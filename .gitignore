@@ -1,0 +1,10 @@
+*~
+#*#
+_site
+.sass-cache
+.DS_Store
+Gemfile.lock
+.idea/
+_work/
+*.iml
+
