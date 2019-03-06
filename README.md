@@ -10,6 +10,7 @@ using multiple nodes. It is written in pure Ruby.
 ## Table of Contents
 
 - [Background](#background)
+- [Install](#install)
 - [Usage](#usage)
 - [Contribute](#contribute)
 - [License](#license)
@@ -25,9 +26,9 @@ and so on are executed in the context of one of the nodes in the Vespa installat
 Each of the nodes must be running a ruby process called <i>node_server.rb</i> that acts as a server
 for the RPC calls.
 
-## Usage
+## Install
 
-Follow these steps to install and run system tests
+Follow these steps to install.
 
 ### 1. Create CentOS 7 dev environment
 
@@ -49,7 +50,13 @@ sudo bash
 gem install libxml-ruby gnuplot distribution 
 exit</pre>
 
-### 4. Compile vespa:
+### 4. Clone the system-test repo
+
+<pre>git clone git@github.com:vespa-engine/system-test.git</pre>
+
+## Usage
+
+### 1. Compile vespa:
 
 <pre>cd $HOME/git/vespa
 sh bootstrap.sh java
@@ -58,19 +65,19 @@ sh bootstrap-cpp.sh -u . .
 make -j 5
 make install</pre>
 
-### 5. Run systemtests in newly created Vespa systemtest enviroment
+### 2. Run systemtests in newly created Vespa systemtest enviroment
 
-#### 5.1 Modify .bash_profile to include the following in PATH:
+#### 2.1 Modify .bash_profile to include the following in PATH:
 * $HOME/git/systemtests/bin/centos
 
-#### 5.2 Ensure hostname is set to localhost
+#### 2.2 Ensure hostname is set to localhost
 <pre>sudo hostname localhost</pre>
 
-#### 5.3 In terminal window 1
+#### 2.3 In terminal window 1
 
 <pre>nodeserver.sh</pre>
 
-#### 5.4 In terminal window 2
+#### 2.4 In terminal window 2
 
 <pre>cd $HOME/git/systemtests
 cd tests/search/basicsearch
