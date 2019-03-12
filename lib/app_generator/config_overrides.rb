@@ -1,0 +1,108 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+class ConfigValue
+  def initialize(key, value)
+    @key = key
+    if value.respond_to? :to_xml
+      @value_obj = value
+    else
+      @value = value
+    end
+  end
+  def to_xml(indent)
+    XmlHelper.new(indent).
+      tag(@key).
+        to_xml(@value_obj).
+        content(@value).to_s
+  end
+end
+
+class ConfigValues
+  include ChainedSetter
+
+  def initialize()
+    @values = []
+  end
+  def add(key, value = nil)
+    if key.is_a? ConfigValue and value.nil?
+      @values.push(key)
+    else
+      @values.push(ConfigValue.new(key, value))
+    end
+    self
+  end
+  def to_xml(indent="")
+    XmlHelper.new(indent).to_xml(@values).to_s
+  end
+end
+
+class ArrayConfig
+  def initialize(name)
+    @name = name
+    @map = {}
+    @mode = 'item'
+  end
+  def append
+    @mode = 'append'
+    return self
+  end
+  def add(key, value)
+    if !(key.class < Integer)
+      raise "Key must be integer, is #{key.class} ('#{key}')"
+    end
+    @map[key] = [] unless @map.has_key?(key)
+    @map[key].push(value)
+    return self
+  end
+
+  def to_xml(indent)
+    if @mode == 'item'
+      XmlHelper.new(indent).
+        tag(@name).
+        list_do(@map.keys) { |helper, key|
+          helper.tag("item").
+            to_xml(@map[key]).close_tag }.to_s
+    else
+      XmlHelper.new(indent).
+        list_do(@map.keys) { |helper, key|
+          helper.tag(@name, :operation => "append").
+            to_xml(@map[key]).close_tag }.to_s
+    end
+  end
+
+end
+
+class ConfigOverride
+  include ChainedSetter
+
+  def initialize(name)
+    @name = name
+    @overrides = []
+  end
+  def add(key, value = nil)
+    if key.is_a? ArrayConfig and value.nil?
+      @overrides.push(key)
+    else
+      @overrides.push(ConfigValue.new(key, value))
+    end
+    self
+  end
+  def to_xml(indent="")
+    XmlHelper.new(indent).
+      tag("config", :name => @name).
+        to_xml(@overrides).to_s
+  end
+end
+
+class ConfigOverrides
+  include ChainedSetter
+
+  chained_forward :overrides, :add => :push
+  def initialize()
+    @overrides = []
+  end
+  def to_xml(indent="")
+    XmlHelper.new(indent).
+      to_xml(@overrides).to_s
+  end
+end
+

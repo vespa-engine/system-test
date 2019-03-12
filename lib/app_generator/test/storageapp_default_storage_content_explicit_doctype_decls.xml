@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+  </admin>
+
+  <jdisc id="default" version="1.0">
+    <search />
+    <document-processing />
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+  </jdisc>
+  <content id="storage" version="1.0">
+    <redundancy>1</redundancy>
+    <group>
+      <node hostalias="node1" distribution-key="0" />
+    </group>
+    <documents>
+      <document mode="store-only" selection="sd2.foo == bar" type="sd2" />
+    </documents>
+    <engine>
+      <proton />
+    </engine>
+  </content>
+
+  <jdisc id="doc-api" version="1.0">
+    <document-api />
+    <http>
+      <server id="default" port="19020" />
+    </http>
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+  </jdisc>
+
+</services>

@@ -1,0 +1,214 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+class Content
+  include ChainedSetter
+
+  attr_reader :sd_files
+  attr_reader :_qrservers
+  attr_writer :distribution_type
+
+  chained_setter :qrservers, :_qrservers
+  chained_setter :model_type, :model_type
+  chained_setter :search_type, :search_type
+  chained_setter :use_global_sd_files
+  chained_forward :search_clusters, :search => :push
+  chained_forward :storage_clusters, :storage => :push
+  chained_forward :search_cfg_overrides, :search_config => :add
+  chained_forward :storage_cfg_overrides, :storage_config => :add
+
+  def initialize
+    @sd_files = []
+    @_qrservers = Qrservers.new
+    @search_type = :indexed
+    @distribution_type = nil
+    @provider = :proton
+    @search_clusters = []
+    @storage_clusters = []
+    @search_cfg_overrides = ConfigOverrides.new
+    @storage_cfg_overrides = ConfigOverrides.new
+    @use_global_sd_files = false
+  end
+
+  def sd(file_name, params = {})
+    @sd_files.push(SDFile.new(file_name, (params[:global] ? true : false)))
+    self
+  end
+
+  def clear_search()
+    @search_clusters = []
+    self
+  end
+
+  def set_indexing_cluster(name)
+    @search_clusters.each do |cluster|
+      cluster.indexing_cluster(name)
+    end
+  end
+
+  def all_sd_files
+    all = [].concat(@sd_files)
+    @search_clusters.each do |cluster|
+      all.concat(cluster.sd_files)
+    end
+    all
+  end
+
+  def get_model_type
+    return @model_type
+  end
+
+  def provider(value)
+    @provider = value
+    @storage_clusters.each do |cluster|
+      cluster.provider(value)
+    end
+    self
+  end
+
+  def is_indexed
+    @search_type == :indexed
+  end
+
+  def storage_clusters_or_default
+    return @storage_clusters unless @storage_clusters.empty?
+    return [StorageCluster.new("storage").default_group]
+  end
+
+  def get_storage_clusters
+    @storage_clusters
+  end
+
+  # Global sd files are registered outside of search clusters. If
+  # there is only the default cluster, there are no global sd files.
+  def global_sd_files_xml(indent)
+    return "" unless @use_global_sd_files
+    XmlHelper.new(indent).
+      tag("searchdefinitions").
+        list_do(@sd_files) { |helper, sd|
+          helper.tag("searchdefinition", :name => File.basename(sd.file_name, '.sd')).
+            close_tag }.to_s
+  end
+
+  def to_indexed_xml(indent)
+    XmlHelper.new(indent).
+      to_xml(@search_cfg_overrides).
+      to_xml(@storage_cfg_overrides).
+      to_xml(@_qrservers, :to_container_xml).
+      to_xml(match_search_and_storage_clusters, :to_indexed_xml).to_s
+  end
+
+  class ContentCluster
+    def initialize(search, storage)
+      @search = search
+      @storage = storage
+      if search
+        @name = search.get_storage_cluster
+      else
+        @name = storage.get_name
+      end
+      @distribution_type = nil
+    end
+
+    def set_distribution_type(type)
+      @distribution_type = type
+      self
+    end
+
+    def needs_cluster_tuning_tag?
+      @distribution_type != nil || @search.get_use_local_node != nil ||
+      @search.get_dispatch_policy != nil || @search.get_min_group_coverage != nil ||
+      @search.get_min_node_ratio_per_group != nil
+    end
+
+    # @search's <redundancy> and <group> takes precedence.
+    def to_indexed_xml(indent)
+      if @search
+        xml = XmlHelper.new(indent).
+            tag("content", :id => @name, :version => "1.0")
+        if needs_cluster_tuning_tag?
+          tuningTag = xml.tag("tuning")
+          if (@distribution_type != nil)
+            tuningTag.tag("distribution", :type => @distribution_type).close_tag
+          end
+          if (@search.get_use_local_node != nil || @search.get_dispatch_policy != nil || @search.get_min_group_coverage != nil)
+            dispatch = tuningTag.tag("dispatch")
+            if (@search.get_use_local_node != nil)
+              dispatch.tag("use-local-node").content(@search.get_use_local_node).close_tag
+            end
+            if (@search.get_dispatch_policy != nil)
+              dispatch.tag("dispatch-policy").content(@search.get_dispatch_policy).close_tag
+            end
+            if (@search.get_min_group_coverage != nil)
+              dispatch.tag("min-group-coverage").content(@search.get_min_group_coverage).close_tag
+            end
+            dispatch.close_tag
+          end
+          if @search.get_min_node_ratio_per_group != nil
+            tuningTag.tag("min-node-ratio-per-group").content(@search.get_min_node_ratio_per_group).close_tag
+          end
+          xml = tuningTag.close_tag
+        end
+        xml.to_xml(@search, :cluster_parameters_xml).
+            to_xml(@storage, :cluster_parameters_xml).to_s
+      else
+        @storage.to_xml(indent)
+      end
+    end
+
+    def to_streaming_xml(indent)
+      XmlHelper.new(indent).tag("content", :id => @name, :version => "1.0").
+        to_xml(@search, :streaming_cluster_parameters_xml).
+        to_xml(@storage, :streaming_cluster_parameters_xml).to_s
+    end
+  end
+
+  def match_search_and_storage_clusters
+    storage_map = {}
+    @storage_clusters.each do |storage|
+      storage_map[storage.get_name] = storage
+    end
+    clusters = []
+    @search_clusters.each do |search|
+      clusters.push(ContentCluster.new(
+          search, storage_map[search.get_storage_cluster]).set_distribution_type(@distribution_type))
+      storage_map[search.get_storage_cluster] = nil
+    end
+    storage_map.each do |name, storage|
+      if storage
+        clusters.push(ContentCluster.new(nil, storage).set_distribution_type(@distribution_type))
+      end
+    end
+    clusters
+  end
+
+  def to_streaming_xml(indent)
+    XmlHelper.new(indent).
+        to_xml(@search_cfg_overrides).
+        to_xml(@storage_cfg_overrides).
+	to_xml(@_qrservers, :to_container_xml).
+        to_xml(match_search_and_storage_clusters, :to_streaming_xml).to_s
+  end
+
+  def to_storage_xml(indent)
+    XmlHelper.new(indent).
+        to_xml(@storage_cfg_overrides).
+        to_xml(@_qrservers, :to_container_xml).
+        to_xml(@storage_clusters).to_s
+  end
+
+  def to_xml(indent)
+    qrs_clusters = @_qrservers.qrserver_list
+    if qrs_clusters.length > 1
+      for i in 1..(qrs_clusters.length-1)
+        qrs_clusters[i].set_baseport(4080 + 10*i)
+      end
+    end
+    if @search_type == :indexed
+      return to_indexed_xml(indent)
+    elsif @search_type == :streaming
+      return to_streaming_xml(indent)
+    else
+      return to_storage_xml(indent)
+    end
+  end
+
+end

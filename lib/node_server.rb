@@ -1,0 +1,951 @@
+#!/usr/bin/env ruby
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+require 'test_base'
+require 'digest/md5'
+require 'webserver'
+require 'executeerror'
+require 'nodetypes/metrics'
+require 'drb_endpoint'
+require 'digest/md5'
+require 'tls_env'
+require 'environment'
+require 'executor'
+
+# This server is running on all Vespa nodes participating in the test.
+# A NodeServer class is instantiated and made accessible to DRb. Remote
+# method calls in the testcase to all the nodes running Vespa will then
+# be possible.
+
+class NodeServer
+  include DRb::DRbUndumped
+  include Feeder
+  include QueryLoader
+  include Metrics
+  attr_accessor :testcase, :addr_configserver, :hostname, :port_configserver_rpc, :configserver_started
+  attr_reader :tls_env
+
+  def initialize(hostname)
+    @services = []   # must keep list of service objects created to prevent gc
+    @hostname = hostname
+    @short_hostname = @hostname.split(".")[0]
+    @monitoring = false
+    @monitor_thread = nil
+    @http_servers = {}
+    @port_configserver_rpc = nil
+    @configserver_pid = nil
+    @configserver_started = false
+    @tls_env = TlsEnv.new
+    @executor = Executor.new(@short_hostname)
+  end
+
+  def time
+    Time.now
+  end
+
+  # Creates and returns an instance of a subclass of VespaNode based on the string
+  # given in _service_.
+  def get_service(service)
+    # In case hash contains symbol keys, convert them to string keys
+    # This allows the callee to use Ruby 1.9 keyword arguments
+    service = symbol_to_string_keys(service) if service[:servicetype]
+
+    case service["servicetype"]
+      when "adminserver" then @services.push(Adminserver.new(service, testcase, self))
+      when "configserver" then @services.push(Configserver.new(service, testcase, self))
+      when "logserver" then @services.push(Logserver.new(service, testcase, self))
+      when "qrserver" then @services.push(Qrserver.new(service, testcase, self))
+      when "container" then @services.push(ContainerNode.new(service, testcase, self))
+      when "httpgateway" then @services.push(HttpGateway.new(service, testcase, self, true))
+      when "container-httpgateway" then @services.push(HttpGateway.new(service, testcase, self, false))
+      when "distributor" then @services.push(Distributor.new(service, testcase, self))
+      when "topleveldispatch" then @services.push(Topleveldispatch.new(service, testcase, self))
+      when "searchnode" then @services.push(SearchNode.new(service, testcase, self))
+      when "storagenode" then @services.push(StorageNode.new(service, testcase, self))
+      when "fleetcontroller" then @services.push(Fleetcontroller.new(service, testcase, self))
+      when "container-clustercontroller" then @services.push(ContentClusterController.new(service, testcase, self))
+      when "docprocservice" then @services.push(DocprocNode.new(service, testcase, self))
+      when "slobrok" then @services.push(Slobrok.new(service, testcase, self))
+      when "metricsproxy" then @services.push(MetricsProxyNode.new(service, testcase, self))
+      else return nil
+    end
+
+    return @services[@services.size - 1]
+  end
+
+  # Remove all references from the services list in order to free memory
+  def cleanup_services
+    @services.each do |service|
+      begin
+        service.cleanup
+      rescue DRb::DRbConnError => e
+        STDERR.puts "Failed during cleanup of service: #{e.inspect}"
+      end
+    end
+    @services.clear
+  end
+
+  # Remove temporary file dir
+  def remove_tmp_files
+    FileUtils.remove_dir(@testcase.dirs.tmpdir) if File.exists?(@testcase.dirs.tmpdir)
+  end
+
+  # Sets the address of the config server in the environment
+  def set_addr_configserver(config_hostnames)
+    Environment.instance.set_addr_configserver(@testcase, config_hostnames)
+  end
+
+  def set_port_configserver_rpc(port=nil)
+    Environment.instance.set_port_configserver_rpc(@testcase, port)
+    @port_configserver_rpc = port
+  end
+
+  def remote_eval(expr)
+    eval(expr)
+  end
+
+  # Executes _command_ in the background on this node. Returns the pid.
+  def execute_bg(command)
+    pid = fork { exec(command) }
+    pid
+  end
+
+  def kill_pid(pid, signal="TERM")
+    command = "kill -#{signal} #{pid}"
+    execute(command)
+    waitpid(pid)
+  end
+
+  def waitpid(pid)
+    Process.waitpid(pid)
+  end
+
+  # Find child pid of parent runserver
+  def find_runserver_child(parent_pid)
+    `ps -o pid,ppid ax | awk "{ if ( \\$2 == #{parent_pid} ) { print \\$1 }}"`.chomp
+  end
+
+  # Executes _command_ on this node. Raises an exception if the exitstatus
+  # was non-zero, unless :exceptiononfailure is set to false. Echoes output
+  # from the command unless :noecho.
+  # Returns stdout and stderr of the command (max 100kB). If :exitcode, returns an array
+  # containing exit code and stdout/stderr
+  def execute(command, params={})
+    @executor.execute(command, @testcase, params)
+  end
+
+  # Transfers one file from the default webhost using HTTP.
+  # Returns a string with local filename fetched.
+  #
+  def fetchfile(file)
+    fetchfiles(:file => file, :webhost => TestBase::webhost(@hostname)).first
+  end
+
+
+  # Transfers files from either the node running the testcase using DRb, or from a spesific
+  # host using FTP or HTTP. Returns an array of local filenames fetched.
+  #
+  # Args:
+  # * :dir - directory to fetch files from
+  # * :range - range of files in directory to fetch (default is all)
+  # * :file - spesific filename to fetch
+  # * :ftphost - specify ftp host
+  # * :webhost - specify web server (NOTE: only supports :file)
+  # * :https - use https (NOTE: only in combination with :webhost)
+  #
+  # Note that either :dir or :file must be specified.
+  def fetchfiles(params={})
+    localfilenames = []
+    if params[:dir]
+      dirname = params[:dir]
+    elsif params[:file]
+      dirname = File.dirname(params[:file])
+    else
+      raise "ERROR: Either :dir or :file must be supplied to fetchfiles method."
+    end
+    if params[:ftphost]
+      FileUtils.mkdir_p(@testcase.dirs.ftpfiledir)
+      starttime = Time.now.to_i
+      ftp = Net::FTP.new
+      ftp.passive = true
+      retries = 3
+      begin
+        ftp.connect(params[:ftphost], 21)
+        ftp.login
+        ftp.chdir(dirname)
+        if params[:dir]
+          remote_files = ftp.nlst
+        elsif params[:file]
+          remote_files = ftp.nlst(File.basename(params[:file]))
+        end
+        remote_files = remote_files.slice(params[:range]) if params[:range]
+        testcase_output("Transferring #{remote_files.length} files to #{@short_hostname} via FTP...")
+        remote_files.each do |remote_file|
+          localfilename = "#{@testcase.dirs.ftpfiledir}#{File.basename(remote_file)}"
+          checksum='[unknown]'
+          ftp.getbinaryfile(remote_file, localfilename)
+          checksum=`md5sum #{localfilename}` if params[:checksum]
+          testcase_output("Got new #{localfilename} with checksum #{checksum} via FTP")
+          localfilenames << localfilename
+        end
+        ftp.quit
+      rescue
+        testcase_output("FTP transfer exception:\n#{$!}")
+        if retries > 0
+          testcase_output("Retrying...")
+          sleep 2
+          retries -= 1
+          retry
+        else
+          raise
+        end
+      end
+      finishtime = Time.now.to_i
+      testcase_output("File transfer completed in #{finishtime-starttime} secs")
+    elsif params[:webhost]
+      FileUtils.mkdir_p(@testcase.dirs.ftpfiledir)
+      starttime = Time.now.to_i
+
+      if params[:dir]
+        raise ":dir not handled for webhost #{params[:webhost]}"
+      end
+
+      protocol = params[:https] ? "https" : "http"
+      port = params[:https] ? "4443" : "80"
+
+      remote_file = "#{protocol}://#{params[:webhost]}:#{port}/#{params[:file]}"
+      localfilename = @testcase.dirs.ftpfiledir + File.basename(params[:file])
+
+      cmd = "wget -O'#{localfilename}' '#{remote_file}'"
+      err = `#{cmd}`
+      if ($? != 0)
+        raise "error during #{cmd} was: #{err}"
+      end
+
+      checksum='[unknown]'
+      checksum=`md5sum #{localfilename}` if params[:checksum]
+      testcase_output("Got new #{localfilename} with checksum #{checksum} via HTTP")
+      localfilenames << localfilename
+    else
+      FileUtils.mkdir_p(@testcase.dirs.drbfiledir)
+      filereader = @testcase.create_filereader
+      if params[:dir]
+        filenames = Dir.glob(params[:dir]+"/*")
+      elsif params[:file]
+        filenames = [params[:file]]
+      end
+      filenames.each do |filename|
+        localfilename = File.join(@testcase.dirs.drbfiledir, File.basename(filename))
+        unless File.exist?(localfilename) && File.size?(localfilename) == filereader.size?(filename) &&
+            File.mtime(localfilename) == filereader.mtime(filename) &&
+            Digest::MD5.digest(localfilename) == filereader.md5(filename)
+          File.open(localfilename, "w") do |fp|
+            filereader.fetch(filename) do |buf|
+              fp.write(buf)
+            end
+          end
+          File.utime(Time.now, filereader.mtime(filename), localfilename)
+        end
+        localfilenames << localfilename
+      end
+    end
+    localfilenames
+  end
+
+  # Copies the source file or directory on localhost to the destination directory
+  # on the host this node is running. If source is a directory, copy("/foo", "/bar")
+  # has the same effect as "cp -r /foo/* /bar".
+  def copy(source, destination)
+    filereader = @testcase.create_filereader
+    FileUtils.mkdir_p(destination)
+    source_name = File.basename(source)
+    remotearchive = filereader.archive(source)
+    filereader.openfile(remotearchive)
+    localarchivename = destination+"/"+source_name+".tar.gz"
+    localarchive = File.open(localarchivename, "w")
+    while block = filereader.read(4096)
+      localarchive.print(block)
+    end
+    localarchive.close
+    filereader.closefile
+    execute("tar xzf #{destination}/#{source_name}.tar.gz " \
+            "--directory #{destination}")
+    File.delete(localarchivename)
+    filereader.delete(remotearchive)
+  end
+
+  # Returns an array of pids corresponding to _name_.
+  def get_pids(name)
+    pids = `ps awwx | grep #{name} | grep -v grep | awk '{print $1}'`
+    result = []
+    pids.split("\n").each do |pid|
+      pid.gsub!(/\s+/, "")
+      result.push(pid.to_i)
+    end
+    return result
+  end
+
+  # Kills the process identified by _name_. Returns a list of pids killed.
+  #
+  # Optional args:
+  # * :pid - kill process by specifying pid instead of name
+  # * :signal - signal to send to process (default is KILL)
+  def kill_process(name, args={})
+    signal = args[:signal] ? args[:signal] : "KILL"
+    if args[:pid]
+      pids = [args[:pid]]
+    else
+      pids = get_pids(name)
+    end
+    pids.each do |pid|
+      command = "kill -#{signal} #{pid}"
+      execute(command, :exceptiononfailure => false)
+    end
+    return pids
+  end
+
+  def get_unblessed_processes
+    my_pid = Process.pid
+    ps_output = `ps alxww`
+    testcase_output(ps_output)
+
+    pid_ppid = {}
+    pid_comm = {}
+    pidlist = {}
+    ps_output.each_line { |line|
+      if ignore_proc(line)
+        next
+      end
+      fields = line.split
+      pid_comm[fields[2]] = fields[12..fields.size].join(" ")
+      if !pid_ppid[fields[3]]
+        pid_ppid[fields[3]] = []
+      end
+      pid_ppid[fields[3]].push(fields[2])
+    }
+
+    if pid_ppid.has_key?(my_pid.to_s)
+      pid_ppid[my_pid.to_s].each { |pid|
+        pidlist[pid] = pid_comm[pid]
+        children = child_pids(pid, pid_ppid)
+        children.each { |child|
+          pidlist[child] = pid_comm[child]
+        }
+      }
+    end
+    pidlist
+  end
+
+  def ignore_proc(ps_line)
+    ps_line =~ /\[perf\]|\[sh\]|\[ruby\]| perf record | free|ps alxww| PID | sh |home.y.tmp.systemtests|.*node_server.rb.*/
+  end
+
+  def child_pids(pid, pidmap)
+    children = []
+    if pidmap.has_key?(pid)
+      children = pidmap[pid]
+      children.each { |child|
+        children.concat(child_pids(child, pidmap))
+      }
+    end
+    children
+  end
+
+  def kill_unblessed_processes
+    pids_to_kill = get_unblessed_processes
+    if not pids_to_kill.empty?
+      `kill #{pids_to_kill.keys.join(' ')}`
+
+      # wait one second to see if everything got killed
+      sleep 1
+
+      pids_to_kill = get_unblessed_processes
+      if not pids_to_kill.empty?
+
+        # everything was not killed, wait more
+        sleep 9
+
+        # make a new list of pids to kill
+        pids_to_kill = get_unblessed_processes
+        if not pids_to_kill.empty?
+          `kill -9 #{pids_to_kill.keys.join(' ')}`
+        end
+      end
+    end
+  end
+
+  def is_nodeserver_child?(p, nodeserver_pid)
+    process = p
+    while (process.ppid != 0)
+      if (process.ppid == nodeserver_pid)
+        return true
+      end
+      process = ProcTable.ps(process.ppid)
+    end
+    false
+  end
+
+  def reset_logctl
+    command = "rm -f #{Environment.instance.vespa_home}/var/db/vespa/logcontrol/*"
+    execute(command, :exceptiononfailure => false)
+  end
+
+  # Finds coredumps on this node that happened between _starttime_ and _endtime_.
+  # Copies the coredumps and binaryfiles that created the dumps for later inspection.
+  # Returns an array of VespaCoredump objects.
+  def check_coredumps(starttime, endtime)
+    coredumps = []
+    binaries = {}
+    coredir = "#{Environment.instance.vespa_home}/var/crash/"
+    bindir = "#{Environment.instance.vespa_home}/bin/"
+    sbindir = "#{Environment.instance.vespa_home}/sbin/"
+    if File.directory?(coredir)
+      Dir.foreach(coredir) do |filename|
+        next if filename == '.' || filename == '..'
+        next if filename == 'systemtests'
+        crashtime = File.mtime(coredir+filename)
+        if filename !~ /yjava_daemon/
+          if crashtime.to_i >= starttime.to_i and crashtime <= endtime
+            FileUtils.chmod 0444, (coredir+filename)
+
+            if filename =~ /(\S+)\..*core/
+              binaryname = $1
+              if binaryname =~ /^memcheck-amd64.*/
+                binaryname = "#{Environment.instance.vespa_home}/lib64/valgrind/memcheck-amd64-linux"
+              end
+              binaries[binaryname] = true
+              FileUtils.mkdir_p(@testcase.dirs.coredir)
+              FileUtils.mv(coredir+filename, @testcase.dirs.coredir)
+              coredumps << VespaCoredump.new(@testcase.dirs.coredir, filename, binaryname)
+            elsif filename =~ /^hs_err_pid\d+\.log$/
+              binaryname = 'java'
+              FileUtils.mkdir_p(@testcase.dirs.coredir)
+              FileUtils.mv(coredir+filename, @testcase.dirs.coredir)
+              coredumps << VespaCoredump.new(@testcase.dirs.coredir, filename, binaryname)
+            end
+          end
+        end
+      end
+      binaries.each_key do |binary|
+        if File.exist?(bindir+binary)
+          FileUtils.cp(bindir+binary, @testcase.dirs.coredir)
+        elsif File.exist?(sbindir+binary)
+          FileUtils.cp(sbindir+binary, @testcase.dirs.coredir)
+        end
+      end
+    end
+    coredumps
+  end
+
+  def drop_coredumps(starttime)
+    corecount = 0
+    coredir = "#{Environment.instance.vespa_home}/var/crash/"
+    if File.directory?(coredir)
+      Dir.foreach(coredir) do |filename|
+        next if filename == '.' || filename == '..'
+        next if filename == 'systemtests'
+        crashtime = File.mtime(coredir+filename)
+        if filename !~ /yjava_daemon/
+          if crashtime.to_i >= starttime.to_i
+            File.unlink(coredir+filename)
+            corecount = corecount + 1
+          end
+        end
+      end
+    end
+    corecount
+  end
+
+  def get_stateline(path)
+    f = File.open(path, "r")
+    lines = f.readlines
+    f.close()
+    line = lines[0]
+    line = line.chop
+    line
+  end
+
+  def available_space
+    # returns amount of free space on build partition
+    df_out = `df -kP /home | tail -n 1`
+    df_out.split[3].to_i
+  end
+
+  def cleanup_coredumps(wanted_free_space)
+    removed_dirs = []
+    File.open("/tmp/coredump_cleanup.log", "w") do |f|
+      f.puts("Listing files...")
+      files = Dir["#{Environment.instance.vespa_home}/var/crash/systemtests/*/*"]
+      files.sort! { | a, b | File.new(b).stat <=> File.new(a).stat } # by creation time reverse
+      f.puts("Got files: #{files.inspect}")
+      while (wanted_free_space > available_space() && !files.empty?)
+        target = files.pop
+        f.puts("Trying to remove: #{target}")
+        # only remove coredump dirs if they are older than 4 days
+        if (File.stat(target).mtime < (Time.now - 4*24*3600))
+          FileUtils.rm_rf(target)
+          removed_dirs << target
+          f.puts("Tried to remove")
+        else
+          f.puts("Not removing, too new")
+        end
+      end
+      f.puts("All done")
+    end
+    removed_dirs
+  end
+
+  def wait_until_file_exists(filename, timeout)
+    timeout.times {
+      if File.exists?(filename)
+        return true
+      end
+
+      sleep 1
+    }
+
+    return false
+  end
+
+  # Writes _content_ into _filename_.
+  def writefile(content, filename)
+    FileUtils.mkdir_p(File.dirname(filename))
+    File.open(filename, "w") do |file|
+      file.print(content)
+    end
+  end
+
+  # Returns the content of _filename_.
+  def readfile(filename)
+    if File.exists?(filename)
+      File.open(filename) do |file|
+        while buf = file.read(1024*4096)
+          yield buf
+        end
+      end
+      true
+    else
+      nil
+    end
+  end
+
+  # Removes _filename_.
+  def removefile(filename)
+    if File.exists?(filename)
+      File.delete(filename)
+    end
+  end
+
+  # Lists files found with the glob _expression_.
+  def list_files(expression)
+    Dir.glob(expression)
+  end
+
+  # Returns the name of the file referenced by the link _filename_.
+  def readlink(filename)
+    if File.exists?(filename)
+      File.readlink(filename)
+    else
+      nil
+    end
+  end
+
+  # Sets the bash environment variable _name_ to _value_.
+  def set_bash_variable(name, value)
+    ENV[name] = value
+  end
+
+  # Unsets the bash environment variable _name_.
+  def unset_bash_variable(name)
+    ENV[name] = ""
+  end
+
+  def maven_compile(sourcedir, bundle, haspom, vespa_version)
+    mvnargs = ''
+    mvnargs += bundle.params[:mavenargs] if bundle.params[:mavenargs]
+    execute("cd #{sourcedir}; #{@testcase.maven_command} install #{mvnargs}")
+
+    jarfile = sourcedir + "/target/" + File.basename(sourcedir) + ".jar"
+    if !(haspom && File.exists?(jarfile))
+      jarfile = sourcedir + "/target/" + bundle.generate_final_name + ".jar"
+    end
+    bundle = File.open(jarfile)
+    data = bundle.read()
+    data
+  end
+
+  # Returns a hashtable of file status information for all files residing in
+  # path, recursively. Also provided is a selector function which selects which
+  # field to store.
+  def stat_files(path, selector)
+    status = Hash.new
+    filelist = Dir.glob(path)
+    filelist.each { |filename|
+      stat = File.stat(filename)
+      status[filename] = selector.call(stat)
+    }
+    return status
+  end
+
+  # Compiles java source code in _sourcedir_, storing the result in _destdir_ using
+  # the given _classpath_.
+  def compile_java(classpath, destdir, sourcedir, makejar=false)
+    buildfile = sourcedir+"/build.xml"
+    generate_build_script(classpath, destdir, sourcedir, buildfile, makejar)
+    execute("ANT_OPTS=-Xmx512m cd #{sourcedir}; ant")
+  end
+
+  # Compiles the C++ source code in _sourcedir_, storing the result in _destdir_.
+  def compile_cpp(destdir, sourcedir, target=nil)
+    makecmd = "make"
+    if target != nil then
+      makecmd += " #{target}"
+    end
+    execute("cd #{sourcedir}; #{makecmd}")
+  end
+
+  # Deletes class and JAR files based on source code in _sourcedir_
+  def delete_java(destdir, sourcedir)
+    buildfile = sourcedir+"/delete.xml"
+    generate_delete_script(destdir, sourcedir, buildfile)
+    execute("ANT_OPTS=-Xmx512m cd #{sourcedir}; ant -buildfile #{buildfile}")
+  end
+
+  # Generates an ant build script with name _buildfile_ for java compiling.
+  def generate_build_script(classpath, destdir, srcdir, buildfile, makejar=false)
+
+    classfiles = []
+    Dir.glob(srcdir).each do |filename|
+      if (filename =~ /.+\.java/)
+        classfiles << File.basename(filename).sub(/\.java/, ".class")
+      end
+    end
+
+    jarfile = ""
+    Dir.glob(srcdir).each do |filename|
+      if (filename =~ /.+\.java/)
+        jarfile = jarfile + File.basename(filename).sub(/\.java/, "")
+      end
+    end
+    jarfile = jarfile + ".jar"
+
+    file = File.open(buildfile, "w")
+    file.write("<?xml version=\"1.0\"?>\n")
+    file.write("<project name=\"javadev\" default=\"compile\" basedir=\".\">\n")
+    file.write("  <target name=\"init\">\n")
+    file.write("    <mkdir dir=\"#{destdir}\"/>\n")
+    classfiles.each do |classfile|
+      file.write("    <delete file=\"#{destdir}/#{classfile}\"/>\n")
+    end
+    file.write("    <delete file=\"#{destdir}/#{jarfile}\"/>\n")
+    file.write("  </target>\n")
+    file.write("  <target name=\"compile\" depends=\"init\">\n")
+    file.write("    <javac debug=\"true\" srcdir=\"#{srcdir}\" destdir=\"#{destdir}\" classpath=\"#{classpath}\"/>\n")
+    if (makejar)
+      #make JAR file
+      file.write("    <jar jarfile=\"#{destdir}/#{jarfile}\" duplicate=\"preserve\">\n")
+      file.write("      <fileset dir=\"#{destdir}\" includes=\"")
+      #include class files in JAR
+      classfiles.each do |classfile|
+        file.write("#{classfile} ")
+      end
+      file.write("\"/>\n")
+      file.write("    </jar>\n")
+      #delete class files
+      classfiles.each do |classfile|
+        file.write("    <delete file=\"#{destdir}/#{classfile}\"/>\n")
+      end
+    end
+    file.write("  </target>\n")
+    file.write("</project>\n")
+    file.close()
+  end
+
+  # Generates an ant build script with name _buildfile_ for java deleting
+  def generate_delete_script(destdir, srcdir, buildfile)
+
+    classfiles = []
+    Dir.glob(srcdir).each do |filename|
+      if (filename =~ /.+\.java/)
+        classfiles << File.basename(filename).sub(/\.java/, ".class")
+      end
+    end
+
+    jarfile = ""
+    Dir.glob(srcdir).each do |filename|
+      if (filename =~ /.+\.java/)
+        jarfile = jarfile + File.basename(filename).sub(/\.java/, "")
+      end
+    end
+    jarfile = jarfile + ".jar"
+
+    file = File.open(buildfile, "w")
+    file.write("<?xml version=\"1.0\"?>\n")
+    file.write("<project name=\"javadev\" default=\"delete\" basedir=\".\">\n")
+
+    file.write("  <target name=\"delete\">\n")
+    file.write("    <mkdir dir=\"#{destdir}\"/>\n")
+    classfiles.each do |classfile|
+      file.write("    <delete file=\"#{destdir}/#{classfile}\"/>\n")
+    end
+    file.write("    <delete file=\"#{destdir}/#{jarfile}\"/>\n")
+    file.write("  </target>\n")
+    file.write("</project>\n")
+    file.close()
+  end
+
+  def http_server_make(port)
+    @http_servers[port] = Factory::WebServer.new(port)
+  end
+
+  def http_server_start(port)
+    unless @http_servers[port]
+      raise 'The http server must be made before it is started'
+    end
+    @http_servers[port].start
+    @http_servers[port].accept
+  end
+
+  def http_server_stop(port=nil)
+    if port
+      @http_servers[port].stop if @http_servers[port]
+      @http_servers.delete(port)
+    else
+      @http_servers.each do |k,v|
+        http_server_stop(k)
+      end
+    end
+  end
+
+  def http_server_handler(port, &block)
+    @http_servers[port].set_handler(&block)
+  end
+
+  # Starts vespa_base on the node
+  def start_base
+    cmd = "#{Environment.instance.vespa_home}/bin/vespa-prestart.sh"
+    cmd += Environment.instance.additional_start_base_commands
+    cmd += " && #{Environment.instance.vespa_home}/libexec/vespa/start-vespa-base.sh"
+    execute(cmd)
+  end
+
+  # Stops vespa_base on the node.
+  def stop_base
+    execute("#{Environment.instance.vespa_home}/libexec/vespa/stop-vespa-base.sh")
+  end
+
+  def ping_configserver(timeout=300)
+    start = Time.now.to_i
+    if (!@port_configserver_rpc)
+      cmd = "#{Environment.instance.vespa_home}/libexec/vespa/vespa-config.pl -configserverport"
+      @port_configserver_rpc = execute(cmd, :exceptiononfailure => false, :noecho => true, :nostderr => true).chomp.to_i
+    end
+    # TODO: Make configurable
+    port_configserver_http = 19071
+    spec = "#{@hostname}:#{@port_configserver_rpc}"
+
+    testcase_output("Pinging configserver on #{spec} (RPC) and #{hostname}:#{port_configserver_http} (HTTP)")
+    rpc_port_up = false
+    http_port_up = false
+    begin
+      configserver(@hostname, @port_configserver_rpc).ping() unless rpc_port_up
+      rpc_port_up = true
+      configserver_http_ping(@hostname, port_configserver_http) unless http_port_up
+      http_port_up = true
+    rescue StandardError => se
+      if (Time.now.to_i - start > 20)
+        testcase_output("Config server on #{spec} failed: #{se}")
+      end
+      sleep 0.1
+      if Time.now.to_i - start > 200
+        execute("vespa-logfmt -l all | tail -n 300", :exceptiononfailure => false)
+        execute("vespa-logfmt -l all #{Environment.instance.vespa_home}/logs/vespa/zookeeper.configserver.log | tail -n 300", :exceptiononfailure => false)
+        execute("ps xgauww | grep 'config[s]erver'", :exceptiononfailure => false)
+        execute("netstat -an | grep #{@port_configserver_rpc}", :exceptiononfailure => false)
+      end
+      if Time.now.to_i - start < timeout
+        retry
+      else
+        testcase_output("Failed connecting to config server on #{spec}. Gave up after #{timeout} seconds.")
+        execute("ls -latr #{Environment.instance.vespa_home}/var/zookeeper", :exceptiononfailure => false)
+        execute("ls -latr #{Environment.instance.vespa_home}/var/zookeeper/version-2", :exceptiononfailure => false)
+        print_configserver_stack
+        raise
+      end
+    end
+    testcase_output("Config server on #{hostname} is alive")
+  end
+
+  def start_configserver
+    if @configserver_started then
+      # Optimization: Don't start unless it's necessary
+      # Ping configserver to be sure that our assumption is correct
+      begin
+        ping_configserver(5)
+        return
+      rescue StandardError => se
+        testcase_output("Config server state: running, but not responding to ping, so starting it anyway")
+      end
+    end
+    cwd = `/bin/pwd`
+    Environment.instance.start_configserver(@testcase)
+    Dir.chdir(cwd) if cwd == "/var/builds/"
+    @configserver_pid = execute("ps auxww | grep \"configserver.pid\" | grep -v grep | tr -s ' ' | cut -f 2 -d ' ' | tail -n 1").to_i
+    testcase_output("Configserver running with pid #{@configserver_pid}")
+    @configserver_started = true
+  end
+
+  def get_configserver_pid
+    @configserver_pid
+  end
+
+  def stop_configserver(params={})
+    Environment.instance.stop_configserver(@testcase)
+    @configserver_started = false
+    if params[:keep_everything] then
+      return
+    end
+
+    # Delete aplication packages
+    FileUtils.rm_rf Dir.glob("#{Environment.instance.vespa_home}/var/db/vespa/config_server/serverdb/tenants/*") unless params[:keep_configserver_data]
+
+    # Delete all files in hosted-vespa dir
+    FileUtils.rm_rf Dir.glob("#{Environment.instance.vespa_home}/conf/configserver-app/hosted-vespa/*")
+
+    # reset zookeeper between runs
+    FileUtils.rm_rf Dir.glob("#{Environment.instance.vespa_home}/var/zookeeper/*") unless params[:keep_zookeeper_data]
+
+    # Delete file distribution directory
+    FileUtils.rm_rf("#{Environment.instance.vespa_home}/var/db/vespa/filedistribution") unless params[:keep_filedistribution_data]
+
+    # Copy all interesting files into testcase directory to be able to inspect.
+    FileUtils.mkdir_p(@testcase.dirs.vespalogdir)
+    files_to_copy = []
+    files_to_copy.concat(Dir.glob("#{Environment.instance.vespa_home}/logs/vespa/vespa.log*"))
+    files_to_copy.concat(Dir.glob("#{Environment.instance.vespa_home}/logs/vespa/configserver/access.log.*"))
+    files_to_copy.concat(Dir.glob("#{Environment.instance.vespa_home}/logs/vespa/zookeeper.*.log*"))
+    files_to_copy.each do |file|
+      FileUtils.cp(file, File.join(@testcase.dirs.vespalogdir, "#{@short_hostname}_#{File.basename(file)}")) unless File.stat(file).size == 0
+    end
+  end
+
+  # Removes vespa indexes on the node.
+  def clean_indexes
+    execute("vespa-remove-index -force", :exceptiononfailure => false)
+  end
+
+  # Output _str_ to node running testcase.
+  def testcase_output(str, newline=true)
+    @testcase.output(str, newline) if @testcase
+  end
+
+  def print_configserver_stack
+    execute("top -b -n 1", :exceptiononfailure => false)
+    execute("ps -p #{@configserver_pid} && sudo -u yahoo jstack #{@configserver_pid}", :exceptiononfailure => false)
+  end
+
+  # Start monitoring of memory in new thread
+  def start_monitoring
+    @monitoring = true
+    @monitor_thread = Thread.new do
+      max_memory = 0
+      count = 0
+      while @monitoring
+        sleep 0.1
+        if count % 10 == 0
+            used_memory = `free -b | grep + | awk {'print $3'}`.strip.to_i
+            if used_memory > max_memory
+              max_memory = used_memory
+            end
+        end
+        count += 1
+      end
+      max_memory
+    end
+  end
+
+  def stop_monitoring
+    @monitoring = false
+    if @monitor_thread
+      mem = @monitor_thread.value
+      @monitor_thread = nil
+      mem
+    end
+  end
+
+  def file_exist?(path)
+    File.exist?(path)
+  end
+
+  def file?(path)
+    File.file?(path)
+  end
+
+  def directory?(path)
+    File.directory?(path)
+  end
+
+  def get_current_time_as_int
+    Time.now.to_i
+  end
+
+  def create_unique_temp_file(template)
+    tmp = Tempfile.new(template)
+    path = tmp.path
+    tmp.close!()
+    return path
+  end
+
+  # Not safe to call - part of remote copy methods in node_proxy.rb
+  def private_copy_archive_to_node_and_extract(source, dst_dir, orig_name, rename_to)
+    # Copy remote archive to local (node) archive
+    local_tarfile = Tempfile.new("systemtest_copy_")
+    filereader = @testcase.create_filereader
+    filereader.openfile(source)
+    while block = filereader.read(4096)
+      s = local_tarfile.write(block)
+    end
+    local_tarfile.close()
+
+    # Extract files locally
+    FileUtils.mkdir_p(dst_dir)
+    cmd = "cd #{dst_dir} && tar xzf #{local_tarfile.path}"
+    execute(cmd)
+
+    # Remove temporary archives
+    local_tarfile.close!();
+  end
+
+  private
+  def configserver(hostname, port)
+    @rpc_to_cfgs or @rpc_to_cfgs = RpcWrapper.new(hostname, port, @tls_env)
+  end
+  def configserver_http_ping(hostname, port)
+    execute("#{Environment.instance.vespa_home}/libexec/vespa/ping-configserver #{hostname} #{port}", {:exceptiononfailure => true, :noecho => true} )
+  end
+end
+
+def symbol_to_string_keys(hsh)
+  hsh.map { |k,v| [k.to_s, v] }.to_h
+end
+
+def main
+  # Instantiates a NodeServer object and publishes it through DRb.
+  hostname = Environment.instance.vespa_hostname
+  ENV['PATH'] = "#{Environment.instance.path_env_variable}:#{ENV['PATH']}"
+  service_endpoint = ":#{TestBase::DRUBY_REMOTE_PORT}"
+  front_object = NodeServer.new(hostname)
+
+  endpoint = DrbEndpoint.new(service_endpoint)
+  puts("Node server endpoint: #{service_endpoint} " +
+       "(#{endpoint.secure? ? 'secure' : 'INSECURE'})")
+
+  while true
+    endpoint.start_service(for_object: front_object)
+    endpoint.join_service_thread
+  end
+end
+
+if __FILE__ == $0
+  main
+end

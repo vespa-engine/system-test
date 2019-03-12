@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+  <admin version="2.0">
+    <adminserver hostalias="node1" jvmargs="-Xms64m -Xmx256m" />
+  </admin>
+
+  <config name="vespa.config.content.fleetcontroller">
+    <min_distributor_up_ratio>0.1</min_distributor_up_ratio>
+    <min_storage_up_ratio>0.1</min_storage_up_ratio>
+    <storage_transition_time>0</storage_transition_time>
+  </config>
+  <config name="stor-distribution">
+    <ready_copies>2</ready_copies>
+  </config>
+
+  <jdisc id="default" version="1.0">
+    <search />
+    <document-processing />
+    <nodes jvmargs="foo">
+      <node hostalias="node1" />
+    </nodes>
+  </jdisc>
+  <content id="storage" version="1.0">
+    <redundancy>3</redundancy>
+    <config name="vespa.config.search.core.proton">
+      <numthreadspersearch>4</numthreadspersearch>
+      <initialize>
+        <threads>16</threads>
+      </initialize>
+      <hwinfo>
+        <disk>
+          <shared>true</shared>
+          <writespeed>150.0</writespeed>
+        </disk>
+      </hwinfo>
+    </config>
+    <documents>
+      <document-processing cluster="default" />
+      <document mode="index" type="sd1" />
+      <document mode="index" type="sd2" />
+      <document mode="index" type="sd3" />
+    </documents>
+    <group>
+      <node hostalias="node1" distribution-key="0" />
+      <node hostalias="node1" distribution-key="1" />
+      <node hostalias="node1" distribution-key="2" />
+      <node hostalias="node1" distribution-key="3" />
+    </group>
+    <engine>
+      <proton>
+        <searchable-copies>1</searchable-copies>
+      </proton>
+    </engine>
+  </content>
+
+</services>

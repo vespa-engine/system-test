@@ -1,0 +1,39 @@
+Reporting results after 241 seconds runtime.
+Visit statistics: (total)
+  Number of visitors completed:             15
+  Average latency:                  115775.267 ms.
+  Average document blocks per visitor: 8059.133
+  Average documents per visitor:      8059.133
+  Failed visitors:                           0
+  Average throughput:                  677.017 docs/s       1.559 MB/s
+  Total data visited:               163744     docs       377.0   MB
+Last period:
+  Number of visitors completed:             10
+  Average latency:                  137263.600 ms.
+  Average document blocks per visitor: 8356.100
+  Average documents per visitor:      8356.100
+  Failed visitors:                           0
+  Average throughput:                 1014.567 docs/s       2.335 MB/s
+  Total data visited:               121749     docs       280.2   MB
+Completion rate of pending visitors:
+  75.00% 37.50% 43.75% 12.50% 0.00% 87.50% 75.00% 87.50% 37.50% 31.25%
+
+Reporting results after 361 seconds runtime.
+Visit statistics: (total)
+  Number of visitors completed:             44
+  Average latency:                   77417.841 ms.
+  Average document blocks per visitor: 7747.636
+  Average documents per visitor:      7747.636
+  Failed visitors:                           0
+  Average throughput:                 1061.783 docs/s       2.434 MB/s
+  Total data visited:               384222     docs       880.7   MB
+Last period:
+  Number of visitors completed:             29
+  Average latency:                   57577.793 ms.
+  Average document blocks per visitor: 7586.517
+  Average documents per visitor:      7586.517
+  Failed visitors:                           0
+  Average throughput:                 2194.440 docs/s       5.018 MB/s
+  Total data visited:               263335     docs       602.2   MB
+Completion rate of pending visitors:
+  87.50% 56.25% 75.00% 6.25% 75.00% 25.00% 50.00% 37.50% 12.50% 50.00%

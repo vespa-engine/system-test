@@ -1,0 +1,80 @@
+{
+    "root": {
+        "children": [
+            {
+                "fields": {
+                    "artist": "Bad Religion",
+                    "documentid": "id:tutorial:music::5",
+                    "sddocname": "music",
+                    "title": "Bad Religion",
+                    "year": 1981
+                },
+                "id": "id:tutorial:music::5",
+                "relevance": 0.38186238359951247,
+                "source": "music"
+            },
+            {
+                "fields": {
+                    "artist": "Michael Jackson",
+                    "documentid": "id:tutorial:music::1",
+                    "duration": 247,
+                    "sddocname": "music",
+                    "title": "Bad",
+                    "year": 1987
+                },
+                "id": "id:tutorial:music::1",
+                "relevance": 0.254574922399675,
+                "source": "music"
+            },
+            {
+                "fields": {
+                    "artist": "Bad English",
+                    "documentid": "id:tutorial:music::4",
+                    "sddocname": "music",
+                    "title": "When I See You Smile",
+                    "year": 1989
+                },
+                "id": "id:tutorial:music::4",
+                "relevance": 0.254574922399675,
+                "source": "music"
+            },
+            {
+                "fields": {
+                    "artist": "Bad Company",
+                    "documentid": "id:tutorial:music::8",
+                    "sddocname": "music",
+                    "title": "Seagull",
+                    "year": 1974
+                },
+                "id": "id:tutorial:music::8",
+                "relevance": 0.254574922399675,
+                "source": "music"
+            },
+            {
+                "fields": {
+                    "artist": "Eminem",
+                    "documentid": "id:tutorial:music::2",
+                    "sddocname": "music",
+                    "title": "So Bad",
+                    "year": 2010
+                },
+                "id": "id:tutorial:music::2",
+                "relevance": 0.05447959677335429,
+                "source": "music"
+            }
+        ],
+        "coverage": {
+            "coverage": 100,
+            "documents": 10,
+            "full": true,
+            "nodes": 0,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "fields": {
+            "totalCount": 5
+        },
+        "id": "toplevel",
+        "relevance": 1.0
+    }
+}
