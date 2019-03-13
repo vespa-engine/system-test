@@ -92,8 +92,11 @@ module TestBase
   # absolute path to systemtests/tests/performance/
   PERFORMANCE = TESTDIR + "/performance/"
 
-  # absolute path to systemtests/tests/search/data
+  # absolute path to tests/search/data
   SEARCH_DATA = TESTDIR + "/search/data/"
+  if ! File.exists?(SEARCH_DATA) # We're running a checkout from git, not installed packages  
+    SEARCH_DATA = TESTDIR + "/../../system-test/tests/search/data/"
+  end
 
   # Timeout-multiplier when running test through valgrind
   VALGRIND_TIMEOUT_MULTIPLIER = 50
