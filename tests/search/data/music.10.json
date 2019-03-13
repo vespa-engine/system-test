@@ -1,0 +1,121 @@
+[
+    {
+        "fields": {
+            "bgnsellers": 0,
+            "ew": "blues",
+            "mid": 2,
+            "pto": -1,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905709",
+            "title": "Blues"
+        },
+        "put": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709"
+    },
+    {
+        "fields": {
+            "bgnsellers": 0,
+            "categories": "Blues",
+            "ew": "blues",
+            "mid": 2,
+            "pto": -1,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905710",
+            "title": "Chicago Blues"
+        },
+        "put": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710"
+    },
+    {
+        "fields": {
+            "bgnsellers": 0,
+            "categories": "Blues",
+            "ew": "blues",
+            "mid": 2,
+            "pto": -1,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905711",
+            "title": "Classic Female Blues"
+        },
+        "put": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711"
+    },
+    {
+        "fields": {
+            "bgnsellers": 0,
+            "categories": "Blues",
+            "ew": "blues",
+            "mid": 2,
+            "pto": -1,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905712",
+            "title": "Contemporary Blues"
+        },
+        "put": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905712"
+    },
+    {
+        "fields": {
+            "bgnsellers": 0,
+            "categories": "Blues",
+            "ew": "blues",
+            "mid": 2,
+            "pto": -1,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905713",
+            "title": "Country Blues"
+        },
+        "put": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905713"
+    },
+    {
+        "fields": {
+            "bgnsellers": 0,
+            "categories": "Blues",
+            "ew": "blues",
+            "mid": 2,
+            "pto": -1,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905714",
+            "title": "Delta Blues"
+        },
+        "put": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905714"
+    },
+    {
+        "fields": {
+            "bgnsellers": 0,
+            "categories": "Blues",
+            "ew": "blues",
+            "mid": 2,
+            "pto": -1,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1807865251",
+            "title": "East Coast Blues"
+        },
+        "put": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865251"
+    },
+    {
+        "fields": {
+            "bgnsellers": 0,
+            "categories": "Blues",
+            "ew": "blues",
+            "mid": 2,
+            "pto": -1,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1807865261",
+            "title": "Electric Blues"
+        },
+        "put": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865261"
+    },
+    {
+        "fields": {
+            "bgnsellers": 0,
+            "categories": "Blues",
+            "ew": "blues",
+            "mid": 2,
+            "pto": -1,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1807865263",
+            "title": "Louisiana Blues"
+        },
+        "put": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865263"
+    },
+    {
+        "fields": {
+            "bgnsellers": 0,
+            "categories": "Blues",
+            "ew": "blues",
+            "mid": 2,
+            "pto": -1,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1807865264",
+            "title": "Modern Electric Blues"
+        },
+        "put": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865264"
+    }
+]

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vespafeed>
+  <document documenttype="simple" documentid="id:test:simple::1">
+    <language>ja</language>
+    <title>school</title>
+    <description>Godzilla attacks bus full of school children. School children turn out to be evil mecha clones of real ones</description>
+    <date>32</date>
+    <surl>http://headlines.yahoo.co.jp/something</surl>
+  </document>
+
+  <!-- This put should not be executed -->
+  <document documenttype="simple" documentid="id:test:simple::1" condition="false">
+    <language>en</language>
+    <title>basil</title>
+    <description>Basil Fawlty talks about the war</description>
+    <date>59</date>
+    <surl>http://bbc.com/basiltwentyfourseven</surl>
+  </document>
+
+  <document documenttype="simple" documentid="id:test:simple::2">
+    <language>no</language>
+    <title>elisa</title>
+    <description>Rosablogger Elisa-Sofie fanget i luksusfellen igjen. Se bildene</description>
+    <date>99</date>
+    <surl>http://www.vg.no/article.dll?id=3293492394</surl>
+  </document>
+
+  <update documenttype="simple" documentid="id:test:simple::1" condition="simple.date == 32">
+    <assign field="title">onegai shimasu godzilla</assign>
+  </update>
+
+  <!-- This update should not be executed -->
+  <update documenttype="simple" documentid="id:test:simple::1" condition="simple.date == 42">
+    <assign field="title">gundam sama sugoi ne</assign>
+  </update>
+
+  <!-- This remove should not be executed -->
+  <remove documentid="id:test:simple::2" condition="false"/>
+</vespafeed>
