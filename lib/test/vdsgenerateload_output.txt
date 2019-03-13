@@ -1,0 +1,15 @@
+------------- Loader statistics at Tue, 15 Jun 2010 15:43:26 GMT -------------
+Put statistics: Done 68099 [OK: 68099], pending: 100.
+       Ops/s  Data/s Latency: Avg <0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6 1.8 2.0 >2.0
+59s:    36.5    1.90 MB   2.583 s   0%  0%  0%  0%  0%  0%  0%  0%  0%  0%100%
+Total:  38.8    1.92 MB   2.560 s   0%  0%  0%  0%  0%  0%  0%  0%  0%  1% 99%
+------------- Loader statistics at Tue, 15 Jun 2010 15:43:26 GMT -------------
+Get statistics: Done 40403 [OK: 40403], pending: 100.
+       Ops/s  Data/s Latency: Avg <0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6 1.8 2.0 >2.0
+59s:    48.4    2.88 MB   1.105 s   0%  0%  0%  0%  0%  0%  0%  0%  0%  0%100%
+Total:  49.0    2.92 MB   1.161 s   0%  0%  0%  0%  0%  0%  0%  0%  0%  1% 99%
+------------- Loader statistics at Tue, 15 Jun 2010 15:44:26 GMT -------------
+Put statistics: Done 70405 [OK: 70401, BORKED: 4], pending: 100.
+       Ops/s  Data/s Latency: Avg <0.2 0.4 0.6 0.8 1.0 1.2 1.4 1.6 1.8 2.0 >2.0
+59s:    38.4    1.88 MB   2.605 s   0%  0%  0%  0%  0%  0%  0%  0%  0%  0%100%
+Total:  39.0    1.92 MB   2.561 s   0%  0%  0%  0%  0%  0%  0%  0%  0%  1% 99%

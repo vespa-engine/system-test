@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+  </admin>
+
+  <jdisc id="default" version="1.0">
+    <processing>
+      <chain id="default">
+        <processor id="com.yahoo.vespatest.BasicProcessor" />
+      </chain>
+    </processing>
+    <nodes jvmargs="-Dvespa.freezedetector.disable=true ">
+      <node hostalias="node1" />
+    </nodes>
+  </jdisc>
+
+
+</services>

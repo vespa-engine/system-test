@@ -1,0 +1,73 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+class SearchNode < VespaNode
+
+  attr_accessor :row, :column, :num
+  attr_reader :elastic, :feed_destination
+
+  def initialize(*args)
+    super(*args)
+    if @service_entry["num"]
+      @num = @service_entry["num"]
+      @elastic = true
+    else
+      @row = @service_entry["row"].to_s
+      @column = @service_entry["column"].to_s
+      @elastic = false
+    end
+    @feed_destination = @service_entry["feed-destination"]
+  end
+
+  def die
+    label = `vespa-proton-cmd #{rpc_port} die 2>&1`.chomp
+    testcase.output(label)
+  end
+
+  def softdie
+    if testcase.valgrind
+      stop
+      start
+    else
+      die
+    end
+  end
+
+  def use_min_config_generation
+    return true
+  end
+
+  def rpc_port
+    @ports_by_tag["rpc"]
+  end
+  def trigger_flush
+    output = `vespa-proton-cmd #{rpc_port} triggerFlush 2>&1`.chomp
+    testcase.output(output)
+  end
+
+  def prepare_restart
+    output = `vespa-proton-cmd #{rpc_port} prepareRestart 2>&1`.chomp
+    testcase.output(output)
+  end
+
+  def get_state
+    output = `vespa-proton-cmd #{rpc_port} getState 2>&1`.chomp
+    testcase.output(output)
+    output
+  end
+
+  def get_proton_status
+    output = `vespa-proton-cmd #{rpc_port} getProtonStatus 2>&1`.chomp
+    testcase.output(output)
+    output
+  end
+
+  def get_state_v1_custom_component(path = "")
+    get_state_v1("custom/component" + path)
+  end
+
+  def stop(force = false)
+    ret = Sentinel.new(@testcase, tls_env()).stop_service(service, 50, force)
+    dumpPStack unless ret
+    return ret
+  end
+
+end

@@ -1,0 +1,48 @@
+Runtime: 1140 sec
+*** HTTP keep-alive statistics ***
+connection reuse count -- 0
+***************** Benchmark Summary *****************
+clients:                      20
+ran for:                    1200 seconds
+cycle time:                   10 ms
+lower response limit:          0 bytes
+skipped requests:              0
+failed requests:               0
+successful requests:       27192
+cycles not held:           27192
+minimum response time:     82.09 ms
+maximum response time:  30627.37 ms
+average response time:    838.50 ms
+25 percentile:            522.00 ms
+50 percentile:            713.00 ms
+75 percentile:            931.00 ms
+90 percentile:           1176.90 ms
+95 percentile:           1363.45 ms
+99 percentile:           4001.35 ms
+actual query rate:         23.85 Q/s
+utilization:              100.00 %
+zero hit queries:            212
+
+*** HTTP keep-alive statistics ***
+connection reuse count -- 28794
+***************** Benchmark Summary *****************
+clients:                      20
+ran for:                    1200 seconds
+cycle time:                   10 ms
+lower response limit:          0 bytes
+skipped requests:              0
+failed requests:               0
+successful requests:       28814
+cycles not held:           28814
+minimum response time:     82.09 ms
+maximum response time:  30627.37 ms
+average response time:    832.59 ms
+25 percentile:            523.00 ms
+50 percentile:            712.00 ms
+75 percentile:            929.00 ms
+90 percentile:           1171.00 ms
+95 percentile:           1355.00 ms
+99 percentile:           3763.48 ms
+actual query rate:         24.02 Q/s
+utilization:              100.00 %
+zero hit queries:            212

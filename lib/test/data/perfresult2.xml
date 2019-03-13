@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ASCII"?>
+<!-- Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root. -->
+<result version="2.0">
+  <version>5.13.151704</version>
+  <metrics>
+    <metric name="qps">2384.20</metric>
+    <metric name="runtime">10</metric>
+    <metric name="95 percentile">1.00</metric>
+    <metric name="maxresponsetime">37.60</metric>
+    <metric name="minresponsetime">0.23</metric>
+    <metric name="99 percentile">1.00</metric>
+    <metric name="successfulrequests">23881</metric>
+    <metric source="test4-eirik.trondheim.corp.yahoo.com" name="cpuutil">0.260960334029228</metric>
+    <metric name="avgresponsetime">0.41</metric>
+  </metrics>
+  <parameters>
+    <parameter name="clients">2</parameter>
+  </parameters>
+</result>
