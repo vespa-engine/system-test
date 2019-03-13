@@ -1,0 +1,51 @@
+[
+    {
+        "put": "id:test:simple::1",
+        "fields": {
+            "language": "ja",
+            "title": "school",
+            "description": "Godzilla attacks bus full of school children. School children turn out to be evil mecha clones of real ones",
+            "date": 32,
+            "surl": "http://headlines.yahoo.co.jp/something"
+        }
+    },
+    {
+        "put": "id:test:simple::1",
+        "condition": "false",
+        "fields": {
+            "language": "ja",
+            "title": "basil",
+            "description": "Basil Fawlty talks about the war",
+            "date": 59,
+            "surl": "http://bbc.com/basiltwentyfourseven"
+        }
+    },
+    {
+        "put": "id:test:simple::2",
+        "fields": {
+            "language": "no",
+            "title": "elisa",
+            "description": "Rosablogger Elisa-Sofie fanget i luksusfellen igjen. Se bildene",
+            "date": 99,
+            "surl": "http://www.vg.no/article.dll?id=3293492394"
+        }
+    },
+    {
+        "update": "id:test:simple::1",
+        "fields": {
+            "title": { "assign": "onegai shimasu godzilla" }
+        },
+        "condition": "simple.date == 32"
+    },
+    {
+        "update": "id:test:simple::1",
+        "fields": {
+            "title": { "assign": "gundam sama sugoi ne" }
+        },
+        "condition": "simple.date == 42"
+    },
+    {
+        "remove": "id:test:simple::2",
+        "condition": "false"
+    }
+]

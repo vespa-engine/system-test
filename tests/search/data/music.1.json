@@ -1,0 +1,14 @@
+[
+  {
+    "fields": {
+      "bgnsellers": 0,
+      "categories": "Classical",
+      "ew": "concerto",
+      "mid": 2,
+      "pto": -1,
+      "surl": "http://shopping.yahoo.com/shop?d=hab&id=1807871857",
+      "title": "Concerto"
+    },
+    "put": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807871857"
+  }
+]

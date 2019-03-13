@@ -1,0 +1,39 @@
+[
+    {        "update": "id:test:simple::http//shopping.yahoo.com/shop?d=hab&id=1234",
+
+        "fields": {
+            "title": {
+               "assign": "this is the title of json doc1"
+            },
+            "description":  {
+               "assign": "this is not music"
+            },
+            "date":  {
+               "assign": 1091356845
+            },
+            "surl":  {
+               "assign": "http://shopping.yahoo.com/shop?d=hab&id=1234"
+            }
+        },
+      "create":true
+
+    },
+    {
+        "fields": {
+            "title": "this is the title of json doc2",
+            "description": "this is not music as well",
+            "date": 1091356846,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1235"
+        },
+        "put": "id:test:simple::http://shopping.yahoo.com/shop?d=hab&id=1235"
+    },
+    {
+        "fields": {
+            "title": "this is the title of json doc3",
+            "description": "really not music",
+            "date": 1091356846,
+            "surl": "http://shopping.yahoo.com/shop?d=hab&id=1236"
+        },
+        "put": "id:test:simple::http://shopping.yahoo.com/shop?d=hab&id=1236"
+    }
+]
