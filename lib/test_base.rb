@@ -57,34 +57,42 @@ module TestBase
   include TenantRestApi
   attr_accessor :vespa, :tenant_name, :application_name, :use_shared_configservers, :configserverhostlist
 
+  def self.existing_of(dir1, dir2)
+    if File.exists?(dir1)
+      return dir1;
+    else
+      return dir2;
+    end
+  end
+
   DRUBY_REMOTE_PORT = 27183
 
-  # absolute path to the systemtests/tests/ directory as specified by RUBYLIB
-  OLDTESTDIR = $:.find {|path| path =~ /systemtests.*\/tests/} || ""
+  # absolute path to the systemtests/tests/
+  INSTALL_DIR = $:.find {|path| path =~ /systemtests.*\/tests/} || ""
 
-  # absolute path to the system-test/tests/ directory as specified by RUBYLIB                                                                                
-  TESTDIR = $:.find {|path| path =~ /system-test.*\/tests/} || ""
+  # absolute path to the system-test/tests/
+  REPO_DIR = $:.find {|path| path =~ /system-test.*\/tests/} || ""
 
   # absolute path to systemtests/tests/vds/
-  VDS = OLDTESTDIR + "/vds/"
+  VDS = existing_of(INSTALL_DIR + "/vds/", REPO_DIR + "/vds")
 
   # absolute path to systemtests/tests/search/
-  SEARCH = OLDTESTDIR + "/search/"
+  SEARCH = existing_of(INSTALL_DIR + "/search/", REPO_DIR + "/search")
 
   # absolute path to systemtests/tests/docproc/
-  DOCPROC = OLDTESTDIR + "/docproc/"
+  DOCPROC = existing_of(INSTALL_DIR + "/docproc/", REPO_DIR + "/docproc/")
 
   # absolute path to systemtests/tests/cloudconfig/
-  CLOUDCONFIG = OLDTESTDIR + "/cloudconfig/"
+  CLOUDCONFIG = existing_of(INSTALL_DIR + "/cloudconfig/", REPO_DIR + "/cloudconfig/")
 
   # Default config protocol version used by system tests
   DEFAULT_CONFIG_PROTOCOL_VERSION = 3
 
   # absolute path to systemtests/tests/performance/
-  PERFORMANCE = OLDTESTDIR + "/performance/"
+  PERFORMANCE = existing_of(INSTALL_DIR + "/performance/", REPO_DIR + "/performance/")
 
   # absolute path to tests/search/data
-  SEARCH_DATA = TESTDIR + "/search/data/"
+  SEARCH_DATA = existing_of(INSTALL_DIR + "/search/data/", REPO_DIR + "/search/data/")
 
   # Timeout-multiplier when running test through valgrind
   VALGRIND_TIMEOUT_MULTIPLIER = 50
