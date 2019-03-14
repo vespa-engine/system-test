@@ -133,8 +133,7 @@ class AutoRunner
 
   def get_full_hostname(hostname)
     if hostname == "localhost"
-      full_hostname = Socket.gethostname
-      raise "Unable to lookup localhost." unless full_hostname
+      full_hostname = Environment.instance.vespa_hostname
     elsif /vmnet\.yahoo\.com$/ =~ hostname
       full_hostname = hostname
     else

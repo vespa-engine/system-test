@@ -35,7 +35,8 @@ class DrbEndpoint
     # it running before starting the proper client..!
     # Luckily, setting a nil service object disallows anyone from calling
     # remote methods on ourselves. Or so the docs say, anyway.
-    DRb.start_service(nil, nil, @ssl_config.to_drb_openssl_config)
+    selfuri = "drbssl://#{Environment.instance.vespa_hostname}:0"
+    DRb.start_service(selfuri, nil, @ssl_config.to_drb_openssl_config)
     uri = tls_endpoint_uri(endpoint)
     DRbObject.new(nil, uri)
   end
