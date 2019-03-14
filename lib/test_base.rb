@@ -60,16 +60,10 @@ module TestBase
   DRUBY_REMOTE_PORT = 27183
 
   # absolute path to the systemtests/tests/ directory as specified by RUBYLIB
-  OLDTESTDIR = $:.find {|path| path =~ /systemtests.*\/tests/}
-  if OLDTESTDIR == nil
-    OLDTESTDIR = ""
-  end
+  OLDTESTDIR = $:.find {|path| path =~ /systemtests.*\/tests/} || ""
 
   # absolute path to the system-test/tests/ directory as specified by RUBYLIB                                                                                
-  TESTDIR = $:.find {|path| path =~ /system-test.*\/tests/}
-  if TESTDIR == nil
-    TESTDIR = ""
-  end
+  TESTDIR = $:.find {|path| path =~ /system-test.*\/tests/} || ""
 
   # absolute path to systemtests/tests/vds/
   VDS = OLDTESTDIR + "/vds/"
