@@ -60,43 +60,37 @@ module TestBase
   DRUBY_REMOTE_PORT = 27183
 
   # absolute path to the systemtests/tests/ directory as specified by RUBYLIB
-  TESTDIR = $:.find {|path| path =~ /systemtests.*\/tests/}
+  OLDTESTDIR = $:.find {|path| path =~ /systemtests.*\/tests/}
+  if OLDTESTDIR == nil
+    OLDTESTDIR = ""
+  end
+
+  # absolute path to the system-test/tests/ directory as specified by RUBYLIB                                                                                
+  TESTDIR = $:.find {|path| path =~ /system-test.*\/tests/}
   if TESTDIR == nil
     TESTDIR = ""
   end
 
   # absolute path to systemtests/tests/vds/
-  VDS = TESTDIR + "/vds/"
+  VDS = OLDTESTDIR + "/vds/"
 
   # absolute path to systemtests/tests/search/
-  SEARCH = TESTDIR + "/search/"
+  SEARCH = OLDTESTDIR + "/search/"
 
   # absolute path to systemtests/tests/docproc/
-  DOCPROC = TESTDIR + "/docproc/"
+  DOCPROC = OLDTESTDIR + "/docproc/"
 
   # absolute path to systemtests/tests/cloudconfig/
-  CLOUDCONFIG = TESTDIR + "/cloudconfig/"
+  CLOUDCONFIG = OLDTESTDIR + "/cloudconfig/"
 
   # Default config protocol version used by system tests
   DEFAULT_CONFIG_PROTOCOL_VERSION = 3
 
-  # absolute path to systemtests/tests/qa/
-  # QA directory might be located outside of systemtests/,
-  # so it can be overridden by ENV['SYSTEMTESTS_QA_DIR']
-  if ENV['SYSTEMTESTS_QA_DIR']
-    QA = ENV['SYSTEMTESTS_QA_DIR']
-  else
-    QA = TESTDIR + "/qa/"
-  end
-
   # absolute path to systemtests/tests/performance/
-  PERFORMANCE = TESTDIR + "/performance/"
+  PERFORMANCE = OLDTESTDIR + "/performance/"
 
   # absolute path to tests/search/data
   SEARCH_DATA = TESTDIR + "/search/data/"
-  if ! File.exists?(SEARCH_DATA) # We're running a checkout from git, not installed packages  
-    SEARCH_DATA = TESTDIR + "/../../system-test/tests/search/data/"
-  end
 
   # Timeout-multiplier when running test through valgrind
   VALGRIND_TIMEOUT_MULTIPLIER = 50
