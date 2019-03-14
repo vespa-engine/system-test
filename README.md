@@ -68,7 +68,7 @@ make install</pre>
 ### 2. Run systemtests in newly created Vespa systemtest enviroment
 
 #### 2.1 Modify .bash_profile to include the following in PATH:
-* $HOME/git/system-tests/bin/
+* $HOME/git/systemtests/bin/centos
 
 #### 2.2 Ensure hostname is set to localhost
 <pre>sudo hostname localhost</pre>
@@ -79,9 +79,9 @@ make install</pre>
 
 #### 2.4 In terminal window 2
 
-<pre>cd $HOME/git/system-test
+<pre>cd $HOME/git/systemtests
 cd tests/search/basicsearch
-runtest.sh basic_search.rb</pre>
+runtest.sh basic_search.rb --run test_basicsearch__ELASTIC</pre>
 
 ## Contribute
 
