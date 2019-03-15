@@ -68,7 +68,7 @@ make install</pre>
 ### 2. Run systemtests in newly created Vespa systemtest enviroment
 
 #### 2.1 Modify .bash_profile to include the following in PATH:
-* $HOME/git/system-tests/bin/
+* $HOME/git/system-test/bin/
 
 #### 2.2 Ensure hostname is set to localhost
 <pre>sudo hostname localhost</pre>
