@@ -142,6 +142,37 @@ module Maven
 
 
   def Maven.pom_xml(vespa_pom_version, extra_build_plugin_xml="", new_values = {})
+    maven_repository_settings =
+      if Environment.instance.maven_snapshot_url != nil then
+        "<repositories>
+          <repository>
+            <id>vespa-maven-libs-quarantine-local</id>
+            <name>vespa-maven-libs-quarantine-local</name>
+            <url>#{Environment.instance.maven_snapshot_url}</url>
+            <snapshots>
+              <enabled>false</enabled>
+            </snapshots>
+            <releases>
+              <enabled>true</enabled>
+            </releases>
+          </repository>
+        </repositories>
+
+        <pluginRepositories>
+          <pluginRepository>
+            <id>vespa-maven-libs-quarantine-local-plugins</id>
+            <name>vespa-maven-libs-quarantine-local-plugins</name>
+            <url>#{Environment.instance.maven_snapshot_url}</url>
+            <snapshots>
+              <enabled>false</enabled>
+            </snapshots>
+            <releases>
+              <enabled>true</enabled>
+            </releases>
+          </pluginRepository>
+        </pluginRepositories>
+      " else "" end
+
     values = {
       :groupId => 'override from bundle.rb',
       :artifactId => 'override from bundle.rb',
@@ -167,33 +198,7 @@ module Maven
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
       </properties>
 
-      <repositories>
-        <repository>
-          <id>vespa-maven-libs-quarantine-local</id>
-          <name>vespa-maven-libs-quarantine-local</name>
-          <url>#{Environment.instance.maven_snapshot_url}</url>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-        </repository>
-      </repositories>
-
-      <pluginRepositories>
-        <pluginRepository>
-          <id>vespa-maven-libs-quarantine-local-plugins</id>
-          <name>vespa-maven-libs-quarantine-local-plugins</name>
-          <url>#{Environment.instance.maven_snapshot_url}</url>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-        </pluginRepository>
-      </pluginRepositories>
+      #{maven_repository_settings}
 
       <build>
         <!-- hacks other places in this file depends on the order of the
