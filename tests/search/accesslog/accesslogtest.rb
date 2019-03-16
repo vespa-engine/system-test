@@ -2,7 +2,7 @@
 
 require 'indexed_search_test'
 
-class AccessLog < IndexedSearchTest
+class AccessLogTest < IndexedSearchTest
 
   def setup
     set_owner("bjorncs")
@@ -17,7 +17,7 @@ class AccessLog < IndexedSearchTest
     start
   end
 
-  def test_apachelog
+  def test_accesslog
     feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
 
     assert_hitcount("query=sddocname:music", 777)
