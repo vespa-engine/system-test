@@ -1,0 +1,199 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search local {
+
+  document local {
+
+    field id type int {
+      indexing: summary | attribute
+    }
+
+    field type type string {
+      indexing: summary | index
+    }
+
+    field title type string {
+      indexing: index
+    }
+
+    field dtitle type string {
+      indexing: summary
+    }
+
+    field addr type string {
+      indexing: summary | index
+    }
+
+    field city type string {
+      indexing: summary | index
+    }
+
+    field state type string {
+      indexing: summary | index
+    }
+
+    field zip type int {
+      indexing: summary | attribute
+    }
+
+    field phone type string {
+      indexing: summary
+    }
+
+    field ycat type string {
+      indexing: summary
+    }
+
+    field cat type string {
+      indexing: summary | index
+    }
+
+    field keyword type string {
+      indexing: summary | index
+    }
+
+    field featuref type string {
+      indexing: summary | index
+    }
+
+    field featurefgc type string {
+      indexing: summary
+    }
+
+    field ambiancef type string {
+      indexing: summary | index
+    }
+
+    field ambiancefgc type string {
+      indexing: summary
+    }
+
+    field len type int {
+      indexing: summary | attribute
+    }
+
+    field q type int {
+      indexing: summary
+    }
+
+    field ds type string {
+      indexing: summary
+    }
+
+    field hideaddr type string {
+      indexing: summary | index
+    }
+
+    field pricef type string {
+      indexing: summary | index
+    }
+
+    field pricefgc type string {
+      indexing: summary | attribute
+    }
+
+    field rating type float {
+      indexing: summary | attribute
+    }
+
+    field ratinggc type string {
+      indexing: summary | attribute
+    }
+
+    field sponsor type string {
+      indexing: summary
+    }
+
+    field website type string {
+      indexing: summary
+    }
+
+    field logo type string {
+      indexing: summary
+    }
+
+    field logolink type string {
+      indexing: summary
+    }
+
+    field ylink type string {
+      indexing: summary
+    }
+
+    field eventutime type int {
+      indexing: summary | attribute
+    }
+
+    field eventsdate type string {
+      indexing: summary
+    }
+
+    field eventstime type string {
+      indexing: summary
+    }
+
+    field eventetime type string {
+      indexing: summary
+    }
+ 
+    field venueid type string {
+      indexing: summary | index
+    }
+
+    field venuename type string {
+      indexing: summary
+    }
+
+    field ldb type string {
+      indexing: summary
+    }
+
+    field ycatgc type string {
+      indexing: summary
+    }
+
+    field dinresurl type string {
+      indexing: summary
+    }
+
+    field lodresurl type string {
+      indexing: summary
+    }
+
+    field crossst type string {
+      indexing: summary
+    }
+
+    field enhanced type string {
+      indexing: summary
+    }
+
+    field url type string {
+      indexing: summary
+    }
+
+  }
+  fieldset default {
+    fields: type, title, cat, keyword
+  }
+  fieldset cat {
+    fields: cat, keyword
+  }
+
+  field ycatgc_arr type array<int> {
+      indexing: input ycatgc | split " " | for_each { to_int } | attribute
+  }
+
+  field ycat_arr type array<int> {
+      indexing: input ycat | split " " | for_each { to_int } | attribute
+  }
+
+  field featurefgc_arr type array<int> {
+      indexing: input featurefgc | lowercase | split " " | for_each { to_int } | attribute
+  }
+
+  field ambiancefgc_arr type array<int> {
+      indexing: input ambiancefgc | lowercase | split " " | for_each { to_int } | attribute
+  }
+
+}

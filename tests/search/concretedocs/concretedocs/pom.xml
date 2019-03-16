@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>concretedocs</groupId>
+  <artifactId>concretedocs</artifactId>
+  <version>1.0</version>
+  <packaging>container-plugin</packaging>
+  <name>concretedocs</name>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.yahoo.vespa</groupId>
+        <artifactId>bundle-plugin</artifactId>
+        <version>${vespa.version}</version>
+        <extensions>true</extensions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+          <showDeprecation>true</showDeprecation>
+        </configuration>
+      </plugin>
+      
+      <plugin>
+        <groupId>com.yahoo.vespa</groupId>
+        <artifactId>vespa-documentgen-plugin</artifactId>
+        <version>${vespa.version}</version>
+        <configuration>
+          <packageName>com.yahoo.concretedocs</packageName>
+        </configuration>
+        <executions>
+        <execution>
+          <id>document-gen</id>
+          <goals>
+            <goal>document-gen</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+      
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.7</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.yahoo.vespa</groupId>
+      <artifactId>container-dev</artifactId>
+      <version>${vespa.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>concretedocs2</groupId>
+      <artifactId>concretedocs2</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+  </dependencies>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <vespa.version>7-SNAPSHOT</vespa.version>
+  </properties>
+</project>

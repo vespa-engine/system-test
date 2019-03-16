@@ -1,0 +1,30 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search fieldtermmatch {
+  document fieldtermmatch {
+    field a type string {
+      indexing: index | summary
+    }
+    field b type string {
+      indexing: index | summary
+      rank: filter
+    }
+  }
+  fieldset default {
+    fields: a
+  }
+  rank-profile default {
+    summary-features { 
+      fieldTermMatch(a,0).firstPosition
+      fieldTermMatch(a,1).firstPosition
+      fieldTermMatch(a,2).firstPosition
+      fieldTermMatch(a,0).occurrences
+      fieldTermMatch(a,1).occurrences
+      fieldTermMatch(a,2).occurrences
+      fieldTermMatch(b,0).firstPosition
+      fieldTermMatch(b,1).firstPosition
+      fieldTermMatch(b,0).occurrences
+      fieldTermMatch(b,1).occurrences
+    }
+  }
+}

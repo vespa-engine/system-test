@@ -1,0 +1,28 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search simple {
+  document simple {
+    field language type string {
+      indexing: set_language
+    }
+    field title type string {
+      indexing: summary | index
+      rank-type: identity
+      bolding: on
+    }
+    field description type string {
+      indexing: summary | index
+      summary: dynamic
+      rank-type: about
+      bolding: on
+    }
+    field date type long {
+      indexing: summary | attribute
+    }
+    field surl type string {
+      indexing: summary
+    }
+  }
+  fieldset default {
+    fields: title, description
+  }
+}

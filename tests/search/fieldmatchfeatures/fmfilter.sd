@@ -1,0 +1,26 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search fmfilter {
+  document fmfilter {
+    field a type string {
+      indexing: index | summary
+      rank: filter
+    }
+    field b type string {
+      indexing: index | summary
+    }
+  }
+
+  rank-profile default {
+    summary-features { 
+      fieldMatch(a)
+      fieldMatch(a).matches
+      fieldMatch(a).degradedMatches
+      fieldMatch(a).queryCompleteness
+      fieldMatch(a).weight
+      fieldMatch(a).proximity
+      fieldMatch(a).orderness
+      fieldMatch(a).longestSequence
+    }
+  }
+}

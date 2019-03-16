@@ -1,0 +1,30 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search test {
+    document test {
+        field always type string {
+            indexing: attribute | summary
+        }
+        field si type int {
+	    indexing: attribute | summary
+        }
+        field sia type int {
+	    indexing: attribute | summary
+        }
+        field sd type double {
+	    indexing: attribute | summary
+        }
+        field sda type double {
+	    indexing: attribute | summary
+        }
+        field sdaf type double {
+	    indexing: attribute | summary
+            attribute: fast-search
+        }
+        field sdaff type double {
+	    indexing: attribute | summary
+            attribute: fast-search
+            rank: filter
+        }
+    }
+}

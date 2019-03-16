@@ -1,0 +1,52 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search attributematch {
+  document attributematch {
+    field a type string {
+      indexing: attribute | summary
+    }
+    field b type array<string> {
+      indexing: attribute | summary
+    }
+    field c type weightedset<string> {
+      indexing: attribute | summary
+      match: token
+    }
+  }
+
+  rank-profile default {
+    summary-features { 
+      attributeMatch(a) 
+      attributeMatch(a).matches 
+      attributeMatch(a).completeness 
+      attributeMatch(a).queryCompleteness 
+      attributeMatch(a).fieldCompleteness 
+      attributeMatch(b) 
+      attributeMatch(b).matches 
+      attributeMatch(b).completeness 
+      attributeMatch(b).queryCompleteness 
+      attributeMatch(b).fieldCompleteness 
+      attributeMatch(c)
+      attributeMatch(c).matches 
+      attributeMatch(c).totalWeight 
+      attributeMatch(c).averageWeight 
+      attributeMatch(c).completeness 
+      attributeMatch(c).queryCompleteness 
+      attributeMatch(c).fieldCompleteness 
+      attributeMatch(c).normalizedWeight 
+      attributeMatch(c).normalizedWeightedWeight
+    }
+  }
+
+  rank-profile rpb inherits default {
+    rank-properties {
+      attributeMatch(b).fieldCompletenessImportance: 0.5
+    } 
+  }
+
+  rank-profile rpc inherits default {
+    rank-properties {
+      attributeMatch(c).maxWeight: 200
+    } 
+  }
+}

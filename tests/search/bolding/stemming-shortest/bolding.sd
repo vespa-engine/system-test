@@ -1,0 +1,40 @@
+search bolding {
+
+  document bolding {
+
+    field uri type string {
+      indexing: summary | attribute | index
+      stemming: none
+    }
+
+    field title type string {
+      indexing: summary | index
+      bolding: on
+      summary-to: small
+      stemming: shortest
+    }
+
+    field song type string {
+      indexing: summary | index 
+      summary: dynamic
+      summary-to: large
+      stemming: shortest
+    }
+
+    field order type int {
+      indexing: attribute | summary
+    }
+
+  }
+  fieldset default {
+    fields: title, song
+  }
+
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(order)
+    }
+  }
+
+}

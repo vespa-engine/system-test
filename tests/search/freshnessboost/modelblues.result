@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="10">
+ <hit relevancy="0" source="search">
+    <field name="title">Modern Electric Blues</field>
+    <field name="docdate">19678000</field>
+    <field name="documentid">id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&amp;id=1807865264</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="title">Contemporary Blues</field>
+    <field name="docdate">19658000</field>
+    <field name="documentid">id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905712</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="title">Electric Blues</field>
+    <field name="docdate">19578000</field>
+    <field name="documentid">id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&amp;id=1807865261</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="title">Classic Female Blues</field>
+    <field name="docdate">19578000</field>
+    <field name="documentid">id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905711</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="title">Chicago Blues</field>
+    <field name="docdate">19478000</field>
+    <field name="documentid">id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905710</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="title">Louisiana Blues</field>
+    <field name="docdate">19378000</field>
+    <field name="documentid">id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&amp;id=1807865263</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="title">East Coast Blues</field>
+    <field name="docdate">19318000</field>
+    <field name="documentid">id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&amp;id=1807865251</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="title">Country Blues</field>
+    <field name="docdate">19278000</field>
+    <field name="documentid">id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905713</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="title">Delta Blues</field>
+    <field name="docdate">19208000</field>
+    <field name="documentid">id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905714</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="title">Blues</field>
+    <field name="docdate">19178000</field>
+    <field name="documentid">id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905709</field>
+  </hit>
+</result>

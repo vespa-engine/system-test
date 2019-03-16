@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="15" coverage-docs="15" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
+  <hit relevancy="74.0" source="search">
+    <field name="relevancy">74.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Vivaldi: Sonates de Dresde</field>
+    <field name="popularity">74</field>
+    <field name="documentid">id:test:music::72</field>
+  </hit>
+  <hit relevancy="69.0" source="search">
+    <field name="relevancy">69.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Rachmaninov: Concerto Nos. 2 &amp; 3</field>
+    <field name="popularity">69</field>
+    <field name="documentid">id:test:music::67</field>
+  </hit>
+  <hit relevancy="64.0" source="search">
+    <field name="relevancy">64.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Hit the Spot</field>
+    <field name="popularity">64</field>
+    <field name="documentid">id:test:music::62</field>
+  </hit>
+  <hit relevancy="59.0" source="search">
+    <field name="relevancy">59.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Occupied Territories</field>
+    <field name="popularity">59</field>
+    <field name="documentid">id:test:music::57</field>
+  </hit>
+  <hit relevancy="54.0" source="search">
+    <field name="relevancy">54.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Compilation Kingz / Various</field>
+    <field name="popularity">54</field>
+    <field name="documentid">id:test:music::52</field>
+  </hit>
+  <hit relevancy="49.0" source="search">
+    <field name="relevancy">49.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Edward MacDowell: Piano Music, Volume Two</field>
+    <field name="popularity">49</field>
+    <field name="documentid">id:test:music::47</field>
+  </hit>
+  <hit relevancy="44.0" source="search">
+    <field name="relevancy">44.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Reggae and Ska [Captain Mod]</field>
+    <field name="popularity">44</field>
+    <field name="documentid">id:test:music::42</field>
+  </hit>
+  <hit relevancy="39.0" source="search">
+    <field name="relevancy">39.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Bach: Musical Offering BWV1079; Partita in Am</field>
+    <field name="popularity">39</field>
+    <field name="documentid">id:test:music::37</field>
+  </hit>
+  <hit relevancy="34.0" source="search">
+    <field name="relevancy">34.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Aulis Sallinen: Variations for Orchestra; Violin Concerto</field>
+    <field name="popularity">34</field>
+    <field name="documentid">id:test:music::32</field>
+  </hit>
+  <hit relevancy="29.0" source="search">
+    <field name="relevancy">29.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Bach: Violin Concertos</field>
+    <field name="popularity">29</field>
+    <field name="documentid">id:test:music::27</field>
+  </hit>
+</result>

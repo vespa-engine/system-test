@@ -1,0 +1,9 @@
+[
+  {
+    "put": "id:test:test::0",
+    "fields": {
+      "str_array": ["foo", "FOO"],
+      "int_array": [7, 7]
+    }
+  }
+]

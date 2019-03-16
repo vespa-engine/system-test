@@ -1,0 +1,6 @@
+{
+   "fields": {
+       "string_string_map{foo}" : { "assign":"crazy"},
+       "similarfruits" : { "add" : ["banana"]}
+   }
+}

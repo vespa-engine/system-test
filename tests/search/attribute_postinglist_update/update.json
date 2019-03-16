@@ -1,0 +1,9 @@
+[
+  {
+    "update": "id:test:test::0",
+    "fields": {
+      "str_array": { "assign": ["FOO"] },
+      "int_array": { "assign": [7] }
+    }
+  }
+]

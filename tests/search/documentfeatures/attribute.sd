@@ -1,0 +1,71 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search attribute {
+  document attribute {
+    field si type int {
+      indexing: attribute | summary
+    }
+    field ai type array<int> {
+      indexing: attribute | summary
+    }
+    field wi type weightedset<int> {
+      indexing: attribute | summary
+    }
+
+    field sf type float {
+      indexing: attribute | summary
+    }
+    field af type array<float> {
+      indexing: attribute | summary
+    }
+    field wf type weightedset<float> {
+      indexing: attribute | summary
+    }
+
+    field ss type string {
+      indexing: attribute | summary
+    }
+    field as type array<string> {
+      indexing: attribute | summary
+    }
+    field ws type weightedset<string> {
+      indexing: attribute | summary
+    }
+
+    field idx type string {
+      indexing: index | summary
+    }
+  }
+
+  rank-profile default {
+    summary-features {
+      attribute(si)
+      attribute(ai,0)
+      attribute(ai,1)
+      attribute(ai,2)
+      attribute(ai,3)
+      attribute(wi,10).weight
+      attribute(wi,10).contains
+      attribute(wi,20).weight
+      attribute(wi,20).contains
+      attribute(sf)
+      attribute(af,0)
+      attribute(af,1)
+      attribute(af,2)
+      attribute(af,3)
+      attribute(wf,10.5).weight
+      attribute(wf,10.5).contains
+      attribute(wf,20.5).weight
+      attribute(wf,20.5).contains
+      attribute(ss)
+      attribute(as,0)
+      attribute(as,1)
+      attribute(as,2)
+      attribute(as,3)
+      attribute(ws,first).weight
+      attribute(ws,first).contains
+      attribute(ws,second).weight
+      attribute(ws,second).contains
+    }
+  }
+}

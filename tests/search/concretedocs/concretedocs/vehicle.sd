@@ -1,0 +1,34 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search vehicle {
+document vehicle {
+
+field reg type string {
+  indexing: summary | index
+}
+
+field year type int {
+  indexing: summary | attribute
+}
+
+annotation place {
+  field lat type long { }
+  field lon type long { }
+}
+
+struct ss0 {
+  field s0 type string{}
+  field d0 type double{}
+}
+
+struct ss1 {
+  field s1 type string { }
+  field l1 type long { }
+  field i1 type int { }
+  field d1 type double { }
+  field as1 type array<string> { }
+  field al1 type array<long> { }
+}
+
+}
+}

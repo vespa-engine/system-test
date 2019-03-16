@@ -1,0 +1,49 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search arabic {
+
+  document arabic {
+
+    field lang type string { 
+            indexing: set_language 
+    }
+
+    field headline type string {
+            indexing: summary | index
+            bolding: on
+            rank: literal
+            stemming: shortest
+    }
+
+    field describe1 type string {
+            indexing: summary | index
+            bolding: on
+            rank: literal
+            stemming: shortest
+    }
+
+    field describe2  type string {
+            indexing: summary | index
+            bolding: on
+            rank: literal
+            stemming: shortest
+    }
+
+    field describe3  type string {
+            indexing: summary | index
+            bolding: on
+            rank: literal
+            stemming: shortest
+    }
+
+  }
+
+  fieldset default {
+    fields: headline, describe1, describe2, describe3
+  }
+
+  rank-profile literal inherits default {
+    first-phase {
+      expression: nativeRank(describe1,describe2,describe3,headline) + fieldMatch(describe1_literal).queryCompleteness + fieldMatch(describe2_literal).queryCompleteness + fieldMatch(describe3_literal).queryCompleteness + fieldMatch(headline_literal).queryCompleteness
+    }
+  }
+}

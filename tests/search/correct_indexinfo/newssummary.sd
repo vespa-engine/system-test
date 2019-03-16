@@ -1,0 +1,29 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search newssummary {
+   document newssummary {
+      field uri type string {
+         indexing: summary
+      }
+
+      # used for routing only:
+      field where type string {
+
+      }
+
+      field title type string {
+         bolding: on
+         indexing: index | summary
+      }
+
+      field weight type float {
+         indexing: summary
+      }
+   }
+   fieldset default {
+      fields: title
+   }
+   field weight100 type float {
+      indexing: input weight * 100 | attribute
+   }
+}

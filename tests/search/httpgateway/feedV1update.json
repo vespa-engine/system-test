@@ -1,0 +1,6 @@
+{
+   "fields": {
+       "colour" : { "assign":"red"}     
+   }
+}
+

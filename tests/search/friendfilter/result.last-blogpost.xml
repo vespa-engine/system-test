@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1124">
+  <hit relevancy="2.222" source="search">
+    <field name="relevancy">2.222</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">omg! foo bar is teh awsum!!! lolz! DONT THEY WIZPUR SOFLY IN UR EARZ????!!!!111!!!!!1111</field>
+    <field name="author">14yrs4ever2222</field>
+    <field name="timestamp">2222</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.0,"nativeRank":0.0,"termFieldMd(author).firstweight":0.0,"termFieldMd(author).occurrences":0.0,"termFieldMd(author).termsmatched":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.2222</field>
+  </hit>
+</result>

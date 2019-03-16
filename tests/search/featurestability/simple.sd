@@ -1,0 +1,82 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search simple {
+    document simple {   
+        field byte_exp type byte {
+    	    indexing: attribute
+	}		
+	field byte_arr type array<byte> {
+	    indexing: attribute
+	}
+        field byte_wset type weightedset<byte> {
+            indexing: attribute
+        }
+        
+        field double_exp type double {
+            indexing: attribute
+        }   
+        field double_arr type array<double> {
+            indexing: attribute
+        }   
+        field double_wset type weightedset<double> {
+            indexing: attribute
+        }   
+        
+        field float_exp type float {
+            indexing: attribute
+        }   
+        field float_arr type array<float> {
+            indexing: attribute
+        }   
+        field float_wset type weightedset<float> {
+            indexing: attribute
+        }   
+        
+        field int_exp type int {
+            indexing: attribute
+        }   
+        field int_arr type array<int> {
+            indexing: attribute
+        }   
+        field int_wset type weightedset<int> {
+            indexing: attribute
+        }   
+        
+        field long_exp type long {
+            indexing: attribute
+        }   
+        field long_arr type array<long> {
+            indexing: attribute
+        }   
+        field long_wset type weightedset<long> {
+            indexing: attribute
+        }   
+        
+        field position_exp type position {
+            indexing: attribute
+        }   
+        field position_arr type array<position> {
+            indexing: attribute
+        }   
+        
+        field string_exp type string {
+            indexing: index
+        }   
+        field string_arr type array<string> {
+            indexing: index
+        }   
+        field string_wset type weightedset<string> {
+            indexing: index
+        }   
+        
+        field url_exp type uri {
+            indexing: index 
+        }  
+        field url_arr type array<uri> {
+            indexing: index
+        }  
+    }
+    fieldset my_set {
+        fields: byte_exp,byte_arr,byte_wset,double_exp,double_arr,double_wset,float_exp,float_arr,float_wset,int_exp,int_arr,int_wset,long_exp,long_arr,long_wset,position_exp,position_arr,string_exp,string_arr,string_wset,url_exp,url_arr
+    }   	     
+}      

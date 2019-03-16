@@ -1,0 +1,16 @@
+<result total-hit-count="2">
+  <hit relevancy="1000" source="pandora.0-dispatcher.tld.0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">simple</field>
+    <field name="title"><hi>ON</hi> test document</field>
+    <field name="description">test SONY test</field>
+    <field name="surl">http://fake1.fake/</field>
+  </hit>
+  <hit relevancy="937" source="pandora.0-dispatcher.tld.0">
+    <field name="relevancy">937</field>
+    <field name="sddocname">simple</field>
+    <field name="title">doublewidth test document <hi>ｏｎ</hi></field>
+    <field name="description">ｓｏｎｙ doublewidth</field>
+    <field name="surl">http://fake2.fake/</field>
+  </hit>
+</result>

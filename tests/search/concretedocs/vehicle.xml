@@ -1,0 +1,8 @@
+<document documentid='id:vehicle:vehicle::0' documenttype='vehicle'>
+  <reg>FOO 1234</reg>
+  <year>2012</year>
+</document>
+<document documentid='id:vehicle:vehicle::1' documenttype='vehicle'>
+  <reg>BAR 5678</reg>
+  <year>2012</year>
+</document>

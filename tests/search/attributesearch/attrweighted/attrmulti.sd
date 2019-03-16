@@ -1,0 +1,60 @@
+search attrmulti {
+  document attrmulti {
+
+    field mvintfield type weightedset<int> {
+      indexing: attribute
+    }
+    field mvlongfield type weightedset<long> {
+      indexing: attribute
+    }
+    field mvbytefield type weightedset<byte> {
+      indexing: attribute
+    }
+    field mvfloatfield type weightedset<float> {
+      indexing: attribute
+    }
+    field mvdoublefield type weightedset<double> {
+      indexing: attribute
+    }
+
+
+    field mvfsintfield type weightedset<int> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field mvfslongfield type weightedset<long> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field mvfsbytefield type weightedset<byte> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field mvfsfloatfield type weightedset<float> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field mvfsdoublefield type weightedset<double> {
+      indexing: attribute
+      attribute: fast-search
+    }
+
+
+    field mvstringfield type weightedset<string> {
+      indexing: attribute
+    }
+    field mvfsstringfield type weightedset<string> {
+      indexing: attribute
+      attribute: fast-search
+    }
+
+
+    field body type string {
+      indexing: summary | index
+    }
+  }
+  fieldset default {
+    fields: body
+  }
+
+}

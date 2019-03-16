@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="271">
+  <hit relevancy="990.0" source="search">
+    <field name="relevancy">990.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b10c1</field>
+  </hit>
+  <hit relevancy="980.0" source="search">
+    <field name="relevancy">980.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b9c1</field>
+  </hit>
+  <hit relevancy="970.0" source="search">
+    <field name="relevancy">970.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b8c1</field>
+  </hit>
+  <hit relevancy="960.0" source="search">
+    <field name="relevancy">960.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b7c1</field>
+  </hit>
+  <hit relevancy="950.0" source="search">
+    <field name="relevancy">950.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b6c1</field>
+  </hit>
+  <hit relevancy="940.0" source="search">
+    <field name="relevancy">940.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b5c1</field>
+  </hit>
+  <hit relevancy="930.0" source="search">
+    <field name="relevancy">930.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b4c1</field>
+  </hit>
+  <hit relevancy="920.0" source="search">
+    <field name="relevancy">920.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b3c1</field>
+  </hit>
+  <hit relevancy="910.0" source="search">
+    <field name="relevancy">910.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b2c1</field>
+  </hit>
+  <hit relevancy="909.0" source="search">
+    <field name="relevancy">909.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b1c10</field>
+  </hit>
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this"></continuation>
+    <grouplist label="a">
+      <group relevance="990.0">
+        <id type="long">10</id>
+        <output label="count()">19</output>
+      </group>
+      <group relevance="890.0">
+        <id type="long">9</id>
+        <output label="count()">19</output>
+      </group>
+      <group relevance="790.0">
+        <id type="long">8</id>
+        <output label="count()">19</output>
+      </group>
+      <group relevance="690.0">
+        <id type="long">7</id>
+        <output label="count()">19</output>
+      </group>
+      <group relevance="590.0">
+        <id type="long">6</id>
+        <output label="count()">19</output>
+      </group>
+      <group relevance="490.0">
+        <id type="long">5</id>
+        <output label="count()">19</output>
+      </group>
+      <group relevance="390.0">
+        <id type="long">4</id>
+        <output label="count()">19</output>
+      </group>
+      <group relevance="290.0">
+        <id type="long">3</id>
+        <output label="count()">19</output>
+      </group>
+      <group relevance="190.0">
+        <id type="long">2</id>
+        <output label="count()">19</output>
+      </group>
+      <group relevance="99.0">
+        <id type="long">1</id>
+        <output label="count()">100</output>
+      </group>
+    </grouplist>
+  </group>
+</result>

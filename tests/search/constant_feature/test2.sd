@@ -1,0 +1,27 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field my_tensor type tensor(tag{}) {
+      indexing: attribute | summary
+    }
+  }
+  constant model1 {
+    type: tensor(age{},sex{},tag{})
+    file: search/model2.json
+  }
+  constant bias1 {
+    type: tensor(age{})
+    file: search/bias2.json
+  }
+  rank-profile default {
+    first-phase {
+      expression {
+        sum((query(age)*query(sex)*attribute(my_tensor)*constant(model1)) + (query(age)*constant(bias1)))
+      }
+    }
+  }
+}

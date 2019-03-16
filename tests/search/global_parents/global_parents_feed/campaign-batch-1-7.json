@@ -1,0 +1,51 @@
+[
+  { "put": "id:test:campaign::1", "fields": { "budget": 10 } },
+  { "put": "id:test:campaign::2", "fields": { "budget": 20 } },
+  { "put": "id:test:campaign::3", "fields": { "budget": 30 } },
+  { "put": "id:test:campaign::4", "fields": { "budget": 40 } },
+  { "put": "id:test:campaign::5", "fields": { "budget": 50 } },
+  { "put": "id:test:campaign::6", "fields": { "budget": 60 } },
+  { "put": "id:test:campaign::7", "fields": { "budget": 70 } },
+
+  { "put": "id:test:ad::1", "fields": { "campaign_ref": "id:test:campaign::1" } },
+  { "put": "id:test:ad::2", "fields": { "campaign_ref": "id:test:campaign::1" } },
+  { "put": "id:test:ad::3", "fields": { "campaign_ref": "id:test:campaign::1" } },
+  { "put": "id:test:ad::4", "fields": { "campaign_ref": "id:test:campaign::1" } },
+  { "put": "id:test:ad::5", "fields": { "campaign_ref": "id:test:campaign::1" } },
+
+  { "put": "id:test:ad::6", "fields": { "campaign_ref": "id:test:campaign::2" } },
+  { "put": "id:test:ad::7", "fields": { "campaign_ref": "id:test:campaign::2" } },
+  { "put": "id:test:ad::8", "fields": { "campaign_ref": "id:test:campaign::2" } },
+  { "put": "id:test:ad::9", "fields": { "campaign_ref": "id:test:campaign::2" } },
+  { "put": "id:test:ad::10", "fields": { "campaign_ref": "id:test:campaign::2" } },
+
+  { "put": "id:test:ad::11", "fields": { "campaign_ref": "id:test:campaign::3" } },
+  { "put": "id:test:ad::12", "fields": { "campaign_ref": "id:test:campaign::3" } },
+  { "put": "id:test:ad::13", "fields": { "campaign_ref": "id:test:campaign::3" } },
+  { "put": "id:test:ad::14", "fields": { "campaign_ref": "id:test:campaign::3" } },
+  { "put": "id:test:ad::15", "fields": { "campaign_ref": "id:test:campaign::3" } },
+
+  { "put": "id:test:ad::16", "fields": { "campaign_ref": "id:test:campaign::4" } },
+  { "put": "id:test:ad::17", "fields": { "campaign_ref": "id:test:campaign::4" } },
+  { "put": "id:test:ad::18", "fields": { "campaign_ref": "id:test:campaign::4" } },
+  { "put": "id:test:ad::19", "fields": { "campaign_ref": "id:test:campaign::4" } },
+  { "put": "id:test:ad::20", "fields": { "campaign_ref": "id:test:campaign::4" } },
+
+  { "put": "id:test:ad::21", "fields": { "campaign_ref": "id:test:campaign::5" } },
+  { "put": "id:test:ad::22", "fields": { "campaign_ref": "id:test:campaign::5" } },
+  { "put": "id:test:ad::23", "fields": { "campaign_ref": "id:test:campaign::5" } },
+  { "put": "id:test:ad::24", "fields": { "campaign_ref": "id:test:campaign::5" } },
+  { "put": "id:test:ad::25", "fields": { "campaign_ref": "id:test:campaign::5" } },
+
+  { "put": "id:test:ad::26", "fields": { "campaign_ref": "id:test:campaign::6" } },
+  { "put": "id:test:ad::27", "fields": { "campaign_ref": "id:test:campaign::6" } },
+  { "put": "id:test:ad::28", "fields": { "campaign_ref": "id:test:campaign::6" } },
+  { "put": "id:test:ad::29", "fields": { "campaign_ref": "id:test:campaign::6" } },
+  { "put": "id:test:ad::30", "fields": { "campaign_ref": "id:test:campaign::6" } },
+
+  { "put": "id:test:ad::31", "fields": { "campaign_ref": "id:test:campaign::7" } },
+  { "put": "id:test:ad::32", "fields": { "campaign_ref": "id:test:campaign::7" } },
+  { "put": "id:test:ad::33", "fields": { "campaign_ref": "id:test:campaign::7" } },
+  { "put": "id:test:ad::34", "fields": { "campaign_ref": "id:test:campaign::7" } },
+  { "put": "id:test:ad::35", "fields": { "campaign_ref": "id:test:campaign::7" } }
+]

@@ -1,0 +1,22 @@
+<result total-hit-count="2">
+  <hit relevancy="128.25155885706337" source="sc0.num0">
+    <field name="relevancy">128.25155885706337</field>
+    <field name="sddocname">proximitygap</field>
+    <field name="id">proximitygap2</field>
+    <field name="f1">foo bar fuzz</field>
+    <field name="f2">ball</field>
+    <field name="ranklog"/>
+    <field name="summaryfeatures"/>
+    <field name="documentid">id:test:proximitygap::proximitygap2</field>
+  </hit>
+  <hit relevancy="125.66201284733198" source="sc0.num0">
+    <field name="relevancy">125.66201284733198</field>
+    <field name="sddocname">proximitygap</field>
+    <field name="id">proximitygap1</field>
+    <field name="f1">bar</field>
+    <field name="f2">fuzz</field>
+    <field name="ranklog"/>
+    <field name="summaryfeatures"/>
+    <field name="documentid">id:test:proximitygap::proximitygap1</field>
+  </hit>
+</result>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="159">
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this">BOAAAAAAABIBEABKAAABCABGBEA</continuation>
+    <grouplist label="artist">
+      <continuation id="next">BGAAABEBEBC</continuation>
+      <group relevance="1.0">
+        <id type="string">The Beatles</id>
+        <grouplist label="album">
+          <continuation id="next">BKAAAAABGBEBC</continuation>
+          <group relevance="1.0">
+            <id type="string">Please Please Me - Side 1</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAAAAAABIBIBC</continuation>
+              <continuation id="prev">BOAAAAAAABIABC</continuation>
+              <hit relevancy="0.3333333333333333" source="search">
+                <field name="relevancy">0.3333333333333333</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Beatles</field>
+                <field name="album">Please Please Me - Side 1</field>
+                <field name="year">1963</field>
+                <field name="track">3</field>
+                <field name="song">Anna (Go to Him)</field>
+                <field name="duration">177</field>
+                <field name="documentid">id:song:song::313</field>
+              </hit>
+              <hit relevancy="0.25" source="search">
+                <field name="relevancy">0.25</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Beatles</field>
+                <field name="album">Please Please Me - Side 1</field>
+                <field name="year">1963</field>
+                <field name="track">4</field>
+                <field name="song">Chains</field>
+                <field name="duration">146</field>
+                <field name="documentid">id:song:song::314</field>
+              </hit>
+            </hitlist>
+          </group>
+          <group relevance="0.5">
+            <id type="string">Please Please Me - Side 2</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAAAABCABIBEBC</continuation>
+              <hit relevancy="1.0" source="search">
+                <field name="relevancy">1.0</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Beatles</field>
+                <field name="album">Please Please Me - Side 2</field>
+                <field name="year">1963</field>
+                <field name="track">1</field>
+                <field name="song">Love Me Do</field>
+                <field name="duration">143</field>
+                <field name="documentid">id:song:song::321</field>
+              </hit>
+              <hit relevancy="0.5" source="search">
+                <field name="relevancy">0.5</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Beatles</field>
+                <field name="album">Please Please Me - Side 2</field>
+                <field name="year">1963</field>
+                <field name="track">2</field>
+                <field name="song">P.S. I Love You</field>
+                <field name="duration">124</field>
+                <field name="documentid">id:song:song::322</field>
+              </hit>
+            </hitlist>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="0.5">
+        <id type="string">Michael Jackson</id>
+        <grouplist label="album">
+          <continuation id="prev">BKAAABCABGABC</continuation>
+          <group relevance="1.0">
+            <id type="string">Off the Wall</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAABCABEABIBEBC</continuation>
+              <hit relevancy="1.0" source="search">
+                <field name="relevancy">1.0</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Michael Jackson</field>
+                <field name="album">Off the Wall</field>
+                <field name="year">1979</field>
+                <field name="track">1</field>
+                <field name="song">Don't Stop 'til You Get Enough</field>
+                <field name="duration">364</field>
+                <field name="documentid">id:song:song::131</field>
+              </hit>
+              <hit relevancy="0.5" source="search">
+                <field name="relevancy">0.5</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Michael Jackson</field>
+                <field name="album">Off the Wall</field>
+                <field name="year">1979</field>
+                <field name="track">2</field>
+                <field name="song">Rock with You</field>
+                <field name="duration">220</field>
+                <field name="documentid">id:song:song::132</field>
+              </hit>
+            </hitlist>
+          </group>
+          <group relevance="0.5">
+            <id type="string">Thriller</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAABCABGABIBEBC</continuation>
+              <hit relevancy="1.0" source="search">
+                <field name="relevancy">1.0</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Michael Jackson</field>
+                <field name="album">Thriller</field>
+                <field name="year">1982</field>
+                <field name="track">1</field>
+                <field name="song">Wanna Be Startin' Somethin'</field>
+                <field name="duration">363</field>
+                <field name="documentid">id:song:song::141</field>
+              </hit>
+              <hit relevancy="0.5" source="search">
+                <field name="relevancy">0.5</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Michael Jackson</field>
+                <field name="album">Thriller</field>
+                <field name="year">1982</field>
+                <field name="track">2</field>
+                <field name="song">Baby Be Mine</field>
+                <field name="duration">260</field>
+                <field name="documentid">id:song:song::142</field>
+              </hit>
+            </hitlist>
+          </group>
+        </grouplist>
+      </group>
+    </grouplist>
+  </group>
+</result>

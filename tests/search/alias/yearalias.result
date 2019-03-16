@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="3">
+  <hit relevancy="2291.6087212517177" source="sc0.num0">
+    <field name="relevancy">2291.6087212517177</field>
+    <field name="sddocname">music</field>
+    <field name="title">hate 2k</field>
+    <field name="artist">hate</field>
+    <field name="song">hate</field>
+    <field name="weight">1300000</field>
+    <field name="year">2000</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::p_columbia-albums-of-irving-berlin-1-2_music_1922002959</field>
+  </hit>
+  <hit relevancy="763.8695737505725" source="sc0.num0">
+    <field name="relevancy">763.8695737505725</field>
+    <field name="sddocname">music</field>
+    <field name="title">hate</field>
+    <field name="artist">none</field>
+    <field name="song">none</field>
+    <field name="weight">1900000</field>
+    <field name="year">2000</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::p_big-band-box-set-_music_1921490548</field>
+  </hit>
+  <hit relevancy="763.8695737505725" source="sc0.num0">
+    <field name="relevancy">763.8695737505725</field>
+    <field name="sddocname">music</field>
+    <field name="title">xyz</field>
+    <field name="artist">xyz</field>
+    <field name="song">hate</field>
+    <field name="weight">600000</field>
+    <field name="year">2000</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::p_try-this-clean-bonus-dvd-_music_1922003403</field>
+  </hit>
+</result>
