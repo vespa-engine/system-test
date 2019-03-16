@@ -1,0 +1,4 @@
+{ "cells": [
+  { "address": { "age": "kid" },   "value": 1 },
+  { "address": { "age": "adult" }, "value": 2 }]
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="3">
+  <meta type="context">
+    <p>No query profile is used</p>
+    <p>
+      <p>Child execution</p>
+      <p>
+        <p>sc0.num0 search to dispatch: query=[me:arnej] timeout=5000ms offset=0 hits=10 grouping=0 :  collapse=false restrict=[friendslist]</p>
+        <p>Current state of query tree: WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="me" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false uniqueID=1 usePositionData=true weight=100 words=true]{
+  "arnej"
+}
+</p>
+        <p>sc0.num0 dispatch response: Result (1 of total 1 hits)</p>
+      </p>
+      <p>Child execution</p>
+      <p>Child execution</p>
+      <p>
+        <p>sc0.num0 search to dispatch: query=[AND title:foo WEIGHTEDSET author{[2]:"bergum",[1]:"yngve",[3]:"havardpe"}] timeout=5000ms offset=0 hits=10 grouping=0 :  collapse=false restrict=[blogpost]</p>
+        <p>Current state of query tree: AND[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false isRanked=true significance=0.0 usePositionData=true weight=100]{
+  WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="title" isRanked=true origin="(6 9)" segmentIndex=0 significance=0.0 stemmed=true uniqueID=1 usePositionData=true weight=100 words=true]{
+    "foo"
+  }
+  WEIGHTEDSET[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false index="author" isRanked=true significance=0.0 uniqueID=2 usePositionData=true weight=100]{
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=2 words=true]{
+      "bergum"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "yngve"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=3 words=true]{
+      "havardpe"
+    }
+  }
+}
+</p>
+        <p>sc0.num0 dispatch response: Result (3 of total 3 hits)</p>
+      </p>
+      <p>Child execution</p>
+    </p>
+  </meta>
+  <hit relevancy="3.388091141769447" source="search">
+    <field name="relevancy">3.388091141769447</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">foo bar</field>
+    <field name="author">havardpe</field>
+    <field name="timestamp">1</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.011764705882352941,"nativeRank":0.3870911417694471,"termFieldMd(author).firstweight":3.0,"termFieldMd(author).occurrences":1.0,"termFieldMd(author).termsmatched":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::techlist.1</field>
+  </hit>
+  <hit relevancy="2.16992462910002" source="search">
+    <field name="relevancy">2.16992462910002</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">Re: foo bar</field>
+    <field name="author">bergum</field>
+    <field name="timestamp">3</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.00784313725490196,"nativeRank":0.1669246291000193,"termFieldMd(author).firstweight":2.0,"termFieldMd(author).occurrences":1.0,"termFieldMd(author).termsmatched":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::techlist.3</field>
+  </hit>
+  <hit relevancy="1.165488720308928" source="search">
+    <field name="relevancy">1.165488720308928</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">Re: Re: foo bar</field>
+    <field name="author">yngve</field>
+    <field name="timestamp">4</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.00392156862745098,"nativeRank":0.16148872030892833,"termFieldMd(author).firstweight":1.0,"termFieldMd(author).occurrences":1.0,"termFieldMd(author).termsmatched":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::techlist.4</field>
+  </hit>
+</result>

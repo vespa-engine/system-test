@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="5">
+  <hit relevancy="0" source="search">
+    <field name="relevancy">0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:test:test::0</field>
+    <field name="flag">
+      <item>-128</item>
+    </field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="relevancy">0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:test:test::1</field>
+    <field name="flag">
+      <item>-64</item>
+      <item>-8</item>
+    </field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="relevancy">0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:test:test::2</field>
+    <field name="flag">
+      <item>0</item>
+      <item>8</item>
+    </field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="relevancy">0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:test:test::3</field>
+    <field name="flag">
+      <item>64</item>
+      <item>24</item>
+    </field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="relevancy">0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:test:test::4</field>
+    <field name="flag">
+      <item>127</item>
+    </field>
+    <field name="summaryfeatures"></field>
+  </hit>
+</result>

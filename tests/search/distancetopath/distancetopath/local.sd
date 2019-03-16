@@ -1,0 +1,41 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search local {
+
+  document local {
+    field title type string {
+      indexing: summary | index
+    }
+    field gps type array<position> {
+      indexing: attribute | summary
+    }
+  }
+  fieldset default {
+    fields: title
+  }
+
+  rank-profile default {
+    summary-features {
+      distanceToPath(gps).distance
+      distanceToPath(gps).traveled
+    }
+  }
+
+  rank-profile distance inherits default {
+    first-phase {
+      expression {
+        max(0, query(distance) - distanceToPath(gps).distance)
+      } 
+    }
+  }
+
+  rank-profile traveled inherits default {
+    first-phase {
+      expression {
+        max(0,    query(distance) - distanceToPath(gps).distance) *
+        (1 - fabs(query(traveled) - distanceToPath(gps).traveled))
+      } 
+    }
+  }
+
+}

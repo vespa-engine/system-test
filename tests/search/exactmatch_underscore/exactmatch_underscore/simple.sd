@@ -1,0 +1,23 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search simple {
+  document simple {
+
+    field brand_name type string {
+      indexing: attribute | summary
+    }
+
+    field array_1 type array<string> {
+      indexing: attribute | summary
+    }
+
+    field array_3 type array<string> {
+      indexing: attribute | summary
+      match {
+        exact
+        exact-terminator: "@@"
+      }
+    }
+
+  }
+}

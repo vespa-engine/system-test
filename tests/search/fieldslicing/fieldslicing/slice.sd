@@ -1,0 +1,36 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search slice {
+  document slice {
+    
+    field f1 type string {
+      indexing: summary | index
+    }
+    
+    field f2 type string {
+      indexing: summary | index
+    }
+  }
+  fieldset default {
+    fields: f1, f2
+  }
+
+  rank-profile slice-in-second inherits default {
+    first-phase {
+      expression: nativeRank
+    }
+    second-phase {
+      expression: fieldMatch(f1) * 10000 + fieldMatch(f2) * 10000
+    }
+  }
+
+  rank-profile slice-in-both inherits default {
+    first-phase {
+      expression: fieldMatch(f1)
+    }
+    second-phase {
+      expression: fieldMatch(f1) * 10000 + fieldMatch(f2) * 10000
+    }
+  }
+
+}

@@ -1,0 +1,90 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search knowledge {
+
+	document knowledge { 
+		field lang type string { 
+			indexing: set_language
+		}
+		field subject type string { 
+			indexing: summary | index
+			rank-type: identity
+			bolding: on
+		}
+		field content type string { 
+			indexing: summary | index
+			rank-type: identity
+			summary: dynamic
+			bolding: on
+		}
+		field bestanswer type string { 
+			indexing: summary | index
+			rank-type: about
+			summary: dynamic
+			bolding: on
+		}
+		field answers type string { 
+			indexing: summary
+		}
+		field maincatid type int { 
+			indexing: summary | index
+		}
+		field subcatid type int {
+			indexing: summary | index
+		}
+		field catid type int {
+			indexing: summary | index
+		}
+		field nick type string { 
+			indexing: summary | index
+		}
+		field state type int {
+			indexing: attribute | summary | index
+		}
+		field vote_count type int {
+			indexing: summary | index
+		}
+		field qid type string {
+			indexing: summary
+		}
+		field popularity type int {
+			indexing: attribute
+		}
+		field award_points type int {
+			indexing: attribute | summary | index
+		}
+		field date type long {
+			indexing: attribute | summary | index
+		}
+		field answer_count type int { 
+			indexing: summary
+		}
+		field prate type int { 
+			indexing: attribute | summary | index
+		}
+		field url type string { 
+			indexing: summary
+		}
+		field kid type string { 
+			indexing: summary
+		}
+		field hidden type string { 
+			indexing: summary
+		}
+		field cat type string { 
+			indexing: summary
+		}
+		field subcat type string { 
+			indexing: summary
+		}
+		field maincat type string { 
+			indexing: summary
+		}
+		field expire type long { 
+			indexing: summary
+		}
+	}
+	fieldset default {
+		fields: subject, content, bestanswer
+	}
+}

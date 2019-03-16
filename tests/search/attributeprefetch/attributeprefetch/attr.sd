@@ -1,0 +1,35 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search attr {
+  document attr {
+    field stringfield type string {
+      indexing: attribute
+    }
+    field floatfield type float {
+      indexing: attribute
+    }
+    field doublefield type double {
+      indexing: attribute
+    }
+    field int64field type long {
+      indexing: attribute
+    }
+    field bytefield1 type byte {
+      indexing: attribute
+    }
+    field bytefield2 type byte {
+      indexing: attribute
+    }
+    field intfield type int {
+      indexing: attribute | summary | index
+    }
+    field body type string {
+      indexing: summary | index
+      rank-type: identity
+    }
+  }
+  fieldset default {
+    fields: body
+  }
+
+}

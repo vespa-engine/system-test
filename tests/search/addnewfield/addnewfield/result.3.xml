@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="3">
+  <hit relevancy="14" source="search">
+    <field name="relevancy">14</field>
+    <field name="sddocname">music</field>
+    <field name="title">Toad [Box Set]</field>
+    <field name="popularity">14</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::12</field>
+  </hit>
+  <hit relevancy="9" source="search">
+    <field name="relevancy">9</field>
+    <field name="sddocname">music</field>
+    <field name="title">Holst, Vaughan Williams and Jacob</field>
+    <field name="popularity">9</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::7</field>
+  </hit>
+  <hit relevancy="4" source="search">
+    <field name="relevancy">4</field>
+    <field name="sddocname">music</field>
+    <field name="title">Bach: Die Bach Kantate, Vol.44-BWV Nos. 187, 136 &amp; 178</field>
+    <field name="popularity">4</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::2</field>
+  </hit>
+</result>

@@ -1,0 +1,27 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search doublerank {
+  
+  document doublerank {
+
+    field id type string {
+      indexing: summary
+    }
+
+    field cluster type int {
+      indexing: summary | index
+    }
+
+    field rankscore type double {
+        indexing: attribute
+    }
+
+  }
+
+  rank-profile default {
+    first-phase {
+        expression: attribute(rankscore)
+    }
+  }
+}
+

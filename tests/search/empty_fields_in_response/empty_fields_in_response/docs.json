@@ -1,0 +1,52 @@
+[
+    {
+        "put":"id:test:test::normal",
+        "fields": {
+            "int_attribute": 42,
+            "int_non_attribute": 144,
+            "string_attribute": "a string value",
+            "string_non_attribute": "a string value",
+            "array_attribute": [42, 144],
+            "array_non_attribute": [42, 144],
+            "weightedset_attribute": { "a":1 },
+            "weightedset_non_attribute": { "a":1 },
+            "map_attribute": { "b":2 },
+            "map_non_attribute": { "b":2 }
+        }
+    },
+    {
+        "put":"id:test:test::not_set",
+        "fields": {
+        }
+    },
+    {
+        "put":"id:test:test::set_empty",
+        "fields": {
+            "int_attribute": -2147483648,
+            "int_non_attribute": -2147483648,
+            "string_attribute": "",
+            "string_non_attribute": "",
+            "array_attribute": [],
+            "array_non_attribute": [],
+            "weightedset_attribute": {},
+            "weightedset_non_attribute": {},
+            "map_attribute": {},
+            "map_non_attribute": {}
+        }
+    },
+    {
+        "put":"id:test:test::set_null",
+        "fields": {
+            "int_attribute": null,
+            "int_non_attribute": null,
+            "string_attribute": null,
+            "string_non_attribute": null,
+            "array_attribute": null,
+            "array_non_attribute": null,
+            "weightedset_attribute": null,
+            "weightedset_non_attribute": null,
+            "map_attribute": null,
+            "map_non_attribute": null
+        }
+    }
+]

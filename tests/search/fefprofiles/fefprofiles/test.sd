@@ -1,0 +1,43 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search test {
+  document test {
+    field body type string {
+      indexing: summary | index
+    }
+  }
+  fieldset default {
+    fields: body
+  }
+  rank-profile rank1 {
+    first-phase {
+      expression: test_cfgvalue(a)
+    }
+    rank-features {
+      test_cfgvalue(a)
+      test_cfgvalue(b)
+    }
+    rank-properties {
+      test_cfgvalue(a).value: 15.0
+      test_cfgvalue(b).value: 25.0
+    }
+  }
+  rank-profile rank2 {
+    first-phase {
+      expression: test_cfgvalue(a)
+    }
+    second-phase {
+      expression: test_cfgvalue(b)
+    }
+    rank-features {
+      test_cfgvalue(a)
+      test_cfgvalue(b)
+      test_cfgvalue(c)
+    }
+    rank-properties {
+      test_cfgvalue(a).value: 100.0
+      test_cfgvalue(b).value: 200.0
+      test_cfgvalue(c).value: 300.0
+    }
+  }
+}

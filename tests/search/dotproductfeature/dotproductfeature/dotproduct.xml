@@ -1,0 +1,43 @@
+<document documenttype="dotproduct" documentid="id:dotproduct:dotproduct:n=1:0">
+  <a>
+    <item weight="2">i</item>
+    <item weight="4">j</item>
+  </a>
+  <b>
+    <item weight="8">i</item>
+    <item weight="16">j</item>
+  </b>
+  <i>
+    <item>2</item>
+    <item>4</item>
+  </i>
+  <f>
+    <item>2.5</item>
+    <item>4.5</item>
+  </f>
+  <l>
+    <item>2</item>
+    <item>4</item>
+  </l>
+  <d>
+    <item>2.5</item>
+    <item>4.5</item>
+  </d>
+  <fi>
+    <item>2</item>
+    <item>4</item>
+  </fi>
+  <ff>
+    <item>2.5</item>
+    <item>4.5</item>
+  </ff>
+  <fl>
+    <item>2</item>
+    <item>4</item>
+  </fl>
+  <fd>
+    <item>2.5</item>
+    <item>4.5</item>
+  </fd>
+</document>
+

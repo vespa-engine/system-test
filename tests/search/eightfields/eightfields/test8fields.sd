@@ -1,0 +1,177 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search test8fields {
+
+  document test8fields {
+
+    field bgndata type string {
+      indexing: summary
+    }
+
+    field sales type int {
+      indexing: summary | attribute
+    }
+
+    field pto type int {
+      indexing: summary | attribute
+    }
+
+    field keys type string {
+      indexing: index
+    }
+
+    field mid type int {
+      indexing: summary | attribute
+    }
+
+    field ew type string {
+      indexing: summary | index
+    }
+
+    field surl type string {
+      indexing: summary
+    }
+
+    field userrate type int {
+      indexing: summary
+    }
+
+    field pid type string {
+      indexing: summary
+    }
+
+    field weight type float {
+      indexing: summary | attribute
+    }
+
+    field url type string {
+      indexing: summary
+    }
+
+    field isbn type string {
+      indexing: summary
+    }
+
+    field fmt type string {
+      indexing: summary | index
+    }
+
+    field albumid type string {
+      indexing: summary
+    }
+
+    field disp_song type string {
+      indexing: summary
+    }
+
+    field song type string {
+      indexing: summary | index
+      rank-type: about
+    }
+
+    field pfrom type int {
+      indexing: summary
+    }
+
+    field bgnpfrom type float {
+      indexing: summary | attribute
+    }
+
+    field categories type string {
+      indexing: summary | index
+    }
+
+    field data type string {
+      indexing: summary
+    }
+
+    field numreview type int {
+      indexing: summary
+    }
+
+    field bgnsellers type int {
+      indexing: summary
+    }
+
+    field image type string {
+      indexing: summary
+    }
+
+    field artist type string {
+      indexing: summary | index
+    }
+
+    field artistspid type string {
+      indexing: summary
+    }
+
+    field title type string {
+      indexing: summary | index
+    }
+
+    field newestedition type int {
+      indexing: summary | attribute
+    }
+
+    field bgnpto type string {
+      indexing: summary
+    }
+
+    field year type int {
+      indexing: summary | attribute
+    }
+
+    field did type int {
+      indexing: summary | attribute
+    }
+
+    field scorekey type int {
+      indexing: summary | attribute
+    }
+
+    field cbid type int {
+      indexing: summary | attribute
+    }
+    
+    field field1 type string {
+      indexing: summary | index
+    }
+
+    field field2 type string {
+      indexing: summary | index
+    }
+
+    field field3 type string {
+      indexing: summary | index
+    }
+
+    field field4 type string {
+      indexing: summary | index
+    }
+
+    field field5 type string {
+      indexing: summary | index
+    }
+
+    field field6 type string {
+      indexing: summary | index
+    }
+
+    field field7 type string {
+      indexing: summary | index
+    }
+
+    field field8 type string {
+      indexing: summary | index
+    }
+
+  }
+  fieldset default {
+    fields: keys, song, artist, title
+  }
+  fieldset eightfields {
+    fields: field1, field2, field3, field4, field5, field6, field7, field8
+  }
+
+}
+

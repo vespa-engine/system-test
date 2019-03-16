@@ -1,0 +1,79 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search attrmulti {
+  document attrmulti {
+
+    field mvintfield type array<int> {
+      indexing: attribute
+    }
+    field mvlongfield type array<long> {
+      indexing: attribute
+    }
+    field mvbytefield type array<byte> {
+      indexing: attribute
+    }
+    field mvfloatfield type array<float> {
+      indexing: attribute
+    }
+    field mvdoublefield type array<double> {
+      indexing: attribute
+    }
+
+
+    field mvfaintfield type array<int> {
+      indexing: attribute
+    }
+    field mvfalongfield type array<long> {
+      indexing: attribute
+    }
+    field mvfabytefield type array<byte> {
+      indexing: attribute
+    }
+    field mvfafloatfield type array<float> {
+      indexing: attribute
+    }
+    field mvfadoublefield type array<double> {
+      indexing: attribute
+    }
+
+
+    field mvfsintfield type array<int> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field mvfslongfield type array<long> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field mvfsbytefield type array<byte> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field mvfsfloatfield type array<float> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field mvfsdoublefield type array<double> {
+      indexing: attribute
+      attribute: fast-search
+    }
+
+
+    field mvstringfield type array<string> {
+      indexing: attribute
+    }
+    field mvfsstringfield type array<string> {
+      indexing: attribute
+      attribute: fast-search
+    }
+
+
+    field body type string {
+      indexing: summary | index
+    }
+  }
+  fieldset default {
+    fields: body
+  }
+
+}

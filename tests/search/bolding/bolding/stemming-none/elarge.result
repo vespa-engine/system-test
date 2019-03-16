@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="10.0" source="search">
+    <field name="relevancy">10.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="song"><sep /> piece of random text is a really long song title where the words Modern <hi>Electric</hi> Blues actually occur but it is so long that if we use dynamic teaser to extract<sep /></field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="8.0" source="search">
+    <field name="relevancy">8.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="song"><hi>Electric</hi> Blues</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+</result>

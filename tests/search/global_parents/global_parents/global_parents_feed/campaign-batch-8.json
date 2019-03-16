@@ -1,0 +1,8 @@
+[
+  { "put": "id:test:campaign::8", "fields": { "budget": 80 } },
+  { "put": "id:test:ad::36", "fields": { "campaign_ref": "id:test:campaign::8" } },
+  { "put": "id:test:ad::37", "fields": { "campaign_ref": "id:test:campaign::8" } },
+  { "put": "id:test:ad::38", "fields": { "campaign_ref": "id:test:campaign::8" } },
+  { "put": "id:test:ad::39", "fields": { "campaign_ref": "id:test:campaign::8" } },
+  { "put": "id:test:ad::40", "fields": { "campaign_ref": "id:test:campaign::8" } }
+]

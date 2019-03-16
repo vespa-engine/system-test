@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="16">
+  <hit relevancy="999999" source="search">
+    <field name="relevancy">999999</field>
+    <field name="sddocname">music</field>
+    <field name="title">Guitar Concerto op. 88 by Lennox Berkeley</field>
+    <field name="popularity">999999</field>
+    <field name="newfield">this is the new data field</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::special.doc.with.new.field</field>
+  </hit>
+  <hit relevancy="74" source="search">
+    <field name="relevancy">74</field>
+    <field name="sddocname">music</field>
+    <field name="title">Vivaldi: Sonates de Dresde</field>
+    <field name="popularity">74</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::72</field>
+  </hit>
+  <hit relevancy="69" source="search">
+    <field name="relevancy">69</field>
+    <field name="sddocname">music</field>
+    <field name="title">Rachmaninov: Concerto Nos. 2 &amp; 3</field>
+    <field name="popularity">69</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::67</field>
+  </hit>
+  <hit relevancy="64" source="search">
+    <field name="relevancy">64</field>
+    <field name="sddocname">music</field>
+    <field name="title">Hit the Spot</field>
+    <field name="popularity">64</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::62</field>
+  </hit>
+  <hit relevancy="59" source="search">
+    <field name="relevancy">59</field>
+    <field name="sddocname">music</field>
+    <field name="title">Occupied Territories</field>
+    <field name="popularity">59</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::57</field>
+  </hit>
+  <hit relevancy="54" source="search">
+    <field name="relevancy">54</field>
+    <field name="sddocname">music</field>
+    <field name="title">Compilation Kingz / Various</field>
+    <field name="popularity">54</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::52</field>
+  </hit>
+  <hit relevancy="49" source="search">
+    <field name="relevancy">49</field>
+    <field name="sddocname">music</field>
+    <field name="title">Edward MacDowell: Piano Music, Volume Two</field>
+    <field name="popularity">49</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::47</field>
+  </hit>
+  <hit relevancy="44" source="search">
+    <field name="relevancy">44</field>
+    <field name="sddocname">music</field>
+    <field name="title">Reggae and Ska [Captain Mod]</field>
+    <field name="popularity">44</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::42</field>
+  </hit>
+  <hit relevancy="39" source="search">
+    <field name="relevancy">39</field>
+    <field name="sddocname">music</field>
+    <field name="title">Bach: Musical Offering BWV1079; Partita in Am</field>
+    <field name="popularity">39</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::37</field>
+  </hit>
+  <hit relevancy="34" source="search">
+    <field name="relevancy">34</field>
+    <field name="sddocname">music</field>
+    <field name="title">Aulis Sallinen: Variations for Orchestra; Violin Concerto</field>
+    <field name="popularity">34</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::32</field>
+  </hit>
+  <hit relevancy="29" source="search">
+    <field name="relevancy">29</field>
+    <field name="sddocname">music</field>
+    <field name="title">Bach: Violin Concertos</field>
+    <field name="popularity">29</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::27</field>
+  </hit>
+  <hit relevancy="24" source="search">
+    <field name="relevancy">24</field>
+    <field name="sddocname">music</field>
+    <field name="title">Read My Lips [UK Version]</field>
+    <field name="popularity">24</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::22</field>
+  </hit>
+  <hit relevancy="19" source="search">
+    <field name="relevancy">19</field>
+    <field name="sddocname">music</field>
+    <field name="title">Music For The Mature B-boy</field>
+    <field name="popularity">19</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::17</field>
+  </hit>
+  <hit relevancy="14" source="search">
+    <field name="relevancy">14</field>
+    <field name="sddocname">music</field>
+    <field name="title">Toad [Box Set]</field>
+    <field name="popularity">14</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::12</field>
+  </hit>
+  <hit relevancy="9" source="search">
+    <field name="relevancy">9</field>
+    <field name="sddocname">music</field>
+    <field name="title">Holst, Vaughan Williams and Jacob</field>
+    <field name="popularity">9</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::7</field>
+  </hit>
+  <hit relevancy="4" source="search">
+    <field name="relevancy">4</field>
+    <field name="sddocname">music</field>
+    <field name="title">Bach: Die Bach Kantate, Vol.44-BWV Nos. 187, 136 &amp; 178</field>
+    <field name="popularity">4</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::2</field>
+  </hit>
+</result>

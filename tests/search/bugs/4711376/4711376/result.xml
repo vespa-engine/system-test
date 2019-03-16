@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="14">
+  <hit relevancy="0" source="music">
+    <field name="relevancy">0</field>
+    <field name="sddocname">music</field>
+    <field name="artist">DELHI</field>
+    <field name="comment">Rock Music</field>
+    <field name="summaryfeatures"></field>
+    <field name="title">casual trip</field>
+    <field name="documentid">id:music:music::1</field>
+  </hit>
+  <hit relevancy="0" source="music">
+    <field name="relevancy">0</field>
+    <field name="sddocname">music</field>
+    <field name="artist">delhi</field>
+    <field name="comment">rock music</field>
+    <field name="summaryfeatures"></field>
+    <field name="title">business trip</field>
+    <field name="documentid">id:music:music::2</field>
+  </hit>
+  <hit relevancy="0" source="music">
+    <field name="relevancy">0</field>
+    <field name="sddocname">music</field>
+    <field name="artist">chennai</field>
+    <field name="comment">POP MUSIC</field>
+    <field name="summaryfeatures"></field>
+    <field name="title">JOLLY trip</field>
+    <field name="documentid">id:music:music::3</field>
+  </hit>
+  <hit relevancy="0" source="music">
+    <field name="relevancy">0</field>
+    <field name="sddocname">music</field>
+    <field name="artist">Chennai</field>
+    <field name="comment">pop music</field>
+    <field name="summaryfeatures"></field>
+    <field name="title">business trip</field>
+    <field name="documentid">id:music:music::4</field>
+  </hit>
+  <hit relevancy="0" source="music">
+    <field name="relevancy">0</field>
+    <field name="sddocname">music</field>
+    <field name="artist">BOMBAY</field>
+    <field name="comment">JAZZ MUSIC</field>
+    <field name="summaryfeatures"></field>
+    <field name="title">VISITOR TRIP</field>
+    <field name="documentid">id:music:music::6</field>
+  </hit>
+  <hit relevancy="0" source="music">
+    <field name="relevancy">0</field>
+    <field name="sddocname">music</field>
+    <field name="artist">bannarghatta national PARK</field>
+    <field name="comment">JAZZ MUSIC</field>
+    <field name="summaryfeatures"></field>
+    <field name="title">LEISURE TRIP</field>
+    <field name="documentid">id:music:music::5</field>
+  </hit>
+  <hit relevancy="0" source="music">
+    <field name="relevancy">0</field>
+    <field name="sddocname">music</field>
+    <field name="artist">bombay</field>
+    <field name="comment">jazz music</field>
+    <field name="summaryfeatures"></field>
+    <field name="title">visitor trip</field>
+    <field name="documentid">id:music:music::7</field>
+  </hit>
+  <hit relevancy="0" source="image">
+    <field name="relevancy">0</field>
+    <field name="sddocname">image</field>
+    <field name="comment">immersive experience</field>
+    <field name="loc">delhi</field>
+    <field name="month">MAY</field>
+    <field name="summaryfeatures"></field>
+    <field name="title">CASUAL TRIP</field>
+    <field name="documentid">id:image:image::7</field>
+  </hit>
+  <hit relevancy="0" source="image">
+    <field name="relevancy">0</field>
+    <field name="sddocname">image</field>
+    <field name="comment">Good Picute</field>
+    <field name="loc">coorg</field>
+    <field name="month">April</field>
+    <field name="summaryfeatures"></field>
+    <field name="title">leisure trip</field>
+    <field name="documentid">id:image:image::1</field>
+  </hit>
+  <hit relevancy="0" source="image">
+    <field name="relevancy">0</field>
+    <field name="sddocname">image</field>
+    <field name="comment">good picture</field>
+    <field name="loc">COORG</field>
+    <field name="month">april</field>
+    <field name="summaryfeatures"></field>
+    <field name="title">Leisure Trip</field>
+    <field name="documentid">id:image:image::2</field>
+  </hit>
+</result>

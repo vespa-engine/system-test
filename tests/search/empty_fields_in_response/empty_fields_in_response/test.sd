@@ -1,0 +1,48 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search test {
+  document test {
+
+    # Integer fields
+    field int_attribute type int {
+      indexing: summary | attribute
+    }
+    field int_non_attribute type int {
+      indexing: summary
+    }
+
+    # String fields
+    field string_attribute type string {
+      indexing: summary | attribute
+    }
+    field string_non_attribute type string {
+      indexing: summary
+    }
+
+    # Array fields
+    field array_attribute type array<int> {
+      indexing: summary | attribute
+    }
+    field array_non_attribute type array<int> {
+      indexing: summary
+    }
+
+    # Weightedset fields
+    field weightedset_attribute type weightedset<string> {
+      indexing: summary | attribute
+    }
+    field weightedset_non_attribute type weightedset<string> {
+      indexing: summary
+    }
+
+    # Map fields
+    field map_attribute type map<string, int> {
+      indexing: summary
+      struct-field key { indexing: attribute }
+    }
+    field map_non_attribute type map<string, int> {
+      indexing: summary
+    }
+
+  }
+}

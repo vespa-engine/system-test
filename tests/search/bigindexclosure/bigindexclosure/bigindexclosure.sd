@@ -1,0 +1,73 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search bigindexclosure {
+document bigindexclosure {
+
+field a type string {
+  indexing: index | summary
+}
+field b type string {
+  indexing: index | summary
+}
+field c type string {
+  indexing: index | summary
+}
+field d type string {
+  indexing: index | summary
+
+}
+field e type string {
+  indexing: index | summary
+}
+field f type string {
+  indexing: index | summary
+}
+field g type string {
+  indexing: index | summary
+}
+field h type string {
+  indexing: index | summary
+}
+field i type string {
+  indexing: index | summary
+}
+field j type string {
+  indexing: index | summary
+}
+field k type string {
+  indexing: index | summary
+}
+field l type string {
+  indexing: index | summary
+}
+field m type string {
+  indexing: index | summary
+}
+field n type string {
+  indexing: index | summary
+}
+field o type string {
+  indexing: index | summary
+}
+field p type string {
+  indexing: index | summary
+}
+field q type string {
+  indexing: index | summary
+}
+field r type string {
+  indexing: index | summary
+}
+field s type string {
+  indexing: index | summary
+}
+field t type string {
+  indexing: index | summary
+}
+
+}
+fieldset default {
+  fields: a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t
+}
+
+}

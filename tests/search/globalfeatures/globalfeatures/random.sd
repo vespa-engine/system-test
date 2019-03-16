@@ -1,0 +1,28 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search random {
+  document random {
+    field a type string {
+      indexing: index | summary
+    }
+  }
+
+  rank-profile default {
+    summary-features { 
+      random
+      random(1)
+      random(2)
+      random.match
+    }
+  }
+  fieldset default {
+    fields: a
+  }
+
+  rank-profile seed inherits default {
+    rank-properties {
+      random.seed: 100
+      random(1).seed: 200
+      random(2).seed: 300
+    }
+  }
+}

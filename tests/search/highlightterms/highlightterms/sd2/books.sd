@@ -1,0 +1,20 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search books {
+  document books {
+    field title type string {
+      indexing: summary | index
+      bolding: on
+    }
+
+    field url type string {
+      indexing: summary
+    }
+
+    field categories type string {
+      indexing: summary | index
+    }
+  }
+  fieldset default {
+    fields: title
+  }
+}

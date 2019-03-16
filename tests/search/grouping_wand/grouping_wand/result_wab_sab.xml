@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="190">
+  <hit relevancy="909.0" source="search">
+    <field name="relevancy">909.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b1c10</field>
+  </hit>
+  <hit relevancy="908.0" source="search">
+    <field name="relevancy">908.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b1c9</field>
+  </hit>
+  <hit relevancy="907.0" source="search">
+    <field name="relevancy">907.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b1c8</field>
+  </hit>
+  <hit relevancy="906.0" source="search">
+    <field name="relevancy">906.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b1c7</field>
+  </hit>
+  <hit relevancy="905.0" source="search">
+    <field name="relevancy">905.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b1c6</field>
+  </hit>
+  <hit relevancy="904.0" source="search">
+    <field name="relevancy">904.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b1c5</field>
+  </hit>
+  <hit relevancy="903.0" source="search">
+    <field name="relevancy">903.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b1c4</field>
+  </hit>
+  <hit relevancy="902.0" source="search">
+    <field name="relevancy">902.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b1c3</field>
+  </hit>
+  <hit relevancy="901.0" source="search">
+    <field name="relevancy">901.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b1c2</field>
+  </hit>
+  <hit relevancy="900.0" source="search">
+    <field name="relevancy">900.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a10b1c1</field>
+  </hit>
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this"></continuation>
+    <grouplist label="a">
+      <group relevance="909.0">
+        <id type="long">10</id>
+        <grouplist label="b">
+          <group relevance="909.0">
+            <id type="long">1</id>
+            <output label="count()">10</output>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="809.0">
+        <id type="long">9</id>
+        <grouplist label="b">
+          <group relevance="809.0">
+            <id type="long">1</id>
+            <output label="count()">10</output>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="709.0">
+        <id type="long">8</id>
+        <grouplist label="b">
+          <group relevance="709.0">
+            <id type="long">1</id>
+            <output label="count()">10</output>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="609.0">
+        <id type="long">7</id>
+        <grouplist label="b">
+          <group relevance="609.0">
+            <id type="long">1</id>
+            <output label="count()">10</output>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="509.0">
+        <id type="long">6</id>
+        <grouplist label="b">
+          <group relevance="509.0">
+            <id type="long">1</id>
+            <output label="count()">10</output>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="409.0">
+        <id type="long">5</id>
+        <grouplist label="b">
+          <group relevance="409.0">
+            <id type="long">1</id>
+            <output label="count()">10</output>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="309.0">
+        <id type="long">4</id>
+        <grouplist label="b">
+          <group relevance="309.0">
+            <id type="long">1</id>
+            <output label="count()">10</output>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="209.0">
+        <id type="long">3</id>
+        <grouplist label="b">
+          <group relevance="209.0">
+            <id type="long">1</id>
+            <output label="count()">10</output>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="109.0">
+        <id type="long">2</id>
+        <grouplist label="b">
+          <group relevance="109.0">
+            <id type="long">1</id>
+            <output label="count()">10</output>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="99.0">
+        <id type="long">1</id>
+        <grouplist label="b">
+          <group relevance="99.0">
+            <id type="long">10</id>
+            <output label="count()">10</output>
+          </group>
+          <group relevance="89.0">
+            <id type="long">9</id>
+            <output label="count()">10</output>
+          </group>
+          <group relevance="79.0">
+            <id type="long">8</id>
+            <output label="count()">10</output>
+          </group>
+          <group relevance="69.0">
+            <id type="long">7</id>
+            <output label="count()">10</output>
+          </group>
+          <group relevance="59.0">
+            <id type="long">6</id>
+            <output label="count()">10</output>
+          </group>
+          <group relevance="49.0">
+            <id type="long">5</id>
+            <output label="count()">10</output>
+          </group>
+          <group relevance="39.0">
+            <id type="long">4</id>
+            <output label="count()">10</output>
+          </group>
+          <group relevance="29.0">
+            <id type="long">3</id>
+            <output label="count()">10</output>
+          </group>
+          <group relevance="19.0">
+            <id type="long">2</id>
+            <output label="count()">10</output>
+          </group>
+          <group relevance="9.0">
+            <id type="long">1</id>
+            <output label="count()">10</output>
+          </group>
+        </grouplist>
+      </group>
+    </grouplist>
+  </group>
+</result>

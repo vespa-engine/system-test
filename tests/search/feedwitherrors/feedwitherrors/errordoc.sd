@@ -1,0 +1,48 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search errordoc {
+
+  document errordoc {
+
+    field id type string {
+      indexing: summary | index
+    }
+
+    field skey type string {      
+      indexing: summary
+    }
+
+    field srank type int {
+      indexing: attribute
+    }
+
+    field hexfield type string {
+    }
+
+    field b64field type string {
+    }
+
+    field intfield type string {
+    }
+
+    field intfield2 type string {
+    }
+
+  }
+
+  field hexfield_val type long {
+    indexing: input hexfield | hexdecode | index
+  }
+
+  field b64field_val type long {
+    indexing: input b64field | base64decode | index
+  }
+  
+  field intfield_val type int {
+      indexing: input intfield | to_int | summary
+  }
+
+  field intfield2_val type int {
+      indexing: input intfield | to_int | index
+  }
+}

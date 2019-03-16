@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="0">
+  <error code="12">Timed out</error>
+  <errordetails>
+    <error source="search" error="Timed out" code="12">Timeout while waiting for sc0.num0</error>
+  </errordetails>
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this"></continuation>
+  </group>
+</result>

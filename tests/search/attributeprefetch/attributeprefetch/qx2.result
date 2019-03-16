@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="stringfield">stringvalue</field>
+    <field name="floatfield">4.5</field>
+    <field name="doublefield">8.25</field>
+    <field name="int64field">10000000000</field>
+    <field name="bytefield1">42</field>
+    <field name="bytefield2">64</field>
+    <field name="intfield">1234567</field>
+    </hit>
+</result>

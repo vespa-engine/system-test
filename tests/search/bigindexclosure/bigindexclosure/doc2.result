@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0" source="search">
+    <field name="relevancy">0</field>
+    <field name="sddocname">bigindexclosure</field>
+    <field name="a">testA2</field>
+    <field name="b">testB2</field>
+
+    <field name="c">testC2</field>
+    <field name="d">testD2</field>
+    <field name="e">testE2</field>
+    <field name="f">testF2</field>
+    <field name="g">testG2</field>
+    <field name="h">testH2</field>
+
+    <field name="i">testI2</field>
+    <field name="j">testJ2</field>
+    <field name="k">testK2</field>
+    <field name="l">testL2</field>
+    <field name="m">testM2</field>
+    <field name="n">testN2</field>
+
+    <field name="o">testO2</field>
+    <field name="p">testP2</field>
+    <field name="q">testQ2</field>
+    <field name="r">testR2</field>
+    <field name="s">testS2</field>
+    <field name="t">testT2</field>
+
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bigindexclosure::2</field>
+  </hit>
+</result>

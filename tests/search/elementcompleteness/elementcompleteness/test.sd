@@ -1,0 +1,53 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search test {
+  document test {
+    field title type string {
+      indexing: summary | index
+    }
+    field foo type array<string> {
+      indexing: summary | index
+    }
+    field bar type weightedset<string> {
+      indexing: summary | index
+    }
+    field productid type weightedset<string> {
+      indexing: index
+      match: word
+    }
+    field hash type weightedset<string> {
+      indexing: index
+      match {
+        exact
+        exact-terminator: "$"
+      }
+      rank: normal
+    }
+  }
+  fieldset foobar {
+    fields: foo, bar
+  }
+  rank-profile default {
+    summary-features {
+      elementCompleteness(foo).completeness
+      elementCompleteness(foo).fieldCompleteness
+      elementCompleteness(foo).queryCompleteness
+      elementCompleteness(foo).elementWeight
+
+      elementCompleteness(bar).completeness
+      elementCompleteness(bar).fieldCompleteness
+      elementCompleteness(bar).queryCompleteness
+      elementCompleteness(bar).elementWeight
+
+      elementCompleteness(productid).completeness
+      elementCompleteness(productid).fieldCompleteness
+      elementCompleteness(productid).queryCompleteness
+      elementCompleteness(productid).elementWeight
+
+      elementCompleteness(hash).completeness
+      elementCompleteness(hash).fieldCompleteness
+      elementCompleteness(hash).queryCompleteness
+      elementCompleteness(hash).elementWeight
+    }
+  }
+}

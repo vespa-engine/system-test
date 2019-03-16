@@ -1,0 +1,131 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search fieldmatch {
+  document fieldmatch {
+    field a type string {
+      indexing: index | summary
+    }
+    field b type string {
+      indexing: index | summary
+    }
+  }
+  fieldset default {
+    fields: a
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: fieldMatch(a) * 1000
+    }
+    summary-features { 
+      fieldMatch(a)
+      fieldMatch(a).proximity
+      fieldMatch(a).completeness
+      fieldMatch(a).queryCompleteness
+      fieldMatch(a).fieldCompleteness
+      fieldMatch(a).orderness
+      fieldMatch(a).relatedness
+      fieldMatch(a).earliness
+      fieldMatch(a).longestSequenceRatio
+      fieldMatch(a).segmentProximity
+      fieldMatch(a).unweightedProximity
+      fieldMatch(a).absoluteProximity
+      fieldMatch(a).occurrence
+      fieldMatch(a).absoluteOccurrence
+      fieldMatch(a).weightedOccurrence
+      fieldMatch(a).weightedAbsoluteOccurrence
+      fieldMatch(a).significantOccurrence
+      fieldMatch(a).weight
+      fieldMatch(a).significance
+      fieldMatch(a).importance
+      fieldMatch(a).segments
+      fieldMatch(a).matches
+      fieldMatch(a).degradedMatches
+      fieldMatch(a).outOfOrder
+      fieldMatch(a).gaps
+      fieldMatch(a).gapLength
+      fieldMatch(a).longestSequence
+      fieldMatch(a).head
+      fieldMatch(a).tail
+      fieldMatch(a).segmentDistance
+    }
+  }
+
+  rank-profile max-occs inherits default {
+    rank-properties { 
+      fieldMatch(a).maxOccurrences: 10
+    }
+  }
+
+  rank-profile segmentations-0 inherits default {
+    rank-properties {
+      fieldMatch(a).maxAlternativeSegmentations: 0
+    }
+  }
+
+  rank-profile segmentations-1 inherits default {
+    rank-properties {
+      fieldMatch(a).maxAlternativeSegmentations: 1
+    }
+  }
+
+  rank-profile segmentations-2 inherits default {
+    rank-properties {
+      fieldMatch(a).maxAlternativeSegmentations: 2
+    }
+  }
+
+  rank-profile proximity-completeness inherits default {
+    rank-properties {
+      fieldMatch(a).proximityCompletenessImportance: 1
+    }
+  }
+
+  rank-profile relatedness inherits default {
+    rank-properties {
+      fieldMatch(a).relatednessImportance: 1
+    }
+  }
+
+  rank-profile earliness inherits default {
+    rank-properties {
+      fieldMatch(a).earlinessImportance: 1
+    }
+  }
+
+  rank-profile segment-proximity inherits default {
+    rank-properties {
+      fieldMatch(a).segmentProximityImportance: 1
+    }
+  }
+
+  rank-profile occurrence inherits default {
+    rank-properties {
+      fieldMatch(a).occurrenceImportance: 1
+    }
+  }
+
+  rank-profile field-completeness inherits default {
+    rank-properties {
+      fieldMatch(a).fieldCompletenessImportance: 1
+    }
+  }
+
+  rank-profile proximity inherits default {
+    first-phase {
+      expression: fieldMatch(a).proximity * 1000
+    }
+    rank-properties {
+      fieldMatch(a).proximityLimit: 4
+      fieldMatch(a).proximityTable: 0.2
+      fieldMatch(a).proximityTable: 0.4
+      fieldMatch(a).proximityTable: 0.6
+      fieldMatch(a).proximityTable: 0.8
+      fieldMatch(a).proximityTable: 1
+      fieldMatch(a).proximityTable: 0.8
+      fieldMatch(a).proximityTable: 0.6
+      fieldMatch(a).proximityTable: 0.4
+      fieldMatch(a).proximityTable: 0.2
+    }
+  }
+}

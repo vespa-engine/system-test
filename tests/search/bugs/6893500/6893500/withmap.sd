@@ -1,0 +1,40 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search withmap {
+
+  document withmap {
+
+    struct foobar {
+      field foo type int { }
+      field bar type string {}
+    }
+
+    struct address {
+      field name type string {
+        id: 1
+      }
+      field addr type string { 
+        id: 2
+      }
+      field postcode type int {
+        id: 3
+      }
+    }
+
+    field title type string {
+            indexing: index | summary
+    }
+    field meta_tags type map<string, string> {
+            indexing: summary
+    }
+    field good_map type map<string, foobar> {
+            indexing: summary
+    }
+    field bad_map type map<int, address> {
+            indexing: summary
+    }
+  }
+  fieldset default {
+    fields: title
+  }
+}

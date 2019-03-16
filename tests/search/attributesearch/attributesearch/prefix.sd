@@ -1,0 +1,21 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search prefix {
+  document prefix {
+    field title type string {
+      indexing: summary
+    }
+    field str type string {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field popularity type int {
+      indexing: summary | attribute
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(popularity)
+    }
+  }
+}

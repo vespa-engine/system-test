@@ -1,0 +1,3 @@
+[
+  { "update": "id:test:campaign::1", "fields": { "budget": { "assign": 11 } } }
+]

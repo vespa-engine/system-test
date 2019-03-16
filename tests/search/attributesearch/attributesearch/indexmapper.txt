@@ -1,0 +1,5 @@
+bytefield 8
+doublefield 8
+floatfield 8
+intfield 8
+longfield 8

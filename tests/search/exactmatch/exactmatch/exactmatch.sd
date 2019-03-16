@@ -1,0 +1,82 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search exactmatch {
+  document exactmatch {
+    field field1 type string {
+      indexing: index | summary
+    }
+    field field2 type string {
+      indexing: index | summary
+      match {
+        exact
+        exact-terminator: " "
+      }
+    }
+    field field3 type string {
+      indexing: index | summary
+      match {
+        exact
+        exact-terminator: "*!*"
+      }
+    }
+    field field4 type string {
+      indexing: index | summary
+      match {
+        exact
+        exact-terminator: "//END//"
+      }
+    }
+    field field5 type tag {
+      indexing: attribute
+    }
+    field field6 type tag {
+      indexing: attribute
+      match {
+        exact
+        exact-terminator: "*!*"
+      }
+    }
+    field field7 type string {
+      indexing: attribute
+      match {
+        exact
+        exact-terminator: " "
+      }
+    }
+    field field8 type string {
+      indexing: attribute
+      match {
+        exact
+        exact-terminator: "*!*"
+      }
+    }
+    field field9 type string {
+      indexing: attribute
+    }
+    field field10 type array<string> {
+      indexing: attribute
+      match: word
+    }
+  }
+  field field6_i type tag {
+    indexing: input field6 | for_each { lowercase } | attribute
+    match {
+      exact
+      exact-terminator: "*!*"
+    }
+  }
+  field field7_i type string {
+    indexing: input field7 | lowercase | attribute
+    match {
+      exact
+      exact-terminator: " "
+    }
+  }
+  field field8_i type string {
+    indexing: input field8 | lowercase | attribute
+    match {
+      exact
+      exact-terminator: "*!*"
+    }
+  }    
+}

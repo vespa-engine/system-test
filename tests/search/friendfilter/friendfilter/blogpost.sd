@@ -1,0 +1,33 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search blogpost {
+  document blogpost {
+    field title type string {
+      indexing: index | summary
+    }
+    field author type string {
+      indexing: attribute | summary
+    }
+    field recommenders type array<string> {
+      indexing: attribute | summary
+    }
+    field timestamp type long {
+      indexing: attribute | summary
+    }
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: nativeRank + termFieldMd(author) + attribute(timestamp)*0.001
+    }
+    summary-features {
+      nativeRank
+      attributeMatch(author).totalWeight 
+      nativeAttributeMatch(author)
+      termFieldMd(author).termsmatched
+      termFieldMd(author).firstweight
+      termFieldMd(author).occurrences
+    }
+  }
+
+}
