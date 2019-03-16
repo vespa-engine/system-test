@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0.38186238359951247" source="search">
+    <field name="relevancy">0.38186238359951247</field>
+    <field name="sddocname">bold</field>
+    <field name="pttl">buy <hi>iPhone</hi> 4 for BlingBling</field>
+    <field name="pdkw">iphone</field>
+    <field name="documentid">id:bold:bold::1</field>
+  </hit>
+</result>

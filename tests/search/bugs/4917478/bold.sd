@@ -1,0 +1,23 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search bold {
+    document bold {
+        field pttl type string {
+            indexing: summary | index
+            summary: dynamic
+            bolding: on
+            summary-to: catg
+        }
+        field pdkw type string {
+            indexing: summary | index
+        }
+        field pmid type int {
+            indexing: attribute
+        }
+        field iprd type int {
+            indexing: attribute
+        }
+    }
+    fieldset default {
+        fields: pdkw
+    }
+}

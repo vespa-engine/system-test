@@ -1,0 +1,16 @@
+<result total-hit-count="2">
+  <hit relevancy="1000" source="pan0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">simple</field>
+    <field name="title">ON <hi>test</hi> document</field>
+    <field name="description"><hi>test</hi> SONY <hi>test</hi></field>
+    <field name="surl">http://fake1.fake/</field>
+  </hit>
+  <hit relevancy="937" source="pan0.num0">
+    <field name="relevancy">937</field>
+    <field name="sddocname">simple</field>
+    <field name="title">doublewidth <hi>test</hi> document ｏｎ</field>
+    <field name="description">ｓｏｎｙ doublewidth</field>
+    <field name="surl">http://fake2.fake/</field>
+  </hit>
+</result>

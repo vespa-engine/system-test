@@ -1,0 +1,26 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search music {
+  document music {
+    field title type string {
+      indexing: index 
+    }
+    field product_src type string {
+
+    }
+  }
+  field my_title type string {
+    indexing: input title | summary
+  }
+  field product type string {
+    indexing {
+      input product_src | echo |
+      if (this == "foo") {
+        "bar" | echo | index;
+      } else {
+        "baz" | echo | index;
+      };
+    }
+  }
+}
+

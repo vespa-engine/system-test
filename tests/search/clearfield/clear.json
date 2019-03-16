@@ -1,0 +1,8 @@
+[
+  { "update": "id:test:test::0", "fields": { "si": { "assign": null } } },
+  { "update": "id:test:test::0", "fields": { "sia": { "assign": null } } },
+  { "update": "id:test:test::0", "fields": { "sd": { "assign": null } } },
+  { "update": "id:test:test::0", "fields": { "sda": { "assign": null } } },
+  { "update": "id:test:test::0", "fields": { "sdaf": { "assign": null } } },
+  { "update": "id:test:test::0", "fields": { "sdaff": { "assign": null } } }
+]

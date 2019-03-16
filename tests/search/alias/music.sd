@@ -1,0 +1,48 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search music {
+
+  document music {
+
+    field title type string {
+      indexing {
+          summary | index;
+      }
+      alias default: testalias1
+    }
+
+    field artist type string {
+      indexing {
+          summary | index;
+      }
+    }
+
+    field song type string {
+      indexing: summary | attribute | index
+    }
+
+    field weight type int {
+      indexing: summary | attribute
+      alias: testalias3
+    }
+
+    field year type int {
+      indexing: summary | attribute | index
+      alias: testalias2
+    }
+
+    field url type uri {
+     indexing: summary | index
+     normalizing: none
+     stemming: none
+     alias url.hostname: site
+    }
+
+
+  }
+  fieldset default {
+    fields: title, artist, song
+  }
+
+}
+

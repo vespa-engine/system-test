@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="764.2029070839059" source="sc0.num0">
+    <field name="relevancy">764.2029070839059</field>
+    <field name="sddocname">music</field>
+    <field name="title">whatever</field>
+    <field name="artist">hate</field>
+    <field name="song">none</field>
+    <field name="weight">1700000</field>
+    <field name="year">2003</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::p_pianist-extraordinaire-2-deluxe-box-set-_music_1921950529</field>
+  </hit>
+</result>

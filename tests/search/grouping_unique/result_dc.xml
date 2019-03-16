@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="5">
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="n">749</field>
+    <field name="documentid">id:ns:test::a5b10c15</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="n">599</field>
+    <field name="documentid">id:ns:test::a4b10c15</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="n">449</field>
+    <field name="documentid">id:ns:test::a3b10c15</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="n">299</field>
+    <field name="documentid">id:ns:test::a2b10c15</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="n">149</field>
+    <field name="documentid">id:ns:test::a1b10c15</field>
+  </hit>
+</result>

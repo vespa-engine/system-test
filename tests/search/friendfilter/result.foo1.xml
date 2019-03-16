@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="11">
+  <meta type="context">
+    <p>No query profile is used</p>
+    <p>
+      <p>Child execution</p>
+      <p>
+        <p>sc0.num0 search to dispatch: query=[title:foo] timeout=5000ms offset=0 hits=10 grouping=0 :  collapse=false restrict=[friendslist]</p>
+        <p>Current state of query tree: WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="title" isRanked=true origin="(6 9)" segmentIndex=0 significance=0.0 stemmed=true uniqueID=1 usePositionData=true weight=100 words=true]{
+  "foo"
+}
+</p>
+        <p>sc0.num0 dispatch response: Result (0 of total 0 hits)</p>
+        <p>sc0.num0 search to dispatch: query=[title:foo] timeout=5000ms offset=0 hits=10 grouping=0 :  collapse=false restrict=[blogpost]</p>
+        <p>Current state of query tree: WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="title" isRanked=true origin="(6 9)" segmentIndex=0 significance=0.0 stemmed=true uniqueID=1 usePositionData=true weight=100 words=true]{
+  "foo"
+}
+</p>
+        <p>sc0.num0 dispatch response: Result (10 of total 11 hits)</p>
+      </p>
+      <p>Child execution</p>
+    </p>
+  </meta>
+  <hit relevancy="0.3828623835995124" source="search">
+    <field name="relevancy">0.3828623835995124</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">foo bar</field>
+    <field name="author">havardpe</field>
+    <field name="timestamp">1</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.0,"nativeRank":0.38186238359951247,"termFieldMd(author).firstweight":0.0,"termFieldMd(author).occurrences":0.0,"termFieldMd(author).termsmatched":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::techlist.1</field>
+  </hit>
+  <hit relevancy="0.17543879032006287" source="search">
+    <field name="relevancy">0.17543879032006287</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">omg! foo bar is so uncool!</field>
+    <field name="author">fangirl2</field>
+    <field name="timestamp">12</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.0,"nativeRank":0.16343879032006287,"termFieldMd(author).firstweight":0.0,"termFieldMd(author).occurrences":0.0,"termFieldMd(author).termsmatched":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.2</field>
+  </hit>
+  <hit relevancy="0.17443879032006287" source="search">
+    <field name="relevancy">0.17443879032006287</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">omg! foo bar is so cool!</field>
+    <field name="author">fangirl1</field>
+    <field name="timestamp">11</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.0,"nativeRank":0.16343879032006287,"termFieldMd(author).firstweight":0.0,"termFieldMd(author).occurrences":0.0,"termFieldMd(author).termsmatched":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.1</field>
+  </hit>
+  <hit relevancy="0.1664387903200629" source="search">
+    <field name="relevancy">0.1664387903200629</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">Re: foo bar</field>
+    <field name="author">bergum</field>
+    <field name="timestamp">3</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.0,"nativeRank":0.16343879032006287,"termFieldMd(author).firstweight":0.0,"termFieldMd(author).occurrences":0.0,"termFieldMd(author).termsmatched":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::techlist.3</field>
+  </hit>
+  <hit relevancy="0.1654387903200629" source="search">
+    <field name="relevancy">0.1654387903200629</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">Re: foo bar</field>
+    <field name="author">arnej</field>
+    <field name="timestamp">2</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.0,"nativeRank":0.16343879032006287,"termFieldMd(author).firstweight":0.0,"termFieldMd(author).occurrences":0.0,"termFieldMd(author).termsmatched":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::techlist.2</field>
+  </hit>
+  <hit relevancy="0.1637458009189501" source="search">
+    <field name="relevancy">0.1637458009189501</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">Re: Re: foo bar</field>
+    <field name="author">yngve</field>
+    <field name="timestamp">4</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.0,"nativeRank":0.15974580091895013,"termFieldMd(author).firstweight":0.0,"termFieldMd(author).occurrences":0.0,"termFieldMd(author).termsmatched":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::techlist.4</field>
+  </hit>
+  <hit relevancy="0.1628293486650503" source="search">
+    <field name="relevancy">0.1628293486650503</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">omg! way! (was: omg! foo bar is so uncool!)</field>
+    <field name="author">fangirl7</field>
+    <field name="timestamp">14</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.0,"nativeRank":0.14882934866505032,"termFieldMd(author).firstweight":0.0,"termFieldMd(author).occurrences":0.0,"termFieldMd(author).termsmatched":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.4</field>
+  </hit>
+  <hit relevancy="0.1618293486650503" source="search">
+    <field name="relevancy">0.1618293486650503</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">No way! (was: omg! foo bar is so uncool!)</field>
+    <field name="author">fangirl1</field>
+    <field name="timestamp">13</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.0,"nativeRank":0.14882934866505032,"termFieldMd(author).firstweight":0.0,"termFieldMd(author).occurrences":0.0,"termFieldMd(author).termsmatched":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.3</field>
+  </hit>
+  <hit relevancy="0.1549659809554356" source="search">
+    <field name="relevancy">0.1549659809554356</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">No ***ing way! (was: omg! way! (was: omg! foo bar is so uncool!))</field>
+    <field name="author">bff</field>
+    <field name="timestamp">15</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.0,"nativeRank":0.1399659809554356,"termFieldMd(author).firstweight":0.0,"termFieldMd(author).occurrences":0.0,"termFieldMd(author).termsmatched":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.5</field>
+  </hit>
+  <hit relevancy="0.1537134370491001" source="search">
+    <field name="relevancy">0.1537134370491001</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">Paris Hilton's new BFF in fight with fangirls! Is foo bar cool or uncool?</field>
+    <field name="author">tabloid</field>
+    <field name="timestamp">16</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.0,"nativeRank":0.1377134370491001,"termFieldMd(author).firstweight":0.0,"termFieldMd(author).occurrences":0.0,"termFieldMd(author).termsmatched":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.6</field>
+  </hit>
+</result>

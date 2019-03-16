@@ -1,0 +1,27 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search newsarticle {
+   document newsarticle inherits newssummary {
+      field city_src type string {
+
+      }
+   }
+
+   field city type string {
+      indexing {
+         input city_src | lowercase | split ";" | 
+            for_each { trim | normalize } |
+            to_string | index;
+      }
+   }
+
+   field city_summary type string {
+       indexing: input city_src | summary
+   }
+
+   field city_arr type array<string> {
+      indexing { 
+         input city_src | lowercase | split ";" | for_each { trim } | attribute
+      }
+   }
+}

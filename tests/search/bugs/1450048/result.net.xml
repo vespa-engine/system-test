@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1" coverage-docs="1" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
+  <hit relevancy="0.31015154318728255" source="search">
+    <field name="relevancy">0.31015154318728255</field>
+    <field name="sddocname">music</field>
+    <field name="title">Yahoo! Knowledge c++</field>
+    <field name="content">vespa<hi>.net</hi> <sep />vespa<hi>.net</hi> <sep /></field>
+    <field name="year">2001</field>
+    <field name="popularity">200</field>
+    <field name="documentid">id:music:music::http://music.yahoo.com/metallica/BestOf</field>
+  </hit>
+</result>

@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="100">
+  <hit relevancy="99.0" source="search">
+    <field name="relevancy">99.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a1b10c10</field>
+  </hit>
+  <hit relevancy="98.0" source="search">
+    <field name="relevancy">98.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a1b10c9</field>
+  </hit>
+  <hit relevancy="97.0" source="search">
+    <field name="relevancy">97.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a1b10c8</field>
+  </hit>
+  <hit relevancy="96.0" source="search">
+    <field name="relevancy">96.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a1b10c7</field>
+  </hit>
+  <hit relevancy="95.0" source="search">
+    <field name="relevancy">95.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a1b10c6</field>
+  </hit>
+  <hit relevancy="94.0" source="search">
+    <field name="relevancy">94.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a1b10c5</field>
+  </hit>
+  <hit relevancy="93.0" source="search">
+    <field name="relevancy">93.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a1b10c4</field>
+  </hit>
+  <hit relevancy="92.0" source="search">
+    <field name="relevancy">92.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a1b10c3</field>
+  </hit>
+  <hit relevancy="91.0" source="search">
+    <field name="relevancy">91.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a1b10c2</field>
+  </hit>
+  <hit relevancy="90.0" source="search">
+    <field name="relevancy">90.0</field>
+    <field name="sddocname">test</field>
+    <field name="documentid">id:ns:test::a1b10c1</field>
+  </hit>
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this"></continuation>
+    <grouplist label="a">
+      <group relevance="99.0">
+        <id type="long">1</id>
+        <grouplist label="b">
+          <group relevance="99.0">
+            <id type="long">10</id>
+            <grouplist label="c">
+              <group relevance="99.0">
+                <id type="long">10</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="98.0">
+                <id type="long">9</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="97.0">
+                <id type="long">8</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="96.0">
+                <id type="long">7</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="95.0">
+                <id type="long">6</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="94.0">
+                <id type="long">5</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="93.0">
+                <id type="long">4</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="92.0">
+                <id type="long">3</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="91.0">
+                <id type="long">2</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="90.0">
+                <id type="long">1</id>
+                <output label="count()">1</output>
+              </group>
+            </grouplist>
+          </group>
+          <group relevance="89.0">
+            <id type="long">9</id>
+            <grouplist label="c">
+              <group relevance="89.0">
+                <id type="long">10</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="88.0">
+                <id type="long">9</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="87.0">
+                <id type="long">8</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="86.0">
+                <id type="long">7</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="85.0">
+                <id type="long">6</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="84.0">
+                <id type="long">5</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="83.0">
+                <id type="long">4</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="82.0">
+                <id type="long">3</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="81.0">
+                <id type="long">2</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="80.0">
+                <id type="long">1</id>
+                <output label="count()">1</output>
+              </group>
+            </grouplist>
+          </group>
+          <group relevance="79.0">
+            <id type="long">8</id>
+            <grouplist label="c">
+              <group relevance="79.0">
+                <id type="long">10</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="78.0">
+                <id type="long">9</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="77.0">
+                <id type="long">8</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="76.0">
+                <id type="long">7</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="75.0">
+                <id type="long">6</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="74.0">
+                <id type="long">5</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="73.0">
+                <id type="long">4</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="72.0">
+                <id type="long">3</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="71.0">
+                <id type="long">2</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="70.0">
+                <id type="long">1</id>
+                <output label="count()">1</output>
+              </group>
+            </grouplist>
+          </group>
+          <group relevance="69.0">
+            <id type="long">7</id>
+            <grouplist label="c">
+              <group relevance="69.0">
+                <id type="long">10</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="68.0">
+                <id type="long">9</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="67.0">
+                <id type="long">8</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="66.0">
+                <id type="long">7</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="65.0">
+                <id type="long">6</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="64.0">
+                <id type="long">5</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="63.0">
+                <id type="long">4</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="62.0">
+                <id type="long">3</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="61.0">
+                <id type="long">2</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="60.0">
+                <id type="long">1</id>
+                <output label="count()">1</output>
+              </group>
+            </grouplist>
+          </group>
+          <group relevance="59.0">
+            <id type="long">6</id>
+            <grouplist label="c">
+              <group relevance="59.0">
+                <id type="long">10</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="58.0">
+                <id type="long">9</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="57.0">
+                <id type="long">8</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="56.0">
+                <id type="long">7</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="55.0">
+                <id type="long">6</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="54.0">
+                <id type="long">5</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="53.0">
+                <id type="long">4</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="52.0">
+                <id type="long">3</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="51.0">
+                <id type="long">2</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="50.0">
+                <id type="long">1</id>
+                <output label="count()">1</output>
+              </group>
+            </grouplist>
+          </group>
+          <group relevance="49.0">
+            <id type="long">5</id>
+            <grouplist label="c">
+              <group relevance="49.0">
+                <id type="long">10</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="48.0">
+                <id type="long">9</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="47.0">
+                <id type="long">8</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="46.0">
+                <id type="long">7</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="45.0">
+                <id type="long">6</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="44.0">
+                <id type="long">5</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="43.0">
+                <id type="long">4</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="42.0">
+                <id type="long">3</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="41.0">
+                <id type="long">2</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="40.0">
+                <id type="long">1</id>
+                <output label="count()">1</output>
+              </group>
+            </grouplist>
+          </group>
+          <group relevance="39.0">
+            <id type="long">4</id>
+            <grouplist label="c">
+              <group relevance="39.0">
+                <id type="long">10</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="38.0">
+                <id type="long">9</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="37.0">
+                <id type="long">8</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="36.0">
+                <id type="long">7</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="35.0">
+                <id type="long">6</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="34.0">
+                <id type="long">5</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="33.0">
+                <id type="long">4</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="32.0">
+                <id type="long">3</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="31.0">
+                <id type="long">2</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="30.0">
+                <id type="long">1</id>
+                <output label="count()">1</output>
+              </group>
+            </grouplist>
+          </group>
+          <group relevance="29.0">
+            <id type="long">3</id>
+            <grouplist label="c">
+              <group relevance="29.0">
+                <id type="long">10</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="28.0">
+                <id type="long">9</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="27.0">
+                <id type="long">8</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="26.0">
+                <id type="long">7</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="25.0">
+                <id type="long">6</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="24.0">
+                <id type="long">5</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="23.0">
+                <id type="long">4</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="22.0">
+                <id type="long">3</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="21.0">
+                <id type="long">2</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="20.0">
+                <id type="long">1</id>
+                <output label="count()">1</output>
+              </group>
+            </grouplist>
+          </group>
+          <group relevance="19.0">
+            <id type="long">2</id>
+            <grouplist label="c">
+              <group relevance="19.0">
+                <id type="long">10</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="18.0">
+                <id type="long">9</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="17.0">
+                <id type="long">8</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="16.0">
+                <id type="long">7</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="15.0">
+                <id type="long">6</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="14.0">
+                <id type="long">5</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="13.0">
+                <id type="long">4</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="12.0">
+                <id type="long">3</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="11.0">
+                <id type="long">2</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="10.0">
+                <id type="long">1</id>
+                <output label="count()">1</output>
+              </group>
+            </grouplist>
+          </group>
+          <group relevance="9.0">
+            <id type="long">1</id>
+            <grouplist label="c">
+              <group relevance="9.0">
+                <id type="long">10</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="8.0">
+                <id type="long">9</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="7.0">
+                <id type="long">8</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="6.0">
+                <id type="long">7</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="5.0">
+                <id type="long">6</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="4.0">
+                <id type="long">5</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="3.0">
+                <id type="long">4</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="2.0">
+                <id type="long">3</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="1.0">
+                <id type="long">2</id>
+                <output label="count()">1</output>
+              </group>
+              <group relevance="0.0">
+                <id type="long">1</id>
+                <output label="count()">1</output>
+              </group>
+            </grouplist>
+          </group>
+        </grouplist>
+      </group>
+    </grouplist>
+  </group>
+</result>

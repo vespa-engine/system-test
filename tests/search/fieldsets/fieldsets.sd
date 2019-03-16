@@ -1,0 +1,136 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search fieldsets {
+  fieldset default {
+    fields: sb, sc
+  }
+  fieldset ibx {
+    fields: ib
+  }
+  document fieldsets {
+    # string fields
+    field sa type string {
+      indexing: index
+    }
+    field sb type string {
+      indexing: index
+    }
+    field sc type string {
+      indexing: index
+    }
+    field sd type string {
+      indexing: attribute
+    }
+    field se type string {
+      indexing: index
+    }
+    field sf type array<string> {
+      indexing: index
+    }
+    field sg type weightedset<string> {
+      indexing: index
+    }
+    field sh type uri {
+      indexing: index
+    }
+    field si type string {
+      indexing: index
+    }
+
+    field sj type string {
+      indexing: attribute
+    }
+
+    field g1 type string {
+      indexing: index
+      match: gram
+    }
+
+    field g2 type string {
+      indexing: index
+      match {
+        gram
+        gram-size:2
+      }
+    }
+
+    field pref1 type string {
+      indexing: attribute
+      match: prefix
+    }
+
+    field pref2 type string {
+      indexing: attribute
+      match: prefix
+    }
+
+    # integer fields
+    field ia type int {
+      indexing: index
+    }
+    field ib type int {
+      indexing: index
+    }
+    field ic type int {
+      indexing: attribute
+    }
+    field exact1 type string {
+      indexing: index
+      match: exact
+    }
+    field exact2 type string {
+      indexing: index
+      match: exact
+    }
+    field exact3 type string {
+      indexing: index
+      match {
+        exact
+        exact-terminator: "Arnold"
+      }
+    }
+    field exact4 type string {
+      indexing: index
+      match {
+        exact
+        exact-terminator: "Arnold"
+      }
+    }
+  }      
+  fieldset fs1 {
+    fields: se,sa,sf,sj
+  }
+  fieldset fs2 {
+    fields: si
+  }
+  fieldset fs3 {
+    fields: sa, sb
+  }
+  fieldset fs4 {
+    fields: ib, ic
+  }
+  fieldset exact12 {
+    fields: exact1, exact2
+    query-command: "exact @@"
+  }
+  fieldset exact34 {
+    fields: exact3, exact4
+    match {
+      exact
+      exact-terminator: "Arnold"
+    }
+  }
+  fieldset ngram {
+    fields: g1, g2
+    match: gram
+  }
+  fieldset pref {
+    fields: pref1, pref2
+    match {
+      prefix
+    }
+  }
+  
+  
+}
+

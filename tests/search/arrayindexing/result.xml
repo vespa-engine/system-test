@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">arrayindexing</field>
+    <field name="songtitles">
+      <item>Misunderstood</item>
+      <item>Far, Far Away</item>
+      <item>Monday</item>
+      <item>Say You Miss Me</item>
+      <item>Sunken Treasure</item>
+</field>
+    <field name="weightedtitles">
+      <item weight="10">Blackend</item>
+      <item weight="30">Ride The Lightning</item>
+      <item weight="20">And Justice For All</item>
+</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:arrayindexing:arrayindexing::0</field>
+  </hit>
+</result>

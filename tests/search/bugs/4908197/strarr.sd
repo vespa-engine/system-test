@@ -1,0 +1,16 @@
+search strarr {
+    document strarr {
+        field title type string {
+            indexing: summary | index
+        }
+        field attr type array<string> {
+            indexing: attribute | summary
+        }
+        field sum type array<string> {
+            indexing: summary
+        }
+    }
+    fieldset default {
+        fields: title
+    }
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="2.0" source="search">
+    <field name="relevancy">2.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="title"><hi>Chicago</hi> Blues the number is increasing</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+</result>

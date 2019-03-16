@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <meta type="context">
+    <p>No query profile is used</p>
+    <p>
+      <p>Child execution</p>
+      <p>
+        <p>sc0.num0 search to dispatch: query=[AND title:foo WEIGHTEDSET author{[3]:"tv",[2]:"magazine4",[2]:"magazine2",[2]:"magazine3",[2]:"magazines",[1]:"tabloid6",[1]:"tabloid5",[1]:"tabloid4",[1]:"tabloid3",[1]:"tabloid2",[1]:"tabloids"}] timeout=5000ms offset=0 hits=10 grouping=0 :  collapse=false restrict=[blogpost]</p>
+        <p>Current state of query tree: AND[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false isRanked=true significance=0.0 usePositionData=true weight=100]{
+  WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="title" isRanked=true origin="(6 9)" segmentIndex=0 significance=0.0 stemmed=true uniqueID=1 usePositionData=true weight=100 words=true]{
+    "foo"
+  }
+  WEIGHTEDSET[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false index="author" isRanked=true significance=0.0 uniqueID=2 usePositionData=true weight=100]{
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=3 words=true]{
+      "tv"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=2 words=true]{
+      "magazine4"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=2 words=true]{
+      "magazine2"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=2 words=true]{
+      "magazine3"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=2 words=true]{
+      "magazines"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "tabloid6"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "tabloid5"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "tabloid4"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "tabloid3"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "tabloid2"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "tabloids"
+    }
+  }
+}
+</p>
+        <p>sc0.num0 dispatch response: Result (1 of total 1 hits)</p>
+      </p>
+      <p>Child execution</p>
+    </p>
+  </meta>
+  <hit relevancy="3.153346800534175" source="search">
+    <field name="relevancy">3.153346800534175</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">Interview: Paris Hilton's talks about her new BFF,
+       denies rumours of fall-out over fight with fangirls about foo bar coolness</field>
+    <field name="author">tv</field>
+    <field name="timestamp">18</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.011764705882352941,"nativeRank":0.13534680053417578,"termFieldMd(author).firstweight":3.0,"termFieldMd(author).occurrences":1.0,"termFieldMd(author).termsmatched":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.8</field>
+  </hit>
+</result>

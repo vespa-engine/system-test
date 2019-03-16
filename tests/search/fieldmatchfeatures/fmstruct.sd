@@ -1,0 +1,33 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search fmstruct {
+  document fmstruct {
+    struct sct {
+      field sf type string { }
+      field lf type long { }
+    }
+    field f1 type sct {
+      indexing: index | summary
+    }
+    field f2 type array<sct>{
+      indexing: index | summary
+    }
+  }
+
+  rank-profile default {
+    summary-features { 
+      fieldMatch(f1.sf).matches
+      fieldMatch(f1.sf).fieldCompleteness
+      fieldTermMatch(f1.sf,0).occurrences
+      fieldMatch(f1.lf).matches
+      fieldMatch(f1.lf).fieldCompleteness
+      fieldTermMatch(f1.lf,0).occurrences
+      fieldMatch(f2.sf).matches
+      fieldMatch(f2.sf).fieldCompleteness
+      fieldTermMatch(f2.sf,0).occurrences
+      fieldMatch(f2.lf).matches
+      fieldMatch(f2.lf).fieldCompleteness
+      fieldTermMatch(f2.lf,0).occurrences
+    }
+  }
+}

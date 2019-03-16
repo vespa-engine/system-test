@@ -1,0 +1,62 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search foreach {
+  document foreach {
+    field f1 type string {
+      indexing: index | summary
+    }
+    field f2 type string {
+      indexing: index | summary
+    }
+    field f3 type int {
+      indexing: attribute | summary
+    }
+    field f4 type int {
+      indexing: attribute | summary
+    }
+  }
+  fieldset default {
+    fields: f1, f2
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: foreach(fields,N,rankingExpression("fieldMatch(N).matches*fieldMatch(N).matches"),true,sum)
+    }
+  }
+
+  rank-profile dimensions inherits default {
+    summary-features { 
+      foreach(fields,N,fieldMatch(N).matches,true,sum)
+      foreach(attributes,N,attribute(N),true,sum)
+      foreach(terms,N,term(N).weight,true,sum)
+      foreach(attributes,N,foreach(attributes,M,attribute(M),true,sum),true,sum)
+    }
+  }
+
+  rank-profile operations inherits default {
+    summary-features { 
+      foreach(attributes,N,attribute(N),true,product)
+      foreach(attributes,N,attribute(N),true,average)
+      foreach(attributes,N,attribute(N),true,max)
+      foreach(attributes,N,attribute(N),true,min)
+      foreach(attributes,N,attribute(N),true,count)
+    }
+  }
+
+  rank-profile conditions inherits default {
+    summary-features {
+      foreach(attributes,N,attribute(N),">7.9",count)
+      foreach(attributes,N,attribute(N),"<16.1",count)
+    }
+  }
+
+  rank-profile max-terms inherits default {
+    rank-properties { 
+      foreach.maxTerms: 1
+    }
+    summary-features { 
+      foreach(terms,N,term(N).weight,true,sum)
+    }
+  }
+}

@@ -1,0 +1,12 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+version=1
+package=com.yahoo.vespatest
+
+exampleString string default="Hello World"
+
+# See ticket 5379959
+score[].language string
+score[].value double
+regions[].language string
+regions[].value[] string

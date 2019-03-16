@@ -1,0 +1,32 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search vietnamese {
+
+  document vietnamese {
+
+    field lang type string { 
+            indexing: set_language 
+    }
+
+    field headline type string {
+            indexing: summary | index
+            bolding: on
+            rank: literal
+    }
+
+    field body type string {
+            indexing: summary | index
+            bolding: on
+            rank: literal
+    }
+
+  }
+  fieldset default {
+    fields: headline, body
+  }
+
+  rank-profile literal inherits default {
+    first-phase {
+      expression: nativeRank(body,headline) + fieldMatch(body).queryCompleteness + fieldMatch(headline_literal).queryCompleteness
+    }
+  }
+}

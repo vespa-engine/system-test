@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0.3775490064844323" source="search">
+    <field name="relevancy">0.3775490064844323</field>
+    <field name="sddocname">test</field>
+    <field name="title"> <hi>best</hi> of
+multiline on
+title
+field
+Metallica</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:test::http://music.yahoo.com/metallica/BestOf</field>
+  </hit>
+</result>

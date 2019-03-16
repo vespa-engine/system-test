@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="6">
+  <meta type="context">
+    <p>No query profile is used</p>
+    <p>
+      <p>Child execution</p>
+      <p>
+        <p>sc0.num0 search to dispatch: query=[me:paris hilton] timeout=5000ms offset=0 hits=10 grouping=0 :  collapse=false restrict=[friendslist]</p>
+        <p>Current state of query tree: WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="me" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false uniqueID=1 usePositionData=true weight=100 words=true]{
+  "paris hilton"
+}
+</p>
+        <p>sc0.num0 dispatch response: Result (1 of total 1 hits)</p>
+      </p>
+      <p>Child execution</p>
+      <p>Child execution</p>
+      <p>
+        <p>sc0.num0 search to dispatch: query=[AND title:foo WEIGHTEDSET author{[3]:"bff",[1]:"fangirl1",[1]:"fangirl2",[1]:"fangirl3",[1]:"fangirl4",[1]:"fangirl5",[1]:"fangirl6",[1]:"fangirl7",[2]:"tv",[2]:"magazines",[2]:"tabloids"}] timeout=5000ms offset=0 hits=10 grouping=0 :  collapse=false restrict=[blogpost]</p>
+        <p>Current state of query tree: AND[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false isRanked=true significance=0.0 usePositionData=true weight=100]{
+  WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="title" isRanked=true origin="(6 9)" segmentIndex=0 significance=0.0 stemmed=true uniqueID=1 usePositionData=true weight=100 words=true]{
+    "foo"
+  }
+  WEIGHTEDSET[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false index="author" isRanked=true significance=0.0 uniqueID=2 usePositionData=true weight=100]{
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=3 words=true]{
+      "bff"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "fangirl1"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "fangirl2"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "fangirl3"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "fangirl4"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "fangirl5"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "fangirl6"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=1 words=true]{
+      "fangirl7"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=2 words=true]{
+      "tv"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=2 words=true]{
+      "magazines"
+    }
+    WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="author" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=2 words=true]{
+      "tabloids"
+    }
+  }
+}
+</p>
+        <p>sc0.num0 dispatch response: Result (6 of total 6 hits)</p>
+      </p>
+      <p>Child execution</p>
+    </p>
+  </meta>
+  <hit relevancy="3.16019473912537" source="search">
+    <field name="relevancy">3.16019473912537</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">No ***ing way! (was: omg! way! (was: omg! foo bar is so uncool!))</field>
+    <field name="author">bff</field>
+    <field name="timestamp">15</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.011764705882352941,"nativeRank":0.14519473912537023,"termFieldMd(author).firstweight":3.0,"termFieldMd(author).occurrences":1.0,"termFieldMd(author).termsmatched":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.5</field>
+  </hit>
+  <hit relevancy="2.151603881144197" source="search">
+    <field name="relevancy">2.151603881144197</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">Interview: Paris Hilton's talks about her new BFF,
+       denies rumours of fall-out over fight with fangirls about foo bar coolness</field>
+    <field name="author">tv</field>
+    <field name="timestamp">18</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.00784313725490196,"nativeRank":0.13360388114419758,"termFieldMd(author).firstweight":2.0,"termFieldMd(author).occurrences":1.0,"termFieldMd(author).termsmatched":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.8</field>
+  </hit>
+  <hit relevancy="1.177181709710041" source="search">
+    <field name="relevancy">1.177181709710041</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">omg! foo bar is so uncool!</field>
+    <field name="author">fangirl2</field>
+    <field name="timestamp">12</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.00392156862745098,"nativeRank":0.16518170971004106,"termFieldMd(author).firstweight":1.0,"termFieldMd(author).occurrences":1.0,"termFieldMd(author).termsmatched":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.2</field>
+  </hit>
+  <hit relevancy="1.176181709710041" source="search">
+    <field name="relevancy">1.176181709710041</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">omg! foo bar is so cool!</field>
+    <field name="author">fangirl1</field>
+    <field name="timestamp">11</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.00392156862745098,"nativeRank":0.16518170971004106,"termFieldMd(author).firstweight":1.0,"termFieldMd(author).occurrences":1.0,"termFieldMd(author).termsmatched":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.1</field>
+  </hit>
+  <hit relevancy="1.164572268055028" source="search">
+    <field name="relevancy">1.164572268055028</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">omg! way! (was: omg! foo bar is so uncool!)</field>
+    <field name="author">fangirl7</field>
+    <field name="timestamp">14</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.00392156862745098,"nativeRank":0.15057226805502852,"termFieldMd(author).firstweight":1.0,"termFieldMd(author).occurrences":1.0,"termFieldMd(author).termsmatched":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.4</field>
+  </hit>
+  <hit relevancy="1.163572268055028" source="search">
+    <field name="relevancy">1.163572268055028</field>
+    <field name="sddocname">blogpost</field>
+    <field name="title">No way! (was: omg! foo bar is so uncool!)</field>
+    <field name="author">fangirl1</field>
+    <field name="timestamp">13</field>
+    <field name="summaryfeatures">{"attributeMatch(author).totalWeight":0.0,"nativeAttributeMatch(author)":0.00392156862745098,"nativeRank":0.15057226805502852,"termFieldMd(author).firstweight":1.0,"termFieldMd(author).occurrences":1.0,"termFieldMd(author).termsmatched":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:blogpost:blogpost::chat.3</field>
+  </hit>
+</result>

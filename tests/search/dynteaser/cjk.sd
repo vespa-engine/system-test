@@ -1,0 +1,31 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search cjk {
+
+    document cjk {
+
+        field lang type string {
+            indexing: set_language
+        }
+
+        field url type string {
+            indexing: summary | index
+        }
+
+        field content type string {
+            indexing: summary | index
+            summary: static
+            summary dyncontent: dynamic
+        }
+        field content2 type string {
+            indexing: summary | index
+            summary: dynamic
+        }
+        field content3 type string {
+            indexing: summary | index
+            summary: dynamic
+            bolding: on
+        }
+    }
+}
+

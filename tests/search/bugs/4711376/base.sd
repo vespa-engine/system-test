@@ -1,0 +1,20 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+document base {
+	field title type string {
+    	indexing: summary | index | attribute
+    	sorting {
+    		descending
+    		function: raw
+    	}
+   	}
+   	
+   	field comment type string {
+   		indexing: summary | attribute
+   		sorting {
+   			function: uca
+   			locale: en_US
+   			strength: tertiary
+   		}
+   	}
+}	

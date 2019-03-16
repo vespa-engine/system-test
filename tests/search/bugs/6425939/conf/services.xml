@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+  </admin>
+  <jdisc version="1.0" id="httpgateway-container">
+    <search />
+    <document-api />
+    <http>
+      <server id="httpgateway" port="4080" />
+    </http>
+     <nodes>
+        <node hostalias="node1" />
+     </nodes>
+   </jdisc>
+   <content version="1.0" id="cars">
+     <redundancy>1</redundancy>
+       <nodes>
+         <node hostalias="node1" distribution-key="0" />
+       </nodes>
+     <documents>
+       <document type="cars" mode="index" />
+     </documents>
+   </content>
+</services>

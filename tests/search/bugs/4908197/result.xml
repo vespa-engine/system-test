@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0.38186238359951247" source="search">
+    <field name="relevancy">0.38186238359951247</field>
+    <field name="sddocname">strarr</field>
+    <field name="attr">
+      <item>simple</item>
+      <item>with double " quote</item>
+      <item>with back \ slash</item>
+      <item>with both backslash \" and double quote</item>
+      <item>more simple</item>
+    </field>
+    <field name="documentid">id:strarr:strarr::1</field>
+    <field name="sum">
+      <item>simple</item>
+      <item>with double " quote</item>
+      <item>with back \ slash</item>
+      <item>with both backslash \" and double quote</item>
+      <item>more simple</item>
+    </field>
+    <field name="summaryfeatures"></field>
+    <field name="title">foo</field>
+  </hit>
+</result>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="159">
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this">BGAAABEBEA</continuation>
+    <grouplist label="artist">
+      <continuation id="prev">BGAAABEABC</continuation>
+      <group relevance="1.0">
+        <id type="string">Nirvana</id>
+        <grouplist label="album">
+          <continuation id="next">BKAAABEABGBEBC</continuation>
+          <group relevance="1.0">
+            <id type="string">Bleach</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAABEAAABIBEBC</continuation>
+              <hit relevancy="1.0" source="search">
+                <field name="relevancy">1.0</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Nirvana</field>
+                <field name="album">Bleach</field>
+                <field name="year">1989</field>
+                <field name="track">1</field>
+                <field name="song">Blew</field>
+                <field name="duration">175</field>
+                <field name="documentid">id:song:song::211</field>
+              </hit>
+              <hit relevancy="0.5" source="search">
+                <field name="relevancy">0.5</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Nirvana</field>
+                <field name="album">Bleach</field>
+                <field name="year">1989</field>
+                <field name="track">2</field>
+                <field name="song">Floyd The Barber</field>
+                <field name="duration">138</field>
+                <field name="documentid">id:song:song::212</field>
+              </hit>
+            </hitlist>
+          </group>
+          <group relevance="0.5">
+            <id type="string">Nevermind</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAABEABCABIBEBC</continuation>
+              <hit relevancy="1.0" source="search">
+                <field name="relevancy">1.0</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Nirvana</field>
+                <field name="album">Nevermind</field>
+                <field name="year">1991</field>
+                <field name="track">1</field>
+                <field name="song">Smells Like Teen Spirit</field>
+                <field name="duration">301</field>
+                <field name="documentid">id:song:song::221</field>
+              </hit>
+              <hit relevancy="0.5" source="search">
+                <field name="relevancy">0.5</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Nirvana</field>
+                <field name="album">Nevermind</field>
+                <field name="year">1991</field>
+                <field name="track">2</field>
+                <field name="song">In Bloom</field>
+                <field name="duration">254</field>
+                <field name="documentid">id:song:song::222</field>
+              </hit>
+            </hitlist>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="0.5">
+        <id type="string">The Prodigy</id>
+        <grouplist label="album">
+          <continuation id="next">BKAAABGABGBEBC</continuation>
+          <group relevance="1.0">
+            <id type="string">Experience</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAABGAAABIBEBC</continuation>
+              <hit relevancy="1.0" source="search">
+                <field name="relevancy">1.0</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Prodigy</field>
+                <field name="album">Experience</field>
+                <field name="year">1992</field>
+                <field name="track">1</field>
+                <field name="song">Jericho</field>
+                <field name="duration">222</field>
+                <field name="documentid">id:song:song::411</field>
+              </hit>
+              <hit relevancy="0.5" source="search">
+                <field name="relevancy">0.5</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Prodigy</field>
+                <field name="album">Experience</field>
+                <field name="year">1992</field>
+                <field name="track">2</field>
+                <field name="song">Music Reach (1/2/3/4)</field>
+                <field name="duration">252</field>
+                <field name="documentid">id:song:song::412</field>
+              </hit>
+            </hitlist>
+          </group>
+          <group relevance="0.5">
+            <id type="string">Music for the Jilted Generation</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAABGABCABIBEBC</continuation>
+              <hit relevancy="1.0" source="search">
+                <field name="relevancy">1.0</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Prodigy</field>
+                <field name="album">Music for the Jilted Generation</field>
+                <field name="year">1994</field>
+                <field name="track">1</field>
+                <field name="song">Intro</field>
+                <field name="duration">45</field>
+                <field name="documentid">id:song:song::421</field>
+              </hit>
+              <hit relevancy="0.5" source="search">
+                <field name="relevancy">0.5</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Prodigy</field>
+                <field name="album">Music for the Jilted Generation</field>
+                <field name="year">1994</field>
+                <field name="track">2</field>
+                <field name="song">Break &amp; Enter</field>
+                <field name="duration">504</field>
+                <field name="documentid">id:song:song::422</field>
+              </hit>
+            </hitlist>
+          </group>
+        </grouplist>
+      </group>
+    </grouplist>
+  </group>
+</result>

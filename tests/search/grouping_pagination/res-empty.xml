@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="159">
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this"></continuation>
+    <grouplist label="artist">
+      <continuation id="next">BGAAABEBEBC</continuation>
+      <group relevance="1.0">
+        <id type="string">The Beatles</id>
+        <grouplist label="album">
+          <continuation id="next">BKAAAAABGBEBC</continuation>
+          <group relevance="1.0">
+            <id type="string">Please Please Me - Side 1</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAAAAAABIBEBC</continuation>
+              <hit relevancy="1.0" source="search">
+                <field name="relevancy">1.0</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Beatles</field>
+                <field name="album">Please Please Me - Side 1</field>
+                <field name="year">1963</field>
+                <field name="track">1</field>
+                <field name="song">I Saw Her Standing There</field>
+                <field name="duration">174</field>
+                <field name="documentid">id:song:song::311</field>
+              </hit>
+              <hit relevancy="0.5" source="search">
+                <field name="relevancy">0.5</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Beatles</field>
+                <field name="album">Please Please Me - Side 1</field>
+                <field name="year">1963</field>
+                <field name="track">2</field>
+                <field name="song">Misery</field>
+                <field name="duration">109</field>
+                <field name="documentid">id:song:song::312</field>
+              </hit>
+            </hitlist>
+          </group>
+          <group relevance="0.5">
+            <id type="string">Please Please Me - Side 2</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAAAABCABIBEBC</continuation>
+              <hit relevancy="1.0" source="search">
+                <field name="relevancy">1.0</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Beatles</field>
+                <field name="album">Please Please Me - Side 2</field>
+                <field name="year">1963</field>
+                <field name="track">1</field>
+                <field name="song">Love Me Do</field>
+                <field name="duration">143</field>
+                <field name="documentid">id:song:song::321</field>
+              </hit>
+              <hit relevancy="0.5" source="search">
+                <field name="relevancy">0.5</field>
+                <field name="sddocname">song</field>
+                <field name="artist">The Beatles</field>
+                <field name="album">Please Please Me - Side 2</field>
+                <field name="year">1963</field>
+                <field name="track">2</field>
+                <field name="song">P.S. I Love You</field>
+                <field name="duration">124</field>
+                <field name="documentid">id:song:song::322</field>
+              </hit>
+            </hitlist>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="0.5">
+        <id type="string">Michael Jackson</id>
+        <grouplist label="album">
+          <continuation id="next">BKAAABCABGBEBC</continuation>
+          <group relevance="1.0">
+            <id type="string">Ben</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAABCAAABIBEBC</continuation>
+              <hit relevancy="1.0" source="search">
+                <field name="relevancy">1.0</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Michael Jackson</field>
+                <field name="album">Ben</field>
+                <field name="year">1972</field>
+                <field name="track">1</field>
+                <field name="song">Ben</field>
+                <field name="duration">164</field>
+                <field name="documentid">id:song:song::121</field>
+              </hit>
+              <hit relevancy="0.5" source="search">
+                <field name="relevancy">0.5</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Michael Jackson</field>
+                <field name="album">Ben</field>
+                <field name="year">1972</field>
+                <field name="track">2</field>
+                <field name="song">Greatest Show on Earth</field>
+                <field name="duration">168</field>
+                <field name="documentid">id:song:song::122</field>
+              </hit>
+            </hitlist>
+          </group>
+          <group relevance="0.5">
+            <id type="string">Got to Be There</id>
+            <hitlist label="hits">
+              <continuation id="next">BOAAABCABCABIBEBC</continuation>
+              <hit relevancy="1.0" source="search">
+                <field name="relevancy">1.0</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Michael Jackson</field>
+                <field name="album">Got to Be There</field>
+                <field name="year">1972</field>
+                <field name="track">1</field>
+                <field name="song">Ain't No Sunshine</field>
+                <field name="duration">249</field>
+                <field name="documentid">id:song:song::111</field>
+              </hit>
+              <hit relevancy="0.5" source="search">
+                <field name="relevancy">0.5</field>
+                <field name="sddocname">song</field>
+                <field name="artist">Michael Jackson</field>
+                <field name="album">Got to Be There</field>
+                <field name="year">1972</field>
+                <field name="track">2</field>
+                <field name="song">I Wanna Be Where You Are</field>
+                <field name="duration">181</field>
+                <field name="documentid">id:song:song::112</field>
+              </hit>
+            </hitlist>
+          </group>
+        </grouplist>
+      </group>
+    </grouplist>
+  </group>
+</result>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2" coverage-docs="777" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
+  <hit relevancy="0.11184178310325898" source="search">
+    <field name="relevancy">0.11184178310325898</field>
+    <field name="sddocname">music</field>
+    <field name="title">Best Recordings 1936-1947</field>
+    <field name="artist">Albert Ammons</field>
+    <field name="song">Nagasaki;Boogie Woogie Stomp;Early Mornin' Blues;Mile-Or-Mo Bird Rag;Boogie Woogie;Shout For Joy;Boogie Woogie Stomp;Chicago In Mind;Suitcase Blues;Boogie Woogie Blues;Bass Goin' Crazy;Jesse;St Louis Blues;Mecca Flat Blues;Sixth Avenue Express;Albert's Special Boogie Woogie;Bottom Blues;Bedroom Blues;St. Louis Blues;S.P. Blues;Hiroshima;The Sheik Of Araby</field>
+    <field name="bgndata">CD</field>
+    <field name="pto">1569</field>
+    <field name="mid">2</field>
+    <field name="surl">http://shopping.yahoo.com/p_best-recordings-1936-1947_music_1921304908</field>
+    <field name="pid">1921304908</field>
+    <field name="weight">37.0</field>
+    <field name="isbn">723723397324</field>
+    <field name="fmt">CD</field>
+    <field name="disp_song">Nagasaki;Boogie Woogie Stomp;Early Mornin' Blues</field>
+    <field name="pfrom">1388</field>
+    <field name="categories">1804905709 1804905717 1804905773 1804905773 1804905776 1807865271 1804905773 1807865272 1804893726</field>
+    <field name="data">CD13.88-15.69723723397324</field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/137021/amg1921304908_1940.jpg?rm_____DV2WsTf79" height=70 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927005179</field>
+    <field name="newestedition">19360213</field>
+    <field name="year">1936</field>
+    <field name="did">66</field>
+    <field name="cbid">2</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_best-recordings-1936-1947_music_1921304908</field>
+  </hit>
+  <hit relevancy="0.04056554429349642" source="search">
+    <field name="relevancy">0.04056554429349642</field>
+    <field name="sddocname">music</field>
+    <field name="title">Very Best of Michael Hall: In Concert at the Royal Albert Hall</field>
+    <field name="artist">Michael Ball</field>
+    <field name="song">Hot Stuff;Everybody's Talkin';Love On The Rocks;Something Inside So Strong;Someone Else's Dream;Medley: The Way We Were/The Rose;Medley: Prepare Ye The Way Of The Lord/Gethsemane;Oh! What A Circus;My Heart Will Go On;Empty Chairs, Empty Tables;Medley: We Have All The Time In The Word/Millennium;Let The River Run;I'll Be There For You (Theme From Friends);One Step Out Of Time;Blues Brothers Medley: Shake Your Tail Feathers/Think/Everybody Needs Somebody To Love;Love Changes Everything</field>
+    <field name="bgndata">CD</field>
+    <field name="pto">1499</field>
+    <field name="mid">2</field>
+    <field name="surl">http://shopping.yahoo.com/p_very-best-of-michael-hall-in-concert-at-the-royal-albert-hall_music_1921417206</field>
+    <field name="pid">1921417206</field>
+    <field name="weight">49.0</field>
+    <field name="isbn">601215382426</field>
+    <field name="fmt">CD</field>
+    <field name="disp_song">Hot Stuff;Everybody's Talkin';Love On The Rocks</field>
+    <field name="pfrom">879</field>
+    <field name="categories">1804905848 1804893726</field>
+    <field name="data">CD8.79-14.99601215382426</field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/141979/amg1921417206_1940.jpg?rm_____D17uxOvQb" height=70 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927138134</field>
+    <field name="newestedition">20000822</field>
+    <field name="year">2000</field>
+    <field name="did">66</field>
+    <field name="cbid">2</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_very-best-of-michael-hall-in-concert-at-the-royal-albert-hall_music_1921417206</field>
+    <field name="ew">hall</field>
+    <field name="userrate">0</field>
+  </hit>
+</result>
