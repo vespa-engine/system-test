@@ -1,0 +1,54 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+    document test {
+        field a type int {
+            indexing: summary
+        }
+        field b type int {
+            indexing: summary
+        }
+        field c type string {
+            indexing: summary
+        }
+    }
+    field add_2a_b type int {
+        indexing: input a * 2 + input b | attribute | summary        
+    }
+    field sub_a_2b type int {
+        indexing: input a - input b * 2 | attribute | summary        
+    }
+    field mul_a_b type int {
+        indexing: input a * input b | attribute | summary        
+    }
+    field div_2a_b type int {
+        indexing: (input a * 2) / input b | attribute | summary        
+    }
+    field avg_a_b type int {
+        indexing: (input a + input b) / 2 | attribute | summary
+    }
+    field min_a_b type int {
+        indexing {
+            if (input a <= input b) { 
+                input a | attribute | summary 
+            } else { 
+                input b | attribute | summary 
+            }
+        }
+    }
+    field max_a_b type int {
+        indexing {
+            if (input a >= input b) { 
+                input a | attribute | summary 
+            } else { 
+                input b | attribute | summary 
+            }
+        }
+    }
+    field sum_c type int {
+        indexing {     
+            0 | set_var tmp; 
+            input c | split ';' | for_each { to_int + get_var tmp | set_var tmp };
+            get_var tmp | attribute | summary;
+        }
+    }
+}

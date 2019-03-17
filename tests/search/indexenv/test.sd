@@ -1,0 +1,41 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field uri1 type uri {
+      indexing: summary | index
+    }
+    field int1 type int {
+      indexing: summary | index
+    }
+    field default1 type string {
+      indexing: summary | index
+    }
+    field default3 type string {
+      indexing: summary | index
+    }
+    field alone type string {
+      indexing: summary | index
+    }
+    field filter type string {
+      rank: filter
+      indexing: summary | index
+    }
+    field both type string {
+      indexing: summary | index | attribute
+    }
+    field attr1 type string {
+      indexing: summary | attribute
+    }
+    field attr2 type int {
+      indexing: summary | attribute
+    }
+  }
+  fieldset default {
+    fields: default1, default3
+  }
+  rank-profile default {
+    rank-properties {
+      fieldInfo.enable: "true"
+    }
+  }
+}

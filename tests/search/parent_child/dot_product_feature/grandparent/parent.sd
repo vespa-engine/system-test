@@ -1,0 +1,19 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search parent {
+  document parent {
+    field grand_ref type reference<grandparent> {
+      indexing: attribute | summary
+    }
+  }
+  import field grand_ref.ws_i as ws_i {}
+  import field grand_ref.ws_l as ws_l {}
+  import field grand_ref.ws_s as ws_s {}
+  import field grand_ref.arr_i as arr_i {}
+  import field grand_ref.arr_l as arr_l {}
+  import field grand_ref.arr_f as arr_f {}
+  import field grand_ref.arr_d as arr_d {}
+  import field grand_ref.arr_fi as arr_fi {}
+  import field grand_ref.arr_fl as arr_fl {}
+  import field grand_ref.arr_ff as arr_ff {}
+  import field grand_ref.arr_fd as arr_fd {}
+}

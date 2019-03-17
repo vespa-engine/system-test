@@ -1,0 +1,59 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field sbytea type byte {
+      indexing: attribute | summary
+    }
+    field sbytes type byte {
+      indexing: summary
+    }
+    field abytea type array<byte> {
+      indexing: attribute | summary
+    }
+    field abytes type array<byte> {
+      indexing: summary
+    }
+    field wbytea type weightedset<byte> {
+      indexing: attribute | summary
+    }
+    field wbytes type weightedset<byte> {
+      indexing: summary
+    }
+    field sinta type int {
+      indexing: attribute | summary
+    }
+    field sints type int {
+      indexing: summary
+    }
+    field ainta type array<int> {
+      indexing: attribute | summary
+    }
+    field aints type array<int> {
+      indexing: summary
+    }
+    field winta type weightedset<int> {
+      indexing: attribute | summary
+    }
+    field wints type weightedset<int> {
+      indexing: summary
+    }
+    field slonga type long {
+      indexing: attribute | summary
+    }
+    field slongs type long {
+      indexing: summary
+    }
+    field alonga type array<long> {
+      indexing: attribute | summary
+    }
+    field alongs type array<long> {
+      indexing: summary
+    }
+    field wlonga type weightedset<long> {
+      indexing: attribute | summary
+    }
+    field wlongs type weightedset<long> {
+      indexing: summary
+    }
+  }
+}

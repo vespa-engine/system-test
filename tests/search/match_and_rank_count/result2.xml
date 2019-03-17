@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">2.0</field>
+    <field name="id">2</field>
+    <field name="match_count">9</field>
+    <field name="rerank_count">1</field>
+    <field name="summary_count">0</field>
+    <field name="f1">bar-foo</field>
+    <field name="summaryfeatures">{"attribute(id)":2.0,"vespa.summaryFeatures.cached":0.0}</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">1.0</field>
+    <field name="id">1</field>
+    <field name="match_count">9</field>
+    <field name="rerank_count">0</field>
+    <field name="summary_count">0</field>
+    <field name="f1">bar</field>
+    <field name="summaryfeatures">{"attribute(id)":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+  </hit>
+</result>

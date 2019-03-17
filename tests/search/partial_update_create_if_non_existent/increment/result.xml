@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="wset">
+      <item weight="5">foo</item>
+      <item weight="10">bar</item>
+    </field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:test::0</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="wset">
+      <item weight="10">bar</item>
+    </field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:test::1</field>
+  </hit>
+</result>

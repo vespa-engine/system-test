@@ -1,0 +1,10 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search extra_pos {
+    document extra_pos {
+        field my_str type string {
+        }
+    }
+    field my_pos type position {
+        indexing: input my_str | to_pos | attribute | summary
+    }
+}

@@ -1,0 +1,27 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search airplanes {
+  document airplanes {
+
+    field manufacturer type string {
+      indexing: summary | index
+    }
+    field model type string {
+      indexing: summary | index
+    }
+    field information type string {
+      indexing: summary | index
+    }
+    field popularity type int {
+      indexing: attribute
+    }
+    field rating type double {
+      indexing: attribute
+    }
+    field airlines type array<string> {
+      indexing: attribute
+    }
+    field vectors type weightedset<double> {
+      indexing: attribute
+    }
+  }
+}

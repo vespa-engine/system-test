@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="3">
+  <hit>
+    <field name="intfield">555555</field>
+    <field name="longfield">11111111111</field>
+    <field name="bytefield">10</field>
+    <field name="floatfield">10.0</field>
+    <field name="doublefield">100.0</field>
+  </hit>
+  <hit>
+    <field name="intfield">-666666</field>
+    <field name="longfield">-22222222222</field>
+    <field name="bytefield">25</field>
+    <field name="floatfield">-25.0</field>
+    <field name="doublefield">-205.0</field>
+  </hit>
+  <hit>
+    <field name="intfield">777777</field>
+    <field name="longfield">33333333333</field>
+    <field name="bytefield">30</field>
+    <field name="floatfield">30.0</field>
+    <field name="doublefield">300.0</field>
+  </hit>
+</result>

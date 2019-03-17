@@ -1,0 +1,7 @@
+<document documenttype="test" documentid="id:test:test::doc1">
+  <text>Used as the signalling word: 'running'.</text>
+</document>
+
+<document documenttype="test" documentid="id:test:test::doc2">
+  <text>Contains the stem, run.</text>
+</document>

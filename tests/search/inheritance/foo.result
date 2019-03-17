@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1" coverage-docs="1" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
+  <hit relevancy="0.0017429193899782135" source="image">
+    <field name="relevancy">0.0017429193899782135</field>
+    <field name="sddocname">image</field>
+    <field name="size">123</field>
+    <field name="checksum">345</field>
+    <field name="rating">90</field>
+    <field name="nraters">9</field>
+    <field name="views">-1311224358</field>
+    <field name="lastviewed">34234234</field>
+    <field name="make">foo</field>
+    <field name="model">bar</field>
+    <field name="length">78</field>
+    <field name="width">79</field>
+    <field name="aperture">baz</field>
+    <field name="documentid">id:image:image:g=bergum:foo</field>
+  </hit>
+</result>

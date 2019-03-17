@@ -1,0 +1,19 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search multiplepos2d {
+  document multiplepos2d {
+    field title type string {
+      indexing: index | summary
+    }
+    field ll type array<position> {
+      indexing: attribute 
+    }
+  }
+  fieldset default {
+    fields: title
+  }
+  rank-profile default {
+    first-phase {
+      expression: closeness(ll)
+    }
+  }
+}

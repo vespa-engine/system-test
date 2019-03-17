@@ -1,0 +1,18 @@
+[
+  {
+    "put": "id:test:test::0",
+    "fields": {
+      "my_pos": "N63.426915;E10.396929"
+    }
+  },
+  {
+    "put": "id:test:test::1",
+    "fields": {
+      "my_pos": "N71.169493;E25.783164"
+    }
+  },
+  {
+    "put": "id:test:test::2",
+    "fields": {}
+  }
+]

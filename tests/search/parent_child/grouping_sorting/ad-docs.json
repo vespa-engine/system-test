@@ -1,0 +1,7 @@
+[
+  { "put": "id:test:ad::1", "fields": { "campaign_ref": "id:test:campaign::plumbus", "score": 1 } },
+  { "put": "id:test:ad::2", "fields": { "campaign_ref": "id:test:campaign::gazorpazorpfield", "score": 2 } },
+  { "put": "id:test:ad::3", "fields": { "campaign_ref": "id:test:campaign::gazorpazorpfield", "score": 3 } },
+  { "put": "id:test:ad::4", "fields": { "campaign_ref": "id:test:campaign::morty", "score": 4 } },
+  { "put": "id:test:ad::5", "fields": { "campaign_ref": "id:test:campaign::morty", "score": 5 } }
+]

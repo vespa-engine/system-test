@@ -1,0 +1,36 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search child {
+  document child {
+    field parent_ref type reference<parent> {
+      indexing: attribute | summary
+    }
+  }
+  import field parent_ref.ws_i as my_ws_i {}
+  import field parent_ref.ws_l as my_ws_l {}
+  import field parent_ref.ws_s as my_ws_s {}
+  import field parent_ref.arr_i as my_arr_i {}
+  import field parent_ref.arr_l as my_arr_l {}
+  import field parent_ref.arr_f as my_arr_f {}
+  import field parent_ref.arr_d as my_arr_d {}
+  import field parent_ref.arr_fi as my_arr_fi {}
+  import field parent_ref.arr_fl as my_arr_fl {}
+  import field parent_ref.arr_ff as my_arr_ff {}
+  import field parent_ref.arr_fd as my_arr_fd {}
+
+  rank-profile default {
+    summary-features {
+      dotProduct(my_ws_i, vws_i)
+      dotProduct(my_ws_l, vws_l)
+      dotProduct(my_ws_s, vws_s)
+      dotProduct(my_arr_i, varr_i)
+      dotProduct(my_arr_l, varr_l)
+      dotProduct(my_arr_f, varr_f)
+      dotProduct(my_arr_d, varr_d)
+      dotProduct(my_arr_fi, varr_fi)
+      dotProduct(my_arr_fl, varr_fl)
+      dotProduct(my_arr_ff, varr_ff)
+      dotProduct(my_arr_fd, varr_fd)
+    }
+  }
+
+}

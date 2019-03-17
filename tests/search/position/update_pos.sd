@@ -1,0 +1,11 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search update_pos {
+    document update_pos {
+        field my_pos type position {
+	    indexing: attribute | summary
+        }
+    }
+    rank-profile default {
+        summary-features: distance(my_pos)
+    }
+}

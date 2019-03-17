@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0" source="search">
+    <field name="sddocname">test</field>
+    <field name="title">first test title foo</field>
+    <field name="body">first test body bar</field>
+    <field name="sattr">first</field>
+    <field name="iattr">10</field>
+    <field name="documentid">id:test:test::1</field>
+  </hit>
+</result>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1" coverage-docs="1" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
+  <hit relevancy="0.05447959677335429" source="mp3">
+    <field name="relevancy">0.05447959677335429</field>
+    <field name="sddocname">mp3</field>
+    <field name="uri">http://foo.bar.com/path</field>
+    <field name="size">5708739</field>
+    <field name="checksum">2690741102</field>
+    <field name="rating">3</field>
+    <field name="nraters">6</field>
+    <field name="views">81</field>
+    <field name="lastviewed">1253711130</field>
+    <field name="artist">Flo <hi>Rida</hi></field>
+    <field name="album">Mail On Sunday</field>
+    <field name="title">Ms. Hangover</field>
+    <field name="year">2008</field>
+    <field name="length">356</field>
+    <field name="documentid">id:mp3:mp3:g=bergum:/home/bergum/backup/bergum/50_Cent-Ayo_Technology-(CDM)-2007-S4L/07  Flo Rida - Ms. Hangover.mp3</field>
+  </hit>
+</result>

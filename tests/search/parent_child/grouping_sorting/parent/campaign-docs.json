@@ -1,0 +1,5 @@
+[
+  { "put": "id:test:campaign::plumbus", "fields": { "name": "plumbus", "budget": 20 } },
+  { "put": "id:test:campaign::gazorpazorpfield", "fields": { "name": "gazorpazorpfield", "budget": 10 } },
+  { "put": "id:test:campaign::morty", "fields": { "name": "morty", "budget": 5 } }
+]

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="10">
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="a">20</field>
+    <field name="add_2a_b">61</field>
+    <field name="avg_a_b">20</field>
+    <field name="b">21</field>
+    <field name="c">22;23;24;25;26;27;28;29</field>
+    <field name="div_2a_b">1</field>
+    <field name="documentid">id:ns:test::2</field>
+    <field name="max_a_b">21</field>
+    <field name="min_a_b">20</field>
+    <field name="mul_a_b">420</field>
+    <field name="sub_a_2b">-22</field>
+    <field name="sum_c">204</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="a">40</field>
+    <field name="add_2a_b">121</field>
+    <field name="avg_a_b">40</field>
+    <field name="b">41</field>
+    <field name="c">42;43;44;45;46;47;48;49</field>
+    <field name="div_2a_b">1</field>
+    <field name="documentid">id:ns:test::4</field>
+    <field name="max_a_b">41</field>
+    <field name="min_a_b">40</field>
+    <field name="mul_a_b">1640</field>
+    <field name="sub_a_2b">-42</field>
+    <field name="sum_c">364</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="a">0</field>
+    <field name="add_2a_b">1</field>
+    <field name="avg_a_b">0</field>
+    <field name="b">1</field>
+    <field name="c">2;3;4;5;6;7;8;9</field>
+    <field name="div_2a_b">0</field>
+    <field name="documentid">id:ns:test::0</field>
+    <field name="max_a_b">1</field>
+    <field name="min_a_b">0</field>
+    <field name="mul_a_b">0</field>
+    <field name="sub_a_2b">-2</field>
+    <field name="sum_c">44</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="a">30</field>
+    <field name="add_2a_b">91</field>
+    <field name="avg_a_b">30</field>
+    <field name="b">31</field>
+    <field name="c">32;33;34;35;36;37;38;39</field>
+    <field name="div_2a_b">1</field>
+    <field name="documentid">id:ns:test::3</field>
+    <field name="max_a_b">31</field>
+    <field name="min_a_b">30</field>
+    <field name="mul_a_b">930</field>
+    <field name="sub_a_2b">-32</field>
+    <field name="sum_c">284</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="a">50</field>
+    <field name="add_2a_b">151</field>
+    <field name="avg_a_b">50</field>
+    <field name="b">51</field>
+    <field name="c">52;53;54;55;56;57;58;59</field>
+    <field name="div_2a_b">1</field>
+    <field name="documentid">id:ns:test::5</field>
+    <field name="max_a_b">51</field>
+    <field name="min_a_b">50</field>
+    <field name="mul_a_b">2550</field>
+    <field name="sub_a_2b">-52</field>
+    <field name="sum_c">444</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="a">60</field>
+    <field name="add_2a_b">181</field>
+    <field name="avg_a_b">60</field>
+    <field name="b">61</field>
+    <field name="c">62;63;64;65;66;67;68;69</field>
+    <field name="div_2a_b">1</field>
+    <field name="documentid">id:ns:test::6</field>
+    <field name="max_a_b">61</field>
+    <field name="min_a_b">60</field>
+    <field name="mul_a_b">3660</field>
+    <field name="sub_a_2b">-62</field>
+    <field name="sum_c">524</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="a">10</field>
+    <field name="add_2a_b">31</field>
+    <field name="avg_a_b">10</field>
+    <field name="b">11</field>
+    <field name="c">12;13;14;15;16;17;18;19</field>
+    <field name="div_2a_b">1</field>
+    <field name="documentid">id:ns:test::1</field>
+    <field name="max_a_b">11</field>
+    <field name="min_a_b">10</field>
+    <field name="mul_a_b">110</field>
+    <field name="sub_a_2b">-12</field>
+    <field name="sum_c">124</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="a">80</field>
+    <field name="add_2a_b">241</field>
+    <field name="avg_a_b">80</field>
+    <field name="b">81</field>
+    <field name="c">82;83;84;85;86;87;88;89</field>
+    <field name="div_2a_b">1</field>
+    <field name="documentid">id:ns:test::8</field>
+    <field name="max_a_b">81</field>
+    <field name="min_a_b">80</field>
+    <field name="mul_a_b">6480</field>
+    <field name="sub_a_2b">-82</field>
+    <field name="sum_c">684</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="a">90</field>
+    <field name="add_2a_b">271</field>
+    <field name="avg_a_b">90</field>
+    <field name="b">91</field>
+    <field name="c">92;93;94;95;96;97;98;99</field>
+    <field name="div_2a_b">1</field>
+    <field name="documentid">id:ns:test::9</field>
+    <field name="max_a_b">91</field>
+    <field name="min_a_b">90</field>
+    <field name="mul_a_b">8190</field>
+    <field name="sub_a_2b">-92</field>
+    <field name="sum_c">764</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">test</field>
+    <field name="a">70</field>
+    <field name="add_2a_b">211</field>
+    <field name="avg_a_b">70</field>
+    <field name="b">71</field>
+    <field name="c">72;73;74;75;76;77;78;79</field>
+    <field name="div_2a_b">1</field>
+    <field name="documentid">id:ns:test::7</field>
+    <field name="max_a_b">71</field>
+    <field name="min_a_b">70</field>
+    <field name="mul_a_b">4970</field>
+    <field name="sub_a_2b">-72</field>
+    <field name="sum_c">604</field>
+    <field name="summaryfeatures"></field>
+  </hit>
+</result>

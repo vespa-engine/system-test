@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="3">
+  <meta type="trace">
+    <p>Query parsed to [content:booked]</p>
+    <p>Detected language: English: [content:booked]</p>
+    <p>Language English determined by fallback to default.</p>
+    <p>Invoking com.yahoo.prelude.statistics.StatisticsSearcher</p>
+    <p>Invoking com.yahoo.prelude.ranqualizer.RanqualizerSearcher</p>
+    <p>Invoking com.yahoo.prelude.querytransform.LocalitySearcher</p>
+    <p>localityprovider set to "none", simply forwarding search</p>
+    <p>Invoking com.yahoo.prelude.searcher.XMLStringSearcher</p>
+    <p>Invoking com.yahoo.prelude.searcher.JuniperSearcher</p>
+    <p>Invoking com.yahoo.prelude.searcher.FieldCollapsingSearcher</p>
+    <p>Invoking com.yahoo.prelude.querytransform.ExactStringSearcher</p>
+    <p>Invoking com.yahoo.prelude.querytransform.PhrasingSearcher</p>
+    <p>Invoking com.yahoo.prelude.semantics.SemanticSearcher</p>
+    <p>Invoking com.yahoo.prelude.grouping.AggregatingSearcher</p>
+    <p>Invoking com.yahoo.prelude.grouping.GroupingSearcher</p>
+    <p>Invoking com.yahoo.prelude.searcher.TermBoostSearcher</p>
+    <p>Invoking com.yahoo.prelude.searcher.BlendingSearcher</p>
+    <p>Invoking com.yahoo.prelude.querytransform.StemmingSearcher</p>
+    <p>Stemming: [content:book]</p>
+    <p>Invoking com.yahoo.prelude.querytransform.NormalizingSearcher</p>
+    <p>Invoking com.yahoo.prelude.querytransform.LiteralBoostSearcher</p>
+    <p>Query parsed to [content:booked]</p>
+    <p>Adds rank terms for possible literal field matches.: [RANK content:book content_literal:booked]</p>
+    <p>Invoking com.yahoo.prelude.querytransform.CompleteBoostSearcher</p>
+    <p>Invoking com.yahoo.prelude.searcher.PhysicalMappingSearcher</p>
+    <p>Invoking com.yahoo.prelude.cluster.ClusterSearcher</p>
+    <p>Invoking com.yahoo.prelude.fastsearch.FastSearcher</p>
+    <p>sc0.num0 to dispatch: query=[RANK content:book content_literal:booked] aggregation=[] offset=0 hits=10 rankprofile[default]=0 community=null attributefilter=null</p>
+    <p>sc0.num0 dispatch response: Result (3 of total 3 hits)</p>
+    <p>Total search time query 'RANK content:book content_literal:booked': 26 ms</p>
+  </meta>
+  <hit relevancy="927" source="sc0.num0">
+    <field name="relevancy">927</field>
+    <field name="sddocname">literalboost</field>
+    <field name="uri">bookeddoc</field>
+    <field name="content">bogo booked bogo</field>
+    <field name="weight">900.0</field>
+  </hit>
+  <hit relevancy="783" source="sc0.num0">
+    <field name="relevancy">783</field>
+    <field name="sddocname">literalboost</field>
+    <field name="uri">bookdoc</field>
+    <field name="content">bogo book bogo</field>
+    <field name="weight">1000.0</field>
+  </hit>
+  <hit relevancy="747" source="sc0.num0">
+    <field name="relevancy">747</field>
+    <field name="sddocname">literalboost</field>
+    <field name="uri">booksdoc</field>
+    <field name="content">bogo books bogo</field>
+    <field name="weight">950.0</field>
+  </hit>
+</result>

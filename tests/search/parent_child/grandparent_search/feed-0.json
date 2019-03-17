@@ -1,0 +1,72 @@
+[
+  { "put": "id:test:grandparent::0",
+    "fields": {
+      "a1": 5
+    }
+  },
+  { "put": "id:test:grandparent::1",
+    "fields": {
+      "a1": 6
+    }
+  },
+  { "put": "id:test:parent::0",
+    "fields": {
+      "a2": 10,
+      "ref": "id:test:grandparent::0"
+    }
+  },
+  { "put": "id:test:parent::1",
+    "fields": {
+      "a2": 11,
+      "ref": "id:test:grandparent::1"
+    }
+  },
+  { "put": "id:test:parent::2",
+    "fields": {
+      "a2": 12,
+      "ref": "id:test:grandparent::2"
+    }
+  },
+  { "put": "id:test:parent::3",
+    "fields": {
+      "a2": 13,
+      "ref": "id:test:grandparent::0"
+    }
+  },
+  { "put": "id:test:child::0",
+    "fields": {
+      "a3": 100,
+      "ref": "id:test:parent::0"
+    }
+  },
+  { "put": "id:test:child::1",
+    "fields": {
+      "a3": 101,
+      "ref": "id:test:parent::1"
+    }
+  },
+  { "put": "id:test:child::2",
+    "fields": {
+      "a3": 102,
+      "ref": "id:test:parent::2"
+    }
+  },
+  { "put": "id:test:child::3",
+    "fields": {
+      "a3": 103,
+      "ref": "id:test:parent::3"
+    }
+  },
+  { "put": "id:test:child::4",
+    "fields": {
+      "a3": 104,
+      "ref": "id:test:parent::0"
+    }
+  },
+  { "put": "id:test:child::5",
+    "fields": {
+      "a3": 105,
+      "ref": "id:test:parent::1"
+    }
+  }
+]

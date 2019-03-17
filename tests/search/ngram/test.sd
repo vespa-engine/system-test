@@ -1,0 +1,41 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+
+    document test {
+
+        field title type string {
+            indexing: summary | index
+            match: gram
+        }
+
+        field body type string {
+            indexing: summary | index
+            match {
+                gram
+                gram-size: 3
+            }
+            bolding:on
+        }
+
+        field large type string {
+            indexing: summary | index
+            match {
+                gram
+                gram-size: 4
+            }
+            summary: dynamic
+        }
+
+    }
+
+    field default type string {
+        indexing {
+            input title . " " . input body | index
+        }
+        match {
+            gram
+            gram-size: 2
+        }
+    }
+
+}

@@ -1,0 +1,50 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search image {
+
+	document image inherits multimedia {
+
+		field make type string {
+      			indexing: summary | attribute
+    		}
+
+		field model type string {
+      			indexing: summary | attribute
+    		}
+
+		field length type int {
+      			indexing: summary | attribute 
+    		}
+
+		field width type int {
+      			indexing: summary | attribute 
+    		}
+
+		field aperture type string {
+      			indexing: summary | attribute 
+    		}
+
+		field exposure type string {
+      			indexing: summary | attribute 
+    		}
+
+		field datetaken type long {
+      			indexing: summary | attribute 
+    		}
+
+
+    		field thumbnail type raw {
+    		}
+  	}
+
+	rank-profile freshness inherits default {
+		first-phase {
+			expression: attribute(datetaken)
+		}
+	}
+
+	rank-profile rating inherits default {
+		first-phase {
+			expression: attribute(rating)
+		}
+	}
+}

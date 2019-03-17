@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="3">
+  <hit relevancy="0" source="search">
+    <field name="sddocname">test</field>
+    <field name="title">first test title foo</field>
+    <field name="body">first test body bar</field>
+    <field name="sattr">first</field>
+    <field name="iattr">10</field>
+    <field name="documentid">id:test:test::1</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="sddocname">test</field>
+    <field name="title">second test title baz</field>
+    <field name="body">second test body cox</field>
+    <field name="sattr">second</field>
+    <field name="iattr">20</field>
+    <field name="documentid">id:test:test::2</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="sddocname">test</field>
+    <field name="title">third title</field>
+    <field name="body">third body</field>
+    <field name="sattr">third</field>
+    <field name="iattr">30</field>
+    <field name="documentid">id:test:test::3</field>
+  </hit>
+</result>

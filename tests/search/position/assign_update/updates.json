@@ -1,0 +1,26 @@
+[
+  {
+    "update": "id:test:test::0",
+    "fields": {
+      "my_pos": {
+        "assign": null
+      }
+    }
+  },
+  {
+    "update": "id:test:test::1",
+    "fields": {
+      "my_pos": {
+        "assign": "N69.649205;E18.955324"
+      }
+    }
+  },
+  {
+    "update": "id:test:test::2",
+    "fields": {
+      "my_pos": {
+        "assign": "N58.986410;E6.19044"
+      }
+    }
+  }
+]

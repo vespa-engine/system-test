@@ -1,0 +1,7 @@
+[
+  { "put": "id:test:ad::0", "fields": { "campaign_ref": "id:test:campaign::the-best" } },
+  { "put": "id:test:ad::1", "fields": { "campaign_ref": "id:test:campaign::next-best" } },
+  { "put": "id:test:ad::2", "fields": { "campaign_ref": "id:test:campaign::not-here" } },
+  { "put": "id:test:ad::3", "fields": { "campaign_ref": "" } },
+  { "put": "id:test:ad::4", "fields": {} }
+]

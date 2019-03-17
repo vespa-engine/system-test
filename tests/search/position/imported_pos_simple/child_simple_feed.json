@@ -1,0 +1,26 @@
+[
+  {
+    "put": "id:test:child_simple_pos::0",
+    "fields": {
+      "parent_ref": "id:test:parent_simple_pos::0"
+    }
+  },
+  {
+    "put": "id:test:child_simple_pos::1",
+    "fields": {
+      "parent_ref": "id:test:parent_simple_pos::1"
+    }
+  },
+  {
+    "put": "id:test:child_simple_pos::2",
+    "fields": {
+      "parent_ref": "id:test:parent_simple_pos::2"
+    }
+  },
+  {
+    "put": "id:test:child_simple_pos::3",
+    "fields": {
+      "parent_ref": "id:test:parent_simple_pos::3"
+    }
+  }
+]

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="0" source="search">
+    <field name="sddocname">test</field>
+    <field name="title">refeedtitle first</field>
+    <field name="body">refeedbody first</field>
+    <field name="sattr">refeedfirst</field>
+    <field name="iattr">100</field>
+    <field name="documentid">id:test:test::1</field>
+  </hit>
+  <hit relevancy="0" source="search">
+    <field name="sddocname">test</field>
+    <field name="title">third title</field>
+    <field name="body">third body</field>
+    <field name="sattr">third</field>
+    <field name="iattr">30</field>
+    <field name="documentid">id:test:test::3</field>
+  </hit>
+</result>

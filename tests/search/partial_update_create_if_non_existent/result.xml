@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="10">
+  <hit relevancy="0.0" source="search">
+    <field name="a_int">10</field>
+    <field name="documentid">id:test:test:n=1:1</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="a_arr"><item>10</item></field>
+    <field name="documentid">id:test:test:n=1:2</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="a_arr"><item>10</item></field>
+    <field name="documentid">id:test:test:n=1:3</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="a_wset"><item weight="5">10</item></field>
+    <field name="documentid">id:test:test:n=2:4</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="a_wset"><item weight="5">10</item></field>
+    <field name="documentid">id:test:test:n=2:5</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="i_str">foo</field>
+    <field name="documentid">id:test:test:n=2:6</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="i_wset"><item weight="5">foo</item></field>
+    <field name="documentid">id:test:test:n=3:7</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="i_wset"><item weight="5">foo</item></field>
+    <field name="documentid">id:test:test:n=3:8</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="a_int">2</field>
+    <field name="documentid">id:test:test:n=3:9</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="s_str">bar</field>
+    <field name="documentid">id:test:test:n=4:10</field>
+  </hit>
+</result>

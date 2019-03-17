@@ -1,0 +1,5 @@
+<vespafeed>
+  <document documenttype="simple" documentid="id:scheme:simple::">
+    <my_str>foo</my_str>
+  </document>
+</vespafeed>

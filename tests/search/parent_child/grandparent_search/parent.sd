@@ -1,0 +1,20 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search parent {
+  document parent {
+    field a2 type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field ref type reference<grandparent> {
+      indexing: attribute | summary
+    }
+  }
+  import field ref.a1 as a1 {}
+
+  document-summary mysummary {
+    summary documentid type string {}
+    summary ref type reference<grandparent> { }
+    summary a1 type int {}
+    summary a2 type int {}
+  }
+}

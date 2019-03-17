@@ -1,0 +1,4 @@
+[
+  { "put": "id:test:campaign::the-best", "fields": { "title": "thebest", "budget": 20 } },
+  { "put": "id:test:campaign::next-best", "fields": { "title": "nextbest", "budget": 10 } }
+]

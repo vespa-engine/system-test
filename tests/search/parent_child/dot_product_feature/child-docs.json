@@ -1,0 +1,14 @@
+[
+  {
+    "put": "id:test:child::one",
+    "fields": { "parent_ref": "id:test:parent::one" }
+  },
+  {
+    "put": "id:test:child::two",
+    "fields": { "parent_ref": "id:test:parent::two" }
+  },
+  {
+    "put": "id:test:child::badref",
+    "fields": { "parent_ref": "id:test:parent::cousin_vinnie" }
+  }
+]

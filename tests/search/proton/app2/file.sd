@@ -1,0 +1,99 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search file {  document file {
+
+    field id type string {
+      indexing: index | summary
+      summary-to: dynamic, full
+    }
+
+    # The revision string.
+    field revision type string {
+      indexing: attribute | index | summary
+      summary-to: dynamic, full
+    }
+
+    # Filename.
+    field filename type string {
+      indexing: index | summary
+      summary-to: dynamic, full
+    }
+
+    # Path.
+    field path type string {
+      indexing: attribute | index | summary
+      summary-to: dynamic, full
+    }
+
+    # Repository name.
+    field repository type string {
+      indexing: index | summary
+      summary-to: dynamic, full
+    }
+
+    # Branch revision was committed to.
+    field branch type string {
+      indexing: index | summary
+      summary-to: dynamic, full
+    }
+
+    # Date of commit.
+    field date type long {
+      indexing: attribute | summary
+      summary-to: dynamic, full
+    }
+
+    # User committing the revision.
+    field username type string {
+      indexing: index | summary
+      summary-to: dynamic, full
+    }
+
+    # The url to the viewvc view.
+    field url type uri {
+      indexing: summary
+      summary-to: dynamic, full
+    }
+
+    # Module touched.
+    field modules type string {
+      indexing: index | summary
+      summary-to: dynamic, full
+    }
+
+    # Complete code.
+    field code type string {
+      indexing: index | summary
+      summary: full
+      summary-to: full
+      summary dyncode: dynamic
+    }
+
+    field loc type long {
+      indexing: summary
+      summary-to: dynamic, full
+    }
+
+    # File extension.
+    field extension type string {
+      indexing: index | summary
+      summary-to: dynamic, full
+    }
+  }
+
+  fieldset default {
+    fields: username, filename, code
+  }
+
+  rank-profile latest inherits default {
+    first-phase {
+        expression: freshness(date)
+    }
+  }
+
+  document-summary dynamic {
+    summary dyncode type string {
+      dynamic
+      source: code
+    }
+  }
+}

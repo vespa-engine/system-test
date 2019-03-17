@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0" source="search">
+    <field name="sddocname">test</field>
+    <field name="title">second test title baz</field>
+    <field name="body">second test body cox</field>
+    <field name="sattr">second</field>
+    <field name="iattr">20</field>
+    <field name="documentid">id:test:test::2</field>
+  </hit>
+</result>

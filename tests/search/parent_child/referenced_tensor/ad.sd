@@ -1,0 +1,31 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search ad {
+  document ad {
+    field campaign_ref type reference<campaign> {
+      indexing: attribute | summary
+    }
+    field fixup type double {
+      indexing: attribute | summary
+    }
+  }
+
+  import field campaign_ref.indexed_tensor as my_indexed_tensor {}
+  import field campaign_ref.mapped_tensor as my_mapped_tensor {}
+
+  rank-profile default {
+    first-phase {
+      expression {
+        sum(query(qi)*attribute(my_indexed_tensor)) * 100000 + sum(query(qm)*attribute(my_mapped_tensor)) * 10 + attribute(fixup)
+      }
+    }
+  }
+
+  document-summary mysummary {
+    summary documentid type string {}
+    summary my_indexed_tensor type tensor(x[2]) {}
+    summary my_mapped_tensor type tensor(x{}) {}
+    summary campaign_ref type reference<campaign> {}
+    summary fixup type double {}
+  }
+
+}

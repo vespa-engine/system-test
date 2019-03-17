@@ -1,0 +1,46 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search indexed {
+  document indexed {
+
+    field io type string {
+      indexing: index
+    }
+    field ioa type array<string> {
+      indexing: index
+    }
+    field iow type weightedset<string> {
+      indexing: index
+    }
+
+    field so type string {
+      indexing: summary
+    }
+    field soa type array<string> {
+      indexing: summary
+    }
+    field sow type weightedset<string> {
+      indexing: summary
+    }
+
+    field iso type string {
+      indexing: index | summary
+    }
+    field isoa type array<string> {
+      indexing: index | summary
+    }
+    field isow type weightedset<string> {
+      indexing: index | summary
+    }
+
+    field aiso type string {
+      indexing: index | attribute | summary
+    }
+    field aisoa type array<string> {
+      indexing: index | attribute | summary
+    }
+    field aisow type weightedset<string> {
+      indexing: index | attribute | summary
+    }
+
+  }
+}

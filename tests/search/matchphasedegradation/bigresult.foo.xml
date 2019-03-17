@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="25053">
+  <hit relevancy="2097081.75" source="whatever">
+    <field name="relevancy">2097081.75</field>
+    <field name="sddocname">mpd</field>
+    <field name="title">the bar fox says foo hihi</field>
+    <field name="order">2097081.8</field>
+    <field name="documentid">id:test:mpd::43166</field>
+  </hit>
+</result>

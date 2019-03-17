@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0.03281144283580089" source="logical">
+    <field name="relevancy">0.03281144283580089</field>
+    <field name="sddocname">book</field>
+    <field name="sw1">748.54</field>
+    <field name="uri"></field>
+    <field name="title">book 1: The X story</field>
+    <field name="mid">1</field>
+    <field name="scorekey">foobar#55</field>
+    <field name="did">56 57</field>
+    <field name="ew">story</field>
+    <field name="weight">1121.1</field>
+    <field name="w1">705.82996</field>
+    <field name="w2">154.81999</field>
+    <field name="author">Mister X</field>
+    <field name="isbn">0131980521</field>
+    <field name="year">1955</field>
+    <field name="description"><sep />, lies.
+What have we come to?
+If we had <hi>elected</hi> him, it could perhaps be said that we got what
+we deserve<sep /></field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:book::1</field>
+  </hit>
+</result>

@@ -1,0 +1,26 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search literalboost {
+
+  document literalboost {
+
+    field uri type string {
+      indexing: summary
+    }
+
+    field content type string {
+      indexing: summary | index
+      rank: literal
+    }
+
+    field weight type float {
+      indexing: summary | attribute
+    }
+
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(weight) + matches(content_literal) * 300
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="11">
+  <hit relevancy="0.0" source="test">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">...And Justice For All</field>
+    <field name="year">1988</field>
+    <field name="artist">Metallica</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:music:music::0</field>
+  </hit>
+  <hit relevancy="0.0" source="test">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">book</field>
+    <field name="title">Design Patterns: Elements of Reusable Object-Oriented Software</field>
+    <field name="year">1994</field>
+    <field name="author">Erich Gamma</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:book:book::2</field>
+  </hit>
+  <hit relevancy="0.0" source="test">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">video</field>
+    <field name="title">Heat</field>
+    <field name="year">1995</field>
+    <field name="director">Michael Mann</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:video:video::2</field>
+  </hit>
+  <hit relevancy="0.0" source="test">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">video</field>
+    <field name="title">The Rock</field>
+    <field name="year">1996</field>
+    <field name="director">Michael Bay</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:video:video::1</field>
+  </hit>
+</result>

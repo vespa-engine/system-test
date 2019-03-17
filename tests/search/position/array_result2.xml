@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">array_pos</field>
+    <field name="my_pos">
+      <item>
+        <struct-field name="y">12123123</struct-field>
+        <struct-field name="x">98987987</struct-field>
+      </item>
+      <item>
+        <struct-field name="y">12123000</struct-field>
+        <struct-field name="x">98987000</struct-field>
+      </item>
+    </field>
+    <field name="my_pos.position"><position x="98987987" y="12123123" latlong="N12.123123;E98.987987" /><position x="98987000" y="12123000" latlong="N12.123000;E98.987000" /></field>
+    <field name="my_pos.distance">0</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:array_pos::1</field>
+  </hit>
+</result>

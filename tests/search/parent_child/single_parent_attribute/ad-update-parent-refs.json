@@ -1,0 +1,7 @@
+[
+  { "update": "id:test:ad::1", "fields": { "campaign_ref": { "assign": null } } },
+  { "update": "id:test:ad::2", "fields": { "campaign_ref": { "assign": "" } } },
+  { "update": "id:test:ad::3", "fields": { "campaign_ref": { "assign": "id:test:campaign::the-best" } } },
+  { "update": "id:test:ad::4", "fields": { "campaign_ref": { "assign": "id:test:campaign::next-best" } } },
+  { "update": "id:test:ad::5", "fields": { "campaign_ref": { "assign": "id:test:campaign::not-here" } } }
+]

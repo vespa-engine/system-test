@@ -1,0 +1,29 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'indexed_search_test'
+
+class LocalProvider < IndexedSearchTest
+
+  def setup
+    set_owner("nobody")
+    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
+                      search_chain(
+                        Provider.new("local-provider", "local").cluster("search")))
+    start
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :timeout => 240)
+  end
+
+  def test_search_localprovider
+    assert_result("query=sddocname:music&sources=local-provider",
+                   SEARCH_DATA+"music.10.result.xml",
+                   "title")
+  end
+
+  def test_implicit_provider_not_created_when_configuring_localprovider
+    assert_hitcount("query=sddocname:music&sources=search", 0)
+  end
+
+  def teardown
+    stop
+  end
+
+end

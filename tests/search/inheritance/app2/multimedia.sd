@@ -1,0 +1,40 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search multimedia {
+    document multimedia {
+
+        field uri type uri {
+            indexing: summary | index
+            alias uri.hostname: site
+        }
+        field size type int {
+            indexing: summary | attribute 
+        }
+        field content type raw {
+        }
+        field checksum type long {
+            indexing: summary | attribute   
+        }
+        field rating type int {
+            indexing: summary | attribute
+        }
+        field nraters type int {
+            indexing: summary | attribute
+        }
+        field views type int {
+            indexing: summary | attribute
+        }
+        field lastviewed type long {
+            indexing: summary | attribute
+        }
+        field viewtimes type array<long> {
+            indexing: attribute
+        }
+        field viewers type weightedset<string>{
+            indexing: summary | attribute
+        }
+        field tags type tag {
+            indexing: summary | attribute
+        }
+
+    }
+}

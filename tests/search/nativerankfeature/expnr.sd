@@ -1,0 +1,78 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search expnr {
+  document expnr {
+    field f1 type string {
+      indexing: index | summary
+    }
+    field f2 type string {
+      indexing: index | summary
+    }
+    field f3 type string {
+      indexing: index | summary
+      rank: filter
+    }
+    field f4 type string {
+      indexing: attribute | summary
+    }
+    field f5 type string {
+      indexing: attribute | summary
+    }
+  }
+  fieldset default {
+    fields: f1, f2
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: nativeRank
+    }
+    summary-features {
+      nativeRank
+      nativeFieldMatch
+      nativeProximity
+      nativeAttributeMatch
+    }
+    rank-properties {
+      nativeRank.useTableNormalization: "false"
+      nativeRank.fieldMatchWeight: 0.50
+      nativeRank.proximityWeight: 0.25
+      nativeRank.attributeMatchWeight: 0.25
+      nativeFieldMatch.firstOccurrenceTable.f1: "linear(0,200)"
+      nativeFieldMatch.firstOccurrenceTable.f2: "linear(0,400)"
+      nativeFieldMatch.firstOccurrenceTable.f3: "linear(0,800)"
+      nativeFieldMatch.firstOccurrenceTable.f4: "linear(0,300)" # streaming case
+      nativeFieldMatch.firstOccurrenceTable.f5: "linear(0,500)" # streaming case
+      nativeFieldMatch.firstOccurrenceImportance: "1.0"
+      nativeProximity.proximityTable.f1: "linear(0,200)"
+      nativeProximity.proximityTable.f2: "linear(0,400)"
+      nativeProximity.proximityTable.f3: "linear(0,800)"
+      nativeProximity.proximityTable.f4: "linear(0,300)" # streaming case
+      nativeProximity.proximityTable.f5: "linear(0,500)" # streaming case
+      nativeProximity.proximityImportance: "1.0"
+      nativeAttributeMatch.weightTable.f4: "linear(0,200)"
+      nativeAttributeMatch.weightTable.f5: "linear(0,400)"
+    }
+  }
+  rank-profile only-f1 inherits default {
+    summary-features {
+      nativeRank(f1)
+      nativeFieldMatch(f1)
+      nativeProximity(f1)
+    }
+  }
+  rank-profile only-f3 inherits default {
+    summary-features {
+      nativeRank(f3)
+      nativeFieldMatch(f3)
+      nativeProximity(f3)
+    }
+  }
+  rank-profile only-f4 inherits default {
+    summary-features {
+      nativeRank(f4)
+      nativeFieldMatch(f4)
+      nativeProximity(f4)
+      nativeAttributeMatch(f4)
+    }
+  }
+}

@@ -1,0 +1,10 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search campaign {
+  document campaign {
+    field grand_ref type reference<grandcampaign> {
+      indexing: attribute | summary
+    }
+  }
+  import field grand_ref.indexed_tensor as indexed_tensor {}
+  import field grand_ref.mapped_tensor as mapped_tensor {}
+}

@@ -1,0 +1,4 @@
+[
+  { "update": "id:test:campaign::the-best", "fields": { "budget": { "assign": 50 } } },
+  { "update": "id:test:campaign::next-best", "fields": { "budget": { "assign": 30 } } }
+]

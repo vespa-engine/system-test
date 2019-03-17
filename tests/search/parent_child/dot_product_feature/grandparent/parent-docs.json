@@ -1,0 +1,42 @@
+[
+  {
+    "put": "id:test:parent::two",
+    "fields": { "grand_ref": "id:test:grandparent::two" }
+  },
+  {
+    "put": "id:test:parent::one",
+    "fields": { "grand_ref": "id:test:grandparent::one" }
+  },
+  {
+    "put": "id:test:grandparent::one",
+    "fields": {
+      "ws_i": { "10": 13, "20": 21 },
+      "ws_l": { "11": 23, "21": 27 },
+      "ws_s": { "foo": 5, "bar": 7, "baz": 9 },
+      "arr_i": [ 10, 20, 30, 40 ],
+      "arr_l": [ 11, 21, 31, 41 ],
+      "arr_f": [ 12.1, 22.2 ],
+      "arr_d": [ 13.1, 23.2, 33.3 ],
+      "arr_fi": [ 10, 20, 30, 40 ],
+      "arr_fl": [ 11, 21, 31 ],
+      "arr_ff": [ 12.1, 22.2, 32.3, 42.4 ],
+      "arr_fd": [ 13.1, 23.2, 33.3, 43.4 ]
+    }
+  },
+  {
+    "put": "id:test:grandparent::two",
+    "fields": {
+      "ws_i": { "10": 31, "20": 34 },
+      "ws_l": { "11": 37, "21": 41 },
+      "ws_s": { "foo": 2, "bar": 3, "baz": 5 },
+      "arr_i": [ 110, 120, 130, 140 ],
+      "arr_l": [ 111, 121, 131, 141 ],
+      "arr_f": [ 112.1, 122.2 ],
+      "arr_d": [ 113.1, 123.2, 133.3 ],
+      "arr_fi": [ 110, 120, 130, 140 ],
+      "arr_fl": [ 111, 121, 131, 141 ],
+      "arr_ff": [ 112.1, 122.2, 132.3, 142.4 ],
+      "arr_fd": [ 113.1, 123.2, 133.3, 143.4 ]
+    }
+  }
+]

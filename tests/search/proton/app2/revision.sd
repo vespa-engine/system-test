@@ -1,0 +1,79 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search revision {
+  document revision {
+
+    # The revision string.
+    field revision type string {
+      indexing: attribute | index | summary
+    }
+
+    # Date of commit.
+    field date type long {
+      indexing: attribute | summary
+    }
+
+    # Log message given.
+    field logmsg type string {
+      indexing: index | summary
+    }
+
+    # User committing the revision.
+    field username type string {
+      indexing: attribute | index | summary
+    }
+
+    # Repository name.
+    field repository type string {
+      indexing: attribute | index | summary
+    }
+
+    # Branch revision was committed to.
+    field branch type array<string> {
+      indexing: attribute | index | summary
+    }
+
+    # Modules touched.
+    field modules type array<string> {
+      indexing: attribute | summary
+    }
+
+    # Tickets refered to in this revision
+    field tickets type array<long> {
+      indexing: attribute | summary
+    }
+
+    # The url base for files in viewvc.
+    field fileurl type uri {
+      # Empty, only used for creating file docs
+    }
+
+    # The url to the viewvc view.
+    field url type uri {
+      indexing: summary
+    }
+    # Set of revisions aggregated into a merge, if any.
+    field mergerevs type array<string> {
+      indexing: index | summary
+    }
+
+    # Diff from previous version.
+    field diff type string {
+      indexing: summary
+    }
+
+    # Files changed
+    field pathschanged type array<string> {
+      indexing: index | summary
+    }
+  }
+
+  fieldset default {
+    fields: logmsg, username, pathschanged
+  }
+
+  rank-profile latest inherits default {
+    first-phase {
+        expression: freshness(date)
+    }
+  }
+}

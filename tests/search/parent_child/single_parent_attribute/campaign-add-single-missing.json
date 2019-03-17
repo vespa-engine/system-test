@@ -1,0 +1,3 @@
+[
+  { "put": "id:test:campaign::not-here", "fields": { "title": "nothere", "budget": 10 } }
+]

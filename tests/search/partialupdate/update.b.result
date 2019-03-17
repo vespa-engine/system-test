@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit>
+    <field name="intfield">100000</field>
+    <field name="longfield">10000000000</field>
+    <field name="bytefield">11</field>
+    <field name="floatfield">11.1</field>
+    <field name="doublefield">111.1</field>
+  </hit>
+  <hit>
+    <field name="intfield">-200000</field>
+    <field name="longfield">-20000000000</field>
+    <field name="bytefield">22</field>
+    <field name="floatfield">-22.2</field>
+    <field name="doublefield">-222.2</field>
+  </hit>
+</result>

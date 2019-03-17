@@ -1,0 +1,7 @@
+[
+  { "put": "id:test:ad::0", "fields": { "campaign_ref": "id:test:campaign::0", "fixup" : 0.0 } },
+  { "put": "id:test:ad::1", "fields": { "campaign_ref": "id:test:campaign::1", "fixup" : 1.0 } },
+  { "put": "id:test:ad::2", "fields": { "campaign_ref": "id:test:campaign::2", "fixup" : 2.0 } },
+  { "put": "id:test:ad::3", "fields": { "campaign_ref": "", "fixup" : 3.0 } },
+  { "put": "id:test:ad::4", "fields": { "fixup" : 4.0 } }
+]

@@ -1,0 +1,43 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search banana {
+  document banana {
+    field colour type string {
+      indexing: index | summary
+    }
+    field siblings type int {
+      indexing: attribute | summary
+    }
+    field seeds type long {
+      indexing: attribute | summary
+    }
+    field prosperity type byte {
+      indexing: attribute | summary
+    }
+    field curving type float {
+      indexing: attribute | summary
+    }
+    field resistance type double {
+      indexing: attribute | summary
+    }
+    field age type long {
+      indexing: attribute | summary
+    }
+    field uri type uri {
+      indexing: index | summary
+    }
+    field tb type tag {
+      indexing: index | summary
+    }
+    field similarfruits type array<string> {
+      indexing: index | summary
+    }
+    field populardishes type weightedset<string> {
+      indexing: index | summary
+    }
+    field rawfield type raw {
+      indexing: summary
+    }
+    field contentfield type raw {
+    }
+  }
+}
