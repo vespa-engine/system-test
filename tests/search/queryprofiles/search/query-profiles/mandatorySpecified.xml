@@ -1,0 +1,4 @@
+<query-profile id ="mandatorySpecified" type="mandatory">
+  <field name="timeout">1377</field>
+  <field name="foo">37</field>
+</query-profile>

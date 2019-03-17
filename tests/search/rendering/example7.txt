@@ -1,0 +1,48 @@
+Begin result with 1 hits.
+    Verifying empty result: false
+    Verifying non-empty query context: true
+    Begin hit group: 1.0
+        Begin group: 1.0
+            Begin group list: 1.0
+                Begin group: 9870.0
+                    Begin group list: 1.0
+                        Begin group: 9870.0
+                        End group: 9870.0
+                        Begin group: 8900.0
+                        End group: 8900.0
+                        Begin group: 5000.0
+                        End group: 5000.0
+                        Begin group: 2100.0
+                        End group: 2100.0
+                    End group list: 1.0
+                End group: 9870.0
+                Begin group: 8000.0
+                    Begin group list: 1.0
+                        Begin group: 8000.0
+                        End group: 8000.0
+                        Begin group: 3770.0
+                        End group: 3770.0
+                        Begin group: 3400.0
+                        End group: 3400.0
+                        Begin group: 1597.0
+                        End group: 1597.0
+                    End group list: 1.0
+                End group: 8000.0
+                Begin group: 6100.0
+                    Begin group list: 1.0
+                        Begin group: 6100.0
+                        End group: 6100.0
+                        Begin group: 5500.0
+                        End group: 5500.0
+                        Begin group: 2584.0
+                        End group: 2584.0
+                        Begin group: 2000.0
+                        End group: 2000.0
+                        Begin group: 1000.0
+                        End group: 1000.0
+                    End group list: 1.0
+                End group: 6100.0
+            End group list: 1.0
+        End group: 1.0
+    End hit group: 1.0
+End result with 1 hits.

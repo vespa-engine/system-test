@@ -1,0 +1,37 @@
+[
+  {
+    "update": "id:test:test::0",
+    "fields": {
+      "elem_array": {
+        "assign": [
+          {
+            "name": "bar",
+            "weight": 200    
+          },
+          {
+            "name": "baz",
+            "weight": 300    
+          }    
+        ]
+      },
+      "elem_map": {
+        "assign": {
+          "@bar": {
+            "name": "bar",
+            "weight": 200    
+          },
+          "@baz": {
+            "name": "baz",
+            "weight": 300    
+          }
+        }
+      },
+      "str_int_map": {
+        "assign": {
+          "@bar": 200,
+          "@baz": 300
+        }
+      }
+    }
+  }
+]

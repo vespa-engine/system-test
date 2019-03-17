@@ -1,0 +1,21 @@
+{
+  "root": {
+    "fields": {
+      "totalCount" : 1
+    },
+    "children": [
+      { "id": "id:test:test::0",
+        "source": "search",
+        "relevance": 0,
+        "fields": {
+          "elem_array": [
+            {
+              "f1": "foo"
+            }
+          ],
+          "sddocname": "test"
+        }
+      }
+    ]
+  }
+}

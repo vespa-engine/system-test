@@ -1,0 +1,18 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search resize {
+  document resize {
+    field i1 type string {
+      indexing: index | summary
+    }
+    field i2 type string {
+      indexing: index | summary
+    }
+    field a1 type string {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+  }
+  fieldset default {
+    fields: i1
+  }
+}

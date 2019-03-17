@@ -1,0 +1,27 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search specialtokens {
+
+  document specialtokens {
+    field lang type string {
+      indexing: set_language
+    }
+
+    field id type string {
+      indexing: summary | index
+    }
+
+    field content type string {
+      indexing: summary | index
+    }
+  }
+  fieldset default {
+    fields: content
+  }
+ 
+  document-summary juniper {
+    summary jcontent type string {
+      dynamic
+      source: content
+    }
+  }
+}

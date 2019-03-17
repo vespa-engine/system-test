@@ -1,0 +1,31 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search purchase {
+    document purchase {
+        field date type long {
+            indexing: attribute | summary
+        }
+        field price type double {
+            indexing: attribute | summary
+        }
+        field tax type double {
+            indexing: attribute | summary
+        }
+        field item type string {
+            indexing: attribute | summary
+        }
+        field customer type string {
+            indexing: attribute | summary
+        }
+        field lid type int {
+            indexing: attribute
+        }
+    }
+
+    rank-profile default inherits default {
+
+        first-phase {
+            expression: attribute(price)
+        }
+    }
+
+}

@@ -1,0 +1,28 @@
+{
+  "root": {
+    "fields": {
+      "totalCount" : 2
+    },
+    "children": [
+      { "id": "id:test:test::0",
+        "source": "search",
+        "relevance": 0,
+        "fields": {
+          "sddocname": "test"
+        }
+      },
+      { "id": "id:test:test::1",
+        "source": "search",
+        "relevance": 0,
+        "fields": {
+          "elem_array": [
+            {
+              "f2": "baz"
+            }
+          ],
+          "sddocname": "test"
+        }
+      }
+    ]
+  }
+}

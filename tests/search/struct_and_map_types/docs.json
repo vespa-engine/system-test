@@ -1,0 +1,31 @@
+[
+  {
+    "put": "id:test:test::0",
+    "fields": {
+      "elem_array": [
+        {
+          "name": "foo",
+          "weight": 10    
+        },
+        {
+          "name": "bar",
+          "weight": 20    
+        }    
+      ],
+      "elem_map": {
+        "@foo": {
+          "name": "foo",
+          "weight": 10    
+        },
+        "@bar": {
+          "name": "bar",
+          "weight": 20    
+        }    
+      },
+      "str_int_map": {
+        "@foo": 10,
+        "@bar": 20
+      }
+    }
+  }
+]

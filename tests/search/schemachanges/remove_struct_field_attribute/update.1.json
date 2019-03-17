@@ -1,0 +1,26 @@
+[
+  { "update": "id:test:test::0",
+    "fields": {
+      "elem_array": {
+        "assign": [
+          {
+            "f1": "baz",
+            "f2": "bay"
+          }
+        ]
+      }
+    }
+  },
+  { "update": "id:test:test::1",
+    "fields" : {
+      "elem_array": {
+        "assign": [
+          {
+            "f1": "baz",
+            "f2": "bay"
+          }
+        ]
+      }
+    }
+  }
+]

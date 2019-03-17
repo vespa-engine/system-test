@@ -1,0 +1,6 @@
+Begin result with 0 hits.
+    Verifying empty result: true
+    Verifying non-empty query context: true
+    Begin hit group: 1.0
+    End hit group: 1.0
+End result with 0 hits.

@@ -1,0 +1,15 @@
+[
+  {
+    "update": "id:test:test::0",
+    "fields": {
+      "elem_array": {
+        "add": [
+          {    
+            "name": "baz",
+            "weight": 300
+          }
+        ]
+      }
+    }
+  }
+]

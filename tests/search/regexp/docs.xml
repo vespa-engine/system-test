@@ -1,0 +1,83 @@
+<document type="test" documentid="id:test:test::1">
+  <title>test1</title>
+  <single_slow>thisisafox</single_slow>
+  <single_fast>thisisafox</single_fast>
+  <array_slow><item>thisisafox</item></array_slow>
+  <array_fast><item>thisisafox</item></array_fast>
+  <wset_slow><item weight="100">thisisafox</item></wset_slow>
+  <wset_fast><item weight="100">thisisafox</item></wset_fast>
+</document>
+<document type="test" documentid="id:test:test::2">
+  <title>test1</title>
+  <single_slow>thisisabear</single_slow>
+  <single_fast>thisisabear</single_fast>
+  <array_slow><item>thisisabear</item></array_slow>
+  <array_fast><item>thisisabear</item></array_fast>
+  <wset_slow><item weight="100">thisisabear</item></wset_slow>
+  <wset_fast><item weight="100">thisisabear</item></wset_fast>
+</document>
+<document type="test" documentid="id:test:test::3">
+  <title>test1</title>
+  <single_slow>thisisafoxandabear</single_slow>
+  <single_fast>thisisafoxandabear</single_fast>
+  <array_slow><item>thisisafoxandabear</item></array_slow>
+  <array_fast><item>thisisafoxandabear</item></array_fast>
+  <wset_slow><item weight="100">thisisafoxandabear</item></wset_slow>
+  <wset_fast><item weight="100">thisisafoxandabear</item></wset_fast>
+</document>
+
+<document type="test" documentid="id:test:test::4">
+  <title>test2</title>
+  <single_slow>thisisafox</single_slow>
+  <single_fast>thisisafox</single_fast>
+  <array_slow><item>thisisafox</item></array_slow>
+  <array_fast><item>thisisafox</item></array_fast>
+  <wset_slow><item weight="100">thisisafox</item></wset_slow>
+  <wset_fast><item weight="100">thisisafox</item></wset_fast>
+</document>
+<document type="test" documentid="id:test:test::5">
+  <title>test2</title>
+  <single_slow>thisisabear</single_slow>
+  <single_fast>thisisabear</single_fast>
+  <array_slow><item>thisisabear</item></array_slow>
+  <array_fast><item>thisisabear</item></array_fast>
+  <wset_slow><item weight="100">thisisabear</item></wset_slow>
+  <wset_fast><item weight="100">thisisabear</item></wset_fast>
+</document>
+<document type="test" documentid="id:test:test::6">
+  <title>test2</title>
+  <single_slow>thisisafoxandabear</single_slow>
+  <single_fast>thisisafoxandabear</single_fast>
+  <array_slow><item>thisisafoxandabear</item></array_slow>
+  <array_fast><item>thisisafoxandabear</item></array_fast>
+  <wset_slow><item weight="100">thisisafoxandabear</item></wset_slow>
+  <wset_fast><item weight="100">thisisafoxandabear</item></wset_fast>
+</document>
+
+<document type="test" documentid="id:test:test::7">
+  <title>test3</title>
+  <single_slow>thisisafox</single_slow>
+  <single_fast>thisisafox</single_fast>
+  <array_slow><item>thisisafox</item></array_slow>
+  <array_fast><item>thisisafox</item></array_fast>
+  <wset_slow><item weight="100">thisisafox</item></wset_slow>
+  <wset_fast><item weight="100">thisisafox</item></wset_fast>
+</document>
+<document type="test" documentid="id:test:test::8">
+  <title>test3</title>
+  <single_slow>thisisabear</single_slow>
+  <single_fast>thisisabear</single_fast>
+  <array_slow><item>thisisabear</item></array_slow>
+  <array_fast><item>thisisabear</item></array_fast>
+  <wset_slow><item weight="100">thisisabear</item></wset_slow>
+  <wset_fast><item weight="100">thisisabear</item></wset_fast>
+</document>
+<document type="test" documentid="id:test:test::9">
+  <title>test3</title>
+  <single_slow>thisisafoxandabear</single_slow>
+  <single_fast>thisisafoxandabear</single_fast>
+  <array_slow><item>thisisafoxandabear</item></array_slow>
+  <array_fast><item>thisisafoxandabear</item></array_fast>
+  <wset_slow><item weight="100">thisisafoxandabear</item></wset_slow>
+  <wset_fast><item weight="100">thisisafoxandabear</item></wset_fast>
+</document>

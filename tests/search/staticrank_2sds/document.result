@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+ <hit relevancy="1000.0" source="pan0.num0">
+    <field name="relevancy">1000.0</field>
+    <field name="sddocname">one</field>
+    <field name="about">test document</field>
+    <field name="popularity">1000</field>
+    <field name="surl">http://fake.com/1</field>
+  </hit>
+  <hit relevancy="17.0" source="pan0.num0">
+    <field name="relevancy">17.0</field>
+    <field name="sddocname">one</field>
+    <field name="about">document test two</field>
+    <field name="popularity">17</field>
+    <field name="surl">http://fake.com/2</field>
+  </hit>
+</result>

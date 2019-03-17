@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0.155119825708061" source="wstsc">
+    <field name="relevancy">0.155119825708061</field>
+    <field name="sddocname">wstest</field>
+    <field name="titles">
+      <item weight="89">James Bond</item>
+      <item weight="15">Bond</item>
+    </field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:wstest::1</field>
+    <field name="alternates">title: Bond[15], title: James Bond[89]</field>
+  </hit>
+</result>

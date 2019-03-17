@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="4">
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">test</field>
+    <field name="f1">baz</field>
+    <field name="f2">bay</field>
+    <field name="documentid">id:test:test::0</field>
+  </hit>
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">test</field>
+    <field name="f1">baz</field>
+    <field name="f2">bay</field>
+    <field name="documentid">id:test:test::1</field>
+  </hit>
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">test</field>
+    <field name="f1">foo</field>
+    <field name="f2">bar</field>
+    <field name="documentid">id:test:test::2</field>
+  </hit>
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">test</field>
+    <field name="f1">foo</field>
+    <field name="f2">bar</field>
+    <field name="documentid">id:test:test::3</field>
+  </hit>
+</result>

@@ -1,0 +1,48 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search sortspec {
+  document sortspec {
+
+    field name type string {
+      indexing: summary | attribute
+    }
+
+    field name_descending type string {
+      indexing: summary | attribute
+      sorting { descending }
+    }
+
+    field name_ascending type string {
+      indexing: summary | attribute
+      sorting { ascending }
+    }
+
+    field name_function_raw type string {
+      indexing: summary | attribute
+      sorting { function: raw }
+    }
+
+    field name_function_lowercase type string {
+      indexing: summary | attribute
+      sorting { function: lowercase }
+    }
+
+    field name_function_uca type string {
+      indexing: summary | attribute
+      sorting { function: uca }
+    }
+
+    field name_locale_no type string {
+      indexing: summary | attribute
+      sorting { locale: nb_NO }
+    }
+
+    field name_tertiary type string {
+      indexing: summary | attribute
+      sorting {
+        locale: nb_NO
+        strength: tertiary
+      }
+    }
+
+  }
+}

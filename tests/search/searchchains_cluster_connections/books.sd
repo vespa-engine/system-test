@@ -1,0 +1,41 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search books {
+  document books {
+
+    field title type string {
+      indexing: summary | index
+    }
+
+    field dispauthor type string {
+      indexing: summary | index
+    }
+
+    field author type string {
+      indexing: summary | index
+    }
+
+    field isbn type string {
+      indexing: summary | index
+    }
+
+    field url type string {
+      indexing: summary
+    }
+
+    field categories type string {
+      indexing: summary | index
+    }
+
+    field mid type int {
+      indexing: summary | attribute
+    }
+
+    field weight type float {
+      indexing: summary | attribute
+    }
+
+  }
+  fieldset default {
+    fields: title, dispauthor, author, isbn
+  }
+}

@@ -1,0 +1,20 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search setlanguage_nowarning_uri {
+
+  document setlanguage_nowarning_uri {
+    field language type string {
+      indexing: set_language|summary
+    }
+
+    field uri type uri {
+      indexing: summary | index
+    }
+
+    field title type string {
+      indexing: summary | index
+    }
+  }
+  fieldset default {
+    fields: title
+  }
+}

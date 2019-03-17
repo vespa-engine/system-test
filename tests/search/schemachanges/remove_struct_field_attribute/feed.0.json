@@ -1,0 +1,4 @@
+[
+  { "put": "id:test:test::0", "fields": { "elem_array": [{"f1": "foo", "f2": "bar" }] } },
+  { "put": "id:test:test::1", "fields": { "elem_array": [{"f1": "foo", "f2": "bar" }] } }
+]

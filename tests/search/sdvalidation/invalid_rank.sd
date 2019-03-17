@@ -1,0 +1,21 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search invalid_rank {
+  document invalid_rank {
+    field f1 type string {
+      indexing: index
+    }
+    field f2 type int {
+      indexing: attribute
+    }
+  }
+  rank-profile fail1 {
+    first-phase {
+      expression: fieldMatch(f3)
+    }
+  }
+  rank-profile fail2 {
+    first-phase {
+      expression: attributeMatch(f4)
+    }
+  }
+}

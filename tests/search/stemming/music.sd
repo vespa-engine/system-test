@@ -1,0 +1,52 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search music {
+
+  stemming: shortest
+  
+  document music {
+
+    field title type string {
+      indexing: index | summary
+    }
+
+    field artist type string {
+      indexing: index | summary
+      stemming: multiple
+    }
+
+    field song type string {
+      indexing: index | summary
+    }
+
+    field pto type int {
+      indexing: summary | attribute
+    }
+
+    field mid type int {
+      indexing: summary | attribute
+    }
+
+    field ew type string {
+      indexing: index | summary
+    }
+
+    field surl type string {
+      indexing: summary | attribute
+    }
+
+    field bgnsellers type int {
+      indexing: summary
+    }
+
+  }
+  fieldset default {
+    fields: title, song
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: 100 * nativeRank
+    }
+  }
+
+}

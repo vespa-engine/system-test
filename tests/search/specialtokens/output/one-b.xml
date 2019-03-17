@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0.38186238359951247" source="search">
+    <field name="relevancy">0.38186238359951247</field>
+    <field name="sddocname">specialtokens</field>
+    <field name="content">c++ foo &amp; </field>
+    <field name="documentid">id:test:specialtokens::specialtokens1</field>
+    <field name="id">specialtokens1</field>
+    <field name="jcontent"><hi>c++</hi> foo &amp; </field>
+    <field name="summaryfeatures"></field>
+  </hit>
+</result>

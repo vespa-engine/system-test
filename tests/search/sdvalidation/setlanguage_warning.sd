@@ -1,0 +1,22 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search setlanguage_warning {
+  document setlanguage_warning {
+    field year type int {
+      indexing: attribute | summary
+    }
+    field title type string {
+      indexing: index | summary
+    }
+    field uniq_id type string {
+      indexing: index | summary
+      match {
+        exact
+	exact-terminator: "@@"
+      }
+    }
+    field langtag type string {
+      indexing: set_language
+    }
+  }
+}

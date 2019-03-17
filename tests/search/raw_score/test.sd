@@ -1,0 +1,35 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field normal_features type weightedset<string> {
+      indexing: summary | attribute
+    }
+
+    field normal_features_fastsearch type weightedset<string> {
+      indexing: summary | attribute
+      attribute: fast-search
+    }
+
+  }
+  rank-profile default {
+    summary-features {
+      rawScore(normal_features)
+      rawScore(normal_features_fastsearch)
+
+      itemRawScore(normal_foo)
+      itemRawScore(normal_fastsearch_foo)
+
+      itemRawScore(normal_bar)
+      itemRawScore(normal_fastsearch_bar)
+
+      itemRawScore(normal_baz)
+      itemRawScore(normal_fastsearch_baz)
+
+      attributeMatch(normal_features)
+      attributeMatch(normal_features_fastsearch) 
+
+      queryTermCount
+
+    }
+  }
+}

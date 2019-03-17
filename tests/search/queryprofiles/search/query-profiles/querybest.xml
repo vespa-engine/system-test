@@ -1,0 +1,4 @@
+<query-profile id="querybest" type="model">
+    <field name="defaultIndex">title</field>
+    <field name="queryString" overridable="false">best</field>
+</query-profile>

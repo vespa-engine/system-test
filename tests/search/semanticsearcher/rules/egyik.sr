@@ -1,0 +1,4 @@
+@include(common.sr)
+@automata(etc/vespa/fsa/stopwords.fsa)
+[stopwords] -> ;
+

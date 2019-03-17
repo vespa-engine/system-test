@@ -1,0 +1,16 @@
+[
+  {
+    "update": "id:test:test::0",
+    "fields": {
+      "elem_map{@baz}": {
+        "assign": {
+          "name": "baz",  
+          "weight": 300    
+        }
+      },
+      "str_int_map{@baz}": {
+        "assign": 300
+      }
+    }
+  }
+]

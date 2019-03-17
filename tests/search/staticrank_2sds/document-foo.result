@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="4">
+ <hit relevancy="5000.0" source="pan0.num0">
+    <field name="relevancy">5000.0</field>
+    <field name="sddocname">two</field>
+    <field name="title">a foo bar</field>
+    <field name="date">1091356845</field>
+    <field name="weight">5000</field>
+    <field name="surl">http://shopping.yahoo.com/1</field>
+  </hit>
+  <hit relevancy="1000.0" source="pan0.num0">
+    <field name="relevancy">1000.0</field>
+    <field name="sddocname">one</field>
+    <field name="about">test document</field>
+    <field name="popularity">1000</field>
+    <field name="surl">http://fake.com/1</field>
+  </hit>
+  <hit relevancy="42.0" source="pan0.num0">
+    <field name="relevancy">42.0</field>
+    <field name="sddocname">two</field>
+    <field name="title">foo bar</field>
+    <field name="date">1112215893</field>
+    <field name="weight">42</field>
+    <field name="surl">http://shopping.yahoo.com/2</field>
+  </hit>
+  <hit relevancy="17.0" source="pan0.num0">
+    <field name="relevancy">17.0</field>
+    <field name="sddocname">one</field>
+    <field name="about">document test two</field>
+    <field name="popularity">17</field>
+    <field name="surl">http://fake.com/2</field>
+  </hit>
+</result>

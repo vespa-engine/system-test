@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="3">
+  <hit relevancy="0.38186238359951247" source="multitest">
+    <field name="relevancy">0.38186238359951247</field>
+    <field name="sddocname">sfdtest</field>
+    <field name="title">word</field>
+    <field name="documentid">id:test:sfdtest::1</field>
+    <field name="goodmatch">super good title</field>
+  </hit>
+  <hit relevancy="0.15974580091895013" source="multitest">
+    <field name="relevancy">0.15974580091895013</field>
+    <field name="sddocname">sfdtest</field>
+    <field name="title">the final word</field>
+    <field name="documentid">id:test:sfdtest::2</field>
+    <field name="goodmatch">good title</field>
+    <field name="qualitysource">good quality</field>
+  </hit>
+  <hit relevancy="0.13533236717057479" source="multitest">
+    <field name="relevancy">0.13533236717057479</field>
+    <field name="sddocname">sfdtest</field>
+    <field name="title">in this title text (but not very early) somewhere the mystical word appears, followed by more text</field>
+    <field name="documentid">id:test:sfdtest::3</field>
+    <field name="qualitysource">super good quality</field>
+  </hit>
+</result>

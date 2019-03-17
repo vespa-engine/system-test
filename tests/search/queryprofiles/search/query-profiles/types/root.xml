@@ -1,0 +1,4 @@
+<query-profile-type id="root" inherits="native">
+  <match path="true"/>  
+  <field name="indexname" type="string" alias="index-name idx"/>
+</query-profile-type>

@@ -1,0 +1,3 @@
+<query-profile id="rootWithFilter" inherits="root">
+  <field name="model.filter">+best</field>
+</query-profile>

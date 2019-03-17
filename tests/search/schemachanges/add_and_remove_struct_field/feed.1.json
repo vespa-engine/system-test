@@ -1,0 +1,3 @@
+[
+  { "put": "id:test:test::1", "fields": { "elem_array": [{"f1": "bar", "f2": "baz" }] } }
+]

@@ -1,0 +1,50 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+    document test {
+        field string type string {
+            indexing: index
+        }
+        field int type int {
+            indexing: attribute
+        }
+        field long type long {
+            indexing: attribute
+        }
+        field byte type byte {
+            indexing: attribute
+        }
+        field float type float {
+            indexing: attribute
+        }
+        field double type double {
+            indexing: attribute
+        }
+        field pos type position {
+            indexing: attribute
+        }
+        field predicate type predicate {
+            indexing: attribute
+            index {
+                arity: 2
+            }
+        }
+        field raw type raw {
+        }
+        field uri type uri {
+            indexing: index
+        }
+        field array type array<string> {
+            indexing: index
+        }
+        field map type map<string, string> {
+        }
+        field wset type weightedset<string> {
+            indexing: index
+        }
+        struct mystruct {
+            field string type string {}
+        }
+        field struct type mystruct {
+        }
+    }
+}

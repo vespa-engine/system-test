@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="0.0" source="multitest">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">mvdtest</field>
+    <field name="titles">my name is, my name is, Slim Shady</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:mvdtest::1</field>
+  </hit>
+</result>

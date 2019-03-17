@@ -1,0 +1,5 @@
+  <document documenttype="combine" documentid="id:combine:combine::1">
+    <one>foo/bar</one>
+    <two><item>qux/baz</item></two>
+    <text>text</text>
+  </document>

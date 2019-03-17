@@ -1,0 +1,17 @@
+[
+  {
+    "update": "id:test:test::0",
+    "fields": {
+      "elem_map{@bar}.weight": {
+        "increment": 10
+      },
+      "elem_array[1].weight": {
+        "increment": 20
+      },
+      "str_int_map{@foo}": {
+        "increment": 40
+      }
+    }
+  }
+]
+

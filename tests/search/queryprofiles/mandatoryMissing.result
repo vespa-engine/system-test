@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="0">
+  <error code="3">Illegal query</error>
+  <errordetails>
+    <error error="Illegal query" code="3">
+      Incomplete query: Parameter 'timeout' is mandatory in query profile 'mandatory' of type 'mandatory' but is not set
+    </error>
+  </errordetails>
+</result>

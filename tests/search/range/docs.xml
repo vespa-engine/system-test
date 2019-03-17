@@ -1,0 +1,25 @@
+<document documenttype="test" id="id:a:test::1">
+    <i1>1</i1>
+    <f1>1</f1>
+    <m1><item>1</item></m1>
+</document>
+<document documenttype="test" id="id:a:test::2">
+    <i1>1</i1>
+    <f1>1</f1>
+    <m1><item>1</item></m1>
+</document>
+<document documenttype="test" id="id:a:test::3">
+    <i1>2</i1>
+    <f1>2</f1>
+    <m1><item>2</item></m1>
+</document>
+<document documenttype="test" id="id:a:test::4">
+    <i1>3</i1>
+    <f1>3</f1>
+    <m1><item>3</item></m1>
+</document>
+<document documenttype="test" id="id:a:test::5">
+    <i1>3</i1>
+    <f1>3</f1>
+    <m1><item>3</item></m1>
+</document>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">books</field>
+    <field name="title">Access America Guide to the Southwestern National Parks: an atlas and guide for visitors with disabilities /</field>
+    <field name="dispauthor">Cartographic Northern Staff</field>
+    <field name="author">Cartographic Northern Staff</field>
+    <field name="isbn">1555844022</field>
+    <field name="url">http://shopping.yahoo.com/p_access-america-guide-to-the-southwestern-national-parks-an-atlas-and-guide-for-visitors-with-disabilities-_book_1955068427</field>
+    <field name="mid">1</field>
+    <field name="weight">50.0</field>
+  </hit>
+  <hit relevancy="0" source="sc1.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">books</field>
+    <field name="title">Carbon Dioxide Flooding</field>
+    <field name="dispauthor">Mark A. Klins</field>
+    <field name="author">Mark A. Klins</field>
+    <field name="isbn">none</field>
+    <field name="url">http://shopping.yahoo.com/p_carbon-dioxide-flooding_book_1955172970</field>
+    <field name="categories">2065003026,2065003093,2065003099</field>
+    <field name="mid">1</field>
+    <field name="weight">0.0</field>
+  </hit>
+</result>

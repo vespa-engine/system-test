@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="0">
+  <error code="4">Invalid query parameter</error>
+  <errordetails>
+    <error error="Invalid query parameter" code="4">
+      Could not set 'foo' to 'bar': 'foo' is not declared in query profile type 'rootStrict', and the type is strict
+    </error>
+  </errordetails>
+</result>

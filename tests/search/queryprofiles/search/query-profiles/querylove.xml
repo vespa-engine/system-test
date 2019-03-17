@@ -1,0 +1,4 @@
+<query-profile id="querylove" type="model">
+    <field name="defaultIndex">title</field>
+    <field name="queryString" overridable="false">love</field>
+</query-profile>

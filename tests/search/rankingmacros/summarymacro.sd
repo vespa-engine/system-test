@@ -1,0 +1,53 @@
+search summarymacro {
+  document summarymacro {
+    field title type string {
+      indexing: index
+    }
+  }
+  rank-profile used {
+    first-phase {
+      expression: fieldMatch(title) + used
+    }
+    macro used() {
+       expression: 5
+    }
+    summary-features: rankingExpression(used)
+  }
+  rank-profile unused {
+    first-phase {
+      expression: fieldMatch(title)
+    }
+
+    macro unused1() {
+       expression: 5
+    }
+
+    macro unused2() {
+      expression: 4*rankingExpression(unused1)
+    }
+    summary-features: unused2
+  }
+
+  rank-profile unused-inherited inherits unused {
+    first-phase {
+      expression: fieldMatch(title)
+    }
+    summary-features: rankingExpression(unused2)
+  }
+
+  rank-profile unused-inherited-inherited inherits unused-inherited {
+    second-phase {
+      expression: 5*rankingExpression(unused3)
+    }
+
+    macro unused3() {
+      expression: 6*rankingExpression(unused1)
+    }
+
+    first-phase {
+      expression: fieldMatch(title)+5
+    }
+  }
+  
+  
+}

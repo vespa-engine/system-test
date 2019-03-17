@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">specialtokens</field>
+    <field name="id">specialtokens9</field>
+    <field name="content">ab sony手机</field>
+  </hit>
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">specialtokens</field>
+    <field name="id">specialtokens10</field>
+    <field name="content">索尼手机</field>
+  </hit>
+</result>

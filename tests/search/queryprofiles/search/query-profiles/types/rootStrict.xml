@@ -1,0 +1,3 @@
+<query-profile-type id="rootStrict" inherits="root">
+  <strict/>
+</query-profile-type>

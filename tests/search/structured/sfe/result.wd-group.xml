@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="3">
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this"></continuation>
+    <grouplist label="quality">
+      <group relevance="0.3818623835995124">
+        <id type="double">0.125</id>
+        <hitlist label="hits">
+          <hit relevancy="0.3818623835995124" source="multitest">
+            <field name="relevancy">0.3818623835995124</field>
+            <field name="sddocname">sfdtest</field>
+            <field name="title">word</field>
+            <field name="rankfeatures"></field>
+            <field name="summaryfeatures">{"attribute(quality)":0.125,"fieldMatch(title)":1.0,"vespa.summaryFeatures.cached":0.0}</field>
+            <field name="documentid">id:test:sfdtest::1</field>
+          </hit>
+        </hitlist>
+      </group>
+      <group relevance="0.1597458009189501">
+        <id type="double">0.5</id>
+        <hitlist label="hits">
+          <hit relevancy="0.1597458009189501" source="multitest">
+            <field name="relevancy">0.1597458009189501</field>
+            <field name="sddocname">sfdtest</field>
+            <field name="title">the final word</field>
+            <field name="rankfeatures"></field>
+            <field name="summaryfeatures">{"attribute(quality)":0.5,"fieldMatch(title)":0.893015870722919,"vespa.summaryFeatures.cached":0.0}</field>
+            <field name="documentid">id:test:sfdtest::2</field>
+          </hit>
+        </hitlist>
+      </group>
+      <group relevance="0.1353323671705748">
+        <id type="double">0.9375</id>
+        <hitlist label="hits">
+          <hit relevancy="0.1353323671705748" source="multitest">
+            <field name="relevancy">0.1353323671705748</field>
+            <field name="sddocname">sfdtest</field>
+            <field name="title">in this title text (but not very early) somewhere the mystical word appears, followed by more text</field>
+            <field name="rankfeatures"></field>
+            <field name="summaryfeatures">{"attribute(quality)":0.9375,"fieldMatch(title)":0.843669876285249,"vespa.summaryFeatures.cached":0.0}</field>
+            <field name="documentid">id:test:sfdtest::3</field>
+          </hit>
+        </hitlist>
+      </group>
+    </grouplist>
+  </group>
+  <hit relevancy="0.3818623835995124" source="multitest">
+    <field name="relevancy">0.3818623835995124</field>
+    <field name="sddocname">sfdtest</field>
+    <field name="title">word</field>
+    <field name="documentid">id:test:sfdtest::1</field>
+    <field name="goodmatch">super good title</field>
+  </hit>
+  <hit relevancy="0.1597458009189501" source="multitest">
+    <field name="relevancy">0.1597458009189501</field>
+    <field name="sddocname">sfdtest</field>
+    <field name="title">the final word</field>
+    <field name="documentid">id:test:sfdtest::2</field>
+    <field name="goodmatch">good title</field>
+    <field name="qualitysource">good quality</field>
+  </hit>
+  <hit relevancy="0.1353323671705748" source="multitest">
+    <field name="relevancy">0.1353323671705748</field>
+    <field name="sddocname">sfdtest</field>
+    <field name="title">in this title text (but not very early) somewhere the mystical word appears, followed by more text</field>
+    <field name="documentid">id:test:sfdtest::3</field>
+    <field name="qualitysource">super good quality</field>
+  </hit>
+</result>

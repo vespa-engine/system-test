@@ -1,0 +1,10 @@
+[
+  {
+    "update": "id:test:test::0",
+    "fields": {
+      "elem_array": { "assign": null },
+      "elem_map": { "assign": null },
+      "str_int_map": { "assign": null }
+    }
+  }
+]

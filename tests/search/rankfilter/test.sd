@@ -1,0 +1,33 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field f1 type string {
+      indexing: index | summary
+      rank: filter
+    }
+    field f2 type string {
+      indexing: index | summary
+    }
+    field f3 type string {
+      indexing: index | summary
+    }
+    field f4 type string {
+      indexing: index | summary
+      rank: filter
+    }
+  }
+  fieldset default {
+    fields: f3, f4
+  }
+  rank-profile default {
+    summary-features { 
+      fieldTermMatch(f1,0).firstPosition
+      fieldTermMatch(f2,0).firstPosition
+      fieldTermMatch(f3,0).firstPosition
+      fieldTermMatch(f4,0).firstPosition
+    }
+  }
+  rank-profile f2-filter inherits default {
+    rank f2: filter
+  }
+}

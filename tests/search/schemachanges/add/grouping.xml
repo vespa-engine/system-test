@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <group relevance="1.0">
+    <id type="root"/>
+    <grouplist label="f2">
+      <group relevance="21.0">
+        <id type="long">21</id>
+        <output label="count()">1</output>
+      </group>
+    </grouplist>
+  </group>
+</result>

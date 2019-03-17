@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="20">
+  <hit relevancy="0.751813" source="search">
+    <field name="relevancy">0.751813</field>
+    <field name="age">19</field>
+    <field name="colour">yellow0</field>
+    <field name="documentid">id:banana:banana::doc9</field>
+    <field name="sddocname">banana</field>
+    <field name="similarfruits">
+      <item>old0</item>
+      <item>new0</item>
+    </field>
+  </hit>
+</result>

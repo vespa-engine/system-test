@@ -1,0 +1,61 @@
+{
+  "root": {
+    "fields": {
+      "totalCount" : 4
+    },
+    "children": [
+      { "id": "id:test:test::0",
+        "source": "search",
+        "relevance": 0,
+        "fields": {
+          "elem_array": [
+            {
+              "f1": "baz",
+              "f2": "bay"
+            }
+          ],
+          "sddocname": "test"
+        }
+      },
+      { "id": "id:test:test::1",
+        "source": "search",
+        "relevance": 0,
+        "fields": {
+          "elem_array": [
+            {
+              "f1": "baz",
+              "f2": "bay"
+            }
+          ],
+          "sddocname": "test"
+        }
+      },
+      { "id": "id:test:test::2",
+        "source": "search",
+        "relevance": 0,
+        "fields": {
+          "elem_array": [
+            {
+              "f1": "foo",
+              "f2": "bar"
+            }
+          ],
+          "sddocname": "test"
+        }
+      },
+      { "id": "id:test:test::3",
+        "source": "search",
+        "relevance": 0,
+        "fields": {
+          "elem_array": [
+            {
+              "f1": "foo",
+              "f2": "bar"
+            }
+          ],
+          "sddocname": "test"
+        }
+      }
+    ]
+  }
+}

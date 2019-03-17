@@ -1,0 +1,3 @@
+<query-profile id="multiDimensions">
+  <dimensions>myquery, myindex </dimensions>
+</query-profile>

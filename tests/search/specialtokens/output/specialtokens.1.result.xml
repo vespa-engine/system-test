@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="6">
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">specialtokens</field>
+    <field name="id">specialtokens1</field>
+    <field name="content">c++ foo</field>
+  </hit>
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">specialtokens</field>
+    <field name="id">specialtokens2</field>
+    <field name="content">foo .net</field>
+  </hit>
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">specialtokens</field>
+    <field name="id">specialtokens3</field>
+    <field name="content">c foo net</field>
+  </hit>
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">specialtokens</field>
+    <field name="id">specialtokens4</field>
+    <field name="content">wal-mart foo</field>
+  </hit>
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">specialtokens</field>
+    <field name="id">specialtokens5</field>
+    <field name="content">walmart foo</field>
+  </hit>
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">specialtokens</field>
+    <field name="id">specialtokens6</field>
+    <field name="content">wal mart foo</field>
+  </hit>
+</result>

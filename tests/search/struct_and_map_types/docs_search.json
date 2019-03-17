@@ -1,0 +1,60 @@
+[
+  {
+    "put": "id:test:test::0",
+    "fields": {
+      "elem_array": [
+        {
+          "name": "foo",
+          "weight": 10
+        },
+        {
+          "name": "bar",
+          "weight": 20
+        },
+        {
+          "name": "baz",
+          "weight": 30
+        }
+      ],
+      "elem_map": {
+        "@foo": {
+          "name": "foo",
+          "weight": 10
+        },
+        "@bar": {
+          "name": "bar",
+          "weight": 20
+        },
+        "@baz": {
+          "name": "baz",
+          "weight": 30
+        }
+      },
+      "str_int_map": {
+        "@foo": 10,
+        "@bar": 20,
+        "@baz": 30
+      }
+    }
+  },
+  {
+    "put": "id:test:test::1",
+    "fields": {
+      "elem_array": [
+        {
+          "name": "baz",
+          "weight": 30
+        }
+      ],
+      "elem_map": {
+        "@baz": {
+          "name": "baz",
+          "weight": 30
+        }
+      },
+      "str_int_map": {
+        "@baz": 30
+      }
+    }
+  }
+]
