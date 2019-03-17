@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">music</field>
+    <field name="title">Bloodflowers</field>
+    <field name="artist">The Cure</field>
+    <field name="price">229</field>
+    <field name="surl">http://www.cdplanet.no/showarticle.asp?artid=1623430</field>
+    <field name="year">2000</field>
+  </hit>
+</result>

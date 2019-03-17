@@ -1,0 +1,5 @@
+[
+  { "update": "id:test:test::0", "fields": { "f2": { "assign": 15 } } },
+  { "update": "id:test:test::1", "fields": { "f2": { "assign": 15 } } },
+  { "update": "id:test:test::2", "fields": { "f2": { "assign": 15 } } }
+]

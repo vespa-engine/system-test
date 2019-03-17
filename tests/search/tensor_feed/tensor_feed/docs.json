@@ -1,0 +1,24 @@
+[
+  { "put": "id:test:test::0", "fields": {} },
+  { "put": "id:test:test::1", "fields": { "my_tensor": {} } },
+  { "put": "id:test:test::2",
+    "fields": {
+      "my_tensor": {
+        "cells": [
+          { "address": { "x": "a", "y": "b" }, "value": 2.0 },
+          { "address": { "x": "c", "y": "d" }, "value": 3.0 }
+        ]
+      }
+    }
+  },
+  { "put": "id:test:test::3",
+    "fields": {
+      "my_tensor": {
+        "cells": [
+          { "address": { "x": "a", "y": "b" }, "value": 2.5 },
+          { "address": { "x": "c", "y": "d" }, "value": 3.5 }
+        ]
+      }
+    }
+  }
+]

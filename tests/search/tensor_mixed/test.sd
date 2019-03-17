@@ -1,0 +1,20 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field mixed type tensor(x{},y[3]) {
+      indexing: attribute | summary
+    }
+  }
+  constant model {
+    file: search/model.json
+    type: tensor(x{},y[3])
+  }
+  rank-profile default {
+    first-phase {
+      expression: sum(query(tensor) * constant(model) * attribute(mixed))
+    }
+  }
+}

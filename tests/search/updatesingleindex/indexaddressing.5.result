@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">music</field>
+    <field name="title">Modern Electric Blues</field>
+    <field name="sales">0</field>
+    <field name="pto">-1</field>
+    <field name="mid">2</field>
+    <field name="ew">blues</field>
+    <field name="surl">http://shopping.yahoo.com/shop?d=hab&amp;id=1807865264</field>
+    <field name="userrate">0</field>
+    <field name="weight">0.0</field>
+    <field name="pfrom">0</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="categories">Blues</field>
+    <field name="numreview">0</field>
+    <field name="bgnsellers">0</field>
+    <field name="newestedition">0</field>
+    <field name="year">0</field>
+    <field name="did">0</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">0</field>
+  </hit>
+  <hit relevancy="1000" source="sc1.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">books</field>
+    <field name="title">Agrarian Origins of Modern Jap</field>
+    <field name="dispauthor">Thomas C Smith,Ronald Ted Smith</field>
+    <field name="author">Thomas C Smith,Ronald Ted Smith,Thomas Carlyle Smith</field>
+    <field name="isbn">0804705313</field>
+    <field name="uri">http://shopping.yahoo.com/p_agrarian-origins-of-modern-jap_book_1955028889</field>
+    <field name="url">http://shopping.yahoo.com/p_agrarian-origins-of-modern-jap_book_1955028889</field>
+    <field name="did">56</field>
+    <field name="categories">2065001356,2065001561,2065001565,2065002148,2065002149,2065002152,2065002153,2065002157,2065003026,2065003241,2065003250,2065003251</field>
+    <field name="mid">3</field>
+    <field name="pfrom">1710</field>
+    <field name="pto">3000</field>
+    <field name="fmt">Paperback</field>
+    <field name="data">Paperback 17.10-30.00 0804705313</field>
+    <field name="weight">50.0</field>
+    <field name="year">0</field>
+    <field name="newestedition">19591201</field>
+    <field name="formats">P</field>
+    <field name="sales">0</field>
+    <field name="bgndata">Paperback</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="bgnsellers">0</field>
+    <field name="pid">1955028889</field>
+    <field name="userrate">0</field>
+    <field name="numreview">0</field>
+    <field name="cbid">1</field>
+  </hit>
+</result>

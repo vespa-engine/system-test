@@ -1,0 +1,17 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search weather {
+  document weather {
+    field timestamp type int {
+      indexing: attribute | summary
+    }
+    field forecast type string {
+      indexing: index | summary
+    }
+    field snowstats type map<string, int> {
+      indexing: summary
+    }
+    field revision type int {
+      indexing: attribute | summary
+    }
+  }
+}

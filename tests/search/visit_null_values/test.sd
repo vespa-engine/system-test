@@ -1,0 +1,25 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+
+    # Integer index is not supported. This is converted to an attribute.
+    field integer_summary type int {
+      indexing: summary
+    }
+    field integer_attribute type int {
+      indexing: attribute
+    }
+    field string_index type string {
+      indexing: index
+    }
+    field string_attribute type string {
+      indexing: attribute
+    }
+    field string_array_index type array<string> {
+      indexing: index
+    }
+    field string_array_attribute type array<string> {
+      indexing: attribute
+    }
+  }
+}

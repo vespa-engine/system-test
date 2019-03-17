@@ -1,0 +1,10 @@
+<result total-hit-count="1">
+  <hit>
+    <field name="a">foo &amp; bar &lt; baz &gt;</field>
+    <field name="b"><item>foo &amp; bar &lt; baz &gt;</item></field>
+    <field name="c"><item weight="10">foo &amp; bar &lt; baz &gt;</item></field>
+    <field name="d">foo &amp; bar &lt; baz &gt;</field>
+    <field name="e"><item>foo &amp; bar &lt; baz &gt;</item></field>
+    <field name="f"><item weight="10">foo &amp; bar &lt; baz &gt;</item></field>
+  </hit>
+</result>

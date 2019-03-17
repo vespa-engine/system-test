@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="1000" source="pan0.num0">
+    <field name="relevancy">1000</field>
+    <field name="siteId">0</field>
+    <field name="sddocname">simple</field>
+    <field name="title">test2 fake</field>
+    <field name="description">fake with some short text first 香 letter 川 letter 県 letter 産 letter</field>
+    <field name="date">1091356845</field>
+    <field name="surl">http://headlines.yahoo.co.jp/fake2</field>
+  </hit>
+</result>

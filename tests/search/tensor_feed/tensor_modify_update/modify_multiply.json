@@ -1,0 +1,22 @@
+[
+  { "update": "id:test:test::0",
+    "fields": {
+      "dense_attr": {
+        "modify": {
+          "operation": "multiply",
+          "cells": [
+            { "address": { "x": "0" }, "value": 3.0 }
+          ]
+        }
+      },
+      "mixed_attr": {
+        "modify": {
+          "operation": "multiply",
+          "cells": [
+            { "address": { "x": "a", "y":"1" }, "value": 4.0 }
+          ]
+        }
+      }
+    }
+  }
+]

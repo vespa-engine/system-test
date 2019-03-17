@@ -1,0 +1,10 @@
+[
+    {
+	"update": "id:weather:weather::2",
+	"fields": {
+	    "forecast": { "assign": "fluffy snow and godzilla attack" },
+	    "revision": { "assign": 2 }
+	},
+	"condition": "weather.snowstats{fluffyness} == 4"
+    }
+]

@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="10000">
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">music</field>
+    <field name="title">Drankin Patnaz</field>
+    <field name="artist">YoungBloodZ</field>
+    <field name="song">Intro;Damn!;Whatchu Lookin' At;Sean Paul (Get 'Em Crunk);Hustle;Cadillac Pimpin';Oozie 1;Mud Pit;My Automobile;Lane To Lane;Tequila;Skit #2;Drankin' Patnaz;Mind On My Money;Lean Low;No Average Playa</field>
+    <field name="bgndata">CDCALP</field>
+    <field name="sales">0</field>
+    <field name="pto">1898</field>
+    <field name="mid">2</field>
+    <field name="ew">patnaz</field>
+    <field name="surl">http://shopping.yahoo.com/p_drankin-patnaz_music_1921934696</field>
+    <field name="userrate">479</field>
+    <field name="pid">1921934696</field>
+    <field name="weight">73.0</field>
+    <field name="isbn">078221476126,828765015523,828765015547,078221476140,078221476119,828765015516</field>
+    <field name="fmt">CD CA LP</field>
+    <field name="disp_song">Intro;Damn!;Whatchu Lookin' At</field>
+    <field name="pfrom">1195</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="categories">1804905843 1804905843 1807865299 1804893726</field>
+    <field name="data">CD11.95-18.98828765015523CA12.99078221476140LP828765015516</field>
+    <field name="numreview">0</field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/1643302/amgttn.g07462k52jo.jpg?rm_____DAAmL.mGE" height=68 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927378795</field>
+    <field name="newestedition">20251231</field>
+    <field name="year">2025</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+  </hit>
+  <hit relevancy="986" source="sc0.num0">
+    <field name="relevancy">986</field>
+    <field name="sddocname">music</field>
+    <field name="title">Heavier Things</field>
+    <field name="artist">John Mayer</field>
+    <field name="song">Clarity;Bigger Than My Body;Something's Missing;New Deep;Come Back To Bed;Home Life;Split Screen Sadness;Daughters;Only Heart;Wheel</field>
+    <field name="bgndata">CDLP</field>
+    <field name="sales">0</field>
+    <field name="pto">1589</field>
+    <field name="mid">2</field>
+    <field name="ew">things</field>
+    <field name="surl">http://shopping.yahoo.com/p_heavier-things_music_1921991499</field>
+    <field name="userrate">450</field>
+    <field name="pid">1921991499</field>
+    <field name="weight">72.0</field>
+    <field name="isbn">696998618527,696998618510</field>
+    <field name="fmt">CD LP</field>
+    <field name="disp_song">Clarity;Bigger Than My Body;Something's Missing</field>
+    <field name="pfrom">1219</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="categories">1804905848 1804905848 1804905849 1807865302 1804893726</field>
+    <field name="data">CD12.19-15.89696998618527LP696998618510</field>
+    <field name="numreview">0</field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/1554843/amgttn.g03918rb6df.jpg?rm_____DEllOuBlJ" height=69 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927411430</field>
+    <field name="newestedition">20030909</field>
+    <field name="year">2003</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+  </hit>
+  <hit relevancy="972" source="sc0.num0">
+    <field name="relevancy">972</field>
+    <field name="sddocname">music</field>
+    <field name="title">Blink 182 (Bonus Track)</field>
+    <field name="artist">blink-182</field>
+    <field name="bgndata">CD</field>
+    <field name="sales">1</field>
+    <field name="pto">2399</field>
+    <field name="mid">2</field>
+    <field name="ew">182</field>
+    <field name="surl">http://shopping.yahoo.com/p_blink-182-bonus-track-_music_1922019700</field>
+    <field name="userrate">500</field>
+    <field name="pid">1922019700</field>
+    <field name="weight">71.0</field>
+    <field name="isbn">602498614075</field>
+    <field name="fmt">CD</field>
+    <field name="pfrom">1629</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="categories">1804905848 1804893726</field>
+    <field name="data">CD16.29-23.99602498614075</field>
+    <field name="numreview">0</field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/1739641/amgttn.g16744o0dkv.jpg?rm_____DHN.1Krix" height=69 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927220087</field>
+    <field name="newestedition">20031223</field>
+    <field name="year">2003</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+  </hit>
+  <hit relevancy="972" source="sc0.num0">
+    <field name="relevancy">972</field>
+    <field name="sddocname">music</field>
+    <field name="title">La Bella Mafia</field>
+    <field name="artist">Lil' Kim</field>
+    <field name="song">Intro;Hold It Now;Doing It Way Big;Can't F**k With Queen Bee;Hollyhood Skit;Shake Ya Bum Bum;This Is Who I Am;The Jump Off;This Is A Warning;(When Kim Say) Can You Hear Me Now?;Thug Luv;Magic Stick;Get In Touch With Us;Heavenly Father;Tha Beehive;Came Back For You</field>
+    <field name="bgndata">CDCALP</field>
+    <field name="sales">0</field>
+    <field name="pto">1705</field>
+    <field name="mid">2</field>
+    <field name="ew">mafia</field>
+    <field name="surl">http://shopping.yahoo.com/p_la-bella-mafia_music_1921959434</field>
+    <field name="userrate">416</field>
+    <field name="pid">1921959434</field>
+    <field name="weight">71.0</field>
+    <field name="isbn">075678357220,075678357244,075678357213</field>
+    <field name="fmt">CD CA LP</field>
+    <field name="disp_song">Intro;Hold It Now;Doing It Way Big</field>
+    <field name="pfrom">840</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="categories">1804905843 1804905843 1804905844 1804905843 1807865296 1804893726</field>
+    <field name="data">CD12.49-15.19075678357220CA8.40-12.99075678357244LP17.05075678357213</field>
+    <field name="numreview">73</field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/153972/amgtn.f75425iffzd.jpg?rm_____DEmzYKTxL" height=68 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927207828</field>
+    <field name="newestedition">20030304</field>
+    <field name="year">2003</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+  </hit>
+  <hit relevancy="931" source="sc0.num0">
+    <field name="relevancy">931</field>
+    <field name="sddocname">music</field>
+    <field name="title">Diary of a Sinner: 1st Entry</field>
+    <field name="artist">Petey Pablo</field>
+    <field name="bgndata">CDCA</field>
+    <field name="sales">0</field>
+    <field name="pto">1798</field>
+    <field name="mid">2</field>
+    <field name="ew">sinner</field>
+    <field name="surl">http://shopping.yahoo.com/p_diary-of-a-sinner-1st-entry_music_1921474586</field>
+    <field name="userrate">446</field>
+    <field name="pid">1921474586</field>
+    <field name="weight">68.0</field>
+    <field name="isbn">012414172327,012414172341</field>
+    <field name="fmt">CD CA</field>
+    <field name="pfrom">773</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="categories">1804905843 1807865299 1804893726</field>
+    <field name="data">CD11.95-17.98012414172327CA7.73-11.99012414172341</field>
+    <field name="numreview">0</field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/146791/amg1921474586_1940.jpg?rm_____Dmiz_BZVQ" height=68 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927478295</field>
+    <field name="newestedition">20011106</field>
+    <field name="year">2001</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+  </hit>
+  <hit relevancy="931" source="sc0.num0">
+    <field name="relevancy">931</field>
+    <field name="sddocname">music</field>
+    <field name="title">0304</field>
+    <field name="artist">Jewel</field>
+    <field name="bgndata">CDCA</field>
+    <field name="sales">0</field>
+    <field name="pto">1519</field>
+    <field name="mid">2</field>
+    <field name="ew">0304</field>
+    <field name="surl">http://shopping.yahoo.com/p_0304_music_1921975215</field>
+    <field name="userrate">412</field>
+    <field name="pid">1921975215</field>
+    <field name="weight">68.0</field>
+    <field name="isbn">075678363825,075678363849</field>
+    <field name="fmt">CD CA</field>
+    <field name="pfrom">840</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="categories">1804905848 1804905848 1804905859 1804905848 1804905849 1807865302 1804893726</field>
+    <field name="data">CD12.65-15.19075678363825CA8.40-12.99075678363849</field>
+    <field name="numreview">0</field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/352418/catalog_t_t1921975215.1051734865.jpg?rm_____DT11aKugq" height=70 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927018599</field>
+    <field name="newestedition">20030603</field>
+    <field name="year">2003</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+  </hit>
+  <hit relevancy="931" source="sc0.num0">
+    <field name="relevancy">931</field>
+    <field name="sddocname">music</field>
+    <field name="title">100% Ginuwine</field>
+    <field name="artist">Ginuwine</field>
+    <field name="bgndata">CD8.79|2CALP</field>
+    <field name="sales">0</field>
+    <field name="pto">1613</field>
+    <field name="mid">2</field>
+    <field name="ew">ginuwine</field>
+    <field name="surl">http://shopping.yahoo.com/p_100-ginuwine_music_1921321970</field>
+    <field name="userrate">463</field>
+    <field name="pid">1921321970</field>
+    <field name="weight">68.0</field>
+    <field name="isbn">074646959824,074646959848,074646959817</field>
+    <field name="fmt">CD CA LP</field>
+    <field name="pfrom">505</field>
+    <field name="bgnpfrom">8.79</field>
+    <field name="categories">1804905838 1804905840 1804905848 1804905743 1807865268 1804893726</field>
+    <field name="data">CD8.13-13.88074646959824CA5.05-7.99074646959848LP16.13074646959817</field>
+    <field name="numreview">116</field>
+    <field name="bgnsellers">2</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/421789/amgttn.d53677a7jav.jpg?rm_____D8uAsfBpU" height=69 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927204235</field>
+    <field name="newestedition">19990316</field>
+    <field name="bgnpto">8.79</field>
+    <field name="year">1999</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+  </hit>
+  <hit relevancy="917" source="sc0.num0">
+    <field name="relevancy">917</field>
+    <field name="sddocname">music</field>
+    <field name="title">R. Kelly</field>
+    <field name="artist">R. Kelly</field>
+    <field name="bgndata">CD8.79|1CALP</field>
+    <field name="sales">0</field>
+    <field name="pto">1613</field>
+    <field name="mid">2</field>
+    <field name="ew">kelly</field>
+    <field name="surl">http://shopping.yahoo.com/p_r-kelly_music_1921178679</field>
+    <field name="userrate">440</field>
+    <field name="pid">1921178679</field>
+    <field name="weight">67.0</field>
+    <field name="isbn">012414157928,012414157942,012414157911</field>
+    <field name="fmt">CD CA LP</field>
+    <field name="pfrom">1265</field>
+    <field name="bgnpfrom">8.79</field>
+    <field name="categories">1804905838 1804905840 1804905848 1804893726</field>
+    <field name="data">CD12.65-15.89012414157928CA12.99012414157942LP16.13012414157911</field>
+    <field name="numreview">0</field>
+    <field name="bgnsellers">1</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/149176/amg1921178679_1940.jpg?rm_____De7Y4PhW8" height=68 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927036210</field>
+    <field name="newestedition">19951114</field>
+    <field name="bgnpto">8.79</field>
+    <field name="year">1995</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+  </hit>
+  <hit relevancy="904" source="sc0.num0">
+    <field name="relevancy">904</field>
+    <field name="sddocname">music</field>
+    <field name="title">Nate Dogg</field>
+    <field name="artist">Nate Dogg</field>
+    <field name="song">I Need a Bitch;Bad Girls;Get Up;Keep It Real;Leave Her Alone;Hide It;Round Amd Round;Gott Damn Shame;There She Goes;Somebody Like Me;Interlude;I Got Game;All Night Long;Next Boyfriend;3 the Hard Way;Interlude;Right Back Where You Are</field>
+    <field name="bgndata">CDCA</field>
+    <field name="sales">0</field>
+    <field name="pto">1898</field>
+    <field name="mid">2</field>
+    <field name="ew">dogg</field>
+    <field name="surl">http://shopping.yahoo.com/p_nate-dogg_music_1921957779</field>
+    <field name="userrate">450</field>
+    <field name="pid">1921957779</field>
+    <field name="weight">66.0</field>
+    <field name="isbn">075596279628,075596279642</field>
+    <field name="fmt">CD CA</field>
+    <field name="disp_song">I Need a Bitch;Bad Girls;Get Up</field>
+    <field name="pfrom">1898</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="categories">1804905843 1804893726</field>
+    <field name="data">CD18.98075596279628CA075596279642</field>
+    <field name="numreview">1</field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/145554/amg1921957779_1940.jpg?rm_____DpGN_akt9" height=70 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927209380</field>
+    <field name="newestedition">20030225</field>
+    <field name="year">2003</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+  </hit>
+  <hit relevancy="904" source="sc0.num0">
+    <field name="relevancy">904</field>
+    <field name="sddocname">music</field>
+    <field name="title">Gimme The Light (X2)</field>
+    <field name="artist">Sean Paul</field>
+    <field name="song">Gimmie the Light [Buzz Riddum];Gimmie the Light [Buzz Riddum] [Instrumental];Can You Do the Work?</field>
+    <field name="bgndata">CDLP</field>
+    <field name="sales">0</field>
+    <field name="pto">598</field>
+    <field name="mid">2</field>
+    <field name="surl">http://shopping.yahoo.com/p_gimme-the-light-x2-_music_1921876323</field>
+    <field name="userrate">467</field>
+    <field name="pid">1921876323</field>
+    <field name="weight">66.0</field>
+    <field name="isbn">054645640022,075678542206,054645639514</field>
+    <field name="fmt">CD LP</field>
+    <field name="disp_song">Gimmie the Light [Buzz Riddum];Gimmie the Light [Buzz Riddum] [Instrumental];Can You Do the Work?</field>
+    <field name="pfrom">265</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="categories">1804905843 1804905871 1804905915 1804893726</field>
+    <field name="data">CD2.65-5.98054645640022LP3.04-5.68054645639514</field>
+    <field name="numreview">0</field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/422072/amgttn.f96774cova5.jpg?rm_____D71jLinh0" height=69 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927360067</field>
+    <field name="newestedition">20020521</field>
+    <field name="year">2002</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+  </hit>
+</result>

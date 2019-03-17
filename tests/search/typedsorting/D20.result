@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="20">
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">2</field>
+    <field name="title_lowercase">700</field>
+    <field name="title">700</field>
+    <field name="mid">3</field>
+    <field name="likeint">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1807869505</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">3</field>
+    <field name="title_lowercase">3</field>
+    <field name="title">3</field>
+    <field name="mid">3</field>
+    <field name="likeint">3</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1807869506</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc0.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">7</field>
+    <field name="title_lowercase">blues</field>
+    <field name="title">Blues</field>
+    <field name="mid">2</field>
+    <field name="likeint">7</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905709</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">13</field>
+    <field name="title_lowercase">70</field>
+    <field name="title">70</field>
+    <field name="mid">3</field>
+    <field name="likeint">13</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1807869503</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">17</field>
+    <field name="title_lowercase">1</field>
+    <field name="title">1</field>
+    <field name="mid">3</field>
+    <field name="likeint">17</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804909951</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc0.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">19</field>
+    <field name="title_lowercase">chicago blues</field>
+    <field name="title">Chicago Blues</field>
+    <field name="mid">2</field>
+    <field name="likeint">19</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905710</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">21</field>
+    <field name="title_lowercase">50</field>
+    <field name="title">50</field>
+    <field name="mid">3</field>
+    <field name="likeint">21</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804909955</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">22</field>
+    <field name="title_lowercase">1000</field>
+    <field name="title">1000</field>
+    <field name="mid">3</field>
+    <field name="likeint">22</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804909953</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">22</field>
+    <field name="title_lowercase">5</field>
+    <field name="title">5</field>
+    <field name="mid">3</field>
+    <field name="likeint">22</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804909954</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">23</field>
+    <field name="title_lowercase">500</field>
+    <field name="title">500</field>
+    <field name="mid">3</field>
+    <field name="likeint">23</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804909956</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">32</field>
+    <field name="title_lowercase">7</field>
+    <field name="title">7</field>
+    <field name="mid">3</field>
+    <field name="likeint">32</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1807869493</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc0.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">71</field>
+    <field name="title_lowercase">classic female blues</field>
+    <field name="title">Classic Female Blues</field>
+    <field name="mid">2</field>
+    <field name="likeint">71</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905711</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc0.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">77</field>
+    <field name="title_lowercase">contemporary blues</field>
+    <field name="title">Contemporary Blues</field>
+    <field name="mid">2</field>
+    <field name="likeint">77</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905712</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">117</field>
+    <field name="title_lowercase">10</field>
+    <field name="title">10</field>
+    <field name="mid">3</field>
+    <field name="likeint">117</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804909952</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc0.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">321</field>
+    <field name="title_lowercase">electric blues</field>
+    <field name="title">Electric Blues</field>
+    <field name="mid">2</field>
+    <field name="likeint">321</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1807865261</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc0.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">331</field>
+    <field name="title_lowercase">east coast blues</field>
+    <field name="title">east coast blues</field>
+    <field name="mid">2</field>
+    <field name="likeint">331</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1807865251</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc0.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">333</field>
+    <field name="title_lowercase">delta blues</field>
+    <field name="title">Delta Blues</field>
+    <field name="mid">2</field>
+    <field name="likeint">333</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905714</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc0.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">334</field>
+    <field name="title_lowercase">modern electric blues</field>
+    <field name="title">Modern Electric Blues</field>
+    <field name="mid">2</field>
+    <field name="likeint">334</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1807865264</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc0.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">711</field>
+    <field name="title_lowercase">country blues</field>
+    <field name="title">country blues</field>
+    <field name="mid">2</field>
+    <field name="likeint">711</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905713</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc0.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">3334</field>
+    <field name="title_lowercase">louisiana blues</field>
+    <field name="title">Louisiana Blues</field>
+    <field name="mid">2</field>
+    <field name="likeint">3334</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1807865263</field>
+  </hit>
+</result>

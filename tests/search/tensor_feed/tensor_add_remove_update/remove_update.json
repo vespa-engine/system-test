@@ -1,0 +1,38 @@
+[
+  { "update": "id:test:test::0",
+    "fields": {
+      "sparse_attr": {
+        "remove": {
+          "addresses": [
+            { "x": "a" },
+            { "x": "b" }
+          ]
+        }
+      },
+      "sparse_field": {
+        "remove": {
+          "addresses": [
+            { "x": "a" },
+            { "x": "b" }
+          ]
+        }
+      },
+      "mixed_attr": {
+        "remove": {
+          "addresses": [
+            { "x": "a" },
+            { "x": "b" }
+          ]
+        }
+      },
+      "mixed_field": {
+        "remove": {
+          "addresses": [
+            { "x": "a" },
+            { "x": "b" }
+          ]
+        }
+      }
+    }
+  }
+]

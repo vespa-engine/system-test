@@ -1,0 +1,50 @@
+[
+    {
+        "put": "id:test:test::1",
+        "fields": {
+            "id": 1,
+            "mixed" : {
+                "cells": [
+                    { "address" : { "x" : "x1", "y":"0" }, "value": 11.0 },
+                    { "address" : { "x" : "x1", "y":"1" }, "value": 12.0 },
+                    { "address" : { "x" : "x1", "y":"2" }, "value": 13.0 },
+                    { "address" : { "x" : "x2", "y":"0" }, "value": 14.0 },
+                    { "address" : { "x" : "x2", "y":"1" }, "value": 15.0 },
+                    { "address" : { "x" : "x2", "y":"2" }, "value": 16.0 }
+                ]
+            }
+        }
+    },
+    {
+        "put": "id:test:test::2",
+        "fields": {
+            "id": 2,
+            "mixed" : {
+                "cells": [
+                    { "address" : { "x" : "x1", "y":"0" }, "value": 21.0 },
+                    { "address" : { "x" : "x1", "y":"1" }, "value": 22.0 },
+                    { "address" : { "x" : "x1", "y":"2" }, "value": 23.0 },
+                    { "address" : { "x" : "x2", "y":"0" }, "value": 24.0 },
+                    { "address" : { "x" : "x2", "y":"1" }, "value": 25.0 },
+                    { "address" : { "x" : "x2", "y":"2" }, "value": 26.0 }
+                ]
+            }
+        }
+    },
+    {
+        "put": "id:test:test::3",
+        "fields": {
+            "id": 3,
+            "mixed" : {
+                "cells": [
+                    { "address" : { "x" : "x1", "y":"0" }, "value": 31.0 },
+                    { "address" : { "x" : "x1", "y":"1" }, "value": 32.0 },
+                    { "address" : { "x" : "x1", "y":"2" }, "value": 33.0 },
+                    { "address" : { "x" : "x2", "y":"0" }, "value": 34.0 },
+                    { "address" : { "x" : "x2", "y":"1" }, "value": 35.0 },
+                    { "address" : { "x" : "x2", "y":"2" }, "value": 36.0 }
+                ]
+            }
+        }
+    }
+]

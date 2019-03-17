@@ -1,0 +1,50 @@
+[
+    {
+	"put": "id:weather:weather::0",
+	"fields": {
+	    "timestamp": 1000,
+	    "forecast": "raining",
+	    "snowstats": {
+                "height": 0,
+                "fluffyness": 0
+            },
+	    "revision": 1
+	}
+    },
+    {
+	"put": "id:weather:weather::1",
+	"fields": {
+	    "timestamp": 1001,
+	    "forecast": "snowing",
+	    "snowstats": {
+                "height" : 50,
+                "fluffyness" : 2
+            },
+	    "revision": 1
+	}
+    },
+    {
+	"put": "id:weather:weather::2",
+	"fields": {
+	    "timestamp": 1002,
+	    "forecast": "snowing",
+	    "snowstats": {
+                "height": 100,
+                "fluffyness": 4
+            },
+	    "revision": 1
+	}
+    },
+    {
+	"put": "id:weather:weather::3",
+	"fields": {
+	    "timestamp": 1003,
+	    "forecast": "icy",
+	    "snowstats": {
+                "height": 0,
+                "fluffyness": 0
+            },
+	    "revision": 1
+	}
+    }
+]

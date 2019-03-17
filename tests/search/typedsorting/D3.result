@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="20">
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">2</field>
+    <field name="title_lowercase">700</field>
+    <field name="title">700</field>
+    <field name="mid">3</field>
+    <field name="likeint">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1807869505</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc1.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">3</field>
+    <field name="title_lowercase">3</field>
+    <field name="title">3</field>
+    <field name="mid">3</field>
+    <field name="likeint">3</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1807869506</field>
+  </hit>
+  <hit relevancy="251.32402569466396" source="sc0.num0">
+    <field name="relevancy">251.32402569466396</field>
+    <field name="isint">7</field>
+    <field name="title_lowercase">blues</field>
+    <field name="title">Blues</field>
+    <field name="mid">2</field>
+    <field name="likeint">7</field>
+    <field name="summaryfeatures"></field>
+    <field name="sddocname">music</field>
+    <field name="categories">Blues</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905709</field>
+  </hit>
+</result>

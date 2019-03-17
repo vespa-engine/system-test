@@ -1,0 +1,38 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search music {
+  document music {
+
+    field title type string { }
+
+    field artist type string { }
+
+    field time type int { }
+    field band type string { }
+    field vote type int { }
+    field revenue type float { }
+    field batchid type int { }
+    field year type int { }
+    field bits type int { }
+    field popularity type weightedset<int> {
+    }
+
+    field url type uri { }
+    field body type string { }
+    field bodyfield type string { }
+
+    field tracks type array<string> {
+    }
+    field string_string_map type map<string,string> { }
+    field string_array type array<string> { }
+    struct personstruct {
+      field firstname type string { }
+      field lastname type string { }
+      field salary type int { }
+    }
+    field person type personstruct { }
+    field person_by_age type map<int, personstruct> { }
+    field person_array type array<personstruct> { }
+
+    field person_to_age type weightedset<string> { }
+  }
+}

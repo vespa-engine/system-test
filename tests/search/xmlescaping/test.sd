@@ -1,0 +1,23 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field a type string {
+      indexing: index | summary
+    }
+    field b type array<string> {
+      indexing: index | summary
+    }
+    field c type weightedset<string> {
+      indexing: index | summary
+    }
+    field d type string {
+      indexing: attribute | summary
+    }
+    field e type array<string> {
+      indexing: attribute | summary
+    }
+    field f type weightedset<string> {
+      indexing: attribute | summary
+    }
+  }
+}

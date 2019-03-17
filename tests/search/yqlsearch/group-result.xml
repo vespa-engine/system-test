@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="3">
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this"></continuation>
+    <grouplist label="score">
+      <group relevance="0.32620952830819305">
+        <id type="long">1</id>
+        <output label="count()">1</output>
+      </group>
+      <group relevance="0.07859447078383065">
+        <id type="long">3</id>
+        <output label="count()">1</output>
+      </group>
+      <group relevance="0.07681858546907547">
+        <id type="long">2</id>
+        <output label="count()">1</output>
+      </group>
+    </grouplist>
+  </group>
+  <hit relevancy="0.32620952830819305" source="basicsearch">
+    <field name="relevancy">0.32620952830819305</field>
+    <field name="sddocname">music</field>
+    <field name="title">Country Blues</field>
+    <field name="name">
+      <item weight="2">Country</item>
+      <item weight="78">Blues</item>
+    </field>
+    <field name="score">1</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905709</field>
+  </hit>
+  <hit relevancy="0.07859447078383065" source="basicsearch">
+    <field name="relevancy">0.07859447078383065</field>
+    <field name="sddocname">music</field>
+    <field name="title">Electric Blues</field>
+    <field name="name">
+      <item weight="2">Electric</item>
+      <item weight="78">Blues</item>
+    </field>
+    <field name="score">3</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905711</field>
+  </hit>
+  <hit relevancy="0.07681858546907547" source="basicsearch">
+    <field name="relevancy">0.07681858546907547</field>
+    <field name="sddocname">music</field>
+    <field name="title">Modern Electric Blues</field>
+    <field name="name">
+      <item weight="2">Electric</item>
+      <item weight="78">Blues</item>
+      <item weight="2">Modern</item>
+    </field>
+    <field name="score">2</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905710</field>
+  </hit>
+</result>

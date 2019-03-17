@@ -1,0 +1,21 @@
+[
+    {
+        "put": "id:test:parent::0",
+        "fields": {
+            "array": [78, 1111]
+        }
+    },
+
+    {
+        "put": "id:test:parent::1",
+        "fields": {
+            "array": [1111, 2222]
+        }
+    },
+    {
+        "put": "id:test:parent::2",
+        "fields": {
+            "array": [5555]
+        }
+    }
+]
