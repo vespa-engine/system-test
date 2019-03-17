@@ -22,7 +22,7 @@ class SDValidation < SearchTest
   # Tests that we get a proper error message from il parser with line number when il script is invalid
   def test_error_message_invalid_il
     warning_regexp = Regexp.new("Error reported by IL parser: Encountered \" <IDENTIFIER> \"" +
-                                "compact_string_to_single_term\"\" at line 4, column 57.")
+                                "compact_string_to_single_term\"\" at line 5, column 57.")
     begin
       deploy_app(SearchApp.new.sd(selfdir+"invalid_il_expression_name.sd"))
       assert(false)
@@ -33,7 +33,7 @@ class SDValidation < SearchTest
 
   # Tests that we get a proper error message from sd parser with line number when sd is invalid
   def test_error_message_invalid_sd
-    warning_regexp = Regexp.new("Could not parse search definition file 'searchdefinitions/invalid_sd_construct.sd': Encountered \" \"\\(\" \"\\(\"\" at line 4, column 36")
+    warning_regexp = Regexp.new("Could not parse search definition file 'searchdefinitions/invalid_sd_construct.sd': Encountered \" \"\\(\" \"\\(\"\" at line 5, column 36")
     begin
       deploy_app(SearchApp.new.sd(selfdir+"invalid_sd_construct.sd"))
       assert(false)
