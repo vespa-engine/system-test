@@ -1,0 +1,59 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search covtest {
+  
+  document covtest {
+
+    field title type string {
+      indexing: index | summary
+    }
+
+    field sortlimnum type int {
+      indexing: summary | attribute
+      attribute: fast-search
+    }
+
+    field weight type float {
+      indexing: summary | attribute
+    }
+
+  }
+  fieldset default {
+    fields: title
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: 100 * nativeRank + attribute(weight)
+    }
+  }
+
+  rank-profile slow {
+    first-phase {
+      expression: attribute(weight) + debugWait(0.0001, 0)
+    }
+  }
+
+  rank-profile lim {
+    match-phase {
+      attribute: sortlimnum
+      max-hits: 10101
+      max-filter-coverage: 1.0
+    }
+    first-phase {
+      expression: attribute(sortlimnum)
+    }
+  }
+
+  rank-profile revlim {
+    match-phase {
+      attribute: sortlimnum
+      order: ascending
+      max-hits: 30303
+      max-filter-coverage: 1.0
+    }
+    first-phase {
+      expression: 123456789.0 - attribute(sortlimnum)
+    }
+  }
+
+}

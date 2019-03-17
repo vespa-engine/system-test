@@ -1,0 +1,3 @@
+[
+  { "update": "id:test:test::0", "fields": { "f1": { "assign": "bar" } } }
+]

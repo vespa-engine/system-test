@@ -1,0 +1,30 @@
+Begin result with 1 hits.
+    Verifying non-empty query context: true
+    Begin hit group: 1.0
+        Begin group: 1.0
+            Begin group list: 1.0
+                Begin group: 9870.0
+                    Begin hit list: 1.0
+                        Hit: id:order:purchase::16
+                        Hit: id:order:purchase::11
+                        Hit: id:order:purchase::20
+                    End hit list: 1.0
+                End group: 9870.0
+                Begin group: 8000.0
+                    Begin hit list: 1.0
+                        Hit: id:order:purchase::6
+                        Hit: id:order:purchase::14
+                        Hit: id:order:purchase::9
+                    End hit list: 1.0
+                End group: 8000.0
+                Begin group: 6100.0
+                    Begin hit list: 1.0
+                        Hit: id:order:purchase::15
+                        Hit: id:order:purchase::10
+                        Hit: id:order:purchase::18
+                    End hit list: 1.0
+                End group: 6100.0
+            End group list: 1.0
+        End group: 1.0
+    End hit group: 1.0
+End result with 1 hits.

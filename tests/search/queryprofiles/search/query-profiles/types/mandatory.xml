@@ -1,0 +1,4 @@
+<query-profile-type id="mandatory" inherits="native">
+  <field name="timeout" type="string" mandatory="true"/>
+  <field name="foo" type="integer" mandatory="true"/>
+</query-profile-type>

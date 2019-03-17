@@ -1,0 +1,3 @@
+<query-profile id="referingQuerybest" inherits="default">
+  <field name="model"><ref>querybest</ref></field>
+</query-profile>

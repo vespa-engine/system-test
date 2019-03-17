@@ -1,0 +1,21 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search newsarticle {
+
+  document newsarticle {
+
+    field title type string {
+      indexing: summary | index
+    }
+
+    field pubdate type long {
+      indexing: summary | attribute
+    }
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(pubdate)
+    }
+  }
+
+}

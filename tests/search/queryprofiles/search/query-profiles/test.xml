@@ -1,0 +1,4 @@
+<query-profile id="test">
+  <field name="traceLevel">3</field>
+  <field name="nocache">true</field>
+</query-profile>

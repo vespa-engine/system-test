@@ -1,0 +1,17 @@
+[
+  {
+    "update": "id:test:test::0",
+    "fields": {
+      "elem_array[1]": {
+        "assign": {
+          "weight": 300
+        }
+      },
+      "elem_map{@bar}": {
+        "assign": {
+          "weight": 300    
+        }
+      }
+    }
+  }
+]

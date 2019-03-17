@@ -1,0 +1,75 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    struct elem {
+      field name type string {}
+      field weight type int {}
+    }
+    field elem_array type array<elem> {
+      indexing: summary
+      struct-field name {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field weight {
+        indexing: attribute
+      }
+    }
+    field elem_map type map<string, elem> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.name {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.weight {
+        indexing: attribute
+      }
+    }
+    field str_int_map type map<string, int> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value {
+        indexing: attribute
+      }
+    }
+  }
+  rank-profile default {
+    summary-features {
+      attribute(elem_array.name).count
+      attribute(elem_array.name,0)
+      attribute(elem_array.name,1)
+      attribute(elem_array.name,2)
+      attribute(elem_array.weight).count
+      attribute(elem_array.weight,0)
+      attribute(elem_array.weight,1)
+      attribute(elem_array.weight,2)
+      attribute(elem_map.key).count
+      attribute(elem_map.key,0)
+      attribute(elem_map.key,1)
+      attribute(elem_map.key,2)
+      attribute(elem_map.value.name).count
+      attribute(elem_map.value.name,0)
+      attribute(elem_map.value.name,1)
+      attribute(elem_map.value.name,2)
+      attribute(elem_map.value.weight).count
+      attribute(elem_map.value.weight,0)
+      attribute(elem_map.value.weight,1)
+      attribute(elem_map.value.weight,2)
+      attribute(str_int_map.key).count
+      attribute(str_int_map.key,0)
+      attribute(str_int_map.key,1)
+      attribute(str_int_map.key,2)
+      attribute(str_int_map.value).count
+      attribute(str_int_map.value,0)
+      attribute(str_int_map.value,1)
+      attribute(str_int_map.value,2)
+    }
+  }
+}

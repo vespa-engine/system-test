@@ -1,0 +1,24 @@
+search music {
+  document music {
+    field language type string {
+      indexing: set_language
+    }
+    field title type string {
+      indexing: summary | index
+      rank-type: identity
+    }
+    field description type string {
+      indexing: summary | index
+      rank-type: about
+    }
+    field date type long {
+      indexing: summary | index | attribute
+    }
+    field surl type string {
+      indexing: summary
+    }
+  }
+  fieldset default {
+    fields: title
+  }
+}

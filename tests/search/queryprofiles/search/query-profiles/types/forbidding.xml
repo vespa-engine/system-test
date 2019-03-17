@@ -1,0 +1,6 @@
+<query-profile-type id="forbidding">
+    <strict/>
+    <field name="query" type="string"/>
+    <field name="model" type="query-profile:model"/>
+    <field name="hits" type="integer"/>
+</query-profile-type>

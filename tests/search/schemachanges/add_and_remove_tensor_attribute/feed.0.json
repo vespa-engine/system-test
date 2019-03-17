@@ -1,0 +1,12 @@
+[
+  { "put": "id:test:test::0",
+    "fields": {
+      "t1": {
+        "cells": [
+          { "address": { "x": "0" }, "value": 2.0 },
+          { "address": { "x": "1" }, "value": 3.0 }
+        ]
+      }
+    }
+  }
+]

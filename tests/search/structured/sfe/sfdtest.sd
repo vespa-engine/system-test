@@ -1,0 +1,16 @@
+search sfdtest {
+  
+  document sfdtest {
+    field title type string {
+      indexing: index | summary
+    }
+    field quality type double {
+      indexing: attribute
+    }
+  }
+
+  rank-profile default {
+    summary-features: fieldMatch(title) attribute(quality)
+  }
+
+}

@@ -1,0 +1,4 @@
+[
+  { "put": "id:test:test::0", "fields": { "f1": "foo" } },
+  { "put": "id:test:test::1", "fields": { "f1": "bar" } }
+]

@@ -1,0 +1,32 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field title type string {
+      indexing: summary | index
+    }
+    field single_slow type string {
+      indexing: attribute
+    }
+    field array_slow type array<string> {
+      indexing: attribute
+    }
+    field wset_slow type weightedset<string> {
+      indexing: attribute
+    }
+    field single_fast type string {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field array_fast type array<string> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field wset_fast type weightedset<string> {
+      indexing: attribute
+      attribute: fast-search
+    }
+  }
+  field single_index type string {
+    indexing: input single_fast | index
+  }
+}

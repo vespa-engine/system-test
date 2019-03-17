@@ -1,0 +1,4 @@
+@include(common.sr)
+[stopwords] :- etaoin, shrdlu;
+[stopwords] -> ;
+

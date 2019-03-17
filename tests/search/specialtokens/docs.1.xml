@@ -1,0 +1,6 @@
+<vespafeed>
+  <document documenttype="specialtokens" documentid="id:test:specialtokens::specialtokens1">
+    <id><![CDATA[specialtokens1]]></id>
+    <content><![CDATA[c++ foo & ]]></content>
+  </document>
+</vespafeed>

@@ -1,0 +1,9 @@
+<query-profile id="default">
+    <field name="hits">5</field>
+    <field name="model.defaultIndex">%{subst}%{subst.end}</field>
+    <field name="ranking.profile">production1</field>
+    <field name="ranking.features.query(scorelimit)">-20</field>
+    <field name="ranking.properties.dotProduct.X">(a:1,b:2)</field>
+    <field name="subst">tit</field>
+    <field name="subst.end">le</field>
+</query-profile>

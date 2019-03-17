@@ -1,0 +1,51 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search strong {
+  document strong {
+
+    field name type string {
+      indexing: summary | index
+      alias: title
+    }
+
+    # sortable integer, always in summary
+    field year type int {
+      indexing: attribute | summary
+    }
+
+    # sortable float, only in attribute-prefetch summary
+    field weight type float {
+      indexing: attribute
+    }
+
+    # string for display
+    field lastname type string {
+      indexing: summary
+    }
+
+    # for sorting and display
+    field category type string {
+      indexing: summary | attribute
+    }
+
+    # ranking (simple and unique for easy testing)
+    field myrank type float {
+      indexing: attribute
+    }	
+  }
+  fieldset default {
+    fields: name
+  }
+
+  # string for sorting
+  field lastname_lc type string {
+    indexing: input lastname | lowercase | attribute
+    indexing-rewrite: none
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(myrank)
+    }
+  }
+
+}

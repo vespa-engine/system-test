@@ -1,0 +1,80 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search rankexpression {
+    document rankexpression {
+        field title type string {
+            indexing: summary | index
+        }
+        field myrank type int {
+            indexing: summary | attribute
+        }
+    }
+
+    rank-profile default {
+        first-phase {
+            expression {
+             if (attribute(myrank) > 90,
+             # comment
+             attribute(myrank) * attribute(myrank),
+             attribute(myrank))
+            }
+        }
+    }
+
+    rank-profile params1 {
+        first-phase {
+            expression: query(var1) * attribute(myrank) * aconstant
+        }
+        constants {
+            aconstant: 1
+        }
+    }
+
+    rank-profile params2 inherits params1 {
+        rank-properties {
+            query(var1): 0.5
+        }
+        constants {
+            aconstant: 2
+        }
+    }
+
+    rank-profile file1 {
+        first-phase {
+            expression: file:ranking1.expression
+        }
+    }
+
+    rank-profile in1 {
+        first-phase {
+            expression: if (attribute(myrank) in [6, 9], attribute(myrank), 0)
+        }
+    }
+
+    #rank-profile unary_minus1 {
+    #    first-phase {
+    #        expression: -attribute(myrank)
+    #    }
+    #}
+
+    rank-profile unary_minus2 {
+        first-phase {
+            expression: -1 * attribute(myrank)
+        }
+    }
+
+    #rank-profile unary_minus3 {
+    #    first-phase {
+    #        expression: 0 + -attribute(myrank)
+    #    }
+    #}
+
+    rank-profile unary_minus4 {
+        first-phase {
+            expression: 0 + minusone * attribute(myrank)
+        }
+        constants {
+            minusone: -1.0
+        }
+    }
+
+}

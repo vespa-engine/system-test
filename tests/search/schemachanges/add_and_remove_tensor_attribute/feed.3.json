@@ -1,0 +1,12 @@
+[
+  { "update": "id:test:test::0",
+    "fields": {
+      "t1": {
+        "modify": {
+          "operation": "replace",    
+          "cells": [ { "address": { "x": "0" }, "value": 6.0 } ]
+        }
+      }
+    }
+  }
+]

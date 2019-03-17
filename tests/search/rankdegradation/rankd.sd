@@ -1,0 +1,29 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search rankd {
+  document rankd {
+    field f1 type int {
+      indexing: attribute | summary
+    }
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(f1)
+    }
+  }
+
+  rank-profile drop-limit inherits default {
+    first-phase {
+      rank-score-drop-limit: 20.0
+    }
+  }
+ 
+  rank-profile nan inherits default {
+    first-phase {
+      expression: sqrt(-1)
+    }
+    summary-features {
+      firstPhase
+    }
+  }
+}

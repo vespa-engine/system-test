@@ -1,0 +1,8 @@
+Begin result with 1 hits.
+    ErrorMessage: Source 'search': 3: Illegal query: No query
+    Verifying empty result: false
+    Verifying non-empty query context: true
+    Begin hit group: 1.0
+        ErrorHit: Source 'search': 3: Illegal query: No query
+    End hit group: 1.0
+End result with 1 hits.

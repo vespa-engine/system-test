@@ -1,0 +1,16 @@
+[
+  {
+    "update": "id:test:test::0",
+    "fields": {
+      "elem_array[0]": {
+        "remove": 0
+      },
+      "elem_map{@foo}": {
+        "remove": 0
+      },
+      "str_int_map{@foo}": {
+        "remove": 0
+      }
+    }
+  }
+]

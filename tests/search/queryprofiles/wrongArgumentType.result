@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="0">
+  <error code="8">Result has errors</error>
+  <errordetails>
+    <error error="Invalid query parameter" code="4">
+      No search chain named 'null' was found
+    </error>
+    <error error="Invalid query parameter" code="4">
+      Could not set 'foo' to 'nonumber': 'nonumber' is not a integer
+    </error>
+  </errordetails>
+</result>

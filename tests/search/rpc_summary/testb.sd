@@ -1,0 +1,21 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search testb {
+  document testb {
+    field id type long {
+      indexing: summary | attribute
+    }
+    field f1 type string {
+      indexing: summary
+    }
+  }
+  rank-profile rank1 {
+    first-phase {
+      expression: attribute(id)
+    }
+    summary-features: attribute(id)
+  }
+  document-summary s1 {
+    summary id type long { source: id }
+    summary f1 type string { source: f1 }
+  }
+}

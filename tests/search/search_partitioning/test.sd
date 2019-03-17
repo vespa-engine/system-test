@@ -1,0 +1,20 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field title type string {
+      indexing: summary | index
+    }
+    field body type string {
+      indexing: summary | index
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: fieldMatch(title)
+    }
+    second-phase {
+      expression: fieldMatch(body)
+      rerank-count: 200
+    }
+  }
+}

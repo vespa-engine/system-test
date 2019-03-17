@@ -1,0 +1,25 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search two {
+  document two {
+    field title type string {
+      indexing: summary | attribute | index
+    }
+    field surl type string {
+      indexing: summary | attribute
+    }
+    field date type long {
+      indexing: summary | index | attribute
+    }
+    field weight type int {
+      indexing: summary | attribute
+    }
+  }
+  fieldset default {
+    fields: title
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(weight)
+    }
+  }
+}

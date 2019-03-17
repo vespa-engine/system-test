@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="666" source="sc1.num0">
+    <field name="relevancy">666</field>
+    <field name="sddocname">books</field>
+    <field name="title">Car Wars: The Untold Story of the World's Premier Automakers &amp; the Greatest Marketing War Ever Waged</field>
+    <field name="dispauthor">Robert Sobel</field>
+    <field name="author">Robert Sobel</field>
+    <field name="isbn">none</field>
+    <field name="url">http://shopping.yahoo.com/p_car-wars-the-untold-story-of-the-world-s-premier-automakers-the-greatest-marketing-war-ever-waged_book_1955172826</field>
+    <field name="categories">2065001356,2065001599,2065001601</field>
+    <field name="mid">3</field>
+    <field name="weight">50.0</field>
+  </hit>
+  <hit relevancy="666" source="sc1.num0">
+    <field name="relevancy">666</field>
+    <field name="sddocname">books</field>
+    <field name="title">In Care of Yellow River: The Complete Civil War Letters of Pvt. Elii Pinson Landers to His Mother</field>
+    <field name="dispauthor">Eli Pinson Landers</field>
+    <field name="author">Eli Pinson Landers,Elizabeth Whitley Roberson,Elizabeth Roberson</field>
+    <field name="isbn">none</field>
+    <field name="url">http://shopping.yahoo.com/p_in-care-of-yellow-river-the-complete-civil-war-letters-of-pvt-elii-pinson-landers-to-his-mother_book_1955048274</field>
+    <field name="categories">2065002148,2065002149,2065002224,2065002229,2065002459,2065002460,2065002471</field>
+    <field name="mid">3</field>
+    <field name="weight">50.0</field>
+  </hit>
+</result>
