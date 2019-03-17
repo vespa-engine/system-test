@@ -5,7 +5,7 @@ require 'indexed_search_test'
 class RunFbench < IndexedSearchTest
 
   def setup
-    set_owner("tegge")
+    set_owner("toregge")
     set_description("Test vespa-fbench")
     @valgrind=false
 
@@ -78,7 +78,7 @@ end
 class Fbench2 < IndexedSearchTest
 
   def setup
-    set_owner("tegge")
+    set_owner("toregge")
     set_description("Test vespa-fbench with multiple qrservers")
     @valgrind=false
 

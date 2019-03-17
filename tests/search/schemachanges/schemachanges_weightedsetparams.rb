@@ -7,7 +7,7 @@ class SchemaChangesWeightedSetParams < IndexedSearchTest
   include SchemaChangesBase
 
   def setup
-    set_owner("tegge")
+    set_owner("toregge")
   end
 
   def test_change_weighted_set_params
