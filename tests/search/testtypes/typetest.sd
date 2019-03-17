@@ -1,0 +1,58 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search typetest {
+  document typetest {
+
+    field stringfield type string {
+      indexing: summary | attribute | index
+    }
+
+    field urlfield type string {
+      indexing: summary | attribute | index
+    }
+
+    field ematchfield type string {
+      indexing: index
+      match {
+        exact
+        exact-terminator: "@@"
+      }
+    }
+
+    field intfield type int {
+      indexing: summary | attribute
+    }
+
+    field longfield type long {
+      indexing: summary | attribute
+    }
+
+    field floatfield type float {
+      indexing: summary | attribute
+    }
+
+    field doublefield type double {
+      indexing: summary | attribute
+    }
+
+    field rawfield type raw {
+      indexing: summary
+    }
+
+    field timefield type long {
+      indexing: summary  | attribute
+    }
+
+    field boolfield type bool {
+        indexing: summary | attribute
+    }
+
+    field bytefield type byte {
+        indexing: summary | attribute
+    }
+  }
+  fieldset default {
+    fields: stringfield
+  }
+
+}
+

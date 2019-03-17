@@ -1,0 +1,40 @@
+[
+  { "update": "id:test:test::0",
+    "fields": {
+      "my_tensor": {
+        "assign": {  
+          "cells": [
+            { "address": { "x": "a", "y": "b" }, "value": 4.0 },
+            { "address": { "x": "c", "y": "d" }, "value": 5.0 }
+          ]
+        }
+      }
+    }
+  },
+  { "update": "id:test:test::1",
+    "fields": {
+      "my_tensor": {
+        "assign": {
+          "cells": [
+            { "address": { "x": "a", "y": "b" }, "value": 4.5 },
+            { "address": { "x": "c", "y": "d" }, "value": 5.5 }
+          ]
+        }
+      }
+    }
+  },
+  { "update": "id:test:test::2",
+    "fields": {
+      "my_tensor": {
+        "assign": { }
+      }
+    }
+  },
+  { "update": "id:test:test::3",
+    "fields": {
+      "my_tensor": {
+        "assign": null
+      }
+    }
+  }
+]

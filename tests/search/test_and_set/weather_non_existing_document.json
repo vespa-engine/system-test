@@ -1,0 +1,15 @@
+[
+    {
+	"put": "id:weather:weather::42",
+	"fields": {
+	    "timestamp": 1000,
+	    "forecast": "snowing",
+	    "snowstats": {
+                "height": 80,
+                "fluffyness": 3
+            },
+	    "revision": 2
+	},
+	"condition": "weather.revision == 1"
+    }
+]

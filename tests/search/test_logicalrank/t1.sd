@@ -1,0 +1,29 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search t1 {
+
+  document t1 {
+
+    field title type string {
+      indexing: summary | attribute | index
+    }
+
+    field weight type int {
+      indexing: summary | attribute 
+    }
+
+    field year type int {
+      indexing: summary | attribute | index 
+    }
+
+  }
+  fieldset default {
+    fields: title
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(weight)
+    }
+  }
+
+}

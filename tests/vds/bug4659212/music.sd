@@ -1,0 +1,112 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search music {
+
+  fieldset default {
+    fields: title, artist
+  }
+
+document music {
+
+field title type string {
+indexing: summary | index
+}
+
+field url type uri {
+indexing: summary 
+}
+
+field artist type string {
+indexing: summary | index
+}
+
+field band type string {
+indexing: summary
+}
+
+field year type int {
+indexing: summary 
+}
+
+field batchid type int {
+indexing: summary | index 
+}
+
+field vote type long {
+indexing: summary 
+}
+
+field popularity type float {
+indexing: summary 
+}
+
+field revenue type double {
+indexing: summary 
+}
+
+field time type long {
+indexing: summary 
+}
+
+field bits type byte {
+indexing: summary
+}
+
+field album0 type weightedset<string> {
+indexing: summary 
+weightedset {
+ create-if-nonexistent
+ remove-if-zero
+}
+}
+
+field album1 type weightedset<string> {
+indexing: summary 
+}
+
+field album2 type weightedset<string> {
+indexing: summary 
+}
+
+field album3 type weightedset<float> {
+indexing: summary 
+}
+
+field album4 type weightedset<uri> {
+indexing: summary 
+}
+
+field group1 type array<string> {
+indexing: summary 
+}
+
+field group2 type array<int> {
+indexing: summary 
+}
+
+field group3 type array<long> {
+indexing: summary 
+}
+
+field group4 type array<float> {
+indexing: summary 
+}
+
+field group5 type array<double> {
+indexing: summary 
+}
+
+field group6 type array<long> {
+indexing: summary 
+}
+
+field group7 type array<uri> {
+indexing: summary 
+}
+
+field group8 type array<byte> {
+indexing: summary 
+}
+
+}
+
+}

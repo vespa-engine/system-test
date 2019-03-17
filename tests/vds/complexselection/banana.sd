@@ -1,0 +1,62 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search banana {
+  document banana {
+    field title type string { }
+
+    field colour type string {
+      indexing: index | summary
+    }
+    field siblings type int {
+      indexing: index | summary
+    }
+    field seeds type long {
+      indexing: index | summary
+    }
+    field prosperity type byte {
+      indexing: index | summary
+    }
+    field curving type float {
+      indexing: attribute | summary
+    }
+    field resistance type double {
+      indexing: attribute | summary
+    }
+    field age type long {
+      indexing: index | summary
+    }
+    field uri type uri {
+      indexing: index | summary
+    }
+    field tb type tag {
+      indexing: index | summary
+    }
+    field similarfruits type array<string> {
+      indexing: index | summary
+    }
+    field populardishes type weightedset<string> {
+      indexing: index | summary
+    }
+    field rawfield type raw {
+      indexing: summary
+    }
+    field contentfield type string {
+    }
+
+    struct mystruct {
+      field bytearr type array<byte>{}
+      field mymap type map<string, string>{}
+      field title type string {}
+      field director type string {}
+      field structfield type string {}
+    }
+
+    field stringmap type map<string, string> { }
+    field structfield type mystruct { }
+    field structmap type map<int, mystruct> { }
+    field structarr type array<mystruct> { }
+    field arrmap type map<string, array<string>> { }
+    field arrarr type array<array<array<string>>> { }
+    field maparr type array<map<string, string>> { }
+    field structmaparr type array<map<string,mystruct>> { }
+  }
+}

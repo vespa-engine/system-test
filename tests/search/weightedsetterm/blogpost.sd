@@ -1,0 +1,101 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search blogpost {
+  document blogpost {
+    field title type string {
+      indexing: index | summary
+    }
+    field author type int {
+      indexing: attribute | summary
+    }
+    field likes type array<int> {
+      indexing: attribute | summary
+    }
+    field timestamp type long {
+      indexing: attribute | summary
+    }
+  }
+
+  field author_string_attr type string {
+    indexing: input author | to_string | attribute
+  }
+
+  field likes_string_attr type array<string> {
+    indexing: input likes | for_each { to_string } | attribute
+  }
+
+  field author_indexed type string {
+    indexing: input author | to_string | index
+  }
+
+  field likes_indexed type string {
+    indexing: input likes | to_string | index
+  }
+
+
+  rank-profile count_author {
+    first-phase {
+      expression: termFieldMd(author).occurrences
+    }
+  }
+  rank-profile weight_author {
+    first-phase {
+      expression: termFieldMd(author).firstweight
+    }
+  }
+
+  rank-profile count_author_string_attr {
+    first-phase {
+      expression: termFieldMd(author_string_attr).occurrences
+    }
+  }
+  rank-profile weight_author_string_attr {
+    first-phase {
+      expression: termFieldMd(author_string_attr).firstweight
+    }
+  }
+
+  rank-profile count_author_indexed {
+    first-phase {
+      expression: termFieldMd(author_indexed).occurrences
+    }
+  }
+  rank-profile weight_author_indexed {
+    first-phase {
+      expression: termFieldMd(author_indexed).firstweight
+    }
+  }
+
+
+  rank-profile count_likes {
+    first-phase {
+      expression: termFieldMd(likes).occurrences
+    }
+  }
+  rank-profile weight_likes {
+    first-phase {
+      expression: termFieldMd(likes).firstweight
+    }
+  }
+
+  rank-profile count_likes_string_attr {
+    first-phase {
+      expression: termFieldMd(likes_string_attr).occurrences
+    }
+  }
+  rank-profile weight_likes_string_attr {
+    first-phase {
+      expression: termFieldMd(likes_string_attr).firstweight
+    }
+  }
+
+  rank-profile count_likes_indexed {
+    first-phase {
+      expression: termFieldMd(likes_indexed).occurrences
+    }
+  }
+  rank-profile weight_likes_indexed {
+    first-phase {
+      expression: termFieldMd(likes_indexed).firstweight
+    }
+  }
+}

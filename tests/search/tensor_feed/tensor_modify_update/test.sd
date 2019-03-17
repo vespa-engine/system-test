@@ -1,0 +1,28 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field dense_attr type tensor(x[3]) {
+      indexing: attribute | summary
+    }
+    field dense_field type tensor(x[3]) {
+      indexing: summary
+    }
+    field sparse_attr type tensor(x{}) {
+      indexing: attribute | summary
+    }
+    field sparse_field type tensor(x{}) {
+      indexing: summary
+    }
+    field mixed_attr type tensor(x{},y[2]) {
+      indexing: attribute | summary
+    }
+    field mixed_field type tensor(x{},y[2]) {
+      indexing: summary
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: sum(attribute(dense_attr)) + sum(attribute(sparse_attr)) + sum(attribute(mixed_attr))
+    }
+  }
+}

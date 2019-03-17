@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="10000">
+  <hit relevancy="1000" source="sc1.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">books</field>
+    <field name="title">Painted Worlds</field>
+    <field name="dispauthor">Jim Warren</field>
+    <field name="author">Jim Warren</field>
+    <field name="isbn">1843400472,1855858940</field>
+    <field name="uri">http://shopping.yahoo.com/p_painted-worlds_book_1955056588</field>
+    <field name="url">http://shopping.yahoo.com/p_painted-worlds_book_1955056588</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/1522417/muze2t1843400472.jpg?bk_____D652BdJJy" width=50 height=75 border=0</field>
+    <field name="did">56</field>
+    <field name="categories">2065001393,2065001447,2065001457,2065010619,2065045170,2065045179,2065045430</field>
+    <field name="mid">1</field>
+    <field name="pfrom">1338</field>
+    <field name="pto">2995</field>
+    <field name="fmt">Paperback Hardcover</field>
+    <field name="data">Paperback13.38-21.951843400472Hardcover29.951855858940</field>
+    <field name="weight">81.0</field>
+    <field name="year">0</field>
+    <field name="newestedition">20030801</field>
+    <field name="formats">P,H</field>
+    <field name="sales">0</field>
+    <field name="bgndata">PaperbackHardcover</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="bgnsellers">0</field>
+    <field name="pid">1955056588</field>
+    <field name="userrate">0</field>
+    <field name="numreview">0</field>
+    <field name="cbid">1</field>
+  </hit>
+  <hit relevancy="1000" source="sc1.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">books</field>
+    <field name="title">Death on the Nile</field>
+    <field name="dispauthor">Agatha Christie</field>
+    <field name="author">David Suchet,David Timson,Agatha Christie,Copyright Paperback Collection (Library of Congress)</field>
+    <field name="isbn">0061003697,0553167871,0425173739,0425174417,0396085733,0854566716,0745158390,0553478117,1572702036,1559279052,0606122486,0606211438</field>
+    <field name="uri">http://shopping.yahoo.com/p_death-on-the-nile_book_1955252480</field>
+    <field name="url">http://shopping.yahoo.com/p_death-on-the-nile_book_1955252480</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/352383/muzet0061003697.jpg?bk_____DZ0MYXKmI" width=50 height=75 border=0</field>
+    <field name="did">56</field>
+    <field name="categories">2065001393,2065001412,2065001432,2065002400,2065002423,2065002433,2065002445,2065002458,2065003806,2065003816,2065005907,2065006595,2065055277</field>
+    <field name="mid">1</field>
+    <field name="pfrom">295</field>
+    <field name="pto">3530</field>
+    <field name="fmt">Paperback Hardcover Cassette Other</field>
+    <field name="data">Paperback2.95-16.050425174417Hardcover16.400854566716Cassette7.64-35.301559279052Other12.390606211438</field>
+    <field name="weight">81.0</field>
+    <field name="year">0</field>
+    <field name="newestedition">20030801</field>
+    <field name="formats">P,H,A,O</field>
+    <field name="sales">0</field>
+    <field name="bgndata">PaperbackHardcoverCassetteOther</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="bgnsellers">0</field>
+    <field name="pid">1955252480</field>
+    <field name="userrate">0</field>
+    <field name="numreview">0</field>
+    <field name="cbid">1</field>
+  </hit>
+  <hit relevancy="987" source="sc1.num0">
+    <field name="relevancy">987</field>
+    <field name="sddocname">books</field>
+    <field name="title">Hobbit and the Lord of the Rings: Trade Paperback Edition</field>
+    <field name="dispauthor">J. R. R. Tolkien</field>
+    <field name="author">Alan Lee,J. R. R. Tolkien</field>
+    <field name="isbn">0618002251</field>
+    <field name="uri">http://shopping.yahoo.com/p_hobbit-and-the-lord-of-the-rings-trade-paperback-edition_book_1955017027</field>
+    <field name="url">http://shopping.yahoo.com/p_hobbit-and-the-lord-of-the-rings-trade-paperback-edition_book_1955017027</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/380607/ingramt0618002251.gif?bk_____D326K.NVZ" width=50 height=75 border=0</field>
+    <field name="did">56</field>
+    <field name="categories">2065002378,2065002379,2065002459,2065002460,2065002461,2065002465,2065003310,2065003311,2065003314,2065003316,2065003317,2065003320,2065003321</field>
+    <field name="mid">1</field>
+    <field name="pfrom">2199</field>
+    <field name="pto">4500</field>
+    <field name="fmt">Boxset</field>
+    <field name="data">Boxset21.99-45.000618002251</field>
+    <field name="weight">80.0</field>
+    <field name="year">0</field>
+    <field name="newestedition">19990901</field>
+    <field name="formats">B</field>
+    <field name="sales">0</field>
+    <field name="bgndata">Boxset</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="bgnsellers">0</field>
+    <field name="pid">1955017027</field>
+    <field name="scorekey">.22.lord_of_the_rings.22..26..22.boxed_set.22.==q=76;j.2e.r.2e.r.2e._tolkien:_boxed_set==q=76;lord_of_the_rings==q=139;lord_of_the_rings_paperback_set==q=114;lord_of_the_rings_set==q=76;the_lord_of_the_rings_boxed_set_.28.alan_lee_illustrated_hardcover_edition.29.==q=71</field>
+    <field name="userrate">500</field>
+    <field name="numreview">1</field>
+    <field name="cbid">1</field>
+  </hit>
+  <hit relevancy="987" source="sc1.num0">
+    <field name="relevancy">987</field>
+    <field name="sddocname">books</field>
+    <field name="title">Over the Edge</field>
+    <field name="dispauthor">Suzanne Brockmann</field>
+    <field name="author">Suzanne Brockmann,Copyright Paperback Collection (Library of Congress)</field>
+    <field name="isbn">0804119708,0786238534,1979583922,1979583923,1979583924</field>
+    <field name="uri">http://shopping.yahoo.com/p_over-the-edge_book_1955028876</field>
+    <field name="url">http://shopping.yahoo.com/p_over-the-edge_book_1955028876</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/books/67b9b/catalogt_0804119708.jpg?bk_____DaIwex2CH" width=50 height=75 border=0</field>
+    <field name="did">56</field>
+    <field name="categories">2065003000,2065003002,2065003006,2065003370</field>
+    <field name="mid">1</field>
+    <field name="pfrom">435</field>
+    <field name="pto">4193</field>
+    <field name="fmt">Paperback Hardcover Ebook</field>
+    <field name="data">Paperback4.35-6.990804119708Hardcover27.57-41.930786238534Ebook1979583924</field>
+    <field name="weight">80.0</field>
+    <field name="year">0</field>
+    <field name="newestedition">20020624</field>
+    <field name="formats">P,H,E</field>
+    <field name="sales">0</field>
+    <field name="bgndata">PaperbackHardcoverEbook</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="bgnsellers">0</field>
+    <field name="pid">1955028876</field>
+    <field name="userrate">0</field>
+    <field name="numreview">0</field>
+    <field name="cbid">1</field>
+  </hit>
+  <hit relevancy="987" source="sc1.num0">
+    <field name="relevancy">987</field>
+    <field name="sddocname">books</field>
+    <field name="title">Watercolor Flower Painter's A to Z: An Illustrated Directory of Techniques for Painting 50 Popular Flowers</field>
+    <field name="dispauthor">Adelene Fletcher,Adele Fletcher</field>
+    <field name="author">Adelene Fletcher,Adele Fletcher</field>
+    <field name="isbn">1581802145</field>
+    <field name="uri">http://shopping.yahoo.com/p_watercolor-flower-painter-s-a-to-z-an-illustrated-directory-of-techniques-for-painting-50-popular-flowers_book_1955052606</field>
+    <field name="url">http://shopping.yahoo.com/p_watercolor-flower-painter-s-a-to-z-an-illustrated-directory-of-techniques-for-painting-50-popular-flowers_book_1955052606</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/908034/muze2t1581802145.jpg?bk_____Dgp9Gaezo" width=50 height=75 border=0</field>
+    <field name="did">56</field>
+    <field name="categories">2065001393,2065001447,2065001463,2065001472,2065001476,2065001479,2065001482,2065010625,2065045732</field>
+    <field name="mid">1</field>
+    <field name="pfrom">1359</field>
+    <field name="pto">2464</field>
+    <field name="fmt">Hardcover</field>
+    <field name="data">Hardcover13.59-24.641581802145</field>
+    <field name="weight">80.0</field>
+    <field name="year">0</field>
+    <field name="newestedition">20011001</field>
+    <field name="formats">H</field>
+    <field name="sales">0</field>
+    <field name="bgndata">Hardcover</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="bgnsellers">0</field>
+    <field name="pid">1955052606</field>
+    <field name="userrate">0</field>
+    <field name="numreview">0</field>
+    <field name="cbid">1</field>
+  </hit>
+  <hit relevancy="987" source="sc1.num0">
+    <field name="relevancy">987</field>
+    <field name="sddocname">books</field>
+    <field name="title">Unified Modeling Language User Guide</field>
+    <field name="dispauthor">Grady Booch</field>
+    <field name="author">James Rumbaugh,Grady Booch,Ivar Jacobson,Jim Rumbaugh</field>
+    <field name="isbn">0201571684</field>
+    <field name="uri">http://shopping.yahoo.com/p_unified-modeling-language-user-guide_book_1955004674</field>
+    <field name="url">http://shopping.yahoo.com/p_unified-modeling-language-user-guide_book_1955004674</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/305666/ingramt0201571684.jpg?bk_____DLN2H3_EK" width=50 height=75 border=0</field>
+    <field name="did">56</field>
+    <field name="categories">2065001643,2065001716,2065001718,2065001726,2065001735</field>
+    <field name="mid">1</field>
+    <field name="pfrom">3991</field>
+    <field name="pto">5499</field>
+    <field name="fmt">Hardcover</field>
+    <field name="data">Hardcover39.91-54.990201571684</field>
+    <field name="weight">80.0</field>
+    <field name="year">0</field>
+    <field name="newestedition">19990101</field>
+    <field name="formats">H</field>
+    <field name="sales">0</field>
+    <field name="bgndata">Hardcover</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="bgnsellers">0</field>
+    <field name="pid">1955004674</field>
+    <field name="scorekey">the_unified_modeling_language_user_guide==q=76;unified_modeling_language==q=76</field>
+    <field name="userrate">0</field>
+    <field name="numreview">0</field>
+    <field name="cbid">1</field>
+  </hit>
+  <hit relevancy="987" source="sc1.num0">
+    <field name="relevancy">987</field>
+    <field name="sddocname">books</field>
+    <field name="title">Medical Terminology: A Systems Approach with Cassette(s) and CD (Audio)</field>
+    <field name="dispauthor">Barbara A. Gylys</field>
+    <field name="author">Mary Ellen Wedding,Barbara A. Gylys</field>
+    <field name="isbn">0803604874</field>
+    <field name="uri">http://shopping.yahoo.com/p_medical-terminology-a-systems-approach-with-cassette-s-and-cd-audio-_book_1955028736</field>
+    <field name="url">http://shopping.yahoo.com/p_medical-terminology-a-systems-approach-with-cassette-s-and-cd-audio-_book_1955028736</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/1522041/muze2t0803604874.jpg?bk_____DDCJXKgp7" width=50 height=75 border=0</field>
+    <field name="did">56</field>
+    <field name="categories">2065001892,2065001914,2065001976</field>
+    <field name="mid">1</field>
+    <field name="pfrom">2695</field>
+    <field name="pto">4795</field>
+    <field name="fmt">Paperback</field>
+    <field name="data">Paperback26.95-47.950803604874</field>
+    <field name="weight">80.0</field>
+    <field name="year">0</field>
+    <field name="newestedition">19990201</field>
+    <field name="formats">P</field>
+    <field name="sales">0</field>
+    <field name="bgndata">Paperback</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="bgnsellers">0</field>
+    <field name="pid">1955028736</field>
+    <field name="scorekey">cd_s==q=71</field>
+    <field name="userrate">0</field>
+    <field name="numreview">0</field>
+    <field name="cbid">1</field>
+  </hit>
+  <hit relevancy="987" source="sc1.num0">
+    <field name="relevancy">987</field>
+    <field name="sddocname">books</field>
+    <field name="title">Capability Maturity Model: Guidelines for Improving the Software Process</field>
+    <field name="dispauthor">Mark C. Paulk,Marc C. Paulk,Carnegie Mellon University, Software Engineering Institute Staff</field>
+    <field name="author">Bill Curtis,Mark C. Paulk,Marc C. Paulk,Charles V. Weber,Software Engineering Institute Staff,Carnegie Mellon University, Software Engineering Institute Staff</field>
+    <field name="isbn">0201546647</field>
+    <field name="uri">http://shopping.yahoo.com/p_capability-maturity-model-guidelines-for-improving-the-software-process_book_1955004657</field>
+    <field name="url">http://shopping.yahoo.com/p_capability-maturity-model-guidelines-for-improving-the-software-process_book_1955004657</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/305501/ingramt0201546647.jpg?bk_____DcajaZ4jS" width=50 height=75 border=0</field>
+    <field name="did">56</field>
+    <field name="categories">2065001643,2065001716,2065001737</field>
+    <field name="mid">1</field>
+    <field name="pfrom">4681</field>
+    <field name="pto">6499</field>
+    <field name="fmt">Hardcover</field>
+    <field name="data">Hardcover46.81-64.990201546647</field>
+    <field name="weight">80.0</field>
+    <field name="year">0</field>
+    <field name="newestedition">19950601</field>
+    <field name="formats">H</field>
+    <field name="sales">0</field>
+    <field name="bgndata">Hardcover</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="bgnsellers">0</field>
+    <field name="pid">1955004657</field>
+    <field name="userrate">400</field>
+    <field name="numreview">0</field>
+    <field name="cbid">1</field>
+  </hit>
+  <hit relevancy="938" source="sc1.num0">
+    <field name="relevancy">938</field>
+    <field name="sddocname">books</field>
+    <field name="title">Firewalls for Dummies</field>
+    <field name="dispauthor">Brian Komar</field>
+    <field name="author">Brian Komar,Joern Wettern,Ronald Beekelaar</field>
+    <field name="isbn">0764508849,0764540483</field>
+    <field name="uri">http://shopping.yahoo.com/p_firewalls-for-dummies_book_1955024076</field>
+    <field name="url">http://shopping.yahoo.com/p_firewalls-for-dummies_book_1955024076</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/347604/muzet0764508849.jpg?bk_____Dz3MMpt9j" width=50 height=75 border=0</field>
+    <field name="did">56</field>
+    <field name="categories">2065001643,2065001692,2065001696,2065001700,2065001705,2065001740,2065003026,2065003110,2065003117</field>
+    <field name="mid">1</field>
+    <field name="pfrom">1199</field>
+    <field name="pto">2499</field>
+    <field name="fmt">Paperback</field>
+    <field name="data">Paperback11.99-24.990764540483</field>
+    <field name="weight">76.0</field>
+    <field name="year">0</field>
+    <field name="newestedition">20030601</field>
+    <field name="formats">P</field>
+    <field name="sales">0</field>
+    <field name="bgndata">Paperback</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="bgnsellers">0</field>
+    <field name="pid">1955024076</field>
+    <field name="userrate">0</field>
+    <field name="numreview">0</field>
+    <field name="cbid">1</field>
+  </hit>
+  <hit relevancy="938" source="sc1.num0">
+    <field name="relevancy">938</field>
+    <field name="sddocname">books</field>
+    <field name="title">Algorithms &amp; Complexity</field>
+    <field name="dispauthor">Herbert S. Wilf</field>
+    <field name="author">Herbert S. Wilf</field>
+    <field name="isbn">0130219738,1568811780</field>
+    <field name="uri">http://shopping.yahoo.com/p_algorithms-complexity_book_1955084541</field>
+    <field name="url">http://shopping.yahoo.com/p_algorithms-complexity_book_1955084541</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/1526255/muze2t1568811780.jpg?bk_____D0ePR9xSX" width=50 height=75 border=0</field>
+    <field name="did">56</field>
+    <field name="categories">2065003026,2065003257,2065003259,2065003262</field>
+    <field name="mid">1</field>
+    <field name="pfrom">3180</field>
+    <field name="pto">7469</field>
+    <field name="fmt">Hardcover</field>
+    <field name="data">Hardcover31.80-74.691568811780</field>
+    <field name="weight">76.0</field>
+    <field name="year">0</field>
+    <field name="newestedition">20021201</field>
+    <field name="formats">H</field>
+    <field name="sales">0</field>
+    <field name="bgndata">Hardcover</field>
+    <field name="bgnpfrom">0.0</field>
+    <field name="bgnsellers">0</field>
+    <field name="pid">1955084541</field>
+    <field name="userrate">0</field>
+    <field name="numreview">0</field>
+    <field name="cbid">1</field>
+  </hit>
+</result>

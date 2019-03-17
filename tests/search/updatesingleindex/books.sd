@@ -1,0 +1,146 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search books {
+
+  document books {
+
+    field title type string {
+      indexing: summary | index
+    }
+
+    field dispauthor type string {
+      indexing: summary | index
+    }
+
+    field author type string {
+      indexing: summary | index
+    }
+
+    field keys type string {
+      indexing: index
+    }
+
+    field isbn type string {
+      indexing: summary | index
+    }
+
+    field series type string {
+      indexing: summary | index
+    }
+
+    field url type string {
+      indexing: summary
+    }
+
+    field image type string {
+      indexing: summary
+    }
+
+    field did type int {
+      indexing: summary | attribute
+    }
+
+    field price type string {
+      indexing: summary
+    }
+
+    field categories type string {
+      indexing: summary | index
+    }
+
+    field mid type int {
+      indexing: summary | attribute
+    }
+
+    field pfrom type int {
+      indexing: summary | attribute
+    }
+
+    field pto type int {
+      indexing: summary | attribute
+    }
+
+    field fmt type string {
+      indexing: summary | index
+    }
+
+    field data type string {
+      indexing: summary
+    }
+
+    field weight type float {
+      indexing: summary | attribute
+    }
+
+    field year type int {
+      indexing: summary | attribute
+    }
+
+    field newestedition type int {
+      indexing: summary | attribute
+    }
+
+    field formats type string {
+      indexing: summary | index
+    }
+
+    field age type string {
+      indexing: summary | index
+    }
+
+    field sales type int {
+      indexing: summary | attribute
+    }
+
+    field bgndata type string {
+      indexing: summary
+    }
+
+    field bgnpfrom type float {
+      indexing: summary | attribute
+    }
+
+    field bgnpto type string {
+      indexing: summary
+    }
+
+    field bgnsellers type int {
+      indexing: summary | attribute
+    }
+
+    field more_url type string {
+      indexing: summary
+    }
+
+    field more_price type string {
+      indexing: summary
+    }
+
+    field more_format type string {
+      indexing: summary
+    }
+
+    field pid type string {
+      indexing: summary
+    }
+
+    field scorekey type string {
+      indexing: summary | index
+    }
+
+    field userrate type int {
+      indexing: summary
+    }
+
+    field numreview type int {
+      indexing: summary
+    }
+
+    field cbid type int {
+      indexing: summary | attribute
+    }
+  }
+  fieldset default {
+    fields: title, dispauthor, author, keys, isbn, series
+  }
+
+}

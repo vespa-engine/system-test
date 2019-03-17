@@ -1,0 +1,102 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+    document test {
+        field id type int {
+            indexing: attribute | summary
+        }
+        field long type long {
+            indexing: attribute | summary
+        }
+        field longarray type array<long> {
+            indexing: attribute | summary
+        }
+        field intarray type array<int> {
+            indexing: attribute | summary
+        }
+        field stringarray type array<string> {
+            indexing: attribute | summary
+        }
+        field parent_ref type reference<parent> {
+            indexing: attribute | summary
+        }
+        field fs_longarray type array<long> {
+            indexing: attribute | summary
+            attribute: fast-search
+        }
+    }
+
+    import field parent_ref.array as parent_array {}
+
+    rank-profile longarray {
+        macro longarray_expr() {
+            expression: reduce( tensorFromLabels(attribute(longarray), x) * tensorFromWeightedSet(query(weights), x), max)
+        }
+        first-phase {
+            expression: longarray_expr / 10000
+        }
+    }
+
+    rank-profile intarray {
+        macro intarray_expr() {
+            expression: reduce( tensorFromLabels(attribute(intarray), x) * tensorFromWeightedSet(query(weights), x), max)
+        }
+        first-phase {
+            expression: intarray_expr / 10000
+        }
+    }
+
+    rank-profile argument_reorder {
+        macro argument_reorder_expr() {
+            expression: reduce(tensorFromWeightedSet(query(weights), x) * tensorFromLabels(attribute(longarray),x), max)
+        }
+        first-phase {
+            expression: argument_reorder_expr / 10000
+        }
+    }
+
+    rank-profile div {
+        macro div_expr() {
+            expression: reduce( tensorFromLabels(attribute(longarray), x) * tensorFromWeightedSet(query(weights), x), max) / 10000
+        }
+        first-phase {
+            expression: div_expr
+        }
+    }
+
+    rank-profile long {
+        macro long_expr() {
+            expression: reduce( tensorFromLabels(attribute(long), x) * tensorFromWeightedSet(query(weights), x), max)
+        }
+        first-phase {
+            expression: long_expr / 10000
+        }
+    }
+
+    rank-profile stringarray {
+        macro stringarray_expr() {
+            expression: reduce( tensorFromLabels(attribute(stringarray), x) * tensorFromWeightedSet(query(weights), x), max)
+        }
+        first-phase {
+            expression: stringarray_expr / 10000
+        }
+    }
+
+    rank-profile parentarray {
+        macro parentarray_expr() {
+            expression: reduce( tensorFromLabels(attribute(parent_array), x) * tensorFromWeightedSet(query(weights), x), max)
+        }
+        first-phase {
+            expression: parentarray_expr / 10000
+        }
+    }
+
+    rank-profile fs_longarray {
+        macro fs_longarray_expr() {
+            expression: reduce( tensorFromLabels(attribute(fs_longarray), x) * tensorFromWeightedSet(query(weights), x), max)
+        }
+        first-phase {
+            expression: fs_longarray_expr / 10000
+        }
+    }
+
+}

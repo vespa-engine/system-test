@@ -1,0 +1,8 @@
+[
+  {
+    "fields": {
+       "a1": [ "w2" ]
+    },
+    "put": "id:test:writefilter::2"
+  }
+]

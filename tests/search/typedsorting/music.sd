@@ -1,0 +1,38 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search music {
+  
+  document music {
+
+    field title type string {
+      indexing {
+          summary | attribute;
+      }
+    }
+
+    field mid type int {
+      indexing: summary | attribute | index
+    }
+
+    field categories type string {
+      indexing: index
+    }
+
+    field likeint type string {
+      indexing: attribute
+    }
+  }
+  fieldset default {
+    fields: title
+  }
+
+  field isint type int {
+    indexing: input likeint | to_int | attribute
+  }
+  field title_lowercase type string {
+    indexing: input title | lowercase | attribute
+    indexing-rewrite: none
+  }
+
+}
+

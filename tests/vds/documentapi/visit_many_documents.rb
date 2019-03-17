@@ -1,0 +1,56 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'vds_test'
+
+class VisitManyDocumentsTest < VdsTest
+
+  def setup
+    set_owner("geirst")
+    deploy_app(default_app.distribution_bits(8))
+    start
+    @num_users = 500
+    @docs_per_user = 100
+    @wanted_doc_count = 27
+  end
+
+  def feed_documents
+    @num_users.times do |i|
+      @docs_per_user.times do |j|
+        doc = Document.new("music", "id:storage_test:music:n=#{i}:#{j}").add_field("title", "title#{i}")
+        vespa.document_api_v1.put(doc, :brief => (j != 0))
+      end
+    end
+  end
+
+  def test_visit_many_documents
+    set_description("Test visiting of many documents using continuation token")
+    feed_documents
+
+    doc_ids = Set.new
+    params = {:selection => "music", :cluster => "storage", :wantedDocumentCount => @wanted_doc_count}
+    continuation = nil
+    visit_count = 0
+    loop do
+      result = vespa.document_api_v1.visit(continuation ? params.merge(:continuation => continuation) : params)
+      visit_count += 1
+      doc_ids.merge(get_document_ids(result))
+      continuation = result["continuation"]
+      break if continuation == nil
+    end
+    puts "visit_count=#{visit_count}"
+    docs_total = @num_users * @docs_per_user
+    assert_equal(docs_total, doc_ids.size)
+  end
+
+  def get_document_ids(visit_result)
+    result = []
+    visit_result["documents"].each do |document|
+      result.push(document["id"])
+    end
+    result
+  end
+
+  def teardown
+    stop
+  end
+end
+

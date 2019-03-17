@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <meta type="context">
+    <p>No query profile is used</p>
+    <p>
+      <p>Child execution</p>
+      <p>
+        <p>sc0.num0 search to dispatch: query=[DOTPRODUCT name{[10]:"electric",[20]:"modern"}] timeout=5000ms offset=0 hits=10 rankprofile[weightedSet] grouping=0 :  rankproperties=[] collapse=false restrict=[music]</p>
+        <p>Current state of query tree: DOTPRODUCT[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false index="name" isRanked=true significance=0.0 uniqueID=1 usePositionData=true weight=100]{
+  WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="name" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=10 words=true]{
+    "electric"
+  }
+  WORD[connectedItem=null connectivity=0.0 creator=ORIG explicitSignificance=false fromSegmented=false index="name" isRanked=true origin=null segmentIndex=0 significance=0.0 stemmed=false usePositionData=true weight=20 words=true]{
+    "modern"
+  }
+}
+</p>
+        <p>sc0.num0 dispatch response: Result (2 of total 2 hits)</p>
+      </p>
+      <p>Child execution</p>
+    </p>
+  </meta>
+  <hit relevancy="60.0" source="basicsearch">
+    <field name="relevancy">60.0</field>
+    <field name="sddocname">music</field>
+    <field name="name">
+      <item weight="2">Modern</item>
+      <item weight="78">Blues</item>
+      <item weight="2">Electric</item>
+    </field>
+    <field name="score">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905710</field>
+  </hit>
+  <hit relevancy="20.0" source="basicsearch">
+    <field name="relevancy">20.0</field>
+    <field name="sddocname">music</field>
+    <field name="name">
+      <item weight="2">Electric</item>
+      <item weight="78">Blues</item>
+    </field>
+    <field name="score">3</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905711</field>
+  </hit>
+</result>

@@ -1,0 +1,60 @@
+[
+  { "update": "id:test:test::0",
+    "fields": {
+      "dense_attr": {
+        "modify": {
+          "operation": "replace",
+          "cells": [
+            { "address": { "x": "1" }, "value": 7.0 },
+            { "address": { "x": "2" }, "value": 8.0 }
+          ]
+        }
+      },
+      "dense_field": {
+        "modify": {
+          "operation": "replace",
+          "cells": [
+            { "address": { "x": "1" }, "value": 7.0 },
+            { "address": { "x": "2" }, "value": 8.0 }
+          ]
+        }
+      },
+      "sparse_attr": {
+        "modify": {
+          "operation": "replace",
+          "cells": [
+            { "address": { "x": "b" }, "value": 7.0 },
+            { "address": { "x": "c" }, "value": 8.0 }
+          ]
+        }
+      },
+      "sparse_field": {
+        "modify": {
+          "operation": "replace",
+          "cells": [
+            { "address": { "x": "b" }, "value": 7.0 },
+            { "address": { "x": "c" }, "value": 8.0 }
+          ]
+        }
+      },
+      "mixed_attr": {
+        "modify": {
+          "operation": "replace",
+          "cells": [
+            { "address": { "x": "b", "y":"0" }, "value": 7.0 },
+            { "address": { "x": "b", "y":"1" }, "value": 8.0 }
+          ]
+        }
+      },
+      "mixed_field": {
+        "modify": {
+          "operation": "replace",
+          "cells": [
+            { "address": { "x": "b", "y":"0" }, "value": 7.0 },
+            { "address": { "x": "b", "y":"1" }, "value": 8.0 }
+          ]
+        }
+      }
+    }
+  }
+]

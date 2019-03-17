@@ -1,0 +1,26 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search str_type {
+    document str_type {
+        field lang type string {
+            indexing: set_language
+        }
+        field test type string {
+        
+        }
+    }
+    field original type string {
+        indexing: input test | summary
+    }
+    field normalized type string {
+        indexing: input test | normalize | summary
+    }
+    field tokenized_norm type string {
+        indexing: input test | tokenize normalize | flatten | summary
+    }
+    field tokenized_stem type string {
+        indexing: input test | tokenize stem | flatten | summary
+    }
+    field tokenized_norm_stem type string {
+        indexing: input test | tokenize normalize stem | flatten | summary
+    }
+}

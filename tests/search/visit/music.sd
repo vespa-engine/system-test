@@ -1,0 +1,18 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search music {
+  document music {
+    field twit_lkcnt type long {
+        indexing: attribute | summary
+    }
+    field twit_ikcnt type int {
+        indexing: attribute | summary
+    }
+    field twit_dkcnt type double {
+        indexing: attribute | summary
+    }
+    field twit_skcnt type string {
+        indexing: attribute | summary
+    }
+  }
+}
+

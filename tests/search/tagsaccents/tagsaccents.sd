@@ -1,0 +1,57 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search tagsaccents {
+  document tagsaccents {
+    field title type string {
+      indexing: summary | index
+    }
+
+    field sfield1 type string {
+      indexing: attribute | summary
+    }
+    field sfield2 type string {
+      indexing: attribute | summary
+    }
+    field sfield3 type string {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field sfield4 type string {
+      indexing: attribute
+    }
+    field sfield5 type string {
+      indexing: attribute
+    }
+
+    field wfield1 type tag {
+      indexing: attribute | summary
+    }
+    field wfield2 type tag {
+      indexing: attribute
+    }
+    field wfield3 type tag {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field wfield4 type tag {
+      indexing: attribute
+    }
+    field wfield5 type tag {
+      indexing: attribute
+    }
+
+    field wpref type string {
+      indexing: attribute
+      index: prefix
+      match {
+        exact
+        exact-terminator: "@"
+      }
+    }
+
+  }
+  fieldset default {
+    fields: title
+  }
+
+}
+

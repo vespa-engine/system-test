@@ -1,0 +1,39 @@
+[
+    {
+        "put": "id:test:test::0",
+        "fields": {
+            "id": 0,
+            "long": 1111,
+            "longarray": [78, 1111],
+            "fs_longarray": [78, 1111],
+            "intarray": [78, 1111],
+            "stringarray": ["78", "1111"],
+            "parent_ref": "id:test:parent::0"
+        }
+    },
+
+    {
+        "put": "id:test:test::1",
+        "fields": {
+            "id": 1,
+            "long": 2222,
+            "longarray": [1111, 2222],
+            "fs_longarray": [1111, 2222],
+            "intarray": [1111, 2222],
+            "stringarray": ["1111", "2222"],
+            "parent_ref": "id:test:parent::1"
+        }
+    },
+    {
+        "put": "id:test:test::2",
+        "fields": {
+            "id": 2,
+            "long": 5555,
+            "longarray": [5555],
+            "fs_longarray": [5555],
+            "intarray": [5555],
+            "stringarray": ["5555"],
+            "parent_ref": "id:test:parent::2"
+        }
+    }
+]

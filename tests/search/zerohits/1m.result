@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">music</field>
+    <field name="title">Master Of Puppets</field>
+    <field name="artist">Metallica</field>
+    <field name="price">189</field>
+    <field name="surl">http://www.cdplanet.no/showarticle.asp?artid=476777</field>
+    <field name="year">1989</field>
+  </hit>
+</result>

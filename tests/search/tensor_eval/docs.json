@@ -1,0 +1,26 @@
+[
+  { "put": "id:test:test::0", "fields": { "id": 0, "tag": { "barbie": 1 },
+      "my_tensor" : {
+        "cells": [
+          { "address" : { "tag" : "barbie" }, "value": 2.0 }
+        ]
+      }
+    }
+  },
+  { "put": "id:test:test::1", "fields": { "id": 1, "tag": { "heman": 1 },
+      "my_tensor" : {
+        "cells": [
+          { "address" : { "tag" : "heman" }, "value": 2.0 }
+        ]
+      }
+    }
+   },
+  { "put": "id:test:test::2", "fields": { "id": 2, "tag": { "tv": 1 },
+      "my_tensor" : {
+        "cells": [
+          { "address" : { "tag" : "tv" }, "value": 2.0 }
+        ]
+      }
+    }
+  }
+]

@@ -1,0 +1,10 @@
+[
+    {
+	"update": "id:weather:weather::0",
+	"fields": {
+	    "forecast": { "assign": "raining blood" },
+	    "revision": { "assign": 2 }
+	},
+	"condition": "weather.revision == 1"
+    }
+]
