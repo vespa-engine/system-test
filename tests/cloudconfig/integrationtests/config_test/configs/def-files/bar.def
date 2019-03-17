@@ -1,0 +1,4 @@
+version=1
+namespace=foo
+
+barValue string default="defaultBar"

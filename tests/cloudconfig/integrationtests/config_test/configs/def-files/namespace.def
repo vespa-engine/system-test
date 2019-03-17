@@ -1,0 +1,5 @@
+version=1
+
+namespace=myproject.config
+
+a int default=2

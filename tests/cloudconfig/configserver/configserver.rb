@@ -1,0 +1,280 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'cloudconfig_test'
+require 'search_test'
+require 'app_generator/cloudconfig_app'
+require 'environment'
+
+class ConfigServer < CloudConfigTest
+
+  def initialize(*args)
+    super(*args)
+  end
+
+  def nightly?
+    true
+  end
+
+  def timeout_seconds
+    1000
+  end
+
+  def setup
+    set_description("Tests configserver functionality.")
+    set_owner("musum")
+    @configserver = nil
+  end
+
+  def test_deploy_no_activate_restart
+    deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+
+    # sanity check for field from sd
+    assert_match("age", get_document_config())
+
+    # deploy a new app, but do not activate config
+    deploy_app(SearchApp.new.sd(selfdir+"sd-extend/banana.sd"), :no_activate => true)
+
+    # restart configserver and keep zookeeper data
+    restart_config_server(vespa.configservers["0"], :keep_zookeeper_data => true)
+
+    # we should still run with the same application as before deploy,
+    # since we did not activate config, so similarfruits should not be there
+    assert_match("age", get_document_config())
+    assert_no_match("similarfruits", get_document_config())
+  end
+
+  # Tests that there are no zookeeper issues when deploying twice in a row
+  # (we have had issues with first deploy working and the next one not, due
+  # to programming errors when writing to zookeeper, which is hard to test in
+  # unit tests)
+  def test_deploy_twice
+    deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+    deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+  end
+
+  # Tests that deploying and activating session 1, then deploying many more
+  # applications (without preparing and activating), stopping the server will
+  # still load session 1 after restart. Dependent on the number of applicaations
+  # we retain when deploying (currently 10)
+  def test_deploy_many_times
+    deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+
+    # sanity check for field from sd
+    assert_match("age", get_document_config())
+    
+    (0..15).each do |i|
+      # deploy a new app, but do not activate config
+      deploy_app(SearchApp.new.sd(selfdir+"sd-extend/banana.sd"), :no_activate => true)
+    end
+
+    # restart configserver and keep zookeeper data
+    restart_config_server(vespa.configservers["0"], :keep_zookeeper_data => true)
+
+    # we should still run with the same application as before all the 15 deployments
+    # since we did not activate config, so similarfruits should not be there
+    assert_match("age", get_document_config())
+    assert_no_match("similarfruits", get_document_config())
+  end
+
+  # Check that an application with an error is skipped and that another application works just
+  # fine afterwards
+  def test_isolation_between_applications_invalid_data_in_zookeeper
+    output = deploy_app(CloudconfigApp.new)
+    generation_first_app = get_generation(output)
+    # Manipulate application package in zookeeper to make it invalid
+    vespa.adminserver.execute("zkctl delete /config/v2/tenants/default/sessions/#{generation_first_app}/userapp/services.xml")
+    vespa.configservers["0"].stop_configserver({:keep_everything => true})
+    sleep 10
+    vespa.configservers["0"].start_configserver
+    deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+    start
+  end
+
+  # Check that an application with an error is skipped and that another application works just
+  # fine afterwards
+  def test_isolation_between_applications_invalid_data_in_file_system
+    deploy_app(CloudconfigApp.new)
+    assert_deploy_app_fail(SearchApp.new.sd(selfdir + "sd/invalid_sd_construct.sd"))
+    vespa.configservers["0"].stop_configserver({:keep_everything => true})
+    vespa.configservers["0"].start_configserver
+    deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+    start
+  end
+
+  # Check that there is maximum one lock file when restarting many times.
+  # See ticket http://bug.corp.yahoo.com/7072930
+  def test_stop_should_not_leave_lockfiles
+    deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+    assert_equal("1", get_configserver_zookeeper_lock_files)
+    start
+    # 2 services (container and clustercontroller)
+    assert_equal("2", get_services_zookeeper_lock_files)
+    vespa.stop_base
+    vespa.start_base
+    wait_until_ready
+    assert_equal("2", get_services_zookeeper_lock_files)
+    vespa.configservers["0"].stop_configserver({:keep_everything => true})
+    vespa.configservers["0"].start_configserver
+    vespa.configservers["0"].ping_configserver
+    assert_equal("1", get_configserver_zookeeper_lock_files)
+  end
+
+  def test_redeploy_applications_on_upgrade
+    set_expected_logged(/Redeploying default.default failed, will retry/)
+
+    deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+    assert_log_matches("Session 2 activated successfully", 1)
+    assert_log_not_matches("Session 3 activated successfully")
+    restart_config_server_and_reset_version
+    vespa.configservers["0"].ping_configserver
+    assert_log_matches("Session 3 activated successfully", 1)
+    assert_health_status_for_config_server("up")
+
+    # Manipulate version of deployed application, to simulate an upgrade of vespa
+    # Health status should be ''up' when this is the case
+    zk_path = "/config/v2/tenants/default/sessions/3/version"
+    # NOTE: Needs to be a version number with same major version as the deployed version
+    vespa.configservers["0"].execute("echo \"set #{zk_path} 6.0.0\" | zkcli")
+    vespa.configservers["0"].stop_configserver({:keep_everything => true})
+    vespa.configservers["0"].start_configserver
+    vespa.configservers["0"].ping_configserver
+    assert_log_not_matches("Unknown Vespa version '6.0.0'")
+    # Clean up everything
+    restart_config_server(vespa.configservers["0"])
+
+    # Manipulate deployed application so that application package is invalid when restarting config server
+    # Health status should be 'initializing', not 'up' when this is the case
+    deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+    vespa.configservers["0"].execute("echo 'invalid xml' >> #{Environment.instance.vespa_home}/var/db/vespa/config_server/serverdb/tenants/default/sessions/2/services.xml")
+    restart_config_server_and_reset_version
+    wait_for_atleast_log_matches("Redeploying default.default failed, will retry", 1, 30)
+    begin
+      assert_health_status_for_config_server("initializing")
+    rescue
+      puts "Could not get health status, http server not up, as expected"
+      return
+    end
+    assert(nil, "Should have failed when getting health status")
+  end
+
+  def test_wait_for_config_converge
+    deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+    start
+    wait_for_config_converge(60)
+  end
+
+  # When canReturnEmptySentinelConfig is true and app has been deleted an
+  # empty sentinel config should be returned and services stopped
+  def test_empty_sentinel_config_when_app_is_deleted
+    deploy_app(CloudconfigApp.new)
+    node = vespa.configservers["0"]
+
+    override = <<ENDER
+<config name="cloud.config.configserver">
+  <canReturnEmptySentinelConfig>true</canReturnEmptySentinelConfig>
+</config>
+ENDER
+    config_file = Environment.instance.vespa_home + "/conf/configserver-app/configserver-config.xml"
+    node.execute("echo '#{override}' > #{config_file}")
+    restart_config_server(node, :keep_zookeeper_data => true)
+    deploy_app(CloudconfigApp.new)
+    start
+    sleep 5 # No programmatic way of waiting for logserver to be up
+
+    logserver = vespa.logserver
+    assert_equal("RUNNING", logserver.get_state.strip)
+    puts "Deleting app"
+    delete_application_v2(node.hostname, "default", "default")
+    sleep 10
+
+    # Check that config is empty and that logserver service has been stopped
+    config = getvespaconfig("cloud.config.sentinel", "client")
+    assert_equal({}, config)
+    assert_not_equal("RUNNING", logserver.get_state.strip)
+  end
+
+  def wait_for_config_converge(timeout)
+    hostname = vespa.configservers["0"].hostname
+    url = "http://#{hostname}:#{DEFAULT_SERVER_HTTPPORT}/application/v2/tenant/default/application/default/environment/prod/region/default/instance/default/converge?timeout=#{timeout}"
+    response = http_request_get(URI(url), {})
+    assert_equal(200, response.code.to_i)
+  end
+
+  # Remove the stored vespa version, config server will redeploy applications when it comes up
+  # since there will now be an upgrade of the config server's version
+  def restart_config_server_and_reset_version
+    vespa.configservers["0"].stop_configserver({:keep_everything => true})
+    vespa.configservers["0"].execute("rm -rf #{Environment.instance.vespa_home}/var/db/vespa/config_server/serverdb/vespa_version")
+    vespa.configservers["0"].start_configserver
+  end
+
+  def assert_health_status_for_config_server(expected_status)
+    hostname = vespa.configservers["0"].hostname
+    url = "http://#{hostname}:#{DEFAULT_SERVER_HTTPPORT}/state/v1/health"
+    response = http_request_get(URI(url), {:open_timeout => 5.0, :read_timeout => 5.0})
+    assert_equal(200, response.code.to_i)
+    assert_equal(expected_status, JSON.parse(response.body)["status"]["code"])
+  end
+
+  def get_configserver_zookeeper_lock_files
+    get_zookeeper_lock_files("ls #{Environment.instance.vespa_home}/logs/vespa/zookeeper.configserver*lck | wc -l")
+  end
+
+  def get_services_zookeeper_lock_files
+    get_zookeeper_lock_files("ls #{Environment.instance.vespa_home}/logs/vespa/zookeeper*lck | grep -v configserver | wc -l")
+  end
+
+  def get_zookeeper_lock_files(command)
+    puts "#{vespa.adminserver.execute("ls -l #{Environment.instance.vespa_home}/logs/vespa/", :exceptiononfailure => false)}"
+    vespa.adminserver.execute(command, :exceptiononfailure => false).strip
+  end
+
+  # Check that default jute maxbuffer is as expected
+  # Check that setting jute maxbuffer in config override works
+  def test_jute_maxbuffer
+    deploy_app(CloudconfigApp.new)
+    @configserver = vespa.configservers["0"]
+
+    # Check reconfiguring juteMaxBuffer so that the next deploy fails
+    @configserver.stop_configserver({:keep_everything => true})
+    override =<<ENDER
+  <config name="cloud.config.zookeeper-server">
+      <juteMaxBuffer>1500</juteMaxBuffer>
+  </config>
+ENDER
+   
+    add_xml_file_to_configserver_app(@configserver, override, "jutemaxbuffer.xml")
+    @configserver.start_configserver
+    assert_deploy_app_fail(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+    remove_xml_file_from_configserver_app(@configserver, override, "jutemaxbuffer.xml")
+  end
+
+  def copy_app_and_write_large_file(app_dir, tmpdir, large_file_size)
+    system("mkdir -p " + tmpdir + app_dir)
+    system("cp -r #{selfdir}#{app_dir} #{tmpdir}")
+    write_file(tmpdir + app_dir + "large-file", large_file_size)
+    tmpdir + app_dir
+  end
+
+  def write_file(file, size)
+    File.open(file, 'wb') do |f|
+      size.times { f.write("a") }
+    end
+  end
+
+  # Check that we can run configserver on a different port.
+  def ignored_test_custom_rpc_port
+    set_port_configserver_rpc(vespa.nodeproxies.values.first, 12345)
+    deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
+    start
+    assert_match("age", get_document_config(12345))
+  end
+
+  def get_document_config(port=19070)
+    vespa.adminserver.execute("vespa-get-config -n document.config.documentmanager -w 60 -p #{port} | grep field | grep name")
+  end
+
+  def teardown
+    set_port_configserver_rpc(vespa.nodeproxies.values.first)
+    stop
+  end
+end

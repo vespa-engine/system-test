@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hosts>
+  <!-- When running the tests manually, the hosts specified with the hostfile
+       option will be used.  However, this file still needs to be present, with
+       dummy-hostnames.-->
+    <host name='test1.trondheim.corp.yahoo.com'>
+      <alias>node1</alias>
+    </host>
+    <host name='test2.trondheim.corp.yahoo.com'>
+      <alias>node2</alias>
+    </host>
+    <host name='test3.trondheim.corp.yahoo.com'>
+      <alias>node3</alias>
+    </host>
+    <host name='test4.trondheim.corp.yahoo.com'>
+      <alias>node4</alias>
+    </host>
+</hosts>

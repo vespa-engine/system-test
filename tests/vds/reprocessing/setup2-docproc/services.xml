@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node0" />
+    <logserver hostalias="node0" />
+  </admin>
+
+  <content id="storage" version="1.0">
+    <redundancy>1</redundancy>
+
+    <documents>
+      <document type="music" mode="store-only"/>
+    </documents>
+    <group>
+      <node hostalias="node0" distribution-key="0"/>
+    </group>
+    <tuning>
+      <cluster-controller>
+        <transition-time>0</transition-time>
+      </cluster-controller>
+    </tuning>
+    <engine>
+      <proton/>
+    </engine>
+  </content>
+
+  <container id="default" version="1.0">
+    <document-api/>
+    <nodes>
+      <node hostalias="node0" />
+    </nodes>
+    <http>
+      <server id="default" port="19020"/>
+    </http>
+    <document-processing>
+      <chain id="default">
+       <documentprocessor id="com.yahoo.vespatest.NullDocProc" />
+      </chain>
+    </document-processing>
+  </container>
+
+  <container version="1.0" id="skip">
+    <nodes>
+      <node hostalias="node0"/>
+    </nodes>
+    <http>
+      <server id="skip-server" port="4090"/>
+    </http>
+    <document-processing>
+      <chain id="skip-chain">
+        <documentprocessor id="com.yahoo.vespatest.SkipDocProc" />
+       </chain>
+    </document-processing>
+  </container>
+
+  <container version="1.0" id="reprocess">
+    <nodes>
+      <node hostalias="node0"/>
+    </nodes>
+    <http>
+      <server id="reprocess-server" port="4100"/>
+    </http>
+    <document-processing>
+      <chain id="reprocess-chain">
+        <documentprocessor id="com.yahoo.vespatest.TestDocProc" />
+      </chain>
+    </document-processing>
+  </container>
+
+</services>
