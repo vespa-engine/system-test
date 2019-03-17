@@ -1,0 +1,8 @@
+version=1
+namespace=config
+
+message string default="Hello!"
+
+times int default=1
+
+a[].name string

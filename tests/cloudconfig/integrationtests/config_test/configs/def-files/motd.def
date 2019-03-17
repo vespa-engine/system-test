@@ -1,0 +1,6 @@
+# Used in sysdoc
+version=2
+namespace=config
+
+message string default="NO MESSAGE"
+port int default=1337

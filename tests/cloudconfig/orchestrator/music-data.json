@@ -1,0 +1,93 @@
+[
+    {
+        "fields": {
+            "album": "Bad",
+            "artist": "Michael Jackson",
+            "title": "Bad",
+            "year": 1987,
+            "duration": 247
+        },
+        "put": "id:tutorial:music::1"
+    },
+    {
+        "fields": {
+            "album": "Recovery",
+            "artist": "Eminem",
+            "title": "So Bad",
+            "year": 2010
+        },
+        "put": "id:tutorial:music::2"
+    },
+    {
+        "fields": {
+            "album": "Out of Time",
+            "artist": "R.E.M.",
+            "title": "Losing my Religion",
+            "year": 1991
+        },
+        "put": "id:tutorial:music::3"
+    },
+    {
+        "fields": {
+            "album": "Bad English",
+            "artist": "Bad English",
+            "title": "When I See You Smile",
+            "year": 1989
+        },
+        "put": "id:tutorial:music::4"
+    },
+    {
+        "fields": {
+            "album": "Bad Religion (EP)",
+            "artist": "Bad Religion",
+            "title": "Bad Religion",
+            "year": 1981
+        },
+        "put": "id:tutorial:music::5"
+    },
+    {
+        "fields": {
+            "album": "Oops!... I Did It Again",
+            "artist": "Britney Spears",
+            "title": "Lucky",
+            "year": 2000
+        },
+        "put": "id:tutorial:music::6"
+    },
+    {
+        "fields": {
+            "album": "OK Computer",
+            "artist": "Radiohead",
+            "title": "Paranoid Android",
+            "year": 1997
+        },
+        "put": "id:tutorial:music::7"
+    },
+    {
+        "fields": {
+            "album": "Bad Company",
+            "artist": "Bad Company",
+            "title": "Seagull",
+            "year": 1974
+        },
+        "put": "id:tutorial:music::8"
+    },
+    {
+        "fields": {
+            "album": "OK Computer",
+            "artist": "Radiohead",
+            "title": "Lucky",
+            "year": 1997
+        },
+        "put": "id:tutorial:music::9"
+    },
+    {
+        "fields": {
+            "album": "Kid A",
+            "artist": "Radiohead",
+            "title": "How to Disappear Completely",
+            "year": 2000
+        },
+        "put": "id:tutorial:music::10"
+    }
+]

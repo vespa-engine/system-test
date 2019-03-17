@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vespafeed>
+<document documentid="id:storage_test:music:n=12345:doc1" documenttype="music">
+  <artist>the dudey dudes Header Header Header Faaaaaaaaaaaaaaaaaaaaaaaaaaancytimes</artist>
+  <year>1970</year>
+  <bodyfield>shake your bodyfield! AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</bodyfield>
+</document>
+<document documentid="id:storage_test:music:n=12345:doc2" documenttype="music">
+  <artist>the jammy jammers Header Header Header Faaaaaaaaaaaaaaaaaaaaaaaaaaancytimes</artist>
+  <year>1952</year>
+  <bodyfield>boogie woogie BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB</bodyfield>
+</document>
+<document documentid="id:storage_test:music:n=12345:doc3" documenttype="music">
+  <title>alas, poor yorick Header Header Header Faaaaaaaaaaaaaaaaaaaaaaaaaaancytimes</title>
+  <bodyfield>horatio CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC</bodyfield>
+</document>
+<document documentid="id:storage_test:music:n=12345:doc4" documenttype="music">
+  <title>Mining Boogie Header Header Header Faaaaaaaaaaaaaaaaaaaaaaaaaaancytimes</title>
+  <artist>Creeper</artist>
+  <bodyfield>Ssssss.. ssss..! SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS</bodyfield>
+</document>
+</vespafeed>

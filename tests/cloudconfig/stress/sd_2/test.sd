@@ -1,0 +1,220 @@
+search test {
+
+  fieldset default {
+    fields: content_description, content_title, rating_title
+  }
+
+ document test {
+
+   # use summary=content
+   field clob type string {
+    indexing: summary
+    summary-to:content
+   }
+
+   field docid type string {
+    indexing: summary | index
+    match {
+      exact
+      exact-terminator: "@@"
+    }
+    summary-to:content,mini
+   }
+
+   field timestamp type long {
+    indexing: summary | attribute
+    summary-to:content,mini
+    attribute:fast-search
+   }
+
+   field expires type long {
+     indexing: summary | attribute
+     summary-to:content,mini
+   }
+
+   field scl type string {
+     indexing: summary | index
+     rank:filter
+     match {
+       exact
+       exact-terminator: "@@"
+     }
+     summary-to:content,mini
+   }
+
+   field type type byte {
+     indexing: summary | attribute
+     summary-to:content,mini
+     attribute:fast-search
+   }
+
+   field source type string {
+     indexing: summary | attribute
+     summary-to:content,mini
+     attribute:fast-search
+   }
+
+   field visible type byte {
+     indexing: summary | attribute
+     summary-to:content,mini
+   }
+
+   field content_url type string {
+     indexing: summary|index
+     summary-to:content,mini
+   }
+
+   field content_id type string {
+     indexing: summary|attribute
+     summary-to:content,mini
+     attribute:fast-search
+   }
+
+   field content_description type string {
+      indexing: summary | index
+      weight: 10
+      bolding:on
+      summary: dynamic
+      summary-to:content,mini
+   }
+
+   field content_title type string {
+       indexing: summary | index
+       weight: 90
+       bolding:on
+       summary-to:content,mini
+   }
+
+   field content_type type string {
+       indexing: summary | index
+       summary-to:content,mini
+   }
+
+   field media_type type string {
+       indexing: summary | index
+       summary-to:content,mini
+   }
+
+   field user_type type byte {
+      indexing: summary | attribute
+      attribute:fast-search
+      summary-to:content,mini
+   }
+
+   field user type string {
+      indexing: summary | attribute
+      attribute:fast-search
+      summary-to:content,mini
+   }
+
+   #sentiment/rating fields
+   field rating_value type string {
+     indexing: summary | index
+     rank:filter
+     summary-to:content,mini
+   }
+
+   field rating_text type string {
+     indexing: summary | index
+     rank:filter
+     summary-to:content,mini
+   }
+
+   field rating_type type string {
+     indexing: summary | index
+     rank:filter
+     summary-to:content,mini
+   }
+
+   field rating_normalized type double {
+     indexing: summary | attribute
+     attribute:fast-search
+     summary-to:content,mini
+   }
+
+   field rating_title type string {
+       indexing: summary | index
+       weight: 90
+       bolding:on
+       summary-to:content,mini
+   }
+
+   field participants type array<string> {
+     indexing: summary | index
+     summary-to:content,mini
+   }
+
+   field region type string {
+     indexing: summary | index
+     rank:filter
+     summary-to:content,mini
+   }
+
+   field language type string {
+     indexing: summary | index
+     rank:filter
+     summary-to:content,mini
+   }
+
+   field categories type array<string> {
+     indexing: summary | attribute
+     summary-to:content,mini
+     attribute:fast-search  
+   }
+
+   field keywords type array<string> {
+     indexing: summary | index
+     summary-to:content,mini
+   }
+
+   field entities type array<string> {
+     indexing: summary | attribute
+     summary-to:content,mini
+     attribute:fast-search
+     alias:entity
+   }
+
+
+   field debug type array<string> {
+     indexing: summary | index
+     summary-to:content,mini
+   }
+
+ }
+
+ fieldset terms {
+ 	fields:keywords,entities,categories
+ }
+
+  rank-profile text inherits default {
+     first-phase {
+        expression: nativeRank(content_title,content_description,rating_title)
+     }
+  }
+
+  rank-profile random inherits default {
+     first-phase {
+        keep-rank-count: 50000
+        expression: random.match*random
+     }
+  }
+
+  rank-profile freshness inherits default {
+     first-phase {
+        keep-rank-count: 50000
+        expression: attribute(timestamp)
+     }
+  }
+
+  rank-profile context inherits default {
+    rank-properties {
+      query(scorelimit) : -1.0
+    }
+    first-phase {
+       rank-score-drop-limit: -1.0
+       keep-rank-count: 50000
+       expression: if(nativeRank(content_title,content_description,rating_title) > query(scorelimit), nativeRank(content_title,content_description,rating_title), -2.0)
+    }
+  }
+
+ }

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<services version='1.0'>
+  <admin version='2.0'>
+    <adminserver hostalias='node1' />
+  </admin>
+
+  <jdisc version='1.0' id='mycc'>
+    <nodes jvmargs='-Xms64m -Xmx256m'>
+      <node hostalias='node2'/>
+      <node hostalias='node3'/>
+    </nodes>
+  </jdisc>
+
+</services>

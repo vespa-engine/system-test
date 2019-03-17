@@ -1,0 +1,4 @@
+version=1
+namespace=config
+
+configId reference default=":parent:"
