@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">update_pos</field>
+    <field name="my_pos">
+      <struct-field name="y">12123000</struct-field>
+      <struct-field name="x">98987000</struct-field>
+    </field>
+    <field name="my_pos.position"><position x="98987000" y="12123000" latlong="N12.123000;E98.987000" /></field>
+    <field name="my_pos.distance">971</field>
+    <field name="summaryfeatures">{"distance(my_pos)":971.8153116719246,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:test:update_pos::1</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">update_pos</field>
+    <field name="my_pos">
+      <struct-field name="y">12123123</struct-field>
+      <struct-field name="x">98987987</struct-field>
+    </field>
+    <field name="my_pos.position"><position x="98987987" y="12123123" latlong="N12.123123;E98.987987" /></field>
+    <field name="my_pos.distance">0</field>
+    <field name="summaryfeatures">{"distance(my_pos)":0.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:test:update_pos::2</field>
+  </hit>
+</result>

@@ -1,0 +1,101 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search attrweightedset {
+  document attrweightedset {
+
+    field int type weightedset<int> {
+      indexing: attribute | summary
+    }
+    field long type weightedset<long> {
+      indexing: attribute | summary
+    }
+    field byte type weightedset<byte> {
+      indexing: attribute | summary
+    }
+    field float type weightedset<float> {
+      indexing: attribute | summary
+    }
+    field double type weightedset<double> {
+      indexing: attribute | summary
+    }
+
+    field fsint type weightedset<int> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field fslong type weightedset<long> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field fsbyte type weightedset<byte> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field fsfloat type weightedset<float> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field fsdouble type weightedset<double> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+
+    field string type weightedset<string> {
+      indexing: attribute | summary
+    }
+    field fsstring type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+
+    field intcr type weightedset<int> {
+      weightedset: create-if-nonexistent
+      weightedset: remove-if-zero
+      indexing: attribute | summary
+    }
+    field longcr type weightedset<long> {
+      weightedset: create-if-nonexistent
+      weightedset: remove-if-zero
+      indexing: attribute | summary
+    }
+    field bytecr type weightedset<byte> {
+      weightedset: create-if-nonexistent
+      weightedset: remove-if-zero
+      indexing: attribute | summary
+    }
+    field floatcr type weightedset<float> {
+      weightedset: create-if-nonexistent
+      weightedset: remove-if-zero
+      indexing: attribute | summary
+    }
+    field doublecr type weightedset<double> {
+      weightedset: create-if-nonexistent
+      weightedset: remove-if-zero
+      indexing: attribute | summary
+    }
+    field stringcr type weightedset<string> {
+      weightedset: create-if-nonexistent
+      weightedset: remove-if-zero
+      indexing: attribute | summary
+    }
+    field tagcr type tag {
+      indexing: attribute | summary
+    }
+    field fsstringcr type weightedset<string> {
+      weightedset: create-if-nonexistent
+      weightedset: remove-if-zero
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field fstagcr type tag {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+
+    field sortfield type int {
+      indexing: attribute | summary
+    }
+    field hitfield type string {
+      indexing: summary | index
+    }
+  }
+}

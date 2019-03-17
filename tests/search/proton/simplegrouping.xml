@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <group relevance="1.0">
+    <id type="root"/>
+    <grouplist label="sattr">
+      <group relevance="0.0">
+        <id type="string">first</id>
+        <output label="count()">1</output>
+      </group>
+      <group relevance="0.0">
+        <id type="string">second</id>
+        <output label="count()">1</output>
+      </group>
+    </grouplist>
+  </group>
+</result>

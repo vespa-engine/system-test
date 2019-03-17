@@ -1,0 +1,5 @@
+<document type="test" id="id:test:test::0">
+  <wset>
+    <item weight="5">foo</item>
+  </wset>
+</document>

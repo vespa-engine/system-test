@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1" coverage-docs="1" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
+  <hit relevancy="0.1272874611998375" source="search">
+    <field name="relevancy">0.1272874611998375</field>
+    <field name="sddocname">base1</field>
+    <field name="field1">common</field>
+    <field name="field2">f2d2</field>
+    <field name="field3">f3d2</field>
+    <field name="documentid">id:test-inheritance:base1::pushyss://1/</field>
+  </hit>
+</result>

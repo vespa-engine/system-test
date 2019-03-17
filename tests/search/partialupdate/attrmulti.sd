@@ -1,0 +1,29 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search attrmulti {
+  document attrmulti {
+    field int type weightedset<int> {
+      indexing: attribute
+    }
+    field long type weightedset<long> {
+      indexing: attribute
+    }
+    field byte type weightedset<byte> {
+      indexing: attribute
+    }
+    field float type weightedset<float> {
+      indexing: attribute
+    }
+    field double type weightedset<double> {
+      indexing: attribute
+    }
+    field string type weightedset<string> {
+      indexing: attribute
+    }
+    field sortfield type int {
+      indexing: attribute
+    }
+    field hitfield type string {
+      indexing: summary | index
+    }
+  }
+}

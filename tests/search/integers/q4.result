@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="6">
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">simple</field>
+    <field name="uri">id2 from 1970</field>
+    <field name="year">1970</field>
+  </hit>
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">simple</field>
+    <field name="uri">id3 from 1971</field>
+    <field name="year">1971</field>
+  </hit>
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">simple</field>
+    <field name="uri">id5 from 1973</field>
+    <field name="year">1973</field>
+  </hit>
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">simple</field>
+    <field name="uri">id6 from 1974</field>
+    <field name="year">1974</field>
+  </hit>
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">simple</field>
+    <field name="uri">id7 from 1974</field>
+    <field name="year">1974</field>
+  </hit>
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="sddocname">simple</field>
+    <field name="uri">id8 from 1975</field>
+    <field name="year">1975</field>
+  </hit>
+</result>

@@ -1,0 +1,60 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search attrsinglesummary {
+  document attrsinglesummary {
+
+    field int type int {
+      indexing: attribute | summary
+    }
+    field long type long {
+      indexing: attribute | summary
+    }
+    field byte type byte {
+      indexing: attribute | summary
+    }
+    field float type float {
+      indexing: attribute | summary
+    }
+    field double type double {
+      indexing: attribute | summary
+    }
+
+    field fsint type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field fslong type long {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field fsbyte type byte {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field fsfloat type float {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field fsdouble type double {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+
+    field string type string {
+      indexing: attribute | summary
+    }
+    field fsstring type string {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field istring type string {
+      indexing: index | summary
+    }
+
+    field sortfield type int {
+      indexing: attribute | summary
+    }
+    field hitfield type string {
+      indexing: index | summary
+    }
+  }
+}

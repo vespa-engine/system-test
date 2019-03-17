@@ -1,0 +1,41 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search fieldmatch {
+  document fieldmatch {
+    field f1 type string {
+      indexing: index | summary
+    }
+    field f2 type string {
+      indexing: index | summary
+    }
+  }
+  fieldset default {
+    fields: f1, f2
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: nativeFieldMatch
+    }
+    rank-properties {
+      nativeRank.useTableNormalization: "false"
+    }
+  }
+  rank-profile tables inherits default {
+    rank-properties {
+      nativeFieldMatch.firstOccurrenceTable.f1: "linear(-20,200,9)"
+      nativeFieldMatch.firstOccurrenceTable.f2: "linear(-10,100,9)"
+      nativeFieldMatch.occurrenceCountTable.f1: "linear(20,0,10)"
+      nativeFieldMatch.occurrenceCountTable.f2: "linear(10,0,10)"
+    }
+  }
+  rank-profile fieldweight inherits default {
+    weight f1: 300
+    weight f2: 100
+    rank-properties {
+      nativeFieldMatch.firstOccurrenceTable.f1: "linear(0,200)"
+      nativeFieldMatch.firstOccurrenceTable.f2: "linear(0,100)"
+      nativeFieldMatch.occurrenceCountTable.f1: "linear(0,200)"
+      nativeFieldMatch.occurrenceCountTable.f2: "linear(0,100)"
+    }
+  }
+}

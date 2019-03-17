@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">book</field>
+    <field name="author">Mister <hi>X</hi></field>
+    <field name="description">The Best Of Times by Deck Deckert (Swans - October 24, 2005) It is the best of times; it is the worst of times. President George W. Bush is the<sep /></field>
+    <field name="isbn">0131980521</field>
+    <field name="year">1955</field>
+    <field name="uri">1</field>
+    <field name="title">book 1: The <hi>X</hi> story</field>
+    <field name="mid">1</field>
+    <field name="weight">1121.1</field>
+    <field name="w1">706.0</field>
+    <field name="w2">155.0</field>
+    <field name="did">56 57</field>
+    <field name="ew">story</field>
+  </hit>
+</result>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="3">
+  <hit relevancy="779" source="sc0.num0">
+    <field name="relevancy">779</field>
+    <field name="sddocname">literalboost</field>
+    <field name="uri">bookdoc</field>
+    <field name="content">bogo book bogo</field>
+    <field name="weight">1000.0</field>
+  </hit>
+  <hit relevancy="743" source="sc0.num0">
+    <field name="relevancy">743</field>
+    <field name="sddocname">literalboost</field>
+    <field name="uri">booksdoc</field>
+    <field name="content">bogo books bogo</field>
+    <field name="weight">950.0</field>
+  </hit>
+  <hit relevancy="707" source="sc0.num0">
+    <field name="relevancy">707</field>
+    <field name="sddocname">literalboost</field>
+    <field name="uri">bookeddoc</field>
+    <field name="content">bogo booked bogo</field>
+    <field name="weight">900.0</field>
+  </hit>
+</result>

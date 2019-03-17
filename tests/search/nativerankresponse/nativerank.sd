@@ -1,0 +1,80 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search nativerank {
+  document nativerank {
+    field f1 type string {
+      indexing: index | summary
+      rank-type: identity
+    }
+    field f2 type string {
+      indexing: index | summary
+      rank-type: identity
+    }
+    field f3 type string {
+      indexing: index | summary
+      rank-type: identity
+    }
+    field f4 type weightedset<string> {
+      indexing: attribute | summary
+    }
+  }
+  fieldset default {
+    fields: f1, f2, f3
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: nativeRank
+    }
+    summary-features {
+      nativeFieldMatch
+      nativeProximity
+      nativeAttributeMatch
+      nativeRank
+    }
+    rank-properties {
+       nativeRank.useTableNormalization: true
+       nativeAttributeMatch.weightTable: "linear(1,0)"
+    }
+  }
+
+  rank-profile only-fieldmatch inherits default {
+    rank-properties {
+      nativeRank.fieldMatchWeight: 100
+      nativeRank.attributeMatchWeight: 0
+      nativeRank.proximityWeight: 0
+    }
+  }
+
+  rank-profile only-attributematch inherits default {
+    rank-properties {
+      nativeRank.fieldMatchWeight: 0
+      nativeRank.attributeMatchWeight: 100
+      nativeRank.proximityWeight: 0
+    }
+  }
+
+  rank-profile only-proximity inherits default {
+    rank-properties {
+      nativeRank.fieldMatchWeight: 0
+      nativeRank.attributeMatchWeight: 0
+      nativeRank.proximityWeight: 100
+    }
+  }
+
+  rank-profile fieldmatch-proximity inherits default {
+    rank-properties {
+      nativeRank.fieldMatchWeight: 50
+      nativeRank.attributeMatchWeight: 0
+      nativeRank.proximityWeight: 50
+    }
+  }
+
+  rank-profile fieldmatch-attributematch inherits default {
+    rank-properties {
+      nativeRank.fieldMatchWeight: 50
+      nativeRank.attributeMatchWeight: 50
+      nativeRank.proximityWeight: 0
+    }
+  }
+
+}

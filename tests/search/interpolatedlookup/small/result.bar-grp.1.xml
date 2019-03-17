@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this"></continuation>
+    <grouplist label="impressiondata">
+      <group relevance="0.111002">
+        <id type="string">impressions</id>
+        <output label="uniqueusercount">2</output>
+        <output label="totalinpos1">0.0</output>
+        <output label="totalinpos2">0.0</output>
+      </group>
+    </grouplist>
+  </group>
+  <hit relevancy="0.111002" source="multitest">
+    <field name="relevancy">0.111002</field>
+    <field name="sddocname">sad</field>
+    <field name="title">just bar</field>
+    <field name="documentid">id:test:sad::2</field>
+  </hit>
+  <hit relevancy="0.111001" source="multitest">
+    <field name="relevancy">0.111001</field>
+    <field name="sddocname">sad</field>
+    <field name="title">foo bar</field>
+    <field name="documentid">id:test:sad::1</field>
+  </hit>
+</result>

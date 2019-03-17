@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="1000" source="pan0.num0">
+    <field name="relevancy">1000</field>
+    <field name="sddocname">type2</field>
+    <field name="field21">f21d2</field>
+    <field name="field22">f22d2</field>
+    <field name="field23">23</field>
+    <field name="field24">type2 document data</field>
+  </hit>
+</result>

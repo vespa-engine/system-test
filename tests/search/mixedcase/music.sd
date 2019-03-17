@@ -1,0 +1,45 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search music {
+
+  document music {
+
+    field title type string {
+      indexing {
+          summary | index | attribute;
+      }
+    }
+
+    field artist type string {
+      indexing {
+          summary | index | attribute;
+      }
+    }
+
+    field pto type int {
+      indexing: summary | attribute
+    }
+
+    field surl type string {
+      indexing: summary | attribute
+    }
+
+    field YeaR type string {
+      indexing: summary | attribute
+    }
+
+    field AnnO type string {
+      indexing: attribute
+    }
+
+    field YearSet type weightedset<string> {
+      indexing: summary | attribute
+      attribute: fast-search
+    }
+
+  }
+  fieldset default {
+    fields: title, artist
+  }
+
+}
+

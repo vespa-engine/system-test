@@ -1,0 +1,3 @@
+[
+  { "put": "id:test:ad::0", "fields": { "campaign_ref": "id:test:invalid::0" } }
+]

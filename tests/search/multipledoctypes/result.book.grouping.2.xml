@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="5">
+  <group relevance="1.0">
+    <id type="root"/>
+    <grouplist label="rating">
+      <group relevance="2008.0">
+        <id type="long">8</id>
+        <grouplist label="pages">
+          <group relevance="2008.0">
+            <id type="long">464</id>
+            <output label="count()">1</output>
+          </group>
+          <group relevance="2001.0">
+            <id type="long">1312</id>
+            <output label="count()">1</output>
+          </group>
+        </grouplist>
+      </group>
+      <group relevance="2005.0">
+        <id type="long">9</id>
+        <grouplist label="pages">
+          <group relevance="2005.0">
+            <id type="long">224</id>
+            <output label="count()">1</output>
+          </group>
+          <group relevance="1999.0">
+            <id type="long">832</id>
+            <output label="count()">1</output>
+          </group>
+          <group relevance="1994.0">
+            <id type="long">416</id>
+            <output label="count()">1</output>
+          </group>
+        </grouplist>
+      </group>
+    </grouplist>
+  </group>
+</result>

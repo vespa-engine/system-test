@@ -1,0 +1,44 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search grandparent {
+  document grandparent {
+    field ws_i type weightedset<int> {
+      indexing: attribute | summary
+    }
+    field ws_l type weightedset<long> {
+      indexing: attribute | summary
+    }
+    field ws_s type weightedset<string> {
+      indexing: attribute | summary
+    }
+
+    field arr_i type array<int> {
+      indexing: attribute | summary
+    }
+    field arr_l type array<long> {
+      indexing: attribute | summary
+    }
+    field arr_f type array<float> {
+      indexing: attribute | summary
+    }
+    field arr_d type array<double> {
+      indexing: attribute | summary
+    }
+
+    field arr_fi type array<int> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field arr_fl type array<long> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field arr_ff type array<float> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field arr_fd type array<double> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+  }
+}

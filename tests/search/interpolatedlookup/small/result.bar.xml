@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="0.10000200000000001" source="multitest">
+    <field name="relevancy">0.10000200000000001</field>
+    <field name="sddocname">sad</field>
+    <field name="title">just bar</field>
+    <field name="documentid">id:test:sad::2</field>
+  </hit>
+  <hit relevancy="0.100001" source="multitest">
+    <field name="relevancy">0.100001</field>
+    <field name="sddocname">sad</field>
+    <field name="title">foo bar</field>
+    <field name="documentid">id:test:sad::1</field>
+  </hit>
+</result>

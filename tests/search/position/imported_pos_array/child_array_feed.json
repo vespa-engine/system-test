@@ -1,0 +1,14 @@
+[
+  {
+    "put": "id:test:child_array_pos::0",
+    "fields": {
+      "parent_ref": "id:test:parent_array_pos::0"
+    }
+  },
+  {
+    "put": "id:test:child_array_pos::1",
+    "fields": {
+      "parent_ref": "id:test:parent_array_pos::1"
+    }
+  }
+]

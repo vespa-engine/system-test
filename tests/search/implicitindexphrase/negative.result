@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="0">
+  <meta type="trace">
+        <p>sc0.num0 search to dispatch: query=["notanindex blue"] aggregation=[] offset=0 hits=10 rankprofile[default]=0 collapse=false
+    </p>
+    <p>sc0.num0 dispatch response: Result (0 of total 0 hits)
+    </p>
+  </meta>
+</result>

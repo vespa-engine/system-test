@@ -1,0 +1,25 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search ad {
+  document ad {
+    field campaign_ref type reference<campaign> {
+      indexing: attribute | summary
+    }
+    field score type int {
+      indexing: attribute | summary
+    }
+  }
+  import field campaign_ref.title as my_title {}
+  import field campaign_ref.budget as my_budget {}
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(score) + attribute(my_budget)
+    }
+  }
+
+  document-summary my_summary {
+    summary documentid type string {}
+    summary my_title type string {}
+    summary my_budget type int {}
+  }
+}

@@ -1,0 +1,27 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search multiweight {
+    document multiweight {
+        field marker type string {
+            indexing: summary
+        }
+        field weight1 type weightedset<string> {
+            indexing: index
+        }
+        field weight2 type weightedset<string> {
+            indexing: index
+        }
+        field weight3 type weightedset<string> {
+            indexing: index
+        }
+    }
+    fieldset default {
+        fields: weight1, weight2, weight3
+    }
+    rank-profile default {
+        summary-features {       
+            fieldTermMatch(weight1,0).weight 
+            fieldTermMatch(weight2,0).weight
+            fieldTermMatch(weight3,0).weight
+        }
+    }
+}

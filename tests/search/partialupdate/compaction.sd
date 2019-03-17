@@ -1,0 +1,28 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search compaction {
+  document compaction {
+
+    field fa type string {
+      indexing: index | summary
+    }
+    field fb type array<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+  }
+  rank-profile default {
+    summary-features {
+      debugWait(0.1,0.0).out
+      attributeMatch(fb).weight
+      attributeMatch(fb).matches
+      attributeMatch(fb).totalWeight
+      attribute(fb).count
+      fieldInfo(fb).cnt
+    }
+  }
+  rank-profile slow {
+    summary-features {
+      debugWait(0.5,0.0).out
+    }
+  }
+}

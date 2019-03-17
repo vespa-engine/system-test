@@ -1,0 +1,35 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search settest {
+    document settest {
+        field marker type string {
+            indexing: summary | index
+        }
+
+        field weight type weightedset<string> {
+            indexing: index | summary
+        }
+
+        field tokenized type weightedset<string> {
+            indexing: index | summary
+        }
+
+        field critics_ratings type weightedset<string> {
+            indexing: index | summary
+            match: word
+        }
+
+        field other_ratings type weightedset<string> {
+            indexing: index | summary
+            match {
+                exact
+                exact-terminator: "///"
+            }
+        }
+
+    }
+    rank-profile weight inherits default {
+        first-phase {
+            expression: fieldTermMatch(weight,0).weight
+        }
+    }
+}

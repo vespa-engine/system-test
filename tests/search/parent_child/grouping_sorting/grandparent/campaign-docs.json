@@ -1,0 +1,8 @@
+[
+  { "put": "id:test:campaign::morty",            "fields": { "grand_ref": "id:test:grandcampaign::morty" } },
+  { "put": "id:test:campaign::gazorpazorpfield", "fields": { "grand_ref": "id:test:grandcampaign::gazorpazorpfield" } },
+  { "put": "id:test:campaign::plumbus",          "fields": { "grand_ref": "id:test:grandcampaign::plumbus" } },
+  { "put": "id:test:grandcampaign::plumbus",          "fields": { "name": "plumbus", "budget": 20 } },
+  { "put": "id:test:grandcampaign::gazorpazorpfield", "fields": { "name": "gazorpazorpfield", "budget": 10 } },
+  { "put": "id:test:grandcampaign::morty",            "fields": { "name": "morty", "budget": 5 } }
+]

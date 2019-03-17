@@ -1,0 +1,7 @@
+search grandparent_array_pos {
+    document grandparent_array_pos {
+        field grandparent_pos type array<position> {
+	    indexing: attribute | summary
+        }
+    }
+}

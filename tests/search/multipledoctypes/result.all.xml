@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="12">
+  <hit relevancy="2009.0" source="test">
+    <field name="relevancy">2009.0</field>
+    <field name="sddocname">video</field>
+    <field name="title">Inglourious Basterds</field>
+    <field name="year">2009</field>
+    <field name="director">Quentin Tarantino</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:video:video::3</field>
+  </hit>
+  <hit relevancy="2008.0" source="test">
+    <field name="relevancy">2008.0</field>
+    <field name="sddocname">book</field>
+    <field name="title">Clean Code: A Handbook of Agile Software Craftsmanship</field>
+    <field name="year">2008</field>
+    <field name="author">Robert C. Martin</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:book:book::3</field>
+  </hit>
+  <hit relevancy="2007.0" source="test">
+    <field name="relevancy">2007.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Everybody Loves A Chubby Dude</field>
+    <field name="year">2007</field>
+    <field name="artist">Turboneger</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:music:music::3</field>
+  </hit>
+  <hit relevancy="2005.0" source="test">
+    <field name="relevancy">2005.0</field>
+    <field name="sddocname">book</field>
+    <field name="title">Sly Moves: My Proven Program to Lose Weight, Build Strength, Gain Will Power, and Live your Dream</field>
+    <field name="year">2005</field>
+    <field name="author">Sylvester Stallone</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:book:book::4</field>
+  </hit>
+</result>

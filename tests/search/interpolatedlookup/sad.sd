@@ -1,0 +1,29 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search sad {
+  
+  document sad {
+    field title type string {
+      indexing: index | summary
+    }
+    field pos1impr type array<double> {
+      indexing: attribute
+    }
+    field pos2impr type array<double> {
+      indexing: attribute
+    }
+    field order type int {
+      indexing: attribute
+    }
+  }
+
+  rank-profile default {
+    rank-properties {
+      query(bid): 0.1
+    }
+    first-phase {
+      expression: query(bid) + 0.000001*attribute(order)
+    }
+  }
+
+}

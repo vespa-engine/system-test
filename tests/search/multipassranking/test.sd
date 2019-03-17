@@ -1,0 +1,97 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field a1 type int {
+      indexing: attribute | summary
+    }
+    field a2 type int {
+      indexing: attribute | summary
+    }
+    field a3 type int {
+      indexing: attribute | summary
+    }
+    field a4 type int {
+      indexing: attribute | summary
+    }
+  }
+
+  ############## r1 ##############
+  rank-profile r1-single {
+    first-phase {
+      expression: attribute(a1)
+    }
+  }
+  rank-profile r1-multi {
+    first-phase {
+      expression: attribute(a1)
+    }
+    second-phase {
+      expression: attribute(a2)
+      rerank-count: 2
+    }
+  }
+
+  ############## r2 ##############
+  rank-profile r2-single {
+    first-phase {
+      expression: attribute(a1)
+    }
+  }
+  rank-profile r2-multi {
+    first-phase {
+      expression: attribute(a1)
+    }
+    second-phase {
+      expression: attribute(a3)
+      rerank-count: 2
+    }
+  }
+
+  ############## r3 ##############
+  rank-profile r3-single {
+    first-phase {
+      expression: attribute(a2)
+    }
+  }
+  rank-profile r3-multi {
+    first-phase {
+      expression: attribute(a2)
+    }
+    second-phase {
+      expression: attribute(a1)
+      rerank-count: 2
+    }
+  }
+
+  ############## r4 ##############
+  rank-profile r4-single {
+    first-phase {
+      expression: attribute(a3)
+    }
+  }
+  rank-profile r4-multi {
+    first-phase {
+      expression: attribute(a3)
+    }
+    second-phase {
+      expression: attribute(a4)
+      rerank-count: 2
+    }
+  }
+
+  ############## r5 ##############
+  rank-profile r5-single {
+    first-phase {
+      expression: 10
+    }
+  }
+  rank-profile r5-multi {
+    first-phase {
+      expression: 10
+    }
+    second-phase {
+      expression: 100
+      rerank-count: 2
+    }
+  }
+}

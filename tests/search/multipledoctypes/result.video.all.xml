@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="4">
+  <hit relevancy="2010.0" source="test">
+    <field name="relevancy">2010.0</field>
+    <field name="sddocname">video</field>
+    <field name="title">The Expendables</field>
+    <field name="year">2010</field>
+    <field name="director">Sylvester Stallone</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:video:video::0</field>
+  </hit>
+  <hit relevancy="2009.0" source="test">
+    <field name="relevancy">2009.0</field>
+    <field name="sddocname">video</field>
+    <field name="title">Inglourious Basterds</field>
+    <field name="year">2009</field>
+    <field name="director">Quentin Tarantino</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:video:video::3</field>
+  </hit>
+  <hit relevancy="1996.0" source="test">
+    <field name="relevancy">1996.0</field>
+    <field name="sddocname">video</field>
+    <field name="title">The Rock</field>
+    <field name="year">1996</field>
+    <field name="director">Michael Bay</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:video:video::1</field>
+  </hit>
+  <hit relevancy="1995.0" source="test">
+    <field name="relevancy">1995.0</field>
+    <field name="sddocname">video</field>
+    <field name="title">Heat</field>
+    <field name="year">1995</field>
+    <field name="director">Michael Mann</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:video:video::2</field>
+  </hit>
+</result>

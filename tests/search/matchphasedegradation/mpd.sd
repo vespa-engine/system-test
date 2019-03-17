@@ -1,0 +1,118 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search mpd {
+
+  document mpd {
+    field title type string {
+      indexing: index | summary
+    }
+    field body type string {
+      indexing: index
+    }
+    field order type float {
+      indexing: attribute | summary
+      summary-to: small
+      attribute: fast-search
+    }
+    field seq type int {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field cat type int {
+      indexing: attribute
+    }
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(order)
+    }
+  }
+
+  rank-profile inverse {
+    first-phase {
+      expression: 0.0-attribute(order)
+    }
+  }
+
+  rank-profile retainkilo {
+    match-phase {
+      attribute: order
+      max-hits: 1000
+      max-filter-coverage: 1.0
+    }
+    first-phase {
+      expression: attribute(order)
+    }
+  }
+
+  rank-profile retaintenkilo {
+    match-phase {
+      attribute: order
+      max-hits: 10000
+      max-filter-coverage: 1.0
+    }
+    first-phase {
+      expression: attribute(order)
+    }
+  }
+
+  rank-profile inversekilo {
+    match-phase {
+      attribute: order
+      order: ascending
+      max-hits: 1000
+      max-filter-coverage: 1.0
+    }
+    first-phase {
+      expression: 0.0-attribute(order)
+    }
+  }
+
+  rank-profile retainall {
+    match-phase {
+      attribute: order
+      max-hits: 2147483647
+      max-filter-coverage: 1.0
+    }
+    first-phase {
+      expression: attribute(order)
+    }
+  }
+
+  rank-profile diverse {
+    match-phase {
+      attribute: seq
+      max-hits: 100
+      max-filter-coverage: 1.0
+      diversity {
+        attribute: cat
+        min-groups: 10
+      }
+    }
+    first-phase {
+      expression: attribute(seq)
+    }
+  }
+
+  rank-profile diverse_second {
+    first-phase {
+      expression: attribute(seq)
+    }
+    second-phase {
+      rerank-count: 100
+      expression: attribute(seq) * 100
+    }
+  }
+
+  rank-profile undiverse {
+    match-phase {
+      attribute: seq
+      max-hits: 100
+      max-filter-coverage: 1.0
+    }
+    first-phase {
+      expression: attribute(seq)
+    }
+  }
+
+}

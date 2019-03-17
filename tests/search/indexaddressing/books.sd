@@ -1,0 +1,28 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search books {
+  document books {
+    field title type string {
+      indexing: summary | index
+    }
+    field author type string {
+      indexing: summary | index
+    }
+    field uri type string {
+      indexing: summary | attribute
+    }
+    field foobar type string {
+      indexing: summary | attribute
+    }
+    field myrank type float {
+      indexing: attribute
+    }	
+  }
+  fieldset default {
+    fields: title
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(myrank)
+    }
+  }
+}

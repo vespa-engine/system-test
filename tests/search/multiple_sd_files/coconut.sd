@@ -1,0 +1,27 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search coconut {
+  document coconut {
+    field identity type string {
+      indexing: attribute | summary
+      match {
+        exact
+        exact-terminator: " "
+      }
+    }    
+    field beverages type array<string> {
+      indexing: attribute | summary
+    }
+    field groupings type array<int> {
+      indexing: attribute | summary
+    }
+    field measurements type array<double> {
+      indexing: attribute | summary
+    }
+    field hairdistribution type weightedset<int> {
+      indexing: attribute | summary
+    }
+    field customtags type tag {
+      indexing: attribute | summary
+    }
+  }
+}

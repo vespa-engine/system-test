@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="13">
+  <group relevance="1.0">
+    <id type="root"/>
+    <grouplist label="rating">
+      <group relevance="2010.0">
+        <id type="long">6</id>
+        <output label="count()">2</output>
+      </group>
+      <group relevance="2009.0">
+        <id type="long">8</id>
+        <output label="count()">5</output>
+      </group>
+      <group relevance="2005.0">
+        <id type="long">9</id>
+        <output label="count()">3</output>
+      </group>
+      <group relevance="1996.0">
+        <id type="long">7</id>
+        <output label="count()">2</output>
+      </group>
+      <group relevance="1988.0">
+        <id type="long">10</id>
+        <output label="count()">1</output>
+      </group>
+    </grouplist>
+  </group>
+</result>

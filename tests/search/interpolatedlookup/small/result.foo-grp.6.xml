@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this"></continuation>
+    <grouplist label="impressiondata">
+      <group relevance="0.6660010000000001">
+        <id type="string">impressions</id>
+        <output label="uniqueusercount">1</output>
+        <output label="totalinpos1">7.424574377758815</output>
+        <output label="totalinpos2">3.223989125867482</output>
+      </group>
+    </grouplist>
+  </group>
+  <hit relevancy="0.6660010000000001" source="multitest">
+    <field name="relevancy">0.6660010000000001</field>
+    <field name="sddocname">sad</field>
+    <field name="title">foo bar</field>
+    <field name="documentid">id:test:sad::1</field>
+  </hit>
+</result>

@@ -1,0 +1,92 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search mp3 {
+
+    document mp3 inherits multimedia {
+
+        field artist type string {
+            indexing: summary | attribute | index
+            bolding:on
+        }
+        field album type string {
+            indexing: summary | attribute | index
+            bolding:on
+        }
+        field title type string {
+            indexing: summary | attribute | index
+            bolding:on
+            alias: track
+        }
+        field year type int {
+            indexing: summary | attribute
+        }
+        field length type int {
+            indexing: summary | attribute
+        }
+    }
+    fieldset default {
+        fields: artist, album, title
+    }
+
+    #Use the rating of a track as the rank score
+    rank-profile rating inherits default {
+        first-phase {
+            expression {
+                attribute(rating)
+            }
+        }
+    }
+
+    #Use the number of views of a track as the rank score
+    rank-profile views inherits default {
+        first-phase {
+            expression {
+                attribute(views)
+            }
+        }
+    }
+
+    #Use the number of views of a track as the rank score
+    rank-profile textrank inherits default {
+        first-phase {
+            expression {
+                0.25*fieldMatch(title) + 0.5*fieldMatch(artist) + 0.25*fieldMatch(album)
+            }
+        }
+    }
+
+    #Use the rating of a track normalized against the total number of ratings
+    rank-profile ratingnormalized inherits default {
+        macro normalized() {
+            expression: attribute(rating)/attribute(nraters)
+        }
+        first-phase {
+            expression {
+                normalized
+            }
+        }
+        summary-features: rankingExpression(normalized)
+    }
+
+    #
+    rank-profile ratingnormalizeddropcold inherits default {
+        macro normalized() {
+            expression: attribute(rating)/attribute(nraters)
+        }
+        first-phase {
+            rank-score-drop-limit: -1.0
+            expression: if(normalized < query(scorelimit),-2.0,normalized)
+        }
+        summary-features: rankingExpression(normalized)
+
+    }
+
+    rank-profile livescore inherits default {
+        macro normalized() {
+            expression: attribute(rating)/attribute(nraters)
+        }
+        first-phase {
+            rank-score-drop-limit: -1.0
+            expression: if(attribute(lastviewed) + attribute(length) > now, normalized,-2.0)
+        }
+    }
+}

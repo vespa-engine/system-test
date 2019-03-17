@@ -1,0 +1,9 @@
+[
+  { "put": "id:test:grandparent::2",
+    "fields": {
+      "a1": 7
+    }
+  },
+  { "remove": "id:test:parent::0" },
+  { "update": "id:test:parent::3", "fields": { "ref": { "assign" : "id:test:grandparent::1" } } }
+]

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="0.9972918444695218" source="search">
+    <field name="relevancy">0.9972918444695218</field>
+    <field name="sddocname">multiplepos2d</field>
+    <field name="title">Trondheim1</field>
+    <field name="ll.position"><position x="10363700" y="63422500" latlong="N63.422500;E10.363700" /><position x="10386800" y="63394000" latlong="N63.394000;E10.386800" /><position x="10465900" y="63447000" latlong="N63.447000;E10.465900" /><position x="10360300" y="63432500" latlong="N63.432500;E10.360300" /><position x="10511800" y="63423300" latlong="N63.423300;E10.511800" /></field>
+    <field name="ll.distance">24409</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:multiplepos2d::TRD1</field>
+  </hit>
+  <hit relevancy="0.9961428205804575" source="search">
+    <field name="relevancy">0.9961428205804575</field>
+    <field name="sddocname">multiplepos2d</field>
+    <field name="title">Trondheim2</field>
+    <field name="ll.position"><position x="10460800" y="63453700" latlong="N63.453700;E10.460800" /><position x="10388300" y="63384300" latlong="N63.384300;E10.388300" /><position x="10346100" y="63434500" latlong="N63.434500;E10.346100" /><position x="10338100" y="63412400" latlong="N63.412400;E10.338100" /><position x="10533900" y="63405500" latlong="N63.405500;E10.533900" /></field>
+    <field name="ll.distance">34765</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:multiplepos2d::TRD2</field>
+  </hit>
+</result>

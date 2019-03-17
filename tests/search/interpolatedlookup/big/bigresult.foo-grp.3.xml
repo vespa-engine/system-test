@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="30726">
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this"></continuation>
+    <grouplist label="impressiondata">
+      <group relevance="0.45645">
+        <id type="string">impressions</id>
+        <output label="uniqueusercount">30726</output>
+        <output label="totalinpos1">274045.71878881543</output>
+        <output label="totalinpos2">272418.20851190254</output>
+      </group>
+    </grouplist>
+  </group>
+  <hit relevancy="0.45645" source="multitest">
+    <field name="relevancy">0.45645</field>
+    <field name="sddocname">sad</field>
+    <field name="title">the fox says foo hihi</field>
+    <field name="documentid">id:test:sad::123450</field>
+  </hit>
+  <hit relevancy="0.456445" source="multitest">
+    <field name="relevancy">0.456445</field>
+    <field name="sddocname">sad</field>
+    <field name="title">the fox says foo hihi</field>
+    <field name="documentid">id:test:sad::123445</field>
+  </hit>
+  <hit relevancy="0.456441" source="multitest">
+    <field name="relevancy">0.456441</field>
+    <field name="sddocname">sad</field>
+    <field name="title">the fox says foo hihi</field>
+    <field name="documentid">id:test:sad::123441</field>
+  </hit>
+  <hit relevancy="0.456437" source="multitest">
+    <field name="relevancy">0.456437</field>
+    <field name="sddocname">sad</field>
+    <field name="title">the bar fox says foo hihi</field>
+    <field name="documentid">id:test:sad::123437</field>
+  </hit>
+  <hit relevancy="0.45643500000000004" source="multitest">
+    <field name="relevancy">0.45643500000000004</field>
+    <field name="sddocname">sad</field>
+    <field name="title">the fox says foo hihi</field>
+    <field name="documentid">id:test:sad::123435</field>
+  </hit>
+  <hit relevancy="0.45642900000000003" source="multitest">
+    <field name="relevancy">0.45642900000000003</field>
+    <field name="sddocname">sad</field>
+    <field name="title">the fox says foo hihi</field>
+    <field name="documentid">id:test:sad::123429</field>
+  </hit>
+  <hit relevancy="0.456428" source="multitest">
+    <field name="relevancy">0.456428</field>
+    <field name="sddocname">sad</field>
+    <field name="title">the bar fox says foo hihi</field>
+    <field name="documentid">id:test:sad::123428</field>
+  </hit>
+  <hit relevancy="0.456427" source="multitest">
+    <field name="relevancy">0.456427</field>
+    <field name="sddocname">sad</field>
+    <field name="title">the bar fox says foo hihi</field>
+    <field name="documentid">id:test:sad::123427</field>
+  </hit>
+  <hit relevancy="0.456417" source="multitest">
+    <field name="relevancy">0.456417</field>
+    <field name="sddocname">sad</field>
+    <field name="title">the bar fox says foo hihi</field>
+    <field name="documentid">id:test:sad::123417</field>
+  </hit>
+  <hit relevancy="0.456415" source="multitest">
+    <field name="relevancy">0.456415</field>
+    <field name="sddocname">sad</field>
+    <field name="title">the bar fox says foo hihi</field>
+    <field name="documentid">id:test:sad::123415</field>
+  </hit>
+</result>

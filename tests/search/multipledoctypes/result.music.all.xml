@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="4">
+  <hit relevancy="2007.0" source="test">
+    <field name="relevancy">2007.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Everybody Loves A Chubby Dude</field>
+    <field name="year">2007</field>
+    <field name="artist">Turboneger</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:music:music::3</field>
+  </hit>
+  <hit relevancy="1988.0" source="test">
+    <field name="relevancy">1988.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">...And Justice For All</field>
+    <field name="year">1988</field>
+    <field name="artist">Metallica</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:music:music::0</field>
+  </hit>
+  <hit relevancy="1982.0" source="test">
+    <field name="relevancy">1982.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">Run To The Hills</field>
+    <field name="year">1982</field>
+    <field name="artist">Iron Maiden</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:music:music::1</field>
+  </hit>
+  <hit relevancy="1981.0" source="test">
+    <field name="relevancy">1981.0</field>
+    <field name="sddocname">music</field>
+    <field name="title">For Those About To Rock (We Salute You)</field>
+    <field name="year">1981</field>
+    <field name="artist">ACDC</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:music:music::2</field>
+  </hit>
+</result>

@@ -1,0 +1,43 @@
+{
+  "root": {
+    "fields": {
+      "totalCount": 3
+    },
+    "children": [
+      {
+        "id": "id:test:test::0",
+        "source": "search",
+	"fields": {
+          "sddocname": "test",
+          "documentid": "id:test:test::0",
+          "my_pos": {
+            "y": 63426915,
+            "x": 10396929
+          },
+          "my_pos.position": {"x": 10396929, "y": 63426915, "latlong": "N63.426915;E10.396929"}
+        }
+      },
+      {
+        "id": "id:test:test::1",
+        "source": "search",
+        "fields": {
+          "sddocname": "test",
+          "documentid": "id:test:test::1",
+          "my_pos": {
+            "y": 71169493,
+            "x": 25783164
+          },
+          "my_pos.position": {"x": 25783164, "y": 71169493, "latlong": "N71.169493;E25.783164"}
+        }
+      },
+      {
+        "id": "id:test:test::2",
+        "source": "search",
+        "fields": {
+          "sddocname": "test",
+          "documentid": "id:test:test::2"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,187 @@
+  <document documenttype="book" documentid="id:test:book::1">
+      <title>book 1: The X story</title>
+      <mid>1</mid>
+      <scorekey>foobar#55</scorekey>
+      <w1_src>33.17</w1_src>
+      <w2_src>42.71</w2_src>
+      <weight_src>112.11</weight_src>
+      <did>56 57</did>
+      <ew>story</ew>
+      <year>1955</year>
+      <author>Mister X</author>
+      <isbn>0131980521</isbn>
+      <description>The Best Of Times by Deck Deckert
+(Swans - October 24, 2005)  It is the best of times; it is the worst of times.
+President George W. Bush is the worst president in my long lifetime,
+and probably the worst in American history -- I'll leave the latter
+to the historians.
+A list of his sins of commission and omission would fill an
+encyclopedia -- mass murder in the shape of an immoral war, an
+embrace of torture, delusions of empire, financial meltdown, massive
+corruption, misfeasance and malfeasance, the attempted trashing of
+the Constitution and Bill of Rights, environmental destruction, and
+lies, lies, lies.
+What have we come to?
+If we had elected him, it could perhaps be said that we got what
+we deserve. But, of course, we didn't elect him. The last two
+presidential elections were stolen -- if not literally, though I
+believe they were, then in practice in the form of massive manipulation
+of minority voters, particularly in Florida in the 2000 election.
+And because the Democrats were too befuddled and cowardly to raise
+a fuss and the corporate media was cravenly silent, all future
+elections are in doubt.
+Yet elected or not, Bush is not the nation -- his values are not
+our values. But then the value of our leaders never are.
+Bush is just the latest in a long line of presidents who don't serve
+our interests, but serve instead the interests of corporations and
+the other portions of the ruling elite. He may be the worst, but
+he is hardly unique.
+The corporatization of America, which has been going on for decades,
+is nearly complete. Corporations own the government, pay little or
+no taxes, get massive government handouts, and almost totally control
+our access to information. Their lobbyists have immediate and
+frequent access to the president, congressmen and senators, sit in
+on congressional committee sessions, and generally make the rules
+that are supposed to govern them.
+Corporations control not only the federal government but state
+governments as well. States frequently brag that they are good
+places for business. By that they generally mean that taxes are
+low, unions are powerless, wages and benefits are poor, workplace
+safety and environmental regulations are weak. In other words, what
+is good for corporations is bad for workers -- and everyone else.
+But while Bush has aggressively pushed the corporation agenda, he
+is not the first to do so. Clinton, for example, was nearly as bad.
+Bush's values are those of an aging ignorant spoiled playboy --
+primarily hedonism. The values of his puppet-masters are far more
+ominous -- greed, a love of power, and the arrogant assumption that
+they have a manifest destiny to rule the world.
+The values of the American people are the values of people almost
+everywhere. Forget the national stereotypes -- not all British have
+stiff upper lips, not all Canadians are polite, not all Scotsmen
+are penny pinchers, not all American tourists are arrogant, loud
+and boisterous.
+Most Americans live quiet lives, centered on family, church and
+friends. They perhaps embrace individualism more than most of the
+world's people, are a bit more convinced that their country is the
+greatest, and are more concerned with acquiring material goods.
+They pay lip service to the idea of equality, however little they
+may practice it. They are generally optimistic. They don't condone
+torture, murder of innocents, or invasion of nations that don't
+threaten them.
+But, contrary to their own beliefs, they are easily led. Unscrupulous
+leaders, and a compliant media, can easily convince them that they
+are in grave danger, and the solution is yet another war.
+So is this the worst of times?
+Compared to?
+People think there was a golden age in which there was peace, all
+Americans were prosperous, and everyone was happy. When was this?
+Was it when the country was founded by the slaughter of millions
+of Native Americans and the stealing of their land?
+Was it when rich plantation owners owned slaves?
+Was it when country was engaged in a vicious civil war that killed
+600,000 to 700,000 people?
+Or the post-Civil War period when freed slaves were brought back
+under control by lynchings and segregation?
+Was it during the Depression, when millions were hungry and out of
+work?
+Was it during World War II, when more than 50 million people died,
+including 500,000 Americans?
+Or how about in the post-World War II period, a time of optimism
+and prosperity -- unless of course you were poor and black, or
+fighting in Korea?
+Was it during the civil rights revolution, a time of joyous
+reaffirmation of our ideals, and the murder of civil rights workers?
+Was it during the concurrent Vietnam war protests in which millions
+marched in the streets, followed by the assassination of national
+leaders?
+Perhaps this is the best of times?
+All right, perhaps not. But it is a time of great potential, if we
+do not despair. The stranglehold of the corporate media is under
+attack on the Internet by blogs and other sources of news. The
+ugliness and corruption of the radical right of the Republican Party
+is now exposed for all to see and some of the worst offenders may
+get their comeuppance in court. A few Democrats are finally beginning
+to develop some backbone. Some states and cities are beginning to
+rebel against some of the worst assaults on the bill of rights;
+others are working to protect our voting rights.
+The best of times? No, it's just life.
+      </description>
+    </document>
+  <document documenttype="music" documentid="id:test:music::2">
+      <title>music 2: Stash: This Is The Remix (Ep)</title>
+      <scorekey>barfoo#66</scorekey>
+      <w1_src>33.99</w1_src>
+      <w2_src>42.01</w2_src>
+      <weight_src>211.11</weight_src>
+      <year>1945</year>
+      <isbn><![CDATA[696998670921]]></isbn>
+      <year>2002</year>
+      <mid>2</mid>
+      <ew><![CDATA[stash]]></ew>
+      <did>66</did>
+      <artist><![CDATA[Cypress Hill]]></artist>
+      <disp_song><![CDATA[Amplified (Fredwreck Remix);Illusions (Harpischord Mix);Checkmate (Hang 'Em High Remix Radio Edit)]]></disp_song>
+      <song><![CDATA[Amplified (Fredwreck Remix);Illusions (Harpischord Mix);Checkmate (Hang 'Em High Remix Radio Edit);Latin Lingo (Blackout Mix);(Rap) Superstar (Alchemist Remix);Throw Your Set In The Air (Slow Roll Remix)]]></song>
+    </document>
+  <document documenttype="music" documentid="id:test:music::3==1921227460">
+      <title>Three Dollar Bill Y'All</title>
+      <scorekey>limp_bizkit#66:three_dollar_bill#388</scorekey>
+      <w1_src>35</w1_src>
+      <w2_src>35</w2_src>
+      <weight_src>55.4</weight_src>
+      <year>1997</year>
+      <mid>2</mid>
+      <ew><![CDATA[all]]></ew>
+      <did>66</did>
+      <artist>Limp Bizkit</artist>
+      <song>Intro, Pollution, Counterfeit, Stuck, Nobody Loves's Me, Sour, Stalemate, Clunk, Faith, Stink Finger, Indigo Flow, Leech, Everything</song>
+      <disp_song>Intro, Pollution, Counterfeit</disp_song>
+    </document>
+  <document documenttype="video" documentid="id:test:video::4==1800013223">
+      <title>The Adventures of Huckleberry Finn</title>
+      <mid>3</mid>
+      <scorekey>The_Adventures_of_Huckleberry_Finn#39:Huckleberry_Finn#92</scorekey>
+      <w1_src>500</w1_src>
+      <w2_src>500</w2_src>
+      <weight_src>49.7</weight_src>
+      <did>65</did>
+      <ew>Finn</ew>
+      <year>19930526</year>
+      <isbn>027616005335</isbn>
+      <director>Jack B. Hively; Richard Thorpe; Michael Curtiz</director>
+      <disp_actor>Mickey Rooney, Forrest Tucker, Tony Randall</disp_actor>
+      <actor>Mickey Rooney; Forrest Tucker; Tony Randall; Larry Storch; EddieHodges; William Frawley; Kurt Ida; Brock Peters; Patty McCormack; Neville Brand; Walter Connelly; Archie Moore</actor>
+      <fmt>VHS</fmt>
+    </document>
+  <document documenttype="video" documentid="id:test:video::5==1800018600">
+      <title>The Perfect Murder</title>
+      <mid>3</mid>
+      <scorekey>a_perfect_murder#92:gwyneth_paltrow#17:michael_douglas#68</scorekey>
+      <w1_src>500</w1_src>
+      <w2_src>500</w2_src>
+      <weight_src>67</weight_src>
+      <did>65</did>
+      <ew>murder</ew>
+      <year>20061107</year>
+      <isbn>012569750586,085391664321,085397271325,085391730231,012569669338,085391664437</isbn>
+      <director>Andrew Davis</director>
+      <disp_actor>Michael Douglas, Gwyneth Paltrow, Viggo Mortensen</disp_actor>
+      <actor>Michael Douglas; Gwyneth Paltrow; Viggo Mortensen; David Suchet; Sarita Choudhury; Michael P. Moran; Novella Nelson; Constance Towers; Will Lyman; Maeve McGuire; Stephen Singer; Laurindaa Barrett; Aideen O'Kelly; Reed Birney (II); Robert Vincent Smith; Bill Ambrozy; George S. Blumenthal; Iris Alten; Marion Blumenthal; Andrew Sussman; Robynn N. Sussman; Radney Tucker; Beverly Tucker; Bradford Billet; Robert Bosco Cokljat; Marat Yusim; Lee Wong; Roberta Orlan; Francis Dumaurier; Deen Badarou; Peter Benson (II); Jeff Willims; David Eigenberg; Jean De Baer; Michel Moinot (II); Gerrit Vooren; Monica Parker (II); Michael H. Ingram; Scotty Dillin; Starla Benford; Bob Bowersox; Joanna P. Adler; James Georgiades; Jose Ramon Rosario; Gerry Becker; William Bogert; Adrian Martinez; Dexter Brown</actor>
+      <fmt>DVD VHS</fmt>
+    </document>
+  <document documenttype="video" documentid="id:test:video::6==1800018548">
+      <title>10 Things I Hate About You</title>
+      <mid>3</mid>
+      <scorekey>10_things_i_hate_about_you#16:joshua#39:joshua_jackson#69:julia_stiles#89:ten_things_i_hate_about_you#92</scorekey>
+      <w1_src>500</w1_src>
+      <w2_src>500</w2_src>
+      <weight_src>66</weight_src>
+      <did>65</did>
+      <ew>you</ew>
+      <year>19991012</year>
+      <isbn>717951004208,717951005915VHS,786936094145</isbn>
+      <fmt>DVD</fmt>
+      <actor>Heath Ledger; Julia Stiles; Joseph Gordon-Levitt; Larisa Oleynik; David Krumholtz; Andrew Keegan; Susan May Pratt; Gabrielle Union; Larry Miller; darylmitchell; Allison Janney; David Leisure; Greg Jackson; Kyle Cease; Terence Heuston; Cameron Fraser; Eric Reidman; Quinn Maixner; Demegio Kimbrough; Todd Butler; Dennis Mosley; Bianca Kajlich; Nick Vukelic; Benjamin Laurance; Aidan Kennedy; Jelani Quinn; Jesse Dyer; Aaron Therol; Carlos LaCamara; Heather Taylor; Joshua Thorpe; J. R. Johnson; Wendy Gottlieb; Brian Hood; Travis Miller; Ari Karczag; Laura Kenny (II); Alice Evans; Jesper Inglis; Nick Brown (II); Monique Powell; Brian Mashburn; Kay Hanley (II); John Ritter</actor>
+      <director>giljunger</director>
+      <disp_actor>Heath Ledger, Julia Stiles, Joseph Gordon-Levitt</disp_actor>
+    </document>
