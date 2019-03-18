@@ -1,0 +1,106 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+    document test {
+        field id type int {
+            indexing: summary | attribute
+        }
+        field v1 type double {
+            indexing: summary | attribute
+        }
+        field v2 type double {
+            indexing: summary | attribute
+        }
+        field v3 type double {
+            indexing: summary | attribute
+        }
+        field v4 type double {
+            indexing: summary | attribute
+        }
+        field v5 type double {
+            indexing: summary | attribute
+        }
+        field v6 type double {
+            indexing: summary | attribute
+        }
+        field v7 type double {
+            indexing: summary | attribute
+        }
+    }
+
+    constant W_fc1 {
+        file: search/W_fc1.json
+        type: tensor(x[7],hidden[14])
+    }
+    constant b_fc1 {
+        file: search/b_fc1.json
+        type: tensor(hidden[14])
+    }
+    constant W_fc2 {
+        file: search/W_fc2.json
+        type: tensor(hidden[14])
+    }
+    constant b_fc2 {
+        file: search/b_fc2.json
+        type: tensor(hidden[1])
+    }
+
+    rank-profile default {
+        macro nn_input() {
+            expression {
+                concat(attribute(v1),
+                    concat(attribute(v2),
+                        concat(attribute(v3),
+                            concat(attribute(v4),
+                                concat(attribute(v5),
+                                    concat(attribute(v6), attribute(v7), x),
+                                x),
+                            x),
+                        x),
+                    x),
+                x)
+            }
+        }
+        macro hidden_layer() {  # returns tensor(hidden[14])
+            expression: elu(xw_plus_b(nn_input, constant(W_fc1), constant(b_fc1), x))
+        }
+        macro final_layer() {  # returns scalar
+            expression: xw_plus_b(hidden_layer, constant(W_fc2), constant(b_fc2), hidden)
+        }
+        first-phase {
+            expression: sum(final_layer)
+        }
+    }
+
+    rank-profile ludicrous {
+        first-phase {
+            expression {
+	        sum(
+                    xw_plus_b(
+                        elu(
+                            xw_plus_b(
+                                concat(attribute(v1),
+                                    concat(attribute(v2),
+                                        concat(attribute(v3),
+                                            concat(attribute(v4),
+                                                concat(attribute(v5),
+                                                    concat(attribute(v6), attribute(v7), x),
+                                                x),
+                                            x),
+                                        x),
+                                    x),
+                                x),
+                                constant(W_fc1),
+                                constant(b_fc1),
+                                x
+                            )
+                        ),
+                        constant(W_fc2),
+                        constant(b_fc2),
+                        hidden
+                    )
+		)
+            }
+        }
+    }
+}
+

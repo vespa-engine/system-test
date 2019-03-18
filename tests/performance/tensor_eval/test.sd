@@ -1,0 +1,170 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field wset type weightedset<int> {
+      indexing: attribute | summary
+    }
+    field array type array<double> {
+      indexing: attribute | summary
+    }
+    field wset_entries type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field sparse_vector type tensor(x{}) {
+      indexing: attribute | summary
+    }
+    field dense_vector_5 type tensor(x[5]) {
+      indexing: attribute | summary
+    }
+    field dense_vector_10 type tensor(x[10]) {
+      indexing: attribute | summary
+    }
+    field dense_vector_25 type tensor(x[25]) {
+      indexing: attribute | summary
+    }
+    field dense_vector_50 type tensor(x[50]) {
+      indexing: attribute | summary
+    }
+    field dense_vector_100 type tensor(x[100]) {
+      indexing: attribute | summary
+    }
+    field dense_vector_250 type tensor(x[250]) {
+      indexing: attribute | summary
+    }
+    field dense_vector_500 type tensor(x[500]) {
+      indexing: attribute | summary
+    }
+    field dense_vector_unbound type tensor(x[]) {
+      indexing: attribute | summary
+    }
+  }
+  document-summary min_summary {
+    summary documentid type string {}
+  }
+  constant dense_matrix_10x10 {
+    file: searchdefinitions/dense_matrix_10x10.json
+    type: tensor(x[10],y[10])
+  }
+  constant dense_matrix_25x25 {
+    file: searchdefinitions/dense_matrix_25x25.json
+    type: tensor(x[25],y[25])
+  }
+  constant dense_matrix_50x50 {
+    file: searchdefinitions/dense_matrix_50x50.json
+    type: tensor(x[50],y[50])
+  }
+  constant dense_matrix_100x100 {
+    file: searchdefinitions/dense_matrix_100x100.json
+    type: tensor(x[100],y[100])
+  }
+  constant sparse_tensor_25x25 {
+    file: searchdefinitions/sparse_tensor_25x25.json
+    type: tensor(x{},y{})
+  }
+  constant sparse_tensor_50x50 {
+    file: searchdefinitions/sparse_tensor_50x50.json
+    type: tensor(x{},y{})
+  }
+  constant sparse_tensor_100x100 {
+    file: searchdefinitions/sparse_tensor_100x100.json
+    type: tensor(x{},y{})
+  }
+
+  rank-profile dot_product_default {
+    first-phase {
+      keep-rank-count: 100000
+    }
+  }
+  rank-profile feature_dot_product inherits dot_product_default {
+    first-phase {
+      expression: dotProduct(wset, wset_query)
+    }
+  }
+  rank-profile feature_dot_product_array inherits dot_product_default {
+    first-phase {
+      expression: dotProduct(array, array_query)
+    }
+  }
+  rank-profile sparse_tensor_dot_product inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_sparse_vector_x) * attribute(sparse_vector))
+    }
+  }
+  rank-profile tensor_match_25x25 {
+    first-phase {
+      expression: sum(query(q_sparse_vector_y)*attribute(sparse_vector)*constant(sparse_tensor_25x25))
+    }
+  }
+  rank-profile tensor_match_50x50 {
+    first-phase {
+      expression: sum(query(q_sparse_vector_y)*attribute(sparse_vector)*constant(sparse_tensor_50x50))
+    }
+  }
+  rank-profile tensor_match_100x100 {
+    first-phase {
+      expression: sum(query(q_sparse_vector_y)*attribute(sparse_vector)*constant(sparse_tensor_100x100))
+    }
+  }
+  rank-profile tensor_matrix_product_10x10 {
+    first-phase {
+      expression: sum(sum((query(q_dense_vector_10)+attribute(dense_vector_10))*constant(dense_matrix_10x10),x))
+    }
+  }
+  rank-profile tensor_matrix_product_25x25 {
+    first-phase {
+      expression: sum(sum((query(q_dense_vector_25)+attribute(dense_vector_25))*constant(dense_matrix_25x25),x))
+    }
+  }
+  rank-profile tensor_matrix_product_50x50 {
+    first-phase {
+      expression: sum(sum((query(q_dense_vector_50)+attribute(dense_vector_50))*constant(dense_matrix_50x50),x))
+    }
+  }
+  rank-profile tensor_matrix_product_100x100 {
+    first-phase {
+      expression: sum(sum((query(q_dense_vector_100)+attribute(dense_vector_100))*constant(dense_matrix_100x100),x))
+    }
+  }
+  rank-profile dense_tensor_dot_product_5 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_vector_5) * attribute(dense_vector_5))
+    }
+  }
+  rank-profile dense_tensor_dot_product_10 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_vector_10) * attribute(dense_vector_10))
+    }
+  }
+  rank-profile dense_tensor_dot_product_25 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_vector_25) * attribute(dense_vector_25))
+    }
+  }
+  rank-profile dense_tensor_dot_product_50 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_vector_50) * attribute(dense_vector_50))
+    }
+  }
+  rank-profile dense_tensor_dot_product_100 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_vector_100) * attribute(dense_vector_100))
+    }
+  }
+  rank-profile dense_tensor_dot_product_250 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_vector_250) * attribute(dense_vector_250))
+    }
+  }
+  rank-profile dense_tensor_dot_product_500 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_vector_500) * attribute(dense_vector_500))
+    }
+  }
+  rank-profile dense_tensor_dot_product_unbound inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_vector_unbound) * attribute(dense_vector_unbound))
+    }
+  }
+
+}

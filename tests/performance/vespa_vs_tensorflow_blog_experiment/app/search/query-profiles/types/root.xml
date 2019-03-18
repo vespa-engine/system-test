@@ -1,0 +1,3 @@
+<query-profile-type id="root" inherits="native">
+    <field name="ranking.features.query(user_item_cf)" type="tensor(d0[1],d1[128])" />
+</query-profile-type>

@@ -1,0 +1,17 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field tensor_10 type tensor(x[10]) {
+      indexing: attribute | summary
+    }
+    field tensor_100 type tensor(x[100]) {
+      indexing: attribute | summary
+    }
+    field tensor_1000 type tensor(x[1000]) {
+      indexing: attribute | summary
+    }
+    field data type string {
+      indexing: summary
+    }
+  }
+}

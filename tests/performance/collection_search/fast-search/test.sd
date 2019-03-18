@@ -1,0 +1,40 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    struct elem {
+      field f1 type int {}
+      field f2 type string {}
+      field f3 type int {}
+      field f4 type string {}
+      field f5 type int {}
+    }
+    field struct_map type map<string, elem> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.f1 {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.f2 {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.f3 {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.f4 {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.f5 {
+        indexing: attribute
+        attribute: fast-search
+      }
+    }
+  }
+}
+
