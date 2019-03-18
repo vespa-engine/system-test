@@ -1,0 +1,16 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search campaign {
+  document campaign {
+    field ref type reference<advertiser> {
+      indexing: attribute | summary
+    }
+    field budget_slow type int {
+      indexing: attribute | summary
+    }
+    field budget_fast type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+  }
+  import field ref.root_budget_fast as root_budget_fast {}
+}

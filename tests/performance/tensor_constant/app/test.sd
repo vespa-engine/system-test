@@ -1,0 +1,17 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field my_tensor type tensor(x{}) {
+      indexing: attribute | summary
+    }
+  }
+  constant my_constant {
+    file: search/tensor_constant.300MB.json
+    type: tensor(x{})
+  }
+  rank-profile default {
+    first-phase {
+      expression: sum(attribute(my_tensor)*constant(my_constant))
+    }
+  }
+}

@@ -1,0 +1,36 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search ad {
+  document ad {
+    field ref type reference<campaign> {
+      indexing: attribute | summary
+    }
+    field flattened_budget_slow type int {
+      indexing: attribute | summary
+    }
+    field flattened_budget_fast type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+  }
+  import field ref.budget_slow as imported_budget_slow {}
+  import field ref.budget_fast as imported_budget_fast {}
+  import field ref.root_budget_fast as imported_root_budget_fast {}
+  rank-profile flattened_budget {
+    first-phase {
+      expression: attribute(flattened_budget_slow)
+      keep-rank-count: 2000000
+    }
+  }
+  rank-profile imported_budget {
+    first-phase {
+      expression: attribute(imported_budget_slow)
+      keep-rank-count: 2000000
+    }
+  }
+  rank-profile imported_root_budget {
+    first-phase {
+      expression: attribute(imported_root_budget_fast)
+      keep-rank-count: 2000000
+    }
+  }
+}

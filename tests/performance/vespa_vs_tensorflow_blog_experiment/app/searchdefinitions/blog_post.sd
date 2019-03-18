@@ -1,0 +1,69 @@
+search blog_post {
+
+    document blog_post {
+
+	    field post_id type int {
+	        indexing: summary
+	    }
+
+        field user_item_cf type tensor(d0[1],d1[128]) {
+            indexing: summary | attribute
+        }
+
+        field has_user_item_cf type byte {
+            indexing: summary | attribute
+            attribute: fast-search
+        }
+
+    }
+
+    document-summary with_summary {
+        summary post_id type int {
+            source: post_id
+        }
+        summary user_item_cf type tensor(d0[1],d1[128]) {
+            source: user_item_cf
+        }
+    }
+
+    document-summary no_summary {
+        summary post_id type int {
+            source: post_id
+        }
+    }
+
+    rank-profile first_phase_only {
+        first-phase {
+            expression: sum(query(user_item_cf) * attribute(user_item_cf))
+        }
+    }
+
+    rank-profile first_phase_no_summaries inherits first_phase_only {
+    }
+    rank-profile first_phase_with_summaries inherits first_phase_only {
+    }
+    rank-profile first_phase_no_summaries_random_profile inherits first_phase_only {
+    }
+    rank-profile first_phase_with_summaries_random_profile inherits first_phase_only {
+    }
+    rank-profile tensorflow_single inherits first_phase_only {
+    }
+    rank-profile tensorflow_multiple inherits first_phase_only {
+    }
+    rank-profile tensorflow_stateless_evaluation inherits first_phase_only {
+    }
+
+    rank-profile vespa inherits first_phase_only {
+        macro input_u() {
+            expression: query(user_item_cf)
+        }
+        macro input_d() {
+            expression: attribute(user_item_cf)
+        }
+        second-phase {
+            rerank-count: 100
+            expression: sum(tensorflow("blog/saved"))
+        }
+    }
+
+}

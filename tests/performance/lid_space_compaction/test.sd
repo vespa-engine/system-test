@@ -1,0 +1,27 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field body type string {
+      indexing: summary
+    }
+    field id type int {
+      indexing: attribute | summary
+    }
+    field key type int {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field slowkey type int {
+      indexing: summary
+    }
+  }
+  document-summary short {
+    summary  id type int { source: id }
+    summary key type int { source: key }
+  }
+  document-summary slow {
+    summary slowkey type int { source: slowkey }
+    summary  id type int { source: id }
+    summary key type int { source: key }
+  }
+}

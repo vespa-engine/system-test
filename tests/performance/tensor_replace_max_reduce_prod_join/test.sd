@@ -1,0 +1,50 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+    document test {
+        field id type int {
+            indexing: attribute | summary
+        }
+        field longarray type array<long> {
+            indexing: attribute | summary
+        }
+    }
+
+    document-summary id {
+        summary id type int {
+            source: id
+        }
+    }
+
+    rank-profile with_replacement {
+        macro calc() {
+            expression {
+                reduce(
+                    tensorFromLabels(attribute(longarray), x)
+                    *
+                    tensorFromWeightedSet(query(weights), x),
+                    max
+                )
+            }
+        }
+        first-phase {
+            expression: calc / 10000
+        }
+    }
+
+    rank-profile without_replacement {
+        macro calc() {
+            expression {
+                reduce(
+                    tensorFromLabels(attribute(longarray), x)
+                    *
+                    tensorFromWeightedSet(query(weights), x),
+                    max
+                ) / 10000
+            }
+        }
+        first-phase {
+            expression: calc
+        }
+    }
+}
+

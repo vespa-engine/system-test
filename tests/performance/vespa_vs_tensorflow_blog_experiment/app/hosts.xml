@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hosts>
+  <host name="foo0">
+    <alias>node0</alias>
+  </host>
+  <host name="foo1">
+    <alias>node1</alias>
+  </host>
+  <host name="foo2">
+    <alias>node2</alias>
+  </host>
+  <host name="foo3">
+    <alias>node3</alias>
+  </host>
+  <host name="foo4">
+    <alias>node4</alias>
+  </host>
+  <host name="foo5">
+    <alias>node5</alias>
+  </host>
+  <host name="foo6">
+    <alias>node6</alias>
+  </host>
+  <host name="foo7">
+    <alias>node7</alias>
+  </host>
+</hosts>
