@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+    <logserver hostalias="node1" />
+    <slobroks>
+      <slobrok hostalias="node1" />
+    </slobroks>
+  </admin>
+
+  <content version="1.0" id="simple">
+    <nodes>
+      <node hostalias="node1" distribution-key="0"/>
+    </nodes>
+    <redundancy>1</redundancy>
+    <documents>
+      <document type="simple" mode="index"/>
+    </documents>
+  </content>
+
+
+  <jdisc id="default" version="1.0">
+  
+   <search/>
+
+   <document-processing>
+    <documentprocessor id="com.yahoo.vespatest.MelonDocProc">
+      <map>
+        <field in-document="title" in-processor="melon"/>
+      </map>
+    </documentprocessor>
+    
+    <chain id="banana">
+         <map>
+           <field in-document="title" in-processor="banana" doctype="simple"/>
+         </map>
+         <documentprocessor id="com.yahoo.vespatest.BananaDocProc" />
+    </chain>
+  
+    <chain id="apple">
+         <documentprocessor id="com.yahoo.vespatest.AppleDocProc">
+            <map>
+              <field in-document="title" in-processor="apple"/>
+           </map>
+         </documentprocessor>
+         <documentprocessor id="com.yahoo.vespatest.PearDocProc">
+            <map>
+              <field in-document="isbn" in-processor="pear"/>
+           </map>
+         </documentprocessor>
+    </chain>
+  
+    <chain id="applesub" inherits="apple">
+        <documentprocessor id="com.yahoo.vespatest.BananaDocProc">
+          <map>
+            <field in-document="title" in-processor="banana"/>
+          </map>
+        </documentprocessor>
+    </chain>
+   </document-processing>
+   
+   <nodes>
+     <node hostalias="node1"/>
+   </nodes>
+  </jdisc>
+
+</services>
+

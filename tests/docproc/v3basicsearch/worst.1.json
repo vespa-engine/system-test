@@ -1,0 +1,9 @@
+[
+  {
+    "fields": {
+      "order": 0,
+      "title": "Should fail"
+    },
+    "put": "id:test:worst::42"
+  }
+]
