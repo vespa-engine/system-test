@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+    <logserver hostalias="node1" />
+  </admin>
+
+  <container version="1.0">
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+
+      <search>
+        <chain id="default">
+	  <phase id="p1" />
+	  <phase id="p2" after="p1" before="p3" />
+	  <phase id="p3" />
+
+          <searcher id="s1" class="com.yahoo.example.AddHitSearcher" after="p1" before="s2">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Added by s1</hitTitle>
+            </config>
+	  </searcher>
+
+          <searcher id="s2" class="com.yahoo.example.AddHitSearcher" after="p1 p2" before="p3 s3">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Added by s2</hitTitle>
+            </config>
+	  </searcher>
+
+          <searcher id="s3" class="com.yahoo.example.AddHitSearcher" after="p3">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Added by s3</hitTitle>
+            </config>
+	  </searcher>
+        </chain>
+      </search>
+  </container>
+</services>

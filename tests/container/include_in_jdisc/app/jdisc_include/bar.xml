@@ -1,0 +1,7 @@
+<components>
+  <component id="test.BarComponent" bundle="mybundle">
+  <config name="com.yahoo.jdiscinclude.test">
+    <testString>bar </testString>
+  </config>
+  </component>
+</components>

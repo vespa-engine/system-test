@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<container version="1.0">
+
+  <model-evaluation/>
+
+  <handler id="com.yahoo.test.handler.TestModelsEvaluationHandler" bundle="my_bundle">
+    <binding>http://*/models/*</binding>
+  </handler>
+
+</container>

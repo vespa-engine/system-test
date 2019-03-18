@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />    
+    <logserver hostalias="node1" />
+    <slobroks>
+      <slobrok hostalias="node1" />
+    </slobroks>
+  </admin>
+
+  <jdisc version="1.0">
+    <handler id="com.yahoo.jdiscdemo.HandlerWithNonCloudConfig" bundle="mybundle">
+      <binding>http://*:*/demo</binding>
+    </handler>
+    <component id="com.yahoo.jdiscdemo.MyResponseConfigProvider" bundle="mybundle" >
+      <config name='com.yahoo.jdiscdemo.response'>
+        <response>We can configure a jdisc handler that takes non-cloud config!</response>
+      </config>
+    </component>
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+  </jdisc>
+  
+</services>

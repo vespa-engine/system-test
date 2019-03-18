@@ -1,0 +1,5 @@
+<search>
+  <chain id="default">
+    <searcher id="com.yahoo.search.example.SimpleSearcher" bundle="mybundle"/>
+  </chain>
+</search>

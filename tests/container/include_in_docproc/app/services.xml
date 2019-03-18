@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+    <logserver hostalias="node1" />
+  </admin>
+
+  <jdisc version="1.0">
+    <search/>
+    <document-processing>
+      <include dir='docproc/dir1' />
+      <include dir='docproc/dir2' />
+      <include dir='docproc/empty_dir' />
+      <chain id="inline">
+        <documentprocessor id="com.yahoo.example.docproc.TerribleMusicDocProc" bundle="mybundle" />
+      </chain>
+    </document-processing>
+
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+  </jdisc>
+
+   <content id='music' version='1.0'>
+     <redundancy>1</redundancy>
+     <config name='vespa.config.search.core.proton'>
+       <numthreadspersearch>4</numthreadspersearch>
+     </config>
+     <documents>
+       <document mode='index' type='music'/>
+     </documents>
+     <group>
+       <node distribution-key='0' hostalias='node1'/>
+     </group>
+     <engine>
+       <proton>
+         <searchable-copies>1</searchable-copies>
+       </proton>
+     </engine>
+   </content>
+
+</services>

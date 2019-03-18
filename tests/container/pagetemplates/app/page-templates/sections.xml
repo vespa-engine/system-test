@@ -1,0 +1,7 @@
+<page id="sections">
+  <section id="topbar">
+    <section source="blog" max="2"/>
+    <section source="images" max="2"/>
+  </section>
+  <section source="news web" order="[source]" max="4"/>
+</page>

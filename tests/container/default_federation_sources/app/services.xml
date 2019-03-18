@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1"/>
+    <logserver hostalias="node1"/>
+  </admin>
+
+  <container version="1.0">
+    <nodes jvmargs="-Xmx320m -Xms64m -XX:MaxDirectMemorySize=115m">
+      <node hostalias="node1"/>
+    </nodes>
+
+   <search>
+
+        <chain id="chains_are_used_by_default">
+          <searcher id="com.yahoo.example.AddHitSearcher"/>
+        </chain>
+
+        <provider id="providers_without_children_are_used_by_default">
+          <searcher id="com.yahoo.example.AddHitSearcher"/>
+        </provider>
+
+        <provider id="providers_are_not_used_when_explicitly_disabled">
+          <searcher id="com.yahoo.example.AddHitSearcher"/>
+	  <federationoptions default="false" />
+        </provider>
+
+        <provider id="providers_with_sources_are_not_used_by_default">
+          <searcher id="com.yahoo.example.AddHitSearcher"/>
+	  <source id ="source1">
+            <searcher id="com.yahoo.example.AddHitSearcher"/>
+	  </source>
+        </provider>
+
+        <provider id="explicitly_enabled_providers_with_sources_are_used_by_default">
+          <searcher id="com.yahoo.example.AddHitSearcher"/>
+	  <source id ="source2">
+            <searcher id="NestedAddHitSearcher" class="com.yahoo.example.AddHitSearcher"/>
+	  </source>
+	  <federationoptions default="true" />
+        </provider>
+
+        <provider id="source_leaders_are_used_by_default">
+          <searcher id="com.yahoo.example.AddHitSearcher"/>
+	  <source id ="common_source">
+            <searcher id="com.yahoo.example.AddHitSearcher"/>
+	  </source>
+        </provider>
+
+        <provider id="source_participants_are_not_used_by_default">
+          <searcher id="com.yahoo.example.AddHitSearcher"/>
+	  <source idref ="common_source">
+            <searcher id="com.yahoo.example.AddHitSearcher"/>
+	  </source>
+        </provider>
+
+	<chain id="custom_federation" inherits="native">
+	  <federation id="federation">
+	    <source id="explicitly_enabled_providers_with_sources_are_used_by_default" />
+	    <source id="source2">
+	      <federationoptions default="false" />
+	    </source>
+	    <source id="chains_are_used_by_default" />
+	  </federation>
+	</chain>
+
+    </search>
+  </container>
+</services>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<container version="1.0">
+  <rest-api path="rest-api" jersey2="true">
+    <components bundle="hello" />
+  </rest-api>
+
+  <component id="injected" class="com.yahoo.test.Hello" bundle="hello" />
+</container>

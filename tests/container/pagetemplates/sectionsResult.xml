@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<page version="1.0">
+  <section id="section:topbar">
+    <section>
+      <content>
+        <hit relevance="1.0" source="blog">
+          <id>blog:1</id>
+        </hit>
+        <hit relevance="0.5" source="blog">
+          <id>blog:2</id>
+        </hit>
+      </content>
+    </section>
+    <section>
+      <content>
+        <hit relevance="1.0" source="images">
+          <id>images:1</id>
+        </hit>
+        <hit relevance="0.5" source="images">
+          <id>images:2</id>
+        </hit>
+      </content>
+    </section>
+  </section>
+  <section>
+    <content>
+      <hit relevance="1.0" source="news">
+        <id>news:1</id>
+      </hit>
+      <hit relevance="0.5" source="news">
+        <id>news:2</id>
+      </hit>
+      <hit relevance="1.0" source="web">
+        <id>web:1</id>
+      </hit>
+      <hit relevance="0.5" source="web">
+        <id>web:2</id>
+      </hit>
+    </content>
+  </section>
+</page>

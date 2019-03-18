@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+    <admin version="2.0">
+      <adminserver hostalias="node1" />
+      <logserver hostalias="node1" />
+    </admin>
+
+    <container version="1.0">
+        <handler id="com.yahoo.vespatest.Handler0">
+          <binding>http://*/Handler0</binding>
+        </handler>
+      <handler id="com.yahoo.vespatest.Handler1">
+        <binding>http://*/Handler1</binding>
+      </handler>
+        <nodes><node hostalias="node1"/></nodes>
+    </container>
+
+</services>

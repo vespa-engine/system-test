@@ -1,0 +1,19 @@
+<jdisc version="1.0">
+  <handler id="com.yahoo.test.FilesHandler" bundle="handler">
+    <binding>http://*/files</binding>
+    <config name="com.yahoo.test.paths-and-files">
+      <files>
+        <fileVal>file-for-fileVal.txt</fileVal>
+      </files>
+      <paths>
+        <pathVal>file-for-pathVal.txt</pathVal>
+        <pathArr>
+          <item>file-for-pathArr.txt</item>
+        </pathArr>
+        <pathMap>
+          <item key="one">file-for-pathMap.txt</item>
+        </pathMap>
+      </paths>
+    </config>
+  </handler>
+</jdisc>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="0">
+  <hit relevancy="1.0">
+    <field name="message">Hello, world!</field>
+  </hit>
+</result>
+

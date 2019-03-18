@@ -1,0 +1,9 @@
+<jdisc version='1.0' id='default'>
+  <rest-api path="rest1" jersey2="true">
+    <components bundle="main_bundle" />
+  </rest-api>
+
+  <rest-api path="rest2" jersey2="true">
+    <components bundle="other_bundle" />
+  </rest-api>
+</jdisc>

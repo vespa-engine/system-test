@@ -1,0 +1,5 @@
+version=2
+package=com.yahoo.vespatest
+
+enumVal enum {Mind, Body, World}
+times int default=1
