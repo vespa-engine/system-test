@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <container version="1.0">
+    <search/>
+    <document-api/>
+  </container>
+
+  <content version="1.0" id="music">
+    <redundancy>1</redundancy>
+    <documents>
+      <document type="music" mode="streaming"/>
+    </documents>
+    <nodes>
+      <node hostalias="node1" distribution-key="0"/>
+    </nodes>
+  </content>
+
+</services>

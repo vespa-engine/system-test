@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<jdisc version="1.0">
+
+  <handler id="com.yahoo.test.handler.HandlerTakingComponent" bundle="my_bundle">
+    <binding>http://*/test</binding>
+    <component id="genericComponent" class="com.yahoo.test.component.GenericComponent" bundle="my_bundle">
+      <!-- TBD: declare the component outside the handler, and refer to it here:
+      <inject component="genericComponent" name="foo"/> -->
+      <component id="com.yahoo.test.component.NestedGenericComponent" bundle="my_bundle" />
+    </component>
+  </handler>
+
+  <!--
+  <component id="genericComponent" class="com.yahoo.test.component.GenericComponent" bundle="my_bundle">
+    <component id="com.yahoo.test.component.NestedGenericComponent" bundle="my_bundle" />
+  </component>
+-->
+
+</jdisc>

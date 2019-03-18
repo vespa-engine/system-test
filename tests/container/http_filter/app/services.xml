@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+    <logserver hostalias="node1" />
+  </admin>
+
+  <jdisc version="1.0" id="container">
+    <http>
+      <filtering>
+        <response-chain id="response-chain">
+          <filter id="com.yahoo.test.TestSecurityResponseFilter" bundle="test-bundle" />
+          <filter id="com.yahoo.test.TestResponseFilter" bundle="test-bundle" />
+          <binding>http://*:4080/TestHandler</binding>
+          <binding>http://*:4081/*</binding>
+        </response-chain>
+
+        <request-chain id="request-chain">
+          <filter id="com.yahoo.test.TestSecurityRequestFilter" bundle="test-bundle" />
+          <filter id="com.yahoo.test.TestRequestFilter" bundle="test-bundle" />
+          <binding>http://*:4082/*</binding>
+        </request-chain>
+
+        <response-chain id="simple-response-chain">
+          <filter id="response-filter" class="com.yahoo.test.TestResponseFilter" bundle="test-bundle" />
+          <binding>http://*:4083/*</binding>
+        </response-chain>
+
+        <request-chain id="simple-request-chain">
+          <filter id="request-filter" class="com.yahoo.test.TestRequestFilter" bundle="test-bundle" />
+          <binding>http://*:4083/*</binding>
+        </request-chain>
+      </filtering>
+
+      <server port="4080" id="main-server" />
+      <server port="4081" id="server1" />
+      <server port="4082" id="server2" />
+      <server port="4083" id="server3" />
+    </http>
+
+    <handler id="com.yahoo.test.TestHandler" bundle="test-bundle">
+      <binding>http://*/TestHandler</binding>
+    </handler>
+
+  </jdisc>
+</services>

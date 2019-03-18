@@ -1,0 +1,7 @@
+package=com.yahoo.test
+
+files.fileVal file
+
+paths.pathVal path
+paths.pathArr[] path
+paths.pathMap{} path

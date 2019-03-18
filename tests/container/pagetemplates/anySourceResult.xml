@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<page version="1.0">
+  <content>
+    <hit relevance="1.0" source="blog">
+      <id>blog:1</id>
+    </hit>
+    <hit relevance="1.0" source="images">
+      <id>images:1</id>
+    </hit>
+    <hit relevance="1.0" source="news">
+      <id>news:1</id>
+    </hit>
+    <hit relevance="1.0" source="web">
+      <id>web:1</id>
+    </hit>
+    <hit relevance="0.5" source="blog">
+      <id>blog:2</id>
+    </hit>
+    <hit relevance="0.5" source="images">
+      <id>images:2</id>
+    </hit>
+    <hit relevance="0.5" source="news">
+      <id>news:2</id>
+    </hit>
+    <hit relevance="0.5" source="web">
+      <id>web:2</id>
+    </hit>
+    <hit relevance="0.3333333333333333" source="blog">
+      <id>blog:3</id>
+    </hit>
+    <hit relevance="0.3333333333333333" source="images">
+      <id>images:3</id>
+    </hit>
+    <hit relevance="0.3333333333333333" source="news">
+      <id>news:3</id>
+    </hit>
+    <hit relevance="0.3333333333333333" source="web">
+      <id>web:3</id>
+    </hit>
+    <hit relevance="0.25" source="blog">
+      <id>blog:4</id>
+    </hit>
+    <hit relevance="0.25" source="images">
+      <id>images:4</id>
+    </hit>
+    <hit relevance="0.25" source="news">
+      <id>news:4</id>
+    </hit>
+  </content>
+</page>

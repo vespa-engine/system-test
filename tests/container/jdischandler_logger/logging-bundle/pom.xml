@@ -1,0 +1,71 @@
+    <project xsi:schemaLocation='http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd' xmlns='http://maven.apache.org/POM/4.0.0' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+      <modelVersion>4.0.0</modelVersion>
+      <groupId>com.yahoo.vespa</groupId>
+      <artifactId>logging-bundle</artifactId>
+      <version>1.0.0</version>
+      <name>com.yahoo.vespatest.LoggerHandler</name>
+      <packaging>container-plugin</packaging>
+      <description>
+          Create a bundle from one or more classes and zero or more configdef files.
+      </description>
+      <url>https://vespa.ai/</url>
+
+      <build>
+        <!-- hacks other places in this file depends on the order of the
+             plugins.
+             TODO Fix the above mentioned nastiness. -->
+        <plugins>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.0</version>
+            <configuration>
+              <source>11</source>
+              <target>11</target>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>com.yahoo.vespa</groupId>
+            <artifactId>bundle-plugin</artifactId>
+            <version>${vespa.version}</version>
+            <extensions>true</extensions>
+          </plugin>
+
+        </plugins>
+      </build>
+
+      <dependencies>
+        <dependency>
+          <groupId>com.yahoo.vespa</groupId>
+          <artifactId>container-dev</artifactId>
+          <version>${vespa.version}</version>
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+          <exclusions>
+            <exclusion>
+              <groupId>log4j</groupId>
+              <artifactId>log4j</artifactId>
+            </exclusion>
+          </exclusions>
+          <version>1.1</version>
+        </dependency>
+        <dependency>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging-api</artifactId>
+          <exclusions>
+            <exclusion>
+              <groupId>log4j</groupId>
+              <artifactId>log4j</artifactId>
+            </exclusion>
+          </exclusions>
+          <version>1.1</version>
+        </dependency>
+
+      </dependencies>
+
+    </project>

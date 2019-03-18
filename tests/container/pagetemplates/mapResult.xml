@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<page version="1.0">
+  <section layout="row">
+    <section id="section:box1">
+      <content>
+        <hit relevance="1.0" source="news">
+          <id>news:1</id>
+        </hit>
+        <hit relevance="0.5" source="news">
+          <id>news:2</id>
+        </hit>
+        <hit relevance="0.3333333333333333" source="news">
+          <id>news:3</id>
+        </hit>
+        <hit relevance="0.25" source="news">
+          <id>news:4</id>
+        </hit>
+        <hit relevance="0.2" source="news">
+          <id>news:5</id>
+        </hit>
+        <hit relevance="0.16666666666666666" source="news">
+          <id>news:6</id>
+        </hit>
+        <hit relevance="0.14285714285714285" source="news">
+          <id>news:7</id>
+        </hit>
+        <hit relevance="0.125" source="news">
+          <id>news:8</id>
+        </hit>
+        <hit relevance="0.1111111111111111" source="news">
+          <id>news:9</id>
+        </hit>
+        <hit relevance="0.1" source="news">
+          <id>news:10</id>
+        </hit>
+        <hit relevance="0.09090909090909091" source="news">
+          <id>news:11</id>
+        </hit>
+        <hit relevance="0.08333333333333333" source="news">
+          <id>news:12</id>
+        </hit>
+        <hit relevance="0.07692307692307693" source="news">
+          <id>news:13</id>
+        </hit>
+        <hit relevance="0.07142857142857142" source="news">
+          <id>news:14</id>
+        </hit>
+        <hit relevance="0.06666666666666667" source="news">
+          <id>news:15</id>
+        </hit>
+      </content>
+    </section>
+    <section id="section:box2">
+      <content>
+        <hit relevance="1.0" source="web">
+          <id>web:1</id>
+        </hit>
+        <hit relevance="0.5" source="web">
+          <id>web:2</id>
+        </hit>
+        <hit relevance="0.3333333333333333" source="web">
+          <id>web:3</id>
+        </hit>
+        <hit relevance="0.25" source="web">
+          <id>web:4</id>
+        </hit>
+        <hit relevance="0.2" source="web">
+          <id>web:5</id>
+        </hit>
+        <hit relevance="0.16666666666666666" source="web">
+          <id>web:6</id>
+        </hit>
+        <hit relevance="0.14285714285714285" source="web">
+          <id>web:7</id>
+        </hit>
+        <hit relevance="0.125" source="web">
+          <id>web:8</id>
+        </hit>
+        <hit relevance="0.1111111111111111" source="web">
+          <id>web:9</id>
+        </hit>
+        <hit relevance="0.1" source="web">
+          <id>web:10</id>
+        </hit>
+        <hit relevance="0.09090909090909091" source="web">
+          <id>web:11</id>
+        </hit>
+        <hit relevance="0.08333333333333333" source="web">
+          <id>web:12</id>
+        </hit>
+        <hit relevance="0.07692307692307693" source="web">
+          <id>web:13</id>
+        </hit>
+        <hit relevance="0.07142857142857142" source="web">
+          <id>web:14</id>
+        </hit>
+        <hit relevance="0.06666666666666667" source="web">
+          <id>web:15</id>
+        </hit>
+      </content>
+    </section>
+  </section>
+  <section layout="row">
+    <section id="section:box3">
+      <content>
+        <hit relevance="1.0" source="blog">
+          <id>blog:1</id>
+        </hit>
+        <hit relevance="0.5" source="blog">
+          <id>blog:2</id>
+        </hit>
+        <hit relevance="0.3333333333333333" source="blog">
+          <id>blog:3</id>
+        </hit>
+        <hit relevance="0.25" source="blog">
+          <id>blog:4</id>
+        </hit>
+        <hit relevance="0.2" source="blog">
+          <id>blog:5</id>
+        </hit>
+        <hit relevance="0.16666666666666666" source="blog">
+          <id>blog:6</id>
+        </hit>
+        <hit relevance="0.14285714285714285" source="blog">
+          <id>blog:7</id>
+        </hit>
+        <hit relevance="0.125" source="blog">
+          <id>blog:8</id>
+        </hit>
+        <hit relevance="0.1111111111111111" source="blog">
+          <id>blog:9</id>
+        </hit>
+        <hit relevance="0.1" source="blog">
+          <id>blog:10</id>
+        </hit>
+        <hit relevance="0.09090909090909091" source="blog">
+          <id>blog:11</id>
+        </hit>
+        <hit relevance="0.08333333333333333" source="blog">
+          <id>blog:12</id>
+        </hit>
+        <hit relevance="0.07692307692307693" source="blog">
+          <id>blog:13</id>
+        </hit>
+        <hit relevance="0.07142857142857142" source="blog">
+          <id>blog:14</id>
+        </hit>
+        <hit relevance="0.06666666666666667" source="blog">
+          <id>blog:15</id>
+        </hit>
+      </content>
+    </section>
+    <section id="section:box4">
+      <content>
+        <hit relevance="1.0" source="images">
+          <id>images:1</id>
+        </hit>
+        <hit relevance="0.5" source="images">
+          <id>images:2</id>
+        </hit>
+        <hit relevance="0.3333333333333333" source="images">
+          <id>images:3</id>
+        </hit>
+        <hit relevance="0.25" source="images">
+          <id>images:4</id>
+        </hit>
+        <hit relevance="0.2" source="images">
+          <id>images:5</id>
+        </hit>
+        <hit relevance="0.16666666666666666" source="images">
+          <id>images:6</id>
+        </hit>
+        <hit relevance="0.14285714285714285" source="images">
+          <id>images:7</id>
+        </hit>
+        <hit relevance="0.125" source="images">
+          <id>images:8</id>
+        </hit>
+        <hit relevance="0.1111111111111111" source="images">
+          <id>images:9</id>
+        </hit>
+        <hit relevance="0.1" source="images">
+          <id>images:10</id>
+        </hit>
+        <hit relevance="0.09090909090909091" source="images">
+          <id>images:11</id>
+        </hit>
+        <hit relevance="0.08333333333333333" source="images">
+          <id>images:12</id>
+        </hit>
+        <hit relevance="0.07692307692307693" source="images">
+          <id>images:13</id>
+        </hit>
+        <hit relevance="0.07142857142857142" source="images">
+          <id>images:14</id>
+        </hit>
+        <hit relevance="0.06666666666666667" source="images">
+          <id>images:15</id>
+        </hit>
+      </content>
+    </section>
+  </section>
+</page>

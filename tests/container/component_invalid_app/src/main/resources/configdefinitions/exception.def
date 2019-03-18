@@ -1,0 +1,4 @@
+package=com.yahoo.vespatest
+
+doThrow bool default=false
+generation int

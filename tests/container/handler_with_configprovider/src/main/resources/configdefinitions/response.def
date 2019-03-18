@@ -1,0 +1,4 @@
+version=1
+package=com.yahoo.jdiscdemo
+
+response string default="No config value given."

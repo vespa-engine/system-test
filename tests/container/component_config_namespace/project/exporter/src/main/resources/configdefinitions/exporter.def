@@ -1,0 +1,4 @@
+version=1
+package=com.yahoo.exporter.config
+
+exampleString string

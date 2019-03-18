@@ -1,0 +1,7 @@
+<search>
+  <searcher class="com.yahoo.search.example.SimpleSearcher" id="s1" bundle="mybundle"/>
+  <chain id="chain2">
+    <searcher id="s1"/>
+    <searcher id="com.yahoo.search.example.SimpleSearcher2" bundle="mybundle"/>
+  </chain>
+</search>

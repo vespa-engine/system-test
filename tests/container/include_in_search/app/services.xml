@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+    <logserver hostalias="node1" />
+  </admin>
+
+  <jdisc version="1.0">
+    <search>
+      <include dir='search/dir1' />
+      <include dir='search/dir2' />
+      <include dir='search/empty_dir' />
+      <chain id="inline">
+        <searcher id="com.yahoo.search.example.SimpleSearcher" bundle="mybundle" />
+        <searcher id="com.yahoo.search.example.SimpleSearcher2" bundle="mybundle" />
+      </chain>
+    </search>
+
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+  </jdisc>
+
+</services>

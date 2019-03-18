@@ -1,0 +1,5 @@
+<document-processing>
+  <chain id="chain2">
+    <documentprocessor id="com.yahoo.example.docproc.ExampleDocumentProcessor" bundle="mybundle"/>
+  </chain>
+</document-processing>

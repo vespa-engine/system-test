@@ -1,0 +1,6 @@
+version=1
+package=com.yahoo.projecttwo
+
+anotherexample string default="balla"
+
+

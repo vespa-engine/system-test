@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+    <logserver hostalias="node1" />
+  </admin>
+
+  <container version="1.0">
+    <nodes>
+      <node hostalias="node2" />
+    </nodes>
+
+      <search>
+
+        <!-- Example1 -->
+        <chain id="simple_1" />
+
+        <!-- Example2 -->
+        <chain id="simple_2">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher" />
+        </chain>
+
+        <!-- Example3 -->
+        <chain id="elementary_3">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher" />
+        </chain>
+
+        <chain id="simple_3">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher" />
+        </chain>
+
+        <!-- Example4 -->
+        <chain id="elementary_4">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddHitSearcher in the elementary search chain</hitTitle>
+            </config>
+          </searcher>
+        </chain>
+
+        <chain id="simple_4">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddHitSearcher in the simple search chain</hitTitle>
+            </config>
+          </searcher>
+        </chain>
+
+        <!-- Example5 -->
+        <chain id="elementary_5">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddHitSearcher in the elementary search chain</hitTitle>
+            </config>
+          </searcher>
+        </chain>
+
+        <chain id="simple_5">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddHitSearcher in the simple search chain</hitTitle>
+            </config>
+          </searcher>
+        </chain>
+
+        <!-- Example6 -->
+        <chain id="base_6">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddHitSearcher in the base search chain</hitTitle>
+            </config>
+          </searcher>
+
+          <searcher id="com.yahoo.prelude.statistics.StatisticsSearcher" />
+          <searcher id="com.yahoo.search.searchchain.example.ExampleSearcher" />
+        </chain>
+
+        <chain id="derived_6" inherits="base_6">
+          <searcher id="AddAnotherHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddAnotherHitSearcher in the derived search chain</hitTitle>
+            </config>
+          </searcher>
+        </chain>
+
+        <!-- Example7 -->
+        <chain id="base_7">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddHitSearcher in the base search chain</hitTitle>
+            </config>
+          </searcher>
+
+          <searcher id="com.yahoo.prelude.statistics.StatisticsSearcher" />
+          <searcher id="com.yahoo.search.searchchain.example.ExampleSearcher" />
+        </chain>
+
+        <chain id="derived_7" inherits="base_7">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddHitSearcher in the derived search chain</hitTitle>
+            </config>
+          </searcher>
+        </chain>
+
+        <!-- Example8 -->
+        <chain id="base_8">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddHitSearcher in the base search chain</hitTitle>
+            </config>
+          </searcher>
+
+          <searcher id="com.yahoo.prelude.statistics.StatisticsSearcher" />
+          <searcher id="com.yahoo.search.searchchain.example.ExampleSearcher" />
+        </chain>
+
+        <chain id="derived_8" inherits="base_8" excludes="AddHitSearcher com.yahoo.prelude.statistics.StatisticsSearcher" />
+
+        <!-- Example9 -->
+        <chain id="base1_9">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddHitSearcher in the base1 search chain</hitTitle>
+            </config>
+          </searcher>
+        </chain>
+
+        <chain id="base2_9">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddHitSearcher in the base2 search chain</hitTitle>
+            </config>
+          </searcher>
+        </chain>
+
+        <chain id="derived_9" inherits="base1_9 base2_9">
+          <searcher id="AddHitSearcher" class="com.yahoo.example.AddHitSearcher">
+            <config name="com.yahoo.vespatest.hit-title">
+              <hitTitle>Produced by AddHitSearcher in the derived search chain. Overrides AddHitSearcher in base1 and base2</hitTitle>
+            </config>
+          </searcher>
+        </chain>
+
+        <!-- Example10 -->
+        <searcher id="AddHitSearcherOuter" class="com.yahoo.example.AddHitSearcher">
+          <config name="com.yahoo.vespatest.hit-title">
+            <hitTitle>Produced by the outer AddHitSearcher</hitTitle>
+          </config>
+        </searcher>
+
+        <chain id="referenceChain">
+          <searcher idref="AddHitSearcherOuter" />
+        </chain>
+
+        <chain id="referenceChain2">
+          <searcher idref="AddHitSearcherOuter" />
+        </chain>
+    </search>
+
+  </container>
+</services>

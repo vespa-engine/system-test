@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+    <admin version="2.0">
+      <adminserver hostalias="node1" />
+      <logserver hostalias="node1" />
+    </admin>
+
+    <container version="1.0">
+            <nodes>
+              <node hostalias="node1" />
+            </nodes>
+            <search>
+              <searcher id="com.yahoo.vespatest.ExtraHitSearcher">
+                <config name="com.yahoo.vespatest.extra-hit">
+                  <exampleString>Nothing will ever change.</exampleString>
+                </config>
+              </searcher>
+
+              <chain id="default">
+                <searcher id="com.yahoo.vespatest.ExtraHitSearcher"/>
+              </chain>
+
+            </search>
+    </container>
+
+</services>

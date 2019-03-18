@@ -1,0 +1,8 @@
+<query-profile id="default">
+  <field name="service.qlas.Fields">suggestion,rwsuggestion,spelltoken,annotatedsuggestion,annotatedrwsuggestion</field>
+  <field name="service.qlas.QueryEncoding">utf-8</field>
+  <field name="service.qlas.spellexcludeenable">1</field>
+  <field name="service.qlas.Client">yahoousvespatest</field>
+  <field name="service.qlas.Spelldatabase">spell-en-us</field>
+  <field name="service.qlas.SpellState">enable</field>
+</query-profile>

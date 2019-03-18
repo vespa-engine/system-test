@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+  <admin version="2.0">
+    <adminserver hostalias="node1" />    
+    <logserver hostalias="node1" />
+    <slobroks>
+      <slobrok hostalias="node1" />
+    </slobroks>
+  </admin>
+  <container version="1.0">
+        <handler id="com.yahoo.vespatest.HelloWorld">
+          <binding>http://*/HelloWorld</binding>
+        </handler>
+        <nodes>
+          <node hostalias="node1" />
+        </nodes>
+  </container>
+</services>

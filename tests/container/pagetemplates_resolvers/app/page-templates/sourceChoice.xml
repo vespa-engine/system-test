@@ -1,0 +1,6 @@
+<page id="sourceChoice">
+  <choice>
+    <source name="news"/>
+    <source name="web"/>
+  </choice>
+</page>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+  </admin>
+
+  <container version="1.0">
+        <nodes>
+          <node hostalias="node1" />
+        </nodes>
+    <search>
+           <chain id="no1">
+            <searcher id="com.yahoo.searchers.Searcher1" bundle="com.yahoo.searcher1">
+              <config name="foo" namespace="com.yahoo.bar">
+                <title>Searcher1 title</title>
+              </config>
+            </searcher>
+          </chain>
+
+          <chain id="no2">
+            <searcher id="com.yahoo.searchers.Searcher2" bundle="com.yahoo.searcher2">
+              <config name="foo" namespace="com.yahoo.xyzzy">
+                <number>42</number>
+              </config>
+            </searcher>
+          </chain>
+
+       </search>
+
+  </container>
+
+</services>
