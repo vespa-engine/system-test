@@ -1,0 +1,22 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search shopping {
+	document shopping {
+                #offer_url
+                field ourl type string {
+                        # used by docproc to produce comprurl
+                }
+                field comprurl type array<byte> {
+                        # compressed data
+                        indexing: summary | attribute
+                        summary-to: prod, catg, selr
+                }
+		field number type int {
+			indexing: summary | attribute
+		}
+	}
+	rank-profile default {
+		first-phase {
+			expression: 1.0 - 0.001*attribute(number)
+		}
+	}
+}

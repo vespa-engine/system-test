@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+    <logserver hostalias="node1" />
+    <slobroks>
+      <slobrok hostalias="node1" />
+    </slobroks>
+  </admin>
+
+  <content version="1.0">
+    <redundancy>1</redundancy>
+    <nodes>
+      <node hostalias="node1" distribution-key="0"/>
+    </nodes>
+    <documents>
+      <document type="worst" mode="index"/>
+    </documents>
+  </content>
+
+  <container version="1.0" id="banana">
+    <http>
+      <server port='4090' id='default'/>
+    </http>
+    <nodes>
+      <node hostalias="node1"/>
+    </nodes>
+    <search />
+    <document-processing>
+      <chain id="split">
+        <documentprocessor id="com.yahoo.vespatest.BananaDocProc" />
+      </chain>
+    </document-processing>
+  </container>
+
+  <container version="1.0">
+    <http>
+      <server port="4100" id="default"/>
+    </http>
+    <search/>
+    <document-processing>
+      <chain id="default">
+        <documentprocessor id="com.yahoo.vespatest.WorstMusicDocProc" />
+      </chain>
+      <chain id="apple">
+	<documentprocessor id="com.yahoo.vespatest.AppleDocProc" />
+      </chain>
+    </document-processing>
+  </container>
+
+</services>

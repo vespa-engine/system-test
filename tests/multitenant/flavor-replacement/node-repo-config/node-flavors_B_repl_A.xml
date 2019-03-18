@@ -1,0 +1,16 @@
+<config name="config.provisioning.flavors">
+	<flavor>
+		<item>
+			<name>flavor_A</name>
+		</item>
+		<item>
+			<name>flavor_B</name>
+			<replaces>
+			    <item>
+			        <name>flavor_A</name>
+			    </item>
+			</replaces>
+		</item>
+	</flavor>
+</config>
+

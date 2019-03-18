@@ -1,0 +1,102 @@
+// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+package com.yahoo.test;
+
+import com.yahoo.search.Searcher;
+import com.yahoo.search.Query;
+import com.yahoo.search.Result;
+
+import com.yahoo.search.searchchain.Execution;
+import com.yahoo.yolean.chain.Before;
+import com.yahoo.yolean.chain.After;
+
+import com.yahoo.search.result.Hit;
+import com.yahoo.search.result.StructuredData;
+import com.yahoo.prelude.hitfield.JSONString;
+import org.json.JSONArray;
+
+import java.util.Iterator;
+
+import static com.yahoo.search.result.ErrorMessage.*;
+
+@After("rawQuery")
+@Before("transformedQuery")
+public class ShoppingUrlSearcher extends Searcher {
+
+    public ShoppingUrlSearcher() {}
+
+    public Result search(Query query, Execution execution) {
+        Result r = execution.search(query);
+        ensureFilled(r, null, execution);
+        Iterator<Hit> iter = r.hits().deepIterator();
+        while (iter.hasNext()) {
+            Hit h = iter.next();
+            try {
+                Object v = h.getField("comprurl");
+                String newval = extractString(v);
+                if (newval != null) {
+                    h.setField("ourl", newval);
+                    h.removeField("comprurl");
+                    // hit done OK
+                }
+            } catch (BadData e) {
+                r.hits().addError(createErrorInPluginSearcher(e.getMessage(), e.getCause()));
+            }
+        }
+        return r;
+    }
+
+    private ShoppingUrlCompression coder = new ShoppingUrlCompression();
+
+    private String extractString(Object fieldValue) {
+        if (fieldValue == null) {
+            return null;
+        }
+        try {
+            byte[] data = extractBytes(fieldValue);
+            return coder.decompressString(data);
+        } catch (java.util.zip.DataFormatException e) {
+            throw new BadData("bad compressed data", e);
+        }
+    }
+
+    private byte[] extractBytes(Object fieldValue) {
+        if (fieldValue instanceof JSONString) {
+            JSONString s = (JSONString)fieldValue;
+            try {
+                Object p = s.getParsedJSON();
+                if (p instanceof JSONArray) {
+                    JSONArray arr = (JSONArray)p;
+                    byte[] bytes = new byte[arr.length()];
+                    for (int i = 0; i < arr.length(); i++) {
+                        Object val = arr.get(i);
+                        bytes[i] = (byte) Integer.parseInt(val.toString());
+                    }
+                    return bytes;
+                } else {
+                    throw new BadData("expected JSON array, got: "+s.getContent(), null);
+                }
+            } catch (NumberFormatException e) {
+                throw new BadData("bad number: "+e+" in JSON data: "+s.getContent(), e);
+            } catch (org.json.JSONException e) {
+                throw new BadData("bad JSON: "+e+" data: "+s.getContent(), e);
+            }
+        } else if (fieldValue instanceof StructuredData) {
+            StructuredData s = (StructuredData)fieldValue;
+	    int length = s.inspect().entryCount();
+	    byte[] bytes = new byte[length];
+            for (int i = 0; i < length; i++) {
+                bytes[i] = (byte) s.inspect().entry(i).asLong();
+            }
+            return bytes;
+        } else {
+            throw new BadData("expected bytes wrapped in JSON, got: "
+                              +fieldValue.getClass()+" with value: "+fieldValue, null);
+        }
+    }
+
+    static class BadData extends RuntimeException {
+        BadData(String msg, Throwable cause) {
+            super(msg, cause);
+        }
+    }
+}

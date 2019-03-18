@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <content version="1.0" id="docprocordering">
+    <redundancy>1</redundancy>
+    <nodes>
+      <node hostalias="node1" distribution-key="0"/>
+    </nodes>
+    <documents>
+	<document type="docprocordering" mode="index"/>
+    </documents>
+  </content>
+
+  <container version="1.0">
+    <nodes>
+      <node hostalias="node1"/>
+    </nodes>
+    <search/>
+    <document-processing>
+      <chain id="default">
+        <documentprocessor id="com.yahoo.vespatest.FirstDocumentProcessor"/>
+        <documentprocessor id="com.yahoo.vespatest.SecondDocumentProcessor"/>
+        <documentprocessor id="com.yahoo.vespatest.ThirdDocumentProcessor"/>
+        <documentprocessor id="com.yahoo.vespatest.FourthDocumentProcessor"/>
+        <documentprocessor id="com.yahoo.vespatest.FifthDocumentProcessor"/>
+      </chain>
+    </document-processing>
+  </container>
+</services>
+

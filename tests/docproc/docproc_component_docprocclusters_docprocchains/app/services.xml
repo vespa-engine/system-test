@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1"/>
+    <logserver hostalias="node1"/>
+    <slobroks>
+      <slobrok hostalias="node1"/>
+    </slobroks>
+  </admin>
+
+  <jdisc version="1.0" id="cluster1">
+    <document-processing>
+      <chain id="common">
+        <documentprocessor id="CommonDocproc" class="com.yahoo.vespatest.ExtraHitDocumentProcessor">
+          <config name="com.yahoo.vespatest.extra-hit">
+            <exampleString>A docproc for all clusters</exampleString>
+          </config>
+        </documentprocessor>
+      </chain>
+      <chain id="cluster1">
+        <documentprocessor id="Cluster1Docproc" class="com.yahoo.vespatest.ExtraHitDocumentProcessor">
+          <config name="com.yahoo.vespatest.extra-hit">
+            <exampleString>Docproc only for cluster1</exampleString>
+          </config>
+        </documentprocessor>
+      </chain>
+    </document-processing>
+  </jdisc>
+
+  <jdisc version="1.0" id="cluster2">
+    <http>
+      <server port="19020" id="default"/>
+    </http>
+    <document-api/>
+    <document-processing>
+      <chain id="common">
+        <documentprocessor id="CommonDocproc" class="com.yahoo.vespatest.ExtraHitDocumentProcessor">
+          <config name="com.yahoo.vespatest.extra-hit">
+            <exampleString>A docproc for all clusters</exampleString>
+          </config>
+        </documentprocessor>
+      </chain>
+      <chain id="cluster2">
+        <documentprocessor id="Cluster2Docproc" class="com.yahoo.vespatest.ExtraHitDocumentProcessor">
+          <config name="com.yahoo.vespatest.extra-hit">
+            <exampleString>Docproc only for cluster2</exampleString>
+          </config>
+        </documentprocessor>
+      </chain>
+    </document-processing>
+  </jdisc>
+
+  <content version="1.0" id="storage">
+    <documents>
+      <document type="worst" mode="store-only"/>
+    </documents>
+    <redundancy>1</redundancy>
+    <nodes>
+      <node hostalias="node1" distribution-key="0"/>
+    </nodes>
+  </content>
+
+</services>

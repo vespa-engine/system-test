@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<services version="1.0">
+  <admin version="2.0">
+    <adminserver hostalias="node1"/>
+    <logserver hostalias="node1"/>
+  </admin>
+
+  <container version="1.0">
+      <nodes>
+        <node hostalias="node1"/>
+      </nodes>
+      <document-api/>
+      <document-processing>
+        <chain id="onetoone">
+          <documentprocessor id="com.yahoo.vespatest.OneToOneDocumentProcessor"/>
+        </chain>
+        <chain id="onetozero">
+          <documentprocessor id="com.yahoo.vespatest.OneToZeroDocumentsProcessor"/>
+        </chain>
+        <chain id="onetomany">
+          <documentprocessor id="com.yahoo.vespatest.OneToManyDocumentsProcessor"/>
+        </chain>
+        <chain id="onetomanyallin1bucket">
+          <documentprocessor id="com.yahoo.vespatest.OneToManyDocumentsAllInSameBucketProcessor"/>
+        </chain>
+        <chain id="onetomanysomeinsamebucket">
+          <documentprocessor id="com.yahoo.vespatest.OneToManyDocumentsSomeInSameBucketProcessor"/>
+        </chain>
+    </document-processing>
+  </container>
+
+  <content version="1.0">
+    <documents>
+      <document type='worst' mode='index'/>
+    </documents>
+    <redundancy>1</redundancy>
+    <nodes>
+        <node hostalias="node1" distribution-key="0"/>
+    </nodes>
+  </content>
+
+</services>
