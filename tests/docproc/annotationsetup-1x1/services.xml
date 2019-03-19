@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+    <logserver hostalias="node1" />
+    <slobroks>
+      <slobrok hostalias="node1" />
+    </slobroks>
+  </admin>
+
+  <container version="1.0">
+    <document-api/>
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+    <document-processing>
+      <chain id='annotatorchain'>
+        <documentprocessor id="com.yahoo.vespatest.Annotator"/>
+      </chain>
+    </document-processing>
+  </container>
+
+  <container version="1.0" id="consumer">
+    <http>
+      <server id='consumerserver' port='4090'/>
+    </http>
+    <nodes>
+      <node hostalias="node1"/>
+    </nodes>
+    <document-processing>
+      <chain id='consumerchain'>
+         <documentprocessor id="com.yahoo.vespatest.Consumer"/>
+      </chain>
+    </document-processing>
+  </container>
+
+  <content version="1.0">
+    <documents>
+      <document type="article" mode="index"/>
+    </documents>
+    <redundancy>1</redundancy>
+    <nodes>
+      <node hostalias="node1" distribution-key="0"/>
+    </nodes>
+  </content>
+
+</services>
+

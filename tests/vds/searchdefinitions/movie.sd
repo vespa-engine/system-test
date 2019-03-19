@@ -1,0 +1,14 @@
+search movie {
+
+  document movie {
+
+    field title type string {
+    }
+
+    field director type string {
+    }
+
+  }
+
+}
+

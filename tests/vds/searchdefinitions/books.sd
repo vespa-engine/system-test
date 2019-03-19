@@ -1,0 +1,40 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search books {
+
+  document books {
+
+    # Link to pictures showing book
+    field coverart type uri {
+    }
+
+    # Title of book
+    field title type string {
+    }
+
+    # Book writer
+    field writer type string {
+    }
+
+    # Book production year
+    field year type int {
+    }
+
+    # Book description
+    field description type string {
+    }
+
+    # Names of the chapters
+    field chapters type array<string> {
+    }
+
+    # How many have given this book the grade 0/1/2/3 
+    field popularity type weightedset<int> {
+    }
+
+    # Body field
+    field bodyfield type string { }
+
+  }
+
+}
+

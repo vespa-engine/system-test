@@ -1,0 +1,25 @@
+search music {
+  document music {
+
+    field title type string { }
+
+    field artist type string { }
+
+    field time type int { }
+    field band type string { }
+    field vote type int { }
+    field revenue type float { }
+    field batchid type int { }
+    field year type int {  }
+    field bits type int { }
+    field popularity type weightedset<int> { }
+
+    field url type uri { }
+    field body type string { }
+    field bodyfield type string { }
+
+    # Names of the album tracks
+    field tracks type array<string> { }
+  }
+}
+
