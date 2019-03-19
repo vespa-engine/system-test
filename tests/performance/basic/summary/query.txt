@@ -1,0 +1,1 @@
+/search/?query=sddocname:test&summary=s1&sorting=id&ranking=unranked&hits=10000

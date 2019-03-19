@@ -1,0 +1,22 @@
+search foobar {
+  
+  document foobar {
+    field title type string {
+      indexing: index | summary
+    }
+    field foo type array<int> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field order type int {
+      indexing: attribute
+    }
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: 0.000001*attribute(order)
+    }
+  }
+
+}
