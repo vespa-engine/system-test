@@ -1,0 +1,35 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search rla {
+    document rla {
+        field title type string {
+            indexing: index | summary
+        }
+        field onlyattr type string {
+            indexing: attribute
+        }
+        field onlyidx type string {
+            indexing: index
+        }
+        field both type string {
+            indexing: attribute | index
+        }
+        field source type string {
+            indexing : summary | index | attribute
+            rank: filter
+            match: word
+            normalizing: none
+            stemming: none
+       }
+       field order type int {
+            indexing: attribute
+       }
+    }
+    fieldset default {
+       fields: title, onlyattr, onlyidx, both
+    }
+    rank-profile default {
+       first-phase {
+           expression: attribute(order)
+       }
+    }
+}

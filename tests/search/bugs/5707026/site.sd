@@ -1,0 +1,108 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search site {
+
+  document site {
+
+    # the best title describing the page
+    field title type string {
+      indexing: summary | index
+      bolding: on
+    }
+
+    # the outline heading for the page. distance to the beginning matters 
+    field title2 type string {
+      indexing: summary | index
+      bolding: on
+    }
+
+    # the html title
+    field title3 type string {
+      indexing: summary | index
+      bolding: on
+    }
+
+    field anchor type string {
+      indexing: summary | index
+      rank-type: identity
+      bolding: on
+    }
+    
+    field breadcrumb type string {
+      indexing: summary | index
+      bolding: on
+    }
+    
+    # replacing: <indexing: summary | split_foreach "," { index; }> (not working)
+    field keywords type string {
+      indexing: summary | index
+      bolding: on
+    }
+    
+    field weightedtags type weightedset<string> {
+      indexing: attribute | summary
+      weightedset {
+        create-if-nonexistent
+        remove-if-zero
+      }
+      rank-type: tags
+      match {
+        exact
+        exact-terminator: " @@@"
+      }
+    }
+
+    field qterms type weightedset<string> {
+      indexing: attribute | summary
+      weightedset {
+        create-if-nonexistent
+        remove-if-zero
+      }
+      rank-type: tags
+      match {
+        exact
+        exact-terminator: " @@@"
+      }
+    }
+    
+    field description type string {
+      indexing: summary | index
+      summary: dynamic
+    }
+
+    field body type string {
+      indexing: summary | index
+      summary: dynamic
+    }
+
+    field uri type uri {
+      indexing: summary | index
+      stemming: none
+    }
+
+    field person type string {
+      indexing: summary | index
+      rank-type: identity
+      bolding: on
+      stemming: none
+    }
+    
+    field catarr1 type array<string> {
+      indexing: attribute | summary
+      stemming: none
+      index: prefix
+    }
+
+    field catarr4 type array<string> {
+      indexing: attribute | summary
+      stemming: none
+      index: prefix
+    }
+    
+  } # document
+
+  fieldset default {
+    fields: title, description, body
+  }
+
+
+} # search

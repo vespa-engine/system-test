@@ -1,0 +1,10 @@
+search simple {
+  document simple {
+    field marker type string {
+      indexing: summary | index
+    }
+  }
+  fieldset default {
+    fields: marker
+  }
+}

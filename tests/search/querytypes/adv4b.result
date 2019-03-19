@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="62.325455674653256" source="search">
+    <field name="relevancy">62.325455674653256</field>
+    <field name="sddocname">music</field>
+    <field name="albumid"></field>
+    <field name="artist">Willie Nelson/Roger Miller/Faron Young</field>
+    <field name="artistspid">1927001457</field>
+    <field name="bgndata">CD</field>
+    <field name="bgnpfrom"></field>
+    <field name="bgnpto"></field>
+    <field name="bgnsellers">0</field>
+    <field name="categories">1804905724 1804905724 1804905733 1804893726</field>
+    <field name="cbid">2</field>
+    <field name="data">CD11.98-19.24099923803928</field>
+    <field name="did">66</field>
+    <field name="disp_song">Old Friends;Husbands &amp; Wives;Half A Mind</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_old-friends-funny-how-time-slips-away_music_1921320224</field>
+    <field name="ew">away</field>
+    <field name="fmt">CD</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/141605/amg1921320224_1940.jpg?rm_____DMpYJBxnv" height=68 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="isbn">099923803928</field>
+    <field name="mid">2</field>
+    <field name="newestedition">19990216</field>
+    <field name="numreview"></field>
+    <field name="pfrom">1198</field>
+    <field name="pid">1921320224</field>
+    <field name="pto">1924</field>
+    <field name="sales"></field>
+    <field name="scorekey"></field>
+    <field name="song">Old Friends;Husbands &amp; Wives;Half A Mind;The Best I Can Give Her;Sorry Willie;When A House Is Not A Home;Aladambama;Invitation To The Blues;When Two Worlds Collide;I'll Pick Up My Heart (And Go Home);Three Days;Touch Me;Congratulations;Half A Man;Hello Walls;She's Not For You;Live Fast, Love Hard, Die Young;Sweet Dreams;Four In The Morning;Life Turned Her That Way;Going Steady;Funny How Time Slips Away</field>
+    <field name="summaryfeatures"></field>
+    <field name="surl">http://shopping.yahoo.com/p_old-friends-funny-how-time-slips-away_music_1921320224</field>
+    <field name="title">Old Friends/Funny How Time Slips Away</field>
+    <field name="url"></field>
+    <field name="userrate"></field>
+    <field name="weight">50.0</field>
+    <field name="year">1999</field>
+  </hit>
+  <hit relevancy="51.39118370144501" source="search">
+    <field name="relevancy">51.39118370144501</field>
+    <field name="sddocname">music</field>
+    <field name="albumid"></field>
+    <field name="artist">Various Artists</field>
+    <field name="artistspid"></field>
+    <field name="bgndata">CD</field>
+    <field name="bgnpfrom"></field>
+    <field name="bgnpto"></field>
+    <field name="bgnsellers">0</field>
+    <field name="categories">1804905753 1804893726</field>
+    <field name="cbid">2</field>
+    <field name="data">CD12.41-18.98682161110820</field>
+    <field name="did">66</field>
+    <field name="disp_song">Brown Eyes;The Old Man In The Old Country;The Lily Of The West</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_ozark-folksongs_music_1921627165</field>
+    <field name="ew">folksongs</field>
+    <field name="fmt">CD</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/150011/amg1921627165_1940.jpg?rm_____DOjlhYgbR" height=70 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="isbn">682161110820</field>
+    <field name="mid">2</field>
+    <field name="newestedition">20011127</field>
+    <field name="numreview"></field>
+    <field name="pfrom">1241</field>
+    <field name="pid">1921627165</field>
+    <field name="pto">1898</field>
+    <field name="sales"></field>
+    <field name="scorekey">0</field>
+    <field name="song">Brown Eyes;The Old Man In The Old Country;The Lily Of The West;Young Charlotte;The Banks Of The Schuykill;Little Seaside Village;The Little Old Sod Shanty On The Claim;The Fatal Wedding Night;Robin Hood;Chicken Reel;Horse-Trader's Song;Shamus O'Brien;Natchez Under The Hill;Dixon &amp; Johnson;Harvard Student;We'll All Go Down To Rowser's;Leather Britches;Henry Green;Shortnin' Bread;The Dying Girl;Old Dumpty Moore;My Little One's Waiting For Me;Tie-Hacking's Too Tiresome;Marine's Hymn;Lost On The Lady Elgin;Christine Leroy;Hell Among The Yearlings;Rag Pat;Bug In The Taters;Farewell Since All Is Over;Where The Soul Of Man Never Dies;Lord Thomas;The Wandering Cowboy (Home Sweet Home);Granny's Old Arm Chair;In That Morning</field>
+    <field name="summaryfeatures"></field>
+    <field name="surl">http://shopping.yahoo.com/p_ozark-folksongs_music_1921627165</field>
+    <field name="title">Ozark Folksongs</field>
+    <field name="url"></field>
+    <field name="userrate"></field>
+    <field name="weight">46.0</field>
+    <field name="year">2001</field>
+  </hit>
+</result>

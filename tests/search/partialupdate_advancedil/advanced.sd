@@ -1,0 +1,88 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search advanced {
+    document advanced {
+
+        field id type string {
+            indexing: attribute
+        }
+
+        field field1 type string {
+            indexing: attribute | index
+        }
+
+        field field2 type string {
+
+        }
+        
+        field field3 type int {
+        
+        }
+
+        field field5 type string {
+
+        }        
+
+        field field6 type int {
+
+        }
+
+        field field8 type int {
+            indexing: attribute
+        }
+
+    }
+
+    field extra1 type string {
+        indexing: input field3 / 10 | to_string | attribute
+        indexing-rewrite: none
+    }
+
+    field extra2 type array<string> {
+        indexing: input field5 | split ";" | for_each { trim } | attribute
+    }
+
+    field extra3 type float {
+        indexing: input field6 / 3 | to_float | attribute
+    }
+
+    field extra4 type string {
+        indexing: input field1 . " " . input field2 | attribute
+    }
+
+    field extra5 type int {
+        indexing: input field3 * 3 | attribute
+    }
+
+    field extra6 type string {
+        indexing {
+            if (input field8 > 10) {
+                "Large" | attribute;
+            } else {
+                "Small" | attribute;
+            };
+        }
+    }
+
+    field extra7 type int {
+        indexing {
+            if (input field6 > 10) {
+                300 | attribute;
+            } else {
+                30 | attribute;
+            };
+        }
+    }
+
+    document-summary most {
+      summary id type string { }
+      summary field1 type string { }
+      summary field8 type int { }
+      summary extra1 type string { }
+      summary extra2 type array<string> { }
+      summary extra3 type float { }
+      summary extra4 type string { }
+      summary extra5 type int { }
+      summary extra6 type string { }
+      summary extra7 type int { }
+    }
+}

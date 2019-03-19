@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="28">
+  <hit relevancy="54.50842572786755" source="search">
+    <field name="relevancy">54.50842572786755</field>
+    <field name="sddocname">music</field>
+    <field name="title">Mac Dre Presents the Rompalation, Vol. 2</field>
+    <field name="artist">Mac Dre</field>
+    <field name="song">Zero Tolerance;Million Dollar Niggaz;Caper;Romp Representatives;Howda;Money Thirsty;Committee;It's Tha Life;Creastside Throw;Don't Waste My Time;It Don't Stop;My Young Niggaz;The Overdose;Let's Looie</field>
+    <field name="bgndata">CDCA</field>
+    <field name="sales"></field>
+    <field name="pto">1698</field>
+    <field name="mid">2</field>
+    <field name="ew">rompalation</field>
+    <field name="surl">http://shopping.yahoo.com/p_mac-dre-presents-the-rompalation-vol-2_music_1921367542</field>
+    <field name="userrate"></field>
+    <field name="pid">1921367542</field>
+    <field name="weight">53.0</field>
+    <field name="url"></field>
+    <field name="isbn">618763105124,618763105148</field>
+    <field name="fmt">CD CA</field>
+    <field name="albumid"></field>
+    <field name="disp_song">Zero Tolerance;Million Dollar Niggaz;Caper</field>
+    <field name="pfrom">1099</field>
+    <field name="bgnpfrom"></field>
+    <field name="categories">1804905843 1804905844 1804893726</field>
+    <field name="data">CD11.03-16.98618763105124CA10.99618763105148</field>
+    <field name="numreview"></field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/152167/amg1921367542_1940.jpg?rm_____DllgA9JRI" height=68 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927031822</field>
+    <field name="newestedition">19991109</field>
+    <field name="bgnpto"></field>
+    <field name="year">1999</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_mac-dre-presents-the-rompalation-vol-2_music_1921367542</field>
+  </hit>
+</result>

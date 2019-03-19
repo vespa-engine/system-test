@@ -1,0 +1,22 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search updaterank {
+  document updaterank {
+    field rankfield type int {
+      indexing: attribute | summary
+    }
+    field indexfield type string {
+      indexing: index | summary
+    }
+    field attributefield type string {
+      indexing: attribute | summary
+    }
+    field body type string {
+      indexing: summary | index
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(rankfield)
+    }
+  }
+}

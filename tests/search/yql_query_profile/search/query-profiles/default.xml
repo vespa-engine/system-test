@@ -1,0 +1,3 @@
+<query-profile id="default">
+    <field name="yql">select * from sources * where default contains "blues" or userQuery(void);</field>
+</query-profile>
