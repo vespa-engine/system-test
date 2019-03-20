@@ -19,21 +19,26 @@ class Explain < IndexedSearchTest
     wait_for_hitcount("query=sddocname:music", 10)
     assert_hitcount("query=title:country", 1)
     result = search("/search/?query=sddocname:music&format=json&hits=1&explainlevel=1&tracelevel=1").json
-    verify_to_dispatch(result)
-    verify_to_blueprint(result)
+    children = result["trace"]["children"][1]["children"][0]["children"]
+    assert_equal(4, children.size)
+    verify_to_dispatch(children[0])
+    verify_to_blueprint(children[1]["message"][0]["traces"][0])
+
     result = search("/search/?query=sddocname:music&format=json&hits=1&explainlevel=2&tracelevel=1").json
-    verify_to_dispatch(result)
-    verify_to_blueprint(result)
-    verify_to_iteratortree(result)
+    children = result["trace"]["children"][1]["children"][0]["children"]
+    assert_equal(4, children.size)
+    verify_to_dispatch(children[0])
+    verify_to_blueprint(children[1]["message"][0]["traces"][0])
+    verify_to_iteratortree(children[1]["message"][0]["traces"][1])
   end
 
   def verify_to_dispatch(result)
-    to_dispatch = result["trace"]["children"][1]["children"][0]["children"][0]["message"]
+    to_dispatch = result["message"]
     assert_match(/sc0.num0 search to dispatch: query=\[\[documentmetastore\]:\*music\*\] timeout=[0-9]+ms offset=0 hits=1 grouping=0 :  rankproperties={"vespa.softtimeout.enable":\[true\]} restrict=\[music\]/, to_dispatch)
   end
 
   def verify_to_blueprint(result)
-    blueprint = result["trace"]["children"][1]["children"][0]["children"][1]["message"][0]["traces"][0]["optimized"]
+    blueprint = result["optimized"]
     assert_equal("search::queryeval::AndBlueprint", blueprint["[type]"])
     assert_equal(11, blueprint["docid_limit"])
     estimate = blueprint["estimate"]
@@ -43,7 +48,7 @@ class Explain < IndexedSearchTest
   end
 
   def verify_to_iteratortree(result)
-    thread_1 = result["trace"]["children"][1]["children"][0]["children"][1]["message"][0]["traces"][1]["threads"][0]["traces"]
+    thread_1 = result["threads"][0]["traces"]
     assert_equal("Start MatchThread::run", thread_1[0]["event"])
     it = thread_1[1]["optimized"]
     assert_equal("search::queryeval::AndSearchStrict<search::queryeval::NoUnpack>", it["[type]"])
@@ -53,6 +58,7 @@ class Explain < IndexedSearchTest
     assert_equal("Start result processing", thread_1[5]["event"])
     assert_equal("Start thread merge", thread_1[6]["event"])
     assert_equal("MatchThread::run Done", thread_1[7]["event"])
+    assert_equal(8, thread_1.size)
   end
 
   def teardown
