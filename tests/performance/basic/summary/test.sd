@@ -1,0 +1,15 @@
+search test {
+  document test {
+    field id type long {
+      indexing: summary | attribute
+      attribute:fast-search
+    }
+    field f1 type string {
+      indexing: summary | attribute
+    }
+  }
+  document-summary s1 {
+    summary id type long { source: id }
+    summary f1 type string { source: f1 }
+  }
+}

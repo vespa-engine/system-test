@@ -1,0 +1,35 @@
+search music2 {
+
+  fieldset default {
+    fields: title, artist
+  }
+
+  document music2 {
+
+    field title type string {
+      indexing: summary | index
+      rank-type: about
+    }
+
+    field artist type string {
+      indexing: summary | attribute | index
+      rank-type:about
+    }
+
+    field year type int {
+      indexing: summary | attribute | index
+    }
+
+    # Increase rank score of popular documents regardless of query
+    field popularity type int {
+      indexing: summary | attribute
+    }
+
+    field url type uri {
+      indexing: summary | index
+    }
+
+  }
+
+}
+

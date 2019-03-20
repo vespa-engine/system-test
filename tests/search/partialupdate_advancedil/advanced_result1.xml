@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="extra1">0</field>
+    <field name="extra3">6.0</field>
+    <field name="id">id:adv/adv:advanced::1</field>
+    <field name="field1">testing</field>
+    <field name="extra4">testing test2</field>
+    <field name="extra5">15</field>
+    <field name="extra7">300</field>
+   </hit>
+  <hit relevancy="0" source="sc0.num0">
+    <field name="relevancy">0</field>
+    <field name="extra1">2</field>
+    <field name="extra2"><item>foo</item><item>bar</item><item>baz</item></field>
+    <field name="extra3">3.0</field>
+    <field name="id">id:adv/adv:advanced::0</field>
+    <field name="field1">foobar</field>
+    <field name="extra4">foobar bar</field>
+    <field name="extra5">60</field>
+    <field name="extra7">30</field>
+   </hit>
+</result>

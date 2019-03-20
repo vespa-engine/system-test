@@ -1,0 +1,17 @@
+search MiXedCase {
+
+  document MiXedCase {
+
+    field title type string {
+    }
+
+    field description type string {
+    }
+
+    # Body field
+    field bodyfield type string { }
+
+  }
+
+}
+

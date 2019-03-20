@@ -1,0 +1,13 @@
+search simple {
+  
+  document simple {
+
+    field title type string {
+    }
+
+    field w type int {
+    }
+
+  }
+
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="26.778245428599746" source="search">
+    <field name="relevancy">26.778245428599746</field>
+    <field name="sddocname">music</field>
+    <field name="albumid"></field>
+    <field name="artist">Elton John</field>
+    <field name="artistspid">1927523179</field>
+    <field name="bgndata">CA</field>
+    <field name="bgnpfrom"></field>
+    <field name="bgnpto"></field>
+    <field name="bgnsellers">0</field>
+    <field name="categories">1804905824 1804905832 1804905848 1804905848 1804905859 1804905848 1807865301 1804893726</field>
+    <field name="cbid">2</field>
+    <field name="data">CA008811011048</field>
+    <field name="did">66</field>
+    <field name="disp_song">Come Back Baby [#];Lady Samantha;It's Me That You Need</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_to-be-continued-_music_1921008586</field>
+    <field name="ew">continued</field>
+    <field name="fmt">CA</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/137673/amg1921008586_1940.jpg?rm_____DEB7qx9RU" height=70 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="isbn">008811011048</field>
+    <field name="mid">2</field>
+    <field name="newestedition">19900101</field>
+    <field name="numreview">3</field>
+    <field name="pfrom"></field>
+    <field name="pid">1921008586</field>
+    <field name="pto">-100</field>
+    <field name="sales"></field>
+    <field name="scorekey"></field>
+    <field name="song">Come Back Baby [#];Lady Samantha;It's Me That You Need;Your Song [#][Demo Version];Rock &amp; Roll Madonna;Bad Side of the Moon;Your Song;Take Me to the Pilot;Border Song;Sixty Years On;Country Comfort;Grey Seal;Friends;Levon;Tiny Dancer;Madman Across the Water;Honky Cat;Mona Lisas and Mad Hatters;Rocket Man (I Think It's Going to Be a Long, Long Time);Daniel;Crocodile Rock;Bennie and the Jets;Goodbye Yellow Brick Road;All the Girls Love Alice;Funeral for a Friend/Love Lies Bleeding;Whenever You're Ready (We'll Go Steady Again);Saturday Night's Alright for Fighting;Jack Rabbit;Harmony;Young Man's Blues;Step Into Christmas;Bitch Is Back;Pinball Wizard;Someone Saved My Life Tonight;Philadelphia Freedom;One Day (At a Time);Lucy in the Sky With Diamonds;I Saw Her Standing There;Island Girl;Sorry Seems to Be the Hardest Word;Don't Go Breaking My Heart;I Feel Like a Bullet (In the Gun of Robert Ford) [Live][#];Ego [#];Song for Guy;Mama Can't Buy You Love;Cartier [#];Little Jeannie;Donner Pour Donner [#];Fanfare;Chloe;Retreat;Blue Eyes;Empty Garden (Hey, Hey Johnny);I Guess That's Why They Call It the Blues;I'm Still Standing;Sad Songs (Say So Much);Act of War [Single Mix];Nikita;Candle in the Wind [Single Edit][Live][#];Carla Etude [Live][#];Don't Let the Sun Go Down on Me [Live][#];I Don't Wanna Go on With You Like That [12" Shep Pettibone Mix] [#] [#];Give Peace a Chance;Sacrifice;Made for Me;You Gotta Love Someone;I Swear I Heard the Night Talkin';Easier to Walk Away</field>
+    <field name="summaryfeatures"></field>
+    <field name="surl">http://shopping.yahoo.com/p_to-be-continued-_music_1921008586</field>
+    <field name="title">To Be Continued...</field>
+    <field name="url"></field>
+    <field name="userrate">367</field>
+    <field name="weight">24.0</field>
+    <field name="year">1990</field>
+  </hit>
+</result>

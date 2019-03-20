@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="3">
+  <hit relevancy="57.098993591152414" source="search">
+    <field name="relevancy">57.098993591152414</field>
+    <field name="sddocname">music</field>
+    <field name="albumid"></field>
+    <field name="artist">Cocteau Twins</field>
+    <field name="artistspid">1927003336</field>
+    <field name="bgndata">CD</field>
+    <field name="bgnpfrom"></field>
+    <field name="bgnpto"></field>
+    <field name="bgnsellers">0</field>
+    <field name="categories">1804905848 1804905848 1804905849 1804893726</field>
+    <field name="cbid">2</field>
+    <field name="data">CD16.95-24.98014431049729</field>
+    <field name="did">66</field>
+    <field name="disp_song">Wax And Wane;Garlands;Alas Dies Laughing</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_bbc-sessions_music_1921363831</field>
+    <field name="ew">sessions</field>
+    <field name="fmt">CD</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/151877/amg1921363831_1940.jpg?rm_____DOuku_m5H" height=70 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="isbn">014431049729</field>
+    <field name="mid">2</field>
+    <field name="newestedition">19991012</field>
+    <field name="numreview">6</field>
+    <field name="pfrom">1695</field>
+    <field name="pid">1921363831</field>
+    <field name="pto">2498</field>
+    <field name="sales">1</field>
+    <field name="scorekey"></field>
+    <field name="song">Wax And Wane;Garlands;Alas Dies Laughing;Feathers-Oar-Blades;Hearsay Please;Dear Heart;Blind Dumb Deaf;Hazel;The Tinderbox (Of A Heart);Strange Fruit;Hitherto;From The Flagstones;Sugar Hiccup;In Our Angelhood;My Hue And Cry;Musette And Drums;Hitherto;From The Flagstones;Musette And Drums;Pepper-Tree;Beatrix;Ivo;Otterley;Serpentskirt;Golden-Vein;Half-Gifts;Seekers Who Are Lovers;Calfskin Smack;Fifty-Fifty Clown;Violaine</field>
+    <field name="summaryfeatures"></field>
+    <field name="surl">http://shopping.yahoo.com/p_bbc-sessions_music_1921363831</field>
+    <field name="title">BBC Sessions</field>
+    <field name="url"></field>
+    <field name="userrate">443</field>
+    <field name="weight">54.0</field>
+    <field name="year">1999</field>
+  </hit>
+  <hit relevancy="56.91105223995296" source="search">
+    <field name="relevancy">56.91105223995296</field>
+    <field name="sddocname">music</field>
+    <field name="albumid"></field>
+    <field name="artist">Various Artists</field>
+    <field name="artistspid"></field>
+    <field name="bgndata">CDCA</field>
+    <field name="bgnpfrom"></field>
+    <field name="bgnpto"></field>
+    <field name="bgnsellers">0</field>
+    <field name="categories">1804905719 1804893726</field>
+    <field name="cbid">2</field>
+    <field name="data">CD9.49-13.98027072802721CA8.53-9.98027072802745</field>
+    <field name="did">66</field>
+    <field name="disp_song">Playing A Lullaby;Tomorrow We'll Go To The Fair;Someday Baby</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_child-s-gift-of-lullabyes-new-haven-1-_music_1921870173</field>
+    <field name="ew"></field>
+    <field name="fmt">CD CA</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/135954/amg1921870173_1940.jpg?rm_____DxPfcIGyw" height=70 width=69 border=0 hspace=0 vspace=0</field>
+    <field name="isbn">027072802721,027072802745</field>
+    <field name="mid">2</field>
+    <field name="newestedition">20020521</field>
+    <field name="numreview"></field>
+    <field name="pfrom">853</field>
+    <field name="pid">1921870173</field>
+    <field name="pto">1398</field>
+    <field name="sales">1</field>
+    <field name="scorekey">0</field>
+    <field name="song">Playing A Lullaby;Tomorrow We'll Go To The Fair;Someday Baby;Hushabye Street;Wings;Appalachian Lullaby;I L.O.V.E. Y.O.U.;Lullaby For Teddy;Dream Theme;Playing A Lullaby (Intrumental Sing-Along Version);Tomorrow We'll Go To The Fair (Intrumental Sing-Along Version);Someday Baby (Intrumental Sing-Along Version);Hushabye Street (Intrumental Sing-Along Version);Wings (Intrumental Sing-Along Version);Appalachian Lullaby (Intrumental Sing-Along Version);I L.O.V.E. Y.O.U. (Intrumental Sing-Along Version);Lullaby For Teddy (Intrumental Sing-Along Version);Dream Theme (Intrumental Sing-Along Version)</field>
+    <field name="summaryfeatures"></field>
+    <field name="surl">http://shopping.yahoo.com/p_child-s-gift-of-lullabyes-new-haven-1-_music_1921870173</field>
+    <field name="title">Child's Gift of Lullabyes [New Haven] [#1]</field>
+    <field name="url"></field>
+    <field name="userrate">500</field>
+    <field name="weight">53.0</field>
+    <field name="year">2002</field>
+  </hit>
+  <hit relevancy="53.58443245603519" source="search">
+    <field name="relevancy">53.58443245603519</field>
+    <field name="sddocname">music</field>
+    <field name="albumid"></field>
+    <field name="artist">Original Soundtrack</field>
+    <field name="artistspid"></field>
+    <field name="bgndata">CD6.99|1</field>
+    <field name="bgnpfrom">6.99</field>
+    <field name="bgnpto">6.99</field>
+    <field name="bgnsellers">1</field>
+    <field name="categories">1804905861 1804905861 1804905862 1804893726</field>
+    <field name="cbid">2</field>
+    <field name="data">CD6.76-13.88720616228024</field>
+    <field name="did">66</field>
+    <field name="disp_song">Beautiful;Getting Some Fun Out Of Life;Autumn In New York</field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_autumn-in-new-york_music_1921413629</field>
+    <field name="ew">york</field>
+    <field name="fmt">CD</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/139964/amg1921413629_1940.jpg?rm_____DFTra8lwm" height=68 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="isbn">720616228024</field>
+    <field name="mid">2</field>
+    <field name="newestedition">20000725</field>
+    <field name="numreview">1</field>
+    <field name="pfrom">676</field>
+    <field name="pid">1921413629</field>
+    <field name="pto">1388</field>
+    <field name="sales"></field>
+    <field name="scorekey">0</field>
+    <field name="song">Beautiful;Getting Some Fun Out Of Life;Autumn In New York;Our Love Never Ends;Charlotte And Will;Autumn Forever;Elegy For Charlotte;Autumn In New York-Opening Titles;First Kiss;Memories;A Rude Awakening;Walking Through The Park;Lunch;Thinking About Lisa;Butterflies;Break-up;Thinking It Over;Apart;Can You Let Me Love You?;Searching For A Doctor;Katy;The Chances For Success;What Can I Give You?;I Don't Want To Leave You;First/Last Snow;To The Hospital;No Thing That Ever Flew;The Gift</field>
+    <field name="summaryfeatures"></field>
+    <field name="surl">http://shopping.yahoo.com/p_autumn-in-new-york_music_1921413629</field>
+    <field name="title">Autumn in New York</field>
+    <field name="url"></field>
+    <field name="userrate">400</field>
+    <field name="weight">49.0</field>
+    <field name="year">2000</field>
+  </hit>
+</result>

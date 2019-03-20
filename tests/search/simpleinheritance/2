@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="sddocname">base</field>
+    <field name="field1">f1</field>
+    <field name="field2">f2d2</field>
+    <field name="field3">f3d2</field>
+  </hit>
+</result>

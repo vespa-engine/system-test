@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit relevancy="1000" source="sc0.num0">
+    <field name="sddocname">derived</field>
+    <field name="field4">f4d1</field>
+    <field name="field5"></field>
+    <field name="url">http://test1</field>
+    <field name="field1">f1</field>
+    <field name="field2">f2d1</field>
+    <field name="field3">f3d1</field>
+  </hit>
+</result>

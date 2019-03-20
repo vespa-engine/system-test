@@ -1,0 +1,25 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+    document test {
+        field predicate_field type predicate {
+            indexing: attribute | summary
+            index {
+                arity: 2
+                # lower-bound: 3
+                # upper-bound: 200
+            }
+        }
+
+        field second_predicate type predicate {
+            indexing: attribute | summary
+            index {
+                arity: 8
+                # lower-bound: 3
+                # upper-bound: 200
+            }
+        }
+    }
+    rank-profile default {
+        summary-features: subqueries(predicate_field).lsb subqueries(predicate_field).msb subqueries(second_predicate).lsb subqueries(second_predicate).msb
+    }
+}
