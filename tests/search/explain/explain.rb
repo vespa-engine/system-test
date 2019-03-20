@@ -19,8 +19,20 @@ class Explain < IndexedSearchTest
     wait_for_hitcount("query=sddocname:music", 10)
     assert_hitcount("query=title:country", 1)
     result = search("/search/?query=sddocname:music&format=json&hits=1&explainlevel=1&tracelevel=1").json
+    verify_to_dispatch(result)
+    verify_to_blueprint(result)
+    result = search("/search/?query=sddocname:music&format=json&hits=1&explainlevel=2&tracelevel=1").json
+    verify_to_dispatch(result)
+    verify_to_blueprint(result)
+    verify_to_iteratortree(result)
+  end
+
+  def verify_to_dispatch(result)
     to_dispatch = result["trace"]["children"][1]["children"][0]["children"][0]["message"]
     assert_match(/sc0.num0 search to dispatch: query=\[\[documentmetastore\]:\*music\*\] timeout=[0-9]+ms offset=0 hits=1 grouping=0 :  rankproperties={"vespa.softtimeout.enable":\[true\]} restrict=\[music\]/, to_dispatch)
+  end
+
+  def verify_to_blueprint(result)
     blueprint = result["trace"]["children"][1]["children"][0]["children"][1]["message"][0]["traces"][0]["optimized"]
     assert_equal("search::queryeval::AndBlueprint", blueprint["[type]"])
     assert_equal(11, blueprint["docid_limit"])
@@ -28,12 +40,19 @@ class Explain < IndexedSearchTest
     assert_equal(11, estimate["estHits"])
     assert_equal(3, estimate["tree_size"])
     assert_equal(1, estimate["allow_termwise_eval"])
-    #"[type]"=>"search::queryeval::AndBlueprint", "isTermLike"=>false, "estimate"=>{"[type]"=>"HitEstimate", "empty"=>false, "estHits"=>11, "tree_size"=>3, "allow_termwise_eval"=>1}
-    #puts result["trace"]["children"][2]
-    #tree = JSON.parse(result.xmldata)
-    #assert_equal("http://shopping.yahoo.com/shop?d=hab&id=1804905709", tree["root"]["children"][0]["fields"]["surl"])
-    #assert_equal("http://shopping.yahoo.com/shop?d=hab&id=1804905710", tree["root"]["children"][1]["fields"]["surl"])
-    #assert_equal("http://shopping.yahoo.com/shop?d=hab&id=1804905711", tree["root"]["children"][2]["fields"]["surl"])
+  end
+
+  def verify_to_iteratortree(result)
+    thread_1 = result["trace"]["children"][1]["children"][0]["children"][1]["message"][0]["traces"][1]["threads"][0]["traces"]
+    assert_equal("Start MatchThread::run", thread_1[0]["event"])
+    it = thread_1[1]["optimized"]
+    assert_equal("search::queryeval::AndSearchStrict<search::queryeval::NoUnpack>", it["[type]"])
+    assert_equal("Start match and first phase rank", thread_1[2]["event"])
+    assert_equal("Create result set", thread_1[3]["event"])
+    assert_equal("Wait for result processing token", thread_1[4]["event"])
+    assert_equal("Start result processing", thread_1[5]["event"])
+    assert_equal("Start thread merge", thread_1[6]["event"])
+    assert_equal("MatchThread::run Done", thread_1[7]["event"])
   end
 
   def teardown
