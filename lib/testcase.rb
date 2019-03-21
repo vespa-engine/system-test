@@ -295,34 +295,40 @@ class TestCase
       rescue Exception => ex
         puts "Failure during process cleanup: #{ex.message}, ignoring."
       end
-      @vespa = nil
-      @endtime = Time.now
-      @result.endtime = @endtime
-      @result.add_logfile('testoutput', @dirs.testoutput)
 
-      # Copy remote log files to @dirs.vespalogdir
-      copy_remote_vespa_logfiles(savev)
+      begin
+        @vespa = nil
+        @endtime = Time.now
+        @result.endtime = @endtime
+        @result.add_logfile('testoutput', @dirs.testoutput)
 
-      add_vespa_logfiles
-      add_logfiles(@dirs.valgrindlogdir)
-      add_logfiles(@dirs.jdisccorelogdir)
-      if (not @stopped and not @command_line_output)
-        add_failure("ERROR: Method 'stop' was not called at " +
-                    "the end of the testcase.")
+        # Copy remote log files to @dirs.vespalogdir
+        copy_remote_vespa_logfiles(savev)
+
+        add_vespa_logfiles
+        add_logfiles(@dirs.valgrindlogdir)
+        add_logfiles(@dirs.jdisccorelogdir)
+        if (not @stopped and not @command_line_output)
+          add_failure("ERROR: Method 'stop' was not called at " +
+                      "the end of the testcase.")
+        end
+        if not @connection_error
+          output("\nTime  : #{@starttime} - #{@endtime}, ran for " +
+                 "#{@endtime.to_i-@starttime.to_i} seconds." +
+                 "\nResult: #{@result.assertion_count} Assertions, " +
+                 "#{@result.failures.size} " +
+                 "Failures, #{@result.errors.size} Errors.\n")
+          check_coredumps(savev, @starttime, @endtime)
+          log_result_faults
+        end
+      rescue Exception => e
+        add_error(e)
+      ensure
+        if @controller
+          @controller.testrun_ended(self.class.name, test_method, @result)
+        end
+        test_results << @result
       end
-      if not @connection_error
-        output("\nTime  : #{@starttime} - #{@endtime}, ran for " +
-               "#{@endtime.to_i-@starttime.to_i} seconds." +
-               "\nResult: #{@result.assertion_count} Assertions, " +
-               "#{@result.failures.size} " +
-               "Failures, #{@result.errors.size} Errors.\n")
-        check_coredumps(savev, @starttime, @endtime)
-        log_result_faults
-      end
-      if @controller
-        @controller.testrun_ended(self.class.name, test_method, @result)
-      end
-      test_results << @result
     end
   end
 
