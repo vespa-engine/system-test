@@ -76,6 +76,31 @@ class JavaDispatchTest < SearchTest
     puts "internal dispatch grouping = #{grp_in}"
   end
 
+  def test_node_failure_error_reporting
+    deploy_app(create_app(1,2))
+    start
+    generate_and_feed_docs
+
+    code_fd = fetch_empty_code(false)
+    code_in = fetch_empty_code(true)
+    puts "no results, nodes up: fdispatch #{code_fd}, internal #{code_in}"
+    assert(code_fd == code_in, "Internal dispatcher result code equal the one from fdispatch")
+
+    stop_node_and_wait("mycluster", 0)
+
+    code_fd = fetch_empty_code(false)
+    code_in = fetch_empty_code(true)
+    puts "no results, one node down: fdispatch #{code_fd}, internal #{code_in}"
+    assert(code_fd == code_in, "Internal dispatcher result code equal the one from fdispatch")
+
+    stop_node_and_wait("mycluster", 1)
+
+    code_fd = fetch_empty_code(false)
+    code_in = fetch_empty_code(true)
+    puts "no results, all nodes down: fdispatch #{code_fd}, internal #{code_in}"
+    assert(code_fd == code_in, "Internal dispatcher result code equal the one from fdispatch")
+  end
+
   def create_app(groups, nodes)
     add_bundle(selfdir + "DispatchTestSearcher.java")
     searcher = Searcher.new("com.yahoo.test.DispatchTestSearcher")
@@ -169,6 +194,14 @@ class JavaDispatchTest < SearchTest
     assert_equal(internal, internally_dispatched?(result), "Internally dispatched should be #{internal}")
 
     return result.hit.to_s
+  end
+
+  def fetch_empty_code(internal)
+    query = "query=no_such_thing&nocache&dispatch.internal=#{internal}&tracelevel=5"
+    puts "query: #{query}"
+
+    result = search(query)
+    return result.responsecode
   end
 
   def internally_dispatched?(result)
