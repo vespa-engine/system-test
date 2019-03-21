@@ -5,6 +5,7 @@
   </admin>
 
   <config name="vespa.config.content.fleetcontroller">
+    <min_time_between_new_systemstates>100</min_time_between_new_systemstates>
     <min_distributor_up_ratio>0.1</min_distributor_up_ratio>
     <min_storage_up_ratio>0.1</min_storage_up_ratio>
     <storage_transition_time>0</storage_transition_time>
