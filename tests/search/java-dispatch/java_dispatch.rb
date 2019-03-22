@@ -84,21 +84,24 @@ class JavaDispatchTest < SearchTest
     code_fd = fetch_empty_code(false)
     code_in = fetch_empty_code(true)
     puts "no results, nodes up: fdispatch #{code_fd}, internal #{code_in}"
-    assert(code_fd == code_in, "Internal dispatcher result code equal the one from fdispatch")
+    assert_equal(200, code_fd)
+    assert_equal(code_fd, code_in, "Internal dispatcher result code equal the one from fdispatch")
 
     stop_node_and_wait("mycluster", 0)
 
     code_fd = fetch_empty_code(false)
     code_in = fetch_empty_code(true)
     puts "no results, one node down: fdispatch #{code_fd}, internal #{code_in}"
-    assert(code_fd == code_in, "Internal dispatcher result code equal the one from fdispatch")
+    assert_equal(200, code_fd)
+    assert_equal(code_fd, code_in, "Internal dispatcher result code equal the one from fdispatch")
 
     stop_node_and_wait("mycluster", 1)
 
     code_fd = fetch_empty_code(false)
     code_in = fetch_empty_code(true)
     puts "no results, all nodes down: fdispatch #{code_fd}, internal #{code_in}"
-    assert(code_fd == code_in, "Internal dispatcher result code equal the one from fdispatch")
+    assert_equal(503, code_fd)
+    assert_equal(code_fd, code_in, "Internal dispatcher result code equal the one from fdispatch")
   end
 
   def create_app(groups, nodes)
@@ -201,7 +204,7 @@ class JavaDispatchTest < SearchTest
     puts "query: #{query}"
 
     result = search(query)
-    return result.responsecode
+    return result.responsecode.to_i
   end
 
   def internally_dispatched?(result)
