@@ -58,6 +58,11 @@
       <artifactId>zkfacade</artifactId>
       <version>${vespa.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.yahoo.vespa</groupId>
+      <artifactId>flags</artifactId>
+      <version>${vespa.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
