@@ -31,6 +31,7 @@ import com.yahoo.vespa.config.server.rpc.RpcServer;
 import com.yahoo.vespa.config.server.tenant.TenantHandlerProvider;
 import com.yahoo.vespa.config.util.ConfigUtils;
 import com.yahoo.log.LogLevel;
+import com.yahoo.vespa.flags.InMemoryFlagSource;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -92,7 +93,7 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
             public long get() {
                 return 0;
             }
-        });
+        }, new InMemoryFlagSource());
         SuperModelRequestHandler handler = new SuperModelRequestHandler(configDefinitionRepo, configServerConfig, superModelManager);
         this.rpcServer = new RpcServer(new ConfigserverConfig(new ConfigserverConfig.Builder().rpcport(port)),
                                        handler, 
