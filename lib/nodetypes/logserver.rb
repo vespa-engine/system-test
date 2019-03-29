@@ -8,21 +8,25 @@ class Logserver < VespaNode
     super(*args)
   end
 
+  def get_vespalog_helper(reader, args)
+    if args[:multinode] || args[:use_logarchive]
+      logfiles = Dir.glob("#{Environment.instance.vespa_home}/logs/vespa/logarchive/2*/*/*/*")
+      logfiles.each do |logfile|
+        reader.call(logfile)
+      end
+    else
+      logfiles = Dir.glob("#{Environment.instance.vespa_home}/logs/vespa/vespa.log-*")
+      logfiles.each do |logfile|
+        reader.call(logfile)
+      end
+      reader.call("#{Environment.instance.vespa_home}/logs/vespa/vespa.log")
+    end
+  end
+
   def get_vespalog(args={})
     logcontent = ""
     begin
-      if args[:multinode]
-        logfiles = Dir.glob("#{Environment.instance.vespa_home}/logs/vespa/logarchive/2*/*/*/*")
-        logfiles.each do |logfile|
-          logcontent += File.open(logfile).read
-        end
-      else
-        logfiles = Dir.glob("#{Environment.instance.vespa_home}/logs/vespa/vespa.log-*")
-        logfiles.each do |logfile|
-          logcontent += File.open(logfile).read
-        end
-        logcontent += File.open("#{Environment.instance.vespa_home}/logs/vespa/vespa.log").read
-      end
+      get_vespalog_helper(-> logfile { logcontent << File.open(logfile).read }, args)
     rescue
       @testcase.output("Expected Exception: No write to vespa.log since last log initilize")
     end
@@ -62,18 +66,7 @@ class Logserver < VespaNode
   # Finds entries in vespa logarchive on the logserver which match _regexp_
   def find_log_matches(regexp, args={})
     logcontent = ""
-    if args[:multinode] || args[:use_logarchive]
-      logfiles = Dir.glob("#{Environment.instance.vespa_home}/logs/vespa/logarchive/2*/*/*/*")
-      logfiles.each do |logfile|
-        logcontent += File.open(logfile).read
-      end
-    else
-      logfiles = Dir.glob("#{Environment.instance.vespa_home}/logs/vespa/vespa.log-*")
-      logfiles.each do |logfile|
-        logcontent += read_file_ignore_error(logfile)
-      end
-      logcontent += read_file_ignore_error("#{Environment.instance.vespa_home}/logs/vespa/vespa.log")
-    end
+    get_vespalog_helper(-> logfile { logcontent << read_file_ignore_error(logfile) }, args)
 
     # scan returns an array of matches
     logcontent.scan(regexp)
