@@ -23,6 +23,44 @@ class LogServer < SearchTest
     assert_equal(2, matches)
   end
 
+  def add_loglevel_forward(cfg, level, forward)
+    cfg.add("loglevel", ConfigValue.new(level, ConfigValue.new("forward", forward)))
+  end
+
+  def logd_config_override
+    cfg = ConfigOverride.new("cloud.config.log.logd")
+    add_loglevel_forward(cfg, "event", true)
+    add_loglevel_forward(cfg, "debug", true)
+    add_loglevel_forward(cfg, "spam", true)
+    cfg
+  end
+
+  def get_loglines(args = {})
+    log = ""
+    vespa.logserver.get_vespalog(args) { |data|
+      log << data
+      nil
+    }
+    log.split("\n")
+  end
+
+  def compare_lines(expected_lines, actual_lines)
+    actual_lines.size.times do |i|
+      assert_equal(expected_lines[i], actual_lines[i])
+    end
+  end
+
+  def test_full_logarchive
+    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").config(logd_config_override))
+    start
+    sleep 2
+    loglines_archived = get_loglines(:use_logarchive => true)
+    loglines_orig = get_loglines
+    puts "Archived #{loglines_archived.size} of #{loglines_orig.size} log lines"
+    assert(loglines_orig.size >= loglines_archived.size)
+    compare_lines(loglines_orig, loglines_archived)
+  end
+
   def teardown
     stop
   end
