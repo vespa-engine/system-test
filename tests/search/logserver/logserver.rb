@@ -8,10 +8,6 @@ class LogServer < SearchTest
     set_owner("musum")
   end
 
-  def nightly?
-    true
-  end
-
   def test_logarchive
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     run_logarchive_test
