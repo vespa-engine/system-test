@@ -187,7 +187,7 @@ ENDER
     sleep 10
 
     # Check that config is empty and that logserver service has been stopped
-    config = getvespaconfig("cloud.config.sentinel", "client", nil, nil, nil, true)
+    config = getvespaconfig("cloud.config.sentinel", "client", nil, node.hostname, 19070, true)
     assert_equal({}, config)
     assert_not_equal("RUNNING", logserver.get_state.strip)
   end
