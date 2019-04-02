@@ -58,23 +58,24 @@ class TensorUpdatePerfTest < PerformanceTest
 
   def get_graphs
     [
-      get_feed_throughput_graph("assign", 10),
-      get_feed_throughput_graph("assign", 100),
-      get_feed_throughput_graph("assign", 1000),
-      get_feed_throughput_graph("modify", 10),
-      get_feed_throughput_graph("modify", 100),
-      get_feed_throughput_graph("modify", 1000)
+      get_feed_throughput_graph("assign", 10, 29500, 34500),
+      get_feed_throughput_graph("assign", 100, 6200, 7100),
+      get_feed_throughput_graph("assign", 1000, 670, 770),
+      get_feed_throughput_graph("modify", 10, 28500, 35500),
+      get_feed_throughput_graph("modify", 100, 28500, 35500),
+      get_feed_throughput_graph("modify", 1000, 28500, 35500)
     ]
   end
 
-  def get_feed_throughput_graph(update_type, tensor_size)
-    # TODO: add min and max limits
+  def get_feed_throughput_graph(update_type, tensor_size, y_min, y_max)
     {
       :x => UPDATE_TYPE,
       :y => "feeder.throughput",
       :title => "Throughput during feeding of '#{update_type}' updates to dense tensor of size #{tensor_size}",
       :filter => { UPDATE_TYPE => update_type, TENSOR_SIZE => tensor_size },
-      :historic => true
+      :historic => true,
+      :y_min => y_min,
+      :y_max => y_max
     }
   end
 
