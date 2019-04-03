@@ -848,6 +848,7 @@ module TestBase
         puts line
       end
     end
+    puts new_output
     new_output
   end
 
