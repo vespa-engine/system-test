@@ -40,12 +40,26 @@ class StressDispatch < PerformanceTest
     return l
   end
 
+  def common_limits_protobuf
+    l = {
+       :min_qps_search          => 5000,
+       :max_qps_search          => 14100,
+       :min_latency_search      => 4.7,
+       :max_latency_search      => 20
+    }
+    return l
+  end
+
   def test_dispatch
     run_dispatch_test(common_limits, "&dispatch.internal=false")
   end
 
   def test_dispatch_java
-    run_dispatch_test(common_limits_java, "&dispatch.internal=true")
+    run_dispatch_test(common_limits_java, "&dispatch.internal=true&dispatch.protobuf=false")
+  end
+
+  def test_dispatch_protobuf
+    run_dispatch_test(common_limits_protobuf, "&dispatch.internal=true&dispatch.protobuf=true")
   end
 
   def run_dispatch_test(limits, query_append)
