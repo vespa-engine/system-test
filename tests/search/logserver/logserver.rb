@@ -38,8 +38,11 @@ class LogServer < SearchTest
     cfg.add("loglevel", ConfigValue.new(level, ConfigValue.new("forward", forward)))
   end
 
-  def logd_config_override
+  def logd_config_override(use_rpc)
     cfg = ConfigOverride.new("cloud.config.log.logd")
+    if use_rpc
+      cfg.add("logserver", ConfigValue.new("userpc", "true"))
+    end
     add_loglevel_forward(cfg, "event", true)
     add_loglevel_forward(cfg, "debug", true)
     add_loglevel_forward(cfg, "spam", true)
@@ -62,7 +65,15 @@ class LogServer < SearchTest
   end
 
   def test_full_logarchive
-    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").config(logd_config_override))
+    run_full_logarchive(false)
+  end
+
+  def test_full_logarchive_using_rpc_protocol
+    run_full_logarchive(true)
+  end
+
+  def run_full_logarchive(use_rpc)
+    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").config(logd_config_override(use_rpc)))
     start
     sleep 2
     loglines_archived = get_loglines(:use_logarchive => true)
