@@ -198,7 +198,7 @@ class PerformanceTest < TestCase
     perfmap_agent_arg = if File.file?(perfmap_agent) then "-agentpath:#{perfmap_agent}" else '' end
     raw_output = node.execute(
       "LD_PRELOAD=#{Environment.instance.vespa_home}/lib64/vespa/malloc/libvespamalloc.so java #{perfmap_agent_arg} " +
-        "-Xmx16g -Xms16g -XX:NewRatio=1 -verbose:gc -XX:MaxTenuringThreshold=15 " +
+        "-Xmx16g -Xms16g -XX:+UseParallelGC -XX:NewRatio=1 -verbose:gc -XX:MaxTenuringThreshold=15 " +
         "-cp #{Environment.instance.vespa_home}/lib/jars/predicate-search-jar-with-dependencies.jar " +
         "com.yahoo.search.predicate.benchmarks.PredicateIndexBenchmark " +
         "#{benchmark_params}")
