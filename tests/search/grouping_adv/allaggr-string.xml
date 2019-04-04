@@ -7,6 +7,7 @@
       <group relevance="12111.719438207627">
         <id type="string">a1</id>
         <output label="count()">10</output>
+        <output label="sum(s)">0.0</output>
         <output label="avg(s)">0.0</output>
         <output label="min(s)">a</output>
         <output label="max(s)">caa</output>
@@ -16,6 +17,7 @@
       <group relevance="11111.709477840308">
         <id type="string">a2</id>
         <output label="count()">9</output>
+        <output label="sum(s)">0.0</output>
         <output label="avg(s)">0.0</output>
         <output label="min(s)">ac</output>
         <output label="max(s)">bac</output>
@@ -25,6 +27,7 @@
       <group relevance="10011.709521325834">
         <id type="string">a3</id>
         <output label="count()">9</output>
+        <output label="sum(s)">0.0</output>
         <output label="avg(s)">0.0</output>
         <output label="min(s)">bba</output>
         <output label="max(s)">ca</output>

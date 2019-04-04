@@ -191,7 +191,7 @@ module GroupingBase
                 "#{selfdir}/allaggr-int-array.xml")
     check_query("all(group(a) each(output(count(),sum(fa),avg(fa),max(fa),min(fa),xor(fa),stddev(fa))))",
                 "#{selfdir}/allaggr-float-array.xml")
-    check_query("all(group(a) each(output(count(),avg(s),min(s),max(s),xor(s),stddev(s))))",
+    check_query("all(group(a) each(output(count(),sum(s),avg(s),min(s),max(s),xor(s),stddev(s))))",
                 "#{selfdir}/allaggr-string.xml")
 
     # Test count unique groups (count aggregation on list of groups)
