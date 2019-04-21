@@ -61,7 +61,7 @@ class PerformanceTest < TestCase
   end
 
   def feeder_numthreads
-      2
+      3
   end
 
   def feeder_binary
