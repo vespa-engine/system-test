@@ -9,11 +9,6 @@ class MiscTest < TestCase
     "misc"
   end
 
-  # Returns the name of the feeder binary to be used.
-  def feeder_binary
-    "vespa-feeder"
-  end
-
   def can_share_configservers?(method_name=nil)
     true
   end

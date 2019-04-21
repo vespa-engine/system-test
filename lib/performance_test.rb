@@ -60,8 +60,12 @@ class PerformanceTest < TestCase
     "performance"
   end
 
+  def feeder_numthreads
+      2
+  end
+
   def feeder_binary
-    "vespa-feeder --numthreads 2"
+    "vespa-feeder --numthreads #{feeder_numthreads}"
   end
 
   def prepare

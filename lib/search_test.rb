@@ -15,11 +15,6 @@ class SearchTest < TestCase
     true
   end
 
-  # Returns the name of the feeder binary to be used.
-  def feeder_binary
-    "vespa-feeder"
-  end
-
   def redeploy(app, cluster = "search")
     deploy_output = deploy_app(app)
     gen = get_generation(deploy_output).to_i

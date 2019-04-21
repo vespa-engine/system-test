@@ -34,11 +34,6 @@ class VdsTest < TestCase
     true
   end
 
-  # Returns the name of the feeder binary to be used.
-  def feeder_binary
-    "vespa-feeder"
-  end
-
   def default_app(sd = "music", path = VDS + "/searchdefinitions/")
     sd_file = path + "#{sd}.sd"
     StorageApp.new.default_cluster.sd(sd_file).
