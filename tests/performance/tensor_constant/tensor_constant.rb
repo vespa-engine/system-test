@@ -21,6 +21,10 @@ class TensorConstantPerfTest < PerformanceTest
     set_owner("geirst")
   end
 
+  def feeder_numthreads
+      1
+  end
+
   def test_tensor_constant_deploy_and_filedistribution
     set_description("Test that we can deploy an application with a constant tensor of size 300MB (approx 5.97M cells) and distribute with filedistribution")
     @graphs = get_graphs
