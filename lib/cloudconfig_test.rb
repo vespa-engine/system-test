@@ -18,11 +18,6 @@ class CloudConfigTest < TestCase
     "cloudconfig"
   end
 
-  # Returns the name of the feeder binary to be used.
-  def feeder_binary
-    "vespa-feeder"
-  end
-
   # Test app used in multiple cloudconfig tests
   def app_with_logd(logserver_port)
     CloudconfigApp.new.admin(Admin.new.

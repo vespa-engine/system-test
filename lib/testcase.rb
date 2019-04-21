@@ -959,4 +959,8 @@ class TestCase
     destination_file
   end
 
+  # Returns the name of the feeder binary to be used.
+  def feeder_binary
+    "vespa-feeder"
+  end
 end
