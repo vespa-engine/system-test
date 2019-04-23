@@ -84,7 +84,7 @@ class VespaRoute < VdsTest
                "    <route name='default' hops='container/*/chain.blacklist indexing'>\n" +
                "        <error>for hop 'container/*/chain.blacklist', no matching services</error>\n" +
                "    </route>\n" +
-               "    <route name='default-get' hops='indexing' />\n" +
+               "    <route name='default-get' hops='[Content:cluster=search]' />\n" +
                "    <route name='search' hops='[MessageType:search]' />\n" +
                "    <route name='search-direct' hops='[Content:cluster=search]' />\n" +
                "    <route name='search-index' hops='container/chain.indexing [Content:cluster=search]' />\n" +
@@ -110,7 +110,7 @@ class VespaRoute < VdsTest
                "        <recipient session='search' />\n" +
                "    </hop>\n" +
                "    <route name='default' hops='indexing' />\n" +
-               "    <route name='default-get' hops='indexing' />\n" +
+               "    <route name='default-get' hops='[Content:cluster=search]' />\n" +
                "    <route name='search' hops='[MessageType:search]' />\n" +
                "    <route name='search-direct' hops='[Content:cluster=search]' />\n" +
                "    <route name='search-index' hops='default/chain.indexing [Content:cluster=search]' />\n" +
@@ -129,7 +129,7 @@ class VespaRoute < VdsTest
                "        <recipient session='search' />\n" +
                "    </hop>\n" +
                "    <route name='default' hops='indexing' />\n" +
-               "    <route name='default-get' hops='indexing' />\n" +
+               "    <route name='default-get' hops='[Content:cluster=search]' />\n" +
                "    <route name='search' hops='[Content:cluster=search]' />\n" +
                "    <route name='storage/cluster.search' hops='route:search' />\n" +
                "</protocol>\n",
@@ -146,7 +146,7 @@ class VespaRoute < VdsTest
                "        <recipient session='storage' />\n" +
                "    </hop>\n" +
                "    <route name='default' hops='indexing' />\n" +
-               "    <route name='default-get' hops='indexing' />\n" +
+               "    <route name='default-get' hops='[Content:cluster=storage]' />\n" +
                "    <route name='storage' hops='[Content:cluster=storage]' />\n" +
                "    <route name='storage/cluster.storage' hops='route:storage' />\n" +
                "</protocol>",
@@ -163,7 +163,7 @@ class VespaRoute < VdsTest
                "        <recipient session='nonstandard' />\n" +
                "    </hop>\n" +
                "    <route name='default' hops='indexing' />\n" +
-               "    <route name='default-get' hops='indexing' />\n" +
+               "    <route name='default-get' hops='[Content:cluster=nonstandard]' />\n" +
                "    <route name='nonstandard' hops='[Content:cluster=nonstandard]' />\n" +
                "    <route name='storage/cluster.nonstandard' hops='route:nonstandard' />\n" +
                "</protocol>",
@@ -180,7 +180,7 @@ class VespaRoute < VdsTest
                "        <recipient session='storage' />\n" +
                "    </hop>\n" +
                "    <route name='default' hops='indexing' />\n" +
-               "    <route name='default-get' hops='indexing' />\n" +
+               "    <route name='default-get' hops='[Content:cluster=storage]' />\n" +
                "    <route name='storage' hops='[Content:cluster=storage]' />\n" +
                "    <route name='storage/cluster.storage' hops='route:storage' />\n" +
                "</protocol>",
