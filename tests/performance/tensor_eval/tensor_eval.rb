@@ -23,7 +23,6 @@ class TensorEvalPerfTest < PerformanceTest
   TENSOR_MATCH_50X50 = "tensor_match_50x50"
   TENSOR_MATCH_100X100 = "tensor_match_100x100"
   DENSE_TENSOR_DOT_PRODUCT = "dense_tensor_dot_product"
-  DENSE_TENSOR_DOT_PRODUCT_UNBOUND = "dense_tensor_dot_product_unbound"
 
   def initialize(*args)
     super(*args)

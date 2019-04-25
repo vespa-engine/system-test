@@ -6,7 +6,6 @@
   <field name="ranking.features.query(q_dense_vector_100)" type="tensor(x[100])" />
   <field name="ranking.features.query(q_dense_vector_250)" type="tensor(x[250])" />
   <field name="ranking.features.query(q_dense_vector_500)" type="tensor(x[500])" />
-  <field name="ranking.features.query(q_dense_vector_unbound)" type="tensor(x[])" />
   <field name="ranking.features.query(q_sparse_vector_x)" type="tensor(x{})" />
   <field name="ranking.features.query(q_sparse_vector_y)" type="tensor(y{})" />
 </query-profile-type>

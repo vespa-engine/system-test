@@ -49,10 +49,6 @@ def self.gen_tensor_dense_query(query_vector)
   "/search/?query=wset_entries:#{query_vector.size}&q_dense_vector_#{query_vector.size}=#{gen_tensor_array(query_vector)}"
 end
 
-def self.gen_tensor_dense_unbound_query(query_vector)
-  "/search/?query=wset_entries:#{query_vector.size}&q_dense_vector_unbound=#{gen_tensor_array(query_vector)}"
-end
-
 def self.gen_tensor_sparse_query_x(query_vector)
   gen_tensor_sparse_query(query_vector, "x")
 end
@@ -80,7 +76,6 @@ def self.write_query_files(folder)
     write_query_file("#{folder}queries.dot_product_wset.#{num_entries}.txt", num_queries, num_entries, :gen_dot_product_wset_query, query_vectors)
     write_query_file("#{folder}queries.dot_product_array.#{num_entries}.txt", num_queries, num_entries, :gen_dot_product_array_query, query_vectors)
     write_query_file("#{folder}queries.tensor.dense.#{num_entries}.txt", num_queries, num_entries, :gen_tensor_dense_query, query_vectors)
-    write_query_file("#{folder}queries.tensor.dense_unbound.#{num_entries}.txt", num_queries, num_entries, :gen_tensor_dense_unbound_query, query_vectors)
     write_query_file("#{folder}queries.tensor.sparse.x.#{num_entries}.txt", num_queries, num_entries, :gen_tensor_sparse_query_x, query_vectors)
     write_query_file("#{folder}queries.tensor.sparse.y.#{num_entries}.txt", num_queries, num_entries, :gen_tensor_sparse_query_y, query_vectors)
   end
