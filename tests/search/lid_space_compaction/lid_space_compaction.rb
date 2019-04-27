@@ -59,7 +59,7 @@ class LidSpaceCompactionTest < SearchTest
       gen_puts(begin_docs, num_docs)
     end
     puts "feed_puts(#{begin_docs}, #{num_docs})"
-    feed(:file => file_name, :maxpending => 1)
+    feed(:file => file_name)
   end
 
   def feed_removes(begin_docs, end_docs, num_docs)
@@ -68,7 +68,7 @@ class LidSpaceCompactionTest < SearchTest
       gen_removes(begin_docs, end_docs, num_docs)
     end
     puts "feed_removes(#{begin_docs}, #{end_docs}, #{num_docs})"
-    feed(:file => file_name, :maxpending => 1)
+    feed(:file => file_name)
   end
 
   def assert_corpus_hitcount(num_docs)
