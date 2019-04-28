@@ -53,22 +53,30 @@ class LidSpaceCompactionTest < SearchTest
     end
   end
 
-  def feed_puts(begin_docs, num_docs)
+  def feed_file(file_name, preserve_feed_order)
+    if preserve_feed_order
+      feed(:file => file_name, :maxpending => 1)
+    else
+      feed(:file => file_name)
+    end
+  end
+
+  def feed_puts(begin_docs, num_docs, preserve_feed_order = false)
     file_name = dirs.tmpdir + "generated/puts.#{begin_docs}.#{num_docs}.xml"
     if (!File.exists?(file_name))
       gen_puts(begin_docs, num_docs)
     end
     puts "feed_puts(#{begin_docs}, #{num_docs})"
-    feed(:file => file_name)
+    feed_file(file_name, preserve_feed_order)
   end
 
-  def feed_removes(begin_docs, end_docs, num_docs)
+  def feed_removes(begin_docs, end_docs, num_docs, preserve_feed_order = false)
     file_name = dirs.tmpdir + "generated/removes.#{begin_docs}-#{end_docs}.#{num_docs}.xml"
     if (!File.exists?(file_name))
       gen_removes(begin_docs, end_docs, num_docs)
     end
     puts "feed_removes(#{begin_docs}, #{end_docs}, #{num_docs})"
-    feed(:file => file_name)
+    feed_file(file_name, preserve_feed_order)
   end
 
   def assert_corpus_hitcount(num_docs)
