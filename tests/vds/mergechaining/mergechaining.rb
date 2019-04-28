@@ -45,7 +45,7 @@ class MergeChainingTest < VdsMultiModelTest
     puts "Verifying initial document count"
     vespa.storage["storage"].assert_document_count(0)
 
-    feedfile("tmpfeed_mergechaining.xml", {:abortonerror => "yes"})
+    feedfile("tmpfeed_mergechaining.xml")
 
     vespa.storage["storage"].wait_until_ready
 

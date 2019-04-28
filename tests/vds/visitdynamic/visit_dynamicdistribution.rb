@@ -65,7 +65,7 @@ class VisitDynamicDistributionTest < PersistentProviderTest
                                "-d #{@targetDir}/classes " +
                                "#{@targetDir}/src/com/yahoo/vespaclient/test/TestVisitorHandler.java")
 
-    feedfile("tmpfeed_visitdynamic.xml", {:abortonerror => "yes"})
+    feedfile("tmpfeed_visitdynamic.xml")
 
     puts "Letting storage catch up with bucket splitting"
     rounds = 10
@@ -255,7 +255,7 @@ class VisitDynamicDistributionTest < PersistentProviderTest
   end
 
   def test_visit_with_progress
-    feedfile("tmpfeed_visitdynamic.xml", {:abortonerror => "yes"})
+    feedfile("tmpfeed_visitdynamic.xml")
 
     visit_and_deploy(2, 2, 15, [])
     # Now that we've tested going from low->hi, try it the other way around

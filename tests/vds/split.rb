@@ -40,7 +40,7 @@ class Split < VdsTest
 
     set_description("")
 
-    feedfile("docs_test_split_buckets.xml", {:abortonerror => "yes"})
+    feedfile("docs_test_split_buckets.xml")
 
     vespa.storage["storage"].wait_until_ready(300)
 
