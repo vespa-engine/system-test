@@ -53,22 +53,30 @@ class LidSpaceCompactionTest < SearchTest
     end
   end
 
-  def feed_puts(begin_docs, num_docs)
+  def feed_file(file_name, preserve_feed_order)
+    if preserve_feed_order
+      feed(:file => file_name, :maxpending => 1)
+    else
+      feed(:file => file_name)
+    end
+  end
+
+  def feed_puts(begin_docs, num_docs, preserve_feed_order = false)
     file_name = dirs.tmpdir + "generated/puts.#{begin_docs}.#{num_docs}.xml"
     if (!File.exists?(file_name))
       gen_puts(begin_docs, num_docs)
     end
     puts "feed_puts(#{begin_docs}, #{num_docs})"
-    feed(:file => file_name)
+    feed_file(file_name, preserve_feed_order)
   end
 
-  def feed_removes(begin_docs, end_docs, num_docs)
+  def feed_removes(begin_docs, end_docs, num_docs, preserve_feed_order = false)
     file_name = dirs.tmpdir + "generated/removes.#{begin_docs}-#{end_docs}.#{num_docs}.xml"
     if (!File.exists?(file_name))
       gen_removes(begin_docs, end_docs, num_docs)
     end
     puts "feed_removes(#{begin_docs}, #{end_docs}, #{num_docs})"
-    feed(:file => file_name)
+    feed_file(file_name, preserve_feed_order)
   end
 
   def assert_corpus_hitcount(num_docs)
@@ -192,16 +200,16 @@ class LidSpaceCompactionTest < SearchTest
     deploy_app(SearchApp.new.
                cluster(SearchCluster.new.sd(SEARCH_DATA + "test.sd")))
     start
-    feed_puts(0, 400)
+    feed_puts(0, 400, true)
     assert_corpus_hitcount(400)
     assert_ready_and_removed(get_ideal_stats(400), get_ideal_stats(0))
-    feed_removes(0, 400, 200)
+    feed_removes(0, 400, 200, true)
     assert_corpus_hitcount(200)
     assert_ready_and_removed(LidUsageStats.new(401, 200, 1, 400, 0), get_ideal_stats(200))
-    feed_puts(400, 400)
+    feed_puts(400, 400, true)
     assert_corpus_hitcount(600)
     assert_ready_and_removed(get_ideal_stats(600), get_ideal_stats(200))
-    feed_removes(400, 800, 200)
+    feed_removes(400, 800, 200, true)
     assert_corpus_hitcount(400)
     assert_ready_and_removed(LidUsageStats.new(601, 400, 1, 600, 0), get_ideal_stats(400))
   end
