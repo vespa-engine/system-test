@@ -23,7 +23,7 @@ class SearchDownWhileFeeding < IndexedSearchTest
 
     puts "Feeding with searchnode down"
 
-    result = feedfile(selfdir+"music.xml", { :exceptiononfailure => false, :abortonerror => "no", :timeout => 10 })
+    result = feedfile(selfdir+"music.xml", { :exceptiononfailure => false, :timeout => 10 })
 
     puts "2 RESULT *****************"
     puts result

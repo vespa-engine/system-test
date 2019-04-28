@@ -69,7 +69,7 @@ class ClusterDynamicDistributionTest < VdsTest
     puts "Starting feeding in own thread"
     feed_thread = Thread.new {
       feed_start = Time.new
-      feedfile("tmpfeed_cluster_dynamic.xml", {:abortonerror => "yes"})
+      feedfile("tmpfeed_cluster_dynamic.xml")
       puts "Feeding took " + (Time.new - feed_start).to_s + " seconds"
     }
     feed_thread

@@ -67,7 +67,7 @@ class GroupingIndexed < IndexedSearchTest
     feedfile = dirs.tmpdir + "input.xml"
     docs.write_xml(feedfile)
 
-    feed_and_wait_for_docs("test2", 2048, {:file => feedfile, :abortonerror => "yes"})
+    feed_and_wait_for_docs("test2", 2048, {:file => feedfile})
 
     assert_count_equals("select=all(group(a)output(count()))", 2025)
     assert_count_equals("select=all(group(a)output(count())each(output(count())))", 2048)
