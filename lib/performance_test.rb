@@ -65,7 +65,7 @@ class PerformanceTest < TestCase
   end
 
   def feeder_binary
-    "vespa-feeder --numthreads #{feeder_numthreads}"
+    "vespa-feeder --numthreads #{feeder_numthreads} --abortondataerror no --abortonsenderror no"
   end
 
   def prepare

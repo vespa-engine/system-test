@@ -136,18 +136,8 @@ module Feeder
     end
 
     if params[:client] == :vespa_feeder
-      if "default" == params[:abortonerror]
-        # nothing
-      elsif params[:abortonerror]
-        p += "--abortondataerror #{params[:abortonerror]} --abortonsenderror #{params[:abortonerror]} "
-      else
-        p += "--abortondataerror no --abortonsenderror no "
-      end
       if params[:mode]
         p += "--mode #{params[:mode]} "
-      end
-      if params[:configid]
-        p += "--configid #{params[:configid]} "
       end
       if params[:requesttimeout]
         raise "requesttimeout no longer exists"
@@ -155,20 +145,8 @@ module Feeder
       if params[:maxfeedrate]
         p += "--maxfeedrate #{params[:maxfeedrate]} "
       end
-      if params[:maxpendingsize]
-        p += "--maxpendingsize #{params[:maxpendingsize]} "
-      end
-      if params[:dryrun]
-        raise "dryryn no longer exists, use validate"
-      end
       if params[:compress]
         p += "--compress #{params[:compress]} "
-      end
-      if params[:progress]
-        raise "progress no longer exists, use verbose"
-      end
-      if params[:idprefix]
-        raise "idprefix no longer exists, use complete document ids"
       end
       if feed_file
         p += feed_file
