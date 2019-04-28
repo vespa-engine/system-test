@@ -244,9 +244,9 @@ class ContainerNode < VespaNode
 
   def parse_params(params={})
     key_value_pairs = []
-    url_arguments = [:field, :type, :documenttype, :route, :contenttype, :headersonly,
-                     :abortondocumenterror, :idprefix, :maxpendingdocs, :maxpendingbytes,
-                     :retrydelay, :timeout, :contentencoding, :priority, :user, :group, :asynchronous,
+    url_arguments = [:field, :type, :documenttype, :route, :contenttype,
+                     :abortondocumenterror, :maxpendingdocs, :maxpendingbytes,
+                     :timeout, :contentencoding, :priority, :user, :group, :asynchronous,
                      :selection, :loadtype, :fieldset, "visit.continuation", "visit.maxpendingvisitors"]
     # Treat id separately, as it may be an array
     if params.has_key? :id

@@ -113,9 +113,6 @@ module Feeder
     if params[:route]
       p += "--route #{params[:route]} "
     end
-    if params[:retrydelay]
-      p += "--retrydelay #{params[:retrydelay]} "
-    end
     if params[:priority]
       p += "--priority #{params[:priority]} "
     end

@@ -13,7 +13,7 @@ class SortingStreaming < StreamingSearchTest
     feedfile(SEARCH_DATA+"musicstreaming.777.xml")
 
     puts "sanity check"
-    wait_for_hitcount("query=sddocname:music&streaming.selection=true&streaming.headersonly", 777)
+    wait_for_hitcount("query=sddocname:music&streaming.selection=true", 777)
     puts "check sorting:"
 
     # Need to simulate stemming of queries, by supplying OR queries
