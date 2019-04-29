@@ -150,8 +150,8 @@ class DocumentV1Test < SearchTest
     response = http.post("/document/v1/fruit/banana/docid/doc1", feedDataBroken, httpheaders)
     assert_equal("400", response.code)
     assert_json_string_equal(
-       "{\"errors\":[{\"description\":\"PARSER_ERROR Could not get field \\\"habla babla\\\" in the structure of type " +
-       "\\\"banana\\\".\",\"id\":-11}],\"id\":\"id:fruit:banana::doc1\",\"pathId\":\"/document/v1/fruit/banana/docid/doc1\"}",
+       "{\"errors\":[{\"description\":\"PARSER_ERROR No field 'habla babla' in the structure of type " +
+       "'banana'\",\"id\":-11}],\"id\":\"id:fruit:banana::doc1\",\"pathId\":\"/document/v1/fruit/banana/docid/doc1\"}",
        response.body)
 
     # Update, with create = false

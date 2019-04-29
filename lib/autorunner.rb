@@ -85,7 +85,7 @@ class AutoRunner
     opts.on("--list", "Display all available testmethods in the testcase.") do
       @list_testmethods = true
     end
-    opts.on("--run METHOD1,METHOD2", Array, "List of testmethods to run, separated by comma.") do |val|
+    opts.on("--run METHOD1,METHOD2", Array, "List of test methods to run, separated by comma.") do |val|
       @arg_testmethods = val
     end
     opts.on("--keep-tmpdir", "Do not remove the temporary testdir during test stop.") do
