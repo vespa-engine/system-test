@@ -52,6 +52,20 @@ class DynTeaser < IndexedSearchTest
 
   end
 
+  def test_long_dyn_teaser
+    deploy_app(SearchApp.new.sd(selfdir+"cjk.sd").
+                             config(ConfigOverride.new("vespa.config.search.summary.juniperrc").
+                                                   add("length", 360).
+                                                   add("surround_max", 360).
+                                                   add("min_length", 300)))
+    start
+
+    feed_and_wait_for_docs("cjk", 1, :file => selfdir+"dynteaser.1.xml")
+
+    puts "Query: english"
+    compare("query=content:time", selfdir+"time.long.result", "content3")
+  end
+
   def test_fallback_none
     deploy_app(SearchApp.new.sd(selfdir+"fallback.sd").
                              config(ConfigOverride.new("vespa.config.search.summary.juniperrc").
