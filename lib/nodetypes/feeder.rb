@@ -77,10 +77,6 @@ module Feeder
   # <vespafeed> start and end tags based on the values in _params_.
   def create_tmpfeed(params={})
     encoding = params[:encoding]
-    detect_vespafeed_tag = IsXmlWithVespaFeedTag.new
-    if params[:json]
-      need_feed_tag = false
-    end
     buffer = params[:buffer]
 
     if not encoding
@@ -95,6 +91,9 @@ module Feeder
       need_feed_tag = !detect_vespafeed_tag.has_vespafeed_tag
     else
       need_feed_tag = !(buffer.include? '<vespafeed>')
+    end
+    if params[:json]
+      need_feed_tag = false
     end
     timestamp = Time.new.to_i
     randomstring = "%04d" % (rand*10000).to_i
