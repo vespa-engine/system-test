@@ -51,7 +51,10 @@ module Feeder
   end
 
   class IsXmlWithVespaFeedTag
-    @has_vespafeed_tag = false
+    attr_reader :has_vespafeed_tag
+    def initialize
+      @has_vespafeed_tag = false
+    end
     def handle(stream)
       valid_lines = 0
       stream.each_line do |line|
@@ -74,9 +77,10 @@ module Feeder
   # <vespafeed> start and end tags based on the values in _params_.
   def create_tmpfeed(params={})
     encoding = params[:encoding]
-    skip_feed_tag = params[:skipfeedtag]
+    detect_vespafeed_tag = IsXmlWithVespaFeedTag.new
+    need_feed_tag = !params[:skipfeedtag]
     if params[:json]
-      skip_feed_tag = true
+      need_feed_tag = false
     end
     buffer = params[:buffer]
 
@@ -87,12 +91,17 @@ module Feeder
     localfiles = []
     if params[:dir] or params[:file]
       localfiles = fetchfiles(params)
+      detect_vespafeed_tag = IsXmlWithVespaFeedTag.new
+      catfile(localfiles[0], detect_vespafeed_tag)
+      need_feed_tag = !detect_vespafeed_tag.has_vespafeed_tag
+    else
+      need_feed_tag = !(buffer.include? '<vespafeed>')
     end
     timestamp = Time.new.to_i
     randomstring = "%04d" % (rand*10000).to_i
     tmpfeed = "#{Environment.instance.vespa_home}/tmp/tmpfeed#{timestamp}-#{randomstring}"
     File.open(tmpfeed, "w") do |tmp|
-      if not skip_feed_tag
+      if need_feed_tag
         tmp.write("<?xml version=\"1.0\" encoding=\"#{encoding}\" ?>")
         tmp.write("<vespafeed>\n")
       end
@@ -102,7 +111,7 @@ module Feeder
       if buffer
         tmp.write(buffer)
       end
-      if not skip_feed_tag
+      if need_feed_tag
         tmp.write("</vespafeed>\n")
       end
     end
