@@ -23,15 +23,15 @@ module Feeder
   end
 
   def catfile(source, handle)
-    if feedfilename.match /[.]gz$/
+    if source.match /[.]gz$/
       decompressfile("zcat", source, handle)
-    elsif feedfilename.match /[.]xz$/
+    elsif source.match /[.]xz$/
       decompressfile("xzcat", source, handle)
-    elsif feedfilename.match /[.]bz2$/
+    elsif source.match /[.]bz2$/
       decompressfile("bzcat", source, handle)
-    elsif feedfilename.match /[.]zst$/
+    elsif source.match /[.]zst$/
       decompressfile("zstdcat", source, handle)
-    elsif feedfilename.match /[.]lz4$/
+    elsif source.match /[.]lz4$/
       decompressfile("lz4cat", source, handle)
     else
       decompressfile("cat", source, handle)
