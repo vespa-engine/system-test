@@ -16,14 +16,67 @@ module Feeder
     feedlocalfile(tmpfeed, params.merge({:deletefeed => true}))
   end
 
+  def decompressfile(cmd, source, handler)
+    IO.popen("#{cmd} #{source}") do |feed|
+      handler.handle(feed)
+    end
+  end
+
+  def catfile(source, handle)
+    if source.match /[.]gz$/
+      decompressfile("zcat", source, handle)
+    elsif source.match /[.]xz$/
+      decompressfile("xzcat", source, handle)
+    elsif source.match /[.]bz2$/
+      decompressfile("bzcat", source, handle)
+    elsif source.match /[.]zst$/
+      decompressfile("zstdcat", source, handle)
+    elsif source.match /[.]lz4$/
+      decompressfile("lz4cat", source, handle)
+    else
+      decompressfile("cat", source, handle)
+    end
+  end
+
+  class Writer
+
+    def initialize(dest)
+      @destination = dest
+    end
+    def handle(stream)
+      while block = stream.read(50*1024*1024)
+        @destination.write(block)
+      end
+    end
+  end
+
+  class IsXmlWithVespaFeedTag
+    attr_reader :has_vespafeed_tag
+    def initialize
+      @has_vespafeed_tag = false
+    end
+    def handle(stream)
+      valid_lines = 0
+      stream.each_line do |line|
+        if line.start_with?('<')
+          if line.include? '<vespafeed>'
+            @has_vespafeed_tag = true
+            return
+          end
+          valid_lines += 1
+          if valid_lines > 10
+            return
+          end
+        end
+      end
+      return
+    end
+  end
+
   # Constructs a feed from a _:file_ or _:dir_, and optionally generates
   # <vespafeed> start and end tags based on the values in _params_.
   def create_tmpfeed(params={})
     encoding = params[:encoding]
-    skip_feed_tag = params[:skipfeedtag]
-    if params[:json]
-      skip_feed_tag = true
-    end
     buffer = params[:buffer]
 
     if not encoding
@@ -33,46 +86,30 @@ module Feeder
     localfiles = []
     if params[:dir] or params[:file]
       localfiles = fetchfiles(params)
+      detect_vespafeed_tag = IsXmlWithVespaFeedTag.new
+      catfile(localfiles[0], detect_vespafeed_tag)
+      need_feed_tag = !detect_vespafeed_tag.has_vespafeed_tag
+    else
+      need_feed_tag = !(buffer.include? '<vespafeed>')
+    end
+    if params[:json]
+      need_feed_tag = false
     end
     timestamp = Time.new.to_i
     randomstring = "%04d" % (rand*10000).to_i
     tmpfeed = "#{Environment.instance.vespa_home}/tmp/tmpfeed#{timestamp}-#{randomstring}"
     File.open(tmpfeed, "w") do |tmp|
-      if not skip_feed_tag
+      if need_feed_tag
         tmp.write("<?xml version=\"1.0\" encoding=\"#{encoding}\" ?>")
         tmp.write("<vespafeed>\n")
       end
       localfiles.each do |feedfilename|
-        if feedfilename.match /[.]gz$/
-          IO.popen("zcat #{feedfilename}") do |feed|
-            while block = feed.read(50*1024*1024)
-              tmp.write(block)
-            end
-          end
-        elsif feedfilename.match /[.]xz$/
-          IO.popen("xzcat #{feedfilename}") do |feed|
-            while block = feed.read(50*1024*1024)
-              tmp.write(block)
-            end
-          end
-        elsif feedfilename.match /[.]bz2$/
-          IO.popen("bzcat #{feedfilename}") do |feed|
-            while block = feed.read(50*1024*1024)
-              tmp.write(block)
-            end
-          end
-        else
-          File.open(feedfilename, "r") do |feed|
-            while block = feed.read(50*1024*1024)
-              tmp.write(block)
-            end
-          end
-        end
+        catfile(feedfilename, Writer.new(tmp))
       end
       if buffer
         tmp.write(buffer)
       end
-      if not skip_feed_tag
+      if need_feed_tag
         tmp.write("</vespafeed>\n")
       end
     end
