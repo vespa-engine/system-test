@@ -78,7 +78,6 @@ module Feeder
   def create_tmpfeed(params={})
     encoding = params[:encoding]
     detect_vespafeed_tag = IsXmlWithVespaFeedTag.new
-    need_feed_tag = !params[:skipfeedtag]
     if params[:json]
       need_feed_tag = false
     end
