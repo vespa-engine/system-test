@@ -31,10 +31,10 @@ class Position < IndexedSearchTest
     test_dir = selfdir + "assign_update/"
     deploy_app(SearchApp.new.sd(test_dir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 3, :file => test_dir + "docs.json", :json => true)
+    feed_and_wait_for_docs("test", 3, :file => test_dir + "docs.json")
     assert_result("query=sddocname:test&format=json", test_dir + "docs_result.json", "documentid")
 
-    feed(:file => test_dir + "updates.json", :json => true)
+    feed(:file => test_dir + "updates.json")
     assert_result("query=sddocname:test&format=json", test_dir + "updates_result.json", "documentid")
   end
 

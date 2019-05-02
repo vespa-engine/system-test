@@ -23,7 +23,7 @@ class GlobalParentsToolTest < SearchTest
     set_description("Test tools (vespa-stat, vespa-visit) with global parents")
     deploy_app(make_app)
     start
-    feed(:file => @test_dir + "campaign-batch-1-7.json", :json => true)
+    feed(:file => @test_dir + "campaign-batch-1-7.json")
     vespa.storage[@cluster_name].validate_cluster_bucket_state()
     check_visit("default", make_exp_ad_ids)
     check_stat("default", ad(1))

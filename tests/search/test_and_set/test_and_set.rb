@@ -19,7 +19,7 @@ class TestAndSetTest < SearchTest
 
   def test_with_json_feed_format
     run_tests(->(feedfile) {
-      feed(:file => feed_filename(feedfile, :json), :json => true)
+      feed(:file => feed_filename(feedfile, :json))
     })
   end
 

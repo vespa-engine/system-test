@@ -15,7 +15,7 @@ class TensorFeedTest < IndexedSearchTest
     set_description("Test feeding of tensor field and retrieval via search and visit")
     deploy_app(SearchApp.new.sd(@base_dir + "test.sd").enable_http_gateway)
     start
-    feed_and_wait_for_docs("test", 4, :file => @base_dir + "docs.json", :json => true)
+    feed_and_wait_for_docs("test", 4, :file => @base_dir + "docs.json")
 
     search_docs = extract_docs(search("query=sddocname:test&format=json").json)
     puts "search_docs: #{search_docs}"
@@ -27,7 +27,7 @@ class TensorFeedTest < IndexedSearchTest
     puts "visit_docs: #{visit_docs}"
     assert_tensor_docs(visit_docs)
 
-    feed(:file => @base_dir + "updates.json", :json => true)
+    feed(:file => @base_dir + "updates.json")
     search_docs = extract_docs(search("query=sddocname:test&format=json&nocache").json)
     puts "search_docs: #{search_docs}"
     assert_tensor_docs_after_updates(search_docs)
@@ -47,7 +47,7 @@ class TensorFeedTest < IndexedSearchTest
     # not from replaying transaction log.
     deploy_app(SearchApp.new.sd(@base_dir + "attribute/test.sd"))
     start
-    feed_and_wait_for_docs("test", 4, :file => @base_dir + "docs.json", :json => true)
+    feed_and_wait_for_docs("test", 4, :file => @base_dir + "docs.json")
 
     search_docs = extract_docs(search("query=sddocname:test&format=json").json)
     puts "search_docs: #{search_docs}"
@@ -63,7 +63,7 @@ class TensorFeedTest < IndexedSearchTest
     puts "search_docs: #{search_docs}"
     assert_tensor_docs(search_docs)
 
-    feed(:file => @base_dir + "updates.json", :json => true)
+    feed(:file => @base_dir + "updates.json")
     search_docs = extract_docs(search("query=sddocname:test&format=json").json)
     puts "search_docs: #{search_docs}"
     assert_tensor_docs_after_updates(search_docs)

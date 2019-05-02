@@ -97,27 +97,27 @@ class SchemaChangesElastic < IndexedSearchTest
     deploy_output = deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
     start
     postdeploy_wait(deploy_output)
-    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.0.json", :json => true)
+    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.0.json")
     assert_add_attribute_hitcount(0, 0)
 
     puts "Add attribute aspect 1"
     add_attribute_aspect("test.1.sd")
     assert_add_attribute_hitcount(0, 0)
-    feed_and_wait_for_docs("test", 5, :file => @test_dir + "feed.1.json", :json => true)
+    feed_and_wait_for_docs("test", 5, :file => @test_dir + "feed.1.json")
     assert_add_attribute_hitcount(0, 0)
 
     puts "Activate attribute aspect 1"
     activate_attribute_aspect(5)
     assert_add_attribute_hitcount(5, 0)
     assert_add_reprocess_event_logs("f1", 5)
-    feed_and_wait_for_docs("test", 7, :file => @test_dir + "feed.2.json", :json => true)
+    feed_and_wait_for_docs("test", 7, :file => @test_dir + "feed.2.json")
     assert_add_attribute_hitcount(7, 0)
 
     vespa.search["search"].first.trigger_flush
     puts "Add attribute aspect 2"
     add_attribute_aspect("test.2.sd")
     assert_add_attribute_hitcount(7, 0)
-    feed_and_wait_for_docs("test", 9, :file => @test_dir + "feed.3.json", :json => true)
+    feed_and_wait_for_docs("test", 9, :file => @test_dir + "feed.3.json")
     assert_add_attribute_hitcount(9, 0)
 
     puts "Activate attribute aspect 2"
@@ -131,7 +131,7 @@ class SchemaChangesElastic < IndexedSearchTest
     deploy_output = deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
     start
     postdeploy_wait(deploy_output)
-    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.0.json", :json => true)
+    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.0.json")
     assert_result("query=sddocname:test&nocache",
                   @test_dir + "test.0.result.xml",
                   "documentid")
@@ -147,7 +147,7 @@ class SchemaChangesElastic < IndexedSearchTest
 
     puts "Remove attribute aspect 1"
     remove_attribute_aspect("test.1.sd")
-    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.2.json", :json => true)
+    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.2.json")
     assert_result("query=sddocname:test&nocache",
                   @test_dir + "test.2.result.xml",
                   "documentid")
@@ -156,7 +156,7 @@ class SchemaChangesElastic < IndexedSearchTest
     puts "Activate attribute aspect removed 1"
     activate_attribute_aspect(3)
     assert_remove_reprocess_event_logs("f1", 3)
-    feed_and_wait_for_docs("test", 4, :file => @test_dir + "feed.3.json", :json => true)
+    feed_and_wait_for_docs("test", 4, :file => @test_dir + "feed.3.json")
     assert_result("query=sddocname:test&nocache",
                   @test_dir + "test.3.result.xml",
                   "documentid")
@@ -166,7 +166,7 @@ class SchemaChangesElastic < IndexedSearchTest
     vespa.search["search"].first.trigger_flush
     puts "Remove attribute aspect 2"
     remove_attribute_aspect("test.2.sd")
-    feed_and_wait_for_docs("test", 5, :file => @test_dir + "feed.4.json", :json => true)
+    feed_and_wait_for_docs("test", 5, :file => @test_dir + "feed.4.json")
 
     puts "Activate attribute aspect 2"
     activate_attribute_aspect(5)

@@ -32,7 +32,7 @@ class ConstantFeatureTest < IndexedSearchTest
     add_bundle(selfdir + "../tensor_eval/TensorInQuerySearcher.java")
     deploy_app(get_app("test.sd"))
     start
-    feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.json", :json => true)
+    feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.json")
 
     check_ranking(201.0, 161.0, 82.0, 102.0)
     redeploy(get_app("test2.sd"))

@@ -318,10 +318,10 @@ class SchemaChanges < IndexedSearchTest
     @test_dir = selfdir + "remove_attribute_from_index/"
     deploy_output = deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
     start
-    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.0.json", :json => true)
+    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.0.json")
 
     # Feed partial updates to f1
-    feed(:file => @test_dir + "update.0.json", :json => true)
+    feed(:file => @test_dir + "update.0.json")
     assert_hitcount("f1:foo&nocache", 0)
     assert_hitcount("f1:bar&nocache", 2)
 
@@ -334,7 +334,7 @@ class SchemaChanges < IndexedSearchTest
     assert_log_not_matches(/Cannot apply new config snapshot directly/)
     assert_no_match(/Field 'f1' changed: remove attribute aspect/, deploy_output)
 
-    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.1.json", :json => true)
+    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.1.json")
     assert_hitcount("f1:foo&nocache", 0)
     assert_hitcount("f1:bar&nocache", 3)
   end

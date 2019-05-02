@@ -40,7 +40,7 @@ class StructAndMapTypesTest < SearchTest
   def test_search_in_map_and_array_of_struct_attribute
     set_description("Test search in map and array of struct attributes")
     deploy_and_start("attribute_fields")
-    feed(:file => selfdir + "docs_search.json", :json => true)
+    feed(:file => selfdir + "docs_search.json")
     vespa.adminserver.logctl("searchnode:proton.matching.query", "debug=on")
 
     #Tests for array<struct>
@@ -162,7 +162,7 @@ class StructAndMapTypesTest < SearchTest
   end
 
   def run_baseline_test_case
-    feed(:file => selfdir + "docs.json", :json => true)
+    feed(:file => selfdir + "docs.json")
     assert_document(@default_array, @default_map, @default_str_int_map)
     assert_result(@default_array, @default_map, @default_str_int_map)
   end
@@ -170,9 +170,9 @@ class StructAndMapTypesTest < SearchTest
   def run_test_case(file_name, exp_elem_array, exp_elem_map, exp_str_int_map, route_search_direct = false)
     run_baseline_test_case
     if (route_search_direct)
-      feed(:file => selfdir + file_name, :json => true, :route => "search-direct")
+      feed(:file => selfdir + file_name, :route => "search-direct")
     else
-      feed(:file => selfdir + file_name, :json => true)
+      feed(:file => selfdir + file_name)
     end
     assert_document(exp_elem_array, exp_elem_map, exp_str_int_map)
     assert_result(exp_elem_array, exp_elem_map, exp_str_int_map)

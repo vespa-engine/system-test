@@ -14,7 +14,7 @@ class TensorEvalTest < IndexedSearchTest
                search_dir(selfdir + "search").
                search_chain(SearchChain.new.add(Searcher.new("com.yahoo.test.TensorInQuerySearcher"))))
     start
-    feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.json", :json => true)
+    feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.json")
 
     barbie_id = 0
     heman_id  = 1

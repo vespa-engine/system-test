@@ -29,8 +29,8 @@ class ReferencedTensorTest < ParentChildTestBase
   def run_imported_tensor_fields_test(sub_test_dir, root_type)
     @sub_test_dir = sub_test_dir
     deploy_and_start
-    feed_and_wait_for_docs("campaign", 2, :file => get_sub_test_path("campaign-docs.json"), :json => true)
-    feed_and_wait_for_docs("ad", 5, :file => get_test_path("ad-docs.json"), :json => true)
+    feed_and_wait_for_docs("campaign", 2, :file => get_sub_test_path("campaign-docs.json"))
+    feed_and_wait_for_docs("ad", 5, :file => get_test_path("ad-docs.json"))
     assert_campaign_ref_fields(["id:test:campaign::0",
                                 "id:test:campaign::1",
                                 "id:test:campaign::2",
@@ -43,7 +43,7 @@ class ReferencedTensorTest < ParentChildTestBase
                       {"cells"=>[{"address"=>{"x"=>"1"}, "value"=>8.0}, {"address"=>{"x"=>"0"}, "value"=>7.0}]}]
     assert_tensor_fields(root_type, "indexed_tensor", indexed_tensors)
     assert_tensor_fields(root_type, "mapped_tensor", mapped_tensors)
-    feed(:file => get_test_path("ad-updates.json"), :json => true)
+    feed(:file => get_test_path("ad-updates.json"))
     assert_campaign_ref_fields([nil, nil,
                                 "id:test:campaign::0",
                                 "id:test:campaign::1",

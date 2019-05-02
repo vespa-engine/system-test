@@ -16,18 +16,18 @@ class SchemaChangesWeightedSetParams < IndexedSearchTest
     deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
     start
     proton = vespa.search["search"].first
-    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json", :json => true)
+    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
     puts "removing field f1"
     redeploy("test.1.sd")
     puts "adding field f1 with create-if-nonexistent param"
     redeploy("test.2.sd")
-    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.1.json", :json => true)
+    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.1.json")
     assert_result("sddocname:test&nocache", @test_dir + "result.0.xml")
     puts "removing field f1"
     redeploy("test.1.sd")
     puts "adding field f1 with create-if-nonexistent and remove-if-zero params"
     redeploy("test.3.sd")
-    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.2.json", :json => true)
+    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.2.json")
     assert_result("sddocname:test&nocache", @test_dir + "result.1.xml")
   end
 

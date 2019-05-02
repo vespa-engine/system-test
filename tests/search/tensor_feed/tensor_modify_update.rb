@@ -15,20 +15,20 @@ class TensorModifyUpdateTest < SearchTest
     set_description("Test tensor modify updates (replace, add, multiply) in dense, sparse and mixed tensor attributes and fields")
     deploy_app(SearchApp.new.sd(@base_dir + "test.sd").enable_http_gateway)
     start
-    feed_and_wait_for_docs("test", 1, :file => @base_dir + "docs.json", :json => true)
+    feed_and_wait_for_docs("test", 1, :file => @base_dir + "docs.json")
 
     query = "query=sddocname:test&format=json"
     doc_id = "id:test:test::0"
 
-    feed(:file => @base_dir + "modify_replace.json", :json => true)
+    feed(:file => @base_dir + "modify_replace.json")
     assert_tensor_fields_after_modify_replace(search_result_document(query, 50))
     assert_tensor_fields_after_modify_replace(get_result_document(doc_id))
 
-    feed(:file => @base_dir + "modify_add.json", :json => true)
+    feed(:file => @base_dir + "modify_add.json")
     assert_tensor_fields_after_modify_add(search_result_document(query, 56))
     assert_tensor_fields_after_modify_add(get_result_document(doc_id))
 
-    feed(:file => @base_dir + "modify_multiply.json", :json => true)
+    feed(:file => @base_dir + "modify_multiply.json")
     assert_tensor_fields_after_modify_multiply(search_result_document(query, 77))
     assert_tensor_fields_after_modify_multiply(get_result_document(doc_id))
   end

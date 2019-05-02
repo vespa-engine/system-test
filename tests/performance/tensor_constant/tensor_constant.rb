@@ -54,7 +54,7 @@ class TensorConstantPerfTest < PerformanceTest
                                num_hosts(@num_hosts).
                                configserver("node2").
                                search_dir(@tensor_dir))
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json", :json => true)
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
     assert_relevancy("query=sddocname:test", 9.0)
   end
 

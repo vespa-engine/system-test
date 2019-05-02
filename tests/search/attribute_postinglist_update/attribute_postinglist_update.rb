@@ -17,11 +17,11 @@ class AttributePostinglistUpdateTest < IndexedSearchTest
     set_description("Verify that posting list is correctly updated when attribute has multiple terms that share posting list")
     start
 
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.json", :json => true)
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.json")
     assert_hitcount("query=str_array:foo", 1)
     assert_hitcount("query=int_array:7", 1)
 
-    feed(:file => selfdir + "update.json", :json => true)
+    feed(:file => selfdir + "update.json")
     assert_hitcount("query=str_array:foo", 1)
     assert_hitcount("query=int_array:7", 1)
   end

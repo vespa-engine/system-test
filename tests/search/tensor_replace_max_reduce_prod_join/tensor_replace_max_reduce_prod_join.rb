@@ -20,8 +20,8 @@ class TensorReplaceMaxReduceProdJoinTest < IndexedSearchTest
   def deploy_and_feed
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").sd(selfdir + "parent.sd", { :global => true }))
     start
-    feed_and_wait_for_docs("parent", 3, :file => selfdir + "parent-docs.json", :json => true)
-    feed_and_wait_for_docs("test", 3, :file => selfdir + "test-docs.json", :json => true)
+    feed_and_wait_for_docs("parent", 3, :file => selfdir + "parent-docs.json")
+    feed_and_wait_for_docs("test", 3, :file => selfdir + "test-docs.json")
     @log = read_log_from_logserver
   end
 

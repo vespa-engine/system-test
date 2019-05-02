@@ -16,8 +16,8 @@ class ParentChildGroupingSortingTest < ParentChildTestBase
   end
 
   def feed_baseline
-    feed_and_wait_for_docs('campaign', 3, :file => get_sub_test_path("campaign-docs.json"), :json => true)
-    feed_and_wait_for_docs('ad', 5, :file => get_test_path("ad-docs.json"), :json => true)
+    feed_and_wait_for_docs('campaign', 3, :file => get_sub_test_path("campaign-docs.json"))
+    feed_and_wait_for_docs('ad', 5, :file => get_test_path("ad-docs.json"))
   end
 
   def teardown

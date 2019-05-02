@@ -19,7 +19,7 @@ class GrandparentSearchTest < IndexedSearchTest
                sd(@test_dir + "child.sd"))
 
     start
-    feedfile(@test_dir + "feed-0.json", :timeout => 240, :json => true)
+    feedfile(@test_dir + "feed-0.json", :timeout => 240)
     assert_hitcount(hit_count_query_string("grandparent"), 2)
     assert_hitcount(hit_count_query_string("parent"), 4)
     assert_hitcount(hit_count_query_string("child"), 6)
@@ -32,7 +32,7 @@ class GrandparentSearchTest < IndexedSearchTest
     assert_grandparent_search("a1:5", [100, 103, 104])
     assert_grandparent_search("a1:6", [101, 105])
     assert_grandparent_search("a1:7", [])
-    feedfile(@test_dir + "feed-1.json", :timeout => 240, :json => true)
+    feedfile(@test_dir + "feed-1.json", :timeout => 240)
     assert_fields("grandparent", "a1", [ 5, 6, 7])
     assert_fields("parent", "a2", [11, 12, 13])
     assert_fields("child", "a3", [100, 101, 102, 103, 104, 105])

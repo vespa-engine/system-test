@@ -106,7 +106,7 @@ class SplitJoinReadinessTest < SearchTest
       w.write_docs(document_type: 'test', group: 'g1', from: 1, count: 11)
     end
 
-    feed(:file => feed_file, :json => true)
+    feed(:file => feed_file)
     wait_until_ready
   end
 

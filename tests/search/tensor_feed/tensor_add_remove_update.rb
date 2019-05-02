@@ -15,16 +15,16 @@ class TensorAddRemoveUpdateTest < SearchTest
     set_description("Test tensor add and remove updates on sparse and mixed tensor attributes and fields")
     deploy_app(SearchApp.new.sd(@base_dir + "test.sd").enable_http_gateway)
     start
-    feed_and_wait_for_docs("test", 1, :file => @base_dir + "docs.json", :json => true)
+    feed_and_wait_for_docs("test", 1, :file => @base_dir + "docs.json")
 
     query = "query=sddocname:test&format=json"
     doc_id = "id:test:test::0"
 
-    feed(:file => @base_dir + "add_update.json", :json => true)
+    feed(:file => @base_dir + "add_update.json")
     assert_tensor_fields_after_add_update(search_result_document(query, 43))
     assert_tensor_fields_after_add_update(get_result_document(doc_id))
 
-    feed(:file => @base_dir + "remove_update.json", :json => true)
+    feed(:file => @base_dir + "remove_update.json")
     assert_tensor_fields_after_remove_update(search_result_document(query, 22))
     assert_tensor_fields_after_remove_update(get_result_document(doc_id))
   end

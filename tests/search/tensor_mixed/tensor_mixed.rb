@@ -12,7 +12,7 @@ class MixedTensorTest < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
                search_dir(selfdir + "search"))
     start
-    feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.json", :json => true)
+    feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.json")
 
     result = search(get_query("{{x:x1,y:0}:1}"))
     assert_equal(3, result.hit.size)

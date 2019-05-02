@@ -12,7 +12,7 @@ class TensorDotProductTest < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
                search_dir(selfdir + "search"))
     start
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.json", :json => true)
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.json")
 
     result = search(get_query(13,17))
     assert_equal(2, result.hit.size)

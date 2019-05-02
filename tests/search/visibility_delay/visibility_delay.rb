@@ -62,7 +62,7 @@ class VisibilityDelayTest < SearchTest
   end
 
   def assert_puts_committed_at_visibility_delay
-    feed(:file => selfdir + "docs.0.json", :json => true)
+    feed(:file => selfdir + "docs.0.json")
     sleep_visibility_delay
     assert_docs(3, "foo", "foo", 10)
   end
@@ -71,7 +71,7 @@ class VisibilityDelayTest < SearchTest
     restart_search_node
     wait_for_docs(3, "foo", 10) # previous doc state
 
-    feed(:file => selfdir + "updates.0.json", :json => true)
+    feed(:file => selfdir + "updates.0.json")
     sleep_visibility_delay
     assert_docs(3, "foo", "foo", 15)
     assert_hitcount("query=f2:10&nocache", 0)
@@ -81,7 +81,7 @@ class VisibilityDelayTest < SearchTest
     restart_search_node
     wait_for_docs(3, "foo", 15) # previous doc state
 
-    feed(:file => selfdir + "docs.1.json", :json => true)
+    feed(:file => selfdir + "docs.1.json")
     act_doc = vespa.document_api_v1.get("id:test:test::0")
     exp_doc = Document.new("test", "id:test:test::0").add_field("f1", "bar").add_field("f2", 20)
     assert_equal(exp_doc, act_doc)
@@ -96,7 +96,7 @@ class VisibilityDelayTest < SearchTest
     restart_search_node
     wait_for_docs(3, "bar", 20) # previous doc state
 
-    feed(:file => selfdir + "docs.2.json", :json => true)
+    feed(:file => selfdir + "docs.2.json")
     vespa.search["search"].first.trigger_flush
     assert_docs(0, "bar", "bar", 20)
     assert_docs(3, "baz", "baz", 30)
@@ -106,19 +106,19 @@ class VisibilityDelayTest < SearchTest
     set_description("Test that visibility delay can be configured up and down on a live system")
     deploy_app(get_app(0))
     start
-    feed(:file => selfdir + "docs.0.json", :json => true)
+    feed(:file => selfdir + "docs.0.json")
     assert_hitcount("query=f1:foo&nocache", 3)
     assert_hitcount("query=f1:bar&nocache", 0)
 
     redeploy(get_app(120))
-    feed(:file => selfdir + "docs.1.json", :json => true)
+    feed(:file => selfdir + "docs.1.json")
     assert_hitcount("query=f1:foo&nocache", 3)
     assert_hitcount("query=f1:bar&nocache", 0)
 
     redeploy(get_app(0))
     assert_hitcount("query=f1:foo&nocache", 0)
     assert_hitcount("query=f1:bar&nocache", 3)
-    feed(:file => selfdir + "docs.2.json", :json => true)
+    feed(:file => selfdir + "docs.2.json")
     assert_hitcount("query=f1:bar&nocache", 0)
     assert_hitcount("query=f1:baz&nocache", 3)
   end

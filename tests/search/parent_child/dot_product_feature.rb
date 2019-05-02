@@ -17,8 +17,8 @@ class ParentChildDotProductFeatureTest < ParentChildTestBase
   end
 
   def feed_baseline
-    feed_and_wait_for_docs('parent', 2, :file => get_sub_test_path("parent-docs.json"), :json => true)
-    feed_and_wait_for_docs('child', 3, :file => get_test_path("child-docs.json"), :json => true)
+    feed_and_wait_for_docs('parent', 2, :file => get_sub_test_path("parent-docs.json"))
+    feed_and_wait_for_docs('child', 3, :file => get_test_path("child-docs.json"))
   end
 
   # TODO re-evaluate need for multiple inputs for expected and vectors; currently just use 1 per in tests.
