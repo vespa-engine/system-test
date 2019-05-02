@@ -94,7 +94,7 @@ module Feeder
       catfile(localfiles[0], detect_vespafeed_tag)
       need_feed_tag = !detect_vespafeed_tag.has_vespafeed_tag
     else
-      need_feed_tag = !(buffer.include? '<vespafeed>') && buffer.start_with?('<')
+      need_feed_tag = buffer.start_with?('<') && !(buffer.include? '<vespafeed>')
     end
     if params[:json]
       need_feed_tag = false
