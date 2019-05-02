@@ -51,20 +51,20 @@ module Feeder
   end
 
   class IsXmlWithVespaFeedTag
-    attr_reader :has_vespafeed_tag
+    attr_reader :need_vespafeed_tag
     def initialize
-      @has_vespafeed_tag = false
+      @need_vespafeed_tag = false
     end
     def handle(stream)
       valid_lines = 0
       stream.each_line do |line|
         if line.start_with?('<')
           if line.include? '<vespafeed>'
-            @has_vespafeed_tag = true
             return
           end
           valid_lines += 1
           if valid_lines > 10
+            @need_vespafeed_tag = true
             return
           end
         elsif line.start_with?('[')
@@ -73,6 +73,7 @@ module Feeder
           return
         end
       end
+      @need_vespafeed_tag = true
       return
     end
   end
@@ -92,7 +93,7 @@ module Feeder
       localfiles = fetchfiles(params)
       detect_vespafeed_tag = IsXmlWithVespaFeedTag.new
       catfile(localfiles[0], detect_vespafeed_tag)
-      need_feed_tag = !detect_vespafeed_tag.has_vespafeed_tag
+      need_feed_tag = detect_vespafeed_tag.need_vespafeed_tag
     else
       need_feed_tag = buffer.start_with?('<') && !(buffer.include? '<vespafeed>')
     end
