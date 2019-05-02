@@ -16,6 +16,58 @@ module Feeder
     feedlocalfile(tmpfeed, params.merge({:deletefeed => true}))
   end
 
+  def decompressfile(cmd, source, handler)
+    IO.popen("#{cmd} #{source}") do |feed|
+      handler.handle(feed)
+    end
+  end
+
+  def catfile(source, handle)
+    if feedfilename.match /[.]gz$/
+      decompressfile("zcat", source, handle)
+    elsif feedfilename.match /[.]xz$/
+      decompressfile("xzcat", source, handle)
+    elsif feedfilename.match /[.]bz2$/
+      decompressfile("bzcat", source, handle)
+    elsif feedfilename.match /[.]zst$/
+      decompressfile("zstdcat", source, handle)
+    elsif feedfilename.match /[.]lz4$/
+      decompressfile("lz4cat", source, handle)
+    else
+      decompressfile("cat", source, handle)
+    end
+  end
+
+  class Writer
+
+    def initialize(dest)
+      @destination = dest
+    end
+    def hand(stream)
+      while block = stream.read(50*1024*1024)
+        @destination.write(block)
+      end
+    end
+  end
+
+  class IsXmlWithVespaFeedTag
+    def handle(stream)
+      valid_lines = 0
+      stream.each_line do |line|
+        if line.start_with('<')
+          if line.include? '<vespafeed>'
+            return true
+          end
+          valid_lines += 1
+          if valid_lines > 2
+            return false
+          end
+        end
+      end
+      return true
+    end
+  end
+
   # Constructs a feed from a _:file_ or _:dir_, and optionally generates
   # <vespafeed> start and end tags based on the values in _params_.
   def create_tmpfeed(params={})
@@ -43,31 +95,7 @@ module Feeder
         tmp.write("<vespafeed>\n")
       end
       localfiles.each do |feedfilename|
-        if feedfilename.match /[.]gz$/
-          IO.popen("zcat #{feedfilename}") do |feed|
-            while block = feed.read(50*1024*1024)
-              tmp.write(block)
-            end
-          end
-        elsif feedfilename.match /[.]xz$/
-          IO.popen("xzcat #{feedfilename}") do |feed|
-            while block = feed.read(50*1024*1024)
-              tmp.write(block)
-            end
-          end
-        elsif feedfilename.match /[.]bz2$/
-          IO.popen("bzcat #{feedfilename}") do |feed|
-            while block = feed.read(50*1024*1024)
-              tmp.write(block)
-            end
-          end
-        else
-          File.open(feedfilename, "r") do |feed|
-            while block = feed.read(50*1024*1024)
-              tmp.write(block)
-            end
-          end
-        end
+        catfile(feedfilename, Writer.new(tmp))
       end
       if buffer
         tmp.write(buffer)
