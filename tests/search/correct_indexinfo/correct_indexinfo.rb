@@ -25,7 +25,7 @@ class Bug_401679 < IndexedSearchTest
 
   def test_correct_indexinfo
     feed_and_wait_for_docs("newsarticle", 3, :file => "#{selfdir}/all.xml", 
-                           :cluster => "shortcuts", :skipfeedtag => true)
+                           :cluster => "shortcuts")
 
     puts "Query: sanity checks"
     wait_for_hitcount("query=sddocname:newsarticle", 3); # 3 from shortcuts

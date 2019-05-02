@@ -11,8 +11,7 @@ class IndexingScript < IndexedSearchTest
   end
 
   def test_indexingscript_types
-    feed_and_wait_for_docs("test", 10, :file => "#{selfdir}/input.xml", 
-                           :skipfeedtag => true)
+    feed_and_wait_for_docs("test", 10, :file => "#{selfdir}/input.xml")
     assert_result("query=sddocname:test", "#{selfdir}/result.xml", "a")
   end
 

@@ -17,9 +17,7 @@ class FeatureStability < IndexedSearchTest
   def test_feature_stability
     deploy_app(SearchApp.new.sd("#{selfdir}/simple.sd"))
     start
-    feed_and_wait_for_docs("simple", 1,
-                           :file => "#{selfdir}/feed.xml",
-                           :skipfeedtag => true)
+    feed_and_wait_for_docs("simple", 1, :file => "#{selfdir}/feed.xml")
     run_query("my_set:1",          "#{selfdir}/result1.txt")
     run_query("my_set:1.2",        "#{selfdir}/result2.txt")
     run_query("my_set:1+my_set:2", "#{selfdir}/result3.txt")

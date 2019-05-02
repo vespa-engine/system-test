@@ -12,7 +12,7 @@ class GroupingPagination < IndexedSearchTest
   end
 
   def test_grouping_pagination
-    feed_and_wait_for_docs("song", 159, :file => "#{selfdir}/docs.xml", :skipfeedtag => true)
+    feed_and_wait_for_docs("song", 159, :file => "#{selfdir}/docs.xml")
     assert_continue([],
                     "#{selfdir}/res-empty.xml")
     assert_continue(["BGAAABEBEBC"],

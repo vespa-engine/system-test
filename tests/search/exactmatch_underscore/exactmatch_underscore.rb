@@ -16,7 +16,7 @@ class ExactMatchUnderscore < IndexedSearchTest
   def test_exactMatchUnderscore
     deploy_app(SearchApp.new.sd("#{selfdir}/simple.sd"))
     start
-    feed(:file => "#{selfdir}/feed.xml", :skipfeedtag => true)
+    feed(:file => "#{selfdir}/feed.xml")
     wait_for_hitcount("query=sddocname:simple", 2)
 
     assert_hitcount("query=brand_name:nike", 1)

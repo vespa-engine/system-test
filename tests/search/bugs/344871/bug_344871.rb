@@ -15,8 +15,7 @@ class Bug_344871 < IndexedSearchTest
   end
 
   def test_bold_doublewidth
-    feed_and_wait_for_docs("simple", 2, :file => "#{selfdir}/input.xml",
-                           :skipfeedtag => true)
+    feed_and_wait_for_docs("simple", 2, :file => "#{selfdir}/input.xml")
 
     # "Query: basic test"
     assert_result("query=test", 
