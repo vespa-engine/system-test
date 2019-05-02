@@ -10,7 +10,7 @@ class StoreOnly < SearchTest
   end
 
   def test_store_only
-    feed_and_wait_for_docs("index_me", 1, :file => "#{selfdir}/input.xml", :skipfeedtag => true);
+    feed_and_wait_for_docs("index_me", 1, :file => "#{selfdir}/input.xml");
   end
 
   def teardown

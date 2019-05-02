@@ -12,7 +12,7 @@ class AdvancedIL < IndexedSearchTest
   end
 
   def test_advanced_il
-    feed_and_wait_for_docs("music", 10, :file => "#{selfdir}/music.10.xml", :skipfeedtag => true)
+    feed_and_wait_for_docs("music", 10, :file => "#{selfdir}/music.10.xml")
 
     assert_hitcount("query=product:foo", 0)
     assert_hitcount("query=product:bar", 5)

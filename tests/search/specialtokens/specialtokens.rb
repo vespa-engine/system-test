@@ -34,9 +34,7 @@ class SpecialTokens < IndexedSearchTest
   end
 
   def test_one_specialtoken
-    feed_and_wait_for_docs("specialtokens", 1,
-                           :file => "#{selfdir}/docs.1.xml",
-                           :skipfeedtag => true)
+    feed_and_wait_for_docs("specialtokens", 1, :file => "#{selfdir}/docs.1.xml")
     puts "test queries..."
     assert_hitcount("query=content:foo",     1)
     assert_hitcount("query=content:c%2B%2B", 1)
@@ -54,17 +52,13 @@ class SpecialTokens < IndexedSearchTest
   def test_uppercase_specialtoken
     # some libraries linguistics will lowercase strings before passing them through the fsa,
     # meaning that special tokens with capital letters WILL NOT be found.
-    feed_and_wait_for_docs("specialtokens", 18,
-                           :file => "#{selfdir}/docs.xml",
-                           :skipfeedtag => true)
+    feed_and_wait_for_docs("specialtokens", 18, :file => "#{selfdir}/docs.xml")
 
     assert_hitcount("query=content:TOKEN_IN_CAPITALS", 0)
   end
 
   def test_specialtokens
-    feed_and_wait_for_docs("specialtokens", 18,
-                           :file => "#{selfdir}/docs.xml",
-                           :skipfeedtag => true)
+    feed_and_wait_for_docs("specialtokens", 18, :file => "#{selfdir}/docs.xml")
 
     res = "#{selfdir}/output/specialtokens"
     puts "test queries..."

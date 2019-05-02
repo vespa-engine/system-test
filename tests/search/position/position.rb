@@ -41,9 +41,7 @@ class Position < IndexedSearchTest
   def run_test(type, hits)
     deploy_app(SearchApp.new.sd("#{selfdir}/#{type}_pos.sd"))
     start
-    feed_and_wait_for_docs("#{type}_pos", hits,
-                           :file => "#{selfdir}/#{type}_feed.xml",
-                           :skipfeedtag => true)
+    feed_and_wait_for_docs("#{type}_pos", hits, :file => "#{selfdir}/#{type}_feed.xml")
     run_query("query=sddocname:#{type}_pos&pos.ll=E98.987000%3BN12.123000",
               "#{selfdir}/#{type}_result1.xml");
     run_query("query=sddocname:#{type}_pos&pos.ll=E98.987987%3BN12.123123",

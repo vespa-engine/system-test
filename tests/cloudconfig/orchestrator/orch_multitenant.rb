@@ -153,11 +153,11 @@ class OrchestratorMultiTenantTest < SearchContainerTest
     assert(resp)
     puts "response body 'instances/': >>> #{resp.body} <<<"
 
-    a1.feed(:file => selfdir + "feeds/music.xml", :skipfeedtag => true)
-    a1.feed(:file => selfdir + "feeds/other.xml", :skipfeedtag => true)
+    a1.feed(:file => selfdir + "feeds/music.xml")
+    a1.feed(:file => selfdir + "feeds/other.xml")
 
-    a2.feed(:file => selfdir + "feeds/bimbam.xml", :skipfeedtag => true)
-    a3.feed(:file => selfdir + "feeds/foobar.xml", :skipfeedtag => true)
+    a2.feed(:file => selfdir + "feeds/bimbam.xml")
+    a3.feed(:file => selfdir + "feeds/foobar.xml")
 
     @vespa.qrserver["0"] = q1
     assert_hitcount("query=sddocname:music", 9)
