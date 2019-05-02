@@ -96,9 +96,6 @@ module Feeder
     else
       need_feed_tag = buffer.start_with?('<') && !(buffer.include? '<vespafeed>')
     end
-    if params[:json]
-      need_feed_tag = false
-    end
     timestamp = Time.new.to_i
     randomstring = "%04d" % (rand*10000).to_i
     tmpfeed = "#{Environment.instance.vespa_home}/tmp/tmpfeed#{timestamp}-#{randomstring}"
