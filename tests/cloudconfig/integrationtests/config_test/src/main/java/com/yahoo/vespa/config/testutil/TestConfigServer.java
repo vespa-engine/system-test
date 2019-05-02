@@ -9,6 +9,7 @@ import com.yahoo.config.model.api.ConfigDefinitionRepo;
 import com.yahoo.config.provision.ApplicationId;
 import com.yahoo.config.provision.NodeFlavors;
 import com.yahoo.config.provision.TenantName;
+import com.yahoo.config.provision.internal.ConfigNodeFlavors;
 import com.yahoo.component.Version;
 import com.yahoo.config.provisioning.FlavorsConfig;
 import com.yahoo.config.subscription.CfgConfigPayloadBuilder;
@@ -82,7 +83,7 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
         };
         
         ConfigserverConfig configServerConfig = new ConfigserverConfig(new ConfigserverConfig.Builder());
-        final NodeFlavors nodeFlavors = new NodeFlavors(new FlavorsConfig(new FlavorsConfig.Builder()));
+        final NodeFlavors nodeFlavors = new ConfigNodeFlavors(new FlavorsConfig(new FlavorsConfig.Builder()));
         final SuperModelManager superModelManager = new SuperModelManager(configServerConfig, nodeFlavors, new GenerationCounter() {
             @Override
             public long increment() {
