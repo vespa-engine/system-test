@@ -43,7 +43,7 @@ module Feeder
     def initialize(dest)
       @destination = dest
     end
-    def hand(stream)
+    def handle(stream)
       while block = stream.read(50*1024*1024)
         @destination.write(block)
       end
@@ -51,20 +51,22 @@ module Feeder
   end
 
   class IsXmlWithVespaFeedTag
+    @has_vespafeed_tag = false
     def handle(stream)
       valid_lines = 0
       stream.each_line do |line|
         if line.start_with('<')
           if line.include? '<vespafeed>'
-            return true
+            @has_vespafeed_tag = true
+            return
           end
           valid_lines += 1
-          if valid_lines > 2
-            return false
+          if valid_lines > 10
+            return
           end
         end
       end
-      return true
+      return
     end
   end
 
