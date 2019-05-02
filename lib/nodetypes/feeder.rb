@@ -58,7 +58,7 @@ module Feeder
     def handle(stream)
       valid_lines = 0
       stream.each_line do |line|
-        if line.start_with('<')
+        if line.start_with?('<')
           if line.include? '<vespafeed>'
             @has_vespafeed_tag = true
             return
