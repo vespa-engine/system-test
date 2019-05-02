@@ -15,7 +15,7 @@ class JsonSearch < IndexedSearchTest
                cluster_name("basicsearch").
                sd(SEARCH_DATA+"music.sd"))
     start
-    feed(:file => SEARCH_DATA+"music.10.json", :timeout => 240, :json => true)
+    feed(:file => SEARCH_DATA+"music.10.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 10)
     assert_hitcount("query=country", 1)
     assert_hitcount("query=title:country", 1)

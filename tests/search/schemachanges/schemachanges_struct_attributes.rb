@@ -55,27 +55,27 @@ class SchemaChangesStructAttribute < SearchTest
     deploy_output = deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
     start
     postdeploy_wait(deploy_output)
-    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.0.json", :json => true)
+    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.0.json")
     assert_add_attribute_hitcount(0, 0)
 
     puts "Add attribute aspect 1"
     add_attribute_aspect("test.1.sd")
     assert_add_attribute_hitcount(0, 0)
-    feed_and_wait_for_docs("test", 5, :file => @test_dir + "feed.1.json", :json => true)
+    feed_and_wait_for_docs("test", 5, :file => @test_dir + "feed.1.json")
     assert_add_attribute_hitcount(0, 0)
 
     puts "Activate attribute aspect 1"
     activate_attribute_aspect(5)
     assert_add_attribute_hitcount(5, 0)
     assert_add_reprocess_event_logs
-    feed_and_wait_for_docs("test", 7, :file => @test_dir + "feed.2.json", :json => true)
+    feed_and_wait_for_docs("test", 7, :file => @test_dir + "feed.2.json")
     assert_add_attribute_hitcount(7, 0)
 
     vespa.search["search"].first.trigger_flush
     puts "Add attribute aspect 2"
     add_attribute_aspect("test.2.sd")
     assert_add_attribute_hitcount(7, 0)
-    feed_and_wait_for_docs("test", 9, :file => @test_dir + "feed.3.json", :json => true)
+    feed_and_wait_for_docs("test", 9, :file => @test_dir + "feed.3.json")
     assert_add_attribute_hitcount(9, 0)
 
     puts "Activate attribute aspect 2"
@@ -89,12 +89,12 @@ class SchemaChangesStructAttribute < SearchTest
     deploy_output = deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
     start
     postdeploy_wait(deploy_output)
-    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.0.json", :json => true)
+    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.0.json")
     assert_full_json_result("test.0.result.json")
     assert_remove_attribute_hitcount(2, 0, 2, 0)
 
     # Feed partial updates to f1 and f2
-    feed(:file => @test_dir + "update.1.json", :json => true)
+    feed(:file => @test_dir + "update.1.json")
 
     assert_full_json_result("test.1.result.json")
     assert_remove_attribute_hitcount(0, 2, 0, 2)
@@ -103,7 +103,7 @@ class SchemaChangesStructAttribute < SearchTest
     remove_attribute_aspect("test.1.sd")
     assert_full_json_result("test.1.result.json")
     assert_remove_attribute_hitcount(0, 0, 0, 2)
-    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.2.json", :json => true)
+    feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.2.json")
     assert_full_json_result("test.2.result.json")
     assert_remove_attribute_hitcount(0, 0, 1, 2)
 
@@ -111,7 +111,7 @@ class SchemaChangesStructAttribute < SearchTest
     activate_attribute_aspect(3)
     assert_full_json_result("test.2.result.json")
     assert_remove_attribute_hitcount(0, 0, 1, 2)
-    feed_and_wait_for_docs("test", 4, :file => @test_dir + "feed.3.json", :json => true)
+    feed_and_wait_for_docs("test", 4, :file => @test_dir + "feed.3.json")
     assert_full_json_result("test.3.result.json")
     assert_remove_attribute_hitcount(0, 0, 2, 2)
 
@@ -121,7 +121,7 @@ class SchemaChangesStructAttribute < SearchTest
     remove_attribute_aspect("test.2.sd")
     assert_full_json_result("test.3.result.json")
     assert_remove_attribute_hitcount(0, 0, 0, 0)
-    feed_and_wait_for_docs("test", 5, :file => @test_dir + "feed.4.json", :json => true)
+    feed_and_wait_for_docs("test", 5, :file => @test_dir + "feed.4.json")
 
     puts "Activate attribute aspect 2"
     activate_attribute_aspect(5)
@@ -135,12 +135,12 @@ class SchemaChangesStructAttribute < SearchTest
     deploy_output = deploy_app(SearchApp.new.sd(use_sdfile("test#{attr_suffix}.0.sd")))
     start
     postdeploy_wait(deploy_output)
-    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json", :json => true)
+    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
     assert_full_json_result("test.0.result.json")
     puts "Add field"
     redeploy_no_reprocess("test#{attr_suffix}.1.sd")
     assert_full_json_result("test.0.result.json")
-    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.1.json", :json => true)
+    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.1.json")
     assert_full_json_result("test.1.result.json")
     puts "Remove field"
     redeploy_no_reprocess("test#{attr_suffix}.2.sd")

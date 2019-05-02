@@ -12,7 +12,7 @@ class CustomStateApi < SearchTest
     set_description("Test that we can access the /state/v1/custom/component api")
     deploy_app(SearchApp.new.sd(SEARCH_DATA + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json", :json => true)
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
     @node = @vespa.search["search"].first
     assert_root_resources(@node.get_state_v1(""))
     assert_custom_component_api(get_page(""))

@@ -79,7 +79,7 @@ class Bolding < IndexedSearchTest
     set_description("Test the combination of bolding in addition to advanced search operators in the query")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed(:file => selfdir + "doc.json", :json => true)
+    feed(:file => selfdir + "doc.json")
     exp_title_field = "Best of <hi>Metallica</hi>"
     assert_field_value("?query=select+*+from+sources+*+where+title+contains+'Metallica'%3B&type=yql", "title", exp_title_field)
     assert_field_value("?query=select+*+from+sources+*+where+title+contains+'Metallica' and weightedSet(year,{'2001':1})%3B&type=yql", "title", exp_title_field)

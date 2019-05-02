@@ -69,12 +69,12 @@ class ParentChildPerfTest < PerformanceTest
 
   def run_tests(num_ad_docs, campaign_ad_ratio, advertiser_campaign_ratio)
     data = ParentChildDataGenerator.new(num_ad_docs, campaign_ad_ratio, advertiser_campaign_ratio, dirs.tmpdir)
-    feed(:file => data.ad_docs, :json => true)
+    feed(:file => data.ad_docs)
 
     feed_and_profile(data.campaign_docs, FEEDING_PUT, campaign_ad_ratio, advertiser_campaign_ratio, IMPORTED, SLOW)
     feed_and_profile(data.campaign_updates, FEEDING_UPDATE, campaign_ad_ratio, advertiser_campaign_ratio, IMPORTED, SLOW)
     feed_and_profile(data.ad_updates, FEEDING_UPDATE, campaign_ad_ratio, advertiser_campaign_ratio, FLATTENED, SLOW)
-    feed(:file => data.advertiser_docs, :json => true)
+    feed(:file => data.advertiser_docs)
 
     fbench_and_profile(data.ranking_queries, RANKING, campaign_ad_ratio, advertiser_campaign_ratio, IMPORTED, SLOW, "&ranking=imported_budget")
     fbench_and_profile(data.ranking_queries, RANKING, campaign_ad_ratio, advertiser_campaign_ratio, FLATTENED, SLOW, "&ranking=flattened_budget")

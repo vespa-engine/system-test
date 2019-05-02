@@ -136,7 +136,7 @@ class CollectionPerfTestBase < PerformanceTest
   end
 
   def feed_without_profiling(feed_file)
-    feed(:file => feed_file, :json => true)
+    feed(:file => feed_file)
   end
 
   def profiler_label(feed_type, fast_search, elements_per_doc)

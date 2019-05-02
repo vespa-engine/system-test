@@ -59,7 +59,7 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
   def test_struct_and_map_grouping
     deploy_app(create_app)
     start
-    feed_and_wait_for_docs('test', 1, :file => selfdir + "grouping/docs.json", :json => true)
+    feed_and_wait_for_docs('test', 1, :file => selfdir + "grouping/docs.json")
     check_grouping("all(group(int_single) each(output(count())))", {"10"=>1})
     check_grouping("all(group(int_array) each(output(count())))", {"10"=>1,"20"=>1})
     check_grouping("all(group(elem_array.weight) each(output(count())))", {"10"=>1,"20"=>1})

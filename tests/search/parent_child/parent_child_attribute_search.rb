@@ -13,8 +13,8 @@ class ParentChildAttributeSearchTest < IndexedSearchTest
   end
 
   def feed_baseline(subdir)
-    feed_and_wait_for_docs('campaign', 2, :file => "#{selfdir}/#{subdir}/campaign-docs.json", :json => true)
-    feed_and_wait_for_docs('ad', 5, :file => "#{selfdir}/#{subdir}/ad-docs.json", :json => true)
+    feed_and_wait_for_docs('campaign', 2, :file => "#{selfdir}/#{subdir}/campaign-docs.json")
+    feed_and_wait_for_docs('ad', 5, :file => "#{selfdir}/#{subdir}/ad-docs.json")
   end
 
   def convert_relevancy(relevancy)
@@ -50,7 +50,7 @@ class ParentChildAttributeSearchTest < IndexedSearchTest
   end
 
   def feed_json(subdir, file)
-    feed(:file => "#{selfdir}/#{subdir}/#{file}", :json => true)
+    feed(:file => "#{selfdir}/#{subdir}/#{file}")
   end
 
   def test_single_parent_attribute_can_be_used_in_ranking_expressions

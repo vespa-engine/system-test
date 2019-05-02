@@ -79,7 +79,7 @@ class GlobalParentsFeedTest < SearchTest
   end
 
   def feed_and_validate(feed_file, first_time=false)
-    feed(:file => @test_dir + feed_file, :json => true)
+    feed(:file => @test_dir + feed_file)
     wait_for_atleast_hitcount("sddocname:ad", 1) if first_time
     validate_corpus
   end

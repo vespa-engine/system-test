@@ -23,7 +23,7 @@ class ClearField < SearchTest
     start
     feed_and_wait_for_docs("test", 1, :file => "#{selfdir}/feed.xml")
     run_query("sddocname:test", "#{selfdir}/full.xml")
-    feed_and_wait_for_docs("test", 1, :file => "#{selfdir}/clear.json", :json => true)
+    feed_and_wait_for_docs("test", 1, :file => "#{selfdir}/clear.json")
     run_query("sddocname:test", "#{selfdir}/cleared.xml")
   end
 

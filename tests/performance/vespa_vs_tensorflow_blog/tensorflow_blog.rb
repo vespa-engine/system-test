@@ -109,7 +109,7 @@ class TensorFlowBlog < PerformanceTest
     deploy(selfdir + "/app")
     vespa.adminserver.logctl("searchnode:eval", "debug=on")
     start
-    feed_and_wait_for_docs("blog_post", @num_blogs, :file => @blogs_file_name, :json => true)
+    feed_and_wait_for_docs("blog_post", @num_blogs, :file => @blogs_file_name)
     @container = (vespa.qrserver["0"] or vespa.container.values.first)
     vespa.adminserver.execute("vespa-logfmt -S searchnode -l debug -N")
   end

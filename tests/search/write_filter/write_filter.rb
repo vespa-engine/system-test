@@ -15,7 +15,7 @@ class WriteFilter < WriteFilterBase
   end
 
   def http_client_feed_file(file_name)
-    feed(:file => selfdir + file_name, :json => true, :client => :vespa_http_client)
+    feed(:file => selfdir + file_name, :client => :vespa_http_client)
   end
 
   def assert_http_client_feed_failed(pattern)

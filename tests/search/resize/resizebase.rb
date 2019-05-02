@@ -1221,11 +1221,11 @@ class ResizeContentClusterBase < SearchTest
     generate_feed(feedname, dictsize, numdocs, num_child_docs, basedir)
     start_initial_nodes
     feedfile("#{basedir}/#{feedname}",
-             :localfile => true, :timeout => 240, :json => true)
+             :localfile => true, :timeout => 240)
     wait_for_hitcount(hit_count_query_string, numdocs)
     if num_child_docs != 0
       feedfile("#{basedir}/#{feedname}-child",
-               :localfile => true, :timeout => 240, :json => true)
+               :localfile => true, :timeout => 240)
       wait_for_hitcount(hit_count_query_string_child, num_child_docs)
     end
   end

@@ -55,7 +55,7 @@ class TensorFlowBlogExperiment < PerformanceTest
 
   def feed_and_run_queries(content_nodes)
     generate_feed((content_nodes-1) * 1000, 1000)
-    feed_and_wait_for_docs("blog_post", content_nodes * 1000, :file => @blogs_file_name, :json => true)
+    feed_and_wait_for_docs("blog_post", content_nodes * 1000, :file => @blogs_file_name)
     run_queries(content_nodes)
   end
 

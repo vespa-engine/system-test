@@ -55,7 +55,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     postdeploy_wait(deploy_output)
 
     # Feed should be accepted
-    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json", :json => true)
+    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
     assert_tensor_field([{'address'=>{'x'=>'0'}, 'value'=>0.0},
                          {'address'=>{'x'=>'1'}, 'value'=>47.0}], do_search, "f1")
 
@@ -66,7 +66,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     assert(do_search.hit[0].field["f1"] == nil)
 
     # Feed should be accepted
-    feed_output = feed(:file => @test_dir + "feed.1.json", :json => true, :timeout => 20, :exceptiononfailure => false)
+    feed_output = feed(:file => @test_dir + "feed.1.json", :timeout => 20, :exceptiononfailure => false)
     result = do_search
     assert_hitcount(result, 2);
     assert(result.hit[0].field["f1"] == nil)

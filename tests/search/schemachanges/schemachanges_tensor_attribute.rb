@@ -22,13 +22,13 @@ class SchemaChangesTensorAttributeTest < SearchTest
     @test_dir = selfdir + "add_and_remove_tensor_attribute/"
     deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
     start
-    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json", :json => true)
+    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
     assert_tensor_content([2, 3], 5)
 
     # Remove attribute aspect (which is delayed)
     remove_attribute_aspect("test.1.sd")
     assert_tensor_content([2, 3], 0)
-    feed(:file => @test_dir + "feed.1.json", :json => true)
+    feed(:file => @test_dir + "feed.1.json")
     assert_tensor_content([4, 3], 0)
 
     # Activate removal of attribute aspect
@@ -39,14 +39,14 @@ class SchemaChangesTensorAttributeTest < SearchTest
     # Add attribute aspect (which is delayed)
     add_attribute_aspect("test.0.sd")
     assert_tensor_content([4, 3], 0)
-    feed(:file => @test_dir + "feed.2.json", :json => true)
+    feed(:file => @test_dir + "feed.2.json")
     assert_tensor_content([5, 3], 0)
 
     # Activate adding of attribute aspect
     activate_attribute_aspect(1)
     assert_add_reprocess_event_logs("t1", 1)
     assert_tensor_content([5, 3], 8)
-    feed(:file => @test_dir + "feed.3.json", :json => true)
+    feed(:file => @test_dir + "feed.3.json")
     assert_tensor_content([6, 3], 9)
   end
 

@@ -18,7 +18,7 @@ class TensorFlowValidate < IndexedSearchTest
     deploy(selfdir + "app/")
     start
 
-    feed_and_wait_for_docs("mnist", 100, :file => selfdir + "feed.json", :json => true)
+    feed_and_wait_for_docs("mnist", 100, :file => selfdir + "feed.json")
 
     # TensorFlow: rank one document at a time
     10.times do |i|

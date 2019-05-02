@@ -12,20 +12,20 @@ class ParentChildFeedTest < IndexedSearchTest
     set_description("Test feeding (put and update) and document summary of reference fields")
     deploy_app(SearchApp.new.sd(@test_dir + "campaign.sd", { :global => true }).sd(@test_dir + "ad.sd"))
     start
-    feed_and_wait_for_docs("campaign", 2, :file => @test_dir + "campaign-docs.json", :json => true)
-    feed_and_wait_for_docs("ad", 5, :file => @test_dir + "ad-docs.json", :json => true)
+    feed_and_wait_for_docs("campaign", 2, :file => @test_dir + "campaign-docs.json")
+    feed_and_wait_for_docs("ad", 5, :file => @test_dir + "ad-docs.json")
     assert_campaign_ref_fields(["id:test:campaign::the-best",
                                 "id:test:campaign::next-best",
                                 "id:test:campaign::not-here",
                                 nil, nil])
 
-    feed(:file => @test_dir + "ad-updates.json", :json => true)
+    feed(:file => @test_dir + "ad-updates.json")
     assert_campaign_ref_fields([nil, nil,
                                 "id:test:campaign::the-best",
                                 "id:test:campaign::next-best",
                                 "id:test:campaign::not-here"])
 
-    feed(:file => @test_dir + "ad-docs.json", :json => true)
+    feed(:file => @test_dir + "ad-docs.json")
     assert_campaign_ref_fields(["id:test:campaign::the-best",
                                 "id:test:campaign::next-best",
                                 "id:test:campaign::not-here",
@@ -40,7 +40,7 @@ class ParentChildFeedTest < IndexedSearchTest
   end
 
   def feed_and_assert_that_invalid_reference_docid_fails
-    feed_output = feed(:file => @test_dir + "ad-doc.invalid.json", :json => true, :exceptiononfailure => false)
+    feed_output = feed(:file => @test_dir + "ad-doc.invalid.json", :exceptiononfailure => false)
     assert_match(Regexp.new(/Can't assign document ID 'id:test:invalid::0'/), feed_output)
   end
 
