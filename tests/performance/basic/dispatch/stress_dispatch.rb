@@ -50,16 +50,20 @@ class StressDispatch < PerformanceTest
     return l
   end
 
+  def compresslimit
+    102400
+  end
+
   def test_dispatch
     run_dispatch_test(common_limits, "&dispatch.internal=false")
   end
 
   def test_dispatch_java
-    run_dispatch_test(common_limits_java, "&dispatch.internal=true&dispatch.protobuf=false")
+    run_dispatch_test(common_limits_java, "&dispatch.internal=true&dispatch.protobuf=false&packetcompresslimit=#{compresslimit}")
   end
 
   def test_dispatch_protobuf
-    run_dispatch_test(common_limits_protobuf, "&dispatch.internal=true&dispatch.protobuf=true")
+    run_dispatch_test(common_limits_protobuf, "&dispatch.internal=true&dispatch.protobuf=true&dispatch.compression=none")
   end
 
   def run_dispatch_test(limits, query_append)
@@ -77,7 +81,9 @@ class StressDispatch < PerformanceTest
           threads_per_search(1).
           persistence_threads(PersistenceThreads.new.thread(4, 'LOWEST').thread(2, 'HIGH_3')).
           tune_searchnode({:summary => {:store => {:cache => {:maxsize => 50123000}}}}).
+          config(ConfigOverride.new("vespa.config.search.core.fdispatchrc").add("packetcompresslimit", compresslimit)).
           config(ConfigOverride.new("vespa.config.search.core.proton").
+                 add("packetcompresslimit", compresslimit).
                  add("summary", ConfigValue.new("log", ConfigValue.new("maxbucketspread", "10")))).
           elastic.num_parts(5).redundancy(1).ready_copies(1)
     add_bundle(selfdir + "CapInFillSearcher.java")
