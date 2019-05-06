@@ -178,18 +178,30 @@ ENDER
     restart_config_server(node, :keep_zookeeper_data => true)
     deploy_app(CloudconfigApp.new)
     start
-    sleep 5 # No programmatic way of waiting for logserver to be up
-
-    logserver = vespa.logserver
-    assert_equal("RUNNING", logserver.get_state.strip)
-    puts "Deleting app"
+    wait_for_logserver_state{ logserver_running }
     delete_application_v2(node.hostname, "default", "default")
-    sleep 10
 
-    # Check that config is empty and that logserver service has been stopped
-    config = getvespaconfig("cloud.config.sentinel", "client", nil, node.hostname, 19070, true)
-    assert_equal({}, config)
-    assert_not_equal("RUNNING", logserver.get_state.strip)
+    # Check that config is empty and that logserver service is no longer running
+    wait_for_logserver_state{ logserver_not_running }
+    assert_equal({}, getvespaconfig("cloud.config.sentinel", "client"))
+  end
+
+  def logserver_running
+    "RUNNING" == vespa.logserver.get_state.strip
+  end
+
+  def logserver_not_running
+    ! logserver_running
+  end
+
+  def wait_for_logserver_state(&block)
+    i = 0
+    loop do
+      break if yield or i > 20
+      i = i + 1
+      sleep 1
+    end
+    assert(yield)
   end
 
   def wait_for_config_converge(timeout)
