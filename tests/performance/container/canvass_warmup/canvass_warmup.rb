@@ -23,7 +23,7 @@ class CanvassWarmup < PerformanceTest
   end
 
 
-  def fest_warmup_hard
+  def test_warmup_hard
     setup_and_deploy(@app)
     set_description('Test 200 queries after container has started and repeat with 200 queries after first 200 has succeeded')
     @graphs = [
