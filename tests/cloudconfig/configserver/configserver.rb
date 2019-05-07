@@ -146,7 +146,7 @@ class ConfigServer < CloudConfigTest
     deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
     vespa.configservers["0"].execute("echo 'invalid xml' >> #{Environment.instance.vespa_home}/var/db/vespa/config_server/serverdb/tenants/default/sessions/2/services.xml")
     restart_config_server_and_reset_version
-    wait_for_atleast_log_matches("Redeploying default.default failed, will retry", 1, 30)
+    wait_for_atleast_log_matches("Redeploying default.default failed, will retry", 1, 60)
     begin
       assert_health_status_for_config_server("initializing")
     rescue
