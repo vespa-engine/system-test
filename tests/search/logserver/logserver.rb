@@ -13,11 +13,6 @@ class LogServer < SearchTest
     run_logarchive_test
   end
 
-  def test_logarchive_using_rpc_protocol
-    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").config(logd_use_rpc))
-    run_logarchive_test
-  end
-
   def run_logarchive_test
     start
     verify_log_content(/Transitioning from baseline state 'Down' to 'Up'/, vespa.logserver)
@@ -28,21 +23,12 @@ class LogServer < SearchTest
     assert_equal(2, matches)
   end
 
-  def logd_use_rpc
-    cfg = ConfigOverride.new("cloud.config.log.logd")
-    cfg.add("logserver", ConfigValue.new("userpc", "true"))
-    cfg
-  end
-
   def add_loglevel_forward(cfg, level, forward)
     cfg.add("loglevel", ConfigValue.new(level, ConfigValue.new("forward", forward)))
   end
 
-  def logd_config_override(use_rpc)
+  def logd_config_override
     cfg = ConfigOverride.new("cloud.config.log.logd")
-    if use_rpc
-      cfg.add("logserver", ConfigValue.new("userpc", "true"))
-    end
     add_loglevel_forward(cfg, "event", true)
     add_loglevel_forward(cfg, "debug", true)
     add_loglevel_forward(cfg, "spam", true)
@@ -65,15 +51,11 @@ class LogServer < SearchTest
   end
 
   def test_full_logarchive
-    run_full_logarchive(false)
+    run_full_logarchive
   end
 
-  def test_full_logarchive_using_rpc_protocol
-    run_full_logarchive(true)
-  end
-
-  def run_full_logarchive(use_rpc)
-    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").config(logd_config_override(use_rpc)))
+  def run_full_logarchive
+    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").config(logd_config_override))
     start
     sleep 2
     loglines_archived = get_loglines(:use_logarchive => true)
