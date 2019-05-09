@@ -3,5 +3,5 @@
 a5c62af58c8d978e21588575aaccf585  vespa.config.search.attributes.def
 52de90f99bddd748160cf7c1073f2262  vespa.config.search.summary.def
 b32e8d507a72e70cc2d5f55a8f915bed  vespa.config.search.summarymap.def
-b1a98f42593457615289e1c31dd35fa0  vespa.config.search.summary.juniperrc.def
+d5399779fd5813ad4a2ed4ed34d1f6a7  vespa.config.search.summary.juniperrc.def
 1e1abaf3a26a987b801239589dc7e722  document.documenttypes.def
