@@ -4,13 +4,23 @@ require 'search_test'
 class LogServer < SearchTest
 
   def setup
-    set_description("Tests that logserver starts up, gets log from logd and writes it to logarchive.")
     set_owner("musum")
   end
 
   def test_logarchive
+    set_description("Tests that logserver starts up, gets log from logd and writes it to logarchive.")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     run_logarchive_test
+  end
+
+  def test_log_forwarding_turned_off
+    set_description("Tests that log forwarding from logd to logserver can be turned off.")
+    deploy_app(SearchApp.new.sd(SEARCH_DATA + "music.sd")
+               .config(ConfigOverride.new("cloud.config.log.logd")
+                       .add("logserver", ConfigValue.new("use", "false"))))
+    start
+    sleep 2
+    assert_log_not_matches(/Transitioning from baseline state 'Down' to 'Up'/, {:use_logarchive => true})
   end
 
   def run_logarchive_test
@@ -51,6 +61,7 @@ class LogServer < SearchTest
   end
 
   def test_full_logarchive
+    set_description("Tests that logserver starts up, gets full log from logd and writes it to logarchive.")
     run_full_logarchive
   end
 
