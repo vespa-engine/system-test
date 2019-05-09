@@ -4,18 +4,23 @@ require 'search_test'
 class LogServer < SearchTest
 
   def setup
-    set_description("Tests that logserver starts up, gets log from logd and writes it to logarchive.")
     set_owner("musum")
   end
 
   def test_logarchive
+    set_description("Tests that logserver starts up, gets log from logd and writes it to logarchive.")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     run_logarchive_test
   end
 
-  def test_logarchive_using_rpc_protocol
-    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").config(logd_use_rpc))
-    run_logarchive_test
+  def test_log_forwarding_turned_off
+    set_description("Tests that log forwarding from logd to logserver can be turned off.")
+    deploy_app(SearchApp.new.sd(SEARCH_DATA + "music.sd")
+               .config(ConfigOverride.new("cloud.config.log.logd")
+                       .add("logserver", ConfigValue.new("use", "false"))))
+    start
+    sleep 2
+    assert_log_not_matches(/Transitioning from baseline state 'Down' to 'Up'/, {:use_logarchive => true})
   end
 
   def run_logarchive_test
@@ -28,21 +33,12 @@ class LogServer < SearchTest
     assert_equal(2, matches)
   end
 
-  def logd_use_rpc
-    cfg = ConfigOverride.new("cloud.config.log.logd")
-    cfg.add("logserver", ConfigValue.new("userpc", "true"))
-    cfg
-  end
-
   def add_loglevel_forward(cfg, level, forward)
     cfg.add("loglevel", ConfigValue.new(level, ConfigValue.new("forward", forward)))
   end
 
-  def logd_config_override(use_rpc)
+  def logd_config_override
     cfg = ConfigOverride.new("cloud.config.log.logd")
-    if use_rpc
-      cfg.add("logserver", ConfigValue.new("userpc", "true"))
-    end
     add_loglevel_forward(cfg, "event", true)
     add_loglevel_forward(cfg, "debug", true)
     add_loglevel_forward(cfg, "spam", true)
@@ -65,15 +61,12 @@ class LogServer < SearchTest
   end
 
   def test_full_logarchive
-    run_full_logarchive(false)
+    set_description("Tests that logserver starts up, gets full log from logd and writes it to logarchive.")
+    run_full_logarchive
   end
 
-  def test_full_logarchive_using_rpc_protocol
-    run_full_logarchive(true)
-  end
-
-  def run_full_logarchive(use_rpc)
-    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").config(logd_config_override(use_rpc)))
+  def run_full_logarchive
+    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").config(logd_config_override))
     start
     sleep 2
     loglines_archived = get_loglines(:use_logarchive => true)
