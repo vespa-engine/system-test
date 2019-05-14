@@ -271,16 +271,16 @@ class CloudConfigTest < TestCase
     config = get_config_v1("cloud.config.log.logd", "admin")
     assert(config.has_key?("logserver"));
     logserver = config["logserver"]
-    assert(logserver.has_key?("port"));
-    assert_equal(portnum, logserver["port"].to_i)
+    assert(logserver.has_key?("rpcport"));
+    assert_equal(portnum, logserver["rpcport"].to_i)
   end
 
   def assert_logd_config_v2(portnum, hostname, tenant_name, application_name, instance_name="default", env_name="prod", region_name="default")
     config = get_config_v2_assert_200(hostname, tenant_name, application_name, instance_name, "cloud.config.log.logd", "admin", env_name, region_name)
     assert(config.has_key?("logserver"));
     logserver = config["logserver"]
-    assert(logserver.has_key?("port"));
-    assert_equal(portnum, logserver["port"].to_i)
+    assert(logserver.has_key?("rpcport"));
+    assert_equal(portnum, logserver["rpcport"].to_i)
   end
 
   def delete_tenant_and_its_applications(hostname, tenant)
