@@ -148,12 +148,6 @@ class CloudConfigTest < TestCase
     get_json(response)
   end
 
-  def activate_session_fail(hostname, prepare_result, response_code, message)
-    result = activate_session_common(prepare_result, response_code)
-    assert_json_contains_field_value(result, "message", message)
-    result
-  end
-
   def activate_session_message_matches(hostname, prepare_result, response_code, regexp)
     result = activate_session_common(prepare_result, response_code)
     assert_json_field_value_matches(result, "message", regexp)
