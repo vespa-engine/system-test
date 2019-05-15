@@ -2,7 +2,7 @@
   <adminserver hostalias="node0" />
   <config name="cloud.config.log.logd">
     <logserver>
-      <rpcport>${logserver.port}</rpcport>
+      <rpcport>${logserver.rpcport}</rpcport>
     </logserver>
   </config>
 </admin>
