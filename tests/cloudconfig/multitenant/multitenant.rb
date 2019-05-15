@@ -232,10 +232,10 @@ ENDER
     deploy_app(app, params)
   end
 
-  def assert_config(port, hostname=@configserver)
+  def assert_config(rpcport, hostname=@configserver)
     config = get_config("cloud.config.log.logd", "admin", hostname)
     logserver = config["logserver"]
-    assert_equal(port, logserver["port"].to_i)
+    assert_equal(rpcport, logserver["rpcport"].to_i)
   end
 
   def get_config(configName, configId, hostname, instance_name="default")

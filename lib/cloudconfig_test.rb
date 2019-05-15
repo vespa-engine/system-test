@@ -22,7 +22,7 @@ class CloudConfigTest < TestCase
   def app_with_logd(logserver_port)
     CloudconfigApp.new.admin(Admin.new.
                             config(ConfigOverride.new("cloud.config.log.logd").
-                                add("logserver", ConfigValue.new("port", logserver_port))))
+                                add("logserver", ConfigValue.new("rpcport", logserver_port))))
   end
 
   def restart_config_server(node, args={})
