@@ -197,7 +197,7 @@ ENDER
   def wait_for_logserver_state(&block)
     i = 0
     loop do
-      break if yield or i > 70
+      break if yield or i > 120
       i = i + 1
       sleep 1
     end
