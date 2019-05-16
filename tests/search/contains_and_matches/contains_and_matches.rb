@@ -24,9 +24,9 @@ class ContainsAndMatchesTest < SearchTest
     generate_and_feed_docs
 
     @expected_warnings = {
-      "f1-matches"  => "<p>Field 'f1' is indexed, regular expressions with non-literal elements will not be matched</p>",
-      "f2-contains" => "<p>Field 'f2' is an attribute, 'contains' will only recall exact matches</p>",
-      "f3-matches"  => "<p>Field 'f3' is indexed, regular expressions with non-literal elements will not be matched</p>",
+      "f1-matches"  => "<p>Field 'f1' is indexed, non-literal regular expressions will not be matched</p>",
+      "f2-contains" => "<p>Field 'f2' is an attribute, 'contains' will only match exactly</p>",
+      "f3-matches"  => "<p>Field 'f3' is indexed, non-literal regular expressions will not be matched</p>",
     }
 
     h1 = fetch_field_hits("f1")
