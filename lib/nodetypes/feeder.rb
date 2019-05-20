@@ -161,6 +161,9 @@ module Feeder
       #    else
       #      p += "--maxpending 32 "
     end
+    if params[:numthreads]
+      p += "--numthreads #{params[:numthreads]} "
+    end
     if params[:timeout]
       p += "--timeout #{params[:timeout]} "
     end
