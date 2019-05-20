@@ -875,9 +875,10 @@ module TestBase
       if !params_out[:port]
         params_out[:port] = vespa.default_http_gateway_port
       end
-    end
-    if !params_out[:numthreads]
-       params_out[:numthreads] = feeder_numthreads
+    else
+      if !params_out[:numthreads]
+         params_out[:numthreads] = feeder_numthreads
+      end
     end
   end
 
