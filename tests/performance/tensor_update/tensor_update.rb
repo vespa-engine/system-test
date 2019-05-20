@@ -39,6 +39,10 @@ class TensorUpdatePerfTest < PerformanceTest
     feed_and_profile("modify", @num_docs, 5, 1000)
   end
 
+  def feeder_numthreads
+      3
+  end
+
   def compile_data_generator
     @data_generator = dirs.tmpdir + "data_generator"
     # TODO: make this work on centos7 as well
