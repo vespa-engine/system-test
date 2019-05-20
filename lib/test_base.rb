@@ -860,6 +860,10 @@ module TestBase
     params[:client] && params[:client] == :vespa_http_client
   end
 
+  def feeder_numthreads
+    1
+  end
+
   def augment_feeder_params(params_out)
     if vespa.docproc["docproc"].docprocservice.length > 0 and params_out[:docproc].nil?
       params_out[:docproc] = "docproc"
@@ -871,6 +875,9 @@ module TestBase
       if !params_out[:port]
         params_out[:port] = vespa.default_http_gateway_port
       end
+    end
+    if !params_out[:numthreads]
+       params_out[:numthreads] = feeder_numthreads
     end
   end
 
