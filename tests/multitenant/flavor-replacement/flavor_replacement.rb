@@ -70,10 +70,10 @@ class FlavorReplacement < MultiTenantTest
     add_flavored_nodes(4,FLAVOR_A)
     add_flavored_nodes(4,FLAVOR_B)
     
-    #Deploy application, verify that we have 5 nodes
+    #Deploy application, verify that we have 6 nodes (1 logserver node allocated implicitly)
     deploy_app_v2_api(selfdir + "app_default_flavor")
     allocated_nodes = get_allocated_nodes
-    assert_equal(5, allocated_nodes["nodes"].length)
+    assert_equal(6, allocated_nodes["nodes"].length)
   end
   
   def test_platform_owner_adds_similar_flavor_new_application_specific_flavor
@@ -84,14 +84,14 @@ class FlavorReplacement < MultiTenantTest
     start_configserver
     @configserver.ping_configserver
     
-    #Add 4 nodes of each flavor. Note that application requires a total of 5
+    #Add 4 nodes of each flavor. Note that application requires a total of 6
     add_flavored_nodes(4,FLAVOR_A)
     add_flavored_nodes(4,FLAVOR_B)
     
-    #Deploy application, verify that we have 5 nodes
+    #Deploy application, verify that we have 6 nodes (1 logserver node allocated implicitly)
     deploy_app_v2_api(selfdir + "app_specific_flavor")
     allocated_nodes = get_allocated_nodes
-    assert_equal(5, allocated_nodes["nodes"].length)
+    assert_equal(6, allocated_nodes["nodes"].length)
   end
 
   
