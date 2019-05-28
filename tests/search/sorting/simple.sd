@@ -10,6 +10,10 @@ search simple {
       indexing: attribute | summary
     }
 
+    field odd type bool {
+      indexing: summary | attribute
+    }
+
     # sortable float, only in attribute-prefetch summary
     field price type float {
       indexing: attribute

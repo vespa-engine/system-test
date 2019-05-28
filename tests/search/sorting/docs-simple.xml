@@ -129,6 +129,7 @@
 <document type="simple" documentid="id:test:simple::17">
   <title>doc 17 hash 17 val17 type simple</title>
   <year>1834</year>
+  <odd>false</odd>
   <price>210.41</price>
   <lastname>Obstbaum</lastname>
   <category>products / apparel / clothing / mens</category>
@@ -1353,6 +1354,7 @@
 <document type="simple" documentid="id:test:simple::170">
   <title>doc 170 hash 170 val170 type simple</title>
   <year>1828</year>
+  <odd>false</odd>
   <price>255.9</price>
   <lastname>Ishikawa</lastname>
   <category>products / apparel / clothing / mens</category>
@@ -10001,6 +10003,7 @@
 <document type="simple" documentid="id:test:simple::1251">
   <title>doc 1251 hash 17 val1251 type simple</title>
   <year>1846</year>
+  <odd>false</odd>
   <price>1.74</price>
   <lastname>Distribution</lastname>
   <category>products / electronics / computers</category>
@@ -19873,6 +19876,7 @@
 <document type="simple" documentid="id:test:simple::2485">
   <title>doc 2485 hash 17 val2485 type simple</title>
   <year>1873</year>
+  <odd>true</odd>
   <price>145.9</price>
   <lastname>Gussow</lastname>
   <category>products / apparel / clothing / womens / shirts</category>
@@ -29745,6 +29749,7 @@
 <document type="simple" documentid="id:test:simple::3719">
   <title>doc 3719 hash 17 val3719 type simple</title>
   <year>1782</year>
+  <odd>false</odd>
   <price>139.65</price>
   <lastname>Lewitt</lastname>
   <category>products / apparel / clothing / mens</category>
@@ -39617,6 +39622,7 @@
 <document type="simple" documentid="id:test:simple::4953">
   <title>doc 4953 hash 17 val4953 type simple</title>
   <year>1880</year>
+  <odd>false</odd>
   <price>251.24</price>
   <lastname>Truman</lastname>
   <category>products / apparel / shoes</category>
@@ -49489,6 +49495,7 @@
 <document type="simple" documentid="id:test:simple::6187">
   <title>doc 6187 hash 17 val6187 type simple</title>
   <year>1830</year>
+  <odd>false</odd>
   <price>173.11</price>
   <lastname>Cromie</lastname>
   <category>products / apparel / clothing / womens / gloves</category>
@@ -59361,6 +59368,7 @@
 <document type="simple" documentid="id:test:simple::7421">
   <title>doc 7421 hash 17 val7421 type simple</title>
   <year>1854</year>
+  <odd>false</odd>
   <price>21.29</price>
   <lastname>Beldt</lastname>
   <category>services / phone / 300 minutes</category>
@@ -69233,6 +69241,7 @@
 <document type="simple" documentid="id:test:simple::8655">
   <title>doc 8655 hash 17 val8655 type simple</title>
   <year>1784</year>
+  <odd>false</odd>
   <price>218.6</price>
   <lastname>Hostos</lastname>
   <category>services / phone / 300 minutes</category>
@@ -79105,6 +79114,7 @@
 <document type="simple" documentid="id:test:simple::9889">
   <title>doc 9889 hash 17 val9889 type simple</title>
   <year>1895</year>
+  <odd>true</odd>
   <price>189.05</price>
   <lastname>Frizzell</lastname>
   <category>products / apparel / clothing / womens / dresses</category>
