@@ -78,6 +78,9 @@ module SortingBase
     # tickle a bug where the QRS would sort on rank (only) in the first phase
     compare("query=sddocname:simple+17&sortspec=-year%20-[rank]", "17_year_rank", "title")
     compare("query=sddocname:simple+17&sortspec=-category%20-[rank]", "17_cat_rank", "title")
+    # Query: Ascending sort by bool (odd)
+    compare("query=sddocname:simple+17&sortspec=%2Bodd%20-year%20-[rank]", "17_false_true_rank", "title")
+    compare("query=sddocname:simple+17&sortspec=-odd%20-year%20-[rank]", "17_true_false_rank", "title")
   end
 
   def compare_twoclusters
