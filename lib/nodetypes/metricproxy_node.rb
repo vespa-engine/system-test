@@ -15,7 +15,7 @@ class MetricsProxyNode < VespaNode
     while not done and retries < 60
       retries += 1
       begin
-        @wrapper = RpcWrapper.new(host, 19091, tls_env())
+        @wrapper = RpcWrapper.new(host, 19095, tls_env())
       rescue Errno::ECONNREFUSED
         sleep 1
         next
