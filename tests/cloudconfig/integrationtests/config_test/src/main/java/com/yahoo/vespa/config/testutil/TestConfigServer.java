@@ -2,6 +2,7 @@
 package com.yahoo.vespa.config.testutil;
 
 import com.yahoo.cloud.config.ConfigserverConfig;
+import com.yahoo.config.FileReference;
 import com.yahoo.config.codegen.CNode;
 import com.yahoo.config.codegen.DefParser;
 import com.yahoo.config.codegen.InnerCNode;
@@ -27,7 +28,9 @@ import com.yahoo.vespa.config.server.filedistribution.FileServer;
 import com.yahoo.vespa.config.server.host.HostRegistries;
 import com.yahoo.vespa.config.server.monitoring.MetricUpdater;
 import com.yahoo.vespa.config.server.monitoring.Metrics;
+import com.yahoo.vespa.config.server.rpc.RpcRequestHandlerProvider;
 import com.yahoo.vespa.config.server.rpc.RpcServer;
+import com.yahoo.vespa.config.server.rpc.security.NoopRpcAuthorizer;
 import com.yahoo.vespa.config.server.tenant.TenantHandlerProvider;
 import com.yahoo.vespa.config.util.ConfigUtils;
 import com.yahoo.log.LogLevel;
@@ -100,7 +103,9 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
                                        dimensions -> new MetricUpdater(Metrics.createTestMetrics(), Collections.emptyMap()),
                                        new HostRegistries(),
                                        new com.yahoo.vespa.config.server.host.ConfigRequestHostLivenessTracker(),
-                                       new FileServer(configServerConfig));
+                                       new FileServer(configServerConfig),
+                                       new NoopRpcAuthorizer(),
+                                       new RpcRequestHandlerProvider());
         rpcServer.onTenantCreate(TenantName.from(TENANT_NAME), this);
         this.port = port;
         this.defDir = defDir;
@@ -375,6 +380,11 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
     @Override
     public ApplicationId resolveApplicationId(String hostName) {
         return ApplicationId.defaultId();
+    }
+
+    @Override
+    public Set<FileReference> listFileReferences(ApplicationId applicationId) {
+        return Set.of();
     }
 
     public long getApplicationGeneration() {

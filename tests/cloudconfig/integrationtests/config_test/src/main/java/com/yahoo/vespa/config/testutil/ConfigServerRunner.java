@@ -1,9 +1,6 @@
 // Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.vespa.config.testutil;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.yahoo.jrt.Acceptor;
 import com.yahoo.jrt.Int32Value;
 import com.yahoo.jrt.ListenFailedException;
@@ -12,6 +9,9 @@ import com.yahoo.jrt.Request;
 import com.yahoo.jrt.Spec;
 import com.yahoo.jrt.Supervisor;
 import com.yahoo.jrt.Transport;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A config server controller, capable of taking user input and perform actions on the config server.
@@ -45,15 +45,13 @@ public class ConfigServerRunner {
         this.configDir = configDir;
         this.configPort = port;
 
-        supervisor.addMethod(createDeployApplicationMethod(this, "deployApplication"));
-        supervisor.addMethod(createReloadConfigMethod(this, "reloadConfig"));
-        supervisor.addMethod(createStartMethod(this, "startServer"));
-        supervisor.addMethod(createStopMethod(this, "stopServer"));
-        supervisor.addMethod(createPingMethod(this, "ping"));
+        supervisor.addMethod(createDeployApplicationMethod());
+        supervisor.addMethod(createStartMethod());
+        supervisor.addMethod(createStopMethod());
+        supervisor.addMethod(createPingMethod());
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void deployApplication(Request req) {
+    private void deployApplication(Request req) {
         String configDir = req.parameters().get(0).asString();
         this.configDir = configDir;
         System.out.println(configPort + ": deploying application " + configDir);
@@ -63,8 +61,7 @@ public class ConfigServerRunner {
         req.returnValues().add(new Int32Value(0));
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void startServer(Request req) {
+    private void startServer(Request req) {
         String defDir = req.parameters().get(0).asString();
         this.defDir = defDir;
         String configDir = req.parameters().get(1).asString();
@@ -83,8 +80,7 @@ public class ConfigServerRunner {
         req.returnValues().add(new Int32Value(0));
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void stopServer(Request req) {
+    private void stopServer(Request req) {
     	if (serverMap.size() < 1) {
             System.err.println("No servers to stop");
             req.returnValues().add(new Int32Value(1));
@@ -109,8 +105,7 @@ public class ConfigServerRunner {
         req.returnValues().add(new Int32Value(0));
     }
 
-    @SuppressWarnings("UnusedDeclaration")
-    public void ping(Request request) {
+    private void ping(Request request) {
         if (ready) {
             request.returnValues().add(new Int32Value(1));
         } else {
@@ -137,16 +132,16 @@ public class ConfigServerRunner {
         }
     }
 
-    public static Method createPingMethod(Object handler, String handlerMethod) {
+    public Method createPingMethod() {
         return new Method("ping", "", "i",
-                handler, handlerMethod)
+                this::ping)
                 .methodDesc("ping monitor to ensure that it is up")
                 .returnDesc(0, "retCode", "1 if ready, 0 if not");
     }
 
-    public static Method createStartMethod(Object handler, String handlerMethod) {
+    public Method createStartMethod() {
         return new Method("startServer", "ssi", "i",
-                handler, handlerMethod)
+                this::startServer)
                 .methodDesc("start server")
                 .paramDesc(0, "defDir", "Config def file directory")
                 .paramDesc(1, "configDir", "Config file directory")
@@ -154,26 +149,19 @@ public class ConfigServerRunner {
                 .returnDesc(0, "retCode", "return code, 0 is OK");
     }
 
-    public static Method createStopMethod(Object handler, String handlerMethod) {
+    public Method createStopMethod() {
         return new Method("stopServer", "i", "i",
-                handler, handlerMethod)
+                this::stopServer)
                 .methodDesc("stop server")
                 .paramDesc(0, "port", "Port on which server that should be stopped is running")
                 .returnDesc(0, "ret code", "return code, 0 is OK");
     }
 
-    public static Method createDeployApplicationMethod(Object handler, String handlerMethod) {
+    public Method createDeployApplicationMethod() {
         return new Method("deployApplication", "s", "i",
-                handler, handlerMethod)
+                this::deployApplication)
                 .methodDesc("deploy application")
                 .paramDesc(0, "configDir", "Config file directory")
-                .returnDesc(0, "ret code", "return code, 0 is OK");
-    }
-
-    public static Method createReloadConfigMethod(Object handler, String handlerMethod) {
-        return new Method("reloadConfig", "", "i",
-                handler, handlerMethod)
-                .methodDesc("reload config")
                 .returnDesc(0, "ret code", "return code, 0 is OK");
     }
 
