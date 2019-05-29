@@ -1,8 +1,0 @@
-<config name="config.provisioning.flavors">
-	<flavor>
-		<item>
-			<name>flavor_A</name>
-		</item>
-	</flavor>
-</config>
-
