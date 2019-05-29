@@ -88,7 +88,7 @@ module Yamas
 
   # get metrics directly from metricsproxy in JSON format using RPC
   def get_yamas_metrics_rpc(service,wrapper)
-    jsondata = wrapper.getMetricsForYamas(service)[0]
+    jsondata = wrapper.getYAMASMetrics(service)[0]
     puts "Output from metrics proxy: #{jsondata}"
     result = JSON.parse(jsondata)
     return result
