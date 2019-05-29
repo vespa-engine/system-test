@@ -122,7 +122,7 @@ class MetricsProxy < IndexedSearchTest
 
   def get_metrics(yamas_service_name)
     wrapper = vespa.metricsproxies.values.first.get_wrapper
-    JSON.parse(wrapper.getYAMASMetrics(yamas_service_name)[0])
+    JSON.parse(wrapper.getMetricsForYamas(yamas_service_name)[0])
   end 
 
   def teardown
