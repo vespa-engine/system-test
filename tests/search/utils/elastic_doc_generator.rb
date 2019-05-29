@@ -34,11 +34,11 @@ class ElasticDocGenerator
     return ds
   end
 
-  def self.generate_updates(doc_begin, num_docs)
+  def self.generate_updates(doc_begin, num_docs, assign_value = 2012)
     ds = DocumentSet.new()
     for i in doc_begin...(doc_begin + num_docs) do
       upd = DocumentUpdate.new("test", "id:test:test::#{i}")
-      upd.addOperation("assign", "f2", 2012)
+      upd.addOperation("assign", "f2", assign_value)
       ds.add(upd)
     end
     return ds
@@ -56,8 +56,8 @@ class ElasticDocGenerator
     generate_random_docs(doc_begin, doc_end, num_removes).write_rm_xml(file_name)
   end
 
-  def self.write_updates(doc_begin, num_docs, file_name)
-    generate_updates(doc_begin, num_docs).write_xml(file_name)
+  def self.write_updates(doc_begin, num_docs, file_name, assign_value = 2012)
+    generate_updates(doc_begin, num_docs, assign_value).write_xml(file_name)
   end
 
 end
