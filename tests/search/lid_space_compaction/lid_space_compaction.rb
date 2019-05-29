@@ -36,14 +36,35 @@ class LidSpaceCompactionTest < SearchTest
     app
   end
 
+  def file_name_puts(begin_docs, num_docs)
+    dirs.tmpdir + "generated/puts.#{begin_docs}.#{num_docs}.xml"
+  end
+
+  def file_name_updates(begin_docs, num_docs)
+    dirs.tmpdir + "generated/updates.#{begin_docs}.#{num_docs}.xml"
+  end
+
+  def file_name_removes(begin_docs, end_docs, num_docs)
+    dirs.tmpdir + "generated/removes.#{begin_docs}-#{end_docs}.#{num_docs}.xml"
+  end
+
   def gen_puts(begin_docs, num_docs)
     puts "gen_puts(#{begin_docs}, #{num_docs})"
-    file_name = dirs.tmpdir + "generated/puts.#{begin_docs}.#{num_docs}.xml"
+    file_name = file_name_puts(begin_docs, num_docs)
+    @f1_term = "f1:word"
+    @f2_term = "f2:2014"
     ElasticDocGenerator.write_docs(begin_docs, num_docs, file_name, { :field1 => 'word', :field2 => '2014' })
   end
 
+  def gen_updates(begin_docs, num_docs)
+    puts "gen_updates(#{begin_docs}, #{num_docs})"
+    file_name = file_name_updates(begin_docs, num_docs)
+    @f2_term = "f2:2019"
+    ElasticDocGenerator.write_updates(begin_docs, num_docs, file_name, 2019)
+  end
+
   def gen_removes(begin_docs, end_docs, num_docs)
-    file_name = dirs.tmpdir + "generated/removes.#{begin_docs}-#{end_docs}.#{num_docs}.xml"
+    file_name = file_name_removes(begin_docs, end_docs, num_docs)
     if @gen_random_removes
       puts "gen_random_removes(#{begin_docs}, #{end_docs}, #{num_docs})"
       ElasticDocGenerator.write_random_removes(begin_docs, end_docs, num_docs, file_name)
@@ -62,7 +83,7 @@ class LidSpaceCompactionTest < SearchTest
   end
 
   def feed_puts(begin_docs, num_docs, preserve_feed_order = false)
-    file_name = dirs.tmpdir + "generated/puts.#{begin_docs}.#{num_docs}.xml"
+    file_name = file_name_puts(begin_docs, num_docs)
     if (!File.exists?(file_name))
       gen_puts(begin_docs, num_docs)
     end
@@ -70,8 +91,17 @@ class LidSpaceCompactionTest < SearchTest
     feed_file(file_name, preserve_feed_order)
   end
 
+  def feed_updates(begin_docs, num_docs, preserve_feed_order = false)
+    file_name = file_name_updates(begin_docs, num_docs)
+    if (!File.exists?(file_name))
+      gen_updates(begin_docs, num_docs)
+    end
+    puts "feed_updates(#{begin_docs}, #{num_docs})"
+    feed_file(file_name, preserve_feed_order)
+  end
+
   def feed_removes(begin_docs, end_docs, num_docs, preserve_feed_order = false)
-    file_name = dirs.tmpdir + "generated/removes.#{begin_docs}-#{end_docs}.#{num_docs}.xml"
+    file_name = file_name_removes(begin_docs, end_docs, num_docs)
     if (!File.exists?(file_name))
       gen_removes(begin_docs, end_docs, num_docs)
     end
@@ -80,18 +110,18 @@ class LidSpaceCompactionTest < SearchTest
   end
 
   def assert_corpus_hitcount(num_docs)
-    assert_hitcount("f1:word&hits=0", num_docs)
-    assert_hitcount("f2:2014&hits=0", num_docs)
+    assert_hitcount("#{@f1_term}&hits=0", num_docs)
+    assert_hitcount("#{@f2_term}&hits=0", num_docs)
   end
 
   def wait_for_corpus_hitcount(num_docs)
-    wait_for_hitcount("f1:word&hits=0", num_docs)
-    wait_for_hitcount("f2:2014&hits=0", num_docs)
+    wait_for_hitcount("#{@f1_term}&hits=0", num_docs)
+    wait_for_hitcount("#{@f2_term}&hits=0", num_docs)
   end
 
   def print_corpus_hitcount(num_docs)
-    puts "f1:word -> #{search('f1:word&hits=0').hitcount} / #{num_docs} hits"
-    puts "f2:2014 -> #{search('f2:2014&hits=0').hitcount} / #{num_docs} hits"
+    puts "#{@f1_term} -> #{search("#{@f1_term}&hits=0").hitcount} / #{num_docs} hits"
+    puts "#{@f2_term} -> #{search("#{@f2_term}&hits=0").hitcount} / #{num_docs} hits"
   end
 
   def get_lid_space_metric(metrics, sub_db, name)
@@ -243,6 +273,13 @@ class LidSpaceCompactionTest < SearchTest
     feed_removes(0, num_puts, num_removes)
   end
 
+  def feed_puts_updates_and_removes(num_puts, num_removes)
+    puts "#### Feed initial puts, updates and removes ####"
+    feed_puts(0, num_puts)
+    feed_updates(0, num_puts)
+    feed_removes(0, num_puts, num_removes)
+  end
+
   def trigger_lid_compaction(two_nodes = false, disable_flush = false)
     puts "#### Redeploy app to trigger lid compaction ####"
     redeploy(get_app(0.2, two_nodes, disable_flush))
@@ -267,6 +304,18 @@ class LidSpaceCompactionTest < SearchTest
   def test_basic_document_moving
     @valgrind = false
     set_description("Test that documents are moved to allow for lid space compaction")
+
+    run_basic_document_moving_test(false)
+  end
+
+  def test_attribute_updates_are_preserved_during_document_moving
+    @valgrind = false
+    set_description("Test that attribute updates are preserved when moving documents during lid space compaction")
+
+    run_basic_document_moving_test(true)
+  end
+
+  def run_basic_document_moving_test(feed_updates)
     deploy_app(get_app(0.0))
     start
     vespa.adminserver.logctl("searchnode:proton.server.maintenancecontroller", "debug=on")
@@ -276,7 +325,11 @@ class LidSpaceCompactionTest < SearchTest
     num_removes = 40000
     num_remaining = num_docs - num_removes
 
-    feed_puts_and_removes(num_docs, num_removes)
+    if feed_updates
+      feed_puts_updates_and_removes(num_docs, num_removes)
+    else
+      feed_puts_and_removes(num_docs, num_removes)
+    end
 
     exp_removed_stats = get_ideal_stats(num_removes)
     exp_ready_stats = get_ideal_stats(num_remaining)
