@@ -240,7 +240,6 @@ ENDER
     vespa.adminserver.execute(command, :exceptiononfailure => false).strip
   end
 
-  # Check that default jute maxbuffer is as expected
   # Check that setting jute maxbuffer in config override works
   def test_jute_maxbuffer
     deploy_app(CloudconfigApp.new)
@@ -250,7 +249,7 @@ ENDER
     @configserver.stop_configserver({:keep_everything => true})
     override =<<ENDER
   <config name="cloud.config.zookeeper-server">
-      <juteMaxBuffer>1500</juteMaxBuffer>
+      <juteMaxBuffer>1700</juteMaxBuffer>
   </config>
 ENDER
    
