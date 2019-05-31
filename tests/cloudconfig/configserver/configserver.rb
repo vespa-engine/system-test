@@ -241,7 +241,7 @@ ENDER
   end
 
   # Check that setting jute maxbuffer in config override works
-  def test_jute_maxbuffer
+  def no_test_jute_maxbuffer
     deploy_app(CloudconfigApp.new)
     @configserver = vespa.configservers["0"]
 
