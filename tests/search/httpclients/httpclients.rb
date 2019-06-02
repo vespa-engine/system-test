@@ -26,7 +26,7 @@ class HttpClients < IndexedSearchTest
     hname = qrserver.name
     sport = qrserver.http_port
 
-    query = "search/?query=sddocname:music&hits=1&format=xml"
+    query = "search/?query=sddocname:music&hits=1&timeout=30&format=xml"
     httpquery("#{@script} \"http://#{hname}:#{sport}/#{query}\" | sed 's/ coverage-docs=.*\">/>/g' > #{@outputfile}")
     httpquery("wget -q -O -                      'http://#{hname}:#{sport}/#{query}' | sed 's/ coverage-docs=.*\">/>/g' > #{@outputfile}")
     httpquery("wget -q -O - --no-http-keep-alive 'http://#{hname}:#{sport}/#{query}' | sed 's/ coverage-docs=.*\">/>/g' > #{@outputfile}")

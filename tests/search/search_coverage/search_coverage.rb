@@ -10,6 +10,8 @@ class SearchCoverageTest < SearchTest
   def setup
     set_owner('ovirtanen')
     set_description('Search Coverage / Adaptive Timeout test')
+    #test is very timeingsensitive so we disable valgrind.
+    @valgrind = false
 
     @doc_ids = [
       # dist-key 0

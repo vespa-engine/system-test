@@ -6,6 +6,8 @@ class ReportCoverage < IndexedSearchTest
   def setup
     set_owner("arnej")
     set_description("Check coverage reports are returned from search.")
+    # Disable valgrind as test is timing sensitive
+    @valgrind = false
     deploy_app(SearchApp.new.num_parts(2).sd(selfdir+"covtest.sd"))
     start
     vespa.adminserver.logctl("searchnode:proton.matching.matcher", "debug=on")
