@@ -54,6 +54,7 @@ class ModelEvaluation < SearchContainerTest
                    "&argumentName=input" +
                    "&argumentValue=" + URI::encode(generateArgument()))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":6.65883909709195}]}", result.body)
+
   end
 
   def test_model_evaluation_rest_api
@@ -90,6 +91,18 @@ class ModelEvaluation < SearchContainerTest
     result = query("/model-evaluation/v1/mnist_saved/serving_default/eval" +
                    "?input=" + URI::encode(generateArgument()))
     assert_equal("{\"cells\":[{\"address\":{\"d0\":\"0\",\"d1\":\"0\"},\"value\":-0.9851942175674907},{\"address\":{\"d0\":\"0\",\"d1\":\"1\"},\"value\":-3.3600470848109443},{\"address\":{\"d0\":\"0\",\"d1\":\"2\"},\"value\":10.354113129610678},{\"address\":{\"d0\":\"0\",\"d1\":\"3\"},\"value\":12.59513385100048},{\"address\":{\"d0\":\"0\",\"d1\":\"4\"},\"value\":-7.516996382917508},{\"address\":{\"d0\":\"0\",\"d1\":\"5\"},\"value\":3.359956718406166},{\"address\":{\"d0\":\"0\",\"d1\":\"6\"},\"value\":-8.21678924075764},{\"address\":{\"d0\":\"0\",\"d1\":\"7\"},\"value\":-4.859930426566943},{\"address\":{\"d0\":\"0\",\"d1\":\"8\"},\"value\":5.977971539591458},{\"address\":{\"d0\":\"0\",\"d1\":\"9\"},\"value\":-0.6893787888963082}]}", result.body)
+
+    # ---- vespa (only tested with this API since we require 2 arguments which the ad hoc (models) API doesn't support
+    #    - function using small constant
+    result = query("/model-evaluation/v1/example/foo1/eval" +
+                   "?input1=" + URI::encode("{{name:a, x:0}: 1, {name:a, x:1}: 2, {name:a, x:2}: 3}" +
+                   "&input2=" + URI::encode("{{x:0}:3, {x:1}:6, {x:2}:9}"))
+    assert_equal("{\"cells\":[{\"address\":{},\"value\":202.5}]}", result.body)
+    #    - function using large constant
+    result = query("/model-evaluation/v1/example/foo2/eval" +
+                   "?input1=" + URI::encode("{{name:a, x:0}: 1, {name:a, x:1}: 2, {name:a, x:2}: 3}" +
+                   "&input2=" + URI::encode("{{x:0}:3, {x:1}:6, {x:2}:9}"))
+    assert_equal("{\"cells\":[{\"address\":{},\"value\":202.5}]}", result.body)
   end
 
   def query(query_string)
