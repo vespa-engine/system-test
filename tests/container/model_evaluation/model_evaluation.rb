@@ -94,12 +94,12 @@ class ModelEvaluation < SearchContainerTest
 
     # ---- vespa (only tested with this API since we require 2 arguments which the ad hoc (models) API doesn't support
     #    - function using small constant
-    result = query("/model-evaluation/v1/example/foo1/eval" +
+    result = query("/model-evaluation/v1/vespa_example/foo1/eval" +
                    "?input1=" + URI::encode("{{name:a, x:0}: 1, {name:a, x:1}: 2, {name:a, x:2}: 3}") +
                    "&input2=" + URI::encode("{{x:0}:3, {x:1}:6, {x:2}:9}"))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":202.5}]}", result.body)
     #    - function using large constant
-    result = query("/model-evaluation/v1/example/foo2/eval" +
+    result = query("/model-evaluation/v1/vespa_example/foo2/eval" +
                    "?input1=" + URI::encode("{{name:a, x:0}: 1, {name:a, x:1}: 2, {name:a, x:2}: 3}") +
                    "&input2=" + URI::encode("{{x:0}:3, {x:1}:6, {x:2}:9}"))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":202.5}]}", result.body)
