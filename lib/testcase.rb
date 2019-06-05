@@ -631,15 +631,6 @@ class TestCase
     return $1;
   end
 
-  def warn_https_downgraded_once(originator_node, hostname, port)
-    key = "#{originator_node} -> #{hostname}:#{port}"
-    return if @https_downgrade_warnings.include? key
-    @https_downgrade_warnings.add(key)
-    output '--------'
-    output "HTTPS DOWNGRADE WARNING: node #{originator_node} failed to connect to '#{hostname}:#{port}' over HTTPS, downgraded to HTTP"
-    output '--------'
-  end
-
   #
   # Private methods follow.
   #

@@ -43,31 +43,18 @@ class VespaNode
   end
 
   def with_https_connection(hostname, port, path)
-    begin
-      uri = URI("https://#{hostname}:#{port}#{path}")
-      http = Net::HTTP.new(uri.host, uri.port)
-      if use_tls?
-        http.use_ssl = true
-        http.cert_store = ssl_ctx.cert_store
-        http.cert = ssl_ctx.cert
-        http.key = ssl_ctx.key
-        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-      end
-      return http.start { |conn|
-        yield(conn, uri)
-      }
-    rescue Exception => e
-      raise e if not use_tls?
-      uri = URI("http://#{hostname}:#{port}#{path}")
-      # TODO remove this fallback once Java status pages are served with mixed mode as well
-      http = Net::HTTP.new(uri.host, uri.port)
-      response = http.start { |conn|
-         yield(conn, uri)
-      }
-      # Iff HTTPS failed _but_ HTTP worked, we have a server that doesn't accept TLS. Warn in test to increase visibility.
-      @testcase.warn_https_downgraded_once(@name, hostname, port)
-      return response
+    uri = URI("#{use_tls? ? 'https' : 'http'}://#{hostname}:#{port}#{path}")
+    http = Net::HTTP.new(uri.host, uri.port)
+    if use_tls?
+      http.use_ssl = true
+      http.cert_store = ssl_ctx.cert_store
+      http.cert = ssl_ctx.cert
+      http.key = ssl_ctx.key
+      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
     end
+    return http.start { |conn|
+      yield(conn, uri)
+    }
   end
 
   def https_get(hostname, port, path, headers={})
