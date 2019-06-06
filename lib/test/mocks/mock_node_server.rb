@@ -1,0 +1,11 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+class MockNodeServer
+
+  attr_reader :https_client
+
+  def initialize
+    @https_client = nil
+  end
+
+end

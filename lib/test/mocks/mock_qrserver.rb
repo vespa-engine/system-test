@@ -1,12 +1,14 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require "test/mocks/resultset_generator"
+require 'test/mocks/mock_node_server'
+
 
 class MockQrserver < Qrserver
 
   attr_accessor :return_query
 
   def initialize(service_entry)
-    super(service_entry, nil, nil)
+    super(service_entry, nil, MockNodeServer.new)
     @generator = ResultsetGenerator.new
     @resultsetdelay = 0
     @delaystart = nil
