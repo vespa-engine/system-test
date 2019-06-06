@@ -18,7 +18,7 @@ class VespaNode
     @service_entry = service_entry
     @testcase = testcase
     @node_server = node_server
-    @https_client = HttpsClient::new(node_server.tls_env)
+    @https_client = node_server.https_client
 
     if service_entry
       @config_id = service_entry["config-id"]
