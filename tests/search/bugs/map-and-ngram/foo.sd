@@ -1,0 +1,21 @@
+search foo {
+    document foo {
+
+        field justsum type string {
+            indexing: summary
+        }
+        field groupSearch type string {
+            indexing: index
+            stemming: none
+            normalizing: none
+            match {
+                gram
+                gram-size: 3
+            }
+        }
+        field samplesTimeMap type map<string, int> {
+            indexing: summary
+        }
+    }
+
+}

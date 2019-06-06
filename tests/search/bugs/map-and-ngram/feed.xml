@@ -1,0 +1,29 @@
+<document type="foo" id="id:test:foo::1">
+  <justsum>whatever one value</justsum>
+  <groupSearch>usingngramhere</groupSearch>
+  <samplesTimeMap>
+    <item><key>normal</key><value>25</value></item>
+    <item><key>random</key><value>17</value></item>
+    <item><key>latest</key><value>42</value></item>
+  </samplesTimeMap>
+</document>
+
+<document type="foo" id="id:test:foo::2">
+  <justsum>whatever two value</justsum>
+  <groupSearch>usingngramhere</groupSearch>
+  <samplesTimeMap>
+    <item><key>normal</key><value>25</value></item>
+    <item><key>random</key><value>17</value></item>
+    <item><key>latest</key><value>42</value></item>
+  </samplesTimeMap>
+</document>
+
+<document type="foo" id="id:test:foo::3">
+  <justsum>whatever three value</justsum>
+  <groupSearch>usingngramhere</groupSearch>
+  <samplesTimeMap>
+    <item><key>normal</key><value>25</value></item>
+    <item><key>random</key><value>17</value></item>
+    <item><key>latest</key><value>42</value></item>
+  </samplesTimeMap>
+</document>
