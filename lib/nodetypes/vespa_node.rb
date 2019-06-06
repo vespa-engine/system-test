@@ -11,7 +11,7 @@ require 'https_client'
 class VespaNode
   include DRb::DRbUndumped, NodeServerInterface
 
-  attr_reader :name, :servicetype, :testcase, :config_id
+  attr_reader :name, :servicetype, :testcase, :config_id, :https_client
   attr_accessor :service, :index, :cluster, :ports, :ports_by_tag
 
   def initialize(service_entry, testcase, node_server)
