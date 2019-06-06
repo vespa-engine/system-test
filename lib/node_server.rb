@@ -11,6 +11,8 @@ require 'digest/md5'
 require 'tls_env'
 require 'environment'
 require 'executor'
+require 'https_client'
+require 'json'
 
 # This server is running on all Vespa nodes participating in the test.
 # A NodeServer class is instantiated and made accessible to DRb. Remote
@@ -24,6 +26,7 @@ class NodeServer
   include Metrics
   attr_accessor :testcase, :addr_configserver, :hostname, :port_configserver_rpc, :configserver_started
   attr_reader :tls_env
+  attr_reader :https_client
 
   def initialize(hostname)
     @services = []   # must keep list of service objects created to prevent gc
@@ -37,6 +40,7 @@ class NodeServer
     @configserver_started = false
     @tls_env = TlsEnv.new
     @executor = Executor.new(@short_hostname)
+    @https_client = HttpsClient::new(@tls_env)
   end
 
   def time
@@ -920,8 +924,16 @@ class NodeServer
   def configserver(hostname, port)
     @rpc_to_cfgs or @rpc_to_cfgs = RpcWrapper.new(hostname, port, @tls_env)
   end
+
+  private
   def configserver_http_ping(hostname, port)
-    execute("#{Environment.instance.vespa_home}/libexec/vespa/ping-configserver #{hostname} #{port}", {:exceptiononfailure => true, :noecho => true} )
+    response = https_client.https_get(hostname, port, '/state/v1/health')
+    raise StandardError.new("Got response code #{response.code}") unless response.is_a?(Net::HTTPSuccess)
+    json = JSON.parse(response.body)
+    status = json["status"]["code"]
+    if status != 'up'
+      raise StandardError.new("Got status #{status}")
+    end
   end
 end
 

@@ -6,6 +6,7 @@ require 'json_metrics'
 require 'performance/stat'
 require 'http_connection_pool'
 require 'environment'
+require 'https_client'
 
 class VespaNode
   include DRb::DRbUndumped, NodeServerInterface
@@ -17,6 +18,7 @@ class VespaNode
     @service_entry = service_entry
     @testcase = testcase
     @node_server = node_server
+    @https_client = node_server.https_client
 
     if service_entry
       @config_id = service_entry["config-id"]
@@ -34,33 +36,14 @@ class VespaNode
     @node_server.tls_env
   end
 
-  def ssl_ctx
-    tls_env.ssl_ctx
-  end
-
-  def use_tls?
-    ssl_ctx != nil
-  end
-
   def with_https_connection(hostname, port, path)
-    uri = URI("#{use_tls? ? 'https' : 'http'}://#{hostname}:#{port}#{path}")
-    http = Net::HTTP.new(uri.host, uri.port)
-    if use_tls?
-      http.use_ssl = true
-      http.cert_store = ssl_ctx.cert_store
-      http.cert = ssl_ctx.cert
-      http.key = ssl_ctx.key
-      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-    end
-    return http.start { |conn|
+    @https_client.with_https_connection(hostname, port, path) { |conn, uri|
       yield(conn, uri)
     }
   end
 
   def https_get(hostname, port, path, headers={})
-    with_https_connection(hostname, port, path) do |conn, uri|
-      conn.request(Net::HTTP::Get.new(uri, headers))
-    end
+    @https_client.https_get(hostname, port, path, headers)
   end
 
   def get_json_over_http(full_path, port, hostname = "localhost")
