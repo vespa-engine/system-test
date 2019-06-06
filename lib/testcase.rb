@@ -30,7 +30,7 @@ class TestCase
   include Assertions
   include TestBase
 
-  attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :dirty_nodeproxies, :storagehost, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels
+  attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :dirty_nodeproxies, :storagehost, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env
   attr_accessor :hostlist, :num_hosts, :valgrind, :default_valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :required_hostnames, :expected_logged, :method_name
   attr_accessor :dirty_environment_settings
 
@@ -72,6 +72,7 @@ class TestCase
     @tenant_name = sanitize_name(self.class.name)
     @application_name = nil
     @forked = args[:forked]
+    @tls_env = TlsEnv::new()
     # To avoid mass test breakage in case of known warnings, maintain a workaround
     # set of log messages to ignore.
     # ... don't keep them around for long, though!

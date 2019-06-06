@@ -806,18 +806,6 @@ module TestBase
     assert(false, "Resultsets match, when they shouldn't" + (@current_assert_file != nil ? "Answer file: #{@current_assert_file}" : ""))
   end
 
-  def get_config(config_name, config_id, tname=@tenant_name, app_name=@application_name, hostname=nil)
-    hostname = get_configserver_hostname
-    url = "http://#{hostname}:19071/config/v2/tenant/#{tname}/application/#{app_name}/#{config_name}/#{config_id}"
-    output = `curl -s -X GET \"#{url}\"`
-    if $?.exitstatus.to_i == 0
-      puts "output=#{output}"
-      JSON.parse(output)
-    else
-      raise "Could not get config from #{url}: #{output}"
-    end
-  end
-
   # Gets vespa config from config proxy (localost, port 19090), unless hostname and/or port is supplied
   def getvespaconfig(config_name, config_id, vespa_version=nil, hostname=nil, port=nil, debug=nil)
     cmd = "vespa-get-config -j -n #{config_name} -i #{config_id}"
