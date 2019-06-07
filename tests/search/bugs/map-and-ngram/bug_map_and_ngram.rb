@@ -22,10 +22,9 @@ class MapAndNgramBug < SearchTest
                       indexing("mycc")))
     start
     feed_and_wait_for_docs("foo", 3, :file => selfdir+"feed.xml")
-
-    node = vespa.adminserver
-    node.copy(selfdir + "updates.json", dirs.tmpdir)
-    node.execute("cd #{dirs.tmpdir} && vespa-feeder --trace 4 --maxpending 1 updates.json");
+    feed(:file => selfdir + "updates.json",
+         :maxpending => 1,
+         :trace => 5)
   end
 
   def teardown
