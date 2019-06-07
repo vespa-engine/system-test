@@ -21,7 +21,7 @@ class MapAndNgramBug < SearchTest
                       sd(selfdir+"foo.sd").
                       indexing("mycc")))
     start
-    feed_and_wait_for_docs("foo", 3, :file => selfdir+"feed.xml")
+    feed_and_wait_for_docs("foo", 3, :file => selfdir+"feed.json")
     feed(:file => selfdir + "updates.json",
          :maxpending => 1,
          :trace => 5)
