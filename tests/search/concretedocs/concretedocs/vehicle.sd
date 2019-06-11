@@ -11,6 +11,10 @@ field year type int {
   indexing: summary | attribute
 }
 
+field location type position {
+  indexing: attribute
+}
+
 annotation place {
   field lat type long { }
   field lon type long { }
