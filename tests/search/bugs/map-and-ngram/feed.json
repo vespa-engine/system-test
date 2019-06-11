@@ -1,0 +1,5 @@
+[
+{"id":"id:test:foo::1","fields":{"groupSearch":"usingngramhere","samplesTimeMap":{"normal":25,"random":17,"latest":42},"justsum":"whatever one value"}},
+{"id":"id:test:foo::2","fields":{"groupSearch":"usingngramhere","samplesTimeMap":{"normal":25,"random":17,"latest":42},"justsum":"whatever two value"}},
+{"id":"id:test:foo::3","fields":{"groupSearch":"usingngramhere","samplesTimeMap":{"normal":25,"random":17,"latest":42},"justsum":"whatever three value"}}
+]

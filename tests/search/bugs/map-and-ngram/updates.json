@@ -1,0 +1,54 @@
+[
+{
+  "fields": {
+    "samplesTimeMap{latest}": {
+      "assign": 11
+    }
+  },
+  "create": true,
+  "update": "id:test:foo::1"
+},
+{
+  "fields": {
+    "groupSearch": {
+      "assign": "testMap1"
+    }
+  },
+  "create": true,
+  "update": "id:test:foo::2"
+},
+
+{
+  "fields": {
+    "justsum": { "assign": "updated one value" },
+    "samplesTimeMap{latest}": {
+      "assign": 12
+    }
+  },
+  "create": true,
+  "update": "id:test:foo::1"
+},
+{
+  "fields": {
+    "justsum": { "assign": "updated two value" },
+    "groupSearch": {
+      "assign": "testMap2"
+    }
+  },
+  "create": true,
+  "update": "id:test:foo::2"
+},
+
+{
+  "fields": {
+    "samplesTimeMap{latest}": {
+      "assign": 13
+    },
+    "groupSearch": {
+      "assign": "testMap3"
+    }
+  },
+  "create": true,
+  "update": "id:test:foo::3"
+}
+]

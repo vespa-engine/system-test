@@ -1,0 +1,14 @@
+[
+{
+  "fields": {
+    "samplesTimeMap{latest}": {
+      "assign": 100
+    },
+    "groupSearch": {
+      "assign": "testMap4"
+    }
+  },
+  "create": true,
+  "update": "id:test:foo::3"
+}
+]
