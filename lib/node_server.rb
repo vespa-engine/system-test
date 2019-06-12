@@ -408,25 +408,23 @@ class NodeServer
         next if filename == '.' || filename == '..'
         next if filename == 'systemtests'
         crashtime = File.mtime(coredir+filename)
-        if filename !~ /yjava_daemon/
-          if crashtime.to_i >= starttime.to_i and crashtime <= endtime
-            FileUtils.chmod 0444, (coredir+filename)
+        if crashtime.to_i >= starttime.to_i and crashtime <= endtime
+          FileUtils.chmod 0444, (coredir+filename)
 
-            if filename =~ /(\S+)\..*core/
-              binaryname = $1
-              if binaryname =~ /^memcheck-amd64.*/
-                binaryname = "#{Environment.instance.vespa_home}/lib64/valgrind/memcheck-amd64-linux"
-              end
-              binaries[binaryname] = true
-              FileUtils.mkdir_p(@testcase.dirs.coredir)
-              FileUtils.mv(coredir+filename, @testcase.dirs.coredir)
-              coredumps << VespaCoredump.new(@testcase.dirs.coredir, filename, binaryname)
-            elsif filename =~ /^hs_err_pid\d+\.log$/
-              binaryname = 'java'
-              FileUtils.mkdir_p(@testcase.dirs.coredir)
-              FileUtils.mv(coredir+filename, @testcase.dirs.coredir)
-              coredumps << VespaCoredump.new(@testcase.dirs.coredir, filename, binaryname)
+          if filename =~ /(\S+)\..*core/
+            binaryname = $1
+            if binaryname =~ /^memcheck-amd64.*/
+              binaryname = "#{Environment.instance.vespa_home}/lib64/valgrind/memcheck-amd64-linux"
             end
+            binaries[binaryname] = true
+            FileUtils.mkdir_p(@testcase.dirs.coredir)
+            FileUtils.mv(coredir+filename, @testcase.dirs.coredir)
+            coredumps << VespaCoredump.new(@testcase.dirs.coredir, filename, binaryname)
+          elsif filename =~ /^hs_err_pid\d+\.log$/
+            binaryname = 'java'
+            FileUtils.mkdir_p(@testcase.dirs.coredir)
+            FileUtils.mv(coredir+filename, @testcase.dirs.coredir)
+            coredumps << VespaCoredump.new(@testcase.dirs.coredir, filename, binaryname)
           end
         end
       end
@@ -449,11 +447,9 @@ class NodeServer
         next if filename == '.' || filename == '..'
         next if filename == 'systemtests'
         crashtime = File.mtime(coredir+filename)
-        if filename !~ /yjava_daemon/
-          if crashtime.to_i >= starttime.to_i
-            File.unlink(coredir+filename)
-            corecount = corecount + 1
-          end
+        if crashtime.to_i >= starttime.to_i
+          File.unlink(coredir+filename)
+          corecount = corecount + 1
         end
       end
     end
