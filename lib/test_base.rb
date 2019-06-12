@@ -301,7 +301,7 @@ module TestBase
       output("Config server might be hanging. Dumping process stack " +
              "(see Vespa log for output)")
       @vespa.configservers.each do |idx, server|
-        server.execute("pkill -QUIT -u yahoo -f '^yjava_daemon.*?configserver'")
+        server.execute("pkill -QUIT -u yahoo -f 'configserver'")
       end
     rescue => e
       output("Got exception while checking if config server is hanging: #{e}")
