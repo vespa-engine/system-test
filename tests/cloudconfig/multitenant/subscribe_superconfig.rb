@@ -9,12 +9,8 @@ class SubscribeSuperconfig < CloudConfigTest
     @configserver = vespa.nodeproxies.first[1]
   end
 
-  def can_share_configservers?(method_name=nil)
-    false # Will restart configserver to reconfigure
-  end  
-
-  def test_rotations
-    set_description("Tests setting of endpoint aliases and rotations")
+  def test_endpoint_alias
+    set_description("Tests setting of endpoint alias")
 
     jdisc_id = "foo"
     endpoint_alias = "foo1.bar.yahoo.com"
@@ -41,28 +37,13 @@ class SubscribeSuperconfig < CloudConfigTest
 </services>
 ENDER
 
-    deploy_generated(app, nil, nil, {:rotations => "foo"}, nil, get_deployment(jdisc_id))
+    deploy_generated(app, nil, nil, {:rotations => "foo"}, nil)
     start
 
-    # Test rotations
     config = getvespaconfig("cloud.config.lb-services", "\"*\"")
     hostname = @configserver.hostname
     endpointaliases = config["tenants"]["default"]["applications"]["default:prod:default:default"]["hosts"]["#{hostname}"]["services"]["qrserver"]["endpointaliases"]
-    assert_equal(jdisc_id, endpointaliases[0])
-    assert_equal(endpoint_alias, endpointaliases[1])
-  end
-
-  def get_deployment(global_service_id)
-    deployment=<<ENDER
-<deployment version='1.0'>
-  <test />
-  <staging />
-  <prod global-service-id='#{global_service_id}'>
-    <region active="true">us-east</region>
-    <region active="false">us-west-1</region>
-  </prod>
-</deployment>
-ENDER
+    assert_equal(endpoint_alias, endpointaliases[0])
   end
   
   def teardown
