@@ -1,0 +1,5 @@
+[
+  { "put": "id:test:test::0", "fields": { "content": "a a a b c d e" } },
+  { "put": "id:test:test::1", "fields": { "content": "a a b" } },
+  { "put": "id:test:test::2", "fields": { "content": "a d" } }
+]
