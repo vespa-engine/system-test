@@ -729,7 +729,7 @@ class VespaModel
       @slobrok[remote_serviceobject.index] = remote_serviceobject
     elsif service["servicetype"] == "configserver"
       @configservers[remote_serviceobject.index] = remote_serviceobject
-    elsif service["servicetype"] == "metricsproxy"
+    elsif service["servicetype"] == "metricsproxy-container"
       @metricsproxies[service["hostname"]] = remote_serviceobject
     elsif service["servicetype"] == "logd" or service["servicetype"] == "config-sentinel" or service["servicetype"] == "configproxy"
       # Ignoring these
