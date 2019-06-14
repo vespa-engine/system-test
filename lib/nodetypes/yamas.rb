@@ -80,12 +80,6 @@ module Yamas
     return metrics
   end
 
-  def get_ysar_metrics(node,service,column)
-    ret = node.execute("#{Environment.instance.vespa_home}/conf/ysar/plugins/gather-vespa-" + service + '.sh', :exitcode => true)
-    values = ret[1].split(",")
-    return Float(values[column+1]) #first value is always 1 (due to a dummy)
-  end
-
   # get metrics directly from metricsproxy in JSON format using RPC
   def get_yamas_metrics_rpc(service,wrapper)
     jsondata = wrapper.getMetricsForYamas(service)[0]

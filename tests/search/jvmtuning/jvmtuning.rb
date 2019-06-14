@@ -30,7 +30,6 @@ class JvmTuning < SearchTest
 
     override_environment_setting(vespa.configservers["0"], "cloudconfig_server.jvmargs", "-verbose:gc -verbose:jni")
     override_environment_setting(vespa.adminserver, "services.jvmargs_configproxy", "-verbose:jni -verbose:gc")
-    override_environment_setting(vespa.adminserver, "vespa_metrics_proxy.jvmargs", "-verbose:jni -verbose:gc")
     vespa.configservers["0"].stop_configserver
     vespa.configservers["0"].start_configserver
     add_bundle(DOCPROC+"/WorstMusicDocProc.java")
@@ -39,7 +38,6 @@ class JvmTuning < SearchTest
 
     assert(vespa.adminserver.execute("ps auxwww | grep configserver") =~ /-verbose:gc -verbose:jni/)
     assert(vespa.adminserver.execute("ps auxwww | grep configproxy") =~ /-verbose:jni -verbose:gc/)
-    assert(vespa.adminserver.execute("ps auxwww | grep metricsproxy") =~ /-verbose:jni -verbose:gc/)
 
     assert(vespa.adminserver.execute("ps auxwww | grep logserver") =~ /verbose:gc/)
 
