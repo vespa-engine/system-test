@@ -70,7 +70,7 @@ class NodeServer
       when "container-clustercontroller" then @services.push(ContentClusterController.new(service, testcase, self))
       when "docprocservice" then @services.push(DocprocNode.new(service, testcase, self))
       when "slobrok" then @services.push(Slobrok.new(service, testcase, self))
-      when "metricsproxy" then @services.push(MetricsProxyNode.new(service, testcase, self))
+      when "metricsproxy-container" then @services.push(MetricsProxyNode.new(service, testcase, self))
       else return nil
     end
 
