@@ -790,7 +790,8 @@ class NodeServer
     cwd = `/bin/pwd`
     Environment.instance.start_configserver(@testcase)
     Dir.chdir(cwd) if cwd == "/var/builds/"
-    @configserver_pid = execute("ps auxww | grep \"configserver.pid\" | grep -v grep | tr -s ' ' | cut -f 2 -d ' ' | tail -n 1").to_i
+    configserver_runserver_pid = execute("ps auxww | grep \"configserver.pid\" | grep -v grep | tr -s ' ' | cut -f 2 -d ' ' | tail -n 1").to_i
+    @configserver_pid = execute("pgrep -P #{configserver_runserver_pid} | tail -n 1").to_i
     testcase_output("Configserver running with pid #{@configserver_pid}")
     @configserver_started = true
   end
