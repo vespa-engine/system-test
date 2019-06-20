@@ -20,6 +20,7 @@ class SearchDownWhileFeeding < IndexedSearchTest
 
     puts "Stopping one searchnode"
     vespa.search["search"].first.stop
+    sleep(10)
 
     puts "Feeding with searchnode down"
 
