@@ -4,23 +4,49 @@ search dotproduct {
   document dotproduct {
     field a type weightedset<string> {
       indexing: attribute | summary
+      attribute: fast-search
+    }
+    field a2 type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
     }
     field b type weightedset<string> {
       indexing: attribute | summary
+      attribute: fast-search
+    }
+    field b2 type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
     }
     field i type array<int> {
+      indexing: attribute | summary
+    }
+    field i2 type array<int> {
       indexing: attribute | summary
     }
     field l type array<long> {
       indexing: attribute | summary
     }
+    field l2 type array<long> {
+      indexing: attribute | summary
+    }
     field f type array<float> {
+      indexing: attribute | summary
+    }
+    field f2 type array<float> {
       indexing: attribute | summary
     }
     field d type array<double> {
       indexing: attribute | summary
     }
+    field d2 type array<double> {
+      indexing: attribute | summary
+    }
     field fi type array<int> {
+      indexing: attribute | summary
+      attribute:fast-search
+    }
+    field fi2 type array<int> {
       indexing: attribute | summary
       attribute:fast-search
     }
@@ -28,7 +54,15 @@ search dotproduct {
       indexing: attribute | summary
       attribute:fast-search
     }
+    field fl2 type array<long> {
+      indexing: attribute | summary
+      attribute:fast-search
+    }
     field ff type array<float> {
+      indexing: attribute | summary
+      attribute:fast-search
+    }
+    field ff2 type array<float> {
       indexing: attribute | summary
       attribute:fast-search
     }
@@ -36,22 +70,48 @@ search dotproduct {
       indexing: attribute | summary
       attribute:fast-search
     }
+    field fd2 type array<double> {
+      indexing: attribute | summary
+      attribute:fast-search
+    }
   }
 
-  rank-profile default {
+  rank-profile sum_dotproduct {
+
+    macro sum_dp () {
+      expression: dotProduct(a,x) + dotProduct(a,y) + dotProduct(a2,x) + dotProduct(a2,y) + dotProduct(b,x) + dotProduct(b,y) + dotProduct(b2,x) + dotProduct(b2,y) + dotProduct(i,vi) + dotProduct(i2,vi) + dotProduct(f,vf) + dotProduct(f2,vf) + dotProduct(l,vl) + dotProduct(l2,vl) + dotProduct(d,vd) + dotProduct(d2,vd) + dotProduct(fi,vfi) + dotProduct(fi2,vfi) + dotProduct(ff,vff) + dotProduct(ff2,vff) + dotProduct(fl,vfl) + dotProduct(fl2,vfl) + dotProduct(fd,vfd) + dotProduct(fd2,vfd)
+    }
+
+    first-phase {
+      expression: sum_dp
+    }
+
     summary-features { 
+      rankingExpression(sum_dp)
       dotProduct(a,x)
       dotProduct(a,y)
+      dotProduct(a2,x)
+      dotProduct(a2,y)
       dotProduct(b,x)
       dotProduct(b,y)
+      dotProduct(b2,x)
+      dotProduct(b2,y)
       dotProduct(i,vi)
+      dotProduct(i2,vi)
       dotProduct(f,vf)
+      dotProduct(f2,vf)
       dotProduct(l,vl)
+      dotProduct(l2,vl)
       dotProduct(d,vd)
+      dotProduct(d2,vd)
       dotProduct(fi,vfi)
+      dotProduct(fi2,vfi)
       dotProduct(ff,vff)
+      dotProduct(ff2,vff)
       dotProduct(fl,vfl)
+      dotProduct(fl2,vfl)
       dotProduct(fd,vfd)
+      dotProduct(fd2,vfd)
     }
   }
 }
