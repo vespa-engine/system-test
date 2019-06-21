@@ -1,0 +1,50 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'indexed_search_test'
+
+class TensorSummaryFeatureTest < IndexedSearchTest
+
+  def setup
+    set_owner("lesters")
+  end
+
+  def test_tensor_in_summaryfeatures
+    set_description("Test that tensors in summaryfeatures are equal to attribute")
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd").enable_http_gateway)
+    start
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
+
+    search_doc = search("query=sddocname:test&format=json&ranking=test").json
+
+    debug_attribute_and_summaryfeature(search_doc, 'indexed_tensor')
+    debug_attribute_and_summaryfeature(search_doc, 'mapped_tensor')
+    debug_attribute_and_summaryfeature(search_doc, 'mixed_tensor')
+
+    assert_attribute_and_summaryfeature(search_doc, 'indexed_tensor')
+    assert_attribute_and_summaryfeature(search_doc, 'mapped_tensor')
+    assert_attribute_and_summaryfeature(search_doc, 'mixed_tensor')
+  end
+
+  def debug_attribute_and_summaryfeature(doc, field)
+    puts "Attribute #{field}: " + get_attribute(doc, field).to_s
+    puts "Summaryfeature #{field}: " + get_summaryfeature(doc, field).to_s
+  end
+
+  def assert_attribute_and_summaryfeature(doc, field)
+    attribute_field = get_attribute(doc, field)
+    summaryfeature_field = get_summaryfeature(doc, field)
+    assert_tensor_cells(attribute_field, summaryfeature_field)
+  end
+
+  def get_attribute(doc, field)
+    return doc['root']['children'][0]['fields'][field]
+  end
+
+  def get_summaryfeature(doc, field)
+    return doc['root']['children'][0]['fields']['summaryfeatures']["rankingExpression(output_#{field})"]
+  end
+
+  def teardown
+    stop
+  end
+
+end

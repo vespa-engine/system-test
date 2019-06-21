@@ -1,0 +1,32 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+
+    field indexed_tensor type tensor(x[2],y[3]) {
+      indexing: summary | attribute
+    }
+    field mapped_tensor type tensor(x{},y{}) {
+      indexing: summary | attribute
+    }
+    field mixed_tensor type tensor(x{},y[3]) {
+      indexing: summary | attribute
+    }
+
+  }
+
+  rank-profile test {
+    summary-features: output_indexed_tensor output_mapped_tensor output_mixed_tensor
+
+    function output_indexed_tensor() {
+      expression: attribute(indexed_tensor)
+    }
+    function output_mapped_tensor() {
+      expression: attribute(mapped_tensor)
+    }
+    function output_mixed_tensor() {
+      expression: attribute(mixed_tensor)
+    }
+
+  }
+
+}
