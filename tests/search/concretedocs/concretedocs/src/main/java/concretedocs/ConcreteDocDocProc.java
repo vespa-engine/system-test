@@ -36,6 +36,7 @@ public class ConcreteDocDocProc extends DocumentProcessor {
         v.setYear(2013);
         regTree.annotate(p);
         v.regSpanTrees().put("default", regTree);
+        v.setLocation(new Vehicle.Position().setX(2).setY(3));
         return Progress.DONE;
     }
 

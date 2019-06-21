@@ -25,17 +25,25 @@ class ConcreteDocs < SearchTest
     assert_hitcount("query=symptom:Paralysis", 2)
 
     # Check docs with GET
-    doc0 = vespa.document_api_v1.get("id:vehicle:vehicle::0")
-    assert(doc0.fields["year"] == 2013)
-    assert(doc0.fields["reg"] == "FOO 1234")
-    doc1 = vespa.document_api_v1.get("id:vehicle:vehicle::1")
-    assert(doc1.fields["year"] == 2013)
-    assert(doc1.fields["reg"] == "BAR 5678")
+    doc = vespa.document_api_v1.get("id:vehicle:vehicle::0")
+    location = doc.fields["location"]
+    assert(location["x"] == 2)
+    assert(location["y"] == 3)
+    assert(doc.fields["year"] == 2013)
+    assert(doc.fields["reg"] == "FOO 1234")
 
-    doc0 = vespa.document_api_v1.get("id:disease:disease::0")
-    assert(doc0.fields["symptom"] == "Paralysis")
-    doc1 = vespa.document_api_v1.get("id:disease:disease::1")
-    assert(doc1.fields["symptom"] == "Paralysis")
+    doc = vespa.document_api_v1.get("id:vehicle:vehicle::1")
+    location = doc.fields["location"]
+    assert(location["x"] == 2)
+    assert(location["y"] == 3)
+    assert(doc.fields["year"] == 2013)
+    assert(doc.fields["reg"] == "BAR 5678")
+
+    doc = vespa.document_api_v1.get("id:disease:disease::0")
+    assert(doc.fields["symptom"] == "Paralysis")
+
+    doc = vespa.document_api_v1.get("id:disease:disease::1")
+    assert(doc.fields["symptom"] == "Paralysis")
 
   end
 
