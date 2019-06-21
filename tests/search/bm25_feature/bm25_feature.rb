@@ -15,7 +15,7 @@ class Bm25FeatureTest < SearchTest
     # Note: Average field length for these documents = 4 ((7 + 3 + 2) / 3).
     feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.json")
 
-    # TODO: Also test memory index when that is supported
+    assert_bm25_scores
     
     vespa.search["search"].first.trigger_flush
     assert_bm25_scores
