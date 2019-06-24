@@ -17,6 +17,12 @@ class NearSearch < IndexedSearchTest
     start
     feed_and_wait_for_docs("music", 256, :file => "#{selfdir}/documents.xml")
 
+    run_phrases_via_near_test
+    vespa.search["search"].first.trigger_flush
+    run_phrases_via_near_test
+  end
+
+  def run_phrases_via_near_test
     filter = /there is no spoon/
     assert_result_matches("query=sddocname:music&tracelevel=5", "#{selfdir}/trace.result", filter)
 
@@ -54,6 +60,12 @@ class NearSearch < IndexedSearchTest
     start
     feed_and_wait_for_docs("music", 256, :file => "#{selfdir}/documents.xml")
 
+    run_near_for_array_test
+    vespa.search["search"].first.trigger_flush
+    run_near_for_array_test
+  end
+
+  def run_near_for_array_test
     puts "Check that Searcher is actually running"
     data = search("query=sddocname:music&tracelevel=5&hits=0").xmldata
     #puts data
