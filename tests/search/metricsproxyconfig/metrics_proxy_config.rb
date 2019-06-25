@@ -81,34 +81,36 @@ class MetricsProxyConfig < IndexedSearchTest
 
     # check that yamas routing namespaces are correct
     msgs = get_yamas_metrics_yms(vespa.adminserver, "vespa.qrserver")
-    assert_ns_metric(msgs, 'Vespa', 'serverActiveThreads.average')
-    assert_no_ns_metric(msgs, 'foo', 'serverActiveThreads.average')
-    assert_ns_metric(msgs, 'foo', 'my.active.threads')
-    assert_no_ns_metric(msgs, 'Vespa', 'my.active.threads')
+    assert_metric_in_namespace(msgs, 'Vespa', 'serverActiveThreads.average')
+    assert_metric_not_in_namespace(msgs, 'foo', 'serverActiveThreads.average')
+    assert_metric_in_namespace(msgs, 'foo', 'my.active.threads')
+    assert_metric_not_in_namespace(msgs, 'Vespa', 'my.active.threads')
     assert_status(msgs)
   end
 
-  def get_ns_metric(messages, namespace, metricname)
+  def get_namespace_metric(messages, namespace, metricname)
     messages.each do |m|
       next unless m.key?('routing') # Skip the status block
-      nspace = m['routing']['yamas']['namespaces']
-      if (nspace.size == 1 && nspace.first == namespace)
-        m['metrics'].each do |k,v|
-          return "#{k} => #{v}" if (k == metricname)
+      namespaces = m['routing']['yamas']['namespaces']
+      namespaces.each do |ns|
+        if ns == namespace && m['metrics']
+          m['metrics'].each do |k,v|
+            return "#{k} => #{v}" if (k == metricname)
+          end
         end
       end
     end
     return nil
   end
 
-  def assert_ns_metric(messages, namespace, metricname)
-    m = get_ns_metric(messages, namespace, metricname)
+  def assert_metric_in_namespace(messages, namespace, metricname)
+    m = get_namespace_metric(messages, namespace, metricname)
     puts "Metric #{metricname} in namespace #{namespace}: #{m}"
     assert(m)
   end
 
-  def assert_no_ns_metric(messages, namespace, metricname)
-    m = get_ns_metric(messages, namespace, metricname)
+  def assert_metric_not_in_namespace(messages, namespace, metricname)
+    m = get_namespace_metric(messages, namespace, metricname)
     puts "Metric #{metricname} in namespace #{namespace}: #{m}"
     assert(!m)
   end
