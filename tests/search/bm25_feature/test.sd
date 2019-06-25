@@ -3,7 +3,7 @@ search test {
   document test {
     field content type string {
       indexing: index | summary
-      index: experimental-posting-list-format
+      index: enable-bm25
     }
   }
   rank-profile default {
