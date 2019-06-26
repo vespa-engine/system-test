@@ -1,0 +1,20 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field content type string {
+      indexing: index | summary
+      index: enable-bm25
+    }
+    field contenta type array<string> {
+      indexing: index | summary
+      index: enable-bm25
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression {
+        bm25(content) + bm25(contenta)
+      }
+    }
+  }
+}

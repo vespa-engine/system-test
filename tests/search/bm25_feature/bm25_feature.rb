@@ -24,16 +24,67 @@ class Bm25FeatureTest < SearchTest
     assert_bm25_scores
   end
 
-  def assert_bm25_scores
-    assert_scores_for_query("content:a", [score(2, 3, idf(3)),
-                                          score(3, 7, idf(3)),
-                                          score(1, 2, idf(3))])
+  def test_enable_bm25_feature
+    set_description("Test regeneration of interleaved features when enabling bm25 feature")
+    @test_dir = selfdir + "regen/"
+    deploy_output = deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
+    start
+    postdeploy_wait(deploy_output)
+    # Average field length for content = 4 ((7 + 3 + 2) / 3).
+    # Average field length for contenta = 8 ((14 + 6 + 4) / 3).
+    feed_and_wait_for_docs("test", 3, :file => @test_dir + "docs.json")
+    assert_no_bm25_scores
+    assert_no_bm25_array_scores
+    redeploy("test.1.sd")                               
+    assert_no_bm25_scores
+    assert_no_bm25_array_scores
+    feed_and_wait_for_docs("test", 4, :file => @test_dir + "docs2.json")
+    # Trigger dump from memory to disk
+    vespa.search["search"].first.trigger_flush
+    # Trigger fusion
+    vespa.search["search"].first.trigger_flush
+    assert_bm25_scores(4, 4)
+    assert_bm25_array_scores(4, 8)
+  end
 
-    assert_scores_for_query("content:b", [score(1, 3, idf(2)),
-                                          score(1, 7, idf(2))])
+  def assert_bm25_scores(total_doc_count = 3, avg_field_length = 4)
+    assert_scores_for_query("content:a", [score(2, 3, idf(3, total_doc_count), avg_field_length),
+                                          score(3, 7, idf(3, total_doc_count), avg_field_length),
+                                          score(1, 2, idf(3, total_doc_count), avg_field_length)])
 
-    assert_scores_for_query("content:a+content:d", [score(1, 2, idf(3)) + score(1, 2, idf(2)),
-                                                    score(3, 7, idf(3)) + score(1, 7, idf(2))])
+    assert_scores_for_query("content:b", [score(1, 3, idf(2, total_doc_count), avg_field_length),
+                                          score(1, 7, idf(2, total_doc_count), avg_field_length)])
+
+    assert_scores_for_query("content:a+content:d", [score(1, 2, idf(3, total_doc_count), avg_field_length) + score(1, 2, idf(2, total_doc_count), avg_field_length),
+                                                    score(3, 7, idf(3, total_doc_count), avg_field_length) + score(1, 7, idf(2, total_doc_count), avg_field_length)])
+  end
+
+  def assert_bm25_array_scores(total_doc_count, avg_field_length)
+    assert_scores_for_query("contenta:a", [score(2, 6, idf(3, total_doc_count), avg_field_length),
+                                           score(3, 14, idf(3, total_doc_count), avg_field_length),
+                                           score(1, 4, idf(3, total_doc_count), avg_field_length)])
+
+    assert_scores_for_query("contenta:b", [score(1, 6, idf(2, total_doc_count), avg_field_length),
+                                           score(1, 14, idf(2, total_doc_count), avg_field_length)])
+
+    assert_scores_for_query("content:a+content:d", [score(1, 4, idf(3, total_doc_count), avg_field_length) + score(1, 4, idf(2, total_doc_count), avg_field_length),
+                                                    score(3, 14, idf(3, total_doc_count), avg_field_length) + score(1, 14, idf(2, total_doc_count), avg_field_length)])
+  end
+
+  def assert_no_bm25_scores
+    assert_scores_for_query("content:a", [0.0, 0.0, 0.0])
+
+    assert_scores_for_query("content:b", [0.0, 0.0])
+
+    assert_scores_for_query("content:a+content:d", [0.0, 0.0])
+  end
+
+  def assert_no_bm25_array_scores
+    assert_scores_for_query("contenta:a", [0.0, 0.0, 0.0])
+
+    assert_scores_for_query("contenta:b", [0.0, 0.0])
+
+    assert_scores_for_query("content:a+content:d", [0.0, 0.0])
   end
 
   def idf(matching_doc_count, total_doc_count = 3)
@@ -52,6 +103,33 @@ class Bm25FeatureTest < SearchTest
     for i in 0...exp_scores.length do
       assert_relevancy(result, exp_scores[i], i)
     end
+  end
+
+  def use_sdfile(sdfile)
+    dest_sd = "#{dirs.tmpdir}test.sd"
+    command = "cp #{@test_dir}#{sdfile} #{dest_sd}"
+    success = system(command)
+    puts "use_sdfile(#{sdfile}): command='#{command}', success='#{success}'"
+    assert(success)
+    dest_sd
+  end
+
+  def postdeploy_wait(deploy_output)
+    wait_for_application(vespa.container.values.first, deploy_output)
+    wait_for_config_generation_proxy(get_generation(deploy_output))
+    wait_for_reconfig(600)
+  end
+
+  def redeploy(sdfile)
+    deploy_output = deploy_app(SearchApp.new.sd(use_sdfile(sdfile)))
+    wait_for_content_cluster_config_generation(deploy_output)
+    postdeploy_wait(deploy_output)
+    return deploy_output
+  end
+
+  def wait_for_content_cluster_config_generation(deploy_output)
+    gen = get_generation(deploy_output).to_i
+    vespa.storage["search"].wait_until_content_nodes_have_config_generation(gen)
   end
 
   def teardown
