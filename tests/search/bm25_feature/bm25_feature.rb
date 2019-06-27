@@ -24,16 +24,66 @@ class Bm25FeatureTest < SearchTest
     assert_bm25_scores
   end
 
-  def assert_bm25_scores
-    assert_scores_for_query("content:a", [score(2, 3, idf(3)),
-                                          score(3, 7, idf(3)),
-                                          score(1, 2, idf(3))])
+  def test_enable_bm25_feature
+    set_description("Test regeneration of interleaved features when enabling bm25 feature")
+    @test_dir = selfdir + "regen/"
+    deploy_app(SearchApp.new.sd("#{@test_dir}0/test.sd"))
+    start
+    # Average field length for content = 4 ((7 + 3 + 2) / 3).
+    # Average field length for contenta = 8 ((14 + 6 + 4) / 3).
+    feed_and_wait_for_docs("test", 3, :file => @test_dir + "docs.json")
+    assert_no_bm25_scores
+    assert_no_bm25_array_scores
+    redeploy(SearchApp.new.sd("#{@test_dir}1/test.sd"))
+    assert_no_bm25_scores
+    assert_no_bm25_array_scores
+    feed_and_wait_for_docs("test", 4, :file => @test_dir + "docs2.json")
+    # Trigger dump from memory to disk
+    vespa.search["search"].first.trigger_flush
+    # Trigger fusion
+    vespa.search["search"].first.trigger_flush
+    assert_bm25_scores(4, 4)
+    assert_bm25_array_scores(4, 8)
+  end
 
-    assert_scores_for_query("content:b", [score(1, 3, idf(2)),
-                                          score(1, 7, idf(2))])
+  def assert_bm25_scores(total_doc_count = 3, avg_field_length = 4)
+    assert_scores_for_query("content:a", [score(2, 3, idf(3, total_doc_count), avg_field_length),
+                                          score(3, 7, idf(3, total_doc_count), avg_field_length),
+                                          score(1, 2, idf(3, total_doc_count), avg_field_length)])
 
-    assert_scores_for_query("content:a+content:d", [score(1, 2, idf(3)) + score(1, 2, idf(2)),
-                                                    score(3, 7, idf(3)) + score(1, 7, idf(2))])
+    assert_scores_for_query("content:b", [score(1, 3, idf(2, total_doc_count), avg_field_length),
+                                          score(1, 7, idf(2, total_doc_count), avg_field_length)])
+
+    assert_scores_for_query("content:a+content:d", [score(1, 2, idf(3, total_doc_count), avg_field_length) + score(1, 2, idf(2, total_doc_count), avg_field_length),
+                                                    score(3, 7, idf(3, total_doc_count), avg_field_length) + score(1, 7, idf(2, total_doc_count), avg_field_length)])
+  end
+
+  def assert_bm25_array_scores(total_doc_count, avg_field_length)
+    assert_scores_for_query("contenta:a", [score(2, 6, idf(3, total_doc_count), avg_field_length),
+                                           score(3, 14, idf(3, total_doc_count), avg_field_length),
+                                           score(1, 4, idf(3, total_doc_count), avg_field_length)])
+
+    assert_scores_for_query("contenta:b", [score(1, 6, idf(2, total_doc_count), avg_field_length),
+                                           score(1, 14, idf(2, total_doc_count), avg_field_length)])
+
+    assert_scores_for_query("content:a+content:d", [score(1, 4, idf(3, total_doc_count), avg_field_length) + score(1, 4, idf(2, total_doc_count), avg_field_length),
+                                                    score(3, 14, idf(3, total_doc_count), avg_field_length) + score(1, 14, idf(2, total_doc_count), avg_field_length)])
+  end
+
+  def assert_no_bm25_scores
+    assert_scores_for_query("content:a", [0.0, 0.0, 0.0])
+
+    assert_scores_for_query("content:b", [0.0, 0.0])
+
+    assert_scores_for_query("content:a+content:d", [0.0, 0.0])
+  end
+
+  def assert_no_bm25_array_scores
+    assert_scores_for_query("contenta:a", [0.0, 0.0, 0.0])
+
+    assert_scores_for_query("contenta:b", [0.0, 0.0])
+
+    assert_scores_for_query("content:a+content:d", [0.0, 0.0])
   end
 
   def idf(matching_doc_count, total_doc_count = 3)
