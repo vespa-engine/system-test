@@ -44,32 +44,32 @@ class StructAndMapTypesTest < SearchTest
     vespa.adminserver.logctl("searchnode:proton.matching.query", "debug=on")
 
     #Tests for array<struct>
-    assert_same_element("elem_array", "name contains 'not'", 0)
-    assert_same_element("elem_array", "name contains 'foo'", 1)
-    assert_same_element("elem_array", "name contains 'bar'", 1)
-    assert_same_element("elem_array", "name contains 'baz'", 2)
-    assert_same_element("elem_array", "weight contains '5'", 0)
-    assert_same_element("elem_array", "weight contains '10'", 1)
-    assert_same_element("elem_array", "weight contains '20'", 1)
-    assert_same_element("elem_array", "weight contains '30'", 2)
+    assert_same_element_single("elem_array", "name contains 'not'", 0)
+    assert_same_element_single("elem_array", "name contains 'foo'", 1)
+    assert_same_element_single("elem_array", "name contains 'bar'", 1)
+    assert_same_element_single("elem_array", "name contains 'baz'", 2)
+    assert_same_element_single("elem_array", "weight contains '5'", 0)
+    assert_same_element_single("elem_array", "weight contains '10'", 1)
+    assert_same_element_single("elem_array", "weight contains '20'", 1)
+    assert_same_element_single("elem_array", "weight contains '30'", 2)
     assert_same_element("elem_array", "name contains 'bar', weight contains '10'", 0)
     assert_same_element("elem_array", "name contains 'bar', weight contains '20'", 1, "&ranking=unranked")
     assert_same_element("elem_array", "name contains 'bar', weight contains '20'", 1)
     assert_same_element("elem_array", "name contains 'baz', weight contains '30'", 2)
 
     #Tests for map<string, struct>
-    assert_same_element("elem_map", "key contains 'not'", 0)
-    assert_same_element("elem_map", "key contains '@foo'", 1)
-    assert_same_element("elem_map", "key contains '@bar'", 1)
-    assert_same_element("elem_map", "key contains '@baz'", 2)
-    assert_same_element("elem_map", "value.name contains 'not'", 0)
-    assert_same_element("elem_map", "value.name contains 'foo'", 1)
-    assert_same_element("elem_map", "value.name contains 'bar'", 1)
-    assert_same_element("elem_map", "value.name contains 'baz'", 2)
-    assert_same_element("elem_map", "value.weight contains '5'", 0)
-    assert_same_element("elem_map", "value.weight contains '10'", 1)
-    assert_same_element("elem_map", "value.weight contains '20'", 1)
-    assert_same_element("elem_map", "value.weight contains '30'", 2)
+    assert_same_element_single("elem_map", "key contains 'not'", 0)
+    assert_same_element_single("elem_map", "key contains '@foo'", 1)
+    assert_same_element_single("elem_map", "key contains '@bar'", 1)
+    assert_same_element_single("elem_map", "key contains '@baz'", 2)
+    assert_same_element_single("elem_map", "value.name contains 'not'", 0)
+    assert_same_element_single("elem_map", "value.name contains 'foo'", 1)
+    assert_same_element_single("elem_map", "value.name contains 'bar'", 1)
+    assert_same_element_single("elem_map", "value.name contains 'baz'", 2)
+    assert_same_element_single("elem_map", "value.weight contains '5'", 0)
+    assert_same_element_single("elem_map", "value.weight contains '10'", 1)
+    assert_same_element_single("elem_map", "value.weight contains '20'", 1)
+    assert_same_element_single("elem_map", "value.weight contains '30'", 2)
     assert_same_element("elem_map", "value.name contains 'bar', value.weight contains '10'", 0)
     assert_same_element("elem_map", "value.name contains 'bar', value.weight contains '20'", 1, "&ranking=unranked")
     assert_same_element("elem_map", "value.name contains 'bar', value.weight contains '20'", 1)
@@ -79,23 +79,23 @@ class StructAndMapTypesTest < SearchTest
     assert_same_element("elem_map", "key contains '@baz', value.name contains 'baz', value.weight contains '30'", 2)
 
     #Tests for map<string, int>
-    assert_same_element("str_int_map", "key contains 'not'", 0)
-    assert_same_element("str_int_map", "key contains '@foo'", 1)
-    assert_same_element("str_int_map", "key contains '@bar'", 1)
-    assert_same_element("str_int_map", "key contains '@baz'", 2)
-    assert_same_element("str_int_map", "value contains '5'", 0)
-    assert_same_element("str_int_map", "value contains '10'", 1)
-    assert_same_element("str_int_map", "value contains '20'", 1)
-    assert_same_element("str_int_map", "value contains '30'", 2)
+    assert_same_element_single("str_int_map", "key contains 'not'", 0)
+    assert_same_element_single("str_int_map", "key contains '@foo'", 1)
+    assert_same_element_single("str_int_map", "key contains '@bar'", 1)
+    assert_same_element_single("str_int_map", "key contains '@baz'", 2)
+    assert_same_element_single("str_int_map", "value contains '5'", 0)
+    assert_same_element_single("str_int_map", "value contains '10'", 1)
+    assert_same_element_single("str_int_map", "value contains '20'", 1)
+    assert_same_element_single("str_int_map", "value contains '30'", 2)
     assert_same_element("str_int_map", "key contains '@bar', value contains '10'", 0)
     assert_same_element("str_int_map", "key contains '@bar', value contains '20'", 1, "&ranking=unranked")
     assert_same_element("str_int_map", "key contains '@bar', value contains '20'", 1)
     assert_same_element("str_int_map", "key contains '@baz', value contains '30'", 2)
 
     #Tests for lowercasing
-    assert_same_element("elem_array", "name contains 'BAZ'", 2)
-    assert_same_element("str_int_map", "key contains 'NOT'", 0)
-    assert_same_element("str_int_map", "key contains '@FOO'", 1)
+    assert_same_element_single("elem_array", "name contains 'BAZ'", 2)
+    assert_same_element_single("str_int_map", "key contains 'NOT'", 0)
+    assert_same_element_single("str_int_map", "key contains '@FOO'", 1)
     assert_same_element("str_int_map", "key contains '@BAR', value contains '20'", 1)
     assert_same_element("str_int_map", "key contains '@BAZ', value contains '30'", 2)
   end
@@ -104,6 +104,13 @@ class StructAndMapTypesTest < SearchTest
     query = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})%3b#{extra_params}"
     puts "assert_same_element(#{query}, #{exp_hitcount})"
     assert_hitcount(query, exp_hitcount)
+  end
+
+  def assert_same_element_single(field, same_element, exp_hitcount, extra_params = "")
+    query = "yql=select %2a from sources %2a where #{field}.#{same_element}%3b#{extra_params}"
+    query_same = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})%3b#{extra_params}"
+    assert_hitcount(query, exp_hitcount)
+    assert_hitcount(query_same, exp_hitcount)
   end
 
   def run_test
