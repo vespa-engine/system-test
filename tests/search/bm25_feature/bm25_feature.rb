@@ -27,15 +27,14 @@ class Bm25FeatureTest < SearchTest
   def test_enable_bm25_feature
     set_description("Test regeneration of interleaved features when enabling bm25 feature")
     @test_dir = selfdir + "regen/"
-    deploy_output = deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
+    deploy_app(SearchApp.new.sd("#{@test_dir}0/test.sd"))
     start
-    postdeploy_wait(deploy_output)
     # Average field length for content = 4 ((7 + 3 + 2) / 3).
     # Average field length for contenta = 8 ((14 + 6 + 4) / 3).
     feed_and_wait_for_docs("test", 3, :file => @test_dir + "docs.json")
     assert_no_bm25_scores
     assert_no_bm25_array_scores
-    redeploy("test.1.sd")                               
+    redeploy(SearchApp.new.sd("#{@test_dir}1/test.sd"))
     assert_no_bm25_scores
     assert_no_bm25_array_scores
     feed_and_wait_for_docs("test", 4, :file => @test_dir + "docs2.json")
@@ -103,33 +102,6 @@ class Bm25FeatureTest < SearchTest
     for i in 0...exp_scores.length do
       assert_relevancy(result, exp_scores[i], i)
     end
-  end
-
-  def use_sdfile(sdfile)
-    dest_sd = "#{dirs.tmpdir}test.sd"
-    command = "cp #{@test_dir}#{sdfile} #{dest_sd}"
-    success = system(command)
-    puts "use_sdfile(#{sdfile}): command='#{command}', success='#{success}'"
-    assert(success)
-    dest_sd
-  end
-
-  def postdeploy_wait(deploy_output)
-    wait_for_application(vespa.container.values.first, deploy_output)
-    wait_for_config_generation_proxy(get_generation(deploy_output))
-    wait_for_reconfig(600)
-  end
-
-  def redeploy(sdfile)
-    deploy_output = deploy_app(SearchApp.new.sd(use_sdfile(sdfile)))
-    wait_for_content_cluster_config_generation(deploy_output)
-    postdeploy_wait(deploy_output)
-    return deploy_output
-  end
-
-  def wait_for_content_cluster_config_generation(deploy_output)
-    gen = get_generation(deploy_output).to_i
-    vespa.storage["search"].wait_until_content_nodes_have_config_generation(gen)
   end
 
   def teardown
