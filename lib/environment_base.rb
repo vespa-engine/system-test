@@ -10,7 +10,7 @@ require 'executor'
 # this can be replaced by an environment-specific implementation.
 class EnvironmentBase
   attr_reader :vespa_home, :vespa_web_service_port, :vespa_user, :tmp_dir, :path_env_variable, :additional_start_base_commands, :maven_snapshot_url
-  attr_reader :vespa_hostname
+  attr_reader :vespa_hostname, :vespa_short_hostname
 
   def initialize(default_vespa_home, default_vespa_user, default_vespa_web_service_port)
     if ENV.has_key?('VESPA_HOME')
@@ -37,7 +37,17 @@ class EnvironmentBase
       @vespa_hostname = `hostname`.chomp
     end
 
-    @executor = Executor.new(@vespa_hostname.split(".")[0])
+    hostname_components = @vespa_hostname.split(".")
+    if hostname_components.size > 0
+      if hostname_components.size > 1 && hostname_components[1] =~ /^\d+$/
+        @vespa_short_hostname = hostname_components.first(2).join(".")
+      else
+        @vespa_short_hostname = hostname_components[0]
+      end
+    else
+      @vespa_short_hostname = @vespa_hostname
+    end
+    @executor = Executor.new(@vespa_short_hostname)
 
     if File.exists?(@vespa_home)
       @tmp_dir = @vespa_home + "/tmp"

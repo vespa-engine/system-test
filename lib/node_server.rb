@@ -28,10 +28,10 @@ class NodeServer
   attr_reader :tls_env
   attr_reader :https_client
 
-  def initialize(hostname)
+  def initialize(hostname, short_hostname)
     @services = []   # must keep list of service objects created to prevent gc
     @hostname = hostname
-    @short_hostname = @hostname.split(".")[0]
+    @short_hostname = short_hostname
     @monitoring = false
     @monitor_thread = nil
     @http_servers = {}
@@ -941,9 +941,10 @@ end
 def main
   # Instantiates a NodeServer object and publishes it through DRb.
   hostname = Environment.instance.vespa_hostname
+  short_hostname = Environment.instance.vespa_short_hostname
   ENV['PATH'] = "#{Environment.instance.path_env_variable}:#{ENV['PATH']}"
   service_endpoint = ":#{TestBase::DRUBY_REMOTE_PORT}"
-  front_object = NodeServer.new(hostname)
+  front_object = NodeServer.new(hostname, short_hostname)
 
   endpoint = DrbEndpoint.new(service_endpoint)
   puts("Node server endpoint: #{service_endpoint} " +
