@@ -34,16 +34,17 @@ class Bm25FeatureTest < SearchTest
     feed_and_wait_for_docs("test", 3, :file => @test_dir + "docs.json")
     assert_no_bm25_scores
     assert_no_bm25_array_scores
+
     redeploy(SearchApp.new.sd("#{@test_dir}1/test.sd"))
     assert_no_bm25_scores
     assert_no_bm25_array_scores
-    feed_and_wait_for_docs("test", 4, :file => @test_dir + "docs2.json")
+
     # Trigger dump from memory to disk
     vespa.search["search"].first.trigger_flush
     # Trigger fusion
     vespa.search["search"].first.trigger_flush
-    assert_bm25_scores(4, 4)
-    assert_bm25_array_scores(4, 8)
+    assert_bm25_scores(3, 4)
+    assert_bm25_array_scores(3, 8)
   end
 
   def assert_bm25_scores(total_doc_count = 3, avg_field_length = 4)
