@@ -32,7 +32,7 @@ class TensorSummaryFeatureTest < IndexedSearchTest
   def assert_attribute_and_summaryfeature(doc, field)
     attribute_field = get_attribute(doc, field)
     summaryfeature_field = get_summaryfeature(doc, field)
-    assert_tensor_cells(attribute_field, summaryfeature_field)
+    assert_tensor_cells(attribute_field['cells'], summaryfeature_field['cells'])
   end
 
   def get_attribute(doc, field)
