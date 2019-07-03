@@ -1,0 +1,15 @@
+search test {
+  document test {
+    field props type map<string, string> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        match: exact
+      }
+      struct-field value {
+        indexing: attribute
+        match: exact
+      }
+    }
+  }
+}
