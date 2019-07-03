@@ -100,6 +100,18 @@ class StructAndMapTypesTest < SearchTest
     assert_same_element("str_int_map", "key contains '@BAZ', value contains '30'", 2)
   end
 
+  def test_exact_match_search
+    set_description("Test exact match search in the struct field attributes of a map field")
+    deploy_and_start("exact_match")
+    feed(:file => selfdir + "exact_match/docs.json")
+
+    assert_same_element_single("props", "key contains 'tag_one'", 1)
+    assert_same_element_single("props", "key contains 'tag one'", 0)
+    assert_same_element_single("props", "value contains 'android_one'", 1)
+    assert_same_element_single("props", "value contains 'android one'", 0)
+    assert_same_element("props", "key contains 'tag_one', value contains 'android_one'", 1)
+  end
+
   def assert_same_element(field, same_element, exp_hitcount, extra_params = "")
     query = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})%3b#{extra_params}"
     puts "assert_same_element(#{query}, #{exp_hitcount})"

@@ -1,0 +1,11 @@
+[
+  {
+    "put": "id:test:test::0",
+    "fields": {
+      "props": {
+        "tag_one": "android_one",
+        "tag_two": "android_two"
+      }
+    }
+  }
+]
