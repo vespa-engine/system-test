@@ -3,6 +3,7 @@
 require 'tls_env'
 require 'net/http'
 require 'uri'
+require 'json'
 
 # Creates a Net::HTTP client based on TlsEnv
 
@@ -24,8 +25,11 @@ class HttpsClient
     http
   end
 
-  def with_https_connection(hostname, port, path)
+  def with_https_connection(hostname, port, path, query=nil)
     uri = URI("#{scheme}://#{hostname}:#{port}#{path}")
+    if query != nil
+      uri.query = query
+    end
     http = create_client(hostname, port)
     http.start { |conn|
       yield(conn, uri)
