@@ -1,0 +1,51 @@
+{
+  "root": {
+    "fields": {
+      "totalCount":3
+    },
+    "children":[
+      { "id": "id:test:foo::1",
+        "relevance": 0.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "foo",
+          "documentid": "id:test:foo::1",
+          "justsum": "updated one value",
+          "groupSearch": "usingngramhere",
+          "samplesTimeMap": {
+            "normal":25,
+            "latest":12
+          }
+        }
+      },
+      { "id": "id:test:foo::2",
+        "relevance": 0.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "foo",
+          "documentid": "id:test:foo::2",
+          "justsum": "updated two value",
+          "groupSearch": "testMap2",
+          "samplesTimeMap": {
+            "normal":25,
+            "latest":42
+          }
+        }
+      },
+      { "id": "id:test:foo::3",
+        "relevance": 0.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "foo",
+          "documentid": "id:test:foo::3",
+          "justsum": "whatever three value",
+          "groupSearch": "testMap3",
+          "samplesTimeMap": {
+            "normal": 25,
+            "latest": 13
+          }
+        }
+      }
+    ]
+  }
+}
