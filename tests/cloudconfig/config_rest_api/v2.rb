@@ -1,4 +1,5 @@
 require 'cloudconfig_test'
+require 'pp'
 
 class ConfigRestApiV2 < CloudConfigTest
   @configserver = nil
