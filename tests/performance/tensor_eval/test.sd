@@ -35,6 +35,27 @@ search test {
     field dense_vector_500 type tensor(x[500]) {
       indexing: attribute | summary
     }
+    field dense_float_vector_5 type tensor(x[5]) {
+      indexing: attribute | summary
+    }
+    field dense_float_vector_10 type tensor(x[10]) {
+      indexing: attribute | summary
+    }
+    field dense_float_vector_25 type tensor(x[25]) {
+      indexing: attribute | summary
+    }
+    field dense_float_vector_50 type tensor(x[50]) {
+      indexing: attribute | summary
+    }
+    field dense_float_vector_100 type tensor(x[100]) {
+      indexing: attribute | summary
+    }
+    field dense_float_vector_250 type tensor(x[250]) {
+      indexing: attribute | summary
+    }
+    field dense_float_vector_500 type tensor(x[500]) {
+      indexing: attribute | summary
+    }
   }
   document-summary min_summary {
     summary documentid type string {}
@@ -156,6 +177,41 @@ search test {
   rank-profile dense_tensor_dot_product_500 inherits dot_product_default {
     first-phase {
       expression: sum(query(q_dense_vector_500) * attribute(dense_vector_500))
+    }
+  }
+  rank-profile dense_float_tensor_dot_product_5 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_float_vector_5) * attribute(dense_float_vector_5))
+    }
+  }
+  rank-profile dense_float_tensor_dot_product_10 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_float_vector_10) * attribute(dense_float_vector_10))
+    }
+  }
+  rank-profile dense_float_tensor_dot_product_25 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_float_vector_25) * attribute(dense_float_vector_25))
+    }
+  }
+  rank-profile dense_float_tensor_dot_product_50 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_float_vector_50) * attribute(dense_float_vector_50))
+    }
+  }
+  rank-profile dense_float_tensor_dot_product_100 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_float_vector_100) * attribute(dense_float_vector_100))
+    }
+  }
+  rank-profile dense_float_tensor_dot_product_250 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_float_vector_250) * attribute(dense_float_vector_250))
+    }
+  }
+  rank-profile dense_float_tensor_dot_product_500 inherits dot_product_default {
+    first-phase {
+      expression: sum(query(q_dense_float_vector_500) * attribute(dense_float_vector_500))
     }
   }
 }
