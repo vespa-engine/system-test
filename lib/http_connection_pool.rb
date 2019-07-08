@@ -4,9 +4,9 @@ require 'thread'
 
 class Connection
 
-  def initialize(key, host, port, tls_env)
+  def initialize(key, host, port)
     @key = key
-    @connection = HttpsClient::new(tls_env).create_client(host, port)
+    @connection = Net::HTTP.new(host, port)
     @connection.start
   end
 
@@ -21,10 +21,9 @@ end
 
 class HttpConnectionPool
 
-  def initialize(tls_env)
+  def initialize
     @connections = {}
     @mutex = Mutex.new
-    @tls_env = tls_env
   end
 
   def acquire(host, port)
@@ -39,7 +38,7 @@ class HttpConnectionPool
       end
     end
     if ! connection
-      connection = Connection.new(key, host, port, @tls_env)
+      connection = Connection.new(key, host, port)
     end
     return connection
   end
