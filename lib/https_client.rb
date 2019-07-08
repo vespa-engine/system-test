@@ -42,6 +42,14 @@ class HttpsClient
     end
   end
 
+  def post(hostname, port, path, body, headers={})
+    with_https_connection(hostname, port, path) do |conn, uri|
+      request = Net::HTTP::Post.new(uri, headers)
+      request.body = body
+      conn.request(request)
+    end
+  end
+
   private
   def ssl_ctx
     @tls_env.ssl_ctx
