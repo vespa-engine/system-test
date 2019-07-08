@@ -2,10 +2,11 @@
 
 class MockNodeServer
 
-  attr_reader :https_client
+  attr_reader :https_client, :tls_env
 
   def initialize
-    @https_client = nil
+    @tls_env = TlsEnv::new
+    @https_client = HttpsClient::new(tls_env)
   end
 
 end
