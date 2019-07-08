@@ -26,7 +26,7 @@ class DocumentApiV1
     @host = host
     @port = port
     @test_case = test_case
-    @connectionPool = HttpConnectionPool.new
+    @connectionPool = HttpConnectionPool.new(test_case.tls_env)
   end
 
   def request_params(params={})
