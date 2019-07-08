@@ -6,7 +6,7 @@ class Connection
 
   def initialize(key, host, port, tls_env)
     @key = key
-    @connection = HttpsClient::new(tls_env).create_client(host, port)
+    @connection = HttpsClient.new(tls_env).create_client(host, port)
     @connection.start
   end
 

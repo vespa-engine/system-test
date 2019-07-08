@@ -40,7 +40,7 @@ class NodeServer
     @configserver_started = false
     @tls_env = TlsEnv.new
     @executor = Executor.new(@short_hostname)
-    @https_client = HttpsClient::new(@tls_env)
+    @https_client = HttpsClient.new(@tls_env)
   end
 
   def time
