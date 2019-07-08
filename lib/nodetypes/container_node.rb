@@ -11,7 +11,7 @@ class ContainerNode < VespaNode
     super(*args)
     @refs = []
     @http_port = @ports_by_tag["query"] if @ports_by_tag
-    @connectionPool = HttpConnectionPool.new(tls_env)
+    @connectionPool = HttpConnectionPool.new
   end
 
   def local_ip
