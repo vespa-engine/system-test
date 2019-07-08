@@ -29,8 +29,8 @@ module RestApi
     iterations = 0
     response = nil
     while iterations < max_iterations do
-      @https_client.with_https_connection(original_uri.host, original_uri.port, original_uri.path, original_uri.query) do |conn, uri|
-        begin
+      begin
+        @https_client.with_https_connection(original_uri.host, original_uri.port, original_uri.path, original_uri.query) do |conn, uri|
           conn.open_timeout = params[:open_timeout] ? params[:open_timeout] : 4 * 60
           conn.read_timeout = params[:read_timeout] ? params[:read_timeout] : 4 * 60
           if params[:request]
@@ -43,15 +43,15 @@ module RestApi
           end
           puts "Request: " + request.method + " " + uri.to_s
           response = conn.request(request)
-          break
-        rescue Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL
-          puts "Error: #{$!}, url=#{uri}"
-          if iterations == max_iterations - 1
-            puts("Request failed after #{max_iterations} attempts: #{$!}, url=#{uri}")
-            raise
-          else
-            sleep 1
-          end
+        end
+        break
+      rescue Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL
+        puts "Error: #{$!}, url=#{uri}"
+        if iterations == max_iterations - 1
+          puts("Request failed after #{max_iterations} attempts: #{$!}, url=#{uri}")
+          raise
+        else
+          sleep 1
         end
       end
       iterations += 1
