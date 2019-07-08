@@ -28,8 +28,8 @@ module RestApi
     max_iterations = 30
     iterations = 0
     response = nil
-    @https_client.with_https_connection(original_uri.host, original_uri.port, original_uri.path, original_uri.query) do |conn, uri|
-      while iterations < max_iterations do
+    while iterations < max_iterations do
+      @https_client.with_https_connection(original_uri.host, original_uri.port, original_uri.path, original_uri.query) do |conn, uri|
         begin
           conn.open_timeout = params[:open_timeout] ? params[:open_timeout] : 4 * 60
           conn.read_timeout = params[:read_timeout] ? params[:read_timeout] : 4 * 60
@@ -53,8 +53,8 @@ module RestApi
             sleep 1
           end
         end
-        iterations += 1
       end
+      iterations += 1
     end
     puts "Response: #{response.inspect}"
     response
