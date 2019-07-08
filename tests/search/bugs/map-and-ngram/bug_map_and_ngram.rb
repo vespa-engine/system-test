@@ -11,20 +11,13 @@ class MapAndNgramBug < SearchTest
   end
 
   def test_map_and_ngram
-    deploy_app(
-        ContainerApp.new.
-               container(Container.new("mycc").
-                         search(Searching.new).
-                         docproc(DocumentProcessing.new)).
-               search(SearchCluster.new("multitest").
-                      num_parts(1).redundancy(1).ready_copies(1).
-                      sd(selfdir+"foo.sd").
-                      indexing("mycc")))
+    deploy_app(SearchApp.new.sd(selfdir + "foo.sd"))
     start
-    feed_and_wait_for_docs("foo", 3, :file => selfdir+"feed.json")
+    feed_and_wait_for_docs("foo", 3, :file => selfdir + "feed.json")
     feed(:file => selfdir + "updates.json",
          :maxpending => 1,
          :trace => 5)
+    assert_result("query=sddocname:foo&format=json", selfdir + "result.json", "documentid")
   end
 
   def teardown

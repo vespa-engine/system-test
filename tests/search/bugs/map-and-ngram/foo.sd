@@ -5,7 +5,7 @@ search foo {
             indexing: summary
         }
         field groupSearch type string {
-            indexing: index
+            indexing: index | summary
             stemming: none
             normalizing: none
             match {
