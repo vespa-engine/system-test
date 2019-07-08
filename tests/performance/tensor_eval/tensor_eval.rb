@@ -23,6 +23,7 @@ class TensorEvalPerfTest < PerformanceTest
   TENSOR_MATCH_50X50 = "tensor_match_50x50"
   TENSOR_MATCH_100X100 = "tensor_match_100x100"
   DENSE_TENSOR_DOT_PRODUCT = "dense_tensor_dot_product"
+  DENSE_FLOAT_TENSOR_DOT_PRODUCT = "dense_float_tensor_dot_product"
 
   def initialize(*args)
     super(*args)
@@ -75,7 +76,7 @@ class TensorEvalPerfTest < PerformanceTest
                parameter_filler(RANK_PROFILE, rank_profile),
                parameter_filler(WSET_ENTRIES, wset_entries)]
     mangled_rank_profile = rank_profile
-    if rank_profile == DENSE_TENSOR_DOT_PRODUCT
+    if rank_profile == DENSE_TENSOR_DOT_PRODUCT || rank_profile == DENSE_FLOAT_TENSOR_DOT_PRODUCT
       mangled_rank_profile += "_" + wset_entries.to_s
     end
     profiler_start

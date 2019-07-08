@@ -60,7 +60,8 @@ std::ostream & put(std::ostream & os, uint32_t doc, const V & values) {
     os << "\"array\":["; gen_array(os, values) << "],\n";
     os << "\"wset_entries\":" << values.size() << ",\n";
     os << "\"sparse_vector\":{"; gen_tensor(os, values) << "},\n";
-    os << "\"dense_vector_" << values.size() << "\":{"; gen_tensor(os, values) << "}\n";
+    os << "\"dense_vector_" << values.size() << "\":{"; gen_tensor(os, values) << "},\n";
+    os << "\"dense_float_vector_" << values.size() << "\":{"; gen_tensor(os, values) << "}\n";
     os << "}}";
     return os;
 }

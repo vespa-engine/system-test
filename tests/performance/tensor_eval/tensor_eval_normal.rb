@@ -17,6 +17,7 @@ class TensorEvalNormalPerfTest < TensorEvalPerfTest
       run_fbench_helper(DOT_PRODUCT, FEATURE_DOT_PRODUCT, wset_entries, "queries.dot_product_wset.#{wset_entries}.txt")
       run_fbench_helper(DOT_PRODUCT, FEATURE_DOT_PRODUCT_ARRAY, wset_entries, "queries.dot_product_array.#{wset_entries}.txt")
       run_fbench_helper(DOT_PRODUCT, DENSE_TENSOR_DOT_PRODUCT, wset_entries, "queries.tensor.dense.#{wset_entries}.txt")
+      run_fbench_helper(DOT_PRODUCT, DENSE_FLOAT_TENSOR_DOT_PRODUCT, wset_entries, "queries.tensor.dense_float.#{wset_entries}.txt")
       run_fbench_helper(DOT_PRODUCT, SPARSE_TENSOR_DOT_PRODUCT, wset_entries, "queries.tensor.sparse.x.#{wset_entries}.txt")
     end
   end
@@ -26,6 +27,7 @@ class TensorEvalNormalPerfTest < TensorEvalPerfTest
       get_latency_graphs_for_rank_profile(FEATURE_DOT_PRODUCT),
       get_latency_graphs_for_rank_profile(FEATURE_DOT_PRODUCT_ARRAY),
       get_latency_graphs_for_rank_profile(DENSE_TENSOR_DOT_PRODUCT),
+      get_latency_graphs_for_rank_profile(DENSE_FLOAT_TENSOR_DOT_PRODUCT),
       get_latency_graphs_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT),
       get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,              250, 40.0, 45.0),
       get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT_ARRAY,        500, 15.5, 16.8),
