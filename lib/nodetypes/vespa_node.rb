@@ -43,7 +43,7 @@ class VespaNode
   end
 
   def https_get(hostname, port, path, headers={})
-    @https_client.get(hostname, port, path, headers)
+    @https_client.https_get(hostname, port, path, headers)
   end
 
   def get_json_over_http(full_path, port, hostname = "localhost")

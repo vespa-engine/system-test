@@ -36,17 +36,9 @@ class HttpsClient
     }
   end
 
-  def get(hostname, port, path, headers={})
+  def https_get(hostname, port, path, headers={})
     with_https_connection(hostname, port, path) do |conn, uri|
       conn.request(Net::HTTP::Get.new(uri, headers))
-    end
-  end
-
-  def post(hostname, port, path, body, headers={})
-    with_https_connection(hostname, port, path) do |conn, uri|
-      request = Net::HTTP::Post.new(uri, headers)
-      request.body = body
-      conn.request(request)
     end
   end
 
