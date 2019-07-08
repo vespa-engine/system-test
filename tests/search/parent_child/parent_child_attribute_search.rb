@@ -141,6 +141,26 @@ class ParentChildAttributeSearchTest < IndexedSearchTest
                                           'id:test:ad::4' => budget_and_score(30, 4)})
   end
 
+  def test_reference_attribute_is_searchable
+    set_description("Test that the reference attribute in the child (ad) can be searched using parent document id")
+    set_owner("geirst")
+    subdir = "single_parent_attribute"
+    deploy_and_start(subdir)
+    feed_baseline(subdir)
+
+    assert_reference_search("id:test:campaign::the-best", ["id:test:ad::1"])
+    assert_reference_search("id:test:campaign::nothing", [])
+    assert_reference_search("invalid document id", [])
+  end
+
+  def assert_reference_search(parent_doc_id, exp_children)
+    result = search("query=campaign_ref:\"#{parent_doc_id}\"&presentation.format=json")
+    assert_hitcount(result, exp_children.size)
+    for i in 0...exp_children.size do
+      assert_field_value(result, "documentid", exp_children[i], i)
+    end
+  end
+
   def check_hits_summary(query, expected_hits)
     results = search("query=#{query}&presentation.format=json&summary=my_summary")
     actual_hits = results.hit.map{|h| [h.field['documentid'], [h.field['my_title'], h.field['my_budget']]]}.to_h
