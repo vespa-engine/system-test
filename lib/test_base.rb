@@ -351,13 +351,12 @@ module TestBase
     # As of yet, only storage has an explicit wait_until_all_services_up impl.
     # Use wait_until_ready for other services.
     vespa.search.each_value { |searchcluster| searchcluster.wait_until_ready(timeout) }
-    vespa.storage.each_value { |stg|
-      stg.wait_until_all_services_up(timeout)
-    }
+    vespa.storage.each_value { |stg| stg.wait_until_all_services_up(timeout) }
     vespa.docproc.each_value { |dpc| dpc.wait_until_ready(timeout) }
     vespa.qrserver.each_value { |qrs| qrs.wait_until_ready(timeout) }
     vespa.qrs.each_value { |qrs| qrs.wait_until_ready(timeout) }
     vespa.container.each_value { |container| container.wait_until_ready(timeout) }
+    vespa.metricsproxies.each_value { |metrics_proxy| metrics_proxy.wait_until_ready(timeout) }
   end
 
   # Waits until storage services and docprocs are ready.
@@ -370,6 +369,7 @@ module TestBase
     vespa.qrserver.each_value { |qrs| qrs.wait_until_ready(timeout) }
     vespa.qrs.each_value { |qrs| qrs.wait_until_ready(timeout) }
     vespa.container.each_value { |container| container.wait_until_ready(timeout) }
+    vespa.metricsproxies.each_value { |metrics_proxy| metrics_proxy.wait_until_ready(timeout) }
   end
 
   def getcluster(args={})
