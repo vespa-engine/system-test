@@ -24,40 +24,34 @@ module RestApi
   #
   # HTTP requests and response assertions
   #
-  def http_request(uri, params)
-    proxy_host = params[:proxy_host]
-    proxy_port = params[:proxy_port]
-    if proxy_host
-      puts "Using http proxy #{proxy_host}:#{proxy_port}"
-    end
+  def http_request(original_uri, params)
     max_iterations = 30
     iterations = 0
     response = nil
     while iterations < max_iterations do
-      begin
-        Net::HTTP::Proxy(proxy_host, proxy_port).start(uri.host, uri.port) do |http|
-          http.open_timeout = params[:open_timeout] ? params[:open_timeout] : 4 * 60
-          http.read_timeout = params[:read_timeout] ? params[:read_timeout] : 4 * 60
-          if (params[:request])
-#            puts ":request in params #{params[:request]}"
+      @https_client.with_https_connection(original_uri.host, original_uri.port, original_uri.path, original_uri.query) do |conn, uri|
+        begin
+          conn.open_timeout = params[:open_timeout] ? params[:open_timeout] : 4 * 60
+          conn.read_timeout = params[:read_timeout] ? params[:read_timeout] : 4 * 60
+          if params[:request]
             request = params[:request]
           else
             request = Net::HTTP::Get.new uri.request_uri
           end
-          if (params[:body])
+          if params[:body]
             request.body = params[:body]
           end
           puts "Request: " + request.method + " " + uri.to_s
-          response = http.request(request)
-        end
-        break
-      rescue Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL
-        puts "Error: #{$!}, url=#{uri}"
-        if (iterations == max_iterations - 1)
-          puts("Request failed after #{max_iterations} attempts: #{$!}, url=#{uri}")
-          raise 
-        else
-          sleep 1
+          response = conn.request(request)
+          break
+        rescue Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL
+          puts "Error: #{$!}, url=#{uri}"
+          if iterations == max_iterations - 1
+            puts("Request failed after #{max_iterations} attempts: #{$!}, url=#{uri}")
+            raise
+          else
+            sleep 1
+          end
         end
       end
       iterations += 1
