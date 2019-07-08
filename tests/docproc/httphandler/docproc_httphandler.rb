@@ -18,9 +18,10 @@ class DocprocHttpHandler < DocprocTest
     container = vespa.container.values.first
     wait_until_httphandler_ready(container)
 
-    response = @https_client.post(container.name, container.http_port,'/HttpDocproc', \
+    http = Net::HTTP.new(container.name, container.http_port)
+    response = http.post('/HttpDocproc', \
                          '<document id="id:this:music::is:a:music:document" type="music"><title>Best of Wenche Myhre</title></document>',
-                         headers={'Content-Type' => 'text/xml'})
+                         {'Content-Type' => 'text/xml'})
 
     assert_equal(response.message, "OK")
     assert_equal(response.code, "200")
@@ -45,7 +46,8 @@ class DocprocHttpHandler < DocprocTest
     endtime = Time.now.to_i + timeout.to_i
     while Time.now.to_i < endtime
        begin
-         status = @https_client.get(container.name, container.http_port, '/HttpDocproc')
+         http = Net::HTTP.new(container.name, container.http_port)
+         status = http.get("/HttpDocproc")
        rescue StandardError => e
          sleep 0.1
          if Time.now.to_i < endtime

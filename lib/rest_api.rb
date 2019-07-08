@@ -46,9 +46,9 @@ module RestApi
         end
         break
       rescue Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL
-        puts "Error: #{$!}, url=#{original_uri}"
+        puts "Error: #{$!}, url=#{uri}"
         if iterations == max_iterations - 1
-          puts("Request failed after #{max_iterations} attempts: #{$!}, url=#{original_uri}")
+          puts("Request failed after #{max_iterations} attempts: #{$!}, url=#{uri}")
           raise
         else
           sleep 1
