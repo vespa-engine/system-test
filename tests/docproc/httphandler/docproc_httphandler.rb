@@ -46,7 +46,7 @@ class DocprocHttpHandler < DocprocTest
     endtime = Time.now.to_i + timeout.to_i
     while Time.now.to_i < endtime
        begin
-         status = @https_client.https_get(container.name, container.http_port, '/HttpDocproc')
+         status = @https_client.get(container.name, container.http_port, '/HttpDocproc')
        rescue StandardError => e
          sleep 0.1
          if Time.now.to_i < endtime

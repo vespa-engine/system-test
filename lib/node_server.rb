@@ -924,7 +924,7 @@ class NodeServer
 
   private
   def configserver_http_ping(hostname, port)
-    response = https_client.https_get(hostname, port, '/state/v1/health')
+    response = https_client.get(hostname, port, '/state/v1/health')
     raise StandardError.new("Got response code #{response.code}") unless response.is_a?(Net::HTTPSuccess)
     json = JSON.parse(response.body)
     status = json["status"]["code"]
