@@ -11,8 +11,7 @@ class DocprocNode < ContainerNode
     endtime = Time.now.to_i + timeout.to_i
     while Time.now.to_i < endtime
       begin
-        http = Net::HTTP.new(@name, @http_port)
-        status = http.get("/")
+        https_get(@name, @http_port, '/')
       rescue StandardError => e
         sleep 0.1
         if Time.now.to_i < endtime
