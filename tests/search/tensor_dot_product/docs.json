@@ -5,11 +5,23 @@
           { "address" : { "x" : "0" }, "value": 2.0 },
           { "address" : { "x" : "1" }, "value": 3.0 }
         ]
+      },
+      "dvectorf" : {
+        "cells": [
+          { "address" : { "x" : "0" }, "value": 2.0 },
+          { "address" : { "x" : "1" }, "value": 3.0 }
+        ]
       }
     }
   },
   { "put": "id:test:test::1", "fields": { "id": 1,
       "dvector" : {
+        "cells": [
+          { "address" : { "x" : "0" }, "value": 5.0 },
+          { "address" : { "x" : "1" }, "value": 11.0 }
+        ]
+      },
+      "dvectorf" : {
         "cells": [
           { "address" : { "x" : "0" }, "value": 5.0 },
           { "address" : { "x" : "1" }, "value": 11.0 }
