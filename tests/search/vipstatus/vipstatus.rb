@@ -69,8 +69,8 @@ class VipStatus < IndexedSearchTest
     #netcat to search port, fail test otherwise
     assert_nothing_raised() { TCPSocket.new(s_name, s_port) }
 
-    assert_nothing_raised() { 
-      response = Net::HTTP.get_response(s_name, path, s_port) 
+    assert_nothing_raised() {
+      response = https_client.get(s_name, s_port, path)
       assert_equal(expected_response_code, response.code);
     }
   end
