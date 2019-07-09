@@ -81,7 +81,7 @@ class ConfigServer < CloudConfigTest
     output = deploy_app(CloudconfigApp.new)
     generation_first_app = get_generation(output)
     # Manipulate application package in zookeeper to make it invalid
-    vespa.adminserver.execute("zkctl delete /config/v2/tenants/default/sessions/#{generation_first_app}/userapp/services.xml")
+    vespa.adminserver.execute("vespa-zkctl delete /config/v2/tenants/default/sessions/#{generation_first_app}/userapp/services.xml")
     vespa.configservers["0"].stop_configserver({:keep_everything => true})
     sleep 10
     vespa.configservers["0"].start_configserver
@@ -133,7 +133,7 @@ class ConfigServer < CloudConfigTest
     # Health status should be ''up' when this is the case
     zk_path = "/config/v2/tenants/default/sessions/3/version"
     # NOTE: Needs to be a version number with same major version as the deployed version
-    vespa.configservers["0"].execute("echo \"set #{zk_path} 6.0.0\" | zkcli")
+    vespa.configservers["0"].execute("echo \"set #{zk_path} 6.0.0\" | vespa-zkcli")
     vespa.configservers["0"].stop_configserver({:keep_everything => true})
     vespa.configservers["0"].start_configserver
     vespa.configservers["0"].ping_configserver
