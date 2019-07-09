@@ -55,10 +55,11 @@ class AsyncJersey2 < ContainerTest
     threads = (1..numRequests).map do
       Thread.new do
         begin
-          Net::HTTP.start(@container.hostname, @container.http_port) do |http|
+          https_client.with_https_connection(@container.hostname, @container.http_port, query)
+          Net::HTTP.start(@container.hostname, @container.http_port) do |conn, _|
             header = {}
-            http.read_timeout = readTimeoutInSeconds
-            result = http.get(query, header)
+            conn.read_timeout = readTimeoutInSeconds
+            result = conn.get(query, header)
 
             if result.body == "Slow response"
               mutex.synchronize { successfulRequests += 1 }
