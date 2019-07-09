@@ -72,8 +72,8 @@ class TestCase
     @tenant_name = sanitize_name(self.class.name)
     @application_name = nil
     @forked = args[:forked]
-    @tls_env = TlsEnv::new()
-    @https_client = HttpsClient::new(@tls_env)
+    @tls_env = TlsEnv.new()
+    @https_client = HttpsClient.new(@tls_env)
     # To avoid mass test breakage in case of known warnings, maintain a workaround
     # set of log messages to ignore.
     # ... don't keep them around for long, though!
