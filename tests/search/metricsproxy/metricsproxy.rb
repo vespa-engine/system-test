@@ -23,6 +23,27 @@ class MetricsProxy < IndexedSearchTest
     assert(services['topleveldispatch'])
   end
 
+  def test_http_rest_api
+    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
+    start
+    container = @vespa.container.values.first
+    result = container.search("/metrics/v1/values", 19092)
+    json = result.json
+
+    assert(json.has_key? 'services')
+    services = json['services']
+    assert(services.count > 0)
+
+    services.each do |service|
+      assert(service.has_key? 'name')
+      assert(service.has_key? 'status')
+      status = service['status']
+      assert(status.has_key? 'code')
+      assert_equal("up", status['code'])
+      assert(service.has_key? 'metrics')
+    end
+  end
+
   def test_system_metrics
     set_description("Ensure new system metrics snapshots does not keep old system metrics")
     def check(metrics, check_cpu)
