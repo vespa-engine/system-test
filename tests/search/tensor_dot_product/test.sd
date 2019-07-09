@@ -7,7 +7,7 @@ search test {
     field dvector type tensor(x[2]) {
       indexing: attribute | summary
     }
-    field dvectorf type tensor(x[2]) {
+    field dvectorf type tensor<float>(x[2]) {
       indexing: attribute | summary
     }
   }
