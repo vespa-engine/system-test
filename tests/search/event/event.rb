@@ -56,7 +56,7 @@ class Event < IndexedSearchTest
     errorcount = 0
     while count < 10
       begin
-        response = Net::HTTP.get_response(vespa.qrserver["0"].name, "/search/?query=#{count.to_s}", vespa.qrserver["0"].http_port)
+        response = https_client.get(vespa.qrserver["0"].name, vespa.qrserver["0"].http_port, '/search/')
         if response.code == "200"
           puts "Successfully run 1 query"
           count = count + 1
