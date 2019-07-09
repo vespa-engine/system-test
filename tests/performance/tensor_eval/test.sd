@@ -35,25 +35,25 @@ search test {
     field dense_vector_500 type tensor(x[500]) {
       indexing: attribute | summary
     }
-    field dense_float_vector_5 type tensor(x[5]) {
+    field dense_float_vector_5 type tensor<float>(x[5]) {
       indexing: attribute | summary
     }
-    field dense_float_vector_10 type tensor(x[10]) {
+    field dense_float_vector_10 type tensor<float>(x[10]) {
       indexing: attribute | summary
     }
-    field dense_float_vector_25 type tensor(x[25]) {
+    field dense_float_vector_25 type tensor<float>(x[25]) {
       indexing: attribute | summary
     }
-    field dense_float_vector_50 type tensor(x[50]) {
+    field dense_float_vector_50 type tensor<float>(x[50]) {
       indexing: attribute | summary
     }
-    field dense_float_vector_100 type tensor(x[100]) {
+    field dense_float_vector_100 type tensor<float>(x[100]) {
       indexing: attribute | summary
     }
-    field dense_float_vector_250 type tensor(x[250]) {
+    field dense_float_vector_250 type tensor<float>(x[250]) {
       indexing: attribute | summary
     }
-    field dense_float_vector_500 type tensor(x[500]) {
+    field dense_float_vector_500 type tensor<float>(x[500]) {
       indexing: attribute | summary
     }
   }
