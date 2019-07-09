@@ -218,7 +218,7 @@ class DocumentV1Test < SearchTest
 
   def http_connection
     container = vespa.container.values.first
-    http = Net::HTTP.new(container.name, container.http_port)
+    http = https_client.create_client(container.name, container.http_port)
     http.read_timeout=190
     http
   end
