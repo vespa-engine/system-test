@@ -14,11 +14,6 @@ class ContainerNode < VespaNode
     @connectionPool = HttpConnectionPool.new(tls_env)
   end
 
-  def local_ip
-    `/sbin/ifconfig eth0` =~ /inet addr\:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s/
-    $1
-  end
-
   def wait_until_ready(timeout = 60)
     @testcase.output("Wait until container (#{self.config_id}) ready on #{self.hostname} at port " + @http_port.to_s + " ...")
     endtime = Time.now.to_i + timeout.to_i
@@ -34,11 +29,8 @@ class ContainerNode < VespaNode
   end
 
   def http_get2(path, header = {})
-    host = local_ip
-    if (host == nil)
-      host = "localhost"
-    end
-    return http_get(host, 0, path, nil, header)
+    host = Environment.instance.vespa_hostname
+    http_get(host != nil ? host : "localhost", 0, path, nil, header)
   end
 
   def http_get_retry(host, port, uri)
@@ -79,7 +71,7 @@ class ContainerNode < VespaNode
     begin
       retries = 0
       while true do
-        response, data = http_get(params[:use_local_ip] ? local_ip : "localhost", port, query, nil, header)
+        response, data = http_get("localhost", port, query, nil, header)
         data = response.body
         resultset = Resultset.new(data, query, response)
         @refs.push(resultset)
