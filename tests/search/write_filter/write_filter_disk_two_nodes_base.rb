@@ -244,7 +244,7 @@ class WriterFilterDiskTwoNodesBase < WriteFilterBase
     disklimit = calculate_disklimit
     redeploy_with_reduced_disk_limit(disklimit.disklimit, shared_disk)
     stop_node_to_be_down_during_initial_feeding(disklimit.downnode)
-    http = Net::HTTP.new(vespa.document_api_v1.host, vespa.document_api_v1.port)
+    http = https_client.create_client(vespa.document_api_v1.host, vespa.document_api_v1.port)
     failedid = feed_until_failure(http, disklimit.upnode, 1)
     puts "Failed id is #{failedid}"
     perform_du(disklimit.upnode)
