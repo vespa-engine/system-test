@@ -67,13 +67,7 @@ class OrchestratorMultiTenantTest < SearchContainerTest
 
   def orch_get(path)
     uri = orch_uri(path)
-    req = Net::HTTP::Get.new uri.request_uri
-    Net::HTTP.start(uri.host, uri.port) do |session|
-      response = session.request req
-      #puts "HTTP response code: #{response.code}"
-      #puts "HTTP response body: \n>>>>> #{response.body} <<<<<"
-      return response
-    end
+    https_client.get(uri.host, uri.port, uri.path)
   end
 
   def check_no_down(instance_json)
