@@ -66,7 +66,7 @@ class AutomaticOutOfServiceTest < SearchTest
       while ((trynum < 60) && (got != expected_response_code)) do
         trynum += 1
         sleep 1
-        response = Net::HTTP.get_response(s_name, path, s_port) 
+        response = https_client.get(s_name, s_port, path)
         got = response.code
         puts "response code #{response.code} on try #{trynum} (expecting #{expected_response_code})"
       end
