@@ -56,7 +56,7 @@ class Event < IndexedSearchTest
     errorcount = 0
     while count < 10
       begin
-        response = https_client.get(vespa.qrserver["0"].name, vespa.qrserver["0"].http_port, '/search/')
+        response = https_client.get(vespa.qrserver["0"].name, vespa.qrserver["0"].http_port, '/search/', query: "query=#{count.to_s}")
         if response.code == "200"
           puts "Successfully run 1 query"
           count = count + 1
