@@ -55,8 +55,7 @@ class AsyncJersey2 < ContainerTest
     threads = (1..numRequests).map do
       Thread.new do
         begin
-          https_client.with_https_connection(@container.hostname, @container.http_port, path)
-          Net::HTTP.start(@container.hostname, @container.http_port) do |conn, _|
+          https_client.with_https_connection(@container.hostname, @container.http_port, path) do |conn, _|
             header = {}
             conn.read_timeout = readTimeoutInSeconds
             result = conn.get(path, header)
