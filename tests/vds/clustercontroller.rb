@@ -143,7 +143,7 @@ class ClusterControllerTest < VdsTest
     puts "Fetching status from URL we got redirected to: '" +
          "#{response["Location"]}'."
     masterurl = URI(response["Location"]);
-    response = Net::HTTP.get_response(masterurl);
+    response = https_client.get(masterurl.host, masterurl.port, masterurl.path)
     puts response.body()
     assert_equal(200, response.code.to_i, response.message)
     json = JSON.parse(response.body())

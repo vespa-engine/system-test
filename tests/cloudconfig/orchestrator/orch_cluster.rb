@@ -32,28 +32,25 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     return URI("http://#{node.hostname}:19071/orchestrator/v1/#{path}")
   end
 
-  def orch_get(path)
-    uri = orch_uri(path)
-    req = Net::HTTP::Get.new uri.request_uri
-    Net::HTTP.start(uri.host, uri.port) do |session|
-      response = session.request req
-      puts "HTTP response code: #{response.code}"
-      puts "HTTP response body: \n>>>>> #{response.body} <<<<<"
-      return response
-    end
+  def process_response(response)
+    puts "HTTP response code: #{response.code}"
+    puts "HTTP response body: \n>>>>> #{response.body} <<<<<"
+    response
   end
 
-  # 'func' is either a Put or Delete, depending on whether the request should
-  # suspend (/suspended with PUT), or resume (/suspended with DELETE).
-  def orch_suspended(host, func)
+  def orch_get(path)
+    uri = orch_uri(path)
+    process_response(https_client.get(uri.host, uri.port, uri.path))
+  end
+
+  def orch_suspend(host)
     uri = orch_uri("hosts/#{host}/suspended")
-    req = func.new uri.request_uri
-    Net::HTTP.start(uri.host, uri.port) do |session|
-      response = session.request req
-      puts "HTTP response code: #{response.code}"
-      puts "HTTP response body: \n>>>>> #{response.body} <<<<<"
-      return response
-    end
+    process_response(https_client.put(uri.host, uri.port, uri.path, nil))
+  end
+
+  def orch_resume(host)
+    uri = orch_uri("hosts/#{host}/suspended")
+    process_response(https_client.delete(uri.host, uri.port, uri.path))
   end
 
   def orch_suspend_until_no_conflict(host)
@@ -67,10 +64,6 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     end
   end
 
-  def orch_suspend(host)
-    orch_suspended(host, Net::HTTP::Put)
-  end
-
   def orch_resume_until_no_conflict(host)
     time_end = Time.now.to_i + 600
     loop do
@@ -80,10 +73,6 @@ class OrchestratorContainerClusterTest < CloudConfigTest
       puts "Failed to resume #{host}, will retry in a short while"
       sleep(0.5)
     end
-  end
-
-  def orch_resume(host)
-    orch_suspended(host, Net::HTTP::Delete)
   end
 
   def check_no_down(instance_json)

@@ -15,7 +15,7 @@ class StructAndMapTypesTest < SearchTest
 
   def setup_http
     container = vespa.container.values.first
-    @http = Net::HTTP.new(container.name, container.http_port)
+    @http = https_client.create_client(container.name, container.http_port)
   end
 
   def deploy_and_start(test_case)

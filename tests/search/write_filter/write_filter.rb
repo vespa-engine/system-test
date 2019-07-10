@@ -76,7 +76,7 @@ class WriteFilter < WriteFilterBase
   end
 
   def feed_and_test_document_v1_api
-    http = Net::HTTP.new(vespa.document_api_v1.host, vespa.document_api_v1.port)
+    http = https_client.create_client(vespa.document_api_v1.host, vespa.document_api_v1.port)
     http.read_timeout=190
     response = http_v1_api_put(http, 1)
     assert_equal("200", response.code)
@@ -145,7 +145,7 @@ class WriteFilter < WriteFilterBase
     puts "Sleep #{@sleep_delay} seconds to allow content node 1 to stop"
     sleep @sleep_delay
     settle_cluster_state("uimrd")
-    http = Net::HTTP.new(vespa.document_api_v1.host, vespa.document_api_v1.port)
+    http = https_client.create_client(vespa.document_api_v1.host, vespa.document_api_v1.port)
     feed_and_test_document_v1_api_into_limit(http)
     puts "Starting content node 1 to run in normal mode again with 2 nodes up"
     get_node(1).start

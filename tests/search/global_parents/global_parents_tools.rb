@@ -91,7 +91,7 @@ class GlobalParentsToolTest < SearchTest
 
   def http_connection
     container = vespa.container["doc-api/0"]
-    http = Net::HTTP.new(container.name, container.http_port)
+    http = https_client.create_client(container.name, container.http_port)
     http.read_timeout=190
     http
   end

@@ -30,7 +30,7 @@ module RestApi
     response = nil
     while iterations < max_iterations do
       begin
-        @https_client.with_https_connection(original_uri.host, original_uri.port, original_uri.path, original_uri.query) do |conn, uri|
+        @https_client.with_https_connection(original_uri.host, original_uri.port, original_uri.path, query: original_uri.query) do |conn, uri|
           conn.open_timeout = params[:open_timeout] ? params[:open_timeout] : 4 * 60
           conn.read_timeout = params[:read_timeout] ? params[:read_timeout] : 4 * 60
           if params[:request]

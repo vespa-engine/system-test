@@ -14,8 +14,9 @@ class JDiscServer < SearchContainerTest
 
   def test_server
     # port for this is defined in test config
-    result = vespa.container["container/0"].search("/ignored", 16889)
-    assert_match(Regexp.new("Hello, world!"), result.xmldata, "Could not find expected message in response.")
+    uri = URI("http://#{vespa.container["container/0"].hostname}:16889/ignored")
+    response = Net::HTTP.get_response(uri)
+    assert_match(Regexp.new("Hello, world!"), response.body, "Could not find expected message in response.")
   end
 
   def teardown

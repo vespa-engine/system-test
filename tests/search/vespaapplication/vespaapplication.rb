@@ -27,8 +27,9 @@ class VespaApplication < IndexedSearchTest
   end
 
   def http_get(uri_str)
-    response = Net::HTTP.get_response(URI.parse(uri_str))
-    assert(response.code == "200", "Net::HTTP.get_response(#{uri_str}) returned response code #{response.code}. Expected code was 200.")
+    uri = URI.parse(uri_str)
+    response = https_client.get(uri.host, uri.port, uri.path, query: uri.query)
+    assert(response.code == "200", "HTTP GET to #{uri_str} returned response code #{response.code}. Expected code was 200.")
   end
 
   def send_query(uri_str, query)

@@ -35,9 +35,7 @@ class Fleetcontroller < VespaNode
   def get_status_page(page = "/")
     10.times { |i|
       begin
-        http_connection = Net::HTTP.new("localhost", @statusport)
-        response, data = http_connection.get(page, nil)
-        http_connection.finish if http_connection.active?
+        _, data = https_get('localhost', @statusport, page)
         return data
       rescue Exception => e
         if (i > 8)

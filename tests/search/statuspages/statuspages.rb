@@ -21,8 +21,7 @@ class StatusPages < IndexedSearchTest
       begin
         up = false
         while !up
-          http = Net::HTTP.new(host, port)
-          response = http.get(doc)
+          response = https_client.get(host, port, doc)
           if response
             up = true
           end
