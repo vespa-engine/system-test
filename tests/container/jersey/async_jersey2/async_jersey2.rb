@@ -30,23 +30,23 @@ class AsyncJersey2 < ContainerTest
   end
 
   def async_should_work
-    query = "/rest-api/async"
+    path = "/rest-api/async"
     numRequest = 200
 
-    successfulRequests = multiple_http_get_requests(query, numRequest)
+    successfulRequests = multiple_http_get_requests(path, numRequest)
     assert(successfulRequests > 2/3.to_f * numRequest, "Most of the requests should succeed.")
   end
 
   def sync_should_fail
-    query = "/rest-api/sync"
+    path = "/rest-api/sync"
     numRequest = 200
 
-    successfulRequests = multiple_http_get_requests(query, numRequest)
+    successfulRequests = multiple_http_get_requests(path, numRequest)
     assert(successfulRequests < 1/3.to_f * numRequest, "Most of the requests should time out.")
   end
 
 
-  def multiple_http_get_requests(query, numRequests)
+  def multiple_http_get_requests(path, numRequests)
     readTimeoutInSeconds = 30
 
     mutex = Mutex.new
@@ -55,11 +55,11 @@ class AsyncJersey2 < ContainerTest
     threads = (1..numRequests).map do
       Thread.new do
         begin
-          https_client.with_https_connection(@container.hostname, @container.http_port, query)
+          https_client.with_https_connection(@container.hostname, @container.http_port, path)
           Net::HTTP.start(@container.hostname, @container.http_port) do |conn, _|
             header = {}
             conn.read_timeout = readTimeoutInSeconds
-            result = conn.get(query, header)
+            result = conn.get(path, header)
 
             if result.body == "Slow response"
               mutex.synchronize { successfulRequests += 1 }
