@@ -25,7 +25,7 @@ class HttpsClient
     http
   end
 
-  def with_https_connection(hostname, port, path, query=nil)
+  def with_https_connection(hostname, port, path, query: nil)
     uri = URI("#{scheme}://#{hostname}:#{port}#{path}")
     if query != nil
       uri.query = query
@@ -36,27 +36,27 @@ class HttpsClient
     }
   end
 
-  def get(hostname, port, path, headers={}, query=nil)
-    with_https_connection(hostname, port, path, query=query) do |conn, uri|
+  def get(hostname, port, path, headers: {}, query: nil)
+    with_https_connection(hostname, port, path, query: query) do |conn, uri|
       conn.request(Net::HTTP::Get.new(uri, headers))
     end
   end
 
-  def post(hostname, port, path, body, headers={}, query=nil)
-    with_https_connection(hostname, port, path, query=query) do |conn, uri|
+  def post(hostname, port, path, body, headers: {}, query: nil)
+    with_https_connection(hostname, port, path, query: query) do |conn, uri|
       request = Net::HTTP::Post.new(uri, headers)
       request.body = body
       conn.request(request)
     end
   end
 
-  def delete(hostname, port, path, headers={})
+  def delete(hostname, port, path, headers: {})
     with_https_connection(hostname, port, path) do |conn, uri|
       conn.request(Net::HTTP::Delete.new(uri, headers))
     end
   end
 
-  def put(hostname, port, path, body, headers={})
+  def put(hostname, port, path, body, headers: {})
     with_https_connection(hostname, port, path) do |conn, uri|
       request = Net::HTTP::Put.new(uri, headers)
       request.body = body

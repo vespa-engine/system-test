@@ -50,7 +50,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
 
   def orch_resume(host)
     uri = orch_uri("hosts/#{host}/suspended")
-    process_response(https_client.delete(uri.host, uri.port, uri.path, nil))
+    process_response(https_client.delete(uri.host, uri.port, uri.path))
   end
 
   def orch_suspend_until_no_conflict(host)

@@ -20,7 +20,7 @@ class DocprocHttpHandler < DocprocTest
 
     response = https_client.post(container.name, container.http_port,'/HttpDocproc', \
                          '<document id="id:this:music::is:a:music:document" type="music"><title>Best of Wenche Myhre</title></document>',
-                         headers={'Content-Type' => 'text/xml'})
+                         headers: {'Content-Type' => 'text/xml'})
 
     assert_equal(response.message, "OK")
     assert_equal(response.code, "200")
