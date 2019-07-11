@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<jdisc version="1.0">
+<container version="1.0">
 
   <handler id="com.yahoo.test.handler.HandlerTakingComponent" bundle="my_bundle">
     <binding>http://*/test</binding>
@@ -16,4 +16,4 @@
   </component>
 -->
 
-</jdisc>
+</container>

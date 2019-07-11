@@ -4,7 +4,7 @@
     <adminserver hostalias="node1" />
   </admin>
 
-  <jdisc id="default" version="1.0">
+  <container id="default" version="1.0">
     <document type="vehicle" bundle="concretedocs" class="com.yahoo.concretedocs.Vehicle" />
     <document type="ship" bundle="concretedocs" class="com.yahoo.concretedocs.Vehicle" />
     <document type="disease" bundle="concretedocs2" class="com.yahoo.concretedocs2.Disease" />
@@ -18,14 +18,14 @@
     <nodes>
       <node hostalias="node1" />
     </nodes>
-  </jdisc>
+  </container>
 
-  <jdisc id="doc-api" version="1.0" >
+  <container id="doc-api" version="1.0" >
     <http>
       <server port="19020" id="default"/>
     </http>
     <document-api/>
-  </jdisc>
+  </container>
 
   <content version="1.0">
     <redundancy>1</redundancy>

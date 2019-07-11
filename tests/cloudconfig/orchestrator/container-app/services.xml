@@ -4,11 +4,11 @@
     <adminserver hostalias='node1' />
   </admin>
 
-  <jdisc version='1.0' id='mycc'>
+  <container version='1.0' id='mycc'>
     <nodes jvmargs='-Xms64m -Xmx256m'>
       <node hostalias='node2'/>
       <node hostalias='node3'/>
     </nodes>
-  </jdisc>
+  </container>
 
 </services>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <services version="1.0">
 
-    <jdisc id="test" version="1.0">
+    <container id="test" version="1.0">
 
         <nodes>
             <node hostalias="node1"/>
@@ -20,6 +20,6 @@
 
         </search>
 
-    </jdisc>
+    </container>
 
 </services>

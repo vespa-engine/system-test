@@ -19,7 +19,7 @@ class JDiscHandlerBlocking < SearchContainerTest
     res = search("/BlockMe")
     puts res.xmldata
 
-    qrs = @vespa.container["jdisc/0"]
+    qrs = @vespa.container["container/0"]
     pid = qrs.get_pid
     qrs.stop
     cnt = @vespa.adminserver.execute("ps -p #{pid} | wc -l").to_i

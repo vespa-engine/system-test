@@ -6,7 +6,7 @@
     <logserver hostalias="node1" />
   </admin>
 
-  <jdisc version="1.0">
+  <container version="1.0">
     <search>
       <include dir='dir1' />
     </search>
@@ -14,6 +14,6 @@
     <nodes>
       <node hostalias="node1" />
     </nodes>
-  </jdisc>
+  </container>
 
 </services>

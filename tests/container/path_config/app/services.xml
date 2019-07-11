@@ -1,4 +1,4 @@
-<jdisc version="1.0">
+<container version="1.0">
   <handler id="com.yahoo.test.FilesHandler" bundle="handler">
     <binding>http://*/files</binding>
     <config name="com.yahoo.test.paths-and-files">
@@ -16,4 +16,4 @@
       </paths>
     </config>
   </handler>
-</jdisc>
+</container>

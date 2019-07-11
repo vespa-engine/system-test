@@ -1,6 +1,6 @@
-<jdisc version='1.0' id='default'>
+<container version='1.0' id='default'>
   <rest-api path="rest-api" jersey2="true">
     <components bundle="main_bundle" />
     <components bundle="other_bundle" />
   </rest-api>
-</jdisc>
+</container>

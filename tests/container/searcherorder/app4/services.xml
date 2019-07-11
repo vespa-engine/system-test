@@ -5,7 +5,7 @@
       <adminserver hostalias="node1" />
     </admin>
 
-    <jdisc version="1.0">
+    <container version="1.0">
       <search>
           <provider id="default" type="local" cluster="music">
             <searcher id="endSearcher" class="com.yahoo.vespatest.EndSearcher" />
@@ -14,7 +14,7 @@
       <nodes>
         <node hostalias="node1" />
       </nodes>
-    </jdisc>
+    </container>
 
     <content id='music' version='1.0'>
         <redundancy>1</redundancy>

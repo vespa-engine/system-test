@@ -9,7 +9,7 @@
     </slobroks>
   </admin>
   
-  <jdisc version="1.0" id="default">
+  <container version="1.0" id="default">
       <nodes>
         <node hostalias="node1" />
       </nodes>
@@ -21,6 +21,6 @@
       <handler id="com.yahoo.vespatest.HttpDocprocHandler">
          <binding>http://*:*/HttpDocproc</binding>
       </handler>
-  </jdisc>
+  </container>
 </services>
 

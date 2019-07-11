@@ -3,7 +3,7 @@
   <admin version="2.0">
     <adminserver hostalias="node1" />
   </admin>
-  <jdisc version="1.0" id="httpgateway-container">
+  <container version="1.0" id="httpgateway-container">
     <search />
     <document-api />
     <http>
@@ -12,7 +12,7 @@
      <nodes>
         <node hostalias="node1" />
      </nodes>
-   </jdisc>
+   </container>
    <content version="1.0" id="cars">
      <redundancy>1</redundancy>
        <nodes>
