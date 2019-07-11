@@ -2,23 +2,19 @@
 module RestApi
 
   def http_request_post(uri, params = {})
-    req = Net::HTTP::Post.new(uri.request_uri, initheader = params[:headers])
-    http_request(uri, { :request => req }.merge(params))
+    http_request(uri, { :request => Net::HTTP::Post }.merge(params))
   end
 
   def http_request_get(uri, params = {})
-    req = Net::HTTP::Get.new(uri.request_uri)
-    http_request(uri, { :request => req }.merge(params))
+    http_request(uri, { :request => Net::HTTP::Get }.merge(params))
   end
 
   def http_request_put(uri, params = {})
-    req = Net::HTTP::Put.new(uri.request_uri, initheader=params[:headers])
-    http_request(uri, { :request => req }.merge(params))
+    http_request(uri, { :request => Net::HTTP::Put }.merge(params))
   end
 
   def http_request_delete(uri, params = {})
-    req = Net::HTTP::Delete.new(uri.request_uri)
-    http_request(uri, { :request => req }.merge(params))
+    http_request(uri, { :request => Net::HTTP::Delete }.merge(params))
   end
 
   #
@@ -34,14 +30,14 @@ module RestApi
           conn.open_timeout = params[:open_timeout] ? params[:open_timeout] : 4 * 60
           conn.read_timeout = params[:read_timeout] ? params[:read_timeout] : 4 * 60
           if params[:request]
-            request = params[:request]
+            request = params[:request].new(uri, params[:headers])
           else
             request = Net::HTTP::Get.new uri.request_uri
           end
           if params[:body]
             request.body = params[:body]
           end
-          puts "Request: " + request.method + " " + uri.to_s
+          puts "Request: " + request.method + " " + request.uri.to_s
           response = conn.request(request)
         end
         break
