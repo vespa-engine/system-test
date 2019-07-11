@@ -18,11 +18,12 @@ class ConfigRestApiV2 < CloudConfigTest
     @csrvnode = vespa.configservers["0"]
     @configserver = vespa.configservers["0"].name
     @httpport = vespa.configservers["0"].ports[1]
+    @urischeme = https_client.scheme # TODO Inline as 'https' once TLS is enforced
   end
 
   def base_url_long_appid
     path = "/config/v2/tenant/default/application/default/environment/prod/region/default/instance/default/"
-    return "http:\/\/#{@configserver}:#{@httpport}#{path}"
+    return "#{@urischeme}:\/\/#{@configserver}:#{@httpport}#{path}"
   end
 
   def base_url_short_appid
@@ -80,7 +81,7 @@ class ConfigRestApiV2 < CloudConfigTest
 
   def test_rest_basic_short_appid
     path = "/config/v2/tenant/default/application/default/"
-    verify_rest("http:\/\/#{@configserver}:#{@httpport}#{path}")
+    verify_rest("#{@urischeme}:\/\/#{@configserver}:#{@httpport}#{path}")
   end
 
   def test_traverse_all_short_appid

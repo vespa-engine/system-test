@@ -249,7 +249,7 @@ class CloudConfigTest < TestCase
   end
 
   def application_url(hostname, tenant_name="default", app_name="default", environment="prod", region="default", instance="default")
-    "http://#{hostname}:19071/application/v2/tenant/#{tenant_name}/application/#{app_name}/environment/#{environment}/region/#{region}/instance/#{instance}"
+    "#{https_client.scheme}://#{hostname}:19071/application/v2/tenant/#{tenant_name}/application/#{app_name}/environment/#{environment}/region/#{region}/instance/#{instance}"
   end
 
   def deploy_and_activate_session_v2(appdir, session_id, expected_port, application_name=@application_name, tenant_name=@tenant_name)
