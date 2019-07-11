@@ -215,7 +215,11 @@ class NodeServer
       end
 
       protocol = params[:http] ? "http" : "https"
-      port = params[:http] ? "80" : "443"
+      if params[:port]
+        port = params[:port]
+      else
+        port = params[:http] ? "80" : "443"
+      end
 
       remote_file = "#{protocol}://#{params[:webhost]}:#{port}/#{params[:file]}"
       localfilename = @testcase.dirs.ftpfiledir + File.basename(params[:file])
