@@ -17,11 +17,12 @@ class ConfigRestApiV1 < CloudConfigTest
     @csrvnode = vespa.configservers["0"]
     @configserver = vespa.configservers["0"].name
     @httpport = vespa.configservers["0"].ports[1]
+    @urischeme = https_client.scheme # TODO Inline as 'https' once TLS is enforced
   end
 
   def base_url
     path = "/config/v1/"
-    return "http:\/\/#{@configserver}:#{@httpport}#{path}"
+    return "#{@urischeme}:\/\/#{@configserver}:#{@httpport}#{path}"
   end
 
   def test_rest_basic
