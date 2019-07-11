@@ -207,7 +207,7 @@ def generate_app2(cmd, service_name)
   <service id="simpleapp" name="#{service_name}" command="#{cmd}" version="1.0">
     <node hostalias="node1" />
   </service>
-  <jdisc id="stateless" version="1.0">
+  <container id="stateless" version="1.0">
       <search/>
       <http>
           <server id="qrs" port="#{Environment.instance.vespa_web_service_port}"/>
@@ -215,7 +215,7 @@ def generate_app2(cmd, service_name)
       <nodes>
         <node hostalias="node1"/>
       </nodes>
-  </jdisc>
+  </container>
 </services>
 ENDER
     return app

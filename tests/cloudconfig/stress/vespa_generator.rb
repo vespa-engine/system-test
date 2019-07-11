@@ -52,7 +52,7 @@ class VespaAppGenerator
 
   def jdisc
     search =
-    "<jdisc version=\"1.0\">\n" +
+    "<container version=\"1.0\">\n" +
     "  <search />\n" +
     "  <nodes>\n" +
     "    <node hostalias=\"node1\"/>\n" +
@@ -60,7 +60,7 @@ class VespaAppGenerator
     "  <http>\n" +
     container_http +
     "  </http>\n" +
-    "</jdisc>\n"
+    "</container>\n"
   end
 
   def content

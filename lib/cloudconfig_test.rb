@@ -389,7 +389,7 @@ class CloudConfigTest < TestCase
   def add_xml_file_to_configserver_app(configservernode, xml, filename)
     appdir = Environment.instance.vespa_home + "/conf/configserver-app/"
     configservernode.execute("echo '#{xml}' > #{appdir}/#{filename}")
-    configservernode.execute("sed -i '/<jdisc id/ a\
+    configservernode.execute("sed -i '/<container id/ a\
       <preprocess:include file=\"#{filename}\" required=\"false\"/>' #{appdir}/services.xml")
   end
 
