@@ -50,14 +50,14 @@ class HttpsClient
     end
   end
 
-  def delete(hostname, port, path, headers: {})
-    with_https_connection(hostname, port, path) do |conn, uri|
+  def delete(hostname, port, path, headers: {}, query: nil)
+    with_https_connection(hostname, port, path, query: query) do |conn, uri|
       conn.request(Net::HTTP::Delete.new(uri, headers))
     end
   end
 
-  def put(hostname, port, path, body, headers: {})
-    with_https_connection(hostname, port, path) do |conn, uri|
+  def put(hostname, port, path, body, headers: {}, query: nil)
+    with_https_connection(hostname, port, path, query: query) do |conn, uri|
       request = Net::HTTP::Put.new(uri, headers)
       request.body = body
       conn.request(request)
