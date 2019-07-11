@@ -6,7 +6,7 @@
     <logserver hostalias="node1" />
   </admin>
 
-  <jdisc version="1.0">
+  <container version="1.0">
     <components>
       <include dir='jdisc_include' />
     </components>
@@ -20,7 +20,7 @@
     <nodes>
       <node hostalias="node1" />
     </nodes>
-  </jdisc>
+  </container>
 
    <content id='music' version='1.0'>
      <redundancy>1</redundancy>

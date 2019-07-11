@@ -7,12 +7,12 @@
     <adminserver hostalias='node1' />
   </admin>
 
-  <jdisc version='1.0' id='default'>
+  <container version='1.0' id='default'>
     <search/>
     <nodes jvmargs='-Xms64m -Xmx256m'>
       <node hostalias='node1'/>
     </nodes>
-  </jdisc>
+  </container>
   <content version='1.0' id='complex'>
     <redundancy>1</redundancy>
     <documents>

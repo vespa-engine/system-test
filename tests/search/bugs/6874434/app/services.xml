@@ -4,13 +4,13 @@
     <adminserver hostalias='node1'/>
   </admin>
 
-  <jdisc id='default' version='1.0'>
+  <container id='default' version='1.0'>
     <search />
     <document-api/>
     <nodes jvmargs='-Xmx320m -Xms64m -XX:MaxDirectMemorySize=115m'>
       <node hostalias='node1'/>
     </nodes>
-  </jdisc>
+  </container>
 
   <content version='1.0'>
     <redundancy>1</redundancy>

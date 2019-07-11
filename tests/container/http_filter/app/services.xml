@@ -6,7 +6,7 @@
     <logserver hostalias="node1" />
   </admin>
 
-  <jdisc version="1.0" id="container">
+  <container version="1.0" id="container">
     <http>
       <filtering>
         <response-chain id="response-chain">
@@ -43,5 +43,5 @@
       <binding>http://*/TestHandler</binding>
     </handler>
 
-  </jdisc>
+  </container>
 </services>

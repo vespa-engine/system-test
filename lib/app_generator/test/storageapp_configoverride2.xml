@@ -12,13 +12,13 @@
     </snapshot>
   </config>
 
-  <jdisc id="default" version="1.0">
+  <container id="default" version="1.0">
     <search />
     <document-processing />
     <nodes>
       <node hostalias="node1" />
     </nodes>
-  </jdisc>
+  </container>
   <content id="storage" version="1.0">
     <redundancy>1</redundancy>
     <group>
@@ -32,7 +32,7 @@
     </engine>
   </content>
 
-  <jdisc id="doc-api" version="1.0">
+  <container id="doc-api" version="1.0">
     <document-api />
     <http>
       <server id="default" port="19020" />
@@ -40,6 +40,6 @@
     <nodes>
       <node hostalias="node1" />
     </nodes>
-  </jdisc>
+  </container>
 
 </services>

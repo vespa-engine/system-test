@@ -6,7 +6,7 @@
       <logserver hostalias="node1" />
     </admin>
 
-    <container version="1.0">
+    <jdisc version="1.0">
         <nodes>
           <node hostalias="node1"/>
         </nodes>
@@ -21,6 +21,6 @@
                     <searcher id="com.yahoo.search.example.ForgetfulSearcher"/>
                 </chain>
         </search>
-    </container>
+    </jdisc>
 
 </services>

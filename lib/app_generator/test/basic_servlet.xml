@@ -4,14 +4,14 @@
     <adminserver hostalias="node1" />
   </admin>
 
-  <jdisc id="default" jetty="true" version="1.0">
+  <container id="default" jetty="true" version="1.0">
     <servlet bundle="basic_servlet" class="com.yahoo.test.servlet.HelloServlet" id="my-servlets">
       <path>myapp</path>
     </servlet>
     <nodes jvmargs="-Dvespa.freezedetector.disable=true ">
       <node hostalias="node1" />
     </nodes>
-  </jdisc>
+  </container>
 
 
 </services>

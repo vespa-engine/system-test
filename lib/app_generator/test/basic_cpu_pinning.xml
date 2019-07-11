@@ -4,11 +4,11 @@
     <adminserver hostalias="node1" />
   </admin>
 
-  <jdisc id="default" version="1.0">
+  <container id="default" version="1.0">
     <nodes cpu-socket-affinity="true" jvmargs="-Dvespa.freezedetector.disable=true ">
       <node hostalias="node1" />
     </nodes>
-  </jdisc>
+  </container>
 
 
 </services>

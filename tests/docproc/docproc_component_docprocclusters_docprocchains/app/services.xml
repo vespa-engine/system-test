@@ -9,7 +9,7 @@
     </slobroks>
   </admin>
 
-  <jdisc version="1.0" id="cluster1">
+  <container version="1.0" id="cluster1">
     <document-processing>
       <chain id="common">
         <documentprocessor id="CommonDocproc" class="com.yahoo.vespatest.ExtraHitDocumentProcessor">
@@ -26,9 +26,9 @@
         </documentprocessor>
       </chain>
     </document-processing>
-  </jdisc>
+  </container>
 
-  <jdisc version="1.0" id="cluster2">
+  <container version="1.0" id="cluster2">
     <http>
       <server port="19020" id="default"/>
     </http>
@@ -49,7 +49,7 @@
         </documentprocessor>
       </chain>
     </document-processing>
-  </jdisc>
+  </container>
 
   <content version="1.0" id="storage">
     <documents>

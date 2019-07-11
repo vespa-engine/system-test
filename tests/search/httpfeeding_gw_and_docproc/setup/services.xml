@@ -4,12 +4,12 @@
     <adminserver hostalias='node1'/> 
   </admin> 
  
-  <jdisc id='default' version='1.0'> 
+  <container id='default' version='1.0'>
     <search> </search> 
     <nodes> 
       <node hostalias='node1'/> 
     </nodes> 
-  </jdisc> 
+  </container>
   <content id='simple' version='1.0'> 
     <redundancy>1</redundancy> 
     <documents> 
@@ -25,7 +25,7 @@
     </engine> 
   </content> 
  
-  <jdisc id='doc-api' version='1.0'> 
+  <container id='doc-api' version='1.0'>
     <document-api/> 
     <document-processing/>
     <http> 
@@ -34,6 +34,6 @@
     <nodes> 
       <node hostalias='node1'/> 
     </nodes> 
-  </jdisc> 
+  </container>
  
 </services>

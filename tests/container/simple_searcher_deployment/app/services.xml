@@ -6,7 +6,7 @@
       <logserver hostalias="node1" />
     </admin>
 
-    <jdisc id='default' version="1.0">
+    <container id='default' version="1.0">
       <nodes>
         <node hostalias="node1" />
       </nodes>
@@ -16,6 +16,6 @@
           <searcher id="com.yahoo.search.example.SimpleSearcher"/>
         </chain>
       </search>
-    </jdisc>
+    </container>
 
 </services>    

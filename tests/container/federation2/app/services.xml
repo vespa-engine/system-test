@@ -5,7 +5,7 @@
     <adminserver hostalias="node1" />
   </admin>
 
-  <jdisc id="test" version="1.0">
+  <container id="test" version="1.0">
     <nodes>
       <node hostalias="node1" />
     </nodes>
@@ -52,5 +52,5 @@
 	</searcher>
       </chain>
     </search>
-  </jdisc>
+  </container>
 </services>

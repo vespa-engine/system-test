@@ -14,13 +14,13 @@
     <ready_copies>2</ready_copies>
   </config>
 
-  <jdisc id="default" version="1.0">
+  <container id="default" version="1.0">
     <search />
     <document-processing />
     <nodes jvmargs="foo">
       <node hostalias="node1" />
     </nodes>
-  </jdisc>
+  </container>
   <content id="storage" version="1.0">
     <redundancy>3</redundancy>
     <config name="vespa.config.search.core.proton">

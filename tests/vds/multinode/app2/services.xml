@@ -12,12 +12,12 @@
     </slobroks>
   </admin>
 
-  <jdisc version='1.0' id='default'>
+  <container version='1.0' id='default'>
     <search/>
     <nodes>
       <node hostalias='node1'/>
     </nodes>
-  </jdisc>
+  </container>
 
   <content version='1.0' id='storage'>
     <redundancy>2</redundancy>
@@ -38,7 +38,7 @@
     </engine>
   </content>
 
-  <jdisc version='1.0' id='doc-api'>
+  <container version='1.0' id='doc-api'>
     <document-api>
       <timeout>40</timeout>
     </document-api>
@@ -48,6 +48,6 @@
     <nodes>
       <node hostalias='node1'/>
     </nodes>
-  </jdisc>
+  </container>
 
 </services>

@@ -9,13 +9,13 @@
     </slobroks>
   </admin>
 
-  <jdisc version="1.0">
+  <container version="1.0">
     <handler id="com.yahoo.vespatest.BlockingHandler">
       <binding>http://*/BlockMe</binding>
     </handler>
     <nodes>
       <node hostalias="node1" />
     </nodes>
-  </jdisc>
+  </container>
 
 </services>

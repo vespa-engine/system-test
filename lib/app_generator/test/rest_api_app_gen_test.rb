@@ -14,7 +14,7 @@ class RestApiAppGenTest < Test::Unit::TestCase
             to_xml("")
 
     expected_substr =
-        '<jdisc id="default" jetty="true"'
+        '<container id="default" jetty="true"'
 
     assert_substring_ignore_whitespace(actual, expected_substr)
 

@@ -19,7 +19,7 @@
     </documents>
   </content>
 
-  <jdisc version="1.0" id="banana">
+  <container version="1.0" id="banana">
     <nodes>
       <node hostalias="node1"/>
       <node hostalias="node2"/>
@@ -35,6 +35,6 @@
       </chain>
     </document-processing>
 
-  </jdisc>
+  </container>
 
 </services>

@@ -70,7 +70,7 @@ class Container
     attrs[:jetty] = @jetty unless @jetty.nil?
 
     helper = XmlHelper.new(indent)
-    helper.tag("jdisc", attrs)
+    helper.tag("container", attrs)
 
     tmpjvmargs = @jvmargs ? @jvmargs : ""
     nodeparams = { :jvmargs => @minimum_jvmargs + tmpjvmargs }

@@ -6,7 +6,7 @@
     <logserver hostalias="node0" />
   </admin>
 
-  <jdisc id="doc-api" version="1.0">
+  <container id="doc-api" version="1.0">
     <nodes>
       <node hostalias="node0"/>
     </nodes>
@@ -14,7 +14,7 @@
       <server id="default" port="19020"/>
     </http>
     <document-api/>
-  </jdisc>
+  </container>
 
   <content version="1.0" id="vds1">
     <redundancy>1</redundancy>
