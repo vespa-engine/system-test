@@ -1372,7 +1372,7 @@ module TestBase
   end
 
   def vespa_config_status(echo=false)
-    @vespa.adminserver.execute("VESPA_TLS_INSECURE_MIXED_MODE=plaintext_client_mixed_server vespa-config-status -v",
+    @vespa.adminserver.execute("vespa-config-status -v",
                                :exitcode => true,
                                :noecho => !echo)
   end
