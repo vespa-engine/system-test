@@ -64,6 +64,11 @@ class HttpsClient
     end
   end
 
+  # TODO Inline as 'https' once TLS is enforced.
+  def scheme
+    use_tls? ? 'https' : 'http'
+  end
+
   private
   def ssl_ctx
     @tls_env.ssl_ctx
@@ -72,11 +77,6 @@ class HttpsClient
   private
   def use_tls?
     ssl_ctx != nil
-  end
-
-  private
-  def scheme
-    use_tls? ? 'https' : 'http'
   end
 
 end
