@@ -155,7 +155,7 @@ class NodeServer
   # * :file - spesific filename to fetch
   # * :ftphost - specify ftp host
   # * :webhost - specify web server (NOTE: only supports :file)
-  # * :https - use https (NOTE: only in combination with :webhost)
+  # * :http - use http (NOTE: only in combination with :webhost)
   #
   # Note that either :dir or :file must be specified.
   def fetchfiles(params={})
@@ -214,8 +214,8 @@ class NodeServer
         raise ":dir not handled for webhost #{params[:webhost]}"
       end
 
-      protocol = params[:https] ? "https" : "http"
-      port = params[:https] ? "4443" : "80"
+      protocol = params[:http] ? "http" : "https"
+      port = params[:http] ? "80" : "443"
 
       remote_file = "#{protocol}://#{params[:webhost]}:#{port}/#{params[:file]}"
       localfilename = @testcase.dirs.ftpfiledir + File.basename(params[:file])
