@@ -81,7 +81,7 @@ class SearchAppGenTest < Test::Unit::TestCase
              handler("bar", ConfigOverride.new("baz").add("qux", "quux")).
              services_xml
     expected_substr = '
-      <jdisc id="default" version="1.0">
+      <container id="default" version="1.0">
         <search />
         <document-processing />
         <handler id="foo" />
@@ -108,7 +108,7 @@ class SearchAppGenTest < Test::Unit::TestCase
                          add(1, name_value("param2", "value2")))).
       services_xml
     expected_substr = '
-      <jdisc id="default" version="1.0">
+      <container id="default" version="1.0">
         <search />
         <document-processing />
         <filter bundle="jdisc_http_filters" id="ai.vespa.MyFilter">
@@ -290,18 +290,18 @@ class SearchAppGenTest < Test::Unit::TestCase
         services_xml
 
     expected_substr = '
-      <jdisc id="foo" version="1.0">
+      <container id="foo" version="1.0">
         <search />
         <nodes>
           <node hostalias="node1" />
         </nodes>
-      </jdisc>
-      <jdisc baseport="4090" id="bar" version="1.0">
+      </container>
+      <container baseport="4090" id="bar" version="1.0">
         <search />
         <nodes>
           <node hostalias="node1" />
         </nodes>
-      </jdisc>'
+      </container>'
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
@@ -312,18 +312,18 @@ class SearchAppGenTest < Test::Unit::TestCase
         services_xml
 
     expected_substr = '
- <jdisc id="foo" version="1.0">
+ <container id="foo" version="1.0">
       <search />
       <nodes>
         <node hostalias="node1" />
       </nodes>
-    </jdisc>
-    <jdisc baseport="4090" id="bar" version="1.0">
+    </container>
+    <container baseport="4090" id="bar" version="1.0">
       <search />
       <nodes>
         <node hostalias="node1" />
       </nodes>
-    </jdisc>'
+    </container>'
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
@@ -331,7 +331,7 @@ class SearchAppGenTest < Test::Unit::TestCase
     actual = SearchApp.new.gateway("node1").gateway("node2").
              services_xml
     expected_substr = '
-      <jdisc id="doc-api" version="1.0">
+      <container id="doc-api" version="1.0">
         <document-api />
         <http>
             <server id="default" port="19020" />
@@ -340,7 +340,7 @@ class SearchAppGenTest < Test::Unit::TestCase
           <node hostalias="node1" />
           <node hostalias="node2" />
         </nodes>
-      </jdisc>'
+      </container>'
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
@@ -501,7 +501,7 @@ class SearchAppGenTest < Test::Unit::TestCase
         node(:config => ConfigOverride.new("cfg").add("val", 1))).
       services_xml
     expected_substr = '
-    <jdisc id="default" version="1.0">
+    <container id="default" version="1.0">
       <search />
       <nodes>
         <node hostalias="node1">
@@ -517,7 +517,7 @@ class SearchAppGenTest < Test::Unit::TestCase
     actual = SearchApp.new.container(Container.new.
                                      config(ConfigOverride.new("cfg").add("val", 1))).services_xml
     expected = '
-    <jdisc id="default" version="1.0">
+    <container id="default" version="1.0">
       <config name="cfg">
         <val>1</val>
       </config>
@@ -598,7 +598,7 @@ class SearchAppGenTest < Test::Unit::TestCase
         search_chain(SearchChain.new()).
         services_xml
     expected_substr = '
-    <jdisc id="default" version="1.0">
+    <container id="default" version="1.0">
       <search>
         <chain id="default" inherits="vespa" />
       </search>
@@ -606,7 +606,7 @@ class SearchAppGenTest < Test::Unit::TestCase
       <nodes>
         <node hostalias="node1" />
       </nodes>
-    </jdisc>'
+    </container>'
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
@@ -625,7 +625,7 @@ class SearchAppGenTest < Test::Unit::TestCase
   def test_gateways_jvmargs
     actual = SearchApp.new.enable_http_gateway.gateways_jvmargs('-Option').services_xml
     expected_substr = '
-      <jdisc id="doc-api" version="1.0">
+      <container id="doc-api" version="1.0">
         <document-api />
         <http>
             <server id="default" port="19020" />
@@ -640,11 +640,11 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_jdisc_jvmargs
+  def test_container_jvmargs
     actual = SearchApp.new.qrserver(
                QrserverCluster.new.jvmargs('-Option')).services_xml
     expected_substr = '
-      <jdisc id="default" version="1.0">
+      <container id="default" version="1.0">
       <search />
           <nodes jvmargs="-Option">
           <node hostalias="node1" />
@@ -652,11 +652,11 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_jdisc_node_jvmargs
+  def test_container_node_jvmargs
     actual = SearchApp.new.qrserver(
                QrserverCluster.new.node(:jvmargs => '-Option')).services_xml
     expected_substr = '
-      <jdisc id="default" version="1.0">
+      <container id="default" version="1.0">
       <search />
         <nodes>
           <node hostalias="node1" jvmargs="-Option" />

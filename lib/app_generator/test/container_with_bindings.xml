@@ -4,7 +4,7 @@
     <adminserver hostalias="node1" />
   </admin>
 
-  <jdisc id="default" version="1.0">
+  <container id="default" version="1.0">
     <handler id="com.yahoo.vespatest.HelloWorld">
       <binding>http://*/hello</binding>
       <binding>http://*/goodbye</binding>
@@ -12,7 +12,7 @@
     <nodes jvmargs="-Dvespa.freezedetector.disable=true ">
       <node hostalias="node1" />
     </nodes>
-  </jdisc>
+  </container>
 
 
 </services>

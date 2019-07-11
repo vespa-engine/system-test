@@ -66,7 +66,7 @@ class Clients
 
     if !gateway_list.empty?
       return XmlHelper.new(indent).
-        tag("jdisc", :version => "1.0", :id => "doc-api").
+        tag("container", :version => "1.0", :id => "doc-api").
         tag_always("document-api").to_xml(@feeder_options).close_tag.
         tag("http").tag("server", :id => "default", :port => "19020").close_tag.close_tag.
         tag("nodes", :jvmargs => @gateways_jvmargs).to_xml(gateway_list).close_tag.

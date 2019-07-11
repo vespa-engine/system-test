@@ -131,9 +131,9 @@ class QrserverCluster
   def to_container_xml(indent)
     helper = XmlHelper.new(indent)
     if @baseport > 0
-      helper.tag("jdisc", :version => "1.0", :id => @name, :baseport => @baseport)
+      helper.tag("container", :version => "1.0", :id => @name, :baseport => @baseport)
     else
-      helper.tag("jdisc", :version => "1.0", :id => @name)
+      helper.tag("container", :version => "1.0", :id => @name)
     end
     helper.tag_always("search").to_xml(@search_chains, :to_container_xml).close_tag
     helper.tag_always("document-processing").close_tag if @should_add_default_docproc

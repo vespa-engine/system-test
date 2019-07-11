@@ -140,7 +140,7 @@ class ContainerAppGenTest < Test::Unit::TestCase
       to_xml("")
 
     expected_substr =
-    "<jdisc id=\"default\" version=\"1.0\">
+    "<container id=\"default\" version=\"1.0\">
        <accesslog fileNamePattern=\"#{Environment.instance.vespa_home}/logs/vespa/qrs/QueryAccessLog.%Y%m%d%H%M%S\" rotationInterval=\"0 1 ...\" type=\"vespa\" />"
 
     assert_substring_ignore_whitespace(actual, expected_substr)
@@ -159,7 +159,7 @@ class ContainerAppGenTest < Test::Unit::TestCase
             to_xml('')
 
     expected_substr =
-    '<jdisc id="default" version="1.0">
+    '<container id="default" version="1.0">
       <http>
         <filtering>
           <filter bundle="outer-bundle" class="outer-class" id="outer-filter" />
@@ -184,7 +184,7 @@ class ContainerAppGenTest < Test::Unit::TestCase
             to_xml("")
 
     expected_substr =
-    '<jdisc id="default" version="1.0">
+    '<container id="default" version="1.0">
       <http>
         <filtering>
           <filter id="my-filter">
