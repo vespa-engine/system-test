@@ -69,6 +69,10 @@ class HttpsClient
     use_tls? ? 'https' : 'http'
   end
 
+  def verify_success(response)
+    raise StandardError.new("Expected 2xx, got response code #{response.code}") unless response.is_a?(Net::HTTPSuccess)
+  end
+
   private
   def ssl_ctx
     @tls_env.ssl_ctx
