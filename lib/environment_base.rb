@@ -61,11 +61,14 @@ class EnvironmentBase
   end
 
   def set_addr_configserver(testcase, config_hostnames)
-    set_default_conf("VESPA_CONFIGSERVERS", config_hostnames.join(","))
+    configservers = config_hostnames.join(",")
+    set_default_conf("VESPA_CONFIGSERVERS", configservers)
+    ENV["VESPA_CONFIGSERVERS"] = configservers
   end
 
   def set_port_configserver_rpc(testcase, port=nil)
     set_default_conf("VESPA_CONFIGSERVER_RPC_PORT", port)
+    ENV["VESPA_CONFIGSERVER_RPC_PORT"] = port
   end
 
   def start_configserver(testcase)
