@@ -37,7 +37,6 @@ class TlsEnv
   def get_openssl_ctx_from_env_or_nil
     cfg_file = ENV['VESPA_TLS_CONFIG_FILE']
     mode = ENV['VESPA_TLS_INSECURE_MIXED_MODE']
-    mode = nil if mode == 'disabled'
     if not cfg_file or mode == 'plaintext_client_mixed_server'
       puts 'Vespa TLS is not configured, continuing with insecure connections' if @debug_print
       return nil
