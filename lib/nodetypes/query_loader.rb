@@ -23,7 +23,8 @@ module QueryLoader
     fbenchcmd += "-r #{params[:reuse]} " if params[:reuse]
     fbenchcmd += "-o #{params[:output]} " if params[:output]
     fbenchcmd += "-xy " if params[:get_extended]
-    fbenchcmd += "-D " unless params[:disable_tls]
+    # TODO Re-enable HTTPS once performance issues are resolved
+    # fbenchcmd += "-D " unless params[:disable_tls]
     fbenchcmd += "#{qrserver.name} #{qrserver.http_port} "
     qrserver2 = params[:qrserver2]
     fbenchcmd += "#{qrserver2.name} #{qrserver2.http_port}" if params[:multiple_qrs]
