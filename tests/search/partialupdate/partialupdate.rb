@@ -460,7 +460,7 @@ class PartialUpdate < IndexedSearchTest
   end
 
   def create_fbench_thread
-    fbench_command = "vespa-fbench -n 1 -c 0 -s 20 -q #{@remote_query_dir}/query-%03d.txt localhost #{vespa.container.values.first.http_port}"
+    fbench_command = "vespa-fbench -D -n 1 -c 0 -s 20 -q #{@remote_query_dir}/query-%03d.txt localhost #{vespa.container.values.first.http_port}"
     puts "########## create fbench thread ##########"
     thread = Thread.new(vespa.logserver, fbench_command) do |execute_object, command|
       execute_object.execute(command)
