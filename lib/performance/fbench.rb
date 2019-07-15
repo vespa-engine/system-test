@@ -4,7 +4,7 @@ require 'environment'
 
 module Perf
   class Fbench
-    attr_writer :clients, :runtime, :headers, :append_str, :ignore_first, :max_line_size, :single_query_file, :disable_http_keep_alive, :request_per_ms, :times_reuse_query_files, :result_file
+    attr_writer :clients, :runtime, :headers, :append_str, :ignore_first, :max_line_size, :single_query_file, :disable_http_keep_alive, :request_per_ms, :times_reuse_query_files, :result_file, :disable_tls
 
     def initialize(node, hostname, port)
       @node = node
@@ -23,6 +23,7 @@ module Perf
       @output_str = nil
       @request_per_ms = 0
       @times_reuse_query_files = nil
+      @disable_tls = false
     end
 
     def query(queryfile)
@@ -63,6 +64,7 @@ module Perf
       cmd += "-o #{@result_file} " if @result_file
       cmd += "-k " if @disable_http_keep_alive
       cmd += "-r #{@times_reuse_query_files} " if @times_reuse_query_files
+      cmd += "-D " unless @disable_tls
       cmd += "#{@hostname} #{@port} 2>&1"
       cmd
     end
