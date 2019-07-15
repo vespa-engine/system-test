@@ -136,6 +136,7 @@ class PerformanceTest < TestCase
     fbench.times_reuse_query_files = params[:times_reuse_query_files] if params[:times_reuse_query_files]
     fbench.result_file = params[:result_file] if params[:result_file]
     fbench.disable_http_keep_alive = params[:disable_http_keep_alive] if params[:disable_http_keep_alive]
+    fbench.disable_tls = params[:disable_tls] if params[:disable_tls]
 
     fbench.query(queryfile)
     system_fbench.end
