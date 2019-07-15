@@ -64,7 +64,8 @@ module Perf
       cmd += "-o #{@result_file} " if @result_file
       cmd += "-k " if @disable_http_keep_alive
       cmd += "-r #{@times_reuse_query_files} " if @times_reuse_query_files
-      cmd += "-D " unless @disable_tls
+      # TODO Re-enable HTTPS once performance issues are resolved
+      # cmd += "-D " unless @disable_tls
       cmd += "#{@hostname} #{@port} 2>&1"
       cmd
     end
