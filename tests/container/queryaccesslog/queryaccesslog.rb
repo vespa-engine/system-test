@@ -234,7 +234,7 @@ class QueryAccessLog < SearchContainerTest
         return get_timestamp_from_filename(log_file_name)
       else
         puts "Found no query log for cluster #{cluster}"
-        Dir.entries(Environment.instance.vespa_home + "/logs/vespa/qrs/")
+        puts Dir.entries(Environment.instance.vespa_home + "/logs/vespa/qrs/")
       end
       sleep 1
       i = i + 1
