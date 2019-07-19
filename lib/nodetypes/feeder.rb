@@ -213,7 +213,7 @@ module Feeder
 
   private
   def vespa_http_client_cmd
-    "java -cp #{Environment.instance.vespa_home}/lib/jars/vespa-http-client-jar-with-dependencies.jar com.yahoo.vespa.http.client.runner.Runner "
+    "java -cp #{Environment.instance.vespa_home}/lib/jars/vespa-http-client-jar-with-dependencies.jar com.yahoo.vespa.http.client.runner.Runner --vespaTls "
   end
 
   # Feeds a file with name _file_name_ using a feeder and returns the output.
