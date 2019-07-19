@@ -31,18 +31,20 @@ class AsyncJersey2 < ContainerTest
 
   def async_should_work
     path = "/rest-api/async"
-    numRequest = 200
+    numRequests = 200
+    requiredSuccesses = 2/3.to_f * numRequests
 
-    successfulRequests = multiple_http_get_requests(path, numRequest)
-    assert(successfulRequests > 2/3.to_f * numRequest, "Most of the requests should succeed.")
+    successfulRequests = multiple_http_get_requests(path, numRequests)
+    assert(successfulRequests > requiredSuccesses, "Most of the requests should succeed, #{successfulRequests} of #{numRequests} were successful, test requires > #{requiredSuccesses}")
   end
 
   def sync_should_fail
     path = "/rest-api/sync"
-    numRequest = 200
+    numRequests = 200
+    allowedSuccesses = 1/3.to_f * numRequests
 
-    successfulRequests = multiple_http_get_requests(path, numRequest)
-    assert(successfulRequests < 1/3.to_f * numRequest, "Most of the requests should time out.")
+    successfulRequests = multiple_http_get_requests(path, numRequests)
+    assert(successfulRequests < allowedSuccesses, "Most of the requests should time out, #{successfulRequests} of #{numRequests} were successful, test requires < #{allowedSuccesses}")
   end
 
 
