@@ -37,8 +37,7 @@ class SlowQuery < IndexedSearchTest
     # Now to try and make sure the messages propagates to the log file
     sleep 10
     qrserver.stop
-    sleep 10
-    numlogs = assert_log_matches(/container.*Slow execution/)
+    numlogs = assert_log_matches(/container.*Slow execution/, 20)
     puts "GOT log matches: #{numlogs} messages about Slow execution"
 
     i = 0
