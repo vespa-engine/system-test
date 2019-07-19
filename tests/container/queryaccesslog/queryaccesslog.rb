@@ -226,12 +226,24 @@ class QueryAccessLog < SearchContainerTest
   end
 
   def get_querylog_timestamp(cluster)
-    log_name = get_real_qrs_logname(cluster)
-    if log_name != nil
-      log_name[-14, 14].to_i
-    else
-      nil
+    i = 0
+    # Loop, as it looks like there might be log rotation at the same time we try to read
+    loop do
+      log_file_name = get_real_qrs_logname(cluster)
+      if log_file_name
+        return get_timestamp_from_filename(log_file_name)
+      else
+        puts "Found no query log for cluster #{cluster}"
+        puts Dir.entries(Environment.instance.vespa_home + "/logs/vespa/qrs/")
+      end
+      sleep 1
+      i = i + 1
+      break if i > 5
     end
+  end
+
+  def get_timestamp_from_filename(filename)
+    filename[-14, 14].to_i
   end
 
   def teardown
