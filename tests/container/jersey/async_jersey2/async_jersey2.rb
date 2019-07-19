@@ -9,7 +9,8 @@ class AsyncJersey2 < ContainerTest
   include AppGenerator
 
   def setup
-    set_owner("nobody")
+    # TODO: This test can be removed, because there is no special setup for async in the jdisc/jersey integration, and no known users of this feature.
+    set_owner("gv")
     set_description("Verify that the async functionality in jersey2 works.")
 
     add_bundle_dir(selfdir + "async", "async_jersey2")
