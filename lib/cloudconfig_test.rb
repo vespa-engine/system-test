@@ -49,46 +49,23 @@ class CloudConfigTest < TestCase
     end
   end
 
-  def create_session_v2(hostname, tenant, application, expected_session_id, create_from_url=nil, port=DEFAULT_SERVER_HTTPPORT, compression="gzip")
-    create_session_internal(hostname, application, expected_session_id, create_from_url, port, compression, tenant)
+  def create_session_v2(hostname, tenant, application, expected_session_id)
+    baseurl = "#{https_client.scheme}://#{hostname}:#{DEFAULT_SERVER_HTTPPORT}/application/v2/tenant/#{tenant}/session"
+    tmpdest = dirs.tmpdir + File.basename(application)
+    `cp -R #{application} #{tmpdest}`
+    `tar -C #{tmpdest} -cf - . | gzip`
+    puts "Request: POST #{baseurl}?verbose=true"
+    compressed_data = File.read(tempdest)
+    response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, "/application/v2/tenant/#{tenant}/session", compressed_data, query: 'verbose=true', headers: {'Content-Type' => 'application/x-gzip'})
+    json_response = JSON.parse(response.body)
+    assert_json_contains_field(json_response, "prepared")
+    expected_url = "#{baseurl}/#{expected_session_id}/prepared"
+    if expected_session_id > 0
+      assert_equal(expected_url, json_response["prepared"])
+    end
+    json_response
   end
 
-  def create_session_internal(hostname, application, expected_session_id, create_from_url=nil, port=DEFAULT_SERVER_HTTPPORT, compression="gzip", tenant=nil)
-    baseurl = "http://#{hostname}:#{port}/application/"
-    baseurl += "v2/tenant/#{tenant}/session"
-    createurl = "#{baseurl}?verbose=true"
-    out = "{}"
-    if application != nil then
-      tmpdest = dirs.tmpdir + File.basename(application)
-      `cp -R #{application} #{tmpdest}`
-#      puts "compresssion=#{compression}"
-      if compression == "gzip"
-        tarcmd = "tar -C #{tmpdest} -cf - ."
-        gzip = "gzip"
-        curl = "curl -s -S --header \"Content-Type: application/x-gzip\" --data-binary @- ";
-        puts "Request: POST #{createurl}"
-        out = `#{tarcmd} | #{gzip} | #{curl} #{createurl} ; echo`
-      elsif compression == "zip"
-        zipcmd = "cd #{tmpdest}; zip -q app.zip *"
-        puts "Request: POST #{createurl}"
-        curl = "curl -s -S --header \"Content-Type: application/zip\" --data-binary @app.zip";
-        out = `#{zipcmd}; #{curl} #{createurl} ; echo`
-      else
-        raise "Unknown compression #{compression}. Exiting."
-      end
-    else
-      id = create_from_url ? create_from_url : "active"
-      puts "Request: POST #{createurl}&from=#{id}"
-      (out, exit_code) = `curl -s -S -X POST \"#{createurl}&from=#{id}\" ; echo`
-    end
-    response = JSON.parse(out)
-    assert_json_contains_field(response, "prepared")
-    expected_url = "#{baseurl}/#{expected_session_id}/prepared"
-    if (expected_session_id > 0)
-      assert_equal(expected_url, response["prepared"])
-    end
-    response
-  end
 
   def prepare_session_v2(hostname, tenant, create_result, expected_session_id, port=DEFAULT_SERVER_HTTPPORT, timeout=nil, params={})
     prepare_session_internal(hostname, create_result, expected_session_id, port, timeout, tenant, params)
