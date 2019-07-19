@@ -50,7 +50,7 @@ class AsyncJersey2 < ContainerTest
 
 
   def multiple_http_get_requests(path, numRequests)
-    readTimeoutInSeconds = 30
+    readTimeoutInSeconds = 25
 
     mutex = Mutex.new
     successfulRequests = 0
