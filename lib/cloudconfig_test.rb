@@ -52,8 +52,7 @@ class CloudConfigTest < TestCase
   def create_session_v2(hostname, tenant, application, expected_session_id)
     baseurl = "#{https_client.scheme}://#{hostname}:#{DEFAULT_SERVER_HTTPPORT}/application/v2/tenant/#{tenant}/session"
     tmpdest = dirs.tmpdir + File.basename(application)
-    `cp -R #{application} #{tmpdest}`
-    `tar -C #{tmpdest} -cf - . | gzip`
+    `tar -C #{application} -cf - . | gzip > #{tmpdest}`
     puts "Request: POST #{baseurl}?verbose=true"
     compressed_data = File.read(tmpdest)
     response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, "/application/v2/tenant/#{tenant}/session", compressed_data, query: 'verbose=true', headers: {'Content-Type' => 'application/x-gzip'})
