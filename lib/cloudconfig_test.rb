@@ -58,14 +58,25 @@ class CloudConfigTest < TestCase
     compressed_data = File.read(tmpdest)
     response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, "/application/v2/tenant/#{tenant}/session", compressed_data, query: 'verbose=true', headers: {'Content-Type' => 'application/x-gzip'})
     json_response = JSON.parse(response.body)
-    assert_json_contains_field(json_response, "prepared")
-    expected_url = "#{baseurl}/#{expected_session_id}/prepared"
-    if expected_session_id > 0
-      assert_equal(expected_url, json_response["prepared"])
-    end
+    validate_create_session_response(baseurl, json_response, expected_session_id)
     json_response
   end
 
+  def create_session_v2_with_uri(url, expected_session_id)
+    response = https_client.post(url.host, url.port, url.path, query: "#{url.query}&from=#{url}")
+    json_response = JSON.parse(response.body)
+    validate_create_session_response(url, json_response, expected_session_id)
+    json_response
+  end
+
+  private
+  def validate_create_session_response(base_url, json_response, expected_session_id)
+    assert_json_contains_field(json_response, "prepared")
+    expected_url = "#{base_url}/#{expected_session_id}/prepared"
+    if expected_session_id > 0
+      assert_equal(expected_url, json_response["prepared"])
+    end
+  end
 
   def prepare_session_v2(hostname, tenant, create_result, expected_session_id, port=DEFAULT_SERVER_HTTPPORT, timeout=nil, params={})
     prepare_session_internal(hostname, create_result, expected_session_id, port, timeout, tenant, params)
