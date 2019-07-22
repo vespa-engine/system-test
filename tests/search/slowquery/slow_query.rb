@@ -20,12 +20,13 @@ class SlowQuery < IndexedSearchTest
     wait_for_hitcount("sddocname:simple", 400)
     assert_hitcount("foobar", 400)
 
-    puts "Doing 10 queries using misbehaving client."
+    num_queries = 3
+    puts "Doing #{num_queries} queries using misbehaving client."
     could_query = false
     vespa.adminserver.copy(selfdir + "BadClient.java", dirs.tmpdir)
     vespa.adminserver.execute("javac -d #{dirs.tmpdir} #{dirs.tmpdir}/BadClient.java")
     qrserver = vespa.container.values.first
-    3.times do
+    num_queries.times do
       hname = qrserver.name
       sport = qrserver.http_port
       vespa.adminserver.execute("java -cp #{dirs.tmpdir} com.yahoo.prelude.test.BadClient #{hname} #{sport}")
@@ -33,8 +34,8 @@ class SlowQuery < IndexedSearchTest
         could_query = true
       end
     end
-    assert(could_query, "Could not query QRS successfully in 10 tries.")
-    # Now to try and make sure the messages propagates to the log file
+    assert(could_query, "Could not query QRS successfully in #{num_queries} tries.")
+    # Now to try and make sure the messages propagate to the vespa log file
     sleep 10
     qrserver.stop
     numlogs = assert_log_matches(/container.*Slow execution/, 20)
@@ -44,7 +45,7 @@ class SlowQuery < IndexedSearchTest
     query_time_sum = 0.0
     10.times do
         i += 1
-        entry = qrserver.execute("cat #{Environment.instance.vespa_home}/logs/vespa/qrs/JsonAccessLog.default.* | grep foobar | head -#{i+1} | tail -1").chomp
+        entry = qrserver.execute("zgrep -h foobar #{Environment.instance.vespa_home}/logs/vespa/qrs/JsonAccessLog.default.* | head -#{i+1} | tail -1").chomp
         assert(entry && entry != "", "Could not find foobar in JsonAccessLog.default")
         puts "GOT entry #{entry}"
         j = JSON.parse entry
