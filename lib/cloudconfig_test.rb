@@ -55,7 +55,7 @@ class CloudConfigTest < TestCase
     `cp -R #{application} #{tmpdest}`
     `tar -C #{tmpdest} -cf - . | gzip`
     puts "Request: POST #{baseurl}?verbose=true"
-    compressed_data = File.read(tempdest)
+    compressed_data = File.read(tmpdest)
     response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, "/application/v2/tenant/#{tenant}/session", compressed_data, query: 'verbose=true', headers: {'Content-Type' => 'application/x-gzip'})
     json_response = JSON.parse(response.body)
     assert_json_contains_field(json_response, "prepared")
