@@ -50,9 +50,7 @@ class CloudConfigTest < TestCase
   end
 
   def create_session_v2(hostname, tenant, application, expected_session_id)
-    tmpdest = dirs.tmpdir + File.basename(application)
-    `tar -C #{application} -cf - . | gzip > #{tmpdest}`
-    compressed_data = File.read(tmpdest)
+    compressed_data = `tar -C #{application} -czf - .`
     response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, create_session_v2_path(tenant), compressed_data, query: 'verbose=true', headers: {'Content-Type' => 'application/x-gzip'})
     json_response = JSON.parse(response.body)
     validate_create_session_response(json_response, hostname, tenant, expected_session_id)
