@@ -36,7 +36,12 @@ class Search
 
   # Returns the first searchnode in the search cluster
   def first
-    searchnode[0]
+    node = searchnode.values.first
+    if node.elastic
+      searchnode[0]
+    else
+      searchnode["row[0].column[0]"]
+    end
   end
 
   # Returns the first tld in the search cluster
@@ -72,13 +77,28 @@ class Search
       return
     end
 
+#   puts remote_serviceobject.servicetype
+
     if remote_serviceobject.servicetype == "topleveldispatch"
-      # remote_serviceobject.index for a tld is per container cluster, so we might get overlapping indexes
-      # when there are more than one container cluster. Add tld by starting from latest unused index
-      new_index = "#{@topleveldispatch.length}"
-      @topleveldispatch[new_index] = remote_serviceobject
+      if remote_serviceobject.tld
+        # remote_serviceobject.index for a tld is per container cluster, so we might get overlapping indexes
+        # when there are more than one container cluster. Add tld by starting from latest unused index
+        new_index = "#{@topleveldispatch.length}"
+        @topleveldispatch[new_index] = remote_serviceobject
+      else
+        @topleveldispatch[Topleveldispatch.get_idx(remote_serviceobject.part,
+                                                   remote_serviceobject.row)] = remote_serviceobject
+      end
     elsif remote_serviceobject.servicetype == "searchnode"
-      @searchnode[remote_serviceobject.num] = remote_serviceobject
+#      puts remote_serviceobject.num
+
+      if remote_serviceobject.num
+        @searchnode[remote_serviceobject.num] = remote_serviceobject
+      else # Assume row column
+        @searchnode["row[" + remote_serviceobject.row +
+                    "].column[" + remote_serviceobject.column +
+                    "]"] = remote_serviceobject
+      end
     #elsif remote_serviceobject.servicetype == "qrserver"
     #  @qrserver[remote_serviceobject.index] = remote_serviceobject
     elsif remote_serviceobject.servicetype == "fbench"

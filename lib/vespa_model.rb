@@ -621,7 +621,8 @@ class VespaModel
     return [admin_hostname, config_hostnames]
   end
 
-  # Parses model config (json), and generates service objects using create_service.
+  # Parses _vespa_setupcontent_, which is a YAML file, and generates
+  # service objects using create_service.
   def create_model(modelconfig)
     begin
       reset_services
@@ -645,14 +646,28 @@ class VespaModel
           end
           service_entry["ports"] = portsonly
 
-          # index for content nodes are invisible in model config, snoop configid:
+          # row and column, and content number are invisible in model config,
+          # snoop configid:
           c = service_entry["config-id"]
-          match_content = Regexp.new('^\w+/search/cluster\.\w+/(\d+)$').match(c)
+          match_rowcolumn = Regexp.new('/c(\d+)/r(\d+)$').match(c)
+          match_content1 = Regexp.new('^\w+/search/cluster\.\w+/(\d+)$').match(c)
+          match_content2 = Regexp.new('^.\w+/search/(\d+)$').match(c)
+          match_part_row = Regexp.new('/dispatchers/(\d+)/dispatch\.(\d+)$').match(c)
 
           cluster = service_entry["clustername"]
-          if match_content
-            service_entry["num"] = match_content[1].to_i
+          if match_rowcolumn
+            service_entry["column"] = match_rowcolumn[1]
+            service_entry["row"]    = match_rowcolumn[2]
+            feed_destination = "search/cluster.#{cluster}/*/*/feed-destination"
+          elsif match_content1
+            service_entry["num"] = match_content1[1].to_i
             feed_destination = "storage/cluster.#{cluster}/storage/*/default"
+          elsif match_content2
+            service_entry["num"] = match_content2[1].to_i
+            feed_destination = "storage/cluster.#{cluster}/storage/*/default"
+          elsif match_part_row
+            service_entry["part"] = match_part_row[1].to_i
+            service_entry["row"] = match_part_row[2].to_i
           else
             feed_destination = nil
           end
