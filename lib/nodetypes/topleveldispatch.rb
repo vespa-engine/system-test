@@ -2,21 +2,11 @@
 
 class Topleveldispatch < VespaNode
 
-  attr_reader :tld, :part, :row
+  attr_reader :tld
 
   def initialize(*args)
     super(*args)
-    if @service_entry["part"] && @service_entry["row"]
-      @part = @service_entry["part"]
-      @row = @service_entry["row"]
-      @tld = false
-    else
-      @tld = true
-    end
-  end
-
-  def self.get_idx(part, row)
-    "part[#{part}].row[#{row}]"
+    @tld = true
   end
 
   def wait_until_ready(timeout = 60)
