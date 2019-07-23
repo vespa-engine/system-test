@@ -647,12 +647,16 @@ class VespaModel
 
           # index for content nodes are invisible in model config, snoop configid:
           c = service_entry["config-id"]
-          match_content = Regexp.new('^\w+/search/cluster\.\w+/(\d+)$').match(c)
+          match_content1 = Regexp.new('^\w+/search/cluster\.\w+/(\d+)$').match(c)
+          match_content2 = Regexp.new('^.\w+/search/(\d+)$').match(c)
 
           cluster = service_entry["clustername"]
-          if match_content
-            service_entry["num"] = match_content[1].to_i
-            feed_destination = "storage/cluster.#{cluster}/storage/*/default"
+          if match_content1
+             service_entry["num"] = match_content1[1].to_i
+             feed_destination = "storage/cluster.#{cluster}/storage/*/default"
+           elsif match_content2
+             service_entry["num"] = match_content2[1].to_i
+             feed_destination = "storage/cluster.#{cluster}/storage/*/default"
           else
             feed_destination = nil
           end
