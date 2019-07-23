@@ -50,22 +50,25 @@ class CloudConfigTest < TestCase
   end
 
   def create_session_v2(hostname, tenant, application, expected_session_id)
-    baseurl = "#{https_client.scheme}://#{hostname}:#{DEFAULT_SERVER_HTTPPORT}/application/v2/tenant/#{tenant}/session"
     tmpdest = dirs.tmpdir + File.basename(application)
     `tar -C #{application} -cf - . | gzip > #{tmpdest}`
-    puts "Request: POST #{baseurl}?verbose=true"
     compressed_data = File.read(tmpdest)
-    response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, "/application/v2/tenant/#{tenant}/session", compressed_data, query: 'verbose=true', headers: {'Content-Type' => 'application/x-gzip'})
+    response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, create_session_v2_path(tenant), compressed_data, query: 'verbose=true', headers: {'Content-Type' => 'application/x-gzip'})
     json_response = JSON.parse(response.body)
     validate_create_session_response(baseurl, json_response, expected_session_id)
     json_response
   end
 
   def create_session_v2_with_uri(hostname, tenant, from_url, expected_session_id)
-    response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, "/application/v2/tenant/#{tenant}/session", nil, query: "verbose=true&from=#{from_url}")
+    response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, create_session_v2_path(tenant), nil, query: "verbose=true&from=#{from_url}")
     json_response = JSON.parse(response.body)
     validate_create_session_response(url, json_response, expected_session_id)
     json_response
+  end
+
+  private
+  def create_session_v2_path(tenant)
+    "/application/v2/tenant/#{tenant}/session"
   end
 
   private
