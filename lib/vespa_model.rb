@@ -981,7 +981,7 @@ class VespaModel
   end
 
   def save_qrserver_logfiles(handle)
-    handle.list_files(@qrs_logs_dir + '/QueryAccessLog.*.[0-9]*').each do |filename|
+    handle.list_files(@qrs_logs_dir + '/[a-zA-Z]*.*').each do |filename|
       File.open(@testcase.dirs.vespalogdir + "#{handle.short_name}-#{File.basename(filename)}", "w") do |file|
         file.write(handle.readfile(filename))
       end
