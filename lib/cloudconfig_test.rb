@@ -55,14 +55,14 @@ class CloudConfigTest < TestCase
     compressed_data = File.read(tmpdest)
     response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, create_session_v2_path(tenant), compressed_data, query: 'verbose=true', headers: {'Content-Type' => 'application/x-gzip'})
     json_response = JSON.parse(response.body)
-    validate_create_session_response(baseurl, json_response, expected_session_id)
+    validate_create_session_response(json_response, hostname, tenant, expected_session_id)
     json_response
   end
 
   def create_session_v2_with_uri(hostname, tenant, from_url, expected_session_id)
     response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, create_session_v2_path(tenant), nil, query: "verbose=true&from=#{from_url}")
     json_response = JSON.parse(response.body)
-    validate_create_session_response(url, json_response, expected_session_id)
+    validate_create_session_response(json_response, hostname, tenant, expected_session_id)
     json_response
   end
 
@@ -72,11 +72,11 @@ class CloudConfigTest < TestCase
   end
 
   private
-  def validate_create_session_response(base_url, json_response, expected_session_id)
+  def validate_create_session_response(json_response, hostname, tenant, expected_session_id)
     assert_json_contains_field(json_response, "prepared")
-    expected_url = "#{base_url}/#{expected_session_id}/prepared"
     if expected_session_id > 0
-      assert_equal(expected_url, json_response["prepared"])
+      expected_prepare_url = "#{https_client.scheme}://#{hostname}:#{DEFAULT_SERVER_HTTPPORT}#{create_session_v2_path(tenant)}/#{expected_session_id}/prepared"
+      assert_equal(expected_prepare_url, json_response["prepared"])
     end
   end
 
