@@ -61,8 +61,8 @@ class CloudConfigTest < TestCase
     json_response
   end
 
-  def create_session_v2_with_uri(url, expected_session_id)
-    response = https_client.post(url.host, url.port, url.path, nil, query: "#{url.query}&from=#{url}")
+  def create_session_v2_with_uri(hostname, tenant, from_url, expected_session_id)
+    response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, "/application/v2/tenant/#{tenant}/session", nil, query: "verbose=true&from=#{from_url}")
     json_response = JSON.parse(response.body)
     validate_create_session_response(url, json_response, expected_session_id)
     json_response
