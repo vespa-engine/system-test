@@ -122,7 +122,7 @@ class VespaRoute < VdsTest
   end
 
   def test_dumpSinglenodeStreaming
-    app = SearchApp.new.streaming_content.sd(music_sd).qrserver(QrserverCluster.new)
+    app = SearchApp.new.streaming.sd(music_sd).qrserver(QrserverCluster.new)
     deploy_app(app)
     assertDump("<protocol name='document'>\n" +
                "    <hop name='indexing' selector='[DocumentRouteSelector]'>\n" +
