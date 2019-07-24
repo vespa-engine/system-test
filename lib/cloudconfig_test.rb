@@ -49,9 +49,17 @@ class CloudConfigTest < TestCase
     end
   end
 
-  def create_session_v2(hostname, tenant, application, expected_session_id)
-    compressed_data = `tar -C #{application} -czf - .`
-    response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, create_session_v2_path(tenant), compressed_data, query: 'verbose=true', headers: {'Content-Type' => 'application/x-gzip'})
+  def create_session_v2(hostname, tenant, application, expected_session_id, compression='gzip')
+    if compression == 'gzip'
+      compressed_data = `tar -C #{application} -czf - .`
+      content_type = 'application/x-gzip'
+    elsif compression == 'zip'
+       compressed_data = `cd #{application} && zip -q -r - *`
+       content_type = 'application/zip'
+    else
+      raise "Unknown compression type: #{compression}"
+    end
+    response = https_client.post(hostname, DEFAULT_SERVER_HTTPPORT, create_session_v2_path(tenant), compressed_data, query: 'verbose=true', headers: {'Content-Type' => content_type})
     json_response = JSON.parse(response.body)
     validate_create_session_response(json_response, hostname, tenant, expected_session_id)
     json_response
