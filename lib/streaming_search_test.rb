@@ -25,7 +25,7 @@ class StreamingSearchTest < SearchTest
   end
 
   def self.testparameters
-    { "STREAMING_CONTENT" => { :search_type => "STREAMING_CONTENT" } }
+    { "STREAMING" => { :search_type => "STREAMING" } }
   end
 
   def apply_timeout_multiplier(params, mult)
