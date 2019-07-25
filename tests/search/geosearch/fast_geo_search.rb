@@ -153,6 +153,7 @@ def test_multiple_position_fields
     fbench = Perf::Fbench.new(qrserver, qrserver.name, Environment.instance.vespa_web_service_port)
     fbench.runtime = 100
     fbench.clients = 1
+    fbench.disable_tls = false
     fbench.query(queries)
     p95 = fbench.p95.to_f
     puts "vespa-fbench reports 95th percentile: #{p95} ms"
