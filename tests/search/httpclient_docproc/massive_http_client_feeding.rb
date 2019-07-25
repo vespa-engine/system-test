@@ -3,6 +3,9 @@ require 'search_test'
 require 'document_set'
 
 class MassiveHttpClientFeedingTest < SearchTest
+  
+  DOCUMENTS = 50000
+  
   def generate_documents(docid_begin, num_docs)
     ds = DocumentSet.new()
     for i in docid_begin...docid_begin + num_docs do
@@ -23,7 +26,7 @@ class MassiveHttpClientFeedingTest < SearchTest
                             jvmargs("-Xms4096m -Xmx4096m").
                             search(Searching.new).
                             gateway(ContainerDocumentApi.new).
-                            config(ConfigOverride.new("container.handler.threadpool").add("maxthreads", 70))
+                            config(ConfigOverride.new("container.handler.threadpool").add("maxthreads", 50))
     output = deploy_app(SearchApp.new.
                 cluster(SearchCluster.new.sd(SEARCH_DATA+"music.sd")).
                 container(container_cluster))
@@ -31,13 +34,13 @@ class MassiveHttpClientFeedingTest < SearchTest
     
     admin_node = vespa.adminserver
     @feed_file = dirs.tmpdir + "temp.feed.xml"
-    generate_documents(0, 100000).write_vespafeed_xml(@feed_file)
+    generate_documents(0, DOCUMENTS).write_vespafeed_xml(@feed_file)
     gw = @vespa.container.values.first
     wait_for_application(gw, output)
-    feedfile(@feed_file, {:client => :vespa_http_client, :host => gw.name, :port => gw.http_port, :num_persistent_connections_per_endpoint => 1000, :disable_tls => true})
+    feedfile(@feed_file, {:client => :vespa_http_client, :host => gw.name, :port => gw.http_port, :num_persistent_connections_per_endpoint => 500})
 
     # Don't care if we do not hit the spawned documents, we only care about feeding not getting stuck in this test.
-    wait_for_hitcount("ronny", 100000)
+    wait_for_hitcount("ronny", DOCUMENTS)
   end
 
   def teardown
