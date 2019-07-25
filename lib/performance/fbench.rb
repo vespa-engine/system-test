@@ -23,7 +23,8 @@ module Perf
       @output_str = nil
       @request_per_ms = 0
       @times_reuse_query_files = nil
-      @disable_tls = false
+      # TODO Set HTTPS as default once performance test limits and bench configuration have been adjusted
+      @disable_tls = true
     end
 
     def query(queryfile)
@@ -36,7 +37,7 @@ module Perf
       @output[15]
     end
 
-    # The qps_scale_factor is used to scale up the QPS value, 
+    # The qps_scale_factor is used to scale up the QPS value,
     # e.g. when calculating the effective QPS for boolean search with subqueries.
     # For the boolean search benchmarking, the number of subqueries per query is used as scale factor.
     def fill(qps_scale_factor = 1)
@@ -64,8 +65,7 @@ module Perf
       cmd += "-o #{@result_file} " if @result_file
       cmd += "-k " if @disable_http_keep_alive
       cmd += "-r #{@times_reuse_query_files} " if @times_reuse_query_files
-      # TODO Re-enable HTTPS once performance issues are resolved
-      # cmd += "-D " unless @disable_tls
+      cmd += "-D " unless @disable_tls
       cmd += "#{@hostname} #{@port} 2>&1"
       cmd
     end
