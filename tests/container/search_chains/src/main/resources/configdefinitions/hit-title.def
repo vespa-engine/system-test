@@ -1,4 +1,3 @@
-version=1
 package=com.yahoo.vespatest
 
 hitTitle string default="Hit added by AddHitSearcher."

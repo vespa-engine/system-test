@@ -1,4 +1,3 @@
-version=1
 namespace=config
 
 barValue string default="defaultBar"

@@ -1,4 +1,3 @@
-version=2
 namespace=config
 
 # test config vars with no defaults

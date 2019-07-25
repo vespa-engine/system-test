@@ -1,5 +1,4 @@
 # Used in sysdoc
-version=2
 namespace=config
 
 message string default="NO MESSAGE"
