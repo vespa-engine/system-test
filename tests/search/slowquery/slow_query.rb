@@ -4,6 +4,29 @@ require 'environment'
 
 class SlowQuery < IndexedSearchTest
 
+  HTTP_CONTENT_LENGTH = 20
+
+  class SlowStream
+    def initialize
+      @chars_left = HTTP_CONTENT_LENGTH
+    end
+
+    def read(size, out)
+      if eof
+        nil
+      else
+        sleep 1
+        @chars_left = @chars_left - 1
+        out << 'a'
+        1
+      end
+    end
+
+    def eof
+      @chars_left <= 0
+    end
+  end
+
   def setup
     set_owner("arnej")
     deploy_app(SearchApp.new.sd(selfdir+"simple.sd"))#.qrserver(QrserverCluster.new))
@@ -14,6 +37,7 @@ class SlowQuery < IndexedSearchTest
 
     node = vespa.adminserver
     node.copy(selfdir + "gendata.c", dirs.tmpdir)
+    # TODO Generate test data using Ruby instead of C program
     (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c && ./a.out | vespa-feed-perf")
     puts "compile and feed output: #{output}"
 
@@ -22,19 +46,20 @@ class SlowQuery < IndexedSearchTest
 
     num_queries = 3
     puts "Doing #{num_queries} queries using misbehaving client."
-    could_query = false
-    vespa.adminserver.copy(selfdir + "BadClient.java", dirs.tmpdir)
-    vespa.adminserver.execute("javac -d #{dirs.tmpdir} #{dirs.tmpdir}/BadClient.java")
     qrserver = vespa.container.values.first
     num_queries.times do
       hname = qrserver.name
       sport = qrserver.http_port
-      vespa.adminserver.execute("java -cp #{dirs.tmpdir} com.yahoo.prelude.test.BadClient #{hname} #{sport}")
-      if $?.exitstatus == 0
-        could_query = true
+      https_client.with_https_connection(hname, sport, '/search/', query: 'query=foobar&hits=400&timeout=1.0s') do |connection, uri|
+        request = Net::HTTP::Post.new(uri, {'Content-Length' => HTTP_CONTENT_LENGTH.to_s})
+        request.body_stream = SlowStream.new
+        connection.request(request) do |response|
+          puts "Response of length #{response.read_body.length} received"
+        end
+      puts "Request succeeded and connection closed"
       end
     end
-    assert(could_query, "Could not query QRS successfully in #{num_queries} tries.")
+
     # Now to try and make sure the messages propagate to the vespa log file
     sleep 10
     qrserver.stop
