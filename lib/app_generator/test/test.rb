@@ -36,8 +36,8 @@ class SearchAppGenTest < Test::Unit::TestCase
     verify('default_elastic.xml', create_default.elastic.enable_http_gateway)
   end
 
-  def test_default_streaming_content
-    verify('default_streaming_content.xml', create_default.streaming_content.enable_http_gateway)
+  def test_default_streaming
+    verify('default_streaming.xml', create_default.streaming.enable_http_gateway)
   end
 
   # test setup with bells and whistles
@@ -726,8 +726,8 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_streaming_content_with_bucketsplit
-    actual = SearchApp.new.streaming_content.
+  def test_streaming_with_bucketsplit
+    actual = SearchApp.new.streaming.
              storage(StorageCluster.new("mystorage").
                      default_group.bucket_split_count(4)).
              storage(StorageCluster.new("not used").

@@ -77,8 +77,6 @@ class SearchApp < App
       elastic
     elsif value == "STREAMING"
       streaming
-    elsif value == "STREAMING_CONTENT"
-      streaming_content
     elsif value == "NONE"
       no_search
     end
@@ -92,12 +90,6 @@ class SearchApp < App
   end
 
   def streaming()
-    @content.model_type(:content)
-    @content.search_type(:streaming)
-    self
-  end
-
-  def streaming_content()
     @content.model_type(:content)
     @content.search_type(:streaming)
     self
