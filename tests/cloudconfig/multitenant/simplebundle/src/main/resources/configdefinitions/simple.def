@@ -1,4 +1,3 @@
-version=1
 namespace=bar2.baz_foo
 
 foo string

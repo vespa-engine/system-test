@@ -1,4 +1,3 @@
-version=1
 package=com.yahoo.importer.config
 
 exampleString string
