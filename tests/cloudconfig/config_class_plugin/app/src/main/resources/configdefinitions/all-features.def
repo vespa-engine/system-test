@@ -12,7 +12,7 @@
 # - Include enum primitives and array of enums. Arrays of enums must be handled
 #   specially by the C++ code.
 # - Include enums both with and without default values.
-# - Include primitive string, numbers & doubles both with and without default
+# - Include primitive string, numbers and doubles both with and without default
 #   values.
 # - Have an array within a struct, to verify that we correctly recurse.
 # - Reuse type name further within to ensure that this works.
