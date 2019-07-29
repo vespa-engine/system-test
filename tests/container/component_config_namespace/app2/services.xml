@@ -12,7 +12,7 @@
     <search>
            <chain id="no1">
             <searcher id="com.yahoo.searchers.Searcher1" bundle="com.yahoo.searcher1">
-              <config name="foo" namespace="com.yahoo.bar">
+              <config name="com.yahoo.bar.foo">
                 <title>Searcher1 title</title>
               </config>
             </searcher>
@@ -20,7 +20,7 @@
 
           <chain id="no2">
             <searcher id="com.yahoo.searchers.Searcher2" bundle="com.yahoo.searcher2">
-              <config name="foo" namespace="com.yahoo.xyzzy">
+              <config name="com.yahoo.xyzzy.foo">
                 <number>42</number>
               </config>
             </searcher>
