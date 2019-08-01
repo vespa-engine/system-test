@@ -463,12 +463,13 @@ class VespaModel
   end
 
   def add_perfmap_agent_to_container_jvmargs(vespa_services)
+    perfmap_agent = "#{Environment.instance.vespa_home}/lib64/libperfmap.so"
     doc = REXML::Document.new(File.new(vespa_services))
     paths = ['services/jdisc/nodes',
              'services/container/nodes']
     paths.each do |path|
       REXML::XPath.each(doc, path) do |e|
-        newattr = "-agentpath:#{Environment.instance.vespa_home}/lib64/libperfmap.so"
+        newattr = File.file?(perfmap_agent) ? "-agentpath:#{perfmap_agent}" : ''
         origattr = e.attributes['jvmargs']
         newattr += ' ' + origattr if origattr
         e.attributes['jvmargs'] = newattr
