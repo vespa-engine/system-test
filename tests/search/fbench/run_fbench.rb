@@ -32,7 +32,7 @@ class RunFbench < IndexedSearchTest
 
   def test_single_qrs
     # Check all queries are run
-    result = @node.run_fbench(@queryfile, :seconds => 120, :reuse => 0, :cycletime => 0)
+    result = @node.run_fbench(@queryfile, :seconds => 120, :reuse => 0, :cycletime => 0, :include_handshake => true)
     assert_equal(@num_queries, result[:success] , "Not all queries runned")
 
     # Testing different number of clients
@@ -107,7 +107,7 @@ class Fbench2 < IndexedSearchTest
 
   def test_multiple_qrs
     # Check all queries are run with two valid qrs servers
-    result = @node.run_fbench(@queryfile, :seconds => -1, :reuse => 0, :multiple_qrs => 1, :cycletime => 0, :output => @fbench_output, :qrserver => vespa.qrserver["0"], :qrserver2 => vespa.qrserver["1"])
+    result = @node.run_fbench(@queryfile, :seconds => -1, :reuse => 0, :multiple_qrs => 1, :cycletime => 0, :output => @fbench_output, :qrserver => vespa.qrserver["0"], :qrserver2 => vespa.qrserver["1"], :include_handshake => true)
     output = vespa.adminserver.readfile(@fbench_output)
     assert_equal(@num_queries, result[:success] , "Not all queries ran successfully, only #{result[:success]}/#{@num_queries} did. vespa-fbench output=#{output}")
   end
