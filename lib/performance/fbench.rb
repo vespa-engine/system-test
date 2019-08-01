@@ -23,8 +23,7 @@ module Perf
       @output_str = nil
       @request_per_ms = 0
       @times_reuse_query_files = nil
-      # TODO Set HTTPS as default once performance test limits and bench configuration have been adjusted
-      @disable_tls = true
+      @disable_tls = false
     end
 
     def query(queryfile)
