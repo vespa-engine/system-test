@@ -15,13 +15,21 @@ module Perf
       @start_cpu_total = 0
       @end_cpu_used = 0
       @end_cpu_total = 0
+      @ysar_binary = "#{Environment.instance.vespa_home}/sbin/ysar_gather" # TODO Remove dependency on internal tooling
+    end
+
+    def has_ysar
+      @node.file?(@ysar_binary)
     end
 
     def ysar_gather_cmd
-      "#{Environment.instance.vespa_home}/sbin/ysar_gather --list --delay-mode=none"
+      "#{@ysar_binary} --list --delay-mode=none"
     end
 
     def load
+      unless has_ysar
+        return [0, 0]
+      end
       output = @node.execute(ysar_gather_cmd, :noecho => true)
       output.split("\n").each do |l|
         if l =~ /^cput=/
