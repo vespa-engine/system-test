@@ -23,8 +23,8 @@ module Perf
       @output_str = nil
       @request_per_ms = 0
       @times_reuse_query_files = nil
-      @disable_tls = false
-      @include_handshake = false
+      @disable_tls = true
+      @include_handshake = true
     end
 
     def query(queryfile)
