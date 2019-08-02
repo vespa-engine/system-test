@@ -16,7 +16,7 @@ class SearchDownWhileFeeding < IndexedSearchTest
     puts "1 RESULT *****************"
     puts result
     puts "1 ************************"
-    assert(result.index("ok: 10"))
+    assert_match(/ok: 10/, result)
 
     puts "Stopping one searchnode"
     vespa.search["search"].first.stop
@@ -31,7 +31,7 @@ class SearchDownWhileFeeding < IndexedSearchTest
     puts "2 ************************"
     # only with --progress yes # assert(result.index("Lost: 10"))
 
-    assert(result.index("failed: 10"))
+    assert_match(/failed: 10/, result)
 
     puts "Starting searchnode again"
     vespa.search["search"].first.start
@@ -40,7 +40,7 @@ class SearchDownWhileFeeding < IndexedSearchTest
     puts "3 RESULT *****************"
     puts result
     puts "3 ************************"
-    assert(result.index("ok: 10"))
+    assert_match(/ok: 10/, result)
   end
 
   def teardown
