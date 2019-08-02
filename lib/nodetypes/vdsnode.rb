@@ -41,7 +41,7 @@ class VDSNode < VespaNode
       end
     }
     diff = ended - started
-    max_fetch_time = (is_stress_test? or testcase.valgrind) ? 300 : 15
+    max_fetch_time = (is_stress_test? or testcase.valgrind) ? 300 : 20
     if (diff > max_fetch_time) then
       raise "Used more than #{max_fetch_time} seconds (#{diff}) to get status page"
     end
