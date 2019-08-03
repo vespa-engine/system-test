@@ -19,7 +19,7 @@ module ResizeApps
       @num_hosts = num_hosts
       @sps = sps
       @slack_minhits = 200
-      @slack_maxdocs_per_group = 750
+      @slack_maxdocs_per_group = 1000
       assert(num_hosts == 1 || num_hosts == 2 || num_hosts >= nodes)
     end
 
@@ -1331,8 +1331,7 @@ class ResizeContentClusterBase < SearchTest
     puts aapp.services_xml
     numdocs = rapp.numdocs
     num_child_docs = rapp.num_child_docs
-    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs,
-                 "resizefeed")
+    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs, "resizefeed")
     poll_state = start_poll_state
     redeploy(aapp)
     start_new_nodes

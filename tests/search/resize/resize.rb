@@ -50,7 +50,7 @@ class ResizeHDContentCluster < ResizeContentClusterBase
   def test_hd_grow
     set_description("Test grow of hierarchical distribution elastic cluster")
     app = ResizeApps::HDGrowApp.new(self, @smalldictsize, @smallnumdocs, 0, @num_hosts)
-    app.slack_minhits = 700
+    app.slack_minhits = 800
     perform_grow(app)
   end
 
