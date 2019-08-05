@@ -23,6 +23,26 @@ class RoutingTest < IndexedSearchTest
   end
 
   def two_cluster_app
+    SearchApp.new.
+           enable_http_gateway.
+           cluster(
+             SearchCluster.new("music").sd(selfdir + "music.sd").
+             doc_type("music", "music.year / 3 > 0")).
+           cluster(
+             SearchCluster.new("books").sd(selfdir + "book.sd").
+             doc_type("book", "book.year / 3 > 0"))
+  end
+
+  def test_multicluster_with_selection_get
+    deploy_app(two_cluster_app)
+    start
+    feed_and_wait_for_docs("music", 1, :file => selfdir + "bookandmusic_feed.xml", :trace => 9)
+    vespa.document_api_v1.put(getIronMaiden)
+    wait_for_hitcount("sddocname:music", 2)
+    assert_result("search=music&query=metallica", selfdir + "metallica_result.xml")
+    assert_result("search=music&query=prince", selfdir + "lepetitprince_result.xml")
+    assert_equal(getMetallica(), vespa.document_api_v1.get("id:music:music::http://music.yahoo.com/metallica/BestOf", @get_params))
+    assert_equal(getLePetitPrince(), vespa.document_api_v1.get("id:book:book::lepetitprince", @get_params))
   end
 
   def test_feedToSearchAndStorage
