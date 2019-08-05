@@ -16,7 +16,7 @@ class RoutingTest < IndexedSearchTest
                       storage(StorageCluster.new.default_group.
                               doc_type("music").
                               doc_type("book")))
-    @get_params = { :route => "storage/cluster.storage" }
+    @get_params = {}
     start
   end
 
