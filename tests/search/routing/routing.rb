@@ -5,22 +5,49 @@ class RoutingTest < IndexedSearchTest
 
   def setup
     set_owner("vekterli")
-    deploy_app(SearchApp.new.
-                      enable_http_gateway.
-                      cluster(
-                        SearchCluster.new("music").sd(selfdir + "music.sd").
-                        doc_type("music", "music.year > 0")).
-                      cluster(
-                        SearchCluster.new("books").sd(selfdir + "book.sd").
-                        doc_type("book", "book.year > 0")).
-                      storage(StorageCluster.new.default_group.
-                              doc_type("music").
-                              doc_type("book")))
-    @get_params = { :route => "storage/cluster.storage" }
+    @get_params = {}
+  end
+
+  def three_cluster_app
+    SearchApp.new.
+           enable_http_gateway.
+           cluster(
+             SearchCluster.new("music").sd(selfdir + "music.sd").
+             doc_type("music", "music.year > 0")).
+           cluster(
+             SearchCluster.new("books").sd(selfdir + "book.sd").
+             doc_type("book", "book.year > 0")).
+           storage(StorageCluster.new.default_group.
+                   doc_type("music").
+                   doc_type("book"))
+  end
+
+  def two_cluster_app
+    SearchApp.new.
+           enable_http_gateway.
+           cluster(
+             SearchCluster.new("music").sd(selfdir + "music.sd").
+             doc_type("music", "music.year / 3 > 0")).
+           cluster(
+             SearchCluster.new("books").sd(selfdir + "book.sd").
+             doc_type("book", "book.year / 3 > 0"))
+  end
+
+  def test_multicluster_with_selection_get
+    deploy_app(two_cluster_app)
     start
+    feed_and_wait_for_docs("music", 1, :file => selfdir + "bookandmusic_feed.xml", :trace => 9)
+    vespa.document_api_v1.put(getIronMaiden)
+    wait_for_hitcount("sddocname:music", 2)
+    assert_result("search=music&query=metallica", selfdir + "metallica_result.xml")
+    assert_result("search=music&query=prince", selfdir + "lepetitprince_result.xml")
+    assert_equal(getMetallica(), vespa.document_api_v1.get("id:music:music::http://music.yahoo.com/metallica/BestOf", @get_params))
+    assert_equal(getLePetitPrince(), vespa.document_api_v1.get("id:book:book::lepetitprince", @get_params))
   end
 
   def test_feedToSearchAndStorage
+    deploy_app(three_cluster_app)
+    start
     # Feed to search. Because the feed.xml file only contains the actual document we need to pre- and postfix the start-
     # and end-of-feed elements.
     feed_and_wait_for_docs("music", 1, :file => selfdir + "bobdylan_feed.xml", :route => "indexing", :trace => 9)
@@ -39,6 +66,8 @@ class RoutingTest < IndexedSearchTest
   end
 
   def test_musicClusterIgnoresBooks
+    deploy_app(three_cluster_app)
+    start
     feed_and_wait_for_docs("music", 1, :file => selfdir + "bookandmusic_feed.xml", :route => "\"[AND:indexing storage]\"", :trace => 9)
     vespa.document_api_v1.put(getIronMaiden)
     wait_for_hitcount("sddocname:music", 2)
