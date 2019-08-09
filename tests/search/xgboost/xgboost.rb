@@ -12,7 +12,7 @@ class XGBoostServing < IndexedSearchTest
 
     @node = @vespa.nodeproxies.values.first
     @node.execute("pip3 install xgboost sklearn")
-
+    @node.execute("mkdir -p #{selfdir}/app/models/")
     @node.execute("python3 #{selfdir}/train.py #{selfdir}/feature-map.txt  #{selfdir}/app/models/ #{selfdir}  > #{selfdir}/predictions.json")
 
     preds = File.read("#{selfdir}/predictions.json")
