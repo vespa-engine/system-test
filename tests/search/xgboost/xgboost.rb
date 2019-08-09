@@ -10,10 +10,9 @@ class XGBoostServing < IndexedSearchTest
     set_owner("jobergum")
     set_description("Test XGBoost model representation in Vespa")
 
-    @node = @vespa.nodeproxies.values.first
-    @node.execute("pip3 install xgboost sklearn")
-    @node.execute("mkdir -p #{selfdir}/app/models/")
-    @node.execute("python3 #{selfdir}/train.py #{selfdir}/feature-map.txt  #{selfdir}/app/models/ #{selfdir}  > #{selfdir}/predictions.json")
+    system("pip3 install xgboost sklearn")
+    system("mkdir -p #{selfdir}/app/models/")
+    system("python3 #{selfdir}/train.py #{selfdir}/feature-map.txt  #{selfdir}/app/models/ #{selfdir}  > #{selfdir}/predictions.json")
 
     preds = File.read("#{selfdir}/predictions.json")
     @predictions = JSON.parse(preds) 
