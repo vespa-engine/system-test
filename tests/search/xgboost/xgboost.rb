@@ -12,9 +12,7 @@ class XGBoostServing < IndexedSearchTest
 
     system("pip3 install xgboost sklearn")
     system("mkdir -p #{selfdir}/app/models/")
-    system("python3 #{selfdir}/train.py #{selfdir}/feature-map.txt  #{selfdir}/app/models/ #{selfdir}  > #{selfdir}/predictions.json")
-
-    preds = File.read("#{selfdir}/predictions.json")
+    preds = `python3 #{selfdir}/train.py #{selfdir}/feature-map.txt  #{selfdir}/app/models/ #{selfdir}`
     @predictions = JSON.parse(preds) 
   end
 
