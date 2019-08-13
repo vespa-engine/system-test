@@ -2,10 +2,9 @@
 require 'multi_provider_storage_test'
 require 'gatewayxmlparser'
 
-# Test to see if "header" and "body" settings on fields can be changed
-# but you should still get the fields back when visiting.
-#
-# WARNING:  This test is currently known to fail.
+# Test to see if "header" and "body" settings are allowed
+# (they are ignored on Vespa 7, so this test just shows that deployment works)
+# TODO: Remove this test in Vespa 8
 
 class HeaderBodyTest < MultiProviderStorageTest
 
@@ -57,13 +56,6 @@ class HeaderBodyTest < MultiProviderStorageTest
     return results.length
   end
 
-  def restart
-    puts "TEST: Restarting storage node 0"
-    vespa.search["storage"].first.stop
-    vespa.search["storage"].first.start
-    sleep(10)
-  end
-
   def test_with_visit
     # Run a visitor before inserting to make sure storage is empty
     numResults = checkVisiting()
@@ -75,30 +67,8 @@ class HeaderBodyTest < MultiProviderStorageTest
     puts "numResults after insert is " + numResults.to_s
     assert_equal(2, numResults)
 
-    puts "Starting main visitor A"
     visiteddocs = visit()
     correctdocs = [ @doc1, @doc2 ]
-    assert_equal(correctdocs.sort, visiteddocs.sort)
-
-    deploy_app(default_app.sd(selfdir+"v2/music.sd"))
-    puts "Starting main visitor B"
-    visiteddocs = visit()
-    assert_equal(correctdocs.sort, visiteddocs.sort)
-
-    restart
-    puts "Starting main visitor C"
-    visiteddocs = visit()
-    assert_equal(correctdocs.sort, visiteddocs.sort)
-
-    deploy_app(default_app.sd(selfdir+"v3/music.sd"))
-    puts "Starting main visitor D"
-    visiteddocs = visit()
-    assert_equal(correctdocs.sort, visiteddocs.sort)
-
-    restart
-    puts "Starting main visitor E"
-    visiteddocs = visit()
-    puts visiteddocs
     assert_equal(correctdocs.sort, visiteddocs.sort)
   end
 
