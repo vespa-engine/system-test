@@ -12,11 +12,20 @@ class NoQueryInSummaryFetch < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").search_dir(selfdir + "search"))
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir + "data.xml")
-    
-    assert(search_base("query=title:foo&tracelevel=3&timeout=9.9").xmldata.match("Sending 1 summary fetch RPC requests"),
-           "Sending summary requests over RPC when query is not needed")
-    assert(search_base("query=title:foo&tracelevel=3&ranking.profile=test1&ranking.queryCache=true&timeout=9.9").xmldata.match("Sending 1 summary fetch RPC requests"),
-           "Sending summary requests over RPC when query is not needed")
+
+    # Need as cache is off and required by rank profile test1
+    result = search_base("query=title:foo&tracelevel=3&ranking.profile=test1&ranking.queryCache=false&timeout=9.9")
+    assert(result.xmldata.match("Resending query during document summary fetching"), "Resending query data when the feature cache is turned off")
+    assert_equal('{"fieldMatch(title)":1.0,"vespa.summaryFeatures.cached":0.0}', result.hit[0].comparable_fields["summaryfeatures"])
+
+    # Not needed as explicit cached
+    result = search_base("query=title:foo&tracelevel=3&ranking.profile=test1&ranking.queryCache=true&timeout=9.9")
+    assert(result.xmldata.match("Not resending query during document summary fetching"), "Not resending query data when the feature cache is turned off")
+    assert_equal('{"fieldMatch(title)":1.0,"vespa.summaryFeatures.cached":0.0}', result.hit[0].comparable_fields["summaryfeatures"])
+
+    # Not needed by query
+    result = search_base("query=title:foo&tracelevel=3&timeout=9.9")
+    assert(result.xmldata.match("Not resending query during document summary fetching"), "Not resending query data when not required by query for summary construction")
    end
 
   def teardown
