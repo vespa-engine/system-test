@@ -130,10 +130,10 @@ class ConfigServer < CloudConfigTest
     assert_health_status_for_config_server("up")
 
     # Manipulate version of deployed application, to simulate an upgrade of vespa
-    # Health status should be ''up' when this is the case
+    # Health status should be 'up' when this is the case
     zk_path = "/config/v2/tenants/default/sessions/3/version"
     # NOTE: Needs to be a version number with same major version as the deployed version
-    vespa.configservers["0"].execute("echo \"set #{zk_path} 6.0.0\" | vespa-zkcli")
+    vespa.configservers["0"].execute("echo \"set #{zk_path} 7.999.999\" | vespa-zkcli")
     vespa.configservers["0"].stop_configserver({:keep_everything => true})
     vespa.configservers["0"].start_configserver
     vespa.configservers["0"].ping_configserver
