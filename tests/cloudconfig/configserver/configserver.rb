@@ -82,11 +82,21 @@ class ConfigServer < CloudConfigTest
     generation_first_app = get_generation(output)
     # Manipulate application package in zookeeper to make it invalid
     vespa.adminserver.execute("vespa-zkctl delete /config/v2/tenants/default/sessions/#{generation_first_app}/userapp/services.xml")
-    vespa.configservers["0"].stop_configserver({:keep_everything => true})
+    configserver = vespa.configservers["0"]
+    configserver.stop_configserver({:keep_everything => true})
+
+    override =<<ENDER
+<config name="cloud.config.configserver">
+  <throwIfActiveSessionCannotBeLoaded>false</throwIfActiveSessionCannotBeLoaded>
+</config>
+ENDER
+
+    add_xml_file_to_configserver_app(configserver, override, "configserver-config.xml")
     sleep 10
-    vespa.configservers["0"].start_configserver
+    configserver.start_configserver
     deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
     start
+    remove_xml_file_from_configserver_app(configserver, override, "configserver-config.xml")
   end
 
   # Check that an application with an error is skipped and that another application works just
