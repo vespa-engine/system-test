@@ -23,10 +23,17 @@ class HealthCheckProxyTest < SearchContainerTest
                             add('healthCheckProxy', ConfigValues.new.add('enable', true).add('port', container_port.to_s))))))
     deploy_app(app)
     start
-    response = Net::HTTP.get_response(URI("http://#{vespa.container.values.first.hostname}:#{proxy_port}/status.html"))
+    container_hostname = vespa.container.values.first.hostname
+    response = Net::HTTP.get_response(URI("http://#{container_hostname}:#{proxy_port}/status.html"))
     assert_equal(200, response.code.to_i)
     assert_match(Regexp.new('<title>OK</title>'), response.body, 'Could not find expected message in response.')
     assert_equal(container_port, response['Vespa-Health-Check-Proxy-Target'].to_i)
+
+    response = https_client.get(container_hostname, container_port, '/')
+    assert_equal(200, response.code.to_i, 'Root handler should be accessible from the standard port')
+
+    response = Net::HTTP.get_response(URI("http://#{container_hostname}:#{proxy_port}/"))
+    assert_equal(404, response.code.to_i, 'Root handler should not be accessible from proxy port')
   end
 
   def teardown
