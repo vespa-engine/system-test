@@ -13,7 +13,7 @@ class HealthCheckProxyTest < SearchContainerTest
     container_port = Environment.instance.vespa_web_service_port
     proxy_port = container_port + 1
     app = ContainerApp.new.container(
-        Container.new.jvmargs('-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005').
+        Container.new.
             http(Http.new.
                 server(
                     Server.new('https-server', container_port)).
