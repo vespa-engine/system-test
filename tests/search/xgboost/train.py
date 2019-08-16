@@ -6,6 +6,7 @@ import sys
 featureMapFile = sys.argv[1]
 modelDir = sys.argv[2]
 feedDir = sys.argv[3]
+predictionFile = sys.argv[4]
 
 def makeVespaFeed(dataset, data):
   datapoints = []
@@ -47,5 +48,5 @@ predictions = {
     "regression_breast_cancer" : b.predict(breast_cancer.data).tolist(),
     "binary_breast_cancer" : c.predict_proba(breast_cancer.data)[:,1].tolist()
 }
-json.dump(predictions,sys.stdout)
+json.dump(predictions,open(predictionFile,"w"))
 

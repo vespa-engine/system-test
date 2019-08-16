@@ -9,11 +9,6 @@ class XGBoostServing < IndexedSearchTest
     @valgrid = false
     set_owner("jobergum")
     set_description("Test XGBoost model representation in Vespa")
-
-    system("pip3 install xgboost sklearn")
-    system("mkdir -p #{selfdir}/app/models/")
-    system("python3 #{selfdir}/train.py #{selfdir}/feature-map.txt  #{selfdir}/app/models/ #{selfdir} > #{dirs.tmpdir}/predictions.json")
-    @predictions = JSON.parse(File.read("#{dirs.tmpdir}/predictions.json"))
   end
 
   def compare(vespa_prediction,dataset)
@@ -25,6 +20,10 @@ class XGBoostServing < IndexedSearchTest
   end
 
   def test_xgboost
+    system("pip3 install xgboost sklearn")
+    system("mkdir -p #{selfdir}/app/models/")
+    system("python3 #{selfdir}/train.py #{selfdir}/feature-map.txt  #{selfdir}/app/models/ #{selfdir} #{selfdir}/predictions.json")
+    @predictions = JSON.parse(File.read("#{selfdir}/predictions.json"))
     deploy("#{selfdir}/app")
     start
 
