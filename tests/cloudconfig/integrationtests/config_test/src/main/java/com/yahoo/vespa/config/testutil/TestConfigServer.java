@@ -3,7 +3,6 @@ package com.yahoo.vespa.config.testutil;
 
 import com.yahoo.cloud.config.ConfigserverConfig;
 import com.yahoo.config.FileReference;
-import com.yahoo.config.codegen.CNode;
 import com.yahoo.config.codegen.DefParser;
 import com.yahoo.config.codegen.InnerCNode;
 import com.yahoo.config.model.api.ConfigDefinitionRepo;
@@ -14,13 +13,16 @@ import com.yahoo.component.Version;
 import com.yahoo.config.provisioning.FlavorsConfig;
 import com.yahoo.config.subscription.CfgConfigPayloadBuilder;
 import com.yahoo.jrt.Spec;
-import com.yahoo.vespa.config.*;
+import com.yahoo.vespa.config.ConfigDefinitionKey;
+import com.yahoo.vespa.config.ConfigKey;
+import com.yahoo.vespa.config.ConfigPayload;
+import com.yahoo.vespa.config.GenerationCounter;
+import com.yahoo.vespa.config.GetConfigRequest;
 import com.yahoo.vespa.config.buildergen.ConfigDefinition;
 import com.yahoo.vespa.config.protocol.ConfigResponse;
 import com.yahoo.vespa.config.protocol.SlimeConfigResponse;
 import com.yahoo.vespa.config.server.ReloadHandler;
 import com.yahoo.vespa.config.server.RequestHandler;
-import com.yahoo.vespa.config.GenerationCounter;
 import com.yahoo.vespa.config.server.SuperModelManager;
 import com.yahoo.vespa.config.server.SuperModelRequestHandler;
 import com.yahoo.vespa.config.server.application.ApplicationSet;
@@ -36,9 +38,23 @@ import com.yahoo.vespa.config.util.ConfigUtils;
 import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.flags.InMemoryFlagSource;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -198,10 +214,6 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
     private void addConfig(ConfigKey key, ConfigResponse configResponse) {
         // Always store, even if key exists in cache, since config can change without the key changing
         configCache.put(key, configResponse);
-        if (key.getNamespace().equals("")) {
-            ConfigKey newKey = new ConfigKey(key.getName(), key.getConfigId(), CNode.DEFAULT_NAMESPACE);
-            configCache.put(newKey, configResponse);
-        }
     }
 
     /**
