@@ -20,21 +20,21 @@ class XGBoostServing < IndexedSearchTest
   end
 
   def test_xgboost
-
     system("pip3 install xgboost sklearn")
-    system("mkdir -p #{selfdir}/app/models/")
-    system("python3 #{selfdir}/train.py #{selfdir}/feature-map.txt  #{selfdir}/app/models/ #{selfdir} #{selfdir}/predictions.json")
-    puts("Exit code for train.py was " + "#{$?}")
-    puts("Selfdir has these files: " + Dir.entries("#{selfdir}").to_s())
-    puts("Selfdir/models has these files: " + Dir.entries("#{selfdir}/app/models/").to_s())
-
-    @predictions = JSON.parse(File.read("#{selfdir}/predictions.json"))
-    deploy("#{selfdir}/app")
+    tmp_dir = dirs.tmpdir + "/tmp"
+    system("mkdir -p #{tmp_dir}")
+    # We are mutating the app contents and need to copy to a writable area. Do not put the copy
+    # in dirs.tmpdir/app because this is cleaned and used by the framework to store an app copy. 
+    system("cp -a #{selfdir}/app #{tmp_dir}")
+    system("mkdir -p #{tmp_dir}/app/models")
+    system("python3 #{selfdir}/train.py #{selfdir}/feature-map.txt #{tmp_dir}/app/models/ #{tmp_dir} #{tmp_dir}/predictions.json")
+    @predictions = JSON.parse(File.read("#{tmp_dir}/predictions.json"))
+    deploy("#{tmp_dir}/app")
     start
 
     #Feed files generated from setup/train.py 
-    feed(:file => "#{selfdir}/diabetes-feed.json")
-    feed(:file => "#{selfdir}/breast_cancer-feed.json")
+    feed(:file => "#{tmp_dir}/diabetes-feed.json")
+    feed(:file => "#{tmp_dir}/breast_cancer-feed.json")
     wait_for_hitcount("query=sddocname:x", 569 + 442)
 
     regression_diabetes = getVespaPrediction("diabetes", "regression-diabetes")
