@@ -20,9 +20,14 @@ class XGBoostServing < IndexedSearchTest
   end
 
   def test_xgboost
+
     system("pip3 install xgboost sklearn")
     system("mkdir -p #{selfdir}/app/models/")
     system("python3 #{selfdir}/train.py #{selfdir}/feature-map.txt  #{selfdir}/app/models/ #{selfdir} #{selfdir}/predictions.json")
+    puts("Exit code for train.py was " + "#{$?}")
+    puts("Selfdir has these files: " + Dir.entries("#{selfdir}").to_s())
+    puts("Selfdir/models has these files: " + Dir.entries("#{selfdir}/app/models/").to_s())
+
     @predictions = JSON.parse(File.read("#{selfdir}/predictions.json"))
     deploy("#{selfdir}/app")
     start
