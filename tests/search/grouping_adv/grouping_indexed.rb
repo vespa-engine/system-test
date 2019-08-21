@@ -36,9 +36,9 @@ class GroupingIndexed < IndexedSearchTest
     assert(result.xmldata.match(exp_fill_unranked) != nil, "Expected #{exp_fill_unranked} in result")
 
     # Test session cache accuracy
-    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/accuracy1.xml")
-    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29&groupingSessionCache", "#{selfdir}/accuracy2.xml")
-    check_query("all%28group%28a%29 max%281%29 precision%28100%29 each%28output%28count%28%29%29%29%29&groupingSessionCache", "#{selfdir}/accuracy1.xml")
+    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29&groupingSessionCache=false", "#{selfdir}/accuracy1.xml")
+    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29&groupingSessionCache=true", "#{selfdir}/accuracy2.xml")
+    check_query("all%28group%28a%29 max%281%29 precision%28100%29 each%28output%28count%28%29%29%29%29&groupingSessionCache=true", "#{selfdir}/accuracy1.xml")
 
     # Test debug function
     check_fullquery("/?query=s:aaa&hits=0&timeout=5.0&select=all%28group%28debugwait%28a, 0.1, true%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug1.xml")
