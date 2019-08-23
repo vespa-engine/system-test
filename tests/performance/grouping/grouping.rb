@@ -67,8 +67,8 @@ class GroupingTest < PerformanceTest
     @graphs = [{ :x => 'legend',
                  :y => 'latency',
                  :filter => { 'clients' => [ 1 ], 'legend' => [ 'multilevel' ] },
-                 :y_min => 310,
-                 :y_max => 385,
+                 :y_min => 250,
+                 :y_max => 285,
                  :historic => true
                },
                { :x => 'legend',
