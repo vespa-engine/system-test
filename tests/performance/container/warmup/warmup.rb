@@ -2,7 +2,6 @@
 
 require 'performance_test'
 require 'app_generator/container_app'
-require 'performance/httperf'
 require 'performance/filter'
 require 'performance/proc_tools'
 require 'pp'
@@ -28,12 +27,6 @@ class ContainerWarmup < PerformanceTest
     Perf::System.new(container)
   end
 
-  def run_httperf(system, httperf)
-    system.start
-    httperf.query('/HelloWorld')
-    system.end
-  end
-
   def deploy_helloworld_app()
     jdisc = Container.new.
         handler(Handler.new("com.yahoo.vespatest.HelloWorld").
@@ -55,9 +48,14 @@ class ContainerWarmup < PerformanceTest
     wait_for_application(@vespa.container.values.first, output)
   end
 
-  def run_container_warmup_httperf(num_conns, num_calls)
-    set_description("Test container warmup with httperf.")
-    legend = "warmup_httperf"
+  def run_container_warmup(num_conns, num_calls)
+    set_description("Test container warmup with fbench")
+    legend = "warmup_fbench"
+
+    queryfile_dir = "#{Environment.instance.vespa_home}/tmp/performancetest_container_warmup_jetty/"
+    queryfile_name = "fbench-queries.txt"
+    vespa.adminserver.copy(selfdir + queryfile_name, queryfile_dir)
+    query_file = queryfile_dir + queryfile_name
 
     min_time = 1.0
     max_time = 4.0
@@ -65,9 +63,10 @@ class ContainerWarmup < PerformanceTest
     setup_graphs(legend, min_time, max_time)
 
     container = vespa.container.values.first
-    httperf = get_httperf(container)
-    httperf.num_conns = num_conns
-    httperf.num_calls = num_calls
+    fbench = Perf::Fbench.new(container, container.name, container.http_port)
+    fbench.clients = num_conns
+    fbench.times_reuse_query_files = num_calls
+    fbench.include_handshake = false
 
     system = create_perf_system(container)
 
@@ -75,11 +74,13 @@ class ContainerWarmup < PerformanceTest
     request_rates = Array.new
     total_time = 0
     (0..120).each { |i|
-      run_httperf(system, httperf)
-      total_time += httperf.parser.total_test_duration
-
-      request_rates[i] = httperf.parser.request_rate
+      system.start
+      result = fbench.query(query_file)
+      qps = result[17].to_f
+      total_time += (num_calls / qps)
+      request_rates[i] = qps
       times[i] = total_time
+      system.end
     }
 
     short_window = 25
@@ -156,7 +157,7 @@ class ContainerWarmup < PerformanceTest
 
   def test_container_warmup_jetty
     deploy_helloworld_app
-    run_container_warmup_httperf(1, 1000)
+    run_container_warmup(1, 1000)
   end
 
   def teardown

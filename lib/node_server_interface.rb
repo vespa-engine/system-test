@@ -299,6 +299,10 @@ module NodeServerInterface
     @node_server.file?(*args)
   end
 
+  def create_unique_temp_file(*args)
+    @node_server.create_unique_temp_file(*args)
+  end
+
   def directory?(*args)
     @node_server.directory?(*args)
   end

@@ -28,9 +28,10 @@ module Perf
     end
 
     def query(queryfile)
-      raw_output = @node.execute(fbench_cmd(queryfile))
+      result_file = @node.create_unique_temp_file('fbench_result_')
+      raw_output = @node.execute("#{fbench_cmd(queryfile)} | tee #{result_file}")
       @output_str = raw_output
-      @output = @node.execute("(echo \"#{raw_output}\" | vespa-fbench-result-filter.pl) 2>&1").split
+      @output = @node.execute("cat #{result_file} | vespa-fbench-result-filter.pl").split
     end
 
     def p95
