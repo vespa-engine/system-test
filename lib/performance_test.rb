@@ -94,30 +94,6 @@ class PerformanceTest < TestCase
     end
   end
 
-  def get_httperf(container, http_version='1.1')
-    httperf = Perf::Httperf.new(container, container.name, container.http_port)
-    httperf.http_version = http_version
-    httperf
-  end
-
-  def run_httperf(container, httperf, custom_fillers=[], uri='/')
-    system = Perf::System.new(container)
-    system.start
-    httperf.query(uri)
-
-    system.end
-    fillers = [httperf.fill, system.fill]
-    write_report(fillers + custom_fillers)
-  end
-
-  # num_calls default is deduced from visually inspecting the graph of container/warmup.rb
-  def warmup_container(container, uri, num_conns=1, num_calls=25000)
-    httperf = get_httperf(container)
-    httperf.num_conns = num_conns
-    httperf.num_calls = num_calls
-    httperf.query(uri)
-  end
-
   def run_fbench(qrserver, clients, runtime, custom_fillers=[], params={})
     run_fbench2(qrserver, @queryfile, params.merge({:runtime => runtime, :clients => clients}), custom_fillers)
   end

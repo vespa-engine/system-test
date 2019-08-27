@@ -2,7 +2,6 @@
 require 'performance_test'
 require 'app_generator/container_app'
 require 'app_generator/rest_api'
-require 'performance/httperf'
 require 'pp'
 require 'environment'
 
@@ -39,13 +38,22 @@ class Jersey2HelloWorld < PerformanceTest
     wait_for_application(@container, output)
   end
 
-  def run_performance_fbench(clients, runtime, custom_fillers=[])
+  def copy_query_file
     queryfile_dir = "#{Environment.instance.vespa_home}/tmp/performancetest_jersey_helloworld/"
     queryfile_name = "fbench-queries.txt"
     vespa.adminserver.copy(selfdir + queryfile_name, queryfile_dir)
-
-    @graphs = get_graphs('qps', 'latency')
     @queryfile = queryfile_dir + queryfile_name
+  end
+
+  def warmup_container
+    fbench = Perf::Fbench.new(@container, @container.name, @container.http_port)
+    fbench.times_reuse_query_files = 25000
+    fbench.max_line_size = 1
+    fbench.query(@queryfile)
+  end
+
+  def run_performance_fbench(clients, runtime, custom_fillers=[])
+    @graphs = get_graphs('qps', 'latency')
     run_fbench(@container, clients, runtime, custom_fillers)
   end
 
@@ -90,7 +98,8 @@ class Jersey2HelloWorld < PerformanceTest
   end
 
   def test_jersey2_helloworld
-    warmup_container(@container, '/rest-api/hello')
+    copy_query_file
+    warmup_container
     run_performance_fbench(8, 300, [parameter_filler("build", TestMode::CLIENTS_8)])
     run_performance_fbench(128, 300, [parameter_filler("build", TestMode::CLIENTS_128)])
   end
