@@ -144,7 +144,7 @@ class ParentChildPerfTest < PerformanceTest
       get_matching_latency_graphs(IMPORTED_NESTED, FAST, ADVERTISER_CAMPAIGN_RATIO),
       get_feeding_graph(FEEDING_PUT, 23500, 28000),
       get_feeding_graph(FEEDING_UPDATE, 24300, 32300),
-      get_latency_graph(RANKING, SLOW, 88, 105),
+      get_latency_graph(RANKING, SLOW, 88, 106),
       get_latency_graph(MATCHING, SLOW, 1.7, 2.1),
       get_latency_graph(MATCHING, FAST, 1.07, 1.35)
     ]
