@@ -56,7 +56,8 @@ class SearchMetrics < IndexedSearchTest
     assert_equal(9, metrics.get("content.proton.transactionlog.entries")["last"])
 
     # query / docsum metrics
-    assert_equal(1, metrics.get("content.proton.docsum.count")["count"])
+    assert_equal(3, metrics.get("content.proton.search_protocol.query.latency")["count"])
+    assert_equal(1, metrics.get("content.proton.search_protocol.docsum.latency")["count"])
 
     # matching metrics
     assert_equal(3, metrics.get("content.proton.documentdb.matching.queries",
