@@ -68,7 +68,7 @@ class GroupingTest < PerformanceTest
                  :y => 'latency',
                  :filter => { 'clients' => [ 1 ], 'legend' => [ 'multilevel' ] },
                  :y_min => 240,
-                 :y_max => 285,
+                 :y_max => 290,
                  :historic => true
                },
                { :x => 'legend',
