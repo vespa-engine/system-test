@@ -24,7 +24,7 @@ search test {
   rank-profile onnx inherits default {
 
     macro Placeholder() {
-      expression: tensor(d0[1],d1[784])(0.0)
+      expression: tensor<float>(d0[1],d1[784])(0.0)
     }
 
     first-phase {
