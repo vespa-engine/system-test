@@ -29,7 +29,7 @@ class ModelEvaluation < SearchContainerTest
     result = query("/models/?model=mnist_softmax&function=default.add" +
                    "&argumentName=Placeholder" +
                    "&argumentValue=" + URI::encode(generateArgument()))
-    assert_equal("{\"cells\":[{\"address\":{},\"value\":8.949087578535853E-6}]}", result.body)
+    assert_equal("{\"cells\":[{\"address\":{},\"value\":9.268522262573242E-6}]}", result.body)
 
     # ---- mnist_softmax_saved (tensorflow)
     #    - no argument
@@ -75,7 +75,7 @@ class ModelEvaluation < SearchContainerTest
     # evaluate mnist_softmax model (only has one function, thus optional)
     result = query("/model-evaluation/v1/mnist_softmax/eval" +
                    "?Placeholder=" + URI::encode(generateArgument()))
-    assert_equal("{\"cells\":[{\"address\":{\"d0\":\"0\",\"d1\":\"0\"},\"value\":0.8232705493311443},{\"address\":{\"d0\":\"0\",\"d1\":\"1\"},\"value\":-9.757276956504713},{\"address\":{\"d0\":\"0\",\"d1\":\"2\"},\"value\":6.9822281524124215},{\"address\":{\"d0\":\"0\",\"d1\":\"3\"},\"value\":6.5772413370875205},{\"address\":{\"d0\":\"0\",\"d1\":\"4\"},\"value\":-6.682286614129955},{\"address\":{\"d0\":\"0\",\"d1\":\"5\"},\"value\":6.788742593462982},{\"address\":{\"d0\":\"0\",\"d1\":\"6\"},\"value\":0.49136128040612614},{\"address\":{\"d0\":\"0\",\"d1\":\"7\"},\"value\":-3.539295991298334},{\"address\":{\"d0\":\"0\",\"d1\":\"8\"},\"value\":1.3475151895535347},{\"address\":{\"d0\":\"0\",\"d1\":\"9\"},\"value\":-3.031490591233149}]}", result.body)
+    assert_equal("{\"cells\":[{\"address\":{\"d0\":\"0\",\"d1\":\"0\"},\"value\":0.8232706785202026},{\"address\":{\"d0\":\"0\",\"d1\":\"1\"},\"value\":-9.75727653503418},{\"address\":{\"d0\":\"0\",\"d1\":\"2\"},\"value\":6.982227802276611},{\"address\":{\"d0\":\"0\",\"d1\":\"3\"},\"value\":6.57724142074585},{\"address\":{\"d0\":\"0\",\"d1\":\"4\"},\"value\":-6.682286739349365},{\"address\":{\"d0\":\"0\",\"d1\":\"5\"},\"value\":6.788742542266846},{\"address\":{\"d0\":\"0\",\"d1\":\"6\"},\"value\":0.4913613498210907},{\"address\":{\"d0\":\"0\",\"d1\":\"7\"},\"value\":-3.5392959117889404},{\"address\":{\"d0\":\"0\",\"d1\":\"8\"},\"value\":1.3475152254104614},{\"address\":{\"d0\":\"0\",\"d1\":\"9\"},\"value\":-3.0314905643463135}]}", result.body)
 
     # evaluate mnist_saved model
     result = query("/model-evaluation/v1/mnist_saved/eval" +
