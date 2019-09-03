@@ -52,6 +52,13 @@ class CanvassWarmup < PerformanceTest
       }
     ]
     container = (vespa.qrserver['0'] or vespa.container.values.first)
+
+    result = search("/search/?yql=select%20%2A%20from%20sources%20%2A%20where%20text%20contains%20%22foo%22%3B&format=json&tracelevel=1&trace.timestamps").json
+    puts "Result Query #1: " + JSON.pretty_generate(result)
+
+    result = search("/search/?yql=select%20%2A%20from%20sources%20%2A%20where%20text%20contains%20%22foo%22%3B&format=json&tracelevel=1&trace.timestamps").json
+    puts "Result Query #2: " + JSON.pretty_generate(result)
+
     @queryfile = selfdir + 'yql.txt'
     profiler_start
     run_fbench(container, 200, 20, [parameter_filler('legend', 'test_warmup_hard'),
