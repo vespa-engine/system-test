@@ -30,7 +30,7 @@ class MultipleSearchDefs < VdsMultiModelTest
     output = vespaget("id:storage_test:music:n=1234:music1")
     assert_match(/id:storage_test:music:n=1234:music1/, output)
     output = vespaget("id:storage_test:music2:n=1234:music2", :exceptiononfailure => false)
-    assert_match(/DocumentIgnoredReply/, output)
+    assert_match(/Unknown bucket space mapping for document type 'music2'/, output)
     output = vespa.content_node("storage", 0).execute("vespa-visit --xmloutput")
     assert(/id:storage_test:music:n=1234:music1/, output)
 
@@ -48,7 +48,7 @@ class MultipleSearchDefs < VdsMultiModelTest
 
     # Test vespaget
     output = vespaget("id:storage_test:music:n=1234:music1", :exceptiononfailure => false)
-    assert_match(/DocumentIgnoredReply/, output)
+    assert_match(/Unknown bucket space mapping for document type 'music'/, output)
     output = vespaget("id:storage_test:music2:n=1234:music2")
     assert_no_match(/ReturnCode/, output)
     output = vespa.content_node("storage", 0).execute("vespa-visit --xmloutput || true")
@@ -70,14 +70,14 @@ class MultipleSearchDefs < VdsMultiModelTest
     output = vespaget("id:storage_test:music:n=1234:music1")
     assert_no_match(/ReturnCode/, output)
     output = vespaget("id:storage_test:music2:n=1234:music2", :exceptiononfailure => false)
-    assert_match(/DocumentIgnoredReply/, output)
+    assert_match(/Unknown bucket space mapping for document type 'music2'/, output)
     output = vespa.content_node("storage", 0).execute("vespa-visit --xmloutput || true")
     assert_no_match(/Document type music2 not found/, output)
 
     puts "3 **************************************************************"
 
     # Now deploy application with both document types => put/get should work for both
-    deploy_app(default_app.sd(VDS + "searchdefinitions/music2.sd").validation_override("content-type-removal"))
+    deploy_app(default_app.sd(VDS + "/searchdefinitions/music2.sd").validation_override("content-type-removal"))
 
     wait_for_reconfig
 
