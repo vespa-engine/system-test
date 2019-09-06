@@ -72,17 +72,7 @@ class PhraseCasesPerformanceTest < PerformanceTest
     qrserver.copy(query_file, qd)
     qf = qd + "/" + File.basename(query_file)
     puts "qf: #{qf}"
-    just_run_fbench(qrserver, 8, 30, qf)
     run_fbench(qrserver, 48, 120, qf, legend)
-  end
-
- def just_run_fbench(qrserver, clients, runtime, qf)
-    fbench = Perf::Fbench.new(qrserver, qrserver.name, qrserver.http_port)
-    fbench.max_line_size = 10000
-    fbench.single_query_file = true
-    fbench.runtime = runtime
-    fbench.clients = clients
-    fbench.query(qf)
   end
 
   def run_fbench(qrserver, clients, runtime, qf, legend)
