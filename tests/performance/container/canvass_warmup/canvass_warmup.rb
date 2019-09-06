@@ -25,10 +25,11 @@ class CanvassWarmup < PerformanceTest
 
   def test_warmup_hard
     setup_and_deploy(@app)
-    set_description('Test 200 queries after container has started and repeat with 200 queries after first 200 has succeeded')
+    num_queries = 200
+    set_description("Test #{num_queries}  queries after container has started and repeat with #{num_queries} queries after first #{num_queries} has succeeded")
     @graphs = [
       {
-        :title => 'Min response time for 200 first and 200 second query',
+        :title => "Min response time for #{num_queries} first and #{num_queries} second query",
         :x => 'legend',
         :y => 'minresponsetime',
         :historic => true
@@ -61,13 +62,11 @@ class CanvassWarmup < PerformanceTest
 
     @queryfile = selfdir + 'yql.txt'
     profiler_start
-    run_fbench(container, 200, 20, [parameter_filler('legend', 'test_warmup_hard'),
+    run_fbench(container, num_queries, 20, [parameter_filler('legend', 'test_warmup_hard'),
                                      metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:times_reuse_query_files => 0 })
-    profiler_report('test_warmup_hard')
-
 
     profiler_start
-    run_fbench(container, 200, 20, [parameter_filler('legend', 'test_warmup_hard_second'),
+    run_fbench(container, num_queries, 20, [parameter_filler('legend', 'test_warmup_hard_second'),
                                      metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:times_reuse_query_files => 0 })
     profiler_report('test_warmup_hard_second')
 
