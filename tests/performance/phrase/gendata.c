@@ -1,9 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
+
 void header(int num) {
-	printf("<document type='foobar' id='id:test:foobar::%d'>\n", num);
-	printf("<title>doc %d here</title>\n", num);
+	printf("{\"id\":\"id:test:foobar::%d\", \"fields\":{", num);
+	printf("\"title\":\"doc %d here\", ", num);
 }
 
 int pct() {
@@ -11,7 +13,7 @@ int pct() {
 }
 
 void phrases() {
-	printf("<phrases>case");
+	printf("\"phrases\":\"case");
 	if (pct() < 10) printf(" ten");
 	if (pct() < 20) printf(" twenty");
 	if (pct() < 30) printf(" thirty");
@@ -21,35 +23,36 @@ void phrases() {
 	if (pct() < 70) printf(" seventy");
 	if (pct() < 80) printf(" eighty");
 	if (pct() < 90) printf(" ninety");
-	printf(" worst</phrases>\n");
+	printf(" worst\", ");
 }
 
 void whitelist() {
 	int i;
-	printf("<whitelist>\n");
+	printf("\"whitelist\":[");
 	for (i = 0; i < 100; i += 10) {
 		if (pct() < i) {
-			printf("<item>%d</item>\n", i);
+			printf("%d,", i);
 		}
 	}
-	printf("</whitelist>\n");
+	printf("100], ");
 }
 
 void footer(int num) {
-	printf("<order>%d</order>\n", num);
-	printf("</document>\n");
+	printf("\"order\":%d", num);
+	printf("}},\n");
 }
 
 int main(int argc, char **argv) {
 	int i;
 	srandom(42);
-	printf("<vespafeed>\n");
+	printf("[\n");
 	for (i = 0; i < 123456; i++) {
 		header(i);
 		phrases();
 		whitelist();
 		footer(i);
 	}
-	printf("</vespafeed>\n");
+        printf("{\"id\":\"id:test:foobar::0\",\"fields\":{\"title\":\"0\", \"order\":0}}");
+	printf("]\n");
 	return 0;
 }
