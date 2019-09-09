@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services>
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+    <config name="cloud.config.log.logd">
+      <rotate>
+	<age>1234</age>
+      </rotate>
+    </config>
+  </admin>
+  
+</services>
