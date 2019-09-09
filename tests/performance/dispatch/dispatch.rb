@@ -16,7 +16,10 @@ class DispatchMerge < PerformanceTest
   end
 
   def get_app()
-    SearchApp.new.sd(selfdir + "test.sd").search_dir(selfdir + "app").elastic.num_parts(8).redundancy(1).ready_copies(1)
+    SearchApp.new.sd(selfdir + "test.sd").
+                  search_dir(selfdir + "app").
+                  qrservers_jvmargs("-Xms16g -Xmx16g").
+                  elastic.num_parts(8).redundancy(1).ready_copies(1)
   end
 
   def test_merge
