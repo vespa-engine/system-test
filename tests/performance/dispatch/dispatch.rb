@@ -45,7 +45,7 @@ class DispatchMerge < PerformanceTest
         :historic => true
       }
     ]
-    num_docs = 100000
+    num_docs = 400000
     deploy_app(get_app())
     container = (vespa.qrserver["0"] or vespa.container.values.first)
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/docs #{selfdir}/docs.cpp")
@@ -60,15 +60,15 @@ class DispatchMerge < PerformanceTest
     run_fbench(container, 8, 20, [], {:append_str => "&hits=10&offset=1000" })
     run_fbench(container, 8, 20, [], {:append_str => "&hits=10&offset=1000&dispatch.internal" })
 
-    [125, 1000, 8000].each do |offset|
+    [125, 1000, 8000, 32000].each do |offset|
         profiler_start
-        run_fbench(container, 8, 60, [parameter_filler('legend', "test_fdispatch_#{offset}"),
-                   metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:append_str => "&hits=10&offset=#{offset}" })
+        run_fbench(container, 8, 30, [parameter_filler('legend', "test_fdispatch_#{offset}"),
+                   metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:append_str => "&hits=10&offset=#{offset}&timeout=50.0" })
 
         profiler_report("test_fdispatch_#{offset}")
         profiler_start
-        run_fbench(container, 8, 60, [parameter_filler('legend', "test_java_dispatch_#{offset}"),
-                   metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:append_str => "&hits=10&offset=#{offset}&dispatch.internal" })
+        run_fbench(container, 8, 30, [parameter_filler('legend', "test_java_dispatch_#{offset}"),
+                   metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:append_str => "&hits=10&offset=#{offset}&dispatch.internal&timeout=50.0" })
         profiler_report("test_java_dispatch_#{offset}")
     end
   end
