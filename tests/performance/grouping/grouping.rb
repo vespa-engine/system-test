@@ -126,8 +126,7 @@ class GroupingTest < PerformanceTest
     puts "Single level"
     run_fbench(qrserver, 1, 60, [parameter_filler("legend", "single_level")])
     node = vespa.search["search"].first
-    write_report([metric_filler("memory.rss",
-                                node.memusage_rss(node.get_pid)),
+    write_report([metric_filler("memory.rss", node.memusage_rss(node.get_pid)),
                   parameter_filler("legend", "single_level")])
     puts "Single level mem usage: #{node.memusage_rss(node.get_pid)}"
 
@@ -139,8 +138,7 @@ class GroupingTest < PerformanceTest
     vespa.adminserver.copy(@local_queryfile, @remote_dir)
     puts "Multilevel"
     run_fbench(qrserver, 1, 60, [parameter_filler("legend", "multilevel")])
-    write_report([metric_filler("memory.rss",
-                                node.memusage_rss(node.get_pid)),
+    write_report([metric_filler("memory.rss", node.memusage_rss(node.get_pid)),
                   parameter_filler("legend", "multilevel")])
     puts "Multilevel mem usage: #{node.memusage_rss(node.get_pid)}"
   end
