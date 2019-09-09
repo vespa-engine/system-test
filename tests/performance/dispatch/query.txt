@@ -1,1 +1,1 @@
-/search/?query=sddocname:test&sortspec=score
+/search/?query=sddocname:test

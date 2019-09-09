@@ -3,7 +3,11 @@ search test {
   document test {
     field score type int {
       indexing: attribute | summary
-      attribute:fast-search
     }
+  }
+  rank-profile score {
+      first-phase {
+          expression: attribute(score)
+      }
   }
 }

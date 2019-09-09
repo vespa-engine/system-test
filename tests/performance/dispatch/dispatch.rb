@@ -56,7 +56,7 @@ class DispatchMerge < PerformanceTest
     container.execute("#{dirs.tmpdir}/docs #{num_docs} | vespa-feeder")
     assert_hitcount("sddocname:test", num_docs)
 
-    result = search("/search/?query=sddocname:test&sortspec=score&hits=10&offset=300&format=json").json
+    result = search("/search/?query=sddocname:test&ranking=score&hits=10&offset=300&format=json").json
     puts "Result Query #1: " + JSON.pretty_generate(result)
 
     @queryfile = selfdir + 'query.txt'
