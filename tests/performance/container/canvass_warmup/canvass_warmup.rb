@@ -35,7 +35,6 @@ class CanvassWarmup < PerformanceTest
         :historic => true
       },
       {
-
         :title => 'Average latency',
         :x => 'legend',
         :y => 'latency',
@@ -65,6 +64,7 @@ class CanvassWarmup < PerformanceTest
     run_fbench(container, num_queries, 20, [parameter_filler('legend', 'test_warmup_hard'),
                                      metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:times_reuse_query_files => 0 })
 
+    profiler_report('test_warmup_hard')
     profiler_start
     run_fbench(container, num_queries, 20, [parameter_filler('legend', 'test_warmup_hard_second'),
                                      metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:times_reuse_query_files => 0 })
