@@ -61,13 +61,13 @@ class DispatchMerge < PerformanceTest
     puts "Result Query #1: " + JSON.pretty_generate(result)
 
     @queryfile = selfdir + 'query.txt'
-    run_fbench(container, 8, 20, [], {:append_str => "&hits=10&offset=1000" })
+    run_fbench(container, 8, 20, [], {:append_str => "&hits=10&offset=1000&dispatch.internal=false" })
     run_fbench(container, 8, 20, [], {:append_str => "&hits=10&offset=1000&dispatch.internal" })
 
     [125, 1000, 8000, 32000].each do |offset|
         profiler_start
         run_fbench(container, num_clients, 30, [parameter_filler('legend', "test_fdispatch_#{offset}"),
-                   metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:append_str => "&ranking=score&hits=10&offset=#{offset}&timeout=50.0" })
+                   metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:append_str => "&ranking=score&hits=10&offset=#{offset}&dispatch.internal=false&timeout=50.0" })
 
         profiler_report("test_fdispatch_#{offset}")
         profiler_start
