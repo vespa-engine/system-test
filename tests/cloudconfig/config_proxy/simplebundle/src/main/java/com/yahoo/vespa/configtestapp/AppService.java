@@ -1,9 +1,10 @@
 package com.yahoo.vespa.configtestapp;
 
+import com.yahoo.log.LogLevel;
+import com.yahoo.log.LogSetup;
 import com.yahoo.messagebus.MessagebusConfig;
 import com.yahoo.config.subscription.ConfigSubscriber;
 import com.yahoo.config.subscription.ConfigHandle;
-import com.yahoo.log.*;
 
 import java.util.Date;
 import java.util.logging.Logger;
@@ -11,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Application that subscribes to config defined in messagebus.1.def and
+ * Application that subscribes to config defined in messagebus.def and
  * generated code in MessagebusConfig.java.
  *
  * @author Harald Musum
@@ -22,15 +23,10 @@ public class AppService {
     private static final String CONFIG_ID = "client";
     private static String outputFile = "routingconfig.out";
 
-    private int timesConfigured = 0;
-    private MessagebusConfig config = null;
+    private MessagebusConfig config;
     private final String configId;
 
-    public AppService() {
-        this(CONFIG_ID, "client1");
-    }
-
-    public AppService(String configId, String appName) {
+    private AppService(String configId, String appName) {
 	LogSetup.initVespaLogging("test " + appName);
         this.configId = configId;
         ConfigSubscriber subscriber = new ConfigSubscriber();
@@ -47,44 +43,25 @@ public class AppService {
     private void configure(long generation, MessagebusConfig config) {
         log.log(LogLevel.INFO, System.currentTimeMillis() + ": " + configId + " got configure callback");
         this.config = config;
-        Integer routeSize = config.routingtable(0).route().size();
+        int routeSize = config.routingtable(0).route().size();
         log.log(LogLevel.INFO, "Number of routes for " + outputFile + ":" + routeSize + " (generation " + generation + ")");
         try {
             FileWriter writer = new FileWriter(outputFile);
-            writer.write(routeSize.toString());
+            writer.write(Integer.toString(routeSize));
             writer.write("\n");
-            writer.write((new Long(generation)).toString());
+            writer.write("" + generation);
             writer.flush();
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        timesConfigured++;
-    }
-
-    public int timesConfigured() {
-        return timesConfigured;
-    }
-
-    public void setConfigured(boolean configured) {
-        if (! configured) {
-            timesConfigured = 0;
-        } else {
-            if (timesConfigured < 1) {
-                timesConfigured = 1;
-            }
-        }
-    }
-
-    public MessagebusConfig getConfig() {
-        return config;
     }
 
     private static void usage() {
         System.out.println("Missing option: <output file>");
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         System.out.println("Starting app at " + new Date());
         if (args.length < 1) {
             usage();
