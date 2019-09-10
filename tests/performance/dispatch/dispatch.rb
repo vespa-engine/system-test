@@ -15,11 +15,11 @@ class DispatchMerge < PerformanceTest
     set_owner("balder")
   end
 
-  def get_app()
+  def get_app(num_parts)
     SearchApp.new.sd(selfdir + "test.sd").
                   search_dir(selfdir + "app").
                   qrservers_jvmargs("-Xms16g -Xmx16g").
-                  elastic.num_parts(8).redundancy(1).ready_copies(1)
+                  elastic.num_parts(num_parts).redundancy(1).ready_copies(1)
   end
 
   def test_merge
@@ -49,7 +49,8 @@ class DispatchMerge < PerformanceTest
       }
     ]
     num_docs = 400000
-    deploy_app(get_app())
+    num_clients = 16
+    deploy_app(get_app(12))
     container = (vespa.qrserver["0"] or vespa.container.values.first)
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/docs #{selfdir}/docs.cpp")
     start
@@ -65,12 +66,12 @@ class DispatchMerge < PerformanceTest
 
     [125, 1000, 8000, 32000].each do |offset|
         profiler_start
-        run_fbench(container, 8, 30, [parameter_filler('legend', "test_fdispatch_#{offset}"),
+        run_fbench(container, num_clients, 30, [parameter_filler('legend', "test_fdispatch_#{offset}"),
                    metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:append_str => "&ranking=score&hits=10&offset=#{offset}&timeout=50.0" })
 
         profiler_report("test_fdispatch_#{offset}")
         profiler_start
-        run_fbench(container, 8, 30, [parameter_filler('legend', "test_java_dispatch_#{offset}"),
+        run_fbench(container, num_clients, 30, [parameter_filler('legend', "test_java_dispatch_#{offset}"),
                    metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:append_str => "&ranking=score&hits=10&offset=#{offset}&dispatch.internal&timeout=50.0" })
         profiler_report("test_java_dispatch_#{offset}")
     end
