@@ -33,7 +33,7 @@ class StressDispatch < PerformanceTest
   def common_limits_protobuf
     l = {
        :min_qps_search          => 9700,
-       :max_qps_search          => 11200,
+       :max_qps_search          => 11700,
        :min_latency_search      => 5.8,
        :max_latency_search      => 7.1
     }
