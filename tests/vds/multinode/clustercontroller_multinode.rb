@@ -15,11 +15,6 @@ class ClusterControllerMultiNodeTest < VdsTest
     @valgrind = false
     set_owner("vekterli")
 
-    # Use a hammer: No restrictions on access to ZooKeeper
-    vespa.nodeproxies.each_value do |node|
-      override_environment_setting(node, "vespa_zkfacade.restrict", "")
-    end
-
     @sdf = VDS + "searchdefinitions/music.sd"
     @two = selfdir + "app2"
     @four = selfdir + "app4"
