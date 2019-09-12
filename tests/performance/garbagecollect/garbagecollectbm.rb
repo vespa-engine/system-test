@@ -664,7 +664,7 @@ class GarbageCollectBM < PerformanceTest
     graphs
   end
 
-  def ignored_test_garbage_collect_bm
+  def test_garbage_collect_bm
     @graphs = make_graphs
     puts "Before Deploy: #{@vespa.to_s}\n"
     perchunk = @perchunk
