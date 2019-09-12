@@ -5,6 +5,10 @@ search test {
     field body type string {
       indexing: summary | index
     }
+    field bodymultiple type string {
+      indexing: summary | index
+      stemming: multiple
+    }
     field id type int {
       indexing: summary | attribute
     }

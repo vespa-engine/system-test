@@ -16,6 +16,8 @@
 
 <document type="test" documentid="id:test:test::40"><body>onlyonce</body><id>40</id></document>
 
+<document type="test" documentid="id:test:test::50"><bodymultiple>car</bodymultiple><id>50</id></document>
+
 <document type="test" documentid="id:test:test::96"><body>a</body><tag><item>foo</item></tag><id>96</id></document>
 <document type="test" documentid="id:test:test::97"><body>a</body><tag><item>bar</item></tag><id>97</id></document>
 <document type="test" documentid="id:test:test::98"><body>a</body><tag><item>foo bar</item></tag><id>98</id></document>
