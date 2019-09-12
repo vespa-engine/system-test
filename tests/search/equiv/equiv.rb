@@ -77,6 +77,12 @@ class Equiv < IndexedSearchTest
     assert_features(exp, JSON.parse(result.hit[0].field["summaryfeatures"]))
 
     puts "==== ==== ==== ==== ==== ==== ==== ==== ==== ===="
+    puts "test that EQUIV and multiple alternatives can be combined"
+    result = search("query=select%20%2A%20from%20sources%20%2A%20where%20bodymultiple%20contains%20equiv%28%22cars%22%2C%20%22vehicles%22%29%3B&type=yql")
+    puts result.to_s
+    assert_equal(1, result.hit.size)
+
+    puts "==== ==== ==== ==== ==== ==== ==== ==== ==== ===="
     puts "test for phrase size"
     # check that phrase matches act as if they have size 1 (known weakness)
     result = search("query=select%20%2A%20from%20sources%20%2A%20where%20body%20contains%20equiv%28phrase%28%22bar%22%2C%20%22baz%22%29%2C%20%22notbar%22%2C%20%22notbaz%22%29%3B&type=yql")
