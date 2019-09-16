@@ -66,6 +66,25 @@ class ClusterControllerTest < VdsTest
     wait_until_distributor_owns_n_docs(index: 1, expected: 20)
   end
 
+  def wait_until_cluster_state_matches(regex)
+    timeout_after_sec = 120
+    ok = vespa.storage['storage'].wait_for_state_condition(timeout_after_sec) { |state|
+      state.statestr =~ regex
+    }
+    assert(ok, "Failed to reach state matching '#{regex}' within #{timeout_after_sec} seconds")
+  end
+
+  def test_content_node_maintenance_mode_with_safe_condition_implicitly_affects_distributor
+    set_description('Test that setting a content node to Maintenance state with "safe" ' +
+                    'condition implicitly sets distributor on same node into Down state, ' +
+                    'and that this is reversed when setting content node back Up.')
+    feed_docs # Have some docs to report merge stats on
+    vespa.storage['storage'].get_master_cluster_controller.set_node_state('storage', 'storage', 0, 's:m', 'safe')
+    wait_until_cluster_state_matches(/distributor:2 .0.s:d storage:2 .0.s:m/)
+    vespa.storage['storage'].get_master_cluster_controller.set_node_state('storage', 'storage', 0, 's:u', 'safe')
+    wait_until_cluster_state_matches(/distributor:2 storage:2$/)
+  end
+
   def test_status_page
     page = vespa.clustercontrollers["0"].get_status_page("/clustercontroller-status/v1/")
     puts page

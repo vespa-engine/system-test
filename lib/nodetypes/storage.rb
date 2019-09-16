@@ -16,8 +16,8 @@ class ClusterControllerWrapper
     @clustercontroller.wait_for_stable_system(@clustername)
   end
 
-  def set_node_state(nodetype, index, state)
-    @clustercontroller.set_node_state(@clustername, nodetype, index, state)
+  def set_node_state(nodetype, index, state, condition=nil)
+    @clustercontroller.set_node_state(@clustername, nodetype, index, state, condition)
   end
 
   def get_cluster_state
