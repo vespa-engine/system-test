@@ -22,4 +22,35 @@ search foobar {
     }
   }
 
+  rank-profile withdelay {
+    first-phase {
+      expression: 0.000001*attribute(order)
+    }
+    rank-properties {
+      vespa.matching.delay_unpacking_iterators: true
+    }
+  }
+
+  rank-profile withsplit {
+    first-phase {
+      expression: 0.000001*attribute(order)
+    }
+    rank-properties {
+      vespa.matching.split_unpacking_iterators: true
+      vespa.matching.delay_unpacking_iterators: true
+      vespa.matching.termwise_limit: 1.0
+    }
+  }
+
+  rank-profile withtermwise {
+    first-phase {
+      expression: 0.000001*attribute(order)
+    }
+    rank-properties {
+      vespa.matching.split_unpacking_iterators: true
+      vespa.matching.delay_unpacking_iterators: true
+      vespa.matching.termwise_limit: 0.01
+    }
+  }
+
 }

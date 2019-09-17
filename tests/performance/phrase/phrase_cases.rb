@@ -26,7 +26,7 @@ class PhraseCasesPerformanceTest < PerformanceTest
   def write_queries(query, qfn)
     File.open(qfn, 'w') do |f|
       (1..99999).each do |num|
-        f.puts("/search/?query=phrases:#{query}+whitelist:50+-title:#{num}")
+        f.puts("/search/?query=phrases:#{query}+-title:#{num}&recall=%2Bphrases:fifty")
       end
     end
   end
@@ -48,9 +48,11 @@ class PhraseCasesPerformanceTest < PerformanceTest
 
     # queries
     qf1 = file_in_tmp('bestcase-queries.txt')
-    write_queries('ten.twenty', qf1)
+    write_queries('thirty.forty', qf1)
     qf2 = file_in_tmp('worstcase-queries.txt')
     write_queries('worst.case', qf2)
+    qf3 = file_in_tmp('middle-queries.txt')
+    write_queries('forty.sixty', qf3)
 
     # feed
     node = vespa.adminserver
@@ -61,8 +63,14 @@ class PhraseCasesPerformanceTest < PerformanceTest
     assert_equal(0, exitcode)
     wait_for_hitcount("sddocname:foobar", 123456, 30)
 
+    node.execute('vespa-proton-cmd --local triggerFlush')
+    node.execute('vespa-proton-cmd --local triggerFlush')
+    node.execute('vespa-proton-cmd --local die')
+    wait_for_hitcount("sddocname:foobar", 123456, 30)
+
     run_benchmarks(qf1, 'bestcase')
     run_benchmarks(qf2, 'worstcase')
+    run_benchmarks(qf3, 'middle')
   end
 
   def run_benchmarks(query_file, legend)
@@ -72,10 +80,13 @@ class PhraseCasesPerformanceTest < PerformanceTest
     qrserver.copy(query_file, qd)
     qf = qd + "/" + File.basename(query_file)
     puts "qf: #{qf}"
-    run_fbench(qrserver, 48, 120, qf, legend)
+    run_fbench(qrserver, 48, 60, qf, legend + '_untuned')
+    run_fbench(qrserver, 48, 60, qf, legend + '_delay',   "&ranking=withdelay" )
+    run_fbench(qrserver, 48, 60, qf, legend + '_split',   "&ranking=withsplit" )
+    run_fbench(qrserver, 48, 60, qf, legend + '_termwise', "&ranking=withtermwise" )
   end
 
-  def run_fbench(qrserver, clients, runtime, qf, legend)
+  def run_fbench(qrserver, clients, runtime, qf, legend, append_str = "")
     custom_fillers = [parameter_filler("legend", legend)]
     system_fbench = Perf::System.new(qrserver)
     system_fbench.start
@@ -84,7 +95,8 @@ class PhraseCasesPerformanceTest < PerformanceTest
     fbench.single_query_file = true
     fbench.runtime = runtime
     fbench.clients = clients
-    fbench.ignore_first = 1000
+    fbench.append_str = append_str if !append_str.empty?
+    fbench.ignore_first = 50
     profiler_start
     fbench.query(qf)
     system_fbench.end
@@ -94,26 +106,39 @@ class PhraseCasesPerformanceTest < PerformanceTest
   end
 
   def get_graphs()
-    local_graphs = [
-      {
-        :x => 'legend',
-        :y => 'qps',
-        :title => 'phrase_bestcase_qps',
-        :y_min => 1,
-        :y_max => 1000000,
-        :filter => {'legend' => "bestcase"},
-        :historic => true
-      },
-      {
-        :x => 'legend',
-        :y => 'qps',
-        :title => 'phrase_worstcase_qps',
-        :y_min => 1,
-        :y_max => 1000000,
-        :filter => {'legend' => "worstcase"},
-        :historic => true
-      }
-    ]
+    profiles = [ 'untuned', 'delay', 'split', 'termwise' ]
+    casenames = [ 'worstcase', 'bestcase', 'middle' ]
+    maxmins = {
+        'worstcase_untuned'  => { :min => 1, :max => 1000000 },
+        'worstcase_delay'    => { :min => 1, :max => 1000000 },
+        'worstcase_split'    => { :min => 1, :max => 1000000 },
+        'worstcase_termwise' => { :min => 1, :max => 1000000 },
+        'bestcase_untuned'  => { :min => 1, :max => 1000000 },
+        'bestcase_delay'    => { :min => 1, :max => 1000000 },
+        'bestcase_split'    => { :min => 1, :max => 1000000 },
+        'bestcase_termwise' => { :min => 1, :max => 1000000 },
+        'middle_untuned'  => { :min => 1, :max => 1000000 },
+        'middle_delay'    => { :min => 1, :max => 1000000 },
+        'middle_split'    => { :min => 1, :max => 1000000 },
+        'middle_termwise' => { :min => 1, :max => 1000000 },
+        'default' =>  { :min => 1, :max => 1000000 }
+    }
+    local_graphs = []
+    profiles.each do |profile|
+      casenames.each do |casename|
+        case_profile = "#{casename}_#{profile}"
+        mm = maxmins[case_profile]
+        local_graphs.push({
+            :x => 'legend',
+            :y => 'qps',
+            :title => "phrase_#{case_profile}_qps",
+            :y_min => mm[:min],
+            :y_max => mm[:max],
+            :filter => {'legend' => case_profile},
+            :historic => true
+        })
+      end
+    end
     return local_graphs
   end
 

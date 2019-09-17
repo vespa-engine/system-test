@@ -1,8 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
-
 void header(int num) {
 	printf("{\"id\":\"id:test:foobar::%d\", \"fields\":{", num);
 	printf("\"title\":\"doc %d here\", ", num);
@@ -13,17 +11,17 @@ int pct() {
 }
 
 void phrases() {
-	printf("\"phrases\":\"case");
-	if (pct() < 10) printf(" ten");
-	if (pct() < 20) printf(" twenty");
-	if (pct() < 30) printf(" thirty");
-	if (pct() < 40) printf(" forty");
-	if (pct() < 50) printf(" fifty");
-	if (pct() < 60) printf(" sixty");
-	if (pct() < 70) printf(" seventy");
-	if (pct() < 80) printf(" eighty");
-	if (pct() < 90) printf(" ninety");
-	printf(" worst\", ");
+	printf("\"phrases\":\"case case case");
+	if (pct() < 10) printf(" ten ten ten ten ten ten");
+	if (pct() < 20) printf(" twenty twenty twenty twenty twenty");
+	if (pct() < 30) printf(" thirty thirty thirty thirty thirty thirty thirty thirty thirty thirty");
+	if (pct() < 40) printf(" forty forty forty forty forty forty forty forty forty forty");
+	if (pct() < 50) printf(" fifty fifty fifty fifty fifty");
+	if (pct() < 60) printf(" sixty sixty sixty sixty sixty sixty sixty sixty sixty sixty");
+	if (pct() < 70) printf(" seventy seventy seventy seventy seventy");
+	if (pct() < 80) printf(" eighty eighty eighty eighty eighty");
+	if (pct() < 90) printf(" ninety ninety ninety ninety ninety");
+	printf(" worst worst worst\", ");
 }
 
 void whitelist() {
