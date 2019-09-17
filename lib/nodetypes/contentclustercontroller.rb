@@ -66,7 +66,7 @@ class ContentClusterController < VespaNode
     return response, response.body
   end
 
-  def set_node_state(cluster, nodetype, index, state)
+  def set_node_state(cluster, nodetype, index, state, condition=nil)
     state_map = {
       's:u' => 'up',
       's:d' => 'down',
@@ -81,7 +81,11 @@ class ContentClusterController < VespaNode
 
     res = with_https_connection(hostname, @statusport, "/cluster/v2/#{cluster}/#{nodetype}/#{index}") do |conn, uri|
       put_req = Net::HTTP::Put.new(uri, { 'Content-Type' => 'application/json'})
-      put_req.body = "{ \"state\" : { \"user\" : { \"state\" : \"#{rest_state}\", \"reason\" : \"Set by system test framework\" } } }"
+      args = { 'state' => { 'user' => { 'state' => rest_state, 'reason' => 'Set by system test framework' } } }
+      if condition
+        args['condition'] = condition
+      end
+      put_req.body = args.to_json
       conn.request(put_req)
     end
 
