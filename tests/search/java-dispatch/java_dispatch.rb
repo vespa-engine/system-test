@@ -152,7 +152,7 @@ class JavaDispatchTest < SearchTest
         puts "Expected different hits, but received the same. Will retry another #{retries} times"
         sleep 1
       else
-        assert(internally_dispatched?(result) == internal, "Internally dispatched should be #{internal}")
+        assert(internally_dispatched?(result) == true, "Internally dispatched should be true")
         return hits
       end
     end
@@ -171,7 +171,7 @@ class JavaDispatchTest < SearchTest
       groups = groups + grp.to_s
     end
 
-    assert(internally_dispatched?(result) == internal, "Internally dispatched should be #{internal}")
+    assert(internally_dispatched?(result) == true, "Internally dispatched should be true")
 
     if internal
       dispatches = all_internal_dispatches(result)
@@ -194,7 +194,7 @@ class JavaDispatchTest < SearchTest
 
     result = search(query)
     assert_equal(11, result.hit.length, "Expected 11 returned hits")
-    assert_equal(internal, internally_dispatched?(result), "Internally dispatched should be #{internal}")
+    assert_equal(true, internally_dispatched?(result), "Internally dispatched should be true")
 
     return result.hit.to_s
   end

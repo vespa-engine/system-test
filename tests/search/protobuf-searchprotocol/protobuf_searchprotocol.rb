@@ -62,7 +62,7 @@ class ProtobufSearchProtocolTest < SearchTest
 
     result = search(query)
     assert_result_hitcount(result, @num_docs)
-    assert_protobuf_search(with_protobuf, result)
+    assert_protobuf_search(result)
     assert_protobuf_docsum(with_protobuf, result)
 
     return result.hit.to_s
@@ -74,7 +74,7 @@ class ProtobufSearchProtocolTest < SearchTest
     puts "query: #{query}"
 
     result = search(query)
-    assert_protobuf_search(with_protobuf, result)
+    assert_protobuf_search(result)
     groups = ""
     result.xml.each_element("group/grouplist") do |grp|
       groups = groups + grp.to_s
@@ -86,7 +86,8 @@ class ProtobufSearchProtocolTest < SearchTest
     return "&dispatch.internal=#{with_protobuf}&dispatch.protobuf=#{with_protobuf}&nocache&tracelevel=5"
   end
 
-  def assert_protobuf_search(expected, result)
+  def assert_protobuf_search(result)
+    expected = true
     searches = 0
     result.xml.each_element("meta/p/p/p") do |e|
       searches = searches + 1 if e.to_s =~ /<p>Sending search request with jrt\/protobuf/
@@ -101,6 +102,7 @@ class ProtobufSearchProtocolTest < SearchTest
       docsums = docsums + 1 if e.to_s =~ /<p>Sending \d+ summary fetch requests with jrt\/protobuf/
     end
     should = expected ? "should" : "should not"
+    puts "docsum: " + result.to_s
     assert_equal(expected, docsums > 0, "Request #{should} have used protobuf for docsums")
   end
 
