@@ -15,7 +15,7 @@ class QrsPing < IndexedSearchTest
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
 
     puts "Stopping dispatch"
-    stop_topleveldispatch
+    stop_searchcluster
     # ping thread doesn't start at once, need to wait for it
     sleep 30
     puts "Running query"
@@ -31,7 +31,8 @@ class QrsPing < IndexedSearchTest
     # Look for the code for no backends in service
     errorfound = false
     result.xml.elements.each("error") do |element|
-      if element.attributes["code"] == "0"
+      code = element.attributes["code"]
+      if code == "0" || code == "10"
         errorfound = true
       end
     end
@@ -39,7 +40,7 @@ class QrsPing < IndexedSearchTest
     assert_equal(0, result.hitcount)
 
     puts "Starting dispatch again:"
-    start_topleveldispatch
+    start_searchcluster
     sleep 10
     puts "Running query after 10s sleep"
 
@@ -50,7 +51,9 @@ class QrsPing < IndexedSearchTest
 
     errorfound = false
     result.xml.elements.each("error") do |element|
-      if element.attributes["code"] == "0"
+      code = element.attributes["code"]
+      #TODO On removing fdispatch code == "0" can not happen
+      if code == "0" || code == "10"
         errorfound = true
       end
     end
@@ -58,12 +61,19 @@ class QrsPing < IndexedSearchTest
     assert_equal(10, result.hitcount)
   end
 
-  def stop_topleveldispatch
+  def stop_searchcluster
+    #TODO On removing topleveldispatch shall go
     vespa.search["search"].topleveldispatch["0"].stop
+    vespa.search["search"].searchnode.values.each do |node|
+      node.stop
+    end
   end
 
-  def start_topleveldispatch
+  def start_searchcluster
     vespa.search["search"].topleveldispatch["0"].start
+    vespa.search["search"].searchnode.values.each do |node|
+      node.start
+    end
   end
 
   def teardown
