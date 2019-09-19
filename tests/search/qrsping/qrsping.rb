@@ -32,7 +32,7 @@ class QrsPing < IndexedSearchTest
     errorfound = false
     result.xml.elements.each("error") do |element|
       code = element.attributes["code"]
-      if code == "0" || code == "10"
+      if code == "10"
         errorfound = true
       end
     end
@@ -52,8 +52,7 @@ class QrsPing < IndexedSearchTest
     errorfound = false
     result.xml.elements.each("error") do |element|
       code = element.attributes["code"]
-      #TODO On removing fdispatch code == "0" can not happen
-      if code == "0" || code == "10"
+      if code == "10"
         errorfound = true
       end
     end
@@ -62,15 +61,12 @@ class QrsPing < IndexedSearchTest
   end
 
   def stop_searchcluster
-    #TODO On removing topleveldispatch shall go
-    vespa.search["search"].topleveldispatch["0"].stop
     vespa.search["search"].searchnode.values.each do |node|
       node.stop
     end
   end
 
   def start_searchcluster
-    vespa.search["search"].topleveldispatch["0"].start
     vespa.search["search"].searchnode.values.each do |node|
       node.start
     end

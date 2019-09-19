@@ -63,7 +63,6 @@ class NodeServer
       when "httpgateway" then @services.push(HttpGateway.new(service, testcase, self, true))
       when "container-httpgateway" then @services.push(HttpGateway.new(service, testcase, self, false))
       when "distributor" then @services.push(Distributor.new(service, testcase, self))
-      when "topleveldispatch" then @services.push(Topleveldispatch.new(service, testcase, self))
       when "searchnode" then @services.push(SearchNode.new(service, testcase, self))
       when "storagenode" then @services.push(StorageNode.new(service, testcase, self))
       when "fleetcontroller" then @services.push(Fleetcontroller.new(service, testcase, self))

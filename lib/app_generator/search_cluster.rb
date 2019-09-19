@@ -1,7 +1,4 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-class TopLevelDispatcher < SimpleNode
-  tag "topleveldispatcher"
-end
 
 class SearchCluster
   include ChainedSetter
@@ -34,8 +31,6 @@ class SearchCluster
   chained_setter :persistence_threads
   chained_forward :config, :config => :add
   chained_forward :docprocs, :docproc => :push
-  chained_forward :top_level_dispatchers_config,
-                  :top_level_dispatchers_config => :add
   chained_forward :node_groups, :group => :push
 
   # only for compatibility with old SearchApp style.
@@ -58,12 +53,10 @@ class SearchCluster
     @docprocs = []
     @indexing_cluster = nil
     @indexing_chain = nil
-    @top_level_dispatchers = []
     @storage_cluster = nil
     @tuning = {}
     @node_groups = []
     @oos_auto = nil
-    @top_level_dispatchers_config = ConfigOverrides.new
     @config = ConfigOverrides.new
     @garbagecollection = nil
     @garbagecollectioninterval = nil
@@ -83,18 +76,6 @@ class SearchCluster
 
   def get_storage_cluster
     @storage_cluster || @name
-  end
-
-  def top_level_dispatcher(dispatcher)
-    if !dispatcher.is_a? TopLevelDispatcher
-      dispatcher = TopLevelDispatcher.new(dispatcher)
-    end
-    @top_level_dispatchers.push(dispatcher)
-    self
-  end
-
-  def dispatcher_list
-    return @top_level_dispatchers
   end
 
   def get_use_local_node

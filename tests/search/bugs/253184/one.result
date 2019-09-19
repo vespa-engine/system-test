@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <result total-hit-count="1">
-  <hit relevancy="1000" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="1000" source="pandora.0">
     <field name="relevancy">1000</field>
     <field name="siteId">0</field>
     <field name="name">musicsearch</field>

@@ -58,7 +58,6 @@ class GenericConfig < IndexedSearchTest
                          add(0, ConfigValue.new("prefix", false)))).
               config(ConfigOverride.new("vespa.config.search.core.proton").
                       add("numsummarythreads", 32)).
-              top_level_dispatcher("node1").
               group(NodeGroup.new(0, "row0").
                     node(NodeSpec.new("node1", 0).
                          config(ConfigOverride.new("vespa.config.search.core.proton").

@@ -168,7 +168,6 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
   def test_allowed_coverage_loss
     set_description("Test that one group can continue serving with coverage loss distribution")
     run_basic_search_test(3, 3, true, 60.0)
-    #vespa.adminserver.logctl("topleveldispatch:fnet_search", "debug=on")
     verify_ready_copies_per_group(1)
     stop_and_not_wait(0) #group/row 0 still has enough nodes
     assert_atleast_some_queries([nil,50,50, 50,50,50, 50,50,nil], 300)
@@ -198,7 +197,6 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
     deploy_app(create_app(3, ready_copies, redundancy, odd_sized_group, min_group_size))
     configure_bucket_crosschecking(redundancy)
     start
-    vespa.adminserver.logctl("topleveldispatch:fnet_search", "debug=off")
     generate_and_feed_docs
 
     forced_bucket_crosscheck
@@ -279,10 +277,6 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
     deploy_app(create_app(3, ready_copies))
     configure_bucket_crosschecking(6)
     start
-    #vespa.adminserver.logctl("topleveldispatch:engine.transportserver", "spam=on")
-    #["", "2", "3", "4", "5", "6", "7", "8", "9"].each do |id|
-      #vespa.adminserver.logctl("searchnode#{id}:engine.transportserver", "debug=on")
-    #end
     generate_and_feed_docs
     align_fdispatch_to_use_group_0_next
 
