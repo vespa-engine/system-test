@@ -2,18 +2,16 @@
 
 class Search
 
-  attr_accessor :topleveldispatch, :searchnode, :fbench
+  attr_accessor :searchnode, :fbench
 
   def initialize(testcase, vespa)
     @testcase = testcase
     @vespa = vespa
-    @topleveldispatch = {}
     @searchnode = {}
     @fbench = {}
   end
 
   def empty?
-    @topleveldispatch.empty? &&
       @searchnode.empty? &&
       @fbench.empty?
   end
@@ -21,7 +19,6 @@ class Search
   def wait_until_ready(timeout=90)
     @testcase.output("Waiting for search cluster to be ready")
     wait_until_searchnodes_ready(timeout)
-    wait_until_topleveldispatch_ready(timeout)
   end
 
   def adjust_timeout(timeout)
@@ -37,11 +34,6 @@ class Search
   # Returns the first searchnode in the search cluster
   def first
     searchnode[0]
-  end
-
-  # Returns the first tld in the search cluster
-  def first_tld
-    topleveldispatch["0"]
   end
 
   def wait_until_searchnodes_ready(timeout)
@@ -63,21 +55,12 @@ class Search
     raise "Timeout while waiting for searchnodes to become ready."
   end
 
-  def wait_until_topleveldispatch_ready(timeout)
-    @topleveldispatch.each_value { |topleveldispatch| topleveldispatch.wait_until_ready(timeout) }
-  end
-
   def add_service(remote_serviceobject)
     if not remote_serviceobject
       return
     end
 
-    if remote_serviceobject.servicetype == "topleveldispatch"
-      # remote_serviceobject.index for a tld is per container cluster, so we might get overlapping indexes
-      # when there are more than one container cluster. Add tld by starting from latest unused index
-      new_index = "#{@topleveldispatch.length}"
-      @topleveldispatch[new_index] = remote_serviceobject
-    elsif remote_serviceobject.servicetype == "searchnode"
+    if remote_serviceobject.servicetype == "searchnode"
       @searchnode[remote_serviceobject.num] = remote_serviceobject
     #elsif remote_serviceobject.servicetype == "qrserver"
     #  @qrserver[remote_serviceobject.index] = remote_serviceobject
@@ -88,9 +71,6 @@ class Search
 
   def to_s
     repr_string = ""
-    topleveldispatch.each_value do |n|
-      repr_string += n.to_s + "\n"
-    end
     searchnode.each_value do |n|
       repr_string += n.to_s + "\n"
     end

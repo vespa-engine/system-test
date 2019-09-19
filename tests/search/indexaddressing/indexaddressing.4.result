@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <result total-hit-count="630">
-  <hit relevancy="1000" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="1000" source="pandora.0">
     <field name="relevancy">1000</field>
     <field name="siteId">0</field>
     <field name="name">music</field>
@@ -36,7 +36,7 @@
     <field name="scorekey">0</field>
     <field name="cbid">2</field>
   </hit>
-  <hit relevancy="1000" source="pandora.1-dispatcher.tld.0">
+  <hit relevancy="1000" source="pandora.1">
     <field name="relevancy">1000</field>
     <field name="siteId">0</field>
     <field name="name">books</field>
@@ -74,7 +74,7 @@
     <field name="numreview">0</field>
     <field name="cbid">1</field>
   </hit>
-  <hit relevancy="992" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="992" source="pandora.0">
     <field name="relevancy">992</field>
     <field name="siteId">0</field>
     <field name="name">music</field>
@@ -110,7 +110,7 @@
     <field name="scorekey">0</field>
     <field name="cbid">2</field>
   </hit>
-  <hit relevancy="985" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="985" source="pandora.0">
     <field name="relevancy">985</field>
     <field name="siteId">0</field>
     <field name="name">music</field>
@@ -146,7 +146,7 @@
     <field name="scorekey">0</field>
     <field name="cbid">2</field>
   </hit>
-  <hit relevancy="967" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="967" source="pandora.0">
     <field name="relevancy">967</field>
     <field name="siteId">0</field>
     <field name="name">music</field>
@@ -182,7 +182,7 @@
     <field name="scorekey">0</field>
     <field name="cbid">2</field>
   </hit>
-  <hit relevancy="960" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="960" source="pandora.0">
     <field name="relevancy">960</field>
     <field name="siteId">0</field>
     <field name="name">music</field>
@@ -218,7 +218,7 @@
     <field name="scorekey">0</field>
     <field name="cbid">2</field>
   </hit>
-  <hit relevancy="949" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="949" source="pandora.0">
     <field name="relevancy">949</field>
     <field name="siteId">0</field>
     <field name="name">music</field>
@@ -254,7 +254,7 @@
     <field name="scorekey">0</field>
     <field name="cbid">2</field>
   </hit>
-  <hit relevancy="942" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="942" source="pandora.0">
     <field name="relevancy">942</field>
     <field name="siteId">0</field>
     <field name="name">music</field>
@@ -290,7 +290,7 @@
     <field name="scorekey">0</field>
     <field name="cbid">2</field>
   </hit>
-  <hit relevancy="938" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="938" source="pandora.0">
     <field name="relevancy">938</field>
     <field name="siteId">0</field>
     <field name="name">music</field>
@@ -326,7 +326,7 @@
     <field name="scorekey">0</field>
     <field name="cbid">2</field>
   </hit>
-  <hit relevancy="938" source="pandora.1-dispatcher.tld.0">
+  <hit relevancy="938" source="pandora.1">
     <field name="relevancy">938</field>
     <field name="siteId">0</field>
     <field name="name">books</field>

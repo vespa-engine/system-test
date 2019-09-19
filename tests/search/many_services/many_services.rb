@@ -28,8 +28,6 @@ class Many_Services < IndexedSearchTest
                              http(Http.new.
                                   server(Server.new("bar-server", 4090)))).
                       cluster(SearchCluster.new.sd(selfdir+"music.sd").
-                        top_level_dispatcher("node1").
-                        top_level_dispatcher("node1").
                         redundancy(2).num_parts(3)))
     vespa.start
 
@@ -44,7 +42,7 @@ class Many_Services < IndexedSearchTest
     save_result(query, result_file)
 
     for qrs_id in (0..vespa.qrserver.length-1)
-      # wait for qrs/tld to notice new index
+      # wait for qrs to notice new index
       for retries in (1..60)
         puts "Checking qrs #{qrs_id} try #{retries}"
         isdone = false

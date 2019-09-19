@@ -1,31 +1,31 @@
 <result total-hit-count="21">
-  <hit relevancy="1000" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="1000" source="pandora.0">
     <field name="title">Songs of Alan Jackson</field>
     <field name="artist">Karaoke</field>
-  <hit relevancy="950" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="950" source="pandora.0">
     <field name="title">Alan Jackson [Super K]</field>
     <field name="artist">Karaoke</field>
-  <hit relevancy="889" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="889" source="pandora.0">
     <field name="title">Dave Jackson</field>
     <field name="artist"></field>
-  <hit relevancy="889" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="889" source="pandora.0">
     <field name="title">Paul Jackson</field>
     <field name="artist"></field>
-  <hit relevancy="889" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="889" source="pandora.0">
     <field name="title">Juanita Jackson</field>
     <field name="artist"></field>
-  <hit relevancy="889" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="889" source="pandora.0">
     <field name="title">Jermaine Jackson</field>
     <field name="artist"></field>
-  <hit relevancy="889" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="889" source="pandora.0">
     <field name="title">Timothy Jackson</field>
     <field name="artist"></field>
-  <hit relevancy="889" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="889" source="pandora.0">
     <field name="title">Lou Jackson</field>
     <field name="artist"></field>
-  <hit relevancy="889" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="889" source="pandora.0">
     <field name="title">H. Jackson Brown Jr.</field>
     <field name="artist"></field>
-  <hit relevancy="889" source="pandora.0-dispatcher.tld.0">
+  <hit relevancy="889" source="pandora.0">
     <field name="title">Willie Jackson</field>
     <field name="artist"></field>

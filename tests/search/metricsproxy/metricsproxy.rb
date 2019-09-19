@@ -20,7 +20,6 @@ class MetricsProxy < IndexedSearchTest
 
     assert(services['searchnode'])
     assert(services['qrserver'])
-    assert(services['topleveldispatch'])
   end
 
   def test_http_rest_api
