@@ -58,9 +58,11 @@ class Event < IndexedSearchTest
       begin
         response = https_client.get(vespa.qrserver["0"].name, vespa.qrserver["0"].http_port, '/search/', query: "query=#{count.to_s}")
         if response.code == "200"
-          puts "Successfully run 1 query"
-          count = count + 1
+          puts "Successfully run query #{count}"
+        else
+          puts "Query #{count} failed with response code #{response.code}"
         end
+        count = count + 1
       rescue Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL
         puts "Connection refused, trying again in 1 second"
         sleep 1
