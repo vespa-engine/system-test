@@ -336,9 +336,13 @@ class PerformanceTest < TestCase
               node.execute('ps auxwww')
               node.kill_pid(pid, 'INT')
             end
-          rescue Timeout::Error
+          rescue Timeout::Error, ExecuteError
             puts "Failed to terminate pid #{pid} on host #{node.name}, trying KILL"
-            node.kill_pid(pid, 'KILL')
+            begin
+              node.kill_pid(pid, 'KILL')
+            rescue ExecuteError
+              puts "Failed to terminate pid #{pid} on host #{node.name}"
+            end
           end
         end
       end
