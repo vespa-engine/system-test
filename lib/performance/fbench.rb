@@ -38,6 +38,16 @@ module Perf
       @output[15]
     end
 
+    def http_status_code_distribution
+      hist = {}
+      @output_str.each_line do |line|
+        if line =~ /\s+(\d+)\s+:\s+(\d+)/
+          hist[$~[1].to_i] = $~[2].to_i
+        end
+      end
+      hist
+    end
+
     # The qps_scale_factor is used to scale up the QPS value,
     # e.g. when calculating the effective QPS for boolean search with subqueries.
     # For the boolean search benchmarking, the number of subqueries per query is used as scale factor.
