@@ -102,11 +102,14 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     query_file
   end
 
+  def container
+    vespa.container.values.first
+  end
+
   def with_background_fbench(query_file:, clients:, runtime_sec:)
     raise "No block given" if not block_given?
     ret = {}
     fbench_thread = Thread.new {
-      container = vespa.container.values.first
       fbench = Perf::Fbench.new(container, container.name, container.http_port)
       fbench.clients = clients
       fbench.runtime = runtime_sec
@@ -140,6 +143,7 @@ class GetsDuringStateTransitionsTest < PerformanceTest
   def prepare_feed_and_query
     feed_n_documents(@doc_count)
     @query_file = prepare_query_file_for_n_documents(@doc_count)
+    container.copy(@query_file, dirs.tmpdir) # If running locally, just overwrites file with itself.
   end
 
   def restart_all_distributors
