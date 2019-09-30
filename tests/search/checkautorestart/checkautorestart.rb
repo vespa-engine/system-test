@@ -61,25 +61,20 @@ class CheckAutoRestart < SearchTest
 
     puts "Killing various vespa processes"
     killapp("sbin/vespa-logd")
-    killapp("sbin/vespa-storaged-bin")
     killapp("sbin/vespa-distributord-bin")
-    # pid file is part of the output from ps, use that for services running in container
-    killapp("container.pid")
-    killapp("container-clustercontroller.pid")
-    killapp("sbin/vespa-dispatch")
+    killapp("config.id=default/container.0")
+    killapp("config.id=admin/cluster-controllers/0")
     killapp("sbin/vespa-proton")
-    killapp("com.yahoo.vespa.metricsproxy.RpcServer")
-    killapp("bin/vespa-slobrok")
+    killapp("config.id=admin/metrics/")
+    killapp("sbin/vespa-slobrok")
 
     check_new_pids("sbin/vespa-logd")
-    check_new_pids("sbin/vespa-storaged-bin")
     check_new_pids("sbin/vespa-distributord-bin")
-    check_new_pids("container.pid")
-    check_new_pids("container-clustercontroller.pid")
-    check_new_pids("sbin/vespa-dispatch")
+    check_new_pids("config.id=default/container.0")
+    check_new_pids("config.id=admin/cluster-controllers/0")
     check_new_pids("sbin/vespa-proton")
-    check_new_pids("com.yahoo.vespa.metricsproxy.RpcServer")
-    check_new_pids("bin/vespa-slobrok")
+    check_new_pids("config.id=admin/metrics/")
+    check_new_pids("sbin/vespa-slobrok")
 
     wait_until_all_services_up(180)
     # Wait for container to come up again
