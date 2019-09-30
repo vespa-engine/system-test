@@ -332,7 +332,7 @@ class PerformanceTest < TestCase
       @perf_processes.each do |node, pidlist|
         pidlist.each do |pid|
           begin
-            Timeout.timeout(5) do
+            Timeout.timeout(10) do
               node.execute('ps auxwww')
               node.kill_pid(pid, 'INT')
             end
@@ -340,7 +340,7 @@ class PerformanceTest < TestCase
             puts "Failed to terminate pid #{pid} on host #{node.name}, trying KILL"
             begin
               node.kill_pid(pid, 'KILL')
-            rescue ExecuteError
+            rescue ExecuteError, SystemCallError
               puts "Failed to terminate pid #{pid} on host #{node.name}"
             end
           end
