@@ -52,6 +52,7 @@ class CheckAutoRestart < SearchTest
       end
       break
     end
+    assert(!check_again, "Could not find pid for #{app}")
   end
 
   def test_check_auto_restart
