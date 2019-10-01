@@ -30,6 +30,7 @@ class GetsDuringStateTransitionsTest < PerformanceTest
 
   def teardown
     stop
+    super
   end
 
   def create_app(enable_stale_reads:, use_btree_db: false)
