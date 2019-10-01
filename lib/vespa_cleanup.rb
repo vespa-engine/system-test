@@ -45,7 +45,6 @@ class VespaCleanup
       pids |= collect_stale_pids(node, "ps auxww | grep vespa-feeder | grep -v grep | awk '{print $2}'")
       pids |= collect_stale_pids(node, "ps auxww | grep vespa-fbench | grep -v grep | awk '{print $2}'")
       pids |= collect_stale_pids(node, "ps auxww | grep vespa-visit | grep -v grep | awk '{print $2}'")
-      pids |= collect_stale_pids(node, "ps auxww | grep ^#{user} | grep vespa-dispatch-bin | grep -v grep | awk '{print $2}'")
       badpids |= collect_stale_pids(node, "ps auxww | grep ^#{user} | grep -i vespa- | grep -v grep | awk '{print $2}'")
       badpids |= collect_stale_pids(node, "ps auxww | grep ^#{user} | grep vespa-config-sentinel | grep -v grep | awk '{print $2}'")
       badpids |= collect_stale_pids(node, "ps auxww | grep ^#{user} | grep vespa-logd | grep -v grep | awk '{print $2}'")
