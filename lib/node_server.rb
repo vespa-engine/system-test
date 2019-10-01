@@ -284,7 +284,6 @@ class NodeServer
   # Returns an array of pids corresponding to _name_.
   def get_pids(name)
     pids = `ps awwx | grep #{name} | grep -v grep | awk '{print $1}'`
-    puts "pids for #{name}: #{pids}"
     result = []
     pids.split("\n").each do |pid|
       pid.gsub!(/\s+/, "")

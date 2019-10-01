@@ -60,11 +60,17 @@ class CheckAutoRestart < SearchTest
     output = deploy_app(SearchApp.new.sd(selfdir+"banana.sd"))
     start
 
+    if use_shared_configservers
+      clustercontroller_config_id = "config.id=search/standalone/search-controllers/0"
+    else
+      clustercontroller_config_id = "config.id=admin/cluster-controllers/0"
+    end
+
     puts "Killing various vespa processes"
     killapp("sbin/vespa-logd")
     killapp("sbin/vespa-distributord-bin")
     killapp("config.id=default/container.0")
-    killapp("config.id=admin/cluster-controllers/0")
+    killapp(clustercontroller_config_id)
     killapp("sbin/vespa-proton")
     killapp("config.id=admin/metrics/")
     killapp("sbin/vespa-slobrok")
@@ -72,7 +78,7 @@ class CheckAutoRestart < SearchTest
     check_new_pids("sbin/vespa-logd")
     check_new_pids("sbin/vespa-distributord-bin")
     check_new_pids("config.id=default/container.0")
-    check_new_pids("config.id=admin/cluster-controllers/0")
+    check_new_pids(clustercontroller_config_id)
     check_new_pids("sbin/vespa-proton")
     check_new_pids("config.id=admin/metrics/")
     check_new_pids("sbin/vespa-slobrok")
