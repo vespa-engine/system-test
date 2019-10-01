@@ -61,7 +61,7 @@ class CheckAutoRestart < SearchTest
     start
 
     if use_shared_configservers
-      clustercontroller_config_id = "search/standalone/search-controllers/0"
+      clustercontroller_config_id = "config.id=search/standalone/search-controllers/0"
     else
       clustercontroller_config_id = "config.id=admin/cluster-controllers/0"
     end
