@@ -19,6 +19,7 @@ class CheckAutoRestart < SearchTest
     vespa.nodeproxies.each_value do |node|
       @ps[app][node.name] = Hash.new
       pids = node.kill_process(app)
+      raise "Unable to kill #{app}" if pids.empty?
       pids.each do |pid|
         @ps[app][node.name][pid] = true
       end
