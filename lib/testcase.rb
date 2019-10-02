@@ -91,8 +91,6 @@ class TestCase
       @@log_messages[:slf4j_class_path_multiple_bindings],
       @@log_messages[:uncommon_get],
       @@log_messages[:jetty_log_init],
-      @@log_messages[:fnet_temp_fail],
-      @@log_messages[:fnet_disable_interface],
       @@log_messages[:zkmetric_updater_monitor_failure],
       @@log_messages[:async_slow_resolve]
     ]
@@ -699,8 +697,6 @@ class TestCase
     :could_not_get_config => /Could not get config, please check your setup/,
     :jetty_log_init => /Logging initialized @\d+ms to org.eclipse.jetty.util.log.StdErrLog/,
     :no_tick_registered =>  /Thread .+ has gone \d+ milliseconds without registering a tick/,
-    :fnet_temp_fail => /fdispatch::Fdispatch::CheckTempFail: FNET inactive for/,
-    :fnet_disable_interface => /Disabling fnet server interface/,
     :zkmetric_updater_monitor_failure => /Failure in retrieving monitoring data:/,
     :valgrindrc_not_read => /\/home\/builder\/\.valgrindrc was not read/,
     :shutdownguard_forcing_exit => /ShutdownGuard is now forcing an exit of the process/,
