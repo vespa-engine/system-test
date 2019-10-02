@@ -29,7 +29,6 @@ class GetsDuringStateTransitionsTest < PerformanceTest
   end
 
   def teardown
-    stop
     super
   end
 
