@@ -15,6 +15,7 @@ class PhraseCasesPerformanceTest < PerformanceTest
   end
 
   def setup
+    super
     set_description('Test various cases with phrase search')
     set_owner("arnej")
   end
@@ -143,7 +144,7 @@ class PhraseCasesPerformanceTest < PerformanceTest
   end
 
   def teardown
-    stop
+    super
   end
 
 end

@@ -16,6 +16,7 @@ class StressDispatch < PerformanceTest
   end
 
   def setup
+    super
     set_description("Stress test dispatch merging of hits.")
     set_owner("arnej")
   end
@@ -166,7 +167,7 @@ class StressDispatch < PerformanceTest
   end
 
   def teardown
-    stop
+    super
   end
 
 end
