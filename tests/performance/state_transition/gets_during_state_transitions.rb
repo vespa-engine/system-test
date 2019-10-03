@@ -211,7 +211,7 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     {
       :x => 'legend',
       :y => 'latency',
-      :title => "Historic Get latency with DB type #{db_type}, stale reads #{stale_reads}, edge #{edge}'}",
+      :title => "Historic Get latency with DB type #{db_type}, stale reads #{stale_reads}, edge #{edge}",
       :filter => { DB_TYPE => db_type, STALE_READS => stale_reads, EDGE => edge},
       :historic => true
     }
