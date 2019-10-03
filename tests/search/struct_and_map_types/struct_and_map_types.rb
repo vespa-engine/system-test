@@ -112,6 +112,33 @@ class StructAndMapTypesTest < SearchTest
     assert_same_element("props", "key contains 'tag_one', value contains 'android_one'", 1)
   end
 
+  def test_filtered_elements_in_document_summary
+    set_description("Test that we can filter elements in document summary")
+    deploy_and_start("attribute_fields")
+    feed(:file => selfdir + "docs_search.json")
+    assert_same_element_summary("elem_array", "name contains 'bar', weight contains '20'", "default", "elem_array", [elem("foo", 10), elem("bar", 20), elem("baz", 30)])
+    assert_same_element_summary("elem_array", "name contains 'bar', weight contains '20'", "filtered", "elem_array_filtered", [elem("bar", 20)])
+    assert_same_element_summary("elem_map", "key contains '@bar', value.weight contains '20'", "default", "elem_map", {"@foo" => elem("foo", 10), "@bar" => elem("bar", 20), "@baz" => elem("baz", 30)})
+    assert_same_element_summary("elem_map", "key contains '@bar', value.weight contains '20'", "filtered", "elem_map_filtered", {"@bar" => elem("bar", 20)})
+    assert_same_element_summary("str_int_map", "key contains '@bar', value contains '20'", "default", "str_int_map", {"@foo" => 10, "@bar" => 20, "@baz" => 30})
+    assert_same_element_summary("str_int_map", "key contains '@bar', value contains '20'", "filtered", "str_int_map_filtered", {"@bar" => 20})
+  end
+
+  def assert_same_element_summary(field, same_element, summary, summary_field, exp_summary_field)
+    form = [["yql", "select * from sources * where #{field} contains sameElement(#{same_element});"],
+            ["summary", summary ],
+            ["format", "json" ],
+            ["hits", "10"]]
+    encoded_form = URI.encode_www_form(form)
+    puts "form is #{encoded_form}"
+    result = search("#{encoded_form}")
+    puts "result is #{result.xmldata}"
+    assert_equal(1, result.hitcount)
+    hit = result.hit[0]
+    act_summary_field = hit.field[summary_field]
+    assert_equal(exp_summary_field, act_summary_field)
+  end
+
   def assert_same_element(field, same_element, exp_hitcount, extra_params = "")
     query = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})%3b#{extra_params}"
     puts "assert_same_element(#{query}, #{exp_hitcount})"
