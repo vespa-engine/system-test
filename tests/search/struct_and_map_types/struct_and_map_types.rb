@@ -122,6 +122,12 @@ class StructAndMapTypesTest < SearchTest
     assert_same_element_summary("elem_map", "key contains '@bar', value.weight contains '20'", "filtered", "elem_map_filtered", {"@bar" => elem("bar", 20)})
     assert_same_element_summary("str_int_map", "key contains '@bar', value contains '20'", "default", "str_int_map", {"@foo" => 10, "@bar" => 20, "@baz" => 30})
     assert_same_element_summary("str_int_map", "key contains '@bar', value contains '20'", "filtered", "str_int_map_filtered", {"@bar" => 20})
+    assert_same_element_single_summary("elem_array", "name contains 'bar'", "default", "elem_array", [elem("foo", 10), elem("bar", 20), elem("baz", 30)])
+    assert_same_element_single_summary("elem_array", "name contains 'bar'", "filtered", "elem_array_filtered", [elem("bar", 20)])
+    assert_same_element_single_summary("elem_map", "key contains '@bar'", "default", "elem_map", {"@foo" => elem("foo", 10), "@bar" => elem("bar", 20), "@baz" => elem("baz", 30)})
+    assert_same_element_single_summary("elem_map", "key contains '@bar'", "filtered", "elem_map_filtered", {"@bar" => elem("bar", 20)})
+    assert_same_element_single_summary("str_int_map", "key contains '@bar'", "default", "str_int_map", {"@foo" => 10, "@bar" => 20, "@baz" => 30})
+    assert_same_element_single_summary("str_int_map", "key contains '@bar'", "filtered", "str_int_map_filtered", {"@bar" => 20})
   end
 
   def assert_same_element_summary(field, same_element, summary, summary_field, exp_summary_field)
@@ -129,6 +135,18 @@ class StructAndMapTypesTest < SearchTest
             ["summary", summary ],
             ["format", "json" ],
             ["hits", "10"]]
+    assert_summary_field(form, summary_field, exp_summary_field)
+  end
+
+  def assert_same_element_single_summary(field, same_element, summary, summary_field, exp_summary_field)
+    form = [["yql", "select * from sources * where #{field}.#{same_element};"],
+            ["summary", summary ],
+            ["format", "json" ],
+            ["hits", "10"]]
+    assert_summary_field(form, summary_field, exp_summary_field)
+  end
+
+  def assert_summary_field(form, summary_field, exp_summary_field)
     encoded_form = URI.encode_www_form(form)
     puts "form is #{encoded_form}"
     result = search("#{encoded_form}")
