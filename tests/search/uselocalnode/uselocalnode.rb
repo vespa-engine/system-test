@@ -38,7 +38,7 @@ class UseLocalNodeTest < SearchTest
       r=container.search("/search/?query=sddocname:music&nocache&hits=0&dispatch.direct=false#{query_append}")
     end
     matches = wait_for_atleast_log_matches(/.*Coverage of group 0 is only 0\/1 [(]requires 1[)]/, 2, 120, {:multinode => true})
-    assert(matches <= 100, "The test should see 2 to 4 reports for group 0 coverage, saw #{matches}")
+    assert(matches <= 6, "The test should see 2 to 6 reports for group 0 coverage, saw #{matches}")
     assert_log_not_matches(/.*Coverage of group 1 is only 0\/1 [(]requires 1[)]/, {:multinode => true})
   end
 
