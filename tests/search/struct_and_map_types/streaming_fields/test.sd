@@ -11,6 +11,9 @@ search test {
     field elem_map type map<string, elem> {
       indexing: index | summary
     }
+    field elem_map_2 type map<string, elem> {
+      indexing: index | summary
+    }
     field str_int_map type map<string, int> {
       indexing: index | summary
     }
