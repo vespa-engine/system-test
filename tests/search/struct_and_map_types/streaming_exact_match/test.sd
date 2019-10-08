@@ -1,0 +1,14 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field props type map<string, string> {
+      indexing: index | summary
+      struct-field key {
+        match: exact
+      }
+      struct-field value {
+        match: exact
+      }
+    }
+  }
+}
