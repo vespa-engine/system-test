@@ -17,6 +17,7 @@ class GetsDuringStateTransitionsTest < PerformanceTest
   EDGE = 'edge'
   DOWN = 'down'
   UP = 'up'
+  LEGEND = 'legend'
 
   def setup
     super
@@ -157,7 +158,8 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     assert_only_http_200_returned(fbench.http_status_code_distribution)
     param_fillers = [parameter_filler(DB_TYPE, db_type),
                      parameter_filler(STALE_READS, stale_reads),
-                     parameter_filler(EDGE, edge)]
+                     parameter_filler(EDGE, edge),
+                     parameter_filler(LEGEND, "#{DB_TYPE}_#{db_type}_#{STALE_READS}_#{stale_reads}_#{EDGE}_#{edge}"]
     write_report([fbench.fill] + param_fillers) # TODO system fill thingie?
   end
 
