@@ -4,11 +4,9 @@ search test {
     field props type map<string, string> {
       indexing: index | summary
       struct-field key {
-        indexing: attribute
         match: exact
       }
       struct-field value {
-        indexing: attribute
         match: exact
       }
     }
