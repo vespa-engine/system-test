@@ -1,0 +1,18 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    struct elem {
+      field name type string {}
+      field weight type int {}
+    }
+    field elem_array type array<elem> {
+      indexing: index | summary
+    }
+    field elem_map type map<string, elem> {
+      indexing: index | summary
+    }
+    field str_int_map type map<string, int> {
+      indexing: index | summary
+    }
+  }
+}
