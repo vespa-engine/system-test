@@ -159,7 +159,7 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     param_fillers = [parameter_filler(DB_TYPE, db_type),
                      parameter_filler(STALE_READS, stale_reads),
                      parameter_filler(EDGE, edge),
-                     parameter_filler(LEGEND, "Max response time (#{DB_TYPE}_#{db_type}_#{STALE_READS}_#{stale_reads}_#{EDGE}_#{edge})")]
+                     parameter_filler(LEGEND, "Max response time (#{DB_TYPE}: #{db_type}, #{STALE_READS}: #{stale_reads}, #{EDGE}: #{edge})")]
     write_report([fbench.fill] + param_fillers) # TODO system fill thingie?
   end
 
