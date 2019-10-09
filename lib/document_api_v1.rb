@@ -54,7 +54,7 @@ class DocumentApiV1
       @test_case.output("http_post('#{path}', '#{content}'")
     end
     connection = get_connection(params)
-    response = connection.getConnection.post(path, content, headers)
+    response = connection.getConnection.post(path, content, headers.merge({ 'Content-Type' => 'application/json'}))
     @connectionPool.release(connection)
     assert_response_ok(response)
     response.body
@@ -65,7 +65,7 @@ class DocumentApiV1
       @test_case.output("http_put('#{path}', '#{content}'")
     end
     connection = get_connection(params)
-    response = connection.getConnection.put(path, content, headers)
+    response = connection.getConnection.put(path, content, headers.merge({ 'Content-Type' => 'application/json'}))
     @connectionPool.release(connection)
     assert_response_ok(response)
     response.body
