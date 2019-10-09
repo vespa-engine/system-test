@@ -36,6 +36,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def test_feed_and_retrieval_on_attribute_fields
+    @params = { :search_type => "ELASTIC" }
     set_description("Test feed operations and retrieval on attribute array of struct and map of struct fields")
     deploy_and_start("attribute_fields")
     @has_summary_features = true
@@ -118,6 +119,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def test_filtered_elements_in_document_summary
+    @params = { :search_type => "ELASTIC" }
     set_description("Test that we can filter elements in document summary")
     deploy_and_start("attribute_fields")
     feed(:file => selfdir + "docs_search.json")
