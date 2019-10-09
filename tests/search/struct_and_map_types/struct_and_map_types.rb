@@ -1,11 +1,16 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_streaming_search_test'
 
-class StructAndMapTypesTest < SearchTest
+class StructAndMapTypesTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
     @has_summary_features = false
+  end
+
+  def self.final_test_methods
+    ["test_feed_and_retrieval_on_attribute_fields",
+     "test_filtered_elements_in_document_summary"]
   end
 
   def create_app(test_case)
@@ -26,7 +31,7 @@ class StructAndMapTypesTest < SearchTest
 
   def test_feed_and_retrieval_on_regular_fields
     set_description("Test feed operations and retrieval on regular array of struct and map of struct fields")
-    deploy_and_start("regular_fields")
+    deploy_and_start(is_streaming ? "streaming_fields" : "regular_fields")
     run_test
   end
 
@@ -39,7 +44,7 @@ class StructAndMapTypesTest < SearchTest
 
   def test_search_in_map_and_array_of_struct_attribute
     set_description("Test search in map and array of struct attributes")
-    deploy_and_start("attribute_fields")
+    deploy_and_start(is_streaming ? "streaming_fields" : "attribute_fields")
     feed(:file => selfdir + "docs_search.json")
     vespa.adminserver.logctl("searchnode:proton.matching.query", "debug=on")
 
@@ -102,7 +107,7 @@ class StructAndMapTypesTest < SearchTest
 
   def test_exact_match_search
     set_description("Test exact match search in the struct field attributes of a map field")
-    deploy_and_start("exact_match")
+    deploy_and_start(is_streaming ? "streaming_exact_match" : "exact_match")
     feed(:file => selfdir + "exact_match/docs.json")
 
     assert_same_element_single("props", "key contains 'tag_one'", 1)
@@ -134,6 +139,7 @@ class StructAndMapTypesTest < SearchTest
     form = [["yql", "select * from sources * where #{field} contains sameElement(#{same_element});"],
             ["summary", summary ],
             ["format", "json" ],
+            ["streaming.selection", "true"],
             ["hits", "10"]]
     assert_summary_field(form, summary_field, exp_summary_field)
   end
@@ -142,6 +148,7 @@ class StructAndMapTypesTest < SearchTest
     form = [["yql", "select * from sources * where #{field}.#{same_element};"],
             ["summary", summary ],
             ["format", "json" ],
+            ["streaming.selection", "true"],
             ["hits", "10"]]
     assert_summary_field(form, summary_field, exp_summary_field)
   end
@@ -158,14 +165,14 @@ class StructAndMapTypesTest < SearchTest
   end
 
   def assert_same_element(field, same_element, exp_hitcount, extra_params = "")
-    query = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})%3b#{extra_params}"
+    query = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})%3b&streaming.selection=true#{extra_params}"
     puts "assert_same_element(#{query}, #{exp_hitcount})"
     assert_hitcount(query, exp_hitcount)
   end
 
   def assert_same_element_single(field, same_element, exp_hitcount, extra_params = "")
-    query = "yql=select %2a from sources %2a where #{field}.#{same_element}%3b#{extra_params}"
-    query_same = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})%3b#{extra_params}"
+    query = "yql=select %2a from sources %2a where #{field}.#{same_element}%3b&streaming.selection=true#{extra_params}"
+    query_same = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})%3b&streaming.selection=true#{extra_params}"
     assert_hitcount(query, exp_hitcount)
     assert_hitcount(query_same, exp_hitcount)
   end
@@ -242,8 +249,16 @@ class StructAndMapTypesTest < SearchTest
     assert_result(exp_elem_array, exp_elem_map, exp_str_int_map)
   end
 
+  def routing_variants
+    if is_streaming
+      [ false ]
+    else
+      [ true, false ]
+    end
+  end
+
   def run_test_cases(file_name, exp_elem_array, exp_elem_map, exp_str_int_map)
-    [true, false].each { |direct_route| run_test_case(file_name, exp_elem_array, exp_elem_map, exp_str_int_map, direct_route) }
+    routing_variants.each { |direct_route| run_test_case(file_name, exp_elem_array, exp_elem_map, exp_str_int_map, direct_route) }
   end
 
   def assert_document(exp_elem_array, exp_elem_map, exp_str_int_map)
@@ -263,7 +278,7 @@ class StructAndMapTypesTest < SearchTest
   end
 
   def assert_result(exp_elem_array, exp_elem_map, exp_str_int_map)
-    result = search("query=sddocname:test&presentation.format=json")
+    result = search("query=sddocname:test&streaming.selection=true&presentation.format=json")
     assert_equal(1, result.hitcount)
     hit = result.hit[0]
     elem_array = hit.field["elem_array"]
