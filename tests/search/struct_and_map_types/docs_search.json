@@ -30,6 +30,20 @@
           "weight": 30
         }
       },
+      "elem_map_2": {
+        "@foo": {
+          "name": "foo",
+          "weight": 10
+        },
+        "@bar": {
+          "name": "bar",
+          "weight": 20
+        },
+        "@baz": {
+          "name": "baz",
+          "weight": 30
+        }
+      },
       "str_int_map": {
         "@foo": 10,
         "@bar": 20,
@@ -47,6 +61,12 @@
         }
       ],
       "elem_map": {
+        "@baz": {
+          "name": "baz",
+          "weight": 30
+        }
+      },
+      "elem_map_2": {
         "@baz": {
           "name": "baz",
           "weight": 30

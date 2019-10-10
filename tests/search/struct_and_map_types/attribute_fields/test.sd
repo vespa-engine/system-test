@@ -16,6 +16,7 @@ search test {
       }
     }
     field elem_map type map<string, elem> {
+      # All struct-fields are attributes
       indexing: summary
       struct-field key {
         indexing: attribute
@@ -24,6 +25,19 @@ search test {
       struct-field value.name {
         indexing: attribute
         attribute: fast-search
+      }
+      struct-field value.weight {
+        indexing: attribute
+      }
+    }
+    field elem_map_2 type map<string, elem> {
+      # Some struct-fields are attributes
+      # Note: There is no use in extending the "filtered" summary class with a "matched-elements-only" field using this as the source
+      #       as this field would also need to be in that summary class to be available as the source.
+      indexing: summary
+      summary: matched-elements-only
+      struct-field key {
+        indexing: attribute
       }
       struct-field value.weight {
         indexing: attribute
