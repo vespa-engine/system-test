@@ -17,7 +17,7 @@ class ModelEvaluation < SearchContainerTest
 
     # ---- xgboost
     result = query("/models/?model=xgboost_2_2&function=xgboost_2_2")
-    assert_equal("{\"cells\":[{\"address\":{},\"value\":-8.17695}]}", result.body)
+    assert_equal("{\"cells\":[{\"address\":{},\"value\":-4.376589999999999}]}", result.body)
 
     # ---- mnist_softmax (onnx)
     #    - no argument
@@ -70,7 +70,7 @@ class ModelEvaluation < SearchContainerTest
 
     # evaluate xboost_2_2 model (only has one function, thus optional)
     result = query("/model-evaluation/v1/xgboost_2_2/eval")
-    assert_equal("{\"cells\":[{\"address\":{},\"value\":-8.17695}]}", result.body)
+    assert_equal("{\"cells\":[{\"address\":{},\"value\":-4.376589999999999}]}", result.body)
 
     # evaluate mnist_softmax model (only has one function, thus optional)
     result = query("/model-evaluation/v1/mnist_softmax/eval" +
