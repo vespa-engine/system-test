@@ -155,7 +155,7 @@ class ClusterControllerTest < VdsTest
             "/cluster/v2/storage?recursive=true")
     assert_equal('307', response.code, response.message)
     assert_equal('Temporary Redirect', response.message)
-    assert_match(/^http:\/\/[^\/]+\/cluster\/v2\/storage\?recursive=true$/,
+    assert_match(/^https:\/\/[^\/]+\/cluster\/v2\/storage\?recursive=true$/,
                  response["Location"])
 
         # Check that the redirection work
