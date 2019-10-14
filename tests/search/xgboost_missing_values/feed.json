@@ -1,0 +1,11 @@
+[
+{"id":"id:xgboost:xgboost::1","fields":{"expected":1.0,"field1":0.0,"field2":0.0}},
+{"id":"id:xgboost:xgboost::2","fields":{"expected":2.0,"field1":0.0,"field2":1.0}},
+{"id":"id:xgboost:xgboost::3","fields":{"expected":3.0,"field1":1.0,"field2":0.0}},
+{"id":"id:xgboost:xgboost::4","fields":{"expected":4.0,"field1":1.0,"field2":1.0}},
+{"id":"id:xgboost:xgboost::5","fields":{"expected":5.0,"field1":0.0}},
+{"id":"id:xgboost:xgboost::6","fields":{"expected":6.0,"field1":1.0}},
+{"id":"id:xgboost:xgboost::7","fields":{"expected":7.0,"field2":0.0}},
+{"id":"id:xgboost:xgboost::8","fields":{"expected":9.0,"field2":1.0}},
+{"id":"id:xgboost:xgboost::9","fields":{"expected":11.0}}
+]
