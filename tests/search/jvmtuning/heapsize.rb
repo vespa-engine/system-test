@@ -37,7 +37,7 @@ class HeapSize < SearchTest
   def test_jvm_absolute_heap_size_by_heapsize()
     deploy_app(SearchApp.new.sd(selfdir+"foo.sd").qrserver(QrserverCluster.new).
                          config(ConfigOverride.new('search.config.qr-start').
-                                               add('jvm', ConfigValue.new('minHeapsize', '1600'))
+                                               add('jvm', ConfigValue.new('minHeapsize', '1600')).
                                                add('jvm', ConfigValue.new('heapsize', '2048'))))
     start
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xms1600m/)
@@ -49,7 +49,7 @@ class HeapSize < SearchTest
   def test_jvm_absolute_min_heap_size_by_is_capped_at_heapsize()
     deploy_app(SearchApp.new.sd(selfdir+"foo.sd").qrserver(QrserverCluster.new).
                          config(ConfigOverride.new('search.config.qr-start').
-                                               add('jvm', ConfigValue.new('minHeapsize', '2600'))
+                                               add('jvm', ConfigValue.new('minHeapsize', '2600')).
                                                add('jvm', ConfigValue.new('heapsize', '2048'))))
     start
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xms2048m/)
@@ -61,7 +61,7 @@ class HeapSize < SearchTest
   def test_jvm_absolute_heap_size_by_heapsize_is_capped()
     deploy_app(SearchApp.new.sd(selfdir+"foo.sd").qrserver(QrserverCluster.new).
                          config(ConfigOverride.new('search.config.qr-start').
-                                               add('jvm', ConfigValue.new('minHeapsize', '512'))
+                                               add('jvm', ConfigValue.new('minHeapsize', '512')).
                                                add('jvm', ConfigValue.new('heapsize', '512'))))
     start
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xms512m/)
