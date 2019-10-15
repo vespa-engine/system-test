@@ -9,8 +9,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def self.final_test_methods
-    ["test_feed_and_retrieval_on_attribute_fields",
-     "test_filtered_elements_in_document_summary"]
+    ["test_feed_and_retrieval_on_attribute_fields"]
   end
 
   def create_app(test_case)
@@ -119,9 +118,8 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def test_filtered_elements_in_document_summary
-    @params = { :search_type => "ELASTIC" }
     set_description("Test that we can filter elements in document summary")
-    deploy_and_start("attribute_fields")
+    deploy_and_start(is_streaming ? "streaming_fields" : "attribute_fields")
     feed(:file => selfdir + "docs_search.json")
     assert_same_element_summary("elem_array", "name contains 'bar', weight contains '20'", "default", "elem_array", [elem("foo", 10), elem("bar", 20), elem("baz", 30)])
     assert_same_element_summary("elem_array", "name contains 'bar', weight contains '20'", "filtered", "elem_array_filtered", [elem("bar", 20)])
