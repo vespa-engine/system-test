@@ -13,9 +13,25 @@ search test {
     }
     field elem_map_2 type map<string, elem> {
       indexing: index | summary
+      summary: matched-elements-only
     }
     field str_int_map type map<string, int> {
       indexing: index | summary
+    }
+  }
+  document-summary filtered {
+    summary documentid type string {}
+    summary elem_array_filtered type array<elem> {
+      source: elem_array
+      matched-elements-only
+    }
+    summary elem_map_filtered type map<string, elem> {
+      source: elem_map
+      matched-elements-only
+    }
+    summary str_int_map_filtered type map<string, int> {
+      source: str_int_map
+      matched-elements-only
     }
   }
 }
