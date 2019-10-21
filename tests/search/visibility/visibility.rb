@@ -161,7 +161,8 @@ class Visibility < IndexedSearchTest
                 http(Http.new.server(Server.new("node1", 18000)))).
             cluster(sc).
             storage(StorageCluster.new("visibility", 41).distribution_bits(16)).
-            enable_http_gateway
+            enable_http_gateway.
+            gateways_jvmargs('-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005')
   end
 
   def get_app(sc)
