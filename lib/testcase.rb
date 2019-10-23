@@ -92,7 +92,9 @@ class TestCase
       @@log_messages[:uncommon_get],
       @@log_messages[:jetty_log_init],
       @@log_messages[:zkmetric_updater_monitor_failure],
-      @@log_messages[:async_slow_resolve]
+      @@log_messages[:log4j_no_appenders],
+      @@log_messages[:log4j_initialize],
+      @@log_messages[:log4j_see_noconfig]
     ]
     @valgrind_ignorable_messages = [
       @@log_messages[:slow_processing],
@@ -684,7 +686,7 @@ class TestCase
     :connect_location_broker =>  /cannot connect to location broker at tcp/,
     :max_query_timeout => /Query timeout \(\d+ ms\) > max query /,
     :out_of_rotation => /Removing container from rotation by no longer serving status.html/,
-    # Remove when we use 3.5.0 or newer
+    # TODO: Remove when we use 3.5.0 or newer
     :curator_warning_about_zookeeper_version => /The version of ZooKeeper being used doesn\'t support Container nodes\. CreateMode\.PERSISTENT will be used instead/,
     :curator_slf4j_exponential_backoff_retry => /SLF4J: org.apache.curator.retry.ExponentialBackoffRetry/,
     :container_watchdog => /A watchdog meant to run 10 times a second has not been invoked for 5 seconds/,
@@ -700,7 +702,10 @@ class TestCase
     :zkmetric_updater_monitor_failure => /Failure in retrieving monitoring data:/,
     :valgrindrc_not_read => /\/home\/builder\/\.valgrindrc was not read/,
     :shutdownguard_forcing_exit => /ShutdownGuard is now forcing an exit of the process/,
-    :memory_history_should_be_tracked => /Memory history is supposed to be tracked every/
+    :memory_history_should_be_tracked => /Memory history is supposed to be tracked every/,
+    :log4j_no_appenders => /log4j:WARN No appenders could be found for logger/,
+    :log4j_initialize => /log4j:WARN Please initialize the log4j system properly/,
+    :log4j_see_noconfig => /log4j:WARN See http:\/\/logging.apache.org\/log4j\/1.2\/faq.html#noconfig/
   }
 
   # Allow that certain log messages may be ignored without the individual
