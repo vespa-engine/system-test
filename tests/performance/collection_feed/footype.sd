@@ -1,24 +1,6 @@
 search footype {
 document footype {
 
-  field arr_attr_long_nofs type array<long> {
-    indexing: attribute
-  }
-
-  field arr_attr_long_fs type array<long> {
-    indexing: attribute
-    attribute: fast-search
-  }
-
-  field arr_attr_string_nofs type array<string> {
-    indexing: attribute
-  }
-
-  field arr_attr_string_fs type array<string> {
-    indexing: attribute
-    attribute: fast-search
-  }
-
   field wset_attr_long_nofs type weightedset<long> {
     indexing: attribute
   }
