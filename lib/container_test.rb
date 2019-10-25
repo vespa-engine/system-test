@@ -20,7 +20,7 @@ class ContainerTest < TestCase
   # The first app must be deployed with 'start'
   def deploy(app, params={})
     output = container_deploy(app, params)
-    @container = vespa.container.values.first
+    @container = (vespa.container.values.first || vespa.qrserver.values.first)
     wait_for_application(@container, output)
   end
 
