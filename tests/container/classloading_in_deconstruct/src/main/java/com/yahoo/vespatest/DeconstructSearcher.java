@@ -35,7 +35,8 @@ public class DeconstructSearcher extends Searcher {
         try {
             Class<?> causesException = this.getClass().forName("com.yahoo.docproc.DocumentProcessor");
         } catch (ClassNotFoundException e) {
-            log.log(Level.SEVERE, "Class not found when deconstructing searcher", e);
+            log.log(Level.SEVERE, "Class not found when deconstructing searcher " + this
+                    + " (response: " + response + ")", e);
         }
     }
 

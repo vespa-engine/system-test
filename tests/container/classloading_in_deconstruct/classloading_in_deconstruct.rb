@@ -43,6 +43,7 @@ class ClassloadingInDeconstruct < ContainerTest
   end
 
   def teardown
+    # The current searcher will be deconstructed here
     stop
   end
 
