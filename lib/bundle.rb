@@ -1,7 +1,7 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 class Bundle
   attr_reader :sourcedir, :name, :params
-  attr_accessor :version, :artifact_id, :group_id, :extra_build_plugin_xml
+  attr_accessor :version, :artifact_id, :group_id, :extra_build_plugin_xml, :bundle_plugin_config
 
   def initialize(sourcedir, name, params={})
     @sourcedir = sourcedir
@@ -16,6 +16,7 @@ class Bundle
     #     building other bundles
     @params = params
     @extra_build_plugin_xml = params.fetch(:extra_build_plugin_xml, "")
+    @bundle_plugin_config = params.fetch(:bundle_plugin_config, "")
   end
 
   def generate_final_name

@@ -109,7 +109,9 @@ module Maven
       return true
     end
 
-    doc = REXML::Document.new(Maven.pom_xml(to_pom_version(vespa_version), bundle.extra_build_plugin_xml))
+    doc = REXML::Document.new(Maven.pom_xml(to_pom_version(vespa_version),
+                                            bundle.extra_build_plugin_xml,
+                                            bundle.bundle_plugin_config))
     elem = REXML::XPath.first(doc.root, "artifactId")
     elem.text = bundle.artifact_id
     elem = REXML::XPath.first(doc.root, "name")
@@ -141,7 +143,7 @@ module Maven
   end
 
 
-  def Maven.pom_xml(vespa_pom_version, extra_build_plugin_xml="", new_values = {})
+  def Maven.pom_xml(vespa_pom_version, extra_build_plugin_xml="", bundle_plugin_config="", new_values = {})
     maven_repository_settings =
       if Environment.instance.maven_snapshot_url != nil then
         "<repositories>
@@ -221,6 +223,9 @@ module Maven
             <artifactId>bundle-plugin</artifactId>
             <version>#{vespa_pom_version}</version>
             <extensions>true</extensions>
+            <configuration>
+" + bundle_plugin_config + "
+            </configuration>
           </plugin>
 
           <plugin>
