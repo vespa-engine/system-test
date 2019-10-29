@@ -1,5 +1,6 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
+require 'resultset'
 
 class YqlSearch < IndexedSearchTest
 
@@ -23,6 +24,13 @@ class YqlSearch < IndexedSearchTest
     feed_and_check
   end
 
+  def assert_result_matches_wset_order_normalized(query, expected_file)
+    result_xml = search(query, 0).xmldata
+    actual = Resultset.new(result_xml, query)
+    expected = Resultset.new(File.read(expected_file), query)
+    assert_equal(expected, actual)
+  end
+
   def feed_and_check
     feed(:file => selfdir+"music.3.xml", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 3)
@@ -38,7 +46,7 @@ class YqlSearch < IndexedSearchTest
     # YQL: select * from sources * where rank(title contains "blues",title contains "country") | all(group(score)each(output(count())));
 
     yql = 'select+%2A+from+sources+%2A+where+rank%28title+contains+%22blues%22%2Ctitle+contains+%22country%22%29+%7C+all%28group%28score%29each%28output%28count%28%29%29%29%29%3B'
-    assert_result_matches("/search/?yql=#{yql}", selfdir + "group-result.xml")
+    assert_result_matches_wset_order_normalized("/search/?yql=#{yql}", selfdir + "group-result.xml")
   end
 
   def teardown
