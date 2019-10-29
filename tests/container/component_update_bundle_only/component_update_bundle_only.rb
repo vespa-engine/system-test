@@ -42,12 +42,8 @@ class ComponentUpdateBundleOnly < SearchContainerTest
 
     verify_handler_response("Initial handler")
 
-    for i in (1..2)
-      puts ">>>>>>>>>>>> Deploying the updated bundle for the #{i}. time"
-      redeploy("Updated handler", updated)
-      puts ">>>>>>>>>>>> Deploying the initial bundle for the #{i+1}. time"
-      redeploy("Initial handler", initial)
-    end
+    puts ">>>>>>>>>>>> Deploying the updated bundle"
+    redeploy("Updated handler", updated)
 
   end
 
