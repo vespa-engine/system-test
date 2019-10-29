@@ -217,7 +217,7 @@ ENDER
 
   def wait_for_config_converge(timeout)
     hostname = vespa.configservers["0"].hostname
-    url = "http://#{hostname}:#{DEFAULT_SERVER_HTTPPORT}/application/v2/tenant/default/application/default/environment/prod/region/default/instance/default/converge?timeout=#{timeout}"
+    url = "http://#{hostname}:#{DEFAULT_SERVER_HTTPPORT}/application/v2/tenant/default/application/default/environment/prod/region/default/instance/default/serviceconverge?timeout=#{timeout}"
     response = http_request_get(URI(url), {})
     assert_equal(200, response.code.to_i)
   end
