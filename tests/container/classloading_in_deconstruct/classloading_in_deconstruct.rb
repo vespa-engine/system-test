@@ -18,7 +18,9 @@ class ClassloadingInDeconstruct < ContainerTest
                               {
                                   :name => 'importer',
                                   :dependencies => [exporter],
-                                  :bundle_plugin_config => bundle_plugin_config
+                                  # Enforce import-package for the package loaded in the importer's deconstruct().
+                                  # The bundle-plugin will not generate an import because the importer only refers to it in a String.
+                                  :bundle_plugin_config => "<importPackage>com.yahoo.exporter</importPackage>"
                               })
 
     compile_bundles(@vespa.nodeproxies.values.first)
@@ -49,12 +51,6 @@ class ClassloadingInDeconstruct < ContainerTest
   def updated_application
     ContainerApp.new(false).
         container(Container.new.search(Searching.new))
-  end
-
-  def bundle_plugin_config
-    # Enforce import-package for the package loaded in the importer's deconstruct().
-    # The bundle-plugin will not generate an import because the importer only refers to it in a String.
-    "<importPackage>com.yahoo.exporter</importPackage>"
   end
 
   def teardown
