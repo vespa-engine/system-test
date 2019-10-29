@@ -224,7 +224,7 @@ module Maven
             <version>#{vespa_pom_version}</version>
             <extensions>true</extensions>
             <configuration>
-" + bundle_plugin_config + "
+            #{bundle_plugin_config}
             </configuration>
           </plugin>
 
