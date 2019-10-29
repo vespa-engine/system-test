@@ -11,18 +11,26 @@ class ClassloadingInDeconstruct < ContainerTest
   end
 
   def test_classloading_in_deconstruct
-    searcher = add_bundle_dir(selfdir, "com.yahoo.vespatest.DeconstructSearcher", :name => 'searcher')
+    exporter = add_bundle_dir(selfdir+"exporter", "com.yahoo.exporter.Exporter",
+                              {:name => 'exporter'})
+
+    importer = add_bundle_dir(selfdir+"importer", "com.yahoo.importer.DeconstructSearcher",
+                              {
+                                  :name => 'importer',
+                                  :dependencies => [exporter],
+                                  :bundle_plugin_config => bundle_plugin_config
+                              })
+
     compile_bundles(@vespa.nodeproxies.values.first)
 
-    start(create_application('Hello, World!'), :bundles => [searcher])
+    start(original_application, :bundles => [exporter, importer])
     verify_response('Hello, World!')
 
-    # Redeploy with same bundle, but modified configured message
-    deploy(create_application('Hello again!'), :bundles => [searcher])
-    verify_response('Hello again!')
+    # Redeploy with no bundles, to enforce uninstall
+    deploy(updated_application, :bundles => [])
 
     sleep_period = 70
-    puts "Sleeping #{sleep_period} seconds for old searcher to be deconstructed."
+    puts "Sleeping #{sleep_period} seconds for importer to be deconstructed."
     sleep(sleep_period)
   end
 
@@ -31,15 +39,22 @@ class ClassloadingInDeconstruct < ContainerTest
     assert_match(/#{expected}/, result.xmldata, "Did not get expected response.")
   end
 
-  def create_application(message)
-    config = ConfigOverride.new(:"com.yahoo.vespatest.response").
-        add("response", message)
-
+  def original_application
     ContainerApp.new(false).
         container(Container.new.search(Searching.new.
             chain(Chain.new.add(
-                Searcher.new("com.yahoo.vespatest.DeconstructSearcher").
-                    config(config)))))
+                Searcher.new("com.yahoo.importer.DeconstructSearcher")))))
+  end
+
+  def updated_application
+    ContainerApp.new(false).
+        container(Container.new.search(Searching.new))
+  end
+
+  def bundle_plugin_config
+    # Enforce import-package for the package loaded in the importer's deconstruct().
+    # The bundle-plugin will not generate an import because the importer only refers to it in a String.
+    "<importPackage>com.yahoo.exporter</importPackage>"
   end
 
   def teardown
