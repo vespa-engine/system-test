@@ -35,13 +35,12 @@ public class DeconstructSearcher extends Searcher {
             Class<?> callableClass = this.getClass().getClassLoader().loadClass("com.yahoo.exporter.Exporter");
             Callable<String> callable = (Callable<String>) callableClass.getDeclaredConstructor().newInstance();
             String message = callable.call();
-            log.log(Level.INFO, "Got message from exporter in deconstruct: " + message);
+            log.log(Level.INFO, "Successfully retrieved message from exporter in deconstruct: " + message);
         } catch (ClassNotFoundException | NullPointerException e) {
             log.log(Level.SEVERE, "Class not found when deconstructing importer.", e);
         } catch (Throwable t) {
             log.log(Level.SEVERE, "Got unexpected throwable when deconstructing importer.", t);
         }
-        log.log(Level.INFO, "Successfully deconstructed importer!");
     }
 
 }
