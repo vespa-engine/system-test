@@ -55,13 +55,8 @@ class ComponentUpdateSearcher < SearchContainerTest
     assert_result("query=test", selfdir + "initial_result.xml")
 
     # Re-deploy with same app, but modified searcher bundle
-
-    for i in (1..5)
-      puts ">>>>>>>>>>>> Deploying the updated searcher for the #{i}. time"
-      redeploy(selfdir + "updated_result.xml", updated)
-      puts ">>>>>>>>>>>> Re-deploying the initial searcher for the #{i}. time"
-      redeploy(selfdir + "initial_result.xml", initial)
-    end
+    puts ">>>>>>>>>>>> Deploying the updated searcher"
+    redeploy(selfdir + "updated_result.xml", updated)
 
   end
 
