@@ -24,9 +24,6 @@ class ComponentUpdateSearcher < SearchContainerTest
   end
 
   def redeploy(resultFile, bundle)
-    @vespa.nodeproxies.values[0].execute("df")
-    @vespa.nodeproxies.values[0].execute("top -n1 | head -5")
-
     output = deploy(selfdir + "app", nil, nil, :bundles => [bundle])
     begin
       wait_for_application(vespa.qrserver['0'], output)
