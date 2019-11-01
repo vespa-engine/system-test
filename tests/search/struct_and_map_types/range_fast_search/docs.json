@@ -1,0 +1,57 @@
+[
+{
+    "put": "id:test:test::0",
+    "fields": {
+        "assets": [
+        {
+            "type": "mp4",
+            "pixels": 786432
+        }
+        ]
+    }
+},
+{
+    "put": "id:test:test::1",
+    "fields": {
+        "assets": [
+        {
+            "type": "mp4",
+            "pixels": 1800000
+        }
+        ]
+    }
+},
+{
+    "put": "id:test:test::2",
+    "fields": {
+        "assets": [
+        {
+            "type": "mp4",
+            "pixels": 786432
+        }
+        ]
+    }
+},
+{
+    "put": "id:test:test::3",
+    "fields": {
+        "assets": [
+        {
+            "type": "mp4",
+            "pixels": 921600
+        }
+        ]
+    }
+},
+{
+    "put": "id:test:test::4",
+    "fields": {
+        "assets": [
+        {
+            "type": "mp4",
+            "pixels": 921600
+        }
+        ]
+    }
+}
+]

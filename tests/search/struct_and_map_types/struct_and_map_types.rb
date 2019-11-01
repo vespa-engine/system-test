@@ -12,7 +12,8 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def self.final_test_methods
-    ["test_feed_and_retrieval_on_attribute_fields"]
+    ["test_feed_and_retrieval_on_attribute_fields",
+     "test_numeric_range_search_when_using_fast_search"]
   end
 
   def create_app(test_case)
@@ -118,6 +119,26 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     assert_same_element_single("props", "value contains 'android_one'", 1)
     assert_same_element_single("props", "value contains 'android one'", 0)
     assert_same_element("props", "key contains 'tag_one', value contains 'android_one'", 1)
+  end
+
+  def test_numeric_range_search_when_using_fast_search
+    set_description("Test that numeric range search with 'fast-search' (that triggers use of bit vectors) works with sameElement operator")
+    deploy_and_start("range_fast_search")
+    feed(:file => selfdir + "range_fast_search/docs.json")
+
+    assert_same_element("assets", "type contains 'mp4', pixels >786431", 5)
+    assert_same_element("assets", "type contains 'mp4', pixels >786432", 3)
+    assert_same_element("assets", "type contains 'mp4', pixels >921599", 3)
+    assert_same_element("assets", "type contains 'mp4', pixels >921600", 1)
+    assert_same_element("assets", "type contains 'mp4', pixels >1799999", 1)
+    assert_same_element("assets", "type contains 'mp4', pixels >1800000", 0)
+
+    assert_same_element("assets", "type contains 'mp4', pixels <1800001", 5)
+    assert_same_element("assets", "type contains 'mp4', pixels <1800000", 4)
+    assert_same_element("assets", "type contains 'mp4', pixels <921601", 4)
+    assert_same_element("assets", "type contains 'mp4', pixels <921600", 2)
+    assert_same_element("assets", "type contains 'mp4', pixels <786433", 2)
+    assert_same_element("assets", "type contains 'mp4', pixels <786432", 0)
   end
 
   def test_filtered_elements_in_document_summary
