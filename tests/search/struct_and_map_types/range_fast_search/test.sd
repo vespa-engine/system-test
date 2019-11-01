@@ -1,0 +1,20 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    struct asset {
+      field type type string {}
+      field pixels type int {}
+    }
+    field assets type array<asset> {
+      indexing: summary
+      struct-field type {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field pixels {
+        indexing: attribute
+        attribute: fast-search
+      }
+    }
+  }
+}
