@@ -68,29 +68,48 @@ class WeightedSetFeedTest < PerformanceTest
                             gateway(ContainerDocumentApi.new))
   end
 
-  def wset_test_sizes
-    [10, 100, 1000, 10000, 100000]
+  class TestInstanceParams
+    attr_reader :wset_size, :fast_search, :y_min, :y_max
+    def initialize(wset_size, fast_search, y_min, y_max)
+      @wset_size = wset_size
+      @fast_search = fast_search
+      @y_min = y_min
+      @y_max = y_max
+    end
   end
 
-  def fast_search_combinations
-    [false, true]
+  def params(wset_size, fast_search, y_min, y_max)
+    TestInstanceParams.new(wset_size, fast_search, y_min, y_max)
+  end
+
+  def parameter_combinations
+    [
+      params(10,     false, 8, 11),
+      params(100,    false, 4, 8),
+      params(1000,   false, 15, 100),
+      params(10000,  false, 138, 365),
+      params(100000, false, 1200, 1600),
+      params(10,     true, 8, 11),
+      params(100,    true, 15, 20),
+      params(1000,   true, 180, 230),
+      params(10000,  true, 2600, 2850),
+      params(100000, true, 20000, 22000)
+    ]
   end
 
   def get_graphs
-    g = []
-    fast_search_combinations.each do |fs|
-      wset_test_sizes.each do |n|
-        g << {
-          :x => FIELD_TYPE,
-          :y => 'feeder.avglatency',
-          :title => "Average latency of weighted set feeding with #{n} elements per set, key type long, fast search #{fs}",
-          # TODO string type
-          :filter => { WSET_SIZE => n, KEY_TYPE => LONG_TYPE, FAST_SEARCH => fs.to_s},
-          :historic => true
-        }
-      end
-    end
-    g
+    parameter_combinations.map do |p|
+      {
+        :x => FIELD_TYPE,
+        :y => 'feeder.avglatency',
+        :title => "Average latency of weighted set feeding with #{p.wset_size} elements per set, key type long, fast search #{p.fast_search}",
+        # TODO string type
+        :filter => { WSET_SIZE => p.wset_size, KEY_TYPE => LONG_TYPE, FAST_SEARCH => p.fast_search.to_s},
+        :historic => true,
+        :y_min => p.y_min,
+        :y_max => p.y_max
+      }
+    end.to_a
   end
 
   def string_attr_name(fast_search)
@@ -107,14 +126,11 @@ class WeightedSetFeedTest < PerformanceTest
     deploy_app(create_app)
     start
     doc_count = 100_000
-    wset_test_sizes.each do |n|
-      # 10k docs with 100k elems would take forever with old O(n^2) behavior, so we scale the doc count down accordingly.
-      test_doc_count = doc_count / [(n / 100), 1].max
-      fast_search_combinations.each do |fs|
-        feed_initial_wsets(doc_count: test_doc_count, field_name: long_attr_name(fs), key_type: LONG_TYPE, wset_size: n, fast_search: fs)
-        # TODO enable string type test dimension once time complexity is fixed...!
-        #feed_initial_wsets(doc_count: test_doc_count, field_name: string_attr_name(fs), key_type: STRING_TYPE, wset_size: n, fast_search: fs)
-      end
+    parameter_combinations.each do |p|
+      # Reduce document count for large cardinalities to keep test time reasonable.
+      test_doc_count = doc_count / [(p.wset_size / 100), 1].max
+      feed_initial_wsets(doc_count: test_doc_count, field_name: long_attr_name(p.fast_search),
+                         key_type: LONG_TYPE, wset_size: p.wset_size, fast_search: p.fast_search)
     end
   end
 
