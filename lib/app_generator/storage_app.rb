@@ -31,8 +31,6 @@ class StorageApp < App
     @content.search_type(:none)
     @content.provider(:proton)
     @transition_time = 0
-    config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
-               add('use_btree_database', true))
   end
 
   def default_cluster(name="storage")
