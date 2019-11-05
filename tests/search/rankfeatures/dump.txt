@@ -4,6 +4,7 @@ attributeMatch(b).completeness
 attributeMatch(b).fieldCompleteness
 attributeMatch(b).importance
 attributeMatch(b).matches
+attributeMatch(b).maxWeight
 attributeMatch(b).normalizedWeight
 attributeMatch(b).normalizedWeightedWeight
 attributeMatch(b).queryCompleteness
