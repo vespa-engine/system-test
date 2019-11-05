@@ -4,6 +4,7 @@ attributeMatch(byte_arr).completeness#0.975
 attributeMatch(byte_arr).fieldCompleteness#0.5
 attributeMatch(byte_arr).importance#1.0
 attributeMatch(byte_arr).matches#1.0
+attributeMatch(byte_arr).maxWeight#0.0
 attributeMatch(byte_arr).normalizedWeight#0.0
 attributeMatch(byte_arr).normalizedWeightedWeight#0.0
 attributeMatch(byte_arr).queryCompleteness#1.0
@@ -16,6 +17,7 @@ attributeMatch(byte_exp).completeness#1.0
 attributeMatch(byte_exp).fieldCompleteness#1.0
 attributeMatch(byte_exp).importance#1.0
 attributeMatch(byte_exp).matches#1.0
+attributeMatch(byte_exp).maxWeight#0.0
 attributeMatch(byte_exp).normalizedWeight#0.0
 attributeMatch(byte_exp).normalizedWeightedWeight#0.0
 attributeMatch(byte_exp).queryCompleteness#1.0
@@ -28,6 +30,7 @@ attributeMatch(byte_wset).completeness#0.0
 attributeMatch(byte_wset).fieldCompleteness#0.0
 attributeMatch(byte_wset).importance#0.0
 attributeMatch(byte_wset).matches#0.0
+attributeMatch(byte_wset).maxWeight#0.0
 attributeMatch(byte_wset).normalizedWeight#0.0
 attributeMatch(byte_wset).normalizedWeightedWeight#0.0
 attributeMatch(byte_wset).queryCompleteness#0.0
@@ -40,6 +43,7 @@ attributeMatch(double_arr).completeness#0.975
 attributeMatch(double_arr).fieldCompleteness#0.5
 attributeMatch(double_arr).importance#1.0
 attributeMatch(double_arr).matches#1.0
+attributeMatch(double_arr).maxWeight#0.0
 attributeMatch(double_arr).normalizedWeight#0.0
 attributeMatch(double_arr).normalizedWeightedWeight#0.0
 attributeMatch(double_arr).queryCompleteness#1.0
@@ -52,6 +56,7 @@ attributeMatch(double_exp).completeness#1.0
 attributeMatch(double_exp).fieldCompleteness#1.0
 attributeMatch(double_exp).importance#1.0
 attributeMatch(double_exp).matches#1.0
+attributeMatch(double_exp).maxWeight#0.0
 attributeMatch(double_exp).normalizedWeight#0.0
 attributeMatch(double_exp).normalizedWeightedWeight#0.0
 attributeMatch(double_exp).queryCompleteness#1.0
@@ -64,6 +69,7 @@ attributeMatch(double_wset).completeness#0.0
 attributeMatch(double_wset).fieldCompleteness#0.0
 attributeMatch(double_wset).importance#0.0
 attributeMatch(double_wset).matches#0.0
+attributeMatch(double_wset).maxWeight#0.0
 attributeMatch(double_wset).normalizedWeight#0.0
 attributeMatch(double_wset).normalizedWeightedWeight#0.0
 attributeMatch(double_wset).queryCompleteness#0.0
@@ -76,6 +82,7 @@ attributeMatch(float_arr).completeness#0.975
 attributeMatch(float_arr).fieldCompleteness#0.5
 attributeMatch(float_arr).importance#1.0
 attributeMatch(float_arr).matches#1.0
+attributeMatch(float_arr).maxWeight#0.0
 attributeMatch(float_arr).normalizedWeight#0.0
 attributeMatch(float_arr).normalizedWeightedWeight#0.0
 attributeMatch(float_arr).queryCompleteness#1.0
@@ -88,6 +95,7 @@ attributeMatch(float_exp).completeness#1.0
 attributeMatch(float_exp).fieldCompleteness#1.0
 attributeMatch(float_exp).importance#1.0
 attributeMatch(float_exp).matches#1.0
+attributeMatch(float_exp).maxWeight#0.0
 attributeMatch(float_exp).normalizedWeight#0.0
 attributeMatch(float_exp).normalizedWeightedWeight#0.0
 attributeMatch(float_exp).queryCompleteness#1.0
@@ -100,6 +108,7 @@ attributeMatch(float_wset).completeness#0.0
 attributeMatch(float_wset).fieldCompleteness#0.0
 attributeMatch(float_wset).importance#0.0
 attributeMatch(float_wset).matches#0.0
+attributeMatch(float_wset).maxWeight#0.0
 attributeMatch(float_wset).normalizedWeight#0.0
 attributeMatch(float_wset).normalizedWeightedWeight#0.0
 attributeMatch(float_wset).queryCompleteness#0.0
@@ -112,6 +121,7 @@ attributeMatch(int_arr).completeness#0.975
 attributeMatch(int_arr).fieldCompleteness#0.5
 attributeMatch(int_arr).importance#1.0
 attributeMatch(int_arr).matches#1.0
+attributeMatch(int_arr).maxWeight#0.0
 attributeMatch(int_arr).normalizedWeight#0.0
 attributeMatch(int_arr).normalizedWeightedWeight#0.0
 attributeMatch(int_arr).queryCompleteness#1.0
@@ -124,6 +134,7 @@ attributeMatch(int_exp).completeness#1.0
 attributeMatch(int_exp).fieldCompleteness#1.0
 attributeMatch(int_exp).importance#1.0
 attributeMatch(int_exp).matches#1.0
+attributeMatch(int_exp).maxWeight#0.0
 attributeMatch(int_exp).normalizedWeight#0.0
 attributeMatch(int_exp).normalizedWeightedWeight#0.0
 attributeMatch(int_exp).queryCompleteness#1.0
@@ -136,6 +147,7 @@ attributeMatch(int_wset).completeness#0.0
 attributeMatch(int_wset).fieldCompleteness#0.0
 attributeMatch(int_wset).importance#0.0
 attributeMatch(int_wset).matches#0.0
+attributeMatch(int_wset).maxWeight#0.0
 attributeMatch(int_wset).normalizedWeight#0.0
 attributeMatch(int_wset).normalizedWeightedWeight#0.0
 attributeMatch(int_wset).queryCompleteness#0.0
@@ -148,6 +160,7 @@ attributeMatch(long_arr).completeness#0.975
 attributeMatch(long_arr).fieldCompleteness#0.5
 attributeMatch(long_arr).importance#1.0
 attributeMatch(long_arr).matches#1.0
+attributeMatch(long_arr).maxWeight#0.0
 attributeMatch(long_arr).normalizedWeight#0.0
 attributeMatch(long_arr).normalizedWeightedWeight#0.0
 attributeMatch(long_arr).queryCompleteness#1.0
@@ -160,6 +173,7 @@ attributeMatch(long_exp).completeness#1.0
 attributeMatch(long_exp).fieldCompleteness#1.0
 attributeMatch(long_exp).importance#1.0
 attributeMatch(long_exp).matches#1.0
+attributeMatch(long_exp).maxWeight#0.0
 attributeMatch(long_exp).normalizedWeight#0.0
 attributeMatch(long_exp).normalizedWeightedWeight#0.0
 attributeMatch(long_exp).queryCompleteness#1.0
@@ -172,6 +186,7 @@ attributeMatch(long_wset).completeness#0.0
 attributeMatch(long_wset).fieldCompleteness#0.0
 attributeMatch(long_wset).importance#0.0
 attributeMatch(long_wset).matches#0.0
+attributeMatch(long_wset).maxWeight#0.0
 attributeMatch(long_wset).normalizedWeight#0.0
 attributeMatch(long_wset).normalizedWeightedWeight#0.0
 attributeMatch(long_wset).queryCompleteness#0.0
@@ -184,6 +199,7 @@ attributeMatch(position_arr_zcurve).completeness#0.0
 attributeMatch(position_arr_zcurve).fieldCompleteness#0.0
 attributeMatch(position_arr_zcurve).importance#0.0
 attributeMatch(position_arr_zcurve).matches#0.0
+attributeMatch(position_arr_zcurve).maxWeight#0.0
 attributeMatch(position_arr_zcurve).normalizedWeight#0.0
 attributeMatch(position_arr_zcurve).normalizedWeightedWeight#0.0
 attributeMatch(position_arr_zcurve).queryCompleteness#0.0
@@ -196,6 +212,7 @@ attributeMatch(position_exp_zcurve).completeness#0.0
 attributeMatch(position_exp_zcurve).fieldCompleteness#0.0
 attributeMatch(position_exp_zcurve).importance#0.0
 attributeMatch(position_exp_zcurve).matches#0.0
+attributeMatch(position_exp_zcurve).maxWeight#0.0
 attributeMatch(position_exp_zcurve).normalizedWeight#0.0
 attributeMatch(position_exp_zcurve).normalizedWeightedWeight#0.0
 attributeMatch(position_exp_zcurve).queryCompleteness#0.0
@@ -843,14 +860,14 @@ fieldTermMatch(url_exp.scheme,3).weight#0.0
 fieldTermMatch(url_exp.scheme,4).firstPosition#1000000.0
 fieldTermMatch(url_exp.scheme,4).occurrences#0.0
 fieldTermMatch(url_exp.scheme,4).weight#0.0
-firstPhase#0.00116194625998548
-nativeAttributeMatch#0.00261437908496732
+firstPhase#0.001161946259985476
+nativeAttributeMatch#0.002614379084967321
 nativeFieldMatch#0.0
 nativeProximity#0.0
-nativeRank#0.00116194625998548
+nativeRank#0.001161946259985476
 now#0.0
 queryTermCount#1.0
-term(0).connectedness#0.100000001490116
+term(0).connectedness#0.10000000149011612
 term(0).significance#0.5
 term(0).weight#100.0
 term(1).connectedness#0.0
