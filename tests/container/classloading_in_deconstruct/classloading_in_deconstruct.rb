@@ -34,6 +34,9 @@ class ClassloadingInDeconstruct < ContainerTest
     sleep_period = 70
     puts "Sleeping #{sleep_period} seconds for importer to be deconstructed."
     sleep(sleep_period)
+
+    assert_log_matches(/Uninstalling bundle com.yahoo.importer.DeconstructSearcher/)
+    assert_log_matches(/Uninstalling bundle com.yahoo.exporter.Exporter/)
   end
 
   def verify_response(expected)
