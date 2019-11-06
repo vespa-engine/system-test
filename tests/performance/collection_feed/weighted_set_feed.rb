@@ -16,6 +16,7 @@ class WeightedSetFeedTest < PerformanceTest
     super
     set_owner('vekterli')
     @graphs = get_graphs
+    @tainted = false
   end
 
   def teardown
@@ -37,6 +38,13 @@ class WeightedSetFeedTest < PerformanceTest
   end
 
   def feed_initial_wsets(doc_count:, field_name:, key_type:, wset_size:, fast_search:)
+    if @tainted
+      puts 'Wiping existing index data on node to ensure previous tests do not pollute results'
+      node = vespa.storage['search'].storage['0']
+      node.stop_base
+      node.clean_indexes
+      node.start_base
+    end
     puts '-----------'
     puts "Feeding #{doc_count} documents with weighted set field #{field_name} with #{wset_size} elements, fast-search=#{fast_search}"
     puts '-----------'
@@ -56,6 +64,7 @@ class WeightedSetFeedTest < PerformanceTest
                            parameter_filler(WSET_SIZE, wset_size),
                            parameter_filler(FAST_SEARCH, fast_search.to_s)])
     profiler_report("wset_size=#{wset_size},fast_search=#{fast_search}")
+    @tainted = true
   end
 
   def create_app
