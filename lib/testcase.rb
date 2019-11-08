@@ -553,7 +553,7 @@ class TestCase
       str.split("\n").each do |line|
         timeformat = "%H:%M:%S"
         now = Time.now
-        timestring = now.strftime(timeformat) + "." + now.usec.to_s[0..2]
+        timestring = now.strftime(timeformat) + "." + ("%06d" % now.usec)[0..2]
         str_with_timestamps += "[#{timestring}] " + line + "\n"
       end
       str = str_with_timestamps
