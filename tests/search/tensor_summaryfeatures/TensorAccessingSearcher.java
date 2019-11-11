@@ -8,40 +8,36 @@ import com.yahoo.search.result.Hit;
 import com.yahoo.search.result.FeatureData;
 import com.yahoo.search.searchchain.Execution;
 import com.yahoo.tensor.Tensor;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * A searcher accessing tensors in the result
  */
-public class SimpleSearcher extends Searcher {
+public class TensorAccessingSearcher extends Searcher {
 
-	private static final double delta = 0.00001;
+    @Override
+    public Result search(Query query, Execution execution) {
+        Result result = execution.search(query); // Pass on to the next searcher to get results
+        for (Hit hit : result.hits().asList()) {
+            if (hit.isMeta()) continue;
+            assertHasTensors(hit);
+        }
+        return result;
+    }
 
-	@Override
-	public Result search(Query query, Execution execution) {
-		Result result = execution.search(query); // Pass on to the next searcher to get results
-		for (Hit hit : result.hits().asList()) {
-			if (hit.isMeta()) continue;
-			assertHasTensors(hit);
-		}
-		return result;
-	}
+    private void assertHasTensors(Hit hit) {
+        FeatureData featureData = (FeatureData)hit.getField("summaryfeatures");
+        assertTensorSum("output_indexed_tensor", 21.0, featureData);
+        assertTensorSum("output_mapped_tensor", 3.0, featureData);
+        assertTensorSum("output_mixed_tensor", 6.0, featureData);
+    }
 
-	private void assertHasTensors(Hit hit) {
-		FeatureData featureData = (FeatureData)hit.getField("summaryfeatures");
-
-		Tensor indexedTensor = featureData.getTensor("rankingExpression(output_indexed_tensor");
-		assertNotNull(indexedTensor);
-		assertEquals(21.0, indexedTensor.sum(), delta);
-
-		Tensor mappedTensor = featureData.getTensor("rankingExpression(output_mapped_tensor");
-		assertNotNull(mappedTensor);
-		assertEquals(3.0, mappedTensor.sum(), delta);
-
-		Tensor mappedTensor = featureData.getTensor("rankingExpression(output_mixed_tensor");
-		assertNotNull(mappedTensor);
-		assertEquals(6.0, mappedTensor.sum(), delta);
-	}
+    private void assertTensorSum(String tensorName, double expectedSum, FeatureData featureData) {
+        String fullName = "rankingExpression(" + tensorName + ")";
+        Tensor tensor = featureData.getTensor(fullName);
+        if (tensor == null)
+            throw new RuntimeException("Tensor '" + fullName + "' is missing");
+        if (tensor.sum().asDouble() - expectedSum > 0.00001)
+            throw new RuntimeException("Tensor '" + fullName + "' is " + tensor + " with sum " + tensor.sum().asDouble() + " but expected the sum to be " + expectedSum);
+    }
 
 }
