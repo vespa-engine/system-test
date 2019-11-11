@@ -24,7 +24,7 @@ class TensorSummaryFeatureTest < IndexedSearchTest
     assert_attribute_and_summaryfeature(search_doc, 'mixed_tensor')
   end
 
-  def test_tensor_in_summaryfeatures
+  def test_tensor_searcher_access
     add_bundle(selfdir+"TensorAccessingSearcher.java")
 
     set_description("Test that tensors are accessible in searchers")
