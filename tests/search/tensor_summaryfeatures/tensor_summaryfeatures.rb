@@ -8,7 +8,7 @@ class TensorSummaryFeatureTest < IndexedSearchTest
   end
 
   def test_tensor_in_summaryfeatures
-    set_description("Test that tensors in summaryfeatures are equal to attribute")
+    set_description("Test that tensors are surfaced correctly in summaryfeatures")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").enable_http_gateway)
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
@@ -22,6 +22,18 @@ class TensorSummaryFeatureTest < IndexedSearchTest
     assert_attribute_and_summaryfeature(search_doc, 'indexed_tensor')
     assert_attribute_and_summaryfeature(search_doc, 'mapped_tensor')
     assert_attribute_and_summaryfeature(search_doc, 'mixed_tensor')
+  end
+
+  def test_tensor_in_summaryfeatures
+    add_bundle(selfdir+"TensorAccessingSearcher.java")
+
+    set_description("Test that tensors are accessible in searchers")
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd").enable_http_gateway)
+    start
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
+
+    assert_query_no_errors("query=sddocname:test&format=json&ranking=test")
+
   end
 
   def debug_attribute_and_summaryfeature(doc, field)
