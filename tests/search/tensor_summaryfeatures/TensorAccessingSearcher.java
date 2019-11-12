@@ -25,19 +25,18 @@ public class TensorAccessingSearcher extends Searcher {
     }
 
     private void assertHasTensors(Hit hit) {
-        FeatureData featureData = (FeatureData)hit.getField("summaryfeatures");
+        FeatureData featureData = hit.features();
         assertTensorSum("output_indexed_tensor", 21.0, featureData);
         assertTensorSum("output_mapped_tensor", 3.0, featureData);
         assertTensorSum("output_mixed_tensor", 6.0, featureData);
     }
 
-    private void assertTensorSum(String tensorName, double expectedSum, FeatureData featureData) {
-        String fullName = "rankingExpression(" + tensorName + ")";
-        Tensor tensor = featureData.getTensor(fullName);
+    private void assertTensorSum(String name, double expectedSum, FeatureData featureData) {
+        Tensor tensor = featureData.getTensor(name);
         if (tensor == null)
-            throw new RuntimeException("Tensor '" + fullName + "' is missing");
+            throw new RuntimeException("Tensor '" + name + "' is missing");
         if (tensor.sum().asDouble() - expectedSum > 0.00001)
-            throw new RuntimeException("Tensor '" + fullName + "' is " + tensor + " with sum " + tensor.sum().asDouble() + " but expected the sum to be " + expectedSum);
+            throw new RuntimeException("Tensor '" + name + "' is " + tensor + " with sum " + tensor.sum().asDouble() + " but expected the sum to be " + expectedSum);
     }
 
 }
