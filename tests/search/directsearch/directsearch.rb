@@ -6,7 +6,7 @@ class DirectSearch < IndexedSearchTest
 
   def setup
     set_owner("bratseth")
-    set_description("Tests that we bypass dispatch when the local search node has the entire corpus")
+    set_description("Tests that we dispatch to just the local node when is it has the entire corpus")
   end
 
   def test_directsearch
@@ -14,10 +14,10 @@ class DirectSearch < IndexedSearchTest
     start
     feed_and_wait_for_docs("music", 777, :file => selfdir + "../data/music.777.xml")
 
-    directquery="query=best%20albert&presentation.format=xml&dispatch.direct=true&nocache"
+    directquery="query=best%20albert&presentation.format=xml"
 
     # verfify that we use direct dispatch since this is a single-node system
-    assert(search(directquery + "&tracelevel=2").xmldata.include?("Dispatching directly"), "We use direct search")
+    assert(search(directquery + "&tracelevel=2").xmldata.include?("Dispatching to search node"), "Dispatching to local node")
 
     # verfify that the result contains all the usual information
     assert_result(directquery, selfdir + "expected.result")

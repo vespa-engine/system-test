@@ -9,7 +9,7 @@ class JavaDispatchTest < SearchTest
 
   def setup
     set_owner('ovirtanen')
-    set_description('Tests for java dispatcher regressions')
+    set_description('Tests the Java dispatcher')
 
     @num_docs = 50
   end
@@ -23,19 +23,14 @@ class JavaDispatchTest < SearchTest
     start
     generate_and_feed_docs
 
-    hits_fd = fetch_hits(false)
-    puts "fdispatch hits = #{hits_fd}"
+    hits_i1 = fetch_hits
+    puts "dispatch hits 1 = #{hits_i1}"
 
-    hits_i1 = fetch_hits(true)
-    puts "internal dispatch hits 1 = #{hits_i1}"
-
-    hits_i2 = fetch_hits(true, hits_i1)
-    puts "internal dispatch hits 2 = #{hits_i2}"
+    hits_i2 = fetch_hits(hits_i1)
+    puts "dispatch hits 2 = #{hits_i2}"
 
     assert(hits_i1 != hits_i2,
-      "Internal dispatcher should dispatch to different node groups in subsequent queries")
-    assert(hits_i1 == hits_fd || hits_i2 == hits_fd,
-      "One of the internal dispatcher results must equal the fdispatch result")
+      "Should dispatch to different node groups in subsequent queries")
   end
 
   def test_group_with_multiple_nodes
@@ -43,28 +38,14 @@ class JavaDispatchTest < SearchTest
     start
     generate_and_feed_docs
 
-    hits_fd = fetch_hits(false)
-    puts "fdispatch hits = #{hits_fd}"
+    hits_in = fetch_hits
+    puts "Dispatch hits = #{hits_in}"
 
-    hits_in = fetch_hits(true)
-    puts "internal dispatch hits = #{hits_in}"
+    grp_in = fetch_grouped
+    puts "dispatch grouping = #{grp_in}"
 
-    assert(hits_fd == hits_in, "Internal dispatcher result must equal the fdispatch result")
-
-    grp_fd = fetch_grouped(false)
-    puts "fdispatch grouping = #{grp_fd}"
-
-    grp_in = fetch_grouped(true)
-    puts "internal dispatch grouping = #{grp_in}"
-
-    assert(grp_fd == grp_in, "Internal dispatcher result with groupings must equal the fdispatch result")
-
-    window_fd = fetch_window(false)
-    puts "Hits in fdispatch window: #{window_fd}"
-
-    window_in = fetch_window(true)
-    puts "Hits in internal dispatcher window: #{window_in}"
-    assert(window_fd == window_in, "Internal dispatcher result window equal the one from fdispatch")
+    window_in = fetch_window
+    puts "Hits in dispatcher window: #{window_in}"
   end
 
   def test_multiple_groups_with_multiple_nodes
@@ -72,8 +53,8 @@ class JavaDispatchTest < SearchTest
     start
     generate_and_feed_docs
 
-    grp_in = fetch_grouped(true)
-    puts "internal dispatch grouping = #{grp_in}"
+    grp_in = fetch_grouped
+    puts "Dispatch grouping = #{grp_in}"
   end
 
   def test_node_failure_error_reporting
@@ -81,27 +62,21 @@ class JavaDispatchTest < SearchTest
     start
     generate_and_feed_docs
 
-    code_fd = fetch_empty_code(false)
-    code_in = fetch_empty_code(true)
-    puts "no results, nodes up: fdispatch #{code_fd}, internal #{code_in}"
-    assert_equal(200, code_fd)
-    assert_equal(code_fd, code_in, "Internal dispatcher result code equal the one from fdispatch")
+    code_in = fetch_empty_code
+    puts "no results, nodes up: #{code_in}"
+    assert_equal(200, code_in)
 
     stop_node_and_wait("mycluster", 0)
 
-    code_fd = fetch_empty_code(false)
-    code_in = fetch_empty_code(true)
-    puts "no results, one node down: fdispatch #{code_fd}, internal #{code_in}"
-    assert_equal(200, code_fd)
-    assert_equal(code_fd, code_in, "Internal dispatcher result code equal the one from fdispatch")
+    code_in = fetch_empty_code
+    puts "no results, one node down: #{code_in}"
+    assert_equal(200, code_in)
 
     stop_node_and_wait("mycluster", 1)
 
-    code_fd = fetch_empty_code(false)
-    code_in = fetch_empty_code(true)
-    puts "no results, all nodes down: fdispatch #{code_fd}, internal #{code_in}"
-    assert_equal(503, code_fd)
-    assert_equal(code_fd, code_in, "Internal dispatcher result code equal the one from fdispatch")
+    code_in = fetch_empty_code
+    puts "no results, all nodes down: #{code_in}"
+    assert_equal(503, code_in)
   end
 
   def create_app(groups, nodes)
@@ -136,9 +111,9 @@ class JavaDispatchTest < SearchTest
       .group(topgroup))
   end
 
-  def fetch_hits(internal, different_than='')
+  def fetch_hits(different_than='')
     yql = "select+*+from+sources+*+where+f1+contains+%22word%22%3B"
-    query = "yql=#{yql}&nocache&dispatch.internal=#{internal}&tracelevel=5"
+    query = "yql=#{yql}&nocache&tracelevel=5"
     puts "query: #{query}"
 
     retries = 5
@@ -152,7 +127,6 @@ class JavaDispatchTest < SearchTest
         puts "Expected different hits, but received the same. Will retry another #{retries} times"
         sleep 1
       else
-        assert(internally_dispatched?(result) == true, "Internally dispatched should be true")
         return hits
       end
     end
@@ -160,9 +134,9 @@ class JavaDispatchTest < SearchTest
     flunk("Failed to get a different result set")
   end
 
-  def fetch_grouped(internal)
+  def fetch_grouped
     yql = "select+*+from+sources+*+where+f1+contains+%22word%22+%7C+all(group(f3)+each(output(count(),sum(f2))))%3B"
-    query = "yql=#{yql}&nocache&dispatch.internal=#{internal}&tracelevel=5"
+    query = "yql=#{yql}&nocache&tracelevel=5"
     puts "query: #{query}"
 
     result = search(query)
@@ -171,54 +145,41 @@ class JavaDispatchTest < SearchTest
       groups = groups + grp.to_s
     end
 
-    assert(internally_dispatched?(result) == true, "Internally dispatched should be true")
-
-    if internal
-      dispatches = all_internal_dispatches(result)
-      if dispatches.length > 1
-        matches = / search group (\d+)/.match(dispatches[0])
-        group = matches[1]
-        rx = Regexp.compile(" search (?:group #{group}|path /#{group})")
-        for d in 1..dispatches.length - 1 do
-          assert(rx.match(dispatches[d]), "All dispatches should go to the same group -- expected to find group #{group} in '#{dispatches[d]}'")
-        end
+    dispatches = all_dispatches(result)
+    if dispatches.length > 1
+      matches = / search group (\d+)/.match(dispatches[0])
+      group = matches[1]
+      rx = Regexp.compile(" search (?:group #{group}|path /#{group})")
+      for d in 1..dispatches.length - 1 do
+        assert(rx.match(dispatches[d]), "All dispatches should go to the same group -- expected to find group #{group} in '#{dispatches[d]}'")
       end
     end
 
     return groups
   end
 
-  def fetch_window(internal)
-    query = "query=sddocname:test&nocache&dispatch.internal=#{internal}&tracelevel=5&sortspec=-f2&offset=8&hits=11"
+  def fetch_window
+    query = "query=sddocname:test&nocache&tracelevel=5&sortspec=-f2&offset=8&hits=11"
     puts "query: #{query}"
 
     result = search(query)
     assert_equal(11, result.hit.length, "Expected 11 returned hits")
-    assert_equal(true, internally_dispatched?(result), "Internally dispatched should be true")
 
     return result.hit.to_s
   end
 
-  def fetch_empty_code(internal)
-    query = "query=no_such_thing&nocache&dispatch.internal=#{internal}&tracelevel=5"
+  def fetch_empty_code
+    query = "query=no_such_thing&nocache&tracelevel=5"
     puts "query: #{query}"
 
     result = search(query)
     return result.responsecode.to_i
   end
 
-  def internally_dispatched?(result)
-    matches = 0
-    result.xml.each_element("meta/p/p/p") do |e|
-      matches = matches + 1 if e.to_s =~ /<p>Dispatching internally to search group/
-    end
-    return matches > 0
-  end
-
-  def all_internal_dispatches(result)
+  def all_dispatches(result)
     dispatches = []
     result.xml.each_element("meta/p/p/p") do |e|
-      dispatches << e.to_s if e.to_s =~ /<p>Dispatching internally /
+      dispatches << e.to_s
     end
     return dispatches
   end
