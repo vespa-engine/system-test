@@ -147,9 +147,9 @@ class JavaDispatchTest < SearchTest
 
     dispatches = all_dispatches(result)
     if dispatches.length > 1
-      matches = / search group (\d+)/.match(dispatches[0])
+      matches = /to group (\d+)/.match(dispatches[0])
       group = matches[1]
-      rx = Regexp.compile(" search (?:group #{group}|path /#{group})")
+      rx = Regexp.compile("to (?:group #{group}|path /#{group})")
       for d in 1..dispatches.length - 1 do
         assert(rx.match(dispatches[d]), "All dispatches should go to the same group -- expected to find group #{group} in '#{dispatches[d]}'")
       end
