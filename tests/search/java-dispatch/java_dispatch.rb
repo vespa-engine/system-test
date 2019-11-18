@@ -179,7 +179,7 @@ class JavaDispatchTest < SearchTest
   def all_dispatches(result)
     dispatches = []
     result.xml.each_element("meta/p/p/p") do |e|
-      dispatches << e.to_s
+      dispatches << e.to_s if e.to_s =~ /<p>Dispatching to group/
     end
     return dispatches
   end
