@@ -22,7 +22,6 @@ class SearchWhileFeedingAndNodesDownAndUpTest < FeedAndQueryTestBase
       min_group_coverage(min_group_coverage).
       group(create_groups(redundancy, odd_sized_groups))).
         storage(StorageCluster.new("mycluster", 9)).
-        config(ConfigOverride.new("vespa.config.search.core.fdispatchrc").add("maxthreads", num_fdispatch_threads)).
         monitoring("test", "60")
   end
 
