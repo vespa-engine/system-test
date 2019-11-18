@@ -5,10 +5,7 @@ class PacketCompressLimit < IndexedSearchTest
 
   def setup
     set_owner("bjorncs")
-    deploy_app(SearchApp.new.
-               sd("#{SEARCH_DATA}/music.sd").
-               config(ConfigOverride.new("vespa.config.search.core.fdispatchrc").
-                      add("packetcompresslimit", 1)))
+    deploy_app(SearchApp.new.  sd("#{SEARCH_DATA}/music.sd"))
     start
   end
 
