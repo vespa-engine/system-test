@@ -1,5 +1,3 @@
-# Private reason: yinst
-
 require 'cloudconfig_test'
 require 'application_v2_api'
 require 'json'

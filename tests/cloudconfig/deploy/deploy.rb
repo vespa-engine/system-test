@@ -1,5 +1,3 @@
-# Private reason: none (can be moved to public repo)
-
 require 'cloudconfig_test'
 require 'json'
 require 'application_v2_api'
