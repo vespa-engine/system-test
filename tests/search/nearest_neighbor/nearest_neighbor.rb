@@ -54,7 +54,8 @@ class NearestNeighborTest < IndexedSearchTest
       exp_distance = exp_results[i][1]
       exp_score = 15 - exp_distance
       exp_features = { "rankingExpression(euclidean_distance)" => exp_distance,
-                       "rankingExpression(raw_score)" => exp_distance }
+                       "rawScore(pos)" => exp_distance,
+                       "itemRawScore(nns)" => exp_distance }
 
       assert_field_value(result, "documentid", get_docid(exp_docid), i)
       assert_relevancy(result, exp_score, i)
@@ -63,7 +64,7 @@ class NearestNeighborTest < IndexedSearchTest
   end
 
   def get_query(x_0, x_1, target_num_hits, filter = nil)
-    result = "yql=select * from sources * where [{\"targetNumHits\": #{target_num_hits}}] nearestNeighbor(pos,qpos)"
+    result = "yql=select * from sources * where [{\"targetNumHits\": #{target_num_hits}, \"label\": \"nns\"}] nearestNeighbor(pos,qpos)"
     result += " and filter contains \"#{filter}\"" if filter
     result += ";&ranking.features.query(qpos)={{x:0}:#{x_0},{x:1}:#{x_1}}"
     return result

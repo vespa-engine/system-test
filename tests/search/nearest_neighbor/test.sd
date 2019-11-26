@@ -12,15 +12,13 @@ search test {
     function euclidean_distance() {
       expression: sqrt(sum(join(query(qpos), attribute(pos), f(x,y)((x-y)*(x-y)))))
     }
-    function raw_score() {
-      expression: rawScore(pos)
-    }
     first-phase {
-      expression: 15 - raw_score
+      expression: 15 - rawScore(pos)
     }
     summary-features {
       euclidean_distance
-      raw_score
+      rawScore(pos)
+      itemRawScore(nns)
     }
   }
 }
