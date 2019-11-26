@@ -67,7 +67,7 @@ class Jersey2HelloWorld < PerformanceTest
         {
             :x => 'build',
             :y => reply_rate_name,
-            :y_min => 56000,
+            :y_min => 55000,
             :y_max => 63000,
             :historic => true,
             :filter => {
