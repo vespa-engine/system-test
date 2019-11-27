@@ -1,0 +1,24 @@
+search test {
+  document test {
+    field filter type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field pos type tensor(x[2]) {
+      indexing: attribute | summary
+    }
+  }
+  rank-profile default {
+    function euclidean_distance() {
+      expression: sqrt(sum(join(query(qpos), attribute(pos), f(x,y)((x-y)*(x-y)))))
+    }
+    first-phase {
+      expression: 15 - rawScore(pos)
+    }
+    summary-features {
+      euclidean_distance
+      rawScore(pos)
+      itemRawScore(nns)
+    }
+  }
+}
