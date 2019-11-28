@@ -89,7 +89,7 @@ class NearestNeighborPerformanceTest < PerformanceTest
     assert_equal(0, exitcode)
     (exitcode, output) = execute(node, "#{dirs.tmpdir}/a.out | vespa-feed-perf")
     assert_equal(0, exitcode)
-    wait_for_hitcount("sddocname:foobar", 123456, 30)
+    wait_for_hitcount("sddocname:foobar", 100000, 30)
     puts "DONE FEEDING"
 
     node.execute('vespa-proton-cmd --local triggerFlush')

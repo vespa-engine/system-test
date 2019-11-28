@@ -1,7 +1,9 @@
+// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
 #include <stdlib.h>
 #include <stdio.h>
 
-#define NUMDOCS 123456
+#define NUMDOCS 100000
 #define NUMDIMS 512
 
 int pct() {
