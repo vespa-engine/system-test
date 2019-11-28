@@ -1,0 +1,59 @@
+search foobar {
+
+  document foobar {
+    field title type string {
+      indexing: index | summary
+    }
+    field order type int {
+      indexing: attribute
+    }
+    field dvector type tensor(x[512]) {
+      indexing: attribute
+    }
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: 0.00000001*attribute(order)
+    }
+  }
+
+  rank-profile rawscore {
+    first-phase {
+      expression: itemRawScore(mynns)
+    }
+  }
+
+  rank-profile dotproduct {
+    first-phase {
+      expression {
+        sum(query(qvector) * attribute(dvector))
+      }
+    }
+  }
+
+  rank-profile sumsqdiff {
+    first-phase {
+      expression {
+        sqrt(sum((query(qvector) - attribute(dvector)) * (query(qvector) - attribute(dvector))))
+      }
+    }
+  }
+
+  rank-profile sumdiffsq {
+    first-phase {
+      expression {
+        sqrt(sum(map((query(qvector) - attribute(dvector)), f(x)(x*x))))
+      }
+    }
+  }
+
+  rank-profile joinsqdiff {
+    first-phase {
+      expression {
+        sqrt(sum(join(query(qvector), attribute(dvector), f(x,y)((x-y)*(x-y)))))
+      }
+    }
+  }
+
+}
