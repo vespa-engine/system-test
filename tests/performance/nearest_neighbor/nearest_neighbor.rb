@@ -139,9 +139,10 @@ class NearestNeighborPerformanceTest < PerformanceTest
     profiles = [ 'simple', 'rawscore', 'dotproduct', 'joinsq' ]
     casenames = [ 'alldoc', 'nnsitem' ]
     maxmins = {
-        'alldoc_joinsq'    => { :min => 100, :max => 5000 },
-        'nnsitem_rawscore' => { :min => 100, :max => 5000 },
-        'default'          => { :min => 1, :max => 1000000 }
+        'alldoc_joinsq'     => { :min => 300, :max => 999 },
+        'alldoc_dotproduct' => { :min => 100, :max => 300 },
+        'nnsitem_rawscore'  => { :min =>  10, :max => 99 },
+        'default'           => { :min =>   1, :max => 1000000 }
     }
     local_graphs = []
     profiles.each do |profile|
