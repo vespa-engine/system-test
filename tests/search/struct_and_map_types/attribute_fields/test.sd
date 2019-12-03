@@ -6,6 +6,7 @@ search test {
       field weight type int {}
     }
     field elem_array type array<elem> {
+      # All struct-fields are attributes
       indexing: summary
       struct-field name {
         indexing: attribute
@@ -41,7 +42,59 @@ search test {
       }
     }
     field str_int_map type map<string, int> {
+      # All struct-fields are attributes
       indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value {
+        indexing: attribute
+      }
+    }
+    field elem_array_meo type array<elem> {
+      # All struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
+      struct-field name {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field weight {
+        indexing: attribute
+      }
+    }
+    field elem_map_meo type map<string, elem> {
+      # All struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.name {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.weight {
+        indexing: attribute
+      }
+    }
+    field elem_map_2_meo type map<string, elem> {
+      # Some struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value.weight {
+        indexing: attribute
+      }
+    }
+    field str_int_map_meo type map<string, int> {
+      # All struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
       struct-field key {
         indexing: attribute
         attribute: fast-search
