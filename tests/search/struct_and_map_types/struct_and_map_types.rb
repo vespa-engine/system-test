@@ -145,20 +145,42 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     set_description("Test that we can filter elements in document summary")
     deploy_and_start(is_streaming ? "streaming_fields" : "attribute_fields")
     feed(:file => selfdir + "docs_search.json")
-    assert_same_element_summary("elem_array", "name contains 'bar', weight contains '20'", "default", "elem_array", [elem("foo", 10), elem("bar", 20), elem("baz", 30)])
-    assert_same_element_summary("elem_array", "name contains 'bar', weight contains '20'", "filtered", "elem_array_filtered", [elem("bar", 20)])
-    assert_same_element_summary("elem_map", "key contains '@bar', value.weight contains '20'", "default", "elem_map", {"@foo" => elem("foo", 10), "@bar" => elem("bar", 20), "@baz" => elem("baz", 30)})
-    assert_same_element_summary("elem_map", "key contains '@bar', value.weight contains '20'", "filtered", "elem_map_filtered", {"@bar" => elem("bar", 20)})
-    assert_same_element_summary("elem_map_2", "key contains '@bar', value.weight contains '20'", "default", "elem_map_2", {"@bar" => elem("bar", 20)})
-    assert_same_element_summary("str_int_map", "key contains '@bar', value contains '20'", "default", "str_int_map", {"@foo" => 10, "@bar" => 20, "@baz" => 30})
-    assert_same_element_summary("str_int_map", "key contains '@bar', value contains '20'", "filtered", "str_int_map_filtered", {"@bar" => 20})
-    assert_same_element_single_summary("elem_array", "name contains 'bar'", "default", "elem_array", [elem("foo", 10), elem("bar", 20), elem("baz", 30)])
-    assert_same_element_single_summary("elem_array", "name contains 'bar'", "filtered", "elem_array_filtered", [elem("bar", 20)])
-    assert_same_element_single_summary("elem_map", "key contains '@bar'", "default", "elem_map", {"@foo" => elem("foo", 10), "@bar" => elem("bar", 20), "@baz" => elem("baz", 30)})
-    assert_same_element_single_summary("elem_map", "key contains '@bar'", "filtered", "elem_map_filtered", {"@bar" => elem("bar", 20)})
-    assert_same_element_single_summary("elem_map_2", "key contains '@bar'", "default", "elem_map_2", {"@bar" => elem("bar", 20)})
-    assert_same_element_single_summary("str_int_map", "key contains '@bar'", "default", "str_int_map", {"@foo" => 10, "@bar" => 20, "@baz" => 30})
-    assert_same_element_single_summary("str_int_map", "key contains '@bar'", "filtered", "str_int_map_filtered", {"@bar" => 20})
+
+    array_full = [elem("foo", 10), elem("bar", 20), elem("baz", 30)]
+    array_filtered = [elem("bar", 20)]
+    map_full = {"@foo" => elem("foo", 10), "@bar" => elem("bar", 20), "@baz" => elem("baz", 30)}
+    map_filtered = {"@bar" => elem("bar", 20)}
+    prim_map_full = {"@foo" => 10, "@bar" => 20, "@baz" => 30}
+    prim_map_filtered = {"@bar" => 20}
+
+    assert_same_element_summary("elem_array",     "name contains 'bar', weight contains '20'", "default",  "elem_array",          array_full)
+    assert_same_element_summary("elem_array",     "name contains 'bar', weight contains '20'", "filtered", "elem_array_filtered", array_filtered)
+    assert_same_element_summary("elem_array_meo", "name contains 'bar', weight contains '20'", "default",  "elem_array_meo",      array_filtered)
+
+    assert_same_element_summary("elem_map",       "key contains '@bar', value.weight contains '20'", "default",  "elem_map",            map_full)
+    assert_same_element_summary("elem_map",       "key contains '@bar', value.weight contains '20'", "filtered", "elem_map_filtered",   map_filtered)
+    assert_same_element_summary("elem_map_meo",   "key contains '@bar', value.weight contains '20'", "default",  "elem_map_meo",        map_filtered)
+    assert_same_element_summary("elem_map_2",     "key contains '@bar', value.weight contains '20'", "filtered", "elem_map_2_filtered", map_filtered)
+    assert_same_element_summary("elem_map_2_meo", "key contains '@bar', value.weight contains '20'", "default",  "elem_map_2_meo",      map_filtered)
+
+    assert_same_element_summary("str_int_map",     "key contains '@bar', value contains '20'", "default",  "str_int_map",          prim_map_full)
+    assert_same_element_summary("str_int_map",     "key contains '@bar', value contains '20'", "filtered", "str_int_map_filtered", prim_map_filtered)
+    assert_same_element_summary("str_int_map_meo", "key contains '@bar', value contains '20'", "default",  "str_int_map_meo",      prim_map_filtered)
+
+
+    assert_same_element_single_summary("elem_array",     "name contains 'bar'", "default",  "elem_array",          array_full)
+    assert_same_element_single_summary("elem_array",     "name contains 'bar'", "filtered", "elem_array_filtered", array_filtered)
+    assert_same_element_single_summary("elem_array_meo", "name contains 'bar'", "default",  "elem_array_meo",      array_filtered)
+
+    assert_same_element_single_summary("elem_map",       "key contains '@bar'", "default",  "elem_map",            map_full)
+    assert_same_element_single_summary("elem_map",       "key contains '@bar'", "filtered", "elem_map_filtered",   map_filtered)
+    assert_same_element_single_summary("elem_map_meo",   "key contains '@bar'", "default",  "elem_map_meo",        map_filtered)
+    assert_same_element_single_summary("elem_map_2",     "key contains '@bar'", "filtered", "elem_map_2_filtered", map_filtered)
+    assert_same_element_single_summary("elem_map_2_meo", "key contains '@bar'", "default",  "elem_map_2_meo",      map_filtered)
+
+    assert_same_element_single_summary("str_int_map",     "key contains '@bar'", "default",  "str_int_map",          prim_map_full)
+    assert_same_element_single_summary("str_int_map",     "key contains '@bar'", "filtered", "str_int_map_filtered", prim_map_filtered)
+    assert_same_element_single_summary("str_int_map_meo", "key contains '@bar'", "default",  "str_int_map_meo",      prim_map_filtered)
   end
 
   def assert_same_element(field, same_element, exp_hitcount, extra_params = "")

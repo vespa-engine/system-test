@@ -13,10 +13,25 @@ search test {
     }
     field elem_map_2 type map<string, elem> {
       indexing: index | summary
-      summary: matched-elements-only
     }
     field str_int_map type map<string, int> {
       indexing: index | summary
+    }
+    field elem_array_meo type array<elem> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
+    field elem_map_meo type map<string, elem> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
+    field elem_map_2_meo type map<string, elem> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
+    field str_int_map_meo type map<string, int> {
+      indexing: index | summary
+      summary: matched-elements-only
     }
   }
   document-summary filtered {
@@ -27,6 +42,10 @@ search test {
     }
     summary elem_map_filtered type map<string, elem> {
       source: elem_map
+      matched-elements-only
+    }
+    summary elem_map_2_filtered type map<string, elem> {
+      source: elem_map_2
       matched-elements-only
     }
     summary str_int_map_filtered type map<string, int> {

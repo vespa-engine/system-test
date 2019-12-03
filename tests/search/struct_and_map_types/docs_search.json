@@ -48,6 +48,53 @@
         "@foo": 10,
         "@bar": 20,
         "@baz": 30
+      },
+      "elem_array_meo": [
+        {
+          "name": "foo",
+          "weight": 10
+        },
+        {
+          "name": "bar",
+          "weight": 20
+        },
+        {
+          "name": "baz",
+          "weight": 30
+        }
+      ],
+      "elem_map_meo": {
+        "@foo": {
+          "name": "foo",
+          "weight": 10
+        },
+        "@bar": {
+          "name": "bar",
+          "weight": 20
+        },
+        "@baz": {
+          "name": "baz",
+          "weight": 30
+        }
+      },
+      "elem_map_2_meo": {
+        "@foo": {
+          "name": "foo",
+          "weight": 10
+        },
+        "@bar": {
+          "name": "bar",
+          "weight": 20
+        },
+        "@baz": {
+          "name": "baz",
+          "weight": 30
+        }
+      },
+      "str_int_map_meo": {
+        "@foo": 10,
+        "@bar": 20,
+        "@baz": 30
       }
     }
   },
@@ -73,6 +120,27 @@
         }
       },
       "str_int_map": {
+        "@baz": 30
+      },
+      "elem_array_meo": [
+        {
+          "name": "baz",
+          "weight": 30
+        }
+      ],
+      "elem_map_meo": {
+        "@baz": {
+          "name": "baz",
+          "weight": 30
+        }
+      },
+      "elem_map_2_meo": {
+        "@baz": {
+          "name": "baz",
+          "weight": 30
+        }
+      },
+      "str_int_map_meo": {
         "@baz": 30
       }
     }

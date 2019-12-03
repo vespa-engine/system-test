@@ -6,6 +6,7 @@ search test {
       field weight type int {}
     }
     field elem_array type array<elem> {
+      # All struct-fields are attributes
       indexing: summary
       struct-field name {
         indexing: attribute
@@ -32,8 +33,55 @@ search test {
     }
     field elem_map_2 type map<string, elem> {
       # Some struct-fields are attributes
-      # Note: There is no use in extending the "filtered" summary class with a "matched-elements-only" field using this as the source
-      #       as this field would also need to be in that summary class to be available as the source.
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value.weight {
+        indexing: attribute
+      }
+    }
+    field str_int_map type map<string, int> {
+      # All struct-fields are attributes
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value {
+        indexing: attribute
+      }
+    }
+    field elem_array_meo type array<elem> {
+      # All struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
+      struct-field name {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field weight {
+        indexing: attribute
+      }
+    }
+    field elem_map_meo type map<string, elem> {
+      # All struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.name {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.weight {
+        indexing: attribute
+      }
+    }
+    field elem_map_2_meo type map<string, elem> {
+      # Some struct-fields are attributes
       indexing: summary
       summary: matched-elements-only
       struct-field key {
@@ -43,8 +91,10 @@ search test {
         indexing: attribute
       }
     }
-    field str_int_map type map<string, int> {
+    field str_int_map_meo type map<string, int> {
+      # All struct-fields are attributes
       indexing: summary
+      summary: matched-elements-only
       struct-field key {
         indexing: attribute
         attribute: fast-search
@@ -62,6 +112,10 @@ search test {
     }
     summary elem_map_filtered type map<string, elem> {
       source: elem_map
+      matched-elements-only
+    }
+    summary elem_map_2_filtered type map<string, elem> {
+      source: elem_map_2
       matched-elements-only
     }
     summary str_int_map_filtered type map<string, int> {
