@@ -81,7 +81,6 @@ class TestCase
       @@log_messages[:slow_query],
       @@log_messages[:out_of_rotation],
       @@log_messages[:connect_location_broker],
-      @@log_messages[:curator_warning_about_zookeeper_version],
       @@log_messages[:curator_slf4j_exponential_backoff_retry],
       @@log_messages[:container_watchdog],
       @@log_messages[:slf4j_create],
@@ -686,8 +685,6 @@ class TestCase
     :connect_location_broker =>  /cannot connect to location broker at tcp/,
     :max_query_timeout => /Query timeout \(\d+ ms\) > max query /,
     :out_of_rotation => /Removing container from rotation by no longer serving status.html/,
-    # TODO: Remove when we use 3.5.0 or newer
-    :curator_warning_about_zookeeper_version => /The version of ZooKeeper being used doesn\'t support Container nodes\. CreateMode\.PERSISTENT will be used instead/,
     :curator_slf4j_exponential_backoff_retry => /SLF4J: org.apache.curator.retry.ExponentialBackoffRetry/,
     :container_watchdog => /A watchdog meant to run 10 times a second has not been invoked for 5 seconds/,
     :uncommon_get => /a little uncommon that GET method returns always/,
