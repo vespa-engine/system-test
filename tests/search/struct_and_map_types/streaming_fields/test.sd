@@ -5,6 +5,11 @@ search test {
       field name type string {}
       field weight type int {}
     }
+    struct complex_elem {
+      field name type string {}
+      field weight type int {}
+      field str_map type map<string, int> {}
+    }
     field elem_array type array<elem> {
       indexing: index | summary
     }
@@ -15,6 +20,9 @@ search test {
       indexing: index | summary
     }
     field str_int_map type map<string, int> {
+      indexing: index | summary
+    }
+    field complex_elem_map type map<string, complex_elem> {
       indexing: index | summary
     }
     field elem_array_meo type array<elem> {
@@ -30,6 +38,10 @@ search test {
       summary: matched-elements-only
     }
     field str_int_map_meo type map<string, int> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
+    field complex_elem_map_meo type map<string, complex_elem> {
       indexing: index | summary
       summary: matched-elements-only
     }
@@ -50,6 +62,10 @@ search test {
     }
     summary str_int_map_filtered type map<string, int> {
       source: str_int_map
+      matched-elements-only
+    }
+    summary complex_elem_map_filtered type map<string, complex_elem> {
+      source: complex_elem_map
       matched-elements-only
     }
   }
