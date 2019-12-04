@@ -49,6 +49,22 @@
         "@bar": 20,
         "@baz": 30
       },
+      "complex_elem_map": {
+        "@foo": {
+          "name": "foo",
+          "weight": 10,
+          "str_map": {
+            "aa": 11
+          }
+        },
+        "@bar": {
+          "name": "bar",
+          "weight": 20,
+          "str_map": {
+            "bb": 21
+          }
+        }
+      },
       "elem_array_meo": [
         {
           "name": "foo",
@@ -95,6 +111,22 @@
         "@foo": 10,
         "@bar": 20,
         "@baz": 30
+      },
+      "complex_elem_map_meo": {
+        "@foo": {
+          "name": "foo",
+          "weight": 10,
+          "str_map": {
+            "aa": 11
+          }
+        },
+        "@bar": {
+          "name": "bar",
+          "weight": 20,
+          "str_map": {
+            "bb": 21
+          }
+        }
       }
     }
   },

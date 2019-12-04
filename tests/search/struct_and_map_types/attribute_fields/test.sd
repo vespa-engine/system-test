@@ -5,6 +5,12 @@ search test {
       field name type string {}
       field weight type int {}
     }
+    struct complex_elem {
+      field name type string {}
+      field weight type int {}
+      # This field is not searchable
+      field str_map type map<string, int> {}
+    }
     field elem_array type array<elem> {
       # All struct-fields are attributes
       indexing: summary
@@ -49,6 +55,16 @@ search test {
         attribute: fast-search
       }
       struct-field value {
+        indexing: attribute
+      }
+    }
+    field complex_elem_map type map<string, complex_elem> {
+      # Some struct-fields are attributes
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value.weight {
         indexing: attribute
       }
     }
@@ -103,6 +119,17 @@ search test {
         indexing: attribute
       }
     }
+    field complex_elem_map_meo type map<string, complex_elem> {
+      # Some struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value.weight {
+        indexing: attribute
+      }
+    }
   }
   document-summary filtered {
     summary documentid type string {}
@@ -120,6 +147,10 @@ search test {
     }
     summary str_int_map_filtered type map<string, int> {
       source: str_int_map
+      matched-elements-only
+    }
+    summary complex_elem_map_filtered type map<string, complex_elem> {
+      source: complex_elem_map
       matched-elements-only
     }
   }

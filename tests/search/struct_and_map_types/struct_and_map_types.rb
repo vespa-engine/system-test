@@ -152,35 +152,49 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     map_filtered = {"@bar" => elem("bar", 20)}
     prim_map_full = {"@foo" => 10, "@bar" => 20, "@baz" => 30}
     prim_map_filtered = {"@bar" => 20}
+    complex_map_full = {"@foo" => complex_elem("foo", 10, "aa", 11), "@bar" => complex_elem("bar", 20, "bb", 21)}
+    complex_map_filtered = {"@bar" => complex_elem("bar", 20, "bb", 21)}
+
+    map_same_elem_query = "key contains '@bar', value.weight contains '20'"
 
     assert_same_element_summary("elem_array",     "name contains 'bar', weight contains '20'", "default",  "elem_array",          array_full)
     assert_same_element_summary("elem_array",     "name contains 'bar', weight contains '20'", "filtered", "elem_array_filtered", array_filtered)
     assert_same_element_summary("elem_array_meo", "name contains 'bar', weight contains '20'", "default",  "elem_array_meo",      array_filtered)
 
-    assert_same_element_summary("elem_map",       "key contains '@bar', value.weight contains '20'", "default",  "elem_map",            map_full)
-    assert_same_element_summary("elem_map",       "key contains '@bar', value.weight contains '20'", "filtered", "elem_map_filtered",   map_filtered)
-    assert_same_element_summary("elem_map_meo",   "key contains '@bar', value.weight contains '20'", "default",  "elem_map_meo",        map_filtered)
-    assert_same_element_summary("elem_map_2",     "key contains '@bar', value.weight contains '20'", "filtered", "elem_map_2_filtered", map_filtered)
-    assert_same_element_summary("elem_map_2_meo", "key contains '@bar', value.weight contains '20'", "default",  "elem_map_2_meo",      map_filtered)
+    assert_same_element_summary("elem_map",       map_same_elem_query, "default",  "elem_map",            map_full)
+    assert_same_element_summary("elem_map",       map_same_elem_query, "filtered", "elem_map_filtered",   map_filtered)
+    assert_same_element_summary("elem_map_meo",   map_same_elem_query, "default",  "elem_map_meo",        map_filtered)
+    assert_same_element_summary("elem_map_2",     map_same_elem_query, "filtered", "elem_map_2_filtered", map_filtered)
+    assert_same_element_summary("elem_map_2_meo", map_same_elem_query, "default",  "elem_map_2_meo",      map_filtered)
 
     assert_same_element_summary("str_int_map",     "key contains '@bar', value contains '20'", "default",  "str_int_map",          prim_map_full)
     assert_same_element_summary("str_int_map",     "key contains '@bar', value contains '20'", "filtered", "str_int_map_filtered", prim_map_filtered)
     assert_same_element_summary("str_int_map_meo", "key contains '@bar', value contains '20'", "default",  "str_int_map_meo",      prim_map_filtered)
 
+    assert_same_element_summary("complex_elem_map",     map_same_elem_query, "default",  "complex_elem_map",          complex_map_full)
+    assert_same_element_summary("complex_elem_map",     map_same_elem_query, "filtered", "complex_elem_map_filtered", complex_map_filtered)
+    assert_same_element_summary("complex_elem_map_meo", map_same_elem_query, "default",  "complex_elem_map_meo",      complex_map_filtered)
+
+
+    map_key_query = "key contains '@bar'"
 
     assert_same_element_single_summary("elem_array",     "name contains 'bar'", "default",  "elem_array",          array_full)
     assert_same_element_single_summary("elem_array",     "name contains 'bar'", "filtered", "elem_array_filtered", array_filtered)
     assert_same_element_single_summary("elem_array_meo", "name contains 'bar'", "default",  "elem_array_meo",      array_filtered)
 
-    assert_same_element_single_summary("elem_map",       "key contains '@bar'", "default",  "elem_map",            map_full)
-    assert_same_element_single_summary("elem_map",       "key contains '@bar'", "filtered", "elem_map_filtered",   map_filtered)
-    assert_same_element_single_summary("elem_map_meo",   "key contains '@bar'", "default",  "elem_map_meo",        map_filtered)
-    assert_same_element_single_summary("elem_map_2",     "key contains '@bar'", "filtered", "elem_map_2_filtered", map_filtered)
-    assert_same_element_single_summary("elem_map_2_meo", "key contains '@bar'", "default",  "elem_map_2_meo",      map_filtered)
+    assert_same_element_single_summary("elem_map",       map_key_query, "default",  "elem_map",            map_full)
+    assert_same_element_single_summary("elem_map",       map_key_query, "filtered", "elem_map_filtered",   map_filtered)
+    assert_same_element_single_summary("elem_map_meo",   map_key_query, "default",  "elem_map_meo",        map_filtered)
+    assert_same_element_single_summary("elem_map_2",     map_key_query, "filtered", "elem_map_2_filtered", map_filtered)
+    assert_same_element_single_summary("elem_map_2_meo", map_key_query, "default",  "elem_map_2_meo",      map_filtered)
 
-    assert_same_element_single_summary("str_int_map",     "key contains '@bar'", "default",  "str_int_map",          prim_map_full)
-    assert_same_element_single_summary("str_int_map",     "key contains '@bar'", "filtered", "str_int_map_filtered", prim_map_filtered)
-    assert_same_element_single_summary("str_int_map_meo", "key contains '@bar'", "default",  "str_int_map_meo",      prim_map_filtered)
+    assert_same_element_single_summary("str_int_map",     map_key_query, "default",  "str_int_map",          prim_map_full)
+    assert_same_element_single_summary("str_int_map",     map_key_query, "filtered", "str_int_map_filtered", prim_map_filtered)
+    assert_same_element_single_summary("str_int_map_meo", map_key_query, "default",  "str_int_map_meo",      prim_map_filtered)
+
+    assert_same_element_single_summary("complex_elem_map",     map_key_query, "default",  "complex_elem_map",          complex_map_full)
+    assert_same_element_single_summary("complex_elem_map",     map_key_query, "filtered", "complex_elem_map_filtered", complex_map_filtered)
+    assert_same_element_single_summary("complex_elem_map_meo", map_key_query, "default",  "complex_elem_map_meo",      complex_map_filtered)
   end
 
   def assert_same_element(field, same_element, exp_hitcount, extra_params = "")
@@ -249,6 +263,10 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
 
   def elem_weight(weight)
     {"weight"=>weight}
+  end
+
+  def complex_elem(name, weight, str_map_key, str_map_value)
+    {"name" => name, "weight" => weight, "str_map" => [{"key" => str_map_key, "value" => str_map_value}]}
   end
 
   def run_baseline_test_case
