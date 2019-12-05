@@ -13,18 +13,23 @@ class NearestNeighborTest < IndexedSearchTest
     start
     feed_docs
 
-    assert_nearest_docs(-2, 10, nil, [[0,2],[1,3],[2,4],[3,5],[4,6],[5,7],[6,8],[7,9],[8,10],[9,11]])
-    assert_nearest_docs(-2, 5,  nil, [[0,2],[1,3],[2,4],[3,5],[4,6]])
-    assert_nearest_docs(-2, 3,  nil, [[0,2],[1,3],[2,4]])
-    assert_nearest_docs(-2, 1,  nil, [[0,2]])
+    run_brute_force_operator_tests("qpos_double")
+    run_brute_force_operator_tests("qpos_float")
+  end
+
+  def run_brute_force_operator_tests(query_tensor)
+    assert_nearest_docs(-2, 10, query_tensor, nil, [[0,2],[1,3],[2,4],[3,5],[4,6],[5,7],[6,8],[7,9],[8,10],[9,11]])
+    assert_nearest_docs(-2, 5,  query_tensor, nil, [[0,2],[1,3],[2,4],[3,5],[4,6]])
+    assert_nearest_docs(-2, 3,  query_tensor, nil, [[0,2],[1,3],[2,4]])
+    assert_nearest_docs(-2, 1,  query_tensor, nil, [[0,2]])
     # In this case we always find a nearer document when evaluating the next,
     # so all documents go through the heap used by the backend search iterator.
     # This means all documents are returned in the result as well.
-    assert_nearest_docs(11, 3,  nil, [[9,2],[8,3],[7,4],[6,5],[5,6],[4,7],[3,8],[2,9],[1,10],[0,11]])
+    assert_nearest_docs(11, 3,  query_tensor, nil, [[9,2],[8,3],[7,4],[6,5],[5,6],[4,7],[3,8],[2,9],[1,10],[0,11]])
 
     # With additional query filter
-    assert_nearest_docs(-2, 3, 0, [[0,2],[2,4],[4,6]])
-    assert_nearest_docs(-2, 3, 1, [[1,3],[3,5],[5,7]])
+    assert_nearest_docs(-2, 3, query_tensor, 0, [[0,2],[2,4],[4,6]])
+    assert_nearest_docs(-2, 3, query_tensor, 1, [[1,3],[3,5],[5,7]])
   end
 
   def get_docid(i)
@@ -44,8 +49,8 @@ class NearestNeighborTest < IndexedSearchTest
     end
   end
 
-  def assert_nearest_docs(x_0, target_num_hits, filter, exp_results)
-    query = get_query(x_0, X_1_POS, target_num_hits, filter)
+  def assert_nearest_docs(x_0, target_num_hits, query_tensor, filter, exp_results)
+    query = get_query(x_0, X_1_POS, target_num_hits, query_tensor, filter)
     puts "assert_nearest_docs(): query='#{query}'"
     result = search(query)
     assert_hitcount(result, exp_results.length)
@@ -53,7 +58,7 @@ class NearestNeighborTest < IndexedSearchTest
       exp_docid = exp_results[i][0]
       exp_distance = exp_results[i][1]
       exp_score = 15 - exp_distance
-      exp_features = { "rankingExpression(euclidean_distance)" => exp_distance,
+      exp_features = { "rankingExpression(euclidean_distance_#{query_tensor})" => exp_distance,
                        "rawScore(pos)" => exp_distance,
                        "itemRawScore(nns)" => exp_distance }
 
@@ -63,10 +68,10 @@ class NearestNeighborTest < IndexedSearchTest
     end
   end
 
-  def get_query(x_0, x_1, target_num_hits, filter = nil)
-    result = "yql=select * from sources * where [{\"targetNumHits\": #{target_num_hits}, \"label\": \"nns\"}] nearestNeighbor(pos,qpos)"
+  def get_query(x_0, x_1, target_num_hits, query_tensor, filter = nil)
+    result = "yql=select * from sources * where [{\"targetNumHits\": #{target_num_hits}, \"label\": \"nns\"}] nearestNeighbor(pos,#{query_tensor})"
     result += " and filter contains \"#{filter}\"" if filter
-    result += ";&ranking.features.query(qpos)={{x:0}:#{x_0},{x:1}:#{x_1}}"
+    result += ";&ranking.features.query(#{query_tensor})={{x:0}:#{x_0},{x:1}:#{x_1}}"
     return result
   end
 
