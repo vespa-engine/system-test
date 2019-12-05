@@ -146,7 +146,7 @@ class NearestNeighborPerformanceTest < PerformanceTest
 
   def get_graphs()
     profiles = [ 'simple', 'rawscore', 'dotproduct', 'joinsq' ]
-    casenames = [ 'alldoc', 'nnsitem' ]
+    casenames = [ 'alldoc', 'nns_10', 'nns_100', 'nns_1000' ]
     maxmins = {
         'alldoc_joinsq'     => { :min => 300, :max => 999 },
         'alldoc_dotproduct' => { :min => 100, :max => 300 },
