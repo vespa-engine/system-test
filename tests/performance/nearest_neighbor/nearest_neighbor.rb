@@ -29,14 +29,17 @@ class NearestNeighborPerformanceTest < PerformanceTest
   RB = '%7D]'
   PRE = 'select+*+from+sources+*+where+'
   NNS = 'nearestNeighbor(dvector,qvector);'
-  YQL = "#{PRE}#{LB}#{Q}label#{Q}:#{Q}mynns#{Q},#{Q}targetNumHits#{Q}:11#{RB}#{NNS}"
   RFQV = 'ranking.features.query(qvector)'
 
-  def write_nns_queries(qfn)
+  def write_nns_queries(qfn, tHits)
     File.open(qfn, 'w') do |f|
       (1..99999).each do |num|
         v = "[#{num}#{@rnd511vec}]"
-        f.puts("/search/?yql=#{YQL}&#{RFQV}=#{v}")
+        label = "#{Q}label#{Q}:#{Q}mynns#{Q}"
+        t_ann = "#{Q}targetNumHits#{Q}:#{tHits}"
+        annotations = "#{LB}#{label},#{t_ann}#{RB}"
+        yql = "#{PRE}#{annotations}#{NNS}"
+        f.puts("/search/?yql=#{yql}&#{RFQV}=#{v}")
       end
     end
   end
@@ -76,9 +79,13 @@ class NearestNeighborPerformanceTest < PerformanceTest
     # queries
     @rnd511vec = gen_511_randoms
     qf1 = file_in_tmp('alldoc-queries.txt')
+    qf2 = file_in_tmp('nnsitem-10-queries.txt')
+    qf3 = file_in_tmp('nnsitem-100-queries.txt')
+    qf4 = file_in_tmp('nnsitem-1000-queries.txt')
     write_doc_queries(qf1)
-    qf2 = file_in_tmp('nnsitem-queries.txt')
-    write_nns_queries(qf2)
+    write_nns_queries(qf2, 10)
+    write_nns_queries(qf3, 100)
+    write_nns_queries(qf4, 1000)
     puts "DONE QUERY GENERATING"
 
     # feed
@@ -96,7 +103,9 @@ class NearestNeighborPerformanceTest < PerformanceTest
     node.execute('vespa-proton-cmd --local triggerFlush')
 
     run_benchmarks(qf1, 'alldoc', false)
-    run_benchmarks(qf2, 'nnsitem', true)
+    run_benchmarks(qf2, 'nns_10', true)
+    run_benchmarks(qf3, 'nns_100', true)
+    run_benchmarks(qf4, 'nns_1000', true)
   end
 
   def run_benchmarks(query_file, legend, want_rawscore)
@@ -137,16 +146,23 @@ class NearestNeighborPerformanceTest < PerformanceTest
 
   def get_graphs()
     profiles = [ 'simple', 'rawscore', 'dotproduct', 'joinsq' ]
-    casenames = [ 'alldoc', 'nnsitem' ]
+    casenames = [ 'alldoc', 'nns_10', 'nns_100', 'nns_1000' ]
     maxmins = {
         'alldoc_joinsq'     => { :min => 300, :max => 999 },
         'alldoc_dotproduct' => { :min => 100, :max => 300 },
-        'nnsitem_rawscore'  => { :min =>  10, :max => 99 },
+        'nns_10_rawscore'   => { :min =>  10, :max => 99 },
         'default'           => { :min =>   1, :max => 1000000 }
     }
     local_graphs = []
-    profiles.each do |profile|
-      casenames.each do |casename|
+    local_graphs.push({
+        :x => 'legend',
+        :y => '95p',
+        :title => "Latency for NNS versus distance ranking",
+        :filter => {'recall' => '100'},
+        :historic => true
+    })
+    casenames.each do |casename|
+      profiles.each do |profile|
         case_profile = "#{casename}_#{profile}"
         mm = maxmins[case_profile]
         mm = maxmins['default'] unless mm
@@ -161,13 +177,6 @@ class NearestNeighborPerformanceTest < PerformanceTest
         }) if (case_profile != 'alldoc_rawscore')
       end
     end
-    local_graphs.push({
-        :x => 'legend',
-        :y => '95p',
-        :title => "Latency for NNS versus distance ranking",
-        :filter => {'recall' => '100'},
-        :historic => true
-    })
     return local_graphs
   end
 
