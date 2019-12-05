@@ -23,7 +23,6 @@ class DocumentApiVdsPart1 < DocumentApiV1Base
   end
 
   def test_visit_with_wanted_document_count_greater_than_doc_count_exhausts_bucket_space
-    set_owner('vekterli')
     set_description('Test that Document V1 API visit wantedDocumentCount greater than the number ' +
                     'of available documents should exhaust the bucket space and return no continuation token')
 
@@ -35,7 +34,6 @@ class DocumentApiVdsPart1 < DocumentApiV1Base
   end
 
   def test_visit_with_wanted_documents_respects_chunking
-    set_owner('vekterli')
     set_description('Test that Document V1 visit wantedDocumentCount constrains the number of buckets returned, ' +
                     'and that the returned continuation token represents the next in-order bucket(s)')
     # Create 4 buckets in total

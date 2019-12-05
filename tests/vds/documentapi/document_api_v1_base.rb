@@ -1,12 +1,24 @@
-require 'multi_provider_storage_test'
+require 'search_test'
+require 'app_generator/search_app'
+require 'app_generator/storage_app'
 require 'uri'
 
-class DocumentApiV1Base < MultiProviderStorageTest
+class DocumentApiV1Base < SearchTest
 
-  def setup
-    set_owner('valerijf')
+  def param_setup(params)
+    @params = params
+    setup_with_mode(indexed: params[:indexed])
+  end
 
-    deploy_app(default_app.sd(selfdir+'music.sd').distribution_bits(8))
+  def self.testparameters
+    { 'INDEXED'    => { :indexed => true },
+      'STORE_ONLY' => { :indexed => false } }
+  end
+
+  def setup_with_mode(indexed:)
+    set_owner('vekterli')
+    app = indexed ? indexed_app() : store_only_app()
+    deploy_app(app)
 
     start
 
@@ -17,8 +29,20 @@ class DocumentApiV1Base < MultiProviderStorageTest
     feed_single(1, 8)
   end
 
-  def self.testparameter
-    { 'PROTON' => { :provider => 'PROTON' } }
+  def indexed_app
+    SearchApp.new.sd(selfdir + 'music.sd').
+      cluster_name('storage').
+      num_parts(1).redundancy(1).ready_copies(1).
+      enable_http_gateway.
+      storage(StorageCluster.new('storage', 1).distribution_bits(8))
+  end
+
+  def store_only_app
+    StorageApp.new.default_cluster.sd(selfdir + 'music.sd').
+      feeder_options(FeederOptions.new.timeout(120)).
+      transition_time(0).
+      enable_http_gateway.
+      distribution_bits(8)
   end
 
   def api_http_post(path, content, headers={})
