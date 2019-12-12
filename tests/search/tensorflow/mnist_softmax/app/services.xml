@@ -1,6 +1,7 @@
 <services>
 
   <container version="1.0" id="container">
+    <model-evaluation />
     <search/>
     <nodes>
       <node hostalias="node1"/>
