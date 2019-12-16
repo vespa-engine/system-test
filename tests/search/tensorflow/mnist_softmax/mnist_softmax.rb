@@ -14,7 +14,6 @@ class MnistSoftmaxOnnxAndTensorFlow < IndexedSearchTest
     feed_and_wait_for_docs("test", 2, :file => selfdir + "documents.xml")
     assert_relevancy("query=sddocname:test&ranking=tensorflow", 0.6273491382598877)
     assert_relevancy("query=sddocname:test&ranking=onnx", 0.6273491382598877)
-    assert_relevancy("query=sddocname:test&ranking=tf2onnx", 0.6273491382598877)
    end
 
   def teardown
