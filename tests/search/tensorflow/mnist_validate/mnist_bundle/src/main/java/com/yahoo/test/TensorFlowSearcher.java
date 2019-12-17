@@ -29,7 +29,7 @@ public class TensorFlowSearcher extends Searcher {
     private static final int pixels = 28*28;
     private static final String inputName = "input";
     private static final String operationName = "dnn/outputs/add";
-    private static final String tensorFlowVersion = "1.12.0";
+    private static final String tensorFlowVersion = "1.12.3";
 
     private final SavedModelBundle tensorFlowModel;
 
