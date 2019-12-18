@@ -8,7 +8,7 @@ class GenericServices < VdsTest
 
   def initialize(*args)
       super(*args)
-      @num_hosts = 5
+      @num_hosts = 4
   end
 
   def setup
@@ -28,13 +28,11 @@ class GenericServices < VdsTest
     assert(vespa.hostalias["node2"].execute("ps auxwww | grep ping") =~ /ping localhost/)
     assert(vespa.hostalias["node3"].execute("ps auxwww | grep ping") !~ /ping localhost/)
     assert(vespa.hostalias["node4"].execute("ps auxwww | grep ping") !~ /ping localhost/)
-    assert(vespa.hostalias["node5"].execute("ps auxwww | grep ping") !~ /ping localhost/)
 
     assert(vespa.hostalias["node1"].execute("ps auxwww | grep ping") =~ /ping 127/)
     assert(vespa.hostalias["node2"].execute("ps auxwww | grep ping") !~ /ping 127/)
     assert(vespa.hostalias["node3"].execute("ps auxwww | grep ping") =~ /ping 127/)
     assert(vespa.hostalias["node4"].execute("ps auxwww | grep ping") =~ /ping 127/)
-    assert(vespa.hostalias["node5"].execute("ps auxwww | grep ping") =~ /ping 127/)
     #stop
     vespa.hostalias["node1"].execute("vespa-stop-services")
     sleep 5

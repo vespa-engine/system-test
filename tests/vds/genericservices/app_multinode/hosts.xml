@@ -12,9 +12,6 @@
   <host name="bogusname4">
     <alias>node4</alias>
   </host>
-  <host name="bogusname5">
-    <alias>node5</alias>
-  </host>
 
 </hosts>
 
