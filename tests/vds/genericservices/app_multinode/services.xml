@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <service id="pinglocalhost" name="pinglocalhost" command="/bin/ping localhost" version="1.0">
+    <config name="config.myconfig">
+      <mysetting>bar</mysetting>
+    </config>
+    <node hostalias="node1">
+      <config name="config.myconfig">
+        <mysetting>baz</mysetting>
+      </config>
+    </node>
+      <node hostalias="node2"/>
+  </service>
+
+  <service id="pinglo" name="pinglo" command="ping 127.0.0.1" version="1.0">
+    <config name="config.myconfig">
+      <mysetting>bar2</mysetting>
+    </config>
+    <node hostalias="node1"/>
+    <node hostalias="node1"/>
+    <node hostalias="node3">
+      <config name="config.myconfig">
+        <mysetting>baz2</mysetting>
+      </config>
+    </node>
+    <node hostalias="node4"/>
+    <node hostalias="node5"/>
+  </service>
+  
+  <admin version="2.0">
+    <adminserver hostalias="node1"/>
+    <slobroks>
+      <slobrok hostalias="node1"/>
+    </slobroks>
+  </admin>
+
+  <container version="1.0">
+    <nodes>
+      <node hostalias="node1"/>
+    </nodes>
+    <document-api/>
+  </container>
+
+  <content version="1.0">
+    <documents>
+      <document type="music" mode="index" />
+    </documents>
+    <redundancy>1</redundancy>
+    <group name="foo">
+      <node hostalias="node1" distribution-key="0"/>
+    </group>
+  </content>
+
+</services>
