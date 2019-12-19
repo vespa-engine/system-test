@@ -51,6 +51,7 @@ class VespaCleanup
       @testcase.output("Found #{pids.size} stale Vespa processes for #{hostname}, killing them with signal #{signal}")
       kill = "kill -s #{signal} #{pids.join(' ')}"
       execute(node, kill)
+      sleep 0.1
     end
   end
 
