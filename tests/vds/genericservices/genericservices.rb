@@ -22,7 +22,7 @@ class GenericServices < VdsTest
     assert_log_matches(Regexp.compile("pinglocalhost\\s.*icmp_seq"))
     assert_log_not_matches(Regexp.compile("pinglocalhost2\\s.*icmp_seq"))
     assert_log_matches(Regexp.compile("pinglo\\s.*icmp_seq"))
-    assert_log_matches(Regexp.compile("pinglo2\\s.*icmp_seq"))
+    assert_log_matches(Regexp.compile("pinglo2\\s.*icmp_seq")) # Second service on node 1 => pinglo2
 
     assert(vespa.hostalias["node1"].execute("ps auxwww | grep ping") =~ /ping localhost/)
     assert(vespa.hostalias["node2"].execute("ps auxwww | grep ping") =~ /ping localhost/)
