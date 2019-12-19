@@ -45,13 +45,14 @@ class VespaCleanup
 
   def find_and_kill_stale_processes(nodes, time_started, signal)
     nodes.each do |hostname, node|
-      pids = collect_stale_processes(node)
-      break if (pids.size == 0 or (Time.now - time_started) > 2)
+      loop do
+        pids = collect_stale_processes(node)
+        break if (pids.size == 0 or (Time.now - time_started) > 2)
 
-      @testcase.output("Found #{pids.size} stale Vespa processes for #{hostname}, killing them with signal #{signal}")
-      kill = "kill -s #{signal} #{pids.join(' ')}"
-      execute(node, kill)
-      sleep 0.1
+        @testcase.output("Found #{pids.size} stale Vespa processes for #{hostname}, killing them with signal #{signal}")
+        execute(node, "kill -s #{signal} #{pids.join(' ')}")
+        sleep 0.1
+      end
     end
   end
 
