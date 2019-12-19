@@ -34,5 +34,8 @@ search music {
     field person_array type array<personstruct> { }
 
     field person_to_age type weightedset<string> { }
+    field position_array type array<position> {
+      indexing: attribute
+    }
   }
 }
