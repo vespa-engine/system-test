@@ -91,7 +91,11 @@ class EnvironmentBase
   #
   # +hostname+:: The host name which will download test data
   def webhost(hostname)
-    # TODO
+    if ENV.has_key?('VESPA_TESTDATA_SERVER')
+      ENV['VESPA_TESTDATA_SERVER']
+    else
+      hostname
+    end
   end
 
   # TODO: Make private

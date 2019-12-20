@@ -9,7 +9,6 @@
   <service id="pinglo" name="pinglo" command="ping 127.0.0.1" version="1.0">
     <node hostalias="node1"/>
     <node hostalias="node1"/> <!-- Second service on node 1-->
-    <node hostalias="node2"/>
     <node hostalias="node3"/>
   </service>
   
