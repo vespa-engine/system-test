@@ -38,29 +38,31 @@ class VespaCleanup
       puts "Nostop set, won't kill stale processes"
       return
     end
+
+    find_and_kill_stale_processes(nodes, Time.now, 'TERM')
+    find_and_kill_stale_processes(nodes, Time.now, 'KILL')
+  end
+
+  def find_and_kill_stale_processes(nodes, time_started, signal)
     nodes.each do |hostname, node|
-      pids = []
-      badpids = []
-      user = Environment.instance.vespa_user
-      pids |= collect_stale_pids(node, "ps auxww | grep vespa-feeder | grep -v grep | awk '{print $2}'")
-      pids |= collect_stale_pids(node, "ps auxww | grep vespa-fbench | grep -v grep | awk '{print $2}'")
-      pids |= collect_stale_pids(node, "ps auxww | grep vespa-visit | grep -v grep | awk '{print $2}'")
-      badpids |= collect_stale_pids(node, "ps auxww | grep ^#{user} | grep -i vespa- | grep -v grep | awk '{print $2}'")
-      badpids |= collect_stale_pids(node, "ps auxww | grep ^#{user} | grep vespa-config-sentinel | grep -v grep | awk '{print $2}'")
-      badpids |= collect_stale_pids(node, "ps auxww | grep ^#{user} | grep vespa-logd | grep -v grep | awk '{print $2}'")
-      badpids |= collect_stale_pids(node, "ps auxww | grep vespa-runserver | grep -v grep | awk '{print $2}'")
-      badpids |= collect_stale_pids(node, "ps auxww | grep java.*com.yahoo.vespa.http.client | grep -v grep | awk '{print $2}'")
+      loop do
+        pids = collect_stale_processes(node)
+        break if (pids.size == 0 or (Time.now - time_started) > 2)
 
-      pids |= badpids
-
-      if pids.size > 0
-        @testcase.output("Found #{pids.size} stale processes, " +
-               "killing: #{pids.join(" ")}, #{pids.inspect}")
-        execute(node, "kill #{pids.join(" ")}")
-        sleep 2
-        execute(node, "kill -9 #{pids.join(" ")}")
+        @testcase.output("Found #{pids.size} stale Vespa processes for #{hostname}, killing them with signal #{signal}")
+        execute(node, "kill -s #{signal} #{pids.join(' ')}")
+        sleep 0.1
       end
     end
+  end
+
+  def collect_stale_processes(node)
+    pids = []
+    ps_output = execute(node, "ps auxww | grep vespa | grep -v grep")
+    ps_output.split("\n").each { |process_line|
+      pids << process_line.split[1]
+    }
+    pids
   end
 
   def remove_model_plugins(nodes)
@@ -70,22 +72,6 @@ class VespaCleanup
   end
 
   private
-
-  def collect_stale_pids(node, cmd)
-    pids = execute(node, cmd)
-    begin
-      ret = []
-      pids.split("\n").collect do |p|
-        if p =~ /^\d+$/
-          ret << p.to_i
-        end
-      end
-      ret
-    rescue
-      @testcase.output "Unable to parse pid list: #{pids}"
-      []
-    end
-  end
 
   def execute(node, cmd)
     node.execute(cmd, :exceptiononfailure => false)
