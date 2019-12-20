@@ -10,19 +10,15 @@
     <node hostalias="node1"/>
     <node hostalias="node1"/> <!-- Second service on node 1-->
     <node hostalias="node3"/>
-    <node hostalias="node4"/>
   </service>
   
   <admin version="2.0">
     <adminserver hostalias="node1"/>
-    <slobroks>
-      <slobrok hostalias="node1"/>
-    </slobroks>
   </admin>
 
   <container version="1.0">
     <nodes>
-      <node hostalias="node1"/>
+      <node hostalias="node2"/>
     </nodes>
     <document-api/>
   </container>
@@ -33,7 +29,7 @@
     </documents>
     <redundancy>1</redundancy>
     <group name="foo">
-      <node hostalias="node1" distribution-key="0"/>
+      <node hostalias="node3" distribution-key="0"/>
     </group>
   </content>
 
