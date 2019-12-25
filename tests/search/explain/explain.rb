@@ -22,14 +22,25 @@ class Explain < IndexedSearchTest
     children = result["trace"]["children"][1]["children"][0]["children"]
     assert_equal(4, children.size)
     verify_to_dispatch(children[0])
-    verify_to_blueprint(children[1]["message"][0]["traces"][0])
+    verify_traces(children[1]["message"][0]["traces"])
 
     result = search("/search/?query=sddocname:music&format=json&hits=1&explainlevel=2&tracelevel=1").json
     children = result["trace"]["children"][1]["children"][0]["children"]
     assert_equal(4, children.size)
     verify_to_dispatch(children[0])
-    verify_to_blueprint(children[1]["message"][0]["traces"][0])
-    verify_to_iteratortree(children[1]["message"][0]["traces"][1])
+    traces = children[1]["message"][0]["traces"]
+    verify_traces(traces)
+    verify_to_iteratortree(traces[7])
+  end
+
+  def verify_traces(traces)
+    assert_equal("MTF: Start", traces[0]["event"])
+    assert_equal("MTF: Build query", traces[1]["event"])
+    assert_equal("MTF: reserve handles", traces[2]["event"])
+    assert_equal("MTF: Fetch Postings", traces[3]["event"])
+    assert_equal("MTF: prepareSharedState", traces[4]["event"])
+    assert_equal("MTF: Complete", traces[5]["event"])
+    verify_to_blueprint(traces[6])
   end
 
   def verify_to_dispatch(result)
