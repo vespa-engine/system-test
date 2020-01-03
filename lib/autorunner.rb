@@ -194,6 +194,9 @@ class AutoRunner
       $stderr.puts "Unable to find vespa version using vespa-print-default: #{output}"
     elsif output.strip! =~ /^\d+\.\d+\.\d+$/
       vespa_version = output
+      if vespa_version =~ /^(\d+)\.\d+\.0$/
+        vespa_version = "#{$1}-SNAPSHOT"
+      end
     else
       vespa_version = nil
     end
