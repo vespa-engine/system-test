@@ -34,12 +34,14 @@ class MultiEnvironment < CloudConfigTest
   end
 
   def set_env_and_region(node, environment, region)
-    override_environment_setting(node, "cloudconfig_server.environment", environment)
-    override_environment_setting(node, "cloudconfig_server.region", region)
-    @dirty_environment_settings = true
+    node.execute("yinst set cloudconfig_server.environment=#{environment}")
+    node.execute("yinst set cloudconfig_server.region=#{region}")
   end
 
   def teardown
+    @node.execute("yinst unset cloudconfig_server.environment")
+    @node.execute("yinst unset cloudconfig_server.region")
+    @dirty_environment_settings = true
     stop
   end
 end
