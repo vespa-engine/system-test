@@ -11,7 +11,7 @@ class JvmTuning < SearchTest
 
   def setup
     set_owner("musum")
-    set_description("Test setting jvmargs in services.xml or with environment settings")
+    set_description("Test setting jvmargs in services.xml or with yinst settings")
   end
 
   def deploy_jvmtuning
