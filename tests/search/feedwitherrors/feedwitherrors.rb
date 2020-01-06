@@ -15,11 +15,11 @@ class FeedWithErrors < IndexedSearchTest
 
     feedoutput = feed(:file => selfdir + "errorfeed.10.xml", :exceptiononfailure => false)
     wait_for_atleast_hitcount("query=sddocname:errordoc", 1)
-    assert_correct_output([ "Illegal base64 value",
+    assert_correct_output([ "Illegal base64 character",
                             "Illegal hex value 'ziggystardusthex'",
                             "NumberFormatException"],
                           feedoutput)
-    assert_log_matches(Regexp.compile(".*Illegal base64 value 'A@@~~~\\\*'"))
+    assert_log_matches(Regexp.compile(".*Illegal base64 character 40.*'"))
     assert_log_matches(Regexp.compile(".*Illegal hex value 'ziggystardusthex'.*"))
     assert_log_matches(Regexp.compile(".*For input string: \"foobar\".*NumberFormatException.*"))
   end
