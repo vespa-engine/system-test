@@ -1,5 +1,3 @@
-# Private reason: yinst
-
 require 'cloudconfig_test'
 require 'search_test'
 require 'environment'

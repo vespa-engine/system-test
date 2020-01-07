@@ -6,7 +6,7 @@ class JDiscHandlerBlocking < SearchContainerTest
   def setup
     set_owner("bjorncs")
     set_description("Deploy a JDisc handler that prevents shutdown, to " +
-                    "ensure that 'yinst stop services' is able to kill " +
+                    "ensure that 'vespa-stop-services' is able to kill " +
                     "the yjava_daemon process.")
     add_bundle("#{selfdir}/BlockingHandler.java")
     deploy("#{selfdir}/app")
