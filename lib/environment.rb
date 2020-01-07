@@ -3,7 +3,7 @@
 require 'environment_base'
 
 # A singleton providing the default environment in which to run tests.
-# To access, use "Environment.instance" before fieldfs and methods.
+# To access, use "Environment.instance" before fields and methods.
 #
 # If the environment needs to be customized when running tests,
 # this can be replaced by an environment-specific implementation.
