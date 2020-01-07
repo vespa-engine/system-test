@@ -11,7 +11,7 @@ class JvmTuning < SearchTest
 
   def setup
     set_owner("musum")
-    set_description("Test setting jvmargs in services.xml or with yinst settings")
+    set_description("Test setting jvmargs in services.xml or with environment variables")
   end
 
   def deploy_jvmtuning
@@ -28,8 +28,8 @@ class JvmTuning < SearchTest
   def test_jvmtuning
     deploy_jvmtuning
 
-    override_environment_setting(vespa.configservers["0"], "cloudconfig_server.jvmargs", "-verbose:gc -verbose:jni")
-    override_environment_setting(vespa.adminserver, "services.jvmargs_configproxy", "-verbose:jni -verbose:gc")
+    override_environment_setting(vespa.configservers["0"], "VESPA_CONFIGSERVER_JVMARGS", "-verbose:gc -verbose:jni")
+    override_environment_setting(vespa.adminserver, "VESPA_CONFIGPROXY_JVMARGS", "-verbose:jni -verbose:gc")
     vespa.configservers["0"].stop_configserver
     vespa.configservers["0"].start_configserver
     add_bundle(DOCPROC+"/WorstMusicDocProc.java")
