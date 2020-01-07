@@ -19,7 +19,7 @@ class RemoveIndexes < IndexedSearchTest
     @node = vespa.adminserver
 
     # Stop Vespa
-    @node.execute("yinst stop vespa_base")
+    vespa.stop_base
 
     # Remove indexes
     @node.execute("vespa-remove-index -force")
@@ -33,7 +33,7 @@ class RemoveIndexes < IndexedSearchTest
     assert(res == "", "#{Environment.instance.vespa_home}/var/db/vespa/search/ is not empty")
 
     # Start vespa
-    @node.execute("yinst start vespa_base")
+    vespa.start_base
     wait_until_ready
 
     # Assert index is clean
