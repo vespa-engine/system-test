@@ -34,7 +34,8 @@ class QrsSummary < IndexedSearchTest
     
     # also check after a restart
     puts "Restarting"
-    vespa.nodeproxies.values.first.execute('yinst restart services')
+    vespa.stop_base
+    vespa.start_base
     puts "Query: search for concerto in music"
     wait_for_hitcount("query=title:concerto", 1);
     # we can still search in default index due to backend config rejection
