@@ -16,7 +16,7 @@ class NodeProxy
   attr_reader :name
 
   def create_node_server
-    remote = "#{@name}:#{TestBase::DRUBY_REMOTE_PORT}"
+    remote = @name.include?(":") ? @name : "#{@name}:#{TestBase::DRUBY_REMOTE_PORT}"
     endpoint = DrbEndpoint.new(remote)
     endpoint.create_client(with_object: nil)
   end
@@ -324,3 +324,4 @@ private
     end
   end
 end
+
