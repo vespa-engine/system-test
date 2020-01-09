@@ -24,50 +24,34 @@ class UpdatesToInconsistentBucketsTest < SearchTest
              add('restart_with_fast_update_path_if_all_get_timestamps_are_consistent', true))
   end
 
-  def api_http_post(path, content)
-    vespa.document_api_v1.http_post(path, content)
+  def updated_doc_id
+    'id:storage_test:music:n=1:foo'
   end
 
-  def api_http_put(path, content)
-    vespa.document_api_v1.http_put(path, content)
-  end
-
-  def api_http_get(path)
-    response = vespa.document_api_v1.http_get(path)
-    vespa.document_api_v1.assert_response_ok(response)
-    JSON.parse(response.body)['fields']
+  def incidental_doc_id
+    'id:storage_test:music:n=1:bar' # Must be in same location as updated_doc_id
   end
 
   def feed_doc_with_field_value(title:)
     # Also add a second field that updates won't touch so that we can detect if
     # a 'create: true' update erroneously resets the state on any replica.
-    doc = { 'fields' => { 'title' => title, 'artist' => 'cool dude' } }
-    response = api_http_post("/document/v1/storage_test/music/number/1/foo", doc.to_json)
-    assert_json_string_equal(
-      "{\"id\":\"id:storage_test:music:n=1:foo\",\"pathId\":\"/document/v1/storage_test/music/number/1/foo\"}",
-      response)
-    response
+    doc = Document.new('music', updated_doc_id).
+        add_field('title', title).
+        add_field('artist', 'cool dude')
+    vespa.document_api_v1.put(doc)
   end
 
   def feed_incidental_doc_to_same_bucket
-    doc = { 'fields' => { 'title' => 'hello world' } }
-    response = api_http_post('/document/v1/storage_test/music/number/1/bar', doc.to_json)
-    assert_json_string_equal(
-      '{"id":"id:storage_test:music:n=1:bar","pathId":"/document/v1/storage_test/music/number/1/bar"}',
-      response)
-    response
+    doc = Document.new('music', incidental_doc_id).add_field('title', 'hello world')
+    vespa.document_api_v1.put(doc)
   end
 
   def update_doc_with_field_value(title:, create_if_missing:)
+    update = DocumentUpdate.new('music', updated_doc_id)
+    update.addOperation('assign', 'title', title)
     # Use 'create: true' update to ensure that not performing a write repair as
     # expected will create a document from scratch on the node.
-    update = { 'fields' => { 'title' => { 'assign' => title } } }
-    update['create'] = true if create_if_missing
-    response = api_http_put("/document/v1/storage_test/music/number/1/foo", update.to_json)
-    assert_json_string_equal(
-      "{\"id\":\"id:storage_test:music:n=1:foo\",\"pathId\":\"/document/v1/storage_test/music/number/1/foo\"}",
-      response)
-    response
+    vespa.document_api_v1.update(update, :create => create_if_missing)
   end
 
   def mark_node_in_state(idx, state)
@@ -83,7 +67,7 @@ class UpdatesToInconsistentBucketsTest < SearchTest
   end
 
   def verify_document_has_expected_contents(title:)
-    fields = api_http_get('/document/v1/storage_test/music/number/1/foo')
+    fields = vespa.document_api_v1.get(updated_doc_id).fields
     assert_equal(title, fields['title'])
     # Existing field must have been preserved
     assert_equal('cool dude', fields['artist'])
