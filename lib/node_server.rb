@@ -974,7 +974,8 @@ def main(callback_endpoint)
     if callback_endpoint
       node_controller_endpoint = DrbEndpoint.new(callback_endpoint)
       node_controller = node_controller_endpoint.create_client(with_object: nil)
-      node_controller.up(node_server_uri.host, node_server_uri.port)
+      node_controller.register_node_server(node_server_uri.host, node_server_uri.port)
+      puts("Registered node server at #{callback_endpoint}")
     end
 
     endpoint.join_service_thread
