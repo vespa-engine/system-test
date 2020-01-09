@@ -1,6 +1,6 @@
 search test {
   document test {
-    field props type map<string, string> {
+    field props_exact type map<string, string> {
       indexing: summary
       struct-field key {
         indexing: attribute
@@ -9,6 +9,17 @@ search test {
       struct-field value {
         indexing: attribute
         match: exact
+      }
+    }
+    field props_word type map<string, string> {
+      indexing: summary
+      struct-field key {
+        # Default matching is 'word'
+        indexing: attribute
+      }
+      struct-field value {
+        # Default matching is 'word'
+        indexing: attribute
       }
     }
   }

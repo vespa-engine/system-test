@@ -2,7 +2,11 @@
   {
     "put": "id:test:test::0",
     "fields": {
-      "props": {
+      "props_exact": {
+        "tag_one": "android_one",
+        "tag_two": "android_two"
+      },
+      "props_word": {
         "tag_one": "android_one",
         "tag_two": "android_two"
       }

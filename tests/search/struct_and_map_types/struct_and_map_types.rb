@@ -110,15 +110,20 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def test_exact_match_search
-    set_description("Test exact match search in the struct field attributes of a map field")
+    set_description("Test exact match and regular word match in the struct field attributes of a map field")
     deploy_and_start(is_streaming ? "streaming_exact_match" : "exact_match")
     feed(:file => selfdir + "exact_match/docs.json")
 
-    assert_same_element_single("props", "key contains 'tag_one'", 1)
-    assert_same_element_single("props", "key contains 'tag one'", 0)
-    assert_same_element_single("props", "value contains 'android_one'", 1)
-    assert_same_element_single("props", "value contains 'android one'", 0)
-    assert_same_element("props", "key contains 'tag_one', value contains 'android_one'", 1)
+    assert_exact_match_queries("props_exact")
+    assert_exact_match_queries("props_word")
+  end
+
+  def assert_exact_match_queries(field_name)
+    assert_same_element_single(field_name, "key contains 'tag_one'", 1)
+    assert_same_element_single(field_name, "key contains 'tag one'", 0)
+    assert_same_element_single(field_name, "value contains 'android_one'", 1)
+    assert_same_element_single(field_name, "value contains 'android one'", 0)
+    assert_same_element(field_name, "key contains 'tag_one', value contains 'android_one'", 1)
   end
 
   def test_numeric_range_search_when_using_fast_search
