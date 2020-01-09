@@ -131,7 +131,9 @@ class AutoRunner
     end
   end
 
-  def get_full_hostname(hostname)
+  def get_full_hostname(hostport)
+    hostname, port = hostport.split(":")
+
     if hostname == "localhost"
       full_hostname = Environment.instance.vespa_hostname
     elsif /vmnet\.yahoo\.com$/ =~ hostname
@@ -141,7 +143,8 @@ class AutoRunner
       raise "Unable to lookup host #{hostname}." unless hostname
       full_hostname = hostname.first
     end
-    full_hostname
+
+    port ? "#{full_hostname}:#{port}" : full_hostname
   end
 
   def instantiate_testcases
