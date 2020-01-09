@@ -19,7 +19,7 @@ class FeedWithErrors < IndexedSearchTest
                             "Illegal hex value 'ziggystardusthex'",
                             "NumberFormatException"],
                           feedoutput)
-    assert_log_matches(Regexp.compile(".*Illegal base64 character 40.*'"))
+    assert_log_matches(Regexp.compile(".*Illegal base64 character 40.*"))
     assert_log_matches(Regexp.compile(".*Illegal hex value 'ziggystardusthex'.*"))
     assert_log_matches(Regexp.compile(".*For input string: \"foobar\".*NumberFormatException.*"))
   end
