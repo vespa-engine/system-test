@@ -118,11 +118,23 @@ class DocumentApiV1
     end
     "/document/v1/#{uri_enc(parsed_id[:namespace])}/#{uri_enc(parsed_id[:doc_type])}/#{location}/#{uri_enc(parsed_id[:rest])}"
   end
-
-  def put(document, params={})
+  
+  def do_mutating_op(document, params={})
     uri = doc_id_to_v1_uri(document.documentid)
     uri += request_params(params)
-    http_post(uri, document.fields_to_json, params)
+    yield(uri, document.fields_to_json, params)
+  end
+
+  def put(document, params={})
+    do_mutating_op(document, params) { |uri, json, params|
+      http_post(uri, json, params)
+    }
+  end
+
+  def update(update, params={})
+    do_mutating_op(update, params) { |uri, json, params|
+      http_put(uri, json, params)
+    }
   end
 
   def get(doc_id, params={})

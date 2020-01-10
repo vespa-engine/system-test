@@ -9,7 +9,8 @@ class InconsistentUpdates < MultiProviderStorageTest
     set_description("Test inconsistent updates")
 
     deploy_app(default_app.num_nodes(2).redundancy(2).
-               config(ConfigOverride.new("vespa.config.content.core.stor-distributormanager").add("maxpendingidealstateoperations", "0")))
+               config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
+                      add('merge_operations_disabled', 'true')))
     start
   end
 
