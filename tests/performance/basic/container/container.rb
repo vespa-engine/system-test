@@ -45,8 +45,8 @@ class BasicContainer < PerformanceTest
             :filter => {'legend' => STANDARD},
             :x => 'legend',
             :y => 'qps',
-            :y_min => 260000,
-            :y_max => 292000,
+            :y_min => 165000,
+            :y_max => 180000,
             :historic => true
         },
         {
@@ -54,8 +54,8 @@ class BasicContainer < PerformanceTest
             :filter => {'legend' => ASYNC_WRITE },
             :x => 'legend',
             :y => 'qps',
-            :y_min => 190000,
-            :y_max => 215000,
+            :y_min => 135000,
+            :y_max => 150000,
             :historic => true
         },
         {
