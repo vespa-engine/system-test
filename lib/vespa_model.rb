@@ -139,7 +139,7 @@ class VespaModel
 
   def init_nodeproxies
     @testcase.hostlist.each do |hostname|
-      @nodeproxies[hostname.split(":").first] = NodeProxy.new(hostname, @testcase)
+      @nodeproxies[hostname] = NodeProxy.new(hostname, @testcase)
     end
   end
 
@@ -174,7 +174,6 @@ class VespaModel
     else
       hostlist = @testcase.hostlist
     end
-    hostlist = hostlist.map { |h| h.split(":").first }
 
     if hostlist.length == 1 and count_vespahosts(vespa_nodes) > 1
       @testcase.output("WARNING: Only one host available (#{hostlist.first}), not " +

@@ -954,8 +954,8 @@ def main(callback_endpoint)
   ENV['PATH'] = "#{Environment.instance.path_env_variable}:#{ENV['PATH']}"
 
   if callback_endpoint
-    # This will make drb pick an available port
-    service_endpoint = ":0"
+    # This can be specified with :0 to pick an available port, but use the fixed port for now
+    service_endpoint = ":#{TestBase::DRUBY_REMOTE_PORT}"
   else
     service_endpoint = ":#{TestBase::DRUBY_REMOTE_PORT}"
   end
