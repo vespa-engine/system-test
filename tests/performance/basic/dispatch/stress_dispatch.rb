@@ -26,7 +26,7 @@ class StressDispatch < PerformanceTest
        :min_qps_search          => 10100,
        :max_qps_search          => 12800,
        :min_latency_search      => 5.3,
-       :max_latency_search      => 6.1
+       :max_latency_search      => 6.2
     }
     return l
   end
