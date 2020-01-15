@@ -882,6 +882,7 @@ class VespaModel
         end
       end
       save_logfile("#{Environment.instance.vespa_home}/logs/vespa/zookeeper.configserver.0.log")
+      save_logfile("#{Environment.instance.vespa_home}/logs/vespa/zookeeper.container-clustercontroller.0.log")
     end
     proxies.each_value do |handle|
       save_qrserver_logfiles(handle) unless @testcase.performance?
