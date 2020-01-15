@@ -174,6 +174,7 @@ class VespaModel
     else
       hostlist = @testcase.hostlist
     end
+
     if hostlist.length == 1 and count_vespahosts(vespa_nodes) > 1
       @testcase.output("WARNING: Only one host available (#{hostlist.first}), not " +
                        "substituting hostnames in hosts.xml")

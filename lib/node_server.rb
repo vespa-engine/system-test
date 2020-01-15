@@ -95,7 +95,8 @@ class NodeServer
 
   # Sets the address of the config server in the environment
   def set_addr_configserver(config_hostnames)
-    Environment.instance.set_addr_configserver(@testcase, config_hostnames)
+    hosts =  config_hostnames.map { |h| h.split(":").first }
+    Environment.instance.set_addr_configserver(@testcase, hosts)
   end
 
   def set_port_configserver_rpc(port=nil)
@@ -105,6 +106,11 @@ class NodeServer
 
   def remote_eval(expr)
     eval(expr)
+  end
+
+  def shutdown
+    # Just exit for now
+    DRb.stop_service
   end
 
   # Executes _command_ in the background on this node. Returns the pid.
@@ -941,24 +947,58 @@ def symbol_to_string_keys(hsh)
   hsh.map { |k,v| [k.to_s, v] }.to_h
 end
 
-def main
+def main(callback_endpoint)
   # Instantiates a NodeServer object and publishes it through DRb.
   hostname = Environment.instance.vespa_hostname
   short_hostname = Environment.instance.vespa_short_hostname
   ENV['PATH'] = "#{Environment.instance.path_env_variable}:#{ENV['PATH']}"
-  service_endpoint = ":#{TestBase::DRUBY_REMOTE_PORT}"
+
+  if callback_endpoint
+    # This can be specified with :0 to pick an available port, but use the fixed port for now
+    service_endpoint = ":#{TestBase::DRUBY_REMOTE_PORT}"
+  else
+    service_endpoint = ":#{TestBase::DRUBY_REMOTE_PORT}"
+  end
+
   front_object = NodeServer.new(hostname, short_hostname)
 
   endpoint = DrbEndpoint.new(service_endpoint)
-  puts("Node server endpoint: #{service_endpoint} " +
-       "(#{endpoint.secure? ? 'secure' : 'INSECURE'})")
 
   while true
     endpoint.start_service(for_object: front_object)
+
+    node_server_uri = URI.parse(DRb.current_server.uri)
+
+    puts("Node server endpoint: #{node_server_uri.host}:#{node_server_uri.port} " +
+             "(#{endpoint.secure? ? 'secure' : 'INSECURE'})")
+
+    if callback_endpoint
+      node_controller_endpoint = DrbEndpoint.new(callback_endpoint)
+      node_controller = node_controller_endpoint.create_client(with_object: nil)
+      node_controller.register_node_server(node_server_uri.host, node_server_uri.port)
+      puts("Registered node server at #{callback_endpoint}")
+    end
+
     endpoint.join_service_thread
+
+    if callback_endpoint
+      # When using the callback to register, we will exit after finishing
+      break
+    end
   end
 end
 
 if __FILE__ == $0
-  main
+  callback_endpoint = nil
+
+  o = OptionParser.new
+  o.on("-c", "--callbback HOST:PORT", String, "Host and port to use for registering this nodeserver", String) {|v| callback_endpoint = v}
+  begin
+    o.parse!(ARGV)
+  rescue OptionParser::InvalidOption
+    puts o.to_s
+    exit 1
+  end
+
+  main(callback_endpoint)
 end
