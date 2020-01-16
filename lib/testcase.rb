@@ -91,6 +91,7 @@ class TestCase
       @@log_messages[:uncommon_get],
       @@log_messages[:jetty_log_init],
       @@log_messages[:zkmetric_updater_monitor_failure],
+      @@log_messages[:zookeeper_datadir_exception], # ZK bug, tracked in https://issues.apache.org/jira/browse/ZOOKEEPER-1936
       @@log_messages[:log4j_no_appenders],
       @@log_messages[:log4j_initialize],
       @@log_messages[:log4j_see_noconfig]
@@ -697,6 +698,7 @@ class TestCase
     :jetty_log_init => /Logging initialized @\d+ms to org.eclipse.jetty.util.log.StdErrLog/,
     :no_tick_registered =>  /Thread .+ has gone \d+ milliseconds without registering a tick/,
     :zkmetric_updater_monitor_failure => /Failure in retrieving monitoring data:/,
+    :zookeeper_datadir_exception => /Unable to access datadir, exiting abnormally/,
     :valgrindrc_not_read => /\/home\/builder\/\.valgrindrc was not read/,
     :shutdownguard_forcing_exit => /ShutdownGuard is now forcing an exit of the process/,
     :memory_history_should_be_tracked => /Memory history is supposed to be tracked every/,
