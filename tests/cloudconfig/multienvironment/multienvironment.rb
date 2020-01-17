@@ -34,14 +34,13 @@ class MultiEnvironment < CloudConfigTest
   end
 
   def set_env_and_region(node, environment, region)
-    node.execute("yinst set cloudconfig_server.environment=#{environment}")
-    node.execute("yinst set cloudconfig_server.region=#{region}")
+    override_environment_setting(node, "VESPA_ENVIRONMENT", environment);
+    override_environment_setting(node, "VESPA_REGION", region)
   end
 
   def teardown
-    @node.execute("yinst unset cloudconfig_server.environment")
-    @node.execute("yinst unset cloudconfig_server.region")
-    @dirty_environment_settings = true
+    override_environment_setting(@node, "VESPA_ENVIRONMENT", nil)
+    override_environment_setting(@node, "VESPA_REGION", nil)
     stop
   end
 end

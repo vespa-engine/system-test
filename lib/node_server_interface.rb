@@ -49,6 +49,14 @@ module NodeServerInterface
     @node_server.set_port_configserver_rpc(*args)
   end
 
+  def reset_environment_setting
+    @node_server.reset_environment_setting
+  end
+
+  def override_environment_setting(name, value)
+    @node_server.override_environment_setting(name, value)
+  end
+
   def drop_coredumps(starttime)
     @node_server.drop_coredumps(starttime)
   end

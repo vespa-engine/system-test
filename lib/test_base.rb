@@ -1436,7 +1436,7 @@ module TestBase
 
   # Temporarily overrides setting, will be set back at end of test
   def override_environment_setting(node, name, value)
-    node.execute("echo \"override #{name} #{value}\" >> #{Environment.instance.vespa_home}/conf/vespa/default-env.txt")
+    node.override_environment_setting(name, value)
     @dirty_environment_settings = true
   end
 
