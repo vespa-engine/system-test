@@ -24,7 +24,7 @@ class DefaultEnvFile
 
   def backup_original(force)
     @mutex.synchronize do
-      if !File.exist?(@file_name_orig) || force
+      if File.exist?(@file_name) && (!File.exist?(@file_name_orig) || force)
         file_name_orig_new = "#{@file_name_orig}.new"
         FileUtils.cp(@file_name, file_name_orig_new)
         File.rename(file_name_orig_new, @file_name_orig)
