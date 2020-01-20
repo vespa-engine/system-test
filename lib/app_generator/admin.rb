@@ -44,7 +44,6 @@ class Admin
     @configservers = []
     @yamas = nil
     @monitoring = nil
-    @ymon=nil
     @metrics = nil
     @slobroks = []
     @logservers = []
@@ -58,21 +57,6 @@ class Admin
 
   def configserver(hostalias)
     @configservers.push(ConfigServer.new(hostalias))
-  end
-
-  class Ymon
-    def initialize(interval)
-      @interval = interval
-    end
-
-    def to_xml(indent)
-      XmlHelper.new(indent).
-          tag("ymon", :interval => @interval).to_s
-    end
-  end
-
-  def ymon(interval)
-    @ymon = Ymon.new(interval)
   end
 
   class Monitoring
@@ -145,7 +129,6 @@ class Admin
         to_xml(@logservers).
         to_xml(@yamas).
         to_xml(@monitoring).
-        to_xml(@ymon).
         to_xml(@clustercontrollers).
         to_xml(@metrics).to_s
   end
