@@ -9,7 +9,23 @@
           ]
         }
       },
+      "dense_float_attr": {
+        "modify": {
+          "operation": "multiply",
+          "cells": [
+            { "address": { "x": "0" }, "value": 3.0 }
+          ]
+        }
+      },
       "mixed_attr": {
+        "modify": {
+          "operation": "multiply",
+          "cells": [
+            { "address": { "x": "a", "y":"1" }, "value": 4.0 }
+          ]
+        }
+      },
+      "mixed_float_attr": {
         "modify": {
           "operation": "multiply",
           "cells": [

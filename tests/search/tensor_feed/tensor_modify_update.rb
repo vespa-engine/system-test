@@ -34,53 +34,74 @@ class TensorModifyUpdateTest < SearchTest
   end
 
   def assert_tensor_fields_after_modify_replace(doc)
+    assert_dense_tensor_after_modify_replace(doc, "dense_attr")
+    assert_dense_tensor_after_modify_replace(doc, "dense_float_attr")
+    assert_dense_tensor_after_modify_replace(doc, "dense_field")
+    assert_sparse_tensor_after_modify_replace(doc, "sparse_attr")
+    assert_sparse_tensor_after_modify_replace(doc, "sparse_float_attr")
+    assert_sparse_tensor_after_modify_replace(doc, "sparse_field")
+    assert_mixed_tensor_after_modify_replace(doc, "mixed_attr")
+    assert_mixed_tensor_after_modify_replace(doc, "mixed_float_attr")
+    assert_mixed_tensor_after_modify_replace(doc, "mixed_field")
+  end
+
+  def assert_dense_tensor_after_modify_replace(doc, name)
     assert_tensor_field([{'address'=>{'x'=>'0'}, 'value'=>1.0},
                          {'address'=>{'x'=>'1'}, 'value'=>7.0},
-                         {'address'=>{'x'=>'2'}, 'value'=>8.0}], doc, "dense_attr")
+                         {'address'=>{'x'=>'2'}, 'value'=>8.0}], doc, name)
+  end
 
-    assert_tensor_field([{'address'=>{'x'=>'0'}, 'value'=>1.0},
-                         {'address'=>{'x'=>'1'}, 'value'=>7.0},
-                         {'address'=>{'x'=>'2'}, 'value'=>8.0}], doc, "dense_field")
-
+  def assert_sparse_tensor_after_modify_replace(doc, name)
     assert_tensor_field([{'address'=>{'x'=>'a'}, 'value'=>1.0},
                          {'address'=>{'x'=>'b'}, 'value'=>7.0},
-                         {'address'=>{'x'=>'c'}, 'value'=>8.0}], doc, "sparse_attr")
+                         {'address'=>{'x'=>'c'}, 'value'=>8.0}], doc, name)
+  end
 
-    assert_tensor_field([{'address'=>{'x'=>'a'}, 'value'=>1.0},
-                         {'address'=>{'x'=>'b'}, 'value'=>7.0},
-                         {'address'=>{'x'=>'c'}, 'value'=>8.0}], doc, "sparse_field")
-
+  def assert_mixed_tensor_after_modify_replace(doc, name)
     assert_tensor_field([{'address'=>{'x'=>'a','y'=>'0'}, 'value'=>1.0},
                          {'address'=>{'x'=>'a','y'=>'1'}, 'value'=>2.0},
                          {'address'=>{'x'=>'b','y'=>'0'}, 'value'=>7.0},
-                         {'address'=>{'x'=>'b','y'=>'1'}, 'value'=>8.0}], doc, "mixed_attr")
-
-    assert_tensor_field([{'address'=>{'x'=>'a','y'=>'0'}, 'value'=>1.0},
-                         {'address'=>{'x'=>'a','y'=>'1'}, 'value'=>2.0},
-                         {'address'=>{'x'=>'b','y'=>'0'}, 'value'=>7.0},
-                         {'address'=>{'x'=>'b','y'=>'1'}, 'value'=>8.0}], doc, "mixed_field")
+                         {'address'=>{'x'=>'b','y'=>'1'}, 'value'=>8.0}], doc, name)
   end
 
   def assert_tensor_fields_after_modify_add(doc)
+    assert_dense_tensor_after_modify_add(doc, "dense_attr")
+    assert_dense_tensor_after_modify_add(doc, "dense_float_attr")
+    assert_mixed_tensor_after_modify_add(doc, "mixed_attr")
+    assert_mixed_tensor_after_modify_add(doc, "mixed_float_attr")
+  end
+
+  def assert_dense_tensor_after_modify_add(doc, name)
     assert_tensor_field([{'address'=>{'x'=>'0'}, 'value'=>6.0},
                          {'address'=>{'x'=>'1'}, 'value'=>7.0},
-                         {'address'=>{'x'=>'2'}, 'value'=>8.0}], doc, "dense_attr")
+                         {'address'=>{'x'=>'2'}, 'value'=>8.0}], doc, name)
+  end
 
+  def assert_mixed_tensor_after_modify_add(doc, name)
     assert_tensor_field([{'address'=>{'x'=>'a','y'=>'0'}, 'value'=>1.0},
                          {'address'=>{'x'=>'a','y'=>'1'}, 'value'=>3.0},
                          {'address'=>{'x'=>'b','y'=>'0'}, 'value'=>7.0},
-                         {'address'=>{'x'=>'b','y'=>'1'}, 'value'=>8.0}], doc, "mixed_attr")
+                         {'address'=>{'x'=>'b','y'=>'1'}, 'value'=>8.0}], doc, name)
   end
 
   def assert_tensor_fields_after_modify_multiply(doc)
+    assert_dense_tensor_after_modify_multiply(doc, "dense_attr")
+    assert_dense_tensor_after_modify_multiply(doc, "dense_float_attr")
+    assert_mixed_tensor_after_modify_multiply(doc, "mixed_attr")
+    assert_mixed_tensor_after_modify_multiply(doc, "mixed_float_attr")
+  end
+
+  def assert_dense_tensor_after_modify_multiply(doc, name)
     assert_tensor_field([{'address'=>{'x'=>'0'}, 'value'=>18.0},
                          {'address'=>{'x'=>'1'}, 'value'=>7.0},
-                         {'address'=>{'x'=>'2'}, 'value'=>8.0}], doc, "dense_attr")
+                         {'address'=>{'x'=>'2'}, 'value'=>8.0}], doc, name)
+  end
 
+  def assert_mixed_tensor_after_modify_multiply(doc, name)
     assert_tensor_field([{'address'=>{'x'=>'a','y'=>'0'}, 'value'=>1.0},
                          {'address'=>{'x'=>'a','y'=>'1'}, 'value'=>12.0},
                          {'address'=>{'x'=>'b','y'=>'0'}, 'value'=>7.0},
-                         {'address'=>{'x'=>'b','y'=>'1'}, 'value'=>8.0}], doc, "mixed_attr")
+                         {'address'=>{'x'=>'b','y'=>'1'}, 'value'=>8.0}], doc, name)
   end
 
   def teardown
