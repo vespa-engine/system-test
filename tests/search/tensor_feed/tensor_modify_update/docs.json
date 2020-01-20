@@ -8,6 +8,9 @@
           { "address": { "x": "2" }, "value": 3.0 }
         ]
       },
+      "dense_float_attr": {
+        "values": [1.0, 2.0, 3.0]
+      },
       "dense_field": {
         "cells": [
           { "address": { "x": "0" }, "value": 1.0 },
@@ -21,6 +24,13 @@
           { "address": { "x": "b" }, "value": 2.0 },
           { "address": { "x": "c" }, "value": 3.0 }
         ]
+      },
+      "sparse_float_attr": {
+        "cells": {
+          "a": 1.0,
+          "b": 2.0,
+          "c": 3.0
+        }
       },
       "sparse_field": {
         "cells": [
@@ -36,6 +46,12 @@
           { "address": { "x": "b", "y": "0" }, "value": 3.0 },
           { "address": { "x": "b", "y": "1" }, "value": 4.0 }
         ]
+      },
+      "mixed_float_attr": {
+        "blocks": {
+          "a": [1.0, 2.0],
+          "b": [3.0, 4.0]
+        }
       },
       "mixed_field": {
         "cells": [
