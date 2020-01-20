@@ -1,6 +1,7 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'executor'
+require 'default_env_file'
 
 # A base class for a singleton providing the default environment in
 # which to run tests.  To access, use "Environment.instance" before
@@ -58,16 +59,17 @@ class EnvironmentBase
     @path_env_variable = "#{@vespa_home}/bin:#{@vespa_home}/bin64:#{@vespa_home}/sbin:#{@vespa_home}/sbin64"
     @additional_start_base_commands = ""
     @maven_snapshot_url = nil # TODO
+    @default_env_file = DefaultEnvFile.new(@vespa_home)
   end
 
   def set_addr_configserver(testcase, config_hostnames)
     configservers = config_hostnames.join(",")
-    set_default_conf("VESPA_CONFIGSERVERS", configservers)
+    @default_env_file.set("VESPA_CONFIGSERVERS", configservers)
     ENV["VESPA_CONFIGSERVERS"] = configservers
   end
 
   def set_port_configserver_rpc(testcase, port=nil)
-    set_default_conf("VESPA_CONFIGSERVER_RPC_PORT", port)
+    @default_env_file.set("VESPA_CONFIGSERVER_RPC_PORT", port)
     ENV["VESPA_CONFIGSERVER_RPC_PORT"] = port
   end
 
@@ -84,7 +86,11 @@ class EnvironmentBase
   end
 
   def reset_environment(node)
-    # TODO
+    node.reset_environment_setting
+  end
+
+  def reset_environment_setting(testcase)
+    @default_env_file.restore_original
   end
 
   # Returns the host name of a host from which standard test data can be downloaded
@@ -98,24 +104,8 @@ class EnvironmentBase
     end
   end
 
-  # TODO: Make private
-  def set_default_conf(name, value)
-    default_env_name = "#{@vespa_home}/conf/vespa/default-env.txt"
-    default_env_name_new = "#{default_env_name}.new"
-    lines = IO.readlines(default_env_name)
-    wfile = File.open(default_env_name_new, "w")
-    lines.each do |line|
-      chompedline = line.chomp
-      splitline = chompedline.split(" ", 3)
-      if splitline[1] != name
-        wfile.write("#{chompedline}\n")
-      end
-    end
-    if !value.nil?
-      wfile.write("override #{name} #{value}\n")
-    end
-    wfile.close
-    File.rename(default_env_name_new, default_env_name)
+  def override_environment_setting(testcase, name, value)
+    @default_env_file.set(name, value)
   end
 
 end

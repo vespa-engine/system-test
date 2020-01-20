@@ -104,6 +104,14 @@ class NodeServer
     @port_configserver_rpc = port
   end
 
+  def reset_environment_setting
+    Environment.instance.reset_environment_setting(@testcase)
+  end
+
+  def override_environment_setting(name, value)
+    Environment.instance.override_environment_setting(@testcase, name, value)
+  end
+
   def remote_eval(expr)
     eval(expr)
   end
