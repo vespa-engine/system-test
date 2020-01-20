@@ -968,6 +968,8 @@ def main(callback_endpoint)
     service_endpoint = ":#{TestBase::DRUBY_REMOTE_PORT}"
   end
 
+  Environment.instance.backup_environment_setting(false)
+
   front_object = NodeServer.new(hostname, short_hostname)
 
   endpoint = DrbEndpoint.new(service_endpoint)

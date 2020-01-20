@@ -89,6 +89,10 @@ class EnvironmentBase
     node.reset_environment_setting
   end
 
+  def backup_environment_setting(force)
+    @default_env_file.backup_original(force)
+  end
+
   def reset_environment_setting(testcase)
     @default_env_file.restore_original
   end

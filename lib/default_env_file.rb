@@ -9,11 +9,6 @@ class DefaultEnvFile
     @file_name = "#{vespa_home}/conf/vespa/default-env.txt"
     @file_name_orig = "#{@file_name}.orig"
     @mutex = Mutex.new
-    begin
-      backup_original(false)
-    rescue Errno::EACCES
-      puts "Failed to make backup of #{@file_name}"
-    end
   end
 
   def restore_original
