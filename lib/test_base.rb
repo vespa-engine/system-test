@@ -156,6 +156,10 @@ module TestBase
     FileUtils.rm_rf(local_sdfilename)
   end
 
+  def deploy_expand_vespa_home(app)
+    deploy(app, nil, nil, :sed_vespa_services => "sed 's,\\$VESPA_HOME,#{Environment.instance.vespa_home},g'")
+  end
+
   # :call-seq:
   #   create_resultset(xmlfile)  -> Resultset
   #
