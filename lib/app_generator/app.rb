@@ -99,7 +99,6 @@ class App
                   :clustercontroller => :clustercontroller,
                   :logserver => :logserver,
                   :monitoring => :monitoring,
-                  :ymon => :ymon,
                   :admin_metrics => :metrics
   chained_forward :docprocs, :docproc => :cluster
   chained_forward :clients,
