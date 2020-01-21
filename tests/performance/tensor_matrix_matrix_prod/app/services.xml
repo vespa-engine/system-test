@@ -1,0 +1,29 @@
+<services>
+
+  <admin version="2.0">
+    <adminserver hostalias="node0" />
+    <configservers>
+      <configserver hostalias="node0" />
+    </configservers>
+  </admin>
+
+
+  <container version="1.0" id="container">
+    <search />
+    <document-api/>
+    <nodes>
+      <node hostalias="node0"/>
+    </nodes>
+  </container>
+
+  <content version="1.0">
+    <redundancy>1</redundancy>
+    <documents>
+      <document mode='index' type='test'/>
+    </documents>
+    <nodes>
+      <node hostalias="node0" distribution-key="0"/>
+    </nodes>
+  </content>
+
+</services>
