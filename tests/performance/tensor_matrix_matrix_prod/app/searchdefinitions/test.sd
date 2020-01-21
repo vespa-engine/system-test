@@ -2,9 +2,9 @@
 search test {
     document test {
 
-	    field id type int {
-	        indexing: summary
-	    }
+        field id type int {
+            indexing: summary
+        }
         field x_512_float type tensor<float>(d0[256],d2[512]) {
             indexing: summary | attribute
         }
