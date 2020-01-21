@@ -26,8 +26,6 @@ search test {
         }
     }
 
-    # add 512 inconvenient float
-
     constant w_512_float {
         file: searchdefinitions/w_512.json
         type: tensor<float>(d1[256],d2[512])
