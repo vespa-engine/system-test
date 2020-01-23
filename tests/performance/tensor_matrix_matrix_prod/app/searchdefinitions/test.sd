@@ -27,23 +27,23 @@ search test {
     }
 
     constant w_512_float {
-        file: searchdefinitions/w_512.json
+        file: search/w_512.json
         type: tensor<float>(d1[256],d2[512])
     }
     constant w_1024_float {
-        file: searchdefinitions/w_1024.json
+        file: search/w_1024.json
         type: tensor<float>(d1[256],d2[1024])
     }
     constant w_512_double {
-        file: searchdefinitions/w_512.json
+        file: search/w_512.json
         type: tensor<double>(d1[256],d2[512])
     }
     constant w_512_float_non_inner {
-        file: searchdefinitions/w_512_non_inner.json
+        file: search/w_512_non_inner.json
         type: tensor<float>(d1[512],d2[256])
     }
     constant b_float {
-        file: searchdefinitions/b.json
+        file: search/b.json
         type: tensor<float>(d1[256])
     }
 

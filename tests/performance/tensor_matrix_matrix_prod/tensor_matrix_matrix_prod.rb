@@ -24,6 +24,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
     @graphs = get_graphs
     @docs_file_name = dirs.tmpdir + "/docs.json"
     @queries_file_name = dirs.tmpdir + "/queries.txt"
+    @constants_dir = dirs.tmpdir + "/search/"
     @num_docs = 100
 
     generate_feed_and_queries
@@ -103,6 +104,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
 
   def generate_constants
     puts "generate_constants"
+    FileUtils.mkdir_p(@constants_dir)
     write_constant_file("w_512.json", generate_2d_constant("d1", 256, "d2", 512))
     write_constant_file("w_1024.json", generate_2d_constant("d1", 256, "d2", 1024))
     write_constant_file("w_512_non_inner.json", generate_2d_constant("d1", 512, "d2", 256))
@@ -110,7 +112,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
   end
 
   def write_constant_file(file_name, contents)
-    file = File.open(selfdir + "app/searchdefinitions/" + file_name, "w")
+    file = File.open("#{@constants_dir}" + file_name, "w")
     file.write(contents)
     file.close
   end
@@ -157,7 +159,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
   end
 
   def deploy_and_feed
-    deploy(selfdir + "/app")
+    deploy(selfdir + "/app", nil, nil, {:search_dir => @constants_dir})
     vespa.adminserver.logctl("searchnode:eval", "debug=on")
     start
     feed_and_wait_for_docs("test", @num_docs, :file => @docs_file_name)
