@@ -1,0 +1,30 @@
+[
+  {
+    "put": "id:test:test::0",
+    "fields": {
+      "b1": false,
+      "b2": false
+    }
+  },
+  {
+    "put": "id:test:test::1",
+    "fields": {
+      "b1": true,
+      "b2": false
+    }
+  },
+  {
+    "put": "id:test:test::2",
+    "fields": {
+      "b1": false,
+      "b2": true
+    }
+  },
+  {
+    "put": "id:test:test::3",
+    "fields": {
+      "b1": true,
+      "b2": true
+    }
+  }
+]
