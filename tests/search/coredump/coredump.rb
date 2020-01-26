@@ -11,6 +11,12 @@ class CoreDump < SearchTest
     @coredump_sleep = 30
   end
 
+  def get_lz4_program(node)
+    lz4_program = "#{Environment.instance.vespa_home}/bin64/lz4"
+    lz4_program = "/usr/bin/lz4" unless node.file_exist?(lz4_program)
+    lz4_program
+  end
+
   def test_coredump_compression
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
@@ -26,7 +32,8 @@ class CoreDump < SearchTest
     assert_equal(fullcorefile, after)
     filetype = vespa.adminserver.execute("file -b " + fullcorefile + " | cut -d ',' -f1").strip
     assert_equal("data", filetype)
-    vespa.adminserver.execute("#{Environment.instance.vespa_home}/bin64/lz4 -d < " + fullcorefile + " > #{fullcorefile}.core")
+    lz4_program = get_lz4_program(vespa.adminserver)
+    vespa.adminserver.execute("#{lz4_program} -d < " + fullcorefile + " > #{fullcorefile}.core")
     filetype = vespa.adminserver.execute("file -b " + fullcorefile + ".core | cut -d ',' -f1").strip
     assert_equal("ELF 64-bit LSB core file x86-64", filetype)
     vespa.adminserver.execute("rm #{fullcorefile} #{fullcorefile}.core")
@@ -53,7 +60,8 @@ class CoreDump < SearchTest
     sleep @coredump_sleep
     filetype = vespa.adminserver.execute("file -b " + fullcorefile + " | cut -d ',' -f1").strip
     assert_equal("data", filetype)
-    vespa.adminserver.execute("#{Environment.instance.vespa_home}/bin64/lz4 -d < " + fullcorefile + " > #{fullcorefile}.core")
+    lz4_program = get_lz4_program(vespa.adminserver)
+    vespa.adminserver.execute("#{lz4_program} -d < " + fullcorefile + " > #{fullcorefile}.core")
     filetype = vespa.adminserver.execute("file -b -z " + fullcorefile + ".core | cut -d ',' -f1").strip
     assert_equal("ELF 64-bit LSB core file x86-64", filetype)
 
