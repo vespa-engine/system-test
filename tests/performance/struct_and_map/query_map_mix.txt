@@ -1,1 +1,1 @@
-/search/?elem_map_mix:<20
+/search/?query=elem_map_mix.key:77
