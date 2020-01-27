@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright 2020 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 search test {
   document test {
     struct elem {
@@ -29,7 +29,7 @@ search test {
       }
     }
     field elem_map_mix type map<int, elem> {
-      # All struct-fields are attributes
+      # Some struct-fields are not attributes
       indexing: summary
       struct-field key {
         indexing: attribute
