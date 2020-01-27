@@ -61,15 +61,15 @@ class StructAndMapPerf < PerformanceTest
     container.execute("#{dirs.tmpdir}/docs #{num_docs} #{num_elems}| vespa-feeder")
     assert_hitcount("sddocname:test&summary=minimal", num_docs)
     @queryfile = selfdir + 'query_map_attr.txt'
-    run_fbench(container, 8, 20, [], {:append_str => "&timeout=10.0&hits=10&summary=filtered_map_attr" })
+    run_fbench(container, 8, 10, [], {:append_str => "&summary=filtered_map_attr" })
 
     profiler_start
-    run_fbench(container, 32, 60, [parameter_filler('legend', MAP_ATTR)], {:append_str => "&summary=filtered_map_attr"})
+    run_fbench(container, 32, 30, [parameter_filler('legend', MAP_ATTR)], {:append_str => "&summary=filtered_map_attr"})
     profiler_report(MAP_ATTR)
 
     @queryfile = selfdir + 'query_map_mix.txt'
     profiler_start
-    run_fbench(container, 32, 60, [parameter_filler('legend', MAP_MIX)], {:append_str => "&summary=filtered_map_mix"})
+    run_fbench(container, 32, 30, [parameter_filler('legend', MAP_MIX)], {:append_str => "&summary=filtered_map_mix"})
     profiler_report(MAP_MIX)
   end
 
