@@ -1,1 +1,1 @@
-/search/?query=elem_map_map.key:77
+/search/?query=elem_map_attr.key:77
