@@ -203,7 +203,7 @@ class VespaModel
     applicationbuffer += "services.xml:\n" + File.open(vespa_services, "r").readlines.join('')
     applicationbuffer += "hosts.xml:\n" + File.open(vespa_nodes, "r").readlines.join('') if File.exists?(vespa_nodes)
     if (File.exists?(validation_overrides))
-      applicationbuffer += "vaidation-overrides.xml:\n" + File.open(validation_overrides, "r").readlines.join('')
+      applicationbuffer += "validation-overrides.xml:\n" + File.open(validation_overrides, "r").readlines.join('')
     else
       applicationbuffer += "No validation-overrides.xml\n"
     end
