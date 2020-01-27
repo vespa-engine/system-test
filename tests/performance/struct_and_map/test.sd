@@ -1,0 +1,61 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    struct elem {
+      field weight type int {}
+      field name type string {}
+      field description type string {}
+    }
+    field identity type string {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field elem_map_attr type map<int, elem> {
+      # All struct-fields are attributes
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.weight {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.name {
+        indexing: attribute
+      }
+      struct-field value.description {
+        indexing: attribute
+      }
+    }
+    field elem_map_mix type map<int, elem> {
+      # All struct-fields are attributes
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value.weight {
+        indexing: attribute
+        attribute: fast-search
+      }
+    }
+  }
+  document-summary minimal {
+    summary identity type string { source: identity}
+  }
+  document-summary filtered_map_attr {
+    summary identity type string { source: identity}
+    summary map_attr_filtered type map<int, elem> {
+      source: elem_map_attr
+      matched-elements-only
+    }
+  }
+  document-summary filtered_map_mix {
+    summary identity type string { source: identity}
+    summary elem_map_mix_filtered type map<int, elem> {
+      source: elem_map_mix
+      matched-elements-only
+    }
+  }
+}
