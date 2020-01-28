@@ -1,4 +1,4 @@
-// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright 2020 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package concretedocs;
 
 import com.yahoo.document.*;
@@ -9,7 +9,7 @@ import com.yahoo.concretedocs.Usebase;
 import java.util.logging.Logger;
 
 /**
- * An dummy document processor for testing concrete struct inheritance.
+ * A dummy document processor for testing concrete struct inheritance.
  *
  * @author balder
  */
