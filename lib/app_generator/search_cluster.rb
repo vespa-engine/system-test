@@ -19,6 +19,7 @@ class SearchCluster
   chained_setter :garbagecollection
   chained_setter :garbagecollectioninterval
   chained_setter :threads_per_search
+  chained_setter :num_summary_threads
   chained_setter :initialize_threads
   chained_setter :hwinfo_disk_writespeed
   chained_setter :hwinfo_disk_shared
@@ -61,6 +62,7 @@ class SearchCluster
     @garbagecollection = nil
     @garbagecollectioninterval = nil
     @threads_per_search = 4
+    @num_summary_threads = nil
     @initialize_threads = 16
     @dispatch = nil
     @search_coverage = nil
@@ -128,6 +130,7 @@ class SearchCluster
   def proton_config(indent)
     proton = ConfigOverride.new("vespa.config.search.core.proton")
     proton.add("numthreadspersearch", @threads_per_search)
+    proton.add("numsummarythreads", @num_summary_threads) if @num_summary_threads != nil
     proton.add("initialize", ConfigValue.new("threads", @initialize_threads))
     if @hwinfo_disk_shared || !@hwinfo_disk_writespeed.nil?
       values = ConfigValues.new
