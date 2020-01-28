@@ -44,7 +44,7 @@ class ComponentConfig < SearchContainerTest
       puts "xxxxxxxxxxxxx  Writing jstack output to file   xxxxxxxxxxxxxx"
       qrsPid = @container.execute("pgrep -f -o prelude")
       f = File.new(selfdir+"/jstack.out", "w")
-      f.puts(@container.execute("sudo -u #{Environment.instance.vespa_user} jstack -l #{qrsPid}"))
+      f.puts(@container.execute("/usr/bin/sudo -u #{Environment.instance.vespa_user} jstack -l #{qrsPid}"))
       f.close
       flunk "Did not get expected response"
     end

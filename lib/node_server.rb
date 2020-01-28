@@ -859,7 +859,7 @@ class NodeServer
 
   def print_configserver_stack
     execute("top -b -n 1", :exceptiononfailure => false)
-    execute("ps -p #{@configserver_pid} && sudo -u yahoo jstack #{@configserver_pid}", :exceptiononfailure => false)
+    execute("ps -p #{@configserver_pid} && /usr/bin/sudo -u #{Environment.instance.vespa_user} jstack #{@configserver_pid}", :exceptiononfailure => false)
   end
 
   # Start monitoring of memory in new thread

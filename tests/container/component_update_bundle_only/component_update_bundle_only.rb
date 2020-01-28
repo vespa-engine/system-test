@@ -76,7 +76,7 @@ class ComponentUpdateBundleOnly < SearchContainerTest
       puts "xxxxxxxxxxxxx  Writing jstack output to file   xxxxxxxxxxxxxx"
       qrs_pid = @container.execute("pgrep -f -o prelude")
       f = File.new(selfdir+"/jstack.out", "w")
-      f.puts(@container.execute("sudo -u #{Environment.instance.vespa_user} jstack -l #{qrs_pid}"))
+      f.puts(@container.execute("/usr/bin/sudo -u #{Environment.instance.vespa_user} jstack -l #{qrs_pid}"))
       f.close
     end
     flunk "Did not get expected response"
