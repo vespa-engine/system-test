@@ -226,7 +226,7 @@ class VespaNode
     begin
       pids = pids_with_config_id
       pids.each { |p|
-         execute("sudo -u yahoo jmap -dump:live,format=b,file=/tmp/docproc-#{timestamp}.#{p}.hprof #{p}")
+         execute("/usr/bin/sudo -u #{Environment.instance.vespa_user} jmap -dump:live,format=b,file=/tmp/docproc-#{timestamp}.#{p}.hprof #{p}")
       }
     rescue Exception => e
       puts e
@@ -237,7 +237,7 @@ class VespaNode
     begin
       pids = pids_with_config_id
       pids.each { |p|
-        puts execute("sudo -u yahoo jstack -l #{p}", :exceptiononfailure => false)
+        puts execute("/usr/bin/sudo -u #{Environment.instance.vespa_user} jstack -l #{p}", :exceptiononfailure => false)
       }
     rescue Exception => e
       puts e
@@ -249,7 +249,7 @@ class VespaNode
       pids = pids_with_config_id
 
       pids.each { |p|
-        puts execute("sudo -u yahoo pstack #{p}", :exceptiononfailure => false)
+        puts execute("/usr/bin/sudo -u #{Environment.instance.vespa_user} pstack #{p}", :exceptiononfailure => false)
       }
     rescue Exception => e
       puts e
