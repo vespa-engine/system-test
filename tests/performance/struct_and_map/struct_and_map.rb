@@ -8,6 +8,7 @@ class StructAndMapPerf < PerformanceTest
 
   MAP_ATTR = 'map_attr'
   MAP_MIX = 'map_mix'
+  NUM_CLIENTS = 32
 
   def initialize(*args)
     super(*args)
@@ -20,6 +21,8 @@ class StructAndMapPerf < PerformanceTest
 
   def get_app()
     SearchApp.new.sd(selfdir + "test.sd").
+                  threads_per_search(1).
+                  num_summary_threads(NUM_CLIENTS).
                   qrservers_jvmargs("-Xms16g -Xmx16g")
   end
 
@@ -64,12 +67,12 @@ class StructAndMapPerf < PerformanceTest
     run_fbench(container, 8, 10, [], {:append_str => "&summary=filtered_map_attr" })
 
     profiler_start
-    run_fbench(container, 32, 30, [parameter_filler('legend', MAP_ATTR)], {:append_str => "&summary=filtered_map_attr"})
+    run_fbench(container, NUM_CLIENTS, 30, [parameter_filler('legend', MAP_ATTR)], {:append_str => "&summary=filtered_map_attr"})
     profiler_report(MAP_ATTR)
 
     @queryfile = selfdir + 'query_map_mix.txt'
     profiler_start
-    run_fbench(container, 32, 30, [parameter_filler('legend', MAP_MIX)], {:append_str => "&summary=filtered_map_mix"})
+    run_fbench(container, NUM_CLIENTS, 30, [parameter_filler('legend', MAP_MIX)], {:append_str => "&summary=filtered_map_mix"})
     profiler_report(MAP_MIX)
   end
 

@@ -12,6 +12,7 @@ class SearchApp < App
                   :garbagecollection => :garbagecollection,
                   :doc_type => :doc_type,
                   :threads_per_search => :threads_per_search,
+                  :num_summary_threads => :num_summary_threads,
                   :initialize_threads => :initialize_threads,
                   :hwinfo_disk_writespeed => :hwinfo_disk_writespeed,
                   :hwinfo_disk_shared => :hwinfo_disk_shared,
