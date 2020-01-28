@@ -1,0 +1,10 @@
+search usebase {
+  document usebase inherits base {
+    struct my_elem {
+      field desc type string {}
+      field nested type elem {}
+    }
+    field f2 type elem {}
+    field f3 type my_elem {}
+  }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "put": "id:ns:usebase::0",
+    "fields": {
+      "f1": {
+          "name": "foo",
+          "weight": 10
+        },
+      "f2": {
+          "name": "bar",
+          "weight": 20
+        },
+      "f3": {
+          "desc": "short description",
+          "nested": {
+              "name": "nested bar",
+              "weight": 20
+          }
+        }    
+    }
+  }
+]
