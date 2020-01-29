@@ -1,12 +1,16 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 search fieldsets {
+
   fieldset default {
     fields: sb, sc
+    query-command: "phrase-segmenting false"
   }
+
   fieldset ibx {
     fields: ib
   }
+
   document fieldsets {
     # string fields
     field sa type string {
