@@ -1,0 +1,26 @@
+[
+  {
+    "put": "id:child:child::0",
+    "fields": {
+      "ref": "id:test:test::0"
+    }
+  },
+  {
+    "put": "id:child:child::1",
+    "fields": {
+      "ref": "id:test:test::1"
+    }
+  },
+  {
+    "put": "id:child:child::2",
+    "fields": {
+      "ref": "id:test:test::2"
+    }
+  },
+  {
+    "put": "id:child:child::3",
+    "fields": {
+      "ref": "id:test:test::3"
+    }
+  }
+]

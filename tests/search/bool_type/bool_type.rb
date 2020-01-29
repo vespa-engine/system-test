@@ -10,9 +10,25 @@ class BoolTypeTest < SearchTest
   def test_bool_attribute_search
     set_description("Test search on attributes of type 'bool'")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
+    @doctype = "test"
     start
     feed(:file => selfdir + "docs.json")
 
+    run_search_test
+  end
+
+  def test_imported_bool_attribute_search
+    set_description("Test search on imported attributes of type 'bool'")
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd", { :global => true }).sd(selfdir + "child.sd"))
+    @doctype = "child"
+    start
+    feed(:file => selfdir + "docs.json")
+    feed(:file => selfdir + "docs_child.json")
+
+    run_search_test
+  end
+
+  def run_search_test
     assert_hits([0, 2], "b1 = false")
     assert_hits([1, 3], "b1 = true")
     assert_hits([0, 1], "b2 = false")
@@ -42,11 +58,11 @@ class BoolTypeTest < SearchTest
   end
 
   def get_query(expr)
-    "yql=select %2a from sources %2a where " + expr + "%3b"
+    "yql=select %2a from sources %2a where " + expr + "%3b&model.restrict=#{@doctype}"
   end
 
   def get_docid(id)
-    "id:test:test::#{id}"
+    "id:#{@doctype}:#{@doctype}::#{id}"
   end
 
   def teardown
