@@ -84,17 +84,20 @@ class TensorMatrixMatrixProduct < PerformanceTest
       result << "    \"put\":\"id:test:test::#{i}\",\n"
       result << "    \"fields\":{\n"
       result << "      \"id\":#{i},\n"
-      result << "      \"x_512_float\":{\n"
-      result << generate_cells_2d("d0", 256, "d2", 512)
+      result << "      \"vector_512_float\":{\n"
+      result << generate_cells_1d("d0", 512)
       result << "      },\n"
-      result << "      \"x_1024_float\":{\n"
-      result << generate_cells_2d("d0", 256, "d2", 1024)
-      result << "      },\n"
-      result << "      \"x_512_double\":{\n"
-      result << generate_cells_2d("d0", 256, "d2", 512)
-      result << "      },\n"
-      result << "      \"x_512_float_non_inner\":{\n"
+      result << "      \"matrix_256x512_float\":{\n"
       result << generate_cells_2d("d0", 256, "d1", 512)
+      result << "      },\n"
+      result << "      \"matrix_512x256_float\":{\n"
+      result << generate_cells_2d("d0", 512, "d1", 256)
+      result << "      },\n"
+      result << "      \"matrix_256x512_double\":{\n"
+      result << generate_cells_2d("d0", 256, "d1", 512)
+      result << "      },\n"
+      result << "      \"matrix_256x1024_float\":{\n"
+      result << generate_cells_2d("d0", 256, "d1", 1024)
       result << "      }\n"
       result << "    }\n"
       result << "  }"
@@ -105,10 +108,11 @@ class TensorMatrixMatrixProduct < PerformanceTest
   def generate_constants
     puts "generate_constants"
     FileUtils.mkdir_p(@constants_dir)
-    write_constant_file("w_512.json", generate_2d_constant("d1", 256, "d2", 512))
-    write_constant_file("w_1024.json", generate_2d_constant("d1", 256, "d2", 1024))
-    write_constant_file("w_512_non_inner.json", generate_2d_constant("d1", 512, "d2", 256))
-    write_constant_file("b.json", generate_1d_constant("d1", 256))
+    write_constant_file("vector_512.json", generate_1d_constant("d0", 512))
+    write_constant_file("matrix_256x512.json", generate_2d_constant("d0", 256, "d1", 512))
+    write_constant_file("matrix_512x256.json", generate_2d_constant("d0", 512, "d1", 256))
+    write_constant_file("matrix_256x1024.json", generate_2d_constant("d0", 256, "d1", 1024))
+    write_constant_file("matrix_256x256.json", generate_2d_constant("d0", 256, "d1", 256))
   end
 
   def write_constant_file(file_name, contents)
@@ -168,10 +172,14 @@ class TensorMatrixMatrixProduct < PerformanceTest
   end
 
   def run_queries
+    run_fbench_helper("vector_vector_512_float")
+    run_fbench_helper("vector_matrix_512_float_inner")
+    run_fbench_helper("vector_matrix_512_float_outer")
     run_fbench_helper("matrix_product_512_float")
+    run_fbench_helper("matrix_product_512_float_outer_inner")  # same as inner/outer
+    run_fbench_helper("matrix_product_512_float_outer_outer")
     run_fbench_helper("matrix_product_1024_float")
     run_fbench_helper("matrix_product_512_double")
-    run_fbench_helper("matrix_product_512_float_non_inner")
     run_fbench_helper("gemm_512_float")
     run_fbench_helper("gemm_512_float_inline_join")
   end

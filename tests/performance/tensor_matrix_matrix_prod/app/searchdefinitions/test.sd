@@ -5,16 +5,19 @@ search test {
         field id type int {
             indexing: summary
         }
-        field x_512_float type tensor<float>(d0[256],d2[512]) {
+        field vector_512_float type tensor<float>(d0[512]) {
             indexing: summary | attribute
         }
-        field x_1024_float type tensor<float>(d0[256],d2[1024]) {
+        field matrix_256x512_float type tensor<float>(d0[256],d1[512]) {
             indexing: summary | attribute
         }
-        field x_512_double type tensor<double>(d0[256],d2[512]) {
+        field matrix_512x256_float type tensor<float>(d0[512],d1[256]) {
             indexing: summary | attribute
         }
-        field x_512_float_non_inner type tensor<float>(d0[256],d1[512]) {
+        field matrix_256x512_double type tensor<double>(d0[256],d1[512]) {
+            indexing: summary | attribute
+        }
+        field matrix_256x1024_float type tensor<float>(d0[256],d1[1024]) {
             indexing: summary | attribute
         }
 
@@ -26,49 +29,72 @@ search test {
         }
     }
 
-    constant w_512_float {
-        file: search/w_512.json
-        type: tensor<float>(d1[256],d2[512])
+    constant vector_512_float {
+        file: search/vector_512.json
+        type: tensor<float>(d0[512])
     }
-    constant w_1024_float {
-        file: search/w_1024.json
-        type: tensor<float>(d1[256],d2[1024])
+    constant matrix_256x512_float {
+        file: search/matrix_256x512.json
+        type: tensor<float>(d0[256],d1[512])
     }
-    constant w_512_double {
-        file: search/w_512.json
-        type: tensor<double>(d1[256],d2[512])
+    constant matrix_512x256_float {
+        file: search/matrix_512x256.json
+        type: tensor<float>(d0[512],d1[256])
     }
-    constant w_512_float_non_inner {
-        file: search/w_512_non_inner.json
-        type: tensor<float>(d1[512],d2[256])
+    constant matrix_256x1024_float {
+        file: search/matrix_256x1024.json
+        type: tensor<float>(d0[256],d1[1024])
     }
-    constant b_float {
-        file: search/b.json
-        type: tensor<float>(d1[256])
+    constant matrix_256x512_double {
+        file: search/matrix_256x512.json
+        type: tensor<double>(d0[256],d1[512])
+    }
+    constant matrix_256x256_float {
+        file: search/matrix_256x256.json
+        type: tensor<float>(d0[256],d1[256])
     }
 
+    rank-profile vector_vector_512_float {
+        first-phase { expression: sum(join(attribute(vector_512_float), constant(vector_512_float), f(a,b)(a * b))) }
+    }
+
+    rank-profile vector_matrix_512_float_inner {
+        first-phase { expression: sum(reduce(join(rename(attribute(vector_512_float), d0, d1), constant(matrix_256x512_float), f(a,b)(a * b)), sum, d1)) }
+    }
+
+    rank-profile vector_matrix_512_float_outer {
+        first-phase { expression: sum(reduce(join(attribute(vector_512_float), constant(matrix_512x256_float), f(a,b)(a * b)), sum, d0)) }
+    }
+
+    # inner x inner (d0,d2 x d1,d2)
     rank-profile matrix_product_512_float {
-        first-phase { expression: sum(reduce(join(attribute(x_512_float), constant(w_512_float), f(a,b)(a * b)), sum, d2)) }
+        first-phase { expression: sum(reduce(join(rename(attribute(matrix_256x512_float), d1, d2), rename(constant(matrix_256x512_float), (d0,d1), (d1,d2)), f(a,b)(a * b)), sum, d2)) }
+    }
+
+    # outer x inner (d1,d2 x d0,d1)
+    rank-profile matrix_product_512_float_outer_inner {
+        first-phase { expression: sum(reduce(join(rename(attribute(matrix_512x256_float), (d0,d1), (d1,d2)), constant(matrix_256x512_float), f(a,b)(a * b)), sum, d1)) }
+    }
+
+    # outer x outer (d0,d2 x d0,d1)
+    rank-profile matrix_product_512_float_outer_outer {
+        first-phase { expression: sum(reduce(join(rename(attribute(matrix_512x256_float), d1, d2), constant(matrix_512x256_float), f(a,b)(a * b)), sum, d0)) }
     }
 
     rank-profile matrix_product_1024_float {
-        first-phase { expression: sum(reduce(join(attribute(x_1024_float), constant(w_1024_float), f(a,b)(a * b)), sum, d2)) }
+        first-phase { expression: sum(reduce(join(rename(attribute(matrix_256x1024_float), d1, d2), rename(constant(matrix_256x1024_float), (d0,d1), (d1,d2)), f(a,b)(a * b)), sum, d2)) }
     }
 
     rank-profile matrix_product_512_double {
-        first-phase { expression: sum(reduce(join(attribute(x_512_double), constant(w_512_double), f(a,b)(a * b)), sum, d2)) }
-    }
-
-    rank-profile matrix_product_512_float_non_inner {
-        first-phase { expression: sum(reduce(join(attribute(x_512_float_non_inner), constant(w_512_float_non_inner), f(a,b)(a * b)), sum, d1)) }
+        first-phase { expression: sum(reduce(join(rename(attribute(matrix_256x512_double), d1, d2), rename(constant(matrix_256x512_double), (d0,d1), (d1,d2)), f(a,b)(a * b)), sum, d2)) }
     }
 
     rank-profile gemm_512_float {
-        first-phase { expression: sum(join(reduce(join(attribute(x_512_float), constant(w_512_float), f(a,b)(a * b)), sum, d2) * 1.1, constant(b_float) * 1.2, f(a,b)(a+b))) }
+        first-phase { expression: sum(join(reduce(join(rename(attribute(matrix_256x512_float), d1, d2), rename(constant(matrix_256x512_float), (d0,d1), (d1,d2)), f(a,b)(a * b)), sum, d2) * 1.1, constant(matrix_256x256_float) * 1.2, f(a,b)(a+b))) }
     }
 
     rank-profile gemm_512_float_inline_join {
-        first-phase { expression: sum(join(reduce(join(attribute(x_512_float), constant(w_512_float), f(a,b)(a * b)), sum, d2), constant(b_float), f(a,b)(1.1*a + 1.2*b))) }
+        first-phase { expression: sum(join(reduce(join(rename(attribute(matrix_256x512_float), d1, d2), rename(constant(matrix_256x512_float), (d0,d1), (d1,d2)), f(a,b)(a * b)), sum, d2), constant(matrix_256x256_float), f(a,b)(1.1*a + 1.2*b))) }
     }
 
 }
