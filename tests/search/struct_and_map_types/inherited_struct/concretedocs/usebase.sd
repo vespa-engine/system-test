@@ -6,5 +6,7 @@ search usebase {
     }
     field f2 type elem {}
     field f3 type my_elem {}
+    field f4 type array<elem> {}
+    field f5 type array<my_elem> {}
   }
 }
