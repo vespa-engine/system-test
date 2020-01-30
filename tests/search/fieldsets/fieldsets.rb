@@ -18,7 +18,8 @@ class FieldSets < IndexedSearchTest
     assert_hitcount("fs1:30", 2)
     assert_hitcount("sb", 4)
     assert_hitcount("test'sb", 4)
-    assert_hitcount("sb'test", 4) # Reverse order matches since phrase-segmentation is false
+    assert_hitcount("sb'test", 4) # Reverse matches since phrase-segmentation false: Linguistics tokenized
+    assert_hitcount("sb-test", 4) # Reverse matches since phrase-segmentation false: Query parser tokenized                                                                                     
     assert_hitcount("%22test sb 2%22", 1)
     # searching in attributes as well
     assert_hitcount("fs1:onlyindoc", 3)
