@@ -71,9 +71,9 @@ search test {
         first-phase { expression: sum(reduce(join(rename(attribute(matrix_256x512_float), d1, d2), rename(constant(matrix_256x512_float), (d0,d1), (d1,d2)), f(a,b)(a * b)), sum, d2)) }
     }
 
-    # outer x inner (d1,d2 x d0,d1)
-    rank-profile matrix_product_512_float_outer_inner {
-        first-phase { expression: sum(reduce(join(rename(attribute(matrix_512x256_float), (d0,d1), (d1,d2)), constant(matrix_256x512_float), f(a,b)(a * b)), sum, d1)) }
+    # inner x outer (d0,d1 x d1,d2)
+    rank-profile matrix_product_512_float_inner_outer {
+        first-phase { expression: sum(reduce(join(attribute(matrix_256x512_float), rename(constant(matrix_512x256_float), (d0,d1), (d1,d2)), f(a,b)(a * b)), sum, d1)) }
     }
 
     # outer x outer (d0,d2 x d0,d1)

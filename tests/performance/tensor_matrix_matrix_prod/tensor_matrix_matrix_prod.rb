@@ -176,7 +176,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
     run_fbench_helper("vector_matrix_512_float_inner")
     run_fbench_helper("vector_matrix_512_float_outer")
     run_fbench_helper("matrix_product_512_float")
-    run_fbench_helper("matrix_product_512_float_outer_inner")  # same as inner/outer
+    run_fbench_helper("matrix_product_512_float_inner_outer")
     run_fbench_helper("matrix_product_512_float_outer_outer")
     run_fbench_helper("matrix_product_1024_float")
     run_fbench_helper("matrix_product_512_double")
