@@ -23,7 +23,8 @@ class Jersey2HelloWorld < PerformanceTest
               Container.new.
                   jvmargs('-Xms16g -Xmx16g').
                   rest_api(RestApi.new('rest-api').
-                               bundle(Bundle.new('basic_jersey2'))))
+                               bundle(Bundle.new('basic_jersey2'))).
+                  component(AccessLog.new("disabled")))
     deploy_my_app(app)
   end
 
