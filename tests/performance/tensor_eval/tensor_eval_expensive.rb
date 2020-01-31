@@ -39,7 +39,7 @@ class TensorEvalExpensivePerfTest < TensorEvalPerfTest
       get_latency_graphs_for_rank_profile(TENSOR_MATCH_100X100),
       get_latency_graphs_for_eval_type(MATRIX_PRODUCT),
       get_latency_graph_for_rank_profile(TENSOR_MATCH_50X50,            50, 410, 490),
-      get_latency_graph_for_rank_profile("tensor_matrix_product_25x25", 25, 2.10, 2.65)
+      get_latency_graph_for_rank_profile("tensor_matrix_product_25x25", 25, 1.80, 2.35)
     ]
   end
 
