@@ -1,0 +1,964 @@
+[
+  {
+    "id": "id:lightgbm:lightgbm::1",
+    "fields": {
+      "expected": 0.4837467797781051,
+      "num_1": 0.03099467451334703,
+      "num_2": 0.46093061281771597,
+      "cat_1": "e",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::2",
+    "fields": {
+      "expected": 0.5112654562245904,
+      "num_1": 0.6501635583022104,
+      "num_2": 0.39755836602610517,
+      "cat_1": "a",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::3",
+    "fields": {
+      "expected": 0.5718313755120504,
+      "num_1": 0.3602971161792997,
+      "num_2": 0.7224192895833191,
+      "cat_1": "a",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::4",
+    "fields": {
+      "expected": 0.4817262527251491,
+      "num_2": 0.028829259922261596,
+      "cat_1": "d",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::5",
+    "fields": {
+      "expected": 0.3698518985658545,
+      "num_1": 0.1757542764676786,
+      "num_2": 0.26704661517926986,
+      "cat_1": "c",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::6",
+    "fields": {
+      "expected": 0.8009644620230012,
+      "num_1": 0.44066006566993643,
+      "num_2": 0.4983020870015621,
+      "cat_1": "d",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::7",
+    "fields": {
+      "expected": 0.2578544828833851,
+      "num_1": 0.07384898229573456,
+      "num_2": 0.9076404865070284,
+      "cat_1": "a",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::8",
+    "fields": {
+      "expected": 0.4817262527251491,
+      "num_2": 0.024458826933073552,
+      "cat_1": "d",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::9",
+    "fields": {
+      "expected": 0.18440071832709973,
+      "num_1": 0.6594857327169524,
+      "num_2": 0.06926633932048742,
+      "cat_1": "a",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::10",
+    "fields": {
+      "expected": 0.816055144068711,
+      "num_1": 0.44869695501595663,
+      "num_2": 0.5196659336685928,
+      "cat_1": "d",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::11",
+    "fields": {
+      "expected": 0.13628751413487114,
+      "num_1": 0.1321777854561239,
+      "num_2": 0.27931058408390097,
+      "cat_1": "c",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::12",
+    "fields": {
+      "expected": 0.3534464929431055,
+      "num_1": 0.5709768879106744,
+      "num_2": 0.24062731818658334,
+      "cat_1": "e",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::13",
+    "fields": {
+      "expected": 0.5671129656497517,
+      "num_1": 0.17622614838124806,
+      "num_2": 0.9392954941909399,
+      "cat_1": "e",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::14",
+    "fields": {
+      "expected": 0.1783545997962968,
+      "num_1": 0.4288699236756238,
+      "num_2": 0.3513706609658782,
+      "cat_1": "c",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::15",
+    "fields": {
+      "expected": 0.2778285930254763,
+      "num_1": 0.3429843713130136,
+      "num_2": 0.8328673832456478,
+      "cat_1": "a",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::16",
+    "fields": {
+      "expected": 0.6682995900614952,
+      "num_2": 0.41881485562969434,
+      "cat_1": "e",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::17",
+    "fields": {
+      "expected": 0.6848209994009976,
+      "num_1": 0.6711028040699294,
+      "num_2": 0.5304956689219837,
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::18",
+    "fields": {
+      "expected": 0.4016051992091412,
+      "num_1": 0.17924276325897748,
+      "num_2": 0.6360577552939589,
+      "cat_1": "a",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::19",
+    "fields": {
+      "expected": 0.33704510147696753,
+      "num_1": 0.296481693357584,
+      "num_2": 0.9050569174772313,
+      "cat_1": "c",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::20",
+    "fields": {
+      "expected": 0.3173009328841831,
+      "num_1": 0.36711209513906706,
+      "num_2": 0.7831060267761901,
+      "cat_1": "b"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::21",
+    "fields": {
+      "expected": 0.22458217634863192,
+      "num_1": 0.38275256457213247,
+      "num_2": 0.6830106382177874,
+      "cat_1": "b",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::22",
+    "fields": {
+      "expected": 0.14225243551706027,
+      "cat_1": "b",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::23",
+    "fields": {
+      "expected": 0.3173009328841831,
+      "num_1": 0.39568136069085136,
+      "num_2": 0.8613734737991674,
+      "cat_1": "a",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::24",
+    "fields": {
+      "expected": 0.14225243551706027,
+      "num_1": 0.23813916675313185,
+      "cat_1": "b",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::25",
+    "fields": {
+      "expected": 0.1391925320056722,
+      "num_1": 0.3041904018776308,
+      "cat_1": "c",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::26",
+    "fields": {
+      "expected": 0.8047262822558313,
+      "num_1": 0.658027570894669,
+      "num_2": 0.8224473990102299,
+      "cat_1": "e",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::27",
+    "fields": {
+      "expected": 0.14786823956150286,
+      "num_1": 0.32341953682505586,
+      "num_2": 0.1073063970793594,
+      "cat_1": "b",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::28",
+    "fields": {
+      "expected": 0.8694533524390109,
+      "num_1": 0.5421681107044404,
+      "num_2": 0.8463869270759806,
+      "cat_1": "d",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::29",
+    "fields": {
+      "expected": 0.5751480298137736,
+      "num_1": 0.4624056720124916,
+      "num_2": 0.14626839000440495,
+      "cat_1": "e",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::30",
+    "fields": {
+      "expected": 0.1954397340895144,
+      "num_1": 0.5428211833974269,
+      "cat_1": "c",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::31",
+    "fields": {
+      "expected": 0.16754091942474458,
+      "num_1": 0.43754587897443364,
+      "num_2": 0.20512612652238027,
+      "cat_1": "b",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::32",
+    "fields": {
+      "expected": 0.7119435485007122,
+      "num_1": 0.6955916217611194,
+      "cat_1": "d",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::33",
+    "fields": {
+      "expected": 0.3644539227594508,
+      "num_1": 0.8978277137262403,
+      "num_2": 0.53742683400366,
+      "cat_1": "b",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::34",
+    "fields": {
+      "expected": 0.8726805075041894,
+      "num_1": 0.709184339953617,
+      "num_2": 0.6858922671451035,
+      "cat_1": "e",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::35",
+    "fields": {
+      "expected": 0.35966141608662466,
+      "num_1": 0.0018698623869024544,
+      "num_2": 0.5820938673454288,
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::36",
+    "fields": {
+      "expected": 0.5111806859835377,
+      "num_1": 0.6601606697401123,
+      "num_2": 0.9872798430180088,
+      "cat_1": "b",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::37",
+    "fields": {
+      "expected": 0.5548152999884232,
+      "num_1": 0.9136414306073248,
+      "num_2": 0.3692106114672753,
+      "cat_1": "d",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::38",
+    "fields": {
+      "expected": 0.5731436448308072,
+      "num_1": 0.6107459345854334,
+      "cat_1": "e",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::39",
+    "fields": {
+      "expected": 0.209015550838873,
+      "num_1": 0.7219668415274997,
+      "num_2": 0.07750680346665906,
+      "cat_1": "a",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::40",
+    "fields": {
+      "expected": 0.8636647974494704,
+      "num_1": 0.5620089632381498,
+      "num_2": 0.9669083886649975,
+      "cat_1": "c",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::41",
+    "fields": {
+      "expected": 0.2636411211583753,
+      "num_1": 0.37547350638883803,
+      "num_2": 0.2717548224438422,
+      "cat_1": "c",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::42",
+    "fields": {
+      "expected": 0.13628751413487114,
+      "num_2": 0.30324480410419974,
+      "cat_1": "c",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::43",
+    "fields": {
+      "expected": 0.5369643476987507,
+      "num_1": 0.26969107247314483,
+      "num_2": 0.960060179374015,
+      "cat_1": "d"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::44",
+    "fields": {
+      "expected": 0.7728369192466444,
+      "num_1": 0.8088964555027511,
+      "num_2": 0.8796645014929614,
+      "cat_1": "d",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::45",
+    "fields": {
+      "expected": 0.25482220307208236,
+      "num_1": 0.35679145663392176,
+      "num_2": 0.2926597389954446,
+      "cat_1": "d",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::46",
+    "fields": {
+      "expected": 0.21202636085991636,
+      "num_1": 0.5123488921942706,
+      "num_2": 0.3732427727607597,
+      "cat_1": "c",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::47",
+    "fields": {
+      "expected": 0.23286652833099078,
+      "num_1": 0.7983843067648903,
+      "num_2": 0.2855572328152193,
+      "cat_1": "a"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::48",
+    "fields": {
+      "expected": 0.7849125269177761,
+      "num_1": 0.8095540181851788,
+      "num_2": 0.7447617177259866,
+      "cat_1": "b",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::49",
+    "fields": {
+      "expected": 0.7496233096317699,
+      "num_1": 0.9462353265536948,
+      "num_2": 0.6018905775945169,
+      "cat_1": "d",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::50",
+    "fields": {
+      "expected": 0.8726805075041894,
+      "num_1": 0.6884908514104957,
+      "num_2": 0.6807672856402004,
+      "cat_1": "d",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::51",
+    "fields": {
+      "expected": 0.49200546468047146,
+      "num_1": 0.9358734951116676,
+      "num_2": 0.9502548648236421,
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::52",
+    "fields": {
+      "expected": 0.8726805075041894,
+      "num_1": 0.7656125287076493,
+      "num_2": 0.8082688370871575,
+      "cat_1": "d",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::53",
+    "fields": {
+      "expected": 0.4979829506433339,
+      "num_1": 0.7353944147333741,
+      "num_2": 0.7598016508275285,
+      "cat_1": "a",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::54",
+    "fields": {
+      "expected": 0.14977766702163964,
+      "num_1": 0.608020470689677,
+      "num_2": 0.29123960347272027,
+      "cat_1": "b",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::55",
+    "fields": {
+      "expected": 0.2584528601415783,
+      "num_1": 0.031579638051864034,
+      "num_2": 0.41012319211046955,
+      "cat_1": "a",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::56",
+    "fields": {
+      "expected": 0.6927813125630082,
+      "num_1": 0.9459331059381655,
+      "num_2": 0.9278116318385212,
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::57",
+    "fields": {
+      "expected": 0.7405099037861704,
+      "num_2": 0.9997800278185834,
+      "cat_1": "e",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::58",
+    "fields": {
+      "expected": 0.6376994081828021,
+      "num_1": 0.7763438266620339,
+      "cat_1": "d",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::59",
+    "fields": {
+      "expected": 0.4661896326928013,
+      "num_2": 0.9283309508260612,
+      "cat_1": "b",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::60",
+    "fields": {
+      "expected": 0.43481446686733527,
+      "num_2": 0.6761286889439035,
+      "cat_1": "b",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::61",
+    "fields": {
+      "expected": 0.8726805075041894,
+      "num_1": 0.7729057401380567,
+      "num_2": 0.9875690037609559,
+      "cat_1": "d",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::62",
+    "fields": {
+      "expected": 0.719051909829646,
+      "num_1": 0.042648549761408305,
+      "num_2": 0.8812260608339376,
+      "cat_1": "d",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::63",
+    "fields": {
+      "expected": 0.525428419484227,
+      "num_2": 0.593258446612853,
+      "cat_1": "c",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::64",
+    "fields": {
+      "expected": 0.2307611170518151,
+      "num_1": 0.22985513031080884,
+      "cat_1": "e",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::65",
+    "fields": {
+      "expected": 0.8008015953760764,
+      "num_1": 0.7074247137383849,
+      "num_2": 0.48904903653462206,
+      "cat_1": "d",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::66",
+    "fields": {
+      "expected": 0.12615128886646199,
+      "num_1": 0.03255375513454062,
+      "num_2": 0.03689339984217299
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::67",
+    "fields": {
+      "expected": 0.32779137932401814,
+      "num_1": 0.011887492379710651,
+      "num_2": 0.7908826011666434,
+      "cat_1": "a",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::68",
+    "fields": {
+      "expected": 0.8636005841506208,
+      "num_1": 0.7521026244321928,
+      "num_2": 0.5044844803937095,
+      "cat_1": "e",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::69",
+    "fields": {
+      "expected": 0.3968865881737538,
+      "num_1": 0.5925996622329547,
+      "num_2": 0.11342965912176206,
+      "cat_1": "a",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::70",
+    "fields": {
+      "expected": 0.12615128886646199,
+      "num_1": 0.10683467156426552,
+      "num_2": 0.05439315553193913,
+      "cat_1": "b"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::71",
+    "fields": {
+      "expected": 0.4406297133967144,
+      "num_1": 0.9143283733783432,
+      "num_2": 0.11675493451980246,
+      "cat_1": "d",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::72",
+    "fields": {
+      "expected": 0.47953005753948735,
+      "num_1": 0.09680761958588313,
+      "num_2": 0.05362590570764758,
+      "cat_1": "e",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::73",
+    "fields": {
+      "expected": 0.2578544828833851,
+      "num_1": 0.09603465661416377,
+      "num_2": 0.8845514372414497,
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::74",
+    "fields": {
+      "expected": 0.15975708457206628,
+      "num_1": 0.18700680383115842,
+      "num_2": 0.4833788053876201,
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::75",
+    "fields": {
+      "expected": 0.5674628005117848,
+      "num_1": 0.5378132044569899,
+      "num_2": 0.13876062856115146,
+      "cat_1": "c",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::76",
+    "fields": {
+      "expected": 0.6391046761880802,
+      "num_1": 0.8467413689726138,
+      "num_2": 0.8995068559003514,
+      "cat_1": "a",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::77",
+    "fields": {
+      "expected": 0.7184936868914812,
+      "num_1": 0.9557056312401878,
+      "num_2": 0.5115453974101901,
+      "cat_1": "e",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::78",
+    "fields": {
+      "expected": 0.40173214537774016,
+      "num_1": 0.855454374078896,
+      "num_2": 0.3888294218404784,
+      "cat_1": "c",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::79",
+    "fields": {
+      "expected": 0.1972494253273665,
+      "num_1": 0.12676288333132535,
+      "num_2": 0.20842747915609727,
+      "cat_1": "b",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::80",
+    "fields": {
+      "expected": 0.49249659433129284,
+      "num_1": 0.32642756308671017,
+      "num_2": 0.3193337547754085,
+      "cat_1": "e",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::81",
+    "fields": {
+      "expected": 0.667907225289365,
+      "num_1": 0.43550479112766505,
+      "num_2": 0.531885846852585,
+      "cat_1": "d",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::82",
+    "fields": {
+      "expected": 0.7522936729795406,
+      "num_1": 0.7187352641142885,
+      "num_2": 0.6456014916817583,
+      "cat_1": "d",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::83",
+    "fields": {
+      "expected": 0.3438507546471647,
+      "num_1": 0.5527524374602641,
+      "cat_1": "e",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::84",
+    "fields": {
+      "expected": 0.7360377944619239,
+      "num_1": 0.8686613518548327,
+      "num_2": 0.5689988370436458,
+      "cat_1": "b",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::85",
+    "fields": {
+      "expected": 0.12615128886646199,
+      "num_1": 0.1538751784863429,
+      "num_2": 0.35248725095838995,
+      "cat_1": "a",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::86",
+    "fields": {
+      "expected": 0.12615128886646199,
+      "cat_1": "a"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::87",
+    "fields": {
+      "expected": 0.2307611170518151,
+      "num_1": 0.08124699794201984,
+      "num_2": 0.23507098554832162,
+      "cat_1": "e"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::88",
+    "fields": {
+      "expected": 0.4620583845177482,
+      "num_1": 0.38675646196118385,
+      "num_2": 0.5892085602951164,
+      "cat_1": "a",
+      "cat_2": "m"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::89",
+    "fields": {
+      "expected": 0.13628751413487114,
+      "num_1": 0.27316245080081336,
+      "num_2": 0.32552684131636145,
+      "cat_1": "c",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::90",
+    "fields": {
+      "expected": 0.2343485089808452,
+      "num_1": 0.6320236960849789,
+      "num_2": 0.07849403915732633,
+      "cat_1": "a",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::91",
+    "fields": {
+      "expected": 0.31199301697227505,
+      "num_2": 0.515962493221318,
+      "cat_1": "c",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::92",
+    "fields": {
+      "expected": 0.2521708521522306,
+      "num_1": 0.8183465483986103,
+      "cat_1": "b",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::93",
+    "fields": {
+      "expected": 0.4691348463473368,
+      "num_1": 0.9773820953889673,
+      "num_2": 0.10152541974750218,
+      "cat_1": "e",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::94",
+    "fields": {
+      "expected": 0.6927813125630082,
+      "num_1": 0.9122588926131847,
+      "num_2": 0.8719843964393783,
+      "cat_1": "b",
+      "cat_2": "k"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::95",
+    "fields": {
+      "expected": 0.8670131604326534,
+      "num_1": 0.8492652242694558,
+      "num_2": 0.9913007940777188,
+      "cat_1": "c",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::96",
+    "fields": {
+      "expected": 0.4212945702578336,
+      "num_1": 0.9844404075607683,
+      "cat_1": "a",
+      "cat_2": "l"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::97",
+    "fields": {
+      "expected": 0.17797806856347606,
+      "num_1": 0.09240615488282278,
+      "num_2": 0.657236307238207,
+      "cat_1": "a",
+      "cat_2": "i"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::98",
+    "fields": {
+      "expected": 0.15588558324300708,
+      "num_1": 0.07133565777356277,
+      "num_2": 0.40218316860523873,
+      "cat_1": "c"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::99",
+    "fields": {
+      "expected": 0.654237212697397,
+      "num_1": 0.3769189829913796,
+      "num_2": 0.8076441288361543,
+      "cat_1": "e",
+      "cat_2": "j"
+    }
+  },
+  {
+    "id": "id:lightgbm:lightgbm::100",
+    "fields": {
+      "expected": 0.8501369624531564,
+      "num_1": 0.4933047133543843,
+      "num_2": 0.9126871435807328,
+      "cat_1": "c",
+      "cat_2": "l"
+    }
+  }
+]
