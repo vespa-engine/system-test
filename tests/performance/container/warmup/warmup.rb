@@ -58,7 +58,7 @@ class ContainerWarmup < PerformanceTest
     query_file = queryfile_dir + queryfile_name
 
     min_time = 3.0
-    max_time = 4.2
+    max_time = 4.3
 
     setup_graphs(legend, min_time, max_time)
 
