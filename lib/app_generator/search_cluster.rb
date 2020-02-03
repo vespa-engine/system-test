@@ -72,7 +72,7 @@ class SearchCluster
   end
 
   def sd(file_name, params = {})
-    @sd_files.push(SDFile.new(file_name, (params[:global] ? true : false)))
+    @sd_files.push(SDFile.new(file_name, (params[:global] ? true : false), params[:selection]))
     self
   end
 
@@ -120,7 +120,10 @@ class SearchCluster
           :"garbage-collection-interval" => @garbagecollectioninterval).
         tag("document-processing",  "cluster".to_sym => @indexing_cluster, "chain".to_sym => @indexing_chain).close_tag.
         list_do(sds) { |helper, sd|
-          helper.tag("document", :type => File.basename(sd.file_name, '.sd'), :mode => indexing_mode, :global => (sd.global ? "true" : nil)).
+          helper.tag("document", :type => File.basename(sd.file_name, '.sd'),
+                                 :mode => indexing_mode,
+                                 :global => (sd.global ? "true" : nil),
+                                 :selection => sd.selection).
           close_tag }.
         list_do(@doc_types) { |helper, dt|
           helper.tag("document", :type => dt.type, :selection => dt.selection, :mode => indexing_mode).
