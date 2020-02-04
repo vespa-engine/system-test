@@ -778,6 +778,12 @@ class SearchAppGenTest < Test::Unit::TestCase
     expected_substr = '
       <document mode="index" selection="sd.foo == bar" type="sd" />'
     assert_substring_ignore_whitespace(actual, expected_substr)
+
+    actual = create_default.
+      cluster(SearchCluster.new("foo").sd("sd", :selection => 'sd.foo == baz')).services_xml
+    expected_substr = '
+      <document mode="index" selection="sd.foo == baz" type="sd" />'
+    assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
   def test_explicit_dispatch_groups

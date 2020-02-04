@@ -10,6 +10,7 @@ class SearchApp < App
                   :visibility_delay => :visibility_delay,
                   :flush_on_shutdown => :flush_on_shutdown,
                   :garbagecollection => :garbagecollection,
+                  :garbagecollectioninterval => :garbagecollectioninterval,
                   :doc_type => :doc_type,
                   :threads_per_search => :threads_per_search,
                   :num_summary_threads => :num_summary_threads,
