@@ -32,7 +32,7 @@ class AutomaticOutOfServiceTest < SearchTest
     assert_response_code_from_vip_handler("404")
 
     start_searchnodes("bluemusic")
-    assert_response_code_from_vip_handler("200")
+    assert_response_code_from_vip_handler("404")
 
     start_searchnodes("orangemusic")
     assert_response_code_from_vip_handler("200")
