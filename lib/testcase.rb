@@ -56,6 +56,7 @@ class TestCase
     @valgrind_opt = args[:valgrind_opt]
     @keep_tmpdir = args[:keep_tmpdir]
     @leave_loglevels = args[:leave_loglevels]
+    @ignore_performance = args[:ignore_performance]
     @filereaders = []
     @num_hosts = 1
     @dirty_nodeproxies = {}
@@ -263,7 +264,7 @@ class TestCase
                timeout_length.to_s)
         __send__(real_test_method)
       end
-      check_performance(test_method) if performance?
+      check_performance(test_method) if performance? unless @ignore_performance
     rescue DRb::DRbConnError => e
       if e.message =~ /Connection refused/
         output("CONNECTION ERROR: #{e.message}\nPlease make sure you have a node server running on all vespa nodes used in this test.")

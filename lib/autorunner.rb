@@ -94,6 +94,9 @@ class AutoRunner
     opts.on("--leave-loglevels", "Do not alter log levels or remove logctl files.") do
       @cmd_args[:leave_loglevels] = true
     end
+    opts.on("--ignore-performance", "Ignore performance test checks.") do
+      @cmd_args[:ignore_performance] = true
+    end
     opts.on("--vespa-version VERSION", String, "Specify vespa version being used, 5.1.3, 5.1.3.0.20120120.121212, etc") do |val|
       @cmd_args[:vespa_version] = val
     end
