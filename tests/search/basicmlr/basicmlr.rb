@@ -42,30 +42,8 @@ class BasicMLR < IndexedSearchTest
     feedDocuments
     assertDocuments
 
-    # Perform a series of queries to retrieve the rank features of all
-    # documents.
-    feed = "attribute(a)\tattribute(b)\tattribute(c)\tlabel\n"
-    0.upto(3) do |pass|
-      offset = (pass * 250).to_s
-      puts("- Querying 250 hits from offset " + offset + "..")
-      query = "query=sddocname:mlr&parallel&rankfeatures&hits=250&offset=" + offset
-      result = search(query)
-      result.hit.each do |hit|
-        features = JSON.parse(hit.field["rankfeatures"])
-        attribute_a = features.fetch("attribute(a)")
-        attribute_b = features.fetch("attribute(b)")
-        attribute_c = features.fetch("attribute(c)")
-        document_id = hit.field['documentid']
-
-        feed += "#{attribute_a}\t#{attribute_b}\t#{attribute_c}\t#{hit.field['label']}\n"
-      end
-    end
-    vespa.adminserver.writefile(feed, "#{@mytmpdir}/input.fv")
-
-    # Convert the output GBDT model into a ranking expression.
-    config = File.open("#{selfdir}/gbdt.cfg").read.gsub("$PATH", @mytmpdir)
-    vespa.adminserver.writefile(config, "#{@mytmpdir}/gbdt.cfg")
-    vespa.adminserver.execute("#{Environment.instance.vespa_home}/bin64/gbdt #{@mytmpdir}/gbdt.cfg")
+    gbdt_output = File.open("#{selfdir}/output.xml").read.gsub("$PATH", @mytmpdir)
+    vespa.adminserver.writefile(gbdt_output, "#{@mytmpdir}/output.xml")
     vespa.adminserver.execute("vespa-gbdt-converter #{@mytmpdir}/output.xml " +
                               "> #{@mytmpdir}/firstphase.expression.raw")
     vespa.adminserver.execute("tr [:upper:] [:lower:] " +
