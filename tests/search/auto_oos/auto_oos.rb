@@ -6,7 +6,7 @@ class AutomaticOutOfServiceTest < SearchTest
 
   def setup
     set_owner("arnej")
-    set_description("Test basic searching")
+    set_description("Test basic vip handling using /status.html")
   end
 
   def test_multicluster_stop_nodes
@@ -36,9 +36,6 @@ class AutomaticOutOfServiceTest < SearchTest
 
     start_searchnodes("orangemusic")
     assert_response_code_from_vip_handler("200")
-
-    # wait a bit for system to settle before stopping
-    sleep 15
   end
 
   def stop_searchnodes(clustername)
