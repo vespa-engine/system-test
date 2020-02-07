@@ -231,17 +231,16 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
         String configMd5Sum = ConfigUtils.getMd5(payload);
         ConfigKey cKey = new ConfigKey(name, "", namespace);
         String defMd5 = defCache.get(cKey);
-        InnerCNode targetDef = defNodes.get(new ConfigDefinitionKey(cKey));
         if (defMd5 != null) {
             ConfigKey key = new ConfigKey(name, configId, namespace);
-            addConfig(key, createResponse(new CfgConfigPayloadBuilder().deserialize(fileContents), configMd5Sum, getApplicationGeneration(), targetDef));
+            addConfig(key, createResponse(new CfgConfigPayloadBuilder().deserialize(fileContents), configMd5Sum, getApplicationGeneration()));
         } else {
             System.out.println("No config definition for " + namespace + "." + name + ", unable to add config");
         }
     }
 
-    private ConfigResponse createResponse(ConfigPayload payload, String configMd5Sum, long applicationGeneration, InnerCNode targetDef) {
-        return SlimeConfigResponse.fromConfigPayload(payload, targetDef, applicationGeneration, false, configMd5Sum);
+    private ConfigResponse createResponse(ConfigPayload payload, String configMd5Sum, long applicationGeneration) {
+        return SlimeConfigResponse.fromConfigPayload(payload, applicationGeneration, false, configMd5Sum);
     }
 
     private void loadDefFile(File file) throws FileNotFoundException {
@@ -324,7 +323,7 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
             return configCache.get(key);
         } else {
             // TODO: Remove? I don't think this is needed, throw an exception instead?
-            return createResponse(ConfigPayload.empty(), ConfigUtils.getMd5(ConfigPayload.empty()), generation.get(), defNodes.get(key));
+            return createResponse(ConfigPayload.empty(), ConfigUtils.getMd5(ConfigPayload.empty()), generation.get());
         }
     }
 
