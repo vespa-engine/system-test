@@ -104,6 +104,7 @@ class TestCase
       @@log_messages[:slow_query],
       @@log_messages[:max_query_timeout],
       @@log_messages[:memory_history_should_be_tracked],
+      @@log_messages[:failed_find_2_consecutive],
       @@log_messages[:no_tick_registered]
     ]
     @https_downgrade_warnings = Set.new
@@ -703,6 +704,7 @@ class TestCase
     :valgrindrc_not_read => /\/home\/builder\/\.valgrindrc was not read/,
     :shutdownguard_forcing_exit => /ShutdownGuard is now forcing an exit of the process/,
     :memory_history_should_be_tracked => /Memory history is supposed to be tracked every/,
+    :failed_find_2_consecutive => /We failed to find 2 consecutive samples that where similar with epsilon of 1048576/,
     :log4j_no_appenders => /log4j:WARN No appenders could be found for logger/,
     :log4j_initialize => /log4j:WARN Please initialize the log4j system properly/,
     :log4j_see_noconfig => /log4j:WARN See http:\/\/logging.apache.org\/log4j\/1.2\/faq.html#noconfig/
