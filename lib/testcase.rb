@@ -105,6 +105,7 @@ class TestCase
       @@log_messages[:max_query_timeout],
       @@log_messages[:memory_history_should_be_tracked],
       @@log_messages[:failed_find_2_consecutive],
+      @@log_messages[:async_slow_resolve],
       @@log_messages[:no_tick_registered]
     ]
     @https_downgrade_warnings = Set.new
