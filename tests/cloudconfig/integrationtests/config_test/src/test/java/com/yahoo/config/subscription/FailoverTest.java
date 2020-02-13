@@ -2,12 +2,15 @@
 package com.yahoo.config.subscription;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
 import com.yahoo.config.FooConfig;
 import com.yahoo.config.subscription.impl.GenericConfigHandle;
 import com.yahoo.config.subscription.impl.GenericConfigSubscriber;
+import com.yahoo.config.subscription.impl.JRTConfigRequester;
 import com.yahoo.config.subscription.impl.JRTConfigSubscription;
 import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.config.*;
@@ -174,7 +177,9 @@ public class FailoverTest extends ConfigTest {
     @Test
     public void testFailoverGenericSubscriberNextGenerationLoop() {
         ConfigSourceSet sources = setUp3ConfigServers("configs/foo0");
-        genSubscriber = new GenericConfigSubscriber();
+        Map<ConfigSourceSet, JRTConfigRequester> requesterMap = new HashMap<>();
+        requesterMap.put(sources, new JRTConfigRequester(new JRTConnectionPool(sources), new TimingValues()));
+        genSubscriber = new GenericConfigSubscriber(requesterMap);
         GenericConfigHandle bh = genSubscriber.subscribe((ConfigKey<RawConfig>) ConfigKey.createFull(BarConfig.getDefName(), "b", BarConfig.getDefNamespace(), BarConfig.getDefMd5()),
                                                          Arrays.asList(BarConfig.CONFIG_DEF_SCHEMA), sources, getTestTimingValues());
         GenericConfigHandle fh = genSubscriber.subscribe((ConfigKey<RawConfig>) ConfigKey.createFull(FooConfig.getDefName(), "f", FooConfig.getDefNamespace(), FooConfig.getDefMd5()),
