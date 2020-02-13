@@ -6,8 +6,11 @@ import static org.junit.Assert.*;
 
 import com.yahoo.config.AppConfig;
 import com.yahoo.config.FooConfig;
+import com.yahoo.config.subscription.impl.JRTConfigRequester;
 import com.yahoo.foo.BarConfig;
 
+import com.yahoo.vespa.config.JRTConnectionPool;
+import com.yahoo.vespa.config.TimingValues;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +21,8 @@ import com.yahoo.vespa.config.ConfigKey;
 import com.yahoo.vespa.config.ConfigTest;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class GenericSubscriptionTest extends ConfigTest {
@@ -26,7 +31,10 @@ public class GenericSubscriptionTest extends ConfigTest {
     
     @Before
     public void createSubscriber() {
-        subscriber = new GenericConfigSubscriber();
+        ConfigSourceSet sourceSet = JRTConfigRequester.defaultSourceSet;
+        Map<ConfigSourceSet, JRTConfigRequester> requesterMap = new HashMap<>();
+        requesterMap.put(sourceSet, new JRTConfigRequester(new JRTConnectionPool(sourceSet), new TimingValues()));
+        subscriber = new GenericConfigSubscriber(requesterMap);
     }
     
     @After
