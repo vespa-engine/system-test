@@ -71,6 +71,8 @@ module SortingBase
     # Query: Modify (Regular) query by adding '-[rank] in sortspec"
     # (should give exact same answer as default order)
     compare("query=sddocname:simple+17&sortspec=-[rank]", "17", "title")
+    compare("query=sddocname:simple+17&sortspec=-[relevance]", "17", "title")
+    compare("query=sddocname:simple+17&sortspec=-[relevancy]", "17", "title")
 
     # Query: Modify (Regular) query by adding '+[rank]' in sortspec
     compare("query=sddocname:simple+17&sortspec=%2b[rank]", "17_reverse", "title")
