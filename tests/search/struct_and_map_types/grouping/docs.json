@@ -28,5 +28,29 @@
       "key2": "@bar",
       "key3": "@baz"
     }
+  },
+  {
+    "put": "id:test:test::1",
+    "fields": {
+      "elem_array": [
+        {
+          "weight": 10
+        }
+      ],
+      "elem_map": {
+        "@foo": {
+          "weight": 10
+        }
+      },
+      "str_int_map": {
+        "@foo": 20,
+        "@bar": 30
+      },
+      "int_array": [ 10 ],
+      "int_single": 10,
+      "key1": "@foo",
+      "key2": "@bar",
+      "key3": "@baz"
+    }
   }
 ]
