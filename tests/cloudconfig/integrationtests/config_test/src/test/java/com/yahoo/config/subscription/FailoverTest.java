@@ -1,43 +1,31 @@
 // Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.config.subscription;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.regex.Pattern;
-
 import com.yahoo.config.FooConfig;
-import com.yahoo.config.subscription.impl.GenericConfigHandle;
-import com.yahoo.config.subscription.impl.GenericConfigSubscriber;
-import com.yahoo.config.subscription.impl.JRTConfigRequester;
 import com.yahoo.config.subscription.impl.JRTConfigSubscription;
+import com.yahoo.foo.BarConfig;
 import com.yahoo.log.LogLevel;
-import com.yahoo.vespa.config.ConfigKey;
 import com.yahoo.vespa.config.ConfigTest;
 import com.yahoo.vespa.config.Connection;
 import com.yahoo.vespa.config.ConnectionPool;
-import com.yahoo.vespa.config.JRTConnectionPool;
-import com.yahoo.vespa.config.RawConfig;
-import com.yahoo.vespa.config.TimingValues;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
 import org.junit.After;
 import org.junit.Test;
 
-import com.yahoo.foo.BarConfig;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class FailoverTest extends ConfigTest {
     private java.util.logging.Logger log = java.util.logging.Logger.getLogger(BasicSubscriptionTest.class.getName());
 
     private ConfigSubscriber subscriber;
-    private GenericConfigSubscriber genSubscriber;
 
     @After
     public void closeSubscriber() {
         if (subscriber != null) subscriber.close();
-        if (genSubscriber != null) genSubscriber.close();
     }
 
     @Test
@@ -100,28 +88,6 @@ public class FailoverTest extends ConfigTest {
         assertFalse(fh.isChanged());
     }
 
-    private void stopConfigServerMatchingSource(Connection connection) {
-        TestConfigServer configServer = getConfigServerMatchingSource(connection)
-                .orElseThrow(() -> new RuntimeException("Could not get config server matching source for " + connection));
-        stop(configServer);
-    }
-
-    private TestConfigServer getInUse(ConfigSubscriber s, ConfigSourceSet sources) {
-        if (s.requesters.size() > 1) fail("Not one requester");
-        Connection connection = s.requesters().get(sources).getConnectionPool().getCurrent();
-        Optional<TestConfigServer> configServer = getConfigServerMatchingSource(connection);
-        return configServer.orElseThrow(RuntimeException::new);
-    }
-
-    private Optional<TestConfigServer> getConfigServerMatchingSource(Connection connection) {
-        Optional<TestConfigServer> configServer = Optional.empty();
-        int port = Integer.parseInt(connection.getAddress().split("/")[1]);
-        for (TestConfigServer cs : configServerCluster.keySet()) {
-            if (cs.getSpec().port() == port) configServer = Optional.of(cs);
-        }
-        return configServer;
-    }
-
     @Test
     public void testFailoverInvisibleToSubscriber() {
         ConfigSourceSet sources = setUp3ConfigServers("configs/foo0");
@@ -175,65 +141,6 @@ public class FailoverTest extends ConfigTest {
         assertFalse(newConf);
         assertFalse(bh.isChanged());
         assertFalse(fh.isChanged());
-    }
-    
-    /**
-     * Failover during nextGeneration() loop, like proxy
-     */
-    @Test
-    public void testFailoverGenericSubscriberNextGenerationLoop() {
-        ConfigSourceSet sources = setUp3ConfigServers("configs/foo0");
-        Map<ConfigSourceSet, JRTConfigRequester> requesterMap = new HashMap<>();
-        requesterMap.put(sources, new JRTConfigRequester(new JRTConnectionPool(sources), new TimingValues()));
-        genSubscriber = new GenericConfigSubscriber(requesterMap);
-        GenericConfigHandle bh = genSubscriber.subscribe(new ConfigKey<>(BarConfig.getDefName(), "b", BarConfig.getDefNamespace()),
-                                                         Arrays.asList(BarConfig.CONFIG_DEF_SCHEMA), sources, getTestTimingValues());
-        GenericConfigHandle fh = genSubscriber.subscribe(new ConfigKey<>(FooConfig.getDefName(), "f", FooConfig.getDefNamespace()),
-                                                         Arrays.asList(FooConfig.CONFIG_DEF_SCHEMA), sources, getTestTimingValues());
-        assertTrue(genSubscriber.nextConfig(waitWhenExpectedSuccess));
-        assertTrue(bh.isChanged());
-        assertTrue(fh.isChanged());
-        assertPayloadMatches(bh, ".*barValue.*0bar.*");
-        assertPayloadMatches(fh, ".*fooValue.*0foo.*");
-        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
-        assertFalse(bh.isChanged());
-        assertFalse(fh.isChanged());
-        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
-        assertFalse(bh.isChanged());
-        assertFalse(fh.isChanged());
-        stop(getInUse(genSubscriber, sources));
-        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
-        assertFalse(bh.isChanged());
-        assertFalse(fh.isChanged());
-        
-        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
-        assertFalse(bh.isChanged());
-        assertFalse(fh.isChanged());
-        assertPayloadMatches(bh, ".*barValue.*0bar.*");
-        assertPayloadMatches(fh, ".*fooValue.*0foo.*");
-        
-        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
-        assertFalse(bh.isChanged());
-        assertFalse(fh.isChanged());
-        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
-        assertFalse(bh.isChanged());
-        assertFalse(fh.isChanged());
-
-        // A redeploy some time after a failover
-        deployOn3ConfigServers("configs/foo1");
-        assertTrue(genSubscriber.nextConfig(waitWhenExpectedSuccess));
-        assertFalse(bh.isChanged());
-        assertTrue(fh.isChanged());
-        assertPayloadMatches(bh, ".*barValue.*0bar.*");
-        assertPayloadMatches(fh, ".*fooValue.*1foo.*");
-    }
-    
-    private void assertPayloadMatches(GenericConfigHandle bh, String regex) {
-        RawConfig rc = bh.getRawConfig();
-        String payloadS = rc.getPayload().toString();
-        int pFlags = Pattern.MULTILINE+Pattern.DOTALL;
-        Pattern pattern = Pattern.compile(regex, pFlags);
-        assertTrue(pattern.matcher(payloadS).matches());
     }
 
     @Test

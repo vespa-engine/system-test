@@ -2,6 +2,7 @@
 package com.yahoo.vespa.config;
 
 import com.yahoo.config.subscription.ConfigSourceSet;
+import com.yahoo.config.subscription.ConfigSubscriber;
 import com.yahoo.jrt.Request;
 import com.yahoo.jrt.Spec;
 import com.yahoo.jrt.Supervisor;
@@ -14,7 +15,10 @@ import org.junit.Before;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.junit.Assert.fail;
 
 /**
  * Helper class for unit tests to make it easier to start and stop config server(s)
@@ -25,7 +29,7 @@ import java.util.stream.Collectors;
  * @author Harald Musum
  */
 public class ConfigTest {
-    private java.util.logging.Logger log = java.util.logging.Logger.getLogger(ConfigTest.class.getName());
+    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(ConfigTest.class.getName());
 
     public static final String DEF_NAME = "app";
     public static final String CONFIG_MD5 = "";
@@ -172,4 +176,27 @@ public class ConfigTest {
             cfgServer.deployNewConfig(configDir);
         }
     }
+
+    protected Optional<TestConfigServer> getConfigServerMatchingSource(Connection connection) {
+        Optional<TestConfigServer> configServer = Optional.empty();
+        int port = Integer.parseInt(connection.getAddress().split("/")[1]);
+        for (TestConfigServer cs : configServerCluster.keySet()) {
+            if (cs.getSpec().port() == port) configServer = Optional.of(cs);
+        }
+        return configServer;
+    }
+
+    protected TestConfigServer getInUse(ConfigSubscriber s, ConfigSourceSet sources) {
+        if (s.requesters().size() > 1) fail("Not one requester");
+        Connection connection = s.requesters().get(sources).getConnectionPool().getCurrent();
+        Optional<TestConfigServer> configServer = getConfigServerMatchingSource(connection);
+        return configServer.orElseThrow(RuntimeException::new);
+    }
+
+    protected void stopConfigServerMatchingSource(Connection connection) {
+        TestConfigServer configServer = getConfigServerMatchingSource(connection)
+                .orElseThrow(() -> new RuntimeException("Could not get config server matching source for " + connection));
+        stop(configServer);
+    }
+
 }
