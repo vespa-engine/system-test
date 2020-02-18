@@ -103,8 +103,7 @@ public class FailoverTest extends ConfigTest {
     private void stopConfigServerMatchingSource(Connection connection) {
         TestConfigServer configServer = getConfigServerMatchingSource(connection)
                 .orElseThrow(() -> new RuntimeException("Could not get config server matching source for " + connection));
-        log.info("Stopping configserver " + configServer);
-        stop(configServer, configServerCluster.get(configServer));
+        stop(configServer);
     }
 
     private TestConfigServer getInUse(ConfigSubscriber s, ConfigSourceSet sources) {
@@ -202,8 +201,7 @@ public class FailoverTest extends ConfigTest {
         assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
         assertFalse(bh.isChanged());
         assertFalse(fh.isChanged());
-        TestConfigServer inUse = getInUse(genSubscriber, sources);
-        inUse.stop();
+        stop(getInUse(genSubscriber, sources));
         assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
         assertFalse(bh.isChanged());
         assertFalse(fh.isChanged());

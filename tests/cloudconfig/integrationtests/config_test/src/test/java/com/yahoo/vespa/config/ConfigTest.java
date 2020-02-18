@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -54,15 +55,12 @@ public class ConfigTest {
 
     @After
     public void stopConfigServers() {
-        for (HashMap.Entry<TestConfigServer, Thread> entry : configServerCluster.entrySet()) {
-            stop(entry.getKey(), entry.getValue());
-        }
+        configServerCluster.keySet().forEach(this::stop);
     }
 
-    protected void stop(TestConfigServer cs, Thread t) {
-        if (cs == null) {
-            return;
-        }
+    protected void stop(TestConfigServer cs) {
+        Objects.requireNonNull(cs, "stop() cannot be called with null value");
+        Thread t = configServerCluster.get(cs);
         log.log(LogLevel.DEBUG, "Stopping configserver ...");
         cs.stop();
         try {
