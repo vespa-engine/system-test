@@ -2,7 +2,12 @@
 package com.yahoo.config.subscription;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import com.yahoo.config.AppConfig;
 import com.yahoo.config.ConfigurationRuntimeException;
@@ -155,7 +160,7 @@ public class BasicSubscriptionTest extends ConfigTest {
     }
 
     @Test
-    public void testBasicReconfig() throws InterruptedException {
+    public void testBasicReconfig() {
         getConfigServer().deployNewConfig("configs/foo0");
         ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b4", getTestSourceSet(), getTestTimingValues());
         ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f4", getTestSourceSet(), getTestTimingValues());
@@ -199,7 +204,7 @@ public class BasicSubscriptionTest extends ConfigTest {
     }
 
     @Test
-    public void testBasicGenerationChange() throws InterruptedException {
+    public void testBasicGenerationChange() {
         getConfigServer().deployNewConfig("configs/foo0");
         ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b5", getTestSourceSet(), getTestTimingValues());
         ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f5", getTestSourceSet(), getTestTimingValues());
@@ -249,7 +254,6 @@ public class BasicSubscriptionTest extends ConfigTest {
     }
 
     @Test
-    //@Ignore
     public void testQuickReconfigs() throws InterruptedException {
         getConfigServer().deployNewConfig("configs/foo0");
         ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b6", getTestSourceSet(), getTestTimingValues());
@@ -287,17 +291,18 @@ public class BasicSubscriptionTest extends ConfigTest {
     }
 
     @Test
-    public void testExtendSuccessTimeout() throws InterruptedException {
+    public void testExtendSuccessTimeout() {
         ConfigHandle<AppConfig> appCfgHandle = subscriber.subscribe(AppConfig.class, "app.5", getTestSourceSet(), getTestTimingValues());
         assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
         assertTrue(appCfgHandle.isChanged());
         assertFalse(subscriber.nextConfig(waitWhenExpectedFailure));
     }
 
-    @Test
-    /**
-     * If a reload comes between subscribe and nextConfig, or multiple reloads between nextConfigs, handle that the payload then is empty, i.e. empty is not propagated to subscriber
+    /*
+      If a reload comes between subscribe and nextConfig, or multiple reloads between nextConfigs,
+      handle that the payload then is empty, i.e. empty is not propagated to subscriber
      */
+    @Test
     @Ignore
     public void testEmptyPayloadWhenUnHandledReqPreviously() throws InterruptedException {
         log.log(LogLevel.INFO, "Starting testEmptyPayloadWhenUnHandledReqPreviously");

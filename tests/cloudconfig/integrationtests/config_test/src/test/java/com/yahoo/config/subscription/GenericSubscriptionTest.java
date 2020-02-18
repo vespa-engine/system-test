@@ -149,7 +149,7 @@ public class GenericSubscriptionTest extends ConfigTest {
     }
 
     @Test
-    public void testBasicReconfig() throws InterruptedException {
+    public void testBasicReconfig() {
         getConfigServer().deployNewConfig("configs/foo0");
         GenericConfigHandle bh = subscriber.subscribe(new ConfigKey<>("bar", "b4", "foo"), Arrays.asList(BarConfig.CONFIG_DEF_SCHEMA), getTestSourceSet(), getTestTimingValues());
         GenericConfigHandle fh = subscriber.subscribe(new ConfigKey<>("foo", "f4", "config"), Arrays.asList(FooConfig.CONFIG_DEF_SCHEMA), getTestSourceSet(), getTestTimingValues());
@@ -160,7 +160,7 @@ public class GenericSubscriptionTest extends ConfigTest {
         assertConfigMatches(fh.getRawConfig().getPayload().toString(), ".*fooValue.*0foo.*");
         assertThat(subscriber.getGeneration(), is(getConfigServer().getApplicationGeneration()));
         assertThat(bh.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
-        assertThat(bh.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
+        assertThat(fh.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
 
         assertFalse(subscriber.nextConfig(waitWhenExpectedFailure));
         assertFalse(bh.isChanged());
@@ -196,7 +196,7 @@ public class GenericSubscriptionTest extends ConfigTest {
     }
     
     @Test
-    public void testBasicGenerationChange() throws InterruptedException {
+    public void testBasicGenerationChange() {
         getConfigServer().deployNewConfig("configs/foo0");
         GenericConfigHandle bh = subscriber.subscribe(new ConfigKey<>("bar", "b4", "foo"), Arrays.asList(BarConfig.CONFIG_DEF_SCHEMA), getTestSourceSet(), getTestTimingValues());
         GenericConfigHandle fh = subscriber.subscribe(new ConfigKey<>("foo", "f4", "config"), Arrays.asList(FooConfig.CONFIG_DEF_SCHEMA), getTestSourceSet(), getTestTimingValues());

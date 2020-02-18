@@ -45,7 +45,7 @@ public class StressTest extends ConfigTest {
         }
     }
 
-    private class BarSubscriberThread implements Runnable {
+    private static class BarSubscriberThread implements Runnable {
         private final ConfigSubscriber subscriber;
         boolean allOK = false;
 
@@ -65,7 +65,7 @@ public class StressTest extends ConfigTest {
         }
     }
 
-    private class FooSubscriberThread implements Runnable {
+    private static class FooSubscriberThread implements Runnable {
         private final ConfigSubscriber subscriber;
         boolean allOK = false;
 

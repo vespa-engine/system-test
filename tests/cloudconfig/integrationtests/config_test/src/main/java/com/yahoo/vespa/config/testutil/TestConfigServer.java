@@ -78,10 +78,10 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
     private long getConfDelayTimeMillis = 0L; // To induce slow response
 
     /** a cache of config objects, mapping config key to raw config */
-    private final Map<ConfigKey, ConfigResponse> configCache = new LinkedHashMap<>();
+    private final Map<ConfigKey<?>, ConfigResponse> configCache = new LinkedHashMap<>();
 
     /** a cache of config definition objects, mapping config key to def md5sum */
-    private final Map<ConfigKey, String> defCache = Collections.synchronizedMap(new LinkedHashMap<> (100, 0.90f, true));
+    private final Map<ConfigKey<?>, String> defCache = Collections.synchronizedMap(new LinkedHashMap<> (100, 0.90f, true));
     private final Map<ConfigDefinitionKey, InnerCNode> defNodes = Collections.synchronizedMap(new LinkedHashMap<> (100, 0.90f, true));
 
     private final RpcServer rpcServer;
@@ -191,7 +191,7 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
                 }
             }
         }
-        return null;
+        throw new RuntimeException("Could not read file contents for file " + file);
     }
 
     private String getConfigName(File file) {
@@ -199,11 +199,11 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
         if (nameComponents.length >= 1) {
             return nameComponents[0];
         } else {
-            return null;
+            throw new RuntimeException("Could not find config file " + file);
         }
     }
 
-    private void addConfigDef(ConfigKey key, String defMd5, InnerCNode cnode) {
+    private void addConfigDef(ConfigKey<?> key, String defMd5, InnerCNode cnode) {
         final ConfigDefinitionKey configDefinitionKey = new ConfigDefinitionKey(key);
         if (!defCache.containsKey(key)) {
             defCache.put(key, defMd5);
@@ -211,7 +211,7 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
         }
     }
 
-    private void addConfig(ConfigKey key, ConfigResponse configResponse) {
+    private void addConfig(ConfigKey<?> key, ConfigResponse configResponse) {
         // Always store, even if key exists in cache, since config can change without the key changing
         configCache.put(key, configResponse);
     }
@@ -229,10 +229,10 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
 
         ConfigPayload payload = new CfgConfigPayloadBuilder().deserialize(fileContents);
         String configMd5Sum = ConfigUtils.getMd5(payload);
-        ConfigKey cKey = new ConfigKey(name, "", namespace);
+        ConfigKey<?> cKey = new ConfigKey<>(name, "", namespace);
         String defMd5 = defCache.get(cKey);
         if (defMd5 != null) {
-            ConfigKey key = new ConfigKey(name, configId, namespace);
+            ConfigKey<?> key = new ConfigKey<>(name, configId, namespace);
             addConfig(key, createResponse(new CfgConfigPayloadBuilder().deserialize(fileContents), configMd5Sum, getApplicationGeneration()));
         } else {
             System.out.println("No config definition for " + namespace + "." + name + ", unable to add config");
@@ -251,7 +251,7 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
         try {
             String configId = "";
             String namespace = ConfigUtils.getDefNamespace(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
-            addConfigDef(new ConfigKey(name, configId, namespace), md5Sum, cnode);
+            addConfigDef(new ConfigKey<>(name, configId, namespace), md5Sum, cnode);
         } catch (IOException e) {
             throw new RuntimeException("IOException: " + e.getMessage(), e);
         }
@@ -309,7 +309,7 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
         }
         //log.info("In resolveConfig");
         // Load config files for every call, to get the correct config id.  This is just a test server, after all.
-        String namespace = "";
+        String namespace;
         ConfigKey<?> key = req.getConfigKey();
         namespace = key.getNamespace();
         final ConfigDefinitionKey configDefinitionKey = new ConfigDefinitionKey(key);
@@ -322,8 +322,7 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
         if (configCache.containsKey(key)) {
             return configCache.get(key);
         } else {
-            // TODO: Remove? I don't think this is needed, throw an exception instead?
-            return createResponse(ConfigPayload.empty(), ConfigUtils.getMd5(ConfigPayload.empty()), generation.get());
+            throw new RuntimeException("Could not resolve config " + key);
         }
     }
 
@@ -406,4 +405,8 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
         return new Spec(null, port);
     }
 
+    @Override
+    public String toString() {
+        return "Config server running on port " + port;
+    }
 }

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  *
  * Automatically starts 1 config server and option to start 2 more. All are cleaned up in @After
  *
- * @author Harald Musum<
+ * @author Harald Musum
  */
 public class ConfigTest {
     private java.util.logging.Logger log = java.util.logging.Logger.getLogger(ConfigTest.class.getName());
