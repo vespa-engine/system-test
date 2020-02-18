@@ -1,7 +1,7 @@
 // Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.config.subscription;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class StressTest extends ConfigTest {
         }
     }
 
-    private class BarSubscriberThread implements Runnable {
+    private static class BarSubscriberThread implements Runnable {
         private final ConfigSubscriber subscriber;
         boolean allOK = false;
 
@@ -65,7 +65,7 @@ public class StressTest extends ConfigTest {
         }
     }
 
-    private class FooSubscriberThread implements Runnable {
+    private static class FooSubscriberThread implements Runnable {
         private final ConfigSubscriber subscriber;
         boolean allOK = false;
 

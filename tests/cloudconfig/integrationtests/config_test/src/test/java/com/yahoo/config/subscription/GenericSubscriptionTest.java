@@ -1,29 +1,30 @@
 // Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.config.subscription;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-
 import com.yahoo.config.AppConfig;
 import com.yahoo.config.FooConfig;
+import com.yahoo.config.subscription.impl.GenericConfigHandle;
+import com.yahoo.config.subscription.impl.GenericConfigSubscriber;
 import com.yahoo.config.subscription.impl.JRTConfigRequester;
 import com.yahoo.foo.BarConfig;
-
+import com.yahoo.vespa.config.ConfigKey;
+import com.yahoo.vespa.config.ConfigTest;
 import com.yahoo.vespa.config.JRTConnectionPool;
+import com.yahoo.vespa.config.RawConfig;
 import com.yahoo.vespa.config.TimingValues;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.yahoo.config.subscription.impl.GenericConfigHandle;
-import com.yahoo.config.subscription.impl.GenericConfigSubscriber;
-import com.yahoo.vespa.config.ConfigKey;
-import com.yahoo.vespa.config.ConfigTest;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class GenericSubscriptionTest extends ConfigTest {
 
@@ -149,7 +150,7 @@ public class GenericSubscriptionTest extends ConfigTest {
     }
 
     @Test
-    public void testBasicReconfig() throws InterruptedException {
+    public void testBasicReconfig() {
         getConfigServer().deployNewConfig("configs/foo0");
         GenericConfigHandle bh = subscriber.subscribe(new ConfigKey<>("bar", "b4", "foo"), Arrays.asList(BarConfig.CONFIG_DEF_SCHEMA), getTestSourceSet(), getTestTimingValues());
         GenericConfigHandle fh = subscriber.subscribe(new ConfigKey<>("foo", "f4", "config"), Arrays.asList(FooConfig.CONFIG_DEF_SCHEMA), getTestSourceSet(), getTestTimingValues());
@@ -160,7 +161,7 @@ public class GenericSubscriptionTest extends ConfigTest {
         assertConfigMatches(fh.getRawConfig().getPayload().toString(), ".*fooValue.*0foo.*");
         assertThat(subscriber.getGeneration(), is(getConfigServer().getApplicationGeneration()));
         assertThat(bh.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
-        assertThat(bh.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
+        assertThat(fh.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
 
         assertFalse(subscriber.nextConfig(waitWhenExpectedFailure));
         assertFalse(bh.isChanged());
@@ -196,7 +197,7 @@ public class GenericSubscriptionTest extends ConfigTest {
     }
     
     @Test
-    public void testBasicGenerationChange() throws InterruptedException {
+    public void testBasicGenerationChange() {
         getConfigServer().deployNewConfig("configs/foo0");
         GenericConfigHandle bh = subscriber.subscribe(new ConfigKey<>("bar", "b4", "foo"), Arrays.asList(BarConfig.CONFIG_DEF_SCHEMA), getTestSourceSet(), getTestTimingValues());
         GenericConfigHandle fh = subscriber.subscribe(new ConfigKey<>("foo", "f4", "config"), Arrays.asList(FooConfig.CONFIG_DEF_SCHEMA), getTestSourceSet(), getTestTimingValues());
@@ -227,4 +228,69 @@ public class GenericSubscriptionTest extends ConfigTest {
         assertFalse(bh.isChanged());
         assertFalse(fh.isChanged());        
     }
+
+    /**
+     * Failover during nextGeneration() loop, like proxy
+     */
+    @Test
+    public void testFailoverGenericSubscriberNextGenerationLoop() {
+        // TODO: Make ConfigTest a tester and don't subclass it to avoid this mess
+        startConfigServer();
+        ConfigSourceSet sources = setUp3ConfigServers("configs/foo0");
+
+        Map<ConfigSourceSet, JRTConfigRequester> requesterMap = new HashMap<>();
+        requesterMap.put(sources, new JRTConfigRequester(new JRTConnectionPool(sources), new TimingValues()));
+        GenericConfigSubscriber genSubscriber = new GenericConfigSubscriber(requesterMap);
+        GenericConfigHandle bh = genSubscriber.subscribe(new ConfigKey<>(BarConfig.getDefName(), "b", BarConfig.getDefNamespace()),
+                                                         Arrays.asList(BarConfig.CONFIG_DEF_SCHEMA), sources, getTestTimingValues());
+        GenericConfigHandle fh = genSubscriber.subscribe(new ConfigKey<>(FooConfig.getDefName(), "f", FooConfig.getDefNamespace()),
+                                                         Arrays.asList(FooConfig.CONFIG_DEF_SCHEMA), sources, getTestTimingValues());
+        assertTrue(genSubscriber.nextConfig(waitWhenExpectedSuccess));
+        assertTrue(bh.isChanged());
+        assertTrue(fh.isChanged());
+        assertPayloadMatches(bh, ".*barValue.*0bar.*");
+        assertPayloadMatches(fh, ".*fooValue.*0foo.*");
+        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
+        assertFalse(bh.isChanged());
+        assertFalse(fh.isChanged());
+        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
+        assertFalse(bh.isChanged());
+        assertFalse(fh.isChanged());
+        stop(getInUse(genSubscriber, sources));
+        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
+        assertFalse(bh.isChanged());
+        assertFalse(fh.isChanged());
+
+        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
+        assertFalse(bh.isChanged());
+        assertFalse(fh.isChanged());
+        assertPayloadMatches(bh, ".*barValue.*0bar.*");
+        assertPayloadMatches(fh, ".*fooValue.*0foo.*");
+
+        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
+        assertFalse(bh.isChanged());
+        assertFalse(fh.isChanged());
+        assertFalse(genSubscriber.nextGeneration(waitWhenExpectedFailure));
+        assertFalse(bh.isChanged());
+        assertFalse(fh.isChanged());
+
+        // A redeploy some time after a failover
+        deployOn3ConfigServers("configs/foo1");
+        assertTrue(genSubscriber.nextConfig(waitWhenExpectedSuccess));
+        assertFalse(bh.isChanged());
+        assertTrue(fh.isChanged());
+        assertPayloadMatches(bh, ".*barValue.*0bar.*");
+        assertPayloadMatches(fh, ".*fooValue.*1foo.*");
+
+        genSubscriber.close();
+    }
+
+    private void assertPayloadMatches(GenericConfigHandle bh, String regex) {
+        RawConfig rc = bh.getRawConfig();
+        String payloadS = rc.getPayload().toString();
+        int pFlags = Pattern.MULTILINE+Pattern.DOTALL;
+        Pattern pattern = Pattern.compile(regex, pFlags);
+        assertTrue(pattern.matcher(payloadS).matches());
+    }
+
 }

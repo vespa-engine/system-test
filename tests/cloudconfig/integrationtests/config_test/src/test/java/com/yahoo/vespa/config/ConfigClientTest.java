@@ -19,7 +19,10 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static com.yahoo.vespa.config.ErrorCode.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -105,7 +108,7 @@ public class ConfigClientTest extends ConfigTest {
         //System.out.println("Returned config md5=" + configMd5);
 
         // Get again
-        JRTClientConfigRequest  newReq = createRequest(DEF_NAME, CONFIG_ID, configMd5);
+        JRTClientConfigRequest  newReq = createRequest(DEF_NAME, configMd5);
         target.invokeSync(newReq.getRequest(), CLIENT_TIMEOUT);
         verifyOkResponse(newReq);
         verifyConfigUnchanged(newReq);
@@ -128,7 +131,7 @@ public class ConfigClientTest extends ConfigTest {
         // reload and check that we really get a new config
         cServer1.deployNewConfig("configs/baz");
 
-        JRTClientConfigRequest  newReq = createRequest(DEF_NAME, CONFIG_ID, configMd5);
+        JRTClientConfigRequest  newReq = createRequest(DEF_NAME, configMd5);
 
         //printRequest(newReq);
         target.invokeSync(newReq.getRequest(), CLIENT_TIMEOUT);
@@ -155,7 +158,7 @@ public class ConfigClientTest extends ConfigTest {
         // reload same config to set new generation
         cServer1.deployNewConfig("configs/foo");
 
-        JRTClientConfigRequest newReq = createRequest(DEF_NAME, CONFIG_ID, configMd5, generation);
+        JRTClientConfigRequest newReq = createRequest(DEF_NAME, configMd5, generation);
 
         target.invokeSync(newReq.getRequest(), CLIENT_TIMEOUT);
         assertTrue("Valid return values", newReq.validateResponse());
@@ -170,7 +173,7 @@ public class ConfigClientTest extends ConfigTest {
      */
     @Test
     public void testInvalidConfigMd5() {
-        JRTClientConfigRequest req = createRequest(DEF_NAME, CONFIG_ID, "asdf");
+        JRTClientConfigRequest req = createRequest(DEF_NAME, "asdf");
         target.invokeSync(req.getRequest(), CLIENT_TIMEOUT);
         assertEquals(ILLEGAL_CONFIG_MD5, req.errorCode());
     }
@@ -214,20 +217,13 @@ public class ConfigClientTest extends ConfigTest {
     }
 
     JRTClientConfigRequest createRequest(String name, String configMd5) {
-        return createRequest(name, CONFIG_ID, configMd5);
+        return createRequest(name, configMd5, 0);
     }
 
-    JRTClientConfigRequest createRequest(String name, String configId, String configMd5) {
-        return createRequest(name, configId, configMd5, 0);
-    }
-
-    JRTClientConfigRequest createRequest(String name, String configId, String configMd5, long generation) {
-        return createRequest(name, configId, configMd5, generation, SERVER_TIMEOUT);
-    }
-
-    JRTClientConfigRequest createRequest(String name, String configId,
-                                         String configMd5, long generation, long serverTimeout) {
-        return JRTClientConfigRequestV3.createWithParams(new ConfigKey(name, configId, "config"), DefContent.fromList(Collections.emptyList()), "localhost", configMd5, generation, serverTimeout,
+    JRTClientConfigRequest createRequest(String name, String configMd5, long generation) {
+        return JRTClientConfigRequestV3.createWithParams(
+                new ConfigKey<>(name, CONFIG_ID, "config"), DefContent.fromList(Collections.emptyList()),
+                "localhost", configMd5, generation, SERVER_TIMEOUT,
                 Trace.createNew(), CompressionType.UNCOMPRESSED, Optional.empty());
     }
 }
