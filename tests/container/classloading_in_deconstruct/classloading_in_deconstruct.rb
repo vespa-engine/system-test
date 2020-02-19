@@ -27,7 +27,7 @@ class ClassloadingInDeconstruct < ContainerTest
 
     start(original_application, :bundles => [exporter, importer])
 
-    vespa.adminserver.logctl("qrserver:com.yahoo.container.jdisc.component", "debug=on")
+    @container.logctl("qrserver:com.yahoo.container.jdisc.component", "debug=on")
 
     verify_response('Hello, World!')
 
