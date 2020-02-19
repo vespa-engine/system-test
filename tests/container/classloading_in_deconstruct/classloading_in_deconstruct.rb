@@ -36,8 +36,6 @@ class ClassloadingInDeconstruct < ContainerTest
     sleep(sleep_period)
 
     assert_log_matches(/Successfully retrieved message from exporter in deconstruct: Successfully called!/)
-    assert_log_matches(/Uninstalling bundle com.yahoo.importer.DeconstructSearcher/)
-    assert_log_matches(/Uninstalling bundle com.yahoo.exporter.Exporter/)
   end
 
   def verify_response(expected)
