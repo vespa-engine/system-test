@@ -26,10 +26,14 @@ class ClassloadingInDeconstruct < ContainerTest
     compile_bundles(@vespa.nodeproxies.values.first)
 
     start(original_application, :bundles => [exporter, importer])
+
+    @container.logctl("qrserver:com.yahoo.container.jdisc.component", "debug=on")
+
     verify_response('Hello, World!')
 
     # Redeploy with no bundles, to enforce uninstall
     deploy(updated_application, :bundles => [])
+
 
     sleep_period = 70
     puts "Sleeping #{sleep_period} seconds for importer to be deconstructed."
