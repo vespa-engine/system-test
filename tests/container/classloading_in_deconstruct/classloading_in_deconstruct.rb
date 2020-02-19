@@ -27,8 +27,7 @@ class ClassloadingInDeconstruct < ContainerTest
 
     start(original_application, :bundles => [exporter, importer])
 
-    qrserver = @vespa.nodeproxies.values.first
-    qrserver.execute("vespa-logctl -c qrserver debug=on", :exceptiononfailure => false)
+    vespa.adminserver.logctl("qrserver:com.yahoo.container.jdisc.component", "debug=on")
 
     verify_response('Hello, World!')
 
