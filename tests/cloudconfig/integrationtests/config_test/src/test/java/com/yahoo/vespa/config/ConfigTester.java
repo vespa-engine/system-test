@@ -10,29 +10,20 @@ import com.yahoo.jrt.Target;
 import com.yahoo.jrt.Transport;
 import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
-import org.junit.After;
-import org.junit.Before;
 
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.fail;
-
 /**
  * Helper class for unit tests to make it easier to start and stop config server(s)
  * and make sure the config server always uses a free, available port.
  *
- * Automatically starts 1 config server and option to start 2 more. All are cleaned up in @After
- *
  * @author Harald Musum
  */
-public class ConfigTest {
-    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(ConfigTest.class.getName());
-
-    public static final String DEF_NAME = "app";
-    public static final String CONFIG_MD5 = "";
+public class ConfigTester implements AutoCloseable {
+    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(ConfigTester.class.getName());
 
     protected TestConfigServer cServer1;
     protected TestConfigServer cServer2;
@@ -45,34 +36,49 @@ public class ConfigTest {
 
     // How long to wait for config in nextConfig() method, when expecting result to be success (new config available)
     // or failure (no new config)
-    protected static final long waitWhenExpectedSuccess = 60000L;
-    protected static final long waitWhenExpectedFailure = 5000L;
+    public static final long waitWhenExpectedSuccess = 60000L;
+    public static final long waitWhenExpectedFailure = 5000L;
 
-    @Before
-    public void startConfigServer() {
+    public TestConfigServer startOneConfigServer() {
         cServer1 = createConfigServer();
         log.log(LogLevel.DEBUG, "starting configserver on port: " + cServer1.getSpec().port());
-        cS1 = startConfigServer(cServer1);
+        cS1 = startOneConfigServer(cServer1);
         ensureServerRunning(cServer1);
         configServerCluster.put(cServer1, cS1);
+        return cServer1;
     }
 
-    @After
-    public void stopConfigServers() {
-        configServerCluster.keySet().forEach(this::stop);
+    /**
+     * 3 sources with given configs dir
+     */
+    public ConfigSourceSet setUp3ConfigServers(String configDir) {
+        cServer1 = createConfigServer();
+        cS1 = startOneConfigServer(cServer1);
+        cServer2 = createConfigServer();
+        cS2 = startOneConfigServer(cServer2);
+        cServer3 = createConfigServer();
+        cS3 = startOneConfigServer(cServer3);
+
+        configServerCluster.put(cServer1, cS1);
+        configServerCluster.put(cServer2, cS2);
+        configServerCluster.put(cServer3, cS3);
+
+        deployOn3ConfigServers(configDir);
+        return new ConfigSourceSet(
+                configServerCluster.keySet().stream()
+                        .map(configServer -> configServer.getSpec().toString()).collect(Collectors.toList()));
     }
 
-    protected void stop(TestConfigServer cs) {
+    public void stopConfigServer(TestConfigServer cs) {
         Objects.requireNonNull(cs, "stop() cannot be called with null value");
         Thread t = configServerCluster.get(cs);
-        log.log(LogLevel.DEBUG, "Stopping configserver ...");
+        log.log(LogLevel.INFO, "Stopping configserver running on port " + cs.getSpec().port() + "...");
         cs.stop();
         try {
             t.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        log.log(LogLevel.DEBUG, "done.");
     }
 
     /**
@@ -95,7 +101,7 @@ public class ConfigTest {
 
     public TestConfigServer getConfigServer() { return cServer1; }
 
-    protected void ensureServerRunning(TestConfigServer server) {
+    public void ensureServerRunning(TestConfigServer server) {
         long start = System.currentTimeMillis();
         boolean stop = false;
         while (!ping(server) && !stop) {
@@ -119,6 +125,11 @@ public class ConfigTest {
         return !req.isError();
     }
 
+    @Override
+    public void close() {
+        configServerCluster.keySet().forEach(this::stopConfigServer);
+    }
+
     private static class PortRange {
         private int first = 18250;
         private int last  = 18420;
@@ -138,46 +149,28 @@ public class ConfigTest {
         return portRange.next();
     }
 
-    protected ConfigSourceSet getTestSourceSet() {
+    public ConfigSourceSet getTestSourceSet() {
         return new ConfigSourceSet(getConfigServerSpec().toString());
-    }
-
-    /**
-     * 3 sources with given configs dir
-     */
-    protected ConfigSourceSet setUp3ConfigServers(String configDir) {
-        cServer2 = createConfigServer();
-        cS2 = startConfigServer(cServer2);
-        cServer3 = createConfigServer();
-        cS3 = startConfigServer(cServer3);
-
-        configServerCluster.put(cServer2, cS2);
-        configServerCluster.put(cServer3, cS3);
-
-        deployOn3ConfigServers(configDir);
-        return new ConfigSourceSet(
-                configServerCluster.keySet().stream()
-                        .map(configServer -> configServer.getSpec().toString()).collect(Collectors.toList()));
     }
 
     private TestConfigServer createConfigServer() {
         return new TestConfigServer(findAvailablePort(), "configs/def-files", "configs/foo");
     }
 
-    private Thread startConfigServer(TestConfigServer configServer) {
+    private Thread startOneConfigServer(TestConfigServer configServer) {
         Thread t = new Thread(configServer);
         t.start();
         ensureServerRunning(configServer);
         return t;
     }
 
-    protected void deployOn3ConfigServers(String configDir) {
+    public void deployOn3ConfigServers(String configDir) {
         for (TestConfigServer cfgServer : configServerCluster.keySet()) {
             cfgServer.deployNewConfig(configDir);
         }
     }
 
-    protected Optional<TestConfigServer> getConfigServerMatchingSource(Connection connection) {
+    public Optional<TestConfigServer> getConfigServerMatchingSource(Connection connection) {
         Optional<TestConfigServer> configServer = Optional.empty();
         int port = Integer.parseInt(connection.getAddress().split("/")[1]);
         for (TestConfigServer cs : configServerCluster.keySet()) {
@@ -186,17 +179,17 @@ public class ConfigTest {
         return configServer;
     }
 
-    protected TestConfigServer getInUse(ConfigSubscriber s, ConfigSourceSet sources) {
-        if (s.requesters().size() > 1) fail("Not one requester");
+    public TestConfigServer getInUse(ConfigSubscriber s, ConfigSourceSet sources) {
+        if (s.requesters().size() > 1) throw new RuntimeException("Not one requester");
         Connection connection = s.requesters().get(sources).getConnectionPool().getCurrent();
         Optional<TestConfigServer> configServer = getConfigServerMatchingSource(connection);
         return configServer.orElseThrow(RuntimeException::new);
     }
 
-    protected void stopConfigServerMatchingSource(Connection connection) {
+    public void stopConfigServerMatchingSource(Connection connection) {
         TestConfigServer configServer = getConfigServerMatchingSource(connection)
                 .orElseThrow(() -> new RuntimeException("Could not get config server matching source for " + connection));
-        stop(configServer);
+        stopConfigServer(configServer);
     }
 
 }

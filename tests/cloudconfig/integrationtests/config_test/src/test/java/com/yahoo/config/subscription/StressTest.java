@@ -10,38 +10,40 @@ import com.yahoo.config.FooConfig;
 import org.junit.Test;
 
 import com.yahoo.foo.BarConfig;
-import com.yahoo.vespa.config.ConfigTest;
+import com.yahoo.vespa.config.ConfigTester;
 
-public class StressTest extends ConfigTest {
+public class StressTest {
 
     @Test
     public void testManySubscribers() throws InterruptedException {
-        ConfigSourceSet sources = setUp3ConfigServers("configs/foo0");
-        Map<Integer, BarSubscriberThread> barSubscribers = new HashMap<>();
-        Map<Integer, FooSubscriberThread> fooSubscribers = new HashMap<>();
-        Map<Integer, Thread> barThreads = new HashMap<>();
-        Map<Integer, Thread> fooThreads = new HashMap<>();
+        try (ConfigTester tester = new ConfigTester()) {
+            ConfigSourceSet sources = tester.setUp3ConfigServers("configs/foo0");
+            Map<Integer, BarSubscriberThread> barSubscribers = new HashMap<>();
+            Map<Integer, FooSubscriberThread> fooSubscribers = new HashMap<>();
+            Map<Integer, Thread> barThreads = new HashMap<>();
+            Map<Integer, Thread> fooThreads = new HashMap<>();
 
-        int threads = 10;
-        for (int i = 0; i < threads; i++) {
-            final BarSubscriberThread barSubscriberThread = new BarSubscriberThread(sources);
-            barSubscribers.put(i, barSubscriberThread);
-            barThreads.put(i, new Thread(barSubscriberThread));
-            final FooSubscriberThread fooSubscriberThread = new FooSubscriberThread(sources);
-            fooSubscribers.put(i, fooSubscriberThread);
-            fooThreads.put(i, new Thread(fooSubscriberThread));
-        }
-        for (int i = 0; i < threads; i++) {
-            barThreads.get(i).start();
-            fooThreads.get(i).start();
-        }
-        for (int i = 0; i < threads; i++) {
-            barThreads.get(i).join();
-            fooThreads.get(i).join();
-        }
-        for (int i = 0; i < threads; i++) {
-            assertTrue(barSubscribers.get(i).allOK);
-            assertTrue(fooSubscribers.get(i).allOK);
+            int threads = 10;
+            for (int i = 0; i < threads; i++) {
+                final BarSubscriberThread barSubscriberThread = new BarSubscriberThread(sources);
+                barSubscribers.put(i, barSubscriberThread);
+                barThreads.put(i, new Thread(barSubscriberThread));
+                final FooSubscriberThread fooSubscriberThread = new FooSubscriberThread(sources);
+                fooSubscribers.put(i, fooSubscriberThread);
+                fooThreads.put(i, new Thread(fooSubscriberThread));
+            }
+            for (int i = 0; i < threads; i++) {
+                barThreads.get(i).start();
+                fooThreads.get(i).start();
+            }
+            for (int i = 0; i < threads; i++) {
+                barThreads.get(i).join();
+                fooThreads.get(i).join();
+            }
+            for (int i = 0; i < threads; i++) {
+                assertTrue(barSubscribers.get(i).allOK);
+                assertTrue(fooSubscribers.get(i).allOK);
+            }
         }
     }
 
@@ -56,10 +58,10 @@ public class StressTest extends ConfigTest {
         @Override
         public void run() {
             ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "bar");
-            allOK = subscriber.nextConfig(waitWhenExpectedSuccess);
+            allOK = subscriber.nextConfig(ConfigTester.waitWhenExpectedSuccess);
             allOK = allOK && bh.isChanged();
             allOK = allOK && (bh.getConfig().barValue().equals("0bar"));
-            allOK = allOK && !subscriber.nextConfig(waitWhenExpectedFailure);
+            allOK = allOK && !subscriber.nextConfig(ConfigTester.waitWhenExpectedFailure);
             allOK = allOK && !bh.isChanged();
             subscriber.close();
         }
@@ -76,10 +78,10 @@ public class StressTest extends ConfigTest {
         @Override
         public void run() {
             ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "foo");
-            allOK = subscriber.nextConfig(waitWhenExpectedSuccess);
+            allOK = subscriber.nextConfig(ConfigTester.waitWhenExpectedSuccess);
             allOK = allOK && fh.isChanged();
             allOK = allOK && (fh.getConfig().fooValue().equals("0foo"));
-            allOK = allOK && !subscriber.nextConfig(waitWhenExpectedFailure);
+            allOK = allOK && !subscriber.nextConfig(ConfigTester.waitWhenExpectedFailure);
             allOK = allOK && !fh.isChanged();
             subscriber.close();
         }
