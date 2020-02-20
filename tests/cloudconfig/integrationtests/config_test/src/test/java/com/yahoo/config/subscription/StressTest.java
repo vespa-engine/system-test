@@ -1,6 +1,8 @@
 // Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.config.subscription;
 
+import static com.yahoo.vespa.config.ConfigTester.waitWhenExpectedFailure;
+import static com.yahoo.vespa.config.ConfigTester.waitWhenExpectedSuccess;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
@@ -58,10 +60,10 @@ public class StressTest {
         @Override
         public void run() {
             ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "bar");
-            allOK = subscriber.nextConfig(ConfigTester.waitWhenExpectedSuccess);
+            allOK = subscriber.nextConfig(waitWhenExpectedSuccess);
             allOK = allOK && bh.isChanged();
             allOK = allOK && (bh.getConfig().barValue().equals("0bar"));
-            allOK = allOK && !subscriber.nextConfig(ConfigTester.waitWhenExpectedFailure);
+            allOK = allOK && !subscriber.nextConfig(waitWhenExpectedFailure);
             allOK = allOK && !bh.isChanged();
             subscriber.close();
         }
@@ -78,10 +80,10 @@ public class StressTest {
         @Override
         public void run() {
             ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "foo");
-            allOK = subscriber.nextConfig(ConfigTester.waitWhenExpectedSuccess);
+            allOK = subscriber.nextConfig(waitWhenExpectedSuccess);
             allOK = allOK && fh.isChanged();
             allOK = allOK && (fh.getConfig().fooValue().equals("0foo"));
-            allOK = allOK && !subscriber.nextConfig(ConfigTester.waitWhenExpectedFailure);
+            allOK = allOK && !subscriber.nextConfig(waitWhenExpectedFailure);
             allOK = allOK && !fh.isChanged();
             subscriber.close();
         }
