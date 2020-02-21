@@ -31,29 +31,33 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Harald Musum
  */
-public class ConfigClientTest extends ConfigTest {
+public class ConfigClientTest {
 
-    @SuppressWarnings({"UnusedDeclaration"})
-    private java.util.logging.Logger log = java.util.logging.Logger.getLogger(ConfigClientTest.class.getName());
+    public static final String DEF_NAME = "app";
+    public static final String CONFIG_MD5 = "";
 
     // getConfig parameters
     private static final String CONFIG_ID = "client-test.0";
     private static final long SERVER_TIMEOUT = 5000; //msecs
     private static final double CLIENT_TIMEOUT = 10.0; //secs
 
+    ConfigTester tester;
     private Supervisor supervisor;
     private Target target;
 
     @Before
     public void setUp() {
+        tester = new ConfigTester();
+        tester.startOneConfigServer();
         supervisor = new Supervisor(new Transport());
-        target = supervisor.connect(getConfigServerSpec());
+        target = supervisor.connect(tester.getConfigServerSpec());
     }
 
     @After public void tearDown() {
         supervisor.transport().shutdown().join();
         supervisor = null;
         if (target != null) target.close();
+        tester.close();
     }
 
     public ConfigClientTest() {
@@ -129,7 +133,7 @@ public class ConfigClientTest extends ConfigTest {
         String configMd5 = req.getNewConfigMd5();
 
         // reload and check that we really get a new config
-        cServer1.deployNewConfig("configs/baz");
+        tester.getConfigServer().deployNewConfig("configs/baz");
 
         JRTClientConfigRequest  newReq = createRequest(DEF_NAME, configMd5);
 
@@ -156,7 +160,7 @@ public class ConfigClientTest extends ConfigTest {
         long generation = req.getNewGeneration();
 
         // reload same config to set new generation
-        cServer1.deployNewConfig("configs/foo");
+        tester.getConfigServer().deployNewConfig("configs/foo");
 
         JRTClientConfigRequest newReq = createRequest(DEF_NAME, configMd5, generation);
 

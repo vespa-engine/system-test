@@ -47,6 +47,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -99,8 +100,14 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
                 return null;
             }
         };
-        
-        ConfigserverConfig configServerConfig = new ConfigserverConfig(new ConfigserverConfig.Builder());
+
+        String fileReferencesDir;
+        try {
+            fileReferencesDir = Files.createTempDirectory("filereferences").toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        ConfigserverConfig configServerConfig = new ConfigserverConfig(new ConfigserverConfig.Builder().fileReferencesDir(fileReferencesDir));
         final NodeFlavors nodeFlavors = new NodeFlavors(new FlavorsConfig(new FlavorsConfig.Builder()));
         final SuperModelManager superModelManager = new SuperModelManager(configServerConfig, nodeFlavors, new GenerationCounter() {
             @Override
@@ -282,10 +289,10 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
      * @param configDir     directory to read config files from
      */
     public synchronized void deployNewConfig(String configDir) {
-        log.info("Deploying the dir " + configDir);
         this.configDir = configDir;
         long gen = updateApplication();
-        log.log(LogLevel.INFO, "Config reloaded successfully with new application generation " + gen);
+        log.log(LogLevel.INFO, "Activated config with generation " + gen + " from directory " + configDir +
+                               " on config server using port " + port);
     }
 
     protected AtomicLong loadLiveApplication() {

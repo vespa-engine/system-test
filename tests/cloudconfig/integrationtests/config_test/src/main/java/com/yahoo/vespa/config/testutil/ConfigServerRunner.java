@@ -16,11 +16,11 @@ import java.util.Map;
 /**
  * A config server controller, capable of taking user input and perform actions on the config server.
  *
- * @author lulf
+ * @author Ulf Lilleengen
  */
 public class ConfigServerRunner {
 
-	private class ServerContext {
+	private static class ServerContext {
 		public final TestConfigServer server;
 		public final Thread thread;
 		
