@@ -7,6 +7,14 @@ search test {
     field pos type tensor(x[2]) {
       indexing: attribute | summary
     }
+    field pos_hnsw type tensor(x[2]) {
+      indexing: attribute | index | summary
+      index {
+        hnsw {
+          max-links-per-node: 4
+        }
+      }
+    }
   }
   rank-profile default {
     function euclidean_distance_qpos_double() {
@@ -16,12 +24,13 @@ search test {
       expression: sqrt(sum(join(query(qpos_float), attribute(pos), f(x,y)((x-y)*(x-y)))))
     }
     first-phase {
-      expression: 15 - rawScore(pos)
+      expression: 15 - itemRawScore(nns)
     }
     summary-features {
       euclidean_distance_qpos_double
       euclidean_distance_qpos_float
       rawScore(pos)
+      rawScore(pos_hnsw)
       itemRawScore(nns)
     }
   }
