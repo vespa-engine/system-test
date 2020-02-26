@@ -4,9 +4,7 @@ require 'environment'
 
 module Perf
   class Fbench
-    attr_writer :clients, :runtime, :headers, :append_str, :ignore_first, :max_line_size, :single_query_file, :disable_http_keep_alive,
-                :request_per_ms, :times_reuse_query_files, :result_file, :disable_tls, :include_handshake,
-                :certificate_file, :private_key_file, :ca_certificate_file
+    attr_writer :clients, :runtime, :headers, :append_str, :ignore_first, :max_line_size, :single_query_file, :disable_http_keep_alive, :request_per_ms, :times_reuse_query_files, :result_file, :disable_tls, :include_handshake
 
     def initialize(node, hostname, port)
       @node = node
@@ -27,9 +25,6 @@ module Perf
       @times_reuse_query_files = nil
       @disable_tls = false
       @include_handshake = true
-      @certificate_file = nil
-      @ca_certificate_file = nil
-      @private_key_file = nil
     end
 
     def query(queryfile)
@@ -83,9 +78,6 @@ module Perf
       cmd += "-r #{@times_reuse_query_files} " if @times_reuse_query_files
       cmd += "-D " unless @disable_tls
       cmd += "-i 1 " unless @include_handshake
-      cmd += "-T #{@ca_certificate_file} " if @ca_certificate_file
-      cmd += "-C #{@certificate_file} " if @certificate_file
-      cmd += "-K #{@private_key_file} " if @private_key_file
       cmd += "#{@hostname} #{@port} 2>&1"
       cmd
     end

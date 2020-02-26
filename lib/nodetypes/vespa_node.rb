@@ -42,18 +42,6 @@ class VespaNode
     }
   end
 
-  def with_custom_https_connection(cert_file, private_key_file, ca_cert_file, hostname, port)
-    http = Net::HTTP.new(hostname, port)
-    http.use_ssl = true
-    http.ca_file = ca_cert_file
-    http.cert = OpenSSL::X509::Certificate.new(File.read(cert_file))
-    http.key = OpenSSL::PKey::RSA.new(File.read(private_key_file))
-    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-    http.start { |conn|
-      yield(conn)
-    }
-  end
-
   def https_get(hostname, port, path, headers={})
     @https_client.get(hostname, port, path, headers)
   end

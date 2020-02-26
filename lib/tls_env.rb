@@ -5,20 +5,15 @@ require 'json'
 
 class TlsEnv
 
-  attr_reader :ssl_ctx, :ca_certificates_file, :certificate_file, :private_key_file
+  attr_reader :ssl_ctx
 
   def initialize
     # Change to `true` to dump stacktrace every time a SSL context is created.
     # Useful for finding places that does not have propagation of a shared TlsEnv instance.
     @debug_print = false
-    get_openssl_ctx_from_env_or_nil
+    @ssl_ctx = get_openssl_ctx_from_env_or_nil
   end
 
-  def tls_enabled?
-    ssl_ctx != nil
-  end
-
-  private
   def ssl_ctx_from_pems(ca_pem, cert_pem, privkey_pem)
     ca_store = OpenSSL::X509::Store.new
     ca_store.add_cert(OpenSSL::X509::Certificate.new(ca_pem)) # TODO multiple CA certs
@@ -34,13 +29,11 @@ class TlsEnv
     ssl_ctx
   end
 
-  private
   def field_or_throw(obj, field_name)
     raise "Field '#{field_name}' not found in JSON object" if obj[field_name].nil?
     obj[field_name]
   end
 
-  private
   def get_openssl_ctx_from_env_or_nil
     cfg_file = ENV['VESPA_TLS_CONFIG_FILE']
     mode = ENV['VESPA_TLS_INSECURE_MIXED_MODE']
@@ -55,14 +48,11 @@ class TlsEnv
     json = JSON.parse(File.read(cfg_file))
     files = field_or_throw(json, 'files')
 
-    @ca_certificates_file = field_or_throw(files, 'ca-certificates')
-    @certificate_file = field_or_throw(files, 'certificates')
-    @private_key_file = field_or_throw(files, 'private-key')
-    ca_pem      = File.read(@ca_certificates_file)
-    cert_pem    = File.read(@certificate_file)
-    privkey_pem = File.read(@private_key_file)
+    ca_pem      = File.read(field_or_throw(files, 'ca-certificates'))
+    cert_pem    = File.read(field_or_throw(files, 'certificates'))
+    privkey_pem = File.read(field_or_throw(files, 'private-key'))
 
-    @ssl_ctx = ssl_ctx_from_pems(ca_pem, cert_pem, privkey_pem)
+    ssl_ctx_from_pems(ca_pem, cert_pem, privkey_pem)
   end
 
 
