@@ -45,10 +45,11 @@ class VespaNode
   def with_custom_https_connection(cert_file, private_key_file, ca_cert_file, hostname, port)
     http = Net::HTTP.new(hostname, port)
     http.use_ssl = true
-    http.ca_file = ca_cert_file
+    http.ca_file = ca_cert_file unless ca_cert_file == nil
     http.cert = OpenSSL::X509::Certificate.new(File.read(cert_file))
     http.key = OpenSSL::PKey::RSA.new(File.read(private_key_file))
     http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    http.ssl_version = :TLSv1_2
     http.start { |conn|
       yield(conn)
     }
