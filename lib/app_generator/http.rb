@@ -86,8 +86,12 @@ module HttpModule
 end
 
 class HttpFilter < HttpModule::Component
+  include ChainedSetter
+
+  chained_forward :config, :config => :add
+
   def initialize(id, class_id = nil, bundle = nil, filter_config=nil)
-    super(id,  class_id, bundle, nil, "filter")
+    super(id,  class_id, bundle, ConfigOverrides.new, "filter")
     @filter_config=filter_config
   end
 
@@ -165,9 +169,10 @@ end
 class Ssl
     include ChainedSetter
 
-    def initialize(private_key_file, certificate_file)
+    def initialize(private_key_file, certificate_file, ca_certificates_file)
         @private_key_file = private_key_file
         @certificate_file = certificate_file
+        @ca_certificates_file = ca_certificates_file
     end
 
     def to_xml(indent)
@@ -175,6 +180,7 @@ class Ssl
            tag("ssl").
            tag("private-key-file").content(@private_key_file).close_tag.
            tag("certificate-file").content(@certificate_file).close_tag.
+           tag("ca-certificates-file").content(@ca_certificates_file).close_tag.
            close_tag
        out.to_s
    end
