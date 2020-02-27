@@ -181,9 +181,9 @@ class Ssl
            tag("private-key-file").content(@private_key_file).close_tag.
            tag("certificate-file").content(@certificate_file).close_tag
        unless @ca_certificates_file == nil
-         tag("ca-certificates-file").content(@ca_certificates_file).close_tag
+         out.tag("ca-certificates-file").content(@ca_certificates_file).close_tag
        end
-       close_tag
-       out.to_s
+       out.close_tag.
+           to_s
    end
 end
