@@ -26,21 +26,30 @@ class AuditLog < CloudConfigTest
   end
 
   def assert_log_lines(base_url, gen)
+    assert_log_line_matches("POST", base_url, 200)
+    assert_log_line_matches("PUT", "#{base_url}\/#{gen}\/prepared", 200)
+    assert_log_line_matches("PUT", "#{base_url}\/#{gen}\/active", 200)
+  end
+
+  def assert_log_line_matches(method, uri, response_code)
     file_content = get_audit_log(@node)
-    assert_match(/\"POST #{base_url} HTTP\/1.1\" 200/, file_content)
-    assert_match(/\"PUT #{base_url}\/#{gen}\/prepared.* HTTP\/1.1\" 200/, file_content)
-    assert_match(/\"PUT #{base_url}\/#{gen}\/active.* HTTP\/1.1\" 200/, file_content)
+    match = false
+    file_content.split("\n").each do |line|
+      json = JSON.parse(line)
+      match = (method == json['method'] and uri == json['uri'] and response_code.to_s == json['code'])
+      break if match
+    end
+    match
   end
 
   def get_audit_log(node)
     node.execute("sync")
-    node.readfile("#{Environment.instance.vespa_home}/logs/vespa/configserver/access.log")
+    node.readfile("#{Environment.instance.vespa_home}/logs/vespa/configserver/access-json.log")
   end
 
   def teardown
     stop
     @node.stop_base if @node
-    puts "Stopping configserver"
     @node.stop_configserver if @node
   end
 end
