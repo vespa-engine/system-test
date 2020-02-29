@@ -25,7 +25,7 @@ class PermanentServices < CloudConfigTest
     @node.copy("#{selfdir}/permanent-services.xml", Environment.instance.vespa_home + "/conf/configserver-app/")
     deploy_app(CloudconfigApp.new)
     start
-    wait_for_atleast_log_matches(Regexp.compile("pinglo\\s.*icmp_seq"), 1)
+    wait_for_atleast_log_matches(Regexp.compile("vmstat\\s.*\\s.*procs -----------memory----------"), 1)
   end
 
   def teardown
