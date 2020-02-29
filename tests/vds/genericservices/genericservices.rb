@@ -20,7 +20,6 @@ class GenericServices < VdsTest
     start
     sleep 10
 
-    hostname = `hostname`.strip
     iostat_regexp = Regexp.compile("iostat\\s.*Device:            tps")
     iostat2_regexp = Regexp.compile("iostat2\\s.*Device:            tps")
     vmstat_regexp= Regexp.compile("vmstat\\s.*\\s.*procs -----------memory----------")
