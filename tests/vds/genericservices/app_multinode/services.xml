@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <services version="1.0">
 
-  <service id="pinglocalhost" name="pinglocalhost" command="/bin/ping localhost" version="1.0">
+  <service id="iostat" name="iostat" command="iostat 100" version="1.0">
     <node hostalias="node1"/>
     <node hostalias="node2"/>
   </service>
 
-  <service id="pinglo" name="pinglo" command="ping 127.0.0.1" version="1.0">
+  <service id="vmstat" name="vmstat" command="vmstat 100" version="1.0">
     <node hostalias="node1"/>
     <node hostalias="node1"/> <!-- Second service on node 1-->
     <node hostalias="node3"/>
