@@ -18,7 +18,7 @@ class GenericServices < VdsTest
   def test_generic_services_multinode
     deploy(selfdir+"app_multinode")
     start
-    sleep 10
+    sleep 5
 
     iostat_regexp = Regexp.compile("iostat\\s.*Device:            tps")
     iostat2_regexp = Regexp.compile("iostat2\\s.*Device:            tps")
@@ -32,7 +32,7 @@ class GenericServices < VdsTest
 
     assert_ps_output_exists("node1", "iostat", "iostat 100")
     assert_ps_output_exists("node2", "iostat", "iostat 100")
-    assert_ps_output_exists("node3", "iostat", "iostat 100")
+    assert_ps_output_does_not_exists("node3", "iostat", "iostat 100")
 
     assert_ps_output_exists("node1", "vmstat", "vmstat 100")
     assert_ps_output_does_not_exists("node2", "vmstat", "vmstat 100")
