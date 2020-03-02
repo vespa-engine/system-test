@@ -1,6 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
-require 'search_test'
 require 'environment'
 
 class PermanentServices < CloudConfigTest
@@ -20,7 +19,7 @@ class PermanentServices < CloudConfigTest
     @node = vespa.nodeproxies.first[1]
   end
 
-  def test_permanent_ping
+  def test_permanent_services
     save_configserver_app(@node)
     @node.copy("#{selfdir}/permanent-services.xml", Environment.instance.vespa_home + "/conf/configserver-app/")
     deploy_app(CloudconfigApp.new)
