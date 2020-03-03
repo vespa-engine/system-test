@@ -23,14 +23,4 @@
     <document-api/>
   </container>
 
-  <content version="1.0">
-    <documents>
-      <document type="music" mode="index" />
-    </documents>
-    <redundancy>1</redundancy>
-    <group name="foo">
-      <node hostalias="node3" distribution-key="0"/>
-    </group>
-  </content>
-
 </services>
