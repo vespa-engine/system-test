@@ -9,5 +9,9 @@ search basic {
 
   }
 
+  fieldset default {
+    fields: bothtypes
+  }
+
 }
 
