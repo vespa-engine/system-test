@@ -38,7 +38,7 @@ class TlsTest < ContainerTest
                       Server.new('http', '4080')).
                   server(
                       Server.new('https', '4443').ssl(
-                          Ssl.new(private_key_file = "#{dirs.tmpdir}#{KEY_FILE}", certificate_file = "#{dirs.tmpdir}#{CERT_FILE}", ca_certificates_file=nil)))))
+                          Ssl.new(private_key_file = "#{dirs.tmpdir}#{KEY_FILE}", certificate_file = "#{dirs.tmpdir}#{CERT_FILE}", ca_certificates_file=nil, client_authentication='disabled')))))
   end
 
   def https_get(host, port, path)

@@ -101,7 +101,8 @@ class PerformanceTest < TestCase
   def run_fbench2(qrserver, queryfile, params={}, custom_fillers=[])
     system_fbench = Perf::System.new(qrserver)
     system_fbench.start
-    fbench = Perf::Fbench.new(qrserver, qrserver.name, qrserver.http_port)
+    container_port = if params[:port_override] then params[:port_override] else qrserver.http_port end
+    fbench = Perf::Fbench.new(qrserver, qrserver.name, container_port)
 
     fbench.runtime = params[:runtime] if params[:runtime]
     fbench.clients = params[:clients] if params[:clients]
