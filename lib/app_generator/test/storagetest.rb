@@ -67,7 +67,7 @@ class StorageAppGenTest < Test::Unit::TestCase
     verify('storageapp_storage_content_with_thread_config.xml',
            create_default.provider("PROTON").
            final_redundancy(3).
-           persistence_threads(PersistenceThreads.new.thread(1, 'HIGH').thread(2)))
+           persistence_threads(PersistenceThreads.new(7)))
   end
 
   def test_default_proton
