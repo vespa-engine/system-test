@@ -9,11 +9,15 @@ search cn {
 
         field content type string {
             indexing: summary | index
-	    summary: dynamic
+            query-command: phrase-segmenting
+            summary: dynamic
         }
+
     }
+
     fieldset default {
         fields: content
     }
+
 }
 

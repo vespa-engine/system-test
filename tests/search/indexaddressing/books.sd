@@ -3,6 +3,7 @@ search books {
   document books {
     field title type string {
       indexing: summary | index
+      query-command: phrase-segmenting
     }
     field author type string {
       indexing: summary | index
