@@ -169,17 +169,19 @@ end
 class Ssl
     include ChainedSetter
 
-    def initialize(private_key_file, certificate_file, ca_certificates_file)
+    def initialize(private_key_file, certificate_file, ca_certificates_file, client_authentication)
         @private_key_file = private_key_file
         @certificate_file = certificate_file
         @ca_certificates_file = ca_certificates_file
+        @client_authentication = client_authentication
     end
 
     def to_xml(indent)
        out = XmlHelper.new(indent).
            tag("ssl").
            tag("private-key-file").content(@private_key_file).close_tag.
-           tag("certificate-file").content(@certificate_file).close_tag
+           tag("certificate-file").content(@certificate_file).close_tag.
+           tag('client-authentication').content(@client_authentication).close_tag
        unless @ca_certificates_file == nil
          out.tag("ca-certificates-file").content(@ca_certificates_file).close_tag
        end
