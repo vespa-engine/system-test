@@ -114,6 +114,9 @@ class PerformanceTest < TestCase
     fbench.result_file = params[:result_file] if params[:result_file]
     fbench.disable_http_keep_alive = params[:disable_http_keep_alive] if params[:disable_http_keep_alive]
     fbench.disable_tls = params[:disable_tls] if params[:disable_tls]
+    fbench.certificate_file = params[:certificate_file] if params[:certificate_file]
+    fbench.private_key_file = params[:private_key_file] if params[:private_key_file]
+    fbench.ca_certificate_file = params[:ca_certificate_file] if params[:ca_certificate_file]
 
     fbench.query(queryfile)
     system_fbench.end
