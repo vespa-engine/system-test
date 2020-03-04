@@ -62,7 +62,7 @@ class StressDispatch < PerformanceTest
                     gateway(ContainerDocumentApi.new)).
           indexing("combinedcontainer").
           threads_per_search(1).
-          persistence_threads(PersistenceThreads.new.thread(4, 'LOWEST').thread(2, 'HIGH_3')).
+          persistence_threads(PersistenceThreads.new(8)).
           tune_searchnode({:summary => {:store => {:cache => {:maxsize => 50123000}}}}).
           config(ConfigOverride.new("vespa.config.search.core.proton").
                  add("summary", ConfigValue.new("log", ConfigValue.new("maxbucketspread", "10")))).

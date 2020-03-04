@@ -17,10 +17,7 @@
       <node hostalias="node1" distribution-key="0" />
     </group>
     <tuning>
-      <persistence-threads>
-        <thread count="1" lowest-priority="HIGH" />
-        <thread count="2" />
-      </persistence-threads>
+      <persistence-threads count="7" />
     </tuning>
     <documents>
       <document mode="store-only" type="sd" />
