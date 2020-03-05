@@ -5,15 +5,15 @@ import com.yahoo.config.FooConfig;
 import com.yahoo.config.subscription.impl.JRTConfigSubscription;
 import com.yahoo.foo.BarConfig;
 import com.yahoo.log.LogLevel;
-import com.yahoo.vespa.config.ConfigTester;
 import com.yahoo.vespa.config.Connection;
 import com.yahoo.vespa.config.ConnectionPool;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
 import org.junit.After;
 import org.junit.Test;
 
-import static com.yahoo.vespa.config.ConfigTester.waitWhenExpectedFailure;
-import static com.yahoo.vespa.config.ConfigTester.waitWhenExpectedSuccess;
+import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasChanged;
+import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasNotChanged;
+import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -42,10 +42,7 @@ public class FailoverTest {
             ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", sources, ConfigTester.getTestTimingValues());
             ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f", sources, ConfigTester.getTestTimingValues());
 
-            boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
-            assertTrue(newConf);
-            assertTrue(bh.isChanged());
-            assertTrue(fh.isChanged());
+            assertNextConfigHasChanged(subscriber, bh, fh);
             assertEquals(bh.getConfig().barValue(), "0bar");
             assertEquals(fh.getConfig().fooValue(), "0foo");
             ConnectionPool connectionPool = ((JRTConfigSubscription<FooConfig>) fh.subscription()).requester().getConnectionPool();
@@ -53,10 +50,7 @@ public class FailoverTest {
             log.log(LogLevel.INFO, "current source=" + currentConnection.getAddress());
             tester.stopConfigServerMatchingSource(currentConnection);
 
-            newConf = subscriber.nextConfig(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(bh.isChanged());
-            assertFalse(fh.isChanged());
+            assertNextConfigHasNotChanged(subscriber, bh, fh);
 
             log.info("Reconfiguring to foo1/");
             tester.deployOn3ConfigServers("configs/foo1");
@@ -67,7 +61,7 @@ public class FailoverTest {
             } while (currentConnection.getAddress().equals(newConnection.getAddress()));
             log.log(LogLevel.INFO, "newConnection=" + newConnection.getAddress());
             tester.stopConfigServerMatchingSource(newConnection);
-            newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
+            boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
             assertTrue(newConf);
             assertFalse(bh.isChanged());
             assertTrue(fh.isChanged());
@@ -85,10 +79,7 @@ public class FailoverTest {
 
             log.info("Redeploying foo2/");
             tester.deployOn3ConfigServers("configs/foo2");
-            newConf = subscriber.nextConfig(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(bh.isChanged());
-            assertFalse(fh.isChanged());
+            assertNextConfigHasNotChanged(subscriber, bh, fh);
         }
     }
 
@@ -101,51 +92,27 @@ public class FailoverTest {
             ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", sources, ConfigTester.getTestTimingValues());
             ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f", sources, ConfigTester.getTestTimingValues());
 
-            boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
+            assertNextConfigHasChanged(subscriber, bh, fh);
+            assertEquals(bh.getConfig().barValue(), "0bar");
+            assertEquals(fh.getConfig().fooValue(), "0foo");
             ConnectionPool connectionPool = ((JRTConfigSubscription<FooConfig>) fh.subscription()).requester().getConnectionPool();
             Connection current = connectionPool.getCurrent();
             tester.stopConfigServerMatchingSource(current);
-            assertTrue(newConf);
-            assertTrue(bh.isChanged());
-            assertTrue(fh.isChanged());
-            assertEquals(bh.getConfig().barValue(), "0bar");
-            assertEquals(fh.getConfig().fooValue(), "0foo");
 
-            newConf = subscriber.nextConfig(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(bh.isChanged());
-            assertFalse(fh.isChanged());
+            assertNextConfigHasNotChanged(subscriber, bh, fh);
 
             TestConfigServer inUse = tester.getInUse(subscriber, sources);
             inUse.stop();
-            newConf = subscriber.nextConfig(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(bh.isChanged());
-            assertFalse(fh.isChanged());
+            assertNextConfigHasNotChanged(subscriber, bh, fh);
 
-            newConf = subscriber.nextConfig(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(bh.isChanged());
-            assertFalse(fh.isChanged());
+            assertNextConfigHasNotChanged(subscriber, bh, fh);
             assertEquals(bh.getConfig().barValue(), "0bar");
             assertEquals(fh.getConfig().fooValue(), "0foo");
 
-            newConf = subscriber.nextConfig(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(bh.isChanged());
-            assertFalse(fh.isChanged());
-            newConf = subscriber.nextConfig(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(bh.isChanged());
-            assertFalse(fh.isChanged());
-            newConf = subscriber.nextConfig(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(bh.isChanged());
-            assertFalse(fh.isChanged());
-            newConf = subscriber.nextConfig(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(bh.isChanged());
-            assertFalse(fh.isChanged());
+            assertNextConfigHasNotChanged(subscriber, bh, fh);
+            assertNextConfigHasNotChanged(subscriber, bh, fh);
+            assertNextConfigHasNotChanged(subscriber, bh, fh);
+            assertNextConfigHasNotChanged(subscriber, bh, fh);
         }
     }
 
@@ -176,8 +143,7 @@ public class FailoverTest {
             assertEquals(s3, s4);
 
             tester.getConfigServer().deployNewConfig("configs/foo2");
-            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
-            assertTrue(bh.isChanged());
+            assertNextConfigHasChanged(subscriber, bh);
         }
     }
     

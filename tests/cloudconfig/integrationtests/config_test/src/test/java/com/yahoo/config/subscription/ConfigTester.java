@@ -1,20 +1,28 @@
 // Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-package com.yahoo.vespa.config;
+package com.yahoo.config.subscription;
 
-import com.yahoo.config.subscription.ConfigSourceSet;
-import com.yahoo.config.subscription.ConfigSubscriber;
+import com.yahoo.config.AppConfig;
+import com.yahoo.config.FooConfig;
+import com.yahoo.foo.BarConfig;
 import com.yahoo.jrt.Request;
 import com.yahoo.jrt.Spec;
 import com.yahoo.jrt.Supervisor;
 import com.yahoo.jrt.Target;
 import com.yahoo.jrt.Transport;
 import com.yahoo.log.LogLevel;
+import com.yahoo.vespa.config.Connection;
+import com.yahoo.vespa.config.TimingValues;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Helper class for unit tests to make it easier to start and stop config server(s)
@@ -25,14 +33,15 @@ import java.util.stream.Collectors;
 public class ConfigTester implements AutoCloseable {
     private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(ConfigTester.class.getName());
 
-    protected TestConfigServer cServer1;
-    protected TestConfigServer cServer2;
-    protected TestConfigServer cServer3;
-    protected Thread cS1;
-    protected Thread cS2;
-    protected Thread cS3;
+    TestConfigServer cServer1;
+    TestConfigServer cServer2;
+    TestConfigServer cServer3;
+    Thread cS1;
+    Thread cS2;
+    Thread cS3;
 
-    protected final HashMap<TestConfigServer, Thread> configServerCluster = new HashMap<>();
+    private static final PortRange portRange = new PortRange();
+    private final HashMap<TestConfigServer, Thread> configServerCluster = new HashMap<>();
 
     // How long to wait for config in nextConfig() method, when expecting result to be success (new config available)
     // or failure (no new config)
@@ -43,7 +52,6 @@ public class ConfigTester implements AutoCloseable {
         cServer1 = createConfigServer();
         log.log(LogLevel.DEBUG, "starting configserver on port: " + cServer1.getSpec().port());
         cS1 = startOneConfigServer(cServer1);
-        ensureServerRunning(cServer1);
         configServerCluster.put(cServer1, cS1);
         return cServer1;
     }
@@ -79,6 +87,7 @@ public class ConfigTester implements AutoCloseable {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        log.log(LogLevel.INFO, "Config server running on port " + cs.getSpec().port() + " stopped");
     }
 
     /**
@@ -121,13 +130,15 @@ public class ConfigTester implements AutoCloseable {
         Target target = supervisor.connect(server.getSpec());
         Request req = new Request("frt.rpc.ping");
         target.invokeSync(req, 5.0);
-        System.out.println("Got ping response at " + System.currentTimeMillis());
         return !req.isError();
     }
 
     @Override
     public void close() {
-        configServerCluster.keySet().forEach(this::stopConfigServer);
+        configServerCluster.keySet().forEach(configServer -> {
+            System.out.println("DEBUG:" + configServer);
+            stopConfigServer(configServer);
+        });
     }
 
     private static class PortRange {
@@ -141,8 +152,6 @@ public class ConfigTester implements AutoCloseable {
             return value++;
         }
     }
-
-    private final static PortRange portRange = new PortRange();
 
     // Get the next port from a pre-allocated range
     public static int findAvailablePort() {
@@ -190,6 +199,37 @@ public class ConfigTester implements AutoCloseable {
         TestConfigServer configServer = getConfigServerMatchingSource(connection)
                 .orElseThrow(() -> new RuntimeException("Could not get config server matching source for " + connection));
         stopConfigServer(configServer);
+    }
+
+    public ConfigHandle<AppConfig> subscribeToAppConfig(ConfigSubscriber subscriber, String configId) {
+        return subscriber.subscribe(AppConfig.class, configId, getTestSourceSet(), getTestTimingValues());
+    }
+
+    public ConfigHandle<FooConfig> subscribeToFooConfig(ConfigSubscriber subscriber, String configId) {
+        return subscriber.subscribe(FooConfig.class, configId, getTestSourceSet(), getTestTimingValues());
+    }
+
+    public ConfigHandle<BarConfig> subscribeToBarConfig(ConfigSubscriber subscriber, String configId) {
+        return subscribeToBarConfig(subscriber, configId, getTestTimingValues());
+    }
+
+    public ConfigHandle<BarConfig> subscribeToBarConfig(ConfigSubscriber subscriber, String configId, TimingValues timingValues) {
+        return subscriber.subscribe(BarConfig.class, configId, getTestSourceSet(), timingValues);
+    }
+
+    static void assertNextConfigHasChanged(ConfigSubscriber subscriber, ConfigHandle<?>... configHandles) {
+        boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
+        assertTrue(newConf);
+        Arrays.stream(configHandles).forEach(ch -> {
+            assertTrue(ch.isChanged());
+            assertNotNull(ch.getConfig());
+        });
+    }
+
+    static void assertNextConfigHasNotChanged(ConfigSubscriber subscriber, ConfigHandle<?>... configHandles) {
+        boolean newConf = subscriber.nextConfig(waitWhenExpectedFailure);
+        assertFalse(newConf);
+        Arrays.stream(configHandles).forEach(ch -> assertFalse(ch.isChanged()));
     }
 
 }
