@@ -97,7 +97,7 @@ class WeightedSetFeedTest < PerformanceTest
       params(100,    false, 4, 8),
       params(1000,   false, 6, 38),
       params(10000,  false, 27, 60),
-      params(100000, false, 250, 600),
+      params(100000, false, 235, 600),
       params(10,     true, 8, 12),
       params(100,    true, 15, 100),
       params(1000,   true, 140, 200),
