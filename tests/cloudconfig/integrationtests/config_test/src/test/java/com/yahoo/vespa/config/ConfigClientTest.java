@@ -1,6 +1,7 @@
 // Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.vespa.config;
 
+import com.yahoo.config.subscription.ConfigTester;
 import com.yahoo.jrt.Request;
 import com.yahoo.jrt.Supervisor;
 import com.yahoo.jrt.Target;
@@ -11,14 +12,13 @@ import com.yahoo.vespa.config.protocol.DefContent;
 import com.yahoo.vespa.config.protocol.JRTClientConfigRequest;
 import com.yahoo.vespa.config.protocol.JRTClientConfigRequestV3;
 import com.yahoo.vespa.config.protocol.Trace;
-import org.junit.After;
-import org.junit.Before;
+import com.yahoo.vespa.config.testutil.TestConfigServer;
 import org.junit.Test;
 
 import java.util.Collections;
 import java.util.Optional;
 
-import static com.yahoo.vespa.config.ErrorCode.*;
+import static com.yahoo.vespa.config.ErrorCode.ILLEGAL_CONFIG_MD5;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -26,8 +26,7 @@ import static org.junit.Assert.assertTrue;
 
 
 /**
- * Tests for different client requests  to config server.  A configserver is started
- * before the class is loaded and reads config from files.
+ * Tests for different client requests to config server.
  *
  * @author Harald Musum
  */
@@ -41,37 +40,17 @@ public class ConfigClientTest {
     private static final long SERVER_TIMEOUT = 5000; //msecs
     private static final double CLIENT_TIMEOUT = 10.0; //secs
 
-    ConfigTester tester;
-    private Supervisor supervisor;
-    private Target target;
-
-    @Before
-    public void setUp() {
-        tester = new ConfigTester();
-        tester.startOneConfigServer();
-        supervisor = new Supervisor(new Transport());
-        target = supervisor.connect(tester.getConfigServerSpec());
-    }
-
-    @After public void tearDown() {
-        supervisor.transport().shutdown().join();
-        supervisor = null;
-        if (target != null) target.close();
-        tester.close();
-    }
-
-    public ConfigClientTest() {
-    }
-
     @Test
     public void testPing() {
-        Request req = new Request("frt.rpc.ping");
-        target.invokeSync(req, CLIENT_TIMEOUT);
-        //System.out.println("Got ping response at " + System.currentTimeMillis());
-        assertFalse("Invocation failed: " + req.errorCode() + ": " +
-                req.errorMessage(),
-                req.isError());
-        assertEquals(0, req.returnValues().size());
+        try (Tester tester = new Tester()) {
+            Request req = new Request("frt.rpc.ping");
+            tester.invokeSync(req);
+            System.out.println("Got ping response at " + System.currentTimeMillis());
+            assertFalse("Invocation failed: " + req.errorCode() + ": " +
+                        req.errorMessage(),
+                        req.isError());
+            assertEquals(0, req.returnValues().size());
+        }
     }
 
     /**
@@ -79,10 +58,12 @@ public class ConfigClientTest {
      */
     @Test
     public void testGetConfig() {
-        JRTClientConfigRequest req = createRequest();
-        target.invokeSync(req.getRequest(), CLIENT_TIMEOUT);
-        verifyOkResponse(req);
-        verifyConfigChanged(req);
+        try (Tester tester = new Tester()) {
+            JRTClientConfigRequest req = createRequest();
+            tester.invokeSync(req.getRequest());
+            verifyOkResponse(req);
+            verifyConfigChanged(req);
+        }
     }
 
     /**
@@ -90,9 +71,11 @@ public class ConfigClientTest {
      */
     @Test
     public void testGetConfigNoMd5() {
-        JRTClientConfigRequest req = createRequest(DEF_NAME, "");
-        target.invokeSync(req.getRequest(), CLIENT_TIMEOUT);
-        verifyOkResponse(req);
+        try (Tester tester = new Tester()) {
+            JRTClientConfigRequest req = createRequest("");
+            tester.invokeSync(req.getRequest());
+            verifyOkResponse(req);
+        }
     }
 
     /*
@@ -102,20 +85,22 @@ public class ConfigClientTest {
      */
     @Test
     public void testGetConfigTwice() {
-        JRTClientConfigRequest req = createRequest();
-        target.invokeSync(req.getRequest(), CLIENT_TIMEOUT);
-        verifyOkResponse(req);
-        verifyConfigChanged(req);
+        try (Tester tester = new Tester()) {
+            JRTClientConfigRequest req = createRequest();
+            tester.invokeSync(req.getRequest());
+            verifyOkResponse(req);
+            verifyConfigChanged(req);
 
-        // Save away the config md5 for use in next request
-        String configMd5 = req.getNewConfigMd5();
-        //System.out.println("Returned config md5=" + configMd5);
+            // Save away the config md5 for use in next request
+            String configMd5 = req.getNewConfigMd5();
+            //System.out.println("Returned config md5=" + configMd5);
 
-        // Get again
-        JRTClientConfigRequest  newReq = createRequest(DEF_NAME, configMd5);
-        target.invokeSync(newReq.getRequest(), CLIENT_TIMEOUT);
-        verifyOkResponse(newReq);
-        verifyConfigUnchanged(newReq);
+            // Get again
+            JRTClientConfigRequest newReq = createRequest(configMd5);
+            tester.invokeSync(newReq.getRequest());
+            verifyOkResponse(newReq);
+            verifyConfigUnchanged(newReq);
+        }
     }
 
     /**
@@ -123,25 +108,27 @@ public class ConfigClientTest {
      */
     @Test
     public void testReloadConfig() {
-        JRTClientConfigRequest req = createRequest();
-        target.invokeSync(req.getRequest(), CLIENT_TIMEOUT);
-        verifyOkResponse(req);
-        verifyConfigChanged(req);
-        long generation = req.getRequestGeneration();
+        try (Tester tester = new Tester()) {
+            JRTClientConfigRequest req = createRequest();
+            tester.invokeSync(req.getRequest());
+            verifyOkResponse(req);
+            verifyConfigChanged(req);
+            long generation = req.getRequestGeneration();
 
-        // Save away the config md5 for use in next request
-        String configMd5 = req.getNewConfigMd5();
+            // Save away the config md5 for use in next request
+            String configMd5 = req.getNewConfigMd5();
 
-        // reload and check that we really get a new config
-        tester.getConfigServer().deployNewConfig("configs/baz");
+            // reload and check that we really get a new config
+            tester.getConfigServer().deployNewConfig("configs/baz");
 
-        JRTClientConfigRequest  newReq = createRequest(DEF_NAME, configMd5);
+            JRTClientConfigRequest newReq = createRequest(configMd5);
 
-        //printRequest(newReq);
-        target.invokeSync(newReq.getRequest(), CLIENT_TIMEOUT);
-        verifyOkResponse(newReq);
-        verifyConfigChanged(newReq);
-        assertTrue(newReq.getNewGeneration() > generation);
+            //printRequest(newReq);
+            tester.invokeSync(newReq.getRequest());
+            verifyOkResponse(newReq);
+            verifyConfigChanged(newReq);
+            assertTrue(newReq.getNewGeneration() > generation);
+        }
     }
 
     /**
@@ -149,27 +136,29 @@ public class ConfigClientTest {
      */
     @Test
     public void testEmptyPayloadForNewGeneration() {
-        JRTClientConfigRequest req = createRequest();
+        try (Tester tester = new Tester()) {
+            JRTClientConfigRequest req = createRequest();
 
-        target.invokeSync(req.getRequest(), CLIENT_TIMEOUT);
-        verifyOkResponse(req);
-        verifyConfigChanged(req);
+            tester.invokeSync(req.getRequest());
+            verifyOkResponse(req);
+            verifyConfigChanged(req);
 
-        // Save away the config md5 and generation for use in next request
-        String configMd5 = req.getNewConfigMd5();
-        long generation = req.getNewGeneration();
+            // Save away the config md5 and generation for use in next request
+            String configMd5 = req.getNewConfigMd5();
+            long generation = req.getNewGeneration();
 
-        // reload same config to set new generation
-        tester.getConfigServer().deployNewConfig("configs/foo");
+            // reload same config to set new generation
+            tester.getConfigServer().deployNewConfig("configs/foo");
 
-        JRTClientConfigRequest newReq = createRequest(DEF_NAME, configMd5, generation);
+            JRTClientConfigRequest newReq = createRequest(configMd5, generation);
 
-        target.invokeSync(newReq.getRequest(), CLIENT_TIMEOUT);
-        assertTrue("Valid return values", newReq.validateResponse());
-        assertTrue("More recent generation", newReq.getNewGeneration() > generation);
-        assertFalse("Updated flag in response is false", newReq.hasUpdatedConfig());
-        assertEquals("Equal config md5 as previous response", newReq.getNewConfigMd5(), configMd5);
-        assertEquals("Empty payload", 0, newReq.getNewPayload().getData().getByteLength());
+            tester.invokeSync(newReq.getRequest());
+            assertTrue("Valid return values", newReq.validateResponse());
+            assertTrue("More recent generation", newReq.getNewGeneration() > generation);
+            assertFalse("Updated flag in response is false", newReq.hasUpdatedConfig());
+            assertEquals("Equal config md5 as previous response", newReq.getNewConfigMd5(), configMd5);
+            assertEquals("Empty payload", 0, newReq.getNewPayload().getData().getByteLength());
+        }
     }
 
     /**
@@ -177,9 +166,11 @@ public class ConfigClientTest {
      */
     @Test
     public void testInvalidConfigMd5() {
-        JRTClientConfigRequest req = createRequest(DEF_NAME, "asdf");
-        target.invokeSync(req.getRequest(), CLIENT_TIMEOUT);
-        assertEquals(ILLEGAL_CONFIG_MD5, req.errorCode());
+        try (Tester tester = new Tester()) {
+            JRTClientConfigRequest req = createRequest("asdf");
+            tester.invokeSync(req.getRequest());
+            assertEquals(ILLEGAL_CONFIG_MD5, req.errorCode());
+        }
     }
 
     void verifyOkResponse(JRTClientConfigRequest req) {
@@ -217,17 +208,46 @@ public class ConfigClientTest {
     }
 
     JRTClientConfigRequest createRequest() {
-        return createRequest(DEF_NAME, CONFIG_MD5);
+        return createRequest(CONFIG_MD5);
     }
 
-    JRTClientConfigRequest createRequest(String name, String configMd5) {
-        return createRequest(name, configMd5, 0);
+    JRTClientConfigRequest createRequest(String configMd5) {
+        return createRequest(configMd5, 0);
     }
 
-    JRTClientConfigRequest createRequest(String name, String configMd5, long generation) {
+    JRTClientConfigRequest createRequest(String configMd5, long generation) {
         return JRTClientConfigRequestV3.createWithParams(
-                new ConfigKey<>(name, CONFIG_ID, "config"), DefContent.fromList(Collections.emptyList()),
+                new ConfigKey<>(DEF_NAME, CONFIG_ID, "config"), DefContent.fromList(Collections.emptyList()),
                 "localhost", configMd5, generation, SERVER_TIMEOUT,
                 Trace.createNew(), CompressionType.UNCOMPRESSED, Optional.empty());
+    }
+
+    private static class Tester implements AutoCloseable {
+
+        private final ConfigTester tester;
+        private Supervisor supervisor;
+        private Target target;
+
+        public Tester() {
+            tester = new ConfigTester();
+            tester.startOneConfigServer();
+            supervisor = new Supervisor(new Transport());
+            target = supervisor.connect(tester.getConfigServerSpec());
+        }
+
+        @Override
+        public void close() {
+            supervisor.transport().shutdown().join();
+            if (target != null) target.close();
+            tester.close();
+        }
+
+        void invokeSync(Request request) {
+            target.invokeSync(request, CLIENT_TIMEOUT);
+        }
+
+        TestConfigServer getConfigServer() {
+            return tester.getConfigServer();
+        }
     }
 }

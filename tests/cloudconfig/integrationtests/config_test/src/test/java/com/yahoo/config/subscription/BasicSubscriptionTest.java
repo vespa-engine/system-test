@@ -1,13 +1,14 @@
 // Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.config.subscription;
 
-import static com.yahoo.vespa.config.ConfigTester.getTestTimingValues;
-import static com.yahoo.vespa.config.ConfigTester.waitWhenExpectedFailure;
-import static com.yahoo.vespa.config.ConfigTester.waitWhenExpectedSuccess;
+import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasChanged;
+import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasNotChanged;
+import static com.yahoo.config.subscription.ConfigTester.getTestTimingValues;
+import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedFailure;
+import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -16,8 +17,6 @@ import com.yahoo.config.AppConfig;
 import com.yahoo.config.ConfigurationRuntimeException;
 import com.yahoo.config.FooConfig;
 import com.yahoo.io.IOUtils;
-import com.yahoo.log.LogLevel;
-import com.yahoo.vespa.config.ConfigTester;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
 import com.yahoo.vespa.config.util.ConfigUtils;
 
@@ -43,18 +42,15 @@ public class BasicSubscriptionTest {
     
     @After
     public void closeSubscriber() {
-        if (subscriber!=null) subscriber.close();
+        if (subscriber != null) subscriber.close();
     }
     
     @Test
     public void testSimpleJRTSubscription() {
         try (ConfigTester tester = new ConfigTester()) {
             tester.startOneConfigServer();
-            ConfigHandle<AppConfig> appCfgHandle = subscriber.subscribe(AppConfig.class, "app.0",
-                                                                        tester.getTestSourceSet(), getTestTimingValues());
-            subscriber.nextConfig(waitWhenExpectedSuccess);
-            assertTrue(appCfgHandle.isChanged());
-            assertNotNull(appCfgHandle.getConfig());
+            ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.0");
+            assertNextConfigHasChanged(subscriber, appCfgHandle);
             AppConfig a = appCfgHandle.getConfig();
             assertEquals(a.message(), "msg1");
 
@@ -73,8 +69,7 @@ public class BasicSubscriptionTest {
     public void testStateConstraints() {
         try (ConfigTester tester = new ConfigTester()) {
             tester.startOneConfigServer();
-            ConfigHandle<AppConfig> appCfgHandle = subscriber.subscribe(AppConfig.class, "app.1",
-                                                                        tester.getTestSourceSet(), getTestTimingValues());
+            ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.1");
             subscriber.nextConfig(50);
             appCfgHandle.getConfig();
             try {
@@ -92,18 +87,12 @@ public class BasicSubscriptionTest {
     public void testServerFailingNextConfigFalse() {
         try (ConfigTester tester = new ConfigTester()) {
             TestConfigServer configServer = tester.startOneConfigServer();
-            ConfigHandle<AppConfig> appCfgHandle = subscriber.subscribe(AppConfig.class, "app.2",
-                                                                        tester.getTestSourceSet(), getTestTimingValues());
-            boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
-            assertTrue(newConf);
-            assertTrue(appCfgHandle.isChanged());
-            assertNotNull(appCfgHandle.getConfig());
+            ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.2");
+            assertNextConfigHasChanged(subscriber, appCfgHandle);
             AppConfig a = appCfgHandle.getConfig();
             assertEquals(a.message(), "msg1");
             configServer.stop();
-            newConf = subscriber.nextConfig(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(appCfgHandle.isChanged());
+            assertNextConfigHasNotChanged(subscriber, appCfgHandle);
         }
     }
 
@@ -111,17 +100,11 @@ public class BasicSubscriptionTest {
     public void testNextConfigFalseWhenConfigured() {
         try (ConfigTester tester = new ConfigTester()) {
             tester.startOneConfigServer();
-            ConfigHandle<AppConfig> appCfgHandle = subscriber.subscribe(AppConfig.class, "app.3",
-                                                                        tester.getTestSourceSet(), getTestTimingValues());
-            boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
-            assertTrue(newConf);
-            assertTrue(appCfgHandle.isChanged());
-            assertNotNull(appCfgHandle.getConfig());
+            ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.3");
+            assertNextConfigHasChanged(subscriber, appCfgHandle);
             AppConfig a = appCfgHandle.getConfig();
             assertEquals(a.message(), "msg1");
-            newConf = subscriber.nextConfig(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(appCfgHandle.isChanged());
+            assertNextConfigHasNotChanged(subscriber, appCfgHandle);
         }
     }
 
@@ -129,17 +112,11 @@ public class BasicSubscriptionTest {
     public void testNextGenerationFalseWhenConfigured() {
         try (ConfigTester tester = new ConfigTester()) {
             tester.startOneConfigServer();
-            ConfigHandle<AppConfig> appCfgHandle = subscriber.subscribe(AppConfig.class, "app.4",
-                                                                        tester.getTestSourceSet(), getTestTimingValues());
-            boolean newConf = subscriber.nextGeneration(waitWhenExpectedSuccess);
-            assertTrue(newConf);
-            assertTrue(appCfgHandle.isChanged());
-            assertNotNull(appCfgHandle.getConfig());
+            ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.4");
+            assertNextConfigHasChanged(subscriber, appCfgHandle);
             AppConfig a = appCfgHandle.getConfig();
             assertEquals(a.message(), "msg1");
-            newConf = subscriber.nextGeneration(waitWhenExpectedFailure);
-            assertFalse(newConf);
-            assertFalse(appCfgHandle.isChanged());
+            assertNextConfigHasNotChanged(subscriber, appCfgHandle);
         }
     }
 
@@ -148,33 +125,20 @@ public class BasicSubscriptionTest {
         try (ConfigTester tester = new ConfigTester()) {
             TestConfigServer configServer = tester.startOneConfigServer();
             configServer.deployNewConfig("configs/foo0");
-            ConfigHandle<BarConfig> bh1 = subscriber.subscribe(BarConfig.class, "b1",
-                                                               tester.getTestSourceSet(), getTestTimingValues());
-            ConfigHandle<BarConfig> bh2 = subscriber.subscribe(BarConfig.class, "b2",
-                                                               tester.getTestSourceSet(), getTestTimingValues());
-            ConfigHandle<FooConfig> fh1 = subscriber.subscribe(FooConfig.class, "f1",
-                                                               tester.getTestSourceSet(), getTestTimingValues());
-            ConfigHandle<FooConfig> fh2 = subscriber.subscribe(FooConfig.class, "f2",
-                                                               tester.getTestSourceSet(), getTestTimingValues());
-            ConfigHandle<FooConfig> fh3 = subscriber.subscribe(FooConfig.class, "f3",
-                                                               tester.getTestSourceSet(), getTestTimingValues());
-            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
-            assertTrue(bh1.isChanged());
-            assertTrue(bh2.isChanged());
-            assertTrue(fh1.isChanged());
-            assertTrue(fh2.isChanged());
-            assertTrue(fh3.isChanged());
+            ConfigHandle<BarConfig> bh1 = tester.subscribeToBarConfig(subscriber, "b1");
+            ConfigHandle<BarConfig> bh2 = tester.subscribeToBarConfig(subscriber, "b2");
+            ConfigHandle<FooConfig> fh1 = tester.subscribeToFooConfig(subscriber, "f1");
+            ConfigHandle<FooConfig> fh2 = tester.subscribeToFooConfig(subscriber, "f2");
+            ConfigHandle<FooConfig> fh3 = tester.subscribeToFooConfig(subscriber, "f3");
+            assertNextConfigHasChanged(subscriber, bh1, bh2, fh1, fh2, fh3);
             assertEquals(bh1.getConfig().barValue(), "0bar");
             assertEquals(bh2.getConfig().barValue(), "0bar");
             assertEquals(fh1.getConfig().fooValue(), "0foo");
             assertEquals(fh2.getConfig().fooValue(), "0foo");
             assertEquals(fh3.getConfig().fooValue(), "0foo");
-            assertFalse(subscriber.nextConfig(waitWhenExpectedFailure));
-            assertFalse(bh1.isChanged());
-            assertFalse(bh2.isChanged());
-            assertFalse(fh1.isChanged());
-            assertFalse(fh2.isChanged());
-            assertFalse(fh3.isChanged());
+
+            assertNextConfigHasNotChanged(subscriber, bh1, bh2, fh1, fh2, fh3);
+
             log.info("Reconfiguring to foo1/");
             configServer.deployNewConfig("configs/foo1");
             assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
@@ -196,18 +160,14 @@ public class BasicSubscriptionTest {
         try (ConfigTester tester = new ConfigTester()) {
             TestConfigServer configServer = tester.startOneConfigServer();
             configServer.deployNewConfig("configs/foo0");
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b4",
-                                                              tester.getTestSourceSet(), getTestTimingValues());
-            ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f4", tester.getTestSourceSet(), getTestTimingValues());
+            ConfigHandle<BarConfig> bh = tester.subscribeToBarConfig(subscriber, "b4");
+            ConfigHandle<FooConfig> fh = tester.subscribeToFooConfig(subscriber, "f4");
 
-            boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
-            assertTrue(newConf);
-            assertTrue(bh.isChanged());
-            assertTrue(fh.isChanged());
+            assertNextConfigHasChanged(subscriber, bh, fh);
             assertEquals(bh.getConfig().barValue(), "0bar");
             assertEquals(fh.getConfig().fooValue(), "0foo");
 
-            newConf = subscriber.nextConfig(2000);
+            boolean newConf = subscriber.nextConfig(2000);
             assertFalse(newConf);
             assertFalse(bh.isChanged());
             assertFalse(fh.isChanged());
@@ -232,10 +192,7 @@ public class BasicSubscriptionTest {
 
             log.info("Redeploying foo2/");
             configServer.deployNewConfig("configs/foo2");
-            newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
-            assertFalse(newConf);
-            assertFalse(bh.isChanged());
-            assertFalse(fh.isChanged());
+            assertNextConfigHasNotChanged(subscriber, bh, fh);
         }
     }
 
@@ -244,18 +201,13 @@ public class BasicSubscriptionTest {
         try (ConfigTester tester = new ConfigTester()) {
             TestConfigServer configServer = tester.startOneConfigServer();
             configServer.deployNewConfig("configs/foo0");
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b5", tester.getTestSourceSet(), getTestTimingValues());
-            ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f5", tester.getTestSourceSet(), getTestTimingValues());
+            ConfigHandle<BarConfig> bh = tester.subscribeToBarConfig(subscriber, "b5");
+            ConfigHandle<FooConfig> fh = tester.subscribeToFooConfig(subscriber, "f5");
 
-            boolean newConf = subscriber.nextGeneration(waitWhenExpectedSuccess);
+            assertNextConfigHasChanged(subscriber, bh, fh);
             long lastGen = subscriber.getGeneration();
-            assertTrue(newConf);
-            assertTrue(bh.isChanged());
-            assertTrue(fh.isChanged());
-            assertEquals(bh.getConfig().barValue(), "0bar");
-            assertEquals(fh.getConfig().fooValue(), "0foo");
 
-            newConf = subscriber.nextGeneration(2000);
+            boolean newConf = subscriber.nextGeneration(2000);
             assertFalse(newConf);
             assertFalse(bh.isChanged());
             assertFalse(fh.isChanged());
@@ -297,13 +249,10 @@ public class BasicSubscriptionTest {
         try (ConfigTester tester = new ConfigTester()) {
             TestConfigServer configServer = tester.startOneConfigServer();
             configServer.deployNewConfig("configs/foo0");
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b6", tester.getTestSourceSet(), getTestTimingValues());
-            ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f6", tester.getTestSourceSet(), getTestTimingValues());
+            ConfigHandle<BarConfig> bh = tester.subscribeToBarConfig(subscriber, "b6");
+            ConfigHandle<FooConfig> fh = tester.subscribeToFooConfig(subscriber, "f6");
 
-            boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
-            assertTrue(newConf);
-            assertTrue(bh.isChanged());
-            assertTrue(fh.isChanged());
+            assertNextConfigHasChanged(subscriber, bh, fh);
             assertEquals(bh.getConfig().barValue(), "0bar");
             assertEquals(fh.getConfig().fooValue(), "0foo");
             long generation = waitForServerSwitch(configServer, 0);
@@ -313,7 +262,7 @@ public class BasicSubscriptionTest {
             generation = waitForServerSwitch(configServer, generation);
             configServer.deployNewConfig("configs/foo4");
             waitForServerSwitch(configServer, generation);
-            newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
+            boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
             assertTrue(newConf);
             assertTrue(bh.isChanged());
             assertTrue(fh.isChanged());
@@ -336,8 +285,7 @@ public class BasicSubscriptionTest {
     public void testExtendSuccessTimeout() {
         try (ConfigTester tester = new ConfigTester()) {
             tester.startOneConfigServer();
-            ConfigHandle<AppConfig> appCfgHandle = subscriber.subscribe(AppConfig.class, "app.5",
-                                                                        tester.getTestSourceSet(), getTestTimingValues());
+            ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.5");
             assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
             assertTrue(appCfgHandle.isChanged());
             assertFalse(subscriber.nextConfig(waitWhenExpectedFailure));
@@ -354,22 +302,19 @@ public class BasicSubscriptionTest {
         try (ConfigTester tester = new ConfigTester()) {
             TestConfigServer configServer = tester.startOneConfigServer();
             configServer.deployNewConfig("configs/foo0");
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b7",
-                                                              tester.getTestSourceSet(), getTestTimingValues());
-            ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f7",
-                                                              tester.getTestSourceSet(), getTestTimingValues());
+            ConfigHandle<BarConfig> bh = tester.subscribeToBarConfig(subscriber, "b7");
+            ConfigHandle<FooConfig> fh = tester.subscribeToFooConfig(subscriber, "f7");
             configServer.deployNewConfig("configs/foo0");
             Thread.sleep(1000);
-            log.log(LogLevel.INFO, "Calling nextConfig 1st time");
-            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
-            assertTrue(bh.isChanged());
-            assertTrue(fh.isChanged());
+
+            assertNextConfigHasChanged(subscriber, bh, fh);
             assertEquals(bh.getConfig().barValue(), "0bar");
             assertEquals(fh.getConfig().fooValue(), "0foo");
+
             configServer.deployNewConfig("configs/foo1");
             Thread.sleep(1000);
             configServer.deployNewConfig("configs/foo1");
-            log.log(LogLevel.INFO, "Calling nextConfig 2nd time");
+
             assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
             assertFalse(bh.isChanged());
             assertTrue(fh.isChanged());
@@ -385,7 +330,7 @@ public class BasicSubscriptionTest {
             configServer.setGetConfDelayTimeMillis(1000);
             configServer.deployNewConfig("configs/foo0");
             try {
-                subscriber.subscribe(BarConfig.class, "b8", tester.getTestSourceSet(), getTestTimingValues().setSubscribeTimeout(200));
+                tester.subscribeToBarConfig(subscriber, "b8", getTestTimingValues().setSubscribeTimeout(200));
                 fail("Subscribe should have timed out and thrown");
             } catch (Exception e) {
                 assertTrue(e instanceof ConfigurationRuntimeException);
