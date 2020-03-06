@@ -26,11 +26,44 @@ class MetricsProxy < IndexedSearchTest
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
     container = @vespa.container.values.first
+    verify_metrics_v1_api(container)
+    verify_metrics_v2_api(container, 19092)
+    verify_metrics_v2_api(container, container.http_port)
+  end
+
+  def verify_metrics_v1_api(container)
     result = container.search("/metrics/v1/values", 19092)
     json = result.json
 
     assert(json.has_key? 'services')
     services = json['services']
+    assert(services.size > 0)
+
+    services.each do |service|
+      assert(service.has_key? 'name')
+      assert(service.has_key? 'status')
+      status = service['status']
+      assert(status.has_key? 'code')
+      assert_equal("up", status['code'])
+      assert(service.has_key? 'metrics')
+    end
+  end
+
+  def verify_metrics_v2_api(container, port)
+    puts "Verifying metrics/v2 on port #{port}"
+    result = container.search("/metrics/v2/values", port)
+    json = result.json
+
+    assert(json.has_key? 'nodes')
+    nodes = json['nodes']
+    assert(nodes.size == 1)
+    node = nodes[0]
+
+    assert(node.has_key? 'hostname')
+    assert(node.has_key? 'role')
+    assert(node.has_key? 'services')
+
+    services = node['services']
     assert(services.count > 0)
 
     services.each do |service|
