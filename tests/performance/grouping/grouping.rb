@@ -39,7 +39,7 @@ class GroupingTest < PerformanceTest
       generatequeries(File.new(@local_queryfile, "w"),
                       attr_prefix, 1, num_attr, lvl)
       vespa.adminserver.copy(@local_queryfile, @remote_dir)
-      run_fbench_ntimes(qrserver, 1, 10, 10, [parameter_filler("grouping_level", lvl)])
+      run_fbench_ntimes(qrserver, 1, 10, 3, [parameter_filler("grouping_level", lvl)])
     end
   end
 
@@ -58,7 +58,7 @@ class GroupingTest < PerformanceTest
       generatequeries(File.new(@local_queryfile, "w"),
                       attr_prefix, num_par, num_attr, num_levels)
       vespa.adminserver.copy(@local_queryfile, @remote_dir)
-      run_fbench_ntimes(qrserver, 1, 10, 10, [parameter_filler("grouping_level", num_levels), parameter_filler("grouping_parallel", num_par)])
+      run_fbench_ntimes(qrserver, 1, 10, 3, [parameter_filler("grouping_level", num_levels), parameter_filler("grouping_parallel", num_par)])
     end
   end
 
@@ -122,7 +122,7 @@ class GroupingTest < PerformanceTest
     }
     vespa.adminserver.copy(@local_queryfile, @remote_dir)
     puts "Warmup"
-    run_fbench(qrserver, 1, 60, [parameter_filler("legend", "warmup")])
+    run_fbench(qrserver, 1, 30, [parameter_filler("legend", "warmup")])
     puts "Single level"
     run_fbench(qrserver, 1, 60, [parameter_filler("legend", "single_level")])
     node = vespa.search["search"].first
