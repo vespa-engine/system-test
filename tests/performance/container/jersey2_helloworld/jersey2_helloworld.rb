@@ -101,8 +101,8 @@ class Jersey2HelloWorld < PerformanceTest
   def test_jersey2_helloworld
     copy_query_file
     warmup_container
-    run_performance_fbench(8, 300, [parameter_filler("build", TestMode::CLIENTS_8)])
-    run_performance_fbench(128, 300, [parameter_filler("build", TestMode::CLIENTS_128)])
+    run_performance_fbench(8, 60, [parameter_filler("build", TestMode::CLIENTS_8)])
+    run_performance_fbench(128, 60, [parameter_filler("build", TestMode::CLIENTS_128)])
   end
 
   def teardown
