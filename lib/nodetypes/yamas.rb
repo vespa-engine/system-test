@@ -28,7 +28,7 @@ module Yamas
 
   # Execute yms_check_vespa on the given node for service e.g vespa.qrserver
   def get_yamas_metrics_yms(node,service,params={})
-    ret = node.execute("#{Environment.instance.vespa_home}/libexec/yms/yms_check_vespa " + service , params.merge({:exitcode => true}))
+    ret = node.execute("#{Environment.instance.vespa_home}/libexec/yms/yms_check_vespa " + service , params.merge({:exitcode => true, :noecho => true}))
     data = ret[1]
     messages = parseMessages(data)
     return messages
