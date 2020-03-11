@@ -1,4 +1,4 @@
-@ExportPackage(version = @Version(major=1, minor=0, micro=0))
+@ExportPackage
 package com.yahoo.vespatest;
 
 import com.yahoo.osgi.annotation.ExportPackage;
