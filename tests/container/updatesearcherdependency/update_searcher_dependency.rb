@@ -10,8 +10,12 @@ class UpdateSearcherDependency < SearchContainerTest
   end
 
   def test_update_searcher_dependency
-    dep = add_bundle_dir(selfdir+"initial", "com.yahoo.vespatest.Greeting")
-    add_bundle_dir(File.expand_path(selfdir), "com.yahoo.testvespa.SimpleSearcher", :dependencies=>[dep])
+    dep1 = add_bundle_dir(selfdir+"initial", "com.yahoo.vespatest.Greeting",
+                          {
+                              :version=>"1.0.0",
+                              :bundle_plugin_config =>"<useArtifactVersionForExportPackages>true</useArtifactVersionForExportPackages>",
+                          })
+    add_bundle_dir(File.expand_path(selfdir), "com.yahoo.testvespa.SimpleSearcher", :dependencies=>[dep1])
     deploy(selfdir+"app", SEARCH_DATA+"music.sd")
     start
     wait_for_hitcount("query=test",0)
@@ -22,8 +26,12 @@ class UpdateSearcherDependency < SearchContainerTest
 
     # Re-deploy with same app, but modified searcher bundle dependency
     clear_bundles()
-    dep = add_bundle_dir(selfdir+"updated", "com.yahoo.vespatest.Greeting")
-    add_bundle_dir(File.expand_path(selfdir), "com.yahoo.testvespa.SimpleSearcher", :dependencies=>[dep])
+    dep2 = add_bundle_dir(selfdir+"updated", "com.yahoo.vespatest.Greeting",
+                          {
+                              :version=>"1.1.0",
+                              :bundle_plugin_config =>"<useArtifactVersionForExportPackages>true</useArtifactVersionForExportPackages>",
+                          })
+    add_bundle_dir(File.expand_path(selfdir), "com.yahoo.testvespa.SimpleSearcher", :dependencies=>[dep2])
     deploy(selfdir + "app", SEARCH_DATA+"music.sd")
     poll_compare("test", selfdir + "new_world_result.xml")
   end
