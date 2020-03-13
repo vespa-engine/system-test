@@ -24,14 +24,14 @@ search test {
       expression: sqrt(sum(join(query(qpos_float), attribute(pos), f(x,y)((x-y)*(x-y)))))
     }
     first-phase {
-      expression: 15 - itemRawScore(nns)
+      expression: 15 - distance(nns)
     }
     summary-features {
       euclidean_distance_qpos_double
       euclidean_distance_qpos_float
-      rawScore(pos)
-      rawScore(pos_hnsw)
-      itemRawScore(nns)
+      distance(pos)
+      distance(pos_hnsw)
+      distance(nns)
     }
   }
 }

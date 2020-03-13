@@ -46,10 +46,14 @@ class NearestNeighborTest < IndexedSearchTest
     assert_nearest_docs(7,  1,  doc_tensor, query_tensor, nil, [[7,0]])
 
     # With additional query filter.
-    # Currently, we use brute force when the iterator is NOT strict, which is the case here.
-    # Only the filter is strict under the AND.
-    assert_nearest_docs(-2, 3, doc_tensor, query_tensor, 0, [[0,2],[2,4],[4,6]])
-    assert_nearest_docs(-2, 3, doc_tensor, query_tensor, 1, [[1,3],[3,5],[5,7]])
+    # HNSW will be used when the iterator is strict (k is less than 5
+    # since filter produces 5 hits). HNSW produces 4 hits of which 2 are
+    # fitered out:
+    assert_nearest_docs(-2, 4, doc_tensor, query_tensor, 0, [[0,2],[2,4]])
+    assert_nearest_docs(-2, 4, doc_tensor, query_tensor, 1, [[1,3],[3,5]])
+    # Bruteforce is used when iterator is NOT strict:
+    assert_nearest_docs(-2, 6, doc_tensor, query_tensor, 0, [[0,2],[2,4],[4,6],[6,8],[8,10]])
+    assert_nearest_docs(-2, 6, doc_tensor, query_tensor, 1, [[1,3],[3,5],[5,7],[7,9],[9,11]])
   end
 
   def get_docid(i)
@@ -81,8 +85,8 @@ class NearestNeighborTest < IndexedSearchTest
       exp_distance = exp_results[i][1]
       exp_score = 15 - exp_distance
       exp_features = { "rankingExpression(euclidean_distance_#{query_tensor})" => exp_distance,
-                       "rawScore(#{doc_tensor})" => exp_distance,
-                       "itemRawScore(nns)" => exp_distance }
+                       "distance(#{doc_tensor})" => exp_distance,
+                       "distance(nns)" => exp_distance }
 
       assert_field_value(result, "documentid", get_docid(exp_docid), i)
       assert_relevancy(result, exp_score, i)
