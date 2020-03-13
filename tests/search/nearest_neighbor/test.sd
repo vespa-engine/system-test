@@ -5,9 +5,6 @@ search test {
       attribute: fast-search
     }
     field pos type tensor(x[2]) {
-      indexing: attribute | summary
-    }
-    field pos_hnsw type tensor(x[2]) {
       indexing: attribute | index | summary
       index {
         hnsw {
@@ -30,7 +27,6 @@ search test {
       euclidean_distance_qpos_double
       euclidean_distance_qpos_float
       distance(pos)
-      distance(pos_hnsw)
       distance(nns)
     }
   }
