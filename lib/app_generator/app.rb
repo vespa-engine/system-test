@@ -26,6 +26,7 @@ require 'app_generator/processing'
 require 'app_generator/sd_file'
 require 'app_generator/search_chains'
 require 'app_generator/search_cluster'
+require 'app_generator/search_definitions'
 require 'app_generator/storage_cluster'
 require 'app_generator/xml_helper'
 require 'app_generator/persistence_threads'
@@ -38,7 +39,7 @@ require 'app_generator/http'
 # TestBase's deploy_app() method. The main function of the app
 # generator is to create a services.xml file, but it also holds
 # pointers to other files and directories used for setting up an
-# application, such as schemas.
+# application, such as searchdefinitions.
 
 # See test/test.rb for examples of use.
 

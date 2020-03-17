@@ -419,11 +419,11 @@ class VespaModel
   end
 
   def copy_rank_expression_files(tmp_application, rank_files)
-    copy_files(tmp_application, "schemas", rank_files)
+    copy_files(tmp_application, "searchdefinitions", rank_files)
   end
 
   def copy_sd_files(tmp_application, sd_files)
-    copy_files(tmp_application, "schemas", sd_files)
+    copy_files(tmp_application, "searchdefinitions", sd_files)
   end
 
 
@@ -484,7 +484,7 @@ class VespaModel
   def substitute_sdfile(application, services, sdfile)
     return if sdfile.empty?
 
-    sddir = application + "/schemas/"
+    sddir = application + "/searchdefinitions/"
     FileUtils.mkdir_p(sddir)
     Dir.glob(sddir + "*.sd").each {|sd| File.delete(sd)}
 
