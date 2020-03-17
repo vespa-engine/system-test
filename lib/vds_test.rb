@@ -34,7 +34,7 @@ class VdsTest < TestCase
     true
   end
 
-  def default_app(sd = "music", path = VDS + "/searchdefinitions/")
+  def default_app(sd = "music", path = VDS + "/schemas/")
     sd_file = path + "#{sd}.sd"
     StorageApp.new.default_cluster.sd(sd_file).
       feeder_options(FeederOptions.new.timeout(120)).

@@ -39,7 +39,7 @@ require 'app_generator/http'
 # TestBase's deploy_app() method. The main function of the app
 # generator is to create a services.xml file, but it also holds
 # pointers to other files and directories used for setting up an
-# application, such as searchdefinitions.
+# application, such as schemas.
 
 # See test/test.rb for examples of use.
 

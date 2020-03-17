@@ -315,8 +315,8 @@ class CloudConfigTest < TestCase
       f.puts hosts
     end
     if sdfile
-      `mkdir -p #{path}/searchdefinitions`
-      File.open("#{path}/searchdefinitions/music.sd", "w") do |f|
+      `mkdir -p #{path}/schemas`
+      File.open("#{path}/schemas/music.sd", "w") do |f|
         File.open(sdfile, "r") do |r|
           line = r.readlines
           f.puts line
