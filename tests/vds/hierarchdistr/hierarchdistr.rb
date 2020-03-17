@@ -29,7 +29,7 @@ class HierarchDistr < VdsMultiModelTest
                            NodeGroup.new(1, "switch1").
                            node(NodeSpec.new("node1", 2)).
                            node(NodeSpec.new("node1", 3))))).
-               sd(VDS + "/schemas/music.sd").
+               sd(VDS + "/searchdefinitions/music.sd").
                transition_time(0);
   end
 
@@ -48,7 +48,7 @@ class HierarchDistr < VdsMultiModelTest
                            NodeGroup.new(1, "switch1").
                            node(NodeSpec.new("node1", 3)).
                            node(NodeSpec.new("node1", 4))))).
-               sd(VDS + "/schemas/music.sd").
+               sd(VDS + "/searchdefinitions/music.sd").
                transition_time(0);
   end
 
@@ -76,7 +76,7 @@ class HierarchDistr < VdsMultiModelTest
                            group(
                                  NodeGroup.new(1, "rack1").
                                  node(NodeSpec.new("node1", 3)))))).
-               sd(VDS + "/schemas/music.sd").
+               sd(VDS + "/searchdefinitions/music.sd").
                transition_time(0);
   end
 
@@ -102,7 +102,7 @@ class HierarchDistr < VdsMultiModelTest
                       node(NodeSpec.new("node1", 1)).
                       node(NodeSpec.new("node1", 2)).
                       node(NodeSpec.new("node1", 3)))).
-               sd(VDS + "/schemas/music.sd").
+               sd(VDS + "/searchdefinitions/music.sd").
                transition_time(0);
   end
 

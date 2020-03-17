@@ -8,7 +8,7 @@
 # all the tests that use it still work (and still
 # check everything they are supposed to check).
 
-schema music {
+search music {
   
   document music {
 

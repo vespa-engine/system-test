@@ -5,7 +5,7 @@ class StaticRank_2SDs < IndexedSearchTest
 
   def setup
     set_owner("geirst")
-    set_description("Test staticrank with two schemas")
+    set_description("Test staticrank with two searchdefinitions.")
     deploy_app(SearchApp.new.sd(selfdir+"one.sd").sd(selfdir+"two.sd"))
     start
   end
