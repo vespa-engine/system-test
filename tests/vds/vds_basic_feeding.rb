@@ -130,7 +130,7 @@ class VdsBasicFeeding < MultiProviderStorageTest
   end
 
   def test_mixed_case_doctype_vespafeeder
-    deploy_app(default_app.sd(VDS + "searchdefinitions/MiXedCase.sd"))
+    deploy_app(default_app.sd(VDS + "schemas/MiXedCase.sd"))
     start
 
     set_owner("vekterli")
@@ -152,7 +152,7 @@ class VdsBasicFeeding < MultiProviderStorageTest
   end
 
   def test_mixed_case_doctype_vespa_http_client
-    deploy_app(default_app.sd(VDS + "searchdefinitions/MiXedCase.sd"))
+    deploy_app(default_app.sd(VDS + "schemas/MiXedCase.sd"))
     start
 
     set_owner("vekterli")
