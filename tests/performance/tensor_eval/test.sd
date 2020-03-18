@@ -61,31 +61,31 @@ search test {
     summary documentid type string {}
   }
   constant dense_matrix_10x10 {
-    file: searchdefinitions/dense_matrix_10x10.json
+    file: schemas/dense_matrix_10x10.json
     type: tensor(x[10],y[10])
   }
   constant dense_matrix_25x25 {
-    file: searchdefinitions/dense_matrix_25x25.json
+    file: schemas/dense_matrix_25x25.json
     type: tensor(x[25],y[25])
   }
   constant dense_matrix_50x50 {
-    file: searchdefinitions/dense_matrix_50x50.json
+    file: schemas/dense_matrix_50x50.json
     type: tensor(x[50],y[50])
   }
   constant dense_matrix_100x100 {
-    file: searchdefinitions/dense_matrix_100x100.json
+    file: schemas/dense_matrix_100x100.json
     type: tensor(x[100],y[100])
   }
   constant sparse_tensor_25x25 {
-    file: searchdefinitions/sparse_tensor_25x25.json
+    file: schemas/sparse_tensor_25x25.json
     type: tensor(x{},y{})
   }
   constant sparse_tensor_50x50 {
-    file: searchdefinitions/sparse_tensor_50x50.json
+    file: schemas/sparse_tensor_50x50.json
     type: tensor(x{},y{})
   }
   constant sparse_tensor_100x100 {
-    file: searchdefinitions/sparse_tensor_100x100.json
+    file: schemas/sparse_tensor_100x100.json
     type: tensor(x{},y{})
   }
 
