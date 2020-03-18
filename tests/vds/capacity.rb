@@ -17,7 +17,7 @@ class Capacity < VdsTest
                    group(NodeGroup.new(0, "mygroup").
                      node(NodeSpec.new("node1", 0, :capacity => 2.0)).
                      node(NodeSpec.new("node1", 1)))).
-               sd(VDS + "/schemas/music.sd").
+               sd(VDS + "/searchdefinitions/music.sd").
                transition_time(0));
     start
 
@@ -47,7 +47,7 @@ class Capacity < VdsTest
                    group(NodeGroup.new(0, "mygroup").
                      node(NodeSpec.new("node1", 0)).
                      node(NodeSpec.new("node1", 1, :capacity => 3.0)))).
-               sd(VDS + "/schemas/music.sd").
+               sd(VDS + "/searchdefinitions/music.sd").
                transition_time(0));
 
     vespa.storage["storage"].storage["0"].wait_for_current_node_capacity(1.0)
