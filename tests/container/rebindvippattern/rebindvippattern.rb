@@ -6,7 +6,7 @@ class RebindVipPattern < ContainerTest
 
   def setup
     set_owner("gjoranv")
-    set_description("Ensure we can override the default VIP handler binding.")
+    set_description("Ensure we can override the default VIP handler binding with a binding with explicit port.")
   end
 
   def test_binding_override
@@ -18,7 +18,7 @@ class RebindVipPattern < ContainerTest
     app_with_custom_binding = ContainerApp.new.container(
         Container.new.
             handler(Handler.new("com.yahoo.vespatest.HelloWorld").
-                        binding("http://*/status.html")))
+                        binding("http://*:#{@container.http_port}/status.html")))
     deploy(app_with_custom_binding)
     result = @container.search("/status.html")
     assert_match(/Hello, world!/, result.xmldata, "Did not get expected response.")
