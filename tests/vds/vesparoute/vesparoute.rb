@@ -98,7 +98,7 @@ class VespaRoute < VdsTest
   end
 
   def music_sd
-    "#{selfdir}/setup/searchdefinitions/music.sd"
+    "#{selfdir}/setup/schemas/music.sd"
   end
 
   def test_dumpSinglenode

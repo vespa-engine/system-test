@@ -13,7 +13,7 @@ class Cluster_Name_Specified < MultiProviderStorageTest
 
     deploy_app(
                StorageApp.new.enable_http_gateway.storage_cluster(
-                 StorageCluster.new("nonstandard").default_group).sd(VDS + "/searchdefinitions/music.sd").
+                 StorageCluster.new("nonstandard").default_group).sd(VDS + "/schemas/music.sd").
                transition_time(0));
     start
   end

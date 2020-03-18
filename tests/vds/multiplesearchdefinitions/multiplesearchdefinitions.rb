@@ -77,7 +77,7 @@ class MultipleSearchDefs < VdsMultiModelTest
     puts "3 **************************************************************"
 
     # Now deploy application with both document types => put/get should work for both
-    deploy_app(default_app.sd(VDS + "/searchdefinitions/music2.sd").validation_override("content-type-removal"))
+    deploy_app(default_app.sd(VDS + "/schemas/music2.sd").validation_override("content-type-removal"))
 
     wait_for_reconfig
 

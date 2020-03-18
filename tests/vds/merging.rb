@@ -74,7 +74,7 @@ class MergingTest < PersistentProviderTest
     app = default_app.num_nodes(2).
             redundancy(num_copies) # music SD added by default
     if include_2nd_doctype
-      app.sd(VDS + 'searchdefinitions/banana.sd')
+      app.sd(VDS + 'schemas/banana.sd')
     end
     app
   end

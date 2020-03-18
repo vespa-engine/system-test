@@ -68,7 +68,7 @@ class DistributorDown < MultiProviderStorageTest
                   group(
                       NodeGroup.new(1, "switch1").
                       node(NodeSpec.new("node1", 1))))).
-      sd(VDS + "/searchdefinitions/music.sd").
+      sd(VDS + "/schemas/music.sd").
       transition_time(0)
     deploy_app(app)
     start
