@@ -10,7 +10,7 @@ class LoadTypes < StreamingSearchTest
     app = SearchApp.new.
       enable_http_gateway.
       streaming().
-      cluster(SearchCluster.new.sd(VDS+"/schemas/music.sd").
+      cluster(SearchCluster.new.sd(VDS+"/searchdefinitions/music.sd").
               num_parts(1).storage_cluster("storage")).
       storage(StorageCluster.new("storage", 1).
               group(NodeGroup.new(0, "mygroup").default_nodes(1, 0))).

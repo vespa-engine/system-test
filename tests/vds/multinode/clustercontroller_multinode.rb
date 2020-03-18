@@ -15,7 +15,7 @@ class ClusterControllerMultiNodeTest < VdsTest
     @valgrind = false
     set_owner("vekterli")
 
-    @sdf = VDS + "schemas/music.sd"
+    @sdf = VDS + "searchdefinitions/music.sd"
     @two = selfdir + "app2"
     @four = selfdir + "app4"
     puts "[progress] Using #{@sdf}"

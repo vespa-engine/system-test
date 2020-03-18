@@ -77,6 +77,17 @@ class Content
     @storage_clusters
   end
 
+  # Global sd files are registered outside of search clusters. If
+  # there is only the default cluster, there are no global sd files.
+  def global_sd_files_xml(indent)
+    return "" unless @use_global_sd_files
+    XmlHelper.new(indent).
+      tag("searchdefinitions").
+        list_do(@sd_files) { |helper, sd|
+          helper.tag("searchdefinition", :name => File.basename(sd.file_name, '.sd')).
+            close_tag }.to_s
+  end
+
   def to_indexed_xml(indent)
     XmlHelper.new(indent).
       to_xml(@search_cfg_overrides).
