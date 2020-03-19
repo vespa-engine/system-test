@@ -71,6 +71,8 @@ class NearestNeighborTest < IndexedSearchTest
     assert_nearest_docs(query_props, 1, [[0,c2,s2+1],[5,0,0.8]], {:text => "0", :combined => true})
     assert_nearest_docs(query_props, 1, [[0,c2,s2],[1,0,0.8],[6,0,0.6]], {:text => "1", :combined => true})
     assert_nearest_docs(query_props, 1, [[0,c2,s2],[2,0,0.6],[7,0,0.4]], {:text => "2", :combined => true})
+
+    assert_nearest_docs(query_props, 1, [[7,0,0.2],[0,0.01,0.1]], {:text => "7", :combined => true, :x_0 => -99})
   end
 
   def get_docid(i)
@@ -80,15 +82,16 @@ class NearestNeighborTest < IndexedSearchTest
   X_1_POS = 3
 
   def feed_docs
+    # text field for 10 documents:
+    txt = [ "0 x x x 0", "x 1 x x 1", "x x 2 x 2", "x x x 3 3", " 4 x x x 4",
+            "x 0 x x 5", "x x 1 x 6", "x x x 2 7", "3 x x x 8", " x 4 x x 9" ]
     # Inserting one and one document ensures the same (and deterministic) order of the documents on the content node.
     # This means we can change "targetNumHits" and get deterministic behaviour.
     for i in 0...10 do
-      txt = [ 17, 17, 17, 17, i ]
-      txt[i % 4] = (i % 5)
       doc = Document.new("test", get_docid(i)).
         # TODO: Collapse back to 'pos' when we can choose which algorithm to run in the query.
         add_field("pos", { "values" => [i, X_1_POS] }).
-        add_field("text", txt.join(' ')).
+        add_field("text", txt[i]).
         add_field("filter", "#{i % 2}")
       vespa.document_api_v1.put(doc)
     end
