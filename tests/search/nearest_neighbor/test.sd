@@ -21,13 +21,13 @@ search test {
       expression: sqrt(sum(join(query(qpos_float), attribute(pos), f(x,y)((x-y)*(x-y)))))
     }
     first-phase {
-      expression: 15 - distance(nns)
+      expression: 15 - distance(label,nns)
     }
     summary-features {
       euclidean_distance_qpos_double
       euclidean_distance_qpos_float
       distance(pos)
-      distance(nns)
+      distance(label,nns)
     }
   }
 }
