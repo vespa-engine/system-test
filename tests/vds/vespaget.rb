@@ -49,7 +49,7 @@ class VespaGet < MultiProviderStorageTest
   end
 
   def test_vespaget_nonstandard_clustername
-    sd_file = VDS + "/searchdefinitions/music.sd"
+    sd_file = VDS + "/schemas/music.sd"
     deploy_app(StorageApp.new.
                enable_http_gateway.
                default_cluster("dummy").sd(sd_file).
