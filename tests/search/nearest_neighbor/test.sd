@@ -28,6 +28,10 @@ search test {
       euclidean_distance_qpos_float
       distance(pos)
       distance(label,nns)
+      closeness(pos)
+      closeness(label,nns)
+      rawScore(pos)
+      itemRawScore(nns)
     }
   }
 }

@@ -84,9 +84,14 @@ class NearestNeighborTest < IndexedSearchTest
       exp_docid = exp_results[i][0]
       exp_distance = exp_results[i][1]
       exp_score = 15 - exp_distance
+      exp_closeness = 1.0 / (1.0 + exp_distance)
       exp_features = { "rankingExpression(euclidean_distance_#{query_tensor})" => exp_distance,
                        "distance(#{doc_tensor})" => exp_distance,
-                       "distance(label,nns)" => exp_distance }
+                       "distance(label,nns)" => exp_distance,
+                       "closeness(#{doc_tensor})" => exp_closeness,
+                       "closeness(label,nns)" => exp_closeness,
+                       "rawScore(#{doc_tensor})" => exp_closeness,
+                       "itemRawScore(nns)" => exp_closeness }
 
       assert_field_value(result, "documentid", get_docid(exp_docid), i)
       assert_relevancy(result, exp_score, i)
