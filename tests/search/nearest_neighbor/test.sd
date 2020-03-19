@@ -12,6 +12,9 @@ search test {
         }
       }
     }
+    field text type string {
+      indexing: index | summary
+    }
   }
   rank-profile default {
     function euclidean_distance_qpos_double() {
