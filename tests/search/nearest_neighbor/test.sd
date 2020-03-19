@@ -37,4 +37,16 @@ search test {
       itemRawScore(nns)
     }
   }
+  rank-profile combined {
+    first-phase {
+      expression: 10*closeness(label,nns) + fieldMatch(text).earliness
+    }
+    summary-features {
+      closeness(pos)
+      closeness(label,nns)
+      rawScore(pos)
+      itemRawScore(nns)
+      fieldMatch(text).earliness
+    }
+  }
 }
