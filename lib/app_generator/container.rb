@@ -136,7 +136,7 @@ class Searching
     XmlHelper.new(indent)\
       .tag_always("search")\
       .to_xml(@config)\
-      .to_xml(@chains)\
+      .to_xml(@chains, :to_container_xml)\
       .to_xml(@renderers)\
       .to_s
   end
