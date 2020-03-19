@@ -59,6 +59,18 @@ class NearestNeighborTest < IndexedSearchTest
     # Bruteforce is used always when iterator is NOT strict:
     assert_nearest_docs(query_props, 6, [[0,2],[2,4],[4,6],[6,8],[8,10]], {:filter => "0"})
     assert_nearest_docs(query_props, 6, [[1,3],[3,5],[5,7],[7,9],[9,11]], {:filter => "1"})
+
+    # with OR query
+    c2 = 1.0 / (1.0 + 2)
+    s2 = 10.0 / (1.0 + 2)
+    assert_nearest_docs(query_props, 1, [[0,c2,s2],[6,0,0.2]], {:text => "6", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,c2,s2],[7,0,0.2]], {:text => "7", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,c2,s2],[8,0,0.2]], {:text => "8", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,c2,s2],[9,0,0.2]], {:text => "9", :combined => true})
+
+    assert_nearest_docs(query_props, 1, [[0,c2,s2+1],[5,0,0.8]], {:text => "0", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,c2,s2],[1,0,0.8],[6,0,0.6]], {:text => "1", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,c2,s2],[2,0,0.6],[7,0,0.4]], {:text => "2", :combined => true})
   end
 
   def get_docid(i)
@@ -71,10 +83,12 @@ class NearestNeighborTest < IndexedSearchTest
     # Inserting one and one document ensures the same (and deterministic) order of the documents on the content node.
     # This means we can change "targetNumHits" and get deterministic behaviour.
     for i in 0...10 do
+      txt = [ 17, 17, 17, 17, i ]
+      txt[i % 4] = (i % 5)
       doc = Document.new("test", get_docid(i)).
         # TODO: Collapse back to 'pos' when we can choose which algorithm to run in the query.
         add_field("pos", { "values" => [i, X_1_POS] }).
-        add_field("text", "txt #{i} with #{i % 2} and #{i % 3} plus #{i+1000}").
+        add_field("text", txt.join(' ')).
         add_field("filter", "#{i % 2}")
       vespa.document_api_v1.put(doc)
     end
@@ -95,9 +109,17 @@ class NearestNeighborTest < IndexedSearchTest
   end
 
   def assert_single_doc(exp_result, result, i, qp)
-      query_tensor = qp[:query_tensor]
-      doc_tensor = qp[:doc_tensor]
-      exp_docid = exp_result[0]
+    query_tensor = qp[:query_tensor]
+    doc_tensor = qp[:doc_tensor]
+    exp_docid = exp_result[0]
+    if qp[:combined]
+      exp_closeness = exp_result[1]
+      exp_score = exp_result[2]
+      exp_features = { "closeness(#{doc_tensor})" => exp_closeness,
+                       "closeness(label,nns)" => exp_closeness,
+                       "rawScore(#{doc_tensor})" => exp_closeness,
+                       "itemRawScore(nns)" => exp_closeness }
+    else
       exp_distance = exp_result[1]
       exp_score = 15 - exp_distance
       exp_closeness = 1.0 / (1.0 + exp_distance)
@@ -108,10 +130,10 @@ class NearestNeighborTest < IndexedSearchTest
                        "closeness(label,nns)" => exp_closeness,
                        "rawScore(#{doc_tensor})" => exp_closeness,
                        "itemRawScore(nns)" => exp_closeness }
-
-      assert_field_value(result, "documentid", get_docid(exp_docid), i)
-      assert_relevancy(result, exp_score, i)
-      assert_features(exp_features, JSON.parse(result.hit[i].field["summaryfeatures"]))
+    end
+    assert_field_value(result, "documentid", get_docid(exp_docid), i)
+    assert_relevancy(result, exp_score, i)
+    assert_features(exp_features, JSON.parse(result.hit[i].field["summaryfeatures"]))
   end
 
   def get_query(qprops)
@@ -130,6 +152,7 @@ class NearestNeighborTest < IndexedSearchTest
     result += " and filter contains \"#{filter}\"" if filter
     result += " or text contains \"#{text}\"" if text
     result += ";&ranking.features.query(#{query_tensor})={{x:0}:#{x_0},{x:1}:#{x_1}}"
+    result += "&ranking.profile=combined" if qprops[:combined]
     return result
   end
 
