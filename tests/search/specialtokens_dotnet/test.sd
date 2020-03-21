@@ -3,6 +3,7 @@ search test {
     document test {
         field my_str type string { 
             indexing: index
+            query-command: phrase-segmenting
         }
     }
 }
