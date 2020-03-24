@@ -1,0 +1,24 @@
+search geo {
+  document geo {
+    field pos type tensor(x[2]) {
+      indexing: attribute | index | summary
+      index {
+        hnsw {
+          max-links-per-node: 4
+          distance-metric: GeoDegrees
+        }
+      }
+    }
+    field text type string {
+      indexing: index | summary
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: closeness(label,nns)
+    }
+    summary-features {
+      distance(pos)
+    }
+  }
+}
