@@ -11,6 +11,7 @@ class AutomaticOutOfServiceTest < SearchTest
 
   def test_multicluster_stop_nodes
     deploy_app(SearchApp.new.
+        num_parts(2).
         cluster(
             SearchCluster.new("bluemusic").sd(SEARCH_DATA + "music.sd").
                 doc_type("music", "music.mid==2")).
