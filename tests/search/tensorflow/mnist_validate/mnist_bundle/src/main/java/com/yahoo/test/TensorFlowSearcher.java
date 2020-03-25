@@ -33,28 +33,8 @@ public class TensorFlowSearcher extends Searcher {
 
     private final SavedModelBundle tensorFlowModel;
 
-    private void loadExtraContribModules() {
-        String version = TensorFlow.version();
-        log.info("TensorFlow version " + version);
-        if ( ! tensorFlowVersion.equals(version)) {
-            throw new IllegalStateException("Got tensorflow version " + version + " instead of expected " + tensorFlowVersion);
-        }
-        byte [] before = TensorFlow.registeredOpList();
-        log.info("register op list contains " + before.length + " bytes");
-        byte [] added = TensorFlow.loadLibrary("libtensorflow_contrib.so");
-        if (added.length == 0) {
-            throw new IllegalStateException("Only got " + added.length + " bytes from  TensorFlow.loadLibrary('libtensorflow_contrib.so'). Requires > 0");
-        }
-        log.info("Added libtensorflow_contrib.so: op list contains " + added.length + " bytes");
-        byte [] after = TensorFlow.registeredOpList();
-        log.info("register op list contains " + after.length + " bytes");
-        if (after.length <= before.length) {
-            throw new IllegalStateException("Nothing new contributed from TensorFlow.loadLibrary('libtensorflow_contrib.so')");
-        }
-    }
     public TensorFlowSearcher(FileAcquirer fileAcquirer, TfModelConfig config) {
         super();
-        loadExtraContribModules();
         try {
             File tfModel = fileAcquirer.waitFor(config.model(), 5, TimeUnit.MINUTES);
             tensorFlowModel = SavedModelBundle.load(tfModel.getAbsolutePath(), "serve");
