@@ -147,11 +147,16 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     container.copy(@query_file, dirs.tmpdir) # If running locally, just overwrites file with itself.
   end
 
+  def my_cluster
+    vespa.storage['search']
+  end
+
   def restart_all_distributors
     [0, 1, 2].each {|i|
-      vespa.storage['search'].distributor[i.to_s].restart
+      my_cluster.distributor[i.to_s].restart
     }
-    vespa.storage['search'].wait_until_ready
+    my_cluster.wait_for_node_count('distributor', 3, 'u')
+    my_cluster.wait_until_ready
   end
 
   def post_process_fbench_results(fbench, db_type, stale_reads, edge)
@@ -168,7 +173,7 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     fbench = with_background_fbench(query_file: @query_file, clients: FBENCH_CLIENTS, runtime_sec: FBENCH_TRANSITION_RUNTIME_SEC) do
       sleep 10
       puts "Orchestrated take-down of node 0"
-      vespa.storage['search'].get_master_cluster_controller.set_node_state('search', 'storage', 0, 's:m', 'safe')
+      my_cluster.get_master_cluster_controller.set_node_state('search', 'storage', 0, 's:m', 'safe')
     end
     post_process_fbench_results(fbench, db_type, stale_reads, DOWN)
   end
@@ -178,7 +183,7 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     fbench = with_background_fbench(query_file: @query_file, clients: FBENCH_CLIENTS, runtime_sec: FBENCH_TRANSITION_RUNTIME_SEC) do
       sleep 10
       puts "Taking node 0 back up"
-      vespa.storage['search'].get_master_cluster_controller.set_node_state('search', 'storage', 0, 's:u', 'safe')
+      my_cluster.get_master_cluster_controller.set_node_state('search', 'storage', 0, 's:u', 'safe')
     end
     post_process_fbench_results(fbench, db_type, stale_reads, UP)
   end
