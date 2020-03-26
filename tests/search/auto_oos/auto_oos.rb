@@ -14,9 +14,11 @@ class AutomaticOutOfServiceTest < SearchTest
         num_parts(2).
         cluster(
             SearchCluster.new("bluemusic").sd(SEARCH_DATA + "music.sd").
-                doc_type("music", "music.mid==2")).
+            num_parts(2).
+            doc_type("music", "music.mid==2")).
         cluster(
             SearchCluster.new("orangemusic").sd(SEARCH_DATA + "music.sd").
+            num_parts(2).
             doc_type("music", "music.mid==3")))
     start
     assert_response_code_from_vip_handler("200")
