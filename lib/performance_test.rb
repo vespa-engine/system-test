@@ -65,7 +65,7 @@ class PerformanceTest < TestCase
   end
 
   def feeder_binary
-    "vespa-feeder --abortondataerror no --abortonsenderror no"
+    "vespa-feed-perf"
   end
 
   def prepare
