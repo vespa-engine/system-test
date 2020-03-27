@@ -558,7 +558,7 @@ class GarbageCollectBM < PerformanceTest
       subhistogram = read_histogram(dirs.tmpdir + addname + ".histogram")
       subdocs = histogram_sum(subhistogram)
       puts "Feeding #{addname} (#{subdocs} docs)"
-      feed(:file => dirs.tmpdir + addname, :timeout => 240)
+      feed(:file => dirs.tmpdir + addname)
       merge_histograms(histogram, subhistogram)
       docs = histogram_sum(histogram)
       assert(docs == oldhitcount + subdocs)
@@ -574,7 +574,7 @@ class GarbageCollectBM < PerformanceTest
       subhistogram = read_histogram(dirs.tmpdir + addname + ".histogram")
       subdocs = histogram_sum(subhistogram)
       puts "Feeding #{addname} (#{subdocs} docs)"
-      feed(:file => dirs.tmpdir + addname, :timeout => 240)
+      feed(:file => dirs.tmpdir + addname)
       merge_histograms(histogram, subhistogram)
       docs = histogram_sum(histogram)
       assert(docs == oldhitcount + subdocs)
@@ -582,7 +582,7 @@ class GarbageCollectBM < PerformanceTest
       tmphitcount = docs
       wait_for_hitcount(hcs, tmphitcount)
       puts "Feeding #{addname}c"
-      feed(:file => dirs.tmpdir + addname + "c", :timeout => 240)
+      feed(:file => dirs.tmpdir + addname + "c")
       wait_for_hitcount(hcs, tmphitcount + canaries)
       showhits
       ts = tsstart + perchunk
@@ -617,7 +617,7 @@ class GarbageCollectBM < PerformanceTest
       restart_node(app, false)
       wait_for_hitcount(hcs, newhitcount, @restartwait)
       puts "Feeding #{addname}c"
-      feed(:file => dirs.tmpdir + addname + "c", :timeout => 240)
+      feed(:file => dirs.tmpdir + addname + "c")
       wait_for_hitcount(hcs, newhitcount + canaries)
       sc = get_base_sc(1)
       app = get_app(sc)
@@ -642,7 +642,7 @@ class GarbageCollectBM < PerformanceTest
     chunks.times do |i|
       rmname = rmname(label, i)
       puts "Feeding #{rmname}"
-      feed(:file => dirs.tmpdir + rmname, :timeout => 240)
+      feed(:file => dirs.tmpdir + rmname)
     end
     wait_for_hitcount(hcs, 0)
   end
