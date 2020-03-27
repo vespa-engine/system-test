@@ -102,7 +102,7 @@ class ParentChildPerfTest < PerformanceTest
                parameter_filler(ADVERTISER_CAMPAIGN_RATIO, advertiser_campaign_ratio),
                parameter_filler(FIELD_TYPE, field_type),
                parameter_filler(MATCH_TYPE, match_type)]
-    run_feeder(feed_file, fillers, { :json => true })
+    run_feeder(feed_file, fillers)
     profiler_report(profiler_label(mode, campaign_ad_ratio, advertiser_campaign_ratio, field_type, match_type))
   end
 
