@@ -122,16 +122,18 @@ module Feeder
   end
 
   def fetch_to_localfile(filename, params={})
-    localfilename = filename
     if params[:webhost]
-      localfilename = fetchfile(filename)
+      return fetchfile(filename)
+    elsif params[:localfile]
+      return filename
+    else
+      return create_tmpfeed(params)
     end
-    localfilename
   end
 
   # Feeds a single file with name _filename_ without any extra generated XML data.
   def feedfile(filename, params={})
-    localfilename = fetch_to_localfile
+    localfilename = fetch_to_localfile(filename, params)
     feedlocalfile(localfilename, params)
   end
 
