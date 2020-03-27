@@ -122,9 +122,8 @@ module Feeder
   end
 
   def fetch_to_localfile(filename, params={})
-    if params[:localfile]
-      localfilename = filename
-    else
+    localfilename = filename
+    if params[:webhost]
       localfilename = fetchfile(filename)
     end
     localfilename
