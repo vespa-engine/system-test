@@ -12,7 +12,7 @@ module Feeder
   # Creates a temporary feed file using create_tmpfeed and feeds it
   # using feedlocalfile.
   def feed(params={})
-    feed_stream(params[:file], params)
+    feed_stream_file(params[:file], params)
   end
 
   def decompressfile(cmd, source, handler)
@@ -125,7 +125,7 @@ module Feeder
     if params[:localfile]
       localfilename = filename
     else
-      localfilename = fetchfiles(params.merge({:file => filename})).first
+      localfilename = fetchfile(filename)
     end
     localfilename
   end
@@ -145,10 +145,14 @@ module Feeder
   # Pipe the output of _command_ into the feeder binary instead of using an
   # explicit file. The process invoked must have a well-defined lifetime and
   # terminate itself when feeding has completed.
-  def feed_stream(filename, params={})
+  def feed_stream_file(filename, params={})
     file = fetch_to_localfile(filename, params)
     command = select_cat(file)
-    feedercmd = "#{command} #{file} | #{testcase.feeder_binary} "
+    feed_stream("#{command} #{file}", params)
+  end
+
+  def feed_stream(command, params)
+    feedercmd = "#{command} | #{testcase.feeder_binary} "
     feedercmd << build_feeder_cmd_params(params)
     execute(feedercmd, params)
   end
