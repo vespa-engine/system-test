@@ -12,8 +12,7 @@ module Feeder
   # Creates a temporary feed file using create_tmpfeed and feeds it
   # using feedlocalfile.
   def feed(params={})
-    tmpfeed = create_tmpfeed(params)
-    feedlocalfile(tmpfeed, params.merge({:deletefeed => true}))
+    feed_stream(params[:file], params)
   end
 
   def decompressfile(cmd, source, handler)
@@ -22,20 +21,23 @@ module Feeder
     end
   end
 
-  def catfile(source, handle)
-    if source.match /[.]gz$/
-      decompressfile("zcat", source, handle)
-    elsif source.match /[.]xz$/
-      decompressfile("xzcat", source, handle)
-    elsif source.match /[.]bz2$/
-      decompressfile("bzcat", source, handle)
-    elsif source.match /[.]zst$/
-      decompressfile("zstdcat", source, handle)
-    elsif source.match /[.]lz4$/
-      decompressfile("lz4cat", source, handle)
-    else
-      decompressfile("cat", source, handle)
+  def select_cat(filename)
+    if filename.match /[.]gz$/
+      return "zcat"
+    elsif filename.match /[.]xz$/
+      return "xzcat"
+    elsif filename.match /[.]bz2$/
+      return "bzcat"
+    elsif filename.match /[.]zst$/
+      return "zstdcat"
+    elsif filename.match /[.]lz4$/
+      return "lz4cat"
     end
+    return "cat"
+  end
+
+  def catfile(source, handle)
+    decompressfile(select_cat(source), source, handle)
   end
 
   class Writer
@@ -119,13 +121,18 @@ module Feeder
     tmpfeed
   end
 
-  # Feeds a single file with name _filename_ without any extra generated XML data.
-  def feedfile(filename, params={})
+  def fetch_to_localfile(filename, params={})
     if params[:localfile]
       localfilename = filename
     else
       localfilename = fetchfiles(params.merge({:file => filename})).first
     end
+    localfilename
+  end
+
+  # Feeds a single file with name _filename_ without any extra generated XML data.
+  def feedfile(filename, params={})
+    localfilename = fetch_to_localfile
     feedlocalfile(localfilename, params)
   end
 
@@ -138,8 +145,10 @@ module Feeder
   # Pipe the output of _command_ into the feeder binary instead of using an
   # explicit file. The process invoked must have a well-defined lifetime and
   # terminate itself when feeding has completed.
-  def feed_stream(command, params={})
-    feedercmd = "#{command} | #{testcase.feeder_binary} "
+  def feed_stream(filename, params={})
+    file = fetch_to_localfile(filename, params)
+    command = select_cat(file)
+    feedercmd = "#{command} #{file} | #{testcase.feeder_binary} "
     feedercmd << build_feeder_cmd_params(params)
     execute(feedercmd, params)
   end
