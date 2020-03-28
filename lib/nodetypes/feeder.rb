@@ -133,6 +133,7 @@ module Feeder
 
   # Feeds a single file with name _filename_ without any extra generated XML data.
   def feedfile(filename, params={})
+    params = params.merge(:file => filename)
     localfilename = fetch_to_localfile(filename, params)
     feedlocalfile(localfilename, params)
   end
