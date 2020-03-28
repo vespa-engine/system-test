@@ -10,7 +10,7 @@ require 'environment'
 module Feeder
 
   # Creates a temporary feed file using create_tmpfeed and feeds it
-  # using feedlocalfile.
+  # using feed_stream.
   def feed(params={})
     feed_stream_file(params[:file], params)
   end
@@ -19,21 +19,6 @@ module Feeder
     IO.popen("#{cmd} #{source}") do |feed|
       handler.handle(feed)
     end
-  end
-
-  def select_cat(filename)
-    if filename.match /[.]gz$/
-      return "zcat"
-    elsif filename.match /[.]xz$/
-      return "xzcat"
-    elsif filename.match /[.]bz2$/
-      return "bzcat"
-    elsif filename.match /[.]zst$/
-      return "zstdcat"
-    elsif filename.match /[.]lz4$/
-      return "lz4cat"
-    end
-    return "cat"
   end
 
   def catfile(source, handle)
@@ -118,6 +103,7 @@ module Feeder
       end
     end
     puts "Created #{tmpfeed}"
+    params[:deletefeed] = true
     tmpfeed
   end
 
@@ -134,14 +120,13 @@ module Feeder
   # Feeds a single file with name _filename_ without any extra generated XML data.
   def feedfile(filename, params={})
     params = params.merge(:file => filename)
-    localfilename = fetch_to_localfile(filename, params)
-    feedlocalfile(localfilename, params)
+    feed_stream_file(filename, params)
   end
 
   # Writes the feed buffer to a file and feeds it.
   def feedbuffer(buffer, params={})
     tmpfeed = create_tmpfeed(params.merge({:buffer => buffer}))
-    feedlocalfile(tmpfeed, params)
+    feed_stream_file(tmpfeed, params.merge({:file => tmpfeed, :localfile => true}))
   end
 
   # Pipe the output of _command_ into the feeder binary instead of using an
@@ -150,11 +135,24 @@ module Feeder
   def feed_stream_file(filename, params={})
     file = fetch_to_localfile(filename, params)
     command = select_cat(file)
-    feed_stream("#{command} #{file}", params)
+    feeder_output = feed_stream("#{command} #{file}", params)
+    if params[:deletefeed]
+      File.delete(file) if File.exist?(file)
+    end
+    feeder_output
   end
 
   def feed_stream(command, params)
-    feedercmd = "#{command} | #{testcase.feeder_binary} "
+    if params[:do_sync]
+      execute("sync")
+    end
+    if !params[:client]
+      # Set default feeder to 'vespa-feeder'
+      params[:client] = :vespa_feeder
+    end
+
+    feeder = select_feeder(params)
+    feedercmd = "#{command} | #{feeder} "
     feedercmd << build_feeder_cmd_params(params)
     execute(feedercmd, params)
   end
@@ -172,9 +170,6 @@ module Feeder
     end
     if params[:maxpending]
       p += "--maxpending #{params[:maxpending]} "
-      # use mbus dynamic throttling policy
-      #    else
-      #      p += "--maxpending 32 "
     end
     if params[:numthreads]
       p += "--numthreads #{params[:numthreads]} "
@@ -228,22 +223,29 @@ module Feeder
     p
   end
 
-
   private
   def vespa_http_client_cmd
     "java -cp #{Environment.instance.vespa_home}/lib/jars/vespa-http-client-jar-with-dependencies.jar com.yahoo.vespa.http.client.runner.Runner "
   end
 
-  # Feeds a file with name _file_name_ using a feeder and returns the output.
   private
-  def feedlocalfile(file_name, params={})
-    if params[:do_sync]
-      execute("sync")
+  def select_cat(filename)
+    if filename.match /[.]gz$/
+      return "zcat"
+    elsif filename.match /[.]xz$/
+      return "xzcat"
+    elsif filename.match /[.]bz2$/
+      return "bzcat"
+    elsif filename.match /[.]zst$/
+      return "zstdcat"
+    elsif filename.match /[.]lz4$/
+      return "lz4cat"
     end
-    if !params[:client]
-      # Set default feeder to 'vespa-feeder'
-      params[:client] = :vespa_feeder
-    end
+    return "cat"
+  end
+
+  private
+  def select_feeder(params)
     if params[:client] == :vespa_feeder
       feeder_cmd = "#{testcase.feeder_binary} "
     elsif params[:client] == :vespa_http_client
@@ -251,15 +253,7 @@ module Feeder
     else
       raise "Unsupported feed client '#{client}'"
     end
-
-    feeder_cmd << build_feeder_cmd_params(params, file_name)
-    feeder_output = execute(feeder_cmd, params)
-
-    execute("cat #{file_name}") if params[:catfeed]
-    if params[:deletefeed]
-      File.delete(file_name) if File.exist?(file_name)
-    end
-    feeder_output
+    return feeder_cmd
   end
 
 end
