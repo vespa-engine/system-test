@@ -30,13 +30,13 @@ class TensorUpdatePerfTest < PerformanceTest
     @num_docs = 100000
     feed_docs(@num_docs)
 
-    feed_and_profile("assign", @num_docs, 5, 10)
-    feed_and_profile("assign", @num_docs, 1, 100)
-    feed_and_profile("assign", @num_docs/10, 1, 1000)
+    feed_and_profile("assign", @num_docs, 10, 10)
+    feed_and_profile("assign", @num_docs, 5, 100)
+    feed_and_profile("assign", @num_docs/10, 5, 1000)
 
-    feed_and_profile("modify", @num_docs, 5, 10)
-    feed_and_profile("modify", @num_docs, 5, 100)
-    feed_and_profile("modify", @num_docs, 5, 1000)
+    feed_and_profile("modify", @num_docs, 10, 10)
+    feed_and_profile("modify", @num_docs, 10, 100)
+    feed_and_profile("modify", @num_docs, 10, 1000)
   end
 
   def feeder_numthreads
