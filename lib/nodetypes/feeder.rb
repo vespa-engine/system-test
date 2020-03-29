@@ -174,6 +174,12 @@ module Feeder
     if params[:numthreads]
       p += "--numthreads #{params[:numthreads]} "
     end
+    if params[:numconnections]
+      p += "--numconnections #{params[:numconnections]} "
+    end
+    if params[:nummessages]
+      p += "--nummessages #{params[:nummessages]} "
+    end
     if params[:timeout]
       p += "--timeout #{params[:timeout]} "
     end
