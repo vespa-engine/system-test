@@ -3,7 +3,7 @@ search geo {
     field pos type tensor(x[2]) {
       indexing: attribute | index | summary
       index {
-        distance-metric: GeoDegrees
+        distance-metric: geodegrees
         hnsw {
           max-links-per-node: 4
         }
