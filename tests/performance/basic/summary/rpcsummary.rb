@@ -81,7 +81,7 @@ class RpcSummaryTest < PerformanceTest
                qrserver(QrserverCluster.new.jvmargs("-verbose:gc -Xms16g -Xmx16g -XX:NewRatio=1 -XX:+PrintGCDetails")).
                threads_per_search(1))
     start
-    feed_params[:dummy] = :avoidgc
+    feed_params = { :dummy => :avoidgc}
     feedbuffer(@feedbuffer, feed_params)
 
     container = (vespa.qrserver["0"] or vespa.container.values.first)
