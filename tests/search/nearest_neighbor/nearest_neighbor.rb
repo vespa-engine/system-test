@@ -13,6 +13,13 @@ class NearestNeighborTest < IndexedSearchTest
     start
     feed_docs
 
+    run_all_tests
+    assert_flushing_of_hnsw_index
+    restart_proton("test", 10)
+    run_all_tests
+  end
+
+  def run_all_tests
     run_brute_force_tests({:query_tensor => "qpos_double"})
     run_brute_force_tests({:query_tensor => "qpos_float"})
     run_hnsw_tests({:query_tensor => "qpos_double"})
@@ -73,6 +80,23 @@ class NearestNeighborTest < IndexedSearchTest
     assert_nearest_docs(query_props, 1, [[0,c2,s2],[2,0,0.6],[7,0,0.4]], {:text => "2", :combined => true})
 
     assert_nearest_docs(query_props, 1, [[7,0,0.2],[0,0.01,0.1]], {:text => "7", :combined => true, :x_0 => -99})
+  end
+
+  def assert_flushing_of_hnsw_index
+    vespa.search["search"].first.trigger_flush
+    file_name = full_attribute_path("pos/snapshot-22/pos.nnidx")
+    result = nil
+    30.times do
+      puts "Checking if hnsw index file '#{file_name}' exists..."
+      result = vespa.adminserver.remote_eval("File.exists?(\"#{file_name}\")")
+      break if result == true
+      sleep 1
+    end
+    assert_equal(true, result, "Hnsw index file '#{file_name}' does not exists")
+  end
+
+  def full_attribute_path(attr_file)
+    "#{Environment.instance.vespa_home}/var/db/vespa/search/cluster.search/n0/documents/test/0.ready/attribute/#{attr_file}"
   end
 
   def get_docid(i)
