@@ -80,6 +80,11 @@ class NearestNeighborTest < IndexedSearchTest
     assert_nearest_docs(query_props, 1, [[0,c2,s2],[2,0,0.6],[7,0,0.4]], {:text => "2", :combined => true})
 
     assert_nearest_docs(query_props, 1, [[7,0,0.2],[0,0.01,0.1]], {:text => "7", :combined => true, :x_0 => -99})
+
+    stats = get_nni_stats('pos')
+    puts "Nearest Neighbor Index statistics: #{stats}"
+    assert_equal(11, stats['nodes'])
+    assert_equal(0, stats['unreachable_nodes'])
   end
 
   def assert_flushing_of_hnsw_index
@@ -181,6 +186,14 @@ class NearestNeighborTest < IndexedSearchTest
     result += ";&ranking.features.query(#{query_tensor})={{x:0}:#{x_0},{x:1}:#{x_1}}"
     result += "&ranking.profile=combined" if qprops[:combined]
     return result
+  end
+
+  def get_nni_stats(attribute)
+    uri = "/documentdb/test/subdb/ready/attribute/#{attribute}"
+    stats = vespa.search["search"].first.get_state_v1_custom_component(uri)
+    assert(stats['tensor'])
+    assert(stats['tensor']['nearest_neighbor_index'])
+    stats['tensor']['nearest_neighbor_index']
   end
 
   def teardown
