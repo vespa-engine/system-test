@@ -65,8 +65,8 @@ module Perf
         result.add_metric('maxresponsetime', @output[9])
         result.add_metric('avgresponsetime', @output[10])
         result.add_metric('95 percentile', @output[15])
-        result.add_metric('99 percentile', @output[16])
-        result.add_metric('qps', (@output[17].to_i * qps_scale_factor).to_s)
+        result.add_metric('99 percentile', @output[17])
+        result.add_metric('qps', (@output[23].to_i * qps_scale_factor).to_s)
         result.add_parameter('clients', @clients)
       end
     end
