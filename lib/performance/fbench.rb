@@ -43,6 +43,13 @@ module Perf
       @output[15]
     end
 
+    # The qps_scale_factor is used to scale up the QPS value,
+    # e.g. when calculating the effective QPS for boolean search with subqueries.
+    # For the boolean search benchmarking, the number of subqueries per query is used as scale factor.
+    def qps(qps_scale_factor = 1)
+      @output[23].to_f * qps_scale_factor
+    end
+
     def http_status_code_distribution
       hist = {}
       @output_str.each_line do |line|
@@ -66,7 +73,7 @@ module Perf
         result.add_metric('avgresponsetime', @output[10])
         result.add_metric('95 percentile', @output[15])
         result.add_metric('99 percentile', @output[17])
-        result.add_metric('qps', (@output[23].to_i * qps_scale_factor).to_s)
+        result.add_metric('qps', qps(qps_scale_factor).to_s)
         result.add_parameter('clients', @clients)
       end
     end
