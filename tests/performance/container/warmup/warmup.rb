@@ -75,8 +75,8 @@ class ContainerWarmup < PerformanceTest
     total_time = 0
     (0..120).each { |i|
       system.start
-      result = fbench.query(query_file)
-      qps = result[17].to_f
+      fbench.query(query_file)
+      qps = fbench.qps
       total_time += (num_calls / qps)
       request_rates[i] = qps
       times[i] = total_time
