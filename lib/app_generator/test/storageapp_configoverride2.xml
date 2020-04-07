@@ -4,9 +4,6 @@
     <adminserver hostalias="node1" />
   </admin>
 
-  <config name="vespa.config.content.core.stor-distributormanager">
-    <use_btree_database>true</use_btree_database>
-  </config>
   <config name="metricsmanager">
     <snapshot>
       <periods operation="append">10</periods>
