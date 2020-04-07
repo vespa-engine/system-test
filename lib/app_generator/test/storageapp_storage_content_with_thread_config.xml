@@ -4,10 +4,6 @@
     <adminserver hostalias="node1" />
   </admin>
 
-  <config name="vespa.config.content.core.stor-distributormanager">
-    <use_btree_database>true</use_btree_database>
-  </config>
-
   <container id="default" version="1.0">
     <search />
     <document-processing />
