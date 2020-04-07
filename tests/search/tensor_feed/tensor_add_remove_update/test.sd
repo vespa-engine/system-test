@@ -13,6 +13,9 @@ search test {
     field mixed_field type tensor(x{},y[2]) {
       indexing: summary
     }
+    field non_existing_sparse_attr type tensor(x{}) {
+      indexing: attribute | summary
+    }
   }
   rank-profile default {
     first-phase {

@@ -36,6 +36,14 @@
             { "address": { "x": "c", "y": "1" }, "value": 8.0 }
           ]
         }
+      },
+      "non_existing_sparse_attr": {
+        "add": {
+          "cells": [
+            { "address": { "x": "b" }, "value": 5.0 },
+            { "address": { "x": "c" }, "value": 7.0 }
+          ]
+        }
       }
     }
   }
