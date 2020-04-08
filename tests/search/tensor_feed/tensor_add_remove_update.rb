@@ -51,6 +51,9 @@ class TensorAddRemoveUpdateTest < SearchTest
                          {'address'=>{'x'=>'b','y'=>'1'}, 'value'=>6.0},
                          {'address'=>{'x'=>'c','y'=>'0'}, 'value'=>7.0},
                          {'address'=>{'x'=>'c','y'=>'1'}, 'value'=>8.0}], doc, "mixed_field")
+
+    assert_tensor_field([{'address'=>{'x'=>'b'}, 'value'=>5.0},
+                         {'address'=>{'x'=>'c'}, 'value'=>7.0}], doc, "non_existing_sparse_attr")
   end
 
   def assert_tensor_fields_after_remove_update(doc)
