@@ -2,6 +2,7 @@
 
 require 'tempfile'
 require 'drb_endpoint'
+require 'node_server_interface'
 
 # This class is the local reference to the remote NodeServer object.
 # Each node in hosts.xml is represented by an object of this class.

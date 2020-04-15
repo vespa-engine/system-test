@@ -139,6 +139,15 @@ class TestCase
     end
   end
 
+  def self.inherited(subclass)
+    @decendants ||= []
+    @decendants << subclass
+  end
+
+  def self.decendants
+    @decendants
+  end
+
   def find_recognized_method_name(method)
     method.gsub(/^test_/, '')
   end
