@@ -32,7 +32,7 @@ class TensorEvalNormalPerfTest < TensorEvalPerfTest
       get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,              250, 17.5, 19.0),
       get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT_ARRAY,        500, 15.5, 17.2),
       get_latency_graph_for_rank_profile(DENSE_TENSOR_DOT_PRODUCT,         500, 16.5, 18.6),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,        250, 680, 735)
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,        250, 670, 730)
     ]
   end
 
