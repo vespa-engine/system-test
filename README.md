@@ -30,60 +30,13 @@ for the RPC calls.
 
 ## Install
 
-Follow these steps to install.
-
-### 1. Create CentOS 7 dev environment
-
-Follow the 'Create dev environment' section in: [Create C++ / Java dev environment on CentOS using VirtualBox and Vagrant](https://github.com/vespa-engine/vespa/blob/master/vagrant/README.md)
-
-### 2. Add Vespa systemtest runtime dependencies:
-
-<pre>sudo yum -y install \
-  libxml2-devel \
-  rh-ruby23-rubygems-devel \
-  rh-ruby23-ruby-devel \
-  rh-ruby23</pre>
-
-### 3. Add more Vespa systemtest runtime dependencies:
-
-<pre>
-sudo bash
-. /opt/rh/rh-ruby23/enable
-gem install libxml-ruby gnuplot distribution 
-exit</pre>
-
-### 4. Clone the system-test repo
-
-<pre>git clone git@github.com:vespa-engine/system-test.git</pre>
+Before running system tests, build and install Vespa following the steps in the development guide:
+[Vespa development on CentOS 7](https://github.com/vespa-engine/docker-image-dev#vespa-development-on-centos-7).
 
 ## Usage
 
-### 1. Compile vespa:
-
-<pre>cd $HOME/git/vespa
-sh bootstrap.sh java
-mvn --batch-mode --threads 2C -nsu install -DskipTests -Dmaven.javadoc.skip=true
-sh bootstrap-cpp.sh -u . .
-make -j 5
-make install</pre>
-
-### 2. Run systemtests in newly created Vespa systemtest enviroment
-
-#### 2.1 Modify .bash_profile to include the following in PATH:
-* $HOME/git/system-test/bin/
-
-#### 2.2 Ensure hostname is set to localhost
-<pre>sudo hostname localhost</pre>
-
-#### 2.3 In terminal window 1
-
-<pre>nodeserver.sh</pre>
-
-#### 2.4 In terminal window 2
-
-<pre>cd $HOME/git/system-test
-cd tests/search/basicsearch
-runtest.sh basic_search.rb</pre>
+Follow the [run system tests](https://github.com/vespa-engine/docker-image-dev#run-system-tests)
+section of the development guide.
 
 ## Contribute
 
