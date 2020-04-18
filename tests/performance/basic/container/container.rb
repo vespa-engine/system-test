@@ -46,7 +46,7 @@ class BasicContainer < PerformanceTest
             :x => 'legend',
             :y => 'qps',
             :y_min => 150000,
-            :y_max => 210000,
+            :y_max => 215000,
             :historic => true
         },
         {
