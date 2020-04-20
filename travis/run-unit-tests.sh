@@ -13,7 +13,7 @@ yum -y install \
   rh-ruby23 \
   rh-ruby23-rubygem-net-telnet
 
-source /opt/rh/devtoolset-8/enable
+source /opt/rh/devtoolset-9/enable
 source /opt/rh/rh-ruby23/enable
 
 gem install libxml-ruby gnuplot distribution test-unit builder
