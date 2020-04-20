@@ -4,5 +4,5 @@
 
 set -e
 
-docker run --rm -v $(pwd):/source --entrypoint /source/travis/run-unit-tests.sh docker.io/vespaengine/vespa-dev:latest
+docker run --rm -v $(pwd):/source --entrypoint /source/travis/run-unit-tests.sh docker.io/vespaengine/vespa-build-centos7:latest
 exit $?
