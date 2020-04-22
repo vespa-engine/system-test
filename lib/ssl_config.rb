@@ -38,6 +38,7 @@ class SslConfig
     @ca_private_key   = cert_file('ca-root-private.key') # May not exist
     @host_cert        = cert_file('host.pem')
     @host_csr         = cert_file('host.csr') # May not exist
+    @host_exts        = cert_file('host_exts.cnf')
     @host_private_key = cert_file('host.key')
   end
 
@@ -113,6 +114,18 @@ class SslConfig
   end
 
   def generate_host_specific_csr_for(this_host)
+    File.open(@host_exts, 'w') do |f|
+      f.syswrite("[systest_extensions]\n" +
+                 "basicConstraints       = critical, CA:FALSE\n" +
+                 "keyUsage               = critical, digitalSignature, keyAgreement, keyEncipherment\n" +
+                 "extendedKeyUsage       = serverAuth, clientAuth\n" +
+                 "subjectKeyIdentifier   = hash\n" +
+                 "authorityKeyIdentifier = keyid,issuer\n" +
+                 "subjectAltName         = @systest_sans\n" +
+                 "[systest_sans]\n" +
+                 "DNS.1 = localhost\n" +
+                 "DNS.2 = #{this_host}\n")
+    end
     run_or_fail("openssl req -new -key #{@host_private_key} -out #{@host_csr} " +
                 "-subj '/C=NO/L=Trondheim/O=Yahoo, Inc/OU=Vespa system testing/CN=#{this_host}' " +
                 "-sha256")
@@ -125,12 +138,15 @@ class SslConfig
                 "-CAcreateserial " +
                 "-out #{@host_cert} " +
                 "-days 720 " +
+                "-extfile '#{@host_exts}' " +
+                "-extensions systest_extensions " +
                 "-sha256");
   end
 
   def cleanup_files_after_key_and_cert_generation
     # We're done with the CSR; it won't be needed again.
     File.unlink(@host_csr)
+    File.unlink(@host_exts)
 
     # Make everything owned by original user
     FileUtils.chown(@user, nil, @ca_private_key)
