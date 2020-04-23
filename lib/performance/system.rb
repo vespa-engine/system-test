@@ -15,7 +15,12 @@ module Perf
       @start_cpu_total = 0
       @end_cpu_used = 0
       @end_cpu_total = 0
-      @ysar_binary = "#{Environment.instance.vespa_home}/sbin/ysar_gather" # TODO Remove dependency on internal tooling
+      @ysar_binary = propose_ysar_gather # TODO Remove dependency on internal tooling
+    end
+
+    def propose_ysar_gather
+      @ysar_binary = "#{Environment.instance.vespa_home}/sbin/ysar_gather"
+      @ysar_binary = "/usr/sbin/ysar_gather" unless has_ysar
     end
 
     def has_ysar
