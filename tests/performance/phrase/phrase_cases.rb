@@ -69,22 +69,24 @@ class PhraseCasesPerformanceTest < PerformanceTest
     node.execute('vespa-proton-cmd --local die')
     wait_for_hitcount("sddocname:foobar", 123456, 30)
 
-    run_benchmarks(qf1, 'bestcase')
-    run_benchmarks(qf2, 'worstcase')
-    run_benchmarks(qf3, 'middle')
+    clients=48
+    runtime=20
+    run_benchmarks(qf1, clients, runtime, 'bestcase')
+    run_benchmarks(qf2, clients, runtime, 'worstcase')
+    run_benchmarks(qf3, clients, runtime, 'middle')
   end
 
-  def run_benchmarks(query_file, legend)
+  def run_benchmarks(query_file, clients, runtime, legend)
     # Basic search
     qrserver = @vespa.container["combinedcontainer/0"]
     qd = dirs.tmpdir + "qd"
     qrserver.copy(query_file, qd)
     qf = qd + "/" + File.basename(query_file)
     puts "qf: #{qf}"
-    run_fbench(qrserver, 48, 60, qf, legend + '_untuned')
-    run_fbench(qrserver, 48, 60, qf, legend + '_delay',   "&ranking=withdelay" )
-    run_fbench(qrserver, 48, 60, qf, legend + '_split',   "&ranking=withsplit" )
-    run_fbench(qrserver, 48, 60, qf, legend + '_termwise', "&ranking=withtermwise" )
+    run_fbench(qrserver, clients, runtime, qf, legend + '_untuned')
+    run_fbench(qrserver, clients, runtime, qf, legend + '_delay',   "&ranking=withdelay" )
+    run_fbench(qrserver, clients, runtime, qf, legend + '_split',   "&ranking=withsplit" )
+    run_fbench(qrserver, clients, runtime, qf, legend + '_termwise', "&ranking=withtermwise" )
   end
 
   def run_fbench(qrserver, clients, runtime, qf, legend, append_str = "")
