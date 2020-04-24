@@ -420,10 +420,11 @@ class NodeServer
     coredir = "#{Environment.instance.vespa_home}/var/crash/"
     bindir = "#{Environment.instance.vespa_home}/bin/"
     sbindir = "#{Environment.instance.vespa_home}/sbin/"
+    ignored_files = ['.', '..', 'systemtests'].to_set
+    ignored_binaries = ['perf'].to_set
     if File.directory?(coredir)
       Dir.foreach(coredir) do |filename|
-        next if filename == '.' || filename == '..'
-        next if filename == 'systemtests'
+        next if ignored_files.include?(filename)
         crashtime = File.mtime(coredir+filename)
         if crashtime.to_i >= starttime.to_i and crashtime <= endtime
           FileUtils.chmod 0444, (coredir+filename)
@@ -433,10 +434,13 @@ class NodeServer
             if binaryname =~ /^memcheck-amd64.*/
               binaryname = "#{Environment.instance.vespa_home}/lib64/valgrind/memcheck-amd64-linux"
             end
-            binaries[binaryname] = true
-            FileUtils.mkdir_p(@testcase.dirs.coredir)
-            FileUtils.mv(coredir+filename, @testcase.dirs.coredir)
-            coredumps << VespaCoredump.new(@testcase.dirs.coredir, filename, binaryname)
+
+            if ! ignored_binaries.include?(filename)
+              binaries[binaryname] = true
+              FileUtils.mkdir_p(@testcase.dirs.coredir)
+              FileUtils.mv(coredir+filename, @testcase.dirs.coredir)
+              coredumps << VespaCoredump.new(@testcase.dirs.coredir, filename, binaryname)
+            end
           elsif filename =~ /^hs_err_pid\d+\.log$/
             binaryname = 'java'
             FileUtils.mkdir_p(@testcase.dirs.coredir)
