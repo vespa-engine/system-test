@@ -435,7 +435,7 @@ class NodeServer
               binaryname = "#{Environment.instance.vespa_home}/lib64/valgrind/memcheck-amd64-linux"
             end
 
-            if ! ignored_binaries.include?(filename)
+            if ! ignored_binaries.include?(binaryname)
               binaries[binaryname] = true
               FileUtils.mkdir_p(@testcase.dirs.coredir)
               FileUtils.mv(coredir+filename, @testcase.dirs.coredir)
