@@ -21,6 +21,11 @@
       <artifactId>config</artifactId>
       <version>${vespa.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.yahoo.vespa</groupId>
+      <artifactId>vespalog</artifactId>
+      <version>${vespa.version}</version>
+    </dependency>
   </dependencies>
   
   <build>
