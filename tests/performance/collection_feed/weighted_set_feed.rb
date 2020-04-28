@@ -58,6 +58,9 @@ class WeightedSetFeedTest < PerformanceTest
         })
       }
     end
+    puts 'Doing initial container warmup pass'
+    feed(:file => feed_file, :route => '"combinedcontainer/chain.indexing null/default"')
+    puts 'Doing actual backend feed pass'
     profiler_start
     run_feeder(feed_file, [parameter_filler(FIELD_TYPE, WSET),
                            parameter_filler(KEY_TYPE, key_type),
@@ -74,7 +77,8 @@ class WeightedSetFeedTest < PerformanceTest
     container(Container.new("combinedcontainer").
                             search(Searching.new).
                             docproc(DocumentProcessing.new).
-                            gateway(ContainerDocumentApi.new))
+                            gateway(ContainerDocumentApi.new)).
+    generic_service(GenericService.new('devnull', "#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000"))
   end
 
   class TestInstanceParams
@@ -134,6 +138,7 @@ class WeightedSetFeedTest < PerformanceTest
                     'with and without fast-search')
     deploy_app(create_app)
     start
+
     doc_count = 100_000
     parameter_combinations.each do |p|
       # Reduce document count for large cardinalities to keep test time reasonable.
