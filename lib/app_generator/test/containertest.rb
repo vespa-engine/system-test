@@ -7,11 +7,9 @@ require 'app_generator/servlet'
 require 'app_generator/processing'
 require 'app_generator/http'
 require 'environment'
-require_relative 'assertion_utils'
 
 class ContainerAppGenTest < Test::Unit::TestCase
   include AppGenerator
-  include AssertionUtils
 
   def file(name)
     File.join(File.dirname(__FILE__), "#{name}")
@@ -203,6 +201,12 @@ class ContainerAppGenTest < Test::Unit::TestCase
 
   def test_cpu_pinning
     verify('basic_cpu_pinning.xml', ContainerApp.new.container(Container.new.cpu_socket_affinity(true)))
+  end
+
+  def assert_substring_ignore_whitespace(actual, expected_substr)
+    assert(actual.split(/[\s]+/).join(' ').
+             include?(expected_substr.split(/[\s]+/).join(' ')),
+           actual)
   end
 
   def assert_equal(exp, actual)

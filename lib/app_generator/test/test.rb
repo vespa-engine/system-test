@@ -3,11 +3,9 @@
 require 'test/unit'
 require 'app_generator/search_app'
 require 'app_generator/http'
-require_relative 'assertion_utils'
+
 
 class SearchAppGenTest < Test::Unit::TestCase
-
-  include AssertionUtils
 
   def file(name)
     File.join(File.dirname(__FILE__), "#{name}")
@@ -45,6 +43,12 @@ class SearchAppGenTest < Test::Unit::TestCase
   # test setup with bells and whistles
   def test_complex_elastic
     verify('complex_elastic.xml', create_complex.elastic)
+  end
+
+  def assert_substring_ignore_whitespace(actual, expected_substr)
+    assert(actual.split(/[\s]+/).join(' ').
+             include?(expected_substr.split(/[\s]+/).join(' ')),
+           "#{actual} does not include #{expected_substr}")
   end
 
   def assert_equal(exp, actual)
@@ -820,22 +824,6 @@ class SearchAppGenTest < Test::Unit::TestCase
         <document-processing cluster="default" />
         <document global="true" mode="index" type="test" />
       </documents>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
-  def test_that_app_can_have_generic_services
-    actual = SearchApp.new.sd("test.sd").
-        generic_service(GenericService.new('foobar', '/bin/myfoo --do --stuff')).
-        generic_service(GenericService.new('baz', '/bin/mybaz')).
-    services_xml
-    expected_substr = '
-      <service command="/bin/myfoo --do --stuff" name="foobar" version="1.0">
-        <node hostalias="node1" />
-      </service>
-
-      <service command="/bin/mybaz" name="baz" version="1.0">
-        <node hostalias="node1" />
-      </service>'
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
