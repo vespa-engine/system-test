@@ -3,9 +3,11 @@
 require 'test/unit'
 require 'app_generator/container_app'
 require 'app_generator/rest_api'
+require_relative 'assertion_utils'
 
 class RestApiAppGenTest < Test::Unit::TestCase
   include AppGenerator
+  include AssertionUtils
 
   def test_jetty_is_set_true
     actual =
@@ -92,12 +94,6 @@ class RestApiAppGenTest < Test::Unit::TestCase
        </rest-api>'
 
     assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
-  def assert_substring_ignore_whitespace(actual, expected_substr)
-    assert(actual.split(/[\s]+/).join(' ').
-               include?(expected_substr.split(/[\s]+/).join(' ')),
-           actual)
   end
 
 end
