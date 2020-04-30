@@ -1,6 +1,6 @@
 require 'vds_test'
 
-class GenericServices < VdsTest
+class GenericServicesTest < VdsTest
 
   def nightly?
     true
