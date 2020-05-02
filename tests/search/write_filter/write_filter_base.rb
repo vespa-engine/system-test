@@ -10,7 +10,7 @@ class WriteFilterBase < IndexedSearchTest
     @namespace = "writefilter"
     @cluster_name = "writefilter"
     @id_prefix = "id:test:#{@doc_type}::"
-    @sleep_delay = 60
+    @sleep_delay = 12
     @num_parts = 1
   end
 
