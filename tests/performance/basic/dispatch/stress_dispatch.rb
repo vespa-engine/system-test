@@ -21,7 +21,7 @@ class StressDispatch < PerformanceTest
     set_owner("arnej")
   end
 
-  def common_limits
+  def limits
     l = {
        :min_qps_search          => 10500,
        :max_qps_search          => 11700,
@@ -52,7 +52,7 @@ class StressDispatch < PerformanceTest
     add_bundle(selfdir + "CapInFillSearcher.java")
     deploy_app(app)
     clustername = @vespa.search.keys.first
-    @graphs = get_graphs(limits,clustername)
+    @graphs = get_graphs(limits, clustername)
     start
 
     profiler_start
