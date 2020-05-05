@@ -31,25 +31,7 @@ class StressDispatch < PerformanceTest
     return l
   end
 
-  def common_limits_protobuf
-    l = {
-       :min_qps_search          => 10700,
-       :max_qps_search          => 11700,
-       :min_latency_search      => 5.8,
-       :max_latency_search      => 6.4
-    }
-    return l
-  end
-
   def test_dispatch
-    run_dispatch_test(common_limits, "&dispatch.internal=false")
-  end
-
-  def test_dispatch_protobuf
-    run_dispatch_test(common_limits_protobuf, "&dispatch.internal=true")
-  end
-
-  def run_dispatch_test(limits, query_append)
     app = SearchApp.new.monitoring("vespa", 60).
           sd(selfdir+"foobar.sd").
           container(Container.new("combinedcontainer").
@@ -85,10 +67,10 @@ class StressDispatch < PerformanceTest
     wait_for_hitcount("sddocname:foobar", 12345, 30)
 
     profiler_report("profile_feed")
-    run_benchmarks('queries.txt', query_append)
+    run_benchmarks('queries.txt')
   end
 
-  def run_benchmarks(query_file, query_append)
+  def run_benchmarks(query_file)
     clustername = vespa.search.keys.first
     # Basic search
     qrserver = @vespa.container["combinedcontainer/0"]
@@ -96,22 +78,21 @@ class StressDispatch < PerformanceTest
     qrserver.copy(selfdir + query_file, dirs.tmpdir)
     queries = dirs.tmpdir + query_file
     puts "queries: #{queries}"
-    just_run_fbench(qrserver, 8, 30, query_append, queries)
-    run_fbench_hits(qrserver, 48, 120, query_append, queries, legend)
+    just_run_fbench(qrserver, 8, 30, queries)
+    run_fbench_hits(qrserver, 48, 120, queries, legend)
   end
 
-  def just_run_fbench(qrserver, clients, runtime, append_str, queries)
+  def just_run_fbench(qrserver, clients, runtime, queries)
     fbench = Perf::Fbench.new(qrserver, qrserver.name, qrserver.http_port)
     fbench.max_line_size = 100000
     fbench.single_query_file = true
     fbench.runtime = runtime
     fbench.clients = clients
-    fbench.append_str = append_str if !append_str.empty?
     fbench.query(queries)
   end
 
-  def run_fbench_hits(qrserver, clients, runtime, append_str, queries, legend)
-    append_str << "&hits=400&dispatch.summaries=false"
+  def run_fbench_hits(qrserver, clients, runtime, queries, legend)
+    append_str = "&hits=400&dispatch.summaries=false"
     run_fbench(qrserver, clients, runtime, append_str, queries, legend)
   end
 
