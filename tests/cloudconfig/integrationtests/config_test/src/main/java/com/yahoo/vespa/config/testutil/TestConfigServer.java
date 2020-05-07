@@ -2,17 +2,17 @@
 package com.yahoo.vespa.config.testutil;
 
 import com.yahoo.cloud.config.ConfigserverConfig;
+import com.yahoo.component.Version;
 import com.yahoo.config.FileReference;
 import com.yahoo.config.codegen.DefParser;
 import com.yahoo.config.codegen.InnerCNode;
 import com.yahoo.config.model.api.ConfigDefinitionRepo;
 import com.yahoo.config.provision.ApplicationId;
-import com.yahoo.config.provision.NodeFlavors;
 import com.yahoo.config.provision.TenantName;
-import com.yahoo.component.Version;
-import com.yahoo.config.provisioning.FlavorsConfig;
+import com.yahoo.config.provision.Zone;
 import com.yahoo.config.subscription.CfgConfigPayloadBuilder;
 import com.yahoo.jrt.Spec;
+import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.config.ConfigDefinitionKey;
 import com.yahoo.vespa.config.ConfigKey;
 import com.yahoo.vespa.config.ConfigPayload;
@@ -35,7 +35,6 @@ import com.yahoo.vespa.config.server.rpc.RpcServer;
 import com.yahoo.vespa.config.server.rpc.security.NoopRpcAuthorizer;
 import com.yahoo.vespa.config.server.tenant.TenantHandlerProvider;
 import com.yahoo.vespa.config.util.ConfigUtils;
-import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.flags.InMemoryFlagSource;
 
 import java.io.BufferedReader;
@@ -108,8 +107,7 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
             throw new RuntimeException(e);
         }
         ConfigserverConfig configServerConfig = new ConfigserverConfig(new ConfigserverConfig.Builder().fileReferencesDir(fileReferencesDir));
-        final NodeFlavors nodeFlavors = new NodeFlavors(new FlavorsConfig(new FlavorsConfig.Builder()));
-        final SuperModelManager superModelManager = new SuperModelManager(configServerConfig, nodeFlavors, new GenerationCounter() {
+        final SuperModelManager superModelManager = new SuperModelManager(configServerConfig, Zone.defaultZone(), new GenerationCounter() {
             @Override
             public long increment() {
                 return 0;
