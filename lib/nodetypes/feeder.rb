@@ -253,7 +253,11 @@ module Feeder
   private
   def select_feeder(params)
     if params[:client] == :vespa_feeder
-      feeder_cmd = "#{testcase.feeder_binary} "
+      if params[:feeder_binary]
+          feeder_cmd = params[:feeder_binary]
+      else
+          feeder_cmd = "#{testcase.feeder_binary} "
+      end
     elsif params[:client] == :vespa_http_client
       feeder_cmd = vespa_http_client_cmd
     else
