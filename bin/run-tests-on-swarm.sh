@@ -28,6 +28,7 @@ usage() {
   exit 1
 }
 
+if [[ $# == 0 ]]; then usage;fi
 if [[ $(echo $BASH_VERSION|cut -d. -f1) < 4 ]]; then
   echo "ERROR: Requires bash 4 or better."; echo; usage
 fi
@@ -97,16 +98,23 @@ case $key in
     ;;
 esac
 done
-set -- "${POSITIONAL[@]}"
+
+if [[ ${#POSITIONAL[@]} > 0 ]]; then
+  set -- "${POSITIONAL[@]}"
+fi
 
 if [[ -z $DOCKERIMAGE   ]]; then usage; fi
 if [[ -z $NUMNODES   ]]; then usage; fi
-if [[ -z $RESULTDIR ]]; then RESULTDIR=$(mktemp -d $HOME/tmp/systemtest.XXXXXX); fi
-
+if [[ -z $RESULTDIR ]]; then 
+  mkdir -p $HOME/tmp
+  RESULTDIR=$(mktemp -d $HOME/tmp/systemtest.XXXXXX)
+fi
 TESTRUNNER_OPTS="-n $NUMNODES"
-for F in "${TESTFILES[@]}"; do
-  TESTRUNNER_OPTS="$TESTRUNNER_OPTS -f $F"
-done
+if [[ ${#TESTFILES[@]} > 0 ]]; then
+  for F in "${TESTFILES[@]}"; do
+    TESTRUNNER_OPTS="$TESTRUNNER_OPTS -f $F"
+  done
+fi
 if $CONSOLEOUTPUT; then
   TESTRUNNER_OPTS="$TESTRUNNER_OPTS -c"
 fi
@@ -120,9 +128,11 @@ if $VERBOSE; then
   TESTRUNNER_OPTS="$TESTRUNNER_OPTS -v"
 fi
 BINDMOUNT_OPTS=""
-for M in "${MOUNTS[@]}"; do
-  BINDMOUNT_OPTS="$BINDMOUNT_OPTS --mount type=bind,src=${M%:*},dst=${M#*:}"
-done
+if [[ ${#MOUNTS[@]} > 0 ]]; then
+  for M in "${MOUNTS[@]}"; do
+    BINDMOUNT_OPTS="$BINDMOUNT_OPTS --mount type=bind,src=${M%:*},dst=${M#*:}"
+  done
+fi
 
 readonly BASEDIR=/tmp/testresults
 readonly NETWORK="$USER-vespa"
@@ -159,7 +169,9 @@ log_debug "--  RESULTDIR:       $RESULTDIR"
 log_debug "--  TESTRUNNER_OPTS: $TESTRUNNER_OPTS"
 log_debug "--  BINDMOUNT_OPTS:  $BINDMOUNT_OPTS"
 log_debug "--  VESPAVERSION:    $VESPAVERSION"
-log_debug "--  NOT PARSED:      ${POSITIONAL[*]}"
+if [[ ${#POSITIONAL[@]} > 0 ]]; then
+  log_debug "--  NOT PARSED:      ${POSITIONAL[*]}"
+fi
 log_debug ""
 
 # Remove service and network
