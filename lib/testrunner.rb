@@ -238,7 +238,7 @@ if __FILE__ == $0
 
   testrunner = TestRunner.new(logger, options)
   if ! testrunner.run
-    @log.error "Some tests failed."
+    logger.error "Some tests failed."
     exit(1)
   end
 
