@@ -18,18 +18,25 @@ class GeoNnsTest < IndexedSearchTest
     if result.hit.size < 10
       result.hit.each do |hit|
         txt = hit.field['text']
-        pos = hit.field['pos']
+        pos = hit.field['pos_hnsw']
         sfs = JSON.parse(hit.field['summaryfeatures'])
-        dsf = sfs['distance(pos)']
+        dsf = sfs['distance(label,nns)']
         miles = dsf.to_f / 1609.344
         puts "Hit: #{txt}  => #{pos} -> #{miles.to_i} miles"
       end
     end
     query_props[:approx] = "false"
+    assert_geo_search(query_props, result)
+    query_props[:doc_tensor] = "pos"
+    assert_geo_search(query_props, result)
+  end
+
+  def assert_geo_search(query_props, approx_result)
     query = get_query(query_props)
-    exact = search(query)
-    assert_equal(exact.hit.size, result.hit.size)
-    exact.hit.zip(result.hit).each do |exp_hit, act_hit|
+    puts "assert_geo_search(): query='#{query}'"
+    exact_result = search(query)
+    assert_equal(exact_result.hit.size, approx_result.hit.size)
+    exact_result.hit.zip(approx_result.hit).each do |exp_hit, act_hit|
       assert_equal(exp_hit, act_hit)
     end
   end
@@ -44,6 +51,7 @@ class GeoNnsTest < IndexedSearchTest
   def feed_doc(idx, place)
     doc = Document.new("geo", "id:test:geo::#{idx}").
           add_field("pos", { "values" => [place[:lat], place[:lon]] }).
+          add_field("pos_hnsw", { "values" => [place[:lat], place[:lon]] }).
           add_field("text", place[:txt])
     vespa.document_api_v1.put(doc, {:brief => true})
   end
@@ -109,7 +117,7 @@ class GeoNnsTest < IndexedSearchTest
     x_1 = qprops[:x_1] || 0
     target_num_hits = qprops[:target_num_hits] || 10
     query_tensor = qprops[:query_tensor] || 'qpos_double'
-    doc_tensor = qprops[:doc_tensor] || 'pos'
+    doc_tensor = qprops[:doc_tensor] || 'pos_hnsw'
     approx = qprops[:approx]
 
     result = "yql=select * from sources * where [{\"targetNumHits\": #{target_num_hits},"
