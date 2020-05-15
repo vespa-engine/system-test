@@ -2,7 +2,7 @@ require 'cloudconfig_test'
 require 'search_test'
 require 'environment'
 
-class FileDistributionMultipleConfigServers < CloudConfigTest
+class FileDistributionWithMultipleConfigServers < CloudConfigTest
 
   def initialize(*args)
     super(*args)
