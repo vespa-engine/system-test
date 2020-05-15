@@ -34,9 +34,33 @@ Before running system tests, build and install Vespa following the steps in the 
 [Vespa development on CentOS 7](https://github.com/vespa-engine/docker-image-dev#vespa-development-on-centos-7).
 
 ## Usage
+### Vespa development
 
 Follow the [run system tests](https://github.com/vespa-engine/docker-image-dev#run-system-tests)
 section of the development guide.
+
+### System test development
+Developed system tests can be tested locally using Docker Swarm.
+
+Initialize Docker Swarm if not done previously:
+
+```
+$ docker swarm init
+```
+
+Build Docker image with updated files and execute:
+
+```
+$ docker build --file docker/Dockerfile --tag ${USER}-systemtests .
+$ bin/run-tests-on-swarm.sh --consoleoutput --image ${USER}-systemtests --nodes 1 --file search/basicsearch/basic_search.rb
+```
+
+For information about the capabilities of ```run-tests-on-swarm.sh```:
+
+```
+$ bin/run-tests-on-swarm.sh --help
+```
+
 
 ## Contribute
 
