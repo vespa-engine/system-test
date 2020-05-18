@@ -14,6 +14,7 @@ require 'timeout'
 require 'net/http'
 require 'fileutils'
 require 'vespa_cleanup'
+require 'ssl_config'
 
 class SystemTestTimeout < Interrupt
   def message
@@ -73,6 +74,7 @@ class TestCase
     @tenant_name = sanitize_name(self.class.name)
     @application_name = nil
     @forked = args[:forked]
+    ensure_tls_env_populated
     @tls_env = TlsEnv.new()
     @https_client = HttpsClient.new(@tls_env)
     # To avoid mass test breakage in case of known warnings, maintain a workaround
@@ -136,6 +138,19 @@ class TestCase
       require 'drb/drb'
       DRb.start_service
       @controller = DRbObject.new_with_uri(@forked)
+    end
+  end
+
+  def ensure_tls_env_populated
+    # Note: we don't auto-create anything as part of this code path.
+    if not ENV['VESPA_TLS_CONFIG_FILE']
+      ssl_config = SslConfig.new(cert_path: :default)
+      if not ssl_config.cert_path_contains_certs?
+        raise "No certificates or keys found in default certificate path (#{ssl_config.cert_path}). Please re-run node server locally to regenerate."
+      elsif not ssl_config.cert_path_contains_config_file?
+        raise "No Vespa TLS config file found in path #{ssl_config.cert_path}. Please re-run node server locally to regenerate."
+      end
+      ENV['VESPA_TLS_CONFIG_FILE'] = ssl_config.tls_config_file
     end
   end
 
