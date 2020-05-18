@@ -65,6 +65,5 @@ class TlsEnv
     @ssl_ctx = ssl_ctx_from_pems(ca_pem, cert_pem, privkey_pem)
   end
 
-
 end
 

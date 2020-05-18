@@ -9,7 +9,7 @@ class SslConfig
   PATH_OVERRIDE_ENV_VAR_NAME = 'VESPA_SYSTEM_TEST_CERT_PATH'
   USER_HOME_RELATIVE_PATH = '.vespa/system_test_certs'
 
-  attr_reader :cert_path, :use_tls
+  attr_reader :cert_path, :use_tls, :tls_config_file
   # _Paths_ to CA and host PEMs/keys.
   attr_reader :ca_cert, :host_cert, :host_private_key
 
@@ -40,6 +40,7 @@ class SslConfig
     @host_csr         = cert_file('host.csr') # May not exist
     @host_exts        = cert_file('host_exts.cnf')
     @host_private_key = cert_file('host.key')
+    @tls_config_file  = cert_file('tls-config.json')
   end
 
   def self.tls_enabled?
@@ -62,6 +63,10 @@ class SslConfig
     File.exists?(@ca_cert) &&
     File.exists?(@host_cert) &&
     File.exists?(@host_private_key)
+  end
+
+  def cert_path_contains_config_file?
+    File.exists? @tls_config_file
   end
 
   def run_or_fail(cmd)
@@ -90,6 +95,7 @@ class SslConfig
     generate_host_specific_private_key
     generate_host_specific_csr_for this_host
     sign_host_specific_cert_by_root_ca
+    generate_vespa_tls_config_file
 
     cleanup_files_after_key_and_cert_generation
   end
@@ -105,7 +111,7 @@ class SslConfig
   def self_sign_root_ca_certificate_for(this_host)
     run_or_fail("openssl req -new -x509 -nodes -key #{@ca_private_key} " +
                 "-sha256 -out #{@ca_cert} " +
-                "-subj '/C=NO/L=Trondheim/O=Yahoo, Inc/OU=Vespa system test dummy CA root/CN=#{this_host}' " +
+                "-subj '/C=NO/L=Trondheim/O=ACME Vespa/OU=Vespa system test dummy CA root/CN=#{this_host}' " +
                 "-days 720")
   end
 
@@ -127,7 +133,7 @@ class SslConfig
                  "DNS.2 = #{this_host}\n")
     end
     run_or_fail("openssl req -new -key #{@host_private_key} -out #{@host_csr} " +
-                "-subj '/C=NO/L=Trondheim/O=Yahoo, Inc/OU=Vespa system testing/CN=#{this_host}' " +
+                "-subj '/C=NO/L=Trondheim/O=ACME Vespa/OU=Vespa system testing/CN=#{this_host}' " +
                 "-sha256")
   end
 
@@ -141,6 +147,17 @@ class SslConfig
                 "-extfile '#{@host_exts}' " +
                 "-extensions systest_extensions " +
                 "-sha256");
+  end
+
+  def generate_vespa_tls_config_file
+    json = {
+      'files' => {
+        'ca-certificates' => @ca_cert,
+        'certificates'    => @host_cert,
+        'private-key'     => @host_private_key
+      }
+    }.to_json
+    File.open(@tls_config_file, 'w'){|f| f.syswrite(json) }
   end
 
   def cleanup_files_after_key_and_cert_generation
@@ -168,6 +185,15 @@ class SslConfig
 
   def get_openssl_host_cert_info
     get_cert_info(@host_cert)
+  end
+
+  def get_existing_cert_dns_san_entries
+    raw_sans = run_or_fail("openssl x509 -in #{@host_cert} -text -noout | grep 'DNS:' | head -1")
+    raw_sans.split(',').
+        map{|s| s.strip }.
+        select{|s| s =~ /^DNS:/ }.
+        map{|s| s.split(':')[1] }.
+        to_a
   end
 
   def to_drb_openssl_config

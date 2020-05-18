@@ -8,6 +8,7 @@ require 'executeerror'
 require 'nodetypes/metrics'
 require 'drb_endpoint'
 require 'digest/md5'
+require 'ssl_config'
 require 'tls_env'
 require 'environment'
 require 'executor'
@@ -959,6 +960,25 @@ def symbol_to_string_keys(hsh)
   hsh.map { |k,v| [k.to_s, v] }.to_h
 end
 
+def ensure_vespa_tls_env_is_populated
+  if not ENV['VESPA_TLS_CONFIG_FILE']
+    ssl_config = SslConfig.new(cert_path: :default)
+    if not ssl_config.cert_path_contains_certs?
+      puts "No TLS certificates/keys found; generating first-time host-local CA, keypair and Vespa TLS config file"
+      ssl_config.generate_host_specific_certs # Also generates TLS config file.
+    elsif not ssl_config.cert_path_contains_config_file?
+      puts "No Vespa TLS config file found; generating default config file pointing to existing certs/key"
+      ssl_config.generate_vespa_tls_config_file
+    elsif not ssl_config.get_existing_cert_dns_san_entries().include? 'localhost'
+      puts "Existing host certificate does not have required localhost DNS SAN entry."
+      puts "Removing the directory '#{ssl_config.cert_path}' will let the node server auto-generate appropriate certs on the next run."
+      raise 'Existing certificate not sufficient to run full Vespa TLS'
+    end
+    ENV['VESPA_TLS_CONFIG_FILE'] = ssl_config.tls_config_file
+  end
+  puts "Using Vespa TLS config file #{ENV['VESPA_TLS_CONFIG_FILE']}"
+end
+
 def main(callback_endpoint)
   # Instantiates a NodeServer object and publishes it through DRb.
   hostname = Environment.instance.vespa_hostname
@@ -971,6 +991,8 @@ def main(callback_endpoint)
   else
     service_endpoint = ":#{TestBase::DRUBY_REMOTE_PORT}"
   end
+
+  ensure_vespa_tls_env_is_populated
 
   Environment.instance.backup_environment_setting(false)
 
