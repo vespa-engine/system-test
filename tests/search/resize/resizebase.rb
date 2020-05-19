@@ -330,7 +330,7 @@ class PollQuery
   end
 
   def hit_count_query_string
-    "/search/?query=#{@field}:#{@value}&nocache&hits=0&ranking=unranked&model.restrict=#{@doctype}"
+    "/search/?query=#{@field}:#{@value}&nocache&hits=0&ranking=unranked&timeout=5.0&model.restrict=#{@doctype}"
   end
 end
 
@@ -924,11 +924,11 @@ class ResizeContentClusterBase < SearchTest
   end
 
   def hit_count_query_string
-    "/search/?query=sddocname:resize&nocache&hits=0&ranking=unranked&model.restrict=resize"
+    "/search/?query=sddocname:resize&nocache&hits=0&ranking=unranked&timeout=5.0&model.restrict=resize"
   end
 
   def hit_count_query_string_child
-    "/search/?query=sddocname:resizechild&nocache&hits=0&ranking=unranked&model.restrict=resizechild"
+    "/search/?query=sddocname:resizechild&nocache&hits=0&ranking=unranked&timeout=5.0&model.restrict=resizechild"
   end
 
   def get_cluster
