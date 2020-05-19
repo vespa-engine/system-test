@@ -588,7 +588,9 @@ class ResizePollState
   end
 
   def hitcount(poll_query)
-    @qrserver.search(poll_query.hit_count_query_string).hitcount
+    result = @qrserver.search(poll_query.hit_count_query_string)
+    puts "Result = " + result.to_s
+    result.hitcount
   end
 
   def node_hitcount(poll_query, nodeindex)
