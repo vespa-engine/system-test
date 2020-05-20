@@ -144,14 +144,12 @@ class MultipleConfigservers < CloudConfigTest
     debug("17")
     vespa.configservers["2"].stop_configserver({:keep_everything => true})
     debug("18")
-    # Needs a fix in file distributor to work, see http://yo/jira/VESPA-2252
-    # sleep 30 # Make sure zk timeout for file distributor have expired
-    # vespa.qrserver["0"].stop
-    # debug("19")
-    # vespa.qrserver["0"].start
-    # debug("20")
-    # wait_for_sddocname_banana_hitcount(5)
-    # debug("21")
+    vespa.container.values.first.stop
+    debug("19")
+    vespa.container.values.first.start
+    debug("20")
+    wait_for_sddocname_banana_hitcount(5)
+    debug("21")
 
     vespa.stop_base
 
