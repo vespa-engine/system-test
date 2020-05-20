@@ -225,6 +225,10 @@ class QueryAccessLog < SearchContainerTest
     vespa.qrs[cluster].qrserver['0'].readlink(get_qrs_symlink_logname(cluster))
   end
 
+  def list_qrs_log_files(cluster)
+    vespa.qrs[cluster].qrserver['0'].list_files("#{Environment.instance.vespa_home}/logs/vespa/qrs/*")
+  end
+
   def get_querylog_timestamp(cluster)
     i = 0
     # Loop, as it looks like there might be log rotation at the same time we try to read
@@ -234,7 +238,7 @@ class QueryAccessLog < SearchContainerTest
         return get_timestamp_from_filename(log_file_name)
       else
         puts "Found no query log for cluster #{cluster}"
-        puts Dir.entries(Environment.instance.vespa_home + "/logs/vespa/qrs/")
+        puts list_qrs_log_files(cluster)
       end
       sleep 1
       i = i + 1
