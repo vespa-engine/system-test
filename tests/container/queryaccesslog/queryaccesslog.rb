@@ -7,6 +7,8 @@ require 'environment'
 
 class QueryAccessLog < SearchContainerTest
 
+  MAX_ATTEMPTS = 5
+
   def setup
     set_owner("bjorncs")
     set_description("QueryAccessLog log rotation and symlinks are tested for multiple qrservers " +
@@ -54,12 +56,13 @@ class QueryAccessLog < SearchContainerTest
         search('chicago', 0, {}, true, :cluster => 'b')
         search('female', 0, {}, true, :cluster => 'c')
 
-        # sleep to "make sure" it has ended up in the log.
-        sleep 5
-
+        attempt = 1
         # assert query log contents, but deal with unintended interference from log rotation
         # (this code would be a lot prettier if matching for file content were separated from asserting)
         begin
+          # give the jdisc container some time to write the access log to disk
+          sleep 5
+
           # assert that the correct logfiles contain the correct queries
           assert_match(/blues/, get_qrs_log('a'))
           assert_match(/chicago/, get_qrs_log('b'))
@@ -81,8 +84,13 @@ class QueryAccessLog < SearchContainerTest
           log_b_untouched = get_real_qrs_logname('b') == logname_b_t0
           log_c_untouched = get_real_qrs_logname('c') == logname_c_t0
           if log_a_untouched && log_b_untouched && log_c_untouched then
-            # no log rotation detected => no reason the assertions shouldn't be okay
-            raise
+            if attempt <= MAX_ATTEMPTS
+              puts "Attempt #{attempt} failed - recent query is still not written to the access log"
+              attempt = attempt + 1
+            else
+              # no log rotation detected => no reason the assertions shouldn't be okay
+              raise
+            end
           end
         end
 
@@ -114,12 +122,13 @@ class QueryAccessLog < SearchContainerTest
         search('electric', 0, {}, true, :cluster => 'b')
         search('contemporary', 0, {}, true, :cluster => 'c')
 
-        # sleep to "make sure" it has ended up in the log.
-        sleep 5
-
+        attempt = 1
         # assert query log contents, but deal with unintended interference from log rotation
         # (this code would be a lot prettier if matching for file content were separated from asserting)
         begin
+          # give the jdisc container some time to write the access log to disk
+          sleep 5
+
           # assert that the correct logfiles contain the correct queries
           assert_match(/classic/, get_qrs_log('a'))
           assert_match(/electric/, get_qrs_log('b'))
@@ -141,8 +150,13 @@ class QueryAccessLog < SearchContainerTest
           log_b_untouched = get_real_qrs_logname('b') == logname_b_t1
           log_c_untouched = get_real_qrs_logname('c') == logname_c_t1
           if log_a_untouched && log_b_untouched && log_c_untouched then
-            # no log rotation detected => no reason the assertions shouldn't be okay
-            raise
+            if attempt <= MAX_ATTEMPTS
+              puts "Attempt #{attempt} failed - recent query is still not written to the access log"
+              attempt = attempt + 1
+            else
+              # no log rotation detected => no reason the assertions shouldn't be okay
+              raise
+            end
           end
         end
 
