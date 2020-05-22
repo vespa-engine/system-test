@@ -1,5 +1,3 @@
-# Private reason: Depends on pub/ data
-
 require 'http_client'
 require 'performance_test'
 require 'performance/fbench'
