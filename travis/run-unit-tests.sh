@@ -8,15 +8,15 @@ export RUBYLIB=/source/lib
 
 yum -y install \
   libxml2-devel \
-  rh-ruby23-rubygems-devel \
-  rh-ruby23-ruby-devel \
-  rh-ruby23 \
-  rh-ruby23-rubygem-net-telnet
+  rh-ruby25-rubygems-devel \
+  rh-ruby25-ruby-devel \
+  rh-ruby25 \
+  rh-ruby25-rubygem-net-telnet
 
 source /opt/rh/devtoolset-9/enable
-source /opt/rh/rh-ruby23/enable
+source /opt/rh/rh-ruby25/enable
 
-gem install libxml-ruby:3.1 gnuplot distribution test-unit builder
+gem install libxml-ruby gnuplot distribution test-unit builder
 
 cd ${RUBYLIB}
 ruby test/testrunner.rb

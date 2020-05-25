@@ -46,7 +46,7 @@ class ArrayConfig
     return self
   end
   def add(key, value)
-    if !(key.class < Integer)
+    if !key.kind_of? Integer
       raise "Key must be integer, is #{key.class} ('#{key}')"
     end
     @map[key] = [] unless @map.has_key?(key)
