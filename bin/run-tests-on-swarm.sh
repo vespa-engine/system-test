@@ -220,7 +220,7 @@ docker run --privileged --rm \
            --hostname $TESTRUNNER.$NETWORK \
            --network $NETWORK \
            --entrypoint bash $DOCKERIMAGE -lc \
-           "source /opt/rh/rh-ruby23/enable && ruby /opt/vespa-systemtests/lib/testrunner.rb $TESTRUNNER_OPTS" 
+           "source /opt/rh/rh-ruby25/enable && ruby /opt/vespa-systemtests/lib/testrunner.rb $TESTRUNNER_OPTS" 
 
 if ! $KEEPRUNNING; then
   docker_cleanup
