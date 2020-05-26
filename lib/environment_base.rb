@@ -74,7 +74,6 @@ class EnvironmentBase
   end
 
   def start_configserver(testcase)
-    @default_env_file.set("VESPA_CONFIGSERVER_JVMARGS", "-agentpath:#{@vespa_home}/lib64/libperfmap.so") if testcase.performance?
     @executor.execute("#{@vespa_home}/bin/vespa-start-configserver", testcase)
   end
 
