@@ -87,6 +87,8 @@ class TestRunner
                                                             :buildname => nil,
                                                             :vespa_version => @vespaversion,
                                                             :basedir => @basedir,
+                                                            :nostop => @keeprunning,
+                                                            :nostop_if_failure => @keeprunning,
                                                             :configserverhostlist => [],
                                                             :ignore_performance => true,
                                                             :valgrind => false})
