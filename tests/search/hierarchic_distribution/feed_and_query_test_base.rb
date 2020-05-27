@@ -98,5 +98,84 @@ class FeedAndQueryTestBase < SearchTest
     "[#{array.join(',')}]"
   end
 
+  def get_num_queries_all(exp_per_node)
+    search_nodes = @vespa.search["mycluster"].searchnode
+    num_queries = []
+    exp_per_node.each_index do |i|
+      if exp_per_node[i]
+        node = search_nodes[i]
+        metrics = node.get_total_metrics
+        bias_count = (@query_counts_bias != nil) ? @query_counts_bias[i] : 0
+        num_queries.push(get_num_queries(metrics) - bias_count)
+      else
+        num_queries.push(nil)
+      end
+    end
+    return num_queries
+  end
+
+  def assert_num_queries(exp_per_node, atleast = false)
+    act_query_counts = get_num_queries_all(exp_per_node)
+    puts "assert_num_queries(): exp_per_node=#{array_to_s(exp_per_node)}, actual_query_counts=#{array_to_s(act_query_counts)}"
+    exp_per_node.each_index do |i|
+      exp_queries = exp_per_node[i]
+      if exp_queries
+        act_queries = act_query_counts[i]
+        if atleast
+          puts "search_node[#{i}]: group/row(#{i/3}), atleast_exp_queries(#{exp_queries}), act_queries(#{act_queries})"
+          assert(exp_queries <= act_queries, "Expected atleast #{exp_queries} received queries for search node #{i}, but was only #{act_queries}")
+        else
+          puts "search_node[#{i}]: group/row(#{i/3}), exp_queries(#{exp_queries}), act_queries(#{act_queries})"
+          assert_equal(exp_queries, act_queries, "Expected #{exp_queries} received queries for search node #{i}, but was #{act_queries}")
+        end
+      else
+        puts "search_node[#{i}]: group/row(#{i/3}), down"
+      end
+    end
+  end
+
+  def get_num_queries(metrics)
+    metrics.get("content.proton.documentdb.matching.queries", {"documenttype" => "test"})["count"].to_i
+  end
+
+  def run_basic_search_test(ready_copies, redundancy = 6, odd_sized_group=false, min_group_size=100.0)
+    deploy_app(create_app(3, ready_copies, redundancy, odd_sized_group, min_group_size))
+    configure_bucket_crosschecking(redundancy)
+    start
+    generate_and_feed_docs
+
+    forced_bucket_crosscheck
+    if odd_sized_group then
+      assert_odd_sized_groups
+    else
+      assert_even_sized_groups
+    end
+  end
+
+  def assert_even_sized_groups
+    assert_query_hitcount #group/row 0
+    assert_num_queries([1, 1, 1, 0, 0, 0, 0, 0, 0])
+    assert_query_hitcount #group/row 1
+    assert_num_queries([1, 1, 1, 1, 1, 1, 0, 0, 0])
+    assert_query_hitcount #group/row 2
+    assert_num_queries([1, 1, 1, 1, 1, 1, 1, 1, 1])
+    assert_query_hitcount #group/row 0
+    assert_num_queries([2, 2, 2, 1, 1, 1, 1, 1, 1])
+
+    assert_query_hitcount(20, "0,1,2/0") #group/row 0
+    assert_num_queries([3, 3, 3, 1, 1, 1, 1, 1, 1])
+    assert_query_hitcount(20, "0,1,2/1") #group/row 1
+    assert_num_queries([3, 3, 3, 2, 2, 2, 1, 1, 1])
+    assert_query_hitcount(20, "0,1,2/2") #group/row 2
+    assert_num_queries([3, 3, 3, 2, 2, 2, 2, 2, 2])
+  end
+
+  def assert_odd_sized_groups
+    for i in 1...4500 do
+      assert_query_hitcount
+    end
+    assert_num_queries([400, 400, 400, 400, 400, 400, 400, 400, nil], true)
+  end
+
 end
 
