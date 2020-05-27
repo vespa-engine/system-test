@@ -96,6 +96,8 @@ class SigBusHandler < IndexedSearchTest
                    "title", ["title", "surl", "mid"])
     vespa.search["sigbushandler"].first.
       execute("vespa-proton-cmd --local getState")
+    vespa.search["sigbushandler"].first.
+      execute("/sbin/sysctl kernel.core_pattern")
     assert_hitcount("query=title:country&nocache", 1)
     # make sure the memory index is flushed to disk
     node = vespa.search["sigbushandler"].first
