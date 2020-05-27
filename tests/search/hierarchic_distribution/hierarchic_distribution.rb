@@ -14,38 +14,6 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
     60 * 80
   end
 
-  def create_app(num_fdispatch_threads = 3, ready_copies = 6, redundancy = 6, odd_sized_groups = false, min_group_coverage=100.0) # 1 administrative, 1 search, 1 docsum thread
-    SearchApp.new.cluster(
-      SearchCluster.new("mycluster").sd(selfdir + "test.sd").
-      redundancy(redundancy).ready_copies(ready_copies).
-      dispatch_policy(odd_sized_groups ? "random" : "round-robin").
-      min_group_coverage(min_group_coverage).
-      group(create_groups(redundancy, odd_sized_groups))).
-        storage(StorageCluster.new("mycluster", 9)).
-        monitoring("test", "60")
-  end
-
-  def create_groups(redundancy, odd_sized_groups)
-    NodeGroup.new(0, "mytopgroup").
-      distribution(redundancy == 6 ? "2|2|*" : "1|1|*").
-      group(NodeGroup.new(0, "mygroup0").
-            node(NodeSpec.new("node1", 0)).
-            node(NodeSpec.new("node1", 1)).
-            node(NodeSpec.new("node1", 2))).
-      group(NodeGroup.new(1, "mygroup1").
-            node(NodeSpec.new("node1", 3)).
-            node(NodeSpec.new("node1", 4)).
-            node(NodeSpec.new("node1", 5))).
-      group(odd_sized_groups ?
-              NodeGroup.new(2, "mygroup2").
-                node(NodeSpec.new("node1", 6)).
-                node(NodeSpec.new("node1", 7)) :
-              NodeGroup.new(2, "mygroup2").
-                node(NodeSpec.new("node1", 6)).
-                node(NodeSpec.new("node1", 7)).
-                node(NodeSpec.new("node1", 8)))
-  end
-
   def get_num_queries_all(exp_per_node)
     search_nodes = @vespa.search["mycluster"].searchnode
     num_queries = []
@@ -98,28 +66,6 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
     metrics.get("content.proton.documentdb.matching.queries", {"documenttype" => "test"})["count"].to_i
   end
 
-  def stop_and_wait(i)
-    stop_node_and_wait("mycluster", i)
-  end
-
-  def stop_and_not_wait(i)
-    stop_node_and_not_wait("mycluster", i)
-  end
-
-  def start_and_wait(i)
-    start_node_and_wait("mycluster", i)
-  end
-
-  def configure_bucket_crosschecking(redundancy)
-    vespa.storage['mycluster'].set_bucket_crosscheck_params(
-        :check_active => :single_active_per_leaf_group,
-        :check_redundancy => redundancy
-    )
-  end
-
-  def forced_bucket_crosscheck
-    vespa.storage['mycluster'].wait_until_ready
-  end
 
   # Enable check when distributor is able to show what copies are ready or not
   def verify_ready_copies_per_group(wanted_amount)
