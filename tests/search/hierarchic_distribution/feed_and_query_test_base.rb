@@ -94,5 +94,9 @@ class FeedAndQueryTestBase < SearchTest
     vespa.storage['mycluster'].wait_until_ready
   end
 
+  def array_to_s(array)
+    "[#{array.join(',')}]"
+  end
+
 end
 
