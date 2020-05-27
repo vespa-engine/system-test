@@ -116,7 +116,7 @@ class JavaDispatchTest < SearchTest
     query = "yql=#{yql}&nocache&tracelevel=5"
     puts "query: #{query}"
 
-    retries = 5
+    retries = 10
     while retries > 1
       result = search(query)
       assert_result_hitcount(result, @num_docs)
