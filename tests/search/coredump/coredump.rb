@@ -36,11 +36,11 @@ class CoreDump < SearchTest
     assert_equal("", before)
     assert_equal(fullcorefile, after)
     filetype = vespa.adminserver.execute("file -b " + fullcorefile + " | cut -d ',' -f1").strip
-    assert_equal("data", filetype)
+    assert_match(/^(data|LZ4 compressed data \(v.*\))$/, filetype, "Unexpected file type.")
     lz4_program = get_lz4_program(vespa.adminserver)
     vespa.adminserver.execute("#{lz4_program} -d < " + fullcorefile + " > #{fullcorefile}.core")
     filetype = vespa.adminserver.execute("file -b " + fullcorefile + ".core | cut -d ',' -f1").strip
-    assert_equal("ELF 64-bit LSB core file x86-64", filetype)
+    assert_match(/^ELF 64-bit LSB core file( x86-64)?$/, filetype, "Unexpected file type.")
     vespa.adminserver.execute("rm #{fullcorefile} #{fullcorefile}.core")
   end
 
@@ -65,11 +65,11 @@ class CoreDump < SearchTest
     vespa.adminserver.execute("/bin/kill -SIGSEGV " + pid)
     sleep @coredump_sleep
     filetype = vespa.adminserver.execute("file -b " + fullcorefile + " | cut -d ',' -f1").strip
-    assert_equal("data", filetype)
+    assert_match(/^(data|LZ4 compressed data \(v.*\))$/, filetype, "Unexpected file type.")
     lz4_program = get_lz4_program(vespa.adminserver)
     vespa.adminserver.execute("#{lz4_program} -d < " + fullcorefile + " > #{fullcorefile}.core")
     filetype = vespa.adminserver.execute("file -b -z " + fullcorefile + ".core | cut -d ',' -f1").strip
-    assert_equal("ELF 64-bit LSB core file x86-64", filetype)
+    assert_match(/^ELF 64-bit LSB core file( x86-64)?$/, filetype, "Unexpected file type.")
 
     vespa.adminserver.execute("/sbin/sysctl kernel.core_pattern=\"|/usr/bin/lz4 -3 - #{Environment.instance.vespa_home}/var/crash/%e.core.%p.lz4\"")
     vespa.adminserver.execute("rm #{fullcorefile} #{fullcorefile}.core")
