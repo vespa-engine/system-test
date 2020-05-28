@@ -4,7 +4,7 @@ require 'performance/fbench'
 require 'pp'
 
 
-class BasicContainer < PerformanceTest
+class ContainerHttp < PerformanceTest
 
   STANDARD = 'standard'
   ASYNC_WRITE = 'asyncwrite'
