@@ -17,10 +17,15 @@ class CoreDump < SearchTest
     lz4_program
   end
 
+  def show_kernel_core_pattern(node)
+    node.execute("/sbin/sysctl kernel.core_pattern")
+  end
+
   def test_coredump_compression
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
     feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
+    show_kernel_core_pattern(vespa.adminserver)
     pid = vespa.adminserver.execute("pgrep vespa-proton-bi").strip
     corefile = "vespa-proton-bi.core." + pid + ".lz4"
     fullcorefile = "#{Environment.instance.vespa_home}/var/crash/" + corefile
@@ -43,6 +48,7 @@ class CoreDump < SearchTest
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
     feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
+    show_kernel_core_pattern(vespa.adminserver)
     vespa.adminserver.execute("/sbin/sysctl kernel.core_pattern=\"|/usr/bin/lz4 -3 - #{Environment.instance.vespa_home}/var/crash/%e.core.lz4\"")
     pid = vespa.adminserver.execute("pgrep vespa-proton-bi").strip
     corefile = "vespa-proton-bi.core.lz4"
@@ -75,6 +81,7 @@ class CoreDump < SearchTest
   end
 
   def teardown
+    show_kernel_core_pattern(vespa.adminserver)
     stop
   end
 
