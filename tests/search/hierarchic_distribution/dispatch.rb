@@ -4,8 +4,6 @@ require_relative 'feed_and_query_test_base'
 class HierarchicDistributionDispatchTest < FeedAndQueryTestBase
 
   def setup
-    @valgrind = false
-    @query_counts_bias = nil
     set_owner("geirst")
     super
   end
