@@ -49,7 +49,11 @@ class CoreDump < SearchTest
     start
     feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
     show_kernel_core_pattern(vespa.adminserver)
-    vespa.adminserver.execute("/sbin/sysctl kernel.core_pattern=\"|/usr/bin/lz4 -3 - #{Environment.instance.vespa_home}/var/crash/%e.core.lz4\"")
+    execute_result = vespa.adminserver.execute("/sbin/sysctl kernel.core_pattern=\"|/usr/bin/lz4 -3 - #{Environment.instance.vespa_home}/var/crash/%e.core.lz4\"", :exitcode => true)
+    if execute_result[0] != "0"
+      puts "Failed to set kernel.core_pattern, skipping test"
+      return
+    end
     pid = vespa.adminserver.execute("pgrep vespa-proton-bi").strip
     corefile = "vespa-proton-bi.core.lz4"
     fullcorefile = "#{Environment.instance.vespa_home}/var/crash/" + corefile
