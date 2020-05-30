@@ -6,6 +6,8 @@ require 'search/utils/elastic_doc_generator'
 class FeedAndQueryTestBase < SearchTest
 
   def setup
+    @valgrind = false
+    @query_counts_bias = nil
     @base_query = "query=sddocname:test&nocache&hits=0"
     Dir::mkdir("#{dirs.tmpdir}/generated")
   end
