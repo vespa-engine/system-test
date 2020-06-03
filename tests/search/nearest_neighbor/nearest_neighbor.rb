@@ -33,43 +33,25 @@ class NearestNeighborTest < IndexedSearchTest
     assert_nearest_docs(query_props,  1, [[0,2]])
   end
 
-  def run_brute_force_tests(query_props)
-    query_props[:approx] = "false"
-    run_common_tests(query_props)
-
-    # In this case we always find a nearer document when evaluating the next,
-    # so all documents go through the heap used by the backend search iterator.
-    # This means all documents are returned in the result as well.
-    assert_nearest_docs(query_props, 3, [[9,2],[8,3],[7,4],[6,5],[5,6],[4,7],[3,8],[2,9],[1,10],[0,11]], {:x_0 => 11})
-
-    # With additional query filter
-    assert_nearest_docs(query_props, 3, [[0,2],[2,4],[4,6]], {:x_0 => -2, :filter => "0"})
-    assert_nearest_docs(query_props, 3, [[1,3],[3,5],[5,7]], {:x_0 => -2, :filter => "1"})
-  end
-
-  def run_hnsw_tests(query_props)
-    run_common_tests(query_props)
-    query_props[:approx] = "true"
-    run_common_tests(query_props)
-
-    # This is different from the brute force test as we search the hnsw index and find the top k hits up front and can return only those.
-    assert_nearest_docs(query_props, 3, [[9,2],[8,3],[7,4]], {:x_0 => 11})
-    assert_nearest_docs(query_props, 1, [[7,0]], {:x_0 => 7})
-
-    # With additional query filter.
-    # HNSW will be used when the iterator is strict (k is less than 5
-    # since filter produces 5 hits). HNSW produces 4 hits of which 2 are
-    # fitered out:
+  def run_common_and_query_tests(query_props)
+    # Using AND query filter
     query_props[:x_0] = -2
-    assert_nearest_docs(query_props, 4, [[0,2],[2,4]], {:filter => "0"})
-    assert_nearest_docs(query_props, 4, [[1,3],[3,5]], {:filter => "1"})
-    # Bruteforce is used always when iterator is NOT strict:
+    assert_nearest_docs(query_props, 1, [[0,2]], {:filter => "0"})
+    assert_nearest_docs(query_props, 1, [[1,3]], {:filter => "1"})
+    assert_nearest_docs(query_props, 2, [[0,2],[2,4]], {:filter => "0"})
+    assert_nearest_docs(query_props, 2, [[1,3],[3,5]], {:filter => "1"})
+    assert_nearest_docs(query_props, 3, [[0,2],[2,4],[4,6]], {:filter => "0"})
+    assert_nearest_docs(query_props, 3, [[1,3],[3,5],[5,7]], {:filter => "1"})
+    # Asking for k=6, but only 5 hits available
     assert_nearest_docs(query_props, 6, [[0,2],[2,4],[4,6],[6,8],[8,10]], {:filter => "0"})
     assert_nearest_docs(query_props, 6, [[1,3],[3,5],[5,7],[7,9],[9,11]], {:filter => "1"})
+  end
 
-    # with OR query
+  def run_common_or_query_tests(query_props)
+    # Using OR query, combining nearest neighbor and text matching
     c2 = 1.0 / (1.0 + 2)
     s2 = 10.0 / (1.0 + 2)
+    query_props[:x_0] = -2
     assert_nearest_docs(query_props, 1, [[0,c2,s2],[6,0,0.2]], {:text => "6", :combined => true})
     assert_nearest_docs(query_props, 1, [[0,c2,s2],[7,0,0.2]], {:text => "7", :combined => true})
     assert_nearest_docs(query_props, 1, [[0,c2,s2],[8,0,0.2]], {:text => "8", :combined => true})
@@ -80,11 +62,61 @@ class NearestNeighborTest < IndexedSearchTest
     assert_nearest_docs(query_props, 1, [[0,c2,s2],[2,0,0.6],[7,0,0.4]], {:text => "2", :combined => true})
 
     assert_nearest_docs(query_props, 1, [[7,0,0.2],[0,0.01,0.1]], {:text => "7", :combined => true, :x_0 => -99})
+  end
+
+
+  def run_brute_force_tests(query_props)
+    query_props[:approx] = "false"
+    run_common_tests(query_props)
+    run_common_and_query_tests(query_props)
+    run_common_or_query_tests(query_props)
+
+    # In this case we always find a nearer document when evaluating the next,
+    # so all documents go through the heap used by the backend search iterator.
+    # This means all documents are returned in the result as well.
+    assert_nearest_docs(query_props, 3, [[9,2],[8,3],[7,4],[6,5],[5,6],[4,7],[3,8],[2,9],[1,10],[0,11]], {:x_0 => 11})
+  end
+
+  def run_hnsw_tests(query_props)
+    run_common_tests(query_props)
+    query_props[:approx] = "true"
+    run_common_tests(query_props)
+    run_common_or_query_tests(query_props)
+
+    run_hnsw_and_query_tests(query_props)
+
+    # This is different from the brute force test as we search the hnsw index and find the top k hits up front and can return only those.
+    assert_nearest_docs(query_props, 3, [[9,2],[8,3],[7,4]], {:x_0 => 11})
+    assert_nearest_docs(query_props, 1, [[7,0]], {:x_0 => 7})
 
     stats = get_nni_stats('pos')
     puts "Nearest Neighbor Index statistics: #{stats}"
     assert_equal(11, stats['nodes'])
     assert_equal(0, stats['unreachable_nodes'])
+  end
+
+  def run_hnsw_and_query_tests(query_props)
+    # Using AND query filter.
+    # HNSW will be used when the iterator is strict (k is less than 5
+    # since filter produces 5 hits). HNSW produces 4 hits of which 2 are
+    # fitered out:
+    # TODO: Replace with run_common_and_query_tests when sufficient query filter support is added.
+    query_props[:x_0] = -2
+    assert_nearest_docs(query_props, 2, [[0,2]], {:filter => "0"})
+    assert_nearest_docs(query_props, 2, [[1,3]], {:filter => "1"})
+    assert_nearest_docs(query_props, 4, [[0,2],[2,4]], {:filter => "0"})
+    assert_nearest_docs(query_props, 4, [[1,3],[3,5]], {:filter => "1"})
+    # Bruteforce is used always when iterator is NOT strict:
+    assert_nearest_docs(query_props, 6, [[0,2],[2,4],[4,6],[6,8],[8,10]], {:filter => "0"})
+    assert_nearest_docs(query_props, 6, [[1,3],[3,5],[5,7],[7,9],[9,11]], {:filter => "1"})
+
+    # This is different from the brute force test as we search the hnsw index and find the top k hits up front and can return only those.
+    # TODO: Change to k=1 and k=2 when sufficient query filter support is added.
+    query_props[:x_0] = 11
+    assert_nearest_docs(query_props, 2, [[8,3]], {:filter => "0"})
+    assert_nearest_docs(query_props, 2, [[9,2]], {:filter => "1"})
+    assert_nearest_docs(query_props, 4, [[8,3],[6,5]], {:filter => "0"})
+    assert_nearest_docs(query_props, 4, [[9,2],[7,4]], {:filter => "1"})
   end
 
   def assert_flushing_of_hnsw_index
