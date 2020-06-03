@@ -35,14 +35,14 @@ class UpdatesToInconsistentBucketsTest < SearchTest
     stop
   end
 
-  def make_app(fast_restart:, three_phase_updates:)
+  def make_app(fast_restart:, three_phase_updates:, disable_merges: true)
     SearchApp.new.sd(SEARCH_DATA + 'music.sd').
       cluster_name('storage').
       num_parts(2).redundancy(2).ready_copies(2).
       enable_http_gateway.
       storage(StorageCluster.new('storage', 2).distribution_bits(8)).
       config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
-             add('merge_operations_disabled', true).
+             add('merge_operations_disabled', disable_merges).
              add('restart_with_fast_update_path_if_all_get_timestamps_are_consistent', fast_restart).
              add('enable_metadata_only_fetch_phase_for_inconsistent_updates', three_phase_updates))
   end
@@ -91,8 +91,12 @@ class UpdatesToInconsistentBucketsTest < SearchTest
     vespa.document_api_v1.update(update, :create => create_if_missing)
   end
 
+  def content_cluster
+    vespa.storage['storage']
+  end
+
   def mark_node_in_state(idx, state)
-    vespa.storage['storage'].get_master_fleet_controller().set_node_state('storage', idx, "s:#{state}");
+    content_cluster.get_master_fleet_controller().set_node_state('storage', idx, "s:#{state}");
   end
 
   def mark_content_node_down(idx)
@@ -101,6 +105,10 @@ class UpdatesToInconsistentBucketsTest < SearchTest
 
   def mark_content_node_up(idx)
     mark_node_in_state(idx, 'u')
+  end
+
+  def wait_until_no_pending_merges
+    content_cluster.wait_until_ready
   end
 
   def verify_document_has_expected_contents(title:)
@@ -113,6 +121,16 @@ class UpdatesToInconsistentBucketsTest < SearchTest
   def verify_document_does_not_exist
     doc = vespa.document_api_v1.get(updated_doc_id)
     assert_equal(nil, doc)
+  end
+
+  def dump_bucket_contents
+    vespa.adminserver.execute("vespa-stat --document #{updated_doc_id} --dump")
+  end
+
+  def puts_decorated(str)
+    puts '--------'
+    puts str
+    puts '--------'
   end
 
   def verify_document_has_expected_contents_on_all_nodes(title:)
@@ -211,6 +229,44 @@ class UpdatesToInconsistentBucketsTest < SearchTest
     mark_content_node_up(1)
 
     update_doc_with_field_value(title: 'uh oh', create_if_missing: false)
+    verify_document_does_not_exist
+  end
+
+  def test_document_delete_visibility_for_updates_is_propagated_through_merges
+    set_description('Tests that partial updates with create: false do not create new ' +
+                    'document versions when a tombstone for the document ID in question ' +
+                    'shall have been merged from another replica prior to the operation')
+
+    puts_decorated 'Feeding initial document'
+    feed_doc_with_field_value(title: 'first title')
+    dump_bucket_contents
+
+    puts_decorated 'Taking down node 1 and removing document with single replica present'
+    mark_content_node_down(1)
+    remove_document
+    dump_bucket_contents
+
+    puts_decorated 'Unblocking merges to allow remove-entries to be merged'
+    deploy_app(make_app(three_phase_updates: @params[:enable_3phase],
+                        fast_restart: @params[:fast_restart],
+                        disable_merges: false))
+
+    puts_decorated 'Taking node 1 back up'
+    mark_content_node_up(1)
+    wait_until_no_pending_merges
+    dump_bucket_contents
+
+    puts_decorated 'Node 1 back up and all merges have completed. Taking node 0 down'
+    mark_content_node_down(0)
+    puts_decorated 'Verifying update does not operate on old document version'
+    update_doc_with_field_value(title: 'uh oh', create_if_missing: false)
+    dump_bucket_contents
+    verify_document_does_not_exist
+
+    puts_decorated 'Taking node 0 back up to verify remove-entry is visible'
+    mark_content_node_up(0)
+    dump_bucket_contents
+    wait_until_no_pending_merges
     verify_document_does_not_exist
   end
 
