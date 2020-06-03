@@ -233,6 +233,10 @@ class UpdatesToInconsistentBucketsTest < SearchTest
   end
 
   def test_document_delete_visibility_for_updates_is_propagated_through_merges
+    set_description('Tests that partial updates with create: false do not create new ' +
+                    'document versions when a tombstone for the document ID in question ' +
+                    'shall have been merged from another replica prior to the operation')
+
     puts_decorated 'Feeding initial document'
     feed_doc_with_field_value(title: 'first title')
     dump_bucket_contents
