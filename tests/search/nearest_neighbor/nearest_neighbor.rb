@@ -81,6 +81,7 @@ class NearestNeighborTest < IndexedSearchTest
     run_common_tests(query_props)
     query_props[:approx] = "true"
     run_common_tests(query_props)
+    run_common_and_query_tests(query_props)
     run_common_or_query_tests(query_props)
 
     run_hnsw_and_query_tests(query_props)
@@ -98,25 +99,18 @@ class NearestNeighborTest < IndexedSearchTest
   def run_hnsw_and_query_tests(query_props)
     # Using AND query filter.
     # HNSW will be used when the iterator is strict (k is less than 5
-    # since filter produces 5 hits). HNSW produces 4 hits of which 2 are
-    # fitered out:
-    # TODO: Replace with run_common_and_query_tests when sufficient query filter support is added.
+    # since filter produces 5 hits).
     query_props[:x_0] = -2
-    assert_nearest_docs(query_props, 2, [[0,2]], {:filter => "0"})
-    assert_nearest_docs(query_props, 2, [[1,3]], {:filter => "1"})
-    assert_nearest_docs(query_props, 4, [[0,2],[2,4]], {:filter => "0"})
-    assert_nearest_docs(query_props, 4, [[1,3],[3,5]], {:filter => "1"})
     # Bruteforce is used always when iterator is NOT strict:
     assert_nearest_docs(query_props, 6, [[0,2],[2,4],[4,6],[6,8],[8,10]], {:filter => "0"})
     assert_nearest_docs(query_props, 6, [[1,3],[3,5],[5,7],[7,9],[9,11]], {:filter => "1"})
 
     # This is different from the brute force test as we search the hnsw index and find the top k hits up front and can return only those.
-    # TODO: Change to k=1 and k=2 when sufficient query filter support is added.
     query_props[:x_0] = 11
-    assert_nearest_docs(query_props, 2, [[8,3]], {:filter => "0"})
-    assert_nearest_docs(query_props, 2, [[9,2]], {:filter => "1"})
-    assert_nearest_docs(query_props, 4, [[8,3],[6,5]], {:filter => "0"})
-    assert_nearest_docs(query_props, 4, [[9,2],[7,4]], {:filter => "1"})
+    assert_nearest_docs(query_props, 1, [[8,3]], {:filter => "0"})
+    assert_nearest_docs(query_props, 1, [[9,2]], {:filter => "1"})
+    assert_nearest_docs(query_props, 2, [[8,3],[6,5]], {:filter => "0"})
+    assert_nearest_docs(query_props, 2, [[9,2],[7,4]], {:filter => "1"})
   end
 
   def assert_flushing_of_hnsw_index
