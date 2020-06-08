@@ -289,7 +289,7 @@ include ApplicationV2Api
     # prepare and activate c
     deploy_and_activate_session_v2("#{CLOUDCONFIG_DEPLOY_APPS}/app_c", session_c, 1339)
 
-    # try to activate b, which should be a conflict (status code 409)
+    # try to activate b, which should give a conflict (status code 409)
     result = activate_session_fail(result_b, 409, /.*Cannot activate session #{session_b} because the currently active session \(#{session_c}\) has changed since session #{session_b} was created \(was #{session_a} at creation time\)/)
     assert_logd_config_v2(1339, @hostname, tenant_name, @application_name)
 
@@ -390,16 +390,17 @@ include ApplicationV2Api
   def run_create_two_sessions_activate_second_then_first(session_id=@session_id)
     set_description("Tests activating session with a lower session id than the last that was activated")
     first_session = session_id
-    second_session = next_session(first_session)
 
     create_result = create_session("#{CLOUDCONFIG_DEPLOY_APPS}/app_a", first_session)
     prepare_result = prepare_session(create_result, first_session)
 
+    second_session = next_session(first_session)
     # create a second session, and activate it
     deploy_and_activate_session_v2("#{CLOUDCONFIG_DEPLOY_APPS}/app_c", second_session, 1339)
+    third_session = next_session(second_session)
 
     # try to activate first session, which should fail, because config generation cannot go backwards
-    result = activate_session_fail(prepare_result, 409, /It is not possible to activate session #{first_session}, because it is older than current active session \(#{second_session}\)/)
+    result = activate_session_fail(prepare_result, 409, /Cannot activate session #{first_session} because the currently active session \(#{second_session}\) has changed since session #{first_session} was created \(was #{first_session - 1} at creation time\)/)
     assert_logd_config_v2(1339, @hostname, tenant_name, @application_name)
     next_session(second_session)
   end
