@@ -56,9 +56,10 @@ class GeoNnsTest < IndexedSearchTest
     vespa.document_api_v1.put(doc, {:brief => true})
   end
 
-  def geo_deploy
+  def geo_deploy(num_ready_copies = 1)
     app = SearchApp.new.
         sd(selfdir + "geo.sd").
+        num_parts(2).redundancy(2).ready_copies(num_ready_copies).
         search_dir(selfdir + "search").
         threads_per_search(1).
         enable_http_gateway
@@ -86,7 +87,7 @@ class GeoNnsTest < IndexedSearchTest
 
   def test_geo_cities
     set_description("Test the nearest neighbor search operator for geo search")
-    geo_deploy
+    geo_deploy(1)
     start
     i=0
     Zlib::GzipReader.open(selfdir + 'c500-r.txt.gz').each_line do |line|
@@ -101,6 +102,8 @@ class GeoNnsTest < IndexedSearchTest
     puts "Done put of #{i} documents"
     assert_hitcount('query=sddocname:geo', i)
     geo_check(63.0, 10.0, {:target_num_hits => 100})
+    # vespa.search["search"].searchnode.each_value { |x| x.trigger_flush }
+    # vespa.search["search"].searchnode.each_value { |x| x.trigger_flush }
     places = []
     File.open(selfdir + 'airports.txt').each_line do |line|
       places.push(split_line(line))
@@ -109,6 +112,17 @@ class GeoNnsTest < IndexedSearchTest
       [ 50, 7 ].each do |numhits|
         geo_check(place[:lat], place[:lon], {:target_num_hits => numhits})
       end
+      geo_check(place[:lat], place[:lon], {:target_num_hits => 9, :filter => "san"})
+    end
+    vespa.stop
+    geo_deploy(2)
+    vespa.start
+    wait_for_hitcount('query=sddocname:geo', i)
+    places.each do |place|
+      [ 50, 7 ].each do |numhits|
+        geo_check(place[:lat], place[:lon], {:target_num_hits => numhits})
+      end
+      geo_check(place[:lat], place[:lon], {:target_num_hits => 9, :filter => "san"})
     end
   end
 
@@ -119,10 +133,12 @@ class GeoNnsTest < IndexedSearchTest
     query_tensor = qprops[:query_tensor] || 'qpos_double'
     doc_tensor = qprops[:doc_tensor] || 'pos_hnsw'
     approx = qprops[:approx]
+    filter = qprops[:filter]
 
     result = "yql=select * from sources * where [{\"targetNumHits\": #{target_num_hits},"
     result += "\"approximate\": #{approx}," if approx
     result += "\"label\": \"nns\"}] nearestNeighbor(#{doc_tensor},#{query_tensor})"
+    result += " and text contains \"#{filter}\"" if filter
     result += ";&ranking.features.query(#{query_tensor})={{x:0}:#{x_0},{x:1}:#{x_1}}"
     result += "&hits=#{target_num_hits}"
     return result
