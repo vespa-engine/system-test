@@ -30,7 +30,7 @@ class Explain < IndexedSearchTest
     verify_to_dispatch(children[0])
     traces = children[1]["message"][0]["traces"]
     verify_traces(traces)
-    verify_to_iteratortree(traces[7])
+    verify_to_iteratortree(traces[8])
   end
 
   def verify_traces(traces)
@@ -38,9 +38,10 @@ class Explain < IndexedSearchTest
     assert_equal("MTF: Build query", traces[1]["event"])
     assert_equal("MTF: reserve handles", traces[2]["event"])
     assert_equal("MTF: Fetch Postings", traces[3]["event"])
-    assert_equal("MTF: prepareSharedState", traces[4]["event"])
-    assert_equal("MTF: Complete", traces[5]["event"])
-    verify_to_blueprint(traces[6])
+    assert_equal("MTF: Handle Global Filters", traces[4]["event"])
+    assert_equal("MTF: prepareSharedState", traces[5]["event"])
+    assert_equal("MTF: Complete", traces[6]["event"])
+    verify_to_blueprint(traces[7])
   end
 
   def verify_to_dispatch(result)
