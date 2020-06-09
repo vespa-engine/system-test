@@ -34,11 +34,11 @@ class ConstantTensorValidationTest < IndexedSearchTest
   end
 
   def assert_failed_deploy(output)
-    assert_match("Ranking constant \"constant_tensor_1\" (search/constant_tensor_1.json): Coordinate \"10\" not within limits of bounded dimension x", output)
-    assert_match("Ranking constant \"constant_tensor_2\" (search/constant_tensor_2.json): Tensor coordinate is not a string (VALUE_NUMBER_INT)", output)
-    assert_match("Ranking constant \"constant_tensor_3\" (search/constant_tensor_3.json): Tensor dimension \"cd\" does not exist", output)
-    assert_match("Ranking constant \"constant_tensor_4\" (search/constant_tensor_4.json): Tensor dimension \"z\" does not exist", output)
-    assert_match("Ranking constant \"constant_tensor_5\" (search/constant_tensor_5.json): Failed to parse JSON stream", output)
+    assert_match("Ranking constant 'constant_tensor_1' (search/constant_tensor_1.json): Index 10 not within limits of bound dimension 'x'", output)
+    assert_match("Ranking constant 'constant_tensor_2' (search/constant_tensor_2.json): Tensor label is not a string (VALUE_NUMBER_INT)", output)
+    assert_match("Ranking constant 'constant_tensor_3' (search/constant_tensor_3.json): Tensor dimension 'cd' does not exist", output)
+    assert_match("Ranking constant 'constant_tensor_4' (search/constant_tensor_4.json): Tensor dimension 'z' does not exist", output)
+    assert_match("Ranking constant 'constant_tensor_5' (search/constant_tensor_5.json): Failed to parse JSON stream", output)
   end
 
   def teardown
