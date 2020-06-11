@@ -95,7 +95,8 @@ class TestCase
       @@log_messages[:zookeeper_datadir_exception], # ZK bug, tracked in https://issues.apache.org/jira/browse/ZOOKEEPER-1936
       @@log_messages[:log4j_no_appenders],
       @@log_messages[:log4j_initialize],
-      @@log_messages[:log4j_see_noconfig]
+      @@log_messages[:log4j_see_noconfig],
+      @@log_messages[:concurrent_mark_sweep]
     ]
     @valgrind_ignorable_messages = [
       @@log_messages[:slow_processing],
@@ -717,7 +718,8 @@ class TestCase
     :failed_find_2_consecutive => /We failed to find 2 consecutive samples that where similar with epsilon of 1048576/,
     :log4j_no_appenders => /log4j:WARN No appenders could be found for logger/,
     :log4j_initialize => /log4j:WARN Please initialize the log4j system properly/,
-    :log4j_see_noconfig => /log4j:WARN See http:\/\/logging.apache.org\/log4j\/1.2\/faq.html#noconfig/
+    :log4j_see_noconfig => /log4j:WARN See http:\/\/logging.apache.org\/log4j\/1.2\/faq.html#noconfig/,
+    :concurrent_mark_sweep => /OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release./
   }
 
   # Allow that certain log messages may be ignored without the individual
