@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class TensorFlowStatelessEvaluation extends Searcher {
 
     private static final String MODEL_NAME = "mnist_saved";
-    private static final String FUNCTION_NAME = "serving_default.y";
+    private static final String FUNCTION_NAME = "default.dnn_outputs_add";
     private static final String INPUT_NAME = "input";
 
     private final ModelsEvaluator modelsEvaluator;
