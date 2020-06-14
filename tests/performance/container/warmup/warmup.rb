@@ -57,7 +57,7 @@ class ContainerWarmup < PerformanceTest
     vespa.adminserver.copy(selfdir + queryfile_name, queryfile_dir)
     query_file = queryfile_dir + queryfile_name
 
-    min_time = 3.5
+    min_time = 3.3
     max_time = 4.9
 
     setup_graphs(legend, min_time, max_time)
