@@ -34,7 +34,7 @@ class VespaRoute < VdsTest
     # test hop w. verify
     assert(vespa.adminserver.execute("vespa-route --hop container/chain.indexing --verify").
            include?("The hop 'container/chain.indexing' has selector:\n" +
-                    "       [LoadBalancer:cluster=container;session=chain.indexing;type=adaptive] (verified)\n"))
+                    "       [LoadBalancer:cluster=container;session=chain.indexing] (verified)\n"))
 
     # test routes
     assert(vespa.adminserver.execute("vespa-route --routes").
@@ -74,7 +74,7 @@ class VespaRoute < VdsTest
                "    <hop name='backdoor' selector='[MessageType:search]'>\n" +
                "        <recipient session='search' />\n" +
                "    </hop>\n" +
-               "    <hop name='container/chain.indexing' selector='[LoadBalancer:cluster=container;session=chain.indexing;type=adaptive]' />\n" +
+               "    <hop name='container/chain.indexing' selector='[LoadBalancer:cluster=container;session=chain.indexing]' />\n" +
                "    <hop name='indexing' selector='[DocumentRouteSelector]'>\n" +
                "        <recipient session='search' />\n" +
                "    </hop>\n" +
@@ -105,7 +105,7 @@ class VespaRoute < VdsTest
     app = SearchApp.new.sd(music_sd).qrserver(QrserverCluster.new)
     deploy_app(app)
     assertDump("<protocol name='document'>\n" +
-               "    <hop name='default/chain.indexing' selector='[LoadBalancer:cluster=default;session=chain.indexing;type=adaptive]' />\n" +
+               "    <hop name='default/chain.indexing' selector='[LoadBalancer:cluster=default;session=chain.indexing]' />\n" +
                "    <hop name='indexing' selector='[DocumentRouteSelector]'>\n" +
                "        <recipient session='search' />\n" +
                "    </hop>\n" +
