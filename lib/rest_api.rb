@@ -21,7 +21,7 @@ module RestApi
   # HTTP requests and response assertions
   #
   def http_request(original_uri, params)
-    max_iterations = 30
+    max_iterations = 60
     iterations = 0
     response = nil
     while iterations < max_iterations do
