@@ -56,7 +56,7 @@ class EnvironmentBase
       @tmp_dir = "/tmp" # When running unit tests with no Vespa installed
     end
 
-    @path_env_variable = "#{@vespa_home}/bin:#{@vespa_home}/bin64:#{@vespa_home}/sbin:#{@vespa_home}/sbin64"
+    @path_env_variable = "#{@vespa_home}/bin:/opt/vespa-deps/bin"
     @additional_start_base_commands = ""
     @maven_snapshot_url = nil # TODO
     @default_env_file = DefaultEnvFile.new(@vespa_home)
