@@ -388,11 +388,6 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
     }
 
     @Override
-    public ReloadHandler getReloadHandler() {
-        return this;
-    }
-    
-    @Override
     public ApplicationId resolveApplicationId(String hostName) {
         return ApplicationId.defaultId();
     }
@@ -414,4 +409,5 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
     public String toString() {
         return "Config server running on port " + port;
     }
+
 }
