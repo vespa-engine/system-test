@@ -65,7 +65,6 @@ module Perf
     # For the boolean search benchmarking, the number of subqueries per query is used as scale factor.
     def fill(qps_scale_factor = 1)
       Proc.new do |result|
-        result.add_metric('loadgiver', 'fbench')
         result.add_metric('runtime', @output[1])
         result.add_metric('successfulrequests', @output[6])
         result.add_metric('minresponsetime', @output[8])
@@ -75,6 +74,7 @@ module Perf
         result.add_metric('99 percentile', @output[17])
         result.add_metric('qps', qps(qps_scale_factor).to_s)
         result.add_parameter('clients', @clients)
+        result.add_parameter('loadgiver', 'fbench')
       end
     end
 
