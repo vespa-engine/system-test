@@ -135,7 +135,6 @@ class PerformanceTest < TestCase
 
   def fill_feeder(output)
     Proc.new do |result|
-      result.add_metric('loadgiver', 'vespafeeder')
       result.add_metric('feeder.runtime', output[0])
       result.add_metric('feeder.okcount', output[1])
       result.add_metric('feeder.errorcount', output[2])
@@ -143,6 +142,7 @@ class PerformanceTest < TestCase
       result.add_metric('feeder.maxlatency', output[4])
       result.add_metric('feeder.avglatency', output[5])
       result.add_metric('feeder.throughput', (output[1].to_f / output[0].to_f * 1000).to_s)
+      result.add_parameter('loadgiver', 'vespafeeder')
     end
   end
 
