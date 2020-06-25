@@ -202,7 +202,7 @@ class VisitDynamicDistributionTest < PersistentProviderTest
     assert_equal(Set.new, doc_set - check_set)
   end
 
-  def visit_and_deploy(targetDist, targetStorage, targetBits, distBlacklist)
+  def visit_and_deploy(targetDist, targetStorage, targetBits, distBlocklist)
     puts "Verifying document count"
     vespa.storage["storge"].assert_document_count(@numdocs)
 
@@ -230,7 +230,7 @@ class VisitDynamicDistributionTest < PersistentProviderTest
     vespa.storage["storage"].wait_for_node_count("distributor", targetDist, "u", 400)
     vespa.storage["storage"].wait_for_node_count("storage", targetStorage, "u", 400)
 
-    vespa.storage["storage"].wait_until_ready(30, distBlacklist)
+    vespa.storage["storage"].wait_until_ready(30, distBlocklist)
 
     puts "Continuing visiting with new distribution bit count"
     vespa.storage["storage"].storage["0"].execute("cat #{@progressFile}");

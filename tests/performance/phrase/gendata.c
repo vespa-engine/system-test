@@ -24,9 +24,9 @@ void phrases() {
 	printf(" worst worst worst\", ");
 }
 
-void whitelist() {
+void allowlist() {
 	int i;
-	printf("\"whitelist\":[");
+	printf("\"allowlist\":[");
 	for (i = 0; i < 100; i += 10) {
 		if (pct() < i) {
 			printf("%d,", i);
@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
 	for (i = 0; i < 123456; i++) {
 		header(i);
 		phrases();
-		whitelist();
+		allowlist();
 		footer(i);
 	}
         printf("{\"id\":\"id:test:foobar::0\",\"fields\":{\"title\":\"0\", \"order\":0}}");

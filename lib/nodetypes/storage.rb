@@ -468,10 +468,10 @@ class Storage
     return str.split(/\s+/).sort.join(" ")
   end
 
-  def distributors_ready?(blacklist=[])
-    # Don't include blacklisted (presumably down) distributors in testing
+  def distributors_ready?(blocklist=[])
+    # Don't include blocklisted (presumably down) distributors in testing
     @distributor.each do | key, distrib |
-      next if blacklist.include? key
+      next if blocklist.include? key
       return false if not distrib.is_synced?
     end
     true
@@ -763,7 +763,7 @@ class Storage
     @bucket_crosscheck_params = params
   end
 
-  def wait_until_ready(timeout = 120, blacklist=[], crosscheck_buckets_params={})
+  def wait_until_ready(timeout = 120, blocklist=[], crosscheck_buckets_params={})
     @testcase.output("Waiting until storage cluster is ready") 
     # Effectively ignore timeout since they are usually ad-hoc and
     # lead to test instabilities when systest nodes are heavily loaded.
@@ -777,14 +777,14 @@ class Storage
 
     @testcase.output("Waiting for content nodes...")
     online_content_nodes = @storage.select{|k, n| cluster_state.isup('storage', k.to_i)}.
-                                    reject{|k, v| blacklist.include? k}
+                                    reject{|k, v| blocklist.include? k}
     online_content_nodes.each do |key, node|
       node.wait_until_no_pending_bucket_moves
     end
     @testcase.output("Waiting for distributors...")
-    # Don't include blacklisted (presumably down) distributors in testing
+    # Don't include blocklisted (presumably down) distributors in testing
     @distributor.each do | key, distrib |
-      next if blacklist.include? key
+      next if blocklist.include? key
       distrib.wait_until_all_pending_bucket_info_requests_done
       distrib.wait_until_synced(timeout)
     end

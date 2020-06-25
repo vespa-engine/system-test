@@ -80,7 +80,7 @@ class DistributorDown < MultiProviderStorageTest
 
     puts "Take down one distributor. Refeed. All buckets on one."
     stop_distributor(0)
-    cluster.wait_until_ready(120, ['0']) # Distributor blacklist
+    cluster.wait_until_ready(120, ['0']) # Distributor blocklist
     verifyDocumentCountOnDistributor(1, 20)
 
     puts "Take distributor back up. Refeed. Buckets on both again."
