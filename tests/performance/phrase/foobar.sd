@@ -7,7 +7,7 @@ search foobar {
     field phrases type string {
       indexing: index
     }
-    field whitelist type array<int> {
+    field allowlist type array<int> {
       indexing: attribute
       attribute: fast-search
     }

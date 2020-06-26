@@ -1,6 +1,6 @@
 <routing version="1.0">
         <routingtable protocol="document" verify="false">
-            <route name="default" hops="docproc/cluster.blacklist/*/chain.blacklist indexing" />
+            <route name="default" hops="docproc/cluster.blocklist/*/chain.blocklist indexing" />
             <route name="backdoor" hops="docproc/cluster.music.indexing/*/chain.music.indexing backdoor" />
             <hop name="backdoor" selector=
                 "search/cluster.music/[SearchRow:1]/[SearchColumn:1]/feed-destination">

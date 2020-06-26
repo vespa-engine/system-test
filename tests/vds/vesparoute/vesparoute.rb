@@ -81,8 +81,8 @@ class VespaRoute < VdsTest
                "    <route name='backdoor' hops='container/*/chain.music.indexing backdoor'>\n" +
                "        <error>for hop 'container/*/chain.music.indexing', no matching services</error>\n" +
                "    </route>\n" +
-               "    <route name='default' hops='container/*/chain.blacklist indexing'>\n" +
-               "        <error>for hop 'container/*/chain.blacklist', no matching services</error>\n" +
+               "    <route name='default' hops='container/*/chain.blocklist indexing'>\n" +
+               "        <error>for hop 'container/*/chain.blocklist', no matching services</error>\n" +
                "    </route>\n" +
                "    <route name='default-get' hops='[Content:cluster=search]' />\n" +
                "    <route name='search' hops='[MessageType:search]' />\n" +
