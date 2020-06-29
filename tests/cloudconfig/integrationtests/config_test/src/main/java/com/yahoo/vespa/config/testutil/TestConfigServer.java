@@ -27,13 +27,14 @@ import com.yahoo.vespa.config.server.SuperModelManager;
 import com.yahoo.vespa.config.server.SuperModelRequestHandler;
 import com.yahoo.vespa.config.server.application.ApplicationSet;
 import com.yahoo.vespa.config.server.filedistribution.FileServer;
+import com.yahoo.vespa.config.server.host.ConfigRequestHostLivenessTracker;
 import com.yahoo.vespa.config.server.host.HostRegistries;
 import com.yahoo.vespa.config.server.monitoring.MetricUpdater;
 import com.yahoo.vespa.config.server.monitoring.Metrics;
 import com.yahoo.vespa.config.server.rpc.RpcRequestHandlerProvider;
 import com.yahoo.vespa.config.server.rpc.RpcServer;
 import com.yahoo.vespa.config.server.rpc.security.NoopRpcAuthorizer;
-import com.yahoo.vespa.config.server.tenant.TenantHandlerProvider;
+import com.yahoo.vespa.config.server.tenant.Tenant;
 import com.yahoo.vespa.config.util.ConfigUtils;
 import com.yahoo.vespa.flags.InMemoryFlagSource;
 
@@ -47,6 +48,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -62,9 +64,9 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * @author hmusum
  */
-public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHandlerProvider, Runnable {
+public class TestConfigServer implements RequestHandler, ReloadHandler, Runnable {
 
-    private static final String TENANT_NAME = "default";
+    private static final TenantName tenantName = TenantName.from("default");
 
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(TestConfigServer.class.getName());
 
@@ -74,7 +76,7 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
     private final String defDir;
     private String configDir;
     private final int port;
-    private AtomicLong generation; // The generation of the set of configs we are currently serving
+    private final AtomicLong generation; // The generation of the set of configs we are currently serving
     private long getConfDelayTimeMillis = 0L; // To induce slow response
 
     /** a cache of config objects, mapping config key to raw config */
@@ -106,7 +108,10 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ConfigserverConfig configServerConfig = new ConfigserverConfig(new ConfigserverConfig.Builder().fileReferencesDir(fileReferencesDir));
+        ConfigserverConfig configServerConfig = new ConfigserverConfig.Builder()
+                .fileReferencesDir(fileReferencesDir)
+                .rpcport(port)
+                .build();
         final SuperModelManager superModelManager = new SuperModelManager(configServerConfig, Zone.defaultZone(), new GenerationCounter() {
             @Override
             public long increment() {
@@ -119,15 +124,15 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
             }
         }, new InMemoryFlagSource());
         SuperModelRequestHandler handler = new SuperModelRequestHandler(configDefinitionRepo, configServerConfig, superModelManager);
-        this.rpcServer = new RpcServer(new ConfigserverConfig(new ConfigserverConfig.Builder().rpcport(port)),
+        this.rpcServer = new RpcServer(configServerConfig,
                                        handler, 
                                        dimensions -> new MetricUpdater(Metrics.createTestMetrics(), Collections.emptyMap()),
                                        new HostRegistries(),
-                                       new com.yahoo.vespa.config.server.host.ConfigRequestHostLivenessTracker(),
+                                       new ConfigRequestHostLivenessTracker(),
                                        new FileServer(configServerConfig),
                                        new NoopRpcAuthorizer(),
                                        new RpcRequestHandlerProvider());
-        rpcServer.onTenantCreate(TenantName.from(TENANT_NAME), this);
+        rpcServer.onTenantCreate(new MockTenant(tenantName, this));
         this.port = port;
         this.defDir = defDir;
         this.configDir = configDir;
@@ -383,11 +388,6 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
     }
 
     @Override
-    public RequestHandler getRequestHandler() {
-        return this;
-    }
-
-    @Override
     public ApplicationId resolveApplicationId(String hostName) {
         return ApplicationId.defaultId();
     }
@@ -408,6 +408,13 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, TenantHa
     @Override
     public String toString() {
         return "Config server running on port " + port;
+    }
+
+    private static class MockTenant extends Tenant {
+
+        MockTenant(TenantName tenantName, RequestHandler requestHandler) {
+            super(tenantName, null, requestHandler, null, Instant.now());
+        }
     }
 
 }
