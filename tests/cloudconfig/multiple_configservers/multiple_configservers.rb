@@ -29,7 +29,7 @@ class MultipleConfigservers < CloudConfigTest
     @session_id = 1
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.vespatest.ExtraHitSearcher")
     vespa.nodeproxies.values.each do |node|
-      override_environment_setting(node, "cloudconfig_server__zookeeper_barrier_timeout", "20")
+      override_environment_setting(node, "cloudconfig_server__zookeeper_barrier_timeout", "30")
     end
     output = deploy_multiple_app(selfdir + "banana.sd")
     @session_id = get_generation(output).to_i
@@ -55,7 +55,7 @@ class MultipleConfigservers < CloudConfigTest
   end
 
   def test_session_states
-    deploy_multiple_app(selfdir+"extended_sd/banana.sd")
+    deploy_multiple_app(selfdir + "extended_sd/banana.sd")
     @session_id = @session_id + 1
 
     assert_activation_status
@@ -71,7 +71,7 @@ class MultipleConfigservers < CloudConfigTest
 
     wait_for_config_generation_on_all_configservers(@session_id)
     wait_for_reconfig(600, true)
-    feed_and_wait_for_docs("banana", 5, :file => selfdir+"bananafeed-extended.xml")
+    feed_and_wait_for_docs("banana", 5, :file => selfdir + "bananafeed-extended.xml")
   end
 
   def test_deploy_robustness
@@ -114,51 +114,46 @@ class MultipleConfigservers < CloudConfigTest
     debug("5")
     vespa.start_base
     debug("6")
-    debug("7")
     wait_for_sddocname_banana_hitcount(3, 600)
-    debug("8")
+    debug("7")
 
     vespa.configservers["0"].start_configserver
     wait_for_config_generation_on_all_configservers(@session_id)
-    debug("9")
+    debug("")
     deploy_multiple_app(selfdir+"extended_sd/banana.sd")
     @session_id = @session_id + 1
-    debug("10")
+    debug("9")
     wait_for_config_generation_on_all_configservers(@session_id)
     feed_and_wait_for_docs("banana", 5, :file => selfdir+"bananafeed-extended.xml")
-    debug("11")
+    debug("10")
 
     # stop the second configserver and restart vespa, the other configservers should serve config
     vespa.configservers["1"].stop_configserver({:keep_everything => true})
-    debug("12")
+    debug("11")
     vespa.stop_base
-    debug("13")
+    debug("12")
     vespa.start_base
-    debug("14")
-    debug("15")
+    debug("13")
     wait_for_sddocname_banana_hitcount(5)
-    debug("16")
+    debug("14")
 
     # stop remaining configservers too, config should now be served from configproxy cache
     vespa.configservers["0"].stop_configserver({:keep_everything => true})
-    debug("17")
+    debug("15")
     vespa.configservers["2"].stop_configserver({:keep_everything => true})
-    debug("18")
+    debug("16")
     vespa.container.values.first.stop
-    debug("19")
+    debug("17")
     vespa.container.values.first.start
-    debug("20")
+    debug("18")
     wait_for_sddocname_banana_hitcount(5)
-    debug("21")
+    debug("19")
 
     vespa.stop_base
-
+    debug("20")
     vespa.configservers["0"].start_configserver
-    debug("22")
     vespa.configservers["1"].start_configserver
-    debug("23")
     vespa.configservers["2"].start_configserver
-    debug("24")
   end
 
   # Test that deleting an application works when done on another server than the
