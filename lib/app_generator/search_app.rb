@@ -33,8 +33,8 @@ class SearchApp < App
                add("min_distributor_up_ratio", 0.1).
                add("min_storage_up_ratio", 0.1).
                add("storage_transition_time", 0))
-    config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
-               add('use_btree_database', true))
+    config(ConfigOverride.new('vespa.config.content.core.stor-server').
+               add('use_content_node_btree_bucket_db', true))
   end
 
   def cluster(search_cluster)
