@@ -11,7 +11,6 @@
     <document-processing>
       <include dir='docproc/dir1' />
       <include dir='docproc/dir2' />
-      <include dir='docproc/empty_dir' />
       <chain id="inline">
         <documentprocessor id="com.yahoo.example.docproc.TerribleMusicDocProc" bundle="mybundle" />
       </chain>
