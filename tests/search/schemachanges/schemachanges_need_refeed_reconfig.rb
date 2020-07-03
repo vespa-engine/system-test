@@ -48,10 +48,10 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
   def test_that_changing_the_tensor_type_of_a_tensor_attribute_needs_refeed
     set_description("Tests that changing the tensor type of a tensor attribute needs refeed")
     @test_dir = selfdir + "change_tensor_type/"
-    start
 
     # Deploy
     deploy_output = deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
+    start
     postdeploy_wait(deploy_output)
 
     # Feed should be accepted
