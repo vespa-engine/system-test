@@ -21,11 +21,9 @@ import com.yahoo.vespa.config.GetConfigRequest;
 import com.yahoo.vespa.config.buildergen.ConfigDefinition;
 import com.yahoo.vespa.config.protocol.ConfigResponse;
 import com.yahoo.vespa.config.protocol.SlimeConfigResponse;
-import com.yahoo.vespa.config.server.ReloadHandler;
 import com.yahoo.vespa.config.server.RequestHandler;
 import com.yahoo.vespa.config.server.SuperModelManager;
 import com.yahoo.vespa.config.server.SuperModelRequestHandler;
-import com.yahoo.vespa.config.server.application.ApplicationSet;
 import com.yahoo.vespa.config.server.filedistribution.FileServer;
 import com.yahoo.vespa.config.server.host.ConfigRequestHostLivenessTracker;
 import com.yahoo.vespa.config.server.host.HostRegistries;
@@ -64,12 +62,10 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * @author hmusum
  */
-public class TestConfigServer implements RequestHandler, ReloadHandler, Runnable {
-
-    private static final TenantName tenantName = TenantName.from("default");
+public class TestConfigServer implements RequestHandler, Runnable {
 
     private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(TestConfigServer.class.getName());
-
+    private static final TenantName tenantName = TenantName.from("default");
     public static final String DEFAULT_DEF_DIR = "configs/def-files";
     public static final String DEFAULT_CFG_DIR = "configs/foo";
 
@@ -178,9 +174,7 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, Runnable
     private List<String> readFileContents(File file) {
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(
-                    new java.io.InputStreamReader(
-                            new java.io.FileInputStream(file), StandardCharsets.UTF_8));
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
             List<String> fileContents = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -340,15 +334,6 @@ public class TestConfigServer implements RequestHandler, ReloadHandler, Runnable
     public synchronized ConfigResponse resolveConfig(ApplicationId appId, GetConfigRequest req, Optional<Version> vespaVersion) {
         return resolveConfig(req);
     }
-    
-    @Override
-    public synchronized void removeApplication(ApplicationId applicationId) { }
-
-    @Override
-    public void removeApplicationsExcept(Set<ApplicationId> applications) { }
-
-    @Override
-    public final void reloadConfig(ApplicationSet application) { }
 
     @Override
     public Set<ConfigKey<?>> listConfigs(ApplicationId applicationId, Optional<Version> vespaVersion, boolean recurse) {
