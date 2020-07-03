@@ -10,7 +10,6 @@
     <search>
       <include dir='search/dir1' />
       <include dir='search/dir2' />
-      <include dir='search/empty_dir' />
       <chain id="inline">
         <searcher id="com.yahoo.search.example.SimpleSearcher" bundle="mybundle" />
         <searcher id="com.yahoo.search.example.SimpleSearcher2" bundle="mybundle" />
