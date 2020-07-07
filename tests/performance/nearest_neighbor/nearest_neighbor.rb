@@ -116,10 +116,10 @@ class NearestNeighborPerformanceTest < PerformanceTest
     qf = qd + "/" + File.basename(query_file)
     puts "qf: #{qf}"
 
-    run_fbench(qrserver, 48, 60, qf, legend + '_simple')
-    run_fbench(qrserver, 48, 60, qf, legend + '_joinsq',     "&ranking=joinsqdiff")
-    run_fbench(qrserver, 48, 60, qf, legend + '_dotproduct', "&ranking=dotproduct")
-    run_fbench(qrserver, 48, 60, qf, legend + '_rawscore',   "&ranking=rawscore") if want_rawscore
+    run_fbench(qrserver, 48, 20, qf, legend + '_simple')
+    run_fbench(qrserver, 48, 20, qf, legend + '_joinsq',     "&ranking=joinsqdiff")
+    run_fbench(qrserver, 48, 20, qf, legend + '_dotproduct', "&ranking=dotproduct")
+    run_fbench(qrserver, 48, 20, qf, legend + '_rawscore',   "&ranking=rawscore") if want_rawscore
   end
 
   def run_fbench(qrserver, clients, runtime, qf, legend, append_str = "")
