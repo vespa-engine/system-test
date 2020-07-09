@@ -11,6 +11,16 @@
       "int_wset": {
         "10": 5,
         "20": 7
+      },
+      "str_array_src": ["foo", "bar"],
+      "int_array_src": [10, 20],
+      "str_wset_src": {
+        "foo": 5,
+        "bar": 7
+      },
+      "int_wset_src": {
+        "10": 5,
+        "20": 7
       }
     }
   }
