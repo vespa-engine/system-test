@@ -1,0 +1,17 @@
+[
+  {
+    "put": "id:test:test::0",
+    "fields": {
+      "str_array": ["foo", "bar"],
+      "int_array": [10, 20],
+      "str_wset": {
+        "foo": 5,
+        "bar": 7
+      },
+      "int_wset": {
+        "10": 5,
+        "20": 7
+      }
+    }
+  }
+]

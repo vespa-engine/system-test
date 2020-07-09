@@ -1,0 +1,21 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    field str_array type array<string> {
+      indexing: attribute | summary
+      summary: matched-elements-only
+    }
+    field int_array type array<int> {
+      indexing: attribute | summary
+      summary: matched-elements-only
+    }
+    field str_wset type weightedset<string> {
+      indexing: attribute | summary
+      summary: matched-elements-only
+    }
+    field int_wset type weightedset<int> {
+      indexing: attribute | summary
+      summary: matched-elements-only
+    }
+  }
+}
