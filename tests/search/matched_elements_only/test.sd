@@ -17,5 +17,39 @@ schema test {
       indexing: attribute | summary
       summary: matched-elements-only
     }
+    field str_array_src type array<string> {
+      indexing: attribute | summary
+    }
+    field int_array_src type array<int> {
+      indexing: attribute | summary
+    }
+    field str_wset_src type weightedset<string> {
+      indexing: attribute | summary
+    }
+    field int_wset_src type weightedset<int> {
+      indexing: attribute | summary
+    }
+    field str_array_filtered type array<string> {}
+    field int_array_filtered type array<int> {}
+    field str_wset_filtered type weightedset<string> {}
+    field int_wset_filtered type weightedset<int> {}
+  }
+  document-summary filtered {
+    summary str_array_filtered type array<string> {
+      source: str_array_src
+      matched-elements-only
+    }
+    summary int_array_filtered type array<int> {
+      source: int_array_src
+      matched-elements-only
+    }
+    summary str_wset_filtered type weightedset<string> {
+      source: str_wset_src
+      matched-elements-only
+    }
+    summary int_wset_filtered type weightedset<int> {
+      source: int_wset_src
+      matched-elements-only
+    }
   }
 }

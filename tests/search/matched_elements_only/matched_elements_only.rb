@@ -19,21 +19,33 @@ class MatchedElementsOnlyTest < SearchTest
     start
     feed(:file => selfdir + "docs.json")
 
+    # Test attributes with explicit 'matched-elements-only'.
     assert_summary_field("str_array contains 'bar'", "str_array", ["bar"])
     assert_summary_field("int_array contains '20'", "int_array", [20])
     assert_summary_field("str_wset contains 'bar'", "str_wset", [elem("bar", 7)])
     assert_summary_field("int_wset contains '20'", "int_wset", [elem(20, 7)])
-
     assert_summary_field("str_array contains 'foo' or str_array contains 'bar'", "str_array", ["bar", "foo"])
     assert_summary_field("str_wset contains 'foo' or str_wset contains 'bar'", "str_wset", [elem("bar", 7), elem("foo", 5)])
+
+    # Test summary fields with 'matched-elements-only' (in explicit summary class) that reference source attributes.
+    assert_summary_field("str_array_src contains 'bar'", "str_array_filtered", ["bar"], "filtered")
+    assert_summary_field("int_array_src contains '20'", "int_array_filtered", [20], "filtered")
+    assert_summary_field("str_wset_src contains 'bar'", "str_wset_filtered", [elem("bar", 7)], "filtered")
+    assert_summary_field("int_wset_src contains '20'", "int_wset_filtered", [elem(20, 7)], "filtered")
+    assert_summary_field("str_array_src contains 'foo' or str_array_src contains 'bar'", "str_array_filtered", ["bar", "foo"], "filtered")
+    assert_summary_field("str_wset_src contains 'foo' or str_wset_src contains 'bar'", "str_wset_filtered", [elem("bar", 7), elem("foo", 5)], "filtered")
+
+    # The source attributes are not filtered
+    assert_summary_field("str_array_src contains 'bar'", "str_array_src", ["bar", "foo"])
+    assert_summary_field("str_wset_src contains 'bar'", "str_wset_src", [elem("bar", 7), elem("foo", 5)])
   end
 
   def elem(item, weight)
     {"item" => item, "weight" => weight}
   end
 
-  def assert_summary_field(yql_filter, field_name, exp_field_value)
-    query = "yql=select * from sources * where #{yql_filter};&format=json"
+  def assert_summary_field(yql_filter, field_name, exp_field_value, summary = "default")
+    query = "yql=select * from sources * where #{yql_filter};&format=json&summary=#{summary}"
     result = search(query)
     assert_hitcount(result, 1)
     hit = result.hit[0]
