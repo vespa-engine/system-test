@@ -1,0 +1,55 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    field str_array type array<string> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
+    field int_array type array<int> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
+    field str_wset type weightedset<string> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
+    field int_wset type weightedset<int> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
+    field str_array_src type array<string> {
+      indexing: index | summary
+    }
+    field int_array_src type array<int> {
+      indexing: index | summary
+    }
+    field str_wset_src type weightedset<string> {
+      indexing: index | summary
+    }
+    field int_wset_src type weightedset<int> {
+      indexing: index | summary
+    }
+    field str_array_filtered type array<string> {}
+    field int_array_filtered type array<int> {}
+    field str_wset_filtered type weightedset<string> {}
+    field int_wset_filtered type weightedset<int> {}
+  }
+  document-summary filtered {
+    summary str_array_filtered type array<string> {
+      source: str_array_src
+      matched-elements-only
+    }
+    summary int_array_filtered type array<int> {
+      source: int_array_src
+      matched-elements-only
+    }
+    summary str_wset_filtered type weightedset<string> {
+      source: str_wset_src
+      matched-elements-only
+    }
+    summary int_wset_filtered type weightedset<int> {
+      source: int_wset_src
+      matched-elements-only
+    }
+  }
+}
