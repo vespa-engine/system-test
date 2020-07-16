@@ -20,3 +20,14 @@
 <title>pizza hut nowhere</title>
 <order>1</order>
 </document>
+
+<document type="multipoint" id="id:test:multipoint::3">
+<title>napoli, the home of neapolitan pizza</title>
+<latlong>N40o50'00;E14o15'00</latlong>
+<homell>N40o50'00;E14o15'00</homell>
+<workll>
+ <item>N40o50'00;E14o15'00</item>
+</workll>
+<vacationll>N40o50'00;E14o15'00</vacationll>
+<order>3</order>
+</document>

@@ -19,56 +19,80 @@ class FastGeoSearchTest < SearchTest
   end
 
 def test_multiple_position_fields
+    add_bundle(selfdir + "MultiPointTester.java")
     deploy_app(
         ContainerApp.new.
                container(
                          Container.new("mycc").
-                         search(Searching.new).
+                         search(Searching.new.
+                             chain(Chain.new("default", "vespa").add(
+                                 Searcher.new("com.yahoo.test.MultiPointTester")))).
                          docproc(DocumentProcessing.new)).
                search(SearchCluster.new("multitest").
                       sd(selfdir+"multipoint.sd").
                       indexing("mycc")))
     start
-    feed_and_wait_for_docs("multipoint", 2, :file => selfdir+"feed-mp.xml")
-    #     save_result("query=title:pizza", selfdir+"example/mp-all.xml")
+    feed_and_wait_for_docs("multipoint", 3, :file => selfdir+"feed-mp.xml")
+    # save_result("query=title:pizza", selfdir+"example/mp-all.xml")
     assert_result("query=title:pizza", selfdir+"example/mp-all.xml")
 
     semicolon = "%3B"
     geo = "pos.ll=N37.4#{semicolon}W122.0"
     attr = "pos.attribute=latlong"
     add = geo + "&" + attr
-    #     save_result("query=title:pizza&#{add}", selfdir+"example/mp-1.xml")
+    # save_result("query=title:pizza&#{add}", selfdir+"example/mp-1.xml")
     assert_result("query=title:pizza&#{add}", selfdir+"example/mp-1.xml")
 
     geo = "pos.ll=N63.4#{semicolon}E10.4"
     attr = "pos.attribute=homell"
     add = geo + "&" + attr
-    #     save_result("query=title:pizza&#{add}", selfdir+"example/mp-2.xml")
+    # save_result("query=title:pizza&#{add}", selfdir+"example/mp-2.xml")
     assert_result("query=title:pizza&#{add}", selfdir+"example/mp-2.xml")
 
     geo = "pos.ll=N51.5#{semicolon}W0.0"
     attr = "pos.attribute=workll"
     add = geo + "&" + attr
-    #     save_result("query=title:pizza&#{add}", selfdir+"example/mp-3a.xml")
+    # save_result("query=title:pizza&#{add}", selfdir+"example/mp-3a.xml")
     assert_result("query=title:pizza&#{add}", selfdir+"example/mp-3a.xml")
 
     geo = "pos.ll=N37.4#{semicolon}W122.0"
     attr = "pos.attribute=workll"
     add = geo + "&" + attr
-    #     save_result("query=title:pizza&#{add}", selfdir+"example/mp-3b.xml")
+    # save_result("query=title:pizza&#{add}", selfdir+"example/mp-3b.xml")
     assert_result("query=title:pizza&#{add}", selfdir+"example/mp-3b.xml")
 
     geo = "pos.ll=N63.4#{semicolon}E10.4"
     attr = "pos.attribute=workll"
     add = geo + "&" + attr
-    #     save_result("query=title:pizza&#{add}", selfdir+"example/mp-3c.xml")
+    # save_result("query=title:pizza&#{add}", selfdir+"example/mp-3c.xml")
     assert_result("query=title:pizza&#{add}", selfdir+"example/mp-3c.xml")
 
     geo = "pos.ll=N50.0#{semicolon}E20.0"
     attr = "pos.attribute=vacationll"
     add = geo + "&" + attr
-    #     save_result("query=title:pizza&#{add}", selfdir+"example/mp-4.xml")
+    # save_result("query=title:pizza&#{add}", selfdir+"example/mp-4.xml")
     assert_result("query=title:pizza&#{add}", selfdir+"example/mp-4.xml")
+
+    geo = "pos.ll=N40.8#{semicolon}E14.2"
+    attr = "pos.attribute=latlong"
+    add = geo + "&" + attr
+    # save_result("query=title:napoli&#{add}", selfdir+"example/mp-5.xml")
+    assert_result("query=title:napoli&#{add}", selfdir+"example/mp-5.xml")
+
+    add = "multipointtester=true"
+    # save_result("query=title:pizza&#{add}", selfdir+"example/mp-6.xml")
+    assert_result("query=title:pizza&#{add}", selfdir+"example/mp-6.xml")
+
+    yqlpre = 'select * from multipoint'
+    yqlgeo4 = 'geoLocation("latlong", 40.8, 14.25, "10 km")'
+    yqlgeo2 = 'geoLocation("homell", 63.5, 10.5, "200 km")'
+    yqlgeo3 = 'geoLocation("workll", 0.0, 0.0, "300 km")'
+    yqlgeo1 = 'geoLocation("vacationll", -60.0, 120.0, "100 km")'
+
+    yql = "#{yqlpre} where #{yqlgeo1} or #{yqlgeo2} or #{yqlgeo3} or #{yqlgeo4};"
+
+    # save_result("yql=#{URI::encode(yql)}&tracelevel=1", selfdir+"example/mp-7.xml")
+    assert_result("yql=#{URI::encode(yql)}&tracelevel=1", selfdir+"example/mp-7.xml")
   end
 
   def test_sunnyvale_pizza
