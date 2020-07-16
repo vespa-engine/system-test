@@ -79,6 +79,7 @@ class TestCase
     # set of log messages to ignore.
     # ... don't keep them around for long, though!
     @ignorable_messages = [
+      @@log_messages[:async_slow_resolve],
       @@log_messages[:slow_query],
       @@log_messages[:out_of_rotation],
       @@log_messages[:connect_location_broker],
