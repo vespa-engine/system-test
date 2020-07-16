@@ -26,6 +26,7 @@ search multipoint {
     first-phase {
       expression: closeness(latlong) + 0.000000001*attribute(order)
     }
+    summary-features: distance(latlong)
   }
   rank-profile homedist {
     first-phase {
