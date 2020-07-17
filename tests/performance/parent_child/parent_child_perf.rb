@@ -150,7 +150,7 @@ class ParentChildPerfTest < PerformanceTest
       get_feeding_graph(FEEDING_PUT, 31500, 36000),
       get_feeding_graph(FEEDING_UPDATE, 33000, 38000),
       get_latency_graph(RANKING, SLOW, 85, 103),
-      get_latency_graph(MATCHING, SLOW, 1.70, 2.15),
+      get_latency_graph(MATCHING, SLOW, 1.65, 2.15),
       get_latency_graph(MATCHING, FAST, 1.08, 1.40)
     ]
   end
