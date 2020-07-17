@@ -98,14 +98,15 @@ public class TestConfigServer implements RequestHandler, Runnable {
         this.port = port;
         this.defDir = defDir;
         this.configDir = configDir;
-        generation = loadLiveApplication();
+        loadDefFiles();
+        generation = new AtomicLong(1);
     }
 
     /**
      * Loads definitions and sets generation for current set of configs.
      * Configs are loaded at config resolving time.
      */
-    private void loadDefFiles() throws IOException {
+    private void loadDefFiles() {
         defCache.clear();
         for (File file : getFiles((new File(defDir)), (dir, name) -> name.endsWith(".def"))) {
             loadDefFile(file);
@@ -137,11 +138,8 @@ public class TestConfigServer implements RequestHandler, Runnable {
     }
 
     private void addConfigDef(ConfigKey<?> key, String defMd5, InnerCNode cnode) {
-        final ConfigDefinitionKey configDefinitionKey = new ConfigDefinitionKey(key);
-        if (!defCache.containsKey(key)) {
-            defCache.put(key, defMd5);
-            defNodes.put(configDefinitionKey, cnode);
-        }
+        defCache.putIfAbsent(key, defMd5);
+        defNodes.putIfAbsent(new ConfigDefinitionKey(key), cnode);
     }
 
     private void addConfig(ConfigKey<?> key, ConfigResponse configResponse) {
@@ -158,10 +156,7 @@ public class TestConfigServer implements RequestHandler, Runnable {
     private void loadCfgFile(File file, String configId, String namespace) {
         //System.out.println("Loading " + file.getName() + " for subscriber " + configId);
         String name = getConfigName(file);
-
         List<String> lines = readLines(file);
-
-
         ConfigPayload payload = new CfgConfigPayloadBuilder().deserialize(lines);
         String configMd5Sum = ConfigUtils.getMd5(payload);
         ConfigKey<?> cKey = new ConfigKey<>(name, "", namespace);
@@ -187,12 +182,12 @@ public class TestConfigServer implements RequestHandler, Runnable {
         return SlimeConfigResponse.fromConfigPayload(payload, applicationGeneration, false, configMd5Sum);
     }
 
-    private void loadDefFile(File file) throws IOException {
+    private void loadDefFile(File file) {
         String name = getConfigName(file);
         List<String> lines = readLines(file);
         String md5Sum = ConfigUtils.getDefMd5(lines);
-        InnerCNode cnode = new DefParser(name, new FileReader(file)).getTree();
         try {
+            InnerCNode cnode = new DefParser(name, new FileReader(file)).getTree();
             String configId = "";
             String namespace = ConfigUtils.getDefNamespace(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
             addConfigDef(new ConfigKey<>(name, configId, namespace), md5Sum, cnode);
@@ -227,25 +222,12 @@ public class TestConfigServer implements RequestHandler, Runnable {
      */
     public synchronized void deployNewConfig(String configDir) {
         this.configDir = configDir;
-        try {
-            long gen = updateApplication();
-            log.log(LogLevel.INFO, "Activated config with generation " + gen + " from directory " + configDir +
-                                   " on config server using port " + port);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        long gen = updateApplication();
+        log.log(LogLevel.INFO, "Activated config with generation " + gen + " from directory " + configDir +
+                               " on config server using port " + port);
     }
 
-    protected AtomicLong loadLiveApplication() {
-        try {
-            loadDefFiles();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return new AtomicLong(1);
-    }
-
-    public synchronized long updateApplication() throws IOException {
+    public synchronized long updateApplication() {
         configCache.clear();
         loadDefFiles();
         return generation.incrementAndGet();
