@@ -696,7 +696,6 @@ class TestCase
     :async_slow_resolve => /slow resolve time:/,
     :slow_query => /Slow execution. query/,
     :slow_processing =>  /Slow processing of message/,
-    :disk_full =>  /Can\'t increase size of file/,
     :connect_location_broker =>  /cannot connect to location broker at tcp/,
     :max_query_timeout => /Query timeout \(\d+ ms\) > max query /,
     :out_of_rotation => /Removing container from rotation by no longer serving status.html/,
