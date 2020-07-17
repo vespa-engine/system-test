@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertFalse;
@@ -31,7 +32,7 @@ import static org.junit.Assert.assertTrue;
  * @author Harald Musum
  */
 public class ConfigTester implements AutoCloseable {
-    private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(ConfigTester.class.getName());
+    private static final java.util.logging.Logger log = Logger.getLogger(ConfigTester.class.getName());
 
     TestConfigServer cServer1;
     TestConfigServer cServer2;

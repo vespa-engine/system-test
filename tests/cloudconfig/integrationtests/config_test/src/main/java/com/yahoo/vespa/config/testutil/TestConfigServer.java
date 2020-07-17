@@ -11,6 +11,7 @@ import com.yahoo.config.provision.ApplicationId;
 import com.yahoo.config.provision.TenantName;
 import com.yahoo.config.provision.Zone;
 import com.yahoo.config.subscription.CfgConfigPayloadBuilder;
+import com.yahoo.io.IOUtils;
 import com.yahoo.jrt.Spec;
 import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.config.ConfigDefinitionKey;
@@ -56,6 +57,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
 
 /**
  * A mock config server for use in testing.
@@ -64,7 +66,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class TestConfigServer implements RequestHandler, Runnable {
 
-    private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(TestConfigServer.class.getName());
+    private static final java.util.logging.Logger log = Logger.getLogger(TestConfigServer.class.getName());
     private static final TenantName tenantName = TenantName.from("default");
     public static final String DEFAULT_DEF_DIR = "configs/def-files";
     public static final String DEFAULT_CFG_DIR = "configs/foo";
@@ -132,21 +134,21 @@ public class TestConfigServer implements RequestHandler, Runnable {
         this.port = port;
         this.defDir = defDir;
         this.configDir = configDir;
-        generation = loadLiveApplication();
+        try {
+            generation = loadLiveApplication();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * Loads definitions and sets generation for current set of configs.
      * Configs are loaded at config resolving time.
      */
-    private void loadDefFiles() {
-        try {
-            defCache.clear();
-            for (File file : getDefFiles()) {
-                loadDefFile(file);
-            }
-        } catch (FileNotFoundException e) {
-            log.log(LogLevel.ERROR, "Error loading def: ", e);
+    private void loadDefFiles() throws IOException {
+        defCache.clear();
+        for (File file : getDefFiles()) {
+            loadDefFile(file);
         }
     }
 
@@ -247,10 +249,10 @@ public class TestConfigServer implements RequestHandler, Runnable {
         return SlimeConfigResponse.fromConfigPayload(payload, applicationGeneration, false, configMd5Sum);
     }
 
-    private void loadDefFile(File file) throws FileNotFoundException {
+    private void loadDefFile(File file) throws IOException {
         String name = getConfigName(file);
-        List<String> fileContents = readFileContents(file);
-        String md5Sum = ConfigUtils.getDefMd5(fileContents);
+        String fileContents = IOUtils.readFile(file);
+        String md5Sum = ConfigUtils.getDefMd5(List.of(fileContents.split("\n")));
         InnerCNode cnode = new DefParser(name, new FileReader(file)).getTree();
         try {
             String configId = "";
@@ -287,17 +289,21 @@ public class TestConfigServer implements RequestHandler, Runnable {
      */
     public synchronized void deployNewConfig(String configDir) {
         this.configDir = configDir;
-        long gen = updateApplication();
-        log.log(LogLevel.INFO, "Activated config with generation " + gen + " from directory " + configDir +
-                               " on config server using port " + port);
+        try {
+            long gen = updateApplication();
+            log.log(LogLevel.INFO, "Activated config with generation " + gen + " from directory " + configDir +
+                                   " on config server using port " + port);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    protected AtomicLong loadLiveApplication() {
+    protected AtomicLong loadLiveApplication() throws IOException {
         loadDefFiles();
         return new AtomicLong(1);
     }
 
-    public synchronized long updateApplication() {
+    public synchronized long updateApplication() throws IOException {
         configCache.clear();
         loadDefFiles();
         return generation.incrementAndGet();

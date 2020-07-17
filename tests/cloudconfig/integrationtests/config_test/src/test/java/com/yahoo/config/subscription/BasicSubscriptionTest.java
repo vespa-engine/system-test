@@ -30,9 +30,10 @@ import com.yahoo.myproject.config.NamespaceConfig;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Logger;
 
 public class BasicSubscriptionTest {
-    private java.util.logging.Logger log = java.util.logging.Logger.getLogger(BasicSubscriptionTest.class.getName());
+    private final java.util.logging.Logger log = Logger.getLogger(BasicSubscriptionTest.class.getName());
     private ConfigSubscriber subscriber;
     
     @Before
