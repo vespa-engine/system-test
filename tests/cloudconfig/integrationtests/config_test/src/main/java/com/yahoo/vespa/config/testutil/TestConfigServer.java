@@ -86,44 +86,11 @@ public class TestConfigServer implements RequestHandler, Runnable {
 
     private final RpcServer rpcServer;
 
-    // TODO Refactor out a method for the deployment part here
     public TestConfigServer(int port, String defDir, String configDir) {
-        ConfigDefinitionRepo configDefinitionRepo = new ConfigDefinitionRepo() {
-            @Override
-            public Map<ConfigDefinitionKey, ConfigDefinition> getConfigDefinitions() {
-                return Collections.emptyMap();
-            }
-
-            @Override
-            public ConfigDefinition get(ConfigDefinitionKey key) {
-                return null;
-            }
-        };
-
-        String fileReferencesDir;
-        try {
-            fileReferencesDir = Files.createTempDirectory("filereferences").toString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        ConfigserverConfig configServerConfig = new ConfigserverConfig.Builder()
-                .fileReferencesDir(fileReferencesDir)
-                .rpcport(port)
-                .build();
-        final SuperModelManager superModelManager = new SuperModelManager(configServerConfig, Zone.defaultZone(), new GenerationCounter() {
-            @Override
-            public long increment() {
-                return 0;
-            }
-
-            @Override
-            public long get() {
-                return 0;
-            }
-        }, new InMemoryFlagSource());
-        SuperModelRequestHandler handler = new SuperModelRequestHandler(configDefinitionRepo, configServerConfig, superModelManager);
+        ConfigserverConfig configServerConfig = configserverConfig(port);
+        SuperModelRequestHandler superModelRequestHandler = createSuperModelRequestHandler(configServerConfig);
         this.rpcServer = new RpcServer(configServerConfig,
-                                       handler, 
+                                       superModelRequestHandler,
                                        dimensions -> new MetricUpdater(Metrics.createTestMetrics(), Collections.emptyMap()),
                                        new HostRegistries(),
                                        new ConfigRequestHostLivenessTracker(),
@@ -134,11 +101,7 @@ public class TestConfigServer implements RequestHandler, Runnable {
         this.port = port;
         this.defDir = defDir;
         this.configDir = configDir;
-        try {
-            generation = loadLiveApplication();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        generation = loadLiveApplication();
     }
 
     /**
@@ -298,8 +261,12 @@ public class TestConfigServer implements RequestHandler, Runnable {
         }
     }
 
-    protected AtomicLong loadLiveApplication() throws IOException {
-        loadDefFiles();
+    protected AtomicLong loadLiveApplication() {
+        try {
+            loadDefFiles();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return new AtomicLong(1);
     }
 
@@ -401,11 +368,51 @@ public class TestConfigServer implements RequestHandler, Runnable {
         return "Config server running on port " + port;
     }
 
+    private ConfigserverConfig configserverConfig(int port) {
+        String fileReferencesDir;
+        try {
+            fileReferencesDir = Files.createTempDirectory("filereferences").toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new ConfigserverConfig.Builder()
+                .fileReferencesDir(fileReferencesDir)
+                .rpcport(port)
+                .build();
+    }
+
+    private SuperModelRequestHandler createSuperModelRequestHandler(ConfigserverConfig configServerConfig) {
+        SuperModelManager superModelManager = new SuperModelManager(configServerConfig,
+                                                                    Zone.defaultZone(),
+                                                                    new TestGenerationCounter(),
+                                                                    new InMemoryFlagSource());
+        return new SuperModelRequestHandler(new TestConfigDefinitionRepo(),
+                                            configServerConfig,
+                                            superModelManager);
+    }
+
     private static class MockTenant extends Tenant {
 
         MockTenant(TenantName tenantName, RequestHandler requestHandler) {
             super(tenantName, null, requestHandler, null, Instant.now());
         }
+
+    }
+
+    private static class TestConfigDefinitionRepo implements ConfigDefinitionRepo {
+        @Override
+        public Map<ConfigDefinitionKey, ConfigDefinition> getConfigDefinitions() { return Map.of(); }
+
+        @Override
+        public ConfigDefinition get(ConfigDefinitionKey key) { return null; }
+    }
+
+    private static class TestGenerationCounter implements GenerationCounter {
+        @Override
+        public long increment() { return 0; }
+
+        @Override
+        public long get() { return 0; }
     }
 
 }
