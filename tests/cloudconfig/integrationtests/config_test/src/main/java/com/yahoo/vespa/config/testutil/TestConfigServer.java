@@ -37,10 +37,8 @@ import com.yahoo.vespa.config.server.tenant.Tenant;
 import com.yahoo.vespa.config.util.ConfigUtils;
 import com.yahoo.vespa.flags.InMemoryFlagSource;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -48,7 +46,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -110,23 +107,17 @@ public class TestConfigServer implements RequestHandler, Runnable {
      */
     private void loadDefFiles() throws IOException {
         defCache.clear();
-        for (File file : getDefFiles()) {
+        for (File file : getFiles((new File(defDir)), (dir, name) -> name.endsWith(".def"))) {
             loadDefFile(file);
         }
     }
 
-    private File[] getCfgFiles() {
-        FilenameFilter cfgFilter = (dir, name) -> name.endsWith(".cfg");
-        return (new File(configDir)).listFiles(cfgFilter);
-    }
-
-    private File[] getDefFiles() {
-        FilenameFilter defFilter = (dir, name) -> name.endsWith(".def");
-        return (new File(defDir)).listFiles(defFilter);
+    private File[] getFiles(File dir, FilenameFilter filenameFilter) {
+        return dir.listFiles(filenameFilter);
     }
 
     private void loadCfgFiles(String configId, String namespace) {
-        for (File file : getCfgFiles()) {
+        for (File file : getFiles((new File(configDir)), (dir, name) -> name.endsWith(".cfg"))) {
             loadCfgFile(file, configId, namespace);
         }
     }
@@ -134,33 +125,6 @@ public class TestConfigServer implements RequestHandler, Runnable {
     @Override
     public boolean hasApplication(ApplicationId appId, Optional<Version> vespaVersion) {
       return true;
-    }
-
-    private List<String> readFileContents(File file) {
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
-            List<String> fileContents = new ArrayList<>();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                fileContents.add(line);
-            }
-            return fileContents;
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found:" + file.getName());
-        } catch (IOException ioe) {
-            System.err.println("IO error when opening " + file.getName()
-                    + ":" + ioe.getMessage());
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        throw new RuntimeException("Could not read file contents for file " + file);
     }
 
     private String getConfigName(File file) {
@@ -194,17 +158,28 @@ public class TestConfigServer implements RequestHandler, Runnable {
     private void loadCfgFile(File file, String configId, String namespace) {
         //System.out.println("Loading " + file.getName() + " for subscriber " + configId);
         String name = getConfigName(file);
-        List<String> fileContents = readFileContents(file);
 
-        ConfigPayload payload = new CfgConfigPayloadBuilder().deserialize(fileContents);
+        List<String> lines = readLines(file);
+
+
+        ConfigPayload payload = new CfgConfigPayloadBuilder().deserialize(lines);
         String configMd5Sum = ConfigUtils.getMd5(payload);
         ConfigKey<?> cKey = new ConfigKey<>(name, "", namespace);
         String defMd5 = defCache.get(cKey);
         if (defMd5 != null) {
             ConfigKey<?> key = new ConfigKey<>(name, configId, namespace);
-            addConfig(key, createResponse(new CfgConfigPayloadBuilder().deserialize(fileContents), configMd5Sum, getApplicationGeneration()));
+            addConfig(key, createResponse(new CfgConfigPayloadBuilder().deserialize(lines), configMd5Sum, getApplicationGeneration()));
         } else {
             System.out.println("No config definition for " + namespace + "." + name + ", unable to add config");
+        }
+    }
+
+    private List<String> readLines(File file) {
+        try {
+            String fileContents = IOUtils.readFile(file);
+            return List.of(fileContents.split("\n"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -214,8 +189,8 @@ public class TestConfigServer implements RequestHandler, Runnable {
 
     private void loadDefFile(File file) throws IOException {
         String name = getConfigName(file);
-        String fileContents = IOUtils.readFile(file);
-        String md5Sum = ConfigUtils.getDefMd5(List.of(fileContents.split("\n")));
+        List<String> lines = readLines(file);
+        String md5Sum = ConfigUtils.getDefMd5(lines);
         InnerCNode cnode = new DefParser(name, new FileReader(file)).getTree();
         try {
             String configId = "";
