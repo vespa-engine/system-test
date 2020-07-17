@@ -11,6 +11,7 @@ import com.yahoo.config.provision.ApplicationId;
 import com.yahoo.config.provision.TenantName;
 import com.yahoo.config.provision.Zone;
 import com.yahoo.config.subscription.CfgConfigPayloadBuilder;
+import com.yahoo.io.IOUtils;
 import com.yahoo.jrt.Spec;
 import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.config.ConfigDefinitionKey;
@@ -36,10 +37,8 @@ import com.yahoo.vespa.config.server.tenant.Tenant;
 import com.yahoo.vespa.config.util.ConfigUtils;
 import com.yahoo.vespa.flags.InMemoryFlagSource;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -47,7 +46,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -56,6 +54,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
 
 /**
  * A mock config server for use in testing.
@@ -64,7 +63,7 @@ import java.util.concurrent.atomic.AtomicLong;
  */
 public class TestConfigServer implements RequestHandler, Runnable {
 
-    private static final java.util.logging.Logger log = java.util.logging.Logger.getLogger(TestConfigServer.class.getName());
+    private static final java.util.logging.Logger log = Logger.getLogger(TestConfigServer.class.getName());
     private static final TenantName tenantName = TenantName.from("default");
     public static final String DEFAULT_DEF_DIR = "configs/def-files";
     public static final String DEFAULT_CFG_DIR = "configs/foo";
@@ -84,44 +83,11 @@ public class TestConfigServer implements RequestHandler, Runnable {
 
     private final RpcServer rpcServer;
 
-    // TODO Refactor out a method for the deployment part here
     public TestConfigServer(int port, String defDir, String configDir) {
-        ConfigDefinitionRepo configDefinitionRepo = new ConfigDefinitionRepo() {
-            @Override
-            public Map<ConfigDefinitionKey, ConfigDefinition> getConfigDefinitions() {
-                return Collections.emptyMap();
-            }
-
-            @Override
-            public ConfigDefinition get(ConfigDefinitionKey key) {
-                return null;
-            }
-        };
-
-        String fileReferencesDir;
-        try {
-            fileReferencesDir = Files.createTempDirectory("filereferences").toString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        ConfigserverConfig configServerConfig = new ConfigserverConfig.Builder()
-                .fileReferencesDir(fileReferencesDir)
-                .rpcport(port)
-                .build();
-        final SuperModelManager superModelManager = new SuperModelManager(configServerConfig, Zone.defaultZone(), new GenerationCounter() {
-            @Override
-            public long increment() {
-                return 0;
-            }
-
-            @Override
-            public long get() {
-                return 0;
-            }
-        }, new InMemoryFlagSource());
-        SuperModelRequestHandler handler = new SuperModelRequestHandler(configDefinitionRepo, configServerConfig, superModelManager);
+        ConfigserverConfig configServerConfig = configserverConfig(port);
+        SuperModelRequestHandler superModelRequestHandler = createSuperModelRequestHandler(configServerConfig);
         this.rpcServer = new RpcServer(configServerConfig,
-                                       handler, 
+                                       superModelRequestHandler,
                                        dimensions -> new MetricUpdater(Metrics.createTestMetrics(), Collections.emptyMap()),
                                        new HostRegistries(),
                                        new ConfigRequestHostLivenessTracker(),
@@ -132,7 +98,8 @@ public class TestConfigServer implements RequestHandler, Runnable {
         this.port = port;
         this.defDir = defDir;
         this.configDir = configDir;
-        generation = loadLiveApplication();
+        loadDefFiles();
+        generation = new AtomicLong(1);
     }
 
     /**
@@ -140,28 +107,18 @@ public class TestConfigServer implements RequestHandler, Runnable {
      * Configs are loaded at config resolving time.
      */
     private void loadDefFiles() {
-        try {
-            defCache.clear();
-            for (File file : getDefFiles()) {
-                loadDefFile(file);
-            }
-        } catch (FileNotFoundException e) {
-            log.log(LogLevel.ERROR, "Error loading def: ", e);
+        defCache.clear();
+        for (File file : getFiles((new File(defDir)), (dir, name) -> name.endsWith(".def"))) {
+            loadDefFile(file);
         }
     }
 
-    private File[] getCfgFiles() {
-        FilenameFilter cfgFilter = (dir, name) -> name.endsWith(".cfg");
-        return (new File(configDir)).listFiles(cfgFilter);
-    }
-
-    private File[] getDefFiles() {
-        FilenameFilter defFilter = (dir, name) -> name.endsWith(".def");
-        return (new File(defDir)).listFiles(defFilter);
+    private File[] getFiles(File dir, FilenameFilter filenameFilter) {
+        return dir.listFiles(filenameFilter);
     }
 
     private void loadCfgFiles(String configId, String namespace) {
-        for (File file : getCfgFiles()) {
+        for (File file : getFiles((new File(configDir)), (dir, name) -> name.endsWith(".cfg"))) {
             loadCfgFile(file, configId, namespace);
         }
     }
@@ -169,33 +126,6 @@ public class TestConfigServer implements RequestHandler, Runnable {
     @Override
     public boolean hasApplication(ApplicationId appId, Optional<Version> vespaVersion) {
       return true;
-    }
-
-    private List<String> readFileContents(File file) {
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
-            List<String> fileContents = new ArrayList<>();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                fileContents.add(line);
-            }
-            return fileContents;
-        } catch (FileNotFoundException e) {
-            System.err.println("File not found:" + file.getName());
-        } catch (IOException ioe) {
-            System.err.println("IO error when opening " + file.getName()
-                    + ":" + ioe.getMessage());
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        throw new RuntimeException("Could not read file contents for file " + file);
     }
 
     private String getConfigName(File file) {
@@ -208,11 +138,8 @@ public class TestConfigServer implements RequestHandler, Runnable {
     }
 
     private void addConfigDef(ConfigKey<?> key, String defMd5, InnerCNode cnode) {
-        final ConfigDefinitionKey configDefinitionKey = new ConfigDefinitionKey(key);
-        if (!defCache.containsKey(key)) {
-            defCache.put(key, defMd5);
-            defNodes.put(configDefinitionKey, cnode);
-        }
+        defCache.putIfAbsent(key, defMd5);
+        defNodes.putIfAbsent(new ConfigDefinitionKey(key), cnode);
     }
 
     private void addConfig(ConfigKey<?> key, ConfigResponse configResponse) {
@@ -229,17 +156,25 @@ public class TestConfigServer implements RequestHandler, Runnable {
     private void loadCfgFile(File file, String configId, String namespace) {
         //System.out.println("Loading " + file.getName() + " for subscriber " + configId);
         String name = getConfigName(file);
-        List<String> fileContents = readFileContents(file);
-
-        ConfigPayload payload = new CfgConfigPayloadBuilder().deserialize(fileContents);
+        List<String> lines = readLines(file);
+        ConfigPayload payload = new CfgConfigPayloadBuilder().deserialize(lines);
         String configMd5Sum = ConfigUtils.getMd5(payload);
         ConfigKey<?> cKey = new ConfigKey<>(name, "", namespace);
         String defMd5 = defCache.get(cKey);
         if (defMd5 != null) {
             ConfigKey<?> key = new ConfigKey<>(name, configId, namespace);
-            addConfig(key, createResponse(new CfgConfigPayloadBuilder().deserialize(fileContents), configMd5Sum, getApplicationGeneration()));
+            addConfig(key, createResponse(new CfgConfigPayloadBuilder().deserialize(lines), configMd5Sum, getApplicationGeneration()));
         } else {
             System.out.println("No config definition for " + namespace + "." + name + ", unable to add config");
+        }
+    }
+
+    private List<String> readLines(File file) {
+        try {
+            String fileContents = IOUtils.readFile(file);
+            return List.of(fileContents.split("\n"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -247,12 +182,12 @@ public class TestConfigServer implements RequestHandler, Runnable {
         return SlimeConfigResponse.fromConfigPayload(payload, applicationGeneration, false, configMd5Sum);
     }
 
-    private void loadDefFile(File file) throws FileNotFoundException {
+    private void loadDefFile(File file) {
         String name = getConfigName(file);
-        List<String> fileContents = readFileContents(file);
-        String md5Sum = ConfigUtils.getDefMd5(fileContents);
-        InnerCNode cnode = new DefParser(name, new FileReader(file)).getTree();
+        List<String> lines = readLines(file);
+        String md5Sum = ConfigUtils.getDefMd5(lines);
         try {
+            InnerCNode cnode = new DefParser(name, new FileReader(file)).getTree();
             String configId = "";
             String namespace = ConfigUtils.getDefNamespace(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8));
             addConfigDef(new ConfigKey<>(name, configId, namespace), md5Sum, cnode);
@@ -290,11 +225,6 @@ public class TestConfigServer implements RequestHandler, Runnable {
         long gen = updateApplication();
         log.log(LogLevel.INFO, "Activated config with generation " + gen + " from directory " + configDir +
                                " on config server using port " + port);
-    }
-
-    protected AtomicLong loadLiveApplication() {
-        loadDefFiles();
-        return new AtomicLong(1);
     }
 
     public synchronized long updateApplication() {
@@ -395,11 +325,51 @@ public class TestConfigServer implements RequestHandler, Runnable {
         return "Config server running on port " + port;
     }
 
+    private ConfigserverConfig configserverConfig(int port) {
+        String fileReferencesDir;
+        try {
+            fileReferencesDir = Files.createTempDirectory("filereferences").toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new ConfigserverConfig.Builder()
+                .fileReferencesDir(fileReferencesDir)
+                .rpcport(port)
+                .build();
+    }
+
+    private SuperModelRequestHandler createSuperModelRequestHandler(ConfigserverConfig configServerConfig) {
+        SuperModelManager superModelManager = new SuperModelManager(configServerConfig,
+                                                                    Zone.defaultZone(),
+                                                                    new TestGenerationCounter(),
+                                                                    new InMemoryFlagSource());
+        return new SuperModelRequestHandler(new TestConfigDefinitionRepo(),
+                                            configServerConfig,
+                                            superModelManager);
+    }
+
     private static class MockTenant extends Tenant {
 
         MockTenant(TenantName tenantName, RequestHandler requestHandler) {
             super(tenantName, null, requestHandler, null, Instant.now());
         }
+
+    }
+
+    private static class TestConfigDefinitionRepo implements ConfigDefinitionRepo {
+        @Override
+        public Map<ConfigDefinitionKey, ConfigDefinition> getConfigDefinitions() { return Map.of(); }
+
+        @Override
+        public ConfigDefinition get(ConfigDefinitionKey key) { return null; }
+    }
+
+    private static class TestGenerationCounter implements GenerationCounter {
+        @Override
+        public long increment() { return 0; }
+
+        @Override
+        public long get() { return 0; }
     }
 
 }

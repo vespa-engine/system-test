@@ -225,8 +225,8 @@ public class ConfigClientTest {
     private static class Tester implements AutoCloseable {
 
         private final ConfigTester tester;
-        private Supervisor supervisor;
-        private Target target;
+        private final Supervisor supervisor;
+        private final Target target;
 
         public Tester() {
             tester = new ConfigTester();

@@ -11,6 +11,8 @@ import com.yahoo.vespa.config.testutil.TestConfigServer;
 import org.junit.After;
 import org.junit.Test;
 
+import java.util.logging.Logger;
+
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasChanged;
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasNotChanged;
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
@@ -21,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class FailoverTest {
-    private java.util.logging.Logger log = java.util.logging.Logger.getLogger(BasicSubscriptionTest.class.getName());
+    private java.util.logging.Logger log = Logger.getLogger(BasicSubscriptionTest.class.getName());
 
     private ConfigSubscriber subscriber;
 
