@@ -114,8 +114,8 @@ class WeightedSetFeedTest < PerformanceTest
     parameter_combinations.map do |p|
       {
         :x => FIELD_TYPE,
-        :y => 'feeder.avglatency',
-        :title => "Average latency of weighted set feeding with #{p.wset_size} elements per set, key type long, fast search #{p.fast_search}",
+        :y => 'feeder.throughput',
+        :title => "Throughput of weighted set feeding with #{p.wset_size} elements per set, key type long, fast search #{p.fast_search}",
         # TODO string type
         :filter => { WSET_SIZE => p.wset_size, KEY_TYPE => LONG_TYPE, FAST_SEARCH => p.fast_search.to_s},
         :historic => true,
