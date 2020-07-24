@@ -97,13 +97,13 @@ class WeightedSetFeedTest < PerformanceTest
 
   def parameter_combinations
     [
-      params(10,     false, 18000, 23700),
+      params(10,     false, 17900, 23700),
       params(100,    false, 13000, 15000),
       params(1000,   false, 1850, 2060),
       params(10000,  false, 190, 210),
       params(100000, false, 15, 18),
       params(10,     true, 15000, 17250),
-      params(100,    true, 2260, 2435),
+      params(100,    true, 2255, 2435),
       params(1000,   true, 220, 232),
       params(10000,  true, 18, 20),
       params(100000, true, 1.6, 1.75)
