@@ -81,7 +81,6 @@ class TestCase
     @ignorable_messages = [
       @@log_messages[:async_slow_resolve],
       @@log_messages[:slow_query],
-      @@log_messages[:out_of_rotation],
       @@log_messages[:connect_location_broker],
       @@log_messages[:curator_slf4j_exponential_backoff_retry],
       @@log_messages[:slf4j_create],
@@ -697,7 +696,6 @@ class TestCase
     :slow_processing =>  /Slow processing of message/,
     :connect_location_broker =>  /cannot connect to location broker at tcp/,
     :max_query_timeout => /Query timeout \(\d+ ms\) > max query /,
-    :out_of_rotation => /Removing container from rotation by no longer serving status.html/,
     :curator_slf4j_exponential_backoff_retry => /SLF4J: org.apache.curator.retry.ExponentialBackoffRetry/,
     :uncommon_get => /a little uncommon that GET method returns always/,
     :slf4j_create => /SLF4J: (The following loggers|during the default|See also http|org.apache.zookeeper)/,
