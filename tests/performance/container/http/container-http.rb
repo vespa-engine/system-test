@@ -61,7 +61,7 @@ class ContainerHttp < PerformanceTest
             :filter => {'legend' => NON_PERSISTENT },
             :x => 'legend',
             :y => 'qps',
-            :y_min => 2850,
+            :y_min => 2800,
             :y_max => 3000,
             :historic => true
         },
