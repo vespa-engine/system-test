@@ -77,9 +77,7 @@ class Adminserver < VespaNode
     end
     deploy_finished = Time.now
     if params[:collect_timing]
-      # TODO: Second item is upload time, we do prepare with app instead of upload + prepare now,
-      #       fix all usage and remove
-      [out, 0.0, (activate_start - prepare_start).to_f, (deploy_finished - activate_start).to_f]
+      [out, (prepare_start - upload_start).to_f, (activate_start - prepare_start).to_f, (deploy_finished - activate_start).to_f]
     else
       out
     end
