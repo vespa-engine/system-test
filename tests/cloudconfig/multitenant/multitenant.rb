@@ -1,7 +1,6 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'cloudconfig_test'
-require 'json'
 require 'set'
 require 'environment'
 
@@ -9,7 +8,7 @@ require 'environment'
 #
 # On the configserver, run
 #
-# yinst set cloudconfig_server.multitenant=true && yinst restart cloudconfig_server
+# export VESPA_CONFIGSERVER_MULTITENANT=true && vespa-start-configserver
 # 
 # When running test, run for example:
 # sudo ruby systemtests/tests/cloudconfig/multitenant/multitenant.rb --configserverhost myconfigserver.trondheim.corp.yahoo.com
@@ -41,7 +40,7 @@ class MultiTenant < CloudConfigTest
 
   def setup_test
     set_owner("musum")
-    set_description("Tests deploying with multiple tenants")
+    set_description("Tests subscribing to supermodel")
 
     @tenant_name = DEFAULT_TENANT
     @application_name = "default"
@@ -53,60 +52,6 @@ class MultiTenant < CloudConfigTest
     if (!@configserver)
       raise "Could not get config server, check that you are using #{@num_hosts} hosts"
     end
-  end
-
-  def test_multi_tenant_deploy_many_times
-    create_tenants_and_wait([TENANT_A, TENANT_B], @configserver)
-
-    delete_application(@configserver, @tenant_name, @application_name)
-    @tenant_name = TENANT_A
-    @application_name = "foo"
-    puts "deploying with tenant '#{@tenant_name}'"
-    deploy_with_tenant("#{CLOUDCONFIG_DEPLOY_APPS}/app_b", @tenant_name, @application_name)
-    assert_config(1338, @configserver)
-    puts "deploying with tenant '#{@tenant_name}'"
-    deploy_with_tenant("#{CLOUDCONFIG_DEPLOY_APPS}/app_b", @tenant_name, @application_name)
-    assert_config(1338, @configserver)
-    delete_tenant_and_its_applications(@hostname, TENANT_A)
-    delete_tenant_and_its_applications(@hostname, TENANT_B)
-  end
-
-  # Tests requesting config from another tenant than default with v2 protocol
-  def test_multi_tenant_client
-    create_tenant_and_wait(TENANT_A, @configserver)
-    @tenant_name = TENANT_A
-    @application_name = "foo"
-    fooValue = "SimpleApp a"
-    add_bundle("simplebundle")
-    service_name = "simpleapp_a"
-    classpath = "#{Environment.instance.vespa_home}/lib/jars/config.jar"
-    cmd = "cd #{dirs.tmpdir}/bundles; VESPA_CONFIG_ID=#{service_name} java -cp #{classpath}:simplebundle-1.0-deploy.jar com.yahoo.simpleapp.SimpleApp"
-    puts "CMD=#{cmd}"
-    app = generate_app(cmd, service_name, fooValue)
-    deploy_generated(app, nil, nil, :tenant => @tenant_name, :application_name => @application_name)
-
-    start
-    sleep 10
-    delete_tenant_and_its_applications(@hostname, TENANT_A)
-    assert_config_output_in_log("foo: #{fooValue}")
-  end
-
-  def test_multiple_instances
-    create_tenant_and_wait(TENANT_A, @configserver)
-    @tenant_name = TENANT_A
-    @application_name = "foo"
-    @instance = "one"
-    deploy_app_with_tenant(@hostlist[0], 1337)
-    assert_logd_config_v2(1337, @configserver, @tenant_name, @application_name, @instance)
-    @instance = "two"
-    deploy_app_with_tenant(@hostlist[1], 1338)
-    assert_logd_config_v2(1338, @configserver, @tenant_name, @application_name, @instance)
-    assert_logd_config_v2(1337, @configserver, @tenant_name, @application_name, "one")
-    delete_tenant_and_its_applications(@hostname, TENANT_A)
-  end
-
-  def multitenant_app(hostname, logserver_port)
-    app_with_logd(logserver_port).host(AppHost.new(hostname, ["node1"]))
   end
 
   def test_subscribe_to_supermodel
@@ -224,18 +169,6 @@ ENDER
   def deploy_with_tenant(app, tenant, application_name, params={})
     params = params.merge({:tenant => tenant}).merge({:application_name => application_name})
     deploy(app, nil, nil, params)
-  end
-
-  def deploy_app_with_tenant(hostname, logserver_port)
-    app = multitenant_app(hostname, logserver_port)
-    params = {:tenant => @tenant, :application_name => @application_name, :instance => @instance, :hosts_to_use => [hostname]}
-    deploy_app(app, params)
-  end
-
-  def assert_config(rpcport, hostname=@configserver)
-    config = get_config("cloud.config.log.logd", "admin", hostname)
-    logserver = config["logserver"]
-    assert_equal(rpcport, logserver["rpcport"].to_i)
   end
 
   def get_config(configName, configId, hostname, instance_name="default")
