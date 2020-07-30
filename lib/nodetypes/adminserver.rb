@@ -61,17 +61,17 @@ class Adminserver < VespaNode
     if params[:from_url]
       cmd += " -F #{params[:from_url]}"
     end
-    upload_start = Time.now
-    execute("#{cmd} upload #{app_dir}", params)
     prepare_start = Time.now
-    out = execute("#{cmd} prepare", params)
+    out = execute("#{cmd} prepare #{app_dir}", params)
     activate_start = Time.now
     unless params[:no_activate] then
       out += execute("#{cmd} activate", params)
     end
     deploy_finished = Time.now
     if params[:collect_timing]
-      [out, (prepare_start - upload_start).to_f, (activate_start - prepare_start).to_f, (deploy_finished - activate_start).to_f]
+      # TODO: Second item is upload time, we do prepare with app instead of upload + prepare now,
+      #       fix all usage and remove
+      [out, 0.0, (activate_start - prepare_start).to_f, (deploy_finished - activate_start).to_f]
     else
       out
     end
