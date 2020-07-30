@@ -77,7 +77,6 @@ class MultiTenant < CloudConfigTest
     app = generate_app(cmd, service_name, "foo")
     deploy_generated(app, nil, nil, :tenant => TENANT_A, :application_name => "foo")
 
-
     start
     assert_config_output_in_log("a,foo:prod:default:default,configproxy")
     assert_config_output_in_log("a,foo:prod:default:default,slobrok")
@@ -171,18 +170,14 @@ ENDER
     deploy(app, nil, nil, params)
   end
 
-  def get_config(configName, configId, hostname, instance_name="default")
-    get_config_v2_assert_200(hostname, @tenant_name, @application_name, instance_name, configName, configId)
-  end
-
   def assert_config_output_in_log(regexp)
     assert_log_matches(regexp, 30)
   end
 
   def teardown
+    stop
     delete_tenant_and_its_applications(@hostname, TENANT_A)
     delete_tenant_and_its_applications(@hostname, TENANT_B)
-    stop
   end
 
 end
