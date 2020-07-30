@@ -115,7 +115,7 @@ class TensorConstantPerfTest < PerformanceTest
   end
 
   def deploy_app_and_sample_time(app)
-    out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true})
+    out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true, :separate_upload_and_prepare => true})
     start_file_distribution = Time.now
     total_time = (prepare_time + activate_time).to_f
     # wait for config (when new config has arrived file distribution is guaranteed to be finished)

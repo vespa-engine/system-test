@@ -61,10 +61,16 @@ class Adminserver < VespaNode
     if params[:from_url]
       cmd += " -F #{params[:from_url]}"
     end
-    upload_start = Time.now
-    execute("#{cmd} upload #{app_dir}", params)
-    prepare_start = Time.now
-    out = execute("#{cmd} prepare", params)
+    if params[:separate_upload_and_prepare]
+      upload_start = Time.now
+      execute("#{cmd} upload #{app_dir}", params)
+      prepare_start = Time.now
+      out = execute("#{cmd} prepare", params)
+    else
+      upload_start = Time.now
+      prepare_start = upload_start
+      out = execute("#{cmd} prepare #{app_dir}", params)
+    end
     activate_start = Time.now
     unless params[:no_activate] then
       out += execute("#{cmd} activate", params)
