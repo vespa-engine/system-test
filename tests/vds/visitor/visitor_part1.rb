@@ -118,7 +118,7 @@ class VisitorPart1Test < VisitorTest
 
     vespa.document_api_v1.put(doc)
 
-    results = visit(0, 0, "", [], false, "[header]")
+    results = visit(0, 0, "", [], false, "[all]")
     assert_equal(1, results.length)
     assert_equal("mytitle", results[0].attributes["title"])
     assert_equal("myband", results[0].attributes["band"])
