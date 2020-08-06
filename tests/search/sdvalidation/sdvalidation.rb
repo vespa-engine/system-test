@@ -42,25 +42,6 @@ class SDValidation < SearchTest
     end
   end
 
-  def test_setlanguage_warning
-    warning_regexp = Regexp.new("Preceding text fields that will not have their language set: title uniq_id")
-
-    output = deploy_app(SearchApp.new.sd(selfdir+"setlanguage_warning.sd"))
-    assert_match(warning_regexp, output)
-
-    warning_regexp = Regexp.new("Preceding text fields that will not have their language set:")
-
-    output = deploy_app(SearchApp.new.sd(selfdir+"setlanguage_nowarning.sd")
-                                     .validation_override("content-type-removal"))
-    assert_no_match(warning_regexp, output)
-
-    warning_regexp = Regexp.new("Preceding text fields that will not have their language set:")
-
-    output = deploy_app(SearchApp.new.sd(selfdir+"setlanguage_nowarning_uri.sd")
-                                     .validation_override("content-type-removal"))
-    assert_no_match(warning_regexp, output)
-  end
-
   def test_position_expression
     deploy_app(SearchApp.new.sd(selfdir+"position_valid.sd"))
   end
