@@ -140,7 +140,7 @@ class PerformanceTest < TestCase
       result.add_metric('feeder.errorcount', output[2])
       result.add_metric('feeder.minlatency', output[3])
       result.add_metric('feeder.maxlatency', output[4])
-      result.add_metric('feeder.avglatency', output[5])
+      result.add_metric('feeder.avglatency', output[5]) if output[5]
       result.add_metric('feeder.throughput', (output[1].to_f / output[0].to_f * 1000).to_s)
       result.add_parameter('loadgiver', 'vespafeeder')
     end
