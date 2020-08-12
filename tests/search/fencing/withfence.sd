@@ -1,0 +1,98 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search withfence {
+
+  field lang type string {
+    indexing: "en" | set_language
+  }
+
+  document withfence {
+    field title type string {
+      indexing: index | summary
+    }
+    field center type position {
+      indexing: attribute
+    }
+    field fenceradius type double {
+      indexing: attribute
+    }
+    field maybecenter type array<position> {
+      indexing: attribute
+    }
+    field order type int {
+      indexing: attribute
+    }
+    field multiplace type array<fenced> {
+      indexing: summary
+    }
+  }
+
+  struct fenced {
+    field place type position {}
+    field radius type double {}
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(order)
+    }
+    summary-features {
+        distance(maybecenter)
+        distance(maybecenter).index
+        distance(maybecenter).latitude
+        distance(maybecenter).longitude
+        distance(center)
+        attribute(fenceradius)
+        attribute(maybecenter_zcurve).count
+    }
+  }
+
+  rank-profile center inherits default {
+    first-phase {
+      expression: attribute(order) - if((distance(center) > (attribute(fenceradius)*10000)), 1.0e33, 0.0)
+      rank-score-drop-limit: -1000000000.0
+    }
+  }
+
+  rank-profile maybe inherits default {
+    macro maybedistance() {
+      expression: if((attribute(maybecenter_zcurve).count > 0), distance(maybecenter), 0)
+    }
+    macro maybepenalty() {
+      expression: if((maybedistance > (attribute(fenceradius)*10000)), 1.0e33, 0)
+    }
+    first-phase {
+      expression: attribute(order) - maybepenalty
+      rank-score-drop-limit: -1000000000.0
+    }
+  }
+
+  rank-profile withraw inherits center {
+    summary-features {
+        distance(maybecenter)
+        distance(maybecenter).index
+        distance(maybecenter).latitude
+        distance(maybecenter).longitude
+        distance(center)
+        attribute(fenceradius)
+        attribute(maybecenter_zcurve).count
+        rawScore(center_zcurve)
+        rawScore(maybecenter_zcurve)
+        distance(label,foobar)
+    }
+  }
+
+  rank-profile foryql inherits withraw {
+    macro maybedistance() {
+      expression: if ((attribute(maybecenter_zcurve).count > 0), distance(label,foobar), 0)
+    }
+    macro maybepenalty() {
+      expression: if ((maybedistance > attribute(fenceradius)), 1.0e33, 0)
+    }
+    first-phase {
+      expression: attribute(order) - maybepenalty
+      rank-score-drop-limit: -1000000000.0
+    }
+  }
+
+}
