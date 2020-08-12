@@ -1042,6 +1042,8 @@ module TestBase
 
   # Asserts that valgrind has been run with no errors reported.
   def assert_no_valgrind_errors
+    return if not @valgrind
+
     errors = 0
     filenames = []
     valgrindlogs = Dir.glob(dirs.valgrindlogdir+"/*")

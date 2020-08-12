@@ -295,9 +295,6 @@ class TestCase
         Timeout::timeout(get_timeout, SystemTestTimeout) do |timeout|
           teardown
         end
-        assert_no_valgrind_errors
-      rescue AssertionFailedError => e
-        add_failure(e.message, e.backtrace)
       rescue StandardError, ScriptError, SignalException => e
         add_error(e)
       ensure
@@ -330,6 +327,12 @@ class TestCase
         add_vespa_logfiles
         add_logfiles(@dirs.valgrindlogdir)
         add_logfiles(@dirs.jdisccorelogdir)
+
+        begin
+          assert_no_valgrind_errors
+        rescue AssertionFailedError => e
+          add_valgrind_failure(e.message, e.backtrace)
+        end
         if (not @stopped and not @command_line_output)
           add_failure("ERROR: Method 'stop' was not called at " +
                       "the end of the testcase.")
@@ -422,6 +425,16 @@ class TestCase
     $stdout.puts all_locations.join("\n")
     failure = Failure.new(name, all_locations, message)
     @result.add_failure(failure)
+    @failure_recorded = true
+    output(failure.short_desc)
+  end
+
+  def add_valgrind_failure(message, all_locations=caller())
+    $stdout.puts "Add valgrind failure: "
+    $stdout.puts message
+    $stdout.puts all_locations.join("\n")
+    failure = Failure.new(name, all_locations, message)
+    @result.add_valgrind_failure(failure)
     @failure_recorded = true
     output(failure.short_desc)
   end
