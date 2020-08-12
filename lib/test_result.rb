@@ -5,7 +5,7 @@
 class TestResult
 
   attr_reader :assertion_count, :failures, :errors, :coredumps, :values, :log
-  attr_reader :logfiles
+  attr_reader :valgrind_failure, :logfiles
   attr_accessor :owner, :description, :allow_failure, :failuntil, :allow_ticket
   attr_accessor :starttime, :endtime, :performance_annotation
 
@@ -16,6 +16,7 @@ class TestResult
     @failures = []
     @errors = []
     @coredumps = {}
+    @valgrind_failure = false
     @values = []
     @owner = "nobody"
     @description = nil
@@ -46,6 +47,12 @@ class TestResult
   # Records a Failure object.
   def add_failure(failure)
     @failures << failure
+  end
+
+  # Records a valgrind Failure object, putting it first in the list of failures.
+  def add_valgrind_failure(failure)
+    @failures.insert(0, failure)
+    @valgrind_failure = true
   end
 
   # Records an Error object.
