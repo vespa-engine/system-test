@@ -61,6 +61,7 @@ class Adminserver < VespaNode
     if params[:from_url]
       cmd += " -F #{params[:from_url]}"
     end
+
     if params[:separate_upload_and_prepare]
       upload_start = Time.now
       execute("#{cmd} upload #{app_dir}", params)
@@ -103,8 +104,13 @@ class Adminserver < VespaNode
       iterations += 1
       sleep 0.1
     end
+
     if (generation != expected_generation)
-      raise "Did not get expected generation #{expected_generation}, got #{generation}"
+      if (generation == -1)
+        raise "Did not get expected generation #{expected_generation}, got response code #{result.code.to_i} from request #{url}, response body: #{json}"
+      else
+        raise "Did not get expected generation #{expected_generation}, got generation #{generation}"
+      end
     end
   end
 
