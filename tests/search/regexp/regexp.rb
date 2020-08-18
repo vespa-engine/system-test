@@ -85,7 +85,7 @@ class RegExp < IndexedSearchTest
 
     # Invalid regexp
     assert_query_errors(make_query(make_regexp("single_index", "*")),
-                        ["Invalid search request .* Dangling meta character .* near index 0"])
+                        [".* Dangling meta character .* near index 0"])
   end
 
   def teardown
