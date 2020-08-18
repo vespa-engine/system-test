@@ -66,7 +66,7 @@ module TestBase
   DRUBY_REMOTE_PORT = 27183
 
   # absolute path to the systemtests/tests/
-  INSTALL_DIR = $:.find {|path| path =~ /systemtests.*\/tests/} || ""
+  INSTALL_DIR = $:.find {|path| path =~ /systemtests.*\/tests$/} || ""
 
   # absolute path to the system-test/tests/
   REPO_DIR = $:.find {|path| path =~ /system-test.*\/tests/} || ""
