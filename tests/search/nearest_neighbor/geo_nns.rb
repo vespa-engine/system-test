@@ -21,7 +21,7 @@ class GeoNnsTest < IndexedSearchTest
         pos = hit.field['pos_hnsw']
         sfs = JSON.parse(hit.field['summaryfeatures'])
         dsf = sfs['distance(label,nns)']
-        miles = dsf.to_f / 1609.344
+        miles = dsf.to_f / 1.609344
         puts "Hit: #{txt}  => #{pos} -> #{miles.to_i} miles"
       end
     end

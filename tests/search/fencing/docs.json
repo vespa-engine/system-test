@@ -1,0 +1,66 @@
+[
+  {
+    "put": "id:foo:withfence::0",
+    "fields": {
+      "title": "pizza in California",
+      "center": "N37.374821;W122.057174",
+      "fenceradius": 500,
+      "maybecenter": [ "N37.374821;W122.057174" ],
+      "order": 90
+    }
+  },
+  {
+    "put": "id:foo:withfence::1",
+    "fields": {
+      "title": "pizza in Trondheim",
+      "center": "N63.431693;E10.391965",
+      "fenceradius": 500,
+      "maybecenter": [ "N63.431693;E10.391965" ],
+      "order": 80
+    }
+  },
+  {
+    "put": "id:foo:withfence::2",
+    "fields": {
+      "title": "pizza near Napoli, London, Cracow",
+      "center": "N40o50'00;E14o15'00",
+      "fenceradius": 500,
+      "maybecenter": [ "N40o50'00;E14o15'00", "N51.513912;W0.128381", "N50.061598;E19.937473" ],
+      "multiplace": [
+        { "place": "N40o50'00;E14o15'00", "radius": 200 },
+        { "place": "N51.513912;W0.128381", "radius": 300 },
+        { "place": "N50.061598;E19.937473", "radius": 400 }
+      ],
+      "order": 70
+    }
+  },
+  {
+    "put": "id:foo:withfence::3",
+    "fields": {
+      "title": "pizza from Domino's",
+      "center": "N0;E0",
+      "fenceradius": 100000,
+      "maybecenter": [ ],
+      "order": 42
+    }
+  },
+  {
+    "put": "id:foo:withfence::4",
+    "fields": {
+      "title": "pizza with missing data",
+      "order": 17
+    }
+  },
+  {
+    "put": "id:foo:withfence::5",
+    "fields": {
+      "title": "sunnyvale pizza",
+      "center": "N37.374821;W122.057174",
+      "fenceradius": 500,
+      "maybecenter": [ "N37.374821;W122.057174" ],
+      "order": 100
+    }
+  }
+]
+
+

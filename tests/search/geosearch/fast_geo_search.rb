@@ -166,9 +166,6 @@ def test_multiple_position_fields
     large_dist_p95 = run_fbench(vespa.adminserver, "#{dirs.tmpdir}/urls-2.txt")
     small_dist_p95 = run_fbench(vespa.adminserver, "#{dirs.tmpdir}/urls-3.txt")
 
-    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && fbench -n 1 -c 0 -q urls-3.txt localhost #{Environment.instance.vespa_web_service_port}")
-    puts "vespa-fbench output: #{output}"
-
     puts "Want 95% at small distances (#{small_dist_p95}) much less than at large distances (#{large_dist_p95})"
     assert(small_dist_p95 * 3 < large_dist_p95)
   end
