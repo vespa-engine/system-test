@@ -31,7 +31,7 @@
         </struct-field>
       </item>
     </field>
-    <field name="summaryfeatures">{"attribute(fenceradius)":500.0,"attribute(maybecenter_zcurve).count":3.0,"distance(center)":1.391322365615223E7,"distance(maybecenter)":22487.032552117675,"distance(maybecenter).index":1.0,"distance(maybecenter).latitude":51.513912,"distance(maybecenter).longitude":-0.128381,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"attribute(fenceradius)":500000.0,"attribute(maybecenter_zcurve).count":3.0,"distance(center)":1.391322365615223E7,"distance(maybecenter)":22487.032552117675,"distance(maybecenter).index":1.0,"distance(maybecenter).latitude":51.513912,"distance(maybecenter).longitude":-0.128381,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:foo:withfence::2</field>
   </hit>
   <hit relevancy="42.0" source="fencing">
@@ -41,7 +41,7 @@
     <field name="center.position"><position y="0" x="0" latlong="N0.000000;E0.000000" /></field>
     <field name="center.distance">51500037</field>
     <field name="maybecenter.distance">-1257966797</field>
-    <field name="summaryfeatures">{"attribute(fenceradius)":100000.0,"attribute(maybecenter_zcurve).count":0.0,"distance(center)":5.1500037623161025E7,"distance(maybecenter)":4.294967296E9,"distance(maybecenter).index":-1.0,"distance(maybecenter).latitude":90.0,"distance(maybecenter).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"attribute(fenceradius)":1.0E9,"attribute(maybecenter_zcurve).count":0.0,"distance(center)":5.1500037623161025E7,"distance(maybecenter)":4.294967296E9,"distance(maybecenter).index":-1.0,"distance(maybecenter).latitude":90.0,"distance(maybecenter).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:foo:withfence::3</field>
   </hit>
   <hit relevancy="17.0" source="fencing">
