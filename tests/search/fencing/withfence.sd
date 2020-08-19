@@ -48,8 +48,14 @@ search withfence {
   }
 
   rank-profile center inherits default {
+    macro distanceInMeters() {
+        expression: distance(center)*0.1109462521
+    }
+    macro maybepenalty() {
+      expression: if(distanceInMeters > attribute(fenceradius), 1.0e33, 0)
+    }
     first-phase {
-      expression: attribute(order) - if((distance(center)*0.1109462521 > attribute(fenceradius)), 1.0e33, 0.0)
+      expression: attribute(order) - maybepenalty
       rank-score-drop-limit: -1000000000.0
     }
   }
