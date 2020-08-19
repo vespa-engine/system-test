@@ -103,7 +103,7 @@ class TestResult
 
   # Returns the method name stripped of the leading "test_" prefix.
   def name
-    return @method_name.sub(/^test_/, "")
+    return @method_name.to_s.sub(/^test_/, "")
   end
 
   # Returns the number of failures this TestResult has
