@@ -17,7 +17,7 @@
     <field name="title">pizza from Domino's</field>
     <field name="center.position"><position y="0" x="0" latlong="N0.000000;E0.000000" /></field>
     <field name="center.distance">63570785</field>
-    <field name="maybecenter.distance">-1257966797</field>
+    <field name="maybecenter.distance">2147483647</field>
     <field name="summaryfeatures">{"attribute(fenceradius)":1.0E9,"attribute(maybecenter_zcurve).count":0.0,"distance(center)":6.357078573534887E7,"distance(maybecenter)":4.294967296E9,"distance(maybecenter).index":-1.0,"distance(maybecenter).latitude":90.0,"distance(maybecenter).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:foo:withfence::3</field>
   </hit>
@@ -26,7 +26,7 @@
     <field name="sddocname">withfence</field>
     <field name="title">pizza with missing data</field>
     <field name="center.distance">2084088850</field>
-    <field name="maybecenter.distance">-1257966797</field>
+    <field name="maybecenter.distance">2147483647</field>
     <field name="summaryfeatures">{"attribute(fenceradius)":null,"attribute(maybecenter_zcurve).count":0.0,"distance(center)":2.084088850471591E9,"distance(maybecenter)":4.294967296E9,"distance(maybecenter).index":-1.0,"distance(maybecenter).latitude":90.0,"distance(maybecenter).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:foo:withfence::4</field>
   </hit>
