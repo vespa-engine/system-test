@@ -150,6 +150,7 @@ class NearestNeighborTest < IndexedSearchTest
         add_field("filter", "#{i % 2}")
       vespa.document_api_v1.put(doc)
     end
+    wait_for_hitcount('?query=sddocname:test', 10)
   end
 
   def assert_nearest_docs(setup, target_num_hits, exp_results, overrides = {})

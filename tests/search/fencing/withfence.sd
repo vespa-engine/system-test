@@ -11,16 +11,16 @@ search withfence {
       indexing: index | summary
     }
     field center type position {
-      indexing: attribute
+      indexing: attribute | summary
     }
     field fenceradius type double {
-      indexing: attribute
+      indexing: attribute | summary
     }
     field maybecenter type array<position> {
-      indexing: attribute
+      indexing: attribute | summary
     }
     field order type int {
-      indexing: attribute
+      indexing: attribute | summary
     }
     field multiplace type array<fenced> {
       indexing: summary
@@ -48,18 +48,27 @@ search withfence {
   }
 
   rank-profile center inherits default {
+    macro distanceInMeters() {
+        expression: distance(center)*0.1109462521
+    }
+    macro maybepenalty() {
+      expression: if(distanceInMeters > attribute(fenceradius), 1.0e33, 0)
+    }
     first-phase {
-      expression: attribute(order) - if((distance(center) > (attribute(fenceradius)*10000)), 1.0e33, 0.0)
+      expression: attribute(order) - maybepenalty
       rank-score-drop-limit: -1000000000.0
     }
   }
 
   rank-profile maybe inherits default {
+    macro distanceInMeters() {
+        expression: distance(maybecenter)*0.1109462521
+    }
     macro maybedistance() {
-      expression: if((attribute(maybecenter_zcurve).count > 0), distance(maybecenter), 0)
+      expression: if((attribute(maybecenter_zcurve).count > 0), distanceInMeters, 0)
     }
     macro maybepenalty() {
-      expression: if((maybedistance > (attribute(fenceradius)*10000)), 1.0e33, 0)
+      expression: if((maybedistance > attribute(fenceradius)), 1.0e33, 0)
     }
     first-phase {
       expression: attribute(order) - maybepenalty
@@ -83,8 +92,11 @@ search withfence {
   }
 
   rank-profile foryql inherits withraw {
+    macro distanceInMeters() {
+        expression: distance(label,foobar)*1000
+    }
     macro maybedistance() {
-      expression: if ((attribute(maybecenter_zcurve).count > 0), distance(label,foobar), 0)
+      expression: if ((attribute(maybecenter_zcurve).count > 0), distanceInMeters, 0)
     }
     macro maybepenalty() {
       expression: if ((maybedistance > attribute(fenceradius)), 1.0e33, 0)

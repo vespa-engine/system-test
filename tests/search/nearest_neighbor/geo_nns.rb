@@ -78,6 +78,7 @@ class GeoNnsTest < IndexedSearchTest
       feed_doc(i, place)
       i += 1
     end
+    wait_for_hitcount('?query=sddocname:geo', i)
     puts "Done put of #{i} documents"
     places.each do |place|
       geo_check(place[:lat], place[:lon], {:target_num_hits => 4})
@@ -100,7 +101,7 @@ class GeoNnsTest < IndexedSearchTest
       end
     end
     puts "Done put of #{i} documents"
-    assert_hitcount('query=sddocname:geo', i)
+    wait_for_hitcount('?query=sddocname:geo', i)
     geo_check(63.0, 10.0, {:target_num_hits => 100})
     # vespa.search["search"].searchnode.each_value { |x| x.trigger_flush }
     # vespa.search["search"].searchnode.each_value { |x| x.trigger_flush }
