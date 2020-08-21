@@ -11,16 +11,16 @@ search withfence {
       indexing: index | summary
     }
     field center type position {
-      indexing: attribute
+      indexing: attribute | summary
     }
     field fenceradius type double {
-      indexing: attribute
+      indexing: attribute | summary
     }
     field maybecenter type array<position> {
-      indexing: attribute
+      indexing: attribute | summary
     }
     field order type int {
-      indexing: attribute
+      indexing: attribute | summary
     }
     field multiplace type array<fenced> {
       indexing: summary
