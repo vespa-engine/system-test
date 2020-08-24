@@ -89,41 +89,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_filter
-
-    def name_value(name, value)
-      ConfigValues.new.add("name", name).add("value", value)
-    end
-
-    actual = SearchApp.new.
-      filter("ai.vespa.MyFilter",
-             "jdisc_http_filters",
-             ConfigOverride.new("container.core.http.http-filter").
-             add(ArrayConfig.new("param").
-                         add(0, name_value("param1", "value1")).
-                         add(1, name_value("param2", "value2")))).
-      services_xml
-    expected_substr = '
-      <container id="default" version="1.0">
-        <search />
-        <document-processing />
-        <filter bundle="jdisc_http_filters" id="ai.vespa.MyFilter">
-          <config name="container.core.http.http-filter">
-            <param>
-              <item>
-                <name>param1</name>
-                <value>value1</value>
-              </item>
-              <item>
-                <name>param2</name>
-                <value>value2</value>
-              </item>
-            </param>
-          </config>
-        </filter>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
   def test_routing
     app = SearchApp.new.
           routingtable(RoutingTable.new.
