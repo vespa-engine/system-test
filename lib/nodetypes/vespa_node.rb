@@ -167,6 +167,14 @@ class VespaNode
     return Sentinel.new(@testcase, tls_env()).stop_service(service, 50, force)
   end
 
+  def kill()
+    pid = Sentinel.new(@testcase, tls_env()).get_pid(service)
+    @testcase.output("pid of #{service} is #{pid}")
+    cmd = "kill #{pid} 2>&1"
+    output = `#{cmd}`
+    @testcase.output("#{cmd}: #{output}")
+  end
+
   def start
     return Sentinel.new(@testcase, tls_env()).start_service(service, 20)
   end
