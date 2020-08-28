@@ -26,6 +26,12 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     assert_summary_field("int_wset contains '20'", "int_wset", [elem(20, 7)])
     assert_summary_field("str_array contains 'foo' or str_array contains 'bar'", "str_array", ["bar", "foo"])
     assert_summary_field("str_wset contains 'foo' or str_wset contains 'bar'", "str_wset", [elem("bar", 7), elem("foo", 5)])
+    assert_summary_field("weightedSet(str_array, {\"foo\":1, \"baz\":2})", "str_array", ["foo"])
+    assert_summary_field("weightedSet(str_array, {\"baz\":1, \"bar\":2})", "str_array", ["bar"])
+    assert_summary_field("weightedSet(str_array, {\"foo\":1, \"bar\":2})", "str_array", ["bar", "foo"])
+    assert_summary_field("weightedSet(int_array, {\"10\":1, \"11\":2})", "int_array", [10])
+    assert_summary_field("weightedSet(int_array, {\"11\":1, \"20\":2})", "int_array", [20])
+    assert_summary_field("weightedSet(int_array, {\"10\":1, \"20\":2})", "int_array", [10, 20])
 
     # Test summary fields with 'matched-elements-only' (in explicit summary class) that reference source fields.
     assert_summary_field("str_array_src contains 'bar'", "str_array_filtered", ["bar"], "filtered")
