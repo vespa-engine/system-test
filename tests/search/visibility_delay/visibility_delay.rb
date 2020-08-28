@@ -110,6 +110,7 @@ class VisibilityDelayTest < SearchTest
     assert_docs(3, "baz", "baz", 30)
     vespa.search["search"].first.kill
     restart_search_node
+    wait_for_docs(3, "baz", 15)
     assert_docs(3, "baz", "baz", 15)
   end
 
