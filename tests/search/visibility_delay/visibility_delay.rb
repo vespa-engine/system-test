@@ -17,6 +17,7 @@ class VisibilityDelayTest < SearchTest
     assert_updates_committed_at_visibility_delay
     assert_puts_committed_at_get
     assert_puts_committed_at_flush
+    assert_puts_committed_at_shutdown
   end
 
   def get_app(visibility_delay)
@@ -96,6 +97,20 @@ class VisibilityDelayTest < SearchTest
     vespa.search["search"].first.trigger_flush
     assert_docs(0, "bar", "bar", 20)
     assert_docs(3, "baz", "baz", 30)
+  end
+
+  def assert_puts_committed_at_shutdown
+    restart_search_node
+    wait_for_docs(3, "baz", 30) # previous doc state
+    assert_docs(0, "bar", "bar", 20)
+    assert_docs(3, "baz", "baz", 30)
+
+    feed(:file => selfdir + "updates.0.json")
+    assert_docs(0, "bar", "bar", 20)
+    assert_docs(3, "baz", "baz", 30)
+    vespa.search["search"].first.kill
+    restart_search_node
+    assert_docs(3, "baz", "baz", 15)
   end
 
   def test_live_reconfig
