@@ -5,15 +5,11 @@ class VisibilityDelayTest < SearchTest
 
   def setup
     set_owner("geirst")
-  end
-
-  def timeout_seconds
-    1200
+    @visibility_delay = 10.0
   end
 
   def test_visibility_delay
     set_description("Test that committing to attribute and index fields considers visibility delay")
-    @visibility_delay = 120.0
     deploy_app(get_app(@visibility_delay))
     start
 
@@ -110,7 +106,7 @@ class VisibilityDelayTest < SearchTest
     assert_hitcount("query=f1:foo&nocache", 3)
     assert_hitcount("query=f1:bar&nocache", 0)
 
-    redeploy(get_app(120))
+    redeploy(get_app(@visibility_delay))
     feed(:file => selfdir + "docs.1.json")
     assert_hitcount("query=f1:foo&nocache", 3)
     assert_hitcount("query=f1:bar&nocache", 0)
