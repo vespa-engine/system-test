@@ -7,6 +7,10 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     set_owner("geirst")
   end
 
+  def self.final_test_methods
+    ["test_array_and_wset_fields_indexed_fs"]
+  end
+
   def create_app(test_case)
     SearchApp.new.sd(selfdir + "#{test_case}/test.sd")
   end
@@ -15,7 +19,16 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     # Note that the matched-elements-only tests for struct and map types are located in
     # tests/search/struct_and_map_types/struct_and_map_types.rb
     set_description("Test matched-elements-only for array and weighted set fields (both indexed and streaming search)")
-    deploy_app(create_app(is_streaming ? "streaming" : "indexed"))
+    run_test(is_streaming ? "streaming" : "indexed")
+  end
+
+  def test_array_and_wset_fields_indexed_fs
+    @params = { :search_type => "ELASTIC" }
+    run_test("indexed_fs")
+  end
+
+  def run_test(test_dir)
+    deploy_app(create_app(test_dir))
     start
     feed(:file => selfdir + "docs.json")
 
