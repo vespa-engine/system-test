@@ -1,0 +1,30 @@
+search twoperdoc {
+    document twoperdoc {
+        field ptr_globaltensors type reference<globaltensors> {
+            indexing: attribute
+        }
+        field doc_xxx type tensor<float>(xxx{}) {
+            indexing: attribute
+            # attribute: fast-search
+        }
+        field doc_yyy type tensor<float>(yyy{}) {
+            indexing: attribute
+            # attribute: fast-search
+        }
+        field filter type int {
+            indexing: attribute
+        }
+    }
+
+    import field ptr_globaltensors.dxxx as global_dxxx{}
+    import field ptr_globaltensors.dyyy as global_dyyy{}
+
+    rank-profile default {
+        first-phase {
+            expression {
+                sum(attribute(doc_xxx) * attribute(global_dxxx)) +
+                sum(attribute(doc_yyy) * attribute(global_dyyy))
+            }
+        }
+    }
+}
