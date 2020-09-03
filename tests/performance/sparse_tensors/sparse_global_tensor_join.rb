@@ -11,6 +11,8 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
   CLIENTS = 'clients'
   FBENCH_TIME = 60
   SETUP = 'samequery'
+  MEMORY = 'memory'
+  QUERY = 'query'
 
   def create_app(num_threads = 1)
     searching = Searching.new
@@ -26,8 +28,9 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
     return app
   end
 
-  def test_sparse_tensors_stream_ranking
+  def test_deserialized_sparse_tensors
     set_description('Test performance of sparse tensor joins')
+    set_owner('arnej')
     deploy_app(create_app)
     start
 
@@ -49,8 +52,8 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
     memstats = get_mem_stats
     memstats.each do |key, value|
       puts "memstat #{key} is #{value}"
-      write_report([metric_filler("memory", value),
-                    parameter_filler(TYPE, 'memstat'),
+      write_report([metric_filler(MEMORY, value),
+                    parameter_filler(TYPE, MEMORY),
                     parameter_filler(LABEL, key)])
     end
   end
@@ -83,7 +86,7 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
     clients = 1
     result_file = dirs.tmpdir + "fbench_result.#{SETUP}.txt"
     fillers = [parameter_filler(LABEL, SETUP),
-               parameter_filler(TYPE, 'query'),
+               parameter_filler(TYPE, QUERY),
                parameter_filler(CLIENTS, clients)]
     profiler_start
     run_fbench2(@container,
@@ -93,7 +96,8 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
                  :result_file => result_file},
                 fillers)
     memusage = @searchnode.memusage_rss(@searchnode.get_pid)
-    write_report([metric_filler("memory.rss", memusage),
+    write_report([metric_filler(MEMORY, memusage),
+                  parameter_filler(TYPE, MEMORY),
                   parameter_filler(LABEL, 'searchnode.rss')])
     puts "Mem usage (rss): #{memusage}"
     profiler_report(SETUP)
@@ -103,7 +107,6 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
   def get_graphs
     [
       get_latency_graph(SETUP),
-      get_rss_graph('searchnode.rss'),
       get_memstat_graph,
       get_qps_graph(SETUP)
     ]
@@ -112,22 +115,10 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
   def get_memstat_graph
     {
       :x => LABEL,
-      :y => 'memory',
-      :title => 'Historic attribute memory statistics',
-      :filter => {TYPE => 'memstat'},
+      :y => MEMORY,
+      :title => 'Historic memory statistics',
+      :filter => {TYPE => MEMORY},
       :historic => true
-    }
-  end
-
-  def get_rss_graph(label)
-    {
-      :x => LABEL,
-      :y => label,
-      :title => "Historic memory usage (#{label})",
-      :filter => {LABEL => label},
-      :historic => true,
-      :y_min => 1,
-      :y_max => 1000000000
     }
   end
 
@@ -136,7 +127,7 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
       :x => LABEL,
       :y => '95p',
       :title => "Historic 95 percent latency (#{label})",
-      :filter => {LABEL => label},
+      :filter => {TYPE => QUERY, LABEL => label},
       :historic => true,
       :y_min => 0.01,
       :y_max => 2500
@@ -148,7 +139,7 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
       :x => LABEL,
       :y => 'qps',
       :title => "Historic qps (#{label})",
-      :filter => {LABEL => label},
+      :filter => {TYPE => QUERY, LABEL => label},
       :historic => true,
       :y_min => 0.1,
       :y_max => 10000
