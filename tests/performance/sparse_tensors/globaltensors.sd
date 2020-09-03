@@ -1,9 +1,5 @@
 search globaltensors {
     document globaltensors {
-        field ident type string {
-            indexing: summary | attribute
-        }
-
         field dxxx type tensor<float>(xxx{}) {
           indexing: attribute
           # attribute: fast-search
