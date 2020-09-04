@@ -6,7 +6,7 @@ search mnist {
             indexing: summary | attribute
         }
 
-        field image type tensor(d0[1],d1[784]) {
+        field image type tensor<float>(d0[1],d1[784]) {
             indexing: attribute | summary
         }
 

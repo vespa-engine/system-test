@@ -22,7 +22,7 @@ public class UserProfileSearcher extends Searcher {
     }
 
     private Tensor generateRandomProfile() {
-        Tensor.Builder builder = Tensor.Builder.of(TensorType.fromSpec("tensor(d0[1],d1[128])"));
+        Tensor.Builder builder = Tensor.Builder.of(TensorType.fromSpec("tensor<float>(d0[1],d1[128])"));
         Random random = new Random();
         for (int i = 0; i < 128; ++i) {
             builder.cell(random.nextDouble(), 0, i);
