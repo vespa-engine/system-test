@@ -4,10 +4,10 @@ search blog_post {
     document blog_post {
 
         field post_id type int {
-            indexing: summary
+            indexing: summary | attribute
         }
 
-        field user_item_cf type tensor(d0[1],d1[128]) {
+        field user_item_cf type tensor<float>(d0[1],d1[128]) {
             indexing: summary | attribute
         }
 
@@ -22,7 +22,7 @@ search blog_post {
         summary post_id type int {
             source: post_id
         }
-        summary user_item_cf type tensor(d0[1],d1[128]) {
+        summary user_item_cf type tensor<float>(d0[1],d1[128]) {
             source: user_item_cf
         }
     }
