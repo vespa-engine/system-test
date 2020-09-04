@@ -1,0 +1,63 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    field str_array type array<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+      summary: matched-elements-only
+    }
+    field int_array type array<long> {
+      indexing: attribute | summary
+      attribute: fast-search
+      summary: matched-elements-only
+    }
+    field str_wset type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+      summary: matched-elements-only
+    }
+    field int_wset type weightedset<long> {
+      indexing: attribute | summary
+      attribute: fast-search
+      summary: matched-elements-only
+    }
+    field str_array_src type array<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field int_array_src type array<long> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field str_wset_src type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field int_wset_src type weightedset<long> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field str_array_filtered type array<string> {}
+    field int_array_filtered type array<long> {}
+    field str_wset_filtered type weightedset<string> {}
+    field int_wset_filtered type weightedset<long> {}
+  }
+  document-summary filtered {
+    summary str_array_filtered type array<string> {
+      source: str_array_src
+      matched-elements-only
+    }
+    summary int_array_filtered type array<long> {
+      source: int_array_src
+      matched-elements-only
+    }
+    summary str_wset_filtered type weightedset<string> {
+      source: str_wset_src
+      matched-elements-only
+    }
+    summary int_wset_filtered type weightedset<long> {
+      source: int_wset_src
+      matched-elements-only
+    }
+  }
+}

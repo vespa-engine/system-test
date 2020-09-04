@@ -7,6 +7,10 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     set_owner("geirst")
   end
 
+  def self.final_test_methods
+    ["test_array_and_wset_fields_indexed_fs"]
+  end
+
   def create_app(test_case)
     SearchApp.new.sd(selfdir + "#{test_case}/test.sd")
   end
@@ -15,7 +19,16 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     # Note that the matched-elements-only tests for struct and map types are located in
     # tests/search/struct_and_map_types/struct_and_map_types.rb
     set_description("Test matched-elements-only for array and weighted set fields (both indexed and streaming search)")
-    deploy_app(create_app(is_streaming ? "streaming" : "indexed"))
+    run_test(is_streaming ? "streaming" : "indexed")
+  end
+
+  def test_array_and_wset_fields_indexed_fs
+    @params = { :search_type => "ELASTIC" }
+    run_test("indexed_fs")
+  end
+
+  def run_test(test_dir)
+    deploy_app(create_app(test_dir))
     start
     feed(:file => selfdir + "docs.json")
 
@@ -26,6 +39,18 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     assert_summary_field("int_wset contains '20'", "int_wset", [elem(20, 7)])
     assert_summary_field("str_array contains 'foo' or str_array contains 'bar'", "str_array", ["bar", "foo"])
     assert_summary_field("str_wset contains 'foo' or str_wset contains 'bar'", "str_wset", [elem("bar", 7), elem("foo", 5)])
+    assert_summary_field("weightedSet(str_array, {\"foo\":1, \"baz\":2})", "str_array", ["foo"])
+    assert_summary_field("weightedSet(str_array, {\"baz\":1, \"bar\":2})", "str_array", ["bar"])
+    assert_summary_field("weightedSet(str_array, {\"foo\":1, \"bar\":2})", "str_array", ["bar", "foo"])
+    assert_summary_field("weightedSet(int_array, {\"10\":1, \"11\":2})", "int_array", [10])
+    assert_summary_field("weightedSet(int_array, {\"11\":1, \"20\":2})", "int_array", [20])
+    assert_summary_field("weightedSet(int_array, {\"10\":1, \"20\":2})", "int_array", [10, 20])
+    assert_summary_field("weightedSet(str_wset, {\"foo\":1, \"baz\":2})", "str_wset", [elem("foo", 5)])
+    assert_summary_field("weightedSet(str_wset, {\"baz\":1, \"bar\":2})", "str_wset", [elem("bar", 7)])
+    assert_summary_field("weightedSet(str_wset, {\"foo\":1, \"bar\":2})", "str_wset", [elem("bar", 7), elem("foo", 5)])
+    assert_summary_field("weightedSet(int_wset, {\"10\":1, \"11\":2})", "int_wset", [elem(10, 5)])
+    assert_summary_field("weightedSet(int_wset, {\"11\":1, \"20\":2})", "int_wset", [elem(20, 7)])
+    assert_summary_field("weightedSet(int_wset, {\"10\":1, \"20\":2})", "int_wset", [elem(10, 5), elem(20, 7)])
 
     # Test summary fields with 'matched-elements-only' (in explicit summary class) that reference source fields.
     assert_summary_field("str_array_src contains 'bar'", "str_array_filtered", ["bar"], "filtered")
