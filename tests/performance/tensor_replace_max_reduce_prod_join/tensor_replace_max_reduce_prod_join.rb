@@ -35,7 +35,7 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
   def get_graphs
     [
       get_graph("without_replacement", 41.5, 56.5),
-      get_graph("with_replacement", 3.80, 4.30)
+      get_graph("with_replacement", 3.8, 4.5)
     ]
   end
 
