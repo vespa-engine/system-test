@@ -29,7 +29,7 @@ class MultipleConfigservers < CloudConfigTest
     @session_id = 1
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.vespatest.ExtraHitSearcher")
     vespa.nodeproxies.values.each do |node|
-      override_environment_setting(node, "cloudconfig_server__zookeeper_barrier_timeout", "30")
+      override_environment_setting(node, "cloudconfig_server__zookeeper_barrier_timeout", "40")
     end
     output = deploy_multiple_app(selfdir + "banana.sd")
     @session_id = get_generation(output).to_i
@@ -89,7 +89,7 @@ class MultipleConfigservers < CloudConfigTest
     @node2.start_configserver
     @node2.ping_configserver
     sleep 3
-    result = prepare_session_with_timeout(@node1.hostname, result, @session_id, 20)
+    result = prepare_session_with_timeout(@node1.hostname, result, @session_id, 30)
     sleep 3
     @node3.stop_configserver({:keep_everything => true})
     activate_session_message_matches(@node1.hostname, result, 200, /Session #{@session_id} for tenant 'default' activated/)
