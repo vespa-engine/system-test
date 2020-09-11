@@ -57,7 +57,7 @@ class PerformanceTest < TestCase
   end
 
   def deploy_app(app, deploy_params = {})
-    # Override distribution bits to avoid few buckets preventing parallism in the backend.
+    # Override distribution bits to avoid few buckets preventing write concurrency in the backend.
     # If there is someone who knows how to do this in a more 'app_generator' way, feel free.
     app.config(ConfigOverride.new('vespa.config.content.fleetcontroller').
         add('ideal_distribution_bits', distribution_bits))
