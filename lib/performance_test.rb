@@ -67,7 +67,7 @@ class PerformanceTest < TestCase
   end
 
   def distribution_bits
-    10
+    12
   end
 
   def modulename
