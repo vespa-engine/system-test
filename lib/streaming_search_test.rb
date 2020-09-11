@@ -17,6 +17,7 @@ class StreamingSearchTest < SearchTest
     app.search_type(@params[:search_type]) if @params != nil
     # Override distribution bits to ensure no whole-corpus streaming
     # searches have to visit 64k buckets, but only 2.
+    # If there is someone who knows how to do this is a more 'app_generator' way feel free
     app.config(ConfigOverride.new('vespa.config.content.fleetcontroller').
                add('ideal_distribution_bits', 1))
     app.config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
