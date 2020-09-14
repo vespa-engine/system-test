@@ -70,6 +70,15 @@ class InconsistentBucketsBase < SearchTest
     assert_equal(nil, doc)
   end
 
+  def update_doc_with_field_value(title:, create_if_missing:, artist: nil)
+    update = DocumentUpdate.new('music', updated_doc_id)
+    update.addOperation('assign', 'title', title)
+    update.addOperation('assign', 'artist', artist) unless artist.nil?
+    # Use 'create: true' update to ensure that not performing a write repair as
+    # expected will create a document from scratch on the node.
+    vespa.document_api_v1.update(update, :create => create_if_missing)
+  end
+
   def teardown
     stop
   end
