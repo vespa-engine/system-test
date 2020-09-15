@@ -18,45 +18,45 @@ class SemanticSearcher < IndexedSearchTest
     feed_and_wait_for_docs("music", 777, :file => selfdir+"simpler.777.xml")
 
     puts "Details: query=bach"
-    assert_result("query=bach&hits=8&timeout=50", selfdir+"bach.result", "title")
+    assert_result_withtimeout(10, "query=bach&hits=8", selfdir+"bach.result", "title")
 
-    puts "Details: query=bahc&hits=8&timeout=50&rules.rulebase=common"
-    assert_result("query=bahc&hits=8&timeout=50&rules.rulebase=common",
-                  selfdir+"bach.result", "title")
+    puts "Details: query=bahc&hits=8&rules.rulebase=common"
+    assert_result_withtimeout(10, "query=bahc&hits=8&rules.rulebase=common",
+                              selfdir+"bach.result", "title")
 
-    puts "Details: query=bach+somelongstopword&hits=8&timeout=50&rules.rulebase=common"
-    assert_result("query=bach+somelongstopword&hits=8&timeout=50&rules.rulebase=common",
-                  selfdir+"bach.result", "title")
+    puts "Details: query=bach+somelongstopword&hits=8&rules.rulebase=common"
+    assert_result_withtimeout(10, "query=bach+somelongstopword&hits=8&rules.rulebase=common",
+                              selfdir+"bach.result", "title")
 
-    puts "Details: query=bahc+someotherlongstopword&hits=8&timeout=50&rules.rulebase=common"
-    assert_result("query=bahc+someotherlongstopword&hits=8&timeout=50&rules.rulebase=common",
-                  selfdir+"bach.result", "title")
+    puts "Details: query=bahc+someotherlongstopword&hits=8&rules.rulebase=common"
+    assert_result_withtimeout(10, "query=bahc+someotherlongstopword&hits=8&rules.rulebase=common",
+                              selfdir+"bach.result", "title")
 
-    puts "Details: query=together+by+youngbloods&timeout=50&rules.rulebase=common"
-    assert_result("query=together+by+youngbloods&timeout=50&rules.rulebase=common",
-                  selfdir+"youngbloods.result", "title")
+    puts "Details: query=together+by+youngbloods&rules.rulebase=common"
+    assert_result_withtimeout(10, "query=together+by+youngbloods&rules.rulebase=common",
+                              selfdir+"youngbloods.result", "title")
 
-    puts "Details: query=various&rules.rulebase=common&hits=9&timeout=50"
-    assert_result("query=various&rules.rulebase=common&hits=9&timeout=50",
-                  selfdir+"various.result", "title")
+    puts "Details: query=various&rules.rulebase=common&hits=9"
+    assert_result_withtimeout(10, "query=various&rules.rulebase=common&hits=9",
+                              selfdir+"various.result", "title")
 
     # Removing two long stopword not using fsa (inheritance), and another using fsa (different rule)
-    puts "Details: query=bahc+someotherlongstopword+somelongstopword+the&hits=8&timeout=50&rules.rulebase=egyik"
-    assert_result("query=bahc+someotherlongstopword+somelongstopword+the&hits=8&timeout=50&rules.rulebase=egyik",
-                  selfdir+"bach.result", "title")
+    puts "Details: query=bahc+someotherlongstopword+somelongstopword+the&hits=8&rules.rulebase=egyik"
+    assert_result_withtimeout(10, "query=bahc+someotherlongstopword+somelongstopword+the&hits=8&rules.rulebase=egyik",
+                              selfdir+"bach.result", "title")
 
-    puts "Details: query=bahc+in+at+the+of&hits=8&timeout=50&rules.rulebase=egyik"
-    assert_result("query=bahc+in+at+the+of&hits=8&timeout=50&rules.rulebase=egyik",
-                  selfdir+"bach.result", "title")
+    puts "Details: query=bahc+in+at+the+of&hits=8&rules.rulebase=egyik"
+    assert_result_withtimeout(10, "query=bahc+in+at+the+of&hits=8&rules.rulebase=egyik",
+                              selfdir+"bach.result", "title")
 
-    puts "Details: query=bahc+etaoin&hits=8&timeout=50&rules.rulebase=masik"
-    assert_result("query=bahc+etaoin&hits=8&timeout=50&rules.rulebase=masik",
-                  selfdir+"bach.result", "title")
+    puts "Details: query=bahc+etaoin&hits=8&rules.rulebase=masik"
+    assert_result_withtimeout(10, "query=bahc+etaoin&hits=8&rules.rulebase=masik",
+                              selfdir+"bach.result", "title")
 
-    puts "Details: query=%E7%B4%A2%E5%B0%BC&timeout=50&rules.rulebase=cjk"
+    puts "Details: query=%E7%B4%A2%E5%B0%BC&rules.rulebase=cjk"
     # The above two chinese characters should be recognized as a brand by the cjk rule base
-    assert_result("%E7%B4%A2%E5%B0%BC&timeout=50&rules.rulebase=cjk", selfdir+"cjk.result")
-    result = search("%E7%B4%A2%E5%B0%BC&timeout=50&rules.rulebase=cjk&tracelevel=1")
+    assert_result_withtimeout(10, "%E7%B4%A2%E5%B0%BC&rules.rulebase=cjk", selfdir+"cjk.result")
+    result = search("%E7%B4%A2%E5%B0%BC&rules.rulebase=cjk&tracelevel=1")
     # The above two chinese characters should be recognized as a brand by the cjk rule base
     # (they are the encoding of the first brand in the brand list in that rule base):
     assert (result.xmldata.include? "brand:")
