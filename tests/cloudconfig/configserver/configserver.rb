@@ -130,16 +130,21 @@ class ConfigServer < CloudConfigTest
     # Manipulate deployed application so that application package is invalid when restarting config server
     # Health status should be 'initializing', not 'up' when this is the case
     deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
-    vespa.configservers["0"].execute("echo 'invalid xml' >> #{Environment.instance.vespa_home}/var/db/vespa/config_server/serverdb/tenants/default/sessions/2/services.xml")
+    services_xml = "#{Environment.instance.vespa_home}/var/db/vespa/config_server/serverdb/tenants/default/sessions/2/services.xml"
+    vespa.configservers["0"].execute("cp #{services_xml} #{services_xml}.bak")
+    vespa.configservers["0"].execute("echo 'invalid xml' >> #{services_xml}")
     restart_config_server_and_reset_version
     wait_for_atleast_log_matches("Redeploying default.default failed, will retry", 1, 60)
     begin
       assert_health_status_for_config_server("initializing")
     rescue
       puts "Could not get health status, http server not up, as expected"
-      return
     end
-    assert(nil, "Should have failed when getting health status")
+ 
+    puts "Fix broken app"
+    vespa.configservers["0"].execute("cp #{services_xml}.bak #{services_xml}") # Go back to original services.xml, server should come up again
+    wait_for_atleast_log_matches("All applications redeployed successfully", 1, 60)
+    assert_health_status_for_config_server("up")
   end
 
   def test_wait_for_config_converge
