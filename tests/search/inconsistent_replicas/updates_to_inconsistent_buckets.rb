@@ -115,17 +115,4 @@ class UpdatesToInconsistentBucketsTest < InconsistentBucketsBase
     verify_document_does_not_exist
   end
 
-  def test_deleted_document_not_resurrected_by_update
-    set_description('Test that tombstone only present on a subset of replicas ' +
-                    'is taken into account during Update write-repair')
-
-    feed_doc_with_field_value(title: 'first title')
-    mark_content_node_down(1)
-    remove_document
-    mark_content_node_up(1)
-
-    update_doc_with_field_value(title: 'uh oh', create_if_missing: false)
-    verify_document_does_not_exist
-  end
-
 end
