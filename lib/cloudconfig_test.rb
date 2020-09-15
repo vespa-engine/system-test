@@ -125,7 +125,7 @@ class CloudConfigTest < TestCase
   end
 
   def prepare_session(create_result, response_code)
-    response = put("#{create_result["prepared"]}?timeout=20.0")
+    response = put("#{create_result["prepared"]}?timeout=30.0")
     assert_response_code(response, response_code)
     get_json(response)
   end
