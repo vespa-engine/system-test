@@ -252,32 +252,26 @@ class BucketReadiness < SearchTest
       threads.push(thread)
     end
 
-    sleep 4
     stop_and_wait(0)
     wait_for_hitcount(get_query("1,2,3"), docs)
     assert_visit_count(1, docs)
 
-    sleep 4
     stop_and_wait(1)
     wait_for_hitcount(get_query("2,3"), docs)
     assert_visit_count(2, docs)
 
-    sleep 4
     stop_and_wait(2)
     wait_for_hitcount(get_query("3"), docs)
     assert_visit_count(3, docs)
 
-    sleep 4
     start_and_wait(0)
     wait_for_hitcount(get_query("0,3"), docs)
     assert_visit_count(4, docs)
 
-    sleep 4
     start_and_wait(1)
     wait_for_hitcount(get_query("0,1,3"), docs)
     assert_visit_count(5, docs)
 
-    sleep 4
     start_and_wait(2)
     wait_for_hitcount(get_query(), docs)
     assert_visit_count(6, docs)
