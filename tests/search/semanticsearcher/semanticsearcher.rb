@@ -55,7 +55,7 @@ class SemanticSearcher < IndexedSearchTest
 
     puts "Details: query=%E7%B4%A2%E5%B0%BC&rules.rulebase=cjk"
     # The above two chinese characters should be recognized as a brand by the cjk rule base
-    assert_result_withtimeout(10, "%E7%B4%A2%E5%B0%BC&rules.rulebase=cjk", selfdir+"cjk.result")
+    assert_result_withtimeout(20, "%E7%B4%A2%E5%B0%BC&rules.rulebase=cjk", selfdir+"cjk.result")
     result = search("%E7%B4%A2%E5%B0%BC&rules.rulebase=cjk&tracelevel=1")
     # The above two chinese characters should be recognized as a brand by the cjk rule base
     # (they are the encoding of the first brand in the brand list in that rule base):
