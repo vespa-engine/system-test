@@ -13,8 +13,8 @@ class Bug4390127 < SearchContainerTest
     deploy(selfdir+"app")
     start
     feed(:file => selfdir+"feed.xml")
-    assert_xml_result_withtimeout(10, 'sddocname:music&hits=0&nocache&streaming.selection=true&select=all(group(lang)order(max(uca(lang,"sv"))) each(output(count())))', selfdir + "single.xml")
-    assert_xml_result_withtimeout(10, 'sddocname:music&hits=0&nocache&streaming.selection=true&select=all(group(lang)order(max(uca(tracks,"sv"))) each(output(count())))', selfdir + "multi.xml")
+    assert_xml_result_withtimeout(20, 'sddocname:music&hits=0&nocache&streaming.selection=true&select=all(group(lang)order(max(uca(lang,"sv"))) each(output(count())))', selfdir + "single.xml")
+    assert_xml_result_withtimeout(20, 'sddocname:music&hits=0&nocache&streaming.selection=true&select=all(group(lang)order(max(uca(tracks,"sv"))) each(output(count())))', selfdir + "multi.xml")
   end
 
   def teardown
