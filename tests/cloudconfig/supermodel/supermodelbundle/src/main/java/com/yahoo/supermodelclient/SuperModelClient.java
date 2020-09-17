@@ -1,6 +1,8 @@
-// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.supermodelclient;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
 import java.util.List;
 
@@ -18,7 +20,8 @@ public class SuperModelClient {
     }
 
     void loopPrintNewConfig() {
-        while (true) {
+        Instant end = Instant.now().plus(Duration.ofMinutes(1));
+        while (Instant.now().isBefore(end)) {
             if (subscriber.nextConfig()) {
                 System.out.println("nextConfig() was true, gen="+subscriber.getGeneration()+", num tenants: "+lbHandle.getConfig().tenants().size());
                 if (lbHandle.isChanged()) {
@@ -57,4 +60,5 @@ public class SuperModelClient {
         SuperModelClient app = new SuperModelClient("*");
         app.loopPrintNewConfig();
     }
+
 }
