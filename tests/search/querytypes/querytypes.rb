@@ -26,8 +26,8 @@ class QueryTypes < IndexedSearchTest
 
   def compare(query, file)
     puts "checking if query #{query} matches saved result #{file}"
-    assert_field("query="+query+"&hits=200&timeout=60s", selfdir+file, "surl", true)
-    assert_field("query="+query+"&hits=200&timeout=60s", selfdir+file, "title", true)
+    assert_field("query="+query+"&hits=200", selfdir+file, "surl", true, 10)
+    assert_field("query="+query+"&hits=200", selfdir+file, "title", true, 10)
   end
 
   def test_querytypes
