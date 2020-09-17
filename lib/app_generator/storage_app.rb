@@ -33,6 +33,8 @@ class StorageApp < App
     @transition_time = 0
     config(ConfigOverride.new('vespa.config.content.core.stor-server').
                add('use_content_node_btree_bucket_db', true))
+    config(ConfigOverride.new('vespa.config.content.core.stor-communicationmanager').
+               add('use_direct_storageapi_rpc', true))
   end
 
   def default_cluster(name="storage")
