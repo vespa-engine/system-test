@@ -536,6 +536,7 @@ module TestBase
   def assert_result(query, savedresultfile, sortfield=nil, fieldstocompare=nil, qrserver_id=0, explanationstring="")
     assert_result_withtimeout(5, query, savedresultfile, sortfield, fieldstocompare, qrserver_id, explanationstring)
   end
+
   def assert_result_withtimeout(timeout, query, savedresultfile, sortfield=nil, fieldstocompare=nil, qrserver_id=0, explanationstring="")
     result = search_withtimeout(timeout, query, qrserver_id)
     assert_result_base(query, result, savedresultfile, sortfield, fieldstocompare, explanationstring)
@@ -604,12 +605,8 @@ module TestBase
   # Asserts that the result from _query_ matches the content in _expectfile_
   # for a spesific _field_ based on XML comparing. This method is a convenience method
   # for assert_result. Sorting is optional.
-  def assert_field(query, expectfile, field, sort=false, qrserver_id=0, explanationstring="")
-    if sort
-      assert_result(query, expectfile, field, [field], qrserver_id, explanationstring)
-    else
-      assert_result(query, expectfile, nil, [field], qrserver_id, explanationstring)
-    end
+  def assert_field(query, expectfile, field, sort=false, timeout=5)
+    assert_result_withtimeout(timeout, query, expectfile, sort ? field : nil, [field])
   end
 
   # Asserts that the result from _query_or_result_ matches the content given
