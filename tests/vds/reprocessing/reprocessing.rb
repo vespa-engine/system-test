@@ -52,7 +52,7 @@ class Reprocessing < VdsTest
 
     # Deploy config without 'bodyfield'
     output = deploy(selfdir + "setup2-docproc")
-    assert_log_matches("Application switch number: 1", 60)
+    assert_log_matches("Application config generation: 3", 60)
 
     # Reprocess again, unknown fields should now be skipped and essentially disappear
     vespa.storage["storage"].storage["0"].execute("vespa-visit --datahandler \"reprocess/chain.reprocess-chain storage\"")
