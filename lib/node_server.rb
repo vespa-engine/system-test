@@ -968,9 +968,9 @@ def main(callback_endpoint)
 
   if callback_endpoint
     # This can be specified with :0 to pick an available port, but use the fixed port for now
-    service_endpoint = ":#{TestBase::DRUBY_REMOTE_PORT}"
+    service_endpoint = "#{Socket.gethostname}:#{TestBase::DRUBY_REMOTE_PORT}"
   else
-    service_endpoint = ":#{TestBase::DRUBY_REMOTE_PORT}"
+    service_endpoint = "#{Socket.gethostname}:#{TestBase::DRUBY_REMOTE_PORT}"
   end
 
   Environment.instance.backup_environment_setting(false)
@@ -982,24 +982,7 @@ def main(callback_endpoint)
   while true
     endpoint.start_service(for_object: front_object)
 
-    begin
-      node_server_uri = URI.parse(DRb.current_server.uri)
-    rescue URI::InvalidURIError
-      # There is a problem where DrbServer.uri does not return IPv6 addresses that include brackets. URI.parse
-      # requires this or throws InvalidURIError. Try to remedy this problem here and retry the URI.parse.
-      begin
-        # Ok if this is drbssl://
-        uri_parts = DRb::DRbSSLSocket.parse_uri(DRb.current_server.uri)
-      rescue DRbBadScheme
-        # Fallback to druby:// insecure connection
-        uri_parts = DRb::DRbTCPSocket.parse_uri(DRb.current_server.uri)
-      end
-      if uri_parts[0] =~ Resolv::IPv6::Regex
-        uri_to_parse = DRb.current_server.uri.sub(/#{Regexp.escape(uri_parts[0])}/, "[#{uri_parts[0]}]")
-      end
-
-      node_server_uri = URI.parse(uri_to_parse)
-    end
+    node_server_uri = URI.parse(DRb.current_server.uri)
 
     puts("Node server endpoint: #{node_server_uri.host}:#{node_server_uri.port} " +
              "(#{endpoint.secure? ? 'secure' : 'INSECURE'})")
