@@ -2,15 +2,6 @@
 <services version="1.0">
 
   <container id="default" version="1.0">
-    <document type="base" bundle="concretedocs" class="com.yahoo.concretedocs.Base" />
-    <document type="usebase" bundle="concretedocs" class="com.yahoo.concretedocs.UseBase" />
-    <search />
-    <document-processing>
-      <chain id="default">
-        <documentprocessor bundle="concretedocs"
-          id="concretedocs.ConcreteDocDocProc" />
-      </chain>
-    </document-processing>
     <nodes>
       <node hostalias="node1" />
     </nodes>
