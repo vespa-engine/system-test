@@ -326,7 +326,7 @@ class PerformanceTest < TestCase
           file_name = File.join(dir_name, "perf_#{name}-#{pid}")
 
           begin
-            reporter_pids[node] << node.execute_bg("perf report --stdio --header --show-nr-samples --percent-limit 0.1 #{perf_pid_arg} --input #{@perf_data_file} 2>/dev/null > #{file_name}")
+            reporter_pids[node] << node.execute_bg("perf report --stdio --header --show-nr-samples --percent-limit 0.01 #{perf_pid_arg} --input #{@perf_data_file} 2>/dev/null > #{file_name}")
           rescue ExecuteError
             puts "Unable to generate report for #{binary} on host #{node.name}"
           end
