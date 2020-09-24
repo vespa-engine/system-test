@@ -10,7 +10,7 @@ class InheritedStruct < IndexedSearchTest
 
   # Multiple clusters inherit from same base sd
   def test_structs_are_inherited
-    add_bundle_dir(File.expand_path(selfdir + "/concretedocs"), "concretedocs")
+    #add_bundle_dir(File.expand_path(selfdir + "/concretedocs"), "concretedocs")
     deploy(selfdir + "app", [selfdir + "concretedocs/base.sd", selfdir + "concretedocs/usebase.sd"])
     start
     feed(:file => selfdir + "docs.json")
