@@ -23,6 +23,7 @@ class VespaCoredump
   def save_stacktrace
     f = Tempfile.new("gdb.script")
     f.write("bt\n")
+    f.write("thread apply all bt\n")
     f.close
     corename = File.join(@coredir, @corefilename)
     corename_tmp = corename + ".core"
