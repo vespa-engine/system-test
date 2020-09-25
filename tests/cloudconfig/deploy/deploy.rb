@@ -323,11 +323,12 @@ include ApplicationV2Api
     assert_equal(application_url(@hostname, @tenant_name), apps[0])
 
     # Cleanup
-    delete_application(@hostname, @tenant_name, "app_b")
-    session_id
+    delete_application(@hostname, @tenant_name, @application_name)
+    session_id = 2 # reset since we deleted application above
   end
 
   def run_delete_tenant_with_application(session_id=@session_id)
+    create_tenant_and_wait(@tenant_name, @node.hostname)
     session_id = deploy_and_activate_session_v2("#{CLOUDCONFIG_DEPLOY_APPS}/app_a", session_id, 1337)
     apps = list_applications_v2(@hostname, @tenant_name)
     assert_equal(1, apps.length)
