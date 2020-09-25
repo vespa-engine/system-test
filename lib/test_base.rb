@@ -1418,7 +1418,7 @@ module TestBase
     puts("Deleting application from config server (hostname #{hostname}, app #{app})")
     result = delete_tenant_application(tenant, app, hostname)
     if result.code.to_i != 200
-      raise "Unable to delete application #{app}, got status code #{result_delete.code}"
+      raise "Unable to delete application #{app}, got status code #{result.code}"
     end
 
     puts("Deleting tenant from config server (hostname #{hostname}, tenant #{tenant}")
