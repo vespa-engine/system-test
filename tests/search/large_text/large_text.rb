@@ -55,9 +55,9 @@ class LargeText < IndexedSearchTest
     secs = Time.now.getutc - time
     rate = num_tokens / secs
 
-    assert_hitcount("query=my_str:t" + (0).to_s, 1)
-    assert_hitcount("query=my_str:t" + (num_tokens / 2).to_s, 1)
-    assert_hitcount("query=my_str:t" + (num_tokens - 1).to_s, 1)
+    wait_for_hitcount("query=my_str:t" + (0).to_s, 1)
+    wait_for_hitcount("query=my_str:t" + (num_tokens / 2).to_s, 1)
+    wait_for_hitcount("query=my_str:t" + (num_tokens - 1).to_s, 1)
 
     puts "#{num_tokens} tokens => #{secs} secs, #{rate} rate"
     return rate
