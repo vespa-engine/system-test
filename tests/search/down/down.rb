@@ -138,10 +138,14 @@ class Down < SearchTest
 
   def feed_range(count, lower = 0)
     for i in lower..lower+count-1
-      puts "Feeding doc #{i}"
       @feeder.assert_doccount(i, 0)
+    end
+    for i in lower..lower+count-1
+      puts "Feeding doc #{i}"
       @feeder.gen_and_put_doc(i)
-      @feeder.assert_doccount(i, 1)
+    end
+    for i in lower..lower+count-1
+      @feeder.wait_doccount(i, 1)
     end
   end
     
