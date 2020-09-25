@@ -11,7 +11,7 @@ class SslConfigTest < Test::Unit::TestCase
       cfg.generate_host_specific_certs
       assert_equal(true, cfg.cert_path_contains_certs?)
 
-      assert cfg.get_openssl_ca_cert_info.include? 'CA:TRUE'
+      assert cfg.get_openssl_ca_cert_info.include? 'CA:TRUE' unless RUBY_PLATFORM =~ /darwin/  # Issue with LibreSSL not producing X509 extension output in CA certs
       assert cfg.get_openssl_host_cert_info.include? 'CA:FALSE'
       assert cfg.get_openssl_host_cert_info.include? 'DNS:localhost'
     }
