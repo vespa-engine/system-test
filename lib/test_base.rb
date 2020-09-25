@@ -1413,18 +1413,18 @@ module TestBase
   end
 
   def delete_application_and_tenant_from_server(configserver_hosts, tenant, app)
-    # We might need to do the call to more than one server, delete will only work on the one we deployed to (will get 404 else)
-    configserver_hosts.each do |hostname|
-      puts("Deleting application and tenant from config server (hostname #{hostname}, tenant #{tenant}, app #{app})")
-      result_delete_app = delete_tenant_application(tenant, app, hostname)
-      if result_delete_app.code.to_i == 404
-        next
-      end
-      result_delete_tenant = delete_tenant(tenant, hostname)
-      # No need to continue with other servers if both calls were OK
-      if result_delete_app.code.to_i == 200 and result_delete_tenant.code.to_i == 200
-        break
-      end
+    hostname = configserver_hosts[0]
+
+    puts("Deleting application from config server (hostname #{hostname}, app #{app})")
+    result = delete_tenant_application(tenant, app, hostname)
+    if result.code.to_i != 200
+      raise "Unable to delete application #{app}, got status code #{result_delete.code}"
+    end
+
+    puts("Deleting tenant from config server (hostname #{hostname}, tenant #{tenant}")
+    result = delete_tenant(tenant, hostname)
+    if result.code.to_i != 200
+      raise "Unable to delete tenant #{tenant}, got status code #{result.code}"
     end
   end
 
