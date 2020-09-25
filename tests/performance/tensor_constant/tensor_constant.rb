@@ -63,7 +63,7 @@ class TensorConstantPerfTest < PerformanceTest
       get_deploy_graph(TOTAL_TIME, nil, nil),
       get_deploy_graph(PREPARE_TIME, 11, 15),
       get_deploy_graph(ACTIVATE_TIME, nil, nil),
-      get_deploy_graph(FILE_DISTRIBUTION_TIME, 9, 18)
+      get_deploy_graph(FILE_DISTRIBUTION_TIME, 8, 18)
     ]
   end
 
@@ -72,7 +72,7 @@ class TensorConstantPerfTest < PerformanceTest
       get_deploy_graph(TOTAL_TIME, nil, nil),
       get_deploy_graph(PREPARE_TIME, 2.2, 3.7),
       get_deploy_graph(ACTIVATE_TIME, nil, nil),
-      get_deploy_graph(FILE_DISTRIBUTION_TIME, 7, 16)
+      get_deploy_graph(FILE_DISTRIBUTION_TIME, 6, 16)
     ]
   end
 
