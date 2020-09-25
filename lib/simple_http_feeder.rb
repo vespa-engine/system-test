@@ -35,6 +35,18 @@ class SimpleHTTPFeeder
                            "Query returned unexpected number of hits.")
   end
 
+  def wait_doccount(i, expected)
+    start = Time.now.to_i
+    while Time.now.to_i < start + 60
+      count = get_doccount(i)
+      if count == expected
+        return true
+      end
+      sleep 0.01
+    end
+    fail("Timeout after 60s: Expected #{i} docs, got #{count}")
+  end
+
   def gen_doc_docid(i, docid)
     Document.new(@doc_type, docid).add_field(@field, "w#{i.to_s}")
   end
