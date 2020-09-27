@@ -202,7 +202,7 @@ module TestBase
   end
 
   def url_escape_q(q)
-    URI.escape(q, /[{};"<>\[\]@\*\|\(\)\\]?/)
+    CGI.escape(q)
   end
 
   def search_withtimeout(timeout, query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})

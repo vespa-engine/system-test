@@ -145,21 +145,21 @@ class DocumentApiVdsPart2 < DocumentApiV1Base
     set_description('An update with create=true and test-and-set will implicitly create a ' +
                     'missing document from scratch even if the condition does not match')
 
-    api_http_put("/document/v1/storage_test/music/number/2/9?condition=#{URI.escape('music.person.lastname=="Costanza"')}",
+    api_http_put("/document/v1/storage_test/music/number/2/9?condition=#{CGI.escape('music.person.lastname=="Costanza"')}",
                  '{"create":true,"fields":{"title":{"assign":"A Festivus for the rest of us"}, "person.lastname":{"assign":"Costanza"}}}')
     fields = JSON.parse(api_http_get('/document/v1/storage_test/music/number/2/9'))['fields']
     assert_equal({'title' => 'A Festivus for the rest of us', 'person' => {'lastname' => 'Costanza'}}, fields)
 
     # Now that the document _does_ exist, a mismatching TaS update should NOT go through
     assert_fails_with_precondition_violation {
-      api_http_put("/document/v1/storage_test/music/number/2/9?condition=#{URI.escape('music.person.lastname!="Costanza"')}",
+      api_http_put("/document/v1/storage_test/music/number/2/9?condition=#{CGI.escape('music.person.lastname!="Costanza"')}",
                    '{"create":true,"fields":{"title":{"assign":"Serenity now!!"}}}')
     }
     fields = JSON.parse(api_http_get('/document/v1/storage_test/music/number/2/9'))['fields']
     assert_equal({'title' => 'A Festivus for the rest of us', 'person' => {'lastname' => 'Costanza'}}, fields)
 
     # A matching selection should still update the document
-    api_http_put("/document/v1/storage_test/music/number/2/9?condition=#{URI.escape('music.person.lastname=="Costanza"')}",
+    api_http_put("/document/v1/storage_test/music/number/2/9?condition=#{CGI.escape('music.person.lastname=="Costanza"')}",
                  '{"create":true,"fields":{"title":{"assign":"Serenity now!!"}}}')
     fields = JSON.parse(api_http_get('/document/v1/storage_test/music/number/2/9'))['fields']
     assert_equal({'title' => 'Serenity now!!', 'person' => {'lastname' => 'Costanza'}}, fields)
