@@ -98,6 +98,8 @@ module TestBase
   # Max query timeout allowed by QRS.
   MAX_QUERY_TIMEOUT=600
 
+  RFC2396_PARSER = URI::RFC2396_Parser.new
+
   bundles = []
 
   def self.webhost(hostname)
@@ -202,7 +204,7 @@ module TestBase
   end
 
   def url_escape_q(q)
-    CGI.escape(q)
+    RFC2396_PARSER.escape(q, /[{};"<>\[\]@\*\|\(\)\\]?/)
   end
 
   def search_withtimeout(timeout, query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
