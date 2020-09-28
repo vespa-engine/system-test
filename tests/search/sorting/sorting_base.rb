@@ -12,18 +12,19 @@ module SortingBase
 
   def compare(query, file, field=nil)
     fname = selfdir+file+".result"
+    timeout = 20
     puts "Check if #{query} matches #{file}"
     if @valgrind || query.index("&streaming.")
       hc=`perl -ne 'm{total-hit-count="(\\d+)"} and print $1' < #{fname}`;
       wait_for_hitcount(query, hc.to_i)
-      assert_field(query,          fname, field, false, 10)
+      assert_field(query,          fname, field, false, timeout)
       return
     end
-    assert_field(query,            fname, field, false, 10)
-    assert_field(query,            fname, field, false, 10)
-    assert_field(query,            fname, field, false, 10)
-    assert_field(query+"&nocache", fname, field, false, 10)
-    assert_field(query,            fname, field, false, 10)
+    assert_field(query,            fname, field, false, timeout)
+    assert_field(query,            fname, field, false, timeout)
+    assert_field(query,            fname, field, false, timeout)
+    assert_field(query+"&nocache", fname, field, false, timeout)
+    assert_field(query,            fname, field, false, timeout)
   end
 
   def compare_onecluster
