@@ -220,7 +220,7 @@ class LidSpaceCompactionTest < SearchTest
   end
 
   def get_memory_usage(attribute)
-    uri = "documentdb/test/subdb/ready/attribute/#{CGI.escape(attribute)}"
+    uri = uri_escape("documentdb/test/subdb/ready/attribute/#{attribute}", /[\[\]]?/)
     stats = vespa.search["search"].first.get_state_v1_custom_component(uri)
     stats["status"]["memoryUsage"]["allocatedBytes"].to_i
   end
