@@ -204,7 +204,11 @@ module TestBase
   end
 
   def url_escape_q(q)
-    RFC2396_PARSER.escape(q, /[{};"<>\[\]@\*\|\(\)\\]?/)
+    uri_escape(q, /[{};"<>\[\]@\*\|\(\)\\]?/)
+  end
+
+  def uri_escape(uri, regex)
+    RFC2396_PARSER.escape(uri, regex)
   end
 
   def search_withtimeout(timeout, query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
