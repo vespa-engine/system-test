@@ -207,7 +207,7 @@ module TestBase
     RFC2396_PARSER.escape(q, /[{};"<>\[\]@\*\|\(\)\\]?/)
   end
 
-  def search_withtimeout(timeout, query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
+  def search_with_timeout(timeout, query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
     timeout = calculateQueryTimeout(timeout)
     query = query + "&timeout=" + timeout.to_s
     search_base(query, qrserver_id, requestheaders, verbose, params)
@@ -215,7 +215,7 @@ module TestBase
 
   # Performs _query_ on qrserver[qrserver_id] and returns the result.
   def search(query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
-    search_withtimeout(5, query, qrserver_id, requestheaders, verbose, params)
+    search_with_timeout(5, query, qrserver_id, requestheaders, verbose, params)
   end
 
   def search_base(query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
@@ -268,8 +268,8 @@ module TestBase
   end
 
   # Computes correct timeout does the same as save_result.
-  def save_result_withtimeout(timeout, query, file, qrserver_id=0)
-    result = search_withtimeout(timeout, query, qrserver_id)
+  def save_result_with_timeout(timeout, query, file, qrserver_id=0)
+    result = search_with_timeout(timeout, query, qrserver_id)
     File.open(file, "w") do |file|
       file.print(result.xmldata)
     end
@@ -452,15 +452,15 @@ module TestBase
   end
 
   def assert_query_errors(query, errors = [])
-      assert_query_errors_withtimeout(5, query, errors)
+      assert_query_errors_with_timeout(5, query, errors)
   end
 
   def assert_query_errors_withouttimeout(query, errors = [])
     assert_query_errors_base(search_base(query), errors)
   end
 
-  def assert_query_errors_withtimeout(timeout, query, errors = [])
-    assert_query_errors_base(search_withtimeout(timeout, query), errors)
+  def assert_query_errors_with_timeout(timeout, query, errors = [])
+    assert_query_errors_base(search_with_timeout(timeout, query), errors)
   end
 
   def assert_query_errors_base(result, errors = [])
@@ -484,7 +484,7 @@ module TestBase
 
   # Custom method for checking grouping results, for now only a
   # simple diff or the result XML
-  def assert_xml_result_withtimeout(timeout, query, savedresultfile, qrserver_id=0)
+  def assert_xml_result_with_timeout(timeout, query, savedresultfile, qrserver_id=0)
     timeout = calculateQueryTimeout(timeout)
     query = query + "&timeout=" + timeout.to_s
     assert_xml_result(query, savedresultfile, qrserver_id)
@@ -536,11 +536,11 @@ module TestBase
   # All fields except for relevancy are compared by default unless
   # _fieldstocompare_ is set (array of strings).
   def assert_result(query, savedresultfile, sortfield=nil, fieldstocompare=nil, qrserver_id=0, explanationstring="")
-    assert_result_withtimeout(5, query, savedresultfile, sortfield, fieldstocompare, qrserver_id, explanationstring)
+    assert_result_with_timeout(5, query, savedresultfile, sortfield, fieldstocompare, qrserver_id, explanationstring)
   end
 
-  def assert_result_withtimeout(timeout, query, savedresultfile, sortfield=nil, fieldstocompare=nil, qrserver_id=0, explanationstring="")
-    result = search_withtimeout(timeout, query, qrserver_id)
+  def assert_result_with_timeout(timeout, query, savedresultfile, sortfield=nil, fieldstocompare=nil, qrserver_id=0, explanationstring="")
+    result = search_with_timeout(timeout, query, qrserver_id)
     assert_result_base(query, result, savedresultfile, sortfield, fieldstocompare, explanationstring)
   end
 
@@ -608,7 +608,7 @@ module TestBase
   # for a spesific _field_ based on XML comparing. This method is a convenience method
   # for assert_result. Sorting is optional.
   def assert_field(query, expectfile, field, sort=false, timeout=5)
-    assert_result_withtimeout(timeout, query, expectfile, sort ? field : nil, [field])
+    assert_result_with_timeout(timeout, query, expectfile, sort ? field : nil, [field])
   end
 
   # Asserts that the result from _query_or_result_ matches the content given
@@ -1076,12 +1076,12 @@ module TestBase
     if query_or_result.respond_to?(:hitcount)
       assert_result_hitcount(query_or_result, wanted_hitcount)
     else
-      assert_hitcount_withtimeout(5, query_or_result, wanted_hitcount, qrserver_id, params)
+      assert_hitcount_with_timeout(5, query_or_result, wanted_hitcount, qrserver_id, params)
     end
   end
 
   # Asserts that the _query_or_result_ has a total hit count equal to _wanted_hitcount_
-  def assert_hitcount_withtimeout(timeout, query, wanted_hitcount, qrserver_id=0, params = {})
+  def assert_hitcount_with_timeout(timeout, query, wanted_hitcount, qrserver_id=0, params = {})
     timeout = calculateQueryTimeout(timeout)
     query = query + "&timeout=" + timeout.to_s
     assert_hitcount_withouttimeout(query, wanted_hitcount, qrserver_id, params)
@@ -1098,7 +1098,7 @@ module TestBase
       Timeout::timeout(timeout) do |timeout_length|
         while true
           begin
-            hitcount = search_withtimeout(timeout_in, query, qrserver_id).hitcount
+            hitcount = search_with_timeout(timeout_in, query, qrserver_id).hitcount
           rescue Interrupt
             puts "low-level timeout, retry"
           end
@@ -1132,7 +1132,7 @@ module TestBase
     while Time.now.to_i < start + timeout
       begin
         trynum += 1
-        hitcount = search_withtimeout(timeout_in, query, qrserver_id).hitcount
+        hitcount = search_with_timeout(timeout_in, query, qrserver_id).hitcount
         if wanted_hitcount == hitcount
           puts "Success on try #{trynum}: Got #{wanted_hitcount} hits"
           return true
@@ -1167,7 +1167,7 @@ module TestBase
         while true
           begin
             trynum += 1
-            hitcount = search_withtimeout(timeout_in, query, qrserver_id).hitcount
+            hitcount = search_with_timeout(timeout_in, query, qrserver_id).hitcount
             lasthitcount = hitcount
           rescue StandardError => e
             lasthitcount = "error #{e}: #{e.backtrace}"

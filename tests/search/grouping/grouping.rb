@@ -56,7 +56,7 @@ class Grouping < IndexedSearchTest
     if (SAVE_RESULT && !check_xml_result(query, file)) then
       File.open(file, "w") { |f| f.write(search(query).xmldata) }
     end
-    assert_xml_result_withtimeout(5.0, query, file)
+    assert_xml_result_with_timeout(5.0, query, file)
   end
 
   def teardown

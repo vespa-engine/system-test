@@ -87,7 +87,7 @@ class SchemaChanges < IndexedSearchTest
     assert_hitcount("f2:%3E20&nocache", 1)
     assert_relevancy("sddocname:test&nocache&ranking=rp1", 21, 0)
     assert_relevancy("sddocname:test&nocache&ranking=rp1",  0, 1)
-    assert_xml_result_withtimeout(2.0, "f2:%3E20&nocache&ranking=rp1&select=all(group(f2) each(output(count())))&hits=0", @test_dir + "grouping.xml")
+    assert_xml_result_with_timeout(2.0, "f2:%3E20&nocache&ranking=rp1&select=all(group(f2) each(output(count())))&hits=0", @test_dir + "grouping.xml")
     assert_attribute_exists("[documentmetastore]")
     assert_attribute_exists("f2")
     assert_attribute_not_exists("f3")

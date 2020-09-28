@@ -242,7 +242,7 @@ module GroupingBase
 
   def run_query(select, timeout=DEFAULT_TIMEOUT)
     full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0&format=xml"
-    search_withtimeout(timeout, full_query).xml
+    search_with_timeout(timeout, full_query).xml
   end
 
   def check_fullquery(query, file)
@@ -262,7 +262,7 @@ module GroupingBase
   end
 
   def runquery(query, timeout)
-    result_xml = search_withtimeout(timeout, query).xmldata
+    result_xml = search_with_timeout(timeout, query).xmldata
     return (result_xml == nil || result_xml == "" || result_xml =~ /errordetails/)
   end
 

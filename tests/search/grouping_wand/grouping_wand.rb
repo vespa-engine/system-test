@@ -69,7 +69,7 @@ class GroupingWand < IndexedSearchTest
     if (SAVE_RESULT)
       save_result(query, file);
     end
-    assert_xml_result_withtimeout(2.0, query, file)
+    assert_xml_result_with_timeout(2.0, query, file)
   end
 
   def teardown

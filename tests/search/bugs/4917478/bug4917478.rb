@@ -23,10 +23,10 @@ class Bug4917478 < IndexedSearchTest
     gr2B="all(#{ogrp}+#{grpB})&summary=catg"
     gr2C="all(#{ogrp}+#{grpB})"
 
-    assert_xml_result_withtimeout(timeout, "query=iphone",                selfdir+"result1.xml")
-    assert_xml_result_withtimeout(timeout, "query=iphone&select=#{gr2A}", selfdir+"result2.xml")
-    assert_xml_result_withtimeout(timeout, "query=iphone&select=#{gr2B}", selfdir+"result3.xml")
-    assert_xml_result_withtimeout(timeout, "query=iphone&select=#{gr2C}", selfdir+"result4.xml")
+    assert_xml_result_with_timeout(timeout, "query=iphone",                selfdir+"result1.xml")
+    assert_xml_result_with_timeout(timeout, "query=iphone&select=#{gr2A}", selfdir+"result2.xml")
+    assert_xml_result_with_timeout(timeout, "query=iphone&select=#{gr2B}", selfdir+"result3.xml")
+    assert_xml_result_with_timeout(timeout, "query=iphone&select=#{gr2C}", selfdir+"result4.xml")
 
   end
 

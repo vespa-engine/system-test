@@ -51,7 +51,7 @@ class Rendering < IndexedSearchTest
     if (SAVE_RESULT)
       save_result(fullQuery, file);
     end
-    assert_xml_result_withtimeout(2.0, fullQuery, "#{selfdir}/#{file}")
+    assert_xml_result_with_timeout(2.0, fullQuery, "#{selfdir}/#{file}")
   end
 
   def teardown
