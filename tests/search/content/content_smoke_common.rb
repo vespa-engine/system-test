@@ -19,8 +19,8 @@ module ContentSmokeCommon
       @node.logctl2("searchvisitor.rankmanager", "debug=on")
       @node.logctl2("vsm.vsm-adapter", "debug=on")
     end
-    assert_hitcount_withtimeout(5, "query=sddocname:music&streaming.selection=true", 10)
-    assert_result_withtimeout(5, "query=sddocname:music&streaming.selection=true",
+    assert_hitcount_with_timeout(5, "query=sddocname:music&streaming.selection=true", 10)
+    assert_result_with_timeout(5, "query=sddocname:music&streaming.selection=true",
                               SearchTest::SEARCH_DATA+"music.10.result.xml",
                               "title", ["title", "surl"])
   end

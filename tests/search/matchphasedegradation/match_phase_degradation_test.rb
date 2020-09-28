@@ -106,10 +106,10 @@ class MatchPhaseDegradationTest < SearchTest
     end
 
     #     save_result("query=title:foo&hits=1", selfdir+"bigresult.foo.xml")
-    assert_xml_result_withtimeout(2.0, "query=title:foo&hits=1", selfdir+"bigresult.foo.xml")
+    assert_xml_result_with_timeout(2.0, "query=title:foo&hits=1", selfdir+"bigresult.foo.xml")
 
     #     save_result("query=title:bar&hits=1", selfdir+"bigresult.bar.xml")
-    assert_xml_result_withtimeout(2.0, "query=title:bar&hits=1", selfdir+"bigresult.bar.xml")
+    assert_xml_result_with_timeout(2.0, "query=title:bar&hits=1", selfdir+"bigresult.bar.xml")
 
     assert_count_equals("ranking=undiverse&select=all(group(cat)output(count())each(output(count())))", 2)
     assert_count_equals("ranking=diverse&select=all(group(cat)output(count())each(output(count())))", 12)

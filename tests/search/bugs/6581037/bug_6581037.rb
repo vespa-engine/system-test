@@ -30,7 +30,7 @@ class Bug6581037Test < SearchTest
     feed(:file => dirs.tmpdir + "feed.xml")
 
     for i in 1...3  do
-      search_withtimeout(20, gen_query(lang, count))
+      search_with_timeout(20, gen_query(lang, count))
     end
 
     verify(lang, count, count)

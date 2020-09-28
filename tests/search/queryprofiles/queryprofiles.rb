@@ -73,13 +73,13 @@ class QueryProfiles < IndexedSearchTest
     assert_result("query=best&queryProfile=mandatory",selfdir + "mandatoryMissing.result")
 
     # ...specifying one does not work (not checking the particular error message again)
-    assert_hitcount_withtimeout(3000, "query=best&queryProfile=mandatory",0)
+    assert_hitcount_with_timeout(3000, "query=best&queryProfile=mandatory",0)
 
     # ...not the other (not checking the particular error message again)
     assert_hitcount_withouttimeout("query=best&foo=15&queryProfile=mandatory",0)
 
     # ...but specifying both does
-    assert_hitcount_withtimeout(3000, "query=best&foo=10&queryProfile=mandatory",60)
+    assert_hitcount_with_timeout(3000, "query=best&foo=10&queryProfile=mandatory",60)
 
     # Foo is an integer, so giving it a numeric value fails though
     assert_result("query=best&foo=nonumber&hits=9&queryProfile=mandatory",selfdir +  "wrongArgumentType.result")

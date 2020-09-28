@@ -67,7 +67,7 @@ class ParentChildGroupingSortingTest < ParentChildTestBase
   end
 
   def assert_grouping(grouping_query, file_name)
-    assert_xml_result_withtimeout(2.0, "/search/?hits=0&query=sddocname:ad&select=#{grouping_query}",
+    assert_xml_result_with_timeout(2.0, "/search/?hits=0&query=sddocname:ad&select=#{grouping_query}",
                       get_test_path(file_name))
   end
 

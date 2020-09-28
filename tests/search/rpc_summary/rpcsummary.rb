@@ -31,8 +31,8 @@ class RpcSummary < IndexedSearchTest
 
     assert_result(query + "&dispatch.summaries=true&ranking.queryCache", selfdir + "result.xml", nil, ["id", "f1", "relevancy", "summaryfeatures"])
     gquery="#{query}&select=all(group(id) each(each(output(summary(s1)))))&hits=0"
-    assert_xml_result_withtimeout(2.0, gquery, selfdir + "#{type}-group.xml")
-    assert_xml_result_withtimeout(2.0, gquery + "&dispatch.summaries=true&ranking.queryCache", selfdir + "#{type}-group.xml")
+    assert_xml_result_with_timeout(2.0, gquery, selfdir + "#{type}-group.xml")
+    assert_xml_result_with_timeout(2.0, gquery + "&dispatch.summaries=true&ranking.queryCache", selfdir + "#{type}-group.xml")
   end
 
   def teardown

@@ -24,7 +24,7 @@ class FieldSearch < IndexedSearchTest
   def test_medium_advanced
     feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
     puts "Waiting for result with docsum"
-    assert_result_withtimeout(30, "query=rock%20year:%5B1999%3B2002%5D&hits=100", selfdir + "1.result", "surl", ["surl"])
+    assert_result_with_timeout(30, "query=rock%20year:%5B1999%3B2002%5D&hits=100", selfdir + "1.result", "surl", ["surl"])
 
     puts "Query: rock + range of years"
     compare("query=rock%20year:%5B1999%3B2002%5D&hits=100", "1.result", "surl")

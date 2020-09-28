@@ -16,7 +16,7 @@ class PositionsBug < SearchTest
     feed_and_wait_for_docs("test", 1, :file => selfdir+"feed.xml")
     vespa.adminserver.execute("vespa-visit --xmloutput")
     #     save_result("query=title:test&streaming.userid=27959", selfdir+"result.xml")
-    assert_xml_result_withtimeout(2.0, "query=title:test&streaming.userid=27959", selfdir+"result.xml")
+    assert_xml_result_with_timeout(2.0, "query=title:test&streaming.userid=27959", selfdir+"result.xml")
   end
 
   def teardown

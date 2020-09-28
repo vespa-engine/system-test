@@ -60,7 +60,7 @@ class FeedAndQueryTestBase < SearchTest
 
   def run_query(exp_hitcount = 20, search_path = nil)
     query = get_query(search_path)
-    hitcount = search_withtimeout(10, query).hitcount
+    hitcount = search_with_timeout(10, query).hitcount
     puts "run_query(#{query}, #{exp_hitcount}): #{hitcount} hits" if search_path
     return hitcount
   end

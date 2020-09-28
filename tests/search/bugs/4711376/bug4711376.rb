@@ -25,7 +25,7 @@ class Bug4711376 < IndexedSearchTest
     feed(:file => selfdir+"combineddata.xml")
     query = "?query=sddocname:image sddocname:music&type=any&sorting=-uca(comment) title"
     for i in 1...3 do
-        search_withtimeout(20, query)
+        search_with_timeout(20, query)
     end
     assert_result(query, selfdir + "result.xml")
   end

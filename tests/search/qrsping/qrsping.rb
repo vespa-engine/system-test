@@ -22,7 +22,7 @@ class QrsPing < IndexedSearchTest
 
     query = "/?query=blues"
 
-    result = search_withtimeout(5, query)
+    result = search_with_timeout(5, query)
 
     puts "Query result:"
     puts result.xmldata
@@ -45,7 +45,7 @@ class QrsPing < IndexedSearchTest
     puts "Running query after 10s sleep"
 
     wait_for_hitcount(query, 10)
-    result = search_withtimeout(5, query)
+    result = search_with_timeout(5, query)
     puts "Query result:"
     puts result.xmldata
 

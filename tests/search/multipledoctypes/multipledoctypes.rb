@@ -54,14 +54,14 @@ class MultipleDocumentTypes < IndexedSearchTest
 
     # test simple 1 level grouping
     query = "query=year:%3E1980&ranking=year&select=all%28group%28rating%29 each%28output%28count%28%29%29%29%29&hits=0"
-    assert_xml_result_withtimeout(timeout, query + "&restrict=video", selfdir + "result.video.grouping.xml")
-    assert_xml_result_withtimeout(timeout, query, selfdir + "result.all.grouping.xml")
+    assert_xml_result_with_timeout(timeout, query + "&restrict=video", selfdir + "result.video.grouping.xml")
+    assert_xml_result_with_timeout(timeout, query, selfdir + "result.all.grouping.xml")
 
     # test simple 2 level grouping
     query = "?query=year:%3E1980&ranking=year&select=all%28group%28rating%29 each%28group%28pages%29 each%28output%28count%28%29%29%29%29%29&hits=0"
-    assert_xml_result_withtimeout(timeout, query + "&restrict=book", selfdir + "result.book.grouping.2.xml")
+    assert_xml_result_with_timeout(timeout, query + "&restrict=book", selfdir + "result.book.grouping.2.xml")
     # only type book has both attribute rating & pages
-    assert_xml_result_withtimeout(timeout, query, selfdir + "result.all.grouping.2.xml")
+    assert_xml_result_with_timeout(timeout, query, selfdir + "result.all.grouping.2.xml")
   end
 
   def assert_subset(exp_values, query, offset, hits)

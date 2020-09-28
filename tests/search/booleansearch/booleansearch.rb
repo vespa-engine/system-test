@@ -74,7 +74,7 @@ class BooleanSearchTest < SearchTest
   def test_that_rankfeatures_does_not_core
     File.open(@feed_file, "w") {|file| write_value_documents(file) }
     deploy_and_feed
-    assert_hitcount_withtimeout(1, "query=sddocname:test&rankfeatures", @numdocs)
+    assert_hitcount_with_timeout(1, "query=sddocname:test&rankfeatures", @numdocs)
   end
 
   def test_boolean_searcher_value_query_terms

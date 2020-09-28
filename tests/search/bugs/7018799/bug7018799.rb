@@ -21,14 +21,14 @@ class RecoveryLosesAnnotations < SearchTest
     q = qf(fn, wd)
     f = ff(fn, wd)
     puts "save result of '#{q}' in '#{f}'"
-    save_result_withtimeout(5, q, f)
+    save_result_with_timeout(5, q, f)
   end
 
   def check(fn, wd)
     q = qf(fn, wd)
     f = ff(fn, wd)
     puts "check result of '#{q}' in '#{f}'"
-    assert_result_withtimeout(5, q, f)
+    assert_result_with_timeout(5, q, f)
   end
 
   def saveAll

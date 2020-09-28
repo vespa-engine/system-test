@@ -28,7 +28,7 @@ class ClearField < SearchTest
   end
 
   def run_query(query, file)
-    assert_result_withtimeout(5, query, file)
+    assert_result_with_timeout(5, query, file)
   end
 
   def teardown

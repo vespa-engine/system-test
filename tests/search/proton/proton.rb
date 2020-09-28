@@ -250,7 +250,7 @@ class ProtonTest < IndexedSearchTest
     assert(r4 == r5)
 
     puts "simple grouping"
-    assert_xml_result_withtimeout(2.0, "query=sddocname:test&select=all(group(sattr) each(output(count())))&hits=0", selfdir + "simplegrouping.xml")
+    assert_xml_result_with_timeout(2.0, "query=sddocname:test&select=all(group(sattr) each(output(count())))&hits=0", selfdir + "simplegrouping.xml")
   end
 
   def test_proton_replay

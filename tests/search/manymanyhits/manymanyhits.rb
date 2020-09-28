@@ -31,17 +31,17 @@ class ManyManyHits < IndexedSearchTest
     query = "/?query=mid:2&hits=10000&nocache"
 
     puts "running query once..."
-    result = save_result_withtimeout(timeout, query, "#{Environment.instance.vespa_home}/tmp/mmhresult.1.xml")
+    result = save_result_with_timeout(timeout, query, "#{Environment.instance.vespa_home}/tmp/mmhresult.1.xml")
     puts "got #{result.xmldata.length} bytes"
 
     puts "running query twice..."
-    result = save_result_withtimeout(timeout, query, "#{Environment.instance.vespa_home}/tmp/mmhresult.2.xml")
+    result = save_result_with_timeout(timeout, query, "#{Environment.instance.vespa_home}/tmp/mmhresult.2.xml")
     puts "got #{result.xmldata.length} bytes"
     diff1 = `diff #{Environment.instance.vespa_home}/tmp/mmhresult.1.xml #{Environment.instance.vespa_home}/tmp/mmhresult.2.xml`
     puts "diff mmhresult.1.xml vs mmhresult.2.xml: #{diff1}"
 
     puts "running query thrice..."
-    result = save_result_withtimeout(timeout, query, "#{Environment.instance.vespa_home}/tmp/mmhresult.3.xml")
+    result = save_result_with_timeout(timeout, query, "#{Environment.instance.vespa_home}/tmp/mmhresult.3.xml")
     puts "got #{result.xmldata.length} bytes"
     diff2 = `diff #{Environment.instance.vespa_home}/tmp/mmhresult.2.xml #{Environment.instance.vespa_home}/tmp/mmhresult.3.xml`
     puts "diff mmhresult.2.xml vs mmhresult.3.xml: #{diff2}"
@@ -70,10 +70,10 @@ class ManyManyHits < IndexedSearchTest
     timeout=30
     query = "/?query=mid:2&hits=10000&nocache"
 
-    search_withtimeout(timeout, query)
-    search_withtimeout(timeout, query)
-    search_withtimeout(timeout, query)
-    result = search_withtimeout(timeout, query)
+    search_with_timeout(timeout, query)
+    search_with_timeout(timeout, query)
+    search_with_timeout(timeout, query)
+    result = search_with_timeout(timeout, query)
     hitcount = 0
     # Note: Trying to actually parse the XML would crash Ruby version
     # available when writing this test
