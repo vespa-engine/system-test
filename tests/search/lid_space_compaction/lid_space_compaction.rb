@@ -200,7 +200,7 @@ class LidSpaceCompactionTest < SearchTest
     ideal_not_ready = get_ideal_stats(0)
     puts "ideal ready.0:    " + ideal_ready.to_s
     puts "ideal notready.2: " + ideal_not_ready.to_s
-    num_tries = 180
+    num_tries = 300
     num_tries *= VALGRIND_TIMEOUT_MULTIPLIER if @valgrind
     for i in 0..num_tries do
       puts "wait_for_docs_moved(#{num_docs}): try=#{i})"
