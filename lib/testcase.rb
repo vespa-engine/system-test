@@ -245,7 +245,6 @@ class TestCase
 
   def runmethod(test_method, real_test_method, test_results)
     begin
-      init_vespa_model(self, @vespa_version)
       @starttime = Time.now
       @method_name = test_method
       @result = TestResult.new(test_method)
@@ -253,6 +252,8 @@ class TestCase
       @failure_recorded = false
       @stopped = nil
       @application_name = sanitize_name(@method_name)
+
+      init_vespa_model(self, @vespa_version)
 
       @vespa_cleanup.clean(@vespa.nodeproxies)
       setup_directories(test_method, @starttime)
