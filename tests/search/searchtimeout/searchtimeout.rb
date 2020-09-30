@@ -18,14 +18,14 @@ class SearchTimeoutTest < IndexedSearchTest
     assert_query_errors_without_timeout("query=sddocname:banana&hits=1&nocache&timeout=1.0&ranking.softtimeout.enable=false",
                                     ["Timeout while waiting for sc0.num0|Query timed out in sc0.num0"])
     assert_hitcount_withouttimeout("query=sddocname:banana&hits=1&nocache&timeout=40.0", 20)
-    assert_hitcount_withouttimeout("query=sddocname:banana&hits=1&nocache&timeout=2.5&ranking.softtimeout.enable=true", 3)
-    assert_hitcount_withouttimeout("query=sddocname:banana&hits=1&nocache&timeout=2.5&ranking.softtimeout.enable=true&ranking.softtimeout.factor=0.70", 4)
+    assert_hitcount_withouttimeout("query=sddocname:banana&hits=1&nocache&timeout=5.0&ranking.softtimeout.enable=true", 3)
+    assert_hitcount_withouttimeout("query=sddocname:banana&hits=1&nocache&timeout=5.0&ranking.softtimeout.enable=true&ranking.softtimeout.factor=0.70", 4)
     for i in 0..40 do
-        result = search_base("query=sddocname:banana&hits=1&nocache&timeout=2.5&ranking.softtimeout.enable=true")
+        result = search_base("query=sddocname:banana&hits=1&nocache&timeout=5.0&ranking.softtimeout.enable=true")
         puts "Query " + i.to_s + " has " + result.hitcount.to_s + " hits."
         assert(result.hitcount >= 3)
     end
-    assert_hitcount_withouttimeout("query=sddocname:banana&hits=1&nocache&timeout=2.5&ranking.softtimeout.enable=true", 4)
+    assert_hitcount_withouttimeout("query=sddocname:banana&hits=1&nocache&timeout=5.0&ranking.softtimeout.enable=true", 4)
   end
 
   def teardown

@@ -14,7 +14,7 @@ search banana {
 
   rank-profile default {
     first-phase {
-      expression: attribute(age) + debugWait(0.5, 0)
+      expression: attribute(age) + debugWait(1.0, 0)
     }
   }
 }
