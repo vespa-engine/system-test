@@ -63,16 +63,16 @@ class TensorConstantPerfTest < PerformanceTest
       get_deploy_graph(TOTAL_TIME, nil, nil),
       get_deploy_graph(PREPARE_TIME, 11, 15),
       get_deploy_graph(ACTIVATE_TIME, nil, nil),
-      get_deploy_graph(FILE_DISTRIBUTION_TIME, 7, 18)
+      get_deploy_graph(FILE_DISTRIBUTION_TIME, 5.5, 18)
     ]
   end
 
   def get_graphs_lz4
     [
       get_deploy_graph(TOTAL_TIME, nil, nil),
-      get_deploy_graph(PREPARE_TIME, 2.2, 3.7),
+      get_deploy_graph(PREPARE_TIME, 2.2, 3.8),
       get_deploy_graph(ACTIVATE_TIME, nil, nil),
-      get_deploy_graph(FILE_DISTRIBUTION_TIME, 6, 16)
+      get_deploy_graph(FILE_DISTRIBUTION_TIME, 4, 16)
     ]
   end
 
