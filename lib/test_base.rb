@@ -459,7 +459,7 @@ module TestBase
       assert_query_errors_with_timeout(5, query, errors)
   end
 
-  def assert_query_errors_withouttimeout(query, errors = [])
+  def assert_query_errors_without_timeout(query, errors = [])
     assert_query_errors_base(search_base(query), errors)
   end
 
