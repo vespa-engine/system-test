@@ -6,10 +6,13 @@ class ClusterControllerMultiNodeTest < VdsTest
 
   def initialize(*args)
     super(*args)
-    @use_shared_configservers = false
     @num_hosts = 4
   end
 
+  def can_share_configservers?(method_name=nil)
+    return false
+  end
+  
   def setup
     @docnr = 0
     @valgrind = false

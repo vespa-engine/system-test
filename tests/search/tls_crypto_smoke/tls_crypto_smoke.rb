@@ -5,7 +5,10 @@ class TlsCryptoSmokeTest < IndexedSearchTest
 
   def initialize(*args)
     super(*args)
-    @use_shared_configservers = false
+  end
+
+  def can_share_configservers?(method_name=nil)
+    return false
   end
 
   def verify_endpoint_is_running_with_tls(hostname, port)
