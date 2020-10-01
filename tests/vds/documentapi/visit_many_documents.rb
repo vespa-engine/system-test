@@ -12,6 +12,10 @@ class VisitManyDocumentsTest < VdsTest
     @wanted_doc_count = 27
   end
 
+  def timeout_seconds
+    1800
+  end
+
   def feed_documents
     @num_users.times do |i|
       @docs_per_user.times do |j|
