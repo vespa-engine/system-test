@@ -10,7 +10,6 @@ class OrchestratorContainerClusterTest < CloudConfigTest
 
   def initialize(*args)
     super(*args)
-    @use_shared_configservers = false
     @num_hosts = 4
   end
 

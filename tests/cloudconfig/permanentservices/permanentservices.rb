@@ -6,7 +6,10 @@ class PermanentServices < CloudConfigTest
 
   def initialize(*args)
     super(*args)
-    @use_shared_configservers = false
+  end
+
+  def can_share_configservers?(method_name=nil)
+    return false
   end
 
   def can_share_configservers?(method_name=nil)

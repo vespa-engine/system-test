@@ -4,7 +4,6 @@ class OrchestratorMultiTenantTest < SearchContainerTest
 
   def initialize(*args)
     super(*args)
-    @use_shared_configservers = false
     @num_hosts = 6
   end
 
@@ -23,7 +22,6 @@ class OrchestratorMultiTenantTest < SearchContainerTest
   def setup
     set_owner("arnej")
     set_description("Test multiple apps in a multi-tenant (hosted vespa emulation) setup")
-    @use_shared_configservers = false
     @valgrind = false
 
     @cfgsrvnode = nil
