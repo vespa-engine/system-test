@@ -64,7 +64,7 @@ class MultipassRanking < IndexedSearchTest
     # case 8 (same as case 1, but setting heap size per query)
 
     qp = "query=sddocname:test&parallel&skipnormalizing&ranking=r1-multi&" +
-            "ranking.properties.vespa.hitcollector.heapsize="
+            "ranking.rerankCount="
 
     assert_ranking(search(qp + "0"), [[4,40],[3,30],[2,20],[1,10]])
     assert_ranking(search(qp + "1"), [[4,400],[3,30],[2,20],[1,10]])
