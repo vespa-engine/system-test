@@ -81,9 +81,8 @@ class MetricsProxy < IndexedSearchTest
     puts "Verifying prometheus/v1 on #{container.http_port}"
     result = container.http_get2("/prometheus/v1/values").body
 
-    # Just verify that a couple of metrics are present
+    # Verify that an expected metric is present
     assert_match(Regexp.new("# HELP serverActiveThreads_average"), result, "Could not find serverActiveThreads_average metric.")
-    assert_match(Regexp.new("# HELP mem_heap_free_average"), result, "Could not find mem_heap_free_average metric.")
   end
 
   def test_system_metrics
