@@ -27,7 +27,7 @@ class Capacity < VdsTest
 
     # Feed documents to generate 100 buckets
     100.times{|i|
-      doc = Document.new("music", "id:storage_test:music:n=#{i}:")
+      doc = Document.new("music", "id:storage_test:music:n=#{i}:doc")
       vespa.document_api_v1.put(doc)
     }
 

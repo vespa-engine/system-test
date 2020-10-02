@@ -24,7 +24,7 @@ class DistributorDown < MultiProviderStorageTest
     stop_distributor(0)
 
     begin
-      doc = Document.new("music", "id:storage_test:music:n=1234:")
+      doc = Document.new("music", "id:storage_test:music:n=1234:u")
       vespa.document_api_v1.put(doc)
       assert(false)
     rescue RuntimeError => exc
@@ -32,13 +32,13 @@ class DistributorDown < MultiProviderStorageTest
 
     start_distributor(0)
 
-    doc = Document.new("music", "id:storage_test:music:n=1234:")
+    doc = Document.new("music", "id:storage_test:music:n=1234:u")
     vespa.document_api_v1.put(doc)
   end
 
   def feedDocs(numdocs = 20)
     numdocs.times{|i|
-      doc = Document.new("music", "id:storage_test:music:n=#{i}:")
+      doc = Document.new("music", "id:storage_test:music:n=#{i}:u")
       vespa.document_api_v1.put(doc)
     }
   end
