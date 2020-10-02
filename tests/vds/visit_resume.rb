@@ -16,11 +16,11 @@ class VisitorResumeTest < MultiProviderStorageTest
   end
 
   def visitorresume(command)
-    doc = Document.new("music", "id:storage_test:music:n=1234:").
+    doc = Document.new("music", "id:storage_test:music:n=1234:doc").
       add_field("title", "title")
     vespa.document_api_v1.put(doc)
 
-    doc = Document.new("music", "id:storage_test:music:n=4567:").
+    doc = Document.new("music", "id:storage_test:music:n=4567:doc").
       add_field("title", "title")
     vespa.document_api_v1.put(doc)
 
@@ -30,8 +30,8 @@ class VisitorResumeTest < MultiProviderStorageTest
     documents = parser.documents.sort
 
     assert_equal(2, documents.size)
-    assert_equal("id:storage_test:music:n=1234:", documents[0].documentid)
-    assert_equal("id:storage_test:music:n=4567:", documents[1].documentid)
+    assert_equal("id:storage_test:music:n=1234:doc", documents[0].documentid)
+    assert_equal("id:storage_test:music:n=4567:doc", documents[1].documentid)
 
     # Write new progress file with userdoc 1234 bucket set to not started
     vespa.storage["storage"].storage["0"].execute("echo -e \"VDS bucket progress file\n11\n0\n1\n2\n80000000000004d2:0\n\" > #{Environment.instance.vespa_home}/tmp/resume2.txt")
@@ -41,7 +41,7 @@ class VisitorResumeTest < MultiProviderStorageTest
     parser = GatewayXMLParser.new("<result>" + output + "</result>")
 
     assert_equal(1, parser.documents.size)
-    assert_equal("id:storage_test:music:n=1234:", parser.documents[0].documentid)
+    assert_equal("id:storage_test:music:n=1234:doc", parser.documents[0].documentid)
 
     visited_buckets = progress_file.split(/\n/)[3] # Finished buckets
     visited_buckets2 = progress_file2.split(/\n/)[3]
