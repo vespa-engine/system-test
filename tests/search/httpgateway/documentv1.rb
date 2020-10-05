@@ -68,7 +68,6 @@ class DocumentV1Test < SearchTest
     # Feed with conditional feed, but document is non existing.
     response = http.post("/document/v1/fruit/banana/docid/doc1?condition=banana.colour==''", feedData, httpheaders)
     assert_equal("412", response.code)
-    assert_match /Condition\ did\ not\ match\ document/, response.body
 
     # Feed ok test
     # Add route flag as well just to see that it works if route is set.
@@ -85,7 +84,6 @@ class DocumentV1Test < SearchTest
     # Feed, but with wrong condition
     response = http.post("/document/v1/fruit/banana/docid/doc1?condition=banana.colour=='wrong'&route=default", feedData, httpheaders)
     assert_equal("412", response.code)
-    assert_match /Condition\ did\ not\ match\ document/, response.body
 
     # Visit ok test
     response = http.get("/document/v1/fruit/banana/docid/")
