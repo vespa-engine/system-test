@@ -11,7 +11,11 @@ class BackendReporter
   end
 
   def initialize_testrun(test_objects)
-    @test_names = test_objects.map { |k,v| "#{k.class}::#{v.to_s}" }
+    test_objects.each do |object, methods|
+      methods.each do |method|
+        @test_names << "#{object.class}::#{method.to_s}"
+      end
+    end
   end
 
   def test_running(test_case, method_name)
