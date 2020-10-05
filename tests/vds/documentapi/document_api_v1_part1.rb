@@ -10,10 +10,10 @@ class DocumentApiVdsPart1 < DocumentApiV1Base
   end
 
   def test_visit_with_number
-    response = api_http_get('/document/v1/storage_test/music/number/')
+    response = api_http_get('/document/v1/storage_test/music/docid/')
     # Visit completes before covering the entire global bucket space, hence the continuation token.
     assert_json_string_equal(
-      '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}}],"pathId":"/document/v1/storage_test/music/number/",' +
+      '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}}],"pathId":"/document/v1/storage_test/music/docid/",' +
       '"continuation":"AAAACAAAAAAAAACCAAAAAAAAAIEAAAAAAAABAAAAAAEgAAAAAAAAgQAAAAAAAAAA"}',
       response)
     response = api_http_get('/document/v1/storage_test/music/number/1/')
@@ -26,10 +26,10 @@ class DocumentApiVdsPart1 < DocumentApiV1Base
     set_description('Test that Document V1 API visit wantedDocumentCount greater than the number ' +
                     'of available documents should exhaust the bucket space and return no continuation token')
 
-    response = api_http_get('/document/v1/storage_test/music/number/?wantedDocumentCount=2')
+    response = api_http_get('/document/v1/storage_test/music/docid/?wantedDocumentCount=2')
     assert_json_string_equal(
       '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}}],' +
-      '"pathId":"/document/v1/storage_test/music/number/"}',
+      '"pathId":"/document/v1/storage_test/music/docid/"}',
       response)
   end
 
@@ -42,29 +42,29 @@ class DocumentApiVdsPart1 < DocumentApiV1Base
     feed_single(4, 1, 'Ibiza hitz 4 pensionerz')
 
     # First two buckets
-    response = api_http_get('/document/v1/storage_test/music/number/?wantedDocumentCount=2')
+    response = api_http_get('/document/v1/storage_test/music/docid/?wantedDocumentCount=2')
     assert_json_string_equal(
       '{"documents":[{"id":"id:storage_test:music:n=4:1", "fields":{"title":"Ibiza hitz 4 pensionerz"}},' +
       '{"id":"id:storage_test:music:n=2:1", "fields":{"title":"Tango for two and a half"}}],' +
-      '"pathId":"/document/v1/storage_test/music/number/",' +
+      '"pathId":"/document/v1/storage_test/music/docid/",' +
        '"continuation":"AAAACAAAAAAAAABCAAAAAAAAAEEAAAAAAAABAAAAAAEgAAAAAAAAggAAAAAAAAAA"}',
       response)
 
     # Last two buckets
-    response = api_http_get('/document/v1/storage_test/music/number/?wantedDocumentCount=2' +
+    response = api_http_get('/document/v1/storage_test/music/docid/?wantedDocumentCount=2' +
                                        '&continuation=AAAACAAAAAAAAABCAAAAAAAAAEEAAAAAAAABAAAAAAEgAAAAAAAAggAAAAAAAAAA')
     assert_json_string_equal(
       '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}},' +
       '{"id":"id:storage_test:music:n=3:1", "fields":{"title":"Beethoven, dubstep edition"}}],' +
-      '"pathId":"/document/v1/storage_test/music/number/",' +
+      '"pathId":"/document/v1/storage_test/music/docid/",' +
        '"continuation":"AAAACAAAAAAAAADCAAAAAAAAAMEAAAAAAAABAAAAAAEgAAAAAAAAgwAAAAAAAAAA"}',
       response)
 
     # Bucket space is exhausted, empty result set returned with no continuation token
-    response = api_http_get('/document/v1/storage_test/music/number/?wantedDocumentCount=2' +
+    response = api_http_get('/document/v1/storage_test/music/docid/?wantedDocumentCount=2' +
                                        '&continuation=AAAACAAAAAAAAADCAAAAAAAAAMEAAAAAAAABAAAAAAEgAAAAAAAAgwAAAAAAAAAA')
     assert_json_string_equal(
-      '{"documents":[],"pathId":"/document/v1/storage_test/music/number/"}',
+      '{"documents":[],"pathId":"/document/v1/storage_test/music/docid/"}',
       response)
   end
 
