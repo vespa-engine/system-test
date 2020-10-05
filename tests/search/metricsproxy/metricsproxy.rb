@@ -83,7 +83,7 @@ class MetricsProxy < IndexedSearchTest
 
     # Just verify that a couple of metrics are present
     assert_match(Regexp.new("# HELP serverActiveThreads_average"), result, "Could not find serverActiveThreads_average metric.")
-    assert_match(Regexp.new("# HELP mem_heap_free_average"), result, "Could not find mem_heap_free_average metric.")
+    assert_match(Regexp.new("# HELP memory_rss"), result, "Could not find memory_rss metric.")
   end
 
   def test_system_metrics
