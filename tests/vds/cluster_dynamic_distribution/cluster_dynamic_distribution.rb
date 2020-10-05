@@ -1,5 +1,6 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'vds_test'
+require 'securerandom'
 
 class ClusterDynamicDistributionTest < VdsTest
 
@@ -20,15 +21,16 @@ class ClusterDynamicDistributionTest < VdsTest
     @num_users = 100
     set_owner("vekterli")
     set_expected_logged(/pidfile/)
-    make_feed_file("tmpfeed_cluster_dynamic.xml", "music", 0, @num_users - 1, @num_docs / @num_users)
+    @feedfile = "#{SecureRandom.urlsafe_base64}_tmpfeed_cluster_dynamic.xml"
+    make_feed_file(@feedfile, "music", 0, @num_users - 1, @num_docs / @num_users)
     deploy_app(default_app.num_nodes(3).redundancy(2).distribution_bits(8))
     start
   end
 
   def teardown
     begin
-      if File.exists?("tmpfeed_cluster_dynamic.xml")
-        File.delete("tmpfeed_cluster_dynamic.xml")
+      if File.exists?(@feedfile)
+        File.delete(@feedfile)
       end
       # If things went belly-up, visiting thread/process might still be active
       content_node(0).execute("pkill -KILL -f vespa-feeder", :exceptiononfailure => false);
@@ -69,7 +71,7 @@ class ClusterDynamicDistributionTest < VdsTest
     puts "Starting feeding in own thread"
     feed_thread = Thread.new {
       feed_start = Time.new
-      feedfile("tmpfeed_cluster_dynamic.xml")
+      feedfile(@feedfile)
       puts "Feeding took " + (Time.new - feed_start).to_s + " seconds"
     }
     feed_thread
