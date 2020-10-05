@@ -9,6 +9,7 @@ require 'search_test'
 require 'vds_test'
 require 'hosted_test'
 require 'test_node_pool'
+require 'backend_reporter'
 require 'concurrent'
 
 class TestRunner
@@ -24,6 +25,7 @@ class TestRunner
     @performance = options[:performance] ? true : false
     @keeprunning = options[:keeprunning] ? true : false
     @consoleoutput = options[:consoleoutput] ? true : false
+    @backend = BackendReporter.new(@log)
   end
 
   def initialize_run_dependent_fields
@@ -124,7 +126,8 @@ class TestRunner
 
   def run_tests
     thread_pool = Concurrent::FixedThreadPool.new(@node_pool.max_available > 0 ? @node_pool.max_available : 1)
-    test_results = Concurrent::Hash.new
+
+    @backend.initialize_testrun(@test_objects)
 
     @test_objects.each do |testcase, test_methods|
       # This call blocks until nodes available
@@ -145,8 +148,9 @@ class TestRunner
         begin
           test_methods.each do |test_method|
             @log.info "Running #{test_method} from #{testcase.class}"
-
-            test_results["#{testcase.class}::#{test_method}"] = testcase.run([test_method]).first
+            @backend.test_running(testcase, test_method)
+            test_result = testcase.run([test_method]).first
+            @backend.test_finished(testcase, test_method, test_result)
             @log.info "Finished running: #{test_method} from #{testcase.class}"
           end
         rescue Exception => e
@@ -161,27 +165,7 @@ class TestRunner
     thread_pool.shutdown
     thread_pool.wait_for_termination
 
-    report_status(test_results)
-  end
-
-  def report_status(test_results)
-    successful_tests = test_results.select { |name, result| result.passed? }
-    failed_tests = test_results.reject { |name, result| result.passed? }
-    @log.info "#################"
-    @log.info "Successful tests:"
-    successful_tests.each { |key, value| @log.info "  #{key}   #{value.to_s}" }
-    @log.info "#################"
-    @log.info "Failed tests:"
-    failed_tests.each { |key, value| @log.info "  #{key}   #{value.to_s}" }
-    @log.info "#################"
-    if not @testclasses_not_run.empty?
-      @log.info "#################"
-      @log.info "Tests not run:"
-      @testclasses_not_run.each { |klass| @log.info "  #{klass}" }
-      @log.info "#################"
-    end
-
-    failed_tests.empty?
+    @backend.finalize_testrun
   end
 
   def allocate_nodes(testcase)
