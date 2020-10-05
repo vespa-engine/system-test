@@ -1411,14 +1411,14 @@ module TestBase
       app_name = app
     end
     if !@configserverhostlist.empty?
-      delete_application_and_tenant_from_server(@configserverhostlist, tname, app_name)
+      delete_application_from_server(@configserverhostlist, tname, app_name)
     end
     if hostname
-      delete_application_and_tenant_from_server([hostname], tname, app_name)
+      delete_application_from_server([hostname], tname, app_name)
     end
   end
 
-  def delete_application_and_tenant_from_server(configserver_hosts, tenant, app)
+  def delete_application_from_server(configserver_hosts, tenant, app)
     hostname = configserver_hosts[0]
 
     puts("Deleting application from config server (hostname #{hostname}, app #{app})")
@@ -1426,14 +1426,7 @@ module TestBase
     if result.code.to_i != 200
       raise "Unable to delete application #{app}, got status code #{result.code}"
     end
-
-    puts("Deleting tenant from config server (hostname #{hostname}, tenant #{tenant}")
-    result = delete_tenant(tenant, hostname)
-    if result.code.to_i != 200
-      raise "Unable to delete tenant #{tenant}, got status code #{result.code}"
-    end
   end
-
 
   def get_configserver_hostname
     if (@use_shared_configservers)
