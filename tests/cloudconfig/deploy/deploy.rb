@@ -324,7 +324,7 @@ include ApplicationV2Api
 
     # Cleanup
     delete_application(@hostname, @tenant_name, @application_name)
-    session_id = 2 # reset since we deleted application above
+    session_id
   end
 
   def run_delete_tenant_with_application(session_id=@session_id)
