@@ -192,20 +192,20 @@ if __FILE__ == $0
     opts.on("-b", "--basedir DIR", String, "Basedir for test results.") do |basedir|
       options[:basedir] = basedir
     end
-    opts.on("-c", "--consoleoutput", "Output test executions on console.") do |file|
-      options[:consoleoutput] = true
+    opts.on("-c", "--consoleoutput", "Output test executions on console.") do |c|
+      options[:consoleoutput] = c
     end
     opts.on("-f", "--testfile FILE", String, "Ruby test file relative to tests/ path.") do |file|
       options[:testfiles] << file
     end
-    opts.on("-k", "--keeprunning", "Keep the node containers running. For inspection/debugging.") do |limit|
-      options[:keeprunning] = true
+    opts.on("-k", "--keeprunning", "Keep the node containers running. For inspection/debugging.") do |k|
+      options[:keeprunning] = k
     end
     opts.on("-n", "--nodelimit N", Integer, "Only run tests that require no more that N nodes.") do |limit|
       options[:nodelimit] = limit
     end
-    opts.on("-p", "--performance", "Run performance tests.") do |limit|
-      options[:performance] = true
+    opts.on("-p", "--performance", "Run performance tests.") do |p|
+      options[:performance] = p
     end
     opts.on("-V", "--vespaversion VERSION", String, "Vespa version to use.") do |version|
       options[:vespaversion] = version
