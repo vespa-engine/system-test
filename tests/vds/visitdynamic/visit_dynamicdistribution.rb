@@ -2,6 +2,7 @@
 require 'persistent_provider_test'
 require 'set'
 require 'environment'
+require 'securerandom'
 
 class VisitDynamicDistributionTest < PersistentProviderTest
 
@@ -18,7 +19,9 @@ class VisitDynamicDistributionTest < PersistentProviderTest
     @targetDir = "#{Environment.instance.vespa_home}/tmp/vespa-visit"
     @progressFile = "#{Environment.instance.vespa_home}/tmp/progress_dynamic"
     set_owner("vekterli")
-    make_feed_file("tmpfeed_visitdynamic.xml", "music", 0, 4, 100)
+
+    @feed_file = "#{SecureRandom::urlsafe_base64}_tmpfeed_visitdynamic.xml"
+    make_feed_file(@feed_file, "music", 0, 4, 100)
     set_expected_logged(/pidfile/)
 
     deploy_app(default_app.
@@ -32,8 +35,8 @@ class VisitDynamicDistributionTest < PersistentProviderTest
 
   def teardown
     begin
-      if File.exists?("tmpfeed_visitdynamic.xml")
-        File.delete("tmpfeed_visitdynamic.xml")
+      if File.exists?(@feed_file)
+        File.delete(@feed_file)
       end
       # A bit dirty to do this here since the files/dirs weren't created during setup
       vespa.storage["storage"].storage["0"].execute("rm -f #{@ackFile}")
@@ -65,7 +68,7 @@ class VisitDynamicDistributionTest < PersistentProviderTest
                                "-d #{@targetDir}/classes " +
                                "#{@targetDir}/src/com/yahoo/vespaclient/test/TestVisitorHandler.java")
 
-    feedfile("tmpfeed_visitdynamic.xml")
+    feedfile(@feed_file)
 
     puts "Letting storage catch up with bucket splitting"
     rounds = 10
@@ -255,7 +258,7 @@ class VisitDynamicDistributionTest < PersistentProviderTest
   end
 
   def test_visit_with_progress
-    feedfile("tmpfeed_visitdynamic.xml")
+    feedfile(@feed_file)
 
     visit_and_deploy(2, 2, 15, [])
     # Now that we've tested going from low->hi, try it the other way around
