@@ -1,5 +1,6 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'vds_multi_model_test'
+require 'securerandom'
 
 class HierarchDistr < VdsMultiModelTest
 
@@ -13,6 +14,10 @@ class HierarchDistr < VdsMultiModelTest
 
   def timeout_seconds
     1600
+  end
+
+  def tempfile_name(postfix)
+    "#{SecureRandom.urlsafe_base64}_#{postfix}"
   end
 
   def app2
@@ -109,10 +114,11 @@ class HierarchDistr < VdsMultiModelTest
   def test_app_change
     @valgrind = false
     deploy_and_wait(app2, true)
-
-    make_feed_file("1000_buckets_app2.xml", "music", 0, 999, 1)
+    
+    feed_file = tempfile_name("1000_buckets_app2.xml")
+    make_feed_file(feed_file, "music", 0, 999, 1)
     vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
-    feedfile("1000_buckets_app2.xml", :route => "storage")
+    feedfile(feed_file, :route => "storage")
 
     vespagetAllDocs(true)
 
@@ -128,15 +134,16 @@ class HierarchDistr < VdsMultiModelTest
 
     vespagetAllDocs(true)
 
-    File.delete("1000_buckets_app2.xml")
+    File.delete(feed_file)
   end
 
   def test_app2
     deploy_and_wait(app2, true)
 
-    make_feed_file("1000_buckets_app2.xml", "music", 0, 999, 1)
+    feed_file = tempfile_name("1000_buckets_app2.xml")
+    make_feed_file(feed_file, "music", 0, 999, 1)
     vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
-    feedfile("1000_buckets_app2.xml", :route => "storage")
+    feedfile(feed_file, :route => "storage")
 
     vespagetAllDocs(true)
 
@@ -171,16 +178,17 @@ class HierarchDistr < VdsMultiModelTest
     # all data should still be available
     vespagetAllDocs(true)
 
-    File.delete("1000_buckets_app2.xml")
+    File.delete(feed_file)
   end
 
 
   def test_app3
     deploy_and_wait(app3, true)
 
-    make_feed_file("1000_buckets_app3.xml", "music", 0, 999, 1)
+    feed_file = tempfile_name("1000_buckets_app3.xml")
+    make_feed_file(feed_file, "music", 0, 999, 1)
     vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
-    feedfile("1000_buckets_app3.xml", :route => "storage")
+    feedfile(feed_file, :route => "storage")
 
     vespagetAllDocs(true)
 
@@ -228,16 +236,17 @@ class HierarchDistr < VdsMultiModelTest
     # all data should still be available
     vespagetAllDocs(true)
 
-    File.delete("1000_buckets_app3.xml")
+    File.delete(feed_file)
   end
 
 
   def test_app4
     deploy_and_wait(app4, true)
 
-    make_feed_file("1000_buckets_app4.xml", "music", 0, 999, 1)
+    feed_file = tempfile_name("1000_buckets_app4.xml")
+    make_feed_file(feed_file, "music", 0, 999, 1)
     vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
-    feedfile("1000_buckets_app4.xml", :route => "storage")
+    feedfile(feed_file, :route => "storage")
 
     vespagetAllDocs(true)
 
@@ -280,7 +289,7 @@ class HierarchDistr < VdsMultiModelTest
     # all data should still be available
     vespagetAllDocs(true)
 
-    File.delete("1000_buckets_app4.xml")
+    File.delete(feed_file)
   end
 
 
