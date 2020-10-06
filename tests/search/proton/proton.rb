@@ -2,6 +2,7 @@
 
 require 'indexed_search_test'
 require 'search/proton/mixed_feed_generator'
+require 'securerandom'
 
 class ProtonTest < IndexedSearchTest
   include MixedFeedGenerator
@@ -292,10 +293,10 @@ class ProtonTest < IndexedSearchTest
     deploy_app(SearchApp.new.sd("#{selfdir}/banana.sd"))
     start
     numfeed = 100000
-    f = File.new("#{dirs.tmpdir}/mixedfeed.xml", "w")
+    f = File.new("#{dirs.tmpdir}/#{SecureRandom.urlsafe_base64}_mixedfeed.xml", "w")
     numputs, numupdates, numremoves = generate_mixed_feed(f, 0, numfeed, 3, 5)
     f.close
-    output = feed(:file => dirs.tmpdir + "mixedfeed.xml", :timeout => 600)
+    output = feed(:file => f.path, :timeout => 600)
     wait_for_hitcount("sddocname:banana&nocache", 60000)
   end
 
@@ -323,10 +324,10 @@ class ProtonTest < IndexedSearchTest
     start
 
     num_docs = 300000
-    f = File.new(dirs.tmpdir+"mixedfeed.xml", "w")
+    f = File.new("#{dirs.tmpdir}/#{SecureRandom.urlsafe_base64}_mixedfeed.xml", "w")
     generate_mixed_feed(f, 0, num_docs, num_docs, num_docs)
     f.close
-    feed_and_wait_for_docs("banana", num_docs, :file => dirs.tmpdir+"mixedfeed.xml")
+    feed_and_wait_for_docs("banana", num_docs, :file => f.path)
     restart_search_node
     timeout = 120*5  # 120 seconds as sleep is 0.2s
     num_tries = 0
