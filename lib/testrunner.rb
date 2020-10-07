@@ -9,7 +9,9 @@ require 'search_test'
 require 'vds_test'
 require 'hosted_test'
 require 'test_node_pool'
+require 'backend_reporter'
 require 'concurrent'
+require 'securerandom'
 
 class TestRunner
 
@@ -24,6 +26,9 @@ class TestRunner
     @performance = options[:performance] ? true : false
     @keeprunning = options[:keeprunning] ? true : false
     @consoleoutput = options[:consoleoutput] ? true : false
+    @configservers = options[:configservers] ? options[:configservers] : []
+    @testrun_id = options[:testrunid] ? options[:testrunid] : SecureRandom.urlsafe_base64
+    @backend = BackendReporter.new(@testrun_id, @basedir, @log)
   end
 
   def initialize_run_dependent_fields
@@ -93,6 +98,11 @@ class TestRunner
                                                             :ignore_performance => true,
                                                             :valgrind => false})
 
+          if testclass.can_share_configservers? && @configservers.any?
+            testclass.configserverhostlist = @configservers
+            testclass.use_shared_configservers = true
+          end
+
           if !@nodelimit || testclass.num_hosts <= @nodelimit
             @tests[klass] = testclass unless @performance != testclass.performance?
           else
@@ -124,7 +134,8 @@ class TestRunner
 
   def run_tests
     thread_pool = Concurrent::FixedThreadPool.new(@node_pool.max_available > 0 ? @node_pool.max_available : 1)
-    test_results = Concurrent::Hash.new
+
+    @backend.initialize_testrun(@test_objects)
 
     @test_objects.each do |testcase, test_methods|
       # This call blocks until nodes available
@@ -145,8 +156,9 @@ class TestRunner
         begin
           test_methods.each do |test_method|
             @log.info "Running #{test_method} from #{testcase.class}"
-
-            test_results["#{testcase.class}::#{test_method}"] = testcase.run([test_method]).first
+            @backend.test_running(testcase, test_method)
+            test_result = testcase.run([test_method]).first
+            @backend.test_finished(testcase, test_result)
             @log.info "Finished running: #{test_method} from #{testcase.class}"
           end
         rescue Exception => e
@@ -161,27 +173,7 @@ class TestRunner
     thread_pool.shutdown
     thread_pool.wait_for_termination
 
-    report_status(test_results)
-  end
-
-  def report_status(test_results)
-    successful_tests = test_results.select { |name, result| result.passed? }
-    failed_tests = test_results.reject { |name, result| result.passed? }
-    @log.info "#################"
-    @log.info "Successful tests:"
-    successful_tests.each { |key, value| @log.info "  #{key}   #{value.to_s}" }
-    @log.info "#################"
-    @log.info "Failed tests:"
-    failed_tests.each { |key, value| @log.info "  #{key}   #{value.to_s}" }
-    @log.info "#################"
-    if not @testclasses_not_run.empty?
-      @log.info "#################"
-      @log.info "Tests not run:"
-      @testclasses_not_run.each { |klass| @log.info "  #{klass}" }
-      @log.info "#################"
-    end
-
-    failed_tests.empty?
+    @backend.finalize_testrun
   end
 
   def allocate_nodes(testcase)
@@ -203,25 +195,32 @@ if __FILE__ == $0
 
   options = {}
   options[:testfiles] = []
+  options[:configservers] = []
   OptionParser.new do |opts|
     opts.banner = "Usage: testrunner.rb [options]"
     opts.on("-b", "--basedir DIR", String, "Basedir for test results.") do |basedir|
       options[:basedir] = basedir
     end
-    opts.on("-c", "--consoleoutput", "Output test executions on console.") do |file|
-      options[:consoleoutput] = true
+    opts.on("-c", "--configserver SERVER", String, "Shared configserver for tests that support it.") do |server|
+      options[:configservers] << server
     end
     opts.on("-f", "--testfile FILE", String, "Ruby test file relative to tests/ path.") do |file|
       options[:testfiles] << file
     end
-    opts.on("-k", "--keeprunning", "Keep the node containers running. For inspection/debugging.") do |limit|
-      options[:keeprunning] = true
+    opts.on("-i", "--testid ID", "Testrun id. Automatically generated if not specified.") do |id|
+      options[:testrunid] = id
+    end
+    opts.on("-k", "--keeprunning", "Keep the node containers running. For inspection/debugging.") do |k|
+      options[:keeprunning] = k
     end
     opts.on("-n", "--nodelimit N", Integer, "Only run tests that require no more that N nodes.") do |limit|
       options[:nodelimit] = limit
     end
-    opts.on("-p", "--performance", "Run performance tests.") do |limit|
-      options[:performance] = true
+    opts.on("-o", "--consoleoutput", "Output test executions on console.") do |c|
+      options[:consoleoutput] = c
+    end
+    opts.on("-p", "--performance", "Run performance tests.") do |p|
+      options[:performance] = p
     end
     opts.on("-V", "--vespaversion VERSION", String, "Vespa version to use.") do |version|
       options[:vespaversion] = version
