@@ -123,14 +123,14 @@ if [[ -z $RESULTDIR ]]; then
 fi
 TESTRUNNER_OPTS="-n $NUMNODES"
 if [[ ${#CONFIGSERVERS[@]} > 0 ]]; then
-    for C in "${CONFIGSERVERS[@]}"; do
-        TESTRUNNER_OPTS="$TESTRUNNER_OPTS -c $C"
-    done
+  for C in "${CONFIGSERVERS[@]}"; do
+    TESTRUNNER_OPTS="$TESTRUNNER_OPTS -c $C"
+  done
 fi
 if [[ ${#TESTFILES[@]} > 0 ]]; then
-    for F in "${TESTFILES[@]}"; do
-        TESTRUNNER_OPTS="$TESTRUNNER_OPTS -f $F"
-    done
+  for F in "${TESTFILES[@]}"; do
+    TESTRUNNER_OPTS="$TESTRUNNER_OPTS -f $F"
+  done
 fi
 if $CONSOLEOUTPUT; then
   TESTRUNNER_OPTS="$TESTRUNNER_OPTS -c"
