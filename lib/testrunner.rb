@@ -11,6 +11,7 @@ require 'hosted_test'
 require 'test_node_pool'
 require 'backend_reporter'
 require 'concurrent'
+require 'securerandom'
 
 class TestRunner
 
@@ -25,7 +26,9 @@ class TestRunner
     @performance = options[:performance] ? true : false
     @keeprunning = options[:keeprunning] ? true : false
     @consoleoutput = options[:consoleoutput] ? true : false
-    @backend = BackendReporter.new(@log)
+    @configservers = options[:configservers] ? options[:configservers] : []
+    @testrun_id = options[:testrunid] ? options[:testrunid] : SecureRandom.urlsafe_base64
+    @backend = BackendReporter.new(@testrun_id, @basedir, @log)
   end
 
   def initialize_run_dependent_fields
@@ -95,6 +98,11 @@ class TestRunner
                                                             :ignore_performance => true,
                                                             :valgrind => false})
 
+          if testclass.can_share_configservers? && @configservers.any?
+            testclass.configserverhostlist = @configservers
+            testclass.use_shared_configservers = true
+          end
+
           if !@nodelimit || testclass.num_hosts <= @nodelimit
             @tests[klass] = testclass unless @performance != testclass.performance?
           else
@@ -150,7 +158,7 @@ class TestRunner
             @log.info "Running #{test_method} from #{testcase.class}"
             @backend.test_running(testcase, test_method)
             test_result = testcase.run([test_method]).first
-            @backend.test_finished(testcase, test_method, test_result)
+            @backend.test_finished(testcase, test_result)
             @log.info "Finished running: #{test_method} from #{testcase.class}"
           end
         rescue Exception => e
@@ -187,22 +195,29 @@ if __FILE__ == $0
 
   options = {}
   options[:testfiles] = []
+  options[:configservers] = []
   OptionParser.new do |opts|
     opts.banner = "Usage: testrunner.rb [options]"
     opts.on("-b", "--basedir DIR", String, "Basedir for test results.") do |basedir|
       options[:basedir] = basedir
     end
-    opts.on("-c", "--consoleoutput", "Output test executions on console.") do |c|
-      options[:consoleoutput] = c
+    opts.on("-c", "--configserver SERVER", String, "Shared configserver for tests that support it.") do |server|
+      options[:configservers] << server
     end
     opts.on("-f", "--testfile FILE", String, "Ruby test file relative to tests/ path.") do |file|
       options[:testfiles] << file
+    end
+    opts.on("-i", "--testid ID", "Testrun id. Automatically generated if not specified.") do |id|
+      options[:testrunid] = id
     end
     opts.on("-k", "--keeprunning", "Keep the node containers running. For inspection/debugging.") do |k|
       options[:keeprunning] = k
     end
     opts.on("-n", "--nodelimit N", Integer, "Only run tests that require no more that N nodes.") do |limit|
       options[:nodelimit] = limit
+    end
+    opts.on("-o", "--consoleoutput", "Output test executions on console.") do |c|
+      options[:consoleoutput] = c
     end
     opts.on("-p", "--performance", "Run performance tests.") do |p|
       options[:performance] = p

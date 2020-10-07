@@ -1,44 +1,44 @@
 
 require 'concurrent'
-require 'securerandom'
 
 begin
   require 'backend_client'
-  BACKEND_CLIENT_OVERLOAD = true
-rescue
-  BACKEND_CLIENT_OVERLOAD = false
+  BACKEND_CLIENT_OVERRIDE = true
+rescue LoadError
+  BACKEND_CLIENT_OVERRIDE = false
 end
 
 class BackendReporter < BackendClient
-  def initialize(log, testrun_id = nil)
-    @testrun_id = testrun_id ? testrun_id : SecureRandom.urlsafe_base64
-    super(log, "/tmp")
+  def initialize(testrun_id, basedir, log)
+    super(testrun_id, basedir, log)
+    @testrun_id = testrun_id
   end
 
   def initialize_testrun(test_objects)
-    super(@testrun_id, test_objects)
+    super(test_objects)
   end
 
   def test_running(test_case, method_name)
-    super(@testrun_id, test_case, method_name)
+    super(test_case, method_name)
   end
 
-  def test_finished(test_case, method_name, test_result)
-    super(@testrun_id, test_case, test_result)
+  def test_finished(test_case, test_result)
+    super(test_case, test_result)
   end
 
   def finalize_testrun
     true
   end
 
-end if BACKEND_CLIENT_OVERLOAD
+end if BACKEND_CLIENT_OVERRIDE
 
 class BackendReporter
-  def initialize(log, testrun_id = nil)
+  def initialize(testrun_id, basedir, log)
+    @testrun_id = testrun_id
+    @basedir = basedir
+    @log = log
     @test_results = Concurrent::Hash.new
     @test_names = Concurrent::Array.new
-    @log = log
-    @testrun_id = testrun_id ? testrun_id : SecureRandom.urlsafe_base64
   end
 
   def initialize_testrun(test_objects)
@@ -53,8 +53,8 @@ class BackendReporter
     nil
   end
 
-  def test_finished(test_case, method_name, test_result)
-    @test_results["#{test_case.class}::#{method_name}"] = test_result
+  def test_finished(test_case, test_result)
+    @test_results["#{test_case.class}::#{test_result.name}"] = test_result
   end
 
   def finalize_testrun
@@ -79,4 +79,4 @@ class BackendReporter
     failed_tests.empty?
   end
 
-end unless BACKEND_CLIENT_OVERLOAD
+end unless BACKEND_CLIENT_OVERRIDE
