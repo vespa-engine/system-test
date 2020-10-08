@@ -355,6 +355,7 @@ class ProtonTest < IndexedSearchTest
         # We can also get 'DocumentDB initializing' in this case
         if (proton_status_match != nil)
           replay_progress = proton_status_match[1].to_i
+          puts "replay_progress = #{replay_progress} prev_replay_progress = #{prev_replay_progress}"
           assert(replay_progress >= prev_replay_progress)
           prev_replay_progress = replay_progress
         end
