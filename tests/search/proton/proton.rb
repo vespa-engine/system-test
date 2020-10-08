@@ -382,7 +382,7 @@ class ProtonTest < IndexedSearchTest
     # If the system is sluggish we might be online on the first try, don't check replay progress then.
     # We might also be offline on the first try, and completely online on the second try, don't check replay progress then.
     puts "prev_replay_progress: #{prev_replay_progress}"
-    assert(prev_replay_progress > 50) if num_state_verifications > 2
+    assert(prev_replay_progress > 20) if num_state_verifications > 2
   end
 
   def restart_search_node
