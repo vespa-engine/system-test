@@ -347,7 +347,7 @@ class ProtonTest < IndexedSearchTest
         else
           puts "Wait for state indicating 'online' after query returning expected number of docs"
         end
-      elsif state.match(/online/) && state.match(/onlineState/) && !state.match(/\"onlineDocs\", \"#{num_docs}\"/)
+      elsif state.match(/online/) && state.match(/onlineState/)
         puts "Verify that that the system is offline"
         assert_match(/\"online\", \"false\"/, state)
         assert_match(/\"onlineState\", \"onlineSoon\"/, state)
