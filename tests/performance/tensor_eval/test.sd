@@ -14,6 +14,9 @@ search test {
     field sparse_vector type tensor(x{}) {
       indexing: attribute | summary
     }
+    field sparse_xy type tensor(x{},y{}) {
+      indexing: attribute | summary
+    }
     field dense_vector_5 type tensor(x[5]) {
       indexing: attribute | summary
     }
@@ -107,6 +110,16 @@ search test {
   rank-profile sparse_tensor_dot_product inherits dot_product_default {
     first-phase {
       expression: sum(query(q_sparse_vector_x) * attribute(sparse_vector))
+    }
+  }
+  rank-profile sparse_multiply_no_overlap {
+    first-phase {
+      expression: sum(attribute(sparse_vector)*query(q_sparse_vector_y))
+    }
+  }
+  rank-profile sparse_multiply_partial_overlap {
+    first-phase {
+      expression: sum(attribute(sparse_xy)*query(q_sparse_yz))
     }
   }
   rank-profile tensor_match_25x25 {

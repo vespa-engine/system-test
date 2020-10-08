@@ -54,12 +54,26 @@ std::ostream & gen_tensor(std::ostream & os, const V & values) {
     return os << "]";
 }
 
+std::ostream& gen_2d_tensor(std::ostream& os, const V& values) {
+    os << "\"cells\":[";
+    os << "{\"address\":{\"x\":\"0\", \"y\":\"0\"},\"value\":" << values[0] << ".0}";
+    for (size_t x = 0; x < values.size(); ++x) {
+        for (size_t y = 1; y < values.size(); ++y) {
+            os << ",{\"address\":{\"x\":\"" << x << "\", \"y\":\"" << y << "\"},\"value\":" << values[y] << ".0}";
+        }
+    }
+    return os << "]";
+}
+
 std::ostream & put(std::ostream & os, uint32_t doc, const V & values) {
     os << "{ \"put\":\"id:test:test::" << doc << "\",\"fields\": {\n";
     os << "\"wset\":{"; gen_wset(os, values) << "},\n";
     os << "\"array\":["; gen_array(os, values) << "],\n";
     os << "\"wset_entries\":" << values.size() << ",\n";
     os << "\"sparse_vector\":{"; gen_tensor(os, values) << "},\n";
+    if (values.size() <= 50) {
+        os << "\"sparse_xy\":{"; gen_2d_tensor(os, values) << "},\n";
+    }
     os << "\"dense_vector_" << values.size() << "\":{"; gen_tensor(os, values) << "},\n";
     os << "\"dense_float_vector_" << values.size() << "\":{"; gen_tensor(os, values) << "}\n";
     os << "}}";
