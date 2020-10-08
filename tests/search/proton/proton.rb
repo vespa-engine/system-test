@@ -347,10 +347,17 @@ class ProtonTest < IndexedSearchTest
         else
           puts "Wait for state indicating 'online' after query returning expected number of docs"
         end
-      elsif state.match(/online/) && state.match(/onlineState/) && !state.match(/\"onlineDocs\", \"#{num_docs}\"/)
-        puts "Verify that that the system is offline"
-        assert_match(/\"online\", \"false\"/, state)
-        assert_match(/\"onlineState\", \"onlineSoon\"/, state)
+      elsif state.match(/online/) && state.match(/onlineState/)
+        puts "Verify that that the system is offline or online"
+        if state.match(/\"online\", \"false\"/)
+          assert_match(/\"online\", \"false\"/, state)
+          assert_match(/\"onlineState\", \"onlineSoon\"/, state)
+          assert_match(/\"onlineDocs\", \"(\d*)\"/, state)
+        else
+          assert_match(/\"online\", \"true\"/, state)
+          assert_match(/\"onlineState\", \"online\"/, state)
+          assert_match(/\"onlineDocs\", \"#{num_docs}\"/, state)
+        end
         proton_status_match = proton_status.match(/DocumentDB replay transaction log on startup \((\d*)% done\)/)
         # We can also get 'DocumentDB initializing' in this case
         if (proton_status_match != nil)
