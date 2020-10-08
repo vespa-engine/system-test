@@ -15,10 +15,13 @@ class TensorEvalPerfTest < PerformanceTest
   WSET_ENTRIES = "wset_entries"
   DOT_PRODUCT = "dot_product"
   MATCH = "match"
+  SPARSE_MULTIPLY = "sparse_multiply"
   MATRIX_PRODUCT = "matrix_product"
   FEATURE_DOT_PRODUCT = "feature_dot_product"
   FEATURE_DOT_PRODUCT_ARRAY = "feature_dot_product_array"
   SPARSE_TENSOR_DOT_PRODUCT = "sparse_tensor_dot_product"
+  SPARSE_MULTIPLY_NO_OVERLAP = "sparse_multiply_no_overlap"
+  SPARSE_MULTIPLY_PARTIAL_OVERLAP = "sparse_multiply_partial_overlap"
   TENSOR_MATCH_25X25 = "tensor_match_25x25"
   TENSOR_MATCH_50X50 = "tensor_match_50x50"
   TENSOR_MATCH_100X100 = "tensor_match_100x100"
@@ -101,7 +104,7 @@ class TensorEvalPerfTest < PerformanceTest
     {
       :x => WSET_ENTRIES,
       :y => "latency",
-      :title => "Historic latency for rank profile '#{rank_profile}' with various number of entries in query and document weighted sets",
+      :title => "Historic latency for rank profile '#{rank_profile}' with various number of entries (per dimension) in query and document",
       :filter => {RANK_PROFILE => rank_profile},
       :historic => true
     }
@@ -111,7 +114,7 @@ class TensorEvalPerfTest < PerformanceTest
     {
       :x => WSET_ENTRIES,
       :y => "latency",
-      :title => "Historic latency for rank profile '#{rank_profile}' with #{wset_entries} entries in query and document",
+      :title => "Historic latency for rank profile '#{rank_profile}' with #{wset_entries} entries (per dimension) in query and document",
       :filter => {RANK_PROFILE => rank_profile, WSET_ENTRIES => wset_entries},
       :historic => true,
       :y_min => y_min,

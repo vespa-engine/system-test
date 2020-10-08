@@ -31,6 +31,7 @@ public class TensorInQueryBuilderSearcher extends Searcher {
 
     private static TensorType tt_sparse_vector_x = TensorType.fromSpec("tensor(x{})");
     private static TensorType tt_sparse_vector_y = TensorType.fromSpec("tensor(y{})");
+    private static TensorType tt_sparse_yz = TensorType.fromSpec("tensor(y{},z{})");
 
     @Override
     public Result search(Query query, Execution execution) {
@@ -52,6 +53,7 @@ public class TensorInQueryBuilderSearcher extends Searcher {
 
         considerInsertTensor(query, "q_sparse_vector_x", "x", tt_sparse_vector_x);
         considerInsertTensor(query, "q_sparse_vector_y", "y", tt_sparse_vector_y);
+        considerInsert2dTensor(query, "q_sparse_yz", "y", "z", tt_sparse_yz);
         return execution.search(query);
     }
 
@@ -69,6 +71,24 @@ public class TensorInQueryBuilderSearcher extends Searcher {
 	    }
             query.getRanking().getFeatures().put("query(" + tensorName + ")",
 						 tensorBuilder.build());
+	}
+    }
+
+    private static void considerInsert2dTensor(Query query, String tensorName, String dim1, String dim2, TensorType tensorType) {
+        String tensorString = query.properties().getString(tensorName);
+        if (tensorString != null) {
+            String[] tokens = tensorString.split(",");
+            var builder = Tensor.Builder.of(tensorType);
+            int dimSize = tokens.length;
+            for (int i = 0; i < dimSize; ++i) {
+                for (int j = 0; j < dimSize; ++j) {
+                    builder.cell().
+                        label(dim1, Integer.toString(i)).
+                        label(dim2, Integer.toString(j)).
+                        value(Double.parseDouble(tokens[j]));
+                }
+	    }
+            query.getRanking().getFeatures().put("query(" + tensorName + ")", builder.build());
 	}
     }
 

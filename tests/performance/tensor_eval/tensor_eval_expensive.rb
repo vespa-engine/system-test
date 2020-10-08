@@ -25,6 +25,14 @@ class TensorEvalExpensivePerfTest < TensorEvalPerfTest
       run_fbench_helper(MATCH, TENSOR_MATCH_100X100, wset_entries, "queries.tensor.sparse.y.#{wset_entries}.txt")
     end
 
+    [10,50,100].each do |entries|
+      run_fbench_helper(SPARSE_MULTIPLY, SPARSE_MULTIPLY_NO_OVERLAP, entries, "queries.tensor.sparse.y.#{entries}.txt")
+    end
+
+    [5,10,50].each do |entries|
+      run_fbench_helper(SPARSE_MULTIPLY, SPARSE_MULTIPLY_PARTIAL_OVERLAP, entries, "queries.tensor.sparse.yz.#{entries}.txt")
+    end
+
     [10,25,50,100].each do |wset_entries|
       rank_profile = "tensor_matrix_product_#{wset_entries}x#{wset_entries}"
       query_file = "queries.tensor.dense.#{wset_entries}.txt"
@@ -37,6 +45,8 @@ class TensorEvalExpensivePerfTest < TensorEvalPerfTest
       get_latency_graphs_for_rank_profile(TENSOR_MATCH_25X25),
       get_latency_graphs_for_rank_profile(TENSOR_MATCH_50X50),
       get_latency_graphs_for_rank_profile(TENSOR_MATCH_100X100),
+      get_latency_graphs_for_rank_profile(SPARSE_MULTIPLY_NO_OVERLAP),
+      get_latency_graphs_for_rank_profile(SPARSE_MULTIPLY_PARTIAL_OVERLAP),
       get_latency_graphs_for_eval_type(MATRIX_PRODUCT),
       get_latency_graph_for_rank_profile(TENSOR_MATCH_50X50,            50, 380, 475),
       get_latency_graph_for_rank_profile("tensor_matrix_product_25x25", 25, 1.45, 1.87)
