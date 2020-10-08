@@ -162,7 +162,7 @@ fi
 ENV_OPTS=""
 if [[ ${#ENVS[@]} > 0 ]]; then
   for E in "${ENVS[@]}"; do
-    BINDMOUNT_OPTS="$ENV_OPTS --env $E"
+    ENV_OPTS="$ENV_OPTS --env $E"
   done
 fi
 
