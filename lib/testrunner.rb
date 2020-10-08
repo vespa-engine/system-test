@@ -28,6 +28,7 @@ class TestRunner
     @consoleoutput = options[:consoleoutput] ? true : false
     @configservers = options[:configservers] ? options[:configservers] : []
     @testrun_id = options[:testrunid] ? options[:testrunid] : SecureRandom.urlsafe_base64
+    @wait_for_nodes = options[:nodewait] ? options[:nodewait] : 60
     @backend = BackendReporter.new(@testrun_id, @basedir, @log)
   end
 
@@ -45,9 +46,9 @@ class TestRunner
     compute_nodes_required
     scan_for_test_methods
 
-    wait_until = Time.now.to_i + 60
+    wait_until = Time.now.to_i + @wait_for_nodes
     while Time.now.to_i < wait_until && @node_pool.max_available < @nodes_required
-      sleep 5
+      sleep 10
       @log.info "Waiting for at least #{@nodes_required} to become available. Currently #{@node_pool.max_available}."
     end
 
@@ -227,6 +228,9 @@ if __FILE__ == $0
     end
     opts.on("-v", "--verbose", "Run verbosely.") do |v|
       options[:verbose] = v
+    end
+    opts.on("-w", "--nodewait SECONDS", "Wait for enough nodes for this many seconds.") do |seconds|
+      options[:nodewait] = seconds
     end
   end.parse!
 
