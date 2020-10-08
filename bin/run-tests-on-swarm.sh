@@ -15,6 +15,7 @@ usage() {
   echo
   echo "Optional options:"
   echo "-c, --configserver   Shared configserver to use for tests supporting it. Can be repeated for multiple servers."
+  echo "-e, --env            Environment variable to pass to Docker in the form VAR=value. Can be repeated."
   echo "-f, --file           Testfile to execute. Relative to tests/ directory. Can be repeated."
   echo "                     If not specified, all test files in tests/ will be discovered."
   echo "-k, --keeprunning    Keep the test containers running. Only use this option when executing"
@@ -44,6 +45,7 @@ POSITIONAL=()
 CONFIGSERVERS=()
 CONSOLEOUTPUT=false
 DOCKERIMAGE=""
+ENVS=()
 KEEPRUNNING=false
 MOUNTS=()
 NUMNODES=""
@@ -62,6 +64,10 @@ case $key in
     ;;
     -c|--configserver)
     CONFIGSERVERS+=("$2")
+    shift; shift
+    ;;
+    -e|--env)
+    ENVS+=("$2")
     shift; shift
     ;;
     -f|--file)
@@ -153,6 +159,12 @@ if [[ ${#MOUNTS[@]} > 0 ]]; then
     BINDMOUNT_OPTS="$BINDMOUNT_OPTS --mount type=bind,src=${M%:*},dst=${M#*:}"
   done
 fi
+ENV_OPTS=""
+if [[ ${#ENVS[@]} > 0 ]]; then
+  for E in "${ENVS[@]}"; do
+    BINDMOUNT_OPTS="$ENV_OPTS --env $E"
+  done
+fi
 
 readonly BASEDIR=/tmp/testresults
 readonly NETWORK="$USER-vespa"
@@ -188,6 +200,7 @@ log_debug "--  PERFORMANCE:     $PERFORMANCE"
 log_debug "--  RESULTDIR:       $RESULTDIR"
 log_debug "--  TESTRUNNER_OPTS: $TESTRUNNER_OPTS"
 log_debug "--  BINDMOUNT_OPTS:  $BINDMOUNT_OPTS"
+log_debug "--  ENV_OPTS:        $ENV_OPTS"
 log_debug "--  VESPAVERSION:    $VESPAVERSION"
 if [[ ${#POSITIONAL[@]} > 0 ]]; then
   log_debug "--  NOT PARSED:      ${POSITIONAL[*]}"
@@ -234,6 +247,7 @@ else
 fi
 
 docker run --privileged --rm \
+           $ENV_OPTS \
            $BINDMOUNT_OPTS \
            -v $RESULTDIR:$BASEDIR \
            --name $TESTRUNNER \
