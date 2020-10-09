@@ -44,7 +44,6 @@ class TestRunner
     require_testcases
     instantiate_testcase_objects
     compute_nodes_required
-    scan_for_test_methods
 
     wait_until = Time.now.to_i + @wait_for_nodes
     while Time.now.to_i < wait_until && @node_pool.max_available < @nodes_required
@@ -81,55 +80,62 @@ class TestRunner
   end
 
   def instantiate_testcase_objects
-    testcase_objects_seen = {}
     superclasses = TestCase.decendants
 
     ObjectSpace.each_object(Class) do |klass|
       superclasses.each do |superclass|
-        if (!testcase_objects_seen.has_key?(klass) && !@tests.has_key?(klass)) && klass < superclass
+        if !@tests.has_key?(klass) && klass < superclass
           testfile = klass.instance_method(klass.instance_methods(false).first).source_location.first
-          testclass = klass.new(@consoleoutput, testfile, { :platform_label => nil,
-                                                            :buildversion => nil,
-                                                            :buildname => nil,
-                                                            :vespa_version => @vespaversion,
-                                                            :basedir => @basedir,
-                                                            :nostop => @keeprunning,
-                                                            :nostop_if_failure => @keeprunning,
-                                                            :configserverhostlist => [],
-                                                            :ignore_performance => true,
-                                                            :valgrind => false})
 
-          if testclass.can_share_configservers? && @configservers.any?
-            testclass.configserverhostlist = @configservers
-            testclass.use_shared_configservers = true
-          end
+          @tests[klass] = []
 
-          if !@nodelimit || testclass.num_hosts <= @nodelimit
-            @tests[klass] = testclass unless @performance != testclass.performance?
-          else
-            @log.warn "Skipping #{klass.to_s} due to node limit of #{@nodelimit}. Test requires #{testclass.num_hosts}."
-            @testclasses_not_run.add(klass)
+          scan_for_test_methods(klass, testfile).each do |method|
+            testclass = klass.new(@consoleoutput, testfile, { :platform_label => nil,
+                                                              :buildversion => nil,
+                                                              :buildname => nil,
+                                                              :vespa_version => @vespaversion,
+                                                              :basedir => @basedir,
+                                                              :nostop => @keeprunning,
+                                                              :nostop_if_failure => @keeprunning,
+                                                              :configserverhostlist => [],
+                                                              :ignore_performance => true,
+                                                              :valgrind => false})
+
+            # No need to do more as performance is a test class property
+            break if @performance != testclass.performance?
+
+            # No need to do more if we have a node limit and test class requires above limit
+            if @nodelimit && testclass.num_hosts > @nodelimit
+              @log.warn "Skipping #{klass.to_s} due to node limit of #{@nodelimit}. Test requires #{testclass.num_hosts}."
+              @testclasses_not_run.add(klass)
+            end
+
+            # Use shared config servers if we have them configured and test case can use them
+            if testclass.can_share_configservers? && @configservers.any?
+              testclass.configserverhostlist = @configservers
+              testclass.use_shared_configservers = true
+            end
+
+            @tests[klass] << testclass
+            @test_objects[testclass] = method
           end
-          testcase_objects_seen[klass] = true
         end
       end
     end
   end
 
-  def scan_for_test_methods
-    @tests.each do |klass, object|
-      methods = klass.public_instance_methods(true).reject { |m| m !~ /^test_/ }
-      if !methods.empty?
-        @test_objects[object] = methods
-        @log.debug "Test klass=#{klass} file=#{object.testcase_file} methods=#{methods}"
-      end
-    end
+  def scan_for_test_methods(klass, testcase_file)
+    methods = klass.public_instance_methods(true).reject { |m| m !~ /^test_/ }
+    @log.debug "Test klass=#{klass} file=#{testcase_file} methods=#{methods}"
+    methods
   end
 
   def compute_nodes_required
     @nodes_required = 0
-    @tests.each do |key,value|
-      @nodes_required = value.num_hosts if value.num_hosts > @nodes_required
+    @tests.each do |key,objects|
+      unless objects.empty?
+        @nodes_required = objects.first.num_hosts if objects.first.num_hosts > @nodes_required
+      end
     end
   end
 
@@ -138,7 +144,7 @@ class TestRunner
 
     @backend.initialize_testrun(@test_objects)
 
-    @test_objects.each do |testcase, test_methods|
+    @test_objects.each do |testcase, test_method|
       # This call blocks until nodes available
       nodes = allocate_nodes(testcase)
 
@@ -151,17 +157,13 @@ class TestRunner
       @log.info "#{testcase.class} allocated nodes #{nodes.map {|n| n.hostname}.join(', ')}."
 
       thread_pool.post do
-        testcase.hostlist = nodes.map {|n| n.hostname}
-        @log.info "#{testcase.class} running on hosts #{testcase.hostlist}"
-
         begin
-          test_methods.each do |test_method|
-            @log.info "Running #{test_method} from #{testcase.class}"
-            @backend.test_running(testcase, test_method)
-            test_result = testcase.run([test_method]).first
-            @backend.test_finished(testcase, test_result)
-            @log.info "Finished running: #{test_method} from #{testcase.class}"
-          end
+          testcase.hostlist = nodes.map {|n| n.hostname}
+          @log.info "Running #{test_method} from #{testcase.class} on #{testcase.hostlist}"
+          @backend.test_running(testcase, test_method)
+          test_result = testcase.run([test_method]).first
+          @backend.test_finished(testcase, test_result)
+          @log.info "Finished running: #{test_method} from #{testcase.class}"
         rescue Exception => e
           @log.error "Exception #{e.message} "
           raise

@@ -42,10 +42,8 @@ class BackendReporter
   end
 
   def initialize_testrun(test_objects)
-    test_objects.each do |object, methods|
-      methods.each do |method|
-        @test_names << "#{object.class}::#{method.to_s}"
-      end
+    test_objects.each do |object, method|
+      @test_names << "#{object.class}::#{method.to_s}"
     end
   end
 
@@ -54,7 +52,8 @@ class BackendReporter
   end
 
   def test_finished(test_case, test_result)
-    @test_results["#{test_case.class}::#{test_result.name}"] = test_result
+    # The testresult.name chops of test_ and we do not have the original method name where this is called
+    @test_results["#{test_case.class}::test_#{test_result.name}"] = test_result
   end
 
   def finalize_testrun
