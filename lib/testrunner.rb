@@ -229,7 +229,7 @@ if __FILE__ == $0
     opts.on("-v", "--verbose", "Run verbosely.") do |v|
       options[:verbose] = v
     end
-    opts.on("-w", "--nodewait SECONDS", "Wait for enough nodes for this many seconds.") do |seconds|
+    opts.on("-w", "--nodewait SECONDS", Integer, "Wait for enough nodes for this many seconds.") do |seconds|
       options[:nodewait] = seconds
     end
   end.parse!
