@@ -379,12 +379,18 @@ class PollQueryStats
     @normalized_node_hit_count_vector.push(node_hit_count.to_i)
   end
 
-  def fixup_node_hit_count(node_hit_count, is_poll_thread, growing, starttime)
+  def fixup_node_hit_count(node_hit_count, is_poll_thread, growing, fromstarttime)
+    consider_fixup = (is_poll_thread && growing && !@normalized_node_hit_count_vector_initial.nil?)
     # Work around glitch where new dispatch node is used, causing 0 hits
     # temporarily from any node.
-    if is_poll_thread && node_hit_count == 0 && growing && !@normalized_node_hit_count_vector_initial.nil? && starttime.nil?
+    if consider_fixup && fromstarttime.nil? && node_hit_count == 0
       # Use initial value for hits from node instead of glitched value
       @normalized_node_hit_count_vector_initial[@node_hit_count_vector.size]
+    elsif consider_fixup && (fromstarttime.nil? || fromstarttime < 3.0) && @normalized_node_hit_count_vector_initial[@node_hit_count_vector.size] == 0 && node_hit_count > 0.6 * @hit_count
+      # Search path might be ignored when searching only on new node due to dispatch using old config.
+      # Instead, the original nodes are used. Assume this happens if number of hits is greater than
+      # 60 percent of hits from all nodes.
+      0
     else
       node_hit_count
     end
@@ -709,7 +715,7 @@ class ResizePollState
           poll_query = @poll_queries[poll_queries_index]
           if @rapp.pollnode(before, nodeindex)
             nhc = node_hitcount(poll_query, nodeindex)
-            nhc = poll_query_stats[poll_queries_index].fixup_node_hit_count(nhc, is_poll_thread, @rapp.growing, starttime)
+            nhc = poll_query_stats[poll_queries_index].fixup_node_hit_count(nhc, is_poll_thread, @rapp.growing, fromstarttime)
             unsettled = true unless nhc == 0 || @rapp.pollnode(false, nodeindex)
             unsettled = true unless nhc != 0 || @rapp.pollnode(true, nodeindex)
           else
