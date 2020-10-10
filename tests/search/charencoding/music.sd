@@ -11,21 +11,25 @@ search music {
     field title type string {
       indexing: summary | attribute | index
       normalizing: none
+      stemming: none
     }
 
     field artist type string {
       indexing: summary | attribute | index
       normalizing: none
+      stemming: none
     }
 
     field keys type string {      
       indexing: index
       normalizing: none
+      stemming: none
     }
 
     field song type string {
       indexing: summary | attribute | index
       normalizing: none
+      stemming: none
     }
 
     field bgndata type string {
