@@ -111,7 +111,7 @@ class AutoRunner
       @cmd_args.delete(:nopreclean) 
       @cmd_args[:forked] = uri
     }
-    opts.on("--platform-label LABEL", String, "Platform label, example: RHEL6-64") { |v| @cmd_args[:platform_label] = v }
+    opts.on("--platform-label LABEL", String, "Platform label, example: RHEL7-64") { |v| @cmd_args[:platform_label] = v }
     opts.on("--build-version VERSION", String, "Build version, example: HEAD") { |v| @cmd_args[:buildversion] = v }
     opts.on("--build-name LABEL", String, "Build name, example: 6.10.51") { |v| @cmd_args[:buildname] = v }
     opts.on("--base-dir DIR", String, "Base directory") { |v| @cmd_args[:basedir] = v }
@@ -176,7 +176,6 @@ class AutoRunner
 
     instantiate_testcases.each do |testcase, test_methods|
       # if testmethods are specified on the cmdline, remove all other testmethods
-      valgrind_value = testcase.valgrind
       if not @arg_testmethods.empty?
         test_methods.delete_if { |method_name| not @arg_testmethods.include?(method_name.to_s) }
       end
@@ -186,7 +185,6 @@ class AutoRunner
           puts "Testmethods found in #{testcase.class.name}:"
           puts test_methods.sort.join("\n")
         else
-          testcase.default_valgrind = valgrind_value
           arres += testcase.run(test_methods)
         end
       end

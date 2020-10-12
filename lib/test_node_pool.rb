@@ -8,16 +8,9 @@ require 'test_base'
 class TestNodePool
   include DRb::DRbUndumped
 
-  class TestNode
-    attr_reader :hostname
-    def initialize(hostname)
-      @hostname = hostname
-    end
-  end
-
   def initialize(logger)
     @log = logger
-    @hosts = []
+    @nodes = []
     @lock = Mutex.new
     @max_available_nodes = 0
 
@@ -48,8 +41,8 @@ class TestNodePool
 
   def register_node_server(hostname, port)
     @lock.synchronize do
-      @hosts << "#{hostname}" unless @hosts.include?("#{hostname}")
-      @max_available_nodes = @hosts.size if @hosts.size > @max_available_nodes
+      @nodes << "#{hostname}" unless @nodes.include?("#{hostname}")
+      @max_available_nodes = @nodes.size if @nodes.size > @max_available_nodes
       @log.info "Registered node server on: #{hostname}:#{port}"
     end
   end
@@ -60,42 +53,59 @@ class TestNodePool
     end
   end
 
-  def allocate(num)
-    @lock.synchronize do
-      nodes = []
-      if num <= @hosts.size
-        while nodes.size < num && @hosts.size > 0
-          # Should test the node connection here
-          nodes << @hosts.shift
-        end
+  def allocate(num, timeout_sec = 0)
+    if num > max_available
+      raise "Requested #{num} nodes, but max number of available nodes is #{max_available}."
+    end
+
+    endtime = Time.now.to_i + timeout_sec
+    while timeout_sec <= 0 || Time.now.to_i < endtime
+      allocated = allocate_required_or_none(num)
+
+      if allocated.size == num
+        @log.debug("Allocated #{num} nodes.")
+        return allocated
       end
 
-      if nodes.size == num
-        nodes.map { |n| TestNode.new(n) }
-      else
-        [] 
-      end
+      sleep(3)
     end
+
+    raise "Requested #{num} nodes, but could not allocate within #{timeout_sec} seconds."
   end
 
   def free(nodes)
     nodes.each do |node|
       begin
-        TCPSocket.new("#{node.hostname}", TestBase::DRUBY_REMOTE_PORT).close
+        TCPSocket.new(node, TestBase::DRUBY_REMOTE_PORT).close
       rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, SocketError
-        @log.warn "Unable to free node at #{node.hostname}:#{TestBase::DRUBY_REMOTE_PORT} due to connection failure. Node will be dangling and not used in further tests."
+        @log.warn "Unable to free node at #{node}:#{TestBase::DRUBY_REMOTE_PORT} due to connection failure. Node will be dangling and not used in further tests."
         return
       end
 
       begin
-        endpoint = DrbEndpoint.new("#{node.hostname}:#{TestBase::DRUBY_REMOTE_PORT}")
+        endpoint = DrbEndpoint.new("#{node}:#{TestBase::DRUBY_REMOTE_PORT}")
         node_server = endpoint.create_client(with_object: nil)
-        @log.debug "Freeing node server. Calling shutdown on #{node.hostname}:#{TestBase::DRUBY_REMOTE_PORT}"
+        @log.debug "Freeing node server. Calling shutdown on #{node}:#{TestBase::DRUBY_REMOTE_PORT}"
         node_server.shutdown
       rescue DRb::DRbConnError => e
         # The node server will shut down and lead to a connection error
       end
     end
   end
+
+  private
+
+  def allocate_required_or_none(num)
+    @lock.synchronize do
+      allocated = @nodes.shift(num)
+      if allocated.size == num
+        allocated
+      else
+        @nodes.concat(allocated)
+        []
+      end
+    end
+  end
+
 end
 

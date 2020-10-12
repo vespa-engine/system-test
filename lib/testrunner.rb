@@ -15,27 +15,32 @@ require 'securerandom'
 
 class TestRunner
 
-  def initialize(logger, **options)
+  def initialize(logger, basedir, node_allocator, **options)
     @log = logger
-    @testmodule_dir = "#{__dir__}/../tests"
-    @node_pool = TestNodePool.new(logger)
-    @relative_testfiles = options[:testfiles]
-    @nodelimit = options[:nodelimit]
-    @basedir = options[:basedir]
-    @vespaversion = options[:vespaversion] ? options[:vespaversion] : "7-SNAPSHOT"
-    @performance = options[:performance] ? true : false
-    @keeprunning = options[:keeprunning] ? true : false
-    @consoleoutput = options[:consoleoutput] ? true : false
+    @basedir = basedir
+    @node_allocator = node_allocator
+
+    @buildname = options[:buildname]
+    @buildversion = options[:buildversion]
     @configservers = options[:configservers] ? options[:configservers] : []
+    @consoleoutput = options[:consoleoutput] ? true : false
+    @ignore_performance = options[:ignore_performance] ? options[:ignore_performance] : true
+    @keeprunning = options[:keeprunning] ? true : false
+    @nodelimit = options[:nodelimit]
+    @performance = options[:performance] ? true : false
+    @platform_label = options[:platform_label]
+    @relative_testfiles = options[:testfiles]
+    @testmodule_dirs = options[:testmoduledirs] ? options[:testmoduledirs] : ["#{__dir__}/../tests"]
     @testrun_id = options[:testrunid] ? options[:testrunid] : SecureRandom.urlsafe_base64
+    @vespaversion = options[:vespaversion] ? options[:vespaversion] : "7-SNAPSHOT"
     @wait_for_nodes = options[:nodewait] ? options[:nodewait] : 60
+
     @backend = BackendReporter.new(@testrun_id, @basedir, @log)
   end
 
   def initialize_run_dependent_fields
     @tests = {}
     @test_objects = {}
-    @testclasses_not_run = Set.new
     @nodes_required = 0
   end
 
@@ -46,16 +51,16 @@ class TestRunner
     compute_nodes_required
 
     wait_until = Time.now.to_i + @wait_for_nodes
-    while Time.now.to_i < wait_until && @node_pool.max_available < @nodes_required
+    while Time.now.to_i < wait_until && @node_allocator.max_available < @nodes_required
       sleep 10
-      @log.info "Waiting for at least #{@nodes_required} to become available. Currently #{@node_pool.max_available}."
+      @log.info "Waiting for at least #{@nodes_required} to become available. Currently #{@node_allocator.max_available}."
     end
 
-    if @node_pool.max_available >= @nodes_required
+    if @node_allocator.max_available >= @nodes_required
       @log.info "Running #{@test_objects.size} test cases."
       run_tests
     else
-      @log.error "Tests require minimum #{@nodes_required}, but found only #{@node_pool.max_available}. Exiting."
+      @log.error "Tests require minimum #{@nodes_required}, but found only #{@node_allocator.max_available}. Exiting."
       false
     end
   end
@@ -63,10 +68,18 @@ class TestRunner
   private
 
   def require_testcases
+    testfiles = []
     if not @relative_testfiles.empty?
-      testfiles = @relative_testfiles.map{ |relpath| "#{@testmodule_dir}/#{relpath}" }
+      @testmodule_dirs.each do |dir|
+        @relative_testfiles.each do |file|
+          testfile = "#{dir}/#{file}"
+          testfiles << testfile if File.exist?(testfile)
+        end
+      end
     else
-      testfiles = Dir.glob("#{@testmodule_dir}/**/*.rb")
+      @testmodule_dirs.each do |dir|
+        testfiles.concat(Dir.glob("#{dir}/**/*.rb"))
+      end
     end
 
     testfiles.each do |testfile|
@@ -90,16 +103,16 @@ class TestRunner
           @tests[klass] = []
 
           scan_for_test_methods(klass, testfile).each do |method|
-            testclass = klass.new(@consoleoutput, testfile, { :platform_label => nil,
-                                                              :buildversion => nil,
-                                                              :buildname => nil,
+            testclass = klass.new(@consoleoutput, testfile, { :platform_label => @platform_label,
+                                                              :buildversion => @buildversion,
+                                                              :buildname => @buildname,
                                                               :vespa_version => @vespaversion,
                                                               :basedir => @basedir,
                                                               :nostop => @keeprunning,
                                                               :nostop_if_failure => @keeprunning,
                                                               :configserverhostlist => [],
-                                                              :ignore_performance => true,
-                                                              :valgrind => false})
+                                                              :ignore_performance => @ignore_performance,
+                                                              :valgrind => @backend.use_valgrind})
 
             # No need to do more as performance is a test class property
             break if @performance != testclass.performance?
@@ -107,7 +120,7 @@ class TestRunner
             # No need to do more if we have a node limit and test class requires above limit
             if @nodelimit && testclass.num_hosts > @nodelimit
               @log.warn "Skipping #{klass.to_s} due to node limit of #{@nodelimit}. Test requires #{testclass.num_hosts}."
-              @testclasses_not_run.add(klass)
+              break
             end
 
             # Use shared config servers if we have them configured and test case can use them
@@ -140,25 +153,28 @@ class TestRunner
   end
 
   def run_tests
-    thread_pool = Concurrent::FixedThreadPool.new(@node_pool.max_available > 0 ? @node_pool.max_available : 1)
+    thread_pool = Concurrent::FixedThreadPool.new(@node_allocator.max_available > 0 ? @node_allocator.max_available : 1)
 
     @backend.initialize_testrun(@test_objects)
 
-    @test_objects.each do |testcase, test_method|
-      # This call blocks until nodes available
-      nodes = allocate_nodes(testcase)
+    @backend.sort_testcases(@test_objects).each do |testcase, test_method|
 
-      if nodes.empty?
-        @log.warn "Not enough nodes available for #{testcase.class} (required #{testcase.num_hosts}"
-        @testclasses_not_run.add(testcase.class)
+      @log.info "#{testcase.class}::#{test_method.to_s} requesting nodes"
+
+      begin
+        start_allocate = Time.now.to_i
+        nodes = @node_allocator.allocate(testcase.num_hosts, 3600)
+        waited_for = Time.now.to_i - start_allocate
+      rescue StandardError => e
+        @log.error("Not enough nodes were available, could not run #{testcase.class} (required #{testcase.num_hosts}). Exception received #{e.message}")
         next
       end
 
-      @log.info "#{testcase.class} allocated nodes #{nodes.map {|n| n.hostname}.join(', ')}."
+      @log.info "#{testcase.class}::#{test_method.to_s} allocated nodes #{nodes.join(', ')} after #{waited_for} seconds."
 
       thread_pool.post do
         begin
-          testcase.hostlist = nodes.map {|n| n.hostname}
+          testcase.hostlist = nodes
           @log.info "Running #{test_method} from #{testcase.class} on #{testcase.hostlist}"
           @backend.test_running(testcase, test_method)
           test_result = testcase.run([test_method]).first
@@ -168,7 +184,7 @@ class TestRunner
           @log.error "Exception #{e.message} "
           raise
         ensure
-          @node_pool.free(nodes) unless @keeprunning
+          @node_allocator.free(nodes) unless @keeprunning
         end
       end
     end
@@ -179,18 +195,6 @@ class TestRunner
     @backend.finalize_testrun
   end
 
-  def allocate_nodes(testcase)
-    @log.info "#{testcase.class} requesting nodes"
-    wait_until = Time.now.to_i + 60*60
-    nodes = @node_pool.allocate(testcase.num_hosts)
-    while nodes.empty? and (@node_pool.max_available >= testcase.num_hosts)
-      sleep 3
-      nodes = @node_pool.allocate(testcase.num_hosts)
-      # No new nodes/tests within one hour. Something is wrong.
-      break if Time.now.to_i > wait_until
-    end
-    nodes
-  end
 end
 
 if __FILE__ == $0
@@ -243,8 +247,8 @@ if __FILE__ == $0
     "[#{datetime}] #{severity} #{msg}\n"
   end
 
-  testrunner = TestRunner.new(logger, options)
-  if ! testrunner.run
+  testrunner = TestRunner.new(logger, options[:basedir], TestNodePool.new(logger), options)
+  unless testrunner.run
     logger.error "Some tests failed."
     exit(1)
   end
