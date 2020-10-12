@@ -224,6 +224,8 @@ log_debug ""
 
 # Remove service and network
 docker_cleanup() {
+  docker rm -f $TESTRUNNER &> /dev/null || true
+
   if docker service ps $SERVICE &> /dev/null; then
     if ! docker service rm $SERVICE &> /dev/null; then
       log_debug "Could not remove service $SERVICE"
