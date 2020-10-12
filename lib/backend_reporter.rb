@@ -18,6 +18,14 @@ class BackendReporter < BackendClient
     super(test_objects)
   end
 
+  def sort_testcases(test_objects)
+    super(test_objects)
+  end
+
+  def use_valgrind
+    super()
+  end
+
   def test_running(test_case, method_name)
     super(test_case, method_name)
   end
@@ -45,6 +53,14 @@ class BackendReporter
     test_objects.each do |object, method|
       @test_names << "#{object.class}::#{method.to_s}"
     end
+  end
+
+  def sort_testcases(test_objects)
+    test_objects
+  end
+
+  def use_valgrind
+    false
   end
 
   def test_running(test_case, method_name)
