@@ -170,7 +170,7 @@ class TestRunner
         next
       end
 
-      @log.info "#{testcase.class}::#{test_method.to_s} allocated nodes #{nodes.join(', ')}."
+      @log.info "#{testcase.class}::#{test_method.to_s} allocated nodes #{nodes.join(', ')} after #{waited_for} seconds."
 
       thread_pool.post do
         begin
