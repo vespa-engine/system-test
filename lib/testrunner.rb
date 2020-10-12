@@ -41,7 +41,6 @@ class TestRunner
   def initialize_run_dependent_fields
     @tests = {}
     @test_objects = {}
-    @testclasses_not_run = Set.new
     @nodes_required = 0
   end
 
@@ -121,7 +120,6 @@ class TestRunner
             # No need to do more if we have a node limit and test class requires above limit
             if @nodelimit && testclass.num_hosts > @nodelimit
               @log.warn "Skipping #{klass.to_s} due to node limit of #{@nodelimit}. Test requires #{testclass.num_hosts}."
-              @testclasses_not_run.add(klass)
               break
             end
 
@@ -159,22 +157,24 @@ class TestRunner
 
     @backend.initialize_testrun(@test_objects)
 
-
     @backend.sort_testcases(@test_objects).each do |testcase, test_method|
-      # This call blocks until nodes available
-      nodes = allocate_nodes(testcase)
 
-      if nodes.empty?
-        @log.warn "Not enough nodes available for #{testcase.class} (required #{testcase.num_hosts}"
-        @testclasses_not_run.add(testcase.class)
+      @log.info "#{testcase.class}::#{test_method.to_s} requesting nodes"
+
+      begin
+        start_allocate = Time.now.to_i
+        nodes = @node_allocator.allocate(testcase.num_hosts, 3600)
+        waited_for = Time.now.to_i - start_allocate
+      rescue StandardError => e
+        @log.error("Not enough nodes were available, could not run #{testcase.class} (required #{testcase.num_hosts}). Exception received #{e.message}")
         next
       end
 
-      @log.info "#{testcase.class} allocated nodes #{nodes.map {|n| n.hostname}.join(', ')}."
+      @log.info "#{testcase.class}::#{test_method.to_s} allocated nodes #{nodes.join(', ')}."
 
       thread_pool.post do
         begin
-          testcase.hostlist = nodes.map {|n| n.hostname}
+          testcase.hostlist = nodes
           @log.info "Running #{test_method} from #{testcase.class} on #{testcase.hostlist}"
           @backend.test_running(testcase, test_method)
           test_result = testcase.run([test_method]).first
@@ -195,18 +195,6 @@ class TestRunner
     @backend.finalize_testrun
   end
 
-  def allocate_nodes(testcase)
-    @log.info "#{testcase.class} requesting nodes"
-    wait_until = Time.now.to_i + 60*60
-    nodes = @node_allocator.allocate(testcase.num_hosts)
-    while nodes.empty? and (@node_allocator.max_available >= testcase.num_hosts)
-      sleep 3
-      nodes = @node_allocator.allocate(testcase.num_hosts)
-      # No new nodes/tests within one hour. Something is wrong.
-      break if Time.now.to_i > wait_until
-    end
-    nodes
-  end
 end
 
 if __FILE__ == $0
