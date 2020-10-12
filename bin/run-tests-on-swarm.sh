@@ -179,7 +179,13 @@ readonly BASEDIR=/tmp/testresults
 readonly NETWORK="$USER-vespa"
 readonly TESTRUNNER="$USER-testrunner"
 readonly SERVICE="$USER-vespanode"
-readonly VESPAVERSION=$(docker run --rm $BINDMOUNT_OPTS --entrypoint env $DOCKERIMAGE /opt/vespa/bin/vespa-print-default version)
+VESPAVERSION=$(docker run --rm $BINDMOUNT_OPTS --entrypoint bash $DOCKERIMAGE -lc '${VESPA_HOME-/opt/vespa}/bin/vespa-print-default version')
+case "$VESPAVERSION" in
+    7.*.0) VESPAVERSION=7-SNAPSHOT
+	   ;;
+    *)
+	   ;;
+esac
 
 TESTRUNNER_OPTS="$TESTRUNNER_OPTS -b $BASEDIR -V $VESPAVERSION"
 
@@ -263,7 +269,7 @@ docker run --privileged --rm \
            --hostname $TESTRUNNER.$NETWORK \
            --network $NETWORK \
            --entrypoint bash $DOCKERIMAGE -lc \
-           "source /opt/rh/rh-ruby25/enable && ruby /opt/vespa-systemtests/lib/testrunner.rb $TESTRUNNER_OPTS" 
+           "source /opt/rh/rh-ruby25/enable && ruby \${VESPA_SYSTEM_TEST_HOME-/opt/vespa-systemtests}/lib/testrunner.rb $TESTRUNNER_OPTS"
 
 if ! $KEEPRUNNING; then
   docker_cleanup
