@@ -24,6 +24,7 @@ class TestRunner
     @buildversion = options[:buildversion]
     @configservers = options[:configservers] ? options[:configservers] : []
     @consoleoutput = options[:consoleoutput] ? true : false
+    @ignore_performance = options[:ignore_performance] ? options[:ignore_performance] : true
     @keeprunning = options[:keeprunning] ? true : false
     @nodelimit = options[:nodelimit]
     @performance = options[:performance] ? true : false
@@ -111,7 +112,7 @@ class TestRunner
                                                               :nostop => @keeprunning,
                                                               :nostop_if_failure => @keeprunning,
                                                               :configserverhostlist => [],
-                                                              :ignore_performance => true,
+                                                              :ignore_performance => @ignore_performance,
                                                               :valgrind => @backend.use_valgrind})
 
             # No need to do more as performance is a test class property
