@@ -43,7 +43,7 @@ class GenericServicesTest < VdsTest
     wait_for_atleast_log_matches(vmstat_regexp, 3, 60, {:use_logarchive => true})
 
     # kill the processes and check that they are restarted
-    vespa.hostalias["node1"].execute("killall vmstat")
+    vespa.hostalias["node1"].execute("pkill --signal SIGTERM vmstat")
     sleep 10
     assert_ps_output_exists("node1", "vmstat", "vmstat 100")
 
