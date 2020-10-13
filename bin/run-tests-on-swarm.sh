@@ -263,7 +263,9 @@ else
   fi
 fi
 
-docker run --privileged --rm \
+docker run --rm \
+           --cap-add SYSLOG --cap-add SYS_PTRACE --cap-add SYS_ADMIN --cap-add SYS_NICE \
+           --security-opt no-new-privileges=true --security-opt seccomp=unconfined \
            $ENV_OPTS \
            $BINDMOUNT_OPTS \
            -v $RESULTDIR:$BASEDIR \
