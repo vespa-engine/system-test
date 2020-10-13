@@ -268,7 +268,7 @@ if ! docker network create --driver overlay --attachable $NETWORK &> /dev/null; 
   log_error "Could not create network $NETWORK. Exiting."; docker_cleanup; exit 1
 else
   if ! docker service create --replicas $NUMNODES --hostname "{{.Service.Name}}.{{.Task.Slot}}.{{.Task.ID}}.$NETWORK" \
-                             "${SERVICE_EXTRA_ARGS[@]}" \
+                             ${SERVICE_EXTRA_ARGS[@]+"${SERVICE_EXTRA_ARGS[@]}"} \
                              --name $SERVICE --env NODE_SERVER_OPTS="-c $TESTRUNNER.$NETWORK:27183" \
                              $BINDMOUNT_OPTS --network $NETWORK --detach $DOCKERIMAGE &> /dev/null; then
     log_error "Could not create service $SERVICE. Exiting."; docker_cleanup; exit 1
