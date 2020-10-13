@@ -23,13 +23,13 @@ class TestRunner
     @buildname = options[:buildname]
     @buildversion = options[:buildversion]
     @configservers = options[:configservers] ? options[:configservers] : []
-    @consoleoutput = options[:consoleoutput] ? true : false
+    @consoleoutput = options[:consoleoutput] ? options[:consoleoutput] : false
     @ignore_performance = options[:ignore_performance] ? options[:ignore_performance] : true
-    @keeprunning = options[:keeprunning] ? true : false
+    @keeprunning = options[:keeprunning] ? options[:keeprunning] : false
     @nodelimit = options[:nodelimit]
-    @performance = options[:performance] ? true : false
+    @performance = options[:performance] ? options[:performance] : false
     @platform_label = options[:platform_label]
-    @relative_testfiles = options[:testfiles]
+    @relative_testfiles = options[:testfiles] ? options[:testfiles] : []
     @testmodule_dirs = options[:testmoduledirs] ? options[:testmoduledirs] : ["#{__dir__}/../tests"]
     @testrun_id = options[:testrunid] ? options[:testrunid] : SecureRandom.urlsafe_base64
     @vespaversion = options[:vespaversion] ? options[:vespaversion] : "7-SNAPSHOT"
