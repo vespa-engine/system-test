@@ -20,19 +20,11 @@ class GenericServicesTest < VdsTest
     start
     sleep 5
 
-    iostat_regexp = Regexp.compile("iostat\\s.*Device:            tps")
-    iostat2_regexp = Regexp.compile("iostat2\\s.*Device:            tps")
     vmstat_regexp= Regexp.compile("vmstat\\s.*\\s.*procs -----------memory----------")
     vmstat2_regexp= Regexp.compile("vmstat2\\s.*\\s.*procs -----------memory----------")
 
-    assert_log_matches(iostat_regexp)
-    assert_log_not_matches(iostat2_regexp)
     assert_log_matches(vmstat_regexp)
     assert_log_matches(vmstat2_regexp) # Second service on node 1 => host2
-
-    assert_ps_output_exists("node1", "iostat", "iostat 100")
-    assert_ps_output_exists("node2", "iostat", "iostat 100")
-    assert_ps_output_does_not_exists("node3", "iostat", "iostat 100")
 
     assert_ps_output_exists("node1", "vmstat", "vmstat 100")
     assert_ps_output_does_not_exists("node2", "vmstat", "vmstat 100")
@@ -41,28 +33,23 @@ class GenericServicesTest < VdsTest
     # stop
     vespa.hostalias["node1"].execute("vespa-stop-services")
     sleep 5
-    assert_ps_output_does_not_exists("node1", "iostat", "iostat 100")
     assert_ps_output_does_not_exists("node1", "vmstat", "vmstat 100")
 
     # start
     vespa.hostalias["node1"].execute("vespa-start-services")
     wait_until_ready
-    assert_ps_output_exists("node1", "iostat", "iostat 100")
     assert_ps_output_exists("node1", "vmstat", "vmstat 100")
-    # Services on 2 nodes, both iostat and vmstat restarted on 1 node, so should be 3 log messages matching
-    wait_for_atleast_log_matches(iostat_regexp, 3, 60, {:use_logarchive => true})
+    # Services on 2 nodes, vmstat restarted on 1 node, so should be 3 log messages matching
     wait_for_atleast_log_matches(vmstat_regexp, 3, 60, {:use_logarchive => true})
 
     # kill the processes and check that they are restarted
-    vespa.hostalias["node1"].execute("killall iostat")
     vespa.hostalias["node1"].execute("killall vmstat")
     sleep 10
-    assert_ps_output_exists("node1", "iostat", "iostat 100")
     assert_ps_output_exists("node1", "vmstat", "vmstat 100")
 
     # stop
     vespa.hostalias["node1"].execute("vespa-stop-services")
-    assert_ps_output_does_not_exists("node1", "iostat", "iostat 100")
+    assert_ps_output_does_not_exists("node1", "vmstat", "vmstat 100")
   end
 
   def assert_ps_output_exists(node, process_name, expected_output)
