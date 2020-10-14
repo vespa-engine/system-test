@@ -118,7 +118,7 @@ class DocumentV1Test < SearchTest
 
     # Delete document with wrong condition
     response = http.delete("/document/v1/fruit/banana/docid/doc1?condition=banana.colour=='wrong'", httpheaders)
-    assert_equal("400", response.code)
+    assert_equal("412", response.code)
     assert_match /TEST_AND_SET_CONDITION_FAILED/, response.body
     
     # delete again, same document, correct condition
@@ -135,22 +135,23 @@ class DocumentV1Test < SearchTest
       "{\"documents\": [],\"pathId\":\"/document/v1/fruit/banana/docid/\"}", 
       response.body)
 
-    # Feed challenging ID
+    # Feed non-URL-encoded ID
     response = http.post("/document/v1/fruit/banana/docid/vg.no/latest/news/!", feedData, httpheaders)
+    assert_equal("404", response.code)   
+
+    # Feed challenging ID
+    response = http.post("/document/v1/fruit/banana/docid/vg.no%2Flatest%2Fnews%2F%21", feedData, httpheaders)
     assert_equal("200", response.code)   
     assert_json_string_equal(
-      "{\"pathId\":\"/document/v1/fruit/banana/docid/vg.no/latest/news/!\", \"id\":\"id:fruit:banana::vg.no/latest/news/!\"}", 
+      "{\"pathId\":\"/document/v1/fruit/banana/docid/vg.no%2Flatest%2Fnews%2F%21\", \"id\":\"id:fruit:banana::vg.no/latest/news/!\"}", 
       response.body)
-    http.delete("/document/v1/fruit/banana/docid/vg.no/latest/news/!", httpheaders)
+    http.delete("/document/v1/fruit/banana/docid/vg.no%2Flatest%2Fnews%2F%21", httpheaders)
 
     # send document with wrong field
     response = http.post("/document/v1/fruit/banana/docid/doc1", feedDataBroken, httpheaders)
     assert_equal("400", response.code)
-    assert_json_string_equal(
-       "{\"errors\":[{\"description\":\"PARSER_ERROR No field 'habla babla' in the structure of type " +
-       "'banana'\",\"id\":-11}],\"id\":\"id:fruit:banana::doc1\",\"pathId\":\"/document/v1/fruit/banana/docid/doc1\"}",
-       response.body)
-
+    assert_match /No field 'habla babla' in the structure of type 'banana'/, response.body
+    #
     # Update, with create = false
     response = http.put("/document/v1/fruit/banana/docid/doc1?create=false", feedDataUpdate, httpheaders)
     assert_equal("200", response.code)
@@ -202,8 +203,7 @@ class DocumentV1Test < SearchTest
     end
     assert_equal(numDocuments, found)
 
-    # Expect 2, not 3 put errors as route="" is not counted correctly
-    assert(verify_with_retries(http, {"PUT" => 3503, "UPDATE" => 3, "REMOVE" => 3502}, {"PUT" => 2, "REMOVE" => 1}))
+    assert(verify_with_retries(http, {"PUT" => 3503, "UPDATE" => 3, "REMOVE" => 3502}, {"PUT" => 4, "REMOVE" => 1}))
   end
 
   def deploy_application
