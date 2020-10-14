@@ -14,7 +14,7 @@ usage() {
   echo "-n, --nodes          Number of service nodes"
   echo
   echo "Optional options:"
-  echo "-c, --configserver   Shared configserver to use for tests supporting it. Can be repeated for multiple servers."
+  echo "-c, --configserver   Setup shared configserver available to tests that can use shared configservers."
   echo "-e, --env            Environment variable to pass to Docker in the form VAR=value. Can be repeated."
   echo "-f, --file           Testfile to execute. Relative to tests/ directory. Can be repeated."
   echo "                     If not specified, all test files in tests/ will be discovered."
@@ -45,7 +45,7 @@ fi
 
 # Option parsing
 POSITIONAL=()
-CONFIGSERVERS=()
+CONFIGSERVER=""
 CONSOLEOUTPUT=false
 DOCKERIMAGE=""
 ENVS=()
@@ -68,8 +68,8 @@ case $key in
     shift
     ;;
     -c|--configserver)
-    CONFIGSERVERS+=("$2")
-    shift; shift
+    CONFIGSERVER="$USER-configserver"
+    shift
     ;;
     -e|--env)
     ENVS+=("$2")
@@ -145,15 +145,13 @@ if [[ -z $RESULTDIR ]]; then
   RESULTDIR=$(mktemp -d $HOME/tmp/systemtest.XXXXXX)
 fi
 TESTRUNNER_OPTS="-n $NUMNODES"
-if [[ ${#CONFIGSERVERS[@]} > 0 ]]; then
-  for C in "${CONFIGSERVERS[@]}"; do
-    TESTRUNNER_OPTS="$TESTRUNNER_OPTS -c $C"
-  done
-fi
 if [[ ${#TESTFILES[@]} > 0 ]]; then
   for F in "${TESTFILES[@]}"; do
     TESTRUNNER_OPTS="$TESTRUNNER_OPTS -f $F"
   done
+fi
+if [[ -n $CONFIGSERVER ]]; then
+  TESTRUNNER_OPTS="$TESTRUNNER_OPTS -c $CONFIGSERVER"
 fi
 if $CONSOLEOUTPUT; then
   TESTRUNNER_OPTS="$TESTRUNNER_OPTS -c"
@@ -219,6 +217,7 @@ log_debug ""
 log_debug "Options:"
 log_debug "--  DOCKERIMAGE:     $DOCKERIMAGE"
 log_debug "--  NETWORK:         $NETWORK"
+log_debug "--  CONFIGSERVER:    $CONFIGSERVER"
 log_debug "--  SERVICE:         $SERVICE"
 log_debug "--  NUMNODES:        $NUMNODES"
 log_debug "--  KEEPRUNNING:     $KEEPRUNNING"
@@ -236,6 +235,7 @@ log_debug ""
 # Remove service and network
 docker_cleanup() {
   docker rm -f $TESTRUNNER &> /dev/null || true
+  docker rm -f $CONFIGSERVER &> /dev/null || true
 
   if docker service ps $SERVICE &> /dev/null; then
     if ! docker service rm $SERVICE &> /dev/null; then
@@ -272,6 +272,15 @@ else
                              --name $SERVICE --env NODE_SERVER_OPTS="-c $TESTRUNNER.$NETWORK:27183" \
                              $BINDMOUNT_OPTS --network $NETWORK --detach $DOCKERIMAGE &> /dev/null; then
     log_error "Could not create service $SERVICE. Exiting."; docker_cleanup; exit 1
+  fi
+fi
+
+if [[ -n $CONFIGSERVER ]]; then
+  if ! docker run --hostname $CONFIGSERVER.$NETWORK --network $NETWORK --name $CONFIGSERVER --detach \
+                  -e VESPA_CONFIGSERVERS=$CONFIGSERVER.$NETWORK -e VESPA_CONFIGSERVER_JVMARGS="-verbose:gc -Xms12g -Xmx12g" \
+                  -e VESPA_CONFIGSERVER_MULTITENANT=true -e VESPA_SYSTEM=dev --entrypoint bash \
+                  $DOCKERIMAGE -lc "/opt/vespa/bin/vespa-start-configserver && tail -f /dev/null" &> /dev/null; then
+    log_error "Could not create configserver $CONFIGSERVER. Exiting."; docker_cleanup; exit 1
   fi
 fi
 
