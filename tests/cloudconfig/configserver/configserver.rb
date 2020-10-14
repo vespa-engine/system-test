@@ -112,6 +112,7 @@ class ConfigServer < CloudConfigTest
     assert_log_not_matches("Session 3 activated successfully")
     restart_config_server_and_reset_version
     vespa.configservers["0"].ping_configserver
+    sleep 5
     assert_log_matches("Session 3 activated successfully", 1)
     assert_health_status_for_config_server("up")
 
