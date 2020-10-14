@@ -5,7 +5,7 @@ class VisibilityDelayTest < SearchTest
 
   def setup
     set_owner("geirst")
-    @visibility_delay = 20.0
+    @visibility_delay = 30.0
   end
 
   def test_visibility_delay
