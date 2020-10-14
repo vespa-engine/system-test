@@ -43,7 +43,7 @@ class TestNodePool
     @lock.synchronize do
       @nodes << "#{hostname}" unless @nodes.include?("#{hostname}")
       @max_available_nodes = @nodes.size if @nodes.size > @max_available_nodes
-      @log.info "Registered node server on: #{hostname}:#{port}"
+      @log.info "Registered node server on: #{hostname}:#{port}. Available nodes count is #{@nodes.size}."
     end
   end
 
@@ -60,10 +60,10 @@ class TestNodePool
 
     endtime = Time.now.to_i + timeout_sec
     while timeout_sec <= 0 || Time.now.to_i < endtime
-      allocated = allocate_required_or_none(num)
+      allocated, num_free = allocate_required_or_none(num)
 
       if allocated.size == num
-        @log.debug("Allocated #{num} nodes.")
+        @log.debug("Allocated #{num} nodes. Available nodes count is #{num_free}.")
         return allocated
       end
 
@@ -99,10 +99,10 @@ class TestNodePool
     @lock.synchronize do
       allocated = @nodes.shift(num)
       if allocated.size == num
-        allocated
+        [allocated, @nodes.size]
       else
         @nodes.concat(allocated)
-        []
+        [[], @nodes.size]
       end
     end
   end
