@@ -1,0 +1,5 @@
+<query-profile-type id="root" inherits="native">
+  <field name="ranking.features.query(q_cat_keys)" type="tensor(cat{})" />
+  <field name="ranking.features.query(q_cat_scores)" type="tensor(cat{})" />
+  <field name="ranking.features.query(q_user_vec)" type="tensor(vec[256])" />
+</query-profile-type>
