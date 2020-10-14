@@ -29,7 +29,7 @@ class MixedTensorPerfTest < PerformanceTest
     start
     @container = vespa.container.values.first
     compile_data_gen
-    gen_and_copy_query_file(100)
+    gen_query_file(100)
   end
 
   def create_app
@@ -42,10 +42,9 @@ class MixedTensorPerfTest < PerformanceTest
     @container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@data_gen} #{selfdir}/data_gen.cpp")
   end
 
-  def gen_and_copy_query_file(num_queries)
+  def gen_query_file(num_queries)
     @query_file = dirs.tmpdir + "queries.txt"
     @container.execute("#{@data_gen} queries #{num_queries} > #{@query_file}")
-    @container.copy(@query_file, File.dirname(@query_file))
   end
 
   def feed_docs(num_docs)
