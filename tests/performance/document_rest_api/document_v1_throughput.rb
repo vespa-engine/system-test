@@ -45,9 +45,11 @@ class DocumentV1Throughput < PerformanceTest
                          docproc(DocumentProcessing.new).
                          gateway(ContainerDocumentApi.new)).
                admin_metrics(Metrics.new).
+               persistence_threads(PersistenceThreads.new(8)).
                elastic.redundancy(1).ready_copies(1).
                indexing("combinedcontainer").
                sd(selfdir + "text.sd"))
+
 
     @graphs = get_graphs(@test_config)
 
