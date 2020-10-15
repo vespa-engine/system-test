@@ -24,14 +24,15 @@ class DocumentV1Throughput < PerformanceTest
           'qps' => { :y_min => 30000, :y_max => 50000 },
           '95p' => { :y_min =>     3, :y_max =>    10 }
         },
-        :fbench => { }
+        :fbench => { :use_post => false }
       },
       "POST" => {
         :metrics => {
           'qps' => { :y_min => 10000, :y_max => 30000 },
           '95p' => { :y_min =>     3, :y_max =>    20 }
         },
-        :fbench => { :use_post => true, :request_body => '{ "fields": { "text": "very short text" } }' }
+        :fbench => { :use_post => true }
+        :data => '{ "fields": { "text": "some very short text" } }'
       }
     }
   end
@@ -51,19 +52,23 @@ class DocumentV1Throughput < PerformanceTest
     @graphs = get_graphs(@test_config)
 
     start
-    profiler_start
     benchmark_operations(@test_config)
   end
 
   def benchmark_operations(methods)
     qrserver = @vespa.container["combinedcontainer/0"]
-    paths_file = dirs.tmpdir + "paths.txt"
-    qrserver.execute("for i in {1..#{1 << 16}}; do echo '/document/v1/test/text/docid/'$i >> #{paths_file}; done")
     methods.each do |method, config|
+      paths_file = dirs.tmpdir + method + ".txt"
+      qrserver.execute("for i in {1..#{1 << 16}};"\
+                       "  do echo '/document/v1/test/text/docid/'$i >> #{paths_file};"\
+                       "  #{"echo #{config[:data]} >> #{paths_file};" if config[:data]}"\
+                       "done")
+      profiler_start
       run_fbench2(qrserver,
                   paths_file,
-                  [ parameter_filler("HTTP method", method) ],
-                  { :clients => 128, :runtime => 120 }.merge(config[:fbench]))
+                  { :clients => 128, :runtime => 120 }.merge(config[:fbench]),
+                  [ parameter_filler("HTTP method", method) ])
+      profiler_report(method)
     end
   end
 
