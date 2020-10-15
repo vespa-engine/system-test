@@ -25,7 +25,7 @@ class DocumentV1Throughput < PerformanceTest
           '95p' => { :y_min =>     3, :y_max =>    20 }
         },
         :fbench => { :use_post => true },
-        :data => '{ "fields": { "text": "some very short text" } }'
+        :data => '\'{ "fields": { "text": "some very short text" } }\''
       },
       "GET"  => {
         :metrics => {
