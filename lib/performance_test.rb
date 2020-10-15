@@ -1,10 +1,11 @@
-# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'performance/configloadtester'
 require 'performance/fbench'
 require 'performance/resultmodel'
 require 'performance/datasetmanager'
 require 'performance/comparison'
+require 'nodetypes/yamas'
 require 'environment'
 
 require 'testcase'
@@ -15,6 +16,7 @@ class PerformanceTest < TestCase
   attr_accessor :graphs
   attr_accessor :perfdir
   attr_accessor :profilersnapshotdir
+  include Yamas
 
   def initialize(*args)
     # 'stress_test' definition:
@@ -133,6 +135,15 @@ class PerformanceTest < TestCase
     fbench.query(queryfile)
     system_fbench.end
     fillers = [fbench.fill, system_fbench.fill]
+    if (params[:fetch_vespa_metrics])
+      metrics = fetch_vespa_metrics(qrserver)
+      metrics.each do |k, v|
+        p = metric_filler(k, v)
+        if v != nil
+          fillers.push(p)
+        end
+      end
+    end
     write_report(fillers + custom_fillers)
   end
 
@@ -386,6 +397,35 @@ class PerformanceTest < TestCase
     else
       puts "Performance results within specified parameters."
     end
+  end
+
+  def fetch_vespa_metrics(node)
+    query_requests = 0
+    docs_matched = 0
+    docs_ranked = 0
+    docs_reranked = 0
+    query_latency_avg = 0
+
+    90.times do
+      data = get_yamas_metrics_yms(node, "slingstone.searchnode")
+      # data2 = get_yamas_metrics_yms(node, "slingstone.container")
+
+      docs_matched = get_metric(data, "docs_matched")
+      docs_ranked = get_metric(data, "docs_ranked")
+      docs_reranked = get_metric(data, "docs_reranked")
+      query_requests = get_metric(data, "query_requests")
+      query_latency_avg = get_metric(data, "query_latency.avg")
+      break if query_requests > 0
+      sleep 1
+    end
+    metrics = {
+        "docs_matched" => docs_matched,
+        "docs_ranked" => docs_ranked,
+        "docs_reranked" => docs_reranked,
+        "query_request" => query_requests,
+        "query_latency" => query_latency_avg
+    }
+    return metrics
   end
 
   def performance?
