@@ -19,13 +19,6 @@ class DocumentV1Throughput < PerformanceTest
     set_owner("jvenstad")
     @test_config = 
     {
-      "GET"  => {
-        :metrics => {
-          'qps' => { :y_min => 30000, :y_max => 50000 },
-          '95p' => { :y_min =>     3, :y_max =>    10 }
-        },
-        :fbench => { :use_post => false }
-      },
       "POST" => {
         :metrics => {
           'qps' => { :y_min => 10000, :y_max => 30000 },
@@ -33,6 +26,13 @@ class DocumentV1Throughput < PerformanceTest
         },
         :fbench => { :use_post => true },
         :data => '{ "fields": { "text": "some very short text" } }'
+      },
+      "GET"  => {
+        :metrics => {
+          'qps' => { :y_min => 30000, :y_max => 50000 },
+          '95p' => { :y_min =>     3, :y_max =>    10 }
+        },
+        :fbench => { :use_post => false }
       }
     }
   end
