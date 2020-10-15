@@ -5,7 +5,7 @@ require 'environment'
 module Perf
   class Fbench
     attr_writer :clients, :runtime, :headers, :append_str, :ignore_first, :max_line_size, :single_query_file, :disable_http_keep_alive,
-                :request_per_ms, :times_reuse_query_files, :result_file, :disable_tls, :include_handshake,
+                :use_post, :request_per_ms, :times_reuse_query_files, :result_file, :disable_tls, :include_handshake,
                 :certificate_file, :private_key_file, :ca_certificate_file
 
     def initialize(node, hostname, port)
@@ -17,6 +17,7 @@ module Perf
       @append_str = nil
       @ignore_first = nil
       @max_line_size = nil
+      @use_post = false
       @headers = nil
       @result_file = nil
       @single_query_file = false
@@ -83,6 +84,7 @@ module Perf
       cmd += "-a \"#{@append_str}\" " if @append_str
       cmd += "-i #{@ignore_first} " if @ignore_first
       cmd += "-m #{@max_line_size} " if @max_line_size
+      cmd += "-P " if @use_post
       cmd += "-H \"#{@headers}\" " if @headers
       cmd += "-z " if @single_query_file
       cmd += "-o #{@result_file} " if @result_file
