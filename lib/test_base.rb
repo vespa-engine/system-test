@@ -72,10 +72,10 @@ module TestBase
   REPO_DIR = $:.find {|path| path =~ /system-test.*\/tests/} || ""
 
   # absolute path to systemtests/tests/vds/
-  VDS = existing_of(INSTALL_DIR + "/vds/", REPO_DIR + "/vds")
+  VDS = existing_of(INSTALL_DIR + "/vds/", REPO_DIR + "/vds/")
 
   # absolute path to systemtests/tests/search/
-  SEARCH = existing_of(INSTALL_DIR + "/search/", REPO_DIR + "/search")
+  SEARCH = existing_of(INSTALL_DIR + "/search/", REPO_DIR + "/search/")
 
   # absolute path to systemtests/tests/docproc/
   DOCPROC = existing_of(INSTALL_DIR + "/docproc/", REPO_DIR + "/docproc/")
