@@ -61,7 +61,7 @@ class DocumentV1Throughput < PerformanceTest
     qrserver = @vespa.container["combinedcontainer/0"]
     methods.each do |method, config|
       paths_file = dirs.tmpdir + method + ".txt"
-      qrserver.execute("for i in {1..#{1 << 16}};"\
+      qrserver.execute("for i in {1..#{1 << 10}};"\
                        "  do echo '/document/v1/test/text/docid/'$i >> #{paths_file};"\
                        "  #{"echo #{config[:data]} >> #{paths_file};" if config[:data]}"\
                        "done")
