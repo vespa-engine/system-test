@@ -31,7 +31,7 @@ class DocumentV1Throughput < PerformanceTest
           'qps' => { :y_min => 10000, :y_max => 30000 },
           '95p' => { :y_min =>     3, :y_max =>    20 }
         },
-        :fbench => { :use_post => true }
+        :fbench => { :use_post => true },
         :data => '{ "fields": { "text": "some very short text" } }'
       }
     }
