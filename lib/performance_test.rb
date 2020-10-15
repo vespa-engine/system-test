@@ -119,6 +119,7 @@ class PerformanceTest < TestCase
     fbench.runtime = params[:runtime] if params[:runtime]
     fbench.clients = params[:clients] if params[:clients]
     fbench.max_line_size = params[:max_line_size] if params[:max_line_size]
+    fbench.use_post = params[:use_post] if params[:use_post]
     fbench.append_str = params[:append_str] if params[:append_str]
     fbench.headers = params[:headers] if params[:headers]
     fbench.request_per_ms = params[:requests_per_ms] if params[:requests_per_ms]
