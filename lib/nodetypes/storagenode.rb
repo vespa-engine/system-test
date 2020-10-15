@@ -34,7 +34,7 @@ class StorageNode < VDSNode
   # Add a mapping of parsed bucket id -> StorageBucketCopy
   def add_storage_bucket_state(mapping, line)
     # All the cool and hip kids parse XML using regular expressions!
-    if line =~ /<bucket id="0x([0-9a-f]+)" checksum="(0x[a-f0-9]+)" docs="(\d+)" size="(\d+)" metacount="(\d+)" usedfilesize="(\d+)" ready="(\d+)" active="(\d+)" lastmodified="(\d+)" disk="(\d+)"\/>/
+    if line =~ /<bucket id="0x([0-9a-f]+)" checksum="(0x[a-f0-9]+)" docs="(\d+)" size="(\d+)" metacount="(\d+)" usedfilesize="(\d+)" ready="(\d+)" active="(\d+)" lastmodified="(\d+)"\/>/
       crc = $~[2].to_i(16)
       docs = $~[3].to_i
       bytes = $~[4].to_i
@@ -42,7 +42,7 @@ class StorageNode < VDSNode
       usedfilesize = $~[6].to_i
       ready = $~[7] == "1"
       active = $~[8] == "1"
-      disk = $~[10].to_i
+      disk = 0 # TODO remove
       mapping[$~[1]] = StorageBucketCopy.new(crc, docs, metacount, bytes,
                                              usedfilesize, disk, ready, active)
     else
