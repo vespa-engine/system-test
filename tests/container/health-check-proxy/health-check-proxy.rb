@@ -20,6 +20,7 @@ class HealthCheckProxyTest < SearchContainerTest
                 server(
                     Server.new('http-proxy-server', container_port + 1).
                         config(ConfigOverride.new('jdisc.http.connector').
+                            add('implicitTlsEnabled', 'false'). # Disable implicit TLS/HTTPS on this port
                             add('healthCheckProxy', ConfigValues.new.add('enable', true).add('port', container_port.to_s))))))
     deploy_app(app)
     start
