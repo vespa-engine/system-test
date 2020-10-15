@@ -17,9 +17,7 @@ class DocumentV1Throughput < PerformanceTest
     super
     set_description("Stress test document/v1 API POST and GET")
     set_owner("jvenstad")
-  end
-
-  def config
+    @test_config = 
     {
       "GET"  => {
         :metrics => {
@@ -50,12 +48,11 @@ class DocumentV1Throughput < PerformanceTest
                indexing("combinedcontainer").
                sd(selfdir + "text.sd"))
 
-
-    @graphs = get_graphs(methods)
+    @graphs = get_graphs(@test_config)
 
     start
     profiler_start
-    benchmark_operations(methods)
+    benchmark_operations(@test_config)
   end
 
   def benchmark_operations(methods)
