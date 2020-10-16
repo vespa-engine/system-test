@@ -17,24 +17,39 @@ class DocumentV1Throughput < PerformanceTest
     super
     set_description("Stress test document/v1 API POST and GET")
     set_owner("jvenstad")
-    @test_config = 
-    {
-      "POST" => {
-        :metrics => {
-          'qps' => { :y_min => 10000, :y_max => 30000 },
-          '95p' => { :y_min =>     3, :y_max =>    20 }
-        },
-        :fbench => { :use_post => true },
-        :data => '\'{ "fields": { "text": "some very short text" } }\''
+    @test_config = {
+      {
+        :legend => 'POST small data 4 clients',
+        :fbench => { :clients => 4, :use_post => true },
+        :data => "{ \"fields\": { \"text\": \"GNU's not UNIX\" } }"
+      } => {
+        'qps' => { :y_min => 10000, :y_max => 30000 },
+        '95p' => { :y_min =>     3, :y_max =>    20 }
       },
-      "GET"  => {
-        :metrics => {
-          'qps' => { :y_min => 30000, :y_max => 50000 },
-          '95p' => { :y_min =>     3, :y_max =>    10 }
-        },
-        :fbench => { :use_post => false }
+      {
+        :legend => 'GET small data 4 clients',
+        :fbench => { :clients => 4, :use_post => false }
+      } => {
+        'qps' => { :y_min => 10000, :y_max => 50000 },
+        '95p' => { :y_min =>     3, :y_max =>    20 }
+      },
+      {
+        :legend => 'POST large data 128 clients',
+        :fbench => { :clients => 128, :use_post => true},
+        :data => "{ \"fields\": { \"text\": \"GNU#{"'s not UNIX" * (1 << 10) }\" } }"
+      } => {
+        'qps' => { :y_min => 10000, :y_max => 30000 },
+        '95p' => { :y_min =>     3, :y_max =>    20 }
+      },
+      {
+        :legend =>  'GET large data 128 clients',
+        :fbench => { :clients => 128, :use_post => false }
+      } => {
+        'qps' => { :y_min => 10000, :y_max => 50000 },
+        '95p' => { :y_min =>     3, :y_max =>    20 }
       }
     }
+    @graphs = get_graphs
   end
 
   def test_throughput
@@ -45,43 +60,44 @@ class DocumentV1Throughput < PerformanceTest
                          docproc(DocumentProcessing.new).
                          gateway(ContainerDocumentApi.new)).
                admin_metrics(Metrics.new).
-               persistence_threads(PersistenceThreads.new(8)).
-               elastic.redundancy(1).ready_copies(1).
                indexing("combinedcontainer").
                sd(selfdir + "text.sd"))
 
-
-    @graphs = get_graphs(@test_config)
-
     start
-    benchmark_operations(@test_config)
+    benchmark_operations
   end
 
-  def benchmark_operations(methods)
+  def benchmark_operations
     qrserver = @vespa.container["combinedcontainer/0"]
-    methods.each do |method, config|
-      paths_file = dirs.tmpdir + method + ".txt"
-      qrserver.execute("for i in {1..#{1 << 10}};"\
-                       "  do echo '/document/v1/test/text/docid/'$i >> #{paths_file};"\
-                       "  #{"echo #{config[:data]} >> #{paths_file};" if config[:data]}"\
-                       "done")
+    @test_config.keys.each do |config|
+      operations = (1..1024).map do |i|
+        "/document/v1/test/text/docid/#{i}#{"\n#{config[:data]}" if config[:data]}"
+      end.join("\n")
+      legend = config[:legend].gsub(/\s/, '_')
+      operations_file = dirs.tmpdir + legend + ".txt"
+      qrserver.writefile(operations, operations_file)
+      # Warmpup — no legend
+      run_fbench2(qrserver,
+                  operations_file,
+                  { :runtime => 10 }.merge(config[:fbench]))
+      # Benchmark
       profiler_start
       run_fbench2(qrserver,
-                  paths_file,
-                  { :clients => 128, :runtime => 120 }.merge(config[:fbench]),
-                  [ parameter_filler("HTTP method", method) ])
-      profiler_report(method)
+                  operations_file,
+                  { :runtime => 30 }.merge(config[:fbench]),
+                  [ parameter_filler("legend", config[:legend]) ])
+      profiler_report(legend)
     end
   end
 
-  def get_graphs(methods)
-    methods.map do |method, config|
-      config[:metrics].map do |metric, limits|
+  def get_graphs
+    @test_config.map do |config, metrics|
+      metrics.map do |metric, limits|
         {
-          :x => 'HTTP method',
+          :x => "legend",
           :y => metric,
-          :title => "/document/v1 HTTP #{method} #{metric}",
-          :filter => { 'HTTP method' => method },
+          :title => "/document/v1 #{config[:legend]} #{metric}",
+          :filter => { "legend" => config[:legend] },
           :historic => true
         }.merge(limits)
       end

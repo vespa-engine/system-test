@@ -21,8 +21,8 @@ class CoreDump < SearchTest
     node.execute("/sbin/sysctl kernel.core_pattern")
   end
 
-  def expected_core_file(binary, pid)
-    corefile = show_kernel_core_pattern.split[-1].gsub('%e', binary).gsub('%p', pid)
+  def expected_core_file(node, binary, pid)
+    corefile = show_kernel_core_pattern(node).split[-1].gsub('%e', binary).gsub('%p', pid)
     assert(corefile.start_with?("#{Environment.instance.vespa_home}/var/crash/"),
            "/proc/sys/kernel/core_patern shall start with #{Environment.instance.vespa_home}/var/crash/")
   end
@@ -31,10 +31,9 @@ class CoreDump < SearchTest
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
     feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
-    show_kernel_core_pattern(vespa.adminserver)
 
     pid = vespa.adminserver.execute("pgrep vespa-proton-bi").strip
-    fullcorefile = expected_core_file('vespa-proton-bi', pid)
+    fullcorefile = expected_core_file(vespa.adminserver, 'vespa-proton-bi', pid)
     corefile = File.basename(fullcorefile)
 
     before = vespa.adminserver.find_coredumps(@starttime, corefile)
@@ -77,7 +76,7 @@ class CoreDump < SearchTest
     end
 
     pid = vespa.adminserver.execute("pgrep vespa-proton-bi").strip
-    fullcorefile = expected_core_file('vespa-proton-bi', pid)
+    fullcorefile = expected_core_file(vespa.adminserver, 'vespa-proton-bi', pid)
 
     vespa.adminserver.execute("touch " + fullcorefile)
     vespa.adminserver.execute("/bin/kill -SIGSEGV " + pid)
