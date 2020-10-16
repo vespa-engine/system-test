@@ -461,21 +461,29 @@ class NodeServer
     coredumps
   end
 
-  def drop_coredumps(starttime)
-    corecount = 0
+  def find_coredumps(starttime, exact_filename = nil)
+    cores = []
     coredir = "#{Environment.instance.vespa_home}/var/crash/"
     if File.directory?(coredir)
       Dir.foreach(coredir) do |filename|
         next if filename == '.' || filename == '..'
         next if filename == 'systemtests'
+        next if (exact_filename && exact_filename != filename)
         crashtime = File.mtime(coredir+filename)
         if crashtime.to_i >= starttime.to_i
-          File.unlink(coredir+filename)
-          corecount = corecount + 1
+          cores << coredir+filename
         end
       end
     end
-    corecount
+    cores
+  end
+
+  def drop_coredumps(starttime)
+    coredumps = find_coredumps(starttime)
+    coredumps.each do |coredump|
+      File.unlink(coredump)
+    end
+    coredumps.size
   end
 
   def get_stateline(path)

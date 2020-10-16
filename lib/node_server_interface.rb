@@ -57,16 +57,20 @@ module NodeServerInterface
     @node_server.override_environment_setting(name, value)
   end
 
-  def drop_coredumps(starttime)
-    @node_server.drop_coredumps(starttime)
-  end
-
   def get_stateline(path)
     @node_server.get_stateline(path)
   end
 
   def check_coredumps(*args)
     @node_server.check_coredumps(*args)
+  end
+
+  def find_coredumps(*args)
+    @node_server.find_coredumps(*args)
+  end
+
+  def drop_coredumps(starttime)
+    @node_server.drop_coredumps(starttime)
   end
 
   # starts vespa_base on remote node

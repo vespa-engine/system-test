@@ -21,27 +21,46 @@ class CoreDump < SearchTest
     node.execute("/sbin/sysctl kernel.core_pattern")
   end
 
+  def expected_core_file(node, binary, pid)
+    corefile = show_kernel_core_pattern(node).split[-1].gsub('%e', binary).gsub('%p', pid)
+    assert(corefile.start_with?("#{Environment.instance.vespa_home}/var/crash/"),
+           "/proc/sys/kernel/core_patern shall start with #{Environment.instance.vespa_home}/var/crash/")
+    corefile
+  end
+
   def test_coredump_compression
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
     feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
-    show_kernel_core_pattern(vespa.adminserver)
+
     pid = vespa.adminserver.execute("pgrep vespa-proton-bi").strip
-    corefile = "vespa-proton-bi.core." + pid + ".lz4"
-    fullcorefile = "#{Environment.instance.vespa_home}/var/crash/" + corefile
-    before = vespa.adminserver.execute("find #{Environment.instance.vespa_home}/var/crash/ -name " + corefile).strip
+    fullcorefile = expected_core_file(vespa.adminserver, 'vespa-proton-bi', pid)
+    corefile = File.basename(fullcorefile)
+
+    before = vespa.adminserver.find_coredumps(@starttime, corefile)
+
     vespa.adminserver.execute("/bin/kill -SIGSEGV " + pid)
     sleep @coredump_sleep
-    after = vespa.adminserver.execute("find #{Environment.instance.vespa_home}/var/crash/ -name " + corefile).strip
-    assert_equal("", before)
-    assert_equal(fullcorefile, after)
-    filetype = vespa.adminserver.execute("file -b " + fullcorefile + " | cut -d ',' -f1").strip
-    assert_match(/^(data|LZ4 compressed data \(v.*\))$/, filetype, "Unexpected file type.")
-    lz4_program = get_lz4_program(vespa.adminserver)
-    vespa.adminserver.execute("#{lz4_program} -d < " + fullcorefile + " > #{fullcorefile}.core")
-    filetype = vespa.adminserver.execute("file -b " + fullcorefile + ".core | cut -d ',' -f1").strip
+    after = vespa.adminserver.find_coredumps(@starttime, corefile)
+
+    assert_equal(0, before.size, "Expected no coredumps.")
+    assert_equal(1, after.size, "Expected one coredump.")
+    assert_equal(fullcorefile, after.first, "Expected coredump #{fullcorefile}.")
+
+    if fullcorefile.end_with?("lz4")
+      filetype = vespa.adminserver.execute("file -b " + fullcorefile + " | cut -d ',' -f1").strip
+      assert_match(/^(data|LZ4 compressed data \(v.*\))$/, filetype, "Unexpected file type.")
+      lz4_program = get_lz4_program(vespa.adminserver)
+      vespa.adminserver.execute("#{lz4_program} -d < " + fullcorefile + " > #{fullcorefile}.core")
+      fullcorefile_uncompressed = "#{fullcorefile}.core"
+    else
+      fullcorefile_uncompressed = fullcorefile
+    end
+
+    filetype = vespa.adminserver.execute("file -b " + fullcorefile_uncompressed + " | cut -d ',' -f1").strip
     assert_match(/^ELF 64-bit LSB core file( x86-64)?$/, filetype, "Unexpected file type.")
-    vespa.adminserver.execute("rm #{fullcorefile} #{fullcorefile}.core")
+
+    vespa.adminserver.execute("rm -f #{fullcorefile} #{fullcorefile_uncompressed}")
   end
 
   def test_coredump_overwrite
@@ -50,13 +69,16 @@ class CoreDump < SearchTest
     feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
     show_kernel_core_pattern(vespa.adminserver)
     execute_result = vespa.adminserver.execute("/sbin/sysctl kernel.core_pattern=\"|/usr/bin/lz4 -3 - #{Environment.instance.vespa_home}/var/crash/%e.core.lz4\"", :exitcode => true)
+
+    # This will fail when running inside docker containers
     if execute_result[0] != "0"
       puts "Failed to set kernel.core_pattern, skipping test"
       return
     end
+
     pid = vespa.adminserver.execute("pgrep vespa-proton-bi").strip
-    corefile = "vespa-proton-bi.core.lz4"
-    fullcorefile = "#{Environment.instance.vespa_home}/var/crash/" + corefile
+    fullcorefile = expected_core_file(vespa.adminserver, 'vespa-proton-bi', pid)
+
     vespa.adminserver.execute("touch " + fullcorefile)
     vespa.adminserver.execute("/bin/kill -SIGSEGV " + pid)
     sleep @coredump_sleep
