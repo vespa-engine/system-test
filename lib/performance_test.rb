@@ -122,6 +122,7 @@ class PerformanceTest < TestCase
     fbench.use_post = params[:use_post] if params[:use_post]
     fbench.append_str = params[:append_str] if params[:append_str]
     fbench.headers = params[:headers] if params[:headers]
+    fbench.ignore_first = params[:ignore_first] if params[:ignore_first]
     fbench.request_per_ms = params[:requests_per_ms] if params[:requests_per_ms]
     fbench.times_reuse_query_files = params[:times_reuse_query_files] if params[:times_reuse_query_files]
     fbench.result_file = params[:result_file] if params[:result_file]
