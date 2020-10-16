@@ -23,30 +23,30 @@ class DocumentV1Throughput < PerformanceTest
         :fbench => { :clients => 4, :use_post => true },
         :data => "{ \"fields\": { \"text\": \"GNU's not UNIX\" } }"
       } => {
-        'qps' => { :y_min => 10000, :y_max => 30000 },
-        '95p' => { :y_min =>     3, :y_max =>    20 }
+        'qps' => { :y_min =>  3000, :y_max =>  3200 },
+        '95p' => { :y_min =>   1.3, :y_max =>   1.7 }
       },
       {
         :legend => 'GET small data 4 clients',
         :fbench => { :clients => 4, :use_post => false }
       } => {
-        'qps' => { :y_min => 10000, :y_max => 50000 },
-        '95p' => { :y_min =>     3, :y_max =>    20 }
+        'qps' => { :y_min =>  5900, :y_max =>  6200 },
+        '95p' => { :y_min =>   0.7, :y_max =>   0.9 }
       },
       {
         :legend => 'POST large data 128 clients',
         :fbench => { :clients => 128, :use_post => true},
         :data => "{ \"fields\": { \"text\": \"GNU#{"'s not UNIX" * (1 << 10) }\" } }"
       } => {
-        'qps' => { :y_min => 10000, :y_max => 30000 },
-        '95p' => { :y_min =>     3, :y_max =>    20 }
+        'qps' => { :y_min =>  6300, :y_max =>  6700 },
+        '95p' => { :y_min =>    24, :y_max =>    27 }
       },
       {
         :legend =>  'GET large data 128 clients',
         :fbench => { :clients => 128, :use_post => false }
       } => {
-        'qps' => { :y_min => 10000, :y_max => 50000 },
-        '95p' => { :y_min =>     3, :y_max =>    20 }
+        'qps' => { :y_min => 30000, :y_max => 32000 },
+        '95p' => { :y_min =>   5.0, :y_max =>   5.5 }
       }
     }
     @graphs = get_graphs
