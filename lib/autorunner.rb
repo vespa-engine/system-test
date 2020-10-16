@@ -76,7 +76,7 @@ class AutoRunner
         raise "File #{val} does not exist."
       end
     end
-    opts.on("--valgrind COMPONENTS", "Space-separated list of components to run in valgrin.") do |val|
+    opts.on("--valgrind COMPONENTS", "Space-separated list of components to run in valgrind.") do |val|
       @cmd_args[:valgrind] = val
     end
     opts.on("--valgrind_opt OPTIONS", "Options passed to valgrind.") do |val|
