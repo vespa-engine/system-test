@@ -131,7 +131,7 @@ class SigBusHandler < IndexedSearchTest
       assert_log_matches(/SYSTEMSTATE.*All partitions are down/);
     end
 
-    node.execute("rm #{cores_after.first} #{cores_after.first}.core")
+    node.execute("rm -f #{cores_after.first} #{cores_after.first}.core")
   end
 
   def teardown
