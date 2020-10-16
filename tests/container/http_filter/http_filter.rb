@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_container_test'
 require 'environment'
 
@@ -22,7 +22,7 @@ class HttpFilterTest < SearchContainerTest
   def check_response_filter_chain
     filter_names = ["TestSecurityResponseFilter", "TestResponseFilter"]
 
-    response = http_get_test_handler(Environment.instance.vespa_web_service_port)
+    response = http_get_test_handler(4080)
     filter_names.each { |name|
       assert_response_filtered(response, name)
     }
