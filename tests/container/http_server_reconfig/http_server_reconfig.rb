@@ -44,7 +44,7 @@ class HttpServerReconfig < ContainerTest
     success = true
     begin
       @container.http_get("localhost", port, "/")
-    rescue Errno::EAFNOSUPPORT, Errno::ECONNREFUSED, Errno::ENETUNREACH
+    rescue Errno::EAFNOSUPPORT, Errno::ECONNREFUSED, Errno::ENETUNREACH, Errno::EADDRNOTAVAIL
       success = false
     end
 
