@@ -25,6 +25,7 @@ class CoreDump < SearchTest
     corefile = show_kernel_core_pattern(node).split[-1].gsub('%e', binary).gsub('%p', pid)
     assert(corefile.start_with?("#{Environment.instance.vespa_home}/var/crash/"),
            "/proc/sys/kernel/core_patern shall start with #{Environment.instance.vespa_home}/var/crash/")
+    corefile
   end
 
   def test_coredump_compression
