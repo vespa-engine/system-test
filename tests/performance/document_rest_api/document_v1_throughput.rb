@@ -76,10 +76,15 @@ class DocumentV1Throughput < PerformanceTest
       legend = config[:legend].gsub(/\s/, '_')
       operations_file = dirs.tmpdir + legend + ".txt"
       qrserver.writefile(operations, operations_file)
+      # Warmpup — no legend
+      run_fbench2(qrserver,
+                  operations_file,
+                  { :runtime => 10 }.merge(config[:fbench]))
+      # Benchmark
       profiler_start
       run_fbench2(qrserver,
                   operations_file,
-                  { :runtime => 30, :ignore_first => 1 << 12 }.merge(config[:fbench]),
+                  { :runtime => 30 }.merge(config[:fbench]),
                   [ parameter_filler("legend", config[:legend]) ])
       profiler_report(legend)
     end
