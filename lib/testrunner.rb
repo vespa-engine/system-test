@@ -112,7 +112,7 @@ class TestRunner
                                                               :nostop_if_failure => @keeprunning,
                                                               :configserverhostlist => [],
                                                               :ignore_performance => @ignore_performance,
-                                                              :valgrind => @backend.use_valgrind})
+                                                              :valgrind => @backend.use_valgrind ? "all" : nil })
 
             # No need to do more as performance is a test class property
             break if @performance != testclass.performance?
