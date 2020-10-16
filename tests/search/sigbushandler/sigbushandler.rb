@@ -103,6 +103,12 @@ class SigBusHandler < IndexedSearchTest
     node = vespa.search["sigbushandler"].first
     triggerflush(node)
     assert_hitcount("query=title:country&nocache", 1)
+
+    pid = vespa.adminserver.execute("pgrep vespa-proton-bi").strip
+    corefile = "vespa-proton-bi.core." + pid + ".lz4"
+    cores_before = node.find_coredumps(@starttime, corefile)
+    assert(cores_before.empty?, "Expected no core file.")
+
     node.execute("truncate --size=0 #{@datadir}" +
                  "/documents/music" +
                  "/0.ready/index/index.flush.1" +
@@ -114,15 +120,18 @@ class SigBusHandler < IndexedSearchTest
     end
     sleep @coredump_sleep
     node.stop
-    corecount = node.drop_coredumps(@starttime)
-    puts "#{corecount} core dumps"
-    assert(corecount > 0, "Expected core dumps")
+
+    cores_after = node.find_coredumps(@starttime, corefile)
+    assert_equal(1, cores_after.size, "Expected 1 core file.")
+
     state = read_state(node)
     assert_equal("state=down ts=0.0 operation=sigbus errno=0 code=2 addr=0x0",
                  state, "Unexpected state file content")
     if stoponioerrors
       assert_log_matches(/SYSTEMSTATE.*All partitions are down/);
     end
+
+    node.execute("rm #{cores_after.first} #{cores_after.first}.core")
   end
 
   def teardown
