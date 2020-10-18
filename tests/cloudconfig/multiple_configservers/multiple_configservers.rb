@@ -106,7 +106,8 @@ class MultipleConfigservers < CloudConfigTest
                                      /Fleetcontroller \d: Failure code \d when listening to node at \/vespa\/fleetcontroller/,
                                      /Fleetcontroller \d: Strangely, we already had data from node \d when trying to remove it/,
                                      /Fatal error killed fleet controller/,
-                                     /Unable to load class '.*' because the bundle wiring for zkfacade is no longer valid/))
+                                     /Unable to load class '.*' because the bundle wiring for zkfacade is no longer valid/,
+                                     /connection error adding to remote slobrok:/))
     # stop the first configserver and restart vespa, the other configservers should serve config
     vespa.configservers["0"].stop_configserver({:keep_everything => true})
     debug("4")
