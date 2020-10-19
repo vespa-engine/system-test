@@ -976,9 +976,9 @@ def main(callback_endpoint)
 
   if callback_endpoint
     # This can be specified with :0 to pick an available port, but use the fixed port for now
-    service_endpoint = "#{Socket.gethostname}:#{TestBase::DRUBY_REMOTE_PORT}"
+    service_endpoint = "#{hostname}:#{TestBase::DRUBY_REMOTE_PORT}"
   else
-    service_endpoint = "#{Socket.gethostname}:#{TestBase::DRUBY_REMOTE_PORT}"
+    service_endpoint = "#{hostname}:#{TestBase::DRUBY_REMOTE_PORT}"
   end
 
   Environment.instance.backup_environment_setting(false)
