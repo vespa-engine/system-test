@@ -14,7 +14,7 @@ class MalformedQueryReturns400 < ContainerTest
         Container.new.jetty(true))
 
     start(app)
-    client = @container.https_client.create_client('localhost', @container.http_port)
+    client = @container.https_client.create_client(@container.hostname, @container.http_port)
     response = client.request(Net::HTTP::Get.new('/t est\"'))
 
     assert_equal('400', response.code)
