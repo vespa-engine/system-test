@@ -111,8 +111,7 @@ class TestRunner
                                                               :nostop => @keeprunning,
                                                               :nostop_if_failure => @keeprunning,
                                                               :configserverhostlist => [],
-                                                              :ignore_performance => @ignore_performance,
-                                                              :valgrind => @backend.use_valgrind ? "all" : nil })
+                                                              :ignore_performance => @ignore_performance })
 
             # No need to do more as performance is a test class property
             break if @performance != testclass.performance?
@@ -158,6 +157,8 @@ class TestRunner
     @backend.initialize_testrun(@test_objects)
 
     @backend.sort_testcases(@test_objects).each do |testcase, test_method|
+
+      testcase.valgrind = @backend.use_valgrind ? "all" : nil
 
       @log.info "#{testcase.class}::#{test_method.to_s} requesting nodes"
 
