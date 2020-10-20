@@ -19,7 +19,7 @@ class TlsEnv
   end
 
   private
-  def ssl_ctx_from_pems(ca_pem, cert_pem, privkey_pem)
+  def ssl_ctx_from_pems(ca_pem, cert_pem, privkey_pem, disable_hostname_validation)
     ca_store = OpenSSL::X509::Store.new
     ca_store.add_cert(OpenSSL::X509::Certificate.new(ca_pem)) # TODO multiple CA certs
     ssl_ctx = OpenSSL::SSL::SSLContext.new
@@ -30,7 +30,7 @@ class TlsEnv
     rescue # Not EC, try again with RSA
       ssl_ctx.key = OpenSSL::PKey::RSA.new(privkey_pem)
     end
-    ssl_ctx.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    ssl_ctx.verify_mode = disable_hostname_validation ? OpenSSL::SSL::VERIFY_NONE : OpenSSL::SSL::VERIFY_PEER
     ssl_ctx
   end
 
@@ -54,6 +54,7 @@ class TlsEnv
     end
     json = JSON.parse(File.read(cfg_file))
     files = field_or_throw(json, 'files')
+    disable_hostname_validation = json['disable-hostname-validation'] ? json['disable-hostname-validation'] : false
 
     @ca_certificates_file = field_or_throw(files, 'ca-certificates')
     @certificate_file = field_or_throw(files, 'certificates')
@@ -62,7 +63,7 @@ class TlsEnv
     cert_pem    = File.read(@certificate_file)
     privkey_pem = File.read(@private_key_file)
 
-    @ssl_ctx = ssl_ctx_from_pems(ca_pem, cert_pem, privkey_pem)
+    @ssl_ctx = ssl_ctx_from_pems(ca_pem, cert_pem, privkey_pem, disable_hostname_validation)
   end
 
 

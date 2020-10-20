@@ -20,7 +20,7 @@ class HttpsClient
       http.cert_store = ssl_ctx.cert_store
       http.cert = ssl_ctx.cert
       http.key = ssl_ctx.key
-      http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      http.verify_mode = ssl_ctx.verify_mode
     end
     http
   end
