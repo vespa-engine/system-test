@@ -4,7 +4,7 @@ schema test {
     field id type int {
       indexing: attribute | summary
     }
-    field model type tensor(cat{},vec[256]) {
+    field model type tensor<float>(cat{},vec[256]) {
       indexing: attribute | summary
     }
   }
