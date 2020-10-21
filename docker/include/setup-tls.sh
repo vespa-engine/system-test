@@ -22,6 +22,6 @@ cat << EOF > /opt/vespa/conf/vespa/tls/tls_config.json
 EOF
 cp -a /root/.vespa/system_test_certs/ca.pem /opt/vespa/conf/vespa/tls
 cp -a /root/.vespa/system_test_certs/host.pem /opt/vespa/conf/vespa/tls
-cp -a /root/.vespa/system_test_certs/host.key /opt/vespa/conf/vespa/
+cp -a /root/.vespa/system_test_certs/host.key /opt/vespa/conf/vespa/tls
 chown -R vespa:vespa /opt/vespa/conf/vespa/tls
      
