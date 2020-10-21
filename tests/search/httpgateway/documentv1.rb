@@ -135,9 +135,12 @@ class DocumentV1Test < SearchTest
       "{\"documents\": [],\"pathId\":\"/document/v1/fruit/banana/docid/\"}", 
       response.body)
 
-    # Feed non-URL-encoded ID
+    # Feed non-URL-encoded ID — horrible but customers do this today :'(
     response = http.post("/document/v1/fruit/banana/docid/vg.no/latest/news/!", feedData, httpheaders)
-    assert_equal("404", response.code)   
+    assert_equal("200", response.code)   
+    assert_json_string_equal(
+      "{\"pathId\":\"/document/v1/fruit/banana/docid/vg.no/latest/news/!\", \"id\":\"id:fruit:banana::vg.no/latest/news/!\"}", 
+      response.body)
 
     # Feed challenging ID
     response = http.post("/document/v1/fruit/banana/docid/vg.no%2Flatest%2Fnews%2F%21", feedData, httpheaders)
