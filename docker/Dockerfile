@@ -12,8 +12,9 @@ ENV RUBYLIB=/opt/vespa-systemtests/lib:/opt/vespa-systemtests/tests
 
 COPY . /opt/vespa-systemtests
 
-RUN source /opt/rh/rh-ruby25/enable && \
-    bash -c '/usr/bin/env USER=root /opt/vespa-systemtests/lib/node_server.rb & export PID=$!; sleep 3; kill -9 $PID'
+RUN /opt/vespa-systemtests/docker/include/setup-tls.sh
+
+ENV VESPA_TLS_CONFIG_FILE=/opt/vespa/conf/vespa/tls/tls_config.json
 
 ENTRYPOINT ["bash", "-lc", "source /opt/rh/rh-maven35/enable && source /opt/rh/rh-ruby25/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
 
