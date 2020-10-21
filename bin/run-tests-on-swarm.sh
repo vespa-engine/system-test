@@ -270,7 +270,7 @@ else
   if ! docker service create --replicas $NUMNODES --hostname "{{.Service.Name}}.{{.Task.Slot}}.{{.Task.ID}}.$NETWORK" \
                              ${SERVICE_EXTRA_ARGS[@]+"${SERVICE_EXTRA_ARGS[@]}"} \
                              --name $SERVICE --env NODE_SERVER_OPTS="-c $TESTRUNNER.$NETWORK:27183" \
-                             $BINDMOUNT_OPTS --network $NETWORK --detach $DOCKERIMAGE &> /dev/null; then
+                             $ENV_OPTS $BINDMOUNT_OPTS --network $NETWORK --detach $DOCKERIMAGE &> /dev/null; then
     log_error "Could not create service $SERVICE. Exiting."; docker_cleanup; exit 1
   fi
 fi
@@ -279,6 +279,7 @@ if [[ -n $CONFIGSERVER ]]; then
   if ! docker run --hostname $CONFIGSERVER.$NETWORK --network $NETWORK --name $CONFIGSERVER --detach \
                   -e VESPA_CONFIGSERVERS=$CONFIGSERVER.$NETWORK -e VESPA_CONFIGSERVER_JVMARGS="-verbose:gc -Xms12g -Xmx12g" \
                   -e VESPA_CONFIGSERVER_MULTITENANT=true -e VESPA_SYSTEM=dev --entrypoint bash \
+                  $ENV_OPTS $BINDMOUNT_OPTS \
                   $DOCKERIMAGE -lc "\${VESPA_HOME-/opt/vespa}/bin/vespa-start-configserver && tail -f /dev/null" &> /dev/null; then
     log_error "Could not create configserver $CONFIGSERVER. Exiting."; docker_cleanup; exit 1
   fi
