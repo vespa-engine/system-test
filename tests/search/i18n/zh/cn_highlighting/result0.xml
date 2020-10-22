@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="1">
-  <hit relevancy="1000" source="sc0.num0">
-    <field name="relevancy">1000</field>
-    <field name="sddocname">cn</field>
-    <field name="content">The <hi>Lord</hi> <hi>of</hi> <hi>the</hi> <hi>Rings</hi> is an epic high fantasy novel written by English academic <sep /></field>
-  </hit>
-</result>
