@@ -20,7 +20,11 @@ class ConfigClassPlugin < CloudConfigTest
     @node.copy(selfdir + "app", destproject)
     output = @node.execute("cd #{destproject} && #{maven_command} compile && #{maven_command} javadoc:javadoc")
     output.split("\n").each { |line|
-      if line =~ /\[WARNING\] Could not apply configuration for yahoo-public-repo/ or line =~ /\[WARNING\] Could not transfer metadata/ or line =~ /Failure to transfer com.yahoo.vespa:configgen/ or line =~ /\[WARNING\] Checksum validation failed/
+      if line =~ /\[WARNING\] Could not apply configuration for yahoo-public-repo/ or
+          line =~ /\[WARNING\] Could not transfer metadata/ or
+          line =~ /Failure to transfer com.yahoo.vespa:configgen/ or
+          line =~ /\[WARNING\] Checksum validation failed/ or
+          line =~ /\[WARNING\] Invalid cookie header/
         next
       end
       if /WARNING/ =~ line
