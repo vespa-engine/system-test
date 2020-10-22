@@ -1,9 +1,0 @@
-    <document type="cjkrule" id="id:test:cjkrule::1">
-      <lang>en</lang>
-      <title>Lord of the rings</title>
-    </document>
-
-    <document type="cjkrule" id="id:test:cjkrule::2">
-      <lang>zh-hans</lang>
-      <title>马铃薯</title>
-    </document>
