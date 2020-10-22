@@ -206,7 +206,7 @@ class DocumentV1Test < SearchTest
     end
     assert_equal(numDocuments, found)
 
-    assert(verify_with_retries(http, {"PUT" => 3503, "UPDATE" => 3, "REMOVE" => 3502}, {"PUT" => 4, "REMOVE" => 1}))
+    assert(verify_with_retries(http, {"PUT" => 3504, "UPDATE" => 3, "REMOVE" => 3502}, {"PUT" => 4, "REMOVE" => 1}))
   end
 
   def deploy_application
