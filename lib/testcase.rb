@@ -970,18 +970,6 @@ class TestCase
     end
   end
 
-  def add_factory_report_plugin(title, html)
-    filename = "plugin_#{Dir.entries(dirs.plugindir).length}"
-
-    plugin = "<div id='#{filename}'>\n<h3>#{title}</h3>\n#{html}\n</div>\n"
-
-    path = File.join(dirs.plugindir, filename)
-    puts "Writing plugin file #{path}"
-    File.open(path, 'w') { |file|
-      file.write(plugin)
-    }
-  end
-
   def rename_and_use_sd_file(sdfile, new_name)
     destination_file = "#{dirs.tmpdir}/#{new_name}"
     system("cp #{sdfile} #{destination_file}")

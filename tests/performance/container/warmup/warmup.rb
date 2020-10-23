@@ -101,27 +101,6 @@ class ContainerWarmup < PerformanceTest
     puts("Time before stable: " + times[stable_index].to_s)
     write_report([parameter_filler('legend', legend + '-historic_stable_time'),
                   metric_filler('stable_time', times[stable_index])])
-
-    add_factory_report_plugin("Warmup qps", create_graph_plugin(times, request_rates))
-  end
-
-  def create_graph_plugin(times, request_rates)
-    scripts = "<script src='https://www.google.com/jsapi' " +
-        "type='text/javascript'></script>\n" +
-        "<script src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/" +
-        "jquery.min.js' type='text/javascript'></script>\n" +
-        "<script src='/javascripts/plugin_chart.js' type='text/javascript'>" +
-        "</script>\n"
-
-    plugin = scripts +
-        "<div id='plugin_chart' title='Query rate from startup' " +
-        "data=\"[['time', 'qps'], "
-
-
-    for i in (0..request_rates.size-1)
-      plugin += "['#{times[i]}',#{request_rates[i]}],"
-    end
-    plugin += "]\" xlabel='time since first query' ylabel='qps'></div>\n"
   end
 
   def setup_graphs(legend, min_time, max_time)
