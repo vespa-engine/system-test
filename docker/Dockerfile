@@ -7,7 +7,7 @@ RUN yum -y install --setopt=skip_missing_names_on_install=False \
                    rh-ruby25-rubygem-net-telnet devtoolset-9-gcc-c++ git && \
     source /opt/rh/rh-ruby25/enable && \
     source /opt/rh/devtoolset-9/enable && \
-    gem install libxml-ruby gnuplot distribution test-unit builder concurrent-ruby facter && \
+    gem install libxml-ruby gnuplot distribution test-unit builder concurrent-ruby && \
     alternatives --set java java-11-openjdk.x86_64 && \
     alternatives --set javac java-11-openjdk.x86_64 && \
     yum --enablerepo='*' clean all 
