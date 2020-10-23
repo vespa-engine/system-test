@@ -43,6 +43,11 @@ if ! docker service ls &> /dev/null; then
   echo "ERROR: Requires Docker swarm to be running."; echo; usage
 fi
 
+readonly BASEDIR=/tmp/testresults
+readonly NETWORK="$USER-vespa"
+readonly TESTRUNNER="$USER-testrunner"
+readonly SERVICE="$USER-vespanode"
+
 # Option parsing
 POSITIONAL=()
 CONFIGSERVER=""
@@ -151,7 +156,7 @@ if [[ ${#TESTFILES[@]} > 0 ]]; then
   done
 fi
 if [[ -n $CONFIGSERVER ]]; then
-  TESTRUNNER_OPTS="$TESTRUNNER_OPTS -c $CONFIGSERVER"
+  TESTRUNNER_OPTS="$TESTRUNNER_OPTS -c $CONFIGSERVER.$NETWORK"
 fi
 if $CONSOLEOUTPUT; then
   TESTRUNNER_OPTS="$TESTRUNNER_OPTS -o"
@@ -184,10 +189,6 @@ if [[ ${#ENVS[@]} > 0 ]]; then
   done
 fi
 
-readonly BASEDIR=/tmp/testresults
-readonly NETWORK="$USER-vespa"
-readonly TESTRUNNER="$USER-testrunner"
-readonly SERVICE="$USER-vespanode"
 VESPAVERSION=$(docker run --rm $BINDMOUNT_OPTS --entrypoint bash $DOCKERIMAGE -lc '${VESPA_HOME-/opt/vespa}/bin/vespa-print-default version')
 case "$VESPAVERSION" in
     7.*.0) VESPAVERSION=7-SNAPSHOT
