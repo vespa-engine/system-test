@@ -41,7 +41,7 @@ class HttpfeedingGwAndDocproc < IndexedSearchTest
     wait_for_hitcount("query=title:basil", 0)
     wait_for_hitcount("query=title:gundam", 0)
     wait_for_hitcount("query=title:onegai", 1)
-    wait_for_hitcount("query=title:elisa", 1)
+    wait_for_hitcount("query=title:tindersticks", 1)
   end
 
   def require_that_feeding_with_json_works_tas
@@ -50,7 +50,7 @@ class HttpfeedingGwAndDocproc < IndexedSearchTest
     wait_for_hitcount("query=title:basil", 0)
     wait_for_hitcount("query=title:gundam", 0)
     wait_for_hitcount("query=title:onegai", 1)
-    wait_for_hitcount("query=title:elisa", 1)
+    wait_for_hitcount("query=title:tindersticks", 1)
   end
 
   def httpclient_feed(feed_file)
