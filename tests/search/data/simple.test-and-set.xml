@@ -18,11 +18,11 @@
   </document>
 
   <document documenttype="simple" documentid="id:test:simple::2">
-    <language>no</language>
-    <title>elisa</title>
-    <description>Rosablogger Elisa-Sofie fanget i luksusfellen igjen. Se bildene</description>
+    <language>en </language>
+    <title>Tindersticks</title>
+    <description>Tindersticks are an English alternative rock band formed in Nottingham in 1991</description>
     <date>99</date>
-    <surl>http://www.vg.no/article.dll?id=3293492394</surl>
+    <surl>https://en.wikipedia.org/wiki/Tindersticks</surl>
   </document>
 
   <update documenttype="simple" documentid="id:test:simple::1" condition="simple.date == 32">

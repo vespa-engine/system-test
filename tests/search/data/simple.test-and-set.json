@@ -23,11 +23,11 @@
     {
         "put": "id:test:simple::2",
         "fields": {
-            "language": "no",
-            "title": "elisa",
-            "description": "Rosablogger Elisa-Sofie fanget i luksusfellen igjen. Se bildene",
+            "language": "en",
+            "title": "Tindersticks",
+            "description": "Tindersticks are an English alternative rock band formed in Nottingham in 1991",
             "date": 99,
-            "surl": "http://www.vg.no/article.dll?id=3293492394"
+            "surl": "https://en.wikipedia.org/wiki/Tindersticks"
         }
     },
     {
