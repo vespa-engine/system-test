@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="1">
-  <hit relevancy="1000" source="sc0.num0">
-    <field name="relevancy">1000</field>
-    <field name="sddocname">specialtokens</field>
-    <field name="id">specialtokens6</field>
-    <field name="content">wal mart foo</field>
-  </hit>
-</result>
