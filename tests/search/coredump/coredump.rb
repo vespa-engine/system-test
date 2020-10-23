@@ -41,10 +41,12 @@ class CoreDump < SearchTest
 
     vespa.adminserver.execute("/bin/kill -SIGSEGV " + pid)
 
+    after = vespa.adminserver.find_coredumps(@starttime, corefile)
+
     3.times do
+      break unless after.empty?
       sleep @coredump_sleep
       after = vespa.adminserver.find_coredumps(@starttime, corefile)
-      break unless after.empty?
     end
 
     assert_equal(0, before.size, "Expected no coredumps.")
