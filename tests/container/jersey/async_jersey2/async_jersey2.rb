@@ -32,7 +32,7 @@ class AsyncJersey2 < ContainerTest
 
   def async_should_work
     path = "/rest-api/async"
-    numRequests = 200
+    numRequests = 1000
     requiredSuccesses = 2/3.to_f * numRequests
 
     successfulRequests = multiple_http_get_requests(path, numRequests)
@@ -41,7 +41,7 @@ class AsyncJersey2 < ContainerTest
 
   def sync_should_fail
     path = "/rest-api/sync"
-    numRequests = 200
+    numRequests = 1000
     allowedSuccesses = 1/3.to_f * numRequests
 
     successfulRequests = multiple_http_get_requests(path, numRequests)
