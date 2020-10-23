@@ -63,10 +63,9 @@ class MixedTensorPerfTest < PerformanceTest
     profiler_report(MIXED_BASIC)
   end
 
-  # TODO: Set graph limits
   def get_graphs
     [
-      get_latency_graph(MIXED_BASIC, 1, 10000)
+      get_latency_graph(MIXED_BASIC, 8.5, 10.5)
     ]
   end
 
