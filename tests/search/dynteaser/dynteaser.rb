@@ -34,6 +34,9 @@ class DynTeaser < IndexedSearchTest
     compare("query=content:time", selfdir+"time.result", "content2")
     compare("query=content:time", selfdir+"time.result", "content3")
 
+    # Return if CentOS, code below depends on linguistics library suppporting CJK languages
+    return if linux_distribution_CentOS?
+
     puts "Query: korean"
     compare("query=content:%EB%8F%8C%EB%93%A4%EC%9D%B4+content:%EC%9E%A5%EA%B8%B0%EB%82%98&language=ko", selfdir+"ko.result", "dyncontent")
     compare("query=content:%EB%8F%8C%EB%93%A4%EC%9D%B4+content:%EC%9E%A5%EA%B8%B0%EB%82%98&language=ko", selfdir+"ko.result", "content2")

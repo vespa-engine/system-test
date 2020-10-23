@@ -83,9 +83,6 @@ module TestBase
   # absolute path to systemtests/tests/cloudconfig/
   CLOUDCONFIG = existing_of(INSTALL_DIR + "/cloudconfig/", REPO_DIR + "/cloudconfig/")
 
-  # Default config protocol version used by system tests
-  DEFAULT_CONFIG_PROTOCOL_VERSION = 3
-
   # absolute path to systemtests/tests/performance/
   PERFORMANCE = existing_of(INSTALL_DIR + "/performance/", REPO_DIR + "/performance/")
 
@@ -827,6 +824,9 @@ module TestBase
     end
   end
 
+  def linux_distribution_CentOS?
+    File.open('/etc/redhat-release') { |f| f.readline }.start_with?('CentOS')
+  end
 
   private
   def print_and_remove_debug_output_from_getvespaconfig(output)
