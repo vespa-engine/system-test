@@ -54,6 +54,7 @@ class CoreDump < SearchTest
     assert_equal(fullcorefile, after.first, "Expected coredump #{fullcorefile}.")
 
     if fullcorefile.end_with?("lz4")
+      sleep @coredump_sleep # We are decompressing the file. Allow some time to let the kernel finish writing it.
       filetype = vespa.adminserver.execute("file -b " + fullcorefile + " | cut -d ',' -f1").strip
       assert_match(/^(data|LZ4 compressed data \(v.*\))$/, filetype, "Unexpected file type.")
       lz4_program = get_lz4_program(vespa.adminserver)
