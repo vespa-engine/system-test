@@ -62,12 +62,12 @@ class TensorUpdatePerfTest < PerformanceTest
 
   def get_graphs
     [
-      get_feed_throughput_graph("assign",   10, 28000, 37500),
-      get_feed_throughput_graph("assign",  100, 13000, 15400),
+      get_feed_throughput_graph("assign",   10, 28000, 38000),
+      get_feed_throughput_graph("assign",  100, 13000, 15500),
       get_feed_throughput_graph("assign", 1000,  1500,  1750),
-      get_feed_throughput_graph("modify",   10, 29000, 37500),
-      get_feed_throughput_graph("modify",  100, 28500, 37500),
-      get_feed_throughput_graph("modify", 1000, 28500, 37500)
+      get_feed_throughput_graph("modify",   10, 29000, 38000),
+      get_feed_throughput_graph("modify",  100, 28500, 38000),
+      get_feed_throughput_graph("modify", 1000, 28500, 38000)
     ]
   end
 
