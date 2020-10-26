@@ -34,8 +34,8 @@ class TensorCanvass < PerformanceTest
 
   def get_graphs
     [
-      get_graph("default", 0.0, 100000.0),
-      get_graph("ludicrous", 0.0, 100000.0),
+      get_graph("default", 2.0, 4.0),
+      get_graph("ludicrous", 2.0, 4.0),
     ]
   end
 
