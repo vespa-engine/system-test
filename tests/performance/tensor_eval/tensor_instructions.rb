@@ -38,7 +38,6 @@ class TensorInstructionBenchmarkTest < PerformanceTest
   end
 
   def parse_out(output)
-    puts "output >>>\n#{output}\n<<<"
     bm_type = nil
     bm_codec = nil
     output.split("\n").each do |parse_line|
