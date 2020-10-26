@@ -18,7 +18,7 @@ class TensorInstructionBenchmarkTest < PerformanceTest
 
   def test_instruction_benchmark
     set_description("Test performance of low-level tensor instructions")
-    deploy_app(SearchApp.new.sd(selfdir+"foobar.sd"))
+    deploy_app(SearchApp.new.sd(selfdir+"dummy.sd"))
     searchnode = vespa.search['search'].first
     output = searchnode.execute("#{Environment.instance.vespa_home}/bin/vespa-tensor-instructions-benchmark")
     @graphs = []
