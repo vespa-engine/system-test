@@ -20,7 +20,7 @@ class TensorInstructionBenchmarkTest < PerformanceTest
     set_description("Test performance of low-level tensor instructions")
     deploy_app(SearchApp.new.sd(selfdir+"dummy.sd"))
     searchnode = vespa.search['search'].first
-    output = searchnode.execute("#{Environment.instance.vespa_home}/bin/vespa-tensor-instructions-benchmark")
+    output = searchnode.execute("#{Environment.instance.vespa_home}/bin/vespa-tensor-instructions-benchmark --limit-implementations")
     @graphs = []
     parse_out(output)
   end
@@ -38,7 +38,6 @@ class TensorInstructionBenchmarkTest < PerformanceTest
   end
 
   def parse_out(output)
-    puts "output >>>\n#{output}\n<<<"
     bm_type = nil
     bm_codec = nil
     output.split("\n").each do |parse_line|
