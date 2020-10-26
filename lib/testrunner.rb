@@ -152,7 +152,9 @@ class TestRunner
   end
 
   def run_tests
-    thread_pool = Concurrent::FixedThreadPool.new(@node_allocator.max_available > 0 ? @node_allocator.max_available : 1)
+    max_threads = [@node_allocator.max_available, @nodelimit ? @nodelimit : 0, 1].max
+    @log.debug("Running tests with a thread pool of #{max_threads} threads.")
+    thread_pool = Concurrent::FixedThreadPool.new(max_threads)
 
     @backend.initialize_testrun(@test_objects)
 
