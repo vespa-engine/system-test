@@ -5,7 +5,7 @@ require 'doc_generator'
 class DisjointSourceOnlyDocuments < SearchTest
 
   def make_app(disable_merges:)
-    SearchApp.new.sd(SEARCH_DATA + 'music.sd').
+    SearchApp.new.sd(selfdir + 'test.sd').
         config(ConfigOverride.new('vespa.config.content.stor-filestor').
                add('bucket_merge_chunk_size', 1024). # Enforce triggering chunk limit edge case
                add('common_merge_chain_optimalization_minimum_size', 8)).
@@ -68,7 +68,7 @@ class DisjointSourceOnlyDocuments < SearchTest
   def feed_doc_range_to_same_location(from_incl, to_incl)
     (from_incl..to_incl).each{|i|
       # Use docs with location-affinity to ensure we put everything into the same bucket
-      doc = Document.new('music', "id:test:music:n=1:#{i}")
+      doc = Document.new('test', "id:test:test:n=1:#{i}")
       # Add some uncompressable document data to ensure we will trivially exceed configured merge chunk size
       doc.add_field('title', StringGenerator.rand_string(500, 600))
       puts doc.documentid
