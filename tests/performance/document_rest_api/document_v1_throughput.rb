@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright 2020 Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'performance_test'
@@ -23,14 +24,14 @@ class DocumentV1Throughput < PerformanceTest
         :fbench => { :clients => 4, :use_post => true },
         :data => "{ \"fields\": { \"text\": \"GNU's not UNIX\" } }"
       } => {
-        'qps' => { :y_min =>  2700, :y_max =>  3200 },
+        'qps' => { :y_min =>  2700, :y_max =>  3250 },
         '95p' => { :y_min =>   1.4, :y_max =>   1.7 }
       },
       {
         :legend => 'GET small data 4 clients',
         :fbench => { :clients => 4, :use_post => false }
       } => {
-        'qps' => { :y_min =>  5800, :y_max =>  6200 },
+        'qps' => { :y_min =>  5750, :y_max =>  6200 },
         '95p' => { :y_min =>   0.7, :y_max =>   0.9 }
       },
       {
@@ -45,7 +46,7 @@ class DocumentV1Throughput < PerformanceTest
         :legend =>  'GET large data 128 clients',
         :fbench => { :clients => 128, :use_post => false }
       } => {
-        'qps' => { :y_min => 29500, :y_max => 32500 },
+        'qps' => { :y_min => 29500, :y_max => 33000 },
         '95p' => { :y_min =>   4.9, :y_max =>   5.5 }
       }
     }
