@@ -48,9 +48,9 @@ class TensorEvalExpensivePerfTest < TensorEvalPerfTest
       get_latency_graphs_for_rank_profile(SPARSE_MULTIPLY_NO_OVERLAP),
       get_latency_graphs_for_rank_profile(SPARSE_MULTIPLY_PARTIAL_OVERLAP),
       get_latency_graphs_for_eval_type(MATRIX_PRODUCT),
-      get_latency_graph_for_rank_profile(TENSOR_MATCH_50X50,            50, 380, 475),
-      get_latency_graph_for_rank_profile(SPARSE_MULTIPLY_NO_OVERLAP, 50, 215, 240),
-      get_latency_graph_for_rank_profile(SPARSE_MULTIPLY_PARTIAL_OVERLAP, 10, 280, 340),
+      get_latency_graph_for_rank_profile(TENSOR_MATCH_50X50,            50, 380, 450),
+      get_latency_graph_for_rank_profile(SPARSE_MULTIPLY_NO_OVERLAP, 50, 210, 235),
+      get_latency_graph_for_rank_profile(SPARSE_MULTIPLY_PARTIAL_OVERLAP, 10, 275, 330),
       get_latency_graph_for_rank_profile("tensor_matrix_product_25x25", 25, 1.70, 2.20)
     ]
   end
