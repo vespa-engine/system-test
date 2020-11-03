@@ -58,7 +58,7 @@ module Perf
     def end
       @end_cpu_used, @end_cpu_total = load
       cpu_util = (@end_cpu_used - @start_cpu_used).to_f / (@end_cpu_total - @start_cpu_total)
-      @data['cpuutil'] = cpu_util.nan? ? 0.0 : util
+      @data['cpuutil'] = cpu_util.nan? ? 0.0 : cpu_util
     end
 
     def fill
