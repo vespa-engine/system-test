@@ -183,7 +183,7 @@ def test_multiple_position_fields
   end
 
   def assert_geo_result(query, result_file)
-    assert_result_with_timeout(1, query, result_file)
+    assert_result_with_timeout(2, query, result_file)
   end
 
   def teardown
