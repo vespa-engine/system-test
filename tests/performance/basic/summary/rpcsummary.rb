@@ -40,7 +40,8 @@ class RpcSummaryTest < PerformanceTest
     profiler_start if run_profiler
     run_fbench2(qrserver,
                 @queryfile,
-                {:runtime => run_time, :clients => clients, :append_str => append_str})
+                {:runtime => run_time, :clients => clients, :append_str => append_str},
+                [parameter_filler('runtime', run_time)])
     profiler_report("profile-summary") if run_profiler
   end
 
@@ -49,13 +50,7 @@ class RpcSummaryTest < PerformanceTest
     set_description("Test performance fetching many summaries.")
     @graphs = [
       {
-        :x => 'legend',
-        :y => 'qps',
-        :title => 'Summary performance',
-        :historic => true,
-      },
-      {
-        :x => 'legend',
+        :x => 'runtime',
         :y => 'qps',
         :title => 'Summary performance, runtime 20',
         :historic => true,
@@ -64,7 +59,7 @@ class RpcSummaryTest < PerformanceTest
         :y_max => 310,
       },
       {
-        :x => 'legend',
+        :x => 'runtime',
         :y => 'qps',
         :title => 'Summary performance, runtime 60',
         :historic => true,
