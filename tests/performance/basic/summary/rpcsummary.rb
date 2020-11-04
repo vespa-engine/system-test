@@ -10,8 +10,6 @@ require 'document'
 
 class RpcSummaryTest < PerformanceTest
 
-  TYPE='type'
-
   def initialize(*args)
     super(*args)
     @queryfile = selfdir + 'query.txt'
@@ -43,7 +41,7 @@ class RpcSummaryTest < PerformanceTest
     run_fbench2(qrserver,
                 @queryfile,
                 {:runtime => run_time, :clients => clients, :append_str => append_str})
-    profiler_report("#{TYPE}-#{type}") if run_profiler
+    profiler_report("profile-summary") if run_profiler
   end
 
 
@@ -51,13 +49,13 @@ class RpcSummaryTest < PerformanceTest
     set_description("Test performance fetching many summaries.")
     @graphs = [
       {
-        :x => TYPE,
+        :x => 'legend',
         :y => 'qps',
         :title => 'Summary performance',
         :historic => true,
       },
       {
-        :x => TYPE,
+        :x => 'legend',
         :y => 'qps',
         :title => 'Summary performance, runtime 20',
         :historic => true,
@@ -66,7 +64,7 @@ class RpcSummaryTest < PerformanceTest
         :y_max => 310,
       },
       {
-        :x => TYPE,
+        :x => 'legend',
         :y => 'qps',
         :title => 'Summary performance, runtime 60',
         :historic => true,
