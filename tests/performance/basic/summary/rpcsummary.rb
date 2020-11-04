@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'performance_test'
 require 'app_generator/search_app'
@@ -38,12 +38,11 @@ class RpcSummaryTest < PerformanceTest
     set_owner("balder")
   end
 
-  def run_custom_fbench(append_str, qrserver, clients, run_time, type, run_profiler)
+  def run_custom_fbench(append_str, qrserver, clients, run_time, run_profiler)
     profiler_start if run_profiler
     run_fbench2(qrserver,
                 @queryfile,
-                {:runtime => run_time, :clients => clients, :append_str => append_str},
-                [parameter_filler(TYPE, type)])
+                {:runtime => run_time, :clients => clients, :append_str => append_str})
     profiler_report("#{TYPE}-#{type}") if run_profiler
   end
 
@@ -62,7 +61,7 @@ class RpcSummaryTest < PerformanceTest
         :y => 'qps',
         :title => 'Summary performance, runtime 20',
         :historic => true,
-        :filter => { :type => [ TYPE ], :runtime => [ 20 ]},
+        :filter => { :runtime => [ 20 ]},
         :y_min => 270,
         :y_max => 310,
       },
@@ -71,7 +70,7 @@ class RpcSummaryTest < PerformanceTest
         :y => 'qps',
         :title => 'Summary performance, runtime 60',
         :historic => true,
-        :filter => { :type => [ TYPE ], :runtime => [ 60 ]},
+        :filter => { :runtime => [ 60 ]},
         :y_min => 290,
         :y_max => 320,
       }
@@ -85,10 +84,8 @@ class RpcSummaryTest < PerformanceTest
     feedbuffer(@feedbuffer, feed_params)
 
     container = (vespa.qrserver["0"] or vespa.container.values.first)
-    run_custom_fbench("", container, 24, 20, "fdispatch", false)
-    run_custom_fbench("&dispatch.summaries=true", container, 24, 20, "rpc", false)
-    run_custom_fbench("", container, 24, 60, "fdispatch", true)
-    run_custom_fbench("&dispatch.summaries=true", container, 24, 60, "rpc", true)
+    run_custom_fbench("&dispatch.summaries=true", container, 24, 20, false)
+    run_custom_fbench("&dispatch.summaries=true", container, 24, 60, true)
   end
 
   def teardown
