@@ -54,7 +54,7 @@ class RpcSummaryTest < PerformanceTest
         :y => 'qps',
         :title => 'Summary performance, runtime 20',
         :historic => true,
-        :filter => { :runtime => [ 20 ]},
+        :filter => { 'runtime' => [ 20 ]},
         :y_min => 270,
         :y_max => 310,
       },
@@ -63,7 +63,7 @@ class RpcSummaryTest < PerformanceTest
         :y => 'qps',
         :title => 'Summary performance, runtime 60',
         :historic => true,
-        :filter => { :runtime => [ 60 ]},
+        :filter => { 'runtime' => [ 60 ]},
         :y_min => 290,
         :y_max => 320,
       }
