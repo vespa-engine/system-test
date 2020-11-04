@@ -40,8 +40,7 @@ class RpcSummaryTest < PerformanceTest
     profiler_start if run_profiler
     run_fbench2(qrserver,
                 @queryfile,
-                {:runtime => run_time, :clients => clients, :append_str => append_str},
-                [parameter_filler('runtime', run_time)])
+                {:runtime => run_time, :clients => clients, :append_str => append_str})
     profiler_report("profile-summary") if run_profiler
   end
 
