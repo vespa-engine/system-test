@@ -5,10 +5,7 @@ class DistributionBitTest < MultiProviderStorageTest
 
   def setup
     set_owner("vekterli")
-    deploy_app(default_app.distribution_bits(4))
-    #timeout = 600 # Sadly, a 5 min wait is hardcoded in the code for min bits
-                   # split updates. May make that configurable to cut down on
-                   # the time needed to run this test
+    deploy_app(default_app.distribution_bits(8))
     start
   end
 
@@ -53,7 +50,7 @@ class DistributionBitTest < MultiProviderStorageTest
     doc = Document.new("music", "id:test:music:n=1:doc2")
     vespa.document_api_v1.put(doc)
 
-    assert_equal(4, get_split_level())
+    assert_equal(8, get_split_level())
     puts "Have performed #{get_split_count()} splits"
     #assert_equal(2, get_split_count())
 

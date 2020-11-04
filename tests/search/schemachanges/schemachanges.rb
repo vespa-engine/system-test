@@ -198,8 +198,7 @@ class SchemaChanges < IndexedSearchTest
   def test_documentdb_addition_and_removal
     set_description("Test that document databases can be added and removed")
     @test_dir = selfdir + "docdb/"
-    deploy_output = deploy_app(SearchApp.new.sd(@test_dir + "testa.sd").
-                               content_distribution_type("legacy"))
+    deploy_output = deploy_app(SearchApp.new.sd(@test_dir + "testa.sd"))
     start
     postdeploy_wait(deploy_output)
     enable_proton_debug_log
@@ -211,8 +210,7 @@ class SchemaChanges < IndexedSearchTest
     assert_documentdbs_exist(["testa"])
 
     puts "add 'testb' documentdb"
-    deploy_output = deploy_app(SearchApp.new.sd(@test_dir + "testa.sd").sd(@test_dir + "testb.sd").
-                               content_distribution_type("legacy"))
+    deploy_output = deploy_app(SearchApp.new.sd(@test_dir + "testa.sd").sd(@test_dir + "testb.sd"))
     wait_for_content_cluster_config_generation(deploy_output)
     postdeploy_wait(deploy_output)
     vespa.adminserver.execute("vespa-configproxy-cmd -m cache")
@@ -225,8 +223,7 @@ class SchemaChanges < IndexedSearchTest
 
     puts "remove 'testb' documentdb"
     deploy_output = deploy_app(SearchApp.new.sd(@test_dir + "testa.sd").
-                               validation_override("content-type-removal").
-                               content_distribution_type("legacy"))
+                               validation_override("content-type-removal"))
     wait_for_content_cluster_config_generation(deploy_output)
     postdeploy_wait(deploy_output)
     wait_for_hitcount("d&nocache", 1)
@@ -243,8 +240,7 @@ class SchemaChanges < IndexedSearchTest
     assert_hitcount("f3:%3E29&nocache", 2)
 
     puts "re-add 'testb' documentdb"
-    deploy_output = deploy_app(SearchApp.new.sd(@test_dir + "testa.sd").sd(@test_dir + "testb.sd").
-                               content_distribution_type("legacy"))
+    deploy_output = deploy_app(SearchApp.new.sd(@test_dir + "testa.sd").sd(@test_dir + "testb.sd"))
     wait_for_content_cluster_config_generation(deploy_output)
     postdeploy_wait(deploy_output)
     wait_for_hitcount("d&nocache", 2)

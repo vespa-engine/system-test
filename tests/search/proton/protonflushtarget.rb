@@ -13,8 +13,7 @@ class ProtonFlushTargetTest < IndexedSearchTest
     set_description("Test that attributes, index, and docsummary are flushed to disk")
     deploy_app(SearchApp.new.
                          sd(selfdir+"test.sd").
-                         tune_searchnode({:flushstrategy => {:native => {:component => {:maxage => 60}}}}).
-                         content_distribution_type("legacy"))
+                         tune_searchnode({:flushstrategy => {:native => {:component => {:maxage => 60}}}}))
     start
     vespa.adminserver.logctl("searchnode:proton.flushengine.flushengine", "debug=on")
     vespa.adminserver.logctl("searchnode:proton.flushengine.flushengine", "spam=on")
@@ -49,7 +48,7 @@ class ProtonFlushTargetTest < IndexedSearchTest
 
     assert_files_flushed(90, status, "snapshot-")
 
-    assert_log_matches("Pruned TLS to token 5", 20)
+    assert_log_matches("Pruned TLS to token 6", 20)
     assert_log_matches("No target to flush", 20)
     assert_log_matches("New target, Num flushed: 1", 20)
     feed(:file => selfdir + "docs.5.xml")

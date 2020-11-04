@@ -6,10 +6,10 @@
     </admin>
 
     <config name='vespa.config.content.fleetcontroller'> 
-        <ideal_distribution_bits>1</ideal_distribution_bits> 
+        <ideal_distribution_bits>8</ideal_distribution_bits> 
     </config> 
     <config name='vespa.config.content.core.stor-distributormanager'> 
-        <minsplitcount>1</minsplitcount> 
+        <minsplitcount>8</minsplitcount> 
     </config>
 
     <container version="1.0" id="container" >
