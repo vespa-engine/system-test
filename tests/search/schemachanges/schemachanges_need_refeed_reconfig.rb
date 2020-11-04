@@ -36,7 +36,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
 
     puts "need refeed reconfig of f2"
     redeploy_output = redeploy("test.1.sd")
-    assert_match(/Consider removing data and re-feed document type 'test'.*\n.*Field 'f2' changed: add index aspect/, redeploy_output)
+    assert_match(/Consider re-indexing document type 'test' in cluster 'search'.*\n.*Field 'f2' changed: add index aspect/, redeploy_output)
     # feed should be accepted
     feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
     # search & docsum should still work
