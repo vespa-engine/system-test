@@ -4,10 +4,6 @@
     <adminserver hostalias="node1" />
   </admin>
 
-  <config name="vespa.config.content.core.stor-server">
-    <use_content_node_btree_bucket_db>true</use_content_node_btree_bucket_db>
-  </config>
-
   <container id="default" version="1.0">
     <search />
     <document-processing />
