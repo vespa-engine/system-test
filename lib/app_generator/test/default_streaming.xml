@@ -10,9 +10,6 @@
     <min_storage_up_ratio>0.1</min_storage_up_ratio>
     <storage_transition_time>0</storage_transition_time>
   </config>
-  <config name="vespa.config.content.core.stor-server">
-    <use_content_node_btree_bucket_db>true</use_content_node_btree_bucket_db>
-  </config>
 
   <container id="default" version="1.0">
     <search />
