@@ -118,7 +118,7 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
       :y => MEMORY,
       :title => 'Historic memory statistics',
       :filter => {TYPE => MEMORY},
-      :y_min => 5000000,
+      :y_min => 4000000,
       :y_max => 250000000,
       :historic => true
     }
