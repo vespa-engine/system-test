@@ -10,6 +10,8 @@ class ReferencedTensorTest < ParentChildTestBase
 
   def deploy_and_start
     app = SearchApp.new.sd(get_sub_test_path("campaign.sd"), { :global => true }).sd(get_test_path("ad.sd")).
+               config(ConfigOverride.new("vespa.config.search.core.proton").
+                   add("tensor_implementation", "FAST_VALUE")).
                search_dir(get_test_path("search"))
     app.sd(get_sub_test_path("grandcampaign.sd"), { :global => true }) if is_grandparent_test
     deploy_app(app)
@@ -67,7 +69,23 @@ class ReferencedTensorTest < ParentChildTestBase
 
   def assert_tensor_fields(doc_type, field_name, exp_tensors)
     result = search("query=sddocname:#{doc_type}&presentation.format=json&ranking=unranked&summary=mysummary")
-    assert_field_values(result, field_name, exp_tensors)
+    result.sort_results_by("documentid")
+    assert_equal(exp_tensors.size, result.hitcount)
+    for i in 0...exp_tensors.size do
+      exp_value = exp_tensors[i]
+      act_value = result.hit[i].field[field_name]
+      puts "#{i}: '#{exp_value}' == '#{act_value}' ?"
+      if (exp_value && exp_value.include?('cells'))
+        assert_equal(1, exp_value.keys.size)
+        assert(act_value.include?('cells'))
+        assert_equal(1, act_value.keys.size)
+        exp_cells = exp_value['cells'].sort_by { |cell| cell['address'].to_s }
+        act_cells = act_value['cells'].sort_by { |cell| cell['address'].to_s }
+        assert_equal(exp_cells, act_cells)
+      else
+        assert_equal(exp_value, act_value)
+      end
+    end
   end
 
   def assert_field_values(result, field_name, exp_values)
