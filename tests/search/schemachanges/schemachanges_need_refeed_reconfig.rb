@@ -43,6 +43,14 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     assert_result("sddocname:test&nocache", @test_dir + "result.1.xml")
     assert_hitcount("f1:b&nocache", 2)
     assert_hitcount("f3:%3E29&nocache", 2)
+
+    # redeploy again to trigger reindexing, then wait for up to 5 minutes for document 1 to be reindexed
+    redeploy("test.1.sd")
+    start = Time.now
+    until /<field name="a1">30<\/field>/ =~ search("sddocname:test&nocache") or Time.now - start > 300 # seconds
+      sleep 1
+    end
+    assert_result("sddocname:test&nocache", @test_dir + "result.2.xml")
   end
 
   def test_that_changing_the_tensor_type_of_a_tensor_attribute_needs_refeed
