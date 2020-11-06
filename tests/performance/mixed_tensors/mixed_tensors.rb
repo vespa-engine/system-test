@@ -65,7 +65,7 @@ class MixedTensorPerfTest < PerformanceTest
 
   def get_graphs
     [
-      get_latency_graph(MIXED_BASIC, 8.5, 10.5)
+      get_latency_graph(MIXED_BASIC, 5.0, 6.0)
     ]
   end
 
