@@ -54,7 +54,7 @@ class RpcSummaryTest < PerformanceTest
         :title => 'Summary performance, runtime 20',
         :historic => true,
         :filter => { :runtime => [ 20 ]},
-        :y_min => 240,
+        :y_min => 220,
         :y_max => 270,
       },
       {
