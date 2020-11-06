@@ -10,8 +10,6 @@ class ReferencedTensorTest < ParentChildTestBase
 
   def deploy_and_start
     app = SearchApp.new.sd(get_sub_test_path("campaign.sd"), { :global => true }).sd(get_test_path("ad.sd")).
-               config(ConfigOverride.new("vespa.config.search.core.proton").
-                   add("tensor_implementation", "FAST_VALUE")).
                search_dir(get_test_path("search"))
     app.sd(get_sub_test_path("grandcampaign.sd"), { :global => true }) if is_grandparent_test
     deploy_app(app)

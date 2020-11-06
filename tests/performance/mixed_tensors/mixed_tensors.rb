@@ -34,9 +34,7 @@ class MixedTensorPerfTest < PerformanceTest
 
   def create_app
     SearchApp.new.sd(selfdir + "test.sd").
-      search_dir(selfdir + "search").
-      config(ConfigOverride.new("vespa.config.search.core.proton").
-             add("tensor_implementation", "FAST_VALUE"))
+      search_dir(selfdir + "search")
   end
 
   def compile_data_gen
