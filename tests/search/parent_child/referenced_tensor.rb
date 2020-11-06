@@ -75,7 +75,7 @@ class ReferencedTensorTest < ParentChildTestBase
       exp_value = exp_tensors[i]
       act_value = result.hit[i].field[field_name]
       puts "#{i}: '#{exp_value}' == '#{act_value}' ?"
-      assert_tensors_equal(exp_value, act_value)
+      assert_tensor_field(exp_value, result, field_name, i)
     end
   end
 

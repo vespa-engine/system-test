@@ -3,6 +3,7 @@
 class TensorResult
   attr_reader :cells
   attr_reader :dimensions
+  attr_reader :value
 
   def extract_cell_dimensions(input_cells)
     dimhash = {}
@@ -28,8 +29,11 @@ class TensorResult
     @value = value
     @cells = nil
     @dimensions = nil
-    if value && value.include?('cells') && value.keys.size == 1
+    input_cells = value
+    if value.kind_of?(Hash) && value.include?('cells') && value.keys.size == 1
       input_cells = value['cells']
+    end
+    if input_cells.kind_of?(Array)
       @dimensions = extract_cell_dimensions(input_cells)
       @cells = extract_cell_values(input_cells, @dimensions)
     end
@@ -55,7 +59,12 @@ class TensorResult
   end
 
   def ==(other)
-    to_s == other.to_s
+    if @cells
+      return @dimensions == other.dimensions &&
+             @cells == other.cells
+    else
+      return @value == other || @value == other.value
+    end
   end
 
 end
