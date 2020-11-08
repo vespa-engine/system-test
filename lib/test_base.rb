@@ -42,7 +42,7 @@ require 'nodetypes/group'
 require 'nodetypes/searchnode'
 require 'nodetypes/fleetcontroller'
 require 'nodetypes/slobrok'
-require 'nodetypes/metricproxy_node'
+require 'nodetypes/metricsproxy_node'
 require 'executeerror'
 require 'environment'
 
