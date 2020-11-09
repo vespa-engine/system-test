@@ -1422,8 +1422,18 @@ module TestBase
     hostname = configserver_hosts[0]
 
     puts("Deleting application from config server (hostname #{hostname}, app #{app})")
-    result = delete_tenant_application(tenant, app, hostname)
-    if result.code.to_i != 200
+    status_code = 0
+    iteration = 0
+    until (status_code == 200 || iteration > 5) do
+      puts "Deleting application, iteration #{iteration}"
+      result = delete_tenant_application(tenant, app, hostname)
+      status_code = result.code.to_i
+      if status_code != 200
+        sleep 1
+      end
+      iteration = iteration + 1
+    end
+    if status_code != 200
       raise "Unable to delete application #{app}, got status code #{result.code}"
     end
   end
