@@ -75,16 +75,7 @@ class ReferencedTensorTest < ParentChildTestBase
       exp_value = exp_tensors[i]
       act_value = result.hit[i].field[field_name]
       puts "#{i}: '#{exp_value}' == '#{act_value}' ?"
-      if (exp_value && exp_value.include?('cells'))
-        assert_equal(1, exp_value.keys.size)
-        assert(act_value.include?('cells'))
-        assert_equal(1, act_value.keys.size)
-        exp_cells = exp_value['cells'].sort_by { |cell| cell['address'].to_s }
-        act_cells = act_value['cells'].sort_by { |cell| cell['address'].to_s }
-        assert_equal(exp_cells, act_cells)
-      else
-        assert_equal(exp_value, act_value)
-      end
+      assert_tensor_field(exp_value, result, field_name, i)
     end
   end
 

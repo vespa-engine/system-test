@@ -19,6 +19,7 @@ require 'sentinel'
 require 'hit'
 require 'resultset'
 require 'tenant_rest_api'
+require 'tensor_result'
 require 'vespa_hosts'
 require 'vespa_coredump'
 require 'rpc/rpcwrapper'
@@ -629,12 +630,10 @@ module TestBase
   # Asserts that the result from query_or_result has the expected tensor cells in the given tensor field, for a given hit number.
   def assert_tensor_field(expected_cells, query_or_result, field_name, hit=0)
     result = (query_or_result.is_a?(String) ? search(query_or_result, 0) : query_or_result)
-    actual_cells = result.hit[hit].field[field_name]['cells']
-    sort_tensor_cells(actual_cells)
-    sort_tensor_cells(expected_cells)
-
-    explanation = "Expected hit[#{hit}].#{field_name} == '#{expected_cells}'"
-    assert_tensor_cells(expected_cells, actual_cells, explanation)
+    field_result = result.hit[hit].field[field_name]
+    exp_value = TensorResult.new(expected_cells)
+    act_value = TensorResult.new(field_result)
+    assert_equal(exp_value, act_value)
   end
 
   def assert_tensor_cells(expected_cells, actual_cells, explanation="")
