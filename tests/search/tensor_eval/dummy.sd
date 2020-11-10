@@ -1,0 +1,7 @@
+search dummy {
+  document dummy {
+    field title type string {
+      indexing: index | summary
+    }
+  }
+}
