@@ -45,36 +45,6 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     assert_hitcount("f3:%3E29&nocache", 2)
   end
 
-  def test_that_changing_the_tensor_type_of_a_tensor_attribute_needs_refeed
-    set_description("Tests that changing the tensor type of a tensor attribute needs refeed")
-    @test_dir = selfdir + "change_tensor_type/"
-
-    # Deploy
-    deploy_output = deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
-    start
-    postdeploy_wait(deploy_output)
-
-    # Feed should be accepted
-    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
-    assert_tensor_field([{'address'=>{'x'=>'0'}, 'value'=>0.0},
-                         {'address'=>{'x'=>'1'}, 'value'=>47.0}], do_search, "f1")
-
-    # Redeploy with changed tensor type
-    redeploy_output = redeploy("test.1.sd")
-    assert_match("Field 'f1' changed: tensor type: 'tensor(x[2])' -> 'tensor(x[3])'", redeploy_output)
-    # Existing document no longer has content as type is changed
-    assert(do_search.hit[0].field["f1"] == nil)
-
-    # Feed should be accepted
-    feed_output = feed(:file => @test_dir + "feed.1.json", :timeout => 20, :exceptiononfailure => false)
-    result = do_search
-    assert_hitcount(result, 2);
-    assert(result.hit[0].field["f1"] == nil)
-    assert_tensor_field([{'address'=>{'x'=>'0'}, 'value'=>0.0},
-                         {'address'=>{'x'=>'1'}, 'value'=>0.0},
-                         {'address'=>{'x'=>'2'}, 'value'=>47.0}], result, "f1", 1)
-  end
-
   def do_search
     result = search("query=sddocname:test&format=json")
     result.sort_results_by("id")
