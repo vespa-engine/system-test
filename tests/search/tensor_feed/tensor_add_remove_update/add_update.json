@@ -19,21 +19,17 @@
       },
       "mixed_attr": {
         "add": {
-          "cells": [
-            { "address": { "x": "b", "y": "0" }, "value": 5.0 },
-            { "address": { "x": "b", "y": "1" }, "value": 6.0 },
-            { "address": { "x": "c", "y": "0" }, "value": 7.0 },
-            { "address": { "x": "c", "y": "1" }, "value": 8.0 }
+          "blocks": [
+            { "address": { "x": "b" }, "values": [5.0, 6.0] },
+            { "address": { "x": "c" }, "values": [7.0, 8.0] }
           ]
         }
       },
       "mixed_field": {
         "add": {
-          "cells": [
-            { "address": { "x": "b", "y": "0" }, "value": 5.0 },
-            { "address": { "x": "b", "y": "1" }, "value": 6.0 },
-            { "address": { "x": "c", "y": "0" }, "value": 7.0 },
-            { "address": { "x": "c", "y": "1" }, "value": 8.0 }
+          "blocks": [
+            { "address": { "x": "b" }, "values": [5.0, 6.0] },
+            { "address": { "x": "c" }, "values": [7.0, 8.0] }
           ]
         }
       },
