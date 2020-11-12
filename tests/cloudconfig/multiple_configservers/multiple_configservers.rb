@@ -174,10 +174,6 @@ class MultipleConfigservers < CloudConfigTest
     assert_equal(0, apps.length)
     apps = list_applications_v2(@node1.hostname, "default")
     assert_equal(0, apps.length)
-    # Verify that app does not exist in file system on the node it was deleted on (other nodes will be cleaned up asynchronously)
-    @node1.execute("sync") # Sync to disk to  make sure we read latest changes
-    # Returns array with exit code and output from 'ls'. Check for exit code 2, which means that the path does not exist
-    assert_equal("2",  @node2.execute("ls #{sesssion_path}", {:exitcode => true, :exceptiononfailure => false})[0])
   end
 
   def scratch_zk(node)
