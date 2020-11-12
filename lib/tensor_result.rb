@@ -58,10 +58,19 @@ class TensorResult
     to_s
   end
 
+  def approx_eq(cells_a, cells_b)
+    return false unless (cells_a.length == cells_b.length)
+    cells_a.zip(cells_b).each do |a,b|
+      return false unless a[0] == b[0]
+      return false unless (a[1]-b[1]).abs < 1e-6
+    end
+    return true
+  end
+
   def ==(other)
     if @cells
       return @dimensions == other.dimensions &&
-             @cells == other.cells
+             approx_eq(@cells, other.cells)
     else
       return @value == other || @value == other.value
     end
