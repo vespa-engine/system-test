@@ -132,7 +132,7 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
       :filter => {TYPE => QUERY, LABEL => label},
       :historic => true,
       :y_min => 2.5,
-      :y_max => 120
+      :y_max => 30
     }
   end
 
@@ -143,7 +143,7 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
       :title => "Historic qps (#{label})",
       :filter => {TYPE => QUERY, LABEL => label},
       :historic => true,
-      :y_min => 0.5,
+      :y_min => 90,
       :y_max => 150
     }
   end
