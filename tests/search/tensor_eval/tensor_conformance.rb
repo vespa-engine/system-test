@@ -19,7 +19,7 @@ class TensorConformanceTest < IndexedSearchTest
         '${B}vespa-tensor-conformance verify'
     (exitcode, output) = searchnode.execute(command, {:exitcode => true, :exceptiononfailure => false})
     puts "Exit code from vespa-tensor-conformance verify: #{exitcode}"
-    assert_equal(0, exitcode)
+    assert_equal(0, exitcode.to_i)
   end
 
   def teardown
