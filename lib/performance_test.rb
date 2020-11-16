@@ -291,7 +291,7 @@ class PerformanceTest < TestCase
 
     reporter_pids = {}
     vespa.nodeproxies.values.each do | node |
-      node.execute("chown root:root /tmp/perf-*.map || true")
+      node.execute("chown root:root /tmp/perf-*.map 2>/dev/null || true")
 
       dir_name = perf_dir_name(label, node)
       node.execute("mkdir -p #{dir_name}")
@@ -342,7 +342,6 @@ class PerformanceTest < TestCase
         pidlist.each do |pid|
           begin
             Timeout.timeout(10) do
-              node.execute('ps auxwww')
               node.kill_pid(pid, 'INT')
             end
           rescue Timeout::Error, ExecuteError
