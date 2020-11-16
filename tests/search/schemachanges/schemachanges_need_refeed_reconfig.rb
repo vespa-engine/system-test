@@ -42,7 +42,9 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     reindexingUrl = "https://#{vespa.configservers["0"].name}:#{vespa.configservers["0"].ports[1]}/application/v2/tenant/#{@tenant_name}/application/#{@application_name}/environment/prod/region/default/instance/default/reindexing"
     startTime = Time.now
     until Time.now - startTime > 120 # seconds
-      reindexing = get_json(http_request(reindexingUrl))
+      response = http_request(URI(reindexingUrl), {})
+      next if not response.code == 200
+      reindexing = get_json(response)
       next if not reindexing["clusters"] or not reindexing["clusters"]["search"] or not reindexing["clusters"]["search"]["ready"]["test"]
       puts "Reindexing ready at #{Time.at(reindexing["clusters"]["search"]["ready"]["test"] * 1e-3).getutc}"
       break
