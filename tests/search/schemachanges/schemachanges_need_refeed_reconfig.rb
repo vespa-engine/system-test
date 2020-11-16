@@ -37,12 +37,6 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     puts "need refeed reconfig of f2"
     redeploy_output = redeploy("test.1.sd")
     assert_match(/Consider re-indexing document type 'test' in cluster 'search'.*\n.*Field 'f2' changed: add index aspect/, redeploy_output)
-    # feed should be accepted
-    feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
-    # search & docsum should still work
-    assert_result("sddocname:test&nocache", @test_dir + "result.1.xml")
-    assert_hitcount("f1:b&nocache", 2)
-    assert_hitcount("f3:%3E29&nocache", 2)
 
     # Wait up to 2 minutes for reindexing to be ready
     until Time.now - start > 120 # seconds
@@ -52,6 +46,13 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
       break
     end
     assert(reindexing["clusters"]["search"]["ready"].has_key?("test"), "Reindexing failed to become ready within 2 minutes after config change")
+
+    # Feed should be accepted
+    feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
+    # Search & docsum should still work
+    assert_result("sddocname:test&nocache", @test_dir + "result.1.xml")
+    assert_hitcount("f1:b&nocache", 2)
+    assert_hitcount("f3:%3E29&nocache", 2)
 
     # Redeploy again to trigger reindexing, then wait for up to 5 minutes for document 1 to be reindexed
     redeploy("test.1.sd")
