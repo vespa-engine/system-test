@@ -44,10 +44,19 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     assert_hitcount("f1:b&nocache", 2)
     assert_hitcount("f3:%3E29&nocache", 2)
 
-    # redeploy again to trigger reindexing, then wait for up to 5 minutes for document 1 to be reindexed
+    # Wait up to 2 minutes for reindexing to be ready
+    until Time.now - start > 120 # seconds
+      reindexing = vespa.configservers["0"].get_json_over_http("/application/v2/tenant/#{@tenant_name}/application/#{@application_name}/environment/prod/region/default/instance/default/reindexing", 19071)
+      next if not reindexing["clusters"] or not reindexing["clusters"]["search"] or not reindexing["clusters"]["search"]["ready"]["test"]
+      puts "Reindexing ready at #{Time.at(reindexing["clusters"]["search"]["ready"]["test"] * 1e-3).getutc}"
+      break
+    end
+    assert(reindexing["clusters"]["search"]["ready"].has_key?("test"), "Reindexing failed to become ready within 2 minutes after config change")
+
+    # Redeploy again to trigger reindexing, then wait for up to 5 minutes for document 1 to be reindexed
     redeploy("test.1.sd")
     start = Time.now
-    until /<field name="a1">30<\/field>/ =~ search("sddocname:test&nocache") or Time.now - start > 300 # seconds
+    until search("sddocname:test&nocache").filter { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start > 300 # seconds
       sleep 1
     end
     assert_result("sddocname:test&nocache", @test_dir + "result.2.xml")
