@@ -41,7 +41,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     # Wait up to 2 minutes for reindexing to be ready
     tenant = use_shared_configservers ? @tenant_name : "default"
     application = use_shared_configservers ? @application_name : "default"
-    reindexingUrl = "https://#{vespa.configservers["0"].name}:#{vespa.configservers["0"].ports[1]}/application/v2/tenant/#{@tenant_name}/application/#{@application_name}/environment/prod/region/default/instance/default/reindexing"
+    reindexingUrl = "https://#{vespa.configservers["0"].name}:#{vespa.configservers["0"].ports[1]}/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/reindexing"
     startTime = Time.now
     until Time.now - startTime > 120 # seconds
       response = http_request(URI(reindexingUrl), {})
