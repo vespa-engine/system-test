@@ -39,9 +39,10 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     assert_match(/Consider re-indexing document type 'test' in cluster 'search'.*\n.*Field 'f2' changed: add index aspect/, redeploy_output)
 
     # Wait up to 2 minutes for reindexing to be ready
+    reindexingUrl = "https://#{vespa.configservers["0"].name}:#{vespa.configservers["0"].ports[1]}/application/v2/tenant/#{@tenant_name}/application/#{@application_name}/environment/prod/region/default/instance/default/reindexing"
     startTime = Time.now
     until Time.now - startTime > 120 # seconds
-      reindexing = vespa.configservers["0"].get_json_over_http("/application/v2/tenant/#{@tenant_name}/application/#{@application_name}/environment/prod/region/default/instance/default/reindexing", 19071)
+      reindexing = get_json(http_request(reindexingUrl))
       next if not reindexing["clusters"] or not reindexing["clusters"]["search"] or not reindexing["clusters"]["search"]["ready"]["test"]
       puts "Reindexing ready at #{Time.at(reindexing["clusters"]["search"]["ready"]["test"] * 1e-3).getutc}"
       break
