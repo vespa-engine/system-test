@@ -329,7 +329,7 @@ class NodeServer
   def get_unblessed_processes
     my_pid = Process.pid
     ps_output = `ps alxww`
-    testcase_output(ps_output)
+  # testcase_output(ps_output)
 
     pid_ppid = {}
     pid_comm = {}
