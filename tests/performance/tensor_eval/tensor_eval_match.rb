@@ -2,7 +2,7 @@
 
 require 'performance/tensor_eval/tensor_eval'
 
-class TensorEvalExpensivePerfTest < TensorEvalPerfTest
+class TensorEvalMatchPerfTest < TensorEvalPerfTest
 
   def setup
     super
