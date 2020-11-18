@@ -33,6 +33,22 @@
           ]
         }
       },
+      "adv_mixed_attr": {
+        "add": {
+          "blocks": [
+            { "address": { "x": "a", "y": "d" }, "values": [3.0] },
+            { "address": { "x": "b", "y": "c" }, "values": [4.0] }
+          ]
+        }
+      },
+      "adv_mixed_field": {
+        "add": {
+          "blocks": [
+            { "address": { "x": "a", "y": "d" }, "values": [3.0] },
+            { "address": { "x": "b", "y": "c" }, "values": [4.0] }
+          ]
+        }
+      },
       "non_existing_sparse_attr": {
         "add": {
           "cells": [

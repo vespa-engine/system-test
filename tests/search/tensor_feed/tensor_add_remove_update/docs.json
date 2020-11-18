@@ -24,6 +24,18 @@
           { "address": { "x": "a" }, "values": [1.0, 2.0] },
           { "address": { "x": "b" }, "values": [3.0, 4.0] }
         ]
+      },
+      "adv_mixed_attr": {
+        "blocks": [
+          { "address": { "x": "a", "y": "c" }, "values": [1.0] },
+          { "address": { "x": "a", "y": "d" }, "values": [2.0] }
+        ]
+      },
+      "adv_mixed_field": {
+        "blocks": [
+          { "address": { "x": "a", "y": "c" }, "values": [1.0] },
+          { "address": { "x": "a", "y": "d" }, "values": [2.0] }
+        ]
       }
     }
   }
