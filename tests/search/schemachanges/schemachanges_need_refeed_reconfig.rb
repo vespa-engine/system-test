@@ -10,12 +10,16 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     set_owner("geirst")
   end
 
+  # Application and tenant names changes based on the context this is run in.
+  def application_url
+    tenant = use_shared_configservers ? @tenant_name : "default"
+    application = use_shared_configservers ? @application_name : "default"
+    "https://#{vespa.configservers["0"].name}:#{vespa.configservers["0"].ports[1]}/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
+  end
+
   def test_need_refeed_reconfig
-    set_description("Test that a document database needs refeed when adding index aspect to existing field")
+    set_description("Test that a document database needs refeed when adding index aspect to existing field, and that this can be solved by reindexing")
     @test_dir = selfdir + "need_refeed/"
-    exp_logged = 
-      Regexp.union(/proton\.server\.configvalidator.*Cannot add index field `f2', it has existed as a field before/,
-                   /proton\.server\.documentdb.*Cannot apply new config snapshot, new schema is in conflict with old schema or history/)
     deploy_output = deploy_app(SearchApp.new.sd(use_sdfile("test.0.sd")))
     start
     postdeploy_wait(deploy_output)
@@ -38,18 +42,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     redeploy_output = redeploy("test.1.sd")
     assert_match(/Consider re-indexing document type 'test' in cluster 'search'.*\n.*Field 'f2' changed: add index aspect/, redeploy_output)
 
-    tenant = use_shared_configservers ? @tenant_name : "default"
-    application = use_shared_configservers ? @application_name : "default"
-    application_url = "https://#{vespa.configservers["0"].name}:#{vespa.configservers["0"].ports[1]}/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
-
-    # Wait for convergence of all services in the application — specifically document processors 
-    start_time = Time.now
-    until get_json(http_request(URI(application_url + "serviceconverge"), {}))["converged"] or Time.now - start_time > 60 # seconds
-      sleep 1
-    end
-    assert(Time.now - start_time < 60, "Services should converge on new generation within the minute")
-    assert(3 == get_json(http_request(URI(application_url + "serviceconverge"), {}))["wantedGeneration"], "Should converge on generation 3")
-    puts "Services converged on new config generation after #{Time.now - start_time} seconds"
+    wait_for_convergence(3)
 
     # Feed should be accepted
     feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
@@ -58,6 +51,86 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     assert_hitcount("f1:b&nocache", 2)
     assert_hitcount("f3:%3E29&nocache", 2)
 
+    trigger_reindexing
+
+    # Redeploy again to trigger reindexing, then wait for up to 5 minutes for document 1 to be reindexed
+    redeploy("test.1.sd")
+    start_time = Time.now
+    until search("sddocname:test&nocache").hit.select { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start_time > 300 # seconds
+      sleep 1
+    end
+    assert_result("sddocname:test&nocache", @test_dir + "result.2.xml")
+    puts "Reindexing complete after #{Time.now - start_time} seconds"
+  end
+
+  def test_need_refeed_after_indexing_mode_change
+    set_description("Test that a document database needs refeed when changing indexing mode of a document, and that this can be solved by reindexing")
+    @test_dir = selfdir + "need_refeed/"
+
+    # This whole framework was never meant to allow changing indexing mode >_<
+    @params[:search_type] = "STREAMING"
+    app = SearchApp.new.sd(use_sdfile("test.1.sd")).
+                                   config(ConfigOverride.new('vespa.config.content.fleetcontroller').
+                                          add('ideal_distribution_bits', 8)).
+                                   config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
+                                          add('minsplitcount', 8))
+    deploy_output = deploy_app(app)
+    start
+    postdeploy_wait(deploy_output)
+    enable_proton_debug_log
+    vespa.adminserver.logctl("searchnode:proton.server.proton_config_fetcher", "debug=on,spam=on")
+    vespa.adminserver.logctl("searchnode:proton.server.bootstrapconfigmanager", "debug=on,spam=on")
+    vespa.adminserver.logctl("searchnode:proton.server.documentdbconfigmanager", "debug=on,spam=on")
+    vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config.proxy.ConfigProxyRpcServer", "debug=on")
+    vespa.adminserver.logctl("searchnode:common.configmanager", "debug=on,spam=on")
+    vespa.adminserver.logctl("searchnode:proton.server.documentdb", "debug=on")
+    vespa.adminserver.logctl("searchnode:proton.server.proton", "debug=on,spam=on")
+    vespa.adminserver.logctl("searchnode:common.configagent", "debug=on,spam=on")
+    vespa.adminserver.logctl("searchnode:engine.transportserver", "debug=on,spam=on")
+    enable_proton_debug_log
+    proton = vespa.search["search"].first
+    proton.logctl2("proton.docsummary.documentstoreadapter", "all=on")
+    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")
+
+    @params[:search_type] = "ELASTIC"
+    redeploy_output = deploy_app(app)
+    assert_match(/Document type 'test' in cluster 'search' changed indexing mode from 'streaming' to 'indexed'/, redeploy_output)
+
+    wait_for_convergence(3)
+
+    # Feed should be accepted
+    feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
+    # Search & docsum should still work, but only the document fed while indexing mode was "index" (ELASTIC) has had indexing script run
+    assert_result("sddocname:test&nocache", @test_dir + "result.1.xml")
+    assert_hitcount("f1:b&nocache", 1)          # No index for old document
+    assert_hitcount("f3:%3E29&nocache", 2)      # But attributes work
+
+    trigger_reindexing
+
+    # Redeploy again to trigger reindexing, then wait for up to 5 minutes for document 1 to be reindexed
+    deploy_app(app)
+    start_time = Time.now
+    until search("sddocname:test&nocache").hit.select { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start_time > 300 # seconds
+      sleep 1
+    end
+    assert_result("sddocname:test&nocache", @test_dir + "result.2.xml")
+    puts "Reindexing complete after #{Time.now - start_time} seconds"
+  end
+
+  # Wait for convergence of all services in the application — specifically document processors 
+  def wait_for_convergence(generation)
+    start_time = Time.now
+    until get_json(http_request(URI(application_url + "serviceconverge"), {}))["converged"] or Time.now - start_time > 60 # seconds
+      sleep 1
+    end
+    assert(Time.now - start_time < 60, "Services should converge on new generation within the minute")
+    assert(generation == get_json(http_request(URI(application_url + "serviceconverge"), {}))["wantedGeneration"],
+           "Should converge on generation #{generation}")
+    puts "Services converged on new config generation after #{Time.now - start_time} seconds"
+  end
+
+  # Wait for new document types to be discovered by the reindexer, and then trigger reindexing of the whole corpus
+  def trigger_reindexing
     # Read baseline reindexing status — very first reindexing is a no-op in the reindexer controller
     response = http_request(URI(application_url + "reindexing"), {})
     assert(response.code.to_i == 200, "Request should be successful")
@@ -75,15 +148,6 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     current_reindexing_timestamp = get_json(response)["status"]["readyMillis"]
     assert(previous_reindexing_timestamp < current_reindexing_timestamp,
            "Previous reindexing timestamp (#{previous_reindexing_timestamp}) should be after current (#{current_reindexing_timestamp})")
-
-    # Redeploy again to trigger reindexing, then wait for up to 5 minutes for document 1 to be reindexed
-    redeploy("test.1.sd")
-    start_time = Time.now
-    until search("sddocname:test&nocache").hit.select { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start_time > 300 # seconds
-      sleep 1
-    end
-    assert_result("sddocname:test&nocache", @test_dir + "result.2.xml")
-    puts "Reindexing complete after #{Time.now - start_time} seconds"
   end
 
   def test_that_changing_the_tensor_type_of_a_tensor_attribute_needs_refeed
