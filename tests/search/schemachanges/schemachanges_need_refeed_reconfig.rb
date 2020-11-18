@@ -38,22 +38,18 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     redeploy_output = redeploy("test.1.sd")
     assert_match(/Consider re-indexing document type 'test' in cluster 'search'.*\n.*Field 'f2' changed: add index aspect/, redeploy_output)
 
-    # Wait up to 2 minutes for reindexing to be ready
     tenant = use_shared_configservers ? @tenant_name : "default"
     application = use_shared_configservers ? @application_name : "default"
-    reindexingUrl = "http://#{vespa.configservers["0"].name}:#{vespa.configservers["0"].ports[1]}/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/reindexing"
-    puts reindexingUrl
-    startTime = Time.now
-    until Time.now - startTime > 120 # seconds
+    application_url = "https://#{vespa.configservers["0"].name}:#{vespa.configservers["0"].ports[1]}/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
+
+    # Wait for convergence of all services in the application — specifically document processors 
+    start_time = Time.now
+    until get_json(http_request(URI(application_url + "serviceconverge"), {}))["converged"] or Time.now - start_time > 60 # seconds
       sleep 1
-      response = http_request(URI(reindexingUrl), {})
-      next if not response.code == 200
-      reindexing = get_json(response)
-      next if not reindexing["clusters"] or not reindexing["clusters"]["search"] or not reindexing["clusters"]["search"]["ready"]["test"]
-      puts "Reindexing ready at #{Time.at(reindexing["clusters"]["search"]["ready"]["test"] * 1e-3).getutc}"
-      break
     end
-    assert(reindexing["clusters"]["search"]["ready"].has_key?("test"), "Reindexing failed to become ready within 2 minutes after config change")
+    assert(Time.now - start_time < 60, "Services should converge on new generation within the minute")
+    assert(3 == get_json(http_request(URI(application_url + "serviceconverge"), {}))["wantedGeneration"], "Should converge on generation 3")
+    puts "Services converged on new config generation after #{Time.now - start_time} seconds"
 
     # Feed should be accepted
     feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
@@ -62,13 +58,32 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     assert_hitcount("f1:b&nocache", 2)
     assert_hitcount("f3:%3E29&nocache", 2)
 
+    # Read baseline reindexing status — very first reindexing is a no-op in the reindexer controller
+    response = http_request(URI(application_url + "reindexing"), {})
+    assert(response.code.to_i == 200, "Request should be successful")
+    previous_reindexing_timestamp = get_json(response)["status"]["readyMillis"]
+
+    # Allow the reindexing maintainer some time to run, and mark the first no-op reindexing as done
+    sleep 60
+
+    # Trigger reindexing through reindexing API in /application/v2, and verify it was triggered
+    response = http_request_post(URI(application_url + "reindex"), {})
+    assert(response.code.to_i == 200, "Request should be successful")
+
+    response = http_request(URI(application_url + "reindexing"), {})
+    assert(response.code.to_i == 200, "Request should be successful")
+    current_reindexing_timestamp = get_json(response)["status"]["readyMillis"]
+    assert(previous_reindexing_timestamp < current_reindexing_timestamp,
+           "Previous reindexing timestamp (#{previous_reindexing_timestamp}) should be after current (#{current_reindexing_timestamp})")
+
     # Redeploy again to trigger reindexing, then wait for up to 5 minutes for document 1 to be reindexed
     redeploy("test.1.sd")
-    startTime = Time.now
-    until search("sddocname:test&nocache").filter { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - startTime > 300 # seconds
+    start_time = Time.now
+    until search("sddocname:test&nocache").hit.select { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start_time > 300 # seconds
       sleep 1
     end
     assert_result("sddocname:test&nocache", @test_dir + "result.2.xml")
+    puts "Reindexing complete after #{Time.now - start_time} seconds"
   end
 
   def test_that_changing_the_tensor_type_of_a_tensor_attribute_needs_refeed
