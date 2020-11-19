@@ -97,6 +97,7 @@ class NodeServer
   # Sets the address of the config server in the environment
   def set_addr_configserver(config_hostnames)
     hosts =  config_hostnames.map { |h| h.split(":").first }
+    @addr_configserver = hosts
     Environment.instance.set_addr_configserver(@testcase, hosts)
   end
 
