@@ -10,6 +10,7 @@ class MixedTensorPerfTest < PerformanceTest
   FBENCH_RUNTIME = 30
   LABEL = "label"
   MIXED_BASIC = "mixed_basic"
+  MULTI_MODEL = "multi_model"
 
   def initialize(*args)
     super(*args)
@@ -21,7 +22,8 @@ class MixedTensorPerfTest < PerformanceTest
     @graphs = get_graphs
     deploy_and_prepare_data
     feed_docs(5000)
-    run_fbench_helper
+    run_fbench_helper(MIXED_BASIC, @single_model_file)
+    run_fbench_helper(MULTI_MODEL, @multi_model_file)
   end
 
   def deploy_and_prepare_data
@@ -29,7 +31,7 @@ class MixedTensorPerfTest < PerformanceTest
     start
     @container = vespa.container.values.first
     compile_data_gen
-    gen_query_file(100)
+    gen_query_files(100)
   end
 
   def create_app
@@ -42,28 +44,31 @@ class MixedTensorPerfTest < PerformanceTest
     @container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@data_gen} #{selfdir}/data_gen.cpp")
   end
 
-  def gen_query_file(num_queries)
-    @query_file = dirs.tmpdir + "queries.txt"
-    @container.execute("#{@data_gen} queries #{num_queries} > #{@query_file}")
+  def gen_query_files(num_queries)
+    @single_model_file = dirs.tmpdir + "single_model_queries.txt"
+    @multi_model_file = dirs.tmpdir + "multi_model_queries.txt"
+    @container.execute("#{@data_gen} queries single #{num_queries} > #{@single_model_file}")
+    @container.execute("#{@data_gen} queries multi #{num_queries} > #{@multi_model_file}")
   end
 
   def feed_docs(num_docs)
     @container.execute("#{@data_gen} puts #{num_docs} | vespa-feeder")
   end
 
-  def run_fbench_helper
-    fillers = [parameter_filler(LABEL, MIXED_BASIC)]
+  def run_fbench_helper(label, query_file)
+    fillers = [parameter_filler(LABEL, label)]
     profiler_start
     run_fbench2(@container,
-                @query_file,
+                query_file,
                 {:runtime => FBENCH_RUNTIME, :clients => 1, :append_str => "&summary=minimal&timeout=10"},
                 fillers)
-    profiler_report(MIXED_BASIC)
+    profiler_report(label)
   end
 
   def get_graphs
     [
-      get_latency_graph(MIXED_BASIC, 5.0, 6.0)
+      get_latency_graph(MIXED_BASIC, 5.0, 6.0),
+      get_latency_graph(MULTI_MODEL, 5.0, 10.0)
     ]
   end
 

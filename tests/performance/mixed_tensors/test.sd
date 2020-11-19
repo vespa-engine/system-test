@@ -8,8 +8,12 @@ schema test {
       indexing: attribute | summary
       attribute: fast-search
     }
+    field models type tensor<float>(model{},cat{},vec[256]) {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
   }
-  rank-profile default {
+  rank-profile single_model {
     first-phase {
       expression: max_score
     }
@@ -31,6 +35,32 @@ schema test {
     # result: tensor(cat{},vec[256]), where a subset of the categories are selected based on query(q_cat_keys).
     macro inline select_categories() {
       expression: query(q_cat_keys) * attribute(model)
+    }
+  }
+  rank-profile multi_model {
+    first-phase {
+      expression: model_max_score
+    }
+    macro inline model_max_score() {
+      expression: reduce( model_categories_scaled_scores, max )
+    }
+    # result: tensor(model{},cat{}), where all categories scores are scaled by query(q_model_cat_scores).
+    macro inline model_categories_scaled_scores() {
+      expression: model_categories_scores * query(q_model_cat_scores)
+    }
+    # result: tensor(model{},cat{}),
+    # where each vector is reduced (with sum) and an exp function is applied on the result.
+    macro inline model_categories_scores() {
+      expression: map ( reduce( model_categories_raw_scores, sum, vec ), f(x)(1.0 / (1.0 + exp(0.0 - x)) ) )
+    }
+    # result: tensor(model{},cat{},vec[256]), where all vectors are multiplied with query(q_user_vec).
+    macro inline model_categories_raw_scores() {
+      expression: join ( select_model_categories, query(q_user_vec), f(x,y)(x*y) )
+    }
+    # result: tensor(model{},cat{},vec[256]),
+    # where the model and a subset of the categories are selected based on query(q_model_cat_keys).
+    macro inline select_model_categories() {
+      expression: query(q_model_cat_keys) * attribute(models)
     }
   }
   document-summary minimal {
