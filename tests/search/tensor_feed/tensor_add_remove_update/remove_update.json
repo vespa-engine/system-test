@@ -32,6 +32,20 @@
             { "x": "b" }
           ]
         }
+      },
+      "adv_mixed_attr": {
+        "remove": {
+          "addresses": [
+            { "y": "c" }
+          ]
+        }
+      },
+      "adv_mixed_field": {
+        "remove": {
+          "addresses": [
+            { "y": "c" }
+          ]
+        }
       }
     }
   }

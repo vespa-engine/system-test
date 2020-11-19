@@ -13,6 +13,12 @@ search test {
     field mixed_field type tensor(x{},y[2]) {
       indexing: summary
     }
+    field adv_mixed_attr type tensor(x{},y{},z[1]) {
+      indexing: attribute | summary
+    }
+    field adv_mixed_field type tensor(x{},y{},z[1]) {
+      indexing: summary
+    }
     field non_existing_sparse_attr type tensor(x{}) {
       indexing: attribute | summary
     }
