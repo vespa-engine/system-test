@@ -31,7 +31,7 @@ class DocumentV1Throughput < PerformanceTest
         :legend => 'GET small data 4 clients',
         :fbench => { :clients => 4, :use_post => false }
       } => {
-        'qps' => { :y_min =>  5700, :y_max =>  6250 },
+        'qps' => { :y_min =>  5600, :y_max =>  6250 },
         '95p' => { :y_min =>   0.7, :y_max =>   0.9 }
       },
       {
