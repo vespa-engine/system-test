@@ -14,7 +14,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
   def application_url
     tenant = use_shared_configservers ? @tenant_name : "default"
     application = use_shared_configservers ? @application_name : "default"
-    "https://#{vespa.configservers["0"].hostname}:#{vespa.configservers["0"].ports[1]}/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
+    "https://#{vespa.nodeproxies.first[1].addr_configserver[0]}:#{19071}/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
   end
 
   def test_need_refeed_reconfig
