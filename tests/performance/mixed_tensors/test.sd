@@ -8,11 +8,12 @@ schema test {
       indexing: attribute | summary
       attribute: fast-search
     }
+    field models type tensor<float>(model{},cat{},vec[256]) {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
   }
   rank-profile default {
-    first-phase {
-      expression: max_score
-    }
     macro inline max_score() {
       expression: reduce( categories_scaled_scores, max )
     }
@@ -30,7 +31,24 @@ schema test {
     }
     # result: tensor(cat{},vec[256]), where a subset of the categories are selected based on query(q_cat_keys).
     macro inline select_categories() {
-      expression: query(q_cat_keys) * attribute(model)
+      expression: query(q_cat_keys) * select_model
+    }
+  }
+  rank-profile single_model inherits default {
+    first-phase {
+      expression: max_score
+    }
+    macro inline select_model() {
+      expression: attribute(model)
+    }
+  }
+  rank-profile multi_model inherits default {
+    first-phase {
+      expression: max_score
+    }
+    # result: tensor(cat{},vec[256]), the selected model from the mixed tensor based on query(q_model).
+    macro inline select_model() {
+      expression: reduce(query(q_model) * attribute(models), sum, model)
     }
   }
   document-summary minimal {
