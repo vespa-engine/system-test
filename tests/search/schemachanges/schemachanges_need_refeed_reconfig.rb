@@ -168,7 +168,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
 
     # Redeploy with changed tensor type
     redeploy_output = redeploy("test.1.sd")
-    assert_match("Field 'f1' changed: tensor type: 'tensor(x[2])' -> 'tensor(x[3])'", redeploy_output)
+    assert_match("Field 'f1' changed: field type: 'tensor(x[2])' -> 'tensor(x[3])'", redeploy_output)
     # Existing document no longer has content as type is changed
     assert(do_search.hit[0].field["f1"] == nil)
 
