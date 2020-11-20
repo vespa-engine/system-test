@@ -103,30 +103,32 @@ void print_puts(std::ostream& os, const StringVector& models, RandomStrings& str
 const std::string LB = "%7B";
 const std::string RB = "%7D";
 
-void print_cat_tensor(std::ostream& os, const std::string* model, const StringVector& cats, bool rnd_value) {
+void print_query_tensor(std::ostream& os, const std::string& dim_name, const StringVector& values, bool rnd_value) {
     os << LB;
-    for (size_t i = 0; i < cats.size(); ++i) {
+    for (size_t i = 0; i < values.size(); ++i) {
         if (i != 0) os << ",";
-        os << LB;
-        if (model) {
-            os << "model:" << *model << ",";
-        }
-        os << "cat:" << cats[i] << RB << ":" << (rnd_value ? (std::rand()%100) : 1) << ".0";
+        os << LB << dim_name << ":" << values[i] << RB << ":" << (rnd_value ? (std::rand()%100) : 1) << ".0";
     }
     os << RB;
+}
+
+void print_query_cat_tensor(std::ostream& os, const StringVector& cats, bool rnd_value) {
+    print_query_tensor(os, "cat", cats, rnd_value);
+}
+
+void print_query_model_tensor(std::ostream& os, const StringVector& model) {
+    assert(model.size() == 1);
+    print_query_tensor(os, "model", model, false);
 }
 
 void print_query(std::ostream& os, RandomStrings& models, RandomStrings& categories,
                  size_t num_cats_per_query, size_t vec_size, bool single_model) {
     auto cats = categories.get_rnd(num_cats_per_query);
     os << "/search/?query=sddocname:test";
-    if (single_model) {
-        os << "&ranking.features.query(q_cat_keys)="; print_cat_tensor(os, nullptr, cats, false);
-        os << "&ranking.features.query(q_cat_scores)="; print_cat_tensor(os, nullptr, cats, true);
-    } else {
-        auto model = models.get_rnd(1);
-        os << "&ranking.features.query(q_model_cat_keys)="; print_cat_tensor(os, &model[0], cats, false);
-        os << "&ranking.features.query(q_model_cat_scores)="; print_cat_tensor(os, &model[0], cats, true);
+    os << "&ranking.features.query(q_cat_keys)="; print_query_cat_tensor(os, cats, false);
+    os << "&ranking.features.query(q_cat_scores)="; print_query_cat_tensor(os, cats, true);
+    if (!single_model) {
+        os << "&ranking.features.query(q_model)="; print_query_model_tensor(os, models.get_rnd(1));
     }
     os << "&ranking.features.query(q_user_vec)="; print_vector(os, make_rnd_vector(vec_size));
     os << "&ranking.profile=" << (single_model ? "single_model" : "multi_model");

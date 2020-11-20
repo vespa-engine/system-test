@@ -13,10 +13,7 @@ schema test {
       attribute: fast-search
     }
   }
-  rank-profile single_model {
-    first-phase {
-      expression: max_score
-    }
+  rank-profile default {
     macro inline max_score() {
       expression: reduce( categories_scaled_scores, max )
     }
@@ -34,33 +31,24 @@ schema test {
     }
     # result: tensor(cat{},vec[256]), where a subset of the categories are selected based on query(q_cat_keys).
     macro inline select_categories() {
-      expression: query(q_cat_keys) * attribute(model)
+      expression: query(q_cat_keys) * select_model
     }
   }
-  rank-profile multi_model {
+  rank-profile single_model inherits default {
     first-phase {
-      expression: model_max_score
+      expression: max_score
     }
-    macro inline model_max_score() {
-      expression: reduce( model_categories_scaled_scores, max )
+    macro inline select_model() {
+      expression: attribute(model)
     }
-    # result: tensor(model{},cat{}), where all categories scores are scaled by query(q_model_cat_scores).
-    macro inline model_categories_scaled_scores() {
-      expression: model_categories_scores * query(q_model_cat_scores)
+  }
+  rank-profile multi_model inherits default {
+    first-phase {
+      expression: max_score
     }
-    # result: tensor(model{},cat{}),
-    # where each vector is reduced (with sum) and an exp function is applied on the result.
-    macro inline model_categories_scores() {
-      expression: map ( reduce( model_categories_raw_scores, sum, vec ), f(x)(1.0 / (1.0 + exp(0.0 - x)) ) )
-    }
-    # result: tensor(model{},cat{},vec[256]), where all vectors are multiplied with query(q_user_vec).
-    macro inline model_categories_raw_scores() {
-      expression: join ( select_model_categories, query(q_user_vec), f(x,y)(x*y) )
-    }
-    # result: tensor(model{},cat{},vec[256]),
-    # where the model and a subset of the categories are selected based on query(q_model_cat_keys).
-    macro inline select_model_categories() {
-      expression: query(q_model_cat_keys) * attribute(models)
+    # result: tensor(cat{},vec[256]), the selected model from the mixed tensor based on query(q_model).
+    macro inline select_model() {
+      expression: reduce(query(q_model) * attribute(models), sum, model)
     }
   }
   document-summary minimal {
