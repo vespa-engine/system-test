@@ -40,9 +40,10 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
 
     puts "need refeed reconfig of f2"
     redeploy_output = redeploy("test.1.sd")
+    gen = get_generation(redeploy_output).to_i
     assert_match(/Consider re-indexing document type 'test' in cluster 'search'.*\n.*Field 'f2' changed: add index aspect/, redeploy_output)
 
-    wait_for_convergence(3)
+    wait_for_convergence(gen)
 
     # Feed should be accepted
     feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
@@ -94,9 +95,10 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
 
     @params[:search_type] = "ELASTIC"
     redeploy_output = deploy_app(app)
+    gen = get_generation(redeploy_output).to_i
     assert_match(/Document type 'test' in cluster 'search' changed indexing mode from 'streaming' to 'indexed'/, redeploy_output)
 
-    wait_for_convergence(3)
+    wait_for_convergence(gen)
 
     # Feed should be accepted
     feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
