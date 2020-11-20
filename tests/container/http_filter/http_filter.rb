@@ -17,6 +17,8 @@ class HttpFilterTest < SearchContainerTest
     check_response_filter_chain
     check_request_filter_chain
     check_request_response_filters
+    check_default_request_response_filters
+    check_strict_mode
   end
 
   def check_response_filter_chain
@@ -39,6 +41,17 @@ class HttpFilterTest < SearchContainerTest
     assert_response_filtered(response, "TestResponseFilter")
     assert_equal("TestFilterHandler: TestRequestFilter", response.body)
   end
+
+  def check_default_request_response_filters
+    response = http_get_test_handler(4084)
+    assert_response_filtered(response, "TestResponseFilter")
+    assert_equal("TestFilterHandler: TestRequestFilter", response.body)
+  end
+
+ def check_strict_mode
+   response = http_get_test_handler(4085)
+   assert_equal("Request did not match any request filter chain", response.body)
+ end
 
   def http_get_test_handler(port)
     @container.http_get("localhost", port, "/TestHandler")
