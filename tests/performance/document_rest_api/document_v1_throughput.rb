@@ -39,7 +39,7 @@ class DocumentV1Throughput < PerformanceTest
         :fbench => { :clients => 128, :use_post => true},
         :data => "{ \"fields\": { \"text\": \"GNU#{"'s not UNIX" * (1 << 10) }\" } }"
       } => {
-        'qps' => { :y_min =>  6300, :y_max =>  6700 },
+        'qps' => { :y_min =>  6200, :y_max =>  6700 },
         '95p' => { :y_min =>    24, :y_max =>    28 }
       },
       {
