@@ -17,8 +17,10 @@ module SchemaChangesBase
     wait_for_reconfig(600)
   end
 
-  def redeploy(sdfile)
-    deploy_output = deploy_app(SearchApp.new.sd(use_sdfile(sdfile)))
+  def redeploy(sdfile, validation_override = nil)
+    app = SearchApp.new.sd(use_sdfile(sdfile))
+    app = app.validation_override(validation_override) if validation_override
+    deploy_output = deploy_app(app)
     wait_for_content_cluster_config_generation(deploy_output)
     postdeploy_wait(deploy_output)
     return deploy_output
@@ -31,7 +33,7 @@ module SchemaChangesBase
   end
 
   def remove_attribute_aspect(sd_file)
-    redeploy(sd_file)
+    redeploy(sd_file, "indexing-change")
     status = vespa.search["search"].first.get_proton_status
     assert(status.match(/"WARNING","state=ONLINE configstate=NEED_RESTART","DocumentDB delaying attribute aspects changes in config/))
   end
