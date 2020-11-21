@@ -39,7 +39,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")
 
     puts "need refeed reconfig of f2"
-    redeploy_output = redeploy("test.1.sd")
+    redeploy_output = redeploy("test.1.sd", "indexing-change")
     gen = get_generation(redeploy_output).to_i
     assert_match(/Consider re-indexing document type 'test' in cluster 'search'.*\n.*Field 'f2' changed: add index aspect/, redeploy_output)
 
@@ -71,10 +71,11 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     # This whole framework was never meant to allow changing indexing mode >_<
     @params[:search_type] = "STREAMING"
     app = SearchApp.new.sd(use_sdfile("test.1.sd")).
-                                   config(ConfigOverride.new('vespa.config.content.fleetcontroller').
-                                          add('ideal_distribution_bits', 8)).
-                                   config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
-                                          add('minsplitcount', 8))
+              config(ConfigOverride.new('vespa.config.content.fleetcontroller').
+                  add('ideal_distribution_bits', 8)).
+              config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
+                  add('minsplitcount', 8)).
+              validation_override("indexing-mode-change")
     deploy_output = deploy_app(app)
     start
     postdeploy_wait(deploy_output)
@@ -167,7 +168,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
                          {'address'=>{'x'=>'1'}, 'value'=>47.0}], do_search, "f1")
 
     # Redeploy with changed tensor type
-    redeploy_output = redeploy("test.1.sd")
+    redeploy_output = redeploy("test.1.sd", "field-type-change")
     assert_match("Field 'f1' changed: data type: 'tensor(x[2])' -> 'tensor(x[3])'", redeploy_output)
     # Existing document no longer has content as type is changed
     assert(do_search.hit[0].field["f1"] == nil)
