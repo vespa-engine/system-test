@@ -131,7 +131,6 @@ void print_query(std::ostream& os, RandomStrings& models, RandomStrings& categor
         os << "&ranking.features.query(q_model)="; print_query_model_tensor(os, models.get_rnd(1));
     }
     os << "&ranking.features.query(q_user_vec)="; print_vector(os, make_rnd_vector(vec_size));
-    os << "&ranking.profile=" << (single_model ? "single_model" : "multi_model");
 }
 
 void print_queries(std::ostream& os, RandomStrings& models, RandomStrings& categories,

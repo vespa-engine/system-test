@@ -8,9 +8,10 @@ require 'environment'
 class MixedTensorPerfTest < PerformanceTest
 
   FBENCH_RUNTIME = 30
-  LABEL = "label"
-  MIXED_BASIC = "mixed_basic"
-  MULTI_MODEL = "multi_model"
+  RANK_PROFILE = "rank_profile"
+  SINGLE_MODEL = "single_model"
+  MULTI_MODEL_EARLY_REDUCE = "multi_model_early_reduce"
+  MULTI_MODEL_LATE_REDUCE = "multi_model_late_reduce"
 
   def initialize(*args)
     super(*args)
@@ -22,8 +23,9 @@ class MixedTensorPerfTest < PerformanceTest
     @graphs = get_graphs
     deploy_and_prepare_data
     feed_docs(5000)
-    run_fbench_helper(MIXED_BASIC, @single_model_file)
-    run_fbench_helper(MULTI_MODEL, @multi_model_file)
+    run_fbench_helper(SINGLE_MODEL, @single_model_file)
+    run_fbench_helper(MULTI_MODEL_EARLY_REDUCE, @multi_model_file)
+    run_fbench_helper(MULTI_MODEL_LATE_REDUCE, @multi_model_file)
   end
 
   def deploy_and_prepare_data
@@ -55,29 +57,30 @@ class MixedTensorPerfTest < PerformanceTest
     @container.execute("#{@data_gen} puts #{num_docs} | vespa-feeder")
   end
 
-  def run_fbench_helper(label, query_file)
-    fillers = [parameter_filler(LABEL, label)]
+  def run_fbench_helper(rank_profile, query_file)
+    fillers = [parameter_filler(RANK_PROFILE, rank_profile)]
     profiler_start
     run_fbench2(@container,
                 query_file,
-                {:runtime => FBENCH_RUNTIME, :clients => 1, :append_str => "&summary=minimal&timeout=10"},
+                {:runtime => FBENCH_RUNTIME, :clients => 1, :append_str => "&summary=minimal&timeout=10&ranking.profile=#{rank_profile}"},
                 fillers)
-    profiler_report(label)
+    profiler_report(rank_profile)
   end
 
   def get_graphs
     [
-      get_latency_graph(MIXED_BASIC, 5.0, 6.0),
-      get_latency_graph(MULTI_MODEL, 5.0, 12.0)
+      get_latency_graph(SINGLE_MODEL, 5.0, 6.0),
+      get_latency_graph(MULTI_MODEL_EARLY_REDUCE, 5.0, 12.0),
+      get_latency_graph(MULTI_MODEL_LATE_REDUCE, 5.0, 12.0)
     ]
   end
 
-  def get_latency_graph(label, y_min, y_max)
+  def get_latency_graph(rank_profile, y_min, y_max)
     {
-      :x => LABEL,
+      :x => RANK_PROFILE,
       :y => "latency",
-      :title => "Historic average latency (#{label})",
-      :filter => {LABEL => label},
+      :title => "Historic average latency (#{rank_profile})",
+      :filter => {RANK_PROFILE => rank_profile},
       :historic => true,
       :y_min => y_min,
       :y_max => y_max

@@ -17,19 +17,23 @@ schema test {
     macro inline max_score() {
       expression: reduce( categories_scaled_scores, max )
     }
-    # result: tensor(cat{}), where all categories scores are scaled by query(q_cat_scores).
+    # result: tensor(cat{}) / tensor(model{},cat{}),
+    #         where all categories scores are scaled by query(q_cat_scores).
     macro inline categories_scaled_scores() {
       expression: categories_scores * query(q_cat_scores)
     }
-    # result: tensor(cat{}), where each vector is reduced (with sum) and an exp function is applied on the result.
+    # result: tensor(cat{}) / tensor(model{},cat{}),
+    #         where each vector is reduced (with sum) and an exp function is applied on the result.
     macro inline categories_scores() {
       expression: map ( reduce( categories_raw_scores, sum, vec ), f(x)(1.0 / (1.0 + exp(0.0 - x)) ) )
     }
-    # result: tensor(cat{},vec[256]), where all vectors are multiplied with query(q_user_vec).
+    # result: tensor(cat{},vec[256]) / tensor(model{},cat{},vec[256]),
+    #         where all vectors are multiplied with query(q_user_vec).
     macro inline categories_raw_scores() {
       expression: join ( select_categories, query(q_user_vec), f(x,y)(x*y) )
     }
-    # result: tensor(cat{},vec[256]), where a subset of the categories are selected based on query(q_cat_keys).
+    # result: tensor(cat{},vec[256]) / tensor(model{},cat{},vec[256]),
+    #         where a subset of the categories are selected based on query(q_cat_keys).
     macro inline select_categories() {
       expression: query(q_cat_keys) * select_model
     }
@@ -42,13 +46,22 @@ schema test {
       expression: attribute(model)
     }
   }
-  rank-profile multi_model inherits default {
+  rank-profile multi_model_early_reduce inherits default {
     first-phase {
       expression: max_score
     }
     # result: tensor(cat{},vec[256]), the selected model from the mixed tensor based on query(q_model).
     macro inline select_model() {
       expression: reduce(query(q_model) * attribute(models), sum, model)
+    }
+  }
+  rank-profile multi_model_late_reduce inherits default {
+    first-phase {
+      expression: max_score
+    }
+    # result: tensor(model{},cat{},vec[256]), the selected model from the mixed tensor based on query(q_model).
+    macro inline select_model() {
+      expression: query(q_model) * attribute(models)
     }
   }
   document-summary minimal {
