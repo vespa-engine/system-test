@@ -21,6 +21,10 @@ class ContentClusterController < VespaNode
     end
   end
 
+  def get_reindexing_json
+    get_json_over_http("/reindexing/v1/status", @statusport)
+  end
+
   def get_distribution_states(cluster)
     json = get_json_over_http("/cluster/v2/" + cluster, @statusport)
     if json.nil?

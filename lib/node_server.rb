@@ -538,6 +538,22 @@ class NodeServer
     return false
   end
 
+  # Writes _type_ operations to generated document IDs _prefix[0, ..._count_], with other fields as given by _operation_ to _filename_.
+  # Example:
+  # write_document_operations(:update,
+  #                           { :condition => 'title="empty"', :fields => { :title => { :assign => 'unknown' } } },
+  #                           'id:ns:doctype::',
+  #                           1 << 20,
+  #                           '1M_ops.json')
+  def write_document_operations(type, operation, prefix, count, filename)
+    FileUtils.mkdir_p(File.dirname(filename))
+    File.open(filename, "w") do |file|
+      file.puts('[')
+      count.times { |i| file.puts(operation.merge({type => (prefix + i.to_s)}).to_json + (i + 1 < count ? "," : "") }
+      file.puts(']')
+    end
+  end
+
   # Writes _content_ into _filename_.
   def writefile(content, filename)
     FileUtils.mkdir_p(File.dirname(filename))
