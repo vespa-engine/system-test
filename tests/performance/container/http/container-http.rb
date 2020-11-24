@@ -43,7 +43,7 @@ class ContainerHttp < PerformanceTest
             :filter => {'legend' => STANDARD},
             :x => 'legend',
             :y => 'qps',
-            :y_min => 148000,
+            :y_min => 162000,
             :y_max => 188000,
             :historic => true
         },
@@ -52,8 +52,8 @@ class ContainerHttp < PerformanceTest
             :filter => {'legend' => ASYNC_WRITE },
             :x => 'legend',
             :y => 'qps',
-            :y_min => 128000,
-            :y_max => 145000,
+            :y_min => 135000,
+            :y_max => 155000,
             :historic => true
         },
         {
@@ -61,7 +61,7 @@ class ContainerHttp < PerformanceTest
             :filter => {'legend' => NON_PERSISTENT },
             :x => 'legend',
             :y => 'qps',
-            :y_min => 2800,
+            :y_min => 2850,
             :y_max => 3000,
             :historic => true
         },
