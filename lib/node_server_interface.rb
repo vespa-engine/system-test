@@ -151,8 +151,8 @@ module NodeServerInterface
     @node_server.wait_until_file_exists(*args)
   end
 
-  def write_repeated_content_to_file(*args)
-    @node_server.write_pattern_to_file(*args)
+  def write_document_operations(*args)
+    @node_server.write_document_operations(*args)
   end
 
   def writefile(*args)

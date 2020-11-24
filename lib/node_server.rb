@@ -549,7 +549,7 @@ class NodeServer
     FileUtils.mkdir_p(File.dirname(filename))
     File.open(filename, "w") do |file|
       file.puts('[')
-      count.times { |i| file.puts(operation.merge({type => (prefix + i.to_s)}).to_json + (i + 1 < count ? "," : "") }
+      count.times { |i| file.puts(operation.merge({type => (prefix + i.to_s)}).to_json + (i + 1 < count ? "," : "")) }
       file.puts(']')
     end
   end
