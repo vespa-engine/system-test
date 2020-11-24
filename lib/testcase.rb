@@ -81,6 +81,7 @@ class TestCase
     @ignorable_messages = [
       @@log_messages[:async_slow_resolve],
       @@log_messages[:slow_query],
+      @@log_messages[:slobrok_unregister],
       @@log_messages[:connect_location_broker],
       @@log_messages[:curator_slf4j_exponential_backoff_retry],
       @@log_messages[:slf4j_create],
@@ -708,6 +709,7 @@ class TestCase
     :slow_query => /Slow execution. query/,
     :slow_processing =>  /Slow processing of message/,
     :connect_location_broker =>  /cannot connect to location broker at tcp/,
+    :slobrok_unregister => /name registered, but with different spec/,
     :max_query_timeout => /Query timeout \(\d+ ms\) > max query /,
     :curator_slf4j_exponential_backoff_retry => /SLF4J: org.apache.curator.retry.ExponentialBackoffRetry/,
     :uncommon_get => /a little uncommon that GET method returns always/,
