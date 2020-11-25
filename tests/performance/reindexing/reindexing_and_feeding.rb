@@ -104,6 +104,7 @@ class ReindexingAndFeeding < PerformanceTest
 
     # Benchmark pure reindexing
     puts "Reindexing corpus"
+    sleep 2
     now_seconds = Time.now.to_i
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
@@ -113,6 +114,7 @@ class ReindexingAndFeeding < PerformanceTest
 
     # Benchmark concurrent reindexing and feed
     puts "Reindexing corpus while refeeding half of it"
+    sleep 2
     now_seconds = Time.now.to_i
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
@@ -129,6 +131,7 @@ class ReindexingAndFeeding < PerformanceTest
 
     # Benchmark concurrent reindexing and updates
     puts "Reindexing corpus while doing partial updates to all documents"
+    sleep 2
     now_seconds = Time.now.to_i
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
