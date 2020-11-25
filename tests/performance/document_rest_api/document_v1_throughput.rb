@@ -46,7 +46,7 @@ class DocumentV1Throughput < PerformanceTest
         :legend =>  'GET large data 128 clients',
         :fbench => { :clients => 128, :use_post => false }
       } => {
-        'qps' => { :y_min => 29500, :y_max => 33000 },
+        'qps' => { :y_min => 29500, :y_max => 34000 },
         '95p' => { :y_min =>   4.9, :y_max =>   5.5 }
       }
     }
