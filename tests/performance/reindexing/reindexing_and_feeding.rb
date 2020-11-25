@@ -130,8 +130,10 @@ class ReindexingAndFeedingTest < PerformanceTest
 
   # Wait for reindexing after the given time to have started.
   def wait_for_reindexing_start(ready_millis)
+    puts "Waiting for reindexing to start, after #{Time.at(ready_millis / 1000)}"
     while true
       status = get_reindexing_status
+      puts "Reindexing status: #{status}" if Time.now.sec % 10 == 0
       break if status and status['startedMillis'] > ready_millis
       sleep 1
     end
@@ -139,8 +141,10 @@ class ReindexingAndFeedingTest < PerformanceTest
 
   # Wait for reindexing to successfully complete, and return the time used in milliseconds.
   def wait_for_reindexing
+    puts "Waiting for reindexing to complete"
     while true
       status = get_reindexing_status
+      puts "Reindexing status: #{status}" if Time.now.sec % 10 == 0
       break if status and ["successful", "failed"].include? status['state']
       sleep 1
     end
@@ -222,18 +226,6 @@ class ReindexingAndFeedingTest < PerformanceTest
 					'id:test:doc::',
 					@document_count,
 					@updates_file)
-  end
-
-  # Wait for convergence of all services in the application — specifically document processors 
-  def wait_for_convergence(generation)
-    start_time = Time.now
-    until get_json(http_request(URI(application_url + "serviceconverge"), {}))["converged"] or Time.now - start_time > 60 # seconds
-      sleep 1
-    end
-    assert(Time.now - start_time < 60, "Services should converge on new generation within the minute")
-    assert(generation == get_json(http_request(URI(application_url + "serviceconverge"), {}))["wantedGeneration"],
-	   "Should converge on generation #{generation}")
-    puts "Services converged on new config generation after #{Time.now - start_time} seconds"
   end
 
   # Trigger reindexing of the whole corpus
