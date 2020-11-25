@@ -38,7 +38,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     start
 
     @qrserver = @vespa.container["combinedcontainer/0"]
-    @document_count = 1 << 19
+    @document_count = 500_000
     generate_feed
 
     # First time is a dummy.
@@ -162,24 +162,24 @@ class ReindexingAndFeedingTest < PerformanceTest
 	'reindexing.time.seconds' => { :y_min =>     30, :y_max =>    120 }
       },
       'feed' => {
-	'qps' =>                     { :y_min =>  10000, :y_max =>  50000 },
-	'95p' =>                     { :y_min =>     30, :y_max =>    120 }
+	'feeder.throughput' =>       { :y_min =>  10000, :y_max =>  50000 },
+	'feeder.avglatency' =>       { :y_min =>     30, :y_max =>    120 }
       },
       'update' => {
-	'qps' =>                     { :y_min =>  10000, :y_max =>  50000 },
-	'95p' =>                     { :y_min =>     30, :y_max =>    120 }
+	'feeder.throughput' =>       { :y_min =>  10000, :y_max =>  50000 },
+	'feeder.avglatency' =>       { :y_min =>     30, :y_max =>    120 }
       },
       'reindex_feed' => {
 	'reindexing.throughput'   => { :y_min =>  10000, :y_max =>  50000 },
 	'reindexing.time.seconds' => { :y_min =>     30, :y_max =>    120 },
-	'qps' =>                     { :y_min =>  10000, :y_max =>  50000 },
-	'95p' =>                     { :y_min =>     30, :y_max =>    120 }
+	'feeder.throughput' =>       { :y_min =>  10000, :y_max =>  50000 },
+	'feeder.avglatency' =>       { :y_min =>     30, :y_max =>    120 }
       },
       'reindex_update' => {
 	'reindexing.throughput'   => { :y_min =>  10000, :y_max =>  50000 },
 	'reindexing.time.seconds' => { :y_min =>     30, :y_max =>    120 },
-	'qps' =>                     { :y_min =>  10000, :y_max =>  50000 },
-	'95p' =>                     { :y_min =>     30, :y_max =>    120 }
+	'feeder.throughput' =>       { :y_min =>  10000, :y_max =>  50000 },
+	'feeder.avglatency' =>       { :y_min =>     30, :y_max =>    120 }
       }
     }
   end
