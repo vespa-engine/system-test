@@ -111,6 +111,7 @@ class ReindexingAndFeeding < PerformanceTest
     reindexing_millis = wait_for_reindexing
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", document_count) # All documents should be indexed after now_seconds
     write_report([ reindexing_result_filler(reindexing_millis, document_count, 'reindex') ])
+    puts "Reindexed #{document_count} documents in #{reindexing_millis * 1e-3} seconds"
 
     # Benchmark concurrent reindexing and feed
     puts "Reindexing corpus while refeeding half of it"
@@ -124,6 +125,7 @@ class ReindexingAndFeeding < PerformanceTest
     assert_hitcount("label:refeed&nocache", document_count / 2)			# Half the documents should have the "refeed" label
     assert_hitcount("label:initial&nocache", document_count / 2)		# The other half should still have the "initial" label
     write_report([ reindexing_result_filler(reindexing_millis, document_count, 'reindex_feed') ])
+    puts "Reindexed #{document_count} documents in #{reindexing_millis * 1e-3} seconds"
 
     # Benchmark pure feed
     puts "Refeeding half the corpus"
@@ -140,6 +142,7 @@ class ReindexingAndFeeding < PerformanceTest
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", document_count) # All documents should be indexed after now_seconds
     assert_hitcount("count:1&nocache", document_count)					# All documents should have "counter" incremented by 1
     write_report([ reindexing_result_filler(reindexing_millis, document_count, 'reindex_update') ])
+    puts "Reindexed #{document_count} documents in #{reindexing_millis * 1e-3} seconds"
 
     # Benchmark pure partial updates
     puts "Doing partial updates to all documents"
