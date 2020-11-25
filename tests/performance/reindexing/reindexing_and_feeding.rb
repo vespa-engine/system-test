@@ -101,6 +101,7 @@ class ReindexingAndFeeding < PerformanceTest
     # Warmup and feed corpus
     puts "Feeding initial data"
     feed_data({ :file => initial_file })
+    assert_hitcount("sddocname:doc", document_count) # All documents should be fed and visible
 
     # Benchmark pure reindexing
     puts "Reindexing corpus"
@@ -226,9 +227,6 @@ class ReindexingAndFeeding < PerformanceTest
     assert(response.code.to_i == 200, "Request should be successful")
     previous_reindexing_timestamp = get_json(response)["status"]["readyMillis"]
 
-    # Allow the reindexing maintainer some time to run, and mark the first no-op reindexing as done
-    sleep 60
-
     # Trigger reindexing through reindexing API in /application/v2, and verify it was triggered
     response = http_request_post(URI(application_url + "reindex"), {})
     assert(response.code.to_i == 200, "Request should be successful")
@@ -247,7 +245,7 @@ class ReindexingAndFeeding < PerformanceTest
   def application_url
     tenant = use_shared_configservers ? @tenant_name : "default"
     application = use_shared_configservers ? @application_name : "default"
-    "https://#{vespa.nodeproxies.first[1].addr_configserver[0]}:#{19071}/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
+    "http://#{vespa.nodeproxies.first[1].addr_configserver[0]}:#{19071}/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
   end
 
   def teardown
