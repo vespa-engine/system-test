@@ -38,7 +38,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     start
 
     @qrserver = @vespa.container["combinedcontainer/0"]
-    @document_count = 500_000
+    @document_count = 100_000
     generate_feed
 
     # First time is a dummy.
