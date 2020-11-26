@@ -38,7 +38,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     start
 
     @qrserver = @vespa.container["combinedcontainer/0"]
-    @document_count = 500_000
+    @document_count = 600_000
     generate_feed
 
     # First time is a dummy.
@@ -60,7 +60,7 @@ class ReindexingAndFeedingTest < PerformanceTest
   def benchmark_reindexing
     # Benchmark pure reindexing
     puts "Reindexing corpus"
-    sleep 2
+    profiler_start
     now_seconds = Time.now.to_i
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
@@ -68,34 +68,38 @@ class ReindexingAndFeedingTest < PerformanceTest
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) # All documents should be indexed after now_seconds
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex') ])
     puts "Reindexed #{@document_count} documents in #{reindexing_millis * 1e-3} seconds"
+    profiler_report('reindex')
   end
 
   def benchmark_reindexing_and_refeeding
     # Benchmark concurrent reindexing and feed
-    puts "Reindexing corpus while refeeding half of it"
-    sleep 2
+    puts "Reindexing corpus while refeeding one third of it"
+    profiler_start
     now_seconds = Time.now.to_i
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
     feed_data({ :file => @refeed_file, :legend => 'reindex_feed' })
     reindexing_millis = wait_for_reindexing
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) # All documents should be indexed after now_seconds
-    # assert_hitcount("label:refeed&nocache", @document_count / 2)			# Half the documents should have the "refeed" label
-    # assert_hitcount("label:initial&nocache", @document_count / 2)		# The other half should still have the "initial" label
+    # assert_hitcount("label:refeed&nocache", @document_count / 3)			# One third of the documents should have the "refeed" label
+    # assert_hitcount("label:initial&nocache", @document_count * 2 / 3)		# The other two thirds should still have the "initial" label
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex_feed') ])
     puts "Reindexed #{@document_count} documents in #{reindexing_millis * 1e-3} seconds"
+    profiler_report('reindex_feed')
   end
 
   def benchmark_feeding
     # Benchmark pure feed
     puts "Refeeding half the corpus"
+    profiler_start
     feed_data({ :file => @refeed_file, :legend => 'feed' })
+    profiler_report('feed')
   end
 
   def benchmark_reindexing_and_updates
     # Benchmark concurrent reindexing and updates
     puts "Reindexing corpus while doing partial updates to all documents"
-    sleep 2
+    profiler_start
     now_seconds = Time.now.to_i
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
@@ -105,12 +109,15 @@ class ReindexingAndFeedingTest < PerformanceTest
     # assert_hitcount("count:1&nocache", @document_count)					# All documents should have "counter" incremented by 1
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex_update') ])
     puts "Reindexed #{@document_count} documents in #{reindexing_millis * 1e-3} seconds"
+    profiler_report('reindex_update')
   end
 
   def benchmark_updates
     # Benchmark pure partial updates
     puts "Doing partial updates to all documents"
+    profiler_start
     feed_data({ :file => @updates_file, :legend => 'update' })
+    profiler_report('update')
   end
 
   def reindexing_result_filler(time_millis, document_count, concurrent_operations)
@@ -123,9 +130,9 @@ class ReindexingAndFeedingTest < PerformanceTest
 
   # Feed data with the given config, which must include :file.
   def feed_data(config)
-    profiler_start
-    run_feeder(config[:file], [ parameter_filler('legend', config[:legend]) ], config.merge({ :localfile => true, :numthreads => 8, :feed_node => @qrserver }))
-    profiler_report(config[:legend])
+    run_feeder(config[:file],
+	       [ parameter_filler('legend', config[:legend]) ],
+	       config.merge({ :localfile => true, :numthreads => 8, :feed_node => @qrserver }))
   end
 
   # Wait for reindexing after the given time to have started.
