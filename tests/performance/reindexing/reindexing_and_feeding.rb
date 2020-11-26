@@ -47,7 +47,7 @@ class ReindexingAndFeedingTest < PerformanceTest
 
     # Warmup and feed corpus
     puts "Feeding initial data"
-    feed_data({ :file => @initial_file })
+    feed_data({ :file => @initial_file, :legend => 'initial' })
     assert_hitcount("sddocname:doc", @document_count) # All documents should be fed and visible
 
     benchmark_reindexing
@@ -123,9 +123,9 @@ class ReindexingAndFeedingTest < PerformanceTest
 
   # Feed data with the given config, which must include :file.
   def feed_data(config)
-    profiler_start if config.has_key?(:legend)
-    run_feeder(config[:file], [], config.merge({ :localfile => true, :numthreads => 8, :feed_node => @qrserver }))
-    profiler_report(config[:legend]) if config.has_key?(:legend)
+    profiler_start
+    run_feeder(config[:file], [ parameter_filler('legend', config[:legend]) ], config.merge({ :localfile => true, :numthreads => 8, :feed_node => @qrserver }))
+    profiler_report(config[:legend])
   end
 
   # Wait for reindexing after the given time to have started.
