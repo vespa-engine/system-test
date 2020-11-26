@@ -27,8 +27,8 @@ class TensorEvalSparseMultiplyPerfTest < TensorEvalPerfTest
     [
       get_latency_graphs_for_rank_profile(SPARSE_MULTIPLY_NO_OVERLAP),
       get_latency_graphs_for_rank_profile(SPARSE_MULTIPLY_PARTIAL_OVERLAP),
-      get_latency_graph_for_rank_profile(SPARSE_MULTIPLY_NO_OVERLAP, 50, 125, 145),
-      get_latency_graph_for_rank_profile(SPARSE_MULTIPLY_PARTIAL_OVERLAP, 10, 195, 225)
+      get_latency_graph_for_rank_profile(SPARSE_MULTIPLY_NO_OVERLAP, 50, 125, 150),
+      get_latency_graph_for_rank_profile(SPARSE_MULTIPLY_PARTIAL_OVERLAP, 10, 190, 220)
     ]
   end
 
