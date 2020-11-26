@@ -21,7 +21,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     set_owner("jvenstad")
   end
 
-  def reindexing_performance_and_impact
+  def test_reindexing_performance_and_impact
     @graphs = get_graphs(graph_config)
 
     @app = SearchApp.new.monitoring("vespa", 60).
