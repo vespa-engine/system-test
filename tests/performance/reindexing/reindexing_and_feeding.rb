@@ -21,7 +21,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     set_owner("jvenstad")
   end
 
-  def test_reindexing_performance_and_impact
+  def reindexing_performance_and_impact
     @graphs = get_graphs(graph_config)
 
     @app = SearchApp.new.monitoring("vespa", 60).
@@ -38,7 +38,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     start
 
     @qrserver = @vespa.container["combinedcontainer/0"]
-    @document_count = 100_000
+    @document_count = 500_000
     generate_feed
 
     # First time is a dummy.
