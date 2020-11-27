@@ -417,14 +417,14 @@ class BooleanSearchTest < SearchTest
   def test_predicate_optimizations_are_idempotent
     set_description("Test that predicate optimizations are idempotent")
 
-    unoptimized_predicate = "not (not (gender in ['Male'] and age in [20..29] and true)) and gender not in ['Female']"
+    unoptimized_predicate = "not (not (gender in ['Male'] and age in [20..29] and true)) and country not in ['Sweden']"
     doc_id = "unoptimized-1"
     File.open(@feed_file, "w") {|file| write_doc(file, doc_id, unoptimized_predicate) }
     deploy_and_feed
 
     container_port = Environment.instance.vespa_web_service_port
     optimized_doc = vespa.document_api_v1.get("id:test:test::#{doc_id}", :port => container_port)
-    expected_optimized_predicate = "gender not in [Female] and gender in [Male] and age in [20..29]"
+    expected_optimized_predicate = "country not in [Sweden] and gender in [Male] and age in [20..29]"
     assert_equal(expected_optimized_predicate, optimized_doc.fields['predicate_field'])
 
     vespa.document_api_v1.put(optimized_doc, :port => container_port)
