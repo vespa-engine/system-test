@@ -12,7 +12,7 @@ class ReindexingAndFeedingTest < PerformanceTest
   end
 
   def timeout_seconds
-    1800
+    1200
   end
 
   def setup
@@ -73,7 +73,7 @@ class ReindexingAndFeedingTest < PerformanceTest
 
   def benchmark_reindexing_and_refeeding
     # Benchmark concurrent reindexing and feed
-    puts "Reindexing corpus while refeeding one third of it"
+    puts "Reindexing corpus while refeeding two thirds of it"
     profiler_start
     now_seconds = Time.now.to_i
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
@@ -81,8 +81,8 @@ class ReindexingAndFeedingTest < PerformanceTest
     feed_data({ :file => @refeed_file, :legend => 'reindex_feed' })
     reindexing_millis = wait_for_reindexing
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) # All documents should be indexed after now_seconds
-    # assert_hitcount("label:refeed&nocache", @document_count / 3)			# One third of the documents should have the "refeed" label
-    # assert_hitcount("label:initial&nocache", @document_count * 2 / 3)		# The other two thirds should still have the "initial" label
+    # assert_hitcount("label:refeed&nocache", @document_count * 2/ 3)			# Two thirds of the documents should have the "refeed" label
+    # assert_hitcount("label:initial&nocache", @document_count * 1 / 3)		# The last third should still have the "initial" label
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex_feed') ])
     puts "Reindexed #{@document_count} documents in #{reindexing_millis * 1e-3} seconds"
     profiler_report('reindex_feed')
@@ -90,7 +90,7 @@ class ReindexingAndFeedingTest < PerformanceTest
 
   def benchmark_feeding
     # Benchmark pure feed
-    puts "Refeeding half the corpus"
+    puts "Refeeding two thirds of the corpus"
     profiler_start
     feed_data({ :file => @refeed_file, :legend => 'feed' })
     profiler_report('feed')
@@ -103,6 +103,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     now_seconds = Time.now.to_i
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
+    feed_data({ :file => @updates_file, :legend => 'reindex_update' })
     feed_data({ :file => @updates_file, :legend => 'reindex_update' })
     reindexing_millis = wait_for_reindexing
     # assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) # All documents should be indexed after now_seconds
@@ -168,29 +169,26 @@ class ReindexingAndFeedingTest < PerformanceTest
 
   def graph_config
     {
+      ['reindex', 'reindex_feed', 'reindex_update', 'feed', 'update'] => {
+	'reindexing.througput' =>    { },
+	'feeder.throughput' =>       { }
+      },
       'reindex' => {
-	'reindexing.throughput'   => { :y_min =>  10000, :y_max =>  50000 },
-	'reindexing.time.seconds' => { :y_min =>     30, :y_max =>    120 }
+	'reindexing.throughput'   => { :y_min =>   5000, :y_max =>  10000 },
       },
       'feed' => {
-	'feeder.throughput' =>       { :y_min =>  10000, :y_max =>  50000 },
-	'feeder.avglatency' =>       { :y_min =>     30, :y_max =>    120 }
-      },
-      'update' => {
-	'feeder.throughput' =>       { :y_min =>  10000, :y_max =>  50000 },
-	'feeder.avglatency' =>       { :y_min =>     30, :y_max =>    120 }
+	'feeder.throughput' =>       { :y_min =>   5000, :y_max =>  10000 },
       },
       'reindex_feed' => {
-	'reindexing.throughput'   => { :y_min =>  10000, :y_max =>  50000 },
-	'reindexing.time.seconds' => { :y_min =>     30, :y_max =>    120 },
-	'feeder.throughput' =>       { :y_min =>  10000, :y_max =>  50000 },
-	'feeder.avglatency' =>       { :y_min =>     30, :y_max =>    120 }
+	'reindexing.throughput'   => { :y_min =>   2000, :y_max =>   6000 },
+	'feeder.throughput' =>       { :y_min =>   2000, :y_max =>   6000 },
+      },
+      'update' => {
+	'feeder.throughput' =>       { :y_min =>  30000, :y_max =>  50000 },
       },
       'reindex_update' => {
-	'reindexing.throughput'   => { :y_min =>  10000, :y_max =>  50000 },
-	'reindexing.time.seconds' => { :y_min =>     30, :y_max =>    120 },
-	'feeder.throughput' =>       { :y_min =>  10000, :y_max =>  50000 },
-	'feeder.avglatency' =>       { :y_min =>     30, :y_max =>    120 }
+	'reindexing.throughput'   => { :y_min =>   2000, :y_max =>   6000 },
+	'feeder.throughput' =>       { :y_min =>  10000, :y_max =>  30000 },
       }
     }
   end
@@ -199,7 +197,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     config.map do |legend, metrics|
       metrics.map do |metric, limits|
 	{
-	  :x => "blank",
+	  :x => 'legend',
 	  :y => metric,
 	  :title => "#{metric} for #{legend}",
 	  :filter => { "legend" => legend },
@@ -223,7 +221,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     @qrserver.write_document_operations(:put,
 					{ :fields => { :label => 'refeed', :count => 0, :text => "FAST#{" Search and Transfer" * (1 << 6)}" } },
 					'id:test:doc::',
-					@document_count / 2,
+					@document_count * 2 / 3,
 					@refeed_file)
 
     @updates_file = dirs.tmpdir + "updates.json"
