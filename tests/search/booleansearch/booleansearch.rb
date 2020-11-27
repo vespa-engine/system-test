@@ -20,7 +20,11 @@ class BooleanSearchTest < SearchTest
   end
 
   def deploy_and_feed
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd").
+        container(Container.new("combinedcontainer").
+            search(Searching.new).
+            docproc(DocumentProcessing.new).
+            gateway(ContainerDocumentApi.new)))
     start
     feed_and_wait_for_docs("test", @numdocs, :file => @feed_file)
   end
@@ -409,6 +413,25 @@ class BooleanSearchTest < SearchTest
                              ["male-NO", "('gender' in ['Male'] or 'country' in ['Denmark'])\n"],
                              ["male-SE", "('gender' in ['Male'] or 'country' in ['Sweden'])\n"]])
   end
+
+  def test_predicate_optimizations_are_idempotent
+    set_description("Test that predicate optimizations are idempotent")
+
+    unoptimized_predicate = "not (not (gender in ['Male'] and age in [20..29] and true)) and country not in ['Sweden']"
+    doc_id = "unoptimized-1"
+    File.open(@feed_file, "w") {|file| write_doc(file, doc_id, unoptimized_predicate) }
+    deploy_and_feed
+
+    container_port = Environment.instance.vespa_web_service_port
+    optimized_doc = vespa.document_api_v1.get("id:test:test::#{doc_id}", :port => container_port)
+    expected_optimized_predicate = "country not in [Sweden] and gender in [Male] and age in [20..29]"
+    assert_equal(expected_optimized_predicate, optimized_doc.fields['predicate_field'])
+
+    vespa.document_api_v1.put(optimized_doc, :port => container_port)
+    reoptimized_doc = vespa.document_api_v1.get("id:test:test::#{doc_id}", :port => container_port)
+    assert_equal(expected_optimized_predicate, reoptimized_doc.fields['predicate_field'])
+  end
+
 
   def get_query(field, attributes, range_attributes)
     return "/search/?query=&nocache&yql=select * from sources * where "\
