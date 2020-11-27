@@ -170,7 +170,7 @@ class ReindexingAndFeedingTest < PerformanceTest
   def graph_config
     {
       ['reindex', 'reindex_feed', 'reindex_update', 'feed', 'update'] => {
-	'reindexing.througput' =>    { },
+	'reindexing.throughput' =>    { },
 	'feeder.throughput' =>       { }
       },
       'reindex' => {
