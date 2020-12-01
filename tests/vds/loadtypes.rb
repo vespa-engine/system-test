@@ -48,13 +48,13 @@ class LoadTypes < StreamingSearchTest
     puts result.to_s
 
     status = vespa.storage["storage"].distributor["0"].get_metrics_matching("vds.distributor.*ok")
-    assert_equal(1, get_count_metric(status, "vds.distributor.puts.default.ok"))
-    assert_equal(1, get_count_metric(status, "vds.distributor.gets.foo.ok"))
-    assert_equal(1, get_count_metric(status, "vds.distributor.removes.default.ok"))
-    assert_equal(1, get_count_metric(status, "vds.distributor.gets.default.ok"))
+    assert_equal(1, get_count_metric(status, "vds.distributor.puts.sum.ok"))
+    assert_equal(2, get_count_metric(status, "vds.distributor.gets.sum.ok"))
+    assert_equal(1, get_count_metric(status, "vds.distributor.removes.sum.ok"))
+    assert_equal(2, get_count_metric(status, "vds.distributor.gets.sum.ok"))
 
     status = vespa.storage["storage"].storage["0"].get_metrics_matching("vds.filestor.alldisks.allthreads.*")
-    assert_equal(1, get_count_metric(status, "vds.filestor.alldisks.allthreads.get.foo.count"))
+    assert_equal(2, get_count_metric(status, "vds.filestor.alldisks.allthreads.get.sum.count"))
   end
 
   def teardown
