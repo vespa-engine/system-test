@@ -1,0 +1,30 @@
+[
+  { "update": "id:test:test::0",
+    "fields": {
+      "adv_mixed_attr": {
+        "remove": {
+          "addresses": [
+            { "x": "a" }
+          ]
+        },
+        "add": {
+          "blocks": [
+            { "address": { "x": "a", "y": "e" }, "values": [5.0] }
+          ]
+        }
+      },
+      "adv_mixed_field": {
+        "remove": {
+          "addresses": [
+            { "x": "a" }
+          ]
+        },
+        "add": {
+          "blocks": [
+            { "address": { "x": "a", "y": "e" }, "values": [5.0] }
+          ]
+        }
+      }
+    }
+  }
+]

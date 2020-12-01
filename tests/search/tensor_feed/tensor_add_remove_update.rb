@@ -23,12 +23,16 @@ class TensorAddRemoveUpdateTest < SearchTest
     doc_id = "id:test:test::0"
 
     feed(:file => @base_dir + "add_update.json")
-    assert_tensor_fields_after_add_update(search_result_document(query, 43))
+    assert_tensor_fields_after_add_update(search_result_document(query, 14 + 29 + 8))
     assert_tensor_fields_after_add_update(get_result_document(doc_id))
 
     feed(:file => @base_dir + "remove_update.json")
-    assert_tensor_fields_after_remove_update(search_result_document(query, 22))
+    assert_tensor_fields_after_remove_update(search_result_document(query, 7 + 15 + 3))
     assert_tensor_fields_after_remove_update(get_result_document(doc_id))
+
+    feed(:file => @base_dir + "remove_add_combined.json")
+    assert_tensor_fields_after_remove_add_combined(search_result_document(query, 7 + 15 + 5))
+    assert_tensor_fields_after_remove_add_combined(get_result_document(doc_id))
   end
 
   def assert_tensor_fields_after_add_update(doc)
@@ -68,6 +72,12 @@ class TensorAddRemoveUpdateTest < SearchTest
     assert_tensor_field(exp_mixed, doc, "mixed_field")
 
     exp_adv_mixed = [{'address'=>{'x'=>'a','y'=>'d','z'=>'0'}, 'value'=>3.0}]
+    assert_tensor_field(exp_adv_mixed, doc, "adv_mixed_attr")
+    assert_tensor_field(exp_adv_mixed, doc, "adv_mixed_field")
+  end
+
+  def assert_tensor_fields_after_remove_add_combined(doc)
+    exp_adv_mixed = [{'address'=>{'x'=>'a','y'=>'e','z'=>'0'}, 'value'=>5.0}]
     assert_tensor_field(exp_adv_mixed, doc, "adv_mixed_attr")
     assert_tensor_field(exp_adv_mixed, doc, "adv_mixed_field")
   end

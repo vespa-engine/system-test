@@ -25,7 +25,7 @@ search test {
   }
   rank-profile default {
     first-phase {
-      expression: sum(attribute(sparse_attr)) + sum(attribute(mixed_attr))
+      expression: sum(attribute(sparse_attr)) + sum(attribute(mixed_attr)) + sum(attribute(adv_mixed_attr))
     }
   }
 }
