@@ -4,6 +4,11 @@
 
 set -e
 
+cat /proc/cpuinfo
+cat /proc/meminfo
+df -h
+ulimit -a
+
 export RUBYLIB=/source/lib
 
 yum -y install \
