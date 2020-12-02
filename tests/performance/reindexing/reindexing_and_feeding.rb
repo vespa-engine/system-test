@@ -81,8 +81,8 @@ class ReindexingAndFeedingTest < PerformanceTest
     feed_data({ :file => @refeed_file, :legend => 'reindex_feed' })
     reindexing_millis = wait_for_reindexing
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) # All documents should be indexed after now_seconds
-    # assert_hitcount("label:refeed&nocache", @document_count * 2/ 3)			# Two thirds of the documents should have the "refeed" label
-    # assert_hitcount("label:initial&nocache", @document_count * 1 / 3)		# The last third should still have the "initial" label
+    assert_hitcount("label:refeed&nocache", @document_count * 2/ 3)			# Two thirds of the documents should have the "refeed" label
+    assert_hitcount("label:initial&nocache", @document_count * 1 / 3)		# The last third should still have the "initial" label
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex_feed') ])
     puts "Reindexed #{@document_count} documents in #{reindexing_millis * 1e-3} seconds"
     profiler_report('reindex_feed')
@@ -106,8 +106,8 @@ class ReindexingAndFeedingTest < PerformanceTest
     feed_data({ :file => @updates_file, :legend => 'reindex_update' })
     feed_data({ :file => @updates_file, :legend => 'reindex_update' })
     reindexing_millis = wait_for_reindexing
-    # assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) # All documents should be indexed after now_seconds
-    # assert_hitcount("count:1&nocache", @document_count)					# All documents should have "counter" incremented by 1
+    assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) # All documents should be indexed after now_seconds
+    assert_hitcount("count:1&nocache", @document_count)					# All documents should have "counter" incremented by 1
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex_update') ])
     puts "Reindexed #{@document_count} documents in #{reindexing_millis * 1e-3} seconds"
     profiler_report('reindex_update')
