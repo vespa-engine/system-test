@@ -237,14 +237,17 @@ class ReindexingAndFeedingTest < PerformanceTest
   def trigger_reindexing
     # Read baseline reindexing status — very first reindexing is a no-op in the reindexer controller
     response = http_request(URI(application_url + "reindexing"), {})
+    puts response.body unless response.code.to_i == 200
     assert(response.code.to_i == 200, "Request should be successful")
     previous_reindexing_timestamp = get_json(response)["status"]["readyMillis"]
 
     # Trigger reindexing through reindexing API in /application/v2, and verify it was triggered
     response = http_request_post(URI(application_url + "reindex"), {})
+    puts response.body unless response.code.to_i == 200
     assert(response.code.to_i == 200, "Request should be successful")
 
     response = http_request(URI(application_url + "reindexing"), {})
+    puts response.body unless response.code.to_i == 200
     assert(response.code.to_i == 200, "Request should be successful")
     current_reindexing_timestamp = get_json(response)["status"]["readyMillis"]
     assert(previous_reindexing_timestamp < current_reindexing_timestamp,
