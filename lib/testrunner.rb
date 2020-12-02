@@ -34,6 +34,7 @@ class TestRunner
     @testrun_id = options[:testrunid] ? options[:testrunid] : SecureRandom.urlsafe_base64
     @vespaversion = options[:vespaversion] ? options[:vespaversion] : "7-SNAPSHOT"
     @wait_for_nodes = options[:nodewait] ? options[:nodewait] : 60
+    @dns_settle_time = options[:dns_settle_time] ? options[:dns_settle_time] : 0
 
     @backend = BackendReporter.new(@testrun_id, @basedir, @log)
   end
@@ -178,6 +179,11 @@ class TestRunner
       thread_pool.post do
         begin
           testcase.hostlist = nodes
+          if @dns_settle_time > 0
+            # Sleep @dns_settle_time seconds to reduce probability for DNS errors when lookup up nodes in swarm
+            @log.info "Settling network (#{@dns_settle_time} seconds) before running #{test_method} from #{testcase.class}"
+            sleep @dns_settle_time
+          end
           @log.info "Running #{test_method} from #{testcase.class} on #{testcase.hostlist}"
           @backend.test_running(testcase, test_method)
           test_result = testcase.run([test_method]).first
@@ -213,6 +219,9 @@ if __FILE__ == $0
     end
     opts.on("-c", "--configserver SERVER", String, "Shared configserver for tests that support it.") do |server|
       options[:configservers] << server
+    end
+    opts.on("-d", "--dns-settle-time SECONDS", Integer, "Wait at start of test for dns to settle.") do |seconds|
+      options[:dns_settle_time] = seconds
     end
     opts.on("-f", "--testfile FILE", String, "Ruby test file relative to tests/ path.") do |file|
       options[:testfiles] << file

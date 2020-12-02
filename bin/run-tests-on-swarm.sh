@@ -53,6 +53,7 @@ readonly SERVICE="$USER-vespanode"
 POSITIONAL=()
 CONFIGSERVER=""
 CONSOLEOUTPUT=false
+DNS_SETTLE_TIME=""
 DOCKERIMAGE=""
 ENVS=()
 KEEPRUNNING=false
@@ -76,6 +77,10 @@ case $key in
     -c|--configserver)
     CONFIGSERVER="$USER-configserver"
     shift
+    ;;
+    -d|--dns-settle-time)
+    DNS_SETTLE_TIME="$2"
+    shift; shift
     ;;
     -e|--env)
     ENVS+=("$2")
@@ -165,6 +170,9 @@ if [[ -n $CONFIGSERVER ]]; then
 fi
 if $CONSOLEOUTPUT; then
   TESTRUNNER_OPTS="$TESTRUNNER_OPTS -o"
+fi
+if [[ -n $DNS_SETTLE_TIME ]]; then
+  TESTRUNNER_OPTS="$TESTRUNNER_OPTS -d $DNS_SETTLE_TIME"
 fi
 if $KEEPRUNNING; then
   TESTRUNNER_OPTS="$TESTRUNNER_OPTS -k"
