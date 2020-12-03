@@ -65,7 +65,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
     reindexing_millis = wait_for_reindexing
-    assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) # All documents should be indexed after now_seconds
+    assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) 	# All documents should be indexed after now_seconds
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex') ])
     puts "Reindexed #{@document_count} documents in #{reindexing_millis * 1e-3} seconds"
     profiler_report('reindex')
@@ -80,9 +80,9 @@ class ReindexingAndFeedingTest < PerformanceTest
     trigger_reindexing
     feed_data({ :file => @refeed_file, :legend => 'reindex_feed' })
     reindexing_millis = wait_for_reindexing
-    assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) # All documents should be indexed after now_seconds
+    assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) 	# All documents should be indexed after now_seconds
     assert_hitcount("label:refeed&nocache", @document_count * 2/ 3)			# Two thirds of the documents should have the "refeed" label
-    assert_hitcount("label:initial&nocache", @document_count * 1 / 3)		# The last third should still have the "initial" label
+    assert_hitcount("label:initial&nocache", @document_count * 1 / 3)			# The last third should still have the "initial" label
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex_feed') ])
     puts "Reindexed #{@document_count} documents in #{reindexing_millis * 1e-3} seconds"
     profiler_report('reindex_feed')
@@ -106,7 +106,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     feed_data({ :file => @updates_file, :legend => 'reindex_update' })
     feed_data({ :file => @updates_file, :legend => 'reindex_update' })
     reindexing_millis = wait_for_reindexing
-    assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) # All documents should be indexed after now_seconds
+    assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) 	# All documents should be indexed after now_seconds
     assert_hitcount("count:2&nocache", @document_count)					# All documents should have "counter" incremented by 2
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex_update') ])
     puts "Reindexed #{@document_count} documents in #{reindexing_millis * 1e-3} seconds"
@@ -169,38 +169,38 @@ class ReindexingAndFeedingTest < PerformanceTest
 
   def graph_config
     {
-      ['reindex', 'reindex_feed', 'reindex_update', 'feed', 'update'] => {
-	'reindexing.throughput' =>    { },
-	'feeder.throughput' =>       { }
+      {} => {
+	'reindexing.throughput' =>   { },
+	'feeder.throughput'     =>   { }
       },
-      'reindex' => {
-	'reindexing.throughput'   => { :y_min =>   5000, :y_max =>  10000 },
+      { :legend => 'reindex' } => {
+	'reindexing.throughput' =>   { :y_min =>  4500, :y_max =>  6500 },	# This is too loose. Perhaps update throttle policy will fix. 
       },
-      'feed' => {
-	'feeder.throughput' =>       { :y_min =>   5000, :y_max =>  10000 },
+      { :legend => 'feed' } => {
+	'feeder.throughput'     =>   { :y_min =>  8400, :y_max =>  9400 },	
       },
-      'reindex_feed' => {
-	'reindexing.throughput'   => { :y_min =>   2000, :y_max =>   6000 },
-	'feeder.throughput' =>       { :y_min =>   2000, :y_max =>   6000 },
+      { :legend => 'reindex_feed' } => {
+	'reindexing.throughput' =>   { :y_min =>  3700, :y_max =>  4300 },
+	'feeder.throughput'     =>   { :y_min =>  8400, :y_max =>  9400 },
       },
-      'update' => {
-	'feeder.throughput' =>       { :y_min =>  30000, :y_max =>  50000 },
+      { :legend => 'update' } => {
+	'feeder.throughput'     =>   { :y_min => 38000, :y_max => 48000 },
       },
-      'reindex_update' => {
-	'reindexing.throughput'   => { :y_min =>   2000, :y_max =>   6000 },
-	'feeder.throughput' =>       { :y_min =>  10000, :y_max =>  30000 },
+      { :legend => 'reindex_update' } => {
+	'reindexing.throughput' =>   { :y_min =>  4300, :y_max =>  5000 },
+	'feeder.throughput'     =>   { :y_min => 35000, :y_max => 40000 },
       }
     }
   end
 
   def get_graphs(config)
-    config.map do |legend, metrics|
+    config.map do |filter, metrics|
       metrics.map do |metric, limits|
 	{
 	  :x => 'legend',
 	  :y => metric,
 	  :title => "#{metric} for #{legend}",
-	  :filter => { "legend" => legend },
+	  :filter => filter,
 	  :historic => true
 	}.merge(limits)
       end
