@@ -199,7 +199,6 @@ class ReindexingAndFeedingTest < PerformanceTest
 	{
 	  :x => 'legend',
 	  :y => metric,
-	  :title => "#{metric} for #{legend}",
 	  :filter => filter,
 	  :historic => true
 	}.merge(limits)
