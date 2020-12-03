@@ -107,7 +107,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     feed_data({ :file => @updates_file, :legend => 'reindex_update' })
     reindexing_millis = wait_for_reindexing
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) # All documents should be indexed after now_seconds
-    assert_hitcount("count:1&nocache", @document_count)					# All documents should have "counter" incremented by 1
+    assert_hitcount("count:2&nocache", @document_count)					# All documents should have "counter" incremented by 2
     write_report([ reindexing_result_filler(reindexing_millis, @document_count, 'reindex_update') ])
     puts "Reindexed #{@document_count} documents in #{reindexing_millis * 1e-3} seconds"
     profiler_report('reindex_update')
