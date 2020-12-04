@@ -179,18 +179,18 @@ class ReindexingAndFeedingTest < PerformanceTest
 	'reindexing.throughput' =>   { :y_min =>  4500, :y_max =>  6500 },	# This is too loose. Perhaps update throttle policy will fix. 
       },
       { :legend => 'feed' } => {
-	'feeder.throughput'     =>   { :y_min =>  8400, :y_max =>  9400 },	
+	'feeder.throughput'     =>   { :y_min =>  8400, :y_max =>  9600 },	
       },
       { :legend => 'reindex_feed' } => {
-	'reindexing.throughput' =>   { :y_min =>  3700, :y_max =>  4300 },
-	'feeder.throughput'     =>   { :y_min =>  8400, :y_max =>  9400 },
+	'reindexing.throughput' =>   { :y_min =>  3700, :y_max =>  4500 },
+	'feeder.throughput'     =>   { :y_min =>  8400, :y_max =>  9600 },
       },
       { :legend => 'update' } => {
-	'feeder.throughput'     =>   { :y_min => 38000, :y_max => 48000 },
+	'feeder.throughput'     =>   { :y_min => 36000, :y_max => 48000 },
       },
       { :legend => 'reindex_update' } => {
-	'reindexing.throughput' =>   { :y_min =>  4300, :y_max =>  5000 },
-	'feeder.throughput'     =>   { :y_min => 35000, :y_max => 40000 },
+	'reindexing.throughput' =>   { :y_min =>  4100, :y_max =>  5100 },
+	'feeder.throughput'     =>   { :y_min => 34000, :y_max => 40000 },
       }
     }
   end
