@@ -164,12 +164,14 @@ class ReindexingAndFeedingTest < PerformanceTest
   def get_reindexing_status
     status = vespa.clustercontrollers["0"].get_reindexing_json
     return nil if status.nil?
-    return status['status'].first
+    cluster = status['clusters']['search']
+    return nil if cluster.nil?
+    return cluster['documentTypes']['doc']
   end
 
   def graph_config
     {
-      {} => {
+      { } => {
 	'reindexing.throughput' =>   { },
 	'feeder.throughput'     =>   { }
       },
