@@ -43,7 +43,7 @@ class ContainerHttp < PerformanceTest
             :filter => {'legend' => STANDARD},
             :x => 'legend',
             :y => 'qps',
-            :y_min => 162000,
+            :y_min => 160000,
             :y_max => 190000,
             :historic => true
         },
