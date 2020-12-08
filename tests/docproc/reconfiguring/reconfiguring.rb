@@ -110,7 +110,7 @@ class Reconfiguring < DocprocTest
     numCallStackShakeMessages = assert_log_matches(/Setting up call stack for chain shake/, 0)
     assert_equal(2, numCallStackShakeMessages)
 
-    sleep 5 # Wait for graceperiod of 5 seconds
+    sleep 65 # Wait for deconstruction of providers, and then a slobrok graceperiod of 5 seconds
     #check that session for previous chain is no longer present in slobrok:
     ret = vespa.adminserver.execute("vespa-slobrok-cmd 19099 slobrok.admin.listAllRpcServers")
     puts "slobrok\n" + ret
