@@ -236,7 +236,7 @@ class QueryAccessLog < SearchContainerTest
   end
 
   def get_real_qrs_logname(cluster)
-    vespa.qrs[cluster].qrserver['0'].readlink(get_qrs_symlink_logname(cluster))
+    vespa.qrs[cluster].qrserver['0'].resolve_symlink(get_qrs_symlink_logname(cluster))
   end
 
   def list_qrs_log_files(cluster)
