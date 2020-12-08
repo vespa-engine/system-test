@@ -588,10 +588,10 @@ class NodeServer
     Dir.glob(expression)
   end
 
-  # Returns the name of the file referenced by the link _filename_.
-  def readlink(filename)
+  # Returns the absolute and resolved path of _filename_.
+  def realpath(filename)
     if File.exists?(filename)
-      File.readlink(filename)
+      File.realpath(filename)
     else
       nil
     end

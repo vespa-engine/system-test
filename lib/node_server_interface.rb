@@ -188,8 +188,8 @@ module NodeServerInterface
     @node_server.list_files(*args)
   end
 
-  def readlink(*args)
-    @node_server.readlink(*args)
+  def realpath(*args)
+    @node_server.realpath(*args)
   end
 
   def set_bash_variable(*args)
