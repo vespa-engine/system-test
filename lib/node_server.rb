@@ -588,9 +588,9 @@ class NodeServer
     Dir.glob(expression)
   end
 
-  # Returns the absolute and resolved path of _filename_.
-  def realpath(filename)
-    if File.exists?(filename)
+  # Returns the absolute and resolved path of the symlink _filename_.
+  def resolve_symlink(filename)
+    if File.symlink?(filename)
       File.realpath(filename)
     else
       nil

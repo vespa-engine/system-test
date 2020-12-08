@@ -188,8 +188,8 @@ module NodeServerInterface
     @node_server.list_files(*args)
   end
 
-  def realpath(*args)
-    @node_server.realpath(*args)
+  def resolve_symlink(*args)
+    @node_server.resolve_symlink(*args)
   end
 
   def set_bash_variable(*args)
