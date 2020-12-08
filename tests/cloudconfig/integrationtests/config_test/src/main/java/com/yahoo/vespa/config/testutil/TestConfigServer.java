@@ -179,7 +179,7 @@ public class TestConfigServer implements RequestHandler, Runnable {
     }
 
     private ConfigResponse createResponse(ConfigPayload payload, String configMd5Sum, long applicationGeneration) {
-        return SlimeConfigResponse.fromConfigPayload(payload, applicationGeneration, false, false, configMd5Sum);
+        return SlimeConfigResponse.fromConfigPayload(payload, applicationGeneration, false, configMd5Sum);
     }
 
     private void loadDefFile(File file) {
