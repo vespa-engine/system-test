@@ -54,11 +54,11 @@ class TensorInstructionBenchmarkTest < PerformanceTest
           add_graph_for_case("encode #{bm_codec}")
           add_graph_for_case("decode #{bm_codec}")
       end
-      if (parse_line =~ /^\s*([^(]*)[(]([^)]*)[)] <(.*)>:\s*([.0-9]*) us/)
+      if (parse_line =~ /^\s*([^(]*)[(]([^)]*)[)]:\s*([.0-9]*) us <(.*)>/)
           impl_long = $1
           impl_short = $2
-          sub_type = $3
-          cost = $4
+          cost = $3
+          sub_type = $4
           bm_codec = 'unknown' unless bm_codec
           bm_type = "#{sub_type} #{bm_codec}"
           write_report([metric_filler(COST, cost),
