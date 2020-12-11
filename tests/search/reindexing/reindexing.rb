@@ -18,7 +18,6 @@ class ReindexingTest < IndexedSearchTest
         cluster(SearchCluster.new(MUSIC_CLUSTER_ID).sd(selfdir + 'music.sd')).
         cluster(SearchCluster.new(MOVIE_CLUSTER_ID).sd(selfdir + 'movie.sd')).
         container(Container.new('combinedcontainer').
-            jvmargs('-Xms16g -Xmx16g').
             search(Searching.new).
             docproc(DocumentProcessing.new).
             gateway(ContainerDocumentApi.new))
