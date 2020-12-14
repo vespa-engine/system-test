@@ -25,7 +25,6 @@ class ReindexingTest < IndexedSearchTest
     start
     container_node = @vespa.container["combinedcontainer/0"]
 
-    reindexing_timestamp = trigger_reindexing(app)
     puts "Waiting for initial reindexing status to be set"
     wait_for_reindexing_to_complete(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, 0, reindexing_timestamp)
     wait_for_reindexing_to_complete(MOVIE_CLUSTER_ID, MOVIE_DOC_TYPE, 0, reindexing_timestamp)
