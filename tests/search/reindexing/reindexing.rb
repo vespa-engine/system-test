@@ -25,6 +25,10 @@ class ReindexingTest < IndexedSearchTest
     start
     container_node = @vespa.container["combinedcontainer/0"]
 
+    puts "Waiting for initial reindexing status to be set"
+    wait_for_reindexing_to_complete(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, 0, reindexing_timestamp)
+    wait_for_reindexing_to_complete(MOVIE_CLUSTER_ID, MOVIE_DOC_TYPE, 0, reindexing_timestamp)
+
     puts "Feeding #{MUSIC_DOC_TYPE} documents"
     music_file = generate_feed_file(container_node, MUSIC_DOC_TYPE)
     feed_and_wait_for_docs(MUSIC_DOC_TYPE, DOCUMENT_COUNT, { :file => music_file, :feed_node => container_node, :localfile => true })
@@ -35,8 +39,8 @@ class ReindexingTest < IndexedSearchTest
 
     reindexing_timestamp = trigger_reindexing(app)
     puts "Waiting for all documents to have a index timestamp after #{reindexing_timestamp}"
-    wait_for_reindexing_to_complete(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, reindexing_timestamp)
-    wait_for_reindexing_to_complete(MOVIE_CLUSTER_ID, MOVIE_DOC_TYPE, reindexing_timestamp)
+    wait_for_reindexing_to_complete(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, DOCUMENT_COUNT, reindexing_timestamp)
+    wait_for_reindexing_to_complete(MOVIE_CLUSTER_ID, MOVIE_DOC_TYPE, DOCUMENT_COUNT, reindexing_timestamp)
   end
 
   private
@@ -73,7 +77,7 @@ class ReindexingTest < IndexedSearchTest
   end
 
   private
-  def wait_for_reindexing_to_complete(cluster_id, document_type, reindexing_timestamp)
+  def wait_for_reindexing_to_complete(cluster_id, document_type, document_count, reindexing_timestamp)
     puts "Waiting for reindexing to complete for '#{document_type}@#{cluster_id}'"
     while true
       status = get_reindexing_status_from_cluster_controller(cluster_id, document_type)
@@ -83,7 +87,7 @@ class ReindexingTest < IndexedSearchTest
     end
     assert('successful' == status['state'], "Reindexing should complete successfully")
     assert_hitcount("#{document_type}_indexed_at_seconds:#{URI.escape('<')}#{reindexing_timestamp/1000}&nocache", 0)
-    assert_hitcount("#{document_type}_indexed_at_seconds:#{URI.escape('>')}#{reindexing_timestamp/1000}&nocache", DOCUMENT_COUNT)
+    assert_hitcount("#{document_type}_indexed_at_seconds:#{URI.escape('>')}#{reindexing_timestamp/1000}&nocache", document_count)
   end
 
   private

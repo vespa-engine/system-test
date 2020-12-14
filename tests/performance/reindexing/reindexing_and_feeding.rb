@@ -41,14 +41,13 @@ class ReindexingAndFeedingTest < PerformanceTest
     @document_count = 600_000
     generate_feed
 
-    # First time is a dummy.
-    trigger_reindexing
-    wait_for_reindexing
-
     # Warmup and feed corpus
     puts "Feeding initial data"
     feed_data({ :file => @initial_file, :legend => 'initial' })
     assert_hitcount("sddocname:doc", @document_count) # All documents should be fed and visible
+
+    # Wait for initial reindexing status to be set
+    wait_for_reindexing
 
     benchmark_reindexing
     benchmark_reindexing_and_refeeding
