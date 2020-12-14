@@ -27,11 +27,11 @@ class ReindexingTest < IndexedSearchTest
 
     puts "Feeding #{MUSIC_DOC_TYPE} documents"
     music_file = generate_feed_file(container_node, MUSIC_DOC_TYPE)
-    feed_and_wait_for_docs(MUSIC_DOC_TYPE, DOCUMENT_COUNT, :file => music_file)
+    feed_and_wait_for_docs(MUSIC_DOC_TYPE, DOCUMENT_COUNT, { :file => music_file, :feed_node => container_node })
 
     puts "Feeding #{MOVIE_DOC_TYPE} documents"
     movie_file = generate_feed_file(container_node, MOVIE_DOC_TYPE)
-    feed_and_wait_for_docs(MOVIE_DOC_TYPE, DOCUMENT_COUNT, :file => movie_file)
+    feed_and_wait_for_docs(MOVIE_DOC_TYPE, DOCUMENT_COUNT, { :file => movie_file, :feed_node => container_node })
 
     reindexing_timestamp = trigger_reindexing(app)
     puts "Waiting for all documents to have a index timestamp after #{reindexing_timestamp}"
