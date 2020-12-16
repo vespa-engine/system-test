@@ -37,7 +37,7 @@ class CustomStateApi < SearchTest
   def assert_custom_component_api(page)
     # We only test part of the page as the details are unit tested in searchcore.
     puts "assert_custom_component_api: #{page}"
-    assert_keys(["documentdb", "flushengine", "matchengine", "tls", "resourceusage"], page)
+    assert_keys(["documentdb", "threadpools", "flushengine", "matchengine", "tls", "resourceusage"], page)
 
     doc_dbs = page["documentdb"]
     assert_equal(1, doc_dbs.size)
@@ -48,13 +48,14 @@ class CustomStateApi < SearchTest
     assert_equal("ONLINE", page["matchengine"]["status"]["state"])
 
     assert_document_db(get_page("/documentdb/test"))
+    assert_thread_pools(get_page("/threadpools"))
     assert_flush_engine(get_page("/flushengine"))
     assert_tls(get_page("/tls"))
     assert_resource_usage(get_page("/resourceusage"))
   end
 
   def assert_document_db(page)
-    assert_keys(["bucketdb", "documents", "documentType", "maintenancecontroller", "session", "status", "subdb"], page)
+    assert_keys(["bucketdb", "documents", "documentType", "threadingservice", "maintenancecontroller", "session", "status", "subdb"], page)
     assert_equal(1, page["bucketdb"]["numBuckets"].to_i)
     assert_bucket_db(get_page("/documentdb/test/bucketdb"))
   end
@@ -63,6 +64,10 @@ class CustomStateApi < SearchTest
     assert_keys(["buckets", "numBuckets"], page)
     assert_equal(1, page["numBuckets"].to_i)
     assert_equal(1, page["buckets"].size)
+  end
+
+  def assert_thread_pools(page)
+    assert_keys(["shared", "match", "docsum", "flush", "proton", "warmup"], page)
   end
 
   def assert_flush_engine(page)
