@@ -60,7 +60,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     # Benchmark pure reindexing
     puts "Reindexing corpus"
     profiler_start
-    now_seconds = Time.now.to_i
+    now_seconds = Time.now.to_i + 5							# Account for clock skew — reindexing takes more than 10s to trigger
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
     reindexing_millis = wait_for_reindexing
@@ -74,7 +74,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     # Benchmark concurrent reindexing and feed
     puts "Reindexing corpus while refeeding two thirds of it"
     profiler_start
-    now_seconds = Time.now.to_i
+    now_seconds = Time.now.to_i + 5							# Account for clock skew — reindexing takes more than 10s to trigger
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
     feed_data({ :file => @refeed_file, :legend => 'reindex_feed' })
@@ -99,7 +99,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     # Benchmark concurrent reindexing and updates
     puts "Reindexing corpus while doing partial updates to all documents"
     profiler_start
-    now_seconds = Time.now.to_i
+    now_seconds = Time.now.to_i + 5							# Account for clock skew — reindexing takes more than 10s to trigger
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
     feed_data({ :file => @updates_file, :legend => 'reindex_update' })
