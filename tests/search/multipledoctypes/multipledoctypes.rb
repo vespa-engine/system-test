@@ -8,7 +8,7 @@ class MultipleDocumentTypes < IndexedSearchTest
   end
 
   def test_one_search_cluster
-    timeout=2.0
+    timeout = 5.0
     set_description("Test that we can have a search cluster with native support for multiple document types")
     set_expected_logged(/proton\.groupingmanager.*Could not locate attribute for grouping number 0 : Failed locating attribute vector 'pages'/)
     deploy_app(SearchApp.new.sd(selfdir+"common.sd").sd(selfdir+"book.sd").sd(selfdir+"music.sd").sd(selfdir+"video.sd"))
