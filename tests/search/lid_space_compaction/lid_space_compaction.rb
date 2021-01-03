@@ -208,11 +208,14 @@ class LidSpaceCompactionTest < SearchTest
       print_corpus_hitcount(num_docs)
       if (!stable_stats(ideal_ready, stats[0]) ||
          !stable_stats(ideal_not_ready, stats[2]))
-        sleep 1.0
+        sleep 2.0
       else
         break
       end
     end
+    stats = get_all_lid_stats
+    print_corpus_hitcount(num_docs)
+    assert(stable_stats(ideal_ready, stats[0]) && stable_stats(ideal_not_ready, stats[2]))
   end
 
   def get_proton
