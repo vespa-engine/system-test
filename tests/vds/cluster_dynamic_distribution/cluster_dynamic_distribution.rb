@@ -101,8 +101,8 @@ class ClusterDynamicDistributionTest < VdsTest
   def test_storage_node_down_with_outdated_distribution
     feed_thread = start_feed_thread
     puts "Taking down storage node"
-    vespa.adminserver.logctl("searchnode2:proton.persistence.filestor.handler.impl", "debug=on")
-    sleep 1
+    vespa.adminserver.logctl("searchnode2:persistence.filestor.handler.impl", "debug=on")
+    sleep 2
     vespa.stop_content_node("storage", 1)
 
     feed_thread.join
