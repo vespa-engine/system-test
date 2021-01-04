@@ -27,7 +27,7 @@ class ServletReconfig < ContainerTest
     message1 = 'Hello!'
     message2 = 'Hello again!'
 
-    deoploy_and_start(application_with_cloud_config(path, message1))
+    deploy_and_start(application_with_cloud_config(path, message1))
     verify_cloud_config_response(path, message1)
 
     deploy_and_wait_for_reconfig(application_with_cloud_config(path, message2))
@@ -39,7 +39,7 @@ class ServletReconfig < ContainerTest
     message1 = 'Hello!'
     message2 = 'Hello again!'
 
-    deoploy_and_start(application_with_servlet_config(path, message1))
+    deploy_and_start(application_with_servlet_config(path, message1))
     verify_servlet_config_response(path, message1)
 
     deploy_and_wait_for_reconfig(application_with_servlet_config(path, message2))
@@ -50,14 +50,14 @@ class ServletReconfig < ContainerTest
     path1 = 'my-path'
     path2 = 'my-path2'
 
-    deoploy_and_start(create_application_without_config(path1))
+    deploy_and_start(create_application_without_config(path1))
     verify_empty_response(path1)
 
     deploy_and_wait_for_reconfig(create_application_without_config(path2))
     verify_empty_response(path2)
   end
 
-  def deoploy_and_start(application)
+  def deploy_and_start(application)
     start(application, :bundles => [@resource])
   end
 
