@@ -1,4 +1,3 @@
-
 # coding: utf-8
 # Copyright 2020 Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
@@ -175,20 +174,20 @@ class ReindexingAndFeedingTest < PerformanceTest
 	'feeder.throughput'     =>   { }
       },
       { :legend => 'reindex' } => {
-	'reindexing.throughput' =>   { :y_min =>  4000, :y_max =>  5000 },
+	'reindexing.throughput' =>   { :y_min =>  4000, :y_max =>  5100 },
       },
       { :legend => 'feed' } => {
 	'feeder.throughput'     =>   { :y_min =>  8200, :y_max =>  9600 },	
       },
       { :legend => 'reindex_feed' } => {
-	'reindexing.throughput' =>   { :y_min =>  3200, :y_max =>  3900 },
+	'reindexing.throughput' =>   { :y_min =>  3200, :y_max =>  4000 },
 	'feeder.throughput'     =>   { :y_min =>  8400, :y_max =>  9600 },
       },
       { :legend => 'update' } => {
 	'feeder.throughput'     =>   { :y_min => 37000, :y_max => 47000 },
       },
       { :legend => 'reindex_update' } => {
-	'reindexing.throughput' =>   { :y_min =>  3500, :y_max =>  4300 },
+	'reindexing.throughput' =>   { :y_min =>  3500, :y_max =>  4500 },
 	'feeder.throughput'     =>   { :y_min => 34000, :y_max => 41000 },
       }
     }
