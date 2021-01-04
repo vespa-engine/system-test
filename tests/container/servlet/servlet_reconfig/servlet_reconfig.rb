@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'app_generator/container_app'
 require 'app_generator/servlet'
 require 'container_test'
@@ -22,15 +22,15 @@ class ServletReconfig < ContainerTest
   end
 
 
- def test_cloud_config_reconfig
+  def test_cloud_config_reconfig
     path = 'my-path'
     message1 = 'Hello!'
     message2 = 'Hello again!'
 
-    start(application_with_cloud_config(path, message1), :bundles => [@resource])
+    deoploy_and_start(application_with_cloud_config(path, message1))
     verify_cloud_config_response(path, message1)
 
-    deploy(application_with_cloud_config(path, message2), :bundles => [@resource])
+    deploy_and_wait_for_reconfig(application_with_cloud_config(path, message2))
     verify_cloud_config_response(path, message2)
   end
 
@@ -39,10 +39,10 @@ class ServletReconfig < ContainerTest
     message1 = 'Hello!'
     message2 = 'Hello again!'
 
-    start(application_with_servlet_config(path, message1), :bundles => [@resource])
+    deoploy_and_start(application_with_servlet_config(path, message1))
     verify_servlet_config_response(path, message1)
 
-    deploy(application_with_servlet_config(path, message2), :bundles => [@resource])
+    deploy_and_wait_for_reconfig(application_with_servlet_config(path, message2))
     verify_servlet_config_response(path, message2)
   end
 
@@ -50,11 +50,20 @@ class ServletReconfig < ContainerTest
     path1 = 'my-path'
     path2 = 'my-path2'
 
-    start(create_application_without_config(path1), :bundles => [@resource])
+    deoploy_and_start(create_application_without_config(path1))
     verify_empty_response(path1)
 
-    deploy(create_application_without_config(path2), :bundles => [@resource])
+    deploy_and_wait_for_reconfig(create_application_without_config(path2))
     verify_empty_response(path2)
+  end
+
+  def deoploy_and_start(application)
+    start(application, :bundles => [@resource])
+  end
+
+  def deploy_and_wait_for_reconfig(application)
+    deploy(application, :bundles => [@resource])
+    wait_for_reconfig
   end
 
 
@@ -117,4 +126,5 @@ class ServletReconfig < ContainerTest
   def teardown
     stop
   end
+
 end
