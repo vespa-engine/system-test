@@ -1,6 +1,4 @@
 # coding: utf-8
-
-# coding: utf-8
 # Copyright 2020 Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'performance_test'
