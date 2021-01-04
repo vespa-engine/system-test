@@ -102,6 +102,9 @@ class ClusterDynamicDistributionTest < VdsTest
     feed_thread = start_feed_thread
     puts "Taking down storage node"
     vespa.adminserver.logctl("searchnode2:persistence.filestor.handler.impl", "debug=on")
+    vespa.adminserver.logctl("searchnode2:persistence.filestor.manager", "debug=on")
+    vespa.adminserver.logctl("searchnode2:persistence.thread", "debug=on")
+    vespa.adminserver.logctl("searchnode2:application.link", "debug=on")
     sleep 2
     vespa.stop_content_node("storage", 1)
 
