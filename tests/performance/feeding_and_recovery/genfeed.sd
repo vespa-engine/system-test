@@ -1,0 +1,22 @@
+search genfeed {
+    fieldset default {
+        fields: title, body
+    }
+    document genfeed {
+        field title type string {
+            indexing: index | summary
+        }
+        field body type string {
+            indexing: index | summary
+        }
+        field tag type string {
+            indexing: summary | attribute
+        }
+        field seqno type int {
+            indexing: summary | attribute
+        }
+        field id type string {
+            indexing: summary | attribute
+        }
+    }
+}
