@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'json'
 
@@ -22,32 +22,32 @@ class TenantAPI < CloudConfigTest
   def test_tenant_api
     @node.start_configserver
 
-    tenants=list_tenants_assert(@hostname)
-    assert_equal(tenants["tenants"], SYSTEM_TENANTS)
+    tenants = list_tenants_assert(@hostname)
+    assert_equal(SYSTEM_TENANTS, tenants["tenants"])
     get_tenant_assert("default")
     create_tenant_assert("foo")
     get_tenant_assert("foo")
     assert_equal(404, get_tenant("unknown", @hostname).code.to_i)
-    tenants=list_tenants_assert(@hostname)
+    tenants = list_tenants_assert(@hostname)
     assert_equal(create_excpected_tenants(["foo"]), tenants["tenants"])
     create_tenant_assert("bar")
-    tenants=list_tenants_assert(@hostname)
+    tenants = list_tenants_assert(@hostname)
     assert_equal(create_excpected_tenants(["foo", "bar"]), tenants["tenants"])
     delete_tenant_assert("foo")
-    tenants=list_tenants_assert(@hostname)
+    tenants = list_tenants_assert(@hostname)
     assert_equal(create_excpected_tenants(["bar"]), tenants["tenants"])
     delete_tenant_assert("bar")
-    tenants=list_tenants_assert(@hostname)
-    assert_equal(tenants["tenants"], ["default"])
+    tenants = list_tenants_assert(@hostname)
+    assert_equal(SYSTEM_TENANTS, tenants["tenants"])
 
-    # Add one that was previously deleted
+    # Add a tenant that was previously deleted
     create_tenant_assert("foo")
-    tenants=list_tenants_assert(@hostname)
+    tenants = list_tenants_assert(@hostname)
     assert(tenants["tenants"]==["default","foo"])
     delete_tenant_assert("foo")
     assert(wait_for_tenants(@hostname, []))
-    tenants=list_tenants_assert(@hostname)
-    assert(tenants["tenants"]==["default"])
+    tenants = list_tenants_assert(@hostname)
+    assert_equal(SYSTEM_TENANTS, tenants["tenants"])
       
     tenants = Array.new    
     # Many tenants:
@@ -60,8 +60,8 @@ class TenantAPI < CloudConfigTest
       delete_tenant_assert("t#{i}")
     end
     assert(wait_for_tenants(@hostname, []))
-    tenants=list_tenants_assert(@hostname)
-    assert(tenants["tenants"]==["default"])
+    tenants = list_tenants_assert(@hostname)
+    assert(SYSTEM_TENANTS, tenants["tenants"])
   end
 
   def create_tenant_assert(tenant)
@@ -70,7 +70,7 @@ class TenantAPI < CloudConfigTest
   end
 
   def create_excpected_tenants(tenants)
-    expected_tenants = SYSTEM_TENANTS + tenants
+    SYSTEM_TENANTS + tenants
   end
 
   def list_tenants_assert(hostname, port=DEFAULT_SERVER_HTTPPORT)
@@ -95,4 +95,5 @@ class TenantAPI < CloudConfigTest
     @node.stop_configserver
     stop
   end
+
 end
