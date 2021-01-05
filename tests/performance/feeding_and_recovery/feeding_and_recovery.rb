@@ -4,10 +4,6 @@ require 'performance_test'
 require 'app_generator/search_app'
 require 'environment'
 
-mytime = Time.new
-
-if mytime.hour < 5 or mytime.hour > 15
-
 class FeedingAndRecoveryTest < PerformanceTest
 
   def timeout_seconds
@@ -443,6 +439,4 @@ class FeedingAndRecoveryTest < PerformanceTest
   def teardown
     super
   end
-end
-
 end
