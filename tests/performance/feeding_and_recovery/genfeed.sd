@@ -1,13 +1,13 @@
 search genfeed {
     fieldset default {
-        fields: title, body
+        fields: title
     }
     document genfeed {
         field title type string {
             indexing: index | summary
         }
         field body type string {
-            indexing: index | summary
+            indexing: summary
         }
         field tag type string {
             indexing: summary | attribute
