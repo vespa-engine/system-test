@@ -9,7 +9,7 @@ require 'environment'
 
 class TensorEvalPerfTest < PerformanceTest
 
-  FBENCH_RUNTIME = 30
+  FBENCH_RUNTIME = 20
   EVAL_TYPE = "eval_type"
   RANK_PROFILE = "rank_profile"
   WSET_ENTRIES = "wset_entries"
