@@ -42,7 +42,7 @@ class ParentChildPerfTest < PerformanceTest
   def test_parent_child_feeding_ranking_matching
     set_description("Test performance of parent child feeding (partial updates), ranking and matching")
     @graphs = get_graphs
-    [[1,10],[10,1],[100,1],[1000,1]].each do |ratios|
+    [[1,10],[10,1],[1000,1]].each do |ratios|
       clean_indexes_and_deploy_app
       run_tests(@num_ad_docs, ratios[0], ratios[1])
     end
