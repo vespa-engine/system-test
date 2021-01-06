@@ -9,13 +9,6 @@
     <container version="1.0">
         <model-evaluation/>
         <search>
-            <chain id="default" inherits="vespa">
-                <searcher id="com.yahoo.test.TensorFlowSearcher" bundle="mnist" >
-                    <config name="com.yahoo.test.tf-model">
-                        <model>models/mnist/saved</model>
-                    </config>
-                </searcher>
-            </chain>
             <chain id="stateless" inherits="vespa">
                 <searcher id="com.yahoo.test.TensorFlowStatelessEvaluation" bundle="mnist" />
             </chain>
