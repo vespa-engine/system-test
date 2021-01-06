@@ -20,8 +20,6 @@ import com.yahoo.search.result.HitGroup;
 import com.yahoo.search.searchchain.Execution;
 import com.yahoo.tensor.Tensor;
 import com.yahoo.tensor.TensorType;
-import org.tensorflow.SavedModelBundle;
-import org.tensorflow.Session;
 
 import java.io.File;
 import java.nio.FloatBuffer;

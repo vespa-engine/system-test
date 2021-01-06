@@ -6,7 +6,7 @@ class TensorFlowValidate < IndexedSearchTest
   def setup
     @valgrid = false
     set_owner("lesters")
-    set_description("Validate TensorFlow import by running the model both in Vespa and TensorFlow")
+    set_description("Validate TensorFlow import")
   end
 
   def teardown
@@ -19,22 +19,6 @@ class TensorFlowValidate < IndexedSearchTest
     start
 
     feed_and_wait_for_docs("mnist", 100, :file => selfdir + "feed.json")
-
-    # TensorFlow: rank one document at a time
-    10.times do |i|
-      result = search("query=sddocname:mnist&hits=10&class=#{i}&tfrank=single")
-      result.hit.each { |hit|
-        assert((hit.field["relevance"].to_f - hit.field["tf_relevance"].to_f).abs < 0.00001)
-      }
-    end
-
-    # TensorFlow: rank all documents in one go
-    10.times do |i|
-      result = search("query=sddocname:mnist&hits=10&class=#{i}&tfrank=multiple")
-      result.hit.each { |hit|
-        assert((hit.field["relevance"].to_f - hit.field["tf_relevance"].to_f).abs < 0.00001)
-      }
-    end
 
     10.times do |i|
       result = search("query=sddocname:mnist&hits=10&class=#{i}&searchChain=stateless")
