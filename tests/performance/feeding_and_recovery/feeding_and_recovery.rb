@@ -358,11 +358,11 @@ class FeedingAndRecoveryTest < PerformanceTest
     end
 
     feed_stream("#{@data_generator} feed1 #{@test_params.feed1_docs} 100 100", :timeout => 3600)
+    failure_thread.join
     vespa.storage["search"].wait_until_ready(64000)
 
     signal.send
     sample_thread.join
-    failure_thread.join
     sample_thread["samples"].each do |s|
       write_report([parameter_filler("tag", "feeding_and_recovery"),
                     parameter_filler("source", "external"),
