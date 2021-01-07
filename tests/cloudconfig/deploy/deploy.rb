@@ -1,3 +1,4 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'json'
 require 'application_v2_api'
@@ -74,7 +75,7 @@ include ApplicationV2Api
     json = JSON.parse(result.body)
     assert_equal("INVALID_APPLICATION_PACKAGE", json["error-code"])
     message = json["message"]
-    assert_match(/Invalid application package: .*XML error in services\.xml: element \"foo\" not allowed here/, message)
+    assert_match(/Invalid application package: .*Invalid XML according to XML schema, error in services\.xml: element \"foo\" not allowed here/, message)
     assert_match(/\[4:11\]/, json["message"])
     next_session(session_id)
   end

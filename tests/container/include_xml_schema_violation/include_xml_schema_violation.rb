@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_container_test'
 
 class IncludeXmlSchemaViolation < SearchContainerTest
@@ -21,8 +21,7 @@ class IncludeXmlSchemaViolation < SearchContainerTest
     assert_match(/deploy.*prepare/, msg, "vespa-deploy prepare should return error")
 
     puts "output: #{err}"
-    puts "(should contain 'XML error in schema-violation.xml')"
-    assert_match(/XML error in schema-violation.xml/, err,
+    assert_match(/Invalid XML according to XML schema, error in schema-violation.xml/, err,
                  "error message did not contain required text")
   end
 
