@@ -164,7 +164,8 @@ class VespaModel
 
     if params[:sed_vespa_services]
       @testcase.output("Applying #{params[:sed_vespa_services]} on services.xml")
-      `cat #{vespa_services} | #{params[:sed_vespa_services]} > tmp_services ; mv tmp_services #{vespa_services}`
+      tmp_services_xml = tmp_application + "/tmp_services.xml"
+      `cat #{vespa_services} | #{params[:sed_vespa_services]} > #{tmp_services_xml} ; mv #{tmp_services_xml} #{vespa_services}`
     end
 
     if params[:hosts_to_use]
