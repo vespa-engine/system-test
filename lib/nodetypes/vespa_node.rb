@@ -59,7 +59,7 @@ class VespaNode
     @https_client.get(hostname, port, path, headers)
   end
 
-  def get_json_over_http(full_path, port, hostname = "localhost")
+  def get_json_over_http(full_path, port, hostname = Environment.instance.vespa_hostname)
     begin
       res = https_get(hostname, port, full_path)
       raise("error!") unless res.is_a?(Net::HTTPSuccess)
