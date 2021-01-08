@@ -6,8 +6,6 @@ class NGram < IndexedSearchTest
 
   def setup
     set_owner("bratseth")
-    deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
-    start
   end
 
   def teardown
@@ -15,6 +13,8 @@ class NGram < IndexedSearchTest
   end
 
   def test_ngram
+    deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
+    start
     feed_and_wait_for_docs("test", 3, :file => "#{selfdir}/documents.xml")
 
     # Whole word which is in both title and body
@@ -70,4 +70,17 @@ class NGram < IndexedSearchTest
     assert_field_value("?query=body:牧区雪灾救援&language=zh-Hans","body",
                        "\n内蒙古<hi>牧区雪灾救援</hi>困\n  ")
   end
+
+  def test_ngram_external_field
+    set_description("Test that using ngram on an external field does not affect the input field")
+    deploy_app(SearchApp.new.sd(selfdir + "external.sd"))
+    start
+    feed_and_wait_for_docs("external", 1, :file => selfdir + "external_doc.json")
+
+    assert_hitcount("query=gram_album:eam", 1)
+    assert_hitcount("query=gram_album:dreams", 1)
+    assert_hitcount("query=album:eam", 0)
+    assert_hitcount("query=album:dreams", 1)
+  end
+
 end
