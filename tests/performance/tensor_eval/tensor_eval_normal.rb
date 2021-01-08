@@ -13,7 +13,7 @@ class TensorEvalNormalPerfTest < TensorEvalPerfTest
     @graphs = get_graphs_dot_product
     deploy_and_feed(100000)
 
-    [10,25,50,100,250,500].each do |wset_entries|
+    [10,50,250,500].each do |wset_entries|
       run_fbench_helper(DOT_PRODUCT, FEATURE_DOT_PRODUCT, wset_entries, "queries.dot_product_wset.#{wset_entries}.txt")
       run_fbench_helper(DOT_PRODUCT, FEATURE_DOT_PRODUCT_ARRAY, wset_entries, "queries.dot_product_array.#{wset_entries}.txt")
       run_fbench_helper(DOT_PRODUCT, DENSE_TENSOR_DOT_PRODUCT, wset_entries, "queries.tensor.dense.#{wset_entries}.txt")
@@ -32,7 +32,7 @@ class TensorEvalNormalPerfTest < TensorEvalPerfTest
       get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,              250, 17.5, 19.5),
       get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT_ARRAY,        500, 15.5, 17.5),
       get_latency_graph_for_rank_profile(DENSE_TENSOR_DOT_PRODUCT,         500, 16.5, 19.2),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,        250, 380, 420)
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,        250, 210, 420)
     ]
   end
 
