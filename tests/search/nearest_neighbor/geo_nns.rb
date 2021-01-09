@@ -125,6 +125,9 @@ class GeoNnsTest < IndexedSearchTest
       end
       geo_check(place[:lat], place[:lon], {:target_num_hits => 9, :filter => "san"})
     end
+    places.each do |place|
+      geo_check(place[:lat], place[:lon], {:target_num_hits => 50, :threshold => 50.5})
+    end
   end
 
   def get_query(qprops)
@@ -135,9 +138,11 @@ class GeoNnsTest < IndexedSearchTest
     doc_tensor = qprops[:doc_tensor] || 'pos_hnsw'
     approx = qprops[:approx]
     filter = qprops[:filter]
+    threshold = qprops[:threshold]
 
     result = "yql=select * from sources * where [{\"targetNumHits\": #{target_num_hits},"
     result += "\"approximate\": #{approx}," if approx
+    result += "\"distanceThreshold\": #{threshold}," if threshold
     result += "\"label\": \"nns\"}] nearestNeighbor(#{doc_tensor},#{query_tensor})"
     result += " and text contains \"#{filter}\"" if filter
     result += ";&ranking.features.query(#{query_tensor})={{x:0}:#{x_0},{x:1}:#{x_1}}"
