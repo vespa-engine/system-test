@@ -7,6 +7,13 @@ search test {
         field longarray type array<long> {
             indexing: attribute | summary
         }
+        field strten type tensor(x{}) {
+            indexing: attribute
+        }
+    }
+    field strtendirect type tensor(x{}) {
+        indexing: input strten | attribute
+        attribute: fast-search
     }
 
     document-summary id {
@@ -46,5 +53,50 @@ search test {
             expression: calc
         }
     }
-}
 
+    rank-profile halfmodern {
+        macro calc() {
+            expression {
+                reduce(
+                    attribute(strten)
+                    *
+                    tensorFromWeightedSet(query(weights), x),
+                    max
+                ) / 10000
+            }
+        }
+        first-phase {
+            expression: calc
+        }
+    }
+
+    rank-profile halfmoderndirect {
+        macro calc() {
+            expression {
+                reduce(
+                    attribute(strtendirect)
+                    *
+                    tensorFromWeightedSet(query(weights), x),
+                    max
+                ) / 10000
+            }
+        }
+        first-phase {
+            expression: calc
+        }
+    }
+
+    rank-profile modern {
+        macro calc() {
+            expression {
+                reduce(
+                    attribute(strtendirect) * query(qwten),
+                    max
+                ) / 10000
+            }
+        }
+        first-phase {
+            expression: calc
+        }
+    }
+}
