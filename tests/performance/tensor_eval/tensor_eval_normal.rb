@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'performance/tensor_eval/tensor_eval'
 
 class TensorEvalNormalPerfTest < TensorEvalPerfTest
@@ -30,9 +30,9 @@ class TensorEvalNormalPerfTest < TensorEvalPerfTest
       get_latency_graphs_for_rank_profile(DENSE_FLOAT_TENSOR_DOT_PRODUCT),
       get_latency_graphs_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT),
       get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,              250, 17.5, 19.5),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT_ARRAY,        500, 15.5, 17.5),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT_ARRAY,        500, 15.5, 18.0),
       get_latency_graph_for_rank_profile(DENSE_TENSOR_DOT_PRODUCT,         500, 16.5, 19.2),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,        250, 210, 420)
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,        250, 205, 220)
     ]
   end
 
