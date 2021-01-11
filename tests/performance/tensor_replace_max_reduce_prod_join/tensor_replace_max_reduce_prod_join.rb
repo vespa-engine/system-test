@@ -5,6 +5,9 @@ require 'performance/fbench'
 
 class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
 
+  LB = '%7B'
+  RB = '%7D'
+
   def initialize(*args)
     super(*args)
   end
@@ -23,7 +26,8 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
 
     @graphs = get_graphs
     @docs_file_name = dirs.tmpdir + "/docs.json"
-    @queries_file_name = dirs.tmpdir + "/queries.txt"
+    @queries1_file_name = dirs.tmpdir + "/queries1.txt"
+    @queries2_file_name = dirs.tmpdir + "/queries2.txt"
     @num_docs = 100000
     @num_queries = 1000
 
@@ -35,6 +39,9 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
   def get_graphs
     [
       get_graph("without_replacement", 21, 50),
+      get_graph("halfmodern", 5, 30),
+      get_graph("halfmoderndirect", 5, 30),
+      get_graph("modern", 5, 30),
       get_graph("with_replacement", 3.8, 4.5)
     ]
   end
@@ -73,7 +80,14 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
       result << "    \"put\":\"id:test:test::#{i}\",\n"
       result << "    \"fields\":{\n"
       result << "      \"id\":#{i},\n"
-      result << "      \"longarray\":[#{Random.rand(1000)},#{Random.rand(1000)},#{Random.rand(1000)}]\n"
+      nums = {}
+      while nums.size < 3
+         nums[Random.rand(1000)] = 1.0
+      end
+      nums = nums.keys
+      result << "      \"longarray\":#{nums},\n"
+      result << "      \"strten\":{\"cells\":{"
+      result << " \"#{nums[0]}\": 1.0, \"#{nums[1]}\": 1.0, \"#{nums[2]}\": 1.0 }}\n"
       result << "    }\n"
       result << "  }"
     end
@@ -82,27 +96,49 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
 
   def generate_queries
     puts "generate_queries"
-    file = File.open(@queries_file_name, "w")
+    file1 = File.open(@queries1_file_name, "w")
+    file2 = File.open(@queries2_file_name, "w")
     @num_queries.times do |i|
-      file.write("/search/?query=sddocname:test&rankproperty.weights=" + generate_random_wset(50) + "\n")
+      wset = generate_random_wset(50)
+      file1.write("/search/?query=sddocname:test&rankproperty.weights=#{format1(wset)}\n")
+      file2.write("/search/?query=sddocname:test&ranking.features.query(qwten)=#{format2(wset)}\n")
     end
-    file.close
+    file1.close
+    file2.close
+  end
+
+  def format1(wset)
+    result = ""
+    wset.each_pair do |key,weight|
+      result << "," if result != ""
+      result << "#{key}:#{weight}"
+    end
+    return LB + result + RB
+  end
+
+  def format2(wset)
+    result = ""
+    wset.each_pair do |key,weight|
+      result << "," if result != ""
+      result << "#{LB}x:#{key}#{RB}:#{weight}"
+    end
+    return LB + result + RB
   end
 
   def generate_random_wset(num_entries)
     limit = [999, num_entries + 1].max
     unique_keys = (0..limit).to_a.shuffle
-    result = "%7B"
+    wset = {}
     num_entries.times do |i|
-      result << "," if i > 0
-      result << unique_keys[i].to_s + ":" + Random.rand(10000).to_s
+      key = unique_keys[i].to_s
+      weight = Random.rand(10000)
+      wset[key] = weight
     end
-    result << "%7D"
-    result
+    return wset
   end
 
   def deploy_and_feed
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd").search_dir(selfdir + "search"))
     start
     feed_and_wait_for_docs("test", @num_docs, :file => @docs_file_name)
     @container = (vespa.qrserver["0"] or vespa.container.values.first)
@@ -110,23 +146,27 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
 
   def run_queries
     run_fbench_helper("without_replacement")
+    run_fbench_helper("halfmodern")
+    run_fbench_helper("halfmoderndirect")
+    run_fbench_helper("modern", @queries2_file_name)
     run_fbench_helper("with_replacement")
   end
 
-  def run_fbench_helper(rank_profile)
+  def run_fbench_helper(rank_profile, queryfile = @queries1_file_name)
     puts "run_fbench_helper(#{rank_profile})"
     copy_query_file
     fillers = [parameter_filler("rank_profile", rank_profile)]
     profiler_start
     run_fbench2(@container,
-                @queries_file_name,
+                queryfile,
                 {:runtime => 30, :clients => 1, :append_str => "&ranking=#{rank_profile}&summary=id&timeout=10"},
                 fillers)
     profiler_report("rank_profile-#{rank_profile}")
   end
 
   def copy_query_file
-    @container.copy(@queries_file_name, File.dirname(@queries_file_name))
+    @container.copy(@queries1_file_name, File.dirname(@queries1_file_name))
+    @container.copy(@queries2_file_name, File.dirname(@queries2_file_name))
   end
 
 end
