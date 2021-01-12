@@ -1,3 +1,4 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'app_generator/cloudconfig_app'
 require 'json'
@@ -19,13 +20,7 @@ class HostHandler < CloudConfigTest
   end
 
   def setup_test
-    # appdir = "#{CLOUDCONFIG_DEPLOY_APPS}/base"
-    # deploy(appdir, nil, nil) # to initialize nodeproxies etc.
-    # delete_tenant_and_its_applications(@hostname, "default")
     @tenant_name = "mytenant"
-    # create_tenant_and_wait(@tenant_name, @node.hostname)
-    # result = create_session(appdir, 0)
-    # @session_id = result["session-id"].to_i
     @application_name = "default"
     @environment = "prod"
     @region = "default"
@@ -43,7 +38,8 @@ class HostHandler < CloudConfigTest
     @hostname = vespa.nodeproxies.first[0]
     result = get_host_info(@configserver, @hostname)
     assert_host_response_code_and_body(200, result)
-    
+
+    sleep 5
     # delete application, check that the host is removed from both host registries
     delete_application_v2(@configserver, @tenant_name, @application_name)
     sleep 5
@@ -71,4 +67,5 @@ class HostHandler < CloudConfigTest
     stop
     delete_tenant_and_its_applications(@configserver, @tenant_name)
   end
+
 end
