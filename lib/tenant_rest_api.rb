@@ -81,7 +81,7 @@ module TenantRestApi
 
   def wait_for_tenants_removed(hostname, tenants, port=DEFAULT_SERVER_HTTPPORT)
     found_none = false
-    for i in 1..2000 do
+    for i in 1..1000 do
       found_none = !has_tenants?(hostname, tenants, port)
       if found_none
         break
