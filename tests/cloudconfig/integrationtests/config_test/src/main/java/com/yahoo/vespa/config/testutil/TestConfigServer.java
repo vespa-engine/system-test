@@ -27,7 +27,7 @@ import com.yahoo.vespa.config.server.SuperModelManager;
 import com.yahoo.vespa.config.server.SuperModelRequestHandler;
 import com.yahoo.vespa.config.server.filedistribution.FileServer;
 import com.yahoo.vespa.config.server.host.ConfigRequestHostLivenessTracker;
-import com.yahoo.vespa.config.server.host.HostRegistries;
+import com.yahoo.vespa.config.server.host.HostRegistry;
 import com.yahoo.vespa.config.server.monitoring.MetricUpdater;
 import com.yahoo.vespa.config.server.monitoring.Metrics;
 import com.yahoo.vespa.config.server.rpc.RpcRequestHandlerProvider;
@@ -89,7 +89,7 @@ public class TestConfigServer implements RequestHandler, Runnable {
         this.rpcServer = new RpcServer(configServerConfig,
                                        superModelRequestHandler,
                                        dimensions -> new MetricUpdater(Metrics.createTestMetrics(), Collections.emptyMap()),
-                                       new HostRegistries(),
+                                       new HostRegistry(),
                                        new ConfigRequestHostLivenessTracker(),
                                        new FileServer(configServerConfig),
                                        new NoopRpcAuthorizer(),
