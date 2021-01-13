@@ -14,9 +14,9 @@ class RandomStrings {
 private:
     StringVector _strings;
 
-    StringVector gen_strings(size_t count) {
+    StringVector gen_strings(size_t count, size_t offset) {
         StringVector result;
-        for (size_t i = 0; i < count; ++i) {
+        for (size_t i = offset; i < (count + offset); ++i) {
             char str[7];
             snprintf(str, 7, "%06d", i);
             result.push_back(std::string(str));
@@ -25,8 +25,8 @@ private:
     }
 
 public:
-    RandomStrings(size_t count)
-        : _strings(gen_strings(count))
+    RandomStrings(size_t count, size_t offset = 0)
+        : _strings(gen_strings(count, offset))
     {
     }
 
@@ -86,19 +86,43 @@ std::ostream& print_models_tensor(std::ostream& os, const StringVector& models, 
 }
 
 void print_puts(std::ostream& os, const StringVector& models, RandomStrings& strings,
-                size_t num_docs, size_t num_cats_per_doc, size_t vec_size) {
+                size_t num_docs, size_t num_cats_per_doc, size_t vec_size, const std::string& field) {
     os << "[\n";
     for (size_t i = 0; i < num_docs; ++i) {
         if (i != 0) os << ",\n";
         auto cats = strings.get_rnd(num_cats_per_doc);
         os << "{\"put\":\"id:test:test::" << i << "\",\"fields\":{\n";
         os << "\"id\":" << i << ",";
-        os << "\"model\":{"; print_model_tensor(os, cats, vec_size) << "},";
-        os << "\"models\":{"; print_models_tensor(os, models, cats, vec_size) << "}";
+        if (field == "all") {
+            os << "\"model\":{"; print_model_tensor(os, cats, vec_size) << "},";
+            os << "\"models\":{"; print_models_tensor(os, models, cats, vec_size) << "}";
+        } else if (field == "model") {
+            os << "\"model\":{"; print_model_tensor(os, cats, vec_size) << "}";
+        } else if (field == "models") {
+            os << "\"models\":{"; print_models_tensor(os, models, cats, vec_size) << "}";
+        }
         os << "}}";
     }
     os << "]\n";
 }
+
+void print_updates(std::ostream& os, const std::string& type, const StringVector& models, RandomStrings& strings,
+                   size_t num_docs, size_t num_cats_per_doc, size_t vec_size, const std::string& field) {
+    os << "[\n";
+    for (size_t i = 0; i < num_docs; ++i) {
+        if (i != 0) os << ",\n";
+        auto cats = strings.get_rnd(num_cats_per_doc);
+        os << "{\"update\":\"id:test:test::" << i << "\",\"fields\":{\n";
+        if (field == "model") {
+            os << "\"model\":{\"" << type << "\":{"; print_model_tensor(os, cats, vec_size) << "}}";
+        } else if (field == "models") {
+            os << "\"models\":{\"" << type << "\":{"; print_models_tensor(os, models, cats, vec_size) << "}}";
+        }
+        os << "}}";
+    }
+    os << "]\n";
+}
+
 
 const std::string LB = "%7B";
 const std::string RB = "%7D";
@@ -142,11 +166,11 @@ void print_queries(std::ostream& os, RandomStrings& models, RandomStrings& categ
 }
 
 void print_usage(char* argv[]) {
-    std::cerr << argv[0] << " puts <num docs> | queries <type> <num queries>" << std::endl;
+    std::cerr << argv[0] << " puts <field> <num docs> | updates <type> <field> <num docs> | queries <type> <num queries>" << std::endl;
 }
 
 int main (int argc, char* argv[]) {
-    if (argc != 3 && argc != 4) {
+    if (argc < 3 || argc > 5) {
         print_usage(argv);
         return 1;
     }
@@ -159,9 +183,27 @@ int main (int argc, char* argv[]) {
     size_t vec_size = 256;
     RandomStrings strings(num_cats);
     RandomStrings models(num_models);
+    RandomStrings strings_2(num_cats, num_cats);
+    RandomStrings models_2(1, num_models);
     if (mode == "puts") {
-        size_t num_docs = strtoul(argv[2], nullptr, 0);
-        print_puts(std::cout, models.get(), strings, num_docs, num_cats_per_doc, vec_size);
+        std::string field(argv[2]);
+        size_t num_docs = strtoul(argv[3], nullptr, 0);
+        print_puts(std::cout, models.get(), strings, num_docs, num_cats_per_doc, vec_size, field);
+    } else if (mode == "updates") {
+        std::string type(argv[2]);
+        std::string field(argv[3]);
+        size_t num_docs = strtoul(argv[4], nullptr, 0);
+        if (type == "assign") {
+            print_updates(std::cout, "assign", models.get(), strings, num_docs, num_cats_per_doc, vec_size, field);
+        } else if (type == "add") {
+            // When updating the single model tensor we add a single category.
+            // When updating the multi-model tensor we add an entire new model.
+            print_updates(std::cout, "add", models_2.get(), strings_2, num_docs,
+                          (field == "model") ? 1 : num_cats_per_doc, vec_size, field);
+        } else {
+            print_usage(argv);
+            return 1;
+        }
     } else if (mode == "queries") {
         std::string type(argv[2]);
         size_t num_queries = strtoul(argv[3], nullptr, 0);

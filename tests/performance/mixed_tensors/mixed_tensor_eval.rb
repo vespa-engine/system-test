@@ -1,21 +1,13 @@
 # Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'performance_test'
-require 'app_generator/search_app'
-require 'performance/fbench'
-require 'pp'
-require 'environment'
+require_relative 'mixed_tensor_base'
 
-class MixedTensorPerfTest < PerformanceTest
+class MixedTensorPerfTest < MixedTensorPerfTestBase
 
   FBENCH_RUNTIME = 30
   RANK_PROFILE = "rank_profile"
   SINGLE_MODEL = "single_model"
   MULTI_MODEL_EARLY_REDUCE = "multi_model_early_reduce"
   MULTI_MODEL_LATE_REDUCE = "multi_model_late_reduce"
-
-  def initialize(*args)
-    super(*args)
-  end
 
   def test_mixed_tensor_operations
     set_description("Test performance of various mixed tensor operations")
@@ -29,21 +21,8 @@ class MixedTensorPerfTest < PerformanceTest
   end
 
   def deploy_and_prepare_data
-    deploy_app(create_app)
-    start
-    @container = vespa.container.values.first
-    compile_data_gen
+    deploy_and_compile
     gen_query_files(100)
-  end
-
-  def create_app
-    SearchApp.new.sd(selfdir + "test.sd").
-      search_dir(selfdir + "search")
-  end
-
-  def compile_data_gen
-    @data_gen = dirs.tmpdir + "data_gen"
-    @container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@data_gen} #{selfdir}/data_gen.cpp")
   end
 
   def gen_query_files(num_queries)
@@ -54,7 +33,7 @@ class MixedTensorPerfTest < PerformanceTest
   end
 
   def feed_docs(num_docs)
-    @container.execute("#{@data_gen} puts #{num_docs} | vespa-feeder")
+    @container.execute("#{@data_gen} puts all #{num_docs} | vespa-feeder")
   end
 
   def run_fbench_helper(rank_profile, query_file)
