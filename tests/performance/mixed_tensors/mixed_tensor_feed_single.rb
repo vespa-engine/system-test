@@ -9,16 +9,23 @@ class MixedTensorFeedSinglePerfTest < MixedTensorPerfTestBase
     deploy_and_compile
 
     @num_docs = 300000
-    feed_and_profile("puts model #{@num_docs}", PUTS)
-    feed_and_profile("updates assign model #{@num_docs}", UPDATES_ASSIGN)
-    feed_and_profile("updates add model #{@num_docs}", UPDATES_ADD)
+    feed_and_profile("-o #{@num_docs} -f model puts", PUTS, NUMBER)
+    feed_and_profile("-o #{@num_docs} -f model updates assign", UPDATES_ASSIGN, NUMBER)
+    feed_and_profile("-o #{@num_docs} -f model updates add", UPDATES_ADD, NUMBER)
+
+    feed_and_profile("-o #{@num_docs} -f model -s puts", PUTS, STRING)
+    feed_and_profile("-o #{@num_docs} -f model -s updates assign", UPDATES_ASSIGN, STRING)
+    feed_and_profile("-o #{@num_docs} -f model -s updates add", UPDATES_ADD, STRING)
   end
 
   def get_graphs
     [
-      get_feed_throughput_graph(PUTS, 1, 30000),
-      get_feed_throughput_graph(UPDATES_ASSIGN, 1, 30000),
-      get_feed_throughput_graph(UPDATES_ADD, 1, 30000)
+      get_feed_throughput_graph(PUTS, NUMBER, 1, 30000),
+      get_feed_throughput_graph(PUTS, STRING, 1, 30000),
+      get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 1, 30000),
+      get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 1, 30000),
+      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 1, 30000),
+      get_feed_throughput_graph(UPDATES_ADD, STRING, 1, 30000)
     ]
   end
 

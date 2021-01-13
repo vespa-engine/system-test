@@ -5,6 +5,7 @@
 #include <iostream>
 #include <numeric>
 #include <string>
+#include <unistd.h>
 #include <vector>
 
 using StringVector = std::vector<std::string>;
@@ -14,19 +15,23 @@ class RandomStrings {
 private:
     StringVector _strings;
 
-    StringVector gen_strings(size_t count, size_t offset) {
+    StringVector gen_strings(size_t count, size_t offset, bool number_string) {
         StringVector result;
         for (size_t i = offset; i < (count + offset); ++i) {
             char str[7];
-            snprintf(str, 7, "%06d", i);
+            if (number_string) {
+                snprintf(str, 7, "%06d", i);
+            } else {
+                snprintf(str, 7, "A%05d", i);
+            }
             result.push_back(std::string(str));
         }
         return result;
     }
 
 public:
-    RandomStrings(size_t count, size_t offset = 0)
-        : _strings(gen_strings(count, offset))
+    RandomStrings(size_t count, size_t offset, bool number_string)
+        : _strings(gen_strings(count, offset, number_string))
     {
     }
 
@@ -166,51 +171,73 @@ void print_queries(std::ostream& os, RandomStrings& models, RandomStrings& categ
 }
 
 void print_usage(char* argv[]) {
-    std::cerr << argv[0] << " puts <field> <num docs> | updates <type> <field> <num docs> | queries <type> <num queries>" << std::endl;
+    std::cerr << argv[0] << " [-o num_ops] [-f field_name] [-s (label as string)]" << std::endl;
+    std::cerr << "    puts | updates <type> | queries <type> " << std::endl;
 }
 
 int main (int argc, char* argv[]) {
-    if (argc < 3 || argc > 5) {
-        print_usage(argv);
-        return 1;
-    }
     std::srand(12345);
-    std::string mode(argv[1]);
     size_t num_cats = 50;
     size_t num_cats_per_doc = 3;
     size_t num_cats_per_query = 10;
     size_t num_models = 10;
     size_t vec_size = 256;
-    RandomStrings strings(num_cats);
-    RandomStrings models(num_models);
-    RandomStrings strings_2(num_cats, num_cats);
-    RandomStrings models_2(1, num_models);
+
+    size_t num_ops = 2;
+    std::string field = "all";
+    bool label_as_number_string = true;
+
+    char c;
+    while ((c = getopt(argc, argv, "shf:o:")) != -1) {
+        switch (c) {
+        case 's':
+            label_as_number_string = false;
+            break;
+        case 'f':
+            field = std::string(optarg);
+            break;
+        case 'o':
+            num_ops = strtoul(optarg, nullptr, 0);
+            break;
+        case 'h':
+        default:
+            print_usage(argv);
+            return 1;
+        }
+    }
+
+    RandomStrings strings(num_cats, 0, label_as_number_string);
+    RandomStrings models(num_models, 0, label_as_number_string);
+    RandomStrings strings_2(num_cats, num_cats, label_as_number_string);
+    RandomStrings models_2(1, num_models, label_as_number_string);
+
+    if (optind >= argc) {
+        print_usage(argv);
+        return 1;
+    }
+
+    std::string mode(argv[optind]);
     if (mode == "puts") {
-        std::string field(argv[2]);
-        size_t num_docs = strtoul(argv[3], nullptr, 0);
-        print_puts(std::cout, models.get(), strings, num_docs, num_cats_per_doc, vec_size, field);
+        print_puts(std::cout, models.get(), strings, num_ops, num_cats_per_doc, vec_size, field);
     } else if (mode == "updates") {
-        std::string type(argv[2]);
-        std::string field(argv[3]);
-        size_t num_docs = strtoul(argv[4], nullptr, 0);
+        std::string type(argv[optind + 1]);
         if (type == "assign") {
-            print_updates(std::cout, "assign", models.get(), strings, num_docs, num_cats_per_doc, vec_size, field);
+            print_updates(std::cout, "assign", models.get(), strings, num_ops, num_cats_per_doc, vec_size, field);
         } else if (type == "add") {
             // When updating the single model tensor we add a single category.
             // When updating the multi-model tensor we add an entire new model.
-            print_updates(std::cout, "add", models_2.get(), strings_2, num_docs,
+            print_updates(std::cout, "add", models_2.get(), strings_2, num_ops,
                           (field == "model") ? 1 : num_cats_per_doc, vec_size, field);
         } else {
             print_usage(argv);
             return 1;
         }
     } else if (mode == "queries") {
-        std::string type(argv[2]);
-        size_t num_queries = strtoul(argv[3], nullptr, 0);
+        std::string type(argv[optind + 1]);
         if (type == "single") {
-            print_queries(std::cout, models, strings, num_queries, num_cats_per_query, vec_size, true);
+            print_queries(std::cout, models, strings, num_ops, num_cats_per_query, vec_size, true);
         } else if (type == "multi") {
-            print_queries(std::cout, models, strings, num_queries, num_cats_per_query, vec_size, false);
+            print_queries(std::cout, models, strings, num_ops, num_cats_per_query, vec_size, false);
         } else {
             print_usage(argv);
             return 1;
