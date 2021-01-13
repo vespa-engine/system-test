@@ -28,12 +28,12 @@ class MixedTensorPerfTest < MixedTensorPerfTestBase
   def gen_query_files(num_queries)
     @single_model_file = dirs.tmpdir + "single_model_queries.txt"
     @multi_model_file = dirs.tmpdir + "multi_model_queries.txt"
-    @container.execute("#{@data_gen} queries single #{num_queries} > #{@single_model_file}")
-    @container.execute("#{@data_gen} queries multi #{num_queries} > #{@multi_model_file}")
+    @container.execute("#{@data_gen} -o #{num_queries} queries single > #{@single_model_file}")
+    @container.execute("#{@data_gen} -o #{num_queries} queries multi > #{@multi_model_file}")
   end
 
   def feed_docs(num_docs)
-    @container.execute("#{@data_gen} puts all #{num_docs} | vespa-feeder")
+    @container.execute("#{@data_gen} -o #{num_docs} -f all puts | vespa-feeder")
   end
 
   def run_fbench_helper(rank_profile, query_file)
