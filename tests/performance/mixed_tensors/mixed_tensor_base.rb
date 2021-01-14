@@ -12,6 +12,7 @@ class MixedTensorPerfTestBase < PerformanceTest
   PUTS = "puts"
   UPDATES_ASSIGN = "updates_assign"
   UPDATES_ADD = "updates_add"
+  UPDATES_REMOVE = "updates_remove"
   NUMBER = "number"
   STRING = "string"
 
@@ -40,10 +41,12 @@ class MixedTensorPerfTestBase < PerformanceTest
     feed_and_profile("#{data_gen_params_prefix} puts", PUTS, NUMBER)
     feed_and_profile("#{data_gen_params_prefix} updates assign", UPDATES_ASSIGN, NUMBER)
     feed_and_profile("#{data_gen_params_prefix} updates add", UPDATES_ADD, NUMBER)
+    feed_and_profile("#{data_gen_params_prefix} updates remove", UPDATES_REMOVE, NUMBER)
 
     feed_and_profile("#{data_gen_params_prefix} -s puts", PUTS, STRING)
     feed_and_profile("#{data_gen_params_prefix} -s updates assign", UPDATES_ASSIGN, STRING)
     feed_and_profile("#{data_gen_params_prefix} -s updates add", UPDATES_ADD, STRING)
+    feed_and_profile("#{data_gen_params_prefix} -s updates remove", UPDATES_REMOVE, STRING)
   end
 
   def feed_and_profile(data_gen_params, feed_type, label_type)

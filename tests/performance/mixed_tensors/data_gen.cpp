@@ -4,6 +4,7 @@
 #include <cassert>
 #include <iostream>
 #include <numeric>
+#include <random>
 #include <string>
 #include <unistd.h>
 #include <vector>
@@ -14,6 +15,7 @@ using IntVector = std::vector<int>;
 class RandomStrings {
 private:
     StringVector _strings;
+    std::default_random_engine _rnd;
 
     StringVector gen_strings(size_t count, size_t offset, bool number_string) {
         StringVector result;
@@ -31,7 +33,8 @@ private:
 
 public:
     RandomStrings(size_t count, size_t offset, bool number_string)
-        : _strings(gen_strings(count, offset, number_string))
+        : _strings(gen_strings(count, offset, number_string)),
+          _rnd(12345)
     {
     }
 
@@ -40,7 +43,7 @@ public:
     StringVector get_rnd(size_t count) {
         assert(count <= _strings.size());
         StringVector result(count);
-        std::random_shuffle(_strings.begin(), _strings.end());
+        std::shuffle(_strings.begin(), _strings.end(), _rnd);
         std::copy_n(_strings.begin(), count, result.begin());
         return result;
     }
@@ -90,6 +93,15 @@ std::ostream& print_models_tensor(std::ostream& os, const StringVector& models, 
     return os << "]";
 }
 
+std::ostream& print_addresses(std::ostream& os, const std::string& dim_name, const StringVector& values) {
+    os << "\"addresses\":[";
+    for (size_t i = 0; i < values.size(); ++i) {
+        if (i != 0) os << ",\n";
+        os << "{\"" << dim_name << "\":\"" << values[i] << "\"}";
+    }
+    return os << "]";
+}
+
 void print_puts(std::ostream& os, const StringVector& models, RandomStrings& strings,
                 size_t num_docs, size_t num_cats_per_doc, size_t vec_size, const std::string& field) {
     os << "[\n";
@@ -123,6 +135,19 @@ void print_updates(std::ostream& os, const std::string& type, const StringVector
         } else if (field == "models") {
             os << "\"models\":{\"" << type << "\":{"; print_models_tensor(os, models, cats, vec_size) << "}}";
         }
+        os << "}}";
+    }
+    os << "]\n";
+}
+
+void print_remove_updates(std::ostream& os, const std::string& field, const std::string& dim_name,
+                          RandomStrings& strings, size_t num_docs) {
+    os << "[\n";
+    for (size_t i = 0; i < num_docs; ++i) {
+        if (i != 0) os << ",\n";
+        auto values = strings.get_rnd(1);
+        os << "{\"update\":\"id:test:test::" << i << "\",\"fields\":{\n";
+        os << "\"" << field << "\":{\"remove\":{"; print_addresses(os, dim_name, values) << "}}";
         os << "}}";
     }
     os << "]\n";
@@ -230,13 +255,20 @@ int main (int argc, char* argv[]) {
         print_puts(std::cout, models.get(), strings, num_ops, num_cats_per_doc, vec_size, field);
     } else if (mode == "updates") {
         std::string type(argv[optind + 1]);
+        bool single_model = (field == "model");
         if (type == "assign") {
             print_updates(std::cout, "assign", models.get(), strings, num_ops, num_cats_per_doc, vec_size, field);
         } else if (type == "add") {
-            // When updating the single model tensor we add a single category.
-            // When updating the multi-model tensor we add an entire new model.
+            // Single model tensor: we add a single category.
+            // Multi-model tensor: we add an entire new model.
             print_updates(std::cout, "add", models_2.get(), strings_2, num_ops,
-                          (field == "model") ? 1 : num_cats_per_doc, vec_size, field);
+                          single_model ? 1 : num_cats_per_doc, vec_size, field);
+        } else if (type == "remove") {
+            // Single model tensor: we remove a single category (same that was added).
+            // Multi-model tensor: we remove an an entire model (same that was added).
+            std::string dim_name = single_model ? "cat" : "model";
+            auto& values = single_model ? strings_2 : models_2;
+            print_remove_updates(std::cout, field, dim_name, values, num_ops);
         } else {
             print_usage(argv);
             return 1;
