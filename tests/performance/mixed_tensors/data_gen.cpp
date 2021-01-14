@@ -188,16 +188,25 @@ int main (int argc, char* argv[]) {
     bool label_as_number_string = true;
 
     char c;
-    while ((c = getopt(argc, argv, "shf:o:")) != -1) {
+    while ((c = getopt(argc, argv, "shc:d:f:o:v:")) != -1) {
         switch (c) {
         case 's':
             label_as_number_string = false;
+            break;
+        case 'c':
+            num_cats = strtoul(optarg, nullptr, 0);
+            break;
+        case 'd':
+            num_cats_per_doc = strtoul(optarg, nullptr, 0);
             break;
         case 'f':
             field = std::string(optarg);
             break;
         case 'o':
             num_ops = strtoul(optarg, nullptr, 0);
+            break;
+        case 'v':
+            vec_size = strtoul(optarg, nullptr, 0);
             break;
         case 'h':
         default:
