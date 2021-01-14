@@ -74,7 +74,7 @@ class GroupingTest < PerformanceTest
                { :x => 'legend',
                  :y => 'latency',
                  :y_min => 4.1,
-                 :y_max => 5.1,
+                 :y_max => 5.2,
                  :filter => { 'clients' => [ 1 ], 'legend' => [ 'single_level' ] },
                  :historic => true
                },
