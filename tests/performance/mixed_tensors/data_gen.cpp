@@ -20,7 +20,7 @@ private:
         for (size_t i = offset; i < (count + offset); ++i) {
             char str[7];
             if (number_string) {
-                snprintf(str, 7, "%06d", i);
+                snprintf(str, 7, "%d", 10000 + i);
             } else {
                 snprintf(str, 7, "A%05d", i);
             }
