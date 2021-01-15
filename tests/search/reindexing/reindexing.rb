@@ -60,14 +60,14 @@ class ReindexingTest < IndexedSearchTest
   def trigger_reindexing(app)
     response = http_request(URI(application_v2_url_prefix + 'reindexing'), {})
     assert(response.code.to_i == 200, "Requesting reindexing status should give 200 response")
-    baseline_reindexing_timestamp = get_json(response)['status']['readyMillis']
+    baseline_reindexing_timestamp = get_json(response)['clusters']['content']['ready']['music']['readyMillis']
 
     response = http_request_post(URI(application_v2_url_prefix + 'reindex'), {})
     assert(response.code.to_i == 200, "Triggering reindexing of documents should give 200 response")
 
     response = http_request(URI(application_v2_url_prefix + 'reindexing'), {})
     assert(response.code.to_i == 200, "Requesting reindexing status should give 200 response")
-    new_reindexing_timestamp = get_json(response)['status']['readyMillis']
+    new_reindexing_timestamp = get_json(response)['clusters']['content']['ready']['music']['readyMillis']
     assert(baseline_reindexing_timestamp < new_reindexing_timestamp,
            "New reindexing timestamp (#{new_reindexing_timestamp}) should be after previous baseline timestamp (#{baseline_reindexing_timestamp})")
     deploy_app(app)
