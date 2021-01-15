@@ -137,7 +137,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     # Read baseline reindexing status — very first reindexing is a no-op in the reindexer controller
     response = http_request(URI(application_url + "reindexing"), {})
     assert(response.code.to_i == 200, "Request should be successful")
-    previous_reindexing_timestamp = get_json(response)["clusters"]["content"]["ready"]["test"]["readyMillis"]
+    previous_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["test"]["readyMillis"]
 
     # Allow the reindexing maintainer some time to run, and mark the first no-op reindexing as done
     sleep 60
@@ -148,7 +148,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
 
     response = http_request(URI(application_url + "reindexing"), {})
     assert(response.code.to_i == 200, "Request should be successful")
-    current_reindexing_timestamp = get_json(response)["clusters"]["content"]["ready"]["test"]["readyMillis"]
+    current_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["test"]["readyMillis"]
     assert(previous_reindexing_timestamp < current_reindexing_timestamp,
            "Previous reindexing timestamp (#{previous_reindexing_timestamp}) should be after current (#{current_reindexing_timestamp})")
   end
