@@ -53,7 +53,7 @@ class MixedTensorPerfTestBase < PerformanceTest
     command = "#{@data_gen} #{data_gen_params}"
     profiler_start
     run_stream_feeder(command, [parameter_filler(FEED_TYPE, feed_type), parameter_filler(LABEL_TYPE, label_type)], {})
-    profiler_report("#{feed_type}")
+    profiler_report("#{feed_type}.#{label_type}")
   end
 
   def get_feed_throughput_graph(feed_type, label_type, y_min, y_max)
