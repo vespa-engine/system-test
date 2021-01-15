@@ -3,29 +3,51 @@ require_relative 'mixed_tensor_base'
 
 class MixedTensorFeedMultiPerfTest < MixedTensorPerfTestBase
 
-  def test_multi_model_feed
-    set_description("Test feed performance (put, assign, add) for multi-model mixed tensor")
-    @graphs = get_graphs
-    deploy_and_compile
+  def test_multi_model_vec_256
+    set_description("Test feed performance (put, assign, add) for multi-model mixed tensor with vector size 256")
+    set_owner("geirst")
+    @graphs = get_graphs_vec_256
+    deploy_and_compile("vec_256")
 
     @num_docs = 30000
-    feed_and_profile("-o #{@num_docs} -f models puts", PUTS, NUMBER)
-    feed_and_profile("-o #{@num_docs} -f models updates assign", UPDATES_ASSIGN, NUMBER)
-    feed_and_profile("-o #{@num_docs} -f models updates add", UPDATES_ADD, NUMBER)
-
-    feed_and_profile("-o #{@num_docs} -f models -s puts", PUTS, STRING)
-    feed_and_profile("-o #{@num_docs} -f models -s updates assign", UPDATES_ASSIGN, STRING)
-    feed_and_profile("-o #{@num_docs} -f models -s updates add", UPDATES_ADD, STRING)
+    # Tensor cells data is: 10 (model) * 3 (cat) * 256 * 4 = 30k
+    feed_and_profile_cases("-d 3 -o #{@num_docs} -f models")
   end
 
-  def get_graphs
+  def get_graphs_vec_256
     [
       get_feed_throughput_graph(PUTS, NUMBER, 1, 30000),
       get_feed_throughput_graph(PUTS, STRING, 1, 30000),
       get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 1, 30000),
       get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 1, 30000),
       get_feed_throughput_graph(UPDATES_ADD, NUMBER, 1, 30000),
-      get_feed_throughput_graph(UPDATES_ADD, STRING, 1, 30000)
+      get_feed_throughput_graph(UPDATES_ADD, STRING, 1, 30000),
+      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 1, 30000),
+      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 1, 30000)
+    ]
+  end
+
+  def test_multi_model_vec_32
+    set_description("Test feed performance (put, assign, add) for multi-model mixed tensor with vector size 32")
+    set_owner("geirst")
+    @graphs = get_graphs_vec_32
+    deploy_and_compile("vec_32")
+
+    @num_docs = 10000
+    # Tensor cells data is: 10 (model) * 80 (cat) * 32 * 4 = 100k
+    feed_and_profile_cases("-c 1000 -d 80 -v 32 -o #{@num_docs} -f models")
+  end
+
+  def get_graphs_vec_32
+    [
+      get_feed_throughput_graph(PUTS, NUMBER, 1, 30000),
+      get_feed_throughput_graph(PUTS, STRING, 1, 30000),
+      get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 1, 30000),
+      get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 1, 30000),
+      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 1, 30000),
+      get_feed_throughput_graph(UPDATES_ADD, STRING, 1, 30000),
+      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 1, 30000),
+      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 1, 30000)
     ]
   end
 

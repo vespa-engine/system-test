@@ -21,7 +21,7 @@ class MixedTensorPerfTest < MixedTensorPerfTestBase
   end
 
   def deploy_and_prepare_data
-    deploy_and_compile
+    deploy_and_compile("vec_256")
     gen_query_files(100)
   end
 

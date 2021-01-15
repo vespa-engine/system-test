@@ -12,6 +12,7 @@ class MixedTensorPerfTestBase < PerformanceTest
   PUTS = "puts"
   UPDATES_ASSIGN = "updates_assign"
   UPDATES_ADD = "updates_add"
+  UPDATES_REMOVE = "updates_remove"
   NUMBER = "number"
   STRING = "string"
 
@@ -19,21 +20,33 @@ class MixedTensorPerfTestBase < PerformanceTest
     super(*args)
   end
 
-  def deploy_and_compile
-    deploy_app(create_app)
+  def deploy_and_compile(sd_dir)
+    deploy_app(create_app(sd_dir))
     start
     @container = vespa.container.values.first
     compile_data_gen
   end
 
-  def create_app
-    SearchApp.new.sd(selfdir + "test.sd").
+  def create_app(sd_dir)
+    SearchApp.new.sd(selfdir + "#{sd_dir}/test.sd").
       search_dir(selfdir + "search")
   end
 
   def compile_data_gen
     @data_gen = dirs.tmpdir + "data_gen"
     @container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@data_gen} #{selfdir}/data_gen.cpp")
+  end
+
+  def feed_and_profile_cases(data_gen_params_prefix)
+    feed_and_profile("#{data_gen_params_prefix} puts", PUTS, NUMBER)
+    feed_and_profile("#{data_gen_params_prefix} updates assign", UPDATES_ASSIGN, NUMBER)
+    feed_and_profile("#{data_gen_params_prefix} updates add", UPDATES_ADD, NUMBER)
+    feed_and_profile("#{data_gen_params_prefix} updates remove", UPDATES_REMOVE, NUMBER)
+
+    feed_and_profile("#{data_gen_params_prefix} -s puts", PUTS, STRING)
+    feed_and_profile("#{data_gen_params_prefix} -s updates assign", UPDATES_ASSIGN, STRING)
+    feed_and_profile("#{data_gen_params_prefix} -s updates add", UPDATES_ADD, STRING)
+    feed_and_profile("#{data_gen_params_prefix} -s updates remove", UPDATES_REMOVE, STRING)
   end
 
   def feed_and_profile(data_gen_params, feed_type, label_type)
