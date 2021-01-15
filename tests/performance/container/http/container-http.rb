@@ -13,6 +13,7 @@ class ContainerHttp < PerformanceTest
   def initialize(*args)
     super(*args)
     @app = selfdir + 'app'
+    @app_with_logs = selfdir + 'app_with_logging'
     @queryfile = nil
     @bundledir= selfdir + 'java'
   end
@@ -76,7 +77,61 @@ class ContainerHttp < PerformanceTest
             :historic => true
         }
     ]
+    run_test
+  end
 
+  def test_container_http_performance_with_logging
+    setup_and_deploy(@app_with_logs)
+    set_description('Test basic HTTP performance of container with logging enabled')
+    @graphs = [
+        {
+            :title => 'QPS all combined',
+            :x => 'legend',
+            :y => 'qps',
+            :historic => true
+        },
+        {
+            :title => 'QPS HTTP/1.1',
+            :filter => {'legend' => STANDARD},
+            :x => 'legend',
+            :y => 'qps',
+            :y_min => 110000,
+            :y_max => 140000,
+            :historic => true
+        },
+        {
+            :title => 'QPS HTTP/1.1 with async write',
+            :filter => {'legend' => ASYNC_WRITE },
+            :x => 'legend',
+            :y => 'qps',
+            :y_min => 95000,
+            :y_max => 112000,
+            :historic => true
+        },
+        {
+            :title => 'QPS HTTP/1.1 without keep-alive',
+            :filter => {'legend' => NON_PERSISTENT },
+            :x => 'legend',
+            :y => 'qps',
+            :y_min => 2750,
+            :y_max => 2900,
+            :historic => true
+        },
+        {
+            :x => 'legend',
+            :y => 'latency',
+            :historic => true
+        },
+        {
+            :x => 'legend',
+            :y => 'cpuutil',
+            :historic => true
+        }
+    ]
+    run_test
+  end
+
+  def run_test
     container = (vespa.qrserver['0'] or vespa.container.values.first)
     container.copy(selfdir + "hello.txt", dirs.tmpdir)
     sync_req_file = dirs.tmpdir + "hello.txt"
