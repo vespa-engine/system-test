@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+  <admin version="2.0">
+    <adminserver hostalias="node1"/>
+  </admin>
+  <container id="search" version="1.0">
+    <nodes jvmargs=" -verbose:gc -Xms8g -Xmx8g -XX:NewRatio=1 -XX:+PrintGCDetails ">
+    <!--<nodes jvmargs="-agentlib:yjpagent -verbose:gc -Xms8g -Xmx8g -Dvespa.freezedetector.disable=true -XX:NewRatio=1 -XX:+PrintGCDetails">-->
+      <node hostalias='node1'/>
+    </nodes>
+    <handler id="com.yahoo.performance.handler.HelloWorldHandler" bundle="performance">
+      <binding>http://*/HelloWorld</binding>
+    </handler>
+    <handler id="com.yahoo.performance.handler.AsyncHelloWorldHandler" bundle="performance">
+      <binding>http://*/AsyncHelloWorld</binding>
+    </handler>
+  </container>
+</services>
