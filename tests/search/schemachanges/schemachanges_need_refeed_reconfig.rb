@@ -54,10 +54,10 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
 
     trigger_reindexing
 
-    # Redeploy again to trigger reindexing, then wait for up to 5 minutes for document 1 to be reindexed
+    # Redeploy again to trigger reindexing, then wait for up to 2 minutes for document 1 to be reindexed
     redeploy("test.1.sd")
     start_time = Time.now
-    until search("sddocname:test&nocache").hit.select { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start_time > 300 # seconds
+    until search("sddocname:test&nocache").hit.select { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start_time > 120 # seconds
       sleep 1
     end
     assert_result("sddocname:test&nocache", @test_dir + "result.2.xml")
@@ -110,10 +110,10 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
 
     trigger_reindexing
 
-    # Redeploy again to trigger reindexing, then wait for up to 5 minutes for document 1 to be reindexed
+    # Redeploy again to trigger reindexing, then wait for up to 2 minutes for document 1 to be reindexed
     deploy_app(app)
     start_time = Time.now
-    until search("sddocname:test&nocache").hit.select { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start_time > 300 # seconds
+    until search("sddocname:test&nocache").hit.select { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start_time > 120 # seconds
       sleep 1
     end
     assert_result("sddocname:test&nocache", @test_dir + "result.2.xml")
@@ -137,10 +137,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     # Read baseline reindexing status — very first reindexing is a no-op in the reindexer controller
     response = http_request(URI(application_url + "reindexing"), {})
     assert(response.code.to_i == 200, "Request should be successful")
-    # previous_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["test"]["readyMillis"]
-
-    # Allow the reindexing maintainer some time to run, and mark the first no-op reindexing as done
-    sleep 60
+    previous_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["test"]["readyMillis"]
 
     # Trigger reindexing through reindexing API in /application/v2, and verify it was triggered
     response = http_request_post(URI(application_url + "reindex"), {})
@@ -149,8 +146,8 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     response = http_request(URI(application_url + "reindexing"), {})
     assert(response.code.to_i == 200, "Request should be successful")
     current_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["test"]["readyMillis"]
-    # assert(previous_reindexing_timestamp < current_reindexing_timestamp,
-           # "Previous reindexing timestamp (#{previous_reindexing_timestamp}) should be after current (#{current_reindexing_timestamp})")
+    assert(previous_reindexing_timestamp.nil? || previous_reindexing_timestamp < current_reindexing_timestamp,
+           "Previous reindexing timestamp (#{previous_reindexing_timestamp}) should be after current (#{current_reindexing_timestamp})")
   end
 
   def test_that_changing_the_tensor_type_of_a_tensor_attribute_needs_refeed
