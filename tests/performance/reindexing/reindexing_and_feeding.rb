@@ -246,7 +246,7 @@ class ReindexingAndFeedingTest < PerformanceTest
     puts response.body unless response.code.to_i == 200
     assert(response.code.to_i == 200, "Request should be successful")
     current_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["doc"]["readyMillis"]
-    assert(previous_reindexing_timestamp.nil? or previous_reindexing_timestamp < current_reindexing_timestamp,
+    assert(previous_reindexing_timestamp.nil? || previous_reindexing_timestamp < current_reindexing_timestamp,
 	   "Previous reindexing timestamp (#{previous_reindexing_timestamp}) should be after current (#{current_reindexing_timestamp})")
 
     deploy_app(@app)

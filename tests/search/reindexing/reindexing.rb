@@ -64,7 +64,7 @@ class ReindexingTest < IndexedSearchTest
     response = http_request(URI(application_v2_url_prefix + 'reindexing'), {})
     assert(response.code.to_i == 200, "Requesting reindexing status should give 200 response")
     new_reindexing_timestamp = get_json(response)['clusters']['music']['ready']['music']['readyMillis']
-    assert(baseline_reindexing_timestamp.nil? or baseline_reindexing_timestamp < new_reindexing_timestamp,
+    assert(baseline_reindexing_timestamp.nil? || baseline_reindexing_timestamp < new_reindexing_timestamp,
            "New reindexing timestamp (#{new_reindexing_timestamp}) should be after previous baseline timestamp (#{baseline_reindexing_timestamp})")
     deploy_app(app)
     wait_for_reindexing_to_start(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, new_reindexing_timestamp)
