@@ -25,10 +25,6 @@ class ReindexingTest < IndexedSearchTest
     start
     container_node = @vespa.container["combinedcontainer/0"]
 
-    puts "Waiting for initial reindexing status to be set"
-    wait_for_reindexing_to_complete(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE)
-    wait_for_reindexing_to_complete(MOVIE_CLUSTER_ID, MOVIE_DOC_TYPE)
-
     puts "Feeding #{MUSIC_DOC_TYPE} documents"
     music_file = generate_feed_file(container_node, MUSIC_DOC_TYPE)
     feed_and_wait_for_docs(MUSIC_DOC_TYPE, DOCUMENT_COUNT, { :file => music_file, :feed_node => container_node, :localfile => true })
@@ -60,7 +56,7 @@ class ReindexingTest < IndexedSearchTest
   def trigger_reindexing(app)
     response = http_request(URI(application_v2_url_prefix + 'reindexing'), {})
     assert(response.code.to_i == 200, "Requesting reindexing status should give 200 response")
-    # baseline_reindexing_timestamp = get_json(response)['clusters']['music']['ready']['music']['readyMillis']
+    baseline_reindexing_timestamp = get_json(response)['clusters']['music']['ready']['music']['readyMillis']
 
     response = http_request_post(URI(application_v2_url_prefix + 'reindex'), {})
     assert(response.code.to_i == 200, "Triggering reindexing of documents should give 200 response")
@@ -68,8 +64,8 @@ class ReindexingTest < IndexedSearchTest
     response = http_request(URI(application_v2_url_prefix + 'reindexing'), {})
     assert(response.code.to_i == 200, "Requesting reindexing status should give 200 response")
     new_reindexing_timestamp = get_json(response)['clusters']['music']['ready']['music']['readyMillis']
-    # assert(baseline_reindexing_timestamp < new_reindexing_timestamp,
-           # "New reindexing timestamp (#{new_reindexing_timestamp}) should be after previous baseline timestamp (#{baseline_reindexing_timestamp})")
+    assert(baseline_reindexing_timestamp.nil? or baseline_reindexing_timestamp < new_reindexing_timestamp,
+           "New reindexing timestamp (#{new_reindexing_timestamp}) should be after previous baseline timestamp (#{baseline_reindexing_timestamp})")
     deploy_app(app)
     wait_for_reindexing_to_start(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, new_reindexing_timestamp)
     wait_for_reindexing_to_start(MOVIE_CLUSTER_ID, MOVIE_DOC_TYPE, new_reindexing_timestamp)
