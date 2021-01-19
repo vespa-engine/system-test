@@ -48,8 +48,8 @@ class MixedTensorPerfTest < MixedTensorPerfTestBase
 
   def get_graphs
     [
-      get_latency_graph(SINGLE_MODEL, 4.5, 5.1),
-      get_latency_graph(MULTI_MODEL_EARLY_REDUCE, 8.0, 9.5),
+      get_latency_graph(SINGLE_MODEL, 4.5, 5.3),
+      get_latency_graph(MULTI_MODEL_EARLY_REDUCE, 8.0, 9.6),
       get_latency_graph(MULTI_MODEL_LATE_REDUCE, 5.5, 6.5)
     ]
   end
