@@ -334,12 +334,54 @@ class PollQuery
   end
 end
 
-class PollQueryStats
+class StatsBase
+  def initialize(test_case)
+    @test_case = test_case
+    reset
+  end
+
+  def reset
+    @sample_start_time = nil
+    @sample_end_time = nil
+  end
+
+  def set_sample_start_time
+    if @sample_start_time.nil?
+      @sample_start_time = Time.new.to_f
+    end
+  end
+
+  def set_sample_end_time
+    @sample_end_time = Time.new.to_f
+  end
+
+  def elapsed_sample_time
+    if @sample_start_time.nil? || @sample_end_time.nil?
+      return 3600.0
+    else
+      return @sample_end_time - @sample_start_time
+    end
+  end
+
+  def elapsed_sample_time_normal
+    return elapsed_sample_time < 1.0
+  end
+
+  def elapsed_sample_time_fmt
+    fmt = "%8.3f" % elapsed_sample_time
+    unless elapsed_sample_time_normal
+      fmt += " (ignored)"
+    end
+    return fmt
+  end
+end
+
+class PollQueryStats < StatsBase
 
   include Assertions
 
   def initialize(test_case, poll_query, poll_queries_index)
-    @test_case = test_case
+    super(test_case)
     @poll_query = poll_query
     @poll_queries_index = poll_queries_index
     @hit_count = nil
@@ -360,14 +402,17 @@ class PollQueryStats
 
   def set_hit_count(hit_count, fromstarttime)
     @hit_count = hit_count
-    @hit_count_min = hit_count if @hit_count_min.nil? || @hit_count_min > hit_count
-    @hit_count_max = hit_count if @hit_count_max.nil? || @hit_count_max < hit_count
-    if !fromstarttime.nil? && fromstarttime > 3.0
-      @hit_count_min_filtered = hit_count if @hit_count_min_filtered.nil? || @hit_count_min_filtered > hit_count
+    if elapsed_sample_time_normal
+      @hit_count_min = hit_count if @hit_count_min.nil? || @hit_count_min > hit_count
+      @hit_count_max = hit_count if @hit_count_max.nil? || @hit_count_max < hit_count
+      if !fromstarttime.nil? && fromstarttime > 3.0
+        @hit_count_min_filtered = hit_count if @hit_count_min_filtered.nil? || @hit_count_min_filtered > hit_count
+      end
     end
   end
 
   def reset
+    super
     @hit_count_prev = @hit_count
     @node_hit_count_vector_prev = @node_hit_count_vector
     @node_hit_count_vector = Array.new
@@ -377,6 +422,7 @@ class PollQueryStats
   def push_node_hit_count(node_hit_count)
     @node_hit_count_vector.push(node_hit_count)
     @normalized_node_hit_count_vector.push(node_hit_count.to_i)
+    set_sample_end_time
   end
 
   def fixup_node_hit_count(node_hit_count, is_poll_thread, growing, fromstarttime)
@@ -417,9 +463,9 @@ class PollQueryStats
     end
     chcs = fmthcv.join(" ")
     if is_poll_thread
-      puts "Polling poll_queries_index=#{@poll_queries_index} #{fmthc} hits, nodes #{chcs}"
+      puts "Polling poll_queries_index=#{@poll_queries_index} #{fmthc} hits, nodes #{chcs} #{elapsed_sample_time_fmt}"
     else
-      puts "Got     poll_queries_index=#{@poll_queries_index} #{fmthc} hits, nodes #{chcs}"
+      puts "Got     poll_queries_index=#{@poll_queries_index} #{fmthc} hits, nodes #{chcs} #{elapsed_sample_time_fmt}"
     end
   end
 
@@ -477,13 +523,13 @@ class ExploreDocCount
   end
 end
 
-class ExploredDocCountStats
+class ExploredDocCountStats < StatsBase
   attr_reader :explore_doc_count
 
   include Assertions
 
   def initialize(test_case, explore_doc_count, explore_doc_count_index)
-    @test_case = test_case
+    super(test_case)
     @explore_doc_count = explore_doc_count
     @explore_doc_count_index = explore_doc_count_index
     @node_doc_count_vector = nil
@@ -498,16 +544,21 @@ class ExploredDocCountStats
 
   def set_doc_count(doc_count)
     @doc_count = doc_count
-    @doc_count_min = doc_count if @doc_count_min.nil? || @doc_count_min > doc_count
-    @doc_count_max = doc_count if @doc_count_max.nil? || @doc_count_max < doc_count
+    if elapsed_sample_time_normal
+      @doc_count_min = doc_count if @doc_count_min.nil? || @doc_count_min > doc_count
+      @doc_count_max = doc_count if @doc_count_max.nil? || @doc_count_max < doc_count
+    end
   end
 
   def reset
+    super
     @node_doc_count_vector = Array.new
   end
 
   def sample(node)
+    set_sample_start_time
     @node_doc_count_vector.push(@explore_doc_count.get_node_doc_count(@test_case, node))
+    set_sample_end_time
   end
 
   def aggregate
@@ -535,9 +586,9 @@ class ExploredDocCountStats
     end
     fmt_node_doc_counts = fmt_node_doc_count_vector.join(" ")
     if is_poll_thread
-      puts "Polling poll_explore_index=#{@explore_doc_count_index} #{fmt_doc_count} docs, nodes #{fmt_node_doc_counts}"
+      puts "Polling poll_explore_index=#{@explore_doc_count_index} #{fmt_doc_count} docs, nodes #{fmt_node_doc_counts} #{elapsed_sample_time_fmt}"
     else
-      puts "Got     poll_explore_index=#{@explore_doc_count_index} #{fmt_doc_count} docs, nodes #{fmt_node_doc_counts}"
+      puts "Got     poll_explore_index=#{@explore_doc_count_index} #{fmt_doc_count} docs, nodes #{fmt_node_doc_counts} #{elapsed_sample_time_fmt}"
     end
   end
 end
@@ -714,6 +765,7 @@ class ResizePollState
         @poll_queries.size.times do |poll_queries_index|
           poll_query = @poll_queries[poll_queries_index]
           if @rapp.pollnode(before, nodeindex)
+            poll_query_stats[poll_queries_index].set_sample_start_time
             nhc = node_hitcount(poll_query, nodeindex)
             nhc = poll_query_stats[poll_queries_index].fixup_node_hit_count(nhc, is_poll_thread, @rapp.growing, fromstarttime)
             unsettled = true unless nhc == 0 || @rapp.pollnode(false, nodeindex)
