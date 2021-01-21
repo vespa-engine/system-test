@@ -1,9 +1,9 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search/write_filter/write_filter_base'
+require_relative 'feed_block_base'
 require 'doc_generator'
 require 'environment'
 
-class WriterFilterDiskTwoNodesBase < WriteFilterBase
+class FeedBlockDiskTwoNodesBase < FeedBlockBase
 
   @@DiskLimitResult = Struct.new("DiskLimitResult", :downnode, :upnode, :disklimit)
 
@@ -42,7 +42,7 @@ class WriterFilterDiskTwoNodesBase < WriteFilterBase
 
   def get_sc
     SearchCluster.new(@cluster_name).
-      sd(selfdir + "writefilter.sd").
+      sd(selfdir + "test.sd").
       num_parts(@num_parts).
       redundancy(1).
       indexing("default").
@@ -173,7 +173,7 @@ class WriterFilterDiskTwoNodesBase < WriteFilterBase
 
   def perform_du(node_idx)
     puts "perform_du: node_idx=#{node_idx}"
-    get_node(node_idx).execute("cd #{Environment.instance.vespa_home}/var/db/vespa/search/cluster.writefilter && date && hostname && df . && ( du || true )")
+    get_node(node_idx).execute("cd #{Environment.instance.vespa_home}/var/db/vespa/search/cluster.test && date && hostname && df . && ( du || true )")
   end
 
   def calculate_disklimit
@@ -219,7 +219,7 @@ class WriterFilterDiskTwoNodesBase < WriteFilterBase
   end
 
   def mostly_settle_document_redistribution(upnode, failedid)
-    hit_count_query = "query=sddocname:writefilter&nocache&model.searchPath=#{upnode}/0"
+    hit_count_query = "query=sddocname:test&nocache&model.searchPath=#{upnode}/0"
     hit_count = failedid - 1
     hit_count_settle_limit = failedid / 2 + 100
     while hit_count >= hit_count_settle_limit
@@ -236,7 +236,7 @@ class WriterFilterDiskTwoNodesBase < WriteFilterBase
     perform_du(upnode)
   end
 
-  def run_write_filter_document_v1_api_two_nodes_disklimit_test(shared_disk)
+  def run_feed_block_document_v1_api_two_nodes_disklimit_test(shared_disk)
     @num_parts = 2
     setup_strings
     deploy_app(get_app(shared_disk))
