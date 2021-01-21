@@ -1,14 +1,14 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
-class WriteFilterBase < IndexedSearchTest
+class FeedBlockBase < IndexedSearchTest
 
   def setup
     set_owner("toregge")
     srand(123)
-    @doc_type = "writefilter"
-    @namespace = "writefilter"
-    @cluster_name = "writefilter"
+    @doc_type = "test"
+    @namespace = "test"
+    @cluster_name = "test"
     @id_prefix = "id:test:#{@doc_type}::"
     @sleep_delay = 12
     @num_parts = 1
@@ -33,7 +33,7 @@ class WriteFilterBase < IndexedSearchTest
 
   def get_app
     SearchApp.new.cluster_name(@cluster_name).
-      sd(selfdir + "writefilter.sd").num_parts(@num_parts).redundancy(@num_parts).ready_copies(1).enable_http_gateway
+      sd(selfdir + "test.sd").num_parts(@num_parts).redundancy(@num_parts).ready_copies(1).enable_http_gateway
   end
 
   def get_configoverride(memorylimit, disklimit, enumstorelimit, multivaluelimit)

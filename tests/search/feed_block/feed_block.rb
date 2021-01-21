@@ -1,8 +1,8 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search/write_filter/write_filter_base'
+require_relative 'feed_block_base'
 require 'http_client'
 
-class WriteFilter < WriteFilterBase
+class FeedBlockTest < FeedBlockBase
 
   def http_v1_api_put(http, id)
     puts "Putting doc with id #{id}"
@@ -19,9 +19,9 @@ class WriteFilter < WriteFilterBase
   end
 
   def assert_http_client_feed_failed(pattern)
-    feedresult = http_client_feed_file("writefilter.2.json")
+    feedresult = http_client_feed_file("docs.2.json")
     assert_match(pattern, feedresult)
-    assert_hitcount("query=sddocname:writefilter&nocache", 1)
+    assert_hitcount("query=sddocname:test&nocache", 1)
     assert_hitcount("query=w2&nocache", 0)
   end
 
@@ -30,15 +30,15 @@ class WriteFilter < WriteFilterBase
     proton.logctl2("proton.server.proton_config_fetcher", "all=on")
   end
 
-  def test_write_filter_http_client
-    set_description("Test resource based write filter using high performance http client")
+  def test_feed_block_http_client
+    set_description("Test resource based feed block (in proton) using high performance http client")
     @num_parts = 1
     deploy_app(get_app)
     start
     enable_proton_debug_log
     node = vespa.adminserver
-    http_client_feed_file("writefilter.1.json")
-    assert_hitcount("query=sddocname:writefilter&nocache", 1)
+    http_client_feed_file("docs.1.json")
+    assert_hitcount("query=sddocname:test&nocache", 1)
     assert_hitcount("query=w1&nocache", 1)
     # Force trigger of memory limit
     redeploy_app(0.0, 1.0, 1.0, 1.0)
@@ -54,13 +54,13 @@ class WriteFilter < WriteFilterBase
     assert_http_client_feed_failed(/multiValueLimitReached/)
     # Allow feeding again
     redeploy_app(1.0, 1.0, 1.0, 1.0)
-    http_client_feed_file("writefilter.2.json")
-    assert_hitcount("query=sddocname:writefilter&nocache", 2)
+    http_client_feed_file("docs.2.json")
+    assert_hitcount("query=sddocname:test&nocache", 2)
     assert_hitcount("query=w2&nocache", 1)
   end
 
-  def test_write_filter_document_v1_api
-    set_description("Test resource based write filter using document v1 api")
+  def test_feed_block_document_v1_api
+    set_description("Test resource based feed block (in proton) using document v1 api")
     @num_parts = 1
     deploy_app(get_app)
     start
@@ -71,7 +71,7 @@ class WriteFilter < WriteFilterBase
     response = http_v1_api_put(http, 2)
     assert_equal("507", response.code)
     assert_match(pattern, response.body)
-    assert_hitcount("query=sddocname:writefilter&nocache", 1)
+    assert_hitcount("query=sddocname:test&nocache", 1)
     assert_hitcount("query=w2&nocache", 0)
   end
 
@@ -81,9 +81,9 @@ class WriteFilter < WriteFilterBase
     response = http_v1_api_put(http, 1)
     assert_equal("200", response.code)
     assert_json_string_equal(
-                             '{"pathId":"/document/v1/writefilter/writefilter/docid/1", "id":"id:writefilter:writefilter::1"}',
+                             '{"pathId":"/document/v1/test/test/docid/1", "id":"id:test:test::1"}',
                              response.body)
-    assert_hitcount("query=sddocname:writefilter&nocache", 1)
+    assert_hitcount("query=sddocname:test&nocache", 1)
     assert_hitcount("query=w1&nocache", 1)
     # Force trigger of memory limit
     redeploy_app(0.0, 1.0, 1.0, 1.0)
@@ -91,7 +91,7 @@ class WriteFilter < WriteFilterBase
     # Force trigger of disk limit
     redeploy_app(1.0, 0.0, 1.0, 1.0)
     assert_document_v1_feed_failed(http, /diskLimitReached/)
-    assert_hitcount("query=sddocname:writefilter&nocache", 1)
+    assert_hitcount("query=sddocname:test&nocache", 1)
     assert_hitcount("query=w32&nocache", 0)
     # Force trigger of enum store limit
     redeploy_app(1.0, 1.0, 0.0, 1.0)
@@ -104,9 +104,9 @@ class WriteFilter < WriteFilterBase
     response = http_v1_api_put(http, 2)
     assert_equal("200", response.code)
     assert_json_string_equal(
-                             '{"pathId":"/document/v1/writefilter/writefilter/docid/2", "id":"id:writefilter:writefilter::2"}',
+                             '{"pathId":"/document/v1/test/test/docid/2", "id":"id:test:test::2"}',
                              response.body)
-    assert_hitcount("query=sddocname:writefilter&nocache", 2)
+    assert_hitcount("query=sddocname:test&nocache", 2)
     assert_hitcount("query=w2&nocache", 1)
   end
 
@@ -133,8 +133,8 @@ class WriteFilter < WriteFilterBase
     assert_equal("200", response.code)
   end
 
-  def test_write_filter_document_v1_api_two_nodes
-    set_description("Test resource based write filter using document v1 api, attribute resource limit, and node addition for recovery")
+  def test_feed_block_document_v1_api_two_nodes
+    set_description("Test resource based feed block (in proton) using document v1 api, attribute resource limit, and node addition for recovery")
     @num_parts = 2
     @beforelimit = 37
     # Allow feeding, but with very low multivalue limit, allows @beforelimit docs
@@ -152,7 +152,7 @@ class WriteFilter < WriteFilterBase
     puts "Sleep #{@sleep_delay} seconds to allow content node 1 to start"
     sleep @sleep_delay
     settle_cluster_state("ui")
-    hit_count_query = "query=sddocname:writefilter&nocache&model.searchPath=0/0"
+    hit_count_query = "query=sddocname:test&nocache&model.searchPath=0/0"
     hit_count = @beforelimit + 1
     hit_count_toomany = hit_count / 2 + 4
     while hit_count >= hit_count_toomany
