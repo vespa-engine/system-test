@@ -1,0 +1,8 @@
+[
+  {
+    "fields": {
+       "a2": { "assign": 11 }
+    },
+    "update": "id:test:test::1"
+  }
+]

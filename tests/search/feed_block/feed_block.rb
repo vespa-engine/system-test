@@ -4,6 +4,77 @@ require 'http_client'
 
 class FeedBlockTest < FeedBlockBase
 
+  def test_feed_block_http_client
+    set_description("Test resource based feed block (in proton) using high performance http client")
+    @num_parts = 1
+    deploy_app(get_app)
+    start
+    node = vespa.adminserver
+
+    # Baseline
+    http_client_feed_file("docs.1.json")
+    assert_hitcount("query=sddocname:test", 1)
+    assert_hitcount("query=w1", 1)
+
+    # Force trigger of memory limit
+    redeploy_app(0.0, 1.0, 1.0, 1.0)
+    assert_http_client_feed(/memoryLimitReached/, 11)
+    # Force trigger of disk limit
+    redeploy_app(1.0, 0.0, 1.0, 1.0)
+    assert_http_client_feed(/diskLimitReached/, 12)
+    # Force trigger of enum store limit
+    redeploy_app(1.0, 1.0, 0.0, 1.0)
+    assert_http_client_feed(/enumStoreLimitReached/, 11)
+    # Force trigger of multivalue limit
+    redeploy_app(1.0, 1.0, 1.0, 0.0)
+    assert_http_client_feed(/multiValueLimitReached/, 12)
+
+    # Allow feeding again
+    redeploy_app(1.0, 1.0, 1.0, 1.0)
+    http_client_feed_file("docs.2.json")
+    assert_hitcount("query=sddocname:test", 2)
+    assert_hitcount("query=w2", 1)
+    http_client_feed_file("update.nontrivial.1.json")
+    assert_hitcount("query=w11", 1)
+  end
+
+  def http_client_feed_file(file_name)
+    feed(:file => selfdir + file_name, :client => :vespa_http_client)
+  end
+
+  def assert_http_client_feed(pattern, update_value)
+    assert_http_client_put_blocked(pattern)
+    assert_http_client_non_trivial_update_blocked(pattern)
+    assert_http_client_trivial_update_not_blocked(update_value)
+  end
+
+  def assert_http_client_put_blocked(pattern)
+    feed_result = http_client_feed_file("docs.2.json")
+    assert_match(pattern, feed_result)
+    assert_hitcount("query=sddocname:test", 1)
+    assert_hitcount("query=w2", 0)
+  end
+
+  def assert_http_client_non_trivial_update_blocked(pattern)
+    feed_result = http_client_feed_file("update.nontrivial.1.json")
+    assert_match(pattern, feed_result)
+    assert_hitcount("query=w11", 0)
+  end
+
+  def assert_http_client_trivial_update_not_blocked(update_value)
+    feed_result = http_client_feed_file("update.trivial.#{update_value}.json")
+    assert_hitcount("query=a2:#{update_value}", 1)
+  end
+
+
+  def test_feed_block_document_v1_api
+    set_description("Test resource based feed block (in proton) using document v1 api")
+    @num_parts = 1
+    deploy_app(get_app)
+    start
+    feed_and_test_document_v1_api
+  end
+
   def http_v1_api_put(http, id)
     puts "Putting doc with id #{id}"
     url = "/document/v1/#{@namespace}/#{@doc_type}/docid/#{id}"
@@ -12,53 +83,6 @@ class FeedBlockTest < FeedBlockBase
                      url,
                      "{ \"fields\": { \"a1\" : [ \"w#{id}\" ] } }",
                      httpHeaders)
-  end
-
-  def http_client_feed_file(file_name)
-    feed(:file => selfdir + file_name, :client => :vespa_http_client)
-  end
-
-  def assert_http_client_feed_failed(pattern)
-    feedresult = http_client_feed_file("docs.2.json")
-    assert_match(pattern, feedresult)
-    assert_hitcount("query=sddocname:test&nocache", 1)
-    assert_hitcount("query=w2&nocache", 0)
-  end
-
-  def test_feed_block_http_client
-    set_description("Test resource based feed block (in proton) using high performance http client")
-    @num_parts = 1
-    deploy_app(get_app)
-    start
-    node = vespa.adminserver
-    http_client_feed_file("docs.1.json")
-    assert_hitcount("query=sddocname:test&nocache", 1)
-    assert_hitcount("query=w1&nocache", 1)
-    # Force trigger of memory limit
-    redeploy_app(0.0, 1.0, 1.0, 1.0)
-    assert_http_client_feed_failed(/memoryLimitReached/)
-    # Force trigger of disk limit
-    redeploy_app(1.0, 0.0, 1.0, 1.0)
-    assert_http_client_feed_failed(/diskLimitReached/)
-    # Force trigger of enum store limit
-    redeploy_app(1.0, 1.0, 0.0, 1.0)
-    assert_http_client_feed_failed(/enumStoreLimitReached/)
-    # Force trigger of multivalue limit
-    redeploy_app(1.0, 1.0, 1.0, 0.0)
-    assert_http_client_feed_failed(/multiValueLimitReached/)
-    # Allow feeding again
-    redeploy_app(1.0, 1.0, 1.0, 1.0)
-    http_client_feed_file("docs.2.json")
-    assert_hitcount("query=sddocname:test&nocache", 2)
-    assert_hitcount("query=w2&nocache", 1)
-  end
-
-  def test_feed_block_document_v1_api
-    set_description("Test resource based feed block (in proton) using document v1 api")
-    @num_parts = 1
-    deploy_app(get_app)
-    start
-    feed_and_test_document_v1_api
   end
 
   def assert_document_v1_feed_failed(http, pattern)
