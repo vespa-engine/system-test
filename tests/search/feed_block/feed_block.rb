@@ -25,17 +25,11 @@ class FeedBlockTest < FeedBlockBase
     assert_hitcount("query=w2&nocache", 0)
   end
 
-  def enable_proton_debug_log
-    proton = vespa.search[@cluster_name].first
-    proton.logctl2("proton.server.proton_config_fetcher", "all=on")
-  end
-
   def test_feed_block_http_client
     set_description("Test resource based feed block (in proton) using high performance http client")
     @num_parts = 1
     deploy_app(get_app)
     start
-    enable_proton_debug_log
     node = vespa.adminserver
     http_client_feed_file("docs.1.json")
     assert_hitcount("query=sddocname:test&nocache", 1)
