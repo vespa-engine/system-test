@@ -1,5 +1,5 @@
 # coding: utf-8
-# Copyright 2020 Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'performance_test'
 require 'app_generator/search_app'
@@ -31,7 +31,7 @@ class DocumentV1Throughput < PerformanceTest
         :legend => 'GET small data 4 clients',
         :fbench => { :clients => 4, :use_post => false }
       } => {
-        'qps' => { :y_min =>  5700, :y_max =>  6350 },
+        'qps' => { :y_min =>  5650, :y_max =>  6300 },
         '95p' => { :y_min =>   0.7, :y_max =>   0.9 }
       },
       {
@@ -40,14 +40,14 @@ class DocumentV1Throughput < PerformanceTest
         :data => "{ \"fields\": { \"text\": \"GNU#{"'s not UNIX" * (1 << 10) }\" } }"
       } => {
         'qps' => { :y_min =>  6200, :y_max =>  6700 },
-        '95p' => { :y_min =>    24, :y_max =>    27 }
+        '95p' => { :y_min =>    22, :y_max =>    27 }
       },
       {
         :legend =>  'GET large data 128 clients',
         :fbench => { :clients => 128, :use_post => false }
       } => {
         'qps' => { :y_min => 31000, :y_max => 36000 },
-        '95p' => { :y_min =>   4.6, :y_max =>   5.5 }
+        '95p' => { :y_min =>   4.5, :y_max =>   5.5 }
       }
     }
     @graphs = get_graphs
