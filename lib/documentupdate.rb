@@ -1,6 +1,6 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 class Update
-  attr_reader :operation, :fieldname, :params
+  attr_reader :operation, :fieldname, :arraytype, :params
 
   def initialize(op, fieldname, arraytype)
     @operation = op
@@ -164,12 +164,14 @@ class DocumentUpdate
     f.write(to_xml)
   end
 
-  # FIXME only supports single value updates for now
   def fields_to_json
     fields = {}
     @updateops.each do |u|
-      raise 'Multi-value updates not yet supported' if u.params.size != 1
-      fields[u.fieldname] = { u.operation => u.params[0] }
+      if u.arraytype
+        fields[u.fieldname] = { u.operation => u.params }
+      else
+        fields[u.fieldname] = { u.operation => u.params[0] }
+      end
     end
     { 'fields' => fields }.to_json
   end

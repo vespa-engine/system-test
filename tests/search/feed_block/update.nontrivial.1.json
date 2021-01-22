@@ -1,0 +1,8 @@
+[
+  {
+    "fields": {
+       "a1": { "assign": [ "w11" ] }
+    },
+    "update": "id:test:test::1"
+  }
+]

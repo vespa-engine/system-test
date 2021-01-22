@@ -5,6 +5,9 @@ search test {
       indexing: attribute | summary
       attribute: fast-search
     }
+    field a2 type int {
+      indexing: attribute | summary
+    }
   }
   fieldset default {
     fields: a1
