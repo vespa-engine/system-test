@@ -81,10 +81,12 @@ class FeedBlockTest < FeedBlockBase
       add_field("a2", id)
   end
 
-  def assert_document_v1_feed_failed(pattern)
+  def assert_document_v1_feed(pattern, update_value)
     assert_document_v1_put_blocked(2, pattern)
     assert_hitcount("query=sddocname:test&nocache", 1)
     assert_hitcount("query=w2&nocache", 0)
+    assert_document_v1_non_trivial_update_blocked(pattern)
+    assert_document_v1_trivial_update_not_blocked(update_value)
   end
 
   def assert_document_v1_put_blocked(id, pattern)
@@ -95,6 +97,24 @@ class FeedBlockTest < FeedBlockBase
     assert_match(pattern, err.response_message)
   end
 
+  def assert_document_v1_non_trivial_update_blocked(pattern)
+    update = DocumentUpdate.new(@doc_type, @id_prefix + "1")
+    update.addOperation("assign", "a1", ["w11"])
+    err = assert_raise(HttpResponseError) {
+      vespa.document_api_v1.update(update)
+    }
+    assert_equal(507, err.response_code)
+    assert_match(pattern, err.response_message)
+    assert_hitcount("query=w11", 0)
+  end
+
+  def assert_document_v1_trivial_update_not_blocked(update_value)
+    update = DocumentUpdate.new(@doc_type, @id_prefix + "1")
+    update.addOperation("assign", "a2", update_value)
+    vespa.document_api_v1.update(update)
+    assert_hitcount("query=a2:#{update_value}", 1)
+  end
+
   def feed_and_test_document_v1_api
     vespa.document_api_v1.put(create_document(1))
     assert_hitcount("query=sddocname:test", 1)
@@ -102,16 +122,16 @@ class FeedBlockTest < FeedBlockBase
 
     # Force trigger of memory limit
     redeploy_app(0.0, 1.0, 1.0, 1.0)
-    assert_document_v1_feed_failed(/memoryLimitReached/)
+    assert_document_v1_feed(/memoryLimitReached/, 11)
     # Force trigger of disk limit
     redeploy_app(1.0, 0.0, 1.0, 1.0)
-    assert_document_v1_feed_failed(/diskLimitReached/)
+    assert_document_v1_feed(/diskLimitReached/, 12)
     # Force trigger of enum store limit
     redeploy_app(1.0, 1.0, 0.0, 1.0)
-    assert_document_v1_feed_failed(/enumStoreLimitReached/)
+    assert_document_v1_feed(/enumStoreLimitReached/, 11)
     # Force trigger of multivalue limit
     redeploy_app(1.0, 1.0, 1.0, 0.0)
-    assert_document_v1_feed_failed(/multiValueLimitReached/)
+    assert_document_v1_feed(/multiValueLimitReached/, 12)
 
     # Allow feeding again
     redeploy_app(1.0, 1.0, 1.0, 1.0)
