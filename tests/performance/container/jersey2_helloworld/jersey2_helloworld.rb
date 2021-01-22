@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'performance_test'
 require 'app_generator/container_app'
 require 'app_generator/rest_api'
@@ -68,7 +68,7 @@ class Jersey2HelloWorld < PerformanceTest
         {
             :x => 'build',
             :y => reply_rate_name,
-            :y_min => 60000,
+            :y_min => 59000,
             :y_max => 69000,
             :historic => true,
             :filter => {
@@ -78,7 +78,7 @@ class Jersey2HelloWorld < PerformanceTest
         {
             :x => 'build',
             :y => reply_rate_name,
-            :y_min => 188000,
+            :y_min => 185000,
             :y_max => 210000,
             :historic => true,
             :filter => {
