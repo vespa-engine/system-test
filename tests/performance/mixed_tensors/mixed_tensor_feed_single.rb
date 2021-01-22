@@ -16,14 +16,14 @@ class MixedTensorFeedSinglePerfTest < MixedTensorPerfTestBase
 
   def get_graphs_vec_256
     [
-      get_feed_throughput_graph(PUTS, NUMBER, 1, 30000),
-      get_feed_throughput_graph(PUTS, STRING, 1, 30000),
-      get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 1, 30000),
-      get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 1, 30000),
-      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 1, 30000),
-      get_feed_throughput_graph(UPDATES_ADD, STRING, 1, 30000),
-      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 1, 40000),
-      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 1, 40000)
+      get_feed_throughput_graph(PUTS, NUMBER, 5100, 5550),
+      get_feed_throughput_graph(PUTS, STRING, 5500, 5750),
+      get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 5400, 5750),
+      get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 5400, 5750),
+      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 12400, 14300),
+      get_feed_throughput_graph(UPDATES_ADD, STRING, 12800, 14000),
+      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 27300, 30300),
+      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 27000, 32000)
     ]
   end
 
@@ -40,14 +40,14 @@ class MixedTensorFeedSinglePerfTest < MixedTensorPerfTestBase
 
   def get_graphs_vec_32
     [
-      get_feed_throughput_graph(PUTS, NUMBER, 1, 30000),
-      get_feed_throughput_graph(PUTS, STRING, 1, 30000),
-      get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 1, 30000),
-      get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 1, 30000),
-      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 1, 30000),
-      get_feed_throughput_graph(UPDATES_ADD, STRING, 1, 30000),
-      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 1, 40000),
-      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 1, 40000)
+      get_feed_throughput_graph(PUTS, NUMBER, 1550, 1750),
+      get_feed_throughput_graph(PUTS, STRING, 1650, 1800),
+      get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 1600, 1800),
+      get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 1600, 1800),
+      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 15500, 18000),
+      get_feed_throughput_graph(UPDATES_ADD, STRING, 16000, 18000),
+      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 16300, 19000),
+      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 16500, 19500)
     ]
   end
 
