@@ -148,10 +148,10 @@ class NearestNeighborPerformanceTest < PerformanceTest
     profiles = [ 'simple', 'rawscore', 'dotproduct', 'joinsq' ]
     casenames = [ 'alldoc', 'nns_10', 'nns_100', 'nns_1000' ]
     maxmins = {
-        'alldoc_joinsq'     => { :min => 290, :max => 999 },
-        'alldoc_dotproduct' => { :min => 100, :max => 300 },
+        'alldoc_joinsq'     => { :min => 270, :max => 400 },
+        'alldoc_dotproduct' => { :min => 150, :max => 250 },
         'nns_10_rawscore'   => { :min =>  10, :max => 99 },
-        'default'           => { :min =>   1, :max => 1000000 }
+        'default'           => { :min =>  30, :max => 50 }
     }
     local_graphs = []
     local_graphs.push({
