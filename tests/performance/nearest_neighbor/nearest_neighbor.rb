@@ -151,7 +151,7 @@ class NearestNeighborPerformanceTest < PerformanceTest
         'alldoc_joinsq'     => { :min => 270, :max => 400 },
         'alldoc_dotproduct' => { :min => 150, :max => 250 },
         'nns_10_rawscore'   => { :min =>  10, :max => 99 },
-        'default'           => { :min =>  30, :max => 50 }
+        'default'           => { :min =>  30, :max => 80 }
     }
     local_graphs = []
     local_graphs.push({
