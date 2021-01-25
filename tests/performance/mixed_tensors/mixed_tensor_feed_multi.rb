@@ -16,14 +16,14 @@ class MixedTensorFeedMultiPerfTest < MixedTensorPerfTestBase
 
   def get_graphs_vec_256
     [
-      get_feed_throughput_graph(PUTS, NUMBER, 530, 580),
+      get_feed_throughput_graph(PUTS, NUMBER, 510, 580),
       get_feed_throughput_graph(PUTS, STRING, 530, 600),
       get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 530, 600),
       get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 550, 600),
-      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 3800, 4100),
-      get_feed_throughput_graph(UPDATES_ADD, STRING, 3800, 4200),
-      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 9600, 10500),
-      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 9700, 10500)
+      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 3650, 4200),
+      get_feed_throughput_graph(UPDATES_ADD, STRING, 3800, 4250),
+      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 9200, 10500),
+      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 9600, 10900)
     ]
   end
 
@@ -40,14 +40,14 @@ class MixedTensorFeedMultiPerfTest < MixedTensorPerfTestBase
 
   def get_graphs_vec_32
     [
-      get_feed_throughput_graph(PUTS, NUMBER, 50, 155),
-      get_feed_throughput_graph(PUTS, STRING, 140, 155),
-      get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 140, 155),
-      get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 140, 155),
-      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 1000, 1200),
+      get_feed_throughput_graph(PUTS, NUMBER, 35, 160),
+      get_feed_throughput_graph(PUTS, STRING, 135, 160),
+      get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 140, 160),
+      get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 140, 160),
+      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 1000, 1250),
       get_feed_throughput_graph(UPDATES_ADD, STRING, 1050, 1300),
-      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 3600, 3900),
-      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 3100, 3350)
+      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 3500, 3900),
+      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 3100, 3400)
     ]
   end
 
