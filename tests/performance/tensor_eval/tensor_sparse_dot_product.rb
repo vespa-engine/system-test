@@ -1,4 +1,5 @@
 # Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
 require 'performance/tensor_eval/tensor_eval'
 
 class TensorSparseDotProductTest < TensorEvalPerfTest
@@ -24,7 +25,6 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
     generate_tensor_files
     deploy_app(create_app)
     start
-    #@container = (vespa.qrserver["0"] or vespa.container.values.first)
     @container = vespa.container.values.first
     generate_query_files
     feed_docs(num_docs_per_type)
@@ -54,12 +54,7 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
       get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "10/250",  1.0, 300.0),
       get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "250/10",  1.0, 300.0),
       get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "250/250", 1.0, 300.0),
-      {
-        :x => RANK_PROFILE,
-        :y => "latency",
-        :title => "Historic latency for rank profiles with various number of entries in query and document",
-        :historic => true
-      }
+      get_latency_graph_for_all(RANK_PROFILE)
     ]
   end
 

@@ -114,6 +114,15 @@ class TensorEvalPerfTest < PerformanceTest
     }
   end
 
+  def get_latency_graph_for_all(label_key)
+    {
+      :x => label_key,
+      :y => "latency",
+      :title => "Historic latency for all #{label_key} types",
+      :historic => true
+    }
+  end
+
   def get_latency_graph_for_rank_profile(rank_profile, wset_entries, y_min, y_max)
     {
       :x => WSET_ENTRIES,
