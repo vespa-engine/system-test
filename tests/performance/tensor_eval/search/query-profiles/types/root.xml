@@ -16,4 +16,7 @@
   <field name="ranking.features.query(q_sparse_vector_x)" type="tensor(x{})" />
   <field name="ranking.features.query(q_sparse_vector_y)" type="tensor(y{})" />
   <field name="ranking.features.query(q_sparse_yz)" type="tensor(y{},z{})" />
+  <field name="ranking.features.query(q_sparse_float_vector_x)" type="tensor&lt;float&gt;(x{})" />
+  <field name="ranking.features.query(q_sparse_float_vector_y)" type="tensor&lt;float&gt;(y{})" />
+  <field name="ranking.features.query(q_sparse_float_yz)" type="tensor&lt;float&gt;(y{},z{})" />
 </query-profile-type>

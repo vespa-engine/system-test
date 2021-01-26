@@ -33,6 +33,10 @@ public class TensorInQueryBuilderSearcher extends Searcher {
     private static TensorType tt_sparse_vector_y = TensorType.fromSpec("tensor(y{})");
     private static TensorType tt_sparse_yz = TensorType.fromSpec("tensor(y{},z{})");
 
+    private static TensorType tt_sparse_float_vector_x = TensorType.fromSpec("tensor<float>(x{})");
+    private static TensorType tt_sparse_float_vector_y = TensorType.fromSpec("tensor<float>(y{})");
+    private static TensorType tt_sparse_float_yz = TensorType.fromSpec("tensor<float>(y{},z{})");
+
     @Override
     public Result search(Query query, Execution execution) {
         considerInsertTensor(query, "q_dense_vector_5",  "x",  tt_dense_vector_5);
@@ -54,6 +58,11 @@ public class TensorInQueryBuilderSearcher extends Searcher {
         considerInsertTensor(query, "q_sparse_vector_x", "x", tt_sparse_vector_x);
         considerInsertTensor(query, "q_sparse_vector_y", "y", tt_sparse_vector_y);
         considerInsert2dTensor(query, "q_sparse_yz", "y", "z", tt_sparse_yz);
+
+        considerInsertTensor(query, "q_sparse_float_vector_x", "x", tt_sparse_float_vector_x);
+        considerInsertTensor(query, "q_sparse_float_vector_y", "y", tt_sparse_float_vector_y);
+        considerInsert2dTensor(query, "q_sparse_float_yz", "y", "z", tt_sparse_float_yz);
+
         return execution.search(query);
     }
 
