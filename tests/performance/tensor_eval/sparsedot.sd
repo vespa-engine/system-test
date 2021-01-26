@@ -1,0 +1,30 @@
+search sparsedot {
+  document sparsedot {
+    field wset type weightedset<int> {
+      indexing: attribute
+    }
+    field wset_entries type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field sparse_vector_x type tensor<float>(x{}) {
+      indexing: attribute
+      attribute: fast-search
+    }
+  }
+  document-summary min_summary {
+    summary documentid type string {}
+  }
+  rank-profile feature_dot_product {
+    first-phase {
+      keep-rank-count: 1000
+      expression: dotProduct(wset, wset_query)
+    }
+  }
+  rank-profile sparse_tensor_dot_product {
+    first-phase {
+      keep-rank-count: 1000
+      expression: sum(query(q_sparse_float_vector_x) * attribute(sparse_vector_x))
+    }
+  }
+}
