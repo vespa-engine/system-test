@@ -51,53 +51,6 @@ class SimpleMetrics < SearchTest
     assert(found_illegal_parameter, "error.invalid_query_parameter missing from metrics")
   end
 
-  class StopWatch
-    def elapsed
-      return Time.now - @before
-    end
-    def reset
-      @before = Time.now
-      return self
-    end
-    def self.start
-      new().reset
-    end
-  end
-
-  def test_oldimplementation
-    deploy_app(SearchApp.new.
-               config(
-                 ConfigOverride.new("metrics.manager").
-                 add("reportPeriodSeconds", "60")).
-               monitoring("overrideinterval", 60).
-               config(
-                 ConfigOverride.new("metrics.metrics-presentation").
-                 add("slidingwindow", "false")).
-               cluster_name("simplemetrics").
-               sd(SEARCH_DATA+"music.sd"))
-    timer = StopWatch.start
-    start
-    feed(:file => SEARCH_DATA+"music.10.xml", :timeout => 240)
-    wait_for_hitcount("query=sddocname:music", 10)
-    values = get_qrs_metrics["metrics"]
-    while timer.elapsed > 60
-      puts "too much time (#{timer.elapsed.to_i} / 60 s) passed since start, need to restart qrserver..."
-      timer.reset
-      vespa.container["default/0"].restart
-      wait_for_hitcount("query=sddocname:music", 10)
-      values = get_qrs_metrics["metrics"]
-    end
-    assert(values.size == 0, "Expected no metrics on a fresh system")
-    while timer.elapsed < 600
-      values = get_qrs_metrics["metrics"]
-      break if (values && values.size > 0 && values["values"].size > 0)
-      puts "Time passes... #{timer.elapsed.to_i}/600"
-      sleep 5
-    end
-    assert(values.size > 0, "Expected metrics after #{timer.elapsed} seconds")
-    assert(values["values"].size > 0, "Expected some metric values after #{timer.elapsed} seconds")
-  end
-
   def get_qrs_metrics
     JSON.parse(vespa.container.values.first.http_get2("/state/v1/metrics").body)
   end
