@@ -38,15 +38,15 @@ class MixedTensorPerfTestBase < PerformanceTest
   end
 
   def feed_and_profile_cases(data_gen_params_prefix)
-    feed_and_profile("#{data_gen_params_prefix} puts", PUTS, NUMBER)
-    feed_and_profile("#{data_gen_params_prefix} updates assign", UPDATES_ASSIGN, NUMBER)
-    feed_and_profile("#{data_gen_params_prefix} updates add", UPDATES_ADD, NUMBER)
-    feed_and_profile("#{data_gen_params_prefix} updates remove", UPDATES_REMOVE, NUMBER)
-
     feed_and_profile("#{data_gen_params_prefix} -s puts", PUTS, STRING)
     feed_and_profile("#{data_gen_params_prefix} -s updates assign", UPDATES_ASSIGN, STRING)
     feed_and_profile("#{data_gen_params_prefix} -s updates add", UPDATES_ADD, STRING)
     feed_and_profile("#{data_gen_params_prefix} -s updates remove", UPDATES_REMOVE, STRING)
+
+    feed_and_profile("#{data_gen_params_prefix} puts", PUTS, NUMBER)
+    feed_and_profile("#{data_gen_params_prefix} updates assign", UPDATES_ASSIGN, NUMBER)
+    feed_and_profile("#{data_gen_params_prefix} updates add", UPDATES_ADD, NUMBER)
+    feed_and_profile("#{data_gen_params_prefix} updates remove", UPDATES_REMOVE, NUMBER)
   end
 
   def feed_and_profile(data_gen_params, feed_type, label_type)
