@@ -71,6 +71,27 @@ class ArrayConfig
 
 end
 
+class MapConfig
+  def initialize(name)
+    @name = name
+    @map = {}
+  end
+
+  def add(key, value)
+    @map[key] = value
+    return self
+  end
+
+  def to_xml(indent)
+    XmlHelper.new(indent).
+      tag(@name).
+      list_do(@map.keys) { |helper, key|
+        helper.tag("item", :key => key).
+          to_xml(@map[key]).close_tag }.to_s
+  end
+end
+
+
 class ConfigOverride
   include ChainedSetter
 
@@ -80,6 +101,8 @@ class ConfigOverride
   end
   def add(key, value = nil)
     if key.is_a? ArrayConfig and value.nil?
+      @overrides.push(key)
+    elsif key.is_a? MapConfig and value.nil?
       @overrides.push(key)
     else
       @overrides.push(ConfigValue.new(key, value))

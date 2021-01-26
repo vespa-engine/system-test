@@ -652,6 +652,19 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
+  def test_map_config
+    config = ConfigOverride.new("myconfig").add(MapConfig.new("mymap").add("key_a", "val_0").add("key_b", "val_1"))
+    actual = config.to_xml(" ")
+
+    expected_substr = '<config name="myconfig">
+      <mymap>
+        <item key="key_a">val_0</item>
+        <item key="key_b">val_1</item>
+      </mymap>
+    </config>'
+    assert_substring_ignore_whitespace(actual, expected_substr)
+  end
+
   def test_deploy_params
     app = SearchApp.new.sd("sd1").cluster(SearchCluster.new.sd("sd2")).
       cfg_dir("dir1").rules_dir("dir3").
