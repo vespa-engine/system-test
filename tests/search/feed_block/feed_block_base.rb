@@ -10,6 +10,7 @@ class FeedBlockBase < IndexedSearchTest
     @namespace = "test"
     @cluster_name = "test"
     @id_prefix = "id:test:#{@doc_type}::"
+    @block_feed_in_distributor = false
     @sleep_delay = 12
     @num_parts = 1
   end
@@ -36,23 +37,37 @@ class FeedBlockBase < IndexedSearchTest
       sd(selfdir + "test.sd").num_parts(@num_parts).redundancy(@num_parts).ready_copies(1).enable_http_gateway
   end
 
-  def get_configoverride(memorylimit, disklimit, enumstorelimit, multivaluelimit)
+  def get_proton_config(memory, disk, enumstore, multivalue)
     ConfigOverride.new("vespa.config.search.core.proton").
-      add("writefilter", ConfigValue.new("memorylimit", memorylimit)).
-      add("writefilter", ConfigValue.new("disklimit", disklimit)).
+      add("writefilter", ConfigValue.new("memorylimit", memory)).
+      add("writefilter", ConfigValue.new("disklimit", disk)).
       add("writefilter",
           ConfigValue.new("attribute",
-                          ConfigValue.new("enumstorelimit", enumstorelimit))).
+                          ConfigValue.new("enumstorelimit", enumstore))).
       add("writefilter",
           ConfigValue.new("attribute",
                           ConfigValue.new("multivaluelimit",
-                                          multivaluelimit))).
+                                          multivalue))).
       add("writefilter", ConfigValue.new("sampleinterval", 2.0))
   end
 
-  def redeploy_app(memorylimit, disklimit, enumstorelimit, multivaluelimit)
-    redeploy(get_app.config(get_configoverride(memorylimit, disklimit, enumstorelimit, multivaluelimit)),
-             @cluster_name)
+  def get_cluster_controller_config(memory, disk, enumstore, multivalue)
+    ConfigOverride.new("vespa.config.content.fleetcontroller").
+      add("enable_cluster_feed_block", true).
+      add(MapConfig.new("cluster_feed_block_limit").
+          add("memory", memory).
+          add("disk", disk).
+          add("attribute-enum-store", enumstore).
+          add("attribute-multi-value", multivalue))
+  end
+
+  def redeploy_app(memory, disk, enumstore, multivalue)
+    proton_cfg = @block_feed_in_distributor ?
+      get_proton_config(1.0, 1.0, 1.0, 1.0) : get_proton_config(memory, disk, enumstore, multivalue)
+    controller_cfg = @block_feed_in_distributor ?
+      get_cluster_controller_config(memory, disk, enumstore, multivalue) : get_cluster_controller_config(1.0, 1.0, 1.0, 1.0)
+
+    redeploy(get_app.config(proton_cfg).config(controller_cfg), @cluster_name)
     sample_sleep(' after reconfig')
   end
 
