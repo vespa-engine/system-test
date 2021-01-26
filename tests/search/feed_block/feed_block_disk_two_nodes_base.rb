@@ -198,7 +198,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
 
   def redeploy_with_reduced_disk_limit(disklimit, shared_disk)
     puts "Redeploying with reduced disk limit"
-    deploy_app(get_app(shared_disk).config(get_configoverride(1.0, disklimit, 1.0, 1.0)))
+    deploy_app(get_app(shared_disk).config(get_proton_config(1.0, disklimit, 1.0, 1.0)))
     sleep_with_reason(@sleep_delay, " to allow new config to propagate")
     settle_cluster_state("uimrd")
     get_node(0).logctl2("proton.flushengine.flushengine", "all=on")
