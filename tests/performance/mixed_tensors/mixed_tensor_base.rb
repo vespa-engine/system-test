@@ -7,14 +7,15 @@ require 'environment'
 
 class MixedTensorPerfTestBase < PerformanceTest
 
-  FEED_TYPE = "feed_type"
-  LABEL_TYPE = "label_type"
-  PUTS = "puts"
-  UPDATES_ASSIGN = "updates_assign"
-  UPDATES_ADD = "updates_add"
-  UPDATES_REMOVE = "updates_remove"
-  NUMBER = "number"
-  STRING = "string"
+  GRAPH_NAME = 'graph_name'
+  FEED_TYPE = 'feed_type'
+  LABEL_TYPE = 'label_type'
+  PUTS = 'puts'
+  UPDATES_ASSIGN = 'updates_assign'
+  UPDATES_ADD = 'updates_add'
+  UPDATES_REMOVE = 'updates_remove'
+  NUMBER = 'number'
+  STRING = 'string'
 
   def initialize(*args)
     super(*args)
@@ -49,16 +50,25 @@ class MixedTensorPerfTestBase < PerformanceTest
     feed_and_profile("#{data_gen_params_prefix} updates remove", UPDATES_REMOVE, NUMBER)
   end
 
+  def feeder_numthreads
+      8
+  end
+
   def feed_and_profile(data_gen_params, feed_type, label_type)
     command = "#{@data_gen} #{data_gen_params}"
     profiler_start
-    run_stream_feeder(command, [parameter_filler(FEED_TYPE, feed_type), parameter_filler(LABEL_TYPE, label_type)], {})
-    profiler_report("#{feed_type}.#{label_type}")
+    graph_name = "#{feed_type}.#{label_type}"
+    run_stream_feeder(command, [
+      parameter_filler(GRAPH_NAME, graph_name),
+      parameter_filler(FEED_TYPE, feed_type),
+      parameter_filler(LABEL_TYPE, label_type)
+    ], {})
+    profiler_report(graph_name)
   end
 
   def get_feed_throughput_graph(feed_type, label_type, y_min, y_max)
     {
-      :x => FEED_TYPE,
+      :x => GRAPH_NAME,
       :y => "feeder.throughput",
       :title => "Throughput during feeding of '#{feed_type}' (#{LABEL_TYPE}=#{label_type}) to mixed tensor",
       :filter => { FEED_TYPE => feed_type, LABEL_TYPE => label_type },

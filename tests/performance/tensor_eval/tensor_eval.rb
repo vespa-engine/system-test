@@ -72,7 +72,10 @@ class TensorEvalPerfTest < PerformanceTest
     container.execute("#{dirs.tmpdir}/docs #{num_docs} | vespa-feeder")
   end
 
-  def run_fbench_helper(eval_type, rank_profile, wset_entries, query_file)
+  def run_fbench_helper(eval_type, rank_profile, doc_wset_entries, query_file, q_wset_entries = nil)
+    wset_entries="#{doc_wset_entries}"
+    wset_entries="#{q_wset_entries}/#{doc_wset_entries}" if q_wset_entries
+
     puts "run_fbench_helper(#{eval_type}, #{rank_profile}, #{wset_entries}, #{query_file})"
     query_file = fetch_query_file(query_file)
     fillers = [parameter_filler(EVAL_TYPE, eval_type),
@@ -80,12 +83,13 @@ class TensorEvalPerfTest < PerformanceTest
                parameter_filler(WSET_ENTRIES, wset_entries)]
     mangled_rank_profile = rank_profile
     if rank_profile == DENSE_TENSOR_DOT_PRODUCT || rank_profile == DENSE_FLOAT_TENSOR_DOT_PRODUCT
-      mangled_rank_profile += "_" + wset_entries.to_s
+      mangled_rank_profile = "#{rank_profile}_#{doc_wset_entries}"
     end
     profiler_start
     run_fbench2(@container,
                 query_file,
-                {:runtime => FBENCH_RUNTIME, :clients => 1, :append_str => "&ranking=#{mangled_rank_profile}&summary=min_summary&timeout=10"},
+                {:runtime => FBENCH_RUNTIME, :clients => 1,
+                 :append_str => "&query=wset_entries:#{doc_wset_entries}&ranking=#{mangled_rank_profile}&summary=min_summary&timeout=10"},
                 fillers)
     profiler_report(get_label(eval_type, rank_profile, wset_entries))
   end
