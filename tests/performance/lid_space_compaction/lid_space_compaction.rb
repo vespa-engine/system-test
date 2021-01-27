@@ -32,7 +32,7 @@ class LidSpaceCompactionPerfTest < PerformanceTest
     SearchApp.new.cluster(SearchCluster.new.sd(selfdir + "test.sd").
                           config(ConfigOverride.new("vespa.config.search.core.proton").
                                  add("maintenancejobs", ConfigValues.new.
-                                     add("maxoutstandingmoveops", 10)).
+                                     add("maxoutstandingmoveops", 100)).
                                  add("summary", ConfigValues.new.
                                      add("write", ConfigValues.new.
                                          add("io", "NORMAL"))).
