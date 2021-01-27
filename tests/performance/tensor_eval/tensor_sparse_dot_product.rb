@@ -30,15 +30,15 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
     feed_docs(num_docs_per_type)
   end
 
-  def test_tensor_evaluation
+  def test_sparse_tensor_dot_product
     set_description("Test performance of sparse tensor dot product vs feature dot product calculation")
     @graphs = get_graphs_dot_product
     deploy_and_feed(100000)
-    [10,250].each do |q_entries|
-      [10,250].each do |doc_entries|
-        run_fbench_helper(DOT_PRODUCT, FEATURE_DOT_PRODUCT,       doc_entries, "queries.dot_product_wset.#{q_entries}.txt",      q_entries)
-        run_fbench_helper(DOT_PRODUCT, SPARSE_TENSOR_DOT_PRODUCT, doc_entries, "queries.tensor.sparse_float.x.#{q_entries}.txt", q_entries)
-      end
+    [[50,50], [10,50], [50,10], [250,50], [50,250]].each do |doc_entries, q_entries|
+      w_query_f = "queries.dot_product_wset.#{q_entries}.txt"
+      t_query_f = "queries.tensor.sparse_float.x.#{q_entries}.txt"
+      run_fbench_helper(DOT_PRODUCT, FEATURE_DOT_PRODUCT, doc_entries, w_query_f, q_entries)
+      run_fbench_helper(DOT_PRODUCT, SPARSE_TENSOR_DOT_PRODUCT, doc_entries, t_query_f, q_entries)
     end
   end
 
@@ -46,14 +46,16 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
     [
       get_latency_graphs_for_rank_profile(FEATURE_DOT_PRODUCT),
       get_latency_graphs_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "10/10",   1.0, 300.0),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "10/250",  1.0, 300.0),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "250/10",  1.0, 300.0),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "250/250", 1.0, 300.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "10/10",   1.0, 300.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "10/250",  1.0, 300.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "250/10",  1.0, 300.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "250/250", 1.0, 300.0),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50/50",   1.0, 300.0),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50/10",   1.0, 300.0),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "10/50",   1.0, 300.0),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50/250",  1.0, 300.0),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "250/50",  1.0, 300.0),
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50/50",   1.0, 300.0),
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50/10",   1.0, 300.0),
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "10/50",   1.0, 300.0),
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50/250",  1.0, 300.0),
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "250/50",  1.0, 300.0),
       get_latency_graph_for_all(RANK_PROFILE)
     ]
   end
