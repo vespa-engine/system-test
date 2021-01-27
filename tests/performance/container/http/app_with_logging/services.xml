@@ -4,7 +4,7 @@
     <adminserver hostalias="node1"/>
   </admin>
   <container id="search" version="1.0">
-    <accesslog type="json" compressionType="zstd"/>
+    <accesslog fileNamePattern="logs/vespa/qrs/JsonAccessLog.default" type="json" compressionType="zstd"/>
     <nodes jvmargs=" -verbose:gc -Xms8g -Xmx8g -XX:NewRatio=1 -XX:+PrintGCDetails ">
     <!--<nodes jvmargs="-agentlib:yjpagent -verbose:gc -Xms8g -Xmx8g -Dvespa.freezedetector.disable=true -XX:NewRatio=1 -XX:+PrintGCDetails">-->
       <node hostalias='node1'/>
