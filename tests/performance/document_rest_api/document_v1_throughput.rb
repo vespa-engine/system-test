@@ -24,7 +24,7 @@ class DocumentV1Throughput < PerformanceTest
         :fbench => { :clients => 4, :use_post => true },
         :data => "{ \"fields\": { \"text\": \"GNU's not UNIX\" } }"
       } => {
-        'qps' => { :y_min =>  2600, :y_max =>  3100 },
+        'qps' => { :y_min =>  2550, :y_max =>  3100 },
         '95p' => { :y_min =>   1.4, :y_max =>   1.7 }
       },
       {
