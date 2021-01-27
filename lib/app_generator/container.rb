@@ -282,6 +282,7 @@ class AccessLog
   chained_setter :rotationInterval
   chained_setter :fileNamePattern
   chained_setter :symlinkName
+  chained_setter :compressionFormat
 
 
   def initialize(type)
@@ -294,6 +295,7 @@ class AccessLog
           :type => @type,
           :fileNamePattern => @fileNamePattern,
           :symlinkName => @symlinkName,
+          :compressionFormat => @compressionFormat,
           :rotationInterval => @rotationInterval).to_s
   end
 end
