@@ -31,6 +31,8 @@ class LidSpaceCompactionPerfTest < PerformanceTest
   def get_app(lid_bloat_factor = 0.2)
     SearchApp.new.cluster(SearchCluster.new.sd(selfdir + "test.sd").
                           config(ConfigOverride.new("vespa.config.search.core.proton").
+                                 add("maintenancejobs", ConfigValues.new.
+                                     add("maxoutstandingmoveops", 10)).
                                  add("summary", ConfigValues.new.
                                      add("write", ConfigValues.new.
                                          add("io", "NORMAL"))).
@@ -64,7 +66,7 @@ class LidSpaceCompactionPerfTest < PerformanceTest
   def warmup(container, queries, summary)
     container.execute("vespa-fbench-split-file -p #{queries}.%02d 20 #{queries}")
     run_fbench2(container, "#{queries}.%02d",
-                { :times_reuse_query_files => 0, :runtime => 300, :clients => 20,
+                { :times_reuse_query_files => 0, :runtime => 30, :clients => 20,
                   :append_str => "&summary=#{summary}",
                   :result_file => "#{dirs.tmpdir}/result.warmup.#{summary}.txt.%02d"},
                 [ parameter_filler("legend", "idle-#{summary}") ])
@@ -73,7 +75,7 @@ class LidSpaceCompactionPerfTest < PerformanceTest
 
   def verify_summaries(container, queries, summary)
     run_fbench2(container, queries,
-                { :runtime => 180, :clients => 4, :append_str => "&summary=#{summary}",
+                { :runtime => 30, :clients => 4, :append_str => "&summary=#{summary}",
                   :result_file => "#{dirs.tmpdir}/result.compact.#{summary}.%d.txt"},
                 [ parameter_filler("legend", "compact_lidspace") ])
     container.execute("#{dirs.tmpdir}/verify_results #{dirs.tmpdir}/result.warmup.#{summary}.txt #{dirs.tmpdir}/result.compact.#{summary}.0.txt", {:exceptiononfailure => false})
