@@ -50,10 +50,6 @@ class MixedTensorPerfTestBase < PerformanceTest
     feed_and_profile("#{data_gen_params_prefix} updates remove", UPDATES_REMOVE, NUMBER)
   end
 
-  def feeder_numthreads
-      8
-  end
-
   def feed_and_profile(data_gen_params, feed_type, label_type)
     command = "#{@data_gen} #{data_gen_params}"
     profiler_start
@@ -62,7 +58,7 @@ class MixedTensorPerfTestBase < PerformanceTest
       parameter_filler(GRAPH_NAME, graph_name),
       parameter_filler(FEED_TYPE, feed_type),
       parameter_filler(LABEL_TYPE, label_type)
-    ], {})
+    ], { :maxpending => 100, :numthreads => 1 })
     profiler_report(graph_name)
   end
 
