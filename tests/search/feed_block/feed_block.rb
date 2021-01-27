@@ -5,6 +5,7 @@ require 'http_client'
 class FeedBlockTest < FeedBlockBase
 
   def test_proton_feed_block_http_client
+    set_owner("geirst")
     set_description("Test resource based feed block (in proton) using high performance http client")
     run_feed_block_http_client_test({ :memory => /memoryLimitReached/,
                                       :disk => /diskLimitReached/,
@@ -13,6 +14,7 @@ class FeedBlockTest < FeedBlockBase
   end
 
   def test_distributor_feed_block_http_client
+    set_owner("geirst")
     set_description("Test resource based feed block (in distributor) using high performance http client")
     @block_feed_in_distributor = true
     run_feed_block_http_client_test({ :memory => /todo/,
@@ -83,6 +85,7 @@ class FeedBlockTest < FeedBlockBase
 
 
   def test_proton_feed_block_document_v1_api
+    set_owner("geirst")
     set_description("Test resource based feed block (in proton) using document v1 api")
     run_feed_block_document_v1_api_test({ :memory => /memoryLimitReached/,
                                           :disk => /diskLimitReached/,
@@ -91,12 +94,42 @@ class FeedBlockTest < FeedBlockBase
   end
 
   def test_distributor_feed_block_document_v1_api
+    set_owner("geirst")
     set_description("Test resource based feed block (in distributor) using document v1 api")
     @block_feed_in_distributor = true
     run_feed_block_document_v1_api_test({ :memory => /todo/,
                                           :disk => /todo/,
                                           :enum_store => /todo/,
                                           :multi_value => /todo/ })
+  end
+
+  def run_feed_block_document_v1_api_test(error_msg)
+    @num_parts = 1
+    deploy_app(get_app)
+    start
+
+    vespa.document_api_v1.put(create_document(1))
+    assert_hitcount("query=sddocname:test", 1)
+    assert_hitcount("query=w1", 1)
+
+    # Force trigger of memory limit
+    redeploy_app(0.0, 1.0, 1.0, 1.0)
+    assert_document_v1_feed(error_msg[:memory], 11)
+    # Force trigger of disk limit
+    redeploy_app(1.0, 0.0, 1.0, 1.0)
+    assert_document_v1_feed(error_msg[:disk], 12)
+    # Force trigger of enum store limit
+    redeploy_app(1.0, 1.0, 0.0, 1.0)
+    assert_document_v1_feed(error_msg[:enum_store], 11)
+    # Force trigger of multivalue limit
+    redeploy_app(1.0, 1.0, 1.0, 0.0)
+    assert_document_v1_feed(error_msg[:multi_value], 12)
+
+    # Allow feeding again
+    redeploy_app(1.0, 1.0, 1.0, 1.0)
+    vespa.document_api_v1.put(create_document(2))
+    assert_hitcount("query=sddocname:test", 2)
+    assert_hitcount("query=w2", 1)
   end
 
   def create_document(id)
@@ -139,66 +172,34 @@ class FeedBlockTest < FeedBlockBase
     assert_hitcount("query=a2:#{update_value}", 1)
   end
 
-  def run_feed_block_document_v1_api_test(error_msg)
-    @num_parts = 1
-    deploy_app(get_app)
-    start
-
-    vespa.document_api_v1.put(create_document(1))
-    assert_hitcount("query=sddocname:test", 1)
-    assert_hitcount("query=w1", 1)
-
-    # Force trigger of memory limit
-    redeploy_app(0.0, 1.0, 1.0, 1.0)
-    assert_document_v1_feed(error_msg[:memory], 11)
-    # Force trigger of disk limit
-    redeploy_app(1.0, 0.0, 1.0, 1.0)
-    assert_document_v1_feed(error_msg[:disk], 12)
-    # Force trigger of enum store limit
-    redeploy_app(1.0, 1.0, 0.0, 1.0)
-    assert_document_v1_feed(error_msg[:enum_store], 11)
-    # Force trigger of multivalue limit
-    redeploy_app(1.0, 1.0, 1.0, 0.0)
-    assert_document_v1_feed(error_msg[:multi_value], 12)
-
-    # Allow feeding again
-    redeploy_app(1.0, 1.0, 1.0, 1.0)
-    vespa.document_api_v1.put(create_document(2))
-    assert_hitcount("query=sddocname:test", 2)
-    assert_hitcount("query=w2", 1)
-  end
-
-  def feed_and_test_document_v1_api_into_limit()
-    @beforelimit.times do |x|
-      id = 1 + x
-      vespa.document_api_v1.put(create_document(id))
-    end
-    sample_sleep
-    # Currently have @beforelimit documents, below limit
-    vespa.document_api_v1.put(create_document(@beforelimit + 1))
-    sample_sleep
-    # Currently have beforelimit + 1 documents, above limit
-    assert_document_v1_put_blocked(@beforelimit + 2, /multiValueLimitReached/)
-  end
-
-  def feed_and_test_document_v1_api_two_nodes_resumed()
-    # Currently have @beforelimit + 1 documents, but now spread over two nodes
-    vespa.document_api_v1.put(create_document(@beforelimit + 2))
-  end
 
   def test_proton_feed_block_document_v1_api_two_nodes
+    set_owner("geirst")
     set_description("Test resource based feed block (in proton) using document v1 api, attribute resource limit, and node addition for recovery")
+  run_feed_block_document_v1_api_two_nodes_test({ :multi_value => /multiValueLimitReached/ })
+  end
+
+  def test_distributor_feed_block_document_v1_api_two_nodes
+    set_owner("geirst")
+    set_description("Test resource based feed block (in distributor) using document v1 api, attribute resource limit, and node addition for recovery")
+    @block_feed_in_distributor = true
+    run_feed_block_document_v1_api_two_nodes_test({ :multi_value => /todo/ })
+  end
+
+  def run_feed_block_document_v1_api_two_nodes_test(error_msg)
     @num_parts = 2
     @beforelimit = 37
     # Allow feeding, but with very low multivalue limit, allows @beforelimit docs
-    deploy_app(get_app.config(get_proton_config(1.0, 1.0, 1.0, 0.00000001)))
+    deploy_app_with_low_multivalue_limit
     start
+
     puts "Stopping content node 1 to run in degraded mode with only 1 node up"
     get_node(1).stop
     puts "Sleep #{@sleep_delay} seconds to allow content node 1 to stop"
     sleep @sleep_delay
     settle_cluster_state("uimrd")
-    feed_and_test_document_v1_api_into_limit()
+
+    feed_and_test_document_v1_api_into_limit(error_msg)
     puts "Starting content node 1 to run in normal mode again with 2 nodes up"
     get_node(1).start
     puts "Sleep #{@sleep_delay} seconds to allow content node 1 to start"
@@ -214,6 +215,29 @@ class FeedBlockTest < FeedBlockBase
     puts "Node 0 hit count is now #{hit_count}"
     sample_sleep
     feed_and_test_document_v1_api_two_nodes_resumed()
+  end
+
+  def deploy_app_with_low_multivalue_limit
+    proton_cfg, controller_cfg = get_configs(1.0, 1.0, 1.0, 0.00000001)
+    deploy_app(get_app.config(proton_cfg).config(controller_cfg))
+  end
+
+  def feed_and_test_document_v1_api_into_limit(error_msg)
+    @beforelimit.times do |x|
+      id = 1 + x
+      vespa.document_api_v1.put(create_document(id))
+    end
+    sample_sleep
+    # Currently have @beforelimit documents, below limit
+    vespa.document_api_v1.put(create_document(@beforelimit + 1))
+    sample_sleep
+    # Currently have beforelimit + 1 documents, above limit
+    assert_document_v1_put_blocked(@beforelimit + 2, error_msg[:multi_value])
+  end
+
+  def feed_and_test_document_v1_api_two_nodes_resumed()
+    # Currently have @beforelimit + 1 documents, but now spread over two nodes
+    vespa.document_api_v1.put(create_document(@beforelimit + 2))
   end
 
 end
