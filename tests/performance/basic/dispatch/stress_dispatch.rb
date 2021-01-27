@@ -23,10 +23,10 @@ class StressDispatch < PerformanceTest
 
   def limits
     l = {
-       :min_qps_search          => 12500,
-       :max_qps_search          => 14000,
-       :min_latency_search      => 4.8,
-       :max_latency_search      => 5.6
+       :min_qps_search          => 13000,
+       :max_qps_search          => 14200,
+       :min_latency_search      => 4.7,
+       :max_latency_search      => 5.4
     }
     return l
   end
