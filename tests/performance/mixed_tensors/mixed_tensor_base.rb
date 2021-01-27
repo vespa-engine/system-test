@@ -58,7 +58,7 @@ class MixedTensorPerfTestBase < PerformanceTest
       parameter_filler(GRAPH_NAME, graph_name),
       parameter_filler(FEED_TYPE, feed_type),
       parameter_filler(LABEL_TYPE, label_type)
-    ], { :maxpending => 100, :numthreads => 1 })
+    ], { :maxpending => 1000, :numthreads => 5 })
     profiler_report(graph_name)
   end
 
