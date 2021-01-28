@@ -30,7 +30,8 @@ class MixedTensorPerfTestBase < PerformanceTest
 
   def create_app(sd_dir)
     SearchApp.new.sd(selfdir + "#{sd_dir}/test.sd").
-      search_dir(selfdir + "search")
+      search_dir(selfdir + "search").
+      tune_searchnode( { :summary => { :store => { :logstore => { :chunk => { :compression => { :level => 3 } } } } } } )
   end
 
   def compile_data_gen
@@ -58,7 +59,7 @@ class MixedTensorPerfTestBase < PerformanceTest
       parameter_filler(GRAPH_NAME, graph_name),
       parameter_filler(FEED_TYPE, feed_type),
       parameter_filler(LABEL_TYPE, label_type)
-    ], { :maxpending => 1000, :numthreads => 5 })
+    ], { :maxpending => 100, :numthreads => 2, :timeout => 1800.0 })
     profiler_report(graph_name)
   end
 
