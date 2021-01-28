@@ -12,6 +12,7 @@ class TensorEvalPerfTest < PerformanceTest
   FBENCH_RUNTIME = 20
   EVAL_TYPE = "eval_type"
   RANK_PROFILE = "rank_profile"
+  PERF_LABEL = "perf_label"
   WSET_ENTRIES = "wset_entries"
   DOT_PRODUCT = "dot_product"
   MATCH = "match"
@@ -78,8 +79,10 @@ class TensorEvalPerfTest < PerformanceTest
 
     puts "run_fbench_helper(#{eval_type}, #{rank_profile}, #{wset_entries}, #{query_file})"
     query_file = fetch_query_file(query_file)
+    perf_label = get_label(eval_type, rank_profile, wset_entries)
     fillers = [parameter_filler(EVAL_TYPE, eval_type),
                parameter_filler(RANK_PROFILE, rank_profile),
+               parameter_filler(PERF_LABEL, perf_label),
                parameter_filler(WSET_ENTRIES, wset_entries)]
     mangled_rank_profile = rank_profile
     if rank_profile == DENSE_TENSOR_DOT_PRODUCT || rank_profile == DENSE_FLOAT_TENSOR_DOT_PRODUCT
@@ -91,7 +94,7 @@ class TensorEvalPerfTest < PerformanceTest
                 {:runtime => FBENCH_RUNTIME, :clients => 1,
                  :append_str => "&query=wset_entries:#{doc_wset_entries}&ranking=#{mangled_rank_profile}&summary=min_summary&timeout=10"},
                 fillers)
-    profiler_report(get_label(eval_type, rank_profile, wset_entries))
+    profiler_report(perf_label)
   end
 
   def fetch_query_file(query_file)
