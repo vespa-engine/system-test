@@ -61,11 +61,16 @@ class FeedBlockBase < IndexedSearchTest
           add("attribute-multi-value", multivalue))
   end
 
-  def redeploy_app(memory, disk, enumstore, multivalue)
+  def get_configs(memory, disk, enumstore, multivalue)
     proton_cfg = @block_feed_in_distributor ?
       get_proton_config(1.0, 1.0, 1.0, 1.0) : get_proton_config(memory, disk, enumstore, multivalue)
     controller_cfg = @block_feed_in_distributor ?
       get_cluster_controller_config(memory, disk, enumstore, multivalue) : get_cluster_controller_config(1.0, 1.0, 1.0, 1.0)
+    return proton_cfg, controller_cfg
+  end
+
+  def redeploy_app(memory, disk, enumstore, multivalue)
+    proton_cfg, controller_cfg = get_configs(memory, disk, enumstore, multivalue)
 
     redeploy(get_app.config(proton_cfg).config(controller_cfg), @cluster_name)
     sample_sleep(' after reconfig')
