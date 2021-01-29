@@ -51,6 +51,12 @@ class MixedTensorPerfTestBase < PerformanceTest
     feed_and_profile("#{data_gen_params_prefix} updates remove", UPDATES_REMOVE, NUMBER)
   end
 
+  def warmup_feed(data_gen_params)
+    command = "#{@data_gen} #{data_gen_params} puts"
+    run_stream_feeder(command, [ parameter_filler(GRAPH_NAME, "warmup") ],
+                      { :maxpending => 20, :numthreads => 2 })
+  end
+
   def feed_and_profile(data_gen_params, feed_type, label_type)
     command = "#{@data_gen} #{data_gen_params}"
     profiler_start
@@ -59,7 +65,7 @@ class MixedTensorPerfTestBase < PerformanceTest
       parameter_filler(GRAPH_NAME, graph_name),
       parameter_filler(FEED_TYPE, feed_type),
       parameter_filler(LABEL_TYPE, label_type)
-    ], { :maxpending => 100, :numthreads => 2, :timeout => 1800.0 })
+    ], { :maxpending => 0, :numthreads => 2, :timeout => 1800.0 })
     profiler_report(graph_name)
   end
 
