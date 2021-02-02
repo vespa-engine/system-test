@@ -12,15 +12,21 @@ import com.yahoo.yolean.chain.After;
 import com.yahoo.search.result.Hit;
 import com.yahoo.search.result.StructuredData;
 import com.yahoo.prelude.hitfield.JSONString;
-import org.json.JSONArray;
 
+import java.io.IOException;
 import java.util.Iterator;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import static com.yahoo.search.result.ErrorMessage.*;
 
 @After("rawQuery")
 @Before("transformedQuery")
 public class ShoppingUrlSearcher extends Searcher {
+
+    private static final ObjectMapper jsonMapper = new ObjectMapper();
 
     public ShoppingUrlSearcher() {}
 
@@ -63,13 +69,13 @@ public class ShoppingUrlSearcher extends Searcher {
         if (fieldValue instanceof JSONString) {
             JSONString s = (JSONString)fieldValue;
             try {
-                Object p = s.getParsedJSON();
-                if (p instanceof JSONArray) {
-                    JSONArray arr = (JSONArray)p;
-                    byte[] bytes = new byte[arr.length()];
-                    for (int i = 0; i < arr.length(); i++) {
-                        Object val = arr.get(i);
-                        bytes[i] = (byte) Integer.parseInt(val.toString());
+                JsonNode p = jsonMapper.readTree(s.getContent());
+                if (p instanceof ArrayNode) {
+                    ArrayNode arr = (ArrayNode)p;
+                    byte[] bytes = new byte[arr.size()];
+                    for (int i = 0; i < arr.size(); i++) {
+                        JsonNode val = arr.get(i);
+                        bytes[i] = (byte) Integer.parseInt(val.asText());
                     }
                     return bytes;
                 } else {
@@ -77,7 +83,7 @@ public class ShoppingUrlSearcher extends Searcher {
                 }
             } catch (NumberFormatException e) {
                 throw new BadData("bad number: "+e+" in JSON data: "+s.getContent(), e);
-            } catch (org.json.JSONException e) {
+            } catch (IOException e) {
                 throw new BadData("bad JSON: "+e+" data: "+s.getContent(), e);
             }
         } else if (fieldValue instanceof StructuredData) {
