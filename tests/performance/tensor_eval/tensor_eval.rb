@@ -75,7 +75,7 @@ class TensorEvalPerfTest < PerformanceTest
 
   def run_fbench_helper(eval_type, rank_profile, doc_wset_entries, query_file, q_wset_entries = nil)
     wset_entries="#{doc_wset_entries}"
-    wset_entries="#{q_wset_entries}/#{doc_wset_entries}" if q_wset_entries
+    wset_entries="#{q_wset_entries}x#{doc_wset_entries}" if q_wset_entries
 
     puts "run_fbench_helper(#{eval_type}, #{rank_profile}, #{wset_entries}, #{query_file})"
     query_file = fetch_query_file(query_file)
