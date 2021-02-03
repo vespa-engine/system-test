@@ -103,12 +103,9 @@ class Content
     end
 
     def needs_cluster_tuning_tag?
-      @distribution_type != nil ||
-      @search.get_use_local_node != nil ||
-      @search.get_dispatch_policy != nil ||
-      @search.get_min_group_coverage != nil ||
-      @search.get_min_node_ratio_per_group != nil ||
-      @search.get_resource_limits != nil
+      @distribution_type != nil || @search.get_use_local_node != nil ||
+      @search.get_dispatch_policy != nil || @search.get_min_group_coverage != nil ||
+      @search.get_min_node_ratio_per_group != nil
     end
 
     # @search's <redundancy> and <group> takes precedence.
@@ -136,9 +133,6 @@ class Content
           end
           if @search.get_min_node_ratio_per_group != nil
             tuningTag.tag("min-node-ratio-per-group").content(@search.get_min_node_ratio_per_group).close_tag
-          end
-          if @search.get_resource_limits != nil
-            tuningTag.to_xml(@search.get_resource_limits)
           end
           xml = tuningTag.close_tag
         end

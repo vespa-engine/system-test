@@ -21,9 +21,7 @@ class SearchApp < App
                   :disable_flush_tuning => :disable_flush_tuning,
                   :indexing => :indexing,
                   :persistence_threads => :persistence_threads,
-                  :cpu_socket_affinity => :cpu_socket_affinity,
-                  :resource_limits => :resource_limits,
-                  :proton_resource_limits => :proton_resource_limits
+                  :cpu_socket_affinity => :cpu_socket_affinity
 
   def initialize
     super
