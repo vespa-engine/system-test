@@ -202,7 +202,7 @@ class DocumentV1Test < SearchTest
     # Visit all documents and refeed them
     contToken = ""
     for q in 0..numDocuments
-      response = http.post("/document/v1/fruit/banana/docid/?destination=default" + contToken, "", httpheaders)
+      response = http.post("/document/v1/fruit/banana/docid/?route=default" + contToken, "", httpheaders)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        if (jsonResponse.has_key?("continuation"))
@@ -236,7 +236,7 @@ class DocumentV1Test < SearchTest
     # Visit all documents and delete them
     contToken = ""
     for q in 0..numDocuments
-       response = http.delete("/document/v1/fruit/banana/docid/?selection=true&destination=content" + contToken)
+       response = http.delete("/document/v1/fruit/banana/docid/?selection=true&route=content" + contToken)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        if (jsonResponse.has_key?("continuation"))
