@@ -198,7 +198,6 @@ class DocumentV1Test < SearchTest
           break
        end
     end
-    assert_equal(numDocuments, found)
 
     # Visit all documents and refeed them
     contToken = ""
@@ -212,7 +211,6 @@ class DocumentV1Test < SearchTest
           break
        end
     end
-    assert_equal(numDocuments, found)
 
     # Visit all documents, verify colour and the total number of documents
     found = 0
@@ -250,7 +248,6 @@ class DocumentV1Test < SearchTest
           break
        end
     end
-    assert_equal(numDocuments, found)
 
     # Visit all documents and verify there are none
     found = 0
