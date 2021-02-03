@@ -46,16 +46,16 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
     [
       get_latency_graphs_for_rank_profile(FEATURE_DOT_PRODUCT),
       get_latency_graphs_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50/50",   5.0,   8.0),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50/10",   2.0,   4.0),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "10/50",   5.0,   8.0),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50/250", 19.0,  23.0),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "250/50",  4.0,   7.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50/50",   4.0,  50.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50/10",   2.0,  30.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "10/50",   2.0,  30.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50/250",  4.0,  50.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "250/50",  4.0,  50.0),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50x50",   5.0,   8.0),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50x10",   2.0,   4.0),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "10x50",   5.0,   8.0),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50x250", 19.0,  23.0),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "250x50",  4.0,   7.0),
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50x50",   4.0,  50.0),
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50x10",   2.0,  30.0),
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "10x50",   2.0,  30.0),
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50x250",  4.0,  50.0),
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "250x50",  4.0,  50.0),
       get_latency_graph_for_all(PERF_LABEL)
     ]
   end
