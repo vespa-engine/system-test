@@ -30,6 +30,8 @@ class SearchCluster
   chained_setter :min_group_coverage
   chained_setter :min_node_ratio_per_group
   chained_setter :persistence_threads
+  chained_setter :resource_limits
+  chained_setter :proton_resource_limits
   chained_forward :config, :config => :add
   chained_forward :docprocs, :docproc => :push
   chained_forward :node_groups, :group => :push
@@ -69,6 +71,8 @@ class SearchCluster
     @hwinfo_disk_writespeed = 150.0
     @hwinfo_disk_shared = true
     @persistence_threads = nil
+    @resource_limits = nil
+    @proton_resource_limits = nil
   end
 
   def sd(file_name, params = {})
@@ -104,6 +108,10 @@ class SearchCluster
                        default_nodes(@num_parts, 0))
     end
     node_groups
+  end
+
+  def get_resource_limits
+    @resource_limits
   end
 
   def doc_type(name, selection=nil)
@@ -182,7 +190,8 @@ class SearchCluster
           tag("visibility-delay").content(@visibility_delay).close_tag.
           tag("searchable-copies").content(var_if(search_type_tag == "index", @ready_copies)).close_tag.
           tag("flush-on-shutdown").content(@flush_on_shutdown).close_tag.
-          call {|indent| tuning_to_xml(indent)}.to_s
+          call {|indent| tuning_to_xml(indent)}.
+          call {|indent| proton_resource_limits_to_xml(indent)}.to_s
   end
 
   def tune_searchnode(map)
@@ -194,6 +203,10 @@ class SearchCluster
   def tuning_to_xml(indent)
     XmlHelper.new(indent).
       tag("tuning").content(tuning_sub_tag_to_xml(indent + "  ", @tuning)).close_tag.to_s
+  end
+
+  def proton_resource_limits_to_xml(indent)
+    @proton_resource_limits.to_xml(indent) if @proton_resource_limits != nil
   end
 
   def tuning_sub_tag_to_xml(indent, sub_tag)

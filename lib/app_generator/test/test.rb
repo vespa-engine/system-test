@@ -817,4 +817,34 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
+  def test_that_resource_limits_can_be_specified
+    actual = SearchApp.new.
+      cluster(SearchCluster.new("foo").
+              resource_limits(ResourceLimits.new.disk(0.3).memory(0.4)).
+              proton_resource_limits(ResourceLimits.new.disk(0.5).memory(0.6))).
+      services_xml
+
+    expected_tuning = '
+      <content id="foo" version="1.0">
+        <tuning>
+          <resource-limits>
+            <disk>0.3</disk>
+            <memory>0.4</memory>
+          </resource-limits>
+        </tuning>'
+    assert_substring_ignore_whitespace(actual, expected_tuning)
+
+    expected_engine = '
+        <engine>
+          <proton>
+            <searchable-copies>1</searchable-copies>
+            <resource-limits>
+              <disk>0.5</disk>
+              <memory>0.6</memory>
+            </resource-limits>
+          </proton>
+        </engine>'
+    assert_substring_ignore_whitespace(actual, expected_engine)
+  end
+
 end

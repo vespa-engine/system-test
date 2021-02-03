@@ -32,6 +32,7 @@ require 'app_generator/persistence_threads'
 require 'app_generator/validation_overrides'
 require 'app_generator/http'
 require 'app_generator/generic_service'
+require 'app_generator/resource_limits'
 
 # App generator.
 

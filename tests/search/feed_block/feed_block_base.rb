@@ -37,10 +37,8 @@ class FeedBlockBase < IndexedSearchTest
       sd(selfdir + "test.sd").num_parts(@num_parts).redundancy(@num_parts).ready_copies(1).enable_http_gateway
   end
 
-  def get_proton_config(memory, disk, enumstore, multivalue)
+  def get_proton_config(enumstore, multivalue)
     ConfigOverride.new("vespa.config.search.core.proton").
-      add("writefilter", ConfigValue.new("memorylimit", memory)).
-      add("writefilter", ConfigValue.new("disklimit", disk)).
       add("writefilter",
           ConfigValue.new("attribute",
                           ConfigValue.new("enumstorelimit", enumstore))).
@@ -51,28 +49,41 @@ class FeedBlockBase < IndexedSearchTest
       add("writefilter", ConfigValue.new("sampleinterval", 2.0))
   end
 
-  def get_cluster_controller_config(memory, disk, enumstore, multivalue)
+  def get_cluster_controller_config(enumstore, multivalue)
     ConfigOverride.new("vespa.config.content.fleetcontroller").
       add("enable_cluster_feed_block", true).
       add(MapConfig.new("cluster_feed_block_limit").
-          add("memory", memory).
-          add("disk", disk).
           add("attribute-enum-store", enumstore).
           add("attribute-multi-value", multivalue))
   end
 
-  def get_configs(memory, disk, enumstore, multivalue)
-    proton_cfg = @block_feed_in_distributor ?
-      get_proton_config(1.0, 1.0, 1.0, 1.0) : get_proton_config(memory, disk, enumstore, multivalue)
-    controller_cfg = @block_feed_in_distributor ?
-      get_cluster_controller_config(memory, disk, enumstore, multivalue) : get_cluster_controller_config(1.0, 1.0, 1.0, 1.0)
-    return proton_cfg, controller_cfg
+  def set_proton_limits(app, memory, disk, enumstore, multivalue)
+    cfg = get_proton_config(enumstore, multivalue)
+    app.config(cfg)
+    app.proton_resource_limits(ResourceLimits.new.memory(memory).disk(disk))
+  end
+
+  def set_cluster_controller_limits(app, memory, disk, enumstore, multivalue)
+    cfg = get_cluster_controller_config(enumstore, multivalue)
+    app.config(cfg)
+    app.resource_limits(ResourceLimits.new.memory(memory).disk(disk))
+  end
+
+  def set_resource_limits(app, memory, disk, enumstore, multivalue)
+    if @block_feed_in_distributor
+      set_proton_limits(app, 1.0, 1.0, 1.0, 1.0)
+      set_cluster_controller_limits(app, memory, disk, enumstore, multivalue)
+    else
+      set_proton_limits(app, memory, disk, enumstore, multivalue)
+      set_cluster_controller_limits(app, 1.0, 1.0, 1.0, 1.0)
+    end
   end
 
   def redeploy_app(memory, disk, enumstore, multivalue)
-    proton_cfg, controller_cfg = get_configs(memory, disk, enumstore, multivalue)
+    app = get_app
+    set_resource_limits(app, memory, disk, enumstore, multivalue)
 
-    redeploy(get_app.config(proton_cfg).config(controller_cfg), @cluster_name)
+    redeploy(app, @cluster_name)
     sample_sleep(' after reconfig')
   end
 
