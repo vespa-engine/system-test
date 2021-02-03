@@ -24,7 +24,7 @@ class DocumentV1Throughput < PerformanceTest
         :fbench => { :clients => 4, :use_post => true },
         :data => "{ \"fields\": { \"text\": \"GNU's not UNIX\" } }"
       } => {
-        'qps' => { :y_min =>  2550, :y_max =>  3100 },
+        'qps' => { :y_min =>  2550, :y_max =>  3300 },
         '95p' => { :y_min =>   1.4, :y_max =>   1.7 }
       },
       {
@@ -40,7 +40,7 @@ class DocumentV1Throughput < PerformanceTest
         :data => "{ \"fields\": { \"text\": \"GNU#{"'s not UNIX" * (1 << 10) }\" } }"
       } => {
         'qps' => { :y_min =>  6200, :y_max =>  6700 },
-        '95p' => { :y_min =>    22, :y_max =>    27 }
+        '95p' => { :y_min =>    23, :y_max =>    28 }
       },
       {
         :legend =>  'GET large data 128 clients',
