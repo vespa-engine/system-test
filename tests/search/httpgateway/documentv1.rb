@@ -32,9 +32,9 @@ class DocumentV1Test < SearchTest
 
   def test_realtimefeed
     deploy_application
-    # has color yellow
+    # Has color yellow
     feedData = File.read(selfdir+"feedV1.json")
-    # changes to color red
+    # Changes to color red
     feedDataUpdate = File.read(selfdir+"feedV1update.json")
     feedDataBroken = File.read(selfdir+"feedV1broken.json")
     start(240)
@@ -121,14 +121,14 @@ class DocumentV1Test < SearchTest
     assert_equal("412", response.code)
     assert_match /TEST_AND_SET_CONDITION_FAILED/, response.body
     
-    # delete again, same document, correct condition
+    # Delete again, same document, correct condition
     response = http.delete("/document/v1/fruit/banana/docid/doc1?condition=banana.colour=='red'", httpheaders)
     assert_equal("200", response.code)
     assert_json_string_equal(
       "{\"id\":\"id:fruit:banana::doc1\",\"pathId\":\"/document/v1/fruit/banana/docid/doc1\"}", 
       response.body)
 
-    # verify document is gone
+    # Verify document is gone
     response = http.get("/document/v1/fruit/banana/docid/")
     assert_equal("200", response.code)
     assert_json_string_equal(
@@ -150,7 +150,7 @@ class DocumentV1Test < SearchTest
       response.body)
     http.delete("/document/v1/fruit/banana/docid/vg.no%2Flatest%2Fnews%2F%21", httpheaders)
 
-    # send document with wrong field
+    # Send document with wrong field
     response = http.post("/document/v1/fruit/banana/docid/doc1", feedDataBroken, httpheaders)
     assert_equal("400", response.code)
     assert_match /No field 'habla babla' in the structure of type 'banana'/, response.body
@@ -177,7 +177,7 @@ class DocumentV1Test < SearchTest
        "\"fields\":{\"colour\":\"red\"}}",
        response.body)
 
-    # feed some documents
+    # Feed some documents
     i = 0
     while i < numDocuments  do
         # Feed ok test
@@ -186,12 +186,76 @@ class DocumentV1Test < SearchTest
         i +=1
     end
 
-    # visit all documents and check the total number of documents
+    # Visit all documents and update banana colour
+    contToken = ""
+    for q in 0..numDocuments
+      response = http.put("/document/v1/fruit/banana/docid/?selection=true" + contToken, feedDataUpdate, httpheaders)
+       assert_equal("200", response.code)
+       jsonResponse = JSON.parse(response.body)
+       if (jsonResponse.has_key?("continuation"))
+          contToken = "&continuation=" + jsonResponse["continuation"] 
+       else
+          break
+       end
+    end
+    assert_equal(numDocuments, found)
+
+    # Visit all documents and refeed them
+    contToken = ""
+    for q in 0..numDocuments
+      response = http.post("/document/v1/fruit/banana/docid/?destination=indexing" + contToken)
+       assert_equal("200", response.code)
+       jsonResponse = JSON.parse(response.body)
+       if (jsonResponse.has_key?("continuation"))
+          contToken = "&continuation=" + jsonResponse["continuation"] 
+       else
+          break
+       end
+    end
+    assert_equal(numDocuments, found)
+
+    # Visit all documents, verify colour and the total number of documents
     found = 0
     contToken = ""
     # Avoid infinite loop in case of cycles, numDocuments is absolute max
     for q in 0..numDocuments
        # Visit zero result test
+       response = http.get("/document/v1/fruit/banana/docid/" + contToken)
+       assert_equal("200", response.code)
+       jsonResponse = JSON.parse(response.body)
+       jsonResponse["documents"].each do |document|
+          found += 1
+          assert_equal("red", document["fields"]["colour"])
+       end
+       if (jsonResponse.has_key?("continuation"))
+          contToken = "?continuation=" + jsonResponse["continuation"] 
+       else
+          break
+       end
+    end
+    assert_equal(numDocuments, found)
+
+    # Visit all documents and delete them
+    contToken = ""
+    for q in 0..numDocuments
+       response = http.delete("/document/v1/fruit/banana/docid/?selection=true&destination=search" + contToken)
+       assert_equal("200", response.code)
+       jsonResponse = JSON.parse(response.body)
+       jsonResponse["documents"].each do 
+          found += 1
+       end
+       if (jsonResponse.has_key?("continuation"))
+          contToken = "&continuation=" + jsonResponse["continuation"] 
+       else
+          break
+       end
+    end
+    assert_equal(numDocuments, found)
+
+    # Visit all documents and verify there are none
+    found = 0
+    contToken = ""
+    for q in 0..numDocuments
        response = http.get("/document/v1/fruit/banana/docid/" + contToken)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
@@ -204,7 +268,7 @@ class DocumentV1Test < SearchTest
           break
        end
     end
-    assert_equal(numDocuments, found)
+    assert_equal(0, found)
 
     assert(verify_with_retries(http, {"PUT" => 3504, "UPDATE" => 3, "REMOVE" => 3502}, {"PUT" => 4, "REMOVE" => 1}))
   end
