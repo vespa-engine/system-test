@@ -238,7 +238,7 @@ class DocumentV1Test < SearchTest
     # Visit all documents and delete them
     contToken = ""
     for q in 0..numDocuments
-       response = http.delete("/document/v1/fruit/banana/docid/?selection=true&destination=search" + contToken)
+       response = http.delete("/document/v1/fruit/banana/docid/?selection=true&destination=content" + contToken)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        jsonResponse["documents"].each do 
