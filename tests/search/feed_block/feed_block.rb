@@ -17,10 +17,14 @@ class FeedBlockTest < FeedBlockBase
     set_owner("geirst")
     set_description("Test resource based feed block (in distributor) using high performance http client")
     @block_feed_in_distributor = true
-    run_feed_block_http_client_test({ :memory => /memory on node/,
-                                      :disk => /disk on node/,
-                                      :enum_store => /attribute-enum-store on node/,
-                                      :multi_value => /attribute-multi-value on node/ })
+    run_feed_block_http_client_test(expected_distributor_error_messages)
+  end
+
+  def expected_distributor_error_messages
+    { :memory => /memory on node/,
+      :disk => /disk on node/,
+      :enum_store => /attribute-enum-store:test\.ready\.a1 on node/,
+      :multi_value => /attribute-multi-value:test\.ready\.a1 on node/ }
   end
 
   def run_feed_block_http_client_test(error_msg)
@@ -97,10 +101,7 @@ class FeedBlockTest < FeedBlockBase
     set_owner("geirst")
     set_description("Test resource based feed block (in distributor) using document v1 api")
     @block_feed_in_distributor = true
-    run_feed_block_document_v1_api_test({ :memory => /memory on node/,
-                                          :disk => /disk on node/,
-                                          :enum_store => /attribute-enum-store on node/,
-                                          :multi_value => /attribute-multi-value on node/ })
+    run_feed_block_document_v1_api_test(expected_distributor_error_messages)
   end
 
   def run_feed_block_document_v1_api_test(error_msg)
@@ -183,7 +184,7 @@ class FeedBlockTest < FeedBlockBase
     set_owner("geirst")
     set_description("Test resource based feed block (in distributor) using document v1 api, attribute resource limit, and node addition for recovery")
     @block_feed_in_distributor = true
-    run_feed_block_document_v1_api_two_nodes_test({ :multi_value => /attribute-multi-value on node/ })
+    run_feed_block_document_v1_api_two_nodes_test({ :multi_value => /attribute-multi-value:test\.ready\.a1 on node/ })
   end
 
   def run_feed_block_document_v1_api_two_nodes_test(error_msg)
