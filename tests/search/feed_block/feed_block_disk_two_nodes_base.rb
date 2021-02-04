@@ -72,8 +72,8 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
                           ConfigValue.new("shared", (shared_disk ? "true" : "false"))))
   end
 
-  def get_app(shared_disk)
-    SearchApp.new.cluster(get_sc).
+  def get_app(search_cluster, shared_disk)
+    SearchApp.new.cluster(search_cluster).
       num_hosts(@num_hosts).
       container(Container.new.
                 search(Searching.new).
@@ -198,8 +198,9 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
 
   def redeploy_with_reduced_disk_limit(disklimit, shared_disk)
     puts "Redeploying with reduced disk limit"
-    app = get_app(shared_disk)
-    set_proton_limits(app.search, 1.0, disklimit, 1.0, 1.0)
+    search_cluster = get_sc
+    app = get_app(search_cluster, shared_disk)
+    set_proton_limits(search_cluster, 1.0, disklimit, 1.0, 1.0)
     deploy_app(app)
     sleep_with_reason(@sleep_delay, " to allow new config to propagate")
     settle_cluster_state("uimrd")
@@ -241,7 +242,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
   def run_feed_block_document_v1_api_two_nodes_disklimit_test(shared_disk)
     @num_parts = 2
     setup_strings
-    deploy_app(get_app(shared_disk))
+    deploy_app(get_app(get_sc, shared_disk))
     start
     disklimit = calculate_disklimit
     redeploy_with_reduced_disk_limit(disklimit.disklimit, shared_disk)
