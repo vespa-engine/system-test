@@ -189,7 +189,7 @@ class DocumentV1Test < SearchTest
     # Visit all documents and update banana colour
     contToken = ""
     for q in 0..numDocuments
-      response = http.put("/document/v1/fruit/banana/docid/?selection=true" + contToken, feedDataUpdate, httpheaders)
+      response = http.put("/document/v1/fruit/banana/docid/?selection=true&cluster=content" + contToken, feedDataUpdate, httpheaders)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        if (jsonResponse.has_key?("continuation"))
@@ -202,7 +202,7 @@ class DocumentV1Test < SearchTest
     # Visit all documents and refeed them
     contToken = ""
     for q in 0..numDocuments
-      response = http.post("/document/v1/fruit/banana/docid/?route=default" + contToken, "", httpheaders)
+      response = http.post("/document/v1/fruit/banana/docid/?destinationCluster=content&cluster=content&selection=true" + contToken, "", httpheaders)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        if (jsonResponse.has_key?("continuation"))
@@ -235,16 +235,21 @@ class DocumentV1Test < SearchTest
 
     # Visit all documents and delete them
     contToken = ""
+    found = 0
     for q in 0..numDocuments
-       response = http.delete("/document/v1/fruit/banana/docid/?selection=true&route=content" + contToken)
+       response = http.delete("/document/v1/fruit/banana/docid/?selection=true&cluster=content" + contToken)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
+       if (jsonResponse.has_key?("documentCount")
+           found += jsonResponse["documentCount"].to_i
+       end
        if (jsonResponse.has_key?("continuation"))
           contToken = "&continuation=" + jsonResponse["continuation"] 
        else
           break
        end
     end
+    assert_equal(numDocuments, found)
 
     # Visit all documents and verify there are none
     found = 0
