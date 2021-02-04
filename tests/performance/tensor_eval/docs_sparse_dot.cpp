@@ -59,6 +59,7 @@ std::ostream & gen_tensor(std::ostream & os, const V & wset) {
 std::ostream & put(std::ostream & os, uint32_t doc, const V & values) {
     os << "{ \"put\":\"id:sparsedot:sparsedot::" << doc << "\",\"fields\": {\n";
     os << "\"wset\":{"; gen_wset(os, values) << "},\n";
+    os << "\"stringwset\":{"; gen_wset(os, values) << "},\n";
     os << "\"sparse_vector_x\":{"; gen_tensor(os, values) << "},";
     os << "\"wset_entries\":" << values.size();
     os << "}}\n";
