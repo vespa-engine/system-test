@@ -219,8 +219,9 @@ class FeedBlockTest < FeedBlockBase
   end
 
   def deploy_app_with_low_multivalue_limit
-    proton_cfg, controller_cfg = get_configs(1.0, 1.0, 1.0, 0.00000001)
-    deploy_app(get_app.config(proton_cfg).config(controller_cfg))
+    app = get_app
+    set_resource_limits(app, 1.0, 1.0, 1.0, 0.00000001)
+    deploy_app(app)
   end
 
   def feed_and_test_document_v1_api_into_limit(error_msg)
