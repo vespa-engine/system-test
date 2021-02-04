@@ -57,6 +57,11 @@ class FeedBlockBase < IndexedSearchTest
           add("attribute-multi-value", multivalue))
   end
 
+  def get_filestor_config(reporter_noise_level)
+    ConfigOverride.new("vespa.config.content.stor-filestor").
+      add("resource_usage_reporter_noise_level", reporter_noise_level)
+  end
+
   def set_proton_limits(app, memory, disk, enumstore, multivalue)
     cfg = get_proton_config(enumstore, multivalue)
     app.config(cfg)
@@ -69,13 +74,16 @@ class FeedBlockBase < IndexedSearchTest
     app.resource_limits(ResourceLimits.new.memory(memory).disk(disk))
   end
 
-  def set_resource_limits(app, memory, disk, enumstore, multivalue)
+  def set_resource_limits(app, memory, disk, enumstore, multivalue, reporter_noise_level = nil)
     if @block_feed_in_distributor
       set_proton_limits(app, 1.0, 1.0, 1.0, 1.0)
       set_cluster_controller_limits(app, memory, disk, enumstore, multivalue)
     else
       set_proton_limits(app, memory, disk, enumstore, multivalue)
       set_cluster_controller_limits(app, 1.0, 1.0, 1.0, 1.0)
+    end
+    if reporter_noise_level != nil
+      app.config(get_filestor_config(reporter_noise_level))
     end
   end
 

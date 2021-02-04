@@ -220,7 +220,9 @@ class FeedBlockTest < FeedBlockBase
 
   def deploy_app_with_low_multivalue_limit
     app = get_app
-    set_resource_limits(app, 1.0, 1.0, 1.0, 0.00000001)
+    # The resource usage reporter noise level is set to 0.0 to ensure all samples from proton are sent to the cluster controller.
+    # This is needed as we have very small deltas in attribute multi-value sampling.
+    set_resource_limits(app, 1.0, 1.0, 1.0, 0.00000001, 0.0)
     deploy_app(app)
   end
 
