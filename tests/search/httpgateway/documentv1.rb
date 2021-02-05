@@ -240,7 +240,7 @@ class DocumentV1Test < SearchTest
        response = http.delete("/document/v1/fruit/banana/docid/?selection=true&cluster=content" + contToken)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
-       if (jsonResponse.has_key?("documentCount")
+       if (jsonResponse.has_key?("documentCount"))
            found += jsonResponse["documentCount"].to_i
        end
        if (jsonResponse.has_key?("continuation"))
