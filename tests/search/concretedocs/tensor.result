@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1" coverage-docs="5" coverage-nodes="3" coverage-full="true" coverage="100" results-full="3" results="3">
+  <hit relevancy="0.38186238359951247" source="content">
+    <field name="relevancy">0.38186238359951247</field>
+    <field name="sddocname">music</field>
+    <field name="title">hastensor</field>
+    <field name="exactMatchVariant">tensor&lt;float&gt;(variant{}):{10000:9.0,11000:8.0}</field>
+    <field name="documentid">id:music:music::1</field>
+  </hit>
+</result>

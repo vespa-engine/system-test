@@ -1,0 +1,18 @@
+schema music {
+
+  document music {
+    
+    field title type string {
+      indexing: summary | index
+    }
+
+    field exactMatchVariant type tensor<float>(variant{}) {
+      indexing: attribute | summary
+    }
+  }
+  
+  fieldset default {
+    fields: title
+  }
+
+}

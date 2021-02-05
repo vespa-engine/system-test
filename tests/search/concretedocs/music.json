@@ -1,0 +1,14 @@
+[
+  {
+    "put": "id:music:music::1",
+    "fields": {
+      "title": "hastensor",
+      "exactMatchVariant": {
+        "cells": [
+          { "address": { "variant": "10000" }, "value": 9 },
+          { "address": { "variant": "11000" }, "value": 8 }
+        ]
+      }
+    }
+  }
+]

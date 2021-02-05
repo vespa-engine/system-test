@@ -6,6 +6,7 @@
 
   <container id="default" version="1.0">
     <document type="vehicle" bundle="concretedocs" class="com.yahoo.concretedocs.Vehicle" />
+    <document type="music" bundle="concretedocs" class="com.yahoo.concretedocs.Music" />
     <document type="ship" bundle="concretedocs" class="com.yahoo.concretedocs.Vehicle" />
     <document type="disease" bundle="concretedocs2" class="com.yahoo.concretedocs2.Disease" />
     <search />
@@ -31,6 +32,7 @@
     <redundancy>1</redundancy>
     <documents>
       <document type="vehicle" mode="index"/>
+      <document type="music" mode="index"/>
       <document type="disease" mode="index"/>
     </documents>
     <nodes>

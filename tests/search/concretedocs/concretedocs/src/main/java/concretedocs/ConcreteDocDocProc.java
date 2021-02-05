@@ -6,6 +6,7 @@ import com.yahoo.document.annotation.SpanTree;
 import com.yahoo.docproc.*;
 import com.yahoo.concretedocs.Vehicle;
 import com.yahoo.concretedocs.Ship;
+import com.yahoo.concretedocs.Music;
 import com.yahoo.concretedocs.annotation.Place;
 import com.yahoo.concretedocs2.Disease;
 
@@ -24,6 +25,7 @@ public class ConcreteDocDocProc extends DocumentProcessor {
         Document document = ((DocumentPut)processing.getDocumentOperations().get(0)).getDocument();
         if (document instanceof Vehicle) return processVehicle((Vehicle)document);
         if (document instanceof Disease) return processDisease((Disease)document);
+        if (document instanceof Music) return Progress.DONE;
         return Progress.FAILED;
     }
 
