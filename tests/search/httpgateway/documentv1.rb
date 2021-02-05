@@ -62,7 +62,7 @@ class DocumentV1Test < SearchTest
     response = http.get("/document/v1/fruit/banana/docid/")
     assert_equal("200", response.code)
     assert_json_string_equal(
-      "{\"documents\":[], \"pathId\":\"/document/v1/fruit/banana/docid/\"}",
+      "{\"documents\":[], \"documentCount\":0, \"pathId\":\"/document/v1/fruit/banana/docid/\"}",
       response.body)
 
     # Feed with conditional feed, but document is non existing.
@@ -92,7 +92,18 @@ class DocumentV1Test < SearchTest
     assert_json_string_equal(
       "{\"documents\": [{\"id\":\"id:fruit:banana::doc1\",\"fields\":{\"colour\":\"yellow\"}}]," +
       "\"pathId\":\"/document/v1/fruit/banana/docid/\"," +
+      "\"documentCount\":1," +
       "\"continuation\":\"AAAACAAAAAAAAADDAAAAAAAAAMIAAAAAAAABAAAAAAEgAAAAAAAAQwAAAAAAAAAA\"}",
+      response.body)
+
+    # Visit without any matching documents
+    response = http.get("/document/v1/fruit/banana/docid/?selection=false")
+    assert_equal("200", response.code)
+    # Visit exhausts the entire bucket space looking for a document, so no continuation this time
+    assert_json_string_equal(
+      "{\"documents\": []," +
+      "\"pathId\":\"/document/v1/fruit/banana/docid/\"," +
+      "\"documentCount\":0}",
       response.body)
 
     # Conditional feed, with true condition
@@ -132,7 +143,7 @@ class DocumentV1Test < SearchTest
     response = http.get("/document/v1/fruit/banana/docid/")
     assert_equal("200", response.code)
     assert_json_string_equal(
-      "{\"documents\": [],\"pathId\":\"/document/v1/fruit/banana/docid/\"}", 
+      "{\"documents\": [], \"documentCount\":0, \"pathId\":\"/document/v1/fruit/banana/docid/\"}", 
       response.body)
 
     # Feed non-URL-encoded ID — horrible but customers do this today :'(
@@ -189,7 +200,7 @@ class DocumentV1Test < SearchTest
     # Visit all documents and update banana colour
     contToken = ""
     for q in 0..numDocuments
-      response = http.put("/document/v1/fruit/banana/docid/?selection=true" + contToken, feedDataUpdate, httpheaders)
+      response = http.put("/document/v1/fruit/banana/docid/?selection=true&cluster=content" + contToken, feedDataUpdate, httpheaders)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        if (jsonResponse.has_key?("continuation"))
@@ -202,7 +213,7 @@ class DocumentV1Test < SearchTest
     # Visit all documents and refeed them
     contToken = ""
     for q in 0..numDocuments
-      response = http.post("/document/v1/fruit/banana/docid/?route=default" + contToken, "", httpheaders)
+      response = http.post("/document/v1/fruit/banana/docid/?destinationCluster=content&cluster=content&selection=true" + contToken, "", httpheaders)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        if (jsonResponse.has_key?("continuation"))
@@ -235,16 +246,21 @@ class DocumentV1Test < SearchTest
 
     # Visit all documents and delete them
     contToken = ""
+    found = 0
     for q in 0..numDocuments
-       response = http.delete("/document/v1/fruit/banana/docid/?selection=true&route=content" + contToken)
+       response = http.delete("/document/v1/fruit/banana/docid/?selection=true&cluster=content" + contToken)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
+       if (jsonResponse.has_key?("documentCount"))
+           found += jsonResponse["documentCount"].to_i
+       end
        if (jsonResponse.has_key?("continuation"))
           contToken = "&continuation=" + jsonResponse["continuation"] 
        else
           break
        end
     end
+    assert_equal(numDocuments, found)
 
     # Visit all documents and verify there are none
     found = 0
