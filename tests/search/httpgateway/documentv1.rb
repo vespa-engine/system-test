@@ -62,7 +62,7 @@ class DocumentV1Test < SearchTest
     response = http.get("/document/v1/fruit/banana/docid/")
     assert_equal("200", response.code)
     assert_json_string_equal(
-      "{\"documents\":[], \"pathId\":\"/document/v1/fruit/banana/docid/\"}",
+      "{\"documents\":[], \"documentCount\":0, \"pathId\":\"/document/v1/fruit/banana/docid/\"}",
       response.body)
 
     # Feed with conditional feed, but document is non existing.
@@ -92,6 +92,7 @@ class DocumentV1Test < SearchTest
     assert_json_string_equal(
       "{\"documents\": [{\"id\":\"id:fruit:banana::doc1\",\"fields\":{\"colour\":\"yellow\"}}]," +
       "\"pathId\":\"/document/v1/fruit/banana/docid/\"," +
+      "\"documentCount\":123," +
       "\"continuation\":\"AAAACAAAAAAAAADDAAAAAAAAAMIAAAAAAAABAAAAAAEgAAAAAAAAQwAAAAAAAAAA\"}",
       response.body)
 
