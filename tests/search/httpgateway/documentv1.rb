@@ -143,7 +143,7 @@ class DocumentV1Test < SearchTest
     response = http.get("/document/v1/fruit/banana/docid/")
     assert_equal("200", response.code)
     assert_json_string_equal(
-      "{\"documents\": [],\"pathId\":\"/document/v1/fruit/banana/docid/\"}", 
+      "{\"documents\": [], \"documentCount\":0, \"pathId\":\"/document/v1/fruit/banana/docid/\"}", 
       response.body)
 
     # Feed non-URL-encoded ID — horrible but customers do this today :'(
