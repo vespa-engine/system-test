@@ -103,7 +103,7 @@ class DocumentV1Test < SearchTest
     assert_json_string_equal(
       "{\"documents\": []," +
       "\"pathId\":\"/document/v1/fruit/banana/docid/\"," +
-      "\"documentCount\":0",
+      "\"documentCount\":0}",
       response.body)
 
     # Conditional feed, with true condition
