@@ -13,12 +13,14 @@ class DocumentApiVdsPart1 < DocumentApiV1Base
     response = api_http_get('/document/v1/storage_test/music/docid/')
     # Visit completes before covering the entire global bucket space, hence the continuation token.
     assert_json_string_equal(
-      '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}}],"pathId":"/document/v1/storage_test/music/docid/",' +
+      '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}}],"documentCount":1,' +
+      '"pathId":"/document/v1/storage_test/music/docid/",' +
       '"continuation":"AAAACAAAAAAAAACCAAAAAAAAAIEAAAAAAAABAAAAAAEgAAAAAAAAgQAAAAAAAAAA"}',
       response)
     response = api_http_get('/document/v1/storage_test/music/number/1/')
     assert_json_string_equal(
-      '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}}],"pathId":"/document/v1/storage_test/music/number/1/"}',
+      '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}}],"documentCount":0,' +
+      '"pathId":"/document/v1/storage_test/music/number/1/"}',
       response)
   end
 
@@ -28,7 +30,7 @@ class DocumentApiVdsPart1 < DocumentApiV1Base
 
     response = api_http_get('/document/v1/storage_test/music/docid/?wantedDocumentCount=2')
     assert_json_string_equal(
-      '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}}],' +
+      '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}}],"documentCount":1,' +
       '"pathId":"/document/v1/storage_test/music/docid/"}',
       response)
   end
@@ -45,7 +47,7 @@ class DocumentApiVdsPart1 < DocumentApiV1Base
     response = api_http_get('/document/v1/storage_test/music/docid/?wantedDocumentCount=2')
     assert_json_string_equal(
       '{"documents":[{"id":"id:storage_test:music:n=4:1", "fields":{"title":"Ibiza hitz 4 pensionerz"}},' +
-      '{"id":"id:storage_test:music:n=2:1", "fields":{"title":"Tango for two and a half"}}],' +
+      '{"id":"id:storage_test:music:n=2:1", "fields":{"title":"Tango for two and a half"}}],"documentCount":2,' +
       '"pathId":"/document/v1/storage_test/music/docid/",' +
        '"continuation":"AAAACAAAAAAAAABCAAAAAAAAAEEAAAAAAAABAAAAAAEgAAAAAAAAggAAAAAAAAAA"}',
       response)
@@ -55,7 +57,7 @@ class DocumentApiVdsPart1 < DocumentApiV1Base
                                        '&continuation=AAAACAAAAAAAAABCAAAAAAAAAEEAAAAAAAABAAAAAAEgAAAAAAAAggAAAAAAAAAA')
     assert_json_string_equal(
       '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}},' +
-      '{"id":"id:storage_test:music:n=3:1", "fields":{"title":"Beethoven, dubstep edition"}}],' +
+      '{"id":"id:storage_test:music:n=3:1", "fields":{"title":"Beethoven, dubstep edition"}}],"documentCount":2,' +
       '"pathId":"/document/v1/storage_test/music/docid/",' +
        '"continuation":"AAAACAAAAAAAAADCAAAAAAAAAMEAAAAAAAABAAAAAAEgAAAAAAAAgwAAAAAAAAAA"}',
       response)
@@ -64,7 +66,7 @@ class DocumentApiVdsPart1 < DocumentApiV1Base
     response = api_http_get('/document/v1/storage_test/music/docid/?wantedDocumentCount=2' +
                                        '&continuation=AAAACAAAAAAAAADCAAAAAAAAAMEAAAAAAAABAAAAAAEgAAAAAAAAgwAAAAAAAAAA')
     assert_json_string_equal(
-      '{"documents":[],"pathId":"/document/v1/storage_test/music/docid/"}',
+      '{"documents":[],"documentCount":0,"pathId":"/document/v1/storage_test/music/docid/"}',
       response)
   end
 
