@@ -92,8 +92,18 @@ class DocumentV1Test < SearchTest
     assert_json_string_equal(
       "{\"documents\": [{\"id\":\"id:fruit:banana::doc1\",\"fields\":{\"colour\":\"yellow\"}}]," +
       "\"pathId\":\"/document/v1/fruit/banana/docid/\"," +
-      "\"documentCount\":123," +
+      "\"documentCount\":1," +
       "\"continuation\":\"AAAACAAAAAAAAADDAAAAAAAAAMIAAAAAAAABAAAAAAEgAAAAAAAAQwAAAAAAAAAA\"}",
+      response.body)
+
+    # Visit without any matching documents
+    response = http.get("/document/v1/fruit/banana/docid/?selection=false")
+    assert_equal("200", response.code)
+    # Visit exhausts the entire bucket space looking for a document, so no continuation this time
+    assert_json_string_equal(
+      "{\"documents\": []," +
+      "\"pathId\":\"/document/v1/fruit/banana/docid/\"," +
+      "\"documentCount\":0" +
       response.body)
 
     # Conditional feed, with true condition
