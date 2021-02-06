@@ -19,7 +19,7 @@ class DocumentApiVdsPart1 < DocumentApiV1Base
       response)
     response = api_http_get('/document/v1/storage_test/music/number/1/')
     assert_json_string_equal(
-      '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}}],"documentCount":0,' +
+      '{"documents":[{"id":"id:storage_test:music:n=1:8", "fields":{"title":"title"}}],"documentCount":1,' +
       '"pathId":"/document/v1/storage_test/music/number/1/"}',
       response)
   end
