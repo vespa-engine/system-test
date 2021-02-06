@@ -104,6 +104,10 @@ class NodeProxy
     @node_server.directory?(args)
   end
 
+  def create_tmp_bin_dir
+    @node_server.create_tmp_bin_dir
+  end
+  
   # Copies/renames single file from local src to dst (file) on node_server.
   # Target directory will be created if it does not exist.
   # Existing dst will be overwritten.

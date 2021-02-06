@@ -140,7 +140,8 @@ def test_multiple_position_fields
 
     node.copy(selfdir + "gendata.c", dirs.tmpdir)
 
-    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && cc gendata.c && time ./a.out")
+    tmp_bin_dir = node.create_tmp_bin_dir
+    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && cc gendata.c -o #{tmp_bin_dir}/a.out && time #{tmp_bin_dir}/a.out")
     puts "compile output: #{output}"
 
     (exitcode, output) = execute(node, "time vespa-feeder #{dirs.tmpdir}/feed-2.xml")

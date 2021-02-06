@@ -92,9 +92,10 @@ class NearestNeighborPerformanceTest < PerformanceTest
     puts "FEEDING DOCUMENTS"
     node = vespa.adminserver
     node.copy(selfdir + "gendata.c", dirs.tmpdir)
-    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c")
+    tmp_bin_dir = node.create_tmp_bin_dir
+    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c -o #{tmp_bin_dir}/a.out")
     assert_equal(0, exitcode)
-    (exitcode, output) = execute(node, "#{dirs.tmpdir}/a.out | vespa-feed-perf")
+    (exitcode, output) = execute(node, "#{tmp_bin_dir}/a.out | vespa-feed-perf")
     assert_equal(0, exitcode)
     wait_for_hitcount("sddocname:foobar", 100000, 30)
     puts "DONE FEEDING"

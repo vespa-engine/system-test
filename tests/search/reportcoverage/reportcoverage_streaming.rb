@@ -18,7 +18,8 @@ class ReportCoverageStreaming < StreamingSearchTest
     node = vespa.adminserver
     container = qrserver()
     node.copy(selfdir + "gendata.c", dirs.tmpdir)
-    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c && ./a.out 10000 | vespa-feed-perf")
+    tmp_bin_dir = node.create_tmp_bin_dir
+    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c -o #{tmp_bin_dir}/a.out && #{tmp_bin_dir}/a.out 10000 | vespa-feed-perf")
     puts "compile and feed output: #{output}"
     wait_for_hitcount("sddocname:covtest&streaming.selection=true", 10000, 5)
     assert_hitcount("coverage&streaming.selection=true", 10000)

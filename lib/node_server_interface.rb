@@ -340,4 +340,8 @@ module NodeServerInterface
   def get_current_time_as_int
     @node_server.get_current_time_as_int
   end
+ 
+  def create_tmp_bin_dir
+    @node_server.create_tmp_bin_dir
+  end
 end

@@ -944,6 +944,12 @@ class NodeServer
     return path
   end
 
+  def create_tmp_bin_dir
+    dir = "#{Environment.instance.vespa_home}/tmp/systemtests-bin"
+    FileUtils.mkdir_p(dir)
+    return dir
+  end
+
   # Not safe to call - part of remote copy methods in node_proxy.rb
   def private_copy_archive_to_node_and_extract(source, dst_dir, orig_name, rename_to)
     # Copy remote archive to local (node) archive
