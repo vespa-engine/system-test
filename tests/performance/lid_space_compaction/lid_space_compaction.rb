@@ -21,7 +21,7 @@ class LidSpaceCompactionPerfTest < PerformanceTest
         :x => 'legend',
         :y => 'compaction.throughput',
         :title => "Throughput (docs / sec) during lid space compaction of ~5M of 10M remaining documents",
-        :y_min => 68000,
+        :y_min => 64000,
         :y_max => 85000,
         :historic => true
       }
