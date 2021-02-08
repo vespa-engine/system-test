@@ -62,34 +62,34 @@ class FeedBlockBase < IndexedSearchTest
       add("resource_usage_reporter_noise_level", reporter_noise_level)
   end
 
-  def set_proton_limits(app, memory, disk, enumstore, multivalue)
+  def set_proton_limits(search_cluster, memory, disk, enumstore, multivalue)
     cfg = get_proton_config(enumstore, multivalue)
-    app.config(cfg)
-    app.proton_resource_limits(ResourceLimits.new.memory(memory).disk(disk))
+    search_cluster.config(cfg)
+    search_cluster.proton_resource_limits(ResourceLimits.new.memory(memory).disk(disk))
   end
 
-  def set_cluster_controller_limits(app, memory, disk, enumstore, multivalue)
+  def set_cluster_controller_limits(app, search_cluster, memory, disk, enumstore, multivalue)
     cfg = get_cluster_controller_config(enumstore, multivalue)
     app.config(cfg)
-    app.resource_limits(ResourceLimits.new.memory(memory).disk(disk))
+    search_cluster.resource_limits(ResourceLimits.new.memory(memory).disk(disk))
   end
 
-  def set_resource_limits(app, memory, disk, enumstore, multivalue, reporter_noise_level = nil)
+  def set_resource_limits(app, search_cluster, memory, disk, enumstore, multivalue, reporter_noise_level = nil)
     if @block_feed_in_distributor
-      set_proton_limits(app, 1.0, 1.0, 1.0, 1.0)
-      set_cluster_controller_limits(app, memory, disk, enumstore, multivalue)
+      set_proton_limits(search_cluster, 1.0, 1.0, 1.0, 1.0)
+      set_cluster_controller_limits(app, search_cluster, memory, disk, enumstore, multivalue)
     else
-      set_proton_limits(app, memory, disk, enumstore, multivalue)
-      set_cluster_controller_limits(app, 1.0, 1.0, 1.0, 1.0)
+      set_proton_limits(search_cluster, memory, disk, enumstore, multivalue)
+      set_cluster_controller_limits(app, search_cluster, 1.0, 1.0, 1.0, 1.0)
     end
     if reporter_noise_level != nil
-      app.config(get_filestor_config(reporter_noise_level))
+      search_cluster.config(get_filestor_config(reporter_noise_level))
     end
   end
 
   def redeploy_app(memory, disk, enumstore, multivalue)
     app = get_app
-    set_resource_limits(app, memory, disk, enumstore, multivalue)
+    set_resource_limits(app, app, memory, disk, enumstore, multivalue)
 
     redeploy(app, @cluster_name)
     sample_sleep(' after reconfig')
