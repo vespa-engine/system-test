@@ -216,7 +216,7 @@ class PerformanceTest < TestCase
     fillers.each do |filler|
       filler.call(@rep_result)
     end
-    @rep_result.add_parameter('host', `hostname`)
+    @rep_result.add_parameter('hosts', hostlist.join(","))
 
     out = @resultoutputdir + Time.now.strftime('%Y-%m-%d-%H-%M-%S') + '_' + @magic_number.to_s + '.xml'
     @magic_number = @magic_number + 1
