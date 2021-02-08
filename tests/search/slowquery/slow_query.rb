@@ -38,7 +38,8 @@ class SlowQuery < IndexedSearchTest
     node = vespa.adminserver
     node.copy(selfdir + "gendata.c", dirs.tmpdir)
     # TODO Generate test data using Ruby instead of C program
-    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c && ./a.out | vespa-feed-perf")
+    tmp_bin_dir = node.create_tmp_bin_dir
+    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c -o #{tmp_bin_dir}/a.out && #{tmp_bin_dir}/a.out | vespa-feed-perf")
     puts "compile and feed output: #{output}"
 
     wait_for_hitcount("sddocname:simple", 400)
