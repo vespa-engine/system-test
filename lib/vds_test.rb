@@ -14,9 +14,7 @@ class VdsTest < TestCase
     # ... don't keep them around for long, though!
     ignores =
     [
-      /Data is unavailable until node comes back up/,
-      /We detected an empty idx file for part/,
-      /Removing dangling file/
+      /Data is unavailable until node comes back up/
     ]
     add_ignorable_messages(ignores)
 
