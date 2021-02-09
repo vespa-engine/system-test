@@ -26,6 +26,6 @@ cp -a /root/.vespa/system_test_certs/host.key /opt/vespa/conf/vespa/tls
 
 VESPA_USER=$(grep " VESPA_USER " /opt/vespa/conf/vespa/default-env.txt | awk '{print $NF}')
 if [[ -n $VESPA_USER ]]; then
-  chown -R $VESPA_USER:$VESPA_USER /opt/vespa/conf/vespa/tls
+  chown -R $VESPA_USER:$(id -gn $VESPA_USER) /opt/vespa/conf/vespa/tls
 fi
 
