@@ -97,16 +97,17 @@ class TestCase
       @@log_messages[:log4j_initialize],
       @@log_messages[:log4j_see_noconfig],
       @@log_messages[:concurrent_mark_sweep],
-      @@log_messages[:zookeeper_shutdown]
+      @@log_messages[:zookeeper_shutdown],
+      @@log_messages[:async_slow_resolve],
+      @@log_messages[:slow_processing],
+      @@log_messages[:remove_dangling_file],
+      @@log_messages[:empty_idx_file]
     ]
     @valgrind_ignorable_messages = [
-      @@log_messages[:slow_processing],
       @@log_messages[:valgrindrc_not_read],
       @@log_messages[:shutdownguard_forcing_exit],
-      @@log_messages[:slow_query],
       @@log_messages[:max_query_timeout],
       @@log_messages[:failed_find_2_consecutive],
-      @@log_messages[:async_slow_resolve],
       @@log_messages[:no_tick_registered]
     ]
     @https_downgrade_warnings = Set.new
@@ -731,7 +732,10 @@ class TestCase
     :log4j_initialize => /log4j:WARN Please initialize the log4j system properly/,
     :log4j_see_noconfig => /log4j:WARN See http:\/\/logging.apache.org\/log4j\/1.2\/faq.html#noconfig/,
     :concurrent_mark_sweep => /OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release./,
-    :zookeeper_shutdown => /Starting non-reconfigurable ZooKeeper server failed on attempt/
+    :zookeeper_shutdown => /Starting non-reconfigurable ZooKeeper server failed on attempt/,
+    :time_move_backwards => /Time has moved backwards/,
+    :empty_idx_file => /We detected an empty idx file for part/,
+    :remove_dangling_file => /Removing dangling file/
   }
 
   # Allow that certain log messages may be ignored without the individual
