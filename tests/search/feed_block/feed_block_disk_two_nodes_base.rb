@@ -78,7 +78,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
       container(Container.new.
                 search(Searching.new).
                 docproc(DocumentProcessing.new)).
-      storage(StorageCluster.new(@cluster_name, 41).distribution_bits(16)).
+      storage(StorageCluster.new(@cluster_name, 41)).
       config(get_tls_configoverride).
       config(get_flush_configoverride).
       config(get_hwinfo_disk_override(shared_disk)).
@@ -129,7 +129,11 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
   end
 
   def reached_disklimit(response)
-    response.code == "507" && response.body =~ /diskLimitReached/
+    if @block_feed_in_distributor
+      response.code == "507" && response.body =~ /resource exhaustion: disk on node /
+    else
+      response.code == "507" && response.body =~ /diskLimitReached/
+    end
   end
 
   def sleep_with_reason(delay, reason)
@@ -200,7 +204,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     puts "Redeploying with reduced disk limit"
     search_cluster = get_sc
     app = get_app(search_cluster, shared_disk)
-    set_proton_limits(search_cluster, 1.0, disklimit, 1.0, 1.0)
+    set_resource_limits(app, search_cluster, 1.0, disklimit, 1.0, 1.0, 0.0)
     deploy_app(app)
     sleep_with_reason(@sleep_delay, " to allow new config to propagate")
     settle_cluster_state("uimrd")
