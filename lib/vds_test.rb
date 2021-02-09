@@ -14,12 +14,9 @@ class VdsTest < TestCase
     # ... don't keep them around for long, though!
     ignores =
     [
-      /cannot connect to location broker.*retry in 4\.0/,
       /Data is unavailable until node comes back up/,
       /We detected an empty idx file for part/,
-      /Removing dangling file/,
-      /log4j:WARN/,
-      /Slow processing of message/
+      /Removing dangling file/
     ]
     add_ignorable_messages(ignores)
 
