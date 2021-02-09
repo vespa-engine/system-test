@@ -23,5 +23,9 @@ EOF
 cp -a /root/.vespa/system_test_certs/ca.pem /opt/vespa/conf/vespa/tls
 cp -a /root/.vespa/system_test_certs/host.pem /opt/vespa/conf/vespa/tls
 cp -a /root/.vespa/system_test_certs/host.key /opt/vespa/conf/vespa/tls
-chown -R vespa:vespa /opt/vespa/conf/vespa/tls
-     
+
+VESPA_USER=$(grep " VESPA_USER " /opt/vespa/conf/vespa/default-env.txt | awk '{print $NF}')
+if [[ -n $VESPA_USER ]]; then
+  chown -R $VESPA_USER:$VESPA_USER /opt/vespa/conf/vespa/tls
+fi
+
