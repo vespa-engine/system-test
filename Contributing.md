@@ -1,6 +1,6 @@
 <!-- Copyright 2017 Yahoo Holdings. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root. -->
 # Contributing to Vespa
-Contributions to [Vespa](http://github.com/vespa-engine/vespa), 
+Contributions to [Vespa](http://github.com/vespa-engine/vespa),
 [Vespa system tests](http://github.com/vespa-engine/system-test),
 [Vespa samples](https://github.com/vespa-engine/sample-apps)
 and the [Vespa documentation](http://github.com/vespa-engine/documentation) are welcome.
@@ -19,6 +19,17 @@ You can find a suitable reviewer in the OWNERS file upward in the source tree fr
 where you are making the change (the OWNERS have a special responsibility for
 ensuring the long-term integrity of a portion of the code).
 If you want to become a committer/OWNER making some quality contributions is the way to start.
+
+
+***Creating a Pull Request***
+
+Please follow [best practices](https://github.com/trein/dev-best-practices/wiki/Git-Commit-Best-Practices) for creating git commits.
+
+When your code is ready to be submitted, [submit a pull request](https://help.github.com/articles/creating-a-pull-request/) to begin the code review process.
+
+We only seek to accept code that you are authorized to contribute to the project. We have added a pull request template on our projects so that your contributions are made with the following confirmation: 
+
+> I confirm that this contribution is made under the terms of the license found in the root directory of this repository's source tree and that I have the authority necessary to make this contribution on behalf of its copyright owner.
 
 ## Versioning
 Vespa uses semantic versioning - see
@@ -47,3 +58,7 @@ More details are in the READMEs of each module.
 If you add new files you are welcome to use your own copyright.
 In any case the code (or documentation) you submit will be licensed
 under the Apache 2.0 license.
+
+## Code of Conduct
+
+We encourage inclusive and professional interactions on our project. We welcome everyone to open an issue, improve the documentation, report bug or submit a pull request. By participating in this project, you agree to abide by the [Verizon Media Code of Conduct](Code-of-Conduct.md). If you feel there is a conduct issue related to this project, please raise it per the Code of Conduct process and we will address it.
