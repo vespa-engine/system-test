@@ -1,9 +1,17 @@
 #!/bin/bash
 
+if [[ $# -ne 1 ]]; then
+  echo "Usage: $0 <user>"
+  exit 1
+fi
+
+readonly THE_USER=$1
+readonly THE_HOME_DIR=$(getent passwd $THE_USER |cut -d: -f 6)
+
 source /opt/rh/rh-ruby*/enable
 
 # Auto generate cert and key
-env USER=root /opt/vespa-systemtests/lib/node_server.rb &
+env USER=$THE_USER /opt/vespa-systemtests/lib/node_server.rb &
 PID=$!
 sleep 3
 kill -9 $PID
@@ -20,9 +28,9 @@ cat << EOF > /opt/vespa/conf/vespa/tls/tls_config.json
     }
 }
 EOF
-cp -a /root/.vespa/system_test_certs/ca.pem /opt/vespa/conf/vespa/tls
-cp -a /root/.vespa/system_test_certs/host.pem /opt/vespa/conf/vespa/tls
-cp -a /root/.vespa/system_test_certs/host.key /opt/vespa/conf/vespa/tls
+cp -a $THE_HOME_DIR/.vespa/system_test_certs/ca.pem /opt/vespa/conf/vespa/tls
+cp -a $THE_HOME_DIR/.vespa/system_test_certs/host.pem /opt/vespa/conf/vespa/tls
+cp -a $THE_HOME_DIR/.vespa/system_test_certs/host.key /opt/vespa/conf/vespa/tls
 
 VESPA_USER=$(grep " VESPA_USER " /opt/vespa/conf/vespa/default-env.txt | awk '{print $NF}')
 if [[ -n $VESPA_USER ]]; then
