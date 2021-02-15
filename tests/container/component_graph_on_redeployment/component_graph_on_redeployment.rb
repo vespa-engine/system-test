@@ -12,6 +12,8 @@ class ComponentGraphOnRedeployment < ContainerTest
       'com.yahoo.container.core.config.HandlersConfigurerDi$RegistriesHack'
   ]
 
+  SERVICES = ['container', 'metricsproxy-container']
+
   def setup
     set_owner('bjorncs')
     set_description('Verify that only certain components are reconstructed on redeployment of identical app')
@@ -25,13 +27,15 @@ class ComponentGraphOnRedeployment < ContainerTest
     start(app)
 
     # The wanted messages from ComponentNode are logged as debug.
-    @container.logctl('container:com.yahoo.container.di.componentgraph.core.ComponentNode', 'debug=on')
+    SERVICES.each do |service|
+      @container.logctl("#{service}:com.yahoo.container.di.componentgraph.core.ComponentNode", 'debug=on')
+    end
 
     # Redeploy same app. This is similar to an internal reconfiguration in hosted Vespa.
     deploy(app)
 
     log_matches = vespa.logserver.find_log_matches(LOG_MSG_PATTERN)
-    reconstructed_components = log_matches.flatten.sort
+    reconstructed_components = log_matches.flatten.sort.uniq
     assert_equal(ALLOWED_COMPONENTS_TO_RECONSTRUCT.sort, reconstructed_components)
   end
 
