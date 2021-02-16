@@ -48,7 +48,7 @@ class VespaNode
     http.ca_file = ca_cert_file unless ca_cert_file == nil
     http.cert = OpenSSL::X509::Certificate.new(File.read(cert_file)) unless cert_file == nil
     http.key = OpenSSL::PKey::RSA.new(File.read(private_key_file)) unless private_key_file == nil
-    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    http.verify_mode = tls_env.ssl_ctx.verify_mode
     http.ssl_version = :TLSv1_2
     http.start { |conn|
       yield(conn)
