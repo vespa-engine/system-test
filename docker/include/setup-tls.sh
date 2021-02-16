@@ -18,7 +18,7 @@ kill -9 $PID
 
 # Setup the Vespa TLS config
 mkdir -p /opt/vespa/conf/vespa/tls
-cat << EOF > /opt/vespa/conf/vespa/tls/tls_config.json
+cat << EOF > $THE_HOME_DIR/.vespa/system_test_certs/tls_config.json
 {
     "disable-hostname-validation": true,
     "files": {
@@ -31,6 +31,7 @@ EOF
 cp -a $THE_HOME_DIR/.vespa/system_test_certs/ca.pem /opt/vespa/conf/vespa/tls
 cp -a $THE_HOME_DIR/.vespa/system_test_certs/host.pem /opt/vespa/conf/vespa/tls
 cp -a $THE_HOME_DIR/.vespa/system_test_certs/host.key /opt/vespa/conf/vespa/tls
+cp -a $THE_HOME_DIR/.vespa/system_test_certs/tls_config.json /opt/vespa/conf/vespa/tls
 
 VESPA_USER=$(grep " VESPA_USER " /opt/vespa/conf/vespa/default-env.txt | awk '{print $NF}')
 if [[ -n $VESPA_USER ]]; then
