@@ -78,7 +78,7 @@ module Perf
           if line =~ /^\s*(\d+)\s+(\d+)\s+([\w\d\/-]+)\s+([\d\s]+)$/
             dev = $~[3]
             v = $~[4].split.map { |v| v.to_i }
-            raise 'Unknown /proc/diskstats format' if v.size != 11
+            raise 'Unknown /proc/diskstats format' if v.size < 11
             # Based on http://www.kernel.org/doc/Documentation/iostats.txt
             # Note: ios_in_progress is not a counter, i.e. it's unusable.
             @info[dev] = Stat::assoc_array([:reads_completed, :reads_merged,
