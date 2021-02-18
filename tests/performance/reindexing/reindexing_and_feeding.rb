@@ -11,7 +11,7 @@ class ReindexingAndFeedingTest < PerformanceTest
   end
 
   def timeout_seconds
-    1200
+    1500
   end
 
   def setup
