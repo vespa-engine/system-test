@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'performance_test'
 require 'app_generator/search_app'
@@ -62,12 +63,12 @@ class TensorUpdatePerfTest < PerformanceTest
 
   def get_graphs
     [
-      get_feed_throughput_graph("assign",   10, 37000, 46000),
-      get_feed_throughput_graph("assign",  100, 13000, 16000),
-      get_feed_throughput_graph("assign", 1000,  1450,  1800),
-      get_feed_throughput_graph("modify",   10, 37000, 47000),
-      get_feed_throughput_graph("modify",  100, 37500, 47500),
-      get_feed_throughput_graph("modify", 1000, 37500, 46500)
+      get_feed_throughput_graph("assign",   10, 32000, 36000),
+      get_feed_throughput_graph("assign",  100, 12500, 15000),
+      get_feed_throughput_graph("assign", 1000,  1450,  1750),
+      get_feed_throughput_graph("modify",   10, 36000, 42000),
+      get_feed_throughput_graph("modify",  100, 36500, 43000),
+      get_feed_throughput_graph("modify", 1000, 35000, 43000)
     ]
   end
 
