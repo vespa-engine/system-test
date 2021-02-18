@@ -54,8 +54,8 @@ class RpcSummaryTest < PerformanceTest
         :title => 'Summary performance, runtime 20',
         :historic => true,
         :filter => { :runtime => [ 20 ]},
-        :y_min => 220,
-        :y_max => 270,
+        :y_min => 200,
+        :y_max => 230,
       },
       {
         :x => 'runtime',
@@ -63,8 +63,8 @@ class RpcSummaryTest < PerformanceTest
         :title => 'Summary performance, runtime 60',
         :historic => true,
         :filter => { :runtime => [ 60 ]},
-        :y_min => 260,
-        :y_max => 295,
+        :y_min => 240,
+        :y_max => 270,
       }
     ]
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
