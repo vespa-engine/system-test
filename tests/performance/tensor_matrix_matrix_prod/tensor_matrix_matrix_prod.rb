@@ -34,8 +34,8 @@ class TensorMatrixMatrixProduct < PerformanceTest
 
   def get_graphs
     [
-      get_latency_graph(0.1, 0.3),
-      get_qps_graph(3500.0, 7000.0),
+      get_latency_graph(0.15, 0.30),
+      get_qps_graph(3300, 6000),
     ]
   end
 
