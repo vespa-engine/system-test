@@ -39,14 +39,14 @@ class DocumentV1Throughput < PerformanceTest
         :fbench => { :clients => 128, :use_post => true},
         :data => "{ \"fields\": { \"text\": \"GNU#{"'s not UNIX" * (1 << 10) }\" } }"
       } => {
-        'qps' => { :y_min =>  6600, :y_max =>  7500 },
+        'qps' => { :y_min =>  6500, :y_max =>  7500 },
         '95p' => { :y_min =>    24, :y_max =>    29 }
       },
       {
         :legend =>  'GET large data 128 clients',
         :fbench => { :clients => 128, :use_post => false }
       } => {
-        'qps' => { :y_min => 20000, :y_max => 24500 },
+        'qps' => { :y_min => 19500, :y_max => 24500 },
         '95p' => { :y_min =>   8, :y_max =>   10.5 }
       }
     }
