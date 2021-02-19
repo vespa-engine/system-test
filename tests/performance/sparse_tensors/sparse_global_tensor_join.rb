@@ -132,7 +132,7 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
       :filter => {TYPE => QUERY, LABEL => label},
       :historic => true,
       :y_min => 4.0,
-      :y_max => 7.5
+      :y_max => 7.7
     }
   end
 

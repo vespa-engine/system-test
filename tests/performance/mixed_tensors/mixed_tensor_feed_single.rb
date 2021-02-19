@@ -18,7 +18,7 @@ class MixedTensorFeedSinglePerfTest < MixedTensorPerfTestBase
   def get_graphs_vec_256
     [
       get_all_feed_throughput_graphs,
-      get_feed_throughput_graph(PUTS, NUMBER, 4300, 5600),
+      get_feed_throughput_graph(PUTS, NUMBER, 4250, 5600),
       get_feed_throughput_graph(PUTS, STRING, 4500, 5600),
       get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 4300, 5500),
       get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 4400, 5500),
@@ -44,7 +44,7 @@ class MixedTensorFeedSinglePerfTest < MixedTensorPerfTestBase
   def get_graphs_vec_32
     [
       get_all_feed_throughput_graphs,
-      get_feed_throughput_graph(PUTS, NUMBER, 1400, 1700),
+      get_feed_throughput_graph(PUTS, NUMBER, 1400, 1750),
       get_feed_throughput_graph(PUTS, STRING, 1300, 1700),
       get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 1400, 1700),
       get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 1300, 1700),
