@@ -24,8 +24,8 @@ class DocumentV1Throughput < PerformanceTest
         :fbench => { :clients => 4, :use_post => true },
         :data => "{ \"fields\": { \"text\": \"GNU's not UNIX\" } }"
       } => {
-        'qps' => { :y_min =>  1800, :y_bmax =>  2050 },
-        '95p' => { :y_min =>   2.3, :y_max =>   2.7 }
+        'qps' => { :y_min =>  1800, :y_max =>  2100 },
+        '95p' => { :y_min =>   2.3, :y_max =>   2.8 }
       },
       {
         :legend => 'GET small data 4 clients',
@@ -39,15 +39,15 @@ class DocumentV1Throughput < PerformanceTest
         :fbench => { :clients => 128, :use_post => true},
         :data => "{ \"fields\": { \"text\": \"GNU#{"'s not UNIX" * (1 << 10) }\" } }"
       } => {
-        'qps' => { :y_min =>  6600, :y_max =>  7400 },
-        '95p' => { :y_min =>    24, :y_max =>    28 }
+        'qps' => { :y_min =>  6600, :y_max =>  7500 },
+        '95p' => { :y_min =>    24, :y_max =>    29 }
       },
       {
         :legend =>  'GET large data 128 clients',
         :fbench => { :clients => 128, :use_post => false }
       } => {
-        'qps' => { :y_min => 21000, :y_max => 24500 },
-        '95p' => { :y_min =>   8, :y_max =>   10 }
+        'qps' => { :y_min => 20000, :y_max => 24500 },
+        '95p' => { :y_min =>   8, :y_max =>   10.5 }
       }
     }
     @graphs = get_graphs
