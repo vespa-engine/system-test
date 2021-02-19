@@ -87,6 +87,9 @@ class TestStateTools < MultiProviderStorageTest
     # Trying to set the remaining node into maintenance would violate safety constraints, and should therefore fail
     output = execute_cli_tool('vespa-set-node-state -c storage -t storage -i 0 --safe maintenance "bork bork 2.0"')
     assert_match('Another node is already in maintenance:1', output)
+    # For some reason the message is broken over 2 lines
+    assert_match('Another storage node wants state', output)
+    assert_match('MAINTENANCE: 1', output)
 
     # Unchanged node states
     output = execute_cli_tool('vespa-get-cluster-state')
