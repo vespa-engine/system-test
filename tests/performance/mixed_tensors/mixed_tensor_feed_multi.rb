@@ -50,8 +50,8 @@ class MixedTensorFeedMultiPerfTest < MixedTensorPerfTestBase
       get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 135, 165),
       get_feed_throughput_graph(UPDATES_ADD, NUMBER, 900, 1300),
       get_feed_throughput_graph(UPDATES_ADD, STRING, 900, 1300),
-      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 3100, 4300),
-      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 3100, 4300)
+      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 3500, 4300),
+      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 3000, 4300)
     ]
   end
 
