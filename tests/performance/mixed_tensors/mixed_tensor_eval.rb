@@ -56,7 +56,7 @@ class MixedTensorPerfTest < MixedTensorPerfTestBase
       },
       get_latency_graph(SINGLE_MODEL, 3.6, 4.1),
       get_latency_graph(MULTI_MODEL_EARLY_REDUCE, 7.8, 9.2),
-      get_latency_graph(MULTI_MODEL_LATE_REDUCE, 4.8, 5.3)
+      get_latency_graph(MULTI_MODEL_LATE_REDUCE, 4.8, 5.4)
     ]
   end
 
