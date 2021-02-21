@@ -47,7 +47,7 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
       get_graph("without_replacement", 18.5, 24),
       get_graph("halfmodern", 13, 19),
       get_graph("halfmoderndirect", 11.5, 17),
-      get_graph("modern", 12, 15),
+      get_graph("modern", 12, 15.5),
       get_graph("with_replacement", 3.8, 4.5)
     ]
   end
