@@ -171,7 +171,7 @@ class ReindexingAndFeedingTest < PerformanceTest
 	'feeder.throughput'     =>   { }
       },
       { :legend => 'reindex' } => {
-	'reindexing.throughput' =>   { :y_min =>  1500, :y_max => 2300 },
+	'reindexing.throughput' =>   { :y_min =>  1500, :y_max => 2400 },
       },
       { :legend => 'feed' } => {
 	'feeder.throughput'     =>   { :y_min =>  7500, :y_max =>  9000 },
@@ -181,7 +181,7 @@ class ReindexingAndFeedingTest < PerformanceTest
 	'feeder.throughput'     =>   { :y_min =>  6500, :y_max =>  9000 },
       },
       { :legend => 'update' } => {
-	'feeder.throughput'     =>   { :y_min => 32000, :y_max => 42000 },
+	'feeder.throughput'     =>   { :y_min => 32000, :y_max => 43000 },
       },
       { :legend => 'reindex_update' } => {
 	'reindexing.throughput' =>   { :y_min =>  1500, :y_max =>  2100 },
