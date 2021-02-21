@@ -149,8 +149,8 @@ class NearestNeighborPerformanceTest < PerformanceTest
     profiles = [ 'simple', 'rawscore', 'dotproduct', 'joinsq' ]
     casenames = [ 'alldoc', 'nns_10', 'nns_100', 'nns_1000' ]
     maxmins = {
-        'alldoc_joinsq'     => { :min => 270, :max => 450 },
-        'alldoc_dotproduct' => { :min => 150, :max => 380 },
+        'alldoc_joinsq'     => { :min => 270, :max => 490 },
+        'alldoc_dotproduct' => { :min => 150, :max => 475 },
         'nns_10_rawscore'   => { :min =>  30, :max => 70 },
         'default'           => { :min =>  30, :max => 120 }
     }
