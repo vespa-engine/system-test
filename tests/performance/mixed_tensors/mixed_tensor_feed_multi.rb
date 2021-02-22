@@ -18,14 +18,14 @@ class MixedTensorFeedMultiPerfTest < MixedTensorPerfTestBase
   def get_graphs_vec_256
     [
       get_all_feed_throughput_graphs,
-      get_feed_throughput_graph(PUTS, NUMBER, 490, 600),
+      get_feed_throughput_graph(PUTS, NUMBER, 490, 610),
       get_feed_throughput_graph(PUTS, STRING, 490, 600),
       get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 490, 600),
       get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 490, 600),
-      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 3200, 4000),
-      get_feed_throughput_graph(UPDATES_ADD, STRING, 3200, 4000),
-      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 8500, 10500),
-      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 8000,  9500)
+      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 3100, 4000),
+      get_feed_throughput_graph(UPDATES_ADD, STRING, 3100, 4000),
+      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 8000, 10500),
+      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 7500, 10000)
     ]
   end
 
