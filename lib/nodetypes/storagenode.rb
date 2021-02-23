@@ -19,20 +19,13 @@ class StorageNode < VDSNode
   # after all move operations have been completed. However, as mentioned, this
   # time window should be very limited.
   def wait_until_no_pending_bucket_moves
-    wait_until_no_pending_bucket_moves_once
-    for i in 1...2 do
-        sleep 1
-        wait_until_no_pending_bucket_moves_once
-    end
-  end
-  def wait_until_no_pending_bucket_moves_once
     while true
-      move_ops = get_metrics_matching('content.proton.documentdb\\{.*\\}.job.bucket_move', true)
-      max_moves_found = 0.0
+      move_ops = get_metrics_matching('content.proton.documentdb\\{.*\\}.bucket_move.buckets_pending', true)
+      max_moves_found = 0
       move_ops.reject{|k, v| v.empty?}.each_value do |metric|
         max_moves_found = [max_moves_found, metric['last'].to_f].max
       end
-      break if max_moves_found == 0.0
+      break if max_moves_found == 0
       @testcase.output("Waiting for bucket move operations to complete (#{max_moves_found})")
       sleep 1
     end
