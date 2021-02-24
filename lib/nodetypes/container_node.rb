@@ -1,6 +1,7 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'environment'
+require 'openssl'
 
 class ContainerNode < VespaNode
   attr_accessor :http_port
@@ -93,7 +94,7 @@ class ContainerNode < VespaNode
         retries += 1
         @testcase.output("Retrying after query with errors: #{retries}")
       end
-    rescue SystemCallError
+    rescue SystemCallError,OpenSSL::SSL::SSLError
       if @retries == MAX_RETRIES and verbose
         @testcase.output("\nError connecting to qrserver on port #{port}:\n #{$!}\nRetrying.", false)
       end
