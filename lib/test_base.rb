@@ -217,7 +217,7 @@ module TestBase
 
   # Performs _query_ on qrserver[qrserver_id] and returns the result.
   def search(query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
-    search_with_timeout(5, query, qrserver_id, requestheaders, verbose, params)
+    search_with_timeout(10, query, qrserver_id, requestheaders, verbose, params)
   end
 
   def search_base(query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
