@@ -57,22 +57,22 @@ class TestbaseTest < Test::Unit::TestCase
   def test_search
     @qrserver.return_query = true
     resultset = @searchtest.search("?query=foobar")
-    assert_equal("/search/?query=foobar&timeout=5&format=xml", resultset.query)
+    assert_equal("/search/?query=foobar&timeout=10&format=xml", resultset.query)
 
     resultset = @searchtest.search("/?query=foobar")
-    assert_equal("/search/?query=foobar&timeout=5&format=xml", resultset.query)
+    assert_equal("/search/?query=foobar&timeout=10&format=xml", resultset.query)
 
     resultset = @searchtest.search("query=foobar")
-    assert_equal("/search/?query=foobar&timeout=5&format=xml", resultset.query)
+    assert_equal("/search/?query=foobar&timeout=10&format=xml", resultset.query)
 
     resultset = @searchtest.search("foobar")
-    assert_equal("/search/?query=foobar&timeout=5&format=xml", resultset.query)
+    assert_equal("/search/?query=foobar&timeout=10&format=xml", resultset.query)
 
     resultset = @searchtest.search("/search/?query=foobar")
-    assert_equal("/search/?query=foobar&timeout=5&format=xml", resultset.query)
+    assert_equal("/search/?query=foobar&timeout=10&format=xml", resultset.query)
 
     resultset = @searchtest.search("/Example/0/foo")
-    assert_equal("/Example/0/foo&timeout=5", resultset.query)
+    assert_equal("/Example/0/foo&timeout=10", resultset.query)
   end
 
   def test_save_result
