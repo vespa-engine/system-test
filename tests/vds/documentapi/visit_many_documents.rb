@@ -6,6 +6,8 @@ class VisitManyDocumentsTest < VdsTest
   def setup
     set_owner("geirst")
     deploy_app(default_app.distribution_bits(8))
+    container = (vespa.qrserver["0"] or vespa.container.values.first)
+    container.execute("gcc -g -O3 -o #{dirs.tmpdir}/docs #{selfdir}/docs.cpp")
     start
     @num_users = 500
     @docs_per_user = 100
@@ -17,12 +19,8 @@ class VisitManyDocumentsTest < VdsTest
   end
 
   def feed_documents
-    @num_users.times do |i|
-      @docs_per_user.times do |j|
-        doc = Document.new("music", "id:storage_test:music:n=#{i}:#{j}").add_field("title", "title#{i}")
-        vespa.document_api_v1.put(doc, :brief => (j != 0))
-      end
-    end
+    container = (vespa.qrserver["0"] or vespa.container.values.first)
+    container.execute("#{dirs.tmpdir}/docs #{@num_users} #{@docs_per_user}| vespa-feed-perf")
   end
 
   def test_visit_many_documents
