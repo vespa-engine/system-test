@@ -82,7 +82,7 @@ class SearchCoverageTest < SearchTest
 
   def fetch_hits(profile, expected_count, expected_coverage)
     q_start = Time.now
-    result = search("query=sddocname:test&nocache&hits=#{@num_docs}&format=json&ranking.softtimeout.enable=false&timeout=600s#{profile}").json
+    result = search_with_timeout(5, "query=sddocname:test&nocache&hits=#{@num_docs}&format=json&ranking.softtimeout.enable=false#{profile}").json
     q_end = Time.now
     puts "Query completed in #{((q_end-q_start)*1000.0).to_i} ms"
     coverage = result["root"]["coverage"]
