@@ -13,7 +13,9 @@ readonly THE_HOME_DIR=$(getent passwd $THE_USER |cut -d: -f 6)
 readonly VESPA_VERSION=$(/opt/vespa/bin/vespa-print-default version)
 readonly LOCAL_M2_REPO=$THE_HOME_DIR/.m2/repository
 
-source /opt/rh/rh-ruby*/enable
+if [[ -n $(find /opt/rh -mindepth 1 -maxdepth 1 -type d -name "rh-ruby*") ]]; then
+  source /opt/rh/rh-ruby*/enable
+fi
 
 if [[ -n $(find /opt/rh -mindepth 1 -maxdepth 1 -type d -name "rh-maven*") ]]; then
   source /opt/rh/rh-maven*/enable
