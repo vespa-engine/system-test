@@ -20,8 +20,8 @@ class InhibitMinorityBucketStateActivationTest < SearchTest
               group(NodeGroup.new(0, 'root').
                     distribution('1|1|*').
                     group(NodeGroup.new(0, 'g0').node(NodeSpec.new('node1', 0))).
-                    group(NodeGroup.new(1, 'g1').node(NodeSpec.new('node2', 1))).
-                    group(NodeGroup.new(2, 'g2').node(NodeSpec.new('node3', 2))))).
+                    group(NodeGroup.new(1, 'g1').node(NodeSpec.new('node1', 1))).
+                    group(NodeGroup.new(2, 'g2').node(NodeSpec.new('node1', 2))))).
       storage(StorageCluster.new('storage', 3)).
       enable_http_gateway.
       config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
