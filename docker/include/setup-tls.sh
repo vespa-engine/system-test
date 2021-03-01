@@ -8,7 +8,9 @@ fi
 readonly THE_USER=$1
 readonly THE_HOME_DIR=$(getent passwd $THE_USER |cut -d: -f 6)
 
-source /opt/rh/rh-ruby*/enable
+if [[ -n $(find /opt/rh -mindepth 1 -maxdepth 1 -type d -name "rh-ruby*") ]]; then
+  source /opt/rh/rh-ruby*/enable
+fi
 
 # Auto generate cert and key
 env USER=$THE_USER /opt/vespa-systemtests/lib/node_server.rb &
