@@ -30,9 +30,27 @@ class OutOfSyncReplicasActivationTest < SearchTest
     vespa.storage['storage']
   end
 
+  def dump_debug_information
+    vespa.adminserver.execute('vespa-stat --user 1')
+    content_cluster.distributor.each_value{|n|
+      puts "\nDistributor #{n.index}:"
+      puts n.get_status_page('/systemstate')
+    }
+    content_cluster.storage.each_value{|n|
+      puts "\nContent node #{n.index}:"
+      puts n.get_status_page('/systemstate')
+    }
+  end
+
   def test_prefer_activating_bigger_ready_replica_when_out_of_sync
     deploy_app(make_app(disable_merges: true))
     start
+
+    # FIXME temporary
+    ['', '2'].each do |n|
+      content_cluster.distributor['0'].execute("vespa-logctl distributor#{n}:distributor.operation.idealstate.setactive debug=on,spam=on")
+      content_cluster.distributor['0'].execute("vespa-logctl distributor#{n}:distributor.callback.doc.put debug=on,spam=on")
+    end
 
     # Make all docs end up on node 1 which isn't the ideal node when both nodes are up
     set_node_state('storage', 0, 'd')
@@ -46,11 +64,15 @@ class OutOfSyncReplicasActivationTest < SearchTest
     # Transfer bucket ownership back to distributor 0, wiping any existing transient state.
     set_node_state('distributor', 0, 'u')
 
-    vespa.adminserver.execute('vespa-stat --user 1')
+    dump_debug_information
 
     # Old replica is technically less "ideal" but has more documents and is indexed,
     # so that's the one that should be activated.
-    wait_for_hitcount('query=sddocname:test&nocache', 11)
+    begin
+      wait_for_hitcount('query=sddocname:test&nocache', 11)
+    ensure
+      dump_debug_information
+    end
   end
 
   def set_node_state(type, idx, state)
