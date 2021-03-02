@@ -42,53 +42,46 @@ class DocumentV1Test < SearchTest
     httpheaders={}
     numDocuments = 3500
 
-    # Do some cleanup so the test can run over and over without deleting index if it fails
-    i = 0
-    while i < numDocuments  do
-        # Feed ok test
-        response = http.delete("/document/v1/fruit/banana/docid/doc" + i.to_s, httpheaders)
-        assert_equal("200", response.code)
-        i += 1
-    end
+    puts "Test starting"
 
-    # Get zero result test
+    puts "Get zero result test"
     response = http.get("/document/v1/fruit/banana/docid/doc1")
     assert_equal("404", response.code)
     assert_json_string_equal(
        "{\"pathId\":\"/document/v1/fruit/banana/docid/doc1\", \"id\":\"id:fruit:banana::doc1\"}",
        response.body)
 
-    # Visit zero result test
+    puts "Visit zero result test"
     response = http.get("/document/v1/fruit/banana/docid/")
     assert_equal("200", response.code)
     assert_json_string_equal(
       "{\"documents\":[], \"documentCount\":0, \"pathId\":\"/document/v1/fruit/banana/docid/\"}",
       response.body)
 
-    # Feed with conditional feed, but document is non existing.
+    puts "Feed with conditional feed, but document is non existing."
     response = http.post("/document/v1/fruit/banana/docid/doc1?condition=banana.colour==''", feedData, httpheaders)
     assert_equal("412", response.code)
 
-    # Feed ok test
-    # Add route flag as well just to see that it works if route is set.
+    puts "Feed ok test"
+    puts "Add route flag as well just to see that it works if route is set."
     response = http.post("/document/v1/fruit/banana/docid/doc1?route=default", feedData, httpheaders)
     assert_equal("200", response.code)   
     assert_json_string_equal(
       "{\"pathId\":\"/document/v1/fruit/banana/docid/doc1\", \"id\":\"id:fruit:banana::doc1\"}", 
       response.body)
 
-    # Empty route should fail
+    puts "Empty route should fail"
     response = http.post("/document/v1/fruit/banana/docid/doc1?route=", feedData, httpheaders)
     assert_equal("400", response.code)
 
-    # Feed, but with wrong condition
+    puts "Feed, but with wrong condition"
     response = http.post("/document/v1/fruit/banana/docid/doc1?condition=banana.colour=='wrong'&route=default", feedData, httpheaders)
     assert_equal("412", response.code)
 
-    # Visit ok test
+    puts "Visit ok test"
     response = http.get("/document/v1/fruit/banana/docid/")
     assert_equal("200", response.code)
-    # Visit completes before covering the entire global bucket space, hence the continuation token.
+    puts "Visit completes before covering the entire global bucket space, hence the continuation token."
     assert_json_string_equal(
       "{\"documents\": [{\"id\":\"id:fruit:banana::doc1\",\"fields\":{\"colour\":\"yellow\"}}]," +
       "\"pathId\":\"/document/v1/fruit/banana/docid/\"," +
@@ -96,64 +89,64 @@ class DocumentV1Test < SearchTest
       "\"continuation\":\"AAAACAAAAAAAAADDAAAAAAAAAMIAAAAAAAABAAAAAAEgAAAAAAAAQwAAAAAAAAAA\"}",
       response.body)
 
-    # Visit without any matching documents
+    puts "Visit without any matching documents"
     response = http.get("/document/v1/fruit/banana/docid/?selection=false")
     assert_equal("200", response.code)
-    # Visit exhausts the entire bucket space looking for a document, so no continuation this time
+    puts "Visit exhausts the entire bucket space looking for a document, so no continuation this time"
     assert_json_string_equal(
       "{\"documents\": []," +
       "\"pathId\":\"/document/v1/fruit/banana/docid/\"," +
       "\"documentCount\":0}",
       response.body)
 
-    # Conditional feed, with true condition
+    puts "Conditional feed, with true condition"
     response = http.post("/document/v1/fruit/banana/docid/doc1?condition=banana.colour=='yellow'", feedData, httpheaders)
     assert_equal("200", response.code)   
     assert_json_string_equal(
       "{\"pathId\":\"/document/v1/fruit/banana/docid/doc1\", \"id\":\"id:fruit:banana::doc1\"}",
       response.body)
 
-    # Conditional update, with true condition
+    puts "Conditional update, with true condition"
     response = http.put("/document/v1/fruit/banana/docid/doc1?condition=banana.colour=='yellow'", feedDataUpdate, httpheaders)
     assert_equal("200", response.code)
     assert_json_string_equal(
       "{\"id\":\"id:fruit:banana::doc1\",\"pathId\":\"/document/v1/fruit/banana/docid/doc1\"}",
       response.body)
 
-    # Verify that update happened
+    puts "Verify that update happened"
     response = http.get("/document/v1/fruit/banana/docid/doc1", httpheaders)
     assert_equal("200", response.code)
     assert_json_string_equal(
       "{\"pathId\":\"/document/v1/fruit/banana/docid/doc1\",\"id\":\"id:fruit:banana::doc1\",\"fields\":{\"colour\":\"red\"}}", 
      response.body)
 
-    # Delete document with wrong condition
+    puts "Delete document with wrong condition"
     response = http.delete("/document/v1/fruit/banana/docid/doc1?condition=banana.colour=='wrong'", httpheaders)
     assert_equal("412", response.code)
     assert_match /TEST_AND_SET_CONDITION_FAILED/, response.body
     
-    # Delete again, same document, correct condition
+    puts "Delete again, same document, correct condition"
     response = http.delete("/document/v1/fruit/banana/docid/doc1?condition=banana.colour=='red'", httpheaders)
     assert_equal("200", response.code)
     assert_json_string_equal(
       "{\"id\":\"id:fruit:banana::doc1\",\"pathId\":\"/document/v1/fruit/banana/docid/doc1\"}", 
       response.body)
 
-    # Verify document is gone
+    puts "Verify document is gone"
     response = http.get("/document/v1/fruit/banana/docid/")
     assert_equal("200", response.code)
     assert_json_string_equal(
       "{\"documents\": [], \"documentCount\":0, \"pathId\":\"/document/v1/fruit/banana/docid/\"}", 
       response.body)
 
-    # Feed non-URL-encoded ID — horrible but customers do this today :'(
+    puts "Feed non-URL-encoded ID — horrible but customers do this today :'("
     response = http.post("/document/v1/fruit/banana/docid/vg.no/latest/news/!", feedData, httpheaders)
     assert_equal("200", response.code)   
     assert_json_string_equal(
       "{\"pathId\":\"/document/v1/fruit/banana/docid/vg.no/latest/news/!\", \"id\":\"id:fruit:banana::vg.no/latest/news/!\"}", 
       response.body)
 
-    # Feed challenging ID
+    puts "Feed challenging ID"
     response = http.post("/document/v1/fruit/banana/docid/vg.no%2Flatest%2Fnews%2F%21", feedData, httpheaders)
     assert_equal("200", response.code)   
     assert_json_string_equal(
@@ -161,12 +154,12 @@ class DocumentV1Test < SearchTest
       response.body)
     http.delete("/document/v1/fruit/banana/docid/vg.no%2Flatest%2Fnews%2F%21", httpheaders)
 
-    # Send document with wrong field
+    puts "Send document with wrong field"
     response = http.post("/document/v1/fruit/banana/docid/doc1", feedDataBroken, httpheaders)
     assert_equal("400", response.code)
     assert_match /No field 'habla babla' in the structure of type 'banana'/, response.body
     #
-    # Update, with create = false
+    puts "Update, with create = false"
     response = http.put("/document/v1/fruit/banana/docid/doc1?create=false", feedDataUpdate, httpheaders)
     assert_equal("200", response.code)
     assert_json_string_equal(
@@ -175,7 +168,7 @@ class DocumentV1Test < SearchTest
     response = http.get("/document/v1/fruit/banana/docid/doc1")
     assert_equal("404", response.code)
 
-    # Conditional update, with true condition
+    puts "Conditional update, with true condition"
     response = http.put("/document/v1/fruit/banana/docid/doc1?create=true", feedDataUpdate, httpheaders)
     assert_equal("200", response.code)
     assert_json_string_equal(
@@ -188,16 +181,17 @@ class DocumentV1Test < SearchTest
        "\"fields\":{\"colour\":\"red\"}}",
        response.body)
 
-    # Feed some documents
+    puts "Feed some documents"
     i = 0
     while i < numDocuments  do
         # Feed ok test
         response = http.post("/document/v1/fruit/banana/docid/doc" + i.to_s, feedData, httpheaders)
-        assert_equal("200", response.code)   
-        i +=1
+        assert_equal("200", response.code)
+        i += 1
+        puts "#{i} docs fed" if ((i%100) == 0)
     end
 
-    # Visit all documents and update banana colour
+    puts "Visit all documents and update banana colour"
     contToken = ""
     for q in 0..numDocuments
       response = http.put("/document/v1/fruit/banana/docid/?selection=true&cluster=content" + contToken, feedDataUpdate, httpheaders)
@@ -210,7 +204,7 @@ class DocumentV1Test < SearchTest
        end
     end
 
-    # Visit all documents and refeed them
+    puts "Visit all documents and refeed them"
     contToken = ""
     for q in 0..numDocuments
       response = http.post("/document/v1/fruit/banana/docid/?destinationCluster=content&cluster=content&selection=true" + contToken, "", httpheaders)
@@ -223,10 +217,10 @@ class DocumentV1Test < SearchTest
        end
     end
 
-    # Visit all documents, verify colour and the total number of documents
+    puts "Visit all documents, verify colour and the total number of documents"
     found = 0
     contToken = ""
-    # Avoid infinite loop in case of cycles, numDocuments is absolute max
+    puts "Avoid infinite loop in case of cycles, numDocuments is absolute max"
     for q in 0..numDocuments
        # Visit zero result test
        response = http.get("/document/v1/fruit/banana/docid/" + contToken)
@@ -244,7 +238,7 @@ class DocumentV1Test < SearchTest
     end
     assert_equal(numDocuments, found)
 
-    # Visit all documents and delete them
+    puts "Visit all documents and delete them"
     contToken = ""
     found = 0
     for q in 0..numDocuments
@@ -262,7 +256,7 @@ class DocumentV1Test < SearchTest
     end
     assert_equal(numDocuments, found)
 
-    # Visit all documents and verify there are none
+    puts "Visit all documents and verify there are none"
     found = 0
     contToken = ""
     for q in 0..numDocuments
@@ -280,7 +274,7 @@ class DocumentV1Test < SearchTest
     end
     assert_equal(0, found)
 
-    assert(verify_with_retries(http, {"PUT" => 3504, "UPDATE" => 3, "REMOVE" => 3502}, {"PUT" => 4, "REMOVE" => 1}))
+    assert(verify_with_retries(http, {"PUT" => 3504, "UPDATE" => 3, "REMOVE" => 2}, {"PUT" => 4, "REMOVE" => 1}))
   end
 
   def deploy_application
