@@ -200,7 +200,7 @@ class LidSpaceCompactionTest < SearchTest
     ideal_not_ready = get_ideal_stats(0)
     puts "ideal ready.0:    " + ideal_ready.to_s
     puts "ideal notready.2: " + ideal_not_ready.to_s
-    num_tries = 300
+    num_tries = 600
     num_tries *= VALGRIND_TIMEOUT_MULTIPLIER if @valgrind
     for i in 0..num_tries do
       puts "wait_for_docs_moved(#{num_docs}): try=#{i})"
@@ -231,7 +231,10 @@ class LidSpaceCompactionTest < SearchTest
   def test_lid_usage_metrics
     set_description("Test that document meta store metrics regarding lid usage is updated and reported")
     deploy_app(SearchApp.new.
-               cluster(SearchCluster.new.sd(SEARCH_DATA + "test.sd")))
+               cluster(SearchCluster.new.sd(SEARCH_DATA + "test.sd").
+                       config(ConfigOverride.new("vespa.config.search.core.proton").
+                              add("lidspacecompaction", ConfigValues.new.
+                                  add("allowedlidbloat", 1000)))))
     start
     feed_puts(0, 400, true)
     assert_corpus_hitcount(400)
