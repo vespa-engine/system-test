@@ -35,10 +35,12 @@ class OutOfSyncReplicasActivationTest < SearchTest
     content_cluster.distributor.each_value{|n|
       puts "\nDistributor #{n.index}:"
       puts n.get_status_page('/systemstate')
+      puts n.get_status_page('/distributor?page=buckets')
     }
     content_cluster.storage.each_value{|n|
       puts "\nContent node #{n.index}:"
       puts n.get_status_page('/systemstate')
+      puts n.get_status_page('/bucketdb?showall')
     }
   end
 
@@ -50,6 +52,9 @@ class OutOfSyncReplicasActivationTest < SearchTest
     ['', '2'].each do |n|
       content_cluster.distributor['0'].execute("vespa-logctl distributor#{n}:distributor.operation.idealstate.setactive debug=on,spam=on")
       content_cluster.distributor['0'].execute("vespa-logctl distributor#{n}:distributor.callback.doc.put debug=on,spam=on")
+      content_cluster.distributor['0'].execute("vespa-logctl distributor#{n}:pendingclusterstate debug=on,spam=on")
+      content_cluster.distributor['0'].execute("vespa-logctl distributor#{n}:pendingbucketspacedbtransition debug=on,spam=on")
+      content_cluster.distributor['0'].execute("vespa-logctl searchnode#{n}:storage.bucketdb.manager debug=on,spam=on")
     end
 
     # Make all docs end up on node 1 which isn't the ideal node when both nodes are up
