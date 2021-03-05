@@ -134,7 +134,7 @@ class SearchAppGenTest < Test::Unit::TestCase
                      visibility_delay(5).selection("doc_sel").
                      flush_on_shutdown(true).
                      use_local_node(true).
-                     redundancy(3).ready_copies(2).num_parts(3).threads_per_search(2).allowedlidbloat(3)).
+                     redundancy(3).ready_copies(2).num_parts(3).threads_per_search(2).allowed_lid_bloat(3)).
              services_xml
 
     expected_substr = '
