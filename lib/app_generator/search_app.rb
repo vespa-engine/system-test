@@ -13,6 +13,7 @@ class SearchApp < App
                   :garbagecollectioninterval => :garbagecollectioninterval,
                   :doc_type => :doc_type,
                   :threads_per_search => :threads_per_search,
+                  :allowedlidbloat => :allowedlidbloat,
                   :num_summary_threads => :num_summary_threads,
                   :initialize_threads => :initialize_threads,
                   :hwinfo_disk_writespeed => :hwinfo_disk_writespeed,

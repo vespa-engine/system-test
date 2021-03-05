@@ -24,10 +24,10 @@ class LidSpaceCompactionTest < SearchTest
 
   def get_app(lid_bloat_factor = 0.2, two_nodes = false, disable_flush = false)
     cluster = SearchCluster.new.sd(SEARCH_DATA + "test.sd").
+      allowedlidbloat(1).
       config(ConfigOverride.new("vespa.config.search.core.proton").
              add("lidspacecompaction", ConfigValues.new.
                  add("interval", 2.0).
-                 add("allowedlidbloat", 1).
                  add("allowedlidbloatfactor", lid_bloat_factor))).
       tune_searchnode({:resizing => {:'amortize-count' => 0}})
     cluster.disable_flush_tuning if disable_flush
@@ -231,10 +231,8 @@ class LidSpaceCompactionTest < SearchTest
   def test_lid_usage_metrics
     set_description("Test that document meta store metrics regarding lid usage is updated and reported")
     deploy_app(SearchApp.new.
-               cluster(SearchCluster.new.sd(SEARCH_DATA + "test.sd").
-                       config(ConfigOverride.new("vespa.config.search.core.proton").
-                              add("lidspacecompaction", ConfigValues.new.
-                                  add("allowedlidbloat", 1000)))))
+               cluster(SearchCluster.new.sd(SEARCH_DATA + "test.sd")).
+               allowedlidbloat(1000))
     start
     feed_puts(0, 400, true)
     assert_corpus_hitcount(400)
