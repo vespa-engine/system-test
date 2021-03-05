@@ -230,9 +230,7 @@ class LidSpaceCompactionTest < SearchTest
 
   def test_lid_usage_metrics
     set_description("Test that document meta store metrics regarding lid usage is updated and reported")
-    deploy_app(SearchApp.new.
-               cluster(SearchCluster.new.sd(SEARCH_DATA + "test.sd")).
-               allowedlidbloat(1000))
+    deploy_app(SearchApp.new.sd(SEARCH_DATA + "test.sd").allowedlidbloat(1000))
     start
     feed_puts(0, 400, true)
     assert_corpus_hitcount(400)
