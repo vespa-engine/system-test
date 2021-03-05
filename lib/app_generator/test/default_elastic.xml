@@ -25,6 +25,9 @@
       <initialize>
         <threads>16</threads>
       </initialize>
+      <lidspacecompaction>
+        <allowedlidbloat>100</allowedlidbloat>
+      </lidspacecompaction>
       <hwinfo>
         <disk>
           <shared>true</shared>
