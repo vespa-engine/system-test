@@ -20,6 +20,7 @@ class TlsTest < ContainerTest
     # Deploy a dummy app to get a reference to the container node, which is needed for uploading the certificate
     start(ContainerApp.new.container(Container.new))
     system("openssl req -nodes -x509 -newkey rsa:4096 -keyout #{dirs.tmpdir}#{KEY_FILE} -out #{dirs.tmpdir}#{CERT_FILE} -days 365 -subj '/CN=#{@container.hostname}'")
+    system("chmod 644 #{dirs.tmpdir}#{KEY_FILE} #{dirs.tmpdir}#{CERT_FILE}")
     @container.copy("#{dirs.tmpdir}#{KEY_FILE}", dirs.tmpdir)
     @container.copy("#{dirs.tmpdir}#{CERT_FILE}", dirs.tmpdir)
 
