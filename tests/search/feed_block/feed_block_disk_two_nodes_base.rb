@@ -155,6 +155,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     hit_count_query = "query=sddocname:test&nocache&model.searchPath=#{upnode}/0"
     hit_count = search(hit_count_query).hitcount
     puts "Failed at doccount #{hit_count}"
+    hit_count
   end
 
   def feed_until_failure_thread(upnode, id)
@@ -244,11 +245,11 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     settle_cluster_state("uir")
   end
 
-  def mostly_settle_document_redistribution(upnode)
+  def mostly_settle_document_redistribution(upnode, num_docs)
     hit_count_query = "query=sddocname:test&nocache&model.searchPath=#{upnode}/0"
     hit_count = search(hit_count_query).hitcount
-    puts "hit count = #{hit_count}"
-    hit_count_settle_limit = hit_count / 2 + 100
+    puts "num docs = #{num_docs},  hit count = #{hit_count}"
+    hit_count_settle_limit = num_docs / 2 + 100
     while hit_count >= hit_count_settle_limit
       sleep_with_reason(@sleep_delay, ", waiting for node #{upnode} hit count (currently #{hit_count}) to be less than #{hit_count_settle_limit}")
       perform_du(0)
@@ -271,10 +272,10 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     disklimit = calculate_disklimit
     redeploy_with_reduced_disk_limit(disklimit.disklimit, shared_disk)
     stop_node_to_be_down_during_initial_feeding(disklimit.downnode)
-    feed_until_failure(disklimit.upnode)
+    num_docs = feed_until_failure(disklimit.upnode)
     perform_du(disklimit.upnode)
     start_node_that_was_down_during_initial_feeding(disklimit.downnode)
-    mostly_settle_document_redistribution(disklimit.upnode)
+    mostly_settle_document_redistribution(disklimit.upnode, num_docs)
     puts "Feeding again after effective expansion from 1 to 2 nodes"
     feed_after_expansion()
   end
