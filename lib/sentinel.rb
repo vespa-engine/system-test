@@ -3,6 +3,8 @@ require 'rpc/rpcwrapper'
 
 class Sentinel
 
+  NAP_TIME = 0.1
+
 def initialize(testcase, tls_env = nil)
   @testcase = testcase
   @rpcwrap = nil
@@ -64,13 +66,13 @@ def stop_service(service, timeout, force = false)
       return true
     end
     count = count + 1
-    sleep 0.5
+    sleep NAP_TIME
     if (force && count == timeout)
       cmd = "kill -9 #{pid} 2>&1"
       output = `#{cmd}`
       @testcase.output("#{cmd}: #{output}")
     end
-    if (0.5*count > timeout) then
+    if (NAP_TIME*count > timeout) then
       @testcase.output("Timeout, service: " + service + " not stopped, state: " + state)
       return false
     end
@@ -95,9 +97,9 @@ def start_service(service, timeout)
       @testcase.output("Service started: " + service)
       return true
     else
-      sleep 0.5
+      sleep NAP_TIME
       count = count + 1
-      if (0.5*count > timeout) then
+      if (NAP_TIME*count > timeout) then
         @testcase.output("Timeout, service not started: " + service)
         return false
       end
