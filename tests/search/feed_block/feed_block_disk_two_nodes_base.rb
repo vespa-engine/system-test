@@ -31,7 +31,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
 
   def create_group
     if @num_parts == 1
-      NodeGroup.new(0, "mytopgroup").
+      return NodeGroup.new(0, "mytopgroup").
         node(nodespec(0))
     end
     assert(@num_parts == 2)
@@ -118,10 +118,10 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
   end
 
   def http_v1_api_put_long(http, id)
-    puts "Putting doc with id #{id}"
     url = "/document/v1/#{@namespace}/#{@doc_type}/docid/#{id}"
     httpHeaders = {}
     jsonarray = strings_as_json(select_strings)
+    puts "Putting doc with id #{id}"
     http_v1_api_post(http,
                      url,
                      "{ \"fields\": { \"a1\" : #{jsonarray} } }",
@@ -141,14 +141,31 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     sleep delay
   end
 
-  def feed_until_failure(http, upnode, id)
+  def feed_until_failure(upnode)
+    threadlist = []
+    for i in 1..4
+      id = i * 1000000 # Ensure id ranges are disjoint
+      threadlist << Thread.new(id) do |my_id|
+        feed_until_failure_thread(upnode, my_id)
+      end
+    end
+    threadlist.each do |thread|
+      thread.join
+    end
+    hit_count_query = "query=sddocname:test&nocache&model.searchPath=#{upnode}/0"
+    hit_count = search(hit_count_query).hitcount
+    puts "Failed at doccount #{hit_count}"
+  end
+
+  def feed_until_failure_thread(upnode, id)
+    http = https_client.create_client(vespa.document_api_v1.host, vespa.document_api_v1.port)
     fails = 0
     flushedid = id - 1
     while fails < 2
       response = http_v1_api_put_long(http, id)
       if response.code == "200"
         fails = 0
-        if id >= 1000 + flushedid
+        if id >= 200 + flushedid
           puts "Flushing to disk to ensure space used after put #{id}"
           get_node(upnode).trigger_flush
           flushedid = id
@@ -163,11 +180,12 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
       end
     end
     assert(reached_disklimit(response))
-    # Return failed id
-    id
+    puts "Failed at id #{id}"
   end
 
-  def feed_after_expansion(http, id)
+  def feed_after_expansion()
+    http = https_client.create_client(vespa.document_api_v1.host, vespa.document_api_v1.port)
+    id = 0 # Range 0..1M
     20.times do
       response = http_v1_api_put_long(http, id)
       assert(response.code == "200")
@@ -208,8 +226,9 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     deploy_app(app)
     sleep_with_reason(@sleep_delay, " to allow new config to propagate")
     settle_cluster_state("uimrd")
-    get_node(0).logctl2("proton.flushengine.flushengine", "all=on")
-    get_node(1).logctl2("proton.flushengine.flushengine", "all=on")
+    for i in 1..@num_parts
+      get_node(i-1).logctl2("proton.flushengine.flushengine", "all=on")
+    end
   end
 
   def stop_node_to_be_down_during_initial_feeding(downnode)
@@ -225,10 +244,11 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     settle_cluster_state("uir")
   end
 
-  def mostly_settle_document_redistribution(upnode, failedid)
+  def mostly_settle_document_redistribution(upnode)
     hit_count_query = "query=sddocname:test&nocache&model.searchPath=#{upnode}/0"
-    hit_count = failedid - 1
-    hit_count_settle_limit = failedid / 2 + 100
+    hit_count = search(hit_count_query).hitcount
+    puts "hit count = #{hit_count}"
+    hit_count_settle_limit = hit_count / 2 + 100
     while hit_count >= hit_count_settle_limit
       sleep_with_reason(@sleep_delay, ", waiting for node #{upnode} hit count (currently #{hit_count}) to be less than #{hit_count_settle_limit}")
       perform_du(0)
@@ -251,14 +271,12 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     disklimit = calculate_disklimit
     redeploy_with_reduced_disk_limit(disklimit.disklimit, shared_disk)
     stop_node_to_be_down_during_initial_feeding(disklimit.downnode)
-    http = https_client.create_client(vespa.document_api_v1.host, vespa.document_api_v1.port)
-    failedid = feed_until_failure(http, disklimit.upnode, 1)
-    puts "Failed id is #{failedid}"
+    feed_until_failure(disklimit.upnode)
     perform_du(disklimit.upnode)
     start_node_that_was_down_during_initial_feeding(disklimit.downnode)
-    mostly_settle_document_redistribution(disklimit.upnode, failedid)
+    mostly_settle_document_redistribution(disklimit.upnode)
     puts "Feeding again after effective expansion from 1 to 2 nodes"
-    feed_after_expansion(http, failedid)
+    feed_after_expansion()
   end
 
 end
