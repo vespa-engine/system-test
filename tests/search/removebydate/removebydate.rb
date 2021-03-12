@@ -31,28 +31,32 @@ class RemoveByDate < IndexedSearchTest
     start
     vespa.adminserver.logctl("searchnode:proton.server.documentremovetask", "debug=on")
 
-    future = current_time + 180
-    testfeed = generatefeed(6, future, 30)
-    feed_until_correct_output(testfeed, 6, 0, 0)
+    initial_age = 180
+    puts "initial_age : #{initial_age}"
+    future = current_time + initial_age
+    doc_count = 6
+    age_step = initial_age / doc_count
+    testfeed = generatefeed(doc_count, future, age_step)
+    feed_until_correct_output(testfeed, doc_count, 0, 0)
 
-    wait_for_hitcount("sddocname:newsarticle", 6)
+    wait_for_hitcount("sddocname:newsarticle", doc_count)
     redeploy("newsarticle.pubdate > now()")
     # To make sure that old documents don't go in at all
-    testfeed2 = generatefeed(10, 10, 30)
+    testfeed2 = generatefeed(10, 10, age_step)
     feed_until_correct_output(testfeed2, 0, 10, 0)
 
     #feed some updates as well
-    testupdates = generateupdates(6)
-    feed_until_correct_output(testupdates, 6, 0, 0)
+    testupdates = generateupdates(doc_count)
+    feed_until_correct_output(testupdates, doc_count, 0, 0)
 
-    # Should still be having 6 docs.
-    diff = [future - current_time, 0].max
+    # Should still be having doc_count docs.
+    diff = future - current_time
     puts "Diff before waiting: #{diff}"
-    wait_for_hitcount("sddocname:newsarticle", 6, 180);
+    wait_for_hitcount("sddocname:newsarticle", doc_count, initial_age) if diff > 0
     diff = [future - current_time, 0].max
     puts "Diff after waiting: #{diff}. About to sleep"
     sleep(diff)
-    cnt = wait_for_not_hitcount("sddocname:newsarticle", 6, 180)
+    cnt = wait_for_not_hitcount("sddocname:newsarticle", doc_count, initial_age)
     wait_for_hitcount("sddocname:newsarticle", cnt - 2, 360)
     wait_for_hitcount("sddocname:newsarticle", cnt - 4, 360)
     wait_for_hitcount("sddocname:newsarticle", 0, 360)
