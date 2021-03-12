@@ -144,21 +144,21 @@ class ClusterControllerTest < VdsTest
   end
 
   def test_state_rest_api_redirect_to_master
-        # Non-master cluster controller can answer cluster list
+    # Non-master cluster controller can answer cluster list
     page = vespa.clustercontrollers["1"].get_status_page("/cluster/v2/")
     puts page
     json = JSON.parse(page)
     assert_equal("/cluster/v2/storage", json["cluster"]["storage"]["link"])
 
-        # But nothing else
+    # But nothing else
     response, data = vespa.clustercontrollers["1"].http_request(
             "/cluster/v2/storage?recursive=true")
     assert_equal('307', response.code, response.message)
     assert_equal('Temporary Redirect', response.message)
-    assert_match(/^https:\/\/[^\/]+\/cluster\/v2\/storage\?recursive=true$/,
+    assert_match(/^http?:\/\/[^\/]+\/cluster\/v2\/storage\?recursive=true$/,
                  response["Location"])
 
-        # Check that the redirection work
+    # Check that the redirection work
     puts "Fetching status from URL we got redirected to: '" +
          "#{response["Location"]}'."
     masterurl = URI(response["Location"]);
@@ -168,7 +168,7 @@ class ClusterControllerTest < VdsTest
     json = JSON.parse(response.body())
     assert_equal("up", json["service"]["storage"]["node"]["0"]["state"]["user"]["state"], page)
 
-        # Take down one controller.. New master should respond
+    # Take down one controller.. New master should respond
     vespa.clustercontrollers["0"].stop()
     puts "Waiting for cluster controller 1 to report as master. (Have to wait" +
          " beyond the master cooldown period, which currently is 60 seconds " +
