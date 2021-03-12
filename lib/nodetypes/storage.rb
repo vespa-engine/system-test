@@ -767,7 +767,7 @@ class Storage
     @testcase.output("Waiting until storage cluster is ready") 
     # Effectively ignore timeout since they are usually ad-hoc and
     # lead to test instabilities when systest nodes are heavily loaded.
-    timeout = @testcase.timeout || adjust_timeout(timeout)
+    timeout = @testcase.timeout || timeout
     @testcase.output("Waiting for fleetcontroller...")
     get_master_fleet_controller().wait_for_stable_system
     get_master_fleet_controller().wait_for_matching_distribution_states
