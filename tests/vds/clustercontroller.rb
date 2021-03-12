@@ -198,7 +198,7 @@ class ClusterControllerTest < VdsTest
     puts "Waiting for bucket count metric to be visible in State Rest API"
     1000000.times { |i|
         response, data = vespa.clustercontrollers["0"].http_request(
-                "/cluster/v2/storage/storage/0/0")
+                "/cluster/v2/storage/storage/0")
         if (response.code.to_i == 200)
             json = JSON.parse(data)
             if (json == nil || json["metrics"] == nil || json["metrics"]["bucket-count"] == nil)
