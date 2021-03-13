@@ -144,7 +144,7 @@ class ConfigServer < CloudConfigTest
  
     puts "Fix broken app"
     vespa.configservers["0"].execute("cp #{services_xml}.bak #{services_xml}") # Go back to original services.xml, server should come up again
-    wait_for_atleast_log_matches("All applications redeployed successfully", 1, 60)
+    wait_for_atleast_log_matches("All applications redeployed successfully", 1, 180)
     assert_health_status_for_config_server("up")
   end
 
