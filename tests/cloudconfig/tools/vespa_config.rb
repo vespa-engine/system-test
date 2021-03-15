@@ -1,3 +1,4 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'app_generator/search_app'
 require 'environment'
@@ -6,7 +7,7 @@ class VespaConfig < CloudConfigTest
 
   def setup
     set_owner("musum")
-    set_description("Test vespa-config.pl")
+    set_description("Tests vespa-config.pl")
     @node = vespa.nodeproxies.first[1]
   end
 
@@ -21,8 +22,7 @@ class VespaConfig < CloudConfigTest
     @hostname = @node.hostname
 
     run_configsource_test
-    run_configserverport_test
-    run_zkstring_test
+    run_configserver_port_test
     run_empty_port_test
   end
 
@@ -31,28 +31,9 @@ class VespaConfig < CloudConfigTest
     assert_equal("tcp/" + @hostname + ":19070", output.strip)
   end
 
-  def run_configserverport_test
+  def run_configserver_port_test
     output = call_vespa_config_script("-configserverport")
     assert_equal("19070", output.strip)
-  end
-
-  def verify_output_ok
-    verify_output(0, "yes")
-  end
-
-  def verify_output_fail
-    verify_output(1, "no")
-  end
-
-  def verify_output(expected_exit_code, expected_message)
-    (exit_code, output) = call_vespa_config_script("-isthisaconfigserver", true)
-    assert_equal(expected_exit_code, exit_code.to_i)
-    assert_equal(expected_message, output.strip)
-  end
-
-  def run_zkstring_test
-    output = call_vespa_config_script("-zkstring")
-    assert_equal(@hostname + ":2181", output.strip)
   end
 
   def run_empty_port_test
