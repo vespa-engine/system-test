@@ -55,6 +55,7 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
   end
 
   def assert_atleast_some_queries(exp_queries, count)
+    sleep 1 # We need at least one ping round to establish group coverage
     before = get_num_queries_all(exp_queries)
     puts "before: " + before.inspect
     for i in 0...count do
