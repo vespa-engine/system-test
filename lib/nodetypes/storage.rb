@@ -156,17 +156,17 @@ class Storage
               currVersion = vdsnode.get_cluster_state_version
               max_fetch_time = [Time.now - time_started, max_fetch_time].max
               if (currVersion >= clusterstate.version)
-                #@testcase.output("Cluster state version in #{node.type}.#{index} is now #{currVersion}")
+                @testcase.output("Cluster state version in #{node.type}.#{index} is now #{currVersion}")
                 break;
               end
               if (endtime < Time.now)
                 statuspage = vdsnode.get_status_page("/systemstate")
-                puts "Status page to get cluster state: '#{statuspage}'"
+                @testcase.output("Status page to get cluster state: '#{statuspage}'")
                 clusterstate = vdsnode.get_system_state
-                puts "Cluster state parsed from it: '#{clusterstate}'"
+                @testcase.output("Cluster state parsed from it: '#{clusterstate}'")
                 raise "Node #{node.type}.#{index} still has version #{currVersion} after timeout of #{timeout} seconds."
               end
-              if (i == 0)
+              if ((i % 50) == 0)
                 @testcase.output("Waiting for #{node.type}.#{index} to get version >= #{clusterstate.version}. Now has #{currVersion}")
               end
               sleep 0.01
