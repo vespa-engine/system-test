@@ -13,7 +13,7 @@ class ProtonFlushTargetTest < IndexedSearchTest
     set_description("Test that attributes, index, and docsummary are flushed to disk")
     deploy_app(SearchApp.new.
                          sd(selfdir+"test.sd").
-                         tune_searchnode({:flushstrategy => {:native => {:component => {:maxage => 60}}}}))
+                         tune_searchnode({:flushstrategy => {:native => {:component => {:maxage => 20}}}}))
     start
     vespa.adminserver.logctl("searchnode:proton.flushengine.flushengine", "debug=on")
     vespa.adminserver.logctl("searchnode:proton.flushengine.flushengine", "spam=on")
@@ -85,7 +85,7 @@ class ProtonFlushTargetTest < IndexedSearchTest
 
     status_before = get_index_status(searchnode)
     feed_and_wait_for_docs("test", 3, :file => "#{selfdir}/docs.2.xml")
-    timeout = Time.now + 60
+    timeout = Time.now + 20
     while (Time.now < timeout) do
       pre = Time.now
       status_after = get_index_status(searchnode)
