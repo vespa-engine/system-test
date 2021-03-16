@@ -86,9 +86,9 @@ class MergingMaxNodesTest < MultiProviderStorageTest
 
   def test_merge_max_nodes
     ['', '2', '3', '4', '5', '6'].each do |n|
-      vespa.adminserver.execute("vespa-logctl distributor#{n}:distributor.bucketdb.updater debug=on")
+      vespa.adminserver.logctl("distributor#{n}:distributor.bucketdb.updater", 'debug=on')
     end
-    vespa.adminserver.execute('vespa-logctl container-clustercontroller:com.yahoo.vespa.clustercontroller.core.SystemStateBroadcaster debug=on,spam=on')
+    vespa.adminserver.logctl('container-clustercontroller:com.yahoo.vespa.clustercontroller.core.SystemStateBroadcaster', 'debug=on,spam=on')
 
     # Feed one unique doc to each node (Have to take them up one at a time)
     take_down_all_content_nodes
