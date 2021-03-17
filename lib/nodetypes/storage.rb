@@ -166,10 +166,8 @@ class Storage
                 @testcase.output("Cluster state parsed from it: '#{clusterstate}'")
                 raise "Node #{node.type}.#{index} still has version #{currVersion} after timeout of #{timeout} seconds."
               end
-              if ((i % 50) == 0)
-                @testcase.output("Waiting for #{node.type}.#{index} to get version >= #{clusterstate.version}. Now has #{currVersion}")
-              end
-              sleep 0.01
+              @testcase.output("Waiting for #{node.type}.#{index} to get version >= #{clusterstate.version}. Now has #{currVersion}")
+              sleep 0.2
             end
             node_key = "#{node.type}.#{node.index}"
             version_fetch_time[node_key] = max_fetch_time
