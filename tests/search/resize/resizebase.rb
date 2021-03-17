@@ -1224,6 +1224,10 @@ class ResizeContentClusterBase < SearchTest
 #    clean_node if clean
     deploy_app(app, :no_init_logging => true)
     start_node
+    wait_for_content_cluster
+  end
+
+  def wait_for_content_cluster
     vespa.storage["resize"].wait_until_all_services_up(600)
   end
 
@@ -1278,6 +1282,7 @@ class ResizeContentClusterBase < SearchTest
     deploy_app(app)
     generate_feed(feedname, dictsize, numdocs, num_child_docs, basedir)
     start_initial_nodes
+    wait_for_content_cluster
     feedfile("#{basedir}/#{feedname}",
              :localfile => true, :timeout => 240)
     wait_for_hitcount(hit_count_query_string, numdocs)
@@ -1417,8 +1422,7 @@ class ResizeContentClusterBase < SearchTest
     puts rapp.stopnodes
     numdocs = rapp.numdocs
     num_child_docs = rapp.num_child_docs
-    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs,
-                 "resizefeed")
+    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs, "resizefeed")
     poll_state = start_poll_state
     poll_state.set_vespa_model(vespa)
     set_nodes_retired(rapp.stopnodes)
