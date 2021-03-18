@@ -8,6 +8,7 @@ class VDSNode < VespaNode
   def initialize(*args)
     super(*args)
     @statusport = @ports[2]
+    @status_conn = nil
   end
 
   def set_cluster(cluster)
@@ -18,6 +19,11 @@ class VDSNode < VespaNode
     return !testcase.cmd_args[:stress_test].nil?
   end
 
+  def get_status(page)
+    @status_conn = @https_client.create_client('localhost', @statusport) if ! @status_conn
+    @status_conn.get(page)
+  end
+
   def get_status_page(page = "/")
     ntries = 20
     started = Time.now
@@ -26,7 +32,7 @@ class VDSNode < VespaNode
     ntries.times { |i|
       begin
         req_start = Time.now
-        response = https_get('localhost', @statusport, page)
+        response = get_status(page)
         data = response.body
         ended = Time.now
         break
