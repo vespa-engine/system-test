@@ -1,7 +1,7 @@
 # Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'cloudconfig_test'
-require 'app_generator/container_app'
+require 'search_test'
 require 'environment'
 
 class FileDistributionWithMultipleConfigServers < CloudConfigTest
@@ -22,7 +22,12 @@ class FileDistributionWithMultipleConfigServers < CloudConfigTest
 
   def test_file_distribution
     # First deploy to setup so that we have node proxies
-    deploy_test_app
+    deploy_app(SearchApp.new.
+               sd(selfdir + "banana.sd").
+               num_hosts(3).
+               configserver("node1").
+               configserver("node2").
+               configserver("node3"))
 
     # Temp debug logging
     execute_on_all_configservers("vespa-logctl configserver:com.yahoo.vespa.filedistribution debug=on")
@@ -31,44 +36,27 @@ class FileDistributionWithMultipleConfigServers < CloudConfigTest
     # Make sure there are no files from other tests lying around
     execute_on_all_configservers("find #{Environment.instance.vespa_home}/var/db/vespa/filedistribution -mindepth 1 -type d | xargs rm -rf")
 
-    request_unknown_file_reference
-
-    add_bundle_dir(File.expand_path(selfdir), @bundle_name)
-    deploy_test_app_with_searcher
-    start
-    execute_on_all_configservers("ls -lR #{Environment.instance.vespa_home}/var/db/vespa/filedistribution | grep #{@bundle_name}")
-  end
-
-  def deploy_test_app_with_searcher
-    deploy_test_app(true)
-  end
-
-  def deploy_test_app(add_searcher=nil)
-    if add_searcher
-      puts "Deployin app with searcher"
-      app = ContainerApp.new.
-              container(Container.new.search(Searching.new.
-                                               chain(Chain.new.add(
-                                                       Searcher.new("com.yahoo.vespatest.ExtraHitSearcher")))))
-    else
-      puts "Deploying simple app"
-      app = ContainerApp.new.num_hosts(@num_hosts)
-    end
-
-    app = app.configserver("node1")
-    if @num_hosts == 3
-      app = app.configserver("node2").
-              configserver("node3")
-    end
-
-    deploy_app(app)
-  end
-
-  def request_unknown_file_reference
     # Ask for a non-existing file reference
     execute_on_all_configservers("vespa-rpc-invoke tcp/localhost:19070 filedistribution.serveFile s:277c8dcff14e84f1ec55c88395a365388375de34 i:0", :exceptiononfailure => false)
     # Sleep to make sure we have had repeated requests (we want to test that we don't end up using all resources getting a file that does not exist)
     sleep 90
+
+    add_bundle_dir(File.expand_path(selfdir), @bundle_name)
+    deploy_test_app(selfdir + "banana.sd")
+    start
+    feed_and_wait_for_docs("banana", 3, :file => selfdir+"bananafeed.xml")
+    execute_on_all_configservers("ls -lR #{Environment.instance.vespa_home}/var/db/vespa/filedistribution | grep #{@bundle_name}")
+  end
+
+  def deploy_test_app(sd)
+    deploy_app(SearchApp.new.
+               sd(sd).
+               search_chain(SearchChain.new.
+                            add(Searcher.new("com.yahoo.vespatest.ExtraHitSearcher"))).
+               num_hosts(3).
+               configserver("node1").
+               configserver("node2").
+               configserver("node3"))
   end
 
   def execute_on_all_configservers(command, params={})
