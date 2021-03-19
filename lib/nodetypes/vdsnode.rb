@@ -25,31 +25,24 @@ class VDSNode < VespaNode
   end
 
   def get_status_page(page = "/")
-    ntries = 20
     started = Time.now
     ended = started
     data = nil
-    ntries.times { |i|
+    max_fetch_time = (is_stress_test? or testcase.valgrind) ? 300 : 20
+    deadline = Time.now + max_fetch_time
+    while Time.now < deadline
       begin
-        req_start = Time.now
+        started = Time.now
         response = get_status(page)
         data = response.body
         ended = Time.now
+        @testcase.output("Used #{ended - started} seconds to get status page.")
         break
       rescue Exception => e
-        if (i < ntries)
-          sleep 1
-        else
-          ended = Time.now
-          @testcase.output("Used #{ended - started} seconds to get status page")
-          raise e
-        end
+        ended = Time.now
+        @testcase.output("Used #{ended - started} seconds to NOT get status page #{e.to_s}")
+        sleep 1
       end
-    }
-    diff = ended - started
-    max_fetch_time = (is_stress_test? or testcase.valgrind) ? 300 : 20
-    if (diff > max_fetch_time) then
-      raise "Used more than #{max_fetch_time} seconds (#{diff}) to get status page"
     end
     return data
   end
