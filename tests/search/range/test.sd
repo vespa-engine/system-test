@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 search test {
   document test {
      field i1 type int {
@@ -9,7 +9,7 @@ search test {
          indexing: attribute | summary
          attribute: fast-search
      }
-     field m1 type int[] {
+     field m1 type array<int> {
          indexing: attribute | summary
          attribute: fast-search
      }
