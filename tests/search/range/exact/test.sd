@@ -1,0 +1,20 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+     field i1 type int {
+         indexing: attribute | summary
+         attribute: fast-search
+         match:exact
+     }
+     field f1 type int {
+         indexing: attribute | summary
+         attribute: fast-search
+         match:exact
+     }
+     field m1 type int[] {
+         indexing: attribute | summary
+         attribute: fast-search
+         match:exact
+     }
+  }
+}
