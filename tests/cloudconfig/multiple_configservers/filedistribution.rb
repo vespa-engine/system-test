@@ -52,10 +52,10 @@ class FileDistributionWithMultipleConfigServers < CloudConfigTest
                                                        Searcher.new("com.yahoo.vespatest.ExtraHitSearcher")))))
     else
       puts "Deploying simple app"
-      app = ContainerApp.new.num_hosts(@num_hosts)
+      app = ContainerApp.new
     end
 
-    app = app.configserver("node1")
+    app = app.configserver("node1").num_hosts(@num_hosts)
     if @num_hosts == 3
       app = app.configserver("node2").
               configserver("node3")
