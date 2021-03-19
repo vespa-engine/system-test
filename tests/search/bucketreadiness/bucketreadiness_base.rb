@@ -142,7 +142,7 @@ class BucketReadinessBase < SearchTest
     query = get_query(search_path)
     puts "verify_hitcount(#{query}, #{exp_hitcount})"
     wait_for_hitcount(query, exp_hitcount)
-    assert_hitcount(get_query(), exp_hitcount)
+    wait_for_hitcount(get_query(), exp_hitcount)
   end
 
   def create_app(sd_file)
