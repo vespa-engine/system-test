@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class RangeSearch < IndexedSearchTest
@@ -13,6 +13,17 @@ class RangeSearch < IndexedSearchTest
                cluster_name("test").
                sd(selfdir+"test.sd"))
     start_feed_and_check
+    check_range_optimizations
+  end
+
+  def test_range_with_exact
+    deploy_app(SearchApp.new.
+               cluster_name("test").
+               sd(selfdir+"exact/test.sd"))
+    start_feed_and_check
+    # The below tests does not work when enabling exact
+    # That is expected as this is a temporary trick for enabling hash lookups
+    # check_range_optimizations
   end
 
   def start_feed_and_check
@@ -21,7 +32,6 @@ class RangeSearch < IndexedSearchTest
     check_ranges("i1")
     check_ranges("f1")
     check_ranges("m1")
-    check_range_optimizations
   end
 
   def feed_docs
@@ -30,8 +40,15 @@ class RangeSearch < IndexedSearchTest
   end
 
   def check_ranges(field)
+    check_point_lookups(field)
     check_normal_ranges(field)
     check_limited_ranges(field)
+  end
+
+  def check_point_lookups(field)
+    check_yql(field, "1", 2)
+    check_yql(field, "2", 1)
+    check_yql(field, "3", 2)
   end
 
   def check_normal_ranges(field)

@@ -4,14 +4,17 @@ search test {
      field i1 type int {
          indexing: attribute | summary
          attribute: fast-search
+         match:exact
      }
      field f1 type int {
          indexing: attribute | summary
          attribute: fast-search
+         match:exact
      }
      field m1 type array<int> {
          indexing: attribute | summary
          attribute: fast-search
+         match:exact
      }
   }
 }
