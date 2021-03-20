@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'cloudconfig_test'
@@ -24,10 +25,6 @@ class FileDistributionWithMultipleConfigServers < CloudConfigTest
     # First deploy to setup so that we have node proxies
     deploy_test_app
 
-    # Temp debug logging
-    execute_on_all_configservers("vespa-logctl configserver:com.yahoo.vespa.filedistribution debug=on")
-    execute_on_all_configservers("vespa-logctl configserver:com.yahoo.vespa.config.server.filedistribution debug=on")
-
     # Make sure there are no files from other tests lying around
     execute_on_all_configservers("find #{Environment.instance.vespa_home}/var/db/vespa/filedistribution -mindepth 1 -type d | xargs rm -rf")
 
@@ -36,7 +33,7 @@ class FileDistributionWithMultipleConfigServers < CloudConfigTest
     add_bundle_dir(File.expand_path(selfdir), @bundle_name)
     deploy_test_app_with_searcher
     start
-    execute_on_all_configservers("ls -lR #{Environment.instance.vespa_home}/var/db/vespa/filedistribution | grep #{@bundle_name}")
+    verífy_file_reference_exists_on_all_servers
   end
 
   def deploy_test_app_with_searcher
@@ -74,6 +71,21 @@ class FileDistributionWithMultipleConfigServers < CloudConfigTest
   def execute_on_all_configservers(command, params={})
     vespa.configservers.each_value do |node|
       node.execute(command, params)
+    end
+  end
+
+  def verífy_file_reference_exists_on_all_servers
+    iterations = 0
+    loop do
+      iterations = iterations + 1
+      begin
+        execute_on_all_configservers("ls -lR #{Environment.instance.vespa_home}/var/db/vespa/filedistribution | grep #{@bundle_name}")
+        break # Success!
+      rescue ExecuteError => e
+        puts "Getting file reference failed (iteration #{iterations}), will retry"
+      end
+      sleep 5
+      break if iterations > 20
     end
   end
 
