@@ -17,11 +17,6 @@ class HierarchicDistributionDispatchTest < FeedAndQueryTestBase
     run_nodes_down_and_up_test(3)
   end
 
-  def test_dispatch_when_nodes_down_and_up_with_no_ready_copies
-    set_description("Test that dispatch can handle nodes going down in a fixed group/row when doing search, using no ready copies")
-    run_nodes_down_and_up_test(0)
-  end
-
   def test_dispatch_when_nodes_down_and_up
     set_description("Test that dispatch can handle nodes going down in a fixed group/row when doing search")
     run_nodes_down_and_up_test(6)
