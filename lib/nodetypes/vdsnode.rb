@@ -58,6 +58,7 @@ class VDSNode < VespaNode
   def get_cluster_state_version
     statestr = get_system_state
     cluster_state = StorageClusterState.new(@test_case, statestr)
+    @testcase.output("cluster state parsed from '#{statestr}'")
     return cluster_state.version
   end
 
