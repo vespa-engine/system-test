@@ -151,7 +151,7 @@ class Storage
           #@testcase.output("Checking #{node.type}.#{index}")
           if (index.to_i == node.index)
             max_fetch_time = 0
-            for i in 0..100000000000 do
+            while (Time.now < endtime)
               time_started = Time.now
               currVersion = vdsnode.get_cluster_state_version
               max_fetch_time = [Time.now - time_started, max_fetch_time].max
