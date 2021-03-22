@@ -90,10 +90,4 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
     verify_ready_copies_per_group(1)
   end
 
-  def test_no_ready_copies
-    set_description("Test that search works correctly with no ready copies. Active copy should be indexed anyhow")
-    run_basic_search_test(0)
-    verify_ready_copies_per_group(1)
-  end
-
 end
