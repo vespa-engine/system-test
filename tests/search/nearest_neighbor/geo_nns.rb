@@ -23,6 +23,12 @@ class GeoNnsTest < IndexedSearchTest
         dsf = sfs['distance(label,nns)']
         miles = dsf.to_f / 1.609344
         puts "Hit: #{txt}  => #{pos} -> #{miles.to_i} miles"
+      rescue
+        puts "PROBLEM processing hit in result:"
+        puts "#{result}"
+        puts "xml data:"
+        puts "#{result.xmldata}"
+        assert_equal("hit was not OK", hit)
       end
     end
     query_props[:approx] = "false"
