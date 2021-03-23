@@ -1,6 +1,6 @@
 08ebcef7b6f47b8385b0b2eb58eaa9fd  vespa.config.search.rank-profiles.def
 648243a08f50d257b0d7ed7af9d55dc0  vespa.config.search.indexschema.def
-1a1f5b04ec900f6bdf3c143839f85372  vespa.config.search.attributes.def
+c791190ac7bd0ee09bbd0722830c21cd  vespa.config.search.attributes.def
 52de90f99bddd748160cf7c1073f2262  vespa.config.search.summary.def
 b32e8d507a72e70cc2d5f55a8f915bed  vespa.config.search.summarymap.def
 d5399779fd5813ad4a2ed4ed34d1f6a7  vespa.config.search.summary.juniperrc.def
