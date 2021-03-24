@@ -302,14 +302,10 @@ class TestCase
       rescue StandardError, ScriptError, SignalException => e
         add_error(e)
       ensure
-        begin
-          if cmd_args[:nostop]
-            puts "Skipping delete application due to nostop"
-          else
-            delete_application
-          end
-        rescue Exception => ex
-          puts "Failure during application cleanup: #{ex.message}, ignoring"
+        if cmd_args[:nostop]
+          puts "Skipping delete application due to nostop"
+        else
+          delete_application
         end
       end
       begin
