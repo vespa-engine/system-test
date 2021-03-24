@@ -22,6 +22,13 @@ class RangeSearch < IndexedSearchTest
     start_feed_and_check
   end
 
+  def test_range_with_btree_and_hash_dictionary
+    deploy_app(SearchApp.new.
+               cluster_name("test").
+               sd(selfdir+"btree_and_hash_dictionary/test.sd"))
+    start_feed_and_check
+  end
+
   def start_feed_and_check
     start
     feed_docs
