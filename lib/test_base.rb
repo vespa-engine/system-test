@@ -1427,12 +1427,14 @@ module TestBase
       puts "Deleting application, iteration #{iteration}"
       result = delete_tenant_application(tenant, app, hostname)
       status_code = result.code.to_i
-      if status_code != 200
-        sleep 1
-      end
+      break if status_code == 404
+      sleep 1 if status_code != 200
       iteration = iteration + 1
     end
-    if status_code != 200
+
+    if status_code == 404
+      puts "Unable to delete application #{app}, application does not exist"
+    elsif status_code != 200
       raise "Unable to delete application #{app}, got status code #{result.code}"
     end
   end
