@@ -13,17 +13,13 @@ class RangeSearch < IndexedSearchTest
                cluster_name("test").
                sd(selfdir+"test.sd"))
     start_feed_and_check
-    check_range_optimizations
   end
 
-  def test_range_with_exact
+  def test_range_with_hash_dictionary
     deploy_app(SearchApp.new.
                cluster_name("test").
-               sd(selfdir+"exact/test.sd"))
+               sd(selfdir+"hash_dictionary/test.sd"))
     start_feed_and_check
-    # The below tests does not work when enabling exact
-    # That is expected as this is a temporary trick for enabling hash lookups
-    # check_range_optimizations
   end
 
   def start_feed_and_check
@@ -32,6 +28,7 @@ class RangeSearch < IndexedSearchTest
     check_ranges("i1")
     check_ranges("f1")
     check_ranges("m1")
+    check_range_optimizations
   end
 
   def feed_docs
