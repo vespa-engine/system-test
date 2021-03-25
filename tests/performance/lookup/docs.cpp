@@ -3,22 +3,32 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstdint>
+#include <sstream>
 
 void
-doc(int num, unsigned long v) {
-    printf("{\"id\":\"id:test:test::%d\", \"fields\":{ \"f1\":%lu, \"f1_hash\":%lu } }", num, v, v);
+doc(unsigned long num, unsigned long numValues) {
+    unsigned long offset=num * numValues;
+    std::stringstream os;
+    os << offset;
+    for (unsigned long i(1); i < numValues; i++) {
+      os << "," << offset + i;
+    }
+    std::string values = os.str();
+ 
+    printf("{\"id\":\"id:test:test::%d\", \"fields\":{ \"id\":%lu, \"f1\":[%s], \"f1_hash\":[%s] } }", num, num, values.c_str(), values.c_str());
 }
 
 int
 main(int argc, char **argv) {
     int i;
     int numDocs = atoi(argv[1]);
+    int numValues = atoi(argv[2]);
     printf("[\n");
     for (i = 0; i < (numDocs-1); i++) {
-        doc(i, i);
+        doc(i, numValues);
         printf(",\n");
     }
-    doc(i, i);
+    doc(i, numValues);
     printf("\n]\n");
     return 0;
 }

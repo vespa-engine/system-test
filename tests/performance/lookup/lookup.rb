@@ -17,7 +17,8 @@ class LookupPerformance < PerformanceTest
 
   def get_app()
     SearchApp.new.sd(selfdir + "test.sd").
-                  qrservers_jvmargs("-Xms4g -Xmx4g")
+                  threads_per_search(1).
+                  qrservers_jvmargs("-Xms16g -Xmx16g")
   end
 
   def test_dictionary_lookup
@@ -46,27 +47,30 @@ class LookupPerformance < PerformanceTest
         :historic => true
       }
     ]
-    num_docs = 1000000
-    num_queries = num_docs
-    upper_limit = num_docs*10
+    num_docs = 10000000
+    num_values_per_doc=10
+    upper_limit = num_docs*num_values_per_doc*10
     keys_per_query = 100
-    num_clients = 16
+    num_clients = 32
+    num_queries = num_clients * 40000
     deploy_app(get_app())
     container = (vespa.qrserver["0"] or vespa.container.values.first)
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/docs #{selfdir}/docs.cpp")
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/query #{selfdir}/query.cpp")
     start
-    container.execute("#{dirs.tmpdir}/docs #{num_docs} | vespa-feeder")
-    container.execute("#{dirs.tmpdir}/query #{num_queries} #{keys_per_query} #{upper_limit} f1 > #{dirs.tmpdir}/query.txt")
+    container.execute("#{dirs.tmpdir}/docs #{num_docs} #{num_values_per_doc} | vespa-feeder")
     assert_hitcount("sddocname:test", num_docs)
 
     @queryfile = "#{dirs.tmpdir}/query.txt"
+    container.execute("#{dirs.tmpdir}/query #{num_queries} #{keys_per_query} #{upper_limit} f1 > #{dirs.tmpdir}/query.txt")
     run_fbench(container, 8, 20)
+    restart_proton("test", num_docs)
 
     ["f1", "f1_hash"].each do |field|
+        @queryfile = "#{dirs.tmpdir}/q.#{field}.txt"
         container.execute("#{dirs.tmpdir}/query #{num_queries} #{keys_per_query} #{upper_limit} #{field} > #{@queryfile}")
         profiler_start
-        run_fbench(container, num_clients, 30, [parameter_filler('legend', "lookup_#{field}")])
+        run_fbench(container, num_clients, 60, [parameter_filler('legend', "lookup_#{field}")], {:single_query_file => true})
         profiler_report("lookup_#{field}")
     end
   end
