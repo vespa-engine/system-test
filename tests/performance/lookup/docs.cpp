@@ -9,13 +9,13 @@ void
 doc(unsigned long num, unsigned long numValues) {
     unsigned long offset=num * numValues;
     std::stringstream os;
-    os << offset;
+    os << '"' << offset << "\":" << 1;
     for (unsigned long i(1); i < numValues; i++) {
-      os << "," << offset + i;
+      os << ",\"" << (offset + i) << "\":" << 1;
     }
     std::string values = os.str();
  
-    printf("{\"id\":\"id:test:test::%d\", \"fields\":{ \"id\":%lu, \"f1\":[%s], \"f1_hash\":[%s] } }", num, num, values.c_str(), values.c_str());
+    printf("{\"id\":\"id:test:test::%d\", \"fields\":{ \"id\":%lu, \"f1\":{%s}, \"f1_hash\":{%s} } }", num, num, values.c_str(), values.c_str());
 }
 
 int
