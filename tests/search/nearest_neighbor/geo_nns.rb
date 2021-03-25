@@ -8,29 +8,36 @@ class GeoNnsTest < IndexedSearchTest
     set_owner("arnej")
   end
 
-  def geo_check(lat, lon, query_props = {})
-    query_props[:x_0] = lat
-    query_props[:x_1] = lon
+  def query_and_print(query_props)
     query = get_query(query_props)
-    puts "geo_check(): query='#{query}'"
+    puts "geo query='#{query}'"
     result = search(query)
     puts "hits: #{result.hit.size}"
-    if result.hit.size < 10
+    if result.hit.size < 20
       result.hit.each do |hit|
         txt = hit.field['text']
         pos = hit.field['pos_hnsw']
         sfs = JSON.parse(hit.field['summaryfeatures'])
         dsf = sfs['distance(label,nns)']
         miles = dsf.to_f / 1.609344
-        puts "Hit: #{txt}  => #{pos} -> #{miles.to_i} miles"
-      rescue
-        puts "PROBLEM processing hit in result:"
+        puts "Hit: #{txt}  => #{pos} -> #{dsf} km -> #{miles.to_i} miles"
+      rescue => e
+        puts "PROBLEM #{e} processing hit in result:"
         puts "#{result}"
         puts "xml data:"
+        break if query_props[:dbgdump]
         puts "#{result.xmldata}"
         assert_equal("hit was not OK", hit)
       end
     end
+    puts "#{result.xmldata}" if query_props[:dbgdump]
+    result
+  end
+
+  def geo_check(lat, lon, query_props = {})
+    query_props[:x_0] = lat
+    query_props[:x_1] = lon
+    result = query_and_print(query_props)
     query_props[:approx] = "false"
     assert_geo_search(query_props, result)
     query_props[:doc_tensor] = "pos"
@@ -124,8 +131,17 @@ class GeoNnsTest < IndexedSearchTest
     vespa.stop
     geo_deploy(2)
     vespa.start
+    puts "START DEBUG LOGGING"
+    vespa.adminserver.logctl("container:com.yahoo.search.dispatch", "debug=on")
+    vespa.adminserver.logctl("searchnode:searchlib.queryeval.nns_index_iterator", "debug=on")
+    vespa.adminserver.logctl("searchnode:searchlib.queryeval.nearest_neighbor_blueprint", "debug=on")
+    vespa.adminserver.logctl("searchnode:proton.matching", "debug=on")
+    vespa.adminserver.logctl("searchnode2:searchlib.queryeval.nns_index_iterator", "debug=on")
+    vespa.adminserver.logctl("searchnode2:searchlib.queryeval.nearest_neighbor_blueprint", "debug=on")
+    vespa.adminserver.logctl("searchnode2:proton.matching", "debug=on")
     wait_for_hitcount('query=sddocname:geo', i)
     places.each do |place|
+      geo_check(place[:lat], place[:lon], {:target_num_hits => 7})
       [ 50, 7 ].each do |numhits|
         geo_check(place[:lat], place[:lon], {:target_num_hits => numhits})
       end
@@ -134,6 +150,12 @@ class GeoNnsTest < IndexedSearchTest
     places.each do |place|
       geo_check(place[:lat], place[:lon], {:target_num_hits => 50, :threshold => 50.5})
     end
+    place = places[6]
+    query_and_print({:target_num_hits => 7,
+                     :dbgdump => true,
+                     :max_hits => 14,
+                     :x_0 => place[:lat],
+                     :x_1 => place[:lon]})
   end
 
   def get_query(qprops)
@@ -145,6 +167,7 @@ class GeoNnsTest < IndexedSearchTest
     approx = qprops[:approx]
     filter = qprops[:filter]
     threshold = qprops[:threshold]
+    max_hits = qprops[:max_hits] || target_num_hits
 
     result = "yql=select * from sources * where [{\"targetNumHits\": #{target_num_hits},"
     result += "\"approximate\": #{approx}," if approx
@@ -152,7 +175,7 @@ class GeoNnsTest < IndexedSearchTest
     result += "\"label\": \"nns\"}] nearestNeighbor(#{doc_tensor},#{query_tensor})"
     result += " and text contains \"#{filter}\"" if filter
     result += ";&ranking.features.query(#{query_tensor})={{x:0}:#{x_0},{x:1}:#{x_1}}"
-    result += "&hits=#{target_num_hits}"
+    result += "&hits=#{max_hits}"
     return result
   end
 
