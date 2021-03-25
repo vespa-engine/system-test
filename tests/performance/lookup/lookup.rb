@@ -4,7 +4,7 @@ require 'app_generator/search_app'
 require 'performance/fbench'
 require 'environment'
 
-class Lookup < PerformanceTest
+class LookupPerformance < PerformanceTest
 
   def initialize(*args)
     super(*args)

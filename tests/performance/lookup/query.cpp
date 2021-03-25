@@ -22,6 +22,7 @@ main(int argc, char **argv) {
     long keys_per_query = atoi(argv[2]);
     long upper_limit = atoi(argv[3]);
     const char * field = argv[4];
+    srand(1);
     for (long i = 0; i < numQueries; i++) {
         query(field, keys_per_query, upper_limit);
     }
