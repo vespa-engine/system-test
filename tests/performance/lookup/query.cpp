@@ -12,7 +12,7 @@ query(const char * field, unsigned int keys_per_query, unsigned long upper_limit
     for (unsigned int i(1); i < keys_per_query; i++) {
         keys << ",%22" << (rand()%upper_limit) << "%22%3A1";
     }
-    const char * queryPrefix = "/search/?summary=minimal&yql=select%20*%20from%20sources%20*%20where%20weightedSet";
+    const char * queryPrefix = "/search/?summary=minimal&ranking=unranked&hits=1&yql=select%20*%20from%20sources%20*%20where%20weightedSet";
     printf("%s(%s,%7B%s%7D)%3B\n", queryPrefix, field, keys.str().c_str());
 }
 

@@ -1,17 +1,21 @@
 # Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 search test {
   document test {
-    field f1 type long {
+    field id type long {
       indexing: attribute | summary
       attribute: fast-search
     }
-    field f1_hash type long {
+    field f1 type array<long> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field f1_hash type array<long> {
       indexing: attribute | summary
       attribute: fast-search
       dictionary: hash
     }
   }
   document-summary minimal {
-    summary f1 type long { source: f1 }
+    summary id type long { source: id }
   }
 }
