@@ -100,6 +100,7 @@ class TestCase
       @@log_messages[:zookeeper_shutdown],
       @@log_messages[:async_slow_resolve],
       @@log_messages[:slow_processing],
+      @@log_messages[:time_move_backwards],
       @@log_messages[:remove_dangling_file],
       @@log_messages[:empty_idx_file]
     ]
