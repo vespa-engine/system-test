@@ -11,4 +11,7 @@ search test {
       dictionary: hash
     }
   }
+  document-summary minimal {
+    summary f1 type long { source: f1 }
+  }
 }
