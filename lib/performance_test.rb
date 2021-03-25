@@ -131,6 +131,7 @@ class PerformanceTest < TestCase
     fbench.certificate_file = params[:certificate_file] if params[:certificate_file]
     fbench.private_key_file = params[:private_key_file] if params[:private_key_file]
     fbench.ca_certificate_file = params[:ca_certificate_file] if params[:ca_certificate_file]
+    fbench.single_query_file = params[:single_query_file] if params[:single_query_file]
 
     fbench.query(queryfile)
     system_fbench.end

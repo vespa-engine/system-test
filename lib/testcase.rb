@@ -981,4 +981,12 @@ class TestCase
     destination_file
   end
 
+  def restart_proton(doc_type, exp_hits, cluster = "search")
+    node = vespa.search[cluster].first
+    node.trigger_flush
+    node.stop
+    node.start
+    wait_for_hitcount("sddocname:#{doc_type}&nocache", exp_hits)
+  end
+
 end
