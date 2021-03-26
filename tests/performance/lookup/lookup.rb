@@ -62,15 +62,14 @@ class LookupPerformance < PerformanceTest
     assert_hitcount("sddocname:test", num_docs)
 
     @queryfile = "#{dirs.tmpdir}/query.txt"
-    container.execute("#{dirs.tmpdir}/query #{num_queries} #{keys_per_query} #{upper_limit} f1 > #{dirs.tmpdir}/query.txt")
+    container.execute("#{dirs.tmpdir}/query #{num_queries} #{keys_per_query} #{upper_limit} > #{@queryfile}")
     run_fbench(container, 8, 20)
     restart_proton("test", num_docs)
 
     ["f1", "f1_hash"].each do |field|
-        @queryfile = "#{dirs.tmpdir}/q.#{field}.txt"
-        container.execute("#{dirs.tmpdir}/query #{num_queries} #{keys_per_query} #{upper_limit} #{field} > #{@queryfile}")
         profiler_start
-        run_fbench(container, num_clients, 60, [parameter_filler('legend', "lookup_#{field}")], {:single_query_file => true})
+        run_fbench(container, num_clients, 60, [parameter_filler('legend', "lookup_#{field}")],
+                   {:single_query_file => true, :append_str => "&hits=1&summary=minimal&ranking=unranked&wand.type=dotProduct&wand.field=#{field}"})
         profiler_report("lookup_#{field}")
     end
   end
