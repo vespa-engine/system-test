@@ -20,7 +20,7 @@ class GeoNnsTest < IndexedSearchTest
         sfs = JSON.parse(hit.field['summaryfeatures'])
         dsf = sfs['distance(label,nns)']
         miles = dsf.to_f / 1.609344
-        puts "Hit: #{txt}  => #{pos} -> #{dsf} km -> #{miles.to_i} miles"
+        puts "Hit: #{txt}  => #{pos} -> #{miles.to_i} miles"
       rescue => e
         puts "PROBLEM #{e} processing hit in result:"
         puts "#{result}"
@@ -103,14 +103,15 @@ class GeoNnsTest < IndexedSearchTest
     set_description("Test the nearest neighbor search operator for geo search")
     geo_deploy(1)
     start
+    mynode = vespa.search["search"].first
     i=0
     Zlib::GzipReader.open(selfdir + 'c500-r.txt.gz').each_line do |line|
       place = split_line(line)
       feed_doc(i, place)
       i += 1
-      if ((i % 5000) == 0)
+      if ((i % 500) == 0)
         puts "Doc #{i} latitude #{place[:lat]} longitude #{place[:lon]} : #{place[:txt]}"
-        break
+        break if i == 5000
       end
     end
     puts "Done put of #{i} documents"
@@ -128,20 +129,19 @@ class GeoNnsTest < IndexedSearchTest
       end
       geo_check(place[:lat], place[:lon], {:target_num_hits => 9, :filter => "san"})
     end
-    vespa.stop
+    mynode.execute('vespa-stop-services')
     geo_deploy(2)
-    vespa.start
+    mynode.execute('vespa-start-services')
     puts "START DEBUG LOGGING"
-    vespa.adminserver.logctl("container:com.yahoo.search.dispatch", "debug=on")
-    vespa.adminserver.logctl("searchnode:searchlib.queryeval.nns_index_iterator", "debug=on")
-    vespa.adminserver.logctl("searchnode:searchlib.queryeval.nearest_neighbor_blueprint", "debug=on")
-    vespa.adminserver.logctl("searchnode:proton.matching", "debug=on")
-    vespa.adminserver.logctl("searchnode2:searchlib.queryeval.nns_index_iterator", "debug=on")
-    vespa.adminserver.logctl("searchnode2:searchlib.queryeval.nearest_neighbor_blueprint", "debug=on")
-    vespa.adminserver.logctl("searchnode2:proton.matching", "debug=on")
+    mynode.logctl("container:com.yahoo.search.dispatch", "debug=on")
+    #mynode.logctl("searchnode:searchlib.queryeval.nns_index_iterator", "debug=on")
+    #mynode.logctl("searchnode:searchlib.queryeval.nearest_neighbor_blueprint", "debug=on")
+    #mynode.logctl("searchnode:proton.matching", "debug=on")
+    #mynode.logctl("searchnode2:searchlib.queryeval.nns_index_iterator", "debug=on")
+    #mynode.logctl("searchnode2:searchlib.queryeval.nearest_neighbor_blueprint", "debug=on")
+    #mynode.logctl("searchnode2:proton.matching", "debug=on")
     wait_for_hitcount('query=sddocname:geo', i)
     places.each do |place|
-      geo_check(place[:lat], place[:lon], {:target_num_hits => 7})
       [ 50, 7 ].each do |numhits|
         geo_check(place[:lat], place[:lon], {:target_num_hits => numhits})
       end
