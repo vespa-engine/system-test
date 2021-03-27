@@ -54,7 +54,7 @@ class ClusterControllerMultiNodeTest < VdsTest
     puts "[progress] #{@four} DEPLOYED"
   end
 
-  def verify_node_count(count, timeout = 120)
+  def verify_node_count(count, timeout = 60)
     current = nil
     timeout.times { |i|
         page = vespa.clustercontrollers["0"].get_status_page("/cluster/v2/storage/storage")
