@@ -8,23 +8,36 @@ class GeoNnsTest < IndexedSearchTest
     set_owner("arnej")
   end
 
-  def geo_check(lat, lon, query_props = {})
-    query_props[:x_0] = lat
-    query_props[:x_1] = lon
+  def query_and_print(query_props)
     query = get_query(query_props)
-    puts "geo_check(): query='#{query}'"
-    result = search(query)
-    puts "hits: #{result.hit.size}"
-    if result.hit.size < 10
+    puts "geo query='#{query}'"
+    askhits = query_props[:target_num_hits]
+    if askhits == 7
+      fullq = get_query(query_props.merge({:max_hits => 2*askhits}))
+      result = search(fullq)
+      puts "hits: #{result.hit.size}"
       result.hit.each do |hit|
         txt = hit.field['text']
         pos = hit.field['pos_hnsw']
         sfs = JSON.parse(hit.field['summaryfeatures'])
         dsf = sfs['distance(label,nns)']
         miles = dsf.to_f / 1.609344
-        puts "Hit: #{txt}  => #{pos} -> #{miles.to_i} miles"
+        puts "Hit: #{txt}  => #{pos} -> #{dsf} km -> #{miles.to_i} miles"
+      rescue => e
+        puts "PROBLEM #{e} processing hit in result:"
+        puts "#{result}"
+        puts "xml data:"
+        puts "#{result.xmldata}"
+        assert_equal("hit was not OK", hit)
       end
     end
+    search(query)
+  end
+
+  def geo_check(lat, lon, query_props = {})
+    query_props[:x_0] = lat
+    query_props[:x_1] = lon
+    result = query_and_print(query_props)
     query_props[:approx] = "false"
     assert_geo_search(query_props, result)
     query_props[:doc_tensor] = "pos"
@@ -90,16 +103,8 @@ class GeoNnsTest < IndexedSearchTest
     set_description("Test the nearest neighbor search operator for geo search")
     geo_deploy(1)
     start
-    i=0
-    Zlib::GzipReader.open(selfdir + 'c500-r.txt.gz').each_line do |line|
-      place = split_line(line)
-      feed_doc(i, place)
-      i += 1
-      if ((i % 5000) == 0)
-        puts "Doc #{i} latitude #{place[:lat]} longitude #{place[:lon]} : #{place[:txt]}"
-        break
-      end
-    end
+    feed(:file => selfdir + "5k-docs.json", :numthreads => 1)
+    i=5000
     puts "Done put of #{i} documents"
     wait_for_hitcount('?query=sddocname:geo', i)
     geo_check(63.0, 10.0, {:target_num_hits => 100})
@@ -142,6 +147,7 @@ class GeoNnsTest < IndexedSearchTest
     approx = qprops[:approx]
     filter = qprops[:filter]
     threshold = qprops[:threshold]
+    max_hits = qprops[:max_hits] || target_num_hits
 
     result = "yql=select * from sources * where [{\"targetNumHits\": #{target_num_hits},"
     result += "\"approximate\": #{approx}," if approx
@@ -149,7 +155,7 @@ class GeoNnsTest < IndexedSearchTest
     result += "\"label\": \"nns\"}] nearestNeighbor(#{doc_tensor},#{query_tensor})"
     result += " and text contains \"#{filter}\"" if filter
     result += ";&ranking.features.query(#{query_tensor})={{x:0}:#{x_0},{x:1}:#{x_1}}"
-    result += "&hits=#{target_num_hits}"
+    result += "&hits=#{max_hits}"
     return result
   end
 
