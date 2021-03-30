@@ -12,29 +12,36 @@ class RangeSearch < IndexedSearchTest
     deploy_app(SearchApp.new.
                cluster_name("test").
                sd(selfdir+"test.sd"))
-    start_feed_and_check
+    start_feed_and_check(true)
   end
 
   def test_range_with_hash_dictionary
     deploy_app(SearchApp.new.
                cluster_name("test").
                sd(selfdir+"hash_dictionary/test.sd"))
-    start_feed_and_check
+    start_feed_and_check(false)
   end
 
   def test_range_with_btree_and_hash_dictionary
     deploy_app(SearchApp.new.
                cluster_name("test").
                sd(selfdir+"btree_and_hash_dictionary/test.sd"))
-    start_feed_and_check
+    start_feed_and_check(true)
   end
 
-  def start_feed_and_check
+  def test_range_with_no_dictionary
+    deploy_app(SearchApp.new.
+               cluster_name("test").
+               sd(selfdir+"no_dictionary/test.sd"))
+    start_feed_and_check(false)
+  end
+
+  def start_feed_and_check(support_range_limit)
     start
     feed_docs
-    check_ranges("i1")
-    check_ranges("f1")
-    check_ranges("m1")
+    check_ranges("i1", support_range_limit)
+    check_ranges("f1", support_range_limit)
+    check_ranges("m1", support_range_limit)
     check_range_optimizations
   end
 
@@ -43,10 +50,10 @@ class RangeSearch < IndexedSearchTest
     wait_for_hitcount("query=sddocname:test", 5)
   end
 
-  def check_ranges(field)
+  def check_ranges(field, support_range_limit)
     check_point_lookups(field)
     check_normal_ranges(field)
-    check_limited_ranges(field)
+    check_limited_ranges(field, support_range_limit)
   end
 
   def check_point_lookups(field)
@@ -92,18 +99,18 @@ class RangeSearch < IndexedSearchTest
     assert_hitcount("query=" + field + ":[%3b2]", 3)
   end
 
-  def check_limited_ranges(field)
+  def check_limited_ranges(field, support_range_limit)
     assert_hitcount("query=" + field + ":[1%3b2]", 3)
     assert_hitcount("query=" + field + ":[1%3b4]", 5)
     assert_hitcount("query=" + field + ":[1%3b3]", 5)
-    assert_hitcount("query=" + field + ":[1%3b3%3b1]", 2)
-    assert_hitcount("query=" + field + ":[1%3b3%3b2]", 2)
-    assert_hitcount("query=" + field + ":[1%3b3%3b3]", 3)
+    assert_hitcount("query=" + field + ":[1%3b3%3b1]", support_range_limit ? 2 : 5)
+    assert_hitcount("query=" + field + ":[1%3b3%3b2]", support_range_limit ? 2 : 5)
+    assert_hitcount("query=" + field + ":[1%3b3%3b3]", support_range_limit ? 3 : 5)
     assert_hitcount("query=" + field + ":[1%3b3%3b4]", 5)
     assert_hitcount("query=" + field + ":[1%3b3%3b400]", 5)
-    assert_hitcount("query=" + field + ":[1%3b3%3b-1]", 2)
-    assert_hitcount("query=" + field + ":[1%3b3%3b-2]", 2)
-    assert_hitcount("query=" + field + ":[1%3b3%3b-3]", 3)
+    assert_hitcount("query=" + field + ":[1%3b3%3b-1]", support_range_limit ? 2 : 5)
+    assert_hitcount("query=" + field + ":[1%3b3%3b-2]", support_range_limit ? 2 : 5)
+    assert_hitcount("query=" + field + ":[1%3b3%3b-3]", support_range_limit ? 3 : 5)
     assert_hitcount("query=" + field + ":[1%3b3%3b-4]", 5)
     assert_hitcount("query=" + field + ":[1%3b3%3b-400]", 5)
   end
