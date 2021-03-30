@@ -19,6 +19,20 @@ class NearestNeighborTest < IndexedSearchTest
     run_all_tests
   end
 
+  def test_nns_via_parent
+    set_description('Test the nearest neighbor search operator with imported attribute')
+    deploy_app(SearchApp.new
+                 .sd(selfdir + 'campaign.sd', { :global => true })
+                 .sd(selfdir + 'ad.sd')
+                 .search_dir(selfdir + 'search')
+                 .threads_per_search(1)
+                 .enable_http_gateway)
+    start
+    feed_campaign_docs
+    feed_ad_docs
+    run_brute_force_tests({:query_tensor => 'qpos_double', :doc_type => 'ad'})
+  end
+
   def run_all_tests
     run_brute_force_tests({:query_tensor => "qpos_double"})
     run_brute_force_tests({:query_tensor => "qpos_float"})
@@ -130,8 +144,8 @@ class NearestNeighborTest < IndexedSearchTest
     "#{Environment.instance.vespa_home}/var/db/vespa/search/cluster.search/n0/documents/test/0.ready/attribute/#{attr_file}"
   end
 
-  def get_docid(i)
-    "id:test:test::#{i}";
+  def get_docid(i, dt = 'test')
+    "id:test:#{dt}::#{i}";
   end
 
   X_1_POS = 3
@@ -144,13 +158,40 @@ class NearestNeighborTest < IndexedSearchTest
     # This means we can change "targetNumHits" and get deterministic behaviour.
     for i in 0...10 do
       doc = Document.new("test", get_docid(i)).
-        # TODO: Collapse back to 'pos' when we can choose which algorithm to run in the query.
         add_field("pos", { "values" => [i, X_1_POS] }).
         add_field("text", txt[i]).
         add_field("filter", "#{i % 2}")
       vespa.document_api_v1.put(doc)
     end
     wait_for_hitcount('?query=sddocname:test', 10)
+  end
+
+  def feed_campaign_docs
+    # Inserting one and one document ensures the same (and deterministic) order of the documents on the content node.
+    # This means we can change "targetNumHits" and get deterministic behaviour.
+    (0...10).reverse_each do |i|
+      doc = Document.new('campaign', get_docid(i, 'campaign')).
+        add_field('cpos', { 'values' => [i, X_1_POS] }).
+        add_field('title', "campaign #{i}")
+      vespa.document_api_v1.put(doc)
+    end
+    wait_for_hitcount('?query=sddocname:campaign', 10)
+  end
+
+  def feed_ad_docs
+    # text field for 10 documents:
+    txt = [ '0 x x x 0', 'x 1 x x 1', 'x x 2 x 2', 'x x x 3 3', ' 4 x x x 4',
+            'x 0 x x 5', 'x x 1 x 6', 'x x x 2 7', '3 x x x 8', ' x 4 x x 9' ]
+    # Inserting one and one document ensures the same (and deterministic) order of the documents on the content node.
+    # This means we can change 'targetNumHits' and get deterministic behaviour.
+    (0...10).each do |i|
+      doc = Document.new('ad', get_docid(i, 'ad')).
+        add_field('campaign_ref', get_docid(i, 'campaign')).
+        add_field('text', txt[i]).
+        add_field('filter', "#{i % 2}")
+      vespa.document_api_v1.put(doc)
+    end
+    wait_for_hitcount('?query=sddocname:ad', 10)
   end
 
   def assert_nearest_docs(setup, target_num_hits, exp_results, overrides = {})
@@ -161,6 +202,7 @@ class NearestNeighborTest < IndexedSearchTest
     query = get_query(query_props)
     puts "assert_nearest_docs(): query='#{query}'"
     result = search(query)
+    puts "result:"
     assert_hitcount(result, exp_results.length)
     for i in 0...exp_results.length do
       assert_single_doc(exp_results[i], result, i, query_props)
@@ -190,7 +232,8 @@ class NearestNeighborTest < IndexedSearchTest
                        "rawScore(#{doc_tensor})" => exp_closeness,
                        "itemRawScore(nns)" => exp_closeness }
     end
-    assert_field_value(result, "documentid", get_docid(exp_docid), i)
+    doc_type = qp[:doc_type] || 'test'
+    assert_field_value(result, "documentid", get_docid(exp_docid, doc_type), i)
     assert_relevancy(result, exp_score, i)
     assert_features(exp_features, JSON.parse(result.hit[i].field["summaryfeatures"]))
   end
@@ -201,6 +244,7 @@ class NearestNeighborTest < IndexedSearchTest
     target_num_hits = qprops[:target_num_hits] || 10
     query_tensor = qprops[:query_tensor]
     doc_tensor = qprops[:doc_tensor]
+    doc_type = qprops[:doc_type]
     approx = qprops[:approx]
     filter = qprops[:filter]
     text = qprops[:text]
