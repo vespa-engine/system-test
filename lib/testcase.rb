@@ -986,7 +986,7 @@ class TestCase
     node.trigger_flush
     node.stop
     node.start
-    wait_for_hitcount("sddocname:#{doc_type}&nocache", exp_hits)
+    wait_for_hitcount("sddocname:#{doc_type}&nocache", exp_hits, 180)
   end
 
 end
