@@ -5,13 +5,14 @@
 #include <cstdint>
 #include <sstream>
 
+constexpr size_t STEP_LENGTH = 11;
 void
 doc(unsigned long num, unsigned long numValues) {
     unsigned long offset=num * numValues;
     std::stringstream os;
     os << '"' << offset << "\":" << 1;
     for (unsigned long i(1); i < numValues; i++) {
-      os << ",\"" << (offset + i) << "\":" << 1;
+      os << ",\"" << ((offset + i) * STEP_LENGTH) << "\":" << 1;
     }
     std::string values = os.str();
  
