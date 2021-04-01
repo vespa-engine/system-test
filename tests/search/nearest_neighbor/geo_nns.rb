@@ -100,33 +100,18 @@ class GeoNnsTest < IndexedSearchTest
   end
 
   def test_geo_cities
-    set_description("Test the nearest neighbor search operator for geo search")
-    geo_deploy(1)
+    set_description("Test the nearest neighbor search operator for geo search (with whitelist)")
+    geo_deploy(2)
     start
     feed(:file => selfdir + "5k-docs.json", :numthreads => 1)
     i=5000
     puts "Done put of #{i} documents"
     wait_for_hitcount('?query=sddocname:geo', i)
     geo_check(63.0, 10.0, {:target_num_hits => 100})
-    # vespa.search["search"].searchnode.each_value { |x| x.trigger_flush }
-    # vespa.search["search"].searchnode.each_value { |x| x.trigger_flush }
     places = []
     File.open(selfdir + 'airports.txt').each_line do |line|
       places.push(split_line(line))
     end
-    places.each do |place|
-      [ 50, 7 ].each do |numhits|
-        geo_check(place[:lat], place[:lon], {:target_num_hits => numhits})
-      end
-      geo_check(place[:lat], place[:lon], {:target_num_hits => 9, :filter => "san"})
-    end
-    mynode = vespa.search["search"].first
-    mynode.execute('vespa-stop-services')
-    geo_deploy(2)
-    mynode.execute('vespa-start-services')
-    puts "START DEBUG LOGGING"
-    mynode.logctl("container:com.yahoo.search.dispatch", "debug=on")
-    wait_for_hitcount('query=sddocname:geo', i)
     places.each do |place|
       [ 50, 7 ].each do |numhits|
         geo_check(place[:lat], place[:lon], {:target_num_hits => numhits})
