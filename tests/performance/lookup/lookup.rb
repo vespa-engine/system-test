@@ -57,7 +57,7 @@ class LookupPerformance < PerformanceTest
     num_values_per_doc=10
     upper_limit = num_docs*num_values_per_doc*10
     keys_per_query = 100
-    num_clients = 32
+    num_clients = 40
     num_queries = num_clients * 40000
     deploy_app(get_app())
     container = (vespa.qrserver["0"] or vespa.container.values.first)
