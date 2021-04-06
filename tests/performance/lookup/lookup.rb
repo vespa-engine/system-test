@@ -18,7 +18,13 @@ class LookupPerformance < PerformanceTest
   def get_app()
     SearchApp.new.sd(selfdir + "test.sd").
                   threads_per_search(1).
-                  qrservers_jvmargs("-Xms16g -Xmx16g")
+                  container(Container.new("combinedcontainer").
+                                      jvmargs("-Xms16g -Xmx16g").
+                                      search(Searching.new).
+                                      docproc(DocumentProcessing.new).
+                                      gateway(ContainerDocumentApi.new).
+                                      component(AccessLog.new("disabled"))).
+                  indexing("combinedcontainer")
   end
 
   def test_dictionary_lookup
