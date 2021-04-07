@@ -32,7 +32,7 @@ class TensorEvalMatchPerfTest < TensorEvalPerfTest
       get_latency_graphs_for_rank_profile(TENSOR_MATCH_25X25),
       get_latency_graphs_for_rank_profile(TENSOR_MATCH_50X50),
       get_latency_graphs_for_rank_profile(TENSOR_MATCH_100X100),
-      get_latency_graph_for_rank_profile(TENSOR_MATCH_50X50, 50, 70, 85)
+      get_latency_graph_for_rank_profile(TENSOR_MATCH_50X50, 50, 100, 105)
     ]
   end
 
