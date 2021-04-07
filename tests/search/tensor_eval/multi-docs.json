@@ -1,0 +1,29 @@
+[
+  { "put": "id:multi:multi::1", "fields": {
+      "id": 1,
+      "title": "barbie",
+      "mydoubles" : { "cells": { "barbie": 5.25 } },
+      "myfloats" : { "cells": { "barbie": 4.75 } },
+      "myshorts" : { "cells": { "barbie": 3.5 } },
+      "mybytes" : { "cells": { "barbie": 2.0 } }
+    }
+  },
+  { "put": "id:multi:multi::2", "fields": {
+      "id": 2,
+      "title": "heman",
+      "mydoubles" : { "cells": { "heman": 7.25 } },
+      "myfloats" : { "cells": { "heman": 5.75 } },
+      "myshorts" : { "cells": { "heman": 4.5 } },
+      "mybytes" : { "cells": { "heman": 3.0 } }
+    }
+  },
+  { "put": "id:multi:multi::3", "fields": {
+      "id": 3,
+      "title": "tv",
+      "mydoubles" : { "cells": { "tv": 8.25 } },
+      "myfloats" : { "cells": { "tv": 6.75 } },
+      "myshorts" : { "cells": { "tv": 5.5 } },
+      "mybytes" : { "cells": { "tv": 4.0 } }
+    }
+  }
+]
