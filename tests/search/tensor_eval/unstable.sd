@@ -1,0 +1,68 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search unstable {
+  document unstable {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field title type string {
+      indexing: index | summary
+    }
+    field mybytes type tensor<int8>(tag{}) {
+      indexing: attribute
+    }
+    field myshorts type tensor<bfloat16>(tag{}) {
+      indexing: attribute
+    }
+    field myfloats type tensor<float>(tag{}) {
+      indexing: attribute
+    }
+    field mydoubles type tensor<double>(tag{}) {
+      indexing: attribute
+    }
+  }
+  constant model {
+    type: tensor<int8>(age{},sex{},tag{})
+    file: search/model.json
+  }
+  rank-profile default {
+    first-phase {
+      expression {
+        sum(query(age)*query(sex)*attribute(mydoubles)*constant(model))
+      }
+      rank-score-drop-limit: 1.0
+    }
+  }
+  rank-profile w8bits {
+    first-phase {
+      expression {
+        sum(query(age)*query(sex)*attribute(mybytes)*constant(model))
+      }
+      rank-score-drop-limit: 1.0
+    }
+    function output_tensor() {
+      expression: attribute(mybytes)
+    }
+    summary-features: output_tensor
+  }
+  rank-profile w16bits {
+    first-phase {
+      expression {
+        sum(query(age)*query(sex)*attribute(myshorts)*constant(model))
+      }
+      rank-score-drop-limit: 1.0
+    }
+    function output_tensor() {
+      expression: attribute(myshorts)
+    }
+    summary-features: output_tensor
+  }
+  rank-profile w32bits {
+    first-phase {
+      expression {
+        sum(query(age)*query(sex)*attribute(myfloats)*constant(model))
+      }
+      rank-score-drop-limit: 1.0
+    }
+  }
+}
