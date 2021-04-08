@@ -1,0 +1,6 @@
+{ "cells": [
+ { "address": { "age": "kid",   "sex": "f", "tag": "barbie" }, "value": 100 },
+ { "address": { "age": "kid",   "sex": "m", "tag": "heman" },  "value": 80 },
+ { "address": { "age": "adult", "sex": "f", "tag": "tv" },     "value": 40 },
+ { "address": { "age": "adult", "sex": "m", "tag": "tv" },     "value": 50 }]
+}

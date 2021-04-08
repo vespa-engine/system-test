@@ -1,7 +1,7 @@
 # Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-search multi {
-  document multi {
+search unstable {
+  document unstable {
     field id type int {
       indexing: attribute | summary
     }
@@ -40,6 +40,10 @@ search multi {
       }
       rank-score-drop-limit: 1.0
     }
+    function output_tensor() {
+      expression: attribute(mybytes)
+    }
+    summary-features: output_tensor
   }
   rank-profile w16bits {
     first-phase {
@@ -48,6 +52,10 @@ search multi {
       }
       rank-score-drop-limit: 1.0
     }
+    function output_tensor() {
+      expression: attribute(myshorts)
+    }
+    summary-features: output_tensor
   }
   rank-profile w32bits {
     first-phase {
