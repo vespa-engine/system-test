@@ -24,8 +24,8 @@ class MixedTensorFeedSinglePerfTest < MixedTensorPerfTestBase
       get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 5300, 5700),
       get_feed_throughput_graph(UPDATES_ADD, NUMBER, 12000, 13500),
       get_feed_throughput_graph(UPDATES_ADD, STRING, 12000, 13600),
-      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 27000, 34000),
-      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 27000, 33000)
+      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 26000, 34000),
+      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 26000, 34000)
     ]
   end
 
@@ -50,8 +50,8 @@ class MixedTensorFeedSinglePerfTest < MixedTensorPerfTestBase
       get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 1600, 1800),
       get_feed_throughput_graph(UPDATES_ADD, NUMBER, 17500, 19500),
       get_feed_throughput_graph(UPDATES_ADD, STRING, 17000, 19000),
-      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 18500, 20500),
-      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 18000, 20500)
+      get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 17500, 20500),
+      get_feed_throughput_graph(UPDATES_REMOVE, STRING, 17500, 20500)
     ]
   end
 
