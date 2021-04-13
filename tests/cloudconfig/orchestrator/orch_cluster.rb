@@ -138,7 +138,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
 
     resp = orch_get("instances/")
     assert_response_code(resp)
-    assert_equal('["default:default:prod:default:default"]', resp.body)
+    assert_equal(JSON.parse('["default:default:prod:default:default"]'), get_json(resp))
     
     all_up = {confnode => UP, containerA => UP, containerB => UP}
     assert_instance(all_up)
@@ -187,7 +187,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
 
     resp = orch_get("instances/")
     assert_response_code(resp)
-    assert_equal('["default:default:prod:default:default"]', resp.body)
+    assert_equal(JSON.parse('["default:default:prod:default:default"]'), get_json(resp))
 
     @all_up = { configServer => UP, @contentC => UP, @contentD => UP,
       @contentE => UP}
