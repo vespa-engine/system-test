@@ -20,7 +20,7 @@ class SyncHttp2Handler < SearchContainerTest
     container = vespa.container.values.first
     endpoint = "localhost:#{container.http_port}/hello?name=Factory"
     if @tls_env.tls_enabled?
-      args = "--no-verify-peer --key #{@tls_end.private_key_file} --cert #{@tls_env.certificate_file} https://#{endpoint}"
+      args = "--no-verify-peer --key #{@tls_env.private_key_file} --cert #{@tls_env.certificate_file} https://#{endpoint}"
     else
       args = "http://#{endpoint}"
     end
