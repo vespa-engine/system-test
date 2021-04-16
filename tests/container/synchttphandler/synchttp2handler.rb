@@ -2,7 +2,7 @@
 require 'search_container_test'
 require 'app_generator/container_app'
 
-class SyncHttpHandler < SearchContainerTest
+class SyncHttp2Handler < SearchContainerTest
 
   def setup
     set_owner("jonmv")
