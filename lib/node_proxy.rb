@@ -9,6 +9,43 @@ require 'node_server_interface'
 # When methods are called in this object, they are forwarded to
 # the remote NodeServer object using ruby rpc calls (DRb).
 
+class NodeClient
+  include DRb::DRbUndumped
+
+  def initialize(hostname, testcase)
+    @name = hostname
+    @node_server = create_node_server
+    @node_server.testcase = testcase
+  end
+
+  ERRORS_TO_RETRY = [
+    Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL, Errno::EPIPE, Errno::EINVAL, Errno::ECONNRESET, Errno::EHOSTUNREACH
+  ]
+
+  def method_missing(symbol, *args, &block)
+    retries = 0
+    max_retries = 3
+    begin
+      @node_server.send(symbol, *args, &block)
+    rescue *ERRORS_TO_RETRY => e
+      if retries < max_retries
+        sleep retries
+        retry
+      else
+        raise e
+      end
+    end
+  end
+
+  private
+
+  def create_node_server
+    remote = @name.include?(":") ? @name : "#{@name}:#{TestBase::DRUBY_REMOTE_PORT}"
+    endpoint = DrbEndpoint.new(remote)
+    endpoint.create_client(with_object: nil)
+  end
+end
+
 class NodeProxy
   include DRb::DRbUndumped
   include NodeServerInterface
@@ -16,19 +53,12 @@ class NodeProxy
   # the hostname of the remote machine
   attr_reader :name
 
-  def create_node_server
-    remote = @name.include?(":") ? @name : "#{@name}:#{TestBase::DRUBY_REMOTE_PORT}"
-    endpoint = DrbEndpoint.new(remote)
-    endpoint.create_client(with_object: nil)
-  end
-
   # Creates a new NodeProxy object and connects to _hostname_
   # via DRb. A reference to the originating _testcase_ is passed to
   # the remote NodeServer object.
   def initialize(hostname, testcase)
     @name = hostname
-    @node_server = create_node_server
-    @node_server.testcase = testcase
+    @node_server = NodeClient.new(hostname, testcase)
   end
 
   def addr_configserver

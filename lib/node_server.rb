@@ -1025,7 +1025,11 @@ def main(callback_endpoint)
       puts("Registered node server at #{callback_endpoint}")
     end
 
-    endpoint.join_service_thread
+    begin
+      endpoint.join_service_thread
+    rescue Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL, Errno::EPIPE, Errno::EINVAL, Errno::ECONNRESET, Errno::EHOSTUNREACH => e
+      puts("Node server got an exception: " + e.message())
+    end
 
     if callback_endpoint
       # When using the callback to register, we will exit after finishing
