@@ -56,12 +56,18 @@ class AttributeSearch < IndexedSearchTest
     assert_result("query=fstitle:#{word}", selfdir + "case.#{resnam}.result", nil, nil, 0, explain)
   end
 
-  def test_attributesearch_case
-    deploy_app(SearchApp.new.sd(selfdir+"cased.sd"))
+  # helper method
+  def expect_fail(word, explain)
+    assert_hitcount("query=title:#{word}", 0)
+    assert_hitcount("query=fstitle:#{word}", 0)
+  end
+
+  def test_attributesearch_uncased
+    deploy_app(SearchApp.new.sd(selfdir+"uncased/cased.sd"))
     start
     feed_and_wait_for_docs("cased", 5, :file => selfdir+"cased.xml")
 
-    puts "test casing"
+    puts "test uncased (case insenitive search)"
 
     a_r_w_e("lower",    "lower",          "lowercase search failed")
     a_r_w_e("shouting", "upper",          "lowercase search failed")
@@ -80,6 +86,32 @@ class AttributeSearch < IndexedSearchTest
     a_r_w_e("firstupper",    "firstupper",         "lowercase search for uppercase search failed")
     a_r_w_e("mixedcase",    "mixedcase",           "lowercase search for uppercase search failed")
     a_r_w_e("intermixedcase",    "intermixedcase", "lowercase search for uppercase search failed")
+  end
+
+  def test_attributesearch_cased
+    deploy_app(SearchApp.new.sd(selfdir+"cased/cased.sd"))
+    start
+    feed_and_wait_for_docs("cased", 5, :file => selfdir+"cased.xml")
+
+    puts "test cased search"
+
+    a_r_w_e("lower",    "lower",          "lowercase search failed")
+    a_r_w_e("shouting", "upper",          "lowercase search failed")
+    a_r_w_e("name",     "firstupper",     "lowercase search failed")
+    a_r_w_e("plus",     "mixedcase",      "lowercase search failed")
+    a_r_w_e("more",     "intermixedcase", "lowercase search failed")
+
+    expect_fail("LoWeR", "uppercase search for lowercase word failed")
+
+    a_r_w_e("UPPER",          "upper",          "uppercase search failed")
+    a_r_w_e("Firstupper",     "firstupper",     "first-uppercase search failed")
+    a_r_w_e("MixedCase",      "mixedcase",      "mixedcase search failed")
+    a_r_w_e("interMixedCase", "intermixedcase", "intermixedcase search failed")
+
+    expect_fail("upper",          "lowercase search for uppercase search failed")
+    expect_fail("firstupper",     "lowercase search for uppercase search failed")
+    expect_fail("mixedcase",      "lowercase search for uppercase search failed")
+    expect_fail("intermixedcase", "lowercase search for uppercase search failed")
   end
 
   def test_attributesearch_single_value
