@@ -872,7 +872,7 @@ class Storage
     docPattern = "^((user|group|order)?doc|id):.*:.* \\(Last modified at [0-9]+"
     stdOutLog = "#{Environment.instance.vespa_home}/tmp/vespa-visit.stdout.log"
     stdErrLog = "#{Environment.instance.vespa_home}/tmp/vespa-visit.stderr.log"
-    cmd = "vespa-visit -i"
+    cmd = "VESPA_LOG_LEVEL=error,warning vespa-visit -i"
     if (selection != nil)
       cmd += " -s '#{selection}'"
     end
