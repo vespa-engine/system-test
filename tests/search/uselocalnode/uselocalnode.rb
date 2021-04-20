@@ -32,7 +32,7 @@ class UseLocalNodeTest < SearchTest
       host= container.name
       r=container.search("/search/?query=sddocname:music&nocache&hits=0")
     end
-    matches = wait_for_atleast_log_matches(/Cluster dispatcher.search: group 0 has reduced coverage: Active documents 0\/0, working nodes: 0\/1 required 1, unresponsive nodes: none/, 2, 120, {:multinode => true})
+    matches = wait_for_atleast_log_matches(/Cluster dispatcher.search: group 0 has reduced coverage: Active documents: 0\/0, working nodes: 0\/1 required 1, unresponsive nodes: none/, 2, 120, {:multinode => true})
     assert(matches <= 6, "The test should see 2 to 6 reports for group 0 coverage, saw #{matches}")
   end
 
