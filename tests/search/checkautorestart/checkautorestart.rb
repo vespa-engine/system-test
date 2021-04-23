@@ -64,7 +64,7 @@ class CheckAutoRestart < SearchTest
     killapp("sbin/vespa-logd")
     killapp("sbin/vespa-distributord-bin")
     killapp("config.id=default/container.0")
-    killapp("config.id=admin/cluster-controllers/0")
+    killapp("config.id=admin/standalone/cluster-controllers/0")
     killapp("sbin/vespa-proton")
     killapp("config.id=admin/metrics/")
     killapp("sbin/vespa-slobrok")
