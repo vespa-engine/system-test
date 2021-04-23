@@ -72,7 +72,7 @@ class CheckAutoRestart < SearchTest
     check_new_pids("sbin/vespa-logd")
     check_new_pids("sbin/vespa-distributord-bin")
     check_new_pids("config.id=default/container.0")
-    check_new_pids("config.id=admin/cluster-controllers/0")
+    check_new_pids("config.id=admin/standalone/cluster-controllers/0")
     check_new_pids("sbin/vespa-proton")
     check_new_pids("config.id=admin/metrics/")
     check_new_pids("sbin/vespa-slobrok")
