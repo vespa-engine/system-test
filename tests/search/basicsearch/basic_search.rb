@@ -29,6 +29,15 @@ class BasicSearch < IndexedSearchTest
     start_feed_and_check
   end
 
+  def test_basicsearch_with_one_distributor_stripe
+    # TODO STRIPE: Remove this test when new distributor stripe mode is default
+    deploy_app(SearchApp.new.
+               cluster_name("basicsearch").
+               sd(SEARCH_DATA+"music.sd").
+               storage(StorageCluster.new("basicsearch").num_distributor_stripes(1)))
+    start_feed_and_check
+  end
+
   def start_feed_and_check
     start
     feed_and_check
