@@ -15,6 +15,7 @@ class StorageCluster
   chained_setter :garbagecollection
   chained_setter :garbagecollectioninterval
   chained_setter :selection, :documentselection
+  chained_setter :num_distributor_stripes
   chained_forward :fleet_controllers,
                   :min_storage_up_ratio => :min_storage_up_ratio,
                   :min_distributor_up_ratio => :min_distributor_up_ratio,
@@ -43,6 +44,7 @@ class StorageCluster
     @doc_types = []
     @streaming = false
     @max_nodes_per_merge = 16
+    @num_distributor_stripes = nil
   end
 
   def sd(file_name, params = {})
@@ -112,9 +114,20 @@ class StorageCluster
     end
   end
 
+  def distributormanager_config(indent)
+    if @num_distributor_stripes
+      cfg = ConfigOverride.new("vespa.config.content.core.stor-distributormanager")
+      cfg.add("num_distributor_stripes", @num_distributor_stripes)
+      return XmlHelper.new(indent).to_xml(cfg)
+    else
+      return ""
+    end
+  end
+
   def cluster_parameters_xml(indent)
     xml = XmlHelper.new(indent).
       to_xml(@config).
+      call {|indent| distributormanager_config(indent)}.
       tag("tuning").
       tag("bucket-splitting", :"max-documents" => @bucket_split_count,
                               :"max-size" => @bucket_split_size,

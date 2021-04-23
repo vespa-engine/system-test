@@ -850,4 +850,12 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_engine)
   end
 
+  def test_num_distributor_stripes_can_be_specified
+    actual = SearchApp.new.storage(StorageCluster.new("search").num_distributor_stripes(1)).services_xml
+    expected_substr = '
+      <config name="vespa.config.content.core.stor-distributormanager">
+        <num_distributor_stripes>1</num_distributor_stripes>'
+    assert_substring_ignore_whitespace(actual, expected_substr)
+  end
+
 end
