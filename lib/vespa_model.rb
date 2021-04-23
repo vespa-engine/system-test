@@ -678,7 +678,7 @@ class VespaModel
   end
 
   # Creates a service object based on the _service_ hash, and places it
-  # in the appropiate location. All values are subclasses of vespa_node.
+  # in the appropriate location. All values are subclasses of vespa_node.
   # Note that services belonging to a search cluster are added to @search
   def create_service(service)
     node_handle = @nodeproxies[service["hostname"]]
