@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'indexed_search_test'
 
@@ -58,14 +58,15 @@ class AttributeSearch < IndexedSearchTest
 
   # helper method
   def expect_fail(word, explain)
+    # explain is not used, just present as documentation of test similiar to a_r_w_e method.
     assert_hitcount("query=title:#{word}", 0)
     assert_hitcount("query=fstitle:#{word}", 0)
   end
 
   def test_attributesearch_uncased
-    deploy_app(SearchApp.new.sd(selfdir+"uncased/cased.sd"))
+    deploy_app(SearchApp.new.sd(selfdir+"uncased/test.sd"))
     start
-    feed_and_wait_for_docs("cased", 5, :file => selfdir+"cased.xml")
+    feed_and_wait_for_docs("test", 5, :file => selfdir+"docs_casing.xml")
 
     puts "test uncased (case insenitive search)"
 
@@ -89,9 +90,9 @@ class AttributeSearch < IndexedSearchTest
   end
 
   def test_attributesearch_cased
-    deploy_app(SearchApp.new.sd(selfdir+"cased/cased.sd"))
+    deploy_app(SearchApp.new.sd(selfdir+"cased/test.sd"))
     start
-    feed_and_wait_for_docs("cased", 5, :file => selfdir+"cased.xml")
+    feed_and_wait_for_docs("test", 5, :file => selfdir+"docs_casing.xml")
 
     puts "test cased search"
 
