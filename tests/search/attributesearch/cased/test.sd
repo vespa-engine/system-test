@@ -1,13 +1,19 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-search cased {
-  document cased {
+search test {
+  document test {
     field title type array<string> {
       indexing: attribute | summary
+      match: cased
     }
     field fstitle type array<string> {
       indexing: attribute | summary
       attribute: fast-search
+      dictionary {
+        hash
+        cased
+      }
+      match: cased
     }
     field weight type int {
       indexing: summary | attribute
