@@ -239,7 +239,7 @@ class NodeServer
       remote_file = "#{protocol}://#{params[:webhost]}:#{port}/#{params[:file]}"
       localfilename = @testcase.dirs.ftpfiledir + File.basename(params[:file])
 
-      cmd = "wget -O'#{localfilename}' '#{remote_file}'"
+      cmd = "wget -nv -O'#{localfilename}' '#{remote_file}'"
       err = `#{cmd}`
       if ($? != 0)
         raise "error during #{cmd} was: #{err}"
