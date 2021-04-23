@@ -58,7 +58,7 @@ class AttributeSearch < IndexedSearchTest
 
   # helper method
   def expect_fail(word, explain)
-    # explain tis not used, just present as documentation of test similiar to a_r_w_e method.
+    # explain is not used, just present as documentation of test similiar to a_r_w_e method.
     assert_hitcount("query=title:#{word}", 0)
     assert_hitcount("query=fstitle:#{word}", 0)
   end
