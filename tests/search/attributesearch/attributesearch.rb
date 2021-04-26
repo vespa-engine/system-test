@@ -89,12 +89,10 @@ class AttributeSearch < IndexedSearchTest
     a_r_w_e("intermixedcase",    "intermixedcase", "lowercase search for uppercase search failed")
   end
 
-  def test_attributesearch_cased
-    deploy_app(SearchApp.new.sd(selfdir+"cased/test.sd"))
+  def run_cased_search
     start
     feed_and_wait_for_docs("test", 5, :file => selfdir+"docs_casing.xml")
 
-    puts "test cased search"
 
     a_r_w_e("lower",    "lower",          "lowercase search failed")
     a_r_w_e("shouting", "upper",          "lowercase search failed")
@@ -113,6 +111,18 @@ class AttributeSearch < IndexedSearchTest
     expect_fail("firstupper",     "lowercase search for uppercase search failed")
     expect_fail("mixedcase",      "lowercase search for uppercase search failed")
     expect_fail("intermixedcase", "lowercase search for uppercase search failed")
+  end
+
+  def test_attributesearch_cased_hash
+    puts "Test cased search for hashed dictionaries"
+    deploy_app(SearchApp.new.sd(selfdir+"cased_hash/test.sd"))
+    run_cased_search
+  end
+
+  def test_attributesearch_cased_btree
+    puts "Test cased search for btree dictionaries"
+    deploy_app(SearchApp.new.sd(selfdir+"cased_btree/test.sd"))
+    run_cased_search
   end
 
   def test_attributesearch_single_value
