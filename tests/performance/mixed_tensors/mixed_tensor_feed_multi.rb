@@ -19,7 +19,7 @@ class MixedTensorFeedMultiPerfTest < MixedTensorPerfTestBase
     [
       get_all_feed_throughput_graphs,
       get_feed_throughput_graph(PUTS, NUMBER, 480, 600),
-      get_feed_throughput_graph(PUTS, STRING, 520, 600),
+      get_feed_throughput_graph(PUTS, STRING, 480, 600),
       get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 530, 600),
       get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 440, 610),
       get_feed_throughput_graph(UPDATES_ADD, NUMBER, 3400, 4300),
