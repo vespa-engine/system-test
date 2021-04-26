@@ -18,10 +18,10 @@ class MixedTensorFeedSinglePerfTest < MixedTensorPerfTestBase
   def get_graphs_vec_256
     [
       get_all_feed_throughput_graphs,
-      get_feed_throughput_graph(PUTS, NUMBER, 5200, 5800),
+      get_feed_throughput_graph(PUTS, NUMBER, 5200, 5850),
       get_feed_throughput_graph(PUTS, STRING, 4900, 5800),
       get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 5100, 5800),
-      get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 5300, 5700),
+      get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 5300, 5800),
       get_feed_throughput_graph(UPDATES_ADD, NUMBER, 12000, 14000),
       get_feed_throughput_graph(UPDATES_ADD, STRING, 12000, 14000),
       get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 26000, 34500),
@@ -48,8 +48,8 @@ class MixedTensorFeedSinglePerfTest < MixedTensorPerfTestBase
       get_feed_throughput_graph(PUTS, STRING, 1520, 1800),
       get_feed_throughput_graph(UPDATES_ASSIGN, NUMBER, 1600, 1800),
       get_feed_throughput_graph(UPDATES_ASSIGN, STRING, 1550, 1800),
-      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 17500, 19500),
-      get_feed_throughput_graph(UPDATES_ADD, STRING, 17000, 19000),
+      get_feed_throughput_graph(UPDATES_ADD, NUMBER, 17500, 19700),
+      get_feed_throughput_graph(UPDATES_ADD, STRING, 17000, 19300),
       get_feed_throughput_graph(UPDATES_REMOVE, NUMBER, 17500, 20500),
       get_feed_throughput_graph(UPDATES_REMOVE, STRING, 17500, 20500)
     ]
