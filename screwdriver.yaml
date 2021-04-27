@@ -1,0 +1,32 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+shared:
+  settings:
+    email:
+      addresses: [kraune@verizonmedia.com]
+      statuses: [SUCCESS, FAILURE]
+
+jobs:
+  run-system-tests:
+    requires: [~pr, ~commit]
+    image: vespaengine/vespa-build-centos7:latest
+    environment:
+      USER_SHELL_BIN: bash
+    steps:
+      - install-deps: |
+          set -e
+          pwd
+          ls -la
+          export RUBYLIB=/source/lib
+          yum -y install \
+            libxml2-devel \
+            rh-ruby27-rubygems-devel \
+            rh-ruby27-ruby-devel \
+            rh-ruby27 \
+            rh-ruby27-rubygem-net-telnet
+          source /opt/rh/devtoolset-9/enable
+          source /opt/rh/rh-ruby27/enable
+          gem install libxml-ruby gnuplot distribution test-unit builder
+      - run-tests: |
+          cd ${RUBYLIB}
+          ruby test/testrunner.rb
+          exit $?
