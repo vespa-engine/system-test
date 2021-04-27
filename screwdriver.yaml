@@ -27,6 +27,6 @@ jobs:
           source /opt/rh/rh-ruby27/enable
           gem install libxml-ruby gnuplot distribution test-unit builder
       - run-tests: |
-          cd ${RUBYLIB}
+          cd lib
           ruby test/testrunner.rb
           exit $?
