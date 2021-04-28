@@ -6,7 +6,7 @@ shared:
       statuses: [SUCCESS, FAILURE]
 
 jobs:
-  run-system-tests:
+  test-system-tests:
     requires: [~pr, ~commit]
     image: vespaengine/vespa-build-centos7:latest
     environment:
@@ -15,8 +15,6 @@ jobs:
     steps:
       - install-deps: |
           set -e
-          pwd
-          ls -la
           yum -y install \
             libxml2-devel \
             rh-ruby27-rubygems-devel \
