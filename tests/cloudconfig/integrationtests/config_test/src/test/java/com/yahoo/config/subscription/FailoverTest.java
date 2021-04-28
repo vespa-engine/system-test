@@ -1,4 +1,4 @@
-// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.config.subscription;
 
 import com.yahoo.config.FooConfig;
@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class FailoverTest {
-    private java.util.logging.Logger log = Logger.getLogger(BasicSubscriptionTest.class.getName());
+    private final java.util.logging.Logger log = Logger.getLogger(FailoverTest.class.getName());
 
     private ConfigSubscriber subscriber;
 
@@ -59,7 +59,7 @@ public class FailoverTest {
             // Find next that is not current
             Connection newConnection;
             do {
-                newConnection = connectionPool.setNewCurrentConnection();
+                newConnection = connectionPool.switchConnection(currentConnection);
             } while (currentConnection.getAddress().equals(newConnection.getAddress()));
             log.log(LogLevel.INFO, "newConnection=" + newConnection.getAddress());
             tester.stopConfigServerMatchingSource(newConnection);
@@ -129,20 +129,20 @@ public class FailoverTest {
             ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", set, ConfigTester.getTestTimingValues());
 
             ConnectionPool connectionPool = ((JRTConfigSubscription<BarConfig>) bh.subscription()).requester().getConnectionPool();
-            String s1 = connectionPool.getCurrent().getAddress();
+            Connection c1 = connectionPool.getCurrent();
             assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
             assertTrue(bh.isChanged());
 
-            connectionPool.setNewCurrentConnection();
-            String s2 = connectionPool.getCurrent().getAddress();
-            connectionPool.setNewCurrentConnection();
-            String s3 = connectionPool.getCurrent().getAddress();
-            connectionPool.setNewCurrentConnection();
-            String s4 = connectionPool.getCurrent().getAddress();
+            connectionPool.switchConnection(c1);
+            Connection c2 = connectionPool.getCurrent();
+            connectionPool.switchConnection(c2);
+            Connection c3 = connectionPool.getCurrent();
+            connectionPool.switchConnection(c3);
+            Connection c4 = connectionPool.getCurrent();
 
-            assertEquals(s1, s2);
-            assertEquals(s2, s3);
-            assertEquals(s3, s4);
+            assertEquals(c1, c2);
+            assertEquals(c2, c3);
+            assertEquals(c3, c4);
 
             tester.getConfigServer().deployNewConfig("configs/foo2");
             assertNextConfigHasChanged(subscriber, bh);
