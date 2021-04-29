@@ -1,3 +1,4 @@
+require 'app_generator/container_app'
 require 'http_client'
 require 'performance_test'
 require 'performance/fbench'
@@ -6,14 +7,14 @@ require 'pp'
 
 class ContainerHttp < PerformanceTest
 
+  KEY_FILE = 'cert.key'
+  CERT_FILE = 'cert.crt'
   STANDARD = 'standard'
   ASYNC_WRITE = 'asyncwrite'
   NON_PERSISTENT = 'nonpersistent'
 
   def initialize(*args)
     super(*args)
-    @app = selfdir + 'app'
-    @app_with_logs = selfdir + 'app_with_logging'
     @queryfile = nil
     @bundledir= selfdir + 'java'
   end
@@ -22,15 +23,22 @@ class ContainerHttp < PerformanceTest
     set_owner('bjorncs')
     # Bundle with HelloWorld and AsyncHelloWorld handler
     add_bundle_dir(@bundledir, 'performance', {:mavenargs => '-Dmaven.test.skip=true'})
+
+    # Deploy a dummy app to get a reference to the container node, which is needed for uploading the certificate
+    deploy_container_app(ContainerApp.new.container(Container.new))
+    @container = @vespa.container.values.first
+
+    # Generate TLS certificate with endpoint
+    system("openssl req -nodes -x509 -newkey rsa:4096 -keyout #{dirs.tmpdir}#{KEY_FILE} -out #{dirs.tmpdir}#{CERT_FILE} -days 365 -subj '/CN=#{@container.hostname}'")
+    system("chmod 644 #{dirs.tmpdir}#{KEY_FILE} #{dirs.tmpdir}#{CERT_FILE}")
+    @container.copy("#{dirs.tmpdir}#{KEY_FILE}", dirs.tmpdir)
+    @container.copy("#{dirs.tmpdir}#{CERT_FILE}", dirs.tmpdir)
   end
 
-  def setup_and_deploy(app)
-    deploy(app)
-    start
-  end
 
   def test_container_http_performance
-    setup_and_deploy(@app)
+    deploy_test_app(access_logging: false)
+
     set_description('Test basic HTTP performance of container')
     @graphs = [
         {
@@ -81,7 +89,7 @@ class ContainerHttp < PerformanceTest
   end
 
   def test_container_http_performance_with_logging
-    setup_and_deploy(@app_with_logs)
+    deploy_test_app(access_logging: true)
     set_description('Test basic HTTP performance of container with logging enabled')
     @graphs = [
         {
@@ -129,6 +137,33 @@ class ContainerHttp < PerformanceTest
         }
     ]
     run_test
+  end
+
+  def deploy_test_app(access_logging:)
+    app = ContainerApp.new.container(
+      Container.new.
+        component(AccessLog.new(if access_logging then "vespa" else "disabled" end).
+          fileNamePattern("logs/vespa/qrs/QueryAccessLog.default")).
+        handler(Handler.new('com.yahoo.performance.handler.HelloWorldHandler').
+          binding('http://*/HelloWorld').
+          bundle('performance')).
+        handler(Handler.new('com.yahoo.performance.handler.AsyncHelloWorldHandler').
+          binding('http://*/AsyncHelloWorld').
+          bundle('performance')).
+        http(
+          Http.new.
+            server(
+              Server.new('http', @container.http_port)).
+            server(
+              Server.new('https', '4443').ssl(
+                Ssl.new(private_key_file = "#{dirs.tmpdir}#{KEY_FILE}", certificate_file = "#{dirs.tmpdir}#{CERT_FILE}", ca_certificates_file=nil, client_authentication='disabled')))))
+    deploy_container_app(app)
+  end
+
+  def deploy_container_app(app)
+    output = deploy_app(app)
+    start
+    wait_for_application(@vespa.container.values.first, output)
   end
 
   def run_test
