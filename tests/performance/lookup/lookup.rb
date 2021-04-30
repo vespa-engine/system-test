@@ -53,12 +53,12 @@ class LookupPerformance < PerformanceTest
         :historic => true
       }
     ]
-    num_docs = 100000
+    num_docs = 10000000
     num_values_per_doc=10
     upper_limit = num_docs*num_values_per_doc*10
     keys_per_query = 100
     num_clients = 40
-    num_queries = num_clients * 4000
+    num_queries = num_clients * 40000
     deploy_app(get_app())
     container = (vespa.qrserver["0"] or vespa.container.values.first)
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/docs #{selfdir}/docs.cpp")
