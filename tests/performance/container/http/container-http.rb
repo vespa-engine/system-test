@@ -55,7 +55,7 @@ class ContainerHttp < PerformanceTest
             :historic => true
         },
         {
-            :title => 'Cpuutil HTTP/1',
+            :title => 'CPU utilization HTTP/1',
             :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
             :x => 'protocol',
             :y => 'cpuutil',
@@ -104,7 +104,7 @@ class ContainerHttp < PerformanceTest
             :historic => true
         },
         {
-            :title => 'Cpuutil HTTP/2',
+            :title => 'CPU utilization HTTP/2',
             :filter => {'connection' => PERSISTENT, 'protocol' => HTTP2},
             :x => 'protocol',
             :y => 'cpuutil',
@@ -154,7 +154,7 @@ class ContainerHttp < PerformanceTest
           :historic => true
         },
         {
-          :title => 'Latency HTTP/1',
+          :title => 'CPU utilization HTTP/1',
           :filter => {'connection' => PERSISTENT},
           :x => 'connection',
           :y => 'cpuutil',
@@ -217,7 +217,7 @@ class ContainerHttp < PerformanceTest
     perf = Perf::System.new(@container)
     perf.start
     h2load = Perf::H2Load.new(@container)
-    result = h2load.run_benchmark(clients: clients, concurrent_streams: concurrent_streams, warmup: warmup, duration: 90,
+    result = h2load.run_benchmark(clients: clients, threads: [clients, 32].min, concurrent_streams: concurrent_streams, warmup: warmup, duration: 90,
                                   uri_port: 4443, uri_path: '/HelloWorld')
     perf.end
     write_report([result.filler, perf.fill, parameter_filler('connection', PERSISTENT), parameter_filler('protocol', HTTP2)])
