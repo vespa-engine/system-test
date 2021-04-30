@@ -11,22 +11,16 @@ class ContainerHttp < PerformanceTest
   KEY_FILE = 'cert.key'
   CERT_FILE = 'cert.crt'
 
-  STANDARD = 'standard'
-  ASYNC_WRITE = 'asyncwrite'
+  PERSISTENT = 'persistent'
   NON_PERSISTENT = 'nonpersistent'
 
   HTTP1 = 'http1'
   HTTP2 = 'http2'
 
-  def initialize(*args)
-    super(*args)
-    @queryfile = nil
-    @bundledir= selfdir + 'java'
-  end
-
   def setup
     set_owner('bjorncs')
     # Bundle with HelloWorld and AsyncHelloWorld handler
+    @bundledir= selfdir + 'java'
     add_bundle_dir(@bundledir, 'performance', {:mavenargs => '-Dmaven.test.skip=true'})
 
     # Deploy a dummy app to get a reference to the container node, which is needed for uploading the certificate
@@ -47,79 +41,80 @@ class ContainerHttp < PerformanceTest
     set_description('Test basic HTTP performance of container')
     @graphs = [
         {
-            :title => 'QPS HTTP/1 all combined',
-            :filter => {'protocol' => HTTP1},
-            :x => 'legend',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :title => 'QPS HTTP/2 (128 streams total)',
-            :filter => {'protocol' => HTTP2},
-            :x => 'clients',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :title => 'QPS HTTP/1',
-            :filter => {'legend' => STANDARD, 'protocol' => HTTP1},
-            :x => 'legend',
-            :y => 'qps',
-            :y_min => 145000,
-            :y_max => 180000,
-            :historic => true
-        },
-        {
-            :title => 'QPS HTTP/1 vs HTTP/2',
-            :filter => {'legend' => STANDARD, 'clients' => 128},
+            :title => 'QPS HTTP/1 persistent',
+            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
             :x => 'protocol',
             :y => 'qps',
             :historic => true
         },
         {
-            :title => 'QPS HTTP/1 with async write',
-            :filter => {'legend' => ASYNC_WRITE, 'protocol' => HTTP1 },
-            :x => 'legend',
-            :y => 'qps',
-            :y_min => 125000,
-            :y_max => 150000,
-            :historic => true
-        },
-        {
-            :title => 'QPS HTTP/1 without keep-alive',
-            :filter => {'legend' => NON_PERSISTENT, 'protocol' => HTTP1 },
-            :x => 'legend',
-            :y => 'qps',
-            :y_min => 3300,
-            :y_max => 3500,
-            :historic => true
-        },
-        {
             :title => 'Latency HTTP/1',
-            :filter => {'protocol' => HTTP1},
-            :x => 'legend',
+            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
+            :x => 'protocol',
             :y => 'latency',
             :historic => true
         },
         {
-            :title => 'Latency HTTP/1',
-            :filter => {'protocol' => HTTP1},
-            :x => 'legend',
+            :title => 'Cpuutil HTTP/1',
+            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
+            :x => 'protocol',
             :y => 'cpuutil',
             :historic => true
         },
         {
+            :title => 'QPS HTTP/1 non-persistent',
+            :filter => {'connection' => NON_PERSISTENT, 'protocol' => HTTP1 },
+            :x => 'protocol',
+            :y => 'qps',
+            :historic => true
+        },
+        {
+            :title => 'QPS HTTP/2 (1 client)',
+            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP2, 'clients' => 1},
+            :x => 'clients',
+            :y => 'qps',
+            :historic => true
+        },
+        {
+            :title => 'QPS HTTP/2 (32 client)',
+            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP2, 'clients' => 1},
+            :x => 'clients',
+            :y => 'qps',
+            :historic => true
+        },
+        {
+            :title => 'QPS HTTP/2 (128 clients)',
+            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP2, 'clients' => 128},
+            :x => 'clients',
+            :y => 'qps',
+            :historic => true
+        },
+        {
+            :title => 'QPS HTTP/2 (128 streams total)',
+            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP2},
+            :x => 'clients',
+            :y => 'qps',
+            :historic => true
+        },
+        {
             :title => 'Latency HTTP/2',
-            :filter => {'protocol' => HTTP2},
-            :x => 'legend',
+            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP2},
+            :x => 'protocol',
             :y => 'latency',
             :historic => true
         },
         {
-            :title => 'Latency HTTP/2',
-            :filter => {'protocol' => HTTP2},
-            :x => 'legend',
+            :title => 'Cpuutil HTTP/2',
+            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP2},
+            :x => 'protocol',
             :y => 'cpuutil',
+            :historic => true
+        },
+        {
+            :title => 'QPS HTTP/1 vs HTTP/2',
+            :filter => {'connection' => PERSISTENT, 'clients' => 128},
+            :x => 'protocol',
+            :y => 'qps',
             :historic => true
         }
     ]
@@ -133,47 +128,38 @@ class ContainerHttp < PerformanceTest
     @graphs = [
         {
             :title => 'QPS all combined',
-            :x => 'legend',
+            :x => 'connection',
             :y => 'qps',
             :historic => true
         },
         {
             :title => 'QPS HTTP/1',
-            :filter => {'legend' => STANDARD},
-            :x => 'legend',
+            :filter => {'connection' => PERSISTENT},
+            :x => 'connection',
             :y => 'qps',
-            :y_min => 105000,
-            :y_max => 140000,
             :historic => true
         },
         {
-            :title => 'QPS HTTP/1 with async write',
-            :filter => {'legend' => ASYNC_WRITE },
-            :x => 'legend',
+            :title => 'QPS HTTP/1 non-persistent',
+            :filter => {'connection' => NON_PERSISTENT },
+            :x => 'connection',
             :y => 'qps',
-            :y_min => 105000,
-            :y_max => 135000,
             :historic => true
         },
         {
-            :title => 'QPS HTTP/1 without keep-alive',
-            :filter => {'legend' => NON_PERSISTENT },
-            :x => 'legend',
-            :y => 'qps',
-            :y_min => 3200,
-            :y_max => 3500,
-            :historic => true
+          :title => 'Latency HTTP/1',
+          :filter => {'connection' => PERSISTENT},
+          :x => 'connection',
+          :y => 'latency',
+          :historic => true
         },
         {
-            :x => 'legend',
-            :y => 'latency',
-            :historic => true
+          :title => 'Latency HTTP/1',
+          :filter => {'connection' => PERSISTENT},
+          :x => 'connection',
+          :y => 'cpuutil',
+          :historic => true
         },
-        {
-            :x => 'legend',
-            :y => 'cpuutil',
-            :historic => true
-        }
     ]
     run_http1_tests
   end
@@ -185,9 +171,6 @@ class ContainerHttp < PerformanceTest
           fileNamePattern("logs/vespa/qrs/QueryAccessLog.default")).
         handler(Handler.new('com.yahoo.performance.handler.HelloWorldHandler').
           binding('http://*/HelloWorld').
-          bundle('performance')).
-        handler(Handler.new('com.yahoo.performance.handler.AsyncHelloWorldHandler').
-          binding('http://*/AsyncHelloWorld').
           bundle('performance')).
         http(
           Http.new.
@@ -208,29 +191,19 @@ class ContainerHttp < PerformanceTest
   end
 
   def run_http1_tests
-    container = (vespa.qrserver['0'] or vespa.container.values.first)
-    container.copy(selfdir + "hello.txt", dirs.tmpdir)
-    sync_req_file = dirs.tmpdir + "hello.txt"
-    container.copy(selfdir + "async_hello.txt", dirs.tmpdir)
-    async_req_file = dirs.tmpdir + "async_hello.txt"
+    @container.copy(selfdir + "hello.txt", dirs.tmpdir)
+    @queryfile = dirs.tmpdir + "hello.txt"
 
-    @queryfile = sync_req_file
-    run_fbench(container, 128, 20, []) # warmup
+    run_fbench(@container, 128, 20, []) # warmup
+    run_http1_test(128, PERSISTENT)
+    run_http1_test(32, NON_PERSISTENT)
+  end
 
+  def run_http1_test(clients, connection)
     profiler_start
-    run_fbench(container, 128, 90, [parameter_filler('legend', STANDARD), parameter_filler('protocol', HTTP1)])
-    profiler_report(STANDARD)
-
-    @queryfile = async_req_file
-    profiler_start
-    run_fbench(container, 128, 90, [parameter_filler('legend', ASYNC_WRITE), parameter_filler('protocol', HTTP1)])
-    profiler_report(ASYNC_WRITE)
-
-    @queryfile = sync_req_file
-    profiler_start
-    run_fbench(container, 32, 90, [parameter_filler('legend', NON_PERSISTENT), parameter_filler('protocol', HTTP1)],
-               {:disable_http_keep_alive => true})
-    profiler_report(NON_PERSISTENT)
+    run_fbench(@container, clients, 90, [parameter_filler('connection', connection), parameter_filler('protocol', HTTP1)],
+               {:disable_http_keep_alive => connection == NON_PERSISTENT})
+    profiler_report(connection)
   end
 
   def run_http2_tests
@@ -247,7 +220,7 @@ class ContainerHttp < PerformanceTest
     result = h2load.run_benchmark(clients: clients, concurrent_streams: concurrent_streams, warmup: warmup, duration: 90,
                                   uri_port: 4443, uri_path: '/HelloWorld')
     perf.end
-    write_report([result.filler, perf.fill, parameter_filler('legend', STANDARD), parameter_filler('protocol', STANDARD)])
+    write_report([result.filler, perf.fill, parameter_filler('connection', PERSISTENT), parameter_filler('protocol', HTTP2)])
   end
 
 end
