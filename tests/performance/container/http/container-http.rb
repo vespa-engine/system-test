@@ -237,6 +237,7 @@ class ContainerHttp < PerformanceTest
     run_http2_test(128, 1, 30)
     run_http2_test(32, 4, 10)
     run_http2_test(8, 16, 10)
+    run_http2_test(1, 128, 10)
   end
 
   def run_http2_test(clients, concurrent_streams, warmup)
