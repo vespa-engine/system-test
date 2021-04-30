@@ -10,13 +10,19 @@ module Perf
     end
 
     def run_benchmark(clients:, concurrent_streams:, warmup:, duration:,
-                      uri_scheme: "https", uri_port: @node.http_port, uri_path: nil, input_file: nil)
+                      uri_scheme: "https", uri_port: @node.http_port, uri_path: nil, input_file: nil,
+                      post_data_file: nil, protocols: ["h2", "http/1.1"], headers: {}, threads: nil)
       if (uri_path == nil && input_file == nil) || (uri_path != nil && input_file != nil)
         raise "Either 'uripath' or 'input_file' must be specified"
       end
 
       cmd = "/usr/bin/env h2load --clients=#{clients} --max-concurrent-streams=#{concurrent_streams} --duration=#{duration} "
-      cmd += "--warm-up-time=#{warmup} --base-uri=#{uri_scheme}://#{@node.name}:#{uri_port} "
+      cmd += "--warm-up-time=#{warmup} --base-uri=#{uri_scheme}://#{@node.name}:#{uri_port} --npn-list=#{protocols.join(',')} "
+
+      headers.each { |name, value| cmd += "--header=\"#{name}: #{value}\" " }
+
+      cmd += "--threads=#{threads} " if threads != nil
+      cmd += "--data=#{post_data_file} " if post_data_file != nil
 
       if input_file != nil
         cmd += "--input-file=#{input_file} "
@@ -45,6 +51,7 @@ module Perf
           result.add_metric('qps', qps)
           result.add_parameter('runtime', duration)
           result.add_parameter('clients', clients)
+          result.add_parameter('threads', threads)
           result.add_parameter('concurrentstreams', concurrent_streams)
           result.add_parameter('loadgiver', 'h2load')
         end
