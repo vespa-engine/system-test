@@ -5,39 +5,39 @@ search prefix {
     field title type string {
       indexing: summary
     }
-    field scan_uncased type string {
-      indexing: attribute | summary
-      match: uncased
-    }
     field scan_cased type string {
       indexing: attribute | summary
-      match: cased
-    }
-    field btree_uncased type string {
-      indexing: attribute | summary
-      attribute: fast-search
-    }
-    field btree_cased type string {
-      indexing: attribute | summary
-      attribute: fast-search
-      dictionary {
-        btree
-        cased
-      }
-      match: cased
-    }
-    field hash_cased type string {
-      indexing: attribute | summary
-      attribute: fast-search
-      dictionary {
-        hash
-        cased
-      }
       match: cased
     }
     field popularity type int {
       indexing: summary | attribute
     }
+  }
+  field scan_uncased type string {
+    indexing: input scan_cased | attribute | summary
+    match: uncased
+  }
+  field btree_uncased type string {
+    indexing: input scan_cased | attribute | summary
+    attribute: fast-search
+  }
+  field btree_cased type string {
+    indexing: input scan_cased | attribute | summary
+    attribute: fast-search
+    dictionary {
+      btree
+      cased
+    }
+    match: cased
+  }
+  field hash_cased type string {
+    indexing: input scan_cased | attribute | summary
+    attribute: fast-search
+    dictionary {
+      hash
+      cased
+    }
+    match: cased
   }
   rank-profile default {
     first-phase {

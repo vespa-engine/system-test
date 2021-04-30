@@ -4,7 +4,7 @@ search test {
     field title type string {
       indexing: summary | index
     }
-    field single_slow type string {
+    field single_scan_uncased type string {
       indexing: attribute
     }
     field array_slow type array<string> {
@@ -12,10 +12,6 @@ search test {
     }
     field wset_slow type weightedset<string> {
       indexing: attribute
-    }
-    field single_fast type string {
-      indexing: attribute
-      attribute: fast-search
     }
     field array_fast type array<string> {
       indexing: attribute
@@ -26,7 +22,33 @@ search test {
       attribute: fast-search
     }
   }
+  field single_btree_uncased type string {
+    indexing: input single_scan_uncased | attribute
+    attribute: fast-search
+  }
+  field single_btree_cased type string {
+    indexing: input single_scan_uncased | attribute
+    attribute: fast-search
+    dictionary {
+      btree
+      cased
+    }
+    match: cased
+  }
+  field single_hash_cased type string {
+    indexing: input single_scan_uncased | attribute
+    attribute: fast-search
+    dictionary {
+      btree
+      cased
+    }
+    match: cased
+  }
+  field single_scan_cased type string {
+    indexing: input single_scan_uncased | attribute
+    match: cased
+  }
   field single_index type string {
-    indexing: input single_fast | index
+    indexing: input single_scan_uncased | index
   }
 }
