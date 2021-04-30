@@ -359,10 +359,10 @@ class AttributeSearch < IndexedSearchTest
     assert_hitcount("query=#{field}:uu*", 0)
     assert_hitcount("query=#{field}:uuu*", 0)
     assert_hitcount("query=#{field}:uuuu*", 0)
-    assert_hitcount("query=#{field}:U*=100", 0)
-    assert_hitcount("query=#{field}:UU*=100", 0)
-    assert_hitcount("query=#{field}:UUU*=100", 0)
-    assert_hitcount("query=#{field}:UUUU*=100", 0)
+    assert_hitcount("query=#{field}:U*", 0)
+    assert_hitcount("query=#{field}:UU*", 0)
+    assert_hitcount("query=#{field}:UUU*", 0)
+    assert_hitcount("query=#{field}:UUUU*", 0)
   end
 
   def test_attribute_prefix
