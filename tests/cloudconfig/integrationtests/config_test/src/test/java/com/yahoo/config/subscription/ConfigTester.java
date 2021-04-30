@@ -105,8 +105,7 @@ public class ConfigTester implements AutoCloseable {
             6000,  // subscribeTimeout
             250,   // unconfiguredDelay
             500,   // configuredErrorDelay
-            250,   // fixedDelay
-            5);    // maxDelayMultiplier
+            250);   // fixedDelay
     }
 
     public TestConfigServer getConfigServer() { return cServer1; }
