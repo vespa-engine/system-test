@@ -55,7 +55,7 @@ class ContainerHttp < PerformanceTest
             :historic => true
         },
         {
-            :title => 'Cpuutil HTTP/1',
+            :title => 'CPU utilization HTTP/1',
             :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
             :x => 'protocol',
             :y => 'cpuutil',
@@ -104,7 +104,7 @@ class ContainerHttp < PerformanceTest
             :historic => true
         },
         {
-            :title => 'Cpuutil HTTP/2',
+            :title => 'CPU utilization HTTP/2',
             :filter => {'connection' => PERSISTENT, 'protocol' => HTTP2},
             :x => 'protocol',
             :y => 'cpuutil',
@@ -154,7 +154,7 @@ class ContainerHttp < PerformanceTest
           :historic => true
         },
         {
-          :title => 'Latency HTTP/1',
+          :title => 'CPU utilization HTTP/1',
           :filter => {'connection' => PERSISTENT},
           :x => 'connection',
           :y => 'cpuutil',
