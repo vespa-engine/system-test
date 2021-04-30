@@ -218,17 +218,17 @@ class ContainerHttp < PerformanceTest
     run_fbench(container, 128, 20, []) # warmup
 
     profiler_start
-    run_fbench(container, 128, 120, [parameter_filler('legend', STANDARD), parameter_filler('protocol', HTTP1)])
+    run_fbench(container, 128, 90, [parameter_filler('legend', STANDARD), parameter_filler('protocol', HTTP1)])
     profiler_report(STANDARD)
 
     @queryfile = async_req_file
     profiler_start
-    run_fbench(container, 128, 120, [parameter_filler('legend', ASYNC_WRITE), parameter_filler('protocol', HTTP1)])
+    run_fbench(container, 128, 90, [parameter_filler('legend', ASYNC_WRITE), parameter_filler('protocol', HTTP1)])
     profiler_report(ASYNC_WRITE)
 
     @queryfile = sync_req_file
     profiler_start
-    run_fbench(container, 32, 120, [parameter_filler('legend', NON_PERSISTENT), parameter_filler('protocol', HTTP1)],
+    run_fbench(container, 32, 90, [parameter_filler('legend', NON_PERSISTENT), parameter_filler('protocol', HTTP1)],
                {:disable_http_keep_alive => true})
     profiler_report(NON_PERSISTENT)
   end
@@ -243,7 +243,7 @@ class ContainerHttp < PerformanceTest
     perf = Perf::System.new(@container)
     perf.start
     h2load = Perf::H2Load.new(@container)
-    result = h2load.run_benchmark(clients: clients, concurrent_streams: concurrent_streams, warmup: warmup, duration: 120,
+    result = h2load.run_benchmark(clients: clients, concurrent_streams: concurrent_streams, warmup: warmup, duration: 90,
                                   uri_port: 4443, uri_path: '/HelloWorld')
     perf.end
     write_report([result.filler, perf.fill, parameter_filler('legend', STANDARD), parameter_filler('protocol', STANDARD)])
