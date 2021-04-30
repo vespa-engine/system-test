@@ -1,16 +1,34 @@
 package com.yahoo.performance.handler;
 
-import com.yahoo.jdisc.Request;
-import com.yahoo.jdisc.Response;
-import com.yahoo.jdisc.handler.*;
+import com.google.inject.Inject;
+import com.yahoo.container.jdisc.HttpRequest;
+import com.yahoo.container.jdisc.HttpResponse;
+import com.yahoo.container.jdisc.ThreadedHttpRequestHandler;
+import com.yahoo.jdisc.Metric;
 
-public class HelloWorldHandler extends AbstractRequestHandler {
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.concurrent.Executor;
+
+/**
+ * @author bjorncs
+ */
+public class HelloWorldHandler extends ThreadedHttpRequestHandler {
+
+    @Inject
+    public HelloWorldHandler(Executor executor, Metric metric) {
+        super(executor, metric);
+    }
 
     @Override
-    public ContentChannel handleRequest(Request request, ResponseHandler handler) {
-        FastContentWriter writer = ResponseDispatch.newInstance(Response.Status.OK).connectFastWriter(handler);
-        writer.write("Hello, world!");
-        writer.close();
-        return null;
+    public HttpResponse handle(HttpRequest request) {
+        return new HttpResponse(200) {
+            @Override
+            public void render(OutputStream outputStream) {
+                PrintStream out = new PrintStream(outputStream);
+                out.print("OK");
+                out.flush();
+            }
+        };
     }
 }
