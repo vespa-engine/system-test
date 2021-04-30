@@ -16,7 +16,7 @@ doc(unsigned long num, unsigned long numValues) {
     }
     std::string values = os.str();
  
-    printf("{\"id\":\"id:test:test::%d\", \"fields\":{ \"id\":%lu, \"f1\":{%s}, \"f1_hash\":{%s} } }", num, num, values.c_str(), values.c_str());
+    printf("{\"id\":\"id:test:test::%d\", \"fields\":{ \"id\":%lu, \"f1\":{%s}, \"s1\":{%s} } }", num, num, values.c_str(), values.c_str());
 }
 
 int
