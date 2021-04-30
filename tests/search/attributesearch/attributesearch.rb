@@ -377,18 +377,6 @@ class AttributeSearch < IndexedSearchTest
     verify_prefix_cased("hash_cased")
   end
 
-  def test_attribute_strfold
-    deploy_app(SearchApp.new.sd(selfdir+"strfold.sd"))
-    start
-    feed_and_wait_for_docs("strfold", 9, :file => selfdir+"strfold1.xml")
-
-    puts "test string folding"
-
-    assert_hitcount("query=str:a&nocache", 9)
-    feed_and_wait_for_docs("strfold", 10, :file => selfdir+"strfold2.xml")
-    assert_hitcount("query=str:a&nocache", 10)
-  end
-
   def test_flag_attribute
     set_description("Test the byte range of the flag attribute (array<byte>, fast-search)")
     deploy_app(SearchApp.new.sd(selfdir+"attrflag/test.sd"))
