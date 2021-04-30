@@ -1,120 +1,200 @@
 <document type="prefix" id="id:prefix:prefix::1">
 	<title>1</title>
-	<str>t</str>
+	<scan_cased>t</scan_cased>
+	<scan_uncased>t</scan_uncased>
+	<btree_cased>t</btree_cased>
+	<btree_uncased>t</btree_uncased>
+	<hash_cased>t</hash_cased>
 	<popularity>100</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::2">
 	<title>2</title>
-	<str>tt</str>
+	<scan_cased>tT</scan_cased>
+	<scan_uncased>tT</scan_uncased>
+	<btree_cased>tT</btree_cased>
+	<btree_uncased>tT</btree_uncased>
+	<hash_cased>tT</hash_cased>
 	<popularity>99</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::3">
 	<title>3</title>
-	<str>ttt</str>
+	<scan_cased>tTt</scan_cased>
+	<scan_uncased>tTt</scan_uncased>
+	<btree_cased>tTt</btree_cased>
+	<btree_uncased>tTt</btree_uncased>
+	<hash_cased>tTt</hash_cased>
 	<popularity>98</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::4">
 	<title>4</title>
-	<str>tttt</str>
+	<scan_cased>tTtT</scan_cased>
+	<scan_uncased>tTtT</scan_uncased>
+	<btree_cased>tTtT</btree_cased>
+	<btree_uncased>tTtT</btree_uncased>
+	<hash_cased>tTtT</hash_cased>
 	<popularity>97</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::5">
 	<title>5</title>
-	<str>ttttt</str>
+	<scan_cased>tTtTt</scan_cased>
+	<scan_uncased>tTtTt</scan_uncased>
+	<btree_cased>tTtTt</btree_cased>
+	<btree_uncased>tTtTt</btree_uncased>
+	<hash_cased>tTtTt</hash_cased>
 	<popularity>96</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::6">
 	<title>6</title>
-	<str>tttttt</str>
+	<scan_cased>tTtTtT</scan_cased>
+	<scan_uncased>tTtTtT</scan_uncased>
+	<btree_cased>tTtTtT</btree_cased>
+	<btree_uncased>tTtTtT</btree_uncased>
+	<hash_cased>tTtTtT</hash_cased>
 	<popularity>95</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::7">
 	<title>7</title>
-	<str>ttttttt</str>
+	<scan_cased>tTtTtTt</scan_cased>
+	<scan_uncased>tTtTtTt</scan_uncased>
+	<btree_cased>tTtTtTt</btree_cased>
+	<btree_uncased>tTtTtTt</btree_uncased>
+	<hash_cased>tTtTtTt</hash_cased>
 	<popularity>94</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::8">
 	<title>8</title>
-	<str>tttttttt</str>
+	<scan_cased>tTtTtTtT</scan_cased>
+	<scan_uncased>tTtTtTtT</scan_uncased>
+	<btree_cased>tTtTtTtT</btree_cased>
+	<btree_uncased>tTtTtTtT</btree_uncased>
+	<hash_cased>tTtTtTtT</hash_cased>
 	<popularity>93</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::9">
 	<title>9</title>
-	<str>ttttttttt</str>
+	<scan_cased>tTtTtTtTt</scan_cased>
+	<scan_uncased>tTtTtTtTt</scan_uncased>
+	<btree_cased>tTtTtTtTt</btree_cased>
+	<btree_uncased>tTtTtTtTt</btree_uncased>
+	<hash_cased>tTtTtTtTt</hash_cased>
 	<popularity>92</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::10">
 	<title>10</title>
-	<str>tttttttttt</str>
+	<scan_cased>tTtTtTtTtT</scan_cased>
+	<scan_uncased>tTtTtTtTtT</scan_uncased>
+	<btree_cased>tTtTtTtTtT</btree_cased>
+	<btree_uncased>tTtTtTtTtT</btree_uncased>
+	<hash_cased>tTtTtTtTtT</hash_cased>
 	<popularity>91</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::11">
 	<title>11</title>
-	<str>ttttttttttt</str>
+	<scan_cased>tTtTtTtTtTt</scan_cased>
+	<scan_uncased>tTtTtTtTtTt</scan_uncased>
+	<btree_cased>tTtTtTtTtTt</btree_cased>
+	<btree_uncased>tTtTtTtTtTt</btree_uncased>
+	<hash_cased>tTtTtTtTtTt</hash_cased>
 	<popularity>90</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::12">
 	<title>12</title>
-	<str>tttttttttttt</str>
+	<scan_cased>tTtTtTtTtTtT</scan_cased>
+	<scan_uncased>tTtTtTtTtTtT</scan_uncased>
+	<btree_cased>tTtTtTtTtTtT</btree_cased>
+	<btree_uncased>tTtTtTtTtTtT</btree_uncased>
+	<hash_cased>tTtTtTtTtTtT</hash_cased>
 	<popularity>89</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::13">
 	<title>13</title>
-	<str>ttttttttttttt</str>
+	<scan_cased>tTtTtTtTtTtTt</scan_cased>
+	<scan_uncased>tTtTtTtTtTtTt</scan_uncased>
+	<btree_cased>tTtTtTtTtTtTt</btree_cased>
+	<btree_uncased>tTtTtTtTtTtTt</btree_uncased>
+	<hash_cased>tTtTtTtTtTtTt</hash_cased>
 	<popularity>88</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::14">
 	<title>14</title>
-	<str>tttttttttttttt</str>
+	<scan_cased>tTtTtTtTtTtTtT</scan_cased>
+	<scan_uncased>tTtTtTtTtTtTtT</scan_uncased>
+	<btree_cased>tTtTtTtTtTtTtT</btree_cased>
+	<btree_uncased>tTtTtTtTtTtTtT</btree_uncased>
+	<hash_cased>tTtTtTtTtTtTtT</hash_cased>
 	<popularity>87</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::15">
 	<title>15</title>
-	<str>ttttttttttttttt</str>
+	<scan_cased>tTtTtTtTtTtTtTt</scan_cased>
+	<scan_uncased>tTtTtTtTtTtTtTt</scan_uncased>
+	<btree_cased>tTtTtTtTtTtTtTt</btree_cased>
+	<btree_uncased>tTtTtTtTtTtTtTt</btree_uncased>
+	<hash_cased>tTtTtTtTtTtTtTt</hash_cased>
 	<popularity>86</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::16">
 	<title>16</title>
-	<str>tttttttttttttttt</str>
+	<scan_cased>tTtTtTtTtTtTtTtT</scan_cased>
+	<scan_uncased>tTtTtTtTtTtTtTtT</scan_uncased>
+	<btree_cased>tTtTtTtTtTtTtTtT</btree_cased>
+	<btree_uncased>tTtTtTtTtTtTtTtT</btree_uncased>
+	<hash_cased>tTtTtTtTtTtTtTtT</hash_cased>
 	<popularity>85</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::17">
 	<title>17</title>
-	<str>u</str>
+	<scan_cased>U</scan_cased>
+	<scan_uncased>U</scan_uncased>
+	<btree_cased>U</btree_cased>
+	<btree_uncased>U</btree_uncased>
+	<hash_cased>U</hash_cased>
 	<popularity>50</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::18">
 	<title>18</title>
-	<str>uu</str>
+	<scan_cased>Uu</scan_cased>
+	<scan_uncased>Uu</scan_uncased>
+	<btree_cased>Uu</btree_cased>
+	<btree_uncased>Uu</btree_uncased>
+	<hash_cased>Uu</hash_cased>
 	<popularity>49</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::19">
 	<title>19</title>
-	<str>uuu</str>
+	<scan_cased>UuU</scan_cased>
+	<scan_uncased>UuU</scan_uncased>
+	<btree_cased>UuU</btree_cased>
+	<btree_uncased>UuU</btree_uncased>
+	<hash_cased>UuU</hash_cased>
 	<popularity>48</popularity>
 </document>
 
 <document type="prefix" id="id:prefix:prefix::20">
 	<title>20</title>
-	<str>uuuu</str>
+	<scan_cased>UuUu</scan_cased>
+	<scan_uncased>UuUu</scan_uncased>
+	<btree_cased>UuUu</btree_cased>
+	<btree_uncased>UuUu</btree_uncased>
+	<hash_cased>UuUu</hash_cased>
 	<popularity>47</popularity>
 </document>
 

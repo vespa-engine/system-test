@@ -330,15 +330,51 @@ class AttributeSearch < IndexedSearchTest
 
   end
 
+  def verify_prefix_common(field)
+    fields=["title", "documentid"]
+    assert_result("query=#{field}:tTtTtTtT*&hits=100", selfdir + "prefix1.result", nil, fields, 0, "prefix search failed")
+    assert_result("query=#{field}:UuU*&hits=100", selfdir + "prefix2.result", nil, fields, 0, "prefix search failed")
+    assert_hitcount("query=#{field}:U*", 4)
+    assert_hitcount("query=#{field}:Uu*", 3)
+    assert_hitcount("query=#{field}:UuU*", 2)
+    assert_hitcount("query=#{field}:UuUu*", 1)
+  end
+
+  def verify_prefix_uncased(field)
+    puts "test attribute prefix uncased #{field}"
+    verify_prefix_common(field)
+    fields=["title", "documentid"]
+    assert_result("query=#{field}:tttttttt*&hits=100", selfdir + "prefix1.result", nil, fields, 0, "prefix search failed")
+    assert_result("query=#{field}:TTTTTTTT*&hits=100", selfdir + "prefix1.result", nil, fields, 0, "prefix search failed")
+    assert_result("query=#{field}:uuu*&hits=100", selfdir + "prefix2.result", nil, fields, 0, "prefix search failed")
+    assert_result("query=#{field}:UUU*&hits=100", selfdir + "prefix2.result", nil, fields, 0, "prefix search failed")
+  end
+
+  def verify_prefix_cased(field)
+    puts "test attribute prefix cased #{field}"
+    verify_prefix_common(field)
+    assert_hitcount("query=#{field}:tttttttt*", 0)
+    assert_hitcount("query=#{field}:TTTTTTTT*", 0)
+    assert_hitcount("query=#{field}:u*", 0)
+    assert_hitcount("query=#{field}:uu*", 0)
+    assert_hitcount("query=#{field}:uuu*", 0)
+    assert_hitcount("query=#{field}:uuuu*", 0)
+    assert_hitcount("query=#{field}:U*=100", 0)
+    assert_hitcount("query=#{field}:UU*=100", 0)
+    assert_hitcount("query=#{field}:UUU*=100", 0)
+    assert_hitcount("query=#{field}:UUUU*=100", 0)
+  end
+
   def test_attribute_prefix
     deploy_app(SearchApp.new.sd(selfdir+"prefix.sd"))
     start
     feed_and_wait_for_docs("prefix", 20, :file => selfdir+"prefix.xml")
 
-    puts "test attribute prefix"
-
-    assert_result("query=str:tttttttt*&hits=100", selfdir + "prefix1.result", nil, nil, 0, "prefix search failed")
-    assert_result("query=str:uuu*&hits=100", selfdir + "prefix2.result", nil, nil, 0, "prefix search failed")
+    verify_prefix_uncased("scan_uncased")
+    verify_prefix_uncased("btree_uncased")
+    verify_prefix_cased("scan_cased")
+    verify_prefix_cased("btree_cased")
+    verify_prefix_cased("hash_cased")
   end
 
   def test_attribute_strfold
