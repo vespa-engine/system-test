@@ -32,7 +32,7 @@ search test {
     indexing: input s1 | attribute
     attribute: fast-search
     dictionary {
-      btree
+      hash
       cased
     }
     match:cased
