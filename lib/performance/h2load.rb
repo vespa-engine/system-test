@@ -63,16 +63,16 @@ module Perf
     end
 
     def extract_item(item, index=0)
-      item.strip.split(' ')[index]
+      item.strip.split(' ')[index].strip
     end
 
     def to_milliseconds_string(item)
       if item.end_with?('us')
-        (item[..-2].to_f / 1000.0).to_s
+        (item.delete_suffix('us').to_f / 1000.0).to_s
       elsif item.end_with?('ms')
-        item[..-2]
+        item.delete_suffix('ms')
       elsif item.end_with?('s')
-        (item[..-1].to_f * 1000.0).to_s
+        (item.delete_suffix('s').to_f * 1000.0).to_s
       else
         raise "Unknown item: #{item}"
       end
