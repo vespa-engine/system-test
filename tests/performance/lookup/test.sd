@@ -2,18 +2,40 @@
 search test {
   document test {
     field id type long {
-      indexing: attribute | summary
+      indexing: attribute
       attribute: fast-search
     }
     field f1 type weightedset<long> {
-      indexing: attribute | summary
+      indexing: attribute
       attribute: fast-search
     }
-    field f1_hash type weightedset<long> {
-      indexing: attribute | summary
+    field s1 type weightedset<string> {
+      indexing: attribute
       attribute: fast-search
-      dictionary: hash
     }
+  }
+  field f1_hash type weightedset<long> {
+    indexing: input f1 | attribute
+    attribute: fast-search
+    dictionary: hash
+  }
+  field s1_cased type weightedset<string> {
+    indexing: input s1 | attribute
+    attribute: fast-search
+    dictionary {
+      btree
+      cased
+    }
+    match:cased
+  }
+  field s1_hash type weightedset<string> {
+    indexing: input s1 | attribute
+    attribute: fast-search
+    dictionary {
+      btree
+      cased
+    }
+    match:cased
   }
   document-summary minimal {
     summary id type long { source: id }

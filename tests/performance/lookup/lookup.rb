@@ -53,12 +53,12 @@ class LookupPerformance < PerformanceTest
         :historic => true
       }
     ]
-    num_docs = 10000000
+    num_docs = 100000
     num_values_per_doc=10
     upper_limit = num_docs*num_values_per_doc*10
     keys_per_query = 100
     num_clients = 40
-    num_queries = num_clients * 40000
+    num_queries = num_clients * 4000
     deploy_app(get_app())
     container = (vespa.qrserver["0"] or vespa.container.values.first)
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/docs #{selfdir}/docs.cpp")
@@ -72,7 +72,7 @@ class LookupPerformance < PerformanceTest
     run_fbench(container, 8, 20)
     restart_proton("test", num_docs)
 
-    ["f1", "f1_hash"].each do |field|
+    ["f1", "f1_hash", "s1", "s1_cased", "s1_hash"].each do |field|
         profiler_start
         run_fbench(container, num_clients, 60, [parameter_filler('legend', "lookup_#{field}")],
                    {:single_query_file => true, :append_str => "&hits=1&summary=minimal&ranking=unranked&wand.type=dotProduct&wand.field=#{field}"})
