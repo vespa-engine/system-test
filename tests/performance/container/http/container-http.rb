@@ -1,6 +1,7 @@
 require 'app_generator/container_app'
 require 'http_client'
 require 'performance_test'
+require 'performance/fbench'
 require 'performance/h2load'
 require 'pp'
 
@@ -243,7 +244,7 @@ class ContainerHttp < PerformanceTest
     run_h2load_benchmark(128, 1, 30, HTTP1)
     run_h2load_benchmark(64, 1, 30, HTTP1)
     run_h2load_benchmark(32, 1, 10, HTTP1)
-    run_h2load_benchmark(32, 1, 10, HTTP1, NON_PERSISTENT)
+    run_fbench_benchmark(32, NON_PERSISTENT)
   end
 
   def run_http2_tests
@@ -254,16 +255,26 @@ class ContainerHttp < PerformanceTest
     run_h2load_benchmark(1, 128, 10, HTTP2)
   end
 
-  def run_h2load_benchmark(clients, concurrent_streams, warmup, protocol, connection=PERSISTENT)
+  def run_fbench_benchmark(clients, connection)
+    @container.copy(selfdir + "hello.txt", dirs.tmpdir)
+    @queryfile = dirs.tmpdir + "hello.txt"
+
+    profiler_start
+    run_fbench(@container, clients, 90,
+               [parameter_filler('connection', connection), parameter_filler('protocol', HTTP1)],
+               {:disable_http_keep_alive => connection == NON_PERSISTENT})
+    profiler_report(connection)
+    end
+
+  def run_h2load_benchmark(clients, concurrent_streams, warmup, protocol)
     perf = Perf::System.new(@container)
     perf.start
     h2load = Perf::H2Load.new(@container)
     result = h2load.run_benchmark(clients: clients, threads: [clients, 16].min, concurrent_streams: concurrent_streams,
                                   warmup: warmup, duration: 90, uri_port: 4443, uri_path: '/HelloWorld',
-                                  protocols: [if protocol == HTTP2 then 'h2' else 'http/1.1' end],
-                                  headers: if connection == NON_PERSISTENT then {'Connection' => 'close'} else {} end)
+                                  protocols: [if protocol == HTTP2 then 'h2' else 'http/1.1' end])
     perf.end
-    write_report([result.filler, perf.fill, parameter_filler('connection', connection), parameter_filler('protocol', protocol)])
+    write_report([result.filler, perf.fill, parameter_filler('connection', PERSISTENT), parameter_filler('protocol', protocol)])
   end
 
 end
