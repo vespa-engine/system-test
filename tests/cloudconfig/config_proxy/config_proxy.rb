@@ -118,8 +118,7 @@ class ConfigProxy < CloudConfigTest
   end
 
   # Tests that getting an error upstream (e.g. UNKNOWN_DEFINITION) makes the
-  # config proxy stop subscribing to this config (and logging error message also stops)
-  # after a while.
+  # config proxy stop subscribing to this config (and logging error message is not excessive)
   # Also checks that getting this config after deploying an application where it is
   # defined works as expected
   def test_unknown_config_is_not_subscribed_to_forever
@@ -130,16 +129,11 @@ class ConfigProxy < CloudConfigTest
     out = node.execute("vespa-get-config -n bar.baz.extra -i client -j", :exceptiononfailure => false)
     assert_equal("error 103: (RPC) Invocation timed out\n", out)
 
-    # Wait until logging of errors has stopped
-    sleep 90
+    # Wait until subscriber has been closed
+    wait_for_log_matches(/Subscribe for 'name=extra,namespace=bar.baz,configId=client,\h{32}' failed, closing subscriber/, 1, 60)
 
-    log = ""
-    vespa.logserver.get_vespalog do |buf|
-      log += buf
-    end
-    loglines = log.split(/\n/)
-    count = find_warnings(loglines)
-    assert(count < 10)
+    count = find_config_proxy_log_warnings()
+    assert(count < 15, "expected less than 15 warnings in log, but was #{count}")
 
     add_bundle_dir(selfdir + "../namespace/simplebundle2/", "simplebundle2")
     deploy_app(CloudconfigApp.new.
@@ -148,7 +142,13 @@ class ConfigProxy < CloudConfigTest
     assert_equal('test', getvespaconfig('bar.baz.extra', 'client')['quux'])
   end
 
-  def find_warnings(loglines)
+  def find_config_proxy_log_warnings
+    log = ""
+    vespa.logserver.get_vespalog do |buf|
+      log += buf
+    end
+    loglines = log.split(/\n/)
+
     count = 0
     loglines.each { |line|
       fields = line.split(/\t/)
