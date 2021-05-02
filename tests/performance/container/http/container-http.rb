@@ -104,11 +104,25 @@ class ContainerHttp < PerformanceTest
             :historic => true
         },
         {
+          :title => 'QPS HTTP/2 (8 client)',
+          :filter => {'protocol' => HTTP2, 'clients' => 8},
+          :x => 'clients',
+          :y => 'qps',
+          :historic => true
+        },
+        {
             :title => 'QPS HTTP/2 (32 client)',
             :filter => {'protocol' => HTTP2, 'clients' => 32},
             :x => 'clients',
             :y => 'qps',
             :historic => true
+        },
+        {
+          :title => 'QPS HTTP/2 (64 client)',
+          :filter => {'protocol' => HTTP2, 'clients' => 64},
+          :x => 'clients',
+          :y => 'qps',
+          :historic => true
         },
         {
             :title => 'QPS HTTP/2 (128 clients)',
