@@ -71,21 +71,21 @@ class ContainerHttp < PerformanceTest
         {
             :title => 'Latency HTTP/1 persistent',
             :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
-            :x => 'protocol',
+            :x => 'clients',
             :y => 'latency',
             :historic => true
         },
         {
             :title => 'CPU utilization HTTP/1 persistent',
             :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
-            :x => 'protocol',
+            :x => 'clients',
             :y => 'cpuutil',
             :historic => true
         },
         {
             :title => 'CPU utilization HTTP/1 non-persistent',
             :filter => {'connection' => NON_PERSISTENT, 'protocol' => HTTP1},
-            :x => 'protocol',
+            :x => 'clients',
             :y => 'cpuutil',
             :historic => true
         },
