@@ -55,7 +55,7 @@ class ContainerHttp < PerformanceTest
             :historic => true
         },
         {
-          :title => 'QPS HTTP/1 persistent (32 clients)',
+          :title => 'QPS HTTP/1 persistent (64 clients)',
           :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 64},
           :x => 'clients',
           :y => 'qps',
