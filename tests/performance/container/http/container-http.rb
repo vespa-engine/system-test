@@ -104,6 +104,13 @@ class ContainerHttp < PerformanceTest
         :historic => true
       },
       {
+        :title => 'QPS HTTP/2 (4 client)',
+        :filter => {'protocol' => HTTP2, 'clients' => 4},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
         :title => 'QPS HTTP/2 (8 client)',
         :filter => {'protocol' => HTTP2, 'clients' => 8},
         :x => 'clients',
@@ -266,6 +273,7 @@ class ContainerHttp < PerformanceTest
     run_h2load_benchmark(64, 2, 30, HTTP2)
     run_h2load_benchmark(32, 4, 10, HTTP2)
     run_h2load_benchmark(8, 16, 10, HTTP2)
+    run_h2load_benchmark(4, 32, 10, HTTP2)
     run_h2load_benchmark(1, 128, 10, HTTP2)
   end
 
