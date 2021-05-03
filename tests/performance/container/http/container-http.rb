@@ -40,125 +40,139 @@ class ContainerHttp < PerformanceTest
 
     set_description('Test basic HTTP performance of container')
     @graphs = [
-        {
-            :title => 'QPS HTTP/1 persistent',
-            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
-            :x => 'clients',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :title => 'QPS HTTP/1 persistent (32 clients)',
-            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 32},
-            :x => 'clients',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-          :title => 'QPS HTTP/1 persistent (32 clients)',
-          :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 64},
-          :x => 'clients',
-          :y => 'qps',
-          :historic => true
-        },
-        {
-            :title => 'QPS HTTP/1 persistent (128 clients)',
-            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 128},
-            :x => 'clients',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :title => 'Latency HTTP/1 persistent',
-            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
-            :x => 'protocol',
-            :y => 'latency',
-            :historic => true
-        },
-        {
-            :title => 'CPU utilization HTTP/1 persistent',
-            :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
-            :x => 'protocol',
-            :y => 'cpuutil',
-            :historic => true
-        },
-        {
-            :title => 'CPU utilization HTTP/1 non-persistent',
-            :filter => {'connection' => NON_PERSISTENT, 'protocol' => HTTP1},
-            :x => 'protocol',
-            :y => 'cpuutil',
-            :historic => true
-        },
-        {
-            :title => 'QPS HTTP/1 non-persistent',
-            :filter => {'connection' => NON_PERSISTENT, 'protocol' => HTTP1 },
-            :x => 'clients',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :title => 'QPS HTTP/2 (1 client)',
-            :filter => {'protocol' => HTTP2, 'clients' => 1},
-            :x => 'clients',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :title => 'QPS HTTP/2 (32 client)',
-            :filter => {'protocol' => HTTP2, 'clients' => 32},
-            :x => 'clients',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :title => 'QPS HTTP/2 (128 clients)',
-            :filter => {'protocol' => HTTP2, 'clients' => 128},
-            :x => 'clients',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :title => 'QPS HTTP/2 (128 streams total)',
-            :filter => {'protocol' => HTTP2},
-            :x => 'clients',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :title => 'Latency HTTP/2',
-            :filter => {'protocol' => HTTP2},
-            :x => 'clients',
-            :y => 'latency',
-            :historic => true
-        },
-        {
-            :title => 'CPU utilization HTTP/2',
-            :filter => {'protocol' => HTTP2},
-            :x => 'clients',
-            :y => 'cpuutil',
-            :historic => true
-        },
-        {
-            :title => 'QPS HTTP/1 vs HTTP/2 (32 clients)',
-            :filter => {'connection' => PERSISTENT, 'clients' => 32},
-            :x => 'protocol',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-          :title => 'QPS HTTP/1 vs HTTP/2 (64 clients)',
-          :filter => {'connection' => PERSISTENT, 'clients' => 64},
-          :x => 'protocol',
-          :y => 'qps',
-          :historic => true
-        },
-        {
-          :title => 'QPS HTTP/1 vs HTTP/2 (128 clients)',
-          :filter => {'connection' => PERSISTENT, 'clients' => 128},
-          :x => 'protocol',
-          :y => 'qps',
-          :historic => true
-        }
+      {
+        :title => 'QPS HTTP/1 persistent',
+        :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 persistent (32 clients)',
+        :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 32},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 persistent (64 clients)',
+        :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 64},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 persistent (128 clients)',
+        :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 128},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'Latency HTTP/1 persistent',
+        :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
+        :x => 'clients',
+        :y => 'latency',
+        :historic => true
+      },
+      {
+        :title => 'CPU utilization HTTP/1 persistent',
+        :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
+        :x => 'clients',
+        :y => 'cpuutil',
+        :historic => true
+      },
+      {
+        :title => 'CPU utilization HTTP/1 non-persistent',
+        :filter => {'connection' => NON_PERSISTENT, 'protocol' => HTTP1},
+        :x => 'clients',
+        :y => 'cpuutil',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 non-persistent',
+        :filter => {'connection' => NON_PERSISTENT, 'protocol' => HTTP1 },
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/2 (1 client)',
+        :filter => {'protocol' => HTTP2, 'clients' => 1},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/2 (8 client)',
+        :filter => {'protocol' => HTTP2, 'clients' => 8},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/2 (32 client)',
+        :filter => {'protocol' => HTTP2, 'clients' => 32},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/2 (64 client)',
+        :filter => {'protocol' => HTTP2, 'clients' => 64},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/2 (128 clients)',
+        :filter => {'protocol' => HTTP2, 'clients' => 128},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/2 (128 streams total)',
+        :filter => {'protocol' => HTTP2},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'Latency HTTP/2',
+        :filter => {'protocol' => HTTP2},
+        :x => 'clients',
+        :y => 'latency',
+        :historic => true
+      },
+      {
+        :title => 'CPU utilization HTTP/2',
+        :filter => {'protocol' => HTTP2},
+        :x => 'clients',
+        :y => 'cpuutil',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 vs HTTP/2 (32 clients)',
+        :filter => {'connection' => PERSISTENT, 'clients' => 32},
+        :x => 'protocol',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 vs HTTP/2 (64 clients)',
+        :filter => {'connection' => PERSISTENT, 'clients' => 64},
+        :x => 'protocol',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 vs HTTP/2 (128 clients)',
+        :filter => {'connection' => PERSISTENT, 'clients' => 128},
+        :x => 'protocol',
+        :y => 'qps',
+        :historic => true
+      }
     ]
     run_http1_tests
     run_http2_tests
@@ -168,48 +182,48 @@ class ContainerHttp < PerformanceTest
     deploy_test_app(access_logging: true)
     set_description('Test basic HTTP performance of container with logging enabled')
     @graphs = [
-        {
-            :title => 'QPS HTTP/1',
-            :filter => {'connection' => PERSISTENT},
-            :x => 'clients',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-          :title => 'QPS HTTP/1 non-persistent',
-          :filter => {'connection' => NON_PERSISTENT },
-          :x => 'clients',
-          :y => 'qps',
-          :historic => true
-        },
-        {
-          :title => 'QPS HTTP/1 persistent (32 clients)',
-          :filter => {'connection' => PERSISTENT, 'clients' => 32 },
-          :x => 'clients',
-          :y => 'qps',
-          :historic => true
-        },
-        {
-            :title => 'QPS HTTP/1 persistent (128 clients)',
-            :filter => {'connection' => PERSISTENT, 'clients' => 128 },
-            :x => 'clients',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-          :title => 'Latency HTTP/1',
-          :filter => {'connection' => PERSISTENT},
-          :x => 'clients',
-          :y => 'latency',
-          :historic => true
-        },
-        {
-          :title => 'CPU utilization HTTP/1',
-          :filter => {'connection' => PERSISTENT},
-          :x => 'clients',
-          :y => 'cpuutil',
-          :historic => true
-        },
+      {
+        :title => 'QPS HTTP/1',
+        :filter => {'connection' => PERSISTENT},
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 non-persistent',
+        :filter => {'connection' => NON_PERSISTENT },
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 persistent (32 clients)',
+        :filter => {'connection' => PERSISTENT, 'clients' => 32 },
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 persistent (128 clients)',
+        :filter => {'connection' => PERSISTENT, 'clients' => 128 },
+        :x => 'clients',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'Latency HTTP/1',
+        :filter => {'connection' => PERSISTENT},
+        :x => 'clients',
+        :y => 'latency',
+        :historic => true
+      },
+      {
+        :title => 'CPU utilization HTTP/1',
+        :filter => {'connection' => PERSISTENT},
+        :x => 'clients',
+        :y => 'cpuutil',
+        :historic => true
+      },
     ]
     run_http1_tests
   end
