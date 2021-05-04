@@ -3,6 +3,7 @@ require 'environment'
 module Perf
 
   # Simplified wrapper for h2load benchmarking tool for HTTP/2 servers (https://nghttp2.org/documentation/h2load.1.html)
+  # Note: h2load currently does not support client authentication (https://github.com/nghttp2/nghttp2/issues/1479)
   class H2Load
 
     def initialize(node)
