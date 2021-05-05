@@ -224,7 +224,7 @@ class DocumentV1Throughput < PerformanceTest
           graphs.append({
             :x => 'protocol',
             :y => metric_name,
-            :title => "HTTP/1.1 #{metric_name} - #{config[:http1][:clients]} clients",
+            :title => "HTTP/1.1 #{metric_name} - #{config[:method]} - #{config[:http1][:clients]} clients",
             :filter => { 'clients' => config[:http1][:clients], 'method' => config[:method], 'protocol' => 'http1' },
             :historic => true
           }.merge(metric_limits))
@@ -235,7 +235,7 @@ class DocumentV1Throughput < PerformanceTest
           graphs.append({
             :x => 'protocol',
             :y => metric_name,
-            :title => "HTTP/2 #{metric_name} - #{config[:http2][:clients]} clients with #{config[:http2][:streams]} streams each",
+            :title => "HTTP/2 #{metric_name} - #{config[:method]} - #{config[:http2][:clients]} clients, #{config[:http2][:streams]} streams",
             :filter => { 'clients' => config[:http2][:clients], 'streams' => config[:http2][:streams],
                          'method' => config[:method], 'protocol' => 'http2' },
             :historic => true
