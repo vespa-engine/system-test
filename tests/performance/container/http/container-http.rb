@@ -52,7 +52,9 @@ class ContainerHttp < PerformanceTest
         :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 32},
         :x => 'clients',
         :y => 'qps',
-        :historic => true
+        :historic => true,
+        :y_min => 90000,
+        :y_max => 115000
       },
       {
         :title => 'QPS HTTP/1 persistent (64 clients)',
@@ -66,7 +68,9 @@ class ContainerHttp < PerformanceTest
         :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 128},
         :x => 'clients',
         :y => 'qps',
-        :historic => true
+        :historic => true,
+        :y_min => 100000,
+        :y_max => 125000
       },
       {
         :title => 'Latency HTTP/1 persistent',
@@ -94,14 +98,18 @@ class ContainerHttp < PerformanceTest
         :filter => {'connection' => NON_PERSISTENT, 'protocol' => HTTP1 },
         :x => 'clients',
         :y => 'qps',
-        :historic => true
+        :historic => true,
+        :y_min => 2900,
+        :y_max => 3100
       },
       {
         :title => 'QPS HTTP/2 (1 client)',
         :filter => {'protocol' => HTTP2, 'clients' => 1},
         :x => 'clients',
         :y => 'qps',
-        :historic => true
+        :historic => true,
+        :y_min => 100000,
+        :y_max => 125000
       },
       {
         :title => 'QPS HTTP/2 (4 client)',
@@ -115,7 +123,9 @@ class ContainerHttp < PerformanceTest
         :filter => {'protocol' => HTTP2, 'clients' => 8},
         :x => 'clients',
         :y => 'qps',
-        :historic => true
+        :historic => true,
+        :y_min => 180000,
+        :y_max => 210000
       },
       {
         :title => 'QPS HTTP/2 (32 client)',
@@ -136,7 +146,9 @@ class ContainerHttp < PerformanceTest
         :filter => {'protocol' => HTTP2, 'clients' => 128},
         :x => 'clients',
         :y => 'qps',
-        :historic => true
+        :historic => true,
+        :y_min => 110000,
+        :y_max => 135000
       },
       {
         :title => 'QPS HTTP/2 (128 streams total)',
