@@ -24,7 +24,7 @@ class DocumentV1Throughput < PerformanceTest
       {
         :http1 => {
           :clients => 1,
-          :metrics => {'qps' => {}, '95p' => {}}
+          :metrics => {'qps' => {}}
         }
       },
       {
@@ -50,7 +50,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 1,
           :streams => 1,
           :threads => 1,
-          :metrics => {'qps' => {}, '95p' => {}}
+          :metrics => {'qps' => {}}
         }
       },
       {
