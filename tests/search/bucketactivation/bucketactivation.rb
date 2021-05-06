@@ -33,8 +33,21 @@ class BucketActivationTest < SearchTest
   def test_bucket_activation
     set_description("Test basic searching with bucket activation")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
-                      search_type("ELASTIC").cluster_name("mycluster").num_parts(4).redundancy(2).
+               search_type("ELASTIC").cluster_name("mycluster").num_parts(4).redundancy(2).
                storage(StorageCluster.new("mycluster", 4).distribution_bits(16)))
+    run_bucket_activation_test
+  end
+
+  def test_bucket_activation_with_one_distributor_stripe
+    # TODO STRIPE: Remove this test when new distributor stripe mode is default
+    set_description("Test basic searching with bucket activation (using 1 distributor stripe)")
+    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
+               search_type("ELASTIC").cluster_name("mycluster").num_parts(4).redundancy(2).
+               storage(StorageCluster.new("mycluster", 4).distribution_bits(16).num_distributor_stripes(1)))
+    run_bucket_activation_test
+  end
+
+  def run_bucket_activation_test
     start
     vespa.stop_content_node("mycluster", "3")
     vespa.stop_content_node("mycluster", "2")
