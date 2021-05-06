@@ -23,7 +23,8 @@ class StorageApp < App
                   :distributor_base_port => :distributor_base_port,
                   :doc_type => :doc_type,
                   :streaming => :streaming,
-                  :persistence_threads => :persistence_threads
+                  :persistence_threads => :persistence_threads,
+                  :num_distributor_stripes => :num_distributor_stripes
 
   def initialize
     super
