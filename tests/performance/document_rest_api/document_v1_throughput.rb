@@ -24,7 +24,7 @@ class DocumentV1Throughput < PerformanceTest
       {
         :http1 => {
           :clients => 1,
-          :metrics => {'qps' => {}, '95p' => {}}
+          :metrics => {'qps' => {}}
         }
       },
       {
@@ -50,7 +50,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 1,
           :streams => 1,
           :threads => 1,
-          :metrics => {'qps' => {}, '95p' => {}}
+          :metrics => {'qps' => {}}
         }
       },
       {
@@ -170,7 +170,8 @@ class DocumentV1Throughput < PerformanceTest
             clients: clients, threads: config[:http2][:threads], concurrent_streams: streams, warmup: 10, duration: 30, uri_port: 4443,
             input_file: queries_file, protocols: ['h2'], post_data_file: post_data_file)
           http2_fillers = [parameter_filler('clients', clients), parameter_filler('streams', streams),
-                           parameter_filler('method', http_method), parameter_filler('protocol', 'http2'), http2_result.filler]
+                           parameter_filler('method', http_method), parameter_filler('protocol', 'http2'),
+                           parameter_filler('clients-streams', "#{clients}-#{streams}"), http2_result.filler]
           write_report(http2_fillers)
           profiler_report("http2-clients#{clients}-streams-#{streams}-method-#{http_method}")
         end
@@ -207,6 +208,25 @@ class DocumentV1Throughput < PerformanceTest
         end
       end
     end
+    ['post', 'get'].each do |http_method|
+      graphs.append(
+        {
+          :x => 'clients',
+          :y => 'qps',
+          :title => "HTTP/1 qps - #{http_method}",
+          :filter => { 'method' => http_method, 'protocol' => 'http1' },
+          :historic => true
+        })
+      graphs.append(
+        {
+          :x => 'clients-streams',
+          :y => 'qps',
+          :title => "HTTP/2 qps - #{http_method}",
+          :filter => { 'method' => http_method, 'protocol' => 'http2' },
+          :historic => true
+        })
+    end
+
     graphs
   end
 
