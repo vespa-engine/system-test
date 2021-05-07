@@ -58,6 +58,8 @@ class StoreUnknownRemoves < SearchTest
     assert_hitcount("query=sddocname:test", 0)
 
     start_node(@stopped[0])
+    wait_for_hitcount("query=sddocname:test", 0)
+    sleep(10)
     assert_hitcount("query=sddocname:test", 0)  # Document should not be back.
   end
 
