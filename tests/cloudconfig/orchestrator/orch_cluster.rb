@@ -217,6 +217,10 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     assert_response_code(orch_suspend(@contentD), 409)
 
     @vespa.stop_content_node("music", 0)
+    # sleep long enough for the cluster controller to consider the
+    # node as down (to avoid it being allowed to resume for the wrong
+    # reasons later)
+    sleep(90)
     wait_until_up = false
     @vespa.start_content_node("music", 0, 60, wait_until_up)
 
@@ -238,10 +242,10 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     start_content_app
     stop_wait_timeout = 600
     @vespa.stop_content_node("music", 0, stop_wait_timeout)
-
-    # sleep for a while, to allow some documents to redistribute off the
-    # down'ed node.
-    sleep(30)
+    # sleep long enough for the cluster controller to consider the
+    # node as down (to avoid it being allowed to resume for the wrong
+    # reasons later)
+    sleep(90)
 
     assert_response_code(orch_suspend(@contentD), 409)
     assert_response_code(orch_suspend(@contentE), 409)
