@@ -23,6 +23,10 @@ class OrchestratorContainerClusterTest < CloudConfigTest
   end
 
   def teardown
+    if @valgrind
+      # give proton time to start before being stopped
+      sleep(60)
+    end
     stop
   end
 
@@ -217,10 +221,6 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     assert_response_code(orch_suspend(@contentD), 409)
 
     @vespa.stop_content_node("music", 0)
-    # sleep long enough for the cluster controller to consider the
-    # node as down (to avoid it being allowed to resume for the wrong
-    # reasons later)
-    sleep(90)
     wait_until_up = false
     @vespa.start_content_node("music", 0, 60, wait_until_up)
 
@@ -242,10 +242,8 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     start_content_app
     stop_wait_timeout = 600
     @vespa.stop_content_node("music", 0, stop_wait_timeout)
-    # sleep long enough for the cluster controller to consider the
-    # node as down (to avoid it being allowed to resume for the wrong
-    # reasons later)
-    sleep(90)
+    # give the cluster controller time to see the content node as DOWN
+    sleep(30)
 
     assert_response_code(orch_suspend(@contentD), 409)
     assert_response_code(orch_suspend(@contentE), 409)
