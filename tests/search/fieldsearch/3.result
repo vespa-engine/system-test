@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="88">
+<result total-hit-count="96">
   <hit relevancy="63.11271009165352" source="search">
     <field name="relevancy">63.11271009165352</field>
     <field name="sddocname">music</field>
@@ -332,6 +332,43 @@
     <field name="cbid">2</field>
     <field name="summaryfeatures"></field>
     <field name="documentid">id:test:music::http://shopping.yahoo.com/p_in-bright-mansions_music_1921945828</field>
+  </hit>
+  <hit relevancy="55.86394341295901" source="search">
+    <field name="relevancy">55.86394341295901</field>
+    <field name="sddocname">music</field>
+    <field name="title">Not Your Standard Spike Jones Collection</field>
+    <field name="artist">Spike Jones</field>
+    <field name="song">Sheik of Araby;I'm Going to Write Home;Three Little Words {Check and Double Check} {Three Little Words};You're a Sap Mister Jap;Never Hit Your Grandma With a Shovel;Cocktails for Two {Murder at the Vanities};Mary Lou {Mary Lou};He Broke My Heart in Three Places (She Broke My Heart in Three Places);Sailin' on the Robert E. Lee;Great Big Saw Came Nearer and Nearer;His Rocking Horse Ran Away;Oh How She Lied to Me;Toot, Toot, Tootsie (Good-Bye);You Always Hurt the One You Love;Chlo-E (Song of the Swamp);Blue Danube;That Old Black Magic;Holiday for Strings;No, No, Nora;Hi Neighbor;Behind Those Swingin' Doors;Clink, Clink, Another Drink;Barstool Cowboy;Moo Woo Woo;Fort Worth Jail;Pass the Biscuits Mirandy;Over the Last Horizon;Don't Talk to Me About Women;Big Bad Bill;Trailer Annie;Siam;Hotcha, Cornia;Hey, Mable;Boogie Woogie Cowboy;Dodging a Gal from Dodge City;Serenade to a Jerk;Ridin' Home With You;Now Laugh;That's What Makes the World Go Round;Don't Give the Chair to Buster;Forty Eight Reasons Why;De Camptown Races (With Gestures);Blacksmith Song;Der Fuehrer's Face;I Wanna Go Back to West Virginia;Water Lou;St-St-St-Stella;I Know a Story;Hi-Ho, My Lady;John Scotter Trot;Cheatin' on the Sandman;Girl I Left Behind Me;Camptown Races #2;Come Josephine in My Flying Machine;Love for Sale;Moanin' Low;Horsey, Keep Your Tail Up;Yankee Doodler;Down in Jungle Town;Whittle Out a Whistle;By the Beautiful Sea;At Last I'm First With You;Liebestraum;City Slicker Polka;Red Grow the Roses;Jamboree Jones;Down by the O-Hi-O;Casey Jones;Glow Worm;Red Wing;Row, Row, Row;Pack Up Your Troubles in Your Old Kit Bag and Smile, Smile, Smile;They Go Wild Simply Wild Over Me;Oh! By Jingo;It Had to Be You;When Buddha Smiles;Paddlin' Madelin' Home;Little Bo Peep Has Lost Her Jeep;Sailor With the Navy Blue Eyes</field>
+    <field name="bgndata">CD</field>
+    <field name="sales"></field>
+    <field name="pto">2988</field>
+    <field name="mid">2</field>
+    <field name="ew">collection</field>
+    <field name="surl">http://shopping.yahoo.com/p_not-your-standard-spike-jones-collection_music_1921943761</field>
+    <field name="userrate"></field>
+    <field name="pid">1921943761</field>
+    <field name="weight">53.0</field>
+    <field name="url"></field>
+    <field name="isbn">617742032925</field>
+    <field name="fmt">CD</field>
+    <field name="albumid"></field>
+    <field name="disp_song">Sheik of Araby;I'm Going to Write Home;Three Little Words {Check and Double Check} {Three Little Words}</field>
+    <field name="pfrom">2299</field>
+    <field name="bgnpfrom"></field>
+    <field name="categories">1804905720 1804893726</field>
+    <field name="data">CD22.99-29.88617742032925</field>
+    <field name="numreview"></field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/267071/amgttn.f84096zb24v.jpg?rm_____Dg80IEZhQ" height=63 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927005850</field>
+    <field name="newestedition">20020101</field>
+    <field name="bgnpto"></field>
+    <field name="year">2002</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_not-your-standard-spike-jones-collection_music_1921943761</field>
   </hit>
   <hit relevancy="55.37503043134227" source="search">
     <field name="relevancy">55.37503043134227</field>
@@ -776,6 +813,43 @@
     <field name="cbid">2</field>
     <field name="summaryfeatures"></field>
     <field name="documentid">id:test:music::http://shopping.yahoo.com/p_slim-slo-slider-home-grown_music_1921351103</field>
+  </hit>
+  <hit relevancy="52.83710864187638" source="search">
+    <field name="relevancy">52.83710864187638</field>
+    <field name="sddocname">music</field>
+    <field name="title">Very Best of Michael Hall: In Concert at the Royal Albert Hall</field>
+    <field name="artist">Michael Ball</field>
+    <field name="song">Hot Stuff;Everybody's Talkin';Love On The Rocks;Something Inside So Strong;Someone Else's Dream;Medley: The Way We Were/The Rose;Medley: Prepare Ye The Way Of The Lord/Gethsemane;Oh! What A Circus;My Heart Will Go On;Empty Chairs, Empty Tables;Medley: We Have All The Time In The Word/Millennium;Let The River Run;I'll Be There For You (Theme From Friends);One Step Out Of Time;Blues Brothers Medley: Shake Your Tail Feathers/Think/Everybody Needs Somebody To Love;Love Changes Everything</field>
+    <field name="bgndata">CD</field>
+    <field name="sales"></field>
+    <field name="pto">1499</field>
+    <field name="mid">2</field>
+    <field name="ew">hall</field>
+    <field name="surl">http://shopping.yahoo.com/p_very-best-of-michael-hall-in-concert-at-the-royal-albert-hall_music_1921417206</field>
+    <field name="userrate">0</field>
+    <field name="pid">1921417206</field>
+    <field name="weight">49.0</field>
+    <field name="url"></field>
+    <field name="isbn">601215382426</field>
+    <field name="fmt">CD</field>
+    <field name="albumid"></field>
+    <field name="disp_song">Hot Stuff;Everybody's Talkin';Love On The Rocks</field>
+    <field name="pfrom">879</field>
+    <field name="bgnpfrom"></field>
+    <field name="categories">1804905848 1804893726</field>
+    <field name="data">CD8.79-14.99601215382426</field>
+    <field name="numreview"></field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/141979/amg1921417206_1940.jpg?rm_____D17uxOvQb" height=70 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927138134</field>
+    <field name="newestedition">20000822</field>
+    <field name="bgnpto"></field>
+    <field name="year">2000</field>
+    <field name="did">66</field>
+    <field name="scorekey"></field>
+    <field name="cbid">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_very-best-of-michael-hall-in-concert-at-the-royal-albert-hall_music_1921417206</field>
   </hit>
   <hit relevancy="52.55686367682001" source="search">
     <field name="relevancy">52.55686367682001</field>
@@ -1443,6 +1517,43 @@
     <field name="summaryfeatures"></field>
     <field name="documentid">id:test:music::http://shopping.yahoo.com/p_carnavals_music_1921481406</field>
   </hit>
+  <hit relevancy="49.10516490760263" source="search">
+    <field name="relevancy">49.10516490760263</field>
+    <field name="sddocname">music</field>
+    <field name="title">Oceane</field>
+    <field name="artist">Maple &amp; Zeidun</field>
+    <field name="song">Bitter Smell;Frame of Mind;I Saw Fire;Poor Butterfly;Save Me;My Cradle Rocks;Lidé Misto Zisku! [Live];Botanical Party [Live];Girl from Mars [Live];Divinorum [Live];When the Madness [Live];Swallowing Existance [Live]</field>
+    <field name="bgndata">CD</field>
+    <field name="sales"></field>
+    <field name="pto">1598</field>
+    <field name="mid">2</field>
+    <field name="ew">oceane</field>
+    <field name="surl">http://shopping.yahoo.com/p_oceane_music_1921646555</field>
+    <field name="userrate"></field>
+    <field name="pid">1921646555</field>
+    <field name="weight">46.0</field>
+    <field name="url"></field>
+    <field name="isbn">8435015503512</field>
+    <field name="fmt">CD</field>
+    <field name="albumid"></field>
+    <field name="disp_song">Bitter Smell;Frame of Mind;I Saw Fire</field>
+    <field name="pfrom">1598</field>
+    <field name="bgnpfrom"></field>
+    <field name="categories">1804905848 1804905848 1804905849 1804893726</field>
+    <field name="data">CD15.988435015503512</field>
+    <field name="numreview"></field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/1739597/amgttn.g10258eq0c9.jpg?rm_____DJaQ2OUFN" height=69 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927214698</field>
+    <field name="newestedition">20011127</field>
+    <field name="bgnpto"></field>
+    <field name="year">2001</field>
+    <field name="did">66</field>
+    <field name="scorekey"></field>
+    <field name="cbid">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_oceane_music_1921646555</field>
+  </hit>
   <hit relevancy="49.06306893776896" source="search">
     <field name="relevancy">49.06306893776896</field>
     <field name="sddocname">music</field>
@@ -1701,6 +1812,43 @@
     <field name="cbid">2</field>
     <field name="summaryfeatures"></field>
     <field name="documentid">id:test:music::http://shopping.yahoo.com/p_rimsky-korsakov-scheherazade-for-orchestra-op35-borodin-prince-igor_music_1921578677</field>
+  </hit>
+  <hit relevancy="47.88148813054662" source="search">
+    <field name="relevancy">47.88148813054662</field>
+    <field name="sddocname">music</field>
+    <field name="title">Silent Night: 25 Carols of Peace &amp; Tranquility</field>
+    <field name="artist">Various Artists</field>
+    <field name="song">Silent Night;In The Bleak Mid-Winter;Child In A Manger;Cradle Song;Born  On Earth;Away in a manger;Shepherd's Pipe Carol;Suo Gan;In dulci jubilo;The Infant King;King Jesus Hath A Garden;Gabriel's Message;A Spotless Rose;Lullaby My Jesus;The Blessed Son Of God;Quelle est cette odeur agreable;The holly And The Ivy;Rocking;Coventry Carol;Myn lyking;The Crown Of Roses;Mary's Lullaby;I Sing Of A Maiden;Remember, O Thou Man;O Little Town Of Bethlehem</field>
+    <field name="bgndata">CD</field>
+    <field name="sales"></field>
+    <field name="pto">1198</field>
+    <field name="mid">2</field>
+    <field name="ew">night</field>
+    <field name="surl">http://shopping.yahoo.com/p_silent-night-25-carols-of-peace-tranquility_music_1921656346</field>
+    <field name="userrate"></field>
+    <field name="pid">1921656346</field>
+    <field name="weight">45.0</field>
+    <field name="url"></field>
+    <field name="isbn">028945879222</field>
+    <field name="fmt">CD</field>
+    <field name="albumid"></field>
+    <field name="disp_song">Silent Night;In The Bleak Mid-Winter;Child In A Manger</field>
+    <field name="pfrom">813</field>
+    <field name="bgnpfrom"></field>
+    <field name="categories">1804905766 1804893726</field>
+    <field name="data">CD8.13-11.98028945879222</field>
+    <field name="numreview"></field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/474292/amgttn.d70682y1097.jpg?rm_____DwV234vA." height=69 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid"></field>
+    <field name="newestedition">19991012</field>
+    <field name="bgnpto"></field>
+    <field name="year">1999</field>
+    <field name="did">66</field>
+    <field name="scorekey">0</field>
+    <field name="cbid">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_silent-night-25-carols-of-peace-tranquility_music_1921656346</field>
   </hit>
   <hit relevancy="47.83077617883678" source="search">
     <field name="relevancy">47.83077617883678</field>
@@ -2479,6 +2627,43 @@
     <field name="summaryfeatures"></field>
     <field name="documentid">id:test:music::http://shopping.yahoo.com/p_greatest-cuban-dance-rhythms-vol-2_music_1921298707</field>
   </hit>
+  <hit relevancy="40.182562797546076" source="search">
+    <field name="relevancy">40.182562797546076</field>
+    <field name="sddocname">music</field>
+    <field name="title">Ruders: Dramaphonia, etc.</field>
+    <field name="artist"></field>
+    <field name="song">Four Dances in One Movt: Whispering;Four Dances in One Movt: Rocking;Four Dances in One Movt: Ecstatic;Four Dances In One Movt: Extravagant;Dramaphonia;Corpus Cum Figuris</field>
+    <field name="bgndata">CD</field>
+    <field name="sales"></field>
+    <field name="pto">1898</field>
+    <field name="mid">2</field>
+    <field name="ew">ruders</field>
+    <field name="surl">http://shopping.yahoo.com/p_ruders-dramaphonia-etc-_music_1921581286</field>
+    <field name="userrate"></field>
+    <field name="pid">1921581286</field>
+    <field name="weight">37.0</field>
+    <field name="url"></field>
+    <field name="isbn">789368642724</field>
+    <field name="fmt">CD</field>
+    <field name="albumid"></field>
+    <field name="disp_song">Four Dances in One Movt: Whispering;Four Dances in One Movt: Rocking;Four Dances in One Movt: Ecstatic</field>
+    <field name="pfrom">1519</field>
+    <field name="bgnpfrom"></field>
+    <field name="categories">1804951797 1804893726</field>
+    <field name="data">CD15.19-18.98789368642724</field>
+    <field name="numreview"></field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/152391/amg1921581286_1940.jpg?rm_____DE.jwHAmk" height=70 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid"></field>
+    <field name="newestedition">19950101</field>
+    <field name="bgnpto"></field>
+    <field name="year">1995</field>
+    <field name="did">66</field>
+    <field name="scorekey"></field>
+    <field name="cbid">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_ruders-dramaphonia-etc-_music_1921581286</field>
+  </hit>
   <hit relevancy="40.10397562853794" source="search">
     <field name="relevancy">40.10397562853794</field>
     <field name="sddocname">music</field>
@@ -2552,6 +2737,80 @@
     <field name="cbid">2</field>
     <field name="summaryfeatures"></field>
     <field name="documentid">id:test:music::http://shopping.yahoo.com/p_golden-era-of-doo-wops-angletone-records_music_1921201894</field>
+  </hit>
+  <hit relevancy="38.07683695172303" source="search">
+    <field name="relevancy">38.07683695172303</field>
+    <field name="sddocname">music</field>
+    <field name="title">Candidate</field>
+    <field name="artist">Steve Harley</field>
+    <field name="song">Audience With The Man;Woodchopper;Freedom's Prisoner;Love On The Rocks;Who's Afraid?;One More Time;How Good It Feels;From Here To Eternity;Young Hearts (The Candidate);I Can't Even Touch You;Psychomodo (Live)</field>
+    <field name="bgndata">CD</field>
+    <field name="sales"></field>
+    <field name="pto">2365</field>
+    <field name="mid">2</field>
+    <field name="ew">candidate</field>
+    <field name="surl">http://shopping.yahoo.com/p_candidate_music_1921032873</field>
+    <field name="userrate"></field>
+    <field name="pid">1921032873</field>
+    <field name="weight">35.0</field>
+    <field name="url"></field>
+    <field name="isbn">604388464722</field>
+    <field name="fmt">CD</field>
+    <field name="albumid"></field>
+    <field name="disp_song">Audience With The Man;Woodchopper;Freedom's Prisoner</field>
+    <field name="pfrom">1370</field>
+    <field name="bgnpfrom"></field>
+    <field name="categories">1804905848 1804893726</field>
+    <field name="data">CD13.70-23.65604388464722</field>
+    <field name="numreview"></field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/143996/amg1921032873_1940.jpg?rm_____D994oHvwP" height=70 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927067358</field>
+    <field name="newestedition">19790101</field>
+    <field name="bgnpto"></field>
+    <field name="year">1979</field>
+    <field name="did">66</field>
+    <field name="scorekey"></field>
+    <field name="cbid">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_candidate_music_1921032873</field>
+  </hit>
+  <hit relevancy="37.92993432410459" source="search">
+    <field name="relevancy">37.92993432410459</field>
+    <field name="sddocname">music</field>
+    <field name="title">Nativitas</field>
+    <field name="artist"></field>
+    <field name="song">I wonder as I ander;Adam lay ybounden;Alma Redemptoris;The angel Gabriel;Ave Maria;A spotless rose;There is no rose;The little road to Bethlehem;Once in royal David's city;Stille Nacht;Sing lullaby;Gloria sei dir gesungen;O magnum mysterium;In dulci jublio;O Jesulein süB;While shepherds watched their flocks by night;Quem vidistis pastores;Shepherds shake off your drowsy sleep;Adeste fideles;Videntes stellam;Rocking Carol;Here is the little door;Hark the heralds angels sing</field>
+    <field name="bgndata">CD</field>
+    <field name="sales"></field>
+    <field name="pto">1698</field>
+    <field name="mid">2</field>
+    <field name="ew">nativitas</field>
+    <field name="surl">http://shopping.yahoo.com/p_nativitas_music_1921539896</field>
+    <field name="userrate"></field>
+    <field name="pid">1921539896</field>
+    <field name="weight">35.0</field>
+    <field name="url"></field>
+    <field name="isbn">706301935026</field>
+    <field name="fmt">CD</field>
+    <field name="albumid"></field>
+    <field name="disp_song">I wonder as I ander;Adam lay ybounden;Alma Redemptoris</field>
+    <field name="pfrom">1357</field>
+    <field name="bgnpfrom"></field>
+    <field name="categories">1804951797 1804893726</field>
+    <field name="data">CD13.57-16.98706301935026</field>
+    <field name="numreview"></field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/148673/amg1921539896_1940.jpg?rm_____DLYTHZrcd" height=70 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid"></field>
+    <field name="newestedition"></field>
+    <field name="bgnpto"></field>
+    <field name="year"></field>
+    <field name="did">66</field>
+    <field name="scorekey"></field>
+    <field name="cbid">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_nativitas_music_1921539896</field>
   </hit>
   <hit relevancy="37.410580659397766" source="search">
     <field name="relevancy">37.410580659397766</field>
@@ -3071,6 +3330,80 @@
     <field name="summaryfeatures"></field>
     <field name="documentid">id:test:music::http://shopping.yahoo.com/p_bad-sister_music_1921022667</field>
   </hit>
+  <hit relevancy="18.08596975800157" source="search">
+    <field name="relevancy">18.08596975800157</field>
+    <field name="sddocname">music</field>
+    <field name="title">Res</field>
+    <field name="artist">Malawi Rocks</field>
+    <field name="song">Somethin' to Smile About;My Dream;Likoma;Romy and Michell;Shine;Somethin' to Smile About (Francois K. Main Vocal Pass);Somethin' to Smile About [Francois K. Dub Mix]</field>
+    <field name="bgndata">CD</field>
+    <field name="sales"></field>
+    <field name="pto">-100</field>
+    <field name="mid">2</field>
+    <field name="ew">res</field>
+    <field name="surl">http://shopping.yahoo.com/p_res_music_1921320175</field>
+    <field name="userrate"></field>
+    <field name="pid">1921320175</field>
+    <field name="weight">14.0</field>
+    <field name="url"></field>
+    <field name="isbn">4988010735722</field>
+    <field name="fmt">CD</field>
+    <field name="albumid"></field>
+    <field name="disp_song">Somethin' to Smile About;My Dream;Likoma</field>
+    <field name="pfrom"></field>
+    <field name="bgnpfrom"></field>
+    <field name="categories">1804905743 1804893726</field>
+    <field name="data">CD4988010735722</field>
+    <field name="numreview"></field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/141575/amg1921320175_1940.jpg?rm_____DtY_xu7wH" height=69 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927305988</field>
+    <field name="newestedition">19990216</field>
+    <field name="bgnpto"></field>
+    <field name="year">1999</field>
+    <field name="did">66</field>
+    <field name="scorekey"></field>
+    <field name="cbid">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_res_music_1921320175</field>
+  </hit>
+  <hit relevancy="18.0630688906273" source="search">
+    <field name="relevancy">18.0630688906273</field>
+    <field name="sddocname">music</field>
+    <field name="title">Nightlife</field>
+    <field name="artist">The Greyhounds</field>
+    <field name="song">Rockin' So Much;All You Got To Do;Bandstand Doll;Greyhound Walk;I'm Out;Boogie Children;Move On Down The Line;You Know;How Do I Make It;Nightlife;Baby Blue;Lonely Boy;Rock'n' Roll Is Here To Stay</field>
+    <field name="bgndata">CD</field>
+    <field name="sales"></field>
+    <field name="pto">-100</field>
+    <field name="mid">2</field>
+    <field name="ew">nightlife</field>
+    <field name="surl">http://shopping.yahoo.com/p_nightlife_music_1921875989</field>
+    <field name="userrate"></field>
+    <field name="pid">1921875989</field>
+    <field name="weight">15.0</field>
+    <field name="url"></field>
+    <field name="isbn">4015589001085</field>
+    <field name="fmt">CD</field>
+    <field name="albumid"></field>
+    <field name="disp_song">Rockin' So Much;All You Got To Do;Bandstand Doll</field>
+    <field name="pfrom"></field>
+    <field name="bgnpfrom"></field>
+    <field name="categories">1804905848 1804893726</field>
+    <field name="data">CD4015589001085</field>
+    <field name="numreview"></field>
+    <field name="bgnsellers">0</field>
+    <field name="image">img src="http://us.f1.yahoofs.com/shopping/138851/amg1921875989_1940.jpg?rm_____DQL6AJ0Wu" height=69 width=70 border=0 hspace=0 vspace=0</field>
+    <field name="artistspid">1927629747</field>
+    <field name="newestedition">20020702</field>
+    <field name="bgnpto"></field>
+    <field name="year">2002</field>
+    <field name="did">66</field>
+    <field name="scorekey"></field>
+    <field name="cbid">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_nightlife_music_1921875989</field>
+  </hit>
   <hit relevancy="17.60780896990841" source="search">
     <field name="relevancy">17.60780896990841</field>
     <field name="sddocname">music</field>
@@ -3145,43 +3478,6 @@
     <field name="summaryfeatures"></field>
     <field name="documentid">id:test:music::http://shopping.yahoo.com/p_want-some-_music_1921048341</field>
   </hit>
- <hit relevancy="18.0630688906273" source="search">
-    <field name="relevancy">18.0630688906273</field>
-    <field name="sddocname">music</field>
-    <field name="title">Nightlife</field>
-    <field name="artist">The Greyhounds</field>
-    <field name="song">Rockin' So Much;All You Got To Do;Bandstand Doll;Greyhound Walk;I'm Out;Boogie Children;Move On Down The Line;You Know;How Do I Make It;Nightlife;Baby Blue;Lonely Boy;Rock'n' Roll Is Here To Stay</field>
-    <field name="bgndata">CD</field>
-    <field name="sales"></field>
-    <field name="pto">-100</field>
-    <field name="mid">2</field>
-    <field name="ew">nightlife</field>
-    <field name="surl">http://shopping.yahoo.com/p_nightlife_music_1921875989</field>
-    <field name="userrate"></field>
-    <field name="pid">1921875989</field>
-    <field name="weight">15.0</field>
-    <field name="url"></field>
-    <field name="isbn">4015589001085</field>
-    <field name="fmt">CD</field>
-    <field name="albumid"></field>
-    <field name="disp_song">Rockin' So Much;All You Got To Do;Bandstand Doll</field>
-    <field name="pfrom"></field>
-    <field name="bgnpfrom"></field>
-    <field name="categories">1804905848 1804893726</field>
-    <field name="data">CD4015589001085</field>
-    <field name="numreview"></field>
-    <field name="bgnsellers">0</field>
-    <field name="image">img src="http://us.f1.yahoofs.com/shopping/138851/amg1921875989_1940.jpg?rm_____DQL6AJ0Wu" height=69 width=70 border=0 hspace=0 vspace=0</field>
-    <field name="artistspid">1927629747</field>
-    <field name="newestedition">20020702</field>
-    <field name="bgnpto"></field>
-    <field name="year">2002</field>
-    <field name="did">66</field>
-    <field name="scorekey"></field>
-    <field name="cbid">2</field>
-    <field name="summaryfeatures"></field>
-    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_nightlife_music_1921875989</field>
-    </hit>
   <hit relevancy="13.29036266991832" source="search">
     <field name="relevancy">13.29036266991832</field>
     <field name="sddocname">music</field>
