@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="8">
+<result total-hit-count="7">
   <hit relevancy="65.01603458167332" source="search">
     <field name="relevancy">65.01603458167332</field>
     <field name="sddocname">music</field>
@@ -147,43 +147,6 @@
     <field name="userrate"></field>
     <field name="weight">48.0</field>
     <field name="year">2001</field>
-  </hit>
-  <hit relevancy="51.48425058993652" source="search">
-    <field name="relevancy">51.48425058993652</field>
-    <field name="sddocname">music</field>
-    <field name="albumid"></field>
-    <field name="artist">Various Artists</field>
-    <field name="artistspid"></field>
-    <field name="bgndata">CDLP</field>
-    <field name="bgnpfrom"></field>
-    <field name="bgnpto"></field>
-    <field name="bgnsellers">0</field>
-    <field name="categories">1804905743 1804893726</field>
-    <field name="cbid">2</field>
-    <field name="data">CD15.63-41.39822334004628LP822334004987</field>
-    <field name="did">66</field>
-    <field name="disp_song">Good for You [Main Mix];Believe [Kenny Dope Remix];Save Your Life [Grant Nelson Remix]</field>
-    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_hed-kandi-disco-heaven-various_music_1921864602</field>
-    <field name="ew">kandi</field>
-    <field name="fmt">CD LP</field>
-    <field name="image">img src="http://us.f1.yahoofs.com/shopping/134372/amg1921864602_1940.jpg?rm_____DiQ2qD5N8" height=70 width=70 border=0 hspace=0 vspace=0</field>
-    <field name="isbn">822334004628,822334004987</field>
-    <field name="mid">2</field>
-    <field name="newestedition">20020423</field>
-    <field name="numreview"></field>
-    <field name="pfrom">1563</field>
-    <field name="pid">1921864602</field>
-    <field name="pto">4139</field>
-    <field name="sales"></field>
-    <field name="scorekey">0</field>
-    <field name="song">Good for You [Main Mix];Believe [Kenny Dope Remix];Save Your Life [Grant Nelson Remix];I Will Follow You [Full Intention Club Mix];Dancin' in Paradise [JJK Mix];Can't Give Up [Ron Carroll's Body Music Original];New Horizons [Class A Vocal Mix];Everyday [Maurice Joshua Vocal Mix];Home [Knee Deep Club Mix];More Love [Original Edit];Reachin' [Stefano Gamma Tribute Mix];Take It or Leave It [Extended Mix];At Night [Original] [Original Version];Thrill Me [Original Version by Junior Jack];So Good [Original Mix];Young Hearts [Extended Original];Take Me in Your Arms [Vocal Mix];Stars [Full Intention Main Mix];Feels Like It's Better [Disco Re-Make];And It Hurts [Stone's 2001 12" Mix];Love Foolosophy [Knee Deep's Re-Edit];High [Francois K Vocal 12" (Pt. 1 &amp; 2)]</field>
-    <field name="summaryfeatures"></field>
-    <field name="surl">http://shopping.yahoo.com/p_hed-kandi-disco-heaven-various_music_1921864602</field>
-    <field name="title">Hed Kandi: Disco Heaven / Various</field>
-    <field name="url"></field>
-    <field name="userrate"></field>
-    <field name="weight">49.0</field>
-    <field name="year">2002</field>
   </hit>
   <hit relevancy="50.763827950148084" source="search">
     <field name="relevancy">50.763827950148084</field>
