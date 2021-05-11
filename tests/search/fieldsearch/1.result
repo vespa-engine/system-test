@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="53">
+<result total-hit-count="48">
   <hit relevancy="1000" source="sc0.num0">
     <field name="relevancy">1000</field>
     <field name="sddocname">music</field>
@@ -504,42 +504,6 @@
     <field name="scorekey">0</field>
     <field name="cbid">2</field>
   </hit>
-  <hit relevancy="605" source="sc0.num0">
-    <field name="relevancy">605</field>
-    <field name="sddocname">music</field>
-    <field name="title">Not Your Standard Spike Jones Collection</field>
-    <field name="artist">Spike Jones</field>
-    <field name="song">Sheik of Araby;I'm Going to Write Home;Three Little Words {Check and Double Check} {Three Little Words};You're a Sap Mister Jap;Never Hit Your Grandma With a Shovel;Cocktails for Two {Murder at the Vanities};Mary Lou {Mary Lou};He Broke My Heart in Three Places (She Broke My Heart in Three Places);Sailin' on the Robert E. Lee;Great Big Saw Came Nearer and Nearer;His Rocking Horse Ran Away;Oh How She Lied to Me;Toot, Toot, Tootsie (Good-Bye);You Always Hurt the One You Love;Chlo-E (Song of the Swamp);Blue Danube;That Old Black Magic;Holiday for Strings;No, No, Nora;Hi Neighbor;Behind Those Swingin' Doors;Clink, Clink, Another Drink;Barstool Cowboy;Moo Woo Woo;Fort Worth Jail;Pass the Biscuits Mirandy;Over the Last Horizon;Don't Talk to Me About Women;Big Bad Bill;Trailer Annie;Siam;Hotcha, Cornia;Hey, Mable;Boogie Woogie Cowboy;Dodging a Gal from Dodge City;Serenade to a Jerk;Ridin' Home With You;Now Laugh;That's What Makes the World Go Round;Don't Give the Chair to Buster;Forty Eight Reasons Why;De Camptown Races (With Gestures);Blacksmith Song;Der Fuehrer's Face;I Wanna Go Back to West Virginia;Water Lou;St-St-St-Stella;I Know a Story;Hi-Ho, My Lady;John Scotter Trot;Cheatin' on the Sandman;Girl I Left Behind Me;Camptown Races #2;Come Josephine in My Flying Machine;Love for Sale;Moanin' Low;Horsey, Keep Your Tail Up;Yankee Doodler;Down in Jungle Town;Whittle Out a Whistle;By the Beautiful Sea;At Last I'm First With You;Liebestraum;City Slicker Polka;Red Grow the Roses;Jamboree Jones;Down by the O-Hi-O;Casey Jones;Glow Worm;Red Wing;Row, Row, Row;Pack Up Your Troubles in Your Old Kit Bag and Smile, Smile, Smile;They Go Wild Simply Wild Over Me;Oh! By Jingo;It Had to Be You;When Buddha Smiles;Paddlin' Madelin' Home;Little Bo Peep Has Lost Her Jeep;Sailor With the Navy Blue Eyes</field>
-    <field name="bgndata">CD</field>
-    <field name="sales">0</field>
-    <field name="pto">2988</field>
-    <field name="mid">2</field>
-    <field name="ew">collection</field>
-    <field name="surl">http://shopping.yahoo.com/p_not-your-standard-spike-jones-collection_music_1921943761</field>
-    <field name="userrate">0</field>
-    <field name="pid">1921943761</field>
-    <field name="weight">53.0</field>
-    <field name="uri"></field>
-    <field name="url"></field>
-    <field name="isbn">617742032925</field>
-    <field name="fmt">CD</field>
-    <field name="albumid"></field>
-    <field name="disp_song">Sheik of Araby;I'm Going to Write Home;Three Little Words {Check and Double Check} {Three Little Words}</field>
-    <field name="pfrom">2299</field>
-    <field name="bgnpfrom">0.0</field>
-    <field name="categories">1804905720 1804893726</field>
-    <field name="data">CD22.99-29.88617742032925</field>
-    <field name="numreview">0</field>
-    <field name="bgnsellers">0</field>
-    <field name="image">img src="http://us.f1.yahoofs.com/shopping/267071/amgttn.f84096zb24v.jpg?rm_____Dg80IEZhQ" height=63 width=70 border=0 hspace=0 vspace=0</field>
-    <field name="artistspid">1927005850</field>
-    <field name="newestedition">20020101</field>
-    <field name="bgnpto"></field>
-    <field name="year">2002</field>
-    <field name="did">66</field>
-    <field name="scorekey">0</field>
-    <field name="cbid">2</field>
-  </hit>
   <hit relevancy="594" source="sc0.num0">
     <field name="relevancy">594</field>
     <field name="sddocname">music</field>
@@ -680,42 +644,6 @@
     <field name="newestedition">20010828</field>
     <field name="bgnpto"></field>
     <field name="year">2001</field>
-    <field name="did">66</field>
-    <field name="scorekey">0</field>
-    <field name="cbid">2</field>
-  </hit>
-  <hit relevancy="590" source="sc0.num0">
-    <field name="relevancy">590</field>
-    <field name="sddocname">music</field>
-    <field name="title">Very Best of Michael Hall: In Concert at the Royal Albert Hall</field>
-    <field name="artist">Michael Ball</field>
-    <field name="song">Hot Stuff;Everybody's Talkin';Love On The Rocks;Something Inside So Strong;Someone Else's Dream;Medley: The Way We Were/The Rose;Medley: Prepare Ye The Way Of The Lord/Gethsemane;Oh! What A Circus;My Heart Will Go On;Empty Chairs, Empty Tables;Medley: We Have All The Time In The Word/Millennium;Let The River Run;I'll Be There For You (Theme From Friends);One Step Out Of Time;Blues Brothers Medley: Shake Your Tail Feathers/Think/Everybody Needs Somebody To Love;Love Changes Everything</field>
-    <field name="bgndata">CD</field>
-    <field name="sales">0</field>
-    <field name="pto">1499</field>
-    <field name="mid">2</field>
-    <field name="ew">hall</field>
-    <field name="surl">http://shopping.yahoo.com/p_very-best-of-michael-hall-in-concert-at-the-royal-albert-hall_music_1921417206</field>
-    <field name="userrate">0</field>
-    <field name="pid">1921417206</field>
-    <field name="weight">49.0</field>
-    <field name="uri"></field>
-    <field name="url"></field>
-    <field name="isbn">601215382426</field>
-    <field name="fmt">CD</field>
-    <field name="albumid"></field>
-    <field name="disp_song">Hot Stuff;Everybody's Talkin';Love On The Rocks</field>
-    <field name="pfrom">879</field>
-    <field name="bgnpfrom">0.0</field>
-    <field name="categories">1804905848 1804893726</field>
-    <field name="data">CD8.79-14.99601215382426</field>
-    <field name="numreview">0</field>
-    <field name="bgnsellers">0</field>
-    <field name="image">img src="http://us.f1.yahoofs.com/shopping/141979/amg1921417206_1940.jpg?rm_____D17uxOvQb" height=70 width=70 border=0 hspace=0 vspace=0</field>
-    <field name="artistspid">1927138134</field>
-    <field name="newestedition">20000822</field>
-    <field name="bgnpto"></field>
-    <field name="year">2000</field>
     <field name="did">66</field>
     <field name="scorekey">0</field>
     <field name="cbid">2</field>
@@ -1083,42 +1011,6 @@
   <hit relevancy="579" source="sc0.num0">
     <field name="relevancy">579</field>
     <field name="sddocname">music</field>
-    <field name="title">Oceane</field>
-    <field name="artist">Maple &amp; Zeidun</field>
-    <field name="song">Bitter Smell;Frame of Mind;I Saw Fire;Poor Butterfly;Save Me;My Cradle Rocks;Lidé Misto Zisku! [Live];Botanical Party [Live];Girl from Mars [Live];Divinorum [Live];When the Madness [Live];Swallowing Existance [Live]</field>
-    <field name="bgndata">CD</field>
-    <field name="sales">0</field>
-    <field name="pto">1598</field>
-    <field name="mid">2</field>
-    <field name="ew">oceane</field>
-    <field name="surl">http://shopping.yahoo.com/p_oceane_music_1921646555</field>
-    <field name="userrate">0</field>
-    <field name="pid">1921646555</field>
-    <field name="weight">46.0</field>
-    <field name="uri"></field>
-    <field name="url"></field>
-    <field name="isbn">8435015503512</field>
-    <field name="fmt">CD</field>
-    <field name="albumid"></field>
-    <field name="disp_song">Bitter Smell;Frame of Mind;I Saw Fire</field>
-    <field name="pfrom">1598</field>
-    <field name="bgnpfrom">0.0</field>
-    <field name="categories">1804905848 1804905848 1804905849 1804893726</field>
-    <field name="data">CD15.988435015503512</field>
-    <field name="numreview">0</field>
-    <field name="bgnsellers">0</field>
-    <field name="image">img src="http://us.f1.yahoofs.com/shopping/1739597/amgttn.g10258eq0c9.jpg?rm_____DJaQ2OUFN" height=69 width=70 border=0 hspace=0 vspace=0</field>
-    <field name="artistspid">1927214698</field>
-    <field name="newestedition">20011127</field>
-    <field name="bgnpto"></field>
-    <field name="year">2001</field>
-    <field name="did">66</field>
-    <field name="scorekey">0</field>
-    <field name="cbid">2</field>
-  </hit>
-  <hit relevancy="579" source="sc0.num0">
-    <field name="relevancy">579</field>
-    <field name="sddocname">music</field>
     <field name="title">Carnavals</field>
     <field name="artist">Dave Pike</field>
     <field name="song">Sambolero;Sono;Serenidade;Carnival Samba (aka Carnaval);Philumba;Melvalita;Ginha;Sausalito;La Bamba;My Little Suede Shoes;Matilda, Matilda;Mambo Bounce;Limbo Rock;Calypso Blues;Cattin' Latin;St. Thomas;Jamaica Farewell</field>
@@ -1182,42 +1074,6 @@
     <field name="image">img src="http://us.f1.yahoofs.com/shopping/141834/amg1921320900_1940.jpg?rm_____DiAU_qIcX" height=69 width=70 border=0 hspace=0 vspace=0</field>
     <field name="artistspid"></field>
     <field name="newestedition">19990212</field>
-    <field name="bgnpto"></field>
-    <field name="year">1999</field>
-    <field name="did">66</field>
-    <field name="scorekey">0</field>
-    <field name="cbid">2</field>
-  </hit>
-  <hit relevancy="576" source="sc0.num0">
-    <field name="relevancy">576</field>
-    <field name="sddocname">music</field>
-    <field name="title">Silent Night: 25 Carols of Peace &amp; Tranquility</field>
-    <field name="artist">Various Artists</field>
-    <field name="song">Silent Night;In The Bleak Mid-Winter;Child In A Manger;Cradle Song;Born  On Earth;Away in a manger;Shepherd's Pipe Carol;Suo Gan;In dulci jubilo;The Infant King;King Jesus Hath A Garden;Gabriel's Message;A Spotless Rose;Lullaby My Jesus;The Blessed Son Of God;Quelle est cette odeur agreable;The holly And The Ivy;Rocking;Coventry Carol;Myn lyking;The Crown Of Roses;Mary's Lullaby;I Sing Of A Maiden;Remember, O Thou Man;O Little Town Of Bethlehem</field>
-    <field name="bgndata">CD</field>
-    <field name="sales">0</field>
-    <field name="pto">1198</field>
-    <field name="mid">2</field>
-    <field name="ew">night</field>
-    <field name="surl">http://shopping.yahoo.com/p_silent-night-25-carols-of-peace-tranquility_music_1921656346</field>
-    <field name="userrate">0</field>
-    <field name="pid">1921656346</field>
-    <field name="weight">45.0</field>
-    <field name="uri"></field>
-    <field name="url"></field>
-    <field name="isbn">028945879222</field>
-    <field name="fmt">CD</field>
-    <field name="albumid"></field>
-    <field name="disp_song">Silent Night;In The Bleak Mid-Winter;Child In A Manger</field>
-    <field name="pfrom">813</field>
-    <field name="bgnpfrom">0.0</field>
-    <field name="categories">1804905766 1804893726</field>
-    <field name="data">CD8.13-11.98028945879222</field>
-    <field name="numreview">0</field>
-    <field name="bgnsellers">0</field>
-    <field name="image">img src="http://us.f1.yahoofs.com/shopping/474292/amgttn.d70682y1097.jpg?rm_____DwV234vA." height=69 width=70 border=0 hspace=0 vspace=0</field>
-    <field name="artistspid"></field>
-    <field name="newestedition">19991012</field>
     <field name="bgnpto"></field>
     <field name="year">1999</field>
     <field name="did">66</field>
@@ -1650,42 +1506,6 @@
     <field name="image">img src="http://us.f1.yahoofs.com/shopping/472952/amgttn.g01707nfq14.jpg?rm_____D1y15vf_D" height=64 width=70 border=0 hspace=0 vspace=0</field>
     <field name="artistspid">1927016661</field>
     <field name="newestedition">19990701</field>
-    <field name="bgnpto"></field>
-    <field name="year">1999</field>
-    <field name="did">66</field>
-    <field name="scorekey">0</field>
-    <field name="cbid">2</field>
-  </hit>
-  <hit relevancy="525" source="sc0.num0">
-    <field name="relevancy">525</field>
-    <field name="sddocname">music</field>
-    <field name="title">Res</field>
-    <field name="artist">Malawi Rocks</field>
-    <field name="song">Somethin' to Smile About;My Dream;Likoma;Romy and Michell;Shine;Somethin' to Smile About (Francois K. Main Vocal Pass);Somethin' to Smile About [Francois K. Dub Mix]</field>
-    <field name="bgndata">CD</field>
-    <field name="sales">0</field>
-    <field name="pto">-100</field>
-    <field name="mid">2</field>
-    <field name="ew">res</field>
-    <field name="surl">http://shopping.yahoo.com/p_res_music_1921320175</field>
-    <field name="userrate">0</field>
-    <field name="pid">1921320175</field>
-    <field name="weight">14.0</field>
-    <field name="uri"></field>
-    <field name="url"></field>
-    <field name="isbn">4988010735722</field>
-    <field name="fmt">CD</field>
-    <field name="albumid"></field>
-    <field name="disp_song">Somethin' to Smile About;My Dream;Likoma</field>
-    <field name="pfrom">0</field>
-    <field name="bgnpfrom">0.0</field>
-    <field name="categories">1804905743 1804893726</field>
-    <field name="data">CD4988010735722</field>
-    <field name="numreview">0</field>
-    <field name="bgnsellers">0</field>
-    <field name="image">img src="http://us.f1.yahoofs.com/shopping/141575/amg1921320175_1940.jpg?rm_____DtY_xu7wH" height=69 width=70 border=0 hspace=0 vspace=0</field>
-    <field name="artistspid">1927305988</field>
-    <field name="newestedition">19990216</field>
     <field name="bgnpto"></field>
     <field name="year">1999</field>
     <field name="did">66</field>
