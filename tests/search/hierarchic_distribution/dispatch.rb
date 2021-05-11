@@ -62,6 +62,7 @@ class HierarchicDistributionDispatchTest < FeedAndQueryTestBase
     stop_and_not_wait(0)
     stop_and_not_wait(1)
     stop_and_not_wait(2)
+    sleep 1 # We need at least one ping round to establish group coverage
     assert_response_code_from_vip_handler(200)
     assert_query_hitcount # group 1
     assert_num_queries([nil, nil, nil, 2, 2, 2, 1, 1, 1])
