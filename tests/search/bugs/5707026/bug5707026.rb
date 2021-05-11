@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
@@ -15,7 +16,7 @@ class Bug5707026 < IndexedSearchTest
 
     query = "(yahoo ) OR (qterms:yahoo @@@) OR (weightedtags:yahoo @@@) OR (anchor:yahoo ) OR (keywords:yahoo ) OR (breadcrumb:yahoo ) OR (title2:yahoo ) OR (title3:yahoo ) OR (catarr1:yahoo ) OR (uri:yahoo ) OR (person:yahoo ) AND&type=adv"
     wait_for_hitcount(query, 1)
-    exp_body = "<hi>Yahoo</hi>! Korea <sep/>just dedicated to <hi>Yahoo</hi>!, but to the betterment<sep/> Hahm and <hi>Yahoo</hi>! Angels <sep/>"
+    exp_body = "<hi>Yahoo</hi>! Korea is<sep/>are not just dedicated to <hi>Yahoo</hi>!, but to the betterment<sep/> Hahm and <hi>Yahoo</hi>! Angels<sep/>"
     assert_field_value(query, "body", exp_body)
   end
 
@@ -36,13 +37,11 @@ class Bug5707026 < IndexedSearchTest
     feed_and_wait_for_docs("site", 3, :file => selfdir+"feed3.xml")
 
     query = "cafe+menu"
-    wait_for_hitcount(query, 3)
-    exp_body_0 = "<sep/><hi>Caf\303\251</hi> Surf's <hi>Caf\303\251</hi> Print <hi>Menu</hi> Email a <sep/>exist on this day. <hi>Menus</hi> &amp; Hours <sep/>"
-    exp_body_1 = "<sep/>5%) on select items in the <hi>caf\303\251</hi>, effective Monday, April<sep/> always, you can find this week s <hi>menus</hi> and prices on Backyard<sep/>"
-    exp_body_2 = "<sep/>week s Tuesday Dinner <hi>Menu</hi>! This pilot program is currently<sep/>? Reach us at <hi>cafe</hi>@yahoo-inc.com ."
+    wait_for_hitcount(query, 2)
+    exp_body_0 = "<sep/><hi>Café</hi> Surf's <hi>Café</hi> Print <hi>Menu</hi> Email a <sep/> Print <hi>Menu</hi> Print <sep/>"
+    exp_body_1 = "<sep/>week s Tuesday Dinner <hi>Menu</hi>! This pilot program is currently scheduled<sep/> or comments? Reach us at <hi>cafe</hi>@yahoo-inc.com ."
     assert_field_value(query, "body", exp_body_0, 0)
     assert_field_value(query, "body", exp_body_1, 1)
-    assert_field_value(query, "body", exp_body_2, 2)
   end
 
   def teardown
