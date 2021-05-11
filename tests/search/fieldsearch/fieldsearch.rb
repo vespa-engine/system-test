@@ -7,7 +7,7 @@ class FieldSearch < IndexedSearchTest
   def setup
     set_owner("yngve")
     set_description("Field search for text and string, and range search for integers.")
-    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
+    deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
     start
   end
 
