@@ -150,23 +150,25 @@ class StableActiveCount < SearchTest
     puts "Generating feed 1"
     first_pass_docs = 100_000
     content = { :field1 => 'hello', :field2 => '2000' }
+    feed_file_1 = "#{dirs.tmpdir}1stfeed.xml"
     ElasticDocGenerator.write_docs(0, first_pass_docs,
-                                   'generated/1stfeed.xml', content)
+                                   feed_file_1, content)
 
     puts "Generating feed 2"
     second_pass_docs = 200_000
     content = { :field1 => 'world', :field2 => '2001' }
+    feed_file_2 = "#{dirs.tmpdir}2ndfeed.xml"
     ElasticDocGenerator.write_docs(first_pass_docs, second_pass_docs,
-                                   'generated/2ndfeed.xml', content)
+                                   feed_file_2, content)
 
     puts "Feeding first feed"
-    feed(:file => 'generated/1stfeed.xml')
+    feed(:file => feed_file_1)
 
     search_threads = 6
     threads, runners = launch_search_threads(search_threads, first_pass_docs)
 
     puts "Feeding second feed"
-    feed(:file => 'generated/2ndfeed.xml')
+    feed(:file => feed_file_1)
 
     puts "Shutting down runner threads"
     runners.each { |r| r.mark_done }
