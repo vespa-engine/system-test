@@ -51,115 +51,24 @@ class HierarchicDistributionDispatchTest < FeedAndQueryTestBase
     generate_and_feed_docs
     align_fdispatch_to_use_group_0_next
 
-    assert_query_hitcount #group/row 0
+    assert_query_hitcount # group 0
     assert_num_queries([1, 1, 1, 0, 0, 0, 0, 0, 0])
-    assert_query_hitcount #group/row 1
+    assert_query_hitcount # group 1
     assert_num_queries([1, 1, 1, 1, 1, 1, 0, 0, 0])
-    assert_query_hitcount #group/row 2
+    assert_query_hitcount # group 2
     assert_num_queries([1, 1, 1, 1, 1, 1, 1, 1, 1])
 
-    stop_and_wait(0) #group/row 0 still has enough nodes
-    assert_query_hitcount #group/row 0
-    assert_num_queries([nil, 2, 2, 1, 1, 1, 1, 1, 1])
-    assert_query_hitcount #group/row 1
-    assert_num_queries([nil, 2, 2, 2, 2, 2, 1, 1, 1])
-    assert_query_hitcount #group/row 2
-    assert_num_queries([nil, 2, 2, 2, 2, 2, 2, 2, 2])
-
-    configure_bucket_crosschecking(5)
-    stop_and_wait(1) #group/row 0 has too few nodes
-    assert_query_hitcount #group/row 1
-    assert_num_queries([nil, nil, 2, 3, 3, 3, 2, 2, 2])
-    assert_query_hitcount #group/row 2
-    assert_num_queries([nil, nil, 2, 3, 3, 3, 3, 3, 3])
-    assert_query_hitcount #group/row 1
-    assert_num_queries([nil, nil, 2, 4, 4, 4, 3, 3, 3])
-
-    stop_and_wait(3) #group/row 1 still has enough nodes
-    assert_query_hitcount #group/row 2
-    assert_num_queries([nil, nil, 2, nil, 4, 4, 4, 4, 4])
-    assert_query_hitcount #group/row 1
-    assert_num_queries([nil, nil, 2, nil, 5, 5, 4, 4, 4])
-    assert_query_hitcount #group/row 2
-    assert_num_queries([nil, nil, 2, nil, 5, 5, 5, 5, 5])
-
-    configure_bucket_crosschecking(4)
-    stop_and_wait(4) #group/row 1 has too few nodes
-    assert_query_hitcount #group/row 2
-    assert_num_queries([nil, nil, 2, nil, nil, 5, 6, 6, 6])
-    assert_query_hitcount #group/row 2
-    assert_num_queries([nil, nil, 2, nil, nil, 5, 7, 7, 7])
-    assert_query_hitcount #group/row 2
-    assert_num_queries([nil, nil, 2, nil, nil, 5, 8, 8, 8])
-
-    stop_and_wait(6) #group/row 2 still has enough nodes
-    assert_query_hitcount #group/row 2
-    assert_num_queries([nil, nil, 2, nil, nil, 5, nil, 9, 9])
-    assert_query_hitcount #group/row 2
-    assert_num_queries([nil, nil, 2, nil, nil, 5, nil, 10, 10])
-    assert_query_hitcount #group/row 2
-    assert_num_queries([nil, nil, 2, nil, nil, 5, nil, 11, 11])
-
-    configure_bucket_crosschecking(3)
-    stop_and_wait(7) #group/row 2 has too few nodes
-    # all groups/rows has too few nodes
-    run_query #group/row 0
-    assert_num_queries([nil, nil, 3, nil, nil, 5, nil, nil, 11])
-    run_query #group/row 1
-    assert_num_queries([nil, nil, 3, nil, nil, 6, nil, nil, 11])
-    run_query #group/row 2
-    assert_num_queries([nil, nil, 3, nil, nil, 6, nil, nil, 12])
-
-    configure_bucket_crosschecking(4)
-    clear_query_counts_bias(0)
-    start_and_wait(0) #group/row 0 has enough nodes again
-    assert_query_hitcount #group/row 0
-    assert_num_queries([1, nil, 4, nil, nil, 6, nil, nil, 12])
-    assert_query_hitcount #group/row 0
-    assert_num_queries([2, nil, 5, nil, nil, 6, nil, nil, 12])
-    assert_query_hitcount #group/row 0
-    assert_num_queries([3, nil, 6, nil, nil, 6, nil, nil, 12])
-
-    configure_bucket_crosschecking(5)
-    clear_query_counts_bias(3)
-    start_and_wait(3) #group/row 1 has enough nodes again
-    assert_query_hitcount #group/row 1
-    assert_num_queries([3, nil, 6, 1, nil, 7, nil, nil, 12])
-    assert_query_hitcount #group/row 0
-    assert_num_queries([4, nil, 7, 1, nil, 7, nil, nil, 12])
-    assert_query_hitcount #group/row 1
-    assert_num_queries([4, nil, 7, 2, nil, 8, nil, nil, 12])
-
-    configure_bucket_crosschecking(6)
-    clear_query_counts_bias(6)
-    start_and_wait(6) #group/row 2 has enough nodes again
-    assert_query_hitcount #group/row 2
-    assert_num_queries([4, nil, 7, 2, nil, 8, 1, nil, 13])
-    assert_query_hitcount #group/row 0
-    assert_num_queries([5, nil, 8, 2, nil, 8, 1, nil, 13])
-    assert_query_hitcount #group/row 1
-    assert_num_queries([5, nil, 8, 3, nil, 9, 1, nil, 13])
+    # take down group 0
+    stop_and_not_wait(0)
+    stop_and_not_wait(1)
+    stop_and_not_wait(2)
     assert_response_code_from_vip_handler(200)
-
-    # Add test for status.html
-    stop_and_not_wait(0) #group/row 2 has too few nodes
-    sleep 3
-    assert_response_code_from_vip_handler(200)
-    stop_and_not_wait(2) #group/row 2 has too few nodes
-    sleep 3
-    assert_response_code_from_vip_handler(200)
-    stop_and_not_wait(3) #group/row 2 has too few nodes
-    sleep 3
-    assert_response_code_from_vip_handler(200)
-    stop_and_not_wait(5) #group/row 2 has too few nodes
-    sleep 3
-    assert_response_code_from_vip_handler(200)
-    stop_and_not_wait(6) #group/row 2 has too few nodes
-    sleep 3
-    assert_response_code_from_vip_handler(200)
-    stop_and_not_wait(8) #group/row 2 has too few nodes
-    sleep 3
-    assert_response_code_from_vip_handler(404)
+    assert_query_hitcount # group 1
+    assert_num_queries([nil, nil, nil, 2, 2, 2, 1, 1, 1])
+    assert_query_hitcount # group 2
+    assert_num_queries([nil, nil, nil, 2, 2, 2, 2, 2, 2])
+    assert_query_hitcount # group 1
+    assert_num_queries([nil, nil, nil, 3, 3, 3, 2, 2, 2])
   end
 
   def assert_response_code_from_vip_handler(expected_response_code, path="/status.html")
