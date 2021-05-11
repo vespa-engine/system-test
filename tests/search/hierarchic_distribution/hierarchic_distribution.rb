@@ -72,15 +72,15 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
     set_description("Test that one group can continue serving with coverage loss distribution")
     run_basic_search_test(3, 3, true, 60.0)
     verify_ready_copies_per_group(1)
-    stop_and_not_wait(0) #group/row 0 still has enough nodes
+    stop_and_not_wait(0) # group 0 still has enough nodes
     assert_atleast_some_queries([nil,50,50, 50,50,50, 50,50,nil], 300)
-    stop_and_not_wait(3) #group/row 1 still has enough nodes
+    stop_and_not_wait(3) # group 1 still has enough nodes
     assert_atleast_some_queries([nil,50,50, nil,50,50, 50,50,nil], 300)
-    stop_and_not_wait(2) #group/row 0 is down
-    assert_atleast_some_queries([nil,0,nil, nil,100,100, 100,100,nil], 300)
-    stop_and_not_wait(4) #group/row 1 is down
-    assert_atleast_some_queries([nil,0,nil, nil,nil,0, 100,100,nil], 100)
-    stop_and_not_wait(6) #group/row 2 is also down, will make do with whatever we have.
+    stop_and_not_wait(2) # group 0 is down
+    assert_atleast_some_queries([nil,0,nil, nil,10,10, 10,10,nil], 300)
+    stop_and_not_wait(4) # group 1 is down
+    assert_atleast_some_queries([nil,0,nil, nil,nil,0, 10,10,nil], 100)
+    stop_and_not_wait(6) # row 2 is also down, will make do with whatever we have.
     assert_atleast_some_queries([nil,50,nil, nil,nil,50, nil,50,nil], 300)
   end
 
