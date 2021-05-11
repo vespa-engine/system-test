@@ -20,7 +20,7 @@ class QueryTypes < IndexedSearchTest
     # the operator.
     # TODO: Write a fitting rank function for QueryTypes test
     set_owner("arnej")
-    deploy_app(SearchApp.new.sd("music.sd"))
+    deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
     start
   end
 
