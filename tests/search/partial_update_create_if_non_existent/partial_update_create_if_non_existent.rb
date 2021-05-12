@@ -11,7 +11,6 @@ class PartialUpdateCreateIfNonExistentTest < SearchTest
     set_description("Test that partial updates to non-existing documents creates the documents before applying the updates")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    vespa.adminserver.logctl("searchnode:proton.persistenceengine.persistenceengine", "spam=on")
     search_node = vespa.search["search"].first
 
     feed(:file => selfdir + "updates.xml")
@@ -43,7 +42,6 @@ class PartialUpdateCreateIfNonExistentTest < SearchTest
     set_description("Test that increment update works on wset for a document that does not exists (see bug 7098648)")
     deploy_app(SearchApp.new.sd(selfdir + "increment/test.sd"))
     start
-    vespa.adminserver.logctl("searchnode:proton.persistenceengine.persistenceengine", "spam=on")
     feed(:file => selfdir + "increment/docs.xml")
     feed(:file => selfdir + "increment/updates.xml")
     assert_result("sddocname:test", selfdir + "increment/result.xml", "documentid", ["wset"])

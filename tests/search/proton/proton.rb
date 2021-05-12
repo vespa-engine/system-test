@@ -262,6 +262,7 @@ class ProtonTest < IndexedSearchTest
                                                add("pruneremoveddocumentsinterval", 5.0).
                                                add("pruneremoveddocumentsage", 60.0)))
     start
+    # Needed for logging messages that are verified later in this test
     vespa.adminserver.logctl("searchnode:proton.server.documentdb", "debug=on,spam=on")
     vespa.adminserver.logctl("searchnode:proton.server.proton",     "debug=on")
     vespa.adminserver.logctl("searchnode:proton.server.feedstates", "debug=on")
