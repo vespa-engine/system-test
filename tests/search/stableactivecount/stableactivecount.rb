@@ -168,7 +168,7 @@ class StableActiveCount < SearchTest
     threads, runners = launch_search_threads(search_threads, first_pass_docs)
 
     puts "Feeding second feed"
-    feed(:file => feed_file_1)
+    feed(:file => feed_file_2)
 
     puts "Shutting down runner threads"
     runners.each { |r| r.mark_done }
