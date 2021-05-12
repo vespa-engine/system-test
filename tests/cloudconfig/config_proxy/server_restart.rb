@@ -14,16 +14,14 @@ class ServerRestart < CloudConfigTest
 
   def test_server_restart_and_clean
     @valgrind = false
-    set_expected_logged(Regexp.union(/Received ZKSessionExpired exception that I can not handle/,
-                                     /com.yahoo.config.ConfigurationRuntimeException: Subscribe for/))
     deploy(selfdir+"app")
     start
     node = vespa.adminserver
     # Check that we get expected config before deploying a new app with changed config
     assert_logd_config(node, 86400)
     restart_config_server(node)
-    # sleep so that proxy will get APPLICATION_NOT_LOADED response from server (the time is dependent on timeouts in TimingValues.java)
-    sleep 30
+    # wait until config proxy logs APPLICATION_NOT_LOADED response from server (the time is dependent on timeouts in TimingValues.java)
+    wait_for_log_matches(/APPLICATION_NOT_LOADED/, 1)
     # deploy twice to get to a new generation number (2)
     deploy(selfdir+"app")
     deploy(selfdir+"app_changed")
