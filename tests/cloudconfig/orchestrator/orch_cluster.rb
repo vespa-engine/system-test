@@ -241,9 +241,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
 
     start_content_app
     stop_wait_timeout = 600
-    @vespa.stop_content_node("music", 0, stop_wait_timeout)
-    # give the cluster controller time to see the content node as DOWN
-    sleep(30)
+    @vespa.stop_content_node("music", 0, stop_wait_timeout, 'd')
 
     assert_response_code(orch_suspend(@contentD), 409)
     assert_response_code(orch_suspend(@contentE), 409)
@@ -258,13 +256,26 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     assert_host(@contentD, UP)
     assert_host(@contentE, UP)
     
+    # We dump the content cluster's status page in the cluster controller to
+    # help debugging why 'resume' completes immediately below.
+    # TODO(hakon): Remove these dumps once figured out.
+    dump_status_page
+
     wait_until_up = false
     @vespa.start_content_node("music", 0, 60, wait_until_up)
 
+    dump_status_page
+
     assert_response_code(orch_resume_until_no_conflict(@contentC))
+
+    dump_status_page
 
     assert_host(@contentC, UP)
 
     assert_instance(@all_up)
+  end
+
+  def dump_status_page
+    puts @vespa.clustercontrollers["0"].get_status_page("/clustercontroller-status/v1/music")
   end
 end

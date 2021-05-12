@@ -62,12 +62,12 @@ class VespaModel
     return @storage[cluster].storage[index.to_s]
   end
 
-  def stop_content_node(cluster, index, wait_timeout = 60)
+  def stop_content_node(cluster, index, wait_timeout = 60, states = 'dm')
     content_node(cluster, index).stop
 
     if wait_timeout != 0
       wait_timeout *= 10 if @testcase.valgrind
-      @storage[cluster].wait_for_current_node_state("storage", index.to_i, 'sdm', wait_timeout)
+      @storage[cluster].wait_for_current_node_state("storage", index.to_i, states, wait_timeout)
     end
   end
 
