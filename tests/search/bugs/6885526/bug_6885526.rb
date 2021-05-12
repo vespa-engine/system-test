@@ -16,7 +16,6 @@ class Bug6885526Test < SearchTest
     set_description("Test that new line character is preserved when using bolding (ticket 6885526)")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    vespa.adminserver.logctl("searchnode:searchlib.docsummary.dynamicteaserdfw", "debug=on,spam=on")
     feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.xml")
     assert_result("title:best", selfdir + "result.xml")
   end

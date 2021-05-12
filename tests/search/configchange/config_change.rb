@@ -15,9 +15,6 @@ class ConfigChange < IndexedSearchTest
   end
 
   def test_doctypeswitch
-    vespa.adminserver.logctl("searchnode:proton.server.proton", "debug=on,spam=on")
-    vespa.adminserver.logctl("searchnode:proton.server.protonconfigurer", "debug=on,spam=on")
-
     puts "* Insert music doc"
     feed_and_wait_for_docs("music", 1, :file => selfdir+"music.xml", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 1)
@@ -46,7 +43,6 @@ class ConfigChange < IndexedSearchTest
                          deploy_output)
     wait_for_config_generation_proxy(get_generation(deploy_output))
   end
-
 
   def teardown
     stop

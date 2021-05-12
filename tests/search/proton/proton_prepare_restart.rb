@@ -10,6 +10,7 @@ class ProtonPrepareRestartTest < SearchTest
   def test_proton_prepare_restart_command
     set_description("Test that vespa-proton-cmd prepareRestart command flushes components")
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
+    # Needed for logging messages that are verified later in this test
     vespa.adminserver.logctl("searchnode:proton.flushengine.prepare_restart_flush_strategy", "debug=on,spam=on")
     start
     feed_and_wait_for_docs("test", 100, :file => "#{selfdir}/docs.4.xml")

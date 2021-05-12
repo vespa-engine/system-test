@@ -14,7 +14,6 @@ class AnnotationsDocproc < DocprocTest
   end
 
   def test_annotations
-    vespa.adminserver.logctl("storagenode:config.frt.frtconfigresponse", "spam=on")
     doc = Document.new("article", "id:article:article::boringarticle:longarticle").
       add_field("title", "Very long article").
       add_field("content", "Very interesting content")
