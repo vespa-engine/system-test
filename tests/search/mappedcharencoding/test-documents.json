@@ -1,0 +1,20 @@
+[
+  {
+    "put": "id:test:test::doc1",
+    "fields": {
+      "text": "espana"
+    }
+  },
+  {
+    "put": "id:test:test::doc2",
+    "fields": {
+      "text": "españa"
+    }
+  },
+  {
+    "put": "id:test:test::doc3",
+    "fields": {
+      "text": "ESPAÑA"
+    }
+  }
+]
