@@ -44,7 +44,7 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
         :title => 'Historic latency for all rank profiles',
         :historic => true
       },
-      get_graph("without_replacement", 19.0, 26),
+      get_graph("without_replacement", 19.0, 26.5),
       get_graph("halfmodern",          14.5, 17.5),
       get_graph("halfmoderndirect",    10.0, 13.5),
       get_graph("modern",              10.0, 13.5),
