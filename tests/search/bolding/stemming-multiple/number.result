@@ -1,93 +1,48 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="9">
+<result total-hit-count="5" coverage-docs="10" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
   <hit relevancy="9.0" source="search">
     <field name="relevancy">9.0</field>
     <field name="sddocname">bolding</field>
-    <field name="uri">/shopping?id=1807865263</field>
-    <field name="title">Louisiana Blues song <hi>number</hi> nine</field>
     <field name="song">Louisiana Blues</field>
+    <field name="title">Louisiana Blues song <hi>number</hi> nine</field>
+    <field name="uri">/shopping?id=1807865263</field>
     <field name="order">9</field>
-    <field name="summaryfeatures"></field>
     <field name="documentid">id:test:bolding::/shopping?id=1807865263</field>
-  </hit>
-  <hit relevancy="8.0" source="search">
-    <field name="relevancy">8.0</field>
-    <field name="sddocname">bolding</field>
-    <field name="uri">/shopping?id=1807865261</field>
-    <field name="title">Electric Blues songs <hi>numbers</hi> eight and on</field>
-    <field name="song">Electric Blues</field>
-    <field name="order">8</field>
-    <field name="summaryfeatures"></field>
-    <field name="documentid">id:test:bolding::/shopping?id=1807865261</field>
   </hit>
   <hit relevancy="7.0" source="search">
     <field name="relevancy">7.0</field>
     <field name="sddocname">bolding</field>
-    <field name="uri">/shopping?id=1807865251</field>
-    <field name="title">East Coast Blues <hi>number</hi> seven</field>
     <field name="song">East Coast Blues</field>
+    <field name="title">East Coast Blues <hi>number</hi> seven</field>
+    <field name="uri">/shopping?id=1807865251</field>
     <field name="order">7</field>
-    <field name="summaryfeatures"></field>
     <field name="documentid">id:test:bolding::/shopping?id=1807865251</field>
   </hit>
   <hit relevancy="6.0" source="search">
     <field name="relevancy">6.0</field>
     <field name="sddocname">bolding</field>
-    <field name="uri">/shopping?id=1804905714</field>
-    <field name="title">Delta Blues the sixth in the <hi>numbering</hi> of blues titles</field>
     <field name="song">Delta Blues</field>
+    <field name="title">Delta Blues the sixth in the <hi>numbering</hi> of blues titles</field>
+    <field name="uri">/shopping?id=1804905714</field>
     <field name="order">6</field>
-    <field name="summaryfeatures"></field>
     <field name="documentid">id:test:bolding::/shopping?id=1804905714</field>
-  </hit>
-  <hit relevancy="5.0" source="search">
-    <field name="relevancy">5.0</field>
-    <field name="sddocname">bolding</field>
-    <field name="uri">/shopping?id=1804905713</field>
-    <field name="title">Country Blues with a <hi>numb</hi> foot</field>
-    <field name="song">Country Blues</field>
-    <field name="order">5</field>
-    <field name="summaryfeatures"></field>
-    <field name="documentid">id:test:bolding::/shopping?id=1804905713</field>
-  </hit>
-  <hit relevancy="4.0" source="search">
-    <field name="relevancy">4.0</field>
-    <field name="sddocname">bolding</field>
-    <field name="uri">/shopping?id=1804905712</field>
-    <field name="title">Contemporary Blues is <hi>numbing</hi> the soul</field>
-    <field name="song">Contemporary Blues</field>
-    <field name="order">4</field>
-    <field name="summaryfeatures"></field>
-    <field name="documentid">id:test:bolding::/shopping?id=1804905712</field>
-  </hit>
-  <hit relevancy="3.0" source="search">
-    <field name="relevancy">3.0</field>
-    <field name="sddocname">bolding</field>
-    <field name="uri">/shopping?id=1804905711</field>
-    <field name="title">Classic Female Blues <hi>numbers</hi></field>
-    <field name="song">Classic Female Blues</field>
-    <field name="order">3</field>
-    <field name="summaryfeatures"></field>
-    <field name="documentid">id:test:bolding::/shopping?id=1804905711</field>
   </hit>
   <hit relevancy="2.0" source="search">
     <field name="relevancy">2.0</field>
     <field name="sddocname">bolding</field>
-    <field name="uri">/shopping?id=1804905710</field>
-    <field name="title">Chicago Blues the <hi>number</hi> is increasing</field>
     <field name="song">Chicago Blues</field>
+    <field name="title">Chicago Blues the <hi>number</hi> is increasing</field>
+    <field name="uri">/shopping?id=1804905710</field>
     <field name="order">2</field>
-    <field name="summaryfeatures"></field>
     <field name="documentid">id:test:bolding::/shopping?id=1804905710</field>
   </hit>
   <hit relevancy="1.0" source="search">
     <field name="relevancy">1.0</field>
     <field name="sddocname">bolding</field>
-    <field name="uri">/shopping?id=1804905709</field>
-    <field name="title">Blues my head is getting <hi>number</hi> all the time</field>
     <field name="song">Blues</field>
+    <field name="title">Blues my head is getting <hi>number</hi> all the time</field>
+    <field name="uri">/shopping?id=1804905709</field>
     <field name="order">1</field>
-    <field name="summaryfeatures"></field>
     <field name="documentid">id:test:bolding::/shopping?id=1804905709</field>
   </hit>
 </result>
