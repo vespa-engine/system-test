@@ -1,42 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="3">
-  <hit relevancy="57.098993591152414" source="search">
-    <field name="relevancy">57.098993591152414</field>
-    <field name="sddocname">music</field>
-    <field name="albumid"></field>
-    <field name="artist">Cocteau Twins</field>
-    <field name="artistspid">1927003336</field>
-    <field name="bgndata">CD</field>
-    <field name="bgnpfrom"></field>
-    <field name="bgnpto"></field>
-    <field name="bgnsellers">0</field>
-    <field name="categories">1804905848 1804905848 1804905849 1804893726</field>
-    <field name="cbid">2</field>
-    <field name="data">CD16.95-24.98014431049729</field>
-    <field name="did">66</field>
-    <field name="disp_song">Wax And Wane;Garlands;Alas Dies Laughing</field>
-    <field name="documentid">id:test:music::http://shopping.yahoo.com/p_bbc-sessions_music_1921363831</field>
-    <field name="ew">sessions</field>
-    <field name="fmt">CD</field>
-    <field name="image">img src="http://us.f1.yahoofs.com/shopping/151877/amg1921363831_1940.jpg?rm_____DOuku_m5H" height=70 width=70 border=0 hspace=0 vspace=0</field>
-    <field name="isbn">014431049729</field>
-    <field name="mid">2</field>
-    <field name="newestedition">19991012</field>
-    <field name="numreview">6</field>
-    <field name="pfrom">1695</field>
-    <field name="pid">1921363831</field>
-    <field name="pto">2498</field>
-    <field name="sales">1</field>
-    <field name="scorekey"></field>
-    <field name="song">Wax And Wane;Garlands;Alas Dies Laughing;Feathers-Oar-Blades;Hearsay Please;Dear Heart;Blind Dumb Deaf;Hazel;The Tinderbox (Of A Heart);Strange Fruit;Hitherto;From The Flagstones;Sugar Hiccup;In Our Angelhood;My Hue And Cry;Musette And Drums;Hitherto;From The Flagstones;Musette And Drums;Pepper-Tree;Beatrix;Ivo;Otterley;Serpentskirt;Golden-Vein;Half-Gifts;Seekers Who Are Lovers;Calfskin Smack;Fifty-Fifty Clown;Violaine</field>
-    <field name="summaryfeatures"></field>
-    <field name="surl">http://shopping.yahoo.com/p_bbc-sessions_music_1921363831</field>
-    <field name="title">BBC Sessions</field>
-    <field name="url"></field>
-    <field name="userrate">443</field>
-    <field name="weight">54.0</field>
-    <field name="year">1999</field>
-  </hit>
+<result total-hit-count="2">
   <hit relevancy="56.91105223995296" source="search">
     <field name="relevancy">56.91105223995296</field>
     <field name="sddocname">music</field>

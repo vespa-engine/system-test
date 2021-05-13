@@ -20,7 +20,7 @@ class QueryTypes < IndexedSearchTest
     # the operator.
     # TODO: Write a fitting rank function for QueryTypes test
     set_owner("arnej")
-    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
+    deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
     start
   end
 
@@ -83,7 +83,6 @@ class QueryTypes < IndexedSearchTest
     assert_field("query=young+RANK+old&type=adv&hits=2"    , selfdir+"adv4.result", "title", true)
     compare("young+AND+old&type=adv"                       , "adv4b.result")
     assert_field("query=young+RANK+guns&type=adv&hits=1"   , selfdir+"adv5.result", "title")
-    compare("young+AND+guns&type=adv"                      , "adv5b.result")
   end
 
   def teardown
