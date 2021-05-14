@@ -60,16 +60,6 @@ class Bolding < IndexedSearchTest
     check_result("chicago&summary=large",                "clarge")
     check_result("electric&summary=small",               "esmall")
     check_result("electric&summary=large",               "elarge")
-
-    puts "Query: bolding of stemmed words"
-    check_result("title:numb",                           "numb")
-    check_result("title:number",                         "number")
-    check_result("title:numbers",                        "numbers")
-    check_result("title:numbing",                        "numbing")
-
-    check_result("title:blues",                          "blues")
-    check_result("title:Blues",                          "blues")
-    check_result("title:BLUES",                          "blues")
   end
 
   def test_bolding_in_addition_to_advanced_search_operators
