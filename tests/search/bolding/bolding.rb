@@ -67,8 +67,6 @@ class Bolding < IndexedSearchTest
     check_result("title:numbers",                        "numbers")
     check_result("title:numbing",                        "numbing")
 
-    check_result("title:blue",                           "blue")
-    check_result("title:Blue",                           "blue")
     check_result("title:blues",                          "blues")
     check_result("title:Blues",                          "blues")
     check_result("title:BLUES",                          "blues")
