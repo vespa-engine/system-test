@@ -246,7 +246,9 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     assert_response_code(orch_suspend(@contentD), 409)
     assert_response_code(orch_suspend(@contentE), 409)
 
-    assert_response_code(orch_suspend(@contentC))
+    # The first suspend may not complete without timeouts (observed with slow
+    # system test nodes), therefore retry until success.
+    assert_response_code(orch_suspend_until_no_conflict(@contentC))
 
     c_allowed_down = @all_up.clone
     c_allowed_down[@contentC] = DOWN
