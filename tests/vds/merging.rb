@@ -16,7 +16,7 @@ class MergingTest < PersistentProviderTest
   end
 
   def test_merging
-    deploy_app(default_app.num_nodes(2).redundancy(2))
+    deploy_app(default_app.num_nodes(2).redundancy(2).num_distributor_stripes(0))
     run_merging_test
   end
 

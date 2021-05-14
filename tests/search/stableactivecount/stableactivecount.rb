@@ -24,7 +24,7 @@ class StableActiveCount < SearchTest
     60*20
   end
 
-  def create_app(num_stripes = nil)
+  def create_app(num_stripes = 0)
     SearchApp.new.sd(selfdir+'test.sd').
       search_type("ELASTIC").
       cluster_name("mycluster").
