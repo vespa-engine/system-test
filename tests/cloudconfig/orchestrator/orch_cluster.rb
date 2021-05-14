@@ -248,6 +248,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
 
     # The first suspend may not complete without timeouts (observed with slow
     # system test nodes), therefore retry until success.
+    dump_status_page
     assert_response_code(orch_suspend_until_no_conflict(@contentC))
 
     c_allowed_down = @all_up.clone
