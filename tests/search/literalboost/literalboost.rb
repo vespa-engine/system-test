@@ -14,15 +14,12 @@ class LiteralBoost < IndexedSearchTest
   end
 
   def test_literalboost
-    feed_and_wait_for_docs("literalboost", 3, { :file => selfdir+"input.3.xml", :maxpending => "1" })
+    feed_and_wait_for_docs("literalboost", 2, { :file => selfdir+"input.2.xml", :maxpending => "1" })
 
     puts "run queries"
-    compare("query=content:booking", "booking.result")
     compare("query=content:book",    "book.result")
-    compare("query=content:books",   "books.result")
     compare("query=content:booked",  "booked.result")
-    puts "now verify that bug 333048 is fixed"
-    compare("query=content:books&filter=bogo", "333048.result")
+    compare("query=content:booked&filter=bogo", "booked-filter.result")
 
     result = vespa.adminserver.execute('vespa-visit --xmloutput --maxpendingsuperbuckets 1 --maxpending 1')
     assert_xml(result, selfdir+"fullvisit.xml")
