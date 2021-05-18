@@ -255,7 +255,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
       response = orch_suspend(@contentC)
       break unless response.code.to_i == 409
       break unless Time.now.to_i < time_end
-      puts "Failed to suspend #{host}, will retry in a short while"
+      puts "Failed to suspend #{@contentC}, will retry in a short while"
       sleep(1.0)
     end
     dump_status_page
