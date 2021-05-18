@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Configserver def files
+Bundle-SymbolicName: com.yahoo.cloudconfig.benchmark
+Bundle-Version: 1.0.0
