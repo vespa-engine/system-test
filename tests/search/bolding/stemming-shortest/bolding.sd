@@ -2,10 +2,6 @@ search bolding {
 
   document bolding {
 
-    field language type string {
-      indexing: "en" | set_language
-    }
-
     field uri type string {
       indexing: summary | attribute | index
       stemming: none

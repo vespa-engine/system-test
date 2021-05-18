@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="2">
+  <hit relevancy="8.0" source="search">
+    <field name="relevancy">8.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1807865261</field>
+    <field name="title">Electric Blues songs <hi>numbers</hi> eight and on</field>
+    <field name="song">Electric Blues</field>
+    <field name="order">8</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1807865261</field>
+  </hit>
+  <hit relevancy="3.0" source="search">
+    <field name="relevancy">3.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1804905711</field>
+    <field name="title">Classic Female Blues <hi>numbers</hi></field>
+    <field name="song">Classic Female Blues</field>
+    <field name="order">3</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1804905711</field>
+  </hit>
+</result>
