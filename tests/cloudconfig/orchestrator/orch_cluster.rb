@@ -247,6 +247,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     # complete without timeouts (observed with slow system test nodes),
     # therefore retry until success.
     time_end = Time.now.to_i + 600
+    response = nil
     loop do
       assert_response_code(orch_suspend(@contentD), 409)
       assert_response_code(orch_suspend(@contentE), 409)
