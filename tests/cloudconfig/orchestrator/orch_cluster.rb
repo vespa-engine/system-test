@@ -243,13 +243,22 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     stop_wait_timeout = 600
     @vespa.stop_content_node("music", 0, stop_wait_timeout, 'd')
 
-    assert_response_code(orch_suspend(@contentD), 409)
-    assert_response_code(orch_suspend(@contentE), 409)
+    # Wait until stopped node is allowed suspension.  The first suspend may not
+    # complete without timeouts (observed with slow system test nodes),
+    # therefore retry until success.
+    time_end = Time.now.to_i + 600
+    loop do
+      assert_response_code(orch_suspend(@contentD), 409)
+      assert_response_code(orch_suspend(@contentE), 409)
 
-    # The first suspend may not complete without timeouts (observed with slow
-    # system test nodes), therefore retry until success.
+      response = orch_suspend(@contentC)
+      break unless response.code.to_i == 409
+      break unless Time.now.to_i < time_end
+      puts "Failed to suspend #{host}, will retry in a short while"
+      sleep(1.0)
+    end
     dump_status_page
-    assert_response_code(orch_suspend_until_no_conflict(@contentC))
+    assert_response_code(response)
 
     c_allowed_down = @all_up.clone
     c_allowed_down[@contentC] = DOWN
