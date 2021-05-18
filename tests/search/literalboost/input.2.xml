@@ -3,11 +3,6 @@
 			<content>bogo book bogo</content>
 			<weight>1000</weight>
 		</document>
-  <document documenttype="literalboost" documentid="id:test:literalboost::booksdoc">
-                        <uri>booksdoc</uri>
-			<content>bogo books bogo</content>
-			<weight>950</weight>
-		</document>
   <document documenttype="literalboost" documentid="id:test:literalboost::bookeddoc">
                         <uri>bookeddoc</uri>
 			<content>bogo booked bogo</content>

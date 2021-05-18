@@ -1,8 +1,3 @@
-<document documenttype="literalboost" documentid="id:test:literalboost::booksdoc">
-<uri>booksdoc</uri>
-<content>bogo books bogo</content>
-<weight>950.0</weight>
-</document>
 <document documenttype="literalboost" documentid="id:test:literalboost::bookdoc">
 <uri>bookdoc</uri>
 <content>bogo book bogo</content>

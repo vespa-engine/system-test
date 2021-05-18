@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="3">
+<result total-hit-count="2">
   <meta type="trace">
-    <p>Query parsed to [content:books]</p>
-    <p>Detected language: English: [content:books]</p>
+    <p>Query parsed to [RANK content:books |bogo]</p>
+    <p>Detected language: English: [RANK content:books |bogo]</p>
     <p>Language English determined by fallback to default.</p>
     <p>Invoking com.yahoo.prelude.statistics.StatisticsSearcher</p>
     <p>Invoking com.yahoo.prelude.ranqualizer.RanqualizerSearcher</p>
@@ -19,38 +19,31 @@
     <p>Invoking com.yahoo.prelude.searcher.TermBoostSearcher</p>
     <p>Invoking com.yahoo.prelude.searcher.BlendingSearcher</p>
     <p>Invoking com.yahoo.prelude.querytransform.StemmingSearcher</p>
-    <p>Stemming: [content:book]</p>
+    <p>Stemming: [RANK content:book |bogo]</p>
     <p>Invoking com.yahoo.prelude.querytransform.NormalizingSearcher</p>
     <p>Invoking com.yahoo.prelude.querytransform.LiteralBoostSearcher</p>
-    <p>Query parsed to [content:books]</p>
-    <p>Adds rank terms for possible literal field matches.: [RANK content:book content_literal:books]</p>
+    <p>Query parsed to [RANK content:books |bogo]</p>
+    <p>Adds rank terms for possible literal field matches.: [RANK content:book |bogo content_literal:books]</p>
     <p>Invoking com.yahoo.prelude.querytransform.CompleteBoostSearcher</p>
     <p>Invoking com.yahoo.prelude.searcher.PhysicalMappingSearcher</p>
     <p>Invoking com.yahoo.prelude.cluster.ClusterSearcher</p>
     <p>Invoking com.yahoo.prelude.fastsearch.FastSearcher</p>
-    <p>sc0.num0 to dispatch: query=[RANK content:book content_literal:books] aggregation=[] offset=0 hits=10 rankprofile[default]=0 community=null attributefilter=null</p>
+    <p>sc0.num0 to dispatch: query=[RANK content:book |bogo content_literal:books] aggregation=[] offset=0 hits=10 rankprofile[default]=0 community=null attributefilter=null</p>
     <p>sc0.num0 dispatch response: Result (3 of total 3 hits)</p>
-    <p>Total search time query 'RANK content:book content_literal:books': 29 ms</p>
+    <p>Total search time query 'RANK content:book |bogo content_literal:books': 54 ms</p>
   </meta>
-  <hit relevancy="963" source="sc0.num0">
-    <field name="relevancy">963</field>
-    <field name="sddocname">literalboost</field>
-    <field name="uri">booksdoc</field>
-    <field name="content">bogo books bogo</field>
-    <field name="weight">950.0</field>
-  </hit>
-  <hit relevancy="783" source="sc0.num0">
-    <field name="relevancy">783</field>
-    <field name="sddocname">literalboost</field>
-    <field name="uri">bookdoc</field>
-    <field name="content">bogo book bogo</field>
-    <field name="weight">1000.0</field>
-  </hit>
-  <hit relevancy="711" source="sc0.num0">
-    <field name="relevancy">711</field>
+  <hit relevancy="738" source="sc0.num0">
+    <field name="relevancy">738</field>
     <field name="sddocname">literalboost</field>
     <field name="uri">bookeddoc</field>
     <field name="content">bogo booked bogo</field>
     <field name="weight">900.0</field>
   </hit>
+  <hit relevancy="812" source="sc0.num0">
+    <field name="relevancy">812</field>
+    <field name="sddocname">literalboost</field>
+    <field name="uri">bookdoc</field>
+    <field name="content">bogo book bogo</field>
+    <field name="weight">1000.0</field>
+</hit>
 </result>
