@@ -1,5 +1,3 @@
-# Private reason: yinst
-
 require 'performance_test'
 require 'performance/configserver/generator'
 
