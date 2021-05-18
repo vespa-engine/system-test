@@ -27,9 +27,9 @@ class Bolding < IndexedSearchTest
     do_test("stemming-multiple")
   end
 
-  def do_test(testname)
-    @subdir = testname
-    deploy_app(SearchApp.new.sd(selfdir+testname+"/bolding.sd"))
+  def do_test(subdir)
+    @subdir = subdir
+    deploy_app(SearchApp.new.sd(selfdir+subdir + "/bolding.sd"))
     start
 
     puts "Description: Bolding of words from query in displayed summary"
@@ -38,32 +38,40 @@ class Bolding < IndexedSearchTest
 
     feed_and_wait_for_docs("bolding", 10, :file => selfdir + "input.xml")
 
-    puts "Query: sanity check"
+    puts "Query: sanity checks"
     assert_hitcount("query=sddocname:bolding", 10)
+    assert_hitcount("query=electric", 2)
 
     puts "Query: bolding checks"
-    check_result("chicago",                               "chicago")
-    check_result("title:chicago",                         "chicago")
-    check_result("song:chicago",                          "chicago")
-    check_result("chicago&bolding=false",                 "chicagonb")
-    check_result("electrics",                             "bolding")
-    check_result("electric",                              "bolding")      if testname != "stemming-none"
-    check_result("sddocname:bolding&filter=%2Belectrics", "notrybolding")
-    check_result("sddocname:bolding&filter=%2Belectric",  "notrybolding") if testname != "stemming-none"
-    check_result("electrics&bolding",                     "bolding")
-    check_result("electric&bolding",                      "bolding")      if testname != "stemming-none"
-    check_result("electrics&bolding=true",                "bolding")
-    check_result("electric&bolding=true",                 "bolding")      if testname != "stemming-none"
-    check_result("electrics&bolding=false",               "nobolding")
-    check_result("electric&bolding=false",                "nobolding")    if testname != "stemming-none"
+    check_result("chicago",                              "chicago")
+    check_result("title:chicago",                        "chicago")
+    check_result("song:chicago",                         "chicago")
+    check_result("chicago&bolding=false",                "chicagonb")
+    check_result("electric",                             "bolding")
+    check_result("electric",                             "bolding")
+    check_result("sddocname:bolding&filter=%2Belectric", "notrybolding")
+    check_result("electric",                             "bolding")
+    check_result("electric&bolding",                     "bolding")
+    check_result("electric&bolding=true",                "bolding")
+    check_result("electric&bolding=false",               "nobolding")
 
     puts "Query: bolding with summary-to checks"
     check_result("chicago&summary=small",                "csmall")
     check_result("chicago&summary=large",                "clarge")
-    check_result("electrics&summary=small",              "esmall")
-    check_result("electric&summary=small",               "esmall")       if testname != "stemming-none"
-    check_result("electrics&summary=large",              "elarge")
-    check_result("electric&summary=large",               "elarge")       if testname != "stemming-none"
+    check_result("electric&summary=small",               "esmall")
+    check_result("electric&summary=large",               "elarge")
+
+    puts "Query: bolding of stemmed words"
+    check_result("title:numb",                           "numb")
+    check_result("title:number",                         "number")
+    check_result("title:numbers",                        "numbers")
+    check_result("title:numbing",                        "numbing")
+
+    check_result("title:blue",                           "blue")
+    check_result("title:Blue",                           "blue")
+    check_result("title:blues",                          "blues")
+    check_result("title:Blues",                          "blues")
+    check_result("title:BLUES",                          "blues")
   end
 
   def test_bolding_in_addition_to_advanced_search_operators

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="10">
+  <hit relevancy="10.0" source="search">
+    <field name="relevancy">10.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1807865264</field>
+    <field name="title">This piece of random text is a really long album title where the words Modern Electric <hi>Blues</hi> actually occur but it is so long that if we use dynamic teaser to extract the displayed summary we will not get all of it, at least not the end, where we have the special text that we look for, and that text is: FUBAR</field>
+    <field name="song"><sep />a really long song title where the words Modern Electric <hi>Blues</hi> actually occur but it is so long that if we use dynamic teaser to extract the <sep /></field>
+    <field name="order">10</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1807865264</field>
+  </hit>
+  <hit relevancy="9.0" source="search">
+    <field name="relevancy">9.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1807865263</field>
+    <field name="title">Louisiana <hi>Blues</hi> song number nine</field>
+    <field name="song">Louisiana <hi>Blues</hi></field>
+    <field name="order">9</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1807865263</field>
+  </hit>
+  <hit relevancy="8.0" source="search">
+    <field name="relevancy">8.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1807865261</field>
+    <field name="title">Electric <hi>Blues</hi> songs numbers eight and on</field>
+    <field name="song">Electric <hi>Blues</hi></field>
+    <field name="order">8</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1807865261</field>
+  </hit>
+  <hit relevancy="7.0" source="search">
+    <field name="relevancy">7.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1807865251</field>
+    <field name="title">East Coast <hi>Blues</hi> number seven</field>
+    <field name="song">East Coast <hi>Blues</hi></field>
+    <field name="order">7</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1807865251</field>
+  </hit>
+  <hit relevancy="6.0" source="search">
+    <field name="relevancy">6.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1804905714</field>
+    <field name="title">Delta <hi>Blues</hi> the sixth in the numbering of <hi>blues</hi> titles</field>
+    <field name="song">Delta <hi>Blues</hi></field>
+    <field name="order">6</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1804905714</field>
+  </hit>
+  <hit relevancy="5.0" source="search">
+    <field name="relevancy">5.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1804905713</field>
+    <field name="title">Country <hi>Blues</hi> with a numb foot</field>
+    <field name="song">Country <hi>Blues</hi></field>
+    <field name="order">5</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1804905713</field>
+  </hit>
+  <hit relevancy="4.0" source="search">
+    <field name="relevancy">4.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1804905712</field>
+    <field name="title">Contemporary <hi>Blues</hi> is numbing the soul</field>
+    <field name="song">Contemporary <hi>Blues</hi></field>
+    <field name="order">4</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1804905712</field>
+  </hit>
+  <hit relevancy="3.0" source="search">
+    <field name="relevancy">3.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1804905711</field>
+    <field name="title">Classic Female <hi>Blues</hi> numbers</field>
+    <field name="song">Classic Female <hi>Blues</hi></field>
+    <field name="order">3</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1804905711</field>
+  </hit>
+  <hit relevancy="2.0" source="search">
+    <field name="relevancy">2.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1804905710</field>
+    <field name="title">Chicago <hi>Blues</hi> the number is increasing</field>
+    <field name="song">Chicago <hi>Blues</hi></field>
+    <field name="order">2</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1804905710</field>
+  </hit>
+  <hit relevancy="1.0" source="search">
+    <field name="relevancy">1.0</field>
+    <field name="sddocname">bolding</field>
+    <field name="uri">/shopping?id=1804905709</field>
+    <field name="title"><hi>Blues</hi> my head is getting number all the time</field>
+    <field name="song"><hi>Blues</hi></field>
+    <field name="order">1</field>
+    <field name="summaryfeatures"></field>
+    <field name="documentid">id:test:bolding::/shopping?id=1804905709</field>
+  </hit>
+</result>
