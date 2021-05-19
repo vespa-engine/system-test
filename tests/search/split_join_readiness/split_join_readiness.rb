@@ -4,13 +4,14 @@ require 'json_document_writer'
 
 class SplitJoinReadinessTest < SearchTest
 
-  def create_app(split_count: 2)
+  def create_app(split_count: 2, num_distributor_stripes: 0)
     SearchApp.new.sd(SEARCH_DATA + 'test.sd').
       cluster_name("mycluster").
       num_parts(2).redundancy(2).ready_copies(1).
       storage(StorageCluster.new("mycluster", 2).
               distribution_bits(8).
-              bucket_split_count(split_count))
+              bucket_split_count(split_count).
+              num_distributor_stripes(num_distributor_stripes))
   end
 
   def setup
@@ -113,6 +114,17 @@ class SplitJoinReadinessTest < SearchTest
   def test_split_target_with_changed_ready_state_triggers_bucket_move
     set_description('Test that buckets split with altered ideal state are (de-)indexed as expected')
     deploy_app(create_app(split_count: 2))
+    run_test_split_target_with_changed_ready_state_triggers_bucket_move
+  end
+
+  def test_split_target_with_changed_ready_state_triggers_bucket_move_using_one_distributor_stripe
+    # TODO STRIPE: Remove this test when new distributor stripe mode is default
+    set_description('Test that buckets split with altered ideal state are (de-)indexed as expected (using 1 distributor stripe)')
+    deploy_app(create_app(split_count: 2, num_distributor_stripes: 1))
+    run_test_split_target_with_changed_ready_state_triggers_bucket_move
+  end
+
+  def run_test_split_target_with_changed_ready_state_triggers_bucket_move
     start
 
     enable_debug_logging if should_debug_log?
