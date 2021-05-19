@@ -30,16 +30,19 @@ class HostHandler < CloudConfigTest
     puts "configserver=#{@configserver}"
   end
 
-  def test_get_application_for_host
-    result = get_host_info(@configserver, "unknown_host")
+  def test_get_application_for_host()
+    @hostname = "unknown"
+    result = get_host_info(@configserver, @hostname)
     assert_not_found(result, @hostname)
 
     @hostname = vespa.nodeproxies.first[0]
     result = get_host_info(@configserver, @hostname)
     assert_host_response_code_and_body(200, result)
 
-    # delete application, check that host is removed from host registry
+    sleep 5
+    # delete application, check that the host is removed from both host registries
     delete_application_v2(@configserver, @tenant_name, @application_name)
+    sleep 5
     result = get_host_info(@configserver, @hostname)
     assert_not_found(result, @hostname)
   end
