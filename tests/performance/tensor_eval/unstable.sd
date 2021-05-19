@@ -1,0 +1,90 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search unstable {
+  fieldset default {
+    fields: title
+  }
+  document unstable {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field title type string {
+      indexing: index | summary
+    }
+    field doc8 type tensor<int8>(x[128]) {
+      indexing: attribute
+    }
+    field doc16 type tensor<bfloat16>(x[128]) {
+      indexing: attribute
+    }
+    field doc32 type tensor<float>(x[128]) {
+      indexing: attribute
+    }
+    field doc64 type tensor<double>(x[128]) {
+      indexing: attribute
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression {
+        sum(attribute(doc32))
+      }
+    }
+  }
+  rank-profile qry8doc8 {
+    first-phase {
+      expression {
+        reduce(query(qry8)*attribute(doc8),sum,x)
+      }
+    }
+  }
+  rank-profile qry16doc16 {
+    first-phase {
+      expression {
+        reduce(query(qry16)*attribute(doc16),sum,x)
+      }
+    }
+  }
+  rank-profile qry32doc32 {
+    first-phase {
+      expression {
+        reduce(query(qry32)*attribute(doc32),sum,x)
+      }
+    }
+  }
+  rank-profile qry64doc64 {
+    first-phase {
+      expression {
+        reduce(query(qry64)*attribute(doc64),sum,x)
+      }
+    }
+  }
+  rank-profile qry32doc8cast {
+    first-phase {
+      expression {
+        reduce(query(qry32)*cell_cast(attribute(doc8),float),sum,x)
+      }
+    }
+  }
+  rank-profile qry32doc16cast {
+    first-phase {
+      expression {
+        reduce(query(qry32)*cell_cast(attribute(doc16),float),sum,x)
+      }
+    }
+  }
+  rank-profile qry32doc8 {
+    first-phase {
+      expression {
+        reduce(query(qry32)*attribute(doc8),sum,x)
+      }
+    }
+  }
+  rank-profile qry32doc16 {
+    first-phase {
+      expression {
+        reduce(query(qry32)*attribute(doc16),sum,x)
+      }
+    }
+  }
+}
