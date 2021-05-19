@@ -42,8 +42,8 @@
 </document>
 <document documenttype="bolding" documentid="id:test:bolding::/shopping?id=1807865261">
 	<uri>/shopping?id=1807865261</uri>
-	<title>Electric Blues songs numbers eight and on</title>
-	<song><![CDATA[Electric Blues]]></song>
+	<title>Electrics Blues songs numbers eight and on</title>
+	<song><![CDATA[Electrics Blues]]></song>
 	<order>8</order>
 </document>
 <document documenttype="bolding" documentid="id:test:bolding::/shopping?id=1807865263">
@@ -54,7 +54,7 @@
 </document>
 <document documenttype="bolding" documentid="id:test:bolding::/shopping?id=1807865264">
 	<uri>/shopping?id=1807865264</uri>
-	<title><![CDATA[This piece of random text is a really long album title where the words Modern Electric Blues actually occur but it is so long that if we use dynamic teaser to extract the displayed summary we will not get all of it, at least not the end, where we have the special text that we look for, and that text is: FUBAR]]></title>
-	<song><![CDATA[This piece of random text is a really long song title where the words Modern Electric Blues actually occur but it is so long that if we use dynamic teaser to extract the displayed summary we will not get all of it, at least not the end, where we have the special text that we look for, and that text is: FUBAR]]></song>
+	<title><![CDATA[random random random random random random random random random random Electrics random random random random random random random random random random random random random random random random random random random random random random random random random FUBAR]]></title>
+	<song><![CDATA[random random random random random random random random random random Electrics random random random random random random random random random random random random random random random random random random random random random random random random random FUBAR]]></song>
 	<order>10</order>
 </document>
