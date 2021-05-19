@@ -31,7 +31,8 @@ class HostHandler < CloudConfigTest
   end
 
   def test_get_application_for_host
-    result = get_host_info(@configserver, "unknown_host")
+    @hostname = "unknown"
+    result = get_host_info(@configserver, @hostname)
     assert_not_found(result, @hostname)
 
     @hostname = vespa.nodeproxies.first[0]
