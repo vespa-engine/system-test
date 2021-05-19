@@ -15,8 +15,6 @@ class Stemming < IndexedSearchTest
 
     wait_for_hitcount("query=war", 3)
     puts "Query: testing singular and plural"
-    assert_hitcount("query=man", 6)
-    assert_hitcount("query=men", 6)
     assert_hitcount("query=war", 3)
     assert_hitcount("query=wars", 3)
     assert_hitcount("query=car", 7)
@@ -25,12 +23,6 @@ class Stemming < IndexedSearchTest
     puts "Query: testing verb forms"
     assert_hitcount("query=make", 4)
     assert_hitcount("query=makes", 4)
-    assert_hitcount("query=making", 4)
-    assert_hitcount("query=find", 6)
-    assert_hitcount("query=found", 6)
-    assert_hitcount("query=finding", 6)
-    assert_hitcount("query=go", 1)
-    assert_hitcount("query=went", 1)
 
     assert_hitcount("query=artist:towers", 2)
     assert_hitcount("query=artist:tower", 2)
@@ -42,9 +34,6 @@ class Stemming < IndexedSearchTest
     assert_hitcount("query=artist:inxs", 3)
     assert_hitcount("query=artist:Inxs", 3)
     assert_hitcount("query=artist:INXS", 3)
-
-    assert_hitcount("query=artist:numbers", 2)
-    assert_hitcount("query=artist:number", 2)
   end
 
   def teardown

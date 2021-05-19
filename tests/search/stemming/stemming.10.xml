@@ -21,7 +21,7 @@
   <document documenttype="music" documentid="id:test:music::http://ping.oo.com/shop?d=03">
 			<title><![CDATA[doc3]]></title>
 			<artist>by the number</artist>
-			<song><![CDATA[making peace]]></song>
+			<song><![CDATA[makes peace]]></song>
 			<pto>-1</pto>
 			<surl><![CDATA[http://ping.oo.com/shop?d=03]]></surl>
 			<bgnsellers>0</bgnsellers>
