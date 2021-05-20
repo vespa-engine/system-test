@@ -1094,8 +1094,8 @@ class ResizeContentClusterBase < SearchTest
 
   def start_node
     vespa.start_base
-    vespa.adminserver.execute("vespa-logctl -c configserver debug=on", :exceptiononfailure => false)
-    vespa.adminserver.execute("vespa-logctl -c configproxy debug=on", :exceptiononfailure => false)
+    # vespa.adminserver.execute("vespa-logctl -c configserver debug=on", :exceptiononfailure => false)
+    # vespa.adminserver.execute("vespa-logctl -c configproxy debug=on", :exceptiononfailure => false)
     sleep 1 # to make sure vespa-logctl has effect
   end
 

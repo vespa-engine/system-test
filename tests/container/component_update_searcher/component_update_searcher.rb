@@ -43,7 +43,7 @@ class ComponentUpdateSearcher < SearchContainerTest
 
     start
     wait_for_hitcount("query=test",0)  # Just wait for the Qrs to be up
-    enable_all_log_levels
+    # enable_all_log_levels
     #system("vespa-get-config -n container.core.chains -i container/component/com.yahoo.search.handler.SearchHandler")
 
     res = search("query=test&tracelevel=3")

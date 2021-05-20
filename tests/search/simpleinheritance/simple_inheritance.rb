@@ -14,8 +14,8 @@ class SimpleInheritance < IndexedSearchTest
 
   def test_simple_doctype_inheritance
     deploy_app(SearchApp.new.sd(selfdir+"base.sd").sd(selfdir+"derived.sd"))
-    vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config", "debug=on")
-    vespa.adminserver.logctl("configserver", "debug=on")
+    #vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config", "debug=on")
+    #vespa.adminserver.logctl("configserver", "debug=on")
     start
     feed_and_wait_for_docs("derived", 1, :file => selfdir+"testsimpleinheritance.xml")
 
