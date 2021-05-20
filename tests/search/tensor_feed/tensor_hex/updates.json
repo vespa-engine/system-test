@@ -1,0 +1,42 @@
+[
+  { "update": "id:test:test::0",
+    "fields": {
+      "my_8_tensor": {
+        "assign": {  
+          "values": [ -1, -2, -3, -4, -5, -6, -7, -8 ]
+        }
+      },
+      "my_16_tensor": {
+        "assign": {  
+          "values": [ -1, -2, -3, -4, -5, -6, -7, -8 ]
+        }
+      }
+    }
+  },
+  { "update": "id:test:test::1",
+    "fields": {
+      "my_16_tensor": {
+        "assign": {
+          "values": "422849803580c37f0000800000807f7f7"
+        }
+      }
+    }
+  },
+  { "update": "id:test:test::2",
+    "fields": {
+      "my_8_tensor": {
+        "assign": { }
+      }
+    }
+  },
+  { "update": "id:test:test::3",
+    "fields": {
+      "my_8_tensor": {
+        "assign": null
+      },
+      "my_16_tensor": {
+        "assign": null
+      }
+    }
+  }
+]

@@ -1,0 +1,11 @@
+
+search test {
+  document test {
+    field my_8_tensor type tensor<int8>(x[8]) {
+      indexing: summary
+    }
+    field my_16_tensor type tensor<bfloat16>(x[8]) {
+      indexing: summary
+    }
+  }
+}
