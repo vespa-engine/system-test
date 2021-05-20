@@ -153,24 +153,24 @@ class FriendFilter < SearchTest
   # save_result("sddocname:blogpost&nocache&hits=1&tracelevel=3", selfdir+"result.last-blogpost.xml")
     assert_result("sddocname:blogpost&nocache&hits=1", selfdir+"result.last-blogpost.xml")
 
-    before = Time.now().to_i
-    num = 0
-    while (Time.now().to_i < before + 300)
-      num = 1 + num
-      puts "Running queries, iteration #{num} ..."
+    # before = Time.now().to_i
+    # num = 0
+    # while (Time.now().to_i < before + 300)
+    #   num = 1 + num
+    #   puts "Running queries, iteration #{num} ..."
 
-      save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff1.xml")
-      save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff2.xml")
-      save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff3.xml")
-      save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff4.xml")
-      save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff5.xml")
-      save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff6.xml")
-      save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff7.xml")
-      save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff8.xml")
-      save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff9.xml")
-    end
+    #   save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff1.xml")
+    #   save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff2.xml")
+    #   save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff3.xml")
+    #   save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff4.xml")
+    #   save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff5.xml")
+    #   save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff6.xml")
+    #   save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff7.xml")
+    #   save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff8.xml")
+    #   save_result("tracelevel=3&query=title:foo&friendfilter=next&nocache", dirs.tmpdir + "result.ff9.xml")
+    # end
 
-    vespa.adminserver.execute("vespa-logfmt -S searchnode -l event -s fmttime,message")
+    # vespa.adminserver.execute("vespa-logfmt -S searchnode -l event -s fmttime,message")
   end
 
   def teardown
