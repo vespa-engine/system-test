@@ -16,28 +16,37 @@ class TestTypes < IndexedSearchTest
   end
 
   def test_types
+    deploy_app(SearchApp.new.enable_http_gateway.sd(selfdir + "legacy/typetest.sd"))
+    start
+    run_test(selfdir + "legacy/testtypes.result.xml")
+
+    deploy_app(SearchApp.new.enable_http_gateway.sd(selfdir + "typetest.sd"))
+    run_test(selfdir + "testtypes.result.xml")
+  end
+
+  def run_test(expected)
     doc_id = "id:test:typetest::http://this-is-a-host.com/path_name"
     feed_and_wait_for_docs("typetest", 1, :file => selfdir + "testtypes.1.xml")
-    verify
+    verify(expected)
     doc = vespa.document_api_v1.get(doc_id)
     vespa.document_api_v1.put(doc)
-    verify
+    verify(expected)
     res = vespa.document_api_v1.visit(:selection => "typetest", :fieldSet => "typetest:[document]", :cluster => "search")
     assert(res["documents"].size == 1)
     puts "Visit result : " + res["documents"][0].to_s
     vdoc = Document.create_from_json(res["documents"][0], "typetest")
     assert(vdoc.documentid == doc_id)
     vespa.document_api_v1.put(vdoc)
-    verify
+    verify(expected)
   end
 
-  def verify
+  def verify(expected)
 
     # Query: String search
-    assert_result("query=%2bstringfield:is%20%2bstringfield:a", selfdir + "testtypes.result.xml")
+    assert_result("query=%2bstringfield:is%20%2bstringfield:a", expected)
 
     # Query: String search with exact match
-    assert_result("query=ematchfield:this+HAS+to+be+like+this@@", selfdir + "testtypes.result.xml")
+    assert_result("query=ematchfield:this+HAS+to+be+like+this@@", expected)
 
     assert_hitcount("query=boolfield:true", 1)
     assert_hitcount("query=boolfield:false", 0)
