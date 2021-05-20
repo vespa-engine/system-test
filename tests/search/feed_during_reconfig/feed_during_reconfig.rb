@@ -39,7 +39,6 @@ class FeedDuringReconfig < IndexedSearchTest
     set_description("Test that we can feed document puts while doing reconfig")
     deploy_app(SearchApp.new.sd(selfdir + "sd.0/test.sd"))
     start
-    vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config.proxy.ConfigProxyRpcServer", "debug=on")
 
     @feed_file = dirs.tmpdir + "temp.feed.xml"
     generate_documents(0, 50000).write_xml(@feed_file)

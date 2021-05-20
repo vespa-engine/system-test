@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 require 'search/schemachanges/schemachanges_base'
@@ -24,16 +25,15 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     start
     postdeploy_wait(deploy_output)
     enable_proton_debug_log
-    vespa.adminserver.logctl("searchnode:proton.server.proton_config_fetcher", "debug=on,spam=on")
-    vespa.adminserver.logctl("searchnode:proton.server.bootstrapconfigmanager", "debug=on,spam=on")
-    vespa.adminserver.logctl("searchnode:proton.server.documentdbconfigmanager", "debug=on,spam=on")
-    vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config.proxy.ConfigProxyRpcServer", "debug=on")
-    vespa.adminserver.logctl("searchnode:common.configmanager", "debug=on,spam=on")
-    vespa.adminserver.logctl("searchnode:proton.server.documentdb", "debug=on")
-    vespa.adminserver.logctl("searchnode:proton.server.proton", "debug=on,spam=on")
-    vespa.adminserver.logctl("searchnode:common.configagent", "debug=on,spam=on")
-    vespa.adminserver.logctl("searchnode:engine.transportserver", "debug=on,spam=on")
-    enable_proton_debug_log
+    #vespa.adminserver.logctl("searchnode:proton.server.proton_config_fetcher", "debug=on,spam=on")
+    #vespa.adminserver.logctl("searchnode:proton.server.bootstrapconfigmanager", "debug=on,spam=on")
+    #vespa.adminserver.logctl("searchnode:proton.server.documentdbconfigmanager", "debug=on,spam=on")
+    #vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config.proxy.ConfigProxyRpcServer", "debug=on")
+    #vespa.adminserver.logctl("searchnode:common.configmanager", "debug=on,spam=on")
+    #vespa.adminserver.logctl("searchnode:proton.server.documentdb", "debug=on")
+    #vespa.adminserver.logctl("searchnode:proton.server.proton", "debug=on,spam=on")
+    #vespa.adminserver.logctl("searchnode:common.configagent", "debug=on,spam=on")
+    #vespa.adminserver.logctl("searchnode:engine.transportserver", "debug=on,spam=on")
     proton = vespa.search["search"].first
     proton.logctl2("proton.docsummary.documentstoreadapter", "all=on")
     feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")
@@ -80,16 +80,15 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     start
     postdeploy_wait(deploy_output)
     enable_proton_debug_log
-    vespa.adminserver.logctl("searchnode:proton.server.proton_config_fetcher", "debug=on,spam=on")
-    vespa.adminserver.logctl("searchnode:proton.server.bootstrapconfigmanager", "debug=on,spam=on")
-    vespa.adminserver.logctl("searchnode:proton.server.documentdbconfigmanager", "debug=on,spam=on")
-    vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config.proxy.ConfigProxyRpcServer", "debug=on")
-    vespa.adminserver.logctl("searchnode:common.configmanager", "debug=on,spam=on")
-    vespa.adminserver.logctl("searchnode:proton.server.documentdb", "debug=on")
-    vespa.adminserver.logctl("searchnode:proton.server.proton", "debug=on,spam=on")
-    vespa.adminserver.logctl("searchnode:common.configagent", "debug=on,spam=on")
-    vespa.adminserver.logctl("searchnode:engine.transportserver", "debug=on,spam=on")
-    enable_proton_debug_log
+    #vespa.adminserver.logctl("searchnode:proton.server.proton_config_fetcher", "debug=on,spam=on")
+    #vespa.adminserver.logctl("searchnode:proton.server.bootstrapconfigmanager", "debug=on,spam=on")
+    #vespa.adminserver.logctl("searchnode:proton.server.documentdbconfigmanager", "debug=on,spam=on")
+    #vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config.proxy.ConfigProxyRpcServer", "debug=on")
+    #vespa.adminserver.logctl("searchnode:common.configmanager", "debug=on,spam=on")
+    #vespa.adminserver.logctl("searchnode:proton.server.documentdb", "debug=on")
+    #vespa.adminserver.logctl("searchnode:proton.server.proton", "debug=on,spam=on")
+    #vespa.adminserver.logctl("searchnode:common.configagent", "debug=on,spam=on")
+    #vespa.adminserver.logctl("searchnode:engine.transportserver", "debug=on,spam=on")
     proton = vespa.search["search"].first
     proton.logctl2("proton.docsummary.documentstoreadapter", "all=on")
     feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")

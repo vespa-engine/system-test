@@ -17,8 +17,8 @@ class NativeRankResponse < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "nativerank.sd").
                config(ConfigOverride.new("vespa.configdefinition.ilscripts").
                       add("maxtermoccurrences", 1000)))
-    vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config", "debug=on")
-    vespa.adminserver.logctl("configserver", "debug=on")
+    # vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config", "debug=on")
+    # vespa.adminserver.logctl("configserver", "debug=on")
     start
 
     feed_and_wait_for_docs("nativerank", 5, :file => selfdir + "nativerank.xml")

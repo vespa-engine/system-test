@@ -15,7 +15,7 @@ class Sorting < IndexedSearchTest
     #                                                    sortspec-Ucca-en_US, sortspec-Ucca-nb_NO
     deploy_app(SearchApp.new.sd(selfdir+"sortspec.sd"))
     start
-    vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config.proxy.RpcConfigSourceClient", "debug=on")
+    #vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config.proxy.RpcConfigSourceClient", "debug=on")
     feed_and_wait_for_docs("sortspec", 8, :file => selfdir+"docs-sortspec.xml", :clusters => ["search"])
     wait_for_hitcount("query=sddocname:sortspec", 8)
     # Explicitt sort set in sortspec
