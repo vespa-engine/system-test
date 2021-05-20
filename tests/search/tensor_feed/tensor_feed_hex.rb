@@ -91,9 +91,6 @@ class TensorFeedHexTest < IndexedSearchTest
                              {"address"=>{"x"=>"6"}, "value"=>0.0},
                              {"address"=>{"x"=>"7"}, "value"=>0.0}] ]
 
-    docs.each { |d| puts "DOC: #{d}" }
-    docs.each { |d| puts "TF8: #{get_tensor_field(d, 'my_8_tensor')}" }
-    docs.each { |d| puts "TF16: #{get_tensor_field(d, 'my_16_tensor')}" }
     assert_nil(get_tensor_field(docs[0], 'my_8_tensor'))
     assert_nil(get_tensor_field(docs[0], 'my_16_tensor'))
 
@@ -159,9 +156,6 @@ class TensorFeedHexTest < IndexedSearchTest
        {"address"=>{"x"=>"6"}, "value"=>700.0},
        {"address"=>{"x"=>"7"}, "value"=>800.0}]
     ]
-    docs.each { |d| puts "DOC: #{d}" }
-    docs.each { |d| puts "TF8: #{get_tensor_field(d, 'my_8_tensor')}" }
-    docs.each { |d| puts "TF16: #{get_tensor_field(d, 'my_16_tensor')}" }
     assert_tensor_field(expect_8[0], docs[0], 'my_8_tensor')
     assert_tensor_field(expect_8[1], docs[1], 'my_8_tensor')
     assert_tensor_field(expect_8[2], docs[2], 'my_8_tensor')
