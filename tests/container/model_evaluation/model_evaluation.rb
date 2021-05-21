@@ -21,15 +21,15 @@ class ModelEvaluation < SearchContainerTest
 
     # ---- mnist_softmax (onnx)
     #    - no argument
-    result = query("/models/?model=mnist_softmax&function=default.add" +
-                   "&argumentName=Placeholder" +
+    result = query("/models/?model=mnist_softmax&function=y" +
+                   "&argumentName=Placeholder_0" +
                    "&argumentValue=" + URI::encode(generateAllZeroArgument()))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":-1.6372650861740112E-6}]}", result.body)
     #    - with argument
-    result = query("/models/?model=mnist_softmax&function=default.add" +
-                   "&argumentName=Placeholder" +
+    result = query("/models/?model=mnist_softmax&function=y" +
+                   "&argumentName=Placeholder_0" +
                    "&argumentValue=" + URI::encode(generateArgument()))
-    assert_equal("{\"cells\":[{\"address\":{},\"value\":9.268522262573242E-6}]}", result.body)
+    assert_equal("{\"cells\":[{\"address\":{},\"value\":2.4199485778808594E-5}]}", result.body)
 
     # ---- mnist_softmax_saved (tensorflow)
     #    - no argument
@@ -74,8 +74,8 @@ class ModelEvaluation < SearchContainerTest
 
     # evaluate mnist_softmax model (only has one function, thus optional)
     result = query("/model-evaluation/v1/mnist_softmax/eval" +
-                   "?Placeholder=" + URI::encode(generateArgument()))
-    assert_equal("{\"cells\":[{\"address\":{\"d0\":\"0\",\"d1\":\"0\"},\"value\":0.8232706785202026},{\"address\":{\"d0\":\"0\",\"d1\":\"1\"},\"value\":-9.75727653503418},{\"address\":{\"d0\":\"0\",\"d1\":\"2\"},\"value\":6.982227802276611},{\"address\":{\"d0\":\"0\",\"d1\":\"3\"},\"value\":6.57724142074585},{\"address\":{\"d0\":\"0\",\"d1\":\"4\"},\"value\":-6.682286739349365},{\"address\":{\"d0\":\"0\",\"d1\":\"5\"},\"value\":6.788742542266846},{\"address\":{\"d0\":\"0\",\"d1\":\"6\"},\"value\":0.4913613498210907},{\"address\":{\"d0\":\"0\",\"d1\":\"7\"},\"value\":-3.5392959117889404},{\"address\":{\"d0\":\"0\",\"d1\":\"8\"},\"value\":1.3475152254104614},{\"address\":{\"d0\":\"0\",\"d1\":\"9\"},\"value\":-3.0314905643463135}]}", result.body)
+                   "?Placeholder_0=" + URI::encode(generateArgument()))
+    assert_equal("{\"cells\":[{\"address\":{\"d0\":\"0\",\"d1\":\"0\"},\"value\":0.8232707381248474},{\"address\":{\"d0\":\"0\",\"d1\":\"1\"},\"value\":-9.757275581359863},{\"address\":{\"d0\":\"0\",\"d1\":\"2\"},\"value\":6.982227802276611},{\"address\":{\"d0\":\"0\",\"d1\":\"3\"},\"value\":6.577242851257324},{\"address\":{\"d0\":\"0\",\"d1\":\"4\"},\"value\":-6.682279109954834},{\"address\":{\"d0\":\"0\",\"d1\":\"5\"},\"value\":6.788743495941162},{\"address\":{\"d0\":\"0\",\"d1\":\"6\"},\"value\":0.4913627505302429},{\"address\":{\"d0\":\"0\",\"d1\":\"7\"},\"value\":-3.539299726486206},{\"address\":{\"d0\":\"0\",\"d1\":\"8\"},\"value\":1.3475146293640137},{\"address\":{\"d0\":\"0\",\"d1\":\"9\"},\"value\":-3.0314836502075195}]}", result.body)
 
     # evaluate mnist_saved model
     result = query("/model-evaluation/v1/mnist_saved/eval" +
