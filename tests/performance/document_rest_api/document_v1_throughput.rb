@@ -199,7 +199,7 @@ class DocumentV1Throughput < PerformanceTest
               :title => "HTTP/1.1 #{metric_name} - #{http_method} - #{config[:http1][:clients]} clients",
               :filter => { 'clients' => config[:http1][:clients], 'method' => http_method, 'protocol' => 'http1' },
               :historic => true
-            }.merge(metric_limits[http_method]))
+            }.merge(metric_limits[http_method] || {}))
           end
         end
         if config[:http2]
@@ -211,7 +211,7 @@ class DocumentV1Throughput < PerformanceTest
               :filter => { 'clients' => config[:http2][:clients], 'streams' => config[:http2][:streams],
                            'method' => http_method, 'protocol' => 'http2' },
               :historic => true
-            }.merge(metric_limits[http_method]))
+            }.merge(metric_limits[http_method] || {}))
           end
         end
       end
