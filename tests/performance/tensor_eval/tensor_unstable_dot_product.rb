@@ -16,7 +16,6 @@ class TensorUnstableDotProductPerfTest < TensorEvalPerfTest
     unstable_feed
     unstable_query
     @graphs = get_graphs_dot_product
-    verify_same_results
   end
 
   def unstable_feed
@@ -63,34 +62,6 @@ class TensorUnstableDotProductPerfTest < TensorEvalPerfTest
       get_latency_graph_for_rank_profile('qry32doc16cast', 128, 1.0, 200.0),
       get_latency_graph_for_rank_profile('default',        128, 1.0, 200.0)
     ]
-  end
-
-  def verify_same_results
-    expect = 'documentid: id:unstable:unstable::57773 id: 57773 relevancy: 267030.0 sddocname: unstable source: search title: unstable 57773' +
-          ' / documentid: id:unstable:unstable::36487 id: 36487 relevancy: 242505.0 sddocname: unstable source: search title: unstable 36487' +
-          ' / documentid: id:unstable:unstable::44354 id: 44354 relevancy: 241427.0 sddocname: unstable source: search title: unstable 44354'
-    results = []
-    results.append(get_first_result('qry64doc64',     'qry64'))
-    results.append(get_first_result('qry32doc32',     'qry32'))
-    results.append(get_first_result('qry16doc16',     'qry16'))
-    results.append(get_first_result('qry32doc16',     'qry32'))
-    results.append(get_first_result('qry32doc16cast', 'qry32'))
-    results.append(get_first_result('qry8doc8',       'qry8'))
-    results.append(get_first_result('qry32doc8',      'qry32'))
-    results.append(get_first_result('qry32doc8cast',  'qry32'))
-    # puts "RESULTS :::"
-    # results.each { |r| puts "RESULT: #{r}" }
-    # puts "::: RESULTS"
-    results.each { |r| assert_equal(expect, r) }
-  end
-
-  def get_first_result(rank_profile, qf)
-    query_file = dirs.tmpdir + 'qf.' + qf
-    line = File.open(query_file) { |f| f.readline }
-    q = "#{line.chomp}&ranking=#{rank_profile}&timeout=10&hits=3&format=json"
-    #puts "run query: #{q}"
-    res = search(q)
-    res.to_s.chomp.gsub("\n", ' / ')
   end
 
   def teardown
