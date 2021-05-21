@@ -24,7 +24,7 @@ class DocumentV1Throughput < PerformanceTest
       {
         :http1 => {
           :clients => 1,
-          :metrics => {'qps' => {}}
+          :metrics => {'qps' => {'get' => {:y_min => 1000, :y_max => 1400}, 'post' => {:y_min => 420, :y_max => 580}}}
         }
       },
       {
@@ -42,7 +42,7 @@ class DocumentV1Throughput < PerformanceTest
       {
         :http1 => {
           :clients => 128,
-          :metrics => {'qps' => {}}
+          :metrics => {'qps' => {'get' => {:y_min => 30000, :y_max => 35000}, 'post' => {:y_min => 6000, :y_max => 6400}}}
         }
       },
       {
@@ -50,7 +50,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 1,
           :streams => 1,
           :threads => 1,
-          :metrics => {'qps' => {}}
+          :metrics => {'qps' => {'get' => {:y_min => 900, :y_max => 1200}, 'post' => {:y_min => 480, :y_max => 570}}}
         }
       },
       {
@@ -65,6 +65,14 @@ class DocumentV1Throughput < PerformanceTest
         :http2 => {
           :clients => 1,
           :streams => 64,
+          :threads => 1,
+          :metrics => {'qps' => {}}
+        }
+      },
+      {
+        :http2 => {
+          :clients => 1,
+          :streams => 256,
           :threads => 1,
           :metrics => {'qps' => {}}
         }
@@ -191,7 +199,7 @@ class DocumentV1Throughput < PerformanceTest
               :title => "HTTP/1.1 #{metric_name} - #{http_method} - #{config[:http1][:clients]} clients",
               :filter => { 'clients' => config[:http1][:clients], 'method' => http_method, 'protocol' => 'http1' },
               :historic => true
-            }.merge(metric_limits))
+            }.merge(metric_limits[http_method]))
           end
         end
         if config[:http2]
@@ -203,7 +211,7 @@ class DocumentV1Throughput < PerformanceTest
               :filter => { 'clients' => config[:http2][:clients], 'streams' => config[:http2][:streams],
                            'method' => http_method, 'protocol' => 'http2' },
               :historic => true
-            }.merge(metric_limits))
+            }.merge(metric_limits[http_method]))
           end
         end
       end
