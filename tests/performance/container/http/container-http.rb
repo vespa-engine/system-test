@@ -108,8 +108,8 @@ class ContainerHttp < PerformanceTest
         :x => 'clients',
         :y => 'qps',
         :historic => true,
-        :y_min =>  80000,
-        :y_max => 115000
+        :y_min => 100000,
+        :y_max => 120000
       },
       {
         :title => 'QPS HTTP/2 (4 client)',
@@ -124,8 +124,8 @@ class ContainerHttp < PerformanceTest
         :x => 'clients',
         :y => 'qps',
         :historic => true,
-        :y_min => 180000,
-        :y_max => 210000
+        :y_min => 185000,
+        :y_max => 205000
       },
       {
         :title => 'QPS HTTP/2 (32 client)',
