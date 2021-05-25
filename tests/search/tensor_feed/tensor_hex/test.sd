@@ -1,0 +1,12 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search test {
+  document test {
+    field my_8_tensor type tensor<int8>(x[8]) {
+      indexing: summary
+    }
+    field my_16_tensor type tensor<bfloat16>(x{},y[4]) {
+      indexing: summary
+    }
+  }
+}
