@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'app_generator/search_app'
 require 'fileutils'
 require 'performance_test'
@@ -61,18 +61,18 @@ class TensorConstantPerfTest < PerformanceTest
   def get_graphs
     [
       get_deploy_graph(TOTAL_TIME, nil, nil),
-      get_deploy_graph(PREPARE_TIME, 12, 17),
+      get_deploy_graph(PREPARE_TIME, 12, 15),
       get_deploy_graph(ACTIVATE_TIME, nil, nil),
-      get_deploy_graph(FILE_DISTRIBUTION_TIME, 4, 19)
+      get_deploy_graph(FILE_DISTRIBUTION_TIME, 15, 18)
     ]
   end
 
   def get_graphs_lz4
     [
       get_deploy_graph(TOTAL_TIME, nil, nil),
-      get_deploy_graph(PREPARE_TIME, 2.2, 4.5),
+      get_deploy_graph(PREPARE_TIME, 2.5, 4.0),
       get_deploy_graph(ACTIVATE_TIME, nil, nil),
-      get_deploy_graph(FILE_DISTRIBUTION_TIME, 4, 17)
+      get_deploy_graph(FILE_DISTRIBUTION_TIME, 12, 16)
     ]
   end
 
