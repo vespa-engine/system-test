@@ -100,6 +100,15 @@ class DocumentV1Throughput < PerformanceTest
           :threads => 16,
           :metrics => {'qps' => {}}
         }
+      },
+      {
+        :http2 => {
+          :clients => 8,
+          :streams => 512,
+          :threads => 8,
+          :backend => 'dummy',
+          :metrics => {'qps' => {}}
+        }
       }
     ]
     @graphs = get_graphs
@@ -134,6 +143,7 @@ class DocumentV1Throughput < PerformanceTest
             gateway(ContainerDocumentApi.new)).
         admin_metrics(Metrics.new).
         indexing("combinedcontainer").
+        generic_service(GenericService.new('devnull', "#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")).
         sd(selfdir + "text.sd"))
     start
 
@@ -143,15 +153,17 @@ class DocumentV1Throughput < PerformanceTest
   def benchmark_operations
     qrserver = @vespa.container["combinedcontainer/0"]
 
-    queries = (1..1024).map do |i|
-      "/document/v1/test/text/docid/#{i}"
-    end.join("\n")
     queries_file = dirs.tmpdir + "queries.txt"
+    qrserver.writefile((1..1024).map { |i| "/document/v1/test/text/docid/#{i}" }.join("\n"),
+                       queries_file)
 
-    qrserver.writefile(queries, queries_file)
-    feed_data = "{ \"fields\": { \"text\": \"GNU#{"'s not UNIX" * (1 << 10) }\" } }"
+    queries_dev_null_file = dirs.tmpdir + "queries_dev_null.txt"
+    qrserver.writefile((1..1024).map { |i| "/document/v1/test/text/docid/#{i}?route=null%2Fdefault" }.join("\n"),
+                       queries_dev_null_file)
+
     data_file = dirs.tmpdir + "data.txt"
-    qrserver.writefile(feed_data, data_file)
+    qrserver.writefile("{ \"fields\": { \"text\": \"GNU#{"'s not UNIX" * (1 << 10) }\" } }",
+                       data_file)
 
     @test_config.each do |config|
       ['post', 'get'].each do |http_method|
@@ -176,7 +188,8 @@ class DocumentV1Throughput < PerformanceTest
           streams = config[:http2][:streams]
           http2_result = h2load.run_benchmark(
             clients: clients, threads: config[:http2][:threads], concurrent_streams: streams, warmup: 10, duration: 30, uri_port: 4443,
-            input_file: queries_file, protocols: ['h2'], post_data_file: post_data_file)
+            input_file: config[:backend] == 'dummy' && http_method == 'post' ? queries_dev_null_file : queries_file,
+            protocols: ['h2'], post_data_file: post_data_file)
           http2_fillers = [parameter_filler('clients', clients), parameter_filler('streams', streams),
                            parameter_filler('method', http_method), parameter_filler('protocol', 'http2'),
                            parameter_filler('clients-streams', "#{clients}-#{streams}"), http2_result.filler]
@@ -207,7 +220,8 @@ class DocumentV1Throughput < PerformanceTest
             graphs.append({
               :x => 'protocol',
               :y => metric_name,
-              :title => "HTTP/2 #{metric_name} - #{http_method} - #{config[:http2][:clients]} clients, #{config[:http2][:streams]} streams",
+              :title => "HTTP/2 #{metric_name} - #{http_method} - #{config[:http2][:clients]} clients, #{config[:http2][:streams]} streams" \
+                        "#{config[:backend] && " (#{config[:backend]} backend)"}",
               :filter => { 'clients' => config[:http2][:clients], 'streams' => config[:http2][:streams],
                            'method' => http_method, 'protocol' => 'http2' },
               :historic => true
