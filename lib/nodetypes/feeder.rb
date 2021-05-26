@@ -234,6 +234,9 @@ module Feeder
       if params[:max_streams_per_connection]
         p += "--max-streams-per-connection #{params[:max_streams_per_connection]}"
       end
+      if params[:mode] == "benchmark"
+        p += "--benchmark "
+      end
       port = params[:port] || Environment.instance.vespa_web_service_port
       host = params[:host] || Environment.instance.vespa_hostname
       p += "--endpoint https://#{host}:#{port}/ "
