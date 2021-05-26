@@ -6,6 +6,7 @@ require 'performance/resultmodel'
 require 'performance/datasetmanager'
 require 'performance/comparison'
 require 'environment'
+require 'json'
 
 require 'testcase'
 
@@ -152,22 +153,38 @@ class PerformanceTest < TestCase
     end
   end
 
-  def post_process_feed_output(output, custom_fillers)
-    lines = output.split("\n")[-1]
-    res = lines.gsub(/\s+/, "").split(",")
-    fillers = [fill_feeder(res)]
+  def fill_feeder_json(json)
+    Proc.new do |result|
+      result.add_metric('feeder.runtime', json['feeder.runtime'])
+      result.add_metric('feeder.okcount', json['feeder.okcount'])
+      result.add_metric('feeder.errorcount', json['feeder.errorcount'])
+      result.add_metric('feeder.throughput', json['feeder.throughput'])
+      result.add_parameter('loadgiver', 'vespa-feed-client')
+    end
+  end
+
+  private
+  def post_process_feed_output(output, client, custom_fillers)
+    if client == :vespa_feed_client
+      json = JSON.parse(output)
+      fillers = [fill_feeder_json(json)]
+    else
+      lines = output.split("\n")[-1]
+      res = lines.gsub(/\s+/, "").split(",")
+      fillers = [fill_feeder(res)]
+    end
     write_report(fillers + custom_fillers)
   end
 
   def run_feeder(feedfile, custom_fillers=[], feederparams={})
     out = feed(feederparams.merge({:file => feedfile, :mode => "benchmark", :do_sync => true}))
-    post_process_feed_output(out, custom_fillers)
+    post_process_feed_output(out, feederparams[:client], custom_fillers)
   end
 
   def run_stream_feeder(streamer_command, custom_fillers=[], feederparams={})
     out = feed_stream(streamer_command,
                       feederparams.merge({:client => :vespa_feeder, :mode => "benchmark"}))
-    post_process_feed_output(out, custom_fillers)
+    post_process_feed_output(out, :vespa_feeder, custom_fillers)
   end
 
   def create_loadtester(node, configserver_hostname, port, num_requests, num_threads, defdir)
