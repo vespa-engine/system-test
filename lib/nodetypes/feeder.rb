@@ -159,13 +159,21 @@ module Feeder
 
   def build_feeder_cmd_params(params, feed_file = nil)
     p = ""
+
+    if params[:verbose]
+      p += "--verbose "
+    end
+    if params[:route]
+      p += "--route #{params[:route]} "
+    end
+    if params[:timeout]
+      p += "--timeout #{params[:timeout]} "
+    end
+    if params[:trace]
+      p += "--trace #{params[:trace]} "
+    end
+
     if params[:client] == :vespa_feeder || params[:client] == :vespa_http_client
-      if params[:verbose]
-         p += "--verbose "
-      end
-      if params[:route]
-        p += "--route #{params[:route]} "
-      end
       if params[:priority]
         p += "--priority #{params[:priority]} "
       end
@@ -181,14 +189,8 @@ module Feeder
       if params[:nummessages]
         p += "--nummessages #{params[:nummessages]} "
       end
-      if params[:timeout]
-        p += "--timeout #{params[:timeout]} "
-      end
       if params[:validate]
         p += "--validate "
-      end
-      if params[:trace]
-        p += "--trace #{params[:trace]} "
       end
     end
 
@@ -227,6 +229,8 @@ module Feeder
     elsif params[:client] == :vespa_feed_client
       if feed_file
         p += "--file #{feed_file} "
+      else
+        p += "--stdin "
       end
       if params[:numconnections]
         p += "--connections #{params[:numconnections]} "
