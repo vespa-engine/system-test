@@ -155,10 +155,10 @@ class PerformanceTest < TestCase
 
   def fill_feeder_json(json)
     Proc.new do |result|
-      result.add_metric('feeder.runtime', json['feeder.runtime'])
-      result.add_metric('feeder.okcount', json['feeder.okcount'])
-      result.add_metric('feeder.errorcount', json['feeder.errorcount'])
-      result.add_metric('feeder.throughput', json['feeder.throughput'])
+      result.add_metric('feeder.runtime', json['feeder.runtime'].to_s)
+      result.add_metric('feeder.okcount', json['feeder.okcount'].to_s)
+      result.add_metric('feeder.errorcount', json['feeder.errorcount'].to_s)
+      result.add_metric('feeder.throughput', json['feeder.throughput'].to_s)
       result.add_parameter('loadgiver', 'vespa-feed-client')
     end
   end
