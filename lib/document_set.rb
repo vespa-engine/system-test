@@ -37,6 +37,22 @@ class DocumentSet
     f.close()
   end
 
+  def write_vespafeed_json(name)
+    f = File.open(name, "w")
+    f.write("[\n")
+    first = true
+    @documents.each do |document|
+      if first
+        first = false
+      else
+        f.write(",")
+      end
+      f.write(document.to_put_json(false))
+      f.write("\n")
+    end
+    f.write("]\n")
+    f.close()
+  end
 
   def write_xml(name)
     f = File.open(name, "w")
