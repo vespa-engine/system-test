@@ -21,8 +21,8 @@ class MassiveHttpClientFeedingTest < SearchTest
     set_description("Verifies that a container can handle more feed threads than it has thread.")
     @valgrind = false
 
-    @feed_file = dirs.tmpdir + "temp.feed.xml"
-    generate_documents(0, DOCUMENTS).write_vespafeed_xml(@feed_file)
+    @feed_file = dirs.tmpdir + "temp.feed.json"
+    generate_documents(0, DOCUMENTS).write_vespafeed_json(@feed_file)
   end
 
 
