@@ -158,36 +158,40 @@ module Feeder
   end
 
   def build_feeder_cmd_params(params, feed_file = nil)
-    p = "";
+    p = ""
+
     if params[:verbose]
-       p += "--verbose "
+      p += "--verbose "
     end
     if params[:route]
       p += "--route #{params[:route]} "
     end
-    if params[:priority]
-      p += "--priority #{params[:priority]} "
-    end
-    if params[:maxpending]
-      p += "--maxpending #{params[:maxpending]} "
-    end
-    if params[:numthreads]
-      p += "--numthreads #{params[:numthreads]} "
-    end
-    if params[:numconnections]
-      p += "--numconnections #{params[:numconnections]} "
-    end
-    if params[:nummessages]
-      p += "--nummessages #{params[:nummessages]} "
-    end
     if params[:timeout]
       p += "--timeout #{params[:timeout]} "
     end
-    if params[:validate]
-      p += "--validate "
-    end
     if params[:trace]
       p += "--trace #{params[:trace]} "
+    end
+
+    if params[:client] == :vespa_feeder || params[:client] == :vespa_http_client
+      if params[:priority]
+        p += "--priority #{params[:priority]} "
+      end
+      if params[:maxpending]
+        p += "--maxpending #{params[:maxpending]} "
+      end
+      if params[:numthreads]
+        p += "--numthreads #{params[:numthreads]} "
+      end
+      if params[:numconnections]
+        p += "--numconnections #{params[:numconnections]} "
+      end
+      if params[:nummessages]
+        p += "--nummessages #{params[:nummessages]} "
+      end
+      if params[:validate]
+        p += "--validate "
+      end
     end
 
     if params[:client] == :vespa_feeder
@@ -206,9 +210,7 @@ module Feeder
       if feed_file
         p += feed_file
       end
-    end
-
-    if params[:client] == :vespa_http_client
+    elsif params[:client] == :vespa_http_client
       if params[:host]
         p += "--host #{params[:host]} "
       end
@@ -224,8 +226,34 @@ module Feeder
       unless params[:disable_tls]
         p += '--vespaTls '
       end
+    elsif params[:client] == :vespa_feed_client
+      if feed_file
+        p += "--file #{feed_file} "
+      else
+        p += "--stdin "
+      end
+      if params[:numconnections]
+        p += "--connections #{params[:numconnections]} "
+      end
+      if params[:max_streams_per_connection]
+        p += "--max-streams-per-connection #{params[:max_streams_per_connection]}"
+      end
+      if params[:mode] == "benchmark"
+        p += "--benchmark "
+      end
+      port = params[:port] || Environment.instance.vespa_web_service_port
+      host = params[:host] || Environment.instance.vespa_hostname
+      p += "--endpoint https://#{host}:#{port}/ "
+      p += vespa_feed_client_tls_options
     end
+    p
+  end
 
+  private
+  def vespa_feed_client_tls_options
+    raise "Global TLS configuration required" unless @tls_env.tls_enabled?
+    p = "--disable-ssl-hostname-verification --certificate #{@tls_env.certificate_file} "
+    p += "--private-key #{@tls_env.private_key_file} --ca-certificates #{@tls_env.ca_certificates_file} "
     p
   end
 
@@ -254,16 +282,17 @@ module Feeder
   def select_feeder(params)
     if params[:client] == :vespa_feeder
       if params[:feeder_binary]
-          feeder_cmd = params[:feeder_binary]
+        return params[:feeder_binary]
       else
-          feeder_cmd = "#{testcase.feeder_binary} "
+        return "#{testcase.feeder_binary} "
       end
     elsif params[:client] == :vespa_http_client
-      feeder_cmd = vespa_http_client_cmd
+      return vespa_http_client_cmd
+    elsif params[:client] == :vespa_feed_client
+      return "vespa-feed-client"
     else
       raise "Unsupported feed client '#{client}'"
     end
-    return feeder_cmd
   end
 
 end
