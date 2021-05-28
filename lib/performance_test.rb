@@ -163,7 +163,6 @@ class PerformanceTest < TestCase
     end
   end
 
-  private
   def post_process_feed_output(output, client, custom_fillers)
     if client == :vespa_feed_client
       json = JSON.parse(output)
