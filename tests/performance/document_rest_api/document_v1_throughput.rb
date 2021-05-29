@@ -13,7 +13,7 @@ class DocumentV1Throughput < PerformanceTest
   end
 
   def timeout_seconds
-    1200
+    1400
   end
 
   def setup
