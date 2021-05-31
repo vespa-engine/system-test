@@ -8,12 +8,10 @@ class ScalingConfigservers < CloudConfigTest
 
   def initialize(*args)
     super(*args)
-    @num_hosts = 5
+    @num_hosts = 3
     @node1 = nil
     @node2 = nil
     @node3 = nil
-    @node4 = nil
-    @node5 = nil
   end
 
   def timeout_seconds
@@ -33,20 +31,16 @@ class ScalingConfigservers < CloudConfigTest
   def test_scaling
     # Deploying as usual first, to get the data structures of the test
     deploy_app(SearchApp.new.sd(selfdir+"banana.sd").
-                      num_hosts(5).
+                      num_hosts(3).
                       configserver("node1").
                       configserver("node2").
-                      configserver("node3").
-                      configserver("node4").
-                      configserver("node5"))
+                      configserver("node3"))
 
     puts "Stop and scratch all config servers"
     @node1 = vespa.configservers["0"]
     @node2 = vespa.configservers["1"]
     @node3 = vespa.configservers["2"]
-    @node4 = vespa.configservers["3"]
-    @node5 = vespa.configservers["4"]
-    @nodes = [ @node1, @node2, @node3, @node4, @node5 ]
+    @nodes = [ @node1, @node2, @node3 ]
     @nodes.each do |node| node.stop_configserver end
     @nodes.each do |node| node.logctl("configserver:com.yahoo.vespa.config.server", "debug=on") end
     @nodes.each do |node| node.logctl("configserver:com.yahoo.vespa.config.server.tenant", "debug=on") end
@@ -58,10 +52,10 @@ class ScalingConfigservers < CloudConfigTest
     @node1.start_configserver
     @node1.ping_configserver
     deploy_app(SearchApp.new.sd(selfdir+"banana.sd").
-                      num_hosts(5).
+                      num_hosts(3).
                       configserver("node1"))
     assert_configservers_ok([@node1])
-    assert_configservers_down([@node2, @node3, @node4, @node5])
+    assert_configservers_down([@node2, @node3)
 
     puts "SCALING: 1->3"
     srvlist = [@node1.name(), @node2.name(), @node3.name()]
@@ -80,33 +74,6 @@ class ScalingConfigservers < CloudConfigTest
     zk_command = "vespa-zkls /config/v2/tenants/default/sessions/2 2 >/dev/null; vespa-zkcat /config/v2/tenants/default/sessions/2/userapp 2> /dev/null; vespa-zkcat /config/v2/tenants/default/sessions/2/userapp/services.xml 2> /dev/null; vespa-zkcat /config/v2/tenants/default/sessions/2/userapp/hosts.xml 2> /dev/null"
     @node1.execute(zk_command)
     assert_configservers_ok([@node1, @node2, @node3])
-    assert_configservers_down([@node4, @node5])
-
-    puts "SCALING: 3->5"
-    srvlist = [@node1.name(), @node2.name(), @node3.name(), @node4.name(), @node5.name()]
-    @nodes.each do |node| node.set_addr_configserver(srvlist) end
-    @nodes.each do |node| restart_configserver(node) end
-    @nodes.each do |node| node.ping_configserver end
-    assert_configservers_ok([@node1, @node2, @node3, @node4, @node5])
-
-    puts "DOWNSCALING: 5->3"
-    srvlist = [@node3.name(), @node4.name(), @node5.name()]
-    @nodes.each do |node| node.set_addr_configserver(srvlist) end
-    @node1.stop_configserver
-    @node2.stop_configserver
-    restart_configserver(@node3)
-    restart_configserver(@node4)
-    restart_configserver(@node5)
-    scratch_zk(@node1)
-    scratch_zk(@node2)
-    assert_configservers_down([@node1, @node2])
-    # TODO: this doesn't always work, but it's currently far fetched to scale 5->3
-    #@node3.ping_configserver
-    #@node4.ping_configserver
-    #@node5.ping_configserver
-    #assert_configserver_ok(@node3)
-    #assert_configserver_ok(@node4)
-    #assert_configserver_ok(@node5)
   end
 
   def scratch_zk(node)
