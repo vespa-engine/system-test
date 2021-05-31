@@ -37,7 +37,8 @@ class MassiveHttpClientFeedingTest < SearchTest
 
   def test_vespa_feed_client
     gw = deploy_test_app
-    feedfile(@feed_file, {:client => :vespa_feed_client, :host => gw.name, :port => gw.http_port})
+    feedfile(@feed_file, {:client => :vespa_feed_client, :host => gw.name, :port => gw.http_port,
+                          :numconnections => 4, :max_streams_per_connection => 128})
 
     # Don't care if we do not hit the spawned documents, we only care about feeding not getting stuck in this test.
     wait_for_hitcount("ronny", DOCUMENTS)

@@ -180,21 +180,21 @@ module Feeder
       if params[:maxpending]
         p += "--maxpending #{params[:maxpending]} "
       end
-      if params[:numthreads]
-        p += "--numthreads #{params[:numthreads]} "
-      end
-      if params[:numconnections]
-        p += "--numconnections #{params[:numconnections]} "
-      end
-      if params[:nummessages]
-        p += "--nummessages #{params[:nummessages]} "
-      end
       if params[:validate]
         p += "--validate "
       end
     end
 
     if params[:client] == :vespa_feeder
+      if params[:nummessages]
+        p += "--nummessages #{params[:nummessages]} "
+      end
+      if params[:numthreads]
+        p += "--numthreads #{params[:numthreads]} "
+      end
+      if params[:numconnections]
+        p += "--numconnections #{params[:numconnections]} "
+      end
       if params[:mode]
         p += "--mode #{params[:mode]} "
       end
@@ -219,6 +219,8 @@ module Feeder
       end
       if params[:num_persistent_connections_per_endpoint]
         p += "--numPersistentConnectionsPerEndpoint #{params[:num_persistent_connections_per_endpoint]} "
+      elsif params[:numconnections]
+        p += "--numPersistentConnectionsPerEndpoint #{params[:numconnections]} "
       end
       if feed_file
         p += "--file #{feed_file} "
@@ -236,7 +238,7 @@ module Feeder
         p += "--connections #{params[:numconnections]} "
       end
       if params[:max_streams_per_connection]
-        p += "--max-streams-per-connection #{params[:max_streams_per_connection]}"
+        p += "--max-streams-per-connection #{params[:max_streams_per_connection]} "
       end
       if params[:mode] == "benchmark"
         p += "--benchmark "
