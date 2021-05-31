@@ -45,12 +45,11 @@ class DocumentSet
       if first
         first = false
       else
-        f.write(",")
+        f.write(",\n")
       end
       f.write(document.to_put_json(false))
-      f.write("\n")
     end
-    f.write("]\n")
+    f.write("\n]\n")
     f.close()
   end
 
