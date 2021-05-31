@@ -55,7 +55,7 @@ class ScalingConfigservers < CloudConfigTest
                       num_hosts(3).
                       configserver("node1"))
     assert_configservers_ok([@node1])
-    assert_configservers_down([@node2, @node3)
+    assert_configservers_down([@node2, @node3])
 
     puts "SCALING: 1->3"
     srvlist = [@node1.name(), @node2.name(), @node3.name()]
