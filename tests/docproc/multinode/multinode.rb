@@ -12,7 +12,7 @@ class MultiNode < DocprocTest
   def setup
     set_owner("gjoranv")
     add_bundle(DOCPROC + "/WorstMusicDocProc.java")
-    deploy(DOCPROC + "app")
+    deploy(selfdir + "app")
     start
   end
 
