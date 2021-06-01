@@ -21,8 +21,10 @@
 
   <container version="1.0" id="banana">
     <nodes>
+      <node hostalias="node1"/>
       <node hostalias="node2"/>
       <node hostalias="node3"/>
+      <node hostalias="node4"/>
     </nodes>
 
     <search/>
