@@ -120,7 +120,7 @@ class MultipleConfigservers < CloudConfigTest
 
     vespa.configservers["0"].start_configserver
     wait_for_config_generation_on_all_configservers(@session_id)
-    debug("")
+    debug("8")
     deploy_multiple_app(selfdir+"extended_sd/banana.sd")
     @session_id = @session_id + 1
     debug("9")
@@ -152,9 +152,6 @@ class MultipleConfigservers < CloudConfigTest
 
     vespa.stop_base
     debug("20")
-    vespa.configservers["0"].start_configserver
-    vespa.configservers["1"].start_configserver
-    vespa.configservers["2"].start_configserver
   end
 
   # Test that deleting an application works when done on another server than the
