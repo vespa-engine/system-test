@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'docproc_test'
 
@@ -6,13 +6,13 @@ class MultiNode < DocprocTest
 
   def initialize(*args)
     super(*args)
-    @num_hosts = 4
+    @num_hosts = 3
   end
 
   def setup
     set_owner("gjoranv")
     add_bundle(DOCPROC + "/WorstMusicDocProc.java")
-    deploy(DOCPROC + "setup-1x4")
+    deploy(selfdir + "app")
     start
   end
 
