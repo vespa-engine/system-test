@@ -20,9 +20,9 @@ class MergingTest < PersistentProviderTest
     run_merging_test
   end
 
-  def test_merging_with_one_distributor_stripe
+  def test_merging_with_multiple_distributor_stripes
     # TODO STRIPE: Remove this test when new distributor stripe mode is default
-    deploy_app(default_app.num_nodes(2).redundancy(2).num_distributor_stripes(1))
+    deploy_app(default_app.num_nodes(2).redundancy(2).num_distributor_stripes(2))
     run_merging_test
   end
 
