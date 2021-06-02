@@ -103,7 +103,7 @@ class GeoNnsTest < IndexedSearchTest
     set_description("Test the nearest neighbor search operator for geo search (with whitelist)")
     geo_deploy(2)
     start
-    feed(:file => selfdir + "5k-docs.json", :numthreads => 1)
+    feed(:file => selfdir + "5k-docs.json", :numthreads => 1, :maxpending => 1 )
     i=5000
     puts "Done put of #{i} documents"
     wait_for_hitcount('?query=sddocname:geo', i)
