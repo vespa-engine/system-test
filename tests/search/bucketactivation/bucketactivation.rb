@@ -38,12 +38,12 @@ class BucketActivationTest < SearchTest
     run_bucket_activation_test
   end
 
-  def test_bucket_activation_with_one_distributor_stripe
+  def test_bucket_activation_with_multiple_distributor_stripes
     # TODO STRIPE: Remove this test when new distributor stripe mode is default
-    set_description("Test basic searching with bucket activation (using 1 distributor stripe)")
+    set_description("Test basic searching with bucket activation (using 2 distributor stripes)")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
                search_type("ELASTIC").cluster_name("mycluster").num_parts(4).redundancy(2).
-               storage(StorageCluster.new("mycluster", 4).distribution_bits(16).num_distributor_stripes(1)))
+               storage(StorageCluster.new("mycluster", 4).distribution_bits(16).num_distributor_stripes(2)))
     run_bucket_activation_test
   end
 
