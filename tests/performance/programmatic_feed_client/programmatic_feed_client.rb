@@ -38,18 +38,15 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   def test_throughput
     container_node = deploy_test_app
-    build_and_copy_feed_client(container_node)
+    build_feed_client
 
     run_benchmark(container_node, "VespaHttpClient")
     run_benchmark(container_node, "VespaFeedClient")
   end
 
   private
-  def build_and_copy_feed_client(container_node)
-    client_src_root = "#{selfdir}/java-feed-client"
-    Executor.new(Environment.instance.vespa_short_hostname)
-            .execute("cd #{client_src_root}; #{maven_command} --quiet package", self)
-    container_node.copy("#{client_src_root}/target/#{JAR_ARTIFACT_NAME}", test_tmp_dir)
+  def build_feed_client
+    vespa.adminserver.execute("cd #{java_client_src_root}; #{maven_command} --quiet package")
   end
 
   private
@@ -68,7 +65,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
         "-Dvespa.test.feed.private-key=#{tls_env.private_key_file} " +
         "-Dvespa.test.feed.ca-certificate=#{tls_env.ca_certificates_file} " +
         "com.yahoo.vespa.systemtest.javafeedclient.#{main_class}"
-    result = container_node.execute("cd #{test_tmp_dir}; #{java_cmd}")
+    result = vespa.adminserver.execute("cd #{java_client_src_root}/target; #{java_cmd}")
     JSON.parse(result.split("\n")[-1])
   end
 
@@ -103,8 +100,8 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def test_tmp_dir
-    "#{dirs.tmpdir}/#{File.basename(selfdir)}"
+  def java_client_src_root
+    selfdir + "java-feed-client"
   end
 
   def teardown
