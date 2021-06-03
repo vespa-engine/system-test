@@ -72,7 +72,7 @@ class TensorConstantPerfTest < PerformanceTest
       get_deploy_graph(TOTAL_TIME, nil, nil),
       get_deploy_graph(PREPARE_TIME, 2.0, 5.5),
       get_deploy_graph(ACTIVATE_TIME, nil, nil),
-      get_deploy_graph(FILE_DISTRIBUTION_TIME, 11.0, 15.5)
+      get_deploy_graph(FILE_DISTRIBUTION_TIME, 10.5, 15.5)
     ]
   end
 
