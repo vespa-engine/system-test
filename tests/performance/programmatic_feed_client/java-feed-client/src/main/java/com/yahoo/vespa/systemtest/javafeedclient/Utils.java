@@ -5,11 +5,17 @@ import javax.net.ssl.HostnameVerifier;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.LogManager;
 
 /**
  * @author bjorncs
  */
 class Utils {
+
+    static {
+        // Disable java.util.logging
+        LogManager.getLogManager().reset();
+    }
 
     static final HostnameVerifier TRUST_ALL_VERIFIER = (hostname, session) -> true;
 
