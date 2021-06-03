@@ -32,10 +32,10 @@ public class VespaFeedClient {
                 DocumentId id = DocumentId.of("music", "music", Integer.toString(i));
                 client.put(id, "{\"fields\": {\"title\": \"Ronny och Ragge\"}}", OperationParameters.empty().route(route))
                         .whenComplete((result, error) -> {
-                            if (result != null) {
-                                successfulRequests.incrementAndGet();
-                            } else {
+                            if (error != null) {
                                 failedRequests.incrementAndGet();
+                            } else {
+                                successfulRequests.incrementAndGet();
                             }
                             doneSignal.countDown();
                         });
