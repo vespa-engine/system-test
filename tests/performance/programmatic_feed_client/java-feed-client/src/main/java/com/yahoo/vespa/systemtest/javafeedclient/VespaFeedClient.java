@@ -7,59 +7,51 @@ import ai.vespa.feed.client.FeedClientBuilder;
 import ai.vespa.feed.client.OperationParameters;
 
 import java.io.IOException;
-import java.net.URI;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.printBenchmarkResult;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.TRUST_ALL_VERIFIER;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.caCertificate;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.certificate;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.documents;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.endpoint;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.maxConcurrentStreamsPerConnection;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.privateKey;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.route;
 
 /**
  * @author bjorncs
  */
 public class VespaFeedClient {
     public static void main(String[] args) throws IOException, InterruptedException {
-        String route = System.getProperty("vespa.test.feed.route");
-        int documents = Integer.parseInt(System.getProperty("vespa.test.feed.documents"));
-        AtomicInteger successfulRequests = new AtomicInteger(0);
-        AtomicInteger failedRequests = new AtomicInteger(0);
+        int documents = documents();
         CountDownLatch doneSignal = new CountDownLatch(documents);
-        long start = System.nanoTime();
+        BenchmarkReporter reporter = new BenchmarkReporter("vespa-feed-client");
         try (FeedClient client = createFeedClient()) {
             for (int i = 0; i < documents; i++) {
-                DocumentId id = DocumentId.of("music", "music", Integer.toString(i));
-                client.put(id, "{\"fields\": {\"title\": \"Ronny och Ragge\"}}", OperationParameters.empty().route(route))
+                DocumentId id = DocumentId.of("music", "music", "vespa-feed-client-" + i);
+                client.put(id, "{\"fields\": {\"title\": \"vespa.ai\"}}", OperationParameters.empty().route(route()))
                         .whenComplete((result, error) -> {
                             if (error != null) {
-                                failedRequests.incrementAndGet();
+                                reporter.incrementFailure();
+                                System.out.println("For id " + id + ": " + error);
                             } else {
-                                successfulRequests.incrementAndGet();
+                                reporter.incrementSuccess();
                             }
                             doneSignal.countDown();
                         });
             }
             doneSignal.await();
         }
-        Duration duration = Duration.ofNanos(System.nanoTime() - start);
-        printBenchmarkResult("vespa-feed-client", duration, successfulRequests.get(), failedRequests.get());
     }
 
     private static FeedClient createFeedClient() {
-        Path certificate = Paths.get(System.getProperty("vespa.test.feed.certificate"));
-        Path privateKey = Paths.get(System.getProperty("vespa.test.feed.private-key"));
-        Path caCertificate = Paths.get(System.getProperty("vespa.test.feed.ca-certificate"));
-        URI endpoint = URI.create(System.getProperty("vespa.test.feed.endpoint"));
-        int maxConcurrentStreamsPerConnection = Integer.parseInt(
-                System.getProperty("vespa.test.feed.max-concurrent-streams-per-connection"));
-        int connections = Integer.parseInt(System.getProperty("vespa.test.feed.connections"));
-        return FeedClientBuilder.create(endpoint)
-                .setMaxStreamPerConnection(maxConcurrentStreamsPerConnection)
+        int connections = Utils.connections();
+        return FeedClientBuilder.create(endpoint())
+                .setMaxStreamPerConnection(maxConcurrentStreamsPerConnection())
                 .setMaxConnections(connections)
-                .setCaCertificates(caCertificate)
-                .setCertificate(certificate, privateKey)
-                .setHostnameVerifier((hostname, session) -> true)
+                .setCaCertificates(caCertificate())
+                .setCertificate(certificate(), privateKey())
+                .setHostnameVerifier(TRUST_ALL_VERIFIER)
                 .build();
     }
 }

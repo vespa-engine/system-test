@@ -1,29 +1,35 @@
 // Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.vespa.systemtest.javafeedclient;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-
-import java.io.IOException;
-import java.time.Duration;
+import javax.net.ssl.HostnameVerifier;
+import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.LogManager;
 
 /**
  * @author bjorncs
  */
 class Utils {
+
+    static {
+        // Disable java.util.logging
+        LogManager.getLogManager().reset();
+    }
+
+    static final HostnameVerifier TRUST_ALL_VERIFIER = (hostname, session) -> true;
+
     private Utils() {}
 
-    static void printBenchmarkResult(String clientName, Duration duration, int successfulRequests, int failedRequests) throws IOException {
-        JsonFactory factory = new JsonFactory();
-        try (JsonGenerator generator = factory.createGenerator(System.out)) {
-            generator.writeStartObject();
-            generator.writeNumberField("feeder.runtime", duration.toMillis());
-            generator.writeNumberField("feeder.okcount", successfulRequests);
-            generator.writeNumberField("feeder.errorcount", failedRequests);
-            generator.writeNumberField("feeder.throughput", successfulRequests / (double)duration.toMillis() * 1000);
-            generator.writeStringField("loadgiver", clientName);
-            generator.writeEndObject();
-            generator.flush();
-        }
+    static Path certificate() { return Paths.get(System.getProperty("vespa.test.feed.certificate")); }
+    static Path privateKey() { return Paths.get(System.getProperty("vespa.test.feed.private-key")); }
+    static Path caCertificate() { return Paths.get(System.getProperty("vespa.test.feed.ca-certificate")); }
+    static int connections() { return Integer.parseInt(System.getProperty("vespa.test.feed.connections")); }
+    static String route() { return System.getProperty("vespa.test.feed.route"); }
+    static URI endpoint() { return URI.create(System.getProperty("vespa.test.feed.endpoint")); }
+    static int documents() { return Integer.parseInt(System.getProperty("vespa.test.feed.documents")); }
+    static int maxConcurrentStreamsPerConnection() {
+        return Integer.parseInt(System.getProperty("vespa.test.feed.max-concurrent-streams-per-connection"));
     }
+
 }

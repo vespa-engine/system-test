@@ -7,6 +7,7 @@ require 'json'
 class ProgrammaticFeedClientTest < PerformanceTest
 
   DOCUMENTS = 100000
+  JAR_ARTIFACT_NAME = "java-feed-client-1.0.jar"
 
   def setup
     set_owner('bjorncs')
@@ -17,30 +18,55 @@ class ProgrammaticFeedClientTest < PerformanceTest
         :x => 'loadgiver',
         :y => 'feeder.throughput',
         :historic => true
+      },
+      {
+        :title => "Throughput vespa-http-client",
+        :x => 'loadgiver',
+        :y => 'feeder.throughput',
+        :filter => {'loadgiver' => 'vespa-http-client'},
+        :historic => true,
+      },
+      {
+        :title => "Throughput vespa-feed-client",
+        :x => 'loadgiver',
+        :y => 'feeder.throughput',
+        :filter => {'loadgiver' => 'vespa-feed-client'},
+        :historic => true
       }
     ]
   end
 
   def test_throughput
     container_node = deploy_test_app
-    client_src_root = "#{selfdir}/java-feed-client"
-    Executor.new(Environment.instance.vespa_short_hostname)
-            .execute("cd #{client_src_root}; #{maven_command} --quiet package", self)
-    tmp = "#{dirs.tmpdir}/#{File.basename(selfdir)}"
-    jar_artifact_name = "java-feed-client-1.0.jar"
-    container_node.copy("#{client_src_root}/target/#{jar_artifact_name}", tmp)
-    main_class = "com.yahoo.vespa.systemtest.javafeedclient.VespaFeedClient"
+    build_feed_client
+
+    run_benchmark(container_node, "VespaHttpClient")
+    run_benchmark(container_node, "VespaFeedClient")
+  end
+
+  private
+  def build_feed_client
+    vespa.adminserver.execute("cd #{java_client_src_root}; #{maven_command} --quiet package")
+  end
+
+  private
+  def run_benchmark(container_node, program_name)
+    write_report([json_to_filler(run_benchmark_program(container_node, program_name))])
+  end
+
+  private
+  def run_benchmark_program(container_node, main_class)
     java_cmd =
-      "java -cp #{jar_artifact_name} " +
-      "-Dvespa.test.feed.route=default -Dvespa.test.feed.documents=#{DOCUMENTS} " +
+      "java -cp #{JAR_ARTIFACT_NAME} " +
+        "-Dvespa.test.feed.route=default -Dvespa.test.feed.documents=#{DOCUMENTS} " +
         "-Dvespa.test.feed.connections=4 -Dvespa.test.feed.max-concurrent-streams-per-connection=128 " +
         "-Dvespa.test.feed.endpoint=https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/ " +
         "-Dvespa.test.feed.certificate=#{tls_env.certificate_file} " +
         "-Dvespa.test.feed.private-key=#{tls_env.private_key_file} " +
-        "-Dvespa.test.feed.ca-certificate=#{tls_env.ca_certificates_file} #{main_class}"
-    result = container_node.execute("cd #{tmp}; #{java_cmd}")
-    json_result = JSON.parse(result.split("\n")[-1])
-    write_report([json_to_filler(json_result)])
+        "-Dvespa.test.feed.ca-certificate=#{tls_env.ca_certificates_file} " +
+        "com.yahoo.vespa.systemtest.javafeedclient.#{main_class}"
+    result = vespa.adminserver.execute("cd #{java_client_src_root}/target; #{java_cmd}")
+    JSON.parse(result.split("\n")[-1])
   end
 
   private
@@ -71,6 +97,11 @@ class ProgrammaticFeedClientTest < PerformanceTest
     gw = @vespa.container.values.first
     wait_for_application(gw, output)
     gw
+  end
+
+  private
+  def java_client_src_root
+    selfdir + "java-feed-client"
   end
 
   def teardown
