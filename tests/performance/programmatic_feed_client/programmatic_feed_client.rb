@@ -23,11 +23,12 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   def test_throughput
     container_node = deploy_test_app
+    client_src_root = "#{selfdir}/java-feed-client"
     Executor.new(Environment.instance.vespa_short_hostname)
-            .execute("cd java-feed-client; #{maven_command} --quiet package", self)
+            .execute("cd #{client_src_root}; #{maven_command} --quiet package", self)
     tmp = "#{dirs.tmpdir}/#{File.basename(selfdir)}"
     jar_artifact_name = "java-feed-client-1.0.jar"
-    container_node.copy("#{selfdir}/java-feed-client/target/#{jar_artifact_name}", tmp)
+    container_node.copy("#{client_src_root}/target/#{jar_artifact_name}", tmp)
     main_class = "com.yahoo.vespa.systemtest.javafeedclient.VespaFeedClient"
     java_cmd =
       "java -cp #{jar_artifact_name} " +
