@@ -13,6 +13,10 @@ class ProgrammaticFeedClientTest < PerformanceTest
   VESPA_HTTP_CLIENT = 'vespa-http-client'
   VESPA_FEED_CLIENT = 'vespa-feed-client'
 
+  def timeout_seconds
+    1800
+  end
+
   def setup
     set_owner('bjorncs')
     set_description('Benchmarking of programmatic feed clients in Java (vespa-feed-client vs vespa-http-client)')
