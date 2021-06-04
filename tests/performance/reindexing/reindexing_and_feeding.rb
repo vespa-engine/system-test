@@ -98,8 +98,8 @@ class ReindexingAndFeedingTest < PerformanceTest
     now_seconds = Time.now.to_i + 2							# Account for clock skew — reindexing takes more than 3s to trigger
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     trigger_reindexing
-    feed_data({ :file => @updates_file, :legend => 'reindex_update' })
-    feed_data({ :file => @updates_file, :legend => 'reindex_update' })
+    feed_data({ :file => @updates_file, :legend => 'reindex_update', :maxconnections => 2 })
+    feed_data({ :file => @updates_file, :legend => 'reindex_update', :max_streams_per_connection => 512 })
     reindexing_millis = wait_for_reindexing
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) 	# All documents should be indexed after now_seconds
     assert_hitcount("count:2&nocache", @document_count)					# All documents should have "counter" incremented by 2
@@ -127,9 +127,9 @@ class ReindexingAndFeedingTest < PerformanceTest
   # Feed data with the given config, which must include :file.
   def feed_data(config)
     run_feeder(config[:file],
-	       [ parameter_filler('legend', config[:legend]) ],
-	       config.merge({ :localfile => true, :numthreads => 8, :feed_node => @qrserver, :client => :vespa_feed_client,
-		              :numconnections => 4, :max_streams_per_connection => 256 }))
+               [ parameter_filler('legend', config[:legend]) ],
+               { :localfile => true, :numthreads => 8, :feed_node => @qrserver, :client => :vespa_feed_client,
+                 :numconnections => 4, :max_streams_per_connection => 256 }.merge(config))
   end
 
   # Wait for reindexing after the given time to have started.
