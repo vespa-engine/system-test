@@ -48,7 +48,7 @@ public class VespaFeedClient {
         int connections = Utils.connections();
         return FeedClientBuilder.create(endpoint())
                 .setMaxStreamPerConnection(maxConcurrentStreamsPerConnection())
-                .setMaxConnections(connections)
+                .setConnectionsPerEndpoint(connections)
                 .setCaCertificates(caCertificate())
                 .setCertificate(certificate(), privateKey())
                 .setHostnameVerifier(TRUST_ALL_VERIFIER)
