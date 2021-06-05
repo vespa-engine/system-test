@@ -80,7 +80,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     ]
   end
 
-  def fest_throughput
+  def test_throughput
     container_node = deploy_test_app
     build_feed_client
 
