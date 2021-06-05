@@ -9,7 +9,7 @@ class SDValidation < SearchTest
 
   def test_sdvalidation    
     # first one tests that file name in message is relative to app package path
-    deploy_invalid_sd(selfdir+"invalid_il_expression_name.sd", "Could not parse sd file 'invalid_il_expression_name.sd'")
+    deploy_invalid_sd(selfdir+"invalid_il_expression_name.sd", "Could not parse schema file 'invalid_il_expression_name.sd'")
     deploy_invalid_sd(selfdir+"invalid_fieldtype.sd")
     deploy_invalid_sd(selfdir+"invalid_fieldbody.sd")
     deploy_invalid_sd(selfdir+"reserved_fieldname.sd")
@@ -33,7 +33,7 @@ class SDValidation < SearchTest
 
   # Tests that we get a proper error message from sd parser with line number when sd is invalid
   def test_error_message_invalid_sd
-    warning_regexp = Regexp.new("Could not parse sd file 'invalid_sd_construct.sd': Encountered \" \"\\(\" \"\\(\"\" at line 5, column 36")
+    warning_regexp = Regexp.new("Could not parse schema file 'invalid_sd_construct.sd': Encountered \" \"\\(\" \"\\(\"\" at line 5, column 36")
     begin
       deploy_app(SearchApp.new.sd(selfdir+"invalid_sd_construct.sd"))
       assert(false)
