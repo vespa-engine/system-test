@@ -7,7 +7,6 @@ import ai.vespa.feed.client.FeedClientBuilder;
 import ai.vespa.feed.client.OperationParameters;
 
 import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
 
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.TRUST_ALL_VERIFIER;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.caCertificate;
@@ -24,7 +23,6 @@ import static com.yahoo.vespa.systemtest.javafeedclient.Utils.route;
 public class VespaFeedClient {
     public static void main(String[] args) throws IOException, InterruptedException {
         int documents = documents();
-        CountDownLatch doneSignal = new CountDownLatch(documents);
         BenchmarkReporter reporter = new BenchmarkReporter("vespa-feed-client");
         try (FeedClient client = createFeedClient()) {
             for (int i = 0; i < documents; i++) {
@@ -37,10 +35,8 @@ public class VespaFeedClient {
                             } else {
                                 reporter.incrementSuccess();
                             }
-                            doneSignal.countDown();
                         });
             }
-            doneSignal.await();
         }
     }
 
