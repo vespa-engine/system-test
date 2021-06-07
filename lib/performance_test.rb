@@ -200,11 +200,14 @@ class PerformanceTest < TestCase
     write_report(fillers + custom_fillers)
   end
 
-  def run_predicate_search_library_benchmark(node, benchmark_params)
+  def perfmap_agent_jvmarg
     perfmap_agent = "#{Environment.instance.vespa_home}/lib64/libperfmap.so"
-    perfmap_agent_arg = if File.file?(perfmap_agent) then "-agentpath:#{perfmap_agent}" else '' end
+    if File.file?(perfmap_agent) then "-agentpath:#{perfmap_agent}" else '' end
+  end
+
+  def run_predicate_search_library_benchmark(node, benchmark_params)
     raw_output = node.execute(
-      "LD_PRELOAD=#{Environment.instance.vespa_home}/lib64/vespa/malloc/libvespamalloc.so java #{perfmap_agent_arg} " +
+      "LD_PRELOAD=#{Environment.instance.vespa_home}/lib64/vespa/malloc/libvespamalloc.so java #{perfmap_agent_jvmarg} " +
         "-Xmx16g -Xms16g -XX:+UseParallelGC -XX:NewRatio=1 -verbose:gc -XX:MaxTenuringThreshold=15 " +
         "-cp #{Environment.instance.vespa_home}/lib/jars/predicate-search-jar-with-dependencies.jar " +
         "com.yahoo.search.predicate.benchmarks.PredicateIndexBenchmark " +

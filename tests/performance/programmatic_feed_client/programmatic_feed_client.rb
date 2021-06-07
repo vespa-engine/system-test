@@ -76,7 +76,21 @@ class ProgrammaticFeedClientTest < PerformanceTest
         :y => 'feeder.throughput',
         :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'route' => DUMMY_ROUTE},
         :historic => true
-      }
+      },
+      {
+        :title => "CPU #{VESPA_HTTP_CLIENT} (route=#{DEFAULT_ROUTE})",
+        :x => 'loadgiver',
+        :y => 'cpuutil',
+        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'route' => DEFAULT_ROUTE},
+        :historic => true,
+      },
+      {
+        :title => "CPU #{VESPA_FEED_CLIENT} (route=#{DEFAULT_ROUTE})",
+        :x => 'loadgiver',
+        :y => 'cpuutil',
+        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'route' => DEFAULT_ROUTE},
+        :historic => true
+      },
     ]
   end
 
@@ -97,10 +111,17 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   private
   def run_benchmark(container_node, vespa_route, program_name)
+    cpu_monitor = Perf::System.new(container_node)
+    cpu_monitor.start
+    profiler_start
+    result = run_benchmark_program(container_node, vespa_route, program_name)
+    profiler_report("#{program_name}-#{vespa_route}")
+    cpu_monitor.end
     write_report(
       [
-        json_to_filler(run_benchmark_program(container_node, vespa_route, program_name)),
-        parameter_filler('route', vespa_route)
+        json_to_filler(result),
+        parameter_filler('route', vespa_route),
+        cpu_monitor.fill
       ]
     )
   end
@@ -108,7 +129,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   private
   def run_benchmark_program(container_node, vespa_route, main_class)
     java_cmd =
-      "java -cp java-feed-client-1.0.jar " +
+      "java #{perfmap_agent_jvmarg} -cp java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{vespa_route} -Dvespa.test.feed.documents=#{DOCUMENTS} " +
         "-Dvespa.test.feed.connections=4 -Dvespa.test.feed.max-concurrent-streams-per-connection=128 " +
         "-Dvespa.test.feed.endpoint=https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/ " +
