@@ -76,28 +76,10 @@ class MergeChainingTest < VdsMultiModelTest
 
     merge_count = [0, 0, 0, 0]
     merge_baseline = [0, 0, 0, 0]
-    wanted_status = <<EOS
-<html>
-<head>
-  <title>Merge Throttler</title>
-</head>
-<body>
-  <h1>Merge Throttler</h1>
-<p>Max pending: 16</p>
-<p>Please see node metrics for performance numbers</p>
-<h3>Active merges (0)</h3>
-<p>None</p>
-<h3>Queued merges (in priority order) (0)</h3>
-<p>None</p>
-</body>
-</html>
-EOS
 
     for i in 0..2 do
       node = content_node(i)
-      merge_status = node.get_status_page("/merges")
-      puts merge_status
-      assert_equal(wanted_status, merge_status)
+      assert_no_active_or_queued_merges(node)
 
       merge_count[i]  = node.get_metric("vds.mergethrottler.mergechains.ok")["count"]
       merge_count[i] += node.get_metric("vds.mergethrottler.locallyexecutedmerges.ok")["count"]
@@ -126,9 +108,7 @@ EOS
 
     for i in 0..3 do
       node = content_node(i)
-      merge_status = node.get_status_page("/merges?xml")
-      puts merge_status
-      assert_equal(wanted_status, merge_status)
+      assert_no_active_or_queued_merges(node)
 
       merge_count[i]  = node.get_metric("vds.mergethrottler.mergechains.ok")["count"]
       merge_count[i] += node.get_metric("vds.mergethrottler.locallyexecutedmerges.ok")["count"]
@@ -147,4 +127,12 @@ EOS
     puts "Checking doc count one last time"
     vespa.storage["storage"].assert_document_count(@num_users * @docs_per_user)
   end
+
+  def assert_no_active_or_queued_merges(node)
+      merge_status = node.get_status_page("/merges")
+      puts merge_status
+      assert_match(/Active merges \(0\)/, merge_status)
+      assert_match(/Queued merges \(in priority order\) \(0\)/, merge_status)
+  end
+
 end
