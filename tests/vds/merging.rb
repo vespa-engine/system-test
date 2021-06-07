@@ -82,9 +82,10 @@ class MergingTest < PersistentProviderTest
 
   def make_merge_app(num_copies, include_2nd_doctype = false)
     app = default_app.num_nodes(2).
-            redundancy(num_copies) # music SD added by default
+          redundancy(num_copies). # music SD added by default
+          validation_override("redundancy-increase")
     if include_2nd_doctype
-      app.sd(VDS + 'schemas/banana.sd')
+      app.sd(VDS + 'schemas/banana.sd');
     end
     app
   end

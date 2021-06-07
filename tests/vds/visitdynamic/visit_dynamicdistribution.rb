@@ -131,7 +131,8 @@ class VisitDynamicDistributionTest < PersistentProviderTest
                redundancy(targetDist).
                num_nodes(targetDist).
                distribution_bits(targetBits).
-               bucket_split_count(15))
+               bucket_split_count(15).
+               validation_override("redundancy-increase"))
 
     vespa.start_base
 
@@ -223,7 +224,8 @@ class VisitDynamicDistributionTest < PersistentProviderTest
                redundancy(targetDist).
                num_nodes(targetDist).
                distribution_bits(targetBits).
-               bucket_split_count(15))
+               bucket_split_count(15).
+               validation_override("redundancy-increase"))
 
     vespa.start_base
 

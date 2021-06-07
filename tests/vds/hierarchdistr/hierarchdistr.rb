@@ -35,7 +35,8 @@ class HierarchDistr < VdsMultiModelTest
                            node(NodeSpec.new("node1", 2)).
                            node(NodeSpec.new("node1", 3))))).
                sd(VDS + "/schemas/music.sd").
-               transition_time(0);
+               transition_time(0).
+               validation_override("redundancy-increase");
   end
 
   def app3
@@ -54,7 +55,8 @@ class HierarchDistr < VdsMultiModelTest
                            node(NodeSpec.new("node1", 3)).
                            node(NodeSpec.new("node1", 4))))).
                sd(VDS + "/schemas/music.sd").
-               transition_time(0);
+               transition_time(0).
+               validation_override("redundancy-increase");
   end
 
   def app4
@@ -82,8 +84,9 @@ class HierarchDistr < VdsMultiModelTest
                                  NodeGroup.new(1, "rack1").
                                  node(NodeSpec.new("node1", 3)))))).
                sd(VDS + "/schemas/music.sd").
-               transition_time(0);
-  end
+               transition_time(0).
+               validation_override("redundancy-increase");
+ end
 
   def deploy_and_wait(app, start_services=nil)
     config_generation = get_generation(deploy_app(app)).to_i
@@ -108,7 +111,8 @@ class HierarchDistr < VdsMultiModelTest
                       node(NodeSpec.new("node1", 2)).
                       node(NodeSpec.new("node1", 3)))).
                sd(VDS + "/schemas/music.sd").
-               transition_time(0);
+               transition_time(0).
+               validation_override("redundancy-increase");
   end
 
   def test_app_change

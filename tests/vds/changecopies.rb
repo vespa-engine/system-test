@@ -17,7 +17,7 @@ class ChangeCopies < MultiProviderStorageTest
     statinfo = vespa.storage["storage"].storage["0"].stat("id:crawler:music::http://yahoo.com/A", include_owner: false)
     assert_equal(1, statinfo.size)
 
-    deploy_app(default_app.num_nodes(2).redundancy(2))
+    deploy_app(default_app.num_nodes(2).redundancy(2).validation_override("redundancy-increase"))
     sleep 5
     vespa.storage["storage"].wait_until_ready
 
