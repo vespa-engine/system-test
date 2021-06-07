@@ -115,7 +115,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     cpu_monitor.start
     profiler_start
     result = run_benchmark_program(container_node, vespa_route, program_name)
-    profiler_report("#{program_name}-#{vespa_route}")
+    profiler_report("#{program_name}-#{vespa_route.gsub(/\//, "-")}")
     cpu_monitor.end
     write_report(
       [
