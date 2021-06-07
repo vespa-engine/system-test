@@ -83,7 +83,7 @@ class MergeChainingTest < VdsMultiModelTest
 </head>
 <body>
   <h1>Merge Throttler</h1>
-<p>Max pending: 16</p>
+<p>Max pending: 64</p>
 <p>Please see node metrics for performance numbers</p>
 <h3>Active merges (0)</h3>
 <p>None</p>
