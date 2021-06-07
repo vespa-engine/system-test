@@ -76,7 +76,21 @@ class ProgrammaticFeedClientTest < PerformanceTest
         :y => 'feeder.throughput',
         :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'route' => DUMMY_ROUTE},
         :historic => true
-      }
+      },
+      {
+        :title => "CPU #{VESPA_HTTP_CLIENT} (route=#{DEFAULT_ROUTE})",
+        :x => 'loadgiver',
+        :y => 'cpuutil',
+        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'route' => DEFAULT_ROUTE},
+        :historic => true,
+      },
+      {
+        :title => "CPU #{VESPA_FEED_CLIENT} (route=#{DEFAULT_ROUTE})",
+        :x => 'loadgiver',
+        :y => 'cpuutil',
+        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'route' => DEFAULT_ROUTE},
+        :historic => true
+      },
     ]
   end
 
@@ -97,10 +111,15 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   private
   def run_benchmark(container_node, vespa_route, program_name)
+    cpu_monitor = Perf::System.new(container_node)
+    cpu_monitor.start
+    result = run_benchmark_program(container_node, vespa_route, program_name)
+    cpu_monitor.end
     write_report(
       [
-        json_to_filler(run_benchmark_program(container_node, vespa_route, program_name)),
-        parameter_filler('route', vespa_route)
+        json_to_filler(result),
+        parameter_filler('route', vespa_route),
+        cpu_monitor.fill
       ]
     )
   end
