@@ -129,7 +129,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   private
   def run_benchmark_program(container_node, vespa_route, main_class)
     java_cmd =
-      "java -cp java-feed-client-1.0.jar " +
+      "java #{perfmap_agent_jvmarg} -cp java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{vespa_route} -Dvespa.test.feed.documents=#{DOCUMENTS} " +
         "-Dvespa.test.feed.connections=4 -Dvespa.test.feed.max-concurrent-streams-per-connection=128 " +
         "-Dvespa.test.feed.endpoint=https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/ " +
