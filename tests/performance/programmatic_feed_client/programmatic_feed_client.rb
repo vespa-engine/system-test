@@ -78,17 +78,17 @@ class ProgrammaticFeedClientTest < PerformanceTest
         :historic => true
       },
       {
-        :title => "CPU #{VESPA_HTTP_CLIENT} (route=#{DEFAULT_ROUTE})",
+        :title => "CPU for route=#{DEFAULT_ROUTE}",
         :x => 'loadgiver',
         :y => 'cpuutil',
-        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'route' => DEFAULT_ROUTE},
+        :filter => { 'route' => DEFAULT_ROUTE},
         :historic => true,
       },
       {
-        :title => "CPU #{VESPA_FEED_CLIENT} (route=#{DEFAULT_ROUTE})",
+        :title => "CPU for route=#{DUMMY_ROUTE}",
         :x => 'loadgiver',
         :y => 'cpuutil',
-        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'route' => DEFAULT_ROUTE},
+        :filter => { 'route' => DUMMY_ROUTE},
         :historic => true
       },
     ]
