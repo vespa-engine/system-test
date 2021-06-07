@@ -148,7 +148,7 @@ class DocumentV1Throughput < PerformanceTest
                        queries_file)
 
     data_file = dirs.tmpdir + "data.txt"
-    qrserver.writefile("{ \"fields\": { \"text\": \"GNU#{"'s not UNIX" * (1 << 10) }\" } }",
+    qrserver.writefile("{ \"fields\": { \"text\": \"GNU#{"'s not UNIX" * (1 << 0) }\" } }",
                        data_file)
 
     @test_config.each do |config|
