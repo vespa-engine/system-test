@@ -113,7 +113,9 @@ class ProgrammaticFeedClientTest < PerformanceTest
   def run_benchmark(container_node, vespa_route, program_name)
     cpu_monitor = Perf::System.new(container_node)
     cpu_monitor.start
+    profiler_start
     result = run_benchmark_program(container_node, vespa_route, program_name)
+    profiler_report("#{program_name}-#{vespa_route}")
     cpu_monitor.end
     write_report(
       [
