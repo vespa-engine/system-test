@@ -38,6 +38,7 @@ public class VespaFeedClient {
                         });
             }
         }
+        reporter.printJsonReport();
     }
 
     private static FeedClient createFeedClient() {
