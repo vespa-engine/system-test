@@ -159,7 +159,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   private
   def deploy_test_app
     container_cluster = Container.new("dpcluster1").
-      jvmargs("-Xms4096m -Xmx4096m").
+      jvmargs('-Xms16g -Xmx16g').
       search(Searching.new).
       gateway(ContainerDocumentApi.new).
       config(ConfigOverride.new("container.handler.threadpool").add("maxthreads", 4))
