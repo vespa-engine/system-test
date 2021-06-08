@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'indexed_search_test'
 require 'json'
@@ -20,14 +20,14 @@ class XGBoostServing < IndexedSearchTest
   end
 
   def test_xgboost
-    system("pip3 install xgboost sklearn --user")
+    run_command_or_fail('pip3 install xgboost sklearn --user')
     tmp_dir = dirs.tmpdir + "/tmp"
-    system("mkdir -p #{tmp_dir}")
+    run_command_or_fail("mkdir -p #{tmp_dir}")
     # We are mutating the app contents and need to copy to a writable area. Do not put the copy
     # in dirs.tmpdir/app because this is cleaned and used by the framework to store an app copy. 
-    system("cp -a #{selfdir}/app #{tmp_dir}")
-    system("mkdir -p #{tmp_dir}/app/models")
-    system("python3 #{selfdir}/train.py #{selfdir}/feature-map.txt #{tmp_dir}/app/models/ #{tmp_dir}/ #{tmp_dir}/predictions.json")
+    run_command_or_fail("cp -a #{selfdir}/app #{tmp_dir}")
+    run_command_or_fail("mkdir -p #{tmp_dir}/app/models")
+    run_command_or_fail("python3 #{selfdir}/train.py #{selfdir}/feature-map.txt #{tmp_dir}/app/models/ #{tmp_dir}/ #{tmp_dir}/predictions.json")
     @predictions = JSON.parse(File.read("#{tmp_dir}/predictions.json"))
     deploy("#{tmp_dir}/app")
     start
@@ -62,6 +62,13 @@ class XGBoostServing < IndexedSearchTest
       predictions_array.push(predictions[id])
     end
     return predictions_array
+  end
+
+  def run_command_or_fail(command)
+    output = `#{command}`
+    if $?.exitstatus != 0
+      raise "Running command '#{command}' failed: #{output}"
+    end
   end
 
   def teardown
