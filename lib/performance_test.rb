@@ -274,8 +274,8 @@ class PerformanceTest < TestCase
 
   # Generate reports from profile recordings. This call stop the profilers if running to
   # get a correct data dump. Multiple calls with the same label will overwrite the previous reports.
-  def profiler_report(label='')
-    report_perf_profiler(label)
+  def profiler_report(label='', extra_pids={})
+    report_perf_profiler(label, extra_pids)
   end
 
   # Stop the currently running profilers.
@@ -306,7 +306,7 @@ class PerformanceTest < TestCase
     File.join(@perf_data_dir, label.empty? ? "#{node.name}" : "#{label}_#{node.name}")
   end
 
-  def report_perf_profiler(label='')
+  def report_perf_profiler(label, extra_pids)
     stop_perf_profiler
     puts "Generating perf report."
 
@@ -321,7 +321,7 @@ class PerformanceTest < TestCase
 
       reporter_pids[node] << node.execute_bg("cp -a #{@perf_stat_file} #{dir_name}")
 
-      name_to_pids = {}
+      name_to_pids = extra_pids.clone
       name_to_pids['proton-bin'] = node.get_pids('sbin/vespa-proton-bin')
       name_to_pids['storaged-bin'] = node.get_pids('sbin/vespa-storaged-bin')
       name_to_pids['distributord-bin'] = node.get_pids('sbin/vespa-distributord-bin')
