@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require "document.rb"
 require 'assertions'
 require 'bucket_copy'
@@ -84,18 +84,15 @@ class Storage
 
   def get_master_fleet_controller(timeout = 120)
     if (@fleetcontroller && @fleetcontroller[@fleetcontroller.keys().sort().first()]) 
-      puts "Returning fleet controller"
+      @testcase.output("Returning fleet controller")
       return @fleetcontroller[@fleetcontroller.keys().sort().first()]
     end
     return ClusterControllerWrapper.new(get_master_cluster_controller(timeout), @clustername)
   end
 
   def get_master_cluster_controller(timeout = 120)
-    wait_time_in_between_tries = 1
-    iterations = timeout / wait_time_in_between_tries
-    if (iterations < 1)
-        iterations = 1
-    end
+    wait_time_in_between_tries = 0.1
+    iterations = [(timeout / wait_time_in_between_tries).to_i, 1].max
     iterations.times do |iteration|
       ccindexes = @vespa.clustercontrollers.keys().sort()
       ccindexes.each do |index|
@@ -109,12 +106,6 @@ class Storage
         if (iteration + 1 == iterations)
             @testcase.output("Failed to talk to cluster controller #{index}: #{status}")
         end
-      end
-#      if (iteration == 0)
-#        @testcase.output("Retrying every #{wait_time_in_between_tries} seconds until timeout of #{iterations} attempts.")
-#      end
-      if (iteration > 0 || iteration + 1 < iterations)
-#        @testcase.output("Still failing")
       end
       sleep(wait_time_in_between_tries)
     end
@@ -167,7 +158,7 @@ class Storage
                 raise "Node #{node.type}.#{index} still has version #{currVersion} after timeout of #{timeout} seconds."
               end
               @testcase.output("Waiting for #{node.type}.#{index} to get version >= #{clusterstate.version}. Now has #{currVersion}")
-              sleep 0.2
+              sleep 0.1
             end
             node_key = "#{node.type}.#{node.index}"
             version_fetch_time[node_key] = max_fetch_time
@@ -382,7 +373,7 @@ class Storage
 
       @testcase.output("")
 
-      sleep 1
+      sleep 0.1
     end
 
     assert(false, "State did not become '" + state + "' within timeout of " +
@@ -420,7 +411,7 @@ class Storage
       @testcase.output("    State is not contained")
       @testcase.output("")
 
-      sleep 1
+      sleep 0.1
     end
     assert(false, "State did not contain '" + state + "' within timeout of " +
            timeout.to_s  + " seconds")
@@ -446,14 +437,14 @@ class Storage
       @testcase.output("    State is contained")
       @testcase.output("")
 
-      sleep 1
+      sleep 0.1
     end
     assert(false, "State did still contain '" + state + "' after timeout of " +
            timeout.to_s  + " seconds")
   end
 
   def wait_until_content_nodes_have_config_generation(gen)
-    puts "Waiting for content cluster nodes to ack config generation #{gen}"
+    @testcase.output("Waiting for content cluster nodes to ack config generation #{gen}")
     @storage.each_value { |node|
       node.wait_for_config_generation(gen)
     }
