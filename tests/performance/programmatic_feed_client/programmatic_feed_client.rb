@@ -140,7 +140,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
         "com.yahoo.vespa.systemtest.javafeedclient.#{main_class} > #{output}"
     pid = vespa.adminserver.execute_bg(java_cmd)
     vespa.adminserver.waitpid(pid)
-    [ JSON.parse(vespa.adminserver.readfile(output)).split("\n")[-1], pid ]
+    [ JSON.parse(vespa.adminserver.readfile(output).split("\n")[-1]), pid ]
   end
 
   private
