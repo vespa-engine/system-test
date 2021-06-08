@@ -111,11 +111,12 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   private
   def run_benchmark(container_node, vespa_route, program_name)
+    label = "#{program_name}-#{vespa_route.gsub(/\//, "-")}"
     cpu_monitor = Perf::System.new(container_node)
     cpu_monitor.start
     profiler_start
-    result = run_benchmark_program(container_node, vespa_route, program_name)
-    profiler_report("#{program_name}-#{vespa_route.gsub(/\//, "-")}")
+    result, pid = run_benchmark_program(container_node, vespa_route, program_name, "#{label}.json")
+    profiler_report(label, {"program_name" => pid})
     cpu_monitor.end
     write_report(
       [
@@ -127,7 +128,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark_program(container_node, vespa_route, main_class)
+  def run_benchmark_program(container_node, vespa_route, main_class, output)
     java_cmd =
       "java #{perfmap_agent_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{vespa_route} -Dvespa.test.feed.documents=#{DOCUMENTS} " +
@@ -136,9 +137,10 @@ class ProgrammaticFeedClientTest < PerformanceTest
         "-Dvespa.test.feed.certificate=#{tls_env.certificate_file} " +
         "-Dvespa.test.feed.private-key=#{tls_env.private_key_file} " +
         "-Dvespa.test.feed.ca-certificate=#{tls_env.ca_certificates_file} " +
-        "com.yahoo.vespa.systemtest.javafeedclient.#{main_class}"
-    result = vespa.adminserver.execute(java_cmd)
-    JSON.parse(result.split("\n")[-1])
+        "com.yahoo.vespa.systemtest.javafeedclient.#{main_class} > #{output}"
+    pid = vespa.adminserver.execute_bg(java_cmd)
+    vespa.adminserver.waitpid(pid)
+    [ JSON.parse(vespa.adminserver.readfile(output)).split("\n")[-1]), pid ]
   end
 
   private
