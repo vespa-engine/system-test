@@ -26,8 +26,8 @@ public class VespaFeedClient {
         BenchmarkReporter reporter = new BenchmarkReporter("vespa-feed-client");
         try (FeedClient client = createFeedClient()) {
             for (int i = 0; i < documents; i++) {
-                DocumentId id = DocumentId.of("music", "music", "vespa-feed-client-" + i);
-                client.put(id, "{\"fields\": {\"title\": \"vespa.ai\"}}", OperationParameters.empty().route(route()))
+                DocumentId id = DocumentId.of("text", "text", "vespa-feed-client-" + i);
+                client.put(id, "{\"fields\": {\"text\": \"vespa.ai\"}}", OperationParameters.empty().route(route()))
                         .whenComplete((result, error) -> {
                             if (error != null) {
                                 reporter.incrementFailure();

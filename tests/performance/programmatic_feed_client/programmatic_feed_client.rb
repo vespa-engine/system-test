@@ -164,7 +164,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
       gateway(ContainerDocumentApi.new).
       config(ConfigOverride.new("container.handler.threadpool").add("maxthreads", 4))
     output = deploy_app(SearchApp.new.
-      cluster(SearchCluster.new.sd(SEARCH_DATA+"music.sd")).
+      sd(selfdir + 'text.sd').
       container(container_cluster).
       generic_service(GenericService.new('devnull', "#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")))
     start

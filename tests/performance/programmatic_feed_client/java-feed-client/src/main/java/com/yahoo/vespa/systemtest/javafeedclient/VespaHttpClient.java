@@ -57,8 +57,8 @@ public class VespaHttpClient {
         });
         try {
             for (int i = 0; i < documents; i++) {
-                String docId = String.format("id:music:music::vespa-http-client-%07d", i);
-                String operationJson = "{\"put\": \"" + docId + "\",\"fields\": {\"title\": \"vespa.ai\"}}";
+                String docId = String.format("id:text:text::vespa-http-client-%07d", i);
+                String operationJson = "{\"put\": \"" + docId + "\",\"fields\": {\"text\": \"vespa.ai\"}}";
                 feedClient.stream(docId, operationJson);
             }
             doneSignal.await();
