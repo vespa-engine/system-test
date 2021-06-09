@@ -52,7 +52,7 @@ module RestApi
       end
       iterations += 1
     end
-    puts "Response: #{response.inspect}"
+    #puts "Response: #{response.inspect}"
     response
   end
 
