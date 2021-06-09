@@ -138,9 +138,9 @@ class ProgrammaticFeedClientTest < PerformanceTest
         "-Dvespa.test.feed.private-key=#{tls_env.private_key_file} " +
         "-Dvespa.test.feed.ca-certificate=#{tls_env.ca_certificates_file} " +
         "com.yahoo.vespa.systemtest.javafeedclient.#{main_class} > #{output}"
-    pid = vespa.adminserver.execute_bg(java_cmd)
+    pid = vespa.adminserver.execute_bg("exec #{java_cmd}") # exec to let java inherit the subshell's PID.
     vespa.adminserver.waitpid(pid)
-    [ JSON.parse(vespa.adminserver.readfile(output).split("\n")[-1]), pid + 1 ] # pid is "sh -c '...'", while +1 is the real thing (in 99.99% of cases).
+    [ JSON.parse(vespa.adminserver.readfile(output).split("\n")[-1]), pid ]
   end
 
   private
