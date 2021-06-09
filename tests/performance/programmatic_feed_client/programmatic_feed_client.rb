@@ -125,6 +125,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
         cpu_monitor.fill
       ]
     )
+    puts(result)
   end
 
   private
