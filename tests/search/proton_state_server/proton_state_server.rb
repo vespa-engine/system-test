@@ -20,11 +20,11 @@ class ProtonStateServer < IndexedSearchTest
     feed_and_wait_for_docs("test", 5, :file => selfdir + "docs.xml")
     node = @vespa.search["search"].first
     metrics = node.get_state_v1_metrics
-    pp metrics
+    # pp metrics
     assert_equal("up", metrics["status"]["code"])
     assert_not_nil(metrics["metrics"])
     config = node.get_state_v1_config
-    pp config
+    # pp config
     assert_equal(generation, config["config"]["proton"]["generation"])
     assert_equal(generation, config["config"]["proton.documentdb.test"]["generation"])
   end
