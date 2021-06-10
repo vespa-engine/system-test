@@ -1,7 +1,7 @@
 search text {
   document text {
     field text type string {
-      indexing: attribute
+      indexing: index | summary
     }
   }
 }
