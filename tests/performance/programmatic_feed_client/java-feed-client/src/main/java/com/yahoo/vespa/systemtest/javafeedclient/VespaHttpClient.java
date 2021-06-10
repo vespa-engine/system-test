@@ -17,6 +17,7 @@ import static com.yahoo.vespa.systemtest.javafeedclient.Utils.TRUST_ALL_VERIFIER
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.caCertificate;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.certificate;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.connections;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.fieldsJson;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.documents;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.endpoint;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.privateKey;
@@ -43,6 +44,7 @@ public class VespaHttpClient {
                         .build())
                 .build();
         int documents = documents();
+        String fieldsJson = fieldsJson();
 
         CountDownLatch doneSignal = new CountDownLatch(documents);
         BenchmarkReporter reporter = new BenchmarkReporter("vespa-http-client");
@@ -58,7 +60,7 @@ public class VespaHttpClient {
         try {
             for (int i = 0; i < documents; i++) {
                 String docId = String.format("id:text:text::vespa-http-client-%07d", i);
-                String operationJson = "{\"put\": \"" + docId + "\",\"fields\": {\"text\": \"vespa.ai\"}}";
+                String operationJson = "{\"put\": \"" + docId + "\", \"fields\": " + fieldsJson + "}";
                 feedClient.stream(docId, operationJson);
             }
             doneSignal.await();

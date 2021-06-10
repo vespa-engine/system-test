@@ -1,11 +1,19 @@
 // Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.vespa.systemtest.javafeedclient;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
+
 import javax.net.ssl.HostnameVerifier;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.LogManager;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * @author bjorncs
@@ -30,6 +38,16 @@ class Utils {
     static int documents() { return Integer.parseInt(System.getProperty("vespa.test.feed.documents")); }
     static int maxConcurrentStreamsPerConnection() {
         return Integer.parseInt(System.getProperty("vespa.test.feed.max-concurrent-streams-per-connection"));
+    }
+    static String fieldsJson() throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try (JsonGenerator generator = new JsonFactory().createGenerator(out)) {
+            generator.writeStartObject();
+            generator.writeStringField("text", System.getProperty("vespa.test.feed.document-text"));
+            generator.writeEndObject();
+            generator.flush();
+        }
+        return out.toString(UTF_8);
     }
 
 }

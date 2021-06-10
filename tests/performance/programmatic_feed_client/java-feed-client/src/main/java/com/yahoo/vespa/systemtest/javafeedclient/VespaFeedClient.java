@@ -15,6 +15,7 @@ import java.time.Duration;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.TRUST_ALL_VERIFIER;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.caCertificate;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.certificate;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.fieldsJson;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.documents;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.endpoint;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.maxConcurrentStreamsPerConnection;
@@ -27,17 +28,18 @@ import static com.yahoo.vespa.systemtest.javafeedclient.Utils.route;
 public class VespaFeedClient {
     public static void main(String[] args) throws IOException {
         int documents = documents();
+        String fieldsJson = fieldsJson();
         FeedClient client = createFeedClient();
         long start = System.nanoTime();
         try (client) {
             for (int i = 0; i < documents; i++) {
-                DocumentId id = DocumentId.of("text", "text", "vespa-feed-client-" + i);
-                client.put(id, "{\"fields\": {\"text\": \"vespa.ai\"}}", OperationParameters.empty().route(route()))
-                        .whenComplete((result, error) -> {
-                            if (error != null) {
-                                System.out.println("For id " + id + ": " + error);
-                            }
-                        });
+                DocumentId id = DocumentId.of("text", "text", String.format("vespa-feed-client-%07d", + i));
+                client.put(id, "{\"fields\": " + fieldsJson + "}", OperationParameters.empty().route(route()))
+                      .whenComplete((result, error) -> {
+                          if (error != null) {
+                              System.out.println("For id " + id + ": " + error);
+                          }
+                      });
             }
         }
         printJsonReport(Duration.ofNanos(System.nanoTime() - start), client.stats());

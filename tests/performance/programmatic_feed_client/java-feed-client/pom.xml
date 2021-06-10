@@ -13,6 +13,10 @@
     <relativePath>../../../pom.xml</relativePath>
   </parent>
 
+  <properties>
+    <vespa.version>7-SNAPSHOT</vespa.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.yahoo.vespa</groupId>

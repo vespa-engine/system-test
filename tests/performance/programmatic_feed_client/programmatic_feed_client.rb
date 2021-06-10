@@ -7,6 +7,8 @@ require 'json'
 class ProgrammaticFeedClientTest < PerformanceTest
 
   DOCUMENTS = 1000000
+  SMALL = 10
+  LARGE = 1000
 
   DEFAULT_ROUTE = 'default'
   DUMMY_ROUTE = 'null/default'
@@ -22,73 +24,58 @@ class ProgrammaticFeedClientTest < PerformanceTest
     set_description('Benchmarking of programmatic feed clients in Java (vespa-feed-client vs vespa-http-client)')
     @graphs = [
       {
-        :title => "Throughput (route=#{DEFAULT_ROUTE})",
-        :x => 'loadgiver',
+        :title => "Throughput, all combinations",
+        :x => 'label',
         :y => 'feeder.throughput',
-        :filter => {'route' => DEFAULT_ROUTE},
         :historic => true
       },
       {
-        :title => "Throughput (route=#{DUMMY_ROUTE})",
-        :x => 'loadgiver',
-        :y => 'feeder.throughput',
-        :filter => {'route' => DUMMY_ROUTE},
-        :historic => true
-      },
-      {
-        :title => "Throughput #{VESPA_HTTP_CLIENT}",
-        :x => 'route',
-        :y => 'feeder.throughput',
-        :filter => {'loadgiver' => VESPA_HTTP_CLIENT},
+        :title => "CPU util, all combinations",
+        :x => 'label',
+        :y => 'cpuutil',
         :historic => true,
       },
       {
-        :title => "Throughput #{VESPA_FEED_CLIENT}",
-        :x => 'route',
-        :y => 'feeder.throughput',
+        :title => "Average latency #{VESPA_FEED_CLIENT}",
+        :x => 'label',
+        :y => 'feeder.avglatency',
         :filter => {'loadgiver' => VESPA_FEED_CLIENT},
         :historic => true
       },
       {
-        :title => "Throughput #{VESPA_HTTP_CLIENT} (route=#{DEFAULT_ROUTE})",
         :x => 'loadgiver',
         :y => 'feeder.throughput',
-        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'route' => DEFAULT_ROUTE},
+        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'route' => DEFAULT_ROUTE, 'size' => LARGE},
         :historic => true,
       },
       {
-        :title => "Throughput #{VESPA_FEED_CLIENT} (route=#{DEFAULT_ROUTE})",
         :x => 'loadgiver',
         :y => 'feeder.throughput',
-        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'route' => DEFAULT_ROUTE},
+        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'route' => DEFAULT_ROUTE, 'size' => LARGE},
         :historic => true
       },
       {
-        :title => "Throughput #{VESPA_HTTP_CLIENT} (route=#{DUMMY_ROUTE})",
         :x => 'loadgiver',
         :y => 'feeder.throughput',
-        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'route' => DUMMY_ROUTE},
+        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'route' => DEFAULT_ROUTE, 'size' => SMALL},
         :historic => true,
       },
       {
-        :title => "Throughput #{VESPA_FEED_CLIENT} (route=#{DUMMY_ROUTE})",
         :x => 'loadgiver',
         :y => 'feeder.throughput',
-        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'route' => DUMMY_ROUTE},
+        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'route' => DEFAULT_ROUTE, 'size' => SMALL},
         :historic => true
       },
       {
-        :title => "CPU for route=#{DEFAULT_ROUTE}",
         :x => 'loadgiver',
-        :y => 'cpuutil',
-        :filter => { 'route' => DEFAULT_ROUTE},
+        :y => 'feeder.throughput',
+        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'route' => DUMMY_ROUTE, 'size' => SMALL},
         :historic => true,
       },
       {
-        :title => "CPU for route=#{DUMMY_ROUTE}",
         :x => 'loadgiver',
-        :y => 'cpuutil',
-        :filter => { 'route' => DUMMY_ROUTE},
+        :y => 'feeder.throughput',
+        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'route' => DUMMY_ROUTE, 'size' => SMALL},
         :historic => true
       },
     ]
@@ -98,10 +85,12 @@ class ProgrammaticFeedClientTest < PerformanceTest
     container_node = deploy_test_app
     build_feed_client
 
-    run_benchmark(container_node, DEFAULT_ROUTE, "VespaHttpClient")
-    run_benchmark(container_node, DEFAULT_ROUTE, "VespaFeedClient")
-    run_benchmark(container_node, DUMMY_ROUTE, "VespaHttpClient")
-    run_benchmark(container_node, DUMMY_ROUTE, "VespaFeedClient")
+    run_benchmark(container_node, DUMMY_ROUTE, "VespaHttpClient", SMALL)
+    run_benchmark(container_node, DUMMY_ROUTE, "VespaFeedClient", SMALL)
+    run_benchmark(container_node, DEFAULT_ROUTE, "VespaHttpClient", SMALL)
+    run_benchmark(container_node, DEFAULT_ROUTE, "VespaFeedClient", SMALL)
+    run_benchmark(container_node, DEFAULT_ROUTE, "VespaHttpClient", LARGE)
+    run_benchmark(container_node, DEFAULT_ROUTE, "VespaFeedClient", LARGE)
   end
 
   private
@@ -110,18 +99,20 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark(container_node, vespa_route, program_name)
-    label = "#{program_name}-#{vespa_route.gsub(/\//, "-")}"
+  def run_benchmark(container_node, vespa_route, program_name, size)
+    label = "#{program_name}-#{vespa_route.gsub(/\//, "-")}-#{size}b"
     cpu_monitor = Perf::System.new(container_node)
     cpu_monitor.start
     profiler_start
-    result, pid = run_benchmark_program(container_node, vespa_route, program_name, "#{label}.json")
+    result, pid = run_benchmark_program(container_node, vespa_route, program_name, "#{label}.json", generate_text(size))
     profiler_report(label, { "program_name" => [ pid ] })
     cpu_monitor.end
     write_report(
       [
         json_to_filler(result),
         parameter_filler('route', vespa_route),
+        parameter_filler('size', size),
+        parameter_filler('label', label),
         cpu_monitor.fill
       ]
     )
@@ -129,11 +120,20 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark_program(container_node, vespa_route, main_class, output)
+  def generate_text(size)
+    template = "Some text which will be indexed, so let's make it look like something real :> "
+    (template * (size / template.length + 1)).slice(0, size)
+  end
+
+  private
+  def run_benchmark_program(container_node, vespa_route, main_class, output, text)
     java_cmd =
       "java #{perfmap_agent_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
-        "-Dvespa.test.feed.route=#{vespa_route} -Dvespa.test.feed.documents=#{DOCUMENTS} " +
-        "-Dvespa.test.feed.connections=8 -Dvespa.test.feed.max-concurrent-streams-per-connection=64 " +
+        "-Dvespa.test.feed.route=#{vespa_route} " +
+        "-Dvespa.test.feed.documents=#{DOCUMENTS} " +
+        "-Dvespa.test.feed.document-text=#{text} " +
+        "-Dvespa.test.feed.connections=8 " +
+        "-Dvespa.test.feed.max-concurrent-streams-per-connection=64 " +
         "-Dvespa.test.feed.endpoint=https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/ " +
         "-Dvespa.test.feed.certificate=#{tls_env.certificate_file} " +
         "-Dvespa.test.feed.private-key=#{tls_env.private_key_file} " +
