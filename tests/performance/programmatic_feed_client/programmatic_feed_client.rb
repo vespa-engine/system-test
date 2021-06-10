@@ -8,7 +8,8 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   DOCUMENTS = 1000000
   SMALL = 10
-  LARGE = 1000
+  MEDIUM = 1000
+  LARGE = 100000
 
   DEFAULT_ROUTE = 'default'
   DUMMY_ROUTE = 'null/default'
@@ -57,6 +58,18 @@ class ProgrammaticFeedClientTest < PerformanceTest
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
+        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'route' => DEFAULT_ROUTE, 'size' => MEDIUM},
+        :historic => true,
+      },
+      {
+        :x => 'loadgiver',
+        :y => 'feeder.throughput',
+        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'route' => DEFAULT_ROUTE, 'size' => MEDIUM},
+        :historic => true
+      },
+      {
+        :x => 'loadgiver',
+        :y => 'feeder.throughput',
         :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'route' => DEFAULT_ROUTE, 'size' => SMALL},
         :historic => true,
       },
@@ -89,6 +102,8 @@ class ProgrammaticFeedClientTest < PerformanceTest
     run_benchmark(container_node, DUMMY_ROUTE, "VespaFeedClient", SMALL)
     run_benchmark(container_node, DEFAULT_ROUTE, "VespaHttpClient", SMALL)
     run_benchmark(container_node, DEFAULT_ROUTE, "VespaFeedClient", SMALL)
+    run_benchmark(container_node, DEFAULT_ROUTE, "VespaHttpClient", MEDIUM)
+    run_benchmark(container_node, DEFAULT_ROUTE, "VespaFeedClient", MEDIUM)
     run_benchmark(container_node, DEFAULT_ROUTE, "VespaHttpClient", LARGE)
     run_benchmark(container_node, DEFAULT_ROUTE, "VespaFeedClient", LARGE)
   end
@@ -130,7 +145,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     java_cmd =
       "java #{perfmap_agent_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{vespa_route} " +
-        "-Dvespa.test.feed.documents=#{DOCUMENTS} " +
+        "-Dvespa.test.feed.documents=#{(DOCUMENTS / (size / 10) ** 0.5).to_i} " +
         "-Dvespa.test.feed.document-text=#{text} " +
         "-Dvespa.test.feed.connections=8 " +
         "-Dvespa.test.feed.max-concurrent-streams-per-connection=64 " +
