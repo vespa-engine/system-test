@@ -119,7 +119,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     cpu_monitor = Perf::System.new(container_node)
     cpu_monitor.start
     profiler_start
-    result, pid = run_benchmark_program(container_node, vespa_route, program_name, "#{label}.json", generate_text(size))
+    result, pid = run_benchmark_program(container_node, vespa_route, program_name, "#{label}.json", size)
     profiler_report(label, { "program_name" => [ pid ] })
     cpu_monitor.end
     write_report(
@@ -141,19 +141,19 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark_program(container_node, vespa_route, main_class, output, text)
+  def run_benchmark_program(container_node, vespa_route, main_class, out_file, size)
     java_cmd =
       "java #{perfmap_agent_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{vespa_route} " +
         "-Dvespa.test.feed.documents=#{(DOCUMENTS / (size / 10) ** 0.5).to_i} " +
-        "-Dvespa.test.feed.document-text=#{text} " +
+        "-Dvespa.test.feed.document-text=#{generate_text(size)} " +
         "-Dvespa.test.feed.connections=8 " +
         "-Dvespa.test.feed.max-concurrent-streams-per-connection=64 " +
         "-Dvespa.test.feed.endpoint=https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/ " +
         "-Dvespa.test.feed.certificate=#{tls_env.certificate_file} " +
         "-Dvespa.test.feed.private-key=#{tls_env.private_key_file} " +
         "-Dvespa.test.feed.ca-certificate=#{tls_env.ca_certificates_file} " +
-        "com.yahoo.vespa.systemtest.javafeedclient.#{main_class} > #{output}"
+        "com.yahoo.vespa.systemtest.javafeedclient.#{main_class} > #{out_file}"
     pid = vespa.adminserver.execute_bg("exec #{java_cmd}") # exec to let java inherit the subshell's PID.
     vespa.adminserver.waitpid(pid)
     [ JSON.parse(vespa.adminserver.readfile(output).split("\n")[-1]), pid ]
