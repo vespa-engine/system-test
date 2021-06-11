@@ -136,7 +136,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   private
   def generate_text(size)
-    template = "Some text which will be indexed, so let's make it look like something real :> "
+    template = "Some text which will be indexed, so let us make it look like something real :> "
     (template * (size / template.length + 1)).slice(0, size)
   end
 
