@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 module Maven
   DEFAULT_VESPA_POM_VERSION = '7-SNAPSHOT'
@@ -23,10 +23,6 @@ module Maven
   end
 
   def Maven.compile_bundle(bundle, admin_server, tmp_bundle_dir_work, bundle_dir, vespa_version)
-    # TODO a bit nasty way to define an external dependency
-    if bundle.sourcedir == nil
-      return
-    end
     admin_server.execute("[ -d #{tmp_bundle_dir_work} ] && rm -rf #{tmp_bundle_dir_work}/ || true")
     admin_server.execute("mkdir -p #{tmp_bundle_dir_work}")
     # Remove from localhost as well
@@ -34,8 +30,10 @@ module Maven
 
     # TODO :name is a bad name for this parameter
     unique_name = (bundle.params[:name] || '')
+    puts "unique name used in compile_bundle is empty" if unique_name == ''
     source = bundle.sourcedir
     bundlename = bundle.name
+    puts "Compiling bundle with sourcedir #{source}"
     if File.file?(source)
       tmp_sourcedir = create_sourcedir(tmp_bundle_dir_work + "#{unique_name}/", source, bundlename)
     else
