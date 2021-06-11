@@ -47,16 +47,15 @@ public class VespaFeedClient {
 
     static void printJsonReport(Duration duration, OperationStats stats) throws IOException {
         JsonFactory factory = new JsonFactory();
-        long successes = stats.responsesByCode().get(200);
         try (JsonGenerator generator = factory.createGenerator(System.out)) {
             generator.writeStartObject();
             generator.writeNumberField("feeder.runtime", duration.toMillis());
-            generator.writeNumberField("feeder.okcount", successes);
-            generator.writeNumberField("feeder.errorcount", stats.requests() - successes);
+            generator.writeNumberField("feeder.okcount", stats.successes());
+            generator.writeNumberField("feeder.errorcount", stats.requests() - stats.successes());
             generator.writeNumberField("feeder.exceptions", stats.exceptions());
             generator.writeNumberField("feeder.bytessent", stats.bytesSent());
             generator.writeNumberField("feeder.bytesreceived", stats.bytesReceived());
-            generator.writeNumberField("feeder.throughput", successes / (double) duration.toMillis() * 1000);
+            generator.writeNumberField("feeder.throughput", stats.successes() / (double) duration.toMillis() * 1000);
             generator.writeNumberField("feeder.minlatency", stats.minLatencyMillis());
             generator.writeNumberField("feeder.avglatency", stats.averageLatencyMillis());
             generator.writeNumberField("feeder.maxlatency", stats.maxLatencyMillis());
