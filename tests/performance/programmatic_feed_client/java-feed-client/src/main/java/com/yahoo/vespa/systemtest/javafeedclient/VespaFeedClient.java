@@ -70,7 +70,7 @@ public class VespaFeedClient {
         return FeedClientBuilder.create(endpoint())
                 .setMaxStreamPerConnection(maxConcurrentStreamsPerConnection())
                 .setConnectionsPerEndpoint(connections)
-                .setCaCertificates(caCertificate())
+                .setCaCertificatesFile(caCertificate())
                 .setCertificate(certificate(), privateKey())
                 .setHostnameVerifier(TRUST_ALL_VERIFIER)
                 .build();
