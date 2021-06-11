@@ -146,7 +146,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
       "java #{perfmap_agent_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{vespa_route} " +
         "-Dvespa.test.feed.documents=#{(DOCUMENTS / (size / 10) ** 0.5).to_i} " +
-        "-Dvespa.test.feed.document-text=#{generate_text(size)} " +
+        "-Dvespa.test.feed.document-text='#{generate_text(size)}' " +
         "-Dvespa.test.feed.connections=8 " +
         "-Dvespa.test.feed.max-concurrent-streams-per-connection=64 " +
         "-Dvespa.test.feed.endpoint=https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/ " +
