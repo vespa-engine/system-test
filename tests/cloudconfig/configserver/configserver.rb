@@ -176,7 +176,7 @@ ENDER
 
     # Check that config is empty and that logserver service is no longer running
     wait_for_logserver_state{ logserver_not_running }
-    assert_equal({}, getvespaconfig("cloud.config.sentinel", "client", nil, node.hostname, 19070))
+    assert_equal(0, getvespaconfig("cloud.config.sentinel", "client", nil, node.hostname, 19070)['service'].size)
   end
 
   def logserver_running
