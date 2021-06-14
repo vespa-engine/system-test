@@ -29,7 +29,7 @@ public class VespaJsonFeeder {
         try (Writer out = Files.newBufferedWriter(tmpFile, UTF_8)) {
             out.write("[");
             for (int i = 0; i < documents; i++)
-                out.write(String.format("{\"put\":\"id:text:text::vespa-feed-client-%07d\",\"fields\":%s}%s",
+                out.write(String.format("{\"put\":\"id:text:text::vespa-feed-client-%07d\",\"fields\": %s}%s",
                                         i, fieldsJson, i + 1 < documents ? "," : ""));
             out.write("]");
         }

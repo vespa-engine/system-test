@@ -149,7 +149,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     java_cmd =
       "java #{perfmap_agent_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{DUMMY_ROUTE} " +
-        "-Dvespa.test.feed.documents=#{(DOCUMENTS / (size / 10) ** 0.5).to_i} " +
+        "-Dvespa.test.feed.documents=#{(DOCUMENTS / (size / 10) ** (1.0 / 3)).to_i} " +
         "-Dvespa.test.feed.document-text='#{generate_text(size)}' " +
         "-Dvespa.test.feed.connections=4 " +
         "-Dvespa.test.feed.max-concurrent-streams-per-connection=256 " +
