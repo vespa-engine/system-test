@@ -15,6 +15,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   DUMMY_ROUTE = 'null/default'
   VESPA_HTTP_CLIENT = 'vespa-http-client'
   VESPA_FEED_CLIENT = 'vespa-feed-client'
+  VESPA_JSON_FEEDER = 'vespa-json-feeder'
 
   def timeout_seconds
     1800
@@ -100,12 +101,16 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
     run_benchmark(container_node, "VespaHttpClient", TINY)
     run_benchmark(container_node, "VespaFeedClient", TINY)
+    run_benchmark(container_node, "VespaJsonFeeder", TINY)
     run_benchmark(container_node, "VespaHttpClient", SMALL)
     run_benchmark(container_node, "VespaFeedClient", SMALL)
+    run_benchmark(container_node, "VespaJsonFeeder", SMALL)
     run_benchmark(container_node, "VespaHttpClient", MEDIUM)
     run_benchmark(container_node, "VespaFeedClient", MEDIUM)
+    run_benchmark(container_node, "VespaJsonFeeder", MEDIUM)
     run_benchmark(container_node, "VespaHttpClient", LARGE)
     run_benchmark(container_node, "VespaFeedClient", LARGE)
+    run_benchmark(container_node, "VespaJsonFeeder", LARGE)
   end
 
   private
@@ -114,7 +119,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark(container_node, vespa_route, program_name, size)
+  def run_benchmark(container_node, program_name, size)
     label = "#{program_name}-#{size}b"
     cpu_monitor = Perf::System.new(container_node)
     cpu_monitor.start
@@ -135,12 +140,12 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   private
   def generate_text(size)
-    template = "Some text which will be indexed, so let us make it look like something real :> "
+    template = "These are just bytes that flow across the network interface, so nothing too fancy :> "
     (template * (size / template.length + 1)).slice(0, size)
   end
 
   private
-  def run_benchmark_program(container_node, vespa_route, main_class, out_file, size)
+  def run_benchmark_program(container_node, main_class, out_file, size)
     java_cmd =
       "java #{perfmap_agent_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{DUMMY_ROUTE} " +
