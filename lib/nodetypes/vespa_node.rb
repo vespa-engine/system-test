@@ -217,11 +217,6 @@ class VespaNode
     logcontent.scan(regexp).size
   end
 
-  def trigger_flush
-    output = `vespa-proton-cmd --local triggerFlush 2>&1`.chomp
-    testcase.output(output)
-  end
-
   # The time on this Vespa node.
   def time
     Time.new

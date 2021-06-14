@@ -64,9 +64,10 @@ class PhraseCasesPerformanceTest < PerformanceTest
     (exitcode, output) = execute(node, "vespa-feed-perf < #{dirs.tmpdir}/feed-phrases.xml")
     assert_equal(0, exitcode)
     wait_for_hitcount("sddocname:foobar", 123456, 30)
-    node.trigger_flush
-    node.trigger_flush
-    node.execute('vespa-proton-cmd --local die')
+    searchnode = vespa.search["search"].first
+    searchnode.trigger_flush
+    searchnode.trigger_flush
+    searchnode.softdie
     wait_for_hitcount("sddocname:foobar", 123456, 30)
 
     clients=48
