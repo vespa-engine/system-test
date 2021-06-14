@@ -28,6 +28,8 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
     @container = vespa.container.values.first
     generate_query_files
     feed_docs(num_docs_per_type)
+    vespa.search["search"].first.trigger_flush
+    vespa.search["search"].first.restart
   end
 
   def test_sparse_tensor_dot_product

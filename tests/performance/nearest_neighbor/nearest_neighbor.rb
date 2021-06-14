@@ -100,8 +100,8 @@ class NearestNeighborPerformanceTest < PerformanceTest
     wait_for_hitcount("sddocname:foobar", 100000, 30)
     puts "DONE FEEDING"
 
-    node.execute('vespa-proton-cmd --local triggerFlush')
-    node.execute('vespa-proton-cmd --local triggerFlush')
+    node.trigger_flush
+    node.trigger_flush
 
     run_benchmarks(qf1, 'alldoc', false)
     run_benchmarks(qf2, 'nns_10', true)
