@@ -100,8 +100,9 @@ class NearestNeighborPerformanceTest < PerformanceTest
     wait_for_hitcount("sddocname:foobar", 100000, 30)
     puts "DONE FEEDING"
 
-    node.trigger_flush
-    node.trigger_flush
+    searchnode = vespa.search["search"].first
+    searchnode.trigger_flush
+    searchnode.trigger_flush
 
     run_benchmarks(qf1, 'alldoc', false)
     run_benchmarks(qf2, 'nns_10', true)
