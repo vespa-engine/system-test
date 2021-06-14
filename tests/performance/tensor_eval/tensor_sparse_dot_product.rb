@@ -39,9 +39,9 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
     [[50,50], [10,50], [50,10], [250,50], [50,250]].each do |doc_entries, q_entries|
       w_query_f = "queries.dot_product_wset.#{q_entries}.txt"
       t_query_f = "queries.tensor.sparse_float.x.#{q_entries}.txt"
-      run_fbench_helper(DOT_PRODUCT, FEATURE_DOT_PRODUCT, doc_entries, w_query_f, q_entries)
-      run_fbench_helper(DOT_PRODUCT, SPARSE_TENSOR_DOT_PRODUCT, doc_entries, t_query_f, q_entries)
-      run_fbench_helper(DOT_PRODUCT, STRING_FEATURE_DP, doc_entries, w_query_f, q_entries)
+      run_fbench_helper(DOT_PRODUCT, FEATURE_DOT_PRODUCT, doc_entries, w_query_f, q_entries, 8)
+      run_fbench_helper(DOT_PRODUCT, SPARSE_TENSOR_DOT_PRODUCT, doc_entries, t_query_f, q_entries, 8)
+      run_fbench_helper(DOT_PRODUCT, STRING_FEATURE_DP, doc_entries, w_query_f, q_entries, 8)
     end
   end
 
