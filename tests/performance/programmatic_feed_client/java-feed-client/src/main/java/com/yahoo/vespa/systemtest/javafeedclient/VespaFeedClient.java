@@ -3,23 +3,15 @@ package com.yahoo.vespa.systemtest.javafeedclient;
 
 import ai.vespa.feed.client.DocumentId;
 import ai.vespa.feed.client.FeedClient;
-import ai.vespa.feed.client.FeedClientBuilder;
 import ai.vespa.feed.client.OperationParameters;
-import ai.vespa.feed.client.OperationStats;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.IOException;
 import java.time.Duration;
 
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.TRUST_ALL_VERIFIER;
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.caCertificate;
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.certificate;
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.fieldsJson;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.createFeedClient;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.documents;
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.endpoint;
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.maxConcurrentStreamsPerConnection;
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.privateKey;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.fieldsJson;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.printJsonReport;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.route;
 
 /**
@@ -42,37 +34,7 @@ public class VespaFeedClient {
                       });
             }
         }
-        printJsonReport(Duration.ofNanos(System.nanoTime() - start), client.stats());
+        printJsonReport(Duration.ofNanos(System.nanoTime() - start), client.stats(), "vespa-feed-client");
     }
 
-    static void printJsonReport(Duration duration, OperationStats stats) throws IOException {
-        JsonFactory factory = new JsonFactory();
-        try (JsonGenerator generator = factory.createGenerator(System.out)) {
-            generator.writeStartObject();
-            generator.writeNumberField("feeder.runtime", duration.toMillis());
-            generator.writeNumberField("feeder.okcount", stats.successes());
-            generator.writeNumberField("feeder.errorcount", stats.requests() - stats.successes());
-            generator.writeNumberField("feeder.exceptions", stats.exceptions());
-            generator.writeNumberField("feeder.bytessent", stats.bytesSent());
-            generator.writeNumberField("feeder.bytesreceived", stats.bytesReceived());
-            generator.writeNumberField("feeder.throughput", stats.successes() / (double) duration.toMillis() * 1000);
-            generator.writeNumberField("feeder.minlatency", stats.minLatencyMillis());
-            generator.writeNumberField("feeder.avglatency", stats.averageLatencyMillis());
-            generator.writeNumberField("feeder.maxlatency", stats.maxLatencyMillis());
-            generator.writeStringField("loadgiver", "vespa-feed-client");
-            generator.writeEndObject();
-            generator.flush();
-        }
-    }
-
-    private static FeedClient createFeedClient() {
-        int connections = Utils.connections();
-        return FeedClientBuilder.create(endpoint())
-                .setMaxStreamPerConnection(maxConcurrentStreamsPerConnection())
-                .setConnectionsPerEndpoint(connections)
-                .setCaCertificatesFile(caCertificate())
-                .setCertificate(certificate(), privateKey())
-                .setHostnameVerifier(TRUST_ALL_VERIFIER)
-                .build();
-    }
 }
