@@ -54,9 +54,9 @@ class MixedTensorPerfTest < MixedTensorPerfTestBase
         :title => "Historic average latency (all profiles)",
         :historic => true
       },
-      get_latency_graph(SINGLE_MODEL, 2.7, 3.1),
-      get_latency_graph(MULTI_MODEL_EARLY_REDUCE, 5.9, 6.6),
-      get_latency_graph(MULTI_MODEL_LATE_REDUCE,  3.4, 3.9)
+      get_latency_graph(SINGLE_MODEL, 2.7, 3.2),
+      get_latency_graph(MULTI_MODEL_EARLY_REDUCE, 5.9, 6.8),
+      get_latency_graph(MULTI_MODEL_LATE_REDUCE,  3.4, 4.0)
     ]
   end
 
