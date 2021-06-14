@@ -131,7 +131,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
         cpu_monitor.fill
       ]
     )
-    puts(result)
+    puts(JSON.pretty_generate(result))
   end
 
   private
