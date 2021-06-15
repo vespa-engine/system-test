@@ -28,7 +28,6 @@ class SearchCluster
   chained_setter :search_coverage
   chained_setter :use_local_node
   chained_setter :dispatch_policy
-  chained_setter :min_group_coverage
   chained_setter :min_node_ratio_per_group
   chained_setter :persistence_threads
   chained_setter :resource_limits
@@ -49,7 +48,6 @@ class SearchCluster
     @documents_selection = nil
     @use_local_node = nil
     @dispatch_policy= nil
-    @min_group_coverage= nil
     @min_node_ratio_per_group = nil
     @num_parts = 1
     @redundancy = 1
@@ -92,10 +90,6 @@ class SearchCluster
 
   def get_dispatch_policy
     return @dispatch_policy
-  end
-
-  def get_min_group_coverage
-    return @min_group_coverage
   end
 
   def get_min_node_ratio_per_group
