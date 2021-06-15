@@ -139,8 +139,8 @@ class FeedAndQueryTestBase < SearchTest
     metrics.get("content.proton.documentdb.matching.queries", {"documenttype" => "test"})["count"].to_i
   end
 
-  def run_basic_search_test(ready_copies, redundancy = 6, odd_sized_group=false, min_group_size=100.0)
-    deploy_app(create_app(3, ready_copies, redundancy, odd_sized_group, min_group_size))
+  def run_basic_search_test(ready_copies, redundancy = 6, odd_sized_group=false)
+    deploy_app(create_app(3, ready_copies, redundancy, odd_sized_group))
     configure_bucket_crosschecking(redundancy)
     start
     generate_and_feed_docs
