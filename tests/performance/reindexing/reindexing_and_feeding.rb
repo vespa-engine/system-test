@@ -128,8 +128,7 @@ class ReindexingAndFeedingTest < PerformanceTest
   def feed_data(config)
     run_feeder(config[:file],
                [ parameter_filler('legend', config[:legend]) ],
-               { :localfile => true, :numthreads => 8, :feed_node => @qrserver, :client => :vespa_feed_client,
-                 :numconnections => 4, :max_streams_per_connection => 256 }.merge(config))
+               { :localfile => true, :feed_node => @qrserver }.merge(config))
   end
 
   # Wait for reindexing after the given time to have started.

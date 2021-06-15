@@ -29,7 +29,7 @@ public class VespaFeedClient {
                 client.put(id, "{\"fields\": " + fieldsJson + "}", OperationParameters.empty().route(route()))
                       .whenComplete((result, error) -> {
                           if (error != null) {
-                              System.out.println("For id " + id + ": " + error);
+                              System.err.println("For id " + id + ": " + error);
                           }
                       });
             }

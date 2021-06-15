@@ -53,7 +53,7 @@ public class VespaHttpClient {
                 reporter.incrementSuccess();
             } else {
                 reporter.incrementFailure();
-                System.out.println(documentResult + "\n" + documentResult.getDetails());
+                System.err.println(documentResult + "\n" + documentResult.getDetails());
             }
             doneSignal.countDown();
         });
