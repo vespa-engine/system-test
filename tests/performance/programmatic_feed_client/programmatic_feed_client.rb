@@ -162,7 +162,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
         "com.yahoo.vespa.systemtest.javafeedclient.#{main_class} 1> #{out_file} 2> #{err_file}"
     pid = vespa.adminserver.execute_bg("exec #{java_cmd}") # exec to let java inherit the subshell's PID.
     vespa.adminserver.waitpid(pid)
-    puts(vespa.adminserver.readfile(err_file)
+    puts(vespa.adminserver.readfile(err_file))
     [ JSON.parse(vespa.adminserver.readfile(out_file).split("\n")[-1]), pid ]
   end
 
