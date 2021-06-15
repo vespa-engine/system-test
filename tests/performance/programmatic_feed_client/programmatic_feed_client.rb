@@ -153,8 +153,8 @@ class ProgrammaticFeedClientTest < PerformanceTest
         "-Dvespa.test.feed.route=#{DUMMY_ROUTE} " +
         "-Dvespa.test.feed.documents=#{(DOCUMENTS / (size / 10) ** (1.0 / 3)).to_i} " +
         "-Dvespa.test.feed.document-text='#{generate_text(size)}' " +
-        "-Dvespa.test.feed.connections=4 " +
-        "-Dvespa.test.feed.max-concurrent-streams-per-connection=128 " +
+        "-Dvespa.test.feed.connections=8 " +
+        "-Dvespa.test.feed.max-concurrent-streams-per-connection=64 " +
         "-Dvespa.test.feed.endpoint=https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/ " +
         "-Dvespa.test.feed.certificate=#{tls_env.certificate_file} " +
         "-Dvespa.test.feed.private-key=#{tls_env.private_key_file} " +
