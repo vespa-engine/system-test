@@ -106,7 +106,6 @@ class Content
       @distribution_type != nil ||
       @search.get_use_local_node != nil ||
       @search.get_dispatch_policy != nil ||
-      @search.get_min_group_coverage != nil ||
       @search.get_min_node_ratio_per_group != nil ||
       @search.get_resource_limits != nil
     end
@@ -121,16 +120,13 @@ class Content
           if (@distribution_type != nil)
             tuningTag.tag("distribution", :type => @distribution_type).close_tag
           end
-          if (@search.get_use_local_node != nil || @search.get_dispatch_policy != nil || @search.get_min_group_coverage != nil)
+          if (@search.get_use_local_node != nil || @search.get_dispatch_policy != nil)
             dispatch = tuningTag.tag("dispatch")
             if (@search.get_use_local_node != nil)
               dispatch.tag("use-local-node").content(@search.get_use_local_node).close_tag
             end
             if (@search.get_dispatch_policy != nil)
               dispatch.tag("dispatch-policy").content(@search.get_dispatch_policy).close_tag
-            end
-            if (@search.get_min_group_coverage != nil)
-              dispatch.tag("min-group-coverage").content(@search.get_min_group_coverage).close_tag
             end
             dispatch.close_tag
           end

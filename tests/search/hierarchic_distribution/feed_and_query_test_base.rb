@@ -16,12 +16,11 @@ class FeedAndQueryTestBase < SearchTest
     stop
   end
 
-  def create_app(num_fdispatch_threads = 3, ready_copies = 6, redundancy = 6, odd_sized_groups = false, min_group_coverage=100.0) # 1 administrative, 1 search, 1 docsum thread
+  def create_app(num_fdispatch_threads = 3, ready_copies = 6, redundancy = 6, odd_sized_groups = false) # 1 administrative, 1 search, 1 docsum thread
     SearchApp.new.cluster(
       SearchCluster.new("mycluster").sd(selfdir + "test.sd").
       redundancy(redundancy).ready_copies(ready_copies).
       dispatch_policy(odd_sized_groups ? "random" : "round-robin").
-      min_group_coverage(min_group_coverage).
       group(create_groups(redundancy, odd_sized_groups))).
         storage(StorageCluster.new("mycluster", 9)).
         monitoring("test", "60")
