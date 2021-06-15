@@ -70,7 +70,7 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
 
   def test_allowed_coverage_loss
     set_description("Test that one group can continue serving with coverage loss distribution")
-    run_basic_search_test(3, 3, true, 60.0)
+    run_basic_search_test(3, 3, true)
     verify_ready_copies_per_group(1)
     stop_and_not_wait(0) # group 0 still has enough nodes
     assert_atleast_some_queries([nil,50,50, 50,50,50, 50,50,nil], 300)
