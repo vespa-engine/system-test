@@ -42,19 +42,18 @@ class TensorConstantPerfTest < PerformanceTest
   end
 
   def deploy_and_feed(test_app)
-    out = deploy_app(SearchApp.new.sd(selfdir + "app_no_tensor/test.sd").
-              num_hosts(@num_hosts).
-              configserver("node2"))
-    # Start Vespa so services are up when the next deployment is done.
-    # File distribution will start as part of deploy prepare
-    # so this makes sure that we measure time for file distribution to
-    # finish and do not include startup time of services
+    deploy_app(SearchApp.new.sd(selfdir + "app_no_tensor/test.sd").
+               num_hosts(@num_hosts).
+               configserver("node2"))
+    # Start here so services are up when the next deploy happens
+    # then file distribution will start as part of deploy prepare
+    # and we measure time for file distribution to finish (as opposed
+    # to startup time of services)
     start
     deploy_app_and_sample_time(SearchApp.new.sd(test_app).
                                num_hosts(@num_hosts).
                                configserver("node2").
-                               search_dir(@tensor_dir),
-                               get_generation(out).to_i + 1)
+                               search_dir(@tensor_dir))
     feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
     assert_relevancy("query=sddocname:test", 9.0)
   end
@@ -115,24 +114,14 @@ class TensorConstantPerfTest < PerformanceTest
     puts "Command \"#{cmd}\" returned %s" % res
   end
 
-  def deploy_app_and_sample_time(app, next_generation)
-    wait_for_config_thread = Thread.new {
-      # wait for config (when new config has arrived file distribution is guaranteed to be finished)
-      puts "Waiting for config generation #{next_generation}"
-      vespa.search['search'].first.wait_for_config_generation(next_generation)
-      puts "Got config generation #{next_generation}"
-      files_distributed = Time.now
-    }
-
-    start = Time.now
+  def deploy_app_and_sample_time(app)
     out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true, :separate_upload_and_prepare => true})
-    prepare_finished = Time.now - start - activate_time
+    start_file_distribution = Time.now
     total_time = (prepare_time + activate_time).to_f
-
-    wait_for_config_thread.join
-
-    # file distribution starts at end of prepare
-    file_distribution_time = files_distributed - prepare_finished
+    # wait for config (when new config has arrived file distribution is guaranteed to be finished)
+    vespa.search['search'].first.wait_for_config_generation(get_generation(out).to_i)
+    # Subtract activate time, since file distribution starts at end of prepare
+    file_distribution_time = Time.now - start_file_distribution - activate_time
     puts "deploy_app_and_sample_time: total_time=#{total_time}, prepare_time=#{prepare_time}, activate_time=#{activate_time}, file_distribution_time=#{file_distribution_time}"
     write_report([metric_filler(TOTAL_TIME, total_time),
                   metric_filler(PREPARE_TIME, prepare_time),
