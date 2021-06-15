@@ -139,10 +139,11 @@ class WeightedSetFeedTest < PerformanceTest
     deploy_app(create_app)
     start
 
-    doc_count = 100_000
+    doc_count = 10_000_000
     parameter_combinations.each do |p|
       # Reduce document count for large cardinalities to keep test time reasonable.
-      test_doc_count = doc_count / [(p.wset_size / 100), 1].max
+      test_doc_count = doc_count / p.wset_size
+      test_doc_count *= 5 if !p.fast_search
       feed_initial_wsets(doc_count: test_doc_count, field_name: long_attr_name(p.fast_search),
                          key_type: LONG_TYPE, wset_size: p.wset_size, fast_search: p.fast_search)
     end
