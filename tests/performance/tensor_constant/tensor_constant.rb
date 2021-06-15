@@ -121,7 +121,6 @@ class TensorConstantPerfTest < PerformanceTest
       puts "Waiting for config generation #{next_generation}"
       vespa.search['search'].first.wait_for_config_generation(next_generation)
       puts "Got config generation #{next_generation}"
-      files_distributed = Time.now
     }
 
     start = Time.now
@@ -130,9 +129,8 @@ class TensorConstantPerfTest < PerformanceTest
     total_time = (prepare_time + activate_time).to_f
 
     wait_for_config_thread.join
+    file_distribution_time = Time.now - prepare_finished
 
-    # file distribution starts at end of prepare
-    file_distribution_time = files_distributed - prepare_finished
     puts "deploy_app_and_sample_time: total_time=#{total_time}, prepare_time=#{prepare_time}, activate_time=#{activate_time}, file_distribution_time=#{file_distribution_time}"
     write_report([metric_filler(TOTAL_TIME, total_time),
                   metric_filler(PREPARE_TIME, prepare_time),
