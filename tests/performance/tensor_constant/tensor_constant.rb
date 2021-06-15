@@ -116,20 +116,19 @@ class TensorConstantPerfTest < PerformanceTest
   end
 
   def deploy_app_and_sample_time(app, next_generation)
-    deploy_thread = Thread.new {
-      start = Time.now
-      out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true, :separate_upload_and_prepare => true})
-      prepare_finished = Time.now - start - activate_time
-      total_time = (prepare_time + activate_time).to_f
-    }
     wait_for_config_thread = Thread.new {
       # wait for config (when new config has arrived file distribution is guaranteed to be finished)
       puts "Waiting for config generation #{next_generation}"
       vespa.search['search'].first.wait_for_config_generation(next_generation)
+      puts "Got config generation #{next_generation}"
       files_distributed = Time.now
     }
 
-    deploy_thread.join
+    start = Time.now
+    out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true, :separate_upload_and_prepare => true})
+    prepare_finished = Time.now - start - activate_time
+    total_time = (prepare_time + activate_time).to_f
+
     wait_for_config_thread.join
 
     # file distribution starts at end of prepare
