@@ -125,11 +125,11 @@ class TensorConstantPerfTest < PerformanceTest
 
     start = Time.now
     out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true, :separate_upload_and_prepare => true})
-    prepare_finished = Time.now - start - activate_time
+    prepare_finished = Time.now.to_f - start - activate_time
     total_time = (prepare_time + activate_time).to_f
 
     wait_for_config_thread.join
-    file_distribution_time = Time.now - prepare_finished
+    file_distribution_time = Time.now.to_f - prepare_finished
 
     puts "deploy_app_and_sample_time: total_time=#{total_time}, prepare_time=#{prepare_time}, activate_time=#{activate_time}, file_distribution_time=#{file_distribution_time}"
     write_report([metric_filler(TOTAL_TIME, total_time),
