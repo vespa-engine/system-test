@@ -12,6 +12,8 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
   def create_app
     SearchApp.new.sd(selfdir + "sparsedot.sd").
       search_dir(selfdir + "search").
+      threads_per_search(1).
+      qrservers_jvmargs("-Xms16g -Xmx16g").
       search_chain(SearchChain.new.add(Searcher.new("com.yahoo.test.TensorInQueryBuilderSearcher")))
   end
 
@@ -35,13 +37,14 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
   def test_sparse_tensor_dot_product
     set_description("Test performance of sparse tensor dot product vs feature dot product calculation")
     @graphs = get_graphs_dot_product
+    clients = 8
     deploy_and_feed(100000)
     [[50,50], [10,50], [50,10], [250,50], [50,250]].each do |doc_entries, q_entries|
       w_query_f = "queries.dot_product_wset.#{q_entries}.txt"
       t_query_f = "queries.tensor.sparse_float.x.#{q_entries}.txt"
-      run_fbench_helper(DOT_PRODUCT, FEATURE_DOT_PRODUCT, doc_entries, w_query_f, q_entries, 8)
-      run_fbench_helper(DOT_PRODUCT, SPARSE_TENSOR_DOT_PRODUCT, doc_entries, t_query_f, q_entries, 8)
-      run_fbench_helper(DOT_PRODUCT, STRING_FEATURE_DP, doc_entries, w_query_f, q_entries, 8)
+      run_fbench_helper(DOT_PRODUCT, FEATURE_DOT_PRODUCT, doc_entries, w_query_f, q_entries, clients)
+      run_fbench_helper(DOT_PRODUCT, SPARSE_TENSOR_DOT_PRODUCT, doc_entries, t_query_f, q_entries, clients)
+      run_fbench_helper(DOT_PRODUCT, STRING_FEATURE_DP, doc_entries, w_query_f, q_entries, clients)
     end
   end
 
