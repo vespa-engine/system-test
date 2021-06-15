@@ -42,7 +42,7 @@ class TensorConstantPerfTest < PerformanceTest
   end
 
   def deploy_and_feed(test_app)
-    out = deploy_app(SearchApp.new.sd(selfdir + "app_no_tensor/test.sd")
+    out = deploy_app(SearchApp.new.sd(selfdir + "app_no_tensor/test.sd").
               num_hosts(@num_hosts).
               configserver("node2"))
     # Start Vespa so services are up when the next deployment is done.
