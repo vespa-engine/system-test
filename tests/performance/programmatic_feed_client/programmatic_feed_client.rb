@@ -99,18 +99,16 @@ class ProgrammaticFeedClientTest < PerformanceTest
     container_node = deploy_test_app
     build_feed_client
 
-    run_benchmark(container_node, "VespaHttpClient", TINY)
-    run_benchmark(container_node, "VespaFeedClient", TINY)
-    run_benchmark(container_node, "VespaJsonFeeder", TINY)
-    run_benchmark(container_node, "VespaHttpClient", SMALL)
-    run_benchmark(container_node, "VespaFeedClient", SMALL)
-    run_benchmark(container_node, "VespaJsonFeeder", SMALL)
-    run_benchmark(container_node, "VespaHttpClient", MEDIUM)
-    run_benchmark(container_node, "VespaFeedClient", MEDIUM)
-    run_benchmark(container_node, "VespaJsonFeeder", MEDIUM)
-    run_benchmark(container_node, "VespaHttpClient", LARGE)
-    run_benchmark(container_node, "VespaFeedClient", LARGE)
-    run_benchmark(container_node, "VespaJsonFeeder", LARGE)
+    run_benchmark(container_node, "VespaHttpClient",   TINY,  2)
+    run_benchmark(container_node, "VespaFeedClient",   TINY, 16)
+    run_benchmark(container_node, "VespaJsonFeeder",   TINY, 16)
+    run_benchmark(container_node, "VespaHttpClient",  SMALL,  2)
+    run_benchmark(container_node, "VespaFeedClient",  SMALL, 16)
+    run_benchmark(container_node, "VespaHttpClient", MEDIUM,  2)
+    run_benchmark(container_node, "VespaFeedClient", MEDIUM, 16)
+    run_benchmark(container_node, "VespaHttpClient",  LARGE,  2)
+    run_benchmark(container_node, "VespaFeedClient",  LARGE, 16)
+    run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 16)
   end
 
   private
@@ -119,12 +117,12 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark(container_node, program_name, size)
+  def run_benchmark(container_node, program_name, size, connections)
     label = "#{program_name}-#{size}b"
     cpu_monitor = Perf::System.new(container_node)
     cpu_monitor.start
     profiler_start
-    result, pid = run_benchmark_program(container_node, program_name, label, size)
+    result, pid = run_benchmark_program(container_node, program_name, label, size, connections)
     profiler_report(label, { "program_name" => [ pid ] })
     cpu_monitor.end
     write_report(
@@ -145,15 +143,15 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark_program(container_node, main_class, label, size)
+  def run_benchmark_program(container_node, main_class, label, size, connections)
     out_file = "#{label}.out"
     err_file = "#{label}.err"
     java_cmd =
       "java #{perfmap_agent_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{DUMMY_ROUTE} " +
-        "-Dvespa.test.feed.documents=#{(DOCUMENTS / (size / 10) ** (1.0 / 3)).to_i} " +
+        "-Dvespa.test.feed.documents=#{DOCUMENTS} " +
         "-Dvespa.test.feed.document-text='#{generate_text(size)}' " +
-        "-Dvespa.test.feed.connections=8 " +
+        "-Dvespa.test.feed.connections=#{connections} " +
         "-Dvespa.test.feed.max-concurrent-streams-per-connection=64 " +
         "-Dvespa.test.feed.endpoint=https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/ " +
         "-Dvespa.test.feed.certificate=#{tls_env.certificate_file} " +

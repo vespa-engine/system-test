@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import javax.net.ssl.HostnameVerifier;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -55,12 +56,16 @@ class Utils {
     }
 
     static void printJsonReport(Duration duration, OperationStats stats, String loadgiver) throws IOException {
+        printJsonReport(duration, stats, loadgiver, System.out);
+    }
+
+    static void printJsonReport(Duration duration, OperationStats stats, String loadgiver, OutputStream out) throws IOException {
         JsonFactory factory = new JsonFactory();
-        try (JsonGenerator generator = factory.createGenerator(System.out)) {
+        try (JsonGenerator generator = factory.createGenerator(out)) {
             generator.writeStartObject();
             generator.writeNumberField("feeder.runtime", duration.toMillis());
             generator.writeNumberField("feeder.okcount", stats.successes());
-            generator.writeNumberField("feeder.errorcount", stats.requests() - stats.successes());
+            generator.writeNumberField("feeder.errorcount", stats.exceptions() + stats.responses() - stats.successes());
             generator.writeNumberField("feeder.exceptions", stats.exceptions());
             generator.writeNumberField("feeder.bytessent", stats.bytesSent());
             generator.writeNumberField("feeder.bytesreceived", stats.bytesReceived());
@@ -82,6 +87,7 @@ class Utils {
                                 .setCaCertificatesFile(caCertificate())
                                 .setCertificate(certificate(), privateKey())
                                 .setHostnameVerifier(TRUST_ALL_VERIFIER)
+                                .setBenchmarkOn(true)
                                 .build();
     }
 
