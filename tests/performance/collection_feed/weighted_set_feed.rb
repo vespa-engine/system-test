@@ -83,8 +83,8 @@ class WeightedSetFeedTest < PerformanceTest
       params(10000,  false,   255,     280),
       params(100000, false,    20,      22),
       params(10,     true,  20500,    22500),
-      params(100,    true,  1650,     1800),
-      params(1000,   true,   205,      220),
+      params(100,    true,  1600,     1800),
+      params(1000,   true,   200,      220),
       params(10000,  true,    19.5,     22.0),
       params(100000, true,     2.2,      2.5)
     ]
@@ -127,7 +127,7 @@ class WeightedSetFeedTest < PerformanceTest
     parameter_combinations.each do |p|
       # Reduce document count for large cardinalities to keep test time reasonable.
       test_doc_count = doc_count / p.wset_size
-      test_doc_count *= 5 if !p.fast_search #5x more for non fast-search
+      test_doc_count *= 10 if !p.fast_search #10x more for non fast-search
       test_doc_count = [test_doc_count, 2_000_000].min
       feed_initial_wsets(doc_count: test_doc_count, field_name: long_attr_name(p.fast_search),
                          key_type: LONG_TYPE, wset_size: p.wset_size, fast_search: p.fast_search)
