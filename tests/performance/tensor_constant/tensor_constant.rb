@@ -9,7 +9,7 @@ class TensorConstantPerfTest < PerformanceTest
   TOTAL_TIME = "deploy.total_time"
   PREPARE_TIME = "deploy.prepare_time"
   ACTIVATE_TIME = "deploy.activate_time"
-  FILE_DISTRIBUTION_TIME = "deploy.file_distribution_time"
+  FILE_DISTRIBUTION_TIME = "deploy.filedistribution_time"
 
   def initialize(*args)
     super(*args)
