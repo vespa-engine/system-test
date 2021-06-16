@@ -21,7 +21,7 @@ jobs:
             rh-ruby27-ruby-devel \
             rh-ruby27 \
             rh-ruby27-rubygem-net-telnet
-          source /opt/rh/devtoolset-9/enable
+          source /opt/rh/devtoolset-10/enable
           source /opt/rh/rh-ruby27/enable
           gem install libxml-ruby gnuplot distribution test-unit builder
       - run-tests: |
