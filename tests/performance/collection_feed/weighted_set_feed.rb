@@ -23,20 +23,6 @@ class WeightedSetFeedTest < PerformanceTest
     super
   end
 
-  def with_json_feed(file_name)
-    raise 'No block given' if not block_given?
-    json_writer = JsonDocumentWriter.new(File.open(file_name, 'w'))
-    begin
-      yield json_writer
-    ensure
-      json_writer.close()
-    end
-  end
-
-  def doc_id(n)
-    "id:user:footype::#{n}"
-  end
-
   def feed_initial_wsets(doc_count:, field_name:, key_type:, wset_size:, fast_search:)
     if @tainted
       puts 'Wiping existing index data on node to ensure previous tests do not pollute results'
@@ -48,24 +34,16 @@ class WeightedSetFeedTest < PerformanceTest
     puts '-----------'
     puts "Feeding #{doc_count} documents with weighted set field #{field_name} with #{wset_size} elements, fast-search=#{fast_search}"
     puts '-----------'
-    feed_file = dirs.tmpdir + 'initial_feed.json'
-    with_json_feed(feed_file) do |json|
-      doc_count.times {|d|
-        rng = Random.new(d)
-        wset_contents = wset_size.times.map{|i| [rng.rand(10000000000), rng.rand(1000000000)] }.to_h
-        json.put(doc_id(d), {
-          field_name => wset_contents
-        })
-      }
-    end
     puts 'Doing initial container warmup pass'
-    feed(:file => feed_file, :route => '"combinedcontainer/chain.indexing null/default"')
+    stream_cmd = "#{@data_generator} #{doc_count} #{wset_size} #{field_name}"
+    feed_stream(stream_cmd, :route => '"combinedcontainer/chain.indexing null/default"')
     puts 'Doing actual backend feed pass'
     profiler_start
-    run_feeder(feed_file, [parameter_filler(FIELD_TYPE, WSET),
-                           parameter_filler(KEY_TYPE, key_type),
-                           parameter_filler(WSET_SIZE, wset_size),
-                           parameter_filler(FAST_SEARCH, fast_search.to_s)])
+    run_stream_feeder(stream_cmd,
+                      [parameter_filler(FIELD_TYPE, WSET),
+                       parameter_filler(KEY_TYPE, key_type),
+                       parameter_filler(WSET_SIZE, wset_size),
+                       parameter_filler(FAST_SEARCH, fast_search.to_s)])
     profiler_report("wset_size=#{wset_size},fast_search=#{fast_search}")
     @tainted = true
   end
@@ -75,6 +53,7 @@ class WeightedSetFeedTest < PerformanceTest
     SearchApp.new.sd(selfdir + 'footype.sd').
     num_parts(1).redundancy(1).ready_copies(1).
     container(Container.new("combinedcontainer").
+                            jvmargs('-Xms16g -Xmx16g').
                             search(Searching.new).
                             docproc(DocumentProcessing.new).
                             gateway(ContainerDocumentApi.new)).
@@ -139,11 +118,15 @@ class WeightedSetFeedTest < PerformanceTest
     deploy_app(create_app)
     start
 
+    @data_generator = "#{dirs.tmpdir}/docs"
+    container = (vespa.qrserver["0"] or vespa.container.values.first)
+    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@data_generator} #{selfdir}/docs.cpp")
+
     doc_count = 10_000_000
     parameter_combinations.each do |p|
       # Reduce document count for large cardinalities to keep test time reasonable.
       test_doc_count = doc_count / p.wset_size
-      test_doc_count *= 5 if !p.fast_search
+      test_doc_count *= 2 if !p.fast_search
       feed_initial_wsets(doc_count: test_doc_count, field_name: long_attr_name(p.fast_search),
                          key_type: LONG_TYPE, wset_size: p.wset_size, fast_search: p.fast_search)
     end
