@@ -35,11 +35,12 @@ class WeightedSetFeedTest < PerformanceTest
     puts "Feeding #{doc_count} documents with weighted set field #{field_name} with #{wset_size} elements, fast-search=#{fast_search}"
     puts '-----------'
     puts 'Doing initial container warmup pass'
-    stream_cmd = "#{@data_generator} #{doc_count} #{wset_size} #{field_name}"
-    feed_stream(stream_cmd, :route => '"combinedcontainer/chain.indexing null/default"')
+    warmup_doc_count = [doc_count/5, 100].max
+    feed_stream("#{@data_generator} #{warmup_doc_count} #{wset_size} #{field_name}",
+                :route => '"combinedcontainer/chain.indexing null/default"')
     puts 'Doing actual backend feed pass'
     profiler_start
-    run_stream_feeder(stream_cmd,
+    run_stream_feeder("#{@data_generator} #{doc_count} #{wset_size} #{field_name}",
                       [parameter_filler(FIELD_TYPE, WSET),
                        parameter_filler(KEY_TYPE, key_type),
                        parameter_filler(WSET_SIZE, wset_size),
@@ -76,16 +77,16 @@ class WeightedSetFeedTest < PerformanceTest
 
   def parameter_combinations
     [
-      params(10,     false, 18000,   22000),
-      params(100,    false, 14000,   15500),
-      params(1000,   false,  1750,    2000),
-      params(10000,  false,   180,     210),
-      params(100000, false,    14.6,    17.6),
-      params(10,     true,  16000,    19000),
-      params(100,    true,  1550,     1850),
-      params(1000,   true,   200,      220),
-      params(10000,  true,    19.5,     22),
-      params(100000, true,     2.2,      2.4)
+      params(10,     false, 36500,   39500),
+      params(100,    false, 20000,   21000),
+      params(1000,   false,  2600,    2800),
+      params(10000,  false,   255,     280),
+      params(100000, false,    20,      22),
+      params(10,     true,  20500,    22500),
+      params(100,    true,  1650,     1800),
+      params(1000,   true,   205,      220),
+      params(10000,  true,    19.5,     22.0),
+      params(100000, true,     2.2,      2.5)
     ]
   end
 
@@ -126,7 +127,8 @@ class WeightedSetFeedTest < PerformanceTest
     parameter_combinations.each do |p|
       # Reduce document count for large cardinalities to keep test time reasonable.
       test_doc_count = doc_count / p.wset_size
-      test_doc_count *= 2 if !p.fast_search
+      test_doc_count *= 5 if !p.fast_search #5x more for non fast-search
+      test_doc_count = [test_doc_count, 2_000_000].min
       feed_initial_wsets(doc_count: test_doc_count, field_name: long_attr_name(p.fast_search),
                          key_type: LONG_TYPE, wset_size: p.wset_size, fast_search: p.fast_search)
     end
