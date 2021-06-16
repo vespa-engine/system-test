@@ -32,6 +32,7 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
     feed_docs(num_docs_per_type)
     vespa.search["search"].first.trigger_flush
     vespa.search["search"].first.restart
+    wait_for_hitcount("sddocname:sparsedot", num_docs_per_type*3, 60) # Fed with 10, 50, and 250
   end
 
   def test_sparse_tensor_dot_product
