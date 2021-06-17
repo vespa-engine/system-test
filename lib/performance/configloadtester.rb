@@ -14,9 +14,8 @@ module Perf
       @output = "n/a"
     end
 
-    def run(filename=nil)
+    def run(filename=nil, debug=true) # TODO: Temporarily run with debugging, remove afterwards (2021-06-17)
       output = nil
-      debug = false
       @output = @node_to_run_on.execute(cmd(filename, debug))
       puts "Loadtester output:\n#{@output}"
       # Loop through output, skipping #comments
