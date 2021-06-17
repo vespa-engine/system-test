@@ -193,12 +193,20 @@ class PerformanceTest < TestCase
     loadtester
   end
 
+  # deprecated, use run_config_loadtester()
   def run_cloudconfig_loadtester(node, port, num_requests, num_threads, file, defdir, custom_fillers=[])
     loadtester = create_loadtester(node, node.name, port, num_requests, num_threads, defdir)
     loadtester.run(file)
     fillers = [loadtester.fill]
     write_report(fillers + custom_fillers)
   end
+
+  def run_config_loadtester(loadtester, file, custom_fillers=[], debug=false)
+    loadtester.run(file, debug)
+    fillers = [loadtester.fill]
+    write_report(fillers + custom_fillers)
+  end
+
 
   def perfmap_agent_jvmarg
     perfmap_agent = "#{Environment.instance.vespa_home}/lib64/libperfmap.so"
