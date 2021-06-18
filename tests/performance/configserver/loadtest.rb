@@ -33,7 +33,6 @@ class ConfigserverLoadTest < PerformanceTest
         :historic => true
       }
     ]
-    num_requests = 100000
     setup_generator(150, 10, 1)
 
     copy_files_to_tmp_dir(vespa.nodeproxies.first[1])
@@ -45,9 +44,10 @@ class ConfigserverLoadTest < PerformanceTest
     start
 
     node = @vespa.nodeproxies.first[1]
-    1.times do
-      run_cloudconfig_loadtester(node, 19070, num_requests, 32, @dirs.tmpdir + @testfile, @dirs.tmpdir + @defdir)
-    end
+    num_requests_per_thread = 100000
+    num_threads = 32
+    loadtester = create_loadtester(node, node.name, 19070, num_requests_per_thread, num_threads, @dirs.tmpdir + @defdir)
+    run_config_loadtester(loadtester, @dirs.tmpdir + @testfile)
   end
 
   def copy_files_to_tmp_dir(node)
