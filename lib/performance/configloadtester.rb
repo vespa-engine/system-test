@@ -27,7 +27,7 @@ module Perf
           @res = line.gsub(/\s+/, "").split(",")
         end
       end
-      puts "Loadtester res:\n#{@res}"
+      puts "Loadtester results:\n#{@res}"
     end
 
     def run_bg(filename=nil)
@@ -51,10 +51,9 @@ module Perf
         result.add_parameter('config.loadtester.num_queries', @numiter)
 
         result.add_metric('config.loadtester.req_per_sec', @res[0])
-        result.add_metric('config.loadtester.bytes_per_sec', @res[1])
-        result.add_metric('config.loadtester.avg_latency', @res[2])
-        result.add_metric('config.loadtester.min_latency', @res[3])
-        result.add_metric('config.loadtester.max_latency', @res[4])
+        result.add_metric('config.loadtester.avg_latency', @res[1])
+        result.add_metric('config.loadtester.min_latency', @res[2])
+        result.add_metric('config.loadtester.max_latency', @res[3])
       end
     end
   end
