@@ -44,7 +44,7 @@ class ConfigserverLoadTest < PerformanceTest
     start
 
     node = @vespa.nodeproxies.first[1]
-    num_requests_per_thread = 10000
+    num_requests_per_thread = 20000
     num_threads = 32
     loadtester = create_loadtester(node, node.name, 19070, num_requests_per_thread, num_threads, @dirs.tmpdir + @defdir)
     run_config_loadtester(loadtester, @dirs.tmpdir + @testfile)
