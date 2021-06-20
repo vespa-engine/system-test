@@ -74,7 +74,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 1,
           :streams => 256,
           :threads => 1,
-          :metrics => {'qps' => {'get' => {:y_min => 54000, :y_max => 63000}, 'post' => {:y_min => 30000, :y_max => 38000}}}
+          :metrics => {'qps' => {'get' => {:y_min => 52000, :y_max => 63000}, 'post' => {:y_min => 30000, :y_max => 38000}}}
         }
       },
       {
@@ -82,7 +82,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 8,
           :streams => 8,
           :threads => 8,
-          :metrics => {'qps' => {'get' => {:y_min => 42000, :y_max => 46000}, 'post' => {:y_min => 25000, :y_max => 29000}}}
+          :metrics => {'qps' => {'get' => {:y_min => 42000, :y_max => 46500}, 'post' => {:y_min => 25000, :y_max => 29000}}}
         }
       },
       {
@@ -90,7 +90,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 8,
           :streams => 64,
           :threads => 8,
-          :metrics => {'qps' => {'get' => {:y_min => 56000, :y_max => 66000}, 'post' => {:y_min => 33000, :y_max => 40000}}}
+          :metrics => {'qps' => {'get' => {:y_min => 56000, :y_max => 69000}, 'post' => {:y_min => 30500, :y_max => 40000}}}
         }
       },
       {
@@ -98,7 +98,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 64,
           :streams => 8,
           :threads => 16,
-          :metrics => {'qps' => {'get' => {:y_min => 53500, :y_max => 64000}, 'post' => {:y_min => 31000, :y_max => 39000}}}
+          :metrics => {'qps' => {'get' => {:y_min => 53500, :y_max => 66000}, 'post' => {:y_min => 30500, :y_max => 39000}}}
         }
       }
     ]
