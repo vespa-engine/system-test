@@ -55,8 +55,8 @@ class MixedTensorPerfTest < MixedTensorPerfTestBase
         :historic => true
       },
       get_latency_graph(SINGLE_MODEL, 2.7, 3.2),
-      get_latency_graph(MULTI_MODEL_EARLY_REDUCE, 6.2, 6.6),
-      get_latency_graph(MULTI_MODEL_LATE_REDUCE,  3.4, 4.0)
+      get_latency_graph(MULTI_MODEL_EARLY_REDUCE, 6.2, 6.8),
+      get_latency_graph(MULTI_MODEL_LATE_REDUCE,  3.4, 4.1)
     ]
   end
 
