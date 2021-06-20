@@ -6,9 +6,7 @@ require 'performance/tensor_constant/tensor_constant_generator'
 
 class TensorConstantPerfTest < PerformanceTest
 
-  TOTAL_TIME = "deploy.total_time"
   PREPARE_TIME = "deploy.prepare_time"
-  ACTIVATE_TIME = "deploy.activate_time"
   FILE_DISTRIBUTION_TIME = "deploy.filedistribution_time"
 
   def initialize(*args)
@@ -61,18 +59,14 @@ class TensorConstantPerfTest < PerformanceTest
 
   def get_graphs
     [
-      get_deploy_graph(TOTAL_TIME, nil, nil),
       get_deploy_graph(PREPARE_TIME, 11, 15),
-      get_deploy_graph(ACTIVATE_TIME, nil, nil),
       get_deploy_graph(FILE_DISTRIBUTION_TIME, 17, 19.5)
     ]
   end
 
   def get_graphs_lz4
     [
-      get_deploy_graph(TOTAL_TIME, nil, nil),
       get_deploy_graph(PREPARE_TIME, 2.0, 5.5),
-      get_deploy_graph(ACTIVATE_TIME, nil, nil),
       get_deploy_graph(FILE_DISTRIBUTION_TIME, 14, 20)
     ]
   end
@@ -89,7 +83,6 @@ class TensorConstantPerfTest < PerformanceTest
   end
 
   def generate_tensor_constant(mb)
-    puts "generate_tensor_constant"
     FileUtils.mkdir_p(@tensor_dir)
     tensor_constant_file = "#{@tensor_dir}tensor_constant.#{mb}MB.json"
     TensorConstantGenerator.gen_tensor_constant(tensor_constant_file, mb * 1024 * 1024)
@@ -99,20 +92,10 @@ class TensorConstantPerfTest < PerformanceTest
   def generate_tensor_constant_lz4(mb)
     tensor_constant_file = generate_tensor_constant(mb)
 
-    puts "compress_tensor_constant"
     compressed_file = tensor_constant_file + ".lz4"
 
-    run_system_command("lz4 #{tensor_constant_file} #{compressed_file}")
-    run_system_command("rm #{tensor_constant_file}")
-
-    # debug
-    puts "Contents of tensor dir: " + Dir.glob("#{@tensor_dir}/**/*").join(", ")
-    puts "Contents of temp dir: " + Dir.glob("#{dirs.tmpdir}/**/*").join(", ")
-  end
-
-  def run_system_command(cmd)
-    res = system(cmd)
-    puts "Command \"#{cmd}\" returned %s" % res
+    system("lz4 #{tensor_constant_file} #{compressed_file}")
+    system("rm #{tensor_constant_file}")
   end
 
   def deploy_app_and_sample_time(app, next_generation)
@@ -125,15 +108,12 @@ class TensorConstantPerfTest < PerformanceTest
 
     out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true, :separate_upload_and_prepare => true})
     prepare_finished = Time.now.to_f - activate_time
-    total_time = (prepare_time + activate_time).to_f
 
     wait_for_config_thread.join
     file_distribution_time = Time.now.to_f - prepare_finished
 
-    puts "deploy_app_and_sample_time: total_time=#{total_time}, prepare_time=#{prepare_time}, activate_time=#{activate_time}, file_distribution_time=#{file_distribution_time}"
-    write_report([metric_filler(TOTAL_TIME, total_time),
-                  metric_filler(PREPARE_TIME, prepare_time),
-                  metric_filler(ACTIVATE_TIME, activate_time),
+    puts "deploy_app_and_sample_time: prepare_time=#{prepare_time}, file_distribution_time=#{file_distribution_time}"
+    write_report([metric_filler(PREPARE_TIME, prepare_time),
                   metric_filler(FILE_DISTRIBUTION_TIME, file_distribution_time)])
   end
 
