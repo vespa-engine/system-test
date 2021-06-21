@@ -99,22 +99,28 @@ class TensorConstantPerfTest < PerformanceTest
   end
 
   def deploy_app_and_sample_time(app, next_generation)
-    wait_for_config_thread = Thread.new {
-      # wait for config (when new config has arrived file distribution is guaranteed to be finished)
-      puts "Waiting for config generation #{next_generation}"
-      vespa.search['search'].first.wait_for_config_generation(next_generation)
-      puts "Got config generation #{next_generation}"
-    }
+    total_prepare_time = 0.0
+    total_file_distribution_time = 0.0
+    iterations = 2
+    iterations.times do
+      wait_for_config_thread = Thread.new {
+        # wait for config (when new config has arrived file distribution is guaranteed to be finished)
+        puts "Waiting for config generation #{next_generation}"
+        vespa.search['search'].first.wait_for_config_generation(next_generation)
+        puts "Got config generation #{next_generation}"
+      }
 
-    out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true, :separate_upload_and_prepare => true})
-    prepare_finished = Time.now.to_f - activate_time
+      out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true, :separate_upload_and_prepare => true})
+      prepare_finished = Time.now.to_f - activate_time
+      total_prepare_time = total_prepare_time + prepare_time
 
-    wait_for_config_thread.join
-    file_distribution_time = Time.now.to_f - prepare_finished
+      wait_for_config_thread.join
+      total_file_distribution_time = total_file_distribution_time + (Time.now.to_f - prepare_finished)
+    end
 
-    puts "deploy_app_and_sample_time: prepare_time=#{prepare_time}, file_distribution_time=#{file_distribution_time}"
-    write_report([metric_filler(PREPARE_TIME, prepare_time),
-                  metric_filler(FILE_DISTRIBUTION_TIME, file_distribution_time)])
+    puts "deploy_app_and_sample_time: prepare_time=#{total_prepare_time}, file_distribution_time=#{total_file_distribution_time}, iterations=#{iterations}"
+    write_report([metric_filler(PREPARE_TIME, total_prepare_time / iterations),
+                  metric_filler(FILE_DISTRIBUTION_TIME, total_file_distribution_time / iterations)])
   end
 
   def teardown
