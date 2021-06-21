@@ -99,8 +99,8 @@ class TensorConstantPerfTest < PerformanceTest
   end
 
   def deploy_app_and_sample_time(app, next_generation)
-    total_prepare_time = 0.0f
-    total_file_distribution_time = 0.0f
+    total_prepare_time = 0.0
+    total_file_distribution_time = 0.0
     iterations = 2
     iterations.times do
       wait_for_config_thread = Thread.new {
