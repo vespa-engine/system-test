@@ -42,7 +42,7 @@ class DocumentV1Throughput < PerformanceTest
       {
         :http1 => {
           :clients => 128,
-          :metrics => {'qps' => {'get' => {:y_min => 36500, :y_max => 39500}, 'post' => {:y_min => 27000, :y_max => 31500}}}
+          :metrics => {'qps' => {'get' => {:y_min => 36500, :y_max => 39500}, 'post' => {:y_min => 26500, :y_max => 31500}}}
         }
       },
       {
@@ -90,7 +90,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 8,
           :streams => 64,
           :threads => 8,
-          :metrics => {'qps' => {'get' => {:y_min => 56000, :y_max => 69000}, 'post' => {:y_min => 30500, :y_max => 40000}}}
+          :metrics => {'qps' => {'get' => {:y_min => 56000, :y_max => 69000}, 'post' => {:y_min => 30000, :y_max => 40000}}}
         }
       },
       {
