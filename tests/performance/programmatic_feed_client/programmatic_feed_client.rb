@@ -41,55 +41,87 @@ class ProgrammaticFeedClientTest < PerformanceTest
         :title => "Average latency #{VESPA_FEED_CLIENT}",
         :x => 'label',
         :y => 'feeder.avglatency',
-        :filter => {'loadgiver' => VESPA_FEED_CLIENT},
+        :filter => { 'loadgiver' => VESPA_FEED_CLIENT },
         :historic => true
+      },
+      {
+        :x => 'size',
+        :y => 'feeder.throughput',
+        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT }
+      },
+      {
+        :x => 'size',
+        :y => 'feeder.throughput',
+        :filter => { 'loadgiver' => VESPA_FEED_CLIENT }
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
-        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'size' => LARGE},
+        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'size' => LARGE },
+        :y_min => 11500, :y_max => 13000,
         :historic => true,
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
-        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'size' => LARGE},
+        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'size' => LARGE },
+        :y_min => 34000, :y_max => 38000,
         :historic => true
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
-        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'size' => MEDIUM},
-        :historic => true,
-      },
-      {
-        :x => 'loadgiver',
-        :y => 'feeder.throughput',
-        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'size' => MEDIUM},
+        :filter => {'loadgiver' => VESPA_JSON_CLIENT, 'size' => LARGE },
+        :y_min => 33000, :y_max => 37000,
         :historic => true
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
-        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'size' => SMALL},
+        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'size' => MEDIUM },
+        :y_min => 64000, :y_max => 69000,
         :historic => true,
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
-        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'size' => SMALL},
+        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'size' => MEDIUM },
+        :y_min => 43000, :y_max => 48000,
         :historic => true
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
-        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'size' => TINY},
+        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'size' => SMALL },
+        :y_min => 104000, :y_max => 113000,
         :historic => true,
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
-        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'size' => TINY},
+        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'size' => SMALL },
+        :y_min => 44000, :y_max => 51000,
+        :historic => true
+      },
+      {
+        :x => 'loadgiver',
+        :y => 'feeder.throughput',
+        :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'size' => TINY },
+        :y_min => 54000, :y_max => 64000,
+        :historic => true,
+      },
+      {
+        :x => 'loadgiver',
+        :y => 'feeder.throughput',
+        :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'size' => TINY },
+        :y_min => 42000, :y_max => 48000,
+        :historic => true
+      },
+      {
+        :x => 'loadgiver',
+        :y => 'feeder.throughput',
+        :filter => {'loadgiver' => VESPA_JSON_CLIENT, 'size' => TINY },
+        :y_min => 42000, :y_max => 48000,
         :historic => true
       },
     ]
@@ -100,15 +132,15 @@ class ProgrammaticFeedClientTest < PerformanceTest
     build_feed_client
 
     run_benchmark(container_node, "VespaHttpClient",   TINY,  4)
-    run_benchmark(container_node, "VespaFeedClient",   TINY, 32)
-    run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
+    run_benchmark(container_node, "VespaFeedClient",   TINY,  8)
+    run_benchmark(container_node, "VespaJsonFeeder",   TINY,  8)
     run_benchmark(container_node, "VespaHttpClient",  SMALL,  4)
-    run_benchmark(container_node, "VespaFeedClient",  SMALL, 32)
+    run_benchmark(container_node, "VespaFeedClient",  SMALL,  8)
     run_benchmark(container_node, "VespaHttpClient", MEDIUM,  4)
-    run_benchmark(container_node, "VespaFeedClient", MEDIUM, 32)
+    run_benchmark(container_node, "VespaFeedClient", MEDIUM,  8)
     run_benchmark(container_node, "VespaHttpClient",  LARGE,  4)
-    run_benchmark(container_node, "VespaFeedClient",  LARGE, 32)
-    run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 32)
+    run_benchmark(container_node, "VespaFeedClient",  LARGE,  8)
+    run_benchmark(container_node, "VespaJsonFeeder",  LARGE,  8)
   end
 
   private
