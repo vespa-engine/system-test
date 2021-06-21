@@ -90,7 +90,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 8,
           :streams => 64,
           :threads => 8,
-          :metrics => {'qps' => {'get' => {:y_min => 56000, :y_max => 71000}, 'post' => {:y_min => 30000, :y_max => 40000}}}
+          :metrics => {'qps' => {'get' => {:y_min => 56000, :y_max => 71000}, 'post' => {:y_min => 30000, :y_max => 47000}}}
         }
       },
       {
