@@ -17,7 +17,7 @@ class Tuning < IndexedSearchTest
                                                    :transactionlog => {:maxsize => 32000 }
                                                  } },
                    :resizing => {:initialdocumentcount => 32 },
-                   :index => {:io => {:write => :normal, :read =>:normal, :search => :mlock } },
+                   :index => {:io => {:write => :normal, :read =>:normal, :search => :mmap } },
                    :attribute => {:io => {:write => :normal} },
                    :summary => { :io => { :write => :normal, :read =>:directio},
                                  :store => { :cache => { :maxsize => 8192,
