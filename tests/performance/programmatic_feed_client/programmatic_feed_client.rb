@@ -132,15 +132,15 @@ class ProgrammaticFeedClientTest < PerformanceTest
     build_feed_client
 
     run_benchmark(container_node, "VespaHttpClient",   TINY,  4)
-    run_benchmark(container_node, "VespaFeedClient",   TINY,  8)
-    run_benchmark(container_node, "VespaJsonFeeder",   TINY,  8)
+    run_benchmark(container_node, "VespaFeedClient",   TINY, 32)
+    run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
     run_benchmark(container_node, "VespaHttpClient",  SMALL,  4)
-    run_benchmark(container_node, "VespaFeedClient",  SMALL,  8)
+    run_benchmark(container_node, "VespaFeedClient",  SMALL, 32)
     run_benchmark(container_node, "VespaHttpClient", MEDIUM,  4)
-    run_benchmark(container_node, "VespaFeedClient", MEDIUM,  8)
+    run_benchmark(container_node, "VespaFeedClient", MEDIUM, 32)
     run_benchmark(container_node, "VespaHttpClient",  LARGE,  4)
-    run_benchmark(container_node, "VespaFeedClient",  LARGE,  8)
-    run_benchmark(container_node, "VespaJsonFeeder",  LARGE,  8)
+    run_benchmark(container_node, "VespaFeedClient",  LARGE, 32)
+    run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 32)
   end
 
   private
