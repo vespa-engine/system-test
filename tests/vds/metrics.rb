@@ -7,13 +7,14 @@ class VdsMetrics < VdsTest
   def setup
     @valgrind=false
     set_owner("vekterli")
+  end
 
-    deploy_app(default_app.admin_metrics(
-                            Metrics.new.
-                            consumer(Consumer.new("log").
-                                    metric(Metric.new("vds.datastored.disk0.docs", "foo")).
-                                    metric(Metric.new("vds.datastored.disk1.bytes", "bar")))));
-    start
+  def create_app(num_distributor_stripes)
+    default_app.admin_metrics(Metrics.new.
+                              consumer(Consumer.new("log").
+                                       metric(Metric.new("vds.datastored.disk0.docs", "foo")).
+                                       metric(Metric.new("vds.datastored.disk1.bytes", "bar")))).
+                num_distributor_stripes(num_distributor_stripes)
   end
 
   def assert_event_log(count, metric, value = nil)
@@ -74,6 +75,18 @@ class VdsMetrics < VdsTest
 
   # Test that doc counts and sizes are available via state v1 metrics API
   def test_state_v1_metrics_doc_counts
+    deploy_app(create_app(0))
+    run_state_v1_metrics_doc_counts_test
+  end
+
+  def test_state_v1_metrics_doc_counts_using_multiple_distributor_stripes
+    # TODO STRIPE: Remove this test when new distributor stripe mode is default
+    deploy_app(create_app(4))
+    run_state_v1_metrics_doc_counts_test
+  end
+
+  def run_state_v1_metrics_doc_counts_test
+    start
     # At first startup, document counts should be zero
     assert_doc_metrics(0)
     feed_docs
