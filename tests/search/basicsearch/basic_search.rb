@@ -34,7 +34,7 @@ class BasicSearch < IndexedSearchTest
     deploy_app(SearchApp.new.
                cluster_name("basicsearch").
                sd(SEARCH_DATA+"music.sd").
-               storage(StorageCluster.new("basicsearch").num_distributor_stripes(2)))
+               storage(StorageCluster.new("basicsearch").num_distributor_stripes(4)))
     start_feed_and_check
   end
 

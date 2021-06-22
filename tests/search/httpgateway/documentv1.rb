@@ -37,7 +37,7 @@ class DocumentV1Test < SearchTest
 
   def test_realtimefeed_with_multiple_distributor_stripes
     # TODO STRIPE: Remove this test when new distributor stripe mode is default
-    deploy_application(2)
+    deploy_application(4)
     run_realtimefeed_test
   end
 

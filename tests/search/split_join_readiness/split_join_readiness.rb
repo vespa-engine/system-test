@@ -119,8 +119,8 @@ class SplitJoinReadinessTest < SearchTest
 
   def test_split_target_with_changed_ready_state_triggers_bucket_move_using_multiple_distributor_stripes
     # TODO STRIPE: Remove this test when new distributor stripe mode is default
-    set_description('Test that buckets split with altered ideal state are (de-)indexed as expected (using 2 distributor stripe)')
-    deploy_app(create_app(split_count: 2, num_distributor_stripes: 2))
+    set_description('Test that buckets split with altered ideal state are (de-)indexed as expected (using 4 distributor stripe)')
+    deploy_app(create_app(split_count: 2, num_distributor_stripes: 4))
     run_test_split_target_with_changed_ready_state_triggers_bucket_move
   end
 
