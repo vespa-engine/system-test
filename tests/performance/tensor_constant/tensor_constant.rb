@@ -39,7 +39,7 @@ class TensorConstantPerfTest < PerformanceTest
     deploy_and_feed(selfdir + "app_lz4/test.sd")
   end
 
-  def deploy_and_feed(test_app)
+  def deploy_and_feed(schema)
     out = deploy_app(SearchApp.new.sd(selfdir + "app_no_tensor/test.sd").
               num_hosts(@num_hosts).
               configserver("node2"))
@@ -48,11 +48,11 @@ class TensorConstantPerfTest < PerformanceTest
     # so this makes sure that we measure time for file distribution to
     # finish and do not include startup time of services
     start
-    deploy_app_and_sample_time(SearchApp.new.sd(test_app).
+    deploy_app_and_sample_time(SearchApp.new.sd(schema).
                                num_hosts(@num_hosts).
                                configserver("node2").
                                search_dir(@tensor_dir),
-                               get_generation(out).to_i + 1)
+                               get_generation(out).to_i)
     feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
     assert_relevancy("query=sddocname:test", 9.0)
   end
@@ -98,7 +98,8 @@ class TensorConstantPerfTest < PerformanceTest
     system("rm #{tensor_constant_file}")
   end
 
-  def deploy_app_and_sample_time(app, next_generation)
+  def deploy_app_and_sample_time(app, generation)
+    next_generation = generation + 1
     total_prepare_time = 0.0
     total_file_distribution_time = 0.0
     iterations = 2
@@ -116,6 +117,8 @@ class TensorConstantPerfTest < PerformanceTest
 
       wait_for_config_thread.join
       total_file_distribution_time = total_file_distribution_time + (Time.now.to_f - prepare_finished)
+
+      next_generation = next_generation + 1
     end
 
     puts "deploy_app_and_sample_time: prepare_time=#{total_prepare_time}, file_distribution_time=#{total_file_distribution_time}, iterations=#{iterations}"
