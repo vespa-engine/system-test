@@ -140,7 +140,7 @@ class StableActiveCount < SearchTest
 
   def test_hitcount_stable_during_splitting_within_node_with_multiple_distributor_stripes
     # TODO STRIPE: Remove this test when new distributor stripe mode is default
-    deploy_app(create_app(2))
+    deploy_app(create_app(4))
     run_stable_active_count_test
   end
 
