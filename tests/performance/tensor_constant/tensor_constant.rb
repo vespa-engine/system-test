@@ -103,9 +103,10 @@ class TensorConstantPerfTest < PerformanceTest
     total_prepare_time = 0.0
     total_file_distribution_time = 0.0
     iterations = 2
-    iterations.times do
+    iterations.times { |i|
+
+      # wait for config (when new config has arrived file distribution is guaranteed to be finished)
       wait_for_config_thread = Thread.new {
-        # wait for config (when new config has arrived file distribution is guaranteed to be finished)
         puts "Waiting for config generation #{next_generation}"
         vespa.search['search'].first.wait_for_config_generation(next_generation)
         puts "Got config generation #{next_generation}"
@@ -116,14 +117,21 @@ class TensorConstantPerfTest < PerformanceTest
       total_prepare_time = total_prepare_time + prepare_time
 
       wait_for_config_thread.join
-      total_file_distribution_time = total_file_distribution_time + (Time.now.to_f - prepare_finished)
+      # Files will only be distributed on the first deployment, unchanged on the next ones
+      if i == 0
+        total_file_distribution_time = Time.now.to_f - prepare_finished
+      end
 
       next_generation = next_generation + 1
-    end
+    }
 
-    puts "deploy_app_and_sample_time: prepare_time=#{total_prepare_time}, file_distribution_time=#{total_file_distribution_time}, iterations=#{iterations}"
-    write_report([metric_filler(PREPARE_TIME, total_prepare_time / iterations),
-                  metric_filler(FILE_DISTRIBUTION_TIME, total_file_distribution_time / iterations)])
+    avg_prepare_time = total_prepare_time / iterations
+    # Files will only be distributed on the first deployment, unchanged on the next ones, so just use total time
+    avg_file_distribution_time = total_file_distribution_time
+    puts "deploy_app_and_sample_time: prepare_time=#{avg_prepare_time}, file_distribution_time=#{avg_file_distribution_time}, iterations=#{iterations}"
+
+    write_report([metric_filler(PREPARE_TIME, avg_prepare_time),
+                  metric_filler(FILE_DISTRIBUTION_TIME, avg_file_distribution_time)])
   end
 
   def teardown
