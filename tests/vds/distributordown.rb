@@ -55,11 +55,11 @@ class DistributorDown < MultiProviderStorageTest
            "docs to be reported by distributor #{index}")
   end
 
-  def test_all_distributors_in_one_group_down
-    set_owner("vekterli")
-    app = StorageApp.new.enable_http_gateway.storage_cluster(
+  def create_app(num_distributor_stripes)
+    StorageApp.new.enable_http_gateway.storage_cluster(
               StorageCluster.new("storage").
               redundancy(2).
+              num_distributor_stripes(num_distributor_stripes).
               group(NodeGroup.new(0, "mycluster").
                   distribution("1|*").
                   group(
@@ -70,7 +70,22 @@ class DistributorDown < MultiProviderStorageTest
                       node(NodeSpec.new("node1", 1))))).
       sd(VDS + "/schemas/music.sd").
       transition_time(0)
-    deploy_app(app)
+  end
+
+  def test_all_distributors_in_one_group_down
+    set_owner("vekterli")
+    deploy_app(create_app(0))
+    run_all_distributors_in_one_group_down_test
+  end
+
+  def test_all_distributors_in_one_group_down_using_multiple_distributor_stripes
+    # TODO STRIPE: Remove this test when new distributor stripe mode is default
+    set_owner("geirst")
+    deploy_app(create_app(4))
+    run_all_distributors_in_one_group_down_test
+  end
+
+  def run_all_distributors_in_one_group_down_test
     start
 
     puts "Feed through both distributors. Validate buckets on both."
