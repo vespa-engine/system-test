@@ -108,7 +108,7 @@ class TensorConstantPerfTest < PerformanceTest
       # wait for config (when new config has arrived file distribution is guaranteed to be finished)
       wait_for_config_thread = Thread.new {
         puts "Waiting for config generation #{next_generation}"
-        vespa.search['search'].first.wait_for_config_generation(next_generation)
+        vespa.search['search'].first.wait_for_config_generation(next_generation, 120)
         puts "Got config generation #{next_generation}"
       }
 
