@@ -19,10 +19,6 @@ class TensorConstantPerfTest < PerformanceTest
     set_owner("geirst")
   end
 
-  def feeder_numthreads
-      1
-  end
-
   def test_tensor_constant_deploy_and_filedistribution
     set_description("Test that we can deploy an application with a constant tensor of size 300MB (approx 5.97M cells) and distribute with filedistribution")
     @graphs = get_graphs
@@ -41,17 +37,16 @@ class TensorConstantPerfTest < PerformanceTest
 
   def deploy_and_feed(schema)
     out = deploy_app(SearchApp.new.sd(selfdir + "app_no_tensor/test.sd").
-              num_hosts(@num_hosts).
-              configserver("node2"))
-    # Start Vespa so services are up when the next deployment is done.
-    # File distribution will start as part of deploy prepare
-    # so this makes sure that we measure time for file distribution to
-    # finish and do not include startup time of services
+                       num_hosts(@num_hosts).
+                       configserver("node2"))
+    vespa.adminserver.logctl("configserver:com.yahoo.vespa.config.server.session.SessionPreparer", "debug=on")
+    # Start Vespa before the next deployment is done. File distribution will start as part of deploy prepare
+    # so this makes sure that we do not include startup time of services when measuring file distribution time
     start
     deploy_app_and_sample_time(SearchApp.new.sd(schema).
-                               num_hosts(@num_hosts).
-                               configserver("node2").
-                               search_dir(@tensor_dir),
+                                 num_hosts(@num_hosts).
+                                 configserver("node1").
+                                 search_dir(@tensor_dir),
                                get_generation(out).to_i)
     feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
     assert_relevancy("query=sddocname:test", 9.0)
@@ -132,6 +127,10 @@ class TensorConstantPerfTest < PerformanceTest
 
     write_report([metric_filler(PREPARE_TIME, avg_prepare_time),
                   metric_filler(FILE_DISTRIBUTION_TIME, avg_file_distribution_time)])
+  end
+
+  def feeder_numthreads
+      1
   end
 
   def teardown
