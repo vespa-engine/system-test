@@ -45,7 +45,7 @@ class TensorConstantPerfTest < PerformanceTest
     start
     deploy_app_and_sample_time(SearchApp.new.sd(schema).
                                  num_hosts(@num_hosts).
-                                 configserver("node1").
+                                 configserver("node2").
                                  search_dir(@tensor_dir),
                                get_generation(out).to_i)
     feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
