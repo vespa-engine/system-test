@@ -112,12 +112,11 @@ class VespaNode
     return false
   end
 
-  def wait_for_config_generation(wanted_config_generation)
+  def wait_for_config_generation(wanted_config_generation, wait_time=60)
     service = "#{self.config_id} on host #{self.hostname}"
     puts "#{service}: Waiting for config generation #{wanted_config_generation}"
     start = Time.now.to_i
     generation = 0
-    wait_time = 60
     wait_time = 180 if @testcase.valgrind
     begin
       json = get_state_v1_config
