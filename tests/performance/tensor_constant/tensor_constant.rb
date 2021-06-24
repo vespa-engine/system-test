@@ -36,20 +36,25 @@ class TensorConstantPerfTest < PerformanceTest
   end
 
   def deploy_and_feed(schema)
-    out = deploy_app(SearchApp.new.sd(selfdir + "app_no_tensor/test.sd").
-                       num_hosts(@num_hosts).
-                       configserver("node2"))
-    vespa.adminserver.logctl("configserver:com.yahoo.vespa.config.server.session.SessionPreparer", "debug=on")
+    out = deploy_app(create_app(selfdir + "app_no_tensor/test.sd"))
+    vespa.configservers["0"].logctl("configserver:com.yahoo.vespa.config.server.session.SessionPreparer", "debug=on")
     # Start Vespa before the next deployment is done. File distribution will start as part of deploy prepare
     # so this makes sure that we do not include startup time of services when measuring file distribution time
     start
-    deploy_app_and_sample_time(SearchApp.new.sd(schema).
-                                 num_hosts(@num_hosts).
-                                 configserver("node2").
-                                 search_dir(@tensor_dir),
-                               get_generation(out).to_i)
+    deploy_app_and_sample_time(create_app(schema), get_generation(out).to_i)
     feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
     assert_relevancy("query=sddocname:test", 9.0)
+  end
+
+  def create_app(schema)
+    app = SearchApp.new.
+            sd(schema).
+            num_hosts(@num_hosts).
+            search_dir(@tensor_dir)
+    if (@num_hosts == 2)
+      app = app.configserver("node2")
+    end
+    app
   end
 
   def get_graphs
