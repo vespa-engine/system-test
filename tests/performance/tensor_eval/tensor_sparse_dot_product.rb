@@ -67,7 +67,7 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
       get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "50x50",  16.5,  17.1),
       get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "50x10",   6.7,   7.1),
       get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "10x50",  16.5,  19.0),
-      get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "50x250", 72.5,  80.0),
+      get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "50x250", 72.5,  80.5),
       get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "250x50", 16.5,  17.1),
       get_latency_graph_for_all(PERF_LABEL)
     ]
