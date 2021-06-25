@@ -43,30 +43,37 @@ class ContainerHttp < PerformanceTest
       {
         :title => 'QPS HTTP/1 persistent',
         :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
-        :x => 'clients',
+        :x => 'benchmark-tag',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 persistent (1 client)',
+        :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 1},
+        :x => 'benchmark-tag',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 persistent (8 clients)',
+        :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 8},
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true
       },
       {
         :title => 'QPS HTTP/1 persistent (32 clients)',
         :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 32},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true,
         :y_min => 90000,
         :y_max => 115000
       },
       {
-        :title => 'QPS HTTP/1 persistent (64 clients)',
-        :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 64},
-        :x => 'clients',
-        :y => 'qps',
-        :historic => true
-      },
-      {
         :title => 'QPS HTTP/1 persistent (128 clients)',
         :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1, 'clients' => 128},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true,
         :y_min => 100000,
@@ -75,28 +82,28 @@ class ContainerHttp < PerformanceTest
       {
         :title => 'Latency HTTP/1 persistent',
         :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'latency',
         :historic => true
       },
       {
         :title => 'CPU utilization HTTP/1 persistent',
         :filter => {'connection' => PERSISTENT, 'protocol' => HTTP1},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'cpuutil',
         :historic => true
       },
       {
         :title => 'CPU utilization HTTP/1 non-persistent',
         :filter => {'connection' => NON_PERSISTENT, 'protocol' => HTTP1},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'cpuutil',
         :historic => true
       },
       {
         :title => 'QPS HTTP/1 non-persistent',
         :filter => {'connection' => NON_PERSISTENT, 'protocol' => HTTP1 },
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true,
         :y_min => 2900,
@@ -105,7 +112,7 @@ class ContainerHttp < PerformanceTest
       {
         :title => 'QPS HTTP/2 (1 client)',
         :filter => {'protocol' => HTTP2, 'clients' => 1},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true,
         :y_min => 100000,
@@ -114,37 +121,28 @@ class ContainerHttp < PerformanceTest
       {
         :title => 'QPS HTTP/2 (4 client)',
         :filter => {'protocol' => HTTP2, 'clients' => 4},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true
       },
       {
         :title => 'QPS HTTP/2 (8 client)',
         :filter => {'protocol' => HTTP2, 'clients' => 8},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true,
-        :y_min => 185000,
-        :y_max => 205000
       },
       {
         :title => 'QPS HTTP/2 (32 client)',
         :filter => {'protocol' => HTTP2, 'clients' => 32},
-        :x => 'clients',
-        :y => 'qps',
-        :historic => true
-      },
-      {
-        :title => 'QPS HTTP/2 (64 client)',
-        :filter => {'protocol' => HTTP2, 'clients' => 64},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true
       },
       {
         :title => 'QPS HTTP/2 (128 clients)',
         :filter => {'protocol' => HTTP2, 'clients' => 128},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true,
         :y_min => 110000,
@@ -153,42 +151,56 @@ class ContainerHttp < PerformanceTest
       {
         :title => 'QPS HTTP/2 (128 streams total)',
         :filter => {'protocol' => HTTP2},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true
       },
       {
         :title => 'Latency HTTP/2',
         :filter => {'protocol' => HTTP2},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'latency',
         :historic => true
       },
       {
         :title => 'CPU utilization HTTP/2',
         :filter => {'protocol' => HTTP2},
-        :x => 'clients',
+        :x => 'benchmark-tag',
         :y => 'cpuutil',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 vs HTTP/2 (1 clients)',
+        :filter => {'connection' => PERSISTENT, 'clients' => 1},
+        :x => 'benchmark-tag',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 vs HTTP/2 (4 clients)',
+        :filter => {'connection' => PERSISTENT, 'clients' => 4},
+        :x => 'benchmark-tag',
+        :y => 'qps',
+        :historic => true
+      },
+      {
+        :title => 'QPS HTTP/1 vs HTTP/2 (8 clients)',
+        :filter => {'connection' => PERSISTENT, 'clients' => 8},
+        :x => 'benchmark-tag',
+        :y => 'qps',
         :historic => true
       },
       {
         :title => 'QPS HTTP/1 vs HTTP/2 (32 clients)',
         :filter => {'connection' => PERSISTENT, 'clients' => 32},
-        :x => 'protocol',
-        :y => 'qps',
-        :historic => true
-      },
-      {
-        :title => 'QPS HTTP/1 vs HTTP/2 (64 clients)',
-        :filter => {'connection' => PERSISTENT, 'clients' => 64},
-        :x => 'protocol',
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true
       },
       {
         :title => 'QPS HTTP/1 vs HTTP/2 (128 clients)',
         :filter => {'connection' => PERSISTENT, 'clients' => 128},
-        :x => 'protocol',
+        :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true
       }
@@ -275,18 +287,24 @@ class ContainerHttp < PerformanceTest
 
   def run_http1_tests
     run_h2load_benchmark(128, 1, 30, HTTP1)
-    run_h2load_benchmark(64, 1, 30, HTTP1)
     run_h2load_benchmark(32, 1, 10, HTTP1)
+    run_h2load_benchmark(8, 1, 10, HTTP1)
+    run_h2load_benchmark(4, 1, 10, HTTP1)
+    run_h2load_benchmark(1, 1, 10, HTTP1)
     run_fbench_benchmark(32, NON_PERSISTENT)
   end
 
   def run_http2_tests
     run_h2load_benchmark(128, 1, 30, HTTP2)
-    run_h2load_benchmark(64, 2, 30, HTTP2)
-    run_h2load_benchmark(32, 4, 10, HTTP2)
-    run_h2load_benchmark(8, 16, 10, HTTP2)
-    run_h2load_benchmark(4, 32, 10, HTTP2)
-    run_h2load_benchmark(1, 128, 10, HTTP2)
+    run_h2load_benchmark(32, 32, 10, HTTP2)
+    run_h2load_benchmark(32, 64, 10, HTTP2)
+    run_h2load_benchmark(8, 64, 10, HTTP2)
+    run_h2load_benchmark(8, 128, 10, HTTP2)
+    run_h2load_benchmark(8, 256, 10, HTTP2)
+    run_h2load_benchmark(4, 64, 10, HTTP2)
+    run_h2load_benchmark(4, 128, 10, HTTP2)
+    run_h2load_benchmark(4, 256, 10, HTTP2)
+    run_h2load_benchmark(1, 256, 10, HTTP2)
   end
 
   def run_fbench_benchmark(clients, connection)
@@ -305,10 +323,11 @@ class ContainerHttp < PerformanceTest
     perf.start
     h2load = Perf::H2Load.new(@container)
     result = h2load.run_benchmark(clients: clients, threads: [clients, 16].min, concurrent_streams: concurrent_streams,
-                                  warmup: warmup, duration: 90, uri_port: 4443, uri_path: '/HelloWorld',
+                                  warmup: warmup, duration: 60, uri_port: 4443, uri_path: '/HelloWorld',
                                   protocols: [if protocol == HTTP2 then 'h2' else 'http/1.1' end])
     perf.end
-    write_report([result.filler, perf.fill, parameter_filler('connection', PERSISTENT), parameter_filler('protocol', protocol)])
+    write_report([result.filler, perf.fill, parameter_filler('connection', PERSISTENT), parameter_filler('protocol', protocol),
+                  parameter_filler('benchmark-tag', "#{protocol}-#{clients}-#{concurrent_streams}")])
   end
 
 end
