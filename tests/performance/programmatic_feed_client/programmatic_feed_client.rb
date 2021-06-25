@@ -215,6 +215,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
       jvmargs('-Xms16g -Xmx16g').
       search(Searching.new).
       gateway(ContainerDocumentApi.new).
+      component(AccessLog.new("disabled")).
       config(ConfigOverride.new("container.handler.threadpool").add("maxthreads", 4))
     output = deploy_app(SearchApp.new.
       sd(selfdir + 'text.sd').
