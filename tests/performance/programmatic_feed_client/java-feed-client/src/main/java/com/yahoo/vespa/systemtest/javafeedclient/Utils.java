@@ -87,7 +87,6 @@ class Utils {
                                 .setCaCertificatesFile(caCertificate())
                                 .setCertificate(certificate(), privateKey())
                                 .setHostnameVerifier(TRUST_ALL_VERIFIER)
-                                .setBenchmarkOn(true)
                                 .build();
     }
 
