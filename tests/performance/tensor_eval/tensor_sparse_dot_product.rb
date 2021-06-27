@@ -57,18 +57,18 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
       get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50x50",  17.5,  18.2),
       get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50x10",   7.0,   7.3),
       get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "10x50",  19.5,  20.5),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50x250", 70.0,  72.0),
+      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50x250", 70.0,  72.5),
       get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "250x50", 16.3,  16.8),
       get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50x50",  56.0,  60.5),
       get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50x10",  21.5,  25.0),
       get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "10x50",  36.0,  39.5),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50x250", 70.5,  75.0),
+      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50x250", 70.5,  77.0),
       get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "250x50", 35.8,  38.0),
-      get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "50x50",  16.5,  17.1),
+      get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "50x50",  16.4,  17.1),
       get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "50x10",   6.7,   7.1),
       get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "10x50",  16.5,  19.0),
       get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "50x250", 72.5,  81.5),
-      get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "250x50", 16.5,  17.1),
+      get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "250x50", 16.4,  17.1),
       get_latency_graph_for_all(PERF_LABEL)
     ]
   end
