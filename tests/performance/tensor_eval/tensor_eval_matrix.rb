@@ -24,7 +24,7 @@ class TensorEvalMatrixPerfTest < TensorEvalPerfTest
   def get_graphs_matrix
     [
       get_latency_graphs_for_eval_type(MATRIX_PRODUCT),
-      get_latency_graph_for_rank_profile("tensor_matrix_product_25x25", 25, 1.65, 2.00)
+      get_latency_graph_for_rank_profile("tensor_matrix_product_25x25", 25, 1.65, 2.05)
     ]
   end
 
