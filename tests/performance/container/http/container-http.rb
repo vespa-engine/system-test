@@ -301,9 +301,9 @@ class ContainerHttp < PerformanceTest
     run_h2load_benchmark(4, 64, 10, HTTP2)
     run_h2load_benchmark(4, 128, 10, HTTP2)
     run_h2load_benchmark(4, 256, 10, HTTP2)
+    run_h2load_benchmark(2, 64, 10, HTTP2)
     run_h2load_benchmark(2, 128, 10, HTTP2)
     run_h2load_benchmark(2, 256, 10, HTTP2)
-    run_h2load_benchmark(2, 512, 10, HTTP2)
     run_h2load_benchmark(1, 256, 10, HTTP2)
     run_h2load_benchmark(1, 512, 10, HTTP2)
   end
