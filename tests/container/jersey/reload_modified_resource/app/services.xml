@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<container version="1.0">
-  <rest-api path="rest-api" jersey2="true">
-    <components bundle="resource_bundle" />
-  </rest-api>
-</container>
