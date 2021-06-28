@@ -65,14 +65,14 @@ class ProgrammaticFeedClientTest < PerformanceTest
         :x => 'loadgiver',
         :y => 'feeder.throughput',
         :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'size' => LARGE },
-        :y_min => 35000, :y_max => 41000,
+        :y_min => 36000, :y_max => 41000,
         :historic => true
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
         :filter => {'loadgiver' => VESPA_JSON_FEEDER, 'size' => LARGE },
-        :y_min => 33000, :y_max => 39000,
+        :y_min => 34000, :y_max => 39000,
         :historic => true
       },
       {
