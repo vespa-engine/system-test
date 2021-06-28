@@ -149,7 +149,7 @@ class ContainerHttp < PerformanceTest
         :y_max => 135000
       },
       {
-        :title => 'QPS HTTP/2 (128 streams total)',
+        :title => 'QPS HTTP/2',
         :filter => {'protocol' => HTTP2},
         :x => 'benchmark-tag',
         :y => 'qps',
@@ -296,15 +296,16 @@ class ContainerHttp < PerformanceTest
 
   def run_http2_tests
     run_h2load_benchmark(128, 1, 30, HTTP2)
-    run_h2load_benchmark(32, 32, 10, HTTP2)
-    run_h2load_benchmark(32, 64, 10, HTTP2)
     run_h2load_benchmark(8, 64, 10, HTTP2)
     run_h2load_benchmark(8, 128, 10, HTTP2)
-    run_h2load_benchmark(8, 256, 10, HTTP2)
     run_h2load_benchmark(4, 64, 10, HTTP2)
     run_h2load_benchmark(4, 128, 10, HTTP2)
     run_h2load_benchmark(4, 256, 10, HTTP2)
+    run_h2load_benchmark(2, 128, 10, HTTP2)
+    run_h2load_benchmark(2, 256, 10, HTTP2)
+    run_h2load_benchmark(2, 512, 10, HTTP2)
     run_h2load_benchmark(1, 256, 10, HTTP2)
+    run_h2load_benchmark(1, 512, 10, HTTP2)
   end
 
   def run_fbench_benchmark(clients, connection)
@@ -312,7 +313,7 @@ class ContainerHttp < PerformanceTest
     @queryfile = dirs.tmpdir + "hello.txt"
 
     profiler_start
-    run_fbench(@container, clients, 90,
+    run_fbench(@container, clients, 40,
                [parameter_filler('connection', connection), parameter_filler('protocol', HTTP1),
                 parameter_filler('benchmark-tag', "#{HTTP1}-#{clients}-1")],
                {:disable_http_keep_alive => connection == NON_PERSISTENT})
