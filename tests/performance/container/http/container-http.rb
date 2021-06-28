@@ -296,8 +296,8 @@ class ContainerHttp < PerformanceTest
 
   def run_http2_tests
     run_h2load_benchmark(128, 1, 30, HTTP2)
+    run_h2load_benchmark(8, 32, 10, HTTP2)
     run_h2load_benchmark(8, 64, 10, HTTP2)
-    run_h2load_benchmark(8, 128, 10, HTTP2)
     run_h2load_benchmark(4, 64, 10, HTTP2)
     run_h2load_benchmark(4, 128, 10, HTTP2)
     run_h2load_benchmark(4, 256, 10, HTTP2)
