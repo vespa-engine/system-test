@@ -913,7 +913,7 @@ class TestCase
             new_checksum_first_seen = Time.now.to_i
           else
             # Wait a couple of seconds after seeing the correct checksum the first time,
-            # because servlet reconfig (incl. jersey) causes the jetty connector to stop/restart.
+            # because servlet reconfig causes the jetty connector to stop/restart.
             if Time.now.to_i - new_checksum_first_seen > 2
               break
             end
