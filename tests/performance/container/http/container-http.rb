@@ -313,7 +313,8 @@ class ContainerHttp < PerformanceTest
 
     profiler_start
     run_fbench(@container, clients, 90,
-               [parameter_filler('connection', connection), parameter_filler('protocol', HTTP1)],
+               [parameter_filler('connection', connection), parameter_filler('protocol', HTTP1),
+                parameter_filler('benchmark-tag', "#{HTTP1}-#{clients}-1")],
                {:disable_http_keep_alive => connection == NON_PERSISTENT})
     profiler_report(connection)
     end
