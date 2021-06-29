@@ -2,7 +2,6 @@
 
 require 'test/unit'
 require 'app_generator/container_app'
-require 'app_generator/rest_api'
 require 'app_generator/servlet'
 require 'app_generator/processing'
 require 'app_generator/http'
