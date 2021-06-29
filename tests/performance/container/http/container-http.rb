@@ -115,8 +115,8 @@ class ContainerHttp < PerformanceTest
         :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true,
-        :y_min => 100000,
-        :y_max => 120000
+        :y_min => 105000,
+        :y_max => 125000
       },
       {
         :title => 'QPS HTTP/2 (4 client)',
