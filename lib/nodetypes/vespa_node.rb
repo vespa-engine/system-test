@@ -56,7 +56,7 @@ class VespaNode
   end
 
   def https_get(hostname, port, path, headers={})
-    @https_client.get(hostname, port, path, headers)
+    @https_client.get(hostname, port, path, headers: headers)
   end
 
   def get_json_over_http(full_path, port, hostname = Environment.instance.vespa_hostname)
