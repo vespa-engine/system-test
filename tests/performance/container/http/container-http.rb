@@ -119,6 +119,13 @@ class ContainerHttp < PerformanceTest
         :y_max => 125000
       },
       {
+        :title => 'QPS HTTP/2 (2 client)',
+        :filter => {'protocol' => HTTP2, 'clients' => 2},
+        :x => 'benchmark-tag',
+        :y => 'qps',
+        :historic => true
+      },
+      {
         :title => 'QPS HTTP/2 (4 client)',
         :filter => {'protocol' => HTTP2, 'clients' => 4},
         :x => 'benchmark-tag',
@@ -131,13 +138,6 @@ class ContainerHttp < PerformanceTest
         :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true,
-      },
-      {
-        :title => 'QPS HTTP/2 (32 client)',
-        :filter => {'protocol' => HTTP2, 'clients' => 32},
-        :x => 'benchmark-tag',
-        :y => 'qps',
-        :historic => true
       },
       {
         :title => 'QPS HTTP/2 (128 clients)',
@@ -186,13 +186,6 @@ class ContainerHttp < PerformanceTest
       {
         :title => 'QPS HTTP/1 vs HTTP/2 (8 clients)',
         :filter => {'connection' => PERSISTENT, 'clients' => 8},
-        :x => 'benchmark-tag',
-        :y => 'qps',
-        :historic => true
-      },
-      {
-        :title => 'QPS HTTP/1 vs HTTP/2 (32 clients)',
-        :filter => {'connection' => PERSISTENT, 'clients' => 32},
         :x => 'benchmark-tag',
         :y => 'qps',
         :historic => true
