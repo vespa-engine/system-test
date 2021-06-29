@@ -30,7 +30,6 @@ class Container
     @config = ConfigOverrides.new
     @handlers = []
     @components = []
-    @rest_apis = []
     @servlets = []
     @nodes = []
     @id = id
@@ -40,12 +39,6 @@ class Container
     @jvmgcoptions = nil
     @cpu_socket_affinity = nil
     @minimum_jvmargs = "-Dvespa.freezedetector.disable=true "
-  end
-
-  def rest_api(rest_api)
-    @rest_apis.push(rest_api)
-    @jetty = true
-    self
   end
 
   def servlet(servlet)
@@ -82,7 +75,6 @@ class Container
     end
     helper.
       to_xml(@config).
-      to_xml(@rest_apis).
       to_xml(@servlets).
       to_xml(@search).
       to_xml(@docproc).
