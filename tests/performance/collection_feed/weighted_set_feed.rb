@@ -71,22 +71,22 @@ class WeightedSetFeedTest < PerformanceTest
     end
   end
 
-  def params(wset_size, fast_search, y_min, y_max)
-    TestInstanceParams.new(wset_size, fast_search, y_min, y_max)
+  def params(wset_size, hits, fast_search, y_min, y_max)
+    TestInstanceParams.new(wset_size, hits, fast_search, y_min, y_max)
   end
 
   def parameter_combinations
     [
-      params(10,     false, 32000,   40000),
-      params(100,    false, 19500,   22000),
-      params(1000,   false,  2400,    2900),
-      params(10000,  false,   240,     275),
-      params(100000, false,    19,      22),
-      params(10,     true,  19500,   23500),
-      params(100,    true,   1500,    2000),
-      params(1000,   true,    190,     225),
-      params(10000,  true,     18.9,    22.5),
-      params(100000, true,      2.2,     2.6)
+      params(10,     0,   false, 32000,   40000),
+      params(100,    100, false, 19500,   22000),
+      params(1000,   100, false,  2400,    2900),
+      params(10000,  20,  false,   240,     275),
+      params(100000, 0,   false,    19,      22),
+      params(10,     0,   true,  19500,   23500),
+      params(100,    0,   true,   1500,    2000),
+      params(1000,   0,   true,    190,     225),
+      params(10000,  0,   true,     18.9,    22.5),
+      params(100000, 0,   true,      2.2,     2.6)
     ]
   end
 
@@ -134,11 +134,11 @@ class WeightedSetFeedTest < PerformanceTest
       feed_initial_wsets(doc_count: test_doc_count, field_name: attr_name,
                          key_type: LONG_TYPE, wset_size: p.wset_size, fast_search: p.fast_search)
       run_fbench(container, 8, 20)
-      if ! p.fast_search
+      if p.hits > 0
         test_name = "summary_#{attr_name}_#{p.wset_size}"
         profiler_start
-        run_fbench(container, 16, 30, [parameter_filler('legend', test_name)],
-                   {:append_str => "&hits=100&summary=minimal&ranking=unranked&timeout=10"})
+        run_fbench(container, 24, 30, [parameter_filler('legend', test_name)],
+                   {:append_str => "&hits=#{p.hits}&summary=minimal&ranking=unranked&timeout=10"})
         profiler_report(test_name)
       end
     end
