@@ -12,13 +12,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.documents;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.fieldsJson;
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.maxConcurrentStreamsPerConnection;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.printJsonReport;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.route;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.warmupSeconds;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -39,24 +43,19 @@ public class VespaJsonFeeder {
         }
 
         FeedClient client = Utils.createFeedClient();
-        long start = System.nanoTime();
-        CountDownLatch latch = new CountDownLatch(1);
-        new Thread(() -> {
-            try {
-                while ( ! latch.await(1000, TimeUnit.MILLISECONDS)) {
-                    OperationStats stats = client.stats();
-                    System.err.printf("successes:  %7d  exceptions: %7d  failures:   %7d  inflight:   %7d\n",
-                                      stats.successes(), stats.exceptions(), stats.responses() - stats.successes(), stats.inflight());
-                }
-            }
-            catch (InterruptedException ignored) { }
-        }).start();
+        AtomicReference<OperationStats> stats = new AtomicReference<>();
+        AtomicLong startNanos = new AtomicLong();
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.schedule(() -> { stats.set(client.stats()); startNanos.set(System.nanoTime()); },
+                          warmupSeconds(), TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(() -> { System.err.println(client.stats()); },
+                                     1, 1, TimeUnit.SECONDS);
+
         try (InputStream in = Files.newInputStream(tmpFile, StandardOpenOption.READ, StandardOpenOption.DELETE_ON_CLOSE);
              JsonFeeder feeder = JsonFeeder.builder(client).withRoute(route()).build()) {
             feeder.feedMany(in);
         }
-        latch.countDown();
-        Utils.printJsonReport(Duration.ofNanos(System.nanoTime() - start), client.stats(), "vespa-json-feeder");
+        printJsonReport(Duration.ofNanos(System.nanoTime() - startNanos.get()), client.stats().since(stats.get()), "vespa-json-feeder");
     }
 
 }

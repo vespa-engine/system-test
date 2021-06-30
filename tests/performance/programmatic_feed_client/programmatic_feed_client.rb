@@ -6,7 +6,7 @@ require 'json'
 
 class ProgrammaticFeedClientTest < PerformanceTest
 
-  DOCUMENTS = 1000000
+  DOCUMENTS = 5000000
   TINY = 10
   SMALL = 100
   MEDIUM = 1000
@@ -182,6 +182,8 @@ class ProgrammaticFeedClientTest < PerformanceTest
       "java #{perfmap_agent_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{DUMMY_ROUTE} " +
         "-Dvespa.test.feed.documents=#{DOCUMENTS} " +
+        "-Dvespa.test.feed.warmup.seconds=#{10} " +
+        "-Dvespa.test.feed.benchmark.seconds=#{30} " +
         "-Dvespa.test.feed.document-text='#{generate_text(size)}' " +
         "-Dvespa.test.feed.connections=#{connections} " +
         "-Dvespa.test.feed.max-concurrent-streams-per-connection=4096 " +

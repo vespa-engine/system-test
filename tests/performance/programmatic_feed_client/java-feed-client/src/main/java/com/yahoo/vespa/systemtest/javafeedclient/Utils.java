@@ -41,6 +41,8 @@ class Utils {
     static String route() { return System.getProperty("vespa.test.feed.route"); }
     static URI endpoint() { return URI.create(System.getProperty("vespa.test.feed.endpoint")); }
     static int documents() { return Integer.parseInt(System.getProperty("vespa.test.feed.documents")); }
+    static int warmupSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.warmup.seconds")); }
+    static int benchmarkSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.benchmark.seconds")); }
     static int maxConcurrentStreamsPerConnection() {
         return Integer.parseInt(System.getProperty("vespa.test.feed.max-concurrent-streams-per-connection"));
     }

@@ -8,39 +8,36 @@ import ai.vespa.feed.client.OperationStats;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.benchmarkSeconds;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.createFeedClient;
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.documents;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.fieldsJson;
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.maxConcurrentStreamsPerConnection;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.printJsonReport;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.route;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.warmupSeconds;
 
 /**
  * @author bjorncs
  */
 public class VespaFeedClient {
     public static void main(String[] args) throws IOException {
-        int documents = documents();
         String fieldsJson = fieldsJson();
         FeedClient client = createFeedClient();
-        CountDownLatch latch = new CountDownLatch(1);
-        long start = System.nanoTime();
-        new Thread(() -> {
-            try {
-                while ( ! latch.await(1000, TimeUnit.MILLISECONDS)) {
-                    OperationStats stats = client.stats();
-                    System.err.printf("successes:  %7d  exceptions: %7d  failures:   %7d  inflight:   %7d\n",
-                                      stats.successes(), stats.exceptions(), stats.responses() - stats.successes(), stats.inflight());
-                }
-            }
-            catch (InterruptedException ignored) { }
-        }).start();
+        AtomicReference<OperationStats> stats = new AtomicReference<>();
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.schedule(() -> { stats.set(client.stats()); },
+                          warmupSeconds(), TimeUnit.SECONDS);
+        executor.schedule(() -> { stats.set(client.stats().since(stats.get())); executor.shutdown(); },
+                          warmupSeconds() + benchmarkSeconds(), TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(() -> { System.err.println(client.stats()); },
+                                     1, 1, TimeUnit.SECONDS);
         try (client) {
-            for (int i = 0; i < documents; i++) {
-                DocumentId id = DocumentId.of("text", "text", String.format("vespa-feed-client-%07d", + i));
+            while ( ! executor.isShutdown()) {
+                DocumentId id = DocumentId.of("text", "text", String.format("vespa-feed-client-%07d", + (int) (Math.random() * 1e6)));
                 client.put(id, "{\"fields\": " + fieldsJson + "}", OperationParameters.empty().route(route()))
                       .whenComplete((result, error) -> {
                           if (error != null) {
@@ -49,8 +46,7 @@ public class VespaFeedClient {
                       });
             }
         }
-        latch.countDown();
-        printJsonReport(Duration.ofNanos(System.nanoTime() - start), client.stats(), "vespa-feed-client");
+        printJsonReport(Duration.ofSeconds(benchmarkSeconds()), stats.get(), "vespa-feed-client");
     }
 
 }
