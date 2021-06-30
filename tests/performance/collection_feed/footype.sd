@@ -1,23 +1,35 @@
 search footype {
-document footype {
+  document footype {
 
-  field wset_attr_long_nofs type weightedset<long> {
-    indexing: attribute
+    field id type long {
+      indexing: attribute
+      attribute: fast-search
+    }
+
+    field wset_attr_long_nofs type weightedset<long> {
+      indexing: attribute
+    }
+
+    field wset_attr_long_fs type weightedset<long> {
+      indexing: attribute
+      attribute: fast-search
+    }
+
+    field wset_attr_string_nofs type weightedset<string> {
+      indexing: attribute
+    }
+
+    field wset_attr_string_fs type weightedset<string> {
+      indexing: attribute
+      attribute: fast-search
+    }
+
   }
-
-  field wset_attr_long_fs type weightedset<long> {
-    indexing: attribute
-    attribute: fast-search
+  document-summary minimal {
+    summary id type long { source: id }
+    summary wset_attr_long_nofs type weightedset<long> { source: wset_attr_long_nofs }
+    summary wset_attr_long_fs type weightedset<long> { source: wset_attr_long_fs }
+    summary wset_attr_string_nofs type weightedset<string> { source: wset_attr_string_nofs }
+    summary wset_attr_string_fs type weightedset<string> { source: wset_attr_string_fs }
   }
-
-  field wset_attr_string_nofs type weightedset<string> {
-    indexing: attribute
-  }
-
-  field wset_attr_string_fs type weightedset<string> {
-    indexing: attribute
-    attribute: fast-search
-  }
-
-}
 }

@@ -119,6 +119,7 @@ class WeightedSetFeedTest < PerformanceTest
     deploy_app(create_app)
     start
 
+    @queryfile = "#{selfdir}/query.txt"
     @data_generator = "#{dirs.tmpdir}/docs"
     container = (vespa.qrserver["0"] or vespa.container.values.first)
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@data_generator} #{selfdir}/docs.cpp")
@@ -129,8 +130,17 @@ class WeightedSetFeedTest < PerformanceTest
       test_doc_count = doc_count / p.wset_size
       test_doc_count *= 10 if !p.fast_search #10x more for non fast-search
       test_doc_count = [test_doc_count, 2_000_000].min
-      feed_initial_wsets(doc_count: test_doc_count, field_name: long_attr_name(p.fast_search),
+      attr_name = long_attr_name(p.fast_search)
+      feed_initial_wsets(doc_count: test_doc_count, field_name: attr_name,
                          key_type: LONG_TYPE, wset_size: p.wset_size, fast_search: p.fast_search)
+      run_fbench(container, 8, 20)
+      if ! p.fast_search
+        test_name = "summary_#{attr_name}_#{p.wset_size}"
+        profiler_start
+        run_fbench(container, 16, 30, [parameter_filler('legend', test_name)],
+                   {:append_str => "&hits=100&summary=minimal&ranking=unranked&timeout=10"})
+        profiler_report(test_name)
+      end
     end
   end
 
