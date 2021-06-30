@@ -18,6 +18,7 @@ void wset(const char *name, int numElem) {
 
 void doc(const char * fieldName, int num, int numElem) {
     printf("{\"id\":\"id:user:footype::%d\", \"fields\":{ ", num);
+    printf("\"id\" : %d,", num);
     wset(fieldName, numElem);
     printf(" } }");
 }
