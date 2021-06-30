@@ -11,23 +11,24 @@ import com.yahoo.vespa.http.client.config.SessionParams;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.CountDownLatch;
+import java.time.Instant;
 
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.TRUST_ALL_VERIFIER;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.benchmarkSeconds;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.caCertificate;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.certificate;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.connections;
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.fieldsJson;
-import static com.yahoo.vespa.systemtest.javafeedclient.Utils.documents;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.endpoint;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.fieldsJson;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.privateKey;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.route;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.warmupSeconds;
 
 /**
  * @author bjorncs
  */
 public class VespaHttpClient {
-    public static void main(String[] args) throws IOException, InterruptedException {
+    public static void main(String[] args) throws IOException {
         URI endpoint = endpoint();
         SessionParams sessionParams = new SessionParams.Builder()
                 .setFeedParams(new FeedParams.Builder()
@@ -43,29 +44,27 @@ public class VespaHttpClient {
                         .addEndpoint(Endpoint.create(endpoint.getHost(), endpoint.getPort(), true))
                         .build())
                 .build();
-        int documents = documents();
-        String fieldsJson = fieldsJson();
 
-        CountDownLatch doneSignal = new CountDownLatch(documents);
+        String fieldsJson = fieldsJson();
+        Instant start = Instant.now();
+
         BenchmarkReporter reporter = new BenchmarkReporter("vespa-http-client");
         FeedClient feedClient = FeedClientFactory.create(sessionParams, (docId, documentResult) -> {
+            if (Instant.now().isBefore(start.plusSeconds(warmupSeconds()))) return;
+            if (Instant.now().isAfter(start.plusSeconds(warmupSeconds() + benchmarkSeconds()))) return;
             if (documentResult.isSuccess()) {
                 reporter.incrementSuccess();
             } else {
                 reporter.incrementFailure();
                 System.err.println(documentResult + "\n" + documentResult.getDetails());
             }
-            doneSignal.countDown();
         });
-        try {
-            for (int i = 0; i < documents; i++) {
-                String docId = String.format("id:text:text::vespa-http-client-%07d", i);
+        try (feedClient) {
+            while (Instant.now().isBefore(start.plusSeconds(warmupSeconds() + benchmarkSeconds()))) {
+                String docId = String.format("id:text:text::vespa-http-client-%07d", (int) (Math.random() * 1e6));
                 String operationJson = "{\"put\": \"" + docId + "\", \"fields\": " + fieldsJson + "}";
                 feedClient.stream(docId, operationJson);
             }
-            doneSignal.await();
-        } finally {
-            feedClient.close();
         }
         reporter.printJsonReport();
     }
