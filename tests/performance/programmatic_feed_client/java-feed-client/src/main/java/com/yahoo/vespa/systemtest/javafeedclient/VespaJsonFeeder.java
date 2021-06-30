@@ -56,6 +56,7 @@ public class VespaJsonFeeder {
             feeder.feedMany(in);
         }
         printJsonReport(Duration.ofNanos(System.nanoTime() - startNanos.get()), client.stats().since(stats.get()), "vespa-json-feeder");
+        executor.shutdown();
     }
 
 }
