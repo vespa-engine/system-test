@@ -134,7 +134,11 @@ class ProgrammaticFeedClientTest < PerformanceTest
     run_benchmark(container_node, "VespaHttpClient",   TINY,  4)
     run_benchmark(container_node, "VespaFeedClient",   TINY, 32)
     run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
+    run_benchmark(container_node, "VespaHttpClient",  SMALL,  2)
     run_benchmark(container_node, "VespaHttpClient",  SMALL,  4)
+    run_benchmark(container_node, "VespaHttpClient",  SMALL,  8)
+    run_benchmark(container_node, "VespaFeedClient",  SMALL,  2)
+    run_benchmark(container_node, "VespaFeedClient",  SMALL,  8)
     run_benchmark(container_node, "VespaFeedClient",  SMALL, 32)
     run_benchmark(container_node, "VespaHttpClient", MEDIUM,  4)
     run_benchmark(container_node, "VespaFeedClient", MEDIUM, 32)
@@ -162,6 +166,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
         json_to_filler(result),
         parameter_filler('size', size),
         parameter_filler('label', label),
+        parameter_filler('clients', connections),
         cpu_monitor.fill
       ]
     )
