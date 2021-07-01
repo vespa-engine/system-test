@@ -11,6 +11,7 @@ import com.yahoo.vespa.http.client.config.SessionParams;
 
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 import java.time.Instant;
 
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.TRUST_ALL_VERIFIER;
@@ -66,6 +67,6 @@ public class VespaHttpClient {
                 feedClient.stream(docId, operationJson);
             }
         }
-        reporter.printJsonReport();
+        reporter.printJsonReport(Duration.ofSeconds(benchmarkSeconds()));
     }
 }

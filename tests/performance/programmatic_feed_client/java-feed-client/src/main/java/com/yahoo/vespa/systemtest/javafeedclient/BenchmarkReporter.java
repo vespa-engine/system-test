@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 class BenchmarkReporter {
 
     private final String clientName;
-    private final long start = System.nanoTime();
     private final AtomicInteger successfulRequests = new AtomicInteger(0);
     private final AtomicInteger failedRequests = new AtomicInteger(0);
 
@@ -25,8 +24,7 @@ class BenchmarkReporter {
     void incrementSuccess() { successfulRequests.incrementAndGet(); }
     void incrementFailure() { failedRequests.incrementAndGet(); }
 
-    void printJsonReport() throws IOException {
-        Duration duration = Duration.ofNanos(System.nanoTime() - start);
+    void printJsonReport(Duration duration) throws IOException {
         JsonFactory factory = new JsonFactory();
         try (JsonGenerator generator = factory.createGenerator(System.out)) {
             generator.writeStartObject();
