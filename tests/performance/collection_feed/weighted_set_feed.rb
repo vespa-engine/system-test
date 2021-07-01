@@ -62,9 +62,10 @@ class WeightedSetFeedTest < PerformanceTest
   end
 
   class TestInstanceParams
-    attr_reader :wset_size, :fast_search, :y_min, :y_max
-    def initialize(wset_size, fast_search, y_min, y_max)
+    attr_reader :wset_size, :hits, :fast_search, :y_min, :y_max
+    def initialize(wset_size, hits, fast_search, y_min, y_max)
       @wset_size = wset_size
+      @hits = hits
       @fast_search = fast_search
       @y_min = y_min
       @y_max = y_max
