@@ -134,8 +134,8 @@ class WeightedSetFeedTest < PerformanceTest
       attr_name = long_attr_name(p.fast_search)
       feed_initial_wsets(doc_count: test_doc_count, field_name: attr_name,
                          key_type: LONG_TYPE, wset_size: p.wset_size, fast_search: p.fast_search)
-      run_fbench(container, 8, 20)
       if p.hits > 0
+        run_fbench(container, 8, 20)
         test_name = "summary_#{attr_name}_#{p.wset_size}"
         profiler_start
         run_fbench(container, 24, 30, [parameter_filler('legend', test_name)],
