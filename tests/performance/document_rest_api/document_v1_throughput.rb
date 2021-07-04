@@ -30,7 +30,7 @@ class DocumentV1Throughput < PerformanceTest
       {
         :http1 => {
           :clients => 8,
-          :metrics => {'qps' => {'get' => {:y_min => 12500, :y_max => 14000}, 'post' => {:y_min => 6600, :y_max => 7500}}}
+          :metrics => {'qps' => {'get' => {:y_min => 12000, :y_max => 14000}, 'post' => {:y_min => 6600, :y_max => 7500}}}
         }
       },
       {
