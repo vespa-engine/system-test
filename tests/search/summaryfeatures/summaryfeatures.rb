@@ -48,6 +48,20 @@ class SummaryFeatures < IndexedSearchTest
     assert_summaryfeatures
   end
 
+  def test_omit_summary_features
+    set_owner("geirst")
+    set_description("Test that summary features can be omitted for a given document summary")
+    deploy_app(SearchApp.new.sd(selfdir + "sd2/test.sd"))
+    start
+    feed(:file => selfdir + "doc.xml")
+
+    result = search("query=body:test&summary=without_summary_features")
+    assert_hitcount(result, 1)
+    assert_field_value(result, "attr", "200")
+    assert_nil(result.hit[0].field["summaryfeatures"],
+               "Expected that 'summaryfeatures' field was omitted from document summary")
+  end
+
   def assert_summaryfeatures()
     wait_for_hitcount("query=sddocname:test", 6)
 
