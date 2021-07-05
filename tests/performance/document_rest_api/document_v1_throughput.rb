@@ -24,7 +24,7 @@ class DocumentV1Throughput < PerformanceTest
       {
         :http1 => {
           :clients => 1,
-          :metrics => {'qps' => {'get' => {:y_min => 1300, :y_max => 1850}, 'post' => {:y_min => 540, :y_max => 760}}}
+          :metrics => {'qps' => {'get' => {:y_min => 1300, :y_max => 1850}, 'post' => {:y_min => 540, :y_max => 770}}}
         }
       },
       {
@@ -58,7 +58,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 1,
           :streams => 8,
           :threads => 1,
-          :metrics => {'qps' => {'get' => {:y_min => 11800, :y_max => 13000}, 'post' => {:y_min => 6000, :y_max => 7500}}}
+          :metrics => {'qps' => {'get' => {:y_min => 11700, :y_max => 13000}, 'post' => {:y_min => 5500, :y_max => 7500}}}
         }
       },
       {
@@ -66,7 +66,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 1,
           :streams => 64,
           :threads => 1,
-          :metrics => {'qps' => {'get' => {:y_min => 41000, :y_max => 46000}, 'post' => {:y_min => 21000, :y_max => 30000}}}
+          :metrics => {'qps' => {'get' => {:y_min => 41000, :y_max => 46000}, 'post' => {:y_min => 23000, :y_max => 30000}}}
         }
       },
       {
@@ -74,7 +74,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 1,
           :streams => 256,
           :threads => 1,
-          :metrics => {'qps' => {'get' => {:y_min => 51000, :y_max => 67000}, 'post' => {:y_min => 30000, :y_max => 41000}}}
+          :metrics => {'qps' => {'get' => {:y_min => 51000, :y_max => 67000}, 'post' => {:y_min => 29500, :y_max => 41000}}}
         }
       },
       {
@@ -98,7 +98,7 @@ class DocumentV1Throughput < PerformanceTest
           :clients => 64,
           :streams => 8,
           :threads => 16,
-          :metrics => {'qps' => {'get' => {:y_min => 53000, :y_max => 67000}, 'post' => {:y_min => 29000, :y_max => 42000}}}
+          :metrics => {'qps' => {'get' => {:y_min => 53000, :y_max => 68000}, 'post' => {:y_min => 29000, :y_max => 42000}}}
         }
       }
     ]
