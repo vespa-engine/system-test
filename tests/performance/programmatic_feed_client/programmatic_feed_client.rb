@@ -72,42 +72,42 @@ class ProgrammaticFeedClientTest < PerformanceTest
         :x => 'loadgiver',
         :y => 'feeder.throughput',
         :filter => {'loadgiver' => VESPA_JSON_FEEDER, 'size' => LARGE },
-        :y_min => 35000, :y_max => 40000,
+        :y_min => 36000, :y_max => 41000,
         :historic => true
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
         :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'size' => MEDIUM },
-        :y_min => 62000, :y_max => 70000,
+        :y_min => 61000, :y_max => 71000,
         :historic => true,
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
         :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'size' => MEDIUM },
-        :y_min => 54000, :y_max => 58000,
+        :y_min => 53000, :y_max => 59000,
         :historic => true
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
         :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'size' => SMALL },
-        :y_min => 108000, :y_max => 122000,
+        :y_min => 105000, :y_max => 120000,
         :historic => true,
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
         :filter => {'loadgiver' => VESPA_FEED_CLIENT, 'size' => SMALL },
-        :y_min => 57000, :y_max => 61000,
+        :y_min => 57000, :y_max => 62000,
         :historic => true
       },
       {
         :x => 'loadgiver',
         :y => 'feeder.throughput',
         :filter => { 'loadgiver' => VESPA_HTTP_CLIENT, 'size' => TINY },
-        :y_min => 53000, :y_max => 67000,
+        :y_min => 53000, :y_max => 74000,
         :historic => true,
       },
       {
