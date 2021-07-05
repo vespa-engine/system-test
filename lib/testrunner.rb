@@ -259,7 +259,7 @@ if __FILE__ == $0
     "[#{datetime}] #{severity} #{msg}\n"
   end
 
-  testrunner = TestRunner.new(logger, options[:basedir], TestNodePool.new(logger), options)
+  testrunner = TestRunner.new(logger, options[:basedir], TestNodePool.new(logger), **options)
   unless testrunner.run
     logger.error "Some tests failed."
     exit(1)
