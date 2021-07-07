@@ -22,7 +22,6 @@ require 'test/distributionstates_test'
 
 if File.exists?(Environment.instance.vespa_home)
   # Add tests that require a Vespa installation to run here
-  require 'test/datasetmanagertest.rb'
   require 'test/ssl_config_test'
 else
   puts "WARNING: Skipping tests requiring a Vespa installation as none is found in #{Environment.instance.vespa_home}"
