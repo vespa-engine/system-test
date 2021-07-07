@@ -24,7 +24,6 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
   def test_replace_max_reduce_prod_join_expression
     set_description("Test performance of the max-reduce-prod-join tensor expression replacement optimization")
 
-    @graphs = get_graphs
     @docs_file_name = dirs.tmpdir + "/docs.json"
     @queries1_file_name = dirs.tmpdir + "/queries1.txt"
     @queries2_file_name = dirs.tmpdir + "/queries2.txt"
@@ -34,34 +33,6 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
     generate_feed_and_queries
     deploy_and_feed
     run_queries
-  end
-
-  def get_graphs
-    [
-      {
-        :x => 'rank_profile',
-        :y => 'latency',
-        :title => 'Historic latency for all rank profiles',
-        :historic => true
-      },
-      get_graph("without_replacement", 19.0, 26.0),
-      get_graph("halfmodern",          12.5, 15.0),
-      get_graph("halfmoderndirect",    10.0, 12.0),
-      get_graph("modern",               9.5, 12.5),
-      get_graph("with_replacement",     3.6,  4.2)
-    ]
-  end
-
-  def get_graph(rank_profile, y_min, y_max)
-    {
-      :x => "rank_profile",
-      :y => "latency",
-      :title => "Historic latency for rank profile '#{rank_profile}'",
-      :filter => {"rank_profile" => rank_profile},
-      :historic => true,
-      :y_min => y_min,
-      :y_max => y_max
-    }
   end
 
   def generate_feed_and_queries

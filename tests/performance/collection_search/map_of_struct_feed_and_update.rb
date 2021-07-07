@@ -23,33 +23,9 @@ class MapOfStructFeedAndUpdatePerformanceTest < CollectionPerfTestBase
   def test_map_of_struct_feeding_and_updates
     set_description('Test feeding, field and element-wise partial updates for map of struct')
     srand(123456789) # Want deterministic PRNG output TODO explicit Random obj to avoid possible contamination
-    @graphs = get_graphs
     [false, true].each do |fast_search|
       run_map_of_struct_test_cases(fast_search: fast_search)
     end
-  end
-
-  def get_graphs
-    # TODO add y_min/y_max once we have some test runs available
-    [
-      get_feeding_graph(BASELINE_FEED, false),
-      get_feeding_graph(BASELINE_FEED, true),
-      get_feeding_graph(REPLACE_UPDATE, false),
-      get_feeding_graph(REPLACE_UPDATE, true),
-      get_feeding_graph(FIELDPATH_UPDATE, false),
-      get_feeding_graph(FIELDPATH_UPDATE, true)
-    ]
-  end
-
-  def get_feeding_graph(feed_type, fast_search)
-    filter = {FEED_TYPE => feed_type, FAST_SEARCH => fast_search}
-    {
-      :x => ELEMENTS_PER_DOC,
-      :y => "feeder.throughput",
-      :title => "Historic feed throughput (#{filter_to_s(filter)}) with different '#{ELEMENTS_PER_DOC}'",
-      :filter => filter,
-      :historic => true
-    }
   end
 
   class GeneratorBase

@@ -21,7 +21,6 @@ class TensorConstantPerfTest < PerformanceTest
 
   def test_tensor_constant_deploy_and_filedistribution
     set_description("Test that we can deploy an application with a constant tensor of size 300MB (approx 5.97M cells) and distribute with filedistribution")
-    @graphs = get_graphs
     @tensor_dir = dirs.tmpdir + "search/"
     generate_tensor_constant(300)
     deploy_and_feed(selfdir + "app/test.sd")
@@ -29,7 +28,6 @@ class TensorConstantPerfTest < PerformanceTest
 
   def test_tensor_constant_deploy_and_filedistribution_lz4
     set_description("Test that we can deploy an application with a constant tensor of size 300MB (approx 5.97M cells) and distribute with filedistribution, using lz4")
-    @graphs = get_graphs_lz4
     @tensor_dir = dirs.tmpdir + "search/"
     generate_tensor_constant_lz4(300)
     deploy_and_feed(selfdir + "app_lz4/test.sd")
@@ -55,31 +53,6 @@ class TensorConstantPerfTest < PerformanceTest
       app = app.configserver("node2")
     end
     app
-  end
-
-  def get_graphs
-    [
-      get_deploy_graph(PREPARE_TIME, 11, 15),
-      get_deploy_graph(FILE_DISTRIBUTION_TIME, 17, 19.5)
-    ]
-  end
-
-  def get_graphs_lz4
-    [
-      get_deploy_graph(PREPARE_TIME, 2.0, 5.5),
-      get_deploy_graph(FILE_DISTRIBUTION_TIME, 14, 20)
-    ]
-  end
-
-  def get_deploy_graph(name, y_min, y_max)
-    {
-      :x => "blank",
-      :y => name,
-      :title => "Historic #{name} in seconds",
-      :y_min => y_min,
-      :y_max => y_max,
-      :historic => true
-    }
   end
 
   def generate_tensor_constant(mb)

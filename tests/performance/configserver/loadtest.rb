@@ -24,15 +24,6 @@ class ConfigserverLoadTest < PerformanceTest
   end
 
   def test_client_scaling
-    @graphs = [
-      {
-        :x => 'blank',
-        :y => 'config.loadtester.req_per_sec',
-        :y_min => 24000,
-        :y_max => 30000,
-        :historic => true
-      }
-    ]
     setup_generator(150, 10, 1)
 
     copy_files_to_tmp_dir(vespa.nodeproxies.first[1])

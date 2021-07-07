@@ -37,7 +37,6 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
 
   def test_sparse_tensor_dot_product
     set_description("Test performance of sparse tensor dot product vs feature dot product calculation")
-    @graphs = get_graphs_dot_product
     clients = 8
     deploy_and_feed(100000)
     [[50,50], [10,50], [50,10], [250,50], [50,250]].each do |doc_entries, q_entries|
@@ -47,30 +46,6 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
       run_fbench_helper(DOT_PRODUCT, SPARSE_TENSOR_DOT_PRODUCT, doc_entries, t_query_f, q_entries, clients)
       run_fbench_helper(DOT_PRODUCT, STRING_FEATURE_DP, doc_entries, w_query_f, q_entries, clients)
     end
-  end
-
-  def get_graphs_dot_product
-    [
-      get_latency_graphs_for_rank_profile(FEATURE_DOT_PRODUCT),
-      get_latency_graphs_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT),
-      get_latency_graphs_for_rank_profile(STRING_FEATURE_DP),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50x50",  17.4,  18.2),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50x10",   7.0,   7.3),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "10x50",  19.2,  19.9),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "50x250", 69.0,  75.0),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,         "250x50", 16.3,  16.8),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50x50",  56.0,  60.5),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50x10",  21.5,  25.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "10x50",  36.0,  39.5),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "50x250", 70.5,  79.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,   "250x50", 35.5,  38.0),
-      get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "50x50",  16.2,  17.1),
-      get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "50x10",   6.7,   7.1),
-      get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "10x50",  17.0,  19.2),
-      get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "50x250", 72.5,  82.0),
-      get_latency_graph_for_rank_profile(STRING_FEATURE_DP,           "250x50", 16.1,  16.6),
-      get_latency_graph_for_all(PERF_LABEL)
-    ]
   end
 
   def teardown

@@ -21,7 +21,6 @@ class TensorMatrixMatrixProduct < PerformanceTest
   def test_tensor_matrix_matrix_products
     set_description("Test of various matrix-matrix products")
 
-    @graphs = get_graphs
     @docs_file_name = dirs.tmpdir + "/docs.json"
     @queries_file_name = dirs.tmpdir + "/queries.txt"
     @constants_dir = dirs.tmpdir + "/search/"
@@ -30,35 +29,6 @@ class TensorMatrixMatrixProduct < PerformanceTest
     generate_feed_and_queries
     deploy_and_feed
     run_queries
-  end
-
-  def get_graphs
-    [
-      get_latency_graph(0.15, 0.40),
-      get_qps_graph(2800, 6500),
-    ]
-  end
-
-  def get_latency_graph(y_min, y_max)
-    {
-      :x => "rank_profile",
-      :y => "latency",
-      :title => "Historic latency",
-      :historic => true,
-      :y_min => y_min,
-      :y_max => y_max
-    }
-  end
-
-  def get_qps_graph(y_min, y_max)
-    {
-      :x => "rank_profile",
-      :y => "qps",
-      :title => "Historic QPS",
-      :historic => true,
-      :y_min => y_min,
-      :y_max => y_max
-    }
   end
 
   def generate_feed_and_queries

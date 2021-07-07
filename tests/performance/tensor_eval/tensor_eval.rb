@@ -108,45 +108,4 @@ class TensorEvalPerfTest < PerformanceTest
     "#{EVAL_TYPE}-#{eval_type}.#{RANK_PROFILE}-#{rank_profile}.#{WSET_ENTRIES}-#{wset_entries}"
   end
 
-  def get_latency_graphs_for_rank_profile(rank_profile)
-    {
-      :x => WSET_ENTRIES,
-      :y => "latency",
-      :title => "Historic latency for rank profile '#{rank_profile}' with various number of entries (per dimension) in query and document",
-      :filter => {RANK_PROFILE => rank_profile},
-      :historic => true
-    }
-  end
-
-  def get_latency_graph_for_all(label_key)
-    {
-      :x => label_key,
-      :y => "latency",
-      :title => "Historic latency for all #{label_key} types",
-      :historic => true
-    }
-  end
-
-  def get_latency_graph_for_rank_profile(rank_profile, wset_entries, y_min, y_max)
-    {
-      :x => WSET_ENTRIES,
-      :y => "latency",
-      :title => "Historic latency for rank profile '#{rank_profile}' with #{wset_entries} entries (per dimension) in query and document",
-      :filter => {RANK_PROFILE => rank_profile, WSET_ENTRIES => wset_entries},
-      :historic => true,
-      :y_min => y_min,
-      :y_max => y_max
-    }
-  end
-
-  def get_latency_graphs_for_eval_type(eval_type)
-    {
-      :x => RANK_PROFILE,
-      :y => "latency",
-      :title => "Historic latency for eval type '#{eval_type}' with rank profiles with various matrix sizes",
-      :filter => {EVAL_TYPE => eval_type},
-      :historic => true
-    }
-  end
-
 end

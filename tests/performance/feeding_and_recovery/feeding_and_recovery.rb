@@ -391,39 +391,6 @@ class FeedingAndRecoveryTest < PerformanceTest
   end
 
   def test_feeding_and_recovery
-    @graphs = [
-               {
-                 :filter => { :tag => [ "feeding" ] },
-                 :x => 'cluster_setup',
-                 :y => 'feeder.avglatency',
-                 :historic => false
-               },
-               {
-                 :filter => { :tag => [ "feeding" ] },
-                 :x => 'cluster_setup',
-                 :y => 'feeder.throughput',
-                 :historic => false
-               },
-               {
-                 :filter => { :tag => [ "activation" ] },
-                 :x => 'activation',
-                 :y => 'glitch',
-                 :historic => false
-               },
-               {
-                 :filter => { :tag => [ "recovery" ] },
-                 :x => 'recovery',
-                 :y => 'throughput',
-                 :historic => false
-               },
-               {
-                 :filter => { :tag => [ "feeding_and_recovery" ] },
-                 :x => 'time',
-                 :y => 'throughput',
-                 :id => 'source',
-                 :historic => false
-               }
-              ]
     @test_params = FullParams.new
     sniffer = MetricSniffer.new(["feeder.throughput"])
     run_elastic_feeding_benchmark(3, [sniffer]) { stop }

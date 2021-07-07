@@ -41,7 +41,6 @@ class ParentChildPerfTest < PerformanceTest
 
   def test_parent_child_feeding_ranking_matching
     set_description("Test performance of parent child feeding (partial updates), ranking and matching")
-    @graphs = get_graphs
     [[1,10],[10,1],[1000,1]].each do |ratios|
       clean_indexes_and_deploy_app
       run_tests(@num_ad_docs, ratios[0], ratios[1])
@@ -132,87 +131,6 @@ class ParentChildPerfTest < PerformanceTest
 
   def copy_query_file(query_file)
     @container.copy(query_file, File.dirname(query_file))
-  end
-
-  def get_graphs
-    [
-      get_feeding_graphs(FEEDING_PUT, IMPORTED),
-      get_feeding_graphs(FEEDING_UPDATE, IMPORTED),
-      get_feeding_graphs(FEEDING_UPDATE, FLATTENED),
-      get_ranking_latency_graphs(IMPORTED, SLOW, CAMPAIGN_AD_RATIO),
-      get_ranking_latency_graphs(FLATTENED, SLOW, CAMPAIGN_AD_RATIO),
-      get_ranking_latency_graphs(IMPORTED_NESTED, FAST, ADVERTISER_CAMPAIGN_RATIO),
-      get_matching_latency_graphs(IMPORTED, SLOW, CAMPAIGN_AD_RATIO),
-      get_matching_latency_graphs(IMPORTED, FAST, CAMPAIGN_AD_RATIO),
-      get_matching_latency_graphs(FLATTENED, SLOW, CAMPAIGN_AD_RATIO),
-      get_matching_latency_graphs(FLATTENED, FAST, CAMPAIGN_AD_RATIO),
-      get_matching_latency_graphs(IMPORTED_NESTED, FAST, ADVERTISER_CAMPAIGN_RATIO),
-      get_feeding_graph(FEEDING_PUT, 26000, 39000),
-      get_feeding_graph(FEEDING_UPDATE, 29000, 41000),
-      get_latency_graph(RANKING, SLOW, 90, 105),
-      get_latency_graph(MATCHING, SLOW, 1.65, 2.00),
-      get_latency_graph(MATCHING, FAST, 1.00, 1.30)
-    ]
-  end
-
-  def get_feeding_graphs(mode, field_type)
-    filter = {MODE => mode, FIELD_TYPE => field_type, MATCH_TYPE => SLOW}
-    {
-      :x => CAMPAIGN_AD_RATIO,
-      :y => "feeder.throughput",
-      :title => "Historic feed throughput (#{filter_to_s(filter)}) with different '#{CAMPAIGN_AD_RATIO}'",
-      :filter => filter,
-      :historic => true
-    }
-  end
-
-  def get_feeding_graph(mode, y_min, y_max)
-    filter = {MODE => mode, FIELD_TYPE => IMPORTED, MATCH_TYPE => SLOW, CAMPAIGN_AD_RATIO => 10}
-    {
-      :x => CAMPAIGN_AD_RATIO,
-      :y => "feeder.throughput",
-      :title => "Historic feed throughput (#{filter_to_s(filter)})",
-      :filter => filter,
-      :historic => true,
-      :y_min => y_min,
-      :y_max => y_max
-    }
-  end
-
-  def get_ranking_latency_graphs(field_type, match_type, x_axis)
-    get_latency_graphs(RANKING, field_type, match_type, x_axis)
-  end
-
-  def get_matching_latency_graphs(field_type, match_type, x_axis)
-    get_latency_graphs(MATCHING, field_type, match_type, x_axis)
-  end
-
-  def get_latency_graphs(mode, field_type, match_type, x_axis)
-    filter = {MODE => mode, FIELD_TYPE => field_type, MATCH_TYPE => match_type}
-    {
-      :x => x_axis,
-      :y => "latency",
-      :title => "Historic latency (#{filter_to_s(filter)}) with different '#{x_axis}'",
-      :filter => filter,
-      :historic => true
-    }
-  end
-
-  def get_latency_graph(mode, match_type, y_min, y_max)
-    filter = {MODE => mode, FIELD_TYPE => IMPORTED, MATCH_TYPE => match_type, CAMPAIGN_AD_RATIO => 10}
-    {
-      :x => CAMPAIGN_AD_RATIO,
-      :y => "latency",
-      :title => "Historic latency (#{filter_to_s(filter)})",
-      :filter => filter,
-      :historic => true,
-      :y_min => y_min,
-      :y_max => y_max
-    }
-  end
-
-  def filter_to_s(filter)
-    filter.map{|k,v| "#{k}='#{v}'"}.join(',')
   end
 
   def teardown

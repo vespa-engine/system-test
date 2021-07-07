@@ -47,26 +47,6 @@ class RpcSummaryTest < PerformanceTest
 
   def test_summary_performance
     set_description("Test performance fetching many summaries.")
-    @graphs = [
-      {
-        :x => 'runtime',
-        :y => 'qps',
-        :title => 'Summary performance, runtime 20',
-        :historic => true,
-        :filter => { :runtime => [ 20 ]},
-        :y_min => 210,
-        :y_max => 270,
-      },
-      {
-        :x => 'runtime',
-        :y => 'qps',
-        :title => 'Summary performance, runtime 60',
-        :historic => true,
-        :filter => { :runtime => [ 60 ]},
-        :y_min => 240,
-        :y_max => 300,
-      }
-    ]
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
                search_dir(selfdir + "app").
                qrserver(QrserverCluster.new.jvmargs("-verbose:gc -Xms16g -Xmx16g -XX:NewRatio=1 -XX:+PrintGCDetails")).

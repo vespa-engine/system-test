@@ -36,7 +36,6 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
 
     @container = vespa.container.values.first
     @searchnode = vespa.search['search'].first
-    @graphs = get_graphs
     @queries_file_name = dirs.tmpdir + '/queries.txt'
 
     generate_queries
@@ -102,50 +101,6 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
     puts "Mem usage (rss): #{memusage}"
     profiler_report(SETUP)
     @container.execute("head -15 #{result_file}")
-  end
-
-  def get_graphs
-    [
-      get_latency_graph(SETUP),
-      get_memstat_graph,
-      get_qps_graph(SETUP)
-    ]
-  end
-
-  def get_memstat_graph
-    {
-      :x => LABEL,
-      :y => MEMORY,
-      :title => 'Historic memory statistics',
-      :filter => {TYPE => MEMORY},
-      :y_min => 3500000,
-      :y_max => 250000000,
-      :historic => true
-    }
-  end
-
-  def get_latency_graph(label)
-    {
-      :x => LABEL,
-      :y => '95p',
-      :title => "Historic 95 percent latency (#{label})",
-      :filter => {TYPE => QUERY, LABEL => label},
-      :historic => true,
-      :y_min => 4.0,
-      :y_max => 7.7
-    }
-  end
-
-  def get_qps_graph(label)
-    {
-      :x => LABEL,
-      :y => 'qps',
-      :title => "Historic qps (#{label})",
-      :filter => {TYPE => QUERY, LABEL => label},
-      :historic => true,
-      :y_min => 180,
-      :y_max => 260
-    }
   end
 
 end

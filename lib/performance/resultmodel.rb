@@ -125,6 +125,13 @@ module Perf
       @parameters[param_name]
     end
 
+    def to_s
+      {
+        :parameters => @parameters,
+        :metrics => @metrics.transform_keys { |m, s| s.nil? ? [m] : [m, s] },
+      }.to_s
+    end
+
     def Result.read(path)
       f = File.new(path)
       xml = REXML::Document.new(f)

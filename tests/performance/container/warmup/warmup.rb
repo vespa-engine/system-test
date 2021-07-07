@@ -60,8 +60,6 @@ class ContainerWarmup < PerformanceTest
     min_time = 3.3
     max_time = 5.8
 
-    setup_graphs(legend, min_time, max_time)
-
     container = vespa.container.values.first
     fbench = Perf::Fbench.new(container, container.name, container.http_port)
     fbench.clients = num_conns
@@ -101,37 +99,6 @@ class ContainerWarmup < PerformanceTest
     puts("Time before stable: " + times[stable_index].to_s)
     write_report([parameter_filler('legend', legend + '-historic_stable_time'),
                   metric_filler('stable_time', times[stable_index])])
-  end
-
-  def setup_graphs(legend, min_time, max_time)
-    @graphs = [
-        {
-            :x => 'time',
-            :y => 'request-rate',
-            :historic => false
-        },
-        {
-            :x => 'time',
-            :y => 'request-rate-sma-short',
-            :historic => false
-        },
-        {
-            :x => 'time',
-            :y => 'request-rate-sma-long',
-            :historic => false
-        },
-        {
-            :x => 'legend', # works for historic graphs
-            :y => 'stable_time',
-            :title => 'Build vs. warm-up period length [s]',
-            :historic => true,
-            :y_min => min_time,
-            :y_max => max_time,
-            :filter => {
-                :legend => legend + '-historic_stable_time'
-            }
-        }
-    ]
   end
 
   def test_container_warmup_jetty

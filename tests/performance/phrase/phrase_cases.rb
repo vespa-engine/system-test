@@ -44,7 +44,6 @@ class PhraseCasesPerformanceTest < PerformanceTest
           indexing("combinedcontainer").
           threads_per_search(1)
     deploy_app(app)
-    @graphs = get_graphs()
     start
 
     # queries
@@ -107,43 +106,6 @@ class PhraseCasesPerformanceTest < PerformanceTest
     profiler_report(legend)
     fillers = [fbench.fill, system_fbench.fill]
     write_report(fillers + custom_fillers)
-  end
-
-  def get_graphs()
-    profiles = [ 'untuned', 'delay', 'split', 'termwise' ]
-    casenames = [ 'worstcase', 'bestcase', 'middle' ]
-    maxmins = {
-        'worstcase_untuned'  => { :min => 1, :max => 1000000 },
-        'worstcase_delay'    => { :min => 1, :max => 1000000 },
-        'worstcase_split'    => { :min => 1, :max => 1000000 },
-        'worstcase_termwise' => { :min => 1, :max => 1000000 },
-        'bestcase_untuned'  => { :min => 1, :max => 1000000 },
-        'bestcase_delay'    => { :min => 1, :max => 1000000 },
-        'bestcase_split'    => { :min => 1, :max => 1000000 },
-        'bestcase_termwise' => { :min => 1, :max => 1000000 },
-        'middle_untuned'  => { :min => 1, :max => 1000000 },
-        'middle_delay'    => { :min => 1, :max => 1000000 },
-        'middle_split'    => { :min => 1, :max => 1000000 },
-        'middle_termwise' => { :min => 1, :max => 1000000 },
-        'default' =>  { :min => 1, :max => 1000000 }
-    }
-    local_graphs = []
-    profiles.each do |profile|
-      casenames.each do |casename|
-        case_profile = "#{casename}_#{profile}"
-        mm = maxmins[case_profile]
-        local_graphs.push({
-            :x => 'legend',
-            :y => 'qps',
-            :title => "phrase_#{case_profile}_qps",
-            :y_min => mm[:min],
-            :y_max => mm[:max],
-            :filter => {'legend' => case_profile},
-            :historic => true
-        })
-      end
-    end
-    return local_graphs
   end
 
   def teardown

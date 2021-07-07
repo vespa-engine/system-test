@@ -12,7 +12,6 @@ class MixedTensorPerfTest < MixedTensorPerfTestBase
   def test_mixed_tensor_operations
     set_description("Test performance of various mixed tensor operations")
     set_owner("geirst")
-    @graphs = get_graphs
     deploy_and_prepare_data
     feed_docs(5000)
     run_fbench_helper(SINGLE_MODEL, @single_model_file)
@@ -44,32 +43,6 @@ class MixedTensorPerfTest < MixedTensorPerfTestBase
                 {:runtime => FBENCH_RUNTIME, :clients => 1, :append_str => "&summary=minimal&timeout=10&ranking.profile=#{rank_profile}"},
                 fillers)
     profiler_report(rank_profile)
-  end
-
-  def get_graphs
-    [
-      {
-        :x => RANK_PROFILE,
-        :y => "latency",
-        :title => "Historic average latency (all profiles)",
-        :historic => true
-      },
-      get_latency_graph(SINGLE_MODEL, 2.7, 3.2),
-      get_latency_graph(MULTI_MODEL_EARLY_REDUCE, 6.2, 6.8),
-      get_latency_graph(MULTI_MODEL_LATE_REDUCE,  3.4, 4.1)
-    ]
-  end
-
-  def get_latency_graph(rank_profile, y_min, y_max)
-    {
-      :x => RANK_PROFILE,
-      :y => "latency",
-      :title => "Historic average latency (#{rank_profile})",
-      :filter => {RANK_PROFILE => rank_profile},
-      :historic => true,
-      :y_min => y_min,
-      :y_max => y_max
-    }
   end
 
 end

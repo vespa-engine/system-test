@@ -28,33 +28,6 @@ class StructAndMapPerf < PerformanceTest
 
   def test_matched_elements_only
     set_description("Verify performance for fetching summaries of very large maps.")
-    @graphs = [
-        {
-            :title => 'QPS all combined',
-            :x => 'legend',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :title => 'QPS matched-elements-only from attributes',
-            :filter => {'legend' => MAP_ATTR},
-            :x => 'legend',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :title => 'QPS matched-elements-only from summary',
-            :filter => {'legend' => MAP_MIX },
-            :x => 'legend',
-            :y => 'qps',
-            :historic => true
-        },
-        {
-            :x => 'legend',
-            :y => 'cpuutil',
-            :historic => true
-        }
-    ]
     num_docs=10
     num_elems = 10000
     deploy_app(get_app())
