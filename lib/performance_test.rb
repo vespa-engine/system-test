@@ -3,8 +3,6 @@
 require 'performance/configloadtester'
 require 'performance/fbench'
 require 'performance/resultmodel'
-require 'performance/datasetmanager'
-require 'performance/comparison'
 require 'environment'
 require 'json'
 
@@ -13,7 +11,6 @@ require 'testcase'
 class PerformanceTest < TestCase
   attr_reader :result
   attr_accessor :resultoutputdir
-  attr_accessor :graphs
   attr_accessor :perfdir
   attr_accessor :profilersnapshotdir
 
@@ -32,7 +29,6 @@ class PerformanceTest < TestCase
     super(cmdline, tc_file, arg_pack)
 
     @queryfile = selfdir + 'queries.txt'
-    @graphs = nil
     @warmup = true
     @perf_processes = {}
     @perf_data_dir = "#{Environment.instance.vespa_home}/tmp/perf/"
@@ -399,15 +395,9 @@ class PerformanceTest < TestCase
   end
 
   def check_performance(method)
-    @current = get_performance_results
-    message = Perf::check_performance_results(self, @graphs, method, @current)
-    if message!=""
-      @result.performance_annotation = message
-      puts "Performance outside limits:\n\n" + message
-      add_failure("Performance outside limits:\n\n" + message)
-    else
-      puts "Performance results within specified parameters."
-    end
+    puts "#### Performance results ####"
+    get_performance_results.each { |result| puts result }
+    puts "\n"
   end
 
   def performance?
