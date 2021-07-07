@@ -6,7 +6,7 @@ require 'json'
 
 class ProgrammaticFeedClientTest < PerformanceTest
 
-  DOCUMENTS = 5000000
+  DOCUMENTS = 2000000
   TINY = 10
   SMALL = 100
   MEDIUM = 1000
