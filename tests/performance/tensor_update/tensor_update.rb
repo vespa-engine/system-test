@@ -24,7 +24,6 @@ class TensorUpdatePerfTest < PerformanceTest
 
   def test_tensor_update
     set_description("Test feed performance for assign and modify updates on dense tensors")
-    @graphs = get_graphs
     deploy_app(create_app)
     start
     compile_data_generator
@@ -59,29 +58,6 @@ class TensorUpdatePerfTest < PerformanceTest
     profiler_start
     run_stream_feeder(command, [parameter_filler(UPDATE_TYPE, update_type), parameter_filler(TENSOR_SIZE, tensor_size)], {})
     profiler_report("#{update_type}-d#{num_docs}-t#{tensor_size}")
-  end
-
-  def get_graphs
-    [
-      get_feed_throughput_graph("assign",   10, 35000, 51000),
-      get_feed_throughput_graph("assign",  100, 12500, 15000),
-      get_feed_throughput_graph("assign", 1000,  1500,  1750),
-      get_feed_throughput_graph("modify",   10, 36000, 51000),
-      get_feed_throughput_graph("modify",  100, 36500, 51000),
-      get_feed_throughput_graph("modify", 1000, 36500, 51000)
-    ]
-  end
-
-  def get_feed_throughput_graph(update_type, tensor_size, y_min, y_max)
-    {
-      :x => UPDATE_TYPE,
-      :y => "feeder.throughput",
-      :title => "Throughput during feeding of '#{update_type}' updates to dense tensor of size #{tensor_size}",
-      :filter => { UPDATE_TYPE => update_type, TENSOR_SIZE => tensor_size },
-      :historic => true,
-      :y_min => y_min,
-      :y_max => y_max
-    }
   end
 
   def teardown

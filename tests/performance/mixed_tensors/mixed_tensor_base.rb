@@ -69,25 +69,4 @@ class MixedTensorPerfTestBase < PerformanceTest
     profiler_report(graph_name)
   end
 
-  def get_feed_throughput_graph(feed_type, label_type, y_min, y_max)
-    {
-      :x => FEED_TYPE,
-      :y => "feeder.throughput",
-      :title => "Throughput during feeding of '#{feed_type}' (#{LABEL_TYPE}=#{label_type}) to mixed tensor",
-      :filter => { FEED_TYPE => feed_type, LABEL_TYPE => label_type },
-      :historic => true,
-      :y_min => y_min,
-      :y_max => y_max
-    }
-  end
-
-  def get_all_feed_throughput_graphs
-    {
-      :x => GRAPH_NAME,
-      :y => 'feeder.throughput',
-      :title => 'Throughput during feeding of all types',
-      :historic => true
-    }
-  end
-
 end

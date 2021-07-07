@@ -15,19 +15,6 @@ class LidSpaceCompactionPerfTest < PerformanceTest
     set_owner("geirst")
   end
 
-  def get_graphs()
-    [
-      {
-        :x => 'legend',
-        :y => 'compaction.throughput',
-        :title => "Throughput (docs / sec) during lid space compaction of ~5M of 10M remaining documents",
-        :y_min => 72000,
-        :y_max => 89000,
-        :historic => true
-      }
-    ]
-  end
-
   def get_app(lid_bloat_factor = 0.2)
     SearchApp.new.cluster(SearchCluster.new.sd(selfdir + "test.sd").
                           allowed_lid_bloat(10).
@@ -86,7 +73,6 @@ class LidSpaceCompactionPerfTest < PerformanceTest
 
   def test_lid_space_compaction
     set_description("Test the speed of lid space compaction after feeding 20M docs (average 500 bytes) and 10M random removes")
-    @graphs = get_graphs
     @num_docs = 20000000
     @num_docs_to_compact = @num_docs / 2
     deploy_app(get_app(2.0)) # no compaction will happen

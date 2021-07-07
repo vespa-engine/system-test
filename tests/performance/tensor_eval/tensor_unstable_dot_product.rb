@@ -15,7 +15,6 @@ class TensorUnstableDotProductPerfTest < TensorEvalPerfTest
     @container = (vespa.qrserver['0'] or vespa.container.values.first)
     unstable_feed
     unstable_query
-    @graphs = get_graphs_dot_product
   end
 
   def unstable_feed
@@ -48,27 +47,6 @@ class TensorUnstableDotProductPerfTest < TensorEvalPerfTest
                  :append_str => "&ranking=#{rank_profile}&timeout=10"},
                 fillers)
     profiler_report(rank_profile)
-  end
-
-  def get_graphs_dot_product
-    [
-      {
-       :x => RANK_PROFILE,
-       :y => "latency",
-       :title => "Historic latency for dot product with various cell types",
-       :filter => {WSET_ENTRIES => 128},
-       :historic => true
-      },
-      get_latency_graph_for_rank_profile('qry64doc64',     128, 6.0, 12.0),
-      get_latency_graph_for_rank_profile('qry32doc32',     128, 6.0, 12.0),
-      get_latency_graph_for_rank_profile('qry16doc16',     128, 6.0, 12.0),
-      get_latency_graph_for_rank_profile('qry8doc8',       128, 6.0, 12.0),
-      get_latency_graph_for_rank_profile('qry32doc8',      128, 6.0, 12.0),
-      get_latency_graph_for_rank_profile('qry32doc16',     128, 6.0, 12.0),
-      get_latency_graph_for_rank_profile('qry32doc8cast',  128, 6.0, 12.0),
-      get_latency_graph_for_rank_profile('qry32doc16cast', 128, 6.0, 12.0),
-      get_latency_graph_for_rank_profile('default',        128, 6.0, 12.0)
-    ]
   end
 
   def teardown

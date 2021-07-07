@@ -27,30 +27,6 @@ class CanvassWarmup < PerformanceTest
     setup_and_deploy(@app)
     num_queries = 200
     set_description("Test #{num_queries}  queries after container has started and repeat with #{num_queries} queries after first #{num_queries} has succeeded")
-    @graphs = [
-      {
-        :title => "Min response time for #{num_queries} first and #{num_queries} second query",
-        :x => 'legend',
-        :y => 'minresponsetime',
-        :historic => true
-      },
-      {
-        :title => 'Average latency',
-        :x => 'legend',
-        :y => 'latency',
-        :historic => true
-      },
-      {
-        :x => 'legend',
-        :y => 'cpuutil',
-        :historic => true
-      },
-      {
-        :x => 'legend',
-        :y => 'memory.rss',
-        :historic => true
-      }
-    ]
     container = (vespa.qrserver['0'] or vespa.container.values.first)
 
 #    result = search("/search/?yql=select%20%2A%20from%20sources%20%2A%20where%20text%20contains%20%22foo%22%3B&format=json&tracelevel=1&trace.timestamps").json

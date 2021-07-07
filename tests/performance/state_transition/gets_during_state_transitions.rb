@@ -25,7 +25,6 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     @is_set_up = false
     @should_debug_log = false
     @doc_count = 256 * 4
-    @graphs = get_graphs
     @query_file = nil
   end
 
@@ -194,34 +193,6 @@ class GetsDuringStateTransitionsTest < PerformanceTest
         yield(db_type, stale_reads)
       end
     end
-  end
-
-  def for_each_param_permutation
-    [BTREE, LEGACY].each do |db_type|
-      [ENABLED, DISABLED].each do |stale_reads|
-        [DOWN, UP].each do |edge|
-          yield(db_type, stale_reads, edge)
-        end
-      end
-    end
-  end
-
-  def get_graphs
-    g = []
-    for_each_param_permutation { |db_type, stale_reads, edge|
-      g << get_query_graph(db_type: db_type, stale_reads: stale_reads, edge: edge)
-    }
-    g
-  end
-
-  def get_query_graph(db_type:, stale_reads:, edge:)
-    {
-      :x => 'legend',
-      :y => 'maxresponsetime',
-      :title => "Historic Get latency with DB type #{db_type}, stale reads #{stale_reads}, edge #{edge}",
-      :filter => { DB_TYPE => db_type, STALE_READS => stale_reads, EDGE => edge},
-      :historic => true
-    }
   end
 
   def do_test_gets_during_state_transitions(db_type:, stale_reads:)

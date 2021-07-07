@@ -10,7 +10,6 @@ class TensorEvalNormalPerfTest < TensorEvalPerfTest
 
   def test_tensor_evaluation
     set_description("Test performance of tensor dot product vs feature dot product calculation")
-    @graphs = get_graphs_dot_product
     deploy_and_feed(100000)
 
     [10,50,250,500].each do |wset_entries|
@@ -20,20 +19,6 @@ class TensorEvalNormalPerfTest < TensorEvalPerfTest
       run_fbench_helper(DOT_PRODUCT, DENSE_FLOAT_TENSOR_DOT_PRODUCT, wset_entries, "queries.tensor.dense_float.#{wset_entries}.txt")
       run_fbench_helper(DOT_PRODUCT, SPARSE_TENSOR_DOT_PRODUCT, wset_entries, "queries.tensor.sparse.x.#{wset_entries}.txt")
     end
-  end
-
-  def get_graphs_dot_product
-    [
-      get_latency_graphs_for_rank_profile(FEATURE_DOT_PRODUCT),
-      get_latency_graphs_for_rank_profile(FEATURE_DOT_PRODUCT_ARRAY),
-      get_latency_graphs_for_rank_profile(DENSE_TENSOR_DOT_PRODUCT),
-      get_latency_graphs_for_rank_profile(DENSE_FLOAT_TENSOR_DOT_PRODUCT),
-      get_latency_graphs_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT,              250, 17.5,  19.5),
-      get_latency_graph_for_rank_profile(FEATURE_DOT_PRODUCT_ARRAY,        500, 15.0,  18.5),
-      get_latency_graph_for_rank_profile(DENSE_TENSOR_DOT_PRODUCT,         500, 16.5,  20.0),
-      get_latency_graph_for_rank_profile(SPARSE_TENSOR_DOT_PRODUCT,        250, 90  , 120)
-    ]
   end
 
   def teardown

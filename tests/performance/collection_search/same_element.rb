@@ -28,7 +28,6 @@ class SameElementPerformanceTest < CollectionPerfTestBase
   def test_same_element_operator_with_map_of_struct
     set_description('Test use of sameElement() operator for map of struct with varying number of elements per map')
     srand(123456789) # Want deterministic PRNG output TODO explicit Random obj to avoid possible contamination
-    @graphs = get_graphs
     @query_file_name = file_in_tmp('queries.txt')
     puts "Using query file: '#{@query_file_name}'"
     [false, true].each do |fast_search|
@@ -44,25 +43,6 @@ class SameElementPerformanceTest < CollectionPerfTestBase
     MAP_OF_STRUCT_ELEMENT_TEST_CASES.each do |elements_per_doc|
       feed_and_query_map_of_struct(fast_search: fast_search, elements_per_doc: elements_per_doc)
     end
-  end
-
-  def get_graphs
-    # TODO add y_min/y_max once we have some test runs available
-    [
-      get_query_latency_graph(MAP_OF_STRUCT, false),
-      get_query_latency_graph(MAP_OF_STRUCT, true)
-    ]
-  end
-
-  def get_query_latency_graph(collection_type, fast_search)
-    filter = {COLLECTION_TYPE => collection_type, FAST_SEARCH => fast_search}
-    {
-      :x => ELEMENTS_PER_DOC,
-      :y => "latency",
-      :title => "Historic query latency graph (#{filter_to_s(filter)}) with different '#{ELEMENTS_PER_DOC}'",
-      :filter => filter,
-      :historic => true
-    }
   end
 
   class MapOfStructsFeedGenerator

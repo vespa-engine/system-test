@@ -21,20 +21,7 @@ class TensorInstructionBenchmarkTest < PerformanceTest
     deploy_app(SearchApp.new.sd(selfdir+"dummy.sd"))
     searchnode = vespa.search['search'].first
     output = searchnode.execute("#{Environment.instance.vespa_home}/bin/vespa-tensor-instructions-benchmark --limit-implementations")
-    @graphs = []
     parse_out(output)
-  end
-
-  def add_graph_for_case(bm_case)
-    graph = {
-      :x => IMPL_SHORT,
-      :y => COST,
-      :title => "Historic cost for #{bm_case}",
-      :filter => {BM_TYPE => bm_case},
-      :y_min => 0.001,
-      :historic => true
-    }
-    @graphs.push(graph)
   end
 
   def parse_out(output)
@@ -47,12 +34,9 @@ class TensorInstructionBenchmarkTest < PerformanceTest
       end
       if (parse_line =~ /Benchmark Case: \[(.*)\]/)
           bm_type = $1
-          add_graph_for_case(bm_type)
       end
       if (parse_line =~ /Benchmarking encode.decode for: \[(.*)\]/)
           bm_codec = $1
-          add_graph_for_case("encode #{bm_codec}")
-          add_graph_for_case("decode #{bm_codec}")
       end
       if (parse_line =~ /^\s*([^(]*)[(]([^)]*)[)]:\s*([.0-9]*) us <(.*)>/)
           impl_long = $1

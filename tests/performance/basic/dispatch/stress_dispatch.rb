@@ -52,7 +52,6 @@ class StressDispatch < PerformanceTest
     add_bundle(selfdir + "CapInFillSearcher.java")
     deploy_app(app)
     clustername = @vespa.search.keys.first
-    @graphs = get_graphs(limits, clustername)
     start
 
     profiler_start
@@ -114,38 +113,6 @@ class StressDispatch < PerformanceTest
     profiler_report(legend)
     fillers = [fbench.fill, system_fbench.fill]
     write_report(fillers + custom_fillers)
-  end
-
-
-  def get_graphs(limits, clustername)
-    local_graphs = [
-      {
-        :x => 'legend',
-        :y => 'qps',
-        :title => 'search qps',
-        :y_min => limits[:min_qps_search],
-        :y_max => limits[:max_qps_search],
-        :filter => {'legend' => "simple_search"},
-        :historic => true
-      },
-      {
-        :x => 'legend',
-        :y => '95p',
-        :title => 'search 1 thread 95p',
-        :y_min => limits[:min_latency_search],
-        :y_max => limits[:max_latency_search],
-        :filter => {'legend' => "simple_search"},
-        :historic => true
-      },
-      {
-        :x => 'legend',
-        :y => 'cpuutil',
-        :title => 'search 1 thread cpuutil',
-        :filter => {'legend' => "simple_search"},
-        :historic => true
-      }
-    ]
-    return local_graphs
   end
 
   def teardown

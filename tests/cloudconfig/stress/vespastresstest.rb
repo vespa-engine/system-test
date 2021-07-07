@@ -6,7 +6,6 @@ class VespaConfigStressTest < CloudConfigTest
 
   def initialize(*args)
     super(*args)
-    @graphs = nil
   end
 
   def setup

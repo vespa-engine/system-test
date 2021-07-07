@@ -29,30 +29,6 @@ class LookupPerformance < PerformanceTest
 
   def test_dictionary_lookup
     set_description("Test lookupspeed with btree vs hash.")
-    @graphs = [
-      {
-        :title => "Qps",
-        :x => 'legend',
-        :y => 'qps',
-        :historic => true
-      },
-      {
-        :title => 'Average latency',
-        :x => 'legend',
-        :y => 'latency',
-        :historic => true
-      },
-      {
-        :x => 'legend',
-        :y => 'cpuutil',
-        :historic => true
-      },
-      {
-        :x => 'legend',
-        :y => 'memory.rss',
-        :historic => true
-      }
-    ]
     num_docs = 10000000
     num_values_per_doc=10
     upper_limit = num_docs*num_values_per_doc*10

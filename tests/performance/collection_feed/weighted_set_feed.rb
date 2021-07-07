@@ -15,7 +15,6 @@ class WeightedSetFeedTest < PerformanceTest
   def setup
     super
     set_owner('vekterli')
-    @graphs = get_graphs
     @tainted = false
   end
 
@@ -89,21 +88,6 @@ class WeightedSetFeedTest < PerformanceTest
       params(10000,  0,   true,     18.9,    22.5),
       params(100000, 0,   true,      2.2,     2.6)
     ]
-  end
-
-  def get_graphs
-    parameter_combinations.map do |p|
-      {
-        :x => FIELD_TYPE,
-        :y => 'feeder.throughput',
-        :title => "Throughput of weighted set feeding with #{p.wset_size} elements per set, key type long, fast search #{p.fast_search}",
-        # TODO string type
-        :filter => { WSET_SIZE => p.wset_size, KEY_TYPE => LONG_TYPE, FAST_SEARCH => p.fast_search.to_s},
-        :historic => true,
-        :y_min => p.y_min,
-        :y_max => p.y_max
-      }
-    end.to_a
   end
 
   def string_attr_name(fast_search)

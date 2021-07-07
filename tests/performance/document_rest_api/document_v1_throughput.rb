@@ -23,86 +23,74 @@ class DocumentV1Throughput < PerformanceTest
     @test_config = [
       {
         :http1 => {
-          :clients => 1,
-          :metrics => {'qps' => {'get' => {:y_min => 1300, :y_max => 1850}, 'post' => {:y_min => 540, :y_max => 770}}}
+          :clients => 1
         }
       },
       {
         :http1 => {
-          :clients => 8,
-          :metrics => {'qps' => {'get' => {:y_min => 12000, :y_max => 14000}, 'post' => {:y_min => 6600, :y_max => 7500}}}
+          :clients => 8
         }
       },
       {
         :http1 => {
-          :clients => 64,
-          :metrics => {'qps' => {'get' => {:y_min => 39000, :y_max => 43000}, 'post' => {:y_min => 23500, :y_max => 28500}}}
+          :clients => 64
         }
       },
       {
         :http1 => {
-          :clients => 128,
-          :metrics => {'qps' => {'get' => {:y_min => 36500, :y_max => 39500}, 'post' => {:y_min => 25000, :y_max => 32000}}}
+          :clients => 128
         }
       },
       {
         :http2 => {
           :clients => 1,
           :streams => 1,
-          :threads => 1,
-          :metrics => {'qps' => {'get' => {:y_min => 1200, :y_max => 1520}, 'post' => {:y_min => 600, :y_max => 750}}}
+          :threads => 1
         }
       },
       {
         :http2 => {
           :clients => 1,
           :streams => 8,
-          :threads => 1,
-          :metrics => {'qps' => {'get' => {:y_min => 11700, :y_max => 13000}, 'post' => {:y_min => 5500, :y_max => 7500}}}
+          :threads => 1
         }
       },
       {
         :http2 => {
           :clients => 1,
           :streams => 64,
-          :threads => 1,
-          :metrics => {'qps' => {'get' => {:y_min => 41000, :y_max => 46000}, 'post' => {:y_min => 23000, :y_max => 30000}}}
+          :threads => 1
         }
       },
       {
         :http2 => {
           :clients => 1,
           :streams => 256,
-          :threads => 1,
-          :metrics => {'qps' => {'get' => {:y_min => 51000, :y_max => 67000}, 'post' => {:y_min => 29500, :y_max => 41000}}}
+          :threads => 1
         }
       },
       {
         :http2 => {
           :clients => 8,
           :streams => 8,
-          :threads => 8,
-          :metrics => {'qps' => {'get' => {:y_min => 41500, :y_max => 48000}, 'post' => {:y_min => 20500, :y_max => 29500}}}
+          :threads => 8
         }
       },
       {
         :http2 => {
           :clients => 8,
           :streams => 64,
-          :threads => 8,
-          :metrics => {'qps' => {'get' => {:y_min => 54000, :y_max => 71000}, 'post' => {:y_min => 29000, :y_max => 47000}}}
+          :threads => 8
         }
       },
       {
         :http2 => {
           :clients => 64,
           :streams => 8,
-          :threads => 16,
-          :metrics => {'qps' => {'get' => {:y_min => 53000, :y_max => 68000}, 'post' => {:y_min => 29000, :y_max => 42000}}}
+          :threads => 16
         }
       }
     ]
-    @graphs = get_graphs
   end
 
   def test_throughput
@@ -183,58 +171,6 @@ class DocumentV1Throughput < PerformanceTest
         end
       end
     end
-  end
-
-  def get_graphs
-    graphs = []
-    @test_config.each do |config|
-      ['post', 'get'].each do |http_method|
-        if config[:http1]
-          config[:http1][:metrics].map do |metric_name, metric_limits|
-            graphs.append({
-              :x => 'protocol',
-              :y => metric_name,
-              :title => "HTTP/1.1 #{metric_name} - #{http_method} - #{config[:http1][:clients]} clients",
-              :filter => { 'clients' => config[:http1][:clients], 'method' => http_method, 'protocol' => 'http1' },
-              :historic => true
-            }.merge(metric_limits[http_method] || {}))
-          end
-        end
-        if config[:http2]
-          config[:http2][:metrics].map do |metric_name, metric_limits|
-            graphs.append({
-              :x => 'protocol',
-              :y => metric_name,
-              :title => "HTTP/2 #{metric_name} - #{http_method} - #{config[:http2][:clients]} clients, #{config[:http2][:streams]} streams" \
-                        "#{config[:backend] && " (#{config[:backend]} backend)"}",
-              :filter => { 'clients' => config[:http2][:clients], 'streams' => config[:http2][:streams],
-                           'method' => http_method, 'protocol' => 'http2' },
-              :historic => true
-            }.merge(metric_limits[http_method] || {}))
-          end
-        end
-      end
-    end
-    ['post', 'get'].each do |http_method|
-      graphs.append(
-        {
-          :x => 'clients',
-          :y => 'qps',
-          :title => "HTTP/1 qps - #{http_method}",
-          :filter => { 'method' => http_method, 'protocol' => 'http1' },
-          :historic => true
-        })
-      graphs.append(
-        {
-          :x => 'clients-streams',
-          :y => 'qps',
-          :title => "HTTP/2 qps - #{http_method}",
-          :filter => { 'method' => http_method, 'protocol' => 'http2' },
-          :historic => true
-        })
-    end
-
-    graphs
   end
 
   def teardown

@@ -21,8 +21,6 @@ class ReindexingAndFeedingTest < PerformanceTest
   end
 
   def test_reindexing_performance_and_impact
-    @graphs = get_graphs(graph_config)
-
     @app = SearchApp.new.monitoring("vespa", 60).
       container(Container.new("combinedcontainer").
 		jvmargs('-Xms16g -Xmx16g').
@@ -162,45 +160,6 @@ class ReindexingAndFeedingTest < PerformanceTest
     cluster = status['clusters']['search']
     return nil if cluster.nil?
     return cluster['documentTypes']['doc']
-  end
-
-  def graph_config
-    {
-      { } => {
-	'reindexing.throughput' =>   { },
-	'feeder.throughput'     =>   { }
-      },
-      { :legend => 'reindex' } => {
-	'reindexing.throughput' =>   { :y_min =>  3400, :y_max =>  7000 },
-      },
-      { :legend => 'feed' } => {
-	'feeder.throughput'     =>   { :y_min =>  7900, :y_max =>  8800 },
-      },
-      { :legend => 'reindex_feed' } => {
-	'reindexing.throughput' =>   { :y_min =>  2600, :y_max =>  4800 },
-	'feeder.throughput'     =>   { :y_min =>  7400, :y_max =>  9000 },
-      },
-      { :legend => 'update' } => {
-	'feeder.throughput'     =>   { :y_min => 29000, :y_max => 43000 },
-      },
-      { :legend => 'reindex_update' } => {
-	'reindexing.throughput' =>   { :y_min =>  2800, :y_max =>  5300 },
-	'feeder.throughput'     =>   { :y_min => 25000, :y_max => 36000 },
-      }
-    }
-  end
-
-  def get_graphs(config)
-    config.map do |filter, metrics|
-      metrics.map do |metric, limits|
-	{
-	  :x => 'legend',
-	  :y => metric,
-	  :filter => filter,
-	  :historic => true
-	}.merge(limits)
-      end
-    end.flatten
   end
 
   def generate_feed

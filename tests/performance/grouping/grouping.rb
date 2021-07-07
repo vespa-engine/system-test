@@ -26,11 +26,6 @@ class GroupingTest < PerformanceTest
   end
 
   def test_grouping_levels
-    @graphs = [{
-                   :x => 'grouping_level',
-                   :y => 'latency'
-               }]
-
     attr_prefix = "a"
     num_attr = 10
     setup_grouping_test(attr_prefix, 10000, num_attr, 5)
@@ -44,11 +39,6 @@ class GroupingTest < PerformanceTest
   end
 
   def test_grouping_parallel
-    @graphs = [{
-                   :x => 'grouping_parallel',
-                   :y => 'latency'
-               }]
-
     attr_prefix = "a"
     num_attr = 10
     num_levels = 2
@@ -64,36 +54,6 @@ class GroupingTest < PerformanceTest
 
   def test_grouping_count_many_groups
     set_owner("bjorncs")
-    @graphs = [{ :x => 'legend',
-                 :y => 'latency',
-                 :filter => { 'clients' => [ 1 ], 'legend' => [ 'multilevel' ] },
-                 :y_min => 240,
-                 :y_max => 295,
-                 :historic => true
-               },
-               { :x => 'legend',
-                 :y => 'latency',
-                 :y_min => 4.1,
-                 :y_max => 5.2,
-                 :filter => { 'clients' => [ 1 ], 'legend' => [ 'single_level' ] },
-                 :historic => true
-               },
-               { :x => 'legend',
-                 :y => 'qps',
-                 :filter => { 'clients' => [ 1 ], 'legend' => [ 'multilevel' ] },
-                 :historic => true
-               },
-               { :x => 'legend',
-                 :y => 'qps',
-                 :filter => { 'clients' => [ 1 ], 'legend' => [ 'single_level' ] },
-                 :historic => true
-               },
-               {
-                 :x => 'legend',
-                 :y => 'memory.rss',
-                 :historic => true
-               } ]
-
     attr_prefix = "a"
     num_docs = 100000
     num_attr = 3

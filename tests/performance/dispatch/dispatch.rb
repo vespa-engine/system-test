@@ -24,30 +24,6 @@ class DispatchMerge < PerformanceTest
 
   def test_merge
     set_description("Test merge speed with 8 backend and large offsets.")
-    @graphs = [
-      {
-        :title => "Qps",
-        :x => 'legend',
-        :y => 'qps',
-        :historic => true
-      },
-      {
-        :title => 'Average latency',
-        :x => 'legend',
-        :y => 'latency',
-        :historic => true
-      },
-      {
-        :x => 'legend',
-        :y => 'cpuutil',
-        :historic => true
-      },
-      {
-        :x => 'legend',
-        :y => 'memory.rss',
-        :historic => true
-      }
-    ]
     num_docs = 400000
     num_clients = 16
     deploy_app(get_app(12))

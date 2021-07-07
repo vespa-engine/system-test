@@ -72,7 +72,6 @@ class NearestNeighborPerformanceTest < PerformanceTest
           indexing("combinedcontainer").
           threads_per_search(1)
     deploy_app(app)
-    @graphs = get_graphs()
     start
 
     puts "GENERATING QUERIES"
@@ -144,42 +143,6 @@ class NearestNeighborPerformanceTest < PerformanceTest
     profiler_report(legend)
     fillers = [fbench.fill, system_fbench.fill]
     write_report(fillers + custom_fillers)
-  end
-
-  def get_graphs()
-    profiles = [ 'simple', 'rawscore', 'dotproduct', 'joinsq' ]
-    casenames = [ 'alldoc', 'nns_10', 'nns_100', 'nns_1000' ]
-    maxmins = {
-        'alldoc_joinsq'     => { :min => 270, :max => 510 },
-        'alldoc_dotproduct' => { :min => 150, :max => 475 },
-        'nns_10_rawscore'   => { :min =>  30, :max => 70 },
-        'default'           => { :min =>  30, :max => 120 }
-    }
-    local_graphs = []
-    local_graphs.push({
-        :x => 'legend',
-        :y => '95p',
-        :title => "Latency for NNS versus distance ranking",
-        :filter => {'recall' => '100'},
-        :historic => true
-    })
-    casenames.each do |casename|
-      profiles.each do |profile|
-        case_profile = "#{casename}_#{profile}"
-        mm = maxmins[case_profile]
-        mm = maxmins['default'] unless mm
-        local_graphs.push({
-            :x => 'legend',
-            :y => '95p',
-            :title => "#{case_profile}_latency",
-            :y_min => mm[:min],
-            :y_max => mm[:max],
-            :filter => {'legend' => case_profile, 'recall' => '100'},
-            :historic => true
-        }) if (case_profile != 'alldoc_rawscore')
-      end
-    end
-    return local_graphs
   end
 
   def teardown
