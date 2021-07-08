@@ -122,10 +122,10 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
   # Wait for convergence of all services in the application — specifically document processors 
   def wait_for_convergence(generation)
     start_time = Time.now
-    until get_json(http_request(URI(application_url + "serviceconverge"), {}))["converged"] or Time.now - start_time > 60 # seconds
+    until get_json(http_request(URI(application_url + "serviceconverge"), {}))["converged"] or Time.now - start_time > 120 # seconds
       sleep 1
     end
-    assert(Time.now - start_time < 60, "Services should converge on new generation within the minute")
+    assert(Time.now - start_time < 120, "Services should converge on new generation within the minute")
     assert(generation == get_json(http_request(URI(application_url + "serviceconverge"), {}))["wantedGeneration"],
            "Should converge on generation #{generation}")
     puts "Services converged on new config generation after #{Time.now - start_time} seconds"

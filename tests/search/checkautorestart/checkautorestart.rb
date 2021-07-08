@@ -27,7 +27,7 @@ class CheckAutoRestart < SearchTest
   end
 
   def check_new_pids(app)
-    limit = 30
+    limit = 60
     start = Time.now.to_i
     pids = Hash.new
     while (Time.now.to_i - start < limit)

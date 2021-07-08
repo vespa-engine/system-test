@@ -63,7 +63,7 @@ class AutomaticOutOfServiceTest < SearchTest
     assert_nothing_raised() { 
       got = "nothing good"
       trynum = 0
-      while ((trynum < 60) && (got != expected_response_code)) do
+      while ((trynum < 120) && (got != expected_response_code)) do
         trynum += 1
         sleep 1
         response = https_client.get(s_name, s_port, path)
