@@ -17,6 +17,10 @@ class NearestNeighborTest < IndexedSearchTest
     assert_flushing_of_hnsw_index
     restart_proton("test", 10)
     run_all_tests
+
+    feed_docs(false)
+    feed_assign_updates
+    run_all_tests
   end
 
   def test_nns_via_parent
@@ -150,7 +154,7 @@ class NearestNeighborTest < IndexedSearchTest
 
   X_1_POS = 3
 
-  def feed_docs
+  def feed_docs(populate_pos_field = true)
     # text field for 10 documents:
     txt = [ "0 x x x 0", "x 1 x x 1", "x x 2 x 2", "x x x 3 3", " 4 x x x 4",
             "x 0 x x 5", "x x 1 x 6", "x x x 2 7", "3 x x x 8", " x 4 x x 9" ]
@@ -158,12 +162,22 @@ class NearestNeighborTest < IndexedSearchTest
     # This means we can change "targetNumHits" and get deterministic behaviour.
     for i in 0...10 do
       doc = Document.new("test", get_docid(i)).
-        add_field("pos", { "values" => [i, X_1_POS] }).
         add_field("text", txt[i]).
         add_field("filter", "#{i % 2}")
+      if populate_pos_field
+        doc.add_field("pos", { "values" => [i, X_1_POS] })
+      end
       vespa.document_api_v1.put(doc)
     end
     wait_for_hitcount('?query=sddocname:test', 10)
+  end
+
+  def feed_assign_updates
+    for i in 0...10 do
+      upd = DocumentUpdate.new("test", get_docid(i))
+      upd.addOperation("assign", "pos", { "values" => [i, X_1_POS] })
+      vespa.document_api_v1.update(upd)
+    end
   end
 
   def feed_campaign_docs
