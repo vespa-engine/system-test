@@ -49,7 +49,7 @@ class SummaryStore < PerformanceTest
     compile_query_generator
     run_stream_feeder("#{@feed_generator} 100000 1024", [])
     container = (vespa.qrserver['0'] or vespa.container.values.first)
-    container.execute("#{@query_generator} 10000 > #{@queryfile}")
+    container.execute("#{@query_generator} 100000 > #{@queryfile}")
     run_fbench(container, 128, 20, [parameter_filler('legend', 'ignore'),
                                     parameter_filler('tag', 'ignore1')])
     run_fbench(container, 128, 60, [parameter_filler('legend', 'query'),
