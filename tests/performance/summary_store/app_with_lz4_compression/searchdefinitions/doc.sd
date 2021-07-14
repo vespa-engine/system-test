@@ -1,0 +1,12 @@
+search doc {
+  document doc {
+    field doc_id type long {
+      indexing: summary | attribute
+      attribute:fast-search
+    }
+
+    field content type string {
+      indexing: summary
+    }
+  }
+}
