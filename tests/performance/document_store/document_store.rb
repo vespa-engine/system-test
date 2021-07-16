@@ -51,14 +51,13 @@ class DocumentStoreTest < PerformanceTest
     compile_query_generator
     run_stream_feeder("#{@feed_generator} 100000 1024", [])
     container = (vespa.qrserver['0'] or vespa.container.values.first)
-    container.execute("#{@query_generator} 100000 > #{@queryfile}")
+    container.execute("#{@query_generator} 100000 0 > #{@queryfile}")
     run_fbench(container, 128, 20, [parameter_filler('legend', 'ignore'),
                                     parameter_filler('tag', 'ignore1')])
     run_fbench(container, 128, 60, [parameter_filler('legend', 'query'),
                                     parameter_filler('tag', 'getv1api')])
 
-    @queryfile = "#{dirs.tmpdir}query_hits"
-    container.execute("echo \"/search/?query=doc_id:[100%3b101]\" > #{@queryfile}")
+    container.execute("#{@query_generator} 100000 1 > #{@queryfile}")
     run_fbench(container, 128, 20, [parameter_filler('legend', 'ignore'),
                                     parameter_filler('tag', 'ignore2')])
     run_fbench(container, 128, 60, [parameter_filler('legend', 'query'),
