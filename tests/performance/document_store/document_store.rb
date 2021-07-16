@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
 require 'performance_test'
 require 'performance/fbench'
 require 'pp'
 require 'document_set'
 require 'document'
 
-class SummaryStore < PerformanceTest
+class DocumentStoreTest < PerformanceTest
   def setup
     super
     set_owner('chunnoo')
@@ -32,7 +34,7 @@ class SummaryStore < PerformanceTest
   end
 
   def test_put_performance
-    set_description('Test put performance')
+    set_description('Test put performance for string field')
     deploy("#{selfdir}app")
     compile_feed_generator
     warm_up
@@ -43,7 +45,7 @@ class SummaryStore < PerformanceTest
   end
 
   def test_get_performance
-    set_description('Test get performance for v1 api, queries and application with lz4 compression')
+    set_description('Test get performance for string field using document v1 api and queries')
     deploy("#{selfdir}app")
     compile_feed_generator
     compile_query_generator
@@ -61,15 +63,5 @@ class SummaryStore < PerformanceTest
                                     parameter_filler('tag', 'ignore2')])
     run_fbench(container, 128, 60, [parameter_filler('legend', 'query'),
                                     parameter_filler('tag', 'summary')])
-
-    deploy("#{selfdir}app_with_lz4_compression")
-    vespa.search['contentnode'].first.trigger_flush
-    vespa.adminserver.stop_base
-    vespa.adminserver.start_base
-    wait_until_ready
-    run_fbench(container, 128, 20, [parameter_filler('legend', 'ignore'),
-                                    parameter_filler('tag', 'ignore3')])
-    run_fbench(container, 128, 60, [parameter_filler('legend', 'query'),
-                                    parameter_filler('tag', 'summary_lz4')])
   end
 end
