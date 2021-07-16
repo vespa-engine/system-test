@@ -177,9 +177,10 @@ class PerformanceTest < TestCase
   end
 
   def run_stream_feeder(streamer_command, custom_fillers=[], feederparams={})
+    client = feederparams.key?(:client) ? feederparams[:client] : :vespa_feeder
     out = feed_stream(streamer_command,
-                      feederparams.merge({:client => :vespa_feeder, :mode => "benchmark"}))
-    post_process_feed_output(out, :vespa_feeder, custom_fillers)
+                      feederparams.merge({:client => client, :mode => "benchmark"}))
+    post_process_feed_output(out, client, custom_fillers)
   end
 
   def create_loadtester(node, configserver_hostname, port, num_requests, num_threads, defdir)
