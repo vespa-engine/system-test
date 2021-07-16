@@ -1,0 +1,64 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+require 'performance_test'
+require 'performance/fbench'
+require 'pp'
+require 'document_set'
+require 'document'
+
+class DocumentStoreTest < PerformanceTest
+  def setup
+    super
+    set_owner('chunnoo')
+    start
+  end
+
+  def compile_feed_generator
+    @feed_generator = "#{dirs.tmpdir}feed_qenerator"
+    container = (vespa.qrserver['0'] or vespa.container.values.first)
+    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -O3 -o #{@feed_generator} #{selfdir}feed_generator.cpp")
+  end
+
+  def compile_query_generator
+    @query_generator = "#{dirs.tmpdir}query_qenerator"
+    @queryfile = "#{dirs.tmpdir}generated_queries"
+    container = (vespa.qrserver['0'] or vespa.container.values.first)
+    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -O3 -o #{@query_generator} #{selfdir}query_generator.cpp")
+  end
+
+  def warm_up
+    feed_stream("#{@feed_generator} 100 100",
+                route: '"combinedcontainer/chain.indexing null/default"')
+  end
+
+  def test_put_performance
+    set_description('Test put performance for string field')
+    deploy("#{selfdir}app")
+    compile_feed_generator
+    warm_up
+    profiler_start
+    run_stream_feeder("#{@feed_generator} 100000 1024",
+                      [parameter_filler('legend', 'test_put_performance')])
+    profiler_report('test_put_performance')
+  end
+
+  def test_get_performance
+    set_description('Test get performance for string field using document v1 api and queries')
+    deploy("#{selfdir}app")
+    compile_feed_generator
+    compile_query_generator
+    run_stream_feeder("#{@feed_generator} 100000 1024", [])
+    container = (vespa.qrserver['0'] or vespa.container.values.first)
+    container.execute("#{@query_generator} 100000 0 > #{@queryfile}")
+    run_fbench(container, 128, 20, [parameter_filler('legend', 'ignore'),
+                                    parameter_filler('tag', 'ignore1')])
+    run_fbench(container, 128, 60, [parameter_filler('legend', 'query'),
+                                    parameter_filler('tag', 'getv1api')])
+
+    container.execute("#{@query_generator} 100000 1 > #{@queryfile}")
+    run_fbench(container, 128, 20, [parameter_filler('legend', 'ignore'),
+                                    parameter_filler('tag', 'ignore2')])
+    run_fbench(container, 128, 60, [parameter_filler('legend', 'query'),
+                                    parameter_filler('tag', 'summary')])
+  end
+end
