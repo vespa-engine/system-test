@@ -1,0 +1,8 @@
+search doc {
+    document doc {
+
+        field text type string {
+            indexing: index
+        }
+    }
+}
