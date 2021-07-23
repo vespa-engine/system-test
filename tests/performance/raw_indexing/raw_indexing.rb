@@ -26,7 +26,7 @@ class FeedingIndexTest < PerformanceTest
 
     def download_doc_file
         container = (vespa.qrserver['0'] or vespa.container.values.first)
-        container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}download_webtext.py && cd /")
+        container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}download_webtext.py")
     end
 
     def make_feed_docs
