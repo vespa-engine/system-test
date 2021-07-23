@@ -31,17 +31,17 @@ class FeedingIndexTest < PerformanceTest
 
     def make_feed_docs
         container = (vespa.qrserver['0'] or vespa.container.values.first)
-        container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 200000 data/webtext.train.jsonl feed_docs.json && cd /")
+        container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 200000 data/webtext.train.jsonl feed_docs.json")
     end
 
     def make_warm_up_docs
         container = (vespa.qrserver['0'] or vespa.container.values.first)
-        container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 100 data/webtext.train.jsonl warm_up_docs.json && cd /")
+        container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 100 data/webtext.train.jsonl warm_up_docs.json")
     end
 
     def make_queries
         container = (vespa.qrserver['0'] or vespa.container.values.first)
-        container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_queries.py feed_docs.json queries.txt 3 && cd /")
+        container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_queries.py feed_docs.json queries.txt 3")
     end
 
     def set_up_files
