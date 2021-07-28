@@ -12,7 +12,7 @@ class StreamingSearchTest < PerformanceTest
 
     def setup
         set_owner('onorum')
-        set_description('preformance test for streaming search')
+        set_description('performance test for streaming search')
         @docPath = "#{selfdir}data/documents.json"
         start
     end
@@ -36,8 +36,8 @@ class StreamingSearchTest < PerformanceTest
     def query_docs(num_clients, num_chars)
         @queryfile = "#{selfdir}data/#{num_chars}_char_queries.txt"
         container = (vespa.qrserver['0'] or vespa.container.values.first)
-        run_fbench(container, num_clients, 30, [parameter_filler('tag', "query with lenght: #{num_chars} chars"),
-                                        parameter_filler('legend', 'getviapi')])
+        run_fbench(container, num_clients, 30, [parameter_filler('tag', "query lenght: #{num_chars}"),
+                                        parameter_filler('legend', "query lenght: #{num_chars} chars, clients: #{num_clients}")])
     end
 
     
