@@ -36,7 +36,7 @@ class StreamingSearchTest < PerformanceTest
     def query_docs(num_clients, num_chars)
         @queryfile = "#{selfdir}data/#{num_chars}_char_queries.txt"
         container = (vespa.qrserver['0'] or vespa.container.values.first)
-        run_fbench(container, num_clients, 30, [parameter_filler('tag', "query with lenght #{num_chars} chars"),
+        run_fbench(container, num_clients, 30, [parameter_filler('tag', "query with lenght: #{num_chars} chars"),
                                         parameter_filler('legend', 'getviapi')])
     end
 
