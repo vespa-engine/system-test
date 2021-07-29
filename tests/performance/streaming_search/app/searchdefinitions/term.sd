@@ -1,0 +1,43 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema term {
+
+    document term {
+
+        field term type string {
+            indexing: summary | index
+            match: prefix 
+        } 
+
+        field query_count type int {
+            indexing: summary | attribute
+        }
+
+        field query_hits type int {
+            indexing: summary | attribute
+        }
+
+        field corpus_count type int {
+            indexing: summary | attribute
+        }
+
+        field document_count type int {
+            indexing: summary | attribute
+        }
+        
+    } 
+
+    fieldset default {
+        fields: term
+    }
+
+    rank-profile term_rank inherits default {
+        first-phase {
+            expression {
+              10*max(0, attribute(query_count))
+              + max(0, attribute(corpus_count))
+            }
+        }
+    }
+
+}
