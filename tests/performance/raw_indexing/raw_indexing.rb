@@ -11,7 +11,7 @@ class FeedingIndexTest < PerformanceTest
     
     def setup
         set_owner("onorum")
-        set_description("simple test for indexing and querry preformance")
+        set_description("simple test for indexing and query performance")
         
         @tainted = false
         @warmUpDocPath = "#{dirs.tmpdir}warm_up_docs.json"
@@ -52,7 +52,7 @@ class FeedingIndexTest < PerformanceTest
     end
 
     def test_feeding_and_querying_docs
-        set_description("testing indexing preformance and query preformance")
+        set_description("testing indexing performance and query performance")
         if @tainted
             puts 'Wiping existing index data on node to ensure previous tests do not pollute results'
             node = vespa.storage['search'].storage['0']
