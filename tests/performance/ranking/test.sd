@@ -1,0 +1,29 @@
+# Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search test {
+  document test {
+    field title type string {
+      indexing: index | summary
+    }
+    field body type string {
+      indexing: index | summary
+    }
+    field selection type string {
+      indexing: index | summary
+    }
+    field score_1 type float {
+      indexing: attribute | summary
+    }
+    field score_2 type float {
+      indexing: attribute | summary
+    }
+  }
+  rank-profile basic_two_phase {
+    first-phase {
+      expression: nativeFieldMatch(title) + attribute(score_1)
+    }
+    second-phase {
+      expression: nativeFieldMatch(body) + attribute(score_2)
+    }
+  }
+}
