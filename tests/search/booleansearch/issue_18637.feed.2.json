@@ -1,3 +1,4 @@
 [
-{ "id":"id:test:test::1", "fields":{ "predicate_field":"value in [2000..2000]", "title":"1:my title 2000" } }
+{ "id":"id:test:test::1", "fields":{ "predicate_field":"value in [200..200]", "title":"1:my title 2000" } },
+{ "id":"id:test:test::2", "fields":{ "predicate_field":"value in [2000..2001]", "title":"2:my title 2000" } }
 ]
