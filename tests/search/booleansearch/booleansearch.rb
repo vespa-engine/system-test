@@ -19,14 +19,22 @@ class BooleanSearchTest < SearchTest
     1800
   end
 
-  def deploy_and_feed
+  def deploy_and_feed()
+    deploy_and_feed_file(@feed_file)
+  end 
+
+  def deploy_and_start()
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
         container(Container.new("combinedcontainer").
             search(Searching.new).
             docproc(DocumentProcessing.new).
             gateway(ContainerDocumentApi.new)))
     start
-    feed_and_wait_for_docs("test", @numdocs, :file => @feed_file)
+  end
+
+  def deploy_and_feed_file(file)
+    deploy_and_start()
+    feed_and_wait_for_docs("test", @numdocs, :file => file)
   end
 
   def flush_predicate_attribute
@@ -73,6 +81,17 @@ class BooleanSearchTest < SearchTest
     write_doc(file, "second field", "gender in [Female]", ["second_predicate"])
     write_doc(file, "not-female-or-NO",
               "not(gender in [Female] or country in [Norway])")
+  end
+
+  def test_issue_18637()
+    deploy_and_start()
+    feedfile(selfdir + "issue_18637.feed.1.json")
+    assert_hitcount("?query=sddocname:test", 1)
+    assert_search('{}', '{"value":1000}', ["1"], "predicate_field")
+    feedfile(selfdir + "issue_18637.feed.2.json")
+    assert_hitcount("?query=sddocname:test", 1)
+    assert_search('{}', '{"value":2000}', ["1"], "predicate_field")
+    assert_search('{}', '{"value":1000}', ["1"], "predicate_field") # This gives an incorrect match.
   end
 
   def test_that_rankfeatures_does_not_core
