@@ -9,18 +9,16 @@ require 'pp'
 
 class StreamingSearchTest < PerformanceTest
 
-
     def setup
         set_owner('onorum')
         set_description('performance test for streaming search')
         @docPath = "#{selfdir}data/documents.json"
-        start
     end
-
 
     def test_streaming_search
         set_description('tesing query preformance of streaming search with prefix match on small documents')
         deploy("#{selfdir}app")
+        start
         feed(:file => @docPath)
         warm_up
         query_all_chars
@@ -39,7 +37,6 @@ class StreamingSearchTest < PerformanceTest
         run_fbench(container, num_clients, 30, [parameter_filler('tag', "query length: #{num_chars}"),
                                         parameter_filler('legend', "query length: #{num_chars} chars, clients: #{num_clients}")])
     end
-
     
     def query_num_chars(num_chars)
         [1, 2, 4, 8, 16, 32, 64].each { |clients| query_docs(clients, num_chars) }
