@@ -1,0 +1,3 @@
+[
+{ "id":"id:test:test::1", "fields":{ "predicate_field":"value in [7..7]", "title":"1:my title 7" } }
+]
