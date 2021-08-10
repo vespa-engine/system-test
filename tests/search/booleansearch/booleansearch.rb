@@ -121,6 +121,22 @@ class BooleanSearchTest < SearchTest
     assert_search('{}', '{"value":100}', [], "predicate_field") # This gives an incorrect match.
   end
 
+  def test_put_remove_put_of_single_point()
+    deploy_and_start()
+    feedfile(selfdir + "issue_18637.point.7.json")
+    assert_hitcount("?query=sddocname:test", 1)
+    assert_search('{}', '{"value":7}', ["1"], "predicate_field")
+
+    feedfile(selfdir + "issue_18637.remove.json")
+    assert_hitcount("?query=sddocname:test", 0)
+    assert_search('{}', '{"value":7}', [], "predicate_field")
+
+    feedfile(selfdir + "issue_18637.point.8.json")
+    assert_hitcount("?query=sddocname:test", 1)
+    assert_search('{}', '{"value":8}', ["1"], "predicate_field")
+    assert_search('{}', '{"value":7}', [], "predicate_field")
+  end
+
   def test_that_rankfeatures_does_not_core
     File.open(@feed_file, "w") {|file| write_value_documents(file) }
     deploy_and_feed
