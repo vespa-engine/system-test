@@ -1,4 +1,6 @@
 [
-{ "id":"id:test:test::1", "fields":{ "predicate_field":"value in [200..200]", "title":"1:my title 2000" } },
-{ "id":"id:test:test::2", "fields":{ "predicate_field":"value in [2000..2001]", "title":"2:my title 2000" } }
+{ "id":"id:test:test::1", "fields":{ "predicate_field":"value in [200..200]", "title":"1:my title 200" } },
+{ "id":"id:test:test::2", "fields":{ "predicate_field":"value in [2000..2001]", "title":"2:my title 2000" } },
+{ "id":"id:test:test::3", "fields":{ "predicate_field":"value in [20..20]", "title":"3:my title 20" } },
+{ "id":"id:test:test::4", "fields":{ "predicate_field":"value in [2..3]", "title":"4:my title 2" } }
 ]

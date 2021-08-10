@@ -86,25 +86,55 @@ class BooleanSearchTest < SearchTest
   def test_issue_18637()
     deploy_and_start()
     feedfile(selfdir + "issue_18637.feed.1.json")
-    assert_hitcount("?query=sddocname:test", 2)
+    assert_hitcount("?query=sddocname:test", 4)
     assert_search('{}', '{"value":100}', ["1"], "predicate_field")
     assert_search('{}', '{"value":101}', [], "predicate_field")
     assert_search('{}', '{"value":1000}', ["2"], "predicate_field")
     assert_search('{}', '{"value":1001}', ["2"], "predicate_field")
     assert_search('{}', '{"value":1002}', [], "predicate_field")
+    assert_search('{}', '{"value":10}', ["3"], "predicate_field")
+    assert_search('{}', '{"value":11}', ["3"], "predicate_field")
+    assert_search('{}', '{"value":12}', [], "predicate_field")
+    assert_search('{}', '{"value":1}', ["4"], "predicate_field")
+    assert_search('{}', '{"value":2}', [], "predicate_field")
     feedfile(selfdir + "issue_18637.feed.2.json")
-    assert_hitcount("?query=sddocname:test", 2)
+    assert_hitcount("?query=sddocname:test", 4)
     assert_search('{}', '{"value":200}', ["1"], "predicate_field")
     assert_search('{}', '{"value":201}', [], "predicate_field")
     assert_search('{}', '{"value":2000}', ["2"], "predicate_field")
     assert_search('{}', '{"value":2001}', ["2"], "predicate_field")
     assert_search('{}', '{"value":2002}', [], "predicate_field")
+    assert_search('{}', '{"value":20}', ["3"], "predicate_field")
+    assert_search('{}', '{"value":21}', [], "predicate_field")
+    assert_search('{}', '{"value":2}', ["4"], "predicate_field")
+    assert_search('{}', '{"value":3}', ["4"], "predicate_field")
+    assert_search('{}', '{"value":4}', [], "predicate_field")
 
-    assert_search('{}', '{"value":100}', ["1"], "predicate_field") # This gives an incorrect match.
+    assert_search('{}', '{"value":10}', [], "predicate_field")
+    assert_search('{}', '{"value":11}', [], "predicate_field")
     assert_search('{}', '{"value":101}', [], "predicate_field")
     assert_search('{}', '{"value":1000}', [], "predicate_field")
     assert_search('{}', '{"value":1001}', [], "predicate_field")
     assert_search('{}', '{"value":1002}', [], "predicate_field")
+
+    assert_search('{}', '{"value":1}', [], "predicate_field") # This gives an incorrect match.
+    assert_search('{}', '{"value":100}', [], "predicate_field") # This gives an incorrect match.
+  end
+
+  def test_put_remove_put_of_single_point()
+    deploy_and_start()
+    feedfile(selfdir + "issue_18637.point.7.json")
+    assert_hitcount("?query=sddocname:test", 1)
+    assert_search('{}', '{"value":7}', ["1"], "predicate_field")
+
+    feedfile(selfdir + "issue_18637.remove.json")
+    assert_hitcount("?query=sddocname:test", 0)
+    assert_search('{}', '{"value":7}', [], "predicate_field")
+
+    feedfile(selfdir + "issue_18637.point.8.json")
+    assert_hitcount("?query=sddocname:test", 1)
+    assert_search('{}', '{"value":8}', ["1"], "predicate_field")
+    assert_search('{}', '{"value":7}', [], "predicate_field")
   end
 
   def test_that_rankfeatures_does_not_core
