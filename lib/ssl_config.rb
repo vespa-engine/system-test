@@ -2,6 +2,7 @@
 require 'openssl'
 require 'fileutils'
 require 'shellwords'
+require 'etc'
 
 class SslConfig
 
@@ -20,7 +21,7 @@ class SslConfig
   def initialize(cert_path: :default)
     @auto_create_path = false
 
-    @user = ENV['USER'] || ENV['SUDO_USER']
+    @user = ENV['USER'] || ENV['SUDO_USER'] || Etc.getlogin || Etc.getpwuid().name
     raise ArgumentError.new("No SUDO_USER or USER environment variable set") if @user.nil?
 
     if cert_path == :default
