@@ -2,6 +2,7 @@
 require 'openssl'
 require 'fileutils'
 require 'shellwords'
+require 'etc'
 
 class SslConfig
 
@@ -20,7 +21,7 @@ class SslConfig
   def initialize(cert_path: :default)
     @auto_create_path = false
 
-    @user = ENV['USER'] || ENV['SUDO_USER']
+    @user = ENV['USER'] || ENV['SUDO_USER'] || Etc.getlogin || Etc.getpwuid().name
     raise ArgumentError.new("No SUDO_USER or USER environment variable set") if @user.nil?
 
     if cert_path == :default
@@ -68,6 +69,14 @@ class SslConfig
     ret = `#{cmd}`
     raise RuntimeError.new("Command #{cmd} failed: exit code #{$?.exitstatus}") if $? != 0
     ret.strip
+  end
+
+  def auto_create_keys_if_required
+    unless cert_path_contains_certs?
+      puts "No SSL certificates/keys found; generating first-time host-local CA and keypair"
+      generate_host_specific_certs
+      puts "Certs and keys can be found in directory #{cert_path}"
+    end
   end
 
   def ensure_cert_path_exists

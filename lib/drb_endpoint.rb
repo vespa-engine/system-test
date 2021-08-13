@@ -54,17 +54,9 @@ class DrbEndpoint
     end
   end
 
-  def auto_create_keys_if_required
-    if not @ssl_config.cert_path_contains_certs?
-      puts "No SSL certificates/keys found; generating first-time host-local CA and keypair"
-      @ssl_config.generate_host_specific_certs
-      puts "Certs and keys can be found in directory #{@ssl_config.cert_path}"
-    end
-  end
-
   def start_tls_service(endpoint, object, auto_create_missing_keys)
     if auto_create_missing_keys
-      auto_create_keys_if_required
+      @ssl_config.auto_create_keys_if_required
     end
     uri = tls_endpoint_uri(endpoint)
     DRb.start_service(uri, object, @ssl_config.to_drb_openssl_config)

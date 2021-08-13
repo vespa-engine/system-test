@@ -11,6 +11,8 @@ class TlsEnv
     # Change to `true` to dump stacktrace every time a SSL context is created.
     # Useful for finding places that does not have propagation of a shared TlsEnv instance.
     @debug_print = false
+
+    generate_tls_config_if_missing
     get_openssl_ctx_from_env_or_nil
   end
 
@@ -41,11 +43,35 @@ class TlsEnv
   end
 
   private
+  def generate_tls_config_if_missing
+    unless ENV['VESPA_TLS_CONFIG_FILE'] or ENV['VESPA_FACTORY_SYSTEMTESTS_DISABLE_TLS']
+      ssl_config = SslConfig.new(cert_path: :default)
+      ssl_config.auto_create_keys_if_required
+      tls_config_file = ssl_config.cert_file('tls-config.json')
+      tls_config =
+        {
+          'disable-hostname-validation' => true,
+          'files' => {
+            'private-key' => ssl_config.host_private_key,
+            'certificates' => ssl_config.host_cert,
+            'ca-certificates' => ssl_config.ca_cert
+          }
+        }
+      json = JSON.pretty_generate(tls_config)
+      File.open(tls_config_file, 'w') do |f|
+        f.syswrite(json)
+      end
+      puts "Environment variable VESPA_TLS_CONFIG_FILE is not assigned, setting it to #{tls_config_file}."
+      ENV['VESPA_TLS_CONFIG_FILE'] = tls_config_file
+    end
+  end
+
+  private
   def get_openssl_ctx_from_env_or_nil
     cfg_file = ENV['VESPA_TLS_CONFIG_FILE']
     mode = ENV['VESPA_TLS_INSECURE_MIXED_MODE']
     if not cfg_file or mode == 'plaintext_client_mixed_server'
-      puts 'Vespa TLS is not configured, continuing with insecure connections' if @debug_print
+      puts 'Warning: Vespa TLS is not configured, continuing with insecure connections.'
       return nil
     end
     if @debug_print
