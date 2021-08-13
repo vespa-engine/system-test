@@ -70,6 +70,14 @@ class SslConfig
     ret.strip
   end
 
+  def auto_create_keys_if_required
+    unless cert_path_contains_certs?
+      puts "No SSL certificates/keys found; generating first-time host-local CA and keypair"
+      generate_host_specific_certs
+      puts "Certs and keys can be found in directory #{cert_path}"
+    end
+  end
+
   def ensure_cert_path_exists
     return if Dir.exists? @cert_path
     # We want to let any auto-created path be owned by the calling user, but we
