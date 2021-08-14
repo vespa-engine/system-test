@@ -94,6 +94,7 @@ public class TestConfigServer implements RequestHandler, Runnable {
                                        new FileServer(configServerConfig),
                                        new NoopRpcAuthorizer(),
                                        new RpcRequestHandlerProvider());
+        rpcServer.setUpGetConfigHandlers();
         rpcServer.onTenantCreate(new MockTenant(tenantName, this));
         this.port = port;
         this.defDir = defDir;
@@ -251,7 +252,7 @@ public class TestConfigServer implements RequestHandler, Runnable {
         loadCfgFiles(key.getConfigId(), namespace);
         if (!defNodes.containsKey(configDefinitionKey)) {
             System.out.println("keys and values in defnode:" + defNodes);
-            throw new RuntimeException("Configserver at " + port + " could not resolve config for " + req.toString());
+            throw new RuntimeException("Configserver at " + port + " could not resolve config for " + req);
         }
         if (configCache.containsKey(key)) {
             return configCache.get(key);
