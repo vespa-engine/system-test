@@ -163,7 +163,7 @@ public class FailoverTest {
             // Kill current source, wait for failover
             log.log(LogLevel.INFO, "current=" + current.getAddress());
             tester.stopConfigServerMatchingSource(current);
-            Thread.sleep(ConfigTester.getTestTimingValues().getSubscribeTimeout() * 2);
+            Thread.sleep(ConfigTester.getTestTimingValues().getSubscribeTimeout() * 3);
             assertNotEquals(current.toString(), connectionPool.getCurrent().toString());
             //assertFalse(subscriber.nextConfig(waitWhenExpectedFailure));
             // Change config on servers (including whatever one we stopped earlier, not in use anyway), verify subscriber is working
