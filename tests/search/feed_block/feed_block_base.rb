@@ -37,24 +37,19 @@ class FeedBlockBase < IndexedSearchTest
       sd(selfdir + "test.sd").num_parts(@num_parts).redundancy(@num_parts).ready_copies(1).enable_http_gateway
   end
 
-  def get_proton_config(enumstore, multivalue)
+  def get_proton_config(address_space)
     ConfigOverride.new("vespa.config.search.core.proton").
       add("writefilter",
           ConfigValue.new("attribute",
-                          ConfigValue.new("enumstorelimit", enumstore))).
-      add("writefilter",
-          ConfigValue.new("attribute",
-                          ConfigValue.new("multivaluelimit",
-                                          multivalue))).
+                          ConfigValue.new("address_space_limit", address_space))).
       add("writefilter", ConfigValue.new("sampleinterval", 2.0))
   end
 
-  def get_cluster_controller_config(enumstore, multivalue)
+  def get_cluster_controller_config(address_space)
     ConfigOverride.new("vespa.config.content.fleetcontroller").
       add("enable_cluster_feed_block", true).
       add(MapConfig.new("cluster_feed_block_limit").
-          add("attribute-enum-store", enumstore).
-          add("attribute-multi-value", multivalue))
+          add("attribute-address-space", address_space))
   end
 
   def get_filestor_config(reporter_noise_level)
@@ -62,34 +57,36 @@ class FeedBlockBase < IndexedSearchTest
       add("resource_usage_reporter_noise_level", reporter_noise_level)
   end
 
-  def set_proton_limits(search_cluster, memory, disk, enumstore, multivalue)
-    cfg = get_proton_config(enumstore, multivalue)
+  def set_proton_limits(search_cluster, memory, disk, address_space)
+    cfg = get_proton_config(address_space)
     search_cluster.config(cfg)
     search_cluster.proton_resource_limits(ResourceLimits.new.memory(memory).disk(disk))
   end
 
-  def set_cluster_controller_limits(app, search_cluster, memory, disk, enumstore, multivalue)
-    cfg = get_cluster_controller_config(enumstore, multivalue)
+  def set_cluster_controller_limits(app, search_cluster, memory, disk, address_space)
+    cfg = get_cluster_controller_config(address_space)
     app.config(cfg)
     search_cluster.resource_limits(ResourceLimits.new.memory(memory).disk(disk))
   end
 
-  def set_resource_limits(app, search_cluster, memory, disk, enumstore, multivalue, reporter_noise_level = nil)
+  # TODO: change signature when config for cluster controller is simplified
+  def set_resource_limits(app, search_cluster, memory, disk, address_space, reporter_noise_level = nil)
     if @block_feed_in_distributor
-      set_proton_limits(search_cluster, 1.0, 1.0, 1.0, 1.0)
-      set_cluster_controller_limits(app, search_cluster, memory, disk, enumstore, multivalue)
+      set_proton_limits(search_cluster, 1.0, 1.0, 1.0)
+      set_cluster_controller_limits(app, search_cluster, memory, disk, address_space)
     else
-      set_proton_limits(search_cluster, memory, disk, enumstore, multivalue)
-      set_cluster_controller_limits(app, search_cluster, 1.0, 1.0, 1.0, 1.0)
+      set_proton_limits(search_cluster, memory, disk, address_space)
+      set_cluster_controller_limits(app, search_cluster, 1.0, 1.0, 1.0)
     end
     if reporter_noise_level != nil
       search_cluster.config(get_filestor_config(reporter_noise_level))
     end
   end
 
-  def redeploy_app(memory, disk, enumstore, multivalue)
+  # TODO: change signature when config for cluster controller is simplified
+  def redeploy_app(memory, disk, address_space)
     app = get_app
-    set_resource_limits(app, app, memory, disk, enumstore, multivalue)
+    set_resource_limits(app, app, memory, disk, address_space)
 
     redeploy(app, @cluster_name)
     sample_sleep(' after reconfig')

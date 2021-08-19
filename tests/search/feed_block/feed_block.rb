@@ -9,8 +9,7 @@ class FeedBlockTest < FeedBlockBase
     set_description("Test resource based feed block (in proton) using high performance http client")
     run_feed_block_http_client_test({ :memory => /memoryLimitReached/,
                                       :disk => /diskLimitReached/,
-                                      :enum_store => /enumStoreLimitReached/,
-                                      :multi_value => /multiValueLimitReached/ })
+                                      :address_space => /addressSpaceLimitReached/ })
   end
 
   def test_distributor_feed_block_http_client
@@ -23,8 +22,7 @@ class FeedBlockTest < FeedBlockBase
   def expected_distributor_error_messages
     { :memory => /memory on node/,
       :disk => /disk on node/,
-      :enum_store => /attribute-enum-store:test\.ready\.a1 on node/,
-      :multi_value => /attribute-multi-value:test\.ready\.a1 on node/ }
+      :address_space => /attribute-address-space:test\.ready\.a1\..* on node/ }
   end
 
   def run_feed_block_http_client_test(error_msg)
@@ -38,20 +36,17 @@ class FeedBlockTest < FeedBlockBase
     assert_hitcount("query=w1", 1)
 
     # Force trigger of memory limit
-    redeploy_app(0.0, 1.0, 1.0, 1.0)
+    redeploy_app(0.0, 1.0, 1.0)
     assert_http_client_feed(error_msg[:memory], 11)
     # Force trigger of disk limit
-    redeploy_app(1.0, 0.0, 1.0, 1.0)
+    redeploy_app(1.0, 0.0, 1.0)
     assert_http_client_feed(error_msg[:disk], 12)
-    # Force trigger of enum store limit
-    redeploy_app(1.0, 1.0, 0.0, 1.0)
-    assert_http_client_feed(error_msg[:enum_store], 11)
-    # Force trigger of multivalue limit
-    redeploy_app(1.0, 1.0, 1.0, 0.0)
-    assert_http_client_feed(error_msg[:multi_value], 12)
+    # Force trigger of address space limit
+    redeploy_app(1.0, 1.0, 0.0)
+    assert_http_client_feed(error_msg[:address_space], 11)
 
     # Allow feeding again
-    redeploy_app(1.0, 1.0, 1.0, 1.0)
+    redeploy_app(1.0, 1.0, 1.0)
     http_client_feed_file("docs.2.json")
     assert_hitcount("query=sddocname:test", 2)
     assert_hitcount("query=w2", 1)
@@ -93,8 +88,7 @@ class FeedBlockTest < FeedBlockBase
     set_description("Test resource based feed block (in proton) using document v1 api")
     run_feed_block_document_v1_api_test({ :memory => /memoryLimitReached/,
                                           :disk => /diskLimitReached/,
-                                          :enum_store => /enumStoreLimitReached/,
-                                          :multi_value => /multiValueLimitReached/ })
+                                          :address_space => /addressSpaceLimitReached/ })
   end
 
   def test_distributor_feed_block_document_v1_api
@@ -114,20 +108,17 @@ class FeedBlockTest < FeedBlockBase
     assert_hitcount("query=w1", 1)
 
     # Force trigger of memory limit
-    redeploy_app(0.0, 1.0, 1.0, 1.0)
+    redeploy_app(0.0, 1.0, 1.0)
     assert_document_v1_feed(error_msg[:memory], 11)
     # Force trigger of disk limit
-    redeploy_app(1.0, 0.0, 1.0, 1.0)
+    redeploy_app(1.0, 0.0, 1.0)
     assert_document_v1_feed(error_msg[:disk], 12)
-    # Force trigger of enum store limit
-    redeploy_app(1.0, 1.0, 0.0, 1.0)
-    assert_document_v1_feed(error_msg[:enum_store], 11)
-    # Force trigger of multivalue limit
-    redeploy_app(1.0, 1.0, 1.0, 0.0)
-    assert_document_v1_feed(error_msg[:multi_value], 12)
+    # Force trigger of address space limit
+    redeploy_app(1.0, 1.0, 0.0)
+    assert_document_v1_feed(error_msg[:address_space], 11)
 
     # Allow feeding again
-    redeploy_app(1.0, 1.0, 1.0, 1.0)
+    redeploy_app(1.0, 1.0, 1.0)
     vespa.document_api_v1.put(create_document(2))
     assert_hitcount("query=sddocname:test", 2)
     assert_hitcount("query=w2", 1)
@@ -177,14 +168,14 @@ class FeedBlockTest < FeedBlockBase
   def test_proton_feed_block_document_v1_api_two_nodes
     set_owner("geirst")
     set_description("Test resource based feed block (in proton) using document v1 api, attribute resource limit, and node addition for recovery")
-  run_feed_block_document_v1_api_two_nodes_test({ :multi_value => /multiValueLimitReached/ })
+    run_feed_block_document_v1_api_two_nodes_test({ :address_space => /addressSpaceLimitReached/ })
   end
 
   def test_distributor_feed_block_document_v1_api_two_nodes
     set_owner("geirst")
     set_description("Test resource based feed block (in distributor) using document v1 api, attribute resource limit, and node addition for recovery")
     @block_feed_in_distributor = true
-    run_feed_block_document_v1_api_two_nodes_test({ :multi_value => /attribute-multi-value:test\.ready\.a1 on node/ })
+    run_feed_block_document_v1_api_two_nodes_test({ :address_space => /attribute-address-space:test\.ready\.a1\.multi-value on node/ })
   end
 
   def run_feed_block_document_v1_api_two_nodes_test(error_msg)
@@ -222,7 +213,7 @@ class FeedBlockTest < FeedBlockBase
     app = get_app
     # The resource usage reporter noise level is set to 0.0 to ensure all samples from proton are sent to the cluster controller.
     # This is needed as we have very small deltas in attribute multi-value sampling.
-    set_resource_limits(app, app, 1.0, 1.0, 1.0, 0.00000001, 0.0)
+    set_resource_limits(app, app, 1.0, 1.0, 0.00000001, 0.0)
     deploy_app(app)
   end
 
@@ -236,7 +227,7 @@ class FeedBlockTest < FeedBlockBase
     vespa.document_api_v1.put(create_document(@beforelimit + 1))
     sample_sleep
     # Currently have beforelimit + 1 documents, above limit
-    assert_document_v1_put_blocked(@beforelimit + 2, error_msg[:multi_value])
+    assert_document_v1_put_blocked(@beforelimit + 2, error_msg[:address_space])
   end
 
   def feed_and_test_document_v1_api_two_nodes_resumed()
