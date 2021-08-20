@@ -223,7 +223,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     puts "Redeploying with reduced disk limit"
     search_cluster = get_sc
     app = get_app(search_cluster, shared_disk)
-    set_resource_limits(app, search_cluster, 1.0, disklimit, 1.0, 1.0, 0.0)
+    set_resource_limits(app, search_cluster, 1.0, disklimit, 1.0, 0.0)
     deploy_app(app)
     sleep_with_reason(@sleep_delay, " to allow new config to propagate")
     settle_cluster_state("uimrd")
