@@ -61,6 +61,7 @@ class TlsEnv
       File.open(tls_config_file, 'w') do |f|
         f.syswrite(json)
       end
+      FileUtils.chown(ssl_config.user, nil, tls_config_file)
       puts "Environment variable VESPA_TLS_CONFIG_FILE is not assigned, setting it to #{tls_config_file}."
       ENV['VESPA_TLS_CONFIG_FILE'] = tls_config_file
     end
