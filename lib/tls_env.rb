@@ -75,10 +75,12 @@ class TlsEnv
   def write_tls_config_path_to_default_env_if_present
     tls_config_file = ENV[CONFIG_FILE_ENV_VAR]
     default_env_file = DefaultEnvFile.new(Environment.instance.vespa_home)
-    if tls_config_file and File.exist?(tls_config_file) and not ENV[DISABLE_TLS_ENV_VAR]
-      default_env_file.set(CONFIG_FILE_ENV_VAR, tls_config_file)
-    else
-      default_env_file.set(CONFIG_FILE_ENV_VAR, nil)
+    if File.exists?(default_env_file.file_name)
+      if tls_config_file and File.exist?(tls_config_file) and not ENV[DISABLE_TLS_ENV_VAR]
+        default_env_file.set(CONFIG_FILE_ENV_VAR, tls_config_file)
+      else
+        default_env_file.set(CONFIG_FILE_ENV_VAR, nil)
+      end
     end
   end
 
