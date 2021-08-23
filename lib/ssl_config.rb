@@ -12,7 +12,7 @@ class SslConfig
 
   attr_reader :cert_path, :use_tls
   # _Paths_ to CA and host PEMs/keys.
-  attr_reader :ca_cert, :host_cert, :host_private_key
+  attr_reader :ca_cert, :host_cert, :host_private_key, :user
 
   # cert_path: If set to :default, will use VESPA_SYSTEM_TEST_CERT_PATH environment
   #            variable if present, or a homedir-relative fallback path otherwise.
