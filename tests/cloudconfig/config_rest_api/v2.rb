@@ -36,7 +36,7 @@ class ConfigRestApiV2 < CloudConfigTest
     
     sentinel_config_name = "cloud.config.sentinel"
     model_config_name = "cloud.config.model"
-    filereferences_config_name = "cloud.config.filedistribution.filereferences"
+    filedistributorrpc_config_name = "cloud.config.filedistribution.filedistributorrpc"
 
     # Test get config
     resp = execute_http_request(base_url + model_config_name + "/admin/model")
@@ -45,22 +45,22 @@ class ConfigRestApiV2 < CloudConfigTest
     # Test listing, non recursive (default). Includes first level of config id.
     resp = execute_http_request(base_url)
     assert_response_code_and_body(resp, 200, [sentinel_config_name,
-                                              base_url + filereferences_config_name + "\/filedistribution\/"])
+                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/"])
 
     # Test listing, non recursive (explicit). Includes first level of config id.
     resp = execute_http_request(base_url + "?recursive=false")
     assert_response_code_and_body(resp, 200, [sentinel_config_name,
-                                              base_url + filereferences_config_name + "\/filedistribution\/"])
+                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/"])
 
     # Test listing, recursive
     resp = execute_http_request(base_url + "?recursive=true")
     assert_response_code_and_body(resp, 200, [sentinel_config_name,
-                                              base_url + filereferences_config_name + "\/filedistribution\/",
-                                              base_url + filereferences_config_name + "\/filedistribution\/#{@configserver}"])
+                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/",
+                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/#{@configserver}"])
 
     # Test named listing. Includes first level of config id.
-    resp = execute_http_request(base_url + filereferences_config_name + "/")
-    assert_response_code_and_body(resp, 200, [base_url + filereferences_config_name + "\/filedistribution\/"])
+    resp = execute_http_request(base_url + filedistributorrpc_config_name + "/")
+    assert_response_code_and_body(resp, 200, [base_url + filedistributorrpc_config_name + "\/filedistribution\/"])
 
     # Test get config with nocache property set
     resp = execute_http_request(base_url + model_config_name + "/admin/model?nocache=true")
