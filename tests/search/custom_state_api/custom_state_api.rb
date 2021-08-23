@@ -80,7 +80,7 @@ class CustomStateApi < SearchTest
   end
 
   def assert_resource_usage(page)
-    assert_keys(["disk", "memory"], page)
+    assert_keys(["disk", "memory", "attribute_address_space"], page)
   end
 
   def teardown
