@@ -5,9 +5,6 @@ require 'json'
 
 class TlsEnv
 
-  CONFIG_FILE_ENV_VAR = 'VESPA_TLS_CONFIG_FILE'
-  DISABLE_TLS_ENV_VAR = 'VESPA_FACTORY_SYSTEMTESTS_DISABLE_TLS'
-
   attr_reader :ssl_ctx, :ca_certificates_file, :certificate_file, :private_key_file
 
   def initialize
@@ -16,7 +13,6 @@ class TlsEnv
     @debug_print = false
 
     generate_tls_config_if_missing
-    write_tls_config_path_to_default_env_if_present
     get_openssl_ctx_from_env_or_nil
   end
 
@@ -48,7 +44,7 @@ class TlsEnv
 
   private
   def generate_tls_config_if_missing
-    unless ENV[CONFIG_FILE_ENV_VAR] or ENV[DISABLE_TLS_ENV_VAR]
+    unless ENV['VESPA_TLS_CONFIG_FILE'] or ENV['VESPA_FACTORY_SYSTEMTESTS_DISABLE_TLS']
       ssl_config = SslConfig.new(cert_path: :default)
       ssl_config.auto_create_keys_if_required
       tls_config_file = ssl_config.cert_file('tls-config.json')
@@ -67,26 +63,13 @@ class TlsEnv
       end
       FileUtils.chown(ssl_config.user, nil, tls_config_file)
       puts "Environment variable VESPA_TLS_CONFIG_FILE is not assigned, setting it to #{tls_config_file}."
-      ENV[CONFIG_FILE_ENV_VAR] = tls_config_file
-    end
-  end
-
-  private
-  def write_tls_config_path_to_default_env_if_present
-    tls_config_file = ENV[CONFIG_FILE_ENV_VAR]
-    default_env_file = DefaultEnvFile.new(Environment.instance.vespa_home)
-    if File.exists?(default_env_file.file_name)
-      if tls_config_file and File.exist?(tls_config_file) and not ENV[DISABLE_TLS_ENV_VAR]
-        default_env_file.set(CONFIG_FILE_ENV_VAR, tls_config_file)
-      else
-        default_env_file.set(CONFIG_FILE_ENV_VAR, nil)
-      end
+      ENV['VESPA_TLS_CONFIG_FILE'] = tls_config_file
     end
   end
 
   private
   def get_openssl_ctx_from_env_or_nil
-    cfg_file = ENV[CONFIG_FILE_ENV_VAR]
+    cfg_file = ENV['VESPA_TLS_CONFIG_FILE']
     mode = ENV['VESPA_TLS_INSECURE_MIXED_MODE']
     if not cfg_file or mode == 'plaintext_client_mixed_server'
       puts 'Warning: Vespa TLS is not configured, continuing with insecure connections.'
