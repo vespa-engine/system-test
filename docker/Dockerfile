@@ -16,10 +16,6 @@ ENV RUBYLIB=/opt/vespa-systemtests/lib:/opt/vespa-systemtests/tests
 
 COPY . /opt/vespa-systemtests
 
-RUN /opt/vespa-systemtests/docker/include/setup-tls.sh root
-
-ENV VESPA_TLS_CONFIG_FILE=/opt/vespa/conf/vespa/tls/tls_config.json
-
 RUN if [[ "$SKIP_M2_POPULATE" != "true" ]]; then /opt/vespa-systemtests/docker/include/populate-m2-repo.sh root; fi
 
 ENTRYPOINT ["bash", "-lc", "source /opt/rh/devtoolset-10/enable && source /opt/rh/rh-maven35/enable && source /opt/rh/rh-ruby27/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
