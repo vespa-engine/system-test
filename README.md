@@ -2,7 +2,8 @@
 
 # Vespa system tests framework
 
-[![Build Status](https://travis-ci.org/vespa-engine/system-test.svg?branch=master)](https://travis-ci.org/vespa-engine/system-test)
+[![Build Status](https://cd.screwdriver.cd/pipelines/7039/test-system-tests/badge)](https://cd.screwdriver.cd/pipelines/7039)
+
 
 The Vespa system test framework is an automatic testing tool for creating and running
 system tests. It is loosely based upon the methodology used in JUnit and
