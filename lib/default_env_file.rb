@@ -5,8 +5,6 @@ require 'thread'
 
 class DefaultEnvFile
 
-  attr_reader :file_name
-
   def initialize(vespa_home)
     @file_name = "#{vespa_home}/conf/vespa/default-env.txt"
     @file_name_orig = "#{@file_name}.orig"
