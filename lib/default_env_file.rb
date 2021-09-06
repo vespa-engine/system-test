@@ -5,6 +5,8 @@ require 'thread'
 
 class DefaultEnvFile
 
+  attr_reader :file_name
+
   def initialize(vespa_home)
     @file_name = "#{vespa_home}/conf/vespa/default-env.txt"
     @file_name_orig = "#{@file_name}.orig"
@@ -31,7 +33,7 @@ class DefaultEnvFile
     end
   end
 
-  def set(name, value)
+  def set(name, value, action='override')
     file_name_new = "#{@file_name}.new"
     @mutex.synchronize do
       lines = IO.readlines(@file_name)
@@ -44,7 +46,7 @@ class DefaultEnvFile
         end
       end
       if !value.nil?
-        wfile.write("override #{name} #{value}\n")
+        wfile.write("#{action} #{name} #{value}\n")
       end
       wfile.close
       File.rename(file_name_new, @file_name)
