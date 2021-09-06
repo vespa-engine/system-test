@@ -245,8 +245,11 @@ module Feeder
       end
       port = params[:port] || Environment.instance.vespa_web_service_port
       host = params[:host] || Environment.instance.vespa_hostname
-      p += "--endpoint https://#{host}:#{port}/ "
-      p += vespa_feed_client_tls_options
+      uri_scheme = if params[:disable_tls] then "http" else "https" end
+      p += "--endpoint #{uri_scheme}://#{host}:#{port}/ "
+      unless params[:disable_tls]
+        p += vespa_feed_client_tls_options
+      end
     end
     p
   end
