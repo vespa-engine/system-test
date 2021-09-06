@@ -35,10 +35,19 @@ class MassiveHttpClientFeedingTest < SearchTest
     wait_for_hitcount("ronny", DOCUMENTS)
   end
 
-  def test_vespa_feed_client
+  def test_vespa_feed_client_with_tls
     gw = deploy_test_app
     feedfile(@feed_file, {:client => :vespa_feed_client, :host => gw.name, :port => gw.http_port,
-                          :numconnections => 4, :max_streams_per_connection => 128})
+                          :numconnections => 4, :max_streams_per_connection => 128, })
+
+    # Don't care if we do not hit the spawned documents, we only care about feeding not getting stuck in this test.
+    wait_for_hitcount("ronny", DOCUMENTS)
+  end
+
+  def test_vespa_feed_client_without_tls
+    gw = deploy_test_app
+    feedfile(@feed_file, {:client => :vespa_feed_client, :host => gw.name, :port => gw.http_port + 1,
+                          :numconnections => 4, :max_streams_per_connection => 128, :disable_tls => true})
 
     # Don't care if we do not hit the spawned documents, we only care about feeding not getting stuck in this test.
     wait_for_hitcount("ronny", DOCUMENTS)
@@ -46,11 +55,19 @@ class MassiveHttpClientFeedingTest < SearchTest
 
   private
   def deploy_test_app
+    container_port = Environment.instance.vespa_web_service_port
     container_cluster = Container.new("dpcluster1").
       jvmargs("-Xms4096m -Xmx4096m").
       search(Searching.new).
       gateway(ContainerDocumentApi.new).
-      config(ConfigOverride.new("container.handler.threadpool").add("maxthreads", 4))
+      config(ConfigOverride.new("container.handler.threadpool").add("maxthreads", 4)).
+      http(Http.new.
+        server(
+          Server.new('default', container_port)).
+        server(
+          Server.new('plain-text-port', container_port + 1).
+            config(ConfigOverride.new('jdisc.http.connector').
+              add('implicitTlsEnabled', 'false')))) # Disable implicit TLS when Vespa mTLS setup is enabled
     output = deploy_app(SearchApp.new.
       cluster(SearchCluster.new.sd(SEARCH_DATA+"music.sd")).
       container(container_cluster))
