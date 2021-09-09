@@ -1,4 +1,4 @@
-// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.config.subscription;
 
 import com.yahoo.config.AppConfig;
@@ -32,6 +32,7 @@ import static org.junit.Assert.assertTrue;
  * @author Harald Musum
  */
 public class ConfigTester implements AutoCloseable {
+
     private static final java.util.logging.Logger log = Logger.getLogger(ConfigTester.class.getName());
 
     TestConfigServer cServer1;
@@ -218,7 +219,7 @@ public class ConfigTester implements AutoCloseable {
     }
 
     static void assertNextConfigHasChanged(ConfigSubscriber subscriber, ConfigHandle<?>... configHandles) {
-        boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
+        boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess, false);
         assertTrue(newConf);
         Arrays.stream(configHandles).forEach(ch -> {
             assertTrue(ch.isChanged());
@@ -227,7 +228,7 @@ public class ConfigTester implements AutoCloseable {
     }
 
     static void assertNextConfigHasNotChanged(ConfigSubscriber subscriber, ConfigHandle<?>... configHandles) {
-        boolean newConf = subscriber.nextConfig(waitWhenExpectedFailure);
+        boolean newConf = subscriber.nextConfig(waitWhenExpectedFailure, false);
         assertFalse(newConf);
         Arrays.stream(configHandles).forEach(ch -> assertFalse(ch.isChanged()));
     }

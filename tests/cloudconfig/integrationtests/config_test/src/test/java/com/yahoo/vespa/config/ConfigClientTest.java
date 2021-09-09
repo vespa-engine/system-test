@@ -1,4 +1,4 @@
-// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.vespa.config;
 
 import com.yahoo.config.subscription.ConfigTester;
@@ -19,11 +19,12 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static com.yahoo.vespa.config.ErrorCode.ILLEGAL_CONFIG_MD5;
+import static com.yahoo.vespa.config.PayloadChecksum.Type.MD5;
+import static com.yahoo.vespa.config.PayloadChecksum.Type.XXHASH64;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 
 /**
  * Tests for different client requests to config server.
@@ -33,7 +34,6 @@ import static org.junit.Assert.assertTrue;
 public class ConfigClientTest {
 
     public static final String DEF_NAME = "app";
-    public static final String CONFIG_MD5 = "";
 
     // getConfig parameters
     private static final String CONFIG_ID = "client-test.0";
@@ -72,7 +72,7 @@ public class ConfigClientTest {
     @Test
     public void testGetConfigNoMd5() {
         try (Tester tester = new Tester()) {
-            JRTClientConfigRequest req = createRequest("");
+            JRTClientConfigRequest req = createRequest();
             tester.invokeSync(req.getRequest());
             verifyOkResponse(req);
         }
@@ -91,12 +91,12 @@ public class ConfigClientTest {
             verifyOkResponse(req);
             verifyConfigChanged(req);
 
-            // Save away the config md5 for use in next request
-            String configMd5 = req.getNewConfigMd5();
-            //System.out.println("Returned config md5=" + configMd5);
+            // Save away the config checksums for use in next request
+            PayloadChecksums payloadChecksums = req.getNewChecksums();
+            //System.out.println("Returned config md5=" + payloadChecksums);
 
             // Get again
-            JRTClientConfigRequest newReq = createRequest(configMd5);
+            JRTClientConfigRequest newReq = createRequest(payloadChecksums, 0);
             tester.invokeSync(newReq.getRequest());
             verifyOkResponse(newReq);
             verifyConfigUnchanged(newReq);
@@ -115,13 +115,13 @@ public class ConfigClientTest {
             verifyConfigChanged(req);
             long generation = req.getRequestGeneration();
 
-            // Save away the config md5 for use in next request
-            String configMd5 = req.getNewConfigMd5();
+            // Save away the config checksums for use in next request
+            PayloadChecksums payloadChecksums = req.getNewChecksums();
 
             // reload and check that we really get a new config
             tester.getConfigServer().deployNewConfig("configs/baz");
 
-            JRTClientConfigRequest newReq = createRequest(configMd5);
+            JRTClientConfigRequest newReq = createRequest(payloadChecksums, 0);
 
             //printRequest(newReq);
             tester.invokeSync(newReq.getRequest());
@@ -143,20 +143,26 @@ public class ConfigClientTest {
             verifyOkResponse(req);
             verifyConfigChanged(req);
 
-            // Save away the config md5 and generation for use in next request
-            String configMd5 = req.getNewConfigMd5();
+            // Save away the config checksums and generation for use in next request
+            PayloadChecksums payloadChecksums = req.getNewChecksums();
             long generation = req.getNewGeneration();
 
             // reload same config to set new generation
             tester.getConfigServer().deployNewConfig("configs/foo");
 
-            JRTClientConfigRequest newReq = createRequest(configMd5, generation);
+            JRTClientConfigRequest newReq = createRequest(payloadChecksums, generation);
 
             tester.invokeSync(newReq.getRequest());
             assertTrue("Valid return values", newReq.validateResponse());
             assertTrue("More recent generation", newReq.getNewGeneration() > generation);
             assertFalse("Updated flag in response is false", newReq.hasUpdatedConfig());
-            assertEquals("Equal config md5 as previous response", newReq.getNewConfigMd5(), configMd5);
+            PayloadChecksums payloadChecksums2 = newReq.getNewChecksums();
+            assertEquals("Equal config md5 as previous response",
+                         payloadChecksums2.getForType(MD5),
+                         payloadChecksums.getForType(MD5));
+            assertEquals("Equal config xxhash64 as previous response",
+                         payloadChecksums2.getForType(XXHASH64),
+                         payloadChecksums.getForType(XXHASH64));
             assertEquals("Empty payload", 0, newReq.getNewPayload().getData().getByteLength());
         }
     }
@@ -167,7 +173,7 @@ public class ConfigClientTest {
     @Test
     public void testInvalidConfigMd5() {
         try (Tester tester = new Tester()) {
-            JRTClientConfigRequest req = createRequest("asdf");
+            JRTClientConfigRequest req = createRequest(PayloadChecksums.from("asdf", "fdsa"), 0);
             tester.invokeSync(req.getRequest());
             assertEquals(ILLEGAL_CONFIG_MD5, req.errorCode());
         }
@@ -207,18 +213,12 @@ public class ConfigClientTest {
         System.out.println("[end]");
     }
 
-    JRTClientConfigRequest createRequest() {
-        return createRequest(CONFIG_MD5);
-    }
+    JRTClientConfigRequest createRequest() { return createRequest(PayloadChecksums.empty(), 0); }
 
-    JRTClientConfigRequest createRequest(String configMd5) {
-        return createRequest(configMd5, 0);
-    }
-
-    JRTClientConfigRequest createRequest(String configMd5, long generation) {
+    JRTClientConfigRequest createRequest(PayloadChecksums payloadChecksums, long generation) {
         return JRTClientConfigRequestV3.createWithParams(
                 new ConfigKey<>(DEF_NAME, CONFIG_ID, "config"), DefContent.fromList(Collections.emptyList()),
-                "localhost", configMd5, generation, SERVER_TIMEOUT,
+                "localhost", payloadChecksums, generation, SERVER_TIMEOUT,
                 Trace.createNew(), CompressionType.UNCOMPRESSED, Optional.empty());
     }
 
