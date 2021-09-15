@@ -53,7 +53,9 @@ class DisjointSourceOnlyDocuments < SearchTest
     set_content_node_state(1, 'r')
     set_content_node_state(2, 'r')
 
-    deploy_app(make_app(disable_merges: false))
+    gen = get_generation(deploy_app(make_app(disable_merges: false)))
+    # Ensure that config is visible on nodes (and triggering ideal state ops) before running wait_until_ready
+    cluster.wait_until_content_nodes_have_config_generation(gen.to_i)
     cluster.wait_until_ready(200)
 
     puts "Checking that cluster contains #{n_docs} docs..."

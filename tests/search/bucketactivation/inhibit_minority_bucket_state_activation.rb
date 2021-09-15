@@ -60,7 +60,9 @@ class InhibitMinorityBucketStateActivationTest < SearchTest
     assert_group_hitcount(1, 'bar', 0)
 
     # Once merges complete and replicas are in sync, all replicas should be active.
-    deploy_app(make_app(disable_merges: false))
+    gen = get_generation(deploy_app(make_app(disable_merges: false)))
+    # Ensure that config is visible on nodes (and triggering ideal state ops) before running wait_until_ready
+    vespa.storage['storage'].wait_until_content_nodes_have_config_generation(gen.to_i)
     wait_until_ready
     vespa.adminserver.execute('vespa-stat --document id:test:test::doc-0')
     assert_group_hitcount(0, 'bar', 20)
