@@ -52,6 +52,7 @@ class MetricsProxy < IndexedSearchTest
 
   def verify_metrics_v2_api(container, port)
     puts "Verifying metrics/v2 on port #{port}"
+    ignored_just_for_caching = container.search("/metrics/v2/values", port)
     result = container.search("/metrics/v2/values", port)
     json = result.json
 
