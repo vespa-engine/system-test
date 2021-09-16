@@ -33,8 +33,8 @@ class BucketReadiness < BucketReadinessBase
     end
   end
 
-  def create_app_for_visiting(num_distributor_stripes)
-    app = create_app("regular/test.sd", num_distributor_stripes)
+  def create_app_for_visiting
+    app = create_app("regular/test.sd")
     app.config(ConfigOverride.new("vespa.config.content.core.stor-distributormanager").
                add("maxpendingidealstateoperations", 10000000))
     app.config(ConfigOverride.new("vespa.config.content.core.stor-server").
@@ -46,18 +46,7 @@ class BucketReadiness < BucketReadinessBase
 
   def test_visiting_while_nodes_down_and_up
     set_description("Test that we can do visiting while nodes are going down and up")
-    deploy_app(create_app_for_visiting(0))
-    run_visiting_while_nodes_down_and_up_test
-  end
-
-  def test_visiting_while_nodes_down_and_up_using_multiple_distributor_stripes
-    # TODO STRIPE: Remove this test when new distributor stripe mode is default
-    set_description("Test that we can do visiting while nodes are going down and up (using multiple distributor stripes)")
-    deploy_app(create_app_for_visiting(4))
-    run_visiting_while_nodes_down_and_up_test
-  end
-
-  def run_visiting_while_nodes_down_and_up_test
+    deploy_app(create_app_for_visiting)
     start
 
     docs = 10000

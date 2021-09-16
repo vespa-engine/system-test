@@ -31,17 +31,8 @@ class DocumentV1Test < SearchTest
   end
 
   def test_realtimefeed
-    deploy_application(0)
-    run_realtimefeed_test
-  end
+    deploy_application
 
-  def test_realtimefeed_with_multiple_distributor_stripes
-    # TODO STRIPE: Remove this test when new distributor stripe mode is default
-    deploy_application(4)
-    run_realtimefeed_test
-  end
-
-  def run_realtimefeed_test
     # Has color yellow
     feedData = File.read(selfdir+"feedV1.json")
     # Changes to color red
@@ -287,11 +278,11 @@ class DocumentV1Test < SearchTest
     assert(verify_with_retries(http, {"PUT" => 3504, "UPDATE" => 3, "REMOVE" => 2}, {"PUT" => 4, "REMOVE" => 1}))
   end
 
-  def deploy_application(num_distributor_stripes = nil)
+  def deploy_application
     deploy_app(SearchApp.new.container(Container.new("node1").
                                        documentapi(ContainerDocumentApi.new)).
                cluster(SearchCluster.new("content").sd(selfdir+"banana.sd")).
-               storage(StorageCluster.new("content").num_distributor_stripes(num_distributor_stripes)).
+               storage(StorageCluster.new("content")).
                config(ConfigOverride.new("metrics.manager").add("reportPeriodSeconds", 3600)).
                monitoring("vespa", 300))
   end
