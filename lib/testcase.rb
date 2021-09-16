@@ -94,6 +94,7 @@ class TestCase
       @@log_messages[:slow_processing],
       @@log_messages[:time_move_backwards],
       @@log_messages[:remove_dangling_file],
+      @@log_messages[:metrics_proxy_connection_refused],
       @@log_messages[:empty_idx_file]
     ]
     @valgrind_ignorable_messages = [
@@ -715,6 +716,7 @@ class TestCase
     :concurrent_mark_sweep => /OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release./,
     :zookeeper_shutdown => /Starting non-reconfigurable ZooKeeper server failed on attempt/,
     :time_move_backwards => /Time has moved backwards/,
+    :metrics_proxy_connection_refused => /Unable to retrieve metrics from .+ failed: Connection refused \(Connection refused\)/,
     :empty_idx_file => /We detected an empty idx file for part/,
     :remove_dangling_file => /Removing dangling file/
   }
