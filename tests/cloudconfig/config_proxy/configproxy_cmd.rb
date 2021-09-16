@@ -40,7 +40,7 @@ class ConfigProxyCmd < CloudConfigTest
     assert_equal(output.lines.count, 1)
 
     output = node.execute("vespa-configproxy-cmd -m cachefull 2>/dev/null | grep cloud.config.log.logd")
-    assert_match(/cloud.config.log.logd,hosts\/#{hostname}\/logd,\d+,\w{32}/, output)
+    assert_match(/cloud.config.log.logd,hosts\/#{hostname}\/logd,\d+,MD5:\w{32},XXHASH64:\w{16}/, output)
     assert_match(/"logserver":{"host":"#{hostname}"/, output)
   end
 
