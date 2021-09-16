@@ -145,10 +145,10 @@ class BucketReadinessBase < SearchTest
     wait_for_hitcount(get_query(), exp_hitcount)
   end
 
-  def create_app(sd_file, num_distributor_stripes = nil)
+  def create_app(sd_file)
     SearchApp.new.sd(selfdir + sd_file).
       search_type("ELASTIC").cluster_name("mycluster").num_parts(4).redundancy(3).ready_copies(2).
-      storage(StorageCluster.new("mycluster", 4).distribution_bits(8).num_distributor_stripes(num_distributor_stripes))
+      storage(StorageCluster.new("mycluster", 4).distribution_bits(8))
   end
 
   def teardown

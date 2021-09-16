@@ -16,17 +16,7 @@ class MergingTest < PersistentProviderTest
   end
 
   def test_merging
-    deploy_app(default_app.num_nodes(2).redundancy(2).num_distributor_stripes(0))
-    run_merging_test
-  end
-
-  def test_merging_with_multiple_distributor_stripes
-    # TODO STRIPE: Remove this test when new distributor stripe mode is default
-    deploy_app(default_app.num_nodes(2).redundancy(2).num_distributor_stripes(4))
-    run_merging_test
-  end
-
-  def run_merging_test
+    deploy_app(default_app.num_nodes(2).redundancy(2))
     start
     # Take down one node
     vespa.stop_content_node("storage", "1")

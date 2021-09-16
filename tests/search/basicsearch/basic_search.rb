@@ -29,21 +29,9 @@ class BasicSearch < IndexedSearchTest
     start_feed_and_check
   end
 
-  def test_basicsearch_with_multiple_distributor_stripes
-    # TODO STRIPE: Remove this test when new distributor stripe mode is default
-    deploy_app(SearchApp.new.
-               cluster_name("basicsearch").
-               sd(SEARCH_DATA+"music.sd").
-               storage(StorageCluster.new("basicsearch").num_distributor_stripes(4)))
-    start_feed_and_check
-  end
-
   def start_feed_and_check
     start
-    feed_and_check
-  end
 
-  def feed_and_check
     feed(:file => SEARCH_DATA+"music.10.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 10)
     assert_hitcount("query=country", 1)

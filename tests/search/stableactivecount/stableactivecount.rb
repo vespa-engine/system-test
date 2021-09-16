@@ -24,14 +24,14 @@ class StableActiveCount < SearchTest
     60*20
   end
 
-  def create_app(num_stripes = 0)
+  def create_app
     SearchApp.new.sd(selfdir+'test.sd').
       search_type("ELASTIC").
       cluster_name("mycluster").
       num_parts(4).redundancy(2).ready_copies(2).
       storage(StorageCluster.new("mycluster", 4).
               distribution_bits(8).
-              bucket_split_count(5).num_distributor_stripes(num_stripes))
+              bucket_split_count(5))
   end
 
   class SearchRunner
@@ -135,16 +135,6 @@ class StableActiveCount < SearchTest
                     'merged across to other nodes.')
 
     deploy_app(create_app)
-    run_stable_active_count_test
-  end
-
-  def test_hitcount_stable_during_splitting_within_node_with_multiple_distributor_stripes
-    # TODO STRIPE: Remove this test when new distributor stripe mode is default
-    deploy_app(create_app(4))
-    run_stable_active_count_test
-  end
-
-  def run_stable_active_count_test
     start
 
     puts "Generating feed 1"
