@@ -77,7 +77,7 @@ class HeapSize < SearchTest
     start
     free = vespa.adminserver.execute("free -m | grep Mem | tr -s ' ' | cut -f2 -d' '")
     puts "Free memory = " + free
-    relative = free.to_i * 40 / 100
+    relative = (free.to_i - 1024) * 40 / 100
     puts "Relative memory for container " + relative.to_s
     maxdirect = relative/8 + 75 + 0 # Taken from the startup scrip.
     puts "MaxDirectMemorySize should be " + maxdirect.to_s
