@@ -752,7 +752,7 @@ class Storage
     @bucket_crosscheck_params = params
   end
 
-  def wait_until_ready(timeout = 120, blocklist=[], crosscheck_buckets_params={})
+  def wait_until_ready(timeout = 120, blocklist=[])
     @testcase.output("Waiting until storage cluster is ready") 
     # Effectively ignore timeout since they are usually ad-hoc and
     # lead to test instabilities when systest nodes are heavily loaded.
@@ -770,6 +770,7 @@ class Storage
     online_content_nodes.each do |key, node|
       node.wait_until_no_pending_bucket_moves
     end
+
     @testcase.output("Waiting for distributors...")
     # Don't include blocklisted (presumably down) distributors in testing
     @distributor.each do | key, distrib |
@@ -777,15 +778,15 @@ class Storage
       distrib.wait_until_all_pending_bucket_info_requests_done
       distrib.wait_until_synced(timeout)
     end
-    if crosscheck_buckets_params
-      if should_crosscheck_active?
-        crosscheck_buckets_params[:check_active] = :single_active_per_bucket
-      end
-      crosscheck_buckets_params.merge! @bucket_crosscheck_params
-      @testcase.output("Cross checking buckets (check active states: " +
-                       "#{crosscheck_buckets_params[:check_active]})")
-      validate_cluster_bucket_state(crosscheck_buckets_params)
+
+    crosscheck_buckets_params = {}
+    if should_crosscheck_active?
+      crosscheck_buckets_params[:check_active] = :single_active_per_bucket
     end
+    crosscheck_buckets_params.merge! @bucket_crosscheck_params
+    @testcase.output("Cross checking buckets (check active states: " +
+                     "#{crosscheck_buckets_params[:check_active]})")
+    validate_cluster_bucket_state(crosscheck_buckets_params)
     true
   end
 
