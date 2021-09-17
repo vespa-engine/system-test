@@ -716,7 +716,7 @@ class TestCase
     :concurrent_mark_sweep => /OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release./,
     :zookeeper_shutdown => /Starting non-reconfigurable ZooKeeper server failed on attempt/,
     :time_move_backwards => /Time has moved backwards/,
-    :metrics_proxy_connection_refused => /Unable to retrieve metrics from .+ failed: Connection refused \(Connection refused\)/,
+    :metrics_proxy_connection_refused => /Failed retrieving metrics for '.+' : Connect to .+ failed: Connection refused/,
     :empty_idx_file => /We detected an empty idx file for part/,
     :remove_dangling_file => /Removing dangling file/
   }
