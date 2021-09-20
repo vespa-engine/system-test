@@ -4,12 +4,10 @@ require 'vds_test'
 class JoinBucketCount < VdsTest
 
   def setupApplication(splitCount)
-    deploy_app(default_app.num_nodes(2).redundancy(1).bucket_split_count(splitCount).bucket_split_size(50000).
-               config(ConfigOverride.new("vespa.config.content.core.stor-integritychecker").add("mincycletime", "0")).
-               config(ConfigOverride.new("vespa.config.content.core.stor-integritychecker").add("requestdelay", "1")).
-               config(ConfigOverride.new("vespa.config.content.core.stor-integritychecker").add("maxpending", "1")).
+    get_generation(deploy_app(
+               default_app.num_nodes(2).redundancy(1).bucket_split_count(splitCount).bucket_split_size(50000).
                config(ConfigOverride.new("vespa.config.content.persistence").add("revert_time_period", "1")).
-               config(ConfigOverride.new("vespa.config.content.persistence").add("keep_remove_time_period", "1")))
+               config(ConfigOverride.new("vespa.config.content.persistence").add("keep_remove_time_period", "1"))))
   end
 
   def setup
@@ -45,7 +43,9 @@ class JoinBucketCount < VdsTest
 
     wait_for_bucket_count(2)
 
-    setupApplication(50)
+    gen = setupApplication(50)
+    # Ensure that config is visible on nodes so we won't race with wait_until_ready
+    vespa.storage['storage'].wait_until_content_nodes_have_config_generation(gen.to_i)
 
     8.times { |i|
       vespa.document_api_v1.remove("id:storage_test:music:n=1234:" + i.to_s)
