@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'environment'
 
@@ -25,8 +25,6 @@ class VDSNode < VespaNode
   end
 
   def get_status_page(page = "/")
-    started = Time.now
-    ended = started
     data = nil
     max_fetch_time = (is_stress_test? or testcase.valgrind) ? 300 : 20
     deadline = Time.now + max_fetch_time
@@ -35,14 +33,12 @@ class VDSNode < VespaNode
         started = Time.now
         response = get_status(page)
         data = response.body
-        ended = Time.now
-        @testcase.output("Used #{ended - started} seconds to get status page.")
-        break
+        break if (response.code.to_i == 200)
+        @testcase.output("Got response code #{response.code} when getting status page")
       rescue Exception => e
-        ended = Time.now
-        @testcase.output("Used #{ended - started} seconds to NOT get status page #{e.to_s}")
-        sleep 1
+        @testcase.output("Used #{Time.now - started} seconds to NOT get status page: #{e.to_s}")
       end
+      sleep 1
     end
     return data
   end
