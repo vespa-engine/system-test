@@ -174,7 +174,7 @@ module ResizeApps
     end
 
     def slack_maxhits
-      500
+      1000
     end
 
     def slack_mindocs
@@ -304,7 +304,7 @@ module ResizeApps
     end
 
     def slack_maxhits
-      500
+      1500
     end
 
     def slack_mindocs
