@@ -49,6 +49,7 @@ class HierarchicDistributionDispatchTest < FeedAndQueryTestBase
     configure_bucket_crosschecking(6)
     start
     generate_and_feed_docs
+    sleep 10 # This is a sleep to allow all services to complete startup and settle as many services start on the same host.
     align_fdispatch_to_use_group_0_next
 
     assert_query_hitcount # group 0
