@@ -30,6 +30,10 @@ class Addnewfield < IndexedStreamingSearchTest
     wait_for_application(vespa.container.values.first, deploy_output)
     wait_for_reconfig(600, true)
 
+    ### Pragmatic sleep to wait for config propagation as streaming search does ad-hoc config subscription.
+    ### The proper solution is to wire this in to set of configs monitored in proton.
+    sleep(5) if is_streaming
+
     puts "Summary ids in summary config after second deploy"
     print_summary_config_ids
 
