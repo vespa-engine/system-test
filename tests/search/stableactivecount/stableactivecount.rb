@@ -81,7 +81,7 @@ class StableActiveCount < SearchTest
 
     def do_search(start_time)
       hitcount = @test.search(get_query).hitcount
-      if hitcount != @expected_hitcount && should_record_more_errors?
+      if ((hitcount < @expected_hitcount) || (hitcount > (@expected_hitcount + 10))) && should_record_more_errors?
         @bad_searches << [Time.now - start_time, hitcount]
         add_to_error_stats(hitcount)
       end
