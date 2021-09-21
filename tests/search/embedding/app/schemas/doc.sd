@@ -1,0 +1,31 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search doc {
+
+  document doc {
+
+    field text type string {
+      indexing: summary
+    }
+
+  }
+
+  field embedding type tensor(d[10]) {
+    indexing: input text | encode | attribute | index | summary
+    index: hnsw
+  }
+
+  rank-profile default {
+
+    first-phase {
+      expression: 15 - distance(label,nns)
+    }
+
+    summary-features {
+      query(embedding)
+      attribute(embedding)
+    }
+
+  }
+
+}
