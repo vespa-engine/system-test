@@ -4,13 +4,13 @@ require 'rubygems'
 require 'json'
 require 'indexed_search_test'
 
-class ElementCompleteness < IndexedSearchTest
+class Embedding < IndexedSearchTest
 
   def setup
     set_owner("bratseth")
   end
 
-  def test_elementcompleteness
+  def test_embedding
     deploy(selfdir + "app/")
     start
     feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.json")
@@ -18,21 +18,14 @@ class ElementCompleteness < IndexedSearchTest
     assert(result.hit.size == 3)
     hit0 = result.hit[0].field["summaryfeatures"]
     puts "summaryfeatures: '#{hit0}'"
-    json = JSON.parse(rf)
-    # assert_features({"query(embedding)" => ... }, json)
-    # assert_features({"attribute(embedding)" => ... }, json)
-    hit0 = result.hit[0].field["summaryfeatures"]
-    puts "summaryfeatures: '#{hit0}'"
-    json = JSON.parse(rf)
-    # assert_features({"query(embedding)" => ... }, json)
-    # assert_features({"attribute(embedding)" => ... }, json)
-  end
-
-  def sentencepiece_config
-    ConfigOverride.new("language.sentencepiece.sentence-piece").
-      add(ArrayConfig.new("model").append.
-                                   add(0, ConfigValue.new("language", "unknown")).
-                                   add(0, ConfigValue.new("path", "model/en.wiki.bpe.vs10000.model")))
+    json0 = JSON.parse(hit0)
+    # assert_features({"query(embedding)" => ... }, json0)
+    # assert_features({"attribute(embedding)" => ... }, json0)
+    hit1 = result.hit[1].field["summaryfeatures"]
+    puts "summaryfeatures: '#{hit1}'"
+    json = JSON.parse(hit1)
+    # assert_features({"query(embedding)" => ... }, json1)
+    # assert_features({"attribute(embedding)" => ... }, json1)
   end
 
   def teardown
