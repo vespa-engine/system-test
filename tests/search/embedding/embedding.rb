@@ -8,6 +8,7 @@ class Embedding < IndexedSearchTest
 
   def setup
     set_owner("bratseth")
+    @valgrind = false
   end
 
   def test_embedding
