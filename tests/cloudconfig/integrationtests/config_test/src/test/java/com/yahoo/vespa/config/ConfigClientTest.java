@@ -163,7 +163,7 @@ public class ConfigClientTest {
             assertEquals("Equal config xxhash64 as previous response",
                          payloadChecksums2.getForType(XXHASH64),
                          payloadChecksums.getForType(XXHASH64));
-            assertEquals("Empty payload", 0, newReq.getNewPayload().getData().getByteLength());
+            verifyConfigUnchanged(newReq);
         }
     }
 
@@ -193,7 +193,6 @@ public class ConfigClientTest {
     void verifyConfigUnchanged(JRTClientConfigRequest req) {
         assertTrue(req.errorMessage(), (req.errorCode() == 0) );
         assertFalse(req.hasUpdatedConfig());
-        assertEquals(0, req.getNewPayload().getData().getByteLength());
     }
 
     @SuppressWarnings({"UnusedDeclaration"})
