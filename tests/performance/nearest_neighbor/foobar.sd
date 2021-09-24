@@ -10,6 +10,9 @@ search foobar {
     field dvector type tensor(x[512]) {
       indexing: attribute
     }
+    field bvector type tensor<int8>(x[64]) {
+      indexing: attribute
+    }
   }
 
   rank-profile default {
@@ -21,6 +24,12 @@ search foobar {
   rank-profile rawscore {
     first-phase {
       expression: itemRawScore(mynns)
+    }
+  }
+
+  rank-profile hamming {
+    first-phase {
+      expression: sum(hamming(query(qbvector),attribute(bvector)))
     }
   }
 

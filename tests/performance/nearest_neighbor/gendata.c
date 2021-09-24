@@ -28,6 +28,13 @@ void vector() {
 		printf("%.3f", dv);
 	}
 	printf("] }, ");
+	printf("\"bvector\": { \"values\": [ ");
+	for (i = 0; i < NUMDIMS/8; ++i) {
+		char dv = (random() & 0xff);
+		if (i != 0) printf(", ");
+		printf("%d", dv);
+	}
+	printf("] }, ");
 }
 
 void footer(int num) {

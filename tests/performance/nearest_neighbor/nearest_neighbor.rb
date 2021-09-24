@@ -30,6 +30,7 @@ class NearestNeighborPerformanceTest < PerformanceTest
   PRE = 'select+*+from+sources+*+where+'
   NNS = 'nearestNeighbor(dvector,qvector);'
   RFQV = 'ranking.features.query(qvector)'
+  RFQB = 'ranking.features.query(qbvector)'
 
   def write_nns_queries(qfn, tHits)
     File.open(qfn, 'w') do |f|
@@ -49,6 +50,18 @@ class NearestNeighborPerformanceTest < PerformanceTest
       (1..99999).each do |num|
         v = "[#{num}#{@rnd511vec}]"
         f.puts("/search/?query=title:doc&#{RFQV}=#{v}")
+      end
+    end
+  end
+
+  def write_hamming_queries(qfn)
+    File.open(qfn, 'w') do |f|
+      (1..99999).each do |num|
+        byteval = (num % 256) - 128
+        v = "[#{byteval}"
+        v += ",#{byteval}" * 63
+        v += ']'
+        f.puts("/search/?query=title:doc&#{RFQB}=#{v}")
       end
     end
   end
@@ -81,10 +94,12 @@ class NearestNeighborPerformanceTest < PerformanceTest
     qf2 = file_in_tmp('nnsitem-10-queries.txt')
     qf3 = file_in_tmp('nnsitem-100-queries.txt')
     qf4 = file_in_tmp('nnsitem-1000-queries.txt')
+    qf5 = file_in_tmp('hamming-queries.txt')
     write_doc_queries(qf1)
     write_nns_queries(qf2, 10)
     write_nns_queries(qf3, 100)
     write_nns_queries(qf4, 1000)
+    write_hamming_queries(qf5)
     puts "DONE QUERY GENERATING"
 
     # feed
@@ -107,6 +122,7 @@ class NearestNeighborPerformanceTest < PerformanceTest
     run_benchmarks(qf2, 'nns_10', true)
     run_benchmarks(qf3, 'nns_100', true)
     run_benchmarks(qf4, 'nns_1000', true)
+    run_benchmarks(qf5, 'hamming', false)
   end
 
   def run_benchmarks(query_file, legend, want_rawscore)
@@ -116,6 +132,11 @@ class NearestNeighborPerformanceTest < PerformanceTest
     qrserver.copy(query_file, qd)
     qf = qd + "/" + File.basename(query_file)
     puts "qf: #{qf}"
+
+    if legend == 'hamming'
+      run_fbench(qrserver, 48, 20, qf, legend, '&ranking=hamming')
+      return
+    end
 
     run_fbench(qrserver, 48, 20, qf, legend + '_simple')
     run_fbench(qrserver, 48, 20, qf, legend + '_joinsq',     "&ranking=joinsqdiff")
