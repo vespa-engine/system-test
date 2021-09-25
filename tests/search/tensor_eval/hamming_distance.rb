@@ -11,7 +11,7 @@ class HammingDistanceRankingTest < IndexedSearchTest
   def verify_rankscores(queryvector, expected_scores)
     foohit = nil
     q = '?query=sddocname:hamming'
-    q += '&ranking.features.query(just_x)=' + queryvector
+    q += '&ranking.features.query(qvector)=' + queryvector
     q += '&format=json'
     result = search(q)
     puts "Result for query vector #{queryvector} (#{result.hit.size} hits)"

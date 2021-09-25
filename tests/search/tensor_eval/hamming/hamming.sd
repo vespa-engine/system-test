@@ -8,18 +8,18 @@ search hamming {
     field title type string {
       indexing: index | summary
     }
-    field just_x type tensor<int8>(x[8]) {
+    field docvector type tensor<int8>(x[8]) {
       indexing: attribute
     }
   }
   rank-profile default {
     first-phase {
       expression {
-        reduce(hamming(query(just_x),attribute(just_x)),sum,x)
+        reduce(hamming(query(qvector),attribute(docvector)),sum,x)
       }
     }
     function output_tensor() {
-      expression: hamming(query(just_x),attribute(just_x))
+      expression: hamming(query(qvector),attribute(docvector))
     }
     summary-features: output_tensor
   }
