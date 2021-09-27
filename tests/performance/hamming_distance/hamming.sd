@@ -1,0 +1,51 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search hamming {
+  document hamming {
+    field order type int {
+      indexing: attribute | summary
+    }
+    field title type string {
+      indexing: index | summary
+    }
+    field docvector type tensor<int8>(sentence{},x[16]) {
+      indexing: attribute
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression {
+          reduce(
+              map(
+                  reduce(
+                      reduce(
+                          hamming(query(qvector),attribute(docvector)),
+                          sum,
+                          x),
+                      min,
+                      sentence),
+                  f(x)(1/(1+x))),
+              sum,
+              question)
+      }
+    }
+  }
+  rank-profile debugging {
+    function inline hamming_dist() {
+      expression: hamming(query(qvector),attribute(docvector))
+    }
+    function inline hamming_dist_x() {
+      expression: reduce(hamming_dist(),sum,x)
+    }
+    function inline min_sentence_hamming_dist() {
+      expression: reduce(hamming_dist_x(),min,sentence)
+    }
+    function inline best_closeness() {
+      expression: map(min_sentence_hamming_dist(),f(x)(1/(1+x)))
+    }
+    summary-features {
+      min_sentence_hamming_dist
+      best_closeness
+    }
+  }
+}
