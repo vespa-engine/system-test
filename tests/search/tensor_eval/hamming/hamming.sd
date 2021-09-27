@@ -1,0 +1,26 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search hamming {
+  document hamming {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field title type string {
+      indexing: index | summary
+    }
+    field docvector type tensor<int8>(x[8]) {
+      indexing: attribute
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression {
+        reduce(hamming(query(qvector),attribute(docvector)),sum,x)
+      }
+    }
+    function output_tensor() {
+      expression: hamming(query(qvector),attribute(docvector))
+    }
+    summary-features: output_tensor
+  }
+}

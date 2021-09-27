@@ -1,0 +1,26 @@
+[
+  { "put": "id:hamming:hamming::1", "fields": {
+      "id": 1,
+      "title": "foo",
+      "docvector" : { "values": [ 0, 0, 0, 0,  0, 0, 0, 0 ] }
+    }
+  },
+  { "put": "id:hamming:hamming::2", "fields": {
+      "id": 2,
+      "title": "bar",
+      "docvector" : { "values": [ 1, 1, 1, 1,  1, 1, 1, 1 ] }
+    }
+  },
+  { "put": "id:hamming:hamming::3", "fields": {
+      "id": 3,
+      "title": "baz",
+      "docvector" : { "values": [ -1,-1,-1,-1,  -1,-1,-1,-1 ] }
+    }
+  },
+  { "put": "id:hamming:hamming::4", "fields": {
+      "id": 4,
+      "title": "qux",
+      "docvector" : { "values": [ 1, 2, 4, 8, 16, 32, 64, 128 ] }
+    }
+  }
+]
