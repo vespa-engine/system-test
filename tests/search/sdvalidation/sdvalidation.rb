@@ -21,7 +21,7 @@ class SDValidation < SearchTest
 
   # Tests that we get a proper error message from il parser with line number when il script is invalid
   def test_error_message_invalid_il
-    warning_regexp = Regexp.new("Error reported by IL parser: Encountered \" <IDENTIFIER> \"" +
+    warning_regexp = Regexp.new("Could not parse indexing statement: Encountered \" <IDENTIFIER> \"" +
                                 "compact_string_to_single_term\"\" at line 5, column 57.")
     begin
       deploy_app(SearchApp.new.sd(selfdir+"invalid_il_expression_name.sd"))
