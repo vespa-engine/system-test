@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #define NUMDOCS 10000
 #define NUMBYTES 16
@@ -41,9 +42,26 @@ void footer(int num) {
 	printf("}},\n");
 }
 
-int main(int argc, char **argv) {
+void gen_queries() {
+	int i, j, v;
+	for (i = 0; i < NUMDOCS; i++) {
+		printf("/search/?query=title:doc&ranking.features.query(qvector)=%s", "%7B");
+		for (j = 0; j < 4; ++j) {
+			for (v = 0; v < 16; ++v) {
+				if (j + v > 0) printf(",");
+				char dv = random() & 0xff;
+				printf("%s", "%7B");
+				printf("question:n%d,x:%d", j, v);
+				printf("%s:%d", "%7D", dv);
+			}
+		}
+                printf("%s", "%7D");
+		printf("\n");
+	}
+}
+
+void gen_docs() {
 	int i;
-	srandom(42);
 	printf("[\n");
 	for (i = 0; i < NUMDOCS; i++) {
 		header(i);
@@ -52,5 +70,19 @@ int main(int argc, char **argv) {
 	}
 	printf("{\"id\":\"id:test:hamming::0\",\"fields\":{\"title\":\"0\", \"order\":0}}\n");
 	printf("]\n");
-	return 0;
+}
+
+int main(int argc, char **argv) {
+	srandom(42);
+	if (argc == 2) {
+		if (strcmp(argv[1], "queries") == 0) {
+			gen_queries();
+			return 0;
+		} else if (strcmp(argv[1], "docs") == 0) {
+			gen_docs();
+			return 0;
+		}
+	}
+	fprintf(stderr, "Usage: %s queries|docs\n", argv[0]);
+	return 1;
 }

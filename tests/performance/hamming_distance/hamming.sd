@@ -30,7 +30,7 @@ search hamming {
     }
     first-phase {
       expression {
-        sum(best_closeness(query(qvector),attribute(docvector)))
+        reduce(best_closeness(query(qvector),attribute(docvector)),sum,question)
       }
     }
     function output_tensor() {
