@@ -7,7 +7,7 @@
     </admin>
 
     <container version="1.0">
-        <component id="com.yahoo.language.sentencepiece.SentencePieceEncoder">
+        <component id="com.yahoo.language.sentencepiece.SentencePieceEncoder" bundle="linguistics-components">
             <config name="language.sentencepiece.sentence-piece">
                 <model>
                     <item>
