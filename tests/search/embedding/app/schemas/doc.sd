@@ -5,12 +5,12 @@ search doc {
   document doc {
 
     field text type string {
-      indexing: summary
+      indexing: index | summary
     }
 
   }
 
-  field embedding type tensor(d[10]) {
+  field embedding type tensor(x[5]) {
     indexing: input text | encode | attribute | index | summary
     index: hnsw
   }
@@ -18,7 +18,7 @@ search doc {
   rank-profile default {
 
     first-phase {
-      expression: 15 - distance(label,nns)
+      expression: nativeRank
     }
 
     summary-features {

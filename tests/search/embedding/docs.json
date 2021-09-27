@@ -1,5 +1,3 @@
 [
-  { "put": "id:test:doc::0", "fields": { "text": "hello world" } },
-  { "put": "id:test:doc::1", "fields": { "text": "Hello world!" } },
-  { "put": "id:test:doc::2", "fields": { "text": "hello, this is a slightly longer text, with more words. And with multiple sentences." } }
+  { "put": "id:test:doc::1", "fields": { "text": "Hello world" } }
 ]
