@@ -29,16 +29,35 @@ class MinHammingDistancePerfTest <  PerformanceTest
     assert_equal(0, exitcode)
     wait_for_hitcount("sddocname:hamming", 10000, 30)
     puts "DONE FEEDING"
-
     puts "SMOKE TEST"
-    res = search('/search/?query=title:doc&ranking.features.query(qvector)=%7B%7Bquestion:n0,x:0%7D:101,%7Bquestion:n0,x:1%7D:41,%7Bquestion:n0,x:2%7D:-127,%7Bquestion:n0,x:3%7D:96,%7Bquestion:n0,x:4%7D:118,%7Bquestion:n0,x:5%7D:124,%7Bquestion:n0,x:6%7D:-99,%7Bquestion:n0,x:7%7D:15,%7Bquestion:n0,x:8%7D:66,%7Bquestion:n0,x:9%7D:-112,%7Bquestion:n0,x:10%7D:-12,%7Bquestion:n0,x:11%7D:-62,%7Bquestion:n0,x:12%7D:86,%7Bquestion:n0,x:13%7D:44,%7Bquestion:n0,x:14%7D:16,%7Bquestion:n0,x:15%7D:-68,%7Bquestion:n1,x:0%7D:50,%7Bquestion:n1,x:1%7D:84,%7Bquestion:n1,x:2%7D:-39,%7Bquestion:n1,x:3%7D:33,%7Bquestion:n1,x:4%7D:44,%7Bquestion:n1,x:5%7D:88,%7Bquestion:n1,x:6%7D:-103,%7Bquestion:n1,x:7%7D:-17,%7Bquestion:n1,x:8%7D:-86,%7Bquestion:n1,x:9%7D:125,%7Bquestion:n1,x:10%7D:-103,%7Bquestion:n1,x:11%7D:-84,%7Bquestion:n1,x:12%7D:-1,%7Bquestion:n1,x:13%7D:-36,%7Bquestion:n1,x:14%7D:53,%7Bquestion:n1,x:15%7D:101,%7Bquestion:n2,x:0%7D:5,%7Bquestion:n2,x:1%7D:-74,%7Bquestion:n2,x:2%7D:-59,%7Bquestion:n2,x:3%7D:123,%7Bquestion:n2,x:4%7D:50,%7Bquestion:n2,x:5%7D:98,%7Bquestion:n2,x:6%7D:-118,%7Bquestion:n2,x:7%7D:116,%7Bquestion:n2,x:8%7D:-14,%7Bquestion:n2,x:9%7D:127,%7Bquestion:n2,x:10%7D:54,%7Bquestion:n2,x:11%7D:72,%7Bquestion:n2,x:12%7D:-85,%7Bquestion:n2,x:13%7D:71,%7Bquestion:n2,x:14%7D:4,%7Bquestion:n2,x:15%7D:-35,%7Bquestion:n3,x:0%7D:-101,%7Bquestion:n3,x:1%7D:-34,%7Bquestion:n3,x:2%7D:-2,%7Bquestion:n3,x:3%7D:-57,%7Bquestion:n3,x:4%7D:54,%7Bquestion:n3,x:5%7D:-105,%7Bquestion:n3,x:6%7D:-73,%7Bquestion:n3,x:7%7D:-32,%7Bquestion:n3,x:8%7D:20,%7Bquestion:n3,x:9%7D:80,%7Bquestion:n3,x:10%7D:-115,%7Bquestion:n3,x:11%7D:20,%7Bquestion:n3,x:12%7D:45,%7Bquestion:n3,x:13%7D:-62,%7Bquestion:n3,x:14%7D:121,%7Bquestion:n3,x:15%7D:50%7D')
-    puts res.xmldata
-
+    smoke_test
+    puts "DONE SMOKE TEST"
     run_benchmarks(qf1, 'best_hamming_distances')
   end
 
   def in_tmp(name)
     dirs.tmpdir + name
+  end
+
+  def smoke_test
+    query = '/search/?query=title:doc&ranking.features.query(qvector)=%7B'
+    vectors = [ 
+               [  101,   41,  -127,   96,  118,   124,   -99,   15,   66,  -112,   -12,  -62,   86,   44,   16,  -68 ],
+               [   50,   84,   -39,   33,   44,    88,  -103,  -17,  -86,   125,  -103,  -84,   -1,  -36,   53,  101 ],
+               [    5,  -74,   -59,  123,   50,    98,  -118,  116,  -14,   127,    54,   72,  -85,   71,    4,  -35 ],
+               [ -101,  -34,    -2,  -57,   54,  -105,   -73,  -32,   20,    80,  -115,   20,   45,  -62,  121,   50 ]
+              ]
+    vectors.each_index do |qnum|
+      vector = vectors[qnum]
+      vector.each_index do |x|
+        value = vector[x]
+        query += ',' if (qnum + x > 0)
+        query += '%7B' + "question:n#{qnum},x:#{x}" + '%7D:' + value.to_s
+      end
+    end
+    query += '%7D&ranking.profile=debugging'
+    res = search(query)
+    puts res.xmldata
   end
 
   def run_benchmarks(query_file, legend)

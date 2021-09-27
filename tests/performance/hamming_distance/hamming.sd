@@ -8,36 +8,44 @@ search hamming {
     field title type string {
       indexing: index | summary
     }
-    field docvector type tensor<int8>(x[16],sentence{}) {
+    field docvector type tensor<int8>(sentence{},x[16]) {
       indexing: attribute
     }
   }
   rank-profile default {
-    macro hamming_dist_x(a,b) {
-      expression {
-        reduce(hamming(a,b),sum,x)
-      }
-    }
-    macro min_sentence_hamming_dist(a,b) {
-      expression {
-        reduce(hamming_dist_x(a,b),min,sentence)
-      }
-    }
-    macro best_closeness(a,b) {
-      expression {
-        map(min_sentence_hamming_dist(a,b),f(x)(1/(1+x)))
-      }
-    }
     first-phase {
       expression {
-        reduce(best_closeness(query(qvector),attribute(docvector)),sum,question)
+          reduce(
+              map(
+                  reduce(
+                      reduce(
+                          hamming(query(qvector),attribute(docvector)),
+                          sum,
+                          x),
+                      min,
+                      sentence),
+                  f(x)(1/(1+x))),
+              sum,
+              question)
       }
     }
-    function output_tensor() {
-      expression {
-        best_closeness(query(qvector),attribute(docvector))
-      }
+  }
+  rank-profile debugging {
+    function inline hamming_dist() {
+      expression: hamming(query(qvector),attribute(docvector))
     }
-    summary-features: output_tensor
+    function inline hamming_dist_x() {
+      expression: reduce(hamming_dist(),sum,x)
+    }
+    function inline min_sentence_hamming_dist() {
+      expression: reduce(hamming_dist_x(),min,sentence)
+    }
+    function inline best_closeness() {
+      expression: map(min_sentence_hamming_dist(),f(x)(1/(1+x)))
+    }
+    summary-features {
+      min_sentence_hamming_dist
+      best_closeness
+    }
   }
 }

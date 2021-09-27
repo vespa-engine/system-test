@@ -55,7 +55,7 @@ void gen_queries() {
 				printf("%s:%d", "%7D", dv);
 			}
 		}
-                printf("%s", "%7D");
+		printf("%s", "%7D");
 		printf("\n");
 	}
 }
