@@ -62,11 +62,8 @@ class MinHammingDistancePerfTest <  PerformanceTest
 
   def run_benchmarks(query_file, legend)
     node = (vespa.qrserver["0"] or vespa.container.values.first)
-    tmp_query_dir = in_tmp('qd')
-    node.copy(query_file, tmp_query_dir)
-    qf = tmp_query_dir + '/' + File.basename(query_file)
-    puts "qf: #{qf}"
-    run_fbench(node, 48, 20, qf, legend)
+    puts "qf: #{query_file}"
+    run_fbench(node, 48, 20, query_file, legend)
   end                    
 
   def run_fbench(qrserver, clients, runtime, qf, legend, append_str = nil)
