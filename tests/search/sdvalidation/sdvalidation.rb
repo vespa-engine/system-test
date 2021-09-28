@@ -20,10 +20,6 @@ class SDValidation < SearchTest
     deploy_invalid_sd(selfdir+"attribute_properties.sd")
   end
 
-  def test_position_expression
-    deploy_app(SearchApp.new.sd(selfdir+"position_valid.sd"))
-  end
-
   def test_attribute_properties
     # Test that specifying an attribute property for an attribute that is created later
     # in another field works.
