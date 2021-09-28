@@ -8,14 +8,13 @@ class Embedding < IndexedSearchTest
 
   def setup
     set_owner("bratseth")
-    @valgrind = false
   end
 
   def test_embedding
     deploy(selfdir + "app/")
     start
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
-    result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hello%22%3B&ranking.features.query(embedding)=encode(Hello%20world)&format=json").json
+    result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hello%22%3B&ranking.features.query(embedding)=embed(Hello%20world)&format=json").json
     queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(embedding)"]
     attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding)"]
     puts "queryFeature: '#{queryFeature}'"
