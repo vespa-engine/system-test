@@ -9,7 +9,7 @@ class SDValidation < SearchTest
 
   def test_sdvalidation    
     # Tests that file name in error message is relative to app package path
-    deploy_invalid_sd(selfdir+"invalid_il_expression_name.sd", "Could not parse schema file 'invalid_il_expression_name.sd'")
+    deploy_invalid_sd(selfdir+"invalid_il_expression_name.sd", "invalid_il_expression_name.sd'")
 
     deploy_invalid_sd(selfdir+"invalid_fieldtype.sd")
     deploy_invalid_sd(selfdir+"invalid_fieldbody.sd")
