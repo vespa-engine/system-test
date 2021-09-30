@@ -10,6 +10,7 @@ search hamming {
     }
     field docvector type tensor<int8>(sentence{},x[16]) {
       indexing: attribute
+      attribute: fast-search
     }
   }
   rank-profile default {
