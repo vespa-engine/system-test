@@ -55,7 +55,7 @@ public class DataGenerator {
         System.err.println("Examples: echo \"some words.com with#gurba+gurba\" | java DataGenerator.java digest cutoff 1 > words.txt\n");
         System.err.println("          cat words.txt | java DataGenerator.java feed count 3 template '{ \"id\": \"id:ns:type::$seq()\", \"text\": \"$words(3)\" }'\n");
         System.err.println("          echo \"1 rare 4 common\" | java DataGenerator.java query template 'sddocname:type foo:$words()'\n");
-        System.err.println("          echo \"\" | java DataGenerator.java url template 'my-doc-$seq()' prefix '/document/v1/ns/type/docid/' suffix '?fields=%5Bid%5D'\n");
+        System.err.println("          : | java DataGenerator.java url template 'my-doc-$seq()' prefix '/document/v1/ns/type/docid/' suffix '?fields=%5Bid%5D'\n");
 
         System.err.println("List of commands:\n");
         for (Command command : Command.values()) {

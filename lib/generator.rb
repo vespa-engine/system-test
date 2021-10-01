@@ -6,24 +6,33 @@ class Generator
 
   def initialize
     lib_dir = File.dirname(__FILE__)
-    @cmd = "cat #{lib_dir}/gpt-2-webtext-tally.txt | java #{lib_dir}/DataGenerator.java"
+    @cat = "cat #{lib_dir}/gpt-2-webtext-tally.txt"
+    @run = "java #{lib_dir}/DataGenerator.java"
   end
 
-  # A command which will generate documents from the given template
-  def feed_command(template:, count: nil)
-    "#{@cmd} feed template '#{template}'#{" count #{count}" if count}"
+  # A command which digests the output of a prior command, computing word frequencies.
+  def digest_command(command:, cutoff: nil)
+    "#{command} | #{@run} digest#{" cutoff #{cutoff}" if cutoff}"
   end
 
-  # A command which will generate simple or yql queries from the given template.
-  def query_command(template:, yql: false, count: nil, parameters: {})
-    url_command(template, "/search/?#{yql ? "yql=" : "query="}", count, parameters)
+  # A command which will generate documents from a template. Template output may contain
+  # characters [a-zA-Z0-9_.'-], all of which should be permissible as part of, e.g., JSON.
+  def feed_command(template:, count: nil, data: @cat)
+    "#{data} | #{@run} feed template '#{template}'#{" count #{count}" if count}"
   end
 
-  # A command which will generic URLs from the given template. Path may contain query parameters. 
-  def url_command(template:, path:, count: nil, parameters: {})
+  # A command which will generate simple or yql queries from a template.
+  def query_command(template:, yql: false, count: nil, parameters: {}, data: @cat)
+    url_command(template: template, path: "/search/?#{yql ? "yql=" : "query="}", count: count, parameters: parameters, data: data)
+  end
+
+  # A command which will generaet generic URLs from a template.
+  # Since the template output is URL-encoded, it will _either_ be part of the URL path,
+  # when this contains no query part, _or_ be a parameter key _or_ value; see query_command.
+  def url_command(template:, path:, count: nil, parameters: {}, data: @cat)
     query = parameters.map { |k, v| encode(k) + "=" + encode(v) }.join("&")
     query = (path =~ /\?/ ? "&" : "?") + query unless query.empty?
-    "#{@cmd} url template '#{template}' prefix '#{path}' suffix '#{query}#{" count #{count}" if count}"
+    "#{data} | #{@run} url template '#{template}' prefix '#{path}' suffix '#{query}'#{" count #{count}" if count}"
   end
 
   def encode(object)
