@@ -65,7 +65,7 @@ public class Words {
             System.err.println();
         }
 
-        System.err.println("List of patterns (default values for counts is 1, e.g., $words() and $words(1) are the same):\n");
+        System.err.println("List of patterns (default count is 1, i.e., $words() and $words(1) are the same):\n");
         for (Pattern pattern : Pattern.values())
             System.err.printf("%12s: %s\n", pattern.name(), pattern.description);
     }
@@ -73,7 +73,7 @@ public class Words {
     static void countWords(EnumMap<Argument, String> arguments) {
         Map<String, Long> frequencies = new BufferedReader(new InputStreamReader(System.in, UTF_8))
                 .lines().parallel()
-                .flatMap(line -> Stream.of(line.split("[\\W&&[^-.']]"))
+                .flatMap(line -> Stream.of(line.split("[\\W&&[^-.']]")) // Split on non-word-chars except -.'
                                        .map(word -> {
                                            int s = 0, e = word.length();
                                            while (s < e && isIntraWordPunctuation(word.codePointAt(s))) s++;
@@ -147,7 +147,7 @@ public class Words {
         query("generate simple queries from the given template", arguments -> generateURLs(arguments, "query=", ""), count, template, prefix),
         yql("generate yql queries from the given template", arguments -> generateURLs(arguments, "yql=", ""), count, template, prefix),
         url("generate generic URLs from the given template", arguments -> generateURLs(arguments, "", arguments.get(suffix)), count, template, prefix, suffix),
-        feed("generate JSON feed from the given template", Words::generateFeed, count, template);
+        feed("generate documents from the given template", Words::generateFeed, count, template);
 
         final String description;
         final Consumer<EnumMap<Argument, String>> program;
