@@ -914,10 +914,7 @@ module TestBase
 
   # Feeds the file specified in params and waits for expected number of hits for the given query.
   def feed_and_wait_for_hitcount(query, wanted_hitcount, params={})
-    timeout = params[:timeout]
-    if timeout == nil
-        timeout = 120
-    end
+    timeout = params[:timeout] or 120
     feederoutput = feed(params)
     wait_for_hitcount(query, wanted_hitcount, timeout)
     return feederoutput
