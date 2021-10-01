@@ -6,7 +6,7 @@ class Generator
 
   def initialize
     lib_dir = File.dirname(__FILE__)
-    @cmd = "cat #{lib_dir}/gpt-2-webtext-tally.txt | java #{lib_dir}/Words.java"
+    @cmd = "cat #{lib_dir}/gpt-2-webtext-tally.txt | java #{lib_dir}/DataGenerator.java"
   end
 
   # A command which will generate documents from the given template

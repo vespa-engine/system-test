@@ -19,11 +19,11 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static util.Words.Argument.cutoff;
-import static util.Words.Argument.count;
-import static util.Words.Argument.prefix;
-import static util.Words.Argument.suffix;
-import static util.Words.Argument.template;
+import static util.DataGenerator.Argument.cutoff;
+import static util.DataGenerator.Argument.count;
+import static util.DataGenerator.Argument.prefix;
+import static util.DataGenerator.Argument.suffix;
+import static util.DataGenerator.Argument.template;
 import static java.lang.Math.floorMod;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Arrays.binarySearch;
@@ -36,7 +36,7 @@ import static java.util.stream.Collectors.groupingBy;
 /**
  * @author jonmv
  */
-public class Words {
+public class DataGenerator {
 
     public static void main(String[] args) {
         try {
@@ -50,12 +50,12 @@ public class Words {
     }
 
     static void usage() {
-        System.err.println("\nUsage: java Words.java <command> [option-name option-value]...\n");
+        System.err.println("\nUsage: java DataGenerator.java <command> [option-name option-value]...\n");
 
-        System.err.println("Examples: echo \"some words.com with#gurba+gurba\" | java Words.java digest cutoff 1 > words.txt\n");
-        System.err.println("          cat words.txt | java Words.java feed count 3 template '{ \"id\": \"id:ns:type::$seq()\", \"text\": \"$words(3)\" }'\n");
-        System.err.println("          echo \"1 rare 4 common\" | java Words.java query template 'sddocname:type foo:$words()'\n");
-        System.err.println("          echo \"\" | java Words.java url template 'my-doc-$seq()' prefix '/document/v1/ns/type/docid/' suffix '?fields=%5Bid%5D'\n");
+        System.err.println("Examples: echo \"some words.com with#gurba+gurba\" | java DataGenerator.java digest cutoff 1 > words.txt\n");
+        System.err.println("          cat words.txt | java DataGenerator.java feed count 3 template '{ \"id\": \"id:ns:type::$seq()\", \"text\": \"$words(3)\" }'\n");
+        System.err.println("          echo \"1 rare 4 common\" | java DataGenerator.java query template 'sddocname:type foo:$words()'\n");
+        System.err.println("          echo \"\" | java DataGenerator.java url template 'my-doc-$seq()' prefix '/document/v1/ns/type/docid/' suffix '?fields=%5Bid%5D'\n");
 
         System.err.println("List of commands:\n");
         for (Command command : Command.values()) {
@@ -143,11 +143,11 @@ public class Words {
 
     enum Command {
 
-        digest("extract the words from stdin and count their occurrences", Words::countWords, cutoff),
+        digest("extract the words from stdin and count their occurrences", DataGenerator::countWords, cutoff),
         query("generate simple queries from the given template", arguments -> generateURLs(arguments, "query=", ""), count, template, prefix),
         yql("generate yql queries from the given template", arguments -> generateURLs(arguments, "yql=", ""), count, template, prefix),
         url("generate generic URLs from the given template", arguments -> generateURLs(arguments, "", arguments.get(suffix)), count, template, prefix, suffix),
-        feed("generate documents from the given template", Words::generateFeed, count, template);
+        feed("generate documents from the given template", DataGenerator::generateFeed, count, template);
 
         final String description;
         final Consumer<EnumMap<Argument, String>> program;
