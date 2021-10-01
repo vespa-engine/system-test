@@ -21,16 +21,6 @@ class StressDispatch < PerformanceTest
     set_owner("arnej")
   end
 
-  def limits
-    l = {
-       :min_qps_search          => 13000,
-       :max_qps_search          => 15000,
-       :min_latency_search      => 4.9,
-       :max_latency_search      => 6.3
-    }
-    return l
-  end
-
   def test_dispatch
     app = SearchApp.new.monitoring("vespa", 60).
           sd(selfdir+"foobar.sd").
