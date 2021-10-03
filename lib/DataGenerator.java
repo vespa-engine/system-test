@@ -207,7 +207,31 @@ public class DataGenerator {
             return () -> Long.toString(counter.getAndIncrement());
         }),
 
-        words("N randomly chosen words, e.g., $words(5)", (arguments, generator) -> {
+        include("The second argument with probability equal to the first; or nothing, e.g., $include(0.5, \"fifty-fifty\")", (arguments, generator) -> {
+            if (arguments.length != 2) throw new IllegalArgumentException("include requires exactly 2 arguments");
+            double probability = Double.parseDouble(arguments[0]);
+            String value = arguments[1];
+            return () -> generator.random.nextDouble() < probability ? value : "";
+        }),
+
+        pick("N comma-separated, unique picks from the given candidates, e.g., $words(2, \"cat\", \"bird\", \"fish\")", (arguments, generator) -> {
+            if (arguments.length < 1) throw new IllegalArgumentException("pick requires a number of words to pick");
+            int words = Integer.parseInt(arguments[0]);
+            if (arguments.length < 1 + words) throw new IllegalArgumentException("cannot supply fewer words than number to pick");
+            return () -> {
+                StringJoiner joiner = new StringJoiner(",");
+                for (int i = words; i > 0; ) {
+                    int pick = generator.random.nextInt(i) + 1;
+                    String picked = arguments[pick];
+                    arguments[pick] = arguments[i];
+                    arguments[i--] = picked;
+                    joiner.add(picked);
+                }
+                return joiner.toString();
+            };
+        }),
+
+        words("N randomly chosen words from the global tally, e.g., $words(5)", (arguments, generator) -> {
             if (arguments.length > 1) throw new IllegalArgumentException("words accepts 0 or 1 arguments");
             int words = arguments.length == 0 ? 1 : Integer.parseInt(arguments[0]);
             return () -> {
@@ -229,7 +253,7 @@ public class DataGenerator {
             int numbers = arguments.length == 0 ? 1 : Integer.parseInt(arguments[0]);
             long bound = arguments.length <= 1 ? 0 : Long.parseLong(arguments[1]);
             return () -> {
-                StringJoiner joiner = new StringJoiner(", ");
+                StringJoiner joiner = new StringJoiner(",");
                 for (int i = 0; i < numbers; i++)
                     joiner.add(Long.toString(bound > 0 ? generator.nextLong(bound) : generator.random.nextLong()));
                 return joiner.toString();
@@ -240,7 +264,7 @@ public class DataGenerator {
             if (arguments.length > 1) throw new IllegalArgumentException("floats accepts 0 or 1 arguments");
             int floats = arguments.length == 0 ? 1 : Integer.parseInt(arguments[0]);
             return () -> {
-                StringJoiner joiner = new StringJoiner(", ");
+                StringJoiner joiner = new StringJoiner(",");
                 for (int i = 0; i < floats; i++)
                     joiner.add(Double.toString(generator.random.nextDouble()));
                 return joiner.toString();
@@ -256,7 +280,7 @@ public class DataGenerator {
             }
 
             return () -> {
-                StringJoiner joiner = new StringJoiner(", ");
+                StringJoiner joiner = new StringJoiner(",");
                 for (int number : numbers)
                     if (generator.random.nextInt(100) < number)
                         joiner.add(Integer.toString(number));
