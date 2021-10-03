@@ -24,7 +24,7 @@ class FastAccessAttributesPerfTest < PerformanceTest
     '{ "update":"id:test:test::$seq()", "fields": { "' + field + '": { "assign": 2000 } } }'
   end
 
-  def contitional_update_template(field)
+  def conditional_update_template(field)
     '{ "update":"id:test:test::$seq()", "condition": "test.' + field + ' == 2000", "fields": { "' + field + '": { "assign": 3000 } } }'
   end
 
