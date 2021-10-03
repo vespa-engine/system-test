@@ -31,9 +31,9 @@ class GeneratorTest < Test::Unit::TestCase
   def test_url
     generator = Generator.new
     path = '/document/v1/ns/type/docid/'
-    url_command = generator.url_command(template: '$seq()', count: 1, path: path, parameters: {'%' => '%', :c => :d}, data: ':')
+    url_command = generator.url_command(template: '$seq(2)', count: 1, path: path, parameters: {'%' => '%', :c => :d}, data: ':')
     assert_equal(`#{url_command}`,
-                 "/document/v1/ns/type/docid/0?%25=%25&c=d\n")
+                 "/document/v1/ns/type/docid/2?%25=%25&c=d\n")
   end
 
 end

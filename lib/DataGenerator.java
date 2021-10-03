@@ -201,9 +201,9 @@ public class DataGenerator {
 
     enum Pattern {
 
-        seq("A sequence which starts at 0, and increments by 1 for each item, e.g., $seq()", (arguments, generator) -> {
-            if (arguments.length > 0) throw new IllegalArgumentException("seq accepts no arguments");
-            AtomicLong counter = new AtomicLong(0);
+        seq("A sequence which starts at an optional offset, and increments by 1 for each item, e.g., $seq(32)", (arguments, generator) -> {
+            if (arguments.length > 1) throw new IllegalArgumentException("seq accepts 0 or 1 arguments");
+            AtomicLong counter = new AtomicLong(arguments.length == 0 ? 0 : Long.parseLong(arguments[0]));
             return () -> Long.toString(counter.getAndIncrement());
         }),
 
