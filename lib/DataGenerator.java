@@ -108,8 +108,12 @@ public class DataGenerator {
     static void generateFeed(EnumMap<Argument, String> arguments) {
         PrintStream out = new PrintStream(new BufferedOutputStream(System.out));
         Supplier<String> documents = parseTemplate(arguments.get(template), Generator.readFromSystemIn());
-        for (int i = 0; i < Integer.parseInt(arguments.get(count)); i++)
-            out.println(documents.get());
+        out.println("[");
+        for (int i = Integer.parseInt(arguments.get(count)); i > 0; ) {
+            out.print(documents.get());
+            out.println(--i > 0 ? "," : "");
+        }
+        out.println("]");
         out.flush();
     }
 
