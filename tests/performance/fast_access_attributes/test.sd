@@ -1,0 +1,14 @@
+search test {
+  document test {
+    field fast_access type long {
+      indexing: attribute | summary
+      attribute: fast-access
+    }
+    field normal_access type long {
+      indexing: attribute | summary
+    }
+    field body type string {
+      indexing: summary
+    }
+  }
+}
