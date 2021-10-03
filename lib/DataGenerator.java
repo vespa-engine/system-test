@@ -13,7 +13,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.StringJoiner;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -96,22 +95,20 @@ public class DataGenerator {
     }
 
     static void generateURLs(EnumMap<Argument, String> arguments, String key, String suffix) {
-        int total = Integer.parseInt(arguments.get(count));
         PrintStream out = new PrintStream(new BufferedOutputStream(System.out));
-        Supplier<String> queries = parseTemplate(arguments.get(template), Generator.readFromSystemIn(total));
+        Supplier<String> queries = parseTemplate(arguments.get(template), Generator.readFromSystemIn());
         String base = arguments.get(prefix);
         String url = key.isEmpty() || base.endsWith("?") || base.endsWith("&") ? base : base + (base.contains("?") ? "&" : "?");
         Supplier<String> urls = () -> url + key + URLEncoder.encode(queries.get(), UTF_8) + suffix;
-        for (int i = 0; i < total; i++)
+        for (int i = 0; i < Integer.parseInt(arguments.get(count)); i++)
             out.println(urls.get());
         out.flush();
     }
 
     static void generateFeed(EnumMap<Argument, String> arguments) {
-        int total = Integer.parseInt(arguments.get(count));
         PrintStream out = new PrintStream(new BufferedOutputStream(System.out));
-        Supplier<String> documents = parseTemplate(arguments.get(template), Generator.readFromSystemIn(total));
-        for (int i = 0; i < total; i++)
+        Supplier<String> documents = parseTemplate(arguments.get(template), Generator.readFromSystemIn());
+        for (int i = 0; i < Integer.parseInt(arguments.get(count)); i++)
             out.println(documents.get());
         out.flush();
     }
@@ -206,19 +203,6 @@ public class DataGenerator {
             return () -> Long.toString(counter.getAndIncrement());
         }),
 
-        rseq("A permutation of the numbers [0, N) where N is the number of items, e.g., $rseq()", (arguments, generator) -> {
-            if (arguments.length > 0) throw new IllegalArgumentException("rseq accepts no arguments");
-            int[] numbers = new int[generator.total];
-            for (int i = 0; i < numbers.length; ) numbers[i] = i++;
-            AtomicInteger end = new AtomicInteger(numbers.length);
-            return () -> {
-                int i = generator.random.nextInt(end.get());
-                int n = numbers[i];
-                numbers[i] = numbers[end.decrementAndGet()];
-                return Integer.toString(n);
-            };
-        }),
-
         words("N randomly chosen words, e.g., $words(5)", (arguments, generator) -> {
             if (arguments.length > 1) throw new IllegalArgumentException("words accepts 0 or 1 arguments");
             int words = arguments.length == 0 ? 1 : Integer.parseInt(arguments[0]);
@@ -292,14 +276,12 @@ public class DataGenerator {
 
     static class Generator {
 
-        final int total;
         final Random random;
         final long[] counts;
         final String[] words;
         final long count;
 
-        Generator(int total, Random random, long[] counts, String[] words) {
-            this.total = total;
+        Generator(Random random, long[] counts, String[] words) {
             this.random = random;
             this.words = words;
             long count = 0;
@@ -309,7 +291,7 @@ public class DataGenerator {
             this.count = count;
         }
 
-        static Generator readFromSystemIn(int total) {
+        static Generator readFromSystemIn() {
             List<Long> counts = new ArrayList<>();
             List<String> words = new ArrayList<>();
             new BufferedReader(new InputStreamReader(System.in, UTF_8)).lines().forEach(line -> {
@@ -322,8 +304,7 @@ public class DataGenerator {
                     words.add(parts[i++]);
                 }
             });
-            return new Generator(total,
-                                 new Random(-1),
+            return new Generator(new Random(-1),
                                  counts.stream().mapToLong(Long::longValue).toArray(),
                                  words.toArray(String[]::new));
         }
