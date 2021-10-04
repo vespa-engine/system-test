@@ -6,7 +6,7 @@
 # NodeProxy and any subclass of VespaNode.
 
 require 'environment'
-require 'generator'
+require 'data_generator'
 
 module Feeder
 
@@ -136,7 +136,7 @@ module Feeder
 
   # Runs a Java program to generate feed from a template.
   def feed_generated(params={})
-    feed_stream(Generator.new.feed_command(template: params[:template], count: params[:count]), params)
+    feed_stream(DataGenerator.new.feed_command(template: params[:template], count: params[:count]), params)
   end
 
   # Pipe the output of _command_ into the feeder binary instead of using an

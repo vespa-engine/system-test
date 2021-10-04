@@ -4,7 +4,7 @@
 require 'test_base'
 require 'digest/md5'
 require 'webserver'
-require 'generator'
+require 'data_generator'
 require 'executeerror'
 require 'nodetypes/metrics'
 require 'drb_endpoint'
@@ -558,14 +558,14 @@ class NodeServer
   # Writes templated queries into filename, count times.
   def write_queries(template:, yql: false, count: nil, parameters: {}, data: nil, filename:)
     FileUtils.mkdir_p(File.dirname(filename))
-    command = Generator.new.query_command(template: template, yql: yql, count: count, parameters: parameters, data: data)
+    command = DataGenerator.new.query_command(template: template, yql: yql, count: count, parameters: parameters, data: data)
     execute("#{command} > #{filename}")
   end
 
   # Writes templated urls into filename, count times.
   def write_urls(template:, path:, count: nil, parameters: {}, data: nil, filename:)
     FileUtils.mkdir_p(File.dirname(filename))
-    command = Generator.new.url_command(template: template, path: path, count: count, parameters: parameters, data: data)
+    command = DataGenerator.new.url_command(template: template, path: path, count: count, parameters: parameters, data: data)
     execute("#{command} > #{filename}")
   end
 
