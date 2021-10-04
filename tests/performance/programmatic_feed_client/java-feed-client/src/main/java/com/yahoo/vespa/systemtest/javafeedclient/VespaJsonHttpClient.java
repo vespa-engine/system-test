@@ -29,8 +29,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class VespaJsonHttpClient {
 
     public static void main(String[] args) throws IOException {
-        int documents = documents() / 20;
+        int documents = documents();
         String fieldsJson = fieldsJson();
+        if (fieldsJson.length() > 2000) documents /= 20;
         Path tmpFile = Files.createTempFile(null, null);
         try (Writer out = Files.newBufferedWriter(tmpFile, UTF_8)) {
             out.write("[");
