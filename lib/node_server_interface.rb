@@ -155,6 +155,14 @@ module NodeServerInterface
     @node_server.write_document_operations(*args)
   end
 
+  def write_queries(*args)
+    @node_server.write_queries(*args)
+  end
+
+  def write_urls(*args)
+    @node_server.write_urls(*args)
+  end
+
   def writefile(*args)
     @node_server.writefile(*args)
   end

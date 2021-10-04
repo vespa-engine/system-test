@@ -6,13 +6,18 @@
 # NodeProxy and any subclass of VespaNode.
 
 require 'environment'
+require 'data_generator'
 
 module Feeder
 
   # Creates a temporary feed file using create_tmpfeed and feeds it
   # using feed_stream.
   def feed(params={})
-    feed_stream_file(params[:file], params)
+    if params[:template]
+      feed_generated(params)
+    else
+      feed_stream_file(params[:file], params)
+    end
   end
 
   def decompressfile(cmd, source, handler)
@@ -127,6 +132,11 @@ module Feeder
   def feedbuffer(buffer, params={})
     tmpfeed = create_tmpfeed(params.merge({:buffer => buffer}))
     feed_stream_file(tmpfeed, params.merge({:file => tmpfeed, :localfile => true}))
+  end
+
+  # Runs a Java program to generate feed from a template.
+  def feed_generated(params={})
+    feed_stream(DataGenerator.new.feed_command(template: params[:template], count: params[:count]), params)
   end
 
   # Pipe the output of _command_ into the feeder binary instead of using an

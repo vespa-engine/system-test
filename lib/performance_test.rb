@@ -183,6 +183,12 @@ class PerformanceTest < TestCase
     post_process_feed_output(out, client, custom_fillers)
   end
 
+  def run_template_feeder(fillers: [], params: {}, template: params[:template], count: params[:count])
+    raise "Template must be present" unless template
+    out = feed(params.merge({:template => template, :count => count, :mode => "benchmark"}))
+    post_process_feed_output(out, params[:client], fillers)
+  end
+
   def create_loadtester(node, configserver_hostname, port, num_requests, num_threads, defdir)
     loadtester = Perf::ConfigLoadTester.new(node, configserver_hostname, port, defdir)
     loadtester.numiter = num_requests
