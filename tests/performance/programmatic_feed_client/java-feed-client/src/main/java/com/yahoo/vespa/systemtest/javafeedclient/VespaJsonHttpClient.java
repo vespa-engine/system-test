@@ -15,6 +15,7 @@ import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.benchmarkSeconds;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.documents;
@@ -28,7 +29,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class VespaJsonHttpClient {
 
     public static void main(String[] args) throws IOException {
-        int documents = documents();
+        int documents = documents() / 20;
         String fieldsJson = fieldsJson();
         Path tmpFile = Files.createTempFile(null, null);
         try (Writer out = Files.newBufferedWriter(tmpFile, UTF_8)) {
@@ -41,6 +42,7 @@ public class VespaJsonHttpClient {
 
         SessionParams sessionParams = Utils.createSessionParams();
         Instant start = Instant.now();
+        Instant end = start.plusSeconds(warmupSeconds()).plusSeconds(benchmarkSeconds());
 
         BenchmarkReporter reporter = new BenchmarkReporter("vespa-json-http-client");
         FeedClient feedClient = FeedClientFactory.create(sessionParams, (docId, documentResult) -> {
@@ -57,7 +59,9 @@ public class VespaJsonHttpClient {
              InputStream in = Files.newInputStream(tmpFile, StandardOpenOption.READ, StandardOpenOption.DELETE_ON_CLOSE)) {
             Runner.send(feedClient, in, true, new AtomicInteger(), false);
         }
-        reporter.printJsonReport(Duration.ofSeconds(benchmarkSeconds()));
+        if (Instant.now().isBefore(end)) end = Instant.now();
+
+        reporter.printJsonReport(Duration.between(start.plusSeconds(warmupSeconds()), end));
     }
 
 }
