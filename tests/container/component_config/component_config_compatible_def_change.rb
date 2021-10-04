@@ -16,6 +16,8 @@ class ComponentConfigDefVersion < SearchContainerTest
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.vespatest.ExtraHitSearcher")
     deploy(selfdir+"app")
     start
+    #vespa.qrserver.values.first.logctl('qrserver:com.yahoo.container.di', 'debug=on')
+
     result = search("query=test")
     title = result.hit[0].field["title"]
     assert_equal("Heal the World!", title)
