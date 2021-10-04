@@ -4,26 +4,45 @@ package com.yahoo.vespa.systemtest.javafeedclient;
 import com.yahoo.vespa.http.client.FeedClient;
 import com.yahoo.vespa.http.client.FeedClientFactory;
 import com.yahoo.vespa.http.client.config.SessionParams;
+import com.yahoo.vespa.http.client.runner.Runner;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.benchmarkSeconds;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.documents;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.fieldsJson;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.warmupSeconds;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * @author bjorncs
+ * @author jonmv
  */
-public class VespaHttpClient {
+public class VespaJsonHttpClient {
 
     public static void main(String[] args) throws IOException {
-        SessionParams sessionParams = Utils.createSessionParams();
+        int documents = documents();
         String fieldsJson = fieldsJson();
+        Path tmpFile = Files.createTempFile(null, null);
+        try (Writer out = Files.newBufferedWriter(tmpFile, UTF_8)) {
+            out.write("[");
+            for (int i = 0; i < documents; i++)
+                out.write(String.format("{\"put\":\"id:text:text::vespa-http-client-%07d\",\"fields\": %s}%s",
+                                        i, fieldsJson, i + 1 < documents ? "," : ""));
+            out.write("]");
+        }
+
+        SessionParams sessionParams = Utils.createSessionParams();
         Instant start = Instant.now();
 
-        BenchmarkReporter reporter = new BenchmarkReporter("vespa-http-client");
+        BenchmarkReporter reporter = new BenchmarkReporter("vespa-json-http-client");
         FeedClient feedClient = FeedClientFactory.create(sessionParams, (docId, documentResult) -> {
             if (Instant.now().isBefore(start.plusSeconds(warmupSeconds()))) return;
             if (Instant.now().isAfter(start.plusSeconds(warmupSeconds() + benchmarkSeconds()))) return;
@@ -34,12 +53,9 @@ public class VespaHttpClient {
                 System.err.println(documentResult + "\n" + documentResult.getDetails());
             }
         });
-        try (feedClient) {
-            while (Instant.now().isBefore(start.plusSeconds(warmupSeconds() + benchmarkSeconds()))) {
-                String docId = String.format("id:text:text::vespa-http-client-%07d", (int) (Math.random() * 1e6));
-                String operationJson = "{\"put\": \"" + docId + "\", \"fields\": " + fieldsJson + "}";
-                feedClient.stream(docId, operationJson);
-            }
+        try (feedClient;
+             InputStream in = Files.newInputStream(tmpFile, StandardOpenOption.READ, StandardOpenOption.DELETE_ON_CLOSE)) {
+            Runner.send(feedClient, in, true, new AtomicInteger(), false);
         }
         reporter.printJsonReport(Duration.ofSeconds(benchmarkSeconds()));
     }
