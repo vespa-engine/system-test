@@ -13,9 +13,6 @@ class ProgrammaticFeedClientTest < PerformanceTest
   LARGE = 10000
 
   DUMMY_ROUTE = 'null/default'
-  VESPA_HTTP_CLIENT = 'vespa-http-client'
-  VESPA_FEED_CLIENT = 'vespa-feed-client'
-  VESPA_JSON_FEEDER = 'vespa-json-feeder'
 
   def timeout_seconds
     1800
@@ -31,6 +28,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     build_feed_client
 
     run_benchmark(container_node, "VespaHttpClient",   TINY,  4)
+    run_benchmark(container_node, "VespaJsonHttpClient",   TINY,  4)
     run_benchmark(container_node, "VespaFeedClient",   TINY, 32)
     run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
     run_benchmark(container_node, "VespaHttpClient",  SMALL,  4)
@@ -40,6 +38,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     run_benchmark(container_node, "VespaHttpClient", MEDIUM,  4)
     run_benchmark(container_node, "VespaFeedClient", MEDIUM, 32)
     run_benchmark(container_node, "VespaHttpClient",  LARGE,  4)
+    run_benchmark(container_node, "VespaJsonHttpClient",  LARGE,  4)
     run_benchmark(container_node, "VespaFeedClient",  LARGE, 32)
     run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 32)
   end
