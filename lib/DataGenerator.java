@@ -220,11 +220,11 @@ public class DataGenerator {
             if (arguments.length < 1 + words) throw new IllegalArgumentException("cannot supply fewer words than number to pick");
             return () -> {
                 StringJoiner joiner = new StringJoiner(",");
-                for (int i = words; i > 0; ) {
-                    int pick = generator.random.nextInt(i) + 1;
+                for (int i = arguments.length; i > arguments.length - words; ) {
+                    int pick = generator.random.nextInt(--i) + 1;
                     String picked = arguments[pick];
                     arguments[pick] = arguments[i];
-                    arguments[i--] = picked;
+                    arguments[i] = picked;
                     joiner.add(picked);
                 }
                 return joiner.toString();

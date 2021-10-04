@@ -2,7 +2,7 @@
 
 require 'erb'
 
-class Generator
+class DataGenerator
 
   def initialize
     lib_dir = File.dirname(__FILE__)

@@ -24,7 +24,7 @@ class DataGeneratorTest < Test::Unit::TestCase
     query = 'sddocname:test foo:$words() bar:$words() baz:$pick(2, "one", "two", "three")'
     query_command = generator.query_command(template: query, count: 2, parameters: {:a => 'b'})
     assert_equal("/search/?query=sddocname%3Atest+foo%3Ared+bar%3Atwitter+baz%3A%22one%22%2C%22two%22&a=b\n" +
-                 "/search/?query=sddocname%3Atest+foo%3Adefensive+bar%3Abosses+baz%3A%22two%22%2C%22one%22&a=b\n",
+                 "/search/?query=sddocname%3Atest+foo%3Adefensive+bar%3Abosses+baz%3A%22three%22%2C%22one%22&a=b\n",
                  `#{query_command}`)
   end
 
