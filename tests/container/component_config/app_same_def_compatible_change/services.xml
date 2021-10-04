@@ -2,8 +2,8 @@
 <services version="1.0">
 
     <admin version="2.0">
-      <adminserver hostalias="node1" />
-      <logserver hostalias="node1" />
+        <adminserver hostalias="node1" />
+        <logserver hostalias="node1" />
     </admin>
 
     <container version="1.0">
@@ -12,16 +12,16 @@
         </nodes>
 
         <search>
-                <searcher ident="no2" class="com.yahoo.vespatest.ExtraHitSearcher2">
-		  <config name="com.yahoo.vespatest.extra-hit">
-		    <enumVal>Mind</enumVal>
-		    <times>2</times>
-                  </config>
-		</searcher>
+            <searcher ident="no2" class="com.yahoo.vespatest.ExtraHitSearcher2">
+                <config name="com.yahoo.vespatest.extra-hit">
+                    <enumVal>Mind</enumVal>
+                    <times>2</times>
+                </config>
+            </searcher>
 
-                <chain ident="no2">
-                    <searcher id="no2"/>
-                </chain>
+            <chain ident="no2">
+                <searcher id="no2"/>
+            </chain>
 
         </search>
     </container>
