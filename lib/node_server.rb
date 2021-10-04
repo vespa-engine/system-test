@@ -4,6 +4,7 @@
 require 'test_base'
 require 'digest/md5'
 require 'webserver'
+require 'generator'
 require 'executeerror'
 require 'nodetypes/metrics'
 require 'drb_endpoint'
@@ -552,6 +553,20 @@ class NodeServer
       count.times { |i| file.puts(operation.merge({type => (prefix + i.to_s)}).to_json + (i + 1 < count ? "," : "")) }
       file.puts(']')
     end
+  end
+
+  # Writes templated queries into filename, count times.
+  def write_queries(template:, yql: false, count: nil, parameters: {}, data: nil, filename:)
+    FileUtils.mkdir_p(File.dirname(filename))
+    command = Generator.new.query_command(template: template, yql: yql, count: count, parameters: parameters, data: data)
+    execute("#{command} > #{filename}")
+  end
+
+  # Writes templated urls into filename, count times.
+  def write_urls(template:, path:, count: nil, parameters: {}, data: nil, filename:)
+    FileUtils.mkdir_p(File.dirname(filename))
+    command = Generator.new.url_command(template: template, path: path, count: count, parameters: parameters, data: data)
+    execute("#{command} > #{filename}")
   end
 
   # Writes _content_ into _filename_.

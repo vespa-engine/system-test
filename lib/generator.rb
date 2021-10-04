@@ -17,22 +17,22 @@ class Generator
 
   # A command which will generate documents from a template. Template output may contain
   # characters [a-zA-Z0-9_.'-], all of which should be permissible as part of, e.g., JSON.
-  def feed_command(template:, count: nil, data: @cat)
-    "#{data} | #{@run} feed template '#{template}'#{" count #{count}" if count}"
+  def feed_command(template:, count: nil, data: nil)
+    "#{data or @cat} | #{@run} feed template '#{template}'#{" count #{count}" if count}"
   end
 
   # A command which will generate simple or yql queries from a template.
-  def query_command(template:, yql: false, count: nil, parameters: {}, data: @cat)
+  def query_command(template:, yql: false, count: nil, parameters: {}, data: nil)
     url_command(template: template, path: "/search/?#{yql ? "yql=" : "query="}", count: count, parameters: parameters, data: data)
   end
 
   # A command which will generaet generic URLs from a template.
   # Since the template output is URL-encoded, it will _either_ be part of the URL path,
   # when this contains no query part, _or_ be a parameter key _or_ value; see query_command.
-  def url_command(template:, path:, count: nil, parameters: {}, data: @cat)
+  def url_command(template:, path:, count: nil, parameters: {}, data: nil)
     query = parameters.map { |k, v| encode(k) + "=" + encode(v) }.join("&")
     query = (path =~ /\?/ ? "&" : "?") + query unless query.empty?
-    "#{data} | #{@run} url template '#{template}' prefix '#{path}' suffix '#{query}'#{" count #{count}" if count}"
+    "#{data or @cat} | #{@run} url template '#{template}' prefix '#{path}' suffix '#{query}'#{" count #{count}" if count}"
   end
 
   def encode(object)
