@@ -104,8 +104,6 @@ public class ConfigTester implements AutoCloseable {
             500,   // errorTimeout
             500,   // initialTimeout
             6000,  // subscribeTimeout
-            250,   // unconfiguredDelay
-            500,   // configuredErrorDelay
             250);   // fixedDelay
     }
 
