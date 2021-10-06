@@ -56,13 +56,6 @@ public class FailoverTest {
 
             log.info("Reconfiguring to foo1/");
             tester.deployOn3ConfigServers("configs/foo1");
-            // Find next that is not current
-            Connection newConnection;
-            do {
-                newConnection = connectionPool.switchConnection(currentConnection);
-            } while (currentConnection.getAddress().equals(newConnection.getAddress()));
-            log.log(LogLevel.INFO, "newConnection=" + newConnection.getAddress());
-            tester.stopConfigServerMatchingSource(newConnection);
             boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess, false);
             assertTrue(newConf);
             assertFalse(bh.isChanged());
