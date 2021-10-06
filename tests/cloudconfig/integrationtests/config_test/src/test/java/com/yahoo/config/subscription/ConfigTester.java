@@ -50,6 +50,13 @@ public class ConfigTester implements AutoCloseable {
     public static final long waitWhenExpectedSuccess = 60000L;
     public static final long waitWhenExpectedFailure = 5000L;
 
+
+    private final ConfigSubscriber subscriber;
+
+    public ConfigTester() {
+        this.subscriber = new ConfigSubscriber();
+    }
+
     public TestConfigServer startOneConfigServer() {
         cServer1 = createConfigServer();
         log.log(LogLevel.DEBUG, "starting configserver on port: " + cServer1.getSpec().port());
@@ -109,6 +116,10 @@ public class ConfigTester implements AutoCloseable {
 
     public TestConfigServer getConfigServer() { return cServer1; }
 
+    public ConfigSubscriber getSubscriber() {
+        return subscriber;
+    }
+
     public void ensureServerRunning(TestConfigServer server) {
         long start = System.currentTimeMillis();
         boolean stop = false;
@@ -134,6 +145,7 @@ public class ConfigTester implements AutoCloseable {
 
     @Override
     public void close() {
+        subscriber.close();
         configServerCluster.keySet().forEach(configServer -> {
             System.out.println("DEBUG:" + configServer);
             stopConfigServer(configServer);
