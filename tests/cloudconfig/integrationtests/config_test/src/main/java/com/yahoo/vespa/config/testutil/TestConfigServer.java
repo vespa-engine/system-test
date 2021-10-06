@@ -1,4 +1,4 @@
-// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.vespa.config.testutil;
 
 import com.yahoo.cloud.config.ConfigserverConfig;
@@ -19,6 +19,8 @@ import com.yahoo.vespa.config.ConfigKey;
 import com.yahoo.vespa.config.ConfigPayload;
 import com.yahoo.vespa.config.GenerationCounter;
 import com.yahoo.vespa.config.GetConfigRequest;
+import com.yahoo.vespa.config.PayloadChecksum;
+import com.yahoo.vespa.config.PayloadChecksums;
 import com.yahoo.vespa.config.buildergen.ConfigDefinition;
 import com.yahoo.vespa.config.protocol.ConfigResponse;
 import com.yahoo.vespa.config.protocol.SlimeConfigResponse;
@@ -159,12 +161,13 @@ public class TestConfigServer implements RequestHandler, Runnable {
         String name = getConfigName(file);
         List<String> lines = readLines(file);
         ConfigPayload payload = new CfgConfigPayloadBuilder().deserialize(lines);
-        String configMd5Sum = ConfigUtils.getMd5(payload);
+        String xxhash = ConfigUtils.getXxhash64(payload);
+        PayloadChecksums checksums = PayloadChecksums.from(new PayloadChecksum(xxhash, PayloadChecksum.Type.XXHASH64));
         ConfigKey<?> cKey = new ConfigKey<>(name, "", namespace);
         String defMd5 = defCache.get(cKey);
         if (defMd5 != null) {
             ConfigKey<?> key = new ConfigKey<>(name, configId, namespace);
-            addConfig(key, createResponse(new CfgConfigPayloadBuilder().deserialize(lines), configMd5Sum, getApplicationGeneration()));
+            addConfig(key, createResponse(new CfgConfigPayloadBuilder().deserialize(lines), checksums, getApplicationGeneration()));
         } else {
             System.out.println("No config definition for " + namespace + "." + name + ", unable to add config");
         }
@@ -179,8 +182,8 @@ public class TestConfigServer implements RequestHandler, Runnable {
         }
     }
 
-    private ConfigResponse createResponse(ConfigPayload payload, String configMd5Sum, long applicationGeneration) {
-        return SlimeConfigResponse.fromConfigPayload(payload, applicationGeneration, false, configMd5Sum);
+    private ConfigResponse createResponse(ConfigPayload payload, PayloadChecksums payloadChecksums, long applicationGeneration) {
+        return SlimeConfigResponse.fromConfigPayload(payload, applicationGeneration, false, payloadChecksums);
     }
 
     private void loadDefFile(File file) {

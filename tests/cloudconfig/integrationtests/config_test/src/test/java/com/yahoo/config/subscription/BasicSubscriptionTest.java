@@ -5,16 +5,11 @@ import com.yahoo.config.AppConfig;
 import com.yahoo.config.ConfigurationRuntimeException;
 import com.yahoo.config.FooConfig;
 import com.yahoo.foo.BarConfig;
-import com.yahoo.io.IOUtils;
 import com.yahoo.myproject.config.NamespaceConfig;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
-import com.yahoo.vespa.config.util.ConfigUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasChanged;
@@ -40,15 +35,6 @@ public class BasicSubscriptionTest {
             assertNextConfigHasChanged(subscriber, appCfgHandle);
             AppConfig a = appCfgHandle.getConfig();
             assertEquals(a.message(), "msg1");
-
-            // Test that config md5 is set correctly
-            final File file = new File("configs/foo/app.cfg");
-            try {
-                String md5 = ConfigUtils.getMd5(new CfgConfigPayloadBuilder().deserialize(Arrays.asList(IOUtils.readFile(file).split("\n"))));
-                assertEquals(md5, a.getConfigMd5());
-            } catch (IOException e) {
-                fail("Could not read file " + file);
-            }
         }
     }
 
