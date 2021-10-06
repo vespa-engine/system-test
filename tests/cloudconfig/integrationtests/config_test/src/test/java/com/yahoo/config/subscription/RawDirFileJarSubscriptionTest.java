@@ -1,20 +1,20 @@
-// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.config.subscription;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import com.yahoo.config.AppConfig;
+import com.yahoo.config.StringConfig;
+import com.yahoo.foo.BarConfig;
+import com.yahoo.io.IOUtils;
+import org.junit.After;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.jar.JarFile;
 
-import com.yahoo.config.AppConfig;
-import com.yahoo.config.StringConfig;
-import com.yahoo.foo.BarConfig;
-import org.junit.After;
-import org.junit.Test;
-import com.yahoo.io.IOUtils;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test cases for raw:, dir:, jar: and file: subscriptions
@@ -31,16 +31,16 @@ public class RawDirFileJarSubscriptionTest {
     public void testRaw() {
        ConfigSubscriber subscriber = new ConfigSubscriber();
        ConfigHandle<AppConfig> h = subscriber.subscribe(AppConfig.class, "raw:message \"I'm raw\"\ntimes 90\n");
-       assertTrue(subscriber.nextConfig(0));
+       assertTrue(subscriber.nextConfig(0, false));
        assertTrue(h.isChanged());
        assertEquals(h.getConfig().message(), "I'm raw");
-       assertFalse(subscriber.nextConfig(0));
+       assertFalse(subscriber.nextConfig(0, false));
        assertFalse(h.isChanged());
        assertEquals(h.getConfig().message(), "I'm raw");
-       assertFalse(subscriber.nextConfig(0));
+       assertFalse(subscriber.nextConfig(0, false));
        assertFalse(h.isChanged());
        assertEquals(h.getConfig().message(), "I'm raw");
-       assertFalse(subscriber.nextConfig(0));
+       assertFalse(subscriber.nextConfig(0, false));
        assertFalse(h.isChanged());
        assertEquals(h.getConfig().message(), "I'm raw");
        subscriber.close();
@@ -50,16 +50,16 @@ public class RawDirFileJarSubscriptionTest {
     public void testRawSource() {
         ConfigSubscriber subscriber = new ConfigSubscriber(new RawSource("message \"I'm properly abstracted\"\ntimes 99\n"));
         ConfigHandle<AppConfig> h = subscriber.subscribe(AppConfig.class, null);
-        assertTrue(subscriber.nextConfig(0));
+        assertTrue(subscriber.nextConfig(0, false));
         assertTrue(h.isChanged());
         assertEquals(h.getConfig().message(), "I'm properly abstracted");
-        assertFalse(subscriber.nextConfig(0));
+        assertFalse(subscriber.nextConfig(0, false));
         assertFalse(h.isChanged());
         assertEquals(h.getConfig().message(), "I'm properly abstracted");
-        assertFalse(subscriber.nextConfig(0));
+        assertFalse(subscriber.nextConfig(0, false));
         assertFalse(h.isChanged());
         assertEquals(h.getConfig().message(), "I'm properly abstracted");
-        assertFalse(subscriber.nextConfig(0));
+        assertFalse(subscriber.nextConfig(0, false));
         assertFalse(h.isChanged());
         assertEquals(h.getConfig().message(), "I'm properly abstracted");
         subscriber.close();
@@ -71,18 +71,18 @@ public class RawDirFileJarSubscriptionTest {
         tmpFile1 = new File("configs/"+System.currentTimeMillis()+".app.cfg");
         IOUtils.copy(new File("configs/bar/app.cfg"), tmpFile1);
         ConfigHandle<AppConfig> h = subscriber.subscribe(AppConfig.class, "file:"+tmpFile1.getCanonicalPath());
-        assertTrue(subscriber.nextConfig(300));
+        assertTrue(subscriber.nextConfig(300, false));
         assertTrue(h.isChanged());
         assertEquals(h.getConfig().message(), "msg2");
-        assertFalse(subscriber.nextConfig(100));
+        assertFalse(subscriber.nextConfig(100, false));
         assertFalse(h.isChanged());
         assertEquals(h.getConfig().message(), "msg2");
         Thread.sleep(1100);
         IOUtils.writeFile(tmpFile1, "message \"msg3YeYe\"\n", false);
-        assertTrue(subscriber.nextConfig(300));
+        assertTrue(subscriber.nextConfig(300, false));
         assertTrue(h.isChanged());
         assertEquals(h.getConfig().message(), "msg3YeYe");
-        assertFalse(subscriber.nextConfig(100));
+        assertFalse(subscriber.nextConfig(100, false));
         assertFalse(h.isChanged());
         assertEquals(h.getConfig().message(), "msg3YeYe");
         subscriber.close();
@@ -94,18 +94,18 @@ public class RawDirFileJarSubscriptionTest {
         IOUtils.copy(new File("configs/bar/app.cfg"), tmpFile1);
         ConfigSubscriber subscriber = new ConfigSubscriber(new FileSource(new File(tmpFile1.getCanonicalPath())));
         ConfigHandle<AppConfig> h = subscriber.subscribe(AppConfig.class, null);
-        assertTrue(subscriber.nextConfig(300));
+        assertTrue(subscriber.nextConfig(300, false));
         assertTrue(h.isChanged());
         assertEquals(h.getConfig().message(), "msg2");
-        assertFalse(subscriber.nextConfig(100));
+        assertFalse(subscriber.nextConfig(100, false));
         assertFalse(h.isChanged());
         assertEquals(h.getConfig().message(), "msg2");
         Thread.sleep(1100);
         IOUtils.writeFile(tmpFile1, "message \"msg3YeYe\"\n", false);
-        assertTrue(subscriber.nextConfig(300));
+        assertTrue(subscriber.nextConfig(300, false));
         assertTrue(h.isChanged());
         assertEquals(h.getConfig().message(), "msg3YeYe");
-        assertFalse(subscriber.nextConfig(100));
+        assertFalse(subscriber.nextConfig(100, false));
         assertFalse(h.isChanged());
         assertEquals(h.getConfig().message(), "msg3YeYe");
         subscriber.close();
@@ -122,25 +122,25 @@ public class RawDirFileJarSubscriptionTest {
         IOUtils.copy(new File("configs/bar/string.cfg"), tmpFile2);
 
         ConfigHandle<AppConfig> hApp = subscriber.subscribe(AppConfig.class, "dir:"+tmpDir.getCanonicalPath());
-        assertTrue(subscriber.nextConfig(300));
+        assertTrue(subscriber.nextConfig(300, false));
         assertTrue(hApp.isChanged());
         assertEquals(hApp.getConfig().message(), "msg2");
-        assertFalse(subscriber.nextConfig(100));
+        assertFalse(subscriber.nextConfig(100, false));
         assertFalse(hApp.isChanged());
         assertEquals(hApp.getConfig().message(), "msg2");
         Thread.sleep(1100);
         IOUtils.writeFile(tmpFile1, "message \"msg3YeYe\"\n", false);
-        assertTrue(subscriber.nextConfig(300));
+        assertTrue(subscriber.nextConfig(300, false));
         assertTrue(hApp.isChanged());
         assertEquals(hApp.getConfig().message(), "msg3YeYe");
-        assertFalse(subscriber.nextConfig(100));
+        assertFalse(subscriber.nextConfig(100, false));
         assertFalse(hApp.isChanged());
         assertEquals(hApp.getConfig().message(), "msg3YeYe");
 
         subscriber.close();
         subscriber = new ConfigSubscriber();
         ConfigHandle<StringConfig> hString = subscriber.subscribe(StringConfig.class, "dir:"+tmpDir.getCanonicalPath());
-        assertTrue(subscriber.nextConfig(10));
+        assertTrue(subscriber.nextConfig(10, false));
         assertTrue(hString.isChanged());
         assertEquals(hString.getConfig().stringVal(), "My mess");
         subscriber.close();
@@ -156,25 +156,25 @@ public class RawDirFileJarSubscriptionTest {
         IOUtils.copy(new File("configs/bar/string.cfg"), tmpFile2);
         ConfigSubscriber subscriber = new ConfigSubscriber(new DirSource(new File(tmpDir.getCanonicalPath())));
         ConfigHandle<AppConfig> hApp = subscriber.subscribe(AppConfig.class, null);
-        assertTrue(subscriber.nextConfig(300));
+        assertTrue(subscriber.nextConfig(300, false));
         assertTrue(hApp.isChanged());
         assertEquals(hApp.getConfig().message(), "msg2");
-        assertFalse(subscriber.nextConfig(100));
+        assertFalse(subscriber.nextConfig(100, false));
         assertFalse(hApp.isChanged());
         assertEquals(hApp.getConfig().message(), "msg2");
         Thread.sleep(1100);
         IOUtils.writeFile(tmpFile1, "message \"msg3YeYe\"\n", false);
-        assertTrue(subscriber.nextConfig(300));
+        assertTrue(subscriber.nextConfig(300, false));
         assertTrue(hApp.isChanged());
         assertEquals(hApp.getConfig().message(), "msg3YeYe");
-        assertFalse(subscriber.nextConfig(100));
+        assertFalse(subscriber.nextConfig(100, false));
         assertFalse(hApp.isChanged());
         assertEquals(hApp.getConfig().message(), "msg3YeYe");
 
         subscriber.close();
         subscriber = new ConfigSubscriber(new DirSource(new File(tmpDir.getCanonicalPath())));
         ConfigHandle<StringConfig> hString = subscriber.subscribe(StringConfig.class, null);
-        assertTrue(subscriber.nextConfig(10));
+        assertTrue(subscriber.nextConfig(10, false));
         assertTrue(hString.isChanged());
         assertEquals(hString.getConfig().stringVal(), "My mess");
         subscriber.close();
@@ -188,12 +188,12 @@ public class RawDirFileJarSubscriptionTest {
         ConfigSubscriber subscriber = new ConfigSubscriber();
         ConfigHandle<AppConfig> aHDefaultDir = subscriber.subscribe(AppConfig.class, "jar:configs/app.jar");
         ConfigHandle<AppConfig> aHNonDefaultDir = subscriber.subscribe(AppConfig.class, "jar:configs/app.jar!/configs/");
-        assertTrue(subscriber.nextConfig(300));
+        assertTrue(subscriber.nextConfig(300, false));
         assertTrue(aHDefaultDir.isChanged());
         assertEquals(aHDefaultDir.getConfig().message(), "jar-test with default directory");
         assertTrue(aHNonDefaultDir.isChanged());
         assertEquals(aHNonDefaultDir.getConfig().message(), "jar-test with non-default directory");
-        assertFalse(subscriber.nextConfig(100));
+        assertFalse(subscriber.nextConfig(100, false));
         assertFalse(aHDefaultDir.isChanged());
         assertFalse(aHNonDefaultDir.isChanged());
         assertEquals(aHDefaultDir.getConfig().message(), "jar-test with default directory");
@@ -209,7 +209,7 @@ public class RawDirFileJarSubscriptionTest {
     public void testNonExistingJar() {
         ConfigSubscriber subscriber = new ConfigSubscriber();
         subscriber.subscribe(AppConfig.class, "jar:configs/nonexisting.jar");
-        subscriber.nextConfig(300);
+        subscriber.nextConfig(300, false);
         subscriber.close();
     }
 
@@ -220,7 +220,7 @@ public class RawDirFileJarSubscriptionTest {
     public void testJarWrongConfig() {
         ConfigSubscriber subscriber = new ConfigSubscriber();
         subscriber.subscribe(BarConfig.class, "jar:configs/app.jar");
-        subscriber.nextConfig(300);
+        subscriber.nextConfig(300, false);
         subscriber.close();
     }
 
@@ -231,14 +231,14 @@ public class RawDirFileJarSubscriptionTest {
 
         ConfigHandle<AppConfig> aHDefaultDir = subscriber1.subscribe(AppConfig.class, null);
         ConfigHandle<AppConfig> aHNonDefaultDir = subscriber2.subscribe(AppConfig.class, null);
-        assertTrue(subscriber1.nextConfig(300));
-        assertTrue(subscriber2.nextConfig(300));
+        assertTrue(subscriber1.nextConfig(300, false));
+        assertTrue(subscriber2.nextConfig(300, false));
         assertTrue(aHDefaultDir.isChanged());
         assertEquals(aHDefaultDir.getConfig().message(), "jar-test with default directory");
         assertTrue(aHNonDefaultDir.isChanged());
         assertEquals(aHNonDefaultDir.getConfig().message(), "jar-test with non-default directory");
-        assertFalse(subscriber1.nextConfig(100));
-        assertFalse(subscriber2.nextConfig(100));
+        assertFalse(subscriber1.nextConfig(100, false));
+        assertFalse(subscriber2.nextConfig(100, false));
         assertFalse(aHDefaultDir.isChanged());
         assertFalse(aHNonDefaultDir.isChanged());
         assertEquals(aHDefaultDir.getConfig().message(), "jar-test with default directory");

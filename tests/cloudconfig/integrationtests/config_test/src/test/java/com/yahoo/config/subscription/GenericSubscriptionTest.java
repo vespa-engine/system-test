@@ -1,4 +1,4 @@
-// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.config.subscription;
 
 import com.yahoo.config.AppConfig;
@@ -149,7 +149,7 @@ public class GenericSubscriptionTest {
 
             // Reconfiguring to foo1/
             tester.getConfigServer().deployNewConfig("configs/foo1");
-            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
+            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess, false));
             assertFalse(bh1.isChanged());
             assertFalse(bh2.isChanged());
             assertTrue(fh1.isChanged());
@@ -231,20 +231,20 @@ public class GenericSubscriptionTest {
             assertNextConfigHasNotChanged(subscriber, bh, fh);
 
             configServer.deployNewConfig("configs/foo1");
-            assertTrue(subscriber.nextGeneration(waitWhenExpectedSuccess));
+            assertTrue(subscriber.nextGeneration(waitWhenExpectedSuccess, false));
             assertFalse(bh.isChanged());
             assertTrue(fh.isChanged());
             assertConfigMatches(bh.getRawConfig().getPayload().toString(), ".*barValue.*0bar.*");
             assertConfigMatches(fh.getRawConfig().getPayload().toString(), ".*fooValue.*1foo.*");
 
             configServer.deployNewConfig("configs/foo2");
-            assertTrue(subscriber.nextGeneration(waitWhenExpectedSuccess));
+            assertTrue(subscriber.nextGeneration(waitWhenExpectedSuccess, false));
             assertTrue(bh.isChanged());
             assertFalse(fh.isChanged());
             assertConfigMatches(bh.getRawConfig().getPayload().toString(), ".*barValue.*1bar.*");
             assertConfigMatches(fh.getRawConfig().getPayload().toString(), ".*fooValue.*1foo.*");
             configServer.deployNewConfig("configs/foo2");
-            assertTrue(subscriber.nextGeneration(waitWhenExpectedSuccess));
+            assertTrue(subscriber.nextGeneration(waitWhenExpectedSuccess, false));
             assertFalse(bh.isChanged());
             assertFalse(fh.isChanged());
         }
@@ -279,7 +279,7 @@ public class GenericSubscriptionTest {
 
             // Redeploy some time after a failover
             tester.deployOn3ConfigServers("configs/foo1");
-            assertTrue(genSubscriber.nextConfig(waitWhenExpectedSuccess));
+            assertTrue(genSubscriber.nextConfig(waitWhenExpectedSuccess, false));
             assertFalse(bh.isChanged());
             assertTrue(fh.isChanged());
             assertPayloadMatches(bh, ".*barValue.*0bar.*");

@@ -1,4 +1,4 @@
-// Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.config.subscription;
 
 import com.yahoo.config.FooConfig;
@@ -63,7 +63,7 @@ public class FailoverTest {
             } while (currentConnection.getAddress().equals(newConnection.getAddress()));
             log.log(LogLevel.INFO, "newConnection=" + newConnection.getAddress());
             tester.stopConfigServerMatchingSource(newConnection);
-            boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
+            boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess, false);
             assertTrue(newConf);
             assertFalse(bh.isChanged());
             assertTrue(fh.isChanged());
@@ -72,7 +72,7 @@ public class FailoverTest {
 
             log.info("Reconfiguring to foo2/");
             tester.deployOn3ConfigServers("configs/foo2");
-            newConf = subscriber.nextConfig(waitWhenExpectedSuccess);
+            newConf = subscriber.nextConfig(waitWhenExpectedSuccess, false);
             assertTrue(newConf);
             assertTrue(bh.isChanged());
             assertFalse(fh.isChanged());
@@ -130,7 +130,7 @@ public class FailoverTest {
 
             ConnectionPool connectionPool = ((JRTConfigSubscription<BarConfig>) bh.subscription()).requester().getConnectionPool();
             Connection c1 = connectionPool.getCurrent();
-            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
+            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess, false));
             assertTrue(bh.isChanged());
 
             connectionPool.switchConnection(c1);
@@ -158,7 +158,7 @@ public class FailoverTest {
             ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f", sources, ConfigTester.getTestTimingValues());
             ConnectionPool connectionPool = ((JRTConfigSubscription<BarConfig>) bh.subscription()).requester().getConnectionPool();
             Connection current = connectionPool.getCurrent();
-            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
+            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess, false));
             assertEquals(subscriber.requesters().size(), 1);
             // Kill current source, wait for failover
             log.log(LogLevel.INFO, "current=" + current.getAddress());
@@ -172,7 +172,7 @@ public class FailoverTest {
 
             // Want to see a reconfig here, sooner or later
             for (int i = 0; i < 10; i++) {
-                if (subscriber.nextConfig(waitWhenExpectedSuccess)) {
+                if (subscriber.nextConfig(waitWhenExpectedSuccess, false)) {
                     assertFalse(bh.isChanged());
                     assertTrue(fh.isChanged());
                     assertEquals(bh.getConfig().barValue(), "0bar");
