@@ -153,8 +153,8 @@ public class ConfigTester implements AutoCloseable {
     }
 
     private static class PortRange {
-        private int first = 18250;
-        private int last  = 18420;
+        private static final int first = 18250;
+        private static final int last  = 18420;
         private int value = first;
         synchronized int next() {
             if (value > last) {
