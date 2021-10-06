@@ -3,7 +3,7 @@ require 'app_generator/search_app'
 require 'environment'
 
 class VespaStatusFileDistribution < CloudConfigTest
-  @@vespa_status_filedistribution = "#{Environment.instance.vespa_home}/bin/vespa-status-filedistribution"
+  @@vespa_status_filedistribution = "#{Environment.instance.vespa_home}/bin/vespa-status-filedistribution 2>/dev/null"
 
   def initialize(*args)
     super(*args)
@@ -21,7 +21,7 @@ class VespaStatusFileDistribution < CloudConfigTest
   def test_vespa_status_filedistribution
     (exitcode, out) = execute(vespa.adminserver, "#{@@vespa_status_filedistribution}")
     assert_equal(0, exitcode)
-    assert_equal("something", out) # TODO: Update when script has been fixed
+    assert_equal("File distribution finished\n", out)
   end
 
   def teardown
