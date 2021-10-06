@@ -47,8 +47,8 @@ public class ConfigTester implements AutoCloseable {
 
     // How long to wait for config in nextConfig() method, when expecting result to be success (new config available)
     // or failure (no new config)
-    public static final long waitWhenExpectedSuccess = 60000L;
-    public static final long waitWhenExpectedFailure = 5000L;
+    public static final long waitWhenExpectedSuccess = 30000L;
+    public static final long waitWhenExpectedFailure = 2500L;
 
 
     private final ConfigSubscriber subscriber;
