@@ -1,17 +1,16 @@
-// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.config.subscription;
 
-import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedFailure;
-import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
-import static org.junit.Assert.assertTrue;
+import com.yahoo.config.FooConfig;
+import com.yahoo.foo.BarConfig;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.yahoo.config.FooConfig;
-import org.junit.Test;
-
-import com.yahoo.foo.BarConfig;
+import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedFailure;
+import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
+import static org.junit.Assert.assertTrue;
 
 public class StressTest {
 
@@ -59,10 +58,10 @@ public class StressTest {
         @Override
         public void run() {
             ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "bar");
-            allOK = subscriber.nextConfig(waitWhenExpectedSuccess);
+            allOK = subscriber.nextConfig(waitWhenExpectedSuccess, false);
             allOK = allOK && bh.isChanged();
             allOK = allOK && (bh.getConfig().barValue().equals("0bar"));
-            allOK = allOK && !subscriber.nextConfig(waitWhenExpectedFailure);
+            allOK = allOK && !subscriber.nextConfig(waitWhenExpectedFailure, false);
             allOK = allOK && !bh.isChanged();
             subscriber.close();
         }
@@ -79,10 +78,10 @@ public class StressTest {
         @Override
         public void run() {
             ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "foo");
-            allOK = subscriber.nextConfig(waitWhenExpectedSuccess);
+            allOK = subscriber.nextConfig(waitWhenExpectedSuccess, false);
             allOK = allOK && fh.isChanged();
             allOK = allOK && (fh.getConfig().fooValue().equals("0foo"));
-            allOK = allOK && !subscriber.nextConfig(waitWhenExpectedFailure);
+            allOK = allOK && !subscriber.nextConfig(waitWhenExpectedFailure, false);
             allOK = allOK && !fh.isChanged();
             subscriber.close();
         }

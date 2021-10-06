@@ -187,7 +187,7 @@ public class ConfigClientTest {
 
     void verifyConfigChanged(JRTClientConfigRequest req) {
         assertTrue(req.errorMessage(), (req.errorCode() == 0) );
-        assertTrue(req.hasUpdatedConfig());
+        assertTrue(req.toString(), req.hasUpdatedConfig());
     }
 
     void verifyConfigUnchanged(JRTClientConfigRequest req) {
