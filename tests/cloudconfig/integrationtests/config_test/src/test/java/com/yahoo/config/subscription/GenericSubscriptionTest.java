@@ -25,9 +25,8 @@ import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasChan
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasNotChanged;
 import static com.yahoo.config.subscription.ConfigTester.getTestTimingValues;
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
-import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class GenericSubscriptionTest {
@@ -54,19 +53,18 @@ public class GenericSubscriptionTest {
                                                               tester.getTestSourceSet(),
                                                               getTestTimingValues());
             assertNextConfigHasChanged(subscriber, handle);
-            String payloadS = handle.getRawConfig().getPayload().toString();
-            assertConfigMatches(payloadS, ".*message.*msg1.*");
+            RawConfig config = handle.getRawConfig();
+            assertConfigMatches(config.getPayload().toString(), ".*message.*msg1.*");
             assertNextConfigHasNotChanged(subscriber, handle);
             assertNextConfigHasNotChanged(subscriber, handle);
-            assertThat(subscriber.getGeneration(), is(tester.getConfigServer().getApplicationGeneration()));
-            assertThat(handle.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
-            assertThat(handle.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
+            assertEquals(subscriber.getGeneration(), tester.getConfigServer().getApplicationGeneration());
+            assertEquals(subscriber.getGeneration(), config.getGeneration());
 
             // Reconfiguring to bar/
             tester.getConfigServer().deployNewConfig("configs/bar");
             assertNextConfigHasChanged(subscriber, handle);
-            payloadS = handle.getRawConfig().getPayload().toString();
-            assertConfigMatches(payloadS, ".*message.*msg2.*");
+            config = handle.getRawConfig();
+            assertConfigMatches(config.getPayload().toString(), ".*message.*msg2.*");
             assertNextConfigHasNotChanged(subscriber, handle);
         }
     }
@@ -80,8 +78,8 @@ public class GenericSubscriptionTest {
                                                               tester.getTestSourceSet(),
                                                               getTestTimingValues());
             assertNextConfigHasChanged(subscriber, handle);
-            String payloadS = handle.getRawConfig().getPayload().toString();
-            assertConfigMatches(payloadS, ".*message.*msg1.*");
+            RawConfig config = handle.getRawConfig();
+            assertConfigMatches(config.getPayload().toString(), ".*message.*msg1.*");
 
             assertNextConfigHasNotChanged(subscriber, handle);
             assertNextConfigHasNotChanged(subscriber, handle);
@@ -89,11 +87,10 @@ public class GenericSubscriptionTest {
             // Reconfiguring to bar/
             tester.getConfigServer().deployNewConfig("configs/bar");
             assertNextConfigHasChanged(subscriber, handle);
-            payloadS = handle.getRawConfig().getPayload().toString();
-            assertConfigMatches(payloadS, ".*message.*msg2.*");
-            assertThat(subscriber.getGeneration(), is(tester.getConfigServer().getApplicationGeneration()));
-            assertThat(handle.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
-            assertThat(handle.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
+            config = handle.getRawConfig();
+            assertConfigMatches(config.getPayload().toString(), ".*message.*msg2.*");
+            assertEquals(subscriber.getGeneration(), tester.getConfigServer().getApplicationGeneration());
+            assertEquals(subscriber.getGeneration(), config.getGeneration());
         }
     }
     
@@ -160,11 +157,6 @@ public class GenericSubscriptionTest {
             assertConfigMatches(fh1.getRawConfig().getPayload().toString(), ".*fooValue.*1foo.*");
             assertConfigMatches(fh2.getRawConfig().getPayload().toString(), ".*fooValue.*1foo.*");
             assertConfigMatches(fh3.getRawConfig().getPayload().toString(), ".*fooValue.*1foo.*");
-
-            // TODO fix
-            //assertFalse(fh1.getRawConfig().getPayload().toString().matches(".*fooValue.*foo.*"));
-            //assertFalse(fh2.getRawConfig().getPayload().toString().matches(".*fooValue.*foo.*"));
-            //assertFalse(fh3.getRawConfig().getPayload().toString().matches(".*fooValue.*foo.*"));
         }
     }
 
@@ -179,30 +171,34 @@ public class GenericSubscriptionTest {
                                                           tester.getTestSourceSet(), getTestTimingValues());
 
             assertNextConfigHasChanged(subscriber, bh, fh);
-            assertConfigMatches(bh.getRawConfig().getPayload().toString(), ".*barValue.*0bar.*");
-            assertConfigMatches(fh.getRawConfig().getPayload().toString(), ".*fooValue.*0foo.*");
-            assertThat(subscriber.getGeneration(), is(configServer.getApplicationGeneration()));
-            assertThat(bh.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
-            assertThat(fh.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
+            RawConfig bConfig = bh.getRawConfig();
+            RawConfig fConfig = fh.getRawConfig();
+            assertConfigMatches(bConfig.getPayload().toString(), ".*barValue.*0bar.*");
+            assertConfigMatches(fConfig.getPayload().toString(), ".*fooValue.*0foo.*");
+            assertEquals(subscriber.getGeneration(), tester.getConfigServer().getApplicationGeneration());
+            assertEquals(subscriber.getGeneration(), bConfig.getGeneration());
+            assertEquals(subscriber.getGeneration(), fConfig.getGeneration());
 
             assertNextConfigHasNotChanged(subscriber, bh, fh);
 
             configServer.deployNewConfig("configs/foo1");
-            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
+            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess, false));
             assertFalse(bh.isChanged());
             assertTrue(fh.isChanged());
             assertConfigMatches(bh.getRawConfig().getPayload().toString(), ".*barValue.*0bar.*");
             assertConfigMatches(fh.getRawConfig().getPayload().toString(), ".*fooValue.*1foo.*");
 
             configServer.deployNewConfig("configs/foo2");
-            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess));
+            assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess, false));
             assertTrue(bh.isChanged());
             assertFalse(fh.isChanged());
+            bConfig = bh.getRawConfig();
+            fConfig = fh.getRawConfig();
             assertConfigMatches(bh.getRawConfig().getPayload().toString(), ".*barValue.*1bar.*");
             assertConfigMatches(fh.getRawConfig().getPayload().toString(), ".*fooValue.*1foo.*");
-            assertThat(subscriber.getGeneration(), is(configServer.getApplicationGeneration()));
-            assertThat(bh.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
-            assertThat(bh.getRawConfig().getGeneration(), is(subscriber.getGeneration()));
+            assertEquals(subscriber.getGeneration(), tester.getConfigServer().getApplicationGeneration());
+            assertEquals(subscriber.getGeneration(), bConfig.getGeneration());
+            assertEquals(subscriber.getGeneration(), fConfig.getGeneration());
 
             configServer.deployNewConfig("configs/foo2");
             assertNextConfigHasNotChanged(subscriber, bh, fh);
