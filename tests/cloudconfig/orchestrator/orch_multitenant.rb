@@ -106,7 +106,7 @@ class OrchestratorMultiTenantTest < SearchContainerTest
     deploy(mtappdir '0')
     @cfgsrvnode = @vespa.configservers.values.first
     @vespa.stop_configservers
-    override_environment_setting(@cfgsrvnode, "cloudconfig_server.multitenant", "true")
+    override_environment_setting(@cfgsrvnode, "VESPA_CONFIGSERVER_MULTITENANT", "true")
     puts "multitenant configserver on: #{@cfgsrvnode.hostname}"
 
     deploy(mtappdir('1'), nil, nil, :tenant => 'huff')
