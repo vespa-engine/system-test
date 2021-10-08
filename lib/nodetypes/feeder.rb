@@ -136,7 +136,11 @@ module Feeder
 
   # Runs a Java program to generate feed from a template.
   def feed_generated(params={})
-    feed_stream(DataGenerator.new.feed_command(template: params[:template], count: params[:count]), params)
+    timestamp = Time.new.to_i
+    randomstring = "%04d" % (rand*10000).to_i
+    tmpfeed = "#{Environment.instance.vespa_home}/tmp/tmpfeed#{timestamp}-#{randomstring}"
+    execute("#{DataGenerator.new.feed_command(template: params[:template], count: params[:count])} > #{tmpfeed}")
+    feedfile(tmpfeed, params.merge({ :localfile => true, :deletefeed => true })
   end
 
   # Pipe the output of _command_ into the feeder binary instead of using an
