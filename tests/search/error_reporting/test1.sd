@@ -1,0 +1,20 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search test1 {
+  document test1 {
+    field f type float {
+      indexing: attribute
+    }
+    field a type string {
+      indexing: attribute | index | summary
+    }
+    field b type string {
+      indexing: attribute | index | summary
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(f)
+    }
+  }
+}

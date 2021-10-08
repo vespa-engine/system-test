@@ -1,0 +1,5 @@
+[
+    { "put": "id:test2:test2::1", "fields": { "a": "a1", "b": "b1", "e": 0.25 } },
+    { "put": "id:test2:test2::2", "fields": { "a": "a2", "b": "b1", "e": 0.50 } },
+    { "put": "id:test2:test2::3", "fields": { "a": "a2", "b": "b2", "e": 0.75 } }
+]
