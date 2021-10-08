@@ -288,19 +288,21 @@ public class DataGenerator {
             };
         }),
 
-        filter("Includes each percentage, comma-separated, with probability equal to its value; e.g., $filter(10, 50, 90)", (arguments, generator) -> {
-            if (arguments.length == 0) throw new IllegalArgumentException("filter requires at least one term");
-            int[] numbers = new int[arguments.length];
-            for (int i = 0; i < arguments.length; i++) {
-                numbers[i] = Integer.parseInt(arguments[i]);
-                if (numbers[i] <= 0 || numbers[i] > 100) throw new IllegalArgumentException("filter term must be in (0, 100], but was " + numbers[i]);
+        filter("Includes each value, comma-separated, with probability value divided by the first argument; e.g., $filter(100, 10, 50, 90)", (arguments, generator) -> {
+            if (arguments.length < 2) throw new IllegalArgumentException("filter requires at least two arguments");
+            long[] numbers = new long[arguments.length];
+            long divisor = Long.parseLong(arguments[0]);
+            if (divisor <= 0) throw new IllegalArgumentException("divisor must be posiive");
+            for (int i = 1; i < arguments.length; i++) {
+                numbers[i] = Long.parseLong(arguments[i]);
+                if (numbers[i] <= 0 || numbers[i] > divisor) throw new IllegalArgumentException("filter term must be in (0, divisor], but was " + numbers[i]);
             }
 
             return () -> {
                 StringJoiner joiner = new StringJoiner(",");
-                for (int number : numbers)
-                    if (generator.random.nextInt(100) < number)
-                        joiner.add(Integer.toString(number));
+                for (int i = 1; i < numbers.length; i++)
+                    if (generator.nextLong(divisor) < numbers[i])
+                        joiner.add(Long.toString(numbers[i]));
                 return joiner.toString();
             };
         });

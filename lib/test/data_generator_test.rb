@@ -13,7 +13,7 @@ class DataGeneratorTest < Test::Unit::TestCase
 
   def test_feed
     generator = DataGenerator.new
-    doc = '{"id":"id:ns:type::$seq()", "text":"$words(2)", "chars": "$chars(2)", "ints": [$ints(2, 2)], "floats": $floats(), "filter": [$filter(10, 90)]}'
+    doc = '{"id":"id:ns:type::$seq()", "text":"$words(2)", "chars": "$chars(2)", "ints": [$ints(2, 2)], "floats": $floats(), "filter": [$filter(100, 10, 90)]}'
     feed_command = generator.feed_command(template: doc, count: 1, data: 'echo "1 one"')
     assert_equal("[\n{\"id\":\"id:ns:type::0\", \"text\":\"one one\", \"chars\": \"on\", \"ints\": [1,1], \"floats\": 0.6007954689329611, \"filter\": [90]}\n]\n",
                  `#{feed_command}`)
