@@ -2,7 +2,8 @@
 <result total-hit-count="0">
   <error code="12">Timed out</error>
   <errordetails>
-    <error source="search" error="Timed out" code="12">Timeout while waiting for sc0.num0</error>
+    <error source="search" error="Timed out" code="12">Backend communication timeout on all nodes in group (distribution-keys: 1, 0)</error>
+    <error source="search" error="Timed out" code="12">No time left for searching</error>
   </errordetails>
   <group relevance="1.0">
     <id type="root"/>
