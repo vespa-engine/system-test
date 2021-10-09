@@ -49,7 +49,6 @@ class GroupingIndexed < IndexedSearchTest
     duration = endstamp - startstamp
     assert(duration >= 1)
     puts "Duration: #{duration}"
-    puts search_base("/?query=sddocname:test&timeout=5.0&hits=0&select=all%28group%28debugwait%28a, 20.0, true%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug4.xml").xmldata
     check_fullquery("/?query=sddocname:test&timeout=5.0&hits=0&select=all%28group%28debugwait%28a, 20.0, true%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug4.xml")
   end
 
