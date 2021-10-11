@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+  <admin version="2.0">
+    <adminserver hostalias="node1"/>
+  </admin>
+
+  <container jetty="true" id="search" version="1.0">
+    <nodes jvmargs="-verbose:gc -Xms8g -Xmx8g -XX:+PrintGCDetails -XX:+UseG1GC ">
+      <node hostalias='node1'/>
+    </nodes>
+    <search>
+      <provider id="mock">
+        <searcher id="com.yahoo.performance.searcher.BackEndSearcher" bundle="performance"/>
+      </provider>
+    </search>
+    <document-api/>
+    <accesslog type="disabled"/> 
+  </container>
+
+  <service name="devnull" command="$VESPA_HOME/bin/vespa-destination --instant --silent 1000000000" version="1.0">
+    <node hostalias="node1"/>
+  </service>  
+
+</services>

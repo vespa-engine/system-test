@@ -1,0 +1,23 @@
+schema test {
+
+    document test {
+
+        field text1 type string {
+            indexing: index | summary
+        }
+
+        field text2 type string {
+            indexing: index | summary
+        }
+
+        field text3 type string {
+            indexing: index | summary
+        }
+
+        field text4 type string {
+            indexing: index | summary
+        }
+
+    }
+
+}

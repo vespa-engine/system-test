@@ -1,0 +1,10 @@
+schema test {
+  document test {
+    field body type string {
+      indexing: summary
+    }
+    field number type long {
+      indexing: attribute | summary
+    }
+  }
+}

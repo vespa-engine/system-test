@@ -1,0 +1,71 @@
+schema test {
+    
+    document test {
+        
+        field features type weightedset<long> {
+            indexing: attribute | summary
+            attribute: fast-search
+        }
+    
+        field filter type array<long> {
+            indexing: attribute | summary
+            attribute: fast-search
+        }
+    
+    }
+    
+    rank-profile default {
+        first-phase {
+            expression: rawScore(features)
+        }
+    }
+
+    rank-profile default-dotproduct {
+        first-phase {
+            expression: dotProduct(features,tokens)
+        }
+    }
+
+    rank-profile default-or {
+        first-phase {
+            expression: nativeDotProduct(features)
+        }
+    }
+
+    rank-profile one-search-thread inherits default {
+        num-threads-per-search: 1
+    }
+
+    rank-profile two-search-threads inherits default {
+        num-threads-per-search: 2
+    }
+
+    rank-profile four-search-threads inherits default {
+        num-threads-per-search: 4
+    }
+
+    rank-profile eight-search-threads inherits default {
+        num-threads-per-search: 8
+    }
+
+    rank-profile sixteen-search-threads inherits default {
+        num-threads-per-search: 16
+    }
+
+    rank-profile one-search-thread-dotproduct inherits default-dotproduct {
+        num-threads-per-search: 1
+    }
+
+    rank-profile four-search-threads-dotproduct inherits default-dotproduct {
+        num-threads-per-search: 4
+    }
+
+    rank-profile one-search-thread-or inherits default-or {
+        num-threads-per-search: 1
+    }
+
+    rank-profile four-search-threads-or inherits default-or {
+        num-threads-per-search: 4
+    }
+
+}

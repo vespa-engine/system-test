@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <container id="stateless" version="1.0">
+    <nodes>
+      <jvm options="-Xms32g -Xmx32g"/>
+      <node hostalias="node1" />
+    </nodes>
+
+    <config name="jdisc.http.connector">
+      <requestHeaderSize>131072</requestHeaderSize>
+    </config>
+    <document-processing/>
+    <search/>
+  </container>
+
+  <content id="search" version="1.0">
+    <redundancy reply-after='1'>1</redundancy>
+    <documents>
+      <document-processing cluster="stateless"/>
+      <document type='test' mode='index'/>
+    </documents>
+    <engine>
+      <proton>
+        <tuning>
+          <searchnode>
+            <requestthreads>
+              <persearch>16</persearch>
+            </requestthreads>
+          </searchnode>
+        </tuning>
+      </proton>
+    </engine>
+    <nodes>
+      <node distribution-key='0' hostalias='node1'/>
+    </nodes>
+  </content>
+
+</services>

@@ -1,0 +1,45 @@
+search test {
+  document test {
+    field title type string {
+      indexing: summary | index
+    }
+    field body type string {
+      indexing: summary | index
+    }
+    field id type int {
+      indexing: attribute
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: fieldMatch(title)
+    }
+    second-phase {
+      expression: fieldMatch(body)
+      rerank-count: 200
+    }
+  }
+  rank-profile thread1 inherits default {
+    num-threads-per-search:1
+  }
+  rank-profile thread2 inherits default {
+    num-threads-per-search:2
+  }
+  rank-profile thread4 inherits default {
+    num-threads-per-search:4
+  }
+  rank-profile thread8 inherits default {
+    num-threads-per-search:8
+  }
+  rank-profile thread16 inherits default {
+    num-threads-per-search:16
+  }
+  rank-profile thread1024 inherits default {
+    num-threads-per-search:16
+    num-search-partitions:1024
+  }
+  rank-profile thread0 inherits default {
+    num-threads-per-search:16
+    num-search-partitions:0
+  }
+}

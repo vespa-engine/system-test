@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1"/>
+  </admin>
+
+  <container id="stateless" version="1.0">
+    <nodes>
+      <jvm options="-Xms32g -Xmx32G" />
+      <node hostalias="node1" />
+    </nodes>
+    <document-processing>
+      <chain id="empty"/>
+      <chain id="emptywindexing" inherits="indexing"/>
+    </document-processing>
+  </container>
+
+  <content id="search" version="1.0">
+    <redundancy reply-after='1'>1</redundancy>
+    <documents>
+      <document-processing cluster="stateless"/>
+      <document type='text1' mode="index"/>
+      <document type='text2' mode="streaming"/>
+    </documents>
+    <engine>
+      <proton>
+        <tuning>
+          <searchnode>
+            <feeding>
+              <concurrency>1.0</concurrency>
+            </feeding>
+          </searchnode>
+        </tuning>
+      </proton>
+    </engine>
+    <nodes>
+      <node distribution-key='0' hostalias='node1'/>
+    </nodes>
+  </content>
+
+  <service name="devnull" command="$VESPA_HOME/bin/vespa-destination --instant --silent 1000000000" version="1.0">
+    <node hostalias="node1"/>
+  </service>
+
+</services>
