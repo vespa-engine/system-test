@@ -1,0 +1,1 @@
+/search/?query=title:bit1&nocache&hits=0&select=all(group(add(id,id))+order(-max(id))+max(10)+each(each(output(summary()))))

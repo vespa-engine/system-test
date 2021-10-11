@@ -1,0 +1,63 @@
+search dotproduct {
+    document dotproduct {
+
+        field wset type weightedset<long> {
+            indexing: attribute | summary
+        }
+
+        field wset_fast type weightedset<long> {
+            indexing: attribute | summary
+            attribute: fast-search
+        }
+
+        field array type array<int> {
+            indexing: attribute | summary
+            attribute: huge
+        }
+
+        field array_float type array<float> {
+            indexing: attribute | summary
+            attribute: huge
+        }
+    }
+
+    rank-profile dp_wset_operator {
+        first-phase {
+            expression: rawScore(wset)
+        }
+    }
+
+    rank-profile dp_wset_fast_operator {
+        first-phase {
+            expression: rawScore(wset_fast)
+        }
+    }
+
+    rank-profile dp_wset {
+        first-phase {
+            expression: dotProduct(wset, dotproductitems)
+        }
+    }
+
+    rank-profile dp_wset_fast {
+        first-phase {
+            expression: dotProduct(wset_fast, dotproductitems)
+        }
+    }
+
+    rank-profile dp_array {
+        first-phase {
+            expression: dotProduct(array, dotproductitems)
+        }
+    }
+
+    rank-profile dp_array_float {
+        first-phase {
+            expression: dotProduct(array_float, dotproductitems)
+        }
+    }
+
+    document-summary minSummary {
+        summary documentid type string {}
+    }
+}

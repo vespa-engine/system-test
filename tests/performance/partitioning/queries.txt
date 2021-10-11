@@ -1,0 +1,2 @@
+/search/?query=title:bit1&nocache&hits=0
+/search/?query=title:bit2+title:bit4&nocache&hits=0

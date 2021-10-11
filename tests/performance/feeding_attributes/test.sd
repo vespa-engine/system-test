@@ -1,0 +1,36 @@
+search test {
+  document test {
+    field f1 type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field f2 type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field f3 type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field f4 type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field f5 type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field f6 type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field f7 type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field f8 type weightedset<string> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+  }
+}

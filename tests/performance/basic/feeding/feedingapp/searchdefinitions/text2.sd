@@ -1,0 +1,13 @@
+schema text2 {
+    
+    document text2 {
+
+        field text type string {
+            
+            indexing: index | summary
+
+        }
+
+    }
+
+}
