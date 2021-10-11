@@ -28,7 +28,7 @@ class FastAccessAttributesPerfTest < PerformanceTest
     '{ "update":"id:test:test::$seq()", "condition": "test.' + field + ' == 2000", "fields": { "' + field + '": { "assign": 3000 } } }'
   end
 
-  def very_soon_test_partial_update_feed
+  def test_partial_update_feed
     set_description("Test partial update feed performance for normal and fast access attributes")
     sd_file = selfdir + "test.sd"
     @num_docs = 1000000
