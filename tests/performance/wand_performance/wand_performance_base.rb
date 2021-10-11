@@ -35,7 +35,7 @@ class WandPerformanceTestBase < PerformanceTest
   # digit for weightsets, or a 128-valued 3-digit prefix for queries, which ensures uniqueness
   # of keys within each set/query, this yields 128k different keys with a non-uniform distribution. 
   def skewed_random
-    "$pick(1, 0, 0, 0, 0, 1, 2, 3)"
+    "$pick(1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3)"
   end
 
   def write_queries
