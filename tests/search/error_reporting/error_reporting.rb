@@ -22,9 +22,7 @@ class ErrorReportingTest < IndexedSearchTest
     #save_result(q, selfdir + 'res.json')
 
     result = search(q)
-    puts "RESULT: >>>\n#{result.xmldata}\n<<<\n"
     json = JSON.parse(result.xmldata)
-    puts "parsed as JSON>>>\n#{json}\n"
 
     err_list = json['root']['errors']
     assert(err_list, 'Result should contain "errors" as child of root')
@@ -32,6 +30,8 @@ class ErrorReportingTest < IndexedSearchTest
     assert_equal('Error in search reply.', first_err['summary'])
     msg = first_err['message']
     assert(msg =~ /^Could not locate attribute for grouping/, "Wrong message: #{msg}")
+    first_line = msg.split("\n").first
+    puts "Detailed error message: #{first_line} [...]"
   end
 
   def teardown
