@@ -1,10 +1,24 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
+require 'rexml/document'
 
 class MultipleDocumentTypes < IndexedSearchTest
 
   def setup
     set_owner("geirst")
+  end
+
+  def extract_group(res)
+    json = JSON.parse(res.xmldata)
+    root = json['root']
+    assert(root)
+    children = root['children']
+    assert(children)
+    assert(children.size > 0)
+    children.each do |child|
+      return child if ('group:root:0' == child['id'])
+    end
+    assert(false, "Missing group:root:0 in #{children}")
   end
 
   def test_one_search_cluster
@@ -53,15 +67,21 @@ class MultipleDocumentTypes < IndexedSearchTest
     assert_subset([],                    query, 12, 4)
 
     # test simple 1 level grouping
-    query = "query=year:%3E1980&ranking=year&select=all%28group%28rating%29 each%28output%28count%28%29%29%29%29&hits=0"
+    query = "query=year:%3E1980&ranking=year&select=all(group(rating) each(output(count())))&hits=0"
     assert_xml_result_with_timeout(timeout, query + "&restrict=video", selfdir + "result.video.grouping.xml")
     assert_xml_result_with_timeout(timeout, query, selfdir + "result.all.grouping.xml")
 
     # test simple 2 level grouping
-    query = "?query=year:%3E1980&ranking=year&select=all%28group%28rating%29 each%28group%28pages%29 each%28output%28count%28%29%29%29%29%29&hits=0"
+    query = "?query=year:%3E1980&ranking=year&select=all(group(rating) each(group(pages) each(output(count()))))&hits=0"
     assert_xml_result_with_timeout(timeout, query + "&restrict=book", selfdir + "result.book.grouping.2.xml")
     # only type book has both attribute rating & pages
-    assert_xml_result_with_timeout(timeout, query, selfdir + "result.all.grouping.2.xml")
+    res_one = search(query + '&restrict=book&format=json')
+    res_both = search(query + '&format=json')
+    assert_equal(5, res_one.hitcount)
+    assert_equal(13, res_both.hitcount)
+    group_one = extract_group(res_one)
+    group_both = extract_group(res_both)
+    assert_equal(group_one, group_both)
   end
 
   def assert_subset(exp_values, query, offset, hits)
