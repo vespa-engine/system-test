@@ -35,8 +35,6 @@ class TensorReplaceMaxReduceProdJoinTest < IndexedSearchTest
     verify_rank_profile(false, "stringarray")
 
     verify_rank_profile(false, "long", true)
-    add_expected_logged(/field 'long' has inappropriate collection type/i)
-    add_expected_logged(/field 'stringarray' has inappropriate data type/i)
   end
 
   def verify_rank_profile(should_replace, rank_profile, verify_results = true)
