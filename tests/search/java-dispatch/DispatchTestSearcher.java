@@ -19,9 +19,7 @@ public class DispatchTestSearcher extends Searcher {
         Result r = execution.search(query);
         execution.fill(r);
         for (Hit hit : r.hits().asList()) {
-            if (hit.isMeta()) {   
-                continue;
-            }
+            if ( ! (hit instanceof FastHit)) continue;
             FastHit fhit = (FastHit) hit;
             hit.setField("distKey", fhit.getDistributionKey());
         }
