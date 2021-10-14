@@ -5,7 +5,7 @@ class CloudAppOnSelfhosted < IndexedSearchTest
 
   def setup
     set_owner("bratseth")
-    set_description("Tests that this cloud sample app can be deployed on a self-hoted instance")
+    set_description("Tests that this cloud sample app can be deployed on a self-hosted instance")
   end
 
   def test_cloud_app_on_selfhosted
