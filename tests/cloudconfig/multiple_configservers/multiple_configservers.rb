@@ -157,6 +157,7 @@ class MultipleConfigservers < CloudConfigTest
   # Test that deleting an application works when done on another server than the
   # one the application was deployed to
   def test_delete_application
+    vespa.stop_base # No need for running vespa services in this test
     apps = list_applications_v2(@node1.hostname, "default")
     assert_equal(1, apps.length)
 
