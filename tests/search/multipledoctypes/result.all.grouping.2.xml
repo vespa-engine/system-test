@@ -1,5 +1,515 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <result total-hit-count="13">
+  <error code="8">Error in search reply.</error>
+  <errordetails>
+    <error source="search" error="Error in search reply." code="8">Could not locate attribute for grouping number 0 : Failed locating attribute vector 'pages'. Ignoring grouping 'search::aggregation::Grouping {
+    id: 0
+    valid: true
+    all: false
+    topN: -1
+    firstLevel: 0
+    lastLevel: 2
+    levels: std::vector {
+        [0]: search::aggregation::GroupingLevel {
+            maxGroups: -1
+            precision: -1
+            classify: search::expression::ExpressionTree {
+                root: search::expression::AttributeNode {
+                    attributeName: 'rating'
+                }
+            }
+            collect: search::aggregation::Group {
+                id: &lt;NULL&gt;
+                rank: 0
+                orderBy: [] {
+                    size: 0
+                }
+                aggregationresults: [] {
+                    size: 0
+                }
+                expressionResults: [] {
+                    size: 0
+                }
+                children: [] {
+                    size: 0
+                }
+                tag: 2
+            }
+        }
+        [1]: search::aggregation::GroupingLevel {
+            maxGroups: -1
+            precision: -1
+            classify: search::expression::ExpressionTree {
+                root: search::expression::AttributeNode {
+                    attributeName: 'pages'
+                }
+            }
+            collect: search::aggregation::Group {
+                id: &lt;NULL&gt;
+                rank: 0
+                orderBy: [] {
+                    size: 0
+                }
+                aggregationresults: [] {
+                    size: 1
+                    [0]: search::aggregation::CountAggregationResult {
+                        expression: search::expression::ExpressionTree {
+                            root: search::expression::ConstantNode {
+                                Value: search::expression::Int64ResultNode {
+                                    value: 0
+                                }
+                            }
+                        }
+                        count: search::expression::Int64ResultNode {
+                            value: 0
+                        }
+                    }
+                }
+                expressionResults: [] {
+                    size: 0
+                }
+                children: [] {
+                    size: 0
+                }
+                tag: 3
+            }
+        }
+    }
+    root: search::aggregation::Group {
+        id: &lt;NULL&gt;
+        rank: 0
+        orderBy: [] {
+            size: 0
+        }
+        aggregationresults: [] {
+            size: 0
+        }
+        expressionResults: [] {
+            size: 0
+        }
+        children: [] {
+            size: 0
+        }
+        tag: 1
+    }
+}
+'</error>
+    <error source="search" error="Error in search reply." code="8">Could not locate attribute for grouping number 0 : Failed locating attribute vector 'pages'. Ignoring grouping 'search::aggregation::Grouping {
+    id: 0
+    valid: true
+    all: false
+    topN: -1
+    firstLevel: 1
+    lastLevel: 2
+    levels: std::vector {
+        [0]: search::aggregation::GroupingLevel {
+            maxGroups: -1
+            precision: -1
+            classify: search::expression::ExpressionTree {
+                root: search::expression::AttributeNode {
+                    attributeName: 'rating'
+                }
+            }
+            collect: search::aggregation::Group {
+                id: &lt;NULL&gt;
+                rank: 0
+                orderBy: [] {
+                    size: 0
+                }
+                aggregationresults: [] {
+                    size: 0
+                }
+                expressionResults: [] {
+                    size: 0
+                }
+                children: [] {
+                    size: 0
+                }
+                tag: 2
+            }
+        }
+        [1]: search::aggregation::GroupingLevel {
+            maxGroups: -1
+            precision: -1
+            classify: search::expression::ExpressionTree {
+                root: search::expression::AttributeNode {
+                    attributeName: 'pages'
+                }
+            }
+            collect: search::aggregation::Group {
+                id: &lt;NULL&gt;
+                rank: 0
+                orderBy: [] {
+                    size: 0
+                }
+                aggregationresults: [] {
+                    size: 1
+                    [0]: search::aggregation::CountAggregationResult {
+                        expression: search::expression::ExpressionTree {
+                            root: search::expression::ConstantNode {
+                                Value: search::expression::Int64ResultNode {
+                                    value: 0
+                                }
+                            }
+                        }
+                        count: search::expression::Int64ResultNode {
+                            value: 0
+                        }
+                    }
+                }
+                expressionResults: [] {
+                    size: 0
+                }
+                children: [] {
+                    size: 0
+                }
+                tag: 3
+            }
+        }
+    }
+    root: search::aggregation::Group {
+        id: &lt;NULL&gt;
+        rank: 0
+        orderBy: [] {
+            size: 0
+        }
+        aggregationresults: [] {
+            size: 0
+        }
+        expressionResults: [] {
+            size: 0
+        }
+        children: [] {
+            size: 2
+            [0]: search::aggregation::Group {
+                id: search::expression::Int64ResultNode {
+                    value: 8
+                }
+                rank: 2008
+                orderBy: [] {
+                    size: 0
+                }
+                aggregationresults: [] {
+                    size: 0
+                }
+                expressionResults: [] {
+                    size: 0
+                }
+                children: [] {
+                    size: 0
+                }
+                tag: 2
+            }
+            [1]: search::aggregation::Group {
+                id: search::expression::Int64ResultNode {
+                    value: 9
+                }
+                rank: 2005
+                orderBy: [] {
+                    size: 0
+                }
+                aggregationresults: [] {
+                    size: 0
+                }
+                expressionResults: [] {
+                    size: 0
+                }
+                children: [] {
+                    size: 0
+                }
+                tag: 2
+            }
+        }
+        tag: 1
+    }
+}
+'</error>
+    <error source="search" error="Error in search reply." code="8">Could not locate attribute for grouping number 0 : Failed locating attribute vector 'pages'. Ignoring grouping 'search::aggregation::Grouping {
+    id: 0
+    valid: true
+    all: false
+    topN: -1
+    firstLevel: 2
+    lastLevel: 2
+    levels: std::vector {
+        [0]: search::aggregation::GroupingLevel {
+            maxGroups: -1
+            precision: -1
+            classify: search::expression::ExpressionTree {
+                root: search::expression::AttributeNode {
+                    attributeName: 'rating'
+                }
+            }
+            collect: search::aggregation::Group {
+                id: &lt;NULL&gt;
+                rank: 0
+                orderBy: [] {
+                    size: 0
+                }
+                aggregationresults: [] {
+                    size: 0
+                }
+                expressionResults: [] {
+                    size: 0
+                }
+                children: [] {
+                    size: 0
+                }
+                tag: 2
+            }
+        }
+        [1]: search::aggregation::GroupingLevel {
+            maxGroups: -1
+            precision: -1
+            classify: search::expression::ExpressionTree {
+                root: search::expression::AttributeNode {
+                    attributeName: 'pages'
+                }
+            }
+            collect: search::aggregation::Group {
+                id: &lt;NULL&gt;
+                rank: 0
+                orderBy: [] {
+                    size: 0
+                }
+                aggregationresults: [] {
+                    size: 1
+                    [0]: search::aggregation::CountAggregationResult {
+                        expression: search::expression::ExpressionTree {
+                            root: search::expression::ConstantNode {
+                                Value: search::expression::Int64ResultNode {
+                                    value: 0
+                                }
+                            }
+                        }
+                        count: search::expression::Int64ResultNode {
+                            value: 0
+                        }
+                    }
+                }
+                expressionResults: [] {
+                    size: 0
+                }
+                children: [] {
+                    size: 0
+                }
+                tag: 3
+            }
+        }
+    }
+    root: search::aggregation::Group {
+        id: &lt;NULL&gt;
+        rank: 0
+        orderBy: [] {
+            size: 0
+        }
+        aggregationresults: [] {
+            size: 0
+        }
+        expressionResults: [] {
+            size: 0
+        }
+        children: [] {
+            size: 2
+            [0]: search::aggregation::Group {
+                id: search::expression::Int64ResultNode {
+                    value: 8
+                }
+                rank: 2008
+                orderBy: [] {
+                    size: 0
+                }
+                aggregationresults: [] {
+                    size: 0
+                }
+                expressionResults: [] {
+                    size: 0
+                }
+                children: [] {
+                    size: 2
+                    [0]: search::aggregation::Group {
+                        id: search::expression::Int64ResultNode {
+                            value: 464
+                        }
+                        rank: 2008
+                        orderBy: [] {
+                            size: 0
+                        }
+                        aggregationresults: [] {
+                            size: 1
+                            [0]: search::aggregation::CountAggregationResult {
+                                expression: search::expression::ExpressionTree {
+                                    root: search::expression::ConstantNode {
+                                        Value: search::expression::Int64ResultNode {
+                                            value: 0
+                                        }
+                                    }
+                                }
+                                count: search::expression::Int64ResultNode {
+                                    value: 0
+                                }
+                            }
+                        }
+                        expressionResults: [] {
+                            size: 0
+                        }
+                        children: [] {
+                            size: 0
+                        }
+                        tag: 3
+                    }
+                    [1]: search::aggregation::Group {
+                        id: search::expression::Int64ResultNode {
+                            value: 1312
+                        }
+                        rank: 2001
+                        orderBy: [] {
+                            size: 0
+                        }
+                        aggregationresults: [] {
+                            size: 1
+                            [0]: search::aggregation::CountAggregationResult {
+                                expression: search::expression::ExpressionTree {
+                                    root: search::expression::ConstantNode {
+                                        Value: search::expression::Int64ResultNode {
+                                            value: 0
+                                        }
+                                    }
+                                }
+                                count: search::expression::Int64ResultNode {
+                                    value: 0
+                                }
+                            }
+                        }
+                        expressionResults: [] {
+                            size: 0
+                        }
+                        children: [] {
+                            size: 0
+                        }
+                        tag: 3
+                    }
+                }
+                tag: 2
+            }
+            [1]: search::aggregation::Group {
+                id: search::expression::Int64ResultNode {
+                    value: 9
+                }
+                rank: 2005
+                orderBy: [] {
+                    size: 0
+                }
+                aggregationresults: [] {
+                    size: 0
+                }
+                expressionResults: [] {
+                    size: 0
+                }
+                children: [] {
+                    size: 3
+                    [0]: search::aggregation::Group {
+                        id: search::expression::Int64ResultNode {
+                            value: 224
+                        }
+                        rank: 2005
+                        orderBy: [] {
+                            size: 0
+                        }
+                        aggregationresults: [] {
+                            size: 1
+                            [0]: search::aggregation::CountAggregationResult {
+                                expression: search::expression::ExpressionTree {
+                                    root: search::expression::ConstantNode {
+                                        Value: search::expression::Int64ResultNode {
+                                            value: 0
+                                        }
+                                    }
+                                }
+                                count: search::expression::Int64ResultNode {
+                                    value: 0
+                                }
+                            }
+                        }
+                        expressionResults: [] {
+                            size: 0
+                        }
+                        children: [] {
+                            size: 0
+                        }
+                        tag: 3
+                    }
+                    [1]: search::aggregation::Group {
+                        id: search::expression::Int64ResultNode {
+                            value: 416
+                        }
+                        rank: 1994
+                        orderBy: [] {
+                            size: 0
+                        }
+                        aggregationresults: [] {
+                            size: 1
+                            [0]: search::aggregation::CountAggregationResult {
+                                expression: search::expression::ExpressionTree {
+                                    root: search::expression::ConstantNode {
+                                        Value: search::expression::Int64ResultNode {
+                                            value: 0
+                                        }
+                                    }
+                                }
+                                count: search::expression::Int64ResultNode {
+                                    value: 0
+                                }
+                            }
+                        }
+                        expressionResults: [] {
+                            size: 0
+                        }
+                        children: [] {
+                            size: 0
+                        }
+                        tag: 3
+                    }
+                    [2]: search::aggregation::Group {
+                        id: search::expression::Int64ResultNode {
+                            value: 832
+                        }
+                        rank: 1999
+                        orderBy: [] {
+                            size: 0
+                        }
+                        aggregationresults: [] {
+                            size: 1
+                            [0]: search::aggregation::CountAggregationResult {
+                                expression: search::expression::ExpressionTree {
+                                    root: search::expression::ConstantNode {
+                                        Value: search::expression::Int64ResultNode {
+                                            value: 0
+                                        }
+                                    }
+                                }
+                                count: search::expression::Int64ResultNode {
+                                    value: 0
+                                }
+                            }
+                        }
+                        expressionResults: [] {
+                            size: 0
+                        }
+                        children: [] {
+                            size: 0
+                        }
+                        tag: 3
+                    }
+                }
+                tag: 2
+            }
+        }
+        tag: 1
+    }
+}
+'</error>
+  </errordetails>
   <group relevance="1.0">
     <id type="root"/>
     <grouplist label="rating">
