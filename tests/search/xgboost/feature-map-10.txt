@@ -1,0 +1,10 @@
+0 attribute(features,0)  q
+1 attribute(features,1)  q
+2 attribute(features,2)  q
+3 attribute(features,3)  q
+4 attribute(features,4)  q
+5 attribute(features,5)  q
+6 attribute(features,6)  q
+7 attribute(features,7)  q
+8 attribute(features,8)  q
+9 attribute(features,9)  q
