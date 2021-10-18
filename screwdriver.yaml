@@ -1,14 +1,16 @@
 # Copyright Verizon Media. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 shared:
+  image: vespaengine/vespa-build-centos7:latest
   settings:
     email:
       addresses: [kraune@verizonmedia.com]
       statuses: [SUCCESS, FAILURE]
+  environment:
+    USER_SHELL_BIN: bash
 
 jobs:
   test-system-tests:
     requires: [~pr, ~commit]
-    image: vespaengine/vespa-build-centos7:latest
     environment:
       USER_SHELL_BIN: bash
       RUBYLIB: $SD_SOURCE_DIR/lib
@@ -28,3 +30,36 @@ jobs:
           cd ${RUBYLIB}
           ruby test/testrunner.rb
           exit $?
+
+  systemtest-base-centos7:
+    requires: [~pr, ~commit]
+    sourcePaths: ["docker/"]
+    annotations:
+      screwdriver.cd/cpu: HIGH
+      screwdriver.cd/ram: HIGH
+      screwdriver.cd/timeout: 30
+      screwdriver.cd/buildPeriodically: H 4 * * 1
+      screwdriver.cd/dockerEnabled: true
+      screwdriver.cd/dockerCpu: TURBO
+      screwdriver.cd/dockerRam: TURBO
+    secrets:
+      - DOCKER_HUB_DEPLOY_KEY
+    steps:
+      - install-docker-cli: |
+          yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+          yum install -y --setopt skip_missing_names_on_install=False docker-ce docker-ce-cli containerd.io
+          docker system info
+      - build: |
+          cd docker
+          docker build --file Dockerfile.multistage \
+                       --build-arg BASE_IMAGE=centos:7 --build-arg VESPA_BASE_IMAGE=notused \
+                       --build-arg SYSTEMTEST_BASE_IMAGE=notused --build-arg SKIP_M2_POPULATE=notused \
+                       --target base --tag vespaengine/vespa-systemtest-base-centos7:latest .
+      - publish: |
+          if [[ -z "$SD_PULL_REQUEST" ]]; then
+            OPT_STATE="$(set +o)"
+            set +x
+            docker login --username aressem --password "$DOCKER_HUB_DEPLOY_KEY"
+            eval "$OPT_STATE"
+            docker push docker.io/vespaengine/vespa-systemtest-base-centos7:latest
+          fi
