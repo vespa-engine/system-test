@@ -3,7 +3,7 @@ shared:
   image: vespaengine/vespa-build-centos7:latest
   settings:
     email:
-      addresses: [kraune@verizonmedia.com]
+      addresses: [kraune@yahooinc.com]
       statuses: [SUCCESS, FAILURE]
   environment:
     USER_SHELL_BIN: bash
