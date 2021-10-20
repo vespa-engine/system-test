@@ -31,16 +31,26 @@ class YqlSearch < IndexedSearchTest
     assert_equal(expected, actual)
   end
 
+  def check_yql_hits(yql, hitcount)
+    query = "/search/?query=#{yql}&type=yql&format=json"
+    assert_hitcount(query, hitcount)
+    query = "/search/?yql=#{yql}&format=json"
+    assert_hitcount(query, hitcount)
+  end
+
   def feed_and_check
     feed(:file => selfdir+"music.3.xml", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 3)
 
+    check_yql_hits('select * from sources * where false;', 0)
+    check_yql_hits('select * from sources * where default contains "country";', 1)
+    check_yql_hits('select * from sources * where (default contains "country") or false;', 1)
 
-    assert_hitcount("query=select%20ignoredfield%20from%20ignoredsource%20where%20default%20contains%20%22country%22%3B&type=yql", 1)
-    assert_hitcount("query=select%20ignoredfield%20from%20ignoredsource%20where%20score%20%3D%202%3B&type=yql", 1)
-    assert_hitcount("query=select%20ignoredfield%20from%20ignoredsource%20where%20default%20contains%20%28%5B%7B%22distance%22%3A1%7D%5Dnear%28%22modern%22%2C%22electric%22%29%29%3B&type=yql&tracelevel=1", 1)
+    assert_hitcount("query=select+ignoredfield+from+ignoredsource+where+default+contains+%22country%22%3B&type=yql", 1)
+    assert_hitcount("query=select+ignoredfield+from+ignoredsource+where+score+%3D+2%3B&type=yql", 1)
+    assert_hitcount("query=select+ignoredfield+from+ignoredsource+where+default+contains+%28%5B%7B%22distance%22%3A1%7D%5Dnear%28%22modern%22%2C%22electric%22%29%29%3B&type=yql&tracelevel=1", 1)
 
-    assert_result_matches("query=select%20ignoredfield%20from%20ignoredsource%20where%20wand%28name%2C%7B%22electric%22%3A10%2C%22modern%22%3A20%7D%29%3B&ranking=weightedSet&type=yql&tracelevel=1", selfdir + "result.xml", "field name=\"relevancy\"" )
+    assert_result_matches("query=select+ignoredfield+from+ignoredsource+where+wand%28name%2C%7B%22electric%22%3A10%2C%22modern%22%3A20%7D%29%3B&ranking=weightedSet&type=yql&tracelevel=1", selfdir + "result.xml", "field name=\"relevancy\"" )
 
 
     # YQL: select * from sources * where rank(title contains "blues",title contains "country") | all(group(score)each(output(count())));
