@@ -1,8 +1,6 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 ARG BASE_IMAGE
-ARG VESPA_BASE_IMAGE
-ARG SYSTEMTEST_BASE_IMAGE
 
 # Common base
 FROM $BASE_IMAGE AS base
@@ -38,33 +36,4 @@ RUN yum -y install --setopt=skip_missing_names_on_install=False \
     alternatives --set javac java-11-openjdk.x86_64 && \
     yum --enablerepo='*' clean all && \
     rm -rf /tmp/include
-
-# Vespa install
-FROM $VESPA_BASE_IMAGE AS vespa
-COPY /rpms/*.rpm /tmp/
-RUN yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/vespa/vespa/repo/epel-7/group_vespa-vespa-epel-7.repo && \
-    yum -y localinstall $(ls /tmp/vespa*.rpm | xargs) && \
-    yum clean all && \
-    rm -f /tmp/*.rpm
-
-# System test
-FROM $SYSTEMTEST_BASE_IMAGE AS systemtest
-
-ARG SKIP_M2_POPULATE
-
-RUN mkdir -p /root/.m2
-COPY /repository /root/.m2/repository
-
-COPY /vespa-systemtests /opt/vespa-systemtests
-
-ENV RUBYLIB=/opt/vespa-systemtests/lib:/opt/vespa-systemtests/tests
-
-RUN /opt/vespa-systemtests/docker/include/setup-tls.sh root
-
-ENV VESPA_TLS_CONFIG_FILE=/opt/vespa/conf/vespa/tls/tls_config.json
-
-RUN if [[ "$SKIP_M2_POPULATE" != "true" ]]; then /opt/vespa-systemtests/docker/include/populate-m2-repo.sh root; fi
-
-ENTRYPOINT ["bash", "-lc", "source /opt/rh/devtoolset-10/enable && source /opt/rh/rh-maven35/enable && source /opt/rh/rh-ruby27/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
-
 
