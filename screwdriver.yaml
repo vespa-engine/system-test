@@ -51,10 +51,9 @@ jobs:
           docker system info
       - build: |
           cd docker
-          docker build --file Dockerfile.multistage \
-                       --build-arg BASE_IMAGE=centos:7 --build-arg VESPA_BASE_IMAGE=notused \
-                       --build-arg SYSTEMTEST_BASE_IMAGE=notused --build-arg SKIP_M2_POPULATE=notused \
-                       --target base --tag vespaengine/vespa-systemtest-base-centos7:latest .
+          docker build --file Dockerfile.base \
+                       --build-arg BASE_IMAGE=centos:7 \
+                       --tag vespaengine/vespa-systemtest-base-centos7:latest .
       - publish: |
           if [[ -z "$SD_PULL_REQUEST" ]]; then
             OPT_STATE="$(set +o)"
