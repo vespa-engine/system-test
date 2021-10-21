@@ -65,7 +65,7 @@ $ bin/run-tests-on-swarm.sh --help
 
 ## Contribute
 
-We welcome contributions - see [Contributing.md](Contributing.md)
+We welcome contributions - see [contributing](https://github.com/vespa-engine/vespa/blob/master/CONTRIBUTING.md)
 
 ## License
 
