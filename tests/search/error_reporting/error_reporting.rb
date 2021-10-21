@@ -32,6 +32,20 @@ class ErrorReportingTest < IndexedSearchTest
     assert(msg =~ /^Could not locate attribute for grouping/, "Wrong message: #{msg}")
     first_line = msg.split("\n").first
     puts "Detailed error message: #{first_line} [...]"
+
+    deploy_output = deploy_app(SearchApp.new
+                                 .sd(selfdir+"test1.sd").sd(selfdir+"test2.sd")
+                                 .config(ConfigOverride
+                                           .new("vespa.config.search.core.proton")
+                                           .add("forward_issues", "false")))
+    wait_for_application(vespa.container.values.first, deploy_output)
+    wait_for_reconfig(600, true)
+
+    result = search(q)
+    json = JSON.parse(result.xmldata)
+
+    assert(json['root'], "Missing root in #{json}")
+    assert(json['root']['errors'] == nil, "Unexpected errors in #{json}")
   end
 
   def teardown
