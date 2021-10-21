@@ -125,6 +125,7 @@ class Visibility < IndexedSearchTest
     @id_prefix = "id:test:#{@doc_type}::"
     @mutex = Mutex.new
     @cv = ConditionVariable.new
+    @disable_log_query_and_result = true
   end
 
   def get_base_sc(parts, r, rc)
@@ -157,11 +158,12 @@ class Visibility < IndexedSearchTest
     SearchApp.new.
             container(Container.new.
                 search(Searching.new).
+                component(AccessLog.new("disabled")).
                 docproc(DocumentProcessing.new).
-                http(Http.new.server(Server.new("node1", 18000)))).
+                gateway(ContainerDocumentApi.new).
+                http(Http.new.server(Server.new("node1", vespa.default_http_gateway_port)))).
             cluster(sc).
-            storage(StorageCluster.new("visibility", 41).distribution_bits(16)).
-            enable_http_gateway
+            storage(StorageCluster.new("visibility", 41).distribution_bits(16))
   end
 
   def get_app(sc)

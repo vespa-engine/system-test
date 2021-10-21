@@ -61,6 +61,7 @@ class TestCase
     @num_hosts = 1
     @dirty_nodeproxies = {}
     @dirty_environment_settings = false
+    @disable_log_query_and_result = nil
     @connection_error = false
     @current_assert_file = nil
     @required_hostnames = nil
@@ -629,6 +630,7 @@ class TestCase
   end
 
   def log_query_and_result(query, result)
+    return if @disable_log_query_and_result
     path = File.join(@dirs.tmpdir, 'query_result.log')
     File.open(path, 'a+') do |f|
       f.write("Query: #{query}\n")
