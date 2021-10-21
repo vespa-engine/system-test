@@ -63,7 +63,7 @@ class ProtobufSearchProtocolTest < SearchTest
     result = search(query)
     assert_result_hitcount(result, @num_docs)
     assert_protobuf_search(result)
-    assert_protobuf_docsum(with_protobuf, result)
+    assert_protobuf_docsum(result)
 
     return result.hit.to_s
   end
@@ -96,14 +96,13 @@ class ProtobufSearchProtocolTest < SearchTest
     assert_equal(expected, searches > 0, "Request #{should} have used protobuf for searches")
   end
 
-  def assert_protobuf_docsum(expected, result)
+  def assert_protobuf_docsum(result)
     docsums = 0
     result.xml.each_element("meta/p/p/p") do |e|
       docsums = docsums + 1 if e.to_s =~ /<p>Sending \d+ summary fetch requests with jrt\/protobuf/
     end
-    should = expected ? "should" : "should not"
     puts "docsum: " + result.to_s
-    assert_equal(expected, docsums > 0, "Request #{should} have used protobuf for docsums")
+    assert_equal(true, docsums > 0, "Request should have used protobuf for docsums")
   end
 
   def generate_doc(idx, f1, f2, f3)
