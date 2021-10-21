@@ -46,6 +46,9 @@ class YqlSearch < IndexedSearchTest
     check_yql_hits('select * from sources * where default contains "country";', 1)
     check_yql_hits('select * from sources * where (default contains "country") or false;', 1)
 
+    check_yql_hits('select * from sources * where true;', 3)
+    check_yql_hits('select * from sources * where true AND !(default contains "country");', 2)
+
     assert_hitcount("query=select+ignoredfield+from+ignoredsource+where+default+contains+%22country%22%3B&type=yql", 1)
     assert_hitcount("query=select+ignoredfield+from+ignoredsource+where+score+%3D+2%3B&type=yql", 1)
     assert_hitcount("query=select+ignoredfield+from+ignoredsource+where+default+contains+%28%5B%7B%22distance%22%3A1%7D%5Dnear%28%22modern%22%2C%22electric%22%29%29%3B&type=yql&tracelevel=1", 1)
