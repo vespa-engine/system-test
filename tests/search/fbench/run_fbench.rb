@@ -14,7 +14,12 @@ class RunFbench < IndexedSearchTest
     @fbench_output = @dirs.tmpdir + "fbench_out.txt"
     @num_queries = 4000
 
-    deploy_app(SearchApp.new.sd("#{selfdir}/banana.sd"))
+    container_cluster = Container.new("container").
+      search(Searching.new).
+      component(AccessLog.new("disabled"))
+    deploy_app(SearchApp.new.
+               sd("#{selfdir}/banana.sd").
+               container(container_cluster))
     start
     feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.xml")
     @node = vespa.logserver
@@ -26,13 +31,13 @@ class RunFbench < IndexedSearchTest
   end
 
   def check_client(num_clients)
-    result = @node.run_fbench(@queryfile, :clients => num_clients, :seconds => 30, :cycletime => 0)
+    result = @node.run_fbench(@queryfile, :clients => num_clients, :seconds => 30, :cycletime => 0, :qrserver => vespa.qrserver["0"])
     assert(result[:failed] == 0, "Failed with #{num_clients} client")
   end
 
   def test_single_qrs
     # Check all queries are run
-    result = @node.run_fbench(@queryfile, :seconds => 120, :reuse => 0, :cycletime => 0, :include_handshake => true)
+    result = @node.run_fbench(@queryfile, :seconds => 120, :reuse => 0, :cycletime => 0, :include_handshake => true, :qrserver => vespa.qrserver["0"])
     assert_equal(@num_queries, result[:success] , "Not all queries runned")
 
     # Testing different number of clients
@@ -46,7 +51,7 @@ class RunFbench < IndexedSearchTest
   end
 
   def test_fbench_log
-    @node.run_fbench(@queryfile, :clients => 1, :seconds => 1, :reuse => 0, :output => @fbench_output, :get_extended => 1, :cycletime => 0)
+    @node.run_fbench(@queryfile, :clients => 1, :seconds => 1, :reuse => 0, :output => @fbench_output, :get_extended => 1, :cycletime => 0, :qrserver => vespa.qrserver["0"])
 
     # Assert output is written
     (exitcode, result) = @node.execute("cat #{@fbench_output}", {:exitcode => true})
