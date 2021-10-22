@@ -11,6 +11,7 @@ class BucketReadinessBase < SearchTest
     @base_query = "query=f1:word&nocache"
     @generated_dir = "#{dirs.tmpdir}/generated/"
     Dir::mkdir(@generated_dir)
+    @debug_log_enabled = false
   end
 
   def initialize(*args)
@@ -34,6 +35,8 @@ class BucketReadinessBase < SearchTest
     generate_updates("upd.01.xml", chunks, chunks)
     generate_updates("upd.02.xml", 2*chunks, chunks)
     generate_updates("upd.03.xml", 3*chunks, chunks)
+
+    enable_merge_debug_logging if @debug_log_enabled
 
     feed_and_wait_for_hitcount(get_query(), 5*chunks, :file => @generated_dir + "doc.0.xml")
 
@@ -149,6 +152,13 @@ class BucketReadinessBase < SearchTest
     SearchApp.new.sd(selfdir + sd_file).
       search_type("ELASTIC").cluster_name("mycluster").num_parts(4).redundancy(3).ready_copies(2).
       storage(StorageCluster.new("mycluster", 4).distribution_bits(8))
+  end
+
+  def enable_merge_debug_logging
+    for i in 0..3
+      vespa.content_node("mycluster", i).logctl2("persistence.mergehandler", "debug=on,spam=on")
+      vespa.distributor_node("mycluster", i).logctl2("distributor.operation.idealstate.merge","debug=on,spam=on")
+    end
   end
 
   def teardown
