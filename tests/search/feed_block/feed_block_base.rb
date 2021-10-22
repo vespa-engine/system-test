@@ -1,5 +1,6 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
+require 'app_generator/http'
 
 class FeedBlockBase < IndexedSearchTest
 
@@ -13,6 +14,7 @@ class FeedBlockBase < IndexedSearchTest
     @block_feed_in_distributor = false
     @sleep_delay = 12
     @num_parts = 1
+    @disable_log_query_and_result = true
   end
 
   def can_share_configservers?(method_name=nil)
@@ -34,7 +36,13 @@ class FeedBlockBase < IndexedSearchTest
 
   def get_app
     SearchApp.new.cluster_name(@cluster_name).
-      sd(selfdir + "test.sd").num_parts(@num_parts).redundancy(@num_parts).ready_copies(1).enable_http_gateway
+      container(Container.new.
+                search(Searching.new).
+                component(AccessLog.new("disabled")).
+                docproc(DocumentProcessing.new).
+                gateway(ContainerDocumentApi.new).
+                http(Http.new.server(Server.new("node1", vespa.default_http_gateway_port)))).
+      sd(selfdir + "test.sd").num_parts(@num_parts).redundancy(@num_parts).ready_copies(1)
   end
 
   def get_proton_config(address_space)
