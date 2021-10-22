@@ -129,6 +129,7 @@ def test_multiple_position_fields
                container(
                          Container.new("mycc").
                          search(Searching.new).
+                         component(AccessLog.new("disabled")).
                          docproc(DocumentProcessing.new)).
                search(SearchCluster.new("multitest").
                       sd(selfdir+"point.sd").
