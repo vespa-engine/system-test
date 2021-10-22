@@ -473,7 +473,6 @@ class PartialUpdate < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "compaction.sd"))
     start
     proton = vespa.search["search"].first
-    proton.logctl("searchnode", "all=on")
     transfer_fbench_queries(selfdir + "slowqueries")
     feed_and_wait_for_docs("compaction", 1,
 	 :file => selfdir + "compaction.doc.xml")

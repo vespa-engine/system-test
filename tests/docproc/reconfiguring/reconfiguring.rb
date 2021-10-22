@@ -15,9 +15,6 @@ class Reconfiguring < DocprocTest
     add_bundle(selfdir + "BananaDocProc.java")
     output = deploy(selfdir + "setup-1x1-a", DOCPROC + "data/worst.sd")
 
-    if vespa.adminserver
-      vespa.adminserver.logctl("container", "debug=on")
-    end
     start
     @container = vespa.container.values.first
     wait_for_application(@container, output)
@@ -118,9 +115,6 @@ class Reconfiguring < DocprocTest
   end
 
   def teardown
-    if vespa.adminserver
-      vespa.adminserver.logctl("container", "debug=off")
-    end
     stop
   end
 
