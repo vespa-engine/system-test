@@ -77,12 +77,14 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
       num_hosts(@num_hosts).
       container(Container.new.
                 search(Searching.new).
-                docproc(DocumentProcessing.new)).
+                component(AccessLog.new("disabled")).
+                docproc(DocumentProcessing.new).
+                gateway(ContainerDocumentApi.new).
+                http(Http.new.server(Server.new("node1", vespa.default_http_gateway_port)))).
       storage(StorageCluster.new(@cluster_name, 41)).
       config(get_tls_configoverride).
       config(get_flush_configoverride).
-      config(get_hwinfo_disk_override(shared_disk)).
-      enable_http_gateway
+      config(get_hwinfo_disk_override(shared_disk))
   end
 
   def setup_strings
@@ -227,9 +229,6 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     deploy_app(app)
     sleep_with_reason(@sleep_delay, " to allow new config to propagate")
     settle_cluster_state("uimrd")
-    for i in 1..@num_parts
-      get_node(i-1).logctl2("proton.flushengine.flushengine", "all=on")
-    end
   end
 
   def stop_node_to_be_down_during_initial_feeding(downnode)
