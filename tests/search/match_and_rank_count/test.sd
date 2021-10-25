@@ -12,7 +12,11 @@ search test {
     indexing: 7 | to_long | attribute | summary
     attribute: mutable
   }
-  field rerank_count type long {
+  field first_phase_count type long {
+    indexing: 0 | to_long | attribute | summary
+    attribute: mutable
+  }
+  field second_phase_count type long {
     indexing: 0 | to_long | attribute | summary
     attribute: mutable
   }
@@ -30,11 +34,20 @@ search test {
     }
     summary-features: attribute(id)
   }
+  rank-profile rank2 inherits rank1 {
+    mutate {
+      on-match { match_count += 1 }
+      on-first-phase { first_phase_count += 1 }
+      on-second-phase { second_phase_count += 1 }
+      on-summary { summary_count += 1 }
+    }
+  }
   document-summary all_fast {
     summary id type long { source: id }
     summary f1 type string { source: f1 }
     summary match_count type long { source: match_count }
-    summary rerank_count type long { source: rerank_count }
+    summary first_phase_count type long { source: first_phase_count }
+    summary second_phase_count type long { source: second_phase_count }
     summary summary_count type long { source: summary_count }
   }
 }

@@ -18,10 +18,10 @@ class MatchCount < IndexedSearchTest
   def verify_query(query_in, hitcount, expected, onmatch=nil, onrerank=nil, onsummary=nil)
     query = query_in
     query += "&ranking.properties.vespa.execute.onmatch.attribute=match_count&ranking.properties.vespa.execute.onmatch.operation=#{onmatch}" if onmatch
-    query += "&ranking.properties.vespa.execute.onrerank.attribute=rerank_count&ranking.properties.vespa.execute.onrerank.operation=#{onrerank}" if onrerank
+    query += "&ranking.properties.vespa.execute.onrerank.attribute=second_phase_count&ranking.properties.vespa.execute.onrerank.operation=#{onrerank}" if onrerank
     query += "&ranking.properties.vespa.execute.onsummary.attribute=summary_count&ranking.properties.vespa.execute.onsummary.operation=#{onsummary}" if onsummary
     assert_hitcount(query, hitcount)
-    assert_result(query_in, selfdir + expected, nil, ["id", "f1", "match_count", "rerank_count","summary_count", "relevancy"])
+    assert_result(query_in, selfdir + expected, nil, ["id", "f1", "match_count", "second_phase_count","summary_count", "relevancy"])
   end
 
   def verify_counting(type)
