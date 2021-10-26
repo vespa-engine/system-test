@@ -24,7 +24,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
     @docs_file_name = dirs.tmpdir + "/docs.json"
     @queries_file_name = dirs.tmpdir + "/queries.txt"
     @constants_dir = dirs.tmpdir + "/search/"
-    @num_docs = 1000
+    @num_docs = 100
 
     generate_feed_and_queries
     deploy_and_feed
