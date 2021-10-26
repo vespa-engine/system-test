@@ -16,8 +16,8 @@ class Visiting < PerformanceTest
     set_owner("jonmv")
     @document_count = 1 << 22
     @document_template = '{ "put": "id:test:test::$seq()", "fields": { "text": "$words(5)", "number": $ints(1, 100) } }'
-    @document_update = '{ "fields": { "number": { "increment": 1 } } }'
-    @selection_1p = 'test.number == 0'
+    @document_update = '{ "fields": { "number": { "increment": 100 } } }'
+    @selection_1p = 'test.number % 100 == 0'
     @selection_100p = 'test.number >= 0'
 
     deploy_app(
@@ -30,7 +30,8 @@ class Visiting < PerformanceTest
         gateway(ContainerDocumentApi.new)).
       admin_metrics(Metrics.new).
       indexing("combinedcontainer").
-      sd(selfdir + "test.sd"))
+      sd(selfdir + "test.sd").
+      storage(StorageCluster.new("search", 4).distribution_bits(16)))
 
     start
 
@@ -72,8 +73,9 @@ class Visiting < PerformanceTest
     { "1-percent" => @selection_1p, "100-percent" => @selection_100p }.each do |s_name, s_value|
       [1, 100].each do |concurrency|
         parameters = { :timeout => "40s", :cluster => "search", :selection => s_value, :concurrency => concurrency }
+        fillers = [parameter_filler('concurrency', concurrency)]
 
-        benchmark_operations(legend: 'chunked', filter: s_name) do |api|
+        benchmark_operations(legend: 'chunked', filter: s_name, fillers: fillers) do |api|
           visit(uri: to_uri(parameters: parameters.merge({ :wantedDocumentCount => 1024 })))
         end
 
@@ -82,7 +84,7 @@ class Visiting < PerformanceTest
           thread_pool = Concurrent::FixedThreadPool.new(slices)
           documents = Concurrent::Array.new
 
-          benchmark_operations(legend: 'streamed', filter: s_name) do |api|
+          benchmark_operations(legend: 'streamed', filter: s_name, fillers: fillers + [parameter_filler('slices', slices)]) do |api|
             slices.times do |sliceId|
               thread_pool.post do
                 documents[sliceId] = visit(uri: to_uri(parameters: my_parameters.merge({ :sliceId => sliceId })))
