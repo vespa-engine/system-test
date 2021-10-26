@@ -8,6 +8,9 @@ begin
   require 'factory_authtentication'
 rescue LoadError
   class FactoryAuthentication
+    def factory_api
+      nil
+    end
     def client
       nil
     end
@@ -25,7 +28,7 @@ class FactoryHttpClient
   end
 
   def request(path, method='GET', body=nil, headers=nil)
-    uri = URI(@auth.api + path)
+    uri = URI(@auth.factory_api + path)
     case method
     when 'DELETE'
       request = Net::HTTP::Delete.new(uri)
