@@ -5,7 +5,7 @@ require 'json'
 require 'zlib'
 
 begin
-  require 'factory_authtentication'
+  require 'factory_authentication'
 rescue LoadError
   class FactoryAuthentication
     def factory_api
