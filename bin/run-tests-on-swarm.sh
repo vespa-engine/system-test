@@ -23,6 +23,7 @@ usage() {
   echo "-m, --mount          Bind mount to include in both node and testrunner containers."
   echo "                     This will not work correctly if multiple swarm nodes are used. "
   echo "                     Format is <local file/folder>:<container destination>"
+  echo "-M, --testrunner-mount     Bind mount as with -m, but just for the testrunner container."
   echo "-p, --performance    Run performance tests."
   echo "-o, --consoleoutput  Output test execution on console/stdout."
   echo "-r, --resultdir      Directory to store results. Will auto allocate in \$HOME/tmp/systemtest.XXXXXX"
@@ -59,6 +60,7 @@ DOCKERIMAGE=""
 ENVS=()
 KEEPRUNNING=false
 MOUNTS=()
+TESTRUNNER_MOUNTS=()
 NODEWAIT=""
 NUMNODES=""
 PERFORMANCE=false
@@ -98,6 +100,10 @@ case $key in
     ;;
     -m|--mount)
     MOUNTS+=("$2")
+    shift; shift
+    ;;
+    -M|--testrunner-mount)
+    TESTRUNNER_MOUNTS+=("$2")
     shift; shift
     ;;
     -k|--keeprunning)
@@ -197,9 +203,15 @@ if $VERBOSE; then
 fi
 BINDMOUNT_OPTS=""
 if [[ ${#MOUNTS[@]} > 0 ]]; then
-  for M in "${MOUNTS[@]}"; do
-    BINDMOUNT_OPTS="$BINDMOUNT_OPTS --mount type=bind,src=${M%:*},dst=${M#*:}"
-  done
+    for M in "${MOUNTS[@]}"; do
+        BINDMOUNT_OPTS="$BINDMOUNT_OPTS --mount type=bind,src=${M%:*},dst=${M#*:}"
+    done
+fi
+TESTRUNNER_BINDMOUNT_OPTS=""
+if [[ ${#TESTRUNNER_MOUNTS[@]} > 0 ]]; then
+    for M in "${TESTRUNNER_MOUNTS[@]}"; do
+        TESTRUNNER_BINDMOUNT_OPTS="$TESTRUNNER_BINDMOUNT_OPTS --mount type=bind,src=${M%:*},dst=${M#*:}"
+    done
 fi
 ENV_OPTS=""
 if [[ ${#ENVS[@]} > 0 ]]; then
@@ -248,20 +260,21 @@ log_error() {
 
 log_debug ""
 log_debug "Options:"
-log_debug "--  DOCKERIMAGE:     $DOCKERIMAGE"
-log_debug "--  NETWORK:         $NETWORK"
-log_debug "--  CONFIGSERVER:    $CONFIGSERVER"
-log_debug "--  SERVICE:         $SERVICE"
-log_debug "--  NUMNODES:        $NUMNODES"
-log_debug "--  KEEPRUNNING:     $KEEPRUNNING"
-log_debug "--  PERFORMANCE:     $PERFORMANCE"
-log_debug "--  RESULTDIR:       $RESULTDIR"
-log_debug "--  TESTRUNNER_OPTS: $TESTRUNNER_OPTS"
-log_debug "--  BINDMOUNT_OPTS:  $BINDMOUNT_OPTS"
-log_debug "--  ENV_OPTS:        $ENV_OPTS"
-log_debug "--  VESPAVERSION:    $VESPAVERSION"
+log_debug "--  DOCKERIMAGE:                $DOCKERIMAGE"
+log_debug "--  NETWORK:                    $NETWORK"
+log_debug "--  CONFIGSERVER:               $CONFIGSERVER"
+log_debug "--  SERVICE:                    $SERVICE"
+log_debug "--  NUMNODES:                   $NUMNODES"
+log_debug "--  KEEPRUNNING:                $KEEPRUNNING"
+log_debug "--  PERFORMANCE:                $PERFORMANCE"
+log_debug "--  RESULTDIR:                  $RESULTDIR"
+log_debug "--  BINDMOUNT_OPTS:             $BINDMOUNT_OPTS"
+log_debug "--  TESTRUNNER_OPTS:            $TESTRUNNER_OPTS"
+log_debug "--  TESTRUNNER_BINDMOUNT_OPTS:  $TESTRUNNER_BINDMOUNT_OPTS"
+log_debug "--  ENV_OPTS:                   $ENV_OPTS"
+log_debug "--  VESPAVERSION:               $VESPAVERSION"
 if [[ ${#POSITIONAL[@]} > 0 ]]; then
-  log_debug "--  NOT PARSED:      ${POSITIONAL[*]}"
+  log_debug "--  NOT PARSED:                 ${POSITIONAL[*]}"
 fi
 log_debug ""
 
@@ -323,6 +336,7 @@ docker run --rm \
            --security-opt no-new-privileges=true --security-opt seccomp=unconfined \
            $ENV_OPTS \
            $BINDMOUNT_OPTS \
+           $TESTRUNNER_BINDMOUNT_OPTS \
            -v $RESULTDIR:$BASEDIR \
            --name $TESTRUNNER \
            --hostname $TESTRUNNER.$NETWORK \
