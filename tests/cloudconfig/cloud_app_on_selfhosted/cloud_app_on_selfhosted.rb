@@ -8,6 +8,11 @@ class CloudAppOnSelfhosted < IndexedSearchTest
     set_description("Tests that this cloud sample app can be deployed on a self-hosted instance")
   end
 
+  # Test a realistic setup
+  def can_share_configservers?(method_name=nil)
+    false
+  end
+
   def test_cloud_app_on_selfhosted
     deploy(selfdir + "album-recommendation/")
     start
