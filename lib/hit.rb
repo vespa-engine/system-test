@@ -5,8 +5,6 @@ class Hit
   attr_reader :field
   attr_writer :comparablefields
 
-
-
   def initialize(xmlelement = nil)
     @field = {}
     @comparablefields = nil
@@ -104,11 +102,7 @@ class Hit
   def comparable_fields
     comp_fields = field
     if @comparablefields
-      comp_fields.each_key { |k|
-         if @comparablefields.index(k) == nil
-           comp_fields.delete(k)
-         end
-      }
+      comp_fields = fields(@comparablefields)
     else
       comp_fields.delete("relevancy")
       comp_fields.delete("documentid")
@@ -116,6 +110,16 @@ class Hit
       comp_fields.delete_if {|key,value| key =~ /summaryfeatures/ and value == ""}
     end
     return comp_fields
+  end
+
+  def fields(filter)
+    filtered_fields = field
+    filtered_fields.each_key { |k|
+      if filter.index(k) == nil
+        filtered_fields.delete(k)
+      end
+    }
+    filtered_fields
   end
 
   def setcomparablefields(fieldnamearray)
@@ -139,7 +143,11 @@ class Hit
     if other.class != self.class
       return false
     end
-    comparable_fields == other.comparable_fields
+    if (@comparablefields)
+      return fields(@comparablefields) == other.fields(@comparablefields)
+    else
+      return other.comparable_fields == other.comparable_fields
+    end
   end
 
 end
