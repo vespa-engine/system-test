@@ -7,7 +7,7 @@ require 'concurrent'
 class Visiting < PerformanceTest
 
   def timeout_seconds
-    2700
+    1200
   end
 
   def setup
@@ -39,9 +39,13 @@ class Visiting < PerformanceTest
     @api = @vespa.document_api_v1
   end
 
-  def test_throughput
+  def test_get_visit_throughput
     feed({ :template => @document_template, :count => @document_count })
     run_get_visiting_benchmarks
+  end
+
+  def test_process_visit_throughput
+    feed({ :template => @document_template, :count => @document_count })
     run_process_visiting_benchmarks
   end
 
@@ -66,6 +70,7 @@ class Visiting < PerformanceTest
         break
       end
     end
+    puts "#{documents} documents visited in total"
     documents
   end
   
