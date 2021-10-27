@@ -24,7 +24,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
     @docs_file_name = dirs.tmpdir + "/docs.json"
     @queries_file_name = dirs.tmpdir + "/queries.txt"
     @constants_dir = dirs.tmpdir + "/search/"
-    @num_docs = 100
+    @num_docs = 1000
 
     generate_feed_and_queries
     deploy_and_feed
@@ -54,21 +54,8 @@ class TensorMatrixMatrixProduct < PerformanceTest
       result << "    \"put\":\"id:test:test::#{i}\",\n"
       result << "    \"fields\":{\n"
       result << "      \"id\":#{i},\n"
-      result << "      \"vector_512_float\":{\n"
-      result << generate_cells_1d("d0", 512)
-      result << "      },\n"
-      result << "      \"matrix_256x512_float\":{\n"
-      result << generate_cells_2d("d0", 256, "d1", 512)
-      result << "      },\n"
-      result << "      \"matrix_512x256_float\":{\n"
-      result << generate_cells_2d("d0", 512, "d1", 256)
-      result << "      },\n"
-      result << "      \"matrix_256x512_double\":{\n"
-      result << generate_cells_2d("d0", 256, "d1", 512)
-      result << "      },\n"
-      result << "      \"matrix_256x1024_float\":{\n"
-      result << generate_cells_2d("d0", 256, "d1", 1024)
-      result << "      }\n"
+      result << "      \"float_rand\":#{Random.rand}\n"
+      result << "      \"double_rand\":#{Random.rand}\n"
       result << "    }\n"
       result << "  }"
     end
