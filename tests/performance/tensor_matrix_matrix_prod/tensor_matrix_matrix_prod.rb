@@ -54,7 +54,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
       result << "    \"put\":\"id:test:test::#{i}\",\n"
       result << "    \"fields\":{\n"
       result << "      \"id\":#{i},\n"
-      result << "      \"float_rand\":#{Random.rand}\n"
+      result << "      \"float_rand\":#{Random.rand},\n"
       result << "      \"double_rand\":#{Random.rand}\n"
       result << "    }\n"
       result << "  }"
