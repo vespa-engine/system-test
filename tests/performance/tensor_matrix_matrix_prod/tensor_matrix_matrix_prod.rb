@@ -150,7 +150,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
     profiler_start
     run_fbench2(@container,
                 @queries_file_name,
-                {:runtime => 20, :clients => 1, :append_str => "&hits=10&ranking=#{rank_profile}&summary=no_summary&timeout=120&ranking.querycache=true&dispatch.summaries=true"},
+                {:runtime => 20, :clients => 1, :append_str => "&hits=10&ranking=#{rank_profile}&summary=no_summary&timeout=120&dispatch.summaries=true"},
                 fillers)
     profiler_report("rank_profile-#{rank_profile}")
   end
