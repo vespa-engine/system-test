@@ -97,7 +97,7 @@ class Visiting < PerformanceTest
               end
             end
             thread_pool.shutdown
-            thread_pool.wait_for_termination
+            raise "Failed to complete tasks" unless thread_pool.wait_for_termination(60)
             documents.each { |d| raise d unless d.is_a? Integer }
             documents.sum
           end
