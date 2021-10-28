@@ -28,6 +28,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
 
     generate_feed_and_queries
     deploy_and_feed
+    warmup
     run_queries
   end
 
@@ -128,6 +129,13 @@ class TensorMatrixMatrixProduct < PerformanceTest
     vespa.adminserver.execute("vespa-logfmt -S searchnode -l debug -N")
   end
 
+  def warmup
+    rank_profile = "vector_vector_512_float"
+    run_fbench2(@container, @queries_file_name,
+                {:runtime => 5, :clients => 1, :append_str => "&hits=10&ranking=#{rank_profile}&summary=no_summary&timeout=30"},
+                [])
+  end
+
   def run_queries
     run_fbench_helper("vector_vector_512_float")
     run_fbench_helper("vector_matrix_512_float_inner")
@@ -150,7 +158,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
     profiler_start
     run_fbench2(@container,
                 @queries_file_name,
-                {:runtime => 20, :clients => 1, :append_str => "&hits=10&ranking=#{rank_profile}&summary=no_summary&timeout=120&dispatch.summaries=true"},
+                {:runtime => 20, :clients => 20, :append_str => "&hits=10&ranking=#{rank_profile}&summary=no_summary&timeout=30"},
                 fillers)
     profiler_report("rank_profile-#{rank_profile}")
   end
