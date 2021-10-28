@@ -64,7 +64,7 @@ class Visiting < PerformanceTest
       out, err = @container.execute(command)
       json = JSON.parse(out)
       puts "0 documents visited, HTTP response first 1000 bytes: #{err}"
-      raise json['message'] if json['message']
+      return json['message'] if json['message']
       documents += json['documentCount'] if json['documentCount']
       if json['continuation']
         continuation = "&continuation=#{json['continuation']}"
@@ -98,6 +98,7 @@ class Visiting < PerformanceTest
             end
             thread_pool.shutdown
             thread_pool.wait_for_termination
+            documents.each { |d| raise d unless d.is_a? Integer }
             documents.sum
           end
         end
