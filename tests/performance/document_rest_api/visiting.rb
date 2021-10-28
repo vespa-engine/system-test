@@ -14,7 +14,7 @@ class Visiting < PerformanceTest
     super
     set_description("Test throughput of visit operations through /document/v1")
     set_owner("jonmv")
-    @document_count = 1 << 22
+    @document_count = 1 << 21
     @document_template = '{ "put": "id:test:test::$seq()", "fields": { "text": "$words(5)", "number": $ints(1, 100) } }'
     @document_update = '{ "fields": { "number": { "increment": 100 } } }'
     @selection_1p = 'test.number % 100 == 0'
@@ -64,7 +64,7 @@ class Visiting < PerformanceTest
       out, err = @container.execute(command)
       json = JSON.parse(out)
       puts "0 documents visited, HTTP response first 1000 bytes: #{err}"
-      raise json['message'] if json['message']
+      return json['message'] if json['message']
       documents += json['documentCount'] if json['documentCount']
       if json['continuation']
         continuation = "&continuation=#{json['continuation']}"
@@ -97,7 +97,8 @@ class Visiting < PerformanceTest
               end
             end
             thread_pool.shutdown
-            thread_pool.wait_for_termination
+            raise "Failed to complete tasks" unless thread_pool.wait_for_termination(60)
+            documents.each { |d| raise d unless d.is_a? Integer }
             documents.sum
           end
         end
