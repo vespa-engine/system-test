@@ -60,12 +60,14 @@ class Visiting < PerformanceTest
     continuation = ''
     doom = Time.now.to_f + 30
     while Time.now.to_f < doom
-      command="curl -s -X #{method} #{args} '#{endpoint}#{uri}#{continuation}' -d '#{body}' | tee >(head -c 1000 >&2) | jq '{ continuation, documentCount, message }'"
-      out, err = @container.execute(command)
-      json = JSON.parse(out)
-      puts "0 documents visited, HTTP response first 1000 bytes: #{err}"
+      command="curl -s -X #{method} #{args} '#{endpoint}#{uri}#{continuation}' -d '#{body}' | jq '{ path, continuation, documentCount, message }'"
+      json = JSON.parse(@container.execute(command))
       return json['message'] if json['message']
-      documents += json['documentCount'] if json['documentCount']
+      if json['documentCount']
+        documents += json['documentCount']
+      else
+        return "No documentCount in response"
+      end
       if json['continuation']
         continuation = "&continuation=#{json['continuation']}"
       else
