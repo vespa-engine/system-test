@@ -60,8 +60,10 @@ class Visiting < PerformanceTest
     continuation = ''
     doom = Time.now.to_f + 30
     while Time.now.to_f < doom
-      command="curl -s -X #{method} #{args} '#{endpoint}#{uri}#{continuation}' -d '#{body}' | jq '{ continuation, documentCount, message }'"
-      json = JSON.parse(@container.execute(command))
+      command="curl -s -X #{method} #{args} '#{endpoint}#{uri}#{continuation}' -d '#{body}' | tee >(head -c 1000 >&2) | jq '{ continuation, documentCount, message }'"
+      out, err = @container.execute(command)
+      json = JSON.parse(out)
+      puts "0 documents visited, HTTP response first 1000 bytes: #{err}"
       raise json['message'] if json['message']
       documents += json['documentCount'] if json['documentCount']
       if json['continuation']
@@ -70,7 +72,6 @@ class Visiting < PerformanceTest
         break
       end
     end
-    puts "#{documents} documents visited in total"
     documents
   end
   
@@ -126,6 +127,7 @@ class Visiting < PerformanceTest
     profiler_start
     start_seconds = Time.now.to_f
     document_count = yield(@api)
+    puts "#{document_count} documents visited in total"
     fillers = fillers + [parameter_filler('legend', legend),
                          parameter_filler('filter', filter),
                          metric_filler('throughput', document_count / (Time.now.to_f - start_seconds))]
