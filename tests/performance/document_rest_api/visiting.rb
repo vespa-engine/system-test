@@ -79,10 +79,9 @@ class Visiting < PerformanceTest
   
   def run_get_visiting_benchmarks
     { "1-percent" => @selection_1p, "100-percent" => @selection_100p }.each do |s_name, s_value|
-      [1, 100].each do |concurrency|
+      [1, 8, 64].each do |concurrency|
         [1, 8, 64].each do |slices|
           parameters = { :timeout => "40s", :cluster => "search", :selection => s_value, :concurrency => concurrency, :slices => slices }
-          fillers = [parameter_filler('concurrency', concurrency)]
           thread_pool = Concurrent::FixedThreadPool.new(slices)
           documents = Concurrent::Array.new
 
@@ -99,7 +98,7 @@ class Visiting < PerformanceTest
           end
 
           documents.clear
-          benchmark_operations(legend: "streamed-#{s_name}-#{concurrency}c-#{slices}s")]) do |api|
+          benchmark_operations(legend: "streamed-#{s_name}-#{concurrency}c-#{slices}s") do |api|
             slices.times do |sliceId|
               thread_pool.post do
                 documents[sliceId] = visit(uri: to_uri(parameters: parameters.merge({ :stream => true, :sliceId => sliceId })))
