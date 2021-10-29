@@ -327,7 +327,7 @@ class VespaModel
   end
 
   def compile_bundles(adminserver)
-    Maven.compile_bundles(@bundles, @testcase.dirs.bundledir, adminserver, @vespa_version)
+    Maven.compile_bundles(@bundles, @testcase.dirs.bundledir, @testcase.dirs.tmpdir, adminserver, @vespa_version)
   end
 
   def deploy_generated(applicationbuffer, sdfile, configsdir, params, hostbuffer, deploymentbuffer, validation_overridesbuffer)

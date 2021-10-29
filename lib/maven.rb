@@ -3,10 +3,10 @@
 module Maven
   DEFAULT_VESPA_POM_VERSION = '7-SNAPSHOT'
 
-  def Maven.compile_bundles(bundles, bundle_dir, admin_server, vespa_version)
+  def Maven.compile_bundles(bundles, bundle_dir, tmp_dir, admin_server, vespa_version)
     compiled = []
     # Compile bundles
-    tmp_bundle_dir_work = bundle_dir + "work/"
+    tmp_bundle_dir_work = tmp_dir + "bundles/work"
     bundles.each { |bundle|
       next if compiled.include?(bundle)
       deps = bundle.params[:dependencies] || []
@@ -44,7 +44,7 @@ module Maven
     haspom = Maven.create_pom_xml(vespa_version, tmp_sourcedir, bundle)
     admin_server.copy(tmp_sourcedir, tmp_sourcedir)
     bundle_content = admin_server.maven_compile(tmp_sourcedir, bundle, haspom, to_pom_version(vespa_version))
-    bundlepath =  bundle_file_path(bundle_dir, bundle)
+    bundlepath = bundle_file_path(bundle_dir, bundle)
     FileUtils.mkdir_p(File.dirname(bundlepath))
     bundlefile = File.open(bundlepath, "w")
     bundlefile.write(bundle_content)
