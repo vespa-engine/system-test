@@ -28,6 +28,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
 
     generate_feed_and_queries
     deploy_and_feed
+    copy_query_file
     warmup
     run_queries
   end
@@ -151,7 +152,6 @@ class TensorMatrixMatrixProduct < PerformanceTest
 
   def run_fbench_helper(rank_profile)
     puts "run_fbench_helper(#{rank_profile})"
-    copy_query_file
     fillers = [
         parameter_filler("rank_profile", rank_profile),
     ]
