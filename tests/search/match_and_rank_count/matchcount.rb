@@ -8,7 +8,7 @@ class MatchCount < IndexedSearchTest
     set_description("Test that we can accumulate match count per document.")
   end
 
-  def test_match_and_rerank_count
+  def test_match_and_rerank_count_in_query
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
     feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.xml")
@@ -21,19 +21,80 @@ class MatchCount < IndexedSearchTest
     query += "&ranking.properties.vespa.execute.onrerank.attribute=second_phase_count&ranking.properties.vespa.execute.onrerank.operation=#{onrerank}" if onrerank
     query += "&ranking.properties.vespa.execute.onsummary.attribute=summary_count&ranking.properties.vespa.execute.onsummary.operation=#{onsummary}" if onsummary
     assert_hitcount(query, hitcount)
-    assert_result(query_in, selfdir + expected, nil, ["id", "f1", "match_count", "second_phase_count","summary_count", "relevancy"])
+    r = search(query_in)
+    assert_equal(expected, r.hit)
   end
 
   def verify_counting(type)
+    expected = Hits.new([{"id" => "2", "relevancy" => "2.0"},
+                         {"id" => "1", "relevancy" => "1.0"}])
+    cmp_fields = ["id", "match_count", "first_phase_count", "second_phase_count", "summary_count", "relevancy"]
+    expected.setcomparablefields(cmp_fields)
     query="query=sddocname:#{type}&summary=all_fast&ranking=rank1"
-    verify_query(query, 2, "result.xml")
-    verify_query(query, 2, "result.xml")
-    verify_query(query, 2, "result1.xml", "%2b%2b")
-    verify_query(query, 2, "result2.xml", "%2b%2b", "%2b%2b")
-    verify_query(query, 2, "result3.xml", "%2b%2b", "%2b%2b")
-    verify_query(query, 2, "result4.xml", "%2b%2b")
-    verify_query(query, 2, "result5.xml", nil, nil, "%2b%2b")
-    verify_query(query, 2, "result6.xml", "=0")
+    set_counts(expected.hits[0],7,0,0,0)
+    set_counts(expected.hits[1],7,0,0,0)
+    verify_query(query, 2, expected)
+    verify_query(query, 2, expected)
+
+    set_counts(expected.hits[0],8,0,0,0)
+    set_counts(expected.hits[1],8,0,0,0)
+    verify_query(query, 2, expected, "%2b%2b")
+    set_counts(expected.hits[0],9,0,1,0)
+    set_counts(expected.hits[1],9,0,0,0)
+    verify_query(query, 2, expected, "%2b%2b", "%2b%2b")
+    set_counts(expected.hits[0],10,0,2,0)
+    set_counts(expected.hits[1],10,0,0,0)
+    verify_query(query, 2, expected, "%2b%2b", "%2b%2b")
+    set_counts(expected.hits[0],11,0,2,0)
+    set_counts(expected.hits[1],11,0,0,0)
+    verify_query(query, 2, expected, "%2b%2b")
+    set_counts(expected.hits[0],11,0,2,1)
+    set_counts(expected.hits[1],11,0,0,1)
+    verify_query(query, 2, expected, nil, nil, "%2b%2b")
+    set_counts(expected.hits[0],0,0,2,1)
+    set_counts(expected.hits[1],0,0,0,1)
+    verify_query(query, 2, expected, "=0")
+  end
+
+  def set_counts(hit, match, first, second, summary)
+    hit.field["match_count"] = "#{match}"
+    hit.field["first_phase_count"] = "#{first}"
+    hit.field["second_phase_count"] = "#{second}"
+    hit.field["summary_count"] = "#{summary}"
+  end
+
+  def test_on_xxx_in_rank_profile
+    deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
+    start
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.xml")
+    query="query=sddocname:test&summary=all_fast"
+    expected = Hits.new([{"id" => "2", "relevancy" => "2.0"},
+                         {"id" => "1", "relevancy" => "1.0"}])
+    cmp_fields = ["id", "match_count", "first_phase_count", "second_phase_count", "summary_count", "relevancy"]
+    expected.setcomparablefields(cmp_fields)
+
+    r = search(query+"&ranking=rank1")
+    set_counts(expected.hits[0],7,0,0,0)
+    set_counts(expected.hits[1],7,0,0,0)
+    assert_equal(expected, r.hit)
+
+    search(query+"&ranking=rank2")
+    r = search(query+"&ranking=rank1")
+    set_counts(expected.hits[0],8,1,1,1)
+    set_counts(expected.hits[1],8,1,0,1)
+    assert_equal(expected, r.hit)
+
+    r = search(query+"&ranking=rank2")
+    r = search(query+"&ranking=rank1")
+    set_counts(expected.hits[0],9,2,2,2)
+    set_counts(expected.hits[1],9,2,0,2)
+    assert_equal(expected, r.hit)
+
+    search(query+"&ranking=rank2&hits=1")
+    r = search(query+"&ranking=rank1")
+    set_counts(expected.hits[0],10,3,3,3)
+    set_counts(expected.hits[1],10,3,0,2)
+    assert_equal(expected, r.hit)
   end
 
   def teardown
