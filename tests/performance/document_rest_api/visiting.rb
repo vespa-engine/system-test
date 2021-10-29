@@ -58,7 +58,7 @@ class Visiting < PerformanceTest
     end
     documents = 0
     continuation = ''
-    doom = Time.now.to_f + 30
+    doom = Time.now.to_f + 39
     while Time.now.to_f < doom
       command="curl -s -X #{method} #{args} '#{endpoint}#{uri}#{continuation}' -d '#{body}' | jq '{ path, continuation, documentCount, message }'"
       json = JSON.parse(@container.execute(command))
