@@ -1,29 +1,29 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 class Hits
 
   def initialize(hits_in)
-    @hit = []
+    @hits = []
     hits_in.each do |fields|
       h = Hit.new
       fields.each do |k, v|
         h.add_field(k, v)
       end
-      @hit.push(h)
+      @hits.push(h)
     end
   end
 
-  def hit
-    @hit
+  def hits
+    @hits
   end
 
   def setcomparablefields(fieldnamearray)
-    @hit.each {|h| h.setcomparablefields(fieldnamearray)}
+    @hits.each {|h| h.setcomparablefields(fieldnamearray)}
   end
 
   def to_s
     stringval = ""
-    @hit.each do |h|
+    @hits.each do |h|
       stringval += h.to_s + "\n"
     end
     stringval
@@ -31,9 +31,9 @@ class Hits
 
   def ==(other)
     if other.class == self.class
-      return @hit == other.hit
-    elsif other.class == @hit.class
-      return @hit == other
+      return @hits == other.hits
+    elsif other.class == @hits.class
+      return @hits == other
     else
       return false
     end
