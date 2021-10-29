@@ -18,7 +18,7 @@ class Visiting < PerformanceTest
     @document_template = '{ "put": "id:test:test::$seq()", "fields": { "text": "$words(5)", "number": $ints(1, 100) } }'
     @document_update = '{ "fields": { "number": { "increment": 100 } } }'
     @selection_1p = 'test.number % 100 == 0'
-    @selection_100p = 'test.number >= 0'
+    @selection_100p = 'true'
 
     deploy_app(
       SearchApp.new.
@@ -80,22 +80,29 @@ class Visiting < PerformanceTest
   def run_get_visiting_benchmarks
     { "1-percent" => @selection_1p, "100-percent" => @selection_100p }.each do |s_name, s_value|
       [1, 100].each do |concurrency|
-        parameters = { :timeout => "40s", :cluster => "search", :selection => s_value, :concurrency => concurrency }
-        fillers = [parameter_filler('concurrency', concurrency)]
-
-        benchmark_operations(legend: 'chunked', filter: s_name, fillers: fillers) do |api|
-          visit(uri: to_uri(parameters: parameters.merge({ :wantedDocumentCount => 1024 })))
-        end
-
         [1, 8, 64].each do |slices|
-          my_parameters = parameters.merge({ :stream => true, :slices => slices })
+          parameters = { :timeout => "40s", :cluster => "search", :selection => s_value, :concurrency => concurrency, :slices => slices }
+          fillers = [parameter_filler('concurrency', concurrency)]
           thread_pool = Concurrent::FixedThreadPool.new(slices)
           documents = Concurrent::Array.new
 
-          benchmark_operations(legend: 'streamed', filter: s_name, fillers: fillers + [parameter_filler('slices', slices)]) do |api|
+          benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s") do |api|
             slices.times do |sliceId|
               thread_pool.post do
-                documents[sliceId] = visit(uri: to_uri(parameters: my_parameters.merge({ :sliceId => sliceId })))
+                documents[sliceId] = visit(uri: to_uri(parameters: parameters.merge({ :wantedDocumentCount => 1024, :sliceId => sliceId })))
+              end
+            end
+            thread_pool.shutdown
+            raise "Failed to complete tasks" unless thread_pool.wait_for_termination(60)
+            documents.each { |d| raise d unless d.is_a? Integer }
+            documents.sum
+          end
+
+          documents.clear
+          benchmark_operations(legend: "streamed-#{s_name}-#{concurrency}c-#{slices}s")]) do |api|
+            slices.times do |sliceId|
+              thread_pool.post do
+                documents[sliceId] = visit(uri: to_uri(parameters: parameters.merge({ :stream => true, :sliceId => sliceId })))
               end
             end
             thread_pool.shutdown
@@ -112,29 +119,28 @@ class Visiting < PerformanceTest
     { "1-percent" => @selection_1p, "100-percent" => @selection_100p }.each do |s_name, s_value|
       parameters = { :timeChunk => "40s", :cluster => "search", :selection => s_value }
 
-      benchmark_operations(legend: 'refeed', filter: s_name) do |api|
+      benchmark_operations(legend: "refeed-#{s_name}") do |api|
         visit(uri: to_uri(parameters: parameters.merge({ :destinationCluster => "search" })), method: 'POST')
       end
 
-      benchmark_operations(legend: 'update', filter: s_name) do |api|
+      benchmark_operations(legend: "update-#{s_name}") do |api|
         visit(uri: to_uri(parameters: parameters, sub_path: "test/test/docid/"), method: 'PUT', body: @document_update)
       end
 
-      benchmark_operations(legend: 'delete', filter: s_name) do |api|
+      benchmark_operations(legend: "delete-#{s_name}") do |api|
         visit(uri: to_uri(parameters: parameters), method: 'DELETE')
       end
     end
   end
 
-  def benchmark_operations(legend:, filter:, fillers: [])
+  def benchmark_operations(legend:)
     profiler_start
     start_seconds = Time.now.to_f
     document_count = yield(@api)
-    puts "#{document_count} documents visited in total"
-    fillers = fillers + [parameter_filler('legend', legend),
-                         parameter_filler('filter', filter),
-                         metric_filler('throughput', document_count / (Time.now.to_f - start_seconds))]
-    profiler_report(legend + '-' + filter)
+    time_used = Time.now.to_f - start_seconds
+    puts "#{document_count} documents visited in #{time_used} seconds"
+    fillers = [parameter_filler('legend', legend), metric_filler('throughput', document_count / time_used)]
+    profiler_report(legend)
     write_report(fillers)
   end
 
