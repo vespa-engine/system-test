@@ -82,10 +82,10 @@ class Visiting < PerformanceTest
       [1, 8, 64].each do |concurrency|
         [1, 8, 64].each do |slices|
           parameters = { :timeout => "40s", :cluster => "search", :selection => s_value, :concurrency => concurrency, :slices => slices }
-          thread_pool = Concurrent::FixedThreadPool.new(slices)
-          documents = Concurrent::Array.new
 
           benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s") do |api|
+            thread_pool = Concurrent::FixedThreadPool.new(slices)
+            documents = Concurrent::Array.new
             slices.times do |sliceId|
               thread_pool.post do
                 documents[sliceId] = visit(uri: to_uri(parameters: parameters.merge({ :wantedDocumentCount => 1024, :sliceId => sliceId })))
@@ -97,8 +97,9 @@ class Visiting < PerformanceTest
             documents.sum
           end
 
-          documents.clear
           benchmark_operations(legend: "streamed-#{s_name}-#{concurrency}c-#{slices}s") do |api|
+            thread_pool = Concurrent::FixedThreadPool.new(slices)
+            documents = Concurrent::Array.new
             slices.times do |sliceId|
               thread_pool.post do
                 documents[sliceId] = visit(uri: to_uri(parameters: parameters.merge({ :stream => true, :sliceId => sliceId })))
