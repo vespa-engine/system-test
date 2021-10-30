@@ -80,7 +80,7 @@ class Visiting < PerformanceTest
   def run_get_visiting_benchmarks
     { "1-percent" => @selection_1p, "100-percent" => @selection_100p }.each do |s_name, s_value|
       [1, 8, 64].each do |concurrency|
-        [1, 8, 64].each do |slices|
+        [1, 8, 32].each do |slices|
           parameters = { :timeout => "40s", :cluster => "search", :selection => s_value, :concurrency => concurrency, :slices => slices }
 
           benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s") do |api|
