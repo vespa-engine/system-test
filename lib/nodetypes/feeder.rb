@@ -221,6 +221,7 @@ module Feeder
         p += feed_file
       end
     elsif params[:client] == :vespa_http_client
+      p += "--ignoreConditionNotMet "
       if params[:host]
         p += "--host #{params[:host]} "
       end
