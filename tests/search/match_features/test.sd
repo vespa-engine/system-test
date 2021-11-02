@@ -1,0 +1,49 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search test {
+
+  fieldset default {
+    fields: title
+  }
+
+  document test {
+    field title type string {
+      indexing: index | summary
+    }
+    field order type int {
+      indexing: attribute | summary
+    }
+    field mixed type tensor(x{},y[2]) {
+      indexing: attribute
+    }
+  }
+
+  constant model {
+    file: search/model.json
+    type: tensor(x{},y[2])
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(order)
+    }
+  }
+
+  rank-profile withmf {
+    function score_per_x() {
+      expression: reduce(query(mix) * constant(model) * attribute(mixed), sum, y)
+    }
+    first-phase {
+      expression: attribute(order)
+    }
+    match-features {
+      value(2)
+      attribute(order)
+      attribute(mixed)
+      score_per_x
+      nativeFieldMatch
+      query(vec)
+    }
+  }
+
+}
