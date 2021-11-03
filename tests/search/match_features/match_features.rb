@@ -1,30 +1,14 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'rubygems'
 require 'json'
+require 'set'
 require 'indexed_search_test'
 
 class MatchFeatures < IndexedSearchTest
 
   def setup
     set_owner('arnej')
-    @seen = { '0' => 0 }
-  end
-
-  def saw(nrank)
-    key = nrank.to_s
-    if @seen[key]
-      @seen[key] += 1
-    else
-      @seen[key] = 1
-    end
-  end
-
-  def numseen
-    n = 0
-    @seen.each do |k,v|
-      n += 1 if v > 0
-    end
-    return n
+    @seen = Set.new
   end
 
   def s(query)
@@ -57,7 +41,7 @@ class MatchFeatures < IndexedSearchTest
     assert_mf_hit(result, 1, 150)
 
     puts "Native rank scores: #{@seen}"
-    assert(numseen == 5)
+    assert_equal(5, @seen.size)
   end
 
   def assert_mf_hit(result, hit, attr_value)
@@ -71,7 +55,7 @@ class MatchFeatures < IndexedSearchTest
     assert_equal('tensor(y[2])', mf['query(vec)']['type'])
     native = mf['nativeFieldMatch']
     assert(native > 0)
-    saw(native)
+    @seen.add(native)
   end
 
   def teardown
