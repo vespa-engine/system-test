@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'digest/md5'
 require 'environment'
 
@@ -50,9 +50,10 @@ class DocReader
       source_name = "."
       source_dir = source
     end
-    randomstring = "%04d" % (rand*10000).to_i
-    `tar czf  #{Environment.instance.vespa_home}/tmp/#{tar_name}.#{randomstring}.tar.gz --directory #{source_dir} #{source_name}`
-    return "#{Environment.instance.vespa_home}/tmp/#{tar_name}.#{randomstring}.tar.gz"
+    randomstring = "%06d" % (rand(1000000)).to_i
+    archive = "#{Environment.instance.vespa_home}/tmp/#{tar_name}.#{randomstring}.tar.gz"
+    `tar czf #{archive} --directory #{source_dir} #{source_name}`
+    archive
   end
 
   def delete(filename)
