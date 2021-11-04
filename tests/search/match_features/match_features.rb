@@ -47,7 +47,7 @@ class MatchFeatures < IndexedSearchTest
 
   def assert_mf_hit(result, hit, attr_value)
     assert_equal(attr_value, result.hit[hit].field['order'].to_i)
-    mf = result.hit[hit].field['match-features']
+    mf = result.hit[hit].field['matchfeatures']
     #puts "match-features for hit #{hit}: '#{mf}'"
     assert_equal(2.0, mf['value(2)'])
     assert_equal(attr_value, mf['attribute(order)'])
