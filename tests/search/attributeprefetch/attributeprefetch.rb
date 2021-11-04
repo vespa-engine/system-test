@@ -6,9 +6,9 @@ class AttributePrefetch < IndexedSearchTest
 
   def setup
     set_owner("havardpe")
-    add_bundle(selfdir+"TestSearcher.java")
+    add_bundle(selfdir+"AttributePrefetchTestSearcher.java")
     search_chain = Chain.new("default", "vespa").
-        add(Searcher.new("com.yahoo.vespatest.attributeprefetch.TestSearcher", "transformedQuery", "blendedResult"))
+        add(Searcher.new("com.yahoo.vespatest.attributeprefetch.AttributePrefetchTestSearcher", "transformedQuery", "blendedResult"))
     deploy_app(SearchApp.new.sd(selfdir+"attr.sd").container(
                    Container.new.search(
                        Searching.new.chain(search_chain))))

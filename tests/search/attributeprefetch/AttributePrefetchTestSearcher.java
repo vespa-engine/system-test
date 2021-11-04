@@ -7,7 +7,7 @@ import com.yahoo.search.Searcher;
 import com.yahoo.search.result.Hit;
 import com.yahoo.search.searchchain.Execution;
 
-public class TestSearcher extends Searcher {
+public class AttributePrefetchTestSearcher extends Searcher {
 
     public Result search(Query query, Execution execution) {
         Result result = execution.search(query);
