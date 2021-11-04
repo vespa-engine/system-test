@@ -1,0 +1,10 @@
+{
+    "cells": [
+        { "address" : { "x" : "x1", "y":"0" }, "value": 5.000 },
+        { "address" : { "x" : "x1", "y":"1" }, "value": 5.125 },
+        { "address" : { "x" : "x2", "y":"0" }, "value": 5.250 },
+        { "address" : { "x" : "x2", "y":"1" }, "value": 5.375 },
+        { "address" : { "x" : "x3", "y":"0" }, "value": 5.500 },
+        { "address" : { "x" : "x3", "y":"1" }, "value": 5.750 }
+    ]
+}
