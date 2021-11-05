@@ -17,8 +17,9 @@ class Visiting < PerformanceTest
     @document_count = 1 << 21
     @document_template = '{ "put": "id:test:test::$seq()", "fields": { "text": "$words(5)", "number": $ints(1, 100) } }'
     @document_update = '{ "fields": { "number": { "increment": 100 } } }'
-    @selection_1p = 'test.number % 100 == 0'
-    @selection_100p = 'true'
+    @selection_1p = 10.times.map { |i| "test.number % 100 == #{i}" }
+    @selection_100p = [ 'true' ]
+    @visit_seconds = 40
 
     deploy_app(
       SearchApp.new.
@@ -49,7 +50,7 @@ class Visiting < PerformanceTest
     run_process_visiting_benchmarks
   end
 
-  def visit(uri:, method: 'GET', body: '')
+  def visit(selections:, parameters:, sub_path:, method:, body:)
     endpoint = "#{@tls_env.tls_enabled? ? "https" : "http"}://localhost:#{@container.http_port}"
     if @tls_env.tls_enabled?
       args = "--key #{@tls_env.private_key_file} --cert #{@tls_env.certificate_file} --cacert #{@tls_env.ca_certificates_file}"
@@ -57,21 +58,24 @@ class Visiting < PerformanceTest
       args = ""
     end
     documents = 0
-    continuation = ''
-    doom = Time.now.to_f + 39
-    while Time.now.to_f < doom
-      command="curl -s -X #{method} #{args} '#{endpoint}#{uri}#{continuation}' -d '#{body}' | jq '{ path, continuation, documentCount, message }'"
-      json = JSON.parse(@container.execute(command))
-      return json['message'] if json['message']
-      if json['documentCount']
-        documents += json['documentCount']
-      else
-        return "No documentCount in response"
-      end
-      if json['continuation']
-        continuation = "&continuation=#{json['continuation']}"
-      else
-        break
+    doom = Time.now.to_f + @visit_seconds - 1
+    selections.each do |selection|
+      parameters = parameters.merge({ :selection => selection })
+      while Time.now.to_f < doom
+        uri = to_uri(sub_path: sub_path, parameters: parameters)
+        command="curl -s -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}' | jq '{ continuation, documentCount, message }'"
+        json = JSON.parse(@container.execute(command))
+        return json['message'] if json['message']
+        if json['documentCount']
+          documents += json['documentCount']
+        else
+          return "No documentCount in response"
+        end
+        if json['continuation']
+          parameters = parameters.merge({ :continuation => json['continuation'] })
+        else
+          break
+        end
       end
     end
     documents
@@ -79,72 +83,57 @@ class Visiting < PerformanceTest
   
   def run_get_visiting_benchmarks
     { "1-percent" => @selection_1p, "100-percent" => @selection_100p }.each do |s_name, s_value|
-      [1, 8, 64].each do |concurrency|
-        [1, 8, 64].each do |slices|
-          parameters = { :timeout => "40s", :cluster => "search", :selection => s_value, :concurrency => concurrency, :slices => slices }
+      [[1, 1], [1, 16], [16, 1], [16, 16], [64, 1]].each do |concurrency, slices|
+        parameters = { :timeout => "#{@visit_seconds}s", :cluster => "search", :concurrency => concurrency, :slices => slices }
 
-          benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s") do |api|
-            thread_pool = Concurrent::FixedThreadPool.new(slices)
-            documents = Concurrent::Array.new
-            slices.times do |sliceId|
-              thread_pool.post do
-                documents[sliceId] = visit(uri: to_uri(parameters: parameters.merge({ :wantedDocumentCount => 1024, :sliceId => sliceId })))
-              end
-            end
-            thread_pool.shutdown
-            raise "Failed to complete tasks" unless thread_pool.wait_for_termination(60)
-            documents.each { |d| raise d unless d.is_a? Integer }
-            documents.sum
-          end
+        benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
+                             parameters: parameters.merge({ :wantedDocumentCount => 1024, :sliceId => sliceId }))
 
-          benchmark_operations(legend: "streamed-#{s_name}-#{concurrency}c-#{slices}s") do |api|
-            thread_pool = Concurrent::FixedThreadPool.new(slices)
-            documents = Concurrent::Array.new
-            slices.times do |sliceId|
-              thread_pool.post do
-                documents[sliceId] = visit(uri: to_uri(parameters: parameters.merge({ :stream => true, :sliceId => sliceId })))
-              end
-            end
-            thread_pool.shutdown
-            raise "Failed to complete tasks" unless thread_pool.wait_for_termination(60)
-            documents.each { |d| raise d unless d.is_a? Integer }
-            documents.sum
-          end
-        end
+        benchmark_operations(legend: "streamed-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
+                             parameters: parameters.merge({ :stream => true, :sliceId => sliceId }))
       end
     end
   end
 
   def run_process_visiting_benchmarks
     { "1-percent" => @selection_1p, "100-percent" => @selection_100p }.each do |s_name, s_value|
-      parameters = { :timeChunk => "40s", :cluster => "search", :selection => s_value }
+      [1, 16].each do |slices|
+        parameters = { :timeChunk => "#{@visit_seconds}s", :cluster => "search", :slices => slices }
+        benchmark_operations(legend: "refeed-#{s_name}-#{slices}s", selections: s_value,
+                             parameters: parameters.merge({ :destinationCluster => "search" }), method: 'POST')
 
-      benchmark_operations(legend: "refeed-#{s_name}") do |api|
-        visit(uri: to_uri(parameters: parameters.merge({ :destinationCluster => "search" })), method: 'POST')
-      end
+        benchmark_operations(legend: "update-#{s_name}-#{slices}s", selections: s_value,
+                             parameters: parameters, sub_path: "test/test/docid/", method: 'PUT', body: @document_update)
 
-      benchmark_operations(legend: "update-#{s_name}") do |api|
-        visit(uri: to_uri(parameters: parameters, sub_path: "test/test/docid/"), method: 'PUT', body: @document_update)
-      end
-
-      benchmark_operations(legend: "delete-#{s_name}") do |api|
-        visit(uri: to_uri(parameters: parameters), method: 'DELETE')
+        benchmark_operations(legend: "delete-#{s_name}-#{slices}s", selections: s_value,
+                             parameters: parameters, method: 'DELETE')
       end
     end
   end
 
-  def benchmark_operations(legend:)
+  def benchmark_operations(legend:, selections:, parameters:, sub_path: '', method: 'GET', body: '')
+    thread_pool = Concurrent::FixedThreadPool.new(parameters[:slices])
+    documents = Concurrent::Array.new
     profiler_start
     start_seconds = Time.now.to_f
-    document_count = yield(@api)
+    parameters[:slices].times do |sliceId|
+      thread_pool.post do
+        documents[sliceId] = visit(selections: s_value, parameters: parameters.merge({ :sliceId => sliceId }),
+                                   sub_path: sub_path, method: methodd, body: body)
+      end
+    end
+    thread_pool.shutdown
+    raise "Failed to complete tasks" unless thread_pool.wait_for_termination(60)
+    documents.each { |d| raise d unless d.is_a? Integer }
+    document_count = documents.sum
     time_used = Time.now.to_f - start_seconds
     puts "#{document_count} documents visited in #{time_used} seconds"
     fillers = [parameter_filler('legend', legend), metric_filler('throughput', document_count / time_used)]
-    profiler_report(legend)
     write_report(fillers)
+    profiler_report(legend)
   end
 
-  def to_uri(sub_path: '', parameters: )
+  def to_uri(sub_path:, parameters:)
     "/document/v1/#{sub_path}?#{parameters.map { |k, v| "#{ERB::Util.url_encode(k.to_s)}=#{ERB::Util.url_encode(v)}" } .join("&")}"
   end
 
