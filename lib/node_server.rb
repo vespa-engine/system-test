@@ -821,7 +821,7 @@ class NodeServer
       sleep 0.1
       if Time.now.to_i - start > 200
         execute("vespa-logfmt -l all | tail -n 300", :exceptiononfailure => false)
-        execute("vespa-logfmt -l all #{Environment.instance.vespa_home}/logs/vespa/zookeeper.configserver.0.log", :exceptiononfailure => false)
+        execute("vespa-logfmt -l all #{Environment.instance.vespa_home}/logs/vespa/zookeeper.configserver.0.log | tail -n 1000", :exceptiononfailure => false)
         execute("ps xgauww | grep 'config[s]erver'", :exceptiononfailure => false)
         execute("netstat -an | grep #{@port_configserver_rpc}", :exceptiononfailure => false)
       end
