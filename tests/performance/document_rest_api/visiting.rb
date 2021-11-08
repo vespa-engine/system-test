@@ -87,10 +87,10 @@ class Visiting < PerformanceTest
         parameters = { :timeout => "#{@visit_seconds}s", :cluster => "search", :concurrency => concurrency, :slices => slices }
 
         benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
-                             parameters: parameters.merge({ :wantedDocumentCount => 1024, :sliceId => sliceId }))
+                             parameters: parameters.merge({ :wantedDocumentCount => 1024 }))
 
         benchmark_operations(legend: "streamed-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
-                             parameters: parameters.merge({ :stream => true, :sliceId => sliceId }))
+                             parameters: parameters.merge({ :stream => true }))
       end
     end
   end
