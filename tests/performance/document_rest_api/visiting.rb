@@ -118,8 +118,8 @@ class Visiting < PerformanceTest
     start_seconds = Time.now.to_f
     parameters[:slices].times do |sliceId|
       thread_pool.post do
-        documents[sliceId] = visit(selections: s_value, parameters: parameters.merge({ :sliceId => sliceId }),
-                                   sub_path: sub_path, method: methodd, body: body)
+        documents[sliceId] = visit(selections: selections, parameters: parameters.merge({ :sliceId => sliceId }),
+                                   sub_path: sub_path, method: method, body: body)
       end
     end
     thread_pool.shutdown
