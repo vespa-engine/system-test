@@ -13,15 +13,15 @@ search test {
     attribute: mutable
   }
   field first_phase_count type long {
-    indexing: 0 | to_long | attribute | summary
+    indexing: attribute | summary
     attribute: mutable
   }
   field second_phase_count type long {
-    indexing: 0 | to_long | attribute | summary
+    indexing: attribute | summary
     attribute: mutable
   }
   field summary_count type long {
-    indexing: 0 | to_long | attribute | summary
+    indexing: attribute | summary
     attribute: mutable
   }
   rank-profile rank1 {
