@@ -23,6 +23,12 @@ class TestAndSetTest < SearchTest
     })
   end
 
+  def test_with_vespa_http_client
+    run_tests(->(feedfile) {
+      feed(:file => feed_filename(feedfile, :json), :client => :vespa_http_client)
+    })
+  end
+
   def run_tests(feeder)
     conditional_put_not_executed_on_condition_mismatch(feeder)
     conditional_put_executed_on_condition_match(feeder)
