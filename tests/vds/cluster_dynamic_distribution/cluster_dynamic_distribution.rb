@@ -12,10 +12,6 @@ class ClusterDynamicDistributionTest < VdsTest
     true
   end
 
-  def can_share_configservers?(method_name=nil)
-    false
-  end
-
   def setup
     @num_docs = 10000
     @num_users = 100
