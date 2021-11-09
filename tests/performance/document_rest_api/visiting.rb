@@ -84,7 +84,7 @@ class Visiting < PerformanceTest
   
   def run_get_visiting_benchmarks
     { "1-percent" => @selection_1p, "100-percent" => @selection_100p }.each do |s_name, s_value|
-      [[1, 1], [1, 16], [16, 1], [16, 16], [64, 1]].each do |concurrency, slices|
+      [[1, 1], [1, 8], [8, 1], [8, 8], [64, 1]].each do |concurrency, slices|
         parameters = { :timeout => "#{@visit_seconds}s", :cluster => "search", :concurrency => concurrency, :slices => slices }
 
         benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
@@ -98,7 +98,7 @@ class Visiting < PerformanceTest
 
   def run_process_visiting_benchmarks
     { "1-percent" => @selection_1p, "100-percent" => @selection_100p }.each do |s_name, s_value|
-      [1, 16].each do |slices|
+      [1, 8].each do |slices|
         parameters = { :timeChunk => "#{@visit_seconds}s", :cluster => "search", :slices => slices }
         benchmark_operations(legend: "refeed-#{s_name}-#{slices}s", selections: s_value,
                              parameters: parameters.merge({ :destinationCluster => "search" }), method: 'POST')
