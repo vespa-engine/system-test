@@ -83,6 +83,7 @@ class TensorFlow < PerformanceTest
     feed_and_wait_for_docs("test", @num_docs, :file => @docs_file_name)
     @container = (vespa.qrserver["0"] or vespa.container.values.first)
     vespa.adminserver.execute("vespa-logfmt -S searchnode -l debug -N")
+    vespa.adminserver.logctl("searchnode:eval", "debug=off")
   end
 
   def run_queries
