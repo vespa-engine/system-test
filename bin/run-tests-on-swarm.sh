@@ -308,7 +308,7 @@ docker_cleanup
 if ! docker network create --driver overlay --attachable $NETWORK &> /dev/null; then
   log_error "Could not create network $NETWORK. Exiting."; docker_cleanup; exit 1
 else
-  if ! docker service create --init --replicas $NUMNODES --hostname "{{.Service.Name}}.{{.Task.Slot}}.{{.Task.ID}}.$NETWORK" \
+  if ! docker service create --init --limit-pids 0 --replicas $NUMNODES --hostname "{{.Service.Name}}.{{.Task.Slot}}.{{.Task.ID}}.$NETWORK" \
                              --cap-add SYSLOG --cap-add SYS_PTRACE --cap-add SYS_ADMIN --cap-add SYS_NICE \
                              ${SERVICE_EXTRA_ARGS[@]+"${SERVICE_EXTRA_ARGS[@]}"} \
                              --name $SERVICE --env NODE_SERVER_OPTS="-c $TESTRUNNER.$NETWORK:27183" \
@@ -318,7 +318,7 @@ else
 fi
 
 if [[ -n $CONFIGSERVER ]]; then
-  if ! docker run --init --hostname $CONFIGSERVER.$NETWORK --network $NETWORK --name $CONFIGSERVER --detach \
+  if ! docker run --init --pids-limit -1 --hostname $CONFIGSERVER.$NETWORK --network $NETWORK --name $CONFIGSERVER --detach \
                   --cap-add SYSLOG --cap-add SYS_PTRACE --cap-add SYS_ADMIN --cap-add SYS_NICE \
                   --security-opt no-new-privileges=true --security-opt seccomp=unconfined \
                   -e VESPA_CONFIGSERVERS=$CONFIGSERVER.$NETWORK -e VESPA_CONFIGSERVER_JVMARGS="-verbose:gc -Xms12g -Xmx12g" \
@@ -331,6 +331,7 @@ fi
 
 docker run --rm \
            --init \
+           --pids-limit -1 \
            --cap-add SYSLOG --cap-add SYS_PTRACE --cap-add SYS_ADMIN --cap-add SYS_NICE \
            --security-opt no-new-privileges=true --security-opt seccomp=unconfined \
            $ENV_OPTS \
