@@ -60,7 +60,7 @@ class Visiting < PerformanceTest
     documents = 0
     doom = Time.now.to_f + @visit_seconds - 1
     selections.each do |selection|
-      parameters = parameters.merge({ :selection => selection })
+      parameters[:selection] = selection
       while Time.now.to_f < doom
         uri = to_uri(sub_path: sub_path, parameters: parameters)
         command="curl -s -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}' | jq '{ continuation, documentCount, message }'"
@@ -72,8 +72,9 @@ class Visiting < PerformanceTest
           return "No documentCount in response"
         end
         if json['continuation']
-          parameters = parameters.merge({ :continuation => json['continuation'] })
+          parameters[:continuation] = json['continuation']
         else
+          parameters.delete(:continuation)
           break
         end
       end
@@ -118,8 +119,15 @@ class Visiting < PerformanceTest
     start_seconds = Time.now.to_f
     parameters[:slices].times do |sliceId|
       thread_pool.post do
-        documents[sliceId] = visit(selections: selections, parameters: parameters.merge({ :sliceId => sliceId }),
-                                   sub_path: sub_path, method: method, body: body)
+        begin
+          documents[sliceId] = visit(selections: selections, parameters: parameters.merge({ :sliceId => sliceId }),
+                                     sub_path: sub_path, method: method, body: body)
+        rescue Exception e
+          puts "Exception for slice #{sliceId}:"
+          puts e.message
+          puts e.backtrace.inspect
+          documents[sliceId] = e
+        end
       end
     end
     thread_pool.shutdown
