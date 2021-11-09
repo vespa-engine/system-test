@@ -60,7 +60,7 @@ class Visiting < PerformanceTest
     documents = 0
     doom = Time.now.to_f + @visit_seconds - 1
     selections.each do |selection|
-      parameters = parameters.merge({ :selection => selection })
+      parameters[:selection] = selection
       while Time.now.to_f < doom
         uri = to_uri(sub_path: sub_path, parameters: parameters)
         command="curl -s -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}' | jq '{ continuation, documentCount, message }'"
@@ -72,8 +72,9 @@ class Visiting < PerformanceTest
           return "No documentCount in response"
         end
         if json['continuation']
-          parameters = parameters.merge({ :continuation => json['continuation'] })
+          parameters[:continuation] = json['continuation']
         else
+          parameters.delete(:continuation)
           break
         end
       end
