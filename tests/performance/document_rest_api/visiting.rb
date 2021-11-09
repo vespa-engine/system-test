@@ -122,7 +122,7 @@ class Visiting < PerformanceTest
         begin
           documents[sliceId] = visit(selections: selections, parameters: parameters.merge({ :sliceId => sliceId }),
                                      sub_path: sub_path, method: method, body: body)
-        rescue Exception e
+        rescue Exception => e
           puts "Exception for slice #{sliceId}:"
           puts e.message
           puts e.backtrace.inspect
