@@ -119,8 +119,15 @@ class Visiting < PerformanceTest
     start_seconds = Time.now.to_f
     parameters[:slices].times do |sliceId|
       thread_pool.post do
-        documents[sliceId] = visit(selections: selections, parameters: parameters.merge({ :sliceId => sliceId }),
-                                   sub_path: sub_path, method: method, body: body)
+        begin
+          documents[sliceId] = visit(selections: selections, parameters: parameters.merge({ :sliceId => sliceId }),
+                                     sub_path: sub_path, method: method, body: body)
+        rescue Exception e
+          puts "Exception for slice #{sliceId}:"
+          puts e.message
+          puts e.backtrace.inspect
+          documents[sliceId] = e
+        end
       end
     end
     thread_pool.shutdown
