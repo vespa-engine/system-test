@@ -7,7 +7,7 @@ require 'indexed_search_test'
 require 'performance/fbench'
 require 'pp'
 
-class StreamingSearchTest < PerformanceTest
+class StreamingSearchPerformanceTest < PerformanceTest
 
     def setup
         set_owner('onorum')
