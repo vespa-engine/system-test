@@ -91,7 +91,7 @@ class Visiting < PerformanceTest
                              parameters: parameters.merge({ :stream => true }))
 
         benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
-                             parameters: parameters.merge({ :wantedDocumentCount => 256 }))
+                             parameters: parameters.merge({ :wantedDocumentCount => 1024 }))
       end
     end
   end
@@ -131,7 +131,7 @@ class Visiting < PerformanceTest
       end
     end
     thread_pool.shutdown
-    raise "Failed to complete tasks" unless thread_pool.wait_for_termination(60)
+    raise "Failed to complete tasks" unless thread_pool.wait_for_termination(2 * @visit_seconds)
     documents.each { |d| raise d unless d.is_a? Integer }
     document_count = documents.sum
     time_used = Time.now.to_f - start_seconds
