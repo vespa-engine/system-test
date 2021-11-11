@@ -4,10 +4,6 @@ search music {
   document music {
 
 
-    body {
-      compression {}
-    }
-
     # Link to album main page
     field url type uri {
     }
