@@ -1,0 +1,62 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+FROM centos:8
+
+RUN dnf install -y dnf-plugins-core && \
+    dnf install -y epel-release && \
+    dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/vespa/vespa/repo/epel-8/group_vespa-vespa-epel-8.repo && \
+    dnf config-manager --enable powertools && \
+    dnf config-manager --enable epel && \
+    dnf install -y vespa && \
+    dnf clean --enablerepo=* all
+
+RUN dnf install -y gcc-c++ python3-devel && \
+    pip3 install --no-cache-dir --upgrade pip  && \
+    pip3 install --no-cache-dir tf2onnx && \
+    dnf remove -y remove gcc-c++ python3-devel && \
+    yum clean --enablerepo=* all
+
+ENV VESPA_CONFIGPROXY_JVMARGS="-XX:ThreadStackSize=1024k"
+
+RUN dnf config-manager --enable powertools && \
+    dnf module enable -y ruby:2.7 && \
+    dnf module enable -y maven:3.6 && \
+    dnf install -y \
+        bind-utils \
+        gcc-toolset-10-annobin \
+        gcc-toolset-10-gcc-c++ \
+        git \
+        hostname \
+        libxml2-devel \
+        lz4 \
+        make \
+        maven \
+        net-tools \
+        redhat-rpm-config \
+        ruby \
+        ruby-devel \
+        rubygems-devel \
+        rubygem-net-telnet \
+        sudo \
+        zstd && \
+    ln -s /opt/rh/gcc-toolset-10 /opt/rh/devtoolset-10 && \
+    (source /opt/rh/gcc-toolset-10/enable && gem install libxml-ruby gnuplot distribution test-unit builder concurrent-ruby bigdecimal ffi parallel) && \
+    echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
+
+# Installation of maven is sneaky. It installs java-8 and sets as default.
+RUN alternatives --set java $(alternatives --display java | grep -Po "\ java-.*-openjdk.*64" | grep java-11)
+
+COPY /vespa-systemtests /opt/vespa-systemtests
+
+ENV RUBYLIB=/opt/vespa-systemtests/lib:/opt/vespa-systemtests/tests
+
+# Backward compability with testrunner
+RUN mkdir -p /opt/rh/rh-ruby27 && touch /opt/rh/rh-ruby27/enable
+
+RUN /opt/vespa-systemtests/docker/include/populate-m2-repo.sh root
+
+RUN /opt/vespa-systemtests/docker/include/setup-tls.sh root 
+ENV VESPA_TLS_CONFIG_FILE=/opt/vespa/conf/vespa/tls/tls_config.json
+
+ENTRYPOINT ["bash", "-lc", "source /opt/rh/gcc-toolset-10/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
+
