@@ -57,19 +57,21 @@ class Visiting < PerformanceTest
     else
       args = ""
     end
+    stderr_file = dirs.tmpdir + "stderr-" + parameters[:sliceId].to_s
     documents = 0
     doom = Time.now.to_f + @visit_seconds - 1
     selections.each do |selection|
       parameters[:selection] = selection
       while Time.now.to_f < doom
         uri = to_uri(sub_path: sub_path, parameters: parameters)
-        command="curl -s -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}' | jq '{ continuation, documentCount, message }'"
+        command="curl -m #{2 * @visit_seconds} -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}' \\" +
+                " 2>#{stderr_file} | jq '{ continuation, documentCount, message }'"
         json = JSON.parse(@container.execute(command))
         return json['message'] if json['message']
         if json['documentCount']
           documents += json['documentCount']
         else
-          return "No documentCount in response"
+          return "No documentCount in response; stderr: '#{@container.readfile(stderr_file)}'"
         end
         if json['continuation']
           parameters[:continuation] = json['continuation']
@@ -131,7 +133,7 @@ class Visiting < PerformanceTest
       end
     end
     thread_pool.shutdown
-    raise "Failed to complete tasks" unless thread_pool.wait_for_termination(2 * @visit_seconds)
+    raise "Failed to complete tasks" unless thread_pool.wait_for_termination(3 * @visit_seconds)
     documents.each { |d| raise d unless d.is_a? Integer }
     document_count = documents.sum
     time_used = Time.now.to_f - start_seconds
