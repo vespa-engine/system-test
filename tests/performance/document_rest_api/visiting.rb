@@ -64,7 +64,7 @@ class Visiting < PerformanceTest
       parameters[:selection] = selection
       while Time.now.to_f < doom
         uri = to_uri(sub_path: sub_path, parameters: parameters)
-        command="curl -m #{2 * @visit_seconds} -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}' \\" +
+        command="curl -m #{2 * @visit_seconds} -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}'" +
                 " 2>#{stderr_file} | jq '{ continuation, documentCount, message }'"
         json = JSON.parse(@container.execute(command))
         return json['message'] if json['message']
