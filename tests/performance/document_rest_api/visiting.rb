@@ -24,6 +24,7 @@ class Visiting < PerformanceTest
 
     deploy_app(
       SearchApp.new.
+      num_hosts(@num_hosts).
       monitoring("vespa", 60).
       container(
         Container.new("container").
