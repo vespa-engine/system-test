@@ -34,11 +34,13 @@ class Visiting < PerformanceTest
       admin_metrics(Metrics.new).
       indexing("container").
       sd(selfdir + "test.sd").
-      storage(StorageCluster.new("search", 4).distribution_bits(16)))
+      storage(StorageCluster.new("search", 4).distribution_bits(16))).
+      configserver("node2")
 
     start
 
     @container = @vespa.container.values.first
+    @configserver = @vespa.configservers.values.first
     @api = @vespa.document_api_v1
   end
 
@@ -68,12 +70,12 @@ class Visiting < PerformanceTest
         uri = to_uri(sub_path: sub_path, parameters: parameters)
         command="curl -m #{2 * @visit_seconds} -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}'" +
                 " 2>#{stderr_file} | jq '{ continuation, documentCount, message }'"
-        json = JSON.parse(@container.execute(command))
+        json = JSON.parse(@configserver.execute(command))
         return json['message'] if json['message']
         if json['documentCount']
           documents += json['documentCount']
         else
-          return "No documentCount in response; stderr: '#{@container.readfile(stderr_file)}'"
+          return "No documentCount in response; stderr: '#{@configserver.readfile(stderr_file)}'"
         end
         if json['continuation']
           parameters[:continuation] = json['continuation']
