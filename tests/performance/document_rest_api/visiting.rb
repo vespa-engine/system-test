@@ -20,17 +20,18 @@ class Visiting < PerformanceTest
     @selection_1p = 10.times.map { |i| "test.number % 100 == #{i}" }
     @selection_100p = [ 'true' ]
     @visit_seconds = 40
+    @num_hosts = 2
 
     deploy_app(
       SearchApp.new.
       monitoring("vespa", 60).
       container(
-        Container.new("combinedcontainer").
+        Container.new("container").
         jvmargs('-Xms16g -Xmx16g').
         docproc(DocumentProcessing.new).
         gateway(ContainerDocumentApi.new)).
       admin_metrics(Metrics.new).
-      indexing("combinedcontainer").
+      indexing("container").
       sd(selfdir + "test.sd").
       storage(StorageCluster.new("search", 4).distribution_bits(16)))
 
