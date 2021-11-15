@@ -27,6 +27,7 @@ RUN dnf config-manager --enable powertools && \
         gcc-toolset-10-gcc-c++ \
         git \
         hostname \
+        jq \
         libxml2-devel \
         lz4 \
         make \
