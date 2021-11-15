@@ -34,8 +34,8 @@ class Visiting < PerformanceTest
       admin_metrics(Metrics.new).
       indexing("container").
       sd(selfdir + "test.sd").
-      storage(StorageCluster.new("search", 4).distribution_bits(16))).
-      configserver("node2")
+      storage(StorageCluster.new("search", 4).distribution_bits(16)).
+      configserver("node2"))
 
     start
 
