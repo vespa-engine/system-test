@@ -20,11 +20,9 @@ class Visiting < PerformanceTest
     @selection_1p = 10.times.map { |i| "test.number % 100 == #{i}" }
     @selection_100p = [ 'true' ]
     @visit_seconds = 40
-    @num_hosts = 2
 
     deploy_app(
       SearchApp.new.
-      num_hosts(@num_hosts).
       monitoring("vespa", 60).
       container(
         Container.new("container").
@@ -34,13 +32,11 @@ class Visiting < PerformanceTest
       admin_metrics(Metrics.new).
       indexing("container").
       sd(selfdir + "test.sd").
-      storage(StorageCluster.new("search", 4).distribution_bits(16)).
-      configserver("node2"))
+      storage(StorageCluster.new("search", 4).distribution_bits(16)))
 
     start
 
     @container = @vespa.container.values.first
-    @configserver = @vespa.configservers.values.first
     @api = @vespa.document_api_v1
   end
 
@@ -70,12 +66,12 @@ class Visiting < PerformanceTest
         uri = to_uri(sub_path: sub_path, parameters: parameters)
         command="curl -m #{2 * @visit_seconds} -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}'" +
                 " 2>#{stderr_file} | jq '{ continuation, documentCount, message }'"
-        json = JSON.parse(@configserver.execute(command))
+        json = JSON.parse(@container.execute(command))
         return json['message'] if json['message']
         if json['documentCount']
           documents += json['documentCount']
         else
-          return "No documentCount in response; stderr: '#{@configserver.readfile(stderr_file)}'"
+          return "No documentCount in response; stderr: '#{@container.readfile(stderr_file)}'"
         end
         if json['continuation']
           parameters[:continuation] = json['continuation']
@@ -97,7 +93,7 @@ class Visiting < PerformanceTest
                              parameters: parameters.merge({ :stream => true }))
 
         benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
-                             parameters: parameters.merge({ :wantedDocumentCount => 1024 }))
+                             parameters: parameters.merge({ :wantedDocumentCount => 1024 })) if concurrency < 8 or slices < 8
       end
     end
   end
