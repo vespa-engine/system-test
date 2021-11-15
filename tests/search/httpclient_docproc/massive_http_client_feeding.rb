@@ -17,7 +17,7 @@ class MassiveHttpClientFeedingTest < SearchTest
   end
 
   def setup
-    set_owner("valerijf")
+    set_owner("jonmv")
     set_description("Verifies that a container can handle more feed threads than it has thread.")
     @valgrind = false
 
@@ -57,6 +57,7 @@ class MassiveHttpClientFeedingTest < SearchTest
   def deploy_test_app
     container_port = Environment.instance.vespa_web_service_port
     container_cluster = Container.new("dpcluster1").
+      component(AccessLog.new("disabled").
       jvmargs("-Xms4096m -Xmx4096m").
       search(Searching.new).
       gateway(ContainerDocumentApi.new).
