@@ -213,7 +213,7 @@ int main (int argc, char* argv[]) {
     bool label_as_number_string = true;
 
     char c;
-    while ((c = getopt(argc, argv, "shc:d:f:o:v:")) != -1) {
+    while ((c = getopt(argc, argv, "shc:d:f:o:v:")) != static_cast<char>(-1)) {
         switch (c) {
         case 's':
             label_as_number_string = false;
