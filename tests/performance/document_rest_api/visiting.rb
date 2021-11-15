@@ -26,7 +26,7 @@ class Visiting < PerformanceTest
       monitoring("vespa", 60).
       container(
         Container.new("container").
-        jvmargs('-Xms16g -Xmx16g').
+        jvmargs('-Xms8g -Xmx8g').
         docproc(DocumentProcessing.new).
         gateway(ContainerDocumentApi.new)).
       admin_metrics(Metrics.new).
@@ -140,7 +140,7 @@ class Visiting < PerformanceTest
     puts "#{document_count} documents visited in #{time_used} seconds"
 
     # If complete before timeout, verify exactly the documents for 1p or 100p were visited.
-    assert(document_count == 210699 or document_count == @document_count) if time_used + 3 < @visit_seconds
+    assert(document_count == 210699 || document_count == @document_count) if time_used + 3 < @visit_seconds
     fillers = [parameter_filler('legend', legend), metric_filler('throughput', document_count / time_used)]
     write_report(fillers)
     profiler_report(legend)
