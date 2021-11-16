@@ -57,7 +57,7 @@ class MassiveHttpClientFeedingTest < SearchTest
   def deploy_test_app
     container_port = Environment.instance.vespa_web_service_port
     container_cluster = Container.new("dpcluster1").
-      component(AccessLog.new("disabled").
+      component(AccessLog.new("disabled")).
       jvmargs("-Xms4096m -Xmx4096m").
       search(Searching.new).
       gateway(ContainerDocumentApi.new).

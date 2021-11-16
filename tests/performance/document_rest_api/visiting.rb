@@ -93,7 +93,7 @@ class Visiting < PerformanceTest
                              parameters: parameters.merge({ :stream => true }))
 
         benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
-                             parameters: parameters.merge({ :wantedDocumentCount => 1024 })) if concurrency < 8 or slices < 8
+                             parameters: parameters.merge({ :wantedDocumentCount => 1024 })) if slices < 8
       end
     end
   end
@@ -140,7 +140,7 @@ class Visiting < PerformanceTest
     puts "#{document_count} documents visited in #{time_used} seconds"
 
     # If complete before timeout, verify exactly the documents for 1p or 100p were visited.
-    assert(document_count == 210699 || document_count == @document_count) if time_used + 3 < @visit_seconds
+    assert(document_count == 210699 || document_count == @document_count) if method == 'GET' and time_used + 3 < @visit_seconds
     fillers = [parameter_filler('legend', legend), metric_filler('throughput', document_count / time_used)]
     write_report(fillers)
     profiler_report(legend)
