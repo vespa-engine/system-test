@@ -285,15 +285,14 @@ class NodeServer
     source_name = File.basename(source)
     remotearchive = filereader.archive(source)
     filereader.openfile(remotearchive)
-    localarchivename = destination+"/"+source_name+".tar.gz"
+    localarchivename = destination + "/" + source_name + ".tar.gz"
     localarchive = File.open(localarchivename, "w")
     while block = filereader.read(4096)
       localarchive.print(block)
     end
     localarchive.close
     filereader.closefile
-    execute("tar xzf #{destination}/#{source_name}.tar.gz " \
-            "--directory #{destination}")
+    execute("tar xzf #{localarchivename} --directory #{destination}")
     File.delete(localarchivename)
     filereader.delete(remotearchive)
   end
