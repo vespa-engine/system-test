@@ -3,10 +3,9 @@
 module Maven
   DEFAULT_VESPA_POM_VERSION = '7-SNAPSHOT'
 
-  def Maven.compile_bundles(bundles, bundle_dir, tmp_dir, admin_server, vespa_version)
+  def Maven.compile_bundles(bundles, testcase, admin_server, vespa_version)
     compiled = []
     # Compile bundles
-    tmp_bundle_dir_work = tmp_dir + "bundles/work"
     bundles.each { |bundle|
       next if compiled.include?(bundle)
       deps = bundle.params[:dependencies] || []
@@ -14,36 +13,39 @@ module Maven
         next if dep.class == String
         unless compiled.include?(dep)
           compiled << dep
-          compile_bundle(dep, admin_server, tmp_bundle_dir_work, bundle_dir, vespa_version)
+          compile_bundle(dep, admin_server, testcase, vespa_version)
         end
       end
-      compile_bundle(bundle, admin_server, tmp_bundle_dir_work, bundle_dir, vespa_version)
+      compile_bundle(bundle, admin_server, testcase, vespa_version)
       compiled << bundle
     }
   end
 
-  def Maven.compile_bundle(bundle, admin_server, tmp_bundle_dir_work, bundle_dir, vespa_version)
-    admin_server.execute("[ -d #{tmp_bundle_dir_work} ] && rm -rf #{tmp_bundle_dir_work}/ || true")
-    admin_server.execute("mkdir -p #{tmp_bundle_dir_work}")
+  def Maven.compile_bundle(bundle, admin_server, testcase, vespa_version)
+    tmp_bundle_dir = testcase.dirs.tmpdir + "bundles/work"
+    testcase.output("Tmp bundle dir #{tmp_bundle_dir}")
+    admin_server.execute("[ -d #{tmp_bundle_dir} ] && rm -rf #{tmp_bundle_dir}/ || true")
+    admin_server.execute("mkdir -p #{tmp_bundle_dir}")
     # Remove from localhost as well
-    `[ -d #{tmp_bundle_dir_work} ] && rm -rf #{tmp_bundle_dir_work}/ || true`
+    `[ -d #{tmp_bundle_dir} ] && rm -rf #{tmp_bundle_dir}/ || true`
 
     # TODO :name is a bad name for this parameter
     unique_name = (bundle.params[:name] || '')
-    puts "unique name used in compile_bundle is empty" if unique_name == ''
+    testcase.output("unique name used in compile_bundle is empty") if unique_name == ''
     source = bundle.sourcedir
     bundlename = bundle.name
-    puts "Compiling bundle with sourcedir #{source}"
+    testcase.output("Compiling bundle with sourcedir #{source}")
     if File.file?(source)
-      tmp_sourcedir = create_sourcedir(tmp_bundle_dir_work + "#{unique_name}/", source, bundlename)
+      tmp_sourcedir = create_sourcedir(tmp_bundle_dir + "#{unique_name}/", source, bundlename)
     else
-      tmp_sourcedir = tmp_bundle_dir_work + "#{unique_name}/" + File.basename(source)
+      tmp_sourcedir = tmp_bundle_dir + "#{unique_name}/" + File.basename(source)
       copy_directory_structure(source, tmp_sourcedir)
     end
 
     haspom = Maven.create_pom_xml(vespa_version, tmp_sourcedir, bundle)
     admin_server.copy(tmp_sourcedir, tmp_sourcedir)
     bundle_content = admin_server.maven_compile(tmp_sourcedir, bundle, haspom, to_pom_version(vespa_version))
+    bundle_dir = testcase.dirs.bundledir
     bundlepath = bundle_file_path(bundle_dir, bundle)
     FileUtils.mkdir_p(File.dirname(bundlepath))
     bundlefile = File.open(bundlepath, "w")
