@@ -82,7 +82,6 @@ class TestCase
     @ignorable_messages = [
       @@log_messages[:async_slow_resolve],
       @@log_messages[:slow_query],
-      @@log_messages[:slobrok_unregister],
       @@log_messages[:no_slobrok_brokers],
       @@log_messages[:connect_location_broker],
       @@log_messages[:uncommon_get],
@@ -701,7 +700,6 @@ class TestCase
     :slow_query => /Slow execution. query/,
     :slow_processing =>  /Slow processing of message/,
     :connect_location_broker =>  /cannot connect to location broker at tcp/,
-    :slobrok_unregister => /name registered, but with different spec/,
     :no_slobrok_brokers => /no location brokers available, retrying:/,
     :max_query_timeout => /Query timeout \(\d+ ms\) > max query /,
     :uncommon_get => /a little uncommon that GET method returns always/,
