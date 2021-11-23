@@ -293,6 +293,7 @@ class NodeServer
     localarchive.close
     filereader.closefile
     execute("tar xzf #{localarchivename} --directory #{destination}")
+    @testcase.output("Deleting local archive #{localarchivename} and remote archive #{remotearchive}")
     File.delete(localarchivename)
     filereader.delete(remotearchive)
   end
