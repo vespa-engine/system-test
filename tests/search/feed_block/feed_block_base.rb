@@ -6,7 +6,6 @@ class FeedBlockBase < IndexedSearchTest
 
   def setup
     set_owner("toregge")
-    srand(123)
     @doc_type = "test"
     @namespace = "test"
     @cluster_name = "test"
