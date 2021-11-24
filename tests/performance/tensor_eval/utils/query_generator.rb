@@ -1,11 +1,12 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 class TensorEvalQueryGenerator
 
 def self.gen_rnd_array(num_entries)
+  random_generator = Random.new(123456789)
   result = Array.new
   num_entries.times do
-    result.push(Random.rand(100))
+    result.push(random_generator.rand(100))
   end
   result
 end
@@ -101,7 +102,6 @@ end
 end
 
 if __FILE__ == $0
-  srand(123456789)
   TensorEvalQueryGenerator.write_query_files("")
 end
 

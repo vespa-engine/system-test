@@ -1,13 +1,14 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 class TensorEvalTensorGenerator
 
   def self.gen_2d_tensor(dim_x, dim_y, dim_size)
+    random_generator = Random.new(123456789)
     result = "{\n"
     result << "  \"cells\": [\n"
     for i in 0...dim_size do
       for j in 0...dim_size do
         result << ",\n" if (i > 0 || j > 0)
-        result << "    { \"address\": { \"#{dim_x}\": \"#{i}\", \"#{dim_y}\": \"#{j}\" }, \"value\": #{Random.rand(100)}.0 }"
+        result << "    { \"address\": { \"#{dim_x}\": \"#{i}\", \"#{dim_y}\": \"#{j}\" }, \"value\": #{random_generator.rand(100)}.0 }"
       end
     end
     result << "\n  ]"
@@ -33,7 +34,6 @@ class TensorEvalTensorGenerator
 end
 
 if __FILE__ == $0
-  srand(123456789)
   TensorEvalTensorGenerator.write_tensor_files(".")
 end
 
