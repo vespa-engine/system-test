@@ -33,7 +33,6 @@ class AddPartition < SearchTest
   def setup
     set_owner("toregge")
     set_description("Test growing cluster by adding partitions")
-    srand(123)
     @doc_type = "addpartition"
     @id_prefix = "id:test:#{@doc_type}::"
   end

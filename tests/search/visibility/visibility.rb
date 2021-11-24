@@ -120,7 +120,6 @@ class Visibility < IndexedSearchTest
   def setup
     set_owner("toregge")
     set_description("Verify that documents are searchable after put")
-    srand(123)
     @doc_type = "visibility"
     @id_prefix = "id:test:#{@doc_type}::"
     @mutex = Mutex.new
