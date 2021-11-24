@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class Rendering < IndexedSearchTest
@@ -21,19 +21,26 @@ class Rendering < IndexedSearchTest
     feed_and_wait_for_docs("purchase", 20, :file => "#{selfdir}/docs.xml");
   end
 
-  def test_simple_renderer_with_config
+  def test_rendering
+    simple_renderer_with_config
+    empty_result
+    error_message
+    grouping_rendering
+  end
+
+  def simple_renderer_with_config
     check_query("/?query=noMatchingResults", "simple_renderer.txt", "SimpleRenderer")
   end
 
-  def test_empty_result
+  def empty_result
     check_query("/?query=noMatchingResults", "emtpy.txt")
   end
 
-  def test_error_message
+  def error_message
     check_query("/?query=", "error_message.txt")
   end
 
-  def test_grouping_rendering
+  def grouping_rendering
     check_grouping_query("all(group(customer) each(group(time.date(date)) each(output(sum(price)))))",
                 "example7.txt")
 
