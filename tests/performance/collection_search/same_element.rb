@@ -27,7 +27,6 @@ class SameElementPerformanceTest < CollectionPerfTestBase
 
   def test_same_element_operator_with_map_of_struct
     set_description('Test use of sameElement() operator for map of struct with varying number of elements per map')
-    srand(123456789) # Want deterministic PRNG output TODO explicit Random obj to avoid possible contamination
     @query_file_name = file_in_tmp('queries.txt')
     puts "Using query file: '#{@query_file_name}'"
     [false, true].each do |fast_search|
