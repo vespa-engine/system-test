@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'performance_test'
 require 'app_generator/search_app'
 require 'performance/fbench'
@@ -32,7 +32,6 @@ class TensorFlow < PerformanceTest
   end
 
   def generate_feed_and_queries
-    srand(123456789)
     generate_feed
     generate_queries
   end
@@ -45,6 +44,7 @@ class TensorFlow < PerformanceTest
   end
 
   def generate_docs
+    @random_generator = Random.new(123456789)
     result = "["
     @num_docs.times do |i|
       result << "," if i > 0
@@ -57,7 +57,7 @@ class TensorFlow < PerformanceTest
       result << "        \"cells\":[\n"
       784.times do |j|
         result << "," if j > 0
-        result << "          {\"address\":{\"d0\":\"0\",\"d1\":\"#{j}\"},\"value\":#{Random.rand}}"
+        result << "          {\"address\":{\"d0\":\"0\",\"d1\":\"#{j}\"},\"value\":#{@random_generator.rand}}"
       end
       result << "        ]\n"
       result << "      }\n"

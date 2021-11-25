@@ -1,10 +1,11 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 def gen_tensor(dim_x, dim_y, dim_size)
+  @random_generator = Random.new(123456789)
   result = "{"
   for i in 0...dim_size do
     for j in 0...dim_size do
       result << ",\n" if (i > 0 || j > 0)
-      result << "{#{dim_x}:#{i},#{dim_y}:#{j}}:#{Random.rand(100)}"
+      result << "{#{dim_x}:#{i},#{dim_y}:#{j}}:#{@random_generator.rand(100)}"
     end
   end
   result << "}"
@@ -27,7 +28,6 @@ def gen_matrix_expression(file_name, dim_size)
 end
 
 if __FILE__ == $0
-  srand(123456789)
   gen_match_expression("tensor_match_25x25.expression", 25)
   gen_match_expression("tensor_match_50x50.expression", 50)
   gen_match_expression("tensor_match_100x100.expression", 100)
