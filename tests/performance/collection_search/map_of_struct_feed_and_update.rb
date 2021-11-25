@@ -22,7 +22,6 @@ class MapOfStructFeedAndUpdatePerformanceTest < CollectionPerfTestBase
 
   def test_map_of_struct_feeding_and_updates
     set_description('Test feeding, field and element-wise partial updates for map of struct')
-    srand(123456789) # Want deterministic PRNG output TODO explicit Random obj to avoid possible contamination
     [false, true].each do |fast_search|
       run_map_of_struct_test_cases(fast_search: fast_search)
     end
@@ -32,6 +31,7 @@ class MapOfStructFeedAndUpdatePerformanceTest < CollectionPerfTestBase
 
     def initialize(field_value_gen)
       @fv = field_value_gen
+      @rand = Random.new(123456789) # Want deterministic PRNG output
     end
 
     def arbitrary_struct_element_data
@@ -90,7 +90,7 @@ class MapOfStructFeedAndUpdatePerformanceTest < CollectionPerfTestBase
     end
 
     def emit_fields(n)
-      key = "@#{n}-#{rand(@elems_per_doc)}"
+      key = "@#{n}-#{@rand.rand(@elems_per_doc)}"
       "\"struct_map{#{key}}\":{\"assign\":#{arbitrary_struct_element_data.to_json}\}"
     end
 
