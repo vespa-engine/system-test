@@ -1,4 +1,4 @@
-# Copyright 2020 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'performance_test'
 require 'app_generator/search_app'
 require 'performance/fbench'
@@ -34,7 +34,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
   end
 
   def generate_feed_and_queries
-    srand(123456789)
+    @random_generator = Random.new(123456789)
     generate_feed
     generate_constants
     generate_queries
@@ -56,8 +56,8 @@ class TensorMatrixMatrixProduct < PerformanceTest
       result << "    \"put\":\"id:test:test::#{i}\",\n"
       result << "    \"fields\":{\n"
       result << "      \"id\":#{i},\n"
-      result << "      \"float_rand\":#{Random.rand},\n"
-      result << "      \"double_rand\":#{Random.rand}\n"
+      result << "      \"float_rand\":#{@random_generator.rand},\n"
+      result << "      \"double_rand\":#{@random_generator.rand}\n"
       result << "    }\n"
       result << "  }"
     end
@@ -92,7 +92,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
     d0_size.times do |d0|
         d1_size.times do |d1|
           result << ",\n" if (d0 > 0 || d1 > 0)
-          result << "    {\"address\":{\"#{d0_name}\":\"#{d0}\",\"#{d1_name}\":\"#{d1}\"},\"value\":#{Random.rand}}"
+          result << "    {\"address\":{\"#{d0_name}\":\"#{d0}\",\"#{d1_name}\":\"#{d1}\"},\"value\":#{@random_generator.rand}}"
         end
     end
     result << "\n  ]\n"
@@ -109,7 +109,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
     result << "  \"cells\":[\n"
     d0_size.times do |d0|
       result << ",\n" if (d0 > 0)
-      result << "    {\"address\":{\"#{d0_name}\":\"#{d0}\"},\"value\":#{Random.rand}}"
+      result << "    {\"address\":{\"#{d0_name}\":\"#{d0}\"},\"value\":#{@random_generator.rand}}"
     end
     result << "\n  ]\n"
   end

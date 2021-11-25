@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'performance_test'
 require 'app_generator/search_app'
 require 'performance/fbench'
@@ -36,7 +36,7 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
   end
 
   def generate_feed_and_queries
-    srand(123456789)
+    @random_generator = Random.new(123456789)
     generate_feed
     generate_queries
   end
@@ -59,7 +59,7 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
       result << "      \"id\":#{i},\n"
       nums = {}
       while nums.size < 3
-         nums[Random.rand(1000)] = 1.0
+         nums[@random_generator.rand(1000)] = 1.0
       end
       nums = nums.keys
       result << "      \"longarray\":#{nums},\n"
@@ -108,7 +108,7 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
     wset = {}
     num_entries.times do |i|
       key = unique_keys[i].to_s
-      weight = Random.rand(10000)
+      weight = @random_generator.rand(10000)
       wset[key] = weight
     end
     return wset

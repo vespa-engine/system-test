@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'performance_test'
 require 'app_generator/search_app'
 require 'performance/fbench'
@@ -32,7 +32,6 @@ class TensorCanvass < PerformanceTest
   end
 
   def generate_feed_and_queries
-    srand(123456789)
     generate_feed
     generate_queries
   end
@@ -45,6 +44,7 @@ class TensorCanvass < PerformanceTest
   end
 
   def generate_docs
+    @random_generator = Random.new(123456789)
     result = "["
     @num_docs.times do |i|
       result << "," if i > 0
@@ -53,13 +53,13 @@ class TensorCanvass < PerformanceTest
       result << "    \"put\":\"id:test:test::#{i}\",\n"
       result << "    \"fields\":{\n"
       result << "      \"id\":#{i},\n"
-      result << "      \"v1\":#{Random.rand},\n"
-      result << "      \"v2\":#{Random.rand},\n"
-      result << "      \"v3\":#{Random.rand},\n"
-      result << "      \"v4\":#{Random.rand},\n"
-      result << "      \"v5\":#{Random.rand},\n"
-      result << "      \"v6\":#{Random.rand},\n"
-      result << "      \"v7\":#{Random.rand}\n"
+      result << "      \"v1\":#{@random_generator.rand},\n"
+      result << "      \"v2\":#{@random_generator.rand},\n"
+      result << "      \"v3\":#{@random_generator.rand},\n"
+      result << "      \"v4\":#{@random_generator.rand},\n"
+      result << "      \"v5\":#{@random_generator.rand},\n"
+      result << "      \"v6\":#{@random_generator.rand},\n"
+      result << "      \"v7\":#{@random_generator.rand}\n"
       result << "    }\n"
       result << "  }"
     end
