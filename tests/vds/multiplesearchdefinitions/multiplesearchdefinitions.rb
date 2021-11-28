@@ -37,7 +37,7 @@ class MultipleSearchDefs < VdsMultiModelTest
     puts "1 **************************************************************"
     deploy_app(default_app("music2").validation_override("content-type-removal"))
 
-    wait_for_reconfig
+    wait_for_reconfig(true)
 
     # music2 application is deployed => should fail to feed music documents but succeed in feeding music2 documents
     output = feedfile(selfdir+"music.xml", :exceptiononfailure => false)
