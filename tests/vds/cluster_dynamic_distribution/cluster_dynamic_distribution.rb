@@ -58,7 +58,6 @@ class ClusterDynamicDistributionTest < VdsTest
       if time_now - time_started > timeout
         flunk("Timeout waiting for state update")
       end
-      sleep 10
     end
     puts "State has been updated"
   end
