@@ -1,8 +1,7 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class QrsPing < IndexedSearchTest
-
 
   def setup
     set_owner("arnej")
@@ -16,14 +15,10 @@ class QrsPing < IndexedSearchTest
 
     puts "Stopping dispatch"
     stop_searchcluster
-    # ping thread doesn't start at once, need to wait for it
-    sleep 30
+
     puts "Running query"
-
     query = "/?query=blues"
-
     result = search_with_timeout(5, query)
-
     puts "Query result:"
     puts result.xmldata
 
@@ -41,9 +36,6 @@ class QrsPing < IndexedSearchTest
 
     puts "Starting dispatch again:"
     start_searchcluster
-    sleep 10
-    puts "Running query after 10s sleep"
-
     wait_for_hitcount(query, 10)
     result = search_with_timeout(5, query)
     puts "Query result:"
