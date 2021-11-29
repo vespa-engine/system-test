@@ -30,11 +30,9 @@ class GenericServicesTest < VdsTest
     assert_ps_output_does_not_exists("node2", "vmstat", "vmstat 100")
     assert_ps_output_exists("node3", "vmstat", "vmstat 100")
 
-    # stop
     vespa.hostalias["node1"].execute("vespa-stop-services")
     assert_ps_output_does_not_exists("node1", "vmstat", "vmstat 100")
 
-    # start
     vespa.hostalias["node1"].execute("vespa-start-services")
     wait_until_ready
     assert_ps_output_exists("node1", "vmstat", "vmstat 100")
@@ -43,15 +41,30 @@ class GenericServicesTest < VdsTest
 
     # kill the processes and check that they are restarted
     vespa.hostalias["node1"].execute("pkill --signal SIGTERM vmstat")
-    assert_ps_output_exists("node1", "vmstat", "vmstat 100")
+    wait_until_ps_output_exists("node1", "vmstat", "vmstat 100")
 
-    # stop
     vespa.hostalias["node1"].execute("vespa-stop-services")
     assert_ps_output_does_not_exists("node1", "vmstat", "vmstat 100")
   end
 
   def assert_ps_output_exists(node, process_name, expected_output)
-    assert(vespa.hostalias[node].execute("ps auxwww | grep #{process_name} | grep -v grep", :exceptiononfailure => false) =~ Regexp.compile(expected_output))
+    assert(ps_output_exists(node, process_name) =~ Regexp.compile(expected_output))
+  end
+
+  def wait_until_ps_output_exists(node, process_name, expected_output)
+    count = 0
+    loop do
+      puts "loop, count=#{count}"
+      output = ps_output_exists(node, process_name)
+      break if output =~ Regexp.compile(expected_output) || count > 10
+      count = count + 1
+      sleep 1
+    end
+    assert_ps_output_exists(node, process_name, expected_output)
+  end
+
+  def ps_output_exists(node, process_name)
+     vespa.hostalias[node].execute("ps auxwww | grep #{process_name} | grep -v grep", :exceptiononfailure => false)
   end
 
   def assert_ps_output_does_not_exists(node, process_name, expected_output)
