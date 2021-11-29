@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'multi_provider_storage_test'
 
 class GarbageCollection < MultiProviderStorageTest
@@ -63,7 +63,7 @@ class GarbageCollection < MultiProviderStorageTest
     # that GC has been disabled so that the bucket state parsing code
     # does not get confused by intermittent GC operations being scheduled.
     deploy_gc_app(false)
-    sleep 5 # HACK; best-effort wait for config to be effectuated on distributor.
+    wait_for_reconfig
     crosscheck_bucket_consistency
   end
 

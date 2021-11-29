@@ -1,3 +1,4 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'vds_test'
 
 class GenericServicesTest < VdsTest
@@ -18,10 +19,9 @@ class GenericServicesTest < VdsTest
   def test_generic_services_multinode
     deploy(selfdir+"app_multinode")
     start
-    sleep 5
 
-    vmstat_regexp= Regexp.compile("vmstat\\s.*\\s.*procs -----------memory----------")
-    vmstat2_regexp= Regexp.compile("vmstat2\\s.*\\s.*procs -----------memory----------")
+    vmstat_regexp = Regexp.compile("vmstat\\s.*\\s.*procs -----------memory----------")
+    vmstat2_regexp = Regexp.compile("vmstat2\\s.*\\s.*procs -----------memory----------")
 
     assert_log_matches(vmstat_regexp)
     assert_log_matches(vmstat2_regexp) # Second service on node 1 => host2
@@ -32,7 +32,6 @@ class GenericServicesTest < VdsTest
 
     # stop
     vespa.hostalias["node1"].execute("vespa-stop-services")
-    sleep 5
     assert_ps_output_does_not_exists("node1", "vmstat", "vmstat 100")
 
     # start
@@ -44,7 +43,6 @@ class GenericServicesTest < VdsTest
 
     # kill the processes and check that they are restarted
     vespa.hostalias["node1"].execute("pkill --signal SIGTERM vmstat")
-    sleep 10
     assert_ps_output_exists("node1", "vmstat", "vmstat 100")
 
     # stop
