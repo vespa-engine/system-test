@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'search_test'
 require 'search/utils/elastic_doc_generator'
@@ -48,7 +48,7 @@ class Bug6612278Test < SearchTest
 
     feed(:file => "#{selfdir}/feed2.xml")
     deploy_app(generate_app(4, 2))
-    sleep 10 # To ensure new distribution config has kicked.
+    wait_for_reconfig # To ensure new distribution config has kicked.
 
     set_node_up('storage', 1)
     set_node_up('storage', 0)
