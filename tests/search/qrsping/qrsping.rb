@@ -15,14 +15,10 @@ class QrsPing < IndexedSearchTest
 
     puts "Stopping dispatch"
     stop_searchcluster
-    # ping thread doesn't start at once, need to wait for it
-    sleep 30
+
     puts "Running query"
-
     query = "/?query=blues"
-
     result = search_with_timeout(5, query)
-
     puts "Query result:"
     puts result.xmldata
 
