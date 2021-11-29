@@ -53,7 +53,7 @@ class TestRunner
 
     wait_until = Time.now.to_i + @wait_for_nodes
     while Time.now.to_i < wait_until && @node_allocator.max_available < @nodes_required
-      sleep 10
+      sleep 1
       @log.info "Waiting for at least #{@nodes_required} to become available. Currently #{@node_allocator.max_available}."
     end
 
