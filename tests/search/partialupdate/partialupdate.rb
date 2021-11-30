@@ -471,7 +471,9 @@ class PartialUpdate < IndexedSearchTest
   def test_compaction
     set_description("Test that updates don't fail due to slow search")
     deploy_app(SearchApp.new.sd(selfdir + "compaction.sd").
-               container(Container.new.component(AccessLog.new("disabled"))))
+                 container(Container.new.component(AccessLog.new("disabled")).
+                             search(Searching.new).
+                             docproc(DocumentProcessing.new)))
     start
     proton = vespa.search["search"].first
     transfer_fbench_queries(selfdir + "slowqueries")
