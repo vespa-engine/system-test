@@ -77,25 +77,19 @@ class MultipleConfigservers < CloudConfigTest
   def test_deploy_robustness
     set_expected_logged(Regexp.union(/Connection timed out for connection string/ , /Sequential path not found/, /Fleetcontroller \d: Got no data from node entry at/, /has content that does not match its hash, deleting everything in/))
     wait_for_config_generation_on_all_configservers(@session_id)
-    # session_id = 2
     @session_id = @session_id + 1
-    # session_id = 3
     create_session_from_url = "http://#{@node1.hostname}:19071/application/v2/tenant/default/application/default/environment/prod/region/default/instance/default"
     puts "Create session url:#{create_session_from_url}"
     result = create_session_v2_with_uri(@node1.hostname, "default", create_session_from_url, @session_id)
     @node2.stop_configserver({:keep_everything => true})
-    sleep 3
     prepare_session_message_matches(@node1.hostname, result, 200, /Session #{@session_id} for tenant 'default' prepared/)
     @node2.start_configserver
     @node2.ping_configserver
-    sleep 3
     result = prepare_session_with_timeout(@node1.hostname, result, @session_id, 60)
-    sleep 3
     @node3.stop_configserver({:keep_everything => true})
     activate_session_message_matches(@node1.hostname, result, 200, /Session #{@session_id} for tenant 'default' activated/)
     @node3.start_configserver
     @node3.ping_configserver
-    sleep 3
     wait_for_config_generation_on_all_configservers(@session_id)
   end
 
