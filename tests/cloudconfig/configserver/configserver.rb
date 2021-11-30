@@ -170,7 +170,6 @@ ENDER
     restart_config_server(node, :keep_zookeeper_data => true)
     deploy_app(CloudconfigApp.new)
     start
-    sleep 10 # Wait for logserver to start
     wait_for_logserver_state{ logserver_running }
     delete_application_v2(node.hostname, "default", "default")
 
