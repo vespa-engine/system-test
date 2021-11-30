@@ -57,7 +57,7 @@ class MultipleSearchDefs < VdsMultiModelTest
     puts "2 **************************************************************"
     deploy_app(default_app.validation_override("content-type-removal"))
 
-    wait_for_reconfig
+    wait_for_reconfig(600, true)
 
     # music application is deployed => should fail to feed music2 documents but succeed in feeding music documents
     output = feedfile(selfdir+"music.xml", :retries => 3)
@@ -79,7 +79,7 @@ class MultipleSearchDefs < VdsMultiModelTest
     # Now deploy application with both document types => put/get should work for both
     deploy_app(default_app.sd(VDS + "/schemas/music2.sd").validation_override("content-type-removal"))
 
-    wait_for_reconfig
+    wait_for_reconfig(600, true)
 
     # Test vespaget
     output = vespaget("id:storage_test:music:n=1234:music1")
