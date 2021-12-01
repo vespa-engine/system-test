@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'vds_multi_model_test'
 
 class MultipleSearchDefs < VdsMultiModelTest
@@ -37,7 +37,7 @@ class MultipleSearchDefs < VdsMultiModelTest
     puts "1 **************************************************************"
     deploy_output = deploy_app(default_app("music2").validation_override("content-type-removal"))
     config_generation = get_generation(deploy_output).to_i
-    wait_for_reconfig(config_generation, 600, true)
+    wait_for_reconfig(config_generation)
 
     # music2 application is deployed => should fail to feed music documents but succeed in feeding music2 documents
     output = feedfile(selfdir+"music.xml", :exceptiononfailure => false)
@@ -58,7 +58,7 @@ class MultipleSearchDefs < VdsMultiModelTest
 
     deploy_output = deploy_app(default_app.validation_override("content-type-removal"))
     config_generation = get_generation(deploy_output).to_i
-    wait_for_reconfig(config_generation, 600, true)
+    wait_for_reconfig(config_generation)
 
     # music application is deployed => should fail to feed music2 documents but succeed in feeding music documents
     output = feedfile(selfdir+"music.xml", :retries => 3)
@@ -80,7 +80,7 @@ class MultipleSearchDefs < VdsMultiModelTest
     # Now deploy application with both document types => put/get should work for both
     deploy_output = deploy_app(default_app.sd(VDS + "/schemas/music2.sd").validation_override("content-type-removal"))
     config_generation = get_generation(deploy_output).to_i
-    wait_for_reconfig(config_generation, 600, true)
+    wait_for_reconfig(config_generation)
 
     # Test vespaget
     output = vespaget("id:storage_test:music:n=1234:music1")
