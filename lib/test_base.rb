@@ -1364,13 +1364,12 @@ module TestBase
       r = vespa_config_status(echo)
       exitcode = r[0].to_i
       output = r[1]
-      if exitcode != 0
-        retries -= 1
-      else
+      if exitcode == 0
         if output =~ /has the latest generation #{expected_generation}/
           break
         end
       end
+      retries -= 1
       sleep 0.1
     end
     assert_equal(0, exitcode, "Services never reconfigured to latest application package, output from vespa-config-status: #{output}")
