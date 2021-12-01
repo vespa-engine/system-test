@@ -47,8 +47,8 @@ class Bug6612278Test < SearchTest
     wait_until_ready
 
     feed(:file => "#{selfdir}/feed2.xml")
-    deploy_app(generate_app(4, 2))
-    wait_for_reconfig # To ensure new distribution config has kicked.
+    config_generation = get_generation(deploy_app(generate_app(4, 2))).to_i
+    wait_for_reconfig(config_generation) # To ensure new distribution config has kicked.
 
     set_node_up('storage', 1)
     set_node_up('storage', 0)

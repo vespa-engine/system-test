@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 module SchemaChangesBase
 
@@ -13,8 +13,9 @@ module SchemaChangesBase
 
   def postdeploy_wait(deploy_output)
     wait_for_application(vespa.container.values.first, deploy_output)
-    wait_for_config_generation_proxy(get_generation(deploy_output))
-    wait_for_reconfig(600)
+    config_generation = get_generation(deploy_output).to_i
+    wait_for_config_generation_proxy(config_generation)
+    wait_for_reconfig(config_generation, 600)
   end
 
   def redeploy(sdfile, validation_override = nil)

@@ -62,8 +62,8 @@ class GarbageCollection < MultiProviderStorageTest
     # Before doing a final crosscheck validation of bucket state, ensure
     # that GC has been disabled so that the bucket state parsing code
     # does not get confused by intermittent GC operations being scheduled.
-    deploy_gc_app(false)
-    wait_for_reconfig
+    config_generation = get_generation(deploy_gc_app(false)).to_i
+    wait_for_reconfig(config_generation)
     crosscheck_bucket_consistency
   end
 

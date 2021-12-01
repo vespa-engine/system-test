@@ -39,7 +39,7 @@ class ErrorReportingTest < IndexedSearchTest
                                            .new("vespa.config.search.core.proton")
                                            .add("forward_issues", "false")))
     wait_for_application(vespa.container.values.first, deploy_output)
-    wait_for_reconfig(600, true)
+    wait_for_reconfig(get_generation(deploy_output).to_i, 600, true)
 
     result = search(q)
     json = JSON.parse(result.xmldata)
