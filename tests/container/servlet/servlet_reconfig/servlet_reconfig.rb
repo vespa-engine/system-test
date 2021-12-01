@@ -62,10 +62,9 @@ class ServletReconfig < ContainerTest
   end
 
   def deploy_and_wait_for_reconfig(application)
-    deploy(application, :bundles => [@resource])
-    wait_for_reconfig
+    config_generation = get_generation(deploy(application, :bundles => [@resource])).to_i
+    wait_for_reconfig(config_generation)
   end
-
 
   def application_with_cloud_config(path, cloudConfigMessage)
     create_application(path, cloudConfigMessage, nil)

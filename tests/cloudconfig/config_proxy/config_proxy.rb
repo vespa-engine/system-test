@@ -1,3 +1,4 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'search_test'
 require 'search_test'
@@ -110,11 +111,11 @@ class ConfigProxy < CloudConfigTest
     assert_config(@route_count + 1, out_file_1)
     assert_config(@route_count + 1, out_file_2)
 
-    deploy_app_and_assert(:deploy_app_with_routes, @route_count, out_files)
-    wait_for_reconfig(600)
+    config_generation = get_generation(deploy_app_and_assert(:deploy_app_with_routes, @route_count, out_files)).to_i
+    wait_for_reconfig(config_generation)
     # One more time to check that it works with new generation, unchanged config
-    deploy_app_and_assert(:deploy_app_with_routes, @route_count, out_files)
-    wait_for_reconfig(600)
+    config_generation = get_generation(deploy_app_and_assert(:deploy_app_with_routes, @route_count, out_files)).to_i
+    wait_for_reconfig(config_generation, 600)
   end
 
   # Tests that getting an error upstream (e.g. UNKNOWN_DEFINITION) makes the
@@ -182,18 +183,18 @@ class ConfigProxy < CloudConfigTest
     assert_config(@route_count, out_file_1, gen)
     assert_config(@route_count, out_file_2, gen)
 
-    deploy_app_and_assert(:deploy_app_with_routes, @route_count, out_files)
+    config_generation = get_generation(deploy_app_and_assert(:deploy_app_with_routes, @route_count, out_files)).to_i
     if (start_base)
-      wait_for_reconfig(600)
+      wait_for_reconfig(config_generation, 600)
     end
-    deploy_app_and_assert(:deploy_app_with_one_extra_route, @route_count + 1, out_files)
+    config_generation = get_generation(deploy_app_and_assert(:deploy_app_with_one_extra_route, @route_count + 1, out_files)).to_i
     if (start_base)
-      wait_for_reconfig(600)
+      wait_for_reconfig(config_generation, 600)
     end
     # One more time to check that it works with new generation, unchanged config
-    deploy_app_and_assert(:deploy_app_with_one_extra_route, @route_count + 1, out_files)
+    config_generation = get_generation(deploy_app_and_assert(:deploy_app_with_one_extra_route, @route_count + 1, out_files)).to_i
     if (start_base)
-      wait_for_reconfig(600)
+      wait_for_reconfig(config_generation, 600)
     end
   end
 

@@ -70,7 +70,7 @@ class MultipleConfigservers < CloudConfigTest
     #assert_prepared_response_key(@node3, @session_id - 1, "activate")
 
     wait_for_config_generation_on_all_configservers(@session_id)
-    wait_for_reconfig(600, true)
+    wait_for_reconfig(@session_id, 600, true)
     feed_and_wait_for_docs("banana", 5, :file => selfdir + "bananafeed-extended.xml")
   end
 

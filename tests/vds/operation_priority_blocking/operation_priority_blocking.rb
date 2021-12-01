@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'vds_test'
 
 class OperationPriorityBlocking < VdsTest
@@ -70,13 +70,13 @@ class OperationPriorityBlocking < VdsTest
     puts "Deploying app with priority threshold of '#{priority_name}'"
     puts "----"
     output = deploy_app(app_with_priority_threshold(priority_int_value_of(priority_name)))
-    gen = get_generation(output).to_i
+    config_generation = get_generation(output).to_i
 
     # deploy_app does not wait until config has been propagated, so we have to
     # do this explicitly here to avoid test race conditions between deployment
     # and feeding.
-    wait_for_reconfig
-    vespa.storage['storage'].wait_until_content_nodes_have_config_generation(gen)
+    wait_for_reconfig(config_generation)
+    vespa.storage['storage'].wait_until_content_nodes_have_config_generation(config_generation)
   end
 
   def test_feed_ops_with_low_priority_can_be_blocked

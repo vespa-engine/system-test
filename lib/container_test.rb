@@ -22,6 +22,7 @@ class ContainerTest < TestCase
     output = container_deploy(app, params)
     @container = (vespa.container.values.first || vespa.qrserver.values.first)
     wait_for_application(@container, output)
+    output
   end
 
   # First deployment

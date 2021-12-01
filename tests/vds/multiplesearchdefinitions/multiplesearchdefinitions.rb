@@ -35,9 +35,9 @@ class MultipleSearchDefs < VdsMultiModelTest
     assert(/id:storage_test:music:n=1234:music1/, output)
 
     puts "1 **************************************************************"
-    deploy_app(default_app("music2").validation_override("content-type-removal"))
-
-    wait_for_reconfig(600, true)
+    deploy_output = deploy_app(default_app("music2").validation_override("content-type-removal"))
+    config_generation = get_generation(deploy_output).to_i
+    wait_for_reconfig(config_generation, 600, true)
 
     # music2 application is deployed => should fail to feed music documents but succeed in feeding music2 documents
     output = feedfile(selfdir+"music.xml", :exceptiononfailure => false)
@@ -55,9 +55,10 @@ class MultipleSearchDefs < VdsMultiModelTest
     assert_no_match(/Document type music not found/, output)
 
     puts "2 **************************************************************"
-    deploy_app(default_app.validation_override("content-type-removal"))
 
-    wait_for_reconfig(600, true)
+    deploy_output = deploy_app(default_app.validation_override("content-type-removal"))
+    config_generation = get_generation(deploy_output).to_i
+    wait_for_reconfig(config_generation, 600, true)
 
     # music application is deployed => should fail to feed music2 documents but succeed in feeding music documents
     output = feedfile(selfdir+"music.xml", :retries => 3)
@@ -77,9 +78,9 @@ class MultipleSearchDefs < VdsMultiModelTest
     puts "3 **************************************************************"
 
     # Now deploy application with both document types => put/get should work for both
-    deploy_app(default_app.sd(VDS + "/schemas/music2.sd").validation_override("content-type-removal"))
-
-    wait_for_reconfig(600, true)
+    deploy_output = deploy_app(default_app.sd(VDS + "/schemas/music2.sd").validation_override("content-type-removal"))
+    config_generation = get_generation(deploy_output).to_i
+    wait_for_reconfig(config_generation, 600, true)
 
     # Test vespaget
     output = vespaget("id:storage_test:music:n=1234:music1")

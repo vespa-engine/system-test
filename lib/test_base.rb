@@ -1359,21 +1359,21 @@ module TestBase
     }
   end
 
-  # Note: When you have several config servers they are not necessarily in sync,
-  # so this might end up checking that all services have the old generation instead
-  # of the new one
-  def wait_for_reconfig(retries=600, echo=false)
+  def wait_for_reconfig(expected_generation, retries=600, echo=false)
     while retries > 0
       r = vespa_config_status(echo)
       exitcode = r[0].to_i
+      output = r[1]
       if exitcode != 0
         retries -= 1
-        sleep 0.1
       else
-        break
+        if output =~ /has the latest generation #{expected_generation}/
+          break
+        end
       end
+      sleep 0.1
     end
-    assert_equal(0, exitcode, "Services never reconfigured to latest application package, output from vespa-config-status: #{r[1]}")
+    assert_equal(0, exitcode, "Services never reconfigured to latest application package, output from vespa-config-status: #{output}")
   end
 
   def vespa_config_status(echo=false)

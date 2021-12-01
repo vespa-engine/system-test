@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'indexed_streaming_search_test'
 
@@ -28,7 +28,7 @@ class Addnewfield < IndexedStreamingSearchTest
     # deploy config with extra document field
     deploy_output = deploy_app(SearchApp.new.sd(rename_and_use_sd_file(selfdir+"wnf-music.sd", "music.sd")))
     wait_for_application(vespa.container.values.first, deploy_output)
-    wait_for_reconfig(600, true)
+    wait_for_reconfig(get_generation(deploy_output).to_i, 600, true)
 
     ### Pragmatic sleep to wait for config propagation as streaming search does ad-hoc config subscription.
     ### The proper solution is to wire this in to set of configs monitored in proton.

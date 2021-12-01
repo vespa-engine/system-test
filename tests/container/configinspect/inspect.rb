@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_container_test'
 require 'app_generator/search_app'
 
@@ -14,8 +14,8 @@ class ConfigInspect < SearchContainerTest
   def test_config_status_util
     r = vespa_config_status
     assert_equal(0, r[0].to_i, "System ended up with wrong config generation on start:\n#{r[1]}")
-    deploy_app(SearchApp.new().sd(selfdir+'simple.sd').visibility_delay(60))
-    wait_for_reconfig(600, true)
+    config_generation = get_generation(deploy_app(SearchApp.new().sd(selfdir+'simple.sd').visibility_delay(60))).to_i
+    wait_for_reconfig(config_generation, 600, true)
   end
 
   def teardown
