@@ -2,7 +2,6 @@
 
 require 'test/unit'
 require 'app_generator/container_app'
-require 'app_generator/servlet'
 require 'app_generator/processing'
 require 'app_generator/http'
 require 'environment'
@@ -65,16 +64,6 @@ class ContainerAppGenTest < Test::Unit::TestCase
         Processing.new.chain(ProcessorChain.new.add(
         Processor.new("com.yahoo.vespatest.BasicProcessor")))))
     verify('basic_processing.xml', app)
-  end
-
-  def test_basic_servlet
-    app = ContainerApp.new.container(
-        Container.new.
-            servlet(Servlet.new("my-servlets").
-                        klass("com.yahoo.test.servlet.HelloServlet").
-                        bundle("basic_servlet").
-                        path("myapp")))
-    verify('basic_servlet.xml', app)
   end
 
   def test_basic_processing_rendering
