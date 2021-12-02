@@ -8,7 +8,6 @@ require 'environment'
 require_relative 'assertion_utils'
 
 class ContainerAppGenTest < Test::Unit::TestCase
-  include AppGenerator
   include AssertionUtils
 
   def file(name)
