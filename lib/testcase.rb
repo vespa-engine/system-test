@@ -870,7 +870,6 @@ class TestCase
 
     limit = 180
     start = Time.now.to_i
-    new_checksum_first_seen = 0
     puts "start=#{start}"
     while Time.now.to_i - start < limit
       begin
@@ -887,15 +886,7 @@ class TestCase
           puts "Waiting for application checksum #{checksum}, got #{qrs_checksum}"
         else
           puts "Got application checksum #{checksum}"
-          if new_checksum_first_seen == 0
-            new_checksum_first_seen = Time.now.to_i
-          else
-            # Wait a couple of seconds after seeing the correct checksum the first time,
-            # because servlet reconfig causes the jetty connector to stop/restart.
-            if Time.now.to_i - new_checksum_first_seen > 2
-              break
-            end
-          end
+          break
         end
       rescue RuntimeError => e
         puts "Failed getting application status: #{e}"
