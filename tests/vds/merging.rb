@@ -82,12 +82,8 @@ class MergingTest < PersistentProviderTest
 
   def deploy_app_and_wait_until_config_has_been_propagated(app)
     gen = get_generation(deploy_app(app)).to_i
-    vespa.storage['storage'].wait_until_content_nodes_have_config_generation(gen)
+    wait_for_reconfig(gen)
     wait_for_config_generation_proxy(gen)
-    if @valgrind
-        # proton ups generation before all config has been processed.
-        sleep 30
-    end
   end
 
 end
