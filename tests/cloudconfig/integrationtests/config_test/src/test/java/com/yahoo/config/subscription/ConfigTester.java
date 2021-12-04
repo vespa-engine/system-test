@@ -11,6 +11,7 @@ import com.yahoo.jrt.Target;
 import com.yahoo.jrt.Transport;
 import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.config.Connection;
+import com.yahoo.vespa.config.ConnectionPool;
 import com.yahoo.vespa.config.TimingValues;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
 
@@ -199,10 +200,8 @@ public class ConfigTester implements AutoCloseable {
         return configServer;
     }
 
-    public TestConfigServer getInUse(ConfigSubscriber s, ConfigSourceSet sources) {
-        if (s.requesters().size() > 1) throw new RuntimeException("Not one requester");
-        Connection connection = s.requesters().get(sources).getConnectionPool().getCurrent();
-        Optional<TestConfigServer> configServer = getConfigServerMatchingSource(connection);
+    public TestConfigServer getInUse(ConnectionPool connectionPool) {
+        Optional<TestConfigServer> configServer = getConfigServerMatchingSource(connectionPool.getCurrent());
         return configServer.orElseThrow(RuntimeException::new);
     }
 

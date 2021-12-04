@@ -2,6 +2,7 @@
 package com.yahoo.config.subscription;
 
 import com.yahoo.config.FooConfig;
+import com.yahoo.config.subscription.impl.JRTConfigRequester;
 import com.yahoo.config.subscription.impl.JRTConfigSubscription;
 import com.yahoo.foo.BarConfig;
 import com.yahoo.log.LogLevel;
@@ -96,7 +97,7 @@ public class FailoverTest {
 
             assertNextConfigHasNotChanged(subscriber, bh, fh);
 
-            TestConfigServer inUse = tester.getInUse(subscriber, sources);
+            TestConfigServer inUse = tester.getInUse(connectionPool);
             inUse.stop();
             assertNextConfigHasNotChanged(subscriber, bh, fh);
 
@@ -149,11 +150,13 @@ public class FailoverTest {
             subscriber = new ConfigSubscriber(sources);
             ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", sources, ConfigTester.getTestTimingValues());
             ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f", sources, ConfigTester.getTestTimingValues());
-            ConnectionPool connectionPool = ((JRTConfigSubscription<BarConfig>) bh.subscription()).requester().getConnectionPool();
-            Connection current = connectionPool.getCurrent();
+            JRTConfigRequester bhRequester = ((JRTConfigSubscription<BarConfig>) bh.subscription()).requester();
+            JRTConfigRequester fhRequester = ((JRTConfigSubscription<FooConfig>) fh.subscription()).requester();
             assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess, false));
-            assertEquals(subscriber.requesters().size(), 1);
+            assertEquals(fhRequester, bhRequester);
             // Kill current source, wait for failover
+            ConnectionPool connectionPool = bhRequester.getConnectionPool();
+            Connection current = connectionPool.getCurrent();
             log.log(LogLevel.INFO, "current=" + current.getAddress());
             tester.stopConfigServerMatchingSource(current);
             Thread.sleep(ConfigTester.getTestTimingValues().getSubscribeTimeout() * 3);
