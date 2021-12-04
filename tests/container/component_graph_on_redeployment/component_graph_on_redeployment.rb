@@ -32,7 +32,9 @@ class ComponentGraphOnRedeployment < ContainerTest
     end
 
     # Redeploy same app. This is similar to an internal reconfiguration in hosted Vespa.
-    deploy(app)
+    output = deploy(app)
+    @container = vespa.container.values.first
+    wait_for_application(@container, output)
 
     log_matches = vespa.logserver.find_log_matches(LOG_MSG_PATTERN)
     reconstructed_components = log_matches.flatten.sort.uniq
