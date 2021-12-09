@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'container_test'
 require 'app_generator/container_app'
 require 'app_generator/http'
@@ -16,16 +16,16 @@ class TlsTest < ContainerTest
   end
 
   def test_tls
-    set_expected_logged(/Rpc port config has changed/)
     # Deploy a dummy app to get a reference to the container node, which is needed for uploading the certificate
-    start(ContainerApp.new.container(Container.new))
+    start(ContainerApp.new.container(Container.new.http(Http.new.server(Server.new('http', '4080')))))
     system("openssl req -nodes -x509 -newkey rsa:4096 -keyout #{dirs.tmpdir}#{KEY_FILE} -out #{dirs.tmpdir}#{CERT_FILE} -days 365 -subj '/CN=#{@container.hostname}'")
     system("chmod 644 #{dirs.tmpdir}#{KEY_FILE} #{dirs.tmpdir}#{CERT_FILE}")
     @container.copy("#{dirs.tmpdir}#{KEY_FILE}", dirs.tmpdir)
     @container.copy("#{dirs.tmpdir}#{CERT_FILE}", dirs.tmpdir)
 
     # Deploy app with TLS secured endpoint
-    deploy(create_tls_secured_app)
+    output = deploy(create_tls_secured_app)
+    wait_for_reconfig(get_generation(output).to_i)
     response = https_get(@container.hostname, 4443, '/ApplicationStatus')
     assert(response.kind_of?(Net::HTTPSuccess), "Failed fetching /ApplicationStatus with tls: #{response.to_s}")
   end
