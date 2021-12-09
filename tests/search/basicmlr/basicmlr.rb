@@ -62,11 +62,6 @@ class BasicMLR < IndexedSearchTest
     wait_for_application(vespa.container.values.first, deploy_output)
     vespa.search['search'].first.wait_for_config_generation(get_generation(deploy_output).to_i)
 
-    # TODO: The above wait should wait until all was reconfigured.
-    if @valgrind
-        sleep 30
-    end
-
     assertDocuments
 
     # The top hits should now have relevancy scores around 4
