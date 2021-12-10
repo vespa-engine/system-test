@@ -40,12 +40,13 @@ class SyncHttp2Handler < SearchContainerTest
 
   def test_http2_plain_text_with_prior_knowledge
     response = @adminserver.execute("nghttp #{plain_text_http_url}")
-    assert "Hello, Factory!" == response.strip
+    assert_equal("Hello, Factory!", response.strip)
   end
 
   def test_http2_plain_text_with_upgrade
+    verbose_response = @adminserver.execute("nghttp --verbose --upgrade #{plain_text_http_url}")
     response = @adminserver.execute("nghttp --upgrade #{plain_text_http_url}")
-    assert "Hello, Factory!" == response.strip
+    assert_equal("Hello, Factory!", response.strip, "response: #{response}, verbose response from previous request: #{verbose_response}")
   end
 
   def plain_text_http_url
