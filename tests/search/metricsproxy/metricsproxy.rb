@@ -38,7 +38,7 @@ class MetricsProxy < IndexedSearchTest
 
     assert(json.has_key? 'services')
     services = json['services']
-    assert(services.size > 0)
+    assert(services.count > 0, services)
 
     services.each do |service|
       assert(service.has_key? 'name')
@@ -53,7 +53,7 @@ class MetricsProxy < IndexedSearchTest
   def verify_metrics_v2_api(container, port)
     puts "Verifying metrics/v2 on port #{port}"
     ignored_just_for_caching = container.search("/metrics/v2/values", port)
-    sleep 1 # Give time for metrics to be fetched and cached.
+    sleep 2 # Give time for metrics to be fetched and cached.
     result = container.search("/metrics/v2/values", port)
     json = result.json
 
@@ -67,7 +67,7 @@ class MetricsProxy < IndexedSearchTest
     assert(node.has_key? 'services')
 
     services = node['services']
-    assert(services.count > 0)
+    assert(services.count > 0, services)
 
     services.each do |service|
       assert(service.has_key? 'name')
