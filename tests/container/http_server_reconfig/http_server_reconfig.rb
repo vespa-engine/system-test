@@ -20,7 +20,6 @@ class HttpServerReconfig < ContainerTest
             #jvmargs('-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8998').
             jetty(true).
             http(my_http))
-
   end
 
   def test_two_servers_up_then_remove_one_server
@@ -33,9 +32,10 @@ class HttpServerReconfig < ContainerTest
 
     puts "*** Initial application with two servers ok. Redeploying with only one server..."
 
-    deploy(container_app(
-               Http.new.
-                   server(Server.new("server1", 4080))))
+    output = deploy(container_app(
+                      Http.new.
+                        server(Server.new("server1", 4080))))
+    wait_for_reconfig(get_generation(output).to_i)
     check_server(4080)
     check_server(5000, false)
   end
