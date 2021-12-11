@@ -51,8 +51,9 @@ class Reprocessing < VdsTest
     vespa.storage["storage"].storage["0"].execute("vespa-visit --datahandler \"skip/chain.skip-chain storage\"")
 
     # Deploy config without 'bodyfield'
-    output = deploy(selfdir + "setup2-docproc")
-    assert_log_matches("Application config generation: 3", 60)
+    deploy_output = deploy(selfdir + "setup2-docproc")
+    wait_for_application(vespa.container.values.first, deploy_output)
+    wait_for_reconfig(get_generation(deploy_output).to_i, 600, true)
 
     # Reprocess again, unknown fields should now be skipped and essentially disappear
     vespa.storage["storage"].storage["0"].execute("vespa-visit --datahandler \"reprocess/chain.reprocess-chain storage\"")
