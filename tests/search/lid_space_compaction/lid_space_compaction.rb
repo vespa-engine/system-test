@@ -427,8 +427,7 @@ class LidSpaceCompactionTest < SearchTest
     dmsmemusage2 = get_memory_usage("[documentmetastore]")
     puts "documentmetastore memory usage after compaction is #{dmsmemusage2}"
     assert(f2memusage2 == f2memusage1)
-    assert(dmsmemusage2 >= dmsmemusage1)
-    
+
     for i in 1..30
       proton.trigger_flush
       f2memusage3 = get_memory_usage("f2")
