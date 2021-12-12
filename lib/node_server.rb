@@ -1053,7 +1053,7 @@ def main(callback_endpoint)
 end
 
 if __FILE__ == $0
-  if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.6.0') && ! RUBY_PLATFORM =~ /darwin/
+  if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.6.0') && !( RUBY_PLATFORM =~ /darwin/ )
     # Ruby version >= 2.6.0 disables transparent hugepages for the process. This has negative effects
     # for forked processes and leads to a high number of interrupts (at least for the vespa-feed-perf client).
     # We fix this here by enabling the THP here before doing anything else.
