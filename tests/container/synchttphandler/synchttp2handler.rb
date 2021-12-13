@@ -24,6 +24,7 @@ class SyncHttp2Handler < SearchContainerTest
     start
     @container = vespa.container.values.first
     @adminserver = vespa.adminserver
+    @expected_response = 'Hello, Factory!'
   end
 
   def test_synchttphandler
@@ -35,18 +36,17 @@ class SyncHttp2Handler < SearchContainerTest
     end
     @container.execute("nghttp --stat #{args}")
     response = @adminserver.execute("nghttp #{args}")
-    assert "Hello, Factory!" == response.strip
+    assert_equal(@expected_response, response.strip)
   end
 
   def test_http2_plain_text_with_prior_knowledge
     response = @adminserver.execute("nghttp #{plain_text_http_url}")
-    assert_equal("Hello, Factory!", response.strip)
+    assert_equal(@expected_response, response.strip)
   end
 
   def test_http2_plain_text_with_upgrade
-    verbose_response = @adminserver.execute("nghttp --verbose --upgrade #{plain_text_http_url}")
-    response = @adminserver.execute("nghttp --upgrade #{plain_text_http_url}")
-    assert_equal("Hello, Factory!", response.strip, "response: #{response}, verbose response from previous request: #{verbose_response}")
+    response = @adminserver.execute("nghttp --verbose --upgrade #{plain_text_http_url}")
+    assert(response.strip =~ Regexp.new(@expected_response), "Expected response containing #{@expected_response}, response: #{response}")
   end
 
   def plain_text_http_url
