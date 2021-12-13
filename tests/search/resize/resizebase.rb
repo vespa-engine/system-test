@@ -77,7 +77,7 @@ module ResizeApps
     end
 
     def slack_maxhits
-      200
+      250
     end
 
     def slack_mindocs
@@ -958,7 +958,7 @@ class ResizeContentClusterBase < SearchTest
     @bignumdocs = 100000
     @rapp = nil
     @poll_state = nil
-    @valgrind=false
+    @valgrind = false
     @poll_queries = nil
     @explore_doc_count_vector = nil
   end
