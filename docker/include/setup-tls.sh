@@ -13,10 +13,7 @@ if [[ -n $(find /opt/rh -mindepth 1 -maxdepth 1 -type d -name "rh-ruby*") ]]; th
 fi
 
 # Auto generate cert and key
-env USER=$THE_USER /opt/vespa-systemtests/lib/node_server.rb &
-PID=$!
-sleep 3
-kill -9 $PID
+env USER=$THE_USER /opt/vespa-systemtests/lib/node_server.rb --generate-tls-env-and-exit
 
 # Setup the Vespa TLS config
 mkdir -p /opt/vespa/conf/vespa/tls
