@@ -1062,14 +1062,23 @@ if __FILE__ == $0
   end
 
   callback_endpoint = nil
+  callback_endpoint = nil
+  generate_tls_env_and_exit = false
 
   o = OptionParser.new
   o.on("-c", "--callbback HOST:PORT", String, "Host and port to use for registering this nodeserver", String) {|v| callback_endpoint = v}
+  o.on("-g", "--generate-tls-env-and-exit", "Only generate TLS environment files and exit.") {|v| generate_tls_env_and_exit = v}
   begin
     o.parse!(ARGV)
   rescue OptionParser::InvalidOption
     puts o.to_s
     exit 1
+  end
+
+  if generate_tls_env_and_exit
+    ENV.delete(TlsEnv::CONFIG_FILE_ENV_VAR)
+    TlsEnv.new
+    exit 0
   end
 
   main(callback_endpoint)
