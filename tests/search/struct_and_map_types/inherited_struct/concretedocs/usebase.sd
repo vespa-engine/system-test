@@ -1,13 +1,26 @@
-search usebase {
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search usebase inherits base {
   document usebase inherits base {
-    struct my_elem {
-      field desc type string {}
-      field nested type elem {}
-    }
+
+    # use inherited struct directly:
     field f2 type elem {}
-    field f3 type my_elem {}
-    field f4 type array<elem> {}
-    field f5 type array<my_elem> {}
-    field f6 type map<int, elem> {}
+    
+    # inherit from inherited struct:
+    struct xtend inherits elem {
+      field desc type string {}
+    }
+    field f3 type xtend {}
+
+    # use inherited struct inside another struct:
+    struct myperson {
+      field basicinfo type elem {}
+      field occupation type string {}
+    }
+
+    field f4 type myperson {}
+
+    # use inherited struct as a nested type:
+    field f5 type array<elem> {}
   }
 }

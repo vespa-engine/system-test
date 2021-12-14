@@ -1,22 +1,28 @@
 [
-  {
-    "put": "id:ns:usebase::0",
-    "fields": {
-      "f1": {
-          "name": "foo",
-          "weight": 10
-        },
-      "f2": {
-          "name": "bar",
-          "weight": 20
-        },
-      "f3": {
-          "desc": "short description",
-          "nested": {
-              "name": "nested bar",
-              "weight": 20
-          }
-        }    
+    {
+        "put": "id:ns:usebase::1",
+        "fields": {
+            "f1": {
+                "name": "foo",
+                "age": 10
+            },
+            "f2": {
+                "name": "bar",
+                "age": 20
+            },
+            "f3": {
+                "desc": "short description",
+                "name": "NN",
+                "age": 30
+            },
+            "f4": {
+                "basicinfo": {
+                    "name": "My Name Is",
+                    "age": 28
+                },
+                "occupation": "Rap Star"
+            },
+            "f5": [ { "name": "bar", "age": 3 }, { "name": "foo", "age": 2 } ]
+        }
     }
-  }
 ]
