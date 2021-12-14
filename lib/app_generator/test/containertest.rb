@@ -90,6 +90,32 @@ class ContainerAppGenTest < Test::Unit::TestCase
              .binding("http://*/goodbye"))))
   end
 
+  def test_container_app_with_gateway
+    actual =
+        Container.new.
+            documentapi(ContainerDocumentApi.new.gateway(true)).
+            to_xml('')
+    expected_substr =
+    '<container id="default" version="1.0">
+       <document-api />
+       <http>
+         <server id="default" port="19020" />
+       </http>'
+    assert_substring_ignore_whitespace(actual, expected_substr)
+  end
+
+  def test_container_app_with_concrete_docs
+    actual =
+        Container.new.
+            concretedoc(ConcreteDoc.new('foo')).
+            concretedoc(ConcreteDoc.new('bar').bundle('barbar').klass('ai.vespa.something.Bar')).
+            to_xml('')
+    expected_substr =
+    '<container id="default" version="1.0">
+       <document bundle="concretedocs" class="com.yahoo.concretedocs.Foo" type="foo" />
+       <document bundle="barbar" class="ai.vespa.something.Bar" type="bar" />'
+    assert_substring_ignore_whitespace(actual, expected_substr)
+  end
 
   def test_docproc_and_search_in_same
     verify('docproc_and_search_in_same_container.xml', ContainerApp.new\

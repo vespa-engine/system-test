@@ -16,7 +16,7 @@ class Container
   chained_setter :docproc
   chained_setter :processing
   chained_setter :http
-  chained_setter :gateway # todo: try to get rid of this, use :documentpi instead
+  chained_setter :gateway # todo: try to get rid of this, use :documentapi instead
   chained_setter :documentapi
   chained_setter :jvmargs
   chained_setter :jvmgcoptions
@@ -25,11 +25,13 @@ class Container
   chained_forward :config, :config => :add
   chained_forward :handlers, :handler => :push
   chained_forward :components, :component => :push
+  chained_forward :concretedocs, :concretedoc => :push
 
   def initialize(id = "default")
     @config = ConfigOverrides.new
     @handlers = []
     @components = []
+    @concretedocs = []
     @nodes = []
     @id = id
     @baseport = 0
@@ -70,6 +72,7 @@ class Container
       to_xml(@config).
       to_xml(@search).
       to_xml(@docproc).
+      to_xml(@concretedocs).
       to_xml(@processing).
       to_xml(@gateway).
       to_xml(@documentapi).
@@ -160,18 +163,24 @@ class ContainerDocumentApi
 
   chained_setter :abortondocumenterror
   chained_setter :timeout
+  chained_setter :gateway
 
   def initialize()
     @abortondocumenterror = nil
     @timeout = nil
+    @gateway = nil
   end
 
   def to_xml(indent)
-    XmlHelper.new(indent).
+    h = XmlHelper.new(indent).
       tag_always("document-api").
       tag("abortondocumenterror").content(@abortondocumenterror).close_tag.
       tag("timeout").content(@timeout).close_tag.
-      to_s
+      close_tag
+    if @gateway
+      h.tag('http').tag('server', :id => 'default', :port => '19020').close_tag.close_tag
+    end
+    h.to_s
   end
 
 end
@@ -281,5 +290,33 @@ class AccessLog
           :symlinkName => @symlinkName,
           :compressionFormat => @compressionFormat,
           :rotationInterval => @rotationInterval).to_s
+  end
+end
+
+class ConcreteDoc
+  include ChainedSetter
+
+  chained_setter :klass
+  chained_setter :config
+  chained_setter :bundle
+
+  def initialize(name)
+    @name = name
+    @config = ConfigOverrides.new
+    @bundle = 'concretedocs'
+    @klass = 'com.yahoo.concretedocs.' + name.capitalize
+  end
+
+  def to_xml(indent="")
+    dump_xml(indent)
+  end
+
+  def dump_xml(indent="", tagname='document')
+    XmlHelper.new(indent).
+        tag(tagname,
+            :type => @name,
+            :bundle => @bundle,
+            :class => @klass).
+        to_xml(@config).to_s
   end
 end
