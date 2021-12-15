@@ -122,9 +122,6 @@ class ConfigRestApiV2 < CloudConfigTest
     if (url.end_with?("container.jdisc.jdisc-bindings/container"))
       assert_equal("http://*/search/*", resj["handlers"]["com.yahoo.search.handler.SearchHandler"]["serverBindings"][0])
     end
-    if (url.end_with?("document.config.documentmanager"))
-      assert_equal(1381038251, resj["datatype"][0]["id"])
-    end
   end
     
   def execute_http_request(url)
