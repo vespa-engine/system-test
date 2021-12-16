@@ -146,7 +146,7 @@ class Hit
     if (@comparablefields)
       return fields(@comparablefields) == other.fields(@comparablefields)
     else
-      return other.comparable_fields == other.comparable_fields
+      return comparable_fields == other.comparable_fields
     end
   end
 
