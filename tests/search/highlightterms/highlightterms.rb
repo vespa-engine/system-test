@@ -32,13 +32,6 @@ class HighlightTerms < IndexedSearchTest
     assert_result("query=blues", selfdir + "musicbooks.result.xml", "title", ["title", "categories"])
   end
 
-  def test_highlightterms_ngram
-    deploy_app(SearchApp.new.sd(selfdir+"ngram_sd/doc.sd"))
-    start
-    feed_and_wait_for_docs("doc", 1, :file => selfdir + "ngram_docs.json")
-    assert_result("yql=select+*+from+doc+where+content+contains+%22doc%22%3B&format=json", selfdir + "ngram.0.result.json", "documentid", ["content"])
-  end
-
   def teardown
     stop
   end
