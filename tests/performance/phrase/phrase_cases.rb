@@ -27,7 +27,7 @@ class PhraseCasesPerformanceTest < PerformanceTest
   def write_queries(query, qfn)
     File.open(qfn, 'w') do |f|
       (1..99999).each do |num|
-        f.puts("/search/?query=phrases:#{query}+-title:#{num}&recall=%2Bphrases:fifty")
+        f.puts("/search/?query=phrases:#{query}+-title:#{num}&recall=%2Bphrases:fifty&model.locale=en-US")
       end
     end
   end

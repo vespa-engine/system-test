@@ -27,7 +27,8 @@ class ContainerGcTest < PerformanceTest
                     'Uses a Simple Searcher with Mock Hits using G1GC')
     container = (vespa.qrserver['0'] or vespa.container.values.first)
     @queryfile = dirs.tmpdir + "/queries.txt"
-    container.write_queries(template: 'text:$words() AND text:$words() AND text:$words()', count: 1000000, filename: @queryfile)
+    container.write_queries(template: 'text:$words() AND text:$words() AND text:$words()', count: 1000000,
+                            parameters: { "model.locale" => "en-US" }, filename: @queryfile)
     profiler_start
     run_fbench(container, 128, 60, [parameter_filler('legend', 'test_container_search_performance_g1gc'),
                                      metric_filler('memory.rss', container.memusage_rss(container.get_pid))])
