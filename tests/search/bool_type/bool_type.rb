@@ -58,7 +58,7 @@ class BoolTypeTest < SearchTest
   end
 
   def get_query(expr)
-    "yql=select %2a from sources %2a where " + expr + "%3b&model.restrict=#{@doctype}"
+    "yql=select %2a from sources %2a where " + expr + "&model.restrict=#{@doctype}"
   end
 
   def get_docid(id)

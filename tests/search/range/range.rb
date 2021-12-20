@@ -68,7 +68,7 @@ class RangeSearch < IndexedSearchTest
   end
 
   def check_yql(field, term, hits)
-    assert_hitcount("yql=select %2a from sources %2a where " + field + " contains \"" + term + "\"%3b", hits)
+    assert_hitcount("yql=select %2a from sources %2a where " + field + " contains \"" + term + "\"", hits)
   end
 
   def check_normal_ranges_yql(field)

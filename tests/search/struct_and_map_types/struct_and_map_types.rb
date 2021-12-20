@@ -203,14 +203,14 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def assert_same_element(field, same_element, exp_hitcount, extra_params = "")
-    query = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})%3b&streaming.selection=true#{extra_params}"
+    query = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})&streaming.selection=true#{extra_params}"
     puts "assert_same_element(#{query}, #{exp_hitcount})"
     assert_hitcount(query, exp_hitcount)
   end
 
   def assert_same_element_single(field, same_element, exp_hitcount, extra_params = "")
-    query = "yql=select %2a from sources %2a where #{field}.#{same_element}%3b&streaming.selection=true#{extra_params}"
-    query_same = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})%3b&streaming.selection=true#{extra_params}"
+    query = "yql=select %2a from sources %2a where #{field}.#{same_element}&streaming.selection=true#{extra_params}"
+    query_same = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})&streaming.selection=true#{extra_params}"
     assert_hitcount(query, exp_hitcount)
     assert_hitcount(query_same, exp_hitcount)
   end

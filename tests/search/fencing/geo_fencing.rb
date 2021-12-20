@@ -45,7 +45,7 @@ def test_with_geo_fencing
 
     yqlpre = 'select * from fencing'
     yqltxt = 'title contains "pizza"'
-    yqllbl = '[{"label":"foobar"}]'
+    yqllbl = '[{label:"foobar"}]'
 
     semicolon = "%3B"
     # 1c) Near two docs: California, USA
@@ -62,7 +62,7 @@ def test_with_geo_fencing
 
     # Same as 1c, with YQL:
     yqlgeo = 'geoLocation("center", 37.4, -122.0, "-1m")'
-    yql = URI::encode("#{yqlpre} where #{yqltxt} and (#{yqllbl} #{yqlgeo});")
+    yql = URI::encode("#{yqlpre} where #{yqltxt} and (#{yqllbl} #{yqlgeo})")
     qry = "yql=" + yql + crank
     # save_result(qry, selfdir+"out-1.xml")
     assert_result(qry, selfdir+"out-1.xml")

@@ -263,12 +263,12 @@ class NearestNeighborTest < IndexedSearchTest
     filter = qprops[:filter]
     text = qprops[:text]
 
-    result = "yql=select * from sources * where [{\"targetNumHits\": #{target_num_hits},"
-    result += "\"approximate\": #{approx}," if approx
-    result += "\"label\": \"nns\"}] nearestNeighbor(#{doc_tensor},#{query_tensor})"
+    result = "yql=select * from sources * where [{targetNumHits: #{target_num_hits},"
+    result += "approximate: #{approx}," if approx
+    result += "label: \"nns\"}] nearestNeighbor(#{doc_tensor},#{query_tensor})"
     result += " and filter contains \"#{filter}\"" if filter
     result += " or text contains \"#{text}\"" if text
-    result += ";&ranking.features.query(#{query_tensor})={{x:0}:#{x_0},{x:1}:#{x_1}}"
+    result += "&ranking.features.query(#{query_tensor})={{x:0}:#{x_0},{x:1}:#{x_1}}"
     result += "&ranking.profile=combined" if qprops[:combined]
     return result
   end

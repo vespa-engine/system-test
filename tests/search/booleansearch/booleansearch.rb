@@ -342,7 +342,7 @@ class BooleanSearchTest < SearchTest
   def run_query_with_conjunction_of_two_different_predicate_fields()
     assert_summary_features_matches(
       'select * from sources * where predicate(predicate_field, {"0x1":{"gender":"Female"}}, {}) '\
-      'AND predicate(second_predicate, {"0x2":{"gender":"Female"}}, {});',
+      'AND predicate(second_predicate, {"0x2":{"gender":"Female"}}, {})',
       {
         "subqueries(predicate_field).lsb" => 1,
         "subqueries(predicate_field).msb" => 0,
@@ -355,7 +355,7 @@ class BooleanSearchTest < SearchTest
   def run_query_with_conjunction_of_same_predicate_field()
     assert_summary_features_matches(
       'select * from sources * where predicate(second_predicate, {"0x1":{"gender":"Female"}}, {}) '\
-      'AND predicate(second_predicate, {"0x2":{"gender":"Female"}}, {});',
+      'AND predicate(second_predicate, {"0x2":{"gender":"Female"}}, {})',
       {
         "subqueries(second_predicate).lsb" => 3,
         "subqueries(second_predicate).msb" => 0
@@ -497,7 +497,7 @@ class BooleanSearchTest < SearchTest
 
   def get_query(field, attributes, range_attributes)
     return "/search/?query=&nocache&yql=select * from sources * where "\
-    "predicate(#{field}, #{attributes}, #{range_attributes});"
+    "predicate(#{field}, #{attributes}, #{range_attributes})"
   end
 
   def assert_search(attributes, range_attributes, expected_hits,

@@ -22,7 +22,7 @@ class RegExp < IndexedSearchTest
   end
 
   def make_query(a)
-    my_query = "query=" + CGI::escape("select * from sources * where #{a};") + "&type=yql"
+    my_query = "query=" + CGI::escape("select * from sources * where #{a}") + "&type=yql"
   end
 
   def check_regexp_hits(expr, chunk_hits, fields)

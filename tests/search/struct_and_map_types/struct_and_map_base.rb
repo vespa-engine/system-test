@@ -2,7 +2,7 @@
 module StructAndMapBase
 
   def assert_same_element_summary(field, same_element, summary, summary_field, exp_summary_field)
-    form = [["yql", "select * from sources * where #{field} contains sameElement(#{same_element});"],
+    form = [["yql", "select * from sources * where #{field} contains sameElement(#{same_element})"],
             ["summary", summary ],
             ["format", "json" ],
             ["streaming.selection", "true"],
@@ -11,7 +11,7 @@ module StructAndMapBase
   end
 
   def assert_same_element_single_summary(field, same_element, summary, summary_field, exp_summary_field)
-    form = [["yql", "select * from sources * where #{field}.#{same_element};"],
+    form = [["yql", "select * from sources * where #{field}.#{same_element}"],
             ["summary", summary ],
             ["format", "json" ],
             ["streaming.selection", "true"],

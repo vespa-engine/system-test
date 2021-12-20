@@ -103,7 +103,7 @@ class SameElementPerformanceTest < CollectionPerfTestBase
   end
 
   def same_element_yql_query(field, same_element)
-    "select * from sources * where #{field} contains sameElement(#{same_element});"
+    "select * from sources * where #{field} contains sameElement(#{same_element})"
   end
 
   def write_query_to_disk(query)
