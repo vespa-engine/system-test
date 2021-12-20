@@ -12,8 +12,10 @@ class ZooKeeper < CloudConfigTest
     deploy_app(CloudconfigApp.new)
 
     output = vespa.nodeproxies.values.first.execute("vespa-zkflw localhost 2181 srvr |head -n 1")
+    line_of_interest = output.split("\n").select { |line| line.start_with?('Zookeeper version:') }.first
+
     expected_version = "3.7"
-    assert(output.start_with?("Zookeeper version: #{expected_version}"),
+    assert(line_of_interest.start_with?("Zookeeper version: #{expected_version}"),
            "Expected ZooKeeper version to be #{expected_version}, another version found in output: #{output}")
   end
 
