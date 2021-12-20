@@ -1,16 +1,11 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class TestTypes < IndexedSearchTest
-  # VESPA [2.16][3.2]
-  # Description: Index different attribute types
-  #              (string, integer, float, BLOB, timestamp, long, byte)"
-  # Component: Document, Indexing etc
-  # Feature: Different attribute types
 
   def setup
     set_owner("musum")
+    set_description("Index different attribute types: string, integer, float, BLOB, timestamp, long, byte")
     deploy_app(SearchApp.new.enable_http_gateway.sd(selfdir + "typetest.sd"))
     start
   end
@@ -20,7 +15,8 @@ class TestTypes < IndexedSearchTest
     start
     run_test(selfdir + "legacy/testtypes.result.xml")
 
-    deploy_app(SearchApp.new.enable_http_gateway.sd(selfdir + "typetest.sd"))
+    output = deploy_app(SearchApp.new.enable_http_gateway.sd(selfdir + "typetest.sd"))
+    wait_for_reconfig(get_generation(output).to_i)
     run_test(selfdir + "testtypes.result.xml")
   end
 
