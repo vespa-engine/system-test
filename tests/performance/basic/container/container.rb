@@ -61,7 +61,7 @@ class BasicContainer < PerformanceTest
 
   def test_container_yql_performance
     set_description('Test basic search container with opennlp and YQL query parsing. Uses a Simple Searcher with Mock Hits')
-    benchmark_queries('select * from sources * where text contains "$words()" AND weightedSet(text, { ' (['"$words()": 1'] * 10).join(', ') +' });', true, true)
+    benchmark_queries('select * from sources * where text contains "$words()" AND weightedSet(text, { ' + (['"$words()": 1'] * 10).join(', ') +' });', true, true)
   end
 
 end
