@@ -4,6 +4,9 @@
     <adminserver hostalias="node1"/>
   </admin>
   <container id="search" version="1.0">
+    <config name="language.lib.langdetect.langdetect"> <!-- not defined for all platforms -->
+      <enabled>true</enabled>
+    </config>
     <nodes jvmargs=" -verbose:gc -Xms8g -Xmx8g -XX:NewRatio=1 -XX:+PrintGCDetails ">
     <!--<nodes jvmargs="-agentlib:yjpagent -verbose:gc -Xms8g -Xmx8g -Dvespa.freezedetector.disable=true -XX:NewRatio=1 -XX:+PrintGCDetails">-->
       <node hostalias='node1'/>
