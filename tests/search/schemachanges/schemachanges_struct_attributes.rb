@@ -16,15 +16,15 @@ class SchemaChangesStructAttribute < SearchTest
   end
 
   def assert_add_attribute_hitcount(f1_cnt, f2_cnt)
-    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f1 contains \"foo\")%3b", f1_cnt)
-    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f2 contains \"bar\")%3b", f2_cnt)
+    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f1 contains \"foo\")", f1_cnt)
+    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f2 contains \"bar\")", f2_cnt)
   end
 
   def assert_remove_attribute_hitcount(f1_foocnt, f1_bazcnt, f2_barcnt, f2_baycnt)
-    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f1 contains \"foo\")%3b&nocache", f1_foocnt)
-    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f1 contains \"baz\")%3b&nocache", f1_bazcnt)
-    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f2 contains \"bar\")%3b&nocache", f2_barcnt)
-    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f2 contains \"bay\")%3b&nocache", f2_baycnt)
+    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f1 contains \"foo\")&nocache", f1_foocnt)
+    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f1 contains \"baz\")&nocache", f1_bazcnt)
+    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f2 contains \"bar\")&nocache", f2_barcnt)
+    assert_hitcount("yql=select %2a from sources %2a where elem_array contains sameElement(f2 contains \"bay\")&nocache", f2_baycnt)
   end
 
   def redeploy_no_reprocess(sd_file)

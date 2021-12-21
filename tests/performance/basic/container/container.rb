@@ -50,7 +50,7 @@ class BasicContainer < PerformanceTest
 
   def test_container_yql_performance
     set_description('Test basic search container with opennlp and YQL query parsing. Uses a Simple Searcher with Mock Hits')
-    benchmark_queries('select * from sources * where text contains "$words()" AND text contains "$words()" AND text contains "$words()";', true, true)
+    benchmark_queries('select * from sources * where text contains "$words()" AND text contains "$words()" AND text contains "$words()"', true, true)
   end
 
 end
