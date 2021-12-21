@@ -6,7 +6,7 @@ require 'app_generator/search_app'
 class DocumentV1Test < SearchTest
 
   def setup
-    set_owner("valerijf")
+    set_owner("jonmv")
     set_description("Test operations in document/v1 api.")
   end
 
@@ -159,7 +159,7 @@ class DocumentV1Test < SearchTest
     response = http.post("/document/v1/fruit/banana/docid/doc1", feedDataBroken, httpheaders)
     assert_equal("400", response.code)
     assert_match /No field 'habla babla' in the structure of type 'banana'/, response.body
-    #
+
     puts "Update, with create = false"
     response = http.put("/document/v1/fruit/banana/docid/doc1?create=false", feedDataUpdate, httpheaders)
     assert_equal("200", response.code)
@@ -169,7 +169,7 @@ class DocumentV1Test < SearchTest
     response = http.get("/document/v1/fruit/banana/docid/doc1")
     assert_equal("404", response.code)
 
-    puts "Conditional update, with true condition"
+    puts "Update with create = true"
     response = http.put("/document/v1/fruit/banana/docid/doc1?create=true", feedDataUpdate, httpheaders)
     assert_equal("200", response.code)
     assert_json_string_equal(
@@ -275,7 +275,10 @@ class DocumentV1Test < SearchTest
     end
     assert_equal(0, found)
 
-    assert(verify_with_retries(http, {"PUT" => 3504, "UPDATE" => 3, "REMOVE" => 2}, {"PUT" => 4, "REMOVE" => 1}))
+    assert(verify_with_retries(http,
+                               { "PUT" => 3504, "UPDATE" => 3, "REMOVE" => 2 },
+                               { "PUT" => 4, "REMOVE" => 1 },
+                               { "httpapi_condition_not_met" => 3, "httpapi_not_found" => 1, "httpapi_failed" => 0, "httpapi_succeeded" => 3508 }))
   end
 
   def deploy_application
@@ -294,22 +297,23 @@ class DocumentV1Test < SearchTest
     http
   end
 
-  def verify_with_retries(http, success_ops= {}, failed_ops = {})
+  def verify_with_retries(http, success_ops, failed_ops, http_api_metrics)
     for i in 0..10
-      if verify_metrics(http, success_ops, failed_ops)
+      if verify_metrics(http, success_ops, failed_ops, http_api_metrics)
         return true
       end
       sleep(0.5)
     end
-    return verify_metrics(http, success_ops, failed_ops, true)
+    return verify_metrics(http, success_ops, failed_ops, http_api_metrics, true)
   end
 
-  def verify_metrics(http, success_ops, failed_ops, errors = false)
+  def verify_metrics(http, success_ops, failed_ops, http_api_metrics, errors = false)
     metrics_json = JSON.parse(http.get("/state/v1/metrics").body)
     metrics = metrics_json["metrics"]["values"]
 
     expect_metrics = {"OK" => success_ops, "REQUEST_ERROR" => failed_ops}
     actual_metrics = {"OK" => {}, "REQUEST_ERROR" => {}}
+    actual_http_metrics = {}
     for metric in metrics
       if metric["name"] == "feed.operations"
         status = metric["dimensions"]["status"]
@@ -317,16 +321,21 @@ class DocumentV1Test < SearchTest
         value = metric["values"]["count"]
         actual_metrics[status][operation] = value
       end
+      if http_api_metrics.has_key? metric["name"]
+        actual_http_metrics[metric["name"]] = metric["values"]["count"]
+      end
     end
 
-    if actual_metrics == expect_metrics
+    if actual_metrics == expect_metrics && actual_http_metrics == http_api_metrics
       return true
     else
       if errors
         puts "Expected feed metrics to be:"
         puts expect_metrics
+        puts http_api_metrics
         puts "But actually got:"
         puts actual_metrics
+        puts actual_http_metrics
       end
       return false
     end
