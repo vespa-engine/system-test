@@ -39,12 +39,12 @@ class BasicContainer < PerformanceTest
   end
 
   def test_container_search_performance
-    set_description('Test basic search container with opennlp, language detection and simple query parsing. Uses a Simple Searcher with Mock Hits')
+    set_description('Test basic search container with opennlp and simple query parsing. Uses a Simple Searcher with Mock Hits')
     benchmark_queries('text:$words() AND text:$words() AND text:$words()', false, true)
   end
 
   def test_lang_detect_performance
-    set_description('Test basic search container with opennlp and simple query parsing. Uses a Simple Searcher with Mock Hits')
+    set_description('Test basic search container with opennlp, language detection and simple query parsing. Uses a Simple Searcher with Mock Hits')
     template = "$pick(1,
       Yahoo became a public company via an initial public offering in April 1996 and its stock price rose 600% within two years.,
       1996 ging Yahoo mit 46 Angestellten an die Börse. 2009 arbeiteten insgesamt rund 13.500 Mitarbeiter für Yahoo.,
