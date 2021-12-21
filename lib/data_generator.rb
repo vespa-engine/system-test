@@ -18,7 +18,7 @@ class DataGenerator
   # A command which will generate documents from a template. Template output may contain
   # characters [a-zA-Z0-9_.'-], all of which should be permissible as part of, e.g., JSON.
   def feed_command(template:, count: nil, data: nil)
-    "#{data or @cat} | #{@run} feed template '#{template}'#{" count #{count}" if count}"
+    "#{data or @cat} | #{@run} feed template #{shell_quoted(template)}#{" count #{count}" if count}"
   end
 
   # A command which will generate simple or yql queries from a template.
@@ -32,7 +32,11 @@ class DataGenerator
   def url_command(template:, path:, count: nil, parameters: {}, data: nil)
     query = parameters.map { |k, v| encode(k) + "=" + encode(v) }.join("&")
     query = (path =~ /\?/ ? "&" : "?") + query unless query.empty?
-    "#{data or @cat} | #{@run} url template '#{template}' prefix '#{path}' suffix '#{query}'#{" count #{count}" if count}"
+    "#{data or @cat} | #{@run} url template #{shell_quoted(template)} prefix #{shell_quoted(path)} suffix #{shell_quoted(query)}#{" count #{count}" if count}"
+  end
+
+  def shell_quoted(arg_to_single_quote)
+    "'#{arg_to_single_quote.gsub(/'/, "'\"'\"'")}'"
   end
 
   def encode(object)
