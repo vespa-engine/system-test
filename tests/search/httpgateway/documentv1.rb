@@ -278,7 +278,7 @@ class DocumentV1Test < SearchTest
     assert(verify_with_retries(http,
                                { "PUT" => 3504, "UPDATE" => 3, "REMOVE" => 2 },
                                { "PUT" => 4, "REMOVE" => 1 },
-                               { "httpapi_condition_not_met" => 3, "httpapi_not_found" => 1, "httpapi_failed" => 0, "httpapi_succeeded" => 3508 }))
+                               { "httpapi_condition_not_met" => 3, "httpapi_not_found" => 1, "httpapi_succeeded" => 3508 }))
   end
 
   def deploy_application
