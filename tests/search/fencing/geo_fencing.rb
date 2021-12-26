@@ -45,7 +45,7 @@ def test_with_geo_fencing
 
     yqlpre = 'select * from fencing'
     yqltxt = 'title contains "pizza"'
-    yqllbl = '[{label:"foobar"}]'
+    yqllbl = '{label:"foobar"}'
 
     semicolon = "%3B"
     # 1c) Near two docs: California, USA

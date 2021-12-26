@@ -134,10 +134,10 @@ class GeoNnsTest < IndexedSearchTest
     threshold = qprops[:threshold]
     max_hits = qprops[:max_hits] || target_num_hits
 
-    result = "yql=select * from sources * where [{targetNumHits: #{target_num_hits},"
+    result = "yql=select * from sources * where {targetNumHits: #{target_num_hits},"
     result += "approximate: #{approx}," if approx
     result += "distanceThreshold: #{threshold}," if threshold
-    result += "label: \"nns\"}] nearestNeighbor(#{doc_tensor},#{query_tensor})"
+    result += "label: \"nns\"} nearestNeighbor(#{doc_tensor},#{query_tensor})"
     result += " and text contains \"#{filter}\"" if filter
     result += "&ranking.features.query(#{query_tensor})={{x:0}:#{x_0},{x:1}:#{x_1}}"
     result += "&hits=#{max_hits}"
