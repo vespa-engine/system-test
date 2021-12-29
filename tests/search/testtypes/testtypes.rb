@@ -6,8 +6,6 @@ class TestTypes < IndexedSearchTest
   def setup
     set_owner("musum")
     set_description("Index different attribute types: string, integer, float, BLOB, timestamp, long, byte")
-    deploy_app(SearchApp.new.enable_http_gateway.sd(selfdir + "typetest.sd"))
-    start
   end
 
   def test_types
@@ -37,7 +35,6 @@ class TestTypes < IndexedSearchTest
   end
 
   def verify(expected)
-
     # Query: String search
     assert_result("query=%2bstringfield:is%20%2bstringfield:a", expected)
 
@@ -50,7 +47,6 @@ class TestTypes < IndexedSearchTest
     assert_hitcount('yql=select+%2A+from+sources+%2A+where+boolfield+contains+"false"%3B', 0)
     assert_hitcount('yql=select+%2A+from+sources+%2A+where+boolfield=true%3B', 1)
     assert_hitcount('yql=select+%2A+from+sources+%2A+where+boolfield=false%3B', 0)
-
   end
 
   def teardown
