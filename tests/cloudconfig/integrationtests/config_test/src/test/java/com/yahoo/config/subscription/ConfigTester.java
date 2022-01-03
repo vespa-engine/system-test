@@ -36,13 +36,6 @@ public class ConfigTester implements AutoCloseable {
 
     private static final java.util.logging.Logger log = Logger.getLogger(ConfigTester.class.getName());
 
-    TestConfigServer cServer1;
-    TestConfigServer cServer2;
-    TestConfigServer cServer3;
-    Thread cS1;
-    Thread cS2;
-    Thread cS3;
-
     private static final PortRange portRange = new PortRange();
     private final HashMap<TestConfigServer, Thread> configServerCluster = new HashMap<>();
 
@@ -59,32 +52,23 @@ public class ConfigTester implements AutoCloseable {
     }
 
     public TestConfigServer startOneConfigServer() {
-        cServer1 = createConfigServer();
-        log.log(LogLevel.DEBUG, "starting configserver on port: " + cServer1.getSpec().port());
-        cS1 = startOneConfigServer(cServer1);
-        configServerCluster.put(cServer1, cS1);
-        return cServer1;
+        TestConfigServer server = createConfigServer();
+        log.log(LogLevel.DEBUG, "starting configserver on port: " + server.getSpec().port());
+        Thread thread = startConfigServer(server);
+        configServerCluster.put(server, thread);
+        return server;
     }
 
-    /**
-     * 3 sources with given configs dir
-     */
-    public ConfigSourceSet setUp3ConfigServers(String configDir) {
-        cServer1 = createConfigServer();
-        cS1 = startOneConfigServer(cServer1);
-        cServer2 = createConfigServer();
-        cS2 = startOneConfigServer(cServer2);
-        cServer3 = createConfigServer();
-        cS3 = startOneConfigServer(cServer3);
+    public void start3ConfigServers() {
+        startOneConfigServer();
+        startOneConfigServer();
+        startOneConfigServer();
+    }
 
-        configServerCluster.put(cServer1, cS1);
-        configServerCluster.put(cServer2, cS2);
-        configServerCluster.put(cServer3, cS3);
-
-        deployOn3ConfigServers(configDir);
+    public ConfigSourceSet configSourceSet() {
         return new ConfigSourceSet(
                 configServerCluster.keySet().stream()
-                        .map(configServer -> configServer.getSpec().toString()).collect(Collectors.toList()));
+                                   .map(configServer -> configServer.getSpec().toString()).collect(Collectors.toList()));
     }
 
     public void stopConfigServer(TestConfigServer cs) {
@@ -101,11 +85,11 @@ public class ConfigTester implements AutoCloseable {
     }
 
     /**
-     * Returns RPC connect spec for config server.
+     * Returns RPC connect spec for a config server (an arbitrary server if there are more than one).
      *
      * @return a Spec for the running ConfigServer
      */
-    public Spec getConfigServerSpec() { return cServer1.getSpec(); }
+    public Spec getConfigServerSpec() { return getConfigServer().getSpec(); }
 
     public static TimingValues timingValues() { return new TimingValues(
             2000,  // successTimeout
@@ -115,7 +99,7 @@ public class ConfigTester implements AutoCloseable {
             0);   // fixedDelay
     }
 
-    public TestConfigServer getConfigServer() { return cServer1; }
+    public TestConfigServer getConfigServer() { return configServerCluster.keySet().iterator().next(); }
 
     public ConfigSubscriber getSubscriber() {
         return subscriber;
@@ -178,14 +162,14 @@ public class ConfigTester implements AutoCloseable {
         return new TestConfigServer(findAvailablePort(), "configs/def-files", "configs/foo");
     }
 
-    private Thread startOneConfigServer(TestConfigServer configServer) {
+    private Thread startConfigServer(TestConfigServer configServer) {
         Thread t = new Thread(configServer);
         t.start();
         ensureServerRunning(configServer);
         return t;
     }
 
-    public void deployOn3ConfigServers(String configDir) {
+    public void deploy(String configDir) {
         for (TestConfigServer cfgServer : configServerCluster.keySet()) {
             cfgServer.deployNewConfig(configDir);
         }

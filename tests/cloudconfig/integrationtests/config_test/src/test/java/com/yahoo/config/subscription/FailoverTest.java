@@ -40,7 +40,9 @@ public class FailoverTest {
      */
     public void testBasicFailoverInduced() {
         try (ConfigTester tester = new ConfigTester()) {
-            ConfigSourceSet sources = tester.setUp3ConfigServers("configs/foo0");
+            tester.start3ConfigServers();
+            tester.deploy("configs/foo0");
+            ConfigSourceSet sources = tester.configSourceSet();
 
             subscriber = new ConfigSubscriber(sources);
             TimingValues timingValues = ConfigTester.timingValues();
@@ -58,7 +60,7 @@ public class FailoverTest {
             assertNextConfigHasNotChanged(subscriber, bh, fh);
 
             log.info("Reconfiguring to foo1/");
-            tester.deployOn3ConfigServers("configs/foo1");
+            tester.deploy("configs/foo1");
             boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess, false);
             assertTrue(newConf);
             assertFalse(bh.isChanged());
@@ -67,7 +69,7 @@ public class FailoverTest {
             assertEquals("1foo", fh.getConfig().fooValue());
 
             log.info("Reconfiguring to foo2/");
-            tester.deployOn3ConfigServers("configs/foo2");
+            tester.deploy("configs/foo2");
             newConf = subscriber.nextConfig(waitWhenExpectedSuccess, false);
             assertTrue(newConf);
             assertTrue(bh.isChanged());
@@ -76,7 +78,7 @@ public class FailoverTest {
             assertEquals("1foo", fh.getConfig().fooValue());
 
             log.info("Redeploying foo2/");
-            tester.deployOn3ConfigServers("configs/foo2");
+            tester.deploy("configs/foo2");
             assertNextConfigHasNotChanged(subscriber, bh, fh);
         }
     }
@@ -84,7 +86,9 @@ public class FailoverTest {
     @Test
     public void testFailoverInvisibleToSubscriber() {
         try (ConfigTester tester = new ConfigTester()) {
-            ConfigSourceSet sources = tester.setUp3ConfigServers("configs/foo0");
+            tester.start3ConfigServers();
+            tester.deploy("configs/foo0");
+            ConfigSourceSet sources = tester.configSourceSet();
 
             subscriber = new ConfigSubscriber(sources);
             TimingValues timingValues = ConfigTester.timingValues();
@@ -119,9 +123,9 @@ public class FailoverTest {
     public void testFailoverOneSpec() {
         try (ConfigTester tester = new ConfigTester()) {
             tester.startOneConfigServer();
-            ConfigSourceSet set = tester.sourceSet();
-            tester.getConfigServer().deployNewConfig("configs/foo0");
+            tester.deploy("configs/foo0");
 
+            ConfigSourceSet set = tester.sourceSet();
             subscriber = new ConfigSubscriber(set);
             TimingValues timingValues = ConfigTester.timingValues();
             ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", set, timingValues);
@@ -136,7 +140,9 @@ public class FailoverTest {
     @Test
     public void testBasicFailover() throws InterruptedException {
         try (ConfigTester tester = new ConfigTester()) {
-            ConfigSourceSet sources = tester.setUp3ConfigServers("configs/foo0");
+            tester.start3ConfigServers();
+            tester.deploy("configs/foo0");
+            ConfigSourceSet sources = tester.configSourceSet();
             subscriber = new ConfigSubscriber(sources);
             TimingValues timingValues = ConfigTester.timingValues();
             ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", sources, timingValues);
@@ -155,7 +161,7 @@ public class FailoverTest {
             //assertFalse(subscriber.nextConfig(waitWhenExpectedFailure));
             // Change config on servers (including whatever one we stopped earlier, not in use anyway), verify subscriber is working
             log.info("Reconfiguring to foo1/, current generation " + subscriber.getGeneration());
-            tester.deployOn3ConfigServers("configs/foo1");
+            tester.deploy("configs/foo1");
 
             // Want to see a reconfig here, sooner or later
             for (int i = 0; i < 10; i++) {

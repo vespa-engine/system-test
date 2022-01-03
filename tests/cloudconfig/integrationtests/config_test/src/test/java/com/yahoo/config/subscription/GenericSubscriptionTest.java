@@ -251,7 +251,9 @@ public class GenericSubscriptionTest {
     public void testFailoverGenericSubscriberNextGenerationLoop() {
         LogSetup.initVespaLogging("test");
         try (ConfigTester tester = new ConfigTester()) {
-            ConfigSourceSet sources = tester.setUp3ConfigServers("configs/foo0");
+            tester.start3ConfigServers();
+            tester.deploy("configs/foo0");
+            ConfigSourceSet sources = tester.configSourceSet();
 
             JRTConfigRequester requester = new JRTConfigRequester(new JRTConnectionPool(sources), timingValues());
             GenericConfigSubscriber genSubscriber = new GenericConfigSubscriber(requester);
@@ -272,7 +274,7 @@ public class GenericSubscriptionTest {
             assertPayloadMatches(fh, ".*fooValue.*0foo.*");
 
             // Redeploy some time after a failover
-            tester.deployOn3ConfigServers("configs/foo1");
+            tester.deploy("configs/foo1");
             assertTrue(genSubscriber.nextConfig(waitWhenExpectedSuccess, false));
             assertFalse(bh.isChanged());
             assertTrue(fh.isChanged());
