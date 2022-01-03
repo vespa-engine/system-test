@@ -107,7 +107,7 @@ public class ConfigTester implements AutoCloseable {
      */
     public Spec getConfigServerSpec() { return cServer1.getSpec(); }
 
-    public static TimingValues getTestTimingValues() { return new TimingValues(
+    public static TimingValues timingValues() { return new TimingValues(
             2000,  // successTimeout
             500,   // errorTimeout
             500,   // initialTimeout
@@ -170,7 +170,7 @@ public class ConfigTester implements AutoCloseable {
         return portRange.next();
     }
 
-    public ConfigSourceSet getTestSourceSet() {
+    public ConfigSourceSet sourceSet() {
         return new ConfigSourceSet(getConfigServerSpec().toString());
     }
 
@@ -212,19 +212,19 @@ public class ConfigTester implements AutoCloseable {
     }
 
     public ConfigHandle<AppConfig> subscribeToAppConfig(ConfigSubscriber subscriber, String configId) {
-        return subscriber.subscribe(AppConfig.class, configId, getTestSourceSet(), getTestTimingValues());
+        return subscriber.subscribe(AppConfig.class, configId, sourceSet(), timingValues());
     }
 
     public ConfigHandle<FooConfig> subscribeToFooConfig(ConfigSubscriber subscriber, String configId) {
-        return subscriber.subscribe(FooConfig.class, configId, getTestSourceSet(), getTestTimingValues());
+        return subscriber.subscribe(FooConfig.class, configId, sourceSet(), timingValues());
     }
 
     public ConfigHandle<BarConfig> subscribeToBarConfig(ConfigSubscriber subscriber, String configId) {
-        return subscribeToBarConfig(subscriber, configId, getTestTimingValues());
+        return subscribeToBarConfig(subscriber, configId, timingValues());
     }
 
     public ConfigHandle<BarConfig> subscribeToBarConfig(ConfigSubscriber subscriber, String configId, TimingValues timingValues) {
-        return subscriber.subscribe(BarConfig.class, configId, getTestSourceSet(), timingValues);
+        return subscriber.subscribe(BarConfig.class, configId, sourceSet(), timingValues);
     }
 
     static void assertNextConfigHasChanged(ConfigSubscriber subscriber, ConfigHandle<?>... configHandles) {

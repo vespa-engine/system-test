@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasChanged;
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasNotChanged;
-import static com.yahoo.config.subscription.ConfigTester.getTestTimingValues;
+import static com.yahoo.config.subscription.ConfigTester.timingValues;
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedFailure;
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
 import static org.junit.Assert.assertEquals;
@@ -314,7 +314,7 @@ public class BasicSubscriptionTest {
             configServer.setGetConfDelayTimeMillis(1000);
             configServer.deployNewConfig("configs/foo0");
             try {
-                tester.subscribeToBarConfig(subscriber, "b8", getTestTimingValues().setSubscribeTimeout(200));
+                tester.subscribeToBarConfig(subscriber, "b8", timingValues().setSubscribeTimeout(200));
                 fail("Subscribe should have timed out and thrown");
             } catch (Exception e) {
                 assertTrue(e instanceof ConfigurationRuntimeException);

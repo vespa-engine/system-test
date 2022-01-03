@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasChanged;
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasNotChanged;
-import static com.yahoo.config.subscription.ConfigTester.getTestTimingValues;
+import static com.yahoo.config.subscription.ConfigTester.timingValues;
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -37,11 +37,11 @@ public class GenericSubscriptionTest {
     public void testGenericJRTSubscription() {
         try (ConfigTester tester = new ConfigTester()) {
             tester.startOneConfigServer();
-            JRTConfigRequester requester = JRTConfigRequester.create(tester.getTestSourceSet(), getTestTimingValues());
+            JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             GenericConfigHandle handle = subscriber.subscribe(new ConfigKey<>("app", "app.0", "config"),
                                                               List.of(AppConfig.CONFIG_DEF_SCHEMA),
-                                                              getTestTimingValues());
+                                                              timingValues());
             assertNextConfigHasChanged(subscriber, handle);
             RawConfig config = handle.getRawConfig();
             assertConfigMatches(config.getPayload().toString(), ".*message.*msg1.*");
@@ -63,11 +63,11 @@ public class GenericSubscriptionTest {
     public void testNextGeneration() {
         try (ConfigTester tester = new ConfigTester()) {
             tester.startOneConfigServer();
-            JRTConfigRequester requester = JRTConfigRequester.create(tester.getTestSourceSet(), getTestTimingValues());
+            JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             GenericConfigHandle handle = subscriber.subscribe(new ConfigKey<>("app", "app.0", "config"),
                                                               List.of(AppConfig.CONFIG_DEF_SCHEMA),
-                                                              getTestTimingValues());
+                                                              timingValues());
             assertNextConfigHasChanged(subscriber, handle);
             RawConfig config = handle.getRawConfig();
             assertConfigMatches(config.getPayload().toString(), ".*message.*msg1.*");
@@ -89,11 +89,11 @@ public class GenericSubscriptionTest {
     public void testServerFailingNextConfigFalse() {
         try (ConfigTester tester = new ConfigTester()) {
             tester.startOneConfigServer();
-            JRTConfigRequester requester = JRTConfigRequester.create(tester.getTestSourceSet(), getTestTimingValues());
+            JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             GenericConfigHandle handle = subscriber.subscribe(new ConfigKey<>("app", "app.0", "config"),
                                                               List.of(AppConfig.CONFIG_DEF_SCHEMA),
-                                                              getTestTimingValues());
+                                                              timingValues());
             assertNextConfigHasChanged(subscriber, handle);
             String payloadS = handle.getRawConfig().getPayload().toString();
             assertConfigMatches(payloadS, ".*message.*msg1.*");
@@ -107,24 +107,24 @@ public class GenericSubscriptionTest {
     public void testMultipleSubsSameThing() {
         try (ConfigTester tester = new ConfigTester()) {
             tester.startOneConfigServer();
-            JRTConfigRequester requester = JRTConfigRequester.create(tester.getTestSourceSet(), getTestTimingValues());
+            JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             tester.getConfigServer().deployNewConfig("configs/foo0");
             GenericConfigHandle bh1 = subscriber.subscribe(new ConfigKey<>("bar", "b1", "foo"),
                                                            List.of(BarConfig.CONFIG_DEF_SCHEMA),
-                                                           getTestTimingValues());
+                                                           timingValues());
             GenericConfigHandle bh2 = subscriber.subscribe(new ConfigKey<>("bar", "b2", "foo"),
                                                            List.of(BarConfig.CONFIG_DEF_SCHEMA),
-                                                           getTestTimingValues());
+                                                           timingValues());
             GenericConfigHandle fh1 = subscriber.subscribe(new ConfigKey<>("foo", "f1", "config"),
                                                            List.of(FooConfig.CONFIG_DEF_SCHEMA),
-                                                           getTestTimingValues());
+                                                           timingValues());
             GenericConfigHandle fh2 = subscriber.subscribe(new ConfigKey<>("foo", "f2", "config"),
                                                            List.of(FooConfig.CONFIG_DEF_SCHEMA),
-                                                           getTestTimingValues());
+                                                           timingValues());
             GenericConfigHandle fh3 = subscriber.subscribe(new ConfigKey<>("foo", "f3", "config"),
                                                            List.of(FooConfig.CONFIG_DEF_SCHEMA),
-                                                           getTestTimingValues());
+                                                           timingValues());
             assertNextConfigHasChanged(subscriber, bh1, bh2, fh1, fh2, fh3);
             assertConfigMatches(bh1.getRawConfig().getPayload().toString(), ".*barValue.*0bar.*");
             assertConfigMatches(bh2.getRawConfig().getPayload().toString(), ".*barValue.*0bar.*");
@@ -154,15 +154,15 @@ public class GenericSubscriptionTest {
     public void testBasicReconfig() {
         try (ConfigTester tester = new ConfigTester()) {
             TestConfigServer configServer = tester.startOneConfigServer();
-            JRTConfigRequester requester = JRTConfigRequester.create(tester.getTestSourceSet(), getTestTimingValues());
+            JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             configServer.deployNewConfig("configs/foo0");
             GenericConfigHandle bh = subscriber.subscribe(new ConfigKey<>("bar", "b4", "foo"),
                                                           List.of(BarConfig.CONFIG_DEF_SCHEMA),
-                                                          getTestTimingValues());
+                                                          timingValues());
             GenericConfigHandle fh = subscriber.subscribe(new ConfigKey<>("foo", "f4", "config"),
                                                           List.of(FooConfig.CONFIG_DEF_SCHEMA),
-                                                          getTestTimingValues());
+                                                          timingValues());
 
             assertNextConfigHasChanged(subscriber, bh, fh);
             RawConfig bConfig = bh.getRawConfig();
@@ -209,15 +209,15 @@ public class GenericSubscriptionTest {
     public void testBasicGenerationChange() {
         try (ConfigTester tester = new ConfigTester()) {
             TestConfigServer configServer = tester.startOneConfigServer();
-            JRTConfigRequester requester = JRTConfigRequester.create(tester.getTestSourceSet(), getTestTimingValues());
+            JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             configServer.deployNewConfig("configs/foo0");
             GenericConfigHandle bh = subscriber.subscribe(new ConfigKey<>("bar", "b4", "foo"),
                                                           List.of(BarConfig.CONFIG_DEF_SCHEMA),
-                                                          getTestTimingValues());
+                                                          timingValues());
             GenericConfigHandle fh = subscriber.subscribe(new ConfigKey<>("foo", "f4", "config"),
                                                           List.of(FooConfig.CONFIG_DEF_SCHEMA),
-                                                          getTestTimingValues());
+                                                          timingValues());
             assertNextConfigHasChanged(subscriber, bh, fh);
             assertConfigMatches(bh.getRawConfig().getPayload().toString(), ".*barValue.*0bar.*");
             assertConfigMatches(fh.getRawConfig().getPayload().toString(), ".*fooValue.*0foo.*");
@@ -253,13 +253,13 @@ public class GenericSubscriptionTest {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSourceSet sources = tester.setUp3ConfigServers("configs/foo0");
 
-            JRTConfigRequester requester = new JRTConfigRequester(new JRTConnectionPool(sources), getTestTimingValues());
+            JRTConfigRequester requester = new JRTConfigRequester(new JRTConnectionPool(sources), timingValues());
             GenericConfigSubscriber genSubscriber = new GenericConfigSubscriber(requester);
             GenericConfigHandle bh = genSubscriber.subscribe(new ConfigKey<>(BarConfig.getDefName(), "b", BarConfig.getDefNamespace()),
                                                              List.of(BarConfig.CONFIG_DEF_SCHEMA),
-                                                             getTestTimingValues());
+                                                             timingValues());
             GenericConfigHandle fh = genSubscriber.subscribe(new ConfigKey<>(FooConfig.getDefName(), "f", FooConfig.getDefNamespace()),
-                                                             List.of(FooConfig.CONFIG_DEF_SCHEMA), getTestTimingValues());
+                                                             List.of(FooConfig.CONFIG_DEF_SCHEMA), timingValues());
             assertNextConfigHasChanged(genSubscriber, bh, fh);
             assertPayloadMatches(bh, ".*barValue.*0bar.*");
             assertPayloadMatches(fh, ".*fooValue.*0foo.*");
