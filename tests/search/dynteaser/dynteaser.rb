@@ -11,6 +11,7 @@ class DynTeaser < IndexedSearchTest
   def setup
     set_owner("geirst")
     set_description("Test of dynamic teaser support")
+    @debug_log_enabled = false
   end
 
   def compare(query, file, field)
@@ -23,9 +24,17 @@ class DynTeaser < IndexedSearchTest
     assert_field(query, file, field, true)
   end
 
+  def enable_dyn_teaser_debug_logging
+    vespa.search["search"].searchnode.each_value do |proton|
+      proton.logctl2("searchlib.docsummary.dynamicteaserdfw", "all=on")
+      proton.logctl2("juniper.sumdesc", "all=on")
+    end
+  end
+
   def test_dyn_teaser
     deploy_app(SearchApp.new.sd(selfdir+"cjk.sd"))
     start
+    enable_dyn_teaser_debug_logging if @debug_log_enabled
 
     feed_and_wait_for_docs("cjk", 34, :file => selfdir+"dynteaser.34.xml")
 
