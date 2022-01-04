@@ -29,10 +29,12 @@ import static org.junit.Assert.assertTrue;
 public class GenericSubscriptionTest {
 
     private GenericConfigSubscriber subscriber;
-    
+
     @After
-    public void closeSubscriber() { if (subscriber != null) subscriber.close(); }
-    
+    public void closeSubscriber() {
+        if (subscriber != null) subscriber.close();
+    }
+
     @Test
     public void testGenericJRTSubscription() {
         try (ConfigTester tester = new ConfigTester()) {
@@ -58,7 +60,7 @@ public class GenericSubscriptionTest {
             assertNextConfigHasNotChanged(subscriber, handle);
         }
     }
-    
+
     @Test
     public void testNextGeneration() {
         try (ConfigTester tester = new ConfigTester()) {
@@ -84,7 +86,7 @@ public class GenericSubscriptionTest {
             assertEquals(subscriber.getGeneration(), config.getGeneration());
         }
     }
-    
+
     @Test
     public void testServerFailingNextConfigFalse() {
         try (ConfigTester tester = new ConfigTester()) {
@@ -200,11 +202,11 @@ public class GenericSubscriptionTest {
     }
 
     private void assertConfigMatches(String cfg, String regex) {
-        int pFlags = Pattern.MULTILINE+Pattern.DOTALL;
+        int pFlags = Pattern.MULTILINE + Pattern.DOTALL;
         Pattern pattern = Pattern.compile(regex, pFlags);
         assertTrue(pattern.matcher(cfg).matches());
     }
-    
+
     @Test
     public void testBasicGenerationChange() {
         try (ConfigTester tester = new ConfigTester()) {
@@ -257,11 +259,13 @@ public class GenericSubscriptionTest {
 
             JRTConfigRequester requester = new JRTConfigRequester(new JRTConnectionPool(sources), timingValues());
             GenericConfigSubscriber genSubscriber = new GenericConfigSubscriber(requester);
-            GenericConfigHandle bh = genSubscriber.subscribe(new ConfigKey<>(BarConfig.getDefName(), "b", BarConfig.getDefNamespace()),
-                                                             List.of(BarConfig.CONFIG_DEF_SCHEMA),
-                                                             timingValues());
-            GenericConfigHandle fh = genSubscriber.subscribe(new ConfigKey<>(FooConfig.getDefName(), "f", FooConfig.getDefNamespace()),
-                                                             List.of(FooConfig.CONFIG_DEF_SCHEMA), timingValues());
+            GenericConfigHandle bh = genSubscriber
+                    .subscribe(new ConfigKey<>(BarConfig.getDefName(), "b", BarConfig.getDefNamespace()),
+                               List.of(BarConfig.CONFIG_DEF_SCHEMA),
+                               timingValues());
+            GenericConfigHandle fh = genSubscriber
+                    .subscribe(new ConfigKey<>(FooConfig.getDefName(), "f", FooConfig.getDefNamespace()),
+                               List.of(FooConfig.CONFIG_DEF_SCHEMA), timingValues());
             assertNextConfigHasChanged(genSubscriber, bh, fh);
             assertPayloadMatches(bh, ".*barValue.*0bar.*");
             assertPayloadMatches(fh, ".*fooValue.*0foo.*");
@@ -288,7 +292,7 @@ public class GenericSubscriptionTest {
     private void assertPayloadMatches(GenericConfigHandle bh, String regex) {
         RawConfig rc = bh.getRawConfig();
         String payloadS = rc.getPayload().toString();
-        int pFlags = Pattern.MULTILINE+Pattern.DOTALL;
+        int pFlags = Pattern.MULTILINE + Pattern.DOTALL;
         Pattern pattern = Pattern.compile(regex, pFlags);
         assertTrue(pattern.matcher(payloadS).matches());
     }
