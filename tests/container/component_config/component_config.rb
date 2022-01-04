@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_container_test'
 require 'environment'
 
@@ -10,14 +10,14 @@ class ComponentConfig < SearchContainerTest
 
     @searcher = add_bundle_dir(File.expand_path(selfdir), "com.yahoo.vespatest.ExtraHitSearcher", :name => 'searcher')
     compile_bundles(@vespa.nodeproxies.values.first)
+  end
 
+  def test_component_config
     output = deploy(selfdir + "app", nil, nil, :bundles => [@searcher])
     start
     @container = vespa.qrserver.values.first
     wait_for_application(@container, output)
-  end
 
-  def test_component_config
     verify_result("Heal the World!")
     assert_equal("app-component_config", @container.get_application_version)
 
@@ -34,6 +34,17 @@ class ComponentConfig < SearchContainerTest
       verify_result("Heal the World!")
       assert_equal("app-component_config", @container.get_application_version)
     end
+  end
+
+  def test_component_config_with_missing_value
+    set_expected_logged(/JDisc exiting: Throwable caught/)
+    deploy(selfdir + "app_with_missing_config_value", nil, nil, :bundles => [@searcher])
+    begin
+      start(20)
+    rescue Exception => e
+      # Expected to fail
+    end
+    assert_log_matches(/The following builder parameters for extra-hit must be initialized: \[enumVal\]/)
   end
 
   def verify_result(expected)
