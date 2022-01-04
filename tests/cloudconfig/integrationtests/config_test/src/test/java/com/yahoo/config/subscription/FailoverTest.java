@@ -8,7 +8,6 @@ import com.yahoo.foo.BarConfig;
 import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.config.Connection;
 import com.yahoo.vespa.config.ConnectionPool;
-import com.yahoo.vespa.config.TimingValues;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
 import org.junit.After;
 import org.junit.Test;
@@ -45,15 +44,13 @@ public class FailoverTest {
             ConfigSourceSet sources = tester.configSourceSet();
 
             subscriber = new ConfigSubscriber(sources);
-            TimingValues timingValues = ConfigTester.timingValues();
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", sources, timingValues);
-            ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f", sources, timingValues);
+            ConfigHandle<BarConfig> bh = subscribeToBar(sources);
+            ConfigHandle<FooConfig> fh = subscribeToFoo(sources);
 
             assertNextConfigHasChanged(subscriber, bh, fh);
             assertEquals(bh.getConfig().barValue(), "0bar");
             assertEquals(fh.getConfig().fooValue(), "0foo");
-            ConnectionPool connectionPool = ((JRTConfigSubscription<FooConfig>) fh.subscription()).requester().getConnectionPool();
-            Connection currentConnection = connectionPool.getCurrent();
+            Connection currentConnection = connectionPool(fh).getCurrent();
             log.log(LogLevel.INFO, "current source=" + currentConnection.getAddress());
             tester.stopConfigServerMatchingSource(currentConnection);
 
@@ -91,14 +88,13 @@ public class FailoverTest {
             ConfigSourceSet sources = tester.configSourceSet();
 
             subscriber = new ConfigSubscriber(sources);
-            TimingValues timingValues = ConfigTester.timingValues();
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", sources, timingValues);
-            ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f", sources, timingValues);
+            ConfigHandle<BarConfig> bh = subscribeToBar(sources);
+            ConfigHandle<FooConfig> fh = subscribeToFoo(sources);
 
             assertNextConfigHasChanged(subscriber, bh, fh);
             assertEquals(bh.getConfig().barValue(), "0bar");
             assertEquals(fh.getConfig().fooValue(), "0foo");
-            ConnectionPool connectionPool = ((JRTConfigSubscription<FooConfig>) fh.subscription()).requester().getConnectionPool();
+            ConnectionPool connectionPool = connectionPool(fh);
             Connection current = connectionPool.getCurrent();
             tester.stopConfigServerMatchingSource(current);
 
@@ -120,15 +116,14 @@ public class FailoverTest {
     }
 
     @Test
-    public void testFailoverOneSpec() {
+    public void testFailoverWithOneServer() {
         try (ConfigTester tester = new ConfigTester()) {
             tester.createAndStartConfigServer();
             tester.deploy("configs/foo0");
 
-            ConfigSourceSet set = tester.sourceSet();
-            subscriber = new ConfigSubscriber(set);
-            TimingValues timingValues = ConfigTester.timingValues();
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", set, timingValues);
+            ConfigSourceSet sources = tester.sourceSet();
+            subscriber = new ConfigSubscriber(sources);
+            ConfigHandle<BarConfig> bh = subscribeToBar(sources);
             assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess, false));
             assertTrue(bh.isChanged());
 
@@ -136,7 +131,7 @@ public class FailoverTest {
             assertNextConfigHasChanged(subscriber, bh);
         }
     }
-    
+
     @Test
     public void testBasicFailover() throws InterruptedException {
         try (ConfigTester tester = new ConfigTester()) {
@@ -144,9 +139,8 @@ public class FailoverTest {
             tester.deploy("configs/foo0");
             ConfigSourceSet sources = tester.configSourceSet();
             subscriber = new ConfigSubscriber(sources);
-            TimingValues timingValues = ConfigTester.timingValues();
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", sources, timingValues);
-            ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f", sources, timingValues);
+            ConfigHandle<BarConfig> bh = subscribeToBar(sources);
+            ConfigHandle<FooConfig> fh = subscribeToFoo(sources);
             JRTConfigRequester bhRequester = ((JRTConfigSubscription<BarConfig>) bh.subscription()).requester();
             JRTConfigRequester fhRequester = ((JRTConfigSubscription<FooConfig>) fh.subscription()).requester();
             assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess, false));
@@ -176,6 +170,18 @@ public class FailoverTest {
                 if (i == 9) fail("No reconfig");
             }
         }
+    }
+
+    private ConfigHandle<BarConfig> subscribeToBar(ConfigSourceSet sources) {
+        return subscriber.subscribe(BarConfig.class, "b", sources, ConfigTester.timingValues());
+    }
+
+    private ConfigHandle<FooConfig> subscribeToFoo(ConfigSourceSet sources) {
+        return subscriber.subscribe(FooConfig.class, "f", sources, ConfigTester.timingValues());
+    }
+
+    private ConnectionPool connectionPool(ConfigHandle<?> configHandle) {
+        return ((JRTConfigSubscription<?>) configHandle.subscription()).requester().getConnectionPool();
     }
 
 }
