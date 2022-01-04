@@ -38,8 +38,8 @@ class Bug5707026 < IndexedSearchTest
 
     query = "cafe+menu"
     wait_for_hitcount(query, 2)
-    exp_body_0 = "<sep/><hi>Café</hi> Surf's <hi>Café</hi> Print <hi>Menu</hi> Email a <sep/> Print <hi>Menu</hi> Print <sep/>"
-    exp_body_1 = "<sep/>week s Tuesday Dinner <hi>Menu</hi>! This pilot program is currently scheduled<sep/> or comments? Reach us at <hi>cafe</hi>@yahoo-inc.com ."
+    exp_body_0 = "<sep/><hi>Café</hi> Surf's <hi>Café</hi> Print <hi>Menu</hi> Email a Friend<sep/> Print <hi>Menu</hi> Print Details<sep/>"
+    exp_body_1 = "<sep/>week s Tuesday Dinner <hi>Menu</hi>! This pilot program is currently scheduled<sep/>Questions or comments? Reach us at <hi>cafe</hi>@yahoo-inc.com ."
     assert_field_value(query, "body", exp_body_0, 0)
     assert_field_value(query, "body", exp_body_1, 1)
   end
