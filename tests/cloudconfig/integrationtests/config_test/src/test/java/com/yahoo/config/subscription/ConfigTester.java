@@ -15,12 +15,16 @@ import com.yahoo.vespa.config.ConnectionPool;
 import com.yahoo.vespa.config.TimingValues;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -37,7 +41,8 @@ public class ConfigTester implements AutoCloseable {
     private static final java.util.logging.Logger log = Logger.getLogger(ConfigTester.class.getName());
 
     private static final PortRange portRange = new PortRange();
-    private final HashMap<TestConfigServer, Thread> configServerCluster = new HashMap<>();
+    private final List<TestConfigServer> configServerCluster = new ArrayList<>();
+    private final HashMap<TestConfigServer, Thread> configServerThreads = new LinkedHashMap<>();
 
     // How long to wait for config in nextConfig() method, when expecting result to be success (new config available)
     // or failure (no new config)
@@ -51,29 +56,27 @@ public class ConfigTester implements AutoCloseable {
         this.subscriber = new ConfigSubscriber();
     }
 
-    public TestConfigServer startOneConfigServer() {
+    public TestConfigServer createAndStartConfigServer() {
         TestConfigServer server = createConfigServer();
+        configServerCluster.add(server);
         log.log(LogLevel.DEBUG, "starting configserver on port: " + server.getSpec().port());
-        Thread thread = startConfigServer(server);
-        configServerCluster.put(server, thread);
+        startConfigServer(server);
         return server;
     }
 
-    public void start3ConfigServers() {
-        startOneConfigServer();
-        startOneConfigServer();
-        startOneConfigServer();
+    public void createAndStartConfigServers(int count) {
+        IntStream.range(0, count).forEach(i ->  createAndStartConfigServer());
     }
 
     public ConfigSourceSet configSourceSet() {
         return new ConfigSourceSet(
-                configServerCluster.keySet().stream()
+                configServerCluster.stream()
                                    .map(configServer -> configServer.getSpec().toString()).collect(Collectors.toList()));
     }
 
     public void stopConfigServer(TestConfigServer cs) {
         Objects.requireNonNull(cs, "stop() cannot be called with null value");
-        Thread t = configServerCluster.get(cs);
+        Thread t = configServerThreads.get(cs);
         log.log(LogLevel.INFO, "Stopping configserver running on port " + cs.getSpec().port() + "...");
         cs.stop();
         try {
@@ -99,7 +102,7 @@ public class ConfigTester implements AutoCloseable {
             0);   // fixedDelay
     }
 
-    public TestConfigServer getConfigServer() { return configServerCluster.keySet().iterator().next(); }
+    public TestConfigServer getConfigServer() { return configServerCluster.get(0); }
 
     public ConfigSubscriber getSubscriber() {
         return subscriber;
@@ -131,7 +134,7 @@ public class ConfigTester implements AutoCloseable {
     @Override
     public void close() {
         subscriber.close();
-        configServerCluster.keySet().forEach(configServer -> {
+        configServerThreads.keySet().forEach(configServer -> {
             System.out.println("DEBUG:" + configServer);
             stopConfigServer(configServer);
         });
@@ -162,15 +165,15 @@ public class ConfigTester implements AutoCloseable {
         return new TestConfigServer(findAvailablePort(), "configs/def-files", "configs/foo");
     }
 
-    private Thread startConfigServer(TestConfigServer configServer) {
+    private void startConfigServer(TestConfigServer configServer) {
         Thread t = new Thread(configServer);
         t.start();
         ensureServerRunning(configServer);
-        return t;
+        configServerThreads.put(configServer, t);
     }
 
     public void deploy(String configDir) {
-        for (TestConfigServer cfgServer : configServerCluster.keySet()) {
+        for (TestConfigServer cfgServer : configServerCluster) {
             cfgServer.deployNewConfig(configDir);
         }
     }
@@ -178,7 +181,7 @@ public class ConfigTester implements AutoCloseable {
     public Optional<TestConfigServer> getConfigServerMatchingSource(Connection connection) {
         Optional<TestConfigServer> configServer = Optional.empty();
         int port = Integer.parseInt(connection.getAddress().split("/")[1]);
-        for (TestConfigServer cs : configServerCluster.keySet()) {
+        for (TestConfigServer cs : configServerCluster) {
             if (cs.getSpec().port() == port) configServer = Optional.of(cs);
         }
         return configServer;

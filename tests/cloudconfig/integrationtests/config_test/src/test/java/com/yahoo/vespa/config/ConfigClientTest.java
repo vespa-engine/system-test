@@ -229,7 +229,7 @@ public class ConfigClientTest {
 
         public Tester() {
             tester = new ConfigTester();
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             supervisor = new Supervisor(new Transport());
             target = supervisor.connect(tester.getConfigServerSpec());
         }

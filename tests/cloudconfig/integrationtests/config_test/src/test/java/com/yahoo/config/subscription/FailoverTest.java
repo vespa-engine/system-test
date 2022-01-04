@@ -40,7 +40,7 @@ public class FailoverTest {
      */
     public void testBasicFailoverInduced() {
         try (ConfigTester tester = new ConfigTester()) {
-            tester.start3ConfigServers();
+            tester.createAndStartConfigServers(2);
             tester.deploy("configs/foo0");
             ConfigSourceSet sources = tester.configSourceSet();
 
@@ -86,7 +86,7 @@ public class FailoverTest {
     @Test
     public void testFailoverInvisibleToSubscriber() {
         try (ConfigTester tester = new ConfigTester()) {
-            tester.start3ConfigServers();
+            tester.createAndStartConfigServers(2);
             tester.deploy("configs/foo0");
             ConfigSourceSet sources = tester.configSourceSet();
 
@@ -122,7 +122,7 @@ public class FailoverTest {
     @Test
     public void testFailoverOneSpec() {
         try (ConfigTester tester = new ConfigTester()) {
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             tester.deploy("configs/foo0");
 
             ConfigSourceSet set = tester.sourceSet();
@@ -140,7 +140,7 @@ public class FailoverTest {
     @Test
     public void testBasicFailover() throws InterruptedException {
         try (ConfigTester tester = new ConfigTester()) {
-            tester.start3ConfigServers();
+            tester.createAndStartConfigServers(2);
             tester.deploy("configs/foo0");
             ConfigSourceSet sources = tester.configSourceSet();
             subscriber = new ConfigSubscriber(sources);

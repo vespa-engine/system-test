@@ -36,7 +36,7 @@ public class GenericSubscriptionTest {
     @Test
     public void testGenericJRTSubscription() {
         try (ConfigTester tester = new ConfigTester()) {
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             GenericConfigHandle handle = subscriber.subscribe(new ConfigKey<>("app", "app.0", "config"),
@@ -62,7 +62,7 @@ public class GenericSubscriptionTest {
     @Test
     public void testNextGeneration() {
         try (ConfigTester tester = new ConfigTester()) {
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             GenericConfigHandle handle = subscriber.subscribe(new ConfigKey<>("app", "app.0", "config"),
@@ -88,7 +88,7 @@ public class GenericSubscriptionTest {
     @Test
     public void testServerFailingNextConfigFalse() {
         try (ConfigTester tester = new ConfigTester()) {
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             GenericConfigHandle handle = subscriber.subscribe(new ConfigKey<>("app", "app.0", "config"),
@@ -106,7 +106,7 @@ public class GenericSubscriptionTest {
     @Test
     public void testMultipleSubsSameThing() {
         try (ConfigTester tester = new ConfigTester()) {
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             tester.getConfigServer().deployNewConfig("configs/foo0");
@@ -153,7 +153,7 @@ public class GenericSubscriptionTest {
     @Test
     public void testBasicReconfig() {
         try (ConfigTester tester = new ConfigTester()) {
-            TestConfigServer configServer = tester.startOneConfigServer();
+            TestConfigServer configServer = tester.createAndStartConfigServer();
             JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             configServer.deployNewConfig("configs/foo0");
@@ -208,7 +208,7 @@ public class GenericSubscriptionTest {
     @Test
     public void testBasicGenerationChange() {
         try (ConfigTester tester = new ConfigTester()) {
-            TestConfigServer configServer = tester.startOneConfigServer();
+            TestConfigServer configServer = tester.createAndStartConfigServer();
             JRTConfigRequester requester = JRTConfigRequester.create(tester.sourceSet(), timingValues());
             subscriber = new GenericConfigSubscriber(requester);
             configServer.deployNewConfig("configs/foo0");
@@ -251,7 +251,7 @@ public class GenericSubscriptionTest {
     public void testFailoverGenericSubscriberNextGenerationLoop() {
         LogSetup.initVespaLogging("test");
         try (ConfigTester tester = new ConfigTester()) {
-            tester.start3ConfigServers();
+            tester.createAndStartConfigServers(2);
             tester.deploy("configs/foo0");
             ConfigSourceSet sources = tester.configSourceSet();
 

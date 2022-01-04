@@ -17,7 +17,7 @@ public class StressTest {
     @Test
     public void testManySubscribers() throws InterruptedException {
         try (ConfigTester tester = new ConfigTester()) {
-            tester.start3ConfigServers();
+            tester.createAndStartConfigServers(2);
             tester.deploy("configs/foo0");
             ConfigSourceSet sources = tester.configSourceSet();
             Map<Integer, BarSubscriberThread> barSubscribers = new HashMap<>();
