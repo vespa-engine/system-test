@@ -29,21 +29,21 @@ public class RawDirFileJarSubscriptionTest {
 
     @Test
     public void testRaw() {
-       ConfigSubscriber subscriber = new ConfigSubscriber();
-       ConfigHandle<AppConfig> h = subscriber.subscribe(AppConfig.class, "raw:message \"I'm raw\"\ntimes 90\n");
-       assertTrue(subscriber.nextConfig(0, false));
-       assertTrue(h.isChanged());
-       assertEquals(h.getConfig().message(), "I'm raw");
-       assertFalse(subscriber.nextConfig(0, false));
-       assertFalse(h.isChanged());
-       assertEquals(h.getConfig().message(), "I'm raw");
-       assertFalse(subscriber.nextConfig(0, false));
-       assertFalse(h.isChanged());
-       assertEquals(h.getConfig().message(), "I'm raw");
-       assertFalse(subscriber.nextConfig(0, false));
-       assertFalse(h.isChanged());
-       assertEquals(h.getConfig().message(), "I'm raw");
-       subscriber.close();
+        ConfigSubscriber subscriber = new ConfigSubscriber();
+        ConfigHandle<AppConfig> h = subscriber.subscribe(AppConfig.class, "raw:message \"I'm raw\"\ntimes 90\n");
+        assertTrue(subscriber.nextConfig(0, false));
+        assertTrue(h.isChanged());
+        assertEquals(h.getConfig().message(), "I'm raw");
+        assertFalse(subscriber.nextConfig(0, false));
+        assertFalse(h.isChanged());
+        assertEquals(h.getConfig().message(), "I'm raw");
+        assertFalse(subscriber.nextConfig(0, false));
+        assertFalse(h.isChanged());
+        assertEquals(h.getConfig().message(), "I'm raw");
+        assertFalse(subscriber.nextConfig(0, false));
+        assertFalse(h.isChanged());
+        assertEquals(h.getConfig().message(), "I'm raw");
+        subscriber.close();
     }
 
     @Test
@@ -68,9 +68,9 @@ public class RawDirFileJarSubscriptionTest {
     @Test
     public void testFile() throws IOException, InterruptedException {
         ConfigSubscriber subscriber = new ConfigSubscriber();
-        tmpFile1 = new File("configs/"+System.currentTimeMillis()+".app.cfg");
+        tmpFile1 = new File("configs/" + System.currentTimeMillis() + ".app.cfg");
         IOUtils.copy(new File("configs/bar/app.cfg"), tmpFile1);
-        ConfigHandle<AppConfig> h = subscriber.subscribe(AppConfig.class, "file:"+tmpFile1.getCanonicalPath());
+        ConfigHandle<AppConfig> h = subscriber.subscribe(AppConfig.class, "file:" + tmpFile1.getCanonicalPath());
         assertTrue(subscriber.nextConfig(300, false));
         assertTrue(h.isChanged());
         assertEquals(h.getConfig().message(), "msg2");
@@ -90,7 +90,7 @@ public class RawDirFileJarSubscriptionTest {
 
     @Test
     public void testFileSource() throws IOException, InterruptedException {
-        tmpFile1 = new File("configs/"+System.currentTimeMillis()+".app.cfg");
+        tmpFile1 = new File("configs/" + System.currentTimeMillis() + ".app.cfg");
         IOUtils.copy(new File("configs/bar/app.cfg"), tmpFile1);
         ConfigSubscriber subscriber = new ConfigSubscriber(new FileSource(new File(tmpFile1.getCanonicalPath())));
         ConfigHandle<AppConfig> h = subscriber.subscribe(AppConfig.class, null);
@@ -114,14 +114,14 @@ public class RawDirFileJarSubscriptionTest {
     @Test
     public void testDir() throws IOException, InterruptedException {
         ConfigSubscriber subscriber = new ConfigSubscriber();
-        tmpDir = new File("configs/"+System.currentTimeMillis()+"/");
+        tmpDir = new File("configs/" + System.currentTimeMillis() + "/");
         assertTrue(tmpDir.mkdir());
         tmpFile1 = new File(tmpDir, "app.cfg");
         tmpFile2 = new File(tmpDir, "string.cfg");
         IOUtils.copy(new File("configs/bar/app.cfg"), tmpFile1);
         IOUtils.copy(new File("configs/bar/string.cfg"), tmpFile2);
 
-        ConfigHandle<AppConfig> hApp = subscriber.subscribe(AppConfig.class, "dir:"+tmpDir.getCanonicalPath());
+        ConfigHandle<AppConfig> hApp = subscriber.subscribe(AppConfig.class, "dir:" + tmpDir.getCanonicalPath());
         assertTrue(subscriber.nextConfig(300, false));
         assertTrue(hApp.isChanged());
         assertEquals(hApp.getConfig().message(), "msg2");
@@ -139,7 +139,8 @@ public class RawDirFileJarSubscriptionTest {
 
         subscriber.close();
         subscriber = new ConfigSubscriber();
-        ConfigHandle<StringConfig> hString = subscriber.subscribe(StringConfig.class, "dir:"+tmpDir.getCanonicalPath());
+        ConfigHandle<StringConfig> hString = subscriber
+                .subscribe(StringConfig.class, "dir:" + tmpDir.getCanonicalPath());
         assertTrue(subscriber.nextConfig(10, false));
         assertTrue(hString.isChanged());
         assertEquals(hString.getConfig().stringVal(), "My mess");
@@ -148,7 +149,7 @@ public class RawDirFileJarSubscriptionTest {
 
     @Test
     public void testDirSource() throws IOException, InterruptedException {
-        tmpDir = new File("configs/"+System.currentTimeMillis()+"/");
+        tmpDir = new File("configs/" + System.currentTimeMillis() + "/");
         assertTrue(tmpDir.mkdir());
         tmpFile1 = new File(tmpDir, "app.cfg");
         tmpFile2 = new File(tmpDir, "string.cfg");
@@ -187,7 +188,8 @@ public class RawDirFileJarSubscriptionTest {
     public void testJar() {
         ConfigSubscriber subscriber = new ConfigSubscriber();
         ConfigHandle<AppConfig> aHDefaultDir = subscriber.subscribe(AppConfig.class, "jar:configs/app.jar");
-        ConfigHandle<AppConfig> aHNonDefaultDir = subscriber.subscribe(AppConfig.class, "jar:configs/app.jar!/configs/");
+        ConfigHandle<AppConfig> aHNonDefaultDir = subscriber
+                .subscribe(AppConfig.class, "jar:configs/app.jar!/configs/");
         assertTrue(subscriber.nextConfig(300, false));
         assertTrue(aHDefaultDir.isChanged());
         assertEquals(aHDefaultDir.getConfig().message(), "jar-test with default directory");
@@ -251,9 +253,9 @@ public class RawDirFileJarSubscriptionTest {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @After
     public void tearDown() {
-        if (tmpFile1!=null) tmpFile1.delete();
-        if (tmpFile2!=null) tmpFile2.delete();
-        if (tmpDir!=null) IOUtils.recursiveDeleteDir(tmpDir);
+        if (tmpFile1 != null) tmpFile1.delete();
+        if (tmpFile2 != null) tmpFile2.delete();
+        if (tmpDir != null) IOUtils.recursiveDeleteDir(tmpDir);
     }
 
 }

@@ -15,12 +15,16 @@ import com.yahoo.vespa.config.ConnectionPool;
 import com.yahoo.vespa.config.TimingValues;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -36,15 +40,9 @@ public class ConfigTester implements AutoCloseable {
 
     private static final java.util.logging.Logger log = Logger.getLogger(ConfigTester.class.getName());
 
-    TestConfigServer cServer1;
-    TestConfigServer cServer2;
-    TestConfigServer cServer3;
-    Thread cS1;
-    Thread cS2;
-    Thread cS3;
-
     private static final PortRange portRange = new PortRange();
-    private final HashMap<TestConfigServer, Thread> configServerCluster = new HashMap<>();
+    private final List<TestConfigServer> cluster = new ArrayList<>();
+    private final HashMap<TestConfigServer, Thread> threads = new LinkedHashMap<>();
 
     // How long to wait for config in nextConfig() method, when expecting result to be success (new config available)
     // or failure (no new config)
@@ -58,38 +56,27 @@ public class ConfigTester implements AutoCloseable {
         this.subscriber = new ConfigSubscriber();
     }
 
-    public TestConfigServer startOneConfigServer() {
-        cServer1 = createConfigServer();
-        log.log(LogLevel.DEBUG, "starting configserver on port: " + cServer1.getSpec().port());
-        cS1 = startOneConfigServer(cServer1);
-        configServerCluster.put(cServer1, cS1);
-        return cServer1;
+    public TestConfigServer createAndStartConfigServer() {
+        TestConfigServer server = createConfigServer();
+        cluster.add(server);
+        log.log(LogLevel.DEBUG, "starting configserver on port: " + server.getSpec().port());
+        startConfigServer(server);
+        return server;
     }
 
-    /**
-     * 3 sources with given configs dir
-     */
-    public ConfigSourceSet setUp3ConfigServers(String configDir) {
-        cServer1 = createConfigServer();
-        cS1 = startOneConfigServer(cServer1);
-        cServer2 = createConfigServer();
-        cS2 = startOneConfigServer(cServer2);
-        cServer3 = createConfigServer();
-        cS3 = startOneConfigServer(cServer3);
+    public void createAndStartConfigServers(int count) {
+        IntStream.range(0, count).forEach(i -> createAndStartConfigServer());
+    }
 
-        configServerCluster.put(cServer1, cS1);
-        configServerCluster.put(cServer2, cS2);
-        configServerCluster.put(cServer3, cS3);
-
-        deployOn3ConfigServers(configDir);
-        return new ConfigSourceSet(
-                configServerCluster.keySet().stream()
-                        .map(configServer -> configServer.getSpec().toString()).collect(Collectors.toList()));
+    public ConfigSourceSet configSourceSet() {
+        return new ConfigSourceSet(cluster.stream()
+                                          .map(configServer -> configServer.getSpec().toString())
+                                          .collect(Collectors.toList()));
     }
 
     public void stopConfigServer(TestConfigServer cs) {
         Objects.requireNonNull(cs, "stop() cannot be called with null value");
-        Thread t = configServerCluster.get(cs);
+        Thread t = threads.get(cs);
         log.log(LogLevel.INFO, "Stopping configserver running on port " + cs.getSpec().port() + "...");
         cs.stop();
         try {
@@ -101,25 +88,24 @@ public class ConfigTester implements AutoCloseable {
     }
 
     /**
-     * Returns RPC connect spec for config server.
+     * Returns RPC connect spec for a config server (an arbitrary server if there are more than one).
      *
      * @return a Spec for the running ConfigServer
      */
-    public Spec getConfigServerSpec() { return cServer1.getSpec(); }
+    public Spec getConfigServerSpec() { return getConfigServer().getSpec(); }
 
-    public static TimingValues getTestTimingValues() { return new TimingValues(
-            2000,  // successTimeout
-            500,   // errorTimeout
-            500,   // initialTimeout
-            6000,  // subscribeTimeout
-            0);   // fixedDelay
+    public static TimingValues timingValues() {
+        return new TimingValues(
+                2000,  // successTimeout
+                500,   // errorTimeout
+                500,   // initialTimeout
+                6000,  // subscribeTimeout
+                0);   // fixedDelay
     }
 
-    public TestConfigServer getConfigServer() { return cServer1; }
+    public TestConfigServer getConfigServer() { return cluster.get(0); }
 
-    public ConfigSubscriber getSubscriber() {
-        return subscriber;
-    }
+    public ConfigSubscriber getSubscriber() { return subscriber; }
 
     public void ensureServerRunning(TestConfigServer server) {
         long start = System.currentTimeMillis();
@@ -147,7 +133,7 @@ public class ConfigTester implements AutoCloseable {
     @Override
     public void close() {
         subscriber.close();
-        configServerCluster.keySet().forEach(configServer -> {
+        threads.keySet().forEach(configServer -> {
             System.out.println("DEBUG:" + configServer);
             stopConfigServer(configServer);
         });
@@ -155,8 +141,9 @@ public class ConfigTester implements AutoCloseable {
 
     private static class PortRange {
         private static final int first = 18250;
-        private static final int last  = 18420;
+        private static final int last = 18420;
         private int value = first;
+
         synchronized int next() {
             if (value > last) {
                 throw new RuntimeException("no ports available in range (" + first + " - " + last + ")");
@@ -170,7 +157,7 @@ public class ConfigTester implements AutoCloseable {
         return portRange.next();
     }
 
-    public ConfigSourceSet getTestSourceSet() {
+    public ConfigSourceSet sourceSet() {
         return new ConfigSourceSet(getConfigServerSpec().toString());
     }
 
@@ -178,15 +165,15 @@ public class ConfigTester implements AutoCloseable {
         return new TestConfigServer(findAvailablePort(), "configs/def-files", "configs/foo");
     }
 
-    private Thread startOneConfigServer(TestConfigServer configServer) {
+    private void startConfigServer(TestConfigServer configServer) {
         Thread t = new Thread(configServer);
         t.start();
         ensureServerRunning(configServer);
-        return t;
+        threads.put(configServer, t);
     }
 
-    public void deployOn3ConfigServers(String configDir) {
-        for (TestConfigServer cfgServer : configServerCluster.keySet()) {
+    public void deploy(String configDir) {
+        for (TestConfigServer cfgServer : cluster) {
             cfgServer.deployNewConfig(configDir);
         }
     }
@@ -194,7 +181,7 @@ public class ConfigTester implements AutoCloseable {
     public Optional<TestConfigServer> getConfigServerMatchingSource(Connection connection) {
         Optional<TestConfigServer> configServer = Optional.empty();
         int port = Integer.parseInt(connection.getAddress().split("/")[1]);
-        for (TestConfigServer cs : configServerCluster.keySet()) {
+        for (TestConfigServer cs : cluster) {
             if (cs.getSpec().port() == port) configServer = Optional.of(cs);
         }
         return configServer;
@@ -212,19 +199,19 @@ public class ConfigTester implements AutoCloseable {
     }
 
     public ConfigHandle<AppConfig> subscribeToAppConfig(ConfigSubscriber subscriber, String configId) {
-        return subscriber.subscribe(AppConfig.class, configId, getTestSourceSet(), getTestTimingValues());
+        return subscriber.subscribe(AppConfig.class, configId, sourceSet(), timingValues());
     }
 
     public ConfigHandle<FooConfig> subscribeToFooConfig(ConfigSubscriber subscriber, String configId) {
-        return subscriber.subscribe(FooConfig.class, configId, getTestSourceSet(), getTestTimingValues());
+        return subscriber.subscribe(FooConfig.class, configId, sourceSet(), timingValues());
     }
 
     public ConfigHandle<BarConfig> subscribeToBarConfig(ConfigSubscriber subscriber, String configId) {
-        return subscribeToBarConfig(subscriber, configId, getTestTimingValues());
+        return subscribeToBarConfig(subscriber, configId, timingValues());
     }
 
     public ConfigHandle<BarConfig> subscribeToBarConfig(ConfigSubscriber subscriber, String configId, TimingValues timingValues) {
-        return subscriber.subscribe(BarConfig.class, configId, getTestSourceSet(), timingValues);
+        return subscriber.subscribe(BarConfig.class, configId, sourceSet(), timingValues);
     }
 
     static void assertNextConfigHasChanged(ConfigSubscriber subscriber, ConfigHandle<?>... configHandles) {

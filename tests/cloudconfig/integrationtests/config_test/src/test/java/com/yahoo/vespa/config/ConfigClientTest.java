@@ -46,15 +46,14 @@ public class ConfigClientTest {
             Request req = new Request("frt.rpc.ping");
             tester.invokeSync(req);
             System.out.println("Got ping response at " + System.currentTimeMillis());
-            assertFalse("Invocation failed: " + req.errorCode() + ": " +
-                        req.errorMessage(),
+            assertFalse("Invocation failed: " + req.errorCode() + ": " + req.errorMessage(),
                         req.isError());
             assertEquals(0, req.returnValues().size());
         }
     }
 
     /**
-     *  Test getConfig with default parameters
+     * Test getConfig with default parameters
      */
     @Test
     public void testGetConfig() {
@@ -67,7 +66,7 @@ public class ConfigClientTest {
     }
 
     /**
-     *  Test getConfig with default parameters
+     * Test getConfig with default parameters
      */
     @Test
     public void testGetConfigNoMd5() {
@@ -104,7 +103,7 @@ public class ConfigClientTest {
     }
 
     /**
-     *  Test reloading config and getting the new config
+     * Test reloading config and getting the new config
      */
     @Test
     public void testReloadConfig() {
@@ -132,7 +131,7 @@ public class ConfigClientTest {
     }
 
     /**
-     *  Verifies that response has empty payload when server has unchanged config but new application generation.
+     * Verifies that response has empty payload when server has unchanged config but new application generation.
      */
     @Test
     public void testEmptyPayloadForNewGeneration() {
@@ -168,7 +167,7 @@ public class ConfigClientTest {
     }
 
     /**
-     *  Test getConfig with invalid config md5sum
+     * Test getConfig with invalid config md5sum
      */
     @Test
     public void testInvalidConfigMd5() {
@@ -186,12 +185,12 @@ public class ConfigClientTest {
     }
 
     void verifyConfigChanged(JRTClientConfigRequest req) {
-        assertTrue(req.errorMessage(), (req.errorCode() == 0) );
+        assertTrue(req.errorMessage(), (req.errorCode() == 0));
         assertTrue(req.toString(), req.hasUpdatedConfig());
     }
 
     void verifyConfigUnchanged(JRTClientConfigRequest req) {
-        assertTrue(req.errorMessage(), (req.errorCode() == 0) );
+        assertTrue(req.errorMessage(), (req.errorCode() == 0));
         assertFalse(req.hasUpdatedConfig());
     }
 
@@ -206,13 +205,15 @@ public class ConfigClientTest {
 
         System.out.println("Request:");
         for (int i = 0; i <= 4; i++) {
-            System.out.println("param["+i+"]: "+parameters.get(i).asString());
+            System.out.println("param[" + i + "]: " + parameters.get(i).asString());
         }
-        System.out.println("param[5]: "+parameters.get(5).asInt64());
+        System.out.println("param[5]: " + parameters.get(5).asInt64());
         System.out.println("[end]");
     }
 
-    JRTClientConfigRequest createRequest() { return createRequest(PayloadChecksums.empty(), 0); }
+    JRTClientConfigRequest createRequest() {
+        return createRequest(PayloadChecksums.empty(), 0);
+    }
 
     JRTClientConfigRequest createRequest(PayloadChecksums payloadChecksums, long generation) {
         return JRTClientConfigRequestV3.createWithParams(
@@ -229,7 +230,7 @@ public class ConfigClientTest {
 
         public Tester() {
             tester = new ConfigTester();
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             supervisor = new Supervisor(new Transport());
             target = supervisor.connect(tester.getConfigServerSpec());
         }

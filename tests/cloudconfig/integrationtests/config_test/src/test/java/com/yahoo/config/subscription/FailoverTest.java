@@ -39,24 +39,25 @@ public class FailoverTest {
      */
     public void testBasicFailoverInduced() {
         try (ConfigTester tester = new ConfigTester()) {
-            ConfigSourceSet sources = tester.setUp3ConfigServers("configs/foo0");
+            tester.createAndStartConfigServers(2);
+            tester.deploy("configs/foo0");
+            ConfigSourceSet sources = tester.configSourceSet();
 
             subscriber = new ConfigSubscriber(sources);
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", sources, ConfigTester.getTestTimingValues());
-            ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f", sources, ConfigTester.getTestTimingValues());
+            ConfigHandle<BarConfig> bh = subscribeToBar(sources);
+            ConfigHandle<FooConfig> fh = subscribeToFoo(sources);
 
             assertNextConfigHasChanged(subscriber, bh, fh);
             assertEquals(bh.getConfig().barValue(), "0bar");
             assertEquals(fh.getConfig().fooValue(), "0foo");
-            ConnectionPool connectionPool = ((JRTConfigSubscription<FooConfig>) fh.subscription()).requester().getConnectionPool();
-            Connection currentConnection = connectionPool.getCurrent();
+            Connection currentConnection = connectionPool(fh).getCurrent();
             log.log(LogLevel.INFO, "current source=" + currentConnection.getAddress());
             tester.stopConfigServerMatchingSource(currentConnection);
 
             assertNextConfigHasNotChanged(subscriber, bh, fh);
 
             log.info("Reconfiguring to foo1/");
-            tester.deployOn3ConfigServers("configs/foo1");
+            tester.deploy("configs/foo1");
             boolean newConf = subscriber.nextConfig(waitWhenExpectedSuccess, false);
             assertTrue(newConf);
             assertFalse(bh.isChanged());
@@ -65,7 +66,7 @@ public class FailoverTest {
             assertEquals("1foo", fh.getConfig().fooValue());
 
             log.info("Reconfiguring to foo2/");
-            tester.deployOn3ConfigServers("configs/foo2");
+            tester.deploy("configs/foo2");
             newConf = subscriber.nextConfig(waitWhenExpectedSuccess, false);
             assertTrue(newConf);
             assertTrue(bh.isChanged());
@@ -74,7 +75,7 @@ public class FailoverTest {
             assertEquals("1foo", fh.getConfig().fooValue());
 
             log.info("Redeploying foo2/");
-            tester.deployOn3ConfigServers("configs/foo2");
+            tester.deploy("configs/foo2");
             assertNextConfigHasNotChanged(subscriber, bh, fh);
         }
     }
@@ -82,16 +83,18 @@ public class FailoverTest {
     @Test
     public void testFailoverInvisibleToSubscriber() {
         try (ConfigTester tester = new ConfigTester()) {
-            ConfigSourceSet sources = tester.setUp3ConfigServers("configs/foo0");
+            tester.createAndStartConfigServers(2);
+            tester.deploy("configs/foo0");
+            ConfigSourceSet sources = tester.configSourceSet();
 
             subscriber = new ConfigSubscriber(sources);
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", sources, ConfigTester.getTestTimingValues());
-            ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f", sources, ConfigTester.getTestTimingValues());
+            ConfigHandle<BarConfig> bh = subscribeToBar(sources);
+            ConfigHandle<FooConfig> fh = subscribeToFoo(sources);
 
             assertNextConfigHasChanged(subscriber, bh, fh);
             assertEquals(bh.getConfig().barValue(), "0bar");
             assertEquals(fh.getConfig().fooValue(), "0foo");
-            ConnectionPool connectionPool = ((JRTConfigSubscription<FooConfig>) fh.subscription()).requester().getConnectionPool();
+            ConnectionPool connectionPool = connectionPool(fh);
             Connection current = connectionPool.getCurrent();
             tester.stopConfigServerMatchingSource(current);
 
@@ -113,43 +116,31 @@ public class FailoverTest {
     }
 
     @Test
-    public void testFailoverOneSpec() {
+    public void testFailoverWithOneServer() {
         try (ConfigTester tester = new ConfigTester()) {
-            tester.startOneConfigServer();
-            ConfigSourceSet set = tester.getTestSourceSet();
-            tester.getConfigServer().deployNewConfig("configs/foo0");
+            tester.createAndStartConfigServer();
+            tester.deploy("configs/foo0");
 
-            subscriber = new ConfigSubscriber(set);
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", set, ConfigTester.getTestTimingValues());
-
-            ConnectionPool connectionPool = ((JRTConfigSubscription<BarConfig>) bh.subscription()).requester().getConnectionPool();
-            Connection c1 = connectionPool.getCurrent();
+            ConfigSourceSet sources = tester.sourceSet();
+            subscriber = new ConfigSubscriber(sources);
+            ConfigHandle<BarConfig> bh = subscribeToBar(sources);
             assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess, false));
             assertTrue(bh.isChanged());
-
-            connectionPool.switchConnection(c1);
-            Connection c2 = connectionPool.getCurrent();
-            connectionPool.switchConnection(c2);
-            Connection c3 = connectionPool.getCurrent();
-            connectionPool.switchConnection(c3);
-            Connection c4 = connectionPool.getCurrent();
-
-            assertEquals(c1, c2);
-            assertEquals(c2, c3);
-            assertEquals(c3, c4);
 
             tester.getConfigServer().deployNewConfig("configs/foo2");
             assertNextConfigHasChanged(subscriber, bh);
         }
     }
-    
+
     @Test
     public void testBasicFailover() throws InterruptedException {
         try (ConfigTester tester = new ConfigTester()) {
-            ConfigSourceSet sources = tester.setUp3ConfigServers("configs/foo0");
+            tester.createAndStartConfigServers(2);
+            tester.deploy("configs/foo0");
+            ConfigSourceSet sources = tester.configSourceSet();
             subscriber = new ConfigSubscriber(sources);
-            ConfigHandle<BarConfig> bh = subscriber.subscribe(BarConfig.class, "b", sources, ConfigTester.getTestTimingValues());
-            ConfigHandle<FooConfig> fh = subscriber.subscribe(FooConfig.class, "f", sources, ConfigTester.getTestTimingValues());
+            ConfigHandle<BarConfig> bh = subscribeToBar(sources);
+            ConfigHandle<FooConfig> fh = subscribeToFoo(sources);
             JRTConfigRequester bhRequester = ((JRTConfigSubscription<BarConfig>) bh.subscription()).requester();
             JRTConfigRequester fhRequester = ((JRTConfigSubscription<FooConfig>) fh.subscription()).requester();
             assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess, false));
@@ -159,12 +150,12 @@ public class FailoverTest {
             Connection current = connectionPool.getCurrent();
             log.log(LogLevel.INFO, "current=" + current.getAddress());
             tester.stopConfigServerMatchingSource(current);
-            Thread.sleep(ConfigTester.getTestTimingValues().getSubscribeTimeout() * 3);
+            Thread.sleep(ConfigTester.timingValues().getSubscribeTimeout() * 3);
             assertNotEquals(current.toString(), connectionPool.getCurrent().toString());
             //assertFalse(subscriber.nextConfig(waitWhenExpectedFailure));
             // Change config on servers (including whatever one we stopped earlier, not in use anyway), verify subscriber is working
             log.info("Reconfiguring to foo1/, current generation " + subscriber.getGeneration());
-            tester.deployOn3ConfigServers("configs/foo1");
+            tester.deploy("configs/foo1");
 
             // Want to see a reconfig here, sooner or later
             for (int i = 0; i < 10; i++) {
@@ -179,6 +170,18 @@ public class FailoverTest {
                 if (i == 9) fail("No reconfig");
             }
         }
+    }
+
+    private ConfigHandle<BarConfig> subscribeToBar(ConfigSourceSet sources) {
+        return subscriber.subscribe(BarConfig.class, "b", sources, ConfigTester.timingValues());
+    }
+
+    private ConfigHandle<FooConfig> subscribeToFoo(ConfigSourceSet sources) {
+        return subscriber.subscribe(FooConfig.class, "f", sources, ConfigTester.timingValues());
+    }
+
+    private ConnectionPool connectionPool(ConfigHandle<?> configHandle) {
+        return ((JRTConfigSubscription<?>) configHandle.subscription()).requester().getConnectionPool();
     }
 
 }

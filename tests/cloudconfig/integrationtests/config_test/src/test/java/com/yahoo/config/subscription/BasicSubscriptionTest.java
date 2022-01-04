@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasChanged;
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasNotChanged;
-import static com.yahoo.config.subscription.ConfigTester.getTestTimingValues;
+import static com.yahoo.config.subscription.ConfigTester.timingValues;
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedFailure;
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
 import static org.junit.Assert.assertEquals;
@@ -29,7 +29,7 @@ public class BasicSubscriptionTest {
     @Test
     public void testSimpleJRTSubscription() {
         try (ConfigTester tester = new ConfigTester()) {
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             ConfigSubscriber subscriber = tester.getSubscriber();
             ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.0");
             assertNextConfigHasChanged(subscriber, appCfgHandle);
@@ -42,7 +42,7 @@ public class BasicSubscriptionTest {
     public void testStateConstraints() {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.1");
             subscriber.nextConfig(50, false);
             appCfgHandle.getConfig();
@@ -61,7 +61,7 @@ public class BasicSubscriptionTest {
     public void testServerFailingNextConfigFalse() {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();
-            TestConfigServer configServer = tester.startOneConfigServer();
+            TestConfigServer configServer = tester.createAndStartConfigServer();
             ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.2");
             assertNextConfigHasChanged(subscriber, appCfgHandle);
             AppConfig a = appCfgHandle.getConfig();
@@ -75,7 +75,7 @@ public class BasicSubscriptionTest {
     public void testNextConfigFalseWhenConfigured() {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.3");
             assertNextConfigHasChanged(subscriber, appCfgHandle);
             AppConfig a = appCfgHandle.getConfig();
@@ -88,7 +88,7 @@ public class BasicSubscriptionTest {
     public void testNextGenerationFalseWhenConfigured() {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.4");
             assertNextConfigHasChanged(subscriber, appCfgHandle);
             AppConfig a = appCfgHandle.getConfig();
@@ -101,7 +101,7 @@ public class BasicSubscriptionTest {
     public void testMultipleSubsSameThing() {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();
-            TestConfigServer configServer = tester.startOneConfigServer();
+            TestConfigServer configServer = tester.createAndStartConfigServer();
             configServer.deployNewConfig("configs/foo0");
             ConfigHandle<BarConfig> bh1 = tester.subscribeToBarConfig(subscriber, "b1");
             ConfigHandle<BarConfig> bh2 = tester.subscribeToBarConfig(subscriber, "b2");
@@ -137,7 +137,7 @@ public class BasicSubscriptionTest {
     public void testBasicReconfig() {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();
-            TestConfigServer configServer = tester.startOneConfigServer();
+            TestConfigServer configServer = tester.createAndStartConfigServer();
             configServer.deployNewConfig("configs/foo0");
             ConfigHandle<BarConfig> bh = tester.subscribeToBarConfig(subscriber, "b4");
             ConfigHandle<FooConfig> fh = tester.subscribeToFooConfig(subscriber, "f4");
@@ -179,7 +179,7 @@ public class BasicSubscriptionTest {
     public void testBasicGenerationChange() {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();
-            TestConfigServer configServer = tester.startOneConfigServer();
+            TestConfigServer configServer = tester.createAndStartConfigServer();
             configServer.deployNewConfig("configs/foo0");
             ConfigHandle<BarConfig> bh = tester.subscribeToBarConfig(subscriber, "b5");
             ConfigHandle<FooConfig> fh = tester.subscribeToFooConfig(subscriber, "f5");
@@ -228,7 +228,7 @@ public class BasicSubscriptionTest {
     public void testQuickReconfigs() throws InterruptedException {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();
-            TestConfigServer configServer = tester.startOneConfigServer();
+            TestConfigServer configServer = tester.createAndStartConfigServer();
             configServer.deployNewConfig("configs/foo0");
             ConfigHandle<BarConfig> bh = tester.subscribeToBarConfig(subscriber, "b6");
             ConfigHandle<FooConfig> fh = tester.subscribeToFooConfig(subscriber, "f6");
@@ -266,7 +266,7 @@ public class BasicSubscriptionTest {
     public void testExtendSuccessTimeout() {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();
-            tester.startOneConfigServer();
+            tester.createAndStartConfigServer();
             ConfigHandle<AppConfig> appCfgHandle = tester.subscribeToAppConfig(subscriber, "app.5");
             assertTrue(subscriber.nextConfig(waitWhenExpectedSuccess, true));
             assertTrue(appCfgHandle.isChanged());
@@ -283,7 +283,7 @@ public class BasicSubscriptionTest {
     public void testEmptyPayloadWhenUnHandledReqPreviously() throws InterruptedException {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();
-            TestConfigServer configServer = tester.startOneConfigServer();
+            TestConfigServer configServer = tester.createAndStartConfigServer();
             configServer.deployNewConfig("configs/foo0");
             ConfigHandle<BarConfig> bh = tester.subscribeToBarConfig(subscriber, "b7");
             ConfigHandle<FooConfig> fh = tester.subscribeToFooConfig(subscriber, "f7");
@@ -310,11 +310,11 @@ public class BasicSubscriptionTest {
     public void testSubscribeTimeout() {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();
-            TestConfigServer configServer = tester.startOneConfigServer();
+            TestConfigServer configServer = tester.createAndStartConfigServer();
             configServer.setGetConfDelayTimeMillis(1000);
             configServer.deployNewConfig("configs/foo0");
             try {
-                tester.subscribeToBarConfig(subscriber, "b8", getTestTimingValues().setSubscribeTimeout(200));
+                tester.subscribeToBarConfig(subscriber, "b8", timingValues().setSubscribeTimeout(200));
                 fail("Subscribe should have timed out and thrown");
             } catch (Exception e) {
                 assertTrue(e instanceof ConfigurationRuntimeException);
