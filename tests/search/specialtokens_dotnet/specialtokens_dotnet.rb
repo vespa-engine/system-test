@@ -8,9 +8,9 @@ class SpecialTokensDotNet < IndexedSearchTest
     deploy_app(SearchApp.new.
                sd("#{selfdir}/test.sd").
                config(ConfigOverride.new("vespa.configdefinition.specialtokens").
-                      add(ArrayConfig.new("tokenlist").append.
+                      add(ArrayConfig.new("tokenlist").
                           add(0, ConfigValue.new("name", "default")).
-                          add(0, ArrayConfig.new("tokens").append.
+                          add(0, ArrayConfig.new("tokens").
                               add(0, ConfigValue.new("token", ".net"))))))
     start
   end

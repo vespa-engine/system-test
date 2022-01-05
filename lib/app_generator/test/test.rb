@@ -647,12 +647,6 @@ class SearchAppGenTest < Test::Unit::TestCase
       <item>value1_1</item>
     </name>'
     assert_substring_ignore_whitespace(actual, expected_substr)
-
-    actual = config.append.to_xml(" ")
-    expected_substr = '
-      <name operation="append">value0_1value0_2</name>
-      <name operation="append">value1_1</name>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
   def test_map_config

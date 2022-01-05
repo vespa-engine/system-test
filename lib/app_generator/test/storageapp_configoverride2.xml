@@ -6,9 +6,11 @@
 
   <config name="metricsmanager">
     <snapshot>
-      <periods operation="append">10</periods>
-      <periods operation="append">60</periods>
-      <periods operation="append">300</periods>
+      <periods>
+        <item>10</item>
+        <item>60</item>
+        <item>300</item>
+      </periods>
     </snapshot>
   </config>
 

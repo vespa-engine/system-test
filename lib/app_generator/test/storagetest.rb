@@ -22,17 +22,17 @@ class StorageAppGenTest < Test::Unit::TestCase
   def create_advanced_configoverride
     StorageApp.new.enable_http_gateway.default_cluster.sd("sd").provider("PROTON").
             config(ConfigOverride.new("metricsmanager").
-                add(ArrayConfig.new("consumers").append.
+                add(ArrayConfig.new("consumers").
                     add(0, ConfigValue.new("name", "myconsumer")).
-                    add(0, ArrayConfig.new("tags").append.
+                    add(0, ArrayConfig.new("tags").
                         add(0, "logdefault"))))
   end
 
   def create_advanced_configoverride2
-    snapshots = ArrayConfig.new("periods").append
-    snapshots.add(0, 10)
-    snapshots.add(1, 60)
-    snapshots.add(2, 300)
+    snapshots = ArrayConfig.new("periods")
+                           .add(0, 10)
+                           .add(1, 60)
+                           .add(2, 300)
     StorageApp.new.enable_http_gateway.default_cluster.sd("sd").provider("PROTON").
             config(ConfigOverride.new("metricsmanager").
                 add("snapshot", snapshots))
