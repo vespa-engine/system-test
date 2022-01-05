@@ -39,6 +39,11 @@ class ArrayConfig
   def initialize(name)
     @name = name
     @map = {}
+    @mode = 'item'
+  end
+  def append
+    @mode = 'append'
+    return self
   end
   def add(key, value)
     if !key.kind_of? Integer
@@ -50,12 +55,20 @@ class ArrayConfig
   end
 
   def to_xml(indent)
-    XmlHelper.new(indent).
-      tag(@name).
-      list_do(@map.keys) { |helper, key|
-        helper.tag("item").
-          to_xml(@map[key]).close_tag }.to_s
+    if @mode == 'item'
+      XmlHelper.new(indent).
+        tag(@name).
+        list_do(@map.keys) { |helper, key|
+          helper.tag("item").
+            to_xml(@map[key]).close_tag }.to_s
+    else
+      XmlHelper.new(indent).
+        list_do(@map.keys) { |helper, key|
+          helper.tag(@name, :operation => "append").
+            to_xml(@map[key]).close_tag }.to_s
+    end
   end
+
 end
 
 class MapConfig
