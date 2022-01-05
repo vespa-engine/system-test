@@ -10,9 +10,7 @@ class ResizeContentCluster < ResizeContentClusterBase
 
   def test_grow
     set_description("Test grow of elastic cluster")
-    app = ResizeApps::GrowApp.new(self, @smalldictsize, @smallnumdocs, 0, @num_hosts)
-    app.slack_minhits = 250
-    perform_grow(app)
+    perform_grow(ResizeApps::GrowApp.new(self, @smalldictsize, @smallnumdocs, 0, @num_hosts))
   end
 
   def test_shrink

@@ -130,6 +130,11 @@ module ResizeApps
     def growing
       true
     end
+
+    def slack_minhits
+      200
+    end
+
   end
 
   class ShrinkApp < ResizeAppBase
