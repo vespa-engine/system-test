@@ -132,7 +132,7 @@ module ResizeApps
     end
 
     def slack_minhits
-      200
+      250
     end
 
   end
