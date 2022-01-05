@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search/resize/resizebase'
 
 class ResizeContentCluster < ResizeContentClusterBase
@@ -10,7 +10,9 @@ class ResizeContentCluster < ResizeContentClusterBase
 
   def test_grow
     set_description("Test grow of elastic cluster")
-    perform_grow(ResizeApps::GrowApp.new(self, @smalldictsize, @smallnumdocs, 0, @num_hosts))
+    app = ResizeApps::GrowApp.new(self, @smalldictsize, @smallnumdocs, 0, @num_hosts)
+    app.slack_minhits = 250
+    perform_grow(app)
   end
 
   def test_shrink
