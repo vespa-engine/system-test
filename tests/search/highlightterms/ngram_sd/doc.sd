@@ -1,0 +1,12 @@
+schema doc {
+    document doc {
+        field content type string {
+            indexing: index | summary
+            match {
+                gram
+                gram-size: 3
+            }
+            summary: dynamic
+        }
+    }
+}
