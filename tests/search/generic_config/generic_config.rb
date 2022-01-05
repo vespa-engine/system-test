@@ -15,9 +15,9 @@ class GenericConfig < IndexedSearchTest
                     add("jvm", ConfigValue.new("directMemorySizeCache", 20))).
                 config(ConfigOverride.new("com.yahoo.vespatest.extra-hit").
                            add("exampleString", "Heal the World!").
-                           add(ArrayConfig.new("regions").append.
+                           add(ArrayConfig.new("regions").
                                    add(0, ConfigValue.new("language", "any")).
-                                   add(0, ArrayConfig.new("value").append.
+                                   add(0, ArrayConfig.new("value").
                                    add(0, "us")))).
                 config(ConfigOverride.new("container.qr-searchers").
                        add("tag", ConfigValues.new.
@@ -32,13 +32,13 @@ class GenericConfig < IndexedSearchTest
                                       klass("com.yahoo.vespatest.ExtraHitSearcher").
                                       config(ConfigOverride.new("com.yahoo.vespatest.extra-hit").
                                              add("exampleString", "You Rock my World").
-                                             add(ArrayConfig.new("score").append.
+                                             add(ArrayConfig.new("score").
                                                  add(0, ConfigValue.new("language", "english")).
                                                  add(0, ConfigValue.new("value", "3.1"))))).
                          chain(Chain.new.inherits(nil).
                                       config(ConfigOverride.new("com.yahoo.vespatest.extra-hit").
                                              add("exampleString", "We Are Here to Change the World").
-                                             add(ArrayConfig.new("score").append.
+                                             add(ArrayConfig.new("score").
                                                  add(0, ConfigValue.new("language", "french")).
                                                  add(0, ConfigValue.new("value", "5.5")))).
                                       add(Searcher.new("com.yahoo.vespatest.ExtraHitSearcher")).
