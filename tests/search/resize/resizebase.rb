@@ -308,7 +308,7 @@ module ResizeApps
     end
 
     def slack_mindocs
-      400
+      500
     end
 
     def num_groups
