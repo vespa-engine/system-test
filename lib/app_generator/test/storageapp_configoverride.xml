@@ -5,9 +5,13 @@
   </admin>
 
   <config name="metricsmanager">
-    <consumers operation="append">
-      <name>myconsumer</name>
-      <tags operation="append">logdefault</tags>
+    <consumers>
+      <item>
+        <name>myconsumer</name>
+        <tags>
+          <item>logdefault</item>
+        </tags>
+      </item>
     </consumers>
   </config>
 
