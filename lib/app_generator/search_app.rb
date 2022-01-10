@@ -65,7 +65,6 @@ class SearchApp < App
     # This must be called last in order to propagate jvmargs to all components.
     if value > 1
       jvmargs = "-Xms64m -Xmx256m"
-      @admin.adminserver_jvmargs = jvmargs
       @clients.gateways_jvmargs = jvmargs
       @content._qrservers.default_jvmargs = jvmargs
     end

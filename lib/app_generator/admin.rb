@@ -51,10 +51,6 @@ class Admin
     @adminserver = AdminServer.new
   end
 
-  def adminserver_jvmargs= args
-    @adminserver.set_default_jvmargs(args)
-  end
-
   def configserver(hostalias)
     @configservers.push(ConfigServer.new(hostalias))
   end
