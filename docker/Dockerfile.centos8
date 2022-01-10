@@ -24,6 +24,7 @@ RUN dnf config-manager --enable powertools && \
     dnf install -y \
         bind-utils \
         gcc-toolset-11-annobin \
+        gcc-toolset-11-annobin-plugin-gcc \
         gcc-toolset-11-gcc-c++ \
         git \
         hostname \
