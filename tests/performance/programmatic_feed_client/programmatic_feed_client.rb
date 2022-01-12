@@ -2,6 +2,7 @@
 require 'performance_test'
 require 'app_generator/search_app'
 require 'environment'
+require 'concurrent'
 require 'json'
 
 class ProgrammaticFeedClientTest < PerformanceTest
@@ -94,10 +95,14 @@ class ProgrammaticFeedClientTest < PerformanceTest
         "-Dvespa.test.feed.ca-certificate=#{tls_env.ca_certificates_file} " +
         "com.yahoo.vespa.systemtest.javafeedclient.#{main_class} 1> #{out_file} 2> #{err_file}"
     pid = vespa.adminserver.execute_bg("exec #{java_cmd}") # exec to let java inherit the subshell's PID.
-    vespa.adminserver.waitpid(pid)
-    puts(vespa.adminserver.readfile(err_file))
+    thread_pool = Concurrent::FixedThreadPool.new(parameters[:slices])
+    thread_pool.post { vespa.adminserver.waitpid(pid) }
+    thread_pool.shutdown
+    complete = thread_pool.wait_for_termination(300)
+    puts("###### STDERR #####\n#{vespa.adminserver.readfile(err_file)}")
     result = vespa.adminserver.readfile(out_file)
-    puts result
+    puts("###### STDOUT #####\n#{result}")
+    raise "Failed to complete benchmark within 5 minutes" unless complete
     [ JSON.parse(result.split("\n")[-1]), pid ]
   end
 
