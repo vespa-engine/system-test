@@ -95,7 +95,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
         "-Dvespa.test.feed.ca-certificate=#{tls_env.ca_certificates_file} " +
         "com.yahoo.vespa.systemtest.javafeedclient.#{main_class} 1> #{out_file} 2> #{err_file}"
     pid = vespa.adminserver.execute_bg("exec #{java_cmd}") # exec to let java inherit the subshell's PID.
-    thread_pool = Concurrent::FixedThreadPool.new(parameters[:slices])
+    thread_pool = Concurrent::FixedThreadPool.new(1)
     thread_pool.post { vespa.adminserver.waitpid(pid) }
     thread_pool.shutdown
     complete = thread_pool.wait_for_termination(300)
