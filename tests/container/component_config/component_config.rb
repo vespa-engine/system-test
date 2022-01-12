@@ -40,7 +40,7 @@ class ComponentConfig < SearchContainerTest
     set_expected_logged(/JDisc exiting: Throwable caught/)
     deploy(selfdir + "app_with_missing_config_value", nil, nil, :bundles => [@searcher])
     begin
-      start(20)
+      start(30)
     rescue Exception => e
       # Expected to fail
     end
