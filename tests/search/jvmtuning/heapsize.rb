@@ -13,7 +13,7 @@ class HeapSize < SearchTest
     start
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xms1536m/)
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xmx1536m/)
-    assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-XX:MaxDirectMemorySize=267m/)
+    assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-XX:MaxDirectMemorySize=208m/)
   end
 
   def test_jvm_absolute_heap_size_by_jvmargs()
@@ -22,7 +22,7 @@ class HeapSize < SearchTest
     start
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xms1024m/)
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xmx2048m/)
-    assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-XX:MaxDirectMemorySize=267m/)
+    assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-XX:MaxDirectMemorySize=208m/)
   end
 
   def test_jvm_absolute_heap_size_by_jvmargs_is_not_capped()
@@ -31,7 +31,7 @@ class HeapSize < SearchTest
     start
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xms384m/)
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xmx512m/)
-    assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-XX:MaxDirectMemorySize=267m/)
+    assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-XX:MaxDirectMemorySize=208m/)
   end
 
   def test_jvm_absolute_heap_size_by_heapsize()
@@ -42,7 +42,7 @@ class HeapSize < SearchTest
     start
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xms1600m/)
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xmx2048m/)
-    maxdirect = 2048/8 + 75 + 0 # Taken from the startup scrip.
+    maxdirect = 2048/8 + 16 + 0 # Taken from the startup scrip.
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-XX:MaxDirectMemorySize=#{maxdirect}m/)
   end
 
@@ -54,7 +54,7 @@ class HeapSize < SearchTest
     start
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xms2048m/)
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xmx2048m/)
-    maxdirect = 2048/8 + 75 + 0 # Taken from the startup scrip.
+    maxdirect = 2048/8 + 16 + 0 # Taken from the startup scrip.
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-XX:MaxDirectMemorySize=#{maxdirect}m/)
   end
 
@@ -66,7 +66,7 @@ class HeapSize < SearchTest
     start
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xms512m/)
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xmx512m/)
-    maxdirect = 512/8 + 75 + 0 # Taken from the startup scrip.
+    maxdirect = 512/8 + 16 + 0 # Taken from the startup scrip.
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-XX:MaxDirectMemorySize=#{maxdirect}m/)
   end
 
@@ -79,7 +79,7 @@ class HeapSize < SearchTest
     puts "Free memory = " + free
     relative = (free.to_i - 1024) * 40 / 100
     puts "Relative memory for container " + relative.to_s
-    maxdirect = relative/8 + 75 + 0 # Taken from the startup scrip.
+    maxdirect = relative/8 + 16 + 0 # Taken from the startup scrip.
     puts "MaxDirectMemorySize should be " + maxdirect.to_s
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xms#{relative}m/)
     assert(vespa.adminserver.execute("ps auxwww | grep qrserver | grep -v grep") =~ /-Xmx#{relative}m/)
