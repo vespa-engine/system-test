@@ -5,14 +5,14 @@ import ai.vespa.models.evaluation.ModelsEvaluator;
 import ai.vespa.models.evaluation.FunctionEvaluator;
 import com.yahoo.container.jdisc.HttpRequest;
 import com.yahoo.container.jdisc.HttpResponse;
-import com.yahoo.container.jdisc.LoggingRequestHandler;
+import com.yahoo.container.jdisc.ThreadedHttpRequestHandler;
 import com.yahoo.tensor.Tensor;
 import com.yahoo.tensor.serialization.JsonFormat;
 
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class TestModelsEvaluationHandler extends LoggingRequestHandler {
+public class TestModelsEvaluationHandler extends ThreadedHttpRequestHandler {
 
     private final ModelsEvaluator modelsEvaluator;
 

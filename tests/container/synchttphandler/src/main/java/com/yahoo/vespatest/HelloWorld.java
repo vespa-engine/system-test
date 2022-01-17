@@ -9,7 +9,7 @@ import com.yahoo.text.Utf8;
 
 import com.yahoo.container.jdisc.HttpRequest;
 import com.yahoo.container.jdisc.HttpResponse;
-import com.yahoo.container.jdisc.LoggingRequestHandler;
+import com.yahoo.container.jdisc.ThreadedHttpRequestHandler;
 import com.yahoo.container.logging.AccessLog;
 import com.yahoo.jdisc.Response;
 
@@ -19,7 +19,7 @@ import com.yahoo.jdisc.Response;
  *
  * @author <a href="mailto:steinar@yahoo-inc.com">Steinar Knutsen</a>
  */
-public class HelloWorld extends LoggingRequestHandler {
+public class HelloWorld extends ThreadedHttpRequestHandler {
     private final class HelloResponse extends HttpResponse {
         private final String name;
 
