@@ -1,3 +1,0 @@
-package=com.yahoo.vespatest
-
-response string default="No config value given."
