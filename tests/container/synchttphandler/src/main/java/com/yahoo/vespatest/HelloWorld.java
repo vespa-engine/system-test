@@ -1,4 +1,4 @@
-// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.vespatest;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import com.yahoo.jdisc.Response;
  * Synchronous JDisc handler only emitting a silly string composed from
  * a query parameter.
  *
- * @author <a href="mailto:steinar@yahoo-inc.com">Steinar Knutsen</a>
+ * @author Steinar Knutsen
  */
 public class HelloWorld extends ThreadedHttpRequestHandler {
     private final class HelloResponse extends HttpResponse {
@@ -34,8 +34,8 @@ public class HelloWorld extends ThreadedHttpRequestHandler {
         }
     }
 
-    public HelloWorld(Executor executor, AccessLog accessLog) {
-        super(executor, accessLog);
+    public HelloWorld(Executor executor) {
+        super(executor);
     }
 
     @Override
