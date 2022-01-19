@@ -20,6 +20,7 @@ class HttpServer < SearchContainerTest
     deploy_app(ContainerApp.new.
                container(Container.new.
                          jvmargs(nil).
+                         gateway(ContainerDocumentApi.new).
                          search(Searching.new.
                                 chain(Chain.new("default").
                                       add(Searcher.new("test.OutputHttpServerIdentity").
@@ -34,7 +35,7 @@ class HttpServer < SearchContainerTest
     httpServerIdentitiesGen1 = httpServerIdentities()
 
     deploy_generation("2")
-    wait_for_next_application_switch('qrserver', 1)
+    wait_for_next_application_switch('container', 1)
 
     httpServerIdentitiesGen2 = httpServerIdentities()
 
@@ -74,7 +75,7 @@ class HttpServer < SearchContainerTest
 
   # Count number of "Switched to the latest deployed ..." messages in vespa.log
   def num_application_switches(app)
-    regex = Regexp.new(".*#{app}.+Switching to the latest deployed")
+    regex = Regexp.new(".*\\s#{app}\\s.+Switching to the latest deployed")
     log = ''
     num_switches = 0
     vespa.logserver.get_vespalog { |data|

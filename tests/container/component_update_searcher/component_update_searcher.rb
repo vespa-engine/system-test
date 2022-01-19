@@ -17,16 +17,16 @@ class ComponentUpdateSearcher < SearchContainerTest
   end
 
   def enable_all_log_levels
-    # vespa.qrserver["0"].logctl("qrserver", "all=on")
-    vespa.qrserver["0"].logctl("qrserver:com.yahoo.container.di", "debug=on")
-    vespa.qrserver["0"].logctl("configproxy:com.yahoo.vespa.config.proxy.ClientUpdater", "debug=on")
-    vespa.qrserver["0"].logctl("configproxy:com.yahoo.config.subscription.impl.JRTConfigRequester", "debug=on")
+    # @qrs.logctl(@qrs.servicetype, "all=on")
+    @qrs.logctl("#{@qrs.servicetype}:com.yahoo.container.di", "debug=on")
+    @qrs.logctl("configproxy:com.yahoo.vespa.config.proxy.ClientUpdater", "debug=on")
+    @qrs.logctl("configproxy:com.yahoo.config.subscription.impl.JRTConfigRequester", "debug=on")
   end
 
   def redeploy(resultFile, bundle)
     output = deploy(selfdir + "app", nil, nil, :bundles => [bundle])
     begin
-      wait_for_application(vespa.qrserver['0'], output)
+      wait_for_application(@qrs, output)
     rescue
       res = search("query=test&tracelevel=3")
       flunk "Did not get expected application checksum.\n Current result from query=test:\n #{res.xmldata}"
@@ -42,6 +42,7 @@ class ComponentUpdateSearcher < SearchContainerTest
     deploy(selfdir + "app", nil, nil, :bundles => [initial])
 
     start
+    @qrs = (vespa.qrserver.values.first or vespa.container.values.first)
     wait_for_hitcount("query=test",0)  # Just wait for the Qrs to be up
     # enable_all_log_levels
     #system("vespa-get-config -n container.core.chains -i container/component/com.yahoo.search.handler.SearchHandler")

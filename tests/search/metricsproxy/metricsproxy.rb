@@ -8,8 +8,16 @@ class MetricsProxy < IndexedSearchTest
     set_description("Test metrics proxy functionality")
   end
 
+  def make_app
+    SearchApp.new.
+      sd(SEARCH_DATA+'music.sd').
+      container(Container.new.
+                  gateway(ContainerDocumentApi.new).
+                  search(Searching.new))
+  end
+
   def test_metricsproxy
-    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").qrserver(QrserverCluster.new))
+    deploy_app(make_app)
     start
     puts vespa.metricsproxies.inspect
     wrapper = vespa.metricsproxies.values.first.get_wrapper
@@ -19,11 +27,11 @@ class MetricsProxy < IndexedSearchTest
     end
 
     assert(services['searchnode'])
-    assert(services['qrserver'])
+    assert(services['container'])
   end
 
   def test_http_rest_api
-    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
+    deploy_app(make_app)
     start
     container = @vespa.container.values.first
     verify_metrics_v1_api(container)
@@ -93,27 +101,26 @@ class MetricsProxy < IndexedSearchTest
     def check(metrics, check_cpu)
       found = false
       metrics['metrics'].each do  |m|
-        if m['application'] == 'yamastest.qrserver' and m['dimensions']['metrictype'] == 'system'
+        if m['application'] == 'yamastest.container' and m['dimensions']['metrictype'] == 'system'
           found = true
           assert(m['metrics']['memory_virt'] > 0, "memory_virt should be more than zero")
           assert(m['metrics']['memory_rss'] > 0, "memory_virt should be more than zero")
           assert(m['metrics']['cpu'] > 0.0, "cpu usage should be higher than 0.0") if check_cpu
         end
       end
-      assert(found, "System metrics for qrserver should be found")
+      assert(found, "System metrics for container should be found")
     end
-    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
-        qrserver(QrserverCluster.new).
-        monitoring("yamastest", 60))
+    deploy_app(make_app.
+                 monitoring("yamastest", 60))
     start
     puts "Wait 70s for system metrics snapshot"
     sleep 70
-    metrics = get_metrics('yamastest.qrserver')
+    metrics = get_metrics('yamastest.container')
     # Cpu utilization will mostly likely not have been collected yet
     check(metrics, false)
     puts "Wait 70s for another system metrics snapshot"
     sleep 70
-    metrics = get_metrics('yamastest.qrserver')
+    metrics = get_metrics('yamastest.container')
     # After two intervals we should have cpu utilization
     check(metrics, true)
   end

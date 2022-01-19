@@ -185,6 +185,8 @@ def test_multiple_position_fields
   end
 
   def assert_geo_result(query, result_file)
+    r = search(query)
+    puts "XML: #{r.xmldata}"
     assert_result_with_timeout(2, query, result_file)
   end
 

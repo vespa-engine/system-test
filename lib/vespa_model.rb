@@ -697,6 +697,7 @@ class VespaModel
       @qrserver[remote_serviceobject.index] = remote_serviceobject
     elsif service["servicetype"] == "container"
       clustername = service["clustername"]
+      @qrs[clustername].add_service(remote_serviceobject)
       @container[clustername + '/' + remote_serviceobject.index] = remote_serviceobject
     elsif service["servicetype"] == "container-clustercontroller"
       @clustercontrollers[remote_serviceobject.index] = remote_serviceobject

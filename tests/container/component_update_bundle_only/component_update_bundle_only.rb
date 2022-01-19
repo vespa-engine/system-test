@@ -19,7 +19,7 @@ class ComponentUpdateBundleOnly < SearchContainerTest
   end
 
   def enable_all_log_levels
-    @container.logctl("qrserver", "all=on")
+    @container.logctl(@container.servicetype, "all=on")
     @container.logctl("configproxy", "debug=on")
   end
 
@@ -37,7 +37,7 @@ class ComponentUpdateBundleOnly < SearchContainerTest
 
     deploy(selfdir + "app", nil, nil, :bundles => [initial])
     start
-    @container = vespa.qrserver.values.first
+    @container = (vespa.qrserver.values.first or vespa.container.values.first)
     # enable_all_log_levels
 
     verify_handler_response("Initial handler")

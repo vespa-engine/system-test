@@ -19,13 +19,13 @@ class SearcherOrder < SearchContainerTest
         start
         wait_for_hitcount("query=test", 0)  # Just wait for the Qrs to be up
         query =  "/search/?searchChain=nalle"
-        result = vespa.qrserver["0"].search(query)
+        result = search(query)
         assert_match("ThisSearcher, current number of concrete hits: 1", result.xmldata)
         assert_match("ThatSearcher, current number of concrete hits: 0", result.xmldata)
         deploy(selfdir + "app2", SEARCH_DATA+"music.sd")
         oldout = Regexp.new("ThisSearcher, current number of concrete hits: 1")
         (1..90).each do |tryno|
-            result = vespa.qrserver["0"].search(query)
+            result = search(query)
             if oldout.match(result.xmldata)
                 puts "try #{tryno} waiting for reconfiguration to complete"
                 sleep 1
@@ -33,7 +33,7 @@ class SearcherOrder < SearchContainerTest
                 puts "try #{tryno} reconfiguration complete"
             end
         end
-        result = vespa.qrserver["0"].search(query)
+        result = search(query)
         assert_match("ThisSearcher, current number of concrete hits: 0", result.xmldata)
         assert_match("ThatSearcher, current number of concrete hits: 1", result.xmldata)
     end
@@ -45,19 +45,19 @@ class SearcherOrder < SearchContainerTest
         start
         wait_for_hitcount("query=test", 0)  # Just wait for the Qrs to be up
         query =  "/search/?searchChain=nalle"
-        result = vespa.qrserver["0"].search(query)
+        result = search(query)
         assert_match("ThisSearcher, current number of concrete hits: 1", result.xmldata)
         assert_match("ThatSearcher, current number of concrete hits: 0", result.xmldata)
         deploy(selfdir + "app3", SEARCH_DATA+"music.sd")
         oldout = Regexp.new("ThisSearcher, current number of concrete hits: 1")
         (1..90).each do |tryno|
-            result = vespa.qrserver["0"].search(query)
+            result = search(query)
             if oldout.match(result.xmldata)
                 puts "try #{tryno} waiting for reconfiguration to complete"
                 sleep 1
             end
         end
-        result = vespa.qrserver["0"].search(query)
+        result = search(query)
         assert_match("ThisSearcher, current number of concrete hits: 0", result.xmldata)
         assert_match("ThatSearcher, current number of concrete hits: 1", result.xmldata)
     end
@@ -67,7 +67,7 @@ class SearcherOrder < SearchContainerTest
         deploy(selfdir + "app4", SEARCH_DATA+"music.sd")
         start
         wait_for_hitcount("?query=test", 0)  # Just wait for the Qrs to be up
-        result = vespa.qrserver["0"].search("/search/?query=foobar")
+        result = search("/search/?query=foobar")
         assert_match("EndSearcher: 42", result.xmldata)
     end
 

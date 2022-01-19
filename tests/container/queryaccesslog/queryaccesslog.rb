@@ -22,6 +22,14 @@ class QueryAccessLog < SearchContainerTest
     start
   end
 
+  def qrs(cluster, idx='0')
+    old = vespa.qrs[cluster]
+    if old
+      return old.qrserver[idx]
+    end
+    return vespa.container["#{cluster}/#{idx}"]
+  end
+
   def new_container(clusterName, port=4080)
     Container.new(clusterName).
       http(Http.new.server(Server.new(clusterName, port))).
@@ -168,7 +176,7 @@ class QueryAccessLog < SearchContainerTest
 
     puts "Second set of queries found OK in query log"
 
-    qrsnode =vespa.qrs['a'].qrserver['0']
+    qrsnode = qrs('a', '0')
     olfa = qrsnode.execute("cat #{logname_a_t0} 2>/dev/null || gzip -d < #{logname_a_t0}.gz")
     olfb = qrsnode.execute("cat #{logname_b_t0} 2>/dev/null || gzip -d < #{logname_b_t0}.gz")
     olfc = qrsnode.execute("cat #{logname_c_t0} 2>/dev/null || gzip -d < #{logname_c_t0}.gz")
@@ -228,7 +236,7 @@ class QueryAccessLog < SearchContainerTest
   end
 
   def get_qrs_log(cluster)
-    vespa.qrs[cluster].qrserver['0'].readfile(get_qrs_symlink_logname(cluster))
+    qrs(cluster, '0').readfile(get_qrs_symlink_logname(cluster))
   end
 
   def get_qrs_symlink_logname(cluster)
@@ -236,11 +244,11 @@ class QueryAccessLog < SearchContainerTest
   end
 
   def get_real_qrs_logname(cluster)
-    vespa.qrs[cluster].qrserver['0'].resolve_symlink(get_qrs_symlink_logname(cluster))
+    qrs(cluster, '0').resolve_symlink(get_qrs_symlink_logname(cluster))
   end
 
   def list_qrs_log_files(cluster)
-    vespa.qrs[cluster].qrserver['0'].list_files("#{Environment.instance.vespa_home}/logs/vespa/qrs/*")
+    qrs(cluster, '0').list_files("#{Environment.instance.vespa_home}/logs/vespa/qrs/*")
   end
 
   def get_querylog_timestamp(cluster)
