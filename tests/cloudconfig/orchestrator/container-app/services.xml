@@ -5,7 +5,7 @@
   </admin>
 
   <container version='1.0' id='mycc'>
-    <nodes jvmargs='-Xms64m -Xmx256m'>
+    <nodes>
       <node hostalias='node2'/>
       <node hostalias='node3'/>
     </nodes>
