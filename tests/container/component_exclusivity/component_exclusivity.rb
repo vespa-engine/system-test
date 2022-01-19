@@ -40,7 +40,8 @@ class ComponentExclusive < SearchContainerTest
     clear_bundles
     add_bundle_dir(@project_dir, "com.yahoo.vespatest.ExclusiveHitSearcher")
     output = deploy(@project_dir + "/app")
-    wait_for_application(vespa.qrserver.values.first, output)
+    @qrs = (vespa.qrserver.values.first or vespa.container.values.first)
+    wait_for_application(@qrs, output)
     verify_result("2")
     sleep 70
     verify_result("2")

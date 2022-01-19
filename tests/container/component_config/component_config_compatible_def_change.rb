@@ -16,7 +16,8 @@ class ComponentConfigDefVersion < SearchContainerTest
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.vespatest.ExtraHitSearcher")
     deploy(selfdir+"app")
     start
-    #vespa.qrserver.values.first.logctl('qrserver:com.yahoo.container.di', 'debug=on')
+    @qrs = (vespa.qrserver.values.first or vespa.container.values.first)
+    @qrs.logctl(@qrs.servicetype + ':com.yahoo.container.di', 'debug=on')
 
     result = search("query=test")
     title = result.hit[0].field["title"]
@@ -25,7 +26,7 @@ class ComponentConfigDefVersion < SearchContainerTest
     clear_bundles
     add_bundle_dir(File.expand_path(selfdir)+"/src2", "com.yahoo.vespatest.ExtraHitSearcher2")
     output = deploy(selfdir+"app_same_def_compatible_change")
-    wait_for_application(vespa.qrs['container'].qrserver['0'], output)
+    wait_for_application(@qrs, output)
 
     result = search("query=test&searchChain=no2")
     puts "#{result}"

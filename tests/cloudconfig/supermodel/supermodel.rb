@@ -34,7 +34,7 @@ class SuperModel < CloudConfigTest
     start
     assert_config_output_in_log("default,default:prod:default:default,configproxy")
     assert_config_output_in_log("default,default:prod:default:default,slobrok")
-    assert_config_output_in_log("default,default:prod:default:default,qrserver")
+    assert_config_output_in_log("default,default:prod:default:default,container")
   end
 
   def add_bundle(name)
@@ -81,6 +81,7 @@ def generate_app2(cmd, service_name)
   </service>
   <container id="stateless" version="1.0">
       <search/>
+      <document-api />
       <http>
           <server id="qrs" port="#{Environment.instance.vespa_web_service_port}"/>
       </http>

@@ -40,7 +40,9 @@ class ComponentUpdateDef < SearchContainerTest
     clear_bundles
     add_bundle_dir(@project_dir, "com.yahoo.vespatest.ExtraHitSearcher")
     output = deploy(@project_dir + "/app")
-    wait_for_application(vespa.qrserver.values.first, output)
+
+    @qrs = (vespa.qrserver.values.first or vespa.container.values.first)
+    wait_for_application(@qrs, output)
     verify_result("version two")
   end
 

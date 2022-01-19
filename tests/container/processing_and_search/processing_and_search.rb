@@ -31,15 +31,16 @@ class ProcessingAndSearch < SearchContainerTest
   end
 
   def test_processing_and_search_chains_in_one_container
-    result = vespa.qrserver["0"].search("/search/?query=test")
+    @qrs = (vespa.qrserver.values.first or vespa.container.values.first)
+    result = @qrs.search("/search/?query=test")
     assert_match(Regexp.new("search chains and processing chains in one container!"), result.xmldata,
                  "Could not find expected message in response.")
 
-    result = vespa.qrserver["0"].search("/processing/")
+    result = @qrs.search("/processing/")
     assert_match(Regexp.new("Processing chain with one Processor"), result.xmldata,
                  "Could not find expected message in response.")
 
-    result = vespa.qrserver["0"].search("/processing/?chain=other")
+    result = @qrs.search("/processing/?chain=other")
     assert_match(Regexp.new("Processing chain with one Processor"), result.xmldata,
                  "Could not find expected message in response.")
     assert_match(Regexp.new("No, make that two!"), result.xmldata,

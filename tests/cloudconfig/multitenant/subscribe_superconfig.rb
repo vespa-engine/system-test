@@ -26,6 +26,7 @@ class SubscribeSuperconfig < CloudConfigTest
 
   <container id="#{jdisc_id}" version="1.0">
     <search />
+    <document-api />
     <aliases>
       <endpoint-alias>#{endpoint_alias}</endpoint-alias>
    </aliases>
@@ -42,7 +43,7 @@ ENDER
 
     config = getvespaconfig("cloud.config.lb-services", "\"*\"")
     hostname = @configserver.hostname
-    endpointaliases = config["tenants"]["default"]["applications"]["default:prod:default:default"]["hosts"]["#{hostname}"]["services"]["qrserver"]["endpointaliases"]
+    endpointaliases = config["tenants"]["default"]["applications"]["default:prod:default:default"]["hosts"]["#{hostname}"]["services"]["container"]["endpointaliases"]
     assert_equal(endpoint_alias, endpointaliases[0])
   end
   

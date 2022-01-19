@@ -24,7 +24,9 @@ class YqlFederation < IndexedSearchTest
   end
 
   def enable_all_log_levels
-    vespa.qrserver["0"].logctl("qrserver:com.yahoo.search.cluster", "all=on")
+    qrs = (vespa.qrserver['0'] or vespa.container.values.first)
+    svc = qrs.servicetype
+    qrs.logctl("#{svc}:com.yahoo.search.cluster", "all=on")
   end
 
   def test_settings

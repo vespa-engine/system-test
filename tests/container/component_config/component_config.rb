@@ -15,7 +15,7 @@ class ComponentConfig < SearchContainerTest
   def test_component_config
     output = deploy(selfdir + "app", nil, nil, :bundles => [@searcher])
     start
-    @container = vespa.qrserver.values.first
+    @container = (vespa.qrserver.values.first or vespa.container.values.first)
     wait_for_application(@container, output)
 
     verify_result("Heal the World!")

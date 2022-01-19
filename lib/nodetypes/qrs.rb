@@ -15,10 +15,6 @@ class Qrs
   end
 
   def wait_until_ready(timeout=90)
-    wait_until_qrservers_ready(timeout)
-  end
-
-  def wait_until_qrservers_ready(timeout)
     @qrserver.each do |k, v|
       v.wait_until_ready(timeout)
     end
@@ -28,8 +24,11 @@ class Qrs
     if not remote_serviceobject
       return
     end
-    if remote_serviceobject.servicetype == "qrserver"
+    svc = remote_serviceobject.servicetype
+    if svc == 'qrserver' || svc == 'container'
       @qrserver[remote_serviceobject.index] = remote_serviceobject
+    else
+      raise "Unknown service type '#{svc}'"
     end
   end
 

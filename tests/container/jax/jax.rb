@@ -63,7 +63,8 @@ class Jax < SearchContainerTest
   end
 
   def verify_handler_response(apiname, expected)
-    result = vespa.qrserver["0"].post_search("/#{apiname}", get_xml())
+    @qrs = (vespa.qrserver.values.first or vespa.container.values.first)
+    result = @qrs.post_search("/#{apiname}", get_xml())
     if expected == result.xmldata
       puts "Got expected response: #{expected}"
       return;

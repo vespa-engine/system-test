@@ -21,6 +21,7 @@ class RunFbench < IndexedSearchTest
                sd("#{selfdir}/banana.sd").
                container(container_cluster))
     start
+    @qrs = (vespa.qrserver.values.first or vespa.container.values.first)
     feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.xml")
     @node = vespa.logserver
   end
@@ -31,13 +32,13 @@ class RunFbench < IndexedSearchTest
   end
 
   def check_client(num_clients)
-    result = @node.run_fbench(@queryfile, :clients => num_clients, :seconds => 30, :cycletime => 0, :qrserver => vespa.qrserver["0"])
+    result = @node.run_fbench(@queryfile, :clients => num_clients, :seconds => 30, :cycletime => 0, :qrserver => @qrs)
     assert(result[:failed] == 0, "Failed with #{num_clients} client")
   end
 
   def test_single_qrs
     # Check all queries are run
-    result = @node.run_fbench(@queryfile, :seconds => 120, :reuse => 0, :cycletime => 0, :include_handshake => true, :qrserver => vespa.qrserver["0"])
+    result = @node.run_fbench(@queryfile, :seconds => 120, :reuse => 0, :cycletime => 0, :include_handshake => true, :qrserver => @qrs)
     assert_equal(@num_queries, result[:success] , "Not all queries runned")
 
     # Testing different number of clients
@@ -51,7 +52,7 @@ class RunFbench < IndexedSearchTest
   end
 
   def test_fbench_log
-    @node.run_fbench(@queryfile, :clients => 1, :seconds => 1, :reuse => 0, :output => @fbench_output, :get_extended => 1, :cycletime => 0, :qrserver => vespa.qrserver["0"])
+    @node.run_fbench(@queryfile, :clients => 1, :seconds => 1, :reuse => 0, :output => @fbench_output, :get_extended => 1, :cycletime => 0, :qrserver => @qrs)
 
     # Assert output is written
     (exitcode, result) = @node.execute("cat #{@fbench_output}", {:exitcode => true})
@@ -92,27 +93,28 @@ class Fbench2 < IndexedSearchTest
     @fbench_output = @dirs.tmpdir + "fbench_out.txt"
     @num_queries = 4000
 
-    qrscl1 = QrserverCluster.new
-    qrscl1.node(:hostalias => "node1")
-    qrscl1.node(:hostalias => "node2")
-    qrservers = Qrservers.new
-    qrservers.qrserver(qrscl1)
-    deploy_app(SearchApp.new.sd("#{selfdir}/banana.sd").
-               num_hosts(@num_hosts).
-               qrservers(qrservers))
+    c_cluster_a = Container.new('c-a').
+                    search(Searching.new).
+                    http(Http.new.server(Server.new('foo-server', 6180))).
+                    gateway(ContainerDocumentApi.new)
+    c_cluster_b = Container.new('c-b').
+                    search(Searching.new).
+                    http(Http.new.server(Server.new('bar-server', 6190))).
+                    gateway(ContainerDocumentApi.new)
+    deploy_app(SearchApp.new.
+                 sd("#{selfdir}/banana.sd").
+                 container(c_cluster_a).
+                 container(c_cluster_b))
     start
     feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.xml")
     @node = vespa.logserver
   end
 
-  def initialize(*args)
-    super(*args)
-    @num_hosts = 2
-  end
-
   def test_multiple_qrs
+    qrs0 = @vespa.container['c-a/0']
+    qrs1 = @vespa.container['c-b/0']
     # Check all queries are run with two valid qrs servers
-    result = @node.run_fbench(@queryfile, :seconds => -1, :reuse => 0, :multiple_qrs => 1, :cycletime => 0, :output => @fbench_output, :qrserver => vespa.qrserver["0"], :qrserver2 => vespa.qrserver["1"], :include_handshake => true)
+    result = @node.run_fbench(@queryfile, :seconds => -1, :reuse => 0, :multiple_qrs => 1, :cycletime => 0, :output => @fbench_output, :qrserver => qrs0, :qrserver2 => qrs1, :include_handshake => true)
     output = vespa.adminserver.readfile(@fbench_output)
     assert_equal(@num_queries, result[:success] , "Not all queries ran successfully, only #{result[:success]}/#{@num_queries} did. vespa-fbench output=#{output}")
   end
