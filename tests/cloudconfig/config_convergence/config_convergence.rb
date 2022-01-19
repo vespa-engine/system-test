@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'app_generator/search_app'
 require 'json'
@@ -22,8 +22,8 @@ class ConfigConvergence < CloudConfigTest
     json = get_json(response)
     assert_equal(config_generation, json["wantedGeneration"])
     services = json["services"]
-    # 5 services: container, searchnode, container-clustercontroller, distributor, storagenode
-    assert_equal(5, services.length)
+    # 6 services: container, searchnode, container-clustercontroller, distributor, storagenode, metricsproxy-container
+    assert_equal(6, services.length)
 
     converged_services = wait_for_services_to_converge(services)
     # All converged, check result for each service
