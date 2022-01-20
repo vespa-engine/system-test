@@ -5,7 +5,7 @@
   </admin>
 
   <container id="default" version="1.0">
-    <nodes cpu-socket-affinity="true" jvmargs="-Dvespa.freezedetector.disable=true ">
+    <nodes cpu-socket-affinity="true">
       <node hostalias="node1" />
     </nodes>
   </container>
