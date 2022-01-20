@@ -39,7 +39,6 @@ class Container
     @jvmargs = ""
     @jvmgcoptions = nil
     @cpu_socket_affinity = nil
-    @minimum_jvmargs = "-Dvespa.freezedetector.disable=true "
   end
 
   def node_list
@@ -61,7 +60,7 @@ class Container
     helper.tag("container", attrs)
 
     tmpjvmargs = @jvmargs ? @jvmargs : ""
-    nodeparams = { :jvmargs => @minimum_jvmargs + tmpjvmargs }
+    nodeparams = { :jvmargs => tmpjvmargs }
     if (@jvmgcoptions != nil) then
       nodeparams = nodeparams.merge({:"jvm-gc-options" => @jvmgcoptions})
     end

@@ -15,7 +15,7 @@
         <documentprocessor id="com.yahoo.vespatest.WorstMusicDocProc" />
       </chain>
     </document-processing>
-    <nodes jvmargs="-Dvespa.freezedetector.disable=true ">
+    <nodes>
       <node hostalias="node1" />
     </nodes>
   </container>

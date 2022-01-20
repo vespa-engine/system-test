@@ -9,7 +9,7 @@
 
   <container version='1.0' id='default'>
     <search/>
-    <nodes jvmargs='-Xms64m -Xmx256m'>
+    <nodes>
       <node hostalias='node1'/>
     </nodes>
   </container>
