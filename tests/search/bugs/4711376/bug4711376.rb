@@ -12,8 +12,7 @@ class Bug4711376 < IndexedSearchTest
   def test_bug4711376
     app = SearchApp.new.sd(selfdir + "base.sd").
           qrservers_jvmargs("-Xdebug" +
-            " -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005" +
-	    " -Dvespa.freezedetector.disable=1").
+            " -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005").
           cluster(SearchCluster.new("image").sd(selfdir + "image.sd")).
           cluster(SearchCluster.new("music").sd(selfdir + "music.sd")).
           storage(StorageCluster.new("storage", 1).

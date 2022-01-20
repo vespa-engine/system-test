@@ -17,7 +17,7 @@ class Bug6581037Test < SearchTest
 
   def test_uca_chinese
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
-               qrservers_jvmargs("-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -Dvespa.freezedetector.disable=1"))
+               qrservers_jvmargs("-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"))
     start
     verify_uca_sorting("zh", 157)
     verify_uca_sorting("ar", 34)

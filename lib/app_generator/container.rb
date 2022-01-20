@@ -36,10 +36,9 @@ class Container
     @id = id
     @baseport = 0
     @jetty = nil
-    @jvmargs = ""
+    @jvmargs = nil
     @jvmgcoptions = nil
     @cpu_socket_affinity = nil
-    @minimum_jvmargs = "-Dvespa.freezedetector.disable=true "
   end
 
   def node_list
@@ -60,8 +59,7 @@ class Container
     helper = XmlHelper.new(indent)
     helper.tag("container", attrs)
 
-    tmpjvmargs = @jvmargs ? @jvmargs : ""
-    nodeparams = { :jvmargs => @minimum_jvmargs + tmpjvmargs }
+    nodeparams = @jvmargs ? { :jvmargs => @jvmargs } : {}
     if (@jvmgcoptions != nil) then
       nodeparams = nodeparams.merge({:"jvm-gc-options" => @jvmgcoptions})
     end
