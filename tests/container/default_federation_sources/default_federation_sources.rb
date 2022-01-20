@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_container_test'
 
 class DefaultFederationSources < SearchContainerTest
@@ -61,7 +61,6 @@ class DefaultFederationSources < SearchContainerTest
     result.xml.each_element("//hit//field[@name='title']") { |i| titles.push(i.text) };
     titles.sort()
   end
-
 
   def teardown
     stop
