@@ -9,7 +9,7 @@
       <binding>http://*/hello</binding>
       <binding>http://*/goodbye</binding>
     </handler>
-    <nodes jvmargs="">
+    <nodes>
       <node hostalias="node1" />
     </nodes>
   </container>

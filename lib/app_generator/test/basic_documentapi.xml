@@ -9,7 +9,7 @@
       <abortondocumenterror>false</abortondocumenterror>
       <timeout>55.5</timeout>
     </document-api>
-    <nodes jvmargs="">
+    <nodes>
       <node hostalias="node1" />
     </nodes>
   </container>
