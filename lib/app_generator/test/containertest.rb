@@ -224,6 +224,7 @@ class ContainerAppGenTest < Test::Unit::TestCase
     '<container id="default" version="1.0">
       <nodes>
         <jvm gc-options="-XX:+UseG1GC -XX:MaxTenuringThreshold=10" options="-Dfoo=bar -Dvespa_foo=bar -Xms256m -Xms256m" />
+        <node hostalias="node1" />
       </nodes>'
 
     assert_substring_ignore_whitespace(actual, expected_substr)
