@@ -217,13 +217,13 @@ class ContainerAppGenTest < Test::Unit::TestCase
   def test_jvm_options
     actual =
       Container.new.jvmgcoptions('-XX:+UseG1GC -XX:MaxTenuringThreshold=10').
-        jvmoptions('-Dfoo=bar -Dvespa_foo="foo og bar" -Xms256m -Xms256m').
+        jvmoptions('-Dfoo=bar -Dvespa_foo=bar -Xms256m -Xms256m').
     to_xml("")
 
     expected_substr =
     '<container id="default" version="1.0">
       <nodes>
-        <jvm options="-Dfoo=bar -Dvespa_foo="foo og bar" -Xms256m -Xms256m gc-optionis="-XX:+UseG1GC -XX:MaxTenuringThreshold=10""
+        <jvm gc-options="-XX:+UseG1GC -XX:MaxTenuringThreshold=10" options="-Dfoo=bar -Dvespa_foo=bar -Xms256m -Xms256m" />
       </nodes>'
 
     assert_substring_ignore_whitespace(actual, expected_substr)
