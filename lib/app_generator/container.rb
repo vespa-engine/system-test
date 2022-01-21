@@ -19,6 +19,7 @@ class Container
   chained_setter :gateway # todo: try to get rid of this, use :documentapi instead
   chained_setter :documentapi
   chained_setter :jvmargs
+  chained_setter :jvmoptions
   chained_setter :jvmgcoptions
   chained_setter :cpu_socket_affinity
 
@@ -36,7 +37,7 @@ class Container
     @id = id
     @baseport = 0
     @jetty = nil
-    @jvmargs = nil
+    @jvmoptions = nil
     @jvmgcoptions = nil
     @cpu_socket_affinity = nil
   end
@@ -60,12 +61,15 @@ class Container
     helper.tag("container", attrs)
 
     nodeparams = @jvmargs ? { :jvmargs => @jvmargs } : {}
-    if (@jvmgcoptions != nil) then
-      nodeparams = nodeparams.merge({:"jvm-gc-options" => @jvmgcoptions})
-    end
-    if (@cpu_socket_affinity != nil) then
+    if @cpu_socket_affinity then
       nodeparams = nodeparams.merge({:"cpu-socket-affinity" => @cpu_socket_affinity})
     end
+
+    jvm_options = @jvmoptions ? { :options => @jvmoptions } : {}
+    if @jvmgcoptions
+      jvm_options =jvm_options.merge({:"gc-options" => @jvmgcoptions })
+    end
+
     helper.
       to_xml(@config).
       to_xml(@search).
@@ -77,7 +81,7 @@ class Container
       to_xml(@handlers).
       to_xml(@components).
       to_xml(@http).
-      tag("nodes", nodeparams).to_xml(node_list).close_tag.
+      tag("nodes", nodeparams).tag("jvm", jvm_options).close_tag.to_xml(node_list).close_tag.
       to_s
   end
 end
