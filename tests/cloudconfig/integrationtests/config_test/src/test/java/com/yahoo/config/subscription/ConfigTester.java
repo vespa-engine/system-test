@@ -9,7 +9,6 @@ import com.yahoo.jrt.Spec;
 import com.yahoo.jrt.Supervisor;
 import com.yahoo.jrt.Target;
 import com.yahoo.jrt.Transport;
-import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.config.Connection;
 import com.yahoo.vespa.config.ConnectionPool;
 import com.yahoo.vespa.config.TimingValues;
@@ -22,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -59,7 +59,7 @@ public class ConfigTester implements AutoCloseable {
     public TestConfigServer createAndStartConfigServer() {
         TestConfigServer server = createConfigServer();
         cluster.add(server);
-        log.log(LogLevel.DEBUG, "starting configserver on port: " + server.getSpec().port());
+        log.log(Level.FINE, "starting configserver on port: " + server.getSpec().port());
         startConfigServer(server);
         return server;
     }
@@ -77,14 +77,14 @@ public class ConfigTester implements AutoCloseable {
     public void stopConfigServer(TestConfigServer cs) {
         Objects.requireNonNull(cs, "stop() cannot be called with null value");
         Thread t = threads.get(cs);
-        log.log(LogLevel.INFO, "Stopping configserver running on port " + cs.getSpec().port() + "...");
+        log.log(Level.INFO, "Stopping configserver running on port " + cs.getSpec().port() + "...");
         cs.stop();
         try {
             t.join();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        log.log(LogLevel.INFO, "Config server running on port " + cs.getSpec().port() + " stopped");
+        log.log(Level.INFO, "Config server running on port " + cs.getSpec().port() + " stopped");
     }
 
     /**

@@ -17,10 +17,10 @@ import com.yahoo.search.result.ErrorMessage;
 import com.yahoo.search.searchchain.Execution;
 import com.yahoo.text.MapParser;
 
+import java.util.logging.Level;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import com.yahoo.log.LogLevel;
 
 import static com.yahoo.container.protect.Error.UNSPECIFIED;
 import static com.yahoo.prelude.querytransform.NormalizingSearcher.ACCENT_REMOVAL;
@@ -67,7 +67,7 @@ public class ItemRawScoreTestSearcher extends Searcher {
             } else {
                 query.getModel().getQueryTree().setRoot(root);
             }
-            getLogger().log(LogLevel.INFO, "Query plan " + query);
+            getLogger().log(Level.INFO, "Query plan " + query);
             return execution.search(query);
         } catch (Exception e) {
             return new Result(query, new ErrorMessage(UNSPECIFIED.code, "Shit happened", Exceptions.toMessageString(e)));

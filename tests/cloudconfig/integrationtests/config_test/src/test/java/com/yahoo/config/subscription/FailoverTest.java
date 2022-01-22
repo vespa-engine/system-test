@@ -5,13 +5,13 @@ import com.yahoo.config.FooConfig;
 import com.yahoo.config.subscription.impl.JRTConfigRequester;
 import com.yahoo.config.subscription.impl.JRTConfigSubscription;
 import com.yahoo.foo.BarConfig;
-import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.config.Connection;
 import com.yahoo.vespa.config.ConnectionPool;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
 import org.junit.After;
 import org.junit.Test;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasChanged;
@@ -51,7 +51,7 @@ public class FailoverTest {
             assertEquals(bh.getConfig().barValue(), "0bar");
             assertEquals(fh.getConfig().fooValue(), "0foo");
             Connection currentConnection = connectionPool(fh).getCurrent();
-            log.log(LogLevel.INFO, "current source=" + currentConnection.getAddress());
+            log.log(Level.INFO, "current source=" + currentConnection.getAddress());
             tester.stopConfigServerMatchingSource(currentConnection);
 
             assertNextConfigHasNotChanged(subscriber, bh, fh);
@@ -148,7 +148,7 @@ public class FailoverTest {
             // Kill current source, wait for failover
             ConnectionPool connectionPool = bhRequester.getConnectionPool();
             Connection current = connectionPool.getCurrent();
-            log.log(LogLevel.INFO, "current=" + current.getAddress());
+            log.log(Level.INFO, "current=" + current.getAddress());
             tester.stopConfigServerMatchingSource(current);
             Thread.sleep(ConfigTester.timingValues().getSubscribeTimeout() * 3);
             assertNotEquals(current.toString(), connectionPool.getCurrent().toString());

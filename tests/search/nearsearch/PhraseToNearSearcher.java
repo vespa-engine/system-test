@@ -1,7 +1,7 @@
 // Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.nearsearch;
 
-import com.yahoo.log.LogLevel;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.yahoo.search.Searcher;
@@ -28,9 +28,9 @@ public class PhraseToNearSearcher extends Searcher {
     public Result search(Query query, Execution execution) {
         query.trace("PhraseToNearSearcher", true, 1);
         QueryTree tree = query.getModel().getQueryTree();
-        log.log(LogLevel.INFO, "Before: " + tree.getRoot());
+        log.log(Level.INFO, "Before: " + tree.getRoot());
         tree.setRoot(replacePhrase(tree.getRoot()));
-        log.log(LogLevel.INFO, "After: " + tree.getRoot());
+        log.log(Level.INFO, "After: " + tree.getRoot());
         query.trace("PhraseToNearSearcher", true, 1);
         return execution.search(query);
     }
