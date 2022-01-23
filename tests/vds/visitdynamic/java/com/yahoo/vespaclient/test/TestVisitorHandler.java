@@ -8,7 +8,6 @@ import com.yahoo.documentapi.*;
 import com.yahoo.documentapi.messagebus.protocol.DocumentListMessage;
 import com.yahoo.documentapi.messagebus.protocol.EmptyBucketsMessage;
 import com.yahoo.documentapi.messagebus.protocol.MapVisitorMessage;
-import com.yahoo.log.LogLevel;
 import com.yahoo.messagebus.Message;
 import com.yahoo.vdslib.SearchResult;
 import com.yahoo.vdslib.DocumentSummary;
@@ -21,6 +20,7 @@ import org.apache.commons.cli.*;
 
 import java.io.PrintStream;
 import java.io.File;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -120,7 +120,7 @@ public class TestVisitorHandler extends VdsVisitHandler {
             throw new IllegalArgumentException("given killfile does not exist");
         }
         startupKillFileModified = killFile.lastModified();
-	log.log(LogLevel.INFO, "Instantiated test visitor handler");
+	log.log(Level.INFO, "Instantiated test visitor handler");
     }
 
     public void onDone() {
@@ -174,7 +174,7 @@ public class TestVisitorHandler extends VdsVisitHandler {
                 } catch (InterruptedException e) {}
             }
 
-	    log.log(LogLevel.DEBUG, "onMessage: " + m);
+	    log.log(Level.FINE, "onMessage: " + m);
 
             synchronized (getPrintLock()) {
                 if (m instanceof MapVisitorMessage) {
@@ -191,7 +191,7 @@ public class TestVisitorHandler extends VdsVisitHandler {
 
         @Override
         public void onDocument(Document doc, long timestamp) {
-	    log.log(LogLevel.DEBUG, "onDocument: " + doc);
+	    log.log(Level.FINE, "onDocument: " + doc);
 	    synchronized (this) {
 
 		try {
@@ -206,7 +206,7 @@ public class TestVisitorHandler extends VdsVisitHandler {
 		++currentDocumentCount;
 		
 		if (currentDocumentCount == documentThreshold) {
-		    log.log(LogLevel.DEBUG, "Document threshold exceeded; pausing");
+		    log.log(Level.FINE, "Document threshold exceeded; pausing");
 		    System.err.println("Taking a chill pill and waiting for the ACK file to be touched...");
 		    // First, touch the file so that the system test knows it's OK to do a
 		    // re-deployment of vespa
@@ -220,7 +220,7 @@ public class TestVisitorHandler extends VdsVisitHandler {
 		    } catch (InterruptedException e) {
 			// This is just test utility code, don't bother with any cleanup
 		    }
-		    log.log(LogLevel.DEBUG, "Resumed from pause");
+		    log.log(Level.FINE, "Resumed from pause");
 		    System.err.println("aaaaag after ten thousand years i'm finally free!!");
 		}
 	    }
@@ -244,7 +244,7 @@ public class TestVisitorHandler extends VdsVisitHandler {
 
 	public void onDocumentList(BucketId bucketId, List<DocumentListEntry> documents) {
             out.println("Got document list of bucket " + bucketId.toString());
-	    log.log(LogLevel.DEBUG, "Got document list with " + documents.size() + " entries");
+	    log.log(Level.FINE, "Got document list with " + documents.size() + " entries");
             for (DocumentListEntry entry : documents) {
                 entry.getDocument().setLastModified(entry.getTimestamp());
                 onDocument(entry.getDocument(), entry.getTimestamp());
@@ -257,7 +257,7 @@ public class TestVisitorHandler extends VdsVisitHandler {
                 buckets.append(" ");
                 buckets.append(bid.toString());
             }
-            log.log(LogLevel.INFO, "Got EmptyBuckets: " + buckets);
+            log.log(Level.INFO, "Got EmptyBuckets: " + buckets);
         }
 
 	public void onMapVisitorData(java.util.Map<String, String> data) {

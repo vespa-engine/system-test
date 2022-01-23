@@ -1,8 +1,8 @@
 // Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.nearsearch;
 
-import com.yahoo.log.LogLevel;
 import com.yahoo.prelude.query.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Iterator;
 import java.util.Stack;
@@ -17,9 +17,9 @@ public class PhraseToONearSearcher extends Searcher {
 
     @Override
     public Result search(Query query, Execution execution) {
-        log.log(LogLevel.INFO, "Before: " + query.getModel().getQueryTree().getRoot());
+        log.log(Level.INFO, "Before: " + query.getModel().getQueryTree().getRoot());
         query.getModel().getQueryTree().setRoot(replacePhrase(query.getModel().getQueryTree().getRoot()));
-        log.log(LogLevel.INFO, "After: " + query.getModel().getQueryTree().getRoot());
+        log.log(Level.INFO, "After: " + query.getModel().getQueryTree().getRoot());
 
         Result ret = execution.search(query);
         ret.trace("there is no spoon");

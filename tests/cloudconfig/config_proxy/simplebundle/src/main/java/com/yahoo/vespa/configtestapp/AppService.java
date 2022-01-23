@@ -1,12 +1,12 @@
 package com.yahoo.vespa.configtestapp;
 
-import com.yahoo.log.LogLevel;
 import com.yahoo.log.LogSetup;
 import com.yahoo.messagebus.MessagebusConfig;
 import com.yahoo.config.subscription.ConfigSubscriber;
 import com.yahoo.config.subscription.ConfigHandle;
 
 import java.util.Date;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,10 +41,10 @@ public class AppService {
     }
 
     private void configure(long generation, MessagebusConfig config) {
-        log.log(LogLevel.INFO, System.currentTimeMillis() + ": " + configId + " got configure callback");
+        log.log(Level.INFO, System.currentTimeMillis() + ": " + configId + " got configure callback");
         this.config = config;
         int routeSize = config.routingtable(0).route().size();
-        log.log(LogLevel.INFO, "Number of routes for " + outputFile + ":" + routeSize + " (generation " + generation + ")");
+        log.log(Level.INFO, "Number of routes for " + outputFile + ":" + routeSize + " (generation " + generation + ")");
         try {
             FileWriter writer = new FileWriter(outputFile);
             writer.write(Integer.toString(routeSize));

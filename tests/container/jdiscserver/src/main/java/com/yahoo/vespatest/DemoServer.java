@@ -8,11 +8,11 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.yahoo.jdisc.service.AbstractServerProvider;
 import com.yahoo.jdisc.service.CurrentContainer;
-import com.yahoo.log.LogLevel;
 import com.yahoo.text.Utf8;
 
 /**
@@ -51,7 +51,7 @@ public class DemoServer extends AbstractServerProvider {
                 try {
                     clientSocket = server.accept();
                 } catch (IOException e) {
-                    logger.log(LogLevel.WARNING, "Failure while accepting connection.", e);
+                    logger.log(Level.WARNING, "Failure while accepting connection.", e);
                     continue;
                 }
                 try {
@@ -63,12 +63,12 @@ public class DemoServer extends AbstractServerProvider {
                     out.write(response);
                     out.flush();
                 } catch (IOException e) {
-                    logger.log(LogLevel.WARNING, "Could not write to client.", e);
+                    logger.log(Level.WARNING, "Could not write to client.", e);
                 } finally {
                     try {
                         clientSocket.close();
                     } catch (IOException e) {
-                        logger.log(LogLevel.WARNING, "Error while closing client socket.", e);
+                        logger.log(Level.WARNING, "Error while closing client socket.", e);
                     }
                 }
             }
@@ -109,7 +109,7 @@ public class DemoServer extends AbstractServerProvider {
     @Override
     public void close() {
         if (daemon == null) {
-            logger.log(LogLevel.ERROR, "DemoServer.close() invoked without successful start()");
+            logger.log(Level.SEVERE, "DemoServer.close() invoked without successful start()");
         } else {
             daemon.stop();
         }

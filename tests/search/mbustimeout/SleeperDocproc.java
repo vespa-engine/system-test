@@ -3,7 +3,7 @@ package com.yahoo.vespatest;
 
 import com.yahoo.docproc.*;
 import com.yahoo.document.*;
-import com.yahoo.log.LogLevel;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SleeperDocproc extends DocumentProcessor {
@@ -16,14 +16,14 @@ public class SleeperDocproc extends DocumentProcessor {
 		    for (long now = System.currentTimeMillis(), end = now + 5000; now < end; now = System.currentTimeMillis()) {
 			    try {
 					long tmp = end - now;
-					log.log(LogLevel.INFO, "Document (" + documentOperation.getId() + ") going to sleep for " + tmp + " milliseconds.");
+					log.log(Level.INFO, "Document (" + documentOperation.getId() + ") going to sleep for " + tmp + " milliseconds.");
 					Thread.sleep(tmp);
 		    	}
 			    catch (InterruptedException e) {
-					log.log(LogLevel.INFO, "Document (" + documentOperation.getId() + ") sleep walking..");
+					log.log(Level.INFO, "Document (" + documentOperation.getId() + ") sleep walking..");
 			    }
 			}
-	    	log.log(LogLevel.INFO, "Document (" + documentOperation.getId() + ") waking up.");
+	    	log.log(Level.INFO, "Document (" + documentOperation.getId() + ") waking up.");
 		}
         return Progress.DONE;
     }

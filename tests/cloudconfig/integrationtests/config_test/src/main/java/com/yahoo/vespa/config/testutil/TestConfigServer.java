@@ -13,7 +13,6 @@ import com.yahoo.config.provision.Zone;
 import com.yahoo.config.subscription.CfgConfigPayloadBuilder;
 import com.yahoo.io.IOUtils;
 import com.yahoo.jrt.Spec;
-import com.yahoo.log.LogLevel;
 import com.yahoo.vespa.config.ConfigDefinitionKey;
 import com.yahoo.vespa.config.ConfigKey;
 import com.yahoo.vespa.config.ConfigPayload;
@@ -56,6 +55,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -227,7 +227,7 @@ public class TestConfigServer implements RequestHandler, Runnable {
     public synchronized void deployNewConfig(String configDir) {
         this.configDir = configDir;
         long gen = updateApplication();
-        log.log(LogLevel.INFO, "Activated config with generation " + gen + " from directory " + configDir +
+        log.log(Level.INFO, "Activated config with generation " + gen + " from directory " + configDir +
                                " on config server using port " + port);
     }
 
