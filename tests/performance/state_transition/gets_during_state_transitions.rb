@@ -38,7 +38,7 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     container(Container.new("combinedcontainer").
                             search(Searching.new).
                             docproc(DocumentProcessing.new).
-                            gateway(ContainerDocumentApi.new)).
+                            documentapi(ContainerDocumentApi.new)).
     config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
                           add('simulated_db_pruning_latency_msec', 2000).
                           add('simulated_db_merging_latency_msec', 3000).

@@ -23,7 +23,7 @@ class HttpClientDocProcTest < SearchTest
     add_bundle(DOCPROC + "/SpawningMusicDocProc.java")
     container_cluster = Container.new("dpcluster1").
                             search(Searching.new).
-                            gateway(ContainerDocumentApi.new).
+                            documentapi(ContainerDocumentApi.new).
                             docproc(DocumentProcessing.new.chain(Chain.new("default").add(
                                     DocumentProcessor.new("com.yahoo.vespatest.SpawningMusicDocProc"))))
     output = deploy_app(SearchApp.new.

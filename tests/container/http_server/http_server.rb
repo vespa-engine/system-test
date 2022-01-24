@@ -20,7 +20,7 @@ class HttpServer < SearchContainerTest
     deploy_app(ContainerApp.new.
                container(Container.new.
                          jvmargs(nil).
-                         gateway(ContainerDocumentApi.new).
+                         documentapi(ContainerDocumentApi.new).
                          search(Searching.new.
                                 chain(Chain.new("default").
                                       add(Searcher.new("test.OutputHttpServerIdentity").

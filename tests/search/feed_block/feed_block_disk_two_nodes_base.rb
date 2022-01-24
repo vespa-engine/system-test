@@ -79,8 +79,8 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
                 search(Searching.new).
                 component(AccessLog.new("disabled")).
                 docproc(DocumentProcessing.new).
-                gateway(ContainerDocumentApi.new).
-                http(Http.new.server(Server.new("node1", vespa.default_http_gateway_port)))).
+                documentapi(ContainerDocumentApi.new).
+                http(Http.new.server(Server.new("node1", vespa.default_http_documentapi_port)))).
       storage(StorageCluster.new(@cluster_name, 41)).
       config(get_tls_configoverride).
       config(get_flush_configoverride).

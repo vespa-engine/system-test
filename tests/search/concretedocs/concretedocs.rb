@@ -17,7 +17,7 @@ class ConcreteDocs < SearchTest
                sd(selfdir + 'concretedocs2/disease.sd').
                container(Container.new('default').
                          search(Searching.new).
-                         documentapi(ContainerDocumentApi.new.gateway(true)).
+                         documentapi(ContainerDocumentApi.new.documentapi(true)).
                          concretedoc(ConcreteDoc.new('vehicle')).
                          concretedoc(ConcreteDoc.new('ship')).
                          concretedoc(ConcreteDoc.new('disease').
