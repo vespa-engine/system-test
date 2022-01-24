@@ -24,15 +24,15 @@ class SchemaChangesElastic < IndexedSearchTest
     @test_dir = selfdir + "docdb/"
     deploy_output = deploy_app(SearchApp.new.
                                sd(@test_dir + "testa.sd").
-                               gateway("node1").
-                               enable_http_gateway)
+                               documentapi("node1").
+                               enable_http_documentapi)
     start
     postdeploy_wait(deploy_output)
     feed_and_wait_for_docs("testa", 1, :file => @test_dir + "feed.0.xml")
 
     puts "add 'testb' documentdb"
     deploy_output = deploy_app(SearchApp.new.
-                               enable_http_gateway.
+                               enable_http_documentapi.
                                sd(@test_dir + "testa.sd").sd(@test_dir + "testb.sd"))
     wait_for_content_cluster_config_generation(deploy_output)
     postdeploy_wait(deploy_output)
