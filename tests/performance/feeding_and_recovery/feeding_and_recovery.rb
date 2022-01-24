@@ -159,7 +159,7 @@ class FeedingAndRecoveryTest < PerformanceTest
                 jvmargs('-Xms16g -Xmx16g').
                 search(Searching.new).
                 docproc(DocumentProcessing.new).
-                documentapi(ContainerDocumentApi.new)).
+                gateway(ContainerDocumentApi.new)).
       indexing("combinedcontainer").
       config(ConfigOverride.new("vespa.config.content.core.stor-distributormanager").
              add("garbagecollection",

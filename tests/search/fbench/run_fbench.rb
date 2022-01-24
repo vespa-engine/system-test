@@ -96,11 +96,11 @@ class Fbench2 < IndexedSearchTest
     c_cluster_a = Container.new('c-a').
                     search(Searching.new).
                     http(Http.new.server(Server.new('foo-server', 6180))).
-                    documentapi(ContainerDocumentApi.new)
+                    gateway(ContainerDocumentApi.new)
     c_cluster_b = Container.new('c-b').
                     search(Searching.new).
                     http(Http.new.server(Server.new('bar-server', 6190))).
-                    documentapi(ContainerDocumentApi.new)
+                    gateway(ContainerDocumentApi.new)
     deploy_app(SearchApp.new.
                  sd("#{selfdir}/banana.sd").
                  container(c_cluster_a).

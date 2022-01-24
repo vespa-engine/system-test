@@ -41,7 +41,7 @@ class FastAccessAttributesPerfTest < PerformanceTest
                     jvmargs('-Xms8g -Xmx8g').
                     search(Searching.new).
                     docproc(DocumentProcessing.new).
-                    documentapi(ContainerDocumentApi.new)).
+                    gateway(ContainerDocumentApi.new)).
           indexing("combinedcontainer").
       num_parts(2).redundancy(2).ready_copies(1).
       visibility_delay(0.002).

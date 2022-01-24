@@ -27,12 +27,12 @@ class FeedingAndRemovingBase < PerformanceTest
 
   def create_app(visibility_delay = 0, index_threads = 1)
     sd_file = selfdir + "test.sd"
-    app = SearchApp.new.enable_http_documentapi.sd(sd_file).
+    app = SearchApp.new.enable_http_gateway.sd(sd_file).
       container(Container.new("combinedcontainer").
                 jvmargs('-Xms8g -Xmx8g').
                 search(Searching.new).
                 docproc(DocumentProcessing.new).
-                documentapi(ContainerDocumentApi.new)).
+                gateway(ContainerDocumentApi.new)).
       indexing("combinedcontainer").
       redundancy(1).ready_copies(1).threads_per_search(4).
       disable_flush_tuning.

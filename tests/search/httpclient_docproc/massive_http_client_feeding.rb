@@ -60,7 +60,7 @@ class MassiveHttpClientFeedingTest < SearchTest
       component(AccessLog.new("disabled")).
       jvmargs("-Xms4096m -Xmx4096m").
       search(Searching.new).
-      documentapi(ContainerDocumentApi.new).
+      gateway(ContainerDocumentApi.new).
       config(ConfigOverride.new("container.handler.threadpool").add("maxthreads", 4)).
       http(Http.new.
         server(

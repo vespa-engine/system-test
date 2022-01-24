@@ -67,7 +67,7 @@ class ParentChildPerfTest < PerformanceTest
                             jvmargs('-Xms16g -Xmx16g').
                             search(Searching.new).
                             docproc(DocumentProcessing.new).
-                            documentapi(ContainerDocumentApi.new)).
+                            gateway(ContainerDocumentApi.new)).
                   indexing("combinedcontainer")
   end
 

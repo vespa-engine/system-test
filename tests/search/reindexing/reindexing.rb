@@ -20,7 +20,7 @@ class ReindexingTest < IndexedSearchTest
         container(Container.new('combinedcontainer').
             search(Searching.new).
             docproc(DocumentProcessing.new).
-            documentapi(ContainerDocumentApi.new))
+            gateway(ContainerDocumentApi.new))
     deploy_app(app)
     start
     container_node = @vespa.container["combinedcontainer/0"]
