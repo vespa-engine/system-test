@@ -72,12 +72,12 @@ class FeedingMultipleDocTypesTest < PerformanceTest
   def create_app(sd_files)
     app = SearchApp.new.
             visibility_delay(0.002).
-            enable_http_documentapi.disable_flush_tuning.
+            enable_http_gateway.disable_flush_tuning.
             container(Container.new("combinedcontainer").
                       jvmargs('-Xms16g -Xmx16g').
                       search(Searching.new).
                       docproc(DocumentProcessing.new).
-                      documentapi(ContainerDocumentApi.new)).
+                      gateway(ContainerDocumentApi.new)).
             indexing("combinedcontainer").
             generic_service(GenericService.new('devnull', "#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")).
             config(ConfigOverride.new("vespa.config.content.stor-filestor").

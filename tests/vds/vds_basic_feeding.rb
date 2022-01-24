@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'multi_provider_storage_test'
 
 class VdsBasicFeeding < MultiProviderStorageTest
@@ -57,22 +57,30 @@ class VdsBasicFeeding < MultiProviderStorageTest
       add_field("year",  1997).
       add_field("tracks", [ "Track 1", "Track 2", "Track 3" ])
 
+#    puts "doc1 XML: " + doc1.to_xml
+
     # Get the documents we just stored using vespa-feeder
     doc2 = vespa.document_api_v1.get("id:music:music::http://music.yahoo.com/bobdylan/BestOf")
 
+#    puts "doc2 XML: " + doc2.to_xml
+
     assert_equal(doc1, doc2)
 
-    # Put document with array attribute using document API
+    # Put document with array attribute using SOAP gateway
     doc3 = Document.new("music", "id:storage_test:music:n=1234:soap").
       add_field("url", "http://music.yahoo.com/soap").
       add_field("title", "SoapTitle").
       add_field("artist", "Vespa").
       add_field("tracks", [ "123", "456", "789" ])
 
+#    puts "doc3 XML: " + doc3.to_xml
+
     vespa.document_api_v1.put(doc3)
 
-    # Get the documents we just stored using document API
+    # Get the documents we just stored using SOAP gateway
     doc4 = vespa.document_api_v1.get("id:storage_test:music:n=1234:soap")
+
+#    puts "doc4 XML: " + doc4.to_xml
 
     assert_equal(doc3, doc4)
   end
@@ -93,22 +101,30 @@ class VdsBasicFeeding < MultiProviderStorageTest
       add_field("year",  1997).
       add_field("popularity", { 0 => 10, 1 => 11, 2 => 12 })
 
+#    puts "doc1 XML: " + doc1.to_xml
+
     # Get the documents we just stored using vespa-feeder
     doc2 = vespa.document_api_v1.get("id:music:music::http://music.yahoo.com/bobdylan/BestOf")
 
+#    puts "doc2 XML: " + doc2.to_xml
+
     assert_equal(doc1, doc2)
 
-    # Put document with weightedset attribute using document API
+    # Put document with weightedset attribute using SOAP gateway
     doc3 = Document.new("music", "id:storage_test:music:n=1234:soap").
       add_field("url", "http://music.yahoo.com/soap").
       add_field("title", "SoapTitle").
       add_field("artist", "Vespa").
       add_field("popularity", { 3 =>20, 4 => 31, 5 => 42 })
 
+#    puts "doc3 XML: " + doc3.to_xml
+
     vespa.document_api_v1.put(doc3)
 
-    # Get the documents we just stored using document API
+    # Get the documents we just stored using SOAP gateway
     doc4 = vespa.document_api_v1.get("id:storage_test:music:n=1234:soap")
+
+#    puts "doc4 XML: " + doc4.to_xml
 
     assert_equal(doc3, doc4)
   end

@@ -26,7 +26,7 @@ class ReindexingAndFeedingTest < PerformanceTest
 		jvmargs('-Xms16g -Xmx16g').
 		search(Searching.new).
 		docproc(DocumentProcessing.new).
-		documentapi(ContainerDocumentApi.new)).
+		gateway(ContainerDocumentApi.new)).
     admin_metrics(Metrics.new).
     indexing("combinedcontainer").
     sd(selfdir + "doc.sd")

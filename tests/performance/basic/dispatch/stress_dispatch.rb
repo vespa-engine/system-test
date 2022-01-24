@@ -31,7 +31,7 @@ class StressDispatch < PerformanceTest
                                  Searcher.new("com.yahoo.example.CapInFillSearcher")).
                                  inherits("vespa"))).
                     docproc(DocumentProcessing.new).
-                    documentapi(ContainerDocumentApi.new)).
+                    gateway(ContainerDocumentApi.new)).
           indexing("combinedcontainer").
           threads_per_search(1).
           persistence_threads(PersistenceThreads.new(8)).

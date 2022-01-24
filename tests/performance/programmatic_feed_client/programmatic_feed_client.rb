@@ -124,7 +124,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     container_cluster = Container.new("dpcluster1").
       jvmargs('-Xms16g -Xmx16g').
       search(Searching.new).
-      documentapi(ContainerDocumentApi.new).
+      gateway(ContainerDocumentApi.new).
       component(AccessLog.new("disabled")).
       config(ConfigOverride.new("container.handler.threadpool").add("maxthreads", 4))
     output = deploy_app(SearchApp.new.

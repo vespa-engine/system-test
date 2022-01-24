@@ -1,0 +1,78 @@
+diff --git a/lib/app_generator/container.rb b/lib/app_generator/container.rb
+index 9103af75..950775e6 100644
+--- a/lib/app_generator/container.rb
++++ b/lib/app_generator/container.rb
+@@ -19,6 +19,7 @@ class Container
+   chained_setter :gateway # todo: try to get rid of this, use :documentapi instead
+   chained_setter :documentapi
+   chained_setter :jvmargs
++  chained_setter :jvmoptions
+   chained_setter :jvmgcoptions
+   chained_setter :cpu_socket_affinity
+ 
+@@ -36,7 +37,7 @@ class Container
+     @id = id
+     @baseport = 0
+     @jetty = nil
+-    @jvmargs = nil
++    @jvmoptions = nil
+     @jvmgcoptions = nil
+     @cpu_socket_affinity = nil
+   end
+@@ -60,12 +61,15 @@ class Container
+     helper.tag("container", attrs)
+ 
+     nodeparams = @jvmargs ? { :jvmargs => @jvmargs } : {}
+-    if (@jvmgcoptions != nil) then
+-      nodeparams = nodeparams.merge({:"jvm-gc-options" => @jvmgcoptions})
+-    end
+-    if (@cpu_socket_affinity != nil) then
++    if @cpu_socket_affinity then
+       nodeparams = nodeparams.merge({:"cpu-socket-affinity" => @cpu_socket_affinity})
+     end
++
++    jvm_options = @jvmoptions ? { :options => @jvmoptions } : {}
++    if @jvmgcoptions
++      jvm_options =jvm_options.merge({:"gc-options" => @jvmgcoptions })
++    end
++
+     helper.
+       to_xml(@config).
+       to_xml(@search).
+@@ -77,7 +81,7 @@ class Container
+       to_xml(@handlers).
+       to_xml(@components).
+       to_xml(@http).
+-      tag("nodes", nodeparams).to_xml(node_list).close_tag.
++      tag("nodes", nodeparams).tag("jvm", jvm_options).close_tag.to_xml(node_list).close_tag.
+       to_s
+   end
+ end
+diff --git a/lib/app_generator/test/containertest.rb b/lib/app_generator/test/containertest.rb
+index 7982b315..8e5a4c68 100644
+--- a/lib/app_generator/test/containertest.rb
++++ b/lib/app_generator/test/containertest.rb
+@@ -214,6 +214,23 @@ class ContainerAppGenTest < Test::Unit::TestCase
+     assert_substring_ignore_whitespace(actual, expected_substr)
+   end
+ 
++  def test_jvm_options
++    actual =
++      Container.new.jvmgcoptions('-XX:+UseG1GC -XX:MaxTenuringThreshold=10').
++        jvmoptions('-Dfoo=bar -Dvespa_foo=bar -Xms256m -Xms256m').
++    to_xml("")
++
++    expected_substr =
++    '<container id="default" version="1.0">
++      <nodes>
++        <jvm gc-options="-XX:+UseG1GC -XX:MaxTenuringThreshold=10" options="-Dfoo=bar -Dvespa_foo=bar -Xms256m -Xms256m" />
++        <node hostalias="node1" />
++      </nodes>'
++
++    assert_substring_ignore_whitespace(actual, expected_substr)
++  end
++
++
+   def test_cpu_pinning
+     verify('basic_cpu_pinning.xml', ContainerApp.new.container(Container.new.cpu_socket_affinity(true)))
+   end

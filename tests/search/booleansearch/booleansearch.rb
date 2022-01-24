@@ -28,7 +28,7 @@ class BooleanSearchTest < SearchTest
         container(Container.new("combinedcontainer").
             search(Searching.new).
             docproc(DocumentProcessing.new).
-            documentapi(ContainerDocumentApi.new)))
+            gateway(ContainerDocumentApi.new)))
     start
   end
 

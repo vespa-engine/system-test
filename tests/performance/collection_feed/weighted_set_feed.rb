@@ -56,7 +56,7 @@ class WeightedSetFeedTest < PerformanceTest
                             jvmargs('-Xms16g -Xmx16g').
                             search(Searching.new).
                             docproc(DocumentProcessing.new).
-                            documentapi(ContainerDocumentApi.new)).
+                            gateway(ContainerDocumentApi.new)).
     generic_service(GenericService.new('devnull', "#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000"))
   end
 
