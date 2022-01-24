@@ -12,7 +12,7 @@ class MetricsProxy < IndexedSearchTest
     SearchApp.new.
       sd(SEARCH_DATA+'music.sd').
       container(Container.new.
-                  gateway(ContainerDocumentApi.new).
+                  documentapi(ContainerDocumentApi.new).
                   search(Searching.new))
   end
 

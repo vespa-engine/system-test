@@ -28,7 +28,7 @@ class Visiting < PerformanceTest
         Container.new("container").
         jvmargs('-Xms8g -Xmx8g').
         docproc(DocumentProcessing.new).
-        gateway(ContainerDocumentApi.new)).
+        documentapi(ContainerDocumentApi.new)).
       admin_metrics(Metrics.new).
       indexing("container").
       sd(selfdir + "test.sd").

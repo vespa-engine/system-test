@@ -16,7 +16,7 @@ class RoutingDocApiTagTest < IndexedSearchTest
             .doc_type("book"))\
         .container(Container.new\
             .search(Searching.new)\
-            .gateway(ContainerDocumentApi.new))
+            .documentapi(ContainerDocumentApi.new))
     deploy_app(app)
     # TODO: Remove hack that is need to use correct port
     @get_params = { :route => "storage/cluster.storage", :port => Environment.instance.vespa_web_service_port }

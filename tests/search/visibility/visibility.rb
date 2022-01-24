@@ -159,7 +159,7 @@ class Visibility < IndexedSearchTest
                 search(Searching.new).
                 component(AccessLog.new("disabled")).
                 docproc(DocumentProcessing.new).
-                gateway(ContainerDocumentApi.new).
+                documentapi(ContainerDocumentApi.new).
                 http(Http.new.server(Server.new("node1", vespa.default_http_gateway_port)))).
             cluster(sc).
             storage(StorageCluster.new("visibility", 41).distribution_bits(16))

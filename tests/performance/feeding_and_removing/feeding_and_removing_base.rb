@@ -32,7 +32,7 @@ class FeedingAndRemovingBase < PerformanceTest
                 jvmargs('-Xms8g -Xmx8g').
                 search(Searching.new).
                 docproc(DocumentProcessing.new).
-                gateway(ContainerDocumentApi.new)).
+                documentapi(ContainerDocumentApi.new)).
       indexing("combinedcontainer").
       redundancy(1).ready_copies(1).threads_per_search(4).
       disable_flush_tuning.
