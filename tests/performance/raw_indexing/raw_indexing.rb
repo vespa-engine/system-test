@@ -89,7 +89,7 @@ class FeedingIndexTest < PerformanceTest
                                 jvmargs('-Xms10g -Xmx10g').
                                 search(Searching.new).
                                 docproc(DocumentProcessing.new).
-                                gateway(ContainerDocumentApi.new)).
+                                documentapi(ContainerDocumentApi.new)).
         generic_service(GenericService.new('devnull', "#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000"))
     end
     
