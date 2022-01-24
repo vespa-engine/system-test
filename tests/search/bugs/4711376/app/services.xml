@@ -10,7 +10,6 @@
 
   <container version="1.0">
     <nodes>
-      <jvm options="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005" />
       <node hostalias="node1" />
     </nodes>
     <search/>
