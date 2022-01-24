@@ -24,7 +24,7 @@ class SchemaChangesElastic < IndexedSearchTest
     @test_dir = selfdir + "docdb/"
     deploy_output = deploy_app(SearchApp.new.
                                sd(@test_dir + "testa.sd").
-                               documentapi("node1").
+                               gateway("node1").
                                enable_http_gateway)
     start
     postdeploy_wait(deploy_output)
