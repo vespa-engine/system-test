@@ -474,6 +474,13 @@ class VespaModel
         origattr = e.attributes['jvmargs']
         newattr += ' ' + origattr if origattr
         e.attributes['jvmargs'] = newattr
+
+        REXML::XPath.each(doc, path + "/jvm") do |e|
+          newattr = @testcase.perfmap_agent_jvmarg
+          origattr = e.attributes['options']
+          newattr += ' ' + origattr if origattr
+          e.attributes['options'] = newattr
+        end
       end
     end
     File.open(vespa_services, 'w') do |out|
