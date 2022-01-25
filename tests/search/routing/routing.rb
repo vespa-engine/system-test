@@ -10,7 +10,7 @@ class RoutingTest < IndexedSearchTest
 
   def three_cluster_app
     SearchApp.new.
-           enable_http_gateway.
+           enable_document_api.
            cluster(
              SearchCluster.new("music").sd(selfdir + "music.sd").
              doc_type("music", "music.year > 0")).
@@ -24,7 +24,7 @@ class RoutingTest < IndexedSearchTest
 
   def two_cluster_app
     SearchApp.new.
-           enable_http_gateway.
+           enable_document_api.
            cluster(
              SearchCluster.new("music").sd(selfdir + "music.sd").
              doc_type("music", "music.year / 3 > 0")).

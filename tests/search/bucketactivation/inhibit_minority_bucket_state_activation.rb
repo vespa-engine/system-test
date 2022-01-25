@@ -23,7 +23,7 @@ class InhibitMinorityBucketStateActivationTest < SearchTest
                     group(NodeGroup.new(1, 'g1').node(NodeSpec.new('node1', 1))).
                     group(NodeGroup.new(2, 'g2').node(NodeSpec.new('node1', 2))))).
       storage(StorageCluster.new('storage', 3)).
-      enable_http_gateway.
+      enable_document_api.
       config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
              add('merge_operations_disabled', disable_merges).
              add('max_activation_inhibited_out_of_sync_groups', 1))

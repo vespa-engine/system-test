@@ -55,7 +55,7 @@ class Down < SearchTest
       container(Container.new.
                   search(Searching.new).
                   docproc(DocumentProcessing.new)).
-      enable_http_gateway
+      enable_document_api
   end
 
   def get_app(sc)

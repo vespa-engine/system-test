@@ -11,7 +11,7 @@ class DisjointSourceOnlyDocuments < SearchTest
                add('common_merge_chain_optimalization_minimum_size', 8)).
         config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
                add('merge_operations_disabled', disable_merges)).
-        enable_http_gateway.
+        enable_document_api.
         search_type("ELASTIC").cluster_name("storage").num_parts(3).redundancy(1).
         storage(StorageCluster.new("storage", 3).distribution_bits(8))
   end

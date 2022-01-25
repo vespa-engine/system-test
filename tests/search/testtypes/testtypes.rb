@@ -9,11 +9,11 @@ class TestTypes < IndexedSearchTest
   end
 
   def test_types
-    deploy_app(SearchApp.new.enable_http_gateway.sd(selfdir + "legacy/typetest.sd"))
+    deploy_app(SearchApp.new.enable_document_api.sd(selfdir + "legacy/typetest.sd"))
     start
     run_test(selfdir + "legacy/testtypes.result.xml")
 
-    output = deploy_app(SearchApp.new.enable_http_gateway.sd(selfdir + "typetest.sd"))
+    output = deploy_app(SearchApp.new.enable_document_api.sd(selfdir + "typetest.sd"))
     wait_for_reconfig(get_generation(output).to_i)
     run_test(selfdir + "testtypes.result.xml")
   end

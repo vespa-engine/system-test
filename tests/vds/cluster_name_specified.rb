@@ -12,7 +12,7 @@ class Cluster_Name_Specified < MultiProviderStorageTest
     set_owner("vekterli")
 
     deploy_app(
-               StorageApp.new.enable_http_gateway.storage_cluster(
+               StorageApp.new.enable_document_api.storage_cluster(
                  StorageCluster.new("nonstandard").default_group).sd(VDS + "/schemas/music.sd").
                transition_time(0));
     start

@@ -8,7 +8,7 @@ class LoadTypes < StreamingSearchTest
     set_owner("vekterli")
 
     app = SearchApp.new.
-      enable_http_gateway.
+      enable_document_api.
       streaming().
       cluster(SearchCluster.new.sd(VDS+"/schemas/music.sd").
               num_parts(1).storage_cluster("storage")).

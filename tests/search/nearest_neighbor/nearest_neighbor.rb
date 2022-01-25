@@ -9,7 +9,7 @@ class NearestNeighborTest < IndexedSearchTest
 
   def test_nearest_neighbor_operator
     set_description("Test the nearest neighbor search operator (brute force and over hnsw index)")
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd").search_dir(selfdir + "search").threads_per_search(1).enable_http_gateway)
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd").search_dir(selfdir + "search").threads_per_search(1).enable_document_api)
     start
     feed_docs
 
@@ -30,7 +30,7 @@ class NearestNeighborTest < IndexedSearchTest
                  .sd(selfdir + 'ad.sd')
                  .search_dir(selfdir + 'search')
                  .threads_per_search(1)
-                 .enable_http_gateway)
+                 .enable_document_api)
     start
     feed_campaign_docs
     feed_ad_docs
