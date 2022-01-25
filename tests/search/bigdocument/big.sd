@@ -1,0 +1,13 @@
+search big {
+  document big {
+    field title type string {
+      indexing: summary | index
+    }
+    field body type string {
+      indexing: index
+      match {
+        max-length:15000000
+      }
+    }
+  }
+}
