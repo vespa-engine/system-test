@@ -664,14 +664,13 @@ class SearchAppGenTest < Test::Unit::TestCase
 
   def test_deploy_params
     app = SearchApp.new.sd("sd1").cluster(SearchCluster.new.sd("sd2")).
-      cfg_dir("dir1").rules_dir("dir3").
+      rules_dir("dir3").
       components_dir("dir4").search_dir("dir5").
       rank_expression_file("file1").rank_expression_file("file2").num_hosts(3)
 
     sd_files = app.sd_files
     assert_equal(1, sd_files.size)
     assert_equal("sd1", sd_files[0])
-    assert_equal("dir1", app.config_dir)
     deploy_params = app.deploy_params
     assert_equal("dir3", deploy_params[:rules_dir])
     assert_equal("dir4", deploy_params[:components_dir])
