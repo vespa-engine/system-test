@@ -56,7 +56,7 @@ class DistributorDown < MultiProviderStorageTest
   end
 
   def create_app
-    StorageApp.new.enable_http_gateway.storage_cluster(
+    StorageApp.new.enable_document_api.storage_cluster(
               StorageCluster.new("storage").
               redundancy(2).
               group(NodeGroup.new(0, "mycluster").

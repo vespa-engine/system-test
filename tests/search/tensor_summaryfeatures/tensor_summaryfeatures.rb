@@ -9,7 +9,7 @@ class TensorSummaryFeatureTest < IndexedSearchTest
 
   def test_tensor_in_summaryfeatures
     set_description("Test that tensors are surfaced correctly in summaryfeatures")
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd").enable_http_gateway)
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd").enable_document_api)
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
 
@@ -28,7 +28,7 @@ class TensorSummaryFeatureTest < IndexedSearchTest
     add_bundle(selfdir+"TensorAccessingSearcher.java")
 
     set_description("Test that tensors are accessible in searchers")
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd").enable_http_gateway)
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd").enable_document_api)
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
 

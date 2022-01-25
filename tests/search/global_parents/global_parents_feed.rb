@@ -16,7 +16,7 @@ class GlobalParentsFeedTest < SearchTest
       cluster_name("my_cluster").
       redundancy(2).
       num_parts(4).
-      enable_http_gateway
+      enable_document_api
   end
 
   def test_feeding_and_redistribution_of_global_parents

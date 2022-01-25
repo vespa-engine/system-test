@@ -16,7 +16,7 @@ class GlobalParentsToolTest < SearchTest
       cluster_name(@cluster_name).
       redundancy(1).
       num_parts(1).
-      enable_http_gateway
+      enable_document_api
   end
 
   def test_tools_with_global_parents

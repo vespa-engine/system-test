@@ -33,7 +33,7 @@ class DocumentApiV1Base < SearchTest
     SearchApp.new.sd(selfdir + 'music.sd').
       cluster_name('storage').
       num_parts(1).redundancy(1).ready_copies(1).
-      enable_http_gateway.
+      enable_document_api.
       storage(StorageCluster.new('storage', 1).distribution_bits(8))
   end
 
@@ -41,7 +41,7 @@ class DocumentApiV1Base < SearchTest
     StorageApp.new.default_cluster.sd(selfdir + 'music.sd').
       feeder_options(FeederOptions.new.timeout(120)).
       transition_time(0).
-      enable_http_gateway.
+      enable_document_api.
       distribution_bits(8)
   end
 

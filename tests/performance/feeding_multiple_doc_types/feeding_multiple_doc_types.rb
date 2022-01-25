@@ -72,7 +72,7 @@ class FeedingMultipleDocTypesTest < PerformanceTest
   def create_app(sd_files)
     app = SearchApp.new.
             visibility_delay(0.002).
-            enable_http_gateway.disable_flush_tuning.
+            enable_document_api.disable_flush_tuning.
             container(Container.new("combinedcontainer").
                       jvmargs('-Xms16g -Xmx16g').
                       search(Searching.new).

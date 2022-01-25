@@ -6,7 +6,7 @@ class GatewayVisitTest < SearchTest
 
   def setup
     set_owner("arnej")
-    deploy_app(SearchApp.new.sd(selfdir+"music.sd").enable_http_gateway)
+    deploy_app(SearchApp.new.sd(selfdir+"music.sd").enable_document_api)
     start
   end
 

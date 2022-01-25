@@ -26,7 +26,7 @@ class MultipleClusterControllers < IndexedSearchTest
 
   def deploy_multiple_app(sd)
     deploy_app(SearchApp.new.sd(sd).
-      enable_http_gateway.
+      enable_document_api.
       num_hosts(3).
       configserver("node1").
       configserver("node2").

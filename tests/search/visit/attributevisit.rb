@@ -6,7 +6,7 @@ class AttributeVisitorTest < SearchTest
 
   def setup
     set_owner("geirst")
-    deploy_app(SearchApp.new.sd(selfdir+"music.sd").enable_http_gateway)
+    deploy_app(SearchApp.new.sd(selfdir+"music.sd").enable_document_api)
     start
     @doc1 = Document.new("music", "id:storage_test:music:n=1234:1")
   end

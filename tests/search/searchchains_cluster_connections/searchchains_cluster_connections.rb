@@ -15,7 +15,7 @@ class SearchchainsClusterConnections < IndexedSearchTest
   
   def deploy(doctype1, doctype2)
     deploy_app(SearchApp.new.
-               enable_http_gateway.
+               enable_document_api.
                cluster(SearchCluster.new(doctype1).sd(selfdir + "#{doctype1}.sd").
                        doc_type(doctype1)).
                cluster(SearchCluster.new(doctype2).sd(selfdir + "#{doctype2}.sd").

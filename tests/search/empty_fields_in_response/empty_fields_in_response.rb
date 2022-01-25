@@ -10,7 +10,7 @@ class EmptyFieldsInResponseTest < IndexedSearchTest
   end
 
   def test_empty_fields_in_search_and_get_response
-    deploy_app(SearchApp.new.sd(selfdir+"test.sd").enable_http_gateway)
+    deploy_app(SearchApp.new.sd(selfdir+"test.sd").enable_document_api)
     start
     feed_and_wait_for_docs("test", 4, :file => selfdir + "docs.json")
     assert_search

@@ -18,7 +18,7 @@ class OutOfSyncReplicasActivationTest < SearchTest
         elastic.cluster_name("storage").num_parts(2).redundancy(2).
         config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
                add('merge_operations_disabled', disable_merges)).
-        enable_http_gateway.
+        enable_document_api.
         storage(StorageCluster.new("storage", 2).distribution_bits(8))
   end
 

@@ -21,7 +21,7 @@ class HierarchDistr < VdsMultiModelTest
   end
 
   def app2
-               StorageApp.new.enable_http_gateway.storage_cluster(
+               StorageApp.new.enable_document_api.storage_cluster(
                  StorageCluster.new("storage").
                    redundancy(2).
                    group(NodeGroup.new(0, "mycluster").
@@ -40,7 +40,7 @@ class HierarchDistr < VdsMultiModelTest
   end
 
   def app3
-               StorageApp.new.enable_http_gateway.storage_cluster(
+               StorageApp.new.enable_document_api.storage_cluster(
                  StorageCluster.new("storage").
                    redundancy(2).
                    group(NodeGroup.new(0, "mycluster").
@@ -60,7 +60,7 @@ class HierarchDistr < VdsMultiModelTest
   end
 
   def app4
-               StorageApp.new.enable_http_gateway.storage_cluster(
+               StorageApp.new.enable_document_api.storage_cluster(
                  StorageCluster.new("storage").
                    redundancy(2).
                    group(NodeGroup.new(0, "mycluster").
@@ -102,7 +102,7 @@ class HierarchDistr < VdsMultiModelTest
   end
 
   def nohierarchy
-               StorageApp.new.enable_http_gateway.storage_cluster(
+               StorageApp.new.enable_document_api.storage_cluster(
                  StorageCluster.new("storage").
                    redundancy(2).
                    group(NodeGroup.new(0, "mycluster").

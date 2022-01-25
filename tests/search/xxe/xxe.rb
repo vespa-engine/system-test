@@ -11,7 +11,7 @@ class XXEAttack < SearchTest
     set_description("Test if XML eXternal Entity are expanded by the vespa http client")
     deploy_app(SearchApp.new.
                sd(selfdir + "music.sd").
-               enable_http_gateway)
+               enable_document_api)
     start
   end
 

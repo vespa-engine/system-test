@@ -7,7 +7,7 @@ class TestAndSetTest < SearchTest
     set_description("Test test and set functionality in Vespa")
     deploy_app(SearchApp.new.
                 sd(selfdir + "weather.sd").
-                enable_http_gateway)
+                enable_document_api)
     start
   end
 
