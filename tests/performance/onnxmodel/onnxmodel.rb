@@ -40,8 +40,8 @@ class OnnxModel < PerformanceTest
   def fetch_model
     @node = vespa.nodeproxies.first[1]
     file = @node.fetchfiles(:webhost => WEBHOST, :file => "pub/systemtests/performance/onnxmodel/ranking_model.onnx", :nocache => true, :nochecksum => true).first
-    @node.copy(file, selfdir + "app/files")
+    @testcase.output("Copying: cp #{file} #{selfdir}app/files")
+    @node.execute("cp #{file} #{selfdir}app/files")
   end
 
 end
-
