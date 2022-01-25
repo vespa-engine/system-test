@@ -11,16 +11,16 @@ class StorageAppGenTest < Test::Unit::TestCase
   end
 
   def create_default
-    StorageApp.new.enable_http_gateway.default_cluster.sd("sd").provider("PROTON")
+    StorageApp.new.enable_document_api.default_cluster.sd("sd").provider("PROTON")
   end
 
   def create_default_with_doctype
-    StorageApp.new.enable_http_gateway.default_cluster.sd("sd").provider("PROTON").
+    StorageApp.new.enable_document_api.default_cluster.sd("sd").provider("PROTON").
       doc_type("sd2", "sd2.foo == bar")
   end
 
   def create_advanced_configoverride
-    StorageApp.new.enable_http_gateway.default_cluster.sd("sd").provider("PROTON").
+    StorageApp.new.enable_document_api.default_cluster.sd("sd").provider("PROTON").
             config(ConfigOverride.new("metricsmanager").
                 add(ArrayConfig.new("consumers").
                     add(0, ConfigValue.new("name", "myconsumer")).
@@ -33,7 +33,7 @@ class StorageAppGenTest < Test::Unit::TestCase
                            .add(0, 10)
                            .add(1, 60)
                            .add(2, 300)
-    StorageApp.new.enable_http_gateway.default_cluster.sd("sd").provider("PROTON").
+    StorageApp.new.enable_document_api.default_cluster.sd("sd").provider("PROTON").
             config(ConfigOverride.new("metricsmanager").
                 add("snapshot", snapshots))
 

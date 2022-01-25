@@ -127,12 +127,6 @@ class App
     return self
   end
 
-  # TODO: Remove when not used anymore
-  def enable_http_gateway
-    @clients.accept_no_clients = false
-    return self
-  end
-
   def enable_document_api
     @clients.accept_no_clients = false
     return self
