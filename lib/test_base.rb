@@ -133,7 +133,7 @@ module TestBase
 
   # Deploys an application represented by the given app instance.
   def deploy_app(app, deploy_params = {})
-    deploy_generated(app.services_xml, app.sd_files, app.config_dir,
+    deploy_generated(app.services_xml, app.sd_files, nil,
                      deploy_params.merge(app.deploy_params), app.hosts_xml, nil, app.validation_overrides_xml)
   end
 

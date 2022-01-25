@@ -67,7 +67,7 @@ class RemoveByDate < IndexedSearchTest
     if selection then
       cluster.doc_type("newsarticle", selection)
     end
-    return SearchApp.new.cluster(cluster).cfg_dir(selfdir+"cfg")
+    return SearchApp.new.cluster(cluster)
   end
 
   def generatefeed(numdocs, startage, agestep)

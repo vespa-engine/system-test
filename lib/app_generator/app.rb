@@ -51,8 +51,7 @@ require 'app_generator/resource_limits'
 
 # A chained_setter is a method that sets a variable, usually with the
 # same name as the setter function. As the code in class App below
-# illustrates, most setters have the same name, while the function
-# "cfg_dir" sets the variable "config_dir".
+# illustrates, most setters have the same name.
 
 # A chained_forward statement specifies an object to forward methods
 # to, and then a map of method names to be generated and which methods
@@ -64,9 +63,6 @@ require 'app_generator/resource_limits'
 class App
   include ChainedSetter
 
-  attr_reader :config_dir
-
-  chained_setter :cfg_dir, :config_dir
   chained_setter :rules_dir
   chained_setter :components_dir
   chained_setter :search_dir
@@ -111,7 +107,6 @@ class App
 
   def initialize
     @rank_files = []
-    @config_dir = nil
     @rules_dir = nil
     @components_dir = nil
     @search_dir = nil

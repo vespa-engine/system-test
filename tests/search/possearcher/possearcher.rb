@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class PosSearcher < IndexedSearchTest
@@ -9,7 +9,7 @@ class PosSearcher < IndexedSearchTest
   end
 
   def test_pos_searcher
-    deploy_app(SearchApp.new.sd(selfdir+"local.sd").cfg_dir(selfdir + "configs"))
+    deploy_app(SearchApp.new.sd(selfdir+"local.sd"))
     start
     feed_and_wait_for_docs("local", 12, :file => selfdir+"docs.xml")
     wait_for_hitcount("query=BP", 1)
