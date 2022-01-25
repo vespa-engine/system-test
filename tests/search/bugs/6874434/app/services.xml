@@ -7,7 +7,8 @@
   <container id='default' version='1.0'>
     <search />
     <document-api/>
-    <nodes jvmargs='-Xmx320m -Xms64m -XX:MaxDirectMemorySize=115m'>
+    <nodes>
+      <jvm options='-Xmx320m -Xms64m -XX:MaxDirectMemorySize=115m' />
       <node hostalias='node1'/>
     </nodes>
   </container>

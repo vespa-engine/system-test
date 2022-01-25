@@ -21,7 +21,8 @@
         </http>
         <document-api/>
         <search/>
-        <nodes jvmargs="-Xms64m -Xmx256m">
+        <nodes>
+            <jvm options="-Xms64m -Xmx256m" />
             <node hostalias="node1" />
         </nodes>
     </container>

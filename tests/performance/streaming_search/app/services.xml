@@ -15,7 +15,8 @@
     <search/>
     <document-processing/>
     <document-api/>
-    <nodes jvmargs=" -verbose:gc -Xms8g -Xmx8g -XX:NewRatio=1 -XX:+PrintGCDetails ">
+    <nodes>
+      <jvm options="-verbose:gc -Xms8g -Xmx8g -XX:NewRatio=1 -XX:+PrintGCDetails" />
       <node hostalias='node1'/>
     </nodes>
   </container>
