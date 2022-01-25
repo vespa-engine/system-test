@@ -35,11 +35,11 @@ class SearchAppGenTest < Test::Unit::TestCase
 
   # test basic setup without modifications
   def test_default_elastic
-    verify('default_elastic.xml', create_default.elastic.enable_http_gateway)
+    verify('default_elastic.xml', create_default.elastic.enable_document_api)
   end
 
   def test_default_streaming
-    verify('default_streaming.xml', create_default.streaming.enable_http_gateway)
+    verify('default_streaming.xml', create_default.streaming.enable_document_api)
   end
 
   # test setup with bells and whistles
@@ -587,7 +587,7 @@ class SearchAppGenTest < Test::Unit::TestCase
   end
 
   def test_gateways_jvmargs
-    actual = SearchApp.new.enable_http_gateway.gateways_jvmargs('-Option').services_xml
+    actual = SearchApp.new.enable_document_api.gateways_jvmargs('-Option').services_xml
     expected_substr = '
       <container id="doc-api" version="1.0">
         <document-api />

@@ -34,14 +34,14 @@ class VdsTest < TestCase
     StorageApp.new.default_cluster.sd(sd_file).
       feeder_options(FeederOptions.new.timeout(120)).
       transition_time(0).
-      enable_http_gateway
+      enable_document_api
   end
 
   def default_app_no_sd
     StorageApp.new.default_cluster.
       feeder_options(FeederOptions.new.timeout(120)).
       transition_time(0).
-      enable_http_gateway
+      enable_document_api
   end
 
 
