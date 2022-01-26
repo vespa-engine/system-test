@@ -53,7 +53,7 @@ class WeightedSetFeedTest < PerformanceTest
     SearchApp.new.sd(selfdir + 'footype.sd').
     num_parts(1).redundancy(1).ready_copies(1).
     container(Container.new("combinedcontainer").
-                            jvmargs('-Xms16g -Xmx16g').
+                            jvmoptions('-Xms16g -Xmx16g').
                             search(Searching.new).
                             docproc(DocumentProcessing.new).
                             documentapi(ContainerDocumentApi.new)).

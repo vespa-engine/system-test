@@ -25,7 +25,7 @@ class StressDispatch < PerformanceTest
     app = SearchApp.new.monitoring("vespa", 60).
           sd(selfdir+"foobar.sd").
           container(Container.new("combinedcontainer").
-                    jvmargs('-Xms32g -Xmx32g').
+                    jvmoptions('-Xms32g -Xmx32g').
                     search(Searching.new.
                            chain(Chain.new.add(
                                  Searcher.new("com.yahoo.example.CapInFillSearcher")).

@@ -11,18 +11,21 @@ class JvmTuning < SearchTest
 
   def setup
     set_owner("musum")
-    set_description("Test setting jvmargs in services.xml or with environment variables")
+    set_description("Test setting jvmargs/jvmoptions in services.xml or with environment variables")
   end
 
   def deploy_jvmtuning
     deploy_app(SearchApp.new.sd(selfdir+"foo.sd").
                logserver("node1", "-verbose:gc").
-               container(Container.new.jvmgcoptions("-XX:+UseG1GC -XX:MaxTenuringThreshold=10").
-                         jvmargs('-Dfoo=bar -Dvespa_foo="foo og bar" -Xms256m -Xms256m ' +
-                                 '-XX:+PrintCommandLineFlags')).
-               container(Container.new("docproc1").jvmargs("-XX:MaxTenuringThreshold=13 -XX:+PrintCommandLineFlags -Xms256m -Xms256m").
-                         docproc(DocumentProcessing.new.chain(Chain.new("docproc1-chain").add(DocProc.new("com.yahoo.vespatest.WorstMusicDocProc")))).
-                         http(Http.new.server(Server.new("server1", 5000)))))
+               container(Container.new.
+                           jvmgcoptions("-XX:+UseG1GC -XX:MaxTenuringThreshold=10").
+                           jvmoptions('-Dfoo=bar -Dvespa_foo="foo og bar" -Xms256m -Xms256m ' +
+                                      '-XX:+PrintCommandLineFlags')).
+               container(Container.new("docproc1").
+                           jvmoptions("-XX:+PrintCommandLineFlags -Xms256m -Xms256m").
+                           jvmgcoptions("-XX:MaxTenuringThreshold=13").
+                           docproc(DocumentProcessing.new.chain(Chain.new("docproc1-chain").add(DocProc.new("com.yahoo.vespatest.WorstMusicDocProc")))).
+                           http(Http.new.server(Server.new("server1", 5000)))))
   end
 
   def test_jvmtuning
