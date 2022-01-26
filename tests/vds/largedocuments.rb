@@ -1,15 +1,13 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'multi_provider_storage_test'
 
 class LargeDocuments < MultiProviderStorageTest
 
   def setup
-    @valgrind=false
+    @valgrind = false
     set_owner("vekterli")
 
-    # Temporary hack: dump heap to file if out of memory
-    app = default_app.qrservers_jvmargs("-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/")
-    deploy_app(app)
+    deploy_app(default_app)
     set_expected_logged(//, :slow_processing => true)
     start
   end

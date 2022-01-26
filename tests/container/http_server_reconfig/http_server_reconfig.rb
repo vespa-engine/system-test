@@ -17,7 +17,6 @@ class HttpServerReconfig < ContainerTest
   def container_app(my_http)
     ContainerApp.new.container(
         Container.new.
-            #jvmargs('-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8998').
             jetty(true).
             http(my_http))
   end

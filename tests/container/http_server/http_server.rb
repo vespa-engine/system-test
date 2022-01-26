@@ -19,7 +19,6 @@ class HttpServer < SearchContainerTest
   def deploy_generation(generation)
     deploy_app(ContainerApp.new.
                container(Container.new.
-                         jvmargs(nil).
                          documentapi(ContainerDocumentApi.new).
                          search(Searching.new.
                                 chain(Chain.new("default").
