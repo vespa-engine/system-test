@@ -86,7 +86,7 @@ class FeedingIndexTest < PerformanceTest
         SearchApp.new.sd(selfdir + 'doc.sd').
         num_parts(1).redundancy(1).ready_copies(1).
         container(Container.new("combinedcontainer").
-                                jvmargs('-Xms10g -Xmx10g').
+                                jvmoptions('-Xms10g -Xmx10g').
                                 search(Searching.new).
                                 docproc(DocumentProcessing.new).
                                 documentapi(ContainerDocumentApi.new)).

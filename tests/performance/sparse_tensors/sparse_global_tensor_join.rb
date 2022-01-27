@@ -21,7 +21,7 @@ class SparseGlobalTensorJoinPerfTest < PerformanceTest
       sd(selfdir + 'twoperdoc.sd').
       threads_per_search(num_threads).
       container(Container.new('mycc').
-                jvmargs('-Xms2g -Xmx2g').
+                jvmoptions('-Xms2g -Xmx2g').
                 search(searching).
                 docproc(DocumentProcessing.new)).
       indexing('mycc')

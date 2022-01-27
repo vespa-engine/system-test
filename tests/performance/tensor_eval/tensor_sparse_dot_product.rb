@@ -1,5 +1,4 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-
 require 'performance/tensor_eval/tensor_eval'
 
 class TensorSparseDotProductTest < TensorEvalPerfTest
@@ -13,8 +12,11 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
     SearchApp.new.sd(selfdir + "sparsedot.sd").
       search_dir(selfdir + "search").
       threads_per_search(1).
-      qrservers_jvmargs("-Xms16g -Xmx16g").
-      search_chain(SearchChain.new.add(Searcher.new("com.yahoo.test.TensorInQueryBuilderSearcher")))
+      container(Container.new.
+                  search(Searching.new.
+                           chain(Chain.new("default", "vespa").add(Searcher.new("com.yahoo.test.TensorInQueryBuilderSearcher")))).
+                  docproc(DocumentProcessing.new).
+                  jvmoptions("-Xms16g -Xmx16g"))
   end
 
   def feed_docs(num_docs)
