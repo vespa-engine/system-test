@@ -26,7 +26,7 @@ class Visiting < PerformanceTest
       monitoring("vespa", 60).
       container(
         Container.new("container").
-        jvmargs('-Xms8g -Xmx8g').
+        jvmoptions('-Xms8g -Xmx8g').
         docproc(DocumentProcessing.new).
         documentapi(ContainerDocumentApi.new)).
       admin_metrics(Metrics.new).

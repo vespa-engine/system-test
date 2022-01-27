@@ -156,7 +156,7 @@ class FeedingAndRecoveryTest < PerformanceTest
   def get_base_app(parts)
     SearchApp.new.monitoring("name", "60").
       container(Container.new("combinedcontainer").
-                jvmargs('-Xms16g -Xmx16g').
+                jvmoptions('-Xms16g -Xmx16g').
                 search(Searching.new).
                 docproc(DocumentProcessing.new).
                 documentapi(ContainerDocumentApi.new)).

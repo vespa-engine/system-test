@@ -116,7 +116,7 @@ class DocumentV1Throughput < PerformanceTest
                   config(ConfigOverride.new("jdisc.http.connector").add("http2Enabled", true)).
                   ssl(Ssl.new(private_key_file = "#{dirs.tmpdir}cert.key", certificate_file = "#{dirs.tmpdir}cert.pem",
                               ca_certificates_file=nil, client_authentication='disabled')))).
-            jvmargs('-Xms16g -Xmx16g').
+            jvmoptions('-Xms16g -Xmx16g').
             search(Searching.new).
             docproc(DocumentProcessing.new).
             documentapi(ContainerDocumentApi.new)).

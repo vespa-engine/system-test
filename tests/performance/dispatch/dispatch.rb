@@ -18,7 +18,7 @@ class DispatchMerge < PerformanceTest
   def get_app(num_parts)
     SearchApp.new.sd(selfdir + "test.sd").
                   search_dir(selfdir + "app").
-                  qrservers_jvmargs("-Xms16g -Xmx16g").
+                  container(Container.new.search(Searching.new).jvmoptions("-Xms16g -Xmx16g").
                   elastic.num_parts(num_parts).redundancy(1).ready_copies(1)
   end
 
