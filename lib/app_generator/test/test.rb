@@ -194,43 +194,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_docproc
-    actual = SearchApp.new.
-             docproc(DocProcCluster.new("cluster_name").chain("chain_name").
-                     chain(DocProcChain.new("chain2").docproc("id"))).
-             docproc(DocProcCluster.new("cluster_name2")).
-             services_xml
-    expected_substr = '
-      <docproc version="3.0">
-        <cluster name="cluster_name">
-          <nodes>
-            <node hostalias="node1" baseport="5000" />
-          </nodes>
-          <docprocchains>
-            <docprocchain id="chain_name" />
-            <docprocchain id="chain2">
-              <documentprocessor id="id" />
-            </docprocchain>
-          </docprocchains>
-        </cluster>
-        <cluster name="cluster_name2">
-          <nodes>
-            <node hostalias="node1" baseport="5010" />
-          </nodes>
-        </cluster>
-      </docproc>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
-  def test_documentprocessor_with_bundle
-    actual = DocProcChain.new("chain2").docproc("id", "bundle").to_xml('  ')
-    expected_substr = '
-      <docprocchain id="chain2">
-        <documentprocessor bundle="bundle" id="id" />
-      </docprocchain>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
   def test_indexingclustername
     actual = SearchApp.new.
              cluster(SearchCluster.new("foo").sd("sd").indexing("default")).
