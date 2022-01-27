@@ -1,25 +1,13 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'document'
 require 'document_set'
 require 'indexed_search_test'
 
 class LargeText < IndexedSearchTest
 
-  YOURKIT_ENABLED = false
-
   def setup
     set_owner("geirst")
-    if YOURKIT_ENABLED then
-      app = SearchApp.new.
-        cluster(SearchCluster.new.
-                indexing("yourkit").
-                sd("#{selfdir}/test.sd")).
-        docproc(DocProcCluster.new("yourkit").
-                jvmargs("-agentlib:yjpagent"))
-    else
-      app = SearchApp.new.sd("#{selfdir}/test.sd")
-    end
-    deploy_app(app)
+    deploy_app(SearchApp.new.sd("#{selfdir}/test.sd"))
     start
   end
 
@@ -33,9 +21,6 @@ class LargeText < IndexedSearchTest
     arr << time_feed(320000)
     arr << time_feed(640000)
     arr << time_feed(1280000)
-    if YOURKIT_ENABLED then
-      arr << time_feed(2560000)
-    end
     puts "rate = " + arr.join(" ")
   end
 
@@ -64,11 +49,7 @@ class LargeText < IndexedSearchTest
   end
 
   def timeout_seconds
-    if YOURKIT_ENABLED then
-      return 3600
-    else
-      return 900
-    end
+    return 900
   end
 
   def nightly?
