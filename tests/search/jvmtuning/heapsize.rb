@@ -1,6 +1,6 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'docproc_test'
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_test'
+require 'app_generator/container_app'
 
 class HeapSize < SearchTest
 
@@ -8,12 +8,10 @@ class HeapSize < SearchTest
     set_owner("balder")
   end
 
-  def make_app(with_jvm_args = nil)
-    app = SearchApp.new.
-            sd(selfdir + 'foo.sd').
+  def make_app(with_jvm_options = nil)
+    app = ContainerApp.new.
             container(Container.new('foo-bar').
-                        jvmoptions(with_jvm_args).
-                        search(Searching.new))
+                        jvmoptions(with_jvm_options))
   end
 
   def test_jvm_default_heap_size()
@@ -24,7 +22,7 @@ class HeapSize < SearchTest
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-XX:MaxDirectMemorySize=208m/)
   end
 
-  def test_jvm_absolute_heap_size_by_jvmargs()
+  def test_jvm_absolute_heap_size_by_jvm_options()
     deploy_app(make_app('-Xms1024m -Xmx2048m'))
     start
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms1024m/)
@@ -32,7 +30,7 @@ class HeapSize < SearchTest
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-XX:MaxDirectMemorySize=208m/)
   end
 
-  def test_jvm_absolute_heap_size_by_jvmargs_is_not_capped()
+  def test_jvm_absolute_heap_size_by_jvm_options_is_not_capped()
     deploy_app(make_app('-Xms384m -Xmx512m'))
     start
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms384m/)
@@ -48,7 +46,7 @@ class HeapSize < SearchTest
     start
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms1600m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xmx2048m/)
-    maxdirect = 2048/8 + 16 + 0 # Taken from the startup scrip.
+    maxdirect = 2048/8 + 16 + 0 # Taken from the startup script.
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-XX:MaxDirectMemorySize=#{maxdirect}m/)
   end
 
@@ -60,7 +58,7 @@ class HeapSize < SearchTest
     start
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms2048m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xmx2048m/)
-    maxdirect = 2048/8 + 16 + 0 # Taken from the startup scrip.
+    maxdirect = 2048/8 + 16 + 0 # Taken from the startup script.
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-XX:MaxDirectMemorySize=#{maxdirect}m/)
   end
 
@@ -72,7 +70,7 @@ class HeapSize < SearchTest
     start
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms512m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xmx512m/)
-    maxdirect = 512/8 + 16 + 0 # Taken from the startup scrip.
+    maxdirect = 512/8 + 16 + 0 # Taken from the startup script.
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-XX:MaxDirectMemorySize=#{maxdirect}m/)
   end
 
@@ -85,7 +83,7 @@ class HeapSize < SearchTest
     puts "Free memory = " + free
     relative = (free.to_i - 1024) * 40 / 100
     puts "Relative memory for container " + relative.to_s
-    maxdirect = relative/8 + 16 + 0 # Taken from the startup scrip.
+    maxdirect = relative/8 + 16 + 0 # Taken from the startup script.
     puts "MaxDirectMemorySize should be " + maxdirect.to_s
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms#{relative}m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xmx#{relative}m/)
