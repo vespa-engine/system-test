@@ -19,7 +19,7 @@ class LookupPerformance < PerformanceTest
     SearchApp.new.sd(selfdir + "test.sd").
                   threads_per_search(1).
                   container(Container.new("combinedcontainer").
-                                      jvmargs("-Xms16g -Xmx16g").
+                                      jvmoptions("-Xms16g -Xmx16g").
                                       search(Searching.new).
                                       docproc(DocumentProcessing.new).
                                       documentapi(ContainerDocumentApi.new).

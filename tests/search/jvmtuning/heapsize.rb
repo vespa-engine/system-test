@@ -12,7 +12,7 @@ class HeapSize < SearchTest
     app = SearchApp.new.
             sd(selfdir + 'foo.sd').
             container(Container.new('foo-bar').
-                        jvmargs(with_jvm_args).
+                        jvmoptions(with_jvm_args).
                         search(Searching.new))
   end
 

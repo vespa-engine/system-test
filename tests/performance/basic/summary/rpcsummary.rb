@@ -49,7 +49,7 @@ class RpcSummaryTest < PerformanceTest
     set_description("Test performance fetching many summaries.")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
                search_dir(selfdir + "app").
-               qrserver(QrserverCluster.new.jvmargs("-verbose:gc -Xms16g -Xmx16g -XX:NewRatio=1 -XX:+PrintGCDetails")).
+               container(Container.new.search(Searching.new).jvmoptions("-verbose:gc -Xms16g -Xmx16g -XX:NewRatio=1 -XX:+PrintGCDetails")).
                threads_per_search(1))
     start
     feed_params = { :dummy => :avoidgc}

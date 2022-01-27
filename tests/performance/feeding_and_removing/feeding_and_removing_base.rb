@@ -29,7 +29,7 @@ class FeedingAndRemovingBase < PerformanceTest
     sd_file = selfdir + "test.sd"
     app = SearchApp.new.enable_document_api.sd(sd_file).
       container(Container.new("combinedcontainer").
-                jvmargs('-Xms8g -Xmx8g').
+                jvmoptions('-Xms8g -Xmx8g').
                 search(Searching.new).
                 docproc(DocumentProcessing.new).
                 documentapi(ContainerDocumentApi.new)).

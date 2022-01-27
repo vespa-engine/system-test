@@ -74,7 +74,7 @@ class FeedingMultipleDocTypesTest < PerformanceTest
             visibility_delay(0.002).
             enable_document_api.disable_flush_tuning.
             container(Container.new("combinedcontainer").
-                      jvmargs('-Xms16g -Xmx16g').
+                      jvmoptions('-Xms16g -Xmx16g').
                       search(Searching.new).
                       docproc(DocumentProcessing.new).
                       documentapi(ContainerDocumentApi.new)).
