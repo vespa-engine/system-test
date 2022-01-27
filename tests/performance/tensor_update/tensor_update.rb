@@ -19,7 +19,9 @@ class TensorUpdatePerfTest < PerformanceTest
   end
 
   def create_app
-    SearchApp.new.sd(selfdir + "test.sd").disable_flush_tuning.qrservers_jvmargs("-Xms8g -Xmx8g")
+    SearchApp.new.sd(selfdir + "test.sd").disable_flush_tuning.
+      container(Container.new.search(Searching.new).
+                  jvmoptions("-Xms8g -Xmx8g"))
   end
 
   def test_tensor_update
