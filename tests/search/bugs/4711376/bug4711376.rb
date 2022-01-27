@@ -1,5 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class Bug4711376 < IndexedSearchTest
@@ -11,8 +10,6 @@ class Bug4711376 < IndexedSearchTest
 
   def test_bug4711376
     app = SearchApp.new.sd(selfdir + "base.sd").
-          qrservers_jvmargs("-Xdebug" +
-            " -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005").
           cluster(SearchCluster.new("image").sd(selfdir + "image.sd")).
           cluster(SearchCluster.new("music").sd(selfdir + "music.sd")).
           storage(StorageCluster.new("storage", 1).

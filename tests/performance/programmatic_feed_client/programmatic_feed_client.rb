@@ -122,7 +122,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   private
   def deploy_test_app
     container_cluster = Container.new("dpcluster1").
-      jvmargs('-Xms16g -Xmx16g').
+      jvmoptions('-Xms16g -Xmx16g').
       search(Searching.new).
       documentapi(ContainerDocumentApi.new).
       component(AccessLog.new("disabled")).

@@ -23,7 +23,8 @@ class StructAndMapPerf < PerformanceTest
     SearchApp.new.sd(selfdir + "test.sd").
                   threads_per_search(1).
                   num_summary_threads(NUM_CLIENTS).
-                  qrservers_jvmargs("-Xms16g -Xmx16g")
+                  container(Container.new.search(Searching.new).
+                  jvmoptions("-Xms16g -Xmx16g"))
   end
 
   def test_matched_elements_only

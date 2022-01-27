@@ -23,7 +23,7 @@ class ReindexingAndFeedingTest < PerformanceTest
   def test_reindexing_performance_and_impact
     @app = SearchApp.new.monitoring("vespa", 60).
       container(Container.new("combinedcontainer").
-		jvmargs('-Xms16g -Xmx16g').
+		jvmoptions('-Xms16g -Xmx16g').
 		search(Searching.new).
 		docproc(DocumentProcessing.new).
 		documentapi(ContainerDocumentApi.new)).
