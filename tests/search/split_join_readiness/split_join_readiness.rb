@@ -84,18 +84,37 @@ class SplitJoinReadinessTest < SearchTest
     sleep 5
   end
 
-  def verify_readiness_of_primary_replicas
+  def check_readiness_of_primary_replicas_error_or_nil
     this_cluster.distributor.each do |key, node|
       node.each_database_bucket do |space, bucket_id, parsed_state, raw_state|
         # First replica is most ideal replica, and should be ready+active.
         first_replica = parsed_state[0]
-        assert_equal(true, first_replica.ready, "Primary (1st) ideal replica not ready: #{raw_state}");
-        assert_equal(true, first_replica.active, "Primary (1st) ideal replica not active: #{raw_state}")
+        return "Primary (1st) ideal replica not ready: #{raw_state}" if not first_replica.ready
+        return "Primary (1st) ideal replica not active: #{raw_state}" if not first_replica.active
         # Second replica should be de-indexed and inactive
         second_replica = parsed_state[1]
-        assert_equal(false, second_replica.ready, "Non-primary (2nd) replica still ready: #{raw_state}");
-        assert_equal(false, second_replica.active, "Non-primary (2nd) replica still active: #{raw_state}")
+        return "Non-primary (2nd) replica still ready: #{raw_state}" if second_replica.ready
+        return "Non-primary (2nd) replica still active: #{raw_state}" if second_replica.active
       end
+    end
+    nil
+  end
+
+  def readiness_convergence_timeout_sec
+    60
+  end
+
+  def verify_readiness_of_primary_replicas
+    start = Time.now
+    # Replica readiness updates are communicated and propagated asynchronously from Proton
+    # via the persistence layer and finally to the distributor. To avoid spurious failures,
+    # ensure we retry in the face of transient (but expected) inconsistencies.
+    while true
+      last_error = check_readiness_of_primary_replicas_error_or_nil
+      return if last_error.nil?
+      flunk(last_error) if (Time.now - start) > readiness_convergence_timeout_sec
+      puts "Bucket DBs across nodes not yet in sync, retrying; #{last_error}"
+      sleep 1
     end
   end
 
