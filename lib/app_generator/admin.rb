@@ -79,14 +79,11 @@ class Admin
     @logservers.push(LogServer.new(hostalias, jvmargs))
   end
 
-  def clustercontroller(hostalias, jvmargs=nil)
+  def clustercontroller(hostalias)
     if @clustercontrollers == nil
       clustercontrollers(false)
     end
     ctrl = ClusterController.new(hostalias)
-    if jvmargs != nil
-      ctrl.set_default_jvmargs(jvmargs)
-    end
     @clustercontrollers.add(ctrl)
     self
   end

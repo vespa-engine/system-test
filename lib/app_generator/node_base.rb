@@ -18,10 +18,6 @@ class NodeBase
     self
   end
 
-  def set_default_jvmargs(args)
-    @params[:jvmargs] ||= args
-  end
-
   def set_baseport(baseport)
     @params[:baseport] = baseport
   end
