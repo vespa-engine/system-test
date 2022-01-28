@@ -16,10 +16,6 @@ class ForkOneToZero < DocprocTest
     start
   end
 
-  def nightly?
-    true
-  end
-
   def test_fork_onetozero
     doc1 = Document.new("worst", "id:worst:worst::1234").
       add_field("title", "jalla jalla")

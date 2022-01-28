@@ -4,10 +4,6 @@ require 'app_generator/http'
 
 class SearchchainsClusterConnections < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("musum")
     set_description("Tests that chains are using the correct local provider, no matter what order the clusters are defined")

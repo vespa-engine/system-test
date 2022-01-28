@@ -15,7 +15,7 @@ class MultiProviderStorageTest < VdsTest
 
   def self.testparameters
     { "PROTON" => { :provider => "PROTON" },
-      "DUMMY" => { :provider => "DUMMY", :nightly => true } }
+      "DUMMY" => { :provider => "DUMMY" } }
   end
 
 end

@@ -8,10 +8,6 @@ class ClusterDynamicDistributionTest < VdsTest
     super(*args)
   end
 
-  def nightly?
-    true
-  end
-
   def setup
     @num_docs = 10000
     @num_users = 100

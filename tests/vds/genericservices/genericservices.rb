@@ -3,10 +3,6 @@ require 'vds_test'
 
 class GenericServicesTest < VdsTest
 
-  def nightly?
-    true
-  end
-
   def initialize(*args)
       super(*args)
       @num_hosts = 3

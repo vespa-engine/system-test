@@ -6,10 +6,6 @@ require 'pp'
 
 class ProtonStateServer < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("havardpe")
   end

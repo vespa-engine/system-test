@@ -4,10 +4,6 @@ require 'environment'
 
 class ComponentUpdateBundleOnly < SearchContainerTest
 
-  def nightly?
-    true
-  end
-
   def timeout_seconds
     return 1800
   end

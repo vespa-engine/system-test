@@ -5,9 +5,6 @@ require 'indexed_search_test'
 class EmptyIndex < IndexedSearchTest
 
   # with 2 columns and 1 document, one of the columns will get an empty index.
-  def nightly?
-    true
-  end
 
   def setup
     set_owner("aressem")

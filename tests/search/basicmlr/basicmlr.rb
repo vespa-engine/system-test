@@ -5,10 +5,6 @@ require 'environment'
 
 class BasicMLR < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("lesters")
     @mytmpdir = dirs.tmpdir

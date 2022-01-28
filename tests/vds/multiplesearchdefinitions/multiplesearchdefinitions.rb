@@ -3,10 +3,6 @@ require 'vds_multi_model_test'
 
 class MultipleSearchDefs < VdsMultiModelTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("vekterli")
     deploy_app(default_app)

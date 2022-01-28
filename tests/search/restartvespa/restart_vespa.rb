@@ -10,10 +10,6 @@ class RestartVespa < IndexedSearchTest
     start
   end
 
-  def nightly?
-    true
-  end
-
   def can_share_configservers?(method_name=nil)
     false
   end

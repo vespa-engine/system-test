@@ -13,10 +13,6 @@ class ConfigProxyCmd < CloudConfigTest
     set_owner("musum")
   end
 
-  def nightly?
-    true
-  end
-
   def test_dumpcache
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start

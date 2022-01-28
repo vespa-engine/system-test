@@ -11,10 +11,6 @@ class CheckLogs < IndexedSearchTest
     start
   end
 
-  def nightly?
-    true
-  end
-
   def findserviceinlogfile(service)
     found = false
     @loglines.each { |line|

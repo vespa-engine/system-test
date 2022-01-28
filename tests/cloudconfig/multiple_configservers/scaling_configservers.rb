@@ -18,10 +18,6 @@ class ScalingConfigservers < CloudConfigTest
     1200
   end
 
-  def nightly?
-    true
-  end
-
   def setup
     set_description("Tests that multiple configservers work. When one server goes down, " +
                     "the others should continue to serve config.")

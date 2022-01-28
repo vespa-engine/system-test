@@ -14,10 +14,6 @@ class TenantAPI < CloudConfigTest
     @hostname = @vespa.nodeproxies.first[0]
     @node.set_addr_configserver([@hostname])
   end
-
-  def nightly?
-    true
-  end
   
   def test_tenant_api
     @node.start_configserver

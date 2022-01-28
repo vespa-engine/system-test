@@ -10,10 +10,6 @@ class ConfigServer < CloudConfigTest
     super(*args)
   end
 
-  def nightly?
-    true
-  end
-
   def timeout_seconds
     1000
   end

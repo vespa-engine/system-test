@@ -4,10 +4,6 @@ require 'vds_test'
 
 class Reprocessing < VdsTest
 
-  def nightly?
-    true
-  end
-
   def can_share_configservers?(method_name=nil)
     false
   end

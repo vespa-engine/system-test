@@ -5,10 +5,6 @@ require 'indexed_search_test'
 class Bug_253184 < IndexedSearchTest
   # Feature: use "index-to" with multiple indexes, some different, some common
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("bratseth")
     deploy_app(SearchApp.new.sd(selfdir + "musicsearch.sd"))

@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class Bug_401679 < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("arnej")
     set_description("Use index info for all document types in a cluster.")

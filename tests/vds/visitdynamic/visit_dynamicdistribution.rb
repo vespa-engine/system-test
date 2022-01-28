@@ -6,10 +6,6 @@ require 'securerandom'
 
 class VisitDynamicDistributionTest < PersistentProviderTest
 
-  def nightly?
-    true
-  end
-
   def setup
     @numdocs = 500
     @valgrind = false

@@ -8,10 +8,6 @@ class MultipleClusterControllers < IndexedSearchTest
     @num_hosts = 3
   end
 
-  def nightly?
-    false
-  end
-
   def can_share_configservers?(method_name=nil)
     false
   end

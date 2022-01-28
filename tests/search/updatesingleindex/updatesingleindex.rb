@@ -3,10 +3,6 @@ require 'indexed_search_test'
 
 class UpdateSingleIndex < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("yngve")
   end

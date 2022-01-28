@@ -3,10 +3,6 @@ require 'multi_provider_storage_test'
 
 class Cluster_Name_Specified < MultiProviderStorageTest
 
-  def nightly?
-    true
-  end
-
   def setup
     @valgrind=false
     set_owner("vekterli")

@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class Fieldnames < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("musum")
     deploy_app(SearchApp.new.sd(selfdir+"music.sd"))

@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class EightFields < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("musum")
     set_description("Index 8 fields in one index.")

@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class DoubleRank < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("arnej")
     deploy_app(SearchApp.new.cluster(

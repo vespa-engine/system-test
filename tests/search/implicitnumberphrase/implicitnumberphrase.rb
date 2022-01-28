@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class ImplicitNumberPhrase < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("havardpe")
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))

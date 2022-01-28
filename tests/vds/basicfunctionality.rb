@@ -12,7 +12,7 @@ class BasicFunctionality < MultiProviderStorageTest
 
   def self.testparameters
     { "PROTON" => { :provider => "PROTON" },
-      "DUMMY" => { :provider => "DUMMY", :nightly => true } }
+      "DUMMY" => { :provider => "DUMMY"} }
   end
 
   def test_partialupdatethroughvespafeeder

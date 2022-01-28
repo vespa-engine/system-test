@@ -5,7 +5,7 @@ require 'environment'
 class VisitUnknownDocTypeTest < MultiProviderStorageTest
 
   def self.testparameters
-    { "DUMMY" => { :provider => "DUMMY", :nightly => true } }
+    { "DUMMY" => { :provider => "DUMMY" } }
   end
 
   def setup

@@ -5,10 +5,6 @@ require 'app_generator/container_app'
 
 class NoChainsMultiSearch < DocprocTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("gjoranv")
     add_bundle(selfdir + "AppleDocProc.java")

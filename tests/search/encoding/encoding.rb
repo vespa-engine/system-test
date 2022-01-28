@@ -3,10 +3,6 @@ require 'indexed_search_test'
 
 class EncodingTest < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("johansen")
     set_description("Test search and results in non-UTF8 encoding")

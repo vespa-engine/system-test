@@ -4,10 +4,6 @@ require 'app_generator/container_app'
 
 class StructuredArrayTest < SearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("arnej")
     set_description("search structured data in a Searcher")

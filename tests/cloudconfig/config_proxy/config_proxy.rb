@@ -23,10 +23,6 @@ class ConfigProxy < CloudConfigTest
     1400
   end
 
-  def nightly?
-    true
-  end
-
   def deploy_app_with_routes
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
       cluster_name("music").

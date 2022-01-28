@@ -4,10 +4,6 @@ require 'docproc_test'
 
 class Reconfiguring < DocprocTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("arnej")
     add_bundle(DOCPROC + "WorstMusicDocProc.java")
