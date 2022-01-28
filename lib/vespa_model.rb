@@ -15,7 +15,7 @@ class VespaModel
   attr_reader :nodeproxies, :hostalias, :adminserver, :configservers, :logserver
   attr_reader :qrserver, :storage, :search, :docproc, :slobrok, :qrs
   attr_reader :metricsproxies
-  attr_reader :container, :clustercontrollers, :default_http_gateway_port, :document_api_v1
+  attr_reader :container, :clustercontrollers, :default_document_api_port, :document_api_v1
 
   def initialize(testcase, vespa_version=nil)
     @testcase = testcase
@@ -27,7 +27,7 @@ class VespaModel
     @vespa_version = vespa_version
     @hostalias = {}
     @clustercontrollers = {}
-    @default_http_gateway_port = 19020
+    @default_document_api_port = 19020
     @document_api_v1 = nil
     reset_services
   end
@@ -271,7 +271,7 @@ class VespaModel
     end
     @deployments += 1
 
-    @document_api_v1 = DocumentApiV1.new(adminserver.hostname, @default_http_gateway_port, @testcase)
+    @document_api_v1 = DocumentApiV1.new(adminserver.hostname, @default_document_api_port, @testcase)
 
     return output
   end

@@ -40,7 +40,7 @@ class FeedBlockBase < IndexedSearchTest
                 component(AccessLog.new("disabled")).
                 docproc(DocumentProcessing.new).
                 documentapi(ContainerDocumentApi.new).
-                http(Http.new.server(Server.new("node1", vespa.default_http_gateway_port)))).
+                http(Http.new.server(Server.new("node1", vespa.default_document_api_port)))).
       sd(selfdir + "test.sd").num_parts(@num_parts).redundancy(@num_parts).ready_copies(1)
   end
 
