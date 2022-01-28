@@ -13,7 +13,7 @@ require 'environment'
 class VespaModel
 
   attr_reader :nodeproxies, :hostalias, :adminserver, :configservers, :logserver
-  attr_reader :qrserver, :storage, :search, :docproc, :slobrok, :qrs
+  attr_reader :qrserver, :storage, :search, :slobrok, :qrs
   attr_reader :metricsproxies
   attr_reader :container, :clustercontrollers, :default_document_api_port, :document_api_v1
 
@@ -40,7 +40,6 @@ class VespaModel
     @container = {}
     @storage = Hash.new {|h,k| h[k] = Storage.new(@testcase, k, self) }
     @search = Hash.new {|h,k| h[k] = Search.new(@testcase, self) }
-    @docproc = Hash.new {|h,k| h[k] = Docproc.new(@testcase, self) }
     @qrs = Hash.new {|h,k| h[k] = Qrs.new(@testcase, self) }
     @metricsproxies = {}
     @slobrok = {}
@@ -676,9 +675,6 @@ class VespaModel
     elsif service["clustertype"] == "search"
       clustername = service["clustername"]
       @search[clustername].add_service(remote_serviceobject)
-    elsif service["servicetype"] == "docprocservice"
-      clustername = service["clustername"]
-      @docproc[clustername].add_service(remote_serviceobject)
     elsif service["servicetype"] == "slobrok"
       @slobrok[remote_serviceobject.index] = remote_serviceobject
     elsif service["servicetype"] == "configserver"
@@ -1011,10 +1007,6 @@ class VespaModel
       string_repr += "search[\"#{name}\"]:\n"
       string_repr += cluster.to_s + "\n"
     end
-    @docproc.each do |name, cluster|
-      string_repr += "docproc[\"#{name}\"]:\n"
-      string_repr += cluster.to_s + "\n"
-    end
     @container.each do |name, cluster|
        string_repr += "container[\"#{name}\"]:\n"
        string_repr += cluster.to_s + "\n"
@@ -1022,8 +1014,5 @@ class VespaModel
     string_repr += "==="
     return string_repr
   end
+
 end
-
-
-
-
