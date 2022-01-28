@@ -41,7 +41,7 @@ class ComponentManyBundles < SearchContainerTest
       handler[i] = add_bundle_dir(@project_dir+"handler#{i}", "com.yahoo.vespatest.Handler#{i}", :name => "handler#{i}")
     end
     compile_bundles(@vespa.nodeproxies.values.first)
-    deploy(@project_dir + app_dir, nil, nil, :bundles => handler)
+    deploy(@project_dir + app_dir, nil, :bundles => handler)
   end
 
   def test_many_bundles

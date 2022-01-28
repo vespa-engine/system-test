@@ -13,7 +13,7 @@ class ComponentConfig < SearchContainerTest
   end
 
   def test_component_config
-    output = deploy(selfdir + "app", nil, nil, :bundles => [@searcher])
+    output = deploy(selfdir + "app", nil, :bundles => [@searcher])
     start
     @container = (vespa.qrserver.values.first or vespa.container.values.first)
     wait_for_application(@container, output)
@@ -23,13 +23,13 @@ class ComponentConfig < SearchContainerTest
 
     for i in (1..2)
       puts ">>>>>>>>>>>> Deploying app_II for the #{i}. time"
-      output = deploy(selfdir + "app_II", nil, nil, :bundles => [@searcher])
+      output = deploy(selfdir + "app_II", nil, :bundles => [@searcher])
       wait_for_application(@container, output)
       verify_result("(adding a newline, see ticket 3378196)\nHeal the Mind!")
       assert_equal("app_II-component_config", @container.get_application_version)
 
       puts ">>>>>>>>>>>> Deploying the original app for the #{i+1}. time"
-      output = deploy(selfdir + "app", nil, nil, :bundles => [@searcher])
+      output = deploy(selfdir + "app", nil, :bundles => [@searcher])
       wait_for_application(@container, output)
       verify_result("Heal the World!")
       assert_equal("app-component_config", @container.get_application_version)
@@ -38,7 +38,7 @@ class ComponentConfig < SearchContainerTest
 
   def test_component_config_with_missing_value
     set_expected_logged(/JDisc exiting: Throwable caught/)
-    deploy(selfdir + "app_with_missing_config_value", nil, nil, :bundles => [@searcher])
+    deploy(selfdir + "app_with_missing_config_value", nil, :bundles => [@searcher])
     begin
       start(30)
     rescue Exception => e

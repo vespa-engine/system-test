@@ -122,7 +122,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
   end
 
   def deploy_and_feed
-    deploy(selfdir + "/app", nil, nil, {:search_dir => @constants_dir})
+    deploy(selfdir + "/app", nil, {:search_dir => @constants_dir})
     vespa.adminserver.logctl("searchnode:eval", "debug=on")
     start
     feed_and_wait_for_docs("test", @num_docs, :file => @docs_file_name)

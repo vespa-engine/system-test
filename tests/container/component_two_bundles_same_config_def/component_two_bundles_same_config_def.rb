@@ -14,7 +14,7 @@ class ComponentTwoBundlesSameConfigDef < SearchContainerTest
     assert_raise(ExecuteError) {
       output = deploy(selfdir+"app")
     }
-#    output = deploy(selfdir+"app", nil, nil, {:force => true})
+#    output = deploy(selfdir+"app", nil, {:force => true})
 #    wait_for_application(vespa.qrs['default'].qrserver['0'], output)
   end
 

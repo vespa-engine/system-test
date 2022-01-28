@@ -36,7 +36,7 @@ class OrchestratorMultiTenantTest < SearchContainerTest
     else
       if @did_deploy3
         puts "CLEANUP 3"
-        deploy(mtappdir('3'), nil, nil, :tenant => 'quux')
+        deploy(mtappdir('3'), nil, :tenant => 'quux')
         if @did_deploy1 || @did_deploy2
           @vespa.stop_base
           @vespa.clean
@@ -44,7 +44,7 @@ class OrchestratorMultiTenantTest < SearchContainerTest
       end
       if @did_deploy2
         puts "CLEANUP 2"
-        deploy(mtappdir('2'), nil, nil, :tenant => 'nalle')
+        deploy(mtappdir('2'), nil, :tenant => 'nalle')
         if @did_deploy1
           @vespa.stop_base
           @vespa.clean
@@ -52,7 +52,7 @@ class OrchestratorMultiTenantTest < SearchContainerTest
       end
       if @did_deploy1
         puts "CLEANUP 1"
-        deploy(mtappdir('1'), nil, nil, :tenant => 'huff')
+        deploy(mtappdir('1'), nil, :tenant => 'huff')
       end
     end
     stop
@@ -109,7 +109,7 @@ class OrchestratorMultiTenantTest < SearchContainerTest
     override_environment_setting(@cfgsrvnode, "VESPA_CONFIGSERVER_MULTITENANT", "true")
     puts "multitenant configserver on: #{@cfgsrvnode.hostname}"
 
-    deploy(mtappdir('1'), nil, nil, :tenant => 'huff')
+    deploy(mtappdir('1'), nil, :tenant => 'huff')
 
     # subsequent deploys will overwrite references in @vespa (model)
     # so save any references we need first:
@@ -119,13 +119,13 @@ class OrchestratorMultiTenantTest < SearchContainerTest
     assert(q1)
     @did_deploy1 = true
 
-    deploy(mtappdir('2'), nil, nil, :tenant => 'nalle')
+    deploy(mtappdir('2'), nil, :tenant => 'nalle')
     a2 = @vespa.adminserver
     q2 = @vespa.qrserver["0"]
     assert(q2)
     @did_deploy2 = true
 
-    deploy(mtappdir('3'), nil, nil, :tenant => 'quux')
+    deploy(mtappdir('3'), nil, :tenant => 'quux')
     a3 = @vespa.adminserver
     q3 = @vespa.qrserver["0"]
     assert(q3)

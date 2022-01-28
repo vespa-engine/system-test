@@ -44,7 +44,7 @@ class ContainerTest < TestCase
   def container_deploy(app, params)
     app_location = get_app_location(app)
     @node = vespa.nodeproxies.values.first
-    super_deploy(app_location, nil, nil, params)
+    super_deploy(app_location, nil, params)
   end
 
   def create_tmp_application(app_location, params)

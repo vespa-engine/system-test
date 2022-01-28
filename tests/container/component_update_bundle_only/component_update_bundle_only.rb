@@ -24,7 +24,7 @@ class ComponentUpdateBundleOnly < SearchContainerTest
   end
 
   def redeploy(expected, bundle)
-    output = deploy(selfdir + "app", nil, nil, :bundles => [bundle])
+    output = deploy(selfdir + "app", nil, :bundles => [bundle])
     wait_for_application(@container, output)
 
     verify_handler_response(expected)
@@ -35,7 +35,7 @@ class ComponentUpdateBundleOnly < SearchContainerTest
     updated = add_bundle_dir(selfdir+"updated", "com.yahoo.vespatest.ExtraHitSearcher", :name => 'updated')
     compile_bundles(@vespa.nodeproxies.values.first)
 
-    deploy(selfdir + "app", nil, nil, :bundles => [initial])
+    deploy(selfdir + "app", nil, :bundles => [initial])
     start
     @container = (vespa.qrserver.values.first or vespa.container.values.first)
     # enable_all_log_levels

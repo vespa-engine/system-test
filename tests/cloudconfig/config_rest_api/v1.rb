@@ -12,7 +12,7 @@ class ConfigRestApiV1 < CloudConfigTest
 
     @node = @vespa.nodeproxies.first[1]
 
-    deploy(selfdir+"app", nil, nil, :force => true)
+    deploy(selfdir+"app", nil, :force => true)
     start
     @csrvnode = vespa.configservers["0"]
     @configserver = vespa.configservers["0"].name

@@ -38,7 +38,7 @@ class SubscribeSuperconfig < CloudConfigTest
 </services>
 ENDER
 
-    deploy_generated(app, nil, nil, {:rotations => "foo"}, nil)
+    deploy_generated(app, nil, {:rotations => "foo"}, nil)
     start
 
     config = getvespaconfig("cloud.config.lb-services", "\"*\"")
