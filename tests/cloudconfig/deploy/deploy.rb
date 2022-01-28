@@ -23,7 +23,7 @@ include ApplicationV2Api
     puts "original config server config: #{@original_config_server_config}"
 
     appdir = "#{CLOUDCONFIG_DEPLOY_APPS}/base"
-    deploy(appdir, nil, nil) # to initialize nodeproxies etc.
+    deploy(appdir, nil) # to initialize nodeproxies etc.
     delete_application_v2(@hostname, "default", "default")
     @tenant_name = "mytenant"
     create_tenant_and_wait(@tenant_name, @node.hostname)

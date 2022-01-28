@@ -10,7 +10,7 @@ class ConfigSchemas < CloudConfigTest
   end
 
   def test_change_config_definition
-    deploy("#{CLOUDCONFIG_DEPLOY_APPS}/base", nil, nil)
+    deploy("#{CLOUDCONFIG_DEPLOY_APPS}/base", nil)
     start
     @config_id = "myid"
     @config_name = "cloud.config.log.logd"

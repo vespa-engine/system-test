@@ -143,7 +143,7 @@ class VespaModel
     end
   end
 
-  def deploy(application, sdfile, configsdir, params)
+  def deploy(application, sdfile, params)
     @testcase.output("Deploying application #{application}")
 
     tmp_application = create_tmp_application(application)
@@ -188,7 +188,6 @@ class VespaModel
     substitute_sdfile(tmp_application, vespa_services, sdfile) if sdfile
     update_services_jvmargs(tmp_application, vespa_services) unless @testcase.performance?
     add_perfmap_agent_to_container_jvmargs(vespa_services) if @testcase.performance?
-    create_configs_dir(tmp_application, configsdir)
     create_rules_dir(tmp_application, params[:rules_dir])
     create_components_dir(tmp_application, params[:components_dir])
     create_search_dir(tmp_application, params[:search_dir])
@@ -330,7 +329,7 @@ class VespaModel
     Maven.compile_bundles(@bundles, @testcase, adminserver, @vespa_version)
   end
 
-  def deploy_generated(applicationbuffer, sdfile, configsdir, params, hostbuffer, deploymentbuffer, validation_overridesbuffer)
+  def deploy_generated(applicationbuffer, sdfile, params, hostbuffer, deploymentbuffer, validation_overridesbuffer)
     tmp_application = create_services_xml(applicationbuffer)
     if hostbuffer
       outf = File.new("#{tmp_application}/hosts.xml", "w")
@@ -352,7 +351,7 @@ class VespaModel
       outf.close
     end
     FileUtils.chmod_R 0755, tmp_application
-    deploy(tmp_application, sdfile, configsdir, params)
+    deploy(tmp_application, sdfile, params)
   end
 
   def create_services_xml(applicationbuffer)
@@ -379,7 +378,7 @@ class VespaModel
     destdir=@testcase.dirs.tmpdir + "apps/"
     @testcase.output("Extracting #{tarfile_local} into #{destdir}")
     puts `mkdir -p #{destdir}; cd #{destdir}; tar xf #{tarfile_local}`
-    deploy(destdir+appname, nil, nil, params)
+    deploy(destdir+appname, nil, params)
   end
 
   def create_and_copy_dir(tmp_application, dir_name, src_dir)
@@ -388,12 +387,6 @@ class VespaModel
     if src_dir
       FileUtils.cp_r(src_dir + "/.", tmp_dir + "/.")
       FileUtils.chmod_R 0755, tmp_application
-    end
-  end
-
-  def create_configs_dir(tmp_application, configsdir)
-    if configsdir
-      create_and_copy_dir(tmp_application, "configs", configsdir)
     end
   end
 

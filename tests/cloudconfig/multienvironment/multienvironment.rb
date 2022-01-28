@@ -16,11 +16,11 @@ class MultiEnvironment < CloudConfigTest
 
   def test_multiple_environments
     set_env_and_region(@node, "dev", "default")
-    deploy("#{selfdir}/multienv", nil, nil, {:environment=>"dev"})
+    deploy("#{selfdir}/multienv", nil, {:environment=>"dev"})
     assert_logd_config_v2(4099, @node.hostname, "default", "default", "default", "dev", "default")
     @node.stop_configserver
     set_env_and_region(@node, "prod", "us-west")
-    deploy("#{selfdir}/multienv", nil, nil, {:environment=>"prod", :region=>"us-west"})
+    deploy("#{selfdir}/multienv", nil, {:environment=>"prod", :region=>"us-west"})
     assert_logd_config_v2(5000, @node.hostname, "default", "default", "default", "prod", "us-west")
   end
 

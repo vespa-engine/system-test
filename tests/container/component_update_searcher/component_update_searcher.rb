@@ -24,7 +24,7 @@ class ComponentUpdateSearcher < SearchContainerTest
   end
 
   def redeploy(resultFile, bundle)
-    output = deploy(selfdir + "app", nil, nil, :bundles => [bundle])
+    output = deploy(selfdir + "app", nil, :bundles => [bundle])
     begin
       wait_for_application(@qrs, output)
     rescue
@@ -39,7 +39,7 @@ class ComponentUpdateSearcher < SearchContainerTest
     updated = add_bundle_dir(selfdir+"updated", "com.yahoo.vespatest.ExtraHitSearcher", :name => 'updated')
 
     compile_bundles(@vespa.nodeproxies.values.first)
-    deploy(selfdir + "app", nil, nil, :bundles => [initial])
+    deploy(selfdir + "app", nil, :bundles => [initial])
 
     start
     @qrs = (vespa.qrserver.values.first or vespa.container.values.first)

@@ -18,7 +18,7 @@ class ComponentConfigNamespace < SearchContainerTest
 
     compile_bundles(@vespa.nodeproxies.values.first)
 
-    deploy(selfdir+"app", nil, nil, :bundles => [exporter, importer])
+    deploy(selfdir+"app", nil, :bundles => [exporter, importer])
     start
 
     result = search("query=test")
@@ -36,7 +36,7 @@ class ComponentConfigNamespace < SearchContainerTest
 
     compile_bundles(@vespa.nodeproxies.values.first)
 
-    output = deploy(selfdir+"app2", nil, nil, :bundles => [searcher1, searcher2])
+    output = deploy(selfdir+"app2", nil, :bundles => [searcher1, searcher2])
     start
 
     result = search("query=test&searchChain=no1")

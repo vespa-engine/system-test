@@ -118,7 +118,7 @@ module TestBase
   # Search definition files can be substituted by specifying _sdfile_
   # (string or an array of strings). _configsdir_ may point to a configs
   # directory.
-  def deploy(application, sdfile=nil, configsdir=nil, params={})
+  def deploy(application, sdfile=nil, params={})
     return @vespa.deploy(application, sdfile, configsdir, params)
   end
 
@@ -133,19 +133,19 @@ module TestBase
 
   # Deploys an application represented by the given app instance.
   def deploy_app(app, deploy_params = {})
-    deploy_generated(app.services_xml, app.sd_files, nil,
+    deploy_generated(app.services_xml, app.sd_files,
                      deploy_params.merge(app.deploy_params), app.hosts_xml, nil, app.validation_overrides_xml)
   end
 
   # Deploys an application with a provided services.xml buffer
-  def deploy_generated(applicationbuffer, sdfile=nil, configsdir=nil, params={}, hostsbuffer=nil, deploymentbuffer=nil, validation_overridesbuffer=nil)
+  def deploy_generated(applicationbuffer, sdfile=nil, params={}, hostsbuffer=nil, deploymentbuffer=nil, validation_overridesbuffer=nil)
     @vespa.deploy_generated(applicationbuffer, sdfile, configsdir, params, hostsbuffer, deploymentbuffer, validation_overridesbuffer)
   end
 
   # Deploys an application using a sdfile located on the first remote node
   # with Vespa installed. Typically used in singlenode setups for testing
   # sdfiles that are a part of the Vespa installation.
-  def deploy_remote_sdfile(application_package, sd_filename, configsdir=nil, params={})
+  def deploy_remote_sdfile(application_package, sd_filename, params={})
     remotehost = hostlist.first
     proxy = @vespa.nodeproxies[remotehost]
     content = proxy.readfile(sd_filename)
@@ -153,12 +153,12 @@ module TestBase
     File.open(local_sdfilename, "w") do |file|
       file.write(content)
     end
-    deploy(application_package, local_sdfilename, configsdir, params)
+    deploy(application_package, local_sdfilename, params)
     FileUtils.rm_rf(local_sdfilename)
   end
 
   def deploy_expand_vespa_home(app)
-    deploy(app, nil, nil, :sed_vespa_services => "sed 's,\\$VESPA_HOME,#{Environment.instance.vespa_home},g'")
+    deploy(app, nil, :sed_vespa_services => "sed 's,\\$VESPA_HOME,#{Environment.instance.vespa_home},g'")
   end
 
   # :call-seq:
