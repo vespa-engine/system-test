@@ -3,16 +3,15 @@
   <admin version="2.0">
     <adminserver hostalias="node1" />
   </admin>
-  <container version="1.0" id="httpgateway-container">
+
+  <container version="1.0" id="default">
     <search />
     <document-api />
-    <http>
-      <server id="httpgateway" port="4080" />
-    </http>
      <nodes>
         <node hostalias="node1" />
      </nodes>
    </container>
+
    <content version="1.0" id="cars">
      <redundancy>1</redundancy>
        <nodes>
