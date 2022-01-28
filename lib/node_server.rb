@@ -62,8 +62,6 @@ class NodeServer
       when "logserver" then @services.push(Logserver.new(service, testcase, self))
       when "qrserver" then @services.push(Qrserver.new(service, testcase, self))
       when "container" then @services.push(ContainerNode.new(service, testcase, self))
-      when "httpgateway" then @services.push(HttpGateway.new(service, testcase, self, true))
-      when "container-httpgateway" then @services.push(HttpGateway.new(service, testcase, self, false))
       when "distributor" then @services.push(Distributor.new(service, testcase, self))
       when "searchnode" then @services.push(SearchNode.new(service, testcase, self))
       when "storagenode" then @services.push(StorageNode.new(service, testcase, self))
