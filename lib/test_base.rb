@@ -116,10 +116,9 @@ module TestBase
 
   # Creates an instance of VespaModel, then deploys _application_ on the adminserver.
   # Search definition files can be substituted by specifying _sdfile_
-  # (string or an array of strings). _configsdir_ may point to a configs
-  # directory.
+  # (string or an array of strings).
   def deploy(application, sdfile=nil, params={})
-    return @vespa.deploy(application, sdfile, configsdir, params)
+    return @vespa.deploy(application, sdfile, params)
   end
 
   # Deploys an application that is installed on the test nodes
@@ -139,7 +138,7 @@ module TestBase
 
   # Deploys an application with a provided services.xml buffer
   def deploy_generated(applicationbuffer, sdfile=nil, params={}, hostsbuffer=nil, deploymentbuffer=nil, validation_overridesbuffer=nil)
-    @vespa.deploy_generated(applicationbuffer, sdfile, configsdir, params, hostsbuffer, deploymentbuffer, validation_overridesbuffer)
+    @vespa.deploy_generated(applicationbuffer, sdfile, params, hostsbuffer, deploymentbuffer, validation_overridesbuffer)
   end
 
   # Deploys an application using a sdfile located on the first remote node
