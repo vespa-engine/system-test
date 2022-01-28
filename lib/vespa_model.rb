@@ -186,7 +186,6 @@ class VespaModel
     end
 
     substitute_sdfile(tmp_application, vespa_services, sdfile) if sdfile
-    update_services_jvmargs(tmp_application, vespa_services) unless @testcase.performance?
     add_perfmap_agent_to_container_jvmargs(vespa_services) if @testcase.performance?
     create_rules_dir(tmp_application, params[:rules_dir])
     create_components_dir(tmp_application, params[:components_dir])
@@ -418,43 +417,6 @@ class VespaModel
 
   def copy_sd_files(tmp_application, sd_files)
     copy_files(tmp_application, "schemas", sd_files)
-  end
-
-
-  def update_services_jvmargs(tmp_application, vespa_services)
-    services = {
-      "services/docproc/nodes" => 256,
-      "services/search/qrservers" => 320
-    }
-
-    file = vespa_services
-    doc = REXML::Document.new(File.new(file))
-    services.each do |service, memory|
-      if service == 'services/search/qrservers'
-        matches = 0
-        REXML::XPath.each(doc, service + '/cluster') do |e|
-          matches += 1
-        end
-        if matches > 0
-          service = service + '/cluster/nodes'
-        end
-      end
-      REXML::XPath.each(doc, service) do |e|
-        startmemory = memory
-        startmemory = 64 if startmemory > 128
-        directmemory = memory/8
-        directmemory = memory/8 + 75 if service =~ /\/qrserver/
-        newattr = "-Xmx#{memory}m -Xms#{startmemory}m " +
-          "-XX:MaxDirectMemorySize=#{directmemory}m"
-        origattr = e.attributes['jvmargs']
-
-        newattr += ' ' + origattr if origattr
-        e.attributes['jvmargs'] = newattr
-      end
-    end
-    File.open(file, 'w') do |out|
-      doc.write(out, -1)
-    end
   end
 
   def add_perfmap_agent_to_container_jvmargs(vespa_services)
