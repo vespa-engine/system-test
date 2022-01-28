@@ -83,7 +83,6 @@ class App
                   :search_chain => :search_chain,
                   :search_chains_config => :search_chains_config,
                   :renderer => :renderer,
-                  :qrservers_jvmargs => :jvmargs,
                   :qrserver_options => :options,
                   :qrs_cache => :cache,
                   :handler => :handler,

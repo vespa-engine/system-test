@@ -20,7 +20,6 @@ class SearchAppGenTest < Test::Unit::TestCase
   def create_complex
     SearchApp.new.sd("sd1").sd("sd2").sd("sd3").
       cluster_name("storage").num_parts(4).redundancy(3).
-      qrservers_jvmargs("foo").
       config(ConfigOverride.new("stor-distribution").
              add("ready_copies", 2))
   end
