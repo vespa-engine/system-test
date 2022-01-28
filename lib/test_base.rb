@@ -865,7 +865,7 @@ module TestBase
         params_out[:host] = get_feed_node(params_out).hostname
       end
       if !params_out[:port]
-        params_out[:port] = vespa.default_http_gateway_port
+        params_out[:port] = vespa.default_document_api_port
       end
     else
       if !params_out[:numthreads]
