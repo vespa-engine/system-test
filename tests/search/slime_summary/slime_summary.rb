@@ -5,10 +5,6 @@ require 'indexed_search_test'
 
 class SlimeSummary < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("havardpe")
   end

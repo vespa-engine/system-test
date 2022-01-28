@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class Filter < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("arnej")
     set_description("Search using filter")

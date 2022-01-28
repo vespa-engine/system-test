@@ -4,10 +4,6 @@ require 'gatewayxmlparser'
 
 class FieldPath < MultiProviderStorageTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("vekterli")
 

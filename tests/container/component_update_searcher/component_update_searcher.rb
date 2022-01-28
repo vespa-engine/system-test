@@ -3,10 +3,6 @@ require 'search_container_test'
 
 class ComponentUpdateSearcher < SearchContainerTest
 
-  def nightly?
-    false
-  end
-
   def timeout_seconds
     return 1800
   end

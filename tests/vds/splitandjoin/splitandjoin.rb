@@ -3,10 +3,6 @@ require 'vds_multi_model_test'
 
 class SplitAndJoin < VdsMultiModelTest
 
-  def nightly?
-    true
-  end
-
   def setup
     @valgrind=false
 

@@ -3,10 +3,6 @@ require 'search_test'
 
 class StoreUnknownRemoves < SearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("geirst")
     set_description("Try to resurrect a removed document")

@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class SimpleInheritance < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("musum")
   end

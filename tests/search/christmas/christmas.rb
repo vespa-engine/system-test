@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class Christmas < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("geirst")
     set_description("Ensure that 'Christmas' and 'christmas' is indexed equally.")

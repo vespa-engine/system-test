@@ -3,10 +3,6 @@ require 'indexed_search_test'
 
 class TwoPhase_Searcher < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("arnej")
     set_description("Test that we can plug in twophase QRS searchers")

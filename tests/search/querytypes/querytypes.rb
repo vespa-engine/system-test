@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class QueryTypes < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def timeout_seconds
     return  1800
   end

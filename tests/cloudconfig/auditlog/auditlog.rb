@@ -15,10 +15,6 @@ class AuditLog < CloudConfigTest
     super(*args)
   end
 
-  def nightly?
-    true
-  end
-
   def test_audit_log_v2
     gen = get_generation(deploy("#{selfdir}/../deploy/base"))
     sleep 6 # The access log might have up to 5s delay.

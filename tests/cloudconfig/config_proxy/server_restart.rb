@@ -8,10 +8,6 @@ class ServerRestart < CloudConfigTest
     set_owner("musum")
   end
 
-  def nightly?    
-    true
-  end
-
   def test_server_restart_and_clean
     @valgrind = false
     deploy(selfdir+"app")

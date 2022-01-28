@@ -3,11 +3,6 @@ require 'persistent_provider_test'
 
 class VisitRemovedDocs < PersistentProviderTest
 
-  def nightly?
-    true
-  end
-
-
   def setup
     set_description("Test that all docs are removed")
     set_owner("vekterli")

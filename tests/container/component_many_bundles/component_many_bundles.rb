@@ -4,10 +4,6 @@ require 'environment'
 
 class ComponentManyBundles < SearchContainerTest
 
-  def nightly?
-    true
-  end
-
   def timeout_seconds
     return 2400
   end

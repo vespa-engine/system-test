@@ -52,10 +52,6 @@ class LargeText < IndexedSearchTest
     return 900
   end
 
-  def nightly?
-    return true
-  end
-
   def teardown
     stop
   end

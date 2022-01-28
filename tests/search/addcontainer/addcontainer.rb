@@ -19,10 +19,6 @@ class AddContainer < SearchTest
     true
   end
 
-  def nightly?
-    true
-  end
-
   # TODO: Will get port conflicts when adding a container to node 1, so the deployment will
   # fail. Redeploying the original application should give a working cluster again
   def test_addcontainer

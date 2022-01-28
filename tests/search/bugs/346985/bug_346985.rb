@@ -9,10 +9,6 @@ class Bug_346985 < IndexedSearchTest
   # Component:   Search and Config
   # Feature:     Ranking
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("geirst")
     deploy_app(SearchApp.new.sd(selfdir + "proximitygap.sd"))

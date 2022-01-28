@@ -4,10 +4,6 @@ require 'streaming_search_test'
 
 class DynTeaserStreaming < StreamingSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("geirst")
   end

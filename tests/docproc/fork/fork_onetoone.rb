@@ -16,10 +16,6 @@ class ForkOneToOne < DocprocTest
     start
   end
 
-  def nightly?
-    true
-  end
-
   def test_fork_onetoone
     doc1 = Document.new("worst", "id:worst:worst::1234").
       add_field("title", "jalla jalla")

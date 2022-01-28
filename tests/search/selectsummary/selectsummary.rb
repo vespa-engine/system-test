@@ -3,10 +3,6 @@ require 'indexed_search_test'
 
 class SelectSummary < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("bratseth")
     set_description("Test selecting summary class by name")

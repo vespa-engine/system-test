@@ -6,10 +6,6 @@ require 'indexed_search_test'
 
 class ElementSimilarity < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("havardpe")
   end

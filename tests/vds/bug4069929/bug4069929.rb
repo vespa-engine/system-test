@@ -3,10 +3,6 @@ require 'multi_provider_storage_test'
 
 class Bug4069929 < MultiProviderStorageTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("balder")
     set_description("Test for bug 4069929")

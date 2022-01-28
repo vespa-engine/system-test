@@ -12,10 +12,6 @@ class MultiplePositions < IndexedSearchTest
     set_description("Test single and multivalued input to positions with new position syntax in sd files")
   end
 
-  def nightly?
-    true
-  end
-
   def test_multiplepos_2d
     deploy_app(SearchApp.new.sd(selfdir+"multiplepos2d.sd"))
     start

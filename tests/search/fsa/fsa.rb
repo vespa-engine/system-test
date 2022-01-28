@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class Fsa < IndexedSearchTest
 
-  def nightly?
-    false
-  end
-
   def setup
     set_owner("geirst")
     deploy_app(SearchApp.new.sd(selfdir + "fsa.sd"))

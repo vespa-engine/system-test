@@ -5,10 +5,6 @@ require 'indexed_search_test'
 class Bug_316580 < IndexedSearchTest
   # Description: Bugfix for problem with long input without any spaces
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("aressem")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))

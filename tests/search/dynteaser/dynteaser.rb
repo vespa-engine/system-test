@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class DynTeaser < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("geirst")
     set_description("Test of dynamic teaser support")

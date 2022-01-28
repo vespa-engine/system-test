@@ -3,10 +3,6 @@ require 'indexed_streaming_search_test'
 
 class QueryFeatures < IndexedStreamingSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("geirst")
   end

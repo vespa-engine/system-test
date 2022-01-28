@@ -8,10 +8,6 @@ class NoAdminInServices < SearchTest
     set_description("Test that having no admin element in services.xml works")
   end
 
-  def nightly?
-    true
-  end
-
   def test_no_admin_search
     deploy(selfdir + "app-search", SEARCH_DATA + "music.sd")
     start_and_feed

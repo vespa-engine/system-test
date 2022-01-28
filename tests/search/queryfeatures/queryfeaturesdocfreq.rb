@@ -3,10 +3,6 @@ require 'indexed_search_test'
 
 class QueryFeaturesDocFreq < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("geirst")
   end

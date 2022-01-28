@@ -17,10 +17,6 @@ class MultipleConfigservers < CloudConfigTest
     1800
   end
 
-  def nightly?
-    false
-  end
-
   def setup
     @valgrind = false
     set_description("Tests that multiple configservers work. When one server goes down, " +

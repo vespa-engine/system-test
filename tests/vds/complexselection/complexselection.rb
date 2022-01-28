@@ -3,10 +3,6 @@ require 'multi_provider_storage_test'
 
 class ComplexSelection < MultiProviderStorageTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("vekterli")
 

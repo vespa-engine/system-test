@@ -6,10 +6,6 @@ require 'indexed_search_test'
 
 class ElementCompleteness < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("havardpe")
   end

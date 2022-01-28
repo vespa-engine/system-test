@@ -3,10 +3,6 @@ require 'search_container_test'
 
 class FederationTimeoutsTest < SearchContainerTest
 
-  def nightly?
-      false
-  end
-
   def setup
     set_owner("bratseth")
     set_description("Some federation timeout testing")

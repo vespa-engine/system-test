@@ -8,10 +8,6 @@ require 'simple_http_feeder'
 
 class Down < SearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("toregge")
     set_description("Verify that documents are searchable after put")

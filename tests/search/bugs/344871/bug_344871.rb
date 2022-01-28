@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class Bug_344871 < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("arnej")
     deploy_app(SearchApp.new.sd("#{selfdir}/simple.sd"))

@@ -3,10 +3,6 @@ require 'indexed_search_test'
 
 class MultipleInherit < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("bratseth")
     set_description("Document type inherits from 2 or more document types")

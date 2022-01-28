@@ -3,10 +3,6 @@ require 'indexed_search_test'
 
 class ImplitictIndexPhrase < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("arnej")
     set_description("Check implicit phrasing when querying for non-existant index.")

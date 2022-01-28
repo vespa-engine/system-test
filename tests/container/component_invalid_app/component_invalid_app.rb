@@ -9,10 +9,6 @@ class ComponentInvalidApp < ContainerTest
     { "CLUSTER" => { :deploy_mode => "CLUSTER" } }
   end
 
-  def nightly?
-    true
-  end
-
   def timeout_seconds
     return 900
   end

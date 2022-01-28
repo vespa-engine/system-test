@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class TagsAccents < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   @@fctr = Process.pid * 100
 
   @@vals = [ "x", \

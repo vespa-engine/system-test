@@ -12,7 +12,7 @@ class TestDirs
   attr_reader :jdisccorelogdir
 
   def initialize(testclass, testmethod, modulename, args={})
-    methodname = testmethod.sub(/test_/, "").sub(/nightly_/, "")
+    methodname = testmethod.sub(/test_/, "")
     start_timestamp = args[:start_timestamp]
     outputdir = args[:outputdir]
     platform_label = args[:platform_label]

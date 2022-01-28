@@ -4,10 +4,6 @@ require 'environment'
 
 class MergeChainingTest < VdsMultiModelTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("vekterli")
     @valgrind = false

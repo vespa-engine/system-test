@@ -4,10 +4,6 @@ require 'indexed_search_test'
 
 class ExactMatchUnderscore < IndexedSearchTest
 
-  def nightly?
-    true
-  end
-
   def setup
     set_owner("arnej")
     set_description("exact and word match when field name contains underscore (ticket #4558434)")
