@@ -27,8 +27,6 @@ require 'rpc/rpcwrapper'
 require 'nodetypes/feeder'
 require 'nodetypes/vespa_node'
 require 'nodetypes/container_node'
-require 'nodetypes/docproc'
-require 'nodetypes/docprocnode'
 require 'nodetypes/query_loader'
 require 'nodetypes/storage'
 require 'nodetypes/storagenode'
@@ -358,7 +356,6 @@ module TestBase
     # Use wait_until_ready for other services.
     vespa.search.each_value { |searchcluster| searchcluster.wait_until_ready(timeout) }
     vespa.storage.each_value { |stg| stg.wait_until_all_services_up(timeout) }
-    vespa.docproc.each_value { |dpc| dpc.wait_until_ready(timeout) }
     vespa.qrserver.each_value { |qrs| qrs.wait_until_ready(timeout) }
     vespa.qrs.each_value { |qrs| qrs.wait_until_ready(timeout) }
     vespa.container.each_value { |container| container.wait_until_ready(timeout) }
@@ -371,7 +368,6 @@ module TestBase
 
     vespa.search.each_value { |searchcluster| searchcluster.wait_until_ready(timeout) }
     vespa.storage.each_value { |stg| stg.wait_until_ready(timeout) }
-    vespa.docproc.each_value { |dpc| dpc.wait_until_ready(timeout) }
     vespa.qrserver.each_value { |qrs| qrs.wait_until_ready(timeout) }
     vespa.qrs.each_value { |qrs| qrs.wait_until_ready(timeout) }
     vespa.container.each_value { |container| container.wait_until_ready(timeout) }
@@ -857,9 +853,6 @@ module TestBase
   end
 
   def augment_feeder_params(params_out)
-    if vespa.docproc["docproc"].docprocservice.length > 0 and params_out[:docproc].nil?
-      params_out[:docproc] = "docproc"
-    end
     if use_vespa_http_client(params_out)
       if !params_out[:host]
         params_out[:host] = get_feed_node(params_out).hostname
