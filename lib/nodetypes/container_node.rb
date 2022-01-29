@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'environment'
 require 'openssl'
@@ -176,151 +176,10 @@ class ContainerNode < VespaNode
     http_get("localhost", port, query)
   end
 
-  ################ documentapi / gateway ##################
-
-
-  def http_feed(params={})
-    feedfile = create_tmpfeed(params)
-    res = feedlocalfile(feedfile, params)
-    res.body
-  end
-
-  def http_docapi_get(params)
-    http = http = @connectionPool.acquire("localhost", @http_port)
-    key_value_pairs = parse_params(params)
-    if params[:remove]
-      request_uri = "/remove/"
-    elsif params[:removelocation]
-      request_uri = "/removelocation/"
-    elsif params[:visit]
-      request_uri = "/visit/"
-    elsif @compatibility
-      request_uri = "/document/"
-    else
-      request_uri = "/get/"
-    end
-    if not key_value_pairs.empty?
-      request_uri += "?" + key_value_pairs
-    end
-    @testcase.output request_uri
-    response, data = http.getConnection.get(request_uri)
-    @connectionPool.release(http)
-
-    # check if XML validation should be performed
-    if not params[:novalidate]
-      check_response(response)
-    end
-    response
-  end
-
-  def get_document(documentid, params={})
-    begin
-      xml = http_docapi_get(params.merge({:id => documentid})).body
-      gw = GatewayXMLParser.new(xml)
-      # if documentid was an array, return all docs
-      if documentid.kind_of? Array
-        return gw.documents
-      else
-        return gw.documents[0]
-      end
-    rescue RuntimeError => exc
-      if (exc.to_s.index("not found") != nil)
-        @testcase.output "Output gotten in get"
-        @testcase.output exc.to_s
-        return nil
-      else
-        raise exc
-      end
-    end
-  end
-
-  def parse_params(params={})
-    key_value_pairs = []
-    url_arguments = [:field, :type, :documenttype, :route, :contenttype,
-                     :abortondocumenterror, :maxpendingdocs, :maxpendingbytes,
-                     :timeout, :contentencoding, :priority, :user, :group, :asynchronous,
-                     :selection, :loadtype, :fieldset, "visit.continuation", "visit.maxpendingvisitors"]
-    # Treat id separately, as it may be an array
-    if params.has_key? :id
-      if params[:id].kind_of? Array
-        i = 0
-        params[:id].each do |d|
-          key_value_pairs << "id[#{i}]=#{CGI.escape(d)}"
-          i += 1
-        end
-      else
-        key_value_pairs << "id=#{CGI.escape(params[:id])}"
-      end
-    end
-    url_arguments.each do |argument|
-      if params.has_key? argument
-        key_value_pairs << "#{argument}=#{CGI.escape(params[argument].to_s)}"
-      end
-    end
-    key_value_pairs.join("&")
-  end
-
-  def check_response(response)
-    if (response.code != "200")
-      raise "HTTP gateway returned error code "+response.code+": "+response.message
-    end
-  end
-
   def stop
     ret = super
     dumpJStack unless ret
     return ret
-  end
-
-  def http_post(buf, params={})
-    key_value_pairs = parse_params(params)
-    http = @connectionPool.acquire("localhost", @http_port)
-    http.getConnection.read_timeout=190
-
-    if (params[:contenttype])
-      contenttype = params[:contenttype]
-    else
-      contenttype = "application/xml"
-    end
-
-    if (@compatibility)
-      command = "document"
-    elsif params[:multiget]
-      command = "get"
-    elsif params[:multiremove]
-      command = "remove"
-    elsif params[:field]
-      command = "binaryfeed"
-    else
-      command = "feed"
-    end
-
-    key_value_pairs = parse_params(params)
-    if key_value_pairs.empty?
-      request_uri = "/" + command + "/"
-    else
-      request_uri = "/" + command + "/?" + key_value_pairs
-    end
-    httpheaders={"Content-Type" => contenttype}
-    if (params[:contentencoding])
-      httpheaders["Content-Encoding"] = params[:contentencoding]
-    end
-    response, data = http.getConnection.post(request_uri, buf, httpheaders)
-    @connectionPool.release(http)
-
-    check_response(response)
-    response
-  end
-
-  private
-  def feedlocalfile(filename, params={})
-    response = nil
-    File.open(filename) do |fp|
-      buf = fp.read
-      response = http_post(buf, params)
-    end
-    File.delete(filename)
-    response
   end
 
 end
