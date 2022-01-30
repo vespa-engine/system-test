@@ -165,24 +165,19 @@ class ContainerDocumentApi
 
   chained_setter :abortondocumenterror
   chained_setter :timeout
-  chained_setter :gateway
 
   def initialize()
     @abortondocumenterror = nil
     @timeout = nil
-    @gateway = nil
   end
 
   def to_xml(indent)
-    h = XmlHelper.new(indent).
+    XmlHelper.new(indent).
       tag_always("document-api").
       tag("abortondocumenterror").content(@abortondocumenterror).close_tag.
       tag("timeout").content(@timeout).close_tag.
-      close_tag
-    if @gateway
-      h.tag('http').tag('server', :id => 'default', :port => '19020').close_tag.close_tag
-    end
-    h.to_s
+      close_tag.
+      to_s
   end
 
 end
