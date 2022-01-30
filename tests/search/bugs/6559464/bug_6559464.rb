@@ -17,7 +17,7 @@ class Bug6559464Test < SearchTest
 
     feed(:file => selfdir + 'feed.xml')
 
-    puts "Attempting gateway get of document"
+    puts "Get document with document v1 API"
     output = vespa.document_api_v1.http_get('/document/v1/music/music/docid/taz')
     puts output.body
     assert output.body =~ /Tasmanian Devil/

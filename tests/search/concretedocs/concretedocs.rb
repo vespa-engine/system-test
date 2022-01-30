@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'indexed_streaming_search_test'
 
@@ -17,7 +17,7 @@ class ConcreteDocs < SearchTest
                sd(selfdir + 'concretedocs2/disease.sd').
                container(Container.new('default').
                          search(Searching.new).
-                         documentapi(ContainerDocumentApi.new.gateway(true)).
+                         documentapi(ContainerDocumentApi.new).
                          concretedoc(ConcreteDoc.new('vehicle')).
                          concretedoc(ConcreteDoc.new('ship')).
                          concretedoc(ConcreteDoc.new('disease').
@@ -36,26 +36,26 @@ class ConcreteDocs < SearchTest
     assert_hitcount('query=symptom:Paralysis', 2)
 
     # Check docs with GET
-    doc = vespa.document_api_v1.get('id:vehicle:vehicle::0')
+    port = Environment.instance.vespa_web_service_port
+    doc = vespa.document_api_v1.get('id:vehicle:vehicle::0', :port => port)
     location = doc.fields['location']
     assert(location['x'] == 2)
     assert(location['y'] == 3)
     assert(doc.fields['year'] == 2013)
     assert(doc.fields['reg'] == 'FOO 1234')
 
-    doc = vespa.document_api_v1.get('id:vehicle:vehicle::1')
+    doc = vespa.document_api_v1.get('id:vehicle:vehicle::1', :port => port)
     location = doc.fields['location']
     assert(location['x'] == 2)
     assert(location['y'] == 3)
     assert(doc.fields['year'] == 2013)
     assert(doc.fields['reg'] == 'BAR 5678')
 
-    doc = vespa.document_api_v1.get('id:disease:disease::0')
+    doc = vespa.document_api_v1.get('id:disease:disease::0', :port => port)
     assert(doc.fields['symptom'] == 'Paralysis')
 
-    doc = vespa.document_api_v1.get('id:disease:disease::1')
+    doc = vespa.document_api_v1.get('id:disease:disease::1', :port => port)
     assert(doc.fields['symptom'] == 'Paralysis')
-
   end
 
   def teardown

@@ -90,20 +90,6 @@ class ContainerAppGenTest < Test::Unit::TestCase
              .binding("http://*/goodbye"))))
   end
 
-  def test_container_app_with_gateway
-    actual =
-        Container.new.
-            documentapi(ContainerDocumentApi.new.gateway(true)).
-            to_xml('')
-    expected_substr =
-    '<container id="default" version="1.0">
-       <document-api />
-       <http>
-         <server id="default" port="19020" />
-       </http>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
   def test_container_app_with_concrete_docs
     actual =
         Container.new.
