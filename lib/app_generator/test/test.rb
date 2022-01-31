@@ -253,23 +253,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_multiple_gateways
-    actual = SearchApp.new.gateway("node1").gateway("node2").
-             services_xml
-    expected_substr = '
-      <container id="doc-api" version="1.0">
-        <document-api />
-        <http>
-            <server id="default" port="19020" />
-        </http>
-        <nodes>
-          <node hostalias="node1" />
-          <node hostalias="node2" />
-        </nodes>
-      </container>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
   def test_multiple_slobroks
     actual = SearchApp.new.slobrok("node1").slobrok("node2").
              services_xml
@@ -545,36 +528,6 @@ class SearchAppGenTest < Test::Unit::TestCase
   def test_logserver_jvmargs
     actual = SearchApp.new.logserver("foo", '-Option').services_xml
     expected_substr = '<logserver hostalias="foo" jvmargs="-Option" />'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
-  def test_gateways_jvmargs
-    actual = SearchApp.new.enable_document_api.gateways_jvmargs('-Option').services_xml
-    expected_substr = '
-      <container id="doc-api" version="1.0">
-        <document-api />
-        <http>
-            <server id="default" port="19020" />
-        </http>
-        <nodes jvmargs="-Option">'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
-  def test_gateway_jvmargs
-    actual = SearchApp.new.gateway("foo", '-Option').services_xml
-    expected_substr = '<node hostalias="foo" jvmargs="-Option" />'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
-  def test_container_jvmargs
-    actual = SearchApp.new.qrserver(
-               QrserverCluster.new.jvmargs('-Option')).services_xml
-    expected_substr = '
-      <container id="default" version="1.0">
-      <search />
-          <nodes jvmargs="-Option">
-          <node hostalias="node1" />
-        </nodes>'
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 

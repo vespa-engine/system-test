@@ -98,9 +98,7 @@ class App
                   :admin_metrics => :metrics
   chained_forward :docprocs, :docproc => :cluster
   chained_forward :clients,
-                  :gateways_jvmargs => :gateways_jvmargs,
                   :feeder_options => :feeder_options,
-                  :gateway => :gateway,
                   :load_type => :load_type
   chained_forward :generic_services, :generic_service => :service
 
@@ -188,7 +186,6 @@ class App
     services << newline(@cfg_overrides ? @cfg_overrides.to_xml("  ") : '')
     services << newline(@docprocs.to_xml("  "))
     services << newline(@content.to_xml("  "))
-    services << newline(@clients.create_gateways("  "))
     services << @clients.to_xml("  ")
     services << newline(@generic_services.to_xml('  '))
     services << footer
