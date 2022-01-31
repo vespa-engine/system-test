@@ -4,7 +4,7 @@
     <field name="relevancy">12.0</field>
     <field name="sddocname">type1</field>
     <field name="summaryfeatures">{"vespa.summaryFeatures.cached":2,"attribute(field12)":12}</field>
-    <field name="documentid">id:test:type1::pushyss://0/</field>
+    <field name="documentid">id:test:type1::0</field>
     <field name="field11">f11d1</field>
     <field name="field14">type1 document data</field>
     <field name="field15">type1 document data</field>
