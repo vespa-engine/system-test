@@ -27,6 +27,7 @@ search type1 {
     }
 
   }
+
   fieldset default {
     fields: field15
   }
