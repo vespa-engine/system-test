@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 require 'rexml/document'
 require 'search/schemachanges/schemachanges_base'
@@ -24,16 +24,20 @@ class SchemaChangesElastic < IndexedSearchTest
     @test_dir = selfdir + "docdb/"
     deploy_output = deploy_app(SearchApp.new.
                                sd(@test_dir + "testa.sd").
-                               gateway("node1").
-                               enable_document_api)
+                               container(Container.new.
+                                           documentapi(ContainerDocumentApi.new).
+                                           search(Searching.new)))
     start
     postdeploy_wait(deploy_output)
     feed_and_wait_for_docs("testa", 1, :file => @test_dir + "feed.0.xml")
 
     puts "add 'testb' documentdb"
     deploy_output = deploy_app(SearchApp.new.
-                               enable_document_api.
-                               sd(@test_dir + "testa.sd").sd(@test_dir + "testb.sd"))
+                                 sd(@test_dir + "testa.sd").sd(@test_dir + "testb.sd").
+                                 container(Container.new.
+                                             documentapi(ContainerDocumentApi.new).
+                                             search(Searching.new)))
+
     wait_for_content_cluster_config_generation(deploy_output)
     postdeploy_wait(deploy_output)
 
@@ -214,7 +218,7 @@ class SchemaChangesElastic < IndexedSearchTest
   def wait_for_get_result(doc_id, expected_doc)
     actual_doc = nil
     30.times do
-      actual_doc = vespa.document_api_v1.get(doc_id)
+      actual_doc = vespa.document_api_v1.get(doc_id, :port => Environment.instance.vespa_web_service_port)
       puts "doc: '#{actual_doc}'"
       if expected_doc != actual_doc
         sleep 1
