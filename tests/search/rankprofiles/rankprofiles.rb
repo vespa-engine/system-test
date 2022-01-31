@@ -3,7 +3,7 @@ require 'rubygems'
 require 'json'
 require 'indexed_search_test'
 
-class RankExpressionLogical < IndexedSearchTest
+class RankProfiles < IndexedSearchTest
 
   def setup
     set_owner("geirst")
@@ -13,7 +13,7 @@ class RankExpressionLogical < IndexedSearchTest
     start
   end
 
-  def test_rankExpressionLogical
+  def test_rankProfiles
     feed(:file => selfdir + "documents.xml", :cluster => "test")
     wait_for_hitcount("query=sddocname:type1", 1)
     wait_for_hitcount("query=sddocname:type2", 1)
