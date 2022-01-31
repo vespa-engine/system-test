@@ -87,8 +87,12 @@ class Container
 end
 
 class Containers
+
+  attr_accessor :accept_no_clients
+
   def initialize()
     @containers = []
+    @accept_no_clients = true
   end
 
   def add(container)
@@ -106,6 +110,33 @@ class Containers
     end
     return out
   end
+
+  def document_api_containers
+    return @containers unless @containers.empty?
+    return [Container.new("node1")]
+  end
+
+  def create_documentapi(indent)
+    if @accept_no_clients && @containers.empty?
+      return ""
+    end
+
+    if ! document_api_containers.empty?
+      return XmlHelper.new(indent).
+        tag("container", :version => "1.0", :id => "doc-api").
+        tag_always("document-api").to_xml(@feeder_options).close_tag.
+        tag("http").tag("server", :id => "default", :port => "19020").close_tag.close_tag.
+        tag("nodes").to_xml(document_api_nodes).close_tag.
+        close_tag.to_s
+    end
+  end
+
+  def document_api_nodes
+    nodes = Array.new
+    document_api_containers.each do |container| nodes.push(container.node_list) end
+    nodes
+  end
+
 end
 
 class Searching

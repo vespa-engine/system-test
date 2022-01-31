@@ -127,7 +127,7 @@ class App
   end
 
   def enable_document_api
-    @clients.accept_no_clients = false
+    @containers.accept_no_clients = false
     return self
   end
 
@@ -188,7 +188,7 @@ class App
     services << newline(@cfg_overrides ? @cfg_overrides.to_xml("  ") : '')
     services << newline(@docprocs.to_xml("  "))
     services << newline(@content.to_xml("  "))
-    services << newline(@clients.create_gateways("  "))
+    services << newline(@containers.create_documentapi("  "))
     services << @clients.to_xml("  ")
     services << newline(@generic_services.to_xml('  '))
     services << footer
