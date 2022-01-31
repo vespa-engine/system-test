@@ -3,17 +3,18 @@ require 'rubygems'
 require 'json'
 require 'indexed_search_test'
 
-class RankExpressionLogical < IndexedSearchTest
+class RankProfiles < IndexedSearchTest
 
   def setup
     set_owner("geirst")
-    deploy_app(SearchApp.new.sd(selfdir + "type1.sd").
-                      sd(selfdir + "type2.sd").cluster_name("logical"))
+    deploy_app(SearchApp.new.sd(selfdir + "type1.sd")
+                            .sd(selfdir + "type2.sd")
+                            .cluster_name("test"))
     start
   end
 
-  def test_rankExpressionLogical
-    feed(:file => selfdir + "testlogical.1.xml", :cluster => "logical")
+  def test_rankProfiles
+    feed(:file => selfdir + "documents.xml", :cluster => "test")
     wait_for_hitcount("query=sddocname:type1", 1)
     wait_for_hitcount("query=sddocname:type2", 1)
 
@@ -22,8 +23,8 @@ class RankExpressionLogical < IndexedSearchTest
     query3 = "query=document+data"
 
     # field15 is the only field that is a part of the default index of type1
-    query4 = "query=field15:document&search=logical&restrict=type1&ranking=field12rank"
-    query5 = "query=default:document&search=logical&restrict=type1&ranking=field12rank"
+    query4 = "query=field15:document&search=test&restrict=type1&ranking=field12rank"
+    query5 = "query=default:document&search=test&restrict=type1&ranking=field12rank"
 
     fields = ["relevancy","sddocname","documentid","field11","field12","field13","field14","field21","field22","field23","field24"]
 
