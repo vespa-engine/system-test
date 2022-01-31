@@ -26,18 +26,7 @@ search type2 {
     fields: field24
   }
 
-  rank-profile default {
-    first-phase {
-      expression: attribute(field23) * 10 + query(myvalue)
-    }
-
-    summary-features: attribute(field23) fieldMatch(field24).matches firstPhase query(myvalue)
+  rank-profile default inherits firstphase, summaryfeatures {
   }
 
-  rank-profile myvalue inherits default {
-    rank-properties {
-      query(myvalue): 5
-    }
-  }
 }
-

@@ -32,18 +32,6 @@ search type1 {
     fields: field15
   }
 
-  rank-profile default {
-    first-phase {
-      expression: attribute(field13) * 100
-    }
-
-    second-phase {
-      expression: if (attribute(field13) > 90, attribute(field13) * attribute(field13), attribute(field13))
-    }
-
-    summary-features: attribute(field13)
-  }
-
   rank-profile field12rank {
     first-phase {
       expression: attribute(field12) 
