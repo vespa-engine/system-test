@@ -98,7 +98,6 @@ class App
                   :admin_metrics => :metrics
   chained_forward :docprocs, :docproc => :cluster
   chained_forward :clients,
-                  :gateways_jvmargs => :gateways_jvmargs,
                   :feeder_options => :feeder_options,
                   :load_type => :load_type
   chained_forward :generic_services, :generic_service => :service
