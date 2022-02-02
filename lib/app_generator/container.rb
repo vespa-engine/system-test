@@ -16,7 +16,6 @@ class Container
   chained_setter :docproc
   chained_setter :processing
   chained_setter :http
-  chained_setter :gateway # todo: try to get rid of this, use :documentapi instead
   chained_setter :documentapi
   chained_setter :jvmargs
   chained_setter :jvmoptions
@@ -76,7 +75,6 @@ class Container
       to_xml(@docproc).
       to_xml(@concretedocs).
       to_xml(@processing).
-      to_xml(@gateway).
       to_xml(@documentapi).
       to_xml(@handlers).
       to_xml(@components).
