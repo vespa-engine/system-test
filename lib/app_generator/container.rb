@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'app_generator/qrserver_cluster'
 require 'app_generator/processing'
@@ -51,6 +51,10 @@ class Container
     self
   end
 
+  def jvm_options= jvm_options
+    @jvmoptions = jvm_options
+  end
+
   def to_xml(indent)
     attrs = {:version => "1.0", :id => @id}
     attrs[:baseport] = @baseport.to_s if @baseport != 0
@@ -85,8 +89,10 @@ class Container
 end
 
 class Containers
+
   def initialize()
     @containers = []
+    @jvm_options = nil
   end
 
   def add(container)
@@ -97,13 +103,19 @@ class Containers
     s.empty? ? s : s + "\n"
   end
 
+  def jvmoptions= jvm_options
+    @jvm_options = jvm_options
+  end
+
   def to_xml(indent)
     out = ""
     for container in @containers
+      container.jvm_options = @jvm_options
       out << newline(container.to_xml(indent))
     end
     return out
   end
+
 end
 
 class Searching
