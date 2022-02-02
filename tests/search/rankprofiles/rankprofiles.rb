@@ -7,9 +7,7 @@ class RankProfiles < IndexedSearchTest
 
   def setup
     set_owner("geirst")
-    deploy_app(SearchApp.new.sd(selfdir + "type1.sd")
-                            .sd(selfdir + "type2.sd")
-                            .cluster_name("test"))
+    deploy(selfdir + "app")
     start
   end
 
