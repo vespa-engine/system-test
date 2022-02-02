@@ -55,10 +55,6 @@ class Clients
     return [Gateway.new("node1")]
   end
 
-  def gateway(hostalias, jvmargs = nil, baseport="")
-    @gateways.push(Gateway.new(hostalias, jvmargs, baseport))
-  end
-
   def create_gateways(indent)
     if (@accept_no_clients && @gateways.empty?)
       return ""
