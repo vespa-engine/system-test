@@ -57,4 +57,14 @@
     </engine>
   </content>
 
+  <container id="doc-api" version="1.0">
+    <document-api />
+    <http>
+      <server id="default" port="19020" />
+    </http>
+    <nodes jvmargs="-Xms64m -Xmx256m">
+      <node hostalias="node1" />
+    </nodes>
+  </container>
+
 </services>
