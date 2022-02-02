@@ -26,7 +26,7 @@ search type2 {
     fields: field24
   }
 
-  rank-profile default inherits firstphase, summaryfeatures {
+  rank-profile default inherits first {
   }
 
 }

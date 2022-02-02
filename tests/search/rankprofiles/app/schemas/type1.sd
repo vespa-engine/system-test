@@ -32,11 +32,7 @@ search type1 {
     fields: field15
   }
 
-  rank-profile field12rank {
-    first-phase {
-      expression: attribute(field12) 
-    } 
-    summary-features: attribute(field12)
+  rank-profile field12rank inherits first {
   }
 
 }
