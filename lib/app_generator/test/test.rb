@@ -531,18 +531,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_gateways_jvmargs
-    actual = SearchApp.new.enable_document_api.gateways_jvmargs('-Option').services_xml
-    expected_substr = '
-      <container id="doc-api" version="1.0">
-        <document-api />
-        <http>
-            <server id="default" port="19020" />
-        </http>
-        <nodes jvmargs="-Option">'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
   def test_container_jvmargs
     actual = SearchApp.new.qrserver(
                QrserverCluster.new.jvmargs('-Option')).services_xml
