@@ -771,18 +771,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_engine)
   end
 
-  def test_feeder_options
-    actual = SearchApp.new.enable_document_api(FeederOptions.new.timeout(40)).services_xml
-
-    expected_substr =
-    '<container id="doc-api" version="1.0">
-      <document-api>
-        <timeout>40</timeout>
-      </document-api>'
-
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
   def test_num_distributor_stripes_can_be_specified
     actual = SearchApp.new.storage(StorageCluster.new("search").num_distributor_stripes(1)).services_xml
     expected_substr = '
