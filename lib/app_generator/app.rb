@@ -124,9 +124,10 @@ class App
     return self
   end
 
-  def enable_document_api
+  def enable_document_api(feeder_options=nil)
     @containers.add(Container.new('doc-api').
-                      documentapi(ContainerDocumentApi.new).
+                      documentapi(ContainerDocumentApi.new.
+                                    feeder_options(feeder_options)).
                       http(Http.new.server(Server.new('default', 19020))))
     return self
   end
