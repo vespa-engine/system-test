@@ -1,0 +1,6 @@
+[
+{"id":"id:test:multiplepos2d::TRD1","fields":{"order":0.001,"ll":[{"y":63422500,"x":10363700},{"y":63394000,"x":10386800},{"y":63447000,"x":10465900},{"y":63432500,"x":10360300},{"y":63423300,"x":10511800}],"title":"Trondheim1","workplaces":["N60.0;E11.0","N61.0;E12.0"]}},
+{"id":"id:test:multiplepos2d::GCEQDL","fields":{"order":0.002,"ll":[{"y":0,"x":180000000}],"title":"equator/dateline","workplaces":["N0.0;W180.0"]}},
+{"id":"id:test:multiplepos2d::GCEQGW","fields":{"order":0.003,"ll":[{"y":0,"x":0}],"title":"equator/greenwich","workplaces":["N90.0;E0.0"]}},
+{"id":"id:test:multiplepos2d::TRD2","fields":{"order":0.004,"ll":[{"y":63453700,"x":10460800},{"y":63384300,"x":10388300},{"y":63434500,"x":10346100},{"y":63412400,"x":10338100},{"y":63405500,"x":10533900}],"title":"Trondheim2","workplaces":["N71.0;E15.0"]}}
+]
