@@ -11,4 +11,17 @@ search singlepos2d {
   fieldset default {
     fields: title
   }
+  rank-profile default {
+    first-phase {
+      expression: 1000 - distance(ll).km
+    }
+    summary-features {
+      distance(ll)
+      distance(ll).km
+      distance(ll).latitude
+      distance(ll).longitude
+      distance(field,ll).km
+      great_circle_distance(field,ll).km
+    }
+  }
 }

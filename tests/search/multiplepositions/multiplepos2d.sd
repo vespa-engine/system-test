@@ -7,13 +7,34 @@ search multiplepos2d {
     field ll type array<position> {
       indexing: attribute 
     }
+    field workplaces type array<position> {
+      indexing: attribute
+    }
+    field order type double {
+      indexing: attribute
+    }
   }
   fieldset default {
     fields: title
   }
   rank-profile default {
     first-phase {
-      expression: closeness(ll)
+      expression: closeness(ll) + attribute(order)
+    }
+    summary-features {
+      distance(ll)
+      distance(ll).km
+      distance(ll).latitude
+      distance(ll).longitude
+      great_circle_distance(field,ll).km
+      great_circle_distance(field,ll).latitude
+      great_circle_distance(field,ll).longitude
+      distance(workplaces).km
+      distance(workplaces).latitude
+      distance(workplaces).longitude
+      great_circle_distance(field,workplaces).km
+      great_circle_distance(field,workplaces).latitude
+      great_circle_distance(field,workplaces).longitude
     }
   }
 }
