@@ -124,8 +124,11 @@ class App
     return self
   end
 
-  def enable_document_api
-    @clients.accept_no_clients = false
+  def enable_document_api(feeder_options=nil)
+    @containers.add(Container.new('doc-api').
+                      documentapi(ContainerDocumentApi.new.
+                                    feeder_options(feeder_options)).
+                      http(Http.new.server(Server.new('default', 19020))))
     return self
   end
 
@@ -186,7 +189,6 @@ class App
     services << newline(@cfg_overrides ? @cfg_overrides.to_xml("  ") : '')
     services << newline(@docprocs.to_xml("  "))
     services << newline(@content.to_xml("  "))
-    services << newline(@clients.create_gateways("  "))
     services << @clients.to_xml("  ")
     services << newline(@generic_services.to_xml('  '))
     services << footer
