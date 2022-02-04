@@ -75,7 +75,7 @@ class Container
 
     jvm_options = @jvmoptions ? { :options => @jvmoptions } : {}
     if @jvmgcoptions
-      jvm_options =jvm_options.merge({:"gc-options" => @jvmgcoptions })
+      jvm_options = jvm_options.merge({:"gc-options" => @jvmgcoptions })
     end
 
     helper.
@@ -120,7 +120,7 @@ class Containers
   def to_xml(indent)
     out = ""
     for container in @containers
-      container.jvm_options = @jvm_options
+      container.jvm_options = @jvm_options if @jvm_options
       out << newline(container.to_xml(indent))
     end
     return out

@@ -184,11 +184,11 @@ class App
     end
     services = header
     services << newline(@admin.to_xml("  "))
-    services << newline(@containers.to_xml("  "))
     services << newline(@routing.to_xml("  "))
     services << newline(@cfg_overrides ? @cfg_overrides.to_xml("  ") : '')
     services << newline(@docprocs.to_xml("  "))
     services << newline(@content.to_xml("  "))
+    services << newline(@containers.to_xml("  "))
     services << @clients.to_xml("  ")
     services << newline(@generic_services.to_xml('  '))
     services << footer

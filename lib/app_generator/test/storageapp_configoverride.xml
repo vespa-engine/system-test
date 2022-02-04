@@ -4,17 +4,6 @@
     <adminserver hostalias="node1" />
   </admin>
 
-  <container id="doc-api" version="1.0">
-    <document-api />
-    <http>
-      <server id="default" port="19020" />
-    </http>
-    <nodes>
-      <node hostalias="node1" />
-    </nodes>
-  </container>
-
-
   <config name="metricsmanager">
     <consumers>
       <item>
@@ -45,5 +34,16 @@
       <proton />
     </engine>
   </content>
+
+  <container id="doc-api" version="1.0">
+    <document-api />
+    <http>
+      <server id="default" port="19020" />
+    </http>
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+  </container>
+
 
 </services>
