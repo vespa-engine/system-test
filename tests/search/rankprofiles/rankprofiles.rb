@@ -50,7 +50,7 @@ class RankProfiles < IndexedSearchTest
   end
 
   def assert_expression(exp, query, docid)
-    assert_features(exp, search(query).hit[docid].field['summaryfeatures'], 1e-04)
+    assert_features(exp, JSON.parse(search(query).hit[docid].field["summaryfeatures"]), 1e-04)
   end
 
   def teardown

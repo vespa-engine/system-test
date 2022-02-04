@@ -22,7 +22,7 @@ class Weighting_Ranklog < IndexedSearchTest
     }
     result = search("query=black+desc:black");
     assert_equal(1, result.hitcount)
-    assert_features(expected, result.hit[0].field['summaryfeatures'])
+    assert_features(expected, JSON.parse(result.hit[0].field["summaryfeatures"]))
 
     puts "Query: heavy weighting"
     expected = {
@@ -31,7 +31,7 @@ class Weighting_Ranklog < IndexedSearchTest
     }
     result = search("query=black\!10000+desc:black");
     assert_equal(1, result.hitcount)
-    assert_features(expected, result.hit[0].field['summaryfeatures'])
+    assert_features(expected, JSON.parse(result.hit[0].field["summaryfeatures"]))
 
   end
 

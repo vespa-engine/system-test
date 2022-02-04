@@ -25,12 +25,12 @@ class RankingMacros < IndexedSearchTest
                      "rankingExpression(myfeature)" => 546,
                      "rankingExpression(anotherfeature)" => 5460,
                      "rankingExpression(yetanotherfeature)" => 54600},
-                     result.hit[0].field['summaryfeatures'], 1e-4)
+                     JSON.parse(result.hit[0].field["summaryfeatures"]), 1e-4)
     assert_equal(score, 4*(1+1));
 
     result = search("query=title:foo&ranking=constantsAndMacro");
     assert_features({"firstPhase" => 159},
-                     result.hit[0].field['summaryfeatures'], 1e-4)
+                     JSON.parse(result.hit[0].field["summaryfeatures"]), 1e-4)
   end
 
   def teardown

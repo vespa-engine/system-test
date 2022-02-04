@@ -429,7 +429,7 @@ class PartialUpdate < IndexedSearchTest
     pexp = {}
     pexp["fieldInfo(#{field}).cnt"] = score
     puts "#{result.hit[docid].field["summaryfeatures"]}"
-    assert_features(pexp, result.hit[docid].field['summaryfeatures'], 1e-4)
+    assert_features(pexp, JSON.parse(result.hit[docid].field["summaryfeatures"]), 1e-4)
   end
 
   def assert_attrfieldcount(field, query, score, docid=0)
@@ -439,7 +439,7 @@ class PartialUpdate < IndexedSearchTest
     pexp = {}
     pexp["attributeMatch(#{field}).matches"] = score
     puts "#{result.hit[docid].field["summaryfeatures"]}"
-    assert_features(pexp, result.hit[docid].field['summaryfeatures'], 1e-4)
+    assert_features(pexp, JSON.parse(result.hit[docid].field["summaryfeatures"]), 1e-4)
   end
 
   def assert_attrfieldcount_kludge(field, query, score, docid=0)
@@ -449,7 +449,7 @@ class PartialUpdate < IndexedSearchTest
     pexp = {}
     pexp["attribute(#{field}).count"] = score
     puts "#{result.hit[docid].field["summaryfeatures"]}"
-    assert_features(pexp, result.hit[docid].field['summaryfeatures'], 1e-4)
+    assert_features(pexp, JSON.parse(result.hit[docid].field["summaryfeatures"]), 1e-4)
   end
 
   def transfer_fbench_queries(query_dir)

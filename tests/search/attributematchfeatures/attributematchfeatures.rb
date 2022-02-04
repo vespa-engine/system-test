@@ -105,8 +105,8 @@ class AttributeMatchFeatures < IndexedStreamingSearchTest
         pexp["attributeMatch(#{field}).#{name}"] = score
       end
     end
-    puts "#{result.hit[docid].field['summaryfeatures']}"
-    assert_features(pexp, result.hit[docid].field['summaryfeatures'], 1e-4)
+    puts "#{result.hit[docid].field["summaryfeatures"]}"
+    assert_features(pexp, JSON.parse(result.hit[docid].field["summaryfeatures"]), 1e-4)
   end
 
   def teardown

@@ -74,7 +74,7 @@ class Equiv < IndexedSearchTest
     exp = { "fieldMatch(body).fieldCompleteness" => 1,
             "fieldMatch(body).queryCompleteness" => 1,
             "queryTermCount" => 1 }
-    assert_features(exp, result.hit[0].field['summaryfeatures'])
+    assert_features(exp, JSON.parse(result.hit[0].field["summaryfeatures"]))
 
     puts "==== ==== ==== ==== ==== ==== ==== ==== ==== ===="
     puts "test that EQUIV and multiple alternatives can be combined"
@@ -91,7 +91,7 @@ class Equiv < IndexedSearchTest
     exp = { "fieldMatch(body).fieldCompleteness" => 0.5,
             "fieldMatch(body).queryCompleteness" => 1,
             "queryTermCount" => 1 }
-    assert_features(exp, result.hit[0].field['summaryfeatures'])
+    assert_features(exp, JSON.parse(result.hit[0].field["summaryfeatures"]))
 
     puts "==== ==== ==== ==== ==== ==== ==== ==== ==== ===="
     puts "test for occurrence merging"
@@ -105,7 +105,7 @@ class Equiv < IndexedSearchTest
             "fieldInfo(body).first" => 1,
             "fieldInfo(body).last" => 7,
             "fieldInfo(body).cnt" => 6 }
-    assert_features(exp, result.hit[0].field["summaryfeatures"])
+    assert_features(exp, JSON.parse(result.hit[0].field["summaryfeatures"]))
 
     puts "==== ==== ==== ==== ==== ==== ==== ==== ==== ===="
     puts "test for occurrence merging (now with duplicates)"
@@ -120,7 +120,7 @@ class Equiv < IndexedSearchTest
             "fieldInfo(body).first" => 1,
             "fieldInfo(body).last" => 7,
             "fieldInfo(body).cnt" => 6 }
-    assert_features(exp, result.hit[0].field['summaryfeatures'])
+    assert_features(exp, JSON.parse(result.hit[0].field["summaryfeatures"]))
 
     puts "==== ==== ==== ==== ==== ==== ==== ==== ==== ===="
     puts "test for document frequency merging"

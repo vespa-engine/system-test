@@ -57,7 +57,7 @@ class CombiningFeatures < IndexedSearchTest
   def assert_feature(expected, query)
     query = "query=" + query + "&parallel&nocache&type=any"
     result = search(query)
-    assert_features(expected, result.hit[0].field['summaryfeatures'], 1e-4)
+    assert_features(expected, JSON.parse(result.hit[0].field["summaryfeatures"]), 1e-4)
   end
 
   def teardown

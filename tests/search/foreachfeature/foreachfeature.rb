@@ -60,7 +60,7 @@ class ForeachFeature < IndexedStreamingSearchTest
   def assert_foreach(expected, ranking, docid)
     query = "query=a!300+b!200+c&streaming.userid=1&ranking=" + ranking
     result = search_with_timeout(60, query)
-    assert_features(expected, result.hit[docid].field['summaryfeatures'], 1e-4)
+    assert_features(expected, JSON.parse(result.hit[docid].field["summaryfeatures"]), 1e-4)
   end
 
 

@@ -57,7 +57,7 @@ class RankFilter < IndexedSearchTest
     query = "query=" + query + "&nocache"
     result = search(query)
     exp = {"fieldTermMatch(#{field},0).firstPosition" => fpos}
-    assert_features(exp, result.hit[0].field['summaryfeatures'], 1e-4)
+    assert_features(exp, JSON.parse(result.hit[0].field["summaryfeatures"]), 1e-4)
   end
 
   def teardown

@@ -30,7 +30,7 @@ class RankDegradation < IndexedStreamingSearchTest
   def run_nan_test
     r = search("query=f1:10&streaming.selection=true&ranking=nan")
     assert_equal("-Infinity", r.hit[0].field["relevancy"])
-    sf = r.hit[0].field['summaryfeatures']
+    sf = JSON.parse(r.hit[0].field["summaryfeatures"])
     puts "summaryfeatures: #{sf.to_a.join(":")}"
     assert_equal(nil, sf.fetch("firstPhase"))
   end

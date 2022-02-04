@@ -13,6 +13,15 @@ class SummaryFeatures < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "sd2/test.sd"))
     start
     feed(:file => selfdir + "doc.xml")
+
+    assert_summaryfeatures
+  end
+
+  def test_summaryfeatures_emul
+    deploy_app(SearchApp.new.sd(selfdir + "sd2/test.sd"))
+    start
+    feed(:file => selfdir + "doc.xml")
+
     assert_summaryfeatures
   end
 
@@ -83,7 +92,7 @@ class SummaryFeatures < IndexedSearchTest
     # verify that summaryfeatures are presented as true floatingpoint values with '.0' after seemingly integer numbers.
     result = search("query=body:test&hits=1&nocache")
     assert_equal(1, result.hit.size)
-    assert_equal({"attribute(attr)" => 200.0, "value(1)" => 1.0, "value(2)" => 2.0}, result.hit[0].field["summaryfeatures"])
+    assert_equal('{"attribute(attr)":200.0,"value(1)":1.0,"value(2)":2.0,"vespa.summaryFeatures.cached":0.0}', result.hit[0].field["summaryfeatures"])
 
     # verify that summaryfeatures are produced with grouping and hits=0 and the various cache combinations
     base_q = "query=body:test&select=all(group(attr)each(each(output(summary()))))&hits=0"
@@ -104,7 +113,7 @@ class SummaryFeatures < IndexedSearchTest
   def assert_sf_hit(result, hit, attr_value)
     sf = result.hit[hit].field["summaryfeatures"]
     puts "summaryfeatures for hit #{hit}: '#{sf}'"
-    json = sf
+    json = JSON.parse(sf)
     assert_equal(attr_value, result.hit[hit].field["attr"].to_i)
     assert_features({"value(1)" => 1.0}, json)
     assert_features({"value(2)" => 2.0}, json)
