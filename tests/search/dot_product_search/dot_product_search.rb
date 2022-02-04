@@ -56,7 +56,7 @@ class DotProductSearch < IndexedSearchTest
     result = search(build_query(model))
     assert_equal(expect.size, result.hit.size)
     expect.each_with_index do |expected_sub_scores,i|
-      jsf = result.hit[i].field['summaryfeatures']
+      jsf = JSON.parse(result.hit[i].field["summaryfeatures"])
       sub_scores = extract_subscores(jsf, model.size)
       assert_equal(expected_sub_scores, sub_scores,
                    "subscores differ for hit #{i}: #{expected_sub_scores} != #{sub_scores}")

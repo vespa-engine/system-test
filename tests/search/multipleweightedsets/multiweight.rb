@@ -14,7 +14,7 @@ class MultipleWeightedSets < IndexedSearchTest
   end
 
   def assert_summaryfeatures(expected, result)
-    assert_features(expected, result.hit[0].field['summaryfeatures'])
+    assert_features(expected, JSON.parse(result.hit[0].field["summaryfeatures"]))
   end
 
   def test_multipleweightedsets

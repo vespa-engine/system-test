@@ -34,7 +34,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
     query = "query=a&nocache&rankproperty.vespa.now=#{now}&streaming.userid=1"
     search(query)
     exp = {"now" => out}
-    assert_features(exp, search(query).hit[0].field['summaryfeatures'])
+    assert_features(exp, JSON.parse(search(query).hit[0].field["summaryfeatures"]))
   end
 
   def assert_actual_now(epsilon)
@@ -43,7 +43,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
     timebefore = Time.now.to_i
     now = Time.now.to_i
     exp = {"now" => now}
-    got = search(query).hit[0].field['summaryfeatures']
+    got = JSON.parse(search(query).hit[0].field["summaryfeatures"])
     timeafter = Time.now.to_i
     assert_features(exp, got, epsilon + timeafter - timebefore)
   end
@@ -82,7 +82,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
     else
       exp = {"age(a)" => Time.now.to_i - age}
     end
-    got = search(query).hit[0].field['summaryfeatures']
+    got = JSON.parse(search(query).hit[0].field["summaryfeatures"])
     timeafter = Time.now.to_i
     assert_features(exp, got, epsilon + timeafter - timebefore)
   end
@@ -90,7 +90,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
   def assert_freshness(freshness, age)
     query = "query=a:86400&nocache&streaming.userid=1&rankproperty.vespa.now=#{86400 + age}"
     exp = {"freshness(a)" => freshness}
-    assert_features(exp, search(query).hit[0].field['summaryfeatures'], 1e-4)
+    assert_features(exp, JSON.parse(search(query).hit[0].field["summaryfeatures"]), 1e-4)
   end
 
 
@@ -171,7 +171,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
     result.sort_results_by(@id_field)
     retval = []
     result.hit.each do |hit|
-      retval.push(hit.field['summaryfeatures'])
+      retval.push(JSON.parse(hit.field["summaryfeatures"]))
     end
     return retval
   end
