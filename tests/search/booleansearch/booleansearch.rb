@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 # -*- coding: utf-8 -*-
 require 'indexed_search_test'
@@ -523,7 +524,7 @@ class BooleanSearchTest < SearchTest
       exp_docid = "id:test:test::#{expected_hit[0]}"
       puts "Expects that hit[#{i}].documentid == '#{exp_docid}'"
       assert_field_value(result, "documentid", exp_docid, i)
-      actual_summaryfeatures = JSON.parse(result.hit[i].field["summaryfeatures"])
+      actual_summaryfeatures = result.hit[i].field['summaryfeatures']
       assert_int_features(actual_summaryfeatures,
         {"subqueries(predicate_field).lsb" => expected_hit[1] & 0xFFFFFFFF,
          "subqueries(predicate_field).msb" => (expected_hit[1] >> 32) & 0xFFFFFFFF})
@@ -533,7 +534,7 @@ class BooleanSearchTest < SearchTest
   def assert_summary_features_matches(query, expected_summaryfeatures)
     result = search('/search/?query=&yql=' + query)
     assert_hitcount(result, 1)
-    actual_summaryfeatures = JSON.parse(result.hit[0].field["summaryfeatures"])
+    actual_summaryfeatures = result.hit[0].field['summaryfeatures']
     assert_int_features(actual_summaryfeatures, expected_summaryfeatures)
   end
 
