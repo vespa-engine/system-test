@@ -116,7 +116,7 @@ class DistanceToPath < IndexedSearchTest
     results = search("query=sddocname:local&rankproperty.distanceToPath(gps).path=(0,0,10,0,10,5,20,5)&" +
                      "rankproperty.distance=#{distance}&rankproperty.traveled=#{traveled}&ranking=#{ranking}")
     results.hit.each do |document|
-      features = JSON.parse(document.field["summaryfeatures"])
+      features = document.field['summaryfeatures']
       puts("- Relevancy " + document.field["relevancy"].to_s + ": " +
            "Document '" + document.field["title"] + "' with distance " +
            features.fetch("distanceToPath(gps).distance").to_s + " after " +
@@ -134,7 +134,7 @@ class DistanceToPath < IndexedSearchTest
     assert_hitcount(query, 1)
     assert_features({ "distanceToPath(gps).distance" => distance,
                       "distanceToPath(gps).traveled" => traveled },
-                    JSON.parse(search(query).hit[0].field["summaryfeatures"]))
+                    search(query).hit[0].field['summaryfeatures'])
   end
 
   def teardown

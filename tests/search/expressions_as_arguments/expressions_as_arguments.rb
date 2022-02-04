@@ -18,7 +18,7 @@ class ExpressionsAsArguments < IndexedSearchTest
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir + "feed.json")
     result = search("query=sddocname:test&ranking=test")
-    summary = JSON.parse(result.hit[0].field["summaryfeatures"])
+    summary = result.hit[0].field['summaryfeatures']
 
     puts summary
 

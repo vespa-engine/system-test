@@ -53,7 +53,7 @@ class DotProductFeature < IndexedStreamingSearchTest
     end
     puts "run '#{query}'"
     result = search(query)
-    assert_features(expected, JSON.parse(result.hit[0].field["summaryfeatures"]), 1e-4)
+    assert_features(expected, result.hit[0].field['summaryfeatures'], 1e-4)
   end
 
 
