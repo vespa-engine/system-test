@@ -51,9 +51,8 @@ class VespaGet < MultiProviderStorageTest
   def test_vespaget_nonstandard_clustername
     sd_file = VDS + "/schemas/music.sd"
     deploy_app(StorageApp.new.
-               enable_document_api.
+               enable_document_api(FeederOptions.new.timeout(40)).
                default_cluster("dummy").sd(sd_file).
-               feeder_options(FeederOptions.new.timeout(40)).
                transition_time(0))
     start
 
