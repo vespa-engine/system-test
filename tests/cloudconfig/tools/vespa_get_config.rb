@@ -1,3 +1,4 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'app_generator/search_app'
 require 'environment'
@@ -21,7 +22,7 @@ class VespaGetConfig < CloudConfigTest
     (exitcode, out) = execute(vespa.adminserver, "#{getconfig} -n logd -i \"\" -w 10")
     assert_equal(exitcode, 0)
     (exitcode, out) = execute(vespa.adminserver, "#{getconfig} -n unknown -i \"\" -w 10 -p 19070")
-    assert_match(/error 100001: Failed request \(Unknown config definition name=unknown,namespace=config,configId=\) from Connection .*/, out)
+    assert_match(/error 100001: Failed request \(Unknown config definition name=config.unknown,configId=\) from Connection .*/, out)
   end
 
   def teardown
