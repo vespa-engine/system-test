@@ -59,7 +59,7 @@ class DocumentFeatures < IndexedStreamingSearchTest
 
   def assert_attribute(feature, score)
     result = search("query=idx:a&streaming.userid=1")
-    assert_features({feature => score}, JSON.parse(result.hit[0].field["summaryfeatures"]))
+    assert_features({feature => score}, result.hit[0].field['summaryfeatures'])
   end
 
   def teardown

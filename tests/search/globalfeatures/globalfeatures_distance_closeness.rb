@@ -36,13 +36,13 @@ class GlobalFeaturesIndexed < IndexedStreamingSearchTest
   def assert_distance(distance, x, y)
     query = "query=sddocname:distance&pos.xy=#{x}%3B#{y}&streaming.selection=true"
     exp = {"distance(xy)" => distance}
-    assert_features(exp, JSON.parse(search(query).hit[0].field["summaryfeatures"]), 1e-4)
+    assert_features(exp, search(query).hit[0].field['summaryfeatures'], 1e-4)
   end
 
   def assert_closeness(closeness, distance)
     query = "query=sddocname:distance&pos.xy=#{distance + 5}%3B-5&streaming.selection=true"
     exp = {"closeness(xy)" => closeness}
-    assert_features(exp, JSON.parse(search(query).hit[0].field["summaryfeatures"]), 1e-4)
+    assert_features(exp, search(query).hit[0].field['summaryfeatures'], 1e-4)
   end
 
 

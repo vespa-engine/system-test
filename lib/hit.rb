@@ -62,7 +62,11 @@ class Hit
       fieldname = e.attribute("name").to_s
       fieldvalue = e.children.join("").to_s
 
-      if e.elements["item"] != nil
+      if fieldname == 'summaryfeatures' and fieldvalue[0] == '{'
+        sf = JSON.parse(fieldvalue)
+        sf.delete('vespa.summaryFeatures.cached')
+        add_field(fieldname, sf)
+      elsif e.elements["item"] != nil
         items = []
         e.each_element("item") do |item|
           items.push(parse_item(item))

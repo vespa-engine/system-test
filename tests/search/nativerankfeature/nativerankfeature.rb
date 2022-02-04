@@ -184,7 +184,7 @@ class NativeRankFeature < IndexedStreamingSearchTest
     query = query + "&streaming.userid=1&ranking=" + ranking
     puts "assert_expnr: #{query}"
     result = search(query)
-    assert_features(expected, JSON.parse(result.hit[0].field["summaryfeatures"]), 1e-4)
+    assert_features(expected, result.hit[0].field['summaryfeatures'], 1e-4)
   end
 
 
