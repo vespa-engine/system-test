@@ -7,7 +7,8 @@ class Grouping < IndexedSearchTest
 
   def setup
     set_owner("bjorncs")
-    deploy_app(SearchApp.new.sd("#{selfdir}/purchase.sd"))
+    deploy_app(SearchApp.new.sd("#{selfdir}/purchase.sd").
+               feeder_options(FeederOptions.new.max_pending_docs(1)))
     start
   end
 
