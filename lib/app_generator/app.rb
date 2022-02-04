@@ -117,6 +117,7 @@ class App
     @containers = Containers.new
     @validation_overrides = ValidationOverrides.new
     @generic_services = GenericServices.new
+    @legacy_overrides = {}
   end
 
   def no_clients
@@ -129,6 +130,11 @@ class App
                       documentapi(ContainerDocumentApi.new.
                                     feeder_options(feeder_options)).
                       http(Http.new.server(Server.new('default', 19020))))
+    return self
+  end
+
+  def legacy_override(key, value)
+    @legacy_overrides[key] = value
     return self
   end
 
@@ -169,6 +175,14 @@ class App
     "</services>\n"
   end
 
+  def legacy_overrides_xml
+    return "" if @legacy_overrides.empty?
+    res = "  <legacy>\n"
+    @legacy_overrides.each {|k,v| res << "  <#{k}>#{v}</#{k}>\n"}
+    res <<= "  </legacy>\n"
+    return res
+  end
+
   def newline(s)
     s.empty? ? s : s + "\n"
   end
@@ -183,6 +197,7 @@ class App
       @docprocs.set_baseports
     end
     services = header
+    services << legacy_overrides_xml
     services << newline(@admin.to_xml("  "))
     services << newline(@routing.to_xml("  "))
     services << newline(@cfg_overrides ? @cfg_overrides.to_xml("  ") : '')
