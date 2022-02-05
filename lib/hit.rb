@@ -66,6 +66,9 @@ class Hit
         sf = JSON.parse(fieldvalue)
         sf.delete('vespa.summaryFeatures.cached')
         add_field(fieldname, sf)
+      elsif fieldname == 'rankfeatures' and fieldvalue[0] == '{'
+        rf = JSON.parse(fieldvalue)
+        add_field(fieldname, rf)
       elsif e.elements["item"] != nil
         items = []
         e.each_element("item") do |item|
