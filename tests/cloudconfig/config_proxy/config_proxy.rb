@@ -127,7 +127,7 @@ class ConfigProxy < CloudConfigTest
     assert_equal("error 103: (RPC) Invocation timed out\n", out)
 
     # Wait until subscriber has been closed
-    wait_for_log_matches(/Subscribe for 'name=extra,namespace=bar.baz,configId=client,\h{32}' failed, closing subscriber/, 1, 60)
+    wait_for_log_matches(/Subscribe for 'name=bar.baz.extra,configId=client,\h{32}' failed, closing subscriber/, 1, 60)
 
     count = find_config_proxy_log_warnings()
     assert(count < 15, "expected less than 15 warnings in log, but was #{count}")
