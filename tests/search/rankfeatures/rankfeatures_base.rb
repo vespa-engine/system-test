@@ -11,7 +11,6 @@ module RankFeaturesBase
 
   def assert_rankfeatures(expected, result, hit)
     puts "---- check rankfeatures for hit #{hit} ----"
-    result = JSON.parse(result) # returns a hash with feature name -> score
     assert_features(expected, result)
   end
 
@@ -31,7 +30,7 @@ module RankFeaturesBase
     query = "query=" + query + "&rankfeatures&streaming.userid=1"
     result = search(query)
     expected = expected.sort
-    actual = JSON.parse(result.hit[0].field["rankfeatures"]).keys.sort
+    actual = result.hit[0].field["rankfeatures"].keys.sort
 
     assert_equal(expected.size, actual.size)
     expected.each_index do |i|

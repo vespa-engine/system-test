@@ -204,7 +204,7 @@ module FieldMatchFeaturesBase
     result = search_with_timeout(5, query)
     sf = result.hit[0].field["summaryfeatures"]
     fn = "fieldTermMatch(#{field},#{termidx})"
-    assert_features({fn + ".firstPosition" => firstpos, fn + ".occurrences" => occurrences}, JSON.parse(sf))
+    assert_features({fn + ".firstPosition" => firstpos, fn + ".occurrences" => occurrences}, sf)
   end
 
   def assert_struct_streaming(matches, fieldCompleteness, occurrences, query, field, docid)

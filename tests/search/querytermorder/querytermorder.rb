@@ -24,7 +24,7 @@ class QueryTermOrder < IndexedSearchTest
     result = search("query=a!100+b!200+c!300&parallel")
     rf = result.hit[0].field["summaryfeatures"]
     puts "summaryfeatures: '#{rf}'"
-    json = JSON.parse(rf)
+    json = rf
 
     assert_features({"term(0).weight" =>  100}, json)
     assert_features({"term(1).weight" =>  200}, json)
@@ -34,7 +34,7 @@ class QueryTermOrder < IndexedSearchTest
     result = search("query=c!300+b!200+a!100&parallel")
     rf = result.hit[0].field["summaryfeatures"]
     puts "summaryfeatures: '#{rf}'"
-    json = JSON.parse(rf)
+    json = rf
 
     assert_features({"term(0).weight" =>  300}, json)
     assert_features({"term(1).weight" =>  200}, json)

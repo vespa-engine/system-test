@@ -10,7 +10,7 @@ class IndexEnv < IndexedSearchTest
   end
 
   def check_features(features, map)
-    json = JSON.parse(features)
+    json = features
     wanted = {
       "fieldInfo.indexCnt" => 13,
       "fieldInfo.attrCnt" => 3,

@@ -35,7 +35,7 @@ class QueryFeaturesDocFreq < IndexedSearchTest
   def assert_greater_significance(exp, query)
     query = "query=" + query
     sf = search(query).hit[0].field["summaryfeatures"]
-    act = JSON.parse(sf).fetch("term(0).significance")
+    act = sf.fetch("term(0).significance")
     puts "assert_greater_significance: #{act} > #{exp}"
     assert(act > exp)
     return act

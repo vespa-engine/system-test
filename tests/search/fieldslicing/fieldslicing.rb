@@ -22,28 +22,28 @@ class FieldSlicing < IndexedSearchTest
     result = search("query=alone:a&parallel&rankfeatures")
     assert(result.hit.size == 1)
     features = result.hit[0].field["rankfeatures"]
-    assert(/"fieldInfo\(alone\).len":3/   =~ features)
-    assert(/"fieldInfo\(alone\).first":0/ =~ features)
-    assert(/"fieldInfo\(alone\).last":0/  =~ features)
-    assert(/"fieldInfo\(alone\).cnt":1/   =~ features)
+    assert_features({"fieldInfo(alone).len" => 3}, features)
+    assert_features({"fieldInfo(alone).first" => 0}, features)
+    assert_features({"fieldInfo(alone).last" => 0}, features)
+    assert_features({"fieldInfo(alone).cnt" => 1}, features)
 
     # query: b
     result = search("query=alone:b&parallel&rankfeatures")
     assert(result.hit.size == 1)
     features = result.hit[0].field["rankfeatures"]
-    assert(/"fieldInfo\(alone\).len":3/   =~ features)
-    assert(/"fieldInfo\(alone\).first":1/ =~ features)
-    assert(/"fieldInfo\(alone\).last":1/  =~ features)
-    assert(/"fieldInfo\(alone\).cnt":1/   =~ features)
+    assert_features({"fieldInfo(alone).len" => 3}, features)
+    assert_features({"fieldInfo(alone).first" => 1}, features)
+    assert_features({"fieldInfo(alone).last" => 1}, features)
+    assert_features({"fieldInfo(alone).cnt" => 1}, features)
 
     # query: c
     result = search("query=alone:c&parallel&rankfeatures")
     assert(result.hit.size == 1)
     features = result.hit[0].field["rankfeatures"]
-    assert(/"fieldInfo\(alone\).len":3/   =~ features)
-    assert(/"fieldInfo\(alone\).first":2/ =~ features)
-    assert(/"fieldInfo\(alone\).last":2/  =~ features)
-    assert(/"fieldInfo\(alone\).cnt":1/   =~ features)
+    assert_features({"fieldInfo(alone).len" => 3}, features)
+    assert_features({"fieldInfo(alone).first" => 2}, features)
+    assert_features({"fieldInfo(alone).last" => 2}, features)
+    assert_features({"fieldInfo(alone).cnt" => 1}, features)
 
     # GROUP: default
 
@@ -51,52 +51,52 @@ class FieldSlicing < IndexedSearchTest
     result = search("query=a&parallel&rankfeatures")
     assert(result.hit.size == 1)
     features = result.hit[0].field["rankfeatures"]
-    assert(/"fieldInfo\(default1\).len":6/   =~ features)
-    assert(/"fieldInfo\(default1\).first":0/ =~ features)
-    assert(/"fieldInfo\(default1\).last":5/  =~ features)
-    assert(/"fieldInfo\(default1\).cnt":2/   =~ features)
-    assert(/"fieldInfo\(default2\).len":12/  =~ features)
-    assert(/"fieldInfo\(default2\).first":0/ =~ features)
-    assert(/"fieldInfo\(default2\).last":11/ =~ features)
-    assert(/"fieldInfo\(default2\).cnt":4/   =~ features)
-    assert(/"fieldInfo\(default3\).len":18/  =~ features)
-    assert(/"fieldInfo\(default3\).first":0/ =~ features)
-    assert(/"fieldInfo\(default3\).last":17/ =~ features)
-    assert(/"fieldInfo\(default3\).cnt":6/   =~ features)
+    assert_features({"fieldInfo(default1).len" => 6}, features)
+    assert_features({"fieldInfo(default1).first" => 0}, features)
+    assert_features({"fieldInfo(default1).last" => 5}, features)
+    assert_features({"fieldInfo(default1).cnt" => 2}, features)
+    assert_features({"fieldInfo(default2).len" => 12}, features)
+    assert_features({"fieldInfo(default2).first" => 0}, features)
+    assert_features({"fieldInfo(default2).last" => 11}, features)
+    assert_features({"fieldInfo(default2).cnt" => 4}, features)
+    assert_features({"fieldInfo(default3).len" => 18}, features)
+    assert_features({"fieldInfo(default3).first" => 0}, features)
+    assert_features({"fieldInfo(default3).last" => 17}, features)
+    assert_features({"fieldInfo(default3).cnt" => 6}, features)
 
     # query: b
     result = search("query=b&parallel&rankfeatures")
     assert(result.hit.size == 1)
     features = result.hit[0].field["rankfeatures"]
-    assert(/"fieldInfo\(default1\).len":6/   =~ features)
-    assert(/"fieldInfo\(default1\).first":1/ =~ features)
-    assert(/"fieldInfo\(default1\).last":4/  =~ features)
-    assert(/"fieldInfo\(default1\).cnt":2/   =~ features)
-    assert(/"fieldInfo\(default2\).len":12/  =~ features)
-    assert(/"fieldInfo\(default2\).first":2/ =~ features)
-    assert(/"fieldInfo\(default2\).last":9/  =~ features)
-    assert(/"fieldInfo\(default2\).cnt":4/   =~ features)
-    assert(/"fieldInfo\(default3\).len":18/  =~ features)
-    assert(/"fieldInfo\(default3\).first":3/ =~ features)
-    assert(/"fieldInfo\(default3\).last":14/ =~ features)
-    assert(/"fieldInfo\(default3\).cnt":6/   =~ features)
+    assert_features({"fieldInfo(default1).len" => 6}, features)
+    assert_features({"fieldInfo(default1).first" => 1}, features)
+    assert_features({"fieldInfo(default1).last" => 4}, features)
+    assert_features({"fieldInfo(default1).cnt" => 2}, features)
+    assert_features({"fieldInfo(default2).len" => 12}, features)
+    assert_features({"fieldInfo(default2).first" => 2}, features)
+    assert_features({"fieldInfo(default2).last" => 9}, features)
+    assert_features({"fieldInfo(default2).cnt" => 4}, features)
+    assert_features({"fieldInfo(default3).len" => 18}, features)
+    assert_features({"fieldInfo(default3).first" => 3}, features)
+    assert_features({"fieldInfo(default3).last" => 14}, features)
+    assert_features({"fieldInfo(default3).cnt" => 6}, features)
 
     # query: c
     result = search("query=c&parallel&rankfeatures")
     assert(result.hit.size == 1)
     features = result.hit[0].field["rankfeatures"]
-    assert(/"fieldInfo\(default1\).len":6/   =~ features)
-    assert(/"fieldInfo\(default1\).first":2/ =~ features)
-    assert(/"fieldInfo\(default1\).last":3/  =~ features)
-    assert(/"fieldInfo\(default1\).cnt":2/   =~ features)
-    assert(/"fieldInfo\(default2\).len":12/  =~ features)
-    assert(/"fieldInfo\(default2\).first":4/ =~ features)
-    assert(/"fieldInfo\(default2\).last":7/  =~ features)
-    assert(/"fieldInfo\(default2\).cnt":4/   =~ features)
-    assert(/"fieldInfo\(default3\).len":18/  =~ features)
-    assert(/"fieldInfo\(default3\).first":6/ =~ features)
-    assert(/"fieldInfo\(default3\).last":11/ =~ features)
-    assert(/"fieldInfo\(default3\).cnt":6/   =~ features)
+    assert_features({"fieldInfo(default1).len" => 6}, features)
+    assert_features({"fieldInfo(default1).first" => 2}, features)
+    assert_features({"fieldInfo(default1).last" => 3}, features)
+    assert_features({"fieldInfo(default1).cnt" => 2}, features)
+    assert_features({"fieldInfo(default2).len" => 12}, features)
+    assert_features({"fieldInfo(default2).first" => 4}, features)
+    assert_features({"fieldInfo(default2).last" => 7}, features)
+    assert_features({"fieldInfo(default2).cnt" => 4}, features)
+    assert_features({"fieldInfo(default3).len" => 18}, features)
+    assert_features({"fieldInfo(default3).first" => 6}, features)
+    assert_features({"fieldInfo(default3).last" => 11}, features)
+    assert_features({"fieldInfo(default3).cnt" => 6}, features)
 
     # PHRASE
 
@@ -118,7 +118,7 @@ class FieldSlicing < IndexedSearchTest
       "fieldInfo(default3).last"  =>       1,
       "fieldInfo(default3).cnt"   =>       1
     }
-    assert_features(expected, JSON.parse(features), 1e-4)
+    assert_features(expected, features, 1e-4)
   end
 
   def test_slicing_in_both_phases

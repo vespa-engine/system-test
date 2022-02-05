@@ -40,7 +40,7 @@ class FeatureStability < IndexedSearchTest
   end
 
   def parse_features(result)
-    return JSON.parse(result.hit[0].field["rankfeatures"])
+    return result.hit[0].field["rankfeatures"]
   end
 
   def save_features(result, file_name)
