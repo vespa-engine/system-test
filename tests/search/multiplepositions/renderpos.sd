@@ -1,0 +1,47 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search renderpos {
+  document renderpos {
+    field title type string {
+      indexing: index | summary
+    }
+    field order type double {
+      indexing: attribute
+    }
+    field lln type position {
+    }
+    field lls type position {
+      indexing: summary
+    }
+    field lla type position {
+      indexing: attribute
+    }
+    field llas type position {
+      indexing: attribute | summary
+    }
+    field llsa type position {
+      indexing: summary | attribute
+    }
+    field arrn type array<position> {
+    }
+    field arrs type array<position> {
+      indexing: summary
+    }
+    field arra type array<position> {
+      indexing: attribute
+    }
+    field arras type array<position> {
+      indexing: attribute | summary
+    }
+    field arrsa type array<position> {
+      indexing: summary | attribute
+    }
+  }
+  fieldset default {
+    fields: title
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(order)
+    }
+  }
+}
