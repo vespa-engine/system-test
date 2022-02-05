@@ -56,7 +56,7 @@ class FeatureNameQuoting < IndexedSearchTest
     # you do, then that feature is broken.
 
     puts("Asserting features '#{field}'..");
-    features = JSON.parse(field);
+    features = field;
 
     assert(features.fetch("value(3)").to_i == 3);
     assert(features.fetch("double(\" attribute( \\\"foo\\\"  )\")").to_i == 2 * foo);

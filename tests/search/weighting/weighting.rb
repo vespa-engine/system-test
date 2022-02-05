@@ -63,7 +63,7 @@ class Weighting < IndexedSearchTest
   def assert_termweight(weight)
     query = "query=jackson!#{weight}&rankfeatures"
     exp = { "term(0).weight" => weight }
-    assert_features(exp, JSON.parse(search(query).hit[0].field["rankfeatures"]))
+    assert_features(exp, search(query).hit[0].field["rankfeatures"])
   end
 
   def teardown

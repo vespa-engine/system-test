@@ -144,7 +144,7 @@ module FieldMatchFeaturesBase
     result.hit.each do |hit|
       if hit.field[@id_field] == "id:fieldmatch:fieldmatch:n=1:#{docid}"
         # same epsilon as searchlib unit tests
-        assert_features(expected, JSON.parse(hit.field["summaryfeatures"]), 1e-4)
+        assert_features(expected, hit.field['summaryfeatures'], 1e-4)
         found = true
         break
       end
@@ -162,7 +162,7 @@ module FieldMatchFeaturesBase
     exp = {"fieldMatch(a_literal).matches" => matches}
     result = search_with_timeout(5, query)
     result.sort_results_by("documentid")
-    assert_features(exp, JSON.parse(result.hit[docid].field["summaryfeatures"]))
+    assert_features(exp, result.hit[docid].field['summaryfeatures'])
   end
 
   def assert_fmfilter(score, query_completeness, weight, matches, query)
@@ -171,7 +171,7 @@ module FieldMatchFeaturesBase
            "fieldMatch(a).weight" => weight, "fieldMatch(a).matches" => matches, \
            "fieldMatch(a).degradedMatches" => matches, "fieldMatch(a).proximity" => 0, \
            "fieldMatch(a).orderness" => 0, "fieldMatch(a).longestSequence" => 0}
-    assert_features(exp, JSON.parse(search_with_timeout(5, query).hit[0].field["summaryfeatures"]), 1e-3)
+    assert_features(exp, search_with_timeout(5, query).hit[0].field['summaryfeatures'], 1e-3)
   end
 
   def run_field_term_match
@@ -204,7 +204,7 @@ module FieldMatchFeaturesBase
     result = search_with_timeout(5, query)
     sf = result.hit[0].field["summaryfeatures"]
     fn = "fieldTermMatch(#{field},#{termidx})"
-    assert_features({fn + ".firstPosition" => firstpos, fn + ".occurrences" => occurrences}, JSON.parse(sf))
+    assert_features({fn + ".firstPosition" => firstpos, fn + ".occurrences" => occurrences}, sf)
   end
 
   def assert_struct_streaming(matches, fieldCompleteness, occurrences, query, field, docid)
@@ -214,7 +214,7 @@ module FieldMatchFeaturesBase
     exp = {"fieldMatch(#{field}).matches" => matches, \
            "fieldMatch(#{field}).fieldCompleteness" => fieldCompleteness, \
            "fieldTermMatch(#{field},0).occurrences" => occurrences}
-    assert_features(exp, JSON.parse(result.hit[docid].field["summaryfeatures"]), 1e-3)
+    assert_features(exp, result.hit[docid].field['summaryfeatures'], 1e-3)
   end
 
   def run_phrase_test()
@@ -250,13 +250,13 @@ module FieldMatchFeaturesBase
     assert_phrase_streaming(2, "query=%22a+b%22+%22x+d%22", "f2")
     assert_phrase_streaming(4, "query=a+b+x+d",         "f2")
 
-    assert_features({"fieldMatch(f1)" => 1}, JSON.parse(search_with_timeout(5, "query=f1:%22a+b+c+d%22"+"&streaming.userid=1").hit[0].field["summaryfeatures"]))
-    assert_features({"fieldMatch(f1)" => 1}, JSON.parse(search_with_timeout(5, "query=f1:a+b+c+d"+"&streaming.userid=1").hit[0].field["summaryfeatures"]))
+    assert_features({"fieldMatch(f1)" => 1}, search_with_timeout(5, "query=f1:%22a+b+c+d%22"+"&streaming.userid=1").hit[0].field['summaryfeatures'])
+    assert_features({"fieldMatch(f1)" => 1}, search_with_timeout(5, "query=f1:a+b+c+d"+"&streaming.userid=1").hit[0].field['summaryfeatures'])
   end
 
   def assert_phrase_streaming(matches, query, field)
     result = search_with_timeout(5, query + "&streaming.userid=1")
-    assert_features({"fieldMatch(#{field}).matches" => matches}, JSON.parse(result.hit[0].field["summaryfeatures"]))
+    assert_features({"fieldMatch(#{field}).matches" => matches}, result.hit[0].field['summaryfeatures'])
   end
 
   def teardown

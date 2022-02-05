@@ -18,7 +18,7 @@ class ElementCompleteness < IndexedSearchTest
     assert(result.hit.size == 1)
     rf = result.hit[0].field["summaryfeatures"]
     puts "summaryfeatures: '#{rf}'"
-    json = JSON.parse(rf)
+    json = rf
     assert_features({"elementCompleteness(foo).completeness" => 0.875 }, json)
     assert_features({"elementCompleteness(foo).fieldCompleteness" => 1.0 }, json)
     assert_features({"elementCompleteness(foo).queryCompleteness" => 0.75 }, json)
@@ -33,7 +33,7 @@ class ElementCompleteness < IndexedSearchTest
     assert(result.hit.size == 1)
     rf = result.hit[0].field["summaryfeatures"]
     puts "summaryfeatures: '#{rf}'"
-    json = JSON.parse(rf)
+    json = rf
     assert_features({"elementCompleteness(productid).completeness" => 0.75 }, json)
     assert_features({"elementCompleteness(productid).fieldCompleteness" => 1.0 }, json)
     assert_features({"elementCompleteness(productid).queryCompleteness" => 0.5 }, json)
@@ -44,7 +44,7 @@ class ElementCompleteness < IndexedSearchTest
     assert(result.hit.size == 1)
     rf = result.hit[0].field["summaryfeatures"]
     puts "summaryfeatures: '#{rf}'"
-    json = JSON.parse(rf)
+    json = rf
     assert_features({"elementCompleteness(hash).elementWeight" => 18 }, json)
     assert_features({"elementCompleteness(hash).completeness" => 0.75 }, json)
     assert_features({"elementCompleteness(hash).fieldCompleteness" => 1.0 }, json)

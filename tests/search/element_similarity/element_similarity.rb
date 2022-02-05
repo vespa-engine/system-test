@@ -31,7 +31,7 @@ class ElementSimilarity < IndexedSearchTest
     assert(result.hit.size == 1)
     rf = result.hit[0].field["summaryfeatures"]
     puts "summaryfeatures: '#{rf}'"
-    json = JSON.parse(rf)
+    json = rf
     assert_features({"elementSimilarity(foo)" => 15.0 }, json)
   end
 

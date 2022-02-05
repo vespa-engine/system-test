@@ -42,7 +42,7 @@ class FeatureOverride < IndexedSearchTest
     assert(result.hit.size == hits)
     rf = result.hit[0].field["summaryfeatures"]
     puts "summaryfeatures: '#{rf}'"
-    json = JSON.parse(rf)
+    json = rf
     assert_features({"value(1)" => v1}, json)
     assert_features({"value(2)" => v2}, json)
     assert_features({"value(3)" => v3}, json)

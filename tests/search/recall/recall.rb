@@ -29,7 +29,7 @@ class Recall < IndexedSearchTest
     result = search(query)
     assert_equal(1, result.hit.size);
     exp = {"fieldMatch(title).matches" => matches, "queryTermCount" => term_count}
-    assert_features(exp, JSON.parse(result.hit[0].field["summaryfeatures"]))
+    assert_features(exp, result.hit[0].field['summaryfeatures'])
   end
 
   def get_relevancy(query)

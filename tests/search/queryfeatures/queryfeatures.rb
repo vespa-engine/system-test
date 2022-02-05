@@ -32,7 +32,7 @@ class QueryFeatures < IndexedStreamingSearchTest
     query = "query=a&streaming.userid=1" + rankproperties
     result = search(query)
     sf = result.hit[0].field["summaryfeatures"]
-    assert_features(expected, JSON.parse(sf))
+    assert_features(expected, sf)
   end
 
 
@@ -52,7 +52,7 @@ class QueryFeatures < IndexedStreamingSearchTest
 
   def assert_query_term_count(exp, query)
     query = "query=" + query + "&streaming.userid=1"
-    assert_features({"queryTermCount" => exp}, JSON.parse(search(query).hit[0].field["summaryfeatures"]))
+    assert_features({"queryTermCount" => exp}, search(query).hit[0].field['summaryfeatures'])
   end
 
 
@@ -146,7 +146,7 @@ class QueryFeatures < IndexedStreamingSearchTest
     sf = result.hit[0].field["summaryfeatures"]
     fn = "term(#{termidx})"
     assert_features({fn + ".significance" => significance, fn + ".weight" => weight, \
-                     fn + ".connectedness" => connectedness}, JSON.parse(sf))
+                     fn + ".connectedness" => connectedness}, sf)
   end
 
   def teardown

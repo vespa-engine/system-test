@@ -42,7 +42,7 @@ class DocumentFeaturesIndexed < IndexedSearchTest
     result.sort_results_by("documentid")
     sf = result.hit[docid].field["summaryfeatures"]
     puts "summaryfeatures: '#{sf}'"
-    assert_features({"fieldLength(#{field})" => length}, JSON.parse(sf))
+    assert_features({"fieldLength(#{field})" => length}, sf)
   end
 
 
@@ -65,7 +65,7 @@ class DocumentFeaturesIndexed < IndexedSearchTest
     result = search(query)
     result.sort_results_by("documentid")
     sf = result.hit[docid].field["summaryfeatures"]
-    assert_features({"fieldLength(#{field})" => fl}, JSON.parse(sf))
+    assert_features({"fieldLength(#{field})" => fl}, sf)
   end
 
 

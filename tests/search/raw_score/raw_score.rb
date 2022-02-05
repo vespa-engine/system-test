@@ -21,7 +21,7 @@ class RawScore < IndexedSearchTest
     assert(result.hit.size == 1)
     sf = result.hit[0].field["summaryfeatures"]
     puts "summaryfeatures for hit: '#{sf}'"
-    json = JSON.parse(sf)
+    json = sf
     assert_features({"queryTermCount" => 6}, json)
     assert_features({"rawScore(normal_features)" => 6}, json)
     assert_features({"rawScore(normal_features_fastsearch)" => 6}, json)
@@ -40,7 +40,7 @@ class RawScore < IndexedSearchTest
     result = search("query=normal_features_fastsearch:baz")
     assert(result.hit.size == 1)
     sf = result.hit[0].field["summaryfeatures"]
-    json = JSON.parse(sf)
+    json = sf
     puts "summaryfeatures for hit: '#{sf}'"
     assert_features({"queryTermCount" => 7}, json)
     assert_features({"itemRawScore(normal_baz)" => 3}, json)
@@ -50,7 +50,7 @@ class RawScore < IndexedSearchTest
     result = search("query=normal_features_fastsearch:baz&useRank=true")
     assert(result.hit.size == 1)
     sf = result.hit[0].field["summaryfeatures"]
-    json = JSON.parse(sf)
+    json = sf
     puts "summaryfeatures for hit: '#{sf}'"
     assert_features({"queryTermCount" => 7}, json)
     assert_features({"itemRawScore(normal_baz)" => 3}, json)
