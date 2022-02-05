@@ -18,14 +18,14 @@ class RankProperties < IndexedSearchTest
     score = result.hit[0].field["relevancy"].to_f
     assert(score == 40.0)
     rf = result.hit[0].field["rankfeatures"]
-    assert(/"query\(foo\)":40/ =~ rf)
+    assert_features({"query(foo)" => 40}, rf)
 
     result = search("query=test&rankfeatures&ranking=rank1&ranking.properties.foo=50")
     assert(result.hit.size == 1)
     score = result.hit[0].field["relevancy"].to_f
     assert(score == 50.0)
     rf = result.hit[0].field["rankfeatures"]
-    assert(/"query\(foo\)":50/ =~ rf)
+    assert_features({"query(foo)" => 50}, rf)
   end
 
   def teardown
