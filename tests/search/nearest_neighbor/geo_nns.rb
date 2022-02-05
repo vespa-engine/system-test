@@ -19,7 +19,7 @@ class GeoNnsTest < IndexedSearchTest
       result.hit.each do |hit|
         txt = hit.field['text']
         pos = hit.field['pos_hnsw']
-        sfs = JSON.parse(hit.field['summaryfeatures'])
+        sfs = hit.field['summaryfeatures']
         dsf = sfs['distance(label,nns)']
         miles = dsf.to_f / 1.609344
         puts "Hit: #{txt}  => #{pos} -> #{dsf} km -> #{miles.to_i} miles"

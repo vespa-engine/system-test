@@ -29,13 +29,13 @@ class FefProfiles < IndexedSearchTest
     rf1 = result1.hit[0].field["rankfeatures"]
     rf2 = result2.hit[0].field["rankfeatures"]
 
-    assert(/"test_cfgvalue\(a\)":15/ =~ rf1)
-    assert(/"test_cfgvalue\(b\)":25/ =~ rf1)
-    assert_nil(/"test_cfgvalue\(c\)":/ =~ rf1)
+    assert_features({"test_cfgvalue(a)" => 15}, rf1)
+    assert_features({"test_cfgvalue(b)" => 25}, rf1)
+    assert_nil(rf1["test_cfgvalue(c)"])
 
-    assert(/"test_cfgvalue\(a\)":100/ =~ rf2)
-    assert(/"test_cfgvalue\(b\)":200/ =~ rf2)
-    assert(/"test_cfgvalue\(c\)":300/ =~ rf2)
+    assert_features({"test_cfgvalue(a)" => 100}, rf2)
+    assert_features({"test_cfgvalue(b)" => 200}, rf2)
+    assert_features({"test_cfgvalue(c)" => 300}, rf2)
   end
 
   def teardown
