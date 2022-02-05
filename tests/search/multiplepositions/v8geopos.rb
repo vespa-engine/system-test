@@ -100,6 +100,15 @@ class Vespa8GeoPositions < IndexedStreamingSearchTest
                    'geoLocation(workplaces,64.0,10.0,%22999+km%22)%3B', 2, 'v8-mp5')
   end
 
+  def test_v8_positions_summary_rendering
+    deploy_app(SearchApp.new.
+               legacy_override('v7-geo-positions', 'false').
+               sd(selfdir+'renderpos.sd'))
+    start
+    feed_and_wait_for_docs('renderpos', 4, :file => selfdir+'docs-render.json')
+    check_q('/search/?yql=select+*+from+sources+*+where+true%3B', 4, 'v8-render')
+  end
+
   def teardown
     stop
   end

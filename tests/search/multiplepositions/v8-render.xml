@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="4" coverage-docs="4" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
+  <hit relevancy="0.003" source="search.renderpos">
+    <field name="relevancy">0.003</field>
+    <field name="sddocname">renderpos</field>
+    <field name="title">Three 3</field>
+    <field name="lls">
+      <struct-field name="lat">90.0</struct-field>
+      <struct-field name="lng">-180.0</struct-field>
+    </field>
+    <field name="llas">
+      <struct-field name="lat">90.0</struct-field>
+      <struct-field name="lng">-180.0</struct-field>
+    </field>
+    <field name="llsa">
+      <struct-field name="lat">90.0</struct-field>
+      <struct-field name="lng">-180.0</struct-field>
+    </field>
+    <field name="arrs">
+      <item>
+        <struct-field name="lat">90.0</struct-field>
+        <struct-field name="lng">-180.0</struct-field>
+      </item>
+      <item>
+        <struct-field name="lat">90.0</struct-field>
+        <struct-field name="lng">0.0</struct-field>
+      </item>
+    </field>
+    <field name="arras">
+      <item>
+        <struct-field name="lat">90.0</struct-field>
+        <struct-field name="lng">-180.0</struct-field>
+      </item>
+      <item>
+        <struct-field name="lat">90.0</struct-field>
+        <struct-field name="lng">0.0</struct-field>
+      </item>
+    </field>
+    <field name="arrsa">
+      <item>
+        <struct-field name="lat">90.0</struct-field>
+        <struct-field name="lng">-180.0</struct-field>
+      </item>
+      <item>
+        <struct-field name="lat">90.0</struct-field>
+        <struct-field name="lng">0.0</struct-field>
+      </item>
+    </field>
+    <field name="documentid">id:test:renderpos::3</field>
+  </hit>
+  <hit relevancy="0.002" source="search.renderpos">
+    <field name="relevancy">0.002</field>
+    <field name="sddocname">renderpos</field>
+    <field name="title">Two 2</field>
+    <field name="lls">
+      <struct-field name="lat">-40.0</struct-field>
+      <struct-field name="lng">-40.0</struct-field>
+    </field>
+    <field name="llas">
+      <struct-field name="lat">-40.0</struct-field>
+      <struct-field name="lng">-40.0</struct-field>
+    </field>
+    <field name="llsa">
+      <struct-field name="lat">-40.0</struct-field>
+      <struct-field name="lng">-40.0</struct-field>
+    </field>
+    <field name="arrs">
+      <item>
+        <struct-field name="lat">-40.0</struct-field>
+        <struct-field name="lng">-40.0</struct-field>
+      </item>
+      <item>
+        <struct-field name="lat">-89.9</struct-field>
+        <struct-field name="lng">-179.9</struct-field>
+      </item>
+    </field>
+    <field name="arras">
+      <item>
+        <struct-field name="lat">-40.0</struct-field>
+        <struct-field name="lng">-40.0</struct-field>
+      </item>
+      <item>
+        <struct-field name="lat">-89.9</struct-field>
+        <struct-field name="lng">-179.9</struct-field>
+      </item>
+    </field>
+    <field name="arrsa">
+      <item>
+        <struct-field name="lat">-40.0</struct-field>
+        <struct-field name="lng">-40.0</struct-field>
+      </item>
+      <item>
+        <struct-field name="lat">-89.9</struct-field>
+        <struct-field name="lng">-179.9</struct-field>
+      </item>
+    </field>
+    <field name="documentid">id:test:renderpos::2</field>
+  </hit>
+  <hit relevancy="0.001" source="search.renderpos">
+    <field name="relevancy">0.001</field>
+    <field name="sddocname">renderpos</field>
+    <field name="title">One 1</field>
+    <field name="lls">
+      <struct-field name="lat">63.422501</struct-field>
+      <struct-field name="lng">10.363799</struct-field>
+    </field>
+    <field name="llas">
+      <struct-field name="lat">63.422501</struct-field>
+      <struct-field name="lng">10.363799</struct-field>
+    </field>
+    <field name="llsa">
+      <struct-field name="lat">63.422501</struct-field>
+      <struct-field name="lng">10.363799</struct-field>
+    </field>
+    <field name="arrs">
+      <item>
+        <struct-field name="lat">63.4</struct-field>
+        <struct-field name="lng">10.4</struct-field>
+      </item>
+      <item>
+        <struct-field name="lat">71.0</struct-field>
+        <struct-field name="lng">15.0</struct-field>
+      </item>
+    </field>
+    <field name="arras">
+      <item>
+        <struct-field name="lat">63.4</struct-field>
+        <struct-field name="lng">10.4</struct-field>
+      </item>
+      <item>
+        <struct-field name="lat">71.0</struct-field>
+        <struct-field name="lng">15.0</struct-field>
+      </item>
+    </field>
+    <field name="arrsa">
+      <item>
+        <struct-field name="lat">63.4</struct-field>
+        <struct-field name="lng">10.4</struct-field>
+      </item>
+      <item>
+        <struct-field name="lat">71.0</struct-field>
+        <struct-field name="lng">15.0</struct-field>
+      </item>
+    </field>
+    <field name="documentid">id:test:renderpos::1</field>
+  </hit>
+  <hit relevancy="0.0" source="search.renderpos">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">renderpos</field>
+    <field name="title">Zero 0</field>
+    <field name="documentid">id:test:renderpos::0</field>
+  </hit>
+</result>
