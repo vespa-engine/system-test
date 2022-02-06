@@ -125,16 +125,13 @@ class App
     return self
   end
 
-  def enable_document_api(feeder_options=nil)
-    @containers.add(Container.new('doc-api').
-                      documentapi(ContainerDocumentApi.new.
-                                    feeder_options(feeder_options)).
-                      http(Http.new.server(Server.new('default', 19020))))
+  def legacy_override(key, value)
+    @legacy_overrides[key] = value
     return self
   end
 
-  def legacy_override(key, value)
-    @legacy_overrides[key] = value
+  def enable_document_api
+    @clients.accept_no_clients = false
     return self
   end
 
@@ -199,11 +196,12 @@ class App
     services = header
     services << legacy_overrides_xml
     services << newline(@admin.to_xml("  "))
+    services << newline(@containers.to_xml("  "))
     services << newline(@routing.to_xml("  "))
     services << newline(@cfg_overrides ? @cfg_overrides.to_xml("  ") : '')
     services << newline(@docprocs.to_xml("  "))
     services << newline(@content.to_xml("  "))
-    services << newline(@containers.to_xml("  "))
+    services << newline(@clients.create_gateways("  "))
     services << @clients.to_xml("  ")
     services << newline(@generic_services.to_xml('  '))
     services << footer
