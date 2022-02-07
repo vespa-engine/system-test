@@ -771,6 +771,72 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_engine)
   end
 
+  def test_doc_api_and_feeder_options
+    actual = SearchApp.new.enable_document_api(FeederOptions.new.timeout(40)).services_xml
+
+    # Note: 'default' container needs to come first as there assumptions about
+    # a search container being the first one in test framework and tests
+    expected_substr =
+    '<config name="vespa.config.content.fleetcontroller">
+       <min_time_between_new_systemstates>100</min_time_between_new_systemstates>
+       <min_distributor_up_ratio>0.1</min_distributor_up_ratio>
+       <min_storage_up_ratio>0.1</min_storage_up_ratio>
+       <storage_transition_time>0</storage_transition_time>
+    </config>
+
+    <container id="default" version="1.0">
+      <search />
+      <document-processing />
+      <nodes>
+        <node hostalias="node1" />
+      </nodes>
+    </container>
+
+    <content id="search" version="1.0">
+      <redundancy>1</redundancy>
+      <config name="vespa.config.search.core.proton">
+        <numthreadspersearch>4</numthreadspersearch>
+        <initialize>
+          <threads>16</threads>
+        </initialize>
+        <lidspacecompaction>
+          <allowedlidbloat>100</allowedlidbloat>
+        </lidspacecompaction>
+        <hwinfo>
+          <disk>
+            <shared>true</shared>
+            <writespeed>150.0</writespeed>
+          </disk>
+        </hwinfo>
+      </config>
+      <documents>
+        <document-processing cluster="default" />
+      </documents>
+      <group>
+        <node hostalias="node1" distribution-key="0" />
+      </group>
+      <engine>
+        <proton>
+          <searchable-copies>1</searchable-copies>
+        </proton>
+      </engine>
+    </content>
+
+    <container id="doc-api" version="1.0">
+      <document-api>
+        <timeout>40</timeout>
+      </document-api>
+      <http>
+        <server id="default" port="19020" />
+      </http>
+      <nodes>
+        <node hostalias="node1" />
+      </nodes>
+    </container>'
+
+    assert_substring_ignore_whitespace(actual, expected_substr)
+  end
+
   def test_num_distributor_stripes_can_be_specified
     actual = SearchApp.new.storage(StorageCluster.new("search").num_distributor_stripes(1)).services_xml
     expected_substr = '

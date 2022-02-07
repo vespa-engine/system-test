@@ -51,6 +51,19 @@ class Container
     self
   end
 
+  def jvm_options= jvm_options
+    @jvmoptions = jvm_options
+  end
+
+  def jvm_options
+    @jvmoptions
+  end
+
+  def feeder_options(feeder_options)
+    @feeder_options = feeder_options
+    self
+  end
+
   def to_xml(indent)
     attrs = {:version => "1.0", :id => @id}
     attrs[:baseport] = @baseport.to_s if @baseport != 0
@@ -79,14 +92,21 @@ class Container
       to_xml(@handlers).
       to_xml(@components).
       to_xml(@http).
+      to_xml(@feeder_options).
       tag("nodes", nodeparams).tag("jvm", jvm_options).close_tag.to_xml(node_list).close_tag.
       to_s
   end
 end
 
 class Containers
+  include ChainedSetter
+
+  chained_setter :feeder_options
+
   def initialize()
     @containers = []
+    @jvm_options = nil
+    @feeder_options = nil
   end
 
   def add(container)
@@ -97,13 +117,21 @@ class Containers
     s.empty? ? s : s + "\n"
   end
 
+  def jvmoptions= jvm_options
+    @jvm_options = jvm_options
+  end
+
   def to_xml(indent)
     out = ""
     for container in @containers
+      if (@jvm_options and ! container.jvm_options)
+        container.jvm_options = @jvm_options
+      end
       out << newline(container.to_xml(indent))
     end
     return out
   end
+
 end
 
 class Searching
@@ -161,20 +189,17 @@ end
 class ContainerDocumentApi
   include ChainedSetter
 
-  chained_setter :abortondocumenterror
-  chained_setter :timeout
+  chained_setter :feeder_options
 
   def initialize()
     @abortondocumenterror = nil
     @timeout = nil
+    @feeder_options = nil
   end
 
   def to_xml(indent)
     XmlHelper.new(indent).
-      tag_always("document-api").
-      tag("abortondocumenterror").content(@abortondocumenterror).close_tag.
-      tag("timeout").content(@timeout).close_tag.
-      close_tag.
+      tag_always("document-api").to_xml(@feeder_options).close_tag.
       to_s
   end
 
