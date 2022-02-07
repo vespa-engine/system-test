@@ -55,6 +55,10 @@ class Container
     @jvmoptions = jvm_options
   end
 
+  def jvm_options
+    @jvmoptions
+  end
+
   def feeder_options(feeder_options)
     @feeder_options = feeder_options
     self
@@ -120,7 +124,9 @@ class Containers
   def to_xml(indent)
     out = ""
     for container in @containers
-      container.jvm_options = @jvm_options if @jvm_options
+      if (@jvm_options and ! container.jvm_options)
+        container.jvm_options = @jvm_options
+      end
       out << newline(container.to_xml(indent))
     end
     return out
