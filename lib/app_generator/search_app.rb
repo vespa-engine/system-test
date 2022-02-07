@@ -62,11 +62,11 @@ class SearchApp < App
   def num_parts(value)
     @default_search.num_parts(value)
     # Avoid using too much memory when we have multiple parts.
-    # This must be called last in order to propagate jvmargs to all components.
+    # This must be called last in order to propagate jvm options to all components.
     if value > 1
-      jvmargs = "-Xms64m -Xmx256m"
-      @clients.gateways_jvmargs = jvmargs
-      @content._qrservers.default_jvmargs = jvmargs
+      jvm_options = "-Xms64m -Xmx256m"
+      @containers.jvmoptions = jvm_options
+      @content._qrservers.default_jvmargs = jvm_options
     end
     self
   end
