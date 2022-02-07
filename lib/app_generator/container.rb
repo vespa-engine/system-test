@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'app_generator/qrserver_cluster'
 require 'app_generator/processing'
@@ -66,7 +66,7 @@ class Container
 
     jvm_options = @jvmoptions ? { :options => @jvmoptions } : {}
     if @jvmgcoptions
-      jvm_options =jvm_options.merge({:"gc-options" => @jvmgcoptions })
+      jvm_options = jvm_options.merge({:"gc-options" => @jvmgcoptions })
     end
 
     helper.
