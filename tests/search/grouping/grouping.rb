@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class Grouping < IndexedSearchTest
@@ -7,8 +7,7 @@ class Grouping < IndexedSearchTest
 
   def setup
     set_owner("bjorncs")
-    deploy_app(SearchApp.new.sd("#{selfdir}/purchase.sd").
-               feeder_options(FeederOptions.new.max_pending_docs(1)))
+    deploy_app(SearchApp.new.sd("#{selfdir}/purchase.sd"))
     start
   end
 
