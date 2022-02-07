@@ -1,5 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_test'
 
 class CheckAutoRestart < SearchTest
@@ -8,10 +7,6 @@ class CheckAutoRestart < SearchTest
     set_owner("musum")
     set_description("Tests that all the applications we run from config sentinel are auto-restarted when killed brutally")
     @ps = Hash.new
-  end
-
-  def nigthly?
-    true
   end
 
   def killapp(app)

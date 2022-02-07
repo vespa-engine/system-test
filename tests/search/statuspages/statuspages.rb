@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 require 'net/http'
 
@@ -10,10 +10,6 @@ class StatusPages < IndexedSearchTest
       set_description("Validate that services container/qrs has statuspages available")
       deploy_app(SearchApp.new.sd(SEARCH_DATA+'music.sd'))
       start
-    end
-
-    def nigthly?
-      true
     end
 
     def assert_web_page(host, port, doc, code, msg, substring)
@@ -72,7 +68,7 @@ class StatusPages < IndexedSearchTest
     end
 
     def teardown
-    stop
+      stop
     end
 
 end

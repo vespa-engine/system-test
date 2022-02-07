@@ -1,3 +1,4 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 
 class VespaDeploy < CloudConfigTest
@@ -16,10 +17,6 @@ class VespaDeploy < CloudConfigTest
     @base_path = "http://#{@node.hostname}:19071/application/v2/tenant/default/"
     @session_path = "http://#{@node.hostname}:19071/application/v2/tenant/default/session"
     @tenant = "default"
-  end
-
-  def nigthly?
-    true
   end
 
   def test_deploy_output

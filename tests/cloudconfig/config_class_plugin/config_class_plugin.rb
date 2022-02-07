@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'app_generator/search_app'
 
@@ -8,10 +8,6 @@ class ConfigClassPlugin < CloudConfigTest
     set_owner("musum")
     set_description("Tests that config-class-plugin and javdoc in the created class is without warnings")
     @node = vespa.nodeproxies.first[1]
-  end
-
-  def nigthly?
-    true
   end
 
   def test_create_config_class

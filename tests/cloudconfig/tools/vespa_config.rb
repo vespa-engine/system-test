@@ -11,10 +11,6 @@ class VespaConfig < CloudConfigTest
     @node = vespa.nodeproxies.first[1]
   end
 
-  def nigthly?
-    true
-  end
-
   def test_vespa_config
     app_gen = SearchApp.new.sd(SEARCH_DATA+"music.sd")
     deploy_app(app_gen)

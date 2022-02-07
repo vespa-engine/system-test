@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_container_test'
 
 class ComponentConfigDefVersion < SearchContainerTest
@@ -6,10 +6,6 @@ class ComponentConfigDefVersion < SearchContainerTest
   def setup
     set_owner("musum")
     set_description("Test that application packages with components that a compatible change in a config definition will work.")
-  end
-
-  def nigthly?
-    true
   end
 
   def test_two_searchers_same_def_compatible_change

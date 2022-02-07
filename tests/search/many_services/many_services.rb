@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 require 'app_generator/http'
 
@@ -11,10 +11,6 @@ class Many_Services < IndexedSearchTest
   def setup
     set_owner("musum")
     set_description("Test that it's possible to have many services of the same type on one node.")
-  end
-
-  def nigthly?
-    true
   end
 
   def test_many_services_realtime
