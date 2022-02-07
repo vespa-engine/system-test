@@ -1,3 +1,4 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 
 class ZkCtl < CloudConfigTest
@@ -5,10 +6,6 @@ class ZkCtl < CloudConfigTest
   def setup
     set_owner("musum")
     set_description("Tests vespa-zkctl tool")
-  end
-
-  def nigthly?
-    true
   end
 
   def test_zkctl

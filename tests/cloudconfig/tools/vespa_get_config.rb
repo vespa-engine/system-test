@@ -13,10 +13,6 @@ class VespaGetConfig < CloudConfigTest
     start
   end
 
-  def nigthly?
-    true
-  end
-
   def test_getvespaconfig
     getconfig = "#{Environment.instance.vespa_home}/bin/vespa-get-config"
     (exitcode, out) = execute(vespa.adminserver, "#{getconfig} -n logd -i \"\" -w 10")

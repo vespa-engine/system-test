@@ -1,3 +1,4 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'app_generator/search_app'
 require 'environment'
@@ -21,10 +22,6 @@ class VespaModelInspect < CloudConfigTest
     @node1 = vespa.adminserver
     @node2 = vespa.slobrok["0"]
     start
-  end
-
-  def nigthly?
-    true
   end
 
   def test_vespamodelinspect

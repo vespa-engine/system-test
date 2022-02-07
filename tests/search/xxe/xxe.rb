@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_test'
 require 'environment'
 
@@ -13,10 +13,6 @@ class XXEAttack < SearchTest
                sd(selfdir + "music.sd").
                enable_document_api)
     start
-  end
-
-  def nigthly?
-    true
   end
 
   def test_xxe_vespa_http_client

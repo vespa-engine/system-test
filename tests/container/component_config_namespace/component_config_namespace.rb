@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_container_test'
 
 class ComponentConfigNamespace < SearchContainerTest
@@ -6,10 +6,6 @@ class ComponentConfigNamespace < SearchContainerTest
   def setup
     set_owner("gjoranv")
     set_description("Verify that config classes can be exchanged between bundles. A searcher in bundle 'b' extends a configurable searcher from bundle 'a', which requires that the config class is exported from bundle 'a'.")
-  end
-
-  def nigthly?
-    true
   end
 
   def test_component_config_namespace

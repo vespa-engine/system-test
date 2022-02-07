@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class MixedRecall < IndexedSearchTest
@@ -6,10 +6,6 @@ class MixedRecall < IndexedSearchTest
   def setup
     set_owner("musum")
     set_description("Test of mixed recall between index and attributes searching for sddocname")
-  end
-
-  def nigthly?
-    true
   end
 
   def test_sddocname
