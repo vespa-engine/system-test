@@ -242,11 +242,13 @@ module TestBase
     end
 
     query = url_escape_q(query)
-
-    if params[:cluster]
-      container = vespa.qrs[params[:cluster]].qrserver[qrserver_id.to_s]
+    cluster = params[:cluster]
+    server_id = qrserver_id.to_s
+    if cluster
+      # Note: Lookup of vespa.qrs works even if no cluster exists (see initializing code for vespa.qrs in vespa_model.rb)
+      container = (vespa.qrs[cluster].qrserver[server_id] || vespa.container[cluster + "/container." + server_id])
     else
-      container = (vespa.qrserver[qrserver_id.to_s] or vespa.container.values.first)
+      container = (vespa.qrserver[server_id] || vespa.container.values.first)
     end
 
     result = container.search(to_utf8(query), 0, requestheaders, verbose, params)
@@ -900,17 +902,17 @@ module TestBase
   end
 
   # Feeds the file specified in params and waits for expected number of document.
-  def feed_and_wait_for_docs(doc_type, wanted_hitcount, params={}, path="")
+  def feed_and_wait_for_docs(doc_type, wanted_hitcount, feed_params={}, path="", query_params={})
     query = "#{path}query=sddocname:#{doc_type}&nocache&hits=0&streaming.selection=true"
-    return feed_and_wait_for_hitcount(query, wanted_hitcount, params)
+    return feed_and_wait_for_hitcount(query, wanted_hitcount, feed_params, query_params)
   end
 
   # Feeds the file specified in params and waits for expected number of hits for the given query.
-  def feed_and_wait_for_hitcount(query, wanted_hitcount, params={})
-    timeout = params[:timeout]
+  def feed_and_wait_for_hitcount(query, wanted_hitcount, feed_params={}, query_params={})
+    timeout = feed_params[:timeout]
     timeout = 120 if timeout == nil
-    feederoutput = feed(params)
-    wait_for_hitcount(query, wanted_hitcount, timeout)
+    feederoutput = feed(feed_params)
+    wait_for_hitcount(query, wanted_hitcount, timeout, 0, query_params)
     return feederoutput
   end
 
@@ -1110,7 +1112,7 @@ module TestBase
   end
 
   # Waits until _query_ has a total hit count equal to _wanted_hitcount_
-  def wait_for_hitcount(query, wanted_hitcount, timeout_in=60, qrserver_id=0)
+  def wait_for_hitcount(query, wanted_hitcount, timeout_in=60, qrserver_id=0, params={})
 
     hitcount = -1
     timeout = timeout_in
@@ -1126,7 +1128,7 @@ module TestBase
     while Time.now.to_i < start + timeout
       begin
         trynum += 1
-        hitcount = search_with_timeout(timeout_in, query, qrserver_id).hitcount
+        hitcount = search_with_timeout(timeout_in, query, qrserver_id, {}, false, params).hitcount
         if wanted_hitcount == hitcount
           puts "Success on try #{trynum}: Got #{wanted_hitcount} hits"
           return true
