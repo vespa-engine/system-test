@@ -71,7 +71,7 @@ class FeedingAndRemovingBase < PerformanceTest
     run_template_feeder(fillers: fillers, params: feed_params)
     profiler_report(feed_stage + "_" + visibility_delay.to_s + "_" + index_threads.to_s)
     write_metrics(feed_stage, visibility_delay, index_threads)
-    wait_for_hitcount("sddocname:test", doc_count, 60, 0, {:cluster => "combinedcontainer"})
+    wait_for_hitcount("sddocname:test", doc_count)
   end
 
   def write_metrics(feed_stage, visibility_delay, index_threads)
