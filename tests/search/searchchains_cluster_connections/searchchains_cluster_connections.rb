@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 require 'app_generator/http'
 
@@ -36,9 +36,9 @@ class SearchchainsClusterConnections < IndexedSearchTest
 
   def start_and_feed
     start
-    feed_and_wait_for_docs("music", 10, {:file => SEARCH_DATA+"music.10.xml"}, "", {:cluster => "container1"})
-    feed_and_wait_for_docs("books", 5, {:file => selfdir + "books.1.xml", :clusters => [ "books"]}, "", {:cluster => "container2"})
-   end
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
+    feed_and_wait_for_docs("books", 5, :file => selfdir + "books.1.xml", :clusters => [ "books"])
+  end
 
   def check_hits_from_each_cluster
     assert_hits("music", "Classic Female Blues", 1, "container1") # hit with first qrserver/container (music provider)
