@@ -53,7 +53,12 @@ public class BasicSubscriptionTest {
                 assertTrue(e instanceof IllegalStateException);
             }
             subscriber.close();
-            assertFalse(subscriber.nextConfig(1, false));
+            try {
+                subscriber.nextConfig(1, false);
+                fail("Could call nextConfig() after subscriber was closed");
+            } catch (Exception e) {
+                // Ignore, SubscriberClosedException is deprecated, so just check that we get an exception
+            }
         }
     }
 
