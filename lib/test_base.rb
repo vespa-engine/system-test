@@ -242,11 +242,13 @@ module TestBase
     end
 
     query = url_escape_q(query)
-
-    if params[:cluster]
-      container = vespa.container[params[:cluster] + "/" + qrserver_id.to_s] or vespa.qrs[params[:cluster]].qrserver[qrserver_id.to_s]
+    cluster = params[:cluster]
+    server_id = qrserver_id.to_s
+    if cluster
+      # Note: Lookup of vespa.qrs works even if no cluster exists (see initializing code for vespa.qrs in vespa_model.rb)
+      container = (vespa.qrs[cluster].qrserver[server_id] || vespa.container[cluster + "/container." + server_id])
     else
-      container = (vespa.qrserver[qrserver_id.to_s] or vespa.container.values.first)
+      container = (vespa.qrserver[server_id] || vespa.container.values.first)
     end
 
     result = container.search(to_utf8(query), 0, requestheaders, verbose, params)
