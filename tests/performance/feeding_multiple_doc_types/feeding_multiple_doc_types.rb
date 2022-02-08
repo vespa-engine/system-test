@@ -42,10 +42,10 @@ class FeedingMultipleDocTypesTest < PerformanceTest
 
   def run_feeding_test(doc_types)
     feed_and_profile(put_template, "feeding_docs", doc_types)
-    wait_for_hitcount("sddocname:test", @num_docs)
+    wait_for_hitcount("sddocname:test", @num_docs, 60, 0, {:cluster => "combinedcontainer"})
     assert_hitcount("sddocname:test", @num_docs)
     feed_and_profile(update_template, "feeding_updates", doc_types)
-    wait_for_hitcount("number:2000", @num_docs)
+    wait_for_hitcount("number:2000", @num_docs, 60, 0, {:cluster => "combinedcontainer"})
     assert_hitcount("number:2000", @num_docs)
   end
 
