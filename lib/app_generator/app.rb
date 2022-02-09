@@ -120,11 +120,6 @@ class App
     @legacy_overrides = {}
   end
 
-  def no_clients
-    @clients.accept_no_clients = true
-    return self
-  end
-
   def enable_document_api(feeder_options=nil)
     @containers.add(Container.new('doc-api').
                       documentapi(ContainerDocumentApi.new.
