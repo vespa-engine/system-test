@@ -14,6 +14,7 @@ class ContainerApp < App
       @content = NoContent.new
     end
     @transition_time = 0
+    @clients.accept_no_clients = true
   end
 
   def elastic_search
