@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 class FeederOptions
   include ChainedSetter
 
@@ -6,6 +6,16 @@ class FeederOptions
   chained_setter :timeout
   chained_setter :max_pending_bytes
   chained_setter :max_pending_docs
+
+  def abortondocumenterror(abort_on_document_error)
+    @abort_on_document_error = abort_on_document_error
+    self
+  end
+
+  def timeout(timeout)
+    @timeout = timeout
+    self
+  end
 
   def to_xml(indent)
     XmlHelper.new(indent).

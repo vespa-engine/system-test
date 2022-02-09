@@ -8,19 +8,6 @@
     <logserver hostalias="node1" />
   </admin>
 
-  <container id="default" version="1.0">
-    <search />
-    <processing>
-      <chain id="default">
-        <processor id="com.yahoo.vespatest.SearchProcessor" />
-      </chain>
-    </processing>
-    <nodes>
-      <node hostalias="node1" />
-    </nodes>
-  </container>
-
-
   <content id="music" version="1.0">
     <redundancy>1</redundancy>
     <config name="vespa.config.search.core.proton">
@@ -50,5 +37,18 @@
       </proton>
     </engine>
   </content>
+
+  <container id="default" version="1.0">
+    <search />
+    <processing>
+      <chain id="default">
+        <processor id="com.yahoo.vespatest.SearchProcessor" />
+      </chain>
+    </processing>
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+  </container>
+
 
 </services>
