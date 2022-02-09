@@ -54,27 +54,27 @@ class FastAccessAttributesPerfTest < PerformanceTest
     start
     feed({:template => put_template, :count => @num_docs})
     wait_for_hits("sddocname:test", @num_docs)
-    assert_hitcount("normal_access:1000", @num_docs)
-    assert_hitcount("fast_access:1000", @num_docs)
+    assert_hits("normal_access:1000", @num_docs)
+    assert_hits("fast_access:1000", @num_docs)
 
     feed_and_profile(update_template("normal_access"), "feeding_normal_access")
     wait_for_hits("normal_access:2000", @num_docs)
-    assert_hitcount("normal_access:1000", 0)
+    assert_hits("normal_access:1000", 0)
     feed_and_profile(update_template("fast_access"), "feeding_fast_access")
     wait_for_hits("fast_access:2000", @num_docs)
-    assert_hitcount("fast_access:1000", 0)
+    assert_hits("fast_access:1000", 0)
 
     feed_and_profile(conditional_update_template("normal_access"), "feeding_conditional_normal_access")
     wait_for_hits("normal_access:3000", @num_docs)
-    assert_hitcount("normal_access:2000", 0)
+    assert_hits("normal_access:2000", 0)
 
     feed_and_profile(conditional_update_template("fast_access"), "feeding_conditional_fast_access")
     wait_for_hits("fast_access:3000", @num_docs)
-    assert_hitcount("fast_access:2000", 0)
+    assert_hits("fast_access:2000", 0)
 
     feed_and_profile(update_template("fast_access"), "feeding_fast_access_direct", {:route => '"search-direct"'})
     wait_for_hits("fast_access:2000", @num_docs)
-    assert_hitcount("fast_access:3000", 0)
+    assert_hits("fast_access:3000", 0)
   end
 
   def feed_and_profile(feed_template, feed_stage, params={})
@@ -87,6 +87,10 @@ class FastAccessAttributesPerfTest < PerformanceTest
 
   def wait_for_hits(query, num_docs)
     wait_for_hitcount(query, num_docs, 60, 0, {:cluster => "combinedcontainer"})
+  end
+
+  def assert_hits(query, num_docs)
+    assert_hitcount(query, num_docs, 0, {:cluster => "combinedcontainer"})
   end
 
   def teardown
