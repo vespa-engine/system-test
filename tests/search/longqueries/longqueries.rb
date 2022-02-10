@@ -14,7 +14,6 @@ class LongQueries < IndexedSearchTest
     deploy_app(SearchApp.new.
                    sd(SEARCH_DATA+"music.sd").
                    container(Container.new.
-                                 jetty(true).
                                  search(Searching.new).
                                  http(Http.new.
                                           server(Server.

@@ -4,7 +4,7 @@
     <adminserver hostalias="node1"/>
   </admin>
 
-  <container jetty="true" id="search" version="1.0">
+  <container id="search" version="1.0">
     <nodes>
       <jvm options="-verbose:gc -Xms8g -Xmx8g -XX:+PrintGCDetails" gc-options="-XX:+UseG1GC" />
       <node hostalias='node1'/>
