@@ -1,14 +1,13 @@
 // Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.supermodelclient;
 
+import com.yahoo.cloud.config.LbServicesConfig;
+import com.yahoo.config.subscription.ConfigHandle;
+import com.yahoo.config.subscription.ConfigSubscriber;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
-import java.util.List;
-
-import com.yahoo.config.subscription.ConfigSubscriber;
-import com.yahoo.config.subscription.ConfigHandle;
-import com.yahoo.cloud.config.LbServicesConfig;
 
 public class SuperModelClient {
     private final ConfigSubscriber subscriber = new ConfigSubscriber();
@@ -47,9 +46,9 @@ public class SuperModelClient {
         LbServicesConfig lb = lbHandle.getConfig();
         for (Map.Entry<String, LbServicesConfig.Tenants> te : lb.tenants().entrySet()) {
             for (Map.Entry<String, LbServicesConfig.Tenants.Applications> tea : te.getValue().applications().entrySet()) {
-                for (Map.Entry<String, LbServicesConfig.Tenants.Applications.Hosts> teah : tea.getValue().hosts().entrySet()) {
-                    for (Map.Entry<String, LbServicesConfig.Tenants.Applications.Hosts.Services> teahs : teah.getValue().services().entrySet()) {
-                        System.out.println(te.getKey() + "," + tea.getKey() + "," + teahs.getKey()); // tenant,app,servicename
+                for (LbServicesConfig.Tenants.Applications.Endpoints endpoint : tea.getValue().endpoints()) {
+                    for (String host : endpoint.hosts()) {
+                        System.out.println(te.getKey() + "," + tea.getKey() + "," + endpoint.dnsName() + "," + host);
                     }
                 }
             }
