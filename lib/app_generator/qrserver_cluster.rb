@@ -116,6 +116,8 @@ class QrserverCluster
         node.set_baseport(@baseport)
       }
     end
+    jvm_options = @_jvmargs ? { :options => @_jvmargs } : {}
+
     XmlHelper.new(indent).
       tag("cluster", :name => @name).
         tag("cache", :size => @cache).close_tag.
@@ -124,7 +126,7 @@ class QrserverCluster
         to_xml(@components).
         to_xml(@processing).
         to_xml(@hhttp).
-        tag("nodes", :jvmargs => @_jvmargs).to_xml(nodes).close_tag.
+        tag("nodes").tag("jvm", jvm_options).close_tag.to_xml(nodes).close_tag.
         to_xml(@search_chains).to_s
   end
 
@@ -137,12 +139,13 @@ class QrserverCluster
     end
     helper.tag_always("search").to_xml(@search_chains, :to_container_xml).close_tag
     helper.tag_always("document-processing").close_tag if @should_add_default_docproc
+    jvm_options = @_jvmargs ? { :options => @_jvmargs } : {}
     helper.tag("cache", :size => @cache).close_tag.
         to_xml(@renderers).
         to_xml(@components).
         to_xml(@processing).
         to_xml(@hhttp).
-        tag("nodes", :jvmargs => @_jvmargs).to_xml(node_list).close_tag.
+        tag("nodes").tag("jvm", jvm_options).close_tag.to_xml(node_list).close_tag.
         to_s
   end
 end
