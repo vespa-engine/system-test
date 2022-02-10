@@ -17,7 +17,6 @@ class HttpServerReconfig < ContainerTest
   def container_app(my_http)
     ContainerApp.new.container(
         Container.new.
-            jetty(true).
             http(my_http))
   end
 

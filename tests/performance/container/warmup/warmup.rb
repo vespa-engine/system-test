@@ -39,7 +39,6 @@ class ContainerWarmup < PerformanceTest
 
 #    output = deploy_app(ContainerApp.new.
 #                   container(Container.new.
-#                                 jetty(true).
 #                                 handler(Handler.new("com.yahoo.vespatest.HelloWorld").
 #                                             binding("http://*/HelloWorld")).
 #                                 jvmoptions('-Xms387m -Xmx6g -XX:ThreadStackSize=1024')))  # Replicates defaults for jdisc test

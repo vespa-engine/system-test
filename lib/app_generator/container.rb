@@ -11,7 +11,6 @@ class Container
   include ChainedSetter
 
   chained_setter :baseport
-  chained_setter :jetty
   chained_setter :search
   chained_setter :docproc
   chained_setter :processing
@@ -35,7 +34,6 @@ class Container
     @nodes = []
     @id = id
     @baseport = 0
-    @jetty = nil
     @jvmoptions = nil
     @jvmgcoptions = nil
     @cpu_socket_affinity = nil
@@ -67,7 +65,6 @@ class Container
   def to_xml(indent)
     attrs = {:version => "1.0", :id => @id}
     attrs[:baseport] = @baseport.to_s if @baseport != 0
-    attrs[:jetty] = @jetty unless @jetty.nil?
 
     helper = XmlHelper.new(indent)
     helper.tag("container", attrs)

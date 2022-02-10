@@ -10,8 +10,7 @@ class MalformedQueryReturns400 < ContainerTest
   end
 
   def test_query_with_raw_space
-    app = ContainerApp.new.container(
-        Container.new.jetty(true))
+    app = ContainerApp.new.container(Container.new)
 
     start(app)
     client = @container.https_client.create_client(@container.hostname, @container.http_port)
