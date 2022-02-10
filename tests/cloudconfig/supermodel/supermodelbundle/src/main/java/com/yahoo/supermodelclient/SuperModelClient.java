@@ -46,11 +46,12 @@ public class SuperModelClient {
         LbServicesConfig lb = lbHandle.getConfig();
         for (Map.Entry<String, LbServicesConfig.Tenants> te : lb.tenants().entrySet()) {
             for (Map.Entry<String, LbServicesConfig.Tenants.Applications> tea : te.getValue().applications().entrySet()) {
-                for (LbServicesConfig.Tenants.Applications.Endpoints endpoint : tea.getValue().endpoints()) {
-                    for (String host : endpoint.hosts()) {
-                        System.out.println(te.getKey() + "," + tea.getKey() + "," + endpoint.dnsName() + "," + host);
-                    }
-                }
+                // No endpoints because this is run in a non-hosted setup where endpoints are not added to config
+                System.out.printf("%s,%s,%s,%d\n",
+                                  te.getKey(),  // tenant
+                                  tea.getKey(), // application
+                                  tea.getValue().activeRotation(),
+                                  tea.getValue().endpoints().size());
             }
         }
     }
