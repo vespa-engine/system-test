@@ -1,13 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-class Gateway < NodeBase
-  tag "node"
-
-  def initialize(hostalias, jvmargs=nil, baseport="")
-    super(:hostalias => hostalias, :jvmargs => jvmargs)
-    set_baseport(baseport) if !baseport.empty?
-  end
-
-end
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 class LoadType
   def initialize(name, pri=nil)
