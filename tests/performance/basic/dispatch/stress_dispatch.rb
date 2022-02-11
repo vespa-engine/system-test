@@ -38,7 +38,7 @@ class StressDispatch < PerformanceTest
           tune_searchnode({:summary => {:store => {:cache => {:maxsize => 50123000}}}}).
           config(ConfigOverride.new("vespa.config.search.core.proton").
                  add("summary", ConfigValue.new("log", ConfigValue.new("maxbucketspread", "10")))).
-          elastic.num_parts(5).redundancy(1).ready_copies(1)
+          num_parts(5).redundancy(1).ready_copies(1)
     add_bundle(selfdir + "CapInFillSearcher.java")
     deploy_app(app)
     clustername = @vespa.search.keys.first

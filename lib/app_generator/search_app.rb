@@ -30,7 +30,6 @@ class SearchApp < App
     super
     @default_search = SearchCluster.new
     @content.search(@default_search)
-    elastic
     config(ConfigOverride.new("vespa.config.content.fleetcontroller").
                add("min_time_between_new_systemstates", 100).
                add("min_distributor_up_ratio", 0.1).
