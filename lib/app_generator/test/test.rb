@@ -538,20 +538,9 @@ class SearchAppGenTest < Test::Unit::TestCase
     expected_substr = '
       <container id="default" version="1.0">
       <search />
-          <nodes jvmargs="-Option">
-          <node hostalias="node1" />
-        </nodes>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
-  def test_container_node_jvmargs
-    actual = SearchApp.new.qrserver(
-               QrserverCluster.new.node(:jvmargs => '-Option')).services_xml
-    expected_substr = '
-      <container id="default" version="1.0">
-      <search />
-        <nodes>
-          <node hostalias="node1" jvmargs="-Option" />
+          <nodes>
+            <jvm options="-Option" />
+            <node hostalias="node1" />
         </nodes>'
     assert_substring_ignore_whitespace(actual, expected_substr)
   end

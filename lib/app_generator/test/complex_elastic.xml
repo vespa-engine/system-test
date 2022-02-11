@@ -17,7 +17,8 @@
   <container id="default" version="1.0">
     <search />
     <document-processing />
-    <nodes jvmargs="-Xms64m -Xmx256m">
+    <nodes>
+      <jvm options="-Xms64m -Xmx256m" />
       <node hostalias="node1" />
     </nodes>
   </container>
