@@ -6,7 +6,7 @@ class QrserverCluster
 
   chained_setter :baseport
   chained_setter :cache
-  chained_setter :jvm_options, :_jvm_options
+  chained_setter :jvmoptions, :_jvm_options
   chained_setter :options
   chained_forward :renderers, :renderer => :push
   chained_forward :components, :component => :push

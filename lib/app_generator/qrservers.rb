@@ -5,13 +5,13 @@ class Qrservers
   attr_reader :default_qrserver
   attr_accessor :allow_none
 
-  chained_setter :jvm_options
+  chained_setter :jvmoptions
   chained_forward :qrservers, :qrserver => :push
   chained_forward :config, :config => :add
 
   def default_jvm_options= args
     qrserver_list.each do |qrs|
-      qrs.jvm_options(args) unless qrs._jvm_options
+      qrs.jvmoptions(args) unless qrs._jvm_options
     end
   end
 
@@ -19,7 +19,7 @@ class Qrservers
     @qrservers = []
     @default_qrserver = QrserverCluster.new
     @config = ConfigOverrides.new
-    @jvm_options = nil
+    @jvmoptions = nil
     @allow_none = false
   end
 

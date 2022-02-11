@@ -534,7 +534,7 @@ class SearchAppGenTest < Test::Unit::TestCase
 
   def test_container_jvm_options
     actual = SearchApp.new.qrserver(
-               QrserverCluster.new.jvm_options('-Option')).services_xml
+               QrserverCluster.new.jvmoptions('-Option')).services_xml
     expected_substr = '
       <container id="default" version="1.0">
       <search />
