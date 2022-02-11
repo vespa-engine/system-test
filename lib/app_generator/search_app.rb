@@ -88,19 +88,16 @@ class SearchApp < App
   end
 
   def elastic()
-    @content.model_type(:content)
     @content.search_type(:indexed)
     self
   end
 
   def streaming()
-    @content.model_type(:content)
     @content.search_type(:streaming)
     self
   end
 
   def no_search()
-    @content.model_type(:content)
     @content.search_type(:none)
     self
   end

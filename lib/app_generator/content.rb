@@ -7,7 +7,6 @@ class Content
   attr_writer :distribution_type
 
   chained_setter :qrservers, :_qrservers
-  chained_setter :model_type, :model_type
   chained_setter :search_type, :search_type
   chained_setter :use_global_sd_files
   chained_forward :search_clusters, :search => :push
@@ -50,10 +49,6 @@ class Content
       all.concat(cluster.sd_files)
     end
     all
-  end
-
-  def get_model_type
-    return @model_type
   end
 
   def provider(value)
