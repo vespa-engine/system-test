@@ -1,0 +1,129 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 20
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 20,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:shopping:shopping::USxPGx962x12430",
+                "relevance": 0.999,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=5316&m=573647&q=n&priceret=5.99&pg=~~3&k=3e90e2e6e233d21da89e974b9f5754d6&source=feed&url=http%3A%2F%2Fwww%2Eamazon%2Ecom%2Fdp%2FB0009P7EK0%2Fref%3Dasc%5Fdf%5FB0009P7EK01463610%3Fsmid%3DAAV5FH186L91H%26tag%3Dpgmp%2D1542%2D01%2D20%26linkCode%3Dasn%26creative%3D395105%26creativeASIN%3DB0009P7EK0&st=feed&mt=~~~~~~~~n~~~",
+                    "documentid": "id:shopping:shopping::USxPGx962x12430",
+                    "number": 1
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx3142x483",
+                "relevance": 0.998,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=4444&m=628364&q=n&priceret=79.99&pg=~~2&k=a58dfd312aec1012dcc361747e2136ac&source=feed&url=http%3A%2F%2Fwww%2Ecsnclocks%2Ecom%2Fasp%2Fsuperbrowse%2Easp%3Fclid%3D1563%26caid%3D%26sku%3DBVA1282%26refid%3DPG31%2DBVA1282&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx3142x483",
+                    "number": 2
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx8792x883",
+                "relevance": 0.997,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=210&m=764652&q=n&priceret=279.99&pg=~~2&k=b7fbcca0bdadadb3c9ff964e9baea94d&source=feed&url=http%3A%2F%2Fwww%2Ecdw%2Ecom%2Fshop%2Fproducts%2Fdefault%2Easpx%3Fedc%3D366318%26cm%5Fmmc%3DShoppingFeeds%2D%5F%2DPricegrabber%2D%5F%2DAccessories%2D%5F%2DPelican1610UniversalRollingCase%5F366318&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx8792x883",
+                    "number": 3
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx8795x402",
+                "relevance": 0.996,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=8831&m=1535441&q=n&priceret=269.95&pg=~~2&k=6ee4e13c8f3cf8936d8a0f1712fa9f38&source=feed&url=http%3A%2F%2Fwww%2Ecookware%2Ecom%2Fasp%2Fsuperbrowse%2Easp%3Fclid%3D781%26caid%3D%26sku%3DAAC1315%26refid%3DPG75%2DAAC1315&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx8795x402",
+                    "number": 4
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx10993x483",
+                "relevance": 0.995,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=1029&m=1643304&q=n&priceret=69.95&pg=~~2&k=c4431a6e65e277d58fd95710b5a365f4&source=feed&url=http%3A%2F%2Fwww%2Egifttree%2Ecom%2Fp3%2F1352%2FSelect%5FGourmet%5FFruit%5FBasket%2D1%2Ehtml%3Futm%5Fcontent%3Dfruit%2Bbaskets%26utm%5Fmedium%3Dcpc%26refer%3Dpgdf%26utm%5Fcampaign%3DDF%26utm%5Fsource%3Dpricegrabber%26utm%5Fterm%3D1352&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx10993x483",
+                    "number": 5
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx11157x16171",
+                "relevance": 0.994,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=14252&m=1903202&q=n&priceret=52.00&pg=~~3&k=d54121dbf61e6b3d3940721debc1510f&source=feed&url=http%3A%2F%2Fwww%2Edoctorkdermstore%2Ecom%2FShop%2FControl%2FProduct%2Ffp%2FSFV%2F32751%2Fvpid%2F6287638%2Fvpcsid%2F0%2Frid%2F136477&st=feed&mt=~~~~~~~~n~~~",
+                    "documentid": "id:shopping:shopping::USxPGx11157x16171",
+                    "number": 6
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx12521x501",
+                "relevance": 0.993,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=20015&m=2067145&q=n&priceret=23.99&pg=~~3&k=a9be80d6c95281c3981a725f369bc777&source=feed&url=http%3A%2F%2Fwww%2E1stperfume%2Ecom%2Fcarherrfepsp1%2Ehtml%3Fpricegrabber&st=feed&mt=~~~~~~~~n~~~",
+                    "documentid": "id:shopping:shopping::USxPGx12521x501",
+                    "number": 7
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx12966x5316",
+                "relevance": 0.992,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=1378&m=2495677&q=n&priceret=685.00&pg=~~3&k=9941908a91b45c06df86f917765bda8f&source=feed&url=http%3A%2F%2Fwww%2Esanwork%2Ecom%2Fproduct%5Finfo%2Ephp%3Fproducts%5Fid%3D9644%26language%3D1&st=feed&mt=~~~~~~~~n~~~",
+                    "documentid": "id:shopping:shopping::USxPGx12966x5316",
+                    "number": 8
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx14369x743",
+                "relevance": 0.991,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=16286&m=2498735&q=n&priceret=258.99&pg=~~2&k=2f8b24ea305944a8c0b4d932d06908e3&source=feed&url=http%3A%2F%2Fchicagocomputersupply%2Ecom%2Fci12kitforci%2Ehtml&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx14369x743",
+                    "number": 9
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx17016x101",
+                "relevance": 0.99,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=1202&m=2533234&q=n&priceret=31.99&pg=~~2&k=92ff69c25863702b4861ac1af0742c7e&source=feed&url=http%3A%2F%2Flink%2Emercent%2Ecom%2Fredirect%2Eashx%3Fmr%3AmerchantID%3DPETCO%26mr%3AtrackingCode%3D6D89A7BD%2D1CD6%2DDE11%2D974B%2D0019B9C043EB%26mr%3AtargetUrl%3Dhttp%3A%2F%2Fwww%2Epetco%2Ecom%2Fproduct%2F8981%2FPETCO%2DTreat%2DBar%2DBulk%2DDog%2DTreats%2Easpx%253fcm%5Fmmc%253dCSEMPriceGrabber%2D%5F%2DDog%2D%5F%2DPETCO%2D%5F%2D542601&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx17016x101",
+                    "number": 10
+                }
+            }
+        ]
+    }
+}

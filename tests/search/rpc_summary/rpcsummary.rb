@@ -23,13 +23,13 @@ class RpcSummary < IndexedSearchTest
 
   def verify_doctype(type)
     query="query=sddocname:#{type}&summary=s1&ranking=rank1"
-    assert_result(query, selfdir + "result.xml", nil, ["id", "f1", "relevancy"])
-    assert_result(query, selfdir + "result.xml", nil, ["id", "f1", "relevancy", "summaryfeatures"])
+    assert_result(query, selfdir + "result.json", nil, ["id", "f1", "relevancy"])
+    assert_result(query, selfdir + "result.json", nil, ["id", "f1", "relevancy", "summaryfeatures"])
 
     # Silently ignore the dispatch.summaries setting as it won't work in this case
-    assert_result(query + "&dispatch.summaries=true", selfdir + "result.xml", nil, ["id", "f1", "relevancy", "summaryfeatures"])
+    assert_result(query + "&dispatch.summaries=true", selfdir + "result.json", nil, ["id", "f1", "relevancy", "summaryfeatures"])
 
-    assert_result(query + "&dispatch.summaries=true&ranking.queryCache", selfdir + "result.xml", nil, ["id", "f1", "relevancy", "summaryfeatures"])
+    assert_result(query + "&dispatch.summaries=true&ranking.queryCache", selfdir + "result.json", nil, ["id", "f1", "relevancy", "summaryfeatures"])
     gquery="#{query}&select=all(group(id) each(each(output(summary(s1)))))&hits=0"
     assert_xml_result_with_timeout(2.0, gquery, selfdir + "#{type}-group.xml")
     assert_xml_result_with_timeout(2.0, gquery + "&dispatch.summaries=true&ranking.queryCache", selfdir + "#{type}-group.xml")

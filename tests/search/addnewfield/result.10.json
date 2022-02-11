@@ -1,0 +1,129 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 15
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 15,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::72",
+                "relevance": 74.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::72",
+                    "title": "Vivaldi: Sonates de Dresde",
+                    "popularity": 74
+                }
+            },
+            {
+                "id": "id:test:music::67",
+                "relevance": 69.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::67",
+                    "title": "Rachmaninov: Concerto Nos. 2 & 3",
+                    "popularity": 69
+                }
+            },
+            {
+                "id": "id:test:music::62",
+                "relevance": 64.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::62",
+                    "title": "Hit the Spot",
+                    "popularity": 64
+                }
+            },
+            {
+                "id": "id:test:music::57",
+                "relevance": 59.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::57",
+                    "title": "Occupied Territories",
+                    "popularity": 59
+                }
+            },
+            {
+                "id": "id:test:music::52",
+                "relevance": 54.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::52",
+                    "title": "Compilation Kingz / Various",
+                    "popularity": 54
+                }
+            },
+            {
+                "id": "id:test:music::47",
+                "relevance": 49.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::47",
+                    "title": "Edward MacDowell: Piano Music, Volume Two",
+                    "popularity": 49
+                }
+            },
+            {
+                "id": "id:test:music::42",
+                "relevance": 44.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::42",
+                    "title": "Reggae and Ska [Captain Mod]",
+                    "popularity": 44
+                }
+            },
+            {
+                "id": "id:test:music::37",
+                "relevance": 39.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::37",
+                    "title": "Bach: Musical Offering BWV1079; Partita in Am",
+                    "popularity": 39
+                }
+            },
+            {
+                "id": "id:test:music::32",
+                "relevance": 34.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::32",
+                    "title": "Aulis Sallinen: Variations for Orchestra; Violin Concerto",
+                    "popularity": 34
+                }
+            },
+            {
+                "id": "id:test:music::27",
+                "relevance": 29.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::27",
+                    "title": "Bach: Violin Concertos",
+                    "popularity": 29
+                }
+            }
+        ]
+    }
+}

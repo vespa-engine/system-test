@@ -20,20 +20,20 @@ class SelectSubscription < IndexedSearchTest
     assert_correct_output(["ok: 0"],  feedoutput)
     assert_correct_output(["ignored: 10"],  feedoutput)
 
-    #save_result("query=mid:1", selfdir + "ssub.0.result")
+    #save_result("query=mid:1", selfdir + "ssub.0.result.json")
 
-    assert_result("query=mid:1", selfdir + "ssub.0.result");
-    assert_result("query=mid:2", selfdir + "ssub.0.result");
-    assert_result("query=mid:3", selfdir + "ssub.0.result");
+    assert_result("query=mid:1", selfdir + "ssub.0.result.json");
+    assert_result("query=mid:2", selfdir + "ssub.0.result.json");
+    assert_result("query=mid:3", selfdir + "ssub.0.result.json");
   end
 
   def test_selectOneSubscription
     feedoutput = feed_and_wait_for_docs("books", 5, :file => selfdir + "books.1.xml", :clusters => [ "books1", "books2" ], :exceptiononfailure => false)
     assert_correct_output(["ok: 5"], feedoutput)
 
-    assert_result("query=mid:1", selfdir + "ssub.1.result", "title")
-    assert_result("query=mid:2", selfdir + "ssub.2.result", "title")
-    assert_result("query=mid:3", selfdir + "ssub.3.result", "title")
+    assert_result("query=mid:1", selfdir + "ssub.1.result.json", "title")
+    assert_result("query=mid:2", selfdir + "ssub.2.result.json", "title")
+    assert_result("query=mid:3", selfdir + "ssub.3.result.json", "title")
   end
 
   def test_selectSomeSubscriptions
@@ -41,13 +41,13 @@ class SelectSubscription < IndexedSearchTest
     assert_correct_output(["ok: 5"], feedoutput)
     assert_correct_output(["ignored: 10"], feedoutput)
 
-    #save_result("query=mid:1", selfdir + "ssub.1.result")
-    #save_result("query=mid:2", selfdir + "ssub.2.result")
-    #save_result("query=mid:3", selfdir + "ssub.3.result")
+    #save_result("query=mid:1", selfdir + "ssub.1.result.json")
+    #save_result("query=mid:2", selfdir + "ssub.2.result.json")
+    #save_result("query=mid:3", selfdir + "ssub.3.result.json")
 
-    assert_result("query=mid:1", selfdir + "ssub.1.result", "title")
-    assert_result("query=mid:2", selfdir + "ssub.2.result", "title")
-    assert_result("query=mid:3", selfdir + "ssub.3.result", "title")
+    assert_result("query=mid:1", selfdir + "ssub.1.result.json", "title")
+    assert_result("query=mid:2", selfdir + "ssub.2.result.json", "title")
+    assert_result("query=mid:3", selfdir + "ssub.3.result.json", "title")
   end
 
   def teardown

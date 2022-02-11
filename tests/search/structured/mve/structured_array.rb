@@ -24,8 +24,8 @@ class StructuredArrayTest < SearchTest
                       indexing("mycc")))
     start
     feed_and_wait_for_docs("mvdtest", 1, :file => selfdir+"feed-1.xml")
-    # save_result("query=titles:%22slim%20shady%22", selfdir+"result.ss.xml")
-    assert_result("query=titles:%22slim%20shady%22", selfdir+"result.ss.xml")
+    # save_result("query=titles:%22slim%20shady%22", selfdir+"result.ss.json")
+    assert_result("query=titles:%22slim%20shady%22", selfdir+"result.ss.json")
   end
 
   def teardown

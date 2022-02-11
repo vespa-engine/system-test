@@ -1,0 +1,28 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "index:search/0/2f7e645be52f0f6352250a3f",
+                "relevance": 2.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "bolding",
+                    "title": "<hi>Chicago</hi> Blues the number is increasing"
+                }
+            }
+        ]
+    }
+}

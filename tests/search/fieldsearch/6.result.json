@@ -1,0 +1,112 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_1926_music_1921129209",
+                "relevance": 44.17429193899782,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_1926_music_1921129209",
+                    "title": "1926",
+                    "artist": "Johnny Dodds",
+                    "bgndata": "CD",
+                    "pto": 1598,
+                    "mid": 2,
+                    "ew": "1926",
+                    "surl": "http://shopping.yahoo.com/p_1926_music_1921129209",
+                    "pid": "1921129209",
+                    "weight": 44.0,
+                    "isbn": "3307517058928",
+                    "fmt": "CD",
+                    "pfrom": 1598,
+                    "categories": "1804905773 1804905773 1807865272 1804893726",
+                    "data": "CD15.983307517058928",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/142533/amg1921129209_1940.jpg?rm_____D6flGutey\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927005497",
+                    "newestedition": 19260501,
+                    "year": 1926,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_owls-hoot-_music_1921171319",
+                "relevance": 41.17429193899782,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_owls-hoot-_music_1921171319",
+                    "title": "Owls' Hoot!",
+                    "artist": "New Orleans Owls",
+                    "bgndata": "CD",
+                    "pto": 1898,
+                    "mid": 2,
+                    "ew": "hoot",
+                    "surl": "http://shopping.yahoo.com/p_owls-hoot-_music_1921171319",
+                    "pid": "1921171319",
+                    "weight": 41.0,
+                    "isbn": "641654760225",
+                    "fmt": "CD",
+                    "pfrom": 1289,
+                    "categories": "1804905773 1804905773 1807865272 1804893726",
+                    "data": "CD12.89-18.98641654760225",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/148693/amg1921171319_1940.jpg?rm_____DG0Ftfl9k\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927138075",
+                    "newestedition": 19250326,
+                    "year": 1925,
+                    "did": 66,
+                    "cbid": 2,
+                    "song": "Stomp Off, Let's Go;Oh Me! Oh My!;The Owls' Hoot;Piccadilly;Tampeekoe;Dynamite;Pretty Baby;West End Romp;Blowin' Off Steam;White Ghost Shivers;The Nightmare;Brotherly Love;Eccentric;That's A Plenty;Meat On The Table;The New Twister;Goose Pimples;Throwin' The Horns;She's Cryin' For Me -1;She's Cryin' For Me -4;Everybody Loves Somebody Blues -1;Everybody Loves Somebody Blues -2;Ain't Love Grand? -1;Ain't Love Grand? -2;Alligator Blues -3;Alligator Blues -4",
+                    "disp_song": "Stomp Off, Let's Go;Oh Me! Oh My!;The Owls' Hoot"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_1929_music_1921161693",
+                "relevance": 12.174291938997822,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_1929_music_1921161693",
+                    "title": "1929",
+                    "artist": "Clarence Williams",
+                    "bgndata": "CD",
+                    "pto": -100,
+                    "mid": 2,
+                    "ew": "1929",
+                    "surl": "http://shopping.yahoo.com/p_1929_music_1921161693",
+                    "pid": "1921161693",
+                    "weight": 12.0,
+                    "isbn": "3307517079121",
+                    "fmt": "CD",
+                    "categories": "1804905773 1807865272 1804893726",
+                    "data": "CD3307517079121",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/147862/amg1921161693_1940.jpg?rm_____DOpulvTjA\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927193066",
+                    "newestedition": 19290101,
+                    "year": 1929,
+                    "did": 66,
+                    "cbid": 2,
+                    "song": "Hot Lovin';Mama Stayed Out;Nobody's Business (How I Love That Man);Endurance Stomp;Some Do And Some Don't;Scufflin' Blues;If You Like Me Like I Like You;Have You Ever Felt That Way?;A Pane In The Glass;Too Low;Mississippi Blues (Home Town Toddle);Steamboat Days;Close Fit Blues;Baby, Won't You Please Come Home?;Breeze (Blow My Baby Back To Me);Mountain City Blues;I'm Not Worryin';Touch-Down;In Our Cottage Of Love;Lazy Mama;In Our Cottage Of Love;Them Things Got Me",
+                    "disp_song": "Hot Lovin';Mama Stayed Out;Nobody's Business (How I Love That Man)"
+                }
+            }
+        ]
+    }
+}

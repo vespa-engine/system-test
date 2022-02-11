@@ -1,0 +1,168 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 6,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:foo:withfence::2",
+                "relevance": 70.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::2",
+                    "title": "pizza near Napoli, London, Cracow",
+                    "center": {
+                        "y": 40833333,
+                        "x": 14250000
+                    },
+                    "center.position": {
+                        "y": 40833333,
+                        "x": 14250000,
+                        "latlong": "N40.833333;E14.250000"
+                    },
+                    "center.distance": 9950169,
+                    "fenceradius": 500000.0,
+                    "maybecenter": [
+                        {
+                            "y": 40833333,
+                            "x": 14250000
+                        },
+                        {
+                            "y": 51513912,
+                            "x": -128381
+                        },
+                        {
+                            "y": 50061598,
+                            "x": 19937473
+                        }
+                    ],
+                    "maybecenter.position": [
+                        {
+                            "y": 40833333,
+                            "x": 14250000,
+                            "latlong": "N40.833333;E14.250000"
+                        },
+                        {
+                            "y": 51513912,
+                            "x": -128381,
+                            "latlong": "N51.513912;W0.128381"
+                        },
+                        {
+                            "y": 50061598,
+                            "x": 19937473,
+                            "latlong": "N50.061598;E19.937473"
+                        }
+                    ],
+                    "maybecenter.distance": 45304,
+                    "order": 70,
+                    "multiplace": [
+                        {
+                            "radius": 200.0,
+                            "place": {
+                                "y": 40833333,
+                                "x": 14250000
+                            }
+                        },
+                        {
+                            "radius": 300.0,
+                            "place": {
+                                "y": 51513912,
+                                "x": -128381
+                            }
+                        },
+                        {
+                            "radius": 400.0,
+                            "place": {
+                                "y": 50061598,
+                                "x": 19937473
+                            }
+                        }
+                    ],
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": 500000.0,
+                        "attribute(maybecenter_zcurve).count": 3.0,
+                        "distance(center)": 9950169.367653446,
+                        "distance(maybecenter)": 45304.42553437799,
+                        "distance(maybecenter).index": 2.0,
+                        "distance(maybecenter).latitude": 50.061598,
+                        "distance(maybecenter).longitude": 19.937473,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:foo:withfence::3",
+                "relevance": 42.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::3",
+                    "title": "pizza from Domino's",
+                    "center": {
+                        "y": 0,
+                        "x": 0
+                    },
+                    "center.position": {
+                        "y": 0,
+                        "x": 0,
+                        "latlong": "N0.000000;E0.000000"
+                    },
+                    "center.distance": 51700593,
+                    "fenceradius": 1.0E9,
+                    "maybecenter": [
+
+                    ],
+                    "maybecenter.distance": 2147483647,
+                    "order": 42,
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": 1.0E9,
+                        "attribute(maybecenter_zcurve).count": 0.0,
+                        "distance(center)": 5.170059302303416E7,
+                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(maybecenter).index": -1.0,
+                        "distance(maybecenter).latitude": 90.0,
+                        "distance(maybecenter).longitude": -180.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:foo:withfence::4",
+                "relevance": 17.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::4",
+                    "title": "pizza with missing data",
+                    "center.distance": 2097422491,
+                    "maybecenter": [
+
+                    ],
+                    "maybecenter.distance": 2147483647,
+                    "order": 17,
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": null,
+                        "attribute(maybecenter_zcurve).count": 0.0,
+                        "distance(center)": 2.097422491587406E9,
+                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(maybecenter).index": -1.0,
+                        "distance(maybecenter).latitude": 90.0,
+                        "distance(maybecenter).longitude": -180.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

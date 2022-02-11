@@ -13,8 +13,8 @@ class ComplexSummary < IndexedSearchTest
     start
     feed(:file => selfdir + "doc.xml")
     wait_for_hitcount("query=sddocname:complexsummary", 2)
-    assert_result("/search/?query=title:Title1", selfdir+"res1.xml")
-    assert_result("/search/?query=title:Title2", selfdir+"res2.xml")
+    assert_result("/search/?query=title:Title1", selfdir+"res1.json")
+    assert_result("/search/?query=title:Title2", selfdir+"res2.json")
   end
 
   def teardown

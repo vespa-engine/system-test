@@ -1,0 +1,118 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:test::max",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::max",
+                    "sbytea": 127,
+                    "sbytes": 127,
+                    "abytea": [
+                        127,
+                        126
+                    ],
+                    "abytes": [
+                        127,
+                        126
+                    ],
+                    "wbytea": [
+                        {
+                            "item": 126,
+                            "weight": 1
+                        },
+                        {
+                            "item": 127,
+                            "weight": 1
+                        }
+                    ],
+                    "wbytes": [
+                        {
+                            "item": 126,
+                            "weight": 1
+                        },
+                        {
+                            "item": 127,
+                            "weight": 1
+                        }
+                    ],
+                    "sinta": 2147483647,
+                    "sints": 2147483647,
+                    "ainta": [
+                        2147483647,
+                        2147483646
+                    ],
+                    "aints": [
+                        2147483647,
+                        2147483646
+                    ],
+                    "winta": [
+                        {
+                            "item": 2147483646,
+                            "weight": 1
+                        },
+                        {
+                            "item": 2147483647,
+                            "weight": 1
+                        }
+                    ],
+                    "wints": [
+                        {
+                            "item": 2147483646,
+                            "weight": 1
+                        },
+                        {
+                            "item": 2147483647,
+                            "weight": 1
+                        }
+                    ],
+                    "slonga": 9223372036854775807,
+                    "slongs": 9223372036854775807,
+                    "alonga": [
+                        9223372036854775807,
+                        9223372036854775806
+                    ],
+                    "alongs": [
+                        9223372036854775807,
+                        9223372036854775806
+                    ],
+                    "wlonga": [
+                        {
+                            "item": 9223372036854775806,
+                            "weight": 1
+                        },
+                        {
+                            "item": 9223372036854775807,
+                            "weight": 1
+                        }
+                    ],
+                    "wlongs": [
+                        {
+                            "item": 9223372036854775806,
+                            "weight": 1
+                        },
+                        {
+                            "item": 9223372036854775807,
+                            "weight": 1
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 3,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:partial/update:update::0",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "update",
+                    "documentid": "id:partial/update:update::0",
+                    "intfield": 555555,
+                    "longfield": 11111111111,
+                    "bytefield": 10,
+                    "floatfield": 10.0,
+                    "doublefield": 100.0,
+                    "body": "doc0 upd"
+                }
+            },
+            {
+                "id": "id:partial/update:update::1",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "update",
+                    "documentid": "id:partial/update:update::1",
+                    "intfield": -666666,
+                    "longfield": -22222222222,
+                    "bytefield": 25,
+                    "floatfield": -25.0,
+                    "doublefield": -205.0,
+                    "body": "doc1 upd"
+                }
+            },
+            {
+                "id": "id:partial/update:update::2",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "update",
+                    "documentid": "id:partial/update:update::2",
+                    "intfield": 777777,
+                    "longfield": 33333333333,
+                    "bytefield": 30,
+                    "floatfield": 30.0,
+                    "doublefield": 300.0,
+                    "body": "doc2 upd"
+                }
+            }
+        ]
+    }
+}

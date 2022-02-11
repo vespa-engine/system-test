@@ -10,10 +10,13 @@ class Resultset
   attr_accessor :responsecode
   attr_accessor :hitcount
   attr_reader :hit
+  attr_reader :groupings
+  attr_reader :json
   attr_accessor :query
 
   def initialize(data, query, response = nil)
     @hit = []
+    @groupings = {}
     @hitcount = nil
     @query = query
     @xmldata = data
@@ -33,7 +36,6 @@ class Resultset
 
   def parse
     return unless @xmldata
-
     if is_xml?
       parse_xml
     elsif is_json?
@@ -53,36 +55,38 @@ class Resultset
   def parse_json
     begin
       @hit = []
-      json = JSON.parse(@xmldata)
-      parse_hits_json(json)
+      @json = JSON.parse(@xmldata)
+      parse_hits_json(@json)
     rescue Exception => e
       puts "#{e.message}, could not parse JSON: #{@xmldata}"
     end
-    return json
+    @json
   end
 
   def parse_hits_json(json)
-    if !json
+    unless json && json['root'] && json['root']['fields']
       return nil
     end
     begin
       @hitcount = json['root']['fields']['totalCount']
       json['root']['children'].each do |e|
-        hit = Hit.new
-        hit.add_field("relevancy", e['relevance'])
-        hit.add_field("documentid", e['id'])
-        hit.add_field("source", e['source']) if e.key?('source')
-        e['fields'].each { |f| hit.add_field(f.first, f.last) }
-        add_hit(hit)
+        if e.key?('children') && ! e.key?('fields')
+           id = e['id']
+           @groupings[id] = e
+        else
+          hit = Hit.new
+          hit.add_field("relevancy", e['relevance'])
+          hit.add_field("documentid", e['id'])
+          hit.add_field("source", e['source']) if e.key?('source')
+          if e.key?('fields')
+            e['fields'].each { |f| hit.add_field(f.first, f.last) }
+          end
+          add_hit(hit)
+        end
       end
     rescue Exception
       return nil
     end
-  end
-
-  def json
-    raise 'No data available' unless @xmldata
-    JSON.parse(@xmldata)
   end
 
   def xml
@@ -167,7 +171,7 @@ class Resultset
   end
 
   def ==(other)
-    (hit == other.hit && hitcount == other.hitcount)
+    (hitcount == other.hitcount && groupings == other.groupings && hit == other.hit)
   end
 
   def sort_results_by(sortfield)

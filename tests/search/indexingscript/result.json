@@ -1,0 +1,219 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:ns:test::7",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:ns:test::7",
+                    "add_2a_b": 211,
+                    "sub_a_2b": -72,
+                    "mul_a_b": 4970,
+                    "div_2a_b": 1,
+                    "avg_a_b": 70,
+                    "min_a_b": 70,
+                    "max_a_b": 71,
+                    "sum_c": 604,
+                    "a": 70,
+                    "b": 71,
+                    "c": "72;73;74;75;76;77;78;79"
+                }
+            },
+            {
+                "id": "id:ns:test::8",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:ns:test::8",
+                    "add_2a_b": 241,
+                    "sub_a_2b": -82,
+                    "mul_a_b": 6480,
+                    "div_2a_b": 1,
+                    "avg_a_b": 80,
+                    "min_a_b": 80,
+                    "max_a_b": 81,
+                    "sum_c": 684,
+                    "a": 80,
+                    "b": 81,
+                    "c": "82;83;84;85;86;87;88;89"
+                }
+            },
+            {
+                "id": "id:ns:test::9",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:ns:test::9",
+                    "add_2a_b": 271,
+                    "sub_a_2b": -92,
+                    "mul_a_b": 8190,
+                    "div_2a_b": 1,
+                    "avg_a_b": 90,
+                    "min_a_b": 90,
+                    "max_a_b": 91,
+                    "sum_c": 764,
+                    "a": 90,
+                    "b": 91,
+                    "c": "92;93;94;95;96;97;98;99"
+                }
+            },
+            {
+                "id": "id:ns:test::0",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:ns:test::0",
+                    "add_2a_b": 1,
+                    "sub_a_2b": -2,
+                    "mul_a_b": 0,
+                    "div_2a_b": 0,
+                    "avg_a_b": 0,
+                    "min_a_b": 0,
+                    "max_a_b": 1,
+                    "sum_c": 44,
+                    "a": 0,
+                    "b": 1,
+                    "c": "2;3;4;5;6;7;8;9"
+                }
+            },
+            {
+                "id": "id:ns:test::2",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:ns:test::2",
+                    "add_2a_b": 61,
+                    "sub_a_2b": -22,
+                    "mul_a_b": 420,
+                    "div_2a_b": 1,
+                    "avg_a_b": 20,
+                    "min_a_b": 20,
+                    "max_a_b": 21,
+                    "sum_c": 204,
+                    "a": 20,
+                    "b": 21,
+                    "c": "22;23;24;25;26;27;28;29"
+                }
+            },
+            {
+                "id": "id:ns:test::5",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:ns:test::5",
+                    "add_2a_b": 151,
+                    "sub_a_2b": -52,
+                    "mul_a_b": 2550,
+                    "div_2a_b": 1,
+                    "avg_a_b": 50,
+                    "min_a_b": 50,
+                    "max_a_b": 51,
+                    "sum_c": 444,
+                    "a": 50,
+                    "b": 51,
+                    "c": "52;53;54;55;56;57;58;59"
+                }
+            },
+            {
+                "id": "id:ns:test::3",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:ns:test::3",
+                    "add_2a_b": 91,
+                    "sub_a_2b": -32,
+                    "mul_a_b": 930,
+                    "div_2a_b": 1,
+                    "avg_a_b": 30,
+                    "min_a_b": 30,
+                    "max_a_b": 31,
+                    "sum_c": 284,
+                    "a": 30,
+                    "b": 31,
+                    "c": "32;33;34;35;36;37;38;39"
+                }
+            },
+            {
+                "id": "id:ns:test::1",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:ns:test::1",
+                    "add_2a_b": 31,
+                    "sub_a_2b": -12,
+                    "mul_a_b": 110,
+                    "div_2a_b": 1,
+                    "avg_a_b": 10,
+                    "min_a_b": 10,
+                    "max_a_b": 11,
+                    "sum_c": 124,
+                    "a": 10,
+                    "b": 11,
+                    "c": "12;13;14;15;16;17;18;19"
+                }
+            },
+            {
+                "id": "id:ns:test::4",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:ns:test::4",
+                    "add_2a_b": 121,
+                    "sub_a_2b": -42,
+                    "mul_a_b": 1640,
+                    "div_2a_b": 1,
+                    "avg_a_b": 40,
+                    "min_a_b": 40,
+                    "max_a_b": 41,
+                    "sum_c": 364,
+                    "a": 40,
+                    "b": 41,
+                    "c": "42;43;44;45;46;47;48;49"
+                }
+            },
+            {
+                "id": "id:ns:test::6",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:ns:test::6",
+                    "add_2a_b": 181,
+                    "sub_a_2b": -62,
+                    "mul_a_b": 3660,
+                    "div_2a_b": 1,
+                    "avg_a_b": 60,
+                    "min_a_b": 60,
+                    "max_a_b": 61,
+                    "sum_c": 524,
+                    "a": 60,
+                    "b": 61,
+                    "c": "62;63;64;65;66;67;68;69"
+                }
+            }
+        ]
+    }
+}

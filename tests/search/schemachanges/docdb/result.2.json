@@ -1,0 +1,41 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:testa:testa::2",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "testa",
+                    "documentid": "id:testa:testa::2",
+                    "f1": "c d e f",
+                    "f3": 32
+                }
+            },
+            {
+                "id": "id:testa:testa::0",
+                "relevance": 0.15968336182749504,
+                "source": "search",
+                "fields": {
+                    "sddocname": "testa",
+                    "documentid": "id:testa:testa::0",
+                    "f1": "a b c d",
+                    "f3": 30
+                }
+            }
+        ]
+    }
+}

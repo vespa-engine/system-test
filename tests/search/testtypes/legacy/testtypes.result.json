@@ -1,0 +1,38 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:typetest::http://this-is-a-host.com/path_name",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "typetest",
+                    "documentid": "id:test:typetest::http://this-is-a-host.com/path_name",
+                    "stringfield": "This is-a little STRING",
+                    "urlfield": "http://this-is-a-host.com/path_name",
+                    "intfield": 1807,
+                    "longfield": 10098765432100,
+                    "floatfield": 1975.18,
+                    "doublefield": 1975.181987234561,
+                    "rawfield": "this is raw data",
+                    "timefield": 1087203341,
+                    "boolfield": true,
+                    "bytefield": 37
+                }
+            }
+        ]
+    }
+}

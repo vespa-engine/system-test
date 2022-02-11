@@ -1,0 +1,72 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 11
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 13,
+            "full": true,
+            "nodes": 4,
+            "results": 4,
+            "resultsFull": 4
+        },
+        "children": [
+            {
+                "id": "id:music:music::0",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::0",
+                    "title": "...And Justice For All",
+                    "year": 1988,
+                    "rating": 10,
+                    "artist": "Metallica"
+                }
+            },
+            {
+                "id": "id:book:book::2",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "book",
+                    "documentid": "id:book:book::2",
+                    "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
+                    "year": 1994,
+                    "rating": 9,
+                    "author": "Erich Gamma",
+                    "pages": 416
+                }
+            },
+            {
+                "id": "id:video:video::2",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "video",
+                    "documentid": "id:video:video::2",
+                    "title": "Heat",
+                    "year": 1995,
+                    "rating": 8,
+                    "director": "Michael Mann"
+                }
+            },
+            {
+                "id": "id:video:video::1",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "video",
+                    "documentid": "id:video:video::1",
+                    "title": "The Rock",
+                    "year": 1996,
+                    "rating": 7,
+                    "director": "Michael Bay"
+                }
+            }
+        ]
+    }
+}

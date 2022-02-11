@@ -1,0 +1,220 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 8
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:local::pushyss://3/",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://3/",
+                    "id": 21024503,
+                    "type": "POI",
+                    "dtitle": "Leather Creations",
+                    "addr": "540 S Coast Hwy",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "zip": 92651,
+                    "phone": "(949) 494-2044",
+                    "ycat": "95763967 95902128 2711608 7737166",
+                    "cat": "RETAIL,LUGGAGE,ACCESSORIES,SHOPPING",
+                    "len": -1177451,
+                    "q": 6,
+                    "rating": 0.0,
+                    "eventutime": 0,
+                    "ycatgc": "95902128",
+                    "enhanced": "N"
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://0/",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://0/",
+                    "id": 21024500,
+                    "type": "POI",
+                    "dtitle": "Class Act Valet",
+                    "addr": "28831 Shady Pl",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "zip": 92651,
+                    "phone": "(949) 497-3301",
+                    "ycat": "95743685 7737302 2711608 7737166",
+                    "cat": "TRANSPORTATION,PARKING,SERVICE,PARK,CAR,TRAVEL,LOT",
+                    "len": -1177529,
+                    "q": 9,
+                    "rating": 0.0,
+                    "eventutime": 0,
+                    "ycatgc": "95743685",
+                    "enhanced": "N",
+                    "crossst": "2|Shady Ln|Anns Ln"
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://6/",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://6/",
+                    "id": 21024505,
+                    "type": "POI",
+                    "dtitle": "McCormick Crematory",
+                    "addr": "1795 Laguna Canyon Rd",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "zip": 92651,
+                    "phone": "(310) 374-0344",
+                    "ycat": "92210241 95880659 2711608 7737166 7737193",
+                    "cat": "MORTUARIES,MORTUARY,CREMATION,COMMUNITY,SERVICES,MEMORIALS,FUNERALS",
+                    "len": -1177745,
+                    "q": 9,
+                    "rating": 0.0,
+                    "eventutime": 0,
+                    "ycatgc": "95880659",
+                    "enhanced": "N",
+                    "crossst": "1|Canyon Acres Dr"
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://4/",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://4/",
+                    "id": 21024504,
+                    "type": "POI",
+                    "dtitle": "Skyline Kitchen & Bath",
+                    "addr": "31671 Coast Hwy",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "zip": 92651,
+                    "phone": "(949) 477-0504",
+                    "ycat": "23188340 7737252 22683646 2711608 7737166 8109652 23187799 23192001 95982735 95756189 8109656",
+                    "cat": "FIRE,GARDEN,ESTATE,RESTORATION,REAL,FIREWOOD,DAMAGE,WOOD,BUSINESS,HOME,CONTRACTORS,FOUNDATION,REPAIR,WATER,GENERAL,RESIDENTIAL,CONSTRUCTION",
+                    "len": -1177451,
+                    "q": 6,
+                    "rating": 0.0,
+                    "eventutime": 0,
+                    "ycatgc": "23192001 95982735 95756189 8109656",
+                    "enhanced": "N"
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://9/",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://9/",
+                    "id": 21024507,
+                    "type": "POI",
+                    "dtitle": "Identity Fashions",
+                    "addr": "437 Panorama Dr",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "zip": 92651,
+                    "phone": "(949) 715-3460",
+                    "ycat": "8120635 8120288 2711608 7737166 95763967 8120613",
+                    "cat": "RETAIL,SHOPPING,STORE,RETAILERS,T,APPAREL,TSHIRT,CLOTHING,CLOTHES,SHIRT",
+                    "len": -1178003,
+                    "q": 9,
+                    "rating": 0.0,
+                    "eventutime": 0,
+                    "ycatgc": "8120635",
+                    "enhanced": "N",
+                    "crossst": "2|Ferndale Dr|Fayette Pl"
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://2/",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://2/",
+                    "id": 21024502,
+                    "type": "POI",
+                    "dtitle": "Cuddy, Leisa - Smilebliss of Laguna",
+                    "addr": "330 Park Ave",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "zip": 92651,
+                    "phone": "(949) 494-1601",
+                    "ycat": "95495657 7737238 8107040 2711608 7737166 8106998 8110048",
+                    "cat": "DENTAL,MD,DENTIST,DENTISTS,CLINICS,PHYSICIANS,MEDICINE,DOCTORS,COSMETIC,PEDIATRIC,HEALTH,DR,DENTISTRY",
+                    "len": -1177818,
+                    "q": 9,
+                    "rating": 0.0,
+                    "eventutime": 0,
+                    "ycatgc": "8107040 8110048",
+                    "enhanced": "N",
+                    "crossst": "3|Glenneyre St|Park Ave"
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://1/",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://1/",
+                    "id": 21024501,
+                    "type": "POI",
+                    "dtitle": "Alen Deck",
+                    "addr": "668 N Coast Hwy # 511",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "zip": 92651,
+                    "phone": "(949) 497-4562",
+                    "len": -1177451,
+                    "q": 6,
+                    "rating": 0.0,
+                    "eventutime": 0,
+                    "enhanced": "N"
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://7/",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://7/",
+                    "id": 21024506,
+                    "type": "POI",
+                    "dtitle": "Heflin Construction",
+                    "addr": "119 El Morro Vlg",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "zip": 92651,
+                    "phone": "(949) 278-4325",
+                    "ycat": "23188340 7737252 22683646 2711608 7737166 8109652 23187799 23192001 95756189 8109656",
+                    "cat": "GARDEN,ESTATE,REAL,HOME,BUSINESS,CONTRACTORS,FOUNDATION,REPAIR,GENERAL,RESIDENTIAL,CONSTRUCTION",
+                    "len": -1178080,
+                    "q": 6,
+                    "rating": 0.0,
+                    "eventutime": 0,
+                    "ycatgc": "23192001 95756189 8109656",
+                    "enhanced": "N"
+                }
+            }
+        ]
+    }
+}

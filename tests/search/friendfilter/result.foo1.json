@@ -1,0 +1,229 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 11
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 14,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:blogpost:blogpost::techlist.1",
+                "relevance": 0.38286238359951247,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::techlist.1",
+                    "title": "foo bar",
+                    "author": "havardpe",
+                    "timestamp": 1,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.0,
+                        "nativeRank": 0.38186238359951247,
+                        "termFieldMd(author).firstweight": 0.0,
+                        "termFieldMd(author).occurrences": 0.0,
+                        "termFieldMd(author).termsmatched": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::chat.2",
+                "relevance": 0.17543879032006288,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.2",
+                    "title": "omg! foo bar is so uncool!",
+                    "author": "fangirl2",
+                    "timestamp": 12,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.0,
+                        "nativeRank": 0.16343879032006287,
+                        "termFieldMd(author).firstweight": 0.0,
+                        "termFieldMd(author).occurrences": 0.0,
+                        "termFieldMd(author).termsmatched": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::chat.1",
+                "relevance": 0.17443879032006288,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.1",
+                    "title": "omg! foo bar is so cool!",
+                    "author": "fangirl1",
+                    "timestamp": 11,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.0,
+                        "nativeRank": 0.16343879032006287,
+                        "termFieldMd(author).firstweight": 0.0,
+                        "termFieldMd(author).occurrences": 0.0,
+                        "termFieldMd(author).termsmatched": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::techlist.3",
+                "relevance": 0.16643879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::techlist.3",
+                    "title": "Re: foo bar",
+                    "author": "bergum",
+                    "timestamp": 3,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.0,
+                        "nativeRank": 0.16343879032006287,
+                        "termFieldMd(author).firstweight": 0.0,
+                        "termFieldMd(author).occurrences": 0.0,
+                        "termFieldMd(author).termsmatched": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::techlist.2",
+                "relevance": 0.16543879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::techlist.2",
+                    "title": "Re: foo bar",
+                    "author": "arnej",
+                    "timestamp": 2,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.0,
+                        "nativeRank": 0.16343879032006287,
+                        "termFieldMd(author).firstweight": 0.0,
+                        "termFieldMd(author).occurrences": 0.0,
+                        "termFieldMd(author).termsmatched": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::techlist.4",
+                "relevance": 0.16374580091895014,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::techlist.4",
+                    "title": "Re: Re: foo bar",
+                    "author": "yngve",
+                    "timestamp": 4,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.0,
+                        "nativeRank": 0.15974580091895013,
+                        "termFieldMd(author).firstweight": 0.0,
+                        "termFieldMd(author).occurrences": 0.0,
+                        "termFieldMd(author).termsmatched": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::chat.4",
+                "relevance": 0.16282934866505033,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.4",
+                    "title": "omg! way! (was: omg! foo bar is so uncool!)",
+                    "author": "fangirl7",
+                    "timestamp": 14,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.0,
+                        "nativeRank": 0.14882934866505032,
+                        "termFieldMd(author).firstweight": 0.0,
+                        "termFieldMd(author).occurrences": 0.0,
+                        "termFieldMd(author).termsmatched": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::chat.3",
+                "relevance": 0.16182934866505033,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.3",
+                    "title": "No way! (was: omg! foo bar is so uncool!)",
+                    "author": "fangirl1",
+                    "timestamp": 13,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.0,
+                        "nativeRank": 0.14882934866505032,
+                        "termFieldMd(author).firstweight": 0.0,
+                        "termFieldMd(author).occurrences": 0.0,
+                        "termFieldMd(author).termsmatched": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::chat.5",
+                "relevance": 0.15496598095543562,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.5",
+                    "title": "No ***ing way! (was: omg! way! (was: omg! foo bar is so uncool!))",
+                    "author": "bff",
+                    "timestamp": 15,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.0,
+                        "nativeRank": 0.1399659809554356,
+                        "termFieldMd(author).firstweight": 0.0,
+                        "termFieldMd(author).occurrences": 0.0,
+                        "termFieldMd(author).termsmatched": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::chat.6",
+                "relevance": 0.15371343704910012,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.6",
+                    "title": "Paris Hilton's new BFF in fight with fangirls! Is foo bar cool or uncool?",
+                    "author": "tabloid",
+                    "timestamp": 16,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.0,
+                        "nativeRank": 0.1377134370491001,
+                        "termFieldMd(author).firstweight": 0.0,
+                        "termFieldMd(author).occurrences": 0.0,
+                        "termFieldMd(author).termsmatched": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music2::http://music.com/testdoc>",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music2",
+                    "documentid": "id:test:music2::http://music.com/testdoc>",
+                    "base64test_long": 6276970,
+                    "title2": "Title in doctype music2",
+                    "artist2": "strangelove"
+                }
+            }
+        ]
+    }
+}

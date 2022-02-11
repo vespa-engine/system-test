@@ -26,10 +26,10 @@ class RankProfiles < IndexedSearchTest
 
     fields = ["relevancy","sddocname","documentid","field11","field12","field13","field14","field21","field22","field23","field24"]
 
-    assert_result(query1, selfdir + "result1.xml", nil, fields)
-    assert_result(query2, selfdir + "result2.xml", nil, fields)
-    assert_result(query3, selfdir + "result3.xml", nil, fields)
-    assert_result(query4, selfdir + "result4.xml", nil, fields)
+    assert_result(query1, selfdir + "result1.json", nil, fields)
+    assert_result(query2, selfdir + "result2.json", nil, fields)
+    assert_result(query3, selfdir + "result3.json", nil, fields)
+    assert_result(query4, selfdir + "result4.json", nil, fields)
 
     sf1 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 230, "query(myvalue)" => 0}
     sf2 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 235, "query(myvalue)" => 5}

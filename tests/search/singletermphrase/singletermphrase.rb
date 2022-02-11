@@ -14,15 +14,12 @@ class SingleTermPhrase < IndexedSearchTest
     feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.xml")
 
     puts "Query: Querying, old problem query"
-    assert_result_matches("query=CET-4%E6%88%90%E7%BB%A9&tracelevel=2&language=zh-hans",
-                          selfdir+"first.result",
-                          "<p>Detected language: ")
+    assert_result("query=CET-4%E6%88%90%E7%BB%A9&tracelevel=5&language=zh-hans&format=xml",
+                  selfdir+"first.result")
 
     puts "Query: Querying, invalid UTF-8"
-    assert_result_matches("query=%C3%83%C2%98%C3%82%C2%B5%C3%83%C2%99%C3%82%C2%88%C3%83%C2%98%C3%82%C2%B1&tracelevel=2&language=zh-hans",
-                          selfdir+"second.result",
-                          "<p>Detected language: ")
-
+    assert_result("query=%C3%83%C2%98%C3%82%C2%B5%C3%83%C2%99%C3%82%C2%88%C3%83%C2%98%C3%82%C2%B1&tracelevel=5&language=zh-hans&format=xml",
+                  selfdir+"second.result")
   end
 
   def teardown

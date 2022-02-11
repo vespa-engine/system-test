@@ -14,25 +14,28 @@ class StaticRank < IndexedSearchTest
     feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
 
     puts "Search for year:1980, and see that results are sorted in order by decreasing weight"
-    assert_result_matches("query=year:1980&hits=100&sortspec=-weight",
-                          selfdir+"staticrank_year1980.result",
-                          '<field name="weight">')
+    assert_result("query=year:1980&hits=100&sortspec=-weight",
+                  selfdir+"staticrank_year1980.result.json",
+                  nil,
+                  'weight')
 
     puts "Search for year:1980, and see that results are sorted in order by static rank (weight)"
-    assert_result_matches("query=year:1980&hits=100&sortspec=-[rank]",
-                          selfdir+"staticrank_year1980.result",
-                          '<field name="weight">')
+    assert_result("query=year:1980&hits=100&sortspec=-[rank]",
+                  selfdir+"staticrank_year1980.result.json",
+                  nil,
+                  'weight')
 
     puts "Search for year:1980, and see that results are ranked in order by static rank (weight)"
-    assert_result_matches("query=year:1980&hits=100",
-                          selfdir+"staticrank_year1980.result",
-                          '<field name="weight">')
+    assert_result("query=year:1980&hits=100",
+                  selfdir+"staticrank_year1980.result.json",
+                  nil,
+                  'weight')
 
     puts "Search for ew:love, and see that results are ranked in order by static rank (weight)"
-    assert_result_matches("query=ew:love!0&hits=100",
-                          selfdir+"staticrank_ew_love.result",
-                          '<field name="weight">')
-
+    assert_result("query=ew:love!0&hits=100",
+                  selfdir+"staticrank_ew_love.result.json",
+                  nil,
+                  'weight')
   end
 
   def test_update_rank
@@ -45,20 +48,20 @@ class StaticRank < IndexedSearchTest
     query_attribute = "query=attributefield:attribute&nocache"
 
     # ascending doc id
-    assert_result(query_index, selfdir+"updaterank0.result", nil, ["body", "relevancy"])
-    assert_result(query_attribute, selfdir+"updaterank0.result", nil, ["body", "relevancy"])
+    assert_result(query_index, selfdir+"updaterank0.result.json", nil, ["body", "relevancy"])
+    assert_result(query_attribute, selfdir+"updaterank0.result.json", nil, ["body", "relevancy"])
 
     # descending doc id
     feedfile(selfdir+"updaterank1.xml")
     wait_for_hitcount(query_index, 4);
-    assert_result(query_index, selfdir+"updaterank1.result", nil, ["body", "relevancy"])
-    assert_result(query_attribute, selfdir+"updaterank1.result", nil, ["body", "relevancy"])
+    assert_result(query_index, selfdir+"updaterank1.result.json", nil, ["body", "relevancy"])
+    assert_result(query_attribute, selfdir+"updaterank1.result.json", nil, ["body", "relevancy"])
 
     # ascending doc id
     feedfile(selfdir+"updaterank2.xml")
     wait_for_hitcount(query_index, 4);
-    assert_result(query_index, selfdir+"updaterank0.result", nil, ["body", "relevancy"])
-    assert_result(query_attribute, selfdir+"updaterank0.result", nil, ["body", "relevancy"])
+    assert_result(query_index, selfdir+"updaterank0.result.json", nil, ["body", "relevancy"])
+    assert_result(query_attribute, selfdir+"updaterank0.result.json", nil, ["body", "relevancy"])
   end
 
   def teardown

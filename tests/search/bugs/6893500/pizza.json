@@ -1,0 +1,63 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:withmap::1",
+                "relevance": 0.38186238359951247,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "withmap",
+                    "meta_tags": {
+                        "789": "foobar",
+                        "123": "foo",
+                        "456": "bar"
+                    },
+                    "bamf": "\nfield meta_tags (StructuredData): [{\"key\":\"789\",\"value\":\"foobar\"},{\"key\":\"123\",\"value\":\"foo\"},{\"key\":\"456\",\"value\":\"bar\"}]\n",
+                    "documentid": "id:test:withmap::1",
+                    "title": "pizza hut sunnyvale",
+                    "good_map": {
+                        "hitchhiker": {
+                            "bar": "fortytwo",
+                            "foo": 42
+                        },
+                        "adams": {
+                            "bar": "one",
+                            "foo": 1
+                        }
+                    },
+                    "bad_map": [
+                        {
+                            "key": 7042,
+                            "value": {
+                                "name": "lademoen",
+                                "addr": "trondheim",
+                                "postcode": 7042
+                            }
+                        },
+                        {
+                            "key": 42,
+                            "value": {
+                                "name": "the restaurant",
+                                "addr": "at the end of the universe",
+                                "postcode": 42
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

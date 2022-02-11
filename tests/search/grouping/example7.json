@@ -1,0 +1,181 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 20
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 20,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:customer",
+                        "relevance": 1.0,
+                        "label": "customer",
+                        "children": [
+                            {
+                                "id": "group:string:Jones",
+                                "relevance": 9870.0,
+                                "value": "Jones",
+                                "children": [
+                                    {
+                                        "id": "grouplist:time.date(date)",
+                                        "relevance": 1.0,
+                                        "label": "time.date(date)",
+                                        "children": [
+                                            {
+                                                "id": "group:string:2006-9-11",
+                                                "relevance": 9870.0,
+                                                "value": "2006-9-11",
+                                                "fields": {
+                                                    "sum(price)": 20816.0
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:2006-9-10",
+                                                "relevance": 8900.0,
+                                                "value": "2006-9-10",
+                                                "fields": {
+                                                    "sum(price)": 8900.0
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:2006-9-8",
+                                                "relevance": 5000.0,
+                                                "value": "2006-9-8",
+                                                "fields": {
+                                                    "sum(price)": 8000.0
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:2006-9-9",
+                                                "relevance": 2100.0,
+                                                "value": "2006-9-9",
+                                                "fields": {
+                                                    "sum(price)": 2100.0
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "group:string:Brown",
+                                "relevance": 8000.0,
+                                "value": "Brown",
+                                "children": [
+                                    {
+                                        "id": "grouplist:time.date(date)",
+                                        "relevance": 1.0,
+                                        "label": "time.date(date)",
+                                        "children": [
+                                            {
+                                                "id": "group:string:2006-9-8",
+                                                "relevance": 8000.0,
+                                                "value": "2006-9-8",
+                                                "fields": {
+                                                    "sum(price)": 8000.0
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:2006-9-10",
+                                                "relevance": 3770.0,
+                                                "value": "2006-9-10",
+                                                "fields": {
+                                                    "sum(price)": 7540.0
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:2006-9-9",
+                                                "relevance": 3400.0,
+                                                "value": "2006-9-9",
+                                                "fields": {
+                                                    "sum(price)": 3400.0
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:2006-9-11",
+                                                "relevance": 1597.0,
+                                                "value": "2006-9-11",
+                                                "fields": {
+                                                    "sum(price)": 1597.0
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "group:string:Smith",
+                                "relevance": 6100.0,
+                                "value": "Smith",
+                                "children": [
+                                    {
+                                        "id": "grouplist:time.date(date)",
+                                        "relevance": 1.0,
+                                        "label": "time.date(date)",
+                                        "children": [
+                                            {
+                                                "id": "group:string:2006-9-10",
+                                                "relevance": 6100.0,
+                                                "value": "2006-9-10",
+                                                "fields": {
+                                                    "sum(price)": 6100.0
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:2006-9-9",
+                                                "relevance": 5500.0,
+                                                "value": "2006-9-9",
+                                                "fields": {
+                                                    "sum(price)": 6800.0
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:2006-9-11",
+                                                "relevance": 2584.0,
+                                                "value": "2006-9-11",
+                                                "fields": {
+                                                    "sum(price)": 2584.0
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:2006-9-7",
+                                                "relevance": 2000.0,
+                                                "value": "2006-9-7",
+                                                "fields": {
+                                                    "sum(price)": 3000.0
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:2006-9-6",
+                                                "relevance": 1000.0,
+                                                "value": "2006-9-6",
+                                                "fields": {
+                                                    "sum(price)": 1000.0
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

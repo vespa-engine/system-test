@@ -27,7 +27,7 @@ class ArrayIndexing < IndexedSearchTest
     assert_hitcount("query=justice", 1)
     assert_hitcount("query=ride", 1)
 
-    assert_result("query=sddocname:arrayindexing", selfdir + "result.xml", nil, ["songtitles", "weightedtitles"])
+    assert_result("query=sddocname:arrayindexing", selfdir + "result.json", nil, ["songtitles", "weightedtitles"])
   end
 
   def teardown

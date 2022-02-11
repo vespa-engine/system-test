@@ -1,0 +1,135 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_101-strings-with-piano_music_1921247118",
+                "relevance": 86.18623835995125,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_101-strings-with-piano_music_1921247118",
+                    "title": "101 Strings With Piano",
+                    "artist": "101 Strings Orchestra",
+                    "bgndata": "CD",
+                    "pto": 1398,
+                    "mid": 2,
+                    "ew": "piano",
+                    "surl": "http://shopping.yahoo.com/p_101-strings-with-piano_music_1921247118",
+                    "pid": "1921247118",
+                    "weight": 48.0,
+                    "isbn": "056775522223,056775516222",
+                    "fmt": "CD",
+                    "pfrom": 1198,
+                    "categories": "1804905736 1804905736 1804905738 1804905736 1804905739 1804893726",
+                    "data": "CD11.98-13.98056775516222",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/455218/amgttn.d06258ye4ic.jpg?rm_____D.oeyTCKT\" height=62 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927001575",
+                    "newestedition": 19970603,
+                    "year": 1997,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_history-of-rock-the-doo-wop-era-pt-1-wcbs-fm-101_music_1921048354",
+                "relevance": 57.21025210962331,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_history-of-rock-the-doo-wop-era-pt-1-wcbs-fm-101_music_1921048354",
+                    "title": "History of Rock: The Doo-Wop Era, Pt. 1 - WCBS FM-101",
+                    "artist": "Various Artists",
+                    "bgndata": "CDCALP",
+                    "pto": 1697,
+                    "mid": 2,
+                    "ew": "rock",
+                    "surl": "http://shopping.yahoo.com/p_history-of-rock-the-doo-wop-era-pt-1-wcbs-fm-101_music_1921048354",
+                    "pid": "1921048354",
+                    "weight": 43.0,
+                    "isbn": "090431250723,090431250747,090431250716",
+                    "fmt": "CD CA LP",
+                    "pfrom": 1035,
+                    "categories": "1804905824 1804905848 1804893726",
+                    "data": "CD10.35-16.97090431250723CA10.43090431250747LP090431250716",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/145512/amg1921048354_1940.jpg?rm_____Di2JNkN1N\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "newestedition": 19911125,
+                    "year": 1991,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_dancehall-101-vol-4_music_1921921717",
+                "relevance": 56.343879032006285,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_dancehall-101-vol-4_music_1921921717",
+                    "title": "Dancehall 101, Vol. 4",
+                    "artist": "Various Artists",
+                    "bgndata": "CDLP",
+                    "pto": 1698,
+                    "mid": 2,
+                    "ew": "101",
+                    "surl": "http://shopping.yahoo.com/p_dancehall-101-vol-4_music_1921921717",
+                    "pid": "1921921717",
+                    "weight": 40.0,
+                    "isbn": "054645165426,054645165419",
+                    "fmt": "CD LP",
+                    "pfrom": 1057,
+                    "categories": "1804905871 1804905915 1804893726",
+                    "data": "CD10.57-16.98054645165426LP054645165419",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/135636/amg1921921717_1940.jpg?rm_____D6GBkDqMc\" height=69 width=70 border=0 hspace=0 vspace=0",
+                    "newestedition": 20020827,
+                    "year": 2002,
+                    "did": 66,
+                    "cbid": 2,
+                    "song": "Revolution;Here I Come;One Dance;Golden Hen;Everybody;Matey;Money Friend;Hotstepper;True Love;Rudeboy Remember;Strange;Whole Heap a Man;Bonafide Love;Bogus Badge;Crazy;Greetings;Combination Mix;[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track];[Untitled Track]",
+                    "disp_song": "Revolution;Here I Come;One Dance"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_101-dalmatians-1996-meet-puppies-read-along-_music_1921775598",
+                "relevance": 39.75490064844323,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_101-dalmatians-1996-meet-puppies-read-along-_music_1921775598",
+                    "title": "101 Dalmatians (1996): Meet Puppies (Read-along)",
+                    "artist": "101 Dalmatians (1996): Meet Puppies (Read-along)",
+                    "bgndata": "CA",
+                    "pto": -100,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_101-dalmatians-1996-meet-puppies-read-along-_music_1921775598",
+                    "pid": "1921775598",
+                    "weight": 2.0,
+                    "isbn": "050086027149",
+                    "fmt": "CA",
+                    "categories": "1804905719 1804893726",
+                    "data": "CA050086027149",
+                    "bgnsellers": 0,
+                    "newestedition": 19961008,
+                    "year": 1996,
+                    "did": 66,
+                    "cbid": 2
+                }
+            }
+        ]
+    }
+}

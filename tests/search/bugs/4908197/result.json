@@ -1,0 +1,43 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:strarr:strarr::1",
+                "relevance": 0.38186238359951247,
+                "source": "search",
+                "fields": {
+                    "sddocname": "strarr",
+                    "documentid": "id:strarr:strarr::1",
+                    "title": "foo",
+                    "attr": [
+                        "simple",
+                        "with double \" quote",
+                        "with back \\ slash",
+                        "with both backslash \\\" and double quote",
+                        "more simple"
+                    ],
+                    "sum": [
+                        "simple",
+                        "with double \" quote",
+                        "with back \\ slash",
+                        "with both backslash \\\" and double quote",
+                        "more simple"
+                    ]
+                }
+            }
+        ]
+    }
+}

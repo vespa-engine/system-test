@@ -1,0 +1,65 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:update_pos::1",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "update_pos",
+                    "documentid": "id:test:update_pos::1",
+                    "my_pos": {
+                        "y": 12123000,
+                        "x": 98987000
+                    },
+                    "my_pos.position": {
+                        "y": 12123000,
+                        "x": 98987000,
+                        "latlong": "N12.123000;E98.987000"
+                    },
+                    "my_pos.distance": 0,
+                    "summaryfeatures": {
+                        "distance(my_pos)": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:update_pos::2",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "update_pos",
+                    "documentid": "id:test:update_pos::2",
+                    "my_pos": {
+                        "y": 12123123,
+                        "x": 98987987
+                    },
+                    "my_pos.position": {
+                        "y": 12123123,
+                        "x": 98987987,
+                        "latlong": "N12.123123;E98.987987"
+                    },
+                    "my_pos.distance": 971,
+                    "summaryfeatures": {
+                        "distance(my_pos)": 971.8153116719246,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

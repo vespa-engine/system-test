@@ -15,7 +15,7 @@ class PartialUpdateIllegalOperations < IndexedSearchTest
     feed_and_wait_for_docs("dbzero", 1, :file => selfdir + "dbzero-feed.xml")
 
     query = "query=sddocname:dbzero"
-    srf = selfdir + "dbzero-result.xml"
+    srf = selfdir + "dbzero-result.json"
     ftc = ["sint", "sfloat", "wsint", "wsfloat", "wsstr"]
 
     wait_for_hitcount(query, 1)

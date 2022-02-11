@@ -1,0 +1,73 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 12
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 13,
+            "full": true,
+            "nodes": 4,
+            "results": 4,
+            "resultsFull": 4
+        },
+        "children": [
+            {
+                "id": "id:video:video::3",
+                "relevance": 2009.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "video",
+                    "documentid": "id:video:video::3",
+                    "title": "Inglourious Basterds",
+                    "year": 2009,
+                    "rating": 8,
+                    "director": "Quentin Tarantino"
+                }
+            },
+            {
+                "id": "id:book:book::3",
+                "relevance": 2008.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "book",
+                    "documentid": "id:book:book::3",
+                    "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
+                    "year": 2008,
+                    "rating": 8,
+                    "author": "Robert C. Martin",
+                    "pages": 464
+                }
+            },
+            {
+                "id": "id:music:music::3",
+                "relevance": 2007.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::3",
+                    "title": "Everybody Loves A Chubby Dude",
+                    "year": 2007,
+                    "rating": 6,
+                    "artist": "Turboneger"
+                }
+            },
+            {
+                "id": "id:book:book::4",
+                "relevance": 2005.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "book",
+                    "documentid": "id:book:book::4",
+                    "title": "Sly Moves: My Proven Program to Lose Weight, Build Strength, Gain Will Power, and Live your Dream",
+                    "year": 2005,
+                    "rating": 9,
+                    "author": "Sylvester Stallone",
+                    "pages": 224
+                }
+            }
+        ]
+    }
+}

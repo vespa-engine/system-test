@@ -1,0 +1,857 @@
+{
+    "trace": {
+        "children": [
+            {
+                "message": "No query profile is used"
+            },
+            {
+                "message": "Resolved properties:\ntracelevel: 5 (from request)\ntimeout: 10000 (from request)\nquery: sddocname:music (from request)\n"
+            },
+            {
+                "message": "Invoking chain 'default' [com.yahoo.search.querytransform.WeakAndReplacementSearcher@vespa -> com.yahoo.prelude.statistics.StatisticsSearcher@native -> ... -> federation@native]"
+            },
+            {
+                "children": [
+                    {
+                        "message": "Invoke searcher 'com.yahoo.search.querytransform.WeakAndReplacementSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke searcher 'com.yahoo.prelude.statistics.StatisticsSearcher in native'"
+                    },
+                    {
+                        "message": "Invoke searcher 'com.yahoo.prelude.querytransform.PhrasingSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke searcher 'com.yahoo.prelude.searcher.FieldCollapsingSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke searcher 'com.yahoo.search.yql.MinimalQueryInserter in vespa'"
+                    },
+                    {
+                        "message": "Invoke searcher 'com.yahoo.search.yql.FieldFilter in vespa'"
+                    },
+                    {
+                        "message": "Invoke searcher 'com.yahoo.prelude.searcher.JuniperSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke searcher 'com.yahoo.prelude.searcher.PosSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke searcher 'com.yahoo.prelude.semantics.SemanticSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke searcher 'com.yahoo.search.grouping.GroupingQueryParser in vespa'"
+                    },
+                    {
+                        "message": "Invoke searcher 'com.yahoo.nearsearch.PhraseToONearSearcher in default'"
+                    },
+                    {
+                        "message": "Query parsed to: select * from sources * where sddocname contains \"music\" timeout 10000;"
+                    },
+                    {
+                        "message": "Invoke searcher 'com.yahoo.prelude.searcher.BlendingSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke searcher 'federation in native'"
+                    },
+                    {
+                        "message": "Federating to [search]"
+                    },
+                    {
+                        "children": [
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.querytransform.NGramSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.querytransform.DefaultPositionSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.prelude.querytransform.CJKSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.prelude.querytransform.LiteralBoostSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.querytransform.RangeQueryOptimizer in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.querytransform.SortingDegrader in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.searchers.QueryValidator in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.grouping.GroupingValidator in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.querytransform.WandSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.prelude.querytransform.RecallSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.prelude.querytransform.StemmingSearcher in search'"
+                            },
+                            {
+                                "message": "Stemming with language=ENGLISH"
+                            },
+                            {
+                                "message": "Stemming: [select * from sources * where sddocname contains \"music\" timeout 9998;]"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.prelude.querytransform.NormalizingSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.querytransform.VespaLowercasingSearcher in search'"
+                            },
+                            {
+                                "message": "Lowercasing: [select * from sources * where sddocname contains \"music\" timeout 9998;]"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.prelude.searcher.ValidateSortingSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.querytransform.BooleanSearcher in search'"
+                            },
+                            {
+                                "message": "BooleanSearcher: Nothing added to query"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.prelude.searcher.ValidatePredicateSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.searchers.ValidateNearestNeighborSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.grouping.vespa.GroupingExecutor in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.searchers.ValidateMatchPhaseSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.yql.FieldFiller in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.searchers.InputCheckingSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.search.searchers.ContainerLatencySearcher in search'"
+                            },
+                            {
+                                "message": "Invoke searcher 'com.yahoo.prelude.cluster.ClusterSearcher in search'"
+                            },
+                            {
+                                "message": "sc0.num0 search to dispatch: query=[[documentmetastore]:*music*] timeout=9998ms offset=0 hits=10 groupingSessionCache=true sessionId=117b4447-1bf0-4ff9-ab0a-7dcf29ba36b5.1644436722072.92.default grouping=0 :  restrict=[music]"
+                            },
+                            {
+                                "message": "Current state of query tree: SUBSTRING[fromSegmented=false index=\"[documentmetastore]\" origin=null segmentIndex=0 stemmed=false words=true]{\n  \"*music*\"\n}\n"
+                            },
+                            {
+                                "message": "YQL+ representation: select * from sources * where [documentmetastore] contains ([{implicitTransforms: false, substring: true}]\"music\") timeout 9998;"
+                            },
+                            {
+                                "message": "Dispatching to search node key = 0 hostname = c7-1.build.vespa.dev path = 0 in group 0 statusIsKnown = true working = true activeDocs = 256"
+                            },
+                            {
+                                "message": "Sending search request with jrt/protobuf to node with dist key 0"
+                            },
+                            {
+                                "message": [
+                                    {
+                                        "start_time": "2022-02-09 19:58:42.073 UTC",
+                                        "traces": [
+                                            {
+                                                "timestamp_ms": 0.187192,
+                                                "event": "MTF: Start"
+                                            },
+                                            {
+                                                "timestamp_ms": 0.190166,
+                                                "event": "MTF: Build query"
+                                            },
+                                            {
+                                                "timestamp_ms": 0.205289,
+                                                "event": "MTF: reserve handles"
+                                            },
+                                            {
+                                                "timestamp_ms": 0.231022,
+                                                "event": "MTF: Fetch Postings"
+                                            },
+                                            {
+                                                "timestamp_ms": 0.232376,
+                                                "event": "MTF: Handle Global Filters"
+                                            },
+                                            {
+                                                "timestamp_ms": 0.233245,
+                                                "event": "MTF: prepareSharedState"
+                                            },
+                                            {
+                                                "timestamp_ms": 0.237414,
+                                                "event": "MTF: Complete"
+                                            },
+                                            {
+                                                "timestamp_ms": 0.543566,
+                                                "tag": "match_threads",
+                                                "threads": [
+                                                    {
+                                                        "traces": [
+                                                            {
+                                                                "timestamp_ms": 0.3057,
+                                                                "event": "Start MatchThread::run"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.32392,
+                                                                "event": "Start match and first phase rank"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.331788,
+                                                                "event": "Create result set"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.3362,
+                                                                "event": "Wait for result processing token"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.337047,
+                                                                "event": "Start result processing"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.339632,
+                                                                "event": "Start thread merge"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.534435,
+                                                                "event": "MatchThread::run Done"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "traces": [
+                                                            {
+                                                                "timestamp_ms": 0.348619,
+                                                                "event": "Start MatchThread::run"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.354291,
+                                                                "event": "Start match and first phase rank"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.358758,
+                                                                "event": "Create result set"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.35991,
+                                                                "event": "Wait for result processing token"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.360304,
+                                                                "event": "Start result processing"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.361142,
+                                                                "event": "Start thread merge"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.485283,
+                                                                "event": "MatchThread::run Done"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "traces": [
+                                                            {
+                                                                "timestamp_ms": 0.364735,
+                                                                "event": "Start MatchThread::run"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.377311,
+                                                                "event": "Start match and first phase rank"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.383707,
+                                                                "event": "Create result set"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.386052,
+                                                                "event": "Wait for result processing token"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.386575,
+                                                                "event": "Start result processing"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.388119,
+                                                                "event": "Start thread merge"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.443422,
+                                                                "event": "MatchThread::run Done"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "traces": [
+                                                            {
+                                                                "timestamp_ms": 0.337344,
+                                                                "event": "Start MatchThread::run"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.355888,
+                                                                "event": "Start match and first phase rank"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.362726,
+                                                                "event": "Create result set"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.365419,
+                                                                "event": "Wait for result processing token"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.366003,
+                                                                "event": "Start result processing"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.367698,
+                                                                "event": "Start thread merge"
+                                                            },
+                                                            {
+                                                                "timestamp_ms": 0.510528,
+                                                                "event": "MatchThread::run Done"
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "distribution-key": 0,
+                                        "duration_ms": 0.575529
+                                    }
+                                ]
+                            },
+                            {
+                                "message": "sc0.num0 dispatch response: Result (10 of total 256 hits)"
+                            },
+                            {
+                                "message": "sc0.num0 returns:\n  #: 0, relevancy: 0.0, source: sc0.num0, uri: null\n  #: 1, relevancy: 0.0, source: sc0.num0, uri: null\n  #: 2, relevancy: 0.0, source: sc0.num0, uri: null\n  #: 3, relevancy: 0.0, source: sc0.num0, uri: null\n  #: 4, relevancy: 0.0, source: sc0.num0, uri: null\n  #: 5, relevancy: 0.0, source: sc0.num0, uri: null\n  #: 6, relevancy: 0.0, source: sc0.num0, uri: null\n  #: 7, relevancy: 0.0, source: sc0.num0, uri: null\n  #: 8, relevancy: 0.0, source: sc0.num0, uri: null\n  #: 9, relevancy: 0.0, source: sc0.num0, uri: null\n"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.prelude.cluster.ClusterSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.searchers.ContainerLatencySearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.searchers.InputCheckingSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.yql.FieldFiller in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.searchers.ValidateMatchPhaseSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.grouping.vespa.GroupingExecutor in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.searchers.ValidateNearestNeighborSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.prelude.searcher.ValidatePredicateSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.querytransform.BooleanSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.prelude.searcher.ValidateSortingSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.querytransform.VespaLowercasingSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.prelude.querytransform.NormalizingSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.prelude.querytransform.StemmingSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.prelude.querytransform.RecallSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.querytransform.WandSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.grouping.GroupingValidator in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.searchers.QueryValidator in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.querytransform.SortingDegrader in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.querytransform.RangeQueryOptimizer in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.prelude.querytransform.LiteralBoostSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.prelude.querytransform.CJKSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.querytransform.DefaultPositionSearcher in search'"
+                            },
+                            {
+                                "message": "Return searcher 'com.yahoo.search.querytransform.NGramSearcher in search'"
+                            },
+                            {
+                                "message": "sc0.num0 fill to dispatch: query=[[documentmetastore]:*music*] timeout=9998ms offset=0 hits=10 groupingSessionCache=true sessionId=117b4447-1bf0-4ff9-ab0a-7dcf29ba36b5.1644436722072.92.default grouping=0 :  restrict=[music] summary=[null]"
+                            },
+                            {
+                                "message": "Current state of query tree: SUBSTRING[fromSegmented=false index=\"[documentmetastore]\" origin=null segmentIndex=0 stemmed=false words=true]{\n  \"*music*\"\n}\n"
+                            },
+                            {
+                                "message": "YQL+ representation: select * from sources * where [documentmetastore] contains ([{implicitTransforms: false, substring: true}]\"music\") timeout 9998;"
+                            },
+                            {
+                                "message": "Sending 1 summary fetch requests with jrt/protobuf"
+                            },
+                            {
+                                "message": "Not resending query during document summary fetching"
+                            }
+                        ]
+                    },
+                    {
+                        "message": "Got 10 hits from source:search"
+                    },
+                    {
+                        "message": "Return searcher 'federation in native'"
+                    },
+                    {
+                        "message": "Blended result returns:\n  #: 0, relevancy: 0.0, source: search, uri: null\n  #: 1, relevancy: 0.0, source: search, uri: null\n  #: 2, relevancy: 0.0, source: search, uri: null\n  #: 3, relevancy: 0.0, source: search, uri: null\n  #: 4, relevancy: 0.0, source: search, uri: null\n  #: 5, relevancy: 0.0, source: search, uri: null\n  #: 6, relevancy: 0.0, source: search, uri: null\n  #: 7, relevancy: 0.0, source: search, uri: null\n  #: 8, relevancy: 0.0, source: search, uri: null\n  #: 9, relevancy: 0.0, source: search, uri: null\n"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.prelude.searcher.BlendingSearcher in vespa'"
+                    },
+                    {
+                        "message": "there is no spoon returns:\n  #: 0, relevancy: 0.0, source: search, uri: null\n  #: 1, relevancy: 0.0, source: search, uri: null\n  #: 2, relevancy: 0.0, source: search, uri: null\n  #: 3, relevancy: 0.0, source: search, uri: null\n  #: 4, relevancy: 0.0, source: search, uri: null\n  #: 5, relevancy: 0.0, source: search, uri: null\n  #: 6, relevancy: 0.0, source: search, uri: null\n  #: 7, relevancy: 0.0, source: search, uri: null\n  #: 8, relevancy: 0.0, source: search, uri: null\n  #: 9, relevancy: 0.0, source: search, uri: null\n"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.nearsearch.PhraseToONearSearcher in default'"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.search.grouping.GroupingQueryParser in vespa'"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.prelude.semantics.SemanticSearcher in vespa'"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.prelude.searcher.PosSearcher in vespa'"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.prelude.searcher.JuniperSearcher in vespa'"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.search.yql.FieldFilter in vespa'"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.search.yql.MinimalQueryInserter in vespa'"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.prelude.searcher.FieldCollapsingSearcher in vespa'"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.prelude.querytransform.PhrasingSearcher in vespa'"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.prelude.statistics.StatisticsSearcher in native'"
+                    },
+                    {
+                        "message": "Return searcher 'com.yahoo.search.querytransform.WeakAndReplacementSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.search.querytransform.WeakAndReplacementSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.statistics.StatisticsSearcher in native'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.querytransform.PhrasingSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.searcher.FieldCollapsingSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.search.yql.MinimalQueryInserter in vespa'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.search.yql.FieldFilter in vespa'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.searcher.JuniperSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.searcher.PosSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.semantics.SemanticSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.search.grouping.GroupingQueryParser in vespa'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.nearsearch.PhraseToONearSearcher in default'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.searcher.BlendingSearcher in vespa'"
+                    },
+                    {
+                        "message": "Invoke fill(null) on searcher 'federation in native'"
+                    },
+                    {
+                        "children": [
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.querytransform.NGramSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.querytransform.DefaultPositionSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.querytransform.CJKSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.querytransform.LiteralBoostSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.querytransform.RangeQueryOptimizer in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.querytransform.SortingDegrader in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.searchers.QueryValidator in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.grouping.GroupingValidator in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.querytransform.WandSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.querytransform.RecallSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.querytransform.StemmingSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.querytransform.NormalizingSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.querytransform.VespaLowercasingSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.searcher.ValidateSortingSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.querytransform.BooleanSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.searcher.ValidatePredicateSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.searchers.ValidateNearestNeighborSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.grouping.vespa.GroupingExecutor in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.searchers.ValidateMatchPhaseSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.yql.FieldFiller in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.searchers.InputCheckingSearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.search.searchers.ContainerLatencySearcher in search'"
+                            },
+                            {
+                                "message": "Invoke fill(null) on searcher 'com.yahoo.prelude.cluster.ClusterSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.prelude.cluster.ClusterSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.searchers.ContainerLatencySearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.searchers.InputCheckingSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.yql.FieldFiller in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.searchers.ValidateMatchPhaseSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.grouping.vespa.GroupingExecutor in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.searchers.ValidateNearestNeighborSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.prelude.searcher.ValidatePredicateSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.querytransform.BooleanSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.prelude.searcher.ValidateSortingSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.querytransform.VespaLowercasingSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.prelude.querytransform.NormalizingSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.prelude.querytransform.StemmingSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.prelude.querytransform.RecallSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.querytransform.WandSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.grouping.GroupingValidator in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.searchers.QueryValidator in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.querytransform.SortingDegrader in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.querytransform.RangeQueryOptimizer in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.prelude.querytransform.LiteralBoostSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.prelude.querytransform.CJKSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.querytransform.DefaultPositionSearcher in search'"
+                            },
+                            {
+                                "message": "Return fill(null) on searcher 'com.yahoo.search.querytransform.NGramSearcher in search'"
+                            }
+                        ]
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'federation in native'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.prelude.searcher.BlendingSearcher in vespa'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.nearsearch.PhraseToONearSearcher in default'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.search.grouping.GroupingQueryParser in vespa'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.prelude.semantics.SemanticSearcher in vespa'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.prelude.searcher.PosSearcher in vespa'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.prelude.searcher.JuniperSearcher in vespa'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.search.yql.FieldFilter in vespa'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.search.yql.MinimalQueryInserter in vespa'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.prelude.searcher.FieldCollapsingSearcher in vespa'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.prelude.querytransform.PhrasingSearcher in vespa'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.prelude.statistics.StatisticsSearcher in native'"
+                    },
+                    {
+                        "message": "Return fill(null) on searcher 'com.yahoo.search.querytransform.WeakAndReplacementSearcher in vespa'"
+                    },
+                    {
+                        "message": "Query time query 'sddocname:music': 4 ms"
+                    },
+                    {
+                        "message": "Summary fetch time query 'sddocname:music': 2 ms"
+                    },
+                    {
+                        "message": "Vespa version: 7.164"
+                    }
+                ]
+            }
+        ]
+    },
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 256
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 256,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://4",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://4",
+                    "title": "one one one jumped",
+                    "surl": "http://4",
+                    "songs": [
+                        "4 4 4",
+                        "a b c",
+                        "4 4 4"
+                    ]
+                }
+            },
+            {
+                "id": "id:test:music::http://5",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://5",
+                    "title": "one one brown one",
+                    "surl": "http://5",
+                    "songs": [
+                        "c 5 5",
+                        "5 b 5",
+                        "5 5 a"
+                    ]
+                }
+            },
+            {
+                "id": "id:test:music::http://11",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://11",
+                    "title": "one one fox fox",
+                    "surl": "http://11"
+                }
+            },
+            {
+                "id": "id:test:music::http://1",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://1",
+                    "title": "one one one one",
+                    "surl": "http://1",
+                    "songs": [
+                        "1 1 1",
+                        "1 1 1",
+                        "1 1 1"
+                    ]
+                }
+            },
+            {
+                "id": "id:test:music::http://2",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://2",
+                    "title": "one one one brown",
+                    "surl": "http://2",
+                    "songs": [
+                        "a 2 2",
+                        "2 b 2",
+                        "2 2 c"
+                    ]
+                }
+            },
+            {
+                "id": "id:test:music::http://16",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://16",
+                    "title": "one one jumped jumped",
+                    "surl": "http://16"
+                }
+            },
+            {
+                "id": "id:test:music::http://12",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://12",
+                    "title": "one one fox jumped",
+                    "surl": "http://12"
+                }
+            },
+            {
+                "id": "id:test:music::http://18",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://18",
+                    "title": "one brown one brown",
+                    "surl": "http://18"
+                }
+            },
+            {
+                "id": "id:test:music::http://9",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://9",
+                    "title": "one one fox one",
+                    "surl": "http://9",
+                    "songs": [
+                        "c a b",
+                        "b c a",
+                        "b a c",
+                        "a c b"
+                    ]
+                }
+            },
+            {
+                "id": "id:test:music::http://20",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://20",
+                    "title": "one brown one jumped",
+                    "surl": "http://20"
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "errors": [
+            {
+                "code": 8,
+                "summary": "Error in fill reply.",
+                "message": "There is no summary class with name 'barsum' in the summary config. Returning empty document summary for 1 hit(s)"
+            }
+        ],
+        "children": [
+            {
+                "id": "index:search/0/e0ddcec5a12306b2090dbb37",
+                "relevance": 1.0,
+                "source": "search"
+            }
+        ]
+    }
+}

@@ -27,12 +27,13 @@ class ResultsetGenerator
   end
 
   def get_error_resultset(query = nil)
-    xmldata = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<result total-hit-count=\"0\">\n<error code=\"10\">Backend communication error</error>\n<errordetails>\n<error source=\"search\" error=\"Backend communication error\" code=\"10\">\nsc0.num0 failed: Received error from backend in sc0.num0: All searchnodes are down. This might indicate that no index is available yet. (3)\n</error>\n</errordetails>\n</result>\n"
+    xmldata = '{"root":{"id":"toplevel","relevance":1.0,"fields":{"totalCount":0},"coverage":{"coverage":100,"documents":0,"degraded":{"match-phase":false,"timeout":true,"adaptive-timeout":false,"non-ideal-state":false},"full":true,"nodes":0,"results":1,"resultsFull":1},"errors":[{"code":12,"summary":"Timed out","source":"search","message":"Backend communication timeout on all nodes in group (distribution-keys: 0, 1)"},{"code":12,"summary":"Timed out","source":"search","message":"No time left for searching"}],"children":[{"id":"group:root:0","relevance":1.0,"continuation":{"this":""}}]}}'
     resultset = Resultset.new(xmldata, query)
   end
 
   def gen_resultset
-    resultset = Resultset.new(nil, nil)
+    xmldata = '{"root":{"id":"toplevel","relevance":1.0,"fields":{"totalCount":10},"coverage":{"coverage":100}}}'
+    resultset = Resultset.new(xmldata, nil)
     (0..9).each { |i|
       hit = Hit.new
       hit.add_field("relevancy", i.to_s)

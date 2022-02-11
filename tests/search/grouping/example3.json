@@ -1,0 +1,75 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 20
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 20,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:mod(div(date, mul(60, 60)), 24)",
+                        "relevance": 1.0,
+                        "label": "mod(div(date, mul(60, 60)), 24)",
+                        "children": [
+                            {
+                                "id": "group:long:10",
+                                "relevance": 9870.0,
+                                "value": "10",
+                                "fields": {
+                                    "sum(price)": 26181.0
+                                }
+                            },
+                            {
+                                "id": "group:long:8",
+                                "relevance": 8900.0,
+                                "value": "8",
+                                "fields": {
+                                    "sum(price)": 22367.0
+                                }
+                            },
+                            {
+                                "id": "group:long:9",
+                                "relevance": 8000.0,
+                                "value": "9",
+                                "fields": {
+                                    "sum(price)": 23524.0
+                                }
+                            },
+                            {
+                                "id": "group:long:11",
+                                "relevance": 6765.0,
+                                "value": "11",
+                                "fields": {
+                                    "sum(price)": 6765.0
+                                }
+                            },
+                            {
+                                "id": "group:long:7",
+                                "relevance": 1000.0,
+                                "value": "7",
+                                "fields": {
+                                    "sum(price)": 1000.0
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

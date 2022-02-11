@@ -1,0 +1,49 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:partial/update:update::0",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "update",
+                    "documentid": "id:partial/update:update::0",
+                    "intfield": 100000,
+                    "longfield": 10000000000,
+                    "bytefield": 10,
+                    "floatfield": 10.0,
+                    "doublefield": 100.0,
+                    "body": "doc0 upd"
+                }
+            },
+            {
+                "id": "id:partial/update:update::1",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "update",
+                    "documentid": "id:partial/update:update::1",
+                    "intfield": -200000,
+                    "longfield": -20000000000,
+                    "bytefield": 20,
+                    "floatfield": -20.0,
+                    "doublefield": -200.0,
+                    "body": "doc1 upd"
+                }
+            }
+        ]
+    }
+}

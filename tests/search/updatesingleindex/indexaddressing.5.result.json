@@ -1,0 +1,63 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 25,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865264",
+                "relevance": 0.09546559589987813,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865264",
+                    "title": "Modern Electric Blues",
+                    "pto": -1,
+                    "mid": 2,
+                    "ew": "blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1807865264",
+                    "categories": "Blues",
+                    "bgnsellers": 0
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_agrarian-origins-of-modern-jap_book_1955028889",
+                "relevance": 0.026613893637915838,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_agrarian-origins-of-modern-jap_book_1955028889",
+                    "title": "Agrarian Origins of Modern Jap",
+                    "dispauthor": "Thomas C Smith,Ronald Ted Smith",
+                    "author": "Thomas C Smith,Ronald Ted Smith,Thomas Carlyle Smith",
+                    "isbn": "0804705313",
+                    "url": "http://shopping.yahoo.com/p_agrarian-origins-of-modern-jap_book_1955028889",
+                    "did": 56,
+                    "categories": "2065001356,2065001561,2065001565,2065002148,2065002149,2065002152,2065002153,2065002157,2065003026,2065003241,2065003250,2065003251",
+                    "mid": 3,
+                    "pfrom": 1710,
+                    "pto": 3000,
+                    "fmt": "Paperback",
+                    "data": "Paperback 17.10-30.00 0804705313",
+                    "weight": 50.0,
+                    "newestedition": 19591201,
+                    "formats": "P",
+                    "bgndata": "Paperback ",
+                    "bgnsellers": 0,
+                    "pid": "1955028889",
+                    "cbid": 1
+                }
+            }
+        ]
+    }
+}

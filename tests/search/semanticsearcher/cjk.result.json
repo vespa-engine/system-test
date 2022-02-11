@@ -1,0 +1,33 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 777,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::10991",
+                "relevance": 0.09874291938997821,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::10991",
+                    "title": "Beethoven: The Late Piano Sonatas",
+                    "song": "Sonata No.27 In E Minor, Op.90: I: Mit Lebhaftigkeit und durchaus mit Empfindung und Ausdruck;Sonata No.27 In E Minor, Op.90: II: Nicht zu geschwind und sehr singbar vorgetragen;Sonata No.28 In A Major, Op.101: I. Etwas lebhaft, und mit der innigsten Empfindung.  Allegretto ma non troppo;Sonata No.28 In A Major, Op.101: II. Lebhaft, marschmassig.  Vivace alla Marcia;Sonata No.28 In A Major, Op.101: III. Langsam und sehnsuchtsvoll. Adagio ma non troppo, con affetto;Sonata No.28 In A Major, Op.101: IV. Geschwind, doch nicht zu sehr und mit Entschlossenheit.  Allegro;Sonata No.30 In E Major, Op.109: I. Vivace, ma non troppo;Sonata No.30 In E Major, Op.109: II. Prestissimo;Sonata No.30 In E Major, Op.109: III. Andante molto cantabile ed espressivo.  Gesangvoll, mit innigster Empfindung;Sonata No. 31 In A-Flat Major, Op.110: I. Moderato cantabile molto espressivo;Sonata No. 31 In A-Flat Major, Op.110: II. Allegro molto;Sonata No. 31 In A-Flat Major, Op.110: III. Adagio ma non troppo - Fuga.  Allegro ma non troppo;Sonata No. 29 in B-flat major, Op. 106: I. Allegro;Sonata No. 29 in B-flat major, Op. 106: II. Scherzo. Assai vivace;Sonata No. 29 in B-flat major, Op. 106: III. Adagio sostenuto. Appassionato e con molto sentimento;Sonata No. 32 In C Minor, Op. 111: IV. Largo - Allegro risoluto;Sonata No. 32 In C Minor, Op. 111: I Maestoso - Allegro con brio ed appasionato;Sonata No. 32 In C Minor, Op. 111: II. Arietta. Adagio molto semplice e cantabile",
+                    "weight": 97.0,
+                    "brand": "索尼",
+                    "year": 1994
+                }
+            }
+        ]
+    }
+}

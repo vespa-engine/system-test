@@ -1,0 +1,82 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 12,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:blogpost:blogpost::techlist.1",
+                "relevance": 3.388091141769447,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::techlist.1",
+                    "title": "foo bar",
+                    "author": "havardpe",
+                    "timestamp": 1,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.011764705882352941,
+                        "nativeRank": 0.3870911417694471,
+                        "termFieldMd(author).firstweight": 3.0,
+                        "termFieldMd(author).occurrences": 1.0,
+                        "termFieldMd(author).termsmatched": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::techlist.3",
+                "relevance": 2.1699246291000196,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::techlist.3",
+                    "title": "Re: foo bar",
+                    "author": "bergum",
+                    "timestamp": 3,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.00784313725490196,
+                        "nativeRank": 0.1669246291000193,
+                        "termFieldMd(author).firstweight": 2.0,
+                        "termFieldMd(author).occurrences": 1.0,
+                        "termFieldMd(author).termsmatched": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::techlist.4",
+                "relevance": 1.1654887203089284,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::techlist.4",
+                    "title": "Re: Re: foo bar",
+                    "author": "yngve",
+                    "timestamp": 4,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.00392156862745098,
+                        "nativeRank": 0.16148872030892833,
+                        "termFieldMd(author).firstweight": 1.0,
+                        "termFieldMd(author).occurrences": 1.0,
+                        "termFieldMd(author).termsmatched": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

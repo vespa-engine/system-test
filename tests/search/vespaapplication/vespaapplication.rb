@@ -49,7 +49,7 @@ class VespaApplication < IndexedSearchTest
 
     puts "Run a query to test custom juniper config"
     feed_and_wait_for_docs("music", 779, :file => SEARCH_DATA+"music.777.xml")
-    assert_result("query=english+band+major", selfdir + "junipertest.xml", nil, ["song"])
+    assert_result("query=english+band+major", selfdir + "junipertest.json", nil, ["song"])
   end
 
   def teardown

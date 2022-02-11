@@ -16,13 +16,13 @@ class StaticRank_2SDs < IndexedSearchTest
     wait_for_hitcount("query=sddocname:two", 2)
 
     puts "Query: First doctype"
-    assert_result("query=document", selfdir+"document.result", nil, ["relevancy", "about"])
+    assert_result("query=document", selfdir+"document.result.json", nil, ["relevancy", "about"])
 
     puts "Query: Second doctype"
-    assert_result("query=foo", selfdir+"foo.result", nil, ["relevancy", "title"])
+    assert_result("query=foo", selfdir+"foo.result.json", nil, ["relevancy", "title"])
 
     puts "Query: Both doctypes"
-    assert_result("query=document+foo&type=any", selfdir+"document-foo.result", nil, ["relevancy", "surl"])
+    assert_result("query=document+foo&type=any", selfdir+"document-foo.result.json", nil, ["relevancy", "surl"])
 
   end
 

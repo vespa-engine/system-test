@@ -1,0 +1,33 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 19,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::p_pianist-extraordinaire-2-deluxe-box-set-_music_1921950529",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::p_pianist-extraordinaire-2-deluxe-box-set-_music_1921950529",
+                    "title": "whatever",
+                    "artist": "hate",
+                    "song": "none",
+                    "weight": 1700000,
+                    "year": 2003
+                }
+            }
+        ]
+    }
+}

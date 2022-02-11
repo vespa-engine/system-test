@@ -1,0 +1,62 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 19,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::p_columbia-albums-of-irving-berlin-1-2_music_1922002959",
+                "relevance": 0.38360530298949064,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::p_columbia-albums-of-irving-berlin-1-2_music_1922002959",
+                    "title": "hate 2k",
+                    "artist": "hate",
+                    "song": "hate",
+                    "weight": 1300000,
+                    "year": 2000
+                }
+            },
+            {
+                "id": "id:test:music::p_big-band-box-set-_music_1921490548",
+                "relevance": 0.1290303805898157,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::p_big-band-box-set-_music_1921490548",
+                    "title": "hate",
+                    "artist": "none",
+                    "song": "none",
+                    "weight": 1900000,
+                    "year": 2000,
+                    "url": "http://www.bigband.com/foo"
+                }
+            },
+            {
+                "id": "id:test:music::p_try-this-clean-bonus-dvd-_music_1922003403",
+                "relevance": 0.1290303805898157,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::p_try-this-clean-bonus-dvd-_music_1922003403",
+                    "title": "xyz",
+                    "artist": "xyz",
+                    "song": "hate",
+                    "weight": 600000,
+                    "year": 2000
+                }
+            }
+        ]
+    }
+}

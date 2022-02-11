@@ -17,13 +17,13 @@ class Default_Index < IndexedSearchTest
     filterexp = /total-hit-count|"surl"/
 
     puts "Query: Search specifying default index explicitly"
-    assert_result_matches("query=default:cadillac", selfdir + "cadillac_defaultindex.result", filterexp, true)
+    assert_result("query=default:cadillac", selfdir + "cadillac_defaultindex.result.json", 'surl', [ 'surl' ])
 
     puts "Query: Search to default index"
-    assert_result_matches("query=cadillac", selfdir + "cadillac_defaultindex.result", filterexp, true)
+    assert_result("query=cadillac", selfdir + "cadillac_defaultindex.result.json",  'surl', [ 'surl' ])
 
     puts "Query: Search to an explicit index different from default"
-    assert_result_matches("query=song:cadillac", selfdir + "cadillac_song_index.result", filterexp, true)
+    assert_result("query=song:cadillac", selfdir + "cadillac_song_index.result.json",  'surl', [ 'surl' ])
   end
 
   def teardown

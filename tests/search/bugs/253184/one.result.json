@@ -1,0 +1,30 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:musicsearch::pushyss://0/",
+                "relevance": 0.3818623835995125,
+                "source": "search",
+                "fields": {
+                    "sddocname": "musicsearch",
+                    "documentid": "id:test:musicsearch::pushyss://0/",
+                    "f1": "one",
+                    "f2": "three"
+                }
+            }
+        ]
+    }
+}

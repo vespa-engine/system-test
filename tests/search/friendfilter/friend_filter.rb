@@ -63,15 +63,15 @@ class FriendFilter < SearchTest
     wait_for_hitcount("sddocname:friendslist", 2)
     wait_for_hitcount("sddocname:blogpost", 12)
 
-  # save_result("tracelevel=1&query=title:foo",                         selfdir+"result.foo1.xml")
-  # save_result("tracelevel=1&query=title:foo&username=default",        selfdir+"result.foo2.xml")
-  # save_result("tracelevel=1&query=title:foo&username=arnej",          selfdir+"result.foo3.xml")
-  # save_result("tracelevel=1&query=title:foo&username=paris+hilton",   selfdir+"result.foo4.xml")
+  # save_result("tracelevel=1&query=title:foo",                         selfdir+"result.foo1.json")
+  # save_result("tracelevel=1&query=title:foo&username=default",        selfdir+"result.foo2.json")
+  # save_result("tracelevel=1&query=title:foo&username=arnej",          selfdir+"result.foo3.json")
+  # save_result("tracelevel=1&query=title:foo&username=paris+hilton",   selfdir+"result.foo4.json")
 
-    assert_result("query=title:foo",                         selfdir+"result.foo1.xml")
-    assert_result("query=title:foo&username=default",        selfdir+"result.foo2.xml")
-    assert_result("query=title:foo&username=arnej",          selfdir+"result.foo3.xml")
-    assert_result("query=title:foo&username=paris+hilton",   selfdir+"result.foo4.xml")
+    assert_result("query=title:foo",                         selfdir+"result.foo1.json")
+    assert_result("query=title:foo&username=default",        selfdir+"result.foo2.json")
+    assert_result("query=title:foo&username=arnej",          selfdir+"result.foo3.json")
+    assert_result("query=title:foo&username=paris+hilton",   selfdir+"result.foo4.json")
   end
 
   def teardown

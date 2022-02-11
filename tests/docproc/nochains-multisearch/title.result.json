@@ -1,0 +1,59 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 8,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:music::2",
+                "relevance": 12.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::2",
+                    "title": "Random title 2 Apple"
+                }
+            },
+            {
+                "id": "id:test:muzak::1",
+                "relevance": 11.0,
+                "source": "muzak",
+                "fields": {
+                    "sddocname": "muzak",
+                    "documentid": "id:test:muzak::1",
+                    "title": "One random title Banana"
+                }
+            },
+            {
+                "id": "id:test:muzak::2",
+                "relevance": 2.0,
+                "source": "muzak",
+                "fields": {
+                    "sddocname": "muzak",
+                    "documentid": "id:test:muzak::2",
+                    "title": "Random title 2 Banana"
+                }
+            },
+            {
+                "id": "id:test:music::1",
+                "relevance": 1.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::1",
+                    "title": "One random title Apple"
+                }
+            }
+        ]
+    }
+}

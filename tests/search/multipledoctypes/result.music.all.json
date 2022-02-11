@@ -1,0 +1,71 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:music:music::3",
+                "relevance": 2007.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::3",
+                    "title": "Everybody Loves A Chubby Dude",
+                    "year": 2007,
+                    "rating": 6,
+                    "artist": "Turboneger"
+                }
+            },
+            {
+                "id": "id:music:music::0",
+                "relevance": 1988.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::0",
+                    "title": "...And Justice For All",
+                    "year": 1988,
+                    "rating": 10,
+                    "artist": "Metallica"
+                }
+            },
+            {
+                "id": "id:music:music::1",
+                "relevance": 1982.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::1",
+                    "title": "Run To The Hills",
+                    "year": 1982,
+                    "rating": 8,
+                    "artist": "Iron Maiden"
+                }
+            },
+            {
+                "id": "id:music:music::2",
+                "relevance": 1981.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::2",
+                    "title": "For Those About To Rock (We Salute You)",
+                    "year": 1981,
+                    "rating": 7,
+                    "artist": "ACDC"
+                }
+            }
+        ]
+    }
+}

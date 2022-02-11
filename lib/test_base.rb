@@ -236,11 +236,6 @@ module TestBase
       end
     end
 
-    # Default to xml format result TODO: Should change to json default
-    if (!query.scan(/\?/).empty? and query.scan(/\&format=/).empty? and query.scan(/\&presentation.format=/).empty?)
-      query = query + "&format=xml"
-    end
-
     query = url_escape_q(query)
     cluster = params[:cluster]
     server_id = qrserver_id.to_s
@@ -447,8 +442,12 @@ module TestBase
   end
 
   def assert_query_no_errors(query)
-    result_xml = search(query).xmldata
-    assert(result_xml !~ /errordetails/, "Result contains errors: #{result_xml}")
+    result = search(query)
+    lines = "missing result.json[root]"
+    rjson = result.json if result
+    rroot = rjson['root'] if rjson
+    lines = rroot['errors'] if rroot
+    assert(lines == nil, "Result contains errors: #{lines}")
   end
 
   def assert_query_errors(query, errors = [])
@@ -464,21 +463,23 @@ module TestBase
   end
 
   def assert_query_errors_base(result, errors = [])
-    result_xml = result.xmldata
-    assert(result_xml =~ /errordetails/, "Expected errors: #{errors.to_s}, found none")
+    lines = nil
+    rjson = result.json if result
+    rroot = rjson['root'] if rjson
+    lines = rroot['errors'] if rroot
+    assert(lines, "Expected errors: #{errors}, found none")
 
-    lines = result_xml.split("\n")
     for error in errors
-      foundit = false;
+      foundit = false
       m = Regexp.compile(error)
       lines.each { |line|
-        if m.match(line) || line == error
+        if m.match(line.to_s) || line == error
           puts "Found expected query error: "
           puts line
           foundit = true
         end
       }
-      assert(foundit, "Did not find expected query error: #{errors}")
+      assert(foundit, "Did not find expected query error: #{error}")
     end
   end
 
@@ -490,7 +491,7 @@ module TestBase
     assert_xml_result(query, savedresultfile, qrserver_id)
   end
   def assert_xml_result(query, savedresultfile, qrserver_id=0)
-    result = search_base(query, qrserver_id)
+    result = search_base(query + '&format=xml', qrserver_id)
     assert_xml(result.xmldata, savedresultfile)
   end
   def assert_xml(xml, savedresultfile)
@@ -540,6 +541,7 @@ module TestBase
   end
 
   def assert_result_with_timeout(timeout, query, savedresultfile, sortfield=nil, fieldstocompare=nil, qrserver_id=0, explanationstring="")
+    # save_result_with_timeout(timeout, query, savedresultfile)
     result = search_with_timeout(timeout, query, qrserver_id)
     assert_result_base(query, result, savedresultfile, sortfield, fieldstocompare, explanationstring)
   end
@@ -548,7 +550,7 @@ module TestBase
     if explanationstring != ""
       explanationstring=explanationstring + ": "
     end
-   
+    result = Resultset.new(result.xmldata, query)
     result.setcomparablefields(fieldstocompare)
     saved_result = create_resultset(savedresultfile)
     saved_result.setcomparablefields(fieldstocompare)
@@ -566,6 +568,8 @@ module TestBase
     saved_result.hit.each_index do |i|
       assert_equal(saved_result.hit[i], result.hit[i], explanationstring + "At hit " + i.to_s + ". Answer file: #{savedresultfile}")
     end
+
+    assert_equal(saved_result.groupings, result.groupings)
   end
 
   # Calls assert_result until the result matches expected result.
@@ -600,6 +604,7 @@ module TestBase
       end
       equal = true
       sleep 1
+      # save_result(query, expected)
     end
     assert_result_base(query, result, expected, sort_field, fields_to_compare)
   end

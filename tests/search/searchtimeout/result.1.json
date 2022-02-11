@@ -1,0 +1,34 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 20
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 20,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:banana:banana::doc19",
+                "relevance": 20.000111039,
+                "source": "search",
+                "fields": {
+                    "sddocname": "banana",
+                    "documentid": "id:banana:banana::doc19",
+                    "colour": "yellow0",
+                    "age": 19,
+                    "similarfruits": [
+                        "old0",
+                        "new0"
+                    ]
+                }
+            }
+        ]
+    }
+}

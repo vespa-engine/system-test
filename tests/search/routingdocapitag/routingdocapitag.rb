@@ -31,7 +31,7 @@ class RoutingDocApiTagTest < IndexedSearchTest
     # Feed to search. Because the feed.xml file only contains the actual document we need to pre- and postfix the start-
     # and end-of-feed elements.
     feed_and_wait_for_docs("music", 1, :file => selfdir + "bobdylan_feed.xml", :route => "indexing", :trace => 9)
-    assert_result("search=music&query=bob", selfdir + "bobdylan_result.xml")
+    assert_result("search=music&query=bob", selfdir + "bobdylan_result.json")
 
     # Feed to storage. Here we need to use the 'feed' method that creates the necessary vespafeed elements surrounding
     # the content of the feed.xml.
@@ -41,7 +41,7 @@ class RoutingDocApiTagTest < IndexedSearchTest
     # Feed to both search and storage. Here we can use the 'index' method since that will generate the surrouding vespa-,
     # start- and end-of-feed elements. When sending to search AND storage, at least one recipient accepts them.
     feed_and_wait_for_docs("music", 2, :file => selfdir + "metallica_feed.xml", :route => "\"[AND:indexing storage]\"", :trace => 9)
-    assert_result("search=music&query=metallica", selfdir + "metallica_result.xml")
+    assert_result("search=music&query=metallica", selfdir + "metallica_result.json")
     assert_equal(getMetallica(), vespa.document_api_v1.get("id:music:music::http://music.yahoo.com/metallica/BestOf", @get_params))
   end
 
@@ -50,8 +50,8 @@ class RoutingDocApiTagTest < IndexedSearchTest
     # TODO: Remove hack that is need to use correct port
     vespa.document_api_v1.put(getIronMaiden, { :port => Environment.instance.vespa_web_service_port })
     wait_for_hitcount("sddocname:music", 2)
-    assert_result("search=music&query=metallica", selfdir + "metallica_result.xml")
-    assert_result("search=music&query=prince", selfdir + "lepetitprince_result.xml")
+    assert_result("search=music&query=metallica", selfdir + "metallica_result.json")
+    assert_result("search=music&query=prince", selfdir + "lepetitprince_result.json")
     assert_equal(getMetallica(), vespa.document_api_v1.get("id:music:music::http://music.yahoo.com/metallica/BestOf", @get_params))
     assert_equal(getLePetitPrince(), vespa.document_api_v1.get("id:book:book::lepetitprince", @get_params))
   end

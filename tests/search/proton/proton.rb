@@ -49,7 +49,7 @@ class ProtonTest < IndexedSearchTest
     assert_hitcount("query=title:title&nocache", 3)
     assert_hitcount("query=title:test&nocache", 2)
     fields = ["sddocname", "title", "body", "sattr", "iattr"]
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.2.result", "iattr", fields)
+    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.2.result.json", "iattr", fields)
 
     puts "Refeed first document"
     feed(:file => selfdir + "docs.3.xml") # replace first document
@@ -63,7 +63,7 @@ class ProtonTest < IndexedSearchTest
     assert_hitcount("query=body:bar&nocache", 0)
     assert_hitcount("query=sattr:first&nocache", 0)
     assert_hitcount("query=iattr:10&nocache", 0)
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.3.result", "iattr", fields)
+    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.3.result.json", "iattr", fields)
 
     puts "Remove second document"
     feed(:file => selfdir + "remove.xml") # remove second document
@@ -72,23 +72,23 @@ class ProtonTest < IndexedSearchTest
     assert_hitcount("query=body:second&nocache", 0)
     assert_hitcount("query=iattr:20&nocache", 0)
     assert_hitcount("query=sattr:second&nocache", 0)
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.4.result", "iattr", fields)
+    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.4.result.json", "iattr", fields)
 
     puts "Remove non-existing document"
     feed(:file => selfdir + "remove.2.xml")
     assert_hitcount("query=sddocname:test&nocache", 2)
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.4.result", "iattr", fields)
+    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.4.result.json", "iattr", fields)
 
     puts "Update first document"
     assert_hitcount("query=iattr:1000&nocache", 0)
     feed(:file => selfdir + "upd.xml")
     assert_hitcount("query=iattr:1000&nocache", 1)
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.5.result", "iattr", fields)
+    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.5.result.json", "iattr", fields)
 
     puts "Update non-existing document"
     feed(:file => selfdir + "upd.2.xml", :trace => 1)
     assert_hitcount("query=iattr:1000&nocache", 1)
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.5.result", "iattr", fields)
+    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.5.result.json", "iattr", fields)
   end
 
   def nearlyEqual(a, b)
@@ -226,12 +226,14 @@ class ProtonTest < IndexedSearchTest
 
     puts "document summary"
     fields = ["sddocname", "title", "body", "sattr", "iattr", "documentid"]
-    assert_result("query=title:first", selfdir + "docs.first.result", nil, fields)
-    assert_result("query=title:second", selfdir + "docs.second.result", nil, fields)
-    assert_result("query=sddocname:test", selfdir + "docs.all.result", "iattr", fields)
+    assert_result("query=title:first", selfdir + "docs.first.result.json", nil, fields)
+    assert_result("query=title:second", selfdir + "docs.second.result.json", nil, fields)
+    assert_result("query=sddocname:test", selfdir + "docs.all.result.json", "iattr", fields)
     # non-existing summary class -> empty document summary
     result = search("query=title:first&summary=not")
-    assert_equal(1, result.hit[0].field.size())
+    assert_equal(result.hit[0].field.has_key?("title"), false)
+    assert_equal(result.hit[0].field.has_key?("body"), false)
+    assert_equal(result.hit[0].field.has_key?("sddocname"), false)
     assert(result.hit[0].field.has_key?("relevancy"))
 
     puts "simple ranking"

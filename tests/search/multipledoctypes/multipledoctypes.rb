@@ -35,13 +35,13 @@ class MultipleDocumentTypes < IndexedSearchTest
     query = "query=year:%3E1980&ranking=year"
     fields = ["relevancy","sddocname","title","year","author","artist","director","documentid"]
     # restrict to one document type
-    assert_result(query + "&restrict=book",  selfdir + "result.book.all.xml", nil, fields)
-    assert_result(query + "&restrict=music", selfdir + "result.music.all.xml", nil, fields)
-    assert_result(query + "&restrict=video", selfdir + "result.video.all.xml", nil, fields)
+    assert_result(query + "&restrict=book",  selfdir + "result.book.all.json", nil, fields)
+    assert_result(query + "&restrict=music", selfdir + "result.music.all.json", nil, fields)
+    assert_result(query + "&restrict=video", selfdir + "result.video.all.json", nil, fields)
 
     # search all document types
-    assert_result("query=year:%3C2010&ranking=year&hits=4", selfdir + "result.all.xml", nil, fields)
-    assert_result("query=year:%3E1982&ranking=year&hits=4&sorting=%2Byear", selfdir + "result.all.sort.xml", nil, fields)
+    assert_result("query=year:%3C2010&ranking=year&hits=4", selfdir + "result.all.json", nil, fields)
+    assert_result("query=year:%3E1982&ranking=year&hits=4&sorting=%2Byear", selfdir + "result.all.sort.json", nil, fields)
     assert_field_value("query=stallone&ranking=year", "documentid", "id:video:video::0", 0)
     assert_field_value("query=stallone&ranking=year", "documentid", "id:book:book::4", 1)
     assert_field_value("query=author:stallone&ranking=year", "documentid", "id:book:book::4", 0)

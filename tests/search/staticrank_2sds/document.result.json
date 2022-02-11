@@ -1,0 +1,43 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:one::pushyss://0/",
+                "relevance": 1000.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "one",
+                    "documentid": "id:test:one::pushyss://0/",
+                    "about": "test document",
+                    "surl": "http://fake.com/1",
+                    "popularity": 1000
+                }
+            },
+            {
+                "id": "id:test:one::pushyss://1/",
+                "relevance": 17.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "one",
+                    "documentid": "id:test:one::pushyss://1/",
+                    "about": "document test two",
+                    "surl": "http://fake.com/2",
+                    "popularity": 17
+                }
+            }
+        ]
+    }
+}

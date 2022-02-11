@@ -1,0 +1,32 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test-type2:type2::pushyss://1/",
+                "relevance": 0.07987290045947507,
+                "source": "search",
+                "fields": {
+                    "sddocname": "type2",
+                    "documentid": "id:test-type2:type2::pushyss://1/",
+                    "field21": "f21d2",
+                    "field22": "f22d2",
+                    "field23": 23,
+                    "field24": "type2 document data"
+                }
+            }
+        ]
+    }
+}

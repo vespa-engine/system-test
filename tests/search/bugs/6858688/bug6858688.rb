@@ -34,35 +34,35 @@ class CoordinatesBug < SearchTest
     geo = "pos.ll=N63.4#{semicolon}E10.4"
     attr = "pos.attribute=p2"
     add = geo + "&" + attr
-    #     save_result("query=title:pizza&#{add}", selfdir+"pizza2.xml")
-    assert_result("query=title:pizza&#{add}", selfdir+"pizza2.xml")
+    #     save_result("query=title:pizza&#{add}", selfdir+"pizza2.json")
+    assert_result("query=title:pizza&#{add}", selfdir+"pizza2.json")
     add = geo + "&" + attr + "&summary=foo"
-    #     save_result("query=title:pizza&#{add}", selfdir+"pizza2_foo.xml")
-    assert_result("query=title:pizza&#{add}", selfdir+"pizza2_foo.xml")
+    #     save_result("query=title:pizza&#{add}", selfdir+"pizza2_foo.json")
+    assert_result("query=title:pizza&#{add}", selfdir+"pizza2_foo.json")
 
     geo = "pos.ll=N50.0#{semicolon}E20.0"
     attr = "pos.attribute=p4"
     add = geo + "&" + attr
-    #     save_result("query=title:pizza&#{add}", selfdir+"pizza4.xml")
-    assert_result("query=title:pizza&#{add}", selfdir+"pizza4.xml")
+    #     save_result("query=title:pizza&#{add}", selfdir+"pizza4.json")
+    assert_result("query=title:pizza&#{add}", selfdir+"pizza4.json")
     add = geo + "&" + attr + "&summary=foo"
-    #     save_result("query=title:pizza&#{add}", selfdir+"pizza4_foo.xml")
-    assert_result("query=title:pizza&#{add}", selfdir+"pizza4_foo.xml")
+    #     save_result("query=title:pizza&#{add}", selfdir+"pizza4_foo.json")
+    assert_result("query=title:pizza&#{add}", selfdir+"pizza4_foo.json")
 
     geo = "pos.ll=N51.5#{semicolon}W0.1"
     attr = "pos.attribute=p5"
     add = geo + "&" + attr
-    #     save_result("query=title:pizza&#{add}", selfdir+"pizza5.xml")
-    assert_result("query=title:pizza&#{add}", selfdir+"pizza5.xml")
+    #     save_result("query=title:pizza&#{add}", selfdir+"pizza5.json")
+    assert_result("query=title:pizza&#{add}", selfdir+"pizza5.json")
     add = geo + "&" + attr + "&summary=foo"
-    #     save_result("query=title:pizza&#{add}", selfdir+"pizza5_foo.xml")
-    assert_result("query=title:pizza&#{add}", selfdir+"pizza5_foo.xml")
+    #     save_result("query=title:pizza&#{add}", selfdir+"pizza5_foo.json")
+    assert_result("query=title:pizza&#{add}", selfdir+"pizza5_foo.json")
 
-    #     save_result("query=title:pizza&summary=test_summary", selfdir+"pizza_ts.xml")
-    assert_result("query=title:pizza&summary=test_summary", selfdir+"pizza_ts.xml")
+    #     save_result("query=title:pizza&summary=test_summary", selfdir+"pizza_ts.json")
+    assert_result("query=title:pizza&summary=test_summary", selfdir+"pizza_ts.json")
 
-    #     save_result("query=title:pizza", selfdir+"pizza_all.xml")
-    assert_result("query=title:pizza", selfdir+"pizza_all.xml")
+    #     save_result("query=title:pizza", selfdir+"pizza_all.json")
+    assert_result("query=title:pizza", selfdir+"pizza_all.json")
 
   end
 

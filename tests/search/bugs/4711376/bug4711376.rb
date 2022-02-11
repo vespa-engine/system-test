@@ -23,7 +23,7 @@ class Bug4711376 < IndexedSearchTest
     for i in 1...3 do
         search_with_timeout(20, query)
     end
-    assert_result(query, selfdir + "result.xml")
+    assert_result(query, selfdir + "result.json")
   end
 
   def teardown

@@ -1,0 +1,16 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 0
+        },
+        "errors": [
+            {
+                "code": 3,
+                "summary": "Illegal query",
+                "message": "Incomplete query: Parameter 'foo' is mandatory in query profile 'mandatory' of type 'mandatory' but is not set"
+            }
+        ]
+    }
+}

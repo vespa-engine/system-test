@@ -1,0 +1,50 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 4,
+            "results": 4,
+            "resultsFull": 4
+        },
+        "errors": [
+            {
+                "code": 8,
+                "summary": "Error in fill reply.",
+                "message": "There is no summary class with name 'quuxsum' in the summary config. Returning empty document summary for 1 hit(s)"
+            }
+        ],
+        "children": [
+            {
+                "id": "index:search/0/a53c51468db18a698eb401c7",
+                "relevance": 4.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "derived3",
+                    "field42": "f42d3"
+                }
+            },
+            {
+                "id": "index:search/0/887ef06c108e0c3d38dc319c",
+                "relevance": 3.0,
+                "source": "search"
+            },
+            {
+                "id": "index:search/0/c32bc90456a5bc0f7ea4d15e",
+                "relevance": 2.0,
+                "source": "search"
+            },
+            {
+                "id": "index:search/0/e0ddcec5a12306b2090dbb37",
+                "relevance": 1.0,
+                "source": "search"
+            }
+        ]
+    }
+}

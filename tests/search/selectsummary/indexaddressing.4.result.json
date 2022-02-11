@@ -1,0 +1,41 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 11,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "index:music/0/77e7ca08eb24901788864494",
+                "relevance": 35.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "title": "N 2 Gether Now",
+                    "nicefoo": "nice",
+                    "artist": "Limp Bizkit & Method Man"
+                }
+            },
+            {
+                "id": "index:books/0/61f2e0d8a1228480460d4963",
+                "relevance": 1.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "title": "Bibliographie der Autobiographien, Vol. 2: Selbstzeugnisse, Erinnerungen, Tgebucher, und Briefe deutscher Geisteswissenschaftler",
+                    "author": "Jens Jessen",
+                    "valfoo": 17
+                }
+            }
+        ]
+    }
+}

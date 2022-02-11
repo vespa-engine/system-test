@@ -1,0 +1,75 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "jtitle": "Chicago Blues (<hi>kentucky</hi> <hi>fried</hi> <hi>chicken</hi>)",
+                    "jcategories": "<hi>jazz</hi>",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710",
+                    "title": "Chicago Blues (kentucky fried chicken)",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905710",
+                    "categories": "jazz"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "jtitle": "Classic <hi>testing</hi> Female Blues <hi>送花道歉</hi>",
+                    "jcategories": "<hi>Jazz</hi>",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711",
+                    "title": "Classic testing Female Blues 送花道歉",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905711",
+                    "categories": "Jazz"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "jtitle": "Blues <hi>test</hi>",
+                    "jcategories": "Blues",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709",
+                    "title": "Blues test",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905709",
+                    "categories": "Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905713",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "jtitle": "Country Blues",
+                    "jcategories": "Blues",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905713",
+                    "title": "Country Blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905713",
+                    "categories": "Blues"
+                }
+            }
+        ]
+    }
+}

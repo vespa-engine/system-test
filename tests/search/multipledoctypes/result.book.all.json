@@ -1,0 +1,89 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 5
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 5,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:book:book::3",
+                "relevance": 2008.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "book",
+                    "documentid": "id:book:book::3",
+                    "title": "Clean Code: A Handbook of Agile Software Craftsmanship",
+                    "year": 2008,
+                    "rating": 8,
+                    "author": "Robert C. Martin",
+                    "pages": 464
+                }
+            },
+            {
+                "id": "id:book:book::4",
+                "relevance": 2005.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "book",
+                    "documentid": "id:book:book::4",
+                    "title": "Sly Moves: My Proven Program to Lose Weight, Build Strength, Gain Will Power, and Live your Dream",
+                    "year": 2005,
+                    "rating": 9,
+                    "author": "Sylvester Stallone",
+                    "pages": 224
+                }
+            },
+            {
+                "id": "id:book:book::0",
+                "relevance": 2001.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "book",
+                    "documentid": "id:book:book::0",
+                    "title": "Introduction to Algorithms, Second Edition",
+                    "year": 2001,
+                    "rating": 8,
+                    "author": "Thomas H. Cormen",
+                    "pages": 1312
+                }
+            },
+            {
+                "id": "id:book:book::1",
+                "relevance": 1999.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "book",
+                    "documentid": "id:book:book::1",
+                    "title": "The C++ Standard Library: A Tutorial and Reference",
+                    "year": 1999,
+                    "rating": 9,
+                    "author": "Nicolai M. Josuttis",
+                    "pages": 832
+                }
+            },
+            {
+                "id": "id:book:book::2",
+                "relevance": 1994.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "book",
+                    "documentid": "id:book:book::2",
+                    "title": "Design Patterns: Elements of Reusable Object-Oriented Software",
+                    "year": 1994,
+                    "rating": 9,
+                    "author": "Erich Gamma",
+                    "pages": 416
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,17 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 0
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 0,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        }
+    }
+}

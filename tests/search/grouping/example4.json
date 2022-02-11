@@ -1,0 +1,59 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 20
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 20,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:customer",
+                        "relevance": 1.0,
+                        "label": "customer",
+                        "children": [
+                            {
+                                "id": "group:string:Jones",
+                                "relevance": 9870.0,
+                                "value": "Jones",
+                                "fields": {
+                                    "sum(mul(price, sub(1, tax)))": 32868.36
+                                }
+                            },
+                            {
+                                "id": "group:string:Brown",
+                                "relevance": 8000.0,
+                                "value": "Brown",
+                                "fields": {
+                                    "sum(mul(price, sub(1, tax)))": 17193.32
+                                }
+                            },
+                            {
+                                "id": "group:string:Smith",
+                                "relevance": 6100.0,
+                                "value": "Smith",
+                                "fields": {
+                                    "sum(mul(price, sub(1, tax)))": 15897.92
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

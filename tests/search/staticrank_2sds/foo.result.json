@@ -1,0 +1,45 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:two::pushyss://2/",
+                "relevance": 5000.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "two",
+                    "documentid": "id:test:two::pushyss://2/",
+                    "title": "a foo bar",
+                    "surl": "http://shopping.yahoo.com/1",
+                    "date": 1091356845,
+                    "weight": 5000
+                }
+            },
+            {
+                "id": "id:test:two::pushyss://3/",
+                "relevance": 42.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "two",
+                    "documentid": "id:test:two::pushyss://3/",
+                    "title": "foo bar",
+                    "surl": "http://shopping.yahoo.com/2",
+                    "date": 1112215893,
+                    "weight": 42
+                }
+            }
+        ]
+    }
+}

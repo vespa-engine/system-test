@@ -20,7 +20,7 @@ class AttributeSearch < IndexedSearchTest
   end
 
   def extract_relevance(result)
-    result.xml.elements[1].elements["field[@name='relevancy']"].get_text.to_s
+    result.json.elements[1].elements["field[@name='relevancy']"].get_text.to_s
   end
 
   def check_result(query, field, field_values)
@@ -48,8 +48,8 @@ class AttributeSearch < IndexedSearchTest
 
   # helper method
   def a_r_w_e(word, resnam, explain)
-    assert_result("query=title:#{word}", selfdir + "case.#{resnam}.result", nil, nil, 0, explain)
-    assert_result("query=fstitle:#{word}", selfdir + "case.#{resnam}.result", nil, nil, 0, explain)
+    assert_result("query=title:#{word}", selfdir + "case.#{resnam}.result.json", nil, nil, 0, explain)
+    assert_result("query=fstitle:#{word}", selfdir + "case.#{resnam}.result.json", nil, nil, 0, explain)
   end
 
   # helper method
@@ -328,8 +328,8 @@ class AttributeSearch < IndexedSearchTest
 
   def verify_prefix_common(field)
     fields=["title", "documentid"]
-    assert_result("query=#{field}:tTtTtTtT*&hits=100", selfdir + "prefix1.result", nil, fields, 0, "prefix search failed")
-    assert_result("query=#{field}:UuU*&hits=100", selfdir + "prefix2.result", nil, fields, 0, "prefix search failed")
+    assert_result("query=#{field}:tTtTtTtT*&hits=100", selfdir + "prefix1.result.json", nil, fields, 0, "prefix search failed")
+    assert_result("query=#{field}:UuU*&hits=100", selfdir + "prefix2.result.json", nil, fields, 0, "prefix search failed")
     assert_hitcount("query=#{field}:U*", 4)
     assert_hitcount("query=#{field}:Uu*", 3)
     assert_hitcount("query=#{field}:UuU*", 2)
@@ -340,10 +340,10 @@ class AttributeSearch < IndexedSearchTest
     puts "test attribute prefix uncased #{field}"
     verify_prefix_common(field)
     fields=["title", "documentid"]
-    assert_result("query=#{field}:tttttttt*&hits=100", selfdir + "prefix1.result", nil, fields, 0, "prefix search failed")
-    assert_result("query=#{field}:TTTTTTTT*&hits=100", selfdir + "prefix1.result", nil, fields, 0, "prefix search failed")
-    assert_result("query=#{field}:uuu*&hits=100", selfdir + "prefix2.result", nil, fields, 0, "prefix search failed")
-    assert_result("query=#{field}:UUU*&hits=100", selfdir + "prefix2.result", nil, fields, 0, "prefix search failed")
+    assert_result("query=#{field}:tttttttt*&hits=100", selfdir + "prefix1.result.json", nil, fields, 0, "prefix search failed")
+    assert_result("query=#{field}:TTTTTTTT*&hits=100", selfdir + "prefix1.result.json", nil, fields, 0, "prefix search failed")
+    assert_result("query=#{field}:uuu*&hits=100", selfdir + "prefix2.result.json", nil, fields, 0, "prefix search failed")
+    assert_result("query=#{field}:UUU*&hits=100", selfdir + "prefix2.result.json", nil, fields, 0, "prefix search failed")
   end
 
   def verify_prefix_cased(field)
@@ -387,7 +387,7 @@ class AttributeSearch < IndexedSearchTest
     assert_hitcount("query=flag:[8%3B127]", 3)
     assert_hitcount("query=flag:[-129%3B-8]", 2)
     assert_hitcount("query=flag:[8%3B128]", 3)
-    assert_result("query=sddocname:test", selfdir+"attrflag/result.xml", "documentid")
+    assert_result("query=sddocname:test", selfdir+"attrflag/result.json", "documentid")
   end
 
   def teardown

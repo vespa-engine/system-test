@@ -16,46 +16,48 @@ class Grouping < IndexedSearchTest
 
     # Basic Grouping
     assert_grouping("all(group(customer) each(output(sum(price))))",
-                    "#{selfdir}/example1.xml")
+                    "#{selfdir}/example1.json")
 
     assert_grouping("all(group(time.date(date)) each(output(sum(price))))",
-                    "#{selfdir}/example2.xml")
+                    "#{selfdir}/example2.json")
 
     # Expressions
     assert_grouping("all(group(mod(div(date,mul(60,60)),24)) each(output(sum(price))))",
-                    "#{selfdir}/example3.xml")
+                    "#{selfdir}/example3.json")
 
     assert_grouping("all(group(customer) each(output(sum(mul(price,sub(1,tax))))))",
-                    "#{selfdir}/example4.xml")
+                    "#{selfdir}/example4.json")
 
     # Ordering and Limiting Groups
     assert_grouping("all(group(customer) max(2) precision(3) order(-count()) each(output(count(), sum(price))))",
-                    "#{selfdir}/example5.xml")
+                    "#{selfdir}/example5.json")
 
     # Presenting Hits per Group
     assert_grouping("all(group(customer) each(max(3) each(output(summary()))))",
-                    "#{selfdir}/example6.xml")
+                    "#{selfdir}/example6.json")
 
     # Nested Groups
     assert_grouping("all(group(customer) each(group(time.date(date)) each(output(sum(price)))))",
-                    "#{selfdir}/example7.xml")
+                    "#{selfdir}/example7.json")
 
     assert_grouping("all(group(customer) each(max(1) output(sum(price)) each(output(summary()))) as(sumtotal)" +
                     "                    each(group(time.date(date)) each(max(10) output(sum(price)) each(output(summary())))))",
-                    "#{selfdir}/example8.xml")
+                    "#{selfdir}/example8.json")
   end
 
   def assert_grouping(grouping, file)
     my_assert_query("/search/?hits=0&query=sddocname:purchase&select=#{grouping}", file)
-    my_assert_query("/search/?hits=0&yql=select%20%2A%20from%20sources%20%2A%20where%20sddocname%20contains%20%27purchase%27%20%7C%20#{grouping}%3B", file)
+    my_assert_query("/search/?hits=0&yql=select+%2A+from+sources+%2A+where+true+%7C+#{grouping}%3B", file)
   end
 
   def my_assert_query(query, file)
-    puts(query)
-    if (SAVE_RESULT && !check_xml_result(query, file)) then
-      File.open(file, "w") { |f| f.write(search(query).xmldata) }
-    end
-    assert_xml_result_with_timeout(5.0, query, file)
+    act = search_with_timeout(5.0, query)
+    exp = create_resultset(file)
+    assert_equal(exp.hitcount, act.hitcount)
+    actjson = act.json
+    expjson = exp.json
+    assert_equal(actjson['root']['coverage'], expjson['root']['coverage'])
+    assert_equal(expjson['root']['children'], actjson['root']['children'])
   end
 
   def teardown

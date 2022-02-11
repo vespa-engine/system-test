@@ -23,9 +23,10 @@ class NearSearch < IndexedSearchTest
   end
 
   def run_phrases_via_near_test
-    filter = /there is no spoon/
-    assert_result_matches("query=sddocname:music&tracelevel=5", "#{selfdir}/trace.result", filter)
-
+    assert_hitcount("query=sddocname:music&tracelevel=5", 256)
+    result = search("query=sddocname:music&tracelevel=5")
+    trace = result.json['trace']
+    assert(trace.to_s =~ /there is no spoon returns/)
     docs = []
     File.open("#{selfdir}/documents.xml") do |file|
       file.each do |line|

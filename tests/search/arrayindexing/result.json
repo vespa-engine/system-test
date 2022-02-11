@@ -1,0 +1,49 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:arrayindexing:arrayindexing::0",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "arrayindexing",
+                    "documentid": "id:arrayindexing:arrayindexing::0",
+                    "songtitles": [
+                        "Misunderstood",
+                        "Far, Far Away",
+                        "Monday",
+                        "Say You Miss Me",
+                        "Sunken Treasure"
+                    ],
+                    "weightedtitles": [
+                        {
+                            "item": "Blackend",
+                            "weight": 10
+                        },
+                        {
+                            "item": "And Justice For All",
+                            "weight": 20
+                        },
+                        {
+                            "item": "Ride The Lightning",
+                            "weight": 30
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

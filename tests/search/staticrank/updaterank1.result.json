@@ -1,0 +1,71 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:attr/attr:updaterank::3",
+                "relevance": 1000.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "updaterank",
+                    "documentid": "id:attr/attr:updaterank::3",
+                    "rankfield": 1000,
+                    "indexfield": "index",
+                    "attributefield": "attribute",
+                    "body": "doc3"
+                }
+            },
+            {
+                "id": "id:attr/attr:updaterank::2",
+                "relevance": 800.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "updaterank",
+                    "documentid": "id:attr/attr:updaterank::2",
+                    "rankfield": 800,
+                    "indexfield": "index",
+                    "attributefield": "attribute",
+                    "body": "doc2"
+                }
+            },
+            {
+                "id": "id:attr/attr:updaterank::1",
+                "relevance": 600.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "updaterank",
+                    "documentid": "id:attr/attr:updaterank::1",
+                    "rankfield": 600,
+                    "indexfield": "index",
+                    "attributefield": "attribute",
+                    "body": "doc1"
+                }
+            },
+            {
+                "id": "id:attr/attr:updaterank::0",
+                "relevance": 400.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "updaterank",
+                    "documentid": "id:attr/attr:updaterank::0",
+                    "rankfield": 400,
+                    "indexfield": "index",
+                    "attributefield": "attribute",
+                    "body": "doc0"
+                }
+            }
+        ]
+    }
+}

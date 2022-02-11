@@ -1,0 +1,49 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 3,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:worst::4",
+                "relevance": 4.0,
+                "source": "worst",
+                "fields": {
+                    "sddocname": "worst",
+                    "documentid": "id:test:worst::4",
+                    "title": "Four letter word ****"
+                }
+            },
+            {
+                "id": "id:test:worst::3",
+                "relevance": 3.0,
+                "source": "worst",
+                "fields": {
+                    "sddocname": "worst",
+                    "documentid": "id:test:worst::3",
+                    "title": "Three random words"
+                }
+            },
+            {
+                "id": "id:test:worst::1",
+                "relevance": 1.0,
+                "source": "worst",
+                "fields": {
+                    "sddocname": "worst",
+                    "documentid": "id:test:worst::1",
+                    "title": "One random title"
+                }
+            }
+        ]
+    }
+}

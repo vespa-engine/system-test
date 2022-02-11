@@ -1,0 +1,52 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 11,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "index:music/0/0a4f018c8213c821b25dc951",
+                "relevance": 25.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "title": "English Orgran Music",
+                    "nicefoo": "nice",
+                    "artist": "Colin Walsh"
+                }
+            },
+            {
+                "id": "index:books/0/4144eecd1c0666c9e006bd43",
+                "relevance": 19.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "title": "Celts, Will Travel: Set 2 vols.",
+                    "author": "John Rea",
+                    "valfoo": 17
+                }
+            },
+            {
+                "id": "index:books/0/b3185791bd17ecc0f5e4a792",
+                "relevance": 3.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "title": "Constructional Steel Design 2: An International Guide",
+                    "author": "Reidar Bjorhovde,Patrick J. Dowling,John E. Harding",
+                    "valfoo": 42
+                }
+            }
+        ]
+    }
+}

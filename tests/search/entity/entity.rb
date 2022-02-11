@@ -19,7 +19,7 @@ class Entity < IndexedSearchTest
     feed_and_wait_for_docs("entity", 3, :file => selfdir + "entity.3.xml", :encoding => "iso-8859-1")
     query = "query=content:test"
     wait_for_hitcount(query, 3)
-    assert_result(query, selfdir + "entity.1.result.xml", "id")
+    assert_result(query, selfdir + "entity.1.result.json", "id")
   end
 
   def teardown

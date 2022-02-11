@@ -12,7 +12,7 @@ class IndexingScript < IndexedSearchTest
 
   def test_indexingscript_types
     feed_and_wait_for_docs("test", 10, :file => "#{selfdir}/input.xml")
-    assert_result("query=sddocname:test", "#{selfdir}/result.xml", "a")
+    assert_result("query=sddocname:test", "#{selfdir}/result.json", "a")
   end
 
   def teardown

@@ -46,11 +46,11 @@ class ComponentUpdateSearcher < SearchContainerTest
     res = search("query=test&tracelevel=3")
     puts "Result from query=test:"
     puts res.xmldata
-    assert_result("query=test", selfdir + "initial_result.xml")
+    assert_result("query=test", selfdir + "initial_result.json")
 
     # Re-deploy with same app, but modified searcher bundle
     puts ">>>>>>>>>>>> Deploying the updated searcher"
-    redeploy(selfdir + "updated_result.xml", updated)
+    redeploy(selfdir + "updated_result.json", updated)
 
   end
 

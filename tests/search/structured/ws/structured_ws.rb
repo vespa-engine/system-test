@@ -22,8 +22,8 @@ class StructuredWeightedSetTest < SearchTest
                       indexing("mycc")))
     start
     feed_and_wait_for_docs("wstest", 1, :file => selfdir+"feed-3.xml")
-    # save_result("query=titles:%22james%20bond%22", selfdir+"result.ws.xml")
-    assert_result("query=titles:%22james%20bond%22", selfdir+"result.ws.xml")
+    # save_result("query=titles:%22james%20bond%22", selfdir+"result.ws.json")
+    assert_result("query=titles:%22james%20bond%22", selfdir+"result.ws.json")
   end
 
   def teardown

@@ -17,7 +17,7 @@ class Bug6885526Test < SearchTest
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.xml")
-    assert_result("title:best", selfdir + "result.xml")
+    assert_result("title:best", selfdir + "result.json")
   end
 
 end

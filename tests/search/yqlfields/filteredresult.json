@@ -1,0 +1,109 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "index:search/0/7aec3a371c8bf61ddb4ee083",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "ew": "blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905709"
+                }
+            },
+            {
+                "id": "index:search/0/b3c74a9bf3aea1e2260311c0",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "ew": "blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905710"
+                }
+            },
+            {
+                "id": "index:search/0/d74b6182dccaaae007324365",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "ew": "blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905711"
+                }
+            },
+            {
+                "id": "index:search/0/248a91573e40511c9b885ef6",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "ew": "blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905712"
+                }
+            },
+            {
+                "id": "index:search/0/65ad3ca46c580c2912c45358",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "ew": "blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905713"
+                }
+            },
+            {
+                "id": "index:search/0/273d384dc214386c934d793f",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "ew": "blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905714"
+                }
+            },
+            {
+                "id": "index:search/0/ae998d3444b978512c205cab",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "ew": "blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1807865251"
+                }
+            },
+            {
+                "id": "index:search/0/dfd9fcfa650b44545ef0b8b2",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "ew": "blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1807865261"
+                }
+            },
+            {
+                "id": "index:search/0/7725706512bec65e21bb00b0",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "ew": "blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1807865263"
+                }
+            },
+            {
+                "id": "index:search/0/20defc5fd8f57786d9a5f983",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "ew": "blues",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1807865264"
+                }
+            }
+        ]
+    }
+}

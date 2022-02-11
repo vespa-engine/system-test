@@ -1,0 +1,154 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 106
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 777,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::11702",
+                "relevance": 1.1182874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::11702",
+                    "title": "Ozark Folksongs",
+                    "artist": "Various Artists",
+                    "song": "Brown Eyes;The Old Man In The Old Country;The Lily Of The West;Young Charlotte;The Banks Of The Schuykill;Little Seaside Village;The Little Old Sod Shanty On The Claim;The Fatal Wedding Night;Robin Hood;Chicken Reel;Horse-Trader's Song;Shamus O'Brien;Natchez Under The Hill;Dixon & Johnson;Harvard Student;We'll All Go Down To Rowser's;Leather Britches;Henry Green;Shortnin' Bread;The Dying Girl;Old Dumpty Moore;My Little One's Waiting For Me;Tie-Hacking's Too Tiresome;Marine's Hymn;Lost On The Lady Elgin;Christine Leroy;Hell Among The Yearlings;Rag Pat;Bug In The Taters;Farewell Since All Is Over;Where The Soul Of Man Never Dies;Lord Thomas;The Wandering Cowboy (Home Sweet Home);Granny's Old Arm Chair;In That Morning",
+                    "weight": 991.0,
+                    "brand": "682161110820",
+                    "year": 2001
+                }
+            },
+            {
+                "id": "id:test:music::12081",
+                "relevance": 1.1162874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::12081",
+                    "title": "Music of the Bibayak Pygmies",
+                    "artist": "Various Artists",
+                    "song": "'Mebasi' Vocal Game (a, b);'Yodel' Studies: One Voice/Two Voices/Three Voices/Five Voices/Eight Voices;Polyphonic Sequenses: Five Voices 'Yodel And Drum/Chorus Of 'Yodels' By Women, And Men's Voices ...;Polyphonic Sequenses: Suite;Voice And Sanza;Dialogues With The Spirits: Kose/Tsinghi;Chant Epique Du 'Mvet': (Fragment) Par Akwe Obiang",
+                    "weight": 989.0,
+                    "brand": "093046282721,794881648320",
+                    "year": 1996
+                }
+            },
+            {
+                "id": "id:test:music::381",
+                "relevance": 1.1072874611998376,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::381",
+                    "title": "Box Hits '98",
+                    "artist": "Various Artists",
+                    "song": "Crush;Sex on the Beach;Because We Want To;Someone Loves You Honey;One for Sorrow;Real Good Time;My Oh My;How Do I Live;Be Careful [Featuring R. Kelly];High;I've Got This Feeling;Let the Music Heal Your Soul;Searching for a Soul;Don't Rush [Take Love Slowly];Jesus Says;Generation Sex;Only When I Lose Myself;Hundred Mile High City;Morning Afterglow;Tell Me;Got to Get Up;Horny [Horny '98 Radio Edit];Mysterious Times;Rockafeller Skank;Delicious;Rock With You [Di Extended Mix];House Music [Full Intention Radio Edit];Shame [Full on Vocal Radio Mix];Burning [Blockbuster Edit];Everybody (Backstreet's Back) [Sharp London Vocal Remix];Teardrops [Flava Mix 7\"];New Kind of Medicine;Honey;Deep Menace (Spank) [Joey Negro's Sitone Radio Edit];I Wanna Love You;It's True [Main Mix];Eyes Don't Lie;Kiss the Girl;Never Gonna Change My Mind [Jason Nevins Radio Remix];Paradise City",
+                    "weight": 980.0,
+                    "brand": "5014469529885",
+                    "year": 1998
+                }
+            },
+            {
+                "id": "id:test:music::9572",
+                "relevance": 1.1012874611998376,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::9572",
+                    "title": "Nostalgia de la Musica Mexicana",
+                    "artist": "Various Artists",
+                    "song": "Que Te Vaya Bonito;La Verdolaga;Volver, Volver;Mexico Lindo Y Querido;La Valentina;Tu Y Las Nubes;El Terror De La Frontera;Camino De Guanajuato;Cuatro Milpas;La Cama De Piedra;La Noria Escondida;Cuatro De A Caballo;Ojitos Verdes;Tu Solo Tu;Cruz De Olvido;Benito Canales;El Soldano De Levita;La Malaguena;La Ley Del Monte;Las Mananitas",
+                    "weight": 974.0,
+                    "brand": "685738988020",
+                    "year": 2001
+                }
+            },
+            {
+                "id": "id:test:music::1415",
+                "relevance": 1.0942874611998374,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::1415",
+                    "title": "Paris Lounge, Vol. 1",
+                    "artist": "Various Artists",
+                    "song": "Hum Hum;End [Hepop Original];Doo You Bop;Mundo;Deepur;Last Tango in Paris;Chinese Bubbles;Lovelight;Tourbillon;Bitter Crop;Love, God, Weed;Infrarouge;Ph Theme;Camping Jazz;Barcelone;Body Painting;Flying to Frisco;Natacha;Jungle;Back to New York;Blowin' Drums;Salsa Poumtchak Yeah;Music and the Rhythm;My Mama Said;For My Mother;Inspiration;Soul Unit;Colors of My Shy;Givin My All;Run to Me [Deep Edit];New Life;PNC aux Portes;Khalouni [Claude Challe and Steeve Remix]",
+                    "weight": 967.0,
+                    "brand": "3596971696924",
+                    "year": 2001
+                }
+            },
+            {
+                "id": "id:test:music::657",
+                "relevance": 1.0842874611998377,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::657",
+                    "title": "And This Is Maxwell Street",
+                    "artist": "Various Artists",
+                    "song": "Sun Is Shining;Can't Hold Out Much Longer;Juke Medley;That's All Right;Red Top/Ornithology;Maxwell Street Jam;Lucille;Corrina, Corrina;Power to Live Right;Cheating and Lying Blues;Honky Tonk;Dust My Broom;Peter Gunn Jam;I Need Love So Bad;All I Want for My Breakfast;Take It Easy Baby;Long Gone John;Mama Talk to Your Daughter;I'm Ready;Carey'n On;When the Saints Go Marching In;Back off Jam;John Henry;Anna Lee/Sweet Black Angel;Love You Tonight;Time Have Come;Cruisin' in a Cadillac;Honey Hush;I'll Fly Away;I Shall Overcome",
+                    "weight": 957.0,
+                    "brand": "691874264126",
+                    "year": 1998
+                }
+            },
+            {
+                "id": "id:test:music::18239",
+                "relevance": 1.0612874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::18239",
+                    "title": "Vocal Quartets, Vol. 6: S",
+                    "artist": "Various Artists",
+                    "song": "'Buked And Scorned;So High;Live Humble;My Lord's Gonna Move This Wicked Race;In My Saviour's Care;The Great Judgment;Lonesome Road;Way Down Home;Jezebel;Me And The Devil;Anyhow My Lord;Where Shall I Go;Sinner Man;Land Of Fadeless Day;I'm A Pilgrim;Paul And Silas;I Heard My Mother Call My Name In Preyer;With My Lord Above Me;I Will Ever Stand;O Lord, Have Mercy!;Heaven In My View;The Alphabet Of Jesus;Ring Dem Chimin' Bells;He's Coming Soon",
+                    "weight": 934.0,
+                    "brand": "714298554229",
+                    "year": 1997
+                }
+            },
+            {
+                "id": "id:test:music::7800",
+                "relevance": 1.0582874611998376,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::7800",
+                    "title": "What's Up Matador",
+                    "artist": "Various Artists",
+                    "song": "Tom Courtenay;Texas Never Whispers;Catholic Education;For Tension;Vandal X;Splat;Pat's Trick;Nude As The News;Tomboy;Couldn't You Wait (Acoustic);Don't Buy The Realistic;Stratford On Guy;Twiggy Twiggy;Hey Student;Bang The Drum;In/Out;Dang;Son Of Sam;Adam & Steve;Unreal Is Here;Motor Away;Still?;My Pal The Tortoise;Water Cuts My Hands;Back Of Your Head;Strike;One Step Forward;Dig My Shit!;My Thoughts Are A Gas;Telamon Bridge;Killing Moon;Hangman;Don't Say A Word (Demo Version);The Blood Of Feeling;Life Is An Imbecile;Stuck On An Island;Alfredo's Welcome;Days Away;Hurricane Watch;Lucy;Theme From 'For Russ';Small Parade;The Trail;Happy Birthday",
+                    "weight": 931.0,
+                    "brand": "744861016328,744861016311",
+                    "year": 1997
+                }
+            },
+            {
+                "id": "id:test:music::15133",
+                "relevance": 1.0572874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::15133",
+                    "title": "Funk Fest",
+                    "artist": "Various Artists",
+                    "song": "Bring It On;(Jump Up On The) Rhythm & Ride;Car Wash;Why Can't We Live Together;When Can We Get Together Again;Shut Up And Dance;Satisfaction Guaranteed;Uptown Festival-Part 1;I Gotcha;Don't Go Breakin' My Heart;No Parking On The Dance Floor;We Are A Family;When Will I See You Again;Tired Of Being Alone;Move On Up;One Nation Under One Groove;Kung Fu;Street Party;Somebody Dance With You;The Funk Is On;Nutbush City Limits;The Electric Spanking Of War Babies;He's The Greatest Dancer;Superfly;Ain't Gonna Bump No More (With No Big Fat Woman);Billy's Bag;Do You Wanna Get Funky With Me;Spank;Get Off;Midas Touch;Wild & Free;And The Beat Goes On;Headlines;Mighty Mighty (Spade And Whitey);Friends;I Wanna Be Rich;Clean Up Woman;We Got To Have Peace;The Love I Lost;Think;Never Say You Can't Survive;Find Someone To Love;No Tricks;Billy Jack;At Midnight;Give It Up",
+                    "weight": 930.0,
+                    "brand": "642705007429",
+                    "year": 1998
+                }
+            }
+        ]
+    }
+}

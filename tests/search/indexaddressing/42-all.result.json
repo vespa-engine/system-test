@@ -1,0 +1,253 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 18
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 20000,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:books::9996",
+                "relevance": 9996.5,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::9996",
+                    "title": "doc 9996 hash 42 val9996",
+                    "author": "Famous writer 9996",
+                    "uri": "http://9996.yahoo.com/",
+                    "foobar": "http://19993.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:music::9914",
+                "relevance": 9914.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::9914",
+                    "title": "doc 9914 hash 42 val9914",
+                    "artist": "9914 Rock Star",
+                    "uri": "http://9914.yahoo.com/",
+                    "foobar": "http://19828.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:music::8680",
+                "relevance": 8680.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::8680",
+                    "title": "doc 8680 hash 42 val8680",
+                    "artist": "8680 Rock Star",
+                    "uri": "http://8680.yahoo.com/",
+                    "foobar": "http://17360.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:books::8573",
+                "relevance": 8573.5,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::8573",
+                    "title": "doc 8573 hash 42 val8573",
+                    "author": "Famous writer 8573",
+                    "uri": "http://8573.yahoo.com/",
+                    "foobar": "http://17147.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:music::7446",
+                "relevance": 7446.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::7446",
+                    "title": "doc 7446 hash 42 val7446",
+                    "artist": "7446 Rock Star",
+                    "uri": "http://7446.yahoo.com/",
+                    "foobar": "http://14892.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:books::7150",
+                "relevance": 7150.5,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::7150",
+                    "title": "doc 7150 hash 42 val7150",
+                    "author": "Famous writer 7150",
+                    "uri": "http://7150.yahoo.com/",
+                    "foobar": "http://14301.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:music::6212",
+                "relevance": 6212.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::6212",
+                    "title": "doc 6212 hash 42 val6212",
+                    "artist": "6212 Rock Star",
+                    "uri": "http://6212.yahoo.com/",
+                    "foobar": "http://12424.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:books::5727",
+                "relevance": 5727.5,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::5727",
+                    "title": "doc 5727 hash 42 val5727",
+                    "author": "Famous writer 5727",
+                    "uri": "http://5727.yahoo.com/",
+                    "foobar": "http://11455.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:music::4978",
+                "relevance": 4978.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::4978",
+                    "title": "doc 4978 hash 42 val4978",
+                    "artist": "4978 Rock Star",
+                    "uri": "http://4978.yahoo.com/",
+                    "foobar": "http://9956.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:books::4304",
+                "relevance": 4304.5,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::4304",
+                    "title": "doc 4304 hash 42 val4304",
+                    "author": "Famous writer 4304",
+                    "uri": "http://4304.yahoo.com/",
+                    "foobar": "http://8609.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:music::3744",
+                "relevance": 3744.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::3744",
+                    "title": "doc 3744 hash 42 val3744",
+                    "artist": "3744 Rock Star",
+                    "uri": "http://3744.yahoo.com/",
+                    "foobar": "http://7488.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:books::2881",
+                "relevance": 2881.5,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::2881",
+                    "title": "doc 2881 hash 42 val2881",
+                    "author": "Famous writer 2881",
+                    "uri": "http://2881.yahoo.com/",
+                    "foobar": "http://5763.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:music::2510",
+                "relevance": 2510.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::2510",
+                    "title": "doc 2510 hash 42 val2510",
+                    "artist": "2510 Rock Star",
+                    "uri": "http://2510.yahoo.com/",
+                    "foobar": "http://5020.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:books::1458",
+                "relevance": 1458.5,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::1458",
+                    "title": "doc 1458 hash 42 val1458",
+                    "author": "Famous writer 1458",
+                    "uri": "http://1458.yahoo.com/",
+                    "foobar": "http://2917.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:music::1276",
+                "relevance": 1276.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::1276",
+                    "title": "doc 1276 hash 42 val1276",
+                    "artist": "1276 Rock Star",
+                    "uri": "http://1276.yahoo.com/",
+                    "foobar": "http://2552.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:books::42",
+                "relevance": 42.5,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::42",
+                    "title": "doc 42 hash 49 val42",
+                    "author": "Famous writer 42",
+                    "uri": "http://42.yahoo.com/",
+                    "foobar": "http://85.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:music::42",
+                "relevance": 42.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::42",
+                    "title": "doc 42 hash 42 val42",
+                    "artist": "42 Rock Star",
+                    "uri": "http://42.yahoo.com/",
+                    "foobar": "http://84.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:books::35",
+                "relevance": 35.5,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::35",
+                    "title": "doc 35 hash 42 val35",
+                    "author": "Famous writer 35",
+                    "uri": "http://35.yahoo.com/",
+                    "foobar": "http://71.yahoo.com/"
+                }
+            }
+        ]
+    }
+}

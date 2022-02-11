@@ -30,7 +30,7 @@ class SchemaChangesReplaceTest < IndexedSearchTest
     assert_hitcount("f3:30&nocache", 0)
     assert_hitcount("f2:d&nocache", 1)
     assert_hitcount("f3:31&nocache", 1)
-    assert_result("sddocname:test&nocache", @test_dir + "result.0.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.0.json")
   end
 
   def test_replace_and_replay
@@ -63,21 +63,21 @@ class SchemaChangesReplaceTest < IndexedSearchTest
     assert_hitcount("f3:30&nocache", 0)
     assert_hitcount("f2:31&nocache", 1)
     assert_hitcount("f3:d&nocache", 1)
-    assert_result("sddocname:test&nocache", @test_dir + "result.0.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.0.json")
     proton.trigger_flush
     sleep 4
     assert_hitcount("f2:b&nocache", 0)
     assert_hitcount("f3:30&nocache", 0)
     assert_hitcount("f2:31&nocache", 1)
     assert_hitcount("f3:d&nocache", 1)
-    assert_result("sddocname:test&nocache", @test_dir + "result.0.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.0.json")
     proton.softdie
     wait_for_hitcount("/?query=sddocname:test", 2);
     assert_hitcount("f2:b&nocache", 0)
     assert_hitcount("f3:30&nocache", 0)
     assert_hitcount("f2:31&nocache", 1)
     assert_hitcount("f3:d&nocache", 1)
-    assert_result("sddocname:test&nocache", @test_dir + "result.0.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.0.json")
   end
 
   def teardown

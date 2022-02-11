@@ -1,0 +1,163 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 9
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 20,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:prefix:prefix::8",
+                "relevance": 93.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "prefix",
+                    "documentid": "id:prefix:prefix::8",
+                    "scan_uncased": "tTtTtTtT",
+                    "btree_uncased": "tTtTtTtT",
+                    "btree_cased": "tTtTtTtT",
+                    "hash_cased": "tTtTtTtT",
+                    "title": "8",
+                    "scan_cased": "tTtTtTtT",
+                    "popularity": 93
+                }
+            },
+            {
+                "id": "id:prefix:prefix::9",
+                "relevance": 92.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "prefix",
+                    "documentid": "id:prefix:prefix::9",
+                    "scan_uncased": "tTtTtTtTt",
+                    "btree_uncased": "tTtTtTtTt",
+                    "btree_cased": "tTtTtTtTt",
+                    "hash_cased": "tTtTtTtTt",
+                    "title": "9",
+                    "scan_cased": "tTtTtTtTt",
+                    "popularity": 92
+                }
+            },
+            {
+                "id": "id:prefix:prefix::10",
+                "relevance": 91.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "prefix",
+                    "documentid": "id:prefix:prefix::10",
+                    "scan_uncased": "tTtTtTtTtT",
+                    "btree_uncased": "tTtTtTtTtT",
+                    "btree_cased": "tTtTtTtTtT",
+                    "hash_cased": "tTtTtTtTtT",
+                    "title": "10",
+                    "scan_cased": "tTtTtTtTtT",
+                    "popularity": 91
+                }
+            },
+            {
+                "id": "id:prefix:prefix::11",
+                "relevance": 90.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "prefix",
+                    "documentid": "id:prefix:prefix::11",
+                    "scan_uncased": "tTtTtTtTtTt",
+                    "btree_uncased": "tTtTtTtTtTt",
+                    "btree_cased": "tTtTtTtTtTt",
+                    "hash_cased": "tTtTtTtTtTt",
+                    "title": "11",
+                    "scan_cased": "tTtTtTtTtTt",
+                    "popularity": 90
+                }
+            },
+            {
+                "id": "id:prefix:prefix::12",
+                "relevance": 89.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "prefix",
+                    "documentid": "id:prefix:prefix::12",
+                    "scan_uncased": "tTtTtTtTtTtT",
+                    "btree_uncased": "tTtTtTtTtTtT",
+                    "btree_cased": "tTtTtTtTtTtT",
+                    "hash_cased": "tTtTtTtTtTtT",
+                    "title": "12",
+                    "scan_cased": "tTtTtTtTtTtT",
+                    "popularity": 89
+                }
+            },
+            {
+                "id": "id:prefix:prefix::13",
+                "relevance": 88.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "prefix",
+                    "documentid": "id:prefix:prefix::13",
+                    "scan_uncased": "tTtTtTtTtTtTt",
+                    "btree_uncased": "tTtTtTtTtTtTt",
+                    "btree_cased": "tTtTtTtTtTtTt",
+                    "hash_cased": "tTtTtTtTtTtTt",
+                    "title": "13",
+                    "scan_cased": "tTtTtTtTtTtTt",
+                    "popularity": 88
+                }
+            },
+            {
+                "id": "id:prefix:prefix::14",
+                "relevance": 87.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "prefix",
+                    "documentid": "id:prefix:prefix::14",
+                    "scan_uncased": "tTtTtTtTtTtTtT",
+                    "btree_uncased": "tTtTtTtTtTtTtT",
+                    "btree_cased": "tTtTtTtTtTtTtT",
+                    "hash_cased": "tTtTtTtTtTtTtT",
+                    "title": "14",
+                    "scan_cased": "tTtTtTtTtTtTtT",
+                    "popularity": 87
+                }
+            },
+            {
+                "id": "id:prefix:prefix::15",
+                "relevance": 86.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "prefix",
+                    "documentid": "id:prefix:prefix::15",
+                    "scan_uncased": "tTtTtTtTtTtTtTt",
+                    "btree_uncased": "tTtTtTtTtTtTtTt",
+                    "btree_cased": "tTtTtTtTtTtTtTt",
+                    "hash_cased": "tTtTtTtTtTtTtTt",
+                    "title": "15",
+                    "scan_cased": "tTtTtTtTtTtTtTt",
+                    "popularity": 86
+                }
+            },
+            {
+                "id": "id:prefix:prefix::16",
+                "relevance": 85.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "prefix",
+                    "documentid": "id:prefix:prefix::16",
+                    "scan_uncased": "tTtTtTtTtTtTtTtT",
+                    "btree_uncased": "tTtTtTtTtTtTtTtT",
+                    "btree_cased": "tTtTtTtTtTtTtTtT",
+                    "hash_cased": "tTtTtTtTtTtTtTtT",
+                    "title": "16",
+                    "scan_cased": "tTtTtTtTtTtTtTtT",
+                    "popularity": 85
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 20000,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:books::42",
+                "relevance": 42.5,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::42",
+                    "title": "doc 42 hash 49 val42",
+                    "author": "Famous writer 42",
+                    "uri": "http://42.yahoo.com/",
+                    "foobar": "http://85.yahoo.com/"
+                }
+            },
+            {
+                "id": "id:test:music::42",
+                "relevance": 42.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::42",
+                    "title": "doc 42 hash 42 val42",
+                    "artist": "42 Rock Star",
+                    "uri": "http://42.yahoo.com/",
+                    "foobar": "http://84.yahoo.com/"
+                }
+            }
+        ]
+    }
+}

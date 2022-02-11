@@ -1,0 +1,40 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:mp3:mp3:g=bergum:/home/bergum/backup/bergum/50_Cent-Ayo_Technology-(CDM)-2007-S4L/07  Flo Rida - Ms. Hangover.mp3",
+                "relevance": 0.05447959677335429,
+                "source": "mp3",
+                "fields": {
+                    "sddocname": "mp3",
+                    "artist": "Flo <hi>Rida</hi>",
+                    "title": "Ms. Hangover",
+                    "album": "Mail On Sunday",
+                    "documentid": "id:mp3:mp3:g=bergum:/home/bergum/backup/bergum/50_Cent-Ayo_Technology-(CDM)-2007-S4L/07  Flo Rida - Ms. Hangover.mp3",
+                    "uri": "http://foo.bar.com/path",
+                    "size": 5708739,
+                    "checksum": 2690741102,
+                    "rating": 3,
+                    "nraters": 6,
+                    "views": 81,
+                    "lastviewed": 1253711130,
+                    "year": 2008,
+                    "length": 356
+                }
+            }
+        ]
+    }
+}

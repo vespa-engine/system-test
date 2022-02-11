@@ -1,0 +1,179 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865264",
+                "relevance": 1010.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "musicdate",
+                    "documentid": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865264",
+                    "title": "Modern Electric Blues",
+                    "docdate": 19678000,
+                    "weight": 10,
+                    "summaryfeatures": {
+                        "freshness(docdate)": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905712",
+                "relevance": 1001.4279835390947,
+                "source": "search",
+                "fields": {
+                    "sddocname": "musicdate",
+                    "documentid": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905712",
+                    "title": "Contemporary Blues",
+                    "docdate": 19658000,
+                    "weight": 4,
+                    "summaryfeatures": {
+                        "freshness(docdate)": 0.9974279835390947,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865261",
+                "relevance": 995.1399176954733,
+                "source": "search",
+                "fields": {
+                    "sddocname": "musicdate",
+                    "documentid": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865261",
+                    "title": "Electric Blues",
+                    "docdate": 19578000,
+                    "weight": 8,
+                    "summaryfeatures": {
+                        "freshness(docdate)": 0.9871399176954733,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905711",
+                "relevance": 990.1399176954733,
+                "source": "search",
+                "fields": {
+                    "sddocname": "musicdate",
+                    "documentid": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905711",
+                    "title": "Classic Female Blues",
+                    "docdate": 19578000,
+                    "weight": 3,
+                    "summaryfeatures": {
+                        "freshness(docdate)": 0.9871399176954733,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905710",
+                "relevance": 976.2798353909466,
+                "source": "search",
+                "fields": {
+                    "sddocname": "musicdate",
+                    "documentid": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905710",
+                    "title": "Chicago Blues",
+                    "docdate": 19478000,
+                    "weight": 2,
+                    "summaryfeatures": {
+                        "freshness(docdate)": 0.9742798353909465,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865263",
+                "relevance": 970.4197530864199,
+                "source": "search",
+                "fields": {
+                    "sddocname": "musicdate",
+                    "documentid": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865263",
+                    "title": "Louisiana Blues",
+                    "docdate": 19378000,
+                    "weight": 9,
+                    "summaryfeatures": {
+                        "freshness(docdate)": 0.9614197530864198,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865251",
+                "relevance": 960.7037037037037,
+                "source": "search",
+                "fields": {
+                    "sddocname": "musicdate",
+                    "documentid": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865251",
+                    "title": "East Coast Blues",
+                    "docdate": 19318000,
+                    "weight": 7,
+                    "summaryfeatures": {
+                        "freshness(docdate)": 0.9537037037037037,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905713",
+                "relevance": 953.5596707818929,
+                "source": "search",
+                "fields": {
+                    "sddocname": "musicdate",
+                    "documentid": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905713",
+                    "title": "Country Blues",
+                    "docdate": 19278000,
+                    "weight": 5,
+                    "summaryfeatures": {
+                        "freshness(docdate)": 0.948559670781893,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905714",
+                "relevance": 945.5576131687243,
+                "source": "search",
+                "fields": {
+                    "sddocname": "musicdate",
+                    "documentid": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905714",
+                    "title": "Delta Blues",
+                    "docdate": 19208000,
+                    "weight": 6,
+                    "summaryfeatures": {
+                        "freshness(docdate)": 0.9395576131687243,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905709",
+                "relevance": 936.6995884773662,
+                "source": "search",
+                "fields": {
+                    "sddocname": "musicdate",
+                    "documentid": "id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905709",
+                    "title": "Blues",
+                    "docdate": 19178000,
+                    "weight": 1,
+                    "summaryfeatures": {
+                        "freshness(docdate)": 0.9356995884773662,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

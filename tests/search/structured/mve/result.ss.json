@@ -1,0 +1,29 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:mvdtest::1",
+                "relevance": 0.38186238359951247,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "mvdtest",
+                    "titles": "my name is, my name is, Slim Shady",
+                    "documentid": "id:test:mvdtest::1"
+                }
+            }
+        ]
+    }
+}

@@ -61,7 +61,7 @@ class QueryProfiles < IndexedSearchTest
     assert_hitcount("query=best&queryProfile=root&foo=bar", 29)
 
     # This profile references a type which inherits root, but makes it strict, thus setting foo=bar fails
-    assert_result("query=best&queryProfile=rootStrict&foo=bar&hits=0", selfdir + "illegalAssignment.result")
+    assert_result("query=best&queryProfile=rootStrict&foo=bar&hits=0", selfdir + "illegalAssignment.result.json")
 
     # ...while setting default-index still works
     assert_hitcount("query=best&queryProfile=rootStrict&default-index=title", 18)
@@ -70,7 +70,7 @@ class QueryProfiles < IndexedSearchTest
     assert_hitcount("query=best&queryProfile=root&foo=bar", 29)
 
     # This query profile makes it mandatory to set "timeout" and "foo"
-    assert_result("query=best&queryProfile=mandatory", selfdir + "mandatoryMissing.result")
+    assert_result("query=best&queryProfile=mandatory", selfdir + "mandatoryMissing.result.json")
 
     # ...specifying one does not work (not checking the particular error message again)
     assert_hitcount_with_timeout(3000, "query=best&queryProfile=mandatory", 0)
@@ -82,7 +82,7 @@ class QueryProfiles < IndexedSearchTest
     assert_hitcount_with_timeout(3000, "query=best&foo=10&queryProfile=mandatory", 29)
 
     # Foo is an integer, so giving it a numeric value fails though
-    assert_result("query=best&foo=nonumber&hits=9&queryProfile=mandatory", selfdir +  "wrongArgumentType.result")
+    assert_result("query=best&foo=nonumber&hits=9&queryProfile=mandatory", selfdir +  "wrongArgumentType.result.json")
 
     # This profile uses the same type as above, but specifies the mandatory values
     assert_hitcount("query=best&queryProfile=mandatorySpecified", 29)

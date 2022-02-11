@@ -18,7 +18,7 @@ class RestartVespa < IndexedSearchTest
     feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
 
     puts "# Query: Before stopping VESPA"
-    assert_result("query=song:yellow+-title:yellow", selfdir+"query1.result", "surl", ["surl","title"])
+    assert_result("query=song:yellow+-title:yellow", selfdir+"query1.result.json", "surl", ["surl","title"])
 
     puts "# Stopping Vespa"
     vespa.stop_base
@@ -39,7 +39,7 @@ class RestartVespa < IndexedSearchTest
     puts "# Everything should be ready"
 
     puts "# Query: After stopping VESPA"
-    assert_result("query=song:yellow+-title:yellow", selfdir+"query1.result", "surl", ["surl","title"])
+    assert_result("query=song:yellow+-title:yellow", selfdir+"query1.result.json", "surl", ["surl","title"])
   end
 
   def teardown

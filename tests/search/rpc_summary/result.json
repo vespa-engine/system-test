@@ -1,0 +1,47 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "index:search/0/c4ca42382c7b8535ebfe85c6",
+                "relevance": 2.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "testb",
+                    "id": 2,
+                    "f1": "bar-foo",
+                    "summaryfeatures": {
+                        "attribute(id)": 2.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "index:search/0/cfcd20840522c5424ae9594c",
+                "relevance": 1.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "testb",
+                    "id": 1,
+                    "f1": "bar",
+                    "summaryfeatures": {
+                        "attribute(id)": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

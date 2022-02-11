@@ -15,23 +15,23 @@ class Bug_344871 < IndexedSearchTest
 
     # "Query: basic test"
     assert_result("query=test", 
-                  "#{selfdir}/result1.xml", "surl")
+                  "#{selfdir}/result1.json", "surl")
 
     # "Query: singlewidth title"
     assert_result("query=ON", 
-                  "#{selfdir}/result2.xml", "surl")
+                  "#{selfdir}/result2.json", "surl")
 
     # "Query: doublewidth title"
     assert_result("query=%EF%BC%AF%EF%BC%AE",
-                  "#{selfdir}/result2.xml", "surl")
+                  "#{selfdir}/result2.json", "surl")
 
     # "Query: singlewidth description (via juniper)"
     assert_result("query=SONY",
-                  "#{selfdir}/result3.xml", "surl")
+                  "#{selfdir}/result3.json", "surl")
 
     # "Query: doublewidth description (via juniper)"
     assert_result("query=%EF%BC%B3%EF%BC%AF%EF%BC%AE%EF%BC%B9",
-                   "#{selfdir}/result3.xml", "surl")
+                   "#{selfdir}/result3.json", "surl")
   end
 
   def teardown

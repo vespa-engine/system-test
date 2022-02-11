@@ -1,0 +1,36 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 5,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_little-trains-sticker-activity-bk_book_1955012699",
+                "relevance": 0.0017429193899782135,
+                "source": "books2",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_little-trains-sticker-activity-bk_book_1955012699",
+                    "title": "Little Trains Sticker Activity Bk",
+                    "dispauthor": "Carolyn S. Ewing",
+                    "author": "Carolyn S. Ewing",
+                    "isbn": "none",
+                    "url": "http://shopping.yahoo.com/p_little-trains-sticker-activity-bk_book_1955012699",
+                    "categories": "2065001393,2065001394,2065001395,2065002459,2065002543,2065002575,2065002576",
+                    "mid": 2,
+                    "weight": 75.175
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,71 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:video:video::0",
+                "relevance": 2010.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "video",
+                    "documentid": "id:video:video::0",
+                    "title": "The Expendables",
+                    "year": 2010,
+                    "rating": 6,
+                    "director": "Sylvester Stallone"
+                }
+            },
+            {
+                "id": "id:video:video::3",
+                "relevance": 2009.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "video",
+                    "documentid": "id:video:video::3",
+                    "title": "Inglourious Basterds",
+                    "year": 2009,
+                    "rating": 8,
+                    "director": "Quentin Tarantino"
+                }
+            },
+            {
+                "id": "id:video:video::1",
+                "relevance": 1996.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "video",
+                    "documentid": "id:video:video::1",
+                    "title": "The Rock",
+                    "year": 1996,
+                    "rating": 7,
+                    "director": "Michael Bay"
+                }
+            },
+            {
+                "id": "id:video:video::2",
+                "relevance": 1995.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "video",
+                    "documentid": "id:video:video::2",
+                    "title": "Heat",
+                    "year": 1995,
+                    "rating": 8,
+                    "director": "Michael Mann"
+                }
+            }
+        ]
+    }
+}

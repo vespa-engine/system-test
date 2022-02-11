@@ -1,0 +1,59 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:worst::4",
+                "relevance": 4.0,
+                "source": "content",
+                "fields": {
+                    "sddocname": "worst",
+                    "documentid": "id:test:worst::4",
+                    "title": "Four letter word ****Banana"
+                }
+            },
+            {
+                "id": "id:test:worst::3",
+                "relevance": 3.0,
+                "source": "content",
+                "fields": {
+                    "sddocname": "worst",
+                    "documentid": "id:test:worst::3",
+                    "title": "Three random wordsBanana"
+                }
+            },
+            {
+                "id": "id:test:worst::2",
+                "relevance": 2.0,
+                "source": "content",
+                "fields": {
+                    "sddocname": "worst",
+                    "documentid": "id:test:worst::2",
+                    "title": "Random title 2Banana"
+                }
+            },
+            {
+                "id": "id:test:worst::1",
+                "relevance": 1.0,
+                "source": "content",
+                "fields": {
+                    "sddocname": "worst",
+                    "documentid": "id:test:worst::1",
+                    "title": "One random titleBanana"
+                }
+            }
+        ]
+    }
+}

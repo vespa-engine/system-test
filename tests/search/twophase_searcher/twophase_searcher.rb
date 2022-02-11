@@ -18,9 +18,7 @@ class TwoPhase_Searcher < IndexedSearchTest
     feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
 
     puts "Query: Search for frank"
-    assert_result_matches("/search/?query=frank&tracelevel=1", selfdir+"expect.result",
-                          /TwoPhaseTestSearcher/, true)
-
+    assert_result("/search/?query=frank&tracelevel=1", selfdir+"expect.result.json")
   end
 
   def teardown

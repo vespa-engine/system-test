@@ -1,0 +1,183 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 15
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 15,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_geriatric-cardiology-no-22_book_1955028760",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_geriatric-cardiology-no-22_book_1955028760",
+                    "title": "Geriatric Cardiology: No. 22",
+                    "author": "David T. Lowenthal"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_as-it-happenith-to-the-fool_book_1955112449",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_as-it-happenith-to-the-fool_book_1955112449",
+                    "title": "As It Happenith to the Fool",
+                    "author": "Carol Jeffrey"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_citizen-summitry-keeping-the-peace-when-it-matters-too-much-to-be-left-to-politicians_book_1955197001",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_citizen-summitry-keeping-the-peace-when-it-matters-too-much-to-be-left-to-politicians_book_1955197001",
+                    "title": "Citizen Summitry: Keeping the Peace When It Matters Too Much to Be Left to Politicians"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_little-trains-sticker-activity-bk_book_1955012699",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_little-trains-sticker-activity-bk_book_1955012699",
+                    "title": "Little Trains Sticker Activity Bk",
+                    "author": "Carolyn S. Ewing"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_windows-2000-active-directory-services-mcse-study-system-with-cdrom_book_1955024096",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_windows-2000-active-directory-services-mcse-study-system-with-cdrom_book_1955024096",
+                    "title": "Windows 2000 Active Directory Services MCSE Study System with CDROM",
+                    "author": "Alan R. Carter"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_agrarian-origins-of-modern-jap_book_1955028889",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_agrarian-origins-of-modern-jap_book_1955028889",
+                    "title": "Agrarian Origins of Modern Jap",
+                    "author": "Thomas C Smith,Ronald Ted Smith,Thomas Carlyle Smith"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_carbon-dioxide-flooding_book_1955172970",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_carbon-dioxide-flooding_book_1955172970",
+                    "title": "Carbon Dioxide Flooding",
+                    "author": "Mark A. Klins"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_ambitious-heights-writing-friendship-love-the-jewsbury-sisters-felicia-hemans-jane-carlyle_book_1955088619",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_ambitious-heights-writing-friendship-love-the-jewsbury-sisters-felicia-hemans-jane-carlyle_book_1955088619",
+                    "title": "Ambitious Heights: Writing, Friendship, Love: The Jewsbury Sisters, Felicia Hemans & Jane Carlyle",
+                    "author": "Norma Clarke"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_america-invulnerable_book_1955092322",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_america-invulnerable_book_1955092322",
+                    "title": "America Invulnerable",
+                    "author": "James Chace,Caleb Carr"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_access-america-guide-to-the-southwestern-national-parks-an-atlas-and-guide-for-visitors-with-disabilities-_book_1955068427",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_access-america-guide-to-the-southwestern-national-parks-an-atlas-and-guide-for-visitors-with-disabilities-_book_1955068427",
+                    "title": "Access America Guide to the Southwestern National Parks: an atlas and guide for visitors with disabilities /",
+                    "author": "Cartographic Northern Staff"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_children-exercise-xiii-vol-xiii_book_1955189022",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_children-exercise-xiii-vol-xiii_book_1955189022",
+                    "title": "Children & Exercise XIII: Vol. XIII",
+                    "author": "Svein C. Oseid,Kai-Hakon Carlsen"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_car-wars-the-untold-story-of-the-world-s-premier-automakers-the-greatest-marketing-war-ever-waged_book_1955172826",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_car-wars-the-untold-story-of-the-world-s-premier-automakers-the-greatest-marketing-war-ever-waged_book_1955172826",
+                    "title": "Car Wars: The Untold Story of the World's Premier Automakers & the Greatest Marketing War Ever Waged",
+                    "author": "Robert Sobel"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_child-shall-lead-them_book_1955008446",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_child-shall-lead-them_book_1955008446",
+                    "title": "Child Shall Lead Them",
+                    "author": "Carole Gift Page"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_children-without-health-care_book_1955188397",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_children-without-health-care_book_1955188397",
+                    "title": "Children Without Health Care",
+                    "author": "Marian Wright Edelman,Children's Defense Fund Staff"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_in-care-of-yellow-river-the-complete-civil-war-letters-of-pvt-elii-pinson-landers-to-his-mother_book_1955048274",
+                "relevance": 0.0,
+                "source": "books",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_in-care-of-yellow-river-the-complete-civil-war-letters-of-pvt-elii-pinson-landers-to-his-mother_book_1955048274",
+                    "title": "In Care of Yellow River: The Complete Civil War Letters of Pvt. Elii Pinson Landers to His Mother",
+                    "author": "Eli Pinson Landers,Elizabeth Whitley Roberson,Elizabeth Roberson"
+                }
+            }
+        ]
+    }
+}

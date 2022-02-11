@@ -137,7 +137,7 @@ class SchemaChangesElastic < IndexedSearchTest
     postdeploy_wait(deploy_output)
     feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.0.json")
     assert_result("query=sddocname:test&nocache",
-                  @test_dir + "test.0.result.xml",
+                  @test_dir + "test.0.result.json",
                   "documentid")
     assert_remove_attribute_hitcount(2, 0, 2, 0)
 
@@ -145,7 +145,7 @@ class SchemaChangesElastic < IndexedSearchTest
     feed(:file => @test_dir + "update.1.xml")
 
     assert_result("query=sddocname:test&nocache",
-                  @test_dir + "test.1.result.xml",
+                  @test_dir + "test.1.result.json",
                   "documentid")
     assert_remove_attribute_hitcount(0, 2, 0, 2)
 
@@ -153,7 +153,7 @@ class SchemaChangesElastic < IndexedSearchTest
     remove_attribute_aspect("test.1.sd")
     feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.2.json")
     assert_result("query=sddocname:test&nocache",
-                  @test_dir + "test.2.result.xml",
+                  @test_dir + "test.2.result.json",
                   "documentid")
     assert_remove_attribute_hitcount(0, 0, 1, 2)
 
@@ -162,7 +162,7 @@ class SchemaChangesElastic < IndexedSearchTest
     assert_remove_reprocess_event_logs("f1", 3)
     feed_and_wait_for_docs("test", 4, :file => @test_dir + "feed.3.json")
     assert_result("query=sddocname:test&nocache",
-                  @test_dir + "test.3.result.xml",
+                  @test_dir + "test.3.result.json",
                   "documentid")
     assert_remove_attribute_hitcount(0, 0, 2, 2)
 
@@ -175,7 +175,7 @@ class SchemaChangesElastic < IndexedSearchTest
     puts "Activate attribute aspect 2"
     activate_attribute_aspect(5)
     assert_result("query=sddocname:test&nocache",
-                  @test_dir + "test.4.result.xml",
+                  @test_dir + "test.4.result.json",
                   "documentid")
     assert_remove_attribute_hitcount(0, 0, 0, 0)
   end

@@ -1,0 +1,48 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test/test:test::0",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test/test:test::0",
+                    "a": "foo & bar < baz >",
+                    "b": [
+                        "foo & bar < baz >"
+                    ],
+                    "c": [
+                        {
+                            "item": "foo & bar < baz >",
+                            "weight": 10
+                        }
+                    ],
+                    "d": "foo & bar < baz >",
+                    "e": [
+                        "foo & bar < baz >"
+                    ],
+                    "f": [
+                        {
+                            "item": "foo & bar < baz >",
+                            "weight": 10
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

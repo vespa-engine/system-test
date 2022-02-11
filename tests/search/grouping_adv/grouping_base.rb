@@ -262,8 +262,8 @@ module GroupingBase
   end
 
   def runquery(query, timeout)
-    result_xml = search_with_timeout(timeout, query).xmldata
-    return (result_xml == nil || result_xml == "" || result_xml =~ /errordetails/)
+    result = search_with_timeout(timeout, query)
+    return (result == nil || result.json == nil || result.json['root']['errors'])
   end
 
   def teardown

@@ -55,53 +55,53 @@ class PartialUpdate < IndexedSearchTest
     # new feed, documents and partial updates interleaved
     feedfile(selfdir + "update.b.xml")
     feedfile(selfdir + "update.j.xml")
-    poll_cmp("update.b.result")
+    poll_cmp("update.b.result.json")
 
     # new feed, only documents
     feed_docs("update.c.xml")
-    poll_cmp("update.c.result")
+    poll_cmp("update.c.result.json")
 
     # apply partial updates
     feedfile(selfdir + "update.a.xml")
-    poll_cmp("update.a.result")
+    poll_cmp("update.a.result.json")
 
     # new feed, replace partial updates
     feed_docs("update.c.xml")
-    poll_cmp("update.c.result")
+    poll_cmp("update.c.result.json")
 
     # apply partial updates
     feedfile(selfdir + "update.a.xml")
-    poll_cmp("update.a.result")
+    poll_cmp("update.a.result.json")
 
     # apply more partial updates
     feedfile(selfdir + "update.d.xml")
-    poll_cmp("update.d.result")
+    poll_cmp("update.d.result.json")
 
     # apply partial updates for updateable fields
     feedfile(selfdir + "update.a.xml")
-    poll_cmp("update.a.result")
+    poll_cmp("update.a.result.json")
   end
 
   def feed_and_check_2()
     # new feed (increment 0)
     feed_docs("update.c.xml")
-    poll_cmp("update.c.result")
+    poll_cmp("update.c.result.json")
 
     # increment 1
     feed_docs("update.e.xml")
-    poll_cmp("update.e.result")
+    poll_cmp("update.e.result.json")
 
     # apply partial updates
     feedfile(selfdir + "update.f.xml")
-    poll_cmp("update.f.result")
+    poll_cmp("update.f.result.json")
 
     # increment 2
     feed_docs("update.g.xml")
-    poll_cmp("update.g.result")
+    poll_cmp("update.g.result.json")
 
     # apply partial updates
     feedfile(selfdir + "update.h.xml")
-    poll_cmp("update.h.result")
+    poll_cmp("update.h.result.json")
   end
 
   def test_realtime
@@ -112,7 +112,7 @@ class PartialUpdate < IndexedSearchTest
 
     # remove all documents
     feedfile(selfdir+"update.k.xml")
-    poll_cmp("update.k.result", 60)
+    poll_cmp("update.k.result.json", 60)
 
     # the RTC should start up again with the correct sync token
     vespa.search["search"].first.softdie
@@ -221,7 +221,7 @@ class PartialUpdate < IndexedSearchTest
     wait_for_hitcount("/?query=sddocname:#{doc_type}", test_case.max_doc + 1)
     wait_for_hitcount_not_equal(test_case.check_docs_query, test_case.max_doc)
     puts "Query=" + test_case.query
-    poll_compare(test_case.query, result, test_case.sort_field, test_case.fields_to_compare, 30)
+    poll_compare(test_case.query + '&format=xml', result, test_case.sort_field, test_case.fields_to_compare, 30)
 
     # documents and partial updates separated to test fsearch
     index_multiple_files([docs])
@@ -229,13 +229,13 @@ class PartialUpdate < IndexedSearchTest
     wait_for_hitcount(test_case.check_docs_query, test_case.max_doc)
     feedfile(updates)
     wait_for_hitcount_not_equal(test_case.check_docs_query, test_case.max_doc)
-    poll_compare(test_case.query, result, test_case.sort_field, test_case.fields_to_compare, 30)
+    poll_compare(test_case.query + '&format=xml', result, test_case.sort_field, test_case.fields_to_compare, 30)
 
     # the RTC should start up again in the same state
     vespa.search["search"].first.softdie
     vespa.search["search"].wait_until_ready
     wait_for_hitcount("/?query=sddocname:#{doc_type}", test_case.max_doc + 1)
-    poll_compare(test_case.query, result, test_case.sort_field, test_case.fields_to_compare, 30)
+    poll_compare(test_case.query + '&format=xml', result, test_case.sort_field, test_case.fields_to_compare, 30)
   end
 
   #----------------------------------------------------------------------------
