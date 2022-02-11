@@ -185,7 +185,7 @@ class VespaModel
     end
 
     substitute_sdfile(tmp_application, vespa_services, sdfile) if sdfile
-    add_perfmap_agent_to_container_jvmargs(vespa_services) if @testcase.performance?
+    add_perfmap_agent_to_container_jvm_options(vespa_services) if @testcase.performance?
     create_rules_dir(tmp_application, params[:rules_dir])
     create_components_dir(tmp_application, params[:components_dir])
     create_search_dir(tmp_application, params[:search_dir])
@@ -418,17 +418,12 @@ class VespaModel
     copy_files(tmp_application, "schemas", sd_files)
   end
 
-  def add_perfmap_agent_to_container_jvmargs(vespa_services)
+  def add_perfmap_agent_to_container_jvm_options(vespa_services)
     doc = REXML::Document.new(File.new(vespa_services))
     paths = ['services/jdisc/nodes',
              'services/container/nodes']
     paths.each do |path|
       REXML::XPath.each(doc, path) do |e|
-        newattr = @testcase.perfmap_agent_jvmarg
-        origattr = e.attributes['jvmargs']
-        newattr += ' ' + origattr if origattr
-        e.attributes['jvmargs'] = newattr
-
         REXML::XPath.each(doc, path + "/jvm") do |e|
           newattr = @testcase.perfmap_agent_jvmarg
           origattr = e.attributes['options']
