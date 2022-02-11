@@ -16,7 +16,6 @@ class CloudconfigApp < App
   end
 
   def elastic_search
-    @content.model_type(:content)
     @content.search_type(:indexed)
     self
   end

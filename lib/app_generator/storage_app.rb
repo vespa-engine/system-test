@@ -28,7 +28,6 @@ class StorageApp < App
 
   def initialize
     super
-    @content.model_type(:content)
     @content.search_type(:none)
     @content.provider(:proton)
     @transition_time = 0
@@ -48,10 +47,6 @@ class StorageApp < App
   def sd(file_name, params = {})
     @default_storage.sd(file_name, params)
     super(file_name, params)
-  end
-
-  def get_model_type
-    return @content.get_model_type
   end
 
 end

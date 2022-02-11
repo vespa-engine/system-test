@@ -216,10 +216,8 @@ class App
 
   def provider(value)
     if value == "PROTON"
-      @content.model_type(:content)
       @content.provider(:proton)
     elsif value == "DUMMY"
-      @content.model_type(:content)
       @content.provider(:dummy)
     else
       raise "Unknown provider '#{value}' specified"

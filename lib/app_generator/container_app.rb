@@ -7,7 +7,6 @@ class ContainerApp < App
   def initialize(has_content = true)
     super()
     if has_content then
-      @content.model_type(:content)
       @content.search_type(:indexed)
       @content.provider(:none)
     else
@@ -17,7 +16,6 @@ class ContainerApp < App
   end
 
   def elastic_search
-    @content.model_type(:content)
     @content.search_type(:indexed)
     self
   end
