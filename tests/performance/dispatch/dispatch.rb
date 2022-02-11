@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'performance_test'
 require 'app_generator/search_app'
 require 'performance/fbench'
@@ -19,7 +19,7 @@ class DispatchMerge < PerformanceTest
     SearchApp.new.sd(selfdir + "test.sd").
                   search_dir(selfdir + "app").
                   container(Container.new.search(Searching.new).jvmoptions("-Xms16g -Xmx16g").
-                  elastic.num_parts(num_parts).redundancy(1).ready_copies(1)
+                  num_parts(num_parts).redundancy(1).ready_copies(1)
   end
 
   def test_merge

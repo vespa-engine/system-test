@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'app_generator/app'
 require 'app_generator/nocontent'
 require 'app_generator/chained_setter'
@@ -13,11 +13,6 @@ class CloudconfigApp < App
     super
     @content = NoContent.new
     @host = AppHost.new("localhost", ["node1"])
-  end
-
-  def elastic_search
-    @content.search_type(:indexed)
-    self
   end
 
   def hosts_header

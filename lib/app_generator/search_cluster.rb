@@ -168,16 +168,12 @@ class SearchCluster
     @search_coverage.to_xml(indent) if @search_coverage != nil
   end
 
-  def indexing_xml_elastic(indent)
-  end
-
   def cluster_parameters_xml(indent, search_type_tag = "index", search_type_attrs = {})
     XmlHelper.new(indent).
       tag("redundancy").content(@redundancy).close_tag.
       tag("tuning").to_xml(@persistence_threads).close_tag.
       to_xml(@config).
       call {|indent| proton_config(indent)}.
-      call {|indent| indexing_xml_elastic(indent)}.
       call {|indent| docdefinitions_xml(indent, search_type_tag)}.
       call {|indent| dispatch_xml(indent)}.
       call {|indent| search_coverage_xml(indent)}.

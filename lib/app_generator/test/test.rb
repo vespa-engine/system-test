@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'test/unit'
 require 'app_generator/search_app'
@@ -34,8 +34,8 @@ class SearchAppGenTest < Test::Unit::TestCase
   end
 
   # test basic setup without modifications
-  def test_default_elastic
-    verify('default_elastic.xml', create_default.elastic.enable_document_api)
+  def test_default
+    verify('default.xml', create_default.enable_document_api)
   end
 
   def test_default_streaming
@@ -43,8 +43,8 @@ class SearchAppGenTest < Test::Unit::TestCase
   end
 
   # test setup with bells and whistles
-  def test_complex_elastic
-    verify('complex_elastic.xml', create_complex.elastic)
+  def test_complex
+    verify('complex.xml', create_complex)
   end
 
   def assert_equal(exp, actual)
@@ -129,7 +129,7 @@ class SearchAppGenTest < Test::Unit::TestCase
   end
 
   def test_search_clusters
-    actual = SearchApp.new.elastic.
+    actual = SearchApp.new.
              cluster(SearchCluster.new("foo").sd("fo/ba/sd1.sd").sd("sd2.sd").
                      visibility_delay(5).selection("doc_sel").
                      flush_on_shutdown(true).
@@ -182,7 +182,7 @@ class SearchAppGenTest < Test::Unit::TestCase
   end
 
   def test_can_include_node_ratio_per_group_tuning_parameter
-    actual = SearchApp.new.elastic.
+    actual = SearchApp.new.
              cluster(SearchCluster.new("foo").min_node_ratio_per_group(0.75)).
              services_xml
 
@@ -339,7 +339,7 @@ class SearchAppGenTest < Test::Unit::TestCase
       cluster(SearchCluster.new("foo").sd("sd1.sd").
               config(ConfigOverride.new("content-cfg").add("bar", 2)))
 
-    actual_elastic = app.elastic.services_xml
+    actual_elastic = app.services_xml
     actual_streaming = app.streaming.services_xml
 
     expected_substr_content = '
@@ -392,7 +392,7 @@ class SearchAppGenTest < Test::Unit::TestCase
   end
 
   def test_cluster_controller_tuning_in_search_app
-    actual = SearchApp.new.elastic.
+    actual = SearchApp.new.
       sd('music').cluster_name('storage').
       storage(StorageCluster.new.transition_time(5)).services_xml
     expected = '
@@ -444,7 +444,7 @@ class SearchAppGenTest < Test::Unit::TestCase
                            node(NodeSpec.new("node1", 0).
                                 config(ConfigOverride.new("cfg2").
                                        add("key2", "val2")))))
-    actual_elastic = app.elastic.services_xml
+    actual_elastic = app.services_xml
     expected_elastic = '
     <group cpu-socket-affinity="true">
       <config name="cfg1">
@@ -460,7 +460,7 @@ class SearchAppGenTest < Test::Unit::TestCase
   end
 
   def test_content_cluster_config
-    actual = SearchApp.new.elastic.
+    actual = SearchApp.new.
              cluster(SearchCluster.new("foo").sd("bar").
                      config(ConfigOverride.new("cfg").add("val", 1))).
              services_xml
@@ -504,7 +504,7 @@ class SearchAppGenTest < Test::Unit::TestCase
   end
 
   def test_chain_in_search
-    actual = SearchApp.new.elastic.
+    actual = SearchApp.new.
         search_chain(SearchChain.new()).
         services_xml
     expected_substr = '
@@ -628,8 +628,8 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_default_elastic_with_doctype
-    actual = create_default.elastic.
+  def test_default_with_doctype
+    actual = create_default.
       cluster(SearchCluster.new("foo").sd("sd").
               doc_type("sd", "sd.foo == bar")).services_xml
     expected_substr = '
@@ -674,7 +674,7 @@ class SearchAppGenTest < Test::Unit::TestCase
   end
 
   def test_explicit_dispatch_groups
-    actual = create_default.elastic.
+    actual = create_default.
       cluster(SearchCluster.new("foo").dispatch(Dispatch.new.
                                                 group(DispatchGroup.new([0,1])).
                                                 group(DispatchGroup.new([2,3])))).services_xml
@@ -694,7 +694,7 @@ class SearchAppGenTest < Test::Unit::TestCase
   end
 
   def test_implicit_dispatch_groups
-    actual = create_default.elastic.
+    actual = create_default.
       cluster(SearchCluster.new("foo").dispatch(Dispatch.new.num_dispatch_groups(2))).services_xml
 
     expected_substr = '

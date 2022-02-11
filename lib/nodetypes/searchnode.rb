@@ -1,13 +1,12 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 class SearchNode < VespaNode
 
   attr_accessor :num
-  attr_reader :elastic, :feed_destination
+  attr_reader :feed_destination
 
   def initialize(*args)
     super(*args)
     @num = @service_entry["num"]
-    @elastic = true
     @feed_destination = @service_entry["feed-destination"]
   end
 
