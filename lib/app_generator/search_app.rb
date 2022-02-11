@@ -66,7 +66,7 @@ class SearchApp < App
     if value > 1
       jvm_options = "-Xms64m -Xmx256m"
       @containers.jvmoptions = jvm_options
-      @content._qrservers.default_jvmargs = jvm_options
+      @content._qrservers.default_jvm_options = jvm_options
     end
     self
   end
