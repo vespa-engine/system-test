@@ -16,7 +16,6 @@ class Container
   chained_setter :processing
   chained_setter :http
   chained_setter :documentapi
-  chained_setter :jvmargs
   chained_setter :jvmoptions
   chained_setter :jvmgcoptions
   chained_setter :cpu_socket_affinity
@@ -69,7 +68,7 @@ class Container
     helper = XmlHelper.new(indent)
     helper.tag("container", attrs)
 
-    nodeparams = @jvmargs ? { :jvmargs => @jvmargs } : {}
+    nodeparams = {}
     if @cpu_socket_affinity then
       nodeparams = nodeparams.merge({:"cpu-socket-affinity" => @cpu_socket_affinity})
     end

@@ -2,11 +2,11 @@
 class QrserverCluster
   include ChainedSetter
 
-  attr_reader :name, :_jvmargs
+  attr_reader :name, :_jvm_options
 
   chained_setter :baseport
   chained_setter :cache
-  chained_setter :jvmargs, :_jvmargs
+  chained_setter :jvm_options, :_jvm_options
   chained_setter :options
   chained_forward :renderers, :renderer => :push
   chained_forward :components, :component => :push
@@ -20,7 +20,7 @@ class QrserverCluster
     @baseport = 0
     @cache = nil
     @components = []
-    @_jvmargs = nil
+    @_jvm_options = nil
     @options = nil
     @renderers = []
     @search_chains = SearchChains.new
@@ -116,7 +116,7 @@ class QrserverCluster
         node.set_baseport(@baseport)
       }
     end
-    jvm_options = @_jvmargs ? { :options => @_jvmargs } : {}
+    jvm_options = @_jvm_options ? { :options => @_jvm_options } : {}
 
     XmlHelper.new(indent).
       tag("cluster", :name => @name).
@@ -139,7 +139,7 @@ class QrserverCluster
     end
     helper.tag_always("search").to_xml(@search_chains, :to_container_xml).close_tag
     helper.tag_always("document-processing").close_tag if @should_add_default_docproc
-    jvm_options = @_jvmargs ? { :options => @_jvmargs } : {}
+    jvm_options = @_jvm_options ? { :options => @_jvm_options } : {}
     helper.tag("cache", :size => @cache).close_tag.
         to_xml(@renderers).
         to_xml(@components).
