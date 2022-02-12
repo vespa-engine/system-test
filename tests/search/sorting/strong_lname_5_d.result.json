@@ -1,0 +1,98 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 30
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 30,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:strong::10017",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10017",
+                    "name": "doc 10017 hash 63 val17",
+                    "year": 1814,
+                    "lastname": "Yerman",
+                    "category": "products / apparel / clothing / womens / stockings",
+                    "lastname_lc": "yerman",
+                    "weight": 262.67,
+                    "myrank": 4.234
+                }
+            },
+            {
+                "id": "id:test:strong::10013",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10013",
+                    "name": "doc 10013 hash 59 val13",
+                    "year": 1841,
+                    "lastname": "Wingate",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "wingate",
+                    "myrank": 18.234
+                }
+            },
+            {
+                "id": "id:test:strong::10024",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10024",
+                    "name": "doc 10024 hash 70 val24",
+                    "year": 1834,
+                    "lastname": "Villiers",
+                    "category": "services / phone / 300 minutes",
+                    "lastname_lc": "villiers",
+                    "weight": 23.61,
+                    "myrank": 17.234
+                }
+            },
+            {
+                "id": "id:test:strong::10015",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10015",
+                    "name": "doc 10015 hash 61 val15",
+                    "year": 1807,
+                    "lastname": "Vartanian",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "vartanian",
+                    "weight": 131.73,
+                    "myrank": 26.234
+                }
+            },
+            {
+                "id": "id:test:strong::10030",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10030",
+                    "name": "doc 10030 hash 76 val30",
+                    "year": 1797,
+                    "lastname": "Thacker",
+                    "category": "products / apparel / clothing / womens / shirts",
+                    "lastname_lc": "thacker",
+                    "weight": 246.28,
+                    "myrank": 11.234
+                }
+            }
+        ]
+    }
+}

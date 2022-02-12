@@ -1,0 +1,96 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 39
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10030,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:strong::10003",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10003",
+                    "name": "doc 10003 hash 49 val3",
+                    "year": 1785,
+                    "lastname": "Chartres",
+                    "lastname_lc": "chartres",
+                    "myrank": 8.234
+                }
+            },
+            {
+                "id": "id:test:strong::10005",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10005",
+                    "name": "doc 10005 hash 51 val5",
+                    "lastname": "Dickens",
+                    "lastname_lc": "dickens",
+                    "myrank": 16.234,
+                    "weight": 115.55
+                }
+            },
+            {
+                "id": "id:test:strong::10019",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10019",
+                    "name": "doc 10019 hash 65 val19",
+                    "year": 1841,
+                    "lastname": "Sustersic",
+                    "lastname_lc": "sustersic",
+                    "myrank": 12.234,
+                    "weight": 178.03
+                }
+            },
+            {
+                "id": "id:test:simple::3719",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3719",
+                    "title": "doc 3719 hash 17 val3719 type simple",
+                    "year": 1782,
+                    "odd": false,
+                    "lastname": "Lewitt",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "lewitt",
+                    "price": 139.65,
+                    "myrank": 3719.0
+                }
+            },
+            {
+                "id": "id:test:simple::17",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::17",
+                    "title": "doc 17 hash 17 val17 type simple",
+                    "year": 1834,
+                    "odd": false,
+                    "lastname": "Obstbaum",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "obstbaum",
+                    "price": 210.41,
+                    "myrank": 17.0
+                }
+            }
+        ]
+    }
+}

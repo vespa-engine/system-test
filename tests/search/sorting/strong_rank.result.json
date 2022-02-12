@@ -1,0 +1,169 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 30
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 30,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:strong::10012",
+                "relevance": 29.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10012",
+                    "name": "doc 10012 hash 58 val12",
+                    "year": 1828,
+                    "category": "services / phone / premium with broadband",
+                    "myrank": 29.234
+                }
+            },
+            {
+                "id": "id:test:strong::10015",
+                "relevance": 26.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10015",
+                    "name": "doc 10015 hash 61 val15",
+                    "year": 1807,
+                    "category": "services / phone / premium with broadband",
+                    "lastname": "Vartanian",
+                    "myrank": 26.234,
+                    "lastname_lc": "vartanian",
+                    "weight": 131.73
+                }
+            },
+            {
+                "id": "id:test:strong::10007",
+                "relevance": 24.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10007",
+                    "name": "doc 10007 hash 53 val7",
+                    "year": 1854,
+                    "category": "services / phone / premium with broadband",
+                    "lastname": "Lipman",
+                    "myrank": 24.234,
+                    "lastname_lc": "lipman",
+                    "weight": 165.6
+                }
+            },
+            {
+                "id": "id:test:strong::10004",
+                "relevance": 27.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10004",
+                    "name": "doc 10004 hash 50 val4",
+                    "year": 1886,
+                    "category": "services / phone / 300 minutes",
+                    "myrank": 27.234,
+                    "weight": 202.05
+                }
+            },
+            {
+                "id": "id:test:strong::10024",
+                "relevance": 17.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10024",
+                    "name": "doc 10024 hash 70 val24",
+                    "year": 1834,
+                    "category": "services / phone / 300 minutes",
+                    "lastname": "Villiers",
+                    "myrank": 17.234,
+                    "lastname_lc": "villiers",
+                    "weight": 23.61
+                }
+            },
+            {
+                "id": "id:test:strong::10025",
+                "relevance": 6.234000205993652,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10025",
+                    "name": "doc 10025 hash 71 val25",
+                    "year": 1818,
+                    "category": "services / mortgage / prime",
+                    "lastname": "Kitson",
+                    "myrank": 6.234,
+                    "lastname_lc": "kitson",
+                    "weight": 76.3
+                }
+            },
+            {
+                "id": "id:test:strong::10001",
+                "relevance": 30.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10001",
+                    "name": "doc 10001 hash 47 val1",
+                    "year": 1892,
+                    "category": "products / electronics / photo",
+                    "myrank": 30.234,
+                    "weight": 4.8
+                }
+            },
+            {
+                "id": "id:test:strong::10020",
+                "relevance": 1.2339999675750732,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10020",
+                    "name": "doc 10020 hash 66 val20",
+                    "year": 1806,
+                    "category": "products / electronics / photo",
+                    "myrank": 1.234,
+                    "weight": 92.77
+                }
+            },
+            {
+                "id": "id:test:strong::10018",
+                "relevance": 23.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10018",
+                    "name": "doc 10018 hash 64 val18",
+                    "year": 1823,
+                    "category": "products / electronics / computers",
+                    "lastname": "Carder",
+                    "myrank": 23.234,
+                    "lastname_lc": "carder",
+                    "weight": 161.82
+                }
+            },
+            {
+                "id": "id:test:strong::10022",
+                "relevance": 9.234000205993652,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10022",
+                    "name": "doc 10022 hash 68 val22",
+                    "year": 1849,
+                    "category": "products / electronics / computers",
+                    "lastname": "Comstock",
+                    "myrank": 9.234,
+                    "lastname_lc": "comstock"
+                }
+            }
+        ]
+    }
+}

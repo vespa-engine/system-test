@@ -1,0 +1,1719 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10000
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:simple::6207",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6207",
+                    "title": "doc 6207 hash 37 val6207 type simple",
+                    "year": 1952,
+                    "odd": false,
+                    "lastname": "Burch",
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname_lc": "burch",
+                    "price": 195.88,
+                    "myrank": 6207.0
+                }
+            },
+            {
+                "id": "id:test:simple::1080",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1080",
+                    "title": "doc 1080 hash 1080 val1080 type simple",
+                    "year": 1948,
+                    "odd": false,
+                    "lastname": "Reichiler",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "reichiler",
+                    "price": 191.98,
+                    "myrank": 1080.0
+                }
+            },
+            {
+                "id": "id:test:simple::2564",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2564",
+                    "title": "doc 2564 hash 96 val2564 type simple",
+                    "year": 1946,
+                    "odd": false,
+                    "lastname": "Lackie",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "lackie",
+                    "price": 122.91,
+                    "myrank": 2564.0
+                }
+            },
+            {
+                "id": "id:test:simple::8526",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8526",
+                    "title": "doc 8526 hash 1122 val8526 type simple",
+                    "year": 1944,
+                    "odd": false,
+                    "lastname": "Kohl",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "kohl",
+                    "price": 44.5,
+                    "myrank": 8526.0
+                }
+            },
+            {
+                "id": "id:test:simple::4217",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4217",
+                    "title": "doc 4217 hash 515 val4217 type simple",
+                    "year": 1944,
+                    "odd": false,
+                    "lastname": "Stiftel",
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "lastname_lc": "stiftel",
+                    "price": 221.2,
+                    "myrank": 4217.0
+                }
+            },
+            {
+                "id": "id:test:simple::6364",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6364",
+                    "title": "doc 6364 hash 194 val6364 type simple",
+                    "year": 1942,
+                    "odd": false,
+                    "lastname": "Cantor-Jackson",
+                    "category": "services / mortgage / prime",
+                    "lastname_lc": "cantor-jackson",
+                    "price": 32.42,
+                    "myrank": 6364.0
+                }
+            },
+            {
+                "id": "id:test:simple::7161",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7161",
+                    "title": "doc 7161 hash 991 val7161 type simple",
+                    "year": 1942,
+                    "odd": false,
+                    "lastname": "Wood",
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "lastname_lc": "wood",
+                    "price": 88.04,
+                    "myrank": 7161.0
+                }
+            },
+            {
+                "id": "id:test:simple::3483",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3483",
+                    "title": "doc 3483 hash 1015 val3483 type simple",
+                    "year": 1942,
+                    "odd": false,
+                    "lastname": "Hackett",
+                    "category": "products / electronics / computers",
+                    "lastname_lc": "hackett",
+                    "price": 92.39,
+                    "myrank": 3483.0
+                }
+            },
+            {
+                "id": "id:test:simple::9566",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::9566",
+                    "title": "doc 9566 hash 928 val9566 type simple",
+                    "year": 1941,
+                    "odd": false,
+                    "lastname": "Camellion",
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "lastname_lc": "camellion",
+                    "price": 14.15,
+                    "myrank": 9566.0
+                }
+            },
+            {
+                "id": "id:test:simple::1518",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1518",
+                    "title": "doc 1518 hash 284 val1518 type simple",
+                    "year": 1941,
+                    "odd": false,
+                    "lastname": "Vriend",
+                    "category": "products / electronics / computers",
+                    "lastname_lc": "vriend",
+                    "price": 74.74,
+                    "myrank": 1518.0
+                }
+            },
+            {
+                "id": "id:test:simple::6266",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6266",
+                    "title": "doc 6266 hash 96 val6266 type simple",
+                    "year": 1936,
+                    "odd": false,
+                    "lastname": "Lilly",
+                    "category": "services / mortgage / subprime",
+                    "lastname_lc": "lilly",
+                    "price": 108.05,
+                    "myrank": 6266.0
+                }
+            },
+            {
+                "id": "id:test:simple::6065",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6065",
+                    "title": "doc 6065 hash 1129 val6065 type simple",
+                    "year": 1936,
+                    "odd": false,
+                    "lastname": "Kopper",
+                    "category": "products / electronics / game consoles",
+                    "lastname_lc": "kopper",
+                    "price": 13.35,
+                    "myrank": 6065.0
+                }
+            },
+            {
+                "id": "id:test:simple::6997",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6997",
+                    "title": "doc 6997 hash 827 val6997 type simple",
+                    "year": 1936,
+                    "odd": false,
+                    "lastname": "Godson",
+                    "category": "products / electronics / dvd players",
+                    "lastname_lc": "godson",
+                    "price": 39.66,
+                    "myrank": 6997.0
+                }
+            },
+            {
+                "id": "id:test:simple::8309",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8309",
+                    "title": "doc 8309 hash 905 val8309 type simple",
+                    "year": 1935,
+                    "odd": false,
+                    "lastname": "Magazine",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "magazine",
+                    "price": 248.76,
+                    "myrank": 8309.0
+                }
+            },
+            {
+                "id": "id:test:simple::4965",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4965",
+                    "title": "doc 4965 hash 29 val4965 type simple",
+                    "year": 1935,
+                    "odd": false,
+                    "lastname": "Madlem",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "madlem",
+                    "price": 32.36,
+                    "myrank": 4965.0
+                }
+            },
+            {
+                "id": "id:test:simple::8028",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8028",
+                    "title": "doc 8028 hash 624 val8028 type simple",
+                    "year": 1934,
+                    "odd": false,
+                    "lastname": "Aardema",
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname_lc": "aardema",
+                    "price": 201.32,
+                    "myrank": 8028.0
+                }
+            },
+            {
+                "id": "id:test:simple::8010",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8010",
+                    "title": "doc 8010 hash 606 val8010 type simple",
+                    "year": 1934,
+                    "odd": false,
+                    "lastname": "Allison",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "allison",
+                    "price": 98.44,
+                    "myrank": 8010.0
+                }
+            },
+            {
+                "id": "id:test:simple::5855",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5855",
+                    "title": "doc 5855 hash 919 val5855 type simple",
+                    "year": 1934,
+                    "odd": false,
+                    "lastname": "Weissbort",
+                    "category": "products / electronics / phones",
+                    "lastname_lc": "weissbort",
+                    "price": 275.19,
+                    "myrank": 5855.0
+                }
+            },
+            {
+                "id": "id:test:simple::1258",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1258",
+                    "title": "doc 1258 hash 24 val1258 type simple",
+                    "year": 1934,
+                    "odd": false,
+                    "lastname": "Hess",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "hess",
+                    "price": 115.67,
+                    "myrank": 1258.0
+                }
+            },
+            {
+                "id": "id:test:simple::1955",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1955",
+                    "title": "doc 1955 hash 721 val1955 type simple",
+                    "year": 1934,
+                    "odd": false,
+                    "lastname": "Schachter",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "schachter",
+                    "price": 133.28,
+                    "myrank": 1955.0
+                }
+            },
+            {
+                "id": "id:test:simple::5542",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5542",
+                    "title": "doc 5542 hash 606 val5542 type simple",
+                    "year": 1932,
+                    "odd": false,
+                    "lastname": "Musick",
+                    "category": "products / electronics / game consoles",
+                    "lastname_lc": "musick",
+                    "price": 97.99,
+                    "myrank": 5542.0
+                }
+            },
+            {
+                "id": "id:test:simple::171",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::171",
+                    "title": "doc 171 hash 171 val171 type simple",
+                    "year": 1932,
+                    "odd": false,
+                    "lastname": "Piascik",
+                    "category": "services / mortgage / prime",
+                    "lastname_lc": "piascik",
+                    "price": 250.28,
+                    "myrank": 171.0
+                }
+            },
+            {
+                "id": "id:test:simple::1479",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1479",
+                    "title": "doc 1479 hash 245 val1479 type simple",
+                    "year": 1931,
+                    "odd": false,
+                    "lastname": "Lobato",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "lobato",
+                    "price": 64.17,
+                    "myrank": 1479.0
+                }
+            },
+            {
+                "id": "id:test:simple::6836",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6836",
+                    "title": "doc 6836 hash 666 val6836 type simple",
+                    "year": 1930,
+                    "odd": false,
+                    "lastname": "Moschella",
+                    "category": "products / electronics / hi-fi",
+                    "lastname_lc": "moschella",
+                    "price": 126.58,
+                    "myrank": 6836.0
+                }
+            },
+            {
+                "id": "id:test:simple::8956",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8956",
+                    "title": "doc 8956 hash 318 val8956 type simple",
+                    "year": 1929,
+                    "odd": false,
+                    "lastname": "Flower",
+                    "category": "services / mortgage / subprime",
+                    "lastname_lc": "flower",
+                    "price": 85.38,
+                    "myrank": 8956.0
+                }
+            },
+            {
+                "id": "id:test:simple::8437",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8437",
+                    "title": "doc 8437 hash 1033 val8437 type simple",
+                    "year": 1929,
+                    "odd": false,
+                    "lastname": "Ahronheim",
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "lastname_lc": "ahronheim",
+                    "price": 173.27,
+                    "myrank": 8437.0
+                }
+            },
+            {
+                "id": "id:test:simple::3636",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3636",
+                    "title": "doc 3636 hash 1168 val3636 type simple",
+                    "year": 1929,
+                    "odd": false,
+                    "lastname": "Smoot",
+                    "category": "products / apparel / clothing / womens / dresses",
+                    "lastname_lc": "smoot",
+                    "price": 220.52,
+                    "myrank": 3636.0
+                }
+            },
+            {
+                "id": "id:test:simple::3512",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3512",
+                    "title": "doc 3512 hash 1044 val3512 type simple",
+                    "year": 1929,
+                    "odd": false,
+                    "lastname": "Eysell",
+                    "category": "products / apparel / clothing / womens / shorts",
+                    "lastname_lc": "eysell",
+                    "price": 84.81,
+                    "myrank": 3512.0
+                }
+            },
+            {
+                "id": "id:test:simple::4411",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4411",
+                    "title": "doc 4411 hash 709 val4411 type simple",
+                    "year": 1929,
+                    "odd": false,
+                    "lastname": "Black",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "black",
+                    "price": 189.94,
+                    "myrank": 4411.0
+                }
+            },
+            {
+                "id": "id:test:simple::764",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::764",
+                    "title": "doc 764 hash 764 val764 type simple",
+                    "year": 1929,
+                    "odd": false,
+                    "lastname": "Waurin",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "waurin",
+                    "price": 219.6,
+                    "myrank": 764.0
+                }
+            },
+            {
+                "id": "id:test:simple::6959",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6959",
+                    "title": "doc 6959 hash 789 val6959 type simple",
+                    "year": 1928,
+                    "odd": false,
+                    "lastname": "Pinckney",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "pinckney",
+                    "price": 240.58,
+                    "myrank": 6959.0
+                }
+            },
+            {
+                "id": "id:test:simple::2911",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2911",
+                    "title": "doc 2911 hash 443 val2911 type simple",
+                    "year": 1928,
+                    "odd": false,
+                    "lastname": "Perrault",
+                    "category": "products / apparel / clothing / womens / hats",
+                    "lastname_lc": "perrault",
+                    "price": 130.7,
+                    "myrank": 2911.0
+                }
+            },
+            {
+                "id": "id:test:simple::3930",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3930",
+                    "title": "doc 3930 hash 228 val3930 type simple",
+                    "year": 1928,
+                    "odd": false,
+                    "lastname": "Seablom",
+                    "category": "services / mortgage / prime",
+                    "lastname_lc": "seablom",
+                    "price": 109.13,
+                    "myrank": 3930.0
+                }
+            },
+            {
+                "id": "id:test:simple::9287",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::9287",
+                    "title": "doc 9287 hash 649 val9287 type simple",
+                    "year": 1927,
+                    "odd": false,
+                    "lastname": "Tegtmeier",
+                    "category": "products / electronics / photo",
+                    "lastname_lc": "tegtmeier",
+                    "price": 104.14,
+                    "myrank": 9287.0
+                }
+            },
+            {
+                "id": "id:test:simple::7603",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7603",
+                    "title": "doc 7603 hash 199 val7603 type simple",
+                    "year": 1927,
+                    "odd": false,
+                    "lastname": "Aines",
+                    "category": "products / apparel / clothing / womens / dresses",
+                    "lastname_lc": "aines",
+                    "price": 146.55,
+                    "myrank": 7603.0
+                }
+            },
+            {
+                "id": "id:test:simple::4837",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4837",
+                    "title": "doc 4837 hash 1135 val4837 type simple",
+                    "year": 1927,
+                    "odd": false,
+                    "lastname": "Hermes",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "hermes",
+                    "price": 242.66,
+                    "myrank": 4837.0
+                }
+            },
+            {
+                "id": "id:test:simple::1756",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1756",
+                    "title": "doc 1756 hash 522 val1756 type simple",
+                    "year": 1927,
+                    "odd": false,
+                    "lastname": "Warme",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "warme",
+                    "price": 8.34,
+                    "myrank": 1756.0
+                }
+            },
+            {
+                "id": "id:test:simple::1371",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1371",
+                    "title": "doc 1371 hash 137 val1371 type simple",
+                    "year": 1926,
+                    "odd": false,
+                    "lastname": "Huecke",
+                    "category": "services / phone / 300 minutes",
+                    "lastname_lc": "huecke",
+                    "price": 163.22,
+                    "myrank": 1371.0
+                }
+            },
+            {
+                "id": "id:test:simple::5205",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5205",
+                    "title": "doc 5205 hash 269 val5205 type simple",
+                    "year": 1925,
+                    "odd": false,
+                    "lastname": "Delwaide",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "delwaide",
+                    "price": 197.47,
+                    "myrank": 5205.0
+                }
+            },
+            {
+                "id": "id:test:simple::2582",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2582",
+                    "title": "doc 2582 hash 114 val2582 type simple",
+                    "year": 1925,
+                    "odd": false,
+                    "lastname": "Forseth",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "forseth",
+                    "price": 247.93,
+                    "myrank": 2582.0
+                }
+            },
+            {
+                "id": "id:test:simple::2057",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2057",
+                    "title": "doc 2057 hash 823 val2057 type simple",
+                    "year": 1925,
+                    "odd": false,
+                    "lastname": "Bornstein",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "bornstein",
+                    "price": 32.38,
+                    "myrank": 2057.0
+                }
+            },
+            {
+                "id": "id:test:simple::8906",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8906",
+                    "title": "doc 8906 hash 268 val8906 type simple",
+                    "year": 1924,
+                    "odd": false,
+                    "lastname": "Bashkin",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "bashkin",
+                    "price": 157.95,
+                    "myrank": 8906.0
+                }
+            },
+            {
+                "id": "id:test:simple::5917",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5917",
+                    "title": "doc 5917 hash 981 val5917 type simple",
+                    "year": 1924,
+                    "odd": false,
+                    "lastname": "Gregorich",
+                    "category": "services / phone / 300 minutes",
+                    "lastname_lc": "gregorich",
+                    "price": 57.51,
+                    "myrank": 5917.0
+                }
+            },
+            {
+                "id": "id:test:simple::4876",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4876",
+                    "title": "doc 4876 hash 1174 val4876 type simple",
+                    "year": 1924,
+                    "odd": false,
+                    "lastname": "Atwan",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "atwan",
+                    "price": 23.19,
+                    "myrank": 4876.0
+                }
+            },
+            {
+                "id": "id:test:simple::4887",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4887",
+                    "title": "doc 4887 hash 1185 val4887 type simple",
+                    "year": 1924,
+                    "odd": false,
+                    "lastname": "Bocbert",
+                    "category": "products / electronics / photo",
+                    "lastname_lc": "bocbert",
+                    "price": 191.55,
+                    "myrank": 4887.0
+                }
+            },
+            {
+                "id": "id:test:simple::4899",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4899",
+                    "title": "doc 4899 hash 1197 val4899 type simple",
+                    "year": 1924,
+                    "odd": false,
+                    "lastname": "Lynch",
+                    "category": "products / electronics / computers",
+                    "lastname_lc": "lynch",
+                    "price": 82.89,
+                    "myrank": 4899.0
+                }
+            },
+            {
+                "id": "id:test:simple::9749",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::9749",
+                    "title": "doc 9749 hash 1111 val9749 type simple",
+                    "year": 1923,
+                    "odd": false,
+                    "lastname": "Pinciss",
+                    "category": "services / mortgage / prime",
+                    "lastname_lc": "pinciss",
+                    "price": 256.52,
+                    "myrank": 9749.0
+                }
+            },
+            {
+                "id": "id:test:simple::9484",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::9484",
+                    "title": "doc 9484 hash 846 val9484 type simple",
+                    "year": 1923,
+                    "odd": false,
+                    "lastname": "Dunning",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "dunning",
+                    "price": 239.65,
+                    "myrank": 9484.0
+                }
+            },
+            {
+                "id": "id:test:simple::7250",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7250",
+                    "title": "doc 7250 hash 1080 val7250 type simple",
+                    "year": 1923,
+                    "odd": false,
+                    "lastname": "Bloch",
+                    "category": "products / electronics / phones",
+                    "lastname_lc": "bloch",
+                    "price": 134.5,
+                    "myrank": 7250.0
+                }
+            },
+            {
+                "id": "id:test:simple::8031",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8031",
+                    "title": "doc 8031 hash 627 val8031 type simple",
+                    "year": 1922,
+                    "odd": false,
+                    "lastname": "Junor",
+                    "category": "products / electronics / hi-fi",
+                    "lastname_lc": "junor",
+                    "price": 258.97,
+                    "myrank": 8031.0
+                }
+            },
+            {
+                "id": "id:test:simple::5528",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5528",
+                    "title": "doc 5528 hash 592 val5528 type simple",
+                    "year": 1922,
+                    "odd": false,
+                    "lastname": "Cleaves",
+                    "category": "products / electronics / phones",
+                    "lastname_lc": "cleaves",
+                    "price": 235.13,
+                    "myrank": 5528.0
+                }
+            },
+            {
+                "id": "id:test:simple::8793",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8793",
+                    "title": "doc 8793 hash 155 val8793 type simple",
+                    "year": 1921,
+                    "odd": false,
+                    "lastname": "Stolba",
+                    "category": "products / electronics / phones",
+                    "lastname_lc": "stolba",
+                    "price": 95.77,
+                    "myrank": 8793.0
+                }
+            },
+            {
+                "id": "id:test:simple::8545",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8545",
+                    "title": "doc 8545 hash 1141 val8545 type simple",
+                    "year": 1921,
+                    "odd": false,
+                    "lastname": "Bushrui",
+                    "category": "products / apparel / clothing / womens / dresses",
+                    "lastname_lc": "bushrui",
+                    "price": 10.82,
+                    "myrank": 8545.0
+                }
+            },
+            {
+                "id": "id:test:simple::7178",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7178",
+                    "title": "doc 7178 hash 1008 val7178 type simple",
+                    "year": 1921,
+                    "odd": false,
+                    "lastname": "Jonson",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "jonson",
+                    "price": 150.27,
+                    "myrank": 7178.0
+                }
+            },
+            {
+                "id": "id:test:simple::5458",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5458",
+                    "title": "doc 5458 hash 522 val5458 type simple",
+                    "year": 1921,
+                    "odd": false,
+                    "lastname": "Studio",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "studio",
+                    "price": 224.54,
+                    "myrank": 5458.0
+                }
+            },
+            {
+                "id": "id:test:simple::6035",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6035",
+                    "title": "doc 6035 hash 1099 val6035 type simple",
+                    "year": 1921,
+                    "odd": false,
+                    "lastname": "Garfinkel",
+                    "category": "products / apparel / clothing / womens / shirts",
+                    "lastname_lc": "garfinkel",
+                    "price": 262.98,
+                    "myrank": 6035.0
+                }
+            },
+            {
+                "id": "id:test:simple::4049",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4049",
+                    "title": "doc 4049 hash 347 val4049 type simple",
+                    "year": 1921,
+                    "odd": false,
+                    "lastname": "Walrath",
+                    "category": "products / apparel / clothing / womens / stockings",
+                    "lastname_lc": "walrath",
+                    "price": 88.18,
+                    "myrank": 4049.0
+                }
+            },
+            {
+                "id": "id:test:simple::1692",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1692",
+                    "title": "doc 1692 hash 458 val1692 type simple",
+                    "year": 1921,
+                    "odd": false,
+                    "lastname": "Kubicek",
+                    "category": "products / apparel / clothing / womens / dresses",
+                    "lastname_lc": "kubicek",
+                    "price": 90.58,
+                    "myrank": 1692.0
+                }
+            },
+            {
+                "id": "id:test:simple::9627",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::9627",
+                    "title": "doc 9627 hash 989 val9627 type simple",
+                    "year": 1920,
+                    "odd": false,
+                    "lastname": "Wahrendorf",
+                    "category": "services / phone / 300 minutes",
+                    "lastname_lc": "wahrendorf",
+                    "price": 122.55,
+                    "myrank": 9627.0
+                }
+            },
+            {
+                "id": "id:test:simple::2517",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2517",
+                    "title": "doc 2517 hash 49 val2517 type simple",
+                    "year": 1920,
+                    "odd": false,
+                    "lastname": "Lucie-Smith",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "lucie-smith",
+                    "price": 81.42,
+                    "myrank": 2517.0
+                }
+            },
+            {
+                "id": "id:test:simple::2933",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2933",
+                    "title": "doc 2933 hash 465 val2933 type simple",
+                    "year": 1920,
+                    "odd": false,
+                    "lastname": "Chevalier",
+                    "category": "products / electronics / dvd players",
+                    "lastname_lc": "chevalier",
+                    "price": 224.24,
+                    "myrank": 2933.0
+                }
+            },
+            {
+                "id": "id:test:simple::1049",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1049",
+                    "title": "doc 1049 hash 1049 val1049 type simple",
+                    "year": 1920,
+                    "odd": false,
+                    "lastname": "McIver",
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "lastname_lc": "mciver",
+                    "price": 96.38,
+                    "myrank": 1049.0
+                }
+            },
+            {
+                "id": "id:test:simple::7935",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7935",
+                    "title": "doc 7935 hash 531 val7935 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Weiskamp",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "weiskamp",
+                    "price": 56.37,
+                    "myrank": 7935.0
+                }
+            },
+            {
+                "id": "id:test:simple::7255",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7255",
+                    "title": "doc 7255 hash 1085 val7255 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Covello",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "covello",
+                    "price": 44.31,
+                    "myrank": 7255.0
+                }
+            },
+            {
+                "id": "id:test:simple::5295",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5295",
+                    "title": "doc 5295 hash 359 val5295 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Hearne",
+                    "category": "products / electronics / TVs and screens",
+                    "lastname_lc": "hearne",
+                    "price": 184.42,
+                    "myrank": 5295.0
+                }
+            },
+            {
+                "id": "id:test:simple::7372",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7372",
+                    "title": "doc 7372 hash 1202 val7372 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Hugh",
+                    "category": "services / mortgage / prime",
+                    "lastname_lc": "hugh",
+                    "price": 249.72,
+                    "myrank": 7372.0
+                }
+            },
+            {
+                "id": "id:test:simple::3079",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3079",
+                    "title": "doc 3079 hash 611 val3079 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Nakayama",
+                    "category": "products / electronics / phones",
+                    "lastname_lc": "nakayama",
+                    "price": 235.71,
+                    "myrank": 3079.0
+                }
+            },
+            {
+                "id": "id:test:simple::3504",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3504",
+                    "title": "doc 3504 hash 1036 val3504 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Hafrey",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "hafrey",
+                    "price": 77.86,
+                    "myrank": 3504.0
+                }
+            },
+            {
+                "id": "id:test:simple::3337",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3337",
+                    "title": "doc 3337 hash 869 val3337 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Imagesoft",
+                    "category": "products / apparel / clothing / womens / blouses",
+                    "lastname_lc": "imagesoft",
+                    "price": 257.21,
+                    "myrank": 3337.0
+                }
+            },
+            {
+                "id": "id:test:simple::4244",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4244",
+                    "title": "doc 4244 hash 542 val4244 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Guderian",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "guderian",
+                    "price": 28.67,
+                    "myrank": 4244.0
+                }
+            },
+            {
+                "id": "id:test:simple::1189",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1189",
+                    "title": "doc 1189 hash 1189 val1189 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Edmondson",
+                    "category": "products / electronics / computers",
+                    "lastname_lc": "edmondson",
+                    "price": 196.62,
+                    "myrank": 1189.0
+                }
+            },
+            {
+                "id": "id:test:simple::2477",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2477",
+                    "title": "doc 2477 hash 9 val2477 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Gunn",
+                    "category": "products / electronics / dvd players",
+                    "lastname_lc": "gunn",
+                    "price": 58.72,
+                    "myrank": 2477.0
+                }
+            },
+            {
+                "id": "id:test:simple::496",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::496",
+                    "title": "doc 496 hash 496 val496 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Zivanovic",
+                    "category": "products / apparel / clothing / womens / blouses",
+                    "lastname_lc": "zivanovic",
+                    "price": 175.03,
+                    "myrank": 496.0
+                }
+            },
+            {
+                "id": "id:test:simple::1484",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1484",
+                    "title": "doc 1484 hash 250 val1484 type simple",
+                    "year": 1919,
+                    "odd": false,
+                    "lastname": "Eklund",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "eklund",
+                    "price": 129.09,
+                    "myrank": 1484.0
+                }
+            },
+            {
+                "id": "id:test:simple::9548",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::9548",
+                    "title": "doc 9548 hash 910 val9548 type simple",
+                    "year": 1918,
+                    "odd": false,
+                    "lastname": "Gonzales",
+                    "category": "products / apparel / clothing / womens / dresses",
+                    "lastname_lc": "gonzales",
+                    "price": 121.15,
+                    "myrank": 9548.0
+                }
+            },
+            {
+                "id": "id:test:simple::9191",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::9191",
+                    "title": "doc 9191 hash 553 val9191 type simple",
+                    "year": 1918,
+                    "odd": false,
+                    "lastname": "Fritzsche",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "fritzsche",
+                    "price": 110.73,
+                    "myrank": 9191.0
+                }
+            },
+            {
+                "id": "id:test:simple::7018",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7018",
+                    "title": "doc 7018 hash 848 val7018 type simple",
+                    "year": 1918,
+                    "odd": false,
+                    "lastname": "Rana",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "rana",
+                    "price": 253.49,
+                    "myrank": 7018.0
+                }
+            },
+            {
+                "id": "id:test:simple::6128",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6128",
+                    "title": "doc 6128 hash 1192 val6128 type simple",
+                    "year": 1918,
+                    "odd": false,
+                    "lastname": "Good",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "good",
+                    "price": 186.57,
+                    "myrank": 6128.0
+                }
+            },
+            {
+                "id": "id:test:simple::5969",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5969",
+                    "title": "doc 5969 hash 1033 val5969 type simple",
+                    "year": 1918,
+                    "odd": false,
+                    "lastname": "Scriabin",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "scriabin",
+                    "price": 172.77,
+                    "myrank": 5969.0
+                }
+            },
+            {
+                "id": "id:test:simple::6101",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6101",
+                    "title": "doc 6101 hash 1165 val6101 type simple",
+                    "year": 1918,
+                    "odd": false,
+                    "lastname": "Bauman",
+                    "category": "products / apparel / clothing / womens / gloves",
+                    "lastname_lc": "bauman",
+                    "price": 143.29,
+                    "myrank": 6101.0
+                }
+            },
+            {
+                "id": "id:test:simple::3406",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3406",
+                    "title": "doc 3406 hash 938 val3406 type simple",
+                    "year": 1918,
+                    "odd": false,
+                    "lastname": "Flory",
+                    "category": "products / electronics / computers",
+                    "lastname_lc": "flory",
+                    "price": 245.49,
+                    "myrank": 3406.0
+                }
+            },
+            {
+                "id": "id:test:simple::9532",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::9532",
+                    "title": "doc 9532 hash 894 val9532 type simple",
+                    "year": 1917,
+                    "odd": false,
+                    "lastname": "Ewart",
+                    "category": "services / mortgage / prime",
+                    "lastname_lc": "ewart",
+                    "price": 189.33,
+                    "myrank": 9532.0
+                }
+            },
+            {
+                "id": "id:test:simple::8853",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8853",
+                    "title": "doc 8853 hash 215 val8853 type simple",
+                    "year": 1917,
+                    "odd": false,
+                    "lastname": "Lynaugh",
+                    "category": "services / phone / 300 minutes",
+                    "lastname_lc": "lynaugh",
+                    "price": 163.35,
+                    "myrank": 8853.0
+                }
+            },
+            {
+                "id": "id:test:simple::5638",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5638",
+                    "title": "doc 5638 hash 702 val5638 type simple",
+                    "year": 1917,
+                    "odd": false,
+                    "lastname": "Carn",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "carn",
+                    "price": 96.73,
+                    "myrank": 5638.0
+                }
+            },
+            {
+                "id": "id:test:simple::6614",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6614",
+                    "title": "doc 6614 hash 444 val6614 type simple",
+                    "year": 1917,
+                    "odd": false,
+                    "lastname": "Gleason",
+                    "category": "products / apparel / clothing / womens / gloves",
+                    "lastname_lc": "gleason",
+                    "price": 187.64,
+                    "myrank": 6614.0
+                }
+            },
+            {
+                "id": "id:test:simple::3665",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3665",
+                    "title": "doc 3665 hash 1197 val3665 type simple",
+                    "year": 1917,
+                    "odd": false,
+                    "lastname": "Salle",
+                    "category": "products / electronics / computers",
+                    "lastname_lc": "salle",
+                    "price": 112.6,
+                    "myrank": 3665.0
+                }
+            },
+            {
+                "id": "id:test:simple::4310",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4310",
+                    "title": "doc 4310 hash 608 val4310 type simple",
+                    "year": 1917,
+                    "odd": false,
+                    "lastname": "Lovasz",
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "lastname_lc": "lovasz",
+                    "price": 162.3,
+                    "myrank": 4310.0
+                }
+            },
+            {
+                "id": "id:test:simple::3515",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3515",
+                    "title": "doc 3515 hash 1047 val3515 type simple",
+                    "year": 1917,
+                    "odd": false,
+                    "lastname": "Fairbairns",
+                    "category": "products / electronics / phones",
+                    "lastname_lc": "fairbairns",
+                    "price": 96.48,
+                    "myrank": 3515.0
+                }
+            },
+            {
+                "id": "id:test:simple::616",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::616",
+                    "title": "doc 616 hash 616 val616 type simple",
+                    "year": 1917,
+                    "odd": false,
+                    "lastname": "Glim",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "glim",
+                    "price": 12.56,
+                    "myrank": 616.0
+                }
+            },
+            {
+                "id": "id:test:simple::8398",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8398",
+                    "title": "doc 8398 hash 994 val8398 type simple",
+                    "year": 1916,
+                    "odd": false,
+                    "lastname": "Dugopolski",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "dugopolski",
+                    "price": 193.98,
+                    "myrank": 8398.0
+                }
+            },
+            {
+                "id": "id:test:simple::8825",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8825",
+                    "title": "doc 8825 hash 187 val8825 type simple",
+                    "year": 1916,
+                    "odd": false,
+                    "lastname": "Franck",
+                    "category": "products / electronics / game consoles",
+                    "lastname_lc": "franck",
+                    "price": 121.76,
+                    "myrank": 8825.0
+                }
+            },
+            {
+                "id": "id:test:simple::7554",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7554",
+                    "title": "doc 7554 hash 150 val7554 type simple",
+                    "year": 1916,
+                    "odd": false,
+                    "lastname": "Frazier",
+                    "category": "services / mortgage / prime",
+                    "lastname_lc": "frazier",
+                    "price": 153.61,
+                    "myrank": 7554.0
+                }
+            },
+            {
+                "id": "id:test:simple::7837",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7837",
+                    "title": "doc 7837 hash 433 val7837 type simple",
+                    "year": 1916,
+                    "odd": false,
+                    "lastname": "Biehler",
+                    "category": "products / apparel / clothing / womens / tops",
+                    "lastname_lc": "biehler",
+                    "price": 121.78,
+                    "myrank": 7837.0
+                }
+            },
+            {
+                "id": "id:test:simple::7139",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7139",
+                    "title": "doc 7139 hash 969 val7139 type simple",
+                    "year": 1916,
+                    "odd": false,
+                    "lastname": "Pbetursson",
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname_lc": "pbetursson",
+                    "price": 71.85,
+                    "myrank": 7139.0
+                }
+            },
+            {
+                "id": "id:test:simple::4937",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4937",
+                    "title": "doc 4937 hash 1 val4937 type simple",
+                    "year": 1916,
+                    "odd": false,
+                    "lastname": "Bleuer",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "bleuer",
+                    "price": 216.51,
+                    "myrank": 4937.0
+                }
+            },
+            {
+                "id": "id:test:simple::2492",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2492",
+                    "title": "doc 2492 hash 24 val2492 type simple",
+                    "year": 1916,
+                    "odd": false,
+                    "lastname": "Gorguissian",
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "lastname_lc": "gorguissian",
+                    "price": 27.08,
+                    "myrank": 2492.0
+                }
+            },
+            {
+                "id": "id:test:simple::1455",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1455",
+                    "title": "doc 1455 hash 221 val1455 type simple",
+                    "year": 1916,
+                    "odd": false,
+                    "lastname": "Hartigan",
+                    "category": "products / apparel / clothing / womens / dresses",
+                    "lastname_lc": "hartigan",
+                    "price": 102.23,
+                    "myrank": 1455.0
+                }
+            },
+            {
+                "id": "id:test:simple::3829",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3829",
+                    "title": "doc 3829 hash 127 val3829 type simple",
+                    "year": 1915,
+                    "odd": false,
+                    "lastname": "Rathile",
+                    "category": "products / apparel / clothing / womens / gloves",
+                    "lastname_lc": "rathile",
+                    "price": 104.02,
+                    "myrank": 3829.0
+                }
+            },
+            {
+                "id": "id:test:simple::3798",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3798",
+                    "title": "doc 3798 hash 96 val3798 type simple",
+                    "year": 1915,
+                    "odd": false,
+                    "lastname": "Rosenfeld",
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname_lc": "rosenfeld",
+                    "price": 105.83,
+                    "myrank": 3798.0
+                }
+            },
+            {
+                "id": "id:test:simple::1795",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1795",
+                    "title": "doc 1795 hash 561 val1795 type simple",
+                    "year": 1915,
+                    "odd": false,
+                    "lastname": "Joughin",
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname_lc": "joughin",
+                    "price": 78.79,
+                    "myrank": 1795.0
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,94 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 30
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 30,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:strong::10013",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10013",
+                    "name": "doc 10013 hash 59 val13",
+                    "year": 1841,
+                    "lastname": "Wingate",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "wingate",
+                    "myrank": 18.234
+                }
+            },
+            {
+                "id": "id:test:strong::10019",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10019",
+                    "name": "doc 10019 hash 65 val19",
+                    "year": 1841,
+                    "lastname": "Sustersic",
+                    "lastname_lc": "sustersic",
+                    "myrank": 12.234,
+                    "weight": 178.03
+                }
+            },
+            {
+                "id": "id:test:strong::10002",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10002",
+                    "name": "doc 10002 hash 48 val2",
+                    "year": 1835,
+                    "lastname": "Sales",
+                    "category": "products / apparel / clothing / womens / stockings",
+                    "lastname_lc": "sales",
+                    "myrank": 19.234,
+                    "weight": 112.2
+                }
+            },
+            {
+                "id": "id:test:strong::10024",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10024",
+                    "name": "doc 10024 hash 70 val24",
+                    "year": 1834,
+                    "lastname": "Villiers",
+                    "category": "services / phone / 300 minutes",
+                    "lastname_lc": "villiers",
+                    "myrank": 17.234,
+                    "weight": 23.61
+                }
+            },
+            {
+                "id": "id:test:strong::10028",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10028",
+                    "name": "doc 10028 hash 74 val28",
+                    "year": 1834,
+                    "category": "products / apparel / shoes",
+                    "myrank": 3.234
+                }
+            }
+        ]
+    }
+}

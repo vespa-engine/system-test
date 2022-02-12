@@ -1,0 +1,170 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 30
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 30,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:strong::10020",
+                "relevance": 1.2339999675750732,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10020",
+                    "name": "doc 10020 hash 66 val20",
+                    "year": 1806,
+                    "category": "products / electronics / photo",
+                    "weight": 92.77,
+                    "myrank": 1.234
+                }
+            },
+            {
+                "id": "id:test:strong::10009",
+                "relevance": 2.2339999675750732,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10009",
+                    "name": "doc 10009 hash 55 val9",
+                    "year": 1884,
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname": "Pickow",
+                    "weight": 68.2,
+                    "myrank": 2.234,
+                    "lastname_lc": "pickow"
+                }
+            },
+            {
+                "id": "id:test:strong::10028",
+                "relevance": 3.2339999675750732,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10028",
+                    "name": "doc 10028 hash 74 val28",
+                    "year": 1834,
+                    "category": "products / apparel / shoes",
+                    "myrank": 3.234
+                }
+            },
+            {
+                "id": "id:test:strong::10017",
+                "relevance": 4.234000205993652,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10017",
+                    "name": "doc 10017 hash 63 val17",
+                    "year": 1814,
+                    "category": "products / apparel / clothing / womens / stockings",
+                    "lastname": "Yerman",
+                    "weight": 262.67,
+                    "myrank": 4.234,
+                    "lastname_lc": "yerman"
+                }
+            },
+            {
+                "id": "id:test:strong::10006",
+                "relevance": 5.234000205993652,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10006",
+                    "name": "doc 10006 hash 52 val6",
+                    "year": 1922,
+                    "category": "products / apparel / shoes",
+                    "lastname": "Kaduson",
+                    "myrank": 5.234,
+                    "lastname_lc": "kaduson"
+                }
+            },
+            {
+                "id": "id:test:strong::10025",
+                "relevance": 6.234000205993652,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10025",
+                    "name": "doc 10025 hash 71 val25",
+                    "year": 1818,
+                    "category": "services / mortgage / prime",
+                    "lastname": "Kitson",
+                    "weight": 76.3,
+                    "myrank": 6.234,
+                    "lastname_lc": "kitson"
+                }
+            },
+            {
+                "id": "id:test:strong::10014",
+                "relevance": 7.234000205993652,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10014",
+                    "name": "doc 10014 hash 60 val14",
+                    "year": 1803,
+                    "category": "products / apparel / clothing / womens / dresses",
+                    "lastname": "Piantadosi",
+                    "weight": 63.22,
+                    "myrank": 7.234,
+                    "lastname_lc": "piantadosi"
+                }
+            },
+            {
+                "id": "id:test:strong::10003",
+                "relevance": 8.234000205993652,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10003",
+                    "name": "doc 10003 hash 49 val3",
+                    "year": 1785,
+                    "lastname": "Chartres",
+                    "myrank": 8.234,
+                    "lastname_lc": "chartres"
+                }
+            },
+            {
+                "id": "id:test:strong::10022",
+                "relevance": 9.234000205993652,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10022",
+                    "name": "doc 10022 hash 68 val22",
+                    "year": 1849,
+                    "category": "products / electronics / computers",
+                    "lastname": "Comstock",
+                    "myrank": 9.234,
+                    "lastname_lc": "comstock"
+                }
+            },
+            {
+                "id": "id:test:strong::10011",
+                "relevance": 10.234000205993652,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10011",
+                    "name": "doc 10011 hash 57 val11",
+                    "year": 1825,
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "lastname": "Gaddy",
+                    "weight": 186.91,
+                    "myrank": 10.234,
+                    "lastname_lc": "gaddy"
+                }
+            }
+        ]
+    }
+}

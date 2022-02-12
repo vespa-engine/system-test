@@ -1,0 +1,104 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10000
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:simple::726",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::726",
+                    "title": "doc 726 hash 726 val726 type simple",
+                    "year": 1745,
+                    "odd": false,
+                    "lastname": "Warner",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "warner",
+                    "price": 50.25,
+                    "myrank": 726.0
+                }
+            },
+            {
+                "id": "id:test:simple::5611",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5611",
+                    "title": "doc 5611 hash 675 val5611 type simple",
+                    "year": 1746,
+                    "odd": false,
+                    "lastname": "Laughlin",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "laughlin",
+                    "price": 33.99,
+                    "myrank": 5611.0
+                }
+            },
+            {
+                "id": "id:test:simple::4980",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4980",
+                    "title": "doc 4980 hash 44 val4980 type simple",
+                    "year": 1746,
+                    "odd": false,
+                    "lastname": "Kipling",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "kipling",
+                    "price": 9.68,
+                    "myrank": 4980.0
+                }
+            },
+            {
+                "id": "id:test:simple::4572",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4572",
+                    "title": "doc 4572 hash 870 val4572 type simple",
+                    "year": 1747,
+                    "odd": false,
+                    "lastname": "Technologies",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "technologies",
+                    "price": 265.45,
+                    "myrank": 4572.0
+                }
+            },
+            {
+                "id": "id:test:simple::277",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::277",
+                    "title": "doc 277 hash 277 val277 type simple",
+                    "year": 1747,
+                    "odd": false,
+                    "lastname": "Gilleple",
+                    "category": "products / electronics / phones",
+                    "lastname_lc": "gilleple",
+                    "price": 17.86,
+                    "myrank": 277.0
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,104 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10000
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:simple::7685",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7685",
+                    "title": "doc 7685 hash 281 val7685 type simple",
+                    "year": 1732,
+                    "odd": false,
+                    "lastname": "Dellasega",
+                    "category": "products / apparel / clothing / womens / dresses",
+                    "lastname_lc": "dellasega",
+                    "price": 256.94,
+                    "myrank": 7685.0
+                }
+            },
+            {
+                "id": "id:test:simple::9887",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::9887",
+                    "title": "doc 9887 hash 15 val9887 type simple",
+                    "year": 1733,
+                    "odd": false,
+                    "lastname": "Kamins",
+                    "category": "services / mortgage / prime",
+                    "lastname_lc": "kamins",
+                    "price": 80.68,
+                    "myrank": 9887.0
+                }
+            },
+            {
+                "id": "id:test:simple::350",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::350",
+                    "title": "doc 350 hash 350 val350 type simple",
+                    "year": 1734,
+                    "odd": false,
+                    "lastname": "Griffin",
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname_lc": "griffin",
+                    "price": 215.01,
+                    "myrank": 350.0
+                }
+            },
+            {
+                "id": "id:test:simple::3352",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3352",
+                    "title": "doc 3352 hash 884 val3352 type simple",
+                    "year": 1740,
+                    "odd": false,
+                    "lastname": "Atkin",
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "lastname_lc": "atkin",
+                    "price": 196.8,
+                    "myrank": 3352.0
+                }
+            },
+            {
+                "id": "id:test:simple::8920",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8920",
+                    "title": "doc 8920 hash 282 val8920 type simple",
+                    "year": 1742,
+                    "odd": false,
+                    "lastname": "Fane",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "fane",
+                    "price": 235.64,
+                    "myrank": 8920.0
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,104 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10000
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:simple::6207",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6207",
+                    "title": "doc 6207 hash 37 val6207 type simple",
+                    "year": 1952,
+                    "odd": false,
+                    "lastname": "Burch",
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname_lc": "burch",
+                    "price": 195.88,
+                    "myrank": 6207.0
+                }
+            },
+            {
+                "id": "id:test:simple::1080",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1080",
+                    "title": "doc 1080 hash 1080 val1080 type simple",
+                    "year": 1948,
+                    "odd": false,
+                    "lastname": "Reichiler",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "reichiler",
+                    "price": 191.98,
+                    "myrank": 1080.0
+                }
+            },
+            {
+                "id": "id:test:simple::2564",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2564",
+                    "title": "doc 2564 hash 96 val2564 type simple",
+                    "year": 1946,
+                    "odd": false,
+                    "lastname": "Lackie",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "lackie",
+                    "price": 122.91,
+                    "myrank": 2564.0
+                }
+            },
+            {
+                "id": "id:test:simple::8526",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8526",
+                    "title": "doc 8526 hash 1122 val8526 type simple",
+                    "year": 1944,
+                    "odd": false,
+                    "lastname": "Kohl",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "kohl",
+                    "price": 44.5,
+                    "myrank": 8526.0
+                }
+            },
+            {
+                "id": "id:test:simple::4217",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4217",
+                    "title": "doc 4217 hash 515 val4217 type simple",
+                    "year": 1944,
+                    "odd": false,
+                    "lastname": "Stiftel",
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "lastname_lc": "stiftel",
+                    "price": 221.2,
+                    "myrank": 4217.0
+                }
+            }
+        ]
+    }
+}

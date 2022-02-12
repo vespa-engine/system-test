@@ -1,0 +1,168 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 30
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 30,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:strong::10001",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10001",
+                    "name": "doc 10001 hash 47 val1",
+                    "year": 1892,
+                    "category": "products / electronics / photo",
+                    "weight": 4.8,
+                    "myrank": 30.234
+                }
+            },
+            {
+                "id": "id:test:strong::10002",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10002",
+                    "name": "doc 10002 hash 48 val2",
+                    "year": 1835,
+                    "category": "products / apparel / clothing / womens / stockings",
+                    "lastname": "Sales",
+                    "weight": 112.2,
+                    "myrank": 19.234,
+                    "lastname_lc": "sales"
+                }
+            },
+            {
+                "id": "id:test:strong::10003",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10003",
+                    "name": "doc 10003 hash 49 val3",
+                    "year": 1785,
+                    "lastname": "Chartres",
+                    "myrank": 8.234,
+                    "lastname_lc": "chartres"
+                }
+            },
+            {
+                "id": "id:test:strong::10004",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10004",
+                    "name": "doc 10004 hash 50 val4",
+                    "year": 1886,
+                    "category": "services / phone / 300 minutes",
+                    "weight": 202.05,
+                    "myrank": 27.234
+                }
+            },
+            {
+                "id": "id:test:strong::10005",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10005",
+                    "name": "doc 10005 hash 51 val5",
+                    "lastname": "Dickens",
+                    "weight": 115.55,
+                    "myrank": 16.234,
+                    "lastname_lc": "dickens"
+                }
+            },
+            {
+                "id": "id:test:strong::10006",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10006",
+                    "name": "doc 10006 hash 52 val6",
+                    "year": 1922,
+                    "category": "products / apparel / shoes",
+                    "lastname": "Kaduson",
+                    "myrank": 5.234,
+                    "lastname_lc": "kaduson"
+                }
+            },
+            {
+                "id": "id:test:strong::10007",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10007",
+                    "name": "doc 10007 hash 53 val7",
+                    "year": 1854,
+                    "category": "services / phone / premium with broadband",
+                    "lastname": "Lipman",
+                    "weight": 165.6,
+                    "myrank": 24.234,
+                    "lastname_lc": "lipman"
+                }
+            },
+            {
+                "id": "id:test:strong::10008",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10008",
+                    "name": "doc 10008 hash 54 val8",
+                    "year": 1799,
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "weight": 69.27,
+                    "myrank": 13.234
+                }
+            },
+            {
+                "id": "id:test:strong::10009",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10009",
+                    "name": "doc 10009 hash 55 val9",
+                    "year": 1884,
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname": "Pickow",
+                    "weight": 68.2,
+                    "myrank": 2.234,
+                    "lastname_lc": "pickow"
+                }
+            },
+            {
+                "id": "id:test:strong::10010",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10010",
+                    "name": "doc 10010 hash 56 val10",
+                    "year": 1804,
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname": "Stark",
+                    "weight": 66.83,
+                    "myrank": 21.234,
+                    "lastname_lc": "stark"
+                }
+            }
+        ]
+    }
+}

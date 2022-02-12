@@ -11,7 +11,7 @@ class PacketCompressLimit < IndexedSearchTest
 
   def test_packet_compress_limit
     feed_and_wait_for_docs("music", 10, :file => "#{SEARCH_DATA}/music.10.xml");
-    assert_result("query=sddocname:music", "#{SEARCH_DATA}/music.10.result.xml",
+    assert_result("query=sddocname:music", "#{SEARCH_DATA}/music.10.result.json",
                   "title", ["title", "surl", "mid"])
   end
 

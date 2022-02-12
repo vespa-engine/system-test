@@ -1,0 +1,104 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10000
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:simple::6266",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6266",
+                    "title": "doc 6266 hash 96 val6266 type simple",
+                    "year": 1936,
+                    "odd": false,
+                    "lastname": "Lilly",
+                    "category": "services / mortgage / subprime",
+                    "lastname_lc": "lilly",
+                    "price": 108.05,
+                    "myrank": 6266.0
+                }
+            },
+            {
+                "id": "id:test:simple::6065",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6065",
+                    "title": "doc 6065 hash 1129 val6065 type simple",
+                    "year": 1936,
+                    "odd": false,
+                    "lastname": "Kopper",
+                    "category": "products / electronics / game consoles",
+                    "lastname_lc": "kopper",
+                    "price": 13.35,
+                    "myrank": 6065.0
+                }
+            },
+            {
+                "id": "id:test:simple::6997",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6997",
+                    "title": "doc 6997 hash 827 val6997 type simple",
+                    "year": 1936,
+                    "odd": false,
+                    "lastname": "Godson",
+                    "category": "products / electronics / dvd players",
+                    "lastname_lc": "godson",
+                    "price": 39.66,
+                    "myrank": 6997.0
+                }
+            },
+            {
+                "id": "id:test:simple::8309",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8309",
+                    "title": "doc 8309 hash 905 val8309 type simple",
+                    "year": 1935,
+                    "odd": false,
+                    "lastname": "Magazine",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "magazine",
+                    "price": 248.76,
+                    "myrank": 8309.0
+                }
+            },
+            {
+                "id": "id:test:simple::4965",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4965",
+                    "title": "doc 4965 hash 29 val4965 type simple",
+                    "year": 1935,
+                    "odd": false,
+                    "lastname": "Madlem",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "madlem",
+                    "price": 32.36,
+                    "myrank": 4965.0
+                }
+            }
+        ]
+    }
+}

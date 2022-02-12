@@ -1,0 +1,98 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 39
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10030,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:strong::10007",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10007",
+                    "name": "doc 10007 hash 53 val7",
+                    "year": 1854,
+                    "lastname": "Lipman",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "lipman",
+                    "weight": 165.6,
+                    "myrank": 24.234
+                }
+            },
+            {
+                "id": "id:test:strong::10012",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10012",
+                    "name": "doc 10012 hash 58 val12",
+                    "year": 1828,
+                    "category": "services / phone / premium with broadband",
+                    "myrank": 29.234
+                }
+            },
+            {
+                "id": "id:test:strong::10015",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10015",
+                    "name": "doc 10015 hash 61 val15",
+                    "year": 1807,
+                    "lastname": "Vartanian",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "vartanian",
+                    "weight": 131.73,
+                    "myrank": 26.234
+                }
+            },
+            {
+                "id": "id:test:simple::8655",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8655",
+                    "title": "doc 8655 hash 17 val8655 type simple",
+                    "year": 1784,
+                    "odd": false,
+                    "lastname": "Hostos",
+                    "category": "services / phone / 300 minutes",
+                    "lastname_lc": "hostos",
+                    "price": 218.6,
+                    "myrank": 8655.0
+                }
+            },
+            {
+                "id": "id:test:simple::7421",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7421",
+                    "title": "doc 7421 hash 17 val7421 type simple",
+                    "year": 1854,
+                    "odd": false,
+                    "lastname": "Beldt",
+                    "category": "services / phone / 300 minutes",
+                    "lastname_lc": "beldt",
+                    "price": 21.29,
+                    "myrank": 7421.0
+                }
+            }
+        ]
+    }
+}

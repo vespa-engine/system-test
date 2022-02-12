@@ -1,0 +1,93 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 30
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 30,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:strong::10005",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10005",
+                    "name": "doc 10005 hash 51 val5",
+                    "lastname": "Dickens",
+                    "lastname_lc": "dickens",
+                    "weight": 115.55,
+                    "myrank": 16.234
+                }
+            },
+            {
+                "id": "id:test:strong::10003",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10003",
+                    "name": "doc 10003 hash 49 val3",
+                    "lastname": "Chartres",
+                    "year": 1785,
+                    "lastname_lc": "chartres",
+                    "myrank": 8.234
+                }
+            },
+            {
+                "id": "id:test:strong::10030",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10030",
+                    "name": "doc 10030 hash 76 val30",
+                    "lastname": "Thacker",
+                    "year": 1797,
+                    "category": "products / apparel / clothing / womens / shirts",
+                    "lastname_lc": "thacker",
+                    "weight": 246.28,
+                    "myrank": 11.234
+                }
+            },
+            {
+                "id": "id:test:strong::10008",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10008",
+                    "name": "doc 10008 hash 54 val8",
+                    "year": 1799,
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "weight": 69.27,
+                    "myrank": 13.234
+                }
+            },
+            {
+                "id": "id:test:strong::10014",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10014",
+                    "name": "doc 10014 hash 60 val14",
+                    "lastname": "Piantadosi",
+                    "year": 1803,
+                    "category": "products / apparel / clothing / womens / dresses",
+                    "lastname_lc": "piantadosi",
+                    "weight": 63.22,
+                    "myrank": 7.234
+                }
+            }
+        ]
+    }
+}

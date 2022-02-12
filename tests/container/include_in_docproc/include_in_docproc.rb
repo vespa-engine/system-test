@@ -17,7 +17,7 @@ class IncludeInDocproc < SearchContainerTest
 
   def test_include_in_docproc
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :cluster => "music")
-    assert_result("query=sddocname:music", DOCPROC+"/data/music.10.result.xml", "surl", ["title"])
+    assert_result("query=sddocname:music", DOCPROC+"/data/music.10.result.json", "surl", ["title"])
   end
 
   def teardown

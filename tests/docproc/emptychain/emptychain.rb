@@ -11,7 +11,7 @@ class EmptyChain < DocprocTest
 
   def test_emptychain
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.xml", :cluster => "worst")
-    assert_result("query=sddocname:worst", DOCPROC + "data/worst-output.xml")
+    assert_result("query=sddocname:worst", DOCPROC + "data/worst-output.json")
   end
 
   def teardown
