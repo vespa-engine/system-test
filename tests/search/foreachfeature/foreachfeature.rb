@@ -36,10 +36,10 @@ class ForeachFeature < IndexedStreamingSearchTest
       assert_foreach({"foreach(attributes,N,attribute(N),true,product)" => 512}, "operations", 1)
       assert_foreach({"foreach(attributes,N,attribute(N),true,count)"   =>   2}, "operations", 1)
 
-      assert_foreach({"foreach(attributes,N,attribute(N),\"&gt;7.9\",count)"  => 1}, "conditions", 0)
-      assert_foreach({"foreach(attributes,N,attribute(N),\"&lt;16.1\",count)" => 2}, "conditions", 0)
-      assert_foreach({"foreach(attributes,N,attribute(N),\"&gt;7.9\",count)"  => 2}, "conditions", 1)
-      assert_foreach({"foreach(attributes,N,attribute(N),\"&lt;16.1\",count)" => 1}, "conditions", 1)
+      assert_foreach({"foreach(attributes,N,attribute(N),\">7.9\",count)"  => 1}, "conditions", 0)
+      assert_foreach({"foreach(attributes,N,attribute(N),\"<16.1\",count)" => 2}, "conditions", 0)
+      assert_foreach({"foreach(attributes,N,attribute(N),\">7.9\",count)"  => 2}, "conditions", 1)
+      assert_foreach({"foreach(attributes,N,attribute(N),\"<16.1\",count)" => 1}, "conditions", 1)
     end
   end
 
