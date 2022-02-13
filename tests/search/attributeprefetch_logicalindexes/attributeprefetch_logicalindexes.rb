@@ -22,14 +22,14 @@ class AttributePrefetchLogicalIndexes < IndexedSearchTest
 
     3.times do
       result = search("x")
-      assert (result.xmldata.include? ">TEST SEARCHER: OK<")
-      assert !(result.xmldata.include? ">TEST SEARCHER: ERROR<")
+      assert (result.xmldata.include? "TEST SEARCHER: OK")
+      assert !(result.xmldata.include? "TEST SEARCHER: ERROR")
     end
     3.times do
       result = search("x&summary=attributeprefetch")
-      assert !(result.xmldata.include? ">TEST SEARCHER: OK<")
-      assert (result.xmldata.include? ">TEST SEARCHER: ERROR<")
-      assert (result.xmldata.include? ">ERROR DETAILS: 'body' should be set after filling in docsums")
+      assert !(result.xmldata.include? "TEST SEARCHER: OK")
+      assert (result.xmldata.include? "TEST SEARCHER: ERROR")
+      assert (result.xmldata.include? "ERROR DETAILS: 'body' should be set after filling in docsums")
     end
    end
 
