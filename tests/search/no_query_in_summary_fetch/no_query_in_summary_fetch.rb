@@ -20,12 +20,12 @@ class NoQueryInSummaryFetch < IndexedSearchTest
     puts "hit 0: #{result.hit[0]}"
     puts "hit 0 sf: #{result.hit[0].field['summaryfeatures']}"
     assert(result.xmldata.match("Resending query during document summary fetching"), "Resending query data when the feature cache is turned off")
-    assert_equal({'fieldMatch(title)' => 1.0}, result.hit[0].field['summaryfeatures'])
+    assert_features({'fieldMatch(title)' => 1.0}, result.hit[0].field['summaryfeatures'])
 
     # Not needed as explicit cached
     result = search_base("query=title:foo&tracelevel=3&ranking.profile=test1&ranking.queryCache=true&timeout=9.9")
     assert(result.xmldata.match("Not resending query during document summary fetching"), "Not resending query data when the feature cache is turned off")
-    assert_equal({'fieldMatch(title)' => 1.0}, result.hit[0].field['summaryfeatures'])
+    assert_features({'fieldMatch(title)' => 1.0}, result.hit[0].field['summaryfeatures'])
 
     # Not needed by query
     result = search_base("query=title:foo&tracelevel=3&timeout=9.9")
