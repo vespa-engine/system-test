@@ -67,13 +67,6 @@ class TagsAccents < IndexedSearchTest
     start
   end
 
-  def check_hitcount(q, n)
-    r = search(q)
-    m = /result total-hit-count="(\d+)"/.match(r.xmldata)
-    assert(m, "did not find hitcount in search result, got:\n#{r.xmldata}")
-    assert_equal(n.to_s, m[1], "wrong hitcount in search result")
-  end
-
   def test_tagsaccents
     file = generate_feed("foo")
     feed_and_wait_for_docs("tagsaccents", @docid, :file => file)
@@ -85,7 +78,7 @@ class TagsAccents < IndexedSearchTest
       urlcoded = ""
       x.each_byte { |byte| urlcoded += ( "%%%02x" % byte ) }
       puts "query for #{x} => #{urlcoded}"
-      check_hitcount("#{docidnum}", 1)
+      assert_hitcount("#{docidnum}", 1)
       [ "sfield1", "sfield2", "sfield3", "sfield4", "sfield5" ].each do |field|
         doc = search("query=#{field}:#{urlcoded}&tracelevel=1")
         hitcount = doc.hitcount
@@ -95,7 +88,7 @@ class TagsAccents < IndexedSearchTest
           puts "got: #{doc.xmldata}"
         end
         assert(hitcount > 0)
-        check_hitcount("query=#{field}:#{urlcoded}+#{docidnum}&tracelevel=1", 1)
+        assert_hitcount("query=#{field}:#{urlcoded}+#{docidnum}&tracelevel=1", 1)
       end
       [ "wfield1", "wfield2", "wfield3", "wfield4", "wfield5" ].each do |field|
         hitcount = search("query=#{field}:#{urlcoded}&tracelevel=1").hitcount
@@ -103,8 +96,8 @@ class TagsAccents < IndexedSearchTest
           puts "missing in #{field}: '#{x}'"
         end
         assert(hitcount > 0)
-        check_hitcount("query=#{field}:#{urlcoded}+#{docidnum}&tracelevel=1", 1)
-        check_hitcount("query=#{field}:#{urlcoded}#{urlcoded}#{urlcoded}+#{docidnum}&tracelevel=1", 1)
+        assert_hitcount("query=#{field}:#{urlcoded}+#{docidnum}&tracelevel=1", 1)
+        assert_hitcount("query=#{field}:#{urlcoded}#{urlcoded}#{urlcoded}+#{docidnum}&tracelevel=1", 1)
       end
       [ "wpref" ].each do |field|
         hitcount = search("query=#{field}:#{urlcoded} #{urlcoded}&tracelevel=1").hitcount
@@ -112,9 +105,9 @@ class TagsAccents < IndexedSearchTest
           puts "missing in #{field}: '#{x}'"
         end
         assert(hitcount > 0)
-        check_hitcount("query=#{field}:#{urlcoded} #{urlcoded}@+#{docidnum}&tracelevel=1", 1)
-        check_hitcount("query=#{field}:#{urlcoded} @*+#{docidnum}&tracelevel=1", 1)
-        check_hitcount("query=#{field}:#{urlcoded}@*+#{docidnum}&tracelevel=1", 1)
+        assert_hitcount("query=#{field}:#{urlcoded} #{urlcoded}@+#{docidnum}&tracelevel=1", 1)
+        assert_hitcount("query=#{field}:#{urlcoded} @*+#{docidnum}&tracelevel=1", 1)
+        assert_hitcount("query=#{field}:#{urlcoded}@*+#{docidnum}&tracelevel=1", 1)
       end
     end
   end
