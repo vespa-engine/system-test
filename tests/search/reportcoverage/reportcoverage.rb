@@ -22,7 +22,7 @@ class ReportCoverage < IndexedSearchTest
     wait_for_hitcount("sddocname:covtest", 100000, 5)
     assert_hitcount("coverage", 100000)
 
-    result = search("/?query=coverage")
+    result = search("/?query=coverage&format=xml")
     assert(result.xml.attribute("coverage-docs").to_s == "100000", "Expected 'coverage-docs' of 100000, got #{result.xml.attribute("coverage-docs")}.")
     assert(result.xml.attribute("coverage-nodes").to_s == "2", "Expected 'coverage-nodes' of 2, got #{result.xml.attribute("coverage-nodes")}.")
     assert(result.xml.attribute("coverage-full").to_s == "true", "Expected 'coverage-full' of true, got #{result.xml.attribute("coverage-full")}.")
@@ -30,14 +30,14 @@ class ReportCoverage < IndexedSearchTest
     assert(result.xml.attribute("results").to_s == "1", "Expected 'results' of 1, got #{result.xml.attribute("results")}.")
     assert(result.xml.attribute("results-full").to_s == "1", "Expected 'results-full' of 1, got #{result.xml.attribute("results-full")}.")
 
-    result = search("/?query=coverage&ranking=lim")
+    result = search("/?query=coverage&ranking=lim&format=xml")
     puts("Got 'coverage-docs' of #{result.xml.attribute("coverage-docs")}.")
     assert(result.xml.attribute("coverage-full").to_s == "false", "Expected 'coverage-full' of false, got #{result.xml.attribute("coverage-full")}.")
     assert(result.xml.attribute("coverage").to_s == "23", "Expected 'coverage' of 23, got #{result.xml.attribute("coverage")}.")
     assert(result.xml.attribute("results").to_s == "1", "Expected 'results' of 1, got #{result.xml.attribute("results")}.")
     assert(result.xml.attribute("results-full").to_s == "0", "Expected 'results-full' of 0, got #{result.xml.attribute("results-full")}.")
 
-    result = search("/?query=coverage&ranking=revlim")
+    result = search("/?query=coverage&ranking=revlim&format=xml")
     puts("Got 'coverage-docs' of #{result.xml.attribute("coverage-docs")}.")
     assert(result.xml.attribute("coverage-full").to_s == "false", "Expected 'coverage-full' of false, got #{result.xml.attribute("coverage-full")}.")
     assert(result.xml.attribute("coverage").to_s == "65", "Expected 'coverage' of 65, got #{result.xml.attribute("coverage")}.")
@@ -49,7 +49,7 @@ class ReportCoverage < IndexedSearchTest
     expcnt = 50155
     wait_for_hitcount("coverage", expcnt)
 
-    result = search("/?query=coverage")
+    result = search("/?query=coverage&format=xml")
     assert(result.xml.attribute("coverage-docs").to_s == expcnt.to_s, "Expected 'coverage-docs' of #{expcnt}, got #{result.xml.attribute("coverage-docs")}.")
     assert(result.xml.attribute("coverage-nodes").to_s == "1", "Expected 'coverage-nodes' of 1, got #{result.xml.attribute("coverage-nodes")}.")
     assert(result.xml.attribute("coverage-full").to_s == "false", "Expected 'coverage-full' of false, got #{result.xml.attribute("coverage-full")}.")

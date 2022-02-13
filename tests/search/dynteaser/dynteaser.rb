@@ -11,6 +11,7 @@ class DynTeaser < IndexedSearchTest
   end
 
   def compare(query, file, field)
+    save_result(query, file)
     # run all queries twice to check caching
     assert_field(query, file, field, true)
     assert_field(query, file, field, true)
@@ -35,17 +36,17 @@ class DynTeaser < IndexedSearchTest
     feed_and_wait_for_docs("cjk", 34, :file => selfdir+"dynteaser.34.xml")
 
     puts "Query: english"
-    compare("query=content:time", selfdir+"time.result", "dyncontent")
-    compare("query=content:time", selfdir+"time.result", "content2")
-    compare("query=content:time", selfdir+"time.result", "content3")
+    compare("query=content:time", selfdir+"time.result.json", "dyncontent")
+    compare("query=content:time", selfdir+"time.result.json", "content2")
+    compare("query=content:time", selfdir+"time.result.json", "content3")
 
     # Return if CentOS, code below depends on linguistics library suppporting CJK languages
     return if linux_distribution_CentOS?
 
     puts "Query: korean"
-    compare("query=content:%EB%8F%8C%EB%93%A4%EC%9D%B4+content:%EC%9E%A5%EA%B8%B0%EB%82%98&language=ko", selfdir+"ko.result", "dyncontent")
-    compare("query=content:%EB%8F%8C%EB%93%A4%EC%9D%B4+content:%EC%9E%A5%EA%B8%B0%EB%82%98&language=ko", selfdir+"ko.result", "content2")
-    compare("query=content:%EB%8F%8C%EB%93%A4%EC%9D%B4+content:%EC%9E%A5%EA%B8%B0%EB%82%98&language=ko", selfdir+"ko.result", "content3")
+    compare("query=content:%EB%8F%8C%EB%93%A4%EC%9D%B4+content:%EC%9E%A5%EA%B8%B0%EB%82%98&language=ko", selfdir+"ko.result.json", "dyncontent")
+    compare("query=content:%EB%8F%8C%EB%93%A4%EC%9D%B4+content:%EC%9E%A5%EA%B8%B0%EB%82%98&language=ko", selfdir+"ko.result.json", "content2")
+    compare("query=content:%EB%8F%8C%EB%93%A4%EC%9D%B4+content:%EC%9E%A5%EA%B8%B0%EB%82%98&language=ko", selfdir+"ko.result.json", "content3")
 
     #token: %E5%9F%BA%E6%9C%AC basic
     #token: %E5%B1%80%E9%9D%A2 aspect
@@ -54,9 +55,9 @@ class DynTeaser < IndexedSearchTest
     #token: %E9%97%AE%E9%A2%98 question
 
     puts "Query: simplified chinese"
-    compare("query=content:%E5%9F%BA%E6%9C%AC+content:%E9%97%AE%E9%A2%98&language=zh-hans", selfdir+"cs.result", "dyncontent")
-    compare("query=content:%E5%9F%BA%E6%9C%AC+content:%E9%97%AE%E9%A2%98&language=zh-hans", selfdir+"cs.result", "content2")
-    compare("query=content:%E5%9F%BA%E6%9C%AC+content:%E9%97%AE%E9%A2%98&language=zh-hans", selfdir+"cs.result", "content3")
+    compare("query=content:%E5%9F%BA%E6%9C%AC+content:%E9%97%AE%E9%A2%98&language=zh-hans", selfdir+"cs.result.json", "dyncontent")
+    compare("query=content:%E5%9F%BA%E6%9C%AC+content:%E9%97%AE%E9%A2%98&language=zh-hans", selfdir+"cs.result.json", "content2")
+    compare("query=content:%E5%9F%BA%E6%9C%AC+content:%E9%97%AE%E9%A2%98&language=zh-hans", selfdir+"cs.result.json", "content3")
 
   end
 
@@ -71,7 +72,7 @@ class DynTeaser < IndexedSearchTest
     feed_and_wait_for_docs("cjk", 1, :file => selfdir+"dynteaser.1.xml")
 
     puts "Query: english"
-    compare("query=content:time", selfdir+"time.long.result", "content3")
+    compare("query=content:time", selfdir+"time.long.result.json", "content3")
   end
 
   def test_fallback_none
@@ -86,7 +87,7 @@ class DynTeaser < IndexedSearchTest
 
     result = search("report")
     assert_equal(1, result.hitcount)
-    assert_equal("<hi>Report</hi> Kaw-Liga;Johnny<sep/>",
+    assert_equal("<hi>Report</hi> Kaw-Liga;Johnny<sep />",
                  result.hit[0].field["dyncontent"])
     assert_equal("", result.hit[0].field["content2"])
     assert_equal("", result.hit[0].field["content3"])
@@ -96,7 +97,7 @@ class DynTeaser < IndexedSearchTest
     result = search("system")
     assert_equal(1, result.hitcount)
     assert_equal("", result.hit[0].field["dyncontent"])
-    assert_equal("<hi>System</hi> Kaw-Liga;Johnny<sep/>",
+    assert_equal("<hi>System</hi> Kaw-Liga;Johnny<sep />",
                  result.hit[0].field["content2"])
     assert_equal("", result.hit[0].field["content3"])
     assert_equal("", result.hit[0].field["content4"])
@@ -115,22 +116,22 @@ class DynTeaser < IndexedSearchTest
 
     result = search("report")
     assert_equal(1, result.hitcount)
-    assert_equal("<hi>Report</hi> Kaw-Liga;Johnny<sep/>",
+    assert_equal("<hi>Report</hi> Kaw-Liga;Johnny<sep />",
                  result.hit[0].field["dyncontent"])
-    assert_equal("System Kaw-Liga<sep/>",
+    assert_equal("System Kaw-Liga<sep />",
                  result.hit[0].field["content2"])
-    assert_equal("Search Kaw-Liga<sep/>",
+    assert_equal("Search Kaw-Liga<sep />",
                  result.hit[0].field["content3"])
     assert_equal("", result.hit[0].field["content4"])
     assert_equal(nil, result.hit[0].field["content5"])
 
     result = search("system")
     assert_equal(1, result.hitcount)
-    assert_equal("Report Kaw-Liga<sep/>",
+    assert_equal("Report Kaw-Liga<sep />",
                  result.hit[0].field["dyncontent"])
-    assert_equal("<hi>System</hi> Kaw-Liga;Johnny<sep/>",
+    assert_equal("<hi>System</hi> Kaw-Liga;Johnny<sep />",
                  result.hit[0].field["content2"])
-    assert_equal("Search Kaw-Liga<sep/>",
+    assert_equal("Search Kaw-Liga<sep />",
                  result.hit[0].field["content3"])
     assert_equal("", result.hit[0].field["content4"])
     assert_equal(nil, result.hit[0].field["content5"])

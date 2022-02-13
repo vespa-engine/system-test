@@ -13,12 +13,12 @@ class IndexWeightedSets < IndexedSearchTest
 
   def test_indexweightedsets
     # assert equal rank
-    query = "/?query=marker:d&skipnormalizing"
+    query = "/?query=marker:d&skipnormalizing&format=xml"
     result = search(query)
     assert result.xml.elements[1].attributes['relevancy'] == result.xml.elements[2].attributes['relevancy']
 
     # assert unequal rank and correct order
-    query = "/?query=weight:a&skipnormalizing&ranking=weight"
+    query = "/?query=weight:a&skipnormalizing&ranking=weight&format=xml"
     result = search(query)
     assert result.xml.elements[1].attributes['relevancy'] != result.xml.elements[2].attributes['relevancy']
     hit1 = result.xml.elements["hit[1]/field[@name='marker']"].get_text.to_s
@@ -29,7 +29,7 @@ class IndexWeightedSets < IndexedSearchTest
     assert_equal(result.xml.elements[2].attributes['relevancy'].to_i, 1)
 
     # assert unequal rank and correct order
-    query = "/?query=weight:b&skipnormalizing&ranking=weight"
+    query = "/?query=weight:b&skipnormalizing&ranking=weight&format=xml"
     result = search(query)
     assert result.xml.elements[1].attributes['relevancy'] != result.xml.elements[2].attributes['relevancy']
     hit1 = result.xml.elements["hit[1]/field[@name='marker']"].get_text.to_s

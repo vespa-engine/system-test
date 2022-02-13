@@ -25,13 +25,18 @@ class FederationTest2 < SearchContainerTest
     sourceSpec = "?sources=#{sourceName}"
     sourceProviderSpec = sourceSpec + "&source.#{sourceName}.provider=%s"
 
-    assert_title_matches(sourceSpec, "providerA")
-    assert_title_matches(sourceProviderSpec % "providerA", "providerA")
-    assert_title_matches(sourceProviderSpec % "providerB", "providerB")
+    assert_title_matches(sourceSpec, /providerA/)
+    assert_title_matches(sourceProviderSpec % "providerA", /providerA/)
+    assert_title_matches(sourceProviderSpec % "providerB", /providerB/)
   end
 
   def assert_title_matches(query, regex)
-    assert_field_matches(query, "title", regex)
+    save_result(query, 'fqr')
+    result = search(query)
+    assert(result.hit.size > 0)
+    result.hit.each do |h|
+      assert(h.field['title'] =~ regex)
+    end
   end
 
   def assert_length(length, searchChainNames)
@@ -42,7 +47,7 @@ class FederationTest2 < SearchContainerTest
   end
 
   def search_searchchain(name)
-    return search("?searchChain=#{name}")
+    return search("?searchChain=#{name}&format=xml")
   end
 
   def hit_length_searchchain(name)

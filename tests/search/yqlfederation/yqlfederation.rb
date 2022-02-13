@@ -33,7 +33,7 @@ class YqlFederation < IndexedSearchTest
     wait_for_atleast_hitcount("sddocname:music&sources=search,local", 777*2)
     singleresult = search("sddocname:music&sources=search")
     assert_equal(777, singleresult.hitcount)
-    multiresult = search("sddocname:music&sources=search,local&rankfeature.$now=42")
+    multiresult = search("sddocname:music&sources=search,local&rankfeature.$now=42&format=xml")
     assert_equal(777*2, multiresult.hitcount)
 
 

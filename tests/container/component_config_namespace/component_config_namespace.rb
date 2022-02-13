@@ -41,7 +41,7 @@ class ComponentConfigNamespace < SearchContainerTest
 
     result = search("query=test&searchChain=no2")
     assert_equal(1, result.hit.length);
-    assert_equal("42", result.hit[0].field["number"])
+    assert_equal(42, result.hit[0].field["number"])
   end
 
   def teardown

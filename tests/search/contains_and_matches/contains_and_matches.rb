@@ -70,7 +70,7 @@ class ContainsAndMatchesTest < SearchTest
   end
 
   def fetch_hits(field, operator, term)
-    query = "yql=select+*+from+sources+*+where+#{field}+#{operator}+%22#{term}%22%3B&hits=100&tracelevel=2"
+    query = "yql=select+*+from+sources+*+where+#{field}+#{operator}+%22#{term}%22%3B&hits=100&tracelevel=2&format=xml"
     result = search(query)
     traces_found = 0
     result.xml.each_element("meta/p/p") do |e|

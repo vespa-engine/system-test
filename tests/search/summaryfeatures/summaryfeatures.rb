@@ -48,7 +48,7 @@ class SummaryFeatures < IndexedSearchTest
 
     result = search("query=body:test&summary=without_summary_features")
     assert_hitcount(result, 1)
-    assert_field_value(result, "attr", "200")
+    assert_field_value(result, "attr", 200)
     assert_nil(result.hit[0].field["summaryfeatures"],
                "Expected that 'summaryfeatures' field was omitted from document summary")
   end
@@ -90,13 +90,13 @@ class SummaryFeatures < IndexedSearchTest
     sf_key = "group/grouplist/group/hitlist/hit/field[@name='summaryfeatures']"
     sf_val = '{"attribute(attr)":200.0,"value(1)":1.0,"value(2)":2.0,"vespa.summaryFeatures.cached":0.0}'
 
-    result = search(base_q + "&groupingSessionCache=true&ranking.queryCache=false")
+    result = search(base_q + "&groupingSessionCache=true&ranking.queryCache=false&format=xml")
     assert_equal(sf_val, result.xml.root.elements[sf_key].get_text.to_s)
 
-    result = search(base_q + "&groupingSessionCache=false&ranking.queryCache=true")
+    result = search(base_q + "&groupingSessionCache=false&ranking.queryCache=true&format=xml")
     assert_equal(sf_val, result.xml.root.elements[sf_key].get_text.to_s)
 
-    result = search(base_q + "&groupingSessionCache=true&ranking.queryCache=true")
+    result = search(base_q + "&groupingSessionCache=true&ranking.queryCache=true&format=xml")
     assert_equal(sf_val, result.xml.root.elements[sf_key].get_text.to_s)
 
   end

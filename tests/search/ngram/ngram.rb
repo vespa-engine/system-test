@@ -63,7 +63,7 @@ class NGram < IndexedSearchTest
     assert_field_value("query=body:opul","body",
                        "#Logging in #Java is like that \"Judean P<hi>opul</hi>ar Front\" scene from \"Life of Brian\".")
     assert_field_value("query=large:do","large",
-                       "<sep/>I am not saying that you should never use \"else\" in your code, but when you <hi>do</hi>, you should stop and think about what you are doing, because most of<sep/>")
+                       "<sep />I am not saying that you should never use \"else\" in your code, but when you <hi>do</hi>, you should stop and think about what you are doing, because most of<sep />")
 
     # CJK
     assert_hitcount_with_timeout(10, "?query=body:古牧区&language=zh-Hans", 1)

@@ -10,10 +10,16 @@ class PartialUpdateLogicalIndexes < IndexedSearchTest
     start
   end
 
+  def each_field(query, fieldname, qrserver_id=0)
+    result = search(query, qrserver_id)
+    result.xml.elements.each("//hit/field[@name='#{fieldname}']") {
+      | field | yield field
+    }
+  end
 
   def check(query, fieldName, expected)
     query += "&summary=attributeprefetch"
-    query += "&nocache"
+    query += "&nocache&format=xml"
     # @rescount = 0 unless @rescount
     # @rescount += 1
     # resfile = "tmp.res." + @rescount.to_s

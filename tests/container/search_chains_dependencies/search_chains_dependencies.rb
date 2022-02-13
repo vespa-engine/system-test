@@ -14,7 +14,7 @@ class SearchChainsDependencies < SearchContainerTest
   def test_search_chains_depencencies
     # Inconsistencies between before/after semantics for searchers and phases will result in errors when starting the container.
 
-    result = search("")
+    result = search("/search/?format=xml")
     titles = result.xml.get_elements("//hit//field[@name='title']")
 
     assert_equal("Added by s3", titles[0].text)

@@ -43,10 +43,10 @@ class HttpServer < SearchContainerTest
   end
 
   def httpServerIdentities()
+    set = Set.new
     result = search("")
-    hashCodes = result.xml.get_elements("//hit//field[@name='identityHashCode']").
-      map { |x| x.text }
-    Set.new(hashCodes)
+    result.hit.each { |h| set.add(h.field['identityHashCode']) }
+    return set
   end
 
   def wait_for_next_application_switch(app, switches_until_now)

@@ -21,7 +21,7 @@ class SpecialTokensDotNet < IndexedSearchTest
   end
 
   def assert_dotnet(lang)
-    result_set = search("/search/?query=my_str:yahoo.net&language=#{lang}&tracelevel=3") 
+    result_set = search("/search/?query=my_str:yahoo.net&language=#{lang}&tracelevel=3&format=xml")
     result_str = result_set.xmldata.to_s
 
     trace = result_str.lines.grep(/Query time query/)[0]
