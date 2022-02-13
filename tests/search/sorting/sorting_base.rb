@@ -11,16 +11,14 @@ module SortingBase
   end
 
   def compare(query, file, field=nil)
-    fname = selfdir+file+".result"
+    fname = selfdir+file+".result.json"
     timeout = 20
     puts "Check if #{query} matches #{file}"
     if @valgrind || query.index("&streaming.")
-      hc=`perl -ne 'm{total-hit-count="(\\d+)"} and print $1' < #{fname}`;
-      wait_for_hitcount(query, hc.to_i)
-      assert_field(query, fname + '.json', field, false, timeout)
-      return
+      expect = create_resultset(fname)
+      wait_for_hitcount(query, expect.hitcount)
     end
-    assert_field(query, fname + '.json', field, false, timeout)
+    assert_field(query, fname, field, false, timeout)
   end
 
   def compare_onecluster
