@@ -105,8 +105,8 @@ class GlobalParentsFeedTest < SearchTest
     log(:assert_campaign_with_query, doc_id, budget, query)
     result = search(query)
     assert_hitcount(result, 1)
-    assert_field_value(result, "documentid", doc_id.dup)
-    assert_field_value(result, "budget", budget.to_s)
+    assert_equal(doc_id.dup, result.hit[0].field['documentid'])
+    assert_equal(budget, result.hit[0].field['budget'])
   end
 
   def assert_campaign_with_get(doc_id, budget)
