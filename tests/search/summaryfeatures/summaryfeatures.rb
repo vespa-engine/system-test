@@ -48,7 +48,7 @@ class SummaryFeatures < IndexedSearchTest
 
     result = search("query=body:test&summary=without_summary_features")
     assert_hitcount(result, 1)
-    assert_field_value(result, "attr", 200)
+    assert_equal(200, result.hit[0].field['attr'])
     assert_nil(result.hit[0].field["summaryfeatures"],
                "Expected that 'summaryfeatures' field was omitted from document summary")
   end
