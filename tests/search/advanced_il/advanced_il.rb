@@ -17,7 +17,11 @@ class AdvancedIL < IndexedSearchTest
     assert_hitcount("query=product:foo", 0)
     assert_hitcount("query=product:bar", 5)
     assert_hitcount("query=product:baz", 2) # if-then evaluates to null if operand is null
-    assert_field_matches("query=title:chicago", "my_title", "Chicago Blues")
+    result = search('query=title:chicago')
+    assert(result.hitcount > 0)
+    result.hit.each do |h|
+      assert(h.field['my_title'] =~ /Chicago Blues/)
+    end
   end
 
   def teardown
