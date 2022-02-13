@@ -5,7 +5,7 @@ require 'indexed_search_test'
 class Bolding < IndexedSearchTest
 
   def check_result(q, fn)
-    fnam = selfdir+@subdir+"/"+fn+".result"
+    fnam = selfdir+@subdir+"/"+fn+".result.json"
     puts "checking #{fnam}"
     # save_result("query=#{q}", fnam)
     assert_result("query=#{q}", fnam)
