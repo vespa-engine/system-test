@@ -28,8 +28,8 @@ def test_with_geo_fencing
                       indexing("mycc")))
     start
     feed_and_wait_for_docs("withfence", 6, :file => selfdir+"docs.json")
-    # save_result("query=title:pizza", selfdir+"out-all.xml")
-    assert_result("query=title:pizza", selfdir+"out-all.xml")
+    # save_result("query=title:pizza", selfdir+"out-all.json")
+    assert_result("query=title:pizza", selfdir+"out-all.json")
 
     crank = '&ranking=center'
     mrank = '&ranking=maybe'
@@ -51,88 +51,88 @@ def test_with_geo_fencing
     # 1c) Near two docs: California, USA
     geo = "&pos.ll=N37.4#{semicolon}W122.0"
     add = geo + cattr + noradius + crank
-    # save_result(qrytxt + add, selfdir+"out-1.xml")
-    assert_result(qrytxt + add, selfdir+"out-1.xml")
+    # save_result(qrytxt + add, selfdir+"out-1.json")
+    assert_result(qrytxt + add, selfdir+"out-1.json")
 
     # 1m)
     add = geo + mattr + noradius + mrank
     # save_result(qrytxt + add, selfdir+"out-1m.xml")
-    assert_result(qrytxt + add, selfdir+"out-1.xml")
+    assert_result(qrytxt + add, selfdir+"out-1.json")
 
 
     # Same as 1c, with YQL:
     yqlgeo = 'geoLocation("center", 37.4, -122.0, "-1m")'
     yql = URI::encode("#{yqlpre} where #{yqltxt} and (#{yqllbl} #{yqlgeo})")
     qry = "yql=" + yql + crank
-    # save_result(qry, selfdir+"out-1.xml")
-    assert_result(qry, selfdir+"out-1.xml")
+    # save_result(qry, selfdir+"out-1.json")
+    assert_result(qry, selfdir+"out-1.json")
 
     qry = "yql=" + yql + wrank
-    # save_result(qry, selfdir+"out-1cw-yql.xml")
-    assert_result(qry, selfdir+"out-1cw-yql.xml")
+    # save_result(qry, selfdir+"out-1cw-yql.json")
+    assert_result(qry, selfdir+"out-1cw-yql.json")
 
     # Same as 1m, with YQL:
     yqlgeo = 'geoLocation("maybecenter", 37.4, -122.0, "-1m")'
     yql = URI::encode("#{yqlpre} where rank(#{yqltxt},#{yqllbl} #{yqlgeo});")
     qry = "yql=" + yql + mrank
     # save_result(qry, selfdir+"out-1m-yql.xml")
-    assert_result(qry, selfdir+"out-1.xml")
+    assert_result(qry, selfdir+"out-1.json")
 
     # 1y)
     qry = "yql=" + yql + yrank
-    # save_result(qry, selfdir+"out-1y.xml")
-    assert_result(qry, selfdir+"out-1y.xml")
+    # save_result(qry, selfdir+"out-1y.json")
+    assert_result(qry, selfdir+"out-1y.json")
 
     # 1w)
     qry = "yql=" + yql + wrank
     # save_result(qry, selfdir+"out-1mw-yql.xml")
-    assert_result(qry, selfdir+"out-1y.xml")
+    assert_result(qry, selfdir+"out-1y.json")
 
     # 2c) Near one doc: Trondheim, Norway
     geo = "&pos.ll=N63.4#{semicolon}E10.4"
     add = geo + cattr + noradius + crank
-    # save_result(qrytxt + add, selfdir+"out-2.xml")
-    assert_result(qrytxt + add, selfdir+"out-2.xml")
+    # save_result(qrytxt + add, selfdir+"out-2.json")
+    assert_result(qrytxt + add, selfdir+"out-2.json")
 
     # 2m)
     add = geo + mattr + noradius + mrank
     # save_result(qrytxt + add, selfdir+"out-2m.xml")
-    assert_result(qrytxt + add, selfdir+"out-2.xml")
+    assert_result(qrytxt + add, selfdir+"out-2.json")
 
     # 3c) Far from all docs: Sydney, Australia
     geo = "&pos.ll=S33.8#{semicolon}E151.2"
     add = geo + cattr + noradius + crank
-    # save_result(qrytxt + add, selfdir+"out-3.xml")
-    assert_result(qrytxt + add, selfdir+"out-3.xml")
+    # save_result(qrytxt + add, selfdir+"out-3.json")
+    assert_result(qrytxt + add, selfdir+"out-3.json")
 
     # 3m)
     add = geo + mattr + noradius + mrank
     # save_result(qrytxt + add, selfdir+"out-3m.xml")
-    assert_result(qrytxt + add, selfdir+"out-3.xml")
+    assert_result(qrytxt + add, selfdir+"out-3.json")
 
     # 3w)
     add = geo + mattr + noradius + wrank
-    # save_result(qrytxt + add, selfdir+"out-3y.xml")
-    assert_result(qrytxt + add, selfdir+"out-3y.xml")
+    # save_result(qrytxt + add, selfdir+"out-3y.json")
+    assert_result(qrytxt + add, selfdir+"out-3y.json")
 
     # 3y) YQL and label:
     yqlgeo = 'geoLocation("maybecenter", -33.8, 151.2, "-1m")'
     yql = URI::encode("#{yqlpre} where rank(#{yqltxt},#{yqllbl} #{yqlgeo});")
     qry = "yql=" + yql + yrank
-    # save_result(qry, selfdir+"out-3y.xml")
-    assert_result(qry, selfdir+"out-3y.xml")
+    # save_result(qry, selfdir+"out-3y.json")
+    assert_result(qry, selfdir+"out-3y.json")
 
     # 4) Westminster: "N51.513912;W0.128381"
     geo = "&pos.ll=N51.5#{semicolon}W0.1"
     add = geo + mattr + noradius + mrank
-    # save_result(qrytxt + add, selfdir+"out-4.xml")
-    assert_result(qrytxt + add, selfdir+"out-4.xml")
+    # save_result(qrytxt + add, selfdir+"out-4.json")
+    assert_result(qrytxt + add, selfdir+"out-4.json")
 
     # 5) Krakow: "N50.061598;E19.937473"
     geo = "&pos.ll=N50.1#{semicolon}E19.9"
     add = geo + mattr + noradius + mrank
-    # save_result(qrytxt + add, selfdir+"out-5.xml")
-    assert_result(qrytxt + add, selfdir+"out-5.xml")
+    # save_result(qrytxt + add, selfdir+"out-5.json")
+    assert_result(qrytxt + add, selfdir+"out-5.json")
 
     # More complex YQL:
     yqlgeo1 = 'geoLocation("maybecenter", 40.8, 14.25, "150 km")'
@@ -143,8 +143,8 @@ def test_with_geo_fencing
     yql = "#{yqlpre} where #{yqlgeo1} or #{yqlgeo2} or #{yqlgeo3} or #{yqlgeo4};"
     qry = 'yql=' + URI::encode(yql) + crank
 
-    # save_result(qry, selfdir+"out-mp-yql.xml")
-    assert_result(qry, selfdir+"out-mp-yql.xml")
+    # save_result(qry, selfdir+"out-mp-yql.json")
+    assert_result(qry, selfdir+"out-mp-yql.json")
   end
 
   def teardown

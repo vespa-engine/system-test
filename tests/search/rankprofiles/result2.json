@@ -1,0 +1,39 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:type2::1",
+                "relevance": 235.0,
+                "source": "test",
+                "fields": {
+                    "sddocname": "type2",
+                    "documentid": "id:test:type2::1",
+                    "field21": "f21d2",
+                    "field22": 22,
+                    "field23": 23,
+                    "field24": "type2 document document document document data",
+                    "summaryfeatures": {
+                        "attribute(field23)": 23.0,
+                        "fieldMatch(field24).matches": 2.0,
+                        "firstPhase": 235.0,
+                        "query(myvalue)": 5.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

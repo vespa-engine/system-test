@@ -1,0 +1,43 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:test::1",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::1",
+                    "f1": "baz",
+                    "f2": "bay",
+                    "f3": "bag"
+                }
+            },
+            {
+                "id": "id:test:test::0",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::0",
+                    "f1": "baz",
+                    "f2": "bay",
+                    "f3": "bag"
+                }
+            }
+        ]
+    }
+}

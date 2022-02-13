@@ -16,7 +16,7 @@ class IgnoreResult < IndexedSearchTest
 
   def test_ignoreResult
     feed_and_wait_for_docs("music", 1, :file => "#{selfdir}/metallica_feed.xml", :timeout => 240, :trace => 9, :route => "\"[AND:default myroute myhop ?myservice]\"")
-    assert_result("query=metallica", "#{selfdir}/metallica_result.xml")
+    assert_result("query=metallica", "#{selfdir}/metallica_result.json")
   end
 
   def teardown

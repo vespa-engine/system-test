@@ -1,0 +1,31 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:music:music::http://music.yahoo.com/metallica/BestOf",
+                "relevance": 0.27080409225923124,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::http://music.yahoo.com/metallica/BestOf",
+                    "title": "Best of Metallica",
+                    "artist": "Metallica",
+                    "year": 1977
+                }
+            }
+        ]
+    }
+}

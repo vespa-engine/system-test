@@ -1,0 +1,185 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 6,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:foo:withfence::5",
+                "relevance": 100.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::5",
+                    "title": "sunnyvale pizza",
+                    "center": {
+                        "y": 37374821,
+                        "x": -122057174
+                    },
+                    "center.position": {
+                        "y": 37374821,
+                        "x": -122057174,
+                        "latlong": "N37.374821;W122.057174"
+                    },
+                    "center.distance": 51931,
+                    "fenceradius": 500000.0,
+                    "maybecenter": [
+                        {
+                            "y": 37374821,
+                            "x": -122057174
+                        }
+                    ],
+                    "maybecenter.position": [
+                        {
+                            "y": 37374821,
+                            "x": -122057174,
+                            "latlong": "N37.374821;W122.057174"
+                        }
+                    ],
+                    "maybecenter.distance": 51931,
+                    "order": 100,
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": 500000.0,
+                        "attribute(maybecenter_zcurve).count": 1.0,
+                        "distance(center)": 51931.37396603329,
+                        "distance(label,foobar)": 5.7745132947906725,
+                        "distance(maybecenter)": 51931.37396603329,
+                        "distance(maybecenter).index": 0.0,
+                        "distance(maybecenter).latitude": 37.374821,
+                        "distance(maybecenter).longitude": -122.05717399999999,
+                        "rawScore(center_zcurve)": 0.0,
+                        "rawScore(maybecenter_zcurve)": 0.14761208023149938,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:foo:withfence::0",
+                "relevance": 90.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::0",
+                    "title": "pizza in California",
+                    "center": {
+                        "y": 37374821,
+                        "x": -122057174
+                    },
+                    "center.position": {
+                        "y": 37374821,
+                        "x": -122057174,
+                        "latlong": "N37.374821;W122.057174"
+                    },
+                    "center.distance": 51931,
+                    "fenceradius": 500000.0,
+                    "maybecenter": [
+                        {
+                            "y": 37374821,
+                            "x": -122057174
+                        }
+                    ],
+                    "maybecenter.position": [
+                        {
+                            "y": 37374821,
+                            "x": -122057174,
+                            "latlong": "N37.374821;W122.057174"
+                        }
+                    ],
+                    "maybecenter.distance": 51931,
+                    "order": 90,
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": 500000.0,
+                        "attribute(maybecenter_zcurve).count": 1.0,
+                        "distance(center)": 51931.37396603329,
+                        "distance(label,foobar)": 5.7745132947906725,
+                        "distance(maybecenter)": 51931.37396603329,
+                        "distance(maybecenter).index": 0.0,
+                        "distance(maybecenter).latitude": 37.374821,
+                        "distance(maybecenter).longitude": -122.05717399999999,
+                        "rawScore(center_zcurve)": 0.0,
+                        "rawScore(maybecenter_zcurve)": 0.14761208023149938,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:foo:withfence::3",
+                "relevance": 42.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::3",
+                    "title": "pizza from Domino's",
+                    "center": {
+                        "y": 0,
+                        "x": 0
+                    },
+                    "center.position": {
+                        "y": 0,
+                        "x": 0,
+                        "latlong": "N0.000000;E0.000000"
+                    },
+                    "center.distance": 103884415,
+                    "fenceradius": 1.0E9,
+                    "maybecenter": [
+
+                    ],
+                    "maybecenter.distance": 2147483647,
+                    "order": 42,
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": 1.0E9,
+                        "attribute(maybecenter_zcurve).count": 0.0,
+                        "distance(center)": 1.0388441524467416E8,
+                        "distance(label,foobar)": 1.7976931348623157E308,
+                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(maybecenter).index": -1.0,
+                        "distance(maybecenter).latitude": 90.0,
+                        "distance(maybecenter).longitude": -180.0,
+                        "rawScore(center_zcurve)": 0.0,
+                        "rawScore(maybecenter_zcurve)": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:foo:withfence::4",
+                "relevance": 17.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::4",
+                    "title": "pizza with missing data",
+                    "center.distance": 2112308266,
+                    "maybecenter": [
+
+                    ],
+                    "maybecenter.distance": 2147483647,
+                    "order": 17,
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": null,
+                        "attribute(maybecenter_zcurve).count": 0.0,
+                        "distance(center)": 2.1123082666333804E9,
+                        "distance(label,foobar)": 1.7976931348623157E308,
+                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(maybecenter).index": -1.0,
+                        "distance(maybecenter).latitude": 90.0,
+                        "distance(maybecenter).longitude": -180.0,
+                        "rawScore(center_zcurve)": 0.0,
+                        "rawScore(maybecenter_zcurve)": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

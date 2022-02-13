@@ -16,19 +16,19 @@ class MultiChainSimple < DocprocTest
 
   def test_multichain_simple
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.xml", :cluster => "worst")
-    assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-default.xml")
+    assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-default.json")
     feed_and_wait_for_docs("worst", 0, :file => DOCPROC+"data/worst-remove.xml", :cluster => "worst")
 
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.xml", :cluster => "worst", :route => "\"banana/chain.split indexing\"")
-    assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-banana.xml")
+    assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-banana.json")
     feed_and_wait_for_docs("worst", 0, :file => DOCPROC+"data/worst-remove.xml", :cluster => "worst", :route => "\"banana/chain.split indexing\"")
 
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.xml", :cluster => "worst", :route => "\"container/chain.apple indexing\"")
-    assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-apple.xml")
+    assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-apple.json")
     feed_and_wait_for_docs("worst", 0, :file => DOCPROC+"data/worst-remove.xml", :cluster => "worst", :route => "\"container/chain.apple indexing\"")
 
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.xml", :cluster => "worst", :route => "\"container/chain.default banana/chain.split container/chain.apple indexing\"")
-    assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-all.xml")
+    assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-all.json")
   end
 
   def teardown

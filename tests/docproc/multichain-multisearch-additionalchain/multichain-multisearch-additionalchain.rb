@@ -40,10 +40,10 @@ class MultiChainMultiSearchAdditionalChain < DocprocTest
 
   def test_multichain_multisearch_additionalchain
     feed_and_wait_for_docs("music", 4, :file => selfdir+"music.4.xml", :cluster => "music", :route => "\"default/chain.default default/chain.jalla indexing\"")
-    assert_result("query=sddocname:music", selfdir + "music.4.result.xml")
+    assert_result("query=sddocname:music", selfdir + "music.4.result.json")
 
     feed_and_wait_for_docs("muzak", 4, :file => selfdir+"muzak.4.xml", :cluster => "muzak", :route => "\"default/chain.default default/chain.jalla indexing\"")
-    assert_result("query=sddocname:muzak", selfdir + "muzak.4.result.xml")
+    assert_result("query=sddocname:muzak", selfdir + "muzak.4.result.json")
   end
 
   def teardown

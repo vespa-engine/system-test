@@ -1,0 +1,16 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 0
+        },
+        "errors": [
+            {
+                "code": 3,
+                "summary": "Illegal query",
+                "message": "Could not set 'foo' to 'null': 'null' is not a integer"
+            }
+        ]
+    }
+}

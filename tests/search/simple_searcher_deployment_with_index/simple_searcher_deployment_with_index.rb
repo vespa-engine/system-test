@@ -16,7 +16,7 @@ class SimpleSearcherDeploymentWithIndex < IndexedSearchTest
     start
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA + "music.10.xml")
 
-    assert_result("query=classic", selfdir+"hello_world_result.xml")
+    assert_result("query=classic", selfdir+"hello_world_result.json")
   end
 
   def teardown

@@ -1,0 +1,179 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 859
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1234567,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:point::728302",
+                "relevance": 0.9848578299169126,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "point",
+                    "documentid": "id:test:point::728302",
+                    "title": "the bar fox says foo hihi",
+                    "latlong.position": {
+                        "y": 37408947,
+                        "x": -121844823,
+                        "latlong": "N37.408947;W121.844823"
+                    },
+                    "latlong.distance": 143045
+                }
+            },
+            {
+                "id": "id:test:point::671013",
+                "relevance": 0.9767443103298664,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "point",
+                    "documentid": "id:test:point::671013",
+                    "title": "the bar fox says hihi",
+                    "latlong.position": {
+                        "y": 37483916,
+                        "x": -121766811,
+                        "latlong": "N37.483916;W121.766811"
+                    },
+                    "latlong.distance": 215658
+                }
+            },
+            {
+                "id": "id:test:point::946383",
+                "relevance": 0.9740973658843486,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "point",
+                    "documentid": "id:test:point::946383",
+                    "title": "the bar fox says foo hihi",
+                    "latlong.position": {
+                        "y": 37277818,
+                        "x": -121774883,
+                        "latlong": "N37.277818;W121.774883"
+                    },
+                    "latlong.distance": 241998
+                }
+            },
+            {
+                "id": "id:test:point::71150",
+                "relevance": 0.9633960104801481,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "point",
+                    "documentid": "id:test:point::71150",
+                    "title": "the bar fox says foo hihi",
+                    "latlong.position": {
+                        "y": 37110825,
+                        "x": -122183480,
+                        "latlong": "N37.110825;W122.183480"
+                    },
+                    "latlong.distance": 330564
+                }
+            },
+            {
+                "id": "id:test:point::776400",
+                "relevance": 0.962429925134026,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "point",
+                    "documentid": "id:test:point::776400",
+                    "title": "the bar fox says hihi",
+                    "latlong.position": {
+                        "y": 37241679,
+                        "x": -121649199,
+                        "latlong": "N37.241679;W121.649199"
+                    },
+                    "latlong.distance": 345628
+                }
+            },
+            {
+                "id": "id:test:point::672349",
+                "relevance": 0.9607287398293464,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "point",
+                    "documentid": "id:test:point::672349",
+                    "title": "the bar fox says foo hihi",
+                    "latlong.position": {
+                        "y": 37112534,
+                        "x": -121781539,
+                        "latlong": "N37.112534;W121.781539"
+                    },
+                    "latlong.distance": 360023
+                }
+            },
+            {
+                "id": "id:test:point::122240",
+                "relevance": 0.9597469313178775,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "point",
+                    "documentid": "id:test:point::122240",
+                    "title": "the bar fox says foo hihi",
+                    "latlong.position": {
+                        "y": 37256012,
+                        "x": -122435986,
+                        "latlong": "N37.256012;W122.435986"
+                    },
+                    "latlong.distance": 363914
+                }
+            },
+            {
+                "id": "id:test:point::831844",
+                "relevance": 0.959356079539981,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "point",
+                    "documentid": "id:test:point::831844",
+                    "title": "the bar fox says foo hihi",
+                    "latlong.position": {
+                        "y": 37789966,
+                        "x": -122007447,
+                        "latlong": "N37.789966;W122.007447"
+                    },
+                    "latlong.distance": 373833
+                }
+            },
+            {
+                "id": "id:test:point::1202201",
+                "relevance": 0.9576077553030319,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "point",
+                    "documentid": "id:test:point::1202201",
+                    "title": "the bar fox says foo hihi",
+                    "latlong.position": {
+                        "y": 37653200,
+                        "x": -122419459,
+                        "latlong": "N37.653200;W122.419459"
+                    },
+                    "latlong.distance": 392930
+                }
+            },
+            {
+                "id": "id:test:point::220441",
+                "relevance": 0.9546342729916213,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "point",
+                    "documentid": "id:test:point::220441",
+                    "title": "the bar fox says foo hihi",
+                    "latlong.position": {
+                        "y": 37079953,
+                        "x": -121727696,
+                        "latlong": "N37.079953;W121.727696"
+                    },
+                    "latlong.distance": 410882
+                }
+            }
+        ]
+    }
+}

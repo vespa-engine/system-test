@@ -57,8 +57,8 @@ class NumericLimits < IndexedSearchTest
     assert_hitcount("query=wlonga:9223372036854775807", 1)
     assert_hitcount("query=wlonga:9223372036854775808", 1) # Adjusted to int64_t max (but not marked as out of bounds due to out of int64_t range)
 
-    assert_result("query=sbytea:127", selfdir + "result.max.xml")
-    assert_result("query=sbytea:-127", selfdir + "result.min.xml")
+    assert_result("query=sbytea:127", selfdir + "result.max.json")
+    assert_result("query=sbytea:-127", selfdir + "result.min.json")
   end
 
   def teardown

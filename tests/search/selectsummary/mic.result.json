@@ -1,0 +1,79 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 4,
+            "results": 4,
+            "resultsFull": 4
+        },
+        "children": [
+            {
+                "id": "id:test:derived3::pushyss://3/",
+                "relevance": 4.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "derived3",
+                    "documentid": "id:test:derived3::pushyss://3/",
+                    "field1": "common",
+                    "field2": "f2d3",
+                    "field3": "f3d3",
+                    "field4": "f4d3",
+                    "field5": "f5d3",
+                    "field6": "f6d3",
+                    "field7": "f7d3",
+                    "field42": "f42d3",
+                    "url": "http://test3"
+                }
+            },
+            {
+                "id": "id:test:derived2::pushyss://0/",
+                "relevance": 3.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "derived2",
+                    "documentid": "id:test:derived2::pushyss://0/",
+                    "field1": "common",
+                    "field2": "f2d1",
+                    "field3": "f3d1",
+                    "field4": "f4d1",
+                    "field5": "f5d1",
+                    "field6": "f6d1",
+                    "field7": "f7d1",
+                    "field8": "f8d1",
+                    "url": "http://test1"
+                }
+            },
+            {
+                "id": "id:test:base2::pushyss://2/",
+                "relevance": 2.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base2",
+                    "documentid": "id:test:base2::pushyss://2/",
+                    "field4": "common",
+                    "field5": "f5d3",
+                    "field6": "f6d3"
+                }
+            },
+            {
+                "id": "id:test:base1::pushyss://1/",
+                "relevance": 1.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base1",
+                    "documentid": "id:test:base1::pushyss://1/",
+                    "field1": "common",
+                    "field2": "f2d2",
+                    "field3": "f3d2"
+                }
+            }
+        ]
+    }
+}

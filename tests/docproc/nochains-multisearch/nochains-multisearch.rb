@@ -44,12 +44,12 @@ class NoChainsMultiSearch < DocprocTest
 
   def test_nochains_multisearch
     feed_and_wait_for_docs("music", 4, :file => selfdir+"music.4.xml", :cluster => "music")
-    assert_result("query=sddocname:music", selfdir + "music.4.result.xml")
+    assert_result("query=sddocname:music", selfdir + "music.4.result.json")
 
     feed_and_wait_for_docs("muzak", 4, :file => selfdir+"muzak.4.xml", :cluster => "muzak")
-    assert_result("query=sddocname:muzak", selfdir + "muzak.4.result.xml")
+    assert_result("query=sddocname:muzak", selfdir + "muzak.4.result.json")
 
-    assert_result("query=title:title", selfdir + "title.result.xml")
+    assert_result("query=title:title", selfdir + "title.result.json")
   end
 
   def teardown

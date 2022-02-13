@@ -1,0 +1,48 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test/test:dbzero::0",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "dbzero",
+                    "documentid": "id:test/test:dbzero::0",
+                    "sint": 100,
+                    "sfloat": 100.0,
+                    "wsint": [
+                        {
+                            "item": 100,
+                            "weight": 100
+                        }
+                    ],
+                    "wsfloat": [
+                        {
+                            "item": 100.0,
+                            "weight": 100
+                        }
+                    ],
+                    "wsstr": [
+                        {
+                            "item": "string",
+                            "weight": 100
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

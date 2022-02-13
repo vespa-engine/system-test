@@ -1,0 +1,28 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "index:search/0/c4ca4238e2dcf38e66aa62be",
+                "relevance": 0.3208484103718913,
+                "source": "search",
+                "fields": {
+                    "sddocname": "selsum",
+                    "bar": "barval"
+                }
+            }
+        ]
+    }
+}

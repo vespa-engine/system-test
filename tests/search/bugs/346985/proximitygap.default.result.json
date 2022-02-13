@@ -1,0 +1,43 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:proximitygap::proximitygap1",
+                "relevance": 0.19093119179975623,
+                "source": "search",
+                "fields": {
+                    "sddocname": "proximitygap",
+                    "documentid": "id:test:proximitygap::proximitygap1",
+                    "id": "proximitygap1",
+                    "f1": "bar",
+                    "f2": "fuzz"
+                }
+            },
+            {
+                "id": "id:test:proximitygap::proximitygap2",
+                "relevance": 0.10390071109672669,
+                "source": "search",
+                "fields": {
+                    "sddocname": "proximitygap",
+                    "documentid": "id:test:proximitygap::proximitygap2",
+                    "id": "proximitygap2",
+                    "f1": "a b c d e f g foo bar fuzz",
+                    "f2": "ball"
+                }
+            }
+        ]
+    }
+}

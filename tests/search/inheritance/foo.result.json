@@ -1,0 +1,39 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:image:image:g=bergum:foo",
+                "relevance": 0.0017429193899782135,
+                "source": "image",
+                "fields": {
+                    "sddocname": "image",
+                    "documentid": "id:image:image:g=bergum:foo",
+                    "size": 123,
+                    "checksum": 345,
+                    "rating": 90,
+                    "nraters": 9,
+                    "views": -1311224358,
+                    "lastviewed": 34234234,
+                    "make": "foo",
+                    "model": "bar",
+                    "length": 78,
+                    "width": 79,
+                    "aperture": "baz"
+                }
+            }
+        ]
+    }
+}

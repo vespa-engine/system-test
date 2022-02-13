@@ -73,7 +73,7 @@ class ParentChildGroupingSortingTest < ParentChildTestBase
 
   def assert_sorting(sort_spec, hits, file_name)
     assert_result("/search/?query=sddocname:ad&summary=mysummary&sortspec=#{sort_spec}&hits=#{hits}",
-                  get_test_path("#{file_name}.xml"))
+                  get_test_path("#{file_name}.json"))
   end
 
 end

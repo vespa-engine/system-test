@@ -24,14 +24,14 @@ class StructuredSummaryFeaturesTest < SearchTest
                       indexing("mycc")))
     start
     feed_and_wait_for_docs("sfdtest", 3, :file => selfdir+"feed-2.xml")
-    # save_result("query=title:word",                         selfdir+"result.wd.xml")
-    assert_result("query=title:word",                         selfdir+"result.wd.xml")
-    assert_result("query=title:word&ranking.queryCache=true", selfdir+"result.wd.xml")
+    # save_result("query=title:word",                         selfdir+"result.wd.json")
+    assert_result("query=title:word",                         selfdir+"result.wd.json")
+    assert_result("query=title:word&ranking.queryCache=true", selfdir+"result.wd.json")
 
     grp = "select=all(group(quality)each(max(3)each(output(summary()))))"
-    # save_result("query=title:word&#{grp}", selfdir+"result.wd-group.xml")
-    assert_result("query=title:word&#{grp}", selfdir+"result.wd-group.xml")
-    assert_result("query=title:word&#{grp}&ranking.queryCache=true", selfdir+"result.wd-group.xml")
+    # save_result("query=title:word&#{grp}", selfdir+"result.wd-group.json")
+    assert_result("query=title:word&#{grp}", selfdir+"result.wd-group.json")
+    assert_result("query=title:word&#{grp}&ranking.queryCache=true", selfdir+"result.wd-group.json")
   end
 
   def teardown

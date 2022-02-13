@@ -30,7 +30,7 @@ class IndexingDocproc < SearchTest
     start
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
     assert_result("query=sddocname:music",
-                   selfdir+"music.10.result.xml",
+                   selfdir+"music.10.result.json",
                    "surl")
   end
 

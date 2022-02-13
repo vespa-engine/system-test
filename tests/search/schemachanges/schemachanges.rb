@@ -84,7 +84,7 @@ class SchemaChanges < IndexedSearchTest
     puts "1.0: add attribute"
     redeploy("test.1.sd")
     feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.1.xml")
-    assert_result("sddocname:test&nocache", @test_dir + "result.1.xml", "documentid")
+    assert_result("sddocname:test&nocache", @test_dir + "result.1.json", "documentid")
     assert_hitcount("f2:%3E20&nocache", 1)
     assert_relevancy("sddocname:test&nocache&ranking=rp1", 21, 0)
     assert_relevancy("sddocname:test&nocache&ranking=rp1",  0, 1)
@@ -96,7 +96,7 @@ class SchemaChanges < IndexedSearchTest
     puts "1.1: add attribute & summary"
     redeploy("test.2.sd")
     feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.2.xml")
-    assert_result("sddocname:test&nocache", @test_dir + "result.2.xml", "documentid")
+    assert_result("sddocname:test&nocache", @test_dir + "result.2.json", "documentid")
     assert_hitcount("f2:%3E20&nocache", 2)
     assert_hitcount("f3:%3E30&nocache", 1)
     assert_attribute_exists("[documentmetastore]")
@@ -106,25 +106,25 @@ class SchemaChanges < IndexedSearchTest
     puts "2.0: add summary"
     redeploy("test.3.sd")
     feed_and_wait_for_docs("test", 4, :file => @test_dir + "feed.3.xml")
-    assert_result("sddocname:test&nocache", @test_dir + "result.3.xml", "documentid")
+    assert_result("sddocname:test&nocache", @test_dir + "result.3.json", "documentid")
     assert_hitcount("f4:f43&nocache", 0)
 
     puts "3.0: add index"
     redeploy("test.4.sd")
     feed_and_wait_for_docs("test", 5, :file => @test_dir + "feed.4.xml")
-    assert_result("sddocname:test&nocache", @test_dir + "result.4.xml", "documentid")
+    assert_result("sddocname:test&nocache", @test_dir + "result.4.json", "documentid")
     assert_hitcount("f5:e&nocache", 1)
 
     puts "3.1: add index & summary"
     redeploy("test.5.sd")
     feed_and_wait_for_docs("test", 6, :file => @test_dir + "feed.5.xml")
-    assert_result("sddocname:test&nocache", @test_dir + "result.5.xml", "documentid")
+    assert_result("sddocname:test&nocache", @test_dir + "result.5.json", "documentid")
     assert_hitcount("f5:f5&nocache", 2)
     assert_hitcount("f6:f&nocache", 1)
     assert_hitcount("f&nocache", 2)
 
     restart_proton("test", 6);
-    assert_result("sddocname:test&nocache", @test_dir + "result.5.xml", "documentid")
+    assert_result("sddocname:test&nocache", @test_dir + "result.5.json", "documentid")
     assert_hitcount("f2:%3E20&nocache", 5)
     assert_hitcount("f3:%3E30&nocache", 4)
     assert_hitcount("f4:f43&nocache", 0)
@@ -147,14 +147,14 @@ class SchemaChanges < IndexedSearchTest
     #vespa.adminserver.logctl("searchnode:proton.server.metricsengine", "debug=on")
 
     feed_and_wait_for_docs("test", 1, :file => selfdir + "add/feed.5.xml")
-    assert_result("sddocname:test&nocache", selfdir + "remove/result.5.xml", "documentid")
+    assert_result("sddocname:test&nocache", selfdir + "remove/result.5.json", "documentid")
     assert_hitcount("f6:f&nocache", 1)
     assert_hitcount("f6&nocache", 1)
 
     puts "remove index & summary field (f6)"
     redeploy("test.4.sd")
     feed_and_wait_for_docs("test", 2, :file => selfdir + "add/feed.4.xml")
-    assert_result("sddocname:test&nocache", selfdir + "remove/result.4.xml", "documentid")
+    assert_result("sddocname:test&nocache", selfdir + "remove/result.4.json", "documentid")
     assert_hitcount("f6:f&nocache", 0)
     assert_hitcount("f6&nocache", 0)
     assert_hitcount("f5:e&nocache", 1)
@@ -162,20 +162,20 @@ class SchemaChanges < IndexedSearchTest
     puts "remove index field (f5)"
     redeploy("test.3.sd")
     feed_and_wait_for_docs("test", 3, :file => selfdir + "add/feed.3.xml")
-    assert_result("sddocname:test&nocache", selfdir + "remove/result.3.xml", "documentid")
+    assert_result("sddocname:test&nocache", selfdir + "remove/result.3.json", "documentid")
     assert_hitcount("f5:e&nocache", 0)
 
     puts "remove summary field (f4)"
     redeploy("test.2.sd")
     feed_and_wait_for_docs("test", 4, :file => selfdir + "add/feed.2.xml")
-    assert_result("sddocname:test&nocache", selfdir + "remove/result.2.xml", "documentid")
+    assert_result("sddocname:test&nocache", selfdir + "remove/result.2.json", "documentid")
     assert_hitcount("f3:%3E30&nocache", 4)
     assert_attributes_exist(["[documentmetastore]", "f2", "f3"])
 
     puts "remove attribute & summary field (f3)"
     redeploy("test.1.sd")
     feed_and_wait_for_docs("test", 5, :file => selfdir + "add/feed.1.xml")
-    assert_result("sddocname:test&nocache", selfdir + "remove/result.1.xml", "documentid")
+    assert_result("sddocname:test&nocache", selfdir + "remove/result.1.json", "documentid")
     assert_hitcount("f3:%3E30&nocache", 0)
     assert_hitcount("f2:%3E20&nocache", 5)
     assert_attributes_exist(["[documentmetastore]", "f2"])
@@ -183,12 +183,12 @@ class SchemaChanges < IndexedSearchTest
     puts "remove attribute field (f2)"
     redeploy("test.0.sd")
     feed_and_wait_for_docs("test", 6, :file => selfdir + "add/feed.0.xml")
-    assert_result("sddocname:test&nocache", selfdir + "remove/result.0.xml", "documentid")
+    assert_result("sddocname:test&nocache", selfdir + "remove/result.0.json", "documentid")
     assert_hitcount("f2:%3E20&nocache", 0)
     assert_attributes_exist(["[documentmetastore]"])
 
     restart_proton("test", 6)
-    assert_result("sddocname:test&nocache", selfdir + "remove/result.0.xml", "documentid")
+    assert_result("sddocname:test&nocache", selfdir + "remove/result.0.json", "documentid")
     assert_hitcount("f2:%3E20&nocache", 0)
     assert_hitcount("f3:%3E30&nocache", 0)
     assert_hitcount("f5:e&nocache", 0)
@@ -217,7 +217,7 @@ class SchemaChanges < IndexedSearchTest
     vespa.adminserver.execute("vespa-configproxy-cmd -m cache")
     feed_and_wait_for_docs("testb", 1, :file => @test_dir + "feed.1.xml")
     assert_hitcount("d&nocache", 2)
-    assert_result("d&nocache", @test_dir + "result.0.xml", "documentid")
+    assert_result("d&nocache", @test_dir + "result.0.json", "documentid")
     assert_hitcount("f2:d&nocache", 1)
     assert_hitcount("f3:%3E29&nocache", 2)
     assert_documentdbs_exist(["testa", "testb"])
@@ -228,7 +228,7 @@ class SchemaChanges < IndexedSearchTest
     wait_for_content_cluster_config_generation(deploy_output)
     postdeploy_wait(deploy_output)
     wait_for_hitcount("d&nocache", 1)
-    assert_result("d&nocache", @test_dir + "result.1.xml", "documentid")
+    assert_result("d&nocache", @test_dir + "result.1.json", "documentid")
     assert_hitcount("f2:d&nocache", 0)
     assert_hitcount("f3:%3E29&nocache", 1)
     assert_documentdbs_exist(["testa"])
@@ -236,7 +236,7 @@ class SchemaChanges < IndexedSearchTest
     puts "feed new 'testa' docs"
     feed_and_wait_for_docs("testa", 2, :file => @test_dir + "feed.2.xml")
     assert_hitcount("d&nocache", 2)
-    assert_result("d&nocache", @test_dir + "result.2.xml", "documentid")
+    assert_result("d&nocache", @test_dir + "result.2.json", "documentid")
     assert_hitcount("f2:d&nocache", 0)
     assert_hitcount("f3:%3E29&nocache", 2)
 
@@ -245,14 +245,14 @@ class SchemaChanges < IndexedSearchTest
     wait_for_content_cluster_config_generation(deploy_output)
     postdeploy_wait(deploy_output)
     wait_for_hitcount("d&nocache", 2)
-    assert_result("d&nocache", @test_dir + "result.2.xml", "documentid")
+    assert_result("d&nocache", @test_dir + "result.2.json", "documentid")
     assert_hitcount("f2:d&nocache", 0)
     assert_hitcount("f3:%3E29&nocache", 2)
 
     puts "feed new 'testb' docs"
     feed_and_wait_for_docs("testb", 1, :file => @test_dir + "feed.3.xml")
     assert_hitcount("d&nocache", 3)
-    assert_result("d&nocache", @test_dir + "result.4.xml", "documentid")
+    assert_result("d&nocache", @test_dir + "result.4.json", "documentid")
     assert_hitcount("f2:d&nocache", 1)
     assert_hitcount("f3:%3E29&nocache", 3)
   end
@@ -268,27 +268,27 @@ class SchemaChanges < IndexedSearchTest
     postdeploy_wait(deploy_output)
     feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")
     assert_result("sddocname:test&nocache",
-                  @test_dir + "result.0.xml")
+                  @test_dir + "result.0.json")
     puts "remove summary aspect for f2"
     redeploy("test.1.sd")
     assert_result("sddocname:test&nocache",
-                  @test_dir + "result.0b.xml")
+                  @test_dir + "result.0b.json")
     puts "readd summary aspect for f2"
     redeploy("test.0.sd")
     assert_hitcount("f1:b&nocache", 1)
     feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.1.xml")
     assert_hitcount("f1:b&nocache", 2)
     assert_hitcount("f2:%3E19&nocache", 2)
-    assert_result("sddocname:test&nocache", @test_dir + "result.1a.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.1a.json")
 
     puts "use new config again"
     redeploy("test.1.sd")
-    assert_result("sddocname:test&nocache", @test_dir + "result.1.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.1.json")
     assert_hitcount("f1:b&nocache", 2)
     assert_hitcount("f2:%3E19&nocache", 2)
     puts "add attribute to rank profile"
     redeploy("test.2.sd")
-    assert_result("sddocname:test&nocache", @test_dir + "result.1.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.1.json")
     assert_hitcount("f1:b&nocache", 2)
     assert_hitcount("f2:%3E19&nocache", 2)
   end
@@ -302,12 +302,12 @@ class SchemaChanges < IndexedSearchTest
     feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")
     puts "remove summary aspect for f2"
     redeploy("test.1.sd")
-    assert_result("sddocname:test&nocache", @test_dir + "result.0b.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.0b.json")
 
     # Verify that validation upon restart do not reject the summary removal for f2.
     vespa.search["search"].first.trigger_flush
     restart_proton("test", 1)
-    assert_result("sddocname:test&nocache", @test_dir + "result.0b.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.0b.json")
   end
 
   def test_remove_attribute_aspect_from_index_field
@@ -327,7 +327,7 @@ class SchemaChanges < IndexedSearchTest
     puts "deploy output: '#{deploy_output}'"
     assert_hitcount("f1:foo&nocache", 0)
     assert_hitcount("f1:bar&nocache", 2)
-    assert_result("query=sddocname:test&nocache", @test_dir + "test.0.result.xml", "documentid")
+    assert_result("query=sddocname:test&nocache", @test_dir + "test.0.result.json", "documentid")
     assert_log_not_matches(/Cannot apply new config snapshot directly/)
     assert_no_match(/Field 'f1' changed: remove attribute aspect/, deploy_output)
 

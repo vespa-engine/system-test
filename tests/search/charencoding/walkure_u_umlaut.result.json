@@ -1,0 +1,106 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_wagner-symphonic-spectaculars-box-set-_music_1921952966",
+                "relevance": 0.031041307700364697,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_wagner-symphonic-spectaculars-box-set-_music_1921952966",
+                    "title": "Wagner: Symphonic Spectaculars (Box Set)",
+                    "song": "Lohengrin, opera, WWV 75;Tannhäuser, opera, WWV 70;Tannhäuser, opera, WWV 70;Die Meistersinger von Nürnberg, opera, WWV 96;Parsifal, opera, WWV 111;Parsifal, opera, WWV 111;Tristan und Isolde, opera, WWV 90;Tristan und Isolde, opera, WWV 90;Tristan und Isolde, opera, WWV 90;Das Rheingold (The Rhine Gold), opera, WWV 86a;Die Walküre (The Valkyrie), opera, WWV 86b;Die Walküre (The Valkyrie), opera, WWV 86b;Die Walküre (The Valkyrie), opera, WWV 86b;Siegfried, opera, WWV 86c;Siegfried, opera, WWV 86c;Die Götterdämmerung (Twilight of the Gods), opera, WWV 86d;Die Götterdämmerung (Twilight of the Gods), opera, WWV 86d;Die Götterdämmerung (Twilight of the Gods), opera, WWV 86d",
+                    "bgndata": "CD",
+                    "pto": 798,
+                    "mid": 2,
+                    "ew": "wagner",
+                    "surl": "http://shopping.yahoo.com/p_wagner-symphonic-spectaculars-box-set-_music_1921952966",
+                    "pid": "1921952966",
+                    "weight": 46.0,
+                    "isbn": "018111909426",
+                    "fmt": "CD",
+                    "disp_song": "Lohengrin, opera, WWV 75;Tannhäuser, opera, WWV 70;Tannhäuser, opera, WWV 70",
+                    "pfrom": 539,
+                    "categories": "1804951797 1804893726",
+                    "data": "CD5.39-7.98018111909426",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/144852/amg1921952966_1940.jpg?rm_____DKjoFhXqh\" height=61 width=70 border=0 hspace=0 vspace=0",
+                    "newestedition": 20000101,
+                    "year": 2000,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_wagner-die-meistersinger-von-n-rnberg-act-iii_music_1921536129",
+                "relevance": 0.030631157155070678,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_wagner-die-meistersinger-von-n-rnberg-act-iii_music_1921536129",
+                    "title": "Wagner: Die Meistersinger Von Nürnberg, Act III",
+                    "song": "Die Meistersinger von Nürnberg, opera, WWV 96;Die Meistersinger von Nürnberg, opera, WWV 96;Tannhäuser, opera, WWV 70;Tannhäuser, opera, WWV 70;Die Walküre (The Valkyrie), opera, WWV 86b;Siegfried, opera, WWV 86c;Siegfried, opera, WWV 86c;Lohengrin, opera, WWV 75",
+                    "bgndata": "CD",
+                    "pto": -100,
+                    "mid": 2,
+                    "ew": "wagner",
+                    "surl": "http://shopping.yahoo.com/p_wagner-die-meistersinger-von-n-rnberg-act-iii_music_1921536129",
+                    "pid": "1921536129",
+                    "weight": 10.0,
+                    "isbn": "727031912125",
+                    "fmt": "CD",
+                    "disp_song": "Die Meistersinger von Nürnberg, opera, WWV 96;Die Meistersinger von Nürnberg, opera, WWV 96;Tannhäuser, opera, WWV 70",
+                    "categories": "1804951797 1804893726",
+                    "data": "CD727031912125",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/148104/amg1921536129_1940.jpg?rm_____D.BHILdu1\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_classics-at-the-movies_music_1921527067",
+                "relevance": 0.028306715959173098,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_classics-at-the-movies_music_1921527067",
+                    "title": "Classics at the Movies",
+                    "song": "Also sprach Zarathustra (Thus Spoke Zoroaster), tone poem for orchestra, Op. 30 (TrV 176);Serenade No. 13 for strings in G major (\"Eine kleine Nachtmusik\"), K. 525;Symphony No. 4 in A major (\"Italian\"), Op. 90;Kaiser-Walzer (Emperor Waltz), for orchestra, Op. 437 (RV 437);Symphony No. 9 in D minor (\"Choral\") Op. 125;Rhapsody in Blue for piano & orchestra (orchestral version by F. Grofé);Piano Concerto No. 21 in C major (\"Elvira Madigan\") K. 467;Canon and Gigue for 3 violins & continuo in D major;An der schönen, blauen Donau (On the Beautiful, Blue Danube), waltz for orchestra (with chorus ad lib), Op. 314 (RV 314);Rhapsody on a Theme of Paganini (Introduction and 24 Variations), in A minor for piano & orchestra, Op. 43;Finlandia, tone poem for orchestra, Op. 26;Carmina Burana, scenic cantata for soloists, choruses & orchestra;Adagio for strings (arr. from 2nd mvt. of String Quartet), for string quartet/string orchestra), Op. 11;Boléro, ballet for orchestra (or piano);Die Walküre (The Valkyrie), opera, WWV 86b",
+                    "bgndata": "CDCA",
+                    "pto": 998,
+                    "mid": 2,
+                    "ew": "movies",
+                    "surl": "http://shopping.yahoo.com/p_classics-at-the-movies_music_1921527067",
+                    "pid": "1921527067",
+                    "weight": 42.0,
+                    "isbn": "090266083329,090266083343",
+                    "fmt": "CD CA",
+                    "disp_song": "Also sprach Zarathustra (Thus Spoke Zoroaster), tone poem for orchestra, Op. 30 (TrV 176);Serenade No. 13 for strings in G major (\"Eine kleine Nachtmusik\"), K. 525;Symphony No. 4 in A major (\"Italian\"), Op. 90",
+                    "pfrom": 665,
+                    "categories": "1804951797 1804893726",
+                    "data": "CD6.65-9.98090266083329CA090266083343",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/146745/amg1921527067_1940.jpg?rm_____Da8byLuaf\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "newestedition": 19910101,
+                    "year": 1991,
+                    "did": 66,
+                    "cbid": 2
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,180 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 9
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "errors": [
+            {
+                "code": 4,
+                "summary": "Invalid query parameter",
+                "source": "search2",
+                "message": "The cluster search2 has no sortable attribute named: odd"
+            }
+        ],
+        "children": [
+            {
+                "id": "id:test:simple::9889",
+                "relevance": 9889.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::9889",
+                    "title": "doc 9889 hash 17 val9889 type simple",
+                    "year": 1895,
+                    "odd": true,
+                    "lastname": "Frizzell",
+                    "category": "products / apparel / clothing / womens / dresses",
+                    "lastname_lc": "frizzell",
+                    "price": 189.05,
+                    "myrank": 9889.0
+                }
+            },
+            {
+                "id": "id:test:simple::2485",
+                "relevance": 2485.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2485",
+                    "title": "doc 2485 hash 17 val2485 type simple",
+                    "year": 1873,
+                    "odd": true,
+                    "lastname": "Gussow",
+                    "category": "products / apparel / clothing / womens / shirts",
+                    "lastname_lc": "gussow",
+                    "price": 145.9,
+                    "myrank": 2485.0
+                }
+            },
+            {
+                "id": "id:test:simple::4953",
+                "relevance": 4953.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::4953",
+                    "title": "doc 4953 hash 17 val4953 type simple",
+                    "year": 1880,
+                    "odd": false,
+                    "lastname": "Truman",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "truman",
+                    "price": 251.24,
+                    "myrank": 4953.0
+                }
+            },
+            {
+                "id": "id:test:simple::7421",
+                "relevance": 7421.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::7421",
+                    "title": "doc 7421 hash 17 val7421 type simple",
+                    "year": 1854,
+                    "odd": false,
+                    "lastname": "Beldt",
+                    "category": "services / phone / 300 minutes",
+                    "lastname_lc": "beldt",
+                    "price": 21.29,
+                    "myrank": 7421.0
+                }
+            },
+            {
+                "id": "id:test:simple::1251",
+                "relevance": 1251.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1251",
+                    "title": "doc 1251 hash 17 val1251 type simple",
+                    "year": 1846,
+                    "odd": false,
+                    "lastname": "Distribution",
+                    "category": "products / electronics / computers",
+                    "lastname_lc": "distribution",
+                    "price": 1.74,
+                    "myrank": 1251.0
+                }
+            },
+            {
+                "id": "id:test:simple::17",
+                "relevance": 17.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::17",
+                    "title": "doc 17 hash 17 val17 type simple",
+                    "year": 1834,
+                    "odd": false,
+                    "lastname": "Obstbaum",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "obstbaum",
+                    "price": 210.41,
+                    "myrank": 17.0
+                }
+            },
+            {
+                "id": "id:test:simple::6187",
+                "relevance": 6187.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6187",
+                    "title": "doc 6187 hash 17 val6187 type simple",
+                    "year": 1830,
+                    "odd": false,
+                    "lastname": "Cromie",
+                    "category": "products / apparel / clothing / womens / gloves",
+                    "lastname_lc": "cromie",
+                    "price": 173.11,
+                    "myrank": 6187.0
+                }
+            },
+            {
+                "id": "id:test:simple::8655",
+                "relevance": 8655.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8655",
+                    "title": "doc 8655 hash 17 val8655 type simple",
+                    "year": 1784,
+                    "odd": false,
+                    "lastname": "Hostos",
+                    "category": "services / phone / 300 minutes",
+                    "lastname_lc": "hostos",
+                    "price": 218.6,
+                    "myrank": 8655.0
+                }
+            },
+            {
+                "id": "id:test:simple::3719",
+                "relevance": 3719.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3719",
+                    "title": "doc 3719 hash 17 val3719 type simple",
+                    "year": 1782,
+                    "odd": false,
+                    "lastname": "Lewitt",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "lewitt",
+                    "price": 139.65,
+                    "myrank": 3719.0
+                }
+            }
+        ]
+    }
+}

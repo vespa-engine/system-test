@@ -1,0 +1,37 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:derived3::pushyss://3/",
+                "relevance": 4.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "derived3",
+                    "documentid": "id:test:derived3::pushyss://3/",
+                    "field1": "common",
+                    "field2": "f2d3",
+                    "field3": "f3d3",
+                    "field4": "f4d3",
+                    "field5": "f5d3",
+                    "field6": "f6d3",
+                    "field7": "f7d3",
+                    "field42": "f42d3",
+                    "url": "http://test3"
+                }
+            }
+        ]
+    }
+}

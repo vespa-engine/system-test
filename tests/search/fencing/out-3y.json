@@ -1,0 +1,87 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 6,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:foo:withfence::3",
+                "relevance": 42.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::3",
+                    "title": "pizza from Domino's",
+                    "center": {
+                        "y": 0,
+                        "x": 0
+                    },
+                    "center.position": {
+                        "y": 0,
+                        "x": 0,
+                        "latlong": "N0.000000;E0.000000"
+                    },
+                    "center.distance": 130111754,
+                    "fenceradius": 1.0E9,
+                    "maybecenter": [
+
+                    ],
+                    "maybecenter.distance": 2147483647,
+                    "order": 42,
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": 1.0E9,
+                        "attribute(maybecenter_zcurve).count": 0.0,
+                        "distance(center)": 1.3011175420695934E8,
+                        "distance(label,foobar)": 1.7976931348623157E308,
+                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(maybecenter).index": -1.0,
+                        "distance(maybecenter).latitude": 90.0,
+                        "distance(maybecenter).longitude": -180.0,
+                        "rawScore(center_zcurve)": 0.0,
+                        "rawScore(maybecenter_zcurve)": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:foo:withfence::4",
+                "relevance": 17.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::4",
+                    "title": "pizza with missing data",
+                    "center.distance": 2117414742,
+                    "maybecenter": [
+
+                    ],
+                    "maybecenter.distance": 2147483647,
+                    "order": 17,
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": null,
+                        "attribute(maybecenter_zcurve).count": 0.0,
+                        "distance(center)": 2.117414742653267E9,
+                        "distance(label,foobar)": 1.7976931348623157E308,
+                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(maybecenter).index": -1.0,
+                        "distance(maybecenter).latitude": 90.0,
+                        "distance(maybecenter).longitude": -180.0,
+                        "rawScore(center_zcurve)": 0.0,
+                        "rawScore(maybecenter_zcurve)": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

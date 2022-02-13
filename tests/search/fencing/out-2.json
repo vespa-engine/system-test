@@ -1,0 +1,127 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 6,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:foo:withfence::1",
+                "relevance": 80.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::1",
+                    "title": "pizza in Trondheim",
+                    "center": {
+                        "y": 63431693,
+                        "x": 10391965
+                    },
+                    "center.position": {
+                        "y": 63431693,
+                        "x": 10391965,
+                        "latlong": "N63.431693;E10.391965"
+                    },
+                    "center.distance": 31896,
+                    "fenceradius": 500000.0,
+                    "maybecenter": [
+                        {
+                            "y": 63431693,
+                            "x": 10391965
+                        }
+                    ],
+                    "maybecenter.position": [
+                        {
+                            "y": 63431693,
+                            "x": 10391965,
+                            "latlong": "N63.431693;E10.391965"
+                        }
+                    ],
+                    "maybecenter.distance": 31896,
+                    "order": 80,
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": 500000.0,
+                        "attribute(maybecenter_zcurve).count": 1.0,
+                        "distance(center)": 31896.46779817477,
+                        "distance(maybecenter)": 31896.46779817477,
+                        "distance(maybecenter).index": 0.0,
+                        "distance(maybecenter).latitude": 63.431692999999996,
+                        "distance(maybecenter).longitude": 10.391964999999999,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:foo:withfence::3",
+                "relevance": 42.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::3",
+                    "title": "pizza from Domino's",
+                    "center": {
+                        "y": 0,
+                        "x": 0
+                    },
+                    "center.position": {
+                        "y": 0,
+                        "x": 0,
+                        "latlong": "N0.000000;E0.000000"
+                    },
+                    "center.distance": 63570785,
+                    "fenceradius": 1.0E9,
+                    "maybecenter": [
+
+                    ],
+                    "maybecenter.distance": 2147483647,
+                    "order": 42,
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": 1.0E9,
+                        "attribute(maybecenter_zcurve).count": 0.0,
+                        "distance(center)": 6.357078573534887E7,
+                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(maybecenter).index": -1.0,
+                        "distance(maybecenter).latitude": 90.0,
+                        "distance(maybecenter).longitude": -180.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:foo:withfence::4",
+                "relevance": 17.0,
+                "source": "fencing",
+                "fields": {
+                    "sddocname": "withfence",
+                    "documentid": "id:foo:withfence::4",
+                    "title": "pizza with missing data",
+                    "center.distance": 2084088850,
+                    "maybecenter": [
+
+                    ],
+                    "maybecenter.distance": 2147483647,
+                    "order": 17,
+                    "summaryfeatures": {
+                        "attribute(fenceradius)": null,
+                        "attribute(maybecenter_zcurve).count": 0.0,
+                        "distance(center)": 2.084088850471591E9,
+                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(maybecenter).index": -1.0,
+                        "distance(maybecenter).latitude": 90.0,
+                        "distance(maybecenter).longitude": -180.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

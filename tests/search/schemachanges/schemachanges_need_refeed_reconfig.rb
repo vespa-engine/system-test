@@ -48,7 +48,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     # Feed should be accepted
     feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
     # Search & docsum should still work
-    assert_result("sddocname:test&nocache", @test_dir + "result.1.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.1.json")
     assert_hitcount("f1:b&nocache", 2)
     assert_hitcount("f3:%3E29&nocache", 2)
 
@@ -60,7 +60,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     until search("sddocname:test&nocache").hit.select { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start_time > 120 # seconds
       sleep 1
     end
-    assert_result("sddocname:test&nocache", @test_dir + "result.2.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.2.json")
     puts "Reindexing complete after #{Time.now - start_time} seconds"
   end
 
@@ -103,7 +103,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     # Feed should be accepted
     feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
     # Search & docsum should still work, but only the document fed while indexing mode was "index" (ELASTIC) has had indexing script run
-    assert_result("sddocname:test&nocache", @test_dir + "result.1.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.1.json")
     assert_hitcount("f1:b&nocache", 1)          # No index for old document
     assert_hitcount("f3:%3E29&nocache", 2)      # But attributes work
 
@@ -115,7 +115,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     until search("sddocname:test&nocache").hit.select { |h| h.field["a1"] == h.field["f3"] }.length == 2 or Time.now - start_time > 120 # seconds
       sleep 1
     end
-    assert_result("sddocname:test&nocache", @test_dir + "result.2.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.2.json")
     puts "Reindexing complete after #{Time.now - start_time} seconds"
   end
 

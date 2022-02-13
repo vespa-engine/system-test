@@ -1,0 +1,129 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:shopping:shopping::USxPGx962x12430",
+                "relevance": 0.999,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=12430&m=962&q=n&priceret=141.00&pg=~~3&k=5d16e76ad931c0e17c88cfb39c95903d&source=feed&url=http%3A%2F%2Fwww%2Eadvlaser%2Ecom%2FProductDetails%2Easp%3FProductCode%3DSTXE6R881%26click%3D7704&st=feed&mt=~~~~~~~~n~~~",
+                    "documentid": "id:shopping:shopping::USxPGx962x12430",
+                    "number": 1
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx3142x483",
+                "relevance": 0.998,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=483&m=3142&q=n&priceret=42.99&pg=~~2&k=30e53a348f4a83364476d80c5974a46c&source=feed&url=http%3A%2F%2Fofficemax%2Erdr%2Echannelintelligence%2Ecom%2Fgo%2Easp%3FfVhzOC8fBggESSNgX1JYRxJtHD92Z1EABEwDamVcUhdDXSJXNzAjFx0fR0AofAAFDRpCO1JFRwogKz4CRlVTUDE9AwwMCg43SihpJ0JcVUIULTsNAQQdUnFLLCo2Xx9UQ0UyfwwCGQdTN1tDWldsMDxeWllSVHImAA0OAQw6VjYpfk5TQkRENjYIBhhcUSxQJzEwWR9AQlg7YV5QW0ISaABHUnsuKTAQYkJZWzo1HQIJEUQsCRxpB0hRWF5WMz0IGkYsDBdRKGh2HwJkXl46IEpRWxJPOhoWD3YqJjFCXEMdanIGAA0OAQRsFCIqNwgAAHREKj9KUVswQCxLMS03SldDFkQtMQwMDxYcPVZNYBF0fGcVAwYWWy88DAwPFhxiRy8tMEZbVB8H%26nAID%3D5784816&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx3142x483",
+                    "number": 2
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx8792x883",
+                "relevance": 0.997,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=883&m=8792&q=n&priceret=55.39&pg=~~2&k=0cf44f02bde631714afd3a8a141f8f6a&source=feed&url=http%3A%2F%2Fsears%2Erdr%2Echannelintelligence%2Ecom%2Fgo%2Easp%3FfVhzOGNRAAQIASNiE1NbQBBnFnV0Yx0CYEwEay5dVxdBGW0OdzhjUU5YREMvaEBMHARWcExBXlYwajBCXx9DUDx9HEwbLBBuFXZ3DBwABgAMAGJfUFpKE2gPc3RjfQ1DWFRiGysbWUMRaQ8dDRU7dGMdAgNYEywgDAAEF0RjRyotDBFRXFlTMSYGB0RNBz1PLSc8SVcNDFQzOwwIAhcOYA%3D%3D%26nAID%3D5784816&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx8792x883",
+                    "number": 3
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx8795x402",
+                "relevance": 0.996,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=402&m=8795&q=n&priceret=39.24&pg=~~2&k=ab20d267354fdfdf5748f462ea21bae3&source=feed&url=http%3A%2F%2Fwww%2Eamazon%2Ecom%2Fdp%2FB000051174%2Fref%3Dasc%5Fdf%5FB0000511741469996%3Fsmid%3DATVPDKIKX0DER%26tag%3Dpg%2D437%2D01%2D20%26linkCode%3Dasn%26creative%3D395093%26creativeASIN%3DB000051174&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx8795x402",
+                    "number": 4
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx10993x483",
+                "relevance": 0.995,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=483&m=10993&q=n&priceret=26.99&pg=~~2&k=9d6f4bfeefe4ea88c485c691a0806e52&source=feed&url=http%3A%2F%2Fofficemax%2Erdr%2Echannelintelligence%2Ecom%2Fgo%2Easp%3FfVhzOC8fBggESSNgX1JaSxloED92Z1EABEwDamVcUhdDXSJXNzAjFx0fR0AofAAFDRpCO1JFRwogKz4CXVZWUTw3QhAeA1EyTSY3fEFTUlVVLH8DAgkWTTNeKCEhXh1cUFI6PkIOChBJN1FBTAsvJTFIXlleUnImDhMOAA46XS4rfkFTUlVaNjwITh8SUTtMbDQhQlZFU0NyIh0MD0EUbQ8UCBR8Jz5yX11TBQ8gBgAOFFM%2DRiEhIQBtHX9fOTsMBk5BEQ1KMzQ%2DRFdDHG9yHg4BDh9Sew0UXkonYWEdflFSUDM%2DDggOAVJze24IMk9XXBUEbx8OAAMaTztMZTchTlFfVFJiMQYKNEYWZgscDhJlJyNDUV9UXWJuDA8CEEo3QGx6%26nAID%3D5784816&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx10993x483",
+                    "number": 5
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx11157x16171",
+                "relevance": 0.994,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=16171&m=11157&q=n&priceret=69.00&pg=~~3&k=78410bc3c9783be98126128615870857&source=feed&url=http%3A%2F%2Fwesternbackupsolutions%2Estores%2Eyahoo%2Enet%2Fibm%2D59h2678%2Dame1%2Dmammoth%2D170m%2D8mm%2Dbackup%2Dtape%2Ehtml%3Fgdftrk%3DgdfV21304%5Fa%5F7c540%5Fa%5F7c2509%5Fa%5F7c59H2678&st=feed&mt=~~~~~~~~n~~~",
+                    "documentid": "id:shopping:shopping::USxPGx11157x16171",
+                    "number": 6
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx12521x501",
+                "relevance": 0.993,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=501&m=12521&q=n&priceret=177.64&pg=~~3&k=04c13e4c152a326df3d84f8150b00fb3&source=feed&url=http%3A%2F%2Fwww%2Ememory4less%2Ecom%2Fm4l%5Fitemdetail%2Easpx%3Fpartno%3DST39140W%26itemid%3D151528%26rid%3Dfd%5F01&st=feed&mt=~~~~~~~~n~~~",
+                    "documentid": "id:shopping:shopping::USxPGx12521x501",
+                    "number": 7
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx12966x5316",
+                "relevance": 0.992,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=5316&m=12966&q=n&priceret=31.95&pg=~~3&k=8096556b0b4bf385ca8d3df450dabcdd&source=feed&url=http%3A%2F%2Fwww%2Eamazon%2Ecom%2Fgp%2Foffer%2Dlisting%2FB00001ZULW%2Fref%3Dasc%5Fdf%5FB00001ZULW1463607%3Fie%3DUTF8%26condition%3Dnew%26tag%3Dpgmp%2D1186%2D01%2D20%26creative%3D395165%26creativeASIN%3DB00001ZULW%26linkCode%3Dasm&st=feed&mt=~~~~~~~~n~~~",
+                    "documentid": "id:shopping:shopping::USxPGx12966x5316",
+                    "number": 8
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx14369x743",
+                "relevance": 0.991,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=743&m=14369&q=n&priceret=2290.00&pg=~~2&k=cde4500fc70e6a461d2f6ff7c74353eb&source=feed&url=http%3A%2F%2Fwww%2Ectistore%2Ecom%2Fproduct%2F1%2Fcode%2CWS%2DG5487%253D%2Ehtml&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx14369x743",
+                    "number": 9
+                }
+            },
+            {
+                "id": "id:shopping:shopping::USxPGx17016x101",
+                "relevance": 0.99,
+                "source": "shopping",
+                "fields": {
+                    "sddocname": "shopping",
+                    "ourl": "http://yahooshopping.pgpartner.com/rd.php?r=101&m=17016&q=n&priceret=55.55&pg=~~2&k=5af43954c89372cd20470898fe380c37&source=feed&url=http%3A%2F%2Fwww%2Eamatteroffax%2Ecom%2Fitem%2Easp%3FINVID%3D1145610%26SRC%3DsrcPriceGrabber%26CKP%3DAFPEAU%2540M%255EEBJEBT%2540GT&st=feed&mt=~~~~~~~~y~~~",
+                    "documentid": "id:shopping:shopping::USxPGx17016x101",
+                    "number": 10
+                }
+            }
+        ]
+    }
+}

@@ -33,7 +33,7 @@ class LongQueries < IndexedSearchTest
     file = File.new(selfdir+"do.query")
     query = file.read()
 
-    assert_result(query, selfdir+"do.result")
+    assert_result(query, selfdir+"do.result.json")
   end
 
   def teardown

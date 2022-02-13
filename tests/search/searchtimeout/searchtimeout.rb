@@ -13,7 +13,7 @@ class SearchTimeoutTest < IndexedSearchTest
 
   def test_timeout_long_firstphase
     feed_and_wait_for_docs("banana", 20, :file => selfdir+"docs.xml")
-    assert_result_with_timeout(40.0, "query=sddocname:banana&hits=1&nocache", selfdir + "result.1.xml")
+    assert_result_with_timeout(40.0, "query=sddocname:banana&hits=1&nocache", selfdir + "result.1.json")
     # TODO This will start failing once timeout are best effort.
     assert_query_errors_without_timeout("query=sddocname:banana&hits=1&nocache&timeout=1.0&ranking.softtimeout.enable=false",
                                     ["Timeout while waiting for sc0.num0|Query timed out in sc0.num0"])

@@ -1,0 +1,119 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711",
+                    "title": "Classic Female Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865261",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865261",
+                    "title": "Electric Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905714",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905714",
+                    "title": "Delta Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905713",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905713",
+                    "title": "Country Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709",
+                    "title": "Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865263",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865263",
+                    "title": "Louisiana Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905712",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905712",
+                    "title": "Contemporary Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710",
+                    "title": "Chicago Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865251",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865251",
+                    "title": "East Coast Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865264",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1807865264",
+                    "title": "Modern Electric Blues"
+                }
+            }
+        ]
+    }
+}

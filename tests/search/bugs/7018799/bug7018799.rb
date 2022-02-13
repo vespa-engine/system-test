@@ -98,7 +98,7 @@ class RecoveryLosesAnnotations < SearchTest
     sn0.stop
     feed_and_wait_for_docs("rla", 4, :file => selfdir+"xtra1.xml")
     checkAll
-    sn0.execute("rm -r #{Environment.instance.vespa_home}/var/db/vespa/search/cluster.multitest/n0")
+    sn0.execute("rm -rf #{Environment.instance.vespa_home}/var/db/vespa/search/cluster.multitest/n0")
     checkAll
 
     sn0.start

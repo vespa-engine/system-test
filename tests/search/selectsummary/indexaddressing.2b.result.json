@@ -1,0 +1,30 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "index:music/0/0a4f018c8213c821b25dc951",
+                "relevance": 25.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "title": "English Orgran Music",
+                    "nicefoo": "nice",
+                    "artist": "Colin Walsh"
+                }
+            }
+        ]
+    }
+}

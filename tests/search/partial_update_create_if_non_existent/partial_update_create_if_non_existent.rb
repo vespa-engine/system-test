@@ -35,7 +35,7 @@ class PartialUpdateCreateIfNonExistentTest < SearchTest
     assert_hitcount("i_wset:foo", 2)
     assert_hitcount("a_int:2", 1)
     cmp_fields = ["a_int", "a_arr", "a_wset", "i_str", "i_wset", "documentid"]
-    assert_result("sddocname:test&hits=11", selfdir + "result.xml", "documentid", cmp_fields)
+    assert_result("sddocname:test&hits=11", selfdir + "result.json", "documentid", cmp_fields)
   end
 
   def test_increment_update_on_document_that_does_not_exists
@@ -44,7 +44,7 @@ class PartialUpdateCreateIfNonExistentTest < SearchTest
     start
     feed(:file => selfdir + "increment/docs.xml")
     feed(:file => selfdir + "increment/updates.xml")
-    assert_result("sddocname:test", selfdir + "increment/result.xml", "documentid", ["wset"])
+    assert_result("sddocname:test", selfdir + "increment/result.json", "documentid", ["wset"])
   end
 
   def teardown

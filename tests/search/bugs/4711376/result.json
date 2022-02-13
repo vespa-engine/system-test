@@ -1,0 +1,142 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 14
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 14,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:music:music::1",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::1",
+                    "title": "casual trip",
+                    "comment": "Rock Music",
+                    "artist": "DELHI"
+                }
+            },
+            {
+                "id": "id:music:music::2",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::2",
+                    "title": "business trip",
+                    "comment": "rock music",
+                    "artist": "delhi"
+                }
+            },
+            {
+                "id": "id:music:music::3",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::3",
+                    "title": "JOLLY trip",
+                    "comment": "POP MUSIC",
+                    "artist": "chennai"
+                }
+            },
+            {
+                "id": "id:music:music::4",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::4",
+                    "title": "business trip",
+                    "comment": "pop music",
+                    "artist": "Chennai"
+                }
+            },
+            {
+                "id": "id:music:music::6",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::6",
+                    "title": "VISITOR TRIP",
+                    "comment": "JAZZ MUSIC",
+                    "artist": "BOMBAY"
+                }
+            },
+            {
+                "id": "id:music:music::5",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::5",
+                    "title": "LEISURE TRIP",
+                    "comment": "JAZZ MUSIC",
+                    "artist": "bannarghatta national PARK"
+                }
+            },
+            {
+                "id": "id:music:music::7",
+                "relevance": 0.0,
+                "source": "music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:music:music::7",
+                    "title": "visitor trip",
+                    "comment": "jazz music",
+                    "artist": "bombay"
+                }
+            },
+            {
+                "id": "id:image:image::7",
+                "relevance": 0.0,
+                "source": "image",
+                "fields": {
+                    "sddocname": "image",
+                    "documentid": "id:image:image::7",
+                    "title": "CASUAL TRIP",
+                    "comment": "immersive experience",
+                    "loc": "delhi",
+                    "month": "MAY"
+                }
+            },
+            {
+                "id": "id:image:image::1",
+                "relevance": 0.0,
+                "source": "image",
+                "fields": {
+                    "sddocname": "image",
+                    "documentid": "id:image:image::1",
+                    "title": "leisure trip",
+                    "comment": "Good Picute",
+                    "loc": "coorg",
+                    "month": "April"
+                }
+            },
+            {
+                "id": "id:image:image::2",
+                "relevance": 0.0,
+                "source": "image",
+                "fields": {
+                    "sddocname": "image",
+                    "documentid": "id:image:image::2",
+                    "title": "Leisure Trip",
+                    "comment": "good picture",
+                    "loc": "COORG",
+                    "month": "april"
+                }
+            }
+        ]
+    }
+}

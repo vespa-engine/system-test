@@ -1,0 +1,34 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "index:search/0/8a8bb7cdba770994aa063206",
+                "relevance": 0.3208484103718913,
+                "source": "search",
+                "fields": {
+                    "sddocname": "attr",
+                    "stringfield": "stringvalue",
+                    "floatfield": 4.5,
+                    "doublefield": 8.25,
+                    "int64field": 10000000000,
+                    "bytefield1": 42,
+                    "bytefield2": 64,
+                    "intfield": 1234567
+                }
+            }
+        ]
+    }
+}

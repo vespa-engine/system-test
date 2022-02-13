@@ -1,0 +1,18 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 0
+        },
+        "children": [
+            {
+                "id": "id",
+                "relevance": 1.0,
+                "fields": {
+                    "title": "Old searcher says: Nothing will ever change."
+                }
+            }
+        ]
+    }
+}

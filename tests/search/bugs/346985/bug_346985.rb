@@ -18,9 +18,9 @@ class Bug_346985 < IndexedSearchTest
   def test_proximity_gap
     feed_and_wait_for_docs("proximitygap", 2, :file => selfdir+"proximitygap.2.xml")
 
-    assert_result("query=bar+fuzz", selfdir + "proximitygap.default.result", nil, "id")
+    assert_result("query=bar+fuzz", selfdir + "proximitygap.default.result.json", nil, "id")
 
-    assert_result("query=bar+fuzz&ranking=only-proximity", selfdir + "proximitygap.onlyproximity.result", nil, "id")
+    assert_result("query=bar+fuzz&ranking=only-proximity", selfdir + "proximitygap.onlyproximity.result.json", nil, "id")
   end
 
   def teardown

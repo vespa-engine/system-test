@@ -1,0 +1,103 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 7
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 7,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709",
+                "relevance": 0.38186238359951247,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "categories": "<hi>Blues</hi>",
+                    "title": "<hi>Blues</hi> <hi>test</hi>",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905709"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/shop?d=hab&id=1804905714",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "books",
+                    "title": "Delta <hi>Blues</hi> <hi>送花道歉</hi>",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/shop?d=hab&id=1804905714",
+                    "url": "http://shopping.yahoo.com/shop?d=hab&id=1804905714",
+                    "categories": "Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905712",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "categories": "<hi>Blues</hi>",
+                    "title": "Contemporary <hi>Blues</hi>",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905712",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905712"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/shop?d=hab&id=1804905713",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "books",
+                    "title": "Country <hi>Blues</hi>",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/shop?d=hab&id=1804905713",
+                    "url": "http://shopping.yahoo.com/shop?d=hab&id=1804905713",
+                    "categories": "Blues"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710",
+                "relevance": 0.16343879032006287,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "categories": "<hi>Blues</hi>",
+                    "title": "Chicago <hi>Blues</hi> (<hi>kentucky</hi> <hi>fried</hi> <hi>chicken</hi>)",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905710"
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/shop?d=hab&id=1807865251",
+                "relevance": 0.15974580091895013,
+                "source": "search",
+                "fields": {
+                    "sddocname": "books",
+                    "title": "East Coast <hi>Blues</hi> kentucky",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/shop?d=hab&id=1807865251",
+                    "url": "http://shopping.yahoo.com/shop?d=hab&id=1807865251",
+                    "categories": "Blues test"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711",
+                "relevance": 0.15968336182749504,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "categories": "<hi>Jazz</hi>",
+                    "title": "Classic <hi>testing</hi> Female <hi>Blues</hi> <hi>送花道歉</hi>",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711",
+                    "surl": "http://shopping.yahoo.com/shop?d=hab&id=1804905711"
+                }
+            }
+        ]
+    }
+}

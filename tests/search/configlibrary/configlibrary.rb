@@ -23,7 +23,7 @@ class ConfigLibrary < SearchTest
     feed_and_wait_for_docs("book", 2, :file =>selfdir+"feed.xml")
 
     # check correct results with sd1
-    assert_result("query=#{@query}", selfdir+"result.sd1.xml")
+    assert_result("query=#{@query}", selfdir+"result.sd1.json")
 
     # kill config proxy with TERM signal
     kill_proxy(vespa.adminserver)
@@ -47,7 +47,7 @@ class ConfigLibrary < SearchTest
 
   def deploy_and_compare(sd_dir)
     deploy_app(SearchApp.new.sd(selfdir+"#{sd_dir}/book.sd"))
-    poll_compare("query=#{@query}", selfdir+"result.#{sd_dir}.xml", nil, nil, 120)
+    poll_compare("query=#{@query}", selfdir+"result.#{sd_dir}.json", nil, nil, 120)
   end
 
   def turn_on_debug_logging

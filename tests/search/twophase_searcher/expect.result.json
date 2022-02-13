@@ -1,0 +1,217 @@
+{
+    "trace": {
+        "children": [
+            {
+                "message": "No query profile is used"
+            },
+            {
+                "children": [
+                    {
+                        "message": "running TwoPhaseTestSearcher"
+                    },
+                    {
+                        "children": [
+                            {
+                                "message": "sc0.num0 search to dispatch: query=[frank] timeout=9999ms offset=0 hits=10 groupingSessionCache=true sessionId=7bd02e00-9a09-4573-b438-24a17be6f93a.1644442835510.1.default grouping=0 :  restrict=[music]"
+                            },
+                            {
+                                "message": "sc0.num0 dispatch response: Result (5 of total 5 hits)"
+                            },
+                            {
+                                "message": "sc0.num0 fill to dispatch: query=[frank] timeout=9999ms offset=0 hits=10 groupingSessionCache=true sessionId=7bd02e00-9a09-4573-b438-24a17be6f93a.1644442835510.1.default grouping=0 :  restrict=[music] summary=[null]"
+                            }
+                        ]
+                    },
+                    {
+                        "message": "before fill"
+                    },
+                    {
+                        "message": "after fill"
+                    }
+                ]
+            }
+        ]
+    },
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 5
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 777,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "good",
+                "relevance": 1000.0
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_tinsel-town-rebellion-remastered-_music_1921942816",
+                "relevance": 61.54655958998781,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "title": "Tinsel Town Rebellion (Remastered)",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_tinsel-town-rebellion-remastered-_music_1921942816",
+                    "artist": "Frank Zappa",
+                    "song": "Fine Girl;Easy Meat;For The Young Sophisticate;Love Of My Life;I Ain't Got No heart;Panty Rap;Tell Me You Love Me;Now You See It - Now You Don't;Dance Contest;The Blue Light;Tinseltown Rebellion;Pick Me, I'm Clean;Bamboozled By Love;Brown Shoes Don't Make It;Peaches III",
+                    "bgndata": "CD",
+                    "pto": 4849,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_tinsel-town-rebellion-remastered-_music_1921942816",
+                    "pid": "1921942816",
+                    "weight": 52.0,
+                    "isbn": "667342123622,014431053221,144314016620,014431016622",
+                    "fmt": "CD",
+                    "disp_song": "Fine Girl;Easy Meat;For The Young Sophisticate",
+                    "pfrom": 813,
+                    "categories": "1804905848 1804905848 1804905852 1804905848 1804905855 1804893726",
+                    "data": "CD8.13-48.49014431016622",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/142861/amg1921942816_1940.jpg?rm_____DfoXKIbCD\" height=69 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927058713",
+                    "newestedition": 19950502,
+                    "year": 1995,
+                    "did": 66,
+                    "scorekey": 0,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_edison-hot-dance-obscurities-1_music_1922002575",
+                "relevance": 58.54655958998781,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "title": "Edison Hot Dance Obscurities 1",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_edison-hot-dance-obscurities-1_music_1922002575",
+                    "artist": "Frank Winegar",
+                    "song": "Shaking the Blues Away;Ooh! Maybe It's You;Tell Me Little Daisy;Good Man Is Hard to Find;Since My Best Gal Turned Me Down;I Call You Sugar;Stay Out of the South;Ida! Sweet as Apple Cider;My Gal Sal;Imagination;Ooh! Maybe It's You;Shaking the Blues Away;Since My Best Gal Turned Me Down;Buffalo Rhythm;Rocky Mountain Blues;Louisiana Bo Bo;Deep Hollow;No Parking;Why Can't You",
+                    "bgndata": "CD",
+                    "pto": 1698,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_edison-hot-dance-obscurities-1_music_1922002575",
+                    "pid": "1922002575",
+                    "weight": 49.0,
+                    "isbn": "620588804021",
+                    "fmt": "CD",
+                    "disp_song": "Shaking the Blues Away;Ooh! Maybe It's You;Tell Me Little Daisy",
+                    "pfrom": 1409,
+                    "categories": "1804905773 1804893726",
+                    "data": "CD14.09-16.98620588804021",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/1696787/amgttn.g14591npsb2.jpg?rm_____DfbATZ31B\" height=69 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927327268",
+                    "newestedition": 20031118,
+                    "year": 2003,
+                    "did": 66,
+                    "scorekey": 0,
+                    "cbid": 2,
+                    "ew": "1"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_columbia-albums-of-irving-berlin-1-2_music_1922002959",
+                "relevance": 54.54655958998781,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "title": "Columbia Albums Of Irving Berlin 1 & 2",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_columbia-albums-of-irving-berlin-1-2_music_1922002959",
+                    "artist": "Frank DeVol",
+                    "song": "It's a Lovely Day/Blue Skies;Maybe It's Because I Love You Too Much/I Got Lost in His Arms;You'd Be Surprised/I'll See You in C-U-B-A;Always/Remember;Shaking the Blues Away/Play a Simple Melody/Alexander's Ragtime Band;There's No Buisness Like Show Business/I Got the Sun in the Morning/The;Say It With Music/Cheek to Cheek;It's a Lovely Day Tomorrow/Now It Can Be Told;This Year's Kisses/Be Careful! It's My Heart;Lady of the Evening/Better Luck Next Time;Steppin' Out With My Baby/You're Just in Love;Let's Face the Music and Dance/Say It Isn't So;How Deep Is the Ocean/I Never Had a Chance;Change Partners/Mandy;You Can't Brush Me Off/Everybody Step/Waiting at the End of the Road;Soft Lights and Sweet Music/They Say It's Wonderful;Puttin' on the Ritz/Marie;I've Got My Love to Keep Me Warm/Top Hat, White Tie and Tails;What'll I Do/All Alone;Pretty Girl Is Like a Melody/Isn't This a Lovely Day;Lazy/I'm Getting Tired So I Can Sleep;I'm Playing With Fire/Let's Have Another Cup of Coffee;Heat Wave/Let Yourself Go;Piccolino/No Strings",
+                    "bgndata": "CD",
+                    "pto": 1398,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_columbia-albums-of-irving-berlin-1-2_music_1922002959",
+                    "pid": "1922002959",
+                    "weight": 45.0,
+                    "isbn": "090431758625",
+                    "fmt": "CD",
+                    "disp_song": "It's a Lovely Day/Blue Skies;Maybe It's Because I Love You Too Much/I Got Lost in His Arms;You'd Be Surprised/I'll See You in C-U-B-A",
+                    "pfrom": 948,
+                    "categories": "1804905736 1804905819 1804893726",
+                    "data": "CD9.48-13.98090431758625",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/1645762/amgttn.l96283z1ix8.jpg?rm_____DGXmR0TsJ\" height=69 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927018573",
+                    "newestedition": 20031021,
+                    "year": 2003,
+                    "did": 66,
+                    "cbid": 2,
+                    "ew": "2"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_beyond-the-fringe-original-broadway-cast-recording-_music_1921065035",
+                "relevance": 45.83449966422412,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "title": "Beyond the Fringe [Original Broadway Cast Recording]",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_beyond-the-fringe-original-broadway-cast-recording-_music_1921065035",
+                    "artist": "Original Broadway Cast Recording",
+                    "song": "Steppes In The Right Direction;Royal Box;Man Bites God;Let's Face It;Bollard;The Heat-Death Of The Universe;Deutscher Chansons;The Sadder And Wiser Beaver;Words...And Things;Tvpm;And The Same To You;Aftermyth Of War;Civil War;Real Class;Little Miss Britten;The Suspense Is Killing Me;Porn Shop;The Death Of Lord Nelson;Frank Speaking;Bloody Rhondda Mine;Black Equals White;Sitting On The Bench;Bread Alone;Take A Pew;So That's The Way You Like It;The End Of The World;Bollard;Take A Pew;Aftermyth Of War;Sitting On The Bench;Portraits From Memory (Bertrand Russell);The End Of The World;Home Thoughts From Abroad;The English Way Of Death;The Weill Song;The Royal Box;One Leg Too Few;Two English Songs: Little Miss Britten/Old Meg She Was A Gypsy;Lord Cobbold/The Duke (Studio Five Interviews);Real Class;A Piece Of My Mind (The Heat-Death Of The Universe);The Great Train Robbery",
+                    "bgndata": "CD",
+                    "pto": 7474,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_beyond-the-fringe-original-broadway-cast-recording-_music_1921065035",
+                    "pid": "1921065035",
+                    "weight": 43.0,
+                    "isbn": "724385404528",
+                    "fmt": "CD",
+                    "disp_song": "Steppes In The Right Direction;Royal Box;Man Bites God",
+                    "pfrom": 2897,
+                    "categories": "1804905861 1804893726",
+                    "data": "CD28.97-74.74724385404528",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/146761/amg1921065035_1940.jpg?rm_____DfeJVxmYX\" height=61 width=70 border=0 hspace=0 vspace=0",
+                    "newestedition": 19890517,
+                    "year": 1989,
+                    "did": 66,
+                    "scorekey": 0,
+                    "cbid": 2,
+                    "ew": "fringe"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_stony-steps_music_1921080674",
+                "relevance": 37.88148510106524,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "title": "Stony Steps",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_stony-steps_music_1921080674",
+                    "artist": "Matt Molloy",
+                    "song": "Reels: McFadden's Favourite/Sean Maguire's/Jackson's Favourite;Jigs: The Boys Of The Town,/Jackson'sJig/The Connaughtman's Rambles;City Of Savannah;Reels: Primrose Lass/Mullingar Races/John Stenson's;Air: The Parting Of Friend/Slip Jig Ree: Paddy Ryan's Dream;Reels: Stony Steps/Michael Dwyer's Favourite/Grifline From  The Bridge;Mrs Kenny's Barndance;Reels; Paddy Murphy's Wife/The Gravel Walks/The Musical Priest;Jig:Jig Of Slurs;Air: O Rathaille's Grave;Reels: Miss McGuiness/Reel Of Mullinavat;Frank Rockes' Favourite;Reels: Johnny 'Watt' Henry's Favourite/Handsome Sally",
+                    "bgndata": "CDCA",
+                    "pto": 1598,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_stony-steps_music_1921080674",
+                    "pid": "1921080674",
+                    "weight": 35.0,
+                    "isbn": "048248304122,048248304146",
+                    "fmt": "CD CA",
+                    "disp_song": "Reels: McFadden's Favourite/Sean Maguire's/Jackson's Favourite;Jigs: The Boys Of The Town,/Jackson'sJig/The Connaughtman's Rambles;City Of Savannah",
+                    "pfrom": 1598,
+                    "categories": "1804905871 1804905900 1804905904 1804893726",
+                    "data": "CD15.98048248304122CA048248304146",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/147760/amg1921080674_1940.jpg?rm_____DxM_kwqjh\" height=69 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927000650",
+                    "newestedition": 19870101,
+                    "year": 1987,
+                    "did": 66,
+                    "cbid": 2,
+                    "ew": "steps"
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,699 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10000
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:simple::1960",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1960",
+                    "title": "doc 1960 hash 726 val1960 type simple",
+                    "year": 1838,
+                    "odd": false,
+                    "lastname": "Gondosch",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "gondosch",
+                    "price": 181.27,
+                    "myrank": 1960.0
+                }
+            },
+            {
+                "id": "id:test:simple::669",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::669",
+                    "title": "doc 669 hash 669 val669 type simple",
+                    "year": 1855,
+                    "odd": false,
+                    "lastname": "Sher",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "sher",
+                    "price": 166.91,
+                    "myrank": 669.0
+                }
+            },
+            {
+                "id": "id:test:simple::2284",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2284",
+                    "title": "doc 2284 hash 1050 val2284 type simple",
+                    "year": 1827,
+                    "odd": false,
+                    "lastname": "Coxon",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "coxon",
+                    "price": 11.56,
+                    "myrank": 2284.0
+                }
+            },
+            {
+                "id": "id:test:simple::664",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::664",
+                    "title": "doc 664 hash 664 val664 type simple",
+                    "year": 1852,
+                    "odd": false,
+                    "lastname": "Gundry",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "gundry",
+                    "price": 25.74,
+                    "myrank": 664.0
+                }
+            },
+            {
+                "id": "id:test:simple::2264",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2264",
+                    "title": "doc 2264 hash 1030 val2264 type simple",
+                    "year": 1860,
+                    "odd": false,
+                    "lastname": "Herford",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "herford",
+                    "price": 266.64,
+                    "myrank": 2264.0
+                }
+            },
+            {
+                "id": "id:test:simple::35",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::35",
+                    "title": "doc 35 hash 35 val35 type simple",
+                    "year": 1832,
+                    "odd": false,
+                    "lastname": "Rodino",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "rodino",
+                    "price": 208.2,
+                    "myrank": 35.0
+                }
+            },
+            {
+                "id": "id:test:simple::658",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::658",
+                    "title": "doc 658 hash 658 val658 type simple",
+                    "year": 1853,
+                    "odd": false,
+                    "lastname": "Rowntree",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "rowntree",
+                    "price": 78.98,
+                    "myrank": 658.0
+                }
+            },
+            {
+                "id": "id:test:simple::655",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::655",
+                    "title": "doc 655 hash 655 val655 type simple",
+                    "year": 1790,
+                    "odd": false,
+                    "lastname": "Wald",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "wald",
+                    "price": 245.65,
+                    "myrank": 655.0
+                }
+            },
+            {
+                "id": "id:test:simple::1923",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1923",
+                    "title": "doc 1923 hash 689 val1923 type simple",
+                    "year": 1869,
+                    "odd": false,
+                    "lastname": "Buck",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "buck",
+                    "price": 188.26,
+                    "myrank": 1923.0
+                }
+            },
+            {
+                "id": "id:test:simple::642",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::642",
+                    "title": "doc 642 hash 642 val642 type simple",
+                    "year": 1878,
+                    "odd": false,
+                    "lastname": "Birch",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "birch",
+                    "price": 219.24,
+                    "myrank": 642.0
+                }
+            },
+            {
+                "id": "id:test:simple::1394",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1394",
+                    "title": "doc 1394 hash 160 val1394 type simple",
+                    "year": 1891,
+                    "odd": false,
+                    "lastname": "Aschmann",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "aschmann",
+                    "price": 13.48,
+                    "myrank": 1394.0
+                }
+            },
+            {
+                "id": "id:test:simple::1366",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1366",
+                    "title": "doc 1366 hash 132 val1366 type simple",
+                    "year": 1820,
+                    "odd": false,
+                    "lastname": "Cebulash",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "cebulash",
+                    "price": 191.18,
+                    "myrank": 1366.0
+                }
+            },
+            {
+                "id": "id:test:simple::583",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::583",
+                    "title": "doc 583 hash 583 val583 type simple",
+                    "year": 1806,
+                    "odd": false,
+                    "lastname": "Brogan",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "brogan",
+                    "price": 19.27,
+                    "myrank": 583.0
+                }
+            },
+            {
+                "id": "id:test:simple::32",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::32",
+                    "title": "doc 32 hash 32 val32 type simple",
+                    "year": 1810,
+                    "odd": false,
+                    "lastname": "Dibbern",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "dibbern",
+                    "price": 111.61,
+                    "myrank": 32.0
+                }
+            },
+            {
+                "id": "id:test:simple::1946",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1946",
+                    "title": "doc 1946 hash 712 val1946 type simple",
+                    "year": 1807,
+                    "odd": false,
+                    "lastname": "Osiek",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "osiek",
+                    "price": 72.3,
+                    "myrank": 1946.0
+                }
+            },
+            {
+                "id": "id:test:simple::1360",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1360",
+                    "title": "doc 1360 hash 126 val1360 type simple",
+                    "year": 1844,
+                    "odd": false,
+                    "lastname": "Perejaume",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "perejaume",
+                    "price": 1.91,
+                    "myrank": 1360.0
+                }
+            },
+            {
+                "id": "id:test:simple::1356",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1356",
+                    "title": "doc 1356 hash 122 val1356 type simple",
+                    "year": 1825,
+                    "odd": false,
+                    "lastname": "Technology",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "technology",
+                    "price": 30.19,
+                    "myrank": 1356.0
+                }
+            },
+            {
+                "id": "id:test:simple::22",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::22",
+                    "title": "doc 22 hash 22 val22 type simple",
+                    "year": 1831,
+                    "odd": false,
+                    "lastname": "Engels",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "engels",
+                    "price": 160.39,
+                    "myrank": 22.0
+                }
+            },
+            {
+                "id": "id:test:simple::579",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::579",
+                    "title": "doc 579 hash 579 val579 type simple",
+                    "year": 1838,
+                    "odd": false,
+                    "lastname": "Kern",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "kern",
+                    "price": 238.57,
+                    "myrank": 579.0
+                }
+            },
+            {
+                "id": "id:test:simple::1338",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1338",
+                    "title": "doc 1338 hash 104 val1338 type simple",
+                    "year": 1852,
+                    "odd": false,
+                    "lastname": "Tsutsui",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "tsutsui",
+                    "price": 148.89,
+                    "myrank": 1338.0
+                }
+            },
+            {
+                "id": "id:test:simple::220",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::220",
+                    "title": "doc 220 hash 220 val220 type simple",
+                    "year": 1860,
+                    "odd": false,
+                    "lastname": "Fogel",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "fogel",
+                    "price": 143.97,
+                    "myrank": 220.0
+                }
+            },
+            {
+                "id": "id:test:simple::1344",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1344",
+                    "title": "doc 1344 hash 110 val1344 type simple",
+                    "year": 1828,
+                    "odd": false,
+                    "lastname": "Gabor-McLean",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "gabor-mclean",
+                    "price": 59.08,
+                    "myrank": 1344.0
+                }
+            },
+            {
+                "id": "id:test:simple::224",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::224",
+                    "title": "doc 224 hash 224 val224 type simple",
+                    "year": 1843,
+                    "odd": false,
+                    "lastname": "Cour",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "cour",
+                    "price": 98.05,
+                    "myrank": 224.0
+                }
+            },
+            {
+                "id": "id:test:simple::217",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::217",
+                    "title": "doc 217 hash 217 val217 type simple",
+                    "year": 1857,
+                    "odd": false,
+                    "lastname": "Barker",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "barker",
+                    "price": 199.73,
+                    "myrank": 217.0
+                }
+            },
+            {
+                "id": "id:test:simple::1919",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1919",
+                    "title": "doc 1919 hash 685 val1919 type simple",
+                    "year": 1824,
+                    "odd": false,
+                    "lastname": "Chong",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "chong",
+                    "price": 19.86,
+                    "myrank": 1919.0
+                }
+            },
+            {
+                "id": "id:test:simple::1298",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1298",
+                    "title": "doc 1298 hash 64 val1298 type simple",
+                    "year": 1877,
+                    "odd": false,
+                    "lastname": "Embree",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "embree",
+                    "price": 271.91,
+                    "myrank": 1298.0
+                }
+            },
+            {
+                "id": "id:test:simple::556",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::556",
+                    "title": "doc 556 hash 556 val556 type simple",
+                    "year": 1863,
+                    "odd": false,
+                    "lastname": "Losness",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "losness",
+                    "price": 95.02,
+                    "myrank": 556.0
+                }
+            },
+            {
+                "id": "id:test:simple::549",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::549",
+                    "title": "doc 549 hash 549 val549 type simple",
+                    "year": 1871,
+                    "odd": false,
+                    "lastname": "Bacigalupo",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "bacigalupo",
+                    "price": 126.59,
+                    "myrank": 549.0
+                }
+            },
+            {
+                "id": "id:test:simple::1294",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1294",
+                    "title": "doc 1294 hash 60 val1294 type simple",
+                    "year": 1829,
+                    "odd": false,
+                    "lastname": "Samuelson",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "samuelson",
+                    "price": 137.15,
+                    "myrank": 1294.0
+                }
+            },
+            {
+                "id": "id:test:simple::533",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::533",
+                    "title": "doc 533 hash 533 val533 type simple",
+                    "year": 1833,
+                    "odd": false,
+                    "lastname": "Taubert",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "taubert",
+                    "price": 138.65,
+                    "myrank": 533.0
+                }
+            },
+            {
+                "id": "id:test:simple::531",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::531",
+                    "title": "doc 531 hash 531 val531 type simple",
+                    "year": 1863,
+                    "odd": false,
+                    "lastname": "Falkehag",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "falkehag",
+                    "price": 272.44,
+                    "myrank": 531.0
+                }
+            },
+            {
+                "id": "id:test:simple::2229",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2229",
+                    "title": "doc 2229 hash 995 val2229 type simple",
+                    "year": 1806,
+                    "odd": false,
+                    "lastname": "Institute",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "institute",
+                    "price": 257.32,
+                    "myrank": 2229.0
+                }
+            },
+            {
+                "id": "id:test:simple::19",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::19",
+                    "title": "doc 19 hash 19 val19 type simple",
+                    "year": 1858,
+                    "odd": false,
+                    "lastname": "Yates",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "yates",
+                    "price": 240.11,
+                    "myrank": 19.0
+                }
+            },
+            {
+                "id": "id:test:simple::204",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::204",
+                    "title": "doc 204 hash 204 val204 type simple",
+                    "year": 1814,
+                    "odd": false,
+                    "lastname": "Secretariat",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "secretariat",
+                    "price": 141.81,
+                    "myrank": 204.0
+                }
+            },
+            {
+                "id": "id:test:simple::369",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::369",
+                    "title": "doc 369 hash 369 val369 type simple",
+                    "year": 1903,
+                    "odd": false,
+                    "lastname": "Sorman",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "sorman",
+                    "price": 220.66,
+                    "myrank": 369.0
+                }
+            },
+            {
+                "id": "id:test:simple::528",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::528",
+                    "title": "doc 528 hash 528 val528 type simple",
+                    "year": 1837,
+                    "odd": false,
+                    "lastname": "Ivanov",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "ivanov",
+                    "price": 191.84,
+                    "myrank": 528.0
+                }
+            },
+            {
+                "id": "id:test:simple::1256",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1256",
+                    "title": "doc 1256 hash 22 val1256 type simple",
+                    "year": 1828,
+                    "odd": false,
+                    "lastname": "Halasa",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "halasa",
+                    "price": 69.85,
+                    "myrank": 1256.0
+                }
+            },
+            {
+                "id": "id:test:simple::1259",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1259",
+                    "title": "doc 1259 hash 25 val1259 type simple",
+                    "year": 1795,
+                    "odd": false,
+                    "lastname": "Angeloni",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "angeloni",
+                    "price": 60.78,
+                    "myrank": 1259.0
+                }
+            },
+            {
+                "id": "id:test:simple::1248",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1248",
+                    "title": "doc 1248 hash 14 val1248 type simple",
+                    "year": 1816,
+                    "odd": false,
+                    "lastname": "Hammet",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "hammet",
+                    "price": 171.75,
+                    "myrank": 1248.0
+                }
+            },
+            {
+                "id": "id:test:simple::1909",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1909",
+                    "title": "doc 1909 hash 675 val1909 type simple",
+                    "year": 1810,
+                    "odd": false,
+                    "lastname": "Holthaus",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "holthaus",
+                    "price": 178.17,
+                    "myrank": 1909.0
+                }
+            }
+        ]
+    }
+}

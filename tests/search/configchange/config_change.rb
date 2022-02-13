@@ -20,7 +20,7 @@ class ConfigChange < IndexedSearchTest
     wait_for_hitcount("query=sddocname:music", 1)
 
     puts "* Compare search result 1"
-    assert_result("query=sddocname:music", selfdir+"configchange_1.xml")
+    assert_result("query=sddocname:music", selfdir+"configchange_1.json")
 
     puts "* Deploying application with different SD file"
     deploy_output = redeploy(SearchApp.new.sd(selfdir+"music2.sd").validation_override("content-type-removal"))
@@ -33,7 +33,7 @@ class ConfigChange < IndexedSearchTest
     wait_for_hitcount("query=sddocname:music2", 1)
 
     puts "* Compare search result 2"
-    assert_result("query=sddocname:music2", selfdir+"configchange_2.xml")
+    assert_result("query=sddocname:music2", selfdir+"configchange_2.json")
 
     puts "* test_doctypeswitch DONE"
   end

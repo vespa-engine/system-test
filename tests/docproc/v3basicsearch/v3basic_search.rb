@@ -24,8 +24,8 @@ class V3BasicDocproc < SearchContainerTest
 
   def test_v3_basicsearch_docproc
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.xml", :cluster => "worst")
-    assert_result("query=sddocname:worst", DOCPROC + "data/worst-processed.xml")
-    assert_result("query=title:worst", DOCPROC + "data/worst-processed.xml")
+    assert_result("query=sddocname:worst", DOCPROC + "data/worst-processed.json")
+    assert_result("query=title:worst", DOCPROC + "data/worst-processed.json")
     queue = assert_log_matches(/Starting message bus with max \d+? pending messages and max \d+?\.\d+? pending megabytes./, 60)
     assert_equal(1, queue)
   end

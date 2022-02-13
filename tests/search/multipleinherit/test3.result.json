@@ -1,0 +1,36 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test-inheritance:derived::pushyss://0/",
+                "relevance": 0.04773279794993906,
+                "source": "search",
+                "fields": {
+                    "sddocname": "derived",
+                    "documentid": "id:test-inheritance:derived::pushyss://0/",
+                    "field1": "common",
+                    "field2": "f2d1",
+                    "field3": "f3d1",
+                    "field4": "f4d1",
+                    "field5": "f5d1",
+                    "field6": "f6d1",
+                    "field7": "f7d1",
+                    "url": "http://test1"
+                }
+            }
+        ]
+    }
+}

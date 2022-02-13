@@ -1,0 +1,57 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:type2::1",
+                "relevance": 230.0,
+                "source": "test",
+                "fields": {
+                    "sddocname": "type2",
+                    "documentid": "id:test:type2::1",
+                    "field21": "f21d2",
+                    "field22": 22,
+                    "field23": 23,
+                    "field24": "type2 document document document document data",
+                    "summaryfeatures": {
+                        "attribute(field23)": 23.0,
+                        "fieldMatch(field24).matches": 2.0,
+                        "firstPhase": 230.0,
+                        "query(myvalue)": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:type1::0",
+                "relevance": 13.0,
+                "source": "test",
+                "fields": {
+                    "sddocname": "type1",
+                    "documentid": "id:test:type1::0",
+                    "field11": "f11d1",
+                    "field12": 12,
+                    "field13": 13,
+                    "field14": "type1 document data",
+                    "field15": "type1 document data",
+                    "summaryfeatures": {
+                        "attribute(field13)": 13.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

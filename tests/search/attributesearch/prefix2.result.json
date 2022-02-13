@@ -1,0 +1,51 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 20,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:prefix:prefix::19",
+                "relevance": 48.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "prefix",
+                    "documentid": "id:prefix:prefix::19",
+                    "scan_uncased": "UuU",
+                    "btree_uncased": "UuU",
+                    "btree_cased": "UuU",
+                    "hash_cased": "UuU",
+                    "title": "19",
+                    "scan_cased": "UuU",
+                    "popularity": 48
+                }
+            },
+            {
+                "id": "id:prefix:prefix::20",
+                "relevance": 47.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "prefix",
+                    "documentid": "id:prefix:prefix::20",
+                    "scan_uncased": "UuUu",
+                    "btree_uncased": "UuUu",
+                    "btree_cased": "UuUu",
+                    "hash_cased": "UuUu",
+                    "title": "20",
+                    "scan_cased": "UuUu",
+                    "popularity": 47
+                }
+            }
+        ]
+    }
+}

@@ -41,10 +41,10 @@ class BasicSearch < IndexedSearchTest
     assert_hitcount("query=sddocname:music", 10)
     assert_hitcount("query=sddocname:music&ranking=unranked", 10)
     assert_result("query=sddocname:music",
-                   SEARCH_DATA+"music.10.result.xml",
+                   SEARCH_DATA+"music.10.result.json",
                    "title", ["title", "surl", "mid"])
     assert_result("query=sddocname:music&ranking=unranked",
-                   SEARCH_DATA+"music.10.result.xml",
+                   SEARCH_DATA+"music.10.result.json",
                    "title", ["title", "surl", "mid"])
     vespa.search["basicsearch"].first.
       execute("vespa-proton-cmd --local getState")

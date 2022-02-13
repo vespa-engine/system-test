@@ -30,7 +30,7 @@ class Many_Services < IndexedSearchTest
     wait_until_ready(900)
     push_realtime("music.10.ranked.xml")
 
-    query = "query=sddocname:music"
+    query = "query=sddocname:music&format=xml"
     for qrs_id in (0..vespa.qrserver.length-1)
       wait_for_hitcount(query, 10, 300, qrs_id)
     end

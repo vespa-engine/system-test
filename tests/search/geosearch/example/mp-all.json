@@ -1,0 +1,146 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 3,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:multipoint::3",
+                "relevance": 3.0000000000000004E-9,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "multipoint",
+                    "documentid": "id:test:multipoint::3",
+                    "title": "napoli, the home of neapolitan pizza",
+                    "latlong.position": {
+                        "y": 40833333,
+                        "x": 14250000,
+                        "latlong": "N40.833333;E14.250000"
+                    },
+                    "homell.position": {
+                        "y": 40833333,
+                        "x": 14250000,
+                        "latlong": "N40.833333;E14.250000"
+                    },
+                    "workll": [
+                        {
+                            "y": 40833333,
+                            "x": 14250000
+                        }
+                    ],
+                    "workll.position": [
+                        {
+                            "y": 40833333,
+                            "x": 14250000,
+                            "latlong": "N40.833333;E14.250000"
+                        }
+                    ],
+                    "vacationll": {
+                        "y": 40833333,
+                        "x": 14250000
+                    },
+                    "vacationll.position": {
+                        "y": 40833333,
+                        "x": 14250000,
+                        "latlong": "N40.833333;E14.250000"
+                    },
+                    "summaryfeatures": {
+                        "distance(latlong)": 6.4E9,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:multipoint::2",
+                "relevance": 1.0E-9,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "multipoint",
+                    "documentid": "id:test:multipoint::2",
+                    "title": "pizza hut nowhere",
+                    "workll": [
+
+                    ],
+                    "summaryfeatures": {
+                        "distance(latlong)": 6.4E9,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:multipoint::1",
+                "relevance": 0.0,
+                "source": "multitest",
+                "fields": {
+                    "sddocname": "multipoint",
+                    "documentid": "id:test:multipoint::1",
+                    "title": "pizza hut sunnyvale",
+                    "latlong.position": {
+                        "y": 37374821,
+                        "x": -122057174,
+                        "latlong": "N37.374821;W122.057174"
+                    },
+                    "homell.position": {
+                        "y": 63429722,
+                        "x": 10393333,
+                        "latlong": "N63.429722;E10.393333"
+                    },
+                    "workll": [
+                        {
+                            "y": 37416820,
+                            "x": -122025270
+                        },
+                        {
+                            "y": 63431693,
+                            "x": 10391965
+                        },
+                        {
+                            "y": 51513912,
+                            "x": -128381
+                        }
+                    ],
+                    "workll.position": [
+                        {
+                            "y": 37416820,
+                            "x": -122025270,
+                            "latlong": "N37.416820;W122.025270"
+                        },
+                        {
+                            "y": 63431693,
+                            "x": 10391965,
+                            "latlong": "N63.431693;E10.391965"
+                        },
+                        {
+                            "y": 51513912,
+                            "x": -128381,
+                            "latlong": "N51.513912;W0.128381"
+                        }
+                    ],
+                    "vacationll": {
+                        "y": 50061598,
+                        "x": 19937473
+                    },
+                    "vacationll.position": {
+                        "y": 50061598,
+                        "x": 19937473,
+                        "latlong": "N50.061598;E19.937473"
+                    },
+                    "summaryfeatures": {
+                        "distance(latlong)": 6.4E9,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

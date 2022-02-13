@@ -1,0 +1,155 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 8
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 8,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:sortspec-test:sortspec::10001",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "sortspec",
+                    "documentid": "id:sortspec-test:sortspec::10001",
+                    "name": "åsheim",
+                    "name_descending": "åsheim",
+                    "name_ascending": "åsheim",
+                    "name_function_raw": "åsheim",
+                    "name_function_lowercase": "åsheim",
+                    "name_function_uca": "åsheim",
+                    "name_locale_no": "åsheim",
+                    "name_tertiary": "åsheim"
+                }
+            },
+            {
+                "id": "id:sortspec-test:sortspec::10002",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "sortspec",
+                    "documentid": "id:sortspec-test:sortspec::10002",
+                    "name": "Åsheim",
+                    "name_descending": "Åsheim",
+                    "name_ascending": "Åsheim",
+                    "name_function_raw": "Åsheim",
+                    "name_function_lowercase": "Åsheim",
+                    "name_function_uca": "Åsheim",
+                    "name_locale_no": "Åsheim",
+                    "name_tertiary": "Åsheim"
+                }
+            },
+            {
+                "id": "id:sortspec-test:sortspec::10005",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "sortspec",
+                    "documentid": "id:sortspec-test:sortspec::10005",
+                    "name": "aasheim",
+                    "name_descending": "aasheim",
+                    "name_ascending": "aasheim",
+                    "name_function_raw": "aasheim",
+                    "name_function_lowercase": "aasheim",
+                    "name_function_uca": "aasheim",
+                    "name_locale_no": "aasheim",
+                    "name_tertiary": "aasheim"
+                }
+            },
+            {
+                "id": "id:sortspec-test:sortspec::10006",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "sortspec",
+                    "documentid": "id:sortspec-test:sortspec::10006",
+                    "name": "Aasheim",
+                    "name_descending": "Aasheim",
+                    "name_ascending": "Aasheim",
+                    "name_function_raw": "Aasheim",
+                    "name_function_lowercase": "Aasheim",
+                    "name_function_uca": "Aasheim",
+                    "name_locale_no": "Aasheim",
+                    "name_tertiary": "Aasheim"
+                }
+            },
+            {
+                "id": "id:sortspec-test:sortspec::10007",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "sortspec",
+                    "documentid": "id:sortspec-test:sortspec::10007",
+                    "name": "botnevik",
+                    "name_descending": "botnevik",
+                    "name_ascending": "botnevik",
+                    "name_function_raw": "botnevik",
+                    "name_function_lowercase": "botnevik",
+                    "name_function_uca": "botnevik",
+                    "name_locale_no": "botnevik",
+                    "name_tertiary": "botnevik"
+                }
+            },
+            {
+                "id": "id:sortspec-test:sortspec::10008",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "sortspec",
+                    "documentid": "id:sortspec-test:sortspec::10008",
+                    "name": "Botnevik",
+                    "name_descending": "Botnevik",
+                    "name_ascending": "Botnevik",
+                    "name_function_raw": "Botnevik",
+                    "name_function_lowercase": "Botnevik",
+                    "name_function_uca": "Botnevik",
+                    "name_locale_no": "Botnevik",
+                    "name_tertiary": "Botnevik"
+                }
+            },
+            {
+                "id": "id:sortspec-test:sortspec::10003",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "sortspec",
+                    "documentid": "id:sortspec-test:sortspec::10003",
+                    "name": "asheim",
+                    "name_descending": "asheim",
+                    "name_ascending": "asheim",
+                    "name_function_raw": "asheim",
+                    "name_function_lowercase": "asheim",
+                    "name_function_uca": "asheim",
+                    "name_locale_no": "asheim",
+                    "name_tertiary": "asheim"
+                }
+            },
+            {
+                "id": "id:sortspec-test:sortspec::10004",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "sortspec",
+                    "documentid": "id:sortspec-test:sortspec::10004",
+                    "name": "Asheim",
+                    "name_descending": "Asheim",
+                    "name_ascending": "Asheim",
+                    "name_function_raw": "Asheim",
+                    "name_function_lowercase": "Asheim",
+                    "name_function_uca": "Asheim",
+                    "name_locale_no": "Asheim",
+                    "name_tertiary": "Asheim"
+                }
+            }
+        ]
+    }
+}

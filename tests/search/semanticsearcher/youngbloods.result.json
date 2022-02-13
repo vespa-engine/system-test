@@ -1,0 +1,34 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 777,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::10816",
+                "relevance": 0.9860210199053452,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::10816",
+                    "title": "Get Together:The Essential Youngbloods",
+                    "artist": "The Youngbloods",
+                    "song": "Get Together;The Other Side Of This Life;Grizzly Bear;Foolin' Around (The Waltz);Merry-Go-Round;Four In The Morning;All Over The World (La-La);Euphoria;Reason To Believe;All My Dreams Blue;The Wine Song;Don't Play Games;Sugar Babe;Dreamer's Dream;Darkness, Darkness;Beautiful;Sunlight;Sham;Quicksand;Don't Let The Rain Get You Down;Ride The Wind",
+                    "weight": 769.0,
+                    "brand": "078636511726",
+                    "year": 2002
+                }
+            }
+        ]
+    }
+}

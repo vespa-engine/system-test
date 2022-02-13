@@ -1,0 +1,547 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 22
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 54,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:local::pushyss://1/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://1/",
+                    "id": 21024501,
+                    "title": "DECK,ALL",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33503600,
+                        "x": -117745100
+                    },
+                    "ll.position": {
+                        "y": 33503600,
+                        "x": -117745100,
+                        "latlong": "N33.503600;W117.745100"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://4/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://4/",
+                    "id": 21024504,
+                    "title": "SKYLINE,BATH,KITCHEN",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33503800,
+                        "x": -117745300
+                    },
+                    "ll.position": {
+                        "y": 33503800,
+                        "x": -117745300,
+                        "latlong": "N33.503800;W117.745300"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://10/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://10/",
+                    "id": 21024508,
+                    "title": "MANZANITA,COTTAGES",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33543000,
+                        "x": -117776500
+                    },
+                    "ll.position": {
+                        "y": 33543000,
+                        "x": -117776500,
+                        "latlong": "N33.543000;W117.776500"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://12/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://12/",
+                    "id": 21024509,
+                    "title": "CORPORATION,FINANCIAL,CORP,PLAINTIFFS",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33503900,
+                        "x": -117745400
+                    },
+                    "ll.position": {
+                        "y": 33503900,
+                        "x": -117745400,
+                        "latlong": "N33.503900;W117.745400"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://19/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://19/",
+                    "id": 21024510,
+                    "title": "LONDON,QII",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33533100,
+                        "x": -117775100
+                    },
+                    "ll.position": {
+                        "y": 33533100,
+                        "x": -117775100,
+                        "latlong": "N33.533100;W117.775100"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://9/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://9/",
+                    "id": 21024507,
+                    "title": "FASHIONS,IDENTITY",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33552200,
+                        "x": -117800300
+                    },
+                    "ll.position": {
+                        "y": 33552200,
+                        "x": -117800300,
+                        "latlong": "N33.552200;W117.800300"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://2/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://2/",
+                    "id": 21024502,
+                    "title": "OF,LAGUNA,SMILEBLISS,CUDDY,LEISA",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33542000,
+                        "x": -117781800
+                    },
+                    "ll.position": {
+                        "y": 33542000,
+                        "x": -117781800,
+                        "latlong": "N33.542000;W117.781800"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://0/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://0/",
+                    "id": 21024500,
+                    "title": "ACT,CLASS,VALET",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33544000,
+                        "x": -117752900
+                    },
+                    "ll.position": {
+                        "y": 33544000,
+                        "x": -117752900,
+                        "latlong": "N33.544000;W117.752900"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://6/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://6/",
+                    "id": 21024505,
+                    "title": "CREMATORY,CORMICK,MC,MCCORMICK",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33555700,
+                        "x": -117774500
+                    },
+                    "ll.position": {
+                        "y": 33555700,
+                        "x": -117774500,
+                        "latlong": "N33.555700;W117.774500"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://3/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://3/",
+                    "id": 21024503,
+                    "title": "LEATHER,CREATIONS",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33503700,
+                        "x": -117745200
+                    },
+                    "ll.position": {
+                        "y": 33503700,
+                        "x": -117745200,
+                        "latlong": "N33.503700;W117.745200"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://7/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://7/",
+                    "id": 21024506,
+                    "title": "HEFLIN,CONSTRUCTION",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33587200,
+                        "x": -117808000
+                    },
+                    "ll.position": {
+                        "y": 33587200,
+                        "x": -117808000,
+                        "latlong": "N33.587200;W117.808000"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://21/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://21/",
+                    "id": 21024512,
+                    "title": "HEART,INNER,PRIZES",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33548200,
+                        "x": -117795400
+                    },
+                    "ll.position": {
+                        "y": 33548200,
+                        "x": -117795400,
+                        "latlong": "N33.548200;W117.795400"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://24/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://24/",
+                    "id": 21024514,
+                    "title": "TRAINING,VOCATIONAL,SUMNER",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33550200,
+                        "x": -117805900
+                    },
+                    "ll.position": {
+                        "y": 33550200,
+                        "x": -117805900,
+                        "latlong": "N33.550200;W117.805900"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://23/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://23/",
+                    "id": 21024513,
+                    "title": "THE,IN,CARDS",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33551200,
+                        "x": -117806000
+                    },
+                    "ll.position": {
+                        "y": 33551200,
+                        "x": -117806000,
+                        "latlong": "N33.551200;W117.806000"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://27/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://27/",
+                    "id": 21024516,
+                    "title": "STALKER'S,STALKERS,FOODS,FINE",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33546600,
+                        "x": -117760600
+                    },
+                    "ll.position": {
+                        "y": 33546600,
+                        "x": -117760600,
+                        "latlong": "N33.546600;W117.760600"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://30/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://30/",
+                    "id": 21024518,
+                    "title": "BEADLINE",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33504600,
+                        "x": -117745500
+                    },
+                    "ll.position": {
+                        "y": 33504600,
+                        "x": -117745500,
+                        "latlong": "N33.504600;W117.745500"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://28/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://28/",
+                    "id": 21024517,
+                    "title": "STATIONERYWOWCOM",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33541300,
+                        "x": -117759300
+                    },
+                    "ll.position": {
+                        "y": 33541300,
+                        "x": -117759300,
+                        "latlong": "N33.541300;W117.759300"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://32/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://32/",
+                    "id": 21024519,
+                    "title": "WORKS,VIDEO",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33504700,
+                        "x": -117745500
+                    },
+                    "ll.position": {
+                        "y": 33504700,
+                        "x": -117745500,
+                        "latlong": "N33.504700;W117.745500"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://40/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://40/",
+                    "id": 21024520,
+                    "title": "CAPISTRANO,COLOR,CUSTOMIZING,CUSTOM",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33553000,
+                        "x": -117772300
+                    },
+                    "ll.position": {
+                        "y": 33553000,
+                        "x": -117772300,
+                        "latlong": "N33.553000;W117.772300"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://43/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://43/",
+                    "id": 21024522,
+                    "title": "VALUE,ROOFING,BEST",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33564600,
+                        "x": -117763900
+                    },
+                    "ll.position": {
+                        "y": 33564600,
+                        "x": -117763900,
+                        "latlong": "N33.564600;W117.763900"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://45/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://45/",
+                    "id": 21024525,
+                    "title": "poi,point of interest;BEACH,LAGUNA,POLICE,PROPERTY",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33544900,
+                        "x": -117781400
+                    },
+                    "ll.position": {
+                        "y": 33544900,
+                        "x": -117781400,
+                        "latlong": "N33.544900;W117.781400"
+                    },
+                    "ll.distance": 0
+                }
+            },
+            {
+                "id": "id:test:local::pushyss://46/",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "local",
+                    "documentid": "id:test:local::pushyss://46/",
+                    "id": 21024526,
+                    "title": "COMMUNICATIONS,ON,TARGET",
+                    "type": "POI",
+                    "city": "Laguna Beach",
+                    "state": "CA",
+                    "ll": {
+                        "y": 33548000,
+                        "x": -117773000
+                    },
+                    "ll.position": {
+                        "y": 33548000,
+                        "x": -117773000,
+                        "latlong": "N33.548000;W117.773000"
+                    },
+                    "ll.distance": 0
+                }
+            }
+        ]
+    }
+}

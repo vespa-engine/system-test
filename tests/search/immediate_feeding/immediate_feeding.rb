@@ -14,7 +14,7 @@ class ImmediateFeeding < IndexedSearchTest
 
   def test_immediate_feeding
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :maxretries => "5")
-    assert_result("query=sddocname:music", SEARCH_DATA+"music.10.result.xml", "title")
+    assert_result("query=sddocname:music", selfdir+"music.10.result.json", "title")
   end
 
   def teardown

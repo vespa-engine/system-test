@@ -14,17 +14,17 @@ class ProcessRemoves < DocprocTest
   def test_processremoves
     #feed 10 docs
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.xml", :cluster => "worst")
-    assert_result("query=sddocname:worst&nocache", selfdir+"worst.4.result.xml")
+    assert_result("query=sddocname:worst&nocache", selfdir+"worst.4.result.json")
 
     #delete 1 doc
     feed_and_wait_for_docs("worst", 3, :file => selfdir+"removefirst.xml", :cluster => "worst")
     #assert that we have 3 docs now
-    assert_result("query=sddocname:worst&nocache", selfdir+"worst.3.result.xml")
+    assert_result("query=sddocname:worst&nocache", selfdir+"worst.3.result.json")
 
     #delete 1 doc, but set DocumentStatus.SKIP
     feed_and_wait_for_docs("worst", 3, :file => selfdir+"removesecond.xml", :cluster => "worst")
     #assert that we still have 3 docs
-    assert_result("query=sddocname:worst&nocache", selfdir+"worst.3.result.xml")
+    assert_result("query=sddocname:worst&nocache", selfdir+"worst.3.result.json")
   end
 
   def teardown

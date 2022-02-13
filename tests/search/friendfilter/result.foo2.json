@@ -1,0 +1,40 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 12,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:blogpost:blogpost::chat.8",
+                "relevance": 3.1533468005341754,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.8",
+                    "title": "Interview: Paris Hilton's talks about her new BFF,\n       denies rumours of fall-out over fight with fangirls about foo bar coolness",
+                    "author": "tv",
+                    "timestamp": 18,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.011764705882352941,
+                        "nativeRank": 0.13534680053417578,
+                        "termFieldMd(author).firstweight": 3.0,
+                        "termFieldMd(author).occurrences": 1.0,
+                        "termFieldMd(author).termsmatched": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

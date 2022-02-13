@@ -11,6 +11,8 @@ class Hit
     if xmlelement
       if xmlelement.instance_of?(REXML::Element)
         read_xml(xmlelement)
+      elsif xmlelement.instance_of?(Hash)
+        read_hash(xmlelement)
       else
         parse_xml(xmlelement)
       end
@@ -54,6 +56,15 @@ class Hit
       return item.text + "(" + item.attributes["weight"].to_s + ")"
     else
       return item.text
+    end
+  end
+
+  def read_hash(e)
+    add_field("relevancy", e['relevance'])
+    add_field("documentid", e['id'])
+    add_field("source", e['source']) if e.key?('source')
+    if e.key?('fields')
+      e['fields'].each { |f| add_field(f.first, f.last) }
     end
   end
 

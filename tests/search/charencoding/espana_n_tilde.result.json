@@ -1,0 +1,140 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_cantos-de-espa-a_music_1921532126",
+                "relevance": 0.08395497261503022,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_cantos-de-espa-a_music_1921532126",
+                    "title": "Cantos De España",
+                    "artist": "Christensen, Jacob/Fukacová, Michaela",
+                    "song": "Andaluza (Playera) (No.5 of \"Spanish Dances (12)\"), various guitar & other non-piano arrangements;España, 6 album leaves for piano, Op. 165, B. 37;España, 6 album leaves for piano, Op. 165, B. 37;España, 6 album leaves for piano, Op. 165, B. 37;Sicilienne, for cello & piano, Op. 78;Berceuse, for violin & piano (or orchestra) in D Major, Op. 16;Après un rêve (\"Levati sol que luna è levata\"), song for voice & piano, Op. 7/1;Vocalise-Étude en forme de Habanera, for  voice & piano;Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Cantos de España, 5 pieces for piano, Op. 232, B. 44;Spanish Suite, for cello & piano;Spanish Suite, for cello & piano;Spanish Suite, for cello & piano;Spanish Suite, for cello & piano;Goyescas (Guys in Love), 6 pieces in 2 books for piano, H. 64;Danza Espanola, for orchestra (from \"La Vida Breve\")",
+                    "bgndata": "CD",
+                    "pto": -100,
+                    "mid": 2,
+                    "ew": "españa",
+                    "surl": "http://shopping.yahoo.com/p_cantos-de-espa-a_music_1921532126",
+                    "pid": "1921532126",
+                    "isbn": "723721134822",
+                    "fmt": "CD",
+                    "disp_song": "Andaluza (Playera) (No.5 of \"Spanish Dances (12)\"), various guitar & other non-piano arrangements;España, 6 album leaves for piano, Op. 165, B. 37;España, 6 album leaves for piano, Op. 165, B. 37",
+                    "categories": "1804951797 1804893726",
+                    "data": "CD723721134822",
+                    "bgnsellers": 0,
+                    "newestedition": 19900101,
+                    "year": 1990,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_ravel-bol-ro-chabrier-espa-a-dukas-the-sorcerer-s-apprentice-debussy-afternoon-of-a-faun_music_1921533018",
+                "relevance": 0.06911467528062072,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_ravel-bol-ro-chabrier-espa-a-dukas-the-sorcerer-s-apprentice-debussy-afternoon-of-a-faun_music_1921533018",
+                    "title": "Ravel: Boléro/Chabrier: España/Dukas: The Sorcerer's Apprentice/Debussy: Afternoon Of A Faun",
+                    "song": "Boléro, ballet for orchestra (or piano);España, rhapsody for orchestra, also arranged for 2 pianos;The Sorcerer's Apprentice (L'apprenti sorcier), symphonic scherzo for orchestra;Prélude à l'après-midi d'un faune (Prelude to the Afternoon of a Faun), for orchestra, L. 86",
+                    "bgndata": "CD",
+                    "pto": 462,
+                    "mid": 2,
+                    "ew": "ravel",
+                    "surl": "http://shopping.yahoo.com/p_ravel-bol-ro-chabrier-espa-a-dukas-the-sorcerer-s-apprentice-debussy-afternoon-of-a-faun_music_1921533018",
+                    "pid": "1921533018",
+                    "isbn": "047163802522",
+                    "fmt": "CD",
+                    "disp_song": "Boléro, ballet for orchestra (or piano);España, rhapsody for orchestra, also arranged for 2 pianos;The Sorcerer's Apprentice (L'apprenti sorcier), symphonic scherzo for orchestra",
+                    "categories": "1804951797 1804893726",
+                    "data": "CD4.62047163802522",
+                    "bgnsellers": 0,
+                    "newestedition": 19880101,
+                    "year": 1988,
+                    "did": 66,
+                    "cbid": 2,
+                    "weight": 35.0,
+                    "pfrom": 462,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/147617/amg1921533018_1940.jpg?rm_____D9eSk5y5f\" height=70 width=70 border=0 hspace=0 vspace=0"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_volver-a-espa-a-30-hermosas-canciones_music_1921206458",
+                "relevance": 0.03993645022973753,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_volver-a-espa-a-30-hermosas-canciones_music_1921206458",
+                    "title": "Volver a España: 30 Hermosas Canciones",
+                    "artist": "Various Artists",
+                    "song": "Volver, Volver;Mi Segundo Amor;Ella;La Zandunga;Corazon, Corazon;Toda Una Vida;Donde Estas Corazon;Hace Un Ano;Tata Dios;Flor De Azalea;La Noche De Mi Amor;Macorina;Sombras;La Nave Del Olvido;Noche De Ronda;Que Te Vaya Bonito;Juan Charrasqueado;Amaneci En Tus Brazos;Cartas Marcadas;Angelitos Negros;El Cristo De Palacaguina;Se Me Olvido Otra Vez;La Llorona;Simon Blanco;Los Ejes De Mi Carreta;Anillo De Compromiso;Nosotros;El Triste;Maringa;Piensa En Mi",
+                    "bgndata": "CD",
+                    "pto": 1598,
+                    "mid": 2,
+                    "ew": "españa",
+                    "surl": "http://shopping.yahoo.com/p_volver-a-espa-a-30-hermosas-canciones_music_1921206458",
+                    "pid": "1921206458",
+                    "isbn": "099441196229",
+                    "fmt": "CD",
+                    "disp_song": "Volver, Volver;Mi Segundo Amor;Ella",
+                    "categories": "1804905800 1804893726",
+                    "data": "CD15.98099441196229",
+                    "bgnsellers": 0,
+                    "newestedition": 19970318,
+                    "year": 1997,
+                    "did": 66,
+                    "cbid": 2,
+                    "weight": 41.0,
+                    "pfrom": 1598,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/137438/amg1921206458_1940.jpg?rm_____D_4vE3HwV\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927024294"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_alb-niz-iberia-books-1-2-espa-a_music_1921592190",
+                "relevance": 0.03992057207292816,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_alb-niz-iberia-books-1-2-espa-a_music_1921592190",
+                    "title": "Albéniz: Iberia Books 1 & 2 / España",
+                    "artist": "Daniel Barenboim",
+                    "song": "Iberia: First Book: Evocation;Iberia: First Book: El Puerto;Iberia: First Book: Fete-Dieu A Seville;Iberia: Second Book: Rondena;Iberia: Second Book: Almeria;Iberia: Second Book: Triana;Espana, Op.165: Prld;Espana, Op.165: Tango;Espana, Op.165: Malaguena;Espana, Op.165: Ser;Espana, Op.165: Capricho Catalan;Espana, Op.165: Zortzico",
+                    "bgndata": "CD",
+                    "pto": 1698,
+                    "mid": 2,
+                    "ew": "albéniz",
+                    "surl": "http://shopping.yahoo.com/p_alb-niz-iberia-books-1-2-espa-a_music_1921592190",
+                    "pid": "1921592190",
+                    "isbn": "685738170326",
+                    "fmt": "CD",
+                    "disp_song": "Iberia: First Book: Evocation;Iberia: First Book: El Puerto;Iberia: First Book: Fete-Dieu A Seville",
+                    "categories": "1804951797 1804893726",
+                    "data": "CD11.03-16.98685738170326",
+                    "bgnsellers": 0,
+                    "newestedition": 20010101,
+                    "year": 2001,
+                    "did": 66,
+                    "cbid": 2,
+                    "weight": 46.0,
+                    "pfrom": 1103,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/153089/amg1921592190_1940.jpg?rm_____Df3BtLzaW\" height=69 width=70 border=0 hspace=0 vspace=0"
+                }
+            }
+        ]
+    }
+}

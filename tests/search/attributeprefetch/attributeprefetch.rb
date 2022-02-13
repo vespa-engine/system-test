@@ -19,23 +19,23 @@ class AttributePrefetch < IndexedSearchTest
     feed_and_wait_for_docs("attr", 1, :file => selfdir+"attr.xml")
     3.times do
       result = search("/?query=x")
-      assert (result.xmldata.include? ">TEST SEARCHER: OK<")
-      assert !(result.xmldata.include? ">TEST SEARCHER: ERROR: 'body' should be set after filling in docsums<")
+      assert (result.xmldata.include? "TEST SEARCHER: OK")
+      assert !(result.xmldata.include? "TEST SEARCHER: ERROR: 'body' should be set after filling in docsums")
 
     end
     3.times do
       result = search("/?query=x&summary=attributeprefetch")
-      assert !(result.xmldata.include? ">TEST SEARCHER: OK<")
-      assert (result.xmldata.include? ">TEST SEARCHER: ERROR: 'body' should be set after filling in docsums<")
+      assert !(result.xmldata.include? "TEST SEARCHER: OK")
+      assert (result.xmldata.include? "TEST SEARCHER: ERROR: 'body' should be set after filling in docsums")
     end
     3.times do
-      assert_result("/?query=x&notestsearcher", selfdir+"qx1.result")
+      assert_result("/?query=x&notestsearcher", selfdir+"qx1.result.json")
       assert_result("/?query=x&notestsearcher&summary=attributeprefetch",
-                     selfdir+"qx2.result", nil, ["stringfield", "floatfield", "doublefield", "int64field", "bytefield1", "bytefield2", "intfield"])
+                     selfdir+"qx2.result.json", nil, ["stringfield", "floatfield", "doublefield", "int64field", "bytefield1", "bytefield2", "intfield"])
     end
-    assert_result("/?query=x&notestsearcher&nocache", selfdir+"qx1.result")
+    assert_result("/?query=x&notestsearcher&nocache", selfdir+"qx1.result.json")
     assert_result("/?query=x&notestsearcher&summary=attributeprefetch&nocache",
-                   selfdir+"qx2.result", nil, ["stringfield", "floatfield", "doublefield", "int64field", "bytefield1", "bytefield2", "intfield"])
+                   selfdir+"qx2.result.json", nil, ["stringfield", "floatfield", "doublefield", "int64field", "bytefield1", "bytefield2", "intfield"])
   end
 
   def teardown

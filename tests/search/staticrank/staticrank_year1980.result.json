@@ -1,0 +1,113 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 777,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_down-memory-lane_music_1921187802",
+                "relevance": 46.17429193899782,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_down-memory-lane_music_1921187802",
+                    "title": "Down Memory Lane",
+                    "artist": "Mormon Tabernacle Choir",
+                    "song": "I Want To Be Happy/The Best Things In Life Are Free/Happy Days Are Here Again;I Only Have Eyes For You;You Must Have Been A Beautiful Baby/It's Only A Paper Moon/Pick Yourself Up;Blue Skies;As Time Goes By;I'm Looking Over A Four Leaf Clover/Baby Face/When You're Smiling;I'll See You In My Dreams;Singin' In The Rain;Moonlight And Roses/Beautiful Ohio/Moonlight Bay;When Day Is Done",
+                    "bgndata": "CDCA",
+                    "pto": 1475,
+                    "mid": 2,
+                    "ew": "lane",
+                    "surl": "http://shopping.yahoo.com/p_down-memory-lane_music_1921187802",
+                    "pid": "1921187802",
+                    "weight": 46.0,
+                    "isbn": "079892148121,079892148145",
+                    "fmt": "CD CA",
+                    "disp_song": "I Want To Be Happy/The Best Things In Life Are Free/Happy Days Are Here Again;I Only Have Eyes For You;You Must Have Been A Beautiful Baby/It's Only A Paper Moon/Pick Yourself Up",
+                    "pfrom": 798,
+                    "categories": "1804905757 1804893726",
+                    "data": "CD7.98-14.75079892148121CA079892148145",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/150131/amg1921187802_1940.jpg?rm_____D6kLcs_jp\" height=69 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927022801",
+                    "newestedition": 19800101,
+                    "year": 1980,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_greatest-hits-of-1790_music_1921539029",
+                "relevance": 44.17429193899782,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_greatest-hits-of-1790_music_1921539029",
+                    "title": "Greatest Hits Of 1790",
+                    "song": "From The Ruins Of Athens, Op. 113, No. 4: Turkish March;From Piano Concerto No. 21, K 467: Andante;From String Quartet In F Major, Op. 3, No. 5: Serenade - Andante Cantabile;Gavotte;Minuet In G;From Piano Sonata No. 11 In A Major, K. 331: Turkish March - Rondo;Fur Elise;From String Quinet In A Major: Minuet;Dance Of The Blessed Spirits;From Trumpet Concerto In E - Flat Major: Finale",
+                    "bgndata": "CD",
+                    "pto": 998,
+                    "mid": 2,
+                    "ew": "1790",
+                    "surl": "http://shopping.yahoo.com/p_greatest-hits-of-1790_music_1921539029",
+                    "pid": "1921539029",
+                    "weight": 44.0,
+                    "isbn": "074643721622",
+                    "fmt": "CD",
+                    "disp_song": "From The Ruins Of Athens, Op. 113, No. 4: Turkish March;From Piano Concerto No. 21, K 467: Andante;From String Quartet In F Major, Op. 3, No. 5: Serenade - Andante Cantabile",
+                    "pfrom": 988,
+                    "categories": "1804951797 1804893726",
+                    "data": "CD9.88-9.98074643721622",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/148554/amg1921539029_1940.jpg?rm_____D6jxyyUeY\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "newestedition": 19800101,
+                    "year": 1980,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_china-music-of-the-pipa_music_1921076310",
+                "relevance": 42.17429193899782,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_china-music-of-the-pipa_music_1921076310",
+                    "title": "China: Music of the Pipa",
+                    "artist": "Lui Pui-Yuen",
+                    "song": "Shi Mian Mai Fu (Ambuscade From Ten Sides);Fei Hua Dian Cui (Floating Petals Decorating The Green Leaves);Ping Sha Luo Yan (Wild Geese Descend On The Smooth Sand);Gao Shan Liu Shui (High Mountain, Flowing Streams);Yang Chun Bai Xue (Snow On A Sunny Spring Day);Yue Er Gao (The Moon On High);Yi Zu Wu Qu (Dance Of The Yi Tribe)",
+                    "bgndata": "CDCALP",
+                    "pto": 1098,
+                    "mid": 2,
+                    "ew": "china",
+                    "surl": "http://shopping.yahoo.com/p_china-music-of-the-pipa_music_1921076310",
+                    "pid": "1921076310",
+                    "weight": 42.0,
+                    "isbn": "075597208528,075597208542,075597208511",
+                    "fmt": "CD CA LP",
+                    "disp_song": "Shi Mian Mai Fu (Ambuscade From Ten Sides);Fei Hua Dian Cui (Floating Petals Decorating The Green Leaves);Ping Sha Luo Yan (Wild Geese Descend On The Smooth Sand)",
+                    "pfrom": 813,
+                    "categories": "1804905871 1804905871 1804905872 1804905876 1804893726",
+                    "data": "CD8.13-10.98075597208528CA075597208542LP075597208511",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/147516/amg1921076310_1940.jpg?rm_____DUKNs6jjA\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927271241",
+                    "newestedition": 19800101,
+                    "year": 1980,
+                    "did": 66,
+                    "cbid": 2
+                }
+            }
+        ]
+    }
+}

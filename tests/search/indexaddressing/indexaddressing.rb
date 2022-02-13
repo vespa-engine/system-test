@@ -64,17 +64,17 @@ class IndexAddressing < IndexedSearchTest
 
     puts "Query: Blend matches from both"
 
-    assert_result("query=42",                    selfdir+"42.result")
-    assert_result("query=42&hits=51",            selfdir+"42-all.result")
-    assert_result("query=doc.42",                selfdir+"doc42.result")
-    assert_result("query=42&sortspec=%2Bfoobar", selfdir+"fs.result")
+    assert_result("query=42",                    selfdir+"42.result.json")
+    assert_result("query=42&hits=51",            selfdir+"42-all.result.json")
+    assert_result("query=doc.42",                selfdir+"doc42.result.json")
+    assert_result("query=42&sortspec=%2Bfoobar", selfdir+"fs.result.json")
 
     # hitting the cache should work too:
 
-    assert_result("query=42",                    selfdir+"42.result")
-    assert_result("query=42&hits=51",            selfdir+"42-all.result")
-    assert_result("query=doc.42",                selfdir+"doc42.result")
-    assert_result("query=42&sortspec=%2Bfoobar", selfdir+"fs.result")
+    assert_result("query=42",                    selfdir+"42.result.json")
+    assert_result("query=42&hits=51",            selfdir+"42-all.result.json")
+    assert_result("query=doc.42",                selfdir+"doc42.result.json")
+    assert_result("query=42&sortspec=%2Bfoobar", selfdir+"fs.result.json")
 
   end
 

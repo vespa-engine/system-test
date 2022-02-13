@@ -22,7 +22,7 @@ class UpdateSearcherDependency < SearchContainerTest
     res = search("query=test&tracelevel=3")
     puts "Result from query=test:"
     puts res.xmldata
-    assert_result("query=test", selfdir + "hello_world_result.xml")
+    assert_result("query=test", selfdir + "hello_world_result.json")
 
     # Re-deploy with same app, but modified searcher bundle dependency
     clear_bundles()
@@ -33,7 +33,7 @@ class UpdateSearcherDependency < SearchContainerTest
                           })
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.testvespa.SimpleSearcher", :dependencies=>[dep2])
     deploy(selfdir + "app", SEARCH_DATA+"music.sd")
-    poll_compare("test", selfdir + "new_world_result.xml")
+    poll_compare("test", selfdir + "new_world_result.json")
   end
 
   def teardown

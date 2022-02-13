@@ -1,0 +1,104 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10000
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:simple::3320",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::3320",
+                    "title": "doc 3320 hash 852 val3320 type simple",
+                    "year": 1893,
+                    "odd": false,
+                    "lastname": "Aabamadamabaa",
+                    "category": "products / apparel / clothing / womens / shirts",
+                    "lastname_lc": "aabamadamabaa",
+                    "price": 19.88,
+                    "myrank": 3320.0
+                }
+            },
+            {
+                "id": "id:test:simple::5822",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5822",
+                    "title": "doc 5822 hash 886 val5822 type simple",
+                    "year": 1820,
+                    "odd": false,
+                    "lastname": "Aadland",
+                    "category": "products / apparel / clothing / womens / shorts",
+                    "lastname_lc": "aadland",
+                    "price": 84.97,
+                    "myrank": 5822.0
+                }
+            },
+            {
+                "id": "id:test:simple::8028",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8028",
+                    "title": "doc 8028 hash 624 val8028 type simple",
+                    "year": 1934,
+                    "odd": false,
+                    "lastname": "Aardema",
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname_lc": "aardema",
+                    "price": 201.32,
+                    "myrank": 8028.0
+                }
+            },
+            {
+                "id": "id:test:simple::2",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2",
+                    "title": "doc 2 hash 2 val2 type simple",
+                    "year": 1798,
+                    "odd": false,
+                    "lastname": "Aardema",
+                    "category": "products / apparel / clothing / womens / tops",
+                    "lastname_lc": "aardema",
+                    "price": 30.12,
+                    "myrank": 2.0
+                }
+            },
+            {
+                "id": "id:test:simple::2449",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2449",
+                    "title": "doc 2449 hash 1215 val2449 type simple",
+                    "year": 1819,
+                    "odd": false,
+                    "lastname": "Aaron",
+                    "category": "products / electronics / computers",
+                    "lastname_lc": "aaron",
+                    "price": 232.74,
+                    "myrank": 2449.0
+                }
+            }
+        ]
+    }
+}

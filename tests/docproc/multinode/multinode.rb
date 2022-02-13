@@ -18,7 +18,7 @@ class MultiNode < DocprocTest
 
   def test_basicsearch_docproc_multinode
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :cluster => "music")
-    assert_result("query=sddocname:music", DOCPROC + "data/music.10.result.xml", "surl")
+    assert_result("query=sddocname:music", DOCPROC + "data/music.10.result.json", "surl")
   end
 
   def teardown

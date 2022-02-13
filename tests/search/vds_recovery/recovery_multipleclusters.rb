@@ -50,11 +50,11 @@ class TestRecoveryMultiCluster < IndexedSearchTest
 
     # Check that search works
     assert_result("query=sddocname:music",
-                  selfdir+"music.10.result",
+                  selfdir+"music.10.result.json",
                   "title")
 
    assert_result("query=sddocname:books&hits=100",
-                 selfdir+"books.15.result",
+                 selfdir+"books.15.result.json",
                  "title")
   end
 

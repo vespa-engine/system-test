@@ -1,0 +1,104 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 6
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 19,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::p_columbia-albums-of-irving-berlin-1-2_music_1922002959",
+                "relevance": 0.38186238359951247,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::p_columbia-albums-of-irving-berlin-1-2_music_1922002959",
+                    "title": "hate 2k",
+                    "artist": "hate",
+                    "song": "hate",
+                    "weight": 1300000,
+                    "year": 2000
+                }
+            },
+            {
+                "id": "id:test:music::p_singin-the-gospel-1933-1936_music_1921456802",
+                "relevance": 0.254574922399675,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::p_singin-the-gospel-1933-1936_music_1921456802",
+                    "title": "hate 2",
+                    "artist": "xyz",
+                    "song": "hate",
+                    "weight": 300000,
+                    "year": 2001
+                }
+            },
+            {
+                "id": "id:test:music::p_barry-white-friends_music_1921955430",
+                "relevance": 0.1272874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::p_barry-white-friends_music_1921955430",
+                    "title": "foo",
+                    "artist": "none",
+                    "song": "hate",
+                    "weight": 1600000,
+                    "year": 2003
+                }
+            },
+            {
+                "id": "id:test:music::p_big-band-box-set-_music_1921490548",
+                "relevance": 0.1272874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::p_big-band-box-set-_music_1921490548",
+                    "title": "hate",
+                    "artist": "none",
+                    "song": "none",
+                    "weight": 1900000,
+                    "year": 2000,
+                    "url": "http://www.bigband.com/foo"
+                }
+            },
+            {
+                "id": "id:test:music::p_try-this-clean-bonus-dvd-_music_1922003403",
+                "relevance": 0.1272874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::p_try-this-clean-bonus-dvd-_music_1922003403",
+                    "title": "xyz",
+                    "artist": "xyz",
+                    "song": "hate",
+                    "weight": 600000,
+                    "year": 2000
+                }
+            },
+            {
+                "id": "id:test:music::p_pianist-extraordinaire-2-deluxe-box-set-_music_1921950529",
+                "relevance": 0.1272874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::p_pianist-extraordinaire-2-deluxe-box-set-_music_1921950529",
+                    "title": "whatever",
+                    "artist": "hate",
+                    "song": "none",
+                    "weight": 1700000,
+                    "year": 2003
+                }
+            }
+        ]
+    }
+}

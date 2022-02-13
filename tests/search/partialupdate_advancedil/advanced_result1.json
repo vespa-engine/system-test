@@ -1,0 +1,54 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "index:search/0/cfcd2084c6b5dc8a0fe7d0f7",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "advanced",
+                    "id": "id:adv/adv:advanced::0",
+                    "field1": "foobar",
+                    "extra1": "2",
+                    "extra2": [
+                        "foo",
+                        "bar",
+                        "baz"
+                    ],
+                    "extra3": 3.0,
+                    "extra4": "foobar bar",
+                    "extra5": 60,
+                    "extra7": 30
+                }
+            },
+            {
+                "id": "index:search/0/c4ca4238eed8f934104920c8",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "advanced",
+                    "id": "id:adv/adv:advanced::1",
+                    "field1": "testing",
+                    "extra1": "0",
+                    "extra3": 6.0,
+                    "extra4": "testing test2",
+                    "extra5": 15,
+                    "extra7": 300
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,48 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:bigindexclosure::1",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "bigindexclosure",
+                    "documentid": "id:test:bigindexclosure::1",
+                    "a": "testA1",
+                    "b": "testB1",
+                    "c": "testC1",
+                    "d": "testD1",
+                    "e": "testE1",
+                    "f": "testF1",
+                    "g": "testG1",
+                    "h": "testH1",
+                    "i": "testI1",
+                    "j": "testJ1",
+                    "k": "testK1",
+                    "l": "testL1",
+                    "m": "testM1",
+                    "n": "testN1",
+                    "o": "testO1",
+                    "p": "testP1",
+                    "q": "testQ1",
+                    "r": "testR1",
+                    "s": "testS1",
+                    "t": "testT1"
+                }
+            }
+        ]
+    }
+}

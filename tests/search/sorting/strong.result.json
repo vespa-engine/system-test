@@ -1,0 +1,170 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 30
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 30,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:strong::10001",
+                "relevance": 30.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10001",
+                    "name": "doc 10001 hash 47 val1",
+                    "year": 1892,
+                    "category": "products / electronics / photo",
+                    "weight": 4.8,
+                    "myrank": 30.234
+                }
+            },
+            {
+                "id": "id:test:strong::10012",
+                "relevance": 29.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10012",
+                    "name": "doc 10012 hash 58 val12",
+                    "year": 1828,
+                    "category": "services / phone / premium with broadband",
+                    "myrank": 29.234
+                }
+            },
+            {
+                "id": "id:test:strong::10023",
+                "relevance": 28.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10023",
+                    "name": "doc 10023 hash 69 val23",
+                    "year": 1858,
+                    "category": "products / apparel / clothing / womens / shorts",
+                    "lastname": "Mosby",
+                    "weight": 271.74,
+                    "myrank": 28.234,
+                    "lastname_lc": "mosby"
+                }
+            },
+            {
+                "id": "id:test:strong::10004",
+                "relevance": 27.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10004",
+                    "name": "doc 10004 hash 50 val4",
+                    "year": 1886,
+                    "category": "services / phone / 300 minutes",
+                    "weight": 202.05,
+                    "myrank": 27.234
+                }
+            },
+            {
+                "id": "id:test:strong::10015",
+                "relevance": 26.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10015",
+                    "name": "doc 10015 hash 61 val15",
+                    "year": 1807,
+                    "category": "services / phone / premium with broadband",
+                    "lastname": "Vartanian",
+                    "weight": 131.73,
+                    "myrank": 26.234,
+                    "lastname_lc": "vartanian"
+                }
+            },
+            {
+                "id": "id:test:strong::10026",
+                "relevance": 25.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10026",
+                    "name": "doc 10026 hash 72 val26",
+                    "year": 1887,
+                    "category": "products / apparel / clothing / womens / pants",
+                    "weight": 124.89,
+                    "myrank": 25.234
+                }
+            },
+            {
+                "id": "id:test:strong::10007",
+                "relevance": 24.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10007",
+                    "name": "doc 10007 hash 53 val7",
+                    "year": 1854,
+                    "category": "services / phone / premium with broadband",
+                    "lastname": "Lipman",
+                    "weight": 165.6,
+                    "myrank": 24.234,
+                    "lastname_lc": "lipman"
+                }
+            },
+            {
+                "id": "id:test:strong::10018",
+                "relevance": 23.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10018",
+                    "name": "doc 10018 hash 64 val18",
+                    "year": 1823,
+                    "category": "products / electronics / computers",
+                    "lastname": "Carder",
+                    "weight": 161.82,
+                    "myrank": 23.234,
+                    "lastname_lc": "carder"
+                }
+            },
+            {
+                "id": "id:test:strong::10029",
+                "relevance": 22.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10029",
+                    "name": "doc 10029 hash 75 val29",
+                    "year": 1812,
+                    "category": "products / apparel / clothing / womens / shirts",
+                    "lastname": "Grene",
+                    "weight": 223.91,
+                    "myrank": 22.234,
+                    "lastname_lc": "grene"
+                }
+            },
+            {
+                "id": "id:test:strong::10010",
+                "relevance": 21.233999252319336,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10010",
+                    "name": "doc 10010 hash 56 val10",
+                    "year": 1804,
+                    "category": "products / apparel / clothing / womens / pants",
+                    "lastname": "Stark",
+                    "weight": 66.83,
+                    "myrank": 21.234,
+                    "lastname_lc": "stark"
+                }
+            }
+        ]
+    }
+}

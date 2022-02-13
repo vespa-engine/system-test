@@ -1,0 +1,699 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10000
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:simple::411",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::411",
+                    "title": "doc 411 hash 411 val411 type simple",
+                    "year": 1841,
+                    "odd": false,
+                    "lastname": "Ahronheim",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "ahronheim",
+                    "price": 38.28,
+                    "myrank": 411.0
+                }
+            },
+            {
+                "id": "id:test:simple::1586",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1586",
+                    "title": "doc 1586 hash 352 val1586 type simple",
+                    "year": 1869,
+                    "odd": false,
+                    "lastname": "Averbakh",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "averbakh",
+                    "price": 145.8,
+                    "myrank": 1586.0
+                }
+            },
+            {
+                "id": "id:test:simple::1160",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1160",
+                    "title": "doc 1160 hash 1160 val1160 type simple",
+                    "year": 1833,
+                    "odd": false,
+                    "lastname": "Fukuyama",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "fukuyama",
+                    "price": 220.92,
+                    "myrank": 1160.0
+                }
+            },
+            {
+                "id": "id:test:simple::1587",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1587",
+                    "title": "doc 1587 hash 353 val1587 type simple",
+                    "year": 1856,
+                    "odd": false,
+                    "lastname": "Vital",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "vital",
+                    "price": 119.89,
+                    "myrank": 1587.0
+                }
+            },
+            {
+                "id": "id:test:simple::1585",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1585",
+                    "title": "doc 1585 hash 351 val1585 type simple",
+                    "year": 1845,
+                    "odd": false,
+                    "lastname": "Montgomery-Massingberd",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "montgomery-massingberd",
+                    "price": 20.86,
+                    "myrank": 1585.0
+                }
+            },
+            {
+                "id": "id:test:simple::1582",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1582",
+                    "title": "doc 1582 hash 348 val1582 type simple",
+                    "year": 1873,
+                    "odd": false,
+                    "lastname": "Abrams",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "abrams",
+                    "price": 268.69,
+                    "myrank": 1582.0
+                }
+            },
+            {
+                "id": "id:test:simple::1581",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1581",
+                    "title": "doc 1581 hash 347 val1581 type simple",
+                    "year": 1860,
+                    "odd": false,
+                    "lastname": "Schminder",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "schminder",
+                    "price": 117.22,
+                    "myrank": 1581.0
+                }
+            },
+            {
+                "id": "id:test:simple::2394",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2394",
+                    "title": "doc 2394 hash 1160 val2394 type simple",
+                    "year": 1825,
+                    "odd": false,
+                    "lastname": "Hsiung",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "hsiung",
+                    "price": 86.7,
+                    "myrank": 2394.0
+                }
+            },
+            {
+                "id": "id:test:simple::327",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::327",
+                    "title": "doc 327 hash 327 val327 type simple",
+                    "year": 1827,
+                    "odd": false,
+                    "lastname": "dePaola",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "depaola",
+                    "price": 137.33,
+                    "myrank": 327.0
+                }
+            },
+            {
+                "id": "id:test:simple::328",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::328",
+                    "title": "doc 328 hash 328 val328 type simple",
+                    "year": 1846,
+                    "odd": false,
+                    "lastname": "Sauermann",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "sauermann",
+                    "price": 212.74,
+                    "myrank": 328.0
+                }
+            },
+            {
+                "id": "id:test:simple::1127",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1127",
+                    "title": "doc 1127 hash 1127 val1127 type simple",
+                    "year": 1823,
+                    "odd": false,
+                    "lastname": "Winning",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "winning",
+                    "price": 207.1,
+                    "myrank": 1127.0
+                }
+            },
+            {
+                "id": "id:test:simple::2392",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2392",
+                    "title": "doc 2392 hash 1158 val2392 type simple",
+                    "year": 1863,
+                    "odd": false,
+                    "lastname": "Dearle",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "dearle",
+                    "price": 220.13,
+                    "myrank": 2392.0
+                }
+            },
+            {
+                "id": "id:test:simple::326",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::326",
+                    "title": "doc 326 hash 326 val326 type simple",
+                    "year": 1804,
+                    "odd": false,
+                    "lastname": "Ackerman",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "ackerman",
+                    "price": 52.12,
+                    "myrank": 326.0
+                }
+            },
+            {
+                "id": "id:test:simple::1125",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1125",
+                    "title": "doc 1125 hash 1125 val1125 type simple",
+                    "year": 1854,
+                    "odd": false,
+                    "lastname": "Moo-Young",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "moo-young",
+                    "price": 91.84,
+                    "myrank": 1125.0
+                }
+            },
+            {
+                "id": "id:test:simple::312",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::312",
+                    "title": "doc 312 hash 312 val312 type simple",
+                    "year": 1838,
+                    "odd": false,
+                    "lastname": "Chudnovsky",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "chudnovsky",
+                    "price": 103.35,
+                    "myrank": 312.0
+                }
+            },
+            {
+                "id": "id:test:simple::1424",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1424",
+                    "title": "doc 1424 hash 190 val1424 type simple",
+                    "year": 1859,
+                    "odd": false,
+                    "lastname": "Rombeau",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "rombeau",
+                    "price": 165.12,
+                    "myrank": 1424.0
+                }
+            },
+            {
+                "id": "id:test:simple::313",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::313",
+                    "title": "doc 313 hash 313 val313 type simple",
+                    "year": 1820,
+                    "odd": false,
+                    "lastname": "Kurtz",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "kurtz",
+                    "price": 74.54,
+                    "myrank": 313.0
+                }
+            },
+            {
+                "id": "id:test:simple::1115",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1115",
+                    "title": "doc 1115 hash 1115 val1115 type simple",
+                    "year": 1834,
+                    "odd": false,
+                    "lastname": "Tilly",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "tilly",
+                    "price": 204.16,
+                    "myrank": 1115.0
+                }
+            },
+            {
+                "id": "id:test:simple::1112",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1112",
+                    "title": "doc 1112 hash 1112 val1112 type simple",
+                    "year": 1818,
+                    "odd": false,
+                    "lastname": "Keeble",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "keeble",
+                    "price": 260.59,
+                    "myrank": 1112.0
+                }
+            },
+            {
+                "id": "id:test:simple::2067",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2067",
+                    "title": "doc 2067 hash 833 val2067 type simple",
+                    "year": 1852,
+                    "odd": false,
+                    "lastname": "Lange",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "lange",
+                    "price": 139.47,
+                    "myrank": 2067.0
+                }
+            },
+            {
+                "id": "id:test:simple::1412",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1412",
+                    "title": "doc 1412 hash 178 val1412 type simple",
+                    "year": 1853,
+                    "odd": false,
+                    "lastname": "Meinhardt",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "meinhardt",
+                    "price": 149.96,
+                    "myrank": 1412.0
+                }
+            },
+            {
+                "id": "id:test:simple::2065",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2065",
+                    "title": "doc 2065 hash 831 val2065 type simple",
+                    "year": 1780,
+                    "odd": false,
+                    "lastname": "Conference",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "conference",
+                    "price": 146.85,
+                    "myrank": 2065.0
+                }
+            },
+            {
+                "id": "id:test:simple::279",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::279",
+                    "title": "doc 279 hash 279 val279 type simple",
+                    "year": 1893,
+                    "odd": false,
+                    "lastname": "Mundici",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "mundici",
+                    "price": 233.0,
+                    "myrank": 279.0
+                }
+            },
+            {
+                "id": "id:test:simple::1855",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1855",
+                    "title": "doc 1855 hash 621 val1855 type simple",
+                    "year": 1805,
+                    "odd": false,
+                    "lastname": "Patel",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "patel",
+                    "price": 100.36,
+                    "myrank": 1855.0
+                }
+            },
+            {
+                "id": "id:test:simple::2379",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2379",
+                    "title": "doc 2379 hash 1145 val2379 type simple",
+                    "year": 1888,
+                    "odd": false,
+                    "lastname": "Kophal",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "kophal",
+                    "price": 210.43,
+                    "myrank": 2379.0
+                }
+            },
+            {
+                "id": "id:test:simple::1538",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1538",
+                    "title": "doc 1538 hash 304 val1538 type simple",
+                    "year": 1874,
+                    "odd": false,
+                    "lastname": "Binkhorst",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "binkhorst",
+                    "price": 176.0,
+                    "myrank": 1538.0
+                }
+            },
+            {
+                "id": "id:test:simple::2371",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2371",
+                    "title": "doc 2371 hash 1137 val2371 type simple",
+                    "year": 1856,
+                    "odd": false,
+                    "lastname": "Windle",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "windle",
+                    "price": 267.35,
+                    "myrank": 2371.0
+                }
+            },
+            {
+                "id": "id:test:simple::1530",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1530",
+                    "title": "doc 1530 hash 296 val1530 type simple",
+                    "year": 1825,
+                    "odd": false,
+                    "lastname": "Findley",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "findley",
+                    "price": 90.52,
+                    "myrank": 1530.0
+                }
+            },
+            {
+                "id": "id:test:simple::1099",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1099",
+                    "title": "doc 1099 hash 1099 val1099 type simple",
+                    "year": 1807,
+                    "odd": false,
+                    "lastname": "Sauvain",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "sauvain",
+                    "price": 272.08,
+                    "myrank": 1099.0
+                }
+            },
+            {
+                "id": "id:test:simple::2057",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2057",
+                    "title": "doc 2057 hash 823 val2057 type simple",
+                    "year": 1925,
+                    "odd": false,
+                    "lastname": "Bornstein",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "bornstein",
+                    "price": 32.38,
+                    "myrank": 2057.0
+                }
+            },
+            {
+                "id": "id:test:simple::17",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::17",
+                    "title": "doc 17 hash 17 val17 type simple",
+                    "year": 1834,
+                    "odd": false,
+                    "lastname": "Obstbaum",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "obstbaum",
+                    "price": 210.41,
+                    "myrank": 17.0
+                }
+            },
+            {
+                "id": "id:test:simple::1517",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1517",
+                    "title": "doc 1517 hash 283 val1517 type simple",
+                    "year": 1825,
+                    "odd": false,
+                    "lastname": "Einzig",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "einzig",
+                    "price": 230.16,
+                    "myrank": 1517.0
+                }
+            },
+            {
+                "id": "id:test:simple::2267",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2267",
+                    "title": "doc 2267 hash 1033 val2267 type simple",
+                    "year": 1855,
+                    "odd": false,
+                    "lastname": "Amadio",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "amadio",
+                    "price": 260.43,
+                    "myrank": 2267.0
+                }
+            },
+            {
+                "id": "id:test:simple::226",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::226",
+                    "title": "doc 226 hash 226 val226 type simple",
+                    "year": 1842,
+                    "odd": false,
+                    "lastname": "Perpich",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "perpich",
+                    "price": 91.52,
+                    "myrank": 226.0
+                }
+            },
+            {
+                "id": "id:test:simple::1513",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1513",
+                    "title": "doc 1513 hash 279 val1513 type simple",
+                    "year": 1805,
+                    "odd": false,
+                    "lastname": "Bix",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "bix",
+                    "price": 94.06,
+                    "myrank": 1513.0
+                }
+            },
+            {
+                "id": "id:test:simple::11",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::11",
+                    "title": "doc 11 hash 11 val11 type simple",
+                    "year": 1854,
+                    "odd": false,
+                    "lastname": "McKoy",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "mckoy",
+                    "price": 95.66,
+                    "myrank": 11.0
+                }
+            },
+            {
+                "id": "id:test:simple::221",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::221",
+                    "title": "doc 221 hash 221 val221 type simple",
+                    "year": 1808,
+                    "odd": false,
+                    "lastname": "Bharati",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "bharati",
+                    "price": 249.98,
+                    "myrank": 221.0
+                }
+            },
+            {
+                "id": "id:test:simple::1849",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1849",
+                    "title": "doc 1849 hash 615 val1849 type simple",
+                    "year": 1803,
+                    "odd": false,
+                    "lastname": "Soltau",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "soltau",
+                    "price": 268.6,
+                    "myrank": 1849.0
+                }
+            },
+            {
+                "id": "id:test:simple::1075",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::1075",
+                    "title": "doc 1075 hash 1075 val1075 type simple",
+                    "year": 1865,
+                    "odd": false,
+                    "lastname": "Romano",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "romano",
+                    "price": 78.41,
+                    "myrank": 1075.0
+                }
+            },
+            {
+                "id": "id:test:simple::2457",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::2457",
+                    "title": "doc 2457 hash 1223 val2457 type simple",
+                    "year": 1851,
+                    "odd": false,
+                    "lastname": "Reinhardt",
+                    "category": "products / apparel / clothing / mens",
+                    "lastname_lc": "reinhardt",
+                    "price": 107.48,
+                    "myrank": 2457.0
+                }
+            }
+        ]
+    }
+}

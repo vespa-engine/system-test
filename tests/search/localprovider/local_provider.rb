@@ -14,8 +14,8 @@ class LocalProvider < IndexedSearchTest
 
   def test_search_localprovider
     assert_result("query=sddocname:music&sources=local-provider",
-                   SEARCH_DATA+"music.10.result.xml",
-                   "title")
+                   SEARCH_DATA+"music.10.result.json",
+                   "title", [ "title", "surl", "mid" ])
   end
 
   def test_implicit_provider_not_created_when_configuring_localprovider

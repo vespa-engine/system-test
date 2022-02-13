@@ -20,7 +20,7 @@ class BucketActivationTest < SearchTest
     query = get_query(search_path)
     wait_for_hitcount(query, 10)
     assert_hitcount(get_query(), 10)
-    assert_result(get_query(), SEARCH_DATA+"music.10.result.xml", "title", ["title", "surl"])
+    assert_result(get_query(), SEARCH_DATA+"music.10.result.json", "title", ["title", "surl"])
   end
 
   def assert_job_metric

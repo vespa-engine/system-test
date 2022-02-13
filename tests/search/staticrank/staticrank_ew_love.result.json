@@ -1,0 +1,116 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 777,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_easy-to-love-the-songs-of-cole-porter_music_1921184364",
+                "relevance": 48.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_easy-to-love-the-songs-of-cole-porter_music_1921184364",
+                    "title": "Easy to Love: The Songs of Cole Porter",
+                    "artist": "Susannah McCorkle",
+                    "song": "Night & Day;Anything Goes;Just One Of Those Things;It's All Right With Me;Weren't We Fools?;From This Moment On;Who Wants To Be A Millionaire?;Why Don't We Try Staying Home?;You Do Something To Me;Easy To Love;Goodbye Little Dream, Goodbye;You'd Be So Nice To Come Home To;Let's Do It;Ev'rytime We Say Goodbye",
+                    "bgndata": "CD",
+                    "pto": 1798,
+                    "mid": 2,
+                    "ew": "love",
+                    "surl": "http://shopping.yahoo.com/p_easy-to-love-the-songs-of-cole-porter_music_1921184364",
+                    "userrate": 500,
+                    "pid": "1921184364",
+                    "weight": 48.0,
+                    "isbn": "013431469629",
+                    "fmt": "CD",
+                    "disp_song": "Night & Day;Anything Goes;Just One Of Those Things",
+                    "pfrom": 1307,
+                    "categories": "1804905773 1804905773 1804905798 1804905864 1804905864 1807865308 1804893726",
+                    "data": "CD13.07-17.98013431469629",
+                    "numreview": 1,
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/149711/amg1921184364_1940.jpg?rm_____DO1xIW9lP\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927006041",
+                    "newestedition": 19950906,
+                    "year": 1995,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_summer-of-love-woodstock-nation_music_1921617872",
+                "relevance": 46.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_summer-of-love-woodstock-nation_music_1921617872",
+                    "title": "Summer of Love: Woodstock Nation",
+                    "artist": "Various Artists",
+                    "song": "Introduction By The Author;Chet Helms, Originator Of The Family Dog, The Avalon Ballroom And Manager Of Big Brother And The...;A Generation X Actor Echoes The Words Of A Daring Young Patriot Publicly Burning His Draft Card ...;In This Clip, Recorded At Woodstock 94, A New Generation Comes To Party, And A Vietnam Vet Vents...;Actor Peter Coyote, Kindly Gives Us His Thoughts On The Emerging San Francisco Scene Back In '67;Peter Albin, Guitarists For Big Brother And The Holding Company, Recalls The Current Life And...;Kris Kristofferson Sounds Off On The Anything-Goes Late Sixties;In This Rare Clip Jimi Hendrix Sits Down To Talk With An Over-The-Top DJ In The Employ Of The US...;The Jimi Hendrix Experience Discusses The Amazing Circumstances Of Their Current Life And Times...;Kris Kristofferson Comments On Hendrix' s Tragic Death;Sixties' Folk Star Melanie Is Remembered For Her Unique Persona And Original Talents;Purple Haze (Melanie);Big Brother Sam Andrew Recalls The Rocky Relationship Between Janis Joplin And Bill Graham;Frisco Legend Wavy Gravy Sums Up The Unique Contribution Of The Fillmore;Former Rolling Stone Bill Wyman Recalls Contreversial Promoter Bill Graham;Mick Jagger Reflects On Everything That Is Beautiful. 1967;The Title Of The Hippest Of All Hippies Was At Varying Times Bestowed Upon Bob Dylan And John Lennon;In An Exclusive Interview Members Of The Fabled Bonzo Dog Doo Dah Band Recall The Totally Upside...;Ginger Baker, Magic Drummer For Cream, Remembers 1967;Mike Pinder Of The Moody Blues Recalls The Magic World Of The Sixties;Sixties' Veteran Denny Lane Sits Down For A Rare Interview;Angie McCartney Recalls Her Famous Stepson's Penchant For LSD Back In '67;George Harrison Takes A Long Look Back;A Social Scientist From The Trends Research Institute Defines The Generational Link Between The...;Joe Cocker Sounds Off At Woodstock '94;Michael Wadley, Director Of The 'Woodstock' Movie, Takes Issue With Corporate America' s...;Closing Statement By The Author;Guilano Remembers Richie Havens, Ben E. King And Denny Laine For Their Solid Commitment To...;Food For All (Homes For All) (Richie Havens, Ben E. King, Denny Laine, Ginger Baker And Geoffrey...",
+                    "bgndata": "CD",
+                    "pto": 1017,
+                    "mid": 2,
+                    "ew": "love",
+                    "surl": "http://shopping.yahoo.com/p_summer-of-love-woodstock-nation_music_1921617872",
+                    "pid": "1921617872",
+                    "weight": 46.0,
+                    "isbn": "018111283120",
+                    "fmt": "CD",
+                    "disp_song": "Introduction By The Author;Chet Helms, Originator Of The Family Dog, The Avalon Ballroom And Manager Of Big Brother And The...;A Generation X Actor Echoes The Words Of A Daring Young Patriot Publicly Burning His Draft Card ...",
+                    "pfrom": 549,
+                    "categories": "1804905720 1804905721 1807865278 1807865288 1804893726",
+                    "data": "CD5.49-10.17018111283120",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/139870/amg1921617872_1940.jpg?rm_____Dy0Qdh4EG\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "newestedition": 19970923,
+                    "year": 1997,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_transportation-communication-love_music_1921371079",
+                "relevance": 45.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_transportation-communication-love_music_1921371079",
+                    "title": "Transportation + Communication = Love",
+                    "artist": "Figurine",
+                    "song": "I Wait For You (By The Telephone);F-I-G-U-R-I-N-E;New Mate;An Electronic Address;S.O.S.;Batteries (Can't Help Me Now);Robots;My First UFO;The European Beauty;Tired Eyes;Digits;Eurodiscoteque;New Millenium Song;International Space Station;Secret Track;You (Recorded Live In Berlin);S...p...a...c...e;Zero Degrees;Our Song;Bonus Track 1",
+                    "bgndata": "CD",
+                    "pto": 2483,
+                    "mid": 2,
+                    "ew": "love",
+                    "surl": "http://shopping.yahoo.com/p_transportation-communication-love_music_1921371079",
+                    "pid": "1921371079",
+                    "weight": 45.0,
+                    "isbn": "708527705728,708527934425",
+                    "fmt": "CD",
+                    "disp_song": "I Wait For You (By The Telephone);F-I-G-U-R-I-N-E;New Mate",
+                    "pfrom": 1369,
+                    "categories": "1804905833 1804905848 1804905848 1804905849 1804893726",
+                    "data": "CD13.69-24.83708527934425",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/152290/amg1921371079_1940.jpg?rm_____De8Vb0SBu\" height=68 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927398934",
+                    "newestedition": 19991214,
+                    "year": 1999,
+                    "did": 66,
+                    "cbid": 2
+                }
+            }
+        ]
+    }
+}

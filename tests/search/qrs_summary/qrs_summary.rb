@@ -18,7 +18,7 @@ class QrsSummary < IndexedSearchTest
     feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.xml")
 
     puts "Query: search for concerto in music"
-    exp_result = selfdir + "music.result"
+    exp_result = selfdir + "music.result.json"
     assert_result("query=concerto", exp_result)
 
     puts "Change config (that backend rejects)"
@@ -29,7 +29,7 @@ class QrsSummary < IndexedSearchTest
     wait_for_hitcount("query=title:concerto", 1);
     # we can still search in default index due to backend config rejection
     assert_hitcount("query=concerto", 1);
-    exp_result = selfdir + "music.proton.result"
+    exp_result = selfdir + "music.proton.result.json"
     poll_compare("query=title:concerto", exp_result)
     
     # also check after a restart
@@ -40,7 +40,7 @@ class QrsSummary < IndexedSearchTest
     wait_for_hitcount("query=title:concerto", 1);
     # we can still search in default index due to backend config rejection
     assert_hitcount("query=concerto", 1);
-    exp_result = selfdir + "music.proton.result"
+    exp_result = selfdir + "music.proton.result.json"
     poll_compare("query=title:concerto", exp_result)
   end
 

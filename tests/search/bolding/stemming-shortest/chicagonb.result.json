@@ -1,0 +1,32 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:bolding::/shopping?id=1804905710",
+                "relevance": 2.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "bolding",
+                    "song": "Chicago Blues",
+                    "title": "Chicago Blues the number is increasing",
+                    "documentid": "id:test:bolding::/shopping?id=1804905710",
+                    "uri": "/shopping?id=1804905710",
+                    "order": 2
+                }
+            }
+        ]
+    }
+}

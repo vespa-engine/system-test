@@ -1,0 +1,104 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10000
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:simple::6466",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::6466",
+                    "title": "doc 6466 hash 296 val6466 type simple",
+                    "year": 1795,
+                    "odd": false,
+                    "lastname": "Zweig",
+                    "category": "products / electronics / computers",
+                    "lastname_lc": "zweig",
+                    "price": 153.32,
+                    "myrank": 6466.0
+                }
+            },
+            {
+                "id": "id:test:simple::8543",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::8543",
+                    "title": "doc 8543 hash 1139 val8543 type simple",
+                    "year": 1863,
+                    "odd": false,
+                    "lastname": "Zurcher",
+                    "category": "products / electronics / computers",
+                    "lastname_lc": "zurcher",
+                    "price": 165.47,
+                    "myrank": 8543.0
+                }
+            },
+            {
+                "id": "id:test:simple::517",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::517",
+                    "title": "doc 517 hash 517 val517 type simple",
+                    "year": 1888,
+                    "odd": false,
+                    "lastname": "Zurcher",
+                    "category": "products / electronics / phones",
+                    "lastname_lc": "zurcher",
+                    "price": 220.94,
+                    "myrank": 517.0
+                }
+            },
+            {
+                "id": "id:test:simple::5564",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5564",
+                    "title": "doc 5564 hash 628 val5564 type simple",
+                    "year": 1813,
+                    "odd": false,
+                    "lastname": "Zuleger",
+                    "category": "services / phone / premium with broadband",
+                    "lastname_lc": "zuleger",
+                    "price": 62.62,
+                    "myrank": 5564.0
+                }
+            },
+            {
+                "id": "id:test:simple::5823",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "documentid": "id:test:simple::5823",
+                    "title": "doc 5823 hash 887 val5823 type simple",
+                    "year": 1870,
+                    "odd": false,
+                    "lastname": "Zuern",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "zuern",
+                    "price": 261.48,
+                    "myrank": 5823.0
+                }
+            }
+        ]
+    }
+}

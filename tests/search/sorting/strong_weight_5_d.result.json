@@ -1,0 +1,107 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 24
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 30,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "errors": [
+            {
+                "code": 4,
+                "summary": "Invalid query parameter",
+                "source": "search",
+                "message": "The cluster search has no sortable attribute named: weight"
+            }
+        ],
+        "children": [
+            {
+                "id": "id:test:strong::10027",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10027",
+                    "name": "doc 10027 hash 73 val27",
+                    "year": 1821,
+                    "lastname": "Costa",
+                    "category": "products / apparel / clothing / womens / tops",
+                    "lastname_lc": "costa",
+                    "weight": 271.84,
+                    "myrank": 14.234
+                }
+            },
+            {
+                "id": "id:test:strong::10023",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10023",
+                    "name": "doc 10023 hash 69 val23",
+                    "year": 1858,
+                    "lastname": "Mosby",
+                    "category": "products / apparel / clothing / womens / shorts",
+                    "lastname_lc": "mosby",
+                    "weight": 271.74,
+                    "myrank": 28.234
+                }
+            },
+            {
+                "id": "id:test:strong::10017",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10017",
+                    "name": "doc 10017 hash 63 val17",
+                    "year": 1814,
+                    "lastname": "Yerman",
+                    "category": "products / apparel / clothing / womens / stockings",
+                    "lastname_lc": "yerman",
+                    "weight": 262.67,
+                    "myrank": 4.234
+                }
+            },
+            {
+                "id": "id:test:strong::10030",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10030",
+                    "name": "doc 10030 hash 76 val30",
+                    "year": 1797,
+                    "lastname": "Thacker",
+                    "category": "products / apparel / clothing / womens / shirts",
+                    "lastname_lc": "thacker",
+                    "weight": 246.28,
+                    "myrank": 11.234
+                }
+            },
+            {
+                "id": "id:test:strong::10016",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10016",
+                    "name": "doc 10016 hash 62 val16",
+                    "year": 1884,
+                    "lastname": "Cheatum",
+                    "category": "products / apparel / shoes",
+                    "lastname_lc": "cheatum",
+                    "weight": 238.38,
+                    "myrank": 15.234
+                }
+            }
+        ]
+    }
+}

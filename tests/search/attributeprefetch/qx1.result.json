@@ -1,0 +1,30 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:attr::a1",
+                "relevance": 0.3208484103718913,
+                "source": "search",
+                "fields": {
+                    "sddocname": "attr",
+                    "documentid": "id:test:attr::a1",
+                    "intfield": 1234567,
+                    "body": "x"
+                }
+            }
+        ]
+    }
+}

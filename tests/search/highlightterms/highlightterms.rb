@@ -17,7 +17,7 @@ class HighlightTerms < IndexedSearchTest
     start
     feed_and_wait_for_docs("music", 4, :file => selfdir+"music.10.xml", :timeout => 240)
     assert_result("query=sddocname:music",
-                   selfdir + "music.result.xml",
+                   selfdir + "music.result.json",
                    "jtitle", ["jtitle", "jcategories"])
   end
 
@@ -29,7 +29,7 @@ class HighlightTerms < IndexedSearchTest
                                              "rawQuery", "transformedQuery"))))
     start
     feed_and_wait_for_docs("music", 4, :file => selfdir + "musicbooks.10.xml")
-    assert_result("query=blues", selfdir + "musicbooks.result.xml", "title", ["title", "categories"])
+    assert_result("query=blues", selfdir + "musicbooks.result.json", "title", ["title", "categories"])
   end
 
   def test_highlightterms_ngram

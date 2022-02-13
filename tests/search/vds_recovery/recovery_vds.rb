@@ -23,7 +23,7 @@ class TestRecovery < IndexedSearchTest
     vespa.storage["storage"].wait_until_ready
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA + "music.10.xml")
     assert_result("query=sddocname:music",
-                   SEARCH_DATA+"music.10.result.xml",
+                   SEARCH_DATA+"music.10.result.json",
                    "title")
     puts "Stopping"
     vespa.stop_base
@@ -46,7 +46,7 @@ class TestRecovery < IndexedSearchTest
     puts "Got data from visiting, now check if we are fully recovered"
 
     assert_result("query=sddocname:music",
-                   SEARCH_DATA+"music.10.result.xml",
+                   SEARCH_DATA+"music.10.result.json",
                    "title")
   end
 

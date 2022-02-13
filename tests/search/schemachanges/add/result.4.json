@@ -1,0 +1,74 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 5
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 5,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:test::0",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::0",
+                    "f1": "a b"
+                }
+            },
+            {
+                "id": "id:test:test::1",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::1",
+                    "f1": "b c"
+                }
+            },
+            {
+                "id": "id:test:test::2",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::2",
+                    "f1": "c d",
+                    "f3": 32
+                }
+            },
+            {
+                "id": "id:test:test::3",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::3",
+                    "f1": "d e",
+                    "f3": 33,
+                    "f4": "f43"
+                }
+            },
+            {
+                "id": "id:test:test::4",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::4",
+                    "f1": "e f",
+                    "f3": 34,
+                    "f4": "f44"
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,121 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 5
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10000,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_la-famille-bach-a-l-orgue_music_1921575462",
+                "relevance": 0.09546559589987812,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_la-famille-bach-a-l-orgue_music_1921575462",
+                    "title": "La Famille Bach A L'Orgue",
+                    "artist": "François-Henri Houbart",
+                    "song": "Chorale for organ, \"Van Gott will ich nicht lassen\";Chorale for organ, \"Aus tiefer Not\";Chorale Prelude for organ, \"Aus meines Herzens Grunde\";Chorale for organ \"Von Gott will ich nicht lassen\";Partita sopra \"Du Friedefürst, Herr Jesu Christ\";Prelude and Fugue for organ in F minor, BWV534;Chorale prelude for organ (\"O Mensch, bewein dein Sünde gross\"), BWV 622;Fantasia for organ in G major, BWV 572;Wir danken dir, Herr Jesu Christ, chorale prelude for organ, F. 38/1/7 (BR A99);Fantasia & Fugue à 4, for keyboard in C minor \"No. 7\", H. 75.5, Wq. 119/7;Sonata, for organ in D major, H. 86, Wq. 70/5",
+                    "bgndata": "CD",
+                    "pto": -100,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_la-famille-bach-a-l-orgue_music_1921575462",
+                    "pid": "1921575462",
+                    "weight": 10.0,
+                    "isbn": "034069912820",
+                    "fmt": "CD",
+                    "disp_song": "Chorale for organ, \"Van Gott will ich nicht lassen\";Chorale for organ, \"Aus tiefer Not\";Chorale Prelude for organ, \"Aus meines Herzens Grunde\"",
+                    "categories": "1804951797 1804893726",
+                    "data": "CD034069912820",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/151929/amg1921575462_1940.jpg?rm_____DaK4KjFRO\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_fran-ois-granier_music_1927523970",
+                "relevance": 0.09546559589987812,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_fran-ois-granier_music_1927523970",
+                    "title": "François Granier",
+                    "pto": -1,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_fran-ois-granier_music_1927523970",
+                    "categories": "Artists",
+                    "bgnsellers": 0,
+                    "ew": "granier"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_fran-ois-meyer_music_1927616151",
+                "relevance": 0.09546559589987812,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_fran-ois-meyer_music_1927616151",
+                    "title": "François Meyer",
+                    "pto": -1,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_fran-ois-meyer_music_1927616151",
+                    "categories": "Artists",
+                    "bgnsellers": 0,
+                    "ew": "meyer"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_jean-fran-ois-detroy_music_1927700780",
+                "relevance": 0.040859697580015716,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_jean-fran-ois-detroy_music_1927700780",
+                    "title": "Jean-François Detroy",
+                    "pto": -1,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_jean-fran-ois-detroy_music_1927700780",
+                    "categories": "Artists",
+                    "bgnsellers": 0,
+                    "ew": "detroy"
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_liszt-marghieri-a-l-orgue-de-saint-fran-ois-de-sales-lyon-_music_1921540936",
+                "relevance": 0.0360338010610918,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_liszt-marghieri-a-l-orgue-de-saint-fran-ois-de-sales-lyon-_music_1921540936",
+                    "title": "Liszt/Marghieri/A L'orgue De Saint-François De Sales (Lyon)",
+                    "song": "Aux cypres de la vill d'Este I;Consolations en mi majeur;Trauerode;Angelus!;Evocation a la Chapelle Sixtine;Ouverture de l'oratorio La Legende de sainte Elisabeth;Aux cypres de la villa d'Este II",
+                    "bgndata": "CD",
+                    "pto": 1398,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_liszt-marghieri-a-l-orgue-de-saint-fran-ois-de-sales-lyon-_music_1921540936",
+                    "pid": "1921540936",
+                    "weight": 35.0,
+                    "isbn": "794881400423",
+                    "fmt": "CD",
+                    "disp_song": "Aux cypres de la vill d'Este I;Consolations en mi majeur;Trauerode",
+                    "categories": "1804951797 1804893726",
+                    "data": "CD13.98794881400423",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/148827/amg1921540936_1940.jpg?rm_____DFsHR_z9O\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "did": 66,
+                    "cbid": 2,
+                    "pfrom": 1398
+                }
+            }
+        ]
+    }
+}

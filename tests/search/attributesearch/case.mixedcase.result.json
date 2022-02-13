@@ -1,0 +1,37 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 5,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:test::1804905712",
+                "relevance": 0.0017429193899782135,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::1804905712",
+                    "title": [
+                        "MixedCase",
+                        "plus"
+                    ],
+                    "fstitle": [
+                        "MixedCase",
+                        "plus"
+                    ],
+                    "weight": 2600
+                }
+            }
+        ]
+    }
+}

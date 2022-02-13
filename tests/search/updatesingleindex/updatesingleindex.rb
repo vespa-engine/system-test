@@ -31,7 +31,7 @@ class UpdateSingleIndex < IndexedSearchTest
     assert_hitcount("query=sddocname:books&search=books", 10000)
     puts "Query: Blend matches from both"
     assert_result("query=world+modern",
-                  selfdir + "indexaddressing.4.result",
+                  selfdir + "indexaddressing.4.result.json",
                   "title", [ "title", "author", "artist", "mid" ])
 
 
@@ -56,7 +56,7 @@ class UpdateSingleIndex < IndexedSearchTest
 
     puts "Query: Match the 10 new docs in music"
     assert_result("query=sddocname:music&search=music",
-                   selfdir + "indexaddressing.2b.result",
+                   selfdir + "indexaddressing.2b.result.json",
                   "artist",
                   [ "author", "artist", "mid" ])
     puts "Query: Match all documents in books"
@@ -68,17 +68,17 @@ class UpdateSingleIndex < IndexedSearchTest
 
     puts "Query: Match the 15 new docs in books"
     assert_result("query=sddocname:books&search=books&hits=99",
-                  selfdir + "indexaddressing.3b.result",
+                  selfdir + "indexaddressing.3b.result.json",
                   "author",
                   [ "title", "author", "artist", "mid" ])
     puts "Query: Match the 10 new docs in music"
     assert_result("query=sddocname:music&search=music",
-                  selfdir + "indexaddressing.2b.result",
+                  selfdir + "indexaddressing.2b.result.json",
                   "artist",
                   [ "author", "artist", "mid" ])
     puts "Query: Blend matches from both"
     assert_result("query=modern",
-                  selfdir + "indexaddressing.5.result",
+                  selfdir + "indexaddressing.5.result.json",
                   "title",
                   [ "title", "author", "artist", "mid" ])
 

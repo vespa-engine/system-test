@@ -1,0 +1,32 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 5
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 5,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:ad::4",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "ad",
+                    "documentid": "id:test:ad::4",
+                    "my_budget": 5,
+                    "my_campaign_name": "morty",
+                    "campaign_ref": "id:test:campaign::morty",
+                    "score": 4
+                }
+            }
+        ]
+    }
+}

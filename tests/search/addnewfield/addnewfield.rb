@@ -23,7 +23,7 @@ class Addnewfield < IndexedStreamingSearchTest
 
     fields = ["title", "popularity", "documentid"]
 
-    assert_result(sddoc_query, selfdir+"result.10.xml", nil, fields)
+    assert_result(sddoc_query, selfdir+"result.10.json", nil, fields)
 
     # deploy config with extra document field
     deploy_output = deploy_app(SearchApp.new.sd(rename_and_use_sd_file(selfdir+"wnf-music.sd", "music.sd")))
@@ -40,7 +40,7 @@ class Addnewfield < IndexedStreamingSearchTest
     wait_for_hitcount(sddoc_query, 15)
 
     # getting old results should still work:
-    assert_result(sddoc_query, selfdir + "result.10.proton.xml", nil, fields)
+    assert_result(sddoc_query, selfdir + "result.10.proton.json", nil, fields)
 
     # add 1 document, this should force summary.cf merging:
     feed_and_wait_for_hitcount(sddoc_query, 16, :file => selfdir+"wnf.1.xml")
@@ -49,7 +49,7 @@ class Addnewfield < IndexedStreamingSearchTest
     wait_for_hitcount("query=newfield:field&streaming.selection=true&nocache", 1)
 
     # we should now see the new field in summary (in the new document only)
-    assert_result(sddoc_query + "&hits=99", selfdir + "result.16.proton.xml", nil, fields.push("newfield"))
+    assert_result(sddoc_query + "&hits=99", selfdir + "result.16.proton.json", nil, fields.push("newfield"))
   end
 
   def print_summary_config_ids

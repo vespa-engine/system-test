@@ -1,0 +1,88 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 30
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 30,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:strong::10001",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10001",
+                    "name": "doc 10001 hash 47 val1",
+                    "year": 1892,
+                    "category": "products / electronics / photo",
+                    "weight": 4.8,
+                    "myrank": 30.234
+                }
+            },
+            {
+                "id": "id:test:strong::10004",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10004",
+                    "name": "doc 10004 hash 50 val4",
+                    "year": 1886,
+                    "category": "services / phone / 300 minutes",
+                    "weight": 202.05,
+                    "myrank": 27.234
+                }
+            },
+            {
+                "id": "id:test:strong::10008",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10008",
+                    "name": "doc 10008 hash 54 val8",
+                    "year": 1799,
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "weight": 69.27,
+                    "myrank": 13.234
+                }
+            },
+            {
+                "id": "id:test:strong::10012",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10012",
+                    "name": "doc 10012 hash 58 val12",
+                    "year": 1828,
+                    "category": "services / phone / premium with broadband",
+                    "myrank": 29.234
+                }
+            },
+            {
+                "id": "id:test:strong::10020",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10020",
+                    "name": "doc 10020 hash 66 val20",
+                    "year": 1806,
+                    "category": "products / electronics / photo",
+                    "weight": 92.77,
+                    "myrank": 1.234
+                }
+            }
+        ]
+    }
+}

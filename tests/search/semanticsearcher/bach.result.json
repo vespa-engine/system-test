@@ -1,0 +1,137 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 39
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 777,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:music::9698",
+                "relevance": 1.0987510403552183,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::9698",
+                    "title": "Bach: Goldberg Variations BWV988; Well-Tempered Clavier, Book 2 No9",
+                    "artist": "Glenn Gould",
+                    "song": "Goldberg Variations: Aria;Goldberg Variations: Variation 1;Goldberg Variations: Variation 2;Goldberg Variations: Variation 3;Goldberg Variations: Variation 4;Goldberg Variations: Variation 5;Goldberg Variations: Variation 6;Goldberg Variations: Variation 7;Goldberg Variations: Variation 8;Goldberg Variations: Variation 9;Goldberg Variations: Variation 10;Goldberg Variations: Variation 11;Goldberg Variations: Variation 12;Goldberg Variations: Variation 13;Goldberg Variations: Variation 14;Goldberg Variations: Variation 15;Goldberg Variations: Variation 16;Goldberg Variations: Variation 17;Goldberg Variations: Variation 18;Goldberg Variations: Variation 19;Goldberg Variations: Variation 20;Goldberg Variations: Variation 21;Goldberg Variations: Variation 22;Goldberg Variations: Variation 23;Goldberg Variations: Variation 24;Goldberg Variations: Variation 25;Goldberg Variations: Variation 26;Goldberg Variations: Variation 27;Goldberg Variations: Variation 28;Goldberg Variations: Variation 29;Goldberg Variations: Variation 30;Goldberg Variations: Aria da capo;Fugue In F-Sharp Minor;Fugue In E Major",
+                    "weight": 976.0,
+                    "brand": "074645259420",
+                    "year": 1992
+                }
+            },
+            {
+                "id": "id:test:music::9822",
+                "relevance": 1.0952874611998376,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::9822",
+                    "title": "Bach: Goldberg Variations",
+                    "artist": "Triskelion",
+                    "song": "Goldberg Vars, BWV.988: Aria;Goldberg Vars, BWV.988: Var 1;Goldberg Vars, BWV.988: Var 2;Goldberg Vars, BWV.988: Var 3 (Canone All' Unisono);Goldberg Vars, BWV.988: Var 4;Goldberg Vars, BWV.988: Var 5;Goldberg Vars, BWV.988: Var 6 (Canone Alla Seconda);Goldberg Vars, BWV.988: Var 7 (Al Tempo Di Giga);Goldberg Vars, BWV.988: Var 8;Goldberg Vars, BWV.988: Var 9 (Canone Alla Terza);Goldberg Vars, BWV.988: Var 10 (Fugetta);Goldberg Vars, BWV.988: Var 11;Goldberg Vars, BWV.988: Var 12 (Canone Alla Quarta);Goldberg Vars, BWV.988: Var 13;Goldberg Vars, BWV.988: Var 14;Goldberg Vars, BWV.988: Var 15 (Canone Alla Quinta. Andante);Goldberg Vars, BWV.988: Var 16 (Ov);Goldberg Vars, BWV.988: Var 17;Goldberg Vars, BWV.988: Var 18 (Canone Alla Sesta);Goldberg Vars, BWV.988: Var 19;Goldberg Vars, BWV.988: Var 20;Goldberg Vars, BWV.988: Var 21 (Canone Alla Settima);Goldberg Vars, BWV.988: Var 22 (Alla Breve);Goldberg Vars, BWV.988: Var 23;Goldberg Vars, BWV.988: Var 24 (Canone All' Ottava);Goldberg Vars, BWV.988: Var 25 (Adagio);Goldberg Vars, BWV.988: Var 26;Goldberg Vars, BWV.988: Var 27 (Canone Alla Nona);Goldberg Vars, BWV.988: Var 28;Goldberg Vars, BWV.988: Var 29;Goldberg Vars, BWV.988: Var 30 (Quodlibet);Goldberg Vars, BWV.988: Aria;Goldberg Canons, BWV.1087: Canon 1-Canon Simplex;Goldberg Canons, BWV.1087: Canon 2-All' Roverscio;Goldberg Canons, BWV.1087: Canon 3-Beide Vorigen Canones Zugleich Motu Recto E Contrario;Goldberg Canons, BWV.1087: Canon 4-Motu Contrario E Recto;Goldberg Canons, BWV.1087: Canon 5-Canon Duplex;Goldberg Canons, BWV.1087: Canon 6-Canon Simplex Uber Besagtes Fundament;Goldberg Canons, BWV.1087: Canon 7-Idem;Goldberg Canons, BWV.1087: Canon 8-Canon Simplex, Il Soggetto In Alto;Goldberg Canons, BWV.1087: Canon 9-Canon In Unisono Post Semifusam;Goldberg Canons, BWV.1087: Canon 10: I. Alio Modo, Per Syncopationes Ot Per Ligaturas/II. Evolutio;Goldberg Canons, BWV.1087: Canon 11-Canon Duplex Ubers Fundament;Goldberg Canons, BWV.1087: Canon 12-Canon Duplex Uber Besagte Fundamental-Noten;Goldberg Canons, BWV.1087: Canon 13-Canon Triplex;Goldberg Canons, BWV.1087: Canon 14-Canon Per Augmentationen Et Diminutionen;Goldberg Vars, BWV.988: Final Aria",
+                    "weight": 968.0,
+                    "brand": "059582113028",
+                    "year": 1999
+                }
+            },
+            {
+                "id": "id:test:music::14522",
+                "relevance": 1.0752874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::14522",
+                    "title": "Italian Concerto / French Overture",
+                    "artist": "Bach / Gilbert",
+                    "song": "Duetto for keyboard No 1 in E minor (from Clavier-Übung 3) BWV 802;Duetto for keyboard No 2 in F major (from Clavier-Übung 3) BWV 803;Duetto for keyboard No 3 in G major (from Clavier-Übung 3) BWV 804;Duetto for keyboard No 4 in A minor (from Clavier-Übung 3) BWV 805;French Overture for keyboard in B minor, BWV 831",
+                    "weight": 948.0,
+                    "brand": "794881671625",
+                    "year": 2002
+                }
+            },
+            {
+                "id": "id:test:music::6263",
+                "relevance": 1.0264275388013444,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::6263",
+                    "title": "Bach: Concerto for keyboard solo BWV971; Chromatic Fantasia and Fugue in Dm",
+                    "artist": "Chantal Stigliani",
+                    "song": "Prelude and Fugue for organ in A minor, BWV 543;Chromatic Fantasia and Fugue for keyboard in D minor, BWV 903;Italian Concerto for keyboard solo in F major, BWV 971;Well tempered clavier book 1, No. 8 in E flat minor, BWV 853;Well tempered clavier book 1, No. 8 in E flat minor, BWV 853;English Suite for keyboard No. 1 in A major, BWV 806;English Suite for keyboard No. 2 in A minor, BWV 807;English Suite for keyboard No. 3 in G minor, BWV 808",
+                    "weight": 905.0,
+                    "brand": "778325940829",
+                    "year": 1997
+                }
+            },
+            {
+                "id": "id:test:music::914",
+                "relevance": 1.0072874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::914",
+                    "title": "Bach: St. John Passion (1725)",
+                    "song": "Part I: O Mensch, Bewein Dein Sunde Gross;Part I: Jesus Ging Mit Seinen Jungern/Jesum Von Nazareth/Jesus Spricht Zu Ihnen...;Part I: O Grosse Lieb;Part I: Auf Dass Das Wort Erfullet Wurde;Part I: Dein Will Gescheh, Herr ott, Zugleich;Part I: Die Schar Aber Und Der Oberhauptmann;Part I: Von Den Stricken;Part I: Simon Petrus Aber Folgete Jesu Nach;Part I: Ich Folge Dir Gleichfalls;Part I: Derselbige Junger War;Part I: Wer Hat Dich So Geschlagen;Part I: Himmel Reisse;Part I: Und Hannas Sandte Ihn Gebunden/Bist Du Nicht/Er Leugnete Aber Und Sprach;Part I: Zerschmettert Mich;Part I: Petrus, Der Nicht Denkt Zuruck;Part II: Christus, Der Uns Selig Macht;Part II: Da Fuhreten Sie Jesum/Ware Dieser Nicht Ein Ubeltater/Da Sprach Pilatus/Wir Durfen...;Part II: Ach, Grosser Konig;Part II: Da Sprach Pilatus Zu Ihm/Nicht Diesen/Barrabas Aber War Ein Morder;Part II: Ach Winder Euch Nicht So;Part II: Und Die Kriegsknechte/Sei Gegrusset, Lieber Judenkonig/Und Gaben Ihm Backenstreiche...;Part II: Durch Dein Gefangnis;Part II: Die Juden Abet Schrieen/Lassest Du Diesen Los/Da Pilatus Das Wort Horete/Weg, Weg Mit...;Part II: Eilt, Ihr Angefochtnen Seelen;Part II: Allda Kreuzigten Sie Ihn/Schreibe Nicht /Pilatus Antwortet;Part II: In Meines Herzens Grunde;Part II: Die Kreigknechte Aber/Lasset Uns Den Nicht Zerteilen/Auf Dass Erfullet Wurde Die Schrift;Part II: Er Nahm Alles Wohl In Acht;Part II: Und Von Stund An Nahm;Part II: Es Ist Vollbracht;Part II: Und Neiger Das Haupt Und Verschied;Part II: Mein Teurer Heiland;Part II: Und Siehe Da;Part II: Mein Herz;Part II: Zerfliesse, Mein Herze;Part II: Die Juden Aber;Part II: O Hilfm Christe;Part II: Darnach Bat Pilatum;Part II: Ruht Wohl;Part II: Christe, Du Lamm Gottes",
+                    "weight": 880.0,
+                    "brand": "099923747628",
+                    "year": 2001
+                }
+            },
+            {
+                "id": "id:test:music::11551",
+                "relevance": 1.0052874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::11551",
+                    "title": "Complete Flute Sonatas",
+                    "artist": "Bach / Wentz / Wuyts",
+                    "song": "Sonata for flute & keyboard in C major, BWV 1033;Sonata for flute & continuo in E minor, BWV 1034;Sonata for flute, violin & continuo in G major (spurious), BWV 1038;Partita for solo flute in A minor, BWV 1013;Sonata for flute & keyboard in E flat major, BWV 1031;Sonata for flute & keyboard in A major, BWV 1032;Sonata for flute & keyboard in B minor, BWV 1030;Sonata for flute & continuo in E major, BWV 1035;Work(s);Work(s);Work(s);Sonata for violin & keyboard in G minor (doubtful), BWV 1020;Sonata for 2 flutes & continuo in G major, BWV 1039",
+                    "weight": 878.0,
+                    "brand": "608917203028",
+                    "year": 2003
+                }
+            },
+            {
+                "id": "id:test:music::2707",
+                "relevance": 0.9958525392037951,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::2707",
+                    "title": "Franz Schubert: Die Schöne Müllerin",
+                    "artist": "Schreier, Peter/Olbertz, Walter",
+                    "song": "Die schone Mullerin - Op. 25, D795: Das Wandern (Das Wandern ist des Mullers Lust);Die schone Mullerin - Op. 25, D795: Wohin? (Ich hort' ein Bachlein rauschen);Die schone Mullerin - Op. 25, D795: Halt! (Eine Muhle seh ich blinken);Die schone Mullerin - Op. 25, D795: Danksagung an den Bach (War es also gemeint, mein rauschender Freund);Die schone Mullerin - Op. 25, D795: Am Feierabend (Hatt ich tausend Arme zu ruhren!);Die schone Mullerin - Op. 25, D795: Der Neugierige (Ich frage keine Blume);Die schone Mullerin - Op. 25, D795: Ungeduld (Ich Schnitt' es gern in alle Rinden ein);Die schone Mullerin - Op. 25, D795: Morgengruss (Guten Morgen, schone Mullerin!);Die schone Mullerin - Op. 25, D795: Des Mullers Blumen (Am Bach viele kleine Blumen stehn);Die schone Mullerin - Op. 25, D795: Tranenregen ((Wir sassen so traulich beisammen);Die schone Mullerin - Op. 25, D795: Mein! (Bachlein, lass dein Rauschen sein!);Die schone Mullerin - Op. 25, D795: Pause (Meine Laute hab ich gehangt an die Wand);Die schone Mullerin - Op. 25, D795: Mit dem grunen Lautenbande (Schad um das schone grune Band);Die schone Mullerin - Op. 25, D795: Der Jager (Was sucht denn der Jager am Muhlbach hier);Die schone Mullerin - Op. 25, D795: Eifersucht und Stolz (Wohin so schnell, so kraus und wild, mein lieber Bach?);Die schone Mullerin - Op. 25, D795: Die liebe Farbe (In Grun will ich mich kleiden);Die schone Mullerin - Op. 25, D795: Die bose Farbe (Ich mochte ziehn in die Welt hinaus);Die schone Mullerin - Op. 25, D795: Trockne Blumen (Ihr Blumlein alle, die sie mir gab);Die schone Mullerin - Op. 25, D795: Der Muller und der Bach (Wo ein treues Herze in Liebe vergeht);Die schone Mullerin - Op. 25, D795: Des Baches Wiegenlied (Gute Ruh, gute Ruh! Tu die Augen zu!)",
+                    "weight": 954.0,
+                    "brand": "782124928421",
+                    "year": 1996
+                }
+            },
+            {
+                "id": "id:test:music::12336",
+                "relevance": 0.9872874611998375,
+                "source": "search",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::12336",
+                    "title": "Bach: Sacred Cantatas, Vol. 5",
+                    "song": "Gott, der Herr, ist Sonn und Schild BWV 79: (Coro): 'Gott, der Herr, ist Sonn und Schild';Gott, der Herr, ist Sonn und Schild BWV 79: Aria (Alto): 'Gott ist unsre Sonn und Schild';Gott, der Herr, ist Sonn und Schild BWV 79: Choral (Coro): 'Nun danket alle Gott';Gott, der Herr, ist Sonn und Schild BWV 79: Recitativo (Basso): 'Gottlob, wir wissen den rechten Weg';Gott, der Herr, ist Sonn und Schild BWV 79: Aria (Duetto: Soprano, Basso): 'Gott, ach Gott, verlass die Deinen nimmermehr';Gott, der Herr, ist Sonn und Schild BWV 79: Choral (Coro): 'Erhalt uns in der Wahrheit';Ein feste Burg ist unser Gott BWV 80: (Coro): 'Ein feste Burg ist unser Gott';Ein feste Burg ist unser Gott BWV 80: Aria (Soprano, Basso): 'Mit unser Macht';Ein feste Burg ist unser Gott BWV 80: Recitativo (Basso): 'Erwage doch, Kind Gottes';Ein feste Burg ist unser Gott BWV 80: Aria (Soprano): 'Komm in mein Herzenshaus';Ein feste Burg ist unser Gott BWV 80: Choral (Coro): 'Und wenn die Welt voll Teufel war';Ein feste Burg ist unser Gott BWV 80: Recitativo (Tenore): 'So stehe denn bei Christi blutgefarbten Fahne';Ein feste Burg ist unser Gott BWV 80: Duetto (Alto, Tenore): 'Wie selig sind doch die';Ein feste Burg ist unser Gott BWV 80: Choral (Coro): 'Das Wort sie sollen lassen stahn';Jesus schlaft, was soll ich hoffen? BWV 81: Aria (Alto): 'Jesus schlaft, was soll ich hoffen?';Jesus schlaft, was soll ich hoffen? BWV 81: Recitativo (Tenore): 'Herr! warum trittest du so ferne?';Jesus schlaft, was soll ich hoffen? BWV 81: Aria (Tenore): 'Die schaumenden Wellen von Belials Bachen';Jesus schlaft, was soll ich hoffen? BWV 81: Arioso (Basso): 'Ihr Kleinglaubigen, wawrum seid ihr so furchtsam?';Jesus schlaft, was soll ich hoffen? BWV 81: Aria (Basso): 'Schweig, aufgeturmtes Meer!';Jesus schlaft, was soll ich hoffen? BWV 81: Recitativo (Alto): 'Wohl mir, mein Jesus spricht ein Wort';Jesus schlaft, was soll ich hoffen? BWV 81: Choral (Coro): 'Unter deinen Schirmen';Ich habe genung BWV 82: Aria (Basso): 'Ich habe genung';Ich habe genung BWV 82: Recitativo (Basso): 'Ich habe genung! Mein Trost ist nur allein';Ich habe genung BWV 82: Aria (Basso): 'Schlummert ein, ihr matten Augen';Ich habe genung BWV 82: Recitativo (Basso): 'Mein Gott! wann kommt das schone: Nun!';Ich habe genung BWV 82: Aria (Basso): 'Ich freue mich auf meinen Tod';Erfreute Zeit im neuen Bunde BWV 83: (Aria - Alto): 'Erfreute Zeit im neuen Bunde';Erfreute Zeit im neuen Bunde BWV 83: Aria - Recitativo (Basso): 'Herr, nun lassest du deinen Diener in Friede fahren';Erfreute Zeit im neuen Bunde BWV 83: Aria (Tenore): 'Eile, Herz, voll Freudigkeit';Erfreute Zeit im neuen Bunde BWV 83: Recitativo (Alto): 'Ja, merkt dein Glaube noch viel Finsternis';Erfreute Zeit im neuen Bunde BWV 83: Choral (Coro): 'Er ist das Heil und selig Licht';Ich bin vergnugt mit meinem Glucke: Aria (Soprano): 'Ich bin vergnugt mit meinem Glucke';Ich bin vergnugt mit meinem Glucke: Recitativo (Soprano): 'Gott ist mir ja nichts schuldig';Ich bin vergnugt mit meinem Glucke: Aria (Soprano): 'Ich esse mit Freuden mein weniges Brot';Ich bin vergnugt mit meinem Glucke: Recitativo (Soprano): 'Im Schweisse meines Angesichts';Ich bin vergnugt mit meinem Glucke: Choral (Coro): 'Ich leb indes in dir vergnuget';Ich bin ein guter Hirt: (Aria - Basso): 'Ich bin ein guter Hirt';Ich bin ein guter Hirt: Aria (Alto): 'Jesus ist ein guter Hirt';Ich bin ein guter Hirt: Choral (Soprano): 'Der Herr ist mein getreuer Hirt';Ich bin ein guter Hirt: Recitativo (Tenore): 'Wenn die Mietlinge schlafen';Ich bin ein guter Hirt: Aria (Tenore): 'Seht, was die Liebe tut';Ich bin ein guter Hirt: Choral (Coro): 'Ist Gott mein Schutz und treuer Hirt';Wahrlich, wahrlich, ich sage euch BWV 86: (Aria - Basso): 'Wahrlich, wahrlich, ich sage euch';Wahrlich, wahrlich, ich sage euch BWV 86: Aria (Alto): 'Ich will doch wohl Rosen brechen';Wahrlich, wahrlich, ich sage euch BWV 86: Choral (Soprano): 'Und was der ewig gutuge Gott';Wahrlich, wahrlich, ich sage euch BWV 86: Recitativo (Tenore): 'Gott macht es nicht gleich wie die Welt';Wahrlich, wahrlich, ich sage euch BWV 86: Aria (Tenore): 'Gott hilft gewiss';Wahrlich, wahrlich, ich sage euch BWV 86: Choral (Coro): 'Die Hoffnung wart' der rechten Zeit';Bisher habt ihr nichts gebeten in meinem Namen BWV 87: (Aria - Basso): 'Bisher habt ihr nichts gebeten in meinem Namen';Bisher habt ihr nichts gebeten in meinem Namen BWV 87: Recitativo (Alto): 'O Wort, das Geist und Seel erschreckt';Bisher habt ihr nichts gebeten in meinem Namen BWV 87: Aria (Alto);Bisher habt ihr nichts gebeten in meinem Namen BWV 87: Recitativo (Tenore);Bisher habt ihr nichts gebeten in meinem Namen BWV 87: (Aria - Basso): 'In der Welt habt ihr Angst';Bisher habt ihr nichts gebeten in meinem Namen BWV 87: Aria (Tenore): 'Ich will leiden, ich will schweigen';Bisher habt ihr nichts gebeten in meinem Namen BWV 87: Choral (Coro): 'Muss ich sein betrubet?';Siehe, ich will viel Fischer aussenden BWV 88: Aria (Basso): 'Siehe, ich will viel Fischer aussenden';Siehe, ich will viel Fischer aussenden BWV 88: Recitativo (Tenore) 'Wie leichtlich konnte doch der Hochste uns entbehren';Siehe, ich will viel Fischer aussenden BWV 88: Aria (Tenore): 'Nein, Gott ist allezeit geflissen';Siehe, ich will viel Fischer aussenden BWV 88: Recitativo - Aria (Tenore, Basso): 'Jesus sprach zu Simon';Siehe, ich will viel Fischer aussenden BWV 88: Duetto (Soprano, Alto): 'Beruft Gott selbst, so muss der Segen';Siehe, ich will viel Fischer aussenden BWV 88: Recitativo (Soprano): 'Was kann dich denn in deinem Wandel schrecken';Siehe, ich will viel Fischer aussenden BWV 88: Choral (Coro): 'Sing, bet und geh auf Gottes Wegen';Was soll ich aus dir machen, Ephraim? BWV 89: (Aria - Basso): 'Was soll ich aus dir machen, Ephraim?';Was soll ich aus dir machen, Ephraim? BWV 89: Recitativo (Alto): 'Ja, freilich sollte Gott';Was soll ich aus dir machen, Ephraim? BWV 89: Aria (Alto): 'Ein unbarmherziges Gerichte';Gustav Leonhardt: Recitativo (Soprano): 'Wohlan! mein Herze legt Zorn';Was soll ich aus dir machen, Ephraim? BWV 89: Aria (Soprano): 'Gerechter Gott, ach, rechnest du?';Was soll ich aus dir machen, Ephraim? BWV 89: Choral (Coro): 'Mir mangelt zwar sehr viel';Es reisset euch ein schrecklich Ende: Aria (Tenore): 'Es reisset euch ein schrecklich Ende';Es reisset euch ein schrecklich Ende: Recitativo (Alto): 'Des Hochsten Gute wird von Tag zu Tage neu';Es reisset euch ein schrecklich Ende: Aria (Basso): 'So loschet im Eifer der rachende Richter';Es reisset euch ein schrecklich Ende: Recitativo (Tenore): 'Doch Gottes Auge sieht auf uns als Auserwahlte';Es reisset euch ein schrecklich Ende: Choral (Coro): 'Leit uns mit deiner rechten Hand';Gelobet seist du, Jesu Christ BWV 91: (Coro): 'Gelobet seist du, Jesu Christ';Gelobet seist du, Jesu Christ BWV 91: Recitativo - Choral (Sorprano): 'Der Glanz der hochsten Herrlichkeit';Gelobet seist du, Jesu Christ BWV 91: Aria (Tenore): 'Gott, dem der Erdenkreis zu klein';Gelobet seist du, Jesu Christ BWV 91: Recitativo (Basso): 'O Christenheit, wohlan';Gelobet seist du, Jesu Christ BWV 91: Aria (Duetto: Soprano, Alto): 'Die Armut, so Gott auf sich nimmt';Gelobet seist du, Jesu Christ BWV 91: Choral (Coro): 'Das hat er alles uns getan';Ich hab in Gottes Herz und Sinn: (Coro): 'Ich hab in Gottes Herz und Sinn';Ich hab in Gottes Herz und Sinn: Recitativo - Choral (Basso): 'Es kann mir fehlen nimmermehr';Ich hab in Gottes Herz und Sinn: Aria (Tenore): 'Seht, seht! wie reisst, wie bricht, wie fallt';Ich hab in Gottes Herz und Sinn: Choral (Alto): 'Zudem ist Weisheit und Verstand';Ich hab in Gottes Herz und Sinn: Recitativo (Tenore): 'Wir wollen nun nicht langer zagen';Ich hab in Gottes Herz und Sinn: Aria (Basso): 'Das Brausen von den rauhen Winden';Ich hab in Gottes Herz und Sinn: Choral - Recitativo (Soprano, Tenore, Alto, Basso): 'Ei nun, mein Gott, so fall ich dir';Ich hab in Gottes Herz und Sinn: Aria (Soprano): 'Meinem Hirten bleib ich treu';Ich hab in Gottes Herz und Sinn: Choral (Coro): 'Soll ich denn auch des Todes Weg';Wer nur den lieben Gott lasst walten: Coro: 'Wer nur den lieben Gott lasst walten';Wer nur den lieben Gott lasst walten: Recitativo - Choral (Basso): 'Was helfen uns die schweren Sorgen';Wer nur den lieben Gott lasst walten: Aria (Tenore): 'Man halte nur ein wenig stille';Wer nur den lieben Gott lasst walten: Aria - Choral (Duetto: Soprano, Alto): 'Er kennt die rechten Freudenstunden';Wer nur den lieben Gott lasst walten: Recitativo - Choral (Tenore): 'Denk nicht in deiner Drangsalshitze';Wer nur den lieben Gott lasst walten: Aria (Soprano): 'Ich will auf den Herren schaun';Wer nur den lieben Gott lasst walten: Choral (Coro): 'Sing, bet und geh auf Gottes Wegen';Was frag ich nach der Welt BWV 94: (Coro): 'Was frag ich nach der Welt';Aria (Basso): 'Die Welt ist wie ein Rauch und Schatten';Recitativo - Choral (Tenore): 'Die Welt sucht Ehr und Ruhm bei hocherhabnen Leuten';Aria (Alto): 'Betorte Welt, betorte Welt!';Recitativo - Choral (Basso): 'Die Welt bekummert sich';Aria (Tenore): 'Die Welt kann ihre Lust und Freud;Was frag ich nach der Welt BWV 94: Aria (Soprano): 'Es halt es mit der blinden Welt';Was frag ich nach der Welt BWV 94: Choral (Coro): 'Was frag ich nach der Welt!';Christus, der ist mein Leben BWV 95: Coro - Recitativo (Tenore): 'Christus, der ist mein Leben';Christus, der ist mein Leben BWV 95: Recitativo (Soprano): 'Nun, falsche Welt';Christus, der ist mein Leben BWV 95: Choral (Soprano): 'Valet will ich dir geben';Christus, der ist mein Leben BWV 95: Recitativo (Tenore): 'Ach, konnte mir doch bald so wohl geschehen';Christus, der ist mein Leben BWV 95: Aria (Tenore): 'Ach, schlage doch bald';Christus, der ist mein Leben BWV 95: Recitativo (Basso): 'Denn ich weiss dies';Christus, der ist mein Leben BWV 95: Choral (Coro): 'Weil du vom Tod erstanden bist';Herr Christ, der einge Gottessohn BWV 96: Coro: 'Herr Christ, der einge Gottessohn';Herr Christ, der einge Gottessohn BWV 96: Recitativo (Alto): 'O Wunderkraft der Liebe';Herr Christ, der einge Gottessohn BWV 96: Aria (Tenore): 'Ach, ziehe die Seele mit Seilen der Liebe';Herr Christ, der einge Gottessohn BWV 96: Recitativo (Soprano): 'Ach, fuhre mich, o Gott';Herr Christ, der einge Gottessohn BWV 96: Aria (Basso): 'Bald zur Rechten, bald zur Linken';Herr Christ, der einge Gottessohn BWV 96: Choral (Coro): 'Ertot uns durch dein Gute';In allen meinen Taten, BWV 97: Coro: 'In allen meinen Taten';In allen meinen Taten, BWV 97: Aria (Basso): 'Nicht ist es spat und fruhe';In allen meinen Taten, BWV 97: Recitativo (Tenore): 'Es kann mir nichts geschehen';In allen meinen Taten, BWV 97: Aria (Tenore): 'Ich traue seiner Gnaden';In allen meinen Taten, BWV 97: Recitativo (Alto): 'Er wolle meiner Sunden';In allen meinen Taten, BWV 97: Aria (Alto): 'Leg ich mich spate nieder';In allen meinen Taten, BWV 97: Duetto (Soprano, Basso): 'Hat er es denn beschlossen';In allen meinen Taten, BWV 97: Aria (Soprano): 'Ihm hab ich mich ergeben';In allen meinen Taten, BWV 97: Choral (Coro): 'So sei nun, Seele, deine';Was Gott tt, das ist wohlgetan BWV 98: (Coro): 'Was Gott tt, das ist wohlgetan';Was Gott tt, das ist wohlgetan BWV 98: Recitativo (Tenore): 'Ach Gott! wenn wirst du mich einmal';Was Gott tt, das ist wohlgetan BWV 98: Aria (Soprano): 'Hort, ihr Augen, auf zu weinen';Was Gott tt, das ist wohlgetan BWV 98: Recitativo (Alto) 'Gott hat ein Herz, das des Erbarmens Uberfluss';Was Gott tt, das ist wohlgetan BWV 98: Aria (Basso): 'Meinen Jesum lass ich nicht';Was Gott tut, das ist wohlgetan BWV 99: (Coro): 'Was Gott tut, das ist wohlgetan';Was Gott tut, das ist wohlgetan BWV 99: Recitativo (Basso): 'Sein Wort der Wahrheit stehet fest';Was Gott tut, das ist wohlgetan BWV 99: Aria (Tenore): 'Erschuttre dich nur nicht, verzagte Seele';Was Gott tut, das ist wohlgetan BWV 99: Recitativo (Alto): 'Nun, der von Ewigkeit geschlossne Bund';Was Gott tut, das ist wohlgetan BWV 99: Aria (Duetto: Soprano, Alto): 'Wenn des Kreuzes Bitterkeiten';Was Gott tut, das ist wohlgetan BWV 99: Choral (Coro): 'Was Gott tut, das ist wohlgetan'",
+                    "weight": 860.0,
+                    "brand": "745099175924",
+                    "year": 1994
+                }
+            }
+        ]
+    }
+}

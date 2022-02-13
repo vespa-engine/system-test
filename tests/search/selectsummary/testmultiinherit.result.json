@@ -1,0 +1,29 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "index:search/0/887ef06c108e0c3d38dc319c",
+                "relevance": 3.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "derived2",
+                    "field1": "common",
+                    "field5": "f5d1"
+                }
+            }
+        ]
+    }
+}

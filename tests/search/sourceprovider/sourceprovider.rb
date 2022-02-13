@@ -45,7 +45,7 @@ class SourceProvider < IndexedSearchTest
 
     #Check that the result in the two groups are equal
     #Since we have groups, we have to parse the hits ourselves
-    groups = parseGroups(multiresult.xml)
+    groups = parseGroups(multiresult)
     (0..10).each {|i|
       assert_equal(groups["local"][i], groups["search"][i])
     }
@@ -53,7 +53,7 @@ class SourceProvider < IndexedSearchTest
     ##Test out properties
     sourceresult = search("sddocname:music&sources=search,local&source.search.hits=5&source.search.offset=5&source.local.offset=10&source.local.hits=15")
 
-    sourcegroups = parseGroups(sourceresult.xml)
+    sourcegroups = parseGroups(sourceresult)
 
     assert_equal(15, sourcegroups["local"].size)
     assert_equal(5, sourcegroups["search"].size)
@@ -61,7 +61,7 @@ class SourceProvider < IndexedSearchTest
 
     providerresult = search("sddocname:music&sources=local&provider.local.hits=15&source.local.hits=5&provider.local.offset=5")
 
-    providergroups = parseGroups(providerresult.xml)
+    providergroups = parseGroups(providerresult)
 
     assert_equal(5, providergroups["local"].size)
     assert_equal(groups["local"][5], providergroups["local"][0])
@@ -73,27 +73,16 @@ class SourceProvider < IndexedSearchTest
   end
 
 
-  def parseGroups(xml)
+  def parseGroups(res)
     groups = {}
-    xml.each_element("group") { |groupEl|
+    res.groupings.each do |name,groupEl|
       hits = []
-
-      groupEl.each_element("hit") { |hitEl|
-        if not hitEl.attributes["type"] == "logging" then
-          hits.push  Hit.new(hitEl)
-        end
-      }
-      # Ugly hack to handle a single level of nested, unnamed groups
-      groupEl.each_element("group") { |innerGroupEl|
-        hits = []
-        innerGroupEl.each_element("hit") { |hitEl|
-          if not hitEl.attributes["type"] == "logging" then
-            hits.push  Hit.new(hitEl)
-          end
-        }
-      }
-      groups[groupEl.attributes["source"]] = hits
-    }
+      groupEl['children'].each do |hitEl|
+        hitEl.delete('source')
+        hits.push Hit.new(hitEl)
+      end
+      groups[groupEl["source"]] = hits
+    end
     return groups
   end
 

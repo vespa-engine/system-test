@@ -22,13 +22,13 @@ class SchemaChangesWeightedSetParams < IndexedSearchTest
     puts "adding field f1 with create-if-nonexistent param"
     redeploy("test.2.sd")
     feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.1.json")
-    assert_result("sddocname:test&nocache", @test_dir + "result.0.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.0.json")
     puts "removing field f1"
     redeploy("test.1.sd")
     puts "adding field f1 with create-if-nonexistent and remove-if-zero params"
     redeploy("test.3.sd")
     feed_and_wait_for_docs("test", 3, :file => @test_dir + "feed.2.json")
-    assert_result("sddocname:test&nocache", @test_dir + "result.1.xml")
+    assert_result("sddocname:test&nocache", @test_dir + "result.1.json")
   end
 
   def teardown

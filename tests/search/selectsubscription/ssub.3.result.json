@@ -1,0 +1,53 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 5,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_car-wars-the-untold-story-of-the-world-s-premier-automakers-the-greatest-marketing-war-ever-waged_book_1955172826",
+                "relevance": 0.0017429193899782135,
+                "source": "books2",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_car-wars-the-untold-story-of-the-world-s-premier-automakers-the-greatest-marketing-war-ever-waged_book_1955172826",
+                    "title": "Car Wars: The Untold Story of the World's Premier Automakers & the Greatest Marketing War Ever Waged",
+                    "dispauthor": "Robert Sobel",
+                    "author": "Robert Sobel",
+                    "isbn": "none",
+                    "url": "http://shopping.yahoo.com/p_car-wars-the-untold-story-of-the-world-s-premier-automakers-the-greatest-marketing-war-ever-waged_book_1955172826",
+                    "categories": "2065001356,2065001599,2065001601",
+                    "mid": 3,
+                    "weight": 50.0
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_in-care-of-yellow-river-the-complete-civil-war-letters-of-pvt-elii-pinson-landers-to-his-mother_book_1955048274",
+                "relevance": 0.0017429193899782135,
+                "source": "books2",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_in-care-of-yellow-river-the-complete-civil-war-letters-of-pvt-elii-pinson-landers-to-his-mother_book_1955048274",
+                    "title": "In Care of Yellow River: The Complete Civil War Letters of Pvt. Elii Pinson Landers to His Mother",
+                    "dispauthor": "Eli Pinson Landers",
+                    "author": "Eli Pinson Landers,Elizabeth Whitley Roberson,Elizabeth Roberson",
+                    "isbn": "none",
+                    "url": "http://shopping.yahoo.com/p_in-care-of-yellow-river-the-complete-civil-war-letters-of-pvt-elii-pinson-landers-to-his-mother_book_1955048274",
+                    "categories": "2065002148,2065002149,2065002224,2065002229,2065002459,2065002460,2065002471",
+                    "mid": 3,
+                    "weight": 50.0
+                }
+            }
+        ]
+    }
+}

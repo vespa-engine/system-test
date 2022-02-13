@@ -1,0 +1,145 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 6
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 12,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:blogpost:blogpost::chat.5",
+                "relevance": 3.1601947391253704,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.5",
+                    "title": "No ***ing way! (was: omg! way! (was: omg! foo bar is so uncool!))",
+                    "author": "bff",
+                    "timestamp": 15,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.011764705882352941,
+                        "nativeRank": 0.14519473912537023,
+                        "termFieldMd(author).firstweight": 3.0,
+                        "termFieldMd(author).occurrences": 1.0,
+                        "termFieldMd(author).termsmatched": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::chat.8",
+                "relevance": 2.1516038811441973,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.8",
+                    "title": "Interview: Paris Hilton's talks about her new BFF,\n       denies rumours of fall-out over fight with fangirls about foo bar coolness",
+                    "author": "tv",
+                    "timestamp": 18,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.00784313725490196,
+                        "nativeRank": 0.13360388114419758,
+                        "termFieldMd(author).firstweight": 2.0,
+                        "termFieldMd(author).occurrences": 1.0,
+                        "termFieldMd(author).termsmatched": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::chat.2",
+                "relevance": 1.177181709710041,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.2",
+                    "title": "omg! foo bar is so uncool!",
+                    "author": "fangirl2",
+                    "timestamp": 12,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.00392156862745098,
+                        "nativeRank": 0.16518170971004106,
+                        "termFieldMd(author).firstweight": 1.0,
+                        "termFieldMd(author).occurrences": 1.0,
+                        "termFieldMd(author).termsmatched": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::chat.1",
+                "relevance": 1.1761817097100409,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.1",
+                    "title": "omg! foo bar is so cool!",
+                    "author": "fangirl1",
+                    "timestamp": 11,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.00392156862745098,
+                        "nativeRank": 0.16518170971004106,
+                        "termFieldMd(author).firstweight": 1.0,
+                        "termFieldMd(author).occurrences": 1.0,
+                        "termFieldMd(author).termsmatched": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::chat.4",
+                "relevance": 1.1645722680550286,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.4",
+                    "title": "omg! way! (was: omg! foo bar is so uncool!)",
+                    "author": "fangirl7",
+                    "timestamp": 14,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.00392156862745098,
+                        "nativeRank": 0.15057226805502852,
+                        "termFieldMd(author).firstweight": 1.0,
+                        "termFieldMd(author).occurrences": 1.0,
+                        "termFieldMd(author).termsmatched": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:blogpost:blogpost::chat.3",
+                "relevance": 1.1635722680550284,
+                "source": "search",
+                "fields": {
+                    "sddocname": "blogpost",
+                    "documentid": "id:blogpost:blogpost::chat.3",
+                    "title": "No way! (was: omg! foo bar is so uncool!)",
+                    "author": "fangirl1",
+                    "timestamp": 13,
+                    "summaryfeatures": {
+                        "attributeMatch(author).totalWeight": 0.0,
+                        "nativeAttributeMatch(author)": 0.00392156862745098,
+                        "nativeRank": 0.15057226805502852,
+                        "termFieldMd(author).firstweight": 1.0,
+                        "termFieldMd(author).occurrences": 1.0,
+                        "termFieldMd(author).termsmatched": 1.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

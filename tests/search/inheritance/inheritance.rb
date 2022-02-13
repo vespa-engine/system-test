@@ -29,12 +29,12 @@ class Inheritance < IndexedSearchTest
     wait_for_hitcount("query=rida&search=mp3", 1)
     wait_for_hitcount("query=make:foo&search=image", 1)
     assert_hitcount("query=rida&search=mp3", 1)
-    assert_result("query=rida&search=mp3", selfdir+"rida.result")
+    assert_result("query=rida&search=mp3", selfdir+"rida.result.json")
     assert_hitcount("query=uri.path:path&search=mp3", 1)
     assert_hitcount("query=site:foo.bar.com&search=mp3", 1)
     assert_hitcount("query=uri.path:path&search=image", 0)
     assert_hitcount("query=site:foo.bar.com&search=image", 0)
-    assert_result("query=make:foo&search=image", selfdir+"foo.result")
+    assert_result("query=make:foo&search=image", selfdir+"foo.result.json")
   end
 
   def teardown

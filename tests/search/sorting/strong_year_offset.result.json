@@ -1,0 +1,96 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 30
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 30,
+            "full": true,
+            "nodes": 1,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:strong::10025",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10025",
+                    "name": "doc 10025 hash 71 val25",
+                    "year": 1818,
+                    "lastname": "Kitson",
+                    "category": "services / mortgage / prime",
+                    "lastname_lc": "kitson",
+                    "weight": 76.3,
+                    "myrank": 6.234
+                }
+            },
+            {
+                "id": "id:test:strong::10027",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10027",
+                    "name": "doc 10027 hash 73 val27",
+                    "year": 1821,
+                    "lastname": "Costa",
+                    "category": "products / apparel / clothing / womens / tops",
+                    "lastname_lc": "costa",
+                    "weight": 271.84,
+                    "myrank": 14.234
+                }
+            },
+            {
+                "id": "id:test:strong::10018",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10018",
+                    "name": "doc 10018 hash 64 val18",
+                    "year": 1823,
+                    "lastname": "Carder",
+                    "category": "products / electronics / computers",
+                    "lastname_lc": "carder",
+                    "weight": 161.82,
+                    "myrank": 23.234
+                }
+            },
+            {
+                "id": "id:test:strong::10011",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10011",
+                    "name": "doc 10011 hash 57 val11",
+                    "year": 1825,
+                    "lastname": "Gaddy",
+                    "category": "products / apparel / clothing / womens / skirts",
+                    "lastname_lc": "gaddy",
+                    "weight": 186.91,
+                    "myrank": 10.234
+                }
+            },
+            {
+                "id": "id:test:strong::10012",
+                "relevance": 0.0,
+                "source": "search2",
+                "fields": {
+                    "sddocname": "strong",
+                    "documentid": "id:test:strong::10012",
+                    "name": "doc 10012 hash 58 val12",
+                    "year": 1828,
+                    "category": "services / phone / premium with broadband",
+                    "myrank": 29.234
+                }
+            }
+        ]
+    }
+}

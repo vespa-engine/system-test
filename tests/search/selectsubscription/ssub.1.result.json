@@ -1,0 +1,52 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 5,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_access-america-guide-to-the-southwestern-national-parks-an-atlas-and-guide-for-visitors-with-disabilities-_book_1955068427",
+                "relevance": 0.0017429193899782135,
+                "source": "books1",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_access-america-guide-to-the-southwestern-national-parks-an-atlas-and-guide-for-visitors-with-disabilities-_book_1955068427",
+                    "title": "Access America Guide to the Southwestern National Parks: an atlas and guide for visitors with disabilities /",
+                    "dispauthor": "Cartographic Northern Staff",
+                    "author": "Cartographic Northern Staff",
+                    "isbn": "1555844022",
+                    "url": "http://shopping.yahoo.com/p_access-america-guide-to-the-southwestern-national-parks-an-atlas-and-guide-for-visitors-with-disabilities-_book_1955068427",
+                    "mid": 1,
+                    "weight": 50.0
+                }
+            },
+            {
+                "id": "id:test:books::http://shopping.yahoo.com/p_carbon-dioxide-flooding_book_1955172970",
+                "relevance": 0.0017429193899782135,
+                "source": "books2",
+                "fields": {
+                    "sddocname": "books",
+                    "documentid": "id:test:books::http://shopping.yahoo.com/p_carbon-dioxide-flooding_book_1955172970",
+                    "title": "Carbon Dioxide Flooding",
+                    "dispauthor": "Mark A. Klins",
+                    "author": "Mark A. Klins",
+                    "isbn": "none",
+                    "url": "http://shopping.yahoo.com/p_carbon-dioxide-flooding_book_1955172970",
+                    "categories": "2065003026,2065003093,2065003099",
+                    "mid": 1,
+                    "weight": 0.0
+                }
+            }
+        ]
+    }
+}

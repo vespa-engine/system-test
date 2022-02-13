@@ -1,0 +1,43 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:book:book::2",
+                "relevance": 0.08171939516003143,
+                "source": "search",
+                "fields": {
+                    "sddocname": "book",
+                    "documentid": "id:book:book::2",
+                    "title": "Will You Please Be Quiet, Please?",
+                    "author": "Raymond Carver",
+                    "popularity": 10
+                }
+            },
+            {
+                "id": "id:book:book::1",
+                "relevance": 0.07394578062543775,
+                "source": "search",
+                "fields": {
+                    "sddocname": "book",
+                    "documentid": "id:book:book::1",
+                    "title": "Call If You Need Me: The Uncollected Fiction and Other Prose",
+                    "author": "Raymond Carver",
+                    "popularity": 12
+                }
+            }
+        ]
+    }
+}

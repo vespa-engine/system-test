@@ -1,0 +1,67 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 4
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:lr:t1::1",
+                "relevance": 45.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "t1",
+                    "documentid": "id:lr:t1::1",
+                    "title": "test document the first",
+                    "weight": 45,
+                    "year": 2000
+                }
+            },
+            {
+                "id": "id:lr:t1::7",
+                "relevance": 40.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "t1",
+                    "documentid": "id:lr:t1::7",
+                    "title": "test document the seventh",
+                    "weight": 40,
+                    "year": 1995
+                }
+            },
+            {
+                "id": "id:lr:t1::5",
+                "relevance": 38.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "t1",
+                    "documentid": "id:lr:t1::5",
+                    "title": "test document the fifth",
+                    "weight": 38,
+                    "year": 1998
+                }
+            },
+            {
+                "id": "id:lr:t1::3",
+                "relevance": 37.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "t1",
+                    "documentid": "id:lr:t1::3",
+                    "title": "test document the third",
+                    "weight": 37,
+                    "year": 2002
+                }
+            }
+        ]
+    }
+}

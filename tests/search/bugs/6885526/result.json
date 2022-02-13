@@ -1,0 +1,29 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:test::http://music.yahoo.com/metallica/BestOf",
+                "relevance": 0.37754900648443224,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "title": " <hi>best</hi> of\nmultiline on\ntitle\nfield\nMetallica",
+                    "documentid": "id:test:test::http://music.yahoo.com/metallica/BestOf"
+                }
+            }
+        ]
+    }
+}

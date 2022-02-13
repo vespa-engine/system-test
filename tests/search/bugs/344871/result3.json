@@ -1,0 +1,43 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:simple::http://fake2.fake/",
+                "relevance": 0.19093119179975623,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "description": "<hi>ｓｏｎｙ</hi> doublewidth",
+                    "title": "doublewidth test document ｏｎ",
+                    "documentid": "id:test:simple::http://fake2.fake/",
+                    "surl": "http://fake2.fake/"
+                }
+            },
+            {
+                "id": "id:test:simple::http://fake1.fake/",
+                "relevance": 0.08171939516003143,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple",
+                    "description": "test <hi>SONY</hi> test",
+                    "title": "ON test document",
+                    "documentid": "id:test:simple::http://fake1.fake/",
+                    "surl": "http://fake1.fake/"
+                }
+            }
+        ]
+    }
+}

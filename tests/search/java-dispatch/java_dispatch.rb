@@ -136,7 +136,7 @@ class JavaDispatchTest < SearchTest
 
   def fetch_grouped
     yql = "select+*+from+sources+*+where+f1+contains+%22word%22+%7C+all(group(f3)+each(output(count(),sum(f2))))%3B"
-    query = "yql=#{yql}&nocache&tracelevel=5"
+    query = "yql=#{yql}&nocache&tracelevel=5&format=xml"
     puts "query: #{query}"
 
     result = search(query)

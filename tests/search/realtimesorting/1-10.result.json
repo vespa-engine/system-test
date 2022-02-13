@@ -1,0 +1,149 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 10
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 10,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:base::10",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base",
+                    "documentid": "id:test:base::10",
+                    "uri": "10",
+                    "title": "title",
+                    "date": 10,
+                    "doctime": 10
+                }
+            },
+            {
+                "id": "id:test:base::9",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base",
+                    "documentid": "id:test:base::9",
+                    "uri": "9",
+                    "title": "title",
+                    "date": 9,
+                    "doctime": 9
+                }
+            },
+            {
+                "id": "id:test:base::8",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base",
+                    "documentid": "id:test:base::8",
+                    "uri": "8",
+                    "title": "title",
+                    "date": 8,
+                    "doctime": 8
+                }
+            },
+            {
+                "id": "id:test:base::7",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base",
+                    "documentid": "id:test:base::7",
+                    "uri": "7",
+                    "title": "title",
+                    "date": 7,
+                    "doctime": 7
+                }
+            },
+            {
+                "id": "id:test:base::6",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base",
+                    "documentid": "id:test:base::6",
+                    "uri": "6",
+                    "title": "title",
+                    "date": 6,
+                    "doctime": 6
+                }
+            },
+            {
+                "id": "id:test:base::5",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base",
+                    "documentid": "id:test:base::5",
+                    "uri": "5",
+                    "title": "title",
+                    "date": 5,
+                    "doctime": 5
+                }
+            },
+            {
+                "id": "id:test:base::4",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base",
+                    "documentid": "id:test:base::4",
+                    "uri": "4",
+                    "title": "title",
+                    "date": 4,
+                    "doctime": 4
+                }
+            },
+            {
+                "id": "id:test:base::3",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base",
+                    "documentid": "id:test:base::3",
+                    "uri": "3",
+                    "title": "title",
+                    "date": 3,
+                    "doctime": 3
+                }
+            },
+            {
+                "id": "id:test:base::2",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base",
+                    "documentid": "id:test:base::2",
+                    "uri": "2",
+                    "title": "title",
+                    "date": 2,
+                    "doctime": 2
+                }
+            },
+            {
+                "id": "id:test:base::1",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "base",
+                    "documentid": "id:test:base::1",
+                    "uri": "1",
+                    "title": "title",
+                    "date": 1,
+                    "doctime": 1
+                }
+            }
+        ]
+    }
+}

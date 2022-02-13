@@ -16,15 +16,15 @@ class RealtimeSorting < IndexedSearchTest
     filter = /<field name="date">/
     query= "query=title:title&sorting=%2ddate&hits=10&nocache"
     puts "Detail: " + query
-    assert_result_matches(query,selfdir+"1-10.result",filter)
+    assert_result(query,selfdir+"1-10.result.json", nil, [ 'date' ])
 
     feed_and_wait_for_docs("base", 20, :file => selfdir+"11-20.xml")
     puts "Detail: " + query
-    assert_result_matches(query,selfdir+"11-20.result",filter)
+    assert_result(query,selfdir+"11-20.result.json", nil, [ 'date' ])
 
     query= "query=title:title&sorting=%2ddate&hits=15&nocache"
     puts "Detail: " + query
-    assert_result_matches(query,selfdir+"6-20.result",filter)
+    assert_result(query,selfdir+"6-20.result.json", nil, [ 'date' ])
   end
 
   def teardown

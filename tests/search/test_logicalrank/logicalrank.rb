@@ -19,10 +19,10 @@ class Test_LogicalRank < IndexedSearchTest
      wait_for_hitcount("query=test", 8)
 
      puts "Query: four matches, sorted on weight"
-     assert_result("query=test&search=t1", selfdir + "result.1")
+     assert_result("query=test&search=t1", selfdir + "result.1.json")
 
      puts "Query: four matches, sorted on year"
-     assert_result("query=test&search=t2", selfdir + "result.2")
+     assert_result("query=test&search=t2", selfdir + "result.2.json")
 
   end
 
