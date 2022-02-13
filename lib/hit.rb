@@ -75,7 +75,6 @@ class Hit
 
       if fieldname == 'summaryfeatures' and fieldvalue[0] == '{'
         sf = JSON.parse(fieldvalue)
-        sf.delete('vespa.summaryFeatures.cached')
         add_field(fieldname, sf)
       elsif fieldname == 'rankfeatures' and fieldvalue[0] == '{'
         rf = JSON.parse(fieldvalue)
@@ -113,6 +112,9 @@ class Hit
     if fieldvalue.instance_of?(Array)
       items = fieldvalue.sort {|a, b| array_sort_cmp(a, b) }
       fieldvalue = items
+    end
+    if fieldname == 'summaryfeatures' && fieldvalue.instance_of?(Hash)
+      fieldvalue.delete('vespa.summaryFeatures.cached')
     end
     @field[fieldname] = fieldvalue
   end
