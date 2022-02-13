@@ -28,7 +28,7 @@ class ManyManyHits < IndexedSearchTest
     feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
 
     timeout=30
-    query = "/?query=mid:2&hits=10000&nocache"
+    query = "/?query=mid:2&hits=10000&nocache&format=xml"
 
     puts "running query once..."
     result = save_result_with_timeout(timeout, query, "#{Environment.instance.vespa_home}/tmp/mmhresult.1.xml")
@@ -68,7 +68,7 @@ class ManyManyHits < IndexedSearchTest
     feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
 
     timeout=30
-    query = "/?query=mid:2&hits=10000&nocache"
+    query = "/?query=mid:2&hits=10000&nocache&format=xml"
 
     search_with_timeout(timeout, query)
     search_with_timeout(timeout, query)

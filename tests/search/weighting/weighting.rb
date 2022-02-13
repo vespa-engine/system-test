@@ -13,29 +13,29 @@ class Weighting < IndexedSearchTest
     feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
   end
 
-  def test_weighting
+  def q(tw = nil)
+    q1 = '/search/?yql=select+%2A+from+sources+%2A+where+%28'
+    q2 = 'title+contains+%22jackson%22'
+    q3 = '+OR+artist+contains+%22jackson%22'
+    q4 = '%29+limit+21%3B&format=xml'
+    if tw
+      q2 = 'title+contains+%28%5B%7B%22weight%22%3A+' + tw.to_s + '%7D%5D%22jackson%22%29'
+    end
+    query = q1 + q2 + q3 + q4
+    return query
+  end
 
+  def test_weighting
     puts "Check that 100 is the default weighting"
-    assert_queries_match("query=select%20%2A%20from%20sources%20%2A%20where%20%28title%20contains%20%28%5B%7B%22weight%22%3A%20100%7D%5D%22jackson%22%29%20OR%20artist%20contains%20%22jackson%22%29%20limit%2021%3B&type=yql",
-			 "query=select%20%2A%20from%20sources%20%2A%20where%20%28title%20contains%20%22jackson%22%20OR%20artist%20contains%20%22jackson%22%29%20limit%2021%3B&type=yql")
+    assert_queries_match(q(100), q())
 
     puts "Reduce the weight of a term by 50%, check that hits are the same, but ordering different"
-    assert_queries_match("query=select%20%2A%20from%20sources%20%2A%20where%20%28title%20contains%20%28%5B%7B%22weight%22%3A%2050%7D%5D%22jackson%22%29%20OR%20artist%20contains%20%22jackson%22%29%20limit%2021%3B&type=yql",
-			 "query=select%20%2A%20from%20sources%20%2A%20where%20%28title%20contains%20%22jackson%22%20OR%20artist%20contains%20%22jackson%22%29%20limit%2021%3B&type=yql",
-			 "name=\"surl\"", true)
+    assert_queries_match(q(50), q(), 'name="surl"', true)
+    assert_not_queries_match(q(50), q(), 'name="surl"', false)
 
-    assert_not_queries_match("query=select%20%2A%20from%20sources%20%2A%20where%20%28title%20contains%20%28%5B%7B%22weight%22%3A%2050%7D%5D%22jackson%22%29%20OR%20artist%20contains%20%22jackson%22%29%20limit%2021%3B&type=yql",
-			     "query=select%20%2A%20from%20sources%20%2A%20where%20%28title%20contains%20%22jackson%22%20OR%20artist%20contains%20%22jackson%22%29%20limit%2021%3B&type=yql",
-			     "name=\"surl\"", false)
-
-    puts "Increase the weight of a term by 10%, check that hits are the same, but ordering different"
-    assert_queries_match("query=select%20%2A%20from%20sources%20%2A%20where%20%28title%20contains%20%28%5B%7B%22weight%22%3A%20110%7D%5D%22jackson%22%29%20OR%20artist%20contains%20%22jackson%22%29%20limit%2021%3B&type=yql",
-			 "query=select%20%2A%20from%20sources%20%2A%20where%20%28title%20contains%20%22jackson%22%20OR%20artist%20contains%20%22jackson%22%29%20limit%2021%3B&type=yql",
-			 "name=\"surl\"", true)
-
-    assert_not_queries_match("query=select%20%2A%20from%20sources%20%2A%20where%20%28title%20contains%20%28%5B%7B%22weight%22%3A%2050%7D%5D%22jackson%22%29%20OR%20artist%20contains%20%22jackson%22%29%20limit%2021%3B&type=yql",
-			     "query=select%20%2A%20from%20sources%20%2A%20where%20%28title%20contains%20%22jackson%22%20OR%20artist%20contains%20%22jackson%22%29%20limit%2021%3B&type=yql",
-			     "name=\"surl\"", false)
+    puts "Increase the weight of a term by 150%, check that hits are the same, but ordering different"
+    assert_queries_match(q(250), q(), 'name="surl"', true)
+    assert_not_queries_match(q(250), q(), 'name="surl"', false)
 
     puts "Check that !(bang) equals a weight of 150%"
     assert_queries_match("query=title:jackson!+artist:jackson&type=any&hits=21",
@@ -44,7 +44,6 @@ class Weighting < IndexedSearchTest
     puts "Check that !!(double bang) equals a weight of 200%"
     assert_queries_match("query=title:jackson!!+artist:jackson&type=any&hits=21",
 			 "query=title:jackson!200+artist:jackson&type=any&hits=21")
-
   end
 
   def test_weighting_cap

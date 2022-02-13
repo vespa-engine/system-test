@@ -15,7 +15,7 @@ class EncodingTest < IndexedSearchTest
 
     wait_for_hitcount("query=test", 2)
 
-    result = search("/?query=test")
+    result = search("/?query=test&format=xml")
 
     assert_equal(2, result.hit.size)
     assert_equal("<hi>test</hi> <hi>test</hi> document1",
@@ -23,7 +23,7 @@ class EncodingTest < IndexedSearchTest
     assert_equal("document2 <hi>test</hi>",
                  result.hit[1].field["title"]);
 
-    result = search("/?query=bl%C3%A5b%C3%A6r&encoding=iso-8859-1&tracelevel=3")
+    result = search("/?query=bl%C3%A5b%C3%A6r&encoding=iso-8859-1&tracelevel=3&format=xml")
     # TODO remove this debug printout and the above tracelevel when we find the bug
     if (result.hit.size != 1) then
       puts "Wrong number of hits: #{result.hit.size}"
@@ -39,13 +39,13 @@ class EncodingTest < IndexedSearchTest
     # Check that it is converted correctly to UTF-8 by the XML parser.
     assert_equal(to_utf8("Bjørnen spiser <hi>blåbær</hi> på en øy i nærheten."), result.hit[0].field["description"])
 
-    result = search("/?query=bl%C3%A5b%C3%A6r&encoding=utf-8")
+    result = search("/?query=bl%C3%A5b%C3%A6r&encoding=utf-8&format=xml")
     assert_equal(1, result.hit.size)
     assert(result.xmldata.index("encoding=\"utf-8\""))
     assert_equal("test test document1", result.hit[0].field["title"])
     assert_equal(to_utf8("Bjørnen spiser <hi>blåbær</hi> på en øy i nærheten."), result.hit[0].field["description"])
 
-    result = search("/?query=document2&encoding=euc-jp")
+    result = search("/?query=document2&encoding=euc-jp&format=xml")
     assert_equal(1, result.hit.size)
     assert(result.xmldata.index("encoding=\"euc-jp\""))
     assert_equal("<hi>document2</hi> test", result.hit[0].field["title"])

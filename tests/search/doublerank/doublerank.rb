@@ -19,7 +19,7 @@ class DoubleRank < IndexedSearchTest
   end
 
   def test_doublerank
-    result =  search("/?query=cluster:1+cluster:2&type=any&hits=20")
+    result =  search("/?query=cluster:1+cluster:2&type=any&hits=20&format=xml")
     assert result.hit[0].field["relevancy"] == "4.123123123123E12"
     assert result.hit[1].field["relevancy"] == "1000.0"
     assert result.hit[2].field["relevancy"].slice(0, 14) == "2.718281828459"

@@ -20,6 +20,7 @@ class MatchCount < IndexedSearchTest
     query += "&ranking.properties.vespa.execute.onmatch.attribute=match_count&ranking.properties.vespa.execute.onmatch.operation=#{onmatch}" if onmatch
     query += "&ranking.properties.vespa.execute.onrerank.attribute=second_phase_count&ranking.properties.vespa.execute.onrerank.operation=#{onrerank}" if onrerank
     query += "&ranking.properties.vespa.execute.onsummary.attribute=summary_count&ranking.properties.vespa.execute.onsummary.operation=#{onsummary}" if onsummary
+    query += '&format=xml'
     assert_hitcount(query, hitcount)
     r = search(query_in)
     assert_equal(expected, r.hit)
@@ -30,7 +31,7 @@ class MatchCount < IndexedSearchTest
                          {"id" => "1", "relevancy" => "1.0"}])
     cmp_fields = ["id", "match_count", "first_phase_count", "second_phase_count", "summary_count", "relevancy"]
     expected.setcomparablefields(cmp_fields)
-    query="query=sddocname:#{type}&summary=all_fast&ranking=rank1"
+    query="query=sddocname:#{type}&summary=all_fast&ranking=rank1&format=xml"
     set_counts(expected.hits[0],7,0,0,0)
     set_counts(expected.hits[1],7,0,0,0)
     verify_query(query, 2, expected)
@@ -67,7 +68,7 @@ class MatchCount < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
     feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.xml")
-    query="query=sddocname:test&summary=all_fast"
+    query="query=sddocname:test&summary=all_fast&format=xml"
     expected = Hits.new([{"id" => "2", "relevancy" => "2.0"},
                          {"id" => "1", "relevancy" => "1.0"}])
     cmp_fields = ["id", "match_count", "first_phase_count", "second_phase_count", "summary_count", "relevancy"]

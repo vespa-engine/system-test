@@ -13,7 +13,7 @@ class TimingOutput < IndexedSearchTest
   end
 
   def test_timing_is_emitted
-    result = search("/?query=blues&hits=1&presentation.timing")
+    result = search("/?query=blues&hits=1&presentation.timing&format=xml")
     assert_match("querytime=", result.xmldata)
     assert_match("summaryfetchtime=", result.xmldata)
     assert_match("searchtime=", result.xmldata)

@@ -34,12 +34,12 @@ class NumTerm < IndexedStreamingSearchTest
     assert_hitcount("query=d:23.92&streaming.userid=1234",1)
 
     puts "BOLDING:"
-    res = search("query=b:23.5&streaming.userid=1234").xmldata
+    res = search("query=b:23.5&streaming.userid=1234&format=xml").xmldata
     puts res
     assert(res.include?("field name=\"b\"><hi>23"))
 
     puts "DYNAMIC:"
-    res = search("query=d:23.92&streaming.userid=1234").xmldata
+    res = search("query=d:23.92&streaming.userid=1234&format=xml").xmldata
     puts res
     assert(res.include?("field name=\"d\"><hi>23"))
 

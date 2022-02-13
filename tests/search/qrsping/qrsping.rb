@@ -17,7 +17,7 @@ class QrsPing < IndexedSearchTest
     stop_searchcluster
 
     puts "Running query"
-    query = "/?query=blues"
+    query = "/?query=blues&format=xml"
     result = search_with_timeout(5, query)
     puts "Query result:"
     puts result.xmldata

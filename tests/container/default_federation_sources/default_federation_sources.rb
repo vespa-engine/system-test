@@ -16,7 +16,7 @@ class DefaultFederationSources < SearchContainerTest
   end
 
   def test_default_sources_in_default_federation
-    result = search("ignored")
+    result = search("ignored&format=xml")
 
     titles = get_sorted_titles(result)
     assert_equal(5, titles.length)
@@ -31,7 +31,7 @@ class DefaultFederationSources < SearchContainerTest
   end
 
   def test_default_sources_in_custom_federation
-    result = search("?searchChain=custom_federation")
+    result = search("?searchChain=custom_federation&format=xml")
 
     titles = get_sorted_titles(result)
 
@@ -44,7 +44,7 @@ class DefaultFederationSources < SearchContainerTest
   end
 
   def test_non_default_sources_in_custom_federation
-    result = search("?searchChain=custom_federation&sources=source2")
+    result = search("?searchChain=custom_federation&sources=source2&format=xml")
 
     titles = get_sorted_titles(result)
 
