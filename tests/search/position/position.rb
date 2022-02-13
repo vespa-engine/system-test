@@ -43,9 +43,9 @@ class Position < IndexedSearchTest
     start
     feed_and_wait_for_docs("#{type}_pos", hits, :file => "#{selfdir}/#{type}_feed.xml")
     run_query("query=sddocname:#{type}_pos&pos.ll=E98.987000%3BN12.123000",
-              "#{selfdir}/#{type}_result1.xml");
+              "#{selfdir}/#{type}_result1.json");
     run_query("query=sddocname:#{type}_pos&pos.ll=E98.987987%3BN12.123123",
-              "#{selfdir}/#{type}_result2.xml");
+              "#{selfdir}/#{type}_result2.json");
   end
 
   def run_query(query, file)
