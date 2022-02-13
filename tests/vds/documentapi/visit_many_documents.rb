@@ -7,7 +7,8 @@ class VisitManyDocumentsTest < VdsTest
     set_owner("geirst")
     deploy_app(default_app.distribution_bits(8))
     container = (vespa.qrserver["0"] or vespa.container.values.first)
-    container.execute("gcc -g -O3 -o #{dirs.tmpdir}/docs #{selfdir}/docs.cpp")
+    @tmp_bin_dir = container.create_tmp_bin_dir
+    container.execute("gcc -g -O3 -o #{@tmp_bin_dir}/docs #{selfdir}/docs.cpp")
     start
     @num_users = 500
     @docs_per_user = 100
@@ -20,7 +21,7 @@ class VisitManyDocumentsTest < VdsTest
 
   def feed_documents
     container = (vespa.qrserver["0"] or vespa.container.values.first)
-    container.execute("#{dirs.tmpdir}/docs #{@num_users} #{@docs_per_user}| vespa-feed-perf")
+    container.execute("#{@tmp_bin_dir}/docs #{@num_users} #{@docs_per_user}| vespa-feed-perf")
   end
 
   def test_visit_many_documents
