@@ -26,53 +26,46 @@ class SyntheticMinus < IndexedSearchTest
     end
   end
 
-  def check_hitcount(q, n)
-    r = search(q)
-    m = /result total-hit-count="(\d+)"/.match(r.xmldata)
-    assert(m, "did not find hitcount in search result, got:\n#{r.xmldata}")
-    assert_equal(n.to_s, m[1], "wrong hitcount in search result")
-  end
-
   def test_synthetic_minus
     feed_and_wait_for_docs("music", 64, :file => selfdir+"minus.docs.xml")
 
     puts "searching combinations 1..."
     each_comb(["use", "the", "force", "luke"], 2) do |words|
-      check_hitcount("query=#{words[0]}+-#{words[1]}", 11)
-      check_hitcount("query=-#{words[0]}+#{words[1]}", 11)
+      assert_hitcount("query=#{words[0]}+-#{words[1]}", 11)
+      assert_hitcount("query=-#{words[0]}+#{words[1]}", 11)
     end
 
     puts "searching combinations 2..."
     each_comb(["use", "the", "force", "luke"], 3) do |words|
-      check_hitcount("query=-#{words[0]}+#{words[1]}+#{words[2]}", 8)
-      check_hitcount("query=#{words[0]}+-#{words[1]}+#{words[2]}", 8)
-      check_hitcount("query=#{words[0]}+#{words[1]}+-#{words[2]}", 8)
+      assert_hitcount("query=-#{words[0]}+#{words[1]}+#{words[2]}", 8)
+      assert_hitcount("query=#{words[0]}+-#{words[1]}+#{words[2]}", 8)
+      assert_hitcount("query=#{words[0]}+#{words[1]}+-#{words[2]}", 8)
 
-      check_hitcount("query=-#{words[0]}+-#{words[1]}+#{words[2]}", 3)
-      check_hitcount("query=#{words[0]}+-#{words[1]}+-#{words[2]}", 3)
-      check_hitcount("query=-#{words[0]}+#{words[1]}+-#{words[2]}", 3)
+      assert_hitcount("query=-#{words[0]}+-#{words[1]}+#{words[2]}", 3)
+      assert_hitcount("query=#{words[0]}+-#{words[1]}+-#{words[2]}", 3)
+      assert_hitcount("query=-#{words[0]}+#{words[1]}+-#{words[2]}", 3)
     end
 
     puts "searching combinations 3..."
     each_comb(["use", "the", "force", "luke"], 4) do |words|
-      check_hitcount("query=-#{words[0]}+#{words[1]}+#{words[2]}+#{words[3]}", 6)
-      check_hitcount("query=#{words[0]}+-#{words[1]}+#{words[2]}+#{words[3]}", 6)
-      check_hitcount("query=#{words[0]}+#{words[1]}+-#{words[2]}+#{words[3]}", 6)
-      check_hitcount("query=#{words[0]}+#{words[1]}+#{words[2]}+-#{words[3]}", 6)
+      assert_hitcount("query=-#{words[0]}+#{words[1]}+#{words[2]}+#{words[3]}", 6)
+      assert_hitcount("query=#{words[0]}+-#{words[1]}+#{words[2]}+#{words[3]}", 6)
+      assert_hitcount("query=#{words[0]}+#{words[1]}+-#{words[2]}+#{words[3]}", 6)
+      assert_hitcount("query=#{words[0]}+#{words[1]}+#{words[2]}+-#{words[3]}", 6)
 
-      check_hitcount("query=-#{words[0]}+-#{words[1]}+#{words[2]}+#{words[3]}", 2)
-      check_hitcount("query=-#{words[0]}+#{words[1]}+-#{words[2]}+#{words[3]}", 2)
-      check_hitcount("query=-#{words[0]}+#{words[1]}+#{words[2]}+-#{words[3]}", 2)
-      check_hitcount("query=#{words[0]}+-#{words[1]}+-#{words[2]}+#{words[3]}", 2)
-      check_hitcount("query=#{words[0]}+-#{words[1]}+#{words[2]}+-#{words[3]}", 2)
-      check_hitcount("query=#{words[0]}+#{words[1]}+-#{words[2]}+-#{words[3]}", 2)
+      assert_hitcount("query=-#{words[0]}+-#{words[1]}+#{words[2]}+#{words[3]}", 2)
+      assert_hitcount("query=-#{words[0]}+#{words[1]}+-#{words[2]}+#{words[3]}", 2)
+      assert_hitcount("query=-#{words[0]}+#{words[1]}+#{words[2]}+-#{words[3]}", 2)
+      assert_hitcount("query=#{words[0]}+-#{words[1]}+-#{words[2]}+#{words[3]}", 2)
+      assert_hitcount("query=#{words[0]}+-#{words[1]}+#{words[2]}+-#{words[3]}", 2)
+      assert_hitcount("query=#{words[0]}+#{words[1]}+-#{words[2]}+-#{words[3]}", 2)
 
-      check_hitcount("query=#{words[0]}+-#{words[1]}+-#{words[2]}+-#{words[3]}", 1)
-      check_hitcount("query=-#{words[0]}+#{words[1]}+-#{words[2]}+-#{words[3]}", 1)
-      check_hitcount("query=-#{words[0]}+-#{words[1]}+#{words[2]}+-#{words[3]}", 1)
-      check_hitcount("query=-#{words[0]}+-#{words[1]}+-#{words[2]}+#{words[3]}", 1)
+      assert_hitcount("query=#{words[0]}+-#{words[1]}+-#{words[2]}+-#{words[3]}", 1)
+      assert_hitcount("query=-#{words[0]}+#{words[1]}+-#{words[2]}+-#{words[3]}", 1)
+      assert_hitcount("query=-#{words[0]}+-#{words[1]}+#{words[2]}+-#{words[3]}", 1)
+      assert_hitcount("query=-#{words[0]}+-#{words[1]}+-#{words[2]}+#{words[3]}", 1)
 
-      check_hitcount("query=-#{words[0]}+-#{words[1]}+-#{words[2]}+-#{words[3]}", 0)
+      assert_hitcount("query=-#{words[0]}+-#{words[1]}+-#{words[2]}+-#{words[3]}", 0)
     end
 
     puts "done."
