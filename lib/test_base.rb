@@ -627,7 +627,7 @@ module TestBase
     result = (query_or_result.is_a?(String) ? search(query_or_result, 0) : query_or_result)
 
     # check that the hits are equal to the saved hits
-    assert_equal(to_utf8(expectedvalue),result.hit[hitnumber].field[fieldname], explanationstring);
+    assert_equal(to_utf8(expectedvalue), result.hit[hitnumber].field[fieldname].to_s, explanationstring)
   end
 
   # Asserts that the result from query_or_result has the expected tensor cells in the given tensor field, for a given hit number.
@@ -1219,43 +1219,6 @@ module TestBase
     assert_approx(wanted_relevancy, relevancy, eps, "Expected relevancy #{wanted_relevancy} for hit #{hit_idx} but was #{relevancy}")
   end
 
-  # Checks that each field with the specified name
-  # matches the given regexp.
-  # Texts_only provides a mean for searching through
-  # the text child elements exclusively.
-  # (As a single string, separated by newline)
-  def assert_field_matches(query, fieldName, regexp, texts_only = true)
-    foundfield = false
-    each_field(query, fieldName) do |field|
-      foundfield = true
-      if texts_only then
-        target_text = field.texts().join("\n")
-      else
-        target_text = field.to_s
-      end
-      assert_match(to_utf8_regex(regexp), target_text)
-    end
-    assert(foundfield, "Did not find field: #{fieldName}")
-  end
-
-  # Checks the item count for validity using the given code block
-  # ( acting as a predicate )
-  # The item count is found by splitting each text element
-  # in the specified fields by the splittPattern.
-  # For information regarding splitPattern see String.split
-  def assert_item_count(query, fieldName, splitPattern = " ")
-    foundfield = false
-    each_field(query, fieldName) {
-      | field |
-      field.texts.each {
-        | text |
-        assert( yield( text.to_s.split(splitPattern).length ) )
-      }
-      foundfield = true
-    }
-    assert(foundfield, "Did not find field: #{fieldName}")
-  end
-
   # Checks that the given hash with actual features names and scores contains
   # the given hash with expected feature names and scores.
   # Uses the given epsilon when comparing scores.
@@ -1348,14 +1311,6 @@ module TestBase
       return nil
     end
 
-  end
-
-  # Executes the given code block for each matching field.
-  def each_field(query, fieldname, qrserver_id=0)
-    result = search(query, qrserver_id)
-    result.xml.elements.each("//hit/field[@name='#{fieldname}']") {
-      | field | yield field
-    }
   end
 
   def wait_for_reconfig(expected_generation, retries=600, echo=false)
