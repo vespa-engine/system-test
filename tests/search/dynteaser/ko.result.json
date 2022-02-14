@@ -1,0 +1,33 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 34,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:cjk::ko-6",
+                "relevance": 0.17855185340108196,
+                "source": "search",
+                "fields": {
+                    "sddocname": "cjk",
+                    "dyncontent": "(※단, 이미 <hi>돌들이</hi> 놓여있는 기착점과 착수금지점은 제외) 기물마다 행마의 범위가 제한되어 있는 <hi>장기나</hi> 체스와는 크게",
+                    "content3": "(※단, 이미 <hi>돌들이</hi> 놓여있는 기착점과 착수금지점은 제외) 기물마다 행마의 범위가 제한되어 있는 <hi>장기나</hi> 체스와는 크게",
+                    "content2": "(※단, 이미 <hi>돌들이</hi> 놓여있는 기착점과 착수금지점은 제외) 기물마다 행마의 범위가 제한되어 있는 <hi>장기나</hi> 체스와는 크게",
+                    "documentid": "id:test:cjk::ko-6",
+                    "url": "ko-6",
+                    "content": "(※단, 이미 돌들이 놓여있는 기착점과 착수금지점은 제외) 기물마다 행마의 범위가 제한되어 있는 장기나 체스와는 크게"
+                }
+            }
+        ]
+    }
+}

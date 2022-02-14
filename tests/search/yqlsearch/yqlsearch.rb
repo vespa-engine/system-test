@@ -25,7 +25,8 @@ class YqlSearch < IndexedSearchTest
   end
 
   def assert_result_matches_wset_order_normalized(query, expected_file)
-    res = search(query)
+    query += '&renderer.json.jsonMaps=true'
+    query += '&renderer.json.jsonWsets=true'
     assert_result(query, expected_file)
   end
 
