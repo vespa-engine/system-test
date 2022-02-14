@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 # encoding: utf-8
 require 'indexed_search_test'
@@ -59,16 +60,19 @@ class NGram < IndexedSearchTest
     assert_hitcount("query=default:java title:oggingin body:enefr", 1)
 
     # Check result fields
-    assert_field_value("query=title:abo","title","on/about #Logging in #Java")
-    assert_field_value("query=body:opul","body",
-                       "#Logging in #Java is like that \"Judean P<hi>opul</hi>ar Front\" scene from \"Life of Brian\".")
-    assert_field_value("query=large:do","large",
-                       "<sep />I am not saying that you should never use \"else\" in your code, but when you <hi>do</hi>, you should stop and think about what you are doing, because most of<sep />")
+    result = search('query=title:abo')
+    assert_equal('on/about #Logging in #Java', result.hit[0].field['title'])
+    result = search('query=body:opul')
+    assert_equal("#Logging in #Java is like that \"Judean P<hi>opul</hi>ar Front\" scene from \"Life of Brian\".",
+                 result.hit[0].field['body'])
+    result = search('query=large:do')
+    assert_equal("<sep />I am not saying that you should never use \"else\" in your code, but when you <hi>do</hi>, you should stop and think about what you are doing, because most of<sep />",
+                 result.hit[0].field['large'])
 
     # CJK
     assert_hitcount_with_timeout(10, "?query=body:古牧区&language=zh-Hans", 1)
-    assert_field_value("?query=body:牧区雪灾救援&language=zh-Hans","body",
-                       "\n内蒙古<hi>牧区雪灾救援</hi>困\n  ")
+    result = search("?query=body:牧区雪灾救援&language=zh-Hans")
+    assert_equal("\n内蒙古<hi>牧区雪灾救援</hi>困\n  ", result.hit[0].field['body'])
   end
 
   def test_ngram_external_field

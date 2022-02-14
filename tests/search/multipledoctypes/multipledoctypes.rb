@@ -42,9 +42,11 @@ class MultipleDocumentTypes < IndexedSearchTest
     # search all document types
     assert_result("query=year:%3C2010&ranking=year&hits=4", selfdir + "result.all.json", nil, fields)
     assert_result("query=year:%3E1982&ranking=year&hits=4&sorting=%2Byear", selfdir + "result.all.sort.json", nil, fields)
-    assert_field_value("query=stallone&ranking=year", "documentid", "id:video:video::0", 0)
-    assert_field_value("query=stallone&ranking=year", "documentid", "id:book:book::4", 1)
-    assert_field_value("query=author:stallone&ranking=year", "documentid", "id:book:book::4", 0)
+    result = search('query=stallone&ranking=year')
+    assert_equal('id:video:video::0', result.hit[0].field['documentid'])
+    assert_equal('id:book:book::4', result.hit[1].field['documentid'])
+    result = search('query=author:stallone&ranking=year')
+    assert_equal('id:book:book::4', result.hit[0].field['documentid'])
 
     # test offset and hits when using relevancy as ordering
     query = "query=year:%3E1981&ranking=year"

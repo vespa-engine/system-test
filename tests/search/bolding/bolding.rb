@@ -73,9 +73,13 @@ class Bolding < IndexedSearchTest
     start
     feed(:file => selfdir + "doc.json")
     exp_title_field = "Best of <hi>Metallica</hi>"
-    assert_field_value("?query=select+*+from+sources+*+where+title+contains+'Metallica'%3B&type=yql", "title", exp_title_field)
-    assert_field_value("?query=select+*+from+sources+*+where+title+contains+'Metallica' and weightedSet(year,{'2001':1})%3B&type=yql", "title", exp_title_field)
-    assert_field_value("?query=select+*+from+sources+*+where+title+contains+'Metallica'and+artist+matches+'metallica'%3B&type=yql", "title", exp_title_field)
+
+    result = search("?query=select+*+from+sources+*+where+title+contains+'Metallica'%3B&type=yql")
+    assert_equal(exp_title_field, result.hit[0].field['title'])
+    result = search("?query=select+*+from+sources+*+where+title+contains+'Metallica' and weightedSet(year,{'2001':1})%3B&type=yql")
+    assert_equal(exp_title_field, result.hit[0].field['title'])
+    result = search("?query=select+*+from+sources+*+where+title+contains+'Metallica'and+artist+matches+'metallica'%3B&type=yql")
+    assert_equal(exp_title_field, result.hit[0].field['title'])
   end
 
   def teardown

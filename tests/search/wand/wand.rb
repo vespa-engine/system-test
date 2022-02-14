@@ -78,7 +78,7 @@ class WeakAnd < IndexedSearchTest
       exp_docid = exp_hits[i][0]
       exp_score = exp_hits[i][1].to_f
       puts "Expects hit[#{i}]: documentid(#{exp_docid}), relevancy(#{exp_score})"
-      assert_field_value(result, "documentid", exp_docid, i)
+      assert_equal(exp_docid, result.hit[i].field['documentid'])
       assert_relevancy(result, exp_score, i)
     end
   end
@@ -126,7 +126,7 @@ class WeakAnd < IndexedSearchTest
     sorted_hits.each_index do |i|
       exp_docid = sorted_hits[i][0]
       puts "Expects hit[#{i}].documentid == #{exp_docid}"
-      assert_field_value(result, "documentid", exp_docid, i)
+      assert_equal(exp_docid, result.hit[i].field['documentid'])
     end
   end
 
