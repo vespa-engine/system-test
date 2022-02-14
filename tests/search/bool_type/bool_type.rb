@@ -53,7 +53,7 @@ class BoolTypeTest < SearchTest
     assert_hitcount(result, exp_docids.size)
     for i in 0...exp_docids.size
       docid = get_docid(exp_docids[i])
-      assert_field_value(result, "documentid", docid, i)
+      assert_equal(docid, result.hit[i].field['documentid'])
     end
   end
 

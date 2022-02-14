@@ -331,16 +331,24 @@ class PartialUpdate < IndexedSearchTest
   # Complex partial updates in index & summary fields
   #----------------------------------------------------------------------------
   def test_index_and_summary_update_simultaneously
-    set_description("Test that we can update an index and a summary field simultaneously in the same update")
-    deploy_app(SearchApp.new.sd(selfdir + "complex.sd"))
+    set_description('Test that we can update an index and a summary field simultaneously in the same update')
+    deploy_app(SearchApp.new.sd(selfdir + 'complex.sd'))
     start
-    feed_and_wait_for_docs("complex", 1, :file => selfdir + "complex.doc.xml")
-    feed(:file => selfdir + "complex.update.0.xml")
-    assert_hitcount("query=fa:eee", 1)
-    assert_field_value("query=sddocname:complex&nocache", "fb", "fff")
-    feed(:file => selfdir + "complex.update.1.xml")
-    assert_field_value("query=sddocname:complex&nocache", "fc", "ggg")
-    assert_hitcount("query=fd:hhh", 1)
+    feed_and_wait_for_docs('complex', 1, :file => selfdir + 'complex.doc.xml')
+    result = search('query=sddocname:complex&nocache')
+    assert_equal(1, result.hitcount)
+    assert_equal('bbb', result.hit[0].field['fb'])
+    assert_equal('ccc', result.hit[0].field['fc'])
+    feed(:file => selfdir + 'complex.update.0.xml')
+    assert_hitcount('query=fa:eee', 1)
+    result = search('query=sddocname:complex&nocache')
+    assert_equal(1, result.hitcount)
+    assert_equal('fff', result.hit[0].field['fb'])
+    feed(:file => selfdir + 'complex.update.1.xml')
+    result = search('query=sddocname:complex&nocache')
+    assert_equal(1, result.hitcount)
+    assert_equal('ggg', result.hit[0].field['fc'])
+    assert_hitcount('query=fd:hhh', 1)
   end
 
   def test_two_index_updates_one_by_one

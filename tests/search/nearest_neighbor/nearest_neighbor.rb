@@ -247,7 +247,7 @@ class NearestNeighborTest < IndexedSearchTest
                        "itemRawScore(nns)" => exp_closeness }
     end
     doc_type = qp[:doc_type] || 'test'
-    assert_field_value(result, "documentid", get_docid(exp_docid, doc_type), i)
+    assert_equal(get_docid(exp_docid, doc_type), result.hit[i].field['documentid'])
     assert_relevancy(result, exp_score, i)
     assert_features(exp_features, result.hit[i].field['summaryfeatures'])
   end

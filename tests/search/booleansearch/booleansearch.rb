@@ -510,7 +510,7 @@ class BooleanSearchTest < SearchTest
     for i in 0...expected_hits.size
       exp_docid = "id:test:test::#{expected_hits[i]}"
       puts "Expects that hit[#{i}].documentid == '#{exp_docid}'"
-      assert_field_value(result, "documentid", exp_docid, i)
+      assert_equal(exp_docid, result.hit[i].field['documentid'])
     end
   end
 
@@ -523,7 +523,7 @@ class BooleanSearchTest < SearchTest
       expected_hit = expected_hits[i];
       exp_docid = "id:test:test::#{expected_hit[0]}"
       puts "Expects that hit[#{i}].documentid == '#{exp_docid}'"
-      assert_field_value(result, "documentid", exp_docid, i)
+      assert_equal(exp_docid, result.hit[i].field['documentid'])
       actual_summaryfeatures = result.hit[i].field['summaryfeatures']
       assert_int_features(actual_summaryfeatures,
         {"subqueries(predicate_field).lsb" => expected_hit[1] & 0xFFFFFFFF,
@@ -559,8 +559,8 @@ class BooleanSearchTest < SearchTest
       exp_field_value = expected_hits[i][1]
       puts "Expects that hit[#{i}].documentid == '#{exp_docid}'"
       puts "Expects that hit[#{i}].#{field} == '#{exp_field_value}'"
-      assert_field_value(result, "documentid", exp_docid, i)
-      assert_field_value(result, field, exp_field_value, i)
+      assert_equal(exp_docid, result.hit[i].field['documentid'])
+      assert_equal(exp_field_value, result.hit[i].field[field])
     end
   end
 

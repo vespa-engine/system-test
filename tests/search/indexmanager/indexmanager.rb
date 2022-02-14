@@ -103,7 +103,7 @@ class IndexManagerTest < IndexedSearchTest
       sorted_docids.each_index do |i|
         exp_docid = sorted_docids[i]
         #puts "Expects hit[#{i}].documentid == #{exp_docid}"
-        assert_field_value(result, "documentid", exp_docid, i)
+        assert_equal(exp_docid, result.hit[i].field['documentid'])
       end
     end
   end

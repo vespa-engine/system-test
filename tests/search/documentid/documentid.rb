@@ -14,8 +14,12 @@ class DocumentId < IndexedStreamingSearchTest
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir + "feed.xml")
 
-    assert_field_value("query=sddocname:test&streaming.selection=true", "documentid", "id:test:test::0")
-    assert_field_value("query=sddocname:test&summary=s1&streaming.selection=true", "documentid", "id:test:test::0")
+    result = search('query=sddocname:test&streaming.selection=true')
+    assert_equal(1, result.hitcount)
+    assert_equal('id:test:test::0', result.hit[0].field['documentid'])
+    result = search('query=sddocname:test&summary=s1&streaming.selection=true')
+    assert_equal(1, result.hitcount)
+    assert_equal('id:test:test::0', result.hit[0].field['documentid'])
   end
 
   def teardown

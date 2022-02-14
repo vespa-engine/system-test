@@ -157,7 +157,7 @@ class ParentChildAttributeSearchTest < IndexedSearchTest
     result = search("query=campaign_ref:\"#{parent_doc_id}\"&presentation.format=json")
     assert_hitcount(result, exp_children.size)
     for i in 0...exp_children.size do
-      assert_field_value(result, "documentid", exp_children[i], i)
+      assert_equal(exp_children[i], result.hit[i].field['documentid'])
     end
   end
 
