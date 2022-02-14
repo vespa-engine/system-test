@@ -11,7 +11,6 @@ class SearchCluster
   chained_setter :indexing, :indexing_cluster
   chained_setter :indexing_chain
   chained_setter :storage_cluster
-  chained_setter :oos_auto
   chained_setter :num_parts
   chained_setter :redundancy
   chained_setter :ready_copies
@@ -26,7 +25,6 @@ class SearchCluster
   chained_setter :hwinfo_disk_shared
   chained_setter :dispatch
   chained_setter :search_coverage
-  chained_setter :use_local_node
   chained_setter :dispatch_policy
   chained_setter :min_node_ratio_per_group
   chained_setter :persistence_threads
@@ -46,7 +44,6 @@ class SearchCluster
     @visibility_delay = nil
     @flush_on_shutdown = nil
     @documents_selection = nil
-    @use_local_node = nil
     @dispatch_policy= nil
     @min_node_ratio_per_group = nil
     @num_parts = 1
@@ -58,7 +55,6 @@ class SearchCluster
     @storage_cluster = nil
     @tuning = {}
     @node_groups = []
-    @oos_auto = nil
     @config = ConfigOverrides.new
     @garbagecollection = nil
     @garbagecollectioninterval = nil
@@ -82,10 +78,6 @@ class SearchCluster
 
   def get_storage_cluster
     @storage_cluster || @name
-  end
-
-  def get_use_local_node
-    return @use_local_node
   end
 
   def get_dispatch_policy

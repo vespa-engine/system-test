@@ -133,17 +133,11 @@ class SearchAppGenTest < Test::Unit::TestCase
              cluster(SearchCluster.new("foo").sd("fo/ba/sd1.sd").sd("sd2.sd").
                      visibility_delay(5).selection("doc_sel").
                      flush_on_shutdown(true).
-                     use_local_node(true).
                      redundancy(3).ready_copies(2).num_parts(3).threads_per_search(2).allowed_lid_bloat(3)).
              services_xml
 
     expected_substr = '
       <content id="foo" version="1.0">
-        <tuning>
-          <dispatch>
-            <use-local-node>true</use-local-node>
-          </dispatch>
-        </tuning>
         <redundancy>3</redundancy>
         <config name="vespa.config.search.core.proton">
           <numthreadspersearch>2</numthreadspersearch>
