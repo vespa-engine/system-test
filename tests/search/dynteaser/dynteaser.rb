@@ -11,7 +11,6 @@ class DynTeaser < IndexedSearchTest
   end
 
   def compare(query, file, field)
-    save_result(query, file)
     # run all queries twice to check caching
     assert_field(query, file, field, true)
     assert_field(query, file, field, true)
