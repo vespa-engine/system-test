@@ -62,16 +62,10 @@
                     "sddocname": "music",
                     "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709",
                     "title": "Country Blues",
-                    "name": [
-                        {
-                            "item": "Blues",
-                            "weight": 78
-                        },
-                        {
-                            "item": "Country",
-                            "weight": 2
-                        }
-                    ],
+                    "name": {
+                        "Country": 2,
+                        "Blues": 78
+                    },
                     "score": 1
                 }
             },
@@ -83,16 +77,10 @@
                     "sddocname": "music",
                     "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711",
                     "title": "Electric Blues",
-                    "name": [
-                        {
-                            "item": "Electric",
-                            "weight": 2
-                        },
-                        {
-                            "item": "Blues",
-                            "weight": 78
-                        }
-                    ],
+                    "name": {
+                        "Blues": 78,
+                        "Electric": 2
+                    },
                     "score": 3
                 }
             },
@@ -104,20 +92,11 @@
                     "sddocname": "music",
                     "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710",
                     "title": "Modern Electric Blues",
-                    "name": [
-                        {
-                            "item": "Electric",
-                            "weight": 2
-                        },
-                        {
-                            "item": "Blues",
-                            "weight": 78
-                        },
-                        {
-                            "item": "Modern",
-                            "weight": 2
-                        }
-                    ],
+                    "name": {
+                        "Blues": 78,
+                        "Electric": 2,
+                        "Modern": 2
+                    },
                     "score": 2
                 }
             }
