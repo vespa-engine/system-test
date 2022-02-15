@@ -1,0 +1,229 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    struct elem {
+      field name type string {}
+      field weight type int {}
+    }
+    struct complex_elem {
+      field name type string {}
+      field weight type int {}
+      # This field is not searchable
+      field str_map type map<string, int> {}
+    }
+    field elem_array type array<elem> {
+      # All struct-fields are attributes
+      indexing: summary
+      struct-field name {
+        indexing: attribute
+        attribute {
+          fast-search
+          paged
+        }
+      }
+      struct-field weight {
+        indexing: attribute
+        attribute: paged
+      }
+    }
+    field elem_map type map<string, elem> {
+      # All struct-fields are attributes
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute {
+          fast-search
+          paged
+        }
+      }
+      struct-field value.name {
+        indexing: attribute
+        attribute {
+          fast-search
+          paged
+        }
+      }
+      struct-field value.weight {
+        indexing: attribute
+        attribute: paged
+      }
+    }
+    field elem_map_2 type map<string, elem> {
+      # Some struct-fields are attributes
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute {
+          paged
+        }
+      }
+      struct-field value.weight {
+        indexing: attribute
+        attribute: paged
+      }
+    }
+    field str_int_map type map<string, int> {
+      # All struct-fields are attributes
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute {
+          fast-search
+          paged
+        }
+      }
+      struct-field value {
+        indexing: attribute
+        attribute: paged
+      }
+    }
+    field complex_elem_map type map<string, complex_elem> {
+      # Some struct-fields are attributes
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: paged
+      }
+      struct-field value.weight {
+        indexing: attribute
+        attribute: paged
+      }
+    }
+    field elem_array_meo type array<elem> {
+      # All struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
+      struct-field name {
+        indexing: attribute
+        attribute {
+          fast-search
+          paged
+        }
+      }
+      struct-field weight {
+        indexing: attribute
+        attribute: paged
+      }
+    }
+    field elem_map_meo type map<string, elem> {
+      # All struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
+      struct-field key {
+        indexing: attribute
+        attribute {
+          fast-search
+          paged
+        }
+      }
+      struct-field value.name {
+        indexing: attribute
+        attribute {
+          fast-search
+          paged
+        }
+      }
+      struct-field value.weight {
+        indexing: attribute
+        attribute: paged
+      }
+    }
+    field elem_map_2_meo type map<string, elem> {
+      # Some struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
+      struct-field key {
+        indexing: attribute
+        attribute: paged
+      }
+      struct-field value.weight {
+        indexing: attribute
+        attribute: paged
+      }
+    }
+    field str_int_map_meo type map<string, int> {
+      # All struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
+      struct-field key {
+        indexing: attribute
+        attribute {
+          fast-search
+          paged
+        }
+      }
+      struct-field value {
+        indexing: attribute
+        attribute: paged
+      }
+    }
+    field complex_elem_map_meo type map<string, complex_elem> {
+      # Some struct-fields are attributes
+      indexing: summary
+      summary: matched-elements-only
+      struct-field key {
+        indexing: attribute
+        attribute: paged
+      }
+      struct-field value.weight {
+        indexing: attribute
+        attribute: paged
+      }
+    }
+  }
+  document-summary filtered {
+    summary documentid type string {}
+    summary elem_array_filtered type array<elem> {
+      source: elem_array
+      matched-elements-only
+    }
+    summary elem_map_filtered type map<string, elem> {
+      source: elem_map
+      matched-elements-only
+    }
+    summary elem_map_2_filtered type map<string, elem> {
+      source: elem_map_2
+      matched-elements-only
+    }
+    summary str_int_map_filtered type map<string, int> {
+      source: str_int_map
+      matched-elements-only
+    }
+    summary complex_elem_map_filtered type map<string, complex_elem> {
+      source: complex_elem_map
+      matched-elements-only
+    }
+  }
+  rank-profile default {
+    summary-features {
+      attribute(elem_array.name).count
+      attribute(elem_array.name,0)
+      attribute(elem_array.name,1)
+      attribute(elem_array.name,2)
+      attribute(elem_array.weight).count
+      attribute(elem_array.weight,0)
+      attribute(elem_array.weight,1)
+      attribute(elem_array.weight,2)
+      attribute(elem_map.key).count
+      attribute(elem_map.key,0)
+      attribute(elem_map.key,1)
+      attribute(elem_map.key,2)
+      attribute(elem_map.value.name).count
+      attribute(elem_map.value.name,0)
+      attribute(elem_map.value.name,1)
+      attribute(elem_map.value.name,2)
+      attribute(elem_map.value.weight).count
+      attribute(elem_map.value.weight,0)
+      attribute(elem_map.value.weight,1)
+      attribute(elem_map.value.weight,2)
+      attribute(str_int_map.key).count
+      attribute(str_int_map.key,0)
+      attribute(str_int_map.key,1)
+      attribute(str_int_map.key,2)
+      attribute(str_int_map.value).count
+      attribute(str_int_map.value,0)
+      attribute(str_int_map.value,1)
+      attribute(str_int_map.value,2)
+    }
+  }
+}

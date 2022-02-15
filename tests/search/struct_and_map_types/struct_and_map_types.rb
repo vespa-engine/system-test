@@ -13,6 +13,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
 
   def self.final_test_methods
     ["test_feed_and_retrieval_on_attribute_fields",
+     "test_search_in_map_and_array_of_struct_paged_attribute",
      "test_numeric_range_search_when_using_fast_search"]
   end
 
@@ -46,9 +47,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     run_test
   end
 
-  def test_search_in_map_and_array_of_struct_attribute
-    set_description("Test search in map and array of struct attributes")
-    deploy_and_start(is_streaming ? "streaming_fields" : "attribute_fields")
+  def run_test_search_in_map_and_array_of_struct_attribute
     feed(:file => selfdir + "docs_search.json")
     vespa.adminserver.logctl("searchnode:proton.matching.query", "debug=on")
 
@@ -107,6 +106,18 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     assert_same_element_single("str_int_map", "key contains '@FOO'", 1)
     assert_same_element("str_int_map", "key contains '@BAR', value contains '20'", 1)
     assert_same_element("str_int_map", "key contains '@BAZ', value contains '30'", 2)
+  end
+
+  def test_search_in_map_and_array_of_struct_attribute
+    set_description("Test search in map and array of struct attributes")
+    deploy_and_start(is_streaming ? "streaming_fields" : "attribute_fields")
+    run_test_search_in_map_and_array_of_struct_attribute
+  end
+
+  def test_search_in_map_and_array_of_struct_paged_attribute
+    set_description("Test search in map and array of struct paged attributes")
+    deploy_and_start("paged_attribute_fields")
+    run_test_search_in_map_and_array_of_struct_attribute
   end
 
   def test_exact_match_search
