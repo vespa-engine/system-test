@@ -53,9 +53,7 @@ search test {
       indexing: summary
       struct-field key {
         indexing: attribute
-        attribute {
-          paged
-        }
+        attribute: paged
       }
       struct-field value.weight {
         indexing: attribute
