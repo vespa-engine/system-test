@@ -19,7 +19,6 @@ require 'app_generator/metric_consumers'
 require 'app_generator/node_group'
 require 'app_generator/node_group_distribution'
 require 'app_generator/qrserver_cluster'
-require 'app_generator/qrserver_options'
 require 'app_generator/qrservers'
 require 'app_generator/routing_table'
 require 'app_generator/processing'
@@ -83,7 +82,6 @@ class App
                   :search_chain => :search_chain,
                   :search_chains_config => :search_chains_config,
                   :renderer => :renderer,
-                  :qrserver_options => :options,
                   :qrs_cache => :cache,
                   :handler => :handler,
                   :filter => :filter,
