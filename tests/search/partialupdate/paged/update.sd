@@ -1,0 +1,31 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search update {
+  document update {
+    field intfield type int {
+      indexing: attribute | summary
+      attribute: paged
+    }
+    field longfield type long {
+      indexing: attribute | summary
+      attribute: paged
+    }
+    field bytefield type byte {
+      indexing: attribute | summary
+      attribute: paged
+    }
+    field floatfield type float {
+      indexing: attribute | summary
+      attribute: paged
+    }
+    field doublefield type double {
+      indexing: attribute | summary
+      attribute: paged
+    }
+    field body type string {
+      indexing: summary | index
+    }
+  }
+  fieldset default {
+    fields: body
+  }
+}
