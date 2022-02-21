@@ -13,8 +13,8 @@ class PartialUpdate < IndexedSearchTest
     set_owner("geirst")
   end
 
-  def setup_realtime
-    deploy_app(SearchApp.new.sd(selfdir + "update.sd"))
+  def setup_realtime(paged)
+    deploy_app(SearchApp.new.sd(paged ? selfdir + "paged/update.sd" : selfdir + "update.sd"))
     start
   end
 
@@ -104,8 +104,8 @@ class PartialUpdate < IndexedSearchTest
     poll_cmp("update.h.result.json")
   end
 
-  def test_realtime
-    setup_realtime
+  def run_test_realtime(paged)
+    setup_realtime(paged)
 
     feed_and_check()
     feed_and_check_2()
@@ -119,6 +119,14 @@ class PartialUpdate < IndexedSearchTest
     sleep 10
 
     feed_and_check_2()
+  end
+
+  def test_realtime
+    run_test_realtime(false)
+  end
+
+  def test_realtime_paged
+    run_test_realtime(true)
   end
 
   def test_indexed_attribute_summary
