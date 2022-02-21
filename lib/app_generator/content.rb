@@ -11,8 +11,6 @@ class Content
   chained_setter :use_global_sd_files
   chained_forward :search_clusters, :search => :push
   chained_forward :storage_clusters, :storage => :push
-  chained_forward :search_cfg_overrides, :search_config => :add
-  chained_forward :storage_cfg_overrides, :storage_config => :add
 
   def initialize
     @sd_files = []
@@ -22,8 +20,6 @@ class Content
     @provider = :proton
     @search_clusters = []
     @storage_clusters = []
-    @search_cfg_overrides = ConfigOverrides.new
-    @storage_cfg_overrides = ConfigOverrides.new
     @use_global_sd_files = false
   end
 
@@ -74,8 +70,6 @@ class Content
 
   def to_indexed_xml(indent)
     XmlHelper.new(indent).
-      to_xml(@search_cfg_overrides).
-      to_xml(@storage_cfg_overrides).
       to_xml(@_qrservers, :to_container_xml).
       to_xml(match_search_and_storage_clusters, :to_indexed_xml).to_s
   end
@@ -162,17 +156,8 @@ class Content
 
   def to_streaming_xml(indent)
     XmlHelper.new(indent).
-        to_xml(@search_cfg_overrides).
-        to_xml(@storage_cfg_overrides).
 	to_xml(@_qrservers, :to_container_xml).
         to_xml(match_search_and_storage_clusters, :to_streaming_xml).to_s
-  end
-
-  def to_storage_xml(indent)
-    XmlHelper.new(indent).
-        to_xml(@storage_cfg_overrides).
-        to_xml(@_qrservers, :to_container_xml).
-        to_xml(@storage_clusters).to_s
   end
 
   def to_xml(indent)
@@ -182,12 +167,13 @@ class Content
         qrs_clusters[i].set_baseport(4080 + 10*i)
       end
     end
+
     if @search_type == :indexed
       return to_indexed_xml(indent)
     elsif @search_type == :streaming
       return to_streaming_xml(indent)
     else
-      return to_storage_xml(indent)
+      raise "Unknown search type #{@search_type}"
     end
   end
 
