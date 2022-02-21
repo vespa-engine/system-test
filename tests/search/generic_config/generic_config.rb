@@ -63,10 +63,10 @@ class GenericConfig < IndexedSearchTest
                          config(ConfigOverride.new("vespa.config.search.core.proton").
                                 add("numsummarythreads", 34).
                                 add("flush", ConfigValue.new("idleinterval", 700)))).
-                    node(NodeSpec.new("node1", 1)))).
-      storage_config(ConfigOverride.new("vespa.config.content.core.stor-integritychecker").
+                    node(NodeSpec.new("node1", 1))).
+              config(ConfigOverride.new("vespa.config.content.core.stor-integritychecker").
                      add("requestdelay", 3).
-                     add("maxpending", 3)).
+                     add("maxpending", 3))).
       storage(StorageCluster.new.
               sd(selfdir+"foo.sd").
               config(ConfigOverride.new("vespa.config.content.core.stor-integritychecker").
