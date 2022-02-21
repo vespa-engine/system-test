@@ -20,7 +20,7 @@ class OnnxModel < PerformanceTest
     activate_time = 0.0
     run_count = 2
     run_count.times do |i|
-      out, upload, prepare, activate = deploy_local(selfdir + "app", nil, {:collect_timing => true})
+      out, upload, prepare, activate = deploy(selfdir + "app", nil, {:collect_timing => true})
       deploy_time = (prepare_time + activate_time).to_f
       prepare_time = prepare_time + prepare.to_f
       activate_time = activate_time + activate.to_f
@@ -45,7 +45,8 @@ class OnnxModel < PerformanceTest
                             :nocache => true,
                             :nochecksum => true)
              .first
-    @node.copy_remote_file_to_local_file(file, selfdir + "app/files/ranking_model.onnx")
+    puts "node=#{@node.hostname}, file=#{file}, selfdir=#{selfdir}"
+    @node.execute("cp #{file} " + selfdir + "app/files/ranking_model.onnx")
   end
 
 end
