@@ -289,7 +289,7 @@ class VespaModel
 
   def copy_params_files(tmp_application, params)
     if params[:files]
-      params[:files].each do |to, from|
+      params[:files].each do |from, to|
         @testcase.output("Copying in required file for application " + from + " => " + to)
         dir = File.dirname(to)
         to_dir = tmp_application + "/" + dir
