@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'app_generator/app'
 
 class SearchApp < App
@@ -44,7 +44,6 @@ class SearchApp < App
 
     if @default_search != nil
       @content.clear_search
-      @content.use_global_sd_files(true)
       @default_search = nil
     end
     @content.search(search_cluster)
