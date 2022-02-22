@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 class Content
   include ChainedSetter
 
@@ -8,7 +8,6 @@ class Content
 
   chained_setter :qrservers, :_qrservers
   chained_setter :search_type, :search_type
-  chained_setter :use_global_sd_files
   chained_forward :search_clusters, :search => :push
   chained_forward :storage_clusters, :storage => :push
 
@@ -20,7 +19,6 @@ class Content
     @provider = :proton
     @search_clusters = []
     @storage_clusters = []
-    @use_global_sd_files = false
   end
 
   def sd(file_name, params = {})
