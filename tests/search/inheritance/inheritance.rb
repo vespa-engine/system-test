@@ -12,12 +12,10 @@ class Inheritance < IndexedSearchTest
   def test_multiple_inherit_same_base
     deploy_app(SearchApp.new.sd(selfdir + "app2/multimedia.sd").cluster(
                         SearchCluster.new("mp3").
-                        visibility_delay(1).
                         sd(selfdir + "app2/mp3.sd").
                         indexing("dp")).
                       cluster(
                         SearchCluster.new("image").
-                        visibility_delay(1).
                         sd(selfdir + "app2/image.sd").
                         indexing("dp")).
                       container(Container.new("dp").
