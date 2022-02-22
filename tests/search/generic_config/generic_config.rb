@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class GenericConfig < IndexedSearchTest
@@ -63,16 +63,17 @@ class GenericConfig < IndexedSearchTest
                          config(ConfigOverride.new("vespa.config.search.core.proton").
                                 add("numsummarythreads", 34).
                                 add("flush", ConfigValue.new("idleinterval", 700)))).
-                    node(NodeSpec.new("node1", 1))).
-              config(ConfigOverride.new("vespa.config.content.core.stor-integritychecker").
-                     add("requestdelay", 3).
-                     add("maxpending", 3))).
+                    node(NodeSpec.new("node1", 1)))).
       storage(StorageCluster.new.
               sd(selfdir+"foo.sd").
               config(ConfigOverride.new("vespa.config.content.core.stor-integritychecker").
                      add("requestdelay", 2).
                      add("mincycletime", 1000)).
-              default_group)
+              default_group).
+
+      config(ConfigOverride.new("vespa.config.content.core.stor-integritychecker").
+               add("requestdelay", 3).
+               add("maxpending", 3))
   end
 
   def setup
@@ -169,8 +170,8 @@ class GenericConfig < IndexedSearchTest
 
     nodeId = "storage/storage/0"
     storIntegrity = vespa.adminserver.execute("#{@getconfig} -n vespa.config.content.core.stor-integritychecker -i #{nodeId}")
-    assert(storIntegrity =~ /mincycletime 1000/)
     assert(storIntegrity =~ /requestdelay 2/)
+    assert(storIntegrity =~ /mincycletime 1000/)
   end
 
   def dotest_admin_config()
