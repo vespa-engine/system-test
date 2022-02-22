@@ -160,6 +160,12 @@ class Content
         to_xml(match_search_and_storage_clusters, :to_streaming_xml).to_s
   end
 
+  def to_storage_xml(indent)
+    XmlHelper.new(indent).
+        to_xml(@_qrservers, :to_container_xml).
+        to_xml(@storage_clusters).to_s
+  end
+
   def to_xml(indent)
     qrs_clusters = @_qrservers.qrserver_list
     if qrs_clusters.length > 1
@@ -172,6 +178,8 @@ class Content
       return to_indexed_xml(indent)
     elsif @search_type == :streaming
       return to_streaming_xml(indent)
+    elsif @search_type == :none
+      return to_storage_xml(indent)
     else
       raise "Unknown search type #{@search_type}"
     end
