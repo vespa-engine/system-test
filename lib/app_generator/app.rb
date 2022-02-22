@@ -71,8 +71,6 @@ class App
   chained_forward :rank_files, :rank_expression_file => :push
   chained_forward :cfg_overrides, :config => :add
   chained_forward :content,
-                  :search_config => :search_config,
-                  :storage_config => :storage_config,
                   :qrservers => :qrservers,
                   :storage => :storage,
                   :search => :search,
