@@ -14,13 +14,13 @@ class OnnxModel < PerformanceTest
   end
 
   def test_onnx_deploy
-    fetch_model
+    onnx_file = fetch_model
 
     prepare_time = 0.0
     activate_time = 0.0
     run_count = 2
     run_count.times do |i|
-      out, upload, prepare, activate = deploy(selfdir + "app", nil, {:collect_timing => true})
+      out, upload, prepare, activate = deploy(selfdir + "app", nil, {:collect_timing => true, :files => { onnx_file => selfdir + 'app/files/ranking_model.onnx'}})
       deploy_time = (prepare_time + activate_time).to_f
       prepare_time = prepare_time + prepare.to_f
       activate_time = activate_time + activate.to_f
@@ -40,13 +40,11 @@ class OnnxModel < PerformanceTest
   def fetch_model
     @node = vespa.nodeproxies.first[1]
     # Get ONNX model from public S3 bucket through data.vespa.oath.cloud
-    file = @node.fetchfiles(:webhost => "data.vespa.oath.cloud",
-                            :file => "tests/performance/ranking_model.onnx",
-                            :nocache => true,
-                            :nochecksum => true)
-             .first
-    puts "node=#{@node.hostname}, file=#{file}, selfdir=#{selfdir}"
-    @node.execute("cp #{file} " + selfdir + "app/files/ranking_model.onnx")
+    @node.fetchfiles(:webhost => "data.vespa.oath.cloud",
+                     :file => "tests/performance/ranking_model.onnx",
+                     :nocache => true,
+                     :nochecksum => true)
+      .first
   end
 
 end
