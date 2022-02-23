@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'app_generator/node_base'
 require 'app_generator/chained_setter'
@@ -80,7 +80,6 @@ class App
                   :search_chain => :search_chain,
                   :search_chains_config => :search_chains_config,
                   :renderer => :renderer,
-                  :qrs_cache => :cache,
                   :handler => :handler,
                   :filter => :filter,
                   :processing => :processing
