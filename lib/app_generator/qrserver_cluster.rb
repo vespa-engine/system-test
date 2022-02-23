@@ -5,7 +5,6 @@ class QrserverCluster
   attr_reader :name, :_jvm_options
 
   chained_setter :baseport
-  chained_setter :cache
   chained_setter :jvmoptions, :_jvm_options
   chained_setter :options
   chained_forward :renderers, :renderer => :push
@@ -18,7 +17,6 @@ class QrserverCluster
   def initialize(name = "default")
     @name = name
     @baseport = 0
-    @cache = nil
     @components = []
     @_jvm_options = nil
     @options = nil
@@ -120,7 +118,6 @@ class QrserverCluster
 
     XmlHelper.new(indent).
       tag("cluster", :name => @name).
-        tag("cache", :size => @cache).close_tag.
         to_xml(@renderers).
         to_xml(@options).
         to_xml(@components).
@@ -140,7 +137,7 @@ class QrserverCluster
     helper.tag_always("search").to_xml(@search_chains, :to_container_xml).close_tag
     helper.tag_always("document-processing").close_tag if @should_add_default_docproc
     jvm_options = @_jvm_options ? { :options => @_jvm_options } : {}
-    helper.tag("cache", :size => @cache).close_tag.
+    helper.
         to_xml(@renderers).
         to_xml(@components).
         to_xml(@processing).
