@@ -107,26 +107,6 @@ class QrserverCluster
     @should_add_default_docproc = true
   end
 
-  def to_xml(indent)
-    nodes = node_list
-    if @baseport > 0
-      nodes.each { |node|
-        node.set_baseport(@baseport)
-      }
-    end
-    jvm_options = @_jvm_options ? { :options => @_jvm_options } : {}
-
-    XmlHelper.new(indent).
-      tag("cluster", :name => @name).
-        to_xml(@renderers).
-        to_xml(@options).
-        to_xml(@components).
-        to_xml(@processing).
-        to_xml(@hhttp).
-        tag("nodes").tag("jvm", jvm_options).close_tag.to_xml(nodes).close_tag.
-        to_xml(@search_chains).to_s
-  end
-
   def to_container_xml(indent)
     helper = XmlHelper.new(indent)
     if @baseport > 0
