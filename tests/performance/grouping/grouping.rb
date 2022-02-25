@@ -54,11 +54,20 @@ class GroupingTest < PerformanceTest
 
   def test_grouping_count_many_groups
     set_owner("bjorncs")
+    run_grouping_count_many_groups_test(false)
+  end
+
+  def test_grouping_count_many_groups_paged_attributes
+    set_owner("bjorncs")
+    run_grouping_count_many_groups_test(true)
+  end
+
+  def run_grouping_count_many_groups_test(paged_attributes)
     attr_prefix = "a"
     num_docs = 100000
     num_attr = 3
     num_unique = 100000
-    setup_grouping_test(attr_prefix, num_docs, num_attr, num_unique)
+    setup_grouping_test(attr_prefix, num_docs, num_attr, num_unique, paged_attributes)
 
     query = "/?query=sddocname:groupingbench&nocache&hits=0&format=json&" +
       "select=all(group(a0)output(count()))"
@@ -103,24 +112,26 @@ class GroupingTest < PerformanceTest
     puts "Multilevel mem usage: #{node.memusage_rss(node.get_pid)}"
   end
 
-  def setup_grouping_test(attr_prefix, num_docs, num_attr, num_unique)
+  def setup_grouping_test(attr_prefix, num_docs, num_attr, num_unique, paged_attributes=false)
     generatefeed(File.new(@feedfile, "w"), num_docs, attr_prefix, num_attr,
                  num_unique)
-    generatesd(File.new(@sdfile, "w"), attr_prefix, num_attr)
+    generatesd(File.new(@sdfile, "w"), attr_prefix, num_attr, paged_attributes)
 
     deploy_app(SearchApp.new.sd(@sdfile))
     start
     feed_and_wait_for_docs("groupingbench", num_docs, :file => @feedfile)
   end
 
-  def generatesd(f, attr_prefix, num_string_attr, num_int_attr=0,
-                 num_float_attr=0)
+  def generatesd(f, attr_prefix, num_string_attr, paged_attributes=false)
     sd = "search groupingbench {\n"
     sd += "    document groupingbench {\n"
     num_attr = 0
     for attr in num_attr..(num_attr + num_string_attr - 1)
       sd += "        field #{attr_prefix}#{attr} type string {\n"
       sd += "            indexing: attribute | summary\n"
+      if paged_attributes
+        sd += "            attribute: paged\n"
+      end
       sd += "        }\n"
     end
     sd += "    }\n"
