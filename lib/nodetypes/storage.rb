@@ -169,7 +169,7 @@ class Storage
       end
     end
     @testcase.output("All nodes in states #{check_states} now have cluster state version #{clusterstate.version} or newer")
-    @testcase.output('State version fetch times: ' + version_fetch_time.map{|n,t| sprintf('%s -> %.3fs', n, t)}.join(', '))
+    # @testcase.output('State version fetch times: ' + version_fetch_time.map{|n,t| sprintf('%s -> %.3fs', n, t)}.join(', '))
   end
 
   def wait_until_cluster_up(timeout = 120)
