@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'fileutils'
 require 'drb'
 
@@ -7,7 +7,7 @@ class TestDirs
 
   attr_reader :benchmarklogdir, :vespalogdir, :valgrindlogdir, :testoutput, :filesdir
   attr_reader :benchmarklogdir_web, :vespalogdir_web, :valgrindlogdir_web, :testoutput_web, :filesdir_web
-  attr_reader :tmpdir, :rrdsdir, :graphdir, :coredir, :ftpfiledir, :drbfiledir
+  attr_reader :tmpdir, :rrdsdir, :graphdir, :coredir, :downloaddir, :drbfiledir
   attr_reader :bundledir, :resultoutput, :plugindir, :baselogdir
   attr_reader :jdisccorelogdir
 
@@ -47,7 +47,7 @@ class TestDirs
       dbdir = "#{basedir}/var/db/systemtests/command-line/#{starttime_string}"
     end
 
-    @ftpfiledir = "#{bigbasedir}/tmp/systemtests/transferred_files_ftp/"
+    @downloaddir = "#{bigbasedir}/tmp/systemtests/transferred_files/"
     @drbfiledir = "#{bigbasedir}/tmp/systemtests/transferred_files_drb/"
     @tmpdir = "#{basedir}/tmp/systemtests/#{testclass}/#{methodname}/#{starttime_string}/pid.#{pid}/"
     @bundledir = "#{@tmpdir}/bundles/"

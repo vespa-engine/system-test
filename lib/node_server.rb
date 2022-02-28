@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'test_base'
 require 'digest/md5'
@@ -180,7 +180,7 @@ class NodeServer
       raise "ERROR: Either :dir or :file must be supplied to fetchfiles method."
     end
     if params[:webhost]
-      FileUtils.mkdir_p(@testcase.dirs.ftpfiledir)
+      FileUtils.mkdir_p(@testcase.dirs.downloaddir)
       starttime = Time.now.to_i
 
       if params[:dir]
@@ -195,7 +195,7 @@ class NodeServer
       end
 
       remote_file = "#{protocol}://#{params[:webhost]}:#{port}/#{params[:file]}"
-      localfilename = @testcase.dirs.ftpfiledir + File.basename(params[:file])
+      localfilename = @testcase.dirs.downloaddir + File.basename(params[:file])
 
       cmd = "wget -nv -O'#{localfilename}' '#{remote_file}'"
       err = `#{cmd}`
