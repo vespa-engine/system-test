@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'socket'
 require 'nodetypes/storage'
@@ -897,7 +897,7 @@ class VespaModel
     end
     if @testcase.storagehost
       @testcase.dirty_nodeproxies.each_value do |handle|
-        handle.execute("rm -rf #{@testcase.dirs.ftpfiledir}", :exceptiononfailure => false)
+        handle.execute("rm -rf #{@testcase.dirs.downloaddir}", :exceptiononfailure => false)
       end
     end
     if @testcase.valgrind

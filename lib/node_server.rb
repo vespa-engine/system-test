@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'test_base'
 require 'digest/md5'
@@ -160,13 +160,12 @@ class NodeServer
 
 
   # Transfers files from either the node running the testcase using DRb, or from a spesific
-  # host using FTP or HTTP. Returns an array of local filenames fetched.
+  # host using HTTP. Returns an array of local filenames fetched.
   #
   # Args:
   # * :dir - directory to fetch files from
   # * :range - range of files in directory to fetch (default is all)
   # * :file - spesific filename to fetch
-  # * :ftphost - specify ftp host
   # * :webhost - specify web server (NOTE: only supports :file)
   # * :http - use http (NOTE: only in combination with :webhost)
   #
@@ -180,47 +179,8 @@ class NodeServer
     else
       raise "ERROR: Either :dir or :file must be supplied to fetchfiles method."
     end
-    if params[:ftphost]
-      FileUtils.mkdir_p(@testcase.dirs.ftpfiledir)
-      starttime = Time.now.to_i
-      ftp = Net::FTP.new
-      ftp.passive = true
-      retries = 3
-      begin
-        ftp.connect(params[:ftphost], 21)
-        ftp.login
-        ftp.chdir(dirname)
-        if params[:dir]
-          remote_files = ftp.nlst
-        elsif params[:file]
-          remote_files = ftp.nlst(File.basename(params[:file]))
-        end
-        remote_files = remote_files.slice(params[:range]) if params[:range]
-        testcase_output("Transferring #{remote_files.length} files to #{@short_hostname} via FTP...")
-        remote_files.each do |remote_file|
-          localfilename = "#{@testcase.dirs.ftpfiledir}#{File.basename(remote_file)}"
-          checksum='[unknown]'
-          ftp.getbinaryfile(remote_file, localfilename)
-          checksum=`md5sum #{localfilename}` if params[:checksum]
-          testcase_output("Got new #{localfilename} with checksum #{checksum} via FTP")
-          localfilenames << localfilename
-        end
-        ftp.quit
-      rescue
-        testcase_output("FTP transfer exception:\n#{$!}")
-        if retries > 0
-          testcase_output("Retrying...")
-          sleep 2
-          retries -= 1
-          retry
-        else
-          raise
-        end
-      end
-      finishtime = Time.now.to_i
-      testcase_output("File transfer completed in #{finishtime-starttime} secs")
-    elsif params[:webhost]
-      FileUtils.mkdir_p(@testcase.dirs.ftpfiledir)
+    if params[:webhost]
+      FileUtils.mkdir_p(@testcase.dirs.downloaddir)
       starttime = Time.now.to_i
 
       if params[:dir]
@@ -235,7 +195,7 @@ class NodeServer
       end
 
       remote_file = "#{protocol}://#{params[:webhost]}:#{port}/#{params[:file]}"
-      localfilename = @testcase.dirs.ftpfiledir + File.basename(params[:file])
+      localfilename = @testcase.dirs.downloaddir + File.basename(params[:file])
 
       cmd = "wget -nv -O'#{localfilename}' '#{remote_file}'"
       err = `#{cmd}`
@@ -243,9 +203,7 @@ class NodeServer
         raise "error during #{cmd} was: #{err}"
       end
 
-      checksum='[unknown]'
-      checksum=`md5sum #{localfilename}` if params[:checksum]
-      testcase_output("Got new #{localfilename} with checksum #{checksum} via HTTP")
+      testcase_output("Downloaded #{remote_file} to #{localfilename} on host #{`hostname`}")
       localfilenames << localfilename
     else
       FileUtils.mkdir_p(@testcase.dirs.drbfiledir)
