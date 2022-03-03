@@ -248,9 +248,8 @@ class PerformanceTest < TestCase
     @rep_result
   end
 
-  def warmup(qrserver)
+  def warmup(qrserver, warmup_time=30)
     fbench = Perf::Fbench.new(qrserver, qrserver.name, qrserver.http_port)
-    warmup_time = 30
 
     puts "Warming up for #{warmup_time}s*2"
     fbench.clients = 32
