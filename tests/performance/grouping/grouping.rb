@@ -38,18 +38,6 @@ class GroupingTest < PerformanceTest
     end
   end
 
-  def test_grouping_many_clients
-    attr_prefix = "a"
-    num_attr = 10
-    setup_grouping_test(attr_prefix, 10000, num_attr, 5000)
-    container = @vespa.container.values.first
-    generatequeries(File.new(@local_queryfile, "w"), attr_prefix, 1, num_attr, 2)
-    vespa.adminserver.copy(@local_queryfile, @remote_dir)
-    warmup(container, 15)
-    profiler_start
-    run_fbench(container, 32, 60, [metric_filler('memory.rss', container.memusage_rss(container.get_pid))])
-  end
-
   def test_grouping_parallel
     attr_prefix = "a"
     num_attr = 10
