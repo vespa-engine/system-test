@@ -316,6 +316,9 @@ public class TestConfigServer implements RequestHandler, Runnable {
         return Set.of();
     }
 
+    @Override
+    public boolean compatibleWith(Optional<Version> optional, ApplicationId applicationId) { return true; }
+
     public long getApplicationGeneration() {
         return generation.get();
     }
