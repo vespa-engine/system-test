@@ -4,7 +4,7 @@ require 'app_generator/search_app'
 require 'environment'
 
 class VespaModelInspect < CloudConfigTest
-  @@modelinspect = "#{Environment.instance.vespa_home}/bin/vespa-model-inspect 2>/dev/null"
+  @@modelinspect = "#{Environment.instance.vespa_home}/bin/vespa-model-inspect"
 
   def initialize(*args)
     super(*args)
@@ -15,22 +15,24 @@ class VespaModelInspect < CloudConfigTest
     set_owner("musum")
     set_description("Tests vespa-model-inspect")
 
-    app_gen = SearchApp.new.sd(SEARCH_DATA+"music.sd").
-      num_hosts(2).
-      slobrok("node2")
-    deploy_app(app_gen)
+    app = SearchApp.new.sd(SEARCH_DATA+"music.sd")
+    if @num_hosts == 2
+      app = app.num_hosts(@num_hosts).
+              slobrok("node2")
+    end
+    deploy_app(app)
     @node1 = vespa.adminserver
-    @node2 = vespa.slobrok["0"]
+    @node2 = vespa.slobrok["0"] if @num_hosts == 2
     start
   end
 
   def test_vespamodelinspect
     assert_output(@node1)
-    assert_output(@node2)
+    assert_output(@node2) if @num_hosts == 2
   end
 
   def assert_output(node)
-    services = <<EOS;
+    expected_services = <<EOS;
 config-sentinel
 configproxy
 configserver
@@ -45,9 +47,7 @@ slobrok
 storagenode
 transactionlogserver
 EOS
-    (exitcode, out) = execute(node, "#{@@modelinspect} services")
-    assert_equal(exitcode, 0)
-    assert_equal(services, out)
+    assert_exec_output(node, "#{@@modelinspect} services 2>/dev/null", 0, expected_services)
   end
 
   def teardown
