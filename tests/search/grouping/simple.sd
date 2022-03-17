@@ -1,0 +1,11 @@
+schema simple {
+
+  document simple {
+    field long_attr type long {
+      indexing: summary | attribute
+    }
+    field str_attr type string {
+      indexing: summary | attribute
+    }
+  }
+}
