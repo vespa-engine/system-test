@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="28" coverage-docs="28" coverage-nodes="2" coverage-full="true" coverage="100" results-full="1" results="1">
+  <group relevance="1.0">
+    <id type="root"/>
+    <continuation id="this"></continuation>
+    <grouplist label="a">
+      <continuation id="next">BGAAABEBCBC</continuation>
+      <group relevance="12111.719438207627">
+        <id type="string">a1</id>
+        <hitlist label="hits">
+          <continuation id="next">BKAAAAABGBCBC</continuation>
+          <hit relevancy="12111.719438207627" source="search">
+            <field name="relevancy">12111.719438207627</field>
+            <field name="sddocname">test</field>
+            <field name="n">9</field>
+            <field name="a">a1</field>
+            <field name="b">b3</field>
+            <field name="c">c3</field>
+            <field name="from">1223406051</field>
+            <field name="to">1234607162000000000</field>
+            <field name="body">test</field>
+            <field name="boool">false</field>
+            <field name="documentid">id:test:test:n=1234:09</field>
+          </hit>
+        </hitlist>
+      </group>
+    </grouplist>
+  </group>
+</result>
