@@ -223,12 +223,24 @@ module GroupingBase
 
     # TODO handle bool in grouping, and also do so for streaming search.
     check_query("all(group(boool) each(output(count())))", "#{selfdir}/boool.xml")
+
+    check_query_default_max("all(group(a)each(each(output(summary()))))", "#{selfdir}/default-max1.xml", -1, 1)
+    check_query_default_max("all(group(a)each(each(output(summary()))))", "#{selfdir}/default-max2.xml", 1, -1)
+    check_query_default_max("all(group(a)each(each(output(summary()))))", "#{selfdir}/default-max3.xml", 1, 1)
+    check_query_default_max("all(group(a)max(2)each(max(2)each(output(summary()))))", "#{selfdir}/default-max4.xml", 1, 1)
   end
 
   # Tests that are known to fail
   def querytest_failing_common
     wait_for_hitcount("query=test&streaming.selection=true", 28, 10)
   end
+
+  def check_query_default_max(select, file, default_max_groups, default_max_hits)
+    full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0&format=xml&timeout=#{DEFAULT_TIMEOUT}" +
+      "&grouping.defaultMaxGroups=#{default_max_groups}&grouping.defaultMaxHits=#{default_max_hits}"
+    check_fullquery(full_query, file)
+  end
+
 
   def check_query(select, file, timeout=DEFAULT_TIMEOUT)
     full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0&format=xml&timeout=#{timeout}"
