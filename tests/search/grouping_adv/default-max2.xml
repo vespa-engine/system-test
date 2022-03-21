@@ -99,6 +99,19 @@
             <field name="boool">false</field>
             <field name="documentid">id:test:test:n=1234:03</field>
           </hit>
+          <hit relevancy="3580.099884632731" source="search">
+            <field name="relevancy">3580.099884632731</field>
+            <field name="sddocname">test</field>
+            <field name="n">2</field>
+            <field name="a">a1</field>
+            <field name="b">b1</field>
+            <field name="c">c2</field>
+            <field name="from">1234517161</field>
+            <field name="to">1234527162000000000</field>
+            <field name="body">test</field>
+            <field name="boool">false</field>
+            <field name="documentid">id:test:test:n=72331337:02</field>
+          </hit>
           <hit relevancy="1234.517162" source="search">
             <field name="relevancy">1234.517162</field>
             <field name="sddocname">test</field>
@@ -111,6 +124,19 @@
             <field name="body">test</field>
             <field name="boool">true</field>
             <field name="documentid">id:test:test:n=1234:01</field>
+          </hit>
+          <hit relevancy="-3580.099884632731" source="search">
+            <field name="relevancy">-3580.099884632731</field>
+            <field name="sddocname">test</field>
+            <field name="n">-2</field>
+            <field name="a">a1</field>
+            <field name="b">b1</field>
+            <field name="c">c2</field>
+            <field name="from">1234517161</field>
+            <field name="to">1234527162000000000</field>
+            <field name="body">test</field>
+            <field name="boool">true</field>
+            <field name="documentid">id:test:test:n=72331337:28</field>
           </hit>
         </hitlist>
       </group>
