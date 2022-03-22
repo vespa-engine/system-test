@@ -37,4 +37,12 @@ class GroupingStreaming < StreamingSearchTest
 
   end
 
+  def test_hits_in_best_group
+    set_owner("bjorncs")
+    deploy_app(singlenode_streaming_2storage("#{selfdir}/test.sd"))
+    start
+    feed_docs
+    check_query("all(group(a)max(1)each(each(output(summary()))))", "#{selfdir}/best-group1.xml")
+  end
+
 end
