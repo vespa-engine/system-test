@@ -25,7 +25,7 @@ class ContainsAndMatchesTest < SearchTest
 
     @expected_warnings = {
       "f1-matches"  => "<p>Field 'f1' is indexed, non-literal regular expressions will not be matched</p>",
-      "f2-contains" => "<p>Field 'f2' is an attribute, 'contains' will only match exactly</p>",
+      "f2-contains" => "<p>Field 'f2' is an attribute, 'contains' will only match exactly (unless fuzzy is used)</p>",
       "f3-matches"  => "<p>Field 'f3' is indexed, non-literal regular expressions will not be matched</p>",
     }
 
