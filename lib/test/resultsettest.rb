@@ -141,4 +141,29 @@ class ResultsetTest < Test::Unit::TestCase
     assert(!result2.is_xml?)
 
   end
+
+  def test_approx_cmp_epsilon
+    h1 = { :a => 1.0, :b => 1.000001, :c => 'c' }
+    h2 = { :a => 0.999999, :b => 1.0, :c => 'c' }
+    h3 = { :a => 0.999998, :b => 1.0, :c => 'c' }
+    h4 = { :a => 1.0, :b => 1.000003, :c => 'c' }
+    h5 = { :a => 1.0, :b => 1.000001, :c => 'not c' }
+    assert(Resultset.approx_cmp(h1, h2))
+    assert(Resultset.approx_cmp(h2, h3))
+    assert(!Resultset.approx_cmp(h1, h3, "test hash"))
+    assert(!Resultset.approx_cmp(h1, h4, "test hash"))
+    assert(!Resultset.approx_cmp(h1, h5, "test hash"))
+    a1 = [ 1.0, 2.0, 3.0 ]
+    a2 = [ 1.000001, 1.999999, 3.0 ]
+    a3 = [ 1.0, 2.000002, 3.0 ]
+    assert(Resultset.approx_cmp(a1, a2))
+    assert(!Resultset.approx_cmp(a1, a3, "test array")) 
+    complex1 = { "foo" => a1, "bar" => h1 }
+    complex2 = { "foo" => a2, "bar" => h2 }
+    assert(Resultset.approx_cmp(complex1, complex2))
+    complex2 = { "foo" => a3, "bar" => h2 }
+    assert(!Resultset.approx_cmp(complex1, complex2, "test complex"))
+    complex2 = { "foo" => a2, "bar" => h3 }
+    assert(!Resultset.approx_cmp(complex1, complex2, "test complex"))
+  end
 end

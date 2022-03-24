@@ -171,7 +171,7 @@ class Resultset
   end
 
   def ==(other)
-    (hitcount == other.hitcount && groupings == other.groupings && hit == other.hit)
+    (hitcount == other.hitcount && approx_cmp(groupings, other.groupings, "groupings") && hit == other.hit)
   end
 
   def sort_results_by(sortfield)
@@ -184,6 +184,68 @@ class Resultset
       retval.push(a.field[sortfield])
     }
     return retval
+  end
+
+  # define class methods (by opening the class of Resultset)
+  class << self
+
+    # Compare two objects, but when finding floats, do approximate compare
+    def approx_cmp(av, bv, k = '<unknown>')
+      if av.is_a? Numeric
+        af = av.to_f
+        bf = bv.to_f
+        if (af + 1e-6 < bf)
+          puts "Float values for '#{k}' differ: #{af} < #{bf}"
+          return false
+        end
+        if (af - 1e-6 > bf)
+          puts "Float values for '#{k}' differ: #{af} > #{bf}"
+          return false
+        end
+      elsif av.is_a? Hash
+        return false unless approx_cmp_hash(av, bv, k)
+      elsif av.is_a? Array
+        return false unless approx_cmp_array(av, bv, k)
+      elsif ! (av == bv)
+        puts "Values for '#{k}' are unequal: '#{av}' != '#{bv}'"
+        return false
+      end
+      return true
+    end
+
+    # Compare two arrays, but when finding floats, do approximate compare
+    def approx_cmp_array(a, b, k_in)
+      if a.size != b.size
+        puts "Different sizes of array: #{a.size} != #{b.size}"
+        return false
+      end
+      a.each_index do |i|
+        return false unless approx_cmp(a[i], b[i], "#{k_in}[#{i}]")
+      end
+      return true
+    end
+
+    # Compare two hashes, but when finding floats, do approximate compare
+    def approx_cmp_hash(a, b, k_in)
+      if b.size > a.size
+        b.each do |k,bv|
+          av = a[k]
+          if av == nil
+            puts "Extra value for '#{k_in}.#{k}' is '#{bv}'"
+            return false
+          end
+        end
+      end
+      a.each do |k,av|
+        bv = b[k]
+        if bv == nil
+          puts "Missing value for field '#{k_in}.#{k}'"
+          return false
+        end
+        return false unless approx_cmp(av, bv, "#{k_in}.#{k}")
+      end
+      return true
+    end
   end
 
 end
