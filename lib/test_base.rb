@@ -568,8 +568,8 @@ module TestBase
     saved_result.hit.each_index do |i|
       assert_equal(saved_result.hit[i], result.hit[i], explanationstring + "At hit " + i.to_s + ". Answer file: #{savedresultfile}")
     end
-
-    assert_equal(saved_result.groupings, result.groupings)
+    assert(Resultset.approx_cmp(saved_result.groupings, result.groupings, "groupings"),
+           explanationstring + "different grouping results")
   end
 
   # Calls assert_result until the result matches expected result.

@@ -164,9 +164,9 @@ class Hit
       return false
     end
     if (@comparablefields)
-      return fields(@comparablefields) == other.fields(@comparablefields)
+      return Resultset.approx_cmp(fields(@comparablefields), other.fields(@comparablefields), "field")
     else
-      return comparable_fields == other.comparable_fields
+      return Resultset.approx_cmp(comparable_fields, other.comparable_fields, "field")
     end
   end
 
