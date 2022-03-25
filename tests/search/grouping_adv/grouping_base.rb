@@ -235,6 +235,15 @@ module GroupingBase
     wait_for_hitcount("query=test&streaming.selection=true", 28, 10)
   end
 
+  def querytest_global_max
+    check_query("all(group(a)max(inf)each(max(inf)each(output(summary()))))", "#{selfdir}/global-max-1.xml", DEFAULT_TIMEOUT, false)
+    check_query("all(group(a)max(inf)each(each(output(summary()))))", "#{selfdir}/global-max-2.xml", DEFAULT_TIMEOUT, false)
+    check_query("all(group(a)each(max(inf)each(output(summary()))))", "#{selfdir}/global-max-3.xml", DEFAULT_TIMEOUT, false)
+    check_query("all(group(a)each(each(output(summary()))))", "#{selfdir}/global-max-4.xml", DEFAULT_TIMEOUT, false)
+    check_query("all(group(a)max(99)each(max(100)each(output(summary()))))", "#{selfdir}/global-max-5.xml", DEFAULT_TIMEOUT, false)
+    check_query("all(group(a)max(100)each(max(100)each(output(summary()))))", "#{selfdir}/global-max-6.xml", DEFAULT_TIMEOUT, false)
+  end
+
   def check_query_default_max(select, file, default_max_groups, default_max_hits)
     full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0&format=xml&timeout=#{DEFAULT_TIMEOUT}" +
       "&grouping.defaultMaxGroups=#{default_max_groups}&grouping.defaultMaxHits=#{default_max_hits}&groupingSessionCache=false"
@@ -242,8 +251,9 @@ module GroupingBase
   end
 
 
-  def check_query(select, file, timeout=DEFAULT_TIMEOUT)
-    full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0&format=xml&timeout=#{timeout}"
+  def check_query(select, file, timeout=DEFAULT_TIMEOUT, session_cache=true)
+    full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0&format=xml&timeout=#{timeout}" +
+      "&groupingSessionCache=#{session_cache}"
     check_fullquery(full_query, file)
   end
 

@@ -36,9 +36,9 @@ class GroupingIndexed < IndexedSearchTest
     assert(result.xmldata.match(exp_fill_unranked) != nil, "Expected #{exp_fill_unranked} in result")
 
     # Test session cache accuracy
-    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29&groupingSessionCache=false", "#{selfdir}/accuracy1.xml")
-    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29&groupingSessionCache=true", "#{selfdir}/accuracy2.xml")
-    check_query("all%28group%28a%29 max%281%29 precision%28100%29 each%28output%28count%28%29%29%29%29&groupingSessionCache=true", "#{selfdir}/accuracy1.xml")
+    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/accuracy1.xml", DEFAULT_TIMEOUT, false)
+    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/accuracy2.xml", DEFAULT_TIMEOUT, true)
+    check_query("all%28group%28a%29 max%281%29 precision%28100%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/accuracy1.xml", DEFAULT_TIMEOUT, true)
 
     # Test debug function
     check_fullquery("/?query=s:aaa&hits=0&timeout=5.0&select=all%28group%28debugwait%28a, 0.1, true%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug1.xml")
@@ -74,6 +74,14 @@ class GroupingIndexed < IndexedSearchTest
     assert_count_equals("select=all(group(a)max(5)output(count())each(output(count())))", 2025)
     assert_count_equals("select=all(group(a)max(4000)output(count())each(output(count())))", 2048)
     assert_count_equals("select=all(group(a)max(2025)output(count())each(output(count())))", 2025)
+  end
+
+  def test_global_max
+    set_owner("bjorncs")
+    deploy_app(singlenode_streaming_2storage("#{selfdir}/test.sd").search_dir("#{selfdir}/search"))
+    start
+    feed_docs
+    querytest_global_max
   end
 
   def test_hits_in_best_group
