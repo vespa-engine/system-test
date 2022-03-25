@@ -123,6 +123,7 @@ class NodeServer
 
   # Executes _command_ in the background on this node. Returns the pid.
   def execute_bg(command)
+    testcase_output("execute_bg(#{command})")
     pid = fork { exec(command) }
     pid
   end
