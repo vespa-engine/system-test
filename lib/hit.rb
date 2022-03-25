@@ -170,5 +170,15 @@ class Hit
     end
   end
 
+  def check_equal(other)
+    if other.class != self.class
+      return false
+    end
+    if (@comparablefields)
+      return Resultset.check_approx_eq(fields(@comparablefields), other.fields(@comparablefields), "field")
+    else
+      return Resultset.check_approx_eq(comparable_fields, other.comparable_fields, "field")
+    end
+  end
 end
 

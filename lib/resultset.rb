@@ -174,6 +174,14 @@ class Resultset
     (hitcount == other.hitcount && approx_cmp(groupings, other.groupings, "groupings") && hit == other.hit)
   end
 
+  def check_equal(other)
+    return false unless (hitcount == other.hitcount)
+    return false unless (hit.size == other.hit.size)
+    check_approx_eq(groupings, other.groupings, "groupings")
+    hit.each_index { |i| hit[i].check_equal(other.hit[i]) }
+    return true
+  end
+
   def sort_results_by(sortfield)
     @hit = hit.sort {|a, b| a.field[sortfield] <=> b.field[sortfield]}
   end
@@ -191,6 +199,17 @@ class Resultset
 
     # Compare two objects, but when finding floats, do approximate compare
     def approx_cmp(av, bv, k = '<unknown>')
+      begin
+        check_approx_eq(av, bv, k)
+        return true
+      rescue Exception => e
+        puts e
+        return false
+      end
+    end
+
+    # Check two objects for equality, but when finding floats, do approximate compare
+    def check_approx_eq(av, bv, k = '<unknown>')
       if av.equal? bv
         return true
       end
@@ -198,56 +217,48 @@ class Resultset
         af = av.to_f
         bf = bv.to_f
         if (af + 1e-6 < bf)
-          puts "Float values for '#{k}' differ: #{af} < #{bf}"
-          return false
+          raise "Float values for '#{k}' differ: #{af} < #{bf}"
         end
         if (af - 1e-6 > bf)
-          puts "Float values for '#{k}' differ: #{af} > #{bf}"
-          return false
+          raise "Float values for '#{k}' differ: #{af} > #{bf}"
         end
       elsif av.is_a? Hash
-        return false unless approx_cmp_hash(av, bv, k)
+        check_approx_eq_hash(av, bv, k)
       elsif av.is_a? Array
-        return false unless approx_cmp_array(av, bv, k)
+        check_approx_eq_array(av, bv, k)
       elsif ! (av == bv)
-        puts "Values for '#{k}' are unequal: '#{av}' != '#{bv}'"
-        return false
+        raise "Values for '#{k}' are unequal: '#{av}' != '#{bv}'"
       end
-      return true
     end
 
     # Compare two arrays, but when finding floats, do approximate compare
-    def approx_cmp_array(a, b, k_in)
+    def check_approx_eq_array(a, b, k_in)
       if a.size != b.size
-        puts "Different sizes of array: #{a.size} != #{b.size}"
-        return false
+        raise "Different sizes of array: #{a.size} != #{b.size}"
       end
       a.each_index do |i|
-        return false unless approx_cmp(a[i], b[i], "#{k_in}[#{i}]")
+        check_approx_eq(a[i], b[i], "#{k_in}[#{i}]")
       end
-      return true
     end
 
     # Compare two hashes, but when finding floats, do approximate compare
-    def approx_cmp_hash(a, b, k_in)
+    def check_approx_eq_hash(a, b, k_in)
       if b.size > a.size
         b.each do |k,bv|
           unless a.has_key? k
-            puts "Extra value for '#{k_in}.#{k}' is '#{bv}'"
-            return false
+            raise "Extra value for '#{k_in}.#{k}' is '#{bv}'"
           end
         end
       end
       a.each do |k,av|
         unless b.has_key? k
-          puts "Missing value for field '#{k_in}.#{k}'"
-          return false
+          raise "Missing value for field '#{k_in}.#{k}'"
         end
         bv = b[k]
-        return false unless approx_cmp(av, bv, "#{k_in}.#{k}")
+        check_approx_eq(av, bv, "#{k_in}.#{k}")
       end
-      return true
     end
+
   end
 
 end
