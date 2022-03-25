@@ -1,0 +1,5 @@
+<query-profile id="default">
+  <field name="grouping.globalMaxGroups">10000</field>
+  <field name="grouping.defaultMaxGroups">50</field>
+  <field name="grouping.defaultMaxHits">50</field>
+</query-profile>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="0">
+  <error code="4">Invalid query parameter</error>
+  <errordetails>
+    <error source="storage" error="Invalid query parameter" code="4">The theoretical total number of groups and summaries in grouping query exceeds 'grouping.globalMaxGroups' ( 10100 &gt; 10000 ). Either restrict group/summary counts with max() or disable 'grouping.globalMaxGroups'. See https://docs.vespa.ai/en/grouping.html for details.</error>
+  </errordetails>
+</result>
