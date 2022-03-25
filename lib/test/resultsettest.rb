@@ -165,5 +165,16 @@ class ResultsetTest < Test::Unit::TestCase
     assert(!Resultset.approx_cmp(complex1, complex2, "test complex"))
     complex2 = { "foo" => a2, "bar" => h3 }
     assert(!Resultset.approx_cmp(complex1, complex2, "test complex"))
+    h1 = { :a => 'a', :b => nil, :c => false }
+    h2 = { :c => false, :a => 'a', :b => nil }
+    assert(Resultset.approx_cmp(h1, h2, "false/nil test"))
+    h3 = { :a => 'a', :b => false, :c => false }
+    assert(!Resultset.approx_cmp(h1, h3, "false/nil test"))
+    h3 = { :a => 'a', :b => nil, :c => nil }
+    assert(!Resultset.approx_cmp(h1, h3, "false/nil test"))
+    h3 = { :a => 'a', :b => nil }
+    assert(!Resultset.approx_cmp(h1, h3, "false/nil test"))
+    h3 = { :a => 'a', :b => nil, :c => false, :d => nil }
+    assert(!Resultset.approx_cmp(h1, h3, "false/nil test"))
   end
 end
