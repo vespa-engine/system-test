@@ -224,10 +224,10 @@ module GroupingBase
     # TODO handle bool in grouping, and also do so for streaming search.
     check_query("all(group(boool) each(output(count())))", "#{selfdir}/boool.xml")
 
-    check_query_default_max("all(group(a)precision(10)each(each(output(summary()))))", "#{selfdir}/default-max1.xml", -1, 1)
-    check_query_default_max("all(group(a)precision(10)each(each(output(summary()))))", "#{selfdir}/default-max2.xml", 1, -1)
-    check_query_default_max("all(group(a)precision(10)each(each(output(summary()))))", "#{selfdir}/default-max3.xml", 1, 1)
-    check_query_default_max("all(group(a)max(2)precision(10)each(max(2)precision(10)each(output(summary()))))", "#{selfdir}/default-max4.xml", 1, 1)
+    check_query_default_max("all(group(a)each(each(output(summary()))))", "#{selfdir}/default-max1.xml", -1, 1)
+    check_query_default_max("all(group(a)each(each(output(summary()))))", "#{selfdir}/default-max2.xml", 1, -1)
+    check_query_default_max("all(group(a)each(each(output(summary()))))", "#{selfdir}/default-max3.xml", 1, 1)
+    check_query_default_max("all(group(a)max(2)each(max(2)each(output(summary()))))", "#{selfdir}/default-max4.xml", 1, 1)
   end
 
   # Tests that are known to fail
@@ -237,7 +237,7 @@ module GroupingBase
 
   def check_query_default_max(select, file, default_max_groups, default_max_hits)
     full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0&format=xml&timeout=#{DEFAULT_TIMEOUT}" +
-      "&grouping.defaultMaxGroups=#{default_max_groups}&grouping.defaultMaxHits=#{default_max_hits}"
+      "&grouping.defaultMaxGroups=#{default_max_groups}&grouping.defaultMaxHits=#{default_max_hits}&groupingSessionCache=false"
     check_fullquery(full_query, file)
   end
 
