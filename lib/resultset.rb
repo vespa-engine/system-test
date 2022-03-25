@@ -191,6 +191,9 @@ class Resultset
 
     # Compare two objects, but when finding floats, do approximate compare
     def approx_cmp(av, bv, k = '<unknown>')
+      if av.equal? bv
+        return true
+      end
       if av.is_a? Numeric
         af = av.to_f
         bf = bv.to_f
@@ -229,19 +232,18 @@ class Resultset
     def approx_cmp_hash(a, b, k_in)
       if b.size > a.size
         b.each do |k,bv|
-          av = a[k]
-          if av == nil
+          unless a.has_key? k
             puts "Extra value for '#{k_in}.#{k}' is '#{bv}'"
             return false
           end
         end
       end
       a.each do |k,av|
-        bv = b[k]
-        if bv == nil
+        unless b.has_key? k
           puts "Missing value for field '#{k_in}.#{k}'"
           return false
         end
+        bv = b[k]
         return false unless approx_cmp(av, bv, "#{k_in}.#{k}")
       end
       return true
