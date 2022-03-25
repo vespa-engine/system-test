@@ -566,7 +566,7 @@ module TestBase
 
     # check that the hits are equal to the saved hits
     saved_result.hit.each_index do |i|
-      assert_equal(saved_result.hit[i], result.hit[i], explanationstring + "At hit " + i.to_s + ". Answer file: #{savedresultfile}")
+      assert(saved_result.hit[i].check_equal(result.hit[i]), explanationstring + "At hit " + i.to_s + ". Answer file: #{savedresultfile}")
     end
     assert(Resultset.approx_cmp(saved_result.groupings, result.groupings, "groupings"),
            explanationstring + "different grouping results")
