@@ -63,6 +63,37 @@ class Resultset
     @json
   end
 
+  def fixup_groupings(group)
+    if group.is_a? Hash
+      groupid = group['id']
+      if groupid
+        if groupid.start_with? 'index:search/'
+          group.delete('id')
+        end
+        if groupid.start_with? 'index:storage.test/'
+          group.delete('id')
+        end
+        if groupid.start_with? 'group:double:'
+          dbl = groupid.sub('group:double:', '')
+          val = group['value']
+          if dbl == val
+            group['value'] = val.to_f
+            group['id'] = { 'group:double' => dbl.to_f }
+          end
+        end
+      end
+      if group['sddocname'] == 'test'
+        group.delete('sddocname')
+      end
+      if group['source'] == 'search' || group['source'] == 'storage.test'
+        group.delete('source')
+      end
+      group.each_value { |g| fixup_groupings(g) }
+    elsif group.is_a? Array
+      group.each { |g| fixup_groupings(g) }
+    end
+  end
+
   def parse_hits_json(json)
     unless json && json['root'] && json['root']['fields']
       return nil
@@ -71,8 +102,9 @@ class Resultset
       @hitcount = json['root']['fields']['totalCount']
       json['root']['children'].each do |e|
         if e.key?('children') && ! e.key?('fields')
-           id = e['id']
-           @groupings[id] = e
+          id = e['id']
+          fixup_groupings(e)
+          @groupings[id] = e
         else
           hit = Hit.new
           hit.add_field("relevancy", e['relevance'])
