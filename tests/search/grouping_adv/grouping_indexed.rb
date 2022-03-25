@@ -84,14 +84,6 @@ class GroupingIndexed < IndexedSearchTest
     querytest_global_max
   end
 
-  def test_hits_in_best_group
-    set_owner("bjorncs")
-    deploy_app(singlenode_2cols_realtime(selfdir+"test.sd").threads_per_search(1))
-    start
-    feed_docs
-    check_query("all(group(a)max(1)each(each(output(summary()))))", "#{selfdir}/best-group1.xml")
-  end
-
   def assert_count_equals(query, count)
     query_url = "/?query=sddocname:test2&nocache&hits=0&format=json&#{query}"
     tree = search(query_url).json
