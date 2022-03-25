@@ -50,7 +50,7 @@ class GeoNnsTest < IndexedSearchTest
     exact_result = search(query)
     assert_equal(exact_result.hit.size, approx_result.hit.size)
     exact_result.hit.zip(approx_result.hit).each do |exp_hit, act_hit|
-      assert_equal(exp_hit, act_hit)
+      exp_hit.check_equal(act_hit)
     end
   end
 

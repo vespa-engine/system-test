@@ -77,7 +77,7 @@ class Many_Services < IndexedSearchTest
 
     # check that the hits are equal to the saved hits
     saved_result.hit.each_index do |i|
-      assert_equal(saved_result.hit[i], result.hit[i])
+      saved_result.hit[i].check_equal(result.hit[i])
     end
   end
 
