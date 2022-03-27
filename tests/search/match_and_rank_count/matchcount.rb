@@ -23,7 +23,7 @@ class MatchCount < IndexedSearchTest
     query += '&format=xml'
     assert_hitcount(query, hitcount)
     r = search(query_in)
-    assert_equal(expected, r.hit)
+    expected.hits.each_with_index { |h,i| h.check_equal(r.hit[i]) }
   end
 
   def verify_counting(type)
@@ -77,25 +77,25 @@ class MatchCount < IndexedSearchTest
     r = search(query+"&ranking=rank1")
     set_counts(expected.hits[0],7,0,0,0)
     set_counts(expected.hits[1],7,0,0,0)
-    assert_equal(expected, r.hit)
+    expected.hits.each_with_index { |h,i| h.check_equal(r.hit[i]) }
 
     search(query+"&ranking=rank2")
     r = search(query+"&ranking=rank1")
     set_counts(expected.hits[0],8,1,1,1)
     set_counts(expected.hits[1],8,1,0,1)
-    assert_equal(expected, r.hit)
+    expected.hits.each_with_index { |h,i| h.check_equal(r.hit[i]) }
 
     r = search(query+"&ranking=rank2")
     r = search(query+"&ranking=rank1")
     set_counts(expected.hits[0],9,2,2,2)
     set_counts(expected.hits[1],9,2,0,2)
-    assert_equal(expected, r.hit)
+    expected.hits.each_with_index { |h,i| h.check_equal(r.hit[i]) }
 
     search(query+"&ranking=rank2&hits=1")
     r = search(query+"&ranking=rank1")
     set_counts(expected.hits[0],10,3,3,3)
     set_counts(expected.hits[1],10,3,0,2)
-    assert_equal(expected, r.hit)
+    expected.hits.each_with_index { |h,i| h.check_equal(r.hit[i]) }
   end
 
   def teardown
