@@ -268,7 +268,10 @@ module GroupingBase
   end
 
   def check_fullquery(query, file)
+    json_query = query.sub('format=xml', 'format=json')
+    json_file = file.sub('.xml', '.json')
     if (SAVE_RESULT)
+      save_result(json_query, json_file + '.saved')
       result_xml = search_base(query).xmldata
       f = File.new("tmp.txt", "w", 0755)
       f.puts(result_xml)
@@ -278,6 +281,8 @@ module GroupingBase
         # results when the changes have no effect on the assert
         FileUtils.mv("tmp.txt", file)
       end
+    elsif File.exist? json_file
+      assert_result(json_query, json_file)
     else
       assert_xml_result(query, file)
     end
