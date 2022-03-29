@@ -66,7 +66,7 @@ class TlsCryptoSmokeTest < IndexedSearchTest
     deploy_app(SearchApp.new.sd(SEARCH_DATA + 'music.sd'))
     start
 
-    remote_env = content_node.execute('env', :noecho => true).each_line.map{ |e| env_line_to_key_value(e) }.to_h
+    remote_env = content_node.execute('env | grep VESPA', :noecho => true).each_line.map{ |e| env_line_to_key_value(e) }.to_h
     puts "Test runner environment:"
     remote_env.each { |k,v| puts "  #{k} -> #{v}" }
     puts
