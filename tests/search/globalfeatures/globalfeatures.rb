@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'rubygems'
 require 'json'
 require 'indexed_streaming_search_test'
@@ -72,7 +72,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
     assert_freshness(0,   120)
   end
 
-  def assert_age(age, now = nil, epsilon = 4.0)
+  def assert_age(age, now = nil, epsilon = 5.0)
     query = "query=a:86400&nocache&streaming.userid=1"
     search(query)
     timebefore = Time.now.to_i
