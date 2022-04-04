@@ -45,8 +45,18 @@ class SyncHttp2Handler < SearchContainerTest
   end
 
   def test_http2_plain_text_with_upgrade
-    response = @adminserver.execute("nghttp --verbose --upgrade #{plain_text_http_url}")
-    assert(response.strip =~ Regexp.new(@expected_response), "Expected response containing #{@expected_response}, response: #{response}")
+    # This test fail sometimes with the client failing to perform the upgrade. It's either caused by a bug in Jetty or nghttp2.
+    # ("Failed to parse HTTP Upgrade response header: (HPE_INVALID_CONSTANT) invalid constant string")
+    retries = 5
+    for i in 0..retries
+      response = @adminserver.execute("nghttp --upgrade #{plain_text_http_url}")
+      if response.strip == @expected_response
+        return
+      end
+      puts "Expected response containing '#{@expected_response}' but got '#{response}'. Retry ##{i + 1}"
+      sleep(2)
+    end
+    fail("Failed to perform HTTP/2 upgrade after #{retries} retries")
   end
 
   def plain_text_http_url
