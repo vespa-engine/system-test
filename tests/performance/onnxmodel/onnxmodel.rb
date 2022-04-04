@@ -11,16 +11,18 @@ class OnnxModel < PerformanceTest
     super
     set_owner("hmusum")
     set_description("Test performance of deploying an app with a large ONNX model")
+
+    @onnx_filename = "ranking_model.onnx"
   end
 
   def test_onnx_deploy
-    onnx_file = fetch_model
+    downloaded_file = fetch_model
 
     prepare_time = 0.0
     activate_time = 0.0
     run_count = 2
     run_count.times do |i|
-      out, upload, prepare, activate = deploy(selfdir + "app", nil, {:collect_timing => true, :files => { onnx_file => selfdir + 'app/files/ranking_model.onnx'}})
+      out, upload, prepare, activate = deploy(selfdir + "app", nil, {:collect_timing => true, :files => { downloaded_file => "files/#{@onnx_filename}"}})
       deploy_time = (prepare_time + activate_time).to_f
       prepare_time = prepare_time + prepare.to_f
       activate_time = activate_time + activate.to_f
@@ -38,13 +40,11 @@ class OnnxModel < PerformanceTest
   end
 
   def fetch_model
-    @node = vespa.nodeproxies.first[1]
-    # Get ONNX model from public S3 bucket through data.vespa.oath.cloud
-    @node.fetchfiles(:webhost => "data.vespa.oath.cloud",
-                     :file => "tests/performance/ranking_model.onnx",
-                     :nocache => true,
-                     :nochecksum => true)
-      .first
+    remote_file = "https://data.vespa.oath.cloud/tests/performance/#{@onnx_filename}"
+    local_file = "#{Environment.instance.vespa_home}/tmp/#{@onnx_filename}"
+    cmd = "wget -nv -O'#{local_file}' '#{remote_file}'"
+    `#{cmd}`
+    local_file
   end
 
 end
