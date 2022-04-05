@@ -1,0 +1,59 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 28
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 28,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:lang",
+                        "relevance": 1.0,
+                        "label": "lang",
+                        "children": [
+                            {
+                                "id": "group:string:heissö",
+                                "relevance": 1.0,
+                                "value": "heissö",
+                                "fields": {
+                                    "count()": 18
+                                }
+                            },
+                            {
+                                "id": "group:string:heissz",
+                                "relevance": 0.6666666666666666,
+                                "value": "heissz",
+                                "fields": {
+                                    "count()": 7
+                                }
+                            },
+                            {
+                                "id": "group:string:heißz",
+                                "relevance": 0.3333333333333333,
+                                "value": "heißz",
+                                "fields": {
+                                    "count()": 3
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

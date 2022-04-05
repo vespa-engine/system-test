@@ -1,0 +1,57 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 0,
+            "documents": 1,
+            "degraded": {
+                "match-phase": false,
+                "timeout": false,
+                "adaptive-timeout": false,
+                "non-ideal-state": true
+            },
+            "full": true,
+            "nodes": 0,
+            "results": 0,
+            "resultsFull": 0
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:asf1.l1",
+                        "relevance": 1.0,
+                        "label": "asf1.l1",
+                        "children": [
+                            {
+                                "id": "group:long:1122334455667788994",
+                                "relevance": 0.0,
+                                "value": "1122334455667788994",
+                                "fields": {
+                                    "count()": 1
+                                }
+                            },
+                            {
+                                "id": "group:long:1122334455667788995",
+                                "relevance": 0.0,
+                                "value": "1122334455667788995",
+                                "fields": {
+                                    "count()": 1
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

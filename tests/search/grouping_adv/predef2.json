@@ -1,0 +1,64 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 28
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 28,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:predefined(f, bucket[1.0, 3.0>, bucket[6.0, 9.0>)",
+                        "relevance": 1.0,
+                        "label": "predefined(f, bucket[1.0, 3.0>, bucket[6.0, 9.0>)",
+                        "children": [
+                            {
+                                "id": "group:null",
+                                "relevance": 12111.719438207627,
+                                "fields": {
+                                    "count()": 13
+                                }
+                            },
+                            {
+                                "id": "group:double_bucket:6.0:9.0",
+                                "relevance": 10977.31338339293,
+                                "limits": {
+                                    "from": "6.0",
+                                    "to": "9.0"
+                                },
+                                "fields": {
+                                    "count()": 9
+                                }
+                            },
+                            {
+                                "id": "group:double_bucket:1.0:3.0",
+                                "relevance": 3580.099884632731,
+                                "limits": {
+                                    "from": "1.0",
+                                    "to": "3.0"
+                                },
+                                "fields": {
+                                    "count()": 6
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

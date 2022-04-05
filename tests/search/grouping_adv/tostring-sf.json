@@ -1,0 +1,131 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 28
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 28,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:tostring(sf)",
+                        "relevance": 1.0,
+                        "label": "tostring(sf)",
+                        "children": [
+                            {
+                                "id": "group:string:9.9",
+                                "relevance": 12111.719438207627,
+                                "value": "9.9",
+                                "fields": {
+                                    "count()": 2
+                                }
+                            },
+                            {
+                                "id": "group:string:8.9",
+                                "relevance": 10977.31338339293,
+                                "value": "8.9",
+                                "fields": {
+                                    "count()": 3
+                                }
+                            },
+                            {
+                                "id": "group:string:no-number",
+                                "relevance": 10011.709521325834,
+                                "value": "no-number",
+                                "fields": {
+                                    "count()": 1
+                                }
+                            },
+                            {
+                                "id": "group:string:7.9",
+                                "relevance": 9751.807920622134,
+                                "value": "7.9",
+                                "fields": {
+                                    "count()": 3
+                                }
+                            },
+                            {
+                                "id": "group:string:6.9",
+                                "relevance": 8518.091869631671,
+                                "value": "6.9",
+                                "fields": {
+                                    "count()": 3
+                                }
+                            },
+                            {
+                                "id": "group:string:5.9",
+                                "relevance": 7283.644818632625,
+                                "value": "5.9",
+                                "fields": {
+                                    "count()": 3
+                                }
+                            },
+                            {
+                                "id": "group:string:4.9",
+                                "relevance": 6049.133667632721,
+                                "value": "4.9",
+                                "fields": {
+                                    "count()": 3
+                                }
+                            },
+                            {
+                                "id": "group:string:3.9",
+                                "relevance": 4814.61700663273,
+                                "value": "3.9",
+                                "fields": {
+                                    "count()": 3
+                                }
+                            },
+                            {
+                                "id": "group:string:2.9",
+                                "relevance": 3580.099884632731,
+                                "value": "2.9",
+                                "fields": {
+                                    "count()": 3
+                                }
+                            },
+                            {
+                                "id": "group:string:1.9",
+                                "relevance": 2134.4714701159123,
+                                "value": "1.9",
+                                "fields": {
+                                    "count()": 2
+                                }
+                            },
+                            {
+                                "id": "group:string:1",
+                                "relevance": 1234.517162,
+                                "value": "1",
+                                "fields": {
+                                    "count()": 1
+                                }
+                            },
+                            {
+                                "id": "group:string:-2.9",
+                                "relevance": -3580.099884632731,
+                                "value": "-2.9",
+                                "fields": {
+                                    "count()": 1
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

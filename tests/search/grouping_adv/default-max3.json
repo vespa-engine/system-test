@@ -1,0 +1,71 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 28
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 28,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:a",
+                        "relevance": 1.0,
+                        "label": "a",
+                        "continuation": {
+                            "next": "BGAAABEBCBC"
+                        },
+                        "children": [
+                            {
+                                "id": "group:string:a1",
+                                "relevance": 12111.719438207627,
+                                "value": "a1",
+                                "children": [
+                                    {
+                                        "id": "hitlist:hits",
+                                        "relevance": 1.0,
+                                        "label": "hits",
+                                        "continuation": {
+                                            "next": "BKAAAAABGBCBC"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "id:test:test:n=1234:09",
+                                                "relevance": 12111.719438207627,
+                                                "source": "storage.test",
+                                                "fields": {
+                                                    "documentid": "id:test:test:n=1234:09",
+                                                    "n": 9,
+                                                    "a": "a1",
+                                                    "b": "b3",
+                                                    "c": "c3",
+                                                    "from": 1223406051,
+                                                    "to": 1234607162000000000,
+                                                    "body": "test",
+                                                    "boool": false
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

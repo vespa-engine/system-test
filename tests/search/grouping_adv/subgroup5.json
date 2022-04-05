@@ -1,0 +1,219 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 28
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 28,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:fixedwidth(n, 3)",
+                        "relevance": 1.0,
+                        "label": "fixedwidth(n, 3)",
+                        "children": [
+                            {
+                                "id": "group:long_bucket:9:12",
+                                "relevance": 12111.719438207627,
+                                "limits": {
+                                    "from": "9",
+                                    "to": "12"
+                                },
+                                "fields": {
+                                    "count()": 3
+                                },
+                                "children": [
+                                    {
+                                        "id": "grouplist:a",
+                                        "relevance": 1.0,
+                                        "label": "a",
+                                        "continuation": {
+                                            "next": "BKAAAAABIBEBC"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "group:string:a1",
+                                                "relevance": 12111.719438207627,
+                                                "value": "a1",
+                                                "fields": {
+                                                    "count()": 1
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:a2",
+                                                "relevance": 11111.709477840308,
+                                                "value": "a2",
+                                                "fields": {
+                                                    "count()": 1
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "group:long_bucket:6:9",
+                                "relevance": 10977.31338339293,
+                                "limits": {
+                                    "from": "6",
+                                    "to": "9"
+                                },
+                                "fields": {
+                                    "count()": 9
+                                },
+                                "children": [
+                                    {
+                                        "id": "grouplist:a",
+                                        "relevance": 1.0,
+                                        "label": "a",
+                                        "continuation": {
+                                            "next": "BKAAABCABIBEBC"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "group:string:a1",
+                                                "relevance": 10977.31338339293,
+                                                "value": "a1",
+                                                "fields": {
+                                                    "count()": 3
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:a2",
+                                                "relevance": 9998.214537458838,
+                                                "value": "a2",
+                                                "fields": {
+                                                    "count()": 3
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "group:long_bucket:3:6",
+                                "relevance": 7283.644818632625,
+                                "limits": {
+                                    "from": "3",
+                                    "to": "6"
+                                },
+                                "fields": {
+                                    "count()": 9
+                                },
+                                "children": [
+                                    {
+                                        "id": "grouplist:a",
+                                        "relevance": 1.0,
+                                        "label": "a",
+                                        "continuation": {
+                                            "next": "BKAAABEABIBEBC"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "group:string:a1",
+                                                "relevance": 7283.644818632625,
+                                                "value": "a1",
+                                                "fields": {
+                                                    "count()": 3
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:a2",
+                                                "relevance": 6628.09515313634,
+                                                "value": "a2",
+                                                "fields": {
+                                                    "count()": 3
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "group:long_bucket:0:3",
+                                "relevance": 3580.099884632731,
+                                "limits": {
+                                    "from": "0",
+                                    "to": "3"
+                                },
+                                "fields": {
+                                    "count()": 6
+                                },
+                                "children": [
+                                    {
+                                        "id": "grouplist:a",
+                                        "relevance": 1.0,
+                                        "label": "a",
+                                        "continuation": {
+                                            "next": "BKAAABGABIBEBC"
+                                        },
+                                        "children": [
+                                            {
+                                                "id": "group:string:a1",
+                                                "relevance": 3580.099884632731,
+                                                "value": "a1",
+                                                "fields": {
+                                                    "count()": 2
+                                                }
+                                            },
+                                            {
+                                                "id": "group:string:a3",
+                                                "relevance": 2935.945422549505,
+                                                "value": "a3",
+                                                "fields": {
+                                                    "count()": 2
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "group:long_bucket:-3:0",
+                                "relevance": -3580.099884632731,
+                                "limits": {
+                                    "from": "-3",
+                                    "to": "0"
+                                },
+                                "fields": {
+                                    "count()": 1
+                                },
+                                "children": [
+                                    {
+                                        "id": "grouplist:a",
+                                        "relevance": 1.0,
+                                        "label": "a",
+                                        "children": [
+                                            {
+                                                "id": "group:string:a1",
+                                                "relevance": -3580.099884632731,
+                                                "value": "a1",
+                                                "fields": {
+                                                    "count()": 1
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

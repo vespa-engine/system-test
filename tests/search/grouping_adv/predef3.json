@@ -1,0 +1,64 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 28
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 28,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:predefined(s, bucket[\"ab\", \"abc\">, bucket[\"abc\", \"bc\">)",
+                        "relevance": 1.0,
+                        "label": "predefined(s, bucket[\"ab\", \"abc\">, bucket[\"abc\", \"bc\">)",
+                        "children": [
+                            {
+                                "id": "group:string_bucket:abc:bc",
+                                "relevance": 12111.719438207627,
+                                "limits": {
+                                    "from": "abc",
+                                    "to": "bc"
+                                },
+                                "fields": {
+                                    "count()": 13
+                                }
+                            },
+                            {
+                                "id": "group:string_bucket:ab:abc",
+                                "relevance": 10977.31338339293,
+                                "limits": {
+                                    "from": "ab",
+                                    "to": "abc"
+                                },
+                                "fields": {
+                                    "count()": 3
+                                }
+                            },
+                            {
+                                "id": "group:null",
+                                "relevance": 10011.709521325834,
+                                "fields": {
+                                    "count()": 12
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

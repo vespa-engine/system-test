@@ -1,0 +1,17 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 0
+        },
+        "errors": [
+            {
+                "code": 4,
+                "summary": "Invalid query parameter",
+                "source": "storage.test",
+                "message": "The theoretical total number of groups and summaries in grouping query exceeds 'grouping.globalMaxGroups' ( 10100 > 10000 ). Either restrict group/summary counts with max() or disable 'grouping.globalMaxGroups'. See https://docs.vespa.ai/en/grouping.html for details."
+            }
+        ]
+    }
+}
