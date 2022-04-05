@@ -36,20 +36,20 @@ class GroupingIndexed < IndexedSearchTest
     assert(result.xmldata.match(exp_fill_unranked) != nil, "Expected #{exp_fill_unranked} in result")
 
     # Test session cache accuracy
-    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/accuracy1.xml", DEFAULT_TIMEOUT, false)
-    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/accuracy2.xml", DEFAULT_TIMEOUT, true)
-    check_query("all%28group%28a%29 max%281%29 precision%28100%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/accuracy1.xml", DEFAULT_TIMEOUT, true)
+    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/accuracy1.json", DEFAULT_TIMEOUT, false)
+    check_query("all%28group%28a%29 max%281%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/accuracy2.json", DEFAULT_TIMEOUT, true)
+    check_query("all%28group%28a%29 max%281%29 precision%28100%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/accuracy1.json", DEFAULT_TIMEOUT, true)
 
     # Test debug function
-    check_fullquery("/?query=s:aaa&hits=0&timeout=5.0&select=all%28group%28debugwait%28a, 0.1, true%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug1.xml")
-    check_fullquery("/?query=s:aaa&hits=0&timeout=5.0&select=all%28group%28debugwait%28a, 0.1, false%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug2.xml")
+    check_fullquery("/?query=s:aaa&hits=0&timeout=5.0&select=all%28group%28debugwait%28a, 0.1, true%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug1.json")
+    check_fullquery("/?query=s:aaa&hits=0&timeout=5.0&select=all%28group%28debugwait%28a, 0.1, false%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug2.json")
     startstamp = Time.now.to_i
-    check_fullquery("/?query=s:aaa&hits=0&timeout=5.0&select=all%28group%28debugwait%28a, 1.0, true%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug3.xml")
+    check_fullquery("/?query=s:aaa&hits=0&timeout=5.0&select=all%28group%28debugwait%28a, 1.0, true%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug3.json")
     endstamp = Time.now.to_i
     duration = endstamp - startstamp
     assert(duration >= 1)
     puts "Duration: #{duration}"
-    check_fullquery("/?query=sddocname:test&timeout=5.0&hits=0&select=all%28group%28debugwait%28a, 20.0, true%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug4.xml")
+    check_fullquery("/?query=sddocname:test&timeout=5.0&hits=0&select=all%28group%28debugwait%28a, 20.0, true%29%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/debug4.json")
   end
 
 
@@ -64,7 +64,7 @@ class GroupingIndexed < IndexedSearchTest
       doc.add_field("a", a.to_s)
       docs.add(doc)
     end
-    feedfile = dirs.tmpdir + "input.xml"
+    feedfile = dirs.tmpdir + "input.json"
     docs.write_xml(feedfile)
 
     feed_and_wait_for_docs("test2", 2048, {:file => feedfile})
@@ -78,7 +78,7 @@ class GroupingIndexed < IndexedSearchTest
 
   def test_global_max
     set_owner("bjorncs")
-    deploy_app(singlenode_streaming_2storage("#{selfdir}/test.sd").search_dir("#{selfdir}/search"))
+    deploy_app(singlenode_2cols_realtime(selfdir+"test.sd").threads_per_search(1).search_dir("#{selfdir}/search"))
     start
     feed_docs
     querytest_global_max
@@ -130,7 +130,7 @@ class GroupingIndexed < IndexedSearchTest
 
     # Should all work fine
     for i in 0..numqueries do
-      check_fullquery("/?query=sddocname:test&timeout=5.0&nocache&hits=0&select=all%28group%28a%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/session.xml")
+      check_fullquery("/?query=sddocname:test&timeout=5.0&nocache&hits=0&select=all%28group%28a%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/session.json")
     end
   end
 

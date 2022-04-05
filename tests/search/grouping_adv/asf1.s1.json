@@ -1,0 +1,57 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 0,
+            "documents": 1,
+            "degraded": {
+                "match-phase": false,
+                "timeout": false,
+                "adaptive-timeout": false,
+                "non-ideal-state": true
+            },
+            "full": true,
+            "nodes": 0,
+            "results": 0,
+            "resultsFull": 0
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:asf1.s1",
+                        "relevance": 1.0,
+                        "label": "asf1.s1",
+                        "children": [
+                            {
+                                "id": "group:string:string españa asf1[0].s1",
+                                "relevance": 0.0,
+                                "value": "string españa asf1[0].s1",
+                                "fields": {
+                                    "count()": 1
+                                }
+                            },
+                            {
+                                "id": "group:string:string españa asf1[1].s1",
+                                "relevance": 0.0,
+                                "value": "string españa asf1[1].s1",
+                                "fields": {
+                                    "count()": 1
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

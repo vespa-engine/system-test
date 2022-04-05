@@ -1,0 +1,80 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 28
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 28,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:foo",
+                        "relevance": 1.0,
+                        "label": "foo",
+                        "continuation": {
+                            "next": "BGAAABEBEBC"
+                        },
+                        "children": [
+                            {
+                                "id": "group:string:a1",
+                                "relevance": 1.0,
+                                "value": "a1",
+                                "fields": {
+                                    "count()": 10
+                                }
+                            },
+                            {
+                                "id": "group:string:a2",
+                                "relevance": 0.5,
+                                "value": "a2",
+                                "fields": {
+                                    "count()": 9
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "id": "grouplist:bar",
+                        "relevance": 1.0,
+                        "label": "bar",
+                        "continuation": {
+                            "next": "BGAABCBIBEBC"
+                        },
+                        "children": [
+                            {
+                                "id": "group:string:a1",
+                                "relevance": 1.0,
+                                "value": "a1",
+                                "fields": {
+                                    "max(b)": "b3"
+                                }
+                            },
+                            {
+                                "id": "group:string:a2",
+                                "relevance": 0.5,
+                                "value": "a2",
+                                "fields": {
+                                    "max(b)": "b3"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

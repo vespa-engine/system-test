@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="28" coverage-docs="28" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
-  <group relevance="1.0">
-    <id type="root"/>
-    <continuation id="this"></continuation>
-    <output label="count()">3</output>
-  </group>
-</result>

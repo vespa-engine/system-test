@@ -22,94 +22,94 @@
                 },
                 "children": [
                     {
-                        "id": "grouplist:math.cbrt(d)",
+                        "id": "grouplist:math.asinh(d)",
                         "relevance": 1.0,
-                        "label": "math.cbrt(d)",
+                        "label": "math.asinh(d)",
                         "children": [
                             {
-                                "id": "group:double:2.1472291690189413",
+                                "id": "group:double:2.9882229932141517",
                                 "relevance": 12111.719438207627,
-                                "value": "2.1472291690189413",
+                                "value": "2.9882229932141517",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:2.0723510980592614",
+                                "id": "group:double:2.8823397863009728",
                                 "relevance": 10977.31338339293,
-                                "value": "2.0723510980592614",
+                                "value": "2.8823397863009728",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.9916317012899134",
+                                "id": "group:double:2.7639918511000183",
                                 "relevance": 9751.807920622134,
-                                "value": "1.9916317012899134",
+                                "value": "2.7639918511000183",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.9037782619633032",
+                                "id": "group:double:2.6298787064530678",
                                 "relevance": 8518.091869631671,
-                                "value": "1.9037782619633032",
+                                "value": "2.6298787064530678",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.8069688693211894",
+                                "id": "group:double:2.4752052194025724",
                                 "relevance": 7283.644818632625,
-                                "value": "1.8069688693211894",
+                                "value": "2.4752052194025724",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.6984992522418108",
+                                "id": "group:double:2.292635752042407",
                                 "relevance": 6049.133667632721,
-                                "value": "1.6984992522418108",
+                                "value": "2.292635752042407",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.5740609166314437",
+                                "id": "group:double:2.0701692399277114",
                                 "relevance": 4814.61700663273,
-                                "value": "1.5740609166314437",
+                                "value": "2.0701692399277114",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.4260431471424089",
+                                "id": "group:double:1.786340199816898",
                                 "relevance": 3580.099884632731,
-                                "value": "1.4260431471424089",
+                                "value": "1.786340199816898",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.2385623296301707",
+                                "id": "group:double:1.3979983651114345",
                                 "relevance": 2134.4714701159123,
-                                "value": "1.2385623296301707",
+                                "value": "1.3979983651114345",
                                 "fields": {
                                     "count()": 2
                                 }
                             },
                             {
-                                "id": "group:double:1.0",
+                                "id": "group:double:0.881373587019543",
                                 "relevance": 1234.517162,
-                                "value": "1.0",
+                                "value": "0.881373587019543",
                                 "fields": {
                                     "count()": 1
                                 }
                             },
                             {
-                                "id": "group:double:-1.4260431471424089",
+                                "id": "group:double:-1.786340199816898",
                                 "relevance": -3580.099884632731,
-                                "value": "-1.4260431471424089",
+                                "value": "-1.786340199816898",
                                 "fields": {
                                     "count()": 1
                                 }

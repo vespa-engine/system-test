@@ -22,94 +22,94 @@
                 },
                 "children": [
                     {
-                        "id": "grouplist:math.cbrt(d)",
+                        "id": "grouplist:tolong(f)",
                         "relevance": 1.0,
-                        "label": "math.cbrt(d)",
+                        "label": "tolong(f)",
                         "children": [
                             {
-                                "id": "group:double:2.1472291690189413",
+                                "id": "group:long:10",
                                 "relevance": 12111.719438207627,
-                                "value": "2.1472291690189413",
+                                "value": "10",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:2.0723510980592614",
+                                "id": "group:long:9",
                                 "relevance": 10977.31338339293,
-                                "value": "2.0723510980592614",
+                                "value": "9",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.9916317012899134",
+                                "id": "group:long:8",
                                 "relevance": 9751.807920622134,
-                                "value": "1.9916317012899134",
+                                "value": "8",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.9037782619633032",
+                                "id": "group:long:7",
                                 "relevance": 8518.091869631671,
-                                "value": "1.9037782619633032",
+                                "value": "7",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.8069688693211894",
+                                "id": "group:long:6",
                                 "relevance": 7283.644818632625,
-                                "value": "1.8069688693211894",
+                                "value": "6",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.6984992522418108",
+                                "id": "group:long:5",
                                 "relevance": 6049.133667632721,
-                                "value": "1.6984992522418108",
+                                "value": "5",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.5740609166314437",
+                                "id": "group:long:4",
                                 "relevance": 4814.61700663273,
-                                "value": "1.5740609166314437",
+                                "value": "4",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.4260431471424089",
+                                "id": "group:long:3",
                                 "relevance": 3580.099884632731,
-                                "value": "1.4260431471424089",
+                                "value": "3",
                                 "fields": {
                                     "count()": 3
                                 }
                             },
                             {
-                                "id": "group:double:1.2385623296301707",
+                                "id": "group:long:2",
                                 "relevance": 2134.4714701159123,
-                                "value": "1.2385623296301707",
+                                "value": "2",
                                 "fields": {
                                     "count()": 2
                                 }
                             },
                             {
-                                "id": "group:double:1.0",
+                                "id": "group:long:1",
                                 "relevance": 1234.517162,
-                                "value": "1.0",
+                                "value": "1",
                                 "fields": {
                                     "count()": 1
                                 }
                             },
                             {
-                                "id": "group:double:-1.4260431471424089",
+                                "id": "group:long:-3",
                                 "relevance": -3580.099884632731,
-                                "value": "-1.4260431471424089",
+                                "value": "-3",
                                 "fields": {
                                     "count()": 1
                                 }

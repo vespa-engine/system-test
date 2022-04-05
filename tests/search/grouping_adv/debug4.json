@@ -1,0 +1,46 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 0
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 0,
+            "degraded": {
+                "match-phase": false,
+                "timeout": true,
+                "adaptive-timeout": false,
+                "non-ideal-state": false
+            },
+            "full": true,
+            "nodes": 0,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "errors": [
+            {
+                "code": 12,
+                "summary": "Timed out",
+                "source": "search",
+                "message": "Backend communication timeout on all nodes in group (distribution-keys: 1, 0)"
+            },
+            {
+                "code": 12,
+                "summary": "Timed out",
+                "source": "search",
+                "message": "Backend communication timeout on all nodes in group (distribution-keys: 0, 1)"
+            }
+        ],
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,77 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 28
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 28,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:a",
+                        "relevance": 1.0,
+                        "label": "a",
+                        "children": [
+                            {
+                                "id": "group:string:a1",
+                                "relevance": 12111.719438207627,
+                                "value": "a1",
+                                "fields": {
+                                    "count()": 10,
+                                    "sum(f)": 49.299999713897705,
+                                    "avg(f)": 4.929999971389771,
+                                    "max(f)": 9.899999618530273,
+                                    "min(f)": -2.9000000953674316,
+                                    "xor(f)": -12,
+                                    "stddev(f)": 3.688373560400952
+                                }
+                            },
+                            {
+                                "id": "group:string:a2",
+                                "relevance": 11111.709477840308,
+                                "value": "a2",
+                                "fields": {
+                                    "count()": 9,
+                                    "sum(f)": 53.09999978542328,
+                                    "avg(f)": 5.899999976158142,
+                                    "max(f)": 9.899999618530273,
+                                    "min(f)": 1.899999976158142,
+                                    "xor(f)": 10,
+                                    "stddev(f)": 2.5819887743527907
+                                }
+                            },
+                            {
+                                "id": "group:string:a3",
+                                "relevance": 10011.709521325834,
+                                "value": "a3",
+                                "fields": {
+                                    "count()": 9,
+                                    "sum(f)": 53.09999978542328,
+                                    "avg(f)": 5.899999976158142,
+                                    "max(f)": 9.899999618530273,
+                                    "min(f)": 1.899999976158142,
+                                    "xor(f)": 10,
+                                    "stddev(f)": 2.5819887743527907
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

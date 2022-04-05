@@ -1,0 +1,17 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 0
+        },
+        "errors": [
+            {
+                "code": 4,
+                "summary": "Invalid query parameter",
+                "source": "storage.test",
+                "message": "Cannot return unbounded number of summaries when 'grouping.globalMaxGroups' is enabled. Either restrict summary count with max() or disable 'grouping.globalMaxGroups'. See https://docs.vespa.ai/en/grouping.html for details."
+            }
+        ]
+    }
+}
