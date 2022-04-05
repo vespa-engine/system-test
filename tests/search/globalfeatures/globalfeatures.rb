@@ -72,7 +72,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
     assert_freshness(0,   120)
   end
 
-  def assert_age(age, now = nil, epsilon = 5.0)
+  def assert_age(age, now = nil, epsilon = 6.0)
     query = "query=a:86400&nocache&streaming.userid=1"
     search(query)
     timebefore = Time.now.to_i
