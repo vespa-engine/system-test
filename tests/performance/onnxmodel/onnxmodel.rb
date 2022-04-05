@@ -48,4 +48,8 @@ class OnnxModel < PerformanceTest
     local_file
   end
 
+  def teardown
+    super
+  end
+
 end
