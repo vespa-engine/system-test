@@ -25,5 +25,6 @@
  { "put":"id:test:test:n=72331337:25", "fields":{ "s":"bcc", "sf":7.9, "f":7.9, "d":7.9, "n":7, "a":"a3", "b":"b3", "c":"c1", "from":1012383829, "to":1234767162000000000, "boool":true, "body":"test","lang":"heissö"} },
  { "put":"id:test:test:n=72331337:26", "fields":{ "s":"c",   "sf":8.9, "f":8.9, "d":8.9, "n":8, "a":"a3", "b":"b3", "c":"c2", "from":1012283829, "to":1234777162000000000, "boool":true, "body":"test","lang":"heissö"} },
  { "put":"id:test:test:n=72331337:02", "fields":{ "s":"aa",  "sf":2.9, "f":2.9, "d":2.9, "n":2, "a":"a1", "b":"b1", "c":"c2", "from":1234517161, "to":1234527162000000000, "body":"test", "nw":{"1":1,"2":1}, "lang":"heissz"} },
- { "put":"id:test:test:n=72331337:28", "fields":{ "s":"caa",  "sf":-2.9, "f":-2.9, "d":-2.9, "n":-2, "a":"a1", "b":"b1", "c":"c2", "from":1234517161, "to":1234527162000000000, "boool":true, "body":"test", "nw":{"1":1,"2":1}, "lang":"heissz"} }
+ { "put":"id:test:test:n=72331337:28", "fields":{ "s":"caa",  "sf":-2.9, "f":-2.9, "d":-2.9, "n":-2, "a":"a1", "b":"b1", "c":"c2", "from":1234517161, "to":1234527162000000000, "boool":true, "body":"test", "nw":{"1":1,"2":1}, "lang":"heissz"} },
+ { "put":"id:test:test:n=72331337:27", "fields":{ "s":"ca",  "sf":"no-number", "f":9.9, "d":9.9, "n":9, "a":"a3", "b":"b3", "c":"c3", "from":1011283829, "to":1234787162000000000, "boool":true, "body":"test", "lang":"heissö"} }
 ]

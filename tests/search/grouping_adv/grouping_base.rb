@@ -14,8 +14,7 @@ module GroupingBase
   end
 
   def feed_docs
-    feed_and_wait_for_docs('test', 27, :file => "#{selfdir}/docs.json")
-    feed_and_wait_for_docs('test', 28, :file => "#{selfdir}/no-number.xml")
+    feed_and_wait_for_docs('test', 28, :file => "#{selfdir}/docs.json")
   end
 
   def querytest_common
