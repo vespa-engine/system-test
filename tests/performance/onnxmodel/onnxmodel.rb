@@ -12,6 +12,10 @@ class OnnxModel < PerformanceTest
     set_owner("hmusum")
     set_description("Test performance of deploying an app with a large ONNX model")
 
+    @node = @vespa.nodeproxies.first[1]
+    # Set start and max heap equal to avoid a lot of GC while running test
+    override_environment_setting(@node, "VESPA_CONFIGSERVER_JVMARGS", "-Xms2g -Xmx2g")
+
     @onnx_filename = "ranking_model.onnx"
   end
 
