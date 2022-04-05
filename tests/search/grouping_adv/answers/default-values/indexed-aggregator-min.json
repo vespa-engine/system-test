@@ -1,0 +1,190 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 7
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 7,
+      "full": true,
+      "nodes": 2,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        },
+        "children": [
+          {
+            "id": "grouplist:f",
+            "relevance": 1.0,
+            "label": "f",
+            "children": [
+              {
+                "id": "group:double:3.9000000953674316",
+                "relevance": 4814.61700663273,
+                "value": "3.9000000953674316",
+                "fields": {
+                  "min(n)": 3
+                },
+                "children": [
+                  {
+                    "id": "hitlist:hits",
+                    "relevance": 1.0,
+                    "label": "hits",
+                    "children": [
+                      {
+                        "id": "id:test:test::all-fields",
+                        "relevance": 4814.61700663273,
+                        "source": "search",
+                        "fields": {
+                          "sddocname": "test",
+                          "documentid": "id:test:test::all-fields",
+                          "n": 3,
+                          "a": "a1",
+                          "b": "b1",
+                          "c": "c3",
+                          "from": 1234517151,
+                          "to": 1234537162000000000,
+                          "body": "test",
+                          "boool": true
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "group:double:1.2000000476837158",
+                "relevance": 1348.087313568175,
+                "value": "1.2000000476837158",
+                "fields": {
+                  "min(n)": 7
+                },
+                "children": [
+                  {
+                    "id": "hitlist:hits",
+                    "relevance": 1.0,
+                    "label": "hits",
+                    "children": [
+                      {
+                        "id": "id:test:test::all-numeric-fields",
+                        "relevance": 1348.087313568175,
+                        "source": "search",
+                        "fields": {
+                          "sddocname": "test",
+                          "documentid": "id:test:test::all-numeric-fields",
+                          "n": 7,
+                          "from": 1123406050,
+                          "to": 1234637162000000000,
+                          "boool": false
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "group:double:NaN",
+                "relevance": "-Infinity",
+                "value": "NaN",
+                "fields": {
+                  "min(n)": -2147483648
+                },
+                "children": [
+                  {
+                    "id": "hitlist:hits",
+                    "relevance": 1.0,
+                    "label": "hits",
+                    "children": [
+                      {
+                        "id": "id:test:test::no-fields",
+                        "relevance": "-Infinity",
+                        "source": "search",
+                        "fields": {
+                          "sddocname": "test",
+                          "documentid": "id:test:test::no-fields",
+                          "boool": false
+                        }
+                      },
+                      {
+                        "id": "id:test:test::all-integer-fields",
+                        "relevance": "-Infinity",
+                        "source": "search",
+                        "fields": {
+                          "sddocname": "test",
+                          "documentid": "id:test:test::all-integer-fields",
+                          "n": 1,
+                          "from": 1123406000,
+                          "to": 1234638162000000000,
+                          "boool": false
+                        }
+                      },
+                      {
+                        "id": "id:test:test::all-multivalue-fields",
+                        "relevance": "-Infinity",
+                        "source": "search",
+                        "fields": {
+                          "sddocname": "test",
+                          "documentid": "id:test:test::all-multivalue-fields",
+                          "boool": false
+                        }
+                      },
+                      {
+                        "id": "id:test:test::all-non-numeric-fields",
+                        "relevance": "-Infinity",
+                        "source": "search",
+                        "fields": {
+                          "sddocname": "test",
+                          "documentid": "id:test:test::all-non-numeric-fields",
+                          "a": "a2",
+                          "b": "b4",
+                          "c": "c6",
+                          "body": "test2",
+                          "boool": false
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "group:double:2.0999999046325684",
+                "relevance": "-Infinity",
+                "value": "2.0999999046325684",
+                "fields": {
+                  "min(n)": -2147483648
+                },
+                "children": [
+                  {
+                    "id": "hitlist:hits",
+                    "relevance": 1.0,
+                    "label": "hits",
+                    "children": [
+                      {
+                        "id": "id:test:test::all-floating-point-fields",
+                        "relevance": "-Infinity",
+                        "source": "search",
+                        "fields": {
+                          "sddocname": "test",
+                          "documentid": "id:test:test::all-floating-point-fields",
+                          "boool": false
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

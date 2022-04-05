@@ -1,0 +1,24 @@
+[
+  { "put":"id:test:test::no-fields", "fields": {} },
+  { "put":"id:test:test::all-fields", "fields": {
+    "s":"aaa", "sf":3.9, "f":3.9, "d":3.9, "n":3, "a":"a1", "b":"b1", "c":"c3", "from":1234517151,
+    "to":1234537162000000000, "body":"test", "fa":[1.6,2.9], "na":[1,2], "nw":{"1":1,"2":1}, "lang":"heissz",
+    "boool":true, "by":94 }
+  },
+  { "put":"id:test:test::all-numeric-fields", "fields": {
+    "f":1.2, "d":1.2, "n":7, "from":1123406050, "to":1234637162000000000, "by":-101 }
+  },
+  { "put":"id:test:test::all-multivalue-fields", "fields": {
+    "fa":[2.6,5.1,3.2], "na":[3,1,5], "nw":{"1":3,"2":2,"3":11} }
+  },
+  { "put":"id:test:test::all-floating-point-fields", "fields": {
+    "f":2.1, "d":7.8 }
+  },
+  { "put":"id:test:test::all-integer-fields", "fields": {
+    "n":1, "from":1123406000, "to":1234638162000000000, "by":127 }
+  },
+  { "put":"id:test:test::all-non-numeric-fields", "fields": {
+    "s":"bbb", "sf":9.9, "a":"a2", "b":"b4", "c":"c6", "body":"test2", "fa":[1.2], "na":[7,3,1], "nw":{"1":1},
+    "lang":"norwegian", "boool":false }
+  }
+]

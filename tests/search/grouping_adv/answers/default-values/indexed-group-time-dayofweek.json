@@ -1,0 +1,51 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 7
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 7,
+      "full": true,
+      "nodes": 2,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        },
+        "children": [
+          {
+            "id": "grouplist:time.dayofweek(from)",
+            "relevance": 1.0,
+            "label": "time.dayofweek(from)",
+            "children": [
+              {
+                "id": "group:long:5",
+                "relevance": 4814.61700663273,
+                "value": "5",
+                "fields": {
+                  "count()": 5
+                }
+              },
+              {
+                "id": "group:long:0",
+                "relevance": 1348.087313568175,
+                "value": "0",
+                "fields": {
+                  "count()": 2
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

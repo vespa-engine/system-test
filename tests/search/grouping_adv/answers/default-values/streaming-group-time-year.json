@@ -1,0 +1,59 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 7
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 7,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        },
+        "children": [
+          {
+            "id": "grouplist:time.year(from)",
+            "relevance": 1.0,
+            "label": "time.year(from)",
+            "children": [
+              {
+                "id": "group:long:2009",
+                "relevance": 4814.61700663273,
+                "value": "2009",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:long:2005",
+                "relevance": 1348.087313568175,
+                "value": "2005",
+                "fields": {
+                  "count()": 2
+                }
+              },
+              {
+                "id": "group:long:1970",
+                "relevance": "-Infinity",
+                "value": "1970",
+                "fields": {
+                  "count()": 4
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

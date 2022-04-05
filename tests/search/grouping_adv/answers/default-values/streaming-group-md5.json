@@ -1,0 +1,67 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 7
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 7,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        },
+        "children": [
+          {
+            "id": "grouplist:md5(n, 64)",
+            "relevance": 1.0,
+            "label": "md5(n, 64)",
+            "children": [
+              {
+                "id": "group:raw:[88, 74, 21, -87, 15, 47, -107, -99]",
+                "relevance": 4814.61700663273,
+                "value": "[88, 74, 21, -87, 15, 47, -107, -99]",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:raw:[103, -98, 25, 35, 75, 41, 94, -28]",
+                "relevance": 1348.087313568175,
+                "value": "[103, -98, 25, 35, 75, 41, 94, -28]",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:raw:[-15, 69, 3, 6, 81, 118, 36, -91]",
+                "relevance": "-Infinity",
+                "value": "[-15, 69, 3, 6, 81, 118, 36, -91]",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:raw:[-15, -45, -1, -124, 67, 41, 119, 50]",
+                "relevance": "-Infinity",
+                "value": "[-15, -45, -1, -124, 67, 41, 119, 50]",
+                "fields": {
+                  "count()": 4
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
