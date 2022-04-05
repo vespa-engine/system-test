@@ -47,8 +47,9 @@ class OnnxModel < PerformanceTest
     remote_file = "https://data.vespa.oath.cloud/tests/performance/#{@onnx_filename}"
     local_file = "#{Environment.instance.vespa_home}/tmp/#{@onnx_filename}"
     cmd = "wget -nv -O'#{local_file}' '#{remote_file}'"
+    puts "Running command #{cmd}"
     result = `#{cmd}`
-    puts result
+    puts "Result: #{result}"
     local_file
   end
 
