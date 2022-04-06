@@ -21,12 +21,17 @@ class OnnxModel < PerformanceTest
 
   def test_onnx_deploy
     downloaded_file = fetch_model
+    # For debugging when model has already been downloaded
+    # downloaded_file = "/opt/vespa/tmp/ranking_model.onnx"
+
+    # Warmup
+    do_deploy(downloaded_file)
 
     prepare_time = 0.0
     activate_time = 0.0
     run_count = 2
     run_count.times do |i|
-      out, upload, prepare, activate = deploy(selfdir + "app", nil, {:collect_timing => true, :files => { downloaded_file => "files/#{@onnx_filename}"}})
+      out, upload, prepare, activate = do_deploy(downloaded_file, {:collect_timing => true})
       deploy_time = (prepare_time + activate_time).to_f
       prepare_time = prepare_time + prepare.to_f
       activate_time = activate_time + activate.to_f
@@ -52,6 +57,10 @@ class OnnxModel < PerformanceTest
     puts "Result: #{result}"
 
     local_file
+  end
+
+  def do_deploy(downloaded_file, params={})
+    deploy(selfdir + "app", nil, params.merge({:files => { downloaded_file => "files/#{@onnx_filename}"}}))
   end
 
   def teardown
