@@ -282,7 +282,7 @@ module GroupingBase
   end
 
   def check_fullquery(query, localfile)
-    file = selfdir + localfile + '.json'
+    file = selfdir + 'answers/' + localfile + '.json'
     if (SAVE_RESULT)
       save_result(query, file + '.saved')
       result_data = search_base(query).xmldata
