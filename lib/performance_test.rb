@@ -368,7 +368,7 @@ class PerformanceTest < TestCase
               node.kill_pid(pid, 'INT')
             end
           rescue Timeout::Error, ExecuteError
-            puts "Failed to terminate pid #{pid} on host #{node.name}, trying KILL"
+            puts "Failed to terminate pid #{pid} on host #{node.name}, trying KILL. This means that no perf report will be generated!"
             begin
               node.kill_pid(pid, 'KILL')
             rescue ExecuteError, SystemCallError
