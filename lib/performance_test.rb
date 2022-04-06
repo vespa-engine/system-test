@@ -364,7 +364,7 @@ class PerformanceTest < TestCase
       @perf_processes.each do |node, pidlist|
         pidlist.each do |pid|
           begin
-            Timeout.timeout(10) do
+            Timeout.timeout(20) do
               node.kill_pid(pid, 'INT')
             end
           rescue Timeout::Error, ExecuteError
