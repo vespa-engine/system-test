@@ -11,34 +11,30 @@ class GroupingStreaming < StreamingSearchTest
     start
     feed_and_wait_for_docs('structtest', 1, :file => "#{selfdir}/structdocs.xml")
     # Test struct
-    check_wherequery("sddocname:structtest", "all%28group%28ssf1.s1%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/ssf1.s1.json")
-    check_wherequery("sddocname:structtest", "all%28group%28ssf1.l1%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/ssf1.l1.json")
-    check_wherequery("sddocname:structtest", "all%28group%28asf1.s1%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/asf1.s1.json")
-    check_wherequery("sddocname:structtest", "all%28group%28asf1.l1%29 each%28output%28count%28%29%29%29%29", "#{selfdir}/asf1.l1.json")
+    check_wherequery('sddocname:structtest', 'all(group(ssf1.s1) each(output(count())))', 'ssf1.s1')
+    check_wherequery('sddocname:structtest', 'all(group(ssf1.l1) each(output(count())))', 'ssf1.l1')
+    check_wherequery('sddocname:structtest', 'all(group(asf1.s1) each(output(count())))', 'asf1.s1')
+    check_wherequery('sddocname:structtest', 'all(group(asf1.l1) each(output(count())))', 'asf1.l1')
 
   end
 
   def test_advgrouping_vds
-    deploy_app(singlenode_streaming_2storage("#{selfdir}/test.sd"))
+    deploy_app(singlenode_streaming_2storage(selfdir + 'test.sd'))
     start
     feed_docs
 
     querytest_common
 
     # Test where
-    check_query("all%28group%28a%29 each%28output%28count%28%29%29%29%29",
-                "#{selfdir}/where-allhits.json")
-    check_wherequery("a:a1", "all%28group%28a%29 each%28output%28count%28%29%29%29%29",
-                     "#{selfdir}/where-a1.json")
-    check_query("all%28where%28true%29 all%28group%28a%29 each%28output%28count%28%29%29%29%29%29",
-                "#{selfdir}/where-all-28.json")
-    check_wherequery("a:a1","all%28where%28true%29 all%28group%28a%29 each%28output%28count%28%29%29%29%29%29",
-                     "#{selfdir}/where-all-10.json")
+    check_query('all(group(a) each(output(count())))', 'where-allhits')
+    check_wherequery('a:a1', 'all(group(a) each(output(count())))', 'where-a1')
+    check_query('all(where(true) all(group(a) each(output(count()))))', 'where-all-28')
+    check_wherequery('a:a1','all(where(true) all(group(a) each(output(count()))))', 'where-all-10')
 
   end
 
   def test_global_max
-    set_owner("bjorncs")
+    set_owner('bjorncs')
     deploy_app(singlenode_streaming_2storage("#{selfdir}/test.sd").search_dir("#{selfdir}/search"))
     start
     feed_docs
