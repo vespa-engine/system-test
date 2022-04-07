@@ -1,0 +1,22 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search foobar {
+  document foobar inherits foo, bar {
+    struct mystruct {
+      field number type int {}
+      field something type string {}
+    }
+    field f5 type map<string,mystruct> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value.number {
+        indexing: attribute
+      }
+      struct-field value.something {
+        indexing: attribute
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search foo {
+  document {
+    struct mystruct {
+      field name type string {}
+      field age type int {}
+    }
+    field f1 type mystruct {
+      indexing: summary
+    }
+    field f2 type array<mystruct> {
+      indexing: summary
+      struct-field name {
+        indexing: attribute
+      }
+      struct-field age {
+        indexing: attribute
+      }
+    }
+  }
+}
