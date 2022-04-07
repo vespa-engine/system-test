@@ -1,0 +1,13 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+search bar {
+  document {
+    struct mystruct {
+      field title type string {}
+      field age type string {}
+    }
+    field f3 type mystruct {
+      indexing: summary
+    }
+  }
+}

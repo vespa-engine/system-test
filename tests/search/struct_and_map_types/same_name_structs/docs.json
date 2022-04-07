@@ -1,0 +1,47 @@
+[
+    {
+        "put": "id:ns:foo::1",
+        "fields": {
+            "f1": {
+                "name": "foo",
+                "age": 10
+            },
+            "f2": [ { "name": "infoo", "age": 20 },
+                    { "name": "in foo too", "age": 30 } ]
+        }
+    },
+    {
+        "put": "id:ns:bar::2",
+        "fields": {
+            "f3": {
+                "title": "short description",
+                "age": "forty"
+            }
+        }
+    },
+    {
+        "put": "id:ns:mystruct::3",
+        "fields": {
+            "f4": "My Struct is my Name"
+        }
+    },
+    {
+        "put": "id:ns:foobar::4",
+        "fields": {
+            "f1": {
+                "name": "foobar",
+                "age": 50
+            },
+            "f2": [ { "name": "infoobar", "age": 60 },
+                    { "name": "in foobar too", "age": 70 } ],
+            "f3": {
+                "title": "the title",
+                "age": "eighty"
+            },
+            "f5": {
+                "one": { "number": 90, "something": "some thing" },
+                "two": { "number": 42, "something": "the answer to everything" }
+            }
+        }
+    }
+]
