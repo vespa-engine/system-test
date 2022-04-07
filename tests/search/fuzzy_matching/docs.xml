@@ -1,0 +1,49 @@
+<document type="test" documentid="id:test:test::1">
+  <title>test1</title>
+  <single_scan_uncased>ThisIsAFox</single_scan_uncased>
+  <array_slow><item>ThisIsAFox</item></array_slow>
+  <array_fast><item>ThisIsAFox</item></array_fast>
+  <wset_slow><item weight="100">ThisIsAFox</item></wset_slow>
+  <wset_fast><item weight="100">ThisIsAFox</item></wset_fast>
+</document>
+<document type="test" documentid="id:test:test::2">
+  <title>test1</title>
+  <single_scan_uncased>thisisafo</single_scan_uncased>
+  <array_slow><item>thisisafo</item></array_slow>
+  <array_fast><item>thisisafo</item></array_fast>
+  <wset_slow><item weight="100">thisisafo</item></wset_slow>
+  <wset_fast><item weight="100">thisisafo</item></wset_fast>
+</document>
+<document type="test" documentid="id:test:test::3">
+  <title>test1</title>
+  <single_scan_uncased>ThisIs</single_scan_uncased>
+  <array_slow><item>ThisIs</item></array_slow>
+  <array_fast><item>ThisIs</item></array_fast>
+  <wset_slow><item weight="100">ThisIs</item></wset_slow>
+  <wset_fast><item weight="100">ThisIs</item></wset_fast>
+</document>
+
+<document type="test" documentid="id:test:test::4">
+  <title>test2</title>
+  <single_scan_uncased>ThisIsAFox</single_scan_uncased>
+  <array_slow><item>ThisIsAFox</item></array_slow>
+  <array_fast><item>ThisIsAFox</item></array_fast>
+  <wset_slow><item weight="100">ThisIsAFox</item></wset_slow>
+  <wset_fast><item weight="100">ThisIsAFox</item></wset_fast>
+</document>
+<document type="test" documentid="id:test:test::5">
+  <title>test2</title>
+  <single_scan_uncased>IsIsAFox</single_scan_uncased>
+  <array_slow><item>IsIsAFox</item></array_slow>
+  <array_fast><item>IsIsAFox</item></array_fast>
+  <wset_slow><item weight="100">IsIsAFox</item></wset_slow>
+  <wset_fast><item weight="100">IsIsAFox</item></wset_fast>
+</document>
+<document type="test" documentid="id:test:test::6">
+  <title>test2</title>
+  <single_scan_uncased>ThisIsAFoe</single_scan_uncased>
+  <array_slow><item>ThisIsAFoe</item></array_slow>
+  <array_fast><item>ThisIsAFoe</item></array_fast>
+  <wset_slow><item weight="100">ThisIsAFoe</item></wset_slow>
+  <wset_fast><item weight="100">ThisIsAFoe</item></wset_fast>
+</document>

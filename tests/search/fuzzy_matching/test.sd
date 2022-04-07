@@ -1,0 +1,54 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search test {
+  document test {
+    field title type string {
+      indexing: summary | index
+    }
+    field single_scan_uncased type string {
+      indexing: attribute
+    }
+    field array_slow type array<string> {
+      indexing: attribute
+    }
+    field wset_slow type weightedset<string> {
+      indexing: attribute
+    }
+    field array_fast type array<string> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field wset_fast type weightedset<string> {
+      indexing: attribute
+      attribute: fast-search
+    }
+  }
+  field single_btree_uncased type string {
+    indexing: input single_scan_uncased | attribute
+    attribute: fast-search
+  }
+  field single_btree_cased type string {
+    indexing: input single_scan_uncased | attribute
+    attribute: fast-search
+    dictionary {
+      btree
+      cased
+    }
+    match: cased
+  }
+  field single_hash_cased type string {
+    indexing: input single_scan_uncased | attribute
+    attribute: fast-search
+    dictionary {
+      btree
+      cased
+    }
+    match: cased
+  }
+  field single_scan_cased type string {
+    indexing: input single_scan_uncased | attribute
+    match: cased
+  }
+  field single_index type string {
+    indexing: input single_scan_uncased | index
+  }
+}
