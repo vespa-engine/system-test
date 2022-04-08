@@ -50,6 +50,9 @@ search test {
     field boool type bool {
       indexing: attribute | summary
     }
+    field by type byte {
+      indexing: attribute
+    }
   }
   fieldset default {
     fields: body

@@ -1,0 +1,32 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 0
+    },
+    "coverage": {
+      "coverage": 0,
+      "documents": 0,
+      "degraded": {
+        "match-phase": false,
+        "timeout": false,
+        "adaptive-timeout": false,
+        "non-ideal-state": true
+      },
+      "full": true,
+      "nodes": 0,
+      "results": 0,
+      "resultsFull": 0
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        }
+      }
+    ]
+  }
+}
