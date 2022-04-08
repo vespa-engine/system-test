@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'json'
 require 'tenant_rest_api'
 require 'environment'
@@ -12,7 +12,7 @@ class Adminserver < VespaNode
 
   def deploy(application_content, application_dir, application_name, params={}, &block)
     FileUtils.mkdir_p(application_dir)
-    File.open("#{application_dir}/#{application_name}.tar.zst", "w") do |file|
+    File.open("#{application_dir}/#{application_name}.tar.gz", "w") do |file|
       if application_content
         file.write(application_content)
       else
@@ -20,7 +20,7 @@ class Adminserver < VespaNode
       end
     end
     FileUtils.remove_dir("#{application_dir}/#{application_name}") if File.exists?("#{application_dir}/#{application_name}")
-    execute("zstd -d #{application_dir}/#{application_name}.tar.zst -o #{application_dir}/#{application_name}.tar; tar xvf #{application_dir}/#{application_name}.tar " \
+    execute("tar xzvf #{application_dir}/#{application_name}.tar.gz " \
             "--directory #{application_dir}")
     debug = (params[:nodebug] ? '' : '-d')
     force = (params[:force] ? '-f' : '')

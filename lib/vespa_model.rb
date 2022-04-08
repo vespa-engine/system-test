@@ -695,14 +695,12 @@ class VespaModel
     application_name = File.basename(application)
     application_dir = File.dirname(application)
     pid = Process.pid
-    compressed_app = "#{application_dir}/#{application_name}_#{pid}.tar.zst"
-    tar_file = "#{application_name}_#{pid}.tar"
-    `cd #{application_dir}; tar cf #{tar_file} #{application_name}; zstd #{tar_file} -o #{compressed_app}`
+    `cd #{application_dir}; tar czf #{application_name}_#{pid}.tar.gz #{application_name}`
     application_content = ""
-    File.open(compressed_app, 'rb') do |file|
+    File.open("#{application_dir}/#{application_name}_#{pid}.tar.gz", 'rb') do |file|
       application_content = file.read
     end
-    File.delete(compressed_app)
+    File.delete("#{application_dir}/#{application_name}_#{pid}.tar.gz")
     adminserver.deploy(nil, application_dir, application_name, params) do |fp|
       application_content.bytes.each_slice(1024*1024) { |slice|
         fp.write(slice.pack('C*'))
