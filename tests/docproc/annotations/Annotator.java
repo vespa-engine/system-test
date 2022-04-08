@@ -72,9 +72,9 @@ public class Annotator extends DocumentProcessor {
 
 			Struct eventValue = new Struct(eventType.getDataType());
 			eventValue.setFieldValue("description", "Big concert");
-			eventValue.setFieldValue("person", new AnnotationReference((AnnotationReferenceDataType) manager.getDataType("annotationreference<person>"), person));
-			eventValue.setFieldValue("date", new AnnotationReference((AnnotationReferenceDataType) manager.getDataType("annotationreference<date>"), date));
-			eventValue.setFieldValue("place", new AnnotationReference((AnnotationReferenceDataType) manager.getDataType("annotationreference<place>"), place));
+			eventValue.setFieldValue("person", new AnnotationReference(new AnnotationReferenceDataType(personType), person));
+			eventValue.setFieldValue("date", new AnnotationReference(new AnnotationReferenceDataType(dateType), date));
+			eventValue.setFieldValue("place", new AnnotationReference(new AnnotationReferenceDataType(placeType), place));
 			Annotation event = new Annotation(eventType, eventValue);
 			tree.annotate(root, event);
 
