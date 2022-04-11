@@ -29,7 +29,7 @@ class OnnxModel < PerformanceTest
 
     prepare_time = 0.0
     activate_time = 0.0
-    run_count = 2
+    run_count = 3
     run_count.times do |i|
       out, upload, prepare, activate = do_deploy(downloaded_file, {:collect_timing => true})
       deploy_time = (prepare_time + activate_time).to_f
