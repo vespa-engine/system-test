@@ -1,9 +1,6 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 search test {
   document test {
-    field title type string {
-      indexing: summary | index
-    }
     field single_scan_uncased type string {
       indexing: attribute
     }
@@ -22,6 +19,8 @@ search test {
       attribute: fast-search
     }
   }
+
+
   field single_btree_uncased type string {
     indexing: input single_scan_uncased | attribute
     attribute: fast-search
@@ -39,7 +38,7 @@ search test {
     indexing: input single_scan_uncased | attribute
     attribute: fast-search
     dictionary {
-      btree
+      hash
       cased
     }
     match: cased
