@@ -3,20 +3,20 @@
     "put": "id:test:test::1",
     "fields": {
       "single_scan_uncased": "ThisIsAFox",
-      "array_slow": ["ThisIsAFox"],
-      "array_fast": ["ThisIsAFox"],
-      "wset_slow": {"ThisIsAFox": 100},
-      "wset_fast": {"ThisIsAFox": 100}
+      "array_slow": ["ThisIsAFox", "Bear"],
+      "array_fast": ["ThisIsAFox", "Bear"],
+      "wset_slow": {"ThisIsAFox": 100, "Bear": 100},
+      "wset_fast": {"ThisIsAFox": 100, "Bear": 100}
     }
   },
   {
     "put": "id:test:test::2",
     "fields": {
       "single_scan_uncased": "ThisIsAFox",
-      "array_slow": ["ThisIsAFox"],
-      "array_fast": ["ThisIsAFox"],
-      "wset_slow": {"ThisIsAFox": 100},
-      "wset_fast": {"ThisIsAFox": 100}
+      "array_slow": ["ThisIsAFox", "Beaver"],
+      "array_fast": ["ThisIsAFox", "Beaver"],
+      "wset_slow": {"ThisIsAFox": 100, "Beaver": 100},
+      "wset_fast": {"ThisIsAFox": 100, "Beaver": 100}
     }
   },
   {

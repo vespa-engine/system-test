@@ -88,12 +88,26 @@ class FuzzySearch < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
     feed_and_wait_for_docs("test", 6, :file => selfdir + "docs.json")
+    
     FIELDS.each { |f| 
       run_fuzzysearch_default_tests(f) 
       run_fuzzysearch_max_edit_tests(f)
+      run_fuzzysearch_prefix_length_tests(f)
     }
-    run_fuzzysearch_prefix_length_tests("array_fast")
-    run_fuzzysearch_prefix_length_tests("array_slow")
+
+    run_fuzzysearch_array_tests("array_slow")
+    run_fuzzysearch_array_tests("array_fast")
+    run_fuzzysearch_array_tests("wset_slow")
+    run_fuzzysearch_array_tests("wset_fast")
+  end
+
+  def run_fuzzysearch_array_tests(f)
+    puts "Running fuzzy search tests for an array match: #{f}"
+
+    assert_fuzzy(f, "Bear", [1, 2])
+    assert_fuzzy(f, "Bear", [1, 2], prefix_length: 3)
+    assert_fuzzy(f, "Bear", [1], prefix_length: 4)
+    assert_fuzzy(f, "Beaver1", [2])
   end
 
   def run_fuzzysearch_default_tests(f)
