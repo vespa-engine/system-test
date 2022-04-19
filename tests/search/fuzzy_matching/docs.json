@@ -1,0 +1,62 @@
+[
+  {
+    "put": "id:test:test::1",
+    "fields": {
+      "single_scan_uncased": "ThisIsAFox",
+      "array_slow": ["ThisIsAFox", "Bear"],
+      "array_fast": ["ThisIsAFox", "Bear"],
+      "wset_slow": {"ThisIsAFox": 100, "Bear": 100},
+      "wset_fast": {"ThisIsAFox": 100, "Bear": 100}
+    }
+  },
+  {
+    "put": "id:test:test::2",
+    "fields": {
+      "single_scan_uncased": "ThisIsAFox",
+      "array_slow": ["ThisIsAFox", "Beaver"],
+      "array_fast": ["ThisIsAFox", "Beaver"],
+      "wset_slow": {"ThisIsAFox": 100, "Beaver": 100},
+      "wset_fast": {"ThisIsAFox": 100, "Beaver": 100}
+    }
+  },
+  {
+    "put": "id:test:test::3",
+    "fields": {
+      "single_scan_uncased": "ThisIsAFoe",
+      "array_slow": ["ThisIsAFoe"],
+      "array_fast": ["ThisIsAFoe"],
+      "wset_slow": {"ThisIsAFoe": 100},
+      "wset_fast": {"ThisIsAFoe": 100}
+    }
+  },
+  {
+    "put": "id:test:test::4",
+    "fields": {
+      "single_scan_uncased": "thisisafo",
+      "array_slow": ["thisisafo"],
+      "array_fast": ["thisisafo"],
+      "wset_slow": {"thisisafo": 100},
+      "wset_fast": {"thisisafo": 100}
+    }
+  },
+  {
+    "put": "id:test:test::5",
+    "fields": {
+      "single_scan_uncased": "ThisIs",
+      "array_slow": ["ThisIs"],
+      "array_fast": ["ThisIs"],
+      "wset_slow": {"ThisIs": 100},
+      "wset_fast": {"ThisIs": 100}
+    }
+  },
+  {
+    "put": "id:test:test::6",
+    "fields": {
+      "single_scan_uncased": "IsIsAFox",
+      "array_slow": ["IsIsAFox"],
+      "array_fast": ["IsIsAFox"],
+      "wset_slow": {"IsIsAFox": 100},
+      "wset_fast": {"IsIsAFox": 100}
+    }
+  }
+]
