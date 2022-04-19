@@ -27,19 +27,19 @@
             "label": "mod(n, 2)",
             "children": [
               {
-                "id": "group:long:1",
-                "relevance": 4814.61700663273,
-                "value": "1",
-                "fields": {
-                  "count()": 3
-                }
-              },
-              {
                 "id": "group:long:0",
-                "relevance": "-Infinity",
+                "relevance": 7.0,
                 "value": "0",
                 "fields": {
                   "count()": 4
+                }
+              },
+              {
+                "id": "group:long:1",
+                "relevance": 6.0,
+                "value": "1",
+                "fields": {
+                  "count()": 3
                 }
               }
             ]

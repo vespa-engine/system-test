@@ -27,30 +27,8 @@
             "label": "fixedwidth(n, 3)",
             "children": [
               {
-                "id": "group:long_bucket:3:6",
-                "relevance": 4814.61700663273,
-                "limits": {
-                  "from": "3",
-                  "to": "6"
-                },
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
-                "id": "group:long_bucket:6:9",
-                "relevance": 1348.087313568175,
-                "limits": {
-                  "from": "6",
-                  "to": "9"
-                },
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
                 "id": "group:long_bucket:-2147483649:-2147483646",
-                "relevance": "-Infinity",
+                "relevance": 7.0,
                 "limits": {
                   "from": "-2147483649",
                   "to": "-2147483646"
@@ -61,10 +39,32 @@
               },
               {
                 "id": "group:long_bucket:0:3",
-                "relevance": "-Infinity",
+                "relevance": 6.0,
                 "limits": {
                   "from": "0",
                   "to": "3"
+                },
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:long_bucket:6:9",
+                "relevance": 3.0,
+                "limits": {
+                  "from": "6",
+                  "to": "9"
+                },
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:long_bucket:3:6",
+                "relevance": 2.0,
+                "limits": {
+                  "from": "3",
+                  "to": "6"
                 },
                 "fields": {
                   "count()": 1

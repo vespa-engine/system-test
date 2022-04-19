@@ -27,25 +27,25 @@
             "label": "predefined(sub(4, n), bucket[-inf, 3>, bucket[3, inf>)",
             "children": [
               {
-                "id": "group:long_bucket:-9223372036854775808:3",
-                "relevance": 4814.61700663273,
-                "limits": {
-                  "from": "-9223372036854775808",
-                  "to": "3"
-                },
-                "fields": {
-                  "count()": 2
-                }
-              },
-              {
                 "id": "group:long_bucket:3:9223372036854775807",
-                "relevance": "-Infinity",
+                "relevance": 7.0,
                 "limits": {
                   "from": "3",
                   "to": "9223372036854775807"
                 },
                 "fields": {
                   "count()": 5
+                }
+              },
+              {
+                "id": "group:long_bucket:-9223372036854775808:3",
+                "relevance": 3.0,
+                "limits": {
+                  "from": "-9223372036854775808",
+                  "to": "3"
+                },
+                "fields": {
+                  "count()": 2
                 }
               }
             ]

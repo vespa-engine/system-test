@@ -27,33 +27,33 @@
             "label": "size(nw)",
             "children": [
               {
-                "id": "group:long:2",
-                "relevance": 4814.61700663273,
-                "value": "2",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
-                "id": "group:long:0",
-                "relevance": 1348.087313568175,
-                "value": "0",
-                "fields": {
-                  "count()": 4
-                }
-              },
-              {
                 "id": "group:long:1",
-                "relevance": "-Infinity",
+                "relevance": 7.0,
                 "value": "1",
                 "fields": {
                   "count()": 1
                 }
               },
               {
+                "id": "group:long:0",
+                "relevance": 6.0,
+                "value": "0",
+                "fields": {
+                  "count()": 4
+                }
+              },
+              {
                 "id": "group:long:3",
-                "relevance": "-Infinity",
+                "relevance": 4.0,
                 "value": "3",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:long:2",
+                "relevance": 2.0,
+                "value": "2",
                 "fields": {
                   "count()": 1
                 }

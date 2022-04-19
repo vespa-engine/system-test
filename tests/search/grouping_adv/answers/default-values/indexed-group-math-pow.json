@@ -27,35 +27,35 @@
             "label": "math.pow(n, 2)",
             "children": [
               {
-                "id": "group:double:9.0",
-                "relevance": 4814.61700663273,
-                "value": "9.0",
+                "id": "group:double:4.6116860184273879E18",
+                "relevance": 7.0,
+                "value": "4.6116860184273879E18",
                 "fields": {
-                  "count()": 1
-                }
-              },
-              {
-                "id": "group:double:49.0",
-                "relevance": 1348.087313568175,
-                "value": "49.0",
-                "fields": {
-                  "count()": 1
+                  "count()": 4
                 }
               },
               {
                 "id": "group:double:1.0",
-                "relevance": "-Infinity",
+                "relevance": 6.0,
                 "value": "1.0",
                 "fields": {
                   "count()": 1
                 }
               },
               {
-                "id": "group:double:4.6116860184273879E18",
-                "relevance": "-Infinity",
-                "value": "4.6116860184273879E18",
+                "id": "group:double:49.0",
+                "relevance": 3.0,
+                "value": "49.0",
                 "fields": {
-                  "count()": 4
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:double:9.0",
+                "relevance": 2.0,
+                "value": "9.0",
+                "fields": {
+                  "count()": 1
                 }
               }
             ]

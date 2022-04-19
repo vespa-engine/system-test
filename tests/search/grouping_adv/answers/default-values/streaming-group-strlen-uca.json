@@ -27,25 +27,25 @@
             "label": "strlen(uca(lang, \"sv\", \"PRIMARY\"))",
             "children": [
               {
-                "id": "group:long:7",
-                "relevance": 4814.61700663273,
-                "value": "7",
+                "id": "group:long:10",
+                "relevance": 7.0,
+                "value": "10",
                 "fields": {
                   "count()": 1
                 }
               },
               {
                 "id": "group:long:1",
-                "relevance": 1348.087313568175,
+                "relevance": 6.0,
                 "value": "1",
                 "fields": {
                   "count()": 5
                 }
               },
               {
-                "id": "group:long:10",
-                "relevance": "-Infinity",
-                "value": "10",
+                "id": "group:long:7",
+                "relevance": 2.0,
+                "value": "7",
                 "fields": {
                   "count()": 1
                 }

@@ -27,27 +27,27 @@
             "label": "time.year(from)",
             "children": [
               {
-                "id": "group:long:2009",
-                "relevance": 4814.61700663273,
-                "value": "2009",
+                "id": "group:long:1901",
+                "relevance": 7.0,
+                "value": "1901",
                 "fields": {
-                  "count()": 1
+                  "count()": 4
                 }
               },
               {
                 "id": "group:long:2005",
-                "relevance": 1348.087313568175,
+                "relevance": 6.0,
                 "value": "2005",
                 "fields": {
                   "count()": 2
                 }
               },
               {
-                "id": "group:long:1901",
-                "relevance": "-Infinity",
-                "value": "1901",
+                "id": "group:long:2009",
+                "relevance": 2.0,
+                "value": "2009",
                 "fields": {
-                  "count()": 4
+                  "count()": 1
                 }
               }
             ]

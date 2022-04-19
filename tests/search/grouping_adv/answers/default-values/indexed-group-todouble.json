@@ -27,24 +27,8 @@
             "label": "todouble(n)",
             "children": [
               {
-                "id": "group:double:3.0",
-                "relevance": 4814.61700663273,
-                "value": "3.0",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
-                "id": "group:double:7.0",
-                "relevance": 1348.087313568175,
-                "value": "7.0",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
                 "id": "group:double:-2.147483648E9",
-                "relevance": "-Infinity",
+                "relevance": 7.0,
                 "value": "-2.147483648E9",
                 "fields": {
                   "count()": 4
@@ -52,8 +36,24 @@
               },
               {
                 "id": "group:double:1.0",
-                "relevance": "-Infinity",
+                "relevance": 6.0,
                 "value": "1.0",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:double:7.0",
+                "relevance": 3.0,
+                "value": "7.0",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:double:3.0",
+                "relevance": 2.0,
+                "value": "3.0",
                 "fields": {
                   "count()": 1
                 }

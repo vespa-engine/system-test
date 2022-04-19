@@ -27,24 +27,8 @@
             "label": "tolong(f)",
             "children": [
               {
-                "id": "group:long:4",
-                "relevance": 4814.61700663273,
-                "value": "4",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
-                "id": "group:long:1",
-                "relevance": 1348.087313568175,
-                "value": "1",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
                 "id": "group:long:-9223372036854775808",
-                "relevance": "-Infinity",
+                "relevance": 7.0,
                 "value": "-9223372036854775808",
                 "fields": {
                   "count()": 4
@@ -52,8 +36,24 @@
               },
               {
                 "id": "group:long:2",
-                "relevance": "-Infinity",
+                "relevance": 5.0,
                 "value": "2",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:long:1",
+                "relevance": 3.0,
+                "value": "1",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:long:4",
+                "relevance": 2.0,
+                "value": "4",
                 "fields": {
                   "count()": 1
                 }
