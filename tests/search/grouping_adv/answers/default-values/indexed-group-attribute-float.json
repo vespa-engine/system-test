@@ -27,9 +27,9 @@
             "label": "f",
             "children": [
               {
-                "id": "group:double:3.9000000953674316",
-                "relevance": 4814.61700663273,
-                "value": "3.9000000953674316",
+                "id": "group:double:NaN",
+                "relevance": 7.0,
+                "value": "NaN",
                 "children": [
                   {
                     "id": "hitlist:hits",
@@ -37,20 +37,74 @@
                     "label": "hits",
                     "children": [
                       {
-                        "id": "id:test:test::all-fields",
-                        "relevance": 4814.61700663273,
+                        "id": "id:test:test::all-non-numeric-fields",
+                        "relevance": 7.0,
                         "source": "search",
                         "fields": {
                           "sddocname": "test",
-                          "documentid": "id:test:test::all-fields",
-                          "n": 3,
-                          "a": "a1",
-                          "b": "b1",
-                          "c": "c3",
-                          "from": 1234517151,
-                          "to": 1234537162000000000,
-                          "body": "test",
-                          "boool": true
+                          "documentid": "id:test:test::all-non-numeric-fields",
+                          "a": "a2",
+                          "b": "b4",
+                          "c": "c6",
+                          "body": "test2",
+                          "boool": false
+                        }
+                      },
+                      {
+                        "id": "id:test:test::all-integer-fields",
+                        "relevance": 6.0,
+                        "source": "search",
+                        "fields": {
+                          "sddocname": "test",
+                          "documentid": "id:test:test::all-integer-fields",
+                          "n": 1,
+                          "from": 1123406000,
+                          "to": 1234638162000000000,
+                          "boool": false
+                        }
+                      },
+                      {
+                        "id": "id:test:test::all-multivalue-fields",
+                        "relevance": 4.0,
+                        "source": "search",
+                        "fields": {
+                          "sddocname": "test",
+                          "documentid": "id:test:test::all-multivalue-fields",
+                          "boool": false
+                        }
+                      },
+                      {
+                        "id": "id:test:test::no-fields",
+                        "relevance": 1.0,
+                        "source": "search",
+                        "fields": {
+                          "sddocname": "test",
+                          "documentid": "id:test:test::no-fields",
+                          "boool": false
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "group:double:2.0999999046325684",
+                "relevance": 5.0,
+                "value": "2.0999999046325684",
+                "children": [
+                  {
+                    "id": "hitlist:hits",
+                    "relevance": 1.0,
+                    "label": "hits",
+                    "children": [
+                      {
+                        "id": "id:test:test::all-floating-point-fields",
+                        "relevance": 5.0,
+                        "source": "search",
+                        "fields": {
+                          "sddocname": "test",
+                          "documentid": "id:test:test::all-floating-point-fields",
+                          "boool": false
                         }
                       }
                     ]
@@ -59,7 +113,7 @@
               },
               {
                 "id": "group:double:1.2000000476837158",
-                "relevance": 1348.087313568175,
+                "relevance": 3.0,
                 "value": "1.2000000476837158",
                 "children": [
                   {
@@ -69,7 +123,7 @@
                     "children": [
                       {
                         "id": "id:test:test::all-numeric-fields",
-                        "relevance": 1348.087313568175,
+                        "relevance": 3.0,
                         "source": "search",
                         "fields": {
                           "sddocname": "test",
@@ -85,9 +139,9 @@
                 ]
               },
               {
-                "id": "group:double:NaN",
-                "relevance": "-Infinity",
-                "value": "NaN",
+                "id": "group:double:3.9000000953674316",
+                "relevance": 2.0,
+                "value": "3.9000000953674316",
                 "children": [
                   {
                     "id": "hitlist:hits",
@@ -95,74 +149,20 @@
                     "label": "hits",
                     "children": [
                       {
-                        "id": "id:test:test::no-fields",
-                        "relevance": "-Infinity",
+                        "id": "id:test:test::all-fields",
+                        "relevance": 2.0,
                         "source": "search",
                         "fields": {
                           "sddocname": "test",
-                          "documentid": "id:test:test::no-fields",
-                          "boool": false
-                        }
-                      },
-                      {
-                        "id": "id:test:test::all-integer-fields",
-                        "relevance": "-Infinity",
-                        "source": "search",
-                        "fields": {
-                          "sddocname": "test",
-                          "documentid": "id:test:test::all-integer-fields",
-                          "n": 1,
-                          "from": 1123406000,
-                          "to": 1234638162000000000,
-                          "boool": false
-                        }
-                      },
-                      {
-                        "id": "id:test:test::all-multivalue-fields",
-                        "relevance": "-Infinity",
-                        "source": "search",
-                        "fields": {
-                          "sddocname": "test",
-                          "documentid": "id:test:test::all-multivalue-fields",
-                          "boool": false
-                        }
-                      },
-                      {
-                        "id": "id:test:test::all-non-numeric-fields",
-                        "relevance": "-Infinity",
-                        "source": "search",
-                        "fields": {
-                          "sddocname": "test",
-                          "documentid": "id:test:test::all-non-numeric-fields",
-                          "a": "a2",
-                          "b": "b4",
-                          "c": "c6",
-                          "body": "test2",
-                          "boool": false
-                        }
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "group:double:2.0999999046325684",
-                "relevance": "-Infinity",
-                "value": "2.0999999046325684",
-                "children": [
-                  {
-                    "id": "hitlist:hits",
-                    "relevance": 1.0,
-                    "label": "hits",
-                    "children": [
-                      {
-                        "id": "id:test:test::all-floating-point-fields",
-                        "relevance": "-Infinity",
-                        "source": "search",
-                        "fields": {
-                          "sddocname": "test",
-                          "documentid": "id:test:test::all-floating-point-fields",
-                          "boool": false
+                          "documentid": "id:test:test::all-fields",
+                          "a": "a1",
+                          "b": "b1",
+                          "c": "c3",
+                          "body": "test",
+                          "boool": true,
+                          "n": 3,
+                          "from": 1234517151,
+                          "to": 1234537162000000000
                         }
                       }
                     ]

@@ -27,24 +27,8 @@
             "label": "and(n, 7)",
             "children": [
               {
-                "id": "group:long:3",
-                "relevance": 4814.61700663273,
-                "value": "3",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
-                "id": "group:long:7",
-                "relevance": 1348.087313568175,
-                "value": "7",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
                 "id": "group:long:0",
-                "relevance": "-Infinity",
+                "relevance": 7.0,
                 "value": "0",
                 "fields": {
                   "count()": 4
@@ -52,8 +36,24 @@
               },
               {
                 "id": "group:long:1",
-                "relevance": "-Infinity",
+                "relevance": 6.0,
                 "value": "1",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:long:7",
+                "relevance": 3.0,
+                "value": "7",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:long:3",
+                "relevance": 2.0,
+                "value": "3",
                 "fields": {
                   "count()": 1
                 }

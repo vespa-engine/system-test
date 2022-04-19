@@ -27,25 +27,25 @@
             "label": "strcat(a, b, c)",
             "children": [
               {
-                "id": "group:string:a1b1c3",
-                "relevance": 4814.61700663273,
-                "value": "a1b1c3",
+                "id": "group:string:a2b4c6",
+                "relevance": 7.0,
+                "value": "a2b4c6",
                 "fields": {
                   "count()": 1
                 }
               },
               {
                 "id": "group:string:",
-                "relevance": 1348.087313568175,
+                "relevance": 6.0,
                 "value": "",
                 "fields": {
                   "count()": 5
                 }
               },
               {
-                "id": "group:string:a2b4c6",
-                "relevance": "-Infinity",
-                "value": "a2b4c6",
+                "id": "group:string:a1b1c3",
+                "relevance": 2.0,
+                "value": "a1b1c3",
                 "fields": {
                   "count()": 1
                 }

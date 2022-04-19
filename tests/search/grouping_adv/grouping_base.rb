@@ -261,47 +261,47 @@ module GroupingBase
   def querytest_groups_for_default_value(streaming=false)
     classifier = streaming ? 'streaming' : 'indexed'
     # Test default group for singlevalue attributes
-    check_query("all(group(n)each(each(output(summary()))))", "default-values/#{classifier}-group-attribute-int")
-    check_query("all(group(to)each(each(output(summary()))))", "default-values/#{classifier}-group-attribute-long")
-    check_query("all(group(f)each(each(output(summary()))))", "default-values/#{classifier}-group-attribute-float")
-    check_query("all(group(d)each(each(output(summary()))))", "default-values/#{classifier}-group-attribute-double")
-    check_query("all(group(s)each(each(output(summary()))))", "default-values/#{classifier}-group-attribute-string")
-    check_query("all(group(boool)each(each(output(summary()))))", "default-values/#{classifier}-group-attribute-bool")
-    check_query("all(group(by)each(each(output(summary()))))", "default-values/#{classifier}-group-attribute-byte")
+    check_query_default_value("all(group(n)each(each(output(summary()))))", "#{classifier}-group-attribute-int")
+    check_query_default_value("all(group(to)each(each(output(summary()))))", "#{classifier}-group-attribute-long")
+    check_query_default_value("all(group(f)each(each(output(summary()))))", "#{classifier}-group-attribute-float")
+    check_query_default_value("all(group(d)each(each(output(summary()))))", "#{classifier}-group-attribute-double")
+    check_query_default_value("all(group(s)each(each(output(summary()))))", "#{classifier}-group-attribute-string")
+    check_query_default_value("all(group(boool)each(each(output(summary()))))", "#{classifier}-group-attribute-bool")
+    check_query_default_value("all(group(by)each(each(output(summary()))))", "#{classifier}-group-attribute-byte")
 
     # Test default group for expression over attributes
-    check_query("all(group(add(n,1))each(output(count())))", "default-values/#{classifier}-group-add")
-    check_query("all(group(mul(n,3))each(output(count())))", "default-values/#{classifier}-group-mul")
-    check_query("all(group(sub(n,1))each(output(count())))", "default-values/#{classifier}-group-sub")
-    check_query("all(group(div(f,2))each(output(count())))", "default-values/#{classifier}-group-div")
-    check_query("all(group(mod(n,2))each(output(count())))", "default-values/#{classifier}-group-mod")
-    check_query("all(group(cat(a,b,c))each(output(count())))", "default-values/#{classifier}-group-cat")
-    check_query("all(group(strcat(a,b,c))each(output(count())))", "default-values/#{classifier}-group-strcat")
-    check_query("all(group(tostring(n))each(output(count())))", "default-values/#{classifier}-group-tostring")
-    check_query("all(group(tolong(f))each(output(count())))", "default-values/#{classifier}-group-tolong")
-    check_query("all(group(todouble(n))each(output(count())))", "default-values/#{classifier}-group-todouble")
-    check_query("all(group(math.sin(f))each(output(count())))", "default-values/#{classifier}-group-math-sin")
-    check_query("all(group(math.pow(n,2))each(output(count())))", "default-values/#{classifier}-group-math-pow")
-    check_query("all(group(size(na))each(output(count())))", "default-values/#{classifier}-group-size-array")
-    check_query("all(group(size(nw))each(output(count())))", "default-values/#{classifier}-group-size-weighed-set")
-    check_query("all(group(predefined(4-n,bucket(-inf,3),bucket(3,inf)))each(output(count())))",
-                "default-values/#{classifier}-group-predefined-buckets")
-    check_query("all(group(fixedwidth(n,3))each(output(count())))", "default-values/#{classifier}-group-fixedwidth")
-    check_query("all(group(xorbit(n,8))each(output(count())))", "default-values/#{classifier}-group-xor")
-    check_query("all(group(md5(n,64))each(output(count())))", "default-values/#{classifier}-group-md5")
-    check_query("all(group(and(n,7))each(output(count())))", "default-values/#{classifier}-group-and")
-    check_query("all(group(time.year(from))each(output(count())))", "default-values/#{classifier}-group-time-year")
-    check_query("all(group(time.dayofweek(from))each(output(count())))", "default-values/#{classifier}-group-time-dayofweek")
-    check_query("all(group(zcurve.x(to))each(output(count())))", "default-values/#{classifier}-group-zcurve-x")
-    check_query("all(group(strlen(uca(lang,\"sv\",\"PRIMARY\")))each(output(count())))", "default-values/#{classifier}-group-strlen-uca")
+    check_query_default_value("all(group(add(n,1))each(output(count())))", "#{classifier}-group-add")
+    check_query_default_value("all(group(mul(n,3))each(output(count())))", "#{classifier}-group-mul")
+    check_query_default_value("all(group(sub(n,1))each(output(count())))", "#{classifier}-group-sub")
+    check_query_default_value("all(group(div(f,2))each(output(count())))", "#{classifier}-group-div")
+    check_query_default_value("all(group(mod(n,2))each(output(count())))", "#{classifier}-group-mod")
+    check_query_default_value("all(group(cat(a,b,c))each(output(count())))", "#{classifier}-group-cat")
+    check_query_default_value("all(group(strcat(a,b,c))each(output(count())))", "#{classifier}-group-strcat")
+    check_query_default_value("all(group(tostring(n))each(output(count())))", "#{classifier}-group-tostring")
+    check_query_default_value("all(group(tolong(f))each(output(count())))", "#{classifier}-group-tolong")
+    check_query_default_value("all(group(todouble(n))each(output(count())))", "#{classifier}-group-todouble")
+    check_query_default_value("all(group(math.sin(f))each(output(count())))", "#{classifier}-group-math-sin")
+    check_query_default_value("all(group(math.pow(n,2))each(output(count())))", "#{classifier}-group-math-pow")
+    check_query_default_value("all(group(size(na))each(output(count())))", "#{classifier}-group-size-array")
+    check_query_default_value("all(group(size(nw))each(output(count())))", "#{classifier}-group-size-weighed-set")
+    check_query_default_value("all(group(predefined(4-n,bucket(-inf,3),bucket(3,inf)))each(output(count())))",
+                "#{classifier}-group-predefined-buckets")
+    check_query_default_value("all(group(fixedwidth(n,3))each(output(count())))", "#{classifier}-group-fixedwidth")
+    check_query_default_value("all(group(xorbit(n,8))each(output(count())))", "#{classifier}-group-xor")
+    check_query_default_value("all(group(md5(n,64))each(output(count())))", "#{classifier}-group-md5")
+    check_query_default_value("all(group(and(n,7))each(output(count())))", "#{classifier}-group-and")
+    check_query_default_value("all(group(time.year(from))each(output(count())))", "#{classifier}-group-time-year")
+    check_query_default_value("all(group(time.dayofweek(from))each(output(count())))", "#{classifier}-group-time-dayofweek")
+    check_query_default_value("all(group(zcurve.x(to))each(output(count())))", "#{classifier}-group-zcurve-x")
+    check_query_default_value("all(group(strlen(uca(lang,\"sv\",\"PRIMARY\")))each(output(count())))", "#{classifier}-group-strlen-uca")
 
     # Test aggregator on attributes having default value
-    check_query("all(group(n)each(output(sum(f))each(output(summary()))))", "default-values/#{classifier}-aggregator-sum")
-    check_query("all(group(f)each(output(min(n))each(output(summary()))))", "default-values/#{classifier}-aggregator-min")
-    check_query("all(group(f)each(output(max(n))each(output(summary()))))", "default-values/#{classifier}-aggregator-max")
-    check_query("all(group(f)each(output(avg(n))each(output(summary()))))", "default-values/#{classifier}-aggregator-avg")
-    check_query("all(group(f)each(output(xor(to))each(output(summary()))))", "default-values/#{classifier}-aggregator-xor")
-    check_query("all(group(f)each(output(stddev(n))each(output(summary()))))", "default-values/#{classifier}-aggregator-stddev")
+    check_query_default_value("all(group(n)each(output(sum(f))each(output(summary()))))", "#{classifier}-aggregator-sum")
+    check_query_default_value("all(group(f)each(output(min(n))each(output(summary()))))", "#{classifier}-aggregator-min")
+    check_query_default_value("all(group(f)each(output(max(n))each(output(summary()))))", "#{classifier}-aggregator-max")
+    check_query_default_value("all(group(f)each(output(avg(n))each(output(summary()))))", "#{classifier}-aggregator-avg")
+    check_query_default_value("all(group(f)each(output(xor(to))each(output(summary()))))", "#{classifier}-aggregator-xor")
+    check_query_default_value("all(group(f)each(output(stddev(n))each(output(summary()))))", "#{classifier}-aggregator-stddev")
   end
 
   def check_query_default_max(select, file, default_max_groups, default_max_hits)
@@ -311,10 +311,14 @@ module GroupingBase
   end
 
 
-  def check_query(select, file, timeout=DEFAULT_TIMEOUT, session_cache=true)
+  def check_query(select, file, timeout=DEFAULT_TIMEOUT, session_cache=true, rank_profile="default")
     full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0&timeout=#{timeout}" +
-      "&groupingSessionCache=#{session_cache}"
+      "&groupingSessionCache=#{session_cache}&ranking.profile=#{rank_profile}"
     check_fullquery(full_query, file)
+  end
+
+  def check_query_default_value(select, file)
+    check_query(select, "default-values/#{file}", DEFAULT_TIMEOUT, true, "default-values")
   end
 
   def check_wherequery(query, select, file, timeout=DEFAULT_TIMEOUT)

@@ -27,9 +27,9 @@
             "label": "s",
             "children": [
               {
-                "id": "group:string:aaa",
-                "relevance": 4814.61700663273,
-                "value": "aaa",
+                "id": "group:string:bbb",
+                "relevance": 7.0,
+                "value": "bbb",
                 "children": [
                   {
                     "id": "hitlist:hits",
@@ -37,19 +37,16 @@
                     "label": "hits",
                     "children": [
                       {
-                        "id": "id:test:test::all-fields",
-                        "relevance": 4814.61700663273,
+                        "id": "id:test:test::all-non-numeric-fields",
+                        "relevance": 7.0,
                         "source": "storage.test",
                         "fields": {
-                          "documentid": "id:test:test::all-fields",
-                          "n": 3,
-                          "a": "a1",
-                          "b": "b1",
-                          "c": "c3",
-                          "from": 1234517151,
-                          "to": 1234537162000000000,
-                          "body": "test",
-                          "boool": true
+                          "documentid": "id:test:test::all-non-numeric-fields",
+                          "a": "a2",
+                          "b": "b4",
+                          "c": "c6",
+                          "body": "test2",
+                          "boool": false
                         }
                       }
                     ]
@@ -58,7 +55,7 @@
               },
               {
                 "id": "group:string:",
-                "relevance": 1348.087313568175,
+                "relevance": 6.0,
                 "value": "",
                 "children": [
                   {
@@ -67,20 +64,8 @@
                     "label": "hits",
                     "children": [
                       {
-                        "id": "id:test:test::all-numeric-fields",
-                        "relevance": 1348.087313568175,
-                        "source": "storage.test",
-                        "fields": {
-                          "documentid": "id:test:test::all-numeric-fields",
-                          "n": 7,
-                          "from": 1123406050,
-                          "to": 1234637162000000000,
-                          "boool": false
-                        }
-                      },
-                      {
                         "id": "id:test:test::all-integer-fields",
-                        "relevance": "-Infinity",
+                        "relevance": 6.0,
                         "source": "storage.test",
                         "fields": {
                           "documentid": "id:test:test::all-integer-fields",
@@ -92,7 +77,7 @@
                       },
                       {
                         "id": "id:test:test::all-floating-point-fields",
-                        "relevance": "-Infinity",
+                        "relevance": 5.0,
                         "source": "storage.test",
                         "fields": {
                           "documentid": "id:test:test::all-floating-point-fields",
@@ -100,20 +85,32 @@
                         }
                       },
                       {
-                        "id": "id:test:test::no-fields",
-                        "relevance": "-Infinity",
+                        "id": "id:test:test::all-multivalue-fields",
+                        "relevance": 4.0,
                         "source": "storage.test",
                         "fields": {
-                          "documentid": "id:test:test::no-fields",
+                          "documentid": "id:test:test::all-multivalue-fields",
                           "boool": false
                         }
                       },
                       {
-                        "id": "id:test:test::all-multivalue-fields",
-                        "relevance": "-Infinity",
+                        "id": "id:test:test::all-numeric-fields",
+                        "relevance": 3.0,
                         "source": "storage.test",
                         "fields": {
-                          "documentid": "id:test:test::all-multivalue-fields",
+                          "documentid": "id:test:test::all-numeric-fields",
+                          "n": 7,
+                          "from": 1123406050,
+                          "to": 1234637162000000000,
+                          "boool": false
+                        }
+                      },
+                      {
+                        "id": "id:test:test::no-fields",
+                        "relevance": 1.0,
+                        "source": "storage.test",
+                        "fields": {
+                          "documentid": "id:test:test::no-fields",
                           "boool": false
                         }
                       }
@@ -122,9 +119,9 @@
                 ]
               },
               {
-                "id": "group:string:bbb",
-                "relevance": "-Infinity",
-                "value": "bbb",
+                "id": "group:string:aaa",
+                "relevance": 2.0,
+                "value": "aaa",
                 "children": [
                   {
                     "id": "hitlist:hits",
@@ -132,16 +129,19 @@
                     "label": "hits",
                     "children": [
                       {
-                        "id": "id:test:test::all-non-numeric-fields",
-                        "relevance": "-Infinity",
+                        "id": "id:test:test::all-fields",
+                        "relevance": 2.0,
                         "source": "storage.test",
                         "fields": {
-                          "documentid": "id:test:test::all-non-numeric-fields",
-                          "a": "a2",
-                          "b": "b4",
-                          "c": "c6",
-                          "body": "test2",
-                          "boool": false
+                          "documentid": "id:test:test::all-fields",
+                          "n": 3,
+                          "a": "a1",
+                          "b": "b1",
+                          "c": "c3",
+                          "from": 1234517151,
+                          "to": 1234537162000000000,
+                          "body": "test",
+                          "boool": true
                         }
                       }
                     ]

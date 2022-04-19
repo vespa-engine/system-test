@@ -27,27 +27,27 @@
             "label": "time.dayofweek(from)",
             "children": [
               {
-                "id": "group:long:5",
-                "relevance": 4814.61700663273,
-                "value": "5",
+                "id": "group:long:4",
+                "relevance": 7.0,
+                "value": "4",
                 "fields": {
-                  "count()": 1
+                  "count()": 4
                 }
               },
               {
                 "id": "group:long:0",
-                "relevance": 1348.087313568175,
+                "relevance": 6.0,
                 "value": "0",
                 "fields": {
                   "count()": 2
                 }
               },
               {
-                "id": "group:long:4",
-                "relevance": "-Infinity",
-                "value": "4",
+                "id": "group:long:5",
+                "relevance": 2.0,
+                "value": "5",
                 "fields": {
-                  "count()": 4
+                  "count()": 1
                 }
               }
             ]

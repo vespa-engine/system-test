@@ -27,27 +27,27 @@
             "label": "size(na)",
             "children": [
               {
-                "id": "group:long:2",
-                "relevance": 4814.61700663273,
-                "value": "2",
+                "id": "group:long:3",
+                "relevance": 7.0,
+                "value": "3",
                 "fields": {
-                  "count()": 1
+                  "count()": 2
                 }
               },
               {
                 "id": "group:long:0",
-                "relevance": 1348.087313568175,
+                "relevance": 6.0,
                 "value": "0",
                 "fields": {
                   "count()": 4
                 }
               },
               {
-                "id": "group:long:3",
-                "relevance": "-Infinity",
-                "value": "3",
+                "id": "group:long:2",
+                "relevance": 2.0,
+                "value": "2",
                 "fields": {
-                  "count()": 2
+                  "count()": 1
                 }
               }
             ]

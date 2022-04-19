@@ -27,24 +27,8 @@
             "label": "div(f, 2)",
             "children": [
               {
-                "id": "group:double:1.9500000476837158",
-                "relevance": 4814.61700663273,
-                "value": "1.9500000476837158",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
-                "id": "group:double:0.6000000238418579",
-                "relevance": 1348.087313568175,
-                "value": "0.6000000238418579",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
                 "id": "group:double:NaN",
-                "relevance": "-Infinity",
+                "relevance": 7.0,
                 "value": "NaN",
                 "fields": {
                   "count()": 4
@@ -52,8 +36,24 @@
               },
               {
                 "id": "group:double:1.0499999523162842",
-                "relevance": "-Infinity",
+                "relevance": 5.0,
                 "value": "1.0499999523162842",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:double:0.6000000238418579",
+                "relevance": 3.0,
+                "value": "0.6000000238418579",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:double:1.9500000476837158",
+                "relevance": 2.0,
+                "value": "1.9500000476837158",
                 "fields": {
                   "count()": 1
                 }

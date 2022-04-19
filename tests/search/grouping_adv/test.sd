@@ -53,6 +53,9 @@ search test {
     field by type byte {
       indexing: attribute
     }
+    field i type int {
+      indexing: attribute
+    }
   }
   fieldset default {
     fields: body
@@ -61,6 +64,12 @@ search test {
   rank-profile default {
     first-phase {
       expression: attribute(f) * (attribute(from) / 1000000)
+    }
+  }
+
+  rank-profile default-values {
+    first-phase {
+      expression: attribute(i)
     }
   }
 

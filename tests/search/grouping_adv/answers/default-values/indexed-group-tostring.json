@@ -27,24 +27,8 @@
             "label": "tostring(n)",
             "children": [
               {
-                "id": "group:string:3",
-                "relevance": 4814.61700663273,
-                "value": "3",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
-                "id": "group:string:7",
-                "relevance": 1348.087313568175,
-                "value": "7",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
                 "id": "group:string:-2147483648",
-                "relevance": "-Infinity",
+                "relevance": 7.0,
                 "value": "-2147483648",
                 "fields": {
                   "count()": 4
@@ -52,8 +36,24 @@
               },
               {
                 "id": "group:string:1",
-                "relevance": "-Infinity",
+                "relevance": 6.0,
                 "value": "1",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:string:7",
+                "relevance": 3.0,
+                "value": "7",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:string:3",
+                "relevance": 2.0,
+                "value": "3",
                 "fields": {
                   "count()": 1
                 }

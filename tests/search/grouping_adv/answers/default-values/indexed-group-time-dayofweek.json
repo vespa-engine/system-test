@@ -28,7 +28,7 @@
             "children": [
               {
                 "id": "group:long:5",
-                "relevance": 4814.61700663273,
+                "relevance": 7.0,
                 "value": "5",
                 "fields": {
                   "count()": 5
@@ -36,7 +36,7 @@
               },
               {
                 "id": "group:long:0",
-                "relevance": 1348.087313568175,
+                "relevance": 6.0,
                 "value": "0",
                 "fields": {
                   "count()": 2
