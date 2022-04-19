@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<services version="1.0">
+
+    <admin version="2.0">
+        <adminserver hostalias="node1"/>
+    </admin>
+
+    <container version="1.0">
+        <component id="tokenizer" class="com.yahoo.language.sentencepiece.SentencePieceEmbedder" bundle="linguistics-components">
+            <config name="language.sentencepiece.sentence-piece">
+                <model>
+                    <item>
+                        <language>unknown</language>
+                        <path>model/en.wiki.bpe.vs10000.model</path>
+                    </item>
+                </model>
+            </config>
+        </component>
+
+        <!-- Downloads transformer model and vocabulary -->
+        <component id="transformer" class="ai.vespa.embedding.BertBaseEmbedder" bundle="model-integration" />
+
+        <search/>
+        <document-api/>
+        <nodes>
+            <node hostalias="node1"/>
+        </nodes>
+    </container>
+
+    <content id="embeddings" version="1.0">
+        <redundancy>1</redundancy>
+        <documents>
+            <document type="doc" mode="index" />
+        </documents>
+        <nodes>
+            <node hostalias="node1" distribution-key="0" />
+        </nodes>
+    </content>
+
+</services>
