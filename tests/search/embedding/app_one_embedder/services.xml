@@ -7,7 +7,8 @@
     </admin>
 
     <container version="1.0">
-        <component id="com.yahoo.language.sentencepiece.SentencePieceEmbedder" bundle="linguistics-components">
+
+        <component id="tokenizer" class="com.yahoo.language.sentencepiece.SentencePieceEmbedder" bundle="linguistics-components">
             <config name="language.sentencepiece.sentence-piece">
                 <model>
                     <item>
@@ -17,6 +18,7 @@
                 </model>
             </config>
         </component>
+
         <search/>
         <document-api/>
         <nodes>

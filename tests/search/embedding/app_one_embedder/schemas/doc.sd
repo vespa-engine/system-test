@@ -10,22 +10,18 @@ search doc {
 
   }
 
-  field embedding type tensor(x[5]) {
-    indexing: input text | embed | attribute | index | summary
-    index: hnsw
+  field tokens type tensor(x[5]) {
+    indexing: input text | embed | attribute | summary
   }
 
   rank-profile default {
-
     first-phase {
       expression: nativeRank
     }
-
     summary-features {
-      query(embedding)
-      attribute(embedding)
+      query(tokens)
+      attribute(tokens)
     }
-
   }
 
 }
