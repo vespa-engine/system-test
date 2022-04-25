@@ -10,7 +10,6 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
 
   def create_app
     SearchApp.new.sd(selfdir + "sparsedot.sd").
-      search_dir(selfdir + "search").
       threads_per_search(1).
       container(Container.new.
                   search(Searching.new.

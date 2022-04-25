@@ -10,7 +10,7 @@ class TensorUnstableDotProductPerfTest < TensorEvalPerfTest
 
   def test_tensor_unstable_dot_product
     set_description('Test tensor dot product with unstable cell types')
-    deploy_app(SearchApp.new.sd(selfdir + 'unstable.sd').search_dir(selfdir + 'unstable_search'))
+    deploy_app(SearchApp.new.sd(selfdir + 'unstable.sd'))
     start
     @container = (vespa.qrserver['0'] or vespa.container.values.first)
     unstable_feed

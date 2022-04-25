@@ -30,7 +30,6 @@ class MixedTensorPerfTestBase < PerformanceTest
 
   def create_app(sd_dir)
     SearchApp.new.sd(selfdir + "#{sd_dir}/test.sd").
-      search_dir(selfdir + "search").
       tune_searchnode( { :summary => { :store => { :logstore => { :chunk => { :compression => { :level => 3 } } } } } } )
   end
 

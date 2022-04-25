@@ -12,7 +12,7 @@ class MinHammingDistancePerfTest <  PerformanceTest
 
   def test_min_hamming_distance_perf
     set_description('Test performance of minimum hamming distance')
-    deploy_app(SearchApp.new.sd(selfdir + 'hamming.sd').search_dir(selfdir + 'search'))
+    deploy_app(SearchApp.new.sd(selfdir + 'hamming.sd'))
     start
     puts "COMPILE GENERATOR"
     node = vespa.adminserver
