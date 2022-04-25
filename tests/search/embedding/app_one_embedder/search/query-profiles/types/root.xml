@@ -1,3 +1,0 @@
-<query-profile-type id="root" inherits="native">
-  <field name="ranking.features.query(tokens)" type="tensor(x[5])" />
-</query-profile-type>
