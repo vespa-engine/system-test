@@ -12,6 +12,9 @@ search test {
     }
   }
   rank-profile default {
+    inputs {
+      query(qvector) tensor(x[2])
+    }
     first-phase {
       expression {
         sum(query(qvector) * attribute(dvector))
@@ -19,6 +22,9 @@ search test {
     }
   }
   rank-profile usefloat {
+    inputs {
+      query(qvectorf) tensor<float>(x[2])
+    }
     first-phase {
       expression {
         sum(query(qvectorf) * attribute(dvectorf))

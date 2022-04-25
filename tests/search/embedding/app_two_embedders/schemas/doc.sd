@@ -20,6 +20,11 @@ search doc {
 
   rank-profile default {
 
+    inputs {
+      query(tokens) tensor(x[5])
+      query(embedding) tensor(x[32])
+   }
+
     first-phase {
       expression: nativeRank
     }

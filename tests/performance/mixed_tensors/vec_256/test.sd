@@ -14,6 +14,12 @@ schema test {
     }
   }
   rank-profile default {
+    inputs {
+      query(q_cat_keys) tensor<float>(cat{})
+      query(q_cat_scores) tensor<float>(cat{})
+      query(q_model) tensor<float>(model{})
+      query(q_user_vec) tensor<float>(vec[256])
+    }
     macro inline max_score() {
       expression: reduce( categories_scaled_scores, max )
     }

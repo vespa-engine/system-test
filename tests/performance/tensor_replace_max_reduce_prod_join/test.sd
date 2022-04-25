@@ -23,7 +23,7 @@ search test {
     }
 
     rank-profile with_replacement {
-        macro calc() {
+        function calc() {
             expression {
                 reduce(
                     tensorFromLabels(attribute(longarray), x)
@@ -39,7 +39,7 @@ search test {
     }
 
     rank-profile without_replacement {
-        macro calc() {
+        function calc() {
             expression {
                 reduce(
                     tensorFromLabels(attribute(longarray), x)
@@ -55,7 +55,7 @@ search test {
     }
 
     rank-profile halfmodern {
-        macro calc() {
+        function calc() {
             expression {
                 reduce(
                     attribute(strten)
@@ -71,7 +71,7 @@ search test {
     }
 
     rank-profile halfmoderndirect {
-        macro calc() {
+        function calc() {
             expression {
                 reduce(
                     attribute(strtendirect)
@@ -87,7 +87,10 @@ search test {
     }
 
     rank-profile modern {
-        macro calc() {
+        inputs {
+            query(qwten) tensor(x{})
+        }
+        function calc() {
             expression {
                 reduce(
                     attribute(strtendirect) * query(qwten),

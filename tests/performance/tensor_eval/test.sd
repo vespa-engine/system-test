@@ -108,121 +108,193 @@ search test {
     }
   }
   rank-profile sparse_tensor_dot_product inherits dot_product_default {
+    inputs {
+      query(q_sparse_vector_x) tensor(x{})
+    }
     first-phase {
       expression: sum(query(q_sparse_vector_x) * attribute(sparse_vector))
     }
   }
   rank-profile sparse_multiply_no_overlap {
+    inputs {
+      query(q_sparse_vector_y) tensor(y{})
+    }
     first-phase {
       expression: sum(attribute(sparse_vector)*query(q_sparse_vector_y))
     }
   }
   rank-profile sparse_multiply_partial_overlap {
+    inputs {
+      query(q_sparse_yz) tensor(y{},z{})
+    }
     first-phase {
       expression: sum(attribute(sparse_xy)*query(q_sparse_yz))
     }
   }
   rank-profile tensor_match_25x25 {
+    inputs {
+      query(q_sparse_vector_y) tensor(y{})
+    }
     first-phase {
       expression: sum(query(q_sparse_vector_y)*attribute(sparse_vector)*constant(sparse_tensor_25x25))
     }
   }
   rank-profile tensor_match_50x50 {
+    inputs {
+      query(q_sparse_vector_y) tensor(y{})
+    }
     first-phase {
       expression: sum(query(q_sparse_vector_y)*attribute(sparse_vector)*constant(sparse_tensor_50x50))
     }
   }
   rank-profile tensor_match_100x100 {
+    inputs {
+      query(q_sparse_vector_y) tensor(y{})
+    }
     first-phase {
       expression: sum(query(q_sparse_vector_y)*attribute(sparse_vector)*constant(sparse_tensor_100x100))
     }
   }
   rank-profile tensor_matrix_product_10x10 {
+    inputs {
+      query(q_dense_vector_10) tensor(x[10])
+    }
     first-phase {
       expression: sum(sum((query(q_dense_vector_10)+attribute(dense_vector_10))*constant(dense_matrix_10x10),x))
     }
   }
   rank-profile tensor_matrix_product_25x25 {
+    inputs {
+      query(q_dense_vector_25) tensor(x[25])
+    }
     first-phase {
       expression: sum(sum((query(q_dense_vector_25)+attribute(dense_vector_25))*constant(dense_matrix_25x25),x))
     }
   }
   rank-profile tensor_matrix_product_50x50 {
+    inputs {
+      query(q_dense_vector_50) tensor(x[50])
+    }
     first-phase {
       expression: sum(sum((query(q_dense_vector_50)+attribute(dense_vector_50))*constant(dense_matrix_50x50),x))
     }
   }
   rank-profile tensor_matrix_product_100x100 {
+    inputs {
+      query(q_dense_vector_100) tensor(x[100])
+    }
     first-phase {
       expression: sum(sum((query(q_dense_vector_100)+attribute(dense_vector_100))*constant(dense_matrix_100x100),x))
     }
   }
   rank-profile dense_tensor_dot_product_5 inherits dot_product_default {
+    inputs {
+      query(q_dense_vector_5) tensor(x[5])
+    }
     first-phase {
       expression: sum(query(q_dense_vector_5) * attribute(dense_vector_5))
     }
   }
   rank-profile dense_tensor_dot_product_10 inherits dot_product_default {
+    inputs {
+      query(q_dense_vector_10) tensor(x[10])
+    }
     first-phase {
       expression: sum(query(q_dense_vector_10) * attribute(dense_vector_10))
     }
   }
   rank-profile dense_tensor_dot_product_25 inherits dot_product_default {
+    inputs {
+      query(q_dense_vector_25) tensor(x[25])
+    }
     first-phase {
       expression: sum(query(q_dense_vector_25) * attribute(dense_vector_25))
     }
   }
   rank-profile dense_tensor_dot_product_50 inherits dot_product_default {
+    inputs {
+      query(q_dense_vector_50) tensor(x[50])
+    }
     first-phase {
       expression: sum(query(q_dense_vector_50) * attribute(dense_vector_50))
     }
   }
   rank-profile dense_tensor_dot_product_100 inherits dot_product_default {
+    inputs {
+      query(q_dense_vector_100) tensor(x[100])
+    }
     first-phase {
       expression: sum(query(q_dense_vector_100) * attribute(dense_vector_100))
     }
   }
   rank-profile dense_tensor_dot_product_250 inherits dot_product_default {
+    inputs {
+      query(q_dense_vector_250) tensor(x[250])
+    }
     first-phase {
       expression: sum(query(q_dense_vector_250) * attribute(dense_vector_250))
     }
   }
   rank-profile dense_tensor_dot_product_500 inherits dot_product_default {
+    inputs {
+      query(q_dense_vector_500) tensor(x[500])
+    }
     first-phase {
       expression: sum(query(q_dense_vector_500) * attribute(dense_vector_500))
     }
   }
   rank-profile dense_float_tensor_dot_product_5 inherits dot_product_default {
+    inputs {
+      query(q_dense_float_vector_5) tensor<float>(x[5])
+    }
     first-phase {
       expression: sum(query(q_dense_float_vector_5) * attribute(dense_float_vector_5))
     }
   }
   rank-profile dense_float_tensor_dot_product_10 inherits dot_product_default {
+    inputs {
+      query(q_dense_float_vector_10) tensor<float>(x[10])
+    }
     first-phase {
       expression: sum(query(q_dense_float_vector_10) * attribute(dense_float_vector_10))
     }
   }
   rank-profile dense_float_tensor_dot_product_25 inherits dot_product_default {
+    inputs {
+      query(q_dense_float_vector_25) tensor<float>(x[25])
+    }
     first-phase {
       expression: sum(query(q_dense_float_vector_25) * attribute(dense_float_vector_25))
     }
   }
   rank-profile dense_float_tensor_dot_product_50 inherits dot_product_default {
+    inputs {
+      query(q_dense_float_vector_50) tensor<float>(x[50])
+    }
     first-phase {
       expression: sum(query(q_dense_float_vector_50) * attribute(dense_float_vector_50))
     }
   }
   rank-profile dense_float_tensor_dot_product_100 inherits dot_product_default {
+    inputs {
+      query(q_dense_float_vector_100) tensor<float>(x[100])
+    }
     first-phase {
       expression: sum(query(q_dense_float_vector_100) * attribute(dense_float_vector_100))
     }
   }
   rank-profile dense_float_tensor_dot_product_250 inherits dot_product_default {
+    inputs {
+      query(q_dense_float_vector_250) tensor<float>(x[250])
+    }
     first-phase {
       expression: sum(query(q_dense_float_vector_250) * attribute(dense_float_vector_250))
     }
   }
   rank-profile dense_float_tensor_dot_product_500 inherits dot_product_default {
+    inputs {
+      query(q_dense_float_vector_500) tensor<float>(x[500])
+    }
     first-phase {
       expression: sum(query(q_dense_float_vector_500) * attribute(dense_float_vector_500))
     }

@@ -1,4 +1,0 @@
-<query-profile-type id="root" inherits="native">
-  <field name="ranking.features.query(qi)" type="tensor(x[2])" />
-  <field name="ranking.features.query(qm)" type="tensor(x{})" />
-</query-profile-type>

@@ -16,13 +16,17 @@ search test {
     file: search/model.json
   }
   rank-profile default {
+    inputs {
+      query(age) tensor(age{})
+      query(sex) tensor(sex{})
+    }
     first-phase {
       expression {
         sum(tensorFromWeightedSet(query(age))*tensorFromWeightedSet(query(sex))*tensorFromWeightedSet(attribute(tag))*constant(model))
       }
     }
   }
-  rank-profile tensor {
+  rank-profile tensor inherits default {
     first-phase {
       expression {
         sum(query(age)*query(sex)*attribute(my_tensor)*constant(model))

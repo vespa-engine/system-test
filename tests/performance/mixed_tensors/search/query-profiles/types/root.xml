@@ -1,6 +1,0 @@
-<query-profile-type id="root" inherits="native">
-  <field name="ranking.features.query(q_cat_keys)" type="tensor&lt;float&gt;(cat{})" />
-  <field name="ranking.features.query(q_cat_scores)" type="tensor&lt;float&gt;(cat{})" />
-  <field name="ranking.features.query(q_model)" type="tensor&lt;float&gt;(model{})" />
-  <field name="ranking.features.query(q_user_vec)" type="tensor&lt;float&gt;(vec[256])" />
-</query-profile-type>

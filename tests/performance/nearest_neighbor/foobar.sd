@@ -28,12 +28,18 @@ search foobar {
   }
 
   rank-profile hamming {
+    inputs {
+      query(qbvector) tensor<int8>(x[64])
+    }
     first-phase {
       expression: sum(hamming(query(qbvector),attribute(bvector)))
     }
   }
 
   rank-profile dotproduct {
+    inputs {
+      query(qvector) tensor(x[512])
+    }
     first-phase {
       expression {
         sum(query(qvector) * attribute(dvector))
@@ -42,6 +48,9 @@ search foobar {
   }
 
   rank-profile sumsqdiff {
+    inputs {
+      query(qvector) tensor(x[512])
+    }
     first-phase {
       expression {
         sqrt(sum((query(qvector) - attribute(dvector)) * (query(qvector) - attribute(dvector))))
@@ -50,6 +59,9 @@ search foobar {
   }
 
   rank-profile sumdiffsq {
+    inputs {
+      query(qvector) tensor(x[512])
+    }
     first-phase {
       expression {
         sqrt(sum(map((query(qvector) - attribute(dvector)), f(x)(x*x))))
@@ -58,6 +70,9 @@ search foobar {
   }
 
   rank-profile joinsqdiff {
+    inputs {
+      query(qvector) tensor(x[512])
+    }
     first-phase {
       expression {
         sqrt(sum(join(query(qvector), attribute(dvector), f(x,y)((x-y)*(x-y)))))

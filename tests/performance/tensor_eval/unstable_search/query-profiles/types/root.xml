@@ -1,6 +1,0 @@
-<query-profile-type id="root" inherits="native">
-  <field name="ranking.features.query(qry8)" type="tensor&lt;int8&gt;(x[128])" />
-  <field name="ranking.features.query(qry16)" type="tensor&lt;bfloat16&gt;(x[128])" />
-  <field name="ranking.features.query(qry32)" type="tensor&lt;float&gt;(x[128])" />
-  <field name="ranking.features.query(qry64)" type="tensor&lt;double&gt;(x[128])" />
-</query-profile-type>

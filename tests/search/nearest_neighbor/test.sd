@@ -17,6 +17,10 @@ search test {
     }
   }
   rank-profile default {
+    inputs {
+      query(qpos_double) tensor<double>(x[2])
+      query(qpos_float) tensor<float>(x[2])
+    }
     function euclidean_distance_qpos_double() {
       expression: sqrt(sum(join(query(qpos_double), attribute(pos), f(x,y)((x-y)*(x-y)))))
     }
