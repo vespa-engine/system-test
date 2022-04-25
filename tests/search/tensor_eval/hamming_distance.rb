@@ -38,7 +38,7 @@ class HammingDistanceRankingTest < IndexedSearchTest
   def test_hamming_distance_ranking
     set_description('Test evaluation of hamming distance for various tensor combinations')
     hdir = selfdir + 'hamming/'
-    deploy_app(SearchApp.new.sd(hdir + 'hamming.sd').search_dir(hdir + 'search'))
+    deploy_app(SearchApp.new.sd(hdir + 'hamming.sd'))
     start
     feed_and_wait_for_docs('hamming', 4, :file => hdir + 'docs.json')
     q_and_a = {
