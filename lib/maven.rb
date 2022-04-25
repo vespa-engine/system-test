@@ -213,7 +213,7 @@ module Maven
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.10.1</version>
             <configuration>
-              <release>11</release>
+              <release>17</release>
             </configuration>
           </plugin>
 
