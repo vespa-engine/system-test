@@ -25,6 +25,9 @@ search unstable {
     }
   }
   rank-profile default {
+    inputs {
+      query(qry8) tensor<int8>(x[128])
+    }
     first-phase {
       expression {
         sum(attribute(doc32))
@@ -32,6 +35,9 @@ search unstable {
     }
   }
   rank-profile qry8doc8 {
+    inputs {
+      query(qry8) tensor<int8>(x[128])
+    }
     first-phase {
       expression {
         reduce(query(qry8)*attribute(doc8),sum,x)
@@ -39,6 +45,9 @@ search unstable {
     }
   }
   rank-profile qry16doc16 {
+    inputs {
+      query(qry16) tensor<bfloat16>(x[128])
+    }
     first-phase {
       expression {
         reduce(query(qry16)*attribute(doc16),sum,x)
@@ -46,6 +55,9 @@ search unstable {
     }
   }
   rank-profile qry32doc32 {
+    inputs {
+      query(qry32) tensor<float>(x[128])
+    }
     first-phase {
       expression {
         reduce(query(qry32)*attribute(doc32),sum,x)
@@ -53,6 +65,9 @@ search unstable {
     }
   }
   rank-profile qry64doc64 {
+    inputs {
+      query(qry64) tensor<double>(x[128])
+    }
     first-phase {
       expression {
         reduce(query(qry64)*attribute(doc64),sum,x)
@@ -60,6 +75,9 @@ search unstable {
     }
   }
   rank-profile qry32doc8cast {
+    inputs {
+      query(qry32) tensor<float>(x[128])
+    }
     first-phase {
       expression {
         reduce(query(qry32)*cell_cast(attribute(doc8),float),sum,x)
@@ -67,6 +85,9 @@ search unstable {
     }
   }
   rank-profile qry32doc16cast {
+    inputs {
+      query(qry32) tensor<float>(x[128])
+    }
     first-phase {
       expression {
         reduce(query(qry32)*cell_cast(attribute(doc16),float),sum,x)
@@ -74,6 +95,9 @@ search unstable {
     }
   }
   rank-profile qry32doc8 {
+    inputs {
+      query(qry32) tensor<float>(x[128])
+    }
     first-phase {
       expression {
         reduce(query(qry32)*attribute(doc8),sum,x)
@@ -81,6 +105,9 @@ search unstable {
     }
   }
   rank-profile qry32doc16 {
+    inputs {
+      query(qry32) tensor<float>(x[128])
+    }
     first-phase {
       expression {
         reduce(query(qry32)*attribute(doc16),sum,x)

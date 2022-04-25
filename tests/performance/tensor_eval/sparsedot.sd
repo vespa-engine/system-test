@@ -33,6 +33,9 @@ search sparsedot {
     }
   }
   rank-profile sparse_tensor_dot_product {
+    inputs {
+      query(q_sparse_float_vector_x) tensor<float>(x{})
+    }
     first-phase {
       keep-rank-count: 1000
       expression: sum(query(q_sparse_float_vector_x) * attribute(sparse_vector_x))
