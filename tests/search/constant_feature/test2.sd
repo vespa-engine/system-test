@@ -18,6 +18,10 @@ search test {
     file: search/bias2.json
   }
   rank-profile default {
+    inputs {
+      query(age) tensor(age{})
+      query(sex) tensor(sex{})
+    }
     first-phase {
       expression {
         sum((query(age)*query(sex)*attribute(my_tensor)*constant(model1)) + (query(age)*constant(bias1)))
