@@ -1,3 +1,0 @@
-<query-profile-type id="root" inherits="native">
-    <field name="ranking.features.query(class_selector)" type="tensor(d1[10])" />
-</query-profile-type>

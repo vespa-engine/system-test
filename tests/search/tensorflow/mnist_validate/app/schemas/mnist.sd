@@ -14,7 +14,11 @@ search mnist {
 
     rank-profile default inherits default {
 
-        macro input() {
+        inputs {
+            query(class_selector) tensor(d1[10])
+        }
+
+        function input() {
             expression: attribute(image)
         }
 
@@ -26,7 +30,7 @@ search mnist {
 
     rank-profile random inherits default {
 
-        macro input() {
+        function input() {
             expression: attribute(image)
         }
 
