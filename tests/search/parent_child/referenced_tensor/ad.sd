@@ -13,6 +13,10 @@ search ad {
   import field campaign_ref.mapped_tensor as my_mapped_tensor {}
 
   rank-profile default {
+    inputs {
+      query(qi) tensor(x[2])
+      query(qm) tensor(x{})
+    }
     first-phase {
       expression {
         sum(query(qi)*attribute(my_indexed_tensor)) * 100000 + sum(query(qm)*attribute(my_mapped_tensor)) * 10 + attribute(fixup)
