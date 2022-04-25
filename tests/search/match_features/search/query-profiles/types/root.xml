@@ -1,4 +1,0 @@
-<query-profile-type id="root" inherits="native">
-    <field name="ranking.features.query(mix)" type="tensor(x{},y[2])" />
-    <field name="ranking.features.query(vec)" type="tensor(y[2])" />
-</query-profile-type>

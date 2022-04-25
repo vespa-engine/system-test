@@ -30,6 +30,10 @@ search test {
   }
 
   rank-profile withmf {
+    inputs {
+      query(mix) tensor(x{},y[2])
+      query(vec) tensor(y[2])
+    }
     function score_per_x() {
       expression: reduce(query(mix) * constant(model) * attribute(mixed), sum, y)
     }
