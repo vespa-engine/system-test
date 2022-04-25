@@ -28,7 +28,6 @@ class NearestNeighborTest < IndexedSearchTest
     deploy_app(SearchApp.new
                  .sd(selfdir + 'campaign.sd', { :global => true })
                  .sd(selfdir + 'ad.sd')
-                 .search_dir(selfdir + 'search')
                  .threads_per_search(1)
                  .enable_document_api)
     start
