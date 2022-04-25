@@ -1,3 +1,0 @@
-<query-profile-type id="root" inherits="native">
-  <field name="ranking.features.query(qvector)" type="tensor&lt;int8&gt;(question{},x[16])" />
-</query-profile-type>
