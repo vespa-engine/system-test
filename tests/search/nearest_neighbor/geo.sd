@@ -22,6 +22,10 @@ search geo {
     }
   }
   rank-profile default {
+    inputs {
+      query(qpos_double) tensor<double>(x[2])
+      query(qpos_float) tensor<float>(x[2])
+    }
     first-phase {
       expression: closeness(label,nns)
     }
