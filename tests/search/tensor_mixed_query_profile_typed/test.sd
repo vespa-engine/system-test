@@ -13,9 +13,6 @@ search test {
     type: tensor(x{},y[3])
   }
   rank-profile default {
-    inputs {
-        query(tensor) tensor(x{},y[3])
-    }
     first-phase {
       expression: sum(query(tensor) * constant(model) * attribute(mixed))
     }
