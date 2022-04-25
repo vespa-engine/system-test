@@ -9,8 +9,7 @@ class ReferencedTensorTest < ParentChildTestBase
   end
 
   def deploy_and_start
-    app = SearchApp.new.sd(get_sub_test_path("campaign.sd"), { :global => true }).sd(get_test_path("ad.sd")).
-               search_dir(get_test_path("search"))
+    app = SearchApp.new.sd(get_sub_test_path("campaign.sd"), { :global => true }).sd(get_test_path("ad.sd"))
     app.sd(get_sub_test_path("grandcampaign.sd"), { :global => true }) if is_grandparent_test
     deploy_app(app)
     start
