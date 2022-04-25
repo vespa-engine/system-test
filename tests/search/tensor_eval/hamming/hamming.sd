@@ -13,6 +13,9 @@ search hamming {
     }
   }
   rank-profile default {
+    inputs {
+      query(qvector) tensor<int8>(x[8])
+    }
     first-phase {
       expression {
         reduce(hamming(query(qvector),attribute(docvector)),sum,x)
