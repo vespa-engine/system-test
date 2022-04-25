@@ -26,6 +26,10 @@ search unstable {
     file: search/model.json
   }
   rank-profile default {
+    inputs {
+      query(age) tensor(age{})
+      query(sex) tensor(sex{})
+    }
     first-phase {
       expression {
         sum(query(age)*query(sex)*attribute(mydoubles)*constant(model))
@@ -33,7 +37,7 @@ search unstable {
       rank-score-drop-limit: 1.0
     }
   }
-  rank-profile w8bits {
+  rank-profile w8bits inherits default {
     first-phase {
       expression {
         sum(query(age)*query(sex)*attribute(mybytes)*constant(model))
@@ -45,7 +49,7 @@ search unstable {
     }
     summary-features: output_tensor
   }
-  rank-profile w16bits {
+  rank-profile w16bits inherits default {
     first-phase {
       expression {
         sum(query(age)*query(sex)*attribute(myshorts)*constant(model))
@@ -57,7 +61,7 @@ search unstable {
     }
     summary-features: output_tensor
   }
-  rank-profile w32bits {
+  rank-profile w32bits inherits default {
     first-phase {
       expression {
         sum(query(age)*query(sex)*attribute(myfloats)*constant(model))
