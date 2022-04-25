@@ -1,4 +1,0 @@
-<query-profile-type id="root" inherits="native">
-  <field name="ranking.features.query(age)" type="tensor&lt;bfloat16&gt;(age{})" />
-  <field name="ranking.features.query(sex)" type="tensor&lt;int8&gt;(sex{})" />
-</query-profile-type>
