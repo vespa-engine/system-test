@@ -32,7 +32,7 @@ public class WasFoundTest {
 
     @Before
     public void setUp() {
-        access = DocumentAccess.createDefault();
+        access = DocumentAccess.createForNonContainer();
         session = access.createSyncSession(new SyncParameters.Builder().build());
         type = access.getDocumentTypeManager().getDocumentType("test");
         doc = new Document(type, docId);

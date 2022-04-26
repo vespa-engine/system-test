@@ -27,7 +27,7 @@ import static test.Documents.newUpdate;
  */
 public class SyncSessionTest {
 
-    private final DocumentAccess access = DocumentAccess.createDefault();
+    private final DocumentAccess access = DocumentAccess.createForNonContainer();
     private final SyncSession session = access.createSyncSession(new SyncParameters.Builder().build());
 
     @Test
