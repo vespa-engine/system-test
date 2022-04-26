@@ -35,7 +35,7 @@ public class VisitorSessionTest {
 
     @Test
     public void requireThatVisitSessionWorks() throws Exception {
-        DocumentAccess access = DocumentAccess.createDefault();
+        DocumentAccess access = DocumentAccess.createForNonContainer();
         SyncSession session = access.createSyncSession(new SyncParameters.Builder().build());
 
         DocumentType type = access.getDocumentTypeManager().getDocumentType("test");

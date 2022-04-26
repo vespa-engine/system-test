@@ -33,7 +33,7 @@ import static test.Documents.newUpdate;
 public class AsyncSessionTest {
 
     private final static int TIMEOUT_MILLIS = (int)TimeUnit.SECONDS.toMillis(60);
-    private final DocumentAccess access = DocumentAccess.createDefault();
+    private final DocumentAccess access = DocumentAccess.createForNonContainer();
     private final AsyncSession session = access.createAsyncSession(new AsyncParameters());
 
     @Test
