@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_test'
 require 'json_document_writer'
 
@@ -85,19 +85,20 @@ class SplitJoinReadinessTest < SearchTest
   end
 
   def check_readiness_of_primary_replicas_error_or_nil
+    error = nil
     this_cluster.distributor.each do |key, node|
       node.each_database_bucket do |space, bucket_id, parsed_state, raw_state|
         # First replica is most ideal replica, and should be ready+active.
         first_replica = parsed_state[0]
-        return "Primary (1st) ideal replica not ready: #{raw_state}" if not first_replica.ready
-        return "Primary (1st) ideal replica not active: #{raw_state}" if not first_replica.active
+        error = "Primary (1st) ideal replica not ready: #{raw_state}" if not first_replica.ready
+        error = "Primary (1st) ideal replica not active: #{raw_state}" if not first_replica.active
         # Second replica should be de-indexed and inactive
         second_replica = parsed_state[1]
-        return "Non-primary (2nd) replica still ready: #{raw_state}" if second_replica.ready
-        return "Non-primary (2nd) replica still active: #{raw_state}" if second_replica.active
+        error = "Non-primary (2nd) replica still ready: #{raw_state}" if second_replica.ready
+        error = "Non-primary (2nd) replica still active: #{raw_state}" if second_replica.active
       end
     end
-    nil
+    error
   end
 
   def readiness_convergence_timeout_sec
