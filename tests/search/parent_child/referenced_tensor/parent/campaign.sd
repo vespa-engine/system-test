@@ -10,6 +10,10 @@ search campaign {
   }
 
   rank-profile default {
+    inputs {
+      query(qi) tensor(x[2])
+      query(qm) tensor(x{})
+    }
     first-phase {
       expression {
         sum(query(qi)*attribute(indexed_tensor)) * 100000 + sum(query(qm)*attribute(mapped_tensor) * 10)
