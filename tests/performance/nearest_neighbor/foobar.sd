@@ -16,6 +16,9 @@ search foobar {
   }
 
   rank-profile default {
+    inputs {
+      query(qvector) tensor(x[512])
+    }
     first-phase {
       expression: 0.00000001*attribute(order)
     }
