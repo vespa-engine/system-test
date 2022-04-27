@@ -22,6 +22,9 @@ search foobar {
   }
 
   rank-profile rawscore {
+    inputs {
+      query(qvector) tensor(x[512])
+    }
     first-phase {
       expression: itemRawScore(mynns)
     }
