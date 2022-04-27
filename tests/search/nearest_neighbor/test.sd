@@ -42,6 +42,10 @@ search test {
     }
   }
   rank-profile combined {
+    inputs {
+      query(qpos_double) tensor<double>(x[2])
+      query(qpos_float) tensor<float>(x[2])
+    }
     first-phase {
       expression: 10*closeness(label,nns) + fieldMatch(text).earliness
     }
