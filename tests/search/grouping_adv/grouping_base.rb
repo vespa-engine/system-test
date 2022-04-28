@@ -54,13 +54,18 @@ module GroupingBase
                 'combination-1')
 
     # Test limit and precision
-    topn_xml = run_xml_query('all(all(group(a) each(output(count()))))')
+    topn_json = run_query('all(all(group(a)each(output(count()))))')
     sum=0
-    topn_xml.elements.each('group/grouplist/group/output') { |element| sum = sum + element.text.to_i }
+    for g in topn_json['root']['children'][0]['children'][0]['children']
+      sum += g['fields']['count()']
+    end
+    puts "sum = #{sum}"
     assert(sum == 28)
-    topn_xml = run_xml_query('all(max(2) all(group(a) each(output(count()))))')
+    topn_json = run_query('all(max(2)all(group(a)each(output(count()))))')
     sum=0
-    topn_xml.elements.each('group/grouplist/group/output') { |element| sum = sum + element.text.to_i }
+    for g in topn_json['root']['children'][0]['children'][0]['children']
+      sum += g['fields']['count()']
+    end
     puts "sum = #{sum}"
     assert(sum <= 2*8)
 
@@ -326,9 +331,9 @@ module GroupingBase
     check_fullquery(full_query, file)
   end
 
-  def run_xml_query(select, timeout=DEFAULT_TIMEOUT)
-    full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0&format=xml"
-    search_with_timeout(timeout, full_query).xml
+  def run_query(select, timeout=DEFAULT_TIMEOUT)
+    full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0"
+    search_with_timeout(timeout, full_query).json
   end
 
   def check_fullquery(query, localfile)
