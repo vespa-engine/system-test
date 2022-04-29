@@ -23,6 +23,13 @@ class BackendReporter < BackendClient
     super(test_objects)
   end
 
+  def use_sanitizer
+    super()
+  end
+
+  def set_use_sanitizer(sanitizer)
+  end
+
   def use_valgrind
     super()
   end
@@ -48,6 +55,7 @@ class BackendReporter
     @log = log
     @test_results = Concurrent::Hash.new
     @test_names = Concurrent::Array.new
+    @sanitizer = nil
   end
 
   def initialize_testrun(test_objects)
@@ -58,6 +66,14 @@ class BackendReporter
 
   def sort_testcases(test_objects)
     test_objects
+  end
+
+  def use_sanitizer
+    @sanitizer
+  end
+
+  def set_use_sanitizer(sanitizer)
+    @sanitizer = sanitizer
   end
 
   def use_valgrind
