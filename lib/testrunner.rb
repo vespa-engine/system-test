@@ -37,6 +37,7 @@ class TestRunner
     @dns_settle_time = options[:dns_settle_time] ? options[:dns_settle_time] : 0
 
     @backend = BackendReporter.new(@testrun_id, @basedir, @log)
+    @backend.set_use_sanitizer(options[:sanitizer]) if options[:sanitizer]
   end
 
   def initialize_run_dependent_fields
@@ -162,6 +163,7 @@ class TestRunner
     @backend.sort_testcases(@test_objects).each do |testcase, test_method|
 
       testcase.valgrind = @backend.use_valgrind ? "all" : nil
+      testcase.sanitizer = @backend.use_sanitizer
 
       @log.info "#{testcase.class}::#{test_method.to_s} requesting nodes"
 
@@ -249,6 +251,9 @@ if __FILE__ == $0
     end
     opts.on("-w", "--nodewait SECONDS", Integer, "Wait for enough nodes for this many seconds.") do |seconds|
       options[:nodewait] = seconds
+    end
+    opts.on("--sanitizer SANITIZER", String, "Santizer, one of 'address', 'thread', 'undefined'") do |sanitizer|
+      options[:sanitizer] = sanitizer
     end
   end.parse!
 

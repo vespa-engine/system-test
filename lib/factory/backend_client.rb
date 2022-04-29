@@ -40,6 +40,7 @@ class BackendClient
     @basedir = basedir
     @log = log
     @factory_client = FactoryClient.new(@log)
+    @sanitizer = nil
     @valgrind = false
     @durations = {}
     @durations.default = 1500
@@ -49,12 +50,17 @@ class BackendClient
     # Initialize Factory with test cases.
     response = @factory_client.initialize_testrun(@testrun_id, test_objects)
     @durations = response[:durations]
+    @sanitizer = response[:sanitizer]
     @valgrind = response[:valgrind]
   end
 
   def sort_testcases(test_objects)
     @log.info("Sorting tests")
     SimpleSystestSorter.new(@durations, test_objects).sort
+  end
+
+  def use_sanitizer
+    @sanitizer
   end
 
   def use_valgrind
