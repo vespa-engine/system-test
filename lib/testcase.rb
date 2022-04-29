@@ -33,6 +33,7 @@ class TestCase
   attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :dirty_nodeproxies, :storagehost, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client
   attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :required_hostnames, :expected_logged, :method_name
   attr_accessor :dirty_environment_settings
+  attr_accessor :sanitizer
 
   # Creates and returns a new TestCase object.
   #
@@ -51,6 +52,7 @@ class TestCase
     @cmd_args = args
     @hostlist = args[:hostlist]
     @outputdir = args[:outputdir]
+    @sanitizer = args[:sanitizer]
     @storagehost = args[:storagehost]
     @valgrind = args[:valgrind]
     @valgrind_opt = args[:valgrind_opt]
@@ -318,6 +320,7 @@ class TestCase
         add_vespa_logfiles
         add_logfiles(@dirs.valgrindlogdir)
         add_logfiles(@dirs.jdisccorelogdir)
+        add_logfiles(@dirs.sanitizerlogdir)
 
         begin
           assert_no_valgrind_errors

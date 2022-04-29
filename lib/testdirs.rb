@@ -10,6 +10,7 @@ class TestDirs
   attr_reader :tmpdir, :rrdsdir, :graphdir, :coredir, :downloaddir, :drbfiledir
   attr_reader :bundledir, :resultoutput, :plugindir, :baselogdir
   attr_reader :jdisccorelogdir
+  attr_reader :sanitizerlogdir
 
   def initialize(testclass, testmethod, modulename, args={})
     methodname = testmethod.sub(/test_/, "")
@@ -63,6 +64,7 @@ class TestDirs
     @vespalogdir_web = "systemtestlogs/#{platform_label}/#{buildversion}/#{buildname}/#{modulename}/#{testclass}/#{methodname}/vespalog/"
     @baselogdir = baselogdir
     @jdisccorelogdir = "#{logdir}/#{testclass}/#{methodname}/jdisc/"
+    @sanitizerlogdir = "#{logdir}/#{testclass}/#{methodname}/sanitizer/"
 
     @filesdir = "#{logdir}/#{testclass}/#{methodname}/files/"
     @filesdir_web = "systemtestlogs/#{platform_label}/#{buildversion}/#{buildname}/#{modulename}/#{testclass}/#{methodname}/files/"
@@ -74,7 +76,8 @@ class TestDirs
 
     @create_dirlist = [@vespalogdir, @benchmarklogdir, @tmpdir,
                        @valgrindlogdir, @rrdsdir, @graphdir, @bundledir,
-                       @resultoutput, @filesdir, @plugindir, @jdisccorelogdir]
+                       @resultoutput, @filesdir, @plugindir, @jdisccorelogdir,
+                       @sanitizerlogdir]
   end
 
   def create_directories
