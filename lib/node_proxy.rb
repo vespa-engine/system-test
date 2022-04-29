@@ -58,6 +58,20 @@ class NodeProxy
   # the remote NodeServer object.
   def initialize(hostname, testcase)
     @name = hostname
+    # When running system tests on docker swarm using the provided
+    # run-tests-on-swarm.sh script, the first component of the host
+    # name is service name and the second component is task slot.  Use
+    # both to ensure unique short names for a multinode test on swarm.
+    hostname_components = hostname.split(".")
+    if hostname_components.size > 0
+      if hostname_components.size > 1 && hostname_components[1] =~ /^\d+$/
+        @short_name = hostname_components.first(2).join(".")
+      else
+        @short_name = hostname_components[0]
+      end
+    else
+      @short_name = hostname
+    end
     @node_server = NodeClient.new(hostname, testcase)
   end
 
@@ -67,8 +81,7 @@ class NodeProxy
 
   # Returns the hostname stripped of the domain name.
   def short_name
-    result = @name.slice(/^[^\.]*/)
-    return result
+    @short_name
   end
 
   def time
