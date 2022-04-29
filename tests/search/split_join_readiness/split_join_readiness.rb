@@ -18,7 +18,7 @@ class SplitJoinReadinessTest < SearchTest
   end
 
   def should_debug_log?
-    false
+    true
   end
 
   def teardown
@@ -56,8 +56,8 @@ class SplitJoinReadinessTest < SearchTest
   end
 
   def enable_debug_logging
-    logctl_all('distributor', 'distributor.bucketdb.updater', 'debug=on,spam=on')
-    logctl_all('distributor', 'distributor.operation.queue', 'debug=on,spam=on')
+    logctl_all('distributor', 'distributor.stripe_bucket_db_updater', 'debug=on,spam=on')
+    logctl_all('distributor', 'distributor.operation.queue', 'debug=on,spam=off')
     logctl_all('distributor', 'distributor.operation.idealstate.setactive', 'debug=on,spam=on')
     logctl_all('distributor', 'distributor.operation.idealstate.split', 'debug=on,spam=on')
     logctl_all('distributor', 'distributor.operation.idealstate.join', 'debug=on,spam=on')
@@ -137,10 +137,12 @@ class SplitJoinReadinessTest < SearchTest
 
     enable_debug_logging if should_debug_log?
     feed_docs_to_same_location
-    disable_debug_logging if should_debug_log?
 
     wait_until_all_content_nodes_have_bucket_count(8)
     wait_until_bucket_move_jobs_done
+
+    disable_debug_logging if should_debug_log?
+
     verify_readiness_of_primary_replicas
   end
 
