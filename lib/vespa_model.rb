@@ -22,6 +22,7 @@ class VespaModel
     @nodeproxies = {}
     @valgrind_logs_glob = "#{Environment.instance.vespa_home}/tmp/valgrind.*.log.*"
     @qrs_logs_dir = "#{Environment.instance.vespa_home}/logs/vespa/qrs"
+    @sanitizer_logs_dir = "#{Environment.instance.tmp_dir}/sanitizer"
     @deployments = 0
     @bundles = []
     @vespa_version = vespa_version
@@ -741,11 +742,20 @@ class VespaModel
   # Remove vespa logs, reset valgrind options, remove valgrind logs and start memory monitoring.
   def init_logging
     @nodeproxies.each_value do |handle|
+      reset_sanitizer(handle, true)
       reset_valgrind(handle)
       handle.execute("rm -f #{@valgrind_logs_glob}")
       handle.execute("rm -rf #{Environment.instance.vespa_home}/logs/vespa/*")
       handle.start_monitoring
     end
+  end
+
+  def setup_sanitizer(handle)
+    handle.setup_sanitizer(@testcase.sanitizer) if @testcase.sanitizer
+  end
+
+  def reset_sanitizer(handle, cleanup)
+    handle.reset_sanitizer(cleanup)
   end
 
   def setup_valgrind(handle)
@@ -762,6 +772,7 @@ class VespaModel
   def start_base
     threadlist = []
     @nodeproxies.each_value do |handle|
+      setup_sanitizer(handle)
       setup_valgrind(handle)
       threadlist << Thread.new(handle) do |my_handle|
         my_handle.start_base
@@ -798,6 +809,7 @@ class VespaModel
   def stop_base(stop_nodes=@nodeproxies)
     threadlist = []
     stop_nodes.each_value do |handle|
+      reset_sanitizer(handle, false)
       reset_valgrind(handle)
       threadlist << Thread.new(handle) do |my_handle|
         my_handle.stop_base
@@ -905,6 +917,11 @@ class VespaModel
         save_valgrind_logfiles(handle)
       end
     end
+    if @testcase.sanitizer
+      @testcase.dirty_nodeproxies.each_value do |handle|
+        save_sanitizer_logfiles(handle)
+      end
+    end
      #if not nodes_exceeded_memory_limit.empty?
        #raise "Test used too much memory on #{nodes_exceeded_memory_limit.join(', ')}"
      #end
@@ -952,6 +969,14 @@ class VespaModel
   def save_valgrind_logfiles(handle)
     handle.list_files(@valgrind_logs_glob).each do |filename|
       File.open(@testcase.dirs.valgrindlogdir + "#{handle.short_name}-#{File.basename(filename)}", "w") do |file|
+        file.write(handle.readfile(filename))
+      end
+    end
+  end
+
+  def save_sanitizer_logfiles(handle)
+    handle.list_files(@sanitizer_logs_dir + '/[a-zA-Z]*.[0-9]*').each do |filename|
+      File.open(@testcase.dirs.sanitizerlogdir + "#{handle.short_name}-#{File.basename(filename)}", "w") do |file|
         file.write(handle.readfile(filename))
       end
     end
