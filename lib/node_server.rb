@@ -40,6 +40,7 @@ class NodeServer
     @port_configserver_rpc = nil
     @configserver_pid = nil
     @configserver_started = false
+    @sanitizer = nil
     @tls_env = TlsEnv.new
     @executor = Executor.new(@short_hostname)
     @https_client = HttpsClient.new(@tls_env)
@@ -918,6 +919,24 @@ class NodeServer
     dir = "#{Environment.instance.vespa_home}/tmp/systemtests-bin"
     FileUtils.mkdir_p(dir)
     return dir
+  end
+
+  def setup_sanitizer(name)
+    @sanitizer = name
+    dir = "#{Environment.instance.tmp_dir}/sanitizer"
+    FileUtils.mkdir_p(dir)
+    FileUtils.chown(Environment.instance.vespa_user, nil, dir)
+    if name == 'thread'
+      ENV['TSAN_OPTIONS'] = "suppressions=#{Environment.instance.vespa_home}/etc/vespa/tsan-suppressions.txt history_size=7 detect_deadlocks=1 second_deadlock_stack=1 log_path=#{dir}/tsan-log"
+    end
+  end
+
+  def reset_sanitizer(cleanup)
+    dir = "#{Environment.instance.tmp_dir}/sanitizer"
+    FileUtils.rm_rf(dir) if cleanup
+    ENV['ASAN_OPTIONS'] = nil
+    ENV['TSAN_OPTIONS'] = nil
+    ENV['UBSAN_OPTIONS'] = nil
   end
 
   # Not safe to call - part of remote copy methods in node_proxy.rb

@@ -352,4 +352,12 @@ module NodeServerInterface
   def create_tmp_bin_dir
     @node_server.create_tmp_bin_dir
   end
+
+  def setup_sanitizer(name)
+    @node_server.setup_sanitizer(name)
+  end
+
+  def reset_sanitizer(cleanup)
+    @node_server.reset_sanitizer(cleanup)
+  end
 end
