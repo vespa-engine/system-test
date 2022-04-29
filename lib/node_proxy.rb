@@ -151,6 +151,14 @@ class NodeProxy
     @node_server.create_tmp_bin_dir
   end
   
+  def setup_sanitizer(name)
+    @node_server.setup_sanitizer(name)
+  end
+
+  def reset_sanitizer(cleanup)
+    @node_server.reset_sanitizer(cleanup)
+  end
+
   # Copies/renames single file from local src to dst (file) on node_server.
   # Target directory will be created if it does not exist.
   # Existing dst will be overwritten.
