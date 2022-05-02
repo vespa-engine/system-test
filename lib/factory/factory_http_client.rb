@@ -27,6 +27,12 @@ class FactoryHttpClient
     @auth = FactoryAuthentication.new
   end
 
+  ALL_NET_HTTP_ERRORS = [
+    Timeout::Error,  EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, Net::HTTPError,
+    Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL, Errno::EPIPE, Errno::EINVAL, Errno::ECONNRESET,
+    Errno::EHOSTUNREACH
+  ]
+
   def request(path, method='GET', body=nil, headers=nil)
     uri = URI(@auth.factory_api + path)
     case method
