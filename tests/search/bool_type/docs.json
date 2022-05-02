@@ -3,28 +3,32 @@
     "put": "id:test:test::0",
     "fields": {
       "b1": false,
-      "b2": false
+      "b2": false,
+      "b3": false
     }
   },
   {
     "put": "id:test:test::1",
     "fields": {
       "b1": true,
-      "b2": false
+      "b2": false,
+      "b3": true
     }
   },
   {
     "put": "id:test:test::2",
     "fields": {
       "b1": false,
-      "b2": true
+      "b2": true,
+      "b3": false
     }
   },
   {
     "put": "id:test:test::3",
     "fields": {
       "b1": true,
-      "b2": true
+      "b2": true,
+      "b3": true
     }
   }
 ]
