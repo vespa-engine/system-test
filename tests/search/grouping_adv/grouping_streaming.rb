@@ -7,7 +7,7 @@ class GroupingStreaming < StreamingSearchTest
   include GroupingBase
 
   def test_advgrouping_struct_vds
-    deploy_app(singlenode_streaming_2storage("#{selfdir}/structtest.sd"))
+    deploy_app(singlenode_streaming_2storage("#{selfdir}/structtest.sd").search_dir(selfdir + 'search'))
     start
     feed_and_wait_for_docs('structtest', 1, :file => "#{selfdir}/structdocs.xml")
     # Test struct
