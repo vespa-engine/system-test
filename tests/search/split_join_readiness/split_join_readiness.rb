@@ -61,8 +61,8 @@ class SplitJoinReadinessTest < SearchTest
     logctl_all('distributor', 'distributor.operation.idealstate.setactive', 'debug=on,spam=on')
     logctl_all('distributor', 'distributor.operation.idealstate.split', 'debug=on,spam=on')
     logctl_all('distributor', 'distributor.operation.idealstate.join', 'debug=on,spam=on')
-    logctl_all('searchnode', 'proton.server.bucketmovejob', 'debug=on,spam=on')
-    logctl_all('searchnode', 'proton.server.buckethandler', 'debug=on,spam=on')
+    logctl_all('searchnode', 'proton.server.bucketmovejob', 'debug=on,spam=off')
+    logctl_all('searchnode', 'proton.server.buckethandler', 'debug=on,spam=off')
     logctl_all('searchnode', 'persistence.filestor.modifiedbucketchecker', 'debug=on,spam=on')
   end
 
