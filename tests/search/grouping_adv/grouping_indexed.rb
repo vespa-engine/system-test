@@ -21,7 +21,7 @@ class GroupingIndexed < IndexedSearchTest
   end
 
   def test_advgrouping_fs4
-    deploy_app(singlenode_2cols_realtime(selfdir+'test.sd').threads_per_search(1))
+    deploy_app(singlenode_2cols_realtime(selfdir+'test.sd').threads_per_search(1).search_dir(selfdir + 'search'))
     start
     feed_docs
 
