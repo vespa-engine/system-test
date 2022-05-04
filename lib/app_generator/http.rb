@@ -6,18 +6,24 @@ class Http
   chained_forward :server, :server => :push
   chained_forward :filter, :filter => :push
   chained_forward :filter_chain, :filter_chain => :push
+  chained_setter :strict_mode
 
   def initialize()
     @config = ConfigOverrides.new
     @filter = []
     @filter_chain = []
     @server = []
+    @strict_mode = nil
   end
 
   def to_xml(indent="")
+    filtering_attrs = {}
+    if @strict_mode != nil
+      filtering_attrs['strict-mode'] = @strict_mode
+    end
     XmlHelper.new(indent).
     tag("http").
-    tag("filtering").
+    tag("filtering", filtering_attrs).
       to_xml(@filter).
       to_xml(@filter_chain).close_tag.
     to_xml(@server).
