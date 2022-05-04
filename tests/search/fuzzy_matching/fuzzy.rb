@@ -10,19 +10,29 @@ class FuzzySearch < IndexedSearchTest
   end
 
   MAX_EDIT_DISTANCE_DEFAULT = 2
+  
   PREFIX_LENGTH_DEFAULT = 0
 
-  FIELDS = [
+  UNCASED_FIELDS = [
     "single_scan_uncased", 
     "array_slow", 
     "array_fast", 
     "wset_slow", 
     "wset_fast",
-    "single_btree_uncased",
-    # "single_btree_cased", # TODO
-    # "single_hash_cased", 
-    # "single_scan_cased", 
-    # "single_index" 
+    "single_btree_uncased"
+  ]
+
+  ARRAY_FIELDS = [
+    "array_slow",
+    "array_fast",
+    "wset_slow",
+    "wset_fast"
+  ]
+  
+  CASED_FIELDS = [
+    "single_btree_cased",
+    "single_hash_cased", 
+    "single_scan_cased"
   ]
 
   def make_term(field, word)
@@ -89,16 +99,25 @@ class FuzzySearch < IndexedSearchTest
     start
     feed_and_wait_for_docs("test", 6, :file => selfdir + "docs.json")
     
-    FIELDS.each { |f| 
+    UNCASED_FIELDS.each { |f| 
       run_fuzzysearch_default_tests(f) 
       run_fuzzysearch_max_edit_tests(f)
       run_fuzzysearch_prefix_length_tests(f)
     }
 
-    run_fuzzysearch_array_tests("array_slow")
-    run_fuzzysearch_array_tests("array_fast")
-    run_fuzzysearch_array_tests("wset_slow")
-    run_fuzzysearch_array_tests("wset_fast")
+    ARRAY_FIELDS.each { |f|
+      run_fuzzysearch_array_tests(f)
+    }
+
+    CASED_FIELDS.each { |f| 
+      run_fuzzysearch_default_cased_tests(f)
+    }
+    
+    # Indexing field is not supported
+    assert_query_errors(
+      make_query(make_fuzzy("single_index", "query", 2, 0)),
+      [".* single_index:query field is not a string attribute"]
+    )
   end
 
   def run_fuzzysearch_array_tests(f)
@@ -143,6 +162,17 @@ class FuzzySearch < IndexedSearchTest
     assert_fuzzy(f, "Thisisafox", [1, 2, 3, 4, 5], prefix_length: 6, max_edit_distance: 100)
     assert_fuzzy(f, "T", [1, 2, 3, 4, 5], prefix_length: 1, max_edit_distance: 100)
     assert_fuzzy(f, "ThisIsA", [1, 2, 3, 4], prefix_length: 7, max_edit_distance: 100)
+  end
+
+  def run_fuzzysearch_default_cased_tests(f)
+    puts "Running fuzzy search tests with default parameters for cased attributes: #{f}"
+    
+    assert_fuzzy(f, "ThisIsAFox", [1, 2, 3])
+    assert_fuzzy(f, "ThisIsAFo1", [1, 2, 3])
+    assert_fuzzy(f, "ThisIsA11", [])
+    assert_fuzzy(f, "ThisIs", [5])
+    assert_fuzzy(f, "1hisIs", [5])
+    assert_fuzzy(f, "1", [])
   end
 
   def teardown
