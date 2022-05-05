@@ -55,7 +55,7 @@ class GroupingIndexed < IndexedSearchTest
 
   def test_advgrouping_use_exact_group_count_when_applicable
     set_owner('bjorncs')
-    deploy_app(SearchApp.new.sd(selfdir+'test2.sd'))
+    deploy_app(SearchApp.new.sd(selfdir+'test2.sd').search_dir(selfdir + 'unique-count'))
     start
 
     docs = DocumentSet.new
