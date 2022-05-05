@@ -35,7 +35,7 @@ class GroupingStreaming < StreamingSearchTest
 
   def test_global_max
     set_owner('bjorncs')
-    deploy_app(singlenode_streaming_2storage("#{selfdir}/test.sd").search_dir("#{selfdir}/search"))
+    deploy_app(singlenode_streaming_2storage("#{selfdir}/test.sd").search_dir("#{selfdir}/global-max"))
     start
     feed_docs
     querytest_global_max
