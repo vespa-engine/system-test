@@ -1,0 +1,34 @@
+search test {
+  document test {
+    field tags type array<int> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field pos type tensor(x[2]) {
+      indexing: attribute | index | summary
+      index {
+        hnsw {
+          max-links-per-node: 4
+        }
+      }
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(qpos) tensor(x[2])
+    }
+    first-phase {
+      expression: closeness(field,pos)
+    }
+    # Post-filtering is turned off
+    post-filter-threshold: 1.0
+    # Fallback to exact search is turned off
+    approximate-threshold: 0.0
+  }
+  rank-profile post_filter inherits default {
+    post-filter-threshold: 0.69
+  }
+  rank-profile exact_search inherits default {
+    approximate-threshold: 0.51
+  }
+}
