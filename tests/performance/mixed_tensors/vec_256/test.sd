@@ -6,11 +6,11 @@ schema test {
     }
     field model type tensor<float>(cat{},vec[256]) {
       indexing: attribute | summary
-      attribute: fast-search
+      attribute: fast-rank
     }
     field models type tensor<float>(model{},cat{},vec[256]) {
       indexing: attribute | summary
-      attribute: fast-search
+      attribute: fast-rank
     }
   }
   rank-profile default {
