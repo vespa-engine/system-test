@@ -14,15 +14,17 @@ class DocumentStoreTest < PerformanceTest
   end
 
   def compile_feed_generator
-    @feed_generator = "#{dirs.tmpdir}feed_qenerator"
     container = (vespa.qrserver['0'] or vespa.container.values.first)
+    tmp_bin_dir = container.create_tmp_bin_dir
+    @feed_generator = "#{tmp_bin_dir}/feed_generator"
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -O3 -o #{@feed_generator} #{selfdir}feed_generator.cpp")
   end
 
   def compile_query_generator
-    @query_generator = "#{dirs.tmpdir}query_qenerator"
     @queryfile = "#{dirs.tmpdir}generated_queries"
     container = (vespa.qrserver['0'] or vespa.container.values.first)
+    tmp_bin_dir = container.create_tmp_bin_dir
+    @query_generator = "#{tmp_bin_dir}/query_generator"
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -O3 -o #{@query_generator} #{selfdir}query_generator.cpp")
   end
 

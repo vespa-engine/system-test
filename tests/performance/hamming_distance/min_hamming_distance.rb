@@ -17,15 +17,17 @@ class MinHammingDistancePerfTest <  PerformanceTest
     puts "COMPILE GENERATOR"
     node = vespa.adminserver
     node.copy(selfdir + 'gendata.c', dirs.tmpdir)
-    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c")
+    tmp_bin_dir = node.create_tmp_bin_dir
+    gendata_prog = "#{tmp_bin_dir}/gendata"
+    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc -o #{gendata_prog} gendata.c")
     assert_equal(0, exitcode)
     puts "GENERATING QUERIES"
-    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && ./a.out queries > hamming-queries.txt")
+    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && #{gendata_prog} queries > hamming-queries.txt")
     assert_equal(0, exitcode)
     qf1 = in_tmp('hamming-queries.txt')
     puts "DONE QUERY GENERATING"
     puts "FEEDING DOCUMENTS"
-    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && ./a.out docs | vespa-feeder")
+    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && #{gendata_prog} docs | vespa-feeder")
     assert_equal(0, exitcode)
     wait_for_hitcount("sddocname:hamming", 10000, 30)
     puts "DONE FEEDING"

@@ -19,8 +19,9 @@ class TensorUnstableDotProductPerfTest < TensorEvalPerfTest
 
   def unstable_feed
     num_docs = 100000
-    @container.execute("g++ -g -O2 -o #{dirs.tmpdir}/docs #{selfdir}/gen-unstable.cpp")
-    @container.execute("#{dirs.tmpdir}/docs #{num_docs} #{dirs.tmpdir} | vespa-feed-perf")
+    tmp_bin_dir = @container.create_tmp_bin_dir
+    @container.execute("g++ -g -O2 -o #{tmp_bin_dir}/docs #{selfdir}/gen-unstable.cpp")
+    @container.execute("#{tmp_bin_dir}/docs #{num_docs} #{dirs.tmpdir} | vespa-feed-perf")
   end
 
   def unstable_query
