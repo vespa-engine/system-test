@@ -34,7 +34,8 @@ class MixedTensorPerfTestBase < PerformanceTest
   end
 
   def compile_data_gen
-    @data_gen = dirs.tmpdir + "data_gen"
+    tmp_bin_dir = @container.create_tmp_bin_dir
+    @data_gen = "#{tmp_bin_dir}/data_gen"
     @container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@data_gen} #{selfdir}/data_gen.cpp")
   end
 

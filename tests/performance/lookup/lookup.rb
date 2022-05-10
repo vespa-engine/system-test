@@ -37,14 +37,15 @@ class LookupPerformance < PerformanceTest
     num_queries = num_clients * 40000
     deploy_app(get_app())
     container = (vespa.qrserver["0"] or vespa.container.values.first)
-    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/docs #{selfdir}/docs.cpp")
-    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/query #{selfdir}/query.cpp")
+    tmp_bin_dir = container.create_tmp_bin_dir
+    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{tmp_bin_dir}/docs #{selfdir}/docs.cpp")
+    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{tmp_bin_dir}/query #{selfdir}/query.cpp")
     start
-    container.execute("#{dirs.tmpdir}/docs #{num_docs} #{num_values_per_doc} | vespa-feeder")
+    container.execute("#{tmp_bin_dir}/docs #{num_docs} #{num_values_per_doc} | vespa-feeder")
     assert_hitcount("sddocname:test", num_docs)
 
     @queryfile = "#{dirs.tmpdir}/query.txt"
-    container.execute("#{dirs.tmpdir}/query #{num_queries} #{keys_per_query} #{upper_limit} > #{@queryfile}")
+    container.execute("#{tmp_bin_dir}/query #{num_queries} #{keys_per_query} #{upper_limit} > #{@queryfile}")
     run_fbench(container, 8, 20)
     restart_proton("test", num_docs)
 

@@ -68,8 +68,9 @@ class TensorEvalPerfTest < PerformanceTest
 
   def feed_docs(num_docs)
     container = (vespa.qrserver["0"] or vespa.container.values.first)
-    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/docs #{selfdir}/docs.cpp")
-    container.execute("#{dirs.tmpdir}/docs #{num_docs} | vespa-feeder")
+    tmp_bin_dir = container.create_tmp_bin_dir
+    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{tmp_bin_dir}/docs #{selfdir}/docs.cpp")
+    container.execute("#{tmp_bin_dir}/docs #{num_docs} | vespa-feeder")
   end
 
   def run_fbench_helper(eval_type, rank_profile, doc_wset_entries, query_file, q_wset_entries = nil, clients=1)

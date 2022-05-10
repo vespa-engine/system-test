@@ -19,8 +19,9 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
   end
 
   def feed_docs(num_docs)
-    @container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/dsd #{selfdir}/docs_sparse_dot.cpp")
-    @container.execute("#{dirs.tmpdir}/dsd #{num_docs} | vespa-feeder")
+    tmp_bin_dir = @container.create_tmp_bin_dir
+    @container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{tmp_bin_dir}/dsd #{selfdir}/docs_sparse_dot.cpp")
+    @container.execute("#{tmp_bin_dir}/dsd #{num_docs} | vespa-feeder")
   end
 
   def deploy_and_feed(num_docs_per_type)

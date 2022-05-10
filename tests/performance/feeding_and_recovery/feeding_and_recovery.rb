@@ -200,8 +200,9 @@ class FeedingAndRecoveryTest < PerformanceTest
   def run_elastic_feeding_benchmark(nodes, fillers = [], &block)
     deploy_app(get_elastic_app(nodes))
     start
-    @data_generator = "#{dirs.tmpdir}/docs"
     container = (vespa.qrserver["0"] or vespa.container.values.first)
+    tmp_bin_dir = container.create_tmp_bin_dir
+    @data_generator = "#{tmp_bin_dir}/docs"
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@data_generator} #{selfdir}/docs.cpp")
 
     profile(["#{Environment.instance.vespa_home}/sbin64/vespa-proton-bin",
