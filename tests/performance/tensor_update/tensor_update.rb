@@ -46,7 +46,8 @@ class TensorUpdatePerfTest < PerformanceTest
   end
 
   def compile_data_generator
-    @data_generator = dirs.tmpdir + "data_generator"
+    tmp_bin_dir = vespa.adminserver.create_tmp_bin_dir
+    @data_generator = "#{tmp_bin_dir}/data_generator"
     # TODO: make this work on centos7 as well
     vespa.adminserver.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -Wall -g -O3 -o #{@data_generator} #{selfdir}/data_generator.cpp")
   end

@@ -90,12 +90,12 @@ class SplitJoinReadinessTest < SearchTest
       node.each_database_bucket do |space, bucket_id, parsed_state, raw_state|
         # First replica is most ideal replica, and should be ready+active.
         first_replica = parsed_state[0]
-        error = "Primary (1st) ideal replica not ready: #{raw_state}" if not first_replica.ready
-        error = "Primary (1st) ideal replica not active: #{raw_state}" if not first_replica.active
+        error = "#{bucket_id}: primary (1st) ideal replica not ready: #{raw_state}" if not first_replica.ready
+        error = "#{bucket_id}: primary (1st) ideal replica not active: #{raw_state}" if not first_replica.active
         # Second replica should be de-indexed and inactive
         second_replica = parsed_state[1]
-        error = "Non-primary (2nd) replica still ready: #{raw_state}" if second_replica.ready
-        error = "Non-primary (2nd) replica still active: #{raw_state}" if second_replica.active
+        error = "#{bucket_id}: non-primary (2nd) replica still ready: #{raw_state}" if second_replica.ready
+        error = "#{bucket_id}: non-primary (2nd) replica still active: #{raw_state}" if second_replica.active
       end
     end
     error

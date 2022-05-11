@@ -105,8 +105,9 @@ class WeightedSetFeedTest < PerformanceTest
     start
 
     @queryfile = "#{selfdir}/query.txt"
-    @data_generator = "#{dirs.tmpdir}/docs"
     container = (vespa.qrserver["0"] or vespa.container.values.first)
+    tmp_bin_dir = container.create_tmp_bin_dir
+    @data_generator = "#{tmp_bin_dir}/docs"
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@data_generator} #{selfdir}/docs.cpp")
 
     doc_count = 10_000_000

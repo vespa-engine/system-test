@@ -33,9 +33,10 @@ class StructAndMapPerf < PerformanceTest
     num_elems = 10000
     deploy_app(get_app())
     container = (vespa.qrserver["0"] or vespa.container.values.first)
-    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/docs #{selfdir}/docs.cpp")
+    tmp_bin_dir = container.create_tmp_bin_dir
+    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{tmp_bin_dir}/docs #{selfdir}/docs.cpp")
     start
-    container.execute("#{dirs.tmpdir}/docs #{num_docs} #{num_elems}| vespa-feeder")
+    container.execute("#{tmp_bin_dir}/docs #{num_docs} #{num_elems}| vespa-feeder")
     assert_hitcount("sddocname:test&summary=minimal", num_docs)
     @queryfile = selfdir + 'query_map_attr.txt'
     run_fbench(container, 8, 10, [], {:append_str => "&summary=filtered_map_attr" })

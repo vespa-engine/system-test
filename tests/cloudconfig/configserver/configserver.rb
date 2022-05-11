@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'search_test'
 require 'app_generator/cloudconfig_app'
@@ -88,12 +88,12 @@ class ConfigServer < CloudConfigTest
     deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
     assert_equal("1", get_configserver_zookeeper_lock_files)
     start
-    # 3 services (container, clustercontroller, metricsproxy_container)
-    assert_equal("3", get_services_zookeeper_lock_files)
+    # 2 services that might run zookeeper: container and clustercontroller
+    assert_equal("2", get_services_zookeeper_lock_files)
     vespa.stop_base
     vespa.start_base
     wait_until_ready
-    assert_equal("3", get_services_zookeeper_lock_files)
+    assert_equal("2", get_services_zookeeper_lock_files)
     vespa.configservers["0"].stop_configserver({:keep_everything => true})
     vespa.configservers["0"].start_configserver
     vespa.configservers["0"].ping_configserver

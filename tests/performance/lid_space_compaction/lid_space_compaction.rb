@@ -65,10 +65,10 @@ class LidSpaceCompactionPerfTest < PerformanceTest
                 { :runtime => 30, :clients => 4, :append_str => "&summary=#{summary}",
                   :result_file => "#{dirs.tmpdir}/result.compact.#{summary}.%d.txt"},
                 [ parameter_filler("legend", "compact_lidspace") ])
-    container.execute("#{dirs.tmpdir}/verify_results #{dirs.tmpdir}/result.warmup.#{summary}.txt #{dirs.tmpdir}/result.compact.#{summary}.0.txt", {:exceptiononfailure => false})
-    container.execute("#{dirs.tmpdir}/verify_results #{dirs.tmpdir}/result.warmup.#{summary}.txt #{dirs.tmpdir}/result.compact.#{summary}.1.txt", {:exceptiononfailure => false})
-    container.execute("#{dirs.tmpdir}/verify_results #{dirs.tmpdir}/result.warmup.#{summary}.txt #{dirs.tmpdir}/result.compact.#{summary}.2.txt", {:exceptiononfailure => false})
-    container.execute("#{dirs.tmpdir}/verify_results #{dirs.tmpdir}/result.warmup.#{summary}.txt #{dirs.tmpdir}/result.compact.#{summary}.3.txt", {:exceptiononfailure => false})
+    container.execute("#{@tmp_bin_dir}/verify_results #{dirs.tmpdir}/result.warmup.#{summary}.txt #{dirs.tmpdir}/result.compact.#{summary}.0.txt", {:exceptiononfailure => false})
+    container.execute("#{@tmp_bin_dir}/verify_results #{dirs.tmpdir}/result.warmup.#{summary}.txt #{dirs.tmpdir}/result.compact.#{summary}.1.txt", {:exceptiononfailure => false})
+    container.execute("#{@tmp_bin_dir}/verify_results #{dirs.tmpdir}/result.warmup.#{summary}.txt #{dirs.tmpdir}/result.compact.#{summary}.2.txt", {:exceptiononfailure => false})
+    container.execute("#{@tmp_bin_dir}/verify_results #{dirs.tmpdir}/result.warmup.#{summary}.txt #{dirs.tmpdir}/result.compact.#{summary}.3.txt", {:exceptiononfailure => false})
   end
 
   def test_lid_space_compaction
@@ -77,17 +77,18 @@ class LidSpaceCompactionPerfTest < PerformanceTest
     @num_docs_to_compact = @num_docs / 2
     deploy_app(get_app(2.0)) # no compaction will happen
     container = (vespa.qrserver["0"] or vespa.container.values.first)
-    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/verify_results #{selfdir}/verify_results.cpp")
-    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{dirs.tmpdir}/docs #{selfdir}/docs.cpp")
+    @tmp_bin_dir = container.create_tmp_bin_dir
+    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@tmp_bin_dir}/verify_results #{selfdir}/verify_results.cpp")
+    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@tmp_bin_dir}/docs #{selfdir}/docs.cpp")
     queries = create_query_file("query.txt")
     container.copy(queries, "#{dirs.tmpdir}")
     queries = "#{dirs.tmpdir}/query.txt"
     start
     container.logctl("searchnode:proton.server.searchview", "debug=on")
-    container.execute("#{dirs.tmpdir}/docs put #{@num_docs} | vespa-feeder")
+    container.execute("#{@tmp_bin_dir}/docs put #{@num_docs} | vespa-feeder")
     assert_hitcount("sddocname:test", @num_docs)
 
-    container.execute("#{dirs.tmpdir}/docs remove #{@num_docs_to_compact} | vespa-feeder")
+    container.execute("#{@tmp_bin_dir}/docs remove #{@num_docs_to_compact} | vespa-feeder")
     assert_hitcount("sddocname:test", @num_docs_to_compact)
     vespa.search["search"].first.trigger_flush # make sure document store is compacted
 
