@@ -30,13 +30,19 @@ class ApproximateNearestNeighborWithFilterTest < SearchTest
                 get_query({:qpos => 62, :tag => 5, :approximate => 0.5})) # default pre-filtering
 
     # Using post-filtering where the HNSW graph is searched first (estimated-hit-ratio > post-filter-threshold):
-    assert_docs([7],
+    # With qpos => 82, the closest documents are: 8, 9, 7, 6, 5, 4, ...
+    # Note that adjusted targetHits = (targetHits / estimated-hit-ratio) when using post-filtering:
+    # tag => 6: (3 / 0.6) = 5
+    # tag => 7: (3 / 0.7) = 4
+    # tag => 8: (3 / 0.8) = 3
+    # tag => 9: (3 / 0.9) = 3
+    assert_docs([7, 6],
                 get_query({:qpos => 82, :tag => 7, :ranking => "post_filter"}))
-    assert_docs([7],
+    assert_docs([7, 6],
                 get_query({:qpos => 82, :tag => 7, :post_filter => 0.69}))
     assert_docs([7, 6, 5],
                 get_query({:qpos => 82, :tag => 7, :post_filter => 0.7})) # default pre-filtering
-    assert_docs([],
+    assert_docs([6, 5],
                 get_query({:qpos => 82, :tag => 6, :post_filter => 0.59}))
     assert_docs([8, 7],
                 get_query({:qpos => 82, :tag => 8, :post_filter => 0.79}))
@@ -78,11 +84,12 @@ class ApproximateNearestNeighborWithFilterTest < SearchTest
 
   def get_query(args)
     qpos = args[:qpos]
+    target_hits = args[:target_hits] || 3
     tag = args[:tag]
     ranking = args[:ranking] || "default"
     post_filter = args[:post_filter]
     approximate = args[:approximate]
-    result = "yql=select * from sources * where {targetHits:3,approximate:true}nearestNeighbor(pos,qpos)"
+    result = "yql=select * from sources * where {targetHits:#{target_hits},approximate:true}nearestNeighbor(pos,qpos)"
     result += " and tags contains '#{tag}'" if tag
     result += "&ranking.features.query(qpos)=[#{qpos},#{X_1_POS}]"
     result += "&ranking.profile=#{ranking}"
