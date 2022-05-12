@@ -168,7 +168,7 @@ class ContainerNode < VespaNode
 
   # Returns the latest query access log file
   def get_query_access_log
-    lines=`find #{Environment.instance.vespa_home}/logs/vespa/qrs -name 'QueryAccessLog*'| xargs -n 1 cat`
+    lines=`find #{Environment.instance.vespa_home}/logs/vespa/access -name 'QueryAccessLog*'| xargs -n 1 cat`
     return lines
   end
 
