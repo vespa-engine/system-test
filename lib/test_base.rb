@@ -1062,6 +1062,12 @@ module TestBase
     assert_equal(0, errors, "Valgrind logfiles containing errors:\n#{filenames.join("\n")} (on #{Socket.gethostname})")
   end
 
+  def assert_no_sanitizer_warnings
+    return if not @sanitizer
+    sanitizer_logs = Dir.glob(dirs.sanitizerlogdir+"/*")
+    assert_equal(0, sanitizer_logs.length, "#{sanitizer_logs.length} santizer log files present (on #{Socket.gethostname})")
+  end
+
   def assert_result_hitcount(result, wanted_hitcount)
     hitcount = result.hitcount
     assert_equal(wanted_hitcount, hitcount, "Query returned unexpected number of hits.")

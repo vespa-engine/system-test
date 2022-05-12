@@ -327,6 +327,11 @@ class TestCase
         rescue AssertionFailedError => e
           add_valgrind_failure(e.message, e.backtrace)
         end
+        begin
+          assert_no_sanitizer_warnings
+        rescue AssertionFailedError => e
+          add_sanitizer_failure(e.message, e.backtrace)
+        end
         if (not @stopped and not @command_line_output)
           add_failure("ERROR: Method 'stop' was not called at " +
                       "the end of the testcase.")
@@ -429,6 +434,16 @@ class TestCase
     $stdout.puts all_locations.join("\n")
     failure = Failure.new(name, all_locations, message)
     @result.add_valgrind_failure(failure)
+    @failure_recorded = true
+    output(failure.short_desc)
+  end
+
+  def add_sanitizer_failure(message, all_locations=caller())
+    $stdout.puts "Add sanitizer failure: "
+    $stdout.puts message
+    $stdout.puts all_locations.join("\n")
+    failure = Failure.new(name, all_locations, message)
+    @result.add_sanitizer_failure(failure)
     @failure_recorded = true
     output(failure.short_desc)
   end
