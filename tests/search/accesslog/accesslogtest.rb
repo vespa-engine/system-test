@@ -12,7 +12,7 @@ class AccessLogTest < IndexedSearchTest
                    search(Searching.new).
                    docproc(DocumentProcessing.new).
                    component(AccessLog.new("vespa").
-                       fileNamePattern("logs/vespa/qrs/QueryAccessLog.default"))).
+                       fileNamePattern("logs/vespa/access/QueryAccessLog.default"))).
                sd(SEARCH_DATA+"music.sd"))
     start
   end
