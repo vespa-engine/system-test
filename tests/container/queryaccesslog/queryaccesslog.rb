@@ -34,7 +34,7 @@ class QueryAccessLog < SearchContainerTest
     Container.new(clusterName).
       http(Http.new.server(Server.new(clusterName, port))).
       component(AccessLog.new("vespa").
-                fileNamePattern(Environment.instance.vespa_home + "/logs/vespa/qrs/QueryAccessLog.#{clusterName}.%Y%m%d%H%M%S").
+                fileNamePattern(Environment.instance.vespa_home + "/logs/vespa/access/QueryAccessLog.#{clusterName}.%Y%m%d%H%M%S").
                 symlinkName("QueryAccessLog.#{clusterName}").
                 rotationInterval("0 1 ...")).
       search(Searching.new)
@@ -240,7 +240,7 @@ class QueryAccessLog < SearchContainerTest
   end
 
   def get_qrs_symlink_logname(cluster)
-    Environment.instance.vespa_home + "/logs/vespa/qrs/QueryAccessLog.#{cluster}"
+    Environment.instance.vespa_home + "/logs/vespa/access/QueryAccessLog.#{cluster}"
   end
 
   def get_real_qrs_logname(cluster)
@@ -248,7 +248,7 @@ class QueryAccessLog < SearchContainerTest
   end
 
   def list_qrs_log_files(cluster)
-    qrs(cluster, '0').list_files("#{Environment.instance.vespa_home}/logs/vespa/qrs/*")
+    qrs(cluster, '0').list_files("#{Environment.instance.vespa_home}/logs/vespa/access/*")
   end
 
   def get_querylog_timestamp(cluster)
