@@ -21,7 +21,7 @@ class VespaModel
     @testcase = testcase
     @nodeproxies = {}
     @valgrind_logs_glob = "#{Environment.instance.vespa_home}/tmp/valgrind.*.log.*"
-    @qrs_logs_dir = "#{Environment.instance.vespa_home}/logs/vespa/qrs"
+    @qrs_logs_dir = "#{Environment.instance.vespa_home}/logs/vespa/access"
     @sanitizer_logs_dir = "#{Environment.instance.tmp_dir}/sanitizer"
     @deployments = 0
     @bundles = []
