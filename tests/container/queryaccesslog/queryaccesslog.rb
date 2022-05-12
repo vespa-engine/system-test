@@ -240,7 +240,7 @@ class QueryAccessLog < SearchContainerTest
   end
 
   def get_qrs_symlink_logname(cluster)
-    Environment.instance.vespa_home + "/logs/vespa/qrs/QueryAccessLog.#{cluster}"
+    Environment.instance.vespa_home + "/logs/vespa/access/QueryAccessLog.#{cluster}"
   end
 
   def get_real_qrs_logname(cluster)
