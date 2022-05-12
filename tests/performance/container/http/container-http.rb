@@ -53,7 +53,7 @@ class ContainerHttp < PerformanceTest
     app = ContainerApp.new.container(
       Container.new.
         component(AccessLog.new(if access_logging then "vespa" else "disabled" end).
-          fileNamePattern("logs/vespa/qrs/QueryAccessLog.default")).
+          fileNamePattern("logs/vespa/access/QueryAccessLog.default")).
         handler(Handler.new('com.yahoo.performance.handler.HelloWorldHandler').
           binding('http://*/HelloWorld').
           bundle('performance')).
