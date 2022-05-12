@@ -13,7 +13,7 @@ search test {
     }
     field strtendirect type tensor(x{}) {
         indexing: input strten | attribute
-        attribute: fast-search
+        attribute: fast-rank
     }
 
     document-summary id {

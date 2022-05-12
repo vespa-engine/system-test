@@ -5,11 +5,11 @@ search twoperdoc {
         }
         field doc_xxx type tensor<float>(xxx{}) {
             indexing: attribute
-            attribute: fast-search
+            attribute: fast-rank
         }
         field doc_yyy type tensor<float>(yyy{}) {
             indexing: attribute
-            attribute: fast-search
+            attribute: fast-rank
         }
         field filter type int {
             indexing: attribute

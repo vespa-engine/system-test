@@ -2,12 +2,12 @@ search globaltensors {
     document globaltensors {
         field dxxx type tensor<float>(xxx{}) {
           indexing: attribute
-            attribute: fast-search
+          attribute: fast-rank
         }
 
         field dyyy type tensor<float>(yyy{}) {
           indexing: attribute
-            attribute: fast-search
+          attribute: fast-rank
         }
     }
 }

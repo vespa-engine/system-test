@@ -14,7 +14,7 @@ search sparsedot {
     }
     field sparse_vector_x type tensor<float>(x{}) {
       indexing: attribute
-      attribute: fast-search
+      attribute: fast-rank
     }
   }
   document-summary min_summary {
