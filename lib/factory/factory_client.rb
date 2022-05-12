@@ -68,6 +68,7 @@ class FactoryClient
 
     update = { :updatedSeconds => Time.now.to_i, :status => testresult.status, :message => message }
     update[:hasValgrindError => true] if testresult.valgrind_failure
+    update[:hasSanitizerError => true] if testresult.sanitizer_failure
     artifacts = { :artifacts => testdata }
 
     begin

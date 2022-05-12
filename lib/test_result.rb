@@ -5,7 +5,7 @@
 class TestResult
 
   attr_reader :assertion_count, :failures, :errors, :coredumps, :values, :log
-  attr_reader :valgrind_failure, :logfiles
+  attr_reader :valgrind_failure, :logfiles, :sanitizer_failure
   attr_accessor :owner, :description, :allow_failure, :failuntil, :allow_ticket
   attr_accessor :starttime, :endtime, :performance_annotation
 
@@ -17,6 +17,7 @@ class TestResult
     @errors = []
     @coredumps = {}
     @valgrind_failure = false
+    @sanitizer_failure = false
     @values = []
     @owner = "nobody"
     @description = nil
@@ -53,6 +54,11 @@ class TestResult
   def add_valgrind_failure(failure)
     @failures.insert(0, failure)
     @valgrind_failure = true
+  end
+
+  def add_sanitizer_failure(failure)
+    @failures.insert(0, failure)
+    @sanitizer_failure = true
   end
 
   # Records an Error object.
