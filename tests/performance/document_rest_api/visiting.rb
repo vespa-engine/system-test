@@ -19,7 +19,7 @@ class Visiting < PerformanceTest
     @document_update = '{ "fields": { "number": { "increment": 100 } } }'
     @selection_1p = 10.times.map { |i| "test.number % 100 == #{i}" }
     @selection_100p = [ 'true' ]
-    @visit_seconds = 40
+    @visit_seconds = 80
 
     deploy_app(
       SearchApp.new.
