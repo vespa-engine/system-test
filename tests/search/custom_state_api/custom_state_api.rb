@@ -37,7 +37,7 @@ class CustomStateApi < SearchTest
   def assert_custom_component_api(page)
     # We only test part of the page as the details are unit tested in searchcore.
     puts "assert_custom_component_api: #{page}"
-    assert_keys(["documentdb", "threadpools", "flushengine", "matchengine", "tls", "resourceusage"], page)
+    assert_keys(["documentdb", "threadpools", "flushengine", "matchengine", "tls", "hwinfo", "resourceusage"], page)
 
     doc_dbs = page["documentdb"]
     assert_equal(1, doc_dbs.size)
@@ -51,6 +51,7 @@ class CustomStateApi < SearchTest
     assert_thread_pools(get_page("/threadpools"))
     assert_flush_engine(get_page("/flushengine"))
     assert_tls(get_page("/tls"))
+    assert_hw_info(get_page("/hwinfo"))
     assert_resource_usage(get_page("/resourceusage"))
   end
 
@@ -77,6 +78,13 @@ class CustomStateApi < SearchTest
 
   def assert_tls(page)
     assert_keys(["test"], page)
+  end
+
+  def assert_hw_info(page)
+    assert_keys(["disk", "memory", "cpu"], page)
+    assert(page["disk"]["size_bytes"].to_i > 0)
+    assert(page["memory"]["size_bytes"].to_i > 0)
+    assert(page["cpu"]["cores"].to_i > 0)
   end
 
   def assert_resource_usage(page)
