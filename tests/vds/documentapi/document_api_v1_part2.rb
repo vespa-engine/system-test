@@ -74,12 +74,12 @@ class DocumentApiVdsPart2 < DocumentApiV1Base
     api_http_post('/document/v1/storage_test/music/number/2/9', '{"fields":{"position_array": ["N41o40\'51;W72o56\'19", "N31o30\'41;W62o56\'18"]}}')
     response = api_http_get('/document/v1/storage_test/music/number/2/9')
     array_field = JSON.parse(response)['fields']['position_array']
-    assert_equal([{"y"=>41680833, "x"=>-72938611}, {"y"=>31511388, "x"=>-62938333}], array_field)
+    assert_equal([{"lat"=>41.680833, "lng"=>-72.938611}, {"lat"=>31.511388, "lng"=>-62.938333}], array_field)
 
     api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"position_array":{"assign":["N42o42\'52;W82o66\'29"]}}}')
     response = api_http_get('/document/v1/storage_test/music/number/2/9')
     array_field = JSON.parse(response)['fields']['position_array']
-    assert_equal([{"y"=>42714444, "x"=>-83108055}], array_field)
+    assert_equal([{"lat"=>42.714444, "lng"=>-83.108055}], array_field)
   end
 
   def test_array_element_match_update_affects_specified_index
