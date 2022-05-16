@@ -39,15 +39,15 @@ class ConcreteDocs < SearchTest
     port = Environment.instance.vespa_web_service_port
     doc = vespa.document_api_v1.get('id:vehicle:vehicle::0', :port => port)
     location = doc.fields['location']
-    assert(location['x'] == 2)
-    assert(location['y'] == 3)
+    assert(location['lng'] == 0.000002)
+    assert(location['lat'] == 0.000003)
     assert(doc.fields['year'] == 2013)
     assert(doc.fields['reg'] == 'FOO 1234')
 
     doc = vespa.document_api_v1.get('id:vehicle:vehicle::1', :port => port)
     location = doc.fields['location']
-    assert(location['x'] == 2)
-    assert(location['y'] == 3)
+    assert(location['lng'] == 0.000002)
+    assert(location['lat'] == 0.000003)
     assert(doc.fields['year'] == 2013)
     assert(doc.fields['reg'] == 'BAR 5678')
 
