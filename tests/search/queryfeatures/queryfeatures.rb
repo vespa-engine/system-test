@@ -26,6 +26,9 @@ class QueryFeatures < IndexedStreamingSearchTest
     assert_query({"query(foo.bar.baz)" => 40.5}, "&rankproperty.foo.bar.baz=40.5")
 
     assert_query({"query(foo)" => 10.5, "query(foo.bar)" => 20.5}, "&rankproperty.foo=10.5&rankproperty.foo.bar=20.5")
+
+    assert_query({"rankingExpression(mysum)" => 6},  "&ranking=vector")
+    assert_query({"rankingExpression(mysum)" => 12}, "&ranking=vector&ranking.features.query(bar)=[2,4,6]")
   end
 
   def assert_query(expected, rankproperties)
