@@ -28,20 +28,11 @@
                         "Say You Miss Me",
                         "Sunken Treasure"
                     ],
-                    "weightedtitles": [
-                        {
-                            "item": "Blackend",
-                            "weight": 10
-                        },
-                        {
-                            "item": "And Justice For All",
-                            "weight": 20
-                        },
-                        {
-                            "item": "Ride The Lightning",
-                            "weight": 30
-                        }
-                    ]
+                    "weightedtitles": {
+                        "Blackend": 10,
+                        "And Justice For All": 20,
+                        "Ride The Lightning": 30
+                    }
                 }
             }
         ]
