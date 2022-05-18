@@ -1,5 +1,5 @@
 rank-profile myvalue inherits default {
-  rank-properties {
+  inputs {
     query(myvalue): 5
   }
 }

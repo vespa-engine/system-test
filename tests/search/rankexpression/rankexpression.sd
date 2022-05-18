@@ -30,8 +30,8 @@ search rankexpression {
     }
 
     rank-profile params2 inherits params1 {
-        rank-properties {
-            query(var1): 0.5
+        inputs {
+            query(var1) double: 0.5
         }
         constants {
             aconstant: 2
