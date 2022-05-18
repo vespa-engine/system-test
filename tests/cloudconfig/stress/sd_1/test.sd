@@ -202,7 +202,7 @@ search test {
   }
 
   rank-profile context inherits default {
-    rank-properties {
+    inputs {
       query(scorelimit) : -1.0
     }
     first-phase {

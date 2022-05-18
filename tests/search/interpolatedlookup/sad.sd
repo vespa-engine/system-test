@@ -18,8 +18,8 @@ search sad {
   }
 
   rank-profile default {
-    rank-properties {
-      query(bid): 0.1
+    inputs {
+      query(bid) double: 0.1
     }
     first-phase {
       expression: query(bid) + 0.000001*attribute(order)

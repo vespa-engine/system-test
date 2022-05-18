@@ -10,12 +10,12 @@ search query {
   }
 
   rank-profile default {
-    summary-features { 
+    summary-features {
       query(foo)
       query(foo.bar)
       query(foo.bar.baz)
     }
-    rank-properties {
+    inputs {
       query(foo): 5.5
     }
   }
