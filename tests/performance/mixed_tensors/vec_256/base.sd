@@ -1,19 +1,11 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-schema test {
-  document test {
+schema base {
+  document base {
     field id type int {
       indexing: attribute | summary
     }
-    field model type tensor<float>(cat{},vec[256]) {
-      indexing: attribute | summary
-      attribute: fast-rank
-    }
-    field models type tensor<float>(model{},cat{},vec[256]) {
-      indexing: attribute | summary
-      attribute: fast-rank
-    }
   }
-  rank-profile default {
+  rank-profile base_profile {
     inputs {
       query(q_cat_keys) tensor<float>(cat{})
       query(q_cat_scores) tensor<float>(cat{})
@@ -42,32 +34,6 @@ schema test {
     #         where a subset of the categories are selected based on query(q_cat_keys).
     macro inline select_categories() {
       expression: query(q_cat_keys) * select_model
-    }
-  }
-  rank-profile single_model inherits default {
-    first-phase {
-      expression: max_score
-    }
-    macro inline select_model() {
-      expression: attribute(model)
-    }
-  }
-  rank-profile multi_model_early_reduce inherits default {
-    first-phase {
-      expression: max_score
-    }
-    # result: tensor(cat{},vec[256]), the selected model from the mixed tensor based on query(q_model).
-    macro inline select_model() {
-      expression: reduce(query(q_model) * attribute(models), sum, model)
-    }
-  }
-  rank-profile multi_model_late_reduce inherits default {
-    first-phase {
-      expression: max_score
-    }
-    # result: tensor(model{},cat{},vec[256]), the selected model from the mixed tensor based on query(q_model).
-    macro inline select_model() {
-      expression: query(q_model) * attribute(models)
     }
   }
   document-summary minimal {

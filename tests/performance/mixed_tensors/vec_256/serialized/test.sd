@@ -1,0 +1,37 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test inherits base {
+  document test inherits base {
+    field model type tensor<float>(cat{},vec[256]) {
+      indexing: attribute | summary
+    }
+    field models type tensor<float>(model{},cat{},vec[256]) {
+      indexing: attribute | summary
+    }
+  }
+  rank-profile single_model inherits base_profile {
+    first-phase {
+      expression: max_score
+    }
+    macro inline select_model() {
+      expression: attribute(model)
+    }
+  }
+  rank-profile multi_model_early_reduce inherits base_profile {
+    first-phase {
+      expression: max_score
+    }
+    # result: tensor(cat{},vec[256]), the selected model from the mixed tensor based on query(q_model).
+    macro inline select_model() {
+      expression: reduce(query(q_model) * attribute(models), sum, model)
+    }
+  }
+  rank-profile multi_model_late_reduce inherits base_profile {
+    first-phase {
+      expression: max_score
+    }
+    # result: tensor(model{},cat{},vec[256]), the selected model from the mixed tensor based on query(q_model).
+    macro inline select_model() {
+      expression: query(q_model) * attribute(models)
+    }
+  }
+}
