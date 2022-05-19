@@ -4,9 +4,9 @@ require_relative 'mixed_tensor_base'
 class MixedTensorFeedMultiPerfTest < MixedTensorPerfTestBase
 
   def test_multi_model_vec_256
-    set_description("Test feed performance (put, assign, add) for multi-model mixed tensor with vector size 256")
+    set_description("Test feed performance (put, assign, add) for multi-model (direct) mixed tensor with vector size 256")
     set_owner("geirst")
-    deploy_and_compile("vec_256")
+    deploy_and_compile("vec_256/direct", "vec_256")
 
     @num_docs = 30000
     warmup_feed("-d 1 -o #{@num_docs/2} -f models")
@@ -15,7 +15,7 @@ class MixedTensorFeedMultiPerfTest < MixedTensorPerfTestBase
   end
 
   def test_multi_model_vec_32
-    set_description("Test feed performance (put, assign, add) for multi-model mixed tensor with vector size 32")
+    set_description("Test feed performance (put, assign, add) for multi-model (direct) mixed tensor with vector size 32")
     set_owner("geirst")
     deploy_and_compile("vec_32")
 

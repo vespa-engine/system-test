@@ -10,18 +10,25 @@ class MixedTensorPerfTest < MixedTensorPerfTestBase
   MULTI_MODEL_LATE_REDUCE = "multi_model_late_reduce"
 
   def test_mixed_tensor_operations
-    set_description("Test performance of various mixed tensor operations")
+    set_description("Test performance of various mixed tensor operations using direct tensor attribute (with fast-rank)")
     set_owner("geirst")
-    deploy_and_prepare_data
+    run_mixed_tensor_operations("direct")
+  end
+
+  def test_mixed_tensor_operations_using_serialized_tensor_attribute
+    set_description("Test performance of various mixed tensor operations using serialized tensor attribute (without fast-rank)")
+    set_owner("geirst")
+    run_mixed_tensor_operations("serialized")
+  end
+
+  def run_mixed_tensor_operations(sd_dir)
+    deploy_and_compile("vec_256/#{sd_dir}", "vec_256")
+    gen_query_files(100)
+
     feed_docs(5000)
     run_fbench_helper(SINGLE_MODEL, @single_model_file)
     run_fbench_helper(MULTI_MODEL_EARLY_REDUCE, @multi_model_file)
     run_fbench_helper(MULTI_MODEL_LATE_REDUCE, @multi_model_file)
-  end
-
-  def deploy_and_prepare_data
-    deploy_and_compile("vec_256")
-    gen_query_files(100)
   end
 
   def gen_query_files(num_queries)

@@ -21,16 +21,18 @@ class MixedTensorPerfTestBase < PerformanceTest
     super(*args)
   end
 
-  def deploy_and_compile(sd_dir)
-    deploy_app(create_app(sd_dir))
+  def deploy_and_compile(sd_dir, sd_base_dir = nil)
+    deploy_app(create_app(sd_dir, sd_base_dir))
     start
     @container = vespa.container.values.first
     compile_data_gen
   end
 
-  def create_app(sd_dir)
-    SearchApp.new.sd(selfdir + "#{sd_dir}/test.sd").
-      tune_searchnode( { :summary => { :store => { :logstore => { :chunk => { :compression => { :level => 3 } } } } } } )
+  def create_app(sd_dir, sd_base_dir)
+    app = SearchApp.new.sd(selfdir + "#{sd_dir}/test.sd")
+    app.sd(selfdir + "#{sd_base_dir}/base.sd") if sd_base_dir
+    app.tune_searchnode( { :summary => { :store => { :logstore => { :chunk => { :compression => { :level => 3 } } } } } } )
+    return app
   end
 
   def compile_data_gen
