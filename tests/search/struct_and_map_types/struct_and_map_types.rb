@@ -282,7 +282,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def complex_elem(name, weight, str_map_key, str_map_value)
-    {"name" => name, "weight" => weight, "str_map" => [{"key" => str_map_key, "value" => str_map_value}]}
+    {"name" => name, "weight" => weight, "str_map" => {str_map_key => str_map_value}}
   end
 
   def run_baseline_test_case
