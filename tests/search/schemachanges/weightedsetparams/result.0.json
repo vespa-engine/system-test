@@ -30,16 +30,10 @@
                 "fields": {
                     "sddocname": "test",
                     "documentid": "id:test:test::1",
-                    "f1": [
-                        {
-                            "item": "b",
-                            "weight": 5
-                        },
-                        {
-                            "item": "f1",
-                            "weight": 3
-                        }
-                    ]
+                    "f1": {
+                        "b": 5,
+                        "f1": 3
+                    }
                 }
             }
         ]
