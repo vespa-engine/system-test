@@ -13,7 +13,10 @@ class XMLEscaping < IndexedSearchTest
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir + "feed.xml")
 
+    # save_result("query=sddocname:test", selfdir + "result.j")
     assert_result("query=sddocname:test", selfdir + "result.json", nil, ["a", "b", "c", "d", "e", "f"])
+    # save_result("query=sddocname:test&format=xml", selfdir + "result.xml")
+    assert_result("query=sddocname:test&format=xml", selfdir + "result.xml", nil, ["a", "b", "c", "d", "e", "f"])
   end
 
   def teardown
