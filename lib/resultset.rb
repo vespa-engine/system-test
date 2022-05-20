@@ -254,9 +254,9 @@ class Resultset
         if (af - 1e-6 > bf)
           raise "Float values for '#{k}' differ: #{af} > #{bf}"
         end
-      elsif av.is_a? Hash
+      elsif av.is_a?(Hash) && bv.is_a?(Hash)
         check_approx_eq_hash(av, bv, k)
-      elsif av.is_a? Array
+      elsif av.is_a?(Array) && bv.is_a?(Array)
         check_approx_eq_array(av, bv, k)
       elsif ! (av == bv)
         raise "Values for '#{k}' are unequal: '#{av}' != '#{bv}'"
@@ -269,7 +269,14 @@ class Resultset
         raise "Different sizes of array: #{a.size} != #{b.size}"
       end
       a.each_index do |i|
-        check_approx_eq(a[i], b[i], "#{k_in}[#{i}]")
+        k ="#{k_in}[#{i}]"
+        if a[i] && b[i]
+          check_approx_eq(a[i], b[i], k)
+        elsif a[i]
+          raise "Expected '#{a[i]}' for '#{k}', got #{b[i]}"
+        else
+          raise "Expected #{a[i]} for '#{k}', got '#{b[i]}'"
+        end
       end
     end
 
