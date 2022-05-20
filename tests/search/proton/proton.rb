@@ -229,12 +229,15 @@ class ProtonTest < IndexedSearchTest
     assert_result("query=title:first", selfdir + "docs.first.result.json", nil, fields)
     assert_result("query=title:second", selfdir + "docs.second.result.json", nil, fields)
     assert_result("query=sddocname:test", selfdir + "docs.all.result.json", "iattr", fields)
-    # non-existing summary class -> empty document summary
+    # non-existing summary class -> error
     result = search("query=title:first&summary=not")
-    assert_equal(result.hit[0].field.has_key?("title"), false)
-    assert_equal(result.hit[0].field.has_key?("body"), false)
-    assert_equal(result.hit[0].field.has_key?("sddocname"), false)
-    assert(result.hit[0].field.has_key?("relevancy"))
+    assert(result.json)
+    puts result.json
+    assert(result.json['root'])
+    assert(result.json['root'])
+    assert(result.json['root']['errors'])
+    assert(result.json['root']['errors'][0]['message'])
+    assert(result.json['root']['errors'][0]['message'] =~ /invalid.*summary/)
 
     puts "simple ranking"
     r1 = search("query=title:first").hit[0].field["relevancy"].to_f
