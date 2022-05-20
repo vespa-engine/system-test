@@ -25,22 +25,16 @@
                     "b": [
                         "foo & bar < baz >"
                     ],
-                    "c": [
-                        {
-                            "item": "foo & bar < baz >",
-                            "weight": 10
-                        }
-                    ],
+                    "c": {
+                        "foo & bar < baz >": 10
+                    },
                     "d": "foo & bar < baz >",
                     "e": [
                         "foo & bar < baz >"
                     ],
-                    "f": [
-                        {
-                            "item": "foo & bar < baz >",
-                            "weight": 10
-                        }
-                    ]
+                    "f": {
+                        "foo & bar < baz >": 10
+                    }
                 }
             }
         ]
