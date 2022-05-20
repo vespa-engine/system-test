@@ -38,24 +38,18 @@
                             "foo": 1
                         }
                     },
-                    "bad_map": [
-                        {
-                            "key": 7042,
-                            "value": {
-                                "name": "lademoen",
-                                "addr": "trondheim",
-                                "postcode": 7042
-                            }
+                    "bad_map": {
+                        "7042": {
+                            "name": "lademoen",
+                            "addr": "trondheim",
+                            "postcode": 7042
                         },
-                        {
-                            "key": 42,
-                            "value": {
-                                "name": "the restaurant",
-                                "addr": "at the end of the universe",
-                                "postcode": 42
-                            }
+                        "42": {
+                            "name": "the restaurant",
+                            "addr": "at the end of the universe",
+                            "postcode": 42
                         }
-                    ]
+                    }
                 }
             }
         ]
