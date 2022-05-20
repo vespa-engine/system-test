@@ -21,16 +21,10 @@
                 "fields": {
                     "sddocname": "test",
                     "documentid": "id:test:test::0",
-                    "wset": [
-                        {
-                            "item": "foo",
-                            "weight": 5
-                        },
-                        {
-                            "item": "bar",
-                            "weight": 10
-                        }
-                    ]
+                    "wset": {
+                        "foo": 5,
+                        "bar": 10
+                    }
                 }
             },
             {
@@ -40,12 +34,9 @@
                 "fields": {
                     "sddocname": "test",
                     "documentid": "id:test:test::1",
-                    "wset": [
-                        {
-                            "item": "bar",
-                            "weight": 10
-                        }
-                    ]
+                    "wset": {
+                        "bar": 10
+                    }
                 }
             }
         ]

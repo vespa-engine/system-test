@@ -20,16 +20,10 @@
                 "source": "wstsc",
                 "fields": {
                     "sddocname": "wstest",
-                    "titles": [
-                        {
-                            "item": "Bond",
-                            "weight": 15
-                        },
-                        {
-                            "item": "James Bond",
-                            "weight": 89
-                        }
-                    ],
+                    "titles": {
+                        "Bond": 15,
+                        "James Bond": 89
+                    },
                     "alternates": "title: Bond[15], title: James Bond[89]",
                     "documentid": "id:test:wstest::1"
                 }
