@@ -294,7 +294,7 @@ class PerformanceTest < TestCase
           node.execute("rm -rf #{@perf_data_dir} && mkdir -p #{@perf_data_dir}")
           @perf_processes[node] = []
           @perf_processes[node] << node.execute_bg("perf record -a -e cycles -o #{@perf_data_file}")
-          @perf_processes[node] << node.execute_bg("exec perf stat -d -a &> #{@perf_stat_file}")
+          @perf_processes[node] << node.execute_bg("exec perf stat -ddd -a &> #{@perf_stat_file}")
         rescue ExecuteError
           puts "Unable to start perf on node #{node.name}"
         end
