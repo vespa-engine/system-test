@@ -10,7 +10,6 @@ class DocumentStoreTest < PerformanceTest
   def setup
     super
     set_owner('chunnoo')
-    start
   end
 
   def compile_feed_generator
@@ -36,6 +35,7 @@ class DocumentStoreTest < PerformanceTest
   def test_put_performance
     set_description('Test put performance for string field')
     deploy("#{selfdir}app")
+    start
     compile_feed_generator
     warm_up
     profiler_start
@@ -47,6 +47,7 @@ class DocumentStoreTest < PerformanceTest
   def test_get_performance
     set_description('Test get performance for string field using document v1 api and queries')
     deploy("#{selfdir}app")
+    start
     compile_feed_generator
     compile_query_generator
     run_stream_feeder("#{@feed_generator} 100000 1024", [])
