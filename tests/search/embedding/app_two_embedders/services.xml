@@ -19,7 +19,10 @@
         </component>
 
         <!-- Downloads transformer model and vocabulary -->
-        <component id="transformer" class="ai.vespa.embedding.BertBaseEmbedder" bundle="model-integration" />
+        <embedder id="transformer" class="ai.vespa.embedding.BertBaseEmbedder">
+          <model url="https://data.vespa.oath.cloud/onnx_models/sentence_all_MiniLM_L6_v2.onnx"/>
+          <vocab url="https://data.vespa.oath.cloud/onnx_models/bert-base-uncased-vocab.txt"/>
+        </embedder>
 
         <search/>
         <document-api/>
