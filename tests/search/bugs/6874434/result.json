@@ -1,0 +1,40 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 0,
+            "documents": 1,
+            "degraded": {
+                "match-phase": false,
+                "timeout": false,
+                "adaptive-timeout": false,
+                "non-ideal-state": true
+            },
+            "full": true,
+            "nodes": 0,
+            "results": 0,
+            "resultsFull": 0
+        },
+        "children": [
+            {
+                "id": "id:foo:test:n=27959:doc1",
+                "relevance": 0.38186238359951247,
+                "source": "content.test",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:foo:test:n=27959:doc1",
+                    "title": "test",
+                    "latlong": {
+                        "lat": 63.4,
+                        "lng": 10.4
+                    },
+                    "price": 4200
+                }
+            }
+        ]
+    }
+}
