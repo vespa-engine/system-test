@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="1">
-  <hit relevancy="0.38186238359951247" source="content">
+<result total-hit-count="1" coverage-docs="1" coverage-nodes="0" coverage-full="true" coverage="0" results-full="0" results="0">
+  <hit relevancy="0.38186238359951247" source="content.test">
     <field name="relevancy">0.38186238359951247</field>
     <field name="sddocname">test</field>
     <field name="title">test</field>
     <field name="latlong">
-      <struct-field name="y">63400000</struct-field>
-      <struct-field name="x">10400000</struct-field>
+      <struct-field name="lat">63.4</struct-field>
+      <struct-field name="lng">10.4</struct-field>
     </field>
     <field name="price">4200</field>
     <field name="documentid">id:foo:test:n=27959:doc1</field>
