@@ -1,59 +1,55 @@
 {
-  "root": {
-    "id": "toplevel",
-    "relevance": 1,
-    "fields": {
-      "totalCount": 2
-    },
-    "coverage": {
-      "coverage": 100,
-      "documents": 4,
-      "full": true,
-      "nodes": 1,
-      "results": 1,
-      "resultsFull": 1
-    },
-    "children": [
-      {
-        "id": "id:test:child_simple_pos::2",
-        "relevance": 0,
-        "source": "search",
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
         "fields": {
-          "sddocname": "child_simple_pos",
-          "documentid": "id:test:child_simple_pos::2",
-          "my_pos": {
-            "y": 12123123,
-            "x": 98987987
-          },
-          "parent_ref": "id:test:parent_simple_pos::2",
-          "summaryfeatures": {
-            "distance(my_pos)": 0,
-            "vespa.summaryFeatures.cached": 0
-          },
-          "my_pos.position": {"x": 98987987, "y": 12123123, "latlong": "N12.123123;E98.987987"},
-          "my_pos.distance": 0
-        }
-      },
-      {
-        "id": "id:test:child_simple_pos::3",
-        "relevance": 0,
-        "source": "search",
-        "fields": {
-          "sddocname": "child_simple_pos",
-          "documentid": "id:test:child_simple_pos::3",
-          "my_pos": {
-            "y": 12123000,
-            "x": 98987000
-          },
-          "parent_ref": "id:test:parent_simple_pos::3",
-          "summaryfeatures": {
-            "distance(my_pos)": 971.8153116719246,
-            "vespa.summaryFeatures.cached": 0
-          },
-          "my_pos.position": {"x": 98987000, "y": 12123000, "latlong": "N12.123000;E98.987000"},
-          "my_pos.distance": 971
-        }
-      }
-    ]
-  }
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 8,
+            "full": true,
+            "nodes": 2,
+            "results": 2,
+            "resultsFull": 2
+        },
+        "children": [
+            {
+                "id": "id:test:child_simple_pos::2",
+                "relevance": 1.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "child_simple_pos",
+                    "documentid": "id:test:child_simple_pos::2",
+                    "my_pos": {
+                        "lat": 12.123123,
+                        "lng": 98.987987
+                    },
+                    "parent_ref": "id:test:parent_simple_pos::2",
+                    "summaryfeatures": {
+                        "distance(my_pos)": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:child_simple_pos::3",
+                "relevance": 0.999892179914951,
+                "source": "search",
+                "fields": {
+                    "sddocname": "child_simple_pos",
+                    "documentid": "id:test:child_simple_pos::3",
+                    "my_pos": {
+                        "lat": 12.123,
+                        "lng": 98.987
+                    },
+                    "parent_ref": "id:test:parent_simple_pos::3",
+                    "summaryfeatures": {
+                        "distance(my_pos)": 971.8153116719246,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
 }
