@@ -7,4 +7,10 @@ search extra_pos {
     field my_pos type position {
         indexing: input my_str | to_pos | attribute | summary
     }
+    rank-profile default {
+        summary-features: distance(my_pos)
+        first-phase {
+          expression: closeness(my_pos)
+        }
+    }
 }

@@ -15,47 +15,35 @@
         },
         "children": [
             {
-                "id": "id:test:simple_pos::3",
-                "relevance": 0.0017429193899782135,
-                "source": "search",
-                "fields": {
-                    "sddocname": "simple_pos",
-                    "documentid": "id:test:simple_pos::3",
-                    "my_pos": {
-                        "y": 12123000,
-                        "x": 98987000
-                    },
-                    "my_pos.position": {
-                        "y": 12123000,
-                        "x": 98987000,
-                        "latlong": "N12.123000;E98.987000"
-                    },
-                    "my_pos.distance": 971,
-                    "summaryfeatures": {
-                        "distance(my_pos)": 971.8153116719246,
-                        "vespa.summaryFeatures.cached": 0.0
-                    }
-                }
-            },
-            {
                 "id": "id:test:simple_pos::2",
-                "relevance": 0.0017429193899782135,
+                "relevance": 1.0,
                 "source": "search",
                 "fields": {
                     "sddocname": "simple_pos",
                     "documentid": "id:test:simple_pos::2",
                     "my_pos": {
-                        "y": 12123123,
-                        "x": 98987987
+                        "lat": 12.123123,
+                        "lng": 98.987987
                     },
-                    "my_pos.position": {
-                        "y": 12123123,
-                        "x": 98987987,
-                        "latlong": "N12.123123;E98.987987"
-                    },
-                    "my_pos.distance": 0,
                     "summaryfeatures": {
                         "distance(my_pos)": 0.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:simple_pos::3",
+                "relevance": 0.999892179914951,
+                "source": "search",
+                "fields": {
+                    "sddocname": "simple_pos",
+                    "documentid": "id:test:simple_pos::3",
+                    "my_pos": {
+                        "lat": 12.123,
+                        "lng": 98.987
+                    },
+                    "summaryfeatures": {
+                        "distance(my_pos)": 971.8153116719246,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }
