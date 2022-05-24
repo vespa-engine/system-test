@@ -22,60 +22,24 @@
                     "sddocname": "multipoint",
                     "documentid": "id:test:multipoint::1",
                     "title": "pizza hut sunnyvale",
-                    "latlong.position": {
-                        "y": 37374821,
-                        "x": -122057174,
-                        "latlong": "N37.374821;W122.057174"
-                    },
-                    "latlong.distance": 64767707,
-                    "homell.position": {
-                        "y": 63429722,
-                        "x": 10393333,
-                        "latlong": "N63.429722;E10.393333"
-                    },
-                    "homell.distance": 29871,
                     "workll": [
                         {
-                            "y": 37416820,
-                            "x": -122025270
+                            "lat": 37.41682,
+                            "lng": -122.02527
                         },
                         {
-                            "y": 63431693,
-                            "x": 10391965
+                            "lat": 63.431693,
+                            "lng": 10.391965
                         },
                         {
-                            "y": 51513912,
-                            "x": -128381
+                            "lat": 51.513912,
+                            "lng": -0.128381
                         }
                     ],
-                    "workll.position": [
-                        {
-                            "y": 37416820,
-                            "x": -122025270,
-                            "latlong": "N37.416820;W122.025270"
-                        },
-                        {
-                            "y": 63431693,
-                            "x": 10391965,
-                            "latlong": "N63.431693;E10.391965"
-                        },
-                        {
-                            "y": 51513912,
-                            "x": -128381,
-                            "latlong": "N51.513912;W0.128381"
-                        }
-                    ],
-                    "workll.distance": 31896,
                     "vacationll": {
-                        "y": 50061598,
-                        "x": 19937473
+                        "lat": 50.061598,
+                        "lng": 19.937473
                     },
-                    "vacationll.position": {
-                        "y": 50061598,
-                        "x": 19937473,
-                        "latlong": "N50.061598;E19.937473"
-                    },
-                    "vacationll.distance": 14005358,
                     "summaryfeatures": {
                         "distance(latlong)": 6.476770736289382E7,
                         "vespa.summaryFeatures.cached": 0.0
