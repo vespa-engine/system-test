@@ -58,11 +58,10 @@ class ImportedPosition < IndexedSearchTest
     feed_and_wait_for_docs("child_#{type}_pos", hits,
                            :file => "#{workdir}/child_#{type}_feed.json",
                            :json => true)
-    # Must specify position attribute to avoid picking up parent document position attribute name
-    run_query("query=sddocname:child_#{type}_pos&pos.ll=E98.987000%3BN12.123000&pos.attribute=#{pos_attribute}&format=json",
+    run_query("yql=select * from sources * where geoLocation(\"#{pos_attribute}\", 12.123000, 98.987000, \"500 km\")%3B",
               "#{workdir}/child_#{type}_result1.json");
     resultname = type == "array" ? "result1" : "result2";
-    run_query("query=sddocname:child_#{type}_pos&pos.ll=E98.987987%3BN12.123123&pos.attribute=#{pos_attribute}&format=json",
+    run_query("yql=select * from sources * where geoLocation(\"#{pos_attribute}\", 12.123123, 98.987987, \"500 km\")%3B",
               "#{workdir}/child_#{type}_#{resultname}.json");
   end
 
@@ -70,7 +69,7 @@ class ImportedPosition < IndexedSearchTest
     if (SAVE_RESULT)
       save_result(query, file)
     else
-      assert_result(query, file, "my_pos.distance")
+      assert_result(query, file)
     end
   end
 
