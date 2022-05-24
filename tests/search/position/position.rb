@@ -42,9 +42,9 @@ class Position < IndexedSearchTest
     deploy_app(SearchApp.new.sd("#{selfdir}/#{type}_pos.sd"))
     start
     feed_and_wait_for_docs("#{type}_pos", hits, :file => "#{selfdir}/#{type}_feed.xml")
-    run_query("query=sddocname:#{type}_pos&pos.ll=E98.987000%3BN12.123000",
+    run_query("yql=select * from sources * where geoLocation(\"my_pos\", 12.123000, 98.987000, \"500 km\")%3B",
               "#{selfdir}/#{type}_result1.json");
-    run_query("query=sddocname:#{type}_pos&pos.ll=E98.987987%3BN12.123123",
+    run_query("yql=select * from sources * where geoLocation(\"my_pos\", 12.123123, 98.987987, \"500 km\")%3B",
               "#{selfdir}/#{type}_result2.json");
   end
 
@@ -52,7 +52,7 @@ class Position < IndexedSearchTest
     if (SAVE_RESULT)
       save_result(query, file)
     else
-      assert_result(query, file, "my_pos.distance")
+      assert_result(query, file)
     end
   end
 

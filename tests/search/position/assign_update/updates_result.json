@@ -1,43 +1,66 @@
 {
-  "root": {
-    "fields": {
-      "totalCount": 3
-    },
-    "children": [
-      {
-        "id": "id:test:test::0",
-        "source": "search",
-	"fields": {
-          "sddocname": "test",
-          "documentid": "id:test:test::0"
-        }
-      },
-      {
-        "id": "id:test:test::1",
-        "source": "search",
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
         "fields": {
-          "sddocname": "test",
-          "documentid": "id:test:test::1",
-          "my_pos": {
-            "y": 69649205,
-            "x": 18955324
-          },
-          "my_pos.position": {"x": 18955324, "y": 69649205, "latlong": "N69.649205;E18.955324"}
-        }
-      },
-      {
-        "id": "id:test:test::2",
-        "source": "search",
-        "fields": {
-          "sddocname": "test",
-          "documentid": "id:test:test::2",
-          "my_pos": {
-            "y": 58986410,
-            "x": 6190440
-          },
-          "my_pos.position": {"x": 6190440, "y": 58986410, "latlong": "N58.986410;E6.190440"}
-        }
-      }
-    ]
-  }
+            "totalCount": 3
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 3,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:test::0",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::0",
+                    "summaryfeatures": {
+                        "distance(my_pos)": 6.4E9,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:test::2",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::2",
+                    "summaryfeatures": {
+                        "distance(my_pos)": 6.4E9,
+                        "vespa.summaryFeatures.cached": 0.0
+                    },
+                    "my_pos": {
+                        "lat": 58.98641,
+                        "lng": 6.19044
+                    }
+                }
+            },
+            {
+                "id": "id:test:test::1",
+                "relevance": 0.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "test",
+                    "documentid": "id:test:test::1",
+                    "summaryfeatures": {
+                        "distance(my_pos)": 6.4E9,
+                        "vespa.summaryFeatures.cached": 0.0
+                    },
+                    "my_pos": {
+                        "lat": 69.649205,
+                        "lng": 18.955324
+                    }
+                }
+            }
+        ]
+    }
 }
