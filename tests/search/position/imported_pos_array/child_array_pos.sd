@@ -11,5 +11,8 @@ search child_array_pos {
     }
     rank-profile default {
         summary-features: distance(my_pos)
+        first-phase {
+          expression: closeness(my_pos)
+        }
     }
 }
