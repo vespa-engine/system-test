@@ -22,42 +22,16 @@
                     "sddocname": "multipoint",
                     "documentid": "id:test:multipoint::3",
                     "title": "napoli, the home of neapolitan pizza",
-                    "latlong.position": {
-                        "y": 40833333,
-                        "x": 14250000,
-                        "latlong": "N40.833333;E14.250000"
-                    },
-                    "latlong.distance": 50434,
-                    "homell.position": {
-                        "y": 40833333,
-                        "x": 14250000,
-                        "latlong": "N40.833333;E14.250000"
-                    },
-                    "homell.distance": 50434,
                     "workll": [
                         {
-                            "y": 40833333,
-                            "x": 14250000
+                            "lat": 40.833333,
+                            "lng": 14.25
                         }
                     ],
-                    "workll.position": [
-                        {
-                            "y": 40833333,
-                            "x": 14250000,
-                            "latlong": "N40.833333;E14.250000"
-                        }
-                    ],
-                    "workll.distance": 50434,
                     "vacationll": {
-                        "y": 40833333,
-                        "x": 14250000
+                        "lat": 40.833333,
+                        "lng": 14.25
                     },
-                    "vacationll.position": {
-                        "y": 40833333,
-                        "x": 14250000,
-                        "latlong": "N40.833333;E14.250000"
-                    },
-                    "vacationll.distance": 50434,
                     "summaryfeatures": {
                         "distance(latlong)": 50434.46926458134,
                         "vespa.summaryFeatures.cached": 0.0
