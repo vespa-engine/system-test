@@ -255,10 +255,7 @@ module ResizeApps
     end
 
     def get_sc(lr, before)
-      # Override leaf redundancy to 1 when having only one node in each leaf
-      # group, since higher redudancy than nodes are no longer accepted.
-      lr = 1 unless before
-      get_base_sc(before ? 9 : 3, lr * 3, lr * 3).
+      get_base_sc(before ? 9 : 6, lr * 3, lr * 3).
         group(create_groups(lr, before))
     end
 
@@ -282,18 +279,21 @@ module ResizeApps
         NodeGroup.new(0, "mytopgroup").
           distribution("#{lr}|#{lr}|*").
           group(NodeGroup.new(0, "mygroup0").
-                node(nodespec(0))).
+                node(nodespec(0)).
+                node(nodespec(1))).
           group(NodeGroup.new(1, "mygroup1").
-                node(nodespec(3))).
+                node(nodespec(3)).
+                node(nodespec(4))).
           group(NodeGroup.new(2, "mygroup2").
-                node(nodespec(6)))
+                node(nodespec(6)).
+                node(nodespec(7)))
       end
     end
 
     def pollnode(before, nodeindex)
       return false if nodeindex >= 9
       return true if before
-      return (nodeindex % 3) == 0
+      return (nodeindex % 3) <= 1
     end
 
     def growing
@@ -305,7 +305,7 @@ module ResizeApps
     end
 
     def stopnodes
-      [ 1, 2, 4, 5, 7, 8 ]
+      [ 2, 5, 8 ]
     end
 
     def slack_maxhits
