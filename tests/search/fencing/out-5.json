@@ -23,69 +23,45 @@
                     "documentid": "id:foo:withfence::2",
                     "title": "pizza near Napoli, London, Cracow",
                     "center": {
-                        "y": 40833333,
-                        "x": 14250000
+                        "lat": 40.833333,
+                        "lng": 14.25
                     },
-                    "center.position": {
-                        "y": 40833333,
-                        "x": 14250000,
-                        "latlong": "N40.833333;E14.250000"
-                    },
-                    "center.distance": 9950169,
                     "fenceradius": 500000.0,
                     "maybecenter": [
                         {
-                            "y": 40833333,
-                            "x": 14250000
+                            "lat": 40.833333,
+                            "lng": 14.25
                         },
                         {
-                            "y": 51513912,
-                            "x": -128381
+                            "lat": 51.513912,
+                            "lng": -0.128381
                         },
                         {
-                            "y": 50061598,
-                            "x": 19937473
+                            "lat": 50.061598,
+                            "lng": 19.937473
                         }
                     ],
-                    "maybecenter.position": [
-                        {
-                            "y": 40833333,
-                            "x": 14250000,
-                            "latlong": "N40.833333;E14.250000"
-                        },
-                        {
-                            "y": 51513912,
-                            "x": -128381,
-                            "latlong": "N51.513912;W0.128381"
-                        },
-                        {
-                            "y": 50061598,
-                            "x": 19937473,
-                            "latlong": "N50.061598;E19.937473"
-                        }
-                    ],
-                    "maybecenter.distance": 45304,
                     "order": 70,
                     "multiplace": [
                         {
                             "radius": 200.0,
                             "place": {
-                                "y": 40833333,
-                                "x": 14250000
+                                "lat": 40.833333,
+                                "lng": 14.25
                             }
                         },
                         {
                             "radius": 300.0,
                             "place": {
-                                "y": 51513912,
-                                "x": -128381
+                                "lat": 51.513912,
+                                "lng": -0.128381
                             }
                         },
                         {
                             "radius": 400.0,
                             "place": {
-                                "y": 50061598,
-                                "x": 19937473
+                                "lat": 50.061598,
+                                "lng": 19.937473
                             }
                         }
                     ],
@@ -110,20 +86,10 @@
                     "documentid": "id:foo:withfence::3",
                     "title": "pizza from Domino's",
                     "center": {
-                        "y": 0,
-                        "x": 0
+                        "lat": 0.0,
+                        "lng": 0.0
                     },
-                    "center.position": {
-                        "y": 0,
-                        "x": 0,
-                        "latlong": "N0.000000;E0.000000"
-                    },
-                    "center.distance": 51700593,
                     "fenceradius": 1.0E9,
-                    "maybecenter": [
-
-                    ],
-                    "maybecenter.distance": 2147483647,
                     "order": 42,
                     "summaryfeatures": {
                         "attribute(fenceradius)": 1.0E9,
@@ -145,11 +111,6 @@
                     "sddocname": "withfence",
                     "documentid": "id:foo:withfence::4",
                     "title": "pizza with missing data",
-                    "center.distance": 2097422491,
-                    "maybecenter": [
-
-                    ],
-                    "maybecenter.distance": 2147483647,
                     "order": 17,
                     "summaryfeatures": {
                         "attribute(fenceradius)": null,

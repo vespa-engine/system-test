@@ -23,26 +23,14 @@
                     "documentid": "id:foo:withfence::5",
                     "title": "sunnyvale pizza",
                     "center": {
-                        "y": 37374821,
-                        "x": -122057174
-                    },
-                    "center.position": {
-                        "y": 37374821,
-                        "x": -122057174,
-                        "latlong": "N37.374821;W122.057174"
+                        "lat": 37.374821,
+                        "lng": -122.057174
                     },
                     "fenceradius": 500000.0,
                     "maybecenter": [
                         {
-                            "y": 37374821,
-                            "x": -122057174
-                        }
-                    ],
-                    "maybecenter.position": [
-                        {
-                            "y": 37374821,
-                            "x": -122057174,
-                            "latlong": "N37.374821;W122.057174"
+                            "lat": 37.374821,
+                            "lng": -122.057174
                         }
                     ],
                     "order": 100,
@@ -67,26 +55,14 @@
                     "documentid": "id:foo:withfence::0",
                     "title": "pizza in California",
                     "center": {
-                        "y": 37374821,
-                        "x": -122057174
-                    },
-                    "center.position": {
-                        "y": 37374821,
-                        "x": -122057174,
-                        "latlong": "N37.374821;W122.057174"
+                        "lat": 37.374821,
+                        "lng": -122.057174
                     },
                     "fenceradius": 500000.0,
                     "maybecenter": [
                         {
-                            "y": 37374821,
-                            "x": -122057174
-                        }
-                    ],
-                    "maybecenter.position": [
-                        {
-                            "y": 37374821,
-                            "x": -122057174,
-                            "latlong": "N37.374821;W122.057174"
+                            "lat": 37.374821,
+                            "lng": -122.057174
                         }
                     ],
                     "order": 90,
@@ -111,26 +87,14 @@
                     "documentid": "id:foo:withfence::1",
                     "title": "pizza in Trondheim",
                     "center": {
-                        "y": 63431693,
-                        "x": 10391965
-                    },
-                    "center.position": {
-                        "y": 63431693,
-                        "x": 10391965,
-                        "latlong": "N63.431693;E10.391965"
+                        "lat": 63.431693,
+                        "lng": 10.391965
                     },
                     "fenceradius": 500000.0,
                     "maybecenter": [
                         {
-                            "y": 63431693,
-                            "x": 10391965
-                        }
-                    ],
-                    "maybecenter.position": [
-                        {
-                            "y": 63431693,
-                            "x": 10391965,
-                            "latlong": "N63.431693;E10.391965"
+                            "lat": 63.431693,
+                            "lng": 10.391965
                         }
                     ],
                     "order": 80,
@@ -155,44 +119,22 @@
                     "documentid": "id:foo:withfence::2",
                     "title": "pizza near Napoli, London, Cracow",
                     "center": {
-                        "y": 40833333,
-                        "x": 14250000
-                    },
-                    "center.position": {
-                        "y": 40833333,
-                        "x": 14250000,
-                        "latlong": "N40.833333;E14.250000"
+                        "lat": 40.833333,
+                        "lng": 14.25
                     },
                     "fenceradius": 500000.0,
                     "maybecenter": [
                         {
-                            "y": 40833333,
-                            "x": 14250000
+                            "lat": 40.833333,
+                            "lng": 14.25
                         },
                         {
-                            "y": 51513912,
-                            "x": -128381
+                            "lat": 51.513912,
+                            "lng": -0.128381
                         },
                         {
-                            "y": 50061598,
-                            "x": 19937473
-                        }
-                    ],
-                    "maybecenter.position": [
-                        {
-                            "y": 40833333,
-                            "x": 14250000,
-                            "latlong": "N40.833333;E14.250000"
-                        },
-                        {
-                            "y": 51513912,
-                            "x": -128381,
-                            "latlong": "N51.513912;W0.128381"
-                        },
-                        {
-                            "y": 50061598,
-                            "x": 19937473,
-                            "latlong": "N50.061598;E19.937473"
+                            "lat": 50.061598,
+                            "lng": 19.937473
                         }
                     ],
                     "order": 70,
@@ -210,22 +152,22 @@
                         {
                             "radius": 200.0,
                             "place": {
-                                "y": 40833333,
-                                "x": 14250000
+                                "lat": 40.833333,
+                                "lng": 14.25
                             }
                         },
                         {
                             "radius": 300.0,
                             "place": {
-                                "y": 51513912,
-                                "x": -128381
+                                "lat": 51.513912,
+                                "lng": -0.128381
                             }
                         },
                         {
                             "radius": 400.0,
                             "place": {
-                                "y": 50061598,
-                                "x": 19937473
+                                "lat": 50.061598,
+                                "lng": 19.937473
                             }
                         }
                     ]
@@ -240,18 +182,10 @@
                     "documentid": "id:foo:withfence::3",
                     "title": "pizza from Domino's",
                     "center": {
-                        "y": 0,
-                        "x": 0
-                    },
-                    "center.position": {
-                        "y": 0,
-                        "x": 0,
-                        "latlong": "N0.000000;E0.000000"
+                        "lat": 0.0,
+                        "lng": 0.0
                     },
                     "fenceradius": 1.0E9,
-                    "maybecenter": [
-
-                    ],
                     "order": 42,
                     "summaryfeatures": {
                         "attribute(fenceradius)": 1.0E9,
@@ -273,9 +207,6 @@
                     "sddocname": "withfence",
                     "documentid": "id:foo:withfence::4",
                     "title": "pizza with missing data",
-                    "maybecenter": [
-
-                    ],
                     "order": 17,
                     "summaryfeatures": {
                         "attribute(fenceradius)": null,
