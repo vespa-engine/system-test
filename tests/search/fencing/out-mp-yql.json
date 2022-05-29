@@ -23,30 +23,16 @@
                     "documentid": "id:foo:withfence::1",
                     "title": "pizza in Trondheim",
                     "center": {
-                        "y": 63431693,
-                        "x": 10391965
+                        "lat": 63.431693,
+                        "lng": 10.391965
                     },
-                    "center.position": {
-                        "y": 63431693,
-                        "x": 10391965,
-                        "latlong": "N63.431693;E10.391965"
-                    },
-                    "center.distance": 83603,
                     "fenceradius": 500000.0,
                     "maybecenter": [
                         {
-                            "y": 63431693,
-                            "x": 10391965
+                            "lat": 63.431693,
+                            "lng": 10.391965
                         }
                     ],
-                    "maybecenter.position": [
-                        {
-                            "y": 63431693,
-                            "x": 10391965,
-                            "latlong": "N63.431693;E10.391965"
-                        }
-                    ],
-                    "maybecenter.distance": 22819354,
                     "order": 80,
                     "summaryfeatures": {
                         "attribute(fenceradius)": 500000.0,
@@ -69,20 +55,10 @@
                     "documentid": "id:foo:withfence::3",
                     "title": "pizza from Domino's",
                     "center": {
-                        "y": 0,
-                        "x": 0
+                        "lat": 0.0,
+                        "lng": 0.0
                     },
-                    "center.position": {
-                        "y": 0,
-                        "x": 0,
-                        "latlong": "N0.000000;E0.000000"
-                    },
-                    "center.distance": 0,
                     "fenceradius": 1.0E9,
-                    "maybecenter": [
-
-                    ],
-                    "maybecenter.distance": 2147483647,
                     "order": 42,
                     "summaryfeatures": {
                         "attribute(fenceradius)": 1.0E9,

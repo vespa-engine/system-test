@@ -23,30 +23,16 @@
                     "documentid": "id:foo:withfence::5",
                     "title": "sunnyvale pizza",
                     "center": {
-                        "y": 37374821,
-                        "x": -122057174
+                        "lat": 37.374821,
+                        "lng": -122.057174
                     },
-                    "center.position": {
-                        "y": 37374821,
-                        "x": -122057174,
-                        "latlong": "N37.374821;W122.057174"
-                    },
-                    "center.distance": 51931,
                     "fenceradius": 500000.0,
                     "maybecenter": [
                         {
-                            "y": 37374821,
-                            "x": -122057174
+                            "lat": 37.374821,
+                            "lng": -122.057174
                         }
                     ],
-                    "maybecenter.position": [
-                        {
-                            "y": 37374821,
-                            "x": -122057174,
-                            "latlong": "N37.374821;W122.057174"
-                        }
-                    ],
-                    "maybecenter.distance": 51931,
                     "order": 100,
                     "summaryfeatures": {
                         "attribute(fenceradius)": 500000.0,
@@ -69,30 +55,16 @@
                     "documentid": "id:foo:withfence::0",
                     "title": "pizza in California",
                     "center": {
-                        "y": 37374821,
-                        "x": -122057174
+                        "lat": 37.374821,
+                        "lng": -122.057174
                     },
-                    "center.position": {
-                        "y": 37374821,
-                        "x": -122057174,
-                        "latlong": "N37.374821;W122.057174"
-                    },
-                    "center.distance": 51931,
                     "fenceradius": 500000.0,
                     "maybecenter": [
                         {
-                            "y": 37374821,
-                            "x": -122057174
+                            "lat": 37.374821,
+                            "lng": -122.057174
                         }
                     ],
-                    "maybecenter.position": [
-                        {
-                            "y": 37374821,
-                            "x": -122057174,
-                            "latlong": "N37.374821;W122.057174"
-                        }
-                    ],
-                    "maybecenter.distance": 51931,
                     "order": 90,
                     "summaryfeatures": {
                         "attribute(fenceradius)": 500000.0,
@@ -115,20 +87,10 @@
                     "documentid": "id:foo:withfence::3",
                     "title": "pizza from Domino's",
                     "center": {
-                        "y": 0,
-                        "x": 0
+                        "lat": 0.0,
+                        "lng": 0.0
                     },
-                    "center.position": {
-                        "y": 0,
-                        "x": 0,
-                        "latlong": "N0.000000;E0.000000"
-                    },
-                    "center.distance": 103884415,
                     "fenceradius": 1.0E9,
-                    "maybecenter": [
-
-                    ],
-                    "maybecenter.distance": 2147483647,
                     "order": 42,
                     "summaryfeatures": {
                         "attribute(fenceradius)": 1.0E9,
@@ -150,11 +112,6 @@
                     "sddocname": "withfence",
                     "documentid": "id:foo:withfence::4",
                     "title": "pizza with missing data",
-                    "center.distance": 2112308266,
-                    "maybecenter": [
-
-                    ],
-                    "maybecenter.distance": 2147483647,
                     "order": 17,
                     "summaryfeatures": {
                         "attribute(fenceradius)": null,
