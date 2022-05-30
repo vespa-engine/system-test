@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search covtest {
+schema covtest {
   
   document covtest {
 
@@ -37,7 +37,7 @@ search covtest {
     match-phase {
       attribute: sortlimnum
       max-hits: 10101
-      max-filter-coverage: 1.0
+      max-filter-coverage: 1.0 # Not public
     }
     first-phase {
       expression: attribute(sortlimnum)

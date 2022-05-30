@@ -8,7 +8,7 @@
 # all the tests that use it still work (and still
 # check everything they are supposed to check).
 
-search musicdate {
+schema musicdate {
   
   document musicdate {
 
@@ -35,7 +35,6 @@ search musicdate {
 
     field docdate type long {
       indexing: summary| attribute docdate | index
-      freshness-boost: 10
     }
 
     field bgndata type string {

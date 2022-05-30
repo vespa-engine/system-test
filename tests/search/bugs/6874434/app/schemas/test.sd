@@ -1,0 +1,13 @@
+schema test {
+  document test {
+    field title type string {
+      indexing: summary | index
+    }
+    field latlong type position {
+      indexing: summary | attribute
+    }
+    field price type int {
+      indexing: attribute | summary
+    }
+  }
+}

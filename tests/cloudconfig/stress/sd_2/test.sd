@@ -1,4 +1,4 @@
-search test {
+schema test {
 
   fieldset default {
     fields: content_description, content_title, rating_title

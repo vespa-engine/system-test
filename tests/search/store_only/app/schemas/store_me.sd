@@ -1,0 +1,8 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema store_me {
+    document store_me {
+        field my_str type string {
+            indexing: summary
+        }
+    }
+}

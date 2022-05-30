@@ -1,4 +1,4 @@
-search music {
+schema music {
   document music {
     field language type string {
       indexing: set_language

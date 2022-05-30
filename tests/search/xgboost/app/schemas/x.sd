@@ -1,0 +1,37 @@
+# Copyright 2017 Yahoo Holdings. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema x {
+
+  document x {
+
+    field id type int {
+      indexing: summary | attribute 
+    }
+
+    field dataset type string {
+      indexing: summary | attribute 
+    }
+
+    field features type array<float>{
+      indexing: summary | attribute
+    }
+  }
+
+  rank-profile regression-diabetes inherits default {
+	  first-phase {
+	    expression: xgboost("regression_diabetes.json")
+	  }
+  }
+
+  rank-profile regression-breast_cancer inherits default {
+	  first-phase {
+		  expression: sigmoid(xgboost("regression_breast_cancer.json"))
+	  }
+  }
+
+  rank-profile binary-probability-breast_cancer inherits default {
+	  first-phase {
+		  expression: sigmoid(xgboost("binary_breast_cancer.json"))
+	  }
+   }
+}

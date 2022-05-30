@@ -1,0 +1,14 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema doc {
+  document doc {
+    field doc_id type long {
+      indexing: summary | attribute
+      attribute:fast-search
+    }
+
+    field content type string {
+      indexing: summary
+    }
+  }
+}

@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search parent_array_pos {
+schema parent_array_pos {
     document parent_array_pos {
         field parent_pos type array<position> {
 	    indexing: attribute | summary

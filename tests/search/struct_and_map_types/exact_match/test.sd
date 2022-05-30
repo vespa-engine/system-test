@@ -1,4 +1,4 @@
-search test {
+schema test {
   document test {
     field props_exact type map<string, string> {
       indexing: summary

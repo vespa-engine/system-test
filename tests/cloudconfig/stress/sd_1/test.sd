@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search test {
+schema test {
 
   fieldset default {
     fields: content_description, content_title, rating_title
@@ -203,7 +203,7 @@ search test {
 
   rank-profile context inherits default {
     inputs {
-      query(scorelimit) : -1.0
+      query(scorelimit): -1.0
     }
     first-phase {
        rank-score-drop-limit: -1.0

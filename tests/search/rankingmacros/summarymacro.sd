@@ -1,4 +1,4 @@
-search summarymacro {
+schema summarymacro {
   document summarymacro {
     field title type string {
       indexing: index

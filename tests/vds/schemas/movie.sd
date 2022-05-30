@@ -1,4 +1,4 @@
-search movie {
+schema movie {
 
   document movie {
 

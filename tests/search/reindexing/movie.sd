@@ -1,6 +1,6 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-search movie {
+schema movie {
     field movie_indexed_at_seconds type long {
         indexing: now | summary | attribute
     }

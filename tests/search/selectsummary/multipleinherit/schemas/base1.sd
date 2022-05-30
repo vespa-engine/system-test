@@ -1,0 +1,28 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema base1 {
+
+  document base1 {
+
+    field field1 type string {
+      indexing: summary | index
+      summary-to: foosum
+    }
+
+    field field2 type string {
+      indexing: summary | index
+    }
+
+    field field3 type string {
+      indexing: summary | index
+    }
+
+  }
+  fieldset default {
+    fields: field1, field2, field3
+  }
+
+  rank-profile default {
+    first-phase { expression: 1 }
+  }
+
+}

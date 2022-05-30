@@ -1,4 +1,4 @@
-search foo {
+schema foo {
     document foo {
 
         field justsum type string {

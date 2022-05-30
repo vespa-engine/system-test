@@ -2,7 +2,7 @@
 
 # simple sd for filter test
 
-search f {
+schema f {
   
   document f {
 

@@ -1,6 +1,6 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-search withfence {
+schema withfence {
 
   field lang type string {
     indexing: "en" | set_language
@@ -48,10 +48,10 @@ search withfence {
   }
 
   rank-profile center inherits default {
-    macro distanceInMeters() {
+    function distanceInMeters() {
         expression: distance(center)*0.1109462521
     }
-    macro maybepenalty() {
+    function maybepenalty() {
       expression: if(distanceInMeters > attribute(fenceradius), 1.0e33, 0)
     }
     first-phase {
@@ -61,13 +61,13 @@ search withfence {
   }
 
   rank-profile maybe inherits default {
-    macro distanceInMeters() {
+    function distanceInMeters() {
         expression: distance(maybecenter)*0.1109462521
     }
-    macro maybedistance() {
+    function maybedistance() {
       expression: if((attribute(maybecenter_zcurve).count > 0), distanceInMeters, 0)
     }
-    macro maybepenalty() {
+    function maybepenalty() {
       expression: if((maybedistance > attribute(fenceradius)), 1.0e33, 0)
     }
     first-phase {
@@ -92,13 +92,13 @@ search withfence {
   }
 
   rank-profile foryql inherits withraw {
-    macro distanceInMeters() {
+    function distanceInMeters() {
         expression: distance(label,foobar)*1000
     }
-    macro maybedistance() {
+    function maybedistance() {
       expression: if ((attribute(maybecenter_zcurve).count > 0), distanceInMeters, 0)
     }
-    macro maybepenalty() {
+    function maybepenalty() {
       expression: if ((maybedistance > attribute(fenceradius)), 1.0e33, 0)
     }
     first-phase {

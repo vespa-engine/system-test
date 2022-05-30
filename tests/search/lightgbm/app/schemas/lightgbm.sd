@@ -1,0 +1,48 @@
+# Copyright 2020 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema lightgbm {
+    document lightgbm {
+
+        field expected type double {
+            indexing: summary | attribute
+        }
+
+        field num_1 type double {
+            indexing: summary | attribute
+        }
+
+        field num_2 type double {
+            indexing: summary | attribute
+        }
+
+        field cat_1 type string {
+            indexing: summary | attribute
+        }
+
+        field cat_2 type string {
+            indexing: summary | attribute
+        }
+
+    }
+
+    rank-profile default inherits default {
+
+        function inline numerical_1() {
+            expression: attribute(num_1)
+        }
+        function inline numerical_2() {
+            expression: attribute(num_2)
+        }
+        function inline categorical_1() {
+            expression: attribute(cat_1)
+        }
+        function inline categorical_2() {
+            expression: attribute(cat_2)
+        }
+
+        first-phase {
+            expression: lightgbm("lightgbm_classification.json")
+        }
+
+    }
+
+}

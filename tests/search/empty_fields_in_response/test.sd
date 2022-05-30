@@ -1,6 +1,6 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-search test {
+schema test {
   document test {
 
     # Integer fields
@@ -38,7 +38,9 @@ search test {
     # Map fields
     field map_attribute type map<string, int> {
       indexing: summary
-      struct-field key { indexing: attribute }
+      struct-field key {
+        indexing: attribute
+      }
     }
     field map_non_attribute type map<string, int> {
       indexing: summary

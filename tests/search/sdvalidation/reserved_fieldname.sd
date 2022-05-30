@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search reserved_fieldname {
+schema reserved_fieldname {
   document reserved_fieldname {
     field documentID type string {
       indexing: summary

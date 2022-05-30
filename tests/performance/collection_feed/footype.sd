@@ -1,4 +1,4 @@
-search footype {
+schema footype {
   document footype {
 
     field id type long {

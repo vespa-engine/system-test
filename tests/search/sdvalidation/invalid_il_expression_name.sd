@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search invalid_expression_name {
+schema invalid_expression_name {
     document invalid_expression_name {
         field product type string {
             indexing: input product | summary product | compact_string_to_single_term | index product

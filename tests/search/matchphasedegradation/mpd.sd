@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search mpd {
+schema mpd {
 
   document mpd {
     field title type string {
@@ -38,7 +38,7 @@ search mpd {
     match-phase {
       attribute: order
       max-hits: 1000
-      max-filter-coverage: 1.0
+      max-filter-coverage: 1.0 # Not public API
     }
     first-phase {
       expression: attribute(order)

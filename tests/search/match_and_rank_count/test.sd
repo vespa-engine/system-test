@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search test {
+schema test {
   document test {
     field id type long {
       indexing: summary | attribute
@@ -35,7 +35,7 @@ search test {
     summary-features: attribute(id)
   }
   rank-profile rank2 inherits rank1 {
-    mutate {
+    mutate { # Not public API
       on-match { match_count += 1 }
       on-first-phase { first_phase_count += 1 }
       on-second-phase { second_phase_count += 1 }

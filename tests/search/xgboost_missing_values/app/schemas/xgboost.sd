@@ -1,0 +1,35 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema xgboost {
+    document xgboost {
+
+        field expected type double {
+            indexing: summary | attribute
+        }
+
+        field field1 type double {
+            indexing: summary | attribute
+        }
+
+        field field2 type double {
+            indexing: summary | attribute
+        }
+
+    }
+
+    rank-profile default inherits default {
+
+        function inline f1() {
+            expression: attribute(field1)
+        }
+
+        function inline f2() {
+            expression: attribute(field2)
+        }
+
+        first-phase {
+            expression: xgboost("xgboost.if_inversion.json")
+        }
+
+    }
+
+}

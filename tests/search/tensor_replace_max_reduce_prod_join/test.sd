@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search test {
+schema test {
     document test {
         field id type int {
             indexing: attribute | summary
@@ -28,7 +28,7 @@ search test {
     import field parent_ref.array as parent_array {}
 
     rank-profile longarray {
-        macro longarray_expr() {
+        function longarray_expr() {
             expression: reduce( tensorFromLabels(attribute(longarray), x) * tensorFromWeightedSet(query(weights), x), max)
         }
         first-phase {
@@ -37,7 +37,7 @@ search test {
     }
 
     rank-profile intarray {
-        macro intarray_expr() {
+        function intarray_expr() {
             expression: reduce( tensorFromLabels(attribute(intarray), x) * tensorFromWeightedSet(query(weights), x), max)
         }
         first-phase {
@@ -46,7 +46,7 @@ search test {
     }
 
     rank-profile argument_reorder {
-        macro argument_reorder_expr() {
+        function argument_reorder_expr() {
             expression: reduce(tensorFromWeightedSet(query(weights), x) * tensorFromLabels(attribute(longarray),x), max)
         }
         first-phase {
@@ -55,7 +55,7 @@ search test {
     }
 
     rank-profile div {
-        macro div_expr() {
+        function div_expr() {
             expression: reduce( tensorFromLabels(attribute(longarray), x) * tensorFromWeightedSet(query(weights), x), max) / 10000
         }
         first-phase {
@@ -64,7 +64,7 @@ search test {
     }
 
     rank-profile long {
-        macro long_expr() {
+        function long_expr() {
             expression: reduce( tensorFromLabels(attribute(long), x) * tensorFromWeightedSet(query(weights), x), max)
         }
         first-phase {
@@ -73,7 +73,7 @@ search test {
     }
 
     rank-profile stringarray {
-        macro stringarray_expr() {
+        function stringarray_expr() {
             expression: reduce( tensorFromLabels(attribute(stringarray), x) * tensorFromWeightedSet(query(weights), x), max)
         }
         first-phase {
@@ -82,7 +82,7 @@ search test {
     }
 
     rank-profile parentarray {
-        macro parentarray_expr() {
+        function parentarray_expr() {
             expression: reduce( tensorFromLabels(attribute(parent_array), x) * tensorFromWeightedSet(query(weights), x), max)
         }
         first-phase {
@@ -91,7 +91,7 @@ search test {
     }
 
     rank-profile fs_longarray {
-        macro fs_longarray_expr() {
+        function fs_longarray_expr() {
             expression: reduce( tensorFromLabels(attribute(fs_longarray), x) * tensorFromWeightedSet(query(weights), x), max)
         }
         first-phase {
