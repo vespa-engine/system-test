@@ -7,7 +7,7 @@
 # all the tests that use it still work (and still
 # check everything they are supposed to check).
 
-search music {
+schema music {
 
   fieldset default {
     fields: title, artist, keys, song

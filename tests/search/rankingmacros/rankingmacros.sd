@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search rankingmacros {
+schema rankingmacros {
 
   document rankingmacros {
     field title type string {
@@ -46,7 +46,7 @@ search rankingmacros {
     macro yetanotherfeature() {
       expression: 100*rankingExpression(myfeature) # legacy form
     }
-    macro macro_with_dollar$() {
+    macro macro_with_dollar$() { # Not allowed
       expression: 69
     }
     first-phase {

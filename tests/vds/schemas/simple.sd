@@ -1,4 +1,4 @@
-search simple {
+schema simple {
   
   document simple {
 

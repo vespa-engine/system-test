@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search song {
+schema song {
   document song {
     field artist   type string { indexing: attribute | index | summary }
     field album    type string { indexing: attribute | index | summary }

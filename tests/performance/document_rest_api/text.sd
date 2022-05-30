@@ -1,4 +1,4 @@
-search text {
+schema text {
   document text {
     field text type string {
       indexing: attribute

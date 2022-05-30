@@ -1,4 +1,4 @@
-search book {
+schema book {
   document book {
 
     field title type string {

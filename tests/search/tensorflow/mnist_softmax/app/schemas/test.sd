@@ -1,0 +1,49 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+
+  document test {
+
+    field text type string {
+      indexing: index
+    }
+
+  }
+
+  rank-profile tensorflow inherits default {
+    function Placeholder() {
+      expression: tensor<float>(d0[1],d1[784])(0.0)
+    }
+    first-phase {
+      expression: sum(tensorflow("mnist_softmax/saved")) * 10000000 + 17
+    }
+  }
+
+  rank-profile onnx inherits default {
+    function Placeholder() {
+      expression: tensor<float>(d0[1],d1[784])(0.0)
+    }
+    first-phase {
+      expression: sum(onnx("mnist_softmax.onnx")) * 10000000 + 17
+    }
+  }
+
+  rank-profile onnx_vespa inherits default {
+    function Placeholder() {
+      expression: tensor<float>(d0[1],d1[784])(0.0)
+    }
+    first-phase {
+      expression: sum(onnx_vespa("mnist_softmax.onnx")) * 10000000 + 17
+    }
+  }
+
+  rank-profile tf2onnx inherits default {
+    function Placeholder() {
+      expression: tensor<float>(d0[1],d1[784])(0.0)
+    }
+    first-phase {
+      expression: sum(tensorflow("tf_2_onnx/saved")) * 10000000 + 17
+    }
+  }
+
+
+}

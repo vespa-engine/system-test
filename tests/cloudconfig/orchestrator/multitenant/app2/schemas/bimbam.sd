@@ -1,0 +1,23 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema bimbam {
+  
+  fieldset default {
+    fields: title
+  }
+  document bimbam {
+    field title type string {
+      indexing: index | summary
+    }
+    field weight type float {
+      indexing: summary | attribute
+    }
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: 100 * nativeRank + attribute(weight)
+    }
+  }
+
+}
+

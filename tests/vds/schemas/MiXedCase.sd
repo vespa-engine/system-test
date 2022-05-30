@@ -1,4 +1,4 @@
-search MiXedCase {
+schema MiXedCase {
 
   document MiXedCase {
 

@@ -1,4 +1,4 @@
-search sfdtest {
+schema sfdtest {
   
   document sfdtest {
     field title type string {

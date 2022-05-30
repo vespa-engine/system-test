@@ -1,6 +1,6 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-search flexactstring {
+schema flexactstring {
   document flexactstring {
     field a type string {
       indexing: index | summary 

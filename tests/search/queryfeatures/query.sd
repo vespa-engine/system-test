@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search query {
+schema query {
   document query {
     field a type string {
       indexing: index | summary
@@ -12,8 +12,8 @@ search query {
   rank-profile default {
     summary-features {
       query(foo)
-      query(foo.bar)
-      query(foo.bar.baz)
+      query(foo.bar) # Not allowed
+      query(foo.bar.baz) # Not allowed
     }
     inputs {
       query(foo): 5.5

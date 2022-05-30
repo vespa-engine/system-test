@@ -1,4 +1,4 @@
-search music2 {
+schema music2 {
 
   fieldset default {
     fields: title, artist

@@ -1,4 +1,4 @@
-search big {
+schema big {
   document big {
     field title type string {
       indexing: summary | index

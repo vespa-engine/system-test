@@ -1,5 +1,5 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-search grandparent_simple_pos {
+schema grandparent_simple_pos {
     document grandparent_simple_pos {
         field grandparent_pos type position {
 	    indexing: attribute | summary

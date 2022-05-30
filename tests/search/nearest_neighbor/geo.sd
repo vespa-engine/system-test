@@ -1,4 +1,4 @@
-search geo {
+schema geo {
   document geo {
     field pos type tensor(x[2]) {
       indexing: attribute | summary

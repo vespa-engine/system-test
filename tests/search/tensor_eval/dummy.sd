@@ -1,4 +1,4 @@
-search dummy {
+schema dummy {
   document dummy {
     field title type string {
       indexing: index | summary

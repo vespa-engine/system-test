@@ -1,4 +1,4 @@
-search simple {
+schema simple {
   document simple {
     field marker type string {
       indexing: summary | index
