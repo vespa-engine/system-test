@@ -237,7 +237,7 @@ class NearestNeighborTest < IndexedSearchTest
       exp_distance = exp_result[1]
       exp_score = 15 - exp_distance
       exp_closeness = 1.0 / (1.0 + exp_distance)
-      exp_features = { "rankingExpression(euclidean_distance_#{query_tensor})" => exp_distance,
+      exp_features = { "euclidean_distance_#{query_tensor}" => exp_distance,
                        "distance(#{doc_tensor})" => exp_distance,
                        "distance(label,nns)" => exp_distance,
                        "closeness(#{doc_tensor})" => exp_closeness,

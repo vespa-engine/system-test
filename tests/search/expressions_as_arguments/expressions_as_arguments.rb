@@ -36,7 +36,7 @@ class ExpressionsAsArguments < IndexedSearchTest
   end
 
   def assert_feature(summary, name, value)
-    assert_approx(summary["rankingExpression(#{name})"], value)
+    assert_approx(summary[name], value)
   end
 
 end

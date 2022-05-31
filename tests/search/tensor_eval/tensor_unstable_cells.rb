@@ -32,7 +32,7 @@ class TensorUnstableCellTypesTest < IndexedSearchTest
             assert_equal(firsthit.field['relevancy'].to_f, 3.0 * expect_scores[idx])
             sfs = firsthit.field['summaryfeatures']
             if sfs
-              out = sfs['rankingExpression(output_tensor)']
+              out = sfs['output_tensor']
               cell = out['cells'].first
               puts "tensor type: #{out['type']} cell tag #{cell['address']['tag']} value #{cell['value']}"
             end
