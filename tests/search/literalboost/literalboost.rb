@@ -21,9 +21,9 @@ class LiteralBoost < IndexedSearchTest
     compare("query=content:booked",  "booked.result")
     compare("query=content:booked&filter=bogo", "booked-filter.result")
 
-    result = vespa.adminserver.execute('vespa-visit --xmloutput --maxpendingsuperbuckets 1 --maxpending 1')
+    result = vespa.adminserver.execute('vespa-visit --xmloutput --maxpendingsuperbuckets 1 --maxpending 1 --fieldset [all]')
     assert_xml(result, selfdir+"fullvisit.xml")
-    result = vespa.adminserver.execute('vespa-visit --xmloutput --maxpendingsuperbuckets 1 --maxpending 1 --fieldset literalboost:[document]')
+    result = vespa.adminserver.execute('vespa-visit --xmloutput --maxpendingsuperbuckets 1 --maxpending 1')
     assert_xml(result, selfdir+"documentvisit.xml")
   end
 
