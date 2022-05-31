@@ -117,7 +117,7 @@ class GroupingTest < PerformanceTest
                  num_unique)
     generatesd(File.new(@sdfile, "w"), attr_prefix, num_attr, paged_attributes)
 
-    deploy_app(SearchApp.new.sd(@sdfile))
+    deploy_app(SearchApp.new.sd(@sdfile).search_dir(selfdir + 'search'))
     start
     feed_and_wait_for_docs("groupingbench", num_docs, :file => @feedfile)
   end
