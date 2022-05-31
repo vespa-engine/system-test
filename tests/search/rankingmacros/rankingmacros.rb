@@ -21,10 +21,10 @@ class RankingMacros < IndexedSearchTest
     result = search("query=title:foo&ranking=standalone");
     score = result.hit[0].field["relevancy"].to_i;
     assert_features({"firstPhase" => 548,
-                     "rankingExpression(macro_with_dollar$)" => 69,
+                     "macro_with_dollar$" => 69,
                      "rankingExpression(myfeature)" => 546,
-                     "rankingExpression(anotherfeature)" => 5460,
-                     "rankingExpression(yetanotherfeature)" => 54600},
+                     "anotherfeature" => 5460,
+                     "yetanotherfeature" => 54600},
                      result.hit[0].field['summaryfeatures'], 1e-4)
     assert_equal(score, 4*(1+1));
 
