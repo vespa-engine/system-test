@@ -102,7 +102,7 @@ class SelectSummary < IndexedSearchTest
   def test_selectsummary_inherit_abstract
     puts "Details: Using simple inherit (abstract base)"
 
-    dir = selfdir + "simpleinherit_abstract_nobasesearch/searchdefinitions/"
+    dir = selfdir + "simpleinherit_abstract_nobasesearch/schemas/"
     deploy_app(SearchApp.new.
                sd(dir + "base_nosearch.sd").
                sd(dir + "derived.sd"))
@@ -129,7 +129,7 @@ class SelectSummary < IndexedSearchTest
 
   def test_simpleinherit
     puts "Details: Using simple inherit"
-    dir = selfdir + "simpleinherit_basesearch/searchdefinitions/"
+    dir = selfdir + "simpleinherit_basesearch/schemas/"
     deploy_app(SearchApp.new.
                sd(dir + "base.sd").
                sd(dir + "derived.sd"))
@@ -164,7 +164,7 @@ class SelectSummary < IndexedSearchTest
   def test_selectsummary_multipleinherit
     puts "Details: Using multiple inherit"
 
-    dir = selfdir + "multipleinherit/searchdefinitions/"
+    dir = selfdir + "multipleinherit/schemas/"
     deploy_app(SearchApp.new.
                sd(dir + "base1.sd").
                sd(dir + "base2.sd").
