@@ -52,7 +52,7 @@ class TensorSummaryFeatureTest < IndexedSearchTest
   end
 
   def get_summaryfeature(doc, field)
-    return doc['root']['children'][0]['fields']['summaryfeatures']["rankingExpression(output_#{field})"]
+    return doc['root']['children'][0]['fields']['summaryfeatures']["output_#{field}"]
   end
 
   def teardown
