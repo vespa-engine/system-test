@@ -44,7 +44,7 @@ schema test {
       value(2)
       attribute(order)
       attribute(mixed)
-      score_per_x
+      rankingExpression(score_per_x)
       nativeFieldMatch
       query(vec)
     }

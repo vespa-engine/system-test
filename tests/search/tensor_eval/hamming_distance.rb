@@ -26,7 +26,7 @@ class HammingDistanceRankingTest < IndexedSearchTest
     end
     if foohit
       sfs = foohit.field['summaryfeatures']
-      out = sfs['rankingExpression(output_tensor)']
+      out = sfs['output_tensor']
       hdv = []
       out['cells'].each do |cell|
         hdv.append(cell['value'])
