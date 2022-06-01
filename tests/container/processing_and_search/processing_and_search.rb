@@ -24,7 +24,7 @@ class ProcessingAndSearch < SearchContainerTest
             chain(ProcessorChain.new("other").add(
               Processor.new("com.yahoo.vespatest.ProcessorTwo")).add(
               Processor.new("com.yahoo.vespatest.ProcessorOne"))))).
-        logserver("node1", nil).
+        logserver("node1").
         slobrok("node1"))
 
     start

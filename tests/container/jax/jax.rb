@@ -37,7 +37,7 @@ class Jax < SearchContainerTest
                 handler(Handler.new("com.yahoo.vespa.jaxtest.XPathHandler").
                                     bundle("vespa_jaxtest").
                                     binding("http://*/xpath"))).
-            logserver("node1", nil)
+            logserver("node1")
     )
     start
   end
