@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Name: Cloudconfig systest java
-Bundle-SymbolicName: com.yahoo.simpleapp
-Bundle-Version: 1.0.0
-Main-Class: com.yahoo.simpleapp.SimpleApp2
