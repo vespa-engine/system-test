@@ -520,12 +520,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_logserver_jvmargs
-    actual = SearchApp.new.logserver("foo", '-Option').services_xml
-    expected_substr = '<logserver hostalias="foo" jvmargs="-Option" />'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
   def test_container_jvm_options
     actual = SearchApp.new.qrserver(
                QrserverCluster.new.jvmoptions('-Option')).services_xml
