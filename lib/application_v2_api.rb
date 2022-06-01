@@ -39,7 +39,7 @@ module ApplicationV2Api
   def create_application_package(app_dir, hostname)
     tmpdir = Dir.mktmpdir("app", dirs.tmpdir) # To make sure concurrent calls do not use the same tmp dir
     tmpdest = tmpdir + File.basename(app_dir) + ".tgz"
-    cmd = "tar -C #{File.dirname(app_dir)} -czf #{tmpdest} #{File.basename(app_dir)} 2>&1"
+    cmd = "tar -C #{app_dir} -czf #{tmpdest} . 2>&1"
     puts "Executing: #{cmd}"
     puts `#{cmd}`
     tmpdest
