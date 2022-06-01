@@ -24,7 +24,7 @@ class ShoppingUrlCompress < DocprocTest
                          docproc(DocumentProcessing.new.
                                  chain(Chain.new("shoppingindexing", "indexing").add(processor))
                                  )).
-               logserver("node1", nil).
+               logserver("node1").
                slobrok("node1").
                search(SearchCluster.new("shopping").sd(selfdir+"app/schemas/shopping.sd").
                       indexing("containercluster1").

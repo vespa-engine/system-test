@@ -16,7 +16,6 @@ class JvmTuning < SearchTest
 
   def deploy_jvmtuning
     deploy_app(SearchApp.new.sd(selfdir+"foo.sd").
-               logserver("node1", "-verbose:gc").
                container(Container.new.
                            jvmgcoptions("-XX:+UseG1GC -XX:MaxTenuringThreshold=10").
                            jvmoptions('-Dfoo=bar -Dvespa_foo="foo og bar" -Xms256m -Xms256m ' +
@@ -41,8 +40,6 @@ class JvmTuning < SearchTest
 
     assert(vespa.adminserver.execute("ps auxwww | grep configserver") =~ /-verbose:gc -verbose:jni/)
     assert(vespa.adminserver.execute("ps auxwww | grep configproxy") =~ /-verbose:jni -verbose:gc/)
-
-    assert(vespa.adminserver.execute("ps auxwww | grep logserver") =~ /verbose:gc/)
 
     assert(vespa.adminserver.execute("ps auxwww | grep docproc1/container\.0") =~ /MaxTenuringThreshold=13/)
 

@@ -109,7 +109,7 @@ class ContainerAppGenTest < Test::Unit::TestCase
           .docproc(DocumentProcessing.new\
             .chain(Chain.new.add(
               DocProc.new("com.yahoo.vespatest.WorstMusicDocProc")))))\
-        .logserver("node1", nil)\
+        .logserver("node1")\
         .slobrok("node1")\
         .search(SearchCluster.new("music").sd("music")))
   end
@@ -120,7 +120,7 @@ class ContainerAppGenTest < Test::Unit::TestCase
           .processing(Processing.new\
             .chain(ProcessorChain.new.add(
               Processor.new("com.yahoo.vespatest.SearchProcessor")))))\
-        .logserver("node1", nil)\
+        .logserver("node1")\
         .slobrok("node1")\
         .search(SearchCluster.new("music").sd("music")))
   end
