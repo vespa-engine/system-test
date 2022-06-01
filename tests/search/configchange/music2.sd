@@ -167,7 +167,6 @@ schema music2 {
 
   field base64test_long type long {
     indexing: input base64test | base64decode | summary
-    indexing-rewrite: none
   }
 
 }

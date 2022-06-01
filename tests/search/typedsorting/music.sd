@@ -31,7 +31,6 @@ schema music {
   }
   field title_lowercase type string {
     indexing: input title | lowercase | attribute
-    indexing-rewrite: none
   }
 
 }
