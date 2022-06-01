@@ -24,7 +24,7 @@ class MultiChainMultiSearch < DocprocTest
                                  chain(Chain.new("muzakindexing", "indexing").add(
                                     DocumentProcessor.new("com.yahoo.vespatest.BananaDocProc", "indexingStart")))
                                  )).
-               logserver("node1", nil).
+               logserver("node1").
                slobrok("node1").
                search(SearchCluster.new("music").sd(selfdir + "music.sd").
                       indexing("default").
