@@ -18,10 +18,6 @@ class WeightedSetFeedTest < PerformanceTest
     @tainted = false
   end
 
-  def teardown
-    super
-  end
-
   def feed_initial_wsets(doc_count:, field_name:, key_type:, wset_size:, fast_search:)
     if @tainted
       puts 'Wiping existing index data on node to ensure previous tests do not pollute results'
@@ -56,8 +52,7 @@ class WeightedSetFeedTest < PerformanceTest
                             jvmoptions('-Xms16g -Xmx16g').
                             search(Searching.new).
                             docproc(DocumentProcessing.new).
-                            documentapi(ContainerDocumentApi.new)).
-    generic_service(GenericService.new('devnull', "#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000"))
+                            documentapi(ContainerDocumentApi.new))
   end
 
   class TestInstanceParams
@@ -102,6 +97,7 @@ class WeightedSetFeedTest < PerformanceTest
     set_description('Test feed performance of varying sizes of weightedset attributes, ' +
                     'with and without fast-search')
     deploy_app(create_app)
+    start_vespa_destination
     start
 
     @queryfile = "#{selfdir}/query.txt"
@@ -128,6 +124,22 @@ class WeightedSetFeedTest < PerformanceTest
         profiler_report(test_name)
       end
     end
+  end
+
+  def start_vespa_destination
+    @pid = vespa.adminserver.execute_bg("#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")
+  end
+
+  def stop_vespa_destination
+    if @pid then
+      puts "Stopping bakground process with pid #{@pid}"
+      vespa.adminserver.kill_pid(@pid)
+    end
+  end
+
+  def teardown
+    stop_vespa_destination
+    super
   end
 
 end
