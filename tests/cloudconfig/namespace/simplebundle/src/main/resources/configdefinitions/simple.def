@@ -1,3 +1,0 @@
-namespace=bar
-foo string
-bar int default=-1

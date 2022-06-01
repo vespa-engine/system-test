@@ -1,4 +1,0 @@
-namespace=bar2.baz_foo
-
-foo string
-bar int default=-1
