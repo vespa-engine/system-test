@@ -34,7 +34,6 @@ schema advanced {
 
     field extra1 type string {
         indexing: input field3 / 10 | to_string | attribute
-        indexing-rewrite: none
     }
 
     field extra2 type array<string> {

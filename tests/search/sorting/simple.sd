@@ -41,7 +41,6 @@ schema simple {
   # string for sorting
   field lastname_lc type string {
     indexing: input lastname | lowercase | attribute
-    indexing-rewrite: none
   }
 
   rank-profile default {
