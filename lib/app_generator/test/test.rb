@@ -702,22 +702,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_that_app_can_have_generic_services
-    actual = SearchApp.new.sd("test.sd").
-        generic_service(GenericService.new('foobar', '/bin/myfoo --do --stuff')).
-        generic_service(GenericService.new('baz', '/bin/mybaz')).
-    services_xml
-    expected_substr = '
-      <service command="/bin/myfoo --do --stuff" name="foobar" version="1.0">
-        <node hostalias="node1" />
-      </service>
-
-      <service command="/bin/mybaz" name="baz" version="1.0">
-        <node hostalias="node1" />
-      </service>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
   def test_that_resource_limits_can_be_specified
     actual = SearchApp.new.
       cluster(SearchCluster.new("foo").
