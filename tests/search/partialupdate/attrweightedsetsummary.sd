@@ -11,12 +11,6 @@ schema attrweightedsetsummary {
     field byte type weightedset<byte> {
       indexing: attribute | summary
     }
-    field float type weightedset<float> {
-      indexing: attribute | summary
-    }
-    field double type weightedset<double> {
-      indexing: attribute | summary
-    }
 
     field fsint type weightedset<int> {
       indexing: attribute | summary
@@ -27,14 +21,6 @@ schema attrweightedsetsummary {
       attribute: fast-search
     }
     field fsbyte type weightedset<byte> {
-      indexing: attribute | summary
-      attribute: fast-search
-    }
-    field fsfloat type weightedset<float> {
-      indexing: attribute | summary
-      attribute: fast-search
-    }
-    field fsdouble type weightedset<double> {
       indexing: attribute | summary
       attribute: fast-search
     }
@@ -61,16 +47,6 @@ schema attrweightedsetsummary {
       indexing: attribute | summary
     }
     field bytecr type weightedset<byte> {
-      weightedset: create-if-nonexistent
-      weightedset: remove-if-zero
-      indexing: attribute | summary
-    }
-    field floatcr type weightedset<float> {
-      weightedset: create-if-nonexistent
-      weightedset: remove-if-zero
-      indexing: attribute | summary
-    }
-    field doublecr type weightedset<double> {
       weightedset: create-if-nonexistent
       weightedset: remove-if-zero
       indexing: attribute | summary

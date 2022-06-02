@@ -3,7 +3,6 @@
         <field name="sint">100</field>
         <field name="sfloat">100.0</field>
         <field name="wsint"><item weight="100">100</item></field>
-        <field name="wsfloat"><item weight="100">100.0</item></field>
         <field name="wsstr"><item weight="100">string</item></field>
     </hit>
 </result>

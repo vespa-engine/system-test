@@ -48,8 +48,4 @@ The 747 was expected to become obsolete after sales of 400 units, but it outlive
       <item>Air Columbia</item>
       <item>KLM</item>
     </airlines>
-    <vectors>
-      <item weight='100'>22.5</item>
-      <item weight='100'>50.0</item>
-    </vectors>
   </document>

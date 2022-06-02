@@ -16,7 +16,7 @@ class PartialUpdateIllegalOperations < IndexedSearchTest
 
     query = "query=sddocname:dbzero"
     srf = selfdir + "dbzero-result.json"
-    ftc = ["sint", "sfloat", "wsint", "wsfloat", "wsstr"]
+    ftc = ["sint", "sfloat", "wsint", "wsstr"]
 
     wait_for_hitcount(query, 1)
     assert_result(query, srf, nil, ftc)
