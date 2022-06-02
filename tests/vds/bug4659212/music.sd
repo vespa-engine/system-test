@@ -67,10 +67,6 @@ field album2 type weightedset<string> {
 indexing: summary 
 }
 
-field album3 type weightedset<float> {
-indexing: summary 
-}
-
 field album4 type weightedset<uri> {
 indexing: summary 
 }

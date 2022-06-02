@@ -18,9 +18,6 @@ schema attribute {
     field af type array<float> {
       indexing: attribute | summary
     }
-    field wf type weightedset<float> {
-      indexing: attribute | summary
-    }
 
     field ss type string {
       indexing: attribute | summary
@@ -53,10 +50,6 @@ schema attribute {
       attribute(af,1)
       attribute(af,2)
       attribute(af,3)
-      attribute(wf,10.5).weight
-      attribute(wf,10.5).contains
-      attribute(wf,20.5).weight
-      attribute(wf,20.5).contains
       attribute(ss)
       attribute(as,0)
       attribute(as,1)
