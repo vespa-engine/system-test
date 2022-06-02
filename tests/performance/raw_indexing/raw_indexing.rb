@@ -21,7 +21,7 @@ class FeedingIndexTest < PerformanceTest
         
         set_up_files
 
-        start_vespa_destination
+        vespa_destination_start
         start
     end
 
@@ -93,19 +93,7 @@ class FeedingIndexTest < PerformanceTest
                                 documentapi(ContainerDocumentApi.new))
     end
 
-  def start_vespa_destination
-    @pid = vespa.adminserver.execute_bg("#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")
-  end
-
-  def stop_bg_process
-    if @pid then
-      puts "Stopping bakground process with pid #{@pid}"
-      vespa.adminserver.kill_pid(@pid)
-    end
-  end
-
   def teardown
-    stop_bg_process
     super
   end
 

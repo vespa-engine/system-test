@@ -260,6 +260,7 @@ class PerformanceTest < TestCase
   end
 
   def teardown
+    vespa_destination_stop
     profiler_stop
     profiler_report
     stop
@@ -413,4 +414,14 @@ class PerformanceTest < TestCase
   def get_default_log_check_levels
     return [:nothing]
   end
+
+  # Note: teardown will stop process by calling vespa_destination_stop
+  def vespa_destination_start
+    @vespa_destination_pid = vespa.adminserver.execute_bg("#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")
+  end
+
+  def vespa_destination_stop
+    vespa.adminserver.kill_pid(@vespa_destination_pid) if @vespa_destination_pid
+  end
+
 end

@@ -30,7 +30,7 @@ class FeedingMultipleDocTypesTest < PerformanceTest
     set_description("Test put and update feed performance with 1, 16 and 256 configured doc types")
 
     deploy_app(create_app([@base_sd_file]))
-    start_vespa_destination
+    vespa_destination_start
     start
 
     run_feeding_test("1_type")
@@ -109,19 +109,7 @@ class FeedingMultipleDocTypesTest < PerformanceTest
     start
   end
 
-  def start_vespa_destination
-    @pid = vespa.adminserver.execute_bg("#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")
-  end
-
-  def stop_vespa_destination
-    if @pid then
-      puts "Stopping bakground process with pid #{@pid}"
-      vespa.adminserver.kill_pid(@pid)
-    end
-  end
-
   def teardown
-    stop_vespa_destination
     super
   end
 

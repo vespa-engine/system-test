@@ -97,7 +97,7 @@ class WeightedSetFeedTest < PerformanceTest
     set_description('Test feed performance of varying sizes of weightedset attributes, ' +
                     'with and without fast-search')
     deploy_app(create_app)
-    start_vespa_destination
+    vespa_destination_start
     start
 
     @queryfile = "#{selfdir}/query.txt"
@@ -126,19 +126,7 @@ class WeightedSetFeedTest < PerformanceTest
     end
   end
 
-  def start_vespa_destination
-    @pid = vespa.adminserver.execute_bg("#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")
-  end
-
-  def stop_vespa_destination
-    if @pid then
-      puts "Stopping bakground process with pid #{@pid}"
-      vespa.adminserver.kill_pid(@pid)
-    end
-  end
-
   def teardown
-    stop_vespa_destination
     super
   end
 

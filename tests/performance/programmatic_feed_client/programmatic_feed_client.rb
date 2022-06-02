@@ -26,7 +26,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   def test_throughput
     container_node = deploy_test_app
-    start_vespa_destination
+    vespa_destination_start
     build_feed_client
 
     run_benchmark(container_node, "VespaHttpClient",   TINY,  4)
@@ -144,19 +144,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     selfdir + "java-feed-client"
   end
 
-  def start_vespa_destination
-    @pid = vespa.adminserver.execute_bg("#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")
-  end
-
-  def stop_vespa_destination
-    if @pid then
-      puts "Stopping bakground process with pid #{@pid}"
-      vespa.adminserver.kill_pid(@pid)
-    end
-  end
-
   def teardown
-    stop_vespa_destination
     stop
   end
 
