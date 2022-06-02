@@ -18,15 +18,6 @@ class FeatureOverride < IndexedSearchTest
   end
 
   def run_featureoverride_test
-    assert_featureoverride(1,  5,   3,  true,  1, "query=test&featureoverride.value(2)=5")
-    assert_featureoverride(5,  2,   3,  true,  1, "query=test&featureoverride.value(1)=5")
-    assert_featureoverride(10, 2,   3,  true,  1, "query=test&featureoverride.value(1)=10")
-    assert_featureoverride(1,  2,   50, false, 2, "query=both&featureoverride.value(3)=50")
-    assert_featureoverride(1,  50,  3,  false, 2, "query=both&featureoverride.value(2)=50")
-    assert_featureoverride(1,  100, 3,  false, 2, "query=both&featureoverride.value(2)=100")
-    assert_featureoverride(10, 20,  30, true,  1, \
-    "query=test&featureoverride.value(1)=10&featureoverride.value(2)=20&featureoverride.value(3)=30")
-
     assert_featureoverride(1,  5,   3,  true,  1, "query=test&rankfeature.value(2)=5")
     assert_featureoverride(5,  2,   3,  true,  1, "query=test&rankfeature.value(1)=5")
     assert_featureoverride(10, 2,   3,  true,  1, "query=test&rankfeature.value(1)=10")
