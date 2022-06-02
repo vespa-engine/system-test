@@ -97,8 +97,8 @@ class WeightedSetFeedTest < PerformanceTest
     set_description('Test feed performance of varying sizes of weightedset attributes, ' +
                     'with and without fast-search')
     deploy_app(create_app)
-    vespa_destination_start
     start
+    vespa_destination_start
 
     @queryfile = "#{selfdir}/query.txt"
     container = (vespa.qrserver["0"] or vespa.container.values.first)

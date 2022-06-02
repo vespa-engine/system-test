@@ -23,6 +23,7 @@ class ContainerGcTest < PerformanceTest
   def test_container_search_performance_g1gc
     deploy_expand_vespa_home(@app)
     start
+    vespa_destination_start
     set_description('Test basic search container with libyell and query parsing. ' +
                     'Uses a Simple Searcher with Mock Hits using G1GC')
     container = (vespa.qrserver['0'] or vespa.container.values.first)

@@ -21,8 +21,8 @@ class FeedingIndexTest < PerformanceTest
         
         set_up_files
 
-        vespa_destination_start
         start
+        vespa_destination_start
     end
 
     def download_doc_file
