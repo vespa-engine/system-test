@@ -30,8 +30,8 @@ class FeedingMultipleDocTypesTest < PerformanceTest
     set_description("Test put and update feed performance with 1, 16 and 256 configured doc types")
 
     deploy_app(create_app([@base_sd_file]))
-    vespa_destination_start
     start
+    vespa_destination_start
 
     run_feeding_test("1_type")
 

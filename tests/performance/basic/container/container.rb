@@ -24,6 +24,7 @@ class BasicContainer < PerformanceTest
   def setup_and_deploy(app)
     deploy_expand_vespa_home(app)
     start
+    vespa_destination_start
   end
 
   def benchmark_queries(template, yql, set_locale)
