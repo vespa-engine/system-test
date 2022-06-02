@@ -20,8 +20,5 @@ schema airplanes {
     field airlines type array<string> {
       indexing: attribute
     }
-    field vectors type weightedset<double> {
-      indexing: attribute
-    }
   }
 }

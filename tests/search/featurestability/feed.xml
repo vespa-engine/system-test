@@ -5,10 +5,8 @@
     <byte_wset><item weight="1">2</item><item weight="3">4</item></byte_wset>
     <double_exp>1.2</double_exp>
     <double_arr><item>1.2</item><item>3.4</item></double_arr> 
-    <double_wset><item weight="1">2.3</item><item weight="4">5.6</item></double_wset>
     <float_exp>1.2</float_exp>
     <float_arr><item>1.2</item><item>3.4</item></float_arr> 
-    <float_wset><item weight="1">2.3</item><item weight="4">5.6</item></float_wset>
     <int_exp>1</int_exp>
     <int_arr><item>1</item><item>2</item></int_arr>
     <int_wset><item weight="1">2</item><item weight="3">4</item></int_wset>

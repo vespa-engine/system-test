@@ -9,9 +9,6 @@
     <divide field="wsint" by="0"><key>100</key></divide>
 </update>
 <update documenttype="dbzero" documentid="id:test/test:dbzero::0">
-    <divide field="wsfloat" by="0"><key>100</key></divide>
-</update>
-<update documenttype="dbzero" documentid="id:test/test:dbzero::0">
     <divide field="wsstr" by="0"><key>string</key></divide>
 </update>
 </vespafeed>

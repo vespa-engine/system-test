@@ -4,7 +4,6 @@
   <wi><item weight='100'>10</item></wi>
   <sf>10.5</sf>
   <af><item>10.5</item><item>20.5</item></af>
-  <wf><item weight='100'>10.5</item></wf>
   <ss>first</ss>
   <as><item>first</item><item>second</item></as>
   <ws><item weight='100'>first</item></ws>

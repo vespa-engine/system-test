@@ -48,7 +48,6 @@ class PartialUpdateLogicalIndexes < IndexedSearchTest
     validate_doc2_before_pu("query=popularity:20")
     validate_doc3_before_pu("query=manufacturer:boeing")
     validate_doc3_before_pu("query=manufacturer:boeing&search=airplanes")
-    validate_doc3_before_pu("query=vectors:22.5")
 
     feedfile(selfdir+"update_feed.xml")
     sleep 2
@@ -64,7 +63,6 @@ class PartialUpdateLogicalIndexes < IndexedSearchTest
     validate_doc2_after_pu("query=popularity:50")
     validate_doc3_after_pu("query=manufacturer:boeing")
     validate_doc3_after_pu("query=manufacturer:boeing&search=airplanes")
-    validate_doc3_after_pu("query=vectors:22.5")
   end
 
   def validate_doc1_before_pu(query)
@@ -94,8 +92,6 @@ class PartialUpdateLogicalIndexes < IndexedSearchTest
     check(query, "rating", /64\.7834/)
     check(query, "airlines", /<item>Air Columbia<\/item>/)
     check(query, "airlines", /<item>KLM<\/item>/)
-    check(query, "vectors", /<item weight='100'>22\.5<\/item>/)
-    check(query, "vectors", /<item weight='100'>50\.0<\/item>/)
   end
 
   def validate_doc1_after_pu(query)
@@ -128,9 +124,6 @@ class PartialUpdateLogicalIndexes < IndexedSearchTest
     check(query, "rating", /70\.44/)
     check(query, "airlines", /<item>SAS Braathens<\/item>/)
     check(query, "airlines", /<item>American Airlines<\/item>/)
-    check(query, "vectors", /<item weight='140'>22\.5<\/item>/)
-    check(query, "vectors", /<item weight='180'>50\.0<\/item>/)
-    check(query, "vectors", /<item weight='100'>17\.986<\/item>/)
   end
 
   def teardown

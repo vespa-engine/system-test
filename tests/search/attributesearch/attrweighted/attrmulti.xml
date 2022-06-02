@@ -1,0 +1,70 @@
+<document type="attrmulti" id="id:attrmulti/attr:attrmulti::0">
+  <mvintfield><item>100000</item><item>1000</item></mvintfield>
+  <mvlongfield><item>10000000000</item><item>10000</item></mvlongfield>
+  <mvbytefield><item>10</item><item>24</item></mvbytefield>
+
+  <mvfsintfield><item>100000</item><item>1000</item></mvfsintfield>
+  <mvfslongfield><item>10000000000</item><item>10000</item></mvfslongfield>
+  <mvfsbytefield><item>10</item><item>24</item></mvfsbytefield>
+
+  <mvstringfield><item>attribute0</item><item>vespa</item></mvstringfield>
+  <mvfsstringfield><item>attribute0</item><item>vespa</item></mvfsstringfield>
+
+  <body>doc0</body>
+</document>
+<document type="attrmulti" id="id:attrmulti/attr:attrmulti::1">
+  <mvintfield><item>-200000</item><item>-2000</item></mvintfield>
+  <mvlongfield><item>-20000000000</item><item>-20000</item></mvlongfield>
+  <mvbytefield><item>20</item><item>24</item></mvbytefield>
+
+  <mvfsintfield><item>-200000</item><item>-2000</item></mvfsintfield>
+  <mvfslongfield><item>-20000000000</item><item>-20000</item></mvfslongfield>
+  <mvfsbytefield><item>20</item><item>24</item></mvfsbytefield>
+
+  <mvstringfield><item>attribute1</item><item>search</item></mvstringfield>
+  <mvfsstringfield><item>attribute1</item><item>search</item></mvfsstringfield>
+
+  <body>doc1</body>
+</document>
+<document type="attrmulti" id="id:attrmulti/attr:attrmulti::2">
+  <mvintfield><item>300000</item><item>1000</item></mvintfield>
+  <mvlongfield><item>30000000000</item><item>10000</item></mvlongfield>
+  <mvbytefield><item>30</item><item>26</item></mvbytefield>
+
+  <mvfsintfield><item>300000</item><item>1000</item></mvfsintfield>
+  <mvfslongfield><item>30000000000</item><item>10000</item></mvfslongfield>
+  <mvfsbytefield><item>30</item><item>26</item></mvfsbytefield>
+
+  <mvstringfield><item>attribute2</item><item>vespa</item></mvstringfield>
+  <mvfsstringfield><item>attribute2</item><item>vespa</item></mvfsstringfield>
+
+  <body>doc2</body>
+</document>
+<document type="attrmulti" id="id:attrmulti/attr:attrmulti::3">
+  <mvintfield><item>-400000</item><item>-2000</item></mvintfield>
+  <mvlongfield><item>-40000000000</item><item>-20000</item></mvlongfield>
+  <mvbytefield><item>40</item><item>26</item></mvbytefield>
+
+  <mvfsintfield><item>-400000</item><item>-2000</item></mvfsintfield>
+  <mvfslongfield><item>-40000000000</item><item>-20000</item></mvfslongfield>
+  <mvfsbytefield><item>40</item><item>26</item></mvfsbytefield>
+
+  <mvstringfield><item>attribute3</item><item>search</item></mvstringfield>
+  <mvfsstringfield><item>attribute3</item><item>search</item></mvfsstringfield>
+
+  <body>doc3</body>
+</document>
+<document type="attrmulti" id="id:attrmulti/attr:attrmulti::4">
+  <mvintfield><item>500000</item><item>1000</item></mvintfield>
+  <mvlongfield><item>50000000000</item><item>10000</item></mvlongfield>
+  <mvbytefield><item>50</item><item>26</item></mvbytefield>
+
+  <mvfsintfield><item>500000</item><item>1000</item></mvfsintfield>
+  <mvfslongfield><item>50000000000</item><item>10000</item></mvfslongfield>
+  <mvfsbytefield><item>50</item><item>26</item></mvfsbytefield>
+
+  <mvstringfield><item>attribute4</item><item>vespa</item></mvstringfield>
+  <mvfsstringfield><item>attribute4</item><item>vespa</item></mvfsstringfield>
+
+  <body>doc4</body>
+</document>

@@ -259,32 +259,36 @@ class AttributeSearch < IndexedSearchTest
   def test_attributesearch_array
     deploy_app(SearchApp.new.sd(selfdir+"attrarray/attrmulti.sd"))
     start
-    feed_and_wait_for_docs("attrmulti", 5, :file => selfdir+"attrmulti.xml")
+    feed_and_wait_for_docs("attrmulti", 5, :file => selfdir+"attrarray/attrmulti.xml")
 
-    check_attributesearch_multivalue
+    check_attributesearch_multivalue(true)
   end
 
   def test_attributesearch_weightedset
     deploy_app(SearchApp.new.sd(selfdir+"attrweighted/attrmulti.sd"))
     start
-    feed_and_wait_for_docs("attrmulti", 5, :file => selfdir+"attrmulti.xml")
+    feed_and_wait_for_docs("attrmulti", 5, :file => selfdir+"attrweighted/attrmulti.xml")
 
-    check_attributesearch_multivalue
+    check_attributesearch_multivalue(false)
   end
 
-  def check_attributesearch_multivalue
+  def check_attributesearch_multivalue(has_float_fields)
     numeric = Hash.new
     numeric["mvintfield"] = @ints
     numeric["mvlongfield"] = @longs
     numeric["mvbytefield"] = @bytes
-    numeric["mvfloatfield"] = @floats
-    numeric["mvdoublefield"] = @doubles
+    if has_float_fields
+      numeric["mvfloatfield"] = @floats
+      numeric["mvdoublefield"] = @doubles
+    end
 
     numeric["mvfsintfield"] = @ints
     numeric["mvfslongfield"] = @longs
     numeric["mvfsbytefield"] = @bytes
-    numeric["mvfsfloatfield"] = @floats
-    numeric["mvfsdoublefield"] = @doubles
+    if has_float_fields
+      numeric["mvfsfloatfield"] = @floats
+      numeric["mvfsdoublefield"] = @doubles
+    end
 
     numeric.each do |field, values|
       if not field.include?("byte")

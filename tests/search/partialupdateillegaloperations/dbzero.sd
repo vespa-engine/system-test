@@ -10,9 +10,6 @@ schema dbzero {
     field wsint type weightedset<int> {
       indexing: attribute | summary
     }
-    field wsfloat type weightedset<float> {
-      indexing: attribute | summary
-    }
     field wsstr type weightedset<string> {
       indexing: attribute | summary
     }

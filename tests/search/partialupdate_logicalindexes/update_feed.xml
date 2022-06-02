@@ -29,11 +29,6 @@
       <item>SAS Braathens</item>
       <item>American Airlines</item>
     </assign>
-    <assign field='vectors'>
-      <item weight='140'>22.5</item>
-      <item weight='180'>50.0</item>
-      <item weight='100'>17.986</item>
-    </assign>
   </update>
 
 </vespafeed>

@@ -32,10 +32,6 @@ class DocumentFeatures < IndexedStreamingSearchTest
     assert_attribute("attribute(af,0)", 10.5)
     assert_attribute("attribute(af,1)", 20.5)
     assert_attribute("attribute(af,2)", 0)
-    assert_attribute("attribute(wf,10.5).weight",   100)
-    assert_attribute("attribute(wf,10.5).contains", 1)
-    assert_attribute("attribute(wf,20.5).weight",   0)
-    assert_attribute("attribute(wf,20.5).contains", 0)
 
     # string attributes
     assert_attribute("attribute(ss)",   97440432)   # hash of 'first'

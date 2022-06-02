@@ -487,21 +487,15 @@ class WeightedSetAttributeTestCase < AttributeTestCase
     int = [[100000, 10], [-200000, -20], [25, 25], [30, 30]]
     long = [[10000000000, 10], [-20000000000, -20], [2500, 25], [3000, 30]]
     byte = [[10, 10], [20, -20], [25, 25], [30, 30]]
-    float = [[1000.5, 10], [-2000.5, -20], [25.5, 25], [30.5, 30]]
-    double = [[10000.5, 10], [-20000.5, -20], [250.5, 25], [300.5, 30]]
     string = [["first", 10], ["second", -20], ["secondhalf", 25], ["third", 30]]
 
     @fields.push(@@fielddata.new("int", "intval", int))
     @fields.push(@@fielddata.new("long", "longval", long))
     @fields.push(@@fielddata.new("byte", "byteval", byte))
-    @fields.push(@@fielddata.new("float", "floatval", float))
-    @fields.push(@@fielddata.new("double", "doubleval", double))
 
     @fields.push(@@fielddata.new("fsint", "intval", int))
     @fields.push(@@fielddata.new("fslong", "longval", long))
     @fields.push(@@fielddata.new("fsbyte", "byteval", byte))
-    @fields.push(@@fielddata.new("fsfloat", "floatval", float))
-    @fields.push(@@fielddata.new("fsdouble", "doubleval", double))
 
     @fields.push(@@fielddata.new("string", "stringval", string))
     @fields.push(@@fielddata.new("fsstring", "stringval", string))
@@ -509,8 +503,6 @@ class WeightedSetAttributeTestCase < AttributeTestCase
     @fields.push(@@fielddata.new("intcr", "intval", int))
     @fields.push(@@fielddata.new("longcr", "longval", long))
     @fields.push(@@fielddata.new("bytecr", "byteval", byte))
-    @fields.push(@@fielddata.new("floatcr", "floatval", float))
-    @fields.push(@@fielddata.new("doublecr", "doubleval", double))
     @fields.push(@@fielddata.new("stringcr", "stringval", string))
     @fields.push(@@fielddata.new("tagcr", "stringval", string))
     @fields.push(@@fielddata.new("fsstringcr", "stringval", string))
