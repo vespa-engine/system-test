@@ -13,12 +13,10 @@ schema dotproduct {
 
         field array type array<int> {
             indexing: attribute | summary
-            attribute: huge
         }
 
         field array_float type array<float> {
             indexing: attribute | summary
-            attribute: huge
         }
     }
 
