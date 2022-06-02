@@ -19,7 +19,7 @@ public class SuperModelClient {
     }
 
     void loopPrintNewConfig() {
-        Instant end = Instant.now().plus(Duration.ofMinutes(1));
+        Instant end = Instant.now().plus(Duration.ofSeconds(10));
         while (Instant.now().isBefore(end)) {
             if (subscriber.nextConfig()) {
                 System.out.println("nextConfig() was true, gen="+subscriber.getGeneration()+", num tenants: "+lbHandle.getConfig().tenants().size());
