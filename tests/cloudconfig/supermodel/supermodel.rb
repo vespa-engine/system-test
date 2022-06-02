@@ -17,16 +17,17 @@ class SuperModel < CloudConfigTest
     add_expected_logged(/Unable to send default state/)
 
     add_bundle("supermodelbundle")
-    service_name = "supermodelclient"
-    classpath = "#{Environment.instance.vespa_home}/lib/jars/config.jar"
-    cmd = "cd #{dirs.tmpdir}/bundles; VESPA_CONFIG_ID=#{service_name} java -cp #{classpath}:supermodelbundle-1.0-deploy.jar com.yahoo.supermodelclient.SuperModelClient"
-    puts "CMD=#{cmd}"
 
     # Add a jdisc cluster to the app and check that it is included in config
-    app = generate_app(cmd, service_name)
+    app = generate_app()
     deploy_generated(app)
     start
-    assert_config_output_in_log("default,default:prod:default:default,false,0")
+
+    classpath = "#{Environment.instance.vespa_home}/lib/jars/config.jar"
+    env_variables = "VESPA_CONFIG_ID=supermodelclient VESPA_LOG_TARGET=file:/opt/vespa/logs/vespa/vespa.log"
+    cmd = "cd #{dirs.tmpdir}/bundles; #{env_variables}; java -cp #{classpath}:supermodelbundle-1.0-deploy.jar com.yahoo.supermodelclient.SuperModelClient"
+    output = vespa.adminserver.execute(cmd)
+    assert_match("default,default:prod:default:default,false,0", output)
   end
 
   def add_bundle(name)
@@ -34,7 +35,7 @@ class SuperModel < CloudConfigTest
     add_bundle_dir(File.expand_path(selfdir+name), name)
   end
 
-def generate_app(cmd, service_name)
+def generate_app()
     app=<<ENDER
 <?xml version="1.0" encoding="utf-8" ?>
 <services version="1.0">
@@ -47,9 +48,6 @@ def generate_app(cmd, service_name)
     </slobroks>
   </admin>
 
-  <service id="simpleapp" name="#{service_name}" command="#{cmd}" version="1.0">
-    <node hostalias="node1" />
-  </service>
   <container id="stateless" version="1.0">
       <search/>
       <document-api />
@@ -63,10 +61,6 @@ def generate_app(cmd, service_name)
 </services>
 ENDER
     return app
-  end
-
-  def assert_config_output_in_log(regexp)
-    assert_log_matches(regexp, 30)
   end
 
   def teardown
