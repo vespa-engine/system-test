@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<services version="1.0">
-
-  <service id="vmstat" name="vmstat" command="vmstat 100" version="1.0">
-    <node hostalias="node1"/>
-  </service>
-
-</services>
