@@ -20,7 +20,7 @@ class FeedAndQueryTestBase < SearchTest
     SearchApp.new.cluster(
       SearchCluster.new("mycluster").sd(selfdir + "test.sd").
       redundancy(redundancy).ready_copies(ready_copies).
-      dispatch_policy(odd_sized_groups ? "random" : "round-robin").
+      dispatch_policy(odd_sized_groups ? "adaptive" : "round-robin").
       group(create_groups(redundancy, odd_sized_groups))).
         storage(StorageCluster.new("mycluster", 9)).
         monitoring("test", "60")
