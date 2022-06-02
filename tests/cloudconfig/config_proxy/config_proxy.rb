@@ -132,7 +132,7 @@ class ConfigProxy < CloudConfigTest
     count = find_config_proxy_log_warnings()
     assert(count < 15, "expected less than 15 warnings in log, but was #{count}")
 
-    add_bundle_dir(selfdir + "../namespace/simplebundle2/", "simplebundle2")
+    add_bundle_dir(selfdir + "simplebundle", "simplebundle")
     deploy_app(CloudconfigApp.new.
                config(ConfigOverride.new("bar.baz.extra").
                       add("quux", "test")))
