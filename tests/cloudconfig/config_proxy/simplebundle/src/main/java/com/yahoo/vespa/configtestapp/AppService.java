@@ -34,7 +34,7 @@ public class AppService {
         while (true) {
 	    // Use nextGeneration instead of nextConfig to make it possible to test
 	    // new config generations too.
-            if (subscriber.nextGeneration()) {
+            if (subscriber.nextGeneration(false)) {
                 configure(subscriber.getGeneration(), h.getConfig());
             }
         }
