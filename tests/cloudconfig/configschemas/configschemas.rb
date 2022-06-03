@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'environment'
 
@@ -18,7 +18,7 @@ class ConfigSchemas < CloudConfigTest
 
     @logd_modified_default = dirs.tmpdir + "logd_modified_default.def"
     vespa.adminserver.execute("cp #{@logd_def_file} #{@logd_modified_default}")
-    vespa.adminserver.execute("sed -i #{@logd_modified_default} -e 's/default=5821/default=5888/g'")
+    vespa.adminserver.execute("sed -i #{@logd_modified_default} -e 's/default=5822/default=5888/g'")
 
     @logd_extra_field = dirs.tmpdir + "logd_extra_field.def"
     vespa.adminserver.execute("cp #{@logd_def_file} #{@logd_extra_field}")
@@ -30,7 +30,7 @@ class ConfigSchemas < CloudConfigTest
 
   def run_tests(port)
     # Test that default values can be modified
-    assert(vespa.adminserver.execute("vespa-get-config -n #{@config_name} -i #{@config_id} -a #{@logd_modified_default} -p #{port}") =~ /logserver.port 5888/)
+    assert(vespa.adminserver.execute("vespa-get-config -n #{@config_name} -i #{@config_id} -a #{@logd_modified_default} -p #{port}") =~ /logserver.rpcport 5888/)
 
     # Test that fields can be added
     assert(vespa.adminserver.execute("vespa-get-config -n #{@config_name} -i #{@config_id} -a #{@logd_def_file} -p #{port}") !~ /testfield/)
