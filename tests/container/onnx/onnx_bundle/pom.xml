@@ -11,21 +11,21 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <vespa.version>7-SNAPSHOT</vespa.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.yahoo.vespa</groupId>
             <artifactId>container</artifactId>
-            <version>7.391.28</version>
-            <!--<version>${vespa.version}</version>-->
+            <version>${vespa.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.microsoft.onnxruntime</groupId>
             <artifactId>onnxruntime</artifactId>
-            <version>1.7.0</version>
-            <!--<scope>provided</scope>-->
+            <version>1.8.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -45,8 +45,7 @@
             <plugin>
                 <groupId>com.yahoo.vespa</groupId>
                 <artifactId>bundle-plugin</artifactId>
-                <!--<version>${vespa.version}</version>-->
-                <version>7.391.28</version>
+                <version>${vespa.version}</version>
                 <extensions>true</extensions>
             </plugin>
         </plugins>
