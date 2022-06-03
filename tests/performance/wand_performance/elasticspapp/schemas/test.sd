@@ -13,6 +13,9 @@ schema test {
         }
     
     }
+
+    document-summary minimal {
+    }
     
     rank-profile default {
         first-phase {
