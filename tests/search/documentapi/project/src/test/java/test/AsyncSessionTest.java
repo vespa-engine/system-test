@@ -124,7 +124,7 @@ public class AsyncSessionTest {
                 return true;
             }
             if (result.type() == Result.ResultType.FATAL_ERROR) {
-                throw result.getError();
+                throw result.error();
             }
             Thread.sleep(1000);
         }
