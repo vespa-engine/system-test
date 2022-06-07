@@ -34,7 +34,7 @@ class HttpfeedingGwAndDocproc < IndexedSearchTest
   end
 
   def httpclient_feed(feed_file)
-    feedfile(feed_file, {:client => :vespa_feed_client, :route => "indexing"})
+    feedfile(feed_file, {:client => :vespa_feed_client, :route => "indexing", :port => 19020})
   end
 
   def teardown

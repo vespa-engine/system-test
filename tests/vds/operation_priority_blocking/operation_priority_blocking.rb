@@ -34,7 +34,7 @@ class OperationPriorityBlocking < VdsTest
 
   def put_doc(doc, priority:'NORMAL_3')
     puts "Putting document '#{doc.documentid}'"
-    feedbuffer(doc.to_put_json(true), {:json => true, :client => :vespa_feed_client, :priority => priority})
+    feedbuffer(doc.to_put_json(true), {:json => true, :client => :vespa_feed_client, :priority => priority, :port => 19020})
   end
 
   def run_vespa_get(args)
