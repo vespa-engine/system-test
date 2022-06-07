@@ -7,11 +7,17 @@ import com.yahoo.document.*;
 
 public class OneToManyDocumentsProcessor extends DocumentProcessor {
 
-    @Override
+	private final DocumentTypeManager types;
+
+	public OneToManyDocumentsProcessor(DocumentTypeManager types) {
+		this.types = types;
+	}
+
+	@Override
 	public Progress process(Processing processing) {
-		DocumentType type = processing.getService().getDocumentTypeManager().getDocumentType("worst");
 		List<DocumentOperation> docs = processing.getDocumentOperations();
 		docs.clear();
+		DocumentType type = types.getDocumentType("worst");
 		docs.add(new DocumentPut(new Document(type, "id:jalla:worst::balla:er:bra")));
 		docs.add(new DocumentPut(new Document(type, "id:jalla:worst::balla:er:ja")));
 		docs.add(new DocumentPut(new Document(type, "id:jalla:worst::balla:trallala")));
