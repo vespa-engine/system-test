@@ -21,7 +21,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   def setup
     set_owner('bjorncs')
-    set_description('Benchmarking of programmatic feed clients in Java (vespa-feed-client vs vespa-http-client)')
+    set_description('Benchmarking of the programmatic feed client vespa-feed-client in Java')
   end
 
   def test_throughput
@@ -29,18 +29,12 @@ class ProgrammaticFeedClientTest < PerformanceTest
     vespa_destination_start
     build_feed_client
 
-    run_benchmark(container_node, "VespaHttpClient",   TINY,  4)
-    run_benchmark(container_node, "VespaJsonHttpClient",   TINY,  4)
     run_benchmark(container_node, "VespaFeedClient",   TINY, 32)
     run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
-    run_benchmark(container_node, "VespaHttpClient",  SMALL,  4)
     run_benchmark(container_node, "VespaFeedClient",  SMALL, 16)
     run_benchmark(container_node, "VespaFeedClient",  SMALL, 32)
     run_benchmark(container_node, "VespaFeedClient",  SMALL, 64)
-    run_benchmark(container_node, "VespaHttpClient", MEDIUM,  4)
     run_benchmark(container_node, "VespaFeedClient", MEDIUM, 32)
-    run_benchmark(container_node, "VespaHttpClient",  LARGE,  4)
-    run_benchmark(container_node, "VespaJsonHttpClient",  LARGE,  4)
     run_benchmark(container_node, "VespaFeedClient",  LARGE, 32)
     run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 32)
   end
