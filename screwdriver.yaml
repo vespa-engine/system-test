@@ -1,6 +1,6 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 shared:
-  image: vespaengine/vespa-build-centos7:latest
+  image: vespaengine/vespa-build-centos-stream8:latest
   settings:
     email:
       addresses: [kraune@yahooinc.com]
@@ -17,14 +17,20 @@ jobs:
     steps:
       - install-deps: |
           set -e
-          yum -y install \
-            libxml2-devel \
-            rh-ruby27-rubygems-devel \
-            rh-ruby27-ruby-devel \
-            rh-ruby27 \
-            rh-ruby27-rubygem-net-telnet
-          source /opt/rh/devtoolset-11/enable
-          source /opt/rh/rh-ruby27/enable
+          dnf module enable -y ruby:2.7
+          dnf install -y \
+              gcc-toolset-11-annobin \
+              gcc-toolset-11-annobin-plugin-gcc \
+              gcc-toolset-11-binutils \
+              gcc-toolset-11-gcc-c++ \
+              gcc-toolset-11-libatomic-devel \
+              libxml2-devel \
+              ruby \
+              ruby-devel \
+              rubygems-devel \
+              rubygem-net-telnet \
+
+          source /opt/rh/gcc-toolset-11/enable
           gem install libxml-ruby gnuplot distribution test-unit builder
       - run-tests: |
           cd ${RUBYLIB}
@@ -46,19 +52,19 @@ jobs:
       - DOCKER_HUB_DEPLOY_KEY
     steps:
       - install-docker-cli: |
-          yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-          yum install -y --setopt skip_missing_names_on_install=False docker-ce docker-ce-cli containerd.io
+          dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+          dnf -y install docker-ce docker-ce-cli containerd.io
           docker system info
       - build: |
           cd docker
           docker build --file Dockerfile.base \
-                       --build-arg BASE_IMAGE=centos:7 \
-                       --tag vespaengine/vespa-systemtest-base-centos7:latest .
+                       --build-arg BASE_IMAGE=quay.io/centos/centos:stream8 \
+                       --tag vespaengine/vespa-systemtest-base-centos-stream8:latest .
       - publish: |
           if [[ -z "$SD_PULL_REQUEST" ]]; then
             OPT_STATE="$(set +o)"
             set +x
             docker login --username aressem --password "$DOCKER_HUB_DEPLOY_KEY"
             eval "$OPT_STATE"
-            docker push docker.io/vespaengine/vespa-systemtest-base-centos7:latest
+            docker push docker.io/vespaengine/vespa-systemtest-base-centos-stream8:latest
           fi

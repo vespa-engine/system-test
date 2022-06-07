@@ -24,3 +24,4 @@ RUN if [[ "$SKIP_M2_POPULATE" != "true" ]]; then /opt/vespa-systemtests/docker/i
 
 ENTRYPOINT ["bash", "-lc", "source /opt/rh/devtoolset-11/enable && source /opt/rh/rh-maven35/enable && source /opt/rh/rh-ruby27/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
 
+

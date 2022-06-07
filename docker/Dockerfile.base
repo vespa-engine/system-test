@@ -7,34 +7,45 @@ FROM $BASE_IMAGE AS base
 
 COPY /include /tmp/include
 
-RUN yum -y install --setopt=skip_missing_names_on_install=False \
-        epel-release \
-        centos-release-scl && \
-    yum -y install --setopt=skip_missing_names_on_install=False \
+RUN dnf -y install epel-release && \
+    dnf -y install \
+        dnf-plugins-core \
+        dnf-plugin-ovl && \
+    dnf config-manager --enable powertools && \
+    dnf -y module enable maven:3.6 && \
+    dnf -y module enable ruby:2.7 && \
+    dnf -y install \
         bind-utils \
-        devtoolset-11-gcc-c++ \
+        gcc-toolset-11-annobin \
+        gcc-toolset-11-annobin-plugin-gcc \
+        gcc-toolset-11-binutils \
+        gcc-toolset-11-gcc-c++ \
+        gcc-toolset-11-libatomic-devel \
         file \
         git \
-        java-11-openjdk-devel \
+        java-17-openjdk-devel \
         jq \
         libxml2-devel \
+        make \
         net-tools \
         python3-devel \
-        rh-maven35 \
-        rh-ruby27 \
-        rh-ruby27-rubygems-devel \
-        rh-ruby27-ruby-devel \
-        rh-ruby27-rubygem-net-telnet \
+        redhat-rpm-config \
+        ruby \
+        ruby-devel \
+        rubygems-devel \
+        rubygem-net-telnet \
         sudo \
         wget \
+        zstd \
         $(if [[ -e /tmp/include/additional-packages.txt ]]; then echo $(cat /tmp/include/additional-packages.txt | xargs); fi) && \
-    source /opt/rh/rh-ruby27/enable && \
-    source /opt/rh/devtoolset-11/enable && \
-    pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir tensorflow==1.15.3 tf2onnx==1.9.2 && \
-    gem install libxml-ruby gnuplot distribution test-unit builder concurrent-ruby ffi && \
-    alternatives --set java java-11-openjdk.x86_64 && \
-    alternatives --set javac java-11-openjdk.x86_64 && \
-    yum --enablerepo='*' clean all && \
-    rm -rf /tmp/include
+     dnf swap -y maven-openjdk11 maven-openjdk17 && \
+     alternatives --set java java-17-openjdk.$(arch) && \
+     alternatives --set javac java-17-openjdk.$(arch) && \
+     source /opt/rh/gcc-toolset-11/enable && \
+     gem install libxml-ruby gnuplot distribution test-unit builder concurrent-ruby bigdecimal ffi parallel && \
+     dnf clean all && rm -rf /var/cache/dnf && \
+     rm -rf /tmp/include
+
+# Java requires proper locale for unicode
+ENV LANG en_US.UTF-8
 
