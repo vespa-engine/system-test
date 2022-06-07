@@ -232,7 +232,7 @@ class FeedBlockTest < FeedBlockBase
   end
 
   def http_client_feed_file(file_name)
-    feed(:file => selfdir + file_name, :client => :vespa_feed_client)
+    feed(:file => selfdir + file_name, :client => :vespa_feed_client, :port => 19020)
   end
 
 end
