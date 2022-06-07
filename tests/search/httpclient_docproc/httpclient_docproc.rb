@@ -39,7 +39,7 @@ class HttpClientDocProcTest < SearchTest
     generate_documents(0, num_docs).write_vespafeed_xml(@feed_file)
     gw = @vespa.container.values.first
     wait_for_application(gw, output)
-    feedfile(@feed_file, {:client => :vespa_http_client, :host => gw.name, :port => gw.http_port})
+    feedfile(@feed_file, {:client => :vespa_feed_client, :host => gw.name, :port => gw.http_port})
 
     # Don't care if we do not hit the spawned documents, we only care about feeding not getting stuck in this test.
     wait_for_hitcount("Document", num_docs)

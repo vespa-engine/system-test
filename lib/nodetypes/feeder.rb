@@ -183,7 +183,7 @@ module Feeder
       p += "--trace #{params[:trace]} "
     end
 
-    if params[:client] == :vespa_feeder || params[:client] == :vespa_http_client
+    if params[:client] == :vespa_feeder
       if params[:priority]
         p += "--priority #{params[:priority]} "
       end
@@ -220,25 +220,6 @@ module Feeder
       if feed_file
         p += feed_file
       end
-    elsif params[:client] == :vespa_http_client
-      p += "--ignoreConditionNotMet "
-      if params[:host]
-        p += "--host #{params[:host]} "
-      end
-      if params[:port]
-        p += "--port #{params[:port]} "
-      end
-      if params[:num_persistent_connections_per_endpoint]
-        p += "--numPersistentConnectionsPerEndpoint #{params[:num_persistent_connections_per_endpoint]} "
-      elsif params[:numconnections]
-        p += "--numPersistentConnectionsPerEndpoint #{params[:numconnections]} "
-      end
-      if feed_file
-        p += "--file #{feed_file} "
-      end
-      unless params[:disable_tls]
-        p += '--vespaTls '
-      end
     elsif params[:client] == :vespa_feed_client
       if feed_file
         p += "--file #{feed_file} "
@@ -274,11 +255,6 @@ module Feeder
   end
 
   private
-  def vespa_http_client_cmd
-    "java -jar #{Environment.instance.vespa_home}/lib/jars/vespa-feed-client-cli-jar-with-dependencies.jar "
-  end
-
-  private
   def select_cat(filename)
     if filename.match /[.]gz$/
       return "zcat"
@@ -302,8 +278,6 @@ module Feeder
       else
         return "#{testcase.feeder_binary} "
       end
-    elsif params[:client] == :vespa_http_client
-      return vespa_http_client_cmd
     elsif params[:client] == :vespa_feed_client
       return "vespa-feed-client"
     else

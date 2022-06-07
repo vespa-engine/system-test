@@ -25,16 +25,6 @@ class MassiveHttpClientFeedingTest < SearchTest
     generate_documents(0, DOCUMENTS).write_vespafeed_json(@feed_file)
   end
 
-
-
-  def test_vespa_http_client
-    gw = deploy_test_app
-    feedfile(@feed_file, {:client => :vespa_http_client, :host => gw.name, :port => gw.http_port, :num_persistent_connections_per_endpoint => 16})
-
-    # Don't care if we do not hit the spawned documents, we only care about feeding not getting stuck in this test.
-    wait_for_hitcount("ronny", DOCUMENTS)
-  end
-
   def test_vespa_feed_client_with_tls
     gw = deploy_test_app
     feedfile(@feed_file, {:client => :vespa_feed_client, :host => gw.name, :port => gw.http_port,
