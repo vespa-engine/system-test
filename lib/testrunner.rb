@@ -32,7 +32,7 @@ class TestRunner
     @relative_testfiles = options[:testfiles] ? options[:testfiles] : []
     @testmodule_dirs = options[:testmoduledirs] ? options[:testmoduledirs] : ["#{__dir__}/../tests"]
     @testrun_id = options[:testrunid] ? options[:testrunid] : SecureRandom.urlsafe_base64
-    @vespaversion = options[:vespaversion] ? options[:vespaversion] : "7-SNAPSHOT"
+    @vespaversion = options[:vespaversion] ? options[:vespaversion] : "8-SNAPSHOT"
     @wait_for_nodes = options[:nodewait] ? options[:nodewait] : 60
     @dns_settle_time = options[:dns_settle_time] ? options[:dns_settle_time] : 0
 
