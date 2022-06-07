@@ -23,7 +23,7 @@
         </dependency>
     </dependencies>
     <properties>
-        <vespa.version>7-SNAPSHOT</vespa.version>
+        <vespa.version>8-SNAPSHOT</vespa.version>
     </properties>
     <build>
       <plugins>
