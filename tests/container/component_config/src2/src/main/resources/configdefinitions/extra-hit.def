@@ -1,4 +1,5 @@
 package=com.yahoo.vespatest
+version=4 # TODO: Version not used, remove in Vespa 9
 
 enumVal enum {Mind, Body, World}
 times int default=1
