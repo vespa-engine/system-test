@@ -16,12 +16,6 @@
   <dependencies>
     <dependency>
       <groupId>com.yahoo.vespa</groupId>
-      <artifactId>vespa-http-client</artifactId>
-      <version>${vespa.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.yahoo.vespa</groupId>
       <artifactId>vespa-feed-client</artifactId>
       <version>${vespa.version}</version>
       <scope>compile</scope>

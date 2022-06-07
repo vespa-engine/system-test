@@ -275,7 +275,7 @@ module Feeder
 
   private
   def vespa_http_client_cmd
-    "java -cp #{Environment.instance.vespa_home}/lib/jars/vespa-http-client-jar-with-dependencies.jar com.yahoo.vespa.http.client.runner.Runner "
+    "java -jar #{Environment.instance.vespa_home}/lib/jars/vespa-feed-client-cli-jar-with-dependencies.jar "
   end
 
   private
