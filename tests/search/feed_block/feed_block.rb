@@ -54,10 +54,6 @@ class FeedBlockTest < FeedBlockBase
     assert_hitcount("query=w11", 1)
   end
 
-  def http_client_feed_file(file_name)
-    feed(:file => selfdir + file_name, :client => :vespa_http_client)
-  end
-
   def assert_http_client_feed(pattern, update_value)
     assert_http_client_put_blocked(pattern)
     assert_http_client_non_trivial_update_blocked(pattern)

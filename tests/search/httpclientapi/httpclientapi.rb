@@ -16,10 +16,10 @@ class HttpClientApiTest < IndexedSearchTest
 
   def test_feed
     port = Environment.instance.vespa_web_service_port
-    feedfile(selfdir + "../data/simple.docs.3.xml", {:client => :vespa_http_client, :route => "indexing", :port => port})
+    feedfile(selfdir + "../data/simple.docs.3.xml", {:client => :vespa_feeder, :route => "indexing", :port => port})
     wait_for_hitcount("query=sddocname:simple", 3)
 
-    feedfile(selfdir + "simple.docs.error.5.4.xml", {:client => :vespa_http_client, :route => "indexing", :port => port})
+    feedfile(selfdir + "simple.docs.error.5.4.xml", {:client => :vespa_feeder, :route => "indexing", :port => port})
     wait_for_hitcount("query=sddocname:simple", 5)
   end
 

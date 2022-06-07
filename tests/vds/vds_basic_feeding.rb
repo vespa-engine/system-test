@@ -135,12 +135,12 @@ class VdsBasicFeeding < MultiProviderStorageTest
     assert_equal(doc2, doc2_get)
   end
 
-  def test_mixed_case_doctype_vespa_http_client
+  def test_mixed_case_doctype_vespa_feed_client
     deploy_app(default_app.sd(VDS + "schemas/MiXedCase.sd"))
     start
 
     set_owner("vekterli")
-    feedfile(selfdir+"data/mixedcase.xml", :client => :vespa_http_client)
+    feedfile(selfdir+"data/mixedcase.xml", :client => :vespa_feeder)
 
     doc1 = Document.new("MiXedCase", "id:MiXedCase:MiXedCase::DaisyDaisy").
       add_field("title", "title #1").
