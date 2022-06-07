@@ -231,4 +231,8 @@ class FeedBlockTest < FeedBlockBase
     vespa.document_api_v1.put(create_document(@beforelimit + 2))
   end
 
+  def http_client_feed_file(file_name)
+    feed(:file => selfdir + file_name, :client => :vespa_feed_client)
+  end
+
 end
