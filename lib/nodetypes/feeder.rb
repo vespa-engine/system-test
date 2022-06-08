@@ -235,6 +235,9 @@ module Feeder
       if params[:mode] == "benchmark"
         p += "--benchmark "
       end
+      unless params[:ignore_errors]
+        p += "--show-errors "
+      end
       port = params[:port] || Environment.instance.vespa_web_service_port
       host = params[:host] || Environment.instance.vespa_hostname
       uri_scheme = if params[:disable_tls] then "http" else "https" end
