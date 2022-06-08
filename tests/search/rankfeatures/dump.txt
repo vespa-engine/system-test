@@ -11,6 +11,8 @@ attributeMatch(b).queryCompleteness
 attributeMatch(b).significance
 attributeMatch(b).totalWeight
 attributeMatch(b).weight
+bm25(a)
+bm25(c)
 elementCompleteness(a).completeness
 elementCompleteness(a).elementWeight
 elementCompleteness(a).fieldCompleteness
@@ -82,11 +84,13 @@ fieldTermMatch(c,4).firstPosition
 fieldTermMatch(c,4).occurrences
 fieldTermMatch(c,4).weight
 firstPhase
+matches(a)
+matches(b)
+matches(c)
 nativeAttributeMatch
 nativeFieldMatch
 nativeProximity
 nativeRank
-now
 queryTermCount
 term(0).connectedness
 term(0).significance
