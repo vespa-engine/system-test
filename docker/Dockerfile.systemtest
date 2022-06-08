@@ -7,8 +7,8 @@ ARG SYSTEMTEST_BASE_IMAGE
 FROM $VESPA_BASE_IMAGE AS vespa
 
 COPY /rpms/*.rpm /tmp/
-RUN yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/vespa/vespa/repo/epel-7/group_vespa-vespa-epel-7.repo && \
-    yum -y localinstall $(ls /tmp/vespa*.rpm | xargs) && \
+RUN dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/vespa/vespa/repo/centos-stream-8/group_vespa-vespa-centos-stream-8.repo && \
+    dnf -y localinstall $(ls /tmp/vespa*.rpm | xargs) && \
     yum clean all && \
     rm -f /tmp/*.rpm
 
@@ -30,6 +30,6 @@ ENV VESPA_TLS_CONFIG_FILE=/opt/vespa/conf/vespa/tls/tls_config.json
 
 RUN if [[ "$SKIP_M2_POPULATE" != "true" ]]; then /opt/vespa-systemtests/docker/include/populate-m2-repo.sh root; fi
 
-ENTRYPOINT ["bash", "-lc", "source /opt/rh/devtoolset-11/enable && source /opt/rh/rh-maven35/enable && source /opt/rh/rh-ruby27/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
+ENTRYPOINT ["bash", "-lc", "source /opt/rh/gcc-toolset-11/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
 
 
