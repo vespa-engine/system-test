@@ -23,6 +23,7 @@ RUN dnf -y install epel-release && \
         gcc-toolset-11-libatomic-devel \
         file \
         git \
+        hostname \
         java-17-openjdk-devel \
         jq \
         libxml2-devel \
