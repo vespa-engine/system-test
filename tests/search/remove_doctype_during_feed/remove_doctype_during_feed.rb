@@ -113,9 +113,4 @@ class RemoveDocTypeDuringFeed < SearchTest
   def teardown
     stop
   end
-
-  Clones = 0
-  for i in 1..Clones
-    alias_method("test_remove_doctype_during_feed_clone%03d" % i, :test_remove_doctype_during_feed)
-  end
 end
