@@ -36,6 +36,7 @@ class DocumentStoreTest < PerformanceTest
     set_description('Test put performance for string field')
     deploy("#{selfdir}app")
     start
+    vespa_destination_start
     compile_feed_generator
     warm_up
     profiler_start

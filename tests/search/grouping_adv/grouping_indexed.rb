@@ -21,7 +21,7 @@ class GroupingIndexed < IndexedSearchTest
   end
 
   def test_advgrouping_fs4
-    deploy_app(singlenode_2cols_realtime(selfdir+'test.sd').threads_per_search(1))
+    deploy_app(singlenode_2cols_realtime(selfdir+'test.sd').threads_per_search(1).search_dir(selfdir + 'search'))
     start
     feed_docs
 
@@ -78,7 +78,7 @@ class GroupingIndexed < IndexedSearchTest
 
   def test_global_max
     set_owner('bjorncs')
-    deploy_app(singlenode_2cols_realtime(selfdir+'test.sd').threads_per_search(1).search_dir(selfdir + 'search'))
+    deploy_app(singlenode_2cols_realtime(selfdir+'test.sd').threads_per_search(1).search_dir(selfdir + 'global-max'))
     start
     feed_docs
     querytest_global_max

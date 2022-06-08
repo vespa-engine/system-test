@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'test/unit'
 require 'rubygems'
 require 'environment'
@@ -16,7 +16,6 @@ require 'app_generator/test/test'
 require 'app_generator/test/storagetest'
 require 'app_generator/test/containertest'
 require 'app_generator/test/cloudconfigtest'
-require 'app_generator/test/generic_service_test'
 require 'test/yamas_test.rb'
 require 'test/distr_bucketdb_parser_test'
 require 'test/distributionstates_test'

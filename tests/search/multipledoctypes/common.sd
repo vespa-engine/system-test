@@ -14,4 +14,7 @@ schema common {
   fieldset default {
     fields: title
   }
+  rank-profile year inherits default {
+    first-phase { expression: attribute(year) }
+  }  
 }

@@ -109,7 +109,7 @@ class ContainerAppGenTest < Test::Unit::TestCase
           .docproc(DocumentProcessing.new\
             .chain(Chain.new.add(
               DocProc.new("com.yahoo.vespatest.WorstMusicDocProc")))))\
-        .logserver("node1", nil)\
+        .logserver("node1")\
         .slobrok("node1")\
         .search(SearchCluster.new("music").sd("music")))
   end
@@ -120,7 +120,7 @@ class ContainerAppGenTest < Test::Unit::TestCase
           .processing(Processing.new\
             .chain(ProcessorChain.new.add(
               Processor.new("com.yahoo.vespatest.SearchProcessor")))))\
-        .logserver("node1", nil)\
+        .logserver("node1")\
         .slobrok("node1")\
         .search(SearchCluster.new("music").sd("music")))
   end
@@ -135,13 +135,13 @@ class ContainerAppGenTest < Test::Unit::TestCase
   def test_access_log
     actual =
       Container.new.component(AccessLog.new("vespa").
-                              fileNamePattern("#{Environment.instance.vespa_home}/logs/vespa/qrs/QueryAccessLog.%Y%m%d%H%M%S").
+                              fileNamePattern("#{Environment.instance.vespa_home}/logs/vespa/access/QueryAccessLog.%Y%m%d%H%M%S").
                               rotationInterval("0 1 ...")).
       to_xml("")
 
     expected_substr =
     "<container id=\"default\" version=\"1.0\">
-       <accesslog fileNamePattern=\"#{Environment.instance.vespa_home}/logs/vespa/qrs/QueryAccessLog.%Y%m%d%H%M%S\" rotationInterval=\"0 1 ...\" type=\"vespa\" />"
+       <accesslog fileNamePattern=\"#{Environment.instance.vespa_home}/logs/vespa/access/QueryAccessLog.%Y%m%d%H%M%S\" rotationInterval=\"0 1 ...\" type=\"vespa\" />"
 
     assert_substring_ignore_whitespace(actual, expected_substr)
   end

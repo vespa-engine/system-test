@@ -10,12 +10,6 @@ schema attrmulti {
     field byte type weightedset<byte> {
       indexing: attribute
     }
-    field float type weightedset<float> {
-      indexing: attribute
-    }
-    field double type weightedset<double> {
-      indexing: attribute
-    }
     field string type weightedset<string> {
       indexing: attribute
     }

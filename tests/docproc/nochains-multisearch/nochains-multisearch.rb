@@ -30,7 +30,7 @@ class NoChainsMultiSearch < DocprocTest
                                 DocumentProcessor.new("com.yahoo.vespatest.BananaDocProc", "indexingStart")))).
                 http(Http.new().server(Server.new("myServer", 4082)))
         ).
-            logserver("node1", nil).
+            logserver("node1").
             slobrok("node1").
             search(SearchCluster.new("music").sd(selfdir+"music.sd").
                        indexing("musicindexingcluster").

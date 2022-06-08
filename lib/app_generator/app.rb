@@ -30,7 +30,6 @@ require 'app_generator/xml_helper'
 require 'app_generator/persistence_threads'
 require 'app_generator/validation_overrides'
 require 'app_generator/http'
-require 'app_generator/generic_service'
 require 'app_generator/resource_limits'
 
 # App generator.
@@ -95,7 +94,6 @@ class App
   chained_forward :clients,
                   :feeder_options => :feeder_options,
                   :load_type => :load_type
-  chained_forward :generic_services, :generic_service => :service
 
   def initialize
     @rank_files = []
@@ -111,7 +109,6 @@ class App
     @clients = Clients.new
     @containers = Containers.new
     @validation_overrides = ValidationOverrides.new
-    @generic_services = GenericServices.new
     @legacy_overrides = {}
   end
 
@@ -195,7 +192,6 @@ class App
     services << newline(@content.to_xml("  "))
     services << newline(@containers.to_xml("  "))
     services << @clients.to_xml("  ")
-    services << newline(@generic_services.to_xml('  '))
     services << footer
   end
 

@@ -1,7 +1,7 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 module Maven
-  DEFAULT_VESPA_POM_VERSION = '7-SNAPSHOT'
+  DEFAULT_VESPA_POM_VERSION = '8-SNAPSHOT'
 
   def Maven.compile_bundles(bundles, testcase, admin_server, vespa_version)
     compiled = []
@@ -213,7 +213,7 @@ module Maven
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.10.1</version>
             <configuration>
-              <release>11</release>
+              <release>17</release>
             </configuration>
           </plugin>
 

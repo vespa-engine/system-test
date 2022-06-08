@@ -22,6 +22,7 @@ class BasicFeeding < PerformanceTest
     set_owner("bergum")
     deploy_expand_vespa_home(@app)
     start
+    vespa_destination_start
   end
 
   def doc_template(type)

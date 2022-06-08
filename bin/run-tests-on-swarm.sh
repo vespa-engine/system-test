@@ -228,6 +228,8 @@ VESPAVERSION=$(docker run --rm $BINDMOUNT_OPTS --entrypoint bash $DOCKERIMAGE -l
 case "$VESPAVERSION" in
     7.*.0) VESPAVERSION=7-SNAPSHOT
 	   ;;
+    8.*.0) VESPAVERSION=8-SNAPSHOT
+	   ;;
     *)
 	   ;;
 esac

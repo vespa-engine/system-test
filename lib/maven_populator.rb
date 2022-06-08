@@ -32,7 +32,7 @@ end
 
 
 if __FILE__ == $0
-  version = '7-SNAPSHOT'
+  version = '8-SNAPSHOT'
   m2repo = nil
   o = OptionParser.new
   o.on('-v', '--version VERSION', String, 'Vespa version', String) { |v|

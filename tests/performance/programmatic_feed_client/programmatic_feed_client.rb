@@ -21,25 +21,20 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   def setup
     set_owner('bjorncs')
-    set_description('Benchmarking of programmatic feed clients in Java (vespa-feed-client vs vespa-http-client)')
+    set_description('Benchmarking of the programmatic feed client vespa-feed-client in Java')
   end
 
   def test_throughput
     container_node = deploy_test_app
+    vespa_destination_start
     build_feed_client
 
-    run_benchmark(container_node, "VespaHttpClient",   TINY,  4)
-    run_benchmark(container_node, "VespaJsonHttpClient",   TINY,  4)
     run_benchmark(container_node, "VespaFeedClient",   TINY, 32)
     run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
-    run_benchmark(container_node, "VespaHttpClient",  SMALL,  4)
     run_benchmark(container_node, "VespaFeedClient",  SMALL, 16)
     run_benchmark(container_node, "VespaFeedClient",  SMALL, 32)
     run_benchmark(container_node, "VespaFeedClient",  SMALL, 64)
-    run_benchmark(container_node, "VespaHttpClient", MEDIUM,  4)
     run_benchmark(container_node, "VespaFeedClient", MEDIUM, 32)
-    run_benchmark(container_node, "VespaHttpClient",  LARGE,  4)
-    run_benchmark(container_node, "VespaJsonHttpClient",  LARGE,  4)
     run_benchmark(container_node, "VespaFeedClient",  LARGE, 32)
     run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 32)
   end
@@ -131,7 +126,6 @@ class ProgrammaticFeedClientTest < PerformanceTest
     output = deploy_app(SearchApp.new.
       sd(selfdir + 'text.sd').
       container(container_cluster).
-      generic_service(GenericService.new('devnull', "#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")))
     start
 
     gw = @vespa.container.values.first
@@ -147,4 +141,5 @@ class ProgrammaticFeedClientTest < PerformanceTest
   def teardown
     stop
   end
+
 end

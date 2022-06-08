@@ -851,26 +851,13 @@ module TestBase
     params[:feed_node] ? params[:feed_node] : vespa.adminserver
   end
 
-  def use_vespa_http_client(params)
-    params[:client] && params[:client] == :vespa_http_client
-  end
-
   def feeder_numthreads
     1
   end
 
   def augment_feeder_params(params_out)
-    if use_vespa_http_client(params_out)
-      if !params_out[:host]
-        params_out[:host] = get_feed_node(params_out).hostname
-      end
-      if !params_out[:port]
-        params_out[:port] = vespa.default_document_api_port
-      end
-    else
-      if !params_out[:numthreads]
-         params_out[:numthreads] = feeder_numthreads
-      end
+    if !params_out[:numthreads]
+      params_out[:numthreads] = feeder_numthreads
     end
   end
 

@@ -9,17 +9,11 @@
   <parent>
     <groupId>com.yahoo.vespa.systemtest</groupId>
     <artifactId>test-apps-parent</artifactId>
-    <version>7-SNAPSHOT</version>
+    <version>8-SNAPSHOT</version>
     <relativePath>../../../pom.xml</relativePath>
   </parent>
 
   <dependencies>
-    <dependency>
-      <groupId>com.yahoo.vespa</groupId>
-      <artifactId>vespa-http-client</artifactId>
-      <version>${vespa.version}</version>
-      <scope>compile</scope>
-    </dependency>
     <dependency>
       <groupId>com.yahoo.vespa</groupId>
       <artifactId>vespa-feed-client</artifactId>

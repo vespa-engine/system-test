@@ -17,6 +17,12 @@ public class Annotator extends DocumentProcessor {
 
     private static Logger log = Logger.getLogger(Annotator.class.getName());
 
+	private final DocumentTypeManager types;
+
+	public Annotator(DocumentTypeManager types) {
+		this.types = types;
+	}
+
 	@Override
 	public Progress process(Processing processing) {
 		for (DocumentOperation op : processing.getDocumentOperations()) {
@@ -24,10 +30,8 @@ public class Annotator extends DocumentProcessor {
 				continue;
 			}
 			Document document = ((DocumentPut)op).getDocument();
-			log.info("Getting DocumentTypeManager.");
-			DocumentTypeManager manager = processing.getService().getDocumentTypeManager();
-			log.info("Got DocumentTypeManager " + manager);
-			AnnotationTypeRegistry registry = manager.getAnnotationTypeRegistry();
+			log.info("Got DocumentTypeManager " + types);
+			AnnotationTypeRegistry registry = types.getAnnotationTypeRegistry();
 			log.info("Got AnnotationTypeRegistry " + registry);
 			AnnotationType personType = registry.getType("person");
 			AnnotationType artistType = registry.getType("artist");

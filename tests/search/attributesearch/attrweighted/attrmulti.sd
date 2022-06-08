@@ -11,12 +11,6 @@ schema attrmulti {
     field mvbytefield type weightedset<byte> {
       indexing: attribute
     }
-    field mvfloatfield type weightedset<float> {
-      indexing: attribute
-    }
-    field mvdoublefield type weightedset<double> {
-      indexing: attribute
-    }
 
 
     field mvfsintfield type weightedset<int> {
@@ -28,14 +22,6 @@ schema attrmulti {
       attribute: fast-search
     }
     field mvfsbytefield type weightedset<byte> {
-      indexing: attribute
-      attribute: fast-search
-    }
-    field mvfsfloatfield type weightedset<float> {
-      indexing: attribute
-      attribute: fast-search
-    }
-    field mvfsdoublefield type weightedset<double> {
       indexing: attribute
       attribute: fast-search
     }

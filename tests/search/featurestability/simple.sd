@@ -18,17 +18,11 @@ schema simple {
         field double_arr type array<double> {
             indexing: attribute
         }   
-        field double_wset type weightedset<double> {
-            indexing: attribute
-        }   
         
         field float_exp type float {
             indexing: attribute
         }   
         field float_arr type array<float> {
-            indexing: attribute
-        }   
-        field float_wset type weightedset<float> {
             indexing: attribute
         }   
         
@@ -77,6 +71,6 @@ schema simple {
         }  
     }
     fieldset my_set {
-        fields: byte_exp,byte_arr,byte_wset,double_exp,double_arr,double_wset,float_exp,float_arr,float_wset,int_exp,int_arr,int_wset,long_exp,long_arr,long_wset,position_exp,position_arr,string_exp,string_arr,string_wset,url_exp,url_arr
+        fields: byte_exp,byte_arr,byte_wset,double_exp,double_arr,float_exp,float_arr,int_exp,int_arr,int_wset,long_exp,long_arr,long_wset,position_exp,position_arr,string_exp,string_arr,string_wset,url_exp,url_arr
     }   	     
 }      

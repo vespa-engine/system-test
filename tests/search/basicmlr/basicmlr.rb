@@ -15,7 +15,7 @@ class BasicMLR < IndexedSearchTest
   def test_basicMLR
 
     # Deploy classicrank application.
-    @sd_dir = @mytmpdir + "searchdefinitions"
+    @sd_dir = @mytmpdir + "schemas"
     FileUtils.mkdir_p(@sd_dir)
     deployApp("nativeRank")
     start
@@ -46,7 +46,7 @@ class BasicMLR < IndexedSearchTest
                               "< #{@mytmpdir}/firstphase.expression.raw " +
                               "> #{@mytmpdir}/firstphase.expression");
 
-    @sd_dir = @mytmpdir + "searchdefinitions2"
+    @sd_dir = @mytmpdir + "schemas2"
     FileUtils.mkdir_p(@sd_dir)
     vespa.nodeproxies.first[1].copy_remote_file_into_local_directory("#{@mytmpdir}/firstphase.expression", @sd_dir)
 

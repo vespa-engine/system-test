@@ -31,6 +31,8 @@ class FeedingMultipleDocTypesTest < PerformanceTest
 
     deploy_app(create_app([@base_sd_file]))
     start
+    vespa_destination_start
+
     run_feeding_test("1_type")
 
     clean_indexes_and_deploy_app(create_app([@base_sd_file] + create_sd_files(15)))
@@ -79,7 +81,6 @@ class FeedingMultipleDocTypesTest < PerformanceTest
                       docproc(DocumentProcessing.new).
                       documentapi(ContainerDocumentApi.new)).
             indexing("combinedcontainer").
-            generic_service(GenericService.new('devnull', "#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")).
             config(ConfigOverride.new("vespa.config.content.stor-filestor").
                    add("num_threads", "16").
                    add("num_response_threads", "2"))

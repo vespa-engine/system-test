@@ -7,11 +7,17 @@ import com.yahoo.document.*;
 
 public class OneToManyDocumentsSomeInSameBucketProcessor extends DocumentProcessor {
 
+	private final DocumentTypeManager types;
+
+	public OneToManyDocumentsSomeInSameBucketProcessor(DocumentTypeManager types) {
+		this.types = types;
+	}
+
 	@Override
 	public Progress process(Processing processing) {
-		DocumentType type = processing.getService().getDocumentTypeManager().getDocumentType("worst");
 		List<DocumentOperation> docs = processing.getDocumentOperations();
 		docs.clear();
+		DocumentType type = types.getDocumentType("worst");
 		docs.add(new DocumentPut(new Document(type, "id:123456:worst:n=7890:balla:er:bra")));
 		docs.add(new DocumentPut(new Document(type, "id:jalla:worst::balla:er:ja")));
 		docs.add(new DocumentPut(new Document(type, "id:567890:worst:n=1234:a")));

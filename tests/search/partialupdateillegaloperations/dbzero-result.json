@@ -23,24 +23,12 @@
                     "documentid": "id:test/test:dbzero::0",
                     "sint": 100,
                     "sfloat": 100.0,
-                    "wsint": [
-                        {
-                            "item": 100,
-                            "weight": 100
-                        }
-                    ],
-                    "wsfloat": [
-                        {
-                            "item": 100.0,
-                            "weight": 100
-                        }
-                    ],
-                    "wsstr": [
-                        {
-                            "item": "string",
-                            "weight": 100
-                        }
-                    ]
+                    "wsint": {
+                        "100": 100
+                    },
+                    "wsstr": {
+                        "string": 100
+                    }
                 }
             }
         ]

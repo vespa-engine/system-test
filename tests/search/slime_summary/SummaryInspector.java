@@ -24,7 +24,6 @@ import java.util.Iterator;
 import static com.yahoo.container.protect.Error.UNSPECIFIED;
 import static com.yahoo.prelude.querytransform.NormalizingSearcher.ACCENT_REMOVAL;
 import static com.yahoo.prelude.querytransform.StemmingSearcher.STEMMING;
-import static com.yahoo.search.querytransform.QueryTreeUtil.andQueryItemWithRoot;
 
 @After({ STEMMING, ACCENT_REMOVAL })
 public class SummaryInspector extends Searcher {

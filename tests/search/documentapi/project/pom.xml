@@ -23,7 +23,7 @@
         </dependency>
     </dependencies>
     <properties>
-        <vespa.version>7-SNAPSHOT</vespa.version>
+        <vespa.version>8-SNAPSHOT</vespa.version>
     </properties>
     <build>
       <plugins>
@@ -32,7 +32,7 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.10.1</version>
           <configuration>
-            <release>11</release>
+            <release>17</release>
             <showWarnings>true</showWarnings>
             <optimize>true</optimize>
             <showDeprecation>false</showDeprecation>

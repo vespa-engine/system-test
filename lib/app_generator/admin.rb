@@ -18,8 +18,8 @@ class Admin
   class LogServer < NodeBase
     tag "logserver"
 
-    def initialize(hostalias, jvmargs)
-      super(:hostalias => hostalias, :jvmargs => jvmargs)
+    def initialize(hostalias)
+      super(:hostalias => hostalias)
     end
   end
 
@@ -75,8 +75,8 @@ class Admin
     @slobroks.push(Slobrok.new(hostalias))
   end
 
-  def logserver(hostalias, jvmargs)
-    @logservers.push(LogServer.new(hostalias, jvmargs))
+  def logserver(hostalias)
+    @logservers.push(LogServer.new(hostalias))
   end
 
   def clustercontroller(hostalias)

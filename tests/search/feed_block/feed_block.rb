@@ -54,10 +54,6 @@ class FeedBlockTest < FeedBlockBase
     assert_hitcount("query=w11", 1)
   end
 
-  def http_client_feed_file(file_name)
-    feed(:file => selfdir + file_name, :client => :vespa_http_client)
-  end
-
   def assert_http_client_feed(pattern, update_value)
     assert_http_client_put_blocked(pattern)
     assert_http_client_non_trivial_update_blocked(pattern)
@@ -233,6 +229,10 @@ class FeedBlockTest < FeedBlockBase
   def feed_and_test_document_v1_api_two_nodes_resumed()
     # Currently have @beforelimit + 1 documents, but now spread over two nodes
     vespa.document_api_v1.put(create_document(@beforelimit + 2))
+  end
+
+  def http_client_feed_file(file_name)
+    feed(:file => selfdir + file_name, :client => :vespa_feed_client, :port => 19020)
   end
 
 end

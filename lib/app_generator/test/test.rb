@@ -520,12 +520,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_logserver_jvmargs
-    actual = SearchApp.new.logserver("foo", '-Option').services_xml
-    expected_substr = '<logserver hostalias="foo" jvmargs="-Option" />'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
   def test_container_jvm_options
     actual = SearchApp.new.qrserver(
                QrserverCluster.new.jvmoptions('-Option')).services_xml
@@ -705,22 +699,6 @@ class SearchAppGenTest < Test::Unit::TestCase
         <document-processing cluster="default" />
         <document global="true" mode="index" type="test" />
       </documents>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
-  def test_that_app_can_have_generic_services
-    actual = SearchApp.new.sd("test.sd").
-        generic_service(GenericService.new('foobar', '/bin/myfoo --do --stuff')).
-        generic_service(GenericService.new('baz', '/bin/mybaz')).
-    services_xml
-    expected_substr = '
-      <service command="/bin/myfoo --do --stuff" name="foobar" version="1.0">
-        <node hostalias="node1" />
-      </service>
-
-      <service command="/bin/mybaz" name="baz" version="1.0">
-        <node hostalias="node1" />
-      </service>'
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 

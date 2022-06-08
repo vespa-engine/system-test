@@ -19,7 +19,6 @@ import java.util.Map;
 import static com.yahoo.container.protect.Error.UNSPECIFIED;
 import static com.yahoo.prelude.querytransform.NormalizingSearcher.ACCENT_REMOVAL;
 import static com.yahoo.prelude.querytransform.StemmingSearcher.STEMMING;
-import static com.yahoo.search.querytransform.QueryTreeUtil.andQueryItemWithRoot;
 
 @After({ STEMMING, ACCENT_REMOVAL })
 public class DotProductTestSearcher extends Searcher {
@@ -46,7 +45,7 @@ public class DotProductTestSearcher extends Searcher {
             if (field != null && tokens != null) {
                 String label = String.format("dp%d", i);
                 Map<String,Integer> token_map = parser.parse(tokens, new LinkedHashMap<String,Integer>());
-                andQueryItemWithRoot(query, makeDotProduct(label, field, token_map));
+                query.getModel().getQueryTree().and(makeDotProduct(label, field, token_map));
             }
         }
         return execution.search(query);

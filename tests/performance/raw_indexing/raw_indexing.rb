@@ -20,8 +20,9 @@ class FeedingIndexTest < PerformanceTest
         deploy_app(create_app)
         
         set_up_files
-        
+
         start
+        vespa_destination_start
     end
 
     def download_doc_file
@@ -89,13 +90,12 @@ class FeedingIndexTest < PerformanceTest
                                 jvmoptions('-Xms10g -Xmx10g').
                                 search(Searching.new).
                                 docproc(DocumentProcessing.new).
-                                documentapi(ContainerDocumentApi.new)).
-        generic_service(GenericService.new('devnull', "#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000"))
+                                documentapi(ContainerDocumentApi.new))
     end
-    
-    def teardown
-        super
-    end
+
+  def teardown
+    super
+  end
 
 end
 

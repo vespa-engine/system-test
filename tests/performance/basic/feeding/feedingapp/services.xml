@@ -39,8 +39,4 @@
     </nodes>
   </content>
 
-  <service name="devnull" command="$VESPA_HOME/bin/vespa-destination --instant --silent 1000000000" version="1.0">
-    <node hostalias="node1"/>
-  </service>
-
 </services>
