@@ -16,6 +16,7 @@ RUN dnf -y install epel-release && \
     dnf -y module enable ruby:2.7 && \
     dnf -y install \
         bind-utils \
+        cmake \
         gcc-toolset-11-annobin \
         gcc-toolset-11-annobin-plugin-gcc \
         gcc-toolset-11-binutils \
