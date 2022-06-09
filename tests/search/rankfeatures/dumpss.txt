@@ -1,3 +1,4 @@
+bm25(a)
 elementCompleteness(a).completeness
 elementCompleteness(a).elementWeight
 elementCompleteness(a).fieldCompleteness
@@ -48,11 +49,11 @@ fieldTermMatch(a,4).firstPosition
 fieldTermMatch(a,4).occurrences
 fieldTermMatch(a,4).weight
 firstPhase
+matches(a)
 nativeAttributeMatch
 nativeFieldMatch
 nativeProximity
 nativeRank
-now
 queryTermCount
 term(0).connectedness
 term(0).significance
