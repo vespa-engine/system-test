@@ -31,7 +31,7 @@ class XGBoostMissingValues < IndexedSearchTest
   end
 
   def stateless_model_eval(hit, model)
-    eval_url = "/model-evaluation/v1/#{model}/eval/?"
+    eval_url = "/model-evaluation/v1/#{model}/eval/?format.tensors=long&"
     if hit.field.has_key? "field1"
       eval_url += "f1=%s&" % hit.field["field1"].to_f
     end

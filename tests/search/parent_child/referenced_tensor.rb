@@ -36,10 +36,9 @@ class ReferencedTensorTest < ParentChildTestBase
                                 nil, nil])
     assert_relevances(root_type, [10209120.0, 50621240.0])
     assert_relevances("ad", [10209120.0, 50621241.0, 2.0, 3.0, 4.0])
-    indexed_tensors = [{"cells"=>[{"address"=>{"x"=>"0"}, "value"=>1.0}, {"address"=>{"x"=>"1"}, "value"=>2.0}]},
-                       {"cells"=>[{"address"=>{"x"=>"0"}, "value"=>5.0}, {"address"=>{"x"=>"1"}, "value"=>6.0}]}]
-    mapped_tensors = [{"cells"=>[{"address"=>{"x"=>"1"}, "value"=>4.0}, {"address"=>{"x"=>"0"}, "value"=>3.0}]},
-                      {"cells"=>[{"address"=>{"x"=>"1"}, "value"=>8.0}, {"address"=>{"x"=>"0"}, "value"=>7.0}]}]
+
+    indexed_tensors = [{"type"=>"tensor(x[2])", "values"=>[1,2]}, {"type"=>"tensor(x[2])", "values"=>[5,6]}]
+    mapped_tensors = [{"type"=>"tensor(x{})", "cells"=>{"0"=>3.0,"1"=>4.0}},{"type"=>"tensor(x{})", "cells"=>{"0"=>7.0,"1"=>8.0}}]
     assert_tensor_fields(root_type, "indexed_tensor", indexed_tensors)
     assert_tensor_fields(root_type, "mapped_tensor", mapped_tensors)
     feed(:file => get_test_path("ad-updates.json"))

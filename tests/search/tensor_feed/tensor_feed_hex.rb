@@ -18,22 +18,22 @@ class TensorFeedHexTest < IndexedSearchTest
     start
     feed_and_wait_for_docs("test", 4, :file => @base_dir + "docs.json")
 
-    search_docs = extract_docs(search("query=sddocname:test&format=json").json)
+    search_docs = extract_docs(search("query=sddocname:test&format=json&format.tensors=long").json)
     puts "search_docs: #{search_docs}"
     assert_tensor_docs(search_docs)
 
-    visit_response = vespa.document_api_v1.visit(:selection => "test", :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10)
+    visit_response = vespa.document_api_v1.visit(:selection => "test", :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10, "format.tensors" => "long")
     puts "visit_response: #{visit_response}"
     visit_docs = extract_visit_docs(visit_response)
     puts "visit_docs: #{visit_docs}"
     assert_tensor_docs(visit_docs)
 
     feed(:file => @base_dir + "updates.json")
-    search_docs = extract_docs(search("query=sddocname:test&format=json&nocache").json)
+    search_docs = extract_docs(search("query=sddocname:test&format=json&format.tensors=long&nocache").json)
     puts "search_docs: #{search_docs}"
     assert_tensor_docs_after_updates(search_docs)
 
-    visit_response = vespa.document_api_v1.visit(:selection => "test", :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10)
+    visit_response = vespa.document_api_v1.visit(:selection => "test", :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10, "format.tensors" => "long")
     puts "visit_response: #{visit_response}"
     visit_docs = extract_visit_docs(visit_response)
     puts "visit_docs: #{visit_docs}"
@@ -41,7 +41,7 @@ class TensorFeedHexTest < IndexedSearchTest
   end
 
   def assert_tensor_docs(docs)
-    expect_8 = [ nil, 
+    expect_8 = [ nil,
                  [{'address'=>{'x'=>'0'}, 'value'=>0.0},
                   {'address'=>{'x'=>'1'}, 'value'=>0.0},
                   {'address'=>{'x'=>'2'}, 'value'=>0.0},

@@ -11,7 +11,7 @@ class SchemaChangesTensorAttributeTest < SearchTest
   end
 
   def assert_tensor_content(exp_tensor, exp_relevancy)
-    result = search("query=sddocname:test&format=json")
+    result = search("query=sddocname:test&format=json&format.tensors=long")
     assert_tensor_field([{'address'=>{'x'=>'0'}, 'value'=>exp_tensor[0]},
                          {'address'=>{'x'=>'1'}, 'value'=>exp_tensor[1]}], result, "t1")
     assert_relevancy(result, exp_relevancy)
