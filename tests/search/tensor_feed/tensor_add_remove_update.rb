@@ -19,7 +19,7 @@ class TensorAddRemoveUpdateTest < SearchTest
     start
     feed_and_wait_for_docs("test", 1, :file => @base_dir + "docs.json")
 
-    query = "query=sddocname:test&format=json"
+    query = "query=sddocname:test&format=json&format.tensors=long"
     doc_id = "id:test:test::0"
 
     feed(:file => @base_dir + "add_update.json")

@@ -119,7 +119,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     puts "Reindexing complete after #{Time.now - start_time} seconds"
   end
 
-  # Wait for convergence of all services in the application — specifically document processors 
+  # Wait for convergence of all services in the application — specifically document processors
   def wait_for_convergence(generation)
     start_time = Time.now
     until get_json(http_request(URI(application_url + "serviceconverge"), {}))["converged"] or Time.now - start_time > 120 # seconds
@@ -180,7 +180,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
   end
 
   def do_search
-    result = search("query=sddocname:test&format=json")
+    result = search("query=sddocname:test&format=json&format.tensors=long")
     result.sort_results_by("id")
     result
   end

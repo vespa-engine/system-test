@@ -20,7 +20,7 @@ class DocumentApiV1
 
   attr_reader :host, :port
 
-  @@known_request_params = [:concurrency, :condition, :create, :cluster, :continuation,
+  @@known_request_params = [:concurrency, :condition, :create, :cluster, :continuation, "format.tensors",
                             :fieldSet, :route, :selection, :wantedDocumentCount, :bucketSpace].to_set
 
   def initialize(host, port, test_case)
@@ -49,7 +49,7 @@ class DocumentApiV1
     end
     @connectionPool.acquire(@host, port)
   end
-  
+
   def http_post(path, content, params={}, headers={})
     unless params[:brief]
       @test_case.output("http_post('#{path}', '#{content}'")
@@ -119,7 +119,7 @@ class DocumentApiV1
     end
     "/document/v1/#{uri_enc(parsed_id[:namespace])}/#{uri_enc(parsed_id[:doc_type])}/#{location}/#{uri_enc(parsed_id[:rest])}"
   end
-  
+
   def do_mutating_op(document, params={})
     uri = doc_id_to_v1_uri(document.documentid)
     uri += request_params(params)

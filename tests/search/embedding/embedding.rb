@@ -32,7 +32,7 @@ class Embedding < IndexedSearchTest
     attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(tokens)"]
     puts "queryFeature: '#{queryFeature}'"
     puts "attributeFeature: '#{attributeFeature}'"
-    expectedEmbedding = JSON.parse('{"type":"tensor(x[5])","cells":[{"address":{"x":"0"},"value":9912.0},{"address":{"x":"1"},"value":0.0},{"address":{"x":"2"},"value":6595.0},{"address":{"x":"3"},"value":501.0},{"address":{"x":"4"},"value":0.0}]}')
+    expectedEmbedding = JSON.parse('{"type":"tensor(x[5])","values":[9912.0, 0.0, 6595.0, 501.0, 0.0]}')
     assert_equal(expectedEmbedding.to_s, queryFeature.to_s)
     assert_equal(expectedEmbedding.to_s, attributeFeature.to_s)
   end
@@ -43,7 +43,7 @@ class Embedding < IndexedSearchTest
     attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(tokens)"]
     puts "queryFeature: '#{queryFeature}'"
     puts "attributeFeature: '#{attributeFeature}'"
-    expectedEmbedding = JSON.parse('{"type":"tensor(x[5])","cells":[{"address":{"x":"0"},"value":9912.0},{"address":{"x":"1"},"value":0.0},{"address":{"x":"2"},"value":6595.0},{"address":{"x":"3"},"value":501.0},{"address":{"x":"4"},"value":0.0}]}')
+    expectedEmbedding = JSON.parse('{"type":"tensor(x[5])","values":[9912.0, 0.0, 6595.0, 501.0, 0.0]}')
     assert_equal(expectedEmbedding.to_s, queryFeature.to_s)
     assert_equal(expectedEmbedding.to_s, attributeFeature.to_s)
   end

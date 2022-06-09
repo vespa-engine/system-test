@@ -9,7 +9,7 @@ module TensorFeedTestBase
   end
 
   def get_result_document(doc_id)
-    result = vespa.document_api_v1.get(doc_id)
+    result = vespa.document_api_v1.get(doc_id, {"format.tensors"=>"long"})
     {"fields" => result.fields}
   end
 

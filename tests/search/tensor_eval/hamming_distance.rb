@@ -13,6 +13,7 @@ class HammingDistanceRankingTest < IndexedSearchTest
     q = '?query=sddocname:hamming'
     q += '&ranking.features.query(qvector)=' + queryvector
     q += '&format=json'
+    q += '&format.tensors=long'
     result = search(q)
     puts "Result for query vector #{queryvector} (#{result.hit.size} hits)"
     assert_equal(result.hit.size, 4)

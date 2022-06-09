@@ -13,7 +13,7 @@ class TensorSummaryFeatureTest < IndexedSearchTest
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
 
-    search_doc = search("query=sddocname:test&format=json&ranking=test").json
+    search_doc = search("query=sddocname:test&format=json&format.tensors=long&ranking=test").json
 
     debug_attribute_and_summaryfeature(search_doc, 'indexed_tensor')
     debug_attribute_and_summaryfeature(search_doc, 'mapped_tensor')

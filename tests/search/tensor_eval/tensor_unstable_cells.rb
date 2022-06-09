@@ -23,6 +23,7 @@ class TensorUnstableCellTypesTest < IndexedSearchTest
             q += '&ranking.features.query(age)={{age:' + qa + '}:1.5}'
             q += '&ranking.features.query(sex)={{sex:' + qs + '}:2}'
             q += '&format=json'
+            q += '&format.tensors=long'
             result = search(q)
             #puts result.xmldata
             assert_equal(result.hit.size, 1)
