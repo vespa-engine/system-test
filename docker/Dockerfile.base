@@ -28,6 +28,7 @@ RUN dnf -y install epel-release && \
         java-17-openjdk-devel \
         jq \
         libxml2-devel \
+        lz4 \
         make \
         net-tools \
         python3-devel \
