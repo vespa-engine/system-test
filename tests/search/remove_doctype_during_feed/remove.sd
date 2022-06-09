@@ -1,0 +1,14 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema remove {
+  document remove {
+    field i1 type string {
+      indexing: index | summary
+    }
+    field i2 type string {
+      indexing: index | summary
+    }
+  }
+  fieldset default {
+    fields: i1
+  }
+}
