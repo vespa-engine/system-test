@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'indexed_search_test'
 require 'search/proton/mixed_feed_generator'
@@ -170,12 +170,12 @@ class ProtonTest < IndexedSearchTest
     assert_hitcount('query=title:second+body:second&nocache&type=all', 1)
     assert_hitcount('query=title:second+body:first&nocache&type=all', 0)
 
-    assert_hitcount('query=title:first+body:second&type=any&nocache&type=all', 2)
-    assert_hitcount('query=title:second+body:first&type=any&nocache&type=all', 2)
+    assert_hitcount('query=title:first+body:second&type=any&nocache', 2)
+    assert_hitcount('query=title:second+body:first&type=any&nocache', 2)
 
     assert_hitcount('query=title:first+sattr:first&nocache&type=all', 1)
     assert_hitcount('query=title:first+sattr:second&nocache&type=all', 0)
-    assert_hitcount('query=title:first+sattr:second&type=any&nocache&type=all', 2)
+    assert_hitcount('query=title:first+sattr:second&type=any&nocache', 2)
 
     puts "phrase queries"
     assert_hitcount('query=title:%22first test%22&nocache&type=all', 1)
@@ -212,17 +212,17 @@ class ProtonTest < IndexedSearchTest
     assert_hitcount('query=title:%22test title%22+title:baz&nocache&type=all', 1)
     assert_hitcount('query=title:%22test title%22+title:%22title baz%22&nocache&type=all', 1)
 
-    assert_hitcount('query=%22first test%22+%22second test%22&type=any&nocache&type=all', 2)
-    assert_hitcount('query=%22title foo%22+%22body cox%22&type=any&nocache&type=all', 2)
-    assert_hitcount('query=%22first title%22+%22second test%22&type=any&nocache&type=all', 1)
-    assert_hitcount('query=%22test foo%22+%22body cox%22&type=any&nocache&type=all', 1)
+    assert_hitcount('query=%22first test%22+%22second test%22&type=any&nocache', 2)
+    assert_hitcount('query=%22title foo%22+%22body cox%22&type=any&nocache', 2)
+    assert_hitcount('query=%22first title%22+%22second test%22&type=any&nocache', 1)
+    assert_hitcount('query=%22test foo%22+%22body cox%22&type=any&nocache', 1)
 
     puts "prefix queries"
 #    assert_hitcount('query=b*&nocache&type=all', 2)
 #    assert_hitcount('query=ba*&nocache&type=all', 2)
 #    assert_hitcount('query=ba*+fi*&nocache&type=all', 1)
 #    assert_hitcount('query=title:ba*&nocache&type=all', 1)
-#    assert_hitcount('query=title:ba*+title:fi*&type=any&nocache&type=all', 2)
+#    assert_hitcount('query=title:ba*+title:fi*&type=any&nocache', 2)
 
     puts "document summary"
     fields = ["sddocname", "title", "body", "sattr", "iattr", "documentid"]
