@@ -209,18 +209,18 @@ class AttributeSearch < IndexedSearchTest
 
 
     # AND queries
-    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28range%28intfield%2C%20-200000%2C%20500000%29%20AND%20longfield%20%3E%200%20AND%20range%28bytefield%2C%2010%2C%2030%29%29%3B&type=yql&type=all",
+    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28range%28intfield%2C%20-200000%2C%20500000%29%20AND%20longfield%20%3E%200%20AND%20range%28bytefield%2C%2010%2C%2030%29%29%3B&type=yql",
                  "body", ["doc0","doc2"])
-    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28floatfield%20%3E%200.0%20AND%20doublefield%20%3C%20500.5%29%3B&type=yql&type=all", "body", ["doc0","doc2"])
-    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28stringfield%20contains%20%28%5B%7B%22prefix%22%3A%20true%7D%5D%22attribute%22%29%20AND%20intfield%20%3C%200%29%3B&type=yql&type=all", "body", ["doc1","doc3"])
+    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28floatfield%20%3E%200.0%20AND%20doublefield%20%3C%20500.5%29%3B&type=yql", "body", ["doc0","doc2"])
+    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28stringfield%20contains%20%28%5B%7B%22prefix%22%3A%20true%7D%5D%22attribute%22%29%20AND%20intfield%20%3C%200%29%3B&type=yql", "body", ["doc1","doc3"])
 
 
     # OR queries
-    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28range%28intfield%2C%20100000%2C%20100000%29%20OR%20range%28longfield%2C%20-20000000000L%2C%20-20000000000L%29%20OR%20range%28bytefield%2C%2030%2C%2030%29%29%3B&type=yql&type=all",
+    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28range%28intfield%2C%20100000%2C%20100000%29%20OR%20range%28longfield%2C%20-20000000000L%2C%20-20000000000L%29%20OR%20range%28bytefield%2C%2030%2C%2030%29%29%3B&type=yql",
                  "body", ["doc0","doc1","doc2"])
-    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28range%28floatfield%2C%20-40.5%2C%20-40.5%29%20OR%20range%28doublefield%2C%20500.5%2C%20500.5%29%29%3B&type=yql&type=all",
+    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28range%28floatfield%2C%20-40.5%2C%20-40.5%29%20OR%20range%28doublefield%2C%20500.5%2C%20500.5%29%29%3B&type=yql",
                  "body", ["doc3","doc4"])
-    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28stringfield%20contains%20%22attribute0%22%20OR%20stringfield%20contains%20%22attribute1%22%29%3B&type=yql&type=all", "body", ["doc0","doc1"])
+    check_result("/?query=select%20%2A%20from%20sources%20%2A%20where%20%28stringfield%20contains%20%22attribute0%22%20OR%20stringfield%20contains%20%22attribute1%22%29%3B&type=yql", "body", ["doc0","doc1"])
 
 
     # AND queries with both attribute and index hits
@@ -247,10 +247,10 @@ class AttributeSearch < IndexedSearchTest
     # OR queries with both attribute and index hits
     numeric.each do |field, values|
       if not field.include?("byte")
-        check_result("/?query=#{field}:>#{values[0]}+doc0&type=any&type=all", "body", ["doc0","doc2","doc4"])
-        check_result("/?query=#{field}:[#{values[0]}%3B]+doc0&type=any&type=all", "body", ["doc0","doc2","doc4"])
-        check_result("/?query=#{field}:<#{values[0]}+doc4&type=any&type=all", "body", ["doc1","doc3", "doc4"])
-        check_result("/?query=#{field}:[%3B#{values[0]}]+doc4&type=any&type=all", "body", ["doc0","doc1","doc3","doc4"])
+        check_result("/?query=#{field}:>#{values[0]}+doc0&type=any", "body", ["doc0","doc2","doc4"])
+        check_result("/?query=#{field}:[#{values[0]}%3B]+doc0&type=any", "body", ["doc0","doc2","doc4"])
+        check_result("/?query=#{field}:<#{values[0]}+doc4&type=any", "body", ["doc1","doc3", "doc4"])
+        check_result("/?query=#{field}:[%3B#{values[0]}]+doc4&type=any", "body", ["doc0","doc1","doc3","doc4"])
       end
     end
 
