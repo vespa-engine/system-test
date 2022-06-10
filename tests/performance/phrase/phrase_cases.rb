@@ -37,6 +37,7 @@ class PhraseCasesPerformanceTest < PerformanceTest
 
     app = SearchApp.new.monitoring("vespa", 60).
           sd(selfdir+"foobar.sd").
+          search_dir(selfdir + "search").
           container(Container.new("combinedcontainer").
                     search(Searching.new).
                     docproc(DocumentProcessing.new).

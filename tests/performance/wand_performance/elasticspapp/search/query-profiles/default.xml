@@ -3,4 +3,5 @@
 <field name="maxHits">2000</field>
 <field name="maxOffsets">2000</field>
 <field name="presentation.summary">minimal</field>
+<field name="model.type">all</field>
 </query-profile>

@@ -32,6 +32,7 @@ class SearchPartitioningBase < PerformanceTest
 
   def thread_scaling_test
     deploy_app(SearchApp.new.
+               search_dir(selfdir + "search").
                cluster(SearchCluster.new.
                        sd(selfdir + "test.sd").
                        threads_per_search(16).
