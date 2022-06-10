@@ -86,6 +86,7 @@ class FeedingIndexTest < PerformanceTest
         # We only care about single node performance for this test.
         SearchApp.new.sd(selfdir + 'doc.sd').
         num_parts(1).redundancy(1).ready_copies(1).
+        search_dir(selfdir + "search").
         container(Container.new("combinedcontainer").
                                 jvmoptions('-Xms10g -Xmx10g').
                                 search(Searching.new).

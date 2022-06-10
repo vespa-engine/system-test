@@ -63,6 +63,7 @@ class ParentChildPerfTest < PerformanceTest
                   sd(selfdir + "campaign.sd", { :global => true }).
                   sd(selfdir + "ad.sd").
                   threads_per_search(1).
+                  search_dir(selfdir + "search").
                   container(Container.new("combinedcontainer").
                             jvmoptions('-Xms16g -Xmx16g').
                             search(Searching.new).

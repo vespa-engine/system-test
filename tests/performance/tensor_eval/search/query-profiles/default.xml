@@ -1,4 +1,3 @@
 <query-profile id="default">
-    <field name="timeout">60.0</field>
     <field name="model.type">all</field>
 </query-profile>

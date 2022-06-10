@@ -29,7 +29,7 @@ class DotProduct < PerformanceTest
 
 
   def test_DotProduct
-    deploy_app(SearchApp.new.threads_per_search(1).sd(@sdfile))
+    deploy_app(SearchApp.new.threads_per_search(1).sd(@sdfile).search_dir(selfdir + "search"))
     start
 
     feed({:template => doc_template, :count => 100000})

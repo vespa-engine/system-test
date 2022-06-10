@@ -115,7 +115,7 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
   end
 
   def deploy_and_feed
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd").search_dir(selfdir + "search"))
     start
     feed_and_wait_for_docs("test", @num_docs, :file => @docs_file_name)
     @container = (vespa.qrserver["0"] or vespa.container.values.first)

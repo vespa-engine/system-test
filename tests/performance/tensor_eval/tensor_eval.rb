@@ -36,6 +36,7 @@ class TensorEvalPerfTest < PerformanceTest
 
   def create_app
     SearchApp.new.sd(selfdir + "test.sd").
+      search_dir(selfdir + "search").
       search_chain(SearchChain.new.add(Searcher.new("com.yahoo.test.TensorInQueryBuilderSearcher"))).
       rank_expression_file(dirs.tmpdir + "sparse_tensor_25x25.json").
       rank_expression_file(dirs.tmpdir + "sparse_tensor_50x50.json").
