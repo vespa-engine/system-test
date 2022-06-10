@@ -54,7 +54,7 @@ class RankFilter < IndexedSearchTest
   end
 
   def assert_pos(field, fpos, query)
-    query = "query=" + query + "&nocache"
+    query = "query=" + query + "&nocache&type=all"
     result = search(query)
     exp = {"fieldTermMatch(#{field},0).firstPosition" => fpos}
     assert_features(exp, result.hit[0].field['summaryfeatures'], 1e-4)
