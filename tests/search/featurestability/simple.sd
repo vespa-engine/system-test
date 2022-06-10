@@ -55,6 +55,7 @@ schema simple {
         
         field string_exp type string {
             indexing: index
+            index: enable-bm25
         }   
         field string_arr type array<string> {
             indexing: index

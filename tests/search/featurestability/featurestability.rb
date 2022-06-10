@@ -27,7 +27,6 @@ class FeatureStability < IndexedSearchTest
 
   def run_query(query, file)
     query = "query=#{query}&" +
-      "ranking.features.now=0&" +
       "ranking.listFeatures=true"
     if (SAVE_RESULT)
       save_features(search(query), file)
