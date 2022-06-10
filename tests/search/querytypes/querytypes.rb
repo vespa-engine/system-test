@@ -38,7 +38,7 @@ class QueryTypes < IndexedSearchTest
     # Search for terms '(do not)',    not using explicit type
     # Search for terms 'do or not',   using type 'adv'
 
-    compare('do%20or%20not'         , "typeall.result.json")
+    compare('do%20or%20not'         , "typeweakand.result.json")
     compare('do%20or%20not&type=all', "typeall.result.json")
     compare('(do%20or%20not)'       , "typeany.result.json")
     compare('do%20or%20not&type=any', "typeany.result.json")
@@ -55,11 +55,11 @@ class QueryTypes < IndexedSearchTest
     # Test without quotes
     # Test (a or b)
 
-    compare("frank+-zappa"          , "frank_minus_zappa.result.json")
-    compare("%2Bthe+%2Bgift"        , "the_gift_plus.result.json")
-    compare('"the+gift"'            , "the_gift_quoted.result.json")
-    compare("the+gift"              , "the_gift_plus.result.json")
-    compare("(zappa+broadway)"      , "zappa_or_broadway.result.json")
+    compare("frank+-zappa"            , "frank_minus_zappa.result.json")
+    compare("%2Bthe+%2Bgift&type=all" , "the_gift_plus.result.json")
+    compare('"the+gift"&type=all'     , "the_gift_quoted.result.json")
+    compare("the+gift&type=all"       , "the_gift_plus.result.json")
+    compare("(zappa+broadway)"        , "zappa_or_broadway.result.json")
 
     # Advanced query incorporating 'AND', 'OR' and '(parenthesis)'
     # Advanced query incorporating 'OR' and 'ANDNOT'
@@ -76,9 +76,9 @@ class QueryTypes < IndexedSearchTest
     compare("(wildflowers+rank+bird)+-bird"                , "adv2.result.json")
     compare("young&type=adv"                               , "adv3.result.json")
     compare("young+RANK+old&type=adv"                      , "adv3.result.json")
-    assert_field('query=young+RANK+old&type=adv&hits=2&type=all'    , selfdir+"adv4.result.json", "title", true)
+    assert_field('query=young+RANK+old&type=adv&hits=2'    , selfdir+"adv4.result.json", "title", true)
     compare("young+AND+old&type=adv"                       , "adv4b.result.json")
-    assert_field('query=young+RANK+guns&type=adv&hits=1&type=all'   , selfdir+"adv5.result.json", "title")
+    assert_field('query=young+RANK+guns&type=adv&hits=1'   , selfdir+"adv5.result.json", "title")
   end
 
   def teardown
