@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_test'
 
 class Bm25FeatureTest < SearchTest
@@ -48,43 +48,43 @@ class Bm25FeatureTest < SearchTest
   end
 
   def assert_bm25_scores(total_doc_count = 3, avg_field_length = 4)
-    assert_scores_for_query("content:a", [score(2, 3, idf(3, total_doc_count), avg_field_length),
-                                          score(3, 7, idf(3, total_doc_count), avg_field_length),
-                                          score(1, 2, idf(3, total_doc_count), avg_field_length)])
+    assert_scores_for_query("content:a&type=all", [score(2, 3, idf(3, total_doc_count), avg_field_length),
+                                                   score(3, 7, idf(3, total_doc_count), avg_field_length),
+                                                   score(1, 2, idf(3, total_doc_count), avg_field_length)])
 
-    assert_scores_for_query("content:b", [score(1, 3, idf(2, total_doc_count), avg_field_length),
-                                          score(1, 7, idf(2, total_doc_count), avg_field_length)])
+    assert_scores_for_query("content:b&type=all", [score(1, 3, idf(2, total_doc_count), avg_field_length),
+                                                   score(1, 7, idf(2, total_doc_count), avg_field_length)])
 
-    assert_scores_for_query("content:a+content:d", [score(1, 2, idf(3, total_doc_count), avg_field_length) + score(1, 2, idf(2, total_doc_count), avg_field_length),
-                                                    score(3, 7, idf(3, total_doc_count), avg_field_length) + score(1, 7, idf(2, total_doc_count), avg_field_length)])
+    assert_scores_for_query("content:a+content:d&type=all", [score(1, 2, idf(3, total_doc_count), avg_field_length) + score(1, 2, idf(2, total_doc_count), avg_field_length),
+                                                             score(3, 7, idf(3, total_doc_count), avg_field_length) + score(1, 7, idf(2, total_doc_count), avg_field_length)])
   end
 
   def assert_bm25_array_scores(total_doc_count, avg_field_length)
-    assert_scores_for_query("contenta:a", [score(2, 6, idf(3, total_doc_count), avg_field_length),
-                                           score(3, 14, idf(3, total_doc_count), avg_field_length),
-                                           score(1, 4, idf(3, total_doc_count), avg_field_length)])
+    assert_scores_for_query("contenta:a&type=all", [score(2, 6, idf(3, total_doc_count), avg_field_length),
+                                                    score(3, 14, idf(3, total_doc_count), avg_field_length),
+                                                    score(1, 4, idf(3, total_doc_count), avg_field_length)])
 
-    assert_scores_for_query("contenta:b", [score(1, 6, idf(2, total_doc_count), avg_field_length),
-                                           score(1, 14, idf(2, total_doc_count), avg_field_length)])
+    assert_scores_for_query("contenta:b&type=all", [score(1, 6, idf(2, total_doc_count), avg_field_length),
+                                                    score(1, 14, idf(2, total_doc_count), avg_field_length)])
 
-    assert_scores_for_query("content:a+content:d", [score(1, 4, idf(3, total_doc_count), avg_field_length) + score(1, 4, idf(2, total_doc_count), avg_field_length),
-                                                    score(3, 14, idf(3, total_doc_count), avg_field_length) + score(1, 14, idf(2, total_doc_count), avg_field_length)])
+    assert_scores_for_query("content:a+content:d&type=all", [score(1, 4, idf(3, total_doc_count), avg_field_length) + score(1, 4, idf(2, total_doc_count), avg_field_length),
+                                                             score(3, 14, idf(3, total_doc_count), avg_field_length) + score(1, 14, idf(2, total_doc_count), avg_field_length)])
   end
 
   def assert_no_bm25_scores
-    assert_scores_for_query("content:a", [0.0, 0.0, 0.0])
+    assert_scores_for_query("content:a&type=all", [0.0, 0.0, 0.0])
 
-    assert_scores_for_query("content:b", [0.0, 0.0])
+    assert_scores_for_query("content:b&type=all", [0.0, 0.0])
 
-    assert_scores_for_query("content:a+content:d", [0.0, 0.0])
+    assert_scores_for_query("content:a+content:d&type=all", [0.0, 0.0])
   end
 
   def assert_no_bm25_array_scores
-    assert_scores_for_query("contenta:a", [0.0, 0.0, 0.0])
+    assert_scores_for_query("contenta:a&type=all", [0.0, 0.0, 0.0])
 
-    assert_scores_for_query("contenta:b", [0.0, 0.0])
+    assert_scores_for_query("contenta:b&type=all", [0.0, 0.0])
 
-    assert_scores_for_query("content:a+content:d", [0.0, 0.0])
+    assert_scores_for_query("content:a+content:d&type=all", [0.0, 0.0])
   end
 
   def idf(matching_doc_count, total_doc_count = 3)

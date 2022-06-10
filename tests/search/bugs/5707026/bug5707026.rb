@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class Bug5707026 < IndexedSearchTest
@@ -40,7 +40,7 @@ class Bug5707026 < IndexedSearchTest
     start
     feed_and_wait_for_docs("site", 3, :file => selfdir+"feed3.xml")
 
-    query = "cafe+menu"
+    query = "cafe+menu&type=all"
     wait_for_hitcount(query, 2)
     exp_body_0 = "<sep /><hi>Café</hi> Surf's <hi>Café</hi> Print <hi>Menu</hi> Email a Friend<sep /> Print <hi>Menu</hi> Print Details<sep />"
     exp_body_1 = "<sep />week s Tuesday Dinner <hi>Menu</hi>! This pilot program is currently scheduled<sep />Questions or comments? Reach us at <hi>cafe</hi>@yahoo-inc.com ."
