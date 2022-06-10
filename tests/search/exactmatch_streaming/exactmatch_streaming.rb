@@ -15,7 +15,7 @@ class ExactMatchStreaming < StreamingSearchTest
                             add(Searcher.new("com.yahoo.exactmatch.ExactMatchSearcher"))))
     start
 
-    s = "&streaming.selection=true"
+    s = '&streaming.selection=true&type=all'
     feed_and_wait_for_docs("exactmatch"+s, 2, :file => "#{selfdir}/feed.xml")
     assert_hitcount('query=field1:%22Motors%40York%22'+s, 1)
     assert_hitcount('yql=select+*+from+sources+*+where+[{"defaultIndex":"field1"}]userInput("Motors@York")%3b'+s, 1)

@@ -14,7 +14,7 @@ class DirectSearch < IndexedSearchTest
     start
     feed_and_wait_for_docs("music", 777, :file => selfdir + "../data/music.777.xml")
 
-    directquery="query=best%20albert&presentation.format=xml"
+    directquery='query=best%20albert&presentation.format=xml&type=all'
 
     # verfify that we use direct dispatch since this is a single-node system
     assert(search(directquery + "&tracelevel=2").xmldata.include?("Dispatching to search node"), "Dispatching to local node")

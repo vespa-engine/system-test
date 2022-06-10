@@ -21,11 +21,11 @@ class ProtonTest < IndexedSearchTest
     feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.xml")
 
     # single term queries
-    assert_hitcount("query=title:test&nocache", 2)
+    assert_hitcount('query=title:test&nocache&type=all', 2)
     vespa.search["search"].first.stop
     vespa.search["search"].first.start
-    wait_for_hitcount("query=sddocname:test&nocache", 2)
-    assert_hitcount("query=title:test&nocache", 2)
+    wait_for_hitcount('query=sddocname:test&nocache&type=all', 2)
+    assert_hitcount('query=title:test&nocache&type=all', 2)
   end
 
   def test_proton_feeding
@@ -37,58 +37,58 @@ class ProtonTest < IndexedSearchTest
   def run_proton_feeding_test
     puts "Initial feed"
     feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.xml")
-    assert_hitcount("query=title:third&nocache", 0)
-    assert_hitcount("query=sattr:third&nocache", 0)
-    assert_hitcount("query=title:title&nocache", 2)
+    assert_hitcount('query=title:third&nocache&type=all', 0)
+    assert_hitcount('query=sattr:third&nocache&type=all', 0)
+    assert_hitcount('query=title:title&nocache&type=all', 2)
 
     puts "Feed 1 extra document"
     feed(:file => selfdir + "docs.2.xml") # add 1 extra document
-    assert_hitcount("query=sddocname:test&nocache", 3)
-    assert_hitcount("query=title:third&nocache", 1)
-    assert_hitcount("query=sattr:third&nocache", 1)
-    assert_hitcount("query=title:title&nocache", 3)
-    assert_hitcount("query=title:test&nocache", 2)
+    assert_hitcount('query=sddocname:test&nocache&type=all', 3)
+    assert_hitcount('query=title:third&nocache&type=all', 1)
+    assert_hitcount('query=sattr:third&nocache&type=all', 1)
+    assert_hitcount('query=title:title&nocache&type=all', 3)
+    assert_hitcount('query=title:test&nocache&type=all', 2)
     fields = ["sddocname", "title", "body", "sattr", "iattr"]
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.2.result.json", "iattr", fields)
+    assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.2.result.json", "iattr", fields)
 
     puts "Refeed first document"
     feed(:file => selfdir + "docs.3.xml") # replace first document
-    assert_hitcount("query=title:refeedtitle&nocache", 1)
-    assert_hitcount("query=title:first&nocache", 1)
-    assert_hitcount("query=sattr:refeedfirst&nocache", 1)
-    assert_hitcount("query=title:title&nocache", 2)
-    assert_hitcount("query=title:test&nocache", 1)
+    assert_hitcount('query=title:refeedtitle&nocache&type=all', 1)
+    assert_hitcount('query=title:first&nocache&type=all', 1)
+    assert_hitcount('query=sattr:refeedfirst&nocache&type=all', 1)
+    assert_hitcount('query=title:title&nocache&type=all', 2)
+    assert_hitcount('query=title:test&nocache&type=all', 1)
     # check that we have no remains of old documents
-    assert_hitcount("query=title:foo&nocache", 0)
-    assert_hitcount("query=body:bar&nocache", 0)
-    assert_hitcount("query=sattr:first&nocache", 0)
-    assert_hitcount("query=iattr:10&nocache", 0)
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.3.result.json", "iattr", fields)
+    assert_hitcount('query=title:foo&nocache&type=all', 0)
+    assert_hitcount('query=body:bar&nocache&type=all', 0)
+    assert_hitcount('query=sattr:first&nocache&type=all', 0)
+    assert_hitcount('query=iattr:10&nocache&type=all', 0)
+    assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.3.result.json", "iattr", fields)
 
     puts "Remove second document"
     feed(:file => selfdir + "remove.xml") # remove second document
-    assert_hitcount("query=sddocname:test&nocache", 2)
-    assert_hitcount("query=title:second&nocache", 0)
-    assert_hitcount("query=body:second&nocache", 0)
-    assert_hitcount("query=iattr:20&nocache", 0)
-    assert_hitcount("query=sattr:second&nocache", 0)
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.4.result.json", "iattr", fields)
+    assert_hitcount('query=sddocname:test&nocache&type=all', 2)
+    assert_hitcount('query=title:second&nocache&type=all', 0)
+    assert_hitcount('query=body:second&nocache&type=all', 0)
+    assert_hitcount('query=iattr:20&nocache&type=all', 0)
+    assert_hitcount('query=sattr:second&nocache&type=all', 0)
+    assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.4.result.json", "iattr", fields)
 
     puts "Remove non-existing document"
     feed(:file => selfdir + "remove.2.xml")
-    assert_hitcount("query=sddocname:test&nocache", 2)
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.4.result.json", "iattr", fields)
+    assert_hitcount('query=sddocname:test&nocache&type=all', 2)
+    assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.4.result.json", "iattr", fields)
 
     puts "Update first document"
-    assert_hitcount("query=iattr:1000&nocache", 0)
+    assert_hitcount('query=iattr:1000&nocache&type=all', 0)
     feed(:file => selfdir + "upd.xml")
-    assert_hitcount("query=iattr:1000&nocache", 1)
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.5.result.json", "iattr", fields)
+    assert_hitcount('query=iattr:1000&nocache&type=all', 1)
+    assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.5.result.json", "iattr", fields)
 
     puts "Update non-existing document"
     feed(:file => selfdir + "upd.2.xml", :trace => 1)
-    assert_hitcount("query=iattr:1000&nocache", 1)
-    assert_result("query=sddocname:test&nocache", selfdir + "docs.all.5.result.json", "iattr", fields)
+    assert_hitcount('query=iattr:1000&nocache&type=all', 1)
+    assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.5.result.json", "iattr", fields)
   end
 
   def nearlyEqual(a, b)
@@ -100,137 +100,137 @@ class ProtonTest < IndexedSearchTest
   def test_proton
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
-    assert_hitcount("query=sddocname:test&nocache", 0)
+    assert_hitcount('query=sddocname:test&nocache&type=all', 0)
     feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.xml")
 
     puts "single term queries (index fields)"
-    assert_hitcount("query=title:test&nocache", 2)
+    assert_hitcount('query=title:test&nocache&type=all', 2)
 
-    assert_hitcount("query=body:first&nocache", 1)
-    assert_hitcount("query=title:first&nocache", 1)
+    assert_hitcount('query=body:first&nocache&type=all', 1)
+    assert_hitcount('query=title:first&nocache&type=all', 1)
 
-    assert_hitcount("query=body:second&nocache", 1)
-    assert_hitcount("query=title:second&nocache", 1)
+    assert_hitcount('query=body:second&nocache&type=all', 1)
+    assert_hitcount('query=title:second&nocache&type=all', 1)
 
-    assert_hitcount("query=body:title&nocache", 0)
-    assert_hitcount("query=title:title&nocache", 2)
+    assert_hitcount('query=body:title&nocache&type=all', 0)
+    assert_hitcount('query=title:title&nocache&type=all', 2)
 
-    assert_hitcount("query=body:body&nocache", 2)
-    assert_hitcount("query=title:body&nocache", 0)
+    assert_hitcount('query=body:body&nocache&type=all', 2)
+    assert_hitcount('query=title:body&nocache&type=all', 0)
 
-    assert_hitcount("query=body:foo&nocache", 0)
-    assert_hitcount("query=title:foo&nocache", 1)
+    assert_hitcount('query=body:foo&nocache&type=all', 0)
+    assert_hitcount('query=title:foo&nocache&type=all', 1)
 
-    assert_hitcount("query=body:bar&nocache", 1)
-    assert_hitcount("query=title:bar&nocache", 0)
+    assert_hitcount('query=body:bar&nocache&type=all', 1)
+    assert_hitcount('query=title:bar&nocache&type=all', 0)
 
-    assert_hitcount("query=body:baz&nocache", 0)
-    assert_hitcount("query=title:baz&nocache", 1)
+    assert_hitcount('query=body:baz&nocache&type=all', 0)
+    assert_hitcount('query=title:baz&nocache&type=all', 1)
 
-    assert_hitcount("query=body:cox&nocache", 1)
-    assert_hitcount("query=title:cox&nocache", 0)
+    assert_hitcount('query=body:cox&nocache&type=all', 1)
+    assert_hitcount('query=title:cox&nocache&type=all', 0)
 
-    assert_hitcount("query=bogus:test&nocache", 0)
-    assert_hitcount("query=bogus:test&nocache", 0)
+    assert_hitcount('query=bogus:test&nocache&type=all', 0)
+    assert_hitcount('query=bogus:test&nocache&type=all', 0)
 
-    assert_hitcount("query=body:bogus&nocache", 0)
-    assert_hitcount("query=title:bogus&nocache", 0)
+    assert_hitcount('query=body:bogus&nocache&type=all', 0)
+    assert_hitcount('query=title:bogus&nocache&type=all', 0)
 
-    assert_hitcount("query=test&nocache", 2)
-    assert_hitcount("query=foo&nocache", 1);
-    assert_hitcount("query=bar&nocache", 1);
-    assert_hitcount("query=baz&nocache", 1);
-    assert_hitcount("query=cox&nocache", 1);
-    assert_hitcount("query=bogus&nocache", 0);
+    assert_hitcount('query=test&nocache&type=all', 2)
+    assert_hitcount('query=foo&nocache&type=all', 1);
+    assert_hitcount('query=bar&nocache&type=all', 1);
+    assert_hitcount('query=baz&nocache&type=all', 1);
+    assert_hitcount('query=cox&nocache&type=all', 1);
+    assert_hitcount('query=bogus&nocache&type=all', 0);
 
     puts "single term queries (attribute fields)"
-    assert_hitcount("query=sattr:first&nocache", 1)
-    assert_hitcount("query=sattr:second&nocache", 1)
-    assert_hitcount("query=sattr:bogus&nocache", 0)
-    assert_hitcount("query=iattr:10&nocache", 1)
-    assert_hitcount("query=iattr:20&nocache", 1)
-    assert_hitcount("query=iattr:0&nocache", 0)
-    assert_hitcount("query=iattr:[0%3B9]&nocache", 0)
-    assert_hitcount("query=iattr:[0%3B10]&nocache", 1)
-    assert_hitcount("query=iattr:[9%3B19]&nocache", 1)
-    assert_hitcount("query=iattr:[9%3B20]&nocache", 2)
-    assert_hitcount("query=iattr:[20%3B30]&nocache", 1)
-    assert_hitcount("query=iattr:[21%3B30]&nocache", 0)
-    assert_hitcount("query=iattr:%3E9&nocache", 2);
-    assert_hitcount("query=iattr:%3E10&nocache", 1);
-    assert_hitcount("query=iattr:%3E20&nocache", 0);
-    assert_hitcount("query=iattr:%3C10&nocache", 0);
-    assert_hitcount("query=iattr:%3C11&nocache", 1);
-    assert_hitcount("query=iattr:%3C21&nocache", 2);
+    assert_hitcount('query=sattr:first&nocache&type=all', 1)
+    assert_hitcount('query=sattr:second&nocache&type=all', 1)
+    assert_hitcount('query=sattr:bogus&nocache&type=all', 0)
+    assert_hitcount('query=iattr:10&nocache&type=all', 1)
+    assert_hitcount('query=iattr:20&nocache&type=all', 1)
+    assert_hitcount('query=iattr:0&nocache&type=all', 0)
+    assert_hitcount('query=iattr:[0%3B9]&nocache&type=all', 0)
+    assert_hitcount('query=iattr:[0%3B10]&nocache&type=all', 1)
+    assert_hitcount('query=iattr:[9%3B19]&nocache&type=all', 1)
+    assert_hitcount('query=iattr:[9%3B20]&nocache&type=all', 2)
+    assert_hitcount('query=iattr:[20%3B30]&nocache&type=all', 1)
+    assert_hitcount('query=iattr:[21%3B30]&nocache&type=all', 0)
+    assert_hitcount('query=iattr:%3E9&nocache&type=all', 2);
+    assert_hitcount('query=iattr:%3E10&nocache&type=all', 1);
+    assert_hitcount('query=iattr:%3E20&nocache&type=all', 0);
+    assert_hitcount('query=iattr:%3C10&nocache&type=all', 0);
+    assert_hitcount('query=iattr:%3C11&nocache&type=all', 1);
+    assert_hitcount('query=iattr:%3C21&nocache&type=all', 2);
 
     puts "multi term queries"
-    assert_hitcount("query=title:first+body:first&nocache", 1)
-    assert_hitcount("query=title:first+body:second&nocache", 0)
+    assert_hitcount('query=title:first+body:first&nocache&type=all', 1)
+    assert_hitcount('query=title:first+body:second&nocache&type=all', 0)
 
-    assert_hitcount("query=title:second+body:second&nocache", 1)
-    assert_hitcount("query=title:second+body:first&nocache", 0)
+    assert_hitcount('query=title:second+body:second&nocache&type=all', 1)
+    assert_hitcount('query=title:second+body:first&nocache&type=all', 0)
 
-    assert_hitcount("query=title:first+body:second&type=any&nocache", 2)
-    assert_hitcount("query=title:second+body:first&type=any&nocache", 2)
+    assert_hitcount('query=title:first+body:second&type=any&nocache&type=all', 2)
+    assert_hitcount('query=title:second+body:first&type=any&nocache&type=all', 2)
 
-    assert_hitcount("query=title:first+sattr:first&nocache", 1)
-    assert_hitcount("query=title:first+sattr:second&nocache", 0)
-    assert_hitcount("query=title:first+sattr:second&type=any&nocache", 2)
+    assert_hitcount('query=title:first+sattr:first&nocache&type=all', 1)
+    assert_hitcount('query=title:first+sattr:second&nocache&type=all', 0)
+    assert_hitcount('query=title:first+sattr:second&type=any&nocache&type=all', 2)
 
     puts "phrase queries"
-    assert_hitcount("query=title:%22first test%22&nocache", 1)
-    assert_hitcount("query=title:%22test title%22&nocache", 2)
-    assert_hitcount("query=title:%22title foo%22&nocache", 1)
-    assert_hitcount("query=title:%22first test title%22&nocache", 1)
-    assert_hitcount("query=title:%22test title foo%22&nocache", 1)
-    assert_hitcount("query=title:%22first test title foo%22&nocache", 1)
+    assert_hitcount('query=title:%22first test%22&nocache&type=all', 1)
+    assert_hitcount('query=title:%22test title%22&nocache&type=all', 2)
+    assert_hitcount('query=title:%22title foo%22&nocache&type=all', 1)
+    assert_hitcount('query=title:%22first test title%22&nocache&type=all', 1)
+    assert_hitcount('query=title:%22test title foo%22&nocache&type=all', 1)
+    assert_hitcount('query=title:%22first test title foo%22&nocache&type=all', 1)
 
-    assert_hitcount("query=title:%22second test%22&nocache", 1)
-    assert_hitcount("query=title:%22test title%22&nocache", 2)
-    assert_hitcount("query=title:%22title baz%22&nocache", 1)
-    assert_hitcount("query=title:%22second test title%22&nocache", 1)
-    assert_hitcount("query=title:%22test title baz%22&nocache", 1)
-    assert_hitcount("query=title:%22second test title baz%22&nocache", 1)
+    assert_hitcount('query=title:%22second test%22&nocache&type=all', 1)
+    assert_hitcount('query=title:%22test title%22&nocache&type=all', 2)
+    assert_hitcount('query=title:%22title baz%22&nocache&type=all', 1)
+    assert_hitcount('query=title:%22second test title%22&nocache&type=all', 1)
+    assert_hitcount('query=title:%22test title baz%22&nocache&type=all', 1)
+    assert_hitcount('query=title:%22second test title baz%22&nocache&type=all', 1)
 
-    assert_hitcount("query=title:%22test first%22&nocache", 0)
-    assert_hitcount("query=title:%22title test%22&nocache", 0)
-    assert_hitcount("query=title:%22foo title%22&nocache", 0)
-    assert_hitcount("query=title:%22title test first%22&nocache", 0)
-    assert_hitcount("query=title:%22foo title test%22&nocache", 0)
-    assert_hitcount("query=title:%22foo title test first%22&nocache", 0)
+    assert_hitcount('query=title:%22test first%22&nocache&type=all', 0)
+    assert_hitcount('query=title:%22title test%22&nocache&type=all', 0)
+    assert_hitcount('query=title:%22foo title%22&nocache&type=all', 0)
+    assert_hitcount('query=title:%22title test first%22&nocache&type=all', 0)
+    assert_hitcount('query=title:%22foo title test%22&nocache&type=all', 0)
+    assert_hitcount('query=title:%22foo title test first%22&nocache&type=all', 0)
 
-    assert_hitcount("query=%22first test%22&nocache", 1)
-    assert_hitcount("query=%22second test%22&nocache", 1)
-    assert_hitcount("query=%22title foo%22&nocache", 1)
-    assert_hitcount("query=%22test title%22&nocache", 2)
-    assert_hitcount("query=%22test body%22&nocache", 2)
+    assert_hitcount('query=%22first test%22&nocache&type=all', 1)
+    assert_hitcount('query=%22second test%22&nocache&type=all', 1)
+    assert_hitcount('query=%22title foo%22&nocache&type=all', 1)
+    assert_hitcount('query=%22test title%22&nocache&type=all', 2)
+    assert_hitcount('query=%22test body%22&nocache&type=all', 2)
 
     puts "multi term phrase queries"
-    assert_hitcount("query=title:%22test title%22+title:foo&nocache", 1)
-    assert_hitcount("query=title:%22test title%22+title:%22title foo%22&nocache", 1)
+    assert_hitcount('query=title:%22test title%22+title:foo&nocache&type=all', 1)
+    assert_hitcount('query=title:%22test title%22+title:%22title foo%22&nocache&type=all', 1)
 
-    assert_hitcount("query=title:%22test title%22+title:baz&nocache", 1)
-    assert_hitcount("query=title:%22test title%22+title:%22title baz%22&nocache", 1)
+    assert_hitcount('query=title:%22test title%22+title:baz&nocache&type=all', 1)
+    assert_hitcount('query=title:%22test title%22+title:%22title baz%22&nocache&type=all', 1)
 
-    assert_hitcount("query=%22first test%22+%22second test%22&type=any&nocache", 2)
-    assert_hitcount("query=%22title foo%22+%22body cox%22&type=any&nocache", 2)
-    assert_hitcount("query=%22first title%22+%22second test%22&type=any&nocache", 1)
-    assert_hitcount("query=%22test foo%22+%22body cox%22&type=any&nocache", 1)
+    assert_hitcount('query=%22first test%22+%22second test%22&type=any&nocache&type=all', 2)
+    assert_hitcount('query=%22title foo%22+%22body cox%22&type=any&nocache&type=all', 2)
+    assert_hitcount('query=%22first title%22+%22second test%22&type=any&nocache&type=all', 1)
+    assert_hitcount('query=%22test foo%22+%22body cox%22&type=any&nocache&type=all', 1)
 
     puts "prefix queries"
-#    assert_hitcount("query=b*&nocache", 2)
-#    assert_hitcount("query=ba*&nocache", 2)
-#    assert_hitcount("query=ba*+fi*&nocache", 1)
-#    assert_hitcount("query=title:ba*&nocache", 1)
-#    assert_hitcount("query=title:ba*+title:fi*&type=any&nocache", 2)
+#    assert_hitcount('query=b*&nocache&type=all', 2)
+#    assert_hitcount('query=ba*&nocache&type=all', 2)
+#    assert_hitcount('query=ba*+fi*&nocache&type=all', 1)
+#    assert_hitcount('query=title:ba*&nocache&type=all', 1)
+#    assert_hitcount('query=title:ba*+title:fi*&type=any&nocache&type=all', 2)
 
     puts "document summary"
     fields = ["sddocname", "title", "body", "sattr", "iattr", "documentid"]
-    assert_result("query=title:first", selfdir + "docs.first.result.json", nil, fields)
-    assert_result("query=title:second", selfdir + "docs.second.result.json", nil, fields)
-    assert_result("query=sddocname:test", selfdir + "docs.all.result.json", "iattr", fields)
+    assert_result('query=title:first&type=all', selfdir + "docs.first.result.json", nil, fields)
+    assert_result('query=title:second&type=all', selfdir + "docs.second.result.json", nil, fields)
+    assert_result('query=sddocname:test&type=all', selfdir + "docs.all.result.json", "iattr", fields)
     # non-existing summary class -> error
-    result = search("query=title:first&summary=not")
+    result = search('query=title:first&summary=not&type=all')
     assert(result.json)
     puts result.json
     assert(result.json['root'])
@@ -240,23 +240,23 @@ class ProtonTest < IndexedSearchTest
     assert(result.json['root']['errors'][0]['message'] =~ /invalid.*summary/)
 
     puts "simple ranking"
-    r1 = search("query=title:first").hit[0].field["relevancy"].to_f
-    r2 = search("query=body:first").hit[0].field["relevancy"].to_f
+    r1 = search('query=title:first&type=all').hit[0].field["relevancy"].to_f
+    r2 = search('query=body:first&type=all').hit[0].field["relevancy"].to_f
     puts "rank 1 (title) = #{r1}"
     puts "rank 2 (body) = #{r2}"
     assert(r1 > 0)
     assert(r1 == r2)
-    r3 = search("query=first").hit[0].field["relevancy"].to_f
+    r3 = search('query=first&type=all').hit[0].field["relevancy"].to_f
     puts "rank 3 (title+body) = #{r3}"
     assert(r3 > 0)
     assert(nearlyEqual(r3, r1 + r2), "expected #{r3} == #{r1 + r2}")
-    r4 = search("query=bar").hit[0].field["relevancy"].to_f
-    r5 = search("query=body:bar").hit[0].field["relevancy"].to_f
+    r4 = search('query=bar&type=all').hit[0].field["relevancy"].to_f
+    r5 = search('query=body:bar&type=all').hit[0].field["relevancy"].to_f
     assert(r4 > 0)
     assert(r4 == r5)
 
     puts "simple grouping"
-    assert_xml_result_with_timeout(2.0, "query=sddocname:test&select=all(group(sattr) each(output(count())))&hits=0", selfdir + "simplegrouping.xml")
+    assert_xml_result_with_timeout(2.0, 'query=sddocname:test&select=all(group(sattr) each(output(count())))&hits=0&type=all', selfdir + "simplegrouping.xml")
   end
 
   def test_proton_replay

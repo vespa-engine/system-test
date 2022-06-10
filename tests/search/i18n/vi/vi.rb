@@ -14,13 +14,13 @@ class Vi < IndexedSearchTest
     feed_and_wait_for_docs("vietnamese", 3, :file => "#{selfdir}/vietnamese.xml")
 
     # accented query
-    assert_hitcount_with_timeout(10, "query=%C3%A2m%20d%C6%B0%C6%A1ng%20l%E1%BB%8Bch%20vi%E1%BB%87t%20nam&language=vi", 2)
+    assert_hitcount_with_timeout(10, 'query=%C3%A2m%20d%C6%B0%C6%A1ng%20l%E1%BB%8Bch%20vi%E1%BB%87t%20nam&language=vi&type=all', 2)
 
     # accented query, no language parameter
-    assert_hitcount_with_timeout(10, "query=%C3%A2m%20d%C6%B0%C6%A1ng%20l%E1%BB%8Bch%20vi%E1%BB%87t%20nam", 2)
+    assert_hitcount_with_timeout(10, 'query=%C3%A2m%20d%C6%B0%C6%A1ng%20l%E1%BB%8Bch%20vi%E1%BB%87t%20nam&type=all', 2)
 
     # normalized query
-    assert_hitcount_with_timeout(10, "query=am%20duong%20lich%20viet%20nam&language=vi", 2)
+    assert_hitcount_with_timeout(10, 'query=am%20duong%20lich%20viet%20nam&language=vi&type=all', 2)
   end
 
   def teardown
