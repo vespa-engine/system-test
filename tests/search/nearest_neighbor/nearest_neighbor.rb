@@ -18,6 +18,9 @@ class NearestNeighborTest < IndexedSearchTest
     restart_proton("test", 10)
     run_all_tests
 
+    feed_docs
+    run_all_tests
+
     feed_docs(false)
     feed_assign_updates
     run_all_tests
