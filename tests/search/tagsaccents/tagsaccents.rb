@@ -80,7 +80,7 @@ class TagsAccents < IndexedSearchTest
       puts "query for #{x} => #{urlcoded}"
       assert_hitcount("#{docidnum}", 1)
       [ "sfield1", "sfield2", "sfield3", "sfield4", "sfield5" ].each do |field|
-        doc = search("query=#{field}:#{urlcoded}&tracelevel=1")
+        doc = search("query=#{field}:#{urlcoded}&tracelevel=1&type=all")
         hitcount = doc.hitcount
         if (hitcount == 0)
           puts "tried query=#{field}:#{urlcoded}&tracelevel=1"
@@ -88,26 +88,26 @@ class TagsAccents < IndexedSearchTest
           puts "got: #{doc.xmldata}"
         end
         assert(hitcount > 0)
-        assert_hitcount("query=#{field}:#{urlcoded}+#{docidnum}&tracelevel=1", 1)
+        assert_hitcount("query=#{field}:#{urlcoded}+#{docidnum}&tracelevel=1&type=all", 1)
       end
       [ "wfield1", "wfield2", "wfield3", "wfield4", "wfield5" ].each do |field|
-        hitcount = search("query=#{field}:#{urlcoded}&tracelevel=1").hitcount
+        hitcount = search("query=#{field}:#{urlcoded}&tracelevel=1&type=all").hitcount
         if (hitcount == 0)
           puts "missing in #{field}: '#{x}'"
         end
         assert(hitcount > 0)
-        assert_hitcount("query=#{field}:#{urlcoded}+#{docidnum}&tracelevel=1", 1)
-        assert_hitcount("query=#{field}:#{urlcoded}#{urlcoded}#{urlcoded}+#{docidnum}&tracelevel=1", 1)
+        assert_hitcount("query=#{field}:#{urlcoded}+#{docidnum}&tracelevel=1&type=all", 1)
+        assert_hitcount("query=#{field}:#{urlcoded}#{urlcoded}#{urlcoded}+#{docidnum}&tracelevel=1&type=all", 1)
       end
       [ "wpref" ].each do |field|
-        hitcount = search("query=#{field}:#{urlcoded} #{urlcoded}&tracelevel=1").hitcount
+        hitcount = search("query=#{field}:#{urlcoded} #{urlcoded}&tracelevel=1&type=all").hitcount
         if (hitcount == 0)
           puts "missing in #{field}: '#{x}'"
         end
         assert(hitcount > 0)
-        assert_hitcount("query=#{field}:#{urlcoded} #{urlcoded}@+#{docidnum}&tracelevel=1", 1)
-        assert_hitcount("query=#{field}:#{urlcoded} @*+#{docidnum}&tracelevel=1", 1)
-        assert_hitcount("query=#{field}:#{urlcoded}@*+#{docidnum}&tracelevel=1", 1)
+        assert_hitcount("query=#{field}:#{urlcoded} #{urlcoded}@+#{docidnum}&tracelevel=1&type=all", 1)
+        assert_hitcount("query=#{field}:#{urlcoded} @*+#{docidnum}&tracelevel=1&type=all", 1)
+        assert_hitcount("query=#{field}:#{urlcoded}@*+#{docidnum}&tracelevel=1&type=all", 1)
       end
     end
   end

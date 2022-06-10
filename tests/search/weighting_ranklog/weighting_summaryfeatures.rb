@@ -20,7 +20,7 @@ class Weighting_Ranklog < IndexedSearchTest
         "term(0).weight" => 100,
         "term(1).weight" => 100
     }
-    result = search("query=black+desc:black");
+    result = search('query=black+desc:black&type=all');
     assert_equal(1, result.hitcount)
     assert_features(expected, result.hit[0].field['summaryfeatures'])
 
@@ -29,7 +29,7 @@ class Weighting_Ranklog < IndexedSearchTest
         "term(0).weight" => 10000,
         "term(1).weight" => 100
     }
-    result = search("query=black\!10000+desc:black");
+    result = search('query=black\!10000+desc:black&type=all');
     assert_equal(1, result.hitcount)
     assert_features(expected, result.hit[0].field['summaryfeatures'])
 

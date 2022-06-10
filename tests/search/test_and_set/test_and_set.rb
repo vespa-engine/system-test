@@ -133,7 +133,7 @@ end
 
 def query_by_field_values(field_values)
   query_str = field_values.map { |field, value| "#{field}:#{value}" }.join "+"
-  "query=#{query_str}"
+  "query=#{query_str}&type=all"
 end
 
 # Prints method(param1 = value1, param2 = value2, ...)

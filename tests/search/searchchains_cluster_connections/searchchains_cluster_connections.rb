@@ -49,7 +49,7 @@ class SearchchainsClusterConnections < IndexedSearchTest
   end
 
   def assert_hits(doctype, query, hits, container_cluster)
-    assert_hitcount("query=#{query}&searchChain=#{doctype}", hits, 0, { :cluster => container_cluster })
+    assert_hitcount("query=#{query}&searchChain=#{doctype}&type=all", hits, 0, { :cluster => container_cluster })
   end
 
   def teardown

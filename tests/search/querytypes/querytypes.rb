@@ -76,9 +76,9 @@ class QueryTypes < IndexedSearchTest
     compare("(wildflowers+rank+bird)+-bird"                , "adv2.result.json")
     compare("young&type=adv"                               , "adv3.result.json")
     compare("young+RANK+old&type=adv"                      , "adv3.result.json")
-    assert_field("query=young+RANK+old&type=adv&hits=2"    , selfdir+"adv4.result.json", "title", true)
+    assert_field('query=young+RANK+old&type=adv&hits=2&type=all'    , selfdir+"adv4.result.json", "title", true)
     compare("young+AND+old&type=adv"                       , "adv4b.result.json")
-    assert_field("query=young+RANK+guns&type=adv&hits=1"   , selfdir+"adv5.result.json", "title")
+    assert_field('query=young+RANK+guns&type=adv&hits=1&type=all'   , selfdir+"adv5.result.json", "title")
   end
 
   def teardown

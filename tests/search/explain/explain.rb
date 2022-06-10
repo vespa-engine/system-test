@@ -16,15 +16,15 @@ class Explain < IndexedSearchTest
                sd(SEARCH_DATA+"music.sd"))
     start
     feed(:file => SEARCH_DATA+"music.10.json", :timeout => 240)
-    wait_for_hitcount("query=sddocname:music", 10)
-    assert_hitcount("query=title:country", 1)
+    wait_for_hitcount('query=sddocname:music&type=all', 10)
+    assert_hitcount('query=title:country&type=all', 1)
 
     verify_traces(1)
     verify_traces(2)
   end
 
   def verify_traces(explain_level)
-    result = search("/search/?query=sddocname:music&format=json&hits=1&explainlevel=#{explain_level}&tracelevel=1").json
+    result = search("/search/?query=sddocname:music&format=json&hits=1&explainlevel=#{explain_level}&tracelevel=1&type=all").json
     puts "verify_traces(#{explain_level}): result=#{result.to_json}"
     children = result["trace"]["children"][1]["children"][0]["children"]
     assert_equal(4, children.size)

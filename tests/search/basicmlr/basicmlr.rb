@@ -61,7 +61,7 @@ class BasicMLR < IndexedSearchTest
     assertDocuments
 
     # The top hits should now have relevancy scores around 4
-    result = search("query=sddocname:mlr&hits=10")
+    result = search('query=sddocname:mlr&hits=10&type=all')
     0.upto(9) do |i|
       assert_relevancy(result, 4, i, 3.9)
     end
@@ -86,14 +86,14 @@ class BasicMLR < IndexedSearchTest
   def assertDocuments
     # Ensure that all the documents have been indexed.
     puts("Ensuring that the documents are available..")
-    assert_hitcount("query=sddocname:mlr", 1000)
-    assert_hitcount("query=a:[0.09%3B0.11]", 100)
-    assert_hitcount("query=b:[0.09%3B0.11]", 100)
-    assert_hitcount("query=c:[0.09%3B0.11]", 100)
-    assert_hitcount("query=a:[0.09%3B0.11]+b:[0.09%3B0.11]", 10)
-    assert_hitcount("query=b:[0.09%3B0.11]+c:[0.09%3B0.11]", 10)
-    assert_hitcount("query=c:[0.09%3B0.11]+a:[0.09%3B0.11]", 10)
-    assert_hitcount("query=a:[0.09%3B0.11]+b:[0.09%3B0.11]+c:[0.09%3B0.11]", 1)
+    assert_hitcount('query=sddocname:mlr&type=all', 1000)
+    assert_hitcount('query=a:[0.09%3B0.11]&type=all', 100)
+    assert_hitcount('query=b:[0.09%3B0.11]&type=all', 100)
+    assert_hitcount('query=c:[0.09%3B0.11]&type=all', 100)
+    assert_hitcount('query=a:[0.09%3B0.11]+b:[0.09%3B0.11]&type=all', 10)
+    assert_hitcount('query=b:[0.09%3B0.11]+c:[0.09%3B0.11]&type=all', 10)
+    assert_hitcount('query=c:[0.09%3B0.11]+a:[0.09%3B0.11]&type=all', 10)
+    assert_hitcount('query=a:[0.09%3B0.11]+b:[0.09%3B0.11]+c:[0.09%3B0.11]&type=all', 1)
   end
 
   def createDocument(a, b, c)

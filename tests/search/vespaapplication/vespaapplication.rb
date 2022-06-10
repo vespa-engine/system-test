@@ -39,7 +39,7 @@ class VespaApplication < IndexedSearchTest
   def test_vespa_application
     feed_and_wait_for_docs("music", 2, :file => selfdir+"input.xml")
 
-    wait_for_hitcount("query=metallica", 1, 60, 0)
+    wait_for_hitcount('query=metallica&type=all', 1, 60, 0)
 
     hostname = vespa.adminserver.name
     qrs0 = "http://#{hostname}:16666/"
@@ -49,7 +49,7 @@ class VespaApplication < IndexedSearchTest
 
     puts "Run a query to test custom juniper config"
     feed_and_wait_for_docs("music", 779, :file => SEARCH_DATA+"music.777.xml")
-    assert_result("query=english+band+major", selfdir + "junipertest.json", nil, ["song"])
+    assert_result('query=english+band+major&type=all', selfdir + "junipertest.json", nil, ["song"])
   end
 
   def teardown

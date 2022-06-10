@@ -47,7 +47,7 @@ class RangeSearch < IndexedSearchTest
 
   def feed_docs
     feed(:file => selfdir + "docs.xml", :timeout => 240)
-    wait_for_hitcount("query=sddocname:test", 5)
+    wait_for_hitcount('query=sddocname:test&type=all', 5)
   end
 
   def check_ranges(field, support_range_limit)
@@ -117,13 +117,13 @@ class RangeSearch < IndexedSearchTest
 
   def check_range_optimizations
     # Singlevalue matches is optimized
-    assert_hitcount("query=i1:%3E2%20i1:%3C4", 2)
-    assert(search("query=i1:%3E2%20i1:%3C4&tracelevel=2").xmldata.match("Optimized query ranges"),
+    assert_hitcount('query=i1:%3E2%20i1:%3C4&type=all', 2)
+    assert(search('query=i1:%3E2%20i1:%3C4&tracelevel=2&type=all').xmldata.match("Optimized query ranges"),
            "Query ranges are optimized")
 
     # Multivalue is not optimized
-    assert_hitcount("query=m1:%3E2%20m1:%3C4", 2)
-    assert(! search("query=m1:%3E2%20m1:%3C4&tracelevel=2").xmldata.match("Optimized query ranges"),
+    assert_hitcount('query=m1:%3E2%20m1:%3C4&type=all', 2)
+    assert(! search('query=m1:%3E2%20m1:%3C4&tracelevel=2&type=all').xmldata.match("Optimized query ranges"),
            "Query ranges are optimized")                                                                                                                                                     
   end
 

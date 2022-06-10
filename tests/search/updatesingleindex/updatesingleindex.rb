@@ -20,17 +20,17 @@ class UpdateSingleIndex < IndexedSearchTest
     vespa.start
     wait_until_ready
     feed_and_wait_for_docs("music", 10000, :file => selfdir + "testlogicaladv.20000.xml", :clusters => ["music", "books"])
-    wait_for_hitcount("query=sddocname:music&search=music", 10000)
-    wait_for_hitcount("query=sddocname:books&search=books", 10000)
+    wait_for_hitcount('query=sddocname:music&search=music&type=all', 10000)
+    wait_for_hitcount('query=sddocname:books&search=books&type=all', 10000)
 
     puts "Query: Match all documents in both indexes"
-    assert_hitcount("query=(sddocname:books+sddocname:music+)", 20000)
+    assert_hitcount('query=(sddocname:books+sddocname:music+)&type=all', 20000)
     puts "Query: Match all documents in music"
-    assert_hitcount("query=sddocname:music&search=music", 10000)
+    assert_hitcount('query=sddocname:music&search=music&type=all', 10000)
     puts "Query: Match all documents in books"
-    assert_hitcount("query=sddocname:books&search=books", 10000)
+    assert_hitcount('query=sddocname:books&search=books&type=all', 10000)
     puts "Query: Blend matches from both"
-    assert_result("query=world+modern",
+    assert_result('query=world+modern&type=all',
                   selfdir + "indexaddressing.4.result.json",
                   "title", [ "title", "author", "artist", "mid" ])
 
@@ -47,37 +47,37 @@ class UpdateSingleIndex < IndexedSearchTest
 
     wait_until_ready
 
-    wait_for_hitcount("query=sddocname:music&search=music", 10000)
-    wait_for_hitcount("query=sddocname:books&search=books", 10000)
+    wait_for_hitcount('query=sddocname:music&search=music&type=all', 10000)
+    wait_for_hitcount('query=sddocname:books&search=books&type=all', 10000)
 
     feed_and_wait_for_docs("music", 0, :file => selfdir + "testlogicaladv.20000.remove.music.xml", :clusters => ["music", "books"], :encoding => "iso-8859-1")
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :cluster => "music")
-    wait_for_hitcount("query=sddocname:music&search=music", 10)
+    wait_for_hitcount('query=sddocname:music&search=music&type=all', 10)
 
     puts "Query: Match the 10 new docs in music"
-    assert_result("query=sddocname:music&search=music",
+    assert_result('query=sddocname:music&search=music&type=all',
                    selfdir + "indexaddressing.2b.result.json",
                   "artist",
                   [ "author", "artist", "mid" ])
     puts "Query: Match all documents in books"
-    assert_hitcount("query=sddocname:books&search=books", 10000)
+    assert_hitcount('query=sddocname:books&search=books&type=all', 10000)
     feed_and_wait_for_docs("books", 0, :file => selfdir + "testlogicaladv.20000.remove.books.xml", :clusters => ["music", "books"])
 
     feed_and_wait_for_docs("books", 15, :file => selfdir + "books.15.xml", :cluster => "books")
-    wait_for_hitcount("query=sddocname:books&search=books", 15)
+    wait_for_hitcount('query=sddocname:books&search=books&type=all', 15)
 
     puts "Query: Match the 15 new docs in books"
-    assert_result("query=sddocname:books&search=books&hits=99",
+    assert_result('query=sddocname:books&search=books&hits=99&type=all',
                   selfdir + "indexaddressing.3b.result.json",
                   "author",
                   [ "title", "author", "artist", "mid" ])
     puts "Query: Match the 10 new docs in music"
-    assert_result("query=sddocname:music&search=music",
+    assert_result('query=sddocname:music&search=music&type=all',
                   selfdir + "indexaddressing.2b.result.json",
                   "artist",
                   [ "author", "artist", "mid" ])
     puts "Query: Blend matches from both"
-    assert_result("query=modern",
+    assert_result('query=modern&type=all',
                   selfdir + "indexaddressing.5.result.json",
                   "title",
                   [ "title", "author", "artist", "mid" ])

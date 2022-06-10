@@ -19,45 +19,45 @@ class NGram < IndexedSearchTest
     feed_and_wait_for_docs("test", 3, :file => "#{selfdir}/documents.xml")
 
     # Whole word which is in both title and body
-    assert_hitcount("query=title:java", 2)
-    assert_hitcount("query=body:java", 2)
-    assert_hitcount("query=default:java", 2)
-    assert_hitcount("query=java", 2)
+    assert_hitcount('query=title:java&type=all', 2)
+    assert_hitcount('query=body:java&type=all', 2)
+    assert_hitcount('query=default:java&type=all', 2)
+    assert_hitcount('query=java&type=all', 2)
 
     # Whole word in title only
-    assert_hitcount("query=title:on", 2)
-    assert_hitcount("query=body:on", 0)
-    assert_hitcount("query=default:on", 2)
-    assert_hitcount("query=on", 2)
+    assert_hitcount('query=title:on&type=all', 2)
+    assert_hitcount('query=body:on&type=all', 0)
+    assert_hitcount('query=default:on&type=all', 2)
+    assert_hitcount('query=on&type=all', 2)
 
     # Whole word in body only
-    assert_hitcount("query=title:scene", 0)
-    assert_hitcount("query=body:scene", 2)
-    assert_hitcount("query=default:scene", 2)
-    assert_hitcount("query=scene", 2)
+    assert_hitcount('query=title:scene&type=all', 0)
+    assert_hitcount('query=body:scene&type=all', 2)
+    assert_hitcount('query=default:scene&type=all', 2)
+    assert_hitcount('query=scene&type=all', 2)
 
     # Substring in body
-    assert_hitcount("query=title:opul", 0)
-    assert_hitcount("query=body:opul", 2)
-    assert_hitcount("query=default:opul", 2)
-    assert_hitcount("query=opul", 2)
+    assert_hitcount('query=title:opul&type=all', 0)
+    assert_hitcount('query=body:opul&type=all', 2)
+    assert_hitcount('query=default:opul&type=all', 2)
+    assert_hitcount('query=opul&type=all', 2)
 
     # Substring	across word boundaries in body only
-    assert_hitcount("query=title:enefr", 0)
-    assert_hitcount("query=body:enefr", 1)
-    assert_hitcount("query=default:enefr", 1)
-    assert_hitcount("query=enefr", 1)
+    assert_hitcount('query=title:enefr&type=all', 0)
+    assert_hitcount('query=body:enefr&type=all', 1)
+    assert_hitcount('query=default:enefr&type=all', 1)
+    assert_hitcount('query=enefr&type=all', 1)
 
     # No lowercasing is done on the input data, so words containing uppercase
     # letters will not match. This is not a problem since ngrams will only be
     # used by CJK languages, where there is no upper/lowercase.
-    assert_hitcount("query=title:logging", 2)
-    assert_hitcount("query=body:logging", 2)
-    assert_hitcount("query=default:logging", 2)
-    assert_hitcount("query=logging", 2)
+    assert_hitcount('query=title:logging&type=all', 2)
+    assert_hitcount('query=body:logging&type=all', 2)
+    assert_hitcount('query=default:logging&type=all', 2)
+    assert_hitcount('query=logging&type=all', 2)
 
     # Matching both header and body
-    assert_hitcount("query=default:java title:oggingin body:enefr", 1)
+    assert_hitcount('query=default:java title:oggingin body:enefr&type=all', 1)
 
     # Check result fields
     result = search('query=title:abo')
@@ -70,8 +70,8 @@ class NGram < IndexedSearchTest
                  result.hit[0].field['large'])
 
     # CJK
-    assert_hitcount_with_timeout(10, "?query=body:古牧区&language=zh-Hans", 1)
-    result = search("?query=body:牧区雪灾救援&language=zh-Hans")
+    assert_hitcount_with_timeout(10, "?query=body:古牧区&language=zh-Hans&type=all", 1)
+    result = search("?query=body:牧区雪灾救援&language=zh-Hans&type=all")
     assert_equal("\n内蒙古<hi>牧区雪灾救援</hi>困\n  ", result.hit[0].field['body'])
   end
 
@@ -81,10 +81,10 @@ class NGram < IndexedSearchTest
     start
     feed_and_wait_for_docs("external", 1, :file => selfdir + "external_doc.json")
 
-    assert_hitcount("query=gram_album:eam", 1)
-    assert_hitcount("query=gram_album:dreams", 1)
-    assert_hitcount("query=album:eam", 0)
-    assert_hitcount("query=album:dreams", 1)
+    assert_hitcount('query=gram_album:eam&type=all', 1)
+    assert_hitcount('query=gram_album:dreams&type=all', 1)
+    assert_hitcount('query=album:eam&type=all', 0)
+    assert_hitcount('query=album:dreams&type=all', 1)
   end
 
 end
