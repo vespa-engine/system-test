@@ -51,8 +51,8 @@ class SearchPartitioning < IndexedSearchTest
     start
     feed_and_wait_for_hitcount("title:title1", 1,
                                :file => dirs.tmpdir + "generated/feed.xml")
-    assert_hitcount("title:bit1", 512);
-    assert_hitcount("title:bit2+title:bit4", 256);
+    assert_hitcount("title:bit1&type=all", 512);
+    assert_hitcount("title:bit2+title:bit4&type=all", 256);
     print_metrics
   end
 
