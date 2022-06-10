@@ -39,7 +39,7 @@ class FieldSearch < IndexedSearchTest
     compare('query=song:yellow%20-title:yellow&type=all', "4.result.json", "surl")
 
     puts "Query: YQL year range using ># and <#"
-    compare('query=select+%2A+from+sources+%2A+where+year+%3E+0%20and%20year+%3C+1930%3B&type=yql&type=all', "5.result.json", "surl")
+    compare('query=select+%2A+from+sources+%2A+where+year+%3E+0%20and%20year+%3C+1930%3B&type=yql', "5.result.json", "surl")
 
     puts "Query: as previous query but using [# ; #]"
     compare('query=year:%5B1%3B1929%5D&type=all', "6.result.json", "surl")
