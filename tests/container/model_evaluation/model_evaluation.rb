@@ -13,7 +13,7 @@ class ModelEvaluation < SearchContainerTest
     start
   end
 
-  def test_model_evaluation
+  def tensorflow_test_model_evaluation
 
     # ---- xgboost
     result = query("/models/?model=xgboost_2_2&function=xgboost_2_2")
@@ -57,7 +57,7 @@ class ModelEvaluation < SearchContainerTest
 
   end
 
-  def test_model_evaluation_rest_api
+  def tensorflow_test_model_evaluation_rest_api
 
     # list available models
     result = query("/model-evaluation/v1/")

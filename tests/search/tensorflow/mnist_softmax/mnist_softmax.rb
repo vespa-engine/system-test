@@ -8,7 +8,7 @@ class MnistSoftmaxOnnxAndTensorFlow < IndexedSearchTest
     set_description("TensorFlow and Onnx model should produce equals results.")
   end
 
-  def test_mnist_softmax
+  def tensorflow_test_mnist_softmax
     deploy(selfdir + "app/")
     start
     feed_and_wait_for_docs("test", 2, :file => selfdir + "documents.xml")
