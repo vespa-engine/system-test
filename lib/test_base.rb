@@ -569,7 +569,7 @@ module TestBase
       assert(saved_result.hit[i].check_equal(result.hit[i]), explanationstring + "At hit " + i.to_s + ". Answer file: #{savedresultfile}")
     end
     assert(Resultset.approx_cmp(saved_result.groupings, result.groupings, "groupings"),
-           explanationstring + "different grouping results")
+           explanationstring + "different grouping results: expected >>>\n#{saved_result.json}\n<<< but got >>>\n#{result.json}\n<<<")
   end
 
   # Calls assert_result until the result matches expected result.

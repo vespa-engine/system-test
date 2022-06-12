@@ -337,6 +337,7 @@ module GroupingBase
   end
 
   def check_fullquery(query, localfile)
+    puts "check #{query} with #{localfile}"
     file = selfdir + 'answers/' + localfile + '.json'
     if (SAVE_RESULT)
       save_result(query, file + '.saved')
