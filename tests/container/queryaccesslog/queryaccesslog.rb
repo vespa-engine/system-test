@@ -177,9 +177,9 @@ class QueryAccessLog < SearchContainerTest
     puts "Second set of queries found OK in query log"
 
     qrsnode = qrs('a', '0')
-    olfa = qrsnode.execute("cat #{logname_a_t0} 2>/dev/null || gzip -d < #{logname_a_t0}.gz")
-    olfb = qrsnode.execute("cat #{logname_b_t0} 2>/dev/null || gzip -d < #{logname_b_t0}.gz")
-    olfc = qrsnode.execute("cat #{logname_c_t0} 2>/dev/null || gzip -d < #{logname_c_t0}.gz")
+    olfa = qrsnode.execute("cat #{logname_a_t0} 2>/dev/null || zstdcat < #{logname_a_t0}.zst")
+    olfb = qrsnode.execute("cat #{logname_b_t0} 2>/dev/null || zstdcat < #{logname_b_t0}.zst")
+    olfc = qrsnode.execute("cat #{logname_c_t0} 2>/dev/null || zstdcat < #{logname_c_t0}.zst")
 
     # assert that the old logfiles contain the same information as before rotation
     assert_match(/blues/, olfa)
