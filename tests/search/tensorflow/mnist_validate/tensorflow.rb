@@ -13,7 +13,7 @@ class TensorFlowValidate < IndexedSearchTest
     stop
   end
 
-  def test_tensorflow
+  def do_not_test_tensorflow
     add_bundle_dir(selfdir + "mnist_bundle", "mnist")
     deploy(selfdir + "app/")
     start
