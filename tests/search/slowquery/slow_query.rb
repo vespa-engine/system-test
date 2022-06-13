@@ -71,7 +71,7 @@ class SlowQuery < IndexedSearchTest
     query_time_sum = 0.0
     10.times do
         i += 1
-        entry = qrserver.execute("zstdgrep -h foobar #{Environment.instance.vespa_home}/logs/vespa/access/JsonAccessLog.default.* | head -#{i+1} | tail -1").chomp
+        entry = qrserver.execute("zgrep -h foobar #{Environment.instance.vespa_home}/logs/vespa/access/JsonAccessLog.default.* | head -#{i+1} | tail -1").chomp
         assert(entry && entry != "", "Could not find foobar in JsonAccessLog.default")
         puts "GOT entry #{entry}"
         j = JSON.parse entry
