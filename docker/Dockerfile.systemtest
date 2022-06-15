@@ -17,6 +17,8 @@ FROM $SYSTEMTEST_BASE_IMAGE AS systemtest
 
 ARG SKIP_M2_POPULATE
 
+COPY /include/feature-flags.json /opt/vespa/var/vespa/flag.db
+
 RUN mkdir -p /root/.m2
 COPY /repository /root/.m2/repository
 

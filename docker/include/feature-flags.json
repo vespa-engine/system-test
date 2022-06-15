@@ -1,0 +1,24 @@
+{
+    "flags": [
+        {
+            "id" : "jvm-gc-options",
+            "rules" : [
+                {
+                    "value" : "-Djdisc.debug.resources=true -XX:+UseParallelGC -XX:MaxTenuringThreshold=15 -XX:NewRatio=1"
+                }
+            ]
+        },
+        { "id" : "available-processors", "rules" : [ { "value" : 1 } ] },
+        { "id" : "use-qrserver-service-name", "rules" : [ { "value" : false } ] },
+        { "id" : "experimental-sd-parsing", "rules" : [ { "value" : true } ] },
+        { "id" : "ignore-thread-stack-sizes", "rules" : [ { "value" : true } ] },
+        { "id" : "async-message-handling-on-schedule", "rules" : [ { "value" : false } ] },
+        { "id" : "skip-mbus-request-thread", "rules" : [ { "value" : false } ] },
+        { "id" : "skip-mbus-reply-thread", "rules" : [ { "value" : false } ] },
+        { "id" : "use-three-phase-updates", "rules" : [ { "value" : true } ] },
+        { "id" : "max-uncommitted-memory", "rules" : [ { "value" : 65000 } ] },
+        { "id" : "container-shutdown-timeout", "rules" : [ { "value" : 40.0 } ] },
+        { "id" : "container-dump-heap-on-shutdown-timeout", "rules" : [ { "value" : true } ] },
+        { "id" : "resource-limit-disk", "rules" : [ { "value" : 0.9 } ] }
+    ]
+}

@@ -48,6 +48,7 @@ RUN dnf config-manager --enable powertools && \
 # Installation of maven is sneaky. It installs java-8 and sets as default.
 RUN alternatives --set java $(alternatives --display java | grep -Po "\ java-.*-openjdk.*64" | grep java-11)
 
+COPY /include/feature-flags.json /opt/vespa/var/vespa/flag.db
 COPY /vespa-systemtests /opt/vespa-systemtests
 
 ENV RUBYLIB=/opt/vespa-systemtests/lib:/opt/vespa-systemtests/tests
