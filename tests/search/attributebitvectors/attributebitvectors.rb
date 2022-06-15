@@ -13,18 +13,24 @@ class AttributeBitVectors < SearchTest
 
   def get_app
     sc = SearchCluster.new('attributebitvectors')
-    sc.sd(selfdir + '/attributebitvectors.sd').threads_per_search(1)
+    sc.sd(selfdir + '/test.sd').threads_per_search(1)
     app = SearchApp.new.cluster(sc)
   end
 
+  # Control approximate document frequencies for the generated data
+  # i.e. "rare" occurs in about 50 of 4096 documents, "common" occurs in
+  # about 200 of 4096 documents and "stop" occurs in the remaining ones.
   def word_data
     'echo "50 rare 200 common 3846 stop"'
   end
 
   def doc_template
-    '{ "put": "id:ns:attributebitvectors::$seq()", "fields": { "a": { "$words(1)" : 200 } } }'
+    '{ "put": "id:ns:test::$seq()", "fields": { "a": { "$words(1)" : 200 } } }'
   end
 
+  # Feed @num_docs generated documents. The word "rare" should never have
+  # a bitvector variant of posting list, while words "common" and "stop"
+  # will have bitvector variants of posting lists when bitvectors are enabled.
   def feed_data
     command = DataGenerator.new.feed_command(template: doc_template, count: @num_docs, data: word_data)
     feed_stream(command, {})
@@ -35,7 +41,7 @@ class AttributeBitVectors < SearchTest
   end
 
   def doc_count_query_string
-    '/search/?' + URI.encode_www_form([['query', 'sddocname:attributebitvectors'],
+    '/search/?' + URI.encode_www_form([['query', 'sddocname:test'],
                                        ['nocache'],
                                        ['hits', '0'],
                                        ['ranking', 'unranked'],
