@@ -276,8 +276,8 @@ class DocumentV1Test < SearchTest
     assert_equal(0, found)
 
     assert(verify_with_retries(http,
-                               { "PUT" => 3504, "UPDATE" => 3, "REMOVE" => 2 },
-                               { "PUT" => 4, "REMOVE" => 1 },
+                               { "PUT" => 3506, "UPDATE" => 3, "REMOVE" => 3 },
+                               { "PUT" => 2 },
                                { "httpapi_condition_not_met" => 3, "httpapi_not_found" => 1, "httpapi_succeeded" => 3508 }))
   end
 
