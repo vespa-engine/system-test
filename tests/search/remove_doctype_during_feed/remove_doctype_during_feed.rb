@@ -41,12 +41,27 @@ class RemoveDocTypeDuringFeed < SearchTest
               "--json feed-#{doctype}.json")
   end
 
+  def count_ignored_puts(output)
+    lastlines = output.split("\n").last(10)
+    ignored = 0
+    for line in lastlines
+      if line =~ /PutDocument:\s+ok:\s+\d+\s+msgs\/sec:\s+\S+\s+failed:\s+\d+\s+ignored:\s+(\d+)\s+/
+        ignored = $1.to_i
+      end
+    end
+    ignored
+  end
+
   def feed_data(doctype, result)
     thread = Thread.new(doctype, result) do |doctype, result|
       begin
         puts "Feed data #{doctype} start"
-        feedfile("#{dirs.tmpdir}/feed-#{doctype}.json",
-                 :localfile => true, :timeout => 240)
+        output = feedfile("#{dirs.tmpdir}/feed-#{doctype}.json",
+                          :localfile => true, :timeout => 240)
+        ignored = count_ignored_puts(output)
+        if ignored > 0
+          raise "#{ignored} ignored puts"
+        end
       rescue Exception => e
         puts "Feed data #{doctype} got exception"
         puts e.message
