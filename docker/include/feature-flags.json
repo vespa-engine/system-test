@@ -9,6 +9,7 @@
             ]
         },
         { "id" : "available-processors", "rules" : [ { "value" : 1 } ] },
+        { "id" : "shared-string-repo-no-reclaim", "rules" : [ { "value" : true } ] },
         { "id" : "use-qrserver-service-name", "rules" : [ { "value" : false } ] },
         { "id" : "experimental-sd-parsing", "rules" : [ { "value" : true } ] },
         { "id" : "ignore-thread-stack-sizes", "rules" : [ { "value" : true } ] },
