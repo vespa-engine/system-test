@@ -183,8 +183,14 @@ class TestRunner
           testcase.hostlist = nodes
           if @dns_settle_time > 0
             # Sleep @dns_settle_time seconds to reduce probability for DNS errors when lookup up nodes in swarm
-            @log.info "Settling network (#{@dns_settle_time} seconds) before running #{test_method} from #{testcase.class}"
-            sleep @dns_settle_time
+            @log.info "Settling network (max #{@dns_settle_time} seconds) before running #{test_method} from #{testcase.class}"
+            end_by = Time.now + @dns_settle_time
+            begin
+              testcase.hostlist.each { |host| Socket.gethostbyname(host) }
+            rescue SocketError
+              sleep 1
+              retry if Time.now < end_by
+            end
           end
           @log.info "Running #{test_method} from #{testcase.class} on #{testcase.hostlist}"
           @backend.test_running(testcase, test_method)
