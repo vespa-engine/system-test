@@ -1,11 +1,11 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-
 require 'indexed_streaming_search_test'
 
 class ConcreteDocs < SearchTest
 
   def setup
-      set_owner('musum')
+    set_owner('musum')
+    @use_shared_configserver = false
   end
 
   def test_concrete_docs
