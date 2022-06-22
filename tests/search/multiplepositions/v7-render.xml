@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="4" coverage-docs="4" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
+  <hit relevancy="0.003" source="search">
+    <field name="relevancy">0.003</field>
+    <field name="sddocname">renderpos</field>
+    <field name="title">Three 3</field>
+    <field name="lls">
+      <struct-field name="y">90000000</struct-field>
+      <struct-field name="x">-180000000</struct-field>
+    </field>
+    <field name="lla.position"><position y="90000000" x="-180000000" latlong="N90.000000;W180.000000" /></field>
+    <field name="llas">
+      <struct-field name="y">90000000</struct-field>
+      <struct-field name="x">-180000000</struct-field>
+    </field>
+    <field name="llas.position"><position y="90000000" x="-180000000" latlong="N90.000000;W180.000000" /></field>
+    <field name="llsa">
+      <struct-field name="y">90000000</struct-field>
+      <struct-field name="x">-180000000</struct-field>
+    </field>
+    <field name="llsa.position"><position y="90000000" x="-180000000" latlong="N90.000000;W180.000000" /></field>
+    <field name="arrs">
+      <item>
+        <struct-field name="y">90000000</struct-field>
+        <struct-field name="x">-180000000</struct-field>
+      </item>
+      <item>
+        <struct-field name="y">90000000</struct-field>
+        <struct-field name="x">0</struct-field>
+      </item>
+    </field>
+    <field name="arra.position"><position y="90000000" x="-180000000" latlong="N90.000000;W180.000000" /><position y="90000000" x="0" latlong="N90.000000;E0.000000" /></field>
+    <field name="arras">
+      <item>
+        <struct-field name="y">90000000</struct-field>
+        <struct-field name="x">-180000000</struct-field>
+      </item>
+      <item>
+        <struct-field name="y">90000000</struct-field>
+        <struct-field name="x">0</struct-field>
+      </item>
+    </field>
+    <field name="arras.position"><position y="90000000" x="-180000000" latlong="N90.000000;W180.000000" /><position y="90000000" x="0" latlong="N90.000000;E0.000000" /></field>
+    <field name="arrsa">
+      <item>
+        <struct-field name="y">90000000</struct-field>
+        <struct-field name="x">-180000000</struct-field>
+      </item>
+      <item>
+        <struct-field name="y">90000000</struct-field>
+        <struct-field name="x">0</struct-field>
+      </item>
+    </field>
+    <field name="arrsa.position"><position y="90000000" x="-180000000" latlong="N90.000000;W180.000000" /><position y="90000000" x="0" latlong="N90.000000;E0.000000" /></field>
+    <field name="documentid">id:test:renderpos::3</field>
+  </hit>
+  <hit relevancy="0.002" source="search">
+    <field name="relevancy">0.002</field>
+    <field name="sddocname">renderpos</field>
+    <field name="title">Two 2</field>
+    <field name="lls">
+      <struct-field name="y">-40000000</struct-field>
+      <struct-field name="x">-40000000</struct-field>
+    </field>
+    <field name="lla.position"><position y="-40000000" x="-40000000" latlong="S40.000000;W40.000000" /></field>
+    <field name="llas">
+      <struct-field name="y">-40000000</struct-field>
+      <struct-field name="x">-40000000</struct-field>
+    </field>
+    <field name="llas.position"><position y="-40000000" x="-40000000" latlong="S40.000000;W40.000000" /></field>
+    <field name="llsa">
+      <struct-field name="y">-40000000</struct-field>
+      <struct-field name="x">-40000000</struct-field>
+    </field>
+    <field name="llsa.position"><position y="-40000000" x="-40000000" latlong="S40.000000;W40.000000" /></field>
+    <field name="arrs">
+      <item>
+        <struct-field name="y">-40000000</struct-field>
+        <struct-field name="x">-40000000</struct-field>
+      </item>
+      <item>
+        <struct-field name="y">-89900000</struct-field>
+        <struct-field name="x">-179900000</struct-field>
+      </item>
+    </field>
+    <field name="arra.position"><position y="-40000000" x="-40000000" latlong="S40.000000;W40.000000" /><position y="-89900000" x="-179900000" latlong="S89.900000;W179.900000" /></field>
+    <field name="arras">
+      <item>
+        <struct-field name="y">-40000000</struct-field>
+        <struct-field name="x">-40000000</struct-field>
+      </item>
+      <item>
+        <struct-field name="y">-89900000</struct-field>
+        <struct-field name="x">-179900000</struct-field>
+      </item>
+    </field>
+    <field name="arras.position"><position y="-40000000" x="-40000000" latlong="S40.000000;W40.000000" /><position y="-89900000" x="-179900000" latlong="S89.900000;W179.900000" /></field>
+    <field name="arrsa">
+      <item>
+        <struct-field name="y">-40000000</struct-field>
+        <struct-field name="x">-40000000</struct-field>
+      </item>
+      <item>
+        <struct-field name="y">-89900000</struct-field>
+        <struct-field name="x">-179900000</struct-field>
+      </item>
+    </field>
+    <field name="arrsa.position"><position y="-40000000" x="-40000000" latlong="S40.000000;W40.000000" /><position y="-89900000" x="-179900000" latlong="S89.900000;W179.900000" /></field>
+    <field name="documentid">id:test:renderpos::2</field>
+  </hit>
+  <hit relevancy="0.001" source="search">
+    <field name="relevancy">0.001</field>
+    <field name="sddocname">renderpos</field>
+    <field name="title">One 1</field>
+    <field name="lls">
+      <struct-field name="y">63422501</struct-field>
+      <struct-field name="x">10363799</struct-field>
+    </field>
+    <field name="lla.position"><position y="63422501" x="10363799" latlong="N63.422501;E10.363799" /></field>
+    <field name="llas">
+      <struct-field name="y">63422501</struct-field>
+      <struct-field name="x">10363799</struct-field>
+    </field>
+    <field name="llas.position"><position y="63422501" x="10363799" latlong="N63.422501;E10.363799" /></field>
+    <field name="llsa">
+      <struct-field name="y">63422501</struct-field>
+      <struct-field name="x">10363799</struct-field>
+    </field>
+    <field name="llsa.position"><position y="63422501" x="10363799" latlong="N63.422501;E10.363799" /></field>
+    <field name="arrs">
+      <item>
+        <struct-field name="y">63400000</struct-field>
+        <struct-field name="x">10400000</struct-field>
+      </item>
+      <item>
+        <struct-field name="y">71000000</struct-field>
+        <struct-field name="x">15000000</struct-field>
+      </item>
+    </field>
+    <field name="arra.position"><position y="63400000" x="10400000" latlong="N63.400000;E10.400000" /><position y="71000000" x="15000000" latlong="N71.000000;E15.000000" /></field>
+    <field name="arras">
+      <item>
+        <struct-field name="y">63400000</struct-field>
+        <struct-field name="x">10400000</struct-field>
+      </item>
+      <item>
+        <struct-field name="y">71000000</struct-field>
+        <struct-field name="x">15000000</struct-field>
+      </item>
+    </field>
+    <field name="arras.position"><position y="63400000" x="10400000" latlong="N63.400000;E10.400000" /><position y="71000000" x="15000000" latlong="N71.000000;E15.000000" /></field>
+    <field name="arrsa">
+      <item>
+        <struct-field name="y">63400000</struct-field>
+        <struct-field name="x">10400000</struct-field>
+      </item>
+      <item>
+        <struct-field name="y">71000000</struct-field>
+        <struct-field name="x">15000000</struct-field>
+      </item>
+    </field>
+    <field name="arrsa.position"><position y="63400000" x="10400000" latlong="N63.400000;E10.400000" /><position y="71000000" x="15000000" latlong="N71.000000;E15.000000" /></field>
+    <field name="documentid">id:test:renderpos::1</field>
+  </hit>
+  <hit relevancy="0.0" source="search">
+    <field name="relevancy">0.0</field>
+    <field name="sddocname">renderpos</field>
+    <field name="title">Zero 0</field>
+    <field name="arras"></field>
+    <field name="arrsa"></field>
+    <field name="documentid">id:test:renderpos::0</field>
+  </hit>
+</result>

@@ -110,6 +110,16 @@ class MultiplePositions < IndexedSearchTest
     check_mq('query=Trondheim1&pos.ll=63N25+10E25&pos.radius=100km', 1)
   end
 
+  def test_v7_positions_summary_rendering
+    deploy_app(SearchApp.new.
+               legacy_override('v7-geo-positions', 'true').
+               sd(selfdir+'renderpos.sd'))
+    start
+    feed_and_wait_for_docs('renderpos', 4, :file => selfdir+'docs-render.json')
+    check_q('/search/?yql=select+*+from+sources+*+where+true%3B', 4, 'v7-render')
+  end
+
+
   def teardown
     stop
   end
