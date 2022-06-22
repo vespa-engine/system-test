@@ -125,13 +125,13 @@
                     "summaryfeatures": {
                         "attribute(fenceradius)": null,
                         "attribute(maybecenter_zcurve).count": 0.0,
-                        "distance(center)": 2.1123082666333804E9,
-                        "distance(label,foobar)": 234878.28718625352,
+                        "distance(center)": 2.1870321824400563E9,
+                        "distance(label,foobar)": 243187.2189997406,
                         "distance(maybecenter)": 4.294967296E9,
                         "distance(maybecenter).index": -1.0,
                         "distance(maybecenter).latitude": 90.0,
                         "distance(maybecenter).longitude": -180.0,
-                        "rawScore(center_zcurve)": 4.2575061086890325E-6,
+                        "rawScore(center_zcurve)": 4.112041299176037E-6,
                         "rawScore(maybecenter_zcurve)": 0.0,
                         "vespa.summaryFeatures.cached": 0.0
                     }
