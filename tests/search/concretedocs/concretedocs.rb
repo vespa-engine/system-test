@@ -5,7 +5,11 @@ class ConcreteDocs < SearchTest
 
   def setup
     set_owner('musum')
-    @use_shared_configserver = false
+  end
+
+  # TODO: Remove after debugging has finished (after June 2022)
+  def can_share_configservers?(method_name=nil)
+    false
   end
 
   def test_concrete_docs
