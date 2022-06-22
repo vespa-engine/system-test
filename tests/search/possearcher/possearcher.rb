@@ -11,7 +11,7 @@ class PosSearcher < IndexedSearchTest
   def test_pos_searcher
     deploy_app(SearchApp.new.sd(selfdir+"local.sd"))
     start
-    feed_and_wait_for_docs("local", 12, :file => selfdir+"docs.xml")
+    feed_and_wait_for_docs("local", 12, :file => selfdir+"docs.json")
     wait_for_hitcount("query=BP", 1)
     puts "Query: Search with position"
     assert_hitcount("query=BP&pos.ll=0N%3B0E", 0)
