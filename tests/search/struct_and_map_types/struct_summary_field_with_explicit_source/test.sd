@@ -1,0 +1,37 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    struct my_struct {
+        field name type string {}
+        field value type string {}
+    }
+    field complex type array<my_struct> {
+        indexing: summary
+    }
+    field complex_attr type array<my_struct> {
+        indexing: summary
+        struct-field name { indexing: attribute }
+        struct-field value { indexing: attribute }
+    }
+    field simple type string {
+      indexing: summary
+    }
+    field simple_attr type string {
+      indexing: attribute | summary
+    }
+  }
+  document-summary basic {
+    from-disk
+    summary complex type array<my_struct> { }
+    summary complex_attr type array<my_struct> { }
+    summary simple type string { }
+    summary simple_attr type string { }
+  }
+  document-summary rename {
+    from-disk
+    summary new_complex type array<my_struct> { source: complex }
+    summary new_complex_attr type array<my_struct> { source: complex_attr }
+    summary new_simple type string { source: simple }
+    summary new_simple_attr type string { source: simple_attr }
+  }
+}
