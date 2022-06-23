@@ -1,0 +1,13 @@
+[
+{"id":"id:test:local::GCJZFF","fields":{"title":"Pandora - Trondheim GCJZFF","ll":{"lat":63.4055,"lng":10.5339}}},
+{"id":"id:test:local::GCNVM8","fields":{"title":"Fossekaill'n GCNVM8","ll":{"lat":63.3843,"lng":10.3883}}},
+{"id":"id:test:local::GCN9G0","fields":{"title":"The Fir Forest GCN9G0","ll":{"lat":63.4233,"lng":10.5118}}},
+{"id":"id:test:local::GCNHK9","fields":{"title":"A Bridge Too Far GCNHK9","ll":{"lat":63.394,"lng":10.3868}}},
+{"id":"id:test:local::GCPAKJ","fields":{"title":"Kjro#1 - Ilsvika overview GCPAKJ","ll":{"lat":63.4345,"lng":10.3461}}},
+{"id":"id:test:local::GCPCRW","fields":{"title":"Kjro#2 - Ilsvika seaside GCPCRW","ll":{"lat":63.4325,"lng":10.3603}}},
+{"id":"id:test:local::GCQHZ5","fields":{"title":"Overlook Byåsen GCQHZ5","ll":{"lat":63.4124,"lng":10.3381}}},
+{"id":"id:test:local::GCG5KZ","fields":{"title":"Starte #2 - Ladestien GCG5KZ","ll":{"lat":63.447,"lng":10.4659}}},
+{"id":"id:test:local::GCPKHQ","fields":{"title":"Johela#12 - Sponhuset GCPKHQ","ll":{"lat":63.4537,"lng":10.4608}}},
+{"id":"id:test:local::GCQMGM","fields":{"title":"BP#02 Steinberget GCQMGM","ll":{"lat":63.4225,"lng":10.3637}}},
+{"id":"id:test:local::GCEQGW","fields":{"title":"equator/greenwich","ll":{"lat":0.0,"lng":0.0}}},
+{"id":"id:test:local::GCEQDL","fields":{"title":"equator/dateline","ll":{"lat":0.0,"lng":180.0}}}]

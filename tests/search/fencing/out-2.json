@@ -84,7 +84,7 @@
                     "summaryfeatures": {
                         "attribute(fenceradius)": null,
                         "attribute(maybecenter_zcurve).count": 0.0,
-                        "distance(center)": 2.084088850471591E9,
+                        "distance(center)": 2.2108885520968256E9,
                         "distance(maybecenter)": 4.294967296E9,
                         "distance(maybecenter).index": -1.0,
                         "distance(maybecenter).latitude": 90.0,
