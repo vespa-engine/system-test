@@ -14,6 +14,7 @@
         { "id" : "experimental-sd-parsing", "rules" : [ { "value" : true } ] },
         { "id" : "ignore-thread-stack-sizes", "rules" : [ { "value" : true } ] },
         { "id" : "async-message-handling-on-schedule", "rules" : [ { "value" : false } ] },
+        { "id" : "skip-communicationmanager-thread", "rules" : [ { "value" : true } ] },
         { "id" : "skip-mbus-request-thread", "rules" : [ { "value" : false } ] },
         { "id" : "skip-mbus-reply-thread", "rules" : [ { "value" : false } ] },
         { "id" : "use-three-phase-updates", "rules" : [ { "value" : true } ] },
