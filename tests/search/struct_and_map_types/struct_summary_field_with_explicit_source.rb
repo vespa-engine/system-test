@@ -34,8 +34,17 @@ class StructSummaryFieldWithExplicitSource < SearchTest
     result = qrserver.search(query_string(summary))
     assert(1, result.hitcount)
     puts "Result with #{summary} summary is"
-    puts JSON.pretty_generate(result.json["root"]["children"][0]["fields"])
+    fields = result.json["root"]["children"][0]["fields"]
+    puts JSON.pretty_generate(fields)
     puts "----"
+    fields
+  end
+
+  def check_result(result, prefix)
+    assert_equal('svalue0', result["#{prefix}simple"])
+    assert_equal('savalue0', result["#{prefix}simple_attr"])
+    assert_equal([{'value' => 'cvalue0', 'name' => 'cname0'}], result["#{prefix}complex"])
+    assert_equal([{'value' => 'cavalue0', 'name' => 'caname0'}], result["#{prefix}complex_attr"])
   end
 
   def test_struct_summary_field_with_explicit_source
@@ -44,7 +53,9 @@ class StructSummaryFieldWithExplicitSource < SearchTest
     feed(:file => "#{@testdir}/docs.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:test", 1)
     basic_result = get_summary('basic')
+    check_result(basic_result, '')
     rename_result = get_summary('rename')
+    check_result(rename_result, 'new_')
   end
 
   def teardown
