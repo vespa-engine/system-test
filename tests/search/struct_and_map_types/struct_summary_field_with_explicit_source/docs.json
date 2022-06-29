@@ -1,0 +1,21 @@
+[
+    {
+	"put": "id:test:test::0",
+	"fields": {
+	    "complex": [
+		{
+		    "name": "cname0",
+		    "value": "cvalue0"
+		}
+	    ],
+	    "complex_attr": [
+		{
+		    "name": "caname0",
+		    "value": "cavalue0"
+		}
+	    ],
+	    "simple": "svalue0",
+	    "simple_attr": "savalue0"
+	}
+    }
+]
