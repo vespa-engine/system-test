@@ -10,9 +10,7 @@ class StructSummaryFieldWithExplicitSource < SearchTest
   end
 
   def get_app
-    sc = SearchCluster.new('test')
-    sc.sd("#{@testdir}/test.sd")
-    app = SearchApp.new.cluster(sc)
+    SearchApp.new.sd("#{@testdir}/test.sd")
   end
 
   def qrserver
@@ -32,7 +30,7 @@ class StructSummaryFieldWithExplicitSource < SearchTest
 
   def get_summary(summary)
     result = qrserver.search(query_string(summary))
-    assert(1, result.hitcount)
+    assert_hitcount(result, 1)
     puts "Result with #{summary} summary is"
     fields = result.json["root"]["children"][0]["fields"]
     puts JSON.pretty_generate(fields)
