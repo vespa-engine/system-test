@@ -1,8 +1,8 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'search_test'
+require 'indexed_streaming_search_test'
 
-class StructSummaryFieldWithExplicitSource < SearchTest
+class StructSummaryFieldWithExplicitSource < IndexedStreamingSearchTest
   def setup
     set_owner('toregge')
     set_description("Test struct summary field with explicit source")
@@ -25,6 +25,7 @@ class StructSummaryFieldWithExplicitSource < SearchTest
                                        ["format", "json" ],
                                        ['timeout', '5.0'],
                                        ['model.type', 'all'],
+                                       ['streaming.selection', 'true']
                                       ])
   end
 
@@ -49,7 +50,7 @@ class StructSummaryFieldWithExplicitSource < SearchTest
     deploy_app(get_app)
     start
     feed(:file => "#{@testdir}/docs.json", :timeout => 240)
-    wait_for_hitcount("query=sddocname:test", 1)
+    wait_for_hitcount("query=sddocname:test&streaming.selection=true", 1)
     basic_result = get_summary('basic')
     check_result(basic_result, '')
     rename_result = get_summary('rename')
