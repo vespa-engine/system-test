@@ -13,6 +13,7 @@
         { "id" : "use-qrserver-service-name", "rules" : [ { "value" : false } ] },
         { "id" : "experimental-sd-parsing", "rules" : [ { "value" : true } ] },
         { "id" : "ignore-thread-stack-sizes", "rules" : [ { "value" : true } ] },
+        { "id" : "mbus-dispatch-on-encode", "rules" : [ { "value" : false } ] },
         { "id" : "async-message-handling-on-schedule", "rules" : [ { "value" : false } ] },
         { "id" : "use-three-phase-updates", "rules" : [ { "value" : true } ] },
         { "id" : "max-uncommitted-memory", "rules" : [ { "value" : 65000 } ] },
