@@ -1,8 +1,8 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class EmptyFieldsInResponseTest < IndexedSearchTest
+class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("lesters")
@@ -18,7 +18,7 @@ class EmptyFieldsInResponseTest < IndexedSearchTest
   end
 
   def assert_search()
-    result = search("query=sddocname:test")
+    result = search("query=sddocname:test&streaming.selection=true")
     assert(result.hit.size == 4)
     assert_fields(find_doc(result, "normal"), :get_search_field_value, :assert_not_equal, nil)
     assert_fields(find_doc(result, "not_set"), :get_search_field_value, :assert_equal, nil)
@@ -31,7 +31,7 @@ class EmptyFieldsInResponseTest < IndexedSearchTest
     assert_fields(get_doc("not_set"), :get_document_field_value, :assert_equal, nil)
     assert_fields(get_doc("set_null"), :get_document_field_value, :assert_equal, nil)
     # known exception: reserved code for empty int fields will be returned for non-attributes
-    assert_fields(get_doc("set_empty"), :get_document_field_value, :assert_equal, nil, ["int_non_attribute"])
+    assert_fields(get_doc("set_empty"), :get_document_field_value, :assert_equal, nil, is_streaming ? ["int_attribute", "int_non_attribute"] : ["int_non_attribute"])
   end
 
   def find_doc(result, id)
