@@ -15,7 +15,7 @@
         { "id" : "ignore-thread-stack-sizes", "rules" : [ { "value" : true } ] },
         { "id" : "mbus-dispatch-on-encode", "rules" : [ { "value" : true } ] },
         { "id" : "mbus-dispatch-on-decode", "rules" : [ { "value" : true } ] },
-        { "id" : "mbus-num-network-threads", "rules" : [ { "value" : 2 } ] },
+        { "id" : "mbus-num-network-threads", "rules" : [ { "value" : 1 } ] },
         { "id" : "async-message-handling-on-schedule", "rules" : [ { "value" : false } ] },
         { "id" : "use-three-phase-updates", "rules" : [ { "value" : true } ] },
         { "id" : "max-uncommitted-memory", "rules" : [ { "value" : 65000 } ] },
