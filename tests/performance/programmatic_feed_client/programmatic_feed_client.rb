@@ -30,13 +30,13 @@ class ProgrammaticFeedClientTest < PerformanceTest
     build_feed_client
 
     run_benchmark(container_node, "VespaFeedClient",   TINY, 32)
-    run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
-    run_benchmark(container_node, "VespaFeedClient",  SMALL, 16)
-    run_benchmark(container_node, "VespaFeedClient",  SMALL, 32)
-    run_benchmark(container_node, "VespaFeedClient",  SMALL, 64)
-    run_benchmark(container_node, "VespaFeedClient", MEDIUM, 32)
-    run_benchmark(container_node, "VespaFeedClient",  LARGE, 32)
-    run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 32)
+#    run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
+#    run_benchmark(container_node, "VespaFeedClient",  SMALL, 16)
+#    run_benchmark(container_node, "VespaFeedClient",  SMALL, 32)
+#    run_benchmark(container_node, "VespaFeedClient",  SMALL, 64)
+#    run_benchmark(container_node, "VespaFeedClient", MEDIUM, 32)
+#    run_benchmark(container_node, "VespaFeedClient",  LARGE, 32)
+#    run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 32)
   end
 
   private
@@ -140,7 +140,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   def teardown
-    stop
+    super
   end
 
 end
