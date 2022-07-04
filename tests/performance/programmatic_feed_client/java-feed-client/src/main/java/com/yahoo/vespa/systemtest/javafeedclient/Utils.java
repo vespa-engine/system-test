@@ -6,11 +6,6 @@ import ai.vespa.feed.client.FeedClientBuilder;
 import ai.vespa.feed.client.OperationStats;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.yahoo.vespa.http.client.config.Cluster;
-import com.yahoo.vespa.http.client.config.ConnectionParams;
-import com.yahoo.vespa.http.client.config.Endpoint;
-import com.yahoo.vespa.http.client.config.FeedParams;
-import com.yahoo.vespa.http.client.config.SessionParams;
 
 import javax.net.ssl.HostnameVerifier;
 import java.io.ByteArrayOutputStream;
@@ -95,24 +90,6 @@ class Utils {
                                 .setCertificate(certificate(), privateKey())
                                 .setHostnameVerifier(TRUST_ALL_VERIFIER)
                                 .build();
-    }
-
-    static SessionParams createSessionParams() {
-        URI endpoint = endpoint();
-        return new SessionParams.Builder()
-                .setFeedParams(new FeedParams.Builder()
-                                       .setRoute(route())
-                                       .build())
-                .setConnectionParams(new ConnectionParams.Builder()
-                                             .setCaCertificates(caCertificate())
-                                             .setCertificateAndPrivateKey(privateKey(), certificate())
-                                             .setNumPersistentConnectionsPerEndpoint(connections())
-                                             .setHostnameVerifier(TRUST_ALL_VERIFIER)
-                                             .build())
-                .addCluster(new Cluster.Builder()
-                                    .addEndpoint(Endpoint.create(endpoint.getHost(), endpoint.getPort(), true))
-                                    .build())
-                .build();
     }
 
 }
