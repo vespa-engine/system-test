@@ -17,7 +17,7 @@ class TensorDotProductTest < IndexedSearchTest
 
   def test_tensor_dot_product
     set_description("Test basic tensor dot product in ranking expression")
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd")
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
     feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.json")
 

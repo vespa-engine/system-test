@@ -125,7 +125,8 @@ class ProgrammaticFeedClientTest < PerformanceTest
       config(ConfigOverride.new("container.handler.threadpool").add("maxthreads", 4))
     output = deploy_app(SearchApp.new.
       sd(selfdir + 'text.sd').
-      container(container_cluster).
+      container(container_cluster))
+
     start
 
     gw = @vespa.container.values.first
