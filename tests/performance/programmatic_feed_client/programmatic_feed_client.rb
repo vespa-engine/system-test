@@ -140,7 +140,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   def teardown
-    stop
+    super
   end
 
 end
