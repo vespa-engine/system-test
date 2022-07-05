@@ -11,6 +11,38 @@ schema test {
       indexing: summary
     }
 
+    # Long fields
+    field long_attribute type long {
+      indexing: summary | attribute
+    }
+    field long_non_attribute type long {
+      indexing: summary
+    }
+
+    # Byte fields
+    field byte_attribute type byte {
+      indexing: summary | attribute
+    }
+    field byte_non_attribute type byte {
+      indexing: summary
+    }
+
+    # Float fields
+    field float_attribute type float {
+      indexing: summary | attribute
+    }
+    field float_non_attribute type float {
+      indexing: summary
+    }
+
+    # Double fields
+    field double_attribute type double {
+      indexing: summary | attribute
+    }
+    field double_non_attribute type double {
+      indexing: summary
+    }
+
     # String fields
     field string_attribute type string {
       indexing: summary | attribute

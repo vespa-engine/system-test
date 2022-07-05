@@ -20,18 +20,18 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
   def assert_search()
     result = search("query=sddocname:test&streaming.selection=true")
     assert(result.hit.size == 4)
-    assert_fields(find_doc(result, "normal"), :get_search_field_value, :assert_not_equal, nil)
-    assert_fields(find_doc(result, "not_set"), :get_search_field_value, :assert_equal, nil)
-    assert_fields(find_doc(result, "set_null"), :get_search_field_value, :assert_equal, nil)
-    assert_fields(find_doc(result, "set_empty"), :get_search_field_value, :assert_equal, nil)
+    assert_fields(find_doc(result, "normal"), "find", "normal", :get_search_field_value, :assert_not_equal, nil)
+    assert_fields(find_doc(result, "not_set"), "find", "not_set", :get_search_field_value, :assert_equal, nil)
+    assert_fields(find_doc(result, "set_null"), "find", "set_null", :get_search_field_value, :assert_equal, nil)
+    assert_fields(find_doc(result, "set_empty"), "find", "set_empty", :get_search_field_value, :assert_equal, nil)
   end
 
   def assert_get()
-    assert_fields(get_doc("normal"), :get_document_field_value, :assert_not_equal, nil)
-    assert_fields(get_doc("not_set"), :get_document_field_value, :assert_equal, nil)
-    assert_fields(get_doc("set_null"), :get_document_field_value, :assert_equal, nil)
+    assert_fields(get_doc("normal"), "get", "normal", :get_document_field_value, :assert_not_equal, nil)
+    assert_fields(get_doc("not_set"), "get", "not_set", :get_document_field_value, :assert_equal, nil)
+    assert_fields(get_doc("set_null"), "get", "set_null", :get_document_field_value, :assert_equal, nil)
     # known exception: reserved code for empty int fields will be returned for non-attributes
-    assert_fields(get_doc("set_empty"), :get_document_field_value, :assert_equal, nil, is_streaming ? ["int_attribute", "int_non_attribute"] : ["int_non_attribute"])
+    assert_fields(get_doc("set_empty"), "get", "set_empty", :get_document_field_value, :assert_equal, nil, is_streaming ? ["int_attribute", "int_non_attribute", "long_attribute", "long_non_attribute", "byte_attribute", "byte_non_attribute"] : ["int_non_attribute", "long_non_attribute", "byte_non_attribute"])
   end
 
   def find_doc(result, id)
@@ -47,10 +47,18 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
     return vespa.document_api_v1.get("id:test:test::" + id)
   end
 
-  def assert_fields(hit, get_fn, assert_fn, expected = nil, skip_fields = [])
+  def assert_fields(hit, accessor, doc, get_fn, assert_fn, expected = nil, skip_fields = [])
     fields = [
       "int_attribute",
       "int_non_attribute",
+      "long_attribute",
+      "long_non_attribute",
+      "byte_attribute",
+      "byte_non_attribute",
+      "float_attribute",
+      "float_non_attribute",
+      "double_attribute",
+      "double_non_attribute",
       "string_attribute",
       "string_non_attribute",
       "array_attribute",
@@ -61,8 +69,13 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
       "map_non_attribute"
     ]
     for field in fields
-      if !(skip_fields.include? field)
-        self.send(assert_fn, expected, self.send(get_fn, hit, field))
+      begin
+        if !(skip_fields.include? field)
+          self.send(assert_fn, expected, self.send(get_fn, hit, field))
+        end
+      rescue Exception => e
+        puts "Exception #{e.message} for #{accessor} #{doc}, #{field}"
+        raise
       end
     end
   end
