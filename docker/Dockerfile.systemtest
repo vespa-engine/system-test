@@ -17,6 +17,11 @@ FROM $SYSTEMTEST_BASE_IMAGE AS systemtest
 
 ARG SKIP_M2_POPULATE
 
+# Clear all dynamic debuginfo URLs. Current specific issue related to this is
+# that libelfutils wants to download info when interrupting 'perf record'.
+# Depending on network setup for Docker/Podman this might hang forever.
+RUN rm -rf /etc/debuginfod/*
+
 COPY /include/feature-flags.json /opt/vespa/var/vespa/flag.db
 
 RUN mkdir -p /root/.m2
