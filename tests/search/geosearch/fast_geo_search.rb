@@ -91,8 +91,8 @@ def test_multiple_position_fields
 
     yql = "#{yqlpre} where #{yqlgeo1} or #{yqlgeo2} or #{yqlgeo3} or #{yqlgeo4};"
 
-    # save_result("yql=#{URI::encode(yql)}&tracelevel=1", selfdir+"example/mp-7.json")
-    assert_geo_result("yql=#{URI::encode(yql)}&tracelevel=1", selfdir+"example/mp-7.json")
+    # save_result("yql=#{CGI::escape(yql)}&tracelevel=1", selfdir+"example/mp-7.json")
+    assert_geo_result("yql=#{CGI::escape(yql)}&tracelevel=1", selfdir+"example/mp-7.json")
   end
 
 

@@ -83,8 +83,8 @@ class ReindexingTest < IndexedSearchTest
     end
     assert('successful' == status['state'], "Reindexing should complete successfully")
     if reindexing_timestamp
-      assert_hitcount("#{document_type}_indexed_at_seconds:#{URI.escape('<')}#{reindexing_timestamp/1000}&nocache", 0)
-      assert_hitcount("#{document_type}_indexed_at_seconds:#{URI.escape('>')}#{reindexing_timestamp/1000}&nocache", DOCUMENT_COUNT)
+      assert_hitcount("#{document_type}_indexed_at_seconds:#{CGI::escape('<')}#{reindexing_timestamp/1000}&nocache", 0)
+      assert_hitcount("#{document_type}_indexed_at_seconds:#{CGI::escape('>')}#{reindexing_timestamp/1000}&nocache", DOCUMENT_COUNT)
     end
   end
 

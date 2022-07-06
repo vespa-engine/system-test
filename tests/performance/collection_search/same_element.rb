@@ -108,7 +108,7 @@ class SameElementPerformanceTest < CollectionPerfTestBase
 
   def write_query_to_disk(query)
     File.open(@query_file_name, 'w') do |f|
-      f.puts('/search/?yql=' + URI::encode(query))
+      f.puts('/search/?yql=' + CGI::escape(query))
     end
   end
 

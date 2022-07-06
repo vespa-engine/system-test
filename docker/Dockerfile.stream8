@@ -42,7 +42,7 @@ RUN dnf config-manager --enable powertools && \
         sudo \
         zstd && \
     ln -s /opt/rh/gcc-toolset-11 /opt/rh/devtoolset-11 && \
-    (source /opt/rh/gcc-toolset-11/enable && gem install libxml-ruby gnuplot distribution test-unit builder concurrent-ruby bigdecimal addressable ffi parallel) && \
+    (source /opt/rh/gcc-toolset-11/enable && gem install libxml-ruby gnuplot distribution test-unit builder concurrent-ruby bigdecimal ffi parallel) && \
     echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
 # Installation of maven is sneaky. It installs java-8 and sets as default.
