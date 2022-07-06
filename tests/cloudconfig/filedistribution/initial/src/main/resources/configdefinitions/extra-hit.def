@@ -1,3 +1,4 @@
-namespace=vespatest
+package=com.yahoo.vespatest
 
 exampleString string default="Hello World"
+path path
