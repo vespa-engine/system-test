@@ -48,6 +48,8 @@ schema ad {
       expression: 10*closeness(label,nns) + fieldMatch(text).earliness
     }
     summary-features {
+      distance(pos)
+      distance(label,nns)
       closeness(pos)
       closeness(label,nns)
       rawScore(pos)
