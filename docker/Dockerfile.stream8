@@ -19,7 +19,7 @@ RUN dnf install -y gcc-c++ python3-devel && \
 ENV VESPA_CONFIGPROXY_JVMARGS="-XX:ThreadStackSize=1024k"
 
 RUN dnf config-manager --enable powertools && \
-    dnf module enable -y ruby:2.7 && \
+    dnf module enable -y ruby:3.0 && \
     dnf module enable -y maven:3.6 && \
     dnf install -y \
         bind-utils \
@@ -38,11 +38,16 @@ RUN dnf config-manager --enable powertools && \
         ruby \
         ruby-devel \
         rubygems-devel \
-        rubygem-net-telnet \
+        rubygem-bigdecimal \
+        rubygem-builder \
+        rubygem-concurrent-ruby \
+        rubygem-parallel \
+        rubygem-rexml \
+        rubygem-test-unit \
         sudo \
         zstd && \
     ln -s /opt/rh/gcc-toolset-11 /opt/rh/devtoolset-11 && \
-    (source /opt/rh/gcc-toolset-11/enable && gem install libxml-ruby gnuplot distribution test-unit builder concurrent-ruby bigdecimal ffi parallel) && \
+    (source /opt/rh/gcc-toolset-11/enable && gem install ffi libxml-ruby) && \
     echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
 # Installation of maven is sneaky. It installs java-8 and sets as default.

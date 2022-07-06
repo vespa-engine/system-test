@@ -13,7 +13,7 @@ RUN dnf -y install epel-release && \
         dnf-plugin-ovl && \
     dnf config-manager --enable powertools && \
     dnf -y module enable maven:3.6 && \
-    dnf -y module enable ruby:2.7 && \
+    dnf -y module enable ruby:3.0 && \
     dnf -y install \
         bind-utils \
         cmake \
@@ -36,7 +36,12 @@ RUN dnf -y install epel-release && \
         ruby \
         ruby-devel \
         rubygems-devel \
-        rubygem-net-telnet \
+        rubygem-bigdecimal \
+        rubygem-builder \
+        rubygem-concurrent-ruby \
+        rubygem-parallel \
+        rubygem-rexml \
+        rubygem-test-unit \
         sudo \
         wget \
         zstd \
@@ -45,8 +50,7 @@ RUN dnf -y install epel-release && \
      alternatives --set java java-17-openjdk.$(arch) && \
      alternatives --set javac java-17-openjdk.$(arch) && \
      echo -e "#!/bin/bash\nsource /opt/rh/gcc-toolset-11/enable" > /etc/profile.d/enable-gcc-toolset-11.sh && \
-     source /opt/rh/gcc-toolset-11/enable && \
-     gem install libxml-ruby gnuplot distribution test-unit builder concurrent-ruby bigdecimal ffi parallel && \
+     (source /opt/rh/gcc-toolset-11/enable && gem install ffi libxml-ruby) && \
      dnf clean all && rm -rf /var/cache/dnf && \
      rm -rf /tmp/include
 
