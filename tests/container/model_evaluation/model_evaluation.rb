@@ -23,36 +23,36 @@ class ModelEvaluation < SearchContainerTest
     #    - no argument
     result = query("/models/?model=mnist_softmax&function=y" +
                    "&argumentName=Placeholder_0" +
-                   "&argumentValue=" + URI::encode(generateAllZeroArgument()))
+                   "&argumentValue=" + CGI::escape(generateAllZeroArgument()))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":-1.6372650861740112E-6}]}", result.body)
     #    - with argument
     result = query("/models/?model=mnist_softmax&function=y" +
                    "&argumentName=Placeholder_0" +
-                   "&argumentValue=" + URI::encode(generateArgument()))
+                   "&argumentValue=" + CGI::escape(generateArgument()))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":2.4199485778808594E-5}]}", result.body)
 
     # ---- mnist_softmax_saved (tensorflow)
     #    - no argument
     result = query("/models/?model=mnist_softmax_saved&function=serving_default.y" +
                    "&argumentName=Placeholder" +
-                   "&argumentValue=" + URI::encode(generateAllZeroArgument()))
+                   "&argumentValue=" + CGI::escape(generateAllZeroArgument()))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":-1.6372650861740112E-6}]}", result.body)
     #    - with argument
     result = query("/models/?model=mnist_softmax_saved&function=serving_default.y" +
                    "&argumentName=Placeholder" +
-                   "&argumentValue=" + URI::encode(generateArgument()))
+                   "&argumentValue=" + CGI::escape(generateArgument()))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":9.119510650634766E-6}]}", result.body)
 
     # ---- mnist_saved (tensorflow, with generated macros)
     #    - no argument
     result = query("/models/?model=mnist_saved&function=serving_default.y" +
                    "&argumentName=input" +
-                   "&argumentValue=" + URI::encode(generateAllZeroArgument()))
+                   "&argumentValue=" + CGI::escape(generateAllZeroArgument()))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":-0.7146291686221957}]}", result.body)
     #    - with argument
     result = query("/models/?model=mnist_saved&function=serving_default" +
                    "&argumentName=input" +
-                   "&argumentValue=" + URI::encode(generateArgument()))
+                   "&argumentValue=" + CGI::escape(generateArgument()))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":6.658839702606201}]}", result.body)
 
   end
@@ -74,34 +74,34 @@ class ModelEvaluation < SearchContainerTest
 
     # evaluate mnist_softmax model (only has one function, thus optional)
     result = query("/model-evaluation/v1/mnist_softmax/eval" +
-                   "?Placeholder_0=" + URI::encode(generateArgument()))
+                   "?Placeholder_0=" + CGI::escape(generateArgument()))
     assert_equal("{\"cells\":[{\"address\":{\"d0\":\"0\",\"d1\":\"0\"},\"value\":0.8232707381248474},{\"address\":{\"d0\":\"0\",\"d1\":\"1\"},\"value\":-9.757275581359863},{\"address\":{\"d0\":\"0\",\"d1\":\"2\"},\"value\":6.982227802276611},{\"address\":{\"d0\":\"0\",\"d1\":\"3\"},\"value\":6.577242851257324},{\"address\":{\"d0\":\"0\",\"d1\":\"4\"},\"value\":-6.682279109954834},{\"address\":{\"d0\":\"0\",\"d1\":\"5\"},\"value\":6.788743495941162},{\"address\":{\"d0\":\"0\",\"d1\":\"6\"},\"value\":0.4913627505302429},{\"address\":{\"d0\":\"0\",\"d1\":\"7\"},\"value\":-3.539299726486206},{\"address\":{\"d0\":\"0\",\"d1\":\"8\"},\"value\":1.3475146293640137},{\"address\":{\"d0\":\"0\",\"d1\":\"9\"},\"value\":-3.0314836502075195}]}", result.body)
 
     # evaluate mnist_saved model
     result = query("/model-evaluation/v1/mnist_saved/eval" +
-                   "?input=" + URI::encode(generateArgument()))
+                   "?input=" + CGI::escape(generateArgument()))
     assert_equal(200, result.code.to_i)
 
     # evaluate mnist_saved model
     result = query("/model-evaluation/v1/mnist_saved/serving_default.y/eval" +
-                   "?input=" + URI::encode(generateArgument()))
+                   "?input=" + CGI::escape(generateArgument()))
     assert_equal("{\"cells\":[{\"address\":{\"d0\":\"0\",\"d1\":\"0\"},\"value\":-0.9851940870285034},{\"address\":{\"d0\":\"0\",\"d1\":\"1\"},\"value\":-3.3600471019744873},{\"address\":{\"d0\":\"0\",\"d1\":\"2\"},\"value\":10.35411262512207},{\"address\":{\"d0\":\"0\",\"d1\":\"3\"},\"value\":12.595134735107422},{\"address\":{\"d0\":\"0\",\"d1\":\"4\"},\"value\":-7.51699686050415},{\"address\":{\"d0\":\"0\",\"d1\":\"5\"},\"value\":3.359957218170166},{\"address\":{\"d0\":\"0\",\"d1\":\"6\"},\"value\":-8.216789245605469},{\"address\":{\"d0\":\"0\",\"d1\":\"7\"},\"value\":-4.859930515289307},{\"address\":{\"d0\":\"0\",\"d1\":\"8\"},\"value\":5.97797155380249},{\"address\":{\"d0\":\"0\",\"d1\":\"9\"},\"value\":-0.6893786191940308}]}", result.body)
 
     # evaluate mnist_saved model
     result = query("/model-evaluation/v1/mnist_saved/serving_default/eval" +
-                   "?input=" + URI::encode(generateArgument()))
+                   "?input=" + CGI::escape(generateArgument()))
     assert_equal("{\"cells\":[{\"address\":{\"d0\":\"0\",\"d1\":\"0\"},\"value\":-0.9851940870285034},{\"address\":{\"d0\":\"0\",\"d1\":\"1\"},\"value\":-3.3600471019744873},{\"address\":{\"d0\":\"0\",\"d1\":\"2\"},\"value\":10.35411262512207},{\"address\":{\"d0\":\"0\",\"d1\":\"3\"},\"value\":12.595134735107422},{\"address\":{\"d0\":\"0\",\"d1\":\"4\"},\"value\":-7.51699686050415},{\"address\":{\"d0\":\"0\",\"d1\":\"5\"},\"value\":3.359957218170166},{\"address\":{\"d0\":\"0\",\"d1\":\"6\"},\"value\":-8.216789245605469},{\"address\":{\"d0\":\"0\",\"d1\":\"7\"},\"value\":-4.859930515289307},{\"address\":{\"d0\":\"0\",\"d1\":\"8\"},\"value\":5.97797155380249},{\"address\":{\"d0\":\"0\",\"d1\":\"9\"},\"value\":-0.6893786191940308}]}", result.body)
 
     # ---- vespa (only tested with this API since we require 2 arguments which the ad hoc (models) API doesn't support
     #    - function using small constant
     result = query("/model-evaluation/v1/vespa_example/foo1/eval" +
-                   "?input1=" + URI::encode("{{name:a, x:0}: 1, {name:a, x:1}: 2, {name:a, x:2}: 3}") +
-                   "&input2=" + URI::encode("{{x:0}:3, {x:1}:6, {x:2}:9}"))
+                   "?input1=" + CGI::escape("{{name:a, x:0}: 1, {name:a, x:1}: 2, {name:a, x:2}: 3}") +
+                   "&input2=" + CGI::escape("{{x:0}:3, {x:1}:6, {x:2}:9}"))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":202.5}]}", result.body)
     #    - function using large constant
     result = query("/model-evaluation/v1/vespa_example/foo2/eval" +
-                   "?input1=" + URI::encode("{{name:a, x:0}: 1, {name:a, x:1}: 2, {name:a, x:2}: 3}") +
-                   "&input2=" + URI::encode("{{x:0}:3, {x:1}:6, {x:2}:9}"))
+                   "?input1=" + CGI::escape("{{name:a, x:0}: 1, {name:a, x:1}: 2, {name:a, x:2}: 3}") +
+                   "&input2=" + CGI::escape("{{x:0}:3, {x:1}:6, {x:2}:9}"))
     assert_equal("{\"cells\":[{\"address\":{},\"value\":202.5}]}", result.body)
   end
 

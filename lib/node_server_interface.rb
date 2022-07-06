@@ -9,28 +9,28 @@ module NodeServerInterface
     @node_server.remote_eval(expr)
   end
 
-  def execute(*args)
-    @node_server.execute(*args)
+  def execute(...)
+    @node_server.execute(...)
   end
 
-  def execute_bg(*args)
-    @node_server.execute_bg(*args)
+  def execute_bg(...)
+    @node_server.execute_bg(...)
   end
 
-  def get_pids(*args)
-    @node_server.get_pids(*args)
+  def get_pids(...)
+    @node_server.get_pids(...)
   end
 
-  def kill_process(*args)
-    @node_server.kill_process(*args)
+  def kill_process(...)
+    @node_server.kill_process(...)
   end
 
-  def kill_pid(*args)
-    @node_server.kill_pid(*args)
+  def kill_pid(...)
+    @node_server.kill_pid(...)
   end
 
-  def waitpid(*args)
-    @node_server.waitpid(*args)
+  def waitpid(...)
+    @node_server.waitpid(...)
   end
 
   def print_configserver_stack
@@ -41,12 +41,12 @@ module NodeServerInterface
     @node_server.reset_logctl
   end
 
-  def set_addr_configserver(*args)
-    @node_server.set_addr_configserver(*args)
+  def set_addr_configserver(...)
+    @node_server.set_addr_configserver(...)
   end
 
-  def set_port_configserver_rpc(*args)
-    @node_server.set_port_configserver_rpc(*args)
+  def set_port_configserver_rpc(...)
+    @node_server.set_port_configserver_rpc(...)
   end
 
   def reset_environment_setting
@@ -61,12 +61,12 @@ module NodeServerInterface
     @node_server.get_stateline(path)
   end
 
-  def check_coredumps(*args)
-    @node_server.check_coredumps(*args)
+  def check_coredumps(...)
+    @node_server.check_coredumps(...)
   end
 
-  def find_coredumps(*args)
-    @node_server.find_coredumps(*args)
+  def find_coredumps(...)
+    @node_server.find_coredumps(...)
   end
 
   def drop_coredumps(starttime)
@@ -103,68 +103,68 @@ module NodeServerInterface
     @node_server.clean_indexes
   end
 
-  def feed(*args)
-    @node_server.feed(*args)
+  def feed(...)
+    @node_server.feed(...)
   end
 
-  def memusage_rss(*args)
-    @node_server.memusage_rss(*args)
+  def memusage_rss(...)
+    @node_server.memusage_rss(...)
   end
 
-  def create_tmpfeed(*args)
-    @node_server.create_tmpfeed(*args)
+  def create_tmpfeed(...)
+    @node_server.create_tmpfeed(...)
   end
 
-  def feedfile(*args)
-    @node_server.feedfile(*args)
+  def feedfile(...)
+    @node_server.feedfile(...)
   end
 
-  def feedbuffer(*args)
-    @node_server.feedbuffer(*args)
+  def feedbuffer(...)
+    @node_server.feedbuffer(...)
   end
 
-  def feed_stream(*args)
-    @node_server.feed_stream(*args)
+  def feed_stream(...)
+    @node_server.feed_stream(...)
   end
 
-  def memory_rss(*args)
-    @node_server.memory_rss(*args)
+  def memory_rss(...)
+    @node_server.memory_rss(...)
   end
 
-  def fetchfile(*args)
-    @node_server.fetchfile(*args)
+  def fetchfile(...)
+    @node_server.fetchfile(...)
   end
 
-  def fetchfiles(*args)
-    @node_server.fetchfiles(*args)
+  def fetchfiles(...)
+    @node_server.fetchfiles(...)
   end
 
-  def copy(*args)
-    @node_server.copy(*args)
+  def copy(...)
+    @node_server.copy(...)
   end
 
-  def stat_files(*args)
-    @node_server.stat_files(*args)
+  def stat_files(...)
+    @node_server.stat_files(...)
   end
 
-  def wait_until_file_exists(*args)
-    @node_server.wait_until_file_exists(*args)
+  def wait_until_file_exists(...)
+    @node_server.wait_until_file_exists(...)
   end
 
-  def write_document_operations(*args)
-    @node_server.write_document_operations(*args)
+  def write_document_operations(...)
+    @node_server.write_document_operations(...)
   end
 
-  def write_queries(*args)
-    @node_server.write_queries(*args)
+  def write_queries(...)
+    @node_server.write_queries(...)
   end
 
-  def write_urls(*args)
-    @node_server.write_urls(*args)
+  def write_urls(...)
+    @node_server.write_urls(...)
   end
 
-  def writefile(*args)
-    @node_server.writefile(*args)
+  def writefile(...)
+    @node_server.writefile(...)
   end
 
   def readfile(*args)
@@ -188,162 +188,97 @@ module NodeServerInterface
     @node_server.port_configserver_rpc
   end
 
-  def removefile(*args)
-    @node_server.removefile(*args)
+  def removefile(...)
+    @node_server.removefile(...)
   end
 
-  def list_files(*args)
-    @node_server.list_files(*args)
+  def list_files(...)
+    @node_server.list_files(...)
   end
 
-  def resolve_symlink(*args)
-    @node_server.resolve_symlink(*args)
+  def resolve_symlink(...)
+    @node_server.resolve_symlink(...)
   end
 
-  def set_bash_variable(*args)
-    @node_server.set_bash_variable(*args)
+  def set_bash_variable(...)
+    @node_server.set_bash_variable(...)
   end
 
-  def unset_bash_variable(*args)
-    @node_server.unset_bash_variable(*args)
+  def unset_bash_variable(...)
+    @node_server.unset_bash_variable(...)
   end
 
-  def maven_compile(*args)
-    @node_server.maven_compile(*args)
+  def maven_compile(...)
+    @node_server.maven_compile(...)
   end
 
-  def compile_java(*args)
-    @node_server.compile_java(*args)
+  def compile_java(...)
+    @node_server.compile_java(...)
   end
 
-  def compile_cpp(*args)
-    @node_server.compile_cpp(*args)
+  def compile_cpp(...)
+    @node_server.compile_cpp(...)
   end
 
-  def delete_java(*args)
-    @node_server.delete_java(*args)
+  def delete_java(...)
+    @node_server.delete_java(...)
   end
 
-  def generate_build_script(*args)
-    @node_server.generate_build_script(*args)
+  def generate_build_script(...)
+    @node_server.generate_build_script(...)
   end
 
-  def generate_delete_script(*args)
-    @node_server.generate_delete_script(*args)
+  def generate_delete_script(...)
+    @node_server.generate_delete_script(...)
   end
 
-  def runqueries(*args)
-    @node_server.runqueries(*args)
+  def runqueries(...)
+    @node_server.runqueries(...)
   end
 
-  def run_fbench(*args)
-    @node_server.run_fbench(*args)
+  def run_fbench(...)
+    @node_server.run_fbench(...)
   end
 
-  def run_multiple_fbenches(*args)
-    @node_server.run_multiple_fbenches(*args)
+  def run_multiple_fbenches(...)
+    @node_server.run_multiple_fbenches(...)
   end
 
   def performance_snapshot
     @node_server.performance_snapshot
   end
 
-  # Methods used for VDS stability testing
-
-  def vdsstability_initialize(webserver_enabled, doccount, usercount)
-    @node_server.vdsstability_initialize(webserver_enabled, doccount, usercount)
-  end
-
-  def vdsstability_start_load(loadgiver_id, type, rate, numdocs=100, seed=0)
-    @node_server.vdsstability_start_load(loadgiver_id, type, rate, numdocs, seed)
-  end
-
-  def vdsstability_start_populate(loadgiver_id, numdocs, seed=0)
-    @node_server.vdsstability_start_populate(loadgiver_id, numdocs, seed)
-  end
-
-  def vdsstability_start_visit_load(loadgiver_id)
-    @node_server.vdsstability_start_visit_load(loadgiver_id)
-  end
-
-  def vdsstability_stop_load(loadgiver_id)
-    @node_server.vdsstability_stop_load(loadgiver_id)
-  end
-
-  def vdsstability_get_status
-    @node_server.vdsstability_get_status
-  end
-
-  def vdsstability_dumpall
-    @node_server.vdsstability_dumpall
-  end
-
-  def vdsstability_disable_errors(loadgiver_id)
-    @node_server.vdsstability_disable_errors(loadgiver_id)
-  end
-
-  def vdsstability_enable_errors(loadgiver_id)
-    @node_server.vdsstability_enable_errors(loadgiver_id)
-  end
-
-  def vdsstability_get_errors(loadgiver_id)
-    @node_server.vdsstability_get_errors(loadgiver_id)
-  end
-
-  def vdsstability_is_done?(loadgiver_id)
-    @node_server.vdsstability_is_done?(loadgiver_id)
-  end
-
-  def vdsstability_num_pending
-    @node_server.vdsstability_num_pending
-  end
-
-  def vdsstability_stop
-    @node_server.vdsstability_stop
-  end
-
-  def http_server_make(*args)
-    @node_server.http_server_make(*args)
+  def http_server_make(...)
+    @node_server.http_server_make(...)
   end
 
   def http_server_handler(port, &block)
     @node_server.http_server_handler(port, &block)
   end
 
-  def http_server_start(*args)
-    @node_server.http_server_start(*args)
+  def http_server_start(...)
+    @node_server.http_server_start(...)
   end
 
-  def http_server_stop(*args)
-    @node_server.http_server_stop(*args)
+  def http_server_stop(...)
+    @node_server.http_server_stop(...)
   end
 
-  def file_exist?(*args)
-    @node_server.file_exist?(*args)
+  def file_exist?(...)
+    @node_server.file_exist?(...)
   end
  
-  def file?(*args)
-    @node_server.file?(*args)
+  def file?(...)
+    @node_server.file?(...)
   end
 
-  def create_unique_temp_file(*args)
-    @node_server.create_unique_temp_file(*args)
+  def create_unique_temp_file(...)
+    @node_server.create_unique_temp_file(...)
   end
 
-  def directory?(*args)
-    @node_server.directory?(*args)
+  def directory?(...)
+    @node_server.directory?(...)
   end
-
-
-  def vdsstability_do_command(*args)
-    if block_given?
-      @node_server.vdsstability_do_command(*args) do |buf|
-        yield buf
-      end
-    else
-      @node_server.vdsstability_do_command(*args)
-    end
-  end	
 
   def get_current_time_as_int
     @node_server.get_current_time_as_int

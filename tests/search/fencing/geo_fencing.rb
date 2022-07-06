@@ -62,7 +62,7 @@ def test_with_geo_fencing
 
     # Same as 1c, with YQL:
     yqlgeo = 'geoLocation("center", 37.4, -122.0, "-1m")'
-    yql = URI::encode("#{yqlpre} where #{yqltxt} and (#{yqllbl} #{yqlgeo})")
+    yql = CGI::escape("#{yqlpre} where #{yqltxt} and (#{yqllbl} #{yqlgeo})")
     qry = "yql=" + yql + crank
     # save_result(qry, selfdir+"out-1.json")
     assert_result(qry, selfdir+"out-1.json")
@@ -73,7 +73,7 @@ def test_with_geo_fencing
 
     # Same as 1m, with YQL:
     yqlgeo = 'geoLocation("maybecenter", 37.4, -122.0, "-1m")'
-    yql = URI::encode("#{yqlpre} where rank(#{yqltxt},#{yqllbl} #{yqlgeo});")
+    yql = CGI::escape("#{yqlpre} where rank(#{yqltxt},#{yqllbl} #{yqlgeo});")
     qry = "yql=" + yql + mrank
     # save_result(qry, selfdir+"out-1m-yql.xml")
     assert_result(qry, selfdir+"out-1.json")
@@ -117,7 +117,7 @@ def test_with_geo_fencing
 
     # 3y) YQL and label:
     yqlgeo = 'geoLocation("maybecenter", -33.8, 151.2, "-1m")'
-    yql = URI::encode("#{yqlpre} where rank(#{yqltxt},#{yqllbl} #{yqlgeo});")
+    yql = CGI::escape("#{yqlpre} where rank(#{yqltxt},#{yqllbl} #{yqlgeo});")
     qry = "yql=" + yql + yrank
     # save_result(qry, selfdir+"out-3y.json")
     assert_result(qry, selfdir+"out-3y.json")
@@ -141,7 +141,7 @@ def test_with_geo_fencing
     yqlgeo4 = 'geoLocation("maybecenter", -60.0, 120.0, "1000 km")'
 
     yql = "#{yqlpre} where #{yqlgeo1} or #{yqlgeo2} or #{yqlgeo3} or #{yqlgeo4};"
-    qry = 'yql=' + URI::encode(yql) + crank
+    qry = 'yql=' + CGI::escape(yql) + crank
 
     # save_result(qry, selfdir+"out-mp-yql.json")
     assert_result(qry, selfdir+"out-mp-yql.json")

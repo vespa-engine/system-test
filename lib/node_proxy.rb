@@ -22,11 +22,11 @@ class NodeClient
     Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL, Errno::EPIPE, Errno::EINVAL, Errno::ECONNRESET, Errno::EHOSTUNREACH
   ]
 
-  def method_missing(symbol, *args, &block)
+  def method_missing(...)
     retries = 0
     max_retries = 3
     begin
-      @node_server.send(symbol, *args, &block)
+      @node_server.send(...)
     rescue *ERRORS_TO_RETRY => e
       if retries < max_retries
         sleep retries
