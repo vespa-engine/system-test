@@ -167,9 +167,9 @@ module NodeServerInterface
     @node_server.writefile(...)
   end
 
-  def readfile(...)
+  def readfile(*args)
     content = ''
-    ret = @node_server.readfile(...) do |buf|
+    ret = @node_server.readfile(*args) do |buf|
       content += buf
       nil
     end
