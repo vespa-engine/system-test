@@ -13,7 +13,7 @@
         { "id" : "use-qrserver-service-name", "rules" : [ { "value" : false } ] },
         { "id" : "experimental-sd-parsing", "rules" : [ { "value" : true } ] },
         { "id" : "ignore-thread-stack-sizes", "rules" : [ { "value" : true } ] },
-        { "id" : "mbus-num-network-threads", "rules" : [ { "value" : 2 } ] },
+        { "id" : "mbus-num-network-threads", "rules" : [ { "value" : 1 } ] },
         { "id" : "mbus-cpp-num-targets", "rules" : [ { "value" : 2 } ] },
         { "id" : "mbus-java-num-targets", "rules" : [ { "value" : 2 } ] },
         { "id" : "rpc-num-targets", "rules" : [ { "value" : 2 } ] },
