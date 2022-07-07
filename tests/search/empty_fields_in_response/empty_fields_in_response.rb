@@ -10,7 +10,7 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
   end
 
   def self.final_test_methods
-    [ "test_empty_fields_in_search_and_get_response_elasticonly" ]
+    [ "test_empty_reference_field_in_search_and_get_response" ]
   end
 
   def test_empty_fields_in_search_and_get_response
@@ -22,7 +22,7 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
     assert_get
   end
 
-  def test_empty_fields_in_search_and_get_response_elasticonly
+  def test_empty_reference_field_in_search_and_get_response
     @doctype = 'child'
     @params = { :search_type => "ELASTIC" }
     deploy_app(SearchApp.new.sd(selfdir+"child.sd").sd(selfdir + "parent.sd", { :global => true }).enable_document_api)
