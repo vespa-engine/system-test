@@ -1,0 +1,25 @@
+[
+    {
+        "put":"id:test:child::normal",
+        "fields": {
+            "reference_attribute": "id:test:parent::normal"
+        }
+    },
+    {
+        "put":"id:test:child::not_set",
+        "fields": {
+        }
+    },
+    {
+        "put":"id:test:child::set_empty",
+        "fields": {
+            "reference_attribute": ""
+        }
+    },
+    {
+        "put":"id:test:child::set_null",
+        "fields": {
+            "reference_attribute": null
+        }
+    }
+]
