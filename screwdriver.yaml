@@ -15,24 +15,8 @@ jobs:
       USER_SHELL_BIN: bash
       RUBYLIB: $SD_SOURCE_DIR/lib
     steps:
-      - install-deps: |
-          set -e
-          dnf module enable -y ruby:2.7
-          dnf install -y \
-              gcc-toolset-11-annobin \
-              gcc-toolset-11-annobin-plugin-gcc \
-              gcc-toolset-11-binutils \
-              gcc-toolset-11-gcc-c++ \
-              gcc-toolset-11-libatomic-devel \
-              libxml2-devel \
-              ruby \
-              ruby-devel \
-              rubygems-devel \
-              rubygem-net-telnet \
-
-          source /opt/rh/gcc-toolset-11/enable
-          gem install libxml-ruby gnuplot distribution test-unit builder
       - run-tests: |
+          set -e
           cd ${RUBYLIB}
           ruby test/testrunner.rb
           exit $?
