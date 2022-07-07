@@ -9,7 +9,12 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
     set_description("Test empty single- and multivalued fields in search and get")
   end
 
+  def self.final_test_methods
+    [ "test_empty_fields_in_search_and_get_response_elasticonly" ]
+  end
+
   def test_empty_fields_in_search_and_get_response
+    @doctype = 'test'
     deploy_app(SearchApp.new.sd(selfdir+"test.sd").enable_document_api)
     start
     feed_and_wait_for_docs("test", 4, :file => selfdir + "docs.json")
@@ -17,8 +22,18 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
     assert_get
   end
 
+  def test_empty_fields_in_search_and_get_response_elasticonly
+    @doctype = 'child'
+    @params = { :search_type => "ELASTIC" }
+    deploy_app(SearchApp.new.sd(selfdir+"child.sd").sd(selfdir + "parent.sd", { :global => true }).enable_document_api)
+    start
+    feed_and_wait_for_docs("child", 4, :file => selfdir + "child_docs.json")
+    assert_search
+    assert_get
+  end
+
   def assert_search()
-    result = search("query=sddocname:test&streaming.selection=true")
+    result = search("query=sddocname:#{@doctype}&streaming.selection=true")
     assert(result.hit.size == 4)
     assert_fields(find_doc(result, "normal"), "find", "normal", :get_search_field_value, :assert_not_equal, nil)
     assert_fields(find_doc(result, "not_set"), "find", "not_set", :get_search_field_value, :assert_equal, nil)
@@ -31,12 +46,12 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
     assert_fields(get_doc("not_set"), "get", "not_set", :get_document_field_value, :assert_equal, nil)
     assert_fields(get_doc("set_null"), "get", "set_null", :get_document_field_value, :assert_equal, nil)
     # known exception: reserved code for empty int fields will be returned for non-attributes
-    assert_fields(get_doc("set_empty"), "get", "set_empty", :get_document_field_value, :assert_equal, nil, is_streaming ? ["int_attribute", "int_non_attribute", "long_attribute", "long_non_attribute", "byte_attribute", "byte_non_attribute"] : ["int_non_attribute", "long_non_attribute", "byte_non_attribute"])
+    assert_fields(get_doc("set_empty"), "get", "set_empty", :get_document_field_value, :assert_equal, nil, @doctype == 'child' ? ["reference_attribute"] : (is_streaming ? ["int_attribute", "int_non_attribute", "long_attribute", "long_non_attribute", "byte_attribute", "byte_non_attribute"] : ["int_non_attribute", "long_non_attribute", "byte_non_attribute"]))
   end
 
   def find_doc(result, id)
     result.hit.each do |hit|
-      if hit.field["documentid"] == ("id:test:test::" + id)
+      if hit.field["documentid"] == ("id:test:#{@doctype}::" + id)
         return hit
       end
     end
@@ -44,7 +59,7 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
   end
 
   def get_doc(id)
-    return vespa.document_api_v1.get("id:test:test::" + id)
+    return vespa.document_api_v1.get("id:test:#{@doctype}::" + id)
   end
 
   def assert_fields(hit, accessor, doc, get_fn, assert_fn, expected = nil, skip_fields = [])
@@ -66,8 +81,11 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
       "weightedset_attribute",
       "weightedset_non_attribute",
       "map_attribute",
-      "map_non_attribute"
+      "map_non_attribute",
+      "tensor_attribute",
+      "tensor_non_attribute"
     ]
+    fields = [ "reference_attribute" ] if @doctype == 'child'
     for field in fields
       begin
         if !(skip_fields.include? field)

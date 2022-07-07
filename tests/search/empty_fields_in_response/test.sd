@@ -78,5 +78,13 @@ schema test {
       indexing: summary
     }
 
+    # Tensor field
+    field tensor_attribute type tensor(x{},y{}) {
+      indexing: attribute | summary
+    }
+    field tensor_non_attribute type tensor(x{},y{}) {
+      indexing: summary
+    }
+
   }
 }
