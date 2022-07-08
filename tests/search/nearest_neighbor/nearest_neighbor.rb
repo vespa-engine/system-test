@@ -69,20 +69,20 @@ class NearestNeighborTest < IndexedSearchTest
 
   def run_common_or_query_tests(query_props)
     # Using OR query, combining nearest neighbor and text matching.
-    # The expected result triples are specified as [exp_docid,exp_distance,exp_earliness].
-    # When exp_distance=nil, the distance/closeness raw score is not calculated during matching.
-    # This is only calculated for docid 0 in the following queries, as we ask for targetHits=1.
+    # The expected result tuples are specified as [exp_docid,exp_distance,exp_earliness,has_raw_score].
+    # Raw score is only calculated for docid 0 (the closest doc) as we ask for targetHits=1.
+    # For all other documents the distance / closeness is calculated on the fly by the rank features.
     query_props[:x_0] = -2
-    assert_nearest_docs(query_props, 1, [[0,2,0.0],[6,nil,0.2]], {:text => "6", :combined => true})
-    assert_nearest_docs(query_props, 1, [[0,2,0.0],[7,nil,0.2]], {:text => "7", :combined => true})
-    assert_nearest_docs(query_props, 1, [[0,2,0.0],[8,nil,0.2]], {:text => "8", :combined => true})
-    assert_nearest_docs(query_props, 1, [[0,2,0.0],[9,nil,0.2]], {:text => "9", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[6,8,0.2,false]], {:text => "6", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[7,9,0.2,false]], {:text => "7", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[8,10,0.2,false]], {:text => "8", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[9,11,0.2,false]], {:text => "9", :combined => true})
 
-    assert_nearest_docs(query_props, 1, [[0,2,1.0],[5,nil,0.8]], {:text => "0", :combined => true})
-    assert_nearest_docs(query_props, 1, [[0,2,0.0],[1,nil,0.8],[6,nil,0.6]], {:text => "1", :combined => true})
-    assert_nearest_docs(query_props, 1, [[0,2,0.0],[2,nil,0.6],[7,nil,0.4]], {:text => "2", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,2,1.0,true],[5,7,0.8,false]], {:text => "0", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[1,3,0.8,false],[6,8,0.6,false]], {:text => "1", :combined => true})
+    assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[2,4,0.6,false],[7,9,0.4,false]], {:text => "2", :combined => true})
 
-    assert_nearest_docs(query_props, 1, [[7,nil,0.2],[0,99,0.0]], {:text => "7", :combined => true, :x_0 => -99})
+    assert_nearest_docs(query_props, 1, [[7,106,0.2,false],[0,99,0.0,true]], {:text => "7", :combined => true, :x_0 => -99})
   end
 
 
@@ -232,17 +232,18 @@ class NearestNeighborTest < IndexedSearchTest
     exp_docid = exp_result[0]
     if qp[:combined]
       exp_distance = exp_result[1]
-      exp_closeness = (exp_distance != nil) ? 1.0 / (1.0 + exp_distance) : 0
-      exp_distance = (exp_distance != nil) ? exp_distance : Float::MAX
+      exp_closeness = 1.0 / (1.0 + exp_distance)
       exp_earliness = exp_result[2]
+      has_raw_score = exp_result[3]
+      exp_raw_score = has_raw_score ? exp_closeness : 0
       # This matches the expression used i rank-profile 'combined'
       exp_score = 10 * exp_closeness + exp_earliness
       exp_features = { "distance(#{doc_tensor})" => exp_distance,
                        "distance(label,nns)" => exp_distance,
                        "closeness(#{doc_tensor})" => exp_closeness,
                        "closeness(label,nns)" => exp_closeness,
-                       "rawScore(#{doc_tensor})" => exp_closeness,
-                       "itemRawScore(nns)" => exp_closeness }
+                       "rawScore(#{doc_tensor})" => exp_raw_score,
+                       "itemRawScore(nns)" => exp_raw_score }
     else
       exp_distance = exp_result[1]
       exp_score = 15 - exp_distance
