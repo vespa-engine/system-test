@@ -44,6 +44,10 @@ class StructSummaryFieldWithExplicitSource < IndexedStreamingSearchTest
     assert_equal('savalue0', result["#{prefix}simple_attr"])
     assert_equal([{'value' => 'cvalue0', 'name' => 'cname0'}], result["#{prefix}complex"])
     assert_equal([{'value' => 'cavalue0', 'name' => 'caname0'}], result["#{prefix}complex_attr"])
+    assert_equal('svalue2', result["#{prefix}simple3"])
+    assert_equal('savalue2', result["#{prefix}simple3_attr"])
+    assert_equal([{'value' => 'cvalue2', 'name' => 'cname2'}], result["#{prefix}complex3"])
+    assert_equal([{'value' => 'cavalue2', 'name' => 'caname2'}], result["#{prefix}complex3_attr"])
   end
 
   def test_struct_summary_field_with_explicit_source
