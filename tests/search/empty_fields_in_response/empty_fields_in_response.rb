@@ -75,9 +75,6 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
   def not_set_search_values
     if is_streaming
       {
-        # Bool has no empty value. Always present in docsum blob.
-        "bool_attribute" => false,
-        "bool_non_attribute" => false
       }
     else
       {
@@ -96,15 +93,7 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
   end
 
   def not_set_get_values
-    if is_streaming
-      {
-      }
-    else
-      {
-        # Bool has no empty value. Always present in attribute.
-        "bool_attribute" => false
-      }
-    end
+    not_set_search_values
   end
 
   def set_null_get_values
