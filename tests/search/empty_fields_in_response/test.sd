@@ -27,6 +27,14 @@ schema test {
       indexing: summary
     }
 
+    # bool fields
+    field bool_attribute type bool {
+      indexing: summary | attribute
+    }
+    field bool_non_attribute type bool {
+      indexing: summary
+    }
+
     # Float fields
     field float_attribute type float {
       indexing: summary | attribute
