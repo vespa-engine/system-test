@@ -33,7 +33,9 @@
                     { "address": { "x": "a", "y": "b" }, "value": 12.0 },
                     { "address": { "x": "c", "y": "d" }, "value": 13.0 }
                 ]
-            }
+            },
+	    "raw_non_attribute": "dGhpcyBpcyByYXcgZGF0YQ==",
+	    "predicate_attribute": "age in [20..29]"
         }
     },
     {
@@ -57,7 +59,8 @@
             "weightedset_attribute": {},
             "weightedset_non_attribute": {},
             "map_attribute": {},
-            "map_non_attribute": {}
+            "map_non_attribute": {},
+            "raw_non_attribute": ""
         }
     },
     {
@@ -84,7 +87,9 @@
             "map_attribute": null,
             "map_non_attribute": null,
             "tensor_attribute": null,
-            "tensor_non_attribute": null
+            "tensor_non_attribute": null,
+            "raw_non_attribute": null,
+            "predicate_attribute": null
         }
     }
 ]

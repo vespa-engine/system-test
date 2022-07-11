@@ -94,5 +94,17 @@ schema test {
       indexing: summary
     }
 
+    # Raw field
+    field raw_non_attribute type raw {
+      indexing: summary
+    }
+
+    # Predicate field
+    field predicate_attribute type predicate {
+      indexing: attribute | summary
+      index {
+        arity: 2
+      }
+    }
   }
 }
