@@ -13,25 +13,51 @@ schema test {
         struct-field name { indexing: attribute }
         struct-field value { indexing: attribute }
     }
+    field complex2 type array<my_struct> {
+        indexing: summary
+        summary complex3 { source: complex2 }
+    }
+    field complex2_attr type array<my_struct> {
+        indexing: summary
+        struct-field name { indexing: attribute }
+        struct-field value { indexing: attribute }
+        summary complex3_attr { source: complex2_attr }
+    }
     field simple type string {
       indexing: summary
     }
     field simple_attr type string {
       indexing: attribute | summary
     }
+    field simple2 type string {
+      indexing: summary
+      summary simple3 { source: simple2 }
+    }
+    field simple2_attr type string {
+      indexing: attribute | summary
+      summary simple3_attr { source: simple2_attr }
+    }
   }
   document-summary basic {
     from-disk
     summary complex type array<my_struct> { }
     summary complex_attr type array<my_struct> { }
+    summary complex3 type array<my_struct> { source: complex2 }
+    summary complex3_attr type array<my_struct> { source: complex2_attr }
     summary simple type string { }
     summary simple_attr type string { }
+    summary simple3 type string { source: simple2 }
+    summary simple3_attr type string { source: simple2_attr }
   }
   document-summary rename {
     from-disk
     summary new_complex type array<my_struct> { source: complex }
     summary new_complex_attr type array<my_struct> { source: complex_attr }
+    summary new_complex3 type array<my_struct> { source: complex2 }
+    summary new_complex3_attr type array<my_struct> { source: complex2_attr }
     summary new_simple type string { source: simple }
     summary new_simple_attr type string { source: simple_attr }
+    summary new_simple3 type string { source: simple2 }
+    summary new_simple3_attr type string { source: simple2_attr }
   }
 }

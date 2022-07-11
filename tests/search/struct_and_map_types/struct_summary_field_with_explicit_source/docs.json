@@ -14,8 +14,22 @@
 		    "value": "cavalue0"
 		}
 	    ],
+	    "complex2": [
+		{
+		    "name": "cname2",
+		    "value": "cvalue2"
+		}
+	    ],
+	    "complex2_attr": [
+		{
+		    "name": "caname2",
+		    "value": "cavalue2"
+		}
+	    ],
 	    "simple": "svalue0",
-	    "simple_attr": "savalue0"
+	    "simple_attr": "savalue0",
+	    "simple2": "svalue2",
+	    "simple2_attr": "savalue2"
 	}
     }
 ]
