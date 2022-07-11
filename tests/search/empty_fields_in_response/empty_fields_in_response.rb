@@ -32,7 +32,7 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
     assert_get
   end
 
-  def normal_values
+  def normal_values(is_search)
     {
       "int_attribute" => 42,
       "int_non_attribute" => 144,
@@ -68,8 +68,18 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
           { "address" => { "x" => "c", "y" => "d" }, "value" => 13.0 }
         ]
       },
-      "reference_attribute" => "id:test:parent::normal"
+      "reference_attribute" => "id:test:parent::normal",
+      "raw_non_attribute" => "dGhpcyBpcyByYXcgZGF0YQ==",
+      "predicate_attribute" => (is_search ? "'age' in [20..29]\n" : "age in [20..29]")
     }
+  end
+
+  def normal_search_values
+    normal_values(true)
+  end
+
+  def normal_get_values
+    normal_values(false)
   end
 
   def not_set_search_values
@@ -108,7 +118,9 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
         "long_attribute" => -9223372036854775808,
         "long_non_attribute" => -9223372036854775808,
         "byte_attribute" => -128,
-        "byte_non_attribute" => -128
+        "byte_non_attribute" => -128,
+        # Empty raw field is not an empty value
+        "raw_non_attribute" => ""
       }
     else
       {
@@ -118,7 +130,9 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
         # Bool has no empty value. Always present in attribute.
         "bool_attribute" => false,
         # Reference attribute has no empty value
-        "reference_attribute" => ""
+        "reference_attribute" => "",
+        # Empty raw field is not an empty value
+        "raw_non_attribute" => ""
       }
     end
   end
@@ -126,14 +140,14 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
   def assert_search()
     result = search("query=sddocname:#{@doctype}&streaming.selection=true")
     assert(result.hit.size == 4)
-    assert_fields(find_doc(result, "normal"), "find", "normal", :get_search_field_value, normal_values)
+    assert_fields(find_doc(result, "normal"), "find", "normal", :get_search_field_value, normal_search_values)
     assert_fields(find_doc(result, "not_set"), "find", "not_set", :get_search_field_value, not_set_search_values)
     assert_fields(find_doc(result, "set_null"), "find", "set_null", :get_search_field_value, set_null_search_values)
     assert_fields(find_doc(result, "set_empty"), "find", "set_empty", :get_search_field_value, set_empty_search_values)
   end
 
   def assert_get()
-    assert_fields(get_doc("normal"), "get", "normal", :get_document_field_value, normal_values)
+    assert_fields(get_doc("normal"), "get", "normal", :get_document_field_value, normal_get_values)
     assert_fields(get_doc("not_set"), "get", "not_set", :get_document_field_value, not_set_get_values)
     assert_fields(get_doc("set_null"), "get", "set_null", :get_document_field_value, set_null_get_values)
     assert_fields(get_doc("set_empty"), "get", "set_empty", :get_document_field_value, set_empty_get_values)
@@ -175,7 +189,9 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
       "map_attribute",
       "map_non_attribute",
       "tensor_attribute",
-      "tensor_non_attribute"
+      "tensor_non_attribute",
+      "raw_non_attribute",
+      "predicate_attribute"
     ]
     fields = [ "reference_attribute" ] if @doctype == 'child'
     for field in fields
