@@ -78,8 +78,8 @@ class CoreDump < SearchTest
     execute_result = vespa.adminserver.execute("/sbin/sysctl kernel.core_pattern=\"|/usr/bin/lz4 -3 - #{Environment.instance.vespa_home}/var/crash/%e.core.lz4\"", :exitcode => true)
 
     # This will fail when running inside docker containers
-    if execute_result[0] != "0"
-      puts "Failed to set kernel.core_pattern, skipping test"
+    if execute_result[0] != "0" || ENV["container"] == "docker"
+      puts "Failed to set kernel.core_pattern or running in a container, skipping test"
       return
     end
 
