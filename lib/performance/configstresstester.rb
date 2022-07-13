@@ -10,7 +10,7 @@ module Perf
       @node = node
       @hostname = serverhost # hostname for StressTester RPC server
       @port = serverport # port for StressTester RPC server
-      cmd = "VESPA_CONFIG_SOURCES=\"#{hostname}:#{port}\" #{Environment.instance.vespa_home}/bin/java -cp #{bundle}:#{Environment.instance.vespa_home}/lib/jars/config.jar:#{Environment.instance.vespa_home}/lib/jars/yolean.jar:#{Environment.instance.vespa_home}/lib/jars/config-lib.jar:#{Environment.instance.vespa_home}/lib/jars/vespajlib.jar:#{Environment.instance.vespa_home}/lib/jars/jrt.jar:#{Environment.instance.vespa_home}/lib/jars/vespalog.jar com.yahoo.vespa.config.benchmark.StressTester -c #{hostname} -p #{port} -serverport #{serverport} -class com.yahoo.vespa.systemtest.gen.TestStub -d"
+      cmd = "VESPA_CONFIG_SOURCES=\"#{hostname}:#{port}\" #{Environment.instance.vespa_home}/bin/java -cp #{bundle}:#{Environment.instance.vespa_home}/lib/jars/config.jar:#{Environment.instance.vespa_home}/lib/jars/config-lib.jar:#{Environment.instance.vespa_home}/lib/jars/vespajlib.jar:#{Environment.instance.vespa_home}/lib/jars/jrt.jar:#{Environment.instance.vespa_home}/lib/jars/vespalog.jar com.yahoo.vespa.config.benchmark.StressTester -c #{hostname} -p #{port} -serverport #{serverport} -class com.yahoo.vespa.systemtest.gen.TestStub -d"
       puts(cmd)
       @pid = @node.execute_bg("#{cmd}")
       puts("Executing cmd with pid #{@pid}")
