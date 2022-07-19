@@ -154,7 +154,7 @@ class NodeServer
     @executor.execute(command, @testcase, params)
   end
 
-  # Transfers one file from the default test data host using HTTPS.
+  # Transfers one file from the default test data server.
   # Returns a string with local filename fetched.
   #
   def fetchfile(file)
