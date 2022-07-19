@@ -30,7 +30,7 @@ class TestCase
   include Assertions
   include TestBase
 
-  attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :dirty_nodeproxies, :storagehost, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client
+  attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :dirty_nodeproxies, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client
   attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :required_hostnames, :expected_logged, :method_name
   attr_accessor :dirty_environment_settings
   attr_accessor :sanitizer
@@ -43,7 +43,6 @@ class TestCase
   # Optional args:
   # * :hostlist - array of hostnames this testcase is running on
   # * :outputdir - directory to store output files, used when running datacenter tests
-  # * :storagehost - hostname of ftp server containing documents and queries
   # * :keep_tmpdir - Does not remove the tmpdir when testrun is done
   def initialize(cmdline, tc_file, args={})
     @dirs = TestDirs.new(self, 'unknown', 'unknown')
@@ -53,7 +52,6 @@ class TestCase
     @hostlist = args[:hostlist]
     @outputdir = args[:outputdir]
     @sanitizer = args[:sanitizer]
-    @storagehost = args[:storagehost]
     @valgrind = args[:valgrind]
     @valgrind_opt = args[:valgrind_opt]
     @keep_tmpdir = args[:keep_tmpdir]

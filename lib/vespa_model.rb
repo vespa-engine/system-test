@@ -907,11 +907,6 @@ class VespaModel
       end
       backup_log(@testcase.dirty_nodeproxies)
     end
-    if @testcase.storagehost
-      @testcase.dirty_nodeproxies.each_value do |handle|
-        handle.execute("rm -rf #{@testcase.dirs.downloaddir}", :exceptiononfailure => false)
-      end
-    end
     if @testcase.valgrind
       @testcase.dirty_nodeproxies.each_value do |handle|
         save_valgrind_logfiles(handle)

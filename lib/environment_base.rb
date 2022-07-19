@@ -2,6 +2,7 @@
 
 require 'executor'
 require 'default_env_file'
+require 'uri'
 
 # A base class for a singleton providing the default environment in
 # which to run tests.  To access, use "Environment.instance" before
@@ -98,14 +99,15 @@ class EnvironmentBase
   end
 
   # Returns the host name of a host from which standard test data can be downloaded
-  #
   # +hostname+:: The host name which will download test data
-  def webhost(hostname)
-    if ENV.has_key?('VESPA_TESTDATA_SERVER')
-      ENV['VESPA_TESTDATA_SERVER']
-    else
-      hostname
-    end
+  def testdata_server(hostname)
+    ENV.has_key?('VESPA_TESTDATA_SERVER') ? ENV['VESPA_TESTDATA_SERVER'] : hostname
+  end
+
+  # Returns the URL of the test data server
+  # +hostname+:: The host name which will download test data
+  def testdata_url(hostname)
+    URI(ENV.has_key?('VESPA_TESTDATA_URL') ? ENV['VESPA_TESTDATA_URL'] : "https://%s:443" % testdata_server(hostname))
   end
 
   def override_environment_setting(testcase, name, value)

@@ -212,7 +212,7 @@ class FeedingAndRecoveryTest < PerformanceTest
                  [parameter_filler("tag", "feeding"),
                   parameter_filler("cluster_setup", "elastic_#{nodes}")] + fillers,
                  :timeout => 3600,
-                 :webhost => WEBHOST)
+                 :testdata_url => TESTDATA_URL)
     end
     # assert_hitcount("sddocname:genfeed&hits=0&nocache", @test_params.feed0_docs)
     wait_for_hitcount("sddocname:genfeed&hits=0&nocache", @test_params.feed0_docs)
