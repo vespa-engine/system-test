@@ -107,7 +107,7 @@ class EnvironmentBase
   # Returns the URL of the test data server
   # +hostname+:: The host name which will download test data
   def testdata_url(hostname)
-    URI(ENV.has_key?('VESPA_TESTDATA_URL') ? ENV['VESPA_TESTDATA_URL'] : "https://%s:443" % testdata_server(hostname))
+    URI(ENV.has_key?('VESPA_TESTDATA_URL') ? ENV['VESPA_TESTDATA_URL'] : "https://#{testdata_server(hostname)}:443")
   end
 
   def override_environment_setting(testcase, name, value)
