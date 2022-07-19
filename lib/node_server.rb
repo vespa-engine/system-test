@@ -184,7 +184,7 @@ class NodeServer
 
       RemoteFileUtils.download(source_url, localfilename)
 
-      testcase_output("Downloaded #{remote_file} to #{localfilename} on host #{`hostname`}")
+      testcase_output("Downloaded #{source_url} to #{localfilename} on host #{`hostname`}")
       localfilenames << localfilename
     else
       raise ":dir and :destination_file can not both be specified" if params[:dir] && params[:destination_file]

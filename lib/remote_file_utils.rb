@@ -13,7 +13,7 @@ module RemoteFileUtils
     when "s3"
       cmd = "aws s3 cp #{source_url} #{localfile}"
     else
-      cmd = "wget -nv -O'#{localfilename}' '#{source_url}'"
+      cmd = "wget -nv -O'#{localfile}' '#{source_url}'"
     end
 
     err = `#{cmd}`
