@@ -180,7 +180,7 @@ class NodeServer
 
       source_url = URI("#{params[:testdata_url]}/#{params[:file]}")
       destination_dir = params[:destination_dir] ? params[:destination_dir] : @testcase.dirs.downloaddir
-      localfilename = params[:destination_file] ? params[:destination_file] : destination_dir + File.basename(params[:file])
+      localfilename = params[:destination_file] ? params[:destination_file] : File.join(destination_dir, File.basename(params[:file]))
 
       RemoteFileUtils.download(source_url, localfilename)
 
