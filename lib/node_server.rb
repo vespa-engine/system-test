@@ -15,6 +15,7 @@ require 'executor'
 require 'https_client'
 require 'json'
 require 'resolv'
+require 'remote_file_utils'
 
 # This server is running on all Vespa nodes participating in the test.
 # A NodeServer class is instantiated and made accessible to DRb. Remote
@@ -153,62 +154,45 @@ class NodeServer
     @executor.execute(command, @testcase, params)
   end
 
-  # Transfers one file from the default webhost using HTTP.
+  # Transfers one file from the default test data server.
   # Returns a string with local filename fetched.
   #
   def fetchfile(file)
-    fetchfiles(:file => file, :webhost => TestBase::webhost(@hostname)).first
+    fetchfiles(:file => file, :testdata_url => TestBase::testdata_url(@hostname)).first
   end
 
-
   # Transfers files from either the node running the testcase using DRb, or from a spesific
-  # host using HTTP. Returns an array of local filenames fetched.
+  # host using network. Returns an array of local filenames fetched.
   #
   # Args:
   # * :dir - directory to fetch files from
-  # * :range - range of files in directory to fetch (default is all)
-  # * :file - spesific filename to fetch
-  # * :webhost - specify web server (NOTE: only supports :file)
-  # * :http - use http (NOTE: only in combination with :webhost)
-  #
+  # * :file - specific filename to fetch
+  # * :testdata_url - specify URL for test data download (NOTE: only supports :file)
+  # * :destination_dir - destination directory. Defaults to test case downloaddir for remote and drbfiledir for local.
+  # * :destination_file - destination file. Only allowed with :file and takes precedence over :destination_dir.
   # Note that either :dir or :file must be specified.
   def fetchfiles(params={})
+    raise "ERROR: Either :dir or :file must be supplied to fetchfiles method." unless params[:file] || params[:dir]
+
     localfilenames = []
-    if params[:dir]
-      dirname = params[:dir]
-    elsif params[:file]
-      dirname = File.dirname(params[:file])
-    else
-      raise "ERROR: Either :dir or :file must be supplied to fetchfiles method."
-    end
-    if params[:webhost]
-      FileUtils.mkdir_p(@testcase.dirs.downloaddir)
-      starttime = Time.now.to_i
+    if params[:testdata_url]
+      raise ":dir not handled for URL #{params[:testdata_url]}" if params[:dir]
 
-      if params[:dir]
-        raise ":dir not handled for webhost #{params[:webhost]}"
-      end
+      source_url = URI("#{params[:testdata_url]}/#{params[:file]}")
+      destination_dir = params[:destination_dir] ? params[:destination_dir] : @testcase.dirs.downloaddir
+      localfilename = params[:destination_file] ? params[:destination_file] : destination_dir + File.basename(params[:file])
 
-      protocol = params[:http] ? "http" : "https"
-      if params[:port]
-        port = params[:port]
-      else
-        port = params[:http] ? "80" : "443"
-      end
+      RemoteFileUtils.download(source_url, localfilename)
 
-      remote_file = "#{protocol}://#{params[:webhost]}:#{port}/#{params[:file]}"
-      localfilename = @testcase.dirs.downloaddir + File.basename(params[:file])
-
-      cmd = "wget -nv -O'#{localfilename}' '#{remote_file}'"
-      err = `#{cmd}`
-      if ($? != 0)
-        raise "error during #{cmd} was: #{err}"
-      end
-
-      testcase_output("Downloaded #{remote_file} to #{localfilename} on host #{`hostname`}")
+      testcase_output("Downloaded #{source_url} to #{localfilename} on host #{`hostname`}")
       localfilenames << localfilename
     else
-      FileUtils.mkdir_p(@testcase.dirs.drbfiledir)
+      raise ":dir and :destination_file can not both be specified" if params[:dir] && params[:destination_file]
+
+      destination_dir = params[:destination_dir] ? params[:destination_dir] : @testcase.dirs.drbfiledir
+      destination_dir = params[:destination_file] ? File.dirname(params[:destination_file]) : destination_dir
+      FileUtils.mkdir_p(destination_dir)
+
       filereader = @testcase.create_filereader
       if params[:dir]
         filenames = Dir.glob(params[:dir]+"/*")
@@ -216,7 +200,7 @@ class NodeServer
         filenames = [params[:file]]
       end
       filenames.each do |filename|
-        localfilename = File.join(@testcase.dirs.drbfiledir, File.basename(filename))
+        localfilename = params[:destination_file] ? params[:destination_file] : File.join(destination_dir, File.basename(filename))
         unless File.exist?(localfilename) && File.size?(localfilename) == filereader.size?(filename) &&
             File.mtime(localfilename) == filereader.mtime(filename) &&
             Digest::MD5.digest(localfilename) == filereader.md5(filename)

@@ -8,7 +8,6 @@ require 'optparse'
 require 'rexml/document'
 require 'socket'
 require 'net/http'
-require 'net/ftp'
 require 'vespa_model'
 require 'node_server_interface'
 require 'node_proxy'
@@ -99,11 +98,11 @@ module TestBase
 
   bundles = []
 
-  def self.webhost(hostname)
-    return Environment.instance.webhost(hostname)
+  def self.testdata_url(hostname)
+    return Environment.instance.testdata_url(hostname)
   end
 
-  WEBHOST = webhost(`hostname`.chomp)
+  TESTDATA_URL = testdata_url(`hostname`.chomp)
 
   def init_vespa_model(me, vespa_version)
     if not @vespa

@@ -38,9 +38,6 @@ class AutoRunner
     opts.on("--host HOSTNAME", "Run testcase on HOSTNAME.") do |val|
       @cmd_args[:hostlist] << get_full_hostname(val)
     end
-    opts.on("--storagehost HOSTNAME", "File server containing documents and queries.") do |val|
-      @cmd_args[:storagehost] = val
-    end
     opts.on("--configserverhost HOSTNAME", "Config server to use for deploying in test.") do |val|
       @cmd_args[:configserverhostlist] << get_full_hostname(val)
     end
