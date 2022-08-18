@@ -46,7 +46,6 @@ class NodeBase
     attribute(:hostalias) +
     attribute(:index, "distribution-key") +
     attribute(:baseport) +
-    attribute(:jvmargs) +
     attribute(:capacity) +
     close_tag(indent, tag)
   end
@@ -56,7 +55,6 @@ class NodeBase
     attribute(:hostalias) +
     attribute(:index) +
     attribute(:baseport) +
-    attribute(:jvmargs) +
     attribute(:capacity) +
     close_tag(indent, tag)
   end

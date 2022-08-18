@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'docproc_test'
 require 'search_test'
 require 'app_generator/http'
@@ -11,7 +11,7 @@ class JvmTuning < SearchTest
 
   def setup
     set_owner("musum")
-    set_description("Test setting jvmargs/jvmoptions in services.xml or with environment variables")
+    set_description("Tests setting JVM options in services.xml or with environment variables")
   end
 
   def deploy_jvmtuning
