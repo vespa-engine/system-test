@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.microsoft.onnxruntime</groupId>
             <artifactId>onnxruntime</artifactId>
-            <version>1.8.0</version>
+            <version>1.12.1</version>
             <!--<scope>provided</scope>-->
         </dependency>
     </dependencies>
