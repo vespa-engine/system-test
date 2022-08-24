@@ -26,11 +26,12 @@ schema test {
   }
   rank-profile rank1 {
     first-phase {
+      rank-score-drop-limit: 0.5
       expression: attribute(id)
     }
     second-phase {
       expression: attribute(id)
-      rerank-count:1
+      rerank-count: 1
     }
     summary-features: attribute(id)
   }
