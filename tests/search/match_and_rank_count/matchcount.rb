@@ -11,7 +11,7 @@ class MatchCount < IndexedSearchTest
   def test_match_and_rerank_count_in_query
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("test", 3, :file => selfdir + "feed.xml")
     verify_counting("test")
   end
 
@@ -67,17 +67,26 @@ class MatchCount < IndexedSearchTest
   def test_on_xxx_in_rank_profile
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("test", 3, :file => selfdir + "feed.xml")
     query="query=sddocname:test&summary=all_fast&format=xml"
+    all = Hits.new([{"id" => "0"},
+		    {"id" => "1"},
+		    {"id" => "2"}])
+    all.setcomparablefields(["id", "match_count", "first_phase_count", "second_phase_count", "summary_count"])
     expected = Hits.new([{"id" => "2", "relevancy" => "2.0"},
                          {"id" => "1", "relevancy" => "1.0"}])
-    cmp_fields = ["id", "match_count", "first_phase_count", "second_phase_count", "summary_count", "relevancy"]
-    expected.setcomparablefields(cmp_fields)
+    expected.setcomparablefields(["id", "match_count", "first_phase_count", "second_phase_count", "summary_count", "relevancy"])
 
     r = search(query+"&ranking=rank1")
     set_counts(expected.hits[0],7,0,0,0)
     set_counts(expected.hits[1],7,0,0,0)
     expected.hits.each_with_index { |h,i| h.check_equal(r.hit[i]) }
+
+    r = search(query+"&ranking=unranked&sorting=id")
+    set_counts(all.hits[0],7,0,0,0)
+    set_counts(all.hits[1],7,0,0,0)
+    set_counts(all.hits[2],7,0,0,0)
+    all.hits.each_with_index { |h,i| h.check_equal(r.hit[i]) }
 
     search(query+"&ranking=rank2")
     r = search(query+"&ranking=rank1")
@@ -96,6 +105,12 @@ class MatchCount < IndexedSearchTest
     set_counts(expected.hits[0],10,3,3,3)
     set_counts(expected.hits[1],10,3,0,2)
     expected.hits.each_with_index { |h,i| h.check_equal(r.hit[i]) }
+
+    r = search(query+"&ranking=unranked&sorting=id")
+    set_counts(all.hits[0],10,0,0,0)
+    set_counts(all.hits[1],10,3,0,2)
+    set_counts(all.hits[2],10,3,3,3)
+    all.hits.each_with_index { |h,i| h.check_equal(r.hit[i]) }
   end
 
   def teardown

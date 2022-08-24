@@ -6,3 +6,7 @@
   <id>2</id>
   <f1>bar-foo</f1>
 </document>
+<document type="test" documentid="id:test:test::2">
+  <id>0</id>
+  <f1>bar-foo</f1>
+</document>
