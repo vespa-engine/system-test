@@ -19,10 +19,12 @@
         </component>
 
         <!-- Downloads transformer model and vocabulary -->
-        <embedder id="transformer" class="ai.vespa.embedding.BertBaseEmbedder">
-          <transformerModel url="https://data.vespa.oath.cloud/onnx_models/sentence_all_MiniLM_L6_v2.onnx"/>
-          <tokenizerVocab url="https://data.vespa.oath.cloud/onnx_models/bert-base-uncased-vocab.txt"/>
-        </embedder>
+        <component id="transformer" class="ai.vespa.embedding.BertBaseEmbedder">
+          <config name="embedding.bert-base-embedder">
+            <transformerModel url="https://data.vespa.oath.cloud/onnx_models/sentence_all_MiniLM_L6_v2.onnx"/>
+            <tokenizerVocab url="https://data.vespa.oath.cloud/onnx_models/bert-base-uncased-vocab.txt"/>
+          </config>
+        </component>
 
         <search/>
         <document-api/>
