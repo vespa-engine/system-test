@@ -24,6 +24,7 @@
                 <transformerModel id="ignored-on-selfhosted" url="https://data.vespa.oath.cloud/onnx_models/sentence_all_MiniLM_L6_v2.onnx"/>
                 <tokenizerVocab id="ignored-on-selfhosted" url="https://data.vespa.oath.cloud/onnx_models/bert-base-uncased-vocab.txt"/>
             </config>
+          </config>
         </component>
 
         <search/>
