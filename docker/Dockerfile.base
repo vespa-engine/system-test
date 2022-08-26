@@ -51,6 +51,7 @@ RUN dnf -y install epel-release && \
      alternatives --set javac java-17-openjdk.$(arch) && \
      echo -e "#!/bin/bash\nsource /opt/rh/gcc-toolset-11/enable" > /etc/profile.d/enable-gcc-toolset-11.sh && \
      (source /opt/rh/gcc-toolset-11/enable && gem install ffi libxml-ruby) && \
+     pip3 install --no-cache-dir awscli && \
      dnf clean all && rm -rf /var/cache/dnf && \
      rm -rf /tmp/include
 
