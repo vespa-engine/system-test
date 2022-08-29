@@ -1,0 +1,48 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema test {
+
+  fieldset default {
+    fields: title
+  }
+
+  document test {
+    field title type string {
+      indexing: index | summary
+    }
+    field order type int {
+      indexing: attribute | summary
+    }
+  }
+
+  rank-profile default {
+    function first_baz() {
+      expression: attribute(order)
+    }
+    function first_bar() {
+      expression: first_baz()
+    }
+    function first_foo() {
+      expression: first_bar()
+    }
+
+    function second_baz() {
+      expression: attribute(order)
+    }
+    function second_bar() {
+      expression: second_baz()
+    }
+    function second_foo() {
+      expression: second_bar()
+    }
+
+    first-phase {
+      expression: first_foo()
+    }
+
+    second-phase {
+      expression: second_foo()
+    }
+}
+
+}
