@@ -42,10 +42,10 @@ class TestDirs
       logdir_web = "systemtestlogs/#{platform_label}/#{buildversion}/#{buildname}/#{modulename}"
       dbdir = "#{basedir}/var/db/systemtests/#{platform_label}/#{buildversion}/#{buildname}/#{modulename}"
     else
-      baselogdir = "#{basedir}/logs/systemtests/command-line/#{starttime_string}"
+      baselogdir = "#{basedir}/logs/systemtests"
       logdir = baselogdir;
       logdir_web = ""
-      dbdir = "#{basedir}/var/db/systemtests/command-line/#{starttime_string}"
+      dbdir = "#{basedir}/var/db/systemtests/#{modulename}"
     end
 
     @downloaddir = "#{bigbasedir}/tmp/systemtests/transferred_files/"
