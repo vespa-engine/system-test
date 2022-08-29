@@ -30,7 +30,7 @@ class TestRunner
     @performance = options[:performance] ? options[:performance] : false
     @platform_label = options[:platform_label]
     @relative_testfiles = options[:testfiles] ? options[:testfiles] : []
-    @testmodule_dirs = options[:testmoduledirs] ? options[:testmoduledirs] : ["#{__dir__}/../tests"]
+    @testmodule_dirs = options[:testmoduledirs] ? options[:testmoduledirs] : ["#{__dir__}/../tests", "#{__dir__}/../tests-internal"]
     @testrun_id = options[:testrunid] ? options[:testrunid] : SecureRandom.urlsafe_base64
     @vespaversion = options[:vespaversion] ? options[:vespaversion] : "8-SNAPSHOT"
     @wait_for_nodes = options[:nodewait] ? options[:nodewait] : 60
