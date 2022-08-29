@@ -7,7 +7,7 @@ class VespaConfig < CloudConfigTest
 
   def setup
     set_owner("musum")
-    set_description("Tests vespa-config.pl")
+    set_description("Tests getting config sources from vespa-print-default")
     @node = vespa.nodeproxies.first[1]
   end
 
@@ -23,23 +23,23 @@ class VespaConfig < CloudConfigTest
   end
 
   def run_configsource_test
-    output = call_vespa_config_script("-configsources")
+    output = call_vespa_config_script("configservers_rpc")
     assert_equal("tcp/" + @hostname + ":19070", output.strip)
   end
 
   def run_configserver_port_test
-    output = call_vespa_config_script("-configserverport")
+    output = call_vespa_config_script("configserver_rpc_port")
     assert_equal("19070", output.strip)
   end
 
   def run_empty_port_test
     set_port_configserver_rpc(@node)
-    output = call_vespa_config_script("-confighttpsources")
-    assert_equal("http://#{@hostname}:19071", output.strip)
+    output = call_vespa_config_script("configservers_http")
+    assert_equal("http://#{@hostname}:19071/", output.strip)
   end
 
   def call_vespa_config_script(option, noexception=false)
-    command = Environment.instance.vespa_home + "/libexec/vespa/vespa-config.pl #{option} 2>/dev/null"
+    command = Environment.instance.vespa_home + "/bin/vespa-print-default #{option} 2>/dev/null"
     if noexception
       @node.execute(command, {:exitcode => true, :exceptiononfailure => false})
     else
