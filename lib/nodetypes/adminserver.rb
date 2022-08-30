@@ -89,7 +89,7 @@ class Adminserver < VespaNode
   end
 
   def get_httpaddr_configserver
-    execute("#{Environment.instance.vespa_home}/libexec/vespa/vespa-config.pl -confighttpsources 2>/dev/null", :noecho => true).chomp.split(" ")[0]
+    execute("vespa-print-default configservers_http 2>/dev/null", :noecho => true).chomp.split(" ")[0]
   end
 
   def wait_for_config_activated(expected_generation, params={})
@@ -172,7 +172,7 @@ class Adminserver < VespaNode
   end
 
   def get_addr_configserver
-    execute("#{Environment.instance.vespa_home}/libexec/vespa/vespa-config.pl -configsources 2>/dev/null", :noecho => true).chomp
+    execute("vespa-print-default configservers_rpc 2>/dev/null", :noecho => true).chomp
   end
 
 end

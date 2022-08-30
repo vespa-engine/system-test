@@ -739,7 +739,7 @@ class NodeServer
   def ping_configserver(timeout=300)
     start = Time.now.to_i
     if (!@port_configserver_rpc)
-      cmd = "#{Environment.instance.vespa_home}/libexec/vespa/vespa-config.pl -configserverport"
+      cmd = 'vespa-print-default configserver_rpc_port'
       @port_configserver_rpc = execute(cmd, :exceptiononfailure => false, :noecho => true, :nostderr => true).chomp.to_i
     end
     # TODO: Make configurable
