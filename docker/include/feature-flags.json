@@ -28,6 +28,7 @@
         { "id" : "resource-limit-disk", "rules" : [ { "value" : 0.9 } ] },
         { "id" : "enable-bit-vectors", "rules" : [ { "value" : true } ] },
         { "id" : "file-distribution-accepted-compression-types",  "rules": [ { "value": ["lz4", "gzip"] } ] },
-        { "id" : "file-distribution-compression-types-to-use",  "rules": [ { "value": ["lz4", "gzip"] } ] }
+        { "id" : "file-distribution-compression-types-to-use",  "rules": [ { "value": ["lz4", "gzip"] } ] },
+        { "id" : "use-two-phase-document-gc", "rules" : [ { "value" : true } ] }
     ]
 }
