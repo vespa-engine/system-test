@@ -21,8 +21,8 @@
         <!-- Downloads transformer model and vocabulary -->
         <component id="transformer" class="ai.vespa.embedding.BertBaseEmbedder" bundle="model-integration">
             <config name="embedding.bert-base-embedder">
-                <transformerModel id="ignored-on-selfhosted" url="https://data.vespa.oath.cloud/onnx_models/sentence_all_MiniLM_L6_v2.onnx"/>
-                <tokenizerVocab id="ignored-on-selfhosted" url="https://data.vespa.oath.cloud/onnx_models/bert-base-uncased-vocab.txt"/>
+                <transformerModel model-id="ignored-on-selfhosted" url="https://data.vespa.oath.cloud/onnx_models/sentence_all_MiniLM_L6_v2.onnx"/>
+                <tokenizerVocab model-id="ignored-on-selfhosted" url="https://data.vespa.oath.cloud/onnx_models/bert-base-uncased-vocab.txt"/>
             </config>
         </component>
 
