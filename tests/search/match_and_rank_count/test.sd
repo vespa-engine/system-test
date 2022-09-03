@@ -34,6 +34,9 @@ schema test {
       rerank-count: 1
     }
     summary-features: attribute(id)
+    rank-properties {
+      vespa.mutate.allow_query_override: true
+    }
   }
   rank-profile rank2 inherits rank1 {
     mutate { # Not public API
