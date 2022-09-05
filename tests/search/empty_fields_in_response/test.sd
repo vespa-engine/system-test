@@ -91,18 +91,10 @@ schema test {
       indexing: summary | attribute
       summary: matched-elements-only
     }
-    field array_non_attribute_filtered type array<int> {
-      indexing: summary
-      summary: matched-elements-only
-    }
 
     # Weightedset fields, filtered
     field weightedset_attribute_filtered type weightedset<string> {
       indexing: summary | attribute
-      summary: matched-elements-only
-    }
-    field weightedset_non_attribute_filtered type weightedset<string> {
-      indexing: summary
       summary: matched-elements-only
     }
 
@@ -112,10 +104,16 @@ schema test {
       struct-field key {
         indexing: attribute
       }
+      struct-field value {
+        indexing: attribute
+      }
       summary: matched-elements-only
     }
     field map_non_attribute_filtered type map<string, int> {
       indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
       summary: matched-elements-only
     }
 
