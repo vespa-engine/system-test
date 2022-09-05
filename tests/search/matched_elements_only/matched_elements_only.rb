@@ -63,6 +63,16 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     # The source fields are not filtered
     assert_summary_field("str_array_src contains 'bar'", "str_array_src", ["bar", "foo"])
     assert_summary_field("str_wset_src contains 'bar'", "str_wset_src", { "bar" => 7, "foo" => 5 })
+
+    # No elements matches in other fields
+    query = "int_array contains '20'"
+    empty_array = []
+    # Note: Empty weighted set is rendered as empty array
+    empty_wset = []
+    assert_summary_field(query, "str_array", empty_array)
+    assert_summary_field("str_array contains 'bar'", "int_array", empty_array)
+    assert_summary_field(query, "str_wset", empty_wset)
+    assert_summary_field(query, "int_wset", empty_wset)
   end
 
   def assert_summary_field(yql_filter, field_name, exp_field_value, summary = "default")
