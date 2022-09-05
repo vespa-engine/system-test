@@ -22,6 +22,10 @@
             "weightedset_non_attribute": { "a":1 },
             "map_attribute": { "b":2 },
             "map_non_attribute": { "b":2 },
+            "array_attribute_filtered": [42, 144],
+            "weightedset_attribute_filtered": { "a":1 },
+            "map_attribute_filtered": { "b":2 },
+            "map_non_attribute_filtered": { "b":2 },
             "tensor_attribute":  {
                 "cells": [
                     { "address": { "x": "a", "y": "b" }, "value": 2.0 },
@@ -60,6 +64,10 @@
             "weightedset_non_attribute": {},
             "map_attribute": {},
             "map_non_attribute": {},
+            "array_attribute_filtered": [],
+            "weightedset_attribute_filtered": {},
+            "map_attribute_filtered": {},
+            "map_non_attribute_filtered": {},
             "raw_non_attribute": ""
         }
     },
@@ -86,6 +94,10 @@
             "weightedset_non_attribute": null,
             "map_attribute": null,
             "map_non_attribute": null,
+            "array_attribute_filtered": null,
+            "weightedset_attribute_filtered": null,
+            "map_attribute_filtered": null,
+            "map_non_attribute_filtered": null,
             "tensor_attribute": null,
             "tensor_non_attribute": null,
             "raw_non_attribute": null,

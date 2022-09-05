@@ -33,6 +33,10 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
   end
 
   def normal_values(is_search)
+    empty_array = []
+    # Note: empty maps and empty weighted sets are rendered as empty arrays in search results
+    empty_map = []
+    empty_wset = []
     {
       "int_attribute" => 42,
       "int_non_attribute" => 144,
@@ -54,6 +58,10 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
       "weightedset_non_attribute" => { "a" => 1 },
       "map_attribute" => { "b" => 2 },
       "map_non_attribute" => { "b" => 2 },
+      "array_attribute_filtered" => is_search ? empty_array : [42, 144],
+      "weightedset_attribute_filtered" => is_search ? empty_wset : { "a" => 1 },
+      "map_attribute_filtered" => is_search ? empty_map : { "b" => 2 },
+      "map_non_attribute_filtered" => is_search ? empty_map : { "b" => 2 },
       "tensor_attribute"  => {
         "type" => "tensor(x{},y{})",
         "cells" => [
@@ -188,6 +196,10 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
       "weightedset_non_attribute",
       "map_attribute",
       "map_non_attribute",
+      "array_attribute_filtered",
+      "weightedset_attribute_filtered",
+      "map_attribute_filtered",
+      "map_non_attribute_filtered",
       "tensor_attribute",
       "tensor_non_attribute",
       "raw_non_attribute",

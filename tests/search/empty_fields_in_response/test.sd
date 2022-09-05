@@ -86,6 +86,37 @@ schema test {
       indexing: summary
     }
 
+    # Array fields, filtered
+    field array_attribute_filtered type array<int> {
+      indexing: summary | attribute
+      summary: matched-elements-only
+    }
+
+    # Weightedset fields, filtered
+    field weightedset_attribute_filtered type weightedset<string> {
+      indexing: summary | attribute
+      summary: matched-elements-only
+    }
+
+    # Map fields, filtered
+    field map_attribute_filtered type map<string, int> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value {
+        indexing: attribute
+      }
+      summary: matched-elements-only
+    }
+    field map_non_attribute_filtered type map<string, int> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      summary: matched-elements-only
+    }
+
     # Tensor field
     field tensor_attribute type tensor(x{},y{}) {
       indexing: attribute | summary
