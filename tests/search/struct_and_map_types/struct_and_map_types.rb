@@ -166,12 +166,16 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     array_filtered = [elem("bar", 20)]
     map_full = {"@foo" => elem("foo", 10), "@bar" => elem("bar", 20), "@baz" => elem("baz", 30)}
     map_filtered = {"@bar" => elem("bar", 20)}
+    # Note: Empty map is rendered as empty array
+    map_empty = []
     prim_map_full = {"@foo" => 10, "@bar" => 20, "@baz" => 30}
     prim_map_filtered = {"@bar" => 20}
     complex_map_full = {"@foo" => complex_elem("foo", 10, "aa", 11), "@bar" => complex_elem("bar", 20, "bb", 21)}
     complex_map_filtered = {"@bar" => complex_elem("bar", 20, "bb", 21)}
 
     map_same_elem_query = "key contains '@bar', value.weight contains '20'"
+    # No elements matches in query below
+    map_same_elem_query_yql = "select * from sources * where elem_array.name contains 'bar'"
 
     assert_same_element_summary("elem_array",     "name contains 'bar', weight contains '20'", "default",  "elem_array",          array_full)
     assert_same_element_summary("elem_array",     "name contains 'bar', weight contains '20'", "filtered", "elem_array_filtered", array_filtered)
@@ -179,9 +183,13 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
 
     assert_same_element_summary("elem_map",       map_same_elem_query, "default",  "elem_map",            map_full)
     assert_same_element_summary("elem_map",       map_same_elem_query, "filtered", "elem_map_filtered",   map_filtered)
+    assert_same_element_summary_yql(map_same_elem_query_yql, "default", "elem_map", map_full)
+    assert_same_element_summary_yql(map_same_elem_query_yql, "filtered", "elem_map_filtered", map_empty)
     assert_same_element_summary("elem_map_meo",   map_same_elem_query, "default",  "elem_map_meo",        map_filtered)
     assert_same_element_summary("elem_map_2",     map_same_elem_query, "filtered", "elem_map_2_filtered", map_filtered)
     assert_same_element_summary("elem_map_2_meo", map_same_elem_query, "default",  "elem_map_2_meo",      map_filtered)
+    assert_same_element_summary_yql(map_same_elem_query_yql, "default", "elem_map_2", map_full)
+    assert_same_element_summary_yql(map_same_elem_query_yql, "filtered", "elem_map_2_filtered", map_empty)
 
     assert_same_element_summary("str_int_map",     "key contains '@bar', value contains '20'", "default",  "str_int_map",          prim_map_full)
     assert_same_element_summary("str_int_map",     "key contains '@bar', value contains '20'", "filtered", "str_int_map_filtered", prim_map_filtered)
