@@ -1,13 +1,18 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 module StructAndMapBase
 
-  def assert_same_element_summary(field, same_element, summary, summary_field, exp_summary_field)
-    form = [["yql", "select * from sources * where #{field} contains sameElement(#{same_element})"],
+  def assert_same_element_summary_yql(yql, summary, summary_field, exp_summary_field)
+    form = [["yql", yql],
             ["summary", summary ],
             ["format", "json" ],
             ["streaming.selection", "true"],
             ["hits", "10"]]
     assert_summary_field(form, summary_field, exp_summary_field)
+  end
+
+  def assert_same_element_summary(field, same_element, summary, summary_field, exp_summary_field)
+    yql = "select * from sources * where #{field} contains sameElement(#{same_element})"
+    assert_same_element_summary_yql(yql, summary, summary_field, exp_summary_field)
   end
 
   def assert_same_element_single_summary(field, same_element, summary, summary_field, exp_summary_field)
