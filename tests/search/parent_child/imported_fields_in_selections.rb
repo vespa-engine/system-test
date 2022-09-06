@@ -16,10 +16,10 @@ class ImportedFieldsInSelectionsTest < IndexedSearchTest
     2
   end
 
-  def make_app(with_gc:)
+  def make_app(with_gc:, searchable_copies: 1)
     if with_gc
       n_nodes = redundancy = 3
-      ready_copies = 1
+      ready_copies = searchable_copies
       # Preserves documents that either have an invalid grandparent, or the grandparent has a1 in {5, 6}
       selection = 'child.a1 == null or (child.a1 == 5 or child.a1 == 6)'
     else
@@ -156,12 +156,12 @@ class ImportedFieldsInSelectionsTest < IndexedSearchTest
     vespa.document_api_v1.put(doc)
   end
 
-  def test_imported_fields_can_be_used_in_gc_document_selections
+  def do_test_imported_fields_can_be_used_in_gc_document_selections(searchable_copies:)
     set_description('Test that imported fields can be used in GC document selections. ' +
                     'Also implicitly tests passing updates and removes through a ' +
                     'pipeline with imported fields as part of the selection criteria')
 
-    deploy_app(make_app(with_gc: true))
+    deploy_app(make_app(with_gc: true, searchable_copies: searchable_copies))
     start
 
     feed_docs_with_references
@@ -207,6 +207,14 @@ class ImportedFieldsInSelectionsTest < IndexedSearchTest
     # a value that triggers the child to be GC'd.
     put_grandparent_doc(grandparent: 2, a1_value: 4)
     wait_until_doc_set_is([])
+  end
+
+  def test_imported_fields_can_be_used_in_gc_document_selections_subset_ready
+    do_test_imported_fields_can_be_used_in_gc_document_selections(searchable_copies: 1)
+  end
+
+  def test_imported_fields_can_be_used_in_gc_document_selections_all_ready
+    do_test_imported_fields_can_be_used_in_gc_document_selections(searchable_copies: 3)
   end
 
 end
