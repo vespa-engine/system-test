@@ -24,7 +24,6 @@ class ConfigDefinitionsNotChangingTest < IndexedSearchTest
                 "vespa.config.search.indexschema", 
                 "vespa.config.search.attributes", 
                 "vespa.config.search.summary", 
-                "vespa.config.search.summarymap", 
                 "vespa.config.search.summary.juniperrc", 
                 "document.documenttypes" ]
     mymd5cmd = "cd #{dir_name} && md5sum " + configs.join(".def ") + ".def"
