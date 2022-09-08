@@ -33,10 +33,10 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
   end
 
   def normal_values(is_search)
-    empty_array = []
-    # Note: empty maps and empty weighted sets are rendered as empty arrays in search results
-    empty_map = []
-    empty_wset = []
+    # Note: Empty arrays, empty maps and empty weighted sets are not rendered in search results
+    empty_array = nil
+    empty_map = nil
+    empty_wset = nil
     {
       "int_attribute" => 42,
       "int_non_attribute" => 144,
