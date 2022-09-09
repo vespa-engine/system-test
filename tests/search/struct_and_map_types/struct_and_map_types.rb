@@ -166,8 +166,8 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     array_filtered = [elem("bar", 20)]
     map_full = {"@foo" => elem("foo", 10), "@bar" => elem("bar", 20), "@baz" => elem("baz", 30)}
     map_filtered = {"@bar" => elem("bar", 20)}
-    # Note: Empty map is rendered as empty array
-    map_empty = []
+    # Note: Empty maps are not rendered in search results
+    map_empty = nil
     prim_map_full = {"@foo" => 10, "@bar" => 20, "@baz" => 30}
     prim_map_filtered = {"@bar" => 20}
     complex_map_full = {"@foo" => complex_elem("foo", 10, "aa", 11), "@bar" => complex_elem("bar", 20, "bb", 21)}

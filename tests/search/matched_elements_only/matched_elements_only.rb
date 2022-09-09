@@ -66,9 +66,9 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
 
     # No elements matches in other fields
     query = "int_array contains '20'"
-    empty_array = []
-    # Note: Empty weighted set is rendered as empty array
-    empty_wset = []
+    # Note: Empty arrays and empty weighted sets are not rendered in search results
+    empty_array = nil
+    empty_wset = nil
     assert_summary_field(query, "str_array", empty_array)
     assert_summary_field("str_array contains 'bar'", "int_array", empty_array)
     assert_summary_field(query, "str_wset", empty_wset)
