@@ -1,3 +1,5 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
 require 'app_generator/container_app'
 require 'http_client'
 require 'performance_test'
@@ -78,8 +80,6 @@ class ContainerHttp < PerformanceTest
   def run_http1_tests
     run_h2load_benchmark(128, 1, 30, HTTP1)
     run_h2load_benchmark(32, 1, 10, HTTP1)
-    run_h2load_benchmark(8, 1, 10, HTTP1)
-    run_h2load_benchmark(4, 1, 10, HTTP1)
     run_h2load_benchmark(1, 1, 10, HTTP1)
     run_fbench_benchmark(32, NON_PERSISTENT)
   end
@@ -91,8 +91,6 @@ class ContainerHttp < PerformanceTest
     run_h2load_benchmark(4, 64, 10, HTTP2)
     run_h2load_benchmark(4, 128, 10, HTTP2)
     run_h2load_benchmark(4, 256, 10, HTTP2)
-    run_h2load_benchmark(2, 128, 10, HTTP2)
-    run_h2load_benchmark(2, 256, 10, HTTP2)
     run_h2load_benchmark(1, 512, 10, HTTP2)
   end
 
