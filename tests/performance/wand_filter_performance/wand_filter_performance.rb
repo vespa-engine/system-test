@@ -1,5 +1,4 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-
 require 'performance/wand_performance/wand_performance_base'
 
 class WandFilterPerformanceTest < WandPerformanceTestBase
@@ -18,7 +17,7 @@ class WandFilterPerformanceTest < WandPerformanceTestBase
   end
 
   def test_vespa_wand_performance
-    set_description("Test filter performance (none (0%), 0.1%, 1%, 10%, 20%, and 90%) with Parallel Wand, Vespa Wand and brute force approaches for a data set with some common and some rare weighted terms")
+    set_description("Test filter performance (none (0%), 1%, 20%, and 90%) with Parallel Wand, Vespa Wand and brute force approaches for a data set with some common and some rare weighted terms")
     @specs = [ParallelWandSpec, VespaWandSpec, DotProductOperatorSpec, DotProductFeatureSpec, OrSpec]
     @doc_count = 1000000
 
@@ -35,7 +34,7 @@ class WandFilterPerformanceTest < WandPerformanceTestBase
 
     # benchmark
     for spec_type in @specs
-      {'0%' => '', '0.1%' => '1', '1%' => '10', '10%' => '100', '20%' => '200', '90%' => '900'}.sort.each do |key, filter|
+      {'0%' => '', '1%' => '10', '20%' => '200', '90%' => '900'}.sort.each do |key, filter|
         run_fbench(spec_type.new(8, 1000, 1, @doc_count, filter),
                    [parameter_filler("filter", key), parameter_filler("type", spec_type.stype)])
       end
