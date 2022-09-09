@@ -1,4 +1,3 @@
-# coding: utf-8
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'performance_test'
@@ -28,16 +27,6 @@ class DocumentV1Throughput < PerformanceTest
       },
       {
         :http1 => {
-          :clients => 8
-        }
-      },
-      {
-        :http1 => {
-          :clients => 64
-        }
-      },
-      {
-        :http1 => {
           :clients => 128
         }
       },
@@ -45,20 +34,6 @@ class DocumentV1Throughput < PerformanceTest
         :http2 => {
           :clients => 1,
           :streams => 1,
-          :threads => 1
-        }
-      },
-      {
-        :http2 => {
-          :clients => 1,
-          :streams => 8,
-          :threads => 1
-        }
-      },
-      {
-        :http2 => {
-          :clients => 1,
-          :streams => 64,
           :threads => 1
         }
       },
