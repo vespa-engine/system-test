@@ -90,7 +90,7 @@ class DynTeaser < IndexedSearchTest
                  result.hit[0].field["dyncontent"])
     assert_equal("", result.hit[0].field["content2"])
     assert_equal("", result.hit[0].field["content3"])
-    assert_equal("", result.hit[0].field["content4"])
+    assert_equal(nil, result.hit[0].field["content4"])
     assert_equal(nil, result.hit[0].field["content5"])
 
     result = search("system")
@@ -99,7 +99,7 @@ class DynTeaser < IndexedSearchTest
     assert_equal("<hi>System</hi> Kaw-Liga;Johnny<sep />",
                  result.hit[0].field["content2"])
     assert_equal("", result.hit[0].field["content3"])
-    assert_equal("", result.hit[0].field["content4"])
+    assert_equal(nil, result.hit[0].field["content4"])
     assert_equal(nil, result.hit[0].field["content5"])
   end
 
@@ -121,7 +121,7 @@ class DynTeaser < IndexedSearchTest
                  result.hit[0].field["content2"])
     assert_equal("Search Kaw-Liga<sep />",
                  result.hit[0].field["content3"])
-    assert_equal("", result.hit[0].field["content4"])
+    assert_equal(nil, result.hit[0].field["content4"])
     assert_equal(nil, result.hit[0].field["content5"])
 
     result = search("system")
@@ -132,7 +132,7 @@ class DynTeaser < IndexedSearchTest
                  result.hit[0].field["content2"])
     assert_equal("Search Kaw-Liga<sep />",
                  result.hit[0].field["content3"])
-    assert_equal("", result.hit[0].field["content4"])
+    assert_equal(nil, result.hit[0].field["content4"])
     assert_equal(nil, result.hit[0].field["content5"])
   end
 
