@@ -9,8 +9,6 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   DOCUMENTS = 2000000
   TINY = 10
-  SMALL = 100
-  MEDIUM = 1000
   LARGE = 10000
 
   DUMMY_ROUTE = 'null/default'
@@ -31,10 +29,6 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
     run_benchmark(container_node, "VespaFeedClient",   TINY, 32)
     run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
-    run_benchmark(container_node, "VespaFeedClient",  SMALL, 16)
-    run_benchmark(container_node, "VespaFeedClient",  SMALL, 32)
-    run_benchmark(container_node, "VespaFeedClient",  SMALL, 64)
-    run_benchmark(container_node, "VespaFeedClient", MEDIUM, 32)
     run_benchmark(container_node, "VespaFeedClient",  LARGE, 32)
     run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 32)
   end
