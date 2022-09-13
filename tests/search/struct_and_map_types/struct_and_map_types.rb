@@ -176,10 +176,15 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     map_same_elem_query = "key contains '@bar', value.weight contains '20'"
     # No elements matches in query below
     map_same_elem_query_yql = "select * from sources * where elem_array.name contains 'bar'"
+    array_same_elem_query_yql = "select * from sources * where elem_array contains sameElement(name contains 'bar', weight <= 20)"
+    # Same element operator is within an and operator
+    array_same_elem_query_with_and_yql = "select * from sources * where elem_map.key contains '@foo' and elem_array contains sameElement(name contains 'bar', weight <= 20)"
 
     assert_same_element_summary("elem_array",     "name contains 'bar', weight contains '20'", "default",  "elem_array",          array_full)
     assert_same_element_summary("elem_array",     "name contains 'bar', weight contains '20'", "filtered", "elem_array_filtered", array_filtered)
     assert_same_element_summary("elem_array_meo", "name contains 'bar', weight contains '20'", "default",  "elem_array_meo",      array_filtered)
+    assert_same_element_summary_yql(array_same_elem_query_yql, "filtered", "elem_array_filtered", array_filtered)
+    assert_same_element_summary_yql(array_same_elem_query_with_and_yql, "filtered", "elem_array_filtered", array_filtered)
 
     assert_same_element_summary("elem_map",       map_same_elem_query, "default",  "elem_map",            map_full)
     assert_same_element_summary("elem_map",       map_same_elem_query, "filtered", "elem_map_filtered",   map_filtered)
