@@ -85,14 +85,14 @@ class TensorConstantPerfTest < PerformanceTest
         puts "Got config generation #{next_generation}"
       }
 
-      out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true, :separate_upload_and_prepare => true})
-      prepare_finished = Time.now.to_f - activate_time
+      out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true})
+      activate_finished = Time.now.to_f
       total_prepare_time = total_prepare_time + prepare_time
 
       wait_for_config_thread.join
       # Files will only be distributed on the first deployment, unchanged on the next ones
       if i == 0
-        total_file_distribution_time = Time.now.to_f - prepare_finished
+        total_file_distribution_time = Time.now.to_f - activate_finished
       end
 
       next_generation = next_generation + 1
