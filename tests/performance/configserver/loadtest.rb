@@ -10,6 +10,10 @@ class ConfigserverLoadTest < PerformanceTest
     @defdir = "defbundle/src/main/resources/configdefinitions"
   end
 
+  def can_share_configservers?(method_name=nil)
+    false
+  end
+
   def setup
     super
     set_owner("musum")
