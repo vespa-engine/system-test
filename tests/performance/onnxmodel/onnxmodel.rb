@@ -7,6 +7,10 @@ class OnnxModel < PerformanceTest
     super(*args)
   end
 
+  def can_share_configservers?(method_name=nil)
+    false
+  end
+
   def setup
     super
     set_owner("hmusum")
