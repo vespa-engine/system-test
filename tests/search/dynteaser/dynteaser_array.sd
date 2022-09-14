@@ -1,0 +1,17 @@
+schema dynteaser_array {
+  document dynteaser_array {
+    field content_1 type array<string> {
+      indexing: index | summary
+      summary: dynamic
+    }
+    field content_2 type array<string> {
+      indexing: index | summary
+    }
+  }
+  document-summary my_sum {
+    summary content_2_dyn type array<string> {
+      source: content_2
+      dynamic
+    }
+  }
+}
