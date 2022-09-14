@@ -42,6 +42,10 @@ class PerformanceTest < TestCase
     3600*2
   end
 
+  def can_share_configservers?(method_name=nil)
+    true
+  end
+
   def get_script_user
     sudo_user = `echo ${SUDO_USER}`.chomp
     user = "builder"
