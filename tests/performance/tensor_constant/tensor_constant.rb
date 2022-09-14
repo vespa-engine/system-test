@@ -11,7 +11,6 @@ class TensorConstantPerfTest < PerformanceTest
 
   def initialize(*args)
     super(*args)
-    @num_hosts = 2
   end
 
   def setup
@@ -44,14 +43,10 @@ class TensorConstantPerfTest < PerformanceTest
   end
 
   def create_app(schema)
-    app = SearchApp.new.
-            sd(schema).
-            num_hosts(@num_hosts).
-            search_dir(@tensor_dir)
-    if (@num_hosts == 2)
-      app = app.configserver("node2")
-    end
-    app
+    SearchApp.new.
+      sd(schema).
+      num_hosts(@num_hosts).
+      search_dir(@tensor_dir)
   end
 
   def generate_tensor_constant(mb)
@@ -76,19 +71,15 @@ class TensorConstantPerfTest < PerformanceTest
     total_file_distribution_time = 0.0
     iterations = 2
     iterations.times { |i|
-
-      # wait for config (when new config has arrived file distribution is guaranteed to be finished)
-      wait_for_config_thread = Thread.new {
-        puts "Waiting for config generation #{next_generation}"
-        vespa.search['search'].first.wait_for_config_generation(next_generation, 120)
-        puts "Got config generation #{next_generation}"
-      }
-
       out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true})
       activate_finished = Time.now.to_f
       total_prepare_time = total_prepare_time + prepare_time
 
-      wait_for_config_thread.join
+      # wait for config (when new config has arrived file distribution is guaranteed to be finished)
+      puts "Waiting for config generation #{next_generation}"
+      vespa.search['search'].first.wait_for_config_generation(next_generation, 120)
+      puts "Got config generation #{next_generation}"
+
       # Files will only be distributed on the first deployment, unchanged on the next ones
       if i == 0
         total_file_distribution_time = Time.now.to_f - activate_finished
@@ -107,7 +98,7 @@ class TensorConstantPerfTest < PerformanceTest
   end
 
   def feeder_numthreads
-      1
+    1
   end
 
   def teardown
