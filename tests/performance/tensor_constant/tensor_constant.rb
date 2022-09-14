@@ -35,7 +35,6 @@ class TensorConstantPerfTest < PerformanceTest
 
   def deploy_and_feed(schema)
     out = deploy_app(create_app(selfdir + "app_no_tensor/test.sd"))
-    vespa.configservers["0"].logctl("configserver:com.yahoo.vespa.config.server.session.SessionPreparer", "debug=on")
     # Start Vespa before the next deployment is done. File distribution will start as part of deploy prepare
     # so this makes sure that we do not include startup time of services when measuring file distribution time
     start
