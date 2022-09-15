@@ -1,5 +1,5 @@
-schema dynteaser_array {
-  document dynteaser_array {
+schema test {
+  document test {
     field content_1 type array<string> {
       indexing: index | summary
       summary: dynamic
