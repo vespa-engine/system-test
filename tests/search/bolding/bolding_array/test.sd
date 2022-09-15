@@ -1,0 +1,17 @@
+schema test {
+  document test {
+    field content_1 type array<string> {
+      indexing: index | summary
+      bolding: on
+    }
+    field content_2 type array<string> {
+      indexing: index | summary
+    }
+  }
+  document-summary my_sum {
+    summary content_2_dyn type array<string> {
+      source: content_2
+      bolding: on
+    }
+  }
+}
