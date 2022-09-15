@@ -1,0 +1,15 @@
+[
+  {
+    "put": "id:test:test::0",
+    "fields": {
+      "content_1": [
+          "Bolding highlights matching query terms in the summary.",
+          "Set bolding on to enable it."
+      ],
+      "content_2": [
+          "Bolding highlights matching query terms in the summary.",
+          "Set bolding on to enable it."
+      ]
+    }
+  }
+]
