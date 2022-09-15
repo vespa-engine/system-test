@@ -24,7 +24,8 @@ class SearchApp < App
                   :persistence_threads => :persistence_threads,
                   :cpu_socket_affinity => :cpu_socket_affinity,
                   :resource_limits => :resource_limits,
-                  :proton_resource_limits => :proton_resource_limits
+                  :proton_resource_limits => :proton_resource_limits,
+                  :indexing_cluster => :indexing_cluster
 
   def initialize
     super

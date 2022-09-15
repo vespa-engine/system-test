@@ -1,6 +1,6 @@
 [
   {
-    "put": "id:dynteaser_array:dynteaser_array::0",
+    "put": "id:test:test::0",
     "fields": {
       "content_1": [
         "A schema defines a document type and what we want to compute over it. This is the first sentence without any particular meaning. This is the second sentence without any particular meaning. This is the third sentence without any particular meaning. Schemas are stored in files named the same as the schema, with the ending sd, in the schemas directory of the application package.",
