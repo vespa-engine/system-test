@@ -33,11 +33,11 @@ class TensorConstantPerfTest < PerformanceTest
   end
 
   def deploy_and_feed(schema)
-    out = deploy_app(create_app(selfdir + "app_no_tensor/test.sd"))
-    # Start Vespa before the next deployment is done. File distribution will start as part of deploy prepare
-    # so this makes sure that we do not include startup time of services when measuring file distribution time
+    deploy_app(create_app(selfdir + "app_no_tensor/test.sd"))
+    # Start Vespa before the next deployment  is done to make sure that we do not
+    # include startup time of services when measuring file distribution time
     start
-    deploy_app_and_sample_time(create_app(schema), get_generation(out).to_i)
+    deploy_app_and_sample_time(create_app(schema))
     feed_and_wait_for_docs("test", 1, :file => selfdir + "docs.json")
     assert_relevancy("query=sddocname:test", 9.0)
   end
@@ -65,8 +65,7 @@ class TensorConstantPerfTest < PerformanceTest
     system("rm #{tensor_constant_file}")
   end
 
-  def deploy_app_and_sample_time(app, generation)
-    next_generation = generation + 1
+  def deploy_app_and_sample_time(app)
     total_prepare_time = 0.0
     total_file_distribution_time = 0.0
     iterations = 2
@@ -75,17 +74,16 @@ class TensorConstantPerfTest < PerformanceTest
       activate_finished = Time.now.to_f
       total_prepare_time = total_prepare_time + prepare_time
 
+      generation = get_generation(out).to_i
       # wait for config (when new config has arrived file distribution is guaranteed to be finished)
-      puts "Waiting for config generation #{next_generation}"
-      vespa.search['search'].first.wait_for_config_generation(next_generation, 120)
-      puts "Got config generation #{next_generation}"
+      puts "Waiting for config generation #{generation}"
+      vespa.search['search'].first.wait_for_config_generation(generation, 120)
+      puts "Got config generation #{generation}"
 
       # Files will only be distributed on the first deployment, unchanged on the next ones
       if i == 0
         total_file_distribution_time = Time.now.to_f - activate_finished
       end
-
-      next_generation = next_generation + 1
     }
 
     avg_prepare_time = total_prepare_time / iterations
@@ -99,10 +97,6 @@ class TensorConstantPerfTest < PerformanceTest
 
   def feeder_numthreads
     1
-  end
-
-  def teardown
-    super
   end
 
 end
