@@ -74,7 +74,7 @@ class DocumentV1Throughput < PerformanceTest
     @container = @vespa.container.values.first
 
     # Generate TLS certificate with endpoint
-    system("openssl req -nodes -x509 -newkey rsa:4096 -keyout #{dirs.tmpdir}cert.key -out #{dirs.tmpdir}cert.pem -days 365 -subj '/CN=#{@container.hostname}'")
+    system("PATH=/opt/vespa-deps/bin:$PATH; openssl req -nodes -x509 -newkey rsa:4096 -keyout #{dirs.tmpdir}cert.key -out #{dirs.tmpdir}cert.pem -days 365 -subj '/CN=#{@container.hostname}'", exception: true)
     system("chmod 644 #{dirs.tmpdir}cert.key #{dirs.tmpdir}cert.pem")
     @container.copy("#{dirs.tmpdir}cert.key", dirs.tmpdir)
     @container.copy("#{dirs.tmpdir}cert.pem", dirs.tmpdir)
