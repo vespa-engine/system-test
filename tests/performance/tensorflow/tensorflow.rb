@@ -18,7 +18,7 @@ class TensorFlow < PerformanceTest
     super
   end
 
-  def test_tensorflow
+  def do_not_test_tensorflow
     set_description("Test performance of a model imported from TensorFlow")
 
     @docs_file_name = dirs.tmpdir + "/docs.json"
