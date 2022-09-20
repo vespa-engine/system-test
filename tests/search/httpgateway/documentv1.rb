@@ -195,7 +195,7 @@ class DocumentV1Test < SearchTest
     puts "Visit all documents and update banana colour"
     contToken = ""
     for q in 0..numDocuments
-      response = http.put("/document/v1/fruit/banana/docid/?selection=true&cluster=content" + contToken, feedDataUpdate, httpheaders)
+      response = http.put("/document/v1/fruit/banana/docid/?timeout=175s&selection=true&cluster=content" + contToken, feedDataUpdate, httpheaders)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        if (jsonResponse.has_key?("continuation"))
@@ -208,7 +208,7 @@ class DocumentV1Test < SearchTest
     puts "Visit all documents and refeed them"
     contToken = ""
     for q in 0..numDocuments
-      response = http.post("/document/v1/fruit/banana/docid/?destinationCluster=content&cluster=content&selection=true" + contToken, "", httpheaders)
+      response = http.post("/document/v1/fruit/banana/docid/?timeout=175s&destinationCluster=content&cluster=content&selection=true" + contToken, "", httpheaders)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        if (jsonResponse.has_key?("continuation"))
@@ -224,7 +224,7 @@ class DocumentV1Test < SearchTest
     puts "Avoid infinite loop in case of cycles, numDocuments is absolute max"
     for q in 0..numDocuments
        # Visit zero result test
-       response = http.get("/document/v1/fruit/banana/docid/" + contToken)
+       response = http.get("/document/v1/fruit/banana/docid/?timeout=175s" + contToken)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        jsonResponse["documents"].each do |document|
@@ -232,7 +232,7 @@ class DocumentV1Test < SearchTest
           assert_equal("red", document["fields"]["colour"])
        end
        if (jsonResponse.has_key?("continuation"))
-          contToken = "?continuation=" + jsonResponse["continuation"] 
+          contToken = "&continuation=" + jsonResponse["continuation"]
        else
           break
        end
@@ -243,14 +243,14 @@ class DocumentV1Test < SearchTest
     contToken = ""
     found = 0
     for q in 0..numDocuments
-       response = http.delete("/document/v1/fruit/banana/docid/?selection=true&cluster=content" + contToken)
+       response = http.delete("/document/v1/fruit/banana/docid/?timeout=175s&selection=true&cluster=content" + contToken)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        if (jsonResponse.has_key?("documentCount"))
            found += jsonResponse["documentCount"].to_i
        end
        if (jsonResponse.has_key?("continuation"))
-          contToken = "&continuation=" + jsonResponse["continuation"] 
+          contToken = "&continuation=" + jsonResponse["continuation"]
        else
           break
        end
@@ -261,14 +261,14 @@ class DocumentV1Test < SearchTest
     found = 0
     contToken = ""
     for q in 0..numDocuments
-       response = http.get("/document/v1/fruit/banana/docid/" + contToken)
+       response = http.get("/document/v1/fruit/banana/docid/?timeout=175s" + contToken)
        assert_equal("200", response.code)
        jsonResponse = JSON.parse(response.body)
        jsonResponse["documents"].each do 
           found += 1
        end
        if (jsonResponse.has_key?("continuation"))
-          contToken = "?continuation=" + jsonResponse["continuation"] 
+          contToken = "&continuation=" + jsonResponse["continuation"]
        else
           break
        end
