@@ -255,6 +255,10 @@ class DocumentV1Test < SearchTest
           break
        end
     end
+    vespa.nodeproxies.values.first.execute("vespa-visit -i")
+    puts http.get("/document/v1/fruit/banana/docid/?timeout=175s&stream=true&selection=true&cluster=content")
+    puts http.delete("/document/v1/fruit/banana/docid/?timeout=175s&selection=true&cluster=content")
+
     assert_equal(numDocuments, found)
 
     puts "Visit all documents and verify there are none"
