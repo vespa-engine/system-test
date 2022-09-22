@@ -82,10 +82,12 @@ class TestNodePool
         endpoint = DrbEndpoint.new("#{node}:#{TestBase::DRUBY_REMOTE_PORT}")
         node_server = endpoint.create_client(with_object: nil)
         raise "Node #{node} is dead." unless node_server.alive?
-      rescue
+      rescue StandardError => e
+        @log.warn("Exception: #{e.message}")
         return false
       end
     end
+    true
   end
 
   def free(nodes)
