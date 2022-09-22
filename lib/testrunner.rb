@@ -165,20 +165,20 @@ class TestRunner
       testcase.valgrind = @backend.use_valgrind ? "all" : nil
       testcase.sanitizer = @backend.use_sanitizer
 
-      @log.info "#{testcase.class}::#{test_method.to_s} requesting nodes"
-
-      begin
-        start_allocate = Time.now.to_i
-        nodes = @node_allocator.allocate(testcase.num_hosts, 3600)
-        waited_for = Time.now.to_i - start_allocate
-      rescue StandardError => e
-        @log.error("Not enough nodes were available, could not run #{testcase.class} (required #{testcase.num_hosts}). Exception received #{e.message}")
-        next
-      end
-
-      @log.info "#{testcase.class}::#{test_method.to_s} allocated nodes #{nodes.join(', ')} after #{waited_for} seconds."
-
       thread_pool.post do
+        @log.info "#{testcase.class}::#{test_method.to_s} requesting nodes"
+
+        begin
+          start_allocate = Time.now.to_i
+          nodes = @node_allocator.allocate(testcase.num_hosts, 3600)
+          waited_for = Time.now.to_i - start_allocate
+        rescue StandardError => e
+          @log.error("Not enough nodes were available, could not run #{testcase.class} (required #{testcase.num_hosts}). Exception received #{e.message}")
+          next
+        end
+
+        @log.info "#{testcase.class}::#{test_method.to_s} allocated nodes #{nodes.join(', ')} after #{waited_for} seconds."
+
         begin
           testcase.hostlist = nodes
           if @dns_settle_time > 0
@@ -195,9 +195,19 @@ class TestRunner
           @log.info "Running #{test_method} from #{testcase.class} on #{testcase.hostlist}"
           @backend.test_running(testcase, test_method)
           test_result = testcase.run([test_method]).first
+
+          # So our test failed in some way and one or more nodes are dead. We will retry.
+          raise TestNodeFailure unless test_result.passed? || @node_allocator.all_alive?(nodes)
+
           @backend.test_finished(testcase, test_result)
           @log.info "Finished running: #{test_method} from #{testcase.class}"
-        rescue Exception => e
+        rescue TestNodeFailure
+          @log.warn("Node failures observed when running #{testcase.class}::#{test_method.to_s}. Retrying.")
+          @node_allocator.free(nodes)
+          nodes = @node_allocator.allocate(testcase.num_hosts, 3600)
+          @log.info "#{testcase.class}::#{test_method.to_s} allocated nodes #{nodes.join(', ')}"
+          retry
+        rescue StandardError => e
           @log.error "Exception #{e.message} "
           raise
         ensure

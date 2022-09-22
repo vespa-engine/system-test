@@ -2,9 +2,14 @@
 
 module NodeServerInterface
 
+  def alive?
+    @node_server.alive?
+  end
+
   def shutdown
     @node_server.shutdown
   end
+
   def remote_eval(expr)
     @node_server.remote_eval(expr)
   end
