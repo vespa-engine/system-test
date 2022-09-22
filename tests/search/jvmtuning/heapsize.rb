@@ -79,9 +79,17 @@ class HeapSize < SearchTest
                          config(ConfigOverride.new('search.config.qr-start').
                                                add('jvm', ConfigValue.new('heapSizeAsPercentageOfPhysicalMemory', '40'))))
     start
-    free = vespa.adminserver.execute("free -m | grep Mem | tr -s ' ' | cut -f2 -d' '")
-    puts "Free memory = " + free
-    relative = (free.to_i - 1024) * 40 / 100
+    free = vespa.adminserver.execute("free -m | grep Mem | tr -s ' ' | cut -f2 -d' '").to_i
+    begin
+      cglimit_bytes = vespa.adminserver.execute("cgget -nv -r memory.limit_in_bytes / 2>&1").to_i
+      cglimit = cglimit_bytes >> 20
+      free = [free, cglimit].min
+    rescue
+      # Ignored
+    end
+
+    puts "Free memory = " + free.to_s
+    relative = (free - 1024) * 40 / 100
     puts "Relative memory for container " + relative.to_s
     maxdirect = relative/8 + 16 + 0 # Taken from the startup script.
     puts "MaxDirectMemorySize should be " + maxdirect.to_s
