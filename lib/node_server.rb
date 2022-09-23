@@ -118,6 +118,10 @@ class NodeServer
     eval(expr)
   end
 
+  def alive?
+    true
+  end
+
   def shutdown
     # Just exit for now
     DRb.stop_service
