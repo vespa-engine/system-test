@@ -105,8 +105,10 @@ module TestBase
   TESTDATA_URL = testdata_url(`hostname`.chomp)
 
   def init_vespa_model(me, vespa_version)
-    @vespa = VespaModel.new(me, vespa_version)
-    @vespa.init_nodeproxies
+    if not @vespa
+      @vespa = VespaModel.new(me, vespa_version)
+      @vespa.init_nodeproxies
+    end
   end
 
   # Creates an instance of VespaModel, then deploys _application_ on the adminserver.

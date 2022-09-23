@@ -5,9 +5,6 @@ require 'socket'
 require 'node_proxy'
 require 'test_base'
 
-class TestNodeFailure < StandardError
-end
-
 class TestNodePool
   include DRb::DRbUndumped
 
@@ -74,20 +71,6 @@ class TestNodePool
     end
 
     raise "Requested #{num} nodes, but could not allocate within #{timeout_sec} seconds."
-  end
-
-  def all_alive?(nodes)
-    nodes.each do |node|
-      begin
-        endpoint = DrbEndpoint.new("#{node}:#{TestBase::DRUBY_REMOTE_PORT}")
-        node_server = endpoint.create_client(with_object: nil)
-        raise "Node #{node} is dead." unless node_server.alive?
-      rescue StandardError => e
-        @log.warn("Exception: #{e.message}")
-        return false
-      end
-    end
-    true
   end
 
   def free(nodes)

@@ -30,9 +30,9 @@ class TestCase
   include Assertions
   include TestBase
 
-  attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client
+  attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :dirty_nodeproxies, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client
   attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :required_hostnames, :expected_logged, :method_name
-  attr_accessor :dirty_nodeproxies, :dirty_environment_settings
+  attr_accessor :dirty_environment_settings
   attr_accessor :sanitizer
 
   # Creates and returns a new TestCase object.
