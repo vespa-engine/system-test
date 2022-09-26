@@ -105,10 +105,8 @@ class SslConfig
 
   # We generate our own self-signed Certificate Authority. This CA will
   # sign our host key pair and act as the trusted verifier of connection peers.
-  # Note that we use RSA and SHA-256 for all our certs. We will eventually migrate to P-256 elliptic curves
-  # once we are no longer depending on curl compiled with NSS.
   def generate_ca_private_key
-    run_or_fail("openssl genrsa -out #{@ca_private_key} 2048")
+    run_or_fail("openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out #{@ca_private_key}")
   end
 
   def self_sign_root_ca_certificate_for(this_host)
@@ -119,7 +117,7 @@ class SslConfig
   end
 
   def generate_host_specific_private_key
-    run_or_fail("openssl genrsa -out #{@host_private_key} 2048")
+    run_or_fail("openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 -out #{@host_private_key}")
   end
 
   def generate_host_specific_csr_for(this_host)
