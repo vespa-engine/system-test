@@ -256,6 +256,9 @@ if __FILE__ == $0
     opts.on("-k", "--keeprunning", "Keep the node containers running. For inspection/debugging.") do |k|
       options[:keeprunning] = k
     end
+    opts.on("--internal-only", "Only run tests from tests-internal/ directory.") do
+      options[:testmoduledirs] = ["#{__dir__}/../tests-internal"]
+    end
     opts.on("-n", "--nodelimit N", Integer, "Only run tests that require no more that N nodes.") do |limit|
       options[:nodelimit] = limit
     end
