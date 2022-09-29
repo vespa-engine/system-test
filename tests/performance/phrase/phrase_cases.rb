@@ -85,7 +85,6 @@ class PhraseCasesPerformanceTest < PerformanceTest
     qf = qd + "/" + File.basename(query_file)
     puts "qf: #{qf}"
     run_fbench(qrserver, clients, runtime, qf, legend + '_untuned')
-    run_fbench(qrserver, clients, runtime, qf, legend + '_delay',   "&ranking=withdelay" )
     run_fbench(qrserver, clients, runtime, qf, legend + '_split',   "&ranking=withsplit" )
     run_fbench(qrserver, clients, runtime, qf, legend + '_termwise', "&ranking=withtermwise" )
   end
