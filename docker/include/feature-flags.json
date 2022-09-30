@@ -9,8 +9,6 @@
             ]
         },
         { "id" : "shared-string-repo-no-reclaim", "rules" : [ { "value" : true } ] },
-        { "id" : "use-qrserver-service-name", "rules" : [ { "value" : false } ] },
-        { "id" : "experimental-sd-parsing", "rules" : [ { "value" : true } ] },
         { "id" : "ignore-thread-stack-sizes", "rules" : [ { "value" : true } ] },
         { "id" : "mbus-num-network-threads", "rules" : [ { "value" : 1 } ] },
         { "id" : "mbus-cpp-num-targets", "rules" : [ { "value" : 2 } ] },
