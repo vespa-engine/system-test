@@ -31,7 +31,6 @@ class PerformanceTest < TestCase
     @queryfile = selfdir + 'queries.txt'
     @warmup = true
     @perf_processes = {}
-    @perf_record_pids = {}
     @perf_data_dir = "#{Environment.instance.vespa_home}/tmp/perf/"
     @perf_data_file = File.join(@perf_data_dir,'record.data')
     @perf_stat_file = File.join(@perf_data_dir,'perf_stats')
@@ -295,27 +294,12 @@ class PerformanceTest < TestCase
     stop_perf_profiler
     Timeout::timeout(600) do |timeout_length|
       puts "Starting perf record on nodes."
-      @perf_record_pids = {}
       vespa.nodeproxies.values.each do | node |
         begin
           node.execute("rm -rf #{@perf_data_dir} && mkdir -p #{@perf_data_dir}")
-
-          @perf_record_pids[node] = {}
-          @perf_record_pids[node]['proton-bin'] = node.get_pids('sbin/vespa-proton-bin')
-          @perf_record_pids[node]['storaged-bin'] = node.get_pids('sbin/vespa-storaged-bin')
-          @perf_record_pids[node]['distributord-bin'] = node.get_pids('sbin/vespa-distributord-bin')
-          @perf_record_pids[node]['container'] = node.get_pids('"java.*container-disc-jar-with-dependencies.jar"')
-          @perf_record_pids[node]['configserver'] = node.get_pids('"java.*jdisc\/configserver"')
-          @perf_record_pids[node]['vespa-config-loadtester'] = node.get_pids('vespa-config-loadtester')
-
           @perf_processes[node] = []
-          @perf_record_pids[node].each do | name, pids |
-            pids.each do | pid |
-              @perf_processes[node] << node.execute_bg("perf record -e cycles -p #{pid} -o #{@perf_data_file}-#{pid}")
-              @perf_processes[node] << node.execute_bg("exec perf stat -ddd -p #{pid} &> #{@perf_stat_file}-#{name}-#{pid}")
-            end
-          end
-          @perf_processes[node] << node.execute_bg("perf record -e cycles -a -o #{@perf_data_file}-0")
+          @perf_processes[node] << node.execute_bg("perf record -a -e cycles -o #{@perf_data_file}")
+          @perf_processes[node] << node.execute_bg("exec perf stat -ddd -a &> #{@perf_stat_file}")
         rescue ExecuteError
           puts "Unable to start perf on node #{node.name}"
         end
@@ -340,27 +324,28 @@ class PerformanceTest < TestCase
       dir_name = perf_dir_name(label, node)
       node.execute("mkdir -p #{dir_name}")
 
-      name_to_pids = extra_pids.clone
-      name_to_pids.merge!(@perf_record_pids[node])
-
       reporter_pids[node] = []
+
+      reporter_pids[node] << node.execute_bg("cp -a #{@perf_stat_file} #{dir_name}")
+
+      name_to_pids = extra_pids.clone
+      name_to_pids['proton-bin'] = node.get_pids('sbin/vespa-proton-bin')
+      name_to_pids['storaged-bin'] = node.get_pids('sbin/vespa-storaged-bin')
+      name_to_pids['distributord-bin'] = node.get_pids('sbin/vespa-distributord-bin')
+      name_to_pids['container'] = node.get_pids('"java.*container-disc-jar-with-dependencies.jar"')
+      name_to_pids['configserver'] = node.get_pids('"java.*jdisc\/configserver"')
+      name_to_pids['vespa-config-loadtester'] = node.get_pids('vespa-config-loadtester')
+      name_to_pids['systemwide'] = [0]
+
       name_to_pids.each do | name, pids |
         pids.each do | pid |
-
-          if extra_pids.key?(name)
-            # Extra program pids must be picked from a system wide perf record and will not have stat files
-            data_file = "#{@perf_data_file}-0"
-            stat_file = nil
-          else
-            data_file = "#{@perf_data_file}-#{pid}"
-            stat_file = "#{@perf_data_file}-#{name}-#{pid}"
-          end
+          perf_pid_arg = "--pid #{pid}"
+          perf_pid_arg = '' if pid == 0
 
           file_name = File.join(dir_name, "perf_#{name}-#{pid}")
 
           begin
-            reporter_pids[node] << node.execute_bg("perf report --stdio --header --show-nr-samples --percent-limit 0.01 --pid #{pid} --input #{data_file} 2>/dev/null > #{file_name}")
-            reporter_pids[node] << node.execute_bg("cp -a #{@perf_stat_file}-#{name}-#{pid} #{dir_name}") if stat_file
+            reporter_pids[node] << node.execute_bg("perf report --stdio --header --show-nr-samples --percent-limit 0.01 #{perf_pid_arg} --input #{@perf_data_file} 2>/dev/null > #{file_name}")
           rescue ExecuteError
             puts "Unable to generate report for #{binary} on host #{node.name}"
           end
@@ -394,7 +379,7 @@ class PerformanceTest < TestCase
             rescue ExecuteError, SystemCallError
               puts "Failed to terminate pid #{pid} on host #{node.name}"
             end
-          end if node.pid_running(pid)
+          end
         end
       end
       @perf_processes.clear

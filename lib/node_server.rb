@@ -242,11 +242,6 @@ class NodeServer
     filereader.delete(remotearchive)
   end
 
-  def pid_running(pid)
-    system("ps -p #{pid} &> /dev/null")
-    $? == 0
-  end
-
   # Returns an array of pids corresponding to _name_.
   def get_pids(name)
     pids = `ps awwx | grep #{name} | grep -v grep | awk '{print $1}'`
