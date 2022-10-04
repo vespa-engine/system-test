@@ -22,10 +22,6 @@ module NodeServerInterface
     @node_server.execute_bg(...)
   end
 
-  def pid_running(...)
-    @node_server.pid_running(...)
-  end
-
   def get_pids(...)
     @node_server.get_pids(...)
   end
