@@ -295,6 +295,7 @@ class PerformanceTest < TestCase
     stop_perf_profiler
     Timeout::timeout(600) do |timeout_length|
       puts "Starting perf record on nodes."
+      @perf_record_pids = {}
       vespa.nodeproxies.values.each do | node |
         begin
           node.execute("rm -rf #{@perf_data_dir} && mkdir -p #{@perf_data_dir}")
@@ -313,8 +314,8 @@ class PerformanceTest < TestCase
               @perf_processes[node] << node.execute_bg("perf record -e cycles -p #{pid} -o #{@perf_data_file}-#{pid}")
               @perf_processes[node] << node.execute_bg("exec perf stat -ddd -p #{pid} &> #{@perf_stat_file}-#{name}-#{pid}")
             end
-            @perf_processes[node] << node.execute_bg("perf record -e cycles -a -o #{@perf_data_file}-0")
           end
+          @perf_processes[node] << node.execute_bg("perf record -e cycles -a -o #{@perf_data_file}-0")
         rescue ExecuteError
           puts "Unable to start perf on node #{node.name}"
         end
@@ -398,7 +399,6 @@ class PerformanceTest < TestCase
       end
       @perf_processes.clear
     end
-    @perf_record_pids.clear
   end
 
   private :start_perf_profiler, :perf_dir_name, :report_perf_profiler, :stop_perf_profiler
