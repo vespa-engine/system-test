@@ -42,11 +42,11 @@ class TestNodePool
     end
   end
 
-  def register_node_server(hostname, port)
+  def register_node_server(hostname, port, parent)
     @lock.synchronize do
       @nodes << "#{hostname}" unless @nodes.include?("#{hostname}")
       @max_available_nodes = @nodes.size if @nodes.size > @max_available_nodes
-      @log.info "Registered node server on: #{hostname}:#{port}. Available nodes count is #{@nodes.size}."
+      @log.info "Registered node server on: #{hostname}:#{port} (parent #{parent}). Available nodes count is #{@nodes.size}."
     end
   end
 
