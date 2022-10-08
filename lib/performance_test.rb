@@ -276,18 +276,18 @@ class PerformanceTest < TestCase
 
   # Start profiler. Calling this will stop any profilers started earlier and reset recordings.
   def profiler_start
-    #start_perf_profiler
+    start_perf_profiler
   end
 
   # Generate reports from profile recordings. This call stop the profilers if running to
   # get a correct data dump. Multiple calls with the same label will overwrite the previous reports.
   def profiler_report(label='', extra_pids={})
-    #report_perf_profiler(label, extra_pids)
+    report_perf_profiler(label, extra_pids)
   end
 
   # Stop the currently running profilers.
   def profiler_stop
-    #stop_perf_profiler
+    stop_perf_profiler
   end
 
   def start_perf_profiler
