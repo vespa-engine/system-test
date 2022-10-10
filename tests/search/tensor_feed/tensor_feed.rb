@@ -41,25 +41,21 @@ class TensorFeedTest < IndexedSearchTest
 
   def test_tensor_json_feed_attribute
     set_description("Test feeding of tensor field with attribute aspect")
-    # Tests that summary data is properly populated from attribute,
-    # also after attribute has been saved and application has been
-    # restarted, i.e.  attribute populated by loading it from disk,
-    # not from replaying transaction log.
     deploy_app(SearchApp.new.sd(@base_dir + "attribute/test.sd"))
     run_tensor_json_feed_attribute
   end
 
   def test_tensor_json_feed_paged_attribute
     set_description("Test feeding of tensor field with paged attribute aspect")
-    # Tests that summary data is properly populated from attribute,
-    # also after attribute has been saved and application has been
-    # restarted, i.e.  attribute populated by loading it from disk,
-    # not from replaying transaction log.
     deploy_app(SearchApp.new.sd(@base_dir + "paged_attribute/test.sd"))
     run_tensor_json_feed_attribute
   end
 
   def run_tensor_json_feed_attribute
+    # Tests that summary data is properly populated from attribute,
+    # also after attribute has been saved and application has been
+    # restarted, i.e.  attribute populated by loading it from disk,
+    # not from replaying transaction log.
     start
     feed_and_wait_for_docs("test", 4, :file => @base_dir + "docs.json")
 
