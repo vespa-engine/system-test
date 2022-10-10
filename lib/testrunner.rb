@@ -187,7 +187,10 @@ class TestRunner
             @log.info "Settling network (max #{@dns_settle_time} seconds) before running #{test_method} from #{testcase.class}"
             end_by = Time.now + @dns_settle_time
             begin
+              # Test hosts
               testcase.hostlist.each { |host| Addrinfo.getaddrinfo(host, nil) }
+              # Configured configserver hosts
+              testcase.configserverhostlist.each { |host| Addrinfo.getaddrinfo(host, nil) }
             rescue SocketError
               sleep 1
               retry if Time.now < end_by
@@ -201,8 +204,13 @@ class TestRunner
 
             # So our test failed in some way and one or more nodes are dead. We will retry.
             raise TestNodeFailure unless test_result.passed? || @node_allocator.all_alive?(nodes)
-          rescue
+          rescue StandardError => e
             raise TestNodeFailure unless @node_allocator.all_alive?(nodes)
+
+            # The TestCase::run should not leak exceptions, but observations show is does. Make sure the error is recorded
+            # and sent to Vespa Factory so that we can observe what the failures are.
+            test_result = TestResult.new(test_method.to_s)
+            test_result.add_error(Error.new("#{testcase.class}::#{test_method.to_s}", e))
           end
 
           @backend.test_finished(testcase, test_result)
