@@ -196,15 +196,19 @@ class TestRunner
               retry if Time.now < end_by
             end
           end
-          @log.info "Running #{test_method} from #{testcase.class} on #{testcase.hostlist}"
-          @backend.test_running(testcase, test_method)
 
           begin
+            # If we got a bad set of nodes, dont bother trying to run the test
+            raise TestNodeFailure unless @node_allocator.all_alive?(nodes)
+
+            @log.info "Running #{testcase.class}::#{test_method.to_s} on #{testcase.hostlist}"
+            @backend.test_running(testcase, test_method)
             test_result = testcase.run([test_method]).first
 
             # So our test failed in some way and one or more nodes are dead. We will retry.
             raise TestNodeFailure unless test_result.passed? || @node_allocator.all_alive?(nodes)
           rescue StandardError => e
+            @log.error "Exception of type #{e.class} leaked:  #{e.message}"
             raise TestNodeFailure unless @node_allocator.all_alive?(nodes)
 
             # The TestCase::run should not leak exceptions, but observations show is does. Make sure the error is recorded
