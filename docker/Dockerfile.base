@@ -26,6 +26,7 @@ RUN dnf -y install epel-release && \
         git \
         hostname \
         java-17-openjdk-devel \
+        maven-openjdk17 \
         jq \
         libxml2-devel \
         lz4 \
@@ -46,7 +47,6 @@ RUN dnf -y install epel-release && \
         wget \
         zstd \
         $(if [[ -e /tmp/include/additional-packages.txt ]]; then echo $(cat /tmp/include/additional-packages.txt | xargs); fi) && \
-     dnf swap -y maven-openjdk11 maven-openjdk17 && \
      alternatives --set java java-17-openjdk.$(arch) && \
      alternatives --set javac java-17-openjdk.$(arch) && \
      echo -e "#!/bin/bash\nsource /opt/rh/gcc-toolset-11/enable" > /etc/profile.d/enable-gcc-toolset-11.sh && \
@@ -54,6 +54,13 @@ RUN dnf -y install epel-release && \
      pip3 install --no-cache-dir awscli && \
      dnf clean all && rm -rf /var/cache/dnf && \
      rm -rf /tmp/include
+
+# Temporarily work around too old OpenJDK packages for CentOS Stream 8
+RUN dnf upgrade -y --nogpgcheck --disablerepo='*' --repofrompath alma-8-latest,https://repo.almalinux.org/almalinux/8/AppStream/$(arch)/os \
+      $(rpm -qa --qf '%{NAME}\n' java-* | xargs) && \
+    alternatives --set java java-17-openjdk.$(arch) && \
+    alternatives --set javac java-17-openjdk.$(arch) && \
+    dnf clean all --repofrompath alma-8-latest,https://repo.almalinux.org/almalinux/8/AppStream/$(arch)/os
 
 # Java requires proper locale for unicode
 ENV LANG en_US.UTF-8
