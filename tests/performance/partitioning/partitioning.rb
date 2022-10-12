@@ -37,8 +37,7 @@ class SearchPartitioningBase < PerformanceTest
                        sd(selfdir + "test.sd").
                        threads_per_search(16).
                        group(NodeGroup.new(0, nil).
-                            default_nodes(2, 0).
-                            cpu_socket_affinity(true))))
+                            default_nodes(2, 0))))
     start
     feed_and_wait_for_hitcount("title:title1", 1, { :template => doc_template, :count => 100000 })
 
