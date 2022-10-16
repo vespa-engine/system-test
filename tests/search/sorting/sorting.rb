@@ -89,7 +89,7 @@ class Sorting < IndexedSearchTest
                cluster(SearchCluster.new("search2").sd(selfdir+"strong.sd")))
     start
     feed_and_wait_for_docs("simple", 10000, :file => selfdir+"docs-simple.xml", :clusters => ["search"])
-    feed_and_wait_for_docs("strong", 30, :file => selfdir+"docs-strong.xml", :clusters => ["search2"], :maxpending => 1, :trace => 9 )
+    feed_and_wait_for_docs("strong", 30, :file => selfdir+"docs-strong.xml", :clusters => ["search2"])
     compare_onecluster()
     compare_clustertwo()
     compare_twoclusters()
