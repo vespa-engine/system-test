@@ -218,7 +218,7 @@ class TestRunner
           end
 
           @backend.test_finished(testcase, test_result)
-          @log.info "Finished running: #{test_method} from #{testcase.class}"
+          @log.info "Finished running #{testcase.class}::#{test_method.to_s} with status #{test_result.status}."
         rescue TestNodeFailure
           @log.warn("Retrying #{testcase.class}::#{test_method.to_s} due to observed node failures.")
           @node_allocator.free(nodes)
