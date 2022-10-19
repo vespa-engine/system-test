@@ -1,0 +1,151 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema music {
+
+document music {
+
+    field title type string {
+      indexing {
+          summary | attribute | index;
+      }
+    }
+
+    field artist type string {
+      indexing {
+          summary | index | attribute;
+      }
+    }
+
+    field keys type string {
+      indexing: index
+    }
+
+    field song type string {
+      indexing: summary | attribute | index
+    }
+
+    field bgndata type string {
+      indexing: summary
+    }
+
+    field sales type int {
+      indexing: summary | attribute
+    }
+
+    field pto type int {
+      indexing: summary | attribute
+    }
+
+    field mid type int {
+      indexing: summary | attribute
+    }
+
+    field ew type string {
+      indexing: summary | index
+    }
+
+    field surl type string {
+      indexing: summary | attribute
+    }
+
+    field userrate type int {
+      indexing: summary
+    }
+
+    field pid type string {
+      indexing: summary
+    }
+
+    field weight type float {
+      indexing: summary | attribute
+    }
+
+    field url type string {
+      indexing: summary | attribute
+    }
+
+    field isbn type string {
+      indexing: summary | attribute
+    }
+
+    field fmt type string {
+      indexing: summary | index
+    }
+
+    field albumid type string {
+      indexing: summary | attribute
+    }
+
+    field disp_song type string {
+      indexing: summary
+    }
+
+
+    field pfrom type int {
+      indexing: summary
+    }
+
+    field bgnpfrom type float {
+      indexing: summary | attribute
+    }
+
+    field categories type string {
+      indexing: summary | index
+    }
+
+    field data type string {
+      indexing: summary | attribute
+    }
+
+    field numreview type int {
+      indexing: summary 
+    }
+
+    field bgnsellers type int {
+      indexing: summary
+    }
+
+    field image type string {
+      indexing: summary
+    }
+
+    field artistspid type string {
+      indexing: summary
+    }
+
+    field newestedition type int {
+      indexing: summary | attribute
+    }
+
+    field bgnpto type string {
+      indexing: summary
+    }
+
+    field year type int {
+      indexing: summary | attribute
+    }
+
+    field did type int {
+      indexing: summary | attribute
+    }
+
+    field scorekey type int {
+      indexing: summary | attribute
+    }
+
+    field cbid type int {
+      indexing: summary | attribute
+    }
+
+  }
+  fieldset default {
+    fields: title, artist, keys, song
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: 100 * nativeRank + attribute(weight)
+    }
+  }
+
+}
+
