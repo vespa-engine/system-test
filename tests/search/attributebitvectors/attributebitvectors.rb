@@ -135,17 +135,10 @@ class AttributeBitVectors < SearchTest
     start
     feed_data
     assert_equal(@num_docs, doc_count)
-    bv_count = trace_query('a', 'common', 'unranked')
-    assert(bv_count >= 1 && bv_count <= 2, 'One or two bitvector iterator must be present in trace')
-    if bv_count == 2
-      puts "Bitvectors are enabled by default"
-    else
-      puts "Bitvectors are not enabled by default"
-    end
-    assert_bv_counts('a', 'rare', [ 1, 1, 1, 1])
-    assert_bv_counts('af', 'rare', [ 1, 1, 1, 1])
-    assert_bv_counts('a', 'common', [ bv_count, 1, 1, bv_count])
-    assert_bv_counts('af', 'common', [ 2, 2, 2, 2])
+    assert_bv_counts('a', 'rare', [0, 0, 0, 0])
+    assert_bv_counts('af', 'rare', [0, 0, 0, 0])
+    assert_bv_counts('a', 'common', [1, 0, 0, 1])
+    assert_bv_counts('af', 'common', [1, 1, 1, 1])
   end
 
   def teardown
