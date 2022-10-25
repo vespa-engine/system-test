@@ -53,9 +53,11 @@ class ReindexingAndFeedingTest < PerformanceTest
   def benchmark_reindexing
     # Benchmark pure reindexing
     puts "Reindexing corpus"
+    sleep 10
     profiler_start
-    now_seconds = Time.now.to_i + 2							# Account for clock skew — reindexing takes more than 3s to trigger
+    now_seconds = Time.now.to_i                                                         # Account for clock skew
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
+    sleep 10
     trigger_reindexing
     reindexing_millis = wait_for_reindexing
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) 	# All documents should be indexed after now_seconds
@@ -67,9 +69,11 @@ class ReindexingAndFeedingTest < PerformanceTest
   def benchmark_reindexing_and_refeeding
     # Benchmark concurrent reindexing and feed
     puts "Reindexing corpus while refeeding two thirds of it"
+    sleep 10
     profiler_start
-    now_seconds = Time.now.to_i + 2							# Account for clock skew — reindexing takes more than 3s to trigger
+    now_seconds = Time.now.to_i    							# Account for clock skew
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
+    sleep 10
     trigger_reindexing
     feed_data({ :file => @refeed_file, :legend => 'reindex_feed' })
     reindexing_millis = wait_for_reindexing
@@ -92,9 +96,11 @@ class ReindexingAndFeedingTest < PerformanceTest
   def benchmark_reindexing_and_updates
     # Benchmark concurrent reindexing and updates
     puts "Reindexing corpus while doing partial updates to all documents"
+    sleep 10
     profiler_start
-    now_seconds = Time.now.to_i + 2							# Account for clock skew — reindexing takes more than 3s to trigger
+    now_seconds = Time.now.to_i    							# Account for clock skew
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
+    sleep 10
     trigger_reindexing
     feed_data({ :file => @updates_file, :legend => 'reindex_update', :numconnections => 2 })
     feed_data({ :file => @updates_file, :legend => 'reindex_update', :max_streams_per_connection => 512 })
