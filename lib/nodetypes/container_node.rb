@@ -182,4 +182,11 @@ class ContainerNode < VespaNode
     return ret
   end
 
+  def cleanup
+    @testcase.output("Cleaning qrsdocs...")
+    execute("rm -rf #{Environment.instance.vespa_home}/share/qrsdocs")
+    @testcase.output("Cleaning spooler dirs...")
+    execute("rm -rf #{Environment.instance.vespa_home}/var/spool/vespa/events/")
+  end
+
 end
