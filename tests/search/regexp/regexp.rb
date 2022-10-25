@@ -139,6 +139,7 @@ class RegExp < IndexedSearchTest
     check_regexp_hits("bear.*fox", 0, fields);
     check_regexp_hits("[i]+[s]+", 3, fields);
     check_regexp_hits("[i]+[b]+", 0, fields);
+    check_regexp_hits("^thisisafoxandabear.*nothere", 0, fields)
 
   end 
 
