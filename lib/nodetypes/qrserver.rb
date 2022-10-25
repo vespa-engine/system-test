@@ -58,12 +58,6 @@ class Qrserver < ContainerNode
     raise "Timeout while waiting for qrserver to become ready."
   end
 
-  def cleanup
-    @testcase.output("Cleaning qrsdocs...")
-    execute("rm -rf #{Environment.instance.vespa_home}/share/qrsdocs")
-  end
-
-
   def gw_http_get(params)
     http = @connectionPool.aquire("localhost", http_port)
     key_value_pairs = parse_params(params)

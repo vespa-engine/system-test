@@ -10,19 +10,52 @@ class EventLoggingTest < IndexedSearchTest
 
   def test_event_logging
     add_bundle_dir(File.expand_path(selfdir + '/project'), 'test')
-    deploy(selfdir + "application/")
+    deploy(selfdir + "application/", selfdir + 'schemas/music.sd')
     start
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA + "music.10.xml")
 
-    search("query=blues&searchChain=logging")
-    search("query=delta&searchChain=logging")
-    search("query=female&searchChain=logging")
-    search("query=modern&searchChain=logging")
+    count = 4
+    do_queries(count)
+    wait_for_event_count(count)
 
-    sleep 5 # Give spooler some time to process files
+    deploy_output = deploy(selfdir + "application_slow_receiver/", selfdir + 'schemas/music.sd')
+    wait_for_application(vespa.container.values.first, deploy_output)
+
+    count = 100
+    do_queries(count)
+    wait_for_event_count(count)
+  end
+
+  # Wait for expected number of events having been received by backend
+  def wait_for_event_count(expected_count)
+    puts "Waiting for #{expected_count} events to be processed"
     container = vespa.container.values.first
-    result = container.http_get2("/events")
-    assert_equal("{\"count\":4}", result.body)
+    i = 0
+    event_count = 0
+    max_wait_time = 100
+    loop do
+      result = container.http_get2("/events")
+      event_count = get_event_count(result)
+      puts "Event count: #{event_count}"
+      break if expected_count == event_count or i > max_wait_time
+      sleep 1
+      i = i + 1
+    end
+    puts "Waited #{i} seconds"
+    assert_equal(expected_count, event_count)
+  end
+
+  def get_event_count(result)
+    JSON.parse(result.body)['count']
+  end
+
+  def do_queries(n)
+    count = 0
+    loop do
+      search("query=blues&searchChain=logging")
+      count = count + 1
+      break if count >= n
+    end
   end
 
   def teardown
