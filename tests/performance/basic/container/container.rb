@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'http_client'
@@ -63,10 +64,6 @@ class BasicContainer < PerformanceTest
   def test_container_yql_performance
     set_description('Test basic search container with opennlp and YQL query parsing. Uses a Simple Searcher with Mock Hits')
     benchmark_queries('select * from sources * where text contains "$words()" AND weightedSet(text, { ' + (['"$words()": 1'] * 10).join(', ') +' });', true, true)
-    puts "temporary test of security env:"
-    c = vespa.container.values.first
-    c.execute('echo java; $VESPA_HOME/bin/vespa-security-env')
-    c.execute('echo go; $VESPA_HOME/libexec/vespa/script-utils security-env')
   end
 
 end
