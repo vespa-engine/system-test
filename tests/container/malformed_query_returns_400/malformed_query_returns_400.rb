@@ -17,7 +17,7 @@ class MalformedQueryReturns400 < ContainerTest
     response = client.request(Net::HTTP::Get.new('/t est\"'))
 
     assert_equal('400', response.code)
-    assert_equal('Illegal character SPACE=\' \'', response.message)
+    assert_equal('Bad Request', response.message)
   end
 
   def teardown
