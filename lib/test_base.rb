@@ -89,7 +89,7 @@ module TestBase
   SEARCH_DATA = existing_of(INSTALL_DIR + "/search/data/", REPO_DIR + "/search/data/")
 
   # Timeout-multiplier when running test through valgrind
-  VALGRIND_TIMEOUT_MULTIPLIER = 50
+  VALGRIND_TIMEOUT_MULTIPLIER = 20
 
   # Max query timeout allowed by QRS.
   MAX_QUERY_TIMEOUT=600
