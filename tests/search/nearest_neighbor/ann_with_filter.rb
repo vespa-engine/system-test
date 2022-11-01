@@ -14,12 +14,17 @@ class ApproximateNearestNeighborWithFilterTest < SearchTest
     feed_docs
 
     # Only searching the HNSW graph:
-    assert_docs([6, 7, 5],
-                get_query({:qpos => 62}))
+    assert_docs_and_setup([6, 7, 5],
+                          ["Calculate global filter (estimated_hit_ratio (1.000000) <= upper_limit (1.000000))",
+                           "Global filter matches everything",
+                           "Handle global filter in query execution plan"],
+                           get_query({:qpos => 62, :trace => true}))
 
     # Searching the HNSW graph using the result from pre-filter execution:
-    assert_docs([5, 4, 3],
-                get_query({:qpos => 62, :tag => 5}))
+    assert_docs_and_setup([5, 4, 3],
+                          ["Calculate global filter (estimated_hit_ratio (0.500000) <= upper_limit (1.000000))",
+                           "Handle global filter in query execution plan"],
+                           get_query({:qpos => 62, :tag => 5, :trace => true}))
 
     # Fallback to exact nearest neighbor search (estimated-hit-ratio < approximate-threshold):
     assert_docs([5, 4, 3, 2, 1],
@@ -89,12 +94,14 @@ class ApproximateNearestNeighborWithFilterTest < SearchTest
     ranking = args[:ranking] || "default"
     post_filter = args[:post_filter]
     approximate = args[:approximate]
+    trace = args[:trace]
     result = "yql=select * from sources * where {targetHits:#{target_hits},approximate:true}nearestNeighbor(pos,qpos)"
     result += " and tags contains '#{tag}'" if tag
     result += "&ranking.features.query(qpos)=[#{qpos},#{X_1_POS}]"
     result += "&ranking.profile=#{ranking}"
     result += "&ranking.matching.postFilterThreshold=#{post_filter}" if post_filter
     result += "&ranking.matching.approximateThreshold=#{approximate}" if approximate
+    result += "&trace.level=1&trace.explainLevel=1" if trace
     return result
   end
 
@@ -105,6 +112,21 @@ class ApproximateNearestNeighborWithFilterTest < SearchTest
     assert_hitcount(result, exp_docids.length)
     for i in 0...exp_docids.length do
       assert_field_value(result, "documentid", get_docid(exp_docids[i]), i)
+    end
+    result
+  end
+
+  def assert_docs_and_setup(exp_docids, exp_steps, query)
+    result = assert_docs(exp_docids, query)
+    assert_query_setup(exp_steps, result)
+  end
+
+  def assert_query_setup(exp_steps, result)
+    traces = result.json["trace"]["children"][1]["children"][0]["children"][1]["message"][0]["traces"][0]["traces"]
+    puts "assert_query_setup(): traces: #{traces}"
+    # See ../explain/explain.rb for the first steps in the 'query_setup' trace.
+    for i in 0...exp_steps.length do
+      assert_equal(exp_steps[i], traces[5 + i]["event"])
     end
   end
 
