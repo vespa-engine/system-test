@@ -24,7 +24,7 @@ public class SpoolingLogger extends AbstractSpoolingLogger {
 
     @Override
     public boolean transport(LoggerEntry entry) {
-        eventStore.add(entry.serialize());
+        eventStore.add(entry);
         return true;
     }
 

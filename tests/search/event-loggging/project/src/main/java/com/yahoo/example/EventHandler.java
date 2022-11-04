@@ -39,7 +39,8 @@ public class EventHandler extends ThreadedHttpRequestHandler {
         Slime slime = new Slime();
         Cursor root = slime.setObject();
 
-        root.setLong("count", eventStore.getEventCount());
+        root.setLong("count", eventStore.eventCount());
+        root.setString("lastBlob", eventStore.last());
         return new SlimeJsonResponse(200, slime);
     }
 
