@@ -2,6 +2,7 @@
 package com.yahoo.example;
 
 import com.yahoo.component.AbstractComponent;
+import com.yahoo.search.logging.LoggerEntry;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -11,18 +12,23 @@ public class EventStoreSlowReceiver extends AbstractComponent implements EventSt
 
     private final AtomicInteger events = new AtomicInteger(0);
 
-    public void add(String event) {
+    public void add(LoggerEntry entry) {
         try {
             Thread.sleep((long) (Math.random() * 100));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Adding event");
         events.incrementAndGet();
     }
 
-    public int getEventCount() {
+    @Override
+    public int eventCount() {
         return events.get();
+    }
+
+    @Override
+    public String last() {
+        return "";
     }
 
 }
