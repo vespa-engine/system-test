@@ -20,7 +20,7 @@ class XGBoostServing < IndexedSearchTest
   end
 
   def test_xgboost
-    run_command_or_fail('pip3 install xgboost sklearn --user')
+    run_command_or_fail('pip3 install xgboost scikit-learn --user')
     tmp_dir = dirs.tmpdir + "/tmp"
     run_command_or_fail("mkdir -p #{tmp_dir}")
     # We are mutating the app contents and need to copy to a writable area. Do not put the copy
