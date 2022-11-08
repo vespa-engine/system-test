@@ -60,7 +60,7 @@ class Explain < IndexedSearchTest
     estimate = blueprint["estimate"]
     assert_equal(11, estimate["estHits"])
     assert_equal(3, estimate["tree_size"])
-    assert_equal(1, estimate["allow_termwise_eval"])
+    assert_equal(true, estimate["allow_termwise_eval"])
   end
 
   def verify_query_execution(trace, high_explain_level)
