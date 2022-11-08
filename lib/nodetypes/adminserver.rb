@@ -10,21 +10,23 @@ class Adminserver < VespaNode
     super(*args)
   end
 
-  def deploy(application_content, application_dir, application_name, params={}, &block)
+  def transfer_app(application_dir, application_name, &block)
     FileUtils.mkdir_p(application_dir)
-    File.open("#{application_dir}/#{application_name}.tar.gz", "w") do |file|
-      if application_content
-        file.write(application_content)
-      else
-        block.call(file)
-      end
+    app_path = "#{application_dir}/#{application_name}"
+    File.open("#{app_path}.tar.gz", "w") do |file|
+      block.call(file)
     end
-    FileUtils.remove_dir("#{application_dir}/#{application_name}") if File.exists?("#{application_dir}/#{application_name}")
-    execute("tar xzvf #{application_dir}/#{application_name}.tar.gz " \
+
+    FileUtils.remove_dir(app_path) if File.exists?(app_path)
+    execute("tar xzvf #{app_path}.tar.gz " \
             "--directory #{application_dir}")
+    return app_path
+  end
+
+  def deploy(app_path, params={})
     debug = (params[:nodebug] ? '' : '-d')
     force = (params[:force] ? '-f' : '')
-    deploy_http("#{application_dir}/#{application_name}", params)
+    deploy_http(app_path, params)
   end
 
   def deploy_http(app_dir, params={})

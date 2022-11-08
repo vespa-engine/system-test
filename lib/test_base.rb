@@ -116,12 +116,22 @@ module TestBase
     return @vespa.resolve_app(application, sdfile, params)
   end
 
+  def transfer_app(application, sdfile=nil, params={})
+    resolved_app = @vespa.resolve_app(application, sdfile, params)
+    return @vespa.transfer_resolved(resolved_app, params)
+  end
+
   def deploy(application, sdfile=nil, params={})
     return @vespa.deploy(application, sdfile, params)
   end
 
+  def deploy_transfered(app_handle, params={})
+    return @vespa.deploy_transfered(app_handle, params)
+  end
+
   def deploy_resolved(application, params={})
-    return @vespa.deploy_resolved(application, params)
+    app_handle = @vespa.transfer_resolved(application, params)
+    return @vespa.deploy_transfered(app_handle, params)
   end
 
   # Deploys an application that is installed on the test nodes

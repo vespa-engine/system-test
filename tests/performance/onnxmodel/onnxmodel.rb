@@ -29,14 +29,14 @@ class OnnxModel < PerformanceTest
     # downloaded_file = "/opt/vespa/tmp/ranking_model.onnx"
 
     # Warmup
-    resolved_app = do_resolve_app(downloaded_file, {})
-    deploy_resolved(resolved_app, {})
+    app_handle = do_transfer_app(downloaded_file, {})
+    deploy_transfered(app_handle, {})
 
     prepare_time = 0.0
     activate_time = 0.0
     run_count = 3
     run_count.times do |i|
-      out, upload, prepare, activate = deploy_resolved(resolved_app, {:collect_timing => true})
+      out, upload, prepare, activate = deploy_transfered(app_handle, {:collect_timing => true})
       deploy_time = (prepare_time + activate_time).to_f
       prepare_time = prepare_time + prepare.to_f
       activate_time = activate_time + activate.to_f
@@ -64,8 +64,8 @@ class OnnxModel < PerformanceTest
     local_file
   end
 
-  def do_resolve_app(downloaded_file, params={})
-    resolve_app(selfdir + "app", nil, params.merge({:files => { downloaded_file => "files/#{@onnx_filename}"}}))
+  def do_transfer_app(downloaded_file, params={})
+    transfer_app(selfdir + "app", nil, params.merge({:files => { downloaded_file => "files/#{@onnx_filename}"}}))
   end
 
   def teardown
