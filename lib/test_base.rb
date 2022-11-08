@@ -112,8 +112,16 @@ module TestBase
   # Creates an instance of VespaModel, then deploys _application_ on the adminserver.
   # Search definition files can be substituted by specifying _sdfile_
   # (string or an array of strings).
+  def resolve_app(application, sdfile=nil, params={})
+    return @vespa.resolve_app(application, sdfile, params)
+  end
+
   def deploy(application, sdfile=nil, params={})
     return @vespa.deploy(application, sdfile, params)
+  end
+
+  def deploy_resolved(application, params={})
+    return @vespa.deploy_resolved(application, params)
   end
 
   # Deploys an application that is installed on the test nodes
