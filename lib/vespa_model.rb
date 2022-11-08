@@ -257,7 +257,7 @@ class VespaModel
 
   def deploy(application, sdfile, params)
     resolved_app = resolve_app(application, sdfile, params)
-    app_handle = transfer_app(resolved_app, params)
+    app_handle = transfer_resolved(resolved_app, params)
     deploy_transfered(app_handle, params)
   end
 
