@@ -143,8 +143,8 @@ class VespaModel
     end
   end
 
-  def deploy(application, sdfile, params)
-    @testcase.output("Deploying application #{application}")
+  def resolve_app(application, sdfile, params)
+    @testcase.output("Resolving application #{application}")
 
     tmp_application = create_tmp_application(application)
 
@@ -209,10 +209,6 @@ class VespaModel
 
     @testcase.output(applicationbuffer)
 
-    # clean logs if this is the first deployment for the testcase
-    if @deployments == 0 and not params[:no_init_logging]
-      init_logging
-    end
     admin_hostname, config_hostnames = get_admin_and_config_servers(vespa_nodes, vespa_services, hostlist)
     if (@testcase.use_shared_configservers)
       if admin_hostname == ""
@@ -246,19 +242,37 @@ class VespaModel
     adminserver_service_entry = {"servicetype" => "adminserver", "hostname" => admin_hostname}
     adminserver = @nodeproxies[admin_hostname].get_service(adminserver_service_entry)
 
+    application_package = ApplicationPackage.new(tmp_application, admin_hostname)
+    compile_and_add_bundles(adminserver, application_package, params)
+    return application_package
+  end
+
+  def deploy(application, sdfile, params)
+    resolved_app = resolve_app(application, sdfile, params)
+    deploy_resolved(resolved_app, params)
+  end
+
+  def deploy_resolved(application, params)
+    # clean logs if this is the first deployment for the testcase
+    if @deployments == 0 and not params[:no_init_logging]
+      init_logging
+    end
+    admin_hostname = application.admin_hostname
+    @testcase.output("Deploying application #{application.location} on adminserver #{admin_hostname}")
+    # create temporary adminserver service for deploying the application
+    adminserver_service_entry = {"servicetype" => "adminserver", "hostname" => admin_hostname}
+    adminserver = @nodeproxies[admin_hostname].get_service(adminserver_service_entry)
+
     # create logserver service so that we can get the logs even if deployment fails
     logserver_service_entry = {"servicetype" => "logserver", "hostname" => admin_hostname}
     @logserver = @nodeproxies[admin_hostname].get_service(logserver_service_entry)
-
-    application_package = ApplicationPackage.new(tmp_application)
-    compile_and_add_bundles(adminserver, application_package, params)
 
     # Setup these in case of shared configservers 
     if @testcase.use_shared_configservers
       params = params.merge({:tenant => @testcase.tenant_name}) unless params[:tenant]
       params = params.merge({:application_name => @testcase.application_name()}) unless params[:application_name]
     end
-    output = deploy_on_adminserver(adminserver, tmp_application, params) if not params[:dryrun]
+    output = deploy_on_adminserver(adminserver, application.location, params) if not params[:dryrun]
 
     if not params[:skip_create_model]
       if @testcase.use_shared_configservers && !params[:no_activate]
