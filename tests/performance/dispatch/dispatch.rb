@@ -41,7 +41,7 @@ class DispatchMerge < PerformanceTest
 
     [125, 1000, 8000, 32000].each do |offset|
         profiler_start
-        run_fbench(container, num_clients, 30, [parameter_filler('legend', "test_java_dispatch_#{offset}"),
+        run_fbench(container, num_clients, 20, [parameter_filler('legend', "test_java_dispatch_#{offset}"),
                    metric_filler('memory.rss', container.memusage_rss(container.get_pid))], {:append_str => "&ranking=score&hits=10&offset=#{offset}&timeout=50.0" })
         profiler_report("test_java_dispatch_#{offset}")
     end
