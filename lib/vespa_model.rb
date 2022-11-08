@@ -209,6 +209,9 @@ class VespaModel
 
     @testcase.output(applicationbuffer)
 
+    if @deployments == 0 and not params[:no_init_logging]
+      init_logging
+    end
     admin_hostname, config_hostnames = get_admin_and_config_servers(vespa_nodes, vespa_services, hostlist)
     if (@testcase.use_shared_configservers)
       if admin_hostname == ""
@@ -238,49 +241,61 @@ class VespaModel
       end
     end
 
-    # create temporary adminserver service for deploying the application
-    adminserver_service_entry = {"servicetype" => "adminserver", "hostname" => admin_hostname}
-    adminserver = @nodeproxies[admin_hostname].get_service(adminserver_service_entry)
+    adminserver = get_adminserver(admin_hostname)
 
     application_package = ApplicationPackage.new(tmp_application, admin_hostname)
     compile_and_add_bundles(adminserver, application_package, params)
     return application_package
   end
 
-  def deploy(application, sdfile, params)
-    resolved_app = resolve_app(application, sdfile, params)
-    deploy_resolved(resolved_app, params)
+  def get_adminserver(hostname)
+    adminserver_service_entry = {"servicetype" => "adminserver", "hostname" => hostname}
+    return @nodeproxies[hostname].get_service(adminserver_service_entry)
   end
 
-  def deploy_resolved(application, params)
+  def get_logserver(hostname)
+    logserver_service_entry = {"servicetype" => "logserver", "hostname" => hostname}
+    return @nodeproxies[hostname].get_service(logserver_service_entry)
+  end
+
+  def deploy(application, sdfile, params)
+    resolved_app = resolve_app(application, sdfile, params)
+    app_handle = transfer_resolved(resolved_app, params)
+    deploy_transfered(app_handle, params)
+  end
+
+  def transfer_resolved(application, params)
     # clean logs if this is the first deployment for the testcase
-    if @deployments == 0 and not params[:no_init_logging]
-      init_logging
-    end
     admin_hostname = application.admin_hostname
     @testcase.output("Deploying application #{application.location} on adminserver #{admin_hostname}")
-    # create temporary adminserver service for deploying the application
-    adminserver_service_entry = {"servicetype" => "adminserver", "hostname" => admin_hostname}
-    adminserver = @nodeproxies[admin_hostname].get_service(adminserver_service_entry)
+    @adminserver = get_adminserver(admin_hostname)
 
     # create logserver service so that we can get the logs even if deployment fails
-    logserver_service_entry = {"servicetype" => "logserver", "hostname" => admin_hostname}
-    @logserver = @nodeproxies[admin_hostname].get_service(logserver_service_entry)
+    @logserver = get_logserver(admin_hostname)
 
+    app_handle = nil
+    app_handle = transfer_app_to_adminserver(adminserver, application.location) if not params[:dryrun]
+    return app_handle
+  end
+
+  def deploy_transfered(app_handle, params)
     # Setup these in case of shared configservers 
     if @testcase.use_shared_configservers
       params = params.merge({:tenant => @testcase.tenant_name}) unless params[:tenant]
       params = params.merge({:application_name => @testcase.application_name()}) unless params[:application_name]
     end
-    output = deploy_on_adminserver(adminserver, application.location, params) if not params[:dryrun]
+    adminserver = @adminserver
+    if not params[:dryrun]
+      output = deploy_on_adminserver(adminserver, app_handle, params)
 
-    if not params[:skip_create_model]
-      if @testcase.use_shared_configservers && !params[:no_activate]
-        # Handle case where we get an array with output and timing values back
-        deploy_output = output.kind_of?(Array) ? output[0] : output
-        adminserver.wait_for_config_activated(@testcase.get_generation(deploy_output).to_i, params)
+      if not params[:skip_create_model]
+        if @testcase.use_shared_configservers && !params[:no_activate]
+          # Handle case where we get an array with output and timing values back
+          deploy_output = output.kind_of?(Array) ? output[0] : output
+          adminserver.wait_for_config_activated(@testcase.get_generation(deploy_output).to_i, params)
+        end
+        create_model(adminserver.get_model_config(params)) 
       end
-      create_model(adminserver.get_model_config(params)) 
     end
     @deployments += 1
 
@@ -638,8 +653,7 @@ class VespaModel
         end
       end
       if @adminserver == nil && @logserver != nil
-        adminserver_service_entry = {"servicetype" => "adminserver", "hostname" => @logserver.hostname}
-        @adminserver = @nodeproxies[@logserver.hostname].get_service(adminserver_service_entry)
+        @adminserver = get_adminserver(@logserver.hostname)
       end
     rescue => e
         @testcase.output("ERROR #{e} while creating vespa model from JSON: #{modelconfig}")
@@ -706,21 +720,31 @@ class VespaModel
   end
 
   # Deploys _application_ on the adminserver node.
-  def deploy_on_adminserver(adminserver, application, params={})
+  def transfer_app_to_adminserver(adminserver, application)
     application_name = File.basename(application)
     application_dir = File.dirname(application)
     pid = Process.pid
+    @testcase.output("Start tgz creation of #{application_name}")
     `cd #{application_dir}; tar czf #{application_name}_#{pid}.tar.gz #{application_name}`
     application_content = ""
+    @testcase.output("Start read of tgz file #{application_name}")
     File.open("#{application_dir}/#{application_name}_#{pid}.tar.gz", 'rb') do |file|
       application_content = file.read
     end
+    @testcase.output("Delete temporary tgz file #{application_name}")
     File.delete("#{application_dir}/#{application_name}_#{pid}.tar.gz")
-    adminserver.deploy(nil, application_dir, application_name, params) do |fp|
+    @testcase.output("Transfer compressed content #{application_name} to adminserver")
+    app_handle = adminserver.transfer_app(application_dir, application_name) do |fp|
       application_content.bytes.each_slice(1024*1024) { |slice|
         fp.write(slice.pack('C*'))
       }
     end
+    return app_handle
+  end
+
+  def deploy_on_adminserver(adminserver, app_handle, params={})
+    @testcase.output("Deploy from admin server with remote handle = #{app_handle}")
+    adminserver.deploy(app_handle, params)
   end
 
   def set_addr_configservers(config_hostnames)
