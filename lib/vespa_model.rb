@@ -209,6 +209,9 @@ class VespaModel
 
     @testcase.output(applicationbuffer)
 
+    if @deployments == 0 and not params[:no_init_logging]
+      init_logging
+    end
     admin_hostname, config_hostnames = get_admin_and_config_servers(vespa_nodes, vespa_services, hostlist)
     if (@testcase.use_shared_configservers)
       if admin_hostname == ""
@@ -263,9 +266,6 @@ class VespaModel
 
   def transfer_resolved(application, params)
     # clean logs if this is the first deployment for the testcase
-    if @deployments == 0 and not params[:no_init_logging]
-      init_logging
-    end
     admin_hostname = application.admin_hostname
     @testcase.output("Deploying application #{application.location} on adminserver #{admin_hostname}")
     @adminserver = get_adminserver(admin_hostname)
