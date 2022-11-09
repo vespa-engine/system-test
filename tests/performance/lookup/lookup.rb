@@ -29,7 +29,7 @@ class LookupPerformance < PerformanceTest
 
   def test_dictionary_lookup
     set_description("Test lookupspeed with btree vs hash.")
-    num_docs = 10000000
+    num_docs = 4000000
     num_values_per_doc=10
     upper_limit = num_docs*num_values_per_doc*10
     keys_per_query = 100
