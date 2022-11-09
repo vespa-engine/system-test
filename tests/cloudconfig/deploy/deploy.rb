@@ -379,7 +379,7 @@ include ApplicationV2Api
     session_id = deploy_and_activate_session_v2("#{CLOUDCONFIG_DEPLOY_APPS}/app_c", session_id, 1339)
     sleep session_lifetime
 
-    # Check that all old sessions have been purged, except the last active one
+    # Check that all sessions have been purged, except the active one
     wait_until_local_session_purged(session_id_a)
     wait_until_local_session_purged(session_id_b)
     assert_exists(session_id_c)
@@ -526,9 +526,9 @@ include ApplicationV2Api
   end
 
   def wait_until_local_session_purged(session_id)
-    # SessionsMaintainer is set to run every minute (see call to write_config_server_config in setup())
+    # SessionsMaintainer is set to run every minute (see call to write_default_config_server_config in setup())
     session_exists = true
-    70.times do |i|
+    80.times do |i|
       session_exists = local_session_exists(session_id)
       break if !session_exists
       sleep 1
