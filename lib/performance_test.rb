@@ -35,6 +35,7 @@ class PerformanceTest < TestCase
     @perf_data_file = File.join(@perf_data_dir,'record.data')
     @perf_stat_file = File.join(@perf_data_dir,'perf_stats')
     @script_user = get_script_user
+    @perf_recording = args[:perf_recording]
   end
 
   def timeout_seconds
@@ -291,6 +292,7 @@ class PerformanceTest < TestCase
   end
 
   def start_perf_profiler
+    if @perf_recording != "all" return
     stop_perf_profiler
     Timeout::timeout(600) do |timeout_length|
       puts "Starting perf record on nodes."
@@ -315,7 +317,12 @@ class PerformanceTest < TestCase
 
   def report_perf_profiler(label, extra_pids)
     stop_perf_profiler
-    puts "Generating perf report."
+    if @perf_recording != "all"
+      puts "Perf profiling turned off."
+      return
+    else
+      puts "Generating perf report."
+    end
 
     reporter_pids = {}
     vespa.nodeproxies.values.each do | node |

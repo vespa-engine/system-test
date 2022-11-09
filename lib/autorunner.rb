@@ -91,6 +91,9 @@ class AutoRunner
     opts.on("--leave-loglevels", "Do not alter log levels or remove logctl files.") do
       @cmd_args[:leave_loglevels] = true
     end
+    opts.on("--perf-recording type", "perf recoding type {off, all}.") do | type |
+      @cmd_args[:perf_recording] = type
+    end
     opts.on("--ignore-performance", "Ignore performance test checks.") do
       @cmd_args[:ignore_performance] = true
     end
