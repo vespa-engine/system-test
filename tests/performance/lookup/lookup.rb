@@ -50,7 +50,7 @@ class LookupPerformance < PerformanceTest
 
     ["f1", "f1_hash", "s1", "s1_cased", "s1_hash"].each do |field|
         profiler_start
-        run_fbench(container, num_clients, 60, [parameter_filler('legend', "lookup_#{field}")],
+        run_fbench(container, num_clients, 30, [parameter_filler('legend', "lookup_#{field}")],
                    {:single_query_file => true, :append_str => "&hits=1&summary=minimal&ranking=unranked&wand.type=dotProduct&wand.field=#{field}"})
         profiler_report("lookup_#{field}")
     end
