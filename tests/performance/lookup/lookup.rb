@@ -47,7 +47,6 @@ class LookupPerformance < PerformanceTest
     @queryfile = "#{dirs.tmpdir}/query.txt"
     container.execute("#{tmp_bin_dir}/query #{num_queries} #{keys_per_query} #{upper_limit} > #{@queryfile}")
     run_fbench(container, 8, 20)
-    restart_proton("test", num_docs)
 
     ["f1", "f1_hash", "s1", "s1_cased", "s1_hash"].each do |field|
         profiler_start
