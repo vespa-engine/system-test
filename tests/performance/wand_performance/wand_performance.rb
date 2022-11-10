@@ -27,16 +27,8 @@ class WandPerformanceTest < WandPerformanceTestBase
 
   def run_wand_benchmarks
     for spec_type in @wand_specs
-      for clients in [1,4]
-        run_fbench_helper(spec_type.new(clients, 1000, 1, @default_doc_count))
-      end
-      for wand_hits in [200,1000]
-        run_fbench_helper(spec_type.new(1, wand_hits, 1, @default_doc_count))
-      end
       for search_threads in [1,4]
-        for wand_hits in [200,1000]
-          run_fbench_helper(spec_type.new(1, wand_hits, search_threads, @default_doc_count))
-        end
+        run_fbench_helper(spec_type.new(1, 1000, search_threads, @default_doc_count))
       end
     end
   end

@@ -27,10 +27,7 @@ class WandFilterPerformanceTest < WandPerformanceTestBase
     assert_hitcount("query=sddocname:test", @doc_count)
 
     # warmup
-    for spec_type in @specs
-      run_fbench(spec_type.new(8, 1000, 1, @doc_count, '50'), [], true)
-      run_fbench(spec_type.new(8, 1000, 1, @doc_count, '1'), [], true)
-    end
+    run_fbench(@specs[0].new(8, 1000, 1, @doc_count, '50'), [], true)
 
     # benchmark
     for spec_type in @specs
