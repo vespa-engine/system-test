@@ -1,0 +1,20 @@
+[
+    {
+        "put": "id:test:test::1",
+        "fields": {
+            "title": "doc1"
+        }
+    },
+    {
+        "put": "id:test:test::2",
+        "fields": {
+            "title": "doc2"
+        }
+    },
+    {
+        "put": "id:test:test::3",
+        "fields": {
+            "title": "doc3"
+        }
+    }
+]
