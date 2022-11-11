@@ -15,6 +15,7 @@
         { "id" : "mbus-cpp-num-targets", "rules" : [ { "value" : 2 } ] },
         { "id" : "mbus-java-num-targets", "rules" : [ { "value" : 2 } ] },
         { "id" : "rpc-num-targets", "rules" : [ { "value" : 2 } ] },
+        { "id" : "query-dispatch-warmup", "rules" : [ { "value" : 0.1 } ] },
         { "id" : "mbus-cpp-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
         { "id" : "mbus-java-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
         { "id" : "rpc-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
