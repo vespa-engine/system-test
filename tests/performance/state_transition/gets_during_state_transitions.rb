@@ -8,9 +8,6 @@ class GetsDuringStateTransitionsTest < PerformanceTest
   FBENCH_WARMUP_RUNTIME_SEC = 10
   FBENCH_TRANSITION_RUNTIME_SEC = 45
   FBENCH_CLIENTS = 10
-  DB_TYPE = 'db_type'
-  LEGACY = 'legacy'
-  BTREE = 'btree'
   STALE_READS = 'stale_reads'
   ENABLED = 'enabled'
   DISABLED = 'disabled'
@@ -158,46 +155,43 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     my_cluster.wait_until_ready
   end
 
-  def post_process_fbench_results(fbench, db_type, stale_reads, edge)
+  def post_process_fbench_results(fbench, stale_reads, edge)
     assert_only_http_200_returned(fbench.http_status_code_distribution)
-    param_fillers = [parameter_filler(DB_TYPE, db_type),
-                     parameter_filler(STALE_READS, stale_reads),
+    param_fillers = [parameter_filler(STALE_READS, stale_reads),
                      parameter_filler(EDGE, edge),
-                     parameter_filler(LEGEND, "Max response time (#{DB_TYPE}: #{db_type}, #{STALE_READS}: #{stale_reads}, #{EDGE}: #{edge})")]
+                     parameter_filler(LEGEND, "Max response time (#{STALE_READS}: #{stale_reads}, #{EDGE}: #{edge})")]
     write_report([fbench.fill] + param_fillers) # TODO system fill thingie?
   end
 
-  def do_node_down_edge_during_load(db_type, stale_reads)
+  def do_node_down_edge_during_load(stale_reads)
     puts_header "Testing node down during Get load"
     fbench = with_background_fbench(query_file: @query_file, clients: FBENCH_CLIENTS, runtime_sec: FBENCH_TRANSITION_RUNTIME_SEC) do
       sleep 10
       puts "Orchestrated take-down of node 0"
       my_cluster.get_master_cluster_controller.set_node_state('search', 'storage', 0, 's:m', 'safe')
     end
-    post_process_fbench_results(fbench, db_type, stale_reads, DOWN)
+    post_process_fbench_results(fbench, stale_reads, DOWN)
   end
 
-  def do_node_up_edge_during_load(db_type, stale_reads)
+  def do_node_up_edge_during_load(stale_reads)
     puts_header "Testing taking node back up during Get load"
     fbench = with_background_fbench(query_file: @query_file, clients: FBENCH_CLIENTS, runtime_sec: FBENCH_TRANSITION_RUNTIME_SEC) do
       sleep 10
       puts "Taking node 0 back up"
       my_cluster.get_master_cluster_controller.set_node_state('search', 'storage', 0, 's:u', 'safe')
     end
-    post_process_fbench_results(fbench, db_type, stale_reads, UP)
+    post_process_fbench_results(fbench, stale_reads, UP)
   end
 
   def for_each_test_permutation
-    [BTREE, LEGACY].each do |db_type|
-      [ENABLED, DISABLED].each do |stale_reads|
-        yield(db_type, stale_reads)
-      end
+    [ENABLED, DISABLED].each do |stale_reads|
+      yield(stale_reads)
     end
   end
 
-  def do_test_gets_during_state_transitions(db_type:, stale_reads:)
-    puts_header "Starting benchmark run of (DB type: #{db_type}, stale reads: #{stale_reads})"
-    deploy_app(create_app(enable_stale_reads: stale_reads == ENABLED, use_btree_db: db_type == BTREE))
+  def do_test_gets_during_state_transitions(stale_reads:)
+    puts_header "Starting benchmark run of (stale reads: #{stale_reads})"
+    deploy_app(create_app(enable_stale_reads: stale_reads == ENABLED, use_btree_db: true))
     if not @is_set_up
       start
       prepare_feed_and_query
@@ -209,13 +203,13 @@ class GetsDuringStateTransitionsTest < PerformanceTest
       restart_all_distributors
     end
     @is_set_up = true
-    do_node_down_edge_during_load(db_type, stale_reads)
-    do_node_up_edge_during_load(db_type, stale_reads)
+    do_node_down_edge_during_load(stale_reads)
+    do_node_up_edge_during_load(stale_reads)
   end
 
   def test_gets_during_state_transitions
-    for_each_test_permutation { |db_type, stale_reads|
-      do_test_gets_during_state_transitions(db_type: db_type, stale_reads: stale_reads)
+    for_each_test_permutation { |stale_reads|
+      do_test_gets_during_state_transitions(stale_reads: stale_reads)
     }
   end
 
