@@ -818,7 +818,7 @@ class ResizePollState
           if @endtime.nil?
             if !poll_query_stats_changed_from_prev && !unsettled
               @poll_query_stats_settle = @poll_query_stats_settle + 1
-              if @poll_query_stats_settle >= 250
+              if @poll_query_stats_settle >= 100
                 puts "Setting poll move endtime"
                 @m.synchronize do
                   @endtime = @endtimecandidate
