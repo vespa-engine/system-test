@@ -19,7 +19,7 @@ module ResizeApps
       @num_hosts = num_hosts
       @sps = sps
       @slack_minhits = 200
-      @slack_maxdocs_per_group = 1000
+      @slack_maxdocs_per_group = 1100
       assert(num_hosts == 1 || num_hosts == 2 || num_hosts >= nodes)
     end
 
