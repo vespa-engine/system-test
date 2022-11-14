@@ -19,7 +19,6 @@ public class TensorInQueryBuilderSearcher extends Searcher {
     private static TensorType tt_dense_vector_50  = TensorType.fromSpec("tensor(x[50])");
     private static TensorType tt_dense_vector_100 = TensorType.fromSpec("tensor(x[100])");
     private static TensorType tt_dense_vector_250 = TensorType.fromSpec("tensor(x[250])");
-    private static TensorType tt_dense_vector_500 = TensorType.fromSpec("tensor(x[500])");
 
     private static TensorType tt_dense_float_vector_5   = TensorType.fromSpec("tensor<float>(x[5])");
     private static TensorType tt_dense_float_vector_10  = TensorType.fromSpec("tensor<float>(x[10])");
@@ -27,7 +26,6 @@ public class TensorInQueryBuilderSearcher extends Searcher {
     private static TensorType tt_dense_float_vector_50  = TensorType.fromSpec("tensor<float>(x[50])");
     private static TensorType tt_dense_float_vector_100 = TensorType.fromSpec("tensor<float>(x[100])");
     private static TensorType tt_dense_float_vector_250 = TensorType.fromSpec("tensor<float>(x[250])");
-    private static TensorType tt_dense_float_vector_500 = TensorType.fromSpec("tensor<float>(x[500])");
 
     private static TensorType tt_sparse_vector_x = TensorType.fromSpec("tensor(x{})");
     private static TensorType tt_sparse_vector_y = TensorType.fromSpec("tensor(y{})");
@@ -45,7 +43,6 @@ public class TensorInQueryBuilderSearcher extends Searcher {
         considerInsertTensor(query, "q_dense_vector_50",  "x", tt_dense_vector_50);
         considerInsertTensor(query, "q_dense_vector_100", "x", tt_dense_vector_100);
         considerInsertTensor(query, "q_dense_vector_250", "x", tt_dense_vector_250);
-        considerInsertTensor(query, "q_dense_vector_500", "x", tt_dense_vector_500);
 
         considerInsertTensor(query, "q_dense_float_vector_5",   "x", tt_dense_float_vector_5);
         considerInsertTensor(query, "q_dense_float_vector_10",  "x", tt_dense_float_vector_10);
@@ -53,7 +50,6 @@ public class TensorInQueryBuilderSearcher extends Searcher {
         considerInsertTensor(query, "q_dense_float_vector_50",  "x", tt_dense_float_vector_50);
         considerInsertTensor(query, "q_dense_float_vector_100", "x", tt_dense_float_vector_100);
         considerInsertTensor(query, "q_dense_float_vector_250", "x", tt_dense_float_vector_250);
-        considerInsertTensor(query, "q_dense_float_vector_500", "x", tt_dense_float_vector_500);
 
         considerInsertTensor(query, "q_sparse_vector_x", "x", tt_sparse_vector_x);
         considerInsertTensor(query, "q_sparse_vector_y", "y", tt_sparse_vector_y);
