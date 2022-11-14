@@ -18,7 +18,7 @@ include ApplicationV2Api
     @node = @vespa.nodeproxies.first[1]
     @hostname = @vespa.nodeproxies.first[0]
     @httpport = 19071
-    @session_id=nil
+    @session_id = nil
     @original_config_server_config = write_default_config_server_config
     puts "original config server config: #{@original_config_server_config}"
 
@@ -528,7 +528,8 @@ include ApplicationV2Api
   def wait_until_local_session_purged(session_id)
     # SessionsMaintainer is set to run every minute (see call to write_default_config_server_config in setup())
     session_exists = true
-    80.times do |i|
+    # Wait for 2 runs, since config server might not have observed that session has been deactivated on first run
+    130.times do |i|
       session_exists = local_session_exists(session_id)
       break if !session_exists
       sleep 1
