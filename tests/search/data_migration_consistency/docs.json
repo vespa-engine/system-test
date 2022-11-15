@@ -2,19 +2,22 @@
     {
         "put": "id:test:test::1",
         "fields": {
-            "title": "doc1"
+            "title": "doc1",
+            "vec": { "values": [1,2,3] }
         }
     },
     {
         "put": "id:test:test::2",
         "fields": {
-            "title": "doc2"
+            "title": "doc2",
+            "vec": { "values": [2,4,6] }
         }
     },
     {
         "put": "id:test:test::3",
         "fields": {
-            "title": "doc3"
+            "title": "doc3",
+            "vec": { "values": [3,6,9] }
         }
     }
 ]
