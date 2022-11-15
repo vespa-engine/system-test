@@ -4,9 +4,15 @@ schema test {
     field title type string {
       indexing: index | summary
     }
+    field vec type tensor<float>(x[3]) {
+      indexing: attribute | summary
+    }
   }
   
   field ext_title type string {
     indexing: input title | index | summary
+  }
+  field ext_vec type tensor<float>(x[3]) {
+    indexing: input vec | attribute | summary
   }
 }
