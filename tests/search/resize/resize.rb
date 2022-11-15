@@ -5,7 +5,7 @@ class ResizeContentCluster < ResizeContentClusterBase
 
   def initialize(*args)
     super(*args)
-    @num_hosts = 4
+    @num_hosts = 1
   end
 
   def test_grow
@@ -23,7 +23,7 @@ class ResizeParentChildContentCluster < ResizeContentClusterBase
 
   def initialize(*args)
     super(*args)
-    @num_hosts = 4
+    @num_hosts = 1
   end
 
   def test_grow_child
