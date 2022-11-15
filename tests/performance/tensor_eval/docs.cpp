@@ -92,7 +92,7 @@ V gen_values(size_t entries) {
 std::ostream & produce_puts(std::ostream & os, size_t num) {
     os << "[\n";
     for (size_t i(0), docId(0); i < num; i++) {
-        for (uint32_t entries : {5, 10, 25, 50, 100, 250, 500}) {
+        for (uint32_t entries : {5, 10, 25, 50, 100, 250}) {
             if (docId > 0) { os << ",\n"; }
             V values = gen_values(entries);
             put(os, docId++, values);

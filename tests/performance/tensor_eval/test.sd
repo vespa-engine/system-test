@@ -35,9 +35,6 @@ schema test {
     field dense_vector_250 type tensor(x[250]) {
       indexing: attribute | summary
     }
-    field dense_vector_500 type tensor(x[500]) {
-      indexing: attribute | summary
-    }
     field dense_float_vector_5 type tensor<float>(x[5]) {
       indexing: attribute | summary
     }
@@ -54,9 +51,6 @@ schema test {
       indexing: attribute | summary
     }
     field dense_float_vector_250 type tensor<float>(x[250]) {
-      indexing: attribute | summary
-    }
-    field dense_float_vector_500 type tensor<float>(x[500]) {
       indexing: attribute | summary
     }
   }
@@ -235,14 +229,6 @@ schema test {
       expression: sum(query(q_dense_vector_250) * attribute(dense_vector_250))
     }
   }
-  rank-profile dense_tensor_dot_product_500 inherits dot_product_default {
-    inputs {
-      query(q_dense_vector_500) tensor(x[500])
-    }
-    first-phase {
-      expression: sum(query(q_dense_vector_500) * attribute(dense_vector_500))
-    }
-  }
   rank-profile dense_float_tensor_dot_product_5 inherits dot_product_default {
     inputs {
       query(q_dense_float_vector_5) tensor<float>(x[5])
@@ -289,14 +275,6 @@ schema test {
     }
     first-phase {
       expression: sum(query(q_dense_float_vector_250) * attribute(dense_float_vector_250))
-    }
-  }
-  rank-profile dense_float_tensor_dot_product_500 inherits dot_product_default {
-    inputs {
-      query(q_dense_float_vector_500) tensor<float>(x[500])
-    }
-    first-phase {
-      expression: sum(query(q_dense_float_vector_500) * attribute(dense_float_vector_500))
     }
   }
 }
