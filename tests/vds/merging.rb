@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'persistent_provider_test'
 
 class MergingTest < PersistentProviderTest
@@ -61,7 +61,7 @@ class MergingTest < PersistentProviderTest
     # Deploy app with new document type. Feeding will work as the merge handler
     # is not involved in this scope.
     deploy_app_and_wait_until_config_has_been_propagated(make_merge_app(1, true))
-    feedfile(VDS + 'banana.xml')
+    feedfile(VDS + 'banana.xml', { :trace => 9 })
     
     # Increase redundancy, forcing merge of documents with new doc type between
     # the nodes. Will fail unless merge handler properly uses the new document
@@ -82,7 +82,7 @@ class MergingTest < PersistentProviderTest
 
   def deploy_app_and_wait_until_config_has_been_propagated(app)
     gen = get_generation(deploy_app(app)).to_i
-    wait_for_reconfig(gen)
+    wait_for_reconfig(gen, 600, true)
     wait_for_config_generation_proxy(gen)
   end
 
