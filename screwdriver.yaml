@@ -21,7 +21,7 @@ jobs:
           ruby test/testrunner.rb
           exit $?
 
-  systemtest-base-centos7:
+  systemtest-base-centos-stream8:
     requires: [~pr, ~commit]
     sourcePaths: ["docker/"]
     annotations:
