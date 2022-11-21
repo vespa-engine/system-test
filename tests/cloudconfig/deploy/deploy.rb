@@ -75,7 +75,7 @@ include ApplicationV2Api
     json = JSON.parse(result.body)
     assert_equal("INVALID_APPLICATION_PACKAGE", json["error-code"])
     message = json["message"]
-    assert_match(/Invalid application package: .*Invalid XML according to XML schema, error in services\.xml: element \"foo\" not allowed here/, message)
+    assert_match(/Invalid application: .*Invalid XML according to XML schema, error in services\.xml: element \"foo\" not allowed here/, message)
     assert_match(/\[4:11\]/, json["message"])
     next_session(session_id)
   end
