@@ -7,14 +7,6 @@ class MergingTest < PersistentProviderTest
     set_owner("vekterli")
   end
 
-  def timeout_seconds
-    1800
-  end
-
-  def teardown
-    stop
-  end
-
   def test_merging
     deploy_app(default_app.num_nodes(2).redundancy(2))
     start
@@ -83,7 +75,12 @@ class MergingTest < PersistentProviderTest
   def deploy_app_and_wait_until_config_has_been_propagated(app)
     gen = get_generation(deploy_app(app)).to_i
     wait_for_reconfig(gen, 600, true)
+    vespa.storage["storage"].execute("vespa-configproxy-cmd") # TODO: Remove when finished with debugging
     wait_for_config_generation_proxy(gen)
+  end
+
+  def teardown
+    stop
   end
 
 end
