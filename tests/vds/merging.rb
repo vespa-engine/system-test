@@ -75,6 +75,7 @@ class MergingTest < PersistentProviderTest
   def deploy_app_and_wait_until_config_has_been_propagated(app)
     gen = get_generation(deploy_app(app)).to_i
     wait_for_reconfig(gen, 600, true)
+    vespa.storage["storage"].storage["0"].execute("vespa-configproxy-cmd")
     wait_for_config_generation_proxy(gen)
   end
 
