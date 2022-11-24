@@ -55,7 +55,7 @@ include ApplicationV2Api
     @session_id = run_delete_tenant_with_application(@session_id)
     @session_id = run_application_content(@session_id)
     @session_id = run_create_from_application_url(@session_id)
-    @session_id = run_deploy_pruning(@session_id)
+    @session_id = run_old_sessions_are_deleted(@session_id)
     @session_id = run_create_two_sessions_activate_second_then_first(@session_id)
     @session_id = run_create_prepare_and_activate(@session_id)
   end
@@ -363,8 +363,8 @@ include ApplicationV2Api
     session_id
   end
 
-  def run_deploy_pruning(session_id=@session_id)
-    session_lifetime = 5 # seconds
+  def run_old_sessions_are_deleted(session_id=@session_id)
+    session_lifetime = 10 # seconds.
     set_config_server_config({ "sessionLifetime" => session_lifetime })
     restart_config_server(@node, :keep_everything => true)
     session_id_a = session_id
@@ -377,11 +377,10 @@ include ApplicationV2Api
 
     session_id_c = session_id
     session_id = deploy_and_activate_session_v2("#{CLOUDCONFIG_DEPLOY_APPS}/app_c", session_id, 1339)
-    sleep session_lifetime
 
-    # Check that all sessions have been purged, except the active one
-    wait_until_local_session_purged(session_id_a)
-    wait_until_local_session_purged(session_id_b)
+    # Check that all sessions have been deleted, except the active one
+    wait_until_local_session_deleted(session_id_a)
+    wait_until_local_session_deleted(session_id_b)
     assert_exists(session_id_c)
 
     set_config_server_config({ })
@@ -525,7 +524,7 @@ include ApplicationV2Api
     exitcode == "0"
   end
 
-  def wait_until_local_session_purged(session_id)
+  def wait_until_local_session_deleted(session_id)
     # SessionsMaintainer is set to run every minute (see call to write_default_config_server_config in setup())
     session_exists = true
     # Wait for some time longer than maintainer interval, since config server might not have observed that session has been deactivated on first run
@@ -534,7 +533,7 @@ include ApplicationV2Api
       break if !session_exists
       sleep 1
     end
-    raise "Timed out waiting for session #{session_id} to be purged" if session_exists
+    raise "Timed out waiting for session #{session_id} to be deleted" if session_exists
   end
 
   def create_session(*args)
