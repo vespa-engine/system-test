@@ -845,6 +845,12 @@ module TestBase
     File.open('/etc/redhat-release') { |f| f.readline }.start_with?('CentOS')
   end
 
+  def has_active_sanitizers
+    return false if @sanitizers.nil?
+    return false if @sanitizers == [ 'none' ]
+    true
+  end
+
   private
   def print_and_remove_debug_output_from_getvespaconfig(output)
     puts "Debug output from getvespaconfig:"
@@ -1065,7 +1071,7 @@ module TestBase
   end
 
   def assert_no_sanitizer_warnings
-    return if not @sanitizer
+    return unless has_active_sanitizers
     sanitizer_logs = Dir.glob(dirs.sanitizerlogdir+"/*")
     assert_equal(0, sanitizer_logs.length, "#{sanitizer_logs.length} santizer log files present (on #{Socket.gethostname})")
   end

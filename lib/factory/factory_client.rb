@@ -36,7 +36,6 @@ class FactoryClient
     end
 
     test_run_data = { :durations => Hash.new {0},
-                      :sanitizer => response["useSanitizer"],
                       :valgrind => response["useValgrind"] }
 
     response["testDurations"].each do |test_object|

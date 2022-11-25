@@ -33,7 +33,7 @@ class TestCase
   attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client
   attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :required_hostnames, :expected_logged, :method_name
   attr_accessor :dirty_nodeproxies, :dirty_environment_settings
-  attr_accessor :sanitizer
+  attr_accessor :sanitizers
 
   # Creates and returns a new TestCase object.
   #
@@ -51,7 +51,7 @@ class TestCase
     @cmd_args = args
     @hostlist = args[:hostlist]
     @outputdir = args[:outputdir]
-    @sanitizer = args[:sanitizer]
+    @sanitizers = nil
     @valgrind = args[:valgrind]
     @valgrind_opt = args[:valgrind_opt]
     @keep_tmpdir = args[:keep_tmpdir]
@@ -667,6 +667,13 @@ class TestCase
   def get_generation(deploy_output)
     deploy_output =~ /Generation:\s*(\d+)/i
     return $1;
+  end
+
+  def detected_sanitizers(sanitizers)
+    @sanitizers = sanitizers if @sanitizers.nil?
+    unless @sanitizers == sanitizers
+      output("Warning: inconsistent sanitizers, old sanitizers=#{@sanitizers}, new sanitizers=#{sanitizers}")
+    end
   end
 
   #

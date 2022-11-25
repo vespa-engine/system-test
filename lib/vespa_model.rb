@@ -780,7 +780,7 @@ class VespaModel
   # Remove vespa logs, reset valgrind options, remove valgrind logs and start memory monitoring.
   def init_logging
     @nodeproxies.each_value do |handle|
-      reset_sanitizer(handle, true)
+      reset_sanitizers(handle, true)
       reset_valgrind(handle)
       handle.execute("rm -f #{@valgrind_logs_glob}")
       handle.execute("rm -rf #{Environment.instance.vespa_home}/logs/vespa/*")
@@ -788,12 +788,17 @@ class VespaModel
     end
   end
 
-  def setup_sanitizer(handle)
-    handle.setup_sanitizer(@testcase.sanitizer) if @testcase.sanitizer
+  def detect_sanitizers(handle)
+    sanitizers = handle.detect_sanitizers
+    @testcase.detected_sanitizers(sanitizers)
   end
 
-  def reset_sanitizer(handle, cleanup)
-    handle.reset_sanitizer(cleanup)
+  def setup_sanitizers(handle)
+    handle.setup_sanitizers if @testcase.has_active_sanitizers
+  end
+
+  def reset_sanitizers(handle, cleanup)
+    handle.reset_sanitizers(cleanup)
   end
 
   def setup_valgrind(handle)
@@ -810,7 +815,8 @@ class VespaModel
   def start_base
     threadlist = []
     @nodeproxies.each_value do |handle|
-      setup_sanitizer(handle)
+      detect_sanitizers(handle)
+      setup_sanitizers(handle)
       setup_valgrind(handle)
       threadlist << Thread.new(handle) do |my_handle|
         my_handle.start_base
@@ -847,7 +853,7 @@ class VespaModel
   def stop_base(stop_nodes=@nodeproxies)
     threadlist = []
     stop_nodes.each_value do |handle|
-      reset_sanitizer(handle, false)
+      reset_sanitizers(handle, false)
       reset_valgrind(handle)
       threadlist << Thread.new(handle) do |my_handle|
         my_handle.stop_base
@@ -950,7 +956,7 @@ class VespaModel
         save_valgrind_logfiles(handle)
       end
     end
-    if @testcase.sanitizer
+    if @testcase.has_active_sanitizers
       @testcase.dirty_nodeproxies.each_value do |handle|
         save_sanitizer_logfiles(handle)
       end

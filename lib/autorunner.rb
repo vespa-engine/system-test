@@ -115,9 +115,6 @@ class AutoRunner
     opts.on("--build-version VERSION", String, "Build version, example: HEAD") { |v| @cmd_args[:buildversion] = v }
     opts.on("--build-name LABEL", String, "Build name, example: 6.10.51") { |v| @cmd_args[:buildname] = v }
     opts.on("--base-dir DIR", String, "Base directory") { |v| @cmd_args[:basedir] = v }
-    opts.on("--sanitizer SANITIZER", String, "Santizer, one of 'address', 'thread', 'undefined'") do |sanitizer|
-      @cmd_args[:sanitizer] = sanitizer
-    end
     opts.on("-?", "--help", "Display this help text.") {usage = true}
 
     begin

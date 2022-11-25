@@ -27,7 +27,6 @@ usage() {
   echo "-p, --performance    Run performance tests."
   echo "-o, --consoleoutput  Output test execution on console/stdout."
   echo "-r, --resultdir      Directory to store results. Will auto allocate in \$HOME/tmp/systemtest.XXXXXX"
-  echo "--sanitizer          Sanitizer used on system tests, one of 'address', 'thread', 'undefined'"
   echo "--service-constraint       Constraint on where a service node is scheduled"
   echo "--service-reserve-memory   Reserve memory for each service node"
   echo "--service-ramdisk          Use tmpfs in each service node"
@@ -65,7 +64,6 @@ NODEWAIT=""
 NUMNODES=""
 PERFORMANCE=false
 RESULTDIR=""
-SANITIZER=""
 TESTFILES=()
 TESTRUNID=""
 VERBOSE=false
@@ -125,10 +123,6 @@ case $key in
     ;;
     -r|--resultdir)
     RESULTDIR="$2"
-    shift; shift
-    ;;
-    --sanitizer)
-    SANITIZER="$2"
     shift; shift
     ;;
     --service-constraint)
@@ -198,9 +192,6 @@ if $PERFORMANCE; then
 fi
 if [[ -n $TESTRUNID ]]; then
   TESTRUNNER_OPTS="$TESTRUNNER_OPTS -i $TESTRUNID"
-fi
-if [[ -n $SANITIZER ]]; then
-  TESTRUNNER_OPTS="$TESTRUNNER_OPTS --sanitizer $SANITIZER"
 fi
 if $VERBOSE; then
   TESTRUNNER_OPTS="$TESTRUNNER_OPTS -v"
