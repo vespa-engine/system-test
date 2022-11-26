@@ -223,6 +223,8 @@ class TestCase
   def get_timeout
     if @valgrind
       return timeout_seconds * TestBase::VALGRIND_TIMEOUT_MULTIPLIER
+    elsif has_active_sanitizers
+      return timeout_seconds * TestBase::SANITIZERS_TIMEOUT_MULTIPLIER
     else
       return timeout_seconds
     end
@@ -258,6 +260,11 @@ class TestCase
              ">>>>> Running testcase '#{name}'\n" +
              ">>>>> from file '#{testcase_file}'.\n" +
              " \n")
+      if has_active_sanitizers
+        output("Active sanitizers are: #{@sanitizers}")
+      else
+        output("No active sanitizers")
+      end
       output("My coredump dir is: #{@dirs.coredir}")
       output("My current work directory is: #{`/bin/pwd`}")
       Timeout::timeout(get_timeout, SystemTestTimeout) do |timeout_length|
@@ -671,9 +678,6 @@ class TestCase
 
   def detected_sanitizers(sanitizers)
     @sanitizers = sanitizers if @sanitizers.nil?
-    unless @sanitizers == sanitizers
-      output("Warning: inconsistent sanitizers, old sanitizers=#{@sanitizers}, new sanitizers=#{sanitizers}")
-    end
   end
 
   #

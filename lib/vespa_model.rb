@@ -139,7 +139,9 @@ class VespaModel
 
   def init_nodeproxies
     @testcase.hostlist.each do |hostname|
-      @nodeproxies[hostname] = NodeProxy.new(hostname, @testcase)
+      node_proxy = NodeProxy.new(hostname, @testcase)
+      detect_sanitizers(node_proxy)
+      @nodeproxies[hostname] = node_proxy
     end
   end
 
@@ -815,7 +817,6 @@ class VespaModel
   def start_base
     threadlist = []
     @nodeproxies.each_value do |handle|
-      detect_sanitizers(handle)
       setup_sanitizers(handle)
       setup_valgrind(handle)
       threadlist << Thread.new(handle) do |my_handle|

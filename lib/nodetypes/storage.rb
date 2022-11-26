@@ -120,6 +120,9 @@ class Storage
     if @testcase.valgrind
       timeout *= 5
       @testcase.output("using timeout #{timeout} with valgrind")
+    elsif @testcase.has_active_sanitizers
+      timeout *= 5
+      @testcase.output("using timeout #{timeout} with sanitizers")
     else
       @testcase.output("using timeout #{timeout}, no valgrind")
     end

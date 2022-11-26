@@ -910,7 +910,7 @@ class NodeServer
   end
 
   def detect_sanitizers
-    @sanitizers = execute("#{Environment.instance.vespa_home}/bin/vespa-print-default sanitizers").chomp.split(',').sort
+    @sanitizers = execute("#{Environment.instance.vespa_home}/bin/vespa-print-default sanitizers", :noecho => true).chomp.split(',').sort
   end
 
   def setup_sanitizers
