@@ -33,7 +33,7 @@ class TestCase
   attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client
   attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :required_hostnames, :expected_logged, :method_name
   attr_accessor :dirty_nodeproxies, :dirty_environment_settings
-  attr_accessor :sanitizer
+  attr_accessor :sanitizers
 
   # Creates and returns a new TestCase object.
   #
@@ -51,7 +51,7 @@ class TestCase
     @cmd_args = args
     @hostlist = args[:hostlist]
     @outputdir = args[:outputdir]
-    @sanitizer = args[:sanitizer]
+    @sanitizers = nil
     @valgrind = args[:valgrind]
     @valgrind_opt = args[:valgrind_opt]
     @keep_tmpdir = args[:keep_tmpdir]
@@ -223,6 +223,8 @@ class TestCase
   def get_timeout
     if @valgrind
       return timeout_seconds * TestBase::VALGRIND_TIMEOUT_MULTIPLIER
+    elsif has_active_sanitizers
+      return timeout_seconds * TestBase::SANITIZERS_TIMEOUT_MULTIPLIER
     else
       return timeout_seconds
     end
@@ -258,6 +260,11 @@ class TestCase
              ">>>>> Running testcase '#{name}'\n" +
              ">>>>> from file '#{testcase_file}'.\n" +
              " \n")
+      if has_active_sanitizers
+        output("Active sanitizers are: #{@sanitizers}")
+      else
+        output("No active sanitizers")
+      end
       output("My coredump dir is: #{@dirs.coredir}")
       output("My current work directory is: #{`/bin/pwd`}")
       Timeout::timeout(get_timeout, SystemTestTimeout) do |timeout_length|
@@ -667,6 +674,10 @@ class TestCase
   def get_generation(deploy_output)
     deploy_output =~ /Generation:\s*(\d+)/i
     return $1;
+  end
+
+  def detected_sanitizers(sanitizers)
+    @sanitizers = sanitizers if @sanitizers.nil?
   end
 
   #

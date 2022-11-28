@@ -1151,7 +1151,7 @@ class ResizeContentClusterBase < SearchTest
   def start_select_nodes(startnodes)
     threadlist = []
     startnodes.each_value do |handle|
-      vespa.setup_sanitizer(handle)
+      vespa.setup_sanitizers(handle)
       vespa.setup_valgrind(handle)
       threadlist << Thread.new(handle) do |my_handle|
         my_handle.start_base

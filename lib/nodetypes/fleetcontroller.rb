@@ -10,6 +10,9 @@ class Fleetcontroller < VespaNode
     if testcase.valgrind
       retries = retries * 5
       testcase.output("using #{retries} retries with valgrind")
+    elsif testcase.has_active_sanitizers
+      retries = retries * 5
+      testcase.output("using #{retries} retries with sanitizers")
     else
       testcase.output("using #{retries} retries, no valgrind")
     end
@@ -92,6 +95,9 @@ class Fleetcontroller < VespaNode
     if testcase.valgrind
       retries = retries * 5
       testcase.output("using #{retries} retries with valgrind")
+    elsif testcase.has_active_sanitizers
+      retries = retries * 5
+      testcase.output("using #{retries} retries with sanitizers")
     else
       testcase.output("using #{retries} retries, no valgrind")
     end

@@ -91,6 +91,9 @@ module TestBase
   # Timeout-multiplier when running test through valgrind
   VALGRIND_TIMEOUT_MULTIPLIER = 20
 
+  # Timeout-multipler when running test with sanitizer
+  SANITIZERS_TIMEOUT_MULTIPLIER = 5
+
   # Max query timeout allowed by QRS.
   MAX_QUERY_TIMEOUT=600
 
@@ -181,8 +184,14 @@ module TestBase
     return Resultset.new(File.read(xmlfile), query, nil)
   end
 
+  def calc_instrumented_timeout(timeout)
+    return timeout * VALGRIND_TIMEOUT_MULTIPLIER if @valgrind
+    return timeout * SANITIZERS_TIMEOUT_MULTIPLIER if has_active_sanitizers
+    return timeout
+  end
+
   def calculateQueryTimeout(timeout)
-      timeout *= VALGRIND_TIMEOUT_MULTIPLIER if @valgrind
+      timeout = calc_instrumented_timeout(timeout)
       if timeout < MAX_QUERY_TIMEOUT
           return timeout
       end
@@ -362,7 +371,7 @@ module TestBase
   end
 
   def wait_until_all_services_up(timeout=180)
-    timeout *= VALGRIND_TIMEOUT_MULTIPLIER if @valgrind
+    timeout = calc_instrumented_timeout(timeout)
 
     # As of yet, only storage has an explicit wait_until_all_services_up impl.
     # Use wait_until_ready for other services.
@@ -376,7 +385,7 @@ module TestBase
 
   # Waits until storage services and docprocs are ready.
   def wait_until_ready(timeout=180)
-    timeout *= VALGRIND_TIMEOUT_MULTIPLIER if @valgrind
+    timeout = calc_instrumented_timeout(timeout)
 
     vespa.search.each_value { |searchcluster| searchcluster.wait_until_ready(timeout) }
     vespa.storage.each_value { |stg| stg.wait_until_ready(timeout) }
@@ -845,6 +854,12 @@ module TestBase
     File.open('/etc/redhat-release') { |f| f.readline }.start_with?('CentOS')
   end
 
+  def has_active_sanitizers
+    return false if @sanitizers.nil?
+    return false if @sanitizers == [ 'none' ]
+    true
+  end
+
   private
   def print_and_remove_debug_output_from_getvespaconfig(output)
     puts "Debug output from getvespaconfig:"
@@ -1065,7 +1080,7 @@ module TestBase
   end
 
   def assert_no_sanitizer_warnings
-    return if not @sanitizer
+    return unless has_active_sanitizers
     sanitizer_logs = Dir.glob(dirs.sanitizerlogdir+"/*")
     assert_equal(0, sanitizer_logs.length, "#{sanitizer_logs.length} santizer log files present (on #{Socket.gethostname})")
   end

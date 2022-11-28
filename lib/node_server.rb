@@ -41,7 +41,7 @@ class NodeServer
     @port_configserver_rpc = nil
     @configserver_pid = nil
     @configserver_started = false
-    @sanitizer = nil
+    @sanitizers = nil
     @tls_env = TlsEnv.new
     @executor = Executor.new(@short_hostname)
     @https_client = HttpsClient.new(@tls_env)
@@ -909,17 +909,23 @@ class NodeServer
     return dir
   end
 
-  def setup_sanitizer(name)
-    @sanitizer = name
+  def detect_sanitizers
+    @sanitizers = execute("#{Environment.instance.vespa_home}/bin/vespa-print-default sanitizers", :noecho => true).chomp.split(',').sort
+  end
+
+  def setup_sanitizers
     dir = "#{Environment.instance.tmp_dir}/sanitizer"
     FileUtils.mkdir_p(dir)
     FileUtils.chown(Environment.instance.vespa_user, nil, dir)
-    if name == 'thread'
-      ENV['TSAN_OPTIONS'] = "suppressions=#{Environment.instance.vespa_home}/etc/vespa/tsan-suppressions.txt history_size=7 detect_deadlocks=1 second_deadlock_stack=1 log_path=#{dir}/tsan-log"
+    detect_sanitizers if @sanitizers.nil?
+    @sanitizers.each do |name|
+      if name == 'thread'
+        ENV['TSAN_OPTIONS'] = "suppressions=#{Environment.instance.vespa_home}/etc/vespa/tsan-suppressions.txt history_size=7 detect_deadlocks=1 second_deadlock_stack=1 log_path=#{dir}/tsan-log"
+      end
     end
   end
 
-  def reset_sanitizer(cleanup)
+  def reset_sanitizers(cleanup)
     dir = "#{Environment.instance.tmp_dir}/sanitizer"
     FileUtils.rm_rf(dir) if cleanup
     ENV['ASAN_OPTIONS'] = nil
