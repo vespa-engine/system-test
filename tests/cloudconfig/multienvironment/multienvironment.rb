@@ -24,15 +24,6 @@ class MultiEnvironment < CloudConfigTest
     assert_logd_config_v2(5000, @node.hostname, "default", "default", "default", "prod", "us-west")
   end
 
-  def test_preprocess_tool
-    dest = "#{dirs.tmpdir}/multienv"
-    outputdest = "#{dirs.tmpdir}/multienv_dest"
-    @node.copy("#{selfdir}/multienv", dest)
-    @node.execute("mkdir #{outputdest}")
-    out = @node.execute("#{Environment.instance.vespa_home}/bin/vespa-preprocess-application #{dest} prod default #{outputdest}")
-    assert(out =~ /Application preprocessed successfully/)
-  end
-
   def set_env_and_region(node, environment, region)
     override_environment_setting(node, "VESPA_ENVIRONMENT", environment);
     override_environment_setting(node, "VESPA_REGION", region)
