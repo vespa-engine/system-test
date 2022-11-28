@@ -9,6 +9,22 @@ FROM $VESPA_BASE_IMAGE AS vespa
 COPY /rpms/*.rpm /tmp/
 RUN dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/vespa/vespa/repo/centos-stream-8/group_vespa-vespa-centos-stream-8.repo && \
     dnf -y localinstall $(ls /tmp/vespa*.rpm | xargs) && \
+    if test "$(/opt/vespa/bin/vespa-print-default sanitizers)" != "none"; then \
+        dnf debuginfo-install -y --enablerepo=debuginfo \
+            $(rpm -q -a | grep '^vespa-' | sed -e 's,-[0-9].*,,') \
+            glibc \
+            libatomic \
+            libffi \
+            libgcc \
+            libgfortran \
+            libicu \
+            libquadmath \
+            libstdc++ \
+            llvm-libs \
+            ncurses-libs \
+            re2 \
+            xxhash-libs \
+            zlib; fi && \
     yum clean all && \
     rm -f /tmp/*.rpm
 
