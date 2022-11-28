@@ -364,7 +364,7 @@ include ApplicationV2Api
   end
 
   def run_old_sessions_are_deleted(session_id=@session_id)
-    session_lifetime = 10 # seconds.
+    session_lifetime = 30 # seconds.
     set_config_server_config({ "sessionLifetime" => session_lifetime })
     restart_config_server(@node, :keep_everything => true)
     session_id_a = session_id
