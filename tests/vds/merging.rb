@@ -48,12 +48,20 @@ class MergingTest < PersistentProviderTest
   def test_ensure_merge_handler_gets_new_document_config
     deploy_app(make_merge_app(1))
     start
-    feedfile(VDS + 'musicdata.xml')
+
+    # Feed music doc
+    music_doc_id = "id:storage_test:music::thequickbrownfoxjumpsoverthelazydogperhapsyoushouldexercisemoredog"
+    doc = Document.new("music", music_doc_id)
+    vespa.document_api_v1.put(doc)
 
     # Deploy app with new document type. Feeding will work as the merge handler
     # is not involved in this scope.
     deploy_app_and_wait_until_config_has_been_propagated(make_merge_app(1, true))
-    feedfile(VDS + 'banana.xml', { :trace => 9 })
+
+    # Feed banana doc
+    banana_doc_id = "id:storage_test:banana::lookatthisfancydocumentidjustlookatitmygoodnesshowfancyitis"
+    doc = Document.new("banana", banana_doc_id)
+    vespa.document_api_v1.put(doc)
     
     # Increase redundancy, forcing merge of documents with new doc type between
     # the nodes. Will fail unless merge handler properly uses the new document
