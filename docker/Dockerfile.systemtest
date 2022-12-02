@@ -11,7 +11,7 @@ RUN dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/vesp
     dnf -y localinstall $(ls /tmp/vespa*.rpm | xargs) && \
     if test "$(/opt/vespa/bin/vespa-print-default sanitizers)" != "none"; then \
         dnf debuginfo-install -y --enablerepo=debuginfo \
-            $(rpm -q -a | grep '^vespa-' | sed -e 's,-[0-9].*,,' | grep -E '^vespa-(boost|gtest|libzstd|lz4|onnxruntime|openblas|openssl|protobuf)(-devel)?$') \
+            $(rpm -q -a | grep '^vespa-' | sed -e 's,-[0-9].*,,') \
             glibc \
             libatomic \
             libffi \
