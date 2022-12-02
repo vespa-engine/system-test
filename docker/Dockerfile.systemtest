@@ -10,6 +10,7 @@ COPY /rpms/*.rpm /tmp/
 RUN dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/vespa/vespa/repo/centos-stream-8/group_vespa-vespa-centos-stream-8.repo && \
     dnf -y localinstall $(ls /tmp/vespa*.rpm | xargs) && \
     if test "$(/opt/vespa/bin/vespa-print-default sanitizers)" != "none"; then \
+        dnf -y upgrade && \
         dnf debuginfo-install -y --enablerepo=debuginfo \
             $(rpm -q -a | grep '^vespa-' | sed -e 's,-[0-9].*,,') \
             glibc \
