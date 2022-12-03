@@ -1082,7 +1082,7 @@ module TestBase
   def assert_no_sanitizer_warnings
     return unless has_active_sanitizers
     sanitizer_logs = Dir.glob(dirs.sanitizerlogdir+"/*")
-    assert_equal(0, sanitizer_logs.length, "#{sanitizer_logs.length} santizer log files present (on #{Socket.gethostname})")
+    assert_equal(0, sanitizer_logs.length, "#{sanitizer_logs.length} sanitizer log files present (on #{Socket.gethostname})")
   end
 
   def assert_result_hitcount(result, wanted_hitcount)
