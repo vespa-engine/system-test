@@ -22,10 +22,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.microsoft.onnxruntime</groupId>
-            <artifactId>onnxruntime</artifactId>
-            <version>1.12.1</version>
-            <!--<scope>provided</scope>-->
+            <groupId>com.yahoo.vespa</groupId>
+            <artifactId>container-onnxruntime</artifactId>
+            <version>${vespa.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
