@@ -126,7 +126,7 @@ class AttributeBitVectors < SearchTest
   def assert_bv_counts(field, term, counts)
     assert_equal(@rank_profiles.size, counts.size)
     for i in 0...@rank_profiles.size
-      assert_equal(counts[i], trace_query(field, term, @rank_profiles[i]))
+      assert_equal(counts[i] + 1, trace_query(field, term, @rank_profiles[i]))
     end
   end
 
