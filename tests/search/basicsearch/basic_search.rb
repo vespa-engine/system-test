@@ -10,6 +10,13 @@ class BasicSearch < IndexedSearchTest
     @valgrind_opt = nil
   end
 
+  # Override timeout, since the default is very high (1200 seconds) and if
+  # this test fails due to some service not starting it
+  # will take a very long time before it gives up
+  def timeout_seconds
+    return 300
+  end
+
   def can_share_configservers?(method_name=nil)
     false
   end
