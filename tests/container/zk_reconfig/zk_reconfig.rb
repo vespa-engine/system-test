@@ -1,9 +1,8 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'testcase'
-require 'environment'
+require 'cloudconfig_test'
 
-class ZkReconfig < TestCase
+class ZkReconfig < CloudConfigTest
 
   def setup
     set_description("dynamically reconfigure a ZK cluster, through ups and downs")
@@ -11,15 +10,8 @@ class ZkReconfig < TestCase
     start
   end
 
-  def test_documentapi_java
-    tmp = "#{dirs.tmpdir}/#{File.basename(selfdir)}"
-    vespa.adminserver.copy("#{selfdir}/project", tmp)
-    vespa.adminserver.execute("cd #{tmp}; #{maven_command} -Dtest.hide=false test")
-  end
-
   def test_dynamic_reconfiguration
-    node = vespa.nodeproxies.first[1]
-    build_and_test("zookeeper_test", node)
+    build_and_test("zookeeper_test", vespa.nodeproxies.first[1])
   end
 
   def build_and_test(appdir, node)
