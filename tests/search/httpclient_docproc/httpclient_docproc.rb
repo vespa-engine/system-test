@@ -45,7 +45,7 @@ class HttpClientDocProcTest < SearchTest
     wait_for_hitcount("Document", num_docs)
 
     http = http_connection
-    assert(verify_with_retries(http, {"PUT" => num_docs}))
+    assert(verify_with_retries(http, {"PUT" => num_docs + 1})) # +1 for client "handshake"
   end
 
   def verify_with_retries(http, success_ops= {}, failed_ops = {})
@@ -69,7 +69,9 @@ class HttpClientDocProcTest < SearchTest
         status = metric["dimensions"]["status"]
         operation = metric["dimensions"]["operation"]
         value = metric["values"]["count"]
-        actual_metrics[status][operation] = value
+        if actual_metrics.has_key?(status) # Ignore 429
+          actual_metrics[status][operation] = value
+        end
       end
     end
 
