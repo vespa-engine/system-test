@@ -47,7 +47,6 @@ class MaintenanceControllerTest < IndexedSearchTest
   end
 
   def verify_jobs_executed
-    assert_job_executed("prune_session_cache")
     assert_job_executed("prune_removed_documents.test")
     assert_job_metric("removed_documents_prune")
     assert_job_executed("lid_space_compaction\.test\.0\.ready")
