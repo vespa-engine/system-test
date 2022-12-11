@@ -27,16 +27,8 @@
                         "label": "lang",
                         "children": [
                             {
-                                "id": "group:string:heissö",
-                                "relevance": 1.0,
-                                "value": "heissö",
-                                "fields": {
-                                    "count()": 18
-                                }
-                            },
-                            {
                                 "id": "group:string:heissz",
-                                "relevance": 0.6666666666666666,
+                                "relevance": 1.0,
                                 "value": "heissz",
                                 "fields": {
                                     "count()": 7
@@ -44,10 +36,18 @@
                             },
                             {
                                 "id": "group:string:heißz",
-                                "relevance": 0.3333333333333333,
+                                "relevance": 0.6666666666666666,
                                 "value": "heißz",
                                 "fields": {
                                     "count()": 3
+                                }
+                            },
+                            {
+                                "id": "group:string:heissö",
+                                "relevance": 0.3333333333333333,
+                                "value": "heissö",
+                                "fields": {
+                                    "count()": 18
                                 }
                             }
                         ]
