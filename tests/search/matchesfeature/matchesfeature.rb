@@ -13,7 +13,7 @@ class MatchesFeature < IndexedStreamingSearchTest
     set_description("Test the matches feature")
     deploy_app(SearchApp.new.sd(selfdir+"matches.sd"))
     start
-    feed_and_wait_for_docs("matches", 1, :file => selfdir + "matches.xml")
+    feed_and_wait_for_docs("matches", 1, :file => selfdir + "matches.json")
 
     verify_matches
     verify_matchcount
@@ -35,6 +35,33 @@ class MatchesFeature < IndexedStreamingSearchTest
     assert_matches({"matches(f3)" => 0}, "query=a")
     assert_matches({"matches(f3)" => 1}, "query=f3:a")
     assert_matches({"matches(f3,0)" => 0, "matches(f3,1)" => 1}, "query=a+f3:a")
+
+    assert_matches({"matches(f4)" => 0}, "query=a")
+    assert_matches({"matches(f4)" => 1}, "query=f4:a")
+    assert_matches({"matches(f4)" => 1}, "query=f4:d")
+    assert_matches({"matches(f4)" => 0}, "query=a+f4:c")
+    assert_matches({"matches(f4,0)" => 0, "matches(f4,1)" => 1}, "query=a+f4:a")
+
+    if !is_streaming
+      assert_matches({"matches(f5.key)" => 0}, "query=a")
+      assert_matches({"matches(f5.key)" => 1}, "query=f5.key:a")
+      assert_matches({"matches(f5.key)" => 1}, "query=f5.key:d")
+      assert_matches({"matches(f5.key)" => 0}, "query=a+f5.key:c")
+      assert_matches({"matches(f5.key,0)" => 0, "matches(f5.key,1)" => 1}, "query=a+f5.key:a")
+
+      assert_matches({"matches(f5.value)" => 0}, "query=a")
+      assert_matches({"matches(f5.value)" => 1}, "query=f5.value:10")
+      assert_matches({"matches(f5.value)" => 1}, "query=f5.value:40")
+      assert_matches({"matches(f5.value)" => 0}, "query=a+f5.value:30")
+      assert_matches({"matches(f5.value,0)" => 0, "matches(f5.value,1)" => 1}, "query=a+f5.value:10")
+    end
+
+    # TODO: Add more tests when matches() can be used in combination with sameElement().
+    #assert_matches({"matches(f5.key)" => 1}, yql_query("f5 contains sameElement(key contains 'd', value >= 40)"))
+  end
+
+  def yql_query(where)
+    URI.encode("yql=select * from sources * where #{where}")
   end
 
   def verify_matchcount
