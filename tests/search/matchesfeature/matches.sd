@@ -11,6 +11,14 @@ schema matches {
     field f3 type string {
       indexing: attribute | summary
     }
+    field f4 type array<string> {
+      indexing: attribute | summary
+    }
+    field f5 type map<string,int> {
+      indexing: summary
+      struct-field key { indexing: attribute }
+      struct-field value { indexing: attribute }
+    }
   }
   fieldset default {
     fields: f1, f2
@@ -29,6 +37,15 @@ schema matches {
       matches(f3)
       matches(f3,0)
       matches(f3,1)
+      matches(f4)
+      matches(f4,0)
+      matches(f4,1)
+      matches(f5.key)
+      matches(f5.key,0)
+      matches(f5.key,1)
+      matches(f5.value)
+      matches(f5.value,0)
+      matches(f5.value,1)
     }
   }
 }
