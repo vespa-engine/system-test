@@ -93,7 +93,7 @@ public class TestConfigServer implements RequestHandler, Runnable {
                                        superModelRequestHandler,
                                        dimensions -> new MetricUpdater(Metrics.createTestMetrics(), Collections.emptyMap()),
                                        new HostRegistry(),
-                                       new FileServer(new FileDirectory(configServerConfig, flagSource)),
+                                       new FileServer(new FileDirectory(configServerConfig)),
                                        new NoopRpcAuthorizer(),
                                        new RpcRequestHandlerProvider());
         rpcServer.setUpGetConfigHandlers();
