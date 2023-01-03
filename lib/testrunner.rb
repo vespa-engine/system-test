@@ -24,6 +24,7 @@ class TestRunner
     @buildversion = options[:buildversion]
     @configservers = options[:configservers] ? options[:configservers] : []
     @consoleoutput = options[:consoleoutput] ? options[:consoleoutput] : false
+    @perf_recording = options[:perf_recording] ? options[:perf_recording] : "off"
     @ignore_performance = options[:ignore_performance] ? options[:ignore_performance] : true
     @keeprunning = options[:keeprunning] ? options[:keeprunning] : false
     @nodelimit = options[:nodelimit]
@@ -112,6 +113,7 @@ class TestRunner
                                                               :nostop => @keeprunning,
                                                               :nostop_if_failure => @keeprunning,
                                                               :configserverhostlist => [],
+                                                              :perf_recording => @perf_recording,
                                                               :ignore_performance => @ignore_performance })
 
             # No need to do more as performance is a test class property
@@ -246,6 +248,8 @@ if __FILE__ == $0
   options = {}
   options[:testfiles] = []
   options[:configservers] = []
+  options[:perf_recording] = "off"
+
   OptionParser.new do |opts|
     opts.banner = "Usage: testrunner.rb [options]"
     opts.on("-b", "--basedir DIR", String, "Basedir for test results.") do |basedir|
@@ -277,6 +281,9 @@ if __FILE__ == $0
     end
     opts.on("-p", "--performance", "Run performance tests.") do |p|
       options[:performance] = p
+    end
+    opts.on("-r", "--perf-recording R", String, "Set recording with perf. Valid options are 'off' or 'all'. Default off.") do |perf_recording|
+      options[:perf_recording] = perf_recording
     end
     opts.on("-V", "--vespaversion VERSION", String, "Vespa version to use.") do |version|
       options[:vespaversion] = version
