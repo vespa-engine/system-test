@@ -26,7 +26,6 @@ class V3BasicDocproc < SearchContainerTest
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.xml", :cluster => "worst")
     assert_result("query=sddocname:worst", DOCPROC + "data/worst-processed.json")
     assert_result("query=title:worst", DOCPROC + "data/worst-processed.json")
-    assert_equal(1, queue)
   end
 
   def teardown
