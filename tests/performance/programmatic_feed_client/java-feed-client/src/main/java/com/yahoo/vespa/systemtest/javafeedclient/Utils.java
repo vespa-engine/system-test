@@ -43,9 +43,8 @@ class Utils {
     static int documents() { return Integer.parseInt(System.getProperty("vespa.test.feed.documents")); }
     static int warmupSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.warmup.seconds")); }
     static int benchmarkSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.benchmark.seconds")); }
-    static int maxConcurrentStreamsPerConnection() {
-        return Integer.parseInt(System.getProperty("vespa.test.feed.max-concurrent-streams-per-connection"));
-    }
+    static int maxConcurrentStreamsPerConnection() { return Integer.parseInt(System.getProperty("vespa.test.feed.max-concurrent-streams-per-connection")); }
+    static boolean gzipRequests() { return Boolean.parseBoolean(System.getProperty("vespa.test.feed.gzip-requests")); }
     static String fieldsJson() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (JsonGenerator generator = new JsonFactory().createGenerator(out)) {
@@ -89,6 +88,7 @@ class Utils {
                                 .setCaCertificatesFile(caCertificate())
                                 .setCertificate(certificate(), privateKey())
                                 .setHostnameVerifier(TRUST_ALL_VERIFIER)
+                                .setGzipRequests(gzipRequests())
                                 .build();
     }
 
