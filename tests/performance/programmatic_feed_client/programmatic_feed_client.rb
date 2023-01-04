@@ -28,8 +28,10 @@ class ProgrammaticFeedClientTest < PerformanceTest
     build_feed_client
 
     run_benchmark(container_node, "VespaFeedClient",   TINY, 32)
+    run_benchmark(container_node, "VespaFeedClient",   TINY, 32, "gzip")
     run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
     run_benchmark(container_node, "VespaFeedClient",  LARGE, 32)
+    run_benchmark(container_node, "VespaFeedClient",  LARGE, 32, "gzip")
     run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 32)
   end
 
@@ -39,12 +41,12 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark(container_node, program_name, size, connections)
-    label = "#{program_name}-#{size}b"
+  def run_benchmark(container_node, program_name, size, connections, compression = "none")
+    label = "#{program_name}-#{compression == "none" ? "" : "#{compression}-"}#{size}b"
     cpu_monitor = Perf::System.new(container_node)
     cpu_monitor.start
     profiler_start
-    result, pid = run_benchmark_program(container_node, program_name, label, size, connections)
+    result, pid = run_benchmark_program(container_node, program_name, label, size, connections, compression)
     profiler_report(label, { "program_name" => [ pid ] })
     cpu_monitor.end
     write_report(
@@ -53,6 +55,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
         parameter_filler('size', size),
         parameter_filler('label', label),
         parameter_filler('clients', connections),
+        parameter_filler('compression', compression),
         cpu_monitor.fill
       ]
     )
@@ -66,7 +69,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark_program(container_node, main_class, label, size, connections)
+  def run_benchmark_program(container_node, main_class, label, size, connections, compression)
     out_file = "#{label}.out"
     err_file = "#{label}.err"
     java_cmd =
@@ -83,6 +86,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
         "-Dvespa.test.feed.certificate=#{tls_env.certificate_file} " +
         "-Dvespa.test.feed.private-key=#{tls_env.private_key_file} " +
         "-Dvespa.test.feed.ca-certificate=#{tls_env.ca_certificates_file} " +
+        "-Dvespa.test.feed.compression=#{compression} " +
         "com.yahoo.vespa.systemtest.javafeedclient.#{main_class} 1> #{out_file} 2> #{err_file}"
     pid = vespa.adminserver.execute_bg("exec #{java_cmd}") # exec to let java inherit the subshell's PID.
     thread_pool = Concurrent::FixedThreadPool.new(1)
