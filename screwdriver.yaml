@@ -16,6 +16,7 @@ jobs:
       RUBYLIB: $SD_SOURCE_DIR/lib
     steps:
       - require-test-files: |
+          export VESPA_FACTORY_NO_AUTORUNNER=1
           for FILE in $(find tests -name "*.rb"); do
             ruby  -I lib -I tests -I . -e "require '$FILE'"
           done
