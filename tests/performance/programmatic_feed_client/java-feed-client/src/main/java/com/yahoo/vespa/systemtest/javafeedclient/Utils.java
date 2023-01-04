@@ -3,6 +3,7 @@ package com.yahoo.vespa.systemtest.javafeedclient;
 
 import ai.vespa.feed.client.FeedClient;
 import ai.vespa.feed.client.FeedClientBuilder;
+import ai.vespa.feed.client.FeedClientBuilder.Compression;
 import ai.vespa.feed.client.OperationStats;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -44,7 +45,7 @@ class Utils {
     static int warmupSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.warmup.seconds")); }
     static int benchmarkSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.benchmark.seconds")); }
     static int maxConcurrentStreamsPerConnection() { return Integer.parseInt(System.getProperty("vespa.test.feed.max-concurrent-streams-per-connection")); }
-    static boolean gzipRequests() { return Boolean.parseBoolean(System.getProperty("vespa.test.feed.gzip-requests")); }
+    static Compression compression() { return Compression.valueOf(System.getProperty("vespa.test.feed.gzip-requests")); }
     static String fieldsJson() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (JsonGenerator generator = new JsonFactory().createGenerator(out)) {
@@ -88,7 +89,7 @@ class Utils {
                                 .setCaCertificatesFile(caCertificate())
                                 .setCertificate(certificate(), privateKey())
                                 .setHostnameVerifier(TRUST_ALL_VERIFIER)
-                                .setGzipRequests(gzipRequests())
+                                .setCompression(compression())
                                 .build();
     }
 
