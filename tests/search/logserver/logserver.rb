@@ -11,6 +11,7 @@ class LogServer < SearchTest
     set_description("Tests that logserver starts up, gets log from logd and writes it to logarchive.")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
+    sleep 2
     verify_log_content(/Transitioning from baseline state 'Down' to 'Up'/)
   end
 
