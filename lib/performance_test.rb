@@ -311,6 +311,7 @@ class PerformanceTest < TestCase
           @perf_record_pids[node]['container'] = node.get_pids('"java.*container-disc-jar-with-dependencies.jar"')
           @perf_record_pids[node]['configserver'] = node.get_pids('"java.*jdisc\/configserver"')
           @perf_record_pids[node]['vespa-config-loadtester'] = node.get_pids('vespa-config-loadtester')
+          @perf_record_pids[node]['programmatic-feed-client'] = node.get_pids('javafeedclient')
 
           @perf_processes[node] = []
           @perf_record_pids[node].each do | name, pids |
