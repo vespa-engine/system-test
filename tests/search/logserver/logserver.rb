@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_test'
 
 class LogServer < SearchTest
@@ -10,7 +10,8 @@ class LogServer < SearchTest
   def test_logarchive
     set_description("Tests that logserver starts up, gets log from logd and writes it to logarchive.")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
-    run_logarchive_test
+    start
+    verify_log_content(/Transitioning from baseline state 'Down' to 'Up'/)
   end
 
   def test_log_forwarding_turned_off
@@ -23,12 +24,19 @@ class LogServer < SearchTest
     assert_log_not_matches(/Transitioning from baseline state 'Down' to 'Up'/, {:use_logarchive => true})
   end
 
-  def run_logarchive_test
+  def test_full_logarchive
+    set_description("Tests that logserver starts up, gets full log from logd and writes it to logarchive.")
+    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").config(logd_config_override))
     start
-    verify_log_content(/Transitioning from baseline state 'Down' to 'Up'/, vespa.logserver)
+    sleep 2
+    loglines_archived = get_loglines(:use_logarchive => true)
+    loglines_orig = get_loglines
+    puts "Archived #{loglines_archived.size} of #{loglines_orig.size} log lines"
+    assert(loglines_orig.size >= loglines_archived.size)
+    compare_lines(loglines_orig, loglines_archived)
   end
 
-  def verify_log_content(content, logserver)
+  def verify_log_content(content)
     matches = assert_log_matches(content, 30, {:use_logarchive => true})
     assert_equal(2, matches)
   end
@@ -60,23 +68,8 @@ class LogServer < SearchTest
     end
   end
 
-  def test_full_logarchive
-    set_description("Tests that logserver starts up, gets full log from logd and writes it to logarchive.")
-    run_full_logarchive
-  end
-
-  def run_full_logarchive
-    deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").config(logd_config_override))
-    start
-    sleep 2
-    loglines_archived = get_loglines(:use_logarchive => true)
-    loglines_orig = get_loglines
-    puts "Archived #{loglines_archived.size} of #{loglines_orig.size} log lines"
-    assert(loglines_orig.size >= loglines_archived.size)
-    compare_lines(loglines_orig, loglines_archived)
-  end
-
   def teardown
     stop
   end
+
 end
