@@ -4,15 +4,7 @@ require 'document_set'
 require 'json'
 
 class HttpClientDocProcTest < SearchTest
-  def generate_documents(docid_begin, num_docs)
-    ds = DocumentSet.new()
-    for i in docid_begin...docid_begin + num_docs do
-      doc = Document.new("music", "id:music:music::" + "%07d" % i)
-      doc.add_field("title", "Ronny och Ragge");
-      ds.add(doc)
-    end
-    return ds
-  end
+
   def setup
     @valgrind = false
     set_owner("havardpe")
@@ -50,11 +42,11 @@ class HttpClientDocProcTest < SearchTest
   def verify_with_retries(http, num_docs)
     for i in 0..10
       if verify_metrics(http, num_docs)
-        return true
+        true
       end
       sleep(0.5)
     end
-    return verify_metrics(http, num_docs, true)
+    verify_metrics(http, num_docs, true)
   end
 
   def verify_metrics(http, num_docs, errors = false)
@@ -79,7 +71,7 @@ class HttpClientDocProcTest < SearchTest
     expected_metrics = {"OK" => {"PUT" => num_docs_plus_1},  "REQUEST_ERROR" => {}}
     expected_metrics_2 = {"OK" => {"PUT" => num_docs_plus_2},  "REQUEST_ERROR" => {}}
     if actual_metrics == expected_metrics or actual_metrics == expected_metrics_2
-      return true
+      true
     else
       if errors
         puts "Expected feed metrics to be:"
@@ -87,14 +79,24 @@ class HttpClientDocProcTest < SearchTest
         puts "But actually got:"
         puts actual_metrics
       end
-      return false
+      false
     end
+  end
+
+  def generate_documents(docid_begin, num_docs)
+    ds = DocumentSet.new()
+    for i in docid_begin...docid_begin + num_docs do
+      doc = Document.new("music", "id:music:music::" + "%07d" % i)
+      doc.add_field("title", "Ronny och Ragge")
+      ds.add(doc)
+    end
+    ds
   end
 
   def http_connection
     container = vespa.container.values.first
     http = https_client.create_client(container.name, container.http_port)
-    http.read_timeout=190
+    http.read_timeout = 190
     http
   end
 
