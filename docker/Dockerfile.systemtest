@@ -56,13 +56,6 @@ ENV VESPA_FILE_DISTRIBUTION_ACCEPTED_COMPRESSION_TYPES=gzip,lz4
 
 RUN if [[ "$SKIP_M2_POPULATE" != "true" ]]; then /opt/vespa-systemtests/docker/include/populate-m2-repo.sh root; fi
 
-RUN chown vespa:vespa /opt/vespa && \
-    cp -a /root/.vespa /opt/vespa && \
-    chown -R vespa:vespa /opt/vespa/.vespa && \
-    chown -R vespa:vespa /opt/vespa/conf/vespa
-
-USER vespa
-
 ENTRYPOINT ["bash", "-lc", "source /opt/rh/gcc-toolset-11/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
 
 
