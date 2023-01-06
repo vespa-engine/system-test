@@ -47,7 +47,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     cpu_monitor.start
     profiler_start
     result, pid = run_benchmark_program(container_node, program_name, label, size, connections, compression)
-    profiler_report(label, { "program_name" => [ pid ] })
+    profiler_report(label, { program_name => [ pid ] })
     cpu_monitor.end
     write_report(
       [
