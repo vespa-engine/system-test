@@ -1,0 +1,29 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema test {
+  document test {
+    field a type string {
+      indexing: index | summary
+      bolding: on
+    }
+    field b type string {
+      indexing: index | summary
+      bolding: on
+    }
+    field c type string {
+      indexing: index | summary
+    }
+  }
+  fieldset default {
+    fields: a, b, c
+  }
+  fieldset ab {
+    fields: a, b
+  }
+  fieldset ac {
+    fields: a, c
+  }
+  fieldset bc {
+    fields: b, c
+  }
+}

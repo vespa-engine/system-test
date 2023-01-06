@@ -1,0 +1,10 @@
+[
+    {
+	"put" : "id:test:test::numbers",
+	"fields" : {
+	    "a" : "one two three",
+	    "b" : "one two three",
+	    "c" : "one two three"
+	}
+    }
+]
