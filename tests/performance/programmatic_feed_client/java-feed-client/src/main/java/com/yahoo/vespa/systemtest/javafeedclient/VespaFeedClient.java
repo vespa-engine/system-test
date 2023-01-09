@@ -50,7 +50,7 @@ public class VespaFeedClient {
         }
         printJsonReport(Duration.ofSeconds(benchmarkSeconds()),
                         stats.get(),
-                        "vespa-feed-client" + (compression().equals(none) ? "" : "-" + compression()));
+                        "vespa-feed-client" + (compression() == null ? "" : "-" + compression()));
     }
 
 }
