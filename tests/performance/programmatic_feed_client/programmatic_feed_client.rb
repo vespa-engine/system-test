@@ -84,7 +84,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
         "-Dvespa.test.feed.certificate=#{tls_env.certificate_file} " +
         "-Dvespa.test.feed.private-key=#{tls_env.private_key_file} " +
         "-Dvespa.test.feed.ca-certificate=#{tls_env.ca_certificates_file} " +
-        "#{compression.nil? ? "" : "-Dvespa.test.feed.compression=#{compression}"} " +
+        "#{compression.nil? ? "" : "-Dvespa.test.feed.compression=#{compression} "}" +
         "com.yahoo.vespa.systemtest.javafeedclient.#{main_class} 1> #{out_file} 2> #{err_file}"
     pid = vespa.adminserver.execute_bg("exec #{java_cmd}") # exec to let java inherit the subshell's PID.
     thread_pool = Concurrent::FixedThreadPool.new(1)
