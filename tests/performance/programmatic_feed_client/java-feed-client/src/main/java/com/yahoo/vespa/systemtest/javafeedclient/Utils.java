@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.Optional;
 import java.util.logging.LogManager;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -45,7 +46,7 @@ class Utils {
     static int warmupSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.warmup.seconds")); }
     static int benchmarkSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.benchmark.seconds")); }
     static int maxConcurrentStreamsPerConnection() { return Integer.parseInt(System.getProperty("vespa.test.feed.max-concurrent-streams-per-connection")); }
-    static Compression compression() { return Compression.valueOf(System.getProperty("vespa.test.feed.compression")); }
+    static Compression compression() { return Optional.ofNullable(System.getProperty("vespa.test.feed.compression")).map(Compression::valueOf).orElse(null); }
     static String fieldsJson() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (JsonGenerator generator = new JsonFactory().createGenerator(out)) {
