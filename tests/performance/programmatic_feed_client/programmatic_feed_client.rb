@@ -28,10 +28,8 @@ class ProgrammaticFeedClientTest < PerformanceTest
     build_feed_client
 
     run_benchmark(container_node, "VespaFeedClient",   TINY, 32)
-    run_benchmark(container_node, "VespaFeedClient",   TINY, 32, "gzip")
     run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
     run_benchmark(container_node, "VespaFeedClient",  LARGE, 32)
-    run_benchmark(container_node, "VespaFeedClient",  LARGE, 32, "gzip")
     run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 32)
   end
 
