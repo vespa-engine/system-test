@@ -13,14 +13,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.logging.LogManager;
 
+import static ai.vespa.feed.client.FeedClientBuilder.Compression.auto;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Objects.requireNonNullElse;
 
 /**
  * @author bjorncs
@@ -90,7 +91,7 @@ class Utils {
                                 .setCaCertificatesFile(caCertificate())
                                 .setCertificate(certificate(), privateKey())
                                 .setHostnameVerifier(TRUST_ALL_VERIFIER)
-                                .setCompression(compression())
+                                .setCompression(requireNonNullElse(compression(), auto))
                                 .build();
     }
 
