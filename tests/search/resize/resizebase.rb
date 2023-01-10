@@ -1400,7 +1400,7 @@ class ResizeContentClusterBase < SearchTest
     puts aapp.services_xml
     numdocs = rapp.numdocs
     num_child_docs = rapp.num_child_docs
-    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs, "resizefeed")
+    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs, dirs.tmpdir + "resizefeed")
     poll_state = start_poll_state
     redeploy(aapp)
     start_new_nodes
@@ -1428,7 +1428,7 @@ class ResizeContentClusterBase < SearchTest
     puts rapp.stopnodes
     numdocs = rapp.numdocs
     num_child_docs = rapp.num_child_docs
-    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs, "resizefeed")
+    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs, dirs.tmpdir + "/resizefeed")
     poll_state = start_poll_state
     poll_state.set_vespa_model(vespa)
     set_nodes_retired(rapp.stopnodes)
