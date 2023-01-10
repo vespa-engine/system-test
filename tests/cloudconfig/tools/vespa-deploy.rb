@@ -229,7 +229,7 @@ EOS
 
   def create_expected_prepare_output()
     expected = <<EOS;
-Preparing session #{@session_id} using #{@session_path}/#{@session_id}/prepared.*
+Preparing session #{@session_id} using #{@session_path}/#{@session_id}/prepared\\n?.*
 Session #{@session_id} for tenant '#{@tenant}' prepared.
 EOS
     Regexp.new(expected)
