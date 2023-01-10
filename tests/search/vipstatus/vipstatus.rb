@@ -8,7 +8,7 @@ class VipStatus < IndexedSearchTest
     set_owner("musum")
     set_description("Check VIP status reporting works as expected when deploying in different ways.")
     @valgrind=false
-    @vip_status_file = Environment.instance.vespa_home + "/share/qrsdocs/status2.html"
+    @vip_status_file = dirs.tmpdir + "/status2.html"
   end
 
   def test_without_fileserverport_with_disc_access

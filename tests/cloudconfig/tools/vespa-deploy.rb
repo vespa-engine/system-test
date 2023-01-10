@@ -176,7 +176,7 @@ EOS
   end
 
   def test_deploy_app_with_symbolic_link
-    (exitcode, output) = execute(@node, "cd #{dirs.tmpdir}; mkdir app_with_symbolic_link; cd app_with_symbolic_link; sudo ln -s ../base/services.xml .; ls -l; cd ..; vespa-deploy -v prepare app_with_symbolic_link")
+    (exitcode, output) = execute(@node, "cd #{dirs.tmpdir}; mkdir app_with_symbolic_link; cd app_with_symbolic_link; ln -s ../base/services.xml .; ls -l; cd ..; vespa-deploy -v prepare app_with_symbolic_link")
     assert_equal(0, exitcode.to_i)
   end
 
