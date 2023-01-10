@@ -43,6 +43,8 @@ RUN rm -rf /etc/debuginfod/*
 # that might want to write into this location.
 COPY /vespa-systemtests /opt/vespa-systemtests
 
+ENV RUBYLIB=/opt/vespa-systemtests/lib:/opt/vespa-systemtests/tests
+
 # Currently both the root and vespa user need the cert/key because thes
 # test controller must run as root. This can be changed to only vespa user
 # when/if the restriction is lifted.
@@ -60,7 +62,6 @@ RUN chown vespa:vespa /opt/vespa && \
 
 USER vespa
 
-ENV RUBYLIB=/opt/vespa-systemtests/lib:/opt/vespa-systemtests/tests
 ENV VESPA_HOME=/opt/vespa
 ENV VESPA_TLS_CONFIG_FILE=/opt/vespa/conf/vespa/tls/tls_config.json
 ENV VESPA_FILE_DISTRIBUTION_ACCEPTED_COMPRESSION_TYPES=gzip,lz4
