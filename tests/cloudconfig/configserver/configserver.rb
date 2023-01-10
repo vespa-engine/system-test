@@ -246,7 +246,14 @@ ENDER
     @configserver.ping_configserver
 
     pid = @configserver.get_configserver_pid
-    command = "/usr/bin/sudo -u #{Environment.instance.vespa_user} jinfo -sysprops #{pid.to_s} 2>&1 | grep jute.maxbuffer"
+
+    case Process.uid
+    when 0
+      sudo_cmd = "/usr/bin/sudo -u #{Environment.instance.vespa_user}"
+    else
+      sudo_cmd = ""
+    end
+    command = "#{sudo_cmd} jinfo -sysprops #{pid.to_s} 2>&1 | grep jute.maxbuffer"
     assert_equal('jute.maxbuffer=12345', vespa.adminserver.execute(command).strip)
 
     remove_xml_file_from_configserver_app(@configserver, override, "jutemaxbuffer.xml")
