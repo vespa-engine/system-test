@@ -247,7 +247,7 @@ ENDER
 
     pid = @configserver.get_configserver_pid
 
-    case  case vespa.adminserver.execute("whoami").strip
+    case vespa.adminserver.execute("whoami").strip
     when "root"
       sudo_cmd = "/usr/bin/sudo -u #{Environment.instance.vespa_user}"
     else
