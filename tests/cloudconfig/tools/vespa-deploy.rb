@@ -168,7 +168,7 @@ Uploading application '#{@app_path}' using.*
 Retrying with another config server.*
 Uploading application '#{@app_path}' using.*
 Session #{@session_id} for tenant 'default' created..*
-Preparing session #{@session_id} using.*
+Preparing session #{@session_id} using.*\\n?.*
 Session #{@session_id} for tenant 'default' prepared..*
 EOS
     assert_match(Regexp.new(expected), output)
