@@ -273,7 +273,6 @@ class PerformanceTest < TestCase
   end
 
   def setup
-    @vespa.nodeproxies.values.each {|node| override_environment_setting(node, "VESPA_CONTAINER_JVMARGS", perfmap_agent_jvmarg) }
     profiler_start
   end
 
