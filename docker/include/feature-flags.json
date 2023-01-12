@@ -19,7 +19,6 @@
                 }
             ]
         },
-        { "id" : "use-old-jdisc-container-startup", "rules" : [ { "value" : false } ] },
         { "id" : "shared-string-repo-no-reclaim", "rules" : [ { "value" : true } ] },
         { "id" : "ignore-thread-stack-sizes", "rules" : [ { "value" : true } ] },
         { "id" : "mbus-num-network-threads", "rules" : [ { "value" : 1 } ] },
