@@ -29,7 +29,7 @@
         { "id" : "mbus-cpp-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
         { "id" : "mbus-java-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
         { "id" : "rpc-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
-        { "id" : "async-message-handling-on-schedule", "rules" : [ { "value" : true } ] },
+        { "id" : "async-message-handling-on-schedule", "rules" : [ { "value" : false } ] },
         { "id" : "max-uncommitted-memory", "rules" : [ { "value" : 65000 } ] },
         { "id" : "container-shutdown-timeout", "rules" : [ { "value" : 40.0 } ] },
         { "id" : "container-dump-heap-on-shutdown-timeout", "rules" : [ { "value" : true } ] },
