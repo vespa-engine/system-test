@@ -46,6 +46,9 @@ schema matches {
       matches(f5.value)
       matches(f5.value,0)
       matches(f5.value,1)
+      matches(f5)
+      matches(f5,0)
+      matches(f5,1)
     }
   }
 }
