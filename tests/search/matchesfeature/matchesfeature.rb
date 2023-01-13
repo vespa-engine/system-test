@@ -70,7 +70,7 @@ class MatchesFeature < IndexedStreamingSearchTest
   end
 
   def yql_query(where)
-    URI.encode("yql=select * from sources * where #{where}")
+    URI.encode_www_form([["yql", "select * from sources * where #{where}"]])
   end
 
   def verify_matchcount
