@@ -11,12 +11,14 @@ class Resultset
   attr_accessor :hitcount
   attr_reader :hit
   attr_reader :groupings
+  attr_reader :errorlist
   attr_reader :json
   attr_accessor :query
 
   def initialize(data, query, response = nil)
     @hit = []
     @groupings = {}
+    @errorlist = nil
     @hitcount = nil
     @query = query
     @xmldata = data
@@ -95,12 +97,13 @@ class Resultset
   end
 
   def parse_hits_json(json)
-    unless json && json['root'] && json['root']['fields']
-      return nil
-    end
+    return nil unless json && json['root']
+    jroot = json['root']
+    @errorlist = jroot['errors']
+    return nil unless jroot['fields']
     begin
-      @hitcount = json['root']['fields']['totalCount']
-      json['root']['children'].each do |e|
+      @hitcount = jroot['fields']['totalCount']
+      jroot['children'].each do |e|
         if e.key?('children') && ! e.key?('fields')
           id = e['id']
           fixup_groupings(e)

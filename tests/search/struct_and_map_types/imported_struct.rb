@@ -140,6 +140,7 @@ class ImportedStructTest < SearchTest
     encoded_form=URI.encode_www_form(form)
     puts "Endoded form: #{encoded_form}"
     result = search(encoded_form)
+    assert_nil(result.errorlist)
     assert_equal(exp_result.size, result.hitcount)
     exp_result.size.times do |i|
       exp_hit = exp_result[i]
