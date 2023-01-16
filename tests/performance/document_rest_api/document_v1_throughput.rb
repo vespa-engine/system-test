@@ -47,22 +47,8 @@ class DocumentV1Throughput < PerformanceTest
       {
         :http2 => {
           :clients => 8,
-          :streams => 8,
+          :streams => 32,
           :threads => 8
-        }
-      },
-      {
-        :http2 => {
-          :clients => 8,
-          :streams => 64,
-          :threads => 8
-        }
-      },
-      {
-        :http2 => {
-          :clients => 64,
-          :streams => 8,
-          :threads => 16
         }
       }
     ]
