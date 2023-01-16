@@ -91,8 +91,8 @@ class ContainerHttp < PerformanceTest
     run_h2load_benchmark(4, 32, 5, HTTP2)
     run_h2load_benchmark(4, 64, 5, HTTP2)
     run_h2load_benchmark(4, 128, 5, HTTP2)
+    run_h2load_benchmark(1, 128, 5, HTTP2)
     run_h2load_benchmark(1, 256, 5, HTTP2)
-    run_h2load_benchmark(1, 512, 5, HTTP2)
   end
 
   def run_fbench_benchmark(clients, connection)
