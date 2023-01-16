@@ -129,7 +129,7 @@ class ImportedStructTest < SearchTest
   end
 
   def assert_same_element(field, same_element, exp_result)
-    query = "select * from sources * where #{field} contains sameElement(#{same_element})"
+    query = "select * from sources child where #{field} contains sameElement(#{same_element})"
     assert_result("yql", query, exp_result)
   end
 
