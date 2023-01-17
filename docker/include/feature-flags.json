@@ -34,8 +34,8 @@
         { "id" : "container-shutdown-timeout", "rules" : [ { "value" : 40.0 } ] },
         { "id" : "container-dump-heap-on-shutdown-timeout", "rules" : [ { "value" : true } ] },
         { "id" : "resource-limit-disk", "rules" : [ { "value" : 0.9 } ] },
-        { "id" : "file-distribution-accepted-compression-types",  "rules": [ { "value": ["lz4", "gzip"] } ] },
-        { "id" : "file-distribution-compression-types-to-use",  "rules": [ { "value": ["lz4", "gzip"] } ] },
+        { "id" : "file-distribution-accepted-compression-types",  "rules": [ { "value": ["lz4", "gzip", "zstd"] } ] },
+        { "id" : "file-distribution-compression-types-to-use",  "rules": [ { "value": ["zstd", "lz4", "gzip"] } ] },
         { "id" : "use-locks-in-filedistribution", "rules" : [ { "value" : true } ] }
     ]
 }
