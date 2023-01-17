@@ -8,8 +8,19 @@ class NearestNeighborTest < IndexedSearchTest
   end
 
   def test_nearest_neighbor_operator
-    set_description("Test the nearest neighbor search operator (brute force and over hnsw index)")
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd").threads_per_search(1).enable_document_api)
+    set_description("Test the nearest neighbor search operator (brute force and over hnsw index) with dense tensors")
+    run_test_nearest_neighbor_operator(false)
+  end
+
+  def test_nearest_neighbor_operator_mixed
+    set_description("Test the nearest neighbor search operator (brute force and over hnsw index) with mixed tensors")
+    run_test_nearest_neighbor_operator(true)
+  end
+
+  def run_test_nearest_neighbor_operator(mixed)
+    @mixed = mixed
+    sd_file = mixed ? selfdir + "mixed/test.sd" : selfdir + "test.sd"
+    deploy_app(SearchApp.new.sd(sd_file).threads_per_search(1).enable_document_api)
     start
     feed_docs
 
@@ -28,6 +39,7 @@ class NearestNeighborTest < IndexedSearchTest
 
   def test_nns_via_parent
     set_description('Test the nearest neighbor search operator with imported attribute')
+    @mixed = false
     deploy_app(SearchApp.new
                  .sd(selfdir + 'campaign.sd', { :global => true })
                  .sd(selfdir + 'ad.sd')
@@ -113,7 +125,11 @@ class NearestNeighborTest < IndexedSearchTest
 
     stats = get_nni_stats('pos')
     puts "Nearest Neighbor Index statistics: #{stats}"
-    assert_equal(11, stats['nodes'])
+    if @mixed
+      assert(stats['nodes'] >= 11)
+    else
+      assert_equal(11, stats['nodes'])
+    end
     assert_equal(0, stats['unreachable_nodes'])
   end
 
@@ -157,6 +173,14 @@ class NearestNeighborTest < IndexedSearchTest
 
   X_1_POS = 3
 
+  def make_pos(i)
+    if @mixed
+      { "blocks" => [ { "address" => { "a" => ""}, "values" => [ i, X_1_POS] } ] }
+    else
+      { "values" => [ i, X_1_POS] }
+    end
+  end
+
   def feed_docs(populate_pos_field = true)
     # text field for 10 documents:
     txt = [ "0 x x x 0", "x 1 x x 1", "x x 2 x 2", "x x x 3 3", " 4 x x x 4",
@@ -168,7 +192,7 @@ class NearestNeighborTest < IndexedSearchTest
         add_field("text", txt[i]).
         add_field("filter", "#{i % 2}")
       if populate_pos_field
-        doc.add_field("pos", { "values" => [i, X_1_POS] })
+        doc.add_field("pos", make_pos(i))
       end
       vespa.document_api_v1.put(doc)
     end
@@ -178,7 +202,7 @@ class NearestNeighborTest < IndexedSearchTest
   def feed_assign_updates
     for i in 0...10 do
       upd = DocumentUpdate.new("test", get_docid(i))
-      upd.addOperation("assign", "pos", { "values" => [i, X_1_POS] })
+      upd.addOperation("assign", "pos", make_pos(i))
       vespa.document_api_v1.update(upd)
     end
   end
@@ -188,7 +212,7 @@ class NearestNeighborTest < IndexedSearchTest
     # This means we can change "targetNumHits" and get deterministic behaviour.
     (0...10).reverse_each do |i|
       doc = Document.new('campaign', get_docid(i, 'campaign')).
-        add_field('cpos', { 'values' => [i, X_1_POS] }).
+        add_field('cpos', make_pos(i)).
         add_field('title', "campaign #{i}")
       vespa.document_api_v1.put(doc)
     end
