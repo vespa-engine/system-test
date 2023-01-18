@@ -31,14 +31,20 @@ class RankProfiling < IndexedSearchTest
     assert_equal(sum, 5)
   end
   
+  def find_entry(trace, tag)
+    entry = trace.find { |item| item["tag"] == tag }
+    assert_equal(entry["tag"], tag)
+    return entry
+  end
+
   def verify_thread_trace(trace, depth)
-    assert_equal(trace[0]["tag"], "first_phase_profiling")
-    assert_equal(trace[1]["tag"], "second_phase_profiling")
-    assert(trace[0]["roots"][0]["name"].include?("first_foo"))
-    assert(trace[1]["roots"][0]["name"].include?("second_foo"))
-    verify_depth(trace[0]["roots"][0], depth - 1)
-    verify_depth(trace[1]["roots"][0], depth - 1)
-    return trace[0]["roots"][0]["count"]
+    first_phase = find_entry(trace, "first_phase_profiling");
+    second_phase = find_entry(trace, "second_phase_profiling");
+    assert(first_phase["roots"][0]["name"].include?("first_foo"))
+    assert(second_phase["roots"][0]["name"].include?("second_foo"))
+    verify_depth(first_phase["roots"][0], depth - 1)
+    verify_depth(second_phase["roots"][0], depth - 1)
+    return first_phase["roots"][0]["count"]
   end
 
   def verify_depth(profile, depth)
