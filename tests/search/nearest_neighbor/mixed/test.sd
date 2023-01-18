@@ -6,7 +6,7 @@ schema test {
       indexing: attribute | summary
       attribute: fast-search
     }
-    field pos type tensor(x[2]) {
+    field pos type tensor(a{},x[2]) {
       indexing: attribute | index | summary
       index {
         hnsw {
