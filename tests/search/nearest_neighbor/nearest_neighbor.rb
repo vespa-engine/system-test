@@ -19,6 +19,7 @@ class NearestNeighborTest < IndexedSearchTest
 
   def run_test_nearest_neighbor_operator(mixed)
     @mixed = mixed
+    @multipoint_mapping = nil
     sd_file = mixed ? selfdir + "mixed/test.sd" : selfdir + "test.sd"
     deploy_app(SearchApp.new.sd(sd_file).threads_per_search(1).enable_document_api)
     start
@@ -35,6 +36,45 @@ class NearestNeighborTest < IndexedSearchTest
     feed_docs(false)
     feed_assign_updates
     run_all_tests
+  end
+
+  def test_nearest_neighbor_operator_mixed_multipoint
+    @mixed = true
+    @multipoint_mapping = [[0],[1],[2],[3],[4,6],[5],[7],[8],[9],[10]]
+    sd_file = selfdir + "mixed/test.sd"
+    deploy_app(SearchApp.new.sd(sd_file).threads_per_search(1).enable_document_api)
+    start
+    feed_docs
+    run_multipoint_tests(true)
+    assert_flushing_of_hnsw_index
+    restart_proton("test", 10)
+    run_multipoint_tests(true)
+    feed_docs
+    run_multipoint_tests(true)
+    @multipoint_mapping = [[0],[1],[2,4,7],[3],[5],[6],[8],[9,11],[10],[12]]
+    feed_docs(false)
+    feed_assign_updates
+    run_multipoint_tests(false)
+  end
+
+  def run_multipoint_tests(first_pass)
+    assert_multipoint_docs(first_pass, true)
+    assert_multipoint_docs(first_pass, false)
+  end
+
+  def assert_multipoint_docs(first_pass, approx)
+    query_props = {:approx => approx.to_s}
+    if first_pass
+      assert_nearest_docs(query_props, 7, [[0,2],[1,3],[2,4],[3,5],[4,6],[5,7],[6,9]], {:x_0 => -2})
+      if approx
+        assert_nearest_docs(query_props, 7, [[9,1],[8,2],[7,3],[6,4],[4,5],[5,6],[3,8]], {:x_0 => 11})
+      else
+        assert_nearest_docs(query_props, 7, [[9,1],[8,2],[7,3],[6,4],[4,5],[5,6],[3,8],[2,9],[1,10],[0,11]], {:x_0 => 11})
+      end
+    else
+      assert_nearest_docs(query_props, 10, [[0,2],[1,3],[2,4],[3,5],[4,7],[5,8],[6,10],[7,11],[8,12],[9,14]], {:x_0 => -2})
+      assert_nearest_docs(query_props, 10, [[9,1],[7,2],[8,3],[6,5],[2,6],[5,7],[4,8],[3,10],[1,12],[0,13]], {:x_0 => 13})
+    end
   end
 
   def test_nns_via_parent
@@ -175,7 +215,16 @@ class NearestNeighborTest < IndexedSearchTest
 
   def make_pos(i)
     if @mixed
-      { "blocks" => [ { "address" => { "a" => ""}, "values" => [ i, X_1_POS] } ] }
+      if @multipoint_mapping
+        positions = @multipoint_mapping[i]
+      else
+        positions = [ i ]
+      end
+      blocks = [ ]
+      for j in 0...positions.size
+        blocks.push({ "address" => { "a" => j.to_s}, "values" => [ positions[j], X_1_POS] })
+      end
+      { "blocks" => blocks }
     else
       { "values" => [ i, X_1_POS] }
     end
@@ -272,13 +321,15 @@ class NearestNeighborTest < IndexedSearchTest
       exp_distance = exp_result[1]
       exp_score = 15 - exp_distance
       exp_closeness = 1.0 / (1.0 + exp_distance)
-      exp_features = { "euclidean_distance_#{query_tensor}" => exp_distance,
-                       "distance(#{doc_tensor})" => exp_distance,
+      exp_features = { "distance(#{doc_tensor})" => exp_distance,
                        "distance(label,nns)" => exp_distance,
                        "closeness(#{doc_tensor})" => exp_closeness,
                        "closeness(label,nns)" => exp_closeness,
                        "rawScore(#{doc_tensor})" => exp_closeness,
                        "itemRawScore(nns)" => exp_closeness }
+      unless @multipoint_mapping
+        exp_features["euclidean_distance_#{query_tensor}"] = exp_distance
+      end
     end
     doc_type = qp[:doc_type] || 'test'
     act_docid = result.hit[i].field['documentid']
