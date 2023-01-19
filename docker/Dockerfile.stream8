@@ -23,7 +23,7 @@ RUN dnf config-manager --enable powertools && \
     dnf module enable -y maven:3.6 && \
     dnf install -y \
         bind-utils \
-        gcc-toolset-12-annobin \
+        gcc-toolset-12-annobin-docs \
         gcc-toolset-12-annobin-plugin-gcc \
         gcc-toolset-12-gcc-c++ \
         git \

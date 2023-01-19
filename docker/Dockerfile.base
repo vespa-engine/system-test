@@ -17,7 +17,7 @@ RUN dnf -y install epel-release && \
     dnf -y install \
         bind-utils \
         cmake \
-        gcc-toolset-12-annobin \
+        gcc-toolset-12-annobin-docs \
         gcc-toolset-12-annobin-plugin-gcc \
         gcc-toolset-12-binutils \
         gcc-toolset-12-gcc-c++ \
