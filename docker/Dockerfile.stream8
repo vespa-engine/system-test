@@ -23,9 +23,9 @@ RUN dnf config-manager --enable powertools && \
     dnf module enable -y maven:3.6 && \
     dnf install -y \
         bind-utils \
-        gcc-toolset-11-annobin \
-        gcc-toolset-11-annobin-plugin-gcc \
-        gcc-toolset-11-gcc-c++ \
+        gcc-toolset-12-annobin-docs \
+        gcc-toolset-12-annobin-plugin-gcc \
+        gcc-toolset-12-gcc-c++ \
         git \
         hostname \
         jq \
@@ -46,8 +46,7 @@ RUN dnf config-manager --enable powertools && \
         rubygem-test-unit \
         sudo \
         zstd && \
-    ln -s /opt/rh/gcc-toolset-11 /opt/rh/devtoolset-11 && \
-    (source /opt/rh/gcc-toolset-11/enable && gem install ffi libxml-ruby) && \
+    (source /opt/rh/gcc-toolset-12/enable && gem install ffi libxml-ruby) && \
     echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
 # Installation of maven is sneaky. It installs java-8 and sets as default.
@@ -66,5 +65,5 @@ RUN /opt/vespa-systemtests/docker/include/populate-m2-repo.sh root
 RUN /opt/vespa-systemtests/docker/include/setup-tls.sh root 
 ENV VESPA_TLS_CONFIG_FILE=/opt/vespa/conf/vespa/tls/tls_config.json
 
-ENTRYPOINT ["bash", "-lc", "source /opt/rh/gcc-toolset-11/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
+ENTRYPOINT ["bash", "-lc", "source /opt/rh/gcc-toolset-12/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
 

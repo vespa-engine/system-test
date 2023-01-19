@@ -73,6 +73,6 @@ COPY --chown=vespa:vespa /include/feature-flags.json /opt/vespa/var/vespa/flag.d
 
 RUN if [[ "$SKIP_M2_POPULATE" != "true" ]]; then /opt/vespa-systemtests/docker/include/populate-m2-repo.sh vespa; fi
 
-ENTRYPOINT ["bash", "-lc", "source /opt/rh/gcc-toolset-11/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
+ENTRYPOINT ["bash", "-lc", "source /opt/rh/gcc-toolset-12/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
 
 
