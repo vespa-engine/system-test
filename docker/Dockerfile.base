@@ -17,11 +17,11 @@ RUN dnf -y install epel-release && \
     dnf -y install \
         bind-utils \
         cmake \
-        gcc-toolset-11-annobin \
-        gcc-toolset-11-annobin-plugin-gcc \
-        gcc-toolset-11-binutils \
-        gcc-toolset-11-gcc-c++ \
-        gcc-toolset-11-libatomic-devel \
+        gcc-toolset-12-annobin \
+        gcc-toolset-12-annobin-plugin-gcc \
+        gcc-toolset-12-binutils \
+        gcc-toolset-12-gcc-c++ \
+        gcc-toolset-12-libatomic-devel \
         file \
         git \
         hostname \
@@ -49,8 +49,8 @@ RUN dnf -y install epel-release && \
         $(if [[ -e /tmp/include/additional-packages.txt ]]; then echo $(cat /tmp/include/additional-packages.txt | xargs); fi) && \
      alternatives --set java java-17-openjdk.$(arch) && \
      alternatives --set javac java-17-openjdk.$(arch) && \
-     echo -e "#!/bin/bash\nsource /opt/rh/gcc-toolset-11/enable" > /etc/profile.d/enable-gcc-toolset-11.sh && \
-     (source /opt/rh/gcc-toolset-11/enable && gem install ffi libxml-ruby) && \
+     echo -e "#!/bin/bash\nsource /opt/rh/gcc-toolset-12/enable" > /etc/profile.d/enable-gcc-toolset-12.sh && \
+     (source /opt/rh/gcc-toolset-12/enable && gem install ffi libxml-ruby) && \
      pip3 install --no-cache-dir awscli && \
      dnf clean all && rm -rf /var/cache/dnf && \
      rm -rf /tmp/include
