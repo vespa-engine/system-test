@@ -31,6 +31,9 @@ class ComponentGraphOnRedeployment < ContainerTest
       @container.logctl("#{service}:com.yahoo.container.di.componentgraph.core.ComponentNode", 'debug=on')
     end
 
+    # Wait for log control changes to take effect
+    sleep 10
+
     # Redeploy same app. This is similar to an internal reconfiguration in hosted Vespa.
     output = deploy(app)
     @container.wait_for_config_generation(get_generation(output).to_i)
