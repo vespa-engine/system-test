@@ -23,7 +23,7 @@ class PartialUpdateIllegalOperations < IndexedSearchTest
 
     output = feedfile(selfdir + "dbzero-update.xml", :exceptiononfailure => false)
 
-    assert_output(output, "Division by zero.")
+    assert_output(output, "Division by zero")
 
     assert_result(query, srf, nil, ftc)
   end
