@@ -13,7 +13,7 @@ class QueryProfiling < IndexedSearchTest
     set_description("Test query profiling (matching/ranking)")
   end
 
-  def test_rank_profiling
+  def test_query_profiling
     deploy_app(SearchApp.new.sd(selfdir + 'test.sd'))
     start
     feed_and_wait_for_docs('test', 5, :file => selfdir + 'docs.json')
@@ -23,7 +23,11 @@ class QueryProfiling < IndexedSearchTest
       verify_second_phase_profiling(depth)
     end
   end
-
+  
+  def make_simple_query(depth_name, depth_value)
+    return "/?query=sddocname:test&format=json&hits=1&tracelevel=1&trace.#{depth_name}=#{depth_value}&type=all"
+  end
+  
   def get_query_trace(query)
     result = search(query).json
     trace = result["trace"]["children"][1]["children"][0]["children"][1]["message"][0]["traces"][0]
@@ -33,29 +37,23 @@ class QueryProfiling < IndexedSearchTest
   
   def verify_match_profiling(depth)
     puts "test case: match(#{depth})"
-    verify_match_trace(get_query_trace("/search/?query=sddocname:test&format=json&hits=1&tracelevel=1&trace.profileDepth=#{depth}&type=all"),
-                       depth, exclusive: false)
+    verify_match_trace(get_query_trace(make_simple_query("profileDepth", depth)), depth, exclusive: false)
     puts "test case: match(#{depth}) exclusive"
-    verify_match_trace(get_query_trace("/search/?query=sddocname:test&format=json&hits=1&tracelevel=1&trace.profiling.matching.depth=#{depth}&type=all"),
-                       depth, exclusive: true)
+    verify_match_trace(get_query_trace(make_simple_query("profiling.matching.depth", depth)), depth, exclusive: true)
   end
 
   def verify_first_phase_profiling(depth)
     puts "test case: first_phase(#{depth})"
-    verify_first_phase_trace(get_query_trace("/search/?query=sddocname:test&format=json&hits=1&tracelevel=1&trace.profileDepth=#{depth}&type=all"),
-                             depth, exclusive: false)
+    verify_first_phase_trace(get_query_trace(make_simple_query("profileDepth", depth)), depth, exclusive: false)
     puts "test case: first_phase(#{depth}) exclusive"
-    verify_first_phase_trace(get_query_trace("/search/?query=sddocname:test&format=json&hits=1&tracelevel=1&trace.profiling.firstPhaseRanking.depth=#{depth}&type=all"),
-                             depth, exclusive: true)
+    verify_first_phase_trace(get_query_trace(make_simple_query("profiling.firstPhaseRanking.depth", depth)), depth, exclusive: true)
   end
 
   def verify_second_phase_profiling(depth)
     puts "test case: second_phase(#{depth})"
-    verify_second_phase_trace(get_query_trace("/search/?query=sddocname:test&format=json&hits=1&tracelevel=1&trace.profileDepth=#{depth}&type=all"),
-                              depth, exclusive: false)
+    verify_second_phase_trace(get_query_trace(make_simple_query("profileDepth", depth)), depth, exclusive: false)
     puts "test case: second_phase(#{depth}) exclusive"
-    verify_second_phase_trace(get_query_trace("/search/?query=sddocname:test&format=json&hits=1&tracelevel=1&trace.profiling.secondPhaseRanking.depth=#{depth}&type=all"),
-                              depth, exclusive: true)
+    verify_second_phase_trace(get_query_trace(make_simple_query("profiling.secondPhaseRanking.depth", depth)), depth, exclusive: true)
   end
 
   def get_thread_traces(trace, thread_id)
