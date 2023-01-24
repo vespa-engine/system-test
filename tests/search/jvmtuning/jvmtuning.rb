@@ -39,7 +39,7 @@ class JvmTuning < SearchTest
     start
 
     assert(vespa.adminserver.execute("ps auxwww | grep configserver") =~ /-verbose:gc -verbose:jni/)
-    assert(vespa.adminserver.execute("ps auxwww | grep configproxy") =~ /-verbose:jni -verbose:gc/)
+    assert(vespa.adminserver.execute("ps auxwww | grep config.proxy") =~ /-verbose:jni -verbose:gc/)
 
     assert(vespa.adminserver.execute("ps auxwww | grep docproc1/container\.0") =~ /MaxTenuringThreshold=13/)
 
