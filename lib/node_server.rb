@@ -734,9 +734,8 @@ class NodeServer
 
   # Starts vespa_base on the node
   def start_base
-    cmd = "#{Environment.instance.vespa_home}/bin/vespa-prestart.sh"
-    cmd += Environment.instance.additional_start_base_commands
-    cmd += " && #{Environment.instance.vespa_home}/libexec/vespa/start-vespa-base.sh"
+    cmd = Environment.instance.additional_start_base_commands
+    cmd += "#{Environment.instance.vespa_home}/bin/vespa-start-services"
     execute(cmd)
   end
 
