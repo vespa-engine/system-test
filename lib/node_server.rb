@@ -741,7 +741,7 @@ class NodeServer
 
   # Stops vespa_base on the node.
   def stop_base
-    execute("#{Environment.instance.vespa_home}/libexec/vespa/stop-vespa-base.sh")
+    execute("#{Environment.instance.vespa_home}/bin/vespa-stop-services")
   end
 
   def ping_configserver(timeout=300)
