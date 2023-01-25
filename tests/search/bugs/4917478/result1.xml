@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <result total-hit-count="1">
-  <hit relevancy="0.38186238359951247" source="search">
-    <field name="relevancy">0.38186238359951247</field>
+  <hit relevancy="0.16343879032006287" source="search">
+    <field name="relevancy">0.16343879032006287</field>
     <field name="sddocname">bold</field>
     <field name="pttl">buy <hi>iPhone</hi> 4 for BlingBling</field>
     <field name="pdkw">iphone</field>
