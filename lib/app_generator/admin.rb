@@ -42,6 +42,7 @@ class Admin
   def initialize
     @config = ConfigOverrides.new
     @configservers = []
+    @yamas = nil
     @monitoring = nil
     @metrics = nil
     @slobroks = []
@@ -119,6 +120,7 @@ class Admin
         tag("configservers").to_xml(@configservers).close_tag.
         tag("slobroks").to_xml(@slobroks).close_tag.
         to_xml(@logservers).
+        to_xml(@yamas).
         to_xml(@monitoring).
         to_xml(@clustercontrollers).
         to_xml(@metrics).to_s
