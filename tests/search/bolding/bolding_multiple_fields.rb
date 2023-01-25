@@ -57,7 +57,7 @@ class BoldingMultipleFieldsTest < IndexedStreamingSearchTest
     assert_fields("ac:three", [ exp_bold_three, exp_bold_none, exp_bold_none])
     assert_fields("bc:one", [ exp_bold_none, exp_bold_one, exp_bold_none])
     assert_fields("bc:two", [ exp_bold_none, exp_bold_two, exp_bold_none])
-    assert_fields("bc:two", [ exp_bold_none, exp_bold_three, exp_bold_none])
+    assert_fields("bc:three", [ exp_bold_none, exp_bold_three, exp_bold_none])
   end
 
   def teardown
