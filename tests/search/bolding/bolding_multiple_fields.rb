@@ -10,7 +10,8 @@ class BoldingMultipleFieldsTest < IndexedStreamingSearchTest
   def my_search(query)
     form = [['model.type', 'all'],
             ["query", query],
-            ["streaming.selection", "true"]]
+            ["streaming.selection", "true"],
+            ["summary", @summary]]
     encoded_query = URI.encode_www_form(form)
     return search(encoded_query)
   end
@@ -21,13 +22,21 @@ class BoldingMultipleFieldsTest < IndexedStreamingSearchTest
     fields = result.hit[0].field
     puts "fields for query '#{query}' are #{fields}"
     return if @ignore_assert_fields
-    assert_equal(exp_fields[0], fields['a'])
-    assert_equal(exp_fields[1], fields['b'])
-    assert_equal(exp_fields[2], fields['c'])
+    assert_equal(exp_fields[0], fields[@field_names[0]])
+    assert_equal(exp_fields[1], fields[@field_names[1]])
+    assert_equal(exp_fields[2], fields[@field_names[2]])
   end
 
-  def test_bolding_multiple_fields
-    @subdir = 'multiple-fields'
+  def run_test_bolding_multiple_fields(renamed_fields)
+    if renamed_fields
+      @subdir = 'multiple-fields-renamed'
+      @field_names = [ 'a2', 'b2', 'c2' ]
+      @summary = 'renamed'
+    else
+      @subdir = 'multiple-fields'
+      @field_names = [ 'a', 'b', 'c' ]
+      @summary = 'default'
+    end
     exp_bold_none = "one two three"
     exp_bold_one = "<hi>one</hi> two three"
     exp_bold_two = "one <hi>two</hi> three"
@@ -58,6 +67,14 @@ class BoldingMultipleFieldsTest < IndexedStreamingSearchTest
     assert_fields("bc:one", [ exp_bold_none, exp_bold_one, exp_bold_none])
     assert_fields("bc:two", [ exp_bold_none, exp_bold_two, exp_bold_none])
     assert_fields("bc:three", [ exp_bold_none, exp_bold_three, exp_bold_none])
+  end
+
+  def test_bolding_multiple_fields
+    run_test_bolding_multiple_fields(false)
+  end
+
+  def test_bolding_multiple_fields_renamed
+    run_test_bolding_multiple_fields(true)
   end
 
   def teardown
