@@ -1,0 +1,40 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema test {
+  document test {
+    field a type string {
+      indexing: index | summary
+    }
+    field b type string {
+      indexing: index | summary
+    }
+    field c type string {
+      indexing: index | summary
+    }
+  }
+  document-summary renamed {
+    summary a2 type string {
+       source: a
+       bolding: on
+    }
+    summary b2 type string {
+       source: b
+       bolding: on
+    }
+    summary c2 type string {
+       source: c
+    }
+  }
+  fieldset default {
+    fields: a, b, c
+  }
+  fieldset ab {
+    fields: a, b
+  }
+  fieldset ac {
+    fields: a, c
+  }
+  fieldset bc {
+    fields: b, c
+  }
+}
