@@ -43,8 +43,8 @@ class Bolding < IndexedSearchTest
 
     puts "Query: bolding checks"
     check_result("chicago",                               "chicago")
-    check_result("title:chicago",                         "chicago")
-    check_result("song:chicago",                          "chicago")
+    check_result("title:chicago",                         "title-chicago")
+    check_result("song:chicago",                          "song-chicago")
     check_result("chicago&bolding=false",                 "chicagonb")
     check_result("electrics",                             "bolding")
     check_result("electric",                              "bolding")      if testname != "stemming-none"
