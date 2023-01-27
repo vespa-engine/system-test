@@ -41,6 +41,7 @@ class BoldingMultipleFieldsTest < IndexedStreamingSearchTest
     exp_bold_one = "<hi>one</hi> two three"
     exp_bold_two = "one <hi>two</hi> three"
     exp_bold_three = "one two <hi>three</hi>"
+    exp_bold_two_substring = "one t<hi>w</hi>o three"
     deploy_app(SearchApp.new.sd(selfdir+"#{@subdir}/test.sd"))
     start
     feed(:file => selfdir + "#{@subdir}/doc.json")
@@ -67,6 +68,16 @@ class BoldingMultipleFieldsTest < IndexedStreamingSearchTest
     assert_fields("bc:one", [ exp_bold_none, exp_bold_one, exp_bold_none])
     assert_fields("bc:two", [ exp_bold_none, exp_bold_two, exp_bold_none])
     assert_fields("bc:three", [ exp_bold_none, exp_bold_three, exp_bold_none])
+    if is_streaming
+      @ignore_assert_fields = false
+      assert_fields("*w*", [ exp_bold_two_substring, exp_bold_two_substring, exp_bold_none])
+      assert_fields("ab:*w*", [ exp_bold_two_substring, exp_bold_two_substring, exp_bold_none])
+      assert_fields("a:*w*", [ exp_bold_two_substring, exp_bold_none, exp_bold_none])
+      assert_fields("b:*w*", [ exp_bold_none, exp_bold_two_substring, exp_bold_none])
+      assert_fields("c:*w*", [ exp_bold_none, exp_bold_none, exp_bold_none])
+      assert_fields("ac:*w*", [ exp_bold_two_substring, exp_bold_none, exp_bold_none])
+      assert_fields("bc:*w*", [ exp_bold_none, exp_bold_two_substring, exp_bold_none])
+    end
   end
 
   def test_bolding_multiple_fields
