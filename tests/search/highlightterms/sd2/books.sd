@@ -15,6 +15,6 @@ schema books {
     }
   }
   fieldset default {
-    fields: title
+    fields: title, categories
   }
 }
