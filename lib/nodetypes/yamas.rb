@@ -5,13 +5,11 @@ require 'json'
 
 module Yamas
 
-  def parseMetricss(data)
+  def parseMetrics(data)
     return [] if data.empty?
 
     json = JSON.parse(data)
-    buffer = ""
     messages = []
-    
     json['metrics'].each do |metric|
         messages.push(metric)
     end
@@ -22,10 +20,7 @@ module Yamas
   def get_yamas_metrics_yms(node,service,params={})
     ret = node.execute("#{Environment.instance.vespa_home}/libexec/vespa/metricsproxy-client getMetricsForYamas " + service , params.merge({:exitcode => true, :noecho => true}))
     data = ret[1]
-    if data.start_with?('OK|')
-      data = data[3..-1]
-    end
-    parseMetricss(data)
+    parseMetrics(data)
   end
 
   # Get the float associated with a metric name in a set of YAMAS
