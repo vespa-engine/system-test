@@ -21,7 +21,6 @@ class BoldingMultipleFieldsTest < IndexedStreamingSearchTest
     assert_equal(1, result.hitcount)
     fields = result.hit[0].field
     puts "fields for query '#{query}' are #{fields}"
-    return if @ignore_assert_fields
     assert_equal(exp_fields[0], fields[@field_names[0]])
     assert_equal(exp_fields[1], fields[@field_names[1]])
     assert_equal(exp_fields[2], fields[@field_names[2]])
@@ -45,14 +44,12 @@ class BoldingMultipleFieldsTest < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir+"#{@subdir}/test.sd"))
     start
     feed(:file => selfdir + "#{@subdir}/doc.json")
-    @ignore_assert_fields = false
     assert_fields("one", [ exp_bold_one, exp_bold_one, exp_bold_none])
     assert_fields("two", [ exp_bold_two, exp_bold_two, exp_bold_none])
     assert_fields("three", [ exp_bold_three, exp_bold_three, exp_bold_none])
     assert_fields("ab:one", [ exp_bold_one, exp_bold_one, exp_bold_none])
     assert_fields("ab:two", [ exp_bold_two, exp_bold_two, exp_bold_none])
     assert_fields("ab:three", [ exp_bold_three, exp_bold_three, exp_bold_none])
-    @ignore_assert_fields = true
     assert_fields("a:one", [ exp_bold_one, exp_bold_none, exp_bold_none])
     assert_fields("a:two", [ exp_bold_two, exp_bold_none, exp_bold_none])
     assert_fields("a:three", [ exp_bold_three, exp_bold_none, exp_bold_none])
@@ -69,7 +66,6 @@ class BoldingMultipleFieldsTest < IndexedStreamingSearchTest
     assert_fields("bc:two", [ exp_bold_none, exp_bold_two, exp_bold_none])
     assert_fields("bc:three", [ exp_bold_none, exp_bold_three, exp_bold_none])
     if is_streaming
-      @ignore_assert_fields = false
       assert_fields("*w*", [ exp_bold_two_substring, exp_bold_two_substring, exp_bold_none])
       assert_fields("ab:*w*", [ exp_bold_two_substring, exp_bold_two_substring, exp_bold_none])
       assert_fields("a:*w*", [ exp_bold_two_substring, exp_bold_none, exp_bold_none])
