@@ -27,5 +27,8 @@ schema cjk {
             bolding: on
         }
     }
+    fieldset default {
+        fields: content, content2, content3
+    }
 }
 
