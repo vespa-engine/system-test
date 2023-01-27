@@ -16,6 +16,6 @@ schema music {
     }
   }
   fieldset default {
-    fields: title
+    fields: title, categories
   }
 }
