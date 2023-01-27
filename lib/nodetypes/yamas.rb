@@ -16,11 +16,10 @@ module Yamas
     messages
   end
 
-  # Execute metricsproxy-client on the given node for service e.g vespa.qrserver
+  # Get Yamas-formatted metric values (from metrics proxy on that node, listening on port 19092)
   def get_yamas_metrics_yms(node,service,params={})
-    ret = node.execute("#{Environment.instance.vespa_home}/libexec/vespa/metricsproxy-client getMetricsForYamas " + service , params.merge({:exitcode => true, :noecho => true}))
-    data = ret[1]
-    parseMetrics(data)
+    response = @https_client.get(node.hostname, 19092, "/yamas/v1/values")
+    parseMetrics(response.body)
   end
 
   # Get the float associated with a metric name in a set of YAMAS
