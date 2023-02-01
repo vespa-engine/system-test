@@ -87,13 +87,13 @@ class TestCase
       @@log_messages[:zkmetric_updater_monitor_failure],
       @@log_messages[:zookeeper_reconfig],
       @@log_messages[:zookeeper_shutdown],
-      @@log_messages[:async_slow_resolve],
       @@log_messages[:slow_processing],
       @@log_messages[:time_move_backwards],
       @@log_messages[:remove_dangling_file],
       @@log_messages[:canonical_hostname_warning],
       @@log_messages[:metrics_proxy_connection_refused],
-      @@log_messages[:empty_idx_file]
+      @@log_messages[:empty_idx_file],
+      @@log_messages[:no_snapshot_from_instance]
     ]
     @valgrind_ignorable_messages = [
       @@log_messages[:valgrindrc_not_read],
@@ -741,7 +741,8 @@ class TestCase
     :metrics_proxy_connection_refused => /Failed retrieving metrics for '.+' : Connect to .+ failed: Connection refused/,
     :empty_idx_file => /We detected an empty idx file for part/,
     :remove_dangling_file => /Removing dangling file/,
-    :canonical_hostname_warning => /Host named '.+' may not receive any config since it differs from its canonical hostname/
+    :canonical_hostname_warning => /Host named '.+' may not receive any config since it differs from its canonical hostname/,
+    :no_snapshot_from_instance => /no snapshot from instance of /
   }
 
   # Allow that certain log messages may be ignored without the individual
