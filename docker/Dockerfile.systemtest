@@ -65,7 +65,6 @@ USER vespa
 
 ENV VESPA_HOME=/opt/vespa
 ENV VESPA_TLS_CONFIG_FILE=/opt/vespa/conf/vespa/tls/tls_config.json
-ENV VESPA_FILE_DISTRIBUTION_ACCEPTED_COMPRESSION_TYPES=gzip,lz4
 
 RUN mkdir -p /opt/vespa/.m2
 COPY --chown=vespa:vespa /repository /opt/vespa/.m2/repository
