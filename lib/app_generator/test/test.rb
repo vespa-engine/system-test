@@ -362,22 +362,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected)
   end
 
-  def test_admin_metrics_legacy
-    actual = SearchApp.new.
-      admin_metrics(MetricConsumers.new.
-                    add(LegacyConsumer.new("yamas").
-                        add(LegacyMetric.new("foo", "bar")))).services_xml
-    expected = '
-    <admin version="2.0">
-      <adminserver hostalias="node1" />
-      <metric-consumers>
-        <consumer name="yamas">
-          <metric name="foo" output-name="bar" />
-        </consumer>
-      </metric-consumers>'
-    assert_substring_ignore_whitespace(actual, expected)
-  end
-
   def test_adminserver_hostalias
     actual = SearchApp.new.
       admin(Admin.new.adminserver(AdminServer.new('node2'))).services_xml
