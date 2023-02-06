@@ -850,10 +850,6 @@ module TestBase
     end
   end
 
-  def linux_distribution_CentOS?
-    File.open('/etc/redhat-release') { |f| f.readline }.start_with?('CentOS')
-  end
-
   def has_active_sanitizers
     return false if @sanitizers.nil?
     return false if @sanitizers == [ 'none' ]
