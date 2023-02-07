@@ -74,18 +74,16 @@ class QueryProfiling < IndexedSearchTest
   end
 
   def verify_match_trace(traces, depth, exclusive: false)
-    # temporarily disabled until back-end support is merged
-    #
-    # query_setup_trace = find_entry(traces, "query_setup", verify: true)
-    # global_filter_trace = find_entry(query_setup_trace["traces"], "global_filter_execution", verify: true)
-    # for thread_id in 0..3 do
-    #   filter = find_entry(get_thread_traces(global_filter_trace, thread_id), @global_filter_tag, verify: true)
-    #   if thread_id == 0
-    #     puts "profile result: #{JSON.pretty_generate(filter)}"
-    #   end
-    #   verify_profiler_result(filter, depth)
-    #   assert(filter["roots"][0]["name"].start_with?("/"))
-    # end
+    query_setup_trace = find_entry(traces, "query_setup", verify: true)
+    global_filter_trace = find_entry(query_setup_trace["traces"], "global_filter_execution", verify: true)
+    for thread_id in 0..3 do
+      filter = find_entry(get_thread_traces(global_filter_trace, thread_id), @global_filter_tag, verify: true)
+      if thread_id == 0
+        puts "profile result: #{JSON.pretty_generate(filter)}"
+      end
+      verify_profiler_result(filter, depth)
+      assert(filter["roots"][0]["name"].start_with?("/"))
+    end
     trace = find_entry(traces, "query_execution", verify: true)
     for thread_id in 0..3 do
       match = find_entry(get_thread_traces(trace, thread_id), @match_tag, verify: true)
