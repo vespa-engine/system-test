@@ -66,7 +66,7 @@ class BasicContainer < PerformanceTest
     puts "temporary test of security env:"
     c = vespa.container.values.first
     c.execute('echo java; $VESPA_HOME/bin/vespa-security-env')
-    c.execute('echo go; $VESPA_HOME/libexec/vespa/script-utils security-env')
+    c.execute('echo go; $VESPA_HOME/libexec/vespa/vespa-wrapper security-env')
   end
 
 end
