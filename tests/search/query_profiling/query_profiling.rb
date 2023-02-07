@@ -6,9 +6,10 @@ require 'json'
 class QueryProfiling < IndexedSearchTest
   
   def setup
-    @match_tag = "match_profiling"
-    @first_phase_tag = "first_phase_profiling"
-    @second_phase_tag = "second_phase_profiling"
+    @global_filter_tag = "global_filter_profiling"
+    @match_tag         = "match_profiling"
+    @first_phase_tag   = "first_phase_profiling"
+    @second_phase_tag  = "second_phase_profiling"
     set_owner('havardpe')
     set_description("Test query profiling (matching/ranking)")
   end
@@ -23,42 +24,39 @@ class QueryProfiling < IndexedSearchTest
       verify_second_phase_profiling(depth)
     end
   end
-  
-  def make_simple_query(depth_name, depth_value)
-    return "/?query=sddocname:test&format=json&hits=1&tracelevel=1&trace.#{depth_name}=#{depth_value}&type=all"
+
+  def make_query(depth_name, depth_value)
+    result = "yql=select * from sources * where {targetHits:10,approximate:true}nearestNeighbor(vec,qvec) and title contains 'foo'"
+    result += "&ranking.features.query(qvec)=[1,1]"
+    result += "&trace.explainLevel=2&tracelevel=1&trace.#{depth_name}=#{depth_value}"
+    return result
   end
   
-  def get_query_trace(query)
+  def get_query_traces(query)
     result = search(query).json
-    trace = result["trace"]["children"][1]["children"][0]["children"][1]["message"][0]["traces"][0]
-    assert_equal(trace["tag"], "query_execution")
-    return trace
+    traces = result["trace"]["children"][1]["children"][0]["children"][1]["message"][0]["traces"]
+    return traces
   end
   
   def verify_match_profiling(depth)
     puts "test case: match(#{depth})"
-    verify_match_trace(get_query_trace(make_simple_query("profileDepth", depth)), depth, exclusive: false)
+    verify_match_trace(get_query_traces(make_query("profileDepth", depth)), depth, exclusive: false)
     puts "test case: match(#{depth}) exclusive"
-    verify_match_trace(get_query_trace(make_simple_query("profiling.matching.depth", depth)), depth, exclusive: true)
+    verify_match_trace(get_query_traces(make_query("profiling.matching.depth", depth)), depth, exclusive: true)
   end
 
   def verify_first_phase_profiling(depth)
     puts "test case: first_phase(#{depth})"
-    verify_first_phase_trace(get_query_trace(make_simple_query("profileDepth", depth)), depth, exclusive: false)
+    verify_first_phase_trace(get_query_traces(make_query("profileDepth", depth)), depth, exclusive: false)
     puts "test case: first_phase(#{depth}) exclusive"
-    verify_first_phase_trace(get_query_trace(make_simple_query("profiling.firstPhaseRanking.depth", depth)), depth, exclusive: true)
+    verify_first_phase_trace(get_query_traces(make_query("profiling.firstPhaseRanking.depth", depth)), depth, exclusive: true)
   end
 
   def verify_second_phase_profiling(depth)
     puts "test case: second_phase(#{depth})"
-    verify_second_phase_trace(get_query_trace(make_simple_query("profileDepth", depth)), depth, exclusive: false)
+    verify_second_phase_trace(get_query_traces(make_query("profileDepth", depth)), depth, exclusive: false)
     puts "test case: second_phase(#{depth}) exclusive"
-    verify_second_phase_trace(get_query_trace(make_simple_query("profiling.secondPhaseRanking.depth", depth)), depth, exclusive: true)
-  end
-
-  def get_thread_traces(trace, thread_id)
-    assert_equal(trace["threads"].size, 4)
-    return trace["threads"][thread_id]["traces"]
+    verify_second_phase_trace(get_query_traces(make_query("profiling.secondPhaseRanking.depth", depth)), depth, exclusive: true)
   end
 
   def find_entry(traces, tag, verify: false)
@@ -70,9 +68,27 @@ class QueryProfiling < IndexedSearchTest
     return entry
   end
 
-  def verify_match_trace(trace, depth, exclusive: false)
+  def get_thread_traces(trace, thread_id)
+    assert_equal(trace["threads"].size, 4)
+    return trace["threads"][thread_id]["traces"]
+  end
+
+  def verify_match_trace(traces, depth, exclusive: false)
+    # temporarily disabled until back-end support is merged
+    #
+    # query_setup_trace = find_entry(traces, "query_setup", verify: true)
+    # global_filter_trace = find_entry(query_setup_trace["traces"], "global_filter_execution", verify: true)
+    # for thread_id in 0..3 do
+    #   filter = find_entry(get_thread_traces(global_filter_trace, thread_id), @global_filter_tag, verify: true)
+    #   if thread_id == 0
+    #     puts "profile result: #{JSON.pretty_generate(filter)}"
+    #   end
+    #   verify_profiler_result(filter, depth)
+    #   assert(filter["roots"][0]["name"].start_with?("/"))
+    # end
+    trace = find_entry(traces, "query_execution", verify: true)
     for thread_id in 0..3 do
-      match = find_entry(get_thread_traces(trace, thread_id), @match_tag, verify: true);
+      match = find_entry(get_thread_traces(trace, thread_id), @match_tag, verify: true)
       if thread_id == 0
         puts "profile result: #{JSON.pretty_generate(match)}"
       end
@@ -85,10 +101,11 @@ class QueryProfiling < IndexedSearchTest
     end
   end
 
-  def verify_first_phase_trace(trace, depth, exclusive: false)
+  def verify_first_phase_trace(traces, depth, exclusive: false)
+    trace = find_entry(traces, "query_execution", verify: true)
     docs_ranked = 0
     for thread_id in 0..3 do
-      first_phase = find_entry(get_thread_traces(trace, thread_id), @first_phase_tag, verify: true);
+      first_phase = find_entry(get_thread_traces(trace, thread_id), @first_phase_tag, verify: true)
       if thread_id == 0
         puts "profile result: #{JSON.pretty_generate(first_phase)}"
       end
@@ -105,9 +122,10 @@ class QueryProfiling < IndexedSearchTest
     assert_equal(docs_ranked, 5)
   end
 
-  def verify_second_phase_trace(trace, depth, exclusive: false)
+  def verify_second_phase_trace(traces, depth, exclusive: false)
+    trace = find_entry(traces, "query_execution", verify: true)
     for thread_id in 0..3 do
-      second_phase = find_entry(get_thread_traces(trace, thread_id), @second_phase_tag, verify: true);
+      second_phase = find_entry(get_thread_traces(trace, thread_id), @second_phase_tag, verify: true)
       if thread_id == 0
         puts "profile result: #{JSON.pretty_generate(second_phase)}"
       end
@@ -128,13 +146,13 @@ class QueryProfiling < IndexedSearchTest
       assert_equal(profile["topn"], -depth)
       assert_operator profile["roots"].size, :<= ,-depth
       for entry in profile["roots"] do
-        verify_depth(entry, 0);
+        verify_depth(entry, 0)
       end
     else
       assert_equal(profile["profiler"], "tree")
       assert_equal(profile["depth"], depth)
       for entry in profile["roots"] do
-        verify_depth(entry, depth - 1);
+        verify_depth(entry, depth - 1)
       end
     end
   end
