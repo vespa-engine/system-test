@@ -13,9 +13,16 @@ schema test {
     field order type int {
       indexing: attribute | summary
     }
+    field vec type tensor<float>(x[2]) {
+      indexing: attribute | index | summary
+    }
   }
 
   rank-profile default {
+    inputs {
+      query(qvec) tensor<float>(x[2])
+    }
+
     function first_baz() {
       expression: attribute(order)
     }

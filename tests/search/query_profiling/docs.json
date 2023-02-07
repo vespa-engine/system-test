@@ -3,35 +3,40 @@
         "put": "id:test:test::1",
         "fields": {
             "order": 100,
-            "title": "doc1 order100"
+            "title": "foo",
+            "vec": [1,1]
         }
     },
     {
         "put": "id:test:test::2",
         "fields": {
             "order": 150,
-            "title": "doc2 order150"
+            "title": "foo bar",
+            "vec": [2,2]
         }
     },
     {
         "put": "id:test:test::3",
         "fields": {
             "order": 200,
-            "title": "doc3 order200"
+            "title": "foo bar baz",
+            "vec": [3,3]
         }
     },
     {
         "put": "id:test:test::4",
         "fields": {
             "order": 250,
-            "title": "doc4 order250"
+            "title": "foo bar baz",
+            "vec": [4,4]
         }
     },
     {
         "put": "id:test:test::5",
         "fields": {
             "order": 300,
-            "title": "doc5 order300"
+            "title": "foo bar baz",
+            "vec": [5,5]
         }
     }
 ]
