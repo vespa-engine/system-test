@@ -40,7 +40,7 @@ class SchemaChangesReplayTest < IndexedSearchTest
     assert_hitcount("f2:f2&nocache", exp_hits)
     assert_hitcount("f2&nocache", exp_hits)
     assert_hitcount("f3:%3E29&nocache", exp_hits)
-    restart_proton("test", num_docs)
+    restart_proton("test", num_docs, skip_trigger_flush: true)
     assert_result("sddocname:test&nocache", @test_dir + result_file)
     assert_hitcount("f2:f2&nocache", exp_hits)
     assert_hitcount("f2&nocache", exp_hits)
