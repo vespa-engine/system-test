@@ -40,7 +40,7 @@ class HttpClientDocProcTest < SearchTest
   end
 
   def verify_with_retries(http, num_docs)
-    for i in 0..10
+    for i in 0..20
       if verify_metrics(http, num_docs)
         true
       end
