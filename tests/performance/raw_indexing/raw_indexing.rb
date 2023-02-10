@@ -13,36 +13,25 @@ class FeedingIndexTest < PerformanceTest
     set_owner("onorum")
     set_description("simple test for indexing and query performance")
     
-    @tainted = false
     @warmUpDocPath = "#{dirs.tmpdir}warm_up_docs.json"
     @docPath = "#{dirs.tmpdir}feed_docs.json"
+  end
 
+  def test_feeding_and_querying_docs
     deploy_app(create_app)
-
+    @container = vespa.container.values.first
     set_up_files
 
     start
     vespa_destination_start
-  end
 
-  def download_doc_file
-    container = (vespa.qrserver['0'] or vespa.container.values.first)
-    container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}download_webtext.py")
-  end
+    run_feeder(@warmUpDocPath, [parameter_filler("legend", "test_feeding_performance")], {localfile: true, :numthreads => 3, :route => '"combinedcontainer/chain.indexing null/default"'})
 
-  def make_feed_docs
-    container = (vespa.qrserver['0'] or vespa.container.values.first)
-    container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 200000 data/webtext.train.jsonl feed_docs.json")
-  end
+    profiler_start
+    run_feeder(@docPath, [parameter_filler("legend", "test_feeding_performance")], {localfile: true})
+    profiler_report('profile_feed')
 
-  def make_warm_up_docs
-    container = (vespa.qrserver['0'] or vespa.container.values.first)
-    container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 100 data/webtext.train.jsonl warm_up_docs.json")
-  end
-
-  def make_queries
-    container = (vespa.qrserver['0'] or vespa.container.values.first)
-    container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_queries.py feed_docs.json queries.txt 3")
+    query_docs
   end
 
   def set_up_files
@@ -52,23 +41,20 @@ class FeedingIndexTest < PerformanceTest
     make_queries
   end
 
-  def test_feeding_and_querying_docs
-    set_description("testing indexing performance and query performance")
-    if @tainted
-      puts 'Wiping existing index data on node to ensure previous tests do not pollute results'
-      node = vespa.storage['search'].storage['0']
-      node.stop_base
-      node.clean_indexes
-      node.start_base
-    end
+  def download_doc_file
+    @container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}download_webtext.py")
+  end
 
-    run_feeder(@warmUpDocPath, [parameter_filler("legend", "test_feeding_performance")], {localfile: true, :numthreads => 3, :route => '"combinedcontainer/chain.indexing null/default"'})
+  def make_warm_up_docs
+    @container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 100 data/webtext.train.jsonl warm_up_docs.json")
+  end
 
-    profiler_start
-    run_feeder(@docPath, [parameter_filler("legend", "test_feeding_performance")], {localfile: true})
-    profiler_report('profile_feed')
+  def make_feed_docs
+    @container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 200000 data/webtext.train.jsonl feed_docs.json")
+  end
 
-    query_docs
+  def make_queries
+    @container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_queries.py feed_docs.json queries.txt 3")
   end
 
   def query_docs
