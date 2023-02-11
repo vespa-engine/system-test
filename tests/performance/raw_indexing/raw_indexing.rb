@@ -25,7 +25,7 @@ class FeedingIndexTest < PerformanceTest
     start
     vespa_destination_start
 
-    run_feeder(@warmUpDocPath, [parameter_filler("legend", "test_feeding_performance")], {localfile: true, :numthreads => 3, :route => '"combinedcontainer/chain.indexing null/default"'})
+    feedfile(@warmUpDocPath, {localfile: true, :numthreads => 3, :route => '"combinedcontainer/chain.indexing null/default"'})
 
     profiler_start
     run_feeder(@docPath, [parameter_filler("legend", "test_feeding_performance")], {localfile: true})
@@ -46,7 +46,7 @@ class FeedingIndexTest < PerformanceTest
   end
 
   def make_warm_up_docs
-    @container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 100 data/webtext.train.jsonl warm_up_docs.json")
+    @container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 2000 data/webtext.train.jsonl warm_up_docs.json")
   end
 
   def make_feed_docs
