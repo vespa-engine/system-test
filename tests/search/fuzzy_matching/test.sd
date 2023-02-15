@@ -50,4 +50,7 @@ schema test {
   field single_index type string {
     indexing: input single_scan_uncased | index
   }
+  fieldset fs_single_btree_uncased {
+    fields: single_btree_uncased
+  }
 }
