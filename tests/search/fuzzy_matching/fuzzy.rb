@@ -19,7 +19,8 @@ class FuzzySearch < IndexedSearchTest
     "array_fast", 
     "wset_slow", 
     "wset_fast",
-    "single_btree_uncased"
+    "single_btree_uncased",
+    "fs_single_btree_uncased"
   ]
 
   ARRAY_FIELDS = [
