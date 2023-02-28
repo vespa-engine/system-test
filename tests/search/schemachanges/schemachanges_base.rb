@@ -30,19 +30,19 @@ module SchemaChangesBase
   def add_attribute_aspect(sd_file)
     redeploy(sd_file)
     status = vespa.search["search"].first.get_proton_status
-    assert(status.match(/"WARNING","state=ONLINE configstate=NEED_RESTART","DocumentDB delaying attribute aspects changes in config/))
+    assert_match(/"WARNING","state=ONLINE configstate=NEED_RESTART","DocumentDB delaying attribute aspects changes in config/, status, status)
   end
 
   def remove_attribute_aspect(sd_file)
     redeploy(sd_file, "indexing-change")
     status = vespa.search["search"].first.get_proton_status
-    assert(status.match(/"WARNING","state=ONLINE configstate=NEED_RESTART","DocumentDB delaying attribute aspects changes in config/))
+    assert_match(/"WARNING","state=ONLINE configstate=NEED_RESTART","DocumentDB delaying attribute aspects changes in config/, status, status)
   end
 
   def activate_attribute_aspect(exp_hits)
     restart_proton("test", exp_hits)
     status = vespa.search["search"].first.get_proton_status
-    assert(status.match(/"OK","state=ONLINE configstate=OK",""/))
+    assert_match(/"OK","state=ONLINE configstate=OK",""/, status, status)
   end
 
   def wait_for_content_cluster_config_generation(deploy_output)
