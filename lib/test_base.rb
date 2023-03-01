@@ -1245,9 +1245,14 @@ module TestBase
     expected.each do |name, score|
       puts "assert_features: #{name}:#{score}"
       assert(actual.has_key?(name), "Actual hash does not contain feature '#{name}'")
-      x = score.to_f
-      y = actual.fetch(name).to_f
-      assert_approx(x, y, eps,"Feature '#{name}' does not have expected score. Expected: #{x} ~ #{eps}. Actual: #{y}")
+      if score.is_a?(Hash)
+        act_score = actual.fetch(name)
+        assert_equal(score, act_score)
+      else
+        x = score.to_f
+        y = actual.fetch(name).to_f
+        assert_approx(x, y, eps,"Feature '#{name}' does not have expected score. Expected: #{x} ~ #{eps}. Actual: #{y}")
+      end
     end
   end
 
