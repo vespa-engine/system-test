@@ -29,16 +29,22 @@ schema test {
     function euclidean_distance_qpos_float() {
       expression: sqrt(sum(join(query(qpos_float), attribute(pos), f(x,y)((x-y)*(x-y)))))
     }
+    function label_value() {
+      expression: sum(tensor(a{}):{{a:"0"}:100,{a:"1"}:101,{a:"2"}:102}*closest(pos))
+    }
     first-phase {
       expression: 15 - distance(label,nns)
     }
     summary-features {
       euclidean_distance_qpos_double
       euclidean_distance_qpos_float
+      label_value
       distance(pos)
       distance(label,nns)
       closeness(pos)
       closeness(label,nns)
+      closest(pos)
+      closest(pos,nns)
       rawScore(pos)
       itemRawScore(nns)
     }
@@ -56,6 +62,8 @@ schema test {
       distance(label,nns)
       closeness(pos)
       closeness(label,nns)
+      closest(pos)
+      closest(pos,nns)
       rawScore(pos)
       itemRawScore(nns)
       fieldMatch(text).earliness

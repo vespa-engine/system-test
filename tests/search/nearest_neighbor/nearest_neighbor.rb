@@ -65,15 +65,15 @@ class NearestNeighborTest < IndexedSearchTest
   def assert_multipoint_docs(first_pass, approx)
     query_props = {:approx => approx.to_s}
     if first_pass
-      assert_nearest_docs(query_props, 7, [[0,2],[1,3],[2,4],[3,5],[4,6],[5,7],[6,9]], {:x_0 => -2})
+      assert_nearest_docs(query_props, 7, [[0,2,0],[1,3,0],[2,4,0],[3,5,0],[4,6,0],[5,7,0],[6,9,0]], {:x_0 => -2})
       if approx
-        assert_nearest_docs(query_props, 7, [[9,1],[8,2],[7,3],[6,4],[4,5],[5,6],[3,8]], {:x_0 => 11})
+        assert_nearest_docs(query_props, 7, [[9,1,0],[8,2,0],[7,3,0],[6,4,0],[4,5,1],[5,6,0],[3,8,0]], {:x_0 => 11})
       else
-        assert_nearest_docs(query_props, 7, [[9,1],[8,2],[7,3],[6,4],[4,5],[5,6],[3,8],[2,9],[1,10],[0,11]], {:x_0 => 11})
+        assert_nearest_docs(query_props, 7, [[9,1,0],[8,2,0],[7,3,0],[6,4,0],[4,5,1],[5,6,0],[3,8,0],[2,9,0],[1,10,0],[0,11,0]], {:x_0 => 11})
       end
     else
-      assert_nearest_docs(query_props, 10, [[0,2],[1,3],[2,4],[3,5],[4,7],[5,8],[6,10],[7,11],[8,12],[9,14]], {:x_0 => -2})
-      assert_nearest_docs(query_props, 10, [[9,1],[7,2],[8,3],[6,5],[2,6],[5,7],[4,8],[3,10],[1,12],[0,13]], {:x_0 => 13})
+      assert_nearest_docs(query_props, 10, [[0,2,0],[1,3,0],[2,4,0],[3,5,0],[4,7,0],[5,8,0],[6,10,0],[7,11,0],[8,12,0],[9,14,0]], {:x_0 => -2})
+      assert_nearest_docs(query_props, 10, [[9,1,0],[7,2,1],[8,3,0],[6,5,0],[2,6,2],[5,7,0],[4,8,0],[3,10,0],[1,12,0],[0,13,0]], {:x_0 => 13})
     end
   end
 
@@ -329,6 +329,12 @@ class NearestNeighborTest < IndexedSearchTest
                        "itemRawScore(nns)" => exp_closeness }
       unless @multipoint_mapping
         exp_features["euclidean_distance_#{query_tensor}"] = exp_distance
+      else
+        closest_feature_label = exp_result[2]
+        closest_feature = {"type"=>"tensor(a{})", "cells"=>{closest_feature_label.to_s=>1.0}}
+        exp_features["closest(pos)"] = closest_feature
+        exp_features["closest(pos,nns)"] = closest_feature
+        exp_features["label_value"] = closest_feature_label.to_f + 100
       end
     end
     doc_type = qp[:doc_type] || 'test'
