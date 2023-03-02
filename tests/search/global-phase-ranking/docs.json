@@ -1,0 +1,37 @@
+[
+  {
+    "put": "id:test:test::1",
+    "fields": {
+      "doc_vec": [3.0, 7.0],
+      "score": 1
+    }
+  },
+  {
+    "put": "id:test:test::2",
+    "fields": {
+      "doc_vec": [1.0, 2.0],
+      "score": 2
+    }
+  },
+  {
+    "put": "id:test:test::3",
+    "fields": {
+      "doc_vec": [11.0, 5.0],
+      "score": 3
+    }
+  },
+  {
+    "put": "id:test:test::4",
+    "fields": {
+      "doc_vec": [2.0, 2.0],
+      "score": 4
+    }
+  },
+  {
+    "put": "id:test:test::5",
+    "fields": {
+      "doc_vec": [1.0, 1.0],
+      "score": 5
+    }
+  }
+]
