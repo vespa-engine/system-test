@@ -43,20 +43,21 @@ class NearestNeighborTest < IndexedSearchTest
     run_test_nearest_neighbor_operator_mixed_multipoint(sd_file)
   end
 
-  def test_nearest_neighbor_operator_mixed_fast_rank_multipoint
+  def modify_mixed_sd_file_for_fast_rank
+    lines = File.readlines(selfdir + "mixed/test.sd")
+    lines.each do |line|
+      line.sub!("# attribute:", "attribute:")
+    end
     sd_dir = selfdir + "mixed_fast_rank"
     sd_file = sd_dir + "/test.sd"
     FileUtils.rm_rf(sd_dir)
     FileUtils.mkdir_p(sd_dir)
-    origfile = File.open(selfdir + "mixed/test.sd" , "r")
-    lines = origfile.readlines
-    origfile.close
-    lines.each do |line|
-      line.sub!("# attribute:", "attribute:")
-    end
-    modfile = File.open(sd_file, "w")
-    modfile.write(lines.join)
-    modfile.close
+    File.write(sd_file, lines.join)
+    return sd_file
+  end
+
+  def test_nearest_neighbor_operator_mixed_fast_rank_multipoint
+    sd_file = modify_mixed_sd_file_for_fast_rank
     run_test_nearest_neighbor_operator_mixed_multipoint(sd_file)
   end
 
