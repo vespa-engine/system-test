@@ -8,6 +8,7 @@ schema test {
     }
     field pos type tensor(a{},x[2]) {
       indexing: attribute | index | summary
+      # attribute: fast-rank
       index {
         hnsw {
           max-links-per-node: 4

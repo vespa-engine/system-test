@@ -39,9 +39,31 @@ class NearestNeighborTest < IndexedSearchTest
   end
 
   def test_nearest_neighbor_operator_mixed_multipoint
+    sd_file = selfdir + "mixed/test.sd"
+    run_test_nearest_neighbor_operator_mixed_multipoint(sd_file)
+  end
+
+  def modify_mixed_sd_file_for_fast_rank
+    lines = File.readlines(selfdir + "mixed/test.sd")
+    lines.each do |line|
+      line.sub!("# attribute:", "attribute:")
+    end
+    sd_dir = selfdir + "mixed_fast_rank"
+    sd_file = sd_dir + "/test.sd"
+    FileUtils.rm_rf(sd_dir)
+    FileUtils.mkdir_p(sd_dir)
+    File.write(sd_file, lines.join)
+    return sd_file
+  end
+
+  def test_nearest_neighbor_operator_mixed_fast_rank_multipoint
+    sd_file = modify_mixed_sd_file_for_fast_rank
+    run_test_nearest_neighbor_operator_mixed_multipoint(sd_file)
+  end
+
+  def run_test_nearest_neighbor_operator_mixed_multipoint(sd_file)
     @mixed = true
     @multipoint_mapping = [[0],[1],[2],[3],[4,6],[5],[7],[8],[9],[10]]
-    sd_file = selfdir + "mixed/test.sd"
     deploy_app(SearchApp.new.sd(sd_file).threads_per_search(1).enable_document_api)
     start
     feed_docs
