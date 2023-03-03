@@ -1,5 +1,5 @@
 [
- { "put":"id:test:test:n=1234:01", "fields":{ "s":"a",   "sf":1,   "f":1,   "d":1, "n":1, "a":"a1", "b":"b1", "c":"c1", "from":1234517162, "to":1234517162000000000, "boool":true, "body":"test", "na":[1,2], "lang":"heissz"} },
+ { "put":"id:test:test:n=1234:01", "fields":{ "s":"a",   "sf":1,   "f":1,   "d":1, "n":1, "a":"a1", "b":"b1", "c":"c1", "from":1234517162, "to":1234517162000000000, "boool":true, "body":"test", "na":[1,2], "nb":[7,9],"lang":"heissz"} },
  { "put":"id:test:test:n=1234:03", "fields":{ "s":"aaa", "sf":3.9, "f":3.9, "d":3.9, "n":3, "a":"a1", "b":"b1", "c":"c3", "from":1234517151, "to":1234537162000000000, "boool":false, "body":"test", "fa":[1.6,2.9], "lang":"heissz"} },
  { "put":"id:test:test:n=1234:04", "fields":{ "s":"aab", "sf":4.9, "f":4.9, "d":4.9, "n":4, "a":"a1", "b":"b2", "c":"c1", "from":1234517051, "to":1234547162000000000, "boool":true, "body":"test", "fa":[1.6], "lang":"heißz"} },
  { "put":"id:test:test:n=1234:05", "fields":{ "s":"aac", "sf":5.9, "f":5.9, "d":5.9, "n":5, "a":"a1", "b":"b2", "c":"c2", "from":1234516051, "to":1234557162000000000, "boool":false, "body":"test","lang":"heissz"} },
