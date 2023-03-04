@@ -30,7 +30,8 @@ class LookupPerformance < PerformanceTest
   def test_dictionary_lookup
     set_description("Test lookupspeed with btree vs hash.")
     num_docs = 4000000
-    num_values_per_doc=10
+    num_values_per_doc = 10
+    num_payload_bytes_per_doc = 400
     upper_limit = num_docs*num_values_per_doc*10
     keys_per_query = 100
     num_clients = 40
@@ -41,7 +42,7 @@ class LookupPerformance < PerformanceTest
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{tmp_bin_dir}/docs #{selfdir}/docs.cpp")
     container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{tmp_bin_dir}/query #{selfdir}/query.cpp")
     start
-    container.execute("#{tmp_bin_dir}/docs #{num_docs} #{num_values_per_doc} | vespa-feeder")
+    container.execute("#{tmp_bin_dir}/docs #{num_docs} #{num_values_per_doc} #{num_payload_bytes_per_doc}| vespa-feeder")
     assert_hitcount("sddocname:test", num_docs)
 
     @queryfile = "#{dirs.tmpdir}/query.txt"
@@ -53,6 +54,14 @@ class LookupPerformance < PerformanceTest
         run_fbench(container, num_clients, 30, [parameter_filler('legend', "lookup_#{field}")],
                    {:single_query_file => true, :append_str => "&hits=1&summary=minimal&ranking=unranked&wand.type=dotProduct&wand.field=#{field}"})
         profiler_report("lookup_#{field}")
+    end
+
+    num_hits = 400
+    ["minmal","array_byte", "array_long"].each do |summary|
+        profiler_start
+        run_fbench(container, num_clients, 5, [parameter_filler('legend', "summary_#{summary}")],
+                   {:single_query_file => true, :append_str => "&hits=#{num_hits}&summary=#{summary}&ranking=unranked&wand.type=dotProduct&wand.field=f1_hash"})
+        profiler_report("summary_#{summary}")
     end
   end
 
