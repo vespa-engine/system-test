@@ -5,14 +5,12 @@
 #include <cstdint>
 #include <sstream>
 
-constexpr size_t STEP_LENGTH = 11;
-
 std::string
 create_keys(unsigned long offset, unsigned long numKeys) {
     std::stringstream os;
     os << '"' << offset << "\":" << 1;
     for (unsigned long i(1); i < numKeys; i++) {
-      os << ",\"" << ((offset + i) * STEP_LENGTH) << "\":" << 1;
+      os << ",\"" << (offset + i) << "\":" << 1;
     }
     return os.str();
 }
