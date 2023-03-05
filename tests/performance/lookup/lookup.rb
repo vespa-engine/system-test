@@ -48,7 +48,7 @@ class LookupPerformance < PerformanceTest
 
     @queryfile = "#{dirs.tmpdir}/query.txt"
     container.execute("#{tmp_bin_dir}/query #{num_queries} #{keys_per_query} #{upper_limit} > #{@queryfile}")
-    run_fbench(container, 8, 20)
+    run_fbench(container, 8, 20, [], {:single_query_file => true, :append_str => "&hits=1&summary=minimal&ranking=unranked&wand.type=dotProduct&wand.field=f1"})
 
     ["f1", "f1_hash", "s1", "s1_cased", "s1_hash"].each do |field|
         profiler_start
@@ -56,14 +56,23 @@ class LookupPerformance < PerformanceTest
                    {:single_query_file => true, :append_str => "&hits=1&summary=minimal&ranking=unranked&wand.type=dotProduct&wand.field=#{field}"})
         profiler_report("lookup_#{field}")
     end
+
     num_keys = num_docs*num_values_per_doc
     container.execute("#{tmp_bin_dir}/query #{num_queries} #{keys_per_query} #{num_keys} > #{@queryfile}")
     num_hits = 400
-    ["minmal","array_byte", "array_long"].each do |summary|
+    ["minimal","array_byte", "array_long"].each do |summary|
         profiler_start
         run_fbench(container, num_clients, run_time, [parameter_filler('legend', "summary_#{summary}")],
                    {:single_query_file => true, :append_str => "&hits=#{num_hits}&summary=#{summary}&ranking=unranked&wand.type=dotProduct&wand.field=f1_hash"})
         profiler_report("summary_#{summary}")
+    end
+
+    [["count","count()"],["byte","max(cat(%22%22,payload_array_byte))"], ["long", "max(cat(%22%22,payload_array_long))"]].each do |aggr|
+        select = "all(group(f1_hash)hint(singlepass)max(100)each(output(#{aggr[1]})))"
+        profiler_start
+        run_fbench(container, num_clients, run_time, [parameter_filler('legend', "grouping_#{aggr[0]}")],
+                   {:single_query_file => true, :append_str => "&select=#{select}&hits=1&summary=minimal&ranking=unranked&wand.type=dotProduct&wand.field=f1_hash"})
+        profiler_report("grouping_#{aggr[0]}")
     end
   end
 
