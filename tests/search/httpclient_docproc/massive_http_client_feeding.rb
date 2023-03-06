@@ -28,7 +28,7 @@ class MassiveHttpClientFeedingTest < SearchTest
   def test_vespa_feed_client_with_tls
     gw = deploy_test_app
     feedfile(@feed_file, {:client => :vespa_feed_client, :host => gw.name, :port => gw.http_port,
-                          :numconnections => 4, :max_streams_per_connection => 128, })
+                          :numconnections => 8, :max_streams_per_connection => 32, })
 
     # Don't care if we do not hit the spawned documents, we only care about feeding not getting stuck in this test.
     wait_for_hitcount("ronny", DOCUMENTS)
@@ -37,7 +37,7 @@ class MassiveHttpClientFeedingTest < SearchTest
   def test_vespa_feed_client_without_tls
     gw = deploy_test_app
     feedfile(@feed_file, {:client => :vespa_feed_client, :host => gw.name, :port => gw.http_port + 1,
-                          :numconnections => 4, :max_streams_per_connection => 128, :disable_tls => true})
+                          :numconnections => 8, :max_streams_per_connection => 32, :disable_tls => true})
 
     # Don't care if we do not hit the spawned documents, we only care about feeding not getting stuck in this test.
     wait_for_hitcount("ronny", DOCUMENTS)

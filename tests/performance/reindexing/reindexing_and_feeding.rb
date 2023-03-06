@@ -102,8 +102,8 @@ class ReindexingAndFeedingTest < PerformanceTest
     assert_hitcount("indexed_at_seconds:%3C#{now_seconds}&nocache", @document_count)	# All documents should be indexed before now_seconds
     sleep 10
     trigger_reindexing
-    feed_data({ :file => @updates_file, :legend => 'reindex_update', :numconnections => 2 })
-    feed_data({ :file => @updates_file, :legend => 'reindex_update', :max_streams_per_connection => 512 })
+    feed_data({ :file => @updates_file, :legend => 'reindex_update', :max_streams_per_connection => 32, :numconnections => 8 })
+    feed_data({ :file => @updates_file, :legend => 'reindex_update', :max_streams_per_connection => 32, :numconnections => 8 })
     reindexing_millis = wait_for_reindexing
     assert_hitcount("indexed_at_seconds:%3E#{now_seconds}&nocache", @document_count) 	# All documents should be indexed after now_seconds
     assert_hitcount("count:2&nocache", @document_count)					# All documents should have "counter" incremented by 2
