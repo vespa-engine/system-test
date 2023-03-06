@@ -33,6 +33,7 @@
         { "id" : "max-uncommitted-memory", "rules" : [ { "value" : 65000 } ] },
         { "id" : "container-shutdown-timeout", "rules" : [ { "value" : 40.0 } ] },
         { "id" : "container-dump-heap-on-shutdown-timeout", "rules" : [ { "value" : true } ] },
-        { "id" : "resource-limit-disk", "rules" : [ { "value" : 0.9 } ] }
+        { "id" : "resource-limit-disk", "rules" : [ { "value" : 0.9 } ] },
+        { "id" : "enable-global-phase", "rules" : [ { "value" : true } ] }
     ]
 }
