@@ -139,6 +139,7 @@ class ConfigServer < CloudConfigTest
     end
  
     puts "Fix broken app"
+    vespa.configservers["0"].execute("vespa-logctl -c configserver:com.yahoo.vespa.config.server.ConfigServerBootstrap debug=on", :exceptiononfailure => false)
     vespa.configservers["0"].execute("cp #{services_xml}.bak #{services_xml}") # Go back to original services.xml, server should come up again
     wait_for_atleast_log_matches("All applications redeployed successfully", 1, 240)
     assert_health_status_for_config_server("up")
