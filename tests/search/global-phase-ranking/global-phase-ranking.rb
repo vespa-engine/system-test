@@ -26,7 +26,7 @@ class GlobalPhaseRanking < IndexedSearchTest
     assert_equal(DOCS, result_sp.hitcount)
     assert_equal(DOCS, result_gp.hitcount)
 
-    fields_to_compare = [ "relevancy" ]
+    fields_to_compare = ["documentid", "source", "relevancy"]
     result_sp.setcomparablefields(fields_to_compare)
     result_gp.setcomparablefields(fields_to_compare)
 
