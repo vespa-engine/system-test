@@ -17,9 +17,9 @@ class GlobalPhaseRanking < IndexedSearchTest
 
   def test_global_phase
     puts "Search with second-phase ranking"
-    result_sp = search("/search/?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&format=xml&ranking=second_phase")
+    result_sp = search("?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=second_phase")
     puts "Search with global-phase ranking"
-    result_gp = search("/search/?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&format=xml&ranking=global_phase")
+    result_gp = search("?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=global_phase")
     puts "Hits second-phase ranking: #{result_sp}"
     puts "Hits global-phase ranking: #{result_gp}"
 
