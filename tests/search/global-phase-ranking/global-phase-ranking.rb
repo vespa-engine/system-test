@@ -17,22 +17,26 @@ class GlobalPhaseRanking < IndexedSearchTest
 
   def test_global_phase
     puts "Search with second-phase ranking"
-    result_sp = search("/search/?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&format=xml&ranking=second_phase")
+    result_sp = search("?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=second_phase")
     puts "Search with global-phase ranking"
-    result_gp = search("/search/?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&format=xml&ranking=global_phase")
+    result_gp = search("?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=global_phase")
     puts "Hits second-phase ranking: #{result_sp}"
     puts "Hits global-phase ranking: #{result_gp}"
 
     assert_equal(DOCS, result_sp.hitcount)
     assert_equal(DOCS, result_gp.hitcount)
 
-    fields_to_compare = [ "relevancy" ]
+    fields_to_compare = ["documentid", "source", "relevancy"]
     result_sp.setcomparablefields(fields_to_compare)
     result_gp.setcomparablefields(fields_to_compare)
 
     result_sp.hit.each_index do |i|
       result_sp.hit[i].check_equal(result_gp.hit[i])
     end
+
+    puts "Search with global-phase ranking expression using 'firstPhase'"
+    query = "?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=global_phase_inverse_first_phase"
+    assert_result(query, selfdir + "answers/first-phase-as-rank-feature.json", nil, fields_to_compare)
   end
 
   def teardown
