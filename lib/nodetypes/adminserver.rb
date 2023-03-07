@@ -153,8 +153,8 @@ class Adminserver < VespaNode
     "#{serverhost}/#{prefix}/tenant/#{tenant}/application/#{application}/environment/#{environment}/region/#{region}/instance/#{instance}"
   end
 
-  def get_model_config(params={}, required_config_generation)
-    url = get_config_instance_url(params) + "/cloud.config.model?requiredGeneration=#{required_config_generation}"
+  def get_model_config(params={})
+    url = get_config_instance_url(params) + "/cloud.config.model"
     iterations = 0
     result = nil
     while iterations < 250 do
