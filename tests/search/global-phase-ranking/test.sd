@@ -54,4 +54,12 @@ schema test {
             expression: sum(onnx(multiply_add).multiply_add_output - fn_query_vec)
         }
     }
+
+    rank-profile global_phase_inverse_first_phase inherits base {
+        global-phase {
+            rerank-count: 5
+            expression: -firstPhase
+        }
+    }
+
 }

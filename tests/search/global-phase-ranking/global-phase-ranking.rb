@@ -33,6 +33,10 @@ class GlobalPhaseRanking < IndexedSearchTest
     result_sp.hit.each_index do |i|
       result_sp.hit[i].check_equal(result_gp.hit[i])
     end
+
+    puts "Search with global-phase ranking expression using 'firstPhase'"
+    query = "?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=global_phase_inverse_first_phase"
+    assert_result(query, selfdir + "answers/first-phase-as-rank-feature.json", nil, fields_to_compare)
   end
 
   def teardown
