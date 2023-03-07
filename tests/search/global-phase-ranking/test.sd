@@ -39,11 +39,6 @@ schema test {
         function fn_doc_vec() {
             expression: attribute(doc_vec)
         }
-
-        summary-features {
-            query(query_vec)
-            onnx(multiply_add).multiply_add_output
-        }
     }
 
     rank-profile global_phase inherits base {
