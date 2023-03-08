@@ -27,7 +27,7 @@ class ConfigServer < CloudConfigTest
     assert_match("age", get_document_config())
 
     # deploy a new app, but do not activate config
-    deploy_app(SearchApp.new.sd(selfdir+"sd-extend/banana.sd"), :no_activate => true)
+    deploy_app(SearchApp.new.sd(selfdir+"sd-extend/banana.sd"), {:no_activate => true, :skip_create_model => true})
 
     # restart configserver and keep zookeeper data
     restart_config_server(vespa.configservers["0"], :keep_zookeeper_data => true)
@@ -59,7 +59,7 @@ class ConfigServer < CloudConfigTest
     
     (0..15).each do |i|
       # deploy a new app, but do not activate config
-      deploy_app(SearchApp.new.sd(selfdir+"sd-extend/banana.sd"), :no_activate => true)
+      deploy_app(SearchApp.new.sd(selfdir+"sd-extend/banana.sd"), {:no_activate => true, :skip_create_model => true})
     end
 
     # restart configserver and keep zookeeper data

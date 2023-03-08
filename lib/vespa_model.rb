@@ -289,13 +289,14 @@ class VespaModel
     adminserver = @adminserver
     if not params[:dryrun]
       output = deploy_on_adminserver(adminserver, app_handle, params)
-      config_generation = @testcase.get_generation(output).to_i
+      # Handle case where we get an array with output and timing values back (performance tests)
+      deploy_output = output.kind_of?(Array) ? output.shift : output
+      puts "output: #{output},\n deploy output: #{deploy_output}"
+      config_generation = @testcase.get_generation(deploy_output).to_i
 
       if not params[:skip_create_model]
         if @testcase.use_shared_configservers && !params[:no_activate]
-          # Handle case where we get an array with output and timing values back
-          deploy_output = output.kind_of?(Array) ? output[0] : output
-          adminserver.wait_for_config_activated(config_generation, params)
+          adminserver.wait_for_config_activated(@testcase.get_generation(deploy_output).to_i, params)
         end
         create_model(adminserver.get_model_config(params, config_generation))
       end
