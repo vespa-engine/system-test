@@ -38,7 +38,7 @@ class OnnxModel < PerformanceTest
     total_activate_time = 0.0
     run_count = 3
     run_count.times do |i|
-      out, upload_time, prepare_time, activate_time = deploy_transfered(app_handle, {:separate_upload_and_prepare => true, :collect_timing => true})
+      out, upload_time, prepare_time, activate_time = deploy_transfered(app_handle, {:separate_upload_and_prepare => true, :collect_timing => true, :skip_create_model => true})
       deploy_time = (upload_time + prepare_time + activate_time).to_f
       total_deploy_time = total_deploy_time + deploy_time
       total_upload_time = total_upload_time + upload_time
