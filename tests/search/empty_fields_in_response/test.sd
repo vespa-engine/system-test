@@ -126,6 +126,9 @@ schema test {
     }
 
     # Raw field
+    field raw type raw {
+      indexing: attribute | summary
+    }
     field raw_non_attribute type raw {
       indexing: summary
     }
