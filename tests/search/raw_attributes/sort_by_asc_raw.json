@@ -1,0 +1,66 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 4
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 4,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "id:test:test::1",
+        "relevance": 0.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "test",
+          "documentid": "id:test:test::1",
+          "id": 1,
+          "value": 2
+        }
+      },
+      {
+        "id": "id:test:test::2",
+        "relevance": 0.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "test",
+          "documentid": "id:test:test::2",
+          "raw": "aGVsbG8gd29ybGQ=",
+          "id": 2,
+          "value": 4
+        }
+      },
+      {
+        "id": "id:test:test::0",
+        "relevance": 0.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "test",
+          "documentid": "id:test:test::0",
+          "raw": "dGhpcyBpcyByYXcgZGF0YQ==",
+          "id": 0,
+          "value": 1
+        }
+      },
+      {
+        "id": "id:test:test::3",
+        "relevance": 0.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "test",
+          "documentid": "id:test:test::3",
+          "raw": "dGhpcyBpcyByYXcgZGF0YQ==",
+          "id": 3,
+          "value": 8
+        }
+      }
+    ]
+  }
+}
