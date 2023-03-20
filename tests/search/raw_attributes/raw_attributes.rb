@@ -20,6 +20,10 @@ class RawAttributesTest < IndexedStreamingSearchTest
     assert_grouping('all(group(id) each(output(max(raw))))', selfdir + 'initial_group_by_id.json')
     assert_grouping('all(group(raw) each(output(sum(value))))', selfdir + 'initial_group_by_raw.json')
     feed(:file => selfdir + 'updates.json', :exceptiononfailure => true)
+    assert_field(['dGhpcyBpcyByYXcgZGF0YQ=='], '0')
+    assert_field([nil], '1')
+    assert_field(['aGVsbG8gd29ybGQ='], '2')
+    assert_field(['dGhpcyBpcyByYXcgZGF0YQ=='], '3')
     assert_grouping('all(group(id) each(output(max(raw))))', selfdir + 'final_group_by_id.json')
     assert_grouping('all(group(raw) each(output(sum(value))))', selfdir + 'final_group_by_raw.json')
     assert_sorting('-raw +id', 'sort_by_desc_raw.json')
@@ -46,7 +50,7 @@ class RawAttributesTest < IndexedStreamingSearchTest
 
   def assert_grouping(grouping, file)
     assert_grouping_result('/search/?' + URI.encode_www_form([['hits', '0'], ['query', 'sddocname:test'], ['select', grouping], ['streaming.selection', 'true']]), file)
-  #    my_assert_query('/search/?' + URI.encode_www_form([['hits', '0'], ['yql', 'select * from test where sddocname contains "test" |' + grouping + ';'], ['streaming.selection', 'true']]), file)
+    assert_grouping_result('/search/?' + URI.encode_www_form([['hits', '0'], ['yql', 'select * from test where sddocname contains "test" |' + grouping + ';'], ['streaming.selection', 'true']]), file)
   end
 
   def assert_same_result_sets(exp, act)
