@@ -1,0 +1,59 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 4
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 4,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        },
+        "children": [
+          {
+            "id": "grouplist:raw",
+            "relevance": 1.0,
+            "label": "raw",
+            "children": [
+              {
+                "id": "group:raw:[]",
+                "relevance": 0.0,
+                "value": "[]",
+                "fields": {
+                  "sum(value)": 2
+                }
+              },
+              {
+                "id": "group:raw:[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]",
+                "relevance": 0.0,
+                "value": "[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]",
+                "fields": {
+                  "sum(value)": 4
+                }
+              },
+              {
+                "id": "group:raw:[116, 104, 105, 115, 32, 105, 115, 32, 114, 97, 119, 32, 100, 97, 116, 97]",
+                "relevance": 0.0,
+                "value": "[116, 104, 105, 115, 32, 105, 115, 32, 114, 97, 119, 32, 100, 97, 116, 97]",
+                "fields": {
+                  "sum(value)": 9
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "put": "id:test:test::0",
+    "fields": {
+      "id": 0,
+      "raw": "dGhpcyBpcyByYXcgZGF0YQ==",
+      "value": 1
+    }
+  },
+  {
+    "put": "id:test:test::1",
+    "fields": {
+      "id": 1,
+      "raw": "dGhpcyBpcyByYXcgZGF0YQ==",
+      "value": 2
+    }
+  },
+  {
+    "put": "id:test:test::2",
+    "fields": {
+      "id": 2,
+      "raw": "dGhpcyBpcyByYXcgZGF0YQ==",
+      "value": 4
+    }
+  },
+  {
+    "put": "id:test:test::3",
+    "fields": {
+      "id": 3,
+      "raw": "dGhpcyBpcyByYXcgZGF0YQ==",
+      "value": 8
+    }
+  }
+]
