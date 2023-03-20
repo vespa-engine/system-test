@@ -26,7 +26,7 @@ class GlobalPhaseRanking < IndexedSearchTest
     assert_equal(DOCS, result_sp.hitcount)
     assert_equal(DOCS, result_gp.hitcount)
 
-    fields_to_compare = ["documentid", "source", "relevancy"]
+    fields_to_compare = ["documentid", "relevancy"]
     result_sp.setcomparablefields(fields_to_compare)
     result_gp.setcomparablefields(fields_to_compare)
 
@@ -35,7 +35,7 @@ class GlobalPhaseRanking < IndexedSearchTest
     end
 
     puts "Search with global-phase ranking expression using 'firstPhase'"
-    query = "?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=global_phase_inverse_first_phase"
+    query = "?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=global_phase_inverse_first_phase&summary=minimal"
     assert_result(query, selfdir + "answers/first-phase-as-rank-feature.json", nil, fields_to_compare)
   end
 

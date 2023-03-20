@@ -15,6 +15,10 @@ schema test {
         type: tensor<double>(d0[2],d1[2])
     }
 
+    document-summary minimal {
+        summary documentid type string {}
+    }
+
     rank-profile base {
         onnx-model multiply_add {
             file: files/multiply_add.onnx
