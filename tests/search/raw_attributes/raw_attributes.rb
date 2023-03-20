@@ -26,8 +26,8 @@ class RawAttributesTest < IndexedStreamingSearchTest
     assert_field(['dGhpcyBpcyByYXcgZGF0YQ=='], '3')
     assert_grouping('all(group(id) each(output(max(raw))))', selfdir + 'final_group_by_id.json')
     assert_grouping('all(group(raw) each(output(sum(value))))', selfdir + 'final_group_by_raw.json')
-    assert_sorting('-raw +id', 'sort_by_desc_raw.json')
-    assert_sorting('+raw +id', 'sort_by_asc_raw.json')
+    assert_sorting('-raw +id', selfdir + 'sort_by_desc_raw.json')
+    assert_sorting('+raw +id', selfdir + 'sort_by_asc_raw.json')
   end
 
   def assert_field_helper(exp_value, id, search)
