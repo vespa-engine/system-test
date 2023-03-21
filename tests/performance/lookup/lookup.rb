@@ -60,7 +60,7 @@ class LookupPerformance < PerformanceTest
     num_keys = num_docs*num_values_per_doc
     container.execute("#{tmp_bin_dir}/query #{num_queries} #{keys_per_query} #{num_keys} > #{@queryfile}")
     num_hits = 400
-    ["minimal","array_byte", "array_long"].each do |summary|
+    ["minimal","raw_bytes", "array_byte", "array_long"].each do |summary|
         profiler_start
         run_fbench(container, num_clients, run_time, [parameter_filler('legend', "summary_#{summary}")],
                    {:single_query_file => true, :append_str => "&hits=#{num_hits}&summary=#{summary}&ranking=unranked&wand.type=dotProduct&wand.field=f1_hash"})
