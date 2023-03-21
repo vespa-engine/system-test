@@ -38,7 +38,7 @@ schema msmarco {
         input token_type_ids: token_type_ids
     }
 
-    rank-profile transformer {
+    rank-profile base {
         inputs {
             query(input) tensor<float>(d0[32])
         }
@@ -59,10 +59,24 @@ schema msmarco {
         first-phase {
             expression: bm25(title) + bm25(body)
         }
+    }
+
+    rank-profile transformer-sp inherits base {
 
         # The output of this model is a tensor of size ["batch", 2]
         # Use the probability of the positive sequence classification class as rank score
         second-phase {
+            rerank-count: 10
+            expression: onnx(rank_model){d0:0,d1:1}
+        }
+
+    }
+
+    rank-profile transformer-gp inherits base {
+
+        # The output of this model is a tensor of size ["batch", 2]
+        # Use the probability of the positive sequence classification class as rank score
+        global-phase {
             rerank-count: 10
             expression: onnx(rank_model){d0:0,d1:1}
         }

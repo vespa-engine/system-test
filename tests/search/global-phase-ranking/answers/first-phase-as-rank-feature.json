@@ -5,113 +5,40 @@
     "fields": {
       "totalCount": 5
     },
-    "coverage": {
-      "coverage": 100,
-      "documents": 5,
-      "full": true,
-      "nodes": 1,
-      "results": 1,
-      "resultsFull": 1
-    },
     "children": [
       {
         "id": "id:test:test::5",
         "relevance": 5,
-        "source": "search",
         "fields": {
-          "matchfeatures": {
-            "firstPhase": -5
-          },
-          "sddocname": "test",
-          "documentid": "id:test:test::5",
-          "doc_vec": {
-            "type": "tensor(d0[2])",
-            "values": [
-              1,
-              1
-            ]
-          },
-          "score": 5
+          "documentid": "id:test:test::5"
         }
       },
       {
         "id": "id:test:test::4",
         "relevance": 4,
-        "source": "search",
         "fields": {
-          "matchfeatures": {
-            "firstPhase": -4
-          },
-          "sddocname": "test",
-          "documentid": "id:test:test::4",
-          "doc_vec": {
-            "type": "tensor(d0[2])",
-            "values": [
-              2,
-              2
-            ]
-          },
-          "score": 4
+          "documentid": "id:test:test::4"
         }
       },
       {
         "id": "id:test:test::3",
         "relevance": 3,
-        "source": "search",
         "fields": {
-          "matchfeatures": {
-            "firstPhase": -3
-          },
-          "sddocname": "test",
-          "documentid": "id:test:test::3",
-          "doc_vec": {
-            "type": "tensor(d0[2])",
-            "values": [
-              11,
-              5
-            ]
-          },
-          "score": 3
+          "documentid": "id:test:test::3"
         }
       },
       {
         "id": "id:test:test::2",
         "relevance": 2,
-        "source": "search",
         "fields": {
-          "matchfeatures": {
-            "firstPhase": -2
-          },
-          "sddocname": "test",
-          "documentid": "id:test:test::2",
-          "doc_vec": {
-            "type": "tensor(d0[2])",
-            "values": [
-              1,
-              2
-            ]
-          },
-          "score": 2
+          "documentid": "id:test:test::2"
         }
       },
       {
         "id": "id:test:test::1",
         "relevance": 1,
-        "source": "search",
         "fields": {
-          "matchfeatures": {
-            "firstPhase": -1
-          },
-          "sddocname": "test",
-          "documentid": "id:test:test::1",
-          "doc_vec": {
-            "type": "tensor(d0[2])",
-            "values": [
-              3,
-              7
-            ]
-          },
-          "score": 1
+          "documentid": "id:test:test::1"
         }
       }
     ]
