@@ -12,4 +12,8 @@ schema test {
       indexing: attribute | summary
     }
   }
+  document-summary id {
+    summary id type int {}
+  }
+
 }
