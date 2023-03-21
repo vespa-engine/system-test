@@ -68,8 +68,12 @@ class RawAttributesTest < IndexedStreamingSearchTest
   end
 
   def assert_sorting(sortspec, file)
-    query = "/search/?" + URI.encode_www_form([['query', 'sddocname:test'], ['sortspec', sortspec], ['streaming.selection', 'true']])
+    form = [['query', 'sddocname:test'], ['sortspec', sortspec], ['streaming.selection', 'true']]
+    query = "/search/?" + URI.encode_www_form(form)
     assert_result(query, file, nil, ['id','raw', 'value', 'documentid'])
+    form.push(['summary', 'id'])
+    query = "/search/?" + URI.encode_www_form(form)
+    assert_result(query, file, nil, ['id'])
   end
 
   def teardown
