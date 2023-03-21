@@ -19,6 +19,9 @@ schema test {
     field payload_array_long type array<long> {
       indexing: attribute
     }
+    field payload_raw type raw {
+      indexing: attribute
+    }
   }
   field f1_hash type weightedset<long> {
     indexing: input f1 | attribute
@@ -45,6 +48,10 @@ schema test {
   }
   document-summary minimal {
     summary id type long { source: id }
+  }
+  document-summary raw_bytes {
+    summary id type long { source: id }
+    summary payload_raw type raw { source: payload_raw }
   }
   document-summary array_byte {
     summary id type long { source: id }
