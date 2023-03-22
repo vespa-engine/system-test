@@ -73,7 +73,7 @@ class RawAttributesTest < IndexedStreamingSearchTest
     form = [['query', 'sddocname:test'], ['sortspec', sortspec], ['streaming.selection', 'true']]
     query = "/search/?" + URI.encode_www_form(form)
     assert_result(query, file, nil, ['id','raw', 'value', 'documentid'])
-    form.push(['summary', 'id'])
+    form.push(['summary', is_streaming ? 'id_kludge' : 'id'])
     query = "/search/?" + URI.encode_www_form(form)
     assert_result(query, file, nil, ['id'])
   end

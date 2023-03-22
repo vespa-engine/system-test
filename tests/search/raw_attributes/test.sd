@@ -15,5 +15,11 @@ schema test {
   document-summary id {
     summary id type int {}
   }
+  # Following summary class needed by streaming search when sort blob is
+  # ignored or not available.
+  document-summary id_kludge {
+    summary raw type raw {}
+    summary id type int {}
+  }
 
 }
