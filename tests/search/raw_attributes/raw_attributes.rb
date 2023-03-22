@@ -13,8 +13,8 @@ class RawAttributesTest < IndexedStreamingSearchTest
   def test_raw_attribute
     deploy_app(SearchApp.new.sd(selfdir+'test.sd').enable_document_api)
     start
-    feed_and_wait_for_docs('test', 4, :file => selfdir + 'docs.json')
-    4.times do |id|
+    feed_and_wait_for_docs('test', 5, :file => selfdir + 'docs.json')
+    5.times do |id|
       assert_field(['dGhpcyBpcyByYXcgZGF0YQ=='], id.to_s)
     end
     assert_grouping('all(group(id) each(output(max(raw))))', selfdir + 'initial_group_by_id.json')
@@ -24,6 +24,7 @@ class RawAttributesTest < IndexedStreamingSearchTest
     assert_field([nil], '1')
     assert_field(['aGVsbG8gd29ybGQ='], '2')
     assert_field(['dGhpcyBpcyByYXcgZGF0YQ=='], '3')
+    assert_field(['0IA='], '4')
     assert_grouping('all(group(id) each(output(max(raw))))', selfdir + 'final_group_by_id.json')
     assert_grouping('all(group(raw) each(output(sum(value))))', selfdir + 'final_group_by_raw.json')
     assert_sorting('-raw +id', selfdir + 'sort_by_desc_raw.json')

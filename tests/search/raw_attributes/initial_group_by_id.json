@@ -3,11 +3,11 @@
     "id": "toplevel",
     "relevance": 1.0,
     "fields": {
-      "totalCount": 4
+      "totalCount": 5
     },
     "coverage": {
       "coverage": 100,
-      "documents": 4,
+      "documents": 5,
       "full": true,
       "nodes": 1,
       "results": 1,
@@ -54,6 +54,14 @@
                 "id": "group:long:3",
                 "relevance": 0.0,
                 "value": "3",
+                "fields": {
+                  "max(raw)": "this is raw data"
+                }
+              },
+              {
+                "id": "group:long:4",
+                "relevance": 0.0,
+                "value": "4",
                 "fields": {
                   "max(raw)": "this is raw data"
                 }
