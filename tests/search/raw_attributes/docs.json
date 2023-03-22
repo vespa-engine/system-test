@@ -30,5 +30,13 @@
       "raw": "dGhpcyBpcyByYXcgZGF0YQ==",
       "value": 8
     }
+  },
+  {
+    "put": "id:test:test::4",
+    "fields": {
+      "id": 4,
+      "raw": "dGhpcyBpcyByYXcgZGF0YQ==",
+      "value": 16
+    }
   }
 ]
