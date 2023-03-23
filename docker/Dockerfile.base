@@ -45,6 +45,7 @@ RUN dnf -y install epel-release && \
         rubygem-test-unit \
         sudo \
         wget \
+        zip \
         zstd \
         $(if [[ -e /tmp/include/additional-packages.txt ]]; then echo $(cat /tmp/include/additional-packages.txt | xargs); fi) && \
      alternatives --set java java-17-openjdk.$(arch) && \
