@@ -42,6 +42,8 @@ class GetsDuringStateTransitionsTest < PerformanceTest
                           add('allow_stale_reads_during_cluster_state_transitions', enable_stale_reads).
                           add('use_btree_database', use_btree_db)).
     config(ConfigOverride.new('vespa.config.content.core.stor-server').
+                          add('enable_dead_lock_detector', true).      # TODO temporary for debugging
+                          add('dead_lock_detector_timeout_slack', 60). # TODO temporary for debugging
                           add('simulated_bucket_request_latency_msec', 4000)).
     config(ConfigOverride.new('vespa.config.content.fleetcontroller').
                           add('enable_two_phase_cluster_state_transitions', enable_stale_reads))
