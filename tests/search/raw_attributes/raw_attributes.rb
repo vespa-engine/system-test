@@ -30,6 +30,7 @@ class RawAttributesTest < IndexedStreamingSearchTest
     assert_grouping('all(group(raw) each(output(sum(value))))', selfdir + 'final_group_by_raw.json')
     assert_sorting('-raw +id', selfdir + 'sort_by_desc_raw.json')
     assert_sorting('+raw +id', selfdir + 'sort_by_asc_raw.json')
+    assert_empty_raw_search
   end
 
   def assert_field_helper(exp_value, id, search)
@@ -76,6 +77,14 @@ class RawAttributesTest < IndexedStreamingSearchTest
     form.push(['summary', 'id'])
     query = "/search/?" + URI.encode_www_form(form)
     assert_result(query, file, nil, ['id'])
+  end
+
+  def assert_empty_raw_search
+    form = [['query', 'raw:boom'], ['streaming.selection', 'true']]
+    query = "/search/?" + URI.encode_www_form(form)
+    result = search(query)
+    assert_equal(0, result.hitcount)
+    assert_nil(result.errorlist)
   end
 
   def teardown
