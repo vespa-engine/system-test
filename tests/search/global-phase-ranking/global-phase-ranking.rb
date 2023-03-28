@@ -37,6 +37,10 @@ class GlobalPhaseRanking < IndexedSearchTest
     puts "Search with global-phase ranking expression using 'firstPhase'"
     query = "?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=global_phase_inverse_first_phase&summary=minimal"
     assert_result(query, selfdir + "answers/first-phase-as-rank-feature.json", nil, fields_to_compare)
+
+    puts "Verify global-phase with sorting is preemptively failed"
+    query = "?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=global_phase&sorting=-score"
+    assert_query_errors(query, ['Sorting is not supported with global phase'])
   end
 
   def teardown
