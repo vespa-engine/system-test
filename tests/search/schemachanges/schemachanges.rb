@@ -77,7 +77,6 @@ class SchemaChanges < IndexedSearchTest
     #vespa.adminserver.logctl("searchnode:proton.matching.querynodes", "debug=on")
 
     feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")
-    assert_attribute_exists("[documentmetastore]")
     assert_attribute_not_exists("f2")
     assert_attribute_not_exists("f3")
 
@@ -89,7 +88,6 @@ class SchemaChanges < IndexedSearchTest
     assert_relevancy("sddocname:test&nocache&ranking=rp1", 21, 0)
     assert_relevancy("sddocname:test&nocache&ranking=rp1",  0, 1)
     assert_xml_result_with_timeout(2.0, "f2:%3E20&nocache&ranking=rp1&select=all(group(f2) each(output(count())))&hits=0", @test_dir + "grouping.xml")
-    assert_attribute_exists("[documentmetastore]")
     assert_attribute_exists("f2")
     assert_attribute_not_exists("f3")
 
@@ -99,7 +97,6 @@ class SchemaChanges < IndexedSearchTest
     assert_result("sddocname:test&nocache", @test_dir + "result.2.json", "documentid")
     assert_hitcount("f2:%3E20&nocache", 2)
     assert_hitcount("f3:%3E30&nocache", 1)
-    assert_attribute_exists("[documentmetastore]")
     assert_attribute_exists("f2")
     assert_attribute_exists("f3")
 
@@ -170,7 +167,7 @@ class SchemaChanges < IndexedSearchTest
     feed_and_wait_for_docs("test", 4, :file => selfdir + "add/feed.2.xml")
     assert_result("sddocname:test&nocache", selfdir + "remove/result.2.json", "documentid")
     assert_hitcount("f3:%3E30&nocache", 4)
-    assert_attributes_exist(["[documentmetastore]", "f2", "f3"])
+    assert_attributes_exist(["f2", "f3"])
 
     puts "remove attribute & summary field (f3)"
     redeploy("test.1.sd")
@@ -178,14 +175,14 @@ class SchemaChanges < IndexedSearchTest
     assert_result("sddocname:test&nocache", selfdir + "remove/result.1.json", "documentid")
     assert_hitcount("f3:%3E30&nocache", 0)
     assert_hitcount("f2:%3E20&nocache", 5)
-    assert_attributes_exist(["[documentmetastore]", "f2"])
+    assert_attributes_exist(["f2"])
 
     puts "remove attribute field (f2)"
     redeploy("test.0.sd")
     feed_and_wait_for_docs("test", 6, :file => selfdir + "add/feed.0.xml")
     assert_result("sddocname:test&nocache", selfdir + "remove/result.0.json", "documentid")
     assert_hitcount("f2:%3E20&nocache", 0)
-    assert_attributes_exist(["[documentmetastore]"])
+    assert_attributes_exist([])
 
     restart_proton("test", 6)
     assert_result("sddocname:test&nocache", selfdir + "remove/result.0.json", "documentid")
