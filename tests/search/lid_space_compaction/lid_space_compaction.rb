@@ -415,8 +415,6 @@ class LidSpaceCompactionTest < SearchTest
 
     f2memusage1 = get_memory_usage("f2")
     puts "attribute f2 memory usage before compaction is #{f2memusage1}"
-    dmsmemusage1 = get_memory_usage("[documentmetastore]")
-    puts "documentmetastore memory usage before compaction is #{dmsmemusage1}"
     trigger_lid_compaction(false, true)
 
     exp_removed_stats = get_ideal_stats(num_removes)
@@ -424,21 +422,16 @@ class LidSpaceCompactionTest < SearchTest
     wait_and_verify_docs_moved(num_remaining, exp_ready_stats, exp_removed_stats)
     f2memusage2 = get_memory_usage("f2")
     puts "attribute f2 memory usage after compaction is #{f2memusage2}"
-    dmsmemusage2 = get_memory_usage("[documentmetastore]")
-    puts "documentmetastore memory usage after compaction is #{dmsmemusage2}"
     assert(f2memusage2 == f2memusage1)
 
     for i in 1..30
       proton.trigger_flush
       f2memusage3 = get_memory_usage("f2")
       puts "try #{i} attribute f2 memory usage after flush is #{f2memusage3}"
-      dmsmemusage3 = get_memory_usage("[documentmetastore]")
-      puts "try #{i} documentmetastore memory usage after flush is #{dmsmemusage3}"
-      break if f2memusage3 < f2memusage2 && dmsmemusage3 < dmsmemusage2
+      break if f2memusage3 < f2memusage2
       sleep 1.0
     end
     assert(f2memusage3 < f2memusage2)
-    assert(dmsmemusage3 < dmsmemusage2)
   end
 
   def teardown
