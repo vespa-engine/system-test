@@ -81,6 +81,11 @@ class BucketReadiness < BucketReadinessBase
     wait_for_hitcount(get_query("3"), docs)
     assert_visit_count(3, docs)
 
+    # TODO this is temporary for debugging
+    vespa.storage['mycluster'].set_bucket_crosscheck_params(
+        :dump_distributor_db_states_on_failure => true
+    )
+
     start_and_wait(0)
     wait_for_hitcount(get_query("0,3"), docs)
     assert_visit_count(4, docs)
