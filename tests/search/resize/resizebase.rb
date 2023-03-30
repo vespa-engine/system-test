@@ -183,7 +183,7 @@ module ResizeApps
     end
 
     def slack_mindocs
-      900
+      1100
     end
   end
 
