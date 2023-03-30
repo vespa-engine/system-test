@@ -5,6 +5,7 @@ import com.yahoo.cloud.config.ZookeeperServerConfig;
 import com.yahoo.net.HostName;
 import com.yahoo.vespa.zookeeper.ReconfigurableVespaZooKeeperServer;
 import com.yahoo.vespa.zookeeper.Reconfigurer;
+import com.yahoo.vespa.zookeeper.Sleeper;
 import com.yahoo.vespa.zookeeper.VespaZooKeeperAdminImpl;
 import com.yahoo.vespa.zookeeper.client.ZkClientConfigBuilder;
 import org.apache.zookeeper.CreateMode;
@@ -17,11 +18,11 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.ServerSocket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -58,7 +59,7 @@ public class VespaZooKeeperTest {
      * <p>
      * Throughout all of this, quorum should remain, and the data should remain the same.
      */
-    @Test(timeout = 120_000)
+    @Test(timeout = 300_000)
     public void testReconfiguration() throws ExecutionException, InterruptedException, IOException, KeeperException, TimeoutException {
         List<ZooKeeper> keepers = new ArrayList<>();
         for (int i = 0; i < 8; i++) keepers.add(new ZooKeeper());
@@ -75,6 +76,34 @@ public class VespaZooKeeperTest {
         // Write data to verify later.
         String path = writeData(configs.get(0));
 
+        // Each server restarts, in order.
+        for (int i = 0; i < 3; i++) {
+            keepers.get(i).config = null;
+            keepers.get(i).phaser.arriveAndAwaitAdvance();
+            keepers.get(i).await();
+            keepers.get(i).run();
+            keepers.get(i).config = configs.get(i);
+            keepers.get(i).phaser.arriveAndAwaitAdvance();
+            keepers.get(i).phaser.arriveAndAwaitAdvance();
+        }
+
+        // Verify written data is preserved.
+        verifyData(path, configs.get(0));
+
+        // Simultaneously shut down all servers, to simulate a cluster-wide crash.
+        for (int i = 0; i < 3; i++) keepers.get(i).config = null;
+        for (int i = 0; i < 3; i++) keepers.get(i).phaser.arriveAndAwaitAdvance();
+        for (int i = 0; i < 3; i++) keepers.get(i).await();
+
+        // Cluster is down, now restart it.
+        for (int i = 0; i < 3; i++) keepers.get(i).run();
+        for (int i = 0; i < 3; i++) keepers.get(i).config = configs.get(i);
+        for (int i = 0; i < 3; i++) keepers.get(i).phaser.arriveAndAwaitAdvance();
+        for (int i = 0; i < 3; i++) keepers.get(i).phaser.arriveAndAwaitAdvance();
+
+        // Verify written data is preserved.
+        verifyData(path, configs.get(0));
+
         // Let three new servers join, causing the three older ones to retire and leave the ensemble.
         configs = getConfigs(0, 3, 3, 3);
         for (int i = 0; i < 6; i++) keepers.get(i).config = configs.get(i);
@@ -85,6 +114,21 @@ public class VespaZooKeeperTest {
         for (int i = 0; i < 6; i++) keepers.get(i).phaser.arriveAndAwaitAdvance();
 
         // Verify written data is preserved.
+        verifyData(path, configs.get(3));
+
+        // Old servers simultaneously restart, while the newer servers remain up.
+        for (int i = 0; i < 3; i++) keepers.get(i).config = null;
+        // Let old servers shut down, while the new ones retain their config.
+        for (int i = 0; i < 6; i++) keepers.get(i).phaser.arriveAndAwaitAdvance();
+        for (int i = 0; i < 3; i++) keepers.get(i).await();
+        for (int i = 0; i < 3; i++) keepers.get(i).run();
+        for (int i = 0; i < 3; i++) keepers.get(i).config = configs.get(i);
+        for (int i = 0; i < 3; i++) keepers.get(i).phaser.arriveAndAwaitAdvance();
+        // Wait for old servers to rejoin ensemble, which is now led by one of the new servers.
+        for (int i = 0; i < 6; i++) keepers.get(i).phaser.arriveAndAwaitAdvance();
+
+        // Verify written data is preserved.
+        verifyData(path, configs.get(2));
         verifyData(path, configs.get(3));
 
         // Old servers are removed.
@@ -99,7 +143,6 @@ public class VespaZooKeeperTest {
 
         // Verify written data is preserved.
         verifyData(path, configs.get(3));
-
 
         // Cluster shrinks to a single server.
         configs = getConfigs(5, 0, 1, 0);
@@ -164,7 +207,7 @@ public class VespaZooKeeperTest {
 
         void run() {
             future.set(executor.submit(() -> {
-                Reconfigurer reconfigurer = new Reconfigurer(new VespaZooKeeperAdminImpl());
+                Reconfigurer reconfigurer = new Reconfigurer(new VespaZooKeeperAdminImpl(), new Sleeper(), false, Duration.ofMinutes(3));
                 phaser.arriveAndAwaitAdvance();
                 while (config != null) {
                     new ReconfigurableVespaZooKeeperServer(reconfigurer, config);
@@ -176,7 +219,7 @@ public class VespaZooKeeperTest {
         }
 
         void await() throws ExecutionException, InterruptedException, TimeoutException {
-            future.get().get(30, SECONDS);
+            future.get().get(3000, SECONDS);
         }
     }
 
