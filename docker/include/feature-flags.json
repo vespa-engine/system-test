@@ -34,6 +34,7 @@
         { "id" : "container-shutdown-timeout", "rules" : [ { "value" : 40.0 } ] },
         { "id" : "container-dump-heap-on-shutdown-timeout", "rules" : [ { "value" : true } ] },
         { "id" : "resource-limit-disk", "rules" : [ { "value" : 0.9 } ] },
+        { "id" : "summary-decode-policy", "rules" : [ { "value" : "on-demand" } ] },
         { "id" : "enable-global-phase", "rules" : [ { "value" : true } ] }
     ]
 }
