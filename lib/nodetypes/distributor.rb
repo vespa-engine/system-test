@@ -4,6 +4,12 @@ require 'environment'
 
 class Distributor < VDSNode
 
+  def initialize(*args)
+    super(*args)
+    @remember_last_in_sync_db_state = false
+    @last_in_sync_db_state = nil
+  end
+
   def is_synced?
     statuspage = get_status_page("/distributor?page=buckets")
     if !has_expected_bucket_db_prologue(statuspage)
@@ -19,8 +25,19 @@ class Distributor < VDSNode
     }
 
     @lastidealstatus = count
+    if @remember_last_in_sync_db_state and count == 0
+      @last_in_sync_db_state = statuspage
+    end
 
     return @lastidealstatus == 0
+  end
+
+  def remember_last_in_sync_db_state
+    @remember_last_in_sync_db_state = true
+  end
+
+  def last_in_sync_db_state
+    @last_in_sync_db_state
   end
 
   def has_expected_bucket_db_prologue(statuspage)
