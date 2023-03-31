@@ -422,7 +422,9 @@ class LidSpaceCompactionTest < SearchTest
     wait_and_verify_docs_moved(num_remaining, exp_ready_stats, exp_removed_stats)
     f2memusage2 = get_memory_usage("f2")
     puts "attribute f2 memory usage after compaction is #{f2memusage2}"
-    assert(f2memusage2 == f2memusage1)
+    # Reported memory usage might have increased due to increased
+    # _changes or _data capacity.
+    assert(f2memusage2 >= f2memusage1)
 
     for i in 1..30
       proton.trigger_flush
