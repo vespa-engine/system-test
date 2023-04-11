@@ -23,6 +23,9 @@ class Distributor < VDSNode
         count = count + 1
       end
     }
+    if count == 0
+      count = count_ideal_replicas_not_ready()
+    end
 
     @lastidealstatus = count
     if @remember_last_in_sync_db_state and count == 0
@@ -30,6 +33,29 @@ class Distributor < VDSNode
     end
 
     return @lastidealstatus == 0
+  end
+
+  # Count the number of bucket replicas that _should_ (eventually) be indexed and made
+  # searchable according to the ideal state, but where this currently is not the case.
+  # This works as an implicit barrier to wait for search nodes to asynchronously complete
+  # background bucket moving and search node -> distributor bucket info change notifications.
+  #
+  # This only works reliably as a barrier for non-grouped clusters, as this code does
+  # not have enough knowledge of the group topology and ideal state to make an informed
+  # decision on what _other_ replicas than the first one should be ready.
+  #
+  # Should only be called on a distributor that has finished its regular ideal state
+  # operations.
+  def count_ideal_replicas_not_ready
+    non_ready = 0
+    each_database_bucket do |space, bucket_id, state, raw_state|
+      # Output is in ideal state order, so expect the 1st one to always be ready.
+      # This should generalize to always be true for indexed, store-only, flat and grouped setups.
+      # We'd ideally check the active-flag as well, but clusters without indexed docs will
+      # not activate any replicas.
+      non_ready += 1 if not state[0].ready
+    end
+    non_ready
   end
 
   def remember_last_in_sync_db_state
