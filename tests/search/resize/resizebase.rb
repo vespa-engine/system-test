@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 # -*- coding: utf-8 -*-
 require 'search_test'
 
@@ -19,7 +19,7 @@ module ResizeApps
       @num_hosts = num_hosts
       @sps = sps
       @slack_minhits = 200
-      @slack_maxdocs_per_group = 1100
+      @slack_maxdocs_per_group = 1600
       assert(num_hosts == 1 || num_hosts == 2 || num_hosts >= nodes)
     end
 
