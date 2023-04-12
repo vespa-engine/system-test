@@ -84,7 +84,7 @@ class LidSpaceCompactionTest < SearchTest
 
   def feed_puts(begin_docs, num_docs, preserve_feed_order = false)
     file_name = file_name_puts(begin_docs, num_docs)
-    if (!File.exists?(file_name))
+    if (!File.exist?(file_name))
       gen_puts(begin_docs, num_docs)
     end
     puts "feed_puts(#{begin_docs}, #{num_docs})"
@@ -93,7 +93,7 @@ class LidSpaceCompactionTest < SearchTest
 
   def feed_updates(begin_docs, num_docs, preserve_feed_order = false)
     file_name = file_name_updates(begin_docs, num_docs)
-    if (!File.exists?(file_name))
+    if (!File.exist?(file_name))
       gen_updates(begin_docs, num_docs)
     end
     puts "feed_updates(#{begin_docs}, #{num_docs})"
@@ -102,7 +102,7 @@ class LidSpaceCompactionTest < SearchTest
 
   def feed_removes(begin_docs, end_docs, num_docs, preserve_feed_order = false)
     file_name = file_name_removes(begin_docs, end_docs, num_docs)
-    if (!File.exists?(file_name))
+    if (!File.exist?(file_name))
       gen_removes(begin_docs, end_docs, num_docs)
     end
     puts "feed_removes(#{begin_docs}, #{end_docs}, #{num_docs})"

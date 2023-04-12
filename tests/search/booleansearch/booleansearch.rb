@@ -44,8 +44,8 @@ class BooleanSearchTest < SearchTest
   end
 
   def teardown
-    File.delete(@feed_file) if File.exists?(@feed_file)
-    File.delete(@update_file) if File.exists?(@update_file)
+    File.delete(@feed_file) if File.exist?(@feed_file)
+    File.delete(@update_file) if File.exist?(@update_file)
     stop
   end
 

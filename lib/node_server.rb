@@ -91,7 +91,7 @@ class NodeServer
 
   # Remove temporary file dir
   def remove_tmp_files
-    FileUtils.remove_dir(@testcase.dirs.tmpdir) if File.exists?(@testcase.dirs.tmpdir)
+    FileUtils.remove_dir(@testcase.dirs.tmpdir) if File.exist?(@testcase.dirs.tmpdir)
   end
 
   # Sets the address of the config server in the environment
@@ -478,7 +478,7 @@ class NodeServer
 
   def wait_until_file_exists(filename, timeout)
     timeout.times {
-      if File.exists?(filename)
+      if File.exist?(filename)
         return true
       end
 
@@ -528,7 +528,7 @@ class NodeServer
 
   # Returns the content of _filename_.
   def readfile(filename)
-    if File.exists?(filename)
+    if File.exist?(filename)
       File.open(filename) do |file|
         while buf = file.read(1024*4096)
           yield buf
@@ -542,7 +542,7 @@ class NodeServer
 
   # Removes _filename_.
   def removefile(filename)
-    if File.exists?(filename)
+    if File.exist?(filename)
       File.delete(filename)
     end
   end
@@ -577,7 +577,7 @@ class NodeServer
     execute("cd #{sourcedir}; #{@testcase.maven_command} install #{mvnargs}")
 
     jarfile = sourcedir + "/target/" + File.basename(sourcedir) + ".jar"
-    if !(haspom && File.exists?(jarfile))
+    if !(haspom && File.exist?(jarfile))
       jarfile = sourcedir + "/target/" + bundle.generate_final_name + ".jar"
     end
     bundle = File.open(jarfile)

@@ -55,7 +55,7 @@ module TestBase
   attr_accessor :vespa, :tenant_name, :application_name, :use_shared_configservers, :configserverhostlist
 
   def self.existing_of(dir1, dir2)
-    if File.exists?(dir1)
+    if File.exist?(dir1)
       return dir1;
     else
       return dir2;
