@@ -23,6 +23,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -30,14 +33,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.Phaser;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.IntStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * @author jonmv
@@ -81,6 +85,7 @@ public class VespaZooKeeperTest {
             keepers.get(i).config = null;
             keepers.get(i).phaser.arriveAndAwaitAdvance();
             keepers.get(i).await();
+            waitForPorts(getPorts(configs.get(i).myid()));
             keepers.get(i).run();
             keepers.get(i).config = configs.get(i);
             keepers.get(i).phaser.arriveAndAwaitAdvance();
@@ -219,7 +224,7 @@ public class VespaZooKeeperTest {
         }
 
         void await() throws ExecutionException, InterruptedException, TimeoutException {
-            future.get().get(3000, SECONDS);
+            future.get().get(3000, TimeUnit.SECONDS);
         }
     }
 
@@ -272,6 +277,22 @@ public class VespaZooKeeperTest {
                 ports.add(previousPort = nextPort(previousPort));
         }
         return ports.subList(id * 3 - 3, id * 3);
+    }
+
+    static void waitForPorts(List<Integer> ports) throws InterruptedException {
+        Instant doom = Instant.now().plus(70, ChronoUnit.SECONDS);
+        checkAll:
+        while (true) {
+            for (int port : ports) {
+                try (ServerSocket socket = new ServerSocket(port)) { }
+                catch (IOException e) {
+                    if (Instant.now().isAfter(doom)) fail("Port " + port + " not available after waiting 70 seconds");
+                    Thread.sleep(1000);
+                    continue checkAll;
+                }
+            }
+            return;
+        }
     }
 
     static int nextPort(int previousPort) {
