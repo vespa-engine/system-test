@@ -31,7 +31,7 @@ class VisitDynamicDistributionTest < PersistentProviderTest
 
   def teardown
     begin
-      if File.exists?(@feed_file)
+      if File.exist?(@feed_file)
         File.delete(@feed_file)
       end
       # A bit dirty to do this here since the files/dirs weren't created during setup

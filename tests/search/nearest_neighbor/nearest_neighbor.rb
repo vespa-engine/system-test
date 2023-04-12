@@ -218,7 +218,7 @@ class NearestNeighborTest < IndexedSearchTest
     result = nil
     30.times do
       puts "Checking if hnsw index file '#{file_name}' exists..."
-      result = vespa.adminserver.remote_eval("File.exists?(\"#{file_name}\")")
+      result = vespa.adminserver.remote_eval("File.exist?(\"#{file_name}\")")
       break if result == true
       sleep 1
     end

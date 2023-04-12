@@ -20,7 +20,7 @@ require 'test/yamas_test.rb'
 require 'test/distr_bucketdb_parser_test'
 require 'test/distributionstates_test'
 
-if File.exists?(Environment.instance.vespa_home)
+if File.exist?(Environment.instance.vespa_home)
   # Add tests that require a Vespa installation to run here
   require 'test/ssl_config_test'
 else

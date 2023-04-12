@@ -60,9 +60,9 @@ class SslConfig
   end
 
   def cert_path_contains_certs?
-    File.exists?(@ca_cert) &&
-    File.exists?(@host_cert) &&
-    File.exists?(@host_private_key)
+    File.exist?(@ca_cert) &&
+    File.exist?(@host_cert) &&
+    File.exist?(@host_private_key)
   end
 
   def run_or_fail(cmd)
@@ -80,7 +80,7 @@ class SslConfig
   end
 
   def ensure_cert_path_exists
-    return if Dir.exists? @cert_path
+    return if Dir.exist? @cert_path
     # We want to let any auto-created path be owned by the calling user, but we
     # do not dare do this if we're not the ones creating the path in the first place.
     raise ArgumentError.new("Can't auto-create key/cert directory when path explicitly set") if not @auto_create_path

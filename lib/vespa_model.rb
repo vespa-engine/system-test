@@ -154,7 +154,7 @@ class VespaModel
     vespa_services = tmp_application + "/services.xml"
     validation_overrides = tmp_application + "/validation-overrides.xml"
 
-    if (not File.exists?(vespa_nodes) and @testcase.use_shared_configservers)
+    if (not File.exist?(vespa_nodes) and @testcase.use_shared_configservers)
       outf = File.new(vespa_nodes, "w")
       num_hosts = 1
       if (params[:num_hosts])
@@ -202,8 +202,8 @@ class VespaModel
 
     applicationbuffer = Dir.glob(tmp_application + "/*").join("\n") + "\n"
     applicationbuffer += "services.xml:\n" + File.open(vespa_services, "r").readlines.join('')
-    applicationbuffer += "hosts.xml:\n" + File.open(vespa_nodes, "r").readlines.join('') if File.exists?(vespa_nodes)
-    if (File.exists?(validation_overrides))
+    applicationbuffer += "hosts.xml:\n" + File.open(vespa_nodes, "r").readlines.join('') if File.exist?(vespa_nodes)
+    if (File.exist?(validation_overrides))
       applicationbuffer += "validation-overrides.xml:\n" + File.open(validation_overrides, "r").readlines.join('')
     else
       applicationbuffer += "No validation-overrides.xml\n"
@@ -309,10 +309,10 @@ class VespaModel
 
   def create_tmp_application(application)
     tmp_application = @testcase.dirs.tmpdir+File.basename(application)
-    if File.exists?(tmp_application)
+    if File.exist?(tmp_application)
       FileUtils.rm_rf(tmp_application)
     end
-    if File.exists?(tmp_application)
+    if File.exist?(tmp_application)
       @testcase.output(">>> Unable to properly remove old application")
     end
     FileUtils.cp_r(application, tmp_application)
@@ -387,7 +387,7 @@ class VespaModel
 
   def create_services_xml(applicationbuffer)
     tmp_application = @testcase.dirs.tmpdir+"tmp/generatedapp"
-    if File.exists?(tmp_application)
+    if File.exist?(tmp_application)
       FileUtils.rm_rf(tmp_application)
     end
     FileUtils.mkdir_p(tmp_application)
@@ -947,7 +947,7 @@ class VespaModel
         end
       end
       if not @testcase.keep_tmpdir
-        FileUtils.remove_dir(@testcase.dirs.tmpdir) if File.exists?(@testcase.dirs.tmpdir)
+        FileUtils.remove_dir(@testcase.dirs.tmpdir) if File.exist?(@testcase.dirs.tmpdir)
       else
         @testcase.output("Temporary testdir kept as: #{@testcase.dirs.tmpdir}")
       end
