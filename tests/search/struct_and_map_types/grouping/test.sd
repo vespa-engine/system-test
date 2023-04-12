@@ -28,6 +28,15 @@ schema test {
         indexing: attribute
       }
     }
+    field str_str_map type map<string, string> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value {
+        indexing: attribute
+      }
+    }
     field int_array type array<int> {
       indexing: summary | attribute
     }
