@@ -53,7 +53,7 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
   end
 
   def create_app
-    SearchApp.new.sd(selfdir + "grouping/test.sd")
+    SearchApp.new.sd(selfdir + "grouping/test.sd").threads_per_search(1)
   end
 
   def test_struct_and_map_grouping
