@@ -11,7 +11,7 @@ schema doc {
   }
 
   field tokens type tensor(x[5]) {
-    indexing: input text | embed | attribute | summary
+    indexing: ( input text || "" ) | embed | attribute | summary
   }
 
   rank-profile default {
