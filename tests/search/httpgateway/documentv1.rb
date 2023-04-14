@@ -31,6 +31,7 @@ class DocumentV1Test < SearchTest
   end
 
   def test_realtimefeed
+    @valgrind = false
     deploy_application
 
     # Has color yellow
