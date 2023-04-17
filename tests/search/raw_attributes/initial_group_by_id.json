@@ -31,7 +31,7 @@
                 "relevance": 0.0,
                 "value": "0",
                 "fields": {
-                  "max(raw)": "this is raw data"
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
                 }
               },
               {
@@ -39,7 +39,7 @@
                 "relevance": 0.0,
                 "value": "1",
                 "fields": {
-                  "max(raw)": "this is raw data"
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
                 }
               },
               {
@@ -47,7 +47,7 @@
                 "relevance": 0.0,
                 "value": "2",
                 "fields": {
-                  "max(raw)": "this is raw data"
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
                 }
               },
               {
@@ -55,7 +55,7 @@
                 "relevance": 0.0,
                 "value": "3",
                 "fields": {
-                  "max(raw)": "this is raw data"
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
                 }
               },
               {
@@ -63,7 +63,7 @@
                 "relevance": 0.0,
                 "value": "4",
                 "fields": {
-                  "max(raw)": "this is raw data"
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
                 }
               }
             ]

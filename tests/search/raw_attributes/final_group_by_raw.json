@@ -27,33 +27,33 @@
             "label": "raw",
             "children": [
               {
-                "id": "group:raw:[]",
+                "id": "group:raw:",
                 "relevance": 0.0,
-                "value": "[]",
+                "value": "",
                 "fields": {
                   "sum(value)": 2
                 }
               },
               {
-                "id": "group:raw:[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]",
+                "id": "group:raw:aGVsbG8gd29ybGQ",
                 "relevance": 0.0,
-                "value": "[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]",
+                "value": "aGVsbG8gd29ybGQ",
                 "fields": {
                   "sum(value)": 4
                 }
               },
               {
-                "id": "group:raw:[116, 104, 105, 115, 32, 105, 115, 32, 114, 97, 119, 32, 100, 97, 116, 97]",
+                "id": "group:raw:dGhpcyBpcyByYXcgZGF0YQ",
                 "relevance": 0.0,
-                "value": "[116, 104, 105, 115, 32, 105, 115, 32, 114, 97, 119, 32, 100, 97, 116, 97]",
+                "value": "dGhpcyBpcyByYXcgZGF0YQ",
                 "fields": {
                   "sum(value)": 9
                 }
               },
               {
-                "id": "group:raw:[-48, -128]",
+                "id": "group:raw:0IA",
                 "relevance": 0.0,
-                "value": "[-48, -128]",
+                "value": "0IA",
                 "fields": {
                   "sum(value)": 16
                 }
