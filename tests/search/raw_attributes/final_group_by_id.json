@@ -31,20 +31,23 @@
                 "relevance": 0.0,
                 "value": "0",
                 "fields": {
-                  "max(raw)": "this is raw data"
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
                 }
               },
               {
                 "id": "group:long:1",
                 "relevance": 0.0,
-                "value": "1"
+                "value": "1",
+                "fields": {
+                  "max(raw)": ""
+                }
               },
               {
                 "id": "group:long:2",
                 "relevance": 0.0,
                 "value": "2",
                 "fields": {
-                  "max(raw)": "hello world"
+                  "max(raw)": "aGVsbG8gd29ybGQ"
                 }
               },
               {
@@ -52,7 +55,7 @@
                 "relevance": 0.0,
                 "value": "3",
                 "fields": {
-                  "max(raw)": "this is raw data"
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
                 }
               },
               {
@@ -60,7 +63,7 @@
                 "relevance": 0.0,
                 "value": "4",
                 "fields": {
-                  "max(raw)": "Ѐ"
+                  "max(raw)": "0IA"
                 }
               }
             ]
