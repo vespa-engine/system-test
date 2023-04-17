@@ -27,33 +27,33 @@
             "label": "xorbit(n, 8)",
             "children": [
               {
-                "id": "group:raw:[-128]",
+                "id": "group:raw:gA",
                 "relevance": 7.0,
-                "value": "[-128]",
+                "value": "gA",
                 "fields": {
                   "count()": 4
                 }
               },
               {
-                "id": "group:raw:[1]",
+                "id": "group:raw:AQ",
                 "relevance": 6.0,
-                "value": "[1]",
+                "value": "AQ",
                 "fields": {
                   "count()": 1
                 }
               },
               {
-                "id": "group:raw:[7]",
+                "id": "group:raw:Bw",
                 "relevance": 3.0,
-                "value": "[7]",
+                "value": "Bw",
                 "fields": {
                   "count()": 1
                 }
               },
               {
-                "id": "group:raw:[3]",
+                "id": "group:raw:Aw",
                 "relevance": 2.0,
-                "value": "[3]",
+                "value": "Aw",
                 "fields": {
                   "count()": 1
                 }
