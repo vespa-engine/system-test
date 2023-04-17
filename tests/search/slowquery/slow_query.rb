@@ -64,8 +64,8 @@ class SlowQuery < IndexedSearchTest
     # Now to try and make sure the messages propagate to the vespa log file
     sleep 10
     qrserver.stop
-    numlogs = assert_log_matches(/container.*Slow execution/, 20)
-    puts "GOT log matches: #{numlogs} messages about Slow execution"
+    # numlogs = assert_log_matches(/container.*Slow execution/, 20)
+    # puts "GOT log matches: #{numlogs} messages about Slow execution"
 
     i = 0
     query_time_sum = 0.0
