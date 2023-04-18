@@ -176,7 +176,7 @@ class FeedBlockTest < FeedBlockBase
 
   def run_feed_block_document_v1_api_two_nodes_test(error_msg)
     @num_parts = 2
-    @beforelimit = 36
+    @beforelimit = 37
     # Allow feeding, but with very low multivalue limit, allows @beforelimit docs
     deploy_app_with_low_multivalue_limit
     start
