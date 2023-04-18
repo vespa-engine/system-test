@@ -38,8 +38,8 @@
                     { "address": { "x": "c", "y": "d" }, "value": 13.0 }
                 ]
             },
-	    "raw": "dGhpcyBpcyByYXcgZGF0YQ==",
-	    "raw_non_attribute": "dGhpcyBpcyByYXcgZGF0YQ==",
+	    "raw": "dGhpcyBpcyByYXcgZGF0YQ",
+	    "raw_non_attribute": "dGhpcyBpcyByYXcgZGF0YQ",
 	    "predicate_attribute": "age in [20..29]"
         }
     },

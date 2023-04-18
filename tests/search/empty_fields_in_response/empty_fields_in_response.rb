@@ -77,8 +77,8 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
         ]
       },
       "reference_attribute" => "id:test:parent::normal",
-      "raw" => "dGhpcyBpcyByYXcgZGF0YQ==",
-      "raw_non_attribute" => "dGhpcyBpcyByYXcgZGF0YQ==",
+      "raw" => (is_search ? "dGhpcyBpcyByYXcgZGF0YQ" : "dGhpcyBpcyByYXcgZGF0YQ=="),
+      "raw_non_attribute" => (is_search ? "dGhpcyBpcyByYXcgZGF0YQ" : "dGhpcyBpcyByYXcgZGF0YQ=="),
       "predicate_attribute" => (is_search ? "'age' in [20..29]\n" : "age in [20..29]")
     }
   end

@@ -34,7 +34,7 @@
           "documentid": "id:test:test::2",
           "id": 2,
           "value": 4,
-          "raw": "aGVsbG8gd29ybGQ="
+          "raw": "aGVsbG8gd29ybGQ"
         }
       },
       {
@@ -46,7 +46,7 @@
           "documentid": "id:test:test::0",
           "id": 0,
           "value": 1,
-          "raw": "dGhpcyBpcyByYXcgZGF0YQ=="
+          "raw": "dGhpcyBpcyByYXcgZGF0YQ"
         }
       },
       {
@@ -58,7 +58,7 @@
           "documentid": "id:test:test::3",
           "id": 3,
           "value": 8,
-          "raw": "dGhpcyBpcyByYXcgZGF0YQ=="
+          "raw": "dGhpcyBpcyByYXcgZGF0YQ"
         }
       },
       {
@@ -70,7 +70,7 @@
           "documentid": "id:test:test::4",
           "id": 4,
           "value": 16,
-          "raw": "0IA="
+          "raw": "0IA"
         }
       }
     ]
