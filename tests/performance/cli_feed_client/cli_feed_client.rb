@@ -88,7 +88,25 @@ class CliFeedClientTest < PerformanceTest
     result = vespa.adminserver.readfile(out_file)
     puts("###### STDOUT #####\n#{result}")
     raise "Failed to complete benchmark within 5 minutes" unless complete
-    return JSON.parse(result)
+    return format_output(JSON.parse(result))
+  end
+
+  private
+  def format_output(data)
+    durationMillis = data["feeder.seconds"] * 1000
+    throughput = data["feeder.ok.count"] / durationMillis * 1000
+    {
+      "feeder.runtime" => durationMillis,
+      "feeder.okcount" => data["feeder.ok.count"],
+      "feeder.errorcount" => data["feeder.error.count"],
+      "feeder.exceptions" => data["http.exception.count"],
+      "feeder.bytessent" => data["http.request.bytes"],
+      "feeder.bytesreceived" => data["http.response.bytes"],
+      "feeder.throughput" => throughput,
+      "feeder.minlatency" => data["http.response.latency.millis.min"],
+      "feeder.avglatency" => data["http.response.latency.millis.avg"],
+      "feeder.maxlatency" => data["http.response.latency.millis.max"],
+    }
   end
 
   private
@@ -115,9 +133,7 @@ class CliFeedClientTest < PerformanceTest
     output = deploy_app(SearchApp.new.
       sd(selfdir + 'text.sd').
       container(container_cluster))
-
     start
-
     gw = @vespa.container.values.first
     wait_for_application(gw, output)
     gw
