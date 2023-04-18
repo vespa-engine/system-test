@@ -37,12 +37,7 @@ class CliFeedClientTest < PerformanceTest
     cpu_monitor = Perf::System.new(container_node)
     cpu_monitor.start
     profiler_start
-    feed_file = generate_feed_file(DOCUMENTS, generate_text(size))
-    begin
-      result = run_benchmark_program(container_node, label, size, connections, feed_file.path)
-    ensure
-      feed_file.unlink
-    end
+    result = run_benchmark_program(container_node, label, size, connections, DOCUMENTS)
     profiler_report(label)
     cpu_monitor.end
     write_report(
@@ -64,25 +59,10 @@ class CliFeedClientTest < PerformanceTest
   end
 
   private
-  def generate_feed_file(doc_count, text)
-    file = Tempfile.new("docs.json")
-    begin
-      file.write("[")
-      doc_count.times do |i|
-        id = i + 1
-        file.write("{\"put\":\"id:text:text::vespa-cli-feed-#{'%07d' % id}\",\"fields\":{\"text\":\"#{text}\"}}#{id < doc_count ? ',' : ''}")
-      end
-      file.write("]")
-    ensure
-      file.close
-    end
-    return file
-  end
-
-  private
-  def run_benchmark_program(container_node, label, size, connections, docs_path)
+  def run_benchmark_program(container_node, label, size, connections, doc_count)
     out_file = "#{label}.out"
     err_file = "#{label}.err"
+    feed_file = "#{dirs.tmpdir}/docs_#{doc_count}_#{size}b.json"
     feed_cmd = "env "+
                "VESPA_CLI_DATA_PLANE_TRUST_ALL=true " +
                "VESPA_CLI_DATA_PLANE_CA_CERT_FILE=#{tls_env.ca_certificates_file} " +
@@ -92,8 +72,13 @@ class CliFeedClientTest < PerformanceTest
                "--target=https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/ " +
                "--connections=#{connections} " +
                "--route=#{DUMMY_ROUTE} " +
-               "#{docs_path} " +
+               "#{feed_file} " +
                "1> #{out_file} 2> #{err_file}"
+    vespa.adminserver.write_document_operations(:put,
+                                                { :fields => { :text => generate_text(size) } },
+                                                "id:text:text::vespa-cli-feed-",
+                                                doc_count,
+                                                feed_file)
     pid = vespa.adminserver.execute_bg("exec #{feed_cmd}") # exec to let process inherit the subshell's PID
     thread_pool = Concurrent::FixedThreadPool.new(1)
     thread_pool.post { vespa.adminserver.waitpid(pid) }
