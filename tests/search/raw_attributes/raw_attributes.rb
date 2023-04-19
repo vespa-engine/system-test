@@ -42,12 +42,6 @@ class RawAttributesTest < IndexedStreamingSearchTest
     else
       hit = vespa.document_api_v1.get("#{@id_prefix}#{id}")
       field = hit.fields['raw']
-      if exp_value
-        # TODO Remove this hack once we no longer render raw fields with padding.
-        remain = field[exp_value.length..]
-        assert("====".start_with?(remain))
-        field = field[0, exp_value.length]
-      end
     end
     assert_equal(exp_value, field)
   end
