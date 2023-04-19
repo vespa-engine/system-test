@@ -96,7 +96,7 @@ class Visiting < PerformanceTest
                              parameters: parameters.merge({ :stream => true }))
 
         benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
-                             parameters: parameters.merge({ :wantedDocumentCount => 1024 })) if slices < 8
+                             parameters: parameters.merge({ :wantedDocumentCount => 4096 })) if slices < 8
       end
     end
   end
