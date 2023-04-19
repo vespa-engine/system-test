@@ -11,7 +11,7 @@
     "update": "id:test:test::2",
     "fields": {
       "raw": {
-        "assign": "aGVsbG8gd29ybGQ="
+        "assign": "aGVsbG8gd29ybGQ"
       }
     }
   },
@@ -19,7 +19,7 @@
     "update": "id:test:test::4",
     "fields": {
       "raw": {
-        "assign": "0IA="
+        "assign": "0IA"
       }
     }
   }
