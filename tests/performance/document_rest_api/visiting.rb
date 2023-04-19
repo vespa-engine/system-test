@@ -14,7 +14,7 @@ class Visiting < PerformanceTest
     super
     set_description("Test throughput of visit operations through /document/v1")
     set_owner("jonmv")
-    @document_count = 1 << 21
+    @document_count = 1 << 22
     @document_template = '{ "put": "id:test:test::$seq()", "fields": { "text": "$words(5)", "number": $ints(1, 100) } }'
     @document_update = '{ "fields": { "number": { "increment": 100 } } }'
     @selection_1p = 10.times.map { |i| "test.number % 100 == #{i}" }
