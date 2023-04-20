@@ -64,7 +64,7 @@ class Visiting < PerformanceTest
   
   def run_get_visiting_benchmarks
     { "1-percent" => @selection_1p, "100-percent" => @selection_100p }.each do |s_name, s_value|
-      [[1, 1], [1, 8], [8, 1], [8, 8], [64, 1]].each do |concurrency, slices|
+      [[1, 1], [1, 8], [8, 1], [8, 8], [32, 1]].each do |concurrency, slices|
         parameters = { :timeout => "#{@visit_seconds}s", :cluster => "search", :concurrency => concurrency, :slices => slices }
 
         benchmark_operations(legend: "streamed-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
