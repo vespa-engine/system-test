@@ -1,7 +1,7 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class NearestNeighborTest < IndexedSearchTest
+class NearestNeighborTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
@@ -26,7 +26,7 @@ class NearestNeighborTest < IndexedSearchTest
     feed_docs
 
     run_all_tests
-    assert_flushing_of_hnsw_index
+    assert_flushing_of_hnsw_index unless is_streaming
     restart_proton("test", 10)
     run_all_tests
 
@@ -68,7 +68,7 @@ class NearestNeighborTest < IndexedSearchTest
     start
     feed_docs
     run_multipoint_tests(true)
-    assert_flushing_of_hnsw_index
+    assert_flushing_of_hnsw_index unless is_streaming
     restart_proton("test", 10)
     run_multipoint_tests(true)
     feed_docs
@@ -84,8 +84,16 @@ class NearestNeighborTest < IndexedSearchTest
     assert_multipoint_docs(first_pass, false)
   end
 
+  def only_verify_atleast_hitcount(query_props)
+    # In streaming search we don't control the order in which documents are evaluated,
+    # and more than targetHits are typically returned from the nearestNeighbor operator.
+    # This ensures that we only check the targetHits first documents.
+    query_props[:atleast_hitcount] = true if is_streaming
+  end
+
   def assert_multipoint_docs(first_pass, approx)
     query_props = {:approx => approx.to_s}
+    only_verify_atleast_hitcount(query_props)
     if first_pass
       assert_nearest_docs(query_props, 7, [[0,2,0],[1,3,0],[2,4,0],[3,5,0],[4,6,0],[5,7,0],[6,9,0]], {:x_0 => -2})
       if approx
@@ -99,8 +107,14 @@ class NearestNeighborTest < IndexedSearchTest
     end
   end
 
+  def self.final_test_methods
+    [ "test_nns_via_parent" ]
+  end
+
   def test_nns_via_parent
     set_description('Test the nearest neighbor search operator with imported attribute')
+    # Parent-child is NOT supported in streaming search
+    @params = { :search_type => "ELASTIC" }
     @mixed = false
     deploy_app(SearchApp.new
                  .sd(selfdir + 'campaign.sd', { :global => true })
@@ -116,7 +130,7 @@ class NearestNeighborTest < IndexedSearchTest
   def run_all_tests
     run_brute_force_tests({:query_tensor => "qpos_double"})
     run_brute_force_tests({:query_tensor => "qpos_float"})
-    run_hnsw_tests({:query_tensor => "qpos_double"})
+    run_hnsw_tests({:query_tensor => "qpos_double"}) unless is_streaming
   end
 
   def run_common_tests(query_props)
@@ -144,9 +158,12 @@ class NearestNeighborTest < IndexedSearchTest
   def run_common_or_query_tests(query_props)
     # Using OR query, combining nearest neighbor and text matching.
     # The expected result tuples are specified as [exp_docid,exp_distance,exp_earliness,has_raw_score].
-    # Raw score is only calculated for docid 0 (the closest doc) as we ask for targetHits=1.
+    # Raw score is only calculated for docid 0 (the closest doc) as we ask for targetHits=1 (and distanceThreshold=2 in the streaming search case).
+    # With distanceThreshold set we ensure that only docid 0 is returned by the nearestNeighbor operator,
+    # and this is needed when using streaming search as we cannot control the order in which documents are evaluated.
     # For all other documents the distance / closeness is calculated on the fly by the rank features.
     query_props[:x_0] = -2
+    query_props[:distance_threshold] = 2.0 if is_streaming
     assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[6,8,0.2,false]], {:text => "6", :combined => true})
     assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[7,9,0.2,false]], {:text => "7", :combined => true})
     assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[8,10,0.2,false]], {:text => "8", :combined => true})
@@ -156,12 +173,14 @@ class NearestNeighborTest < IndexedSearchTest
     assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[1,3,0.8,false],[6,8,0.6,false]], {:text => "1", :combined => true})
     assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[2,4,0.6,false],[7,9,0.4,false]], {:text => "2", :combined => true})
 
+    query_props[:distance_threshold] = 99.0 if is_streaming
     assert_nearest_docs(query_props, 1, [[7,106,0.2,false],[0,99,0.0,true]], {:text => "7", :combined => true, :x_0 => -99})
   end
 
 
   def run_brute_force_tests(query_props)
     query_props[:approx] = "false"
+    only_verify_atleast_hitcount(query_props)
     run_common_tests(query_props)
     run_common_and_query_tests(query_props)
     run_common_or_query_tests(query_props)
@@ -267,7 +286,7 @@ class NearestNeighborTest < IndexedSearchTest
       end
       vespa.document_api_v1.put(doc)
     end
-    wait_for_hitcount('?query=sddocname:test', 10)
+    wait_for_hitcount('?query=sddocname:test&streaming.selection=true', 10)
   end
 
   def feed_assign_updates
@@ -306,16 +325,20 @@ class NearestNeighborTest < IndexedSearchTest
     wait_for_hitcount('?query=sddocname:ad', 10)
   end
 
-  def assert_nearest_docs(setup, target_num_hits, exp_results, overrides = {})
+  def assert_nearest_docs(setup, target_hits, exp_results, overrides = {})
     query_props = setup.merge(overrides)
-    query_props[:target_num_hits] = target_num_hits
+    query_props[:target_hits] = target_hits
     query_props[:query_tensor] ||= 'qpos_double'
     query_props[:doc_tensor] ||= 'pos'
     query = get_query(query_props)
     puts "assert_nearest_docs(): query='#{query}'"
     result = search(query)
     puts "result:"
-    assert_hitcount(result, exp_results.length)
+    if query_props[:atleast_hitcount]
+      assert(result.hitcount >= exp_results.length)
+    else
+      assert_hitcount(result, exp_results.length)
+    end
     for i in 0...exp_results.length do
       assert_single_doc(exp_results[i], result, i, query_props)
     end
@@ -331,7 +354,7 @@ class NearestNeighborTest < IndexedSearchTest
       exp_earliness = exp_result[2]
       has_raw_score = exp_result[3]
       exp_raw_score = has_raw_score ? exp_closeness : 0
-      # This matches the expression used i rank-profile 'combined'
+      # This matches the expression used in rank-profile 'combined'
       exp_score = 10 * exp_closeness + exp_earliness
       exp_features = { "distance(#{doc_tensor})" => exp_distance,
                        "distance(label,nns)" => exp_distance,
@@ -370,21 +393,24 @@ class NearestNeighborTest < IndexedSearchTest
   def get_query(qprops)
     x_0 = qprops[:x_0] || 0
     x_1 = qprops[:x_1] || X_1_POS
-    target_num_hits = qprops[:target_num_hits] || 10
+    target_hits = qprops[:target_hits] || 10
     query_tensor = qprops[:query_tensor]
     doc_tensor = qprops[:doc_tensor]
     doc_type = qprops[:doc_type]
     approx = qprops[:approx]
+    distance_threshold = qprops[:distance_threshold]
     filter = qprops[:filter]
     text = qprops[:text]
 
-    result = "yql=select * from sources * where {targetNumHits: #{target_num_hits},"
+    result = "yql=select * from sources * where {targetHits: #{target_hits},"
     result += "approximate: #{approx}," if approx
+    result += "distanceThreshold: #{distance_threshold}," if distance_threshold
     result += "label: \"nns\"} nearestNeighbor(#{doc_tensor},#{query_tensor})"
     result += " and filter contains \"#{filter}\"" if filter
     result += " or text contains \"#{text}\"" if text
-    result += "&ranking.features.query(#{query_tensor})={{x:0}:#{x_0},{x:1}:#{x_1}}"
+    result += "&ranking.features.query(#{query_tensor})=[#{x_0},#{x_1}]"
     result += "&ranking.profile=combined" if qprops[:combined]
+    result += "&streaming.selection=true"
     return result
   end
 

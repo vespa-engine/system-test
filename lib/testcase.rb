@@ -989,7 +989,7 @@ class TestCase
     end
     node.stop
     node.start
-    wait_for_hitcount("sddocname:#{doc_type}&nocache", exp_hits, 180)
+    wait_for_hitcount("sddocname:#{doc_type}&nocache&streaming.selection=true", exp_hits, 180)
   end
 
 end
