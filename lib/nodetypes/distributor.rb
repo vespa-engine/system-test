@@ -11,10 +11,16 @@ class Distributor < VDSNode
   end
 
   def is_synced?
+    state = get_sync_state
+    return state == nil
+  end
+
+  def get_sync_state
+    result = []
     statuspage = get_status_page("/distributor?page=buckets")
     if !has_expected_bucket_db_prologue(statuspage)
       testcase.output('NOTE: bucket DB status page did not have expected format, retrying...')
-      return false
+      return result.push(statuspage)
     end
 
     count = 0
@@ -24,7 +30,11 @@ class Distributor < VDSNode
       end
     }
     if count == 0
-      count = count_ideal_replicas_not_ready()
+      not_ready = get_ideal_replicas_not_ready()
+      count = not_ready.size / 2
+      result.push(not_ready) if count > 0
+    else
+      result.push(statuspage)
     end
 
     @lastidealstatus = count
@@ -32,7 +42,8 @@ class Distributor < VDSNode
       @last_in_sync_db_state = statuspage
     end
 
-    return @lastidealstatus == 0
+    return nil if @lastidealstatus == 0 
+    return result
   end
 
   # Count the number of bucket replicas that _should_ (eventually) be indexed and made
@@ -47,13 +58,17 @@ class Distributor < VDSNode
   # Should only be called on a distributor that has finished its regular ideal state
   # operations.
   def count_ideal_replicas_not_ready
-    non_ready = 0
+    get_ideal_replicas_not_ready().size/2
+  end
+
+  def get_ideal_replicas_not_ready
+    non_ready = []
     each_database_bucket do |space, bucket_id, state, raw_state|
       # Output is in ideal state order, so expect the 1st one to always be ready.
       # This should generalize to always be true for indexed, store-only, flat and grouped setups.
       # We'd ideally check the active-flag as well, but clusters without indexed docs will
       # not activate any replicas.
-      non_ready += 1 if not state[0].ready
+      non_ready.push(bucket_id, state) if not state[0].ready
     end
     non_ready
   end
@@ -76,9 +91,11 @@ class Distributor < VDSNode
     progressTimeInc = 5;
     nextProgressTime = Time.now + progressTimeInc
     endTime = Time.now + timeout
+    state = nil
     while (endTime >= Time.now)
       begin
-        if is_synced?
+        state = get_sync_state
+        if state == nil
           return true
         end
       rescue Errno::ECONNREFUSED
@@ -86,11 +103,11 @@ class Distributor < VDSNode
       end
       if (Time.now >= nextProgressTime)
         nextProgressTime += progressTimeInc
-        testcase.output(@lastidealstatus)
+        testcase.output("not_ready_count = #{@lastidealstatus} : state = #{state.to_s}")
       end
       sleep 0.1
     end
-    raise "Distributor did not get in sync within timeout of #{timeout} seconds:\n#{@lastidealstatus}"
+    raise "Distributor did not get in sync within timeout of #{timeout} seconds: #{@lastidealstatus}  : state = #{state[0].to_s}"
   end
 
   def with_status_page(relative_url)
