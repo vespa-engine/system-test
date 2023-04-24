@@ -89,6 +89,7 @@ class FastAccessAttributesTest < SearchTest
 
   def enable_debug
     vespa.adminserver.logctl("distributor:distributor.stripe_bucket_db_updater", "debug=on,spam=on")
+    vespa.adminserver.logctl("distributor2:distributor.stripe_bucket_db_updater", "debug=on,spam=on")
     vespa.adminserver.logctl("searchnode:persistence.filestor.modifiedbucketchecker", "debug=on,spam=on")
     vespa.adminserver.logctl("searchnode:persistence.bucketownershipnotifier", "debug=on,spam=on")
     vespa.adminserver.logctl("searchnode:persistence.persistencehandler", "debug=on")
