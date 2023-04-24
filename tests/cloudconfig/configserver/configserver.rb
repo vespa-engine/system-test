@@ -27,7 +27,7 @@ class ConfigServer < CloudConfigTest
     assert_match("age", get_document_config())
 
     # deploy a new app, but do not activate config
-    deploy_app(SearchApp.new.sd(selfdir+"sd-extend/banana.sd"), :no_activate => true)
+    deploy_app(SearchApp.new.sd(selfdir+"sd-extend/banana.sd"), {:no_activate => true, :skip_create_model => true})
 
     # restart configserver and keep zookeeper data
     restart_config_server(vespa.configservers["0"], :keep_zookeeper_data => true)
@@ -59,7 +59,7 @@ class ConfigServer < CloudConfigTest
     
     (0..15).each do |i|
       # deploy a new app, but do not activate config
-      deploy_app(SearchApp.new.sd(selfdir+"sd-extend/banana.sd"), :no_activate => true)
+      deploy_app(SearchApp.new.sd(selfdir+"sd-extend/banana.sd"), {:no_activate => true, :skip_create_model => true})
     end
 
     # restart configserver and keep zookeeper data
@@ -139,6 +139,7 @@ class ConfigServer < CloudConfigTest
     end
  
     puts "Fix broken app"
+    vespa.configservers["0"].execute("vespa-logctl -c configserver:com.yahoo.vespa.config.server.ConfigServerBootstrap debug=on", :exceptiononfailure => false)
     vespa.configservers["0"].execute("cp #{services_xml}.bak #{services_xml}") # Go back to original services.xml, server should come up again
     wait_for_atleast_log_matches("All applications redeployed successfully", 1, 240)
     assert_health_status_for_config_server("up")
@@ -246,7 +247,14 @@ ENDER
     @configserver.ping_configserver
 
     pid = @configserver.get_configserver_pid
-    command = "/usr/bin/sudo -u #{Environment.instance.vespa_user} jinfo -sysprops #{pid.to_s} 2>&1 | grep jute.maxbuffer"
+
+    case vespa.adminserver.execute("whoami").strip
+    when "root"
+      sudo_cmd = "/usr/bin/sudo -u #{Environment.instance.vespa_user}"
+    else
+      sudo_cmd = ""
+    end
+    command = "#{sudo_cmd} jinfo -sysprops #{pid.to_s} 2>&1 | grep jute.maxbuffer"
     assert_equal('jute.maxbuffer=12345', vespa.adminserver.execute(command).strip)
 
     remove_xml_file_from_configserver_app(@configserver, override, "jutemaxbuffer.xml")

@@ -1,0 +1,73 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema test {
+  document test {
+    field filter type int {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field pos type tensor(a{},x[2]) {
+      indexing: attribute | index | summary
+      # attribute: fast-rank
+      index {
+        hnsw {
+          max-links-per-node: 4
+        }
+      }
+    }
+    field text type string {
+      indexing: index | summary
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(qpos_double) tensor<double>(x[2])
+      query(qpos_float) tensor<float>(x[2])
+    }
+    function euclidean_distance_qpos_double() {
+      expression: sqrt(sum(join(query(qpos_double), attribute(pos), f(x,y)((x-y)*(x-y)))))
+    }
+    function euclidean_distance_qpos_float() {
+      expression: sqrt(sum(join(query(qpos_float), attribute(pos), f(x,y)((x-y)*(x-y)))))
+    }
+    function label_value() {
+      expression: sum(tensor(a{}):{{a:"0"}:100,{a:"1"}:101,{a:"2"}:102}*closest(pos))
+    }
+    first-phase {
+      expression: 15 - distance(label,nns)
+    }
+    summary-features {
+      euclidean_distance_qpos_double
+      euclidean_distance_qpos_float
+      label_value
+      distance(pos)
+      distance(label,nns)
+      closeness(pos)
+      closeness(label,nns)
+      closest(pos)
+      closest(pos,nns)
+      rawScore(pos)
+      itemRawScore(nns)
+    }
+  }
+  rank-profile combined {
+    inputs {
+      query(qpos_double) tensor<double>(x[2])
+      query(qpos_float) tensor<float>(x[2])
+    }
+    first-phase {
+      expression: 10*closeness(label,nns) + fieldMatch(text).earliness
+    }
+    summary-features {
+      distance(pos)
+      distance(label,nns)
+      closeness(pos)
+      closeness(label,nns)
+      closest(pos)
+      closest(pos,nns)
+      rawScore(pos)
+      itemRawScore(nns)
+      fieldMatch(text).earliness
+    }
+  }
+}

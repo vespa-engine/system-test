@@ -1,0 +1,67 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 5
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 5,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        },
+        "children": [
+          {
+            "id": "grouplist:raw",
+            "relevance": 1.0,
+            "label": "raw",
+            "children": [
+              {
+                "id": "group:raw:",
+                "relevance": 0.0,
+                "value": "",
+                "fields": {
+                  "sum(value)": 2
+                }
+              },
+              {
+                "id": "group:raw:aGVsbG8gd29ybGQ",
+                "relevance": 0.0,
+                "value": "aGVsbG8gd29ybGQ",
+                "fields": {
+                  "sum(value)": 4
+                }
+              },
+              {
+                "id": "group:raw:dGhpcyBpcyByYXcgZGF0YQ",
+                "relevance": 0.0,
+                "value": "dGhpcyBpcyByYXcgZGF0YQ",
+                "fields": {
+                  "sum(value)": 9
+                }
+              },
+              {
+                "id": "group:raw:0IA",
+                "relevance": 0.0,
+                "value": "0IA",
+                "fields": {
+                  "sum(value)": 16
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

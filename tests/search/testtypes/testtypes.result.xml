@@ -9,7 +9,7 @@
     <field name="longfield">10098765432100</field>
     <field name="floatfield">1975.18</field>
     <field name="doublefield">1975.181987234561</field>
-    <field name="rawfield">dGhpcyBpcyByYXcgZGF0YQ==</field>
+    <field name="rawfield">dGhpcyBpcyByYXcgZGF0YQ</field>
     <field name="timefield">1087203341</field>
     <field name="bytefield">37</field>
     <field name="boolfield">true</field>

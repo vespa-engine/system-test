@@ -77,7 +77,8 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
         ]
       },
       "reference_attribute" => "id:test:parent::normal",
-      "raw_non_attribute" => "dGhpcyBpcyByYXcgZGF0YQ==",
+      "raw" => "dGhpcyBpcyByYXcgZGF0YQ",
+      "raw_non_attribute" => "dGhpcyBpcyByYXcgZGF0YQ",
       "predicate_attribute" => (is_search ? "'age' in [20..29]\n" : "age in [20..29]")
     }
   end
@@ -128,6 +129,7 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
         "byte_attribute" => -128,
         "byte_non_attribute" => -128,
         # Empty raw field is not an empty value
+        "raw" => "",
         "raw_non_attribute" => ""
       }
     else
@@ -202,6 +204,7 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
       "map_non_attribute_filtered",
       "tensor_attribute",
       "tensor_non_attribute",
+      "raw",
       "raw_non_attribute",
       "predicate_attribute"
     ]

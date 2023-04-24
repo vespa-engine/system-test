@@ -27,25 +27,25 @@
             "label": "cat(a, b, c)",
             "children": [
               {
-                "id": "group:raw:[97, 50, 98, 52, 99, 54]",
+                "id": "group:raw:YTJiNGM2",
                 "relevance": 7.0,
-                "value": "[97, 50, 98, 52, 99, 54]",
+                "value": "YTJiNGM2",
                 "fields": {
                   "count()": 1
                 }
               },
               {
-                "id": "group:raw:[]",
+                "id": "group:raw:",
                 "relevance": 6.0,
-                "value": "[]",
+                "value": "",
                 "fields": {
                   "count()": 5
                 }
               },
               {
-                "id": "group:raw:[97, 49, 98, 49, 99, 51]",
+                "id": "group:raw:YTFiMWMz",
                 "relevance": 2.0,
-                "value": "[97, 49, 98, 49, 99, 51]",
+                "value": "YTFiMWMz",
                 "fields": {
                   "count()": 1
                 }

@@ -1,37 +1,25 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'environment'
+require 'json'
 
 module Yamas
 
-  # parse YAMAS message format as ouput from the yms_check_vespa binary.
-  # The data is not valid Json, so need to parse the parts that are Json
-  # separately (the parts are separated by newline)
-  def parseMessages(data)
+  def parseMetrics(data)
     return [] if data.empty?
-    buffer = ""
+
+    json = JSON.parse(data)
     messages = []
-    
-    data.split("\n").each do |line|
-      if line == ""
-        messages.push(JSON.parse(buffer))
-        buffer = ""
-      else
-        buffer = buffer + line
-      end
-    end
-    unless buffer == ""
-      messages.push(JSON.parse(buffer))
+    json['metrics'].each do |metric|
+        messages.push(metric)
     end
     messages
   end
 
-  # Execute yms_check_vespa on the given node for service e.g vespa.qrserver
+  # Get Yamas-formatted metric values (from metrics proxy on that node, listening on port 19092)
   def get_yamas_metrics_yms(node,service,params={})
-    ret = node.execute("#{Environment.instance.vespa_home}/libexec/yms/yms_check_vespa " + service , params.merge({:exitcode => true, :noecho => true}))
-    data = ret[1]
-    messages = parseMessages(data)
-    return messages
+    response = @https_client.get(node.hostname, 19092, "/yamas/v1/values")
+    parseMetrics(response.body)
   end
 
   # Get the float associated with a metric name in a set of YAMAS

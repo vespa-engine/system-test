@@ -168,7 +168,7 @@ Uploading application '#{@app_path}' using.*
 Retrying with another config server.*
 Uploading application '#{@app_path}' using.*
 Session #{@session_id} for tenant 'default' created..*
-Preparing session #{@session_id} using.*
+Preparing session #{@session_id} using.*\\n?.*
 Session #{@session_id} for tenant 'default' prepared..*
 EOS
     assert_match(Regexp.new(expected), output)
@@ -176,7 +176,7 @@ EOS
   end
 
   def test_deploy_app_with_symbolic_link
-    (exitcode, output) = execute(@node, "cd #{dirs.tmpdir}; mkdir app_with_symbolic_link; cd app_with_symbolic_link; sudo ln -s ../base/services.xml .; ls -l; cd ..; vespa-deploy -v prepare app_with_symbolic_link")
+    (exitcode, output) = execute(@node, "cd #{dirs.tmpdir}; mkdir app_with_symbolic_link; cd app_with_symbolic_link; ln -s ../base/services.xml .; ls -l; cd ..; vespa-deploy -v prepare app_with_symbolic_link")
     assert_equal(0, exitcode.to_i)
   end
 
@@ -229,7 +229,7 @@ EOS
 
   def create_expected_prepare_output()
     expected = <<EOS;
-Preparing session #{@session_id} using #{@session_path}/#{@session_id}/prepared.*
+Preparing session #{@session_id} using #{@session_path}/#{@session_id}/prepared\\n?.*
 Session #{@session_id} for tenant '#{@tenant}' prepared.
 EOS
     Regexp.new(expected)

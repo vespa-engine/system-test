@@ -13,6 +13,15 @@ schema test {
       indexing: attribute
       attribute: fast-search
     }
+    field payload_array_byte type array<byte> {
+      indexing: attribute
+    }
+    field payload_array_long type array<long> {
+      indexing: attribute
+    }
+    field payload_raw type raw {
+      indexing: attribute
+    }
   }
   field f1_hash type weightedset<long> {
     indexing: input f1 | attribute
@@ -39,5 +48,17 @@ schema test {
   }
   document-summary minimal {
     summary id type long { source: id }
+  }
+  document-summary raw_bytes {
+    summary id type long { source: id }
+    summary payload_raw type raw { source: payload_raw }
+  }
+  document-summary array_byte {
+    summary id type long { source: id }
+    summary payload_array_byte type array<byte> { source: payload_array_byte }
+  }
+  document-summary array_long {
+    summary id type long { source: id }
+    summary payload_array_long type array<long> { source: payload_array_long }
   }
 }

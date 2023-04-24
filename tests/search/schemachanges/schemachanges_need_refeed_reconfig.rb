@@ -94,10 +94,12 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")
 
     @params[:search_type] = "ELASTIC"
+    vespa.stop_base # Indexing mode change leads to changed config id for search nodes, a restart is required
     redeploy_output = deploy_app(app)
     gen = get_generation(redeploy_output).to_i
     assert_match(/Document type 'test' in cluster 'search' changed indexing mode from 'streaming' to 'indexed'/, redeploy_output)
 
+    start
     wait_for_convergence(gen)
 
     # Feed should be accepted

@@ -31,6 +31,7 @@ class DocumentV1Test < SearchTest
   end
 
   def test_realtimefeed
+    @valgrind = false
     deploy_application
 
     # Has color yellow
@@ -279,10 +280,12 @@ class DocumentV1Test < SearchTest
     end
     assert_equal(0, found)
 
-    assert(verify_with_retries(http,
-                               { "PUT" => 3506, "UPDATE" => 3, "REMOVE" => 3 },
-                               { "PUT" => 2 },
-                               { "httpapi_condition_not_met" => 3, "httpapi_not_found" => 1, "httpapi_succeeded" => 3508 }))
+    assert(verify_with_retries(
+             http,
+             { "PUT" => 3504, "UPDATE" => 3, "REMOVE" => 2 },
+             { "PUT" => 2 },
+             { "PUT" => 2, "REMOVE" => 1 },
+             { "httpapi_condition_not_met" => 3, "httpapi_not_found" => 1, "httpapi_succeeded" => 3508 }))
   end
 
   def deploy_application
@@ -301,28 +304,31 @@ class DocumentV1Test < SearchTest
     http
   end
 
-  def verify_with_retries(http, success_ops, failed_ops, http_api_metrics)
+  def verify_with_retries(http, success_ops, failed_ops, condition_failed_ops, http_api_metrics)
     for i in 0..10
-      if verify_metrics(http, success_ops, failed_ops, http_api_metrics)
+      if verify_metrics(http, success_ops, failed_ops, condition_failed_ops, http_api_metrics)
         return true
       end
       sleep(0.5)
     end
-    return verify_metrics(http, success_ops, failed_ops, http_api_metrics, true)
+    return verify_metrics(http, success_ops, failed_ops, condition_failed_ops, http_api_metrics, true)
   end
 
-  def verify_metrics(http, success_ops, failed_ops, http_api_metrics, errors = false)
+  def verify_metrics(http, success_ops, failed_ops, condition_failed_ops, http_api_metrics, errors = false)
     metrics_json = JSON.parse(http.get("/state/v1/metrics").body)
     metrics = metrics_json["metrics"]["values"]
 
-    expect_metrics = {"OK" => success_ops, "REQUEST_ERROR" => failed_ops}
-    actual_metrics = {"OK" => {}, "REQUEST_ERROR" => {}}
+    expect_metrics = {"OK" => success_ops, "REQUEST_ERROR" => failed_ops, "CONDITION_FAILED" => condition_failed_ops}
+    actual_metrics = {}
     actual_http_metrics = {}
     for metric in metrics
       if metric["name"] == "feed.operations"
         status = metric["dimensions"]["status"]
         operation = metric["dimensions"]["operation"]
         value = metric["values"]["count"]
+        unless actual_metrics.has_key?(status)
+          actual_metrics[status] = {}
+        end
         actual_metrics[status][operation] = value
       end
       if http_api_metrics.has_key? metric["name"]

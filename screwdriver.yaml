@@ -15,13 +15,18 @@ jobs:
       USER_SHELL_BIN: bash
       RUBYLIB: $SD_SOURCE_DIR/lib
     steps:
-      - run-tests: |
+      - require-test-files: |
+          export VESPA_FACTORY_NO_AUTORUNNER=1
+          for FILE in $(find tests -name "*.rb"); do
+            ruby  -I lib -I tests -I . -e "require '$FILE'"
+          done
+      - run-unit-tests: |
           set -e
           cd ${RUBYLIB}
           ruby test/testrunner.rb
           exit $?
 
-  systemtest-base-centos7:
+  systemtest-base-centos-stream8:
     requires: [~pr, ~commit]
     sourcePaths: ["docker/"]
     annotations:

@@ -7,11 +7,6 @@ class ConcreteDocs < SearchTest
     set_owner('musum')
   end
 
-  # TODO: Remove after debugging has finished (after June 2022)
-  def can_share_configservers?(method_name=nil)
-    false
-  end
-
   def test_concrete_docs
     add_bundle_dir(File.expand_path(selfdir + '/concretedocs2'), 'concretedocs2')
     add_bundle_dir(File.expand_path(selfdir + '/concretedocs'), 'concretedocs')

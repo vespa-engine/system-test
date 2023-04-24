@@ -38,7 +38,8 @@
                     { "address": { "x": "c", "y": "d" }, "value": 13.0 }
                 ]
             },
-	    "raw_non_attribute": "dGhpcyBpcyByYXcgZGF0YQ==",
+	    "raw": "dGhpcyBpcyByYXcgZGF0YQ",
+	    "raw_non_attribute": "dGhpcyBpcyByYXcgZGF0YQ",
 	    "predicate_attribute": "age in [20..29]"
         }
     },
@@ -68,6 +69,7 @@
             "weightedset_attribute_filtered": {},
             "map_attribute_filtered": {},
             "map_non_attribute_filtered": {},
+            "raw": "",
             "raw_non_attribute": ""
         }
     },
@@ -100,6 +102,7 @@
             "map_non_attribute_filtered": null,
             "tensor_attribute": null,
             "tensor_non_attribute": null,
+            "raw": null,
             "raw_non_attribute": null,
             "predicate_attribute": null
         }

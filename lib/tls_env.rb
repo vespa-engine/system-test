@@ -76,7 +76,7 @@ class TlsEnv
     tls_config_file = ENV[CONFIG_FILE_ENV_VAR]
     default_env = DefaultEnvFile.new(Environment.instance.vespa_home)
     default_env_file = default_env.file_name
-    if File.exists?(default_env_file) and File.writable?(default_env_file) and File.writable?(File.dirname(default_env_file))
+    if File.exist?(default_env_file) and File.writable?(default_env_file) and File.writable?(File.dirname(default_env_file))
       if tls_config_file and File.exist?(tls_config_file) and not ENV[DISABLE_TLS_ENV_VAR]
         default_env.set(CONFIG_FILE_ENV_VAR, tls_config_file, 'fallback')
       else

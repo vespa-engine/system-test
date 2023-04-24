@@ -17,9 +17,11 @@ class EventLoggingTest < IndexedSearchTest
     count = 4
     do_queries(count)
     wait_for_event_count(count)
+    container = vespa.container.values.first
+    assert_equal("foo", get_last_blob(container.http_get2("/events")))
 
     deploy_output = deploy(selfdir + "application_slow_receiver/", selfdir + 'schemas/music.sd')
-    wait_for_application(vespa.container.values.first, deploy_output)
+    wait_for_application(container, deploy_output)
 
     count = 100
     do_queries(count)
@@ -47,6 +49,10 @@ class EventLoggingTest < IndexedSearchTest
 
   def get_event_count(result)
     JSON.parse(result.body)['count']
+  end
+
+  def get_last_blob(result)
+    JSON.parse(result.body)['lastBlob']
   end
 
   def do_queries(n)

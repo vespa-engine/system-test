@@ -196,7 +196,7 @@ void print_queries(std::ostream& os, RandomStrings& models, RandomStrings& categ
 }
 
 void print_usage(char* argv[]) {
-    std::cerr << argv[0] << " [-o num_ops] [-f field_name] [-s (label as string)]" << std::endl;
+    std::cerr << argv[0] << " [-o num_ops] [-f field_name]" << std::endl;
     std::cerr << "    puts | updates <type> | queries <type> " << std::endl;
 }
 
@@ -210,14 +210,11 @@ int main (int argc, char* argv[]) {
 
     size_t num_ops = 2;
     std::string field = "all";
-    bool label_as_number_string = true;
+    bool label_as_number_string = false;
 
     char c;
     while ((c = getopt(argc, argv, "shc:d:f:o:v:")) != static_cast<char>(-1)) {
         switch (c) {
-        case 's':
-            label_as_number_string = false;
-            break;
         case 'c':
             num_cats = strtoul(optarg, nullptr, 0);
             break;

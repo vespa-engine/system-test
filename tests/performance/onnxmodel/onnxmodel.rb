@@ -29,24 +29,31 @@ class OnnxModel < PerformanceTest
     # downloaded_file = "/opt/vespa/tmp/ranking_model.onnx"
 
     # Warmup
-    do_deploy(downloaded_file)
+    app_handle = do_transfer_app(downloaded_file, {})
+    deploy_transfered(app_handle, {})
 
-    prepare_time = 0.0
-    activate_time = 0.0
+    total_deploy_time = 0.0
+    total_upload_time = 0.0
+    total_prepare_time = 0.0
+    total_activate_time = 0.0
     run_count = 3
     run_count.times do |i|
-      out, upload, prepare, activate = do_deploy(downloaded_file, {:collect_timing => true})
-      deploy_time = (prepare_time + activate_time).to_f
-      prepare_time = prepare_time + prepare.to_f
-      activate_time = activate_time + activate.to_f
+      out, upload_time, prepare_time, activate_time = deploy_transfered(app_handle, {:separate_upload_and_prepare => true, :collect_timing => true, :skip_create_model => true})
+      deploy_time = (upload_time + prepare_time + activate_time).to_f
+      total_deploy_time = total_deploy_time + deploy_time
+      total_upload_time = total_upload_time + upload_time
+      total_prepare_time = total_prepare_time + prepare_time
+      total_activate_time = total_activate_time + activate_time
     end
 
-    avg_prepare_time = prepare_time / run_count
-    avg_activate_time = activate_time / run_count
-    avg_deploy_time = avg_prepare_time + avg_activate_time
-    puts "Average deploy times: total(#{avg_deploy_time}), prepare(#{avg_prepare_time}), activate(#{avg_activate_time})"
+    avg_upload_time = total_upload_time / run_count
+    avg_prepare_time = total_prepare_time / run_count
+    avg_activate_time = total_activate_time / run_count
+    avg_deploy_time = total_deploy_time / run_count
+    puts "Average deploy times: total(#{avg_deploy_time}), upload(#{avg_upload_time}) prepare(#{avg_prepare_time}), activate(#{avg_activate_time})"
 
     metrics = [metric_filler("config.time.deploy", avg_deploy_time),
+               metric_filler("config.time.deploy.upload", avg_upload_time),
                metric_filler("config.time.deploy.prepare", avg_prepare_time),
                metric_filler("config.time.deploy.activate", avg_activate_time)]
     write_report(metrics)
@@ -63,8 +70,8 @@ class OnnxModel < PerformanceTest
     local_file
   end
 
-  def do_deploy(downloaded_file, params={})
-    deploy(selfdir + "app", nil, params.merge({:files => { downloaded_file => "files/#{@onnx_filename}"}}))
+  def do_transfer_app(downloaded_file, params={})
+    transfer_app(selfdir + "app", nil, params.merge({:files => { downloaded_file => "files/#{@onnx_filename}"}}))
   end
 
   def teardown

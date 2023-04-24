@@ -21,7 +21,7 @@ class ClusterDynamicDistributionTest < VdsTest
 
   def teardown
     begin
-      if File.exists?(@feedfile)
+      if File.exist?(@feedfile)
         File.delete(@feedfile)
       end
       # If things went belly-up, visiting thread/process might still be active

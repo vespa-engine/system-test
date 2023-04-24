@@ -6,7 +6,7 @@
   <longfield>10098765432100</longfield>
   <floatfield>1975.18</floatfield>
   <doublefield>1975.181987234561</doublefield>
-  <rawfield binaryencoding="base64">dGhpcyBpcyByYXcgZGF0YQ==</rawfield>
+  <rawfield binaryencoding="base64">dGhpcyBpcyByYXcgZGF0YQ</rawfield>
   <timefield>1087203341</timefield>
   <bytefield>37</bytefield>
   <boolfield>true</boolfield>

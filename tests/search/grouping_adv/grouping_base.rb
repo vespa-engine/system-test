@@ -188,6 +188,8 @@ module GroupingBase
     check_query('all(group(xorbit(cat(a,b,c),  8)) each(output(count())))', 'xorbit.8')
     check_query('all(group(xorbit(cat(a,b,c), 16)) each(output(count())))', 'xorbit.16')
 
+    check_query('all(group(cat("",c)) each(output(count(), max(cat("",nb)))))', 'cat-array')
+
     # Test md5
     check_query('all(group(md5(cat(a,b,c), 64)) each(output(count())))', 'md5.64')
 

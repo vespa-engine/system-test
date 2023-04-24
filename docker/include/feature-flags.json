@@ -1,6 +1,17 @@
 {
     "flags": [
         {
+            "id" : "environment-variables",
+            "rules" : [
+                {
+                    "value" : [
+                        "VESPA_BITVECTOR_RANGE_CHECK=true",
+                        "VESPA_USE_MPROTECT_TRAP=yes"
+                    ]
+                }
+            ]
+        },
+        {
             "id" : "jvm-gc-options",
             "rules" : [
                 {
@@ -11,19 +22,19 @@
         { "id" : "shared-string-repo-no-reclaim", "rules" : [ { "value" : true } ] },
         { "id" : "ignore-thread-stack-sizes", "rules" : [ { "value" : true } ] },
         { "id" : "mbus-num-network-threads", "rules" : [ { "value" : 1 } ] },
-        { "id" : "mbus-cpp-num-targets", "rules" : [ { "value" : 2 } ] },
-        { "id" : "mbus-java-num-targets", "rules" : [ { "value" : 2 } ] },
-        { "id" : "rpc-num-targets", "rules" : [ { "value" : 2 } ] },
+        { "id" : "mbus-cpp-num-targets", "rules" : [ { "value" : 10 } ] },
+        { "id" : "mbus-java-num-targets", "rules" : [ { "value" : 10 } ] },
+        { "id" : "rpc-num-targets", "rules" : [ { "value" : 10 } ] },
+        { "id" : "query-dispatch-warmup", "rules" : [ { "value" : 0.1 } ] },
         { "id" : "mbus-cpp-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
         { "id" : "mbus-java-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
         { "id" : "rpc-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
-        { "id" : "async-message-handling-on-schedule", "rules" : [ { "value" : false } ] },
+        { "id" : "async-message-handling-on-schedule", "rules" : [ { "value" : true } ] },
         { "id" : "max-uncommitted-memory", "rules" : [ { "value" : 65000 } ] },
         { "id" : "container-shutdown-timeout", "rules" : [ { "value" : 40.0 } ] },
         { "id" : "container-dump-heap-on-shutdown-timeout", "rules" : [ { "value" : true } ] },
         { "id" : "resource-limit-disk", "rules" : [ { "value" : 0.9 } ] },
-        { "id" : "file-distribution-accepted-compression-types",  "rules": [ { "value": ["lz4", "gzip"] } ] },
-        { "id" : "file-distribution-compression-types-to-use",  "rules": [ { "value": ["lz4", "gzip"] } ] },
-        { "id" : "use-two-phase-document-gc", "rules" : [ { "value" : true } ] }
+        { "id" : "summary-decode-policy", "rules" : [ { "value" : "on-demand" } ] },
+        { "id" : "enable-global-phase", "rules" : [ { "value" : true } ] }
     ]
 }

@@ -33,7 +33,7 @@ class TestCase
   attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client
   attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :required_hostnames, :expected_logged, :method_name
   attr_accessor :dirty_nodeproxies, :dirty_environment_settings
-  attr_accessor :sanitizer
+  attr_accessor :sanitizers
 
   # Creates and returns a new TestCase object.
   #
@@ -51,7 +51,7 @@ class TestCase
     @cmd_args = args
     @hostlist = args[:hostlist]
     @outputdir = args[:outputdir]
-    @sanitizer = args[:sanitizer]
+    @sanitizers = nil
     @valgrind = args[:valgrind]
     @valgrind_opt = args[:valgrind_opt]
     @keep_tmpdir = args[:keep_tmpdir]
@@ -87,12 +87,13 @@ class TestCase
       @@log_messages[:zkmetric_updater_monitor_failure],
       @@log_messages[:zookeeper_reconfig],
       @@log_messages[:zookeeper_shutdown],
-      @@log_messages[:async_slow_resolve],
       @@log_messages[:slow_processing],
       @@log_messages[:time_move_backwards],
       @@log_messages[:remove_dangling_file],
+      @@log_messages[:canonical_hostname_warning],
       @@log_messages[:metrics_proxy_connection_refused],
-      @@log_messages[:empty_idx_file]
+      @@log_messages[:empty_idx_file],
+      @@log_messages[:no_snapshot_from_instance]
     ]
     @valgrind_ignorable_messages = [
       @@log_messages[:valgrindrc_not_read],
@@ -223,6 +224,8 @@ class TestCase
   def get_timeout
     if @valgrind
       return timeout_seconds * TestBase::VALGRIND_TIMEOUT_MULTIPLIER
+    elsif has_active_sanitizers
+      return timeout_seconds * TestBase::SANITIZERS_TIMEOUT_MULTIPLIER
     else
       return timeout_seconds
     end
@@ -258,6 +261,11 @@ class TestCase
              ">>>>> Running testcase '#{name}'\n" +
              ">>>>> from file '#{testcase_file}'.\n" +
              " \n")
+      if has_active_sanitizers
+        output("Active sanitizers are: #{@sanitizers}")
+      else
+        output("No active sanitizers")
+      end
       output("My coredump dir is: #{@dirs.coredir}")
       output("My current work directory is: #{`/bin/pwd`}")
       Timeout::timeout(get_timeout, SystemTestTimeout) do |timeout_length|
@@ -669,6 +677,10 @@ class TestCase
     return $1;
   end
 
+  def detected_sanitizers(sanitizers)
+    @sanitizers = sanitizers if @sanitizers.nil?
+  end
+
   #
   # Private methods follow.
   #
@@ -728,7 +740,9 @@ class TestCase
     :time_move_backwards => /Time has moved backwards/,
     :metrics_proxy_connection_refused => /Failed retrieving metrics for '.+' : Connect to .+ failed: Connection refused/,
     :empty_idx_file => /We detected an empty idx file for part/,
-    :remove_dangling_file => /Removing dangling file/
+    :remove_dangling_file => /Removing dangling file/,
+    :canonical_hostname_warning => /Host named '.+' may not receive any config since it differs from its canonical hostname/,
+    :no_snapshot_from_instance => /no snapshot from instance of /
   }
 
   # Allow that certain log messages may be ignored without the individual
@@ -968,12 +982,14 @@ class TestCase
     destination_file
   end
 
-  def restart_proton(doc_type, exp_hits, cluster = "search")
+  def restart_proton(doc_type, exp_hits, cluster = "search", skip_trigger_flush: false)
     node = vespa.search[cluster].first
-    node.trigger_flush
+    unless skip_trigger_flush
+      node.trigger_flush
+    end
     node.stop
     node.start
-    wait_for_hitcount("sddocname:#{doc_type}&nocache", exp_hits, 180)
+    wait_for_hitcount("sddocname:#{doc_type}&nocache&streaming.selection=true", exp_hits, 180)
   end
 
 end

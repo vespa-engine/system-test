@@ -84,7 +84,7 @@ end
 
 def self.write_query_files(folder)
   num_queries = 100
-  [5,10,25,50,100,250,500].each do |num_entries|
+  [5,10,25,50,100,250].each do |num_entries|
     query_vectors = gen_rnd_arrays(num_queries, num_entries)
     write_query_file("#{folder}queries.dot_product_wset.#{num_entries}.txt", num_queries, num_entries, :gen_dot_product_wset_query, query_vectors)
     write_query_file("#{folder}queries.dot_product_array.#{num_entries}.txt", num_queries, num_entries, :gen_dot_product_array_query, query_vectors)

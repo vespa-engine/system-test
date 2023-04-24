@@ -13,7 +13,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static ai.vespa.feed.client.FeedClientBuilder.Compression.none;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.benchmarkSeconds;
+import static com.yahoo.vespa.systemtest.javafeedclient.Utils.compression;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.createFeedClient;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.fieldsJson;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.printJsonReport;
@@ -46,7 +48,9 @@ public class VespaFeedClient {
                       });
             }
         }
-        printJsonReport(Duration.ofSeconds(benchmarkSeconds()), stats.get(), "vespa-feed-client");
+        printJsonReport(Duration.ofSeconds(benchmarkSeconds()),
+                        stats.get(),
+                        "vespa-feed-client" + (compression() == null ? "" : "-" + compression()));
     }
 
 }

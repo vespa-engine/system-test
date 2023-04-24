@@ -172,6 +172,46 @@ class ContainerNode < VespaNode
     return lines
   end
 
+  def to_uri(sub_path:, parameters:)
+    "/document/v1/#{sub_path}?#{parameters.map { |k, v| "#{ERB::Util.url_encode(k.to_s)}=#{ERB::Util.url_encode(v)}" } .join("&")}"
+  end
+
+  def count_visit(doom, endpoint, args, visit_seconds, stderr_file, parameters, sub_path, method, body)
+    documents = 0
+    while Time.now.to_f < doom
+      timeout = doom - Time.now.to_f
+      timeout = timeout <= 1 ? 1 : timeout >= visit_seconds ? visit_seconds : timeout
+      parameters[:timeout] = timeout
+      uri = to_uri(sub_path: sub_path, parameters: parameters)
+      command="curl -m #{2 * visit_seconds} -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}'" +
+              " 2>#{stderr_file} | jq '{ continuation, documentCount, message }'"
+      json = JSON.parse(execute(command))
+      raise json['message'] if json['message']
+      if json['documentCount']
+        documents += json['documentCount']
+      else
+        raise "No documentCount in response; stderr: '#{readfile(stderr_file)}'"
+      end
+      if json['continuation']
+        parameters[:continuation] = json['continuation']
+      else
+        parameters.delete(:continuation)
+        break
+      end
+    end
+    documents
+  end
+
+  def count_visit_until(endpoint, args, visit_seconds, stderr_file, selections, parameters, sub_path, method, body)
+    documents = 0
+    doom = Time.now.to_f + visit_seconds - 1
+    selections.each do |selection|
+      parameters[:selection] = selection
+      documents += count_visit(doom, endpoint, args, visit_seconds, stderr_file, parameters, sub_path, method, body)
+    end
+    documents
+  end
+
   def just_do_query(query, port=0)
     http_get("localhost", port, query)
   end

@@ -120,6 +120,9 @@ class Storage
     if @testcase.valgrind
       timeout *= 5
       @testcase.output("using timeout #{timeout} with valgrind")
+    elsif @testcase.has_active_sanitizers
+      timeout *= 5
+      @testcase.output("using timeout #{timeout} with sanitizers")
     else
       @testcase.output("using timeout #{timeout}, no valgrind")
     end
@@ -636,6 +639,10 @@ class Storage
         if params[:failure_listener]
           params[:failure_listener].notify_failure(bucket, i, e.to_s)
         end
+        if params[:dump_distributor_db_states_on_failure]
+          @testcase.output("Last in-sync bucket DB state on distributor #{i}:")
+          @testcase.output(@distributor[i.to_s].last_in_sync_db_state)
+        end
         raise
       end
       checked_buckets_total += 1
@@ -771,19 +778,21 @@ class Storage
       node.wait_until_no_pending_bucket_moves
     end
 
-    @testcase.output("Waiting for distributors...")
-    # Don't include blocklisted (presumably down) distributors in testing
-    @distributor.each do | key, distrib |
-      next if blocklist.include? key
-      distrib.wait_until_all_pending_bucket_info_requests_done
-      distrib.wait_until_synced(timeout)
-    end
-
     crosscheck_buckets_params = {}
     if should_crosscheck_active?
       crosscheck_buckets_params[:check_active] = :single_active_per_bucket
     end
     crosscheck_buckets_params.merge! @bucket_crosscheck_params
+
+    @testcase.output("Waiting for distributors...")
+    # Don't include blocklisted (presumably down) distributors in testing
+    @distributor.each do | key, distrib |
+      next if blocklist.include? key
+      distrib.remember_last_in_sync_db_state if crosscheck_buckets_params[:dump_distributor_db_states_on_failure]
+      distrib.wait_until_all_pending_bucket_info_requests_done
+      distrib.wait_until_synced(timeout)
+    end
+
     @testcase.output("Cross checking buckets (check active states: " +
                      "#{crosscheck_buckets_params[:check_active]})")
     validate_cluster_bucket_state(crosscheck_buckets_params)

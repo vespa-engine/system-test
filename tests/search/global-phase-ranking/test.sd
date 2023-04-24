@@ -1,0 +1,69 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema test {
+    document test {
+        field doc_vec type tensor<double>(d0[2]) {
+            indexing: attribute | summary
+        }
+        field score type int {
+            indexing: attribute | summary
+        }
+    }
+
+    constant matrix {
+        file: files/matrix.json
+        type: tensor<double>(d0[2],d1[2])
+    }
+
+    document-summary minimal {
+        summary documentid type string {}
+    }
+
+    rank-profile base {
+        onnx-model multiply_add {
+            file: files/multiply_add.onnx
+            input "model_input_1": constant(matrix)
+            input "model_input_2": attribute(doc_vec)
+            input "model_input_3": query(query_vec)
+            output "model_output_1": multiply_add_output
+        }
+
+        inputs {
+            query(query_vec) tensor<double>(d0[2])
+        }
+
+        first-phase {
+            expression: -attribute(score)
+        }
+
+        function fn_query_vec() {
+            expression: query(query_vec)
+        }
+
+        function fn_doc_vec() {
+            expression: attribute(doc_vec)
+        }
+    }
+
+    rank-profile global_phase inherits base {
+        global-phase {
+            rerank-count: 3
+            expression: sum(onnx(multiply_add).multiply_add_output - fn_query_vec)
+        }
+    }
+
+    rank-profile second_phase inherits base {
+        second-phase {
+            rerank-count: 3
+            expression: sum(onnx(multiply_add).multiply_add_output - fn_query_vec)
+        }
+    }
+
+    rank-profile global_phase_inverse_first_phase inherits base {
+        global-phase {
+            rerank-count: 5
+            expression: -firstPhase
+        }
+    }
+
+}

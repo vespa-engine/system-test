@@ -1,7 +1,7 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class TensorDotProductTest < IndexedSearchTest
+class TensorDotProductTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("toregge")
@@ -32,11 +32,11 @@ class TensorDotProductTest < IndexedSearchTest
   end
 
   def get_query(x_0, x_1)
-    "query=sddocname:test&ranking.features.query(qvector)={{x:0}:#{x_0},{x:1}:#{x_1}}"
+    "query=sddocname:test&streaming.selection=true&ranking.features.query(qvector)={{x:0}:#{x_0},{x:1}:#{x_1}}"
   end
 
   def get_queryf(x_0, x_1)
-    "query=sddocname:test&ranking=usefloat&ranking.features.query(qvectorf)={{x:0}:#{x_0},{x:1}:#{x_1}}"
+    "query=sddocname:test&streaming.selection=true&ranking=usefloat&ranking.features.query(qvectorf)={{x:0}:#{x_0},{x:1}:#{x_1}}"
   end
 
   def teardown

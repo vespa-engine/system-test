@@ -30,7 +30,8 @@ class TensorResult
     @cells = nil
     @dimensions = nil
     input_cells = value
-    if value.kind_of?(Hash) && value.include?('cells') && value.keys.size == 1
+    if value.kind_of?(Hash) && value.include?('cells') &&
+       ( value.keys.size == 1 || (value.keys.size == 2 && value.include?('type')) )
       input_cells = value['cells']
     end
     if input_cells.kind_of?(Array)

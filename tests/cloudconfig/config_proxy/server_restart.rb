@@ -1,3 +1,4 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 
 class ServerRestart < CloudConfigTest
@@ -17,7 +18,7 @@ class ServerRestart < CloudConfigTest
     assert_logd_config(node, 86400)
     restart_config_server(node)
     # wait until config proxy logs APPLICATION_NOT_LOADED response from server (the time is dependent on timeouts in TimingValues.java)
-    wait_for_log_matches(/APPLICATION_NOT_LOADED/, 1)
+    wait_for_log_matches(/No application exists/, 1)
     # deploy twice to get to a new generation number (2)
     deploy(selfdir+"app")
     deploy(selfdir+"app_changed")

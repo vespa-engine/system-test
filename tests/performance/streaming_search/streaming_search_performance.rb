@@ -38,15 +38,9 @@ class StreamingSearchPerformanceTest < PerformanceTest
                                         parameter_filler('legend', "query length: #{num_chars} chars, clients: #{num_clients}")])
     end
     
-    def query_num_chars(num_chars)
-        [1, 2, 4, 8, 16, 32, 64].each { |clients| query_docs(clients, num_chars) }
-    end
-
     def query_all_chars
-        query_num_chars(2)
-        query_num_chars(3)
-        query_num_chars(4)
-        query_num_chars(5)
+        [1, 2, 4, 8, 16, 64].each { |clients| query_docs(clients, 4) }
+	[2,3,4,5].each { |chars| query_docs(32, chars) }
     end
 
 end

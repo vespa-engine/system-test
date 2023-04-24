@@ -22,6 +22,10 @@ module NodeServerInterface
     @node_server.execute_bg(...)
   end
 
+  def pid_running(...)
+    @node_server.pid_running(...)
+  end
+
   def get_pids(...)
     @node_server.get_pids(...)
   end
@@ -293,11 +297,15 @@ module NodeServerInterface
     @node_server.create_tmp_bin_dir
   end
 
-  def setup_sanitizer(name)
-    @node_server.setup_sanitizer(name)
+  def detect_sanitizers
+    @node_server.detect_sanitizers
   end
 
-  def reset_sanitizer(cleanup)
-    @node_server.reset_sanitizer(cleanup)
+  def setup_sanitizers
+    @node_server.setup_sanitizers
+  end
+
+  def reset_sanitizers(cleanup)
+    @node_server.reset_sanitizers(cleanup)
   end
 end

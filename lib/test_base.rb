@@ -55,7 +55,7 @@ module TestBase
   attr_accessor :vespa, :tenant_name, :application_name, :use_shared_configservers, :configserverhostlist
 
   def self.existing_of(dir1, dir2)
-    if File.exists?(dir1)
+    if File.exist?(dir1)
       return dir1;
     else
       return dir2;
@@ -89,7 +89,10 @@ module TestBase
   SEARCH_DATA = existing_of(INSTALL_DIR + "/search/data/", REPO_DIR + "/search/data/")
 
   # Timeout-multiplier when running test through valgrind
-  VALGRIND_TIMEOUT_MULTIPLIER = 50
+  VALGRIND_TIMEOUT_MULTIPLIER = 20
+
+  # Timeout-multipler when running test with sanitizer
+  SANITIZERS_TIMEOUT_MULTIPLIER = 5
 
   # Max query timeout allowed by QRS.
   MAX_QUERY_TIMEOUT=600
@@ -112,8 +115,26 @@ module TestBase
   # Creates an instance of VespaModel, then deploys _application_ on the adminserver.
   # Search definition files can be substituted by specifying _sdfile_
   # (string or an array of strings).
+  def resolve_app(application, sdfile=nil, params={})
+    return @vespa.resolve_app(application, sdfile, params)
+  end
+
+  def transfer_app(application, sdfile=nil, params={})
+    resolved_app = @vespa.resolve_app(application, sdfile, params)
+    return @vespa.transfer_resolved(resolved_app, params)
+  end
+
   def deploy(application, sdfile=nil, params={})
     return @vespa.deploy(application, sdfile, params)
+  end
+
+  def deploy_transfered(app_handle, params={})
+    return @vespa.deploy_transfered(app_handle, params)
+  end
+
+  def deploy_resolved(application, params={})
+    app_handle = @vespa.transfer_resolved(application, params)
+    return @vespa.deploy_transfered(app_handle, params)
   end
 
   # Deploys an application that is installed on the test nodes
@@ -163,8 +184,14 @@ module TestBase
     return Resultset.new(File.read(xmlfile), query, nil)
   end
 
+  def calc_instrumented_timeout(timeout)
+    return timeout * VALGRIND_TIMEOUT_MULTIPLIER if @valgrind
+    return timeout * SANITIZERS_TIMEOUT_MULTIPLIER if has_active_sanitizers
+    return timeout
+  end
+
   def calculateQueryTimeout(timeout)
-      timeout *= VALGRIND_TIMEOUT_MULTIPLIER if @valgrind
+      timeout = calc_instrumented_timeout(timeout)
       if timeout < MAX_QUERY_TIMEOUT
           return timeout
       end
@@ -344,7 +371,7 @@ module TestBase
   end
 
   def wait_until_all_services_up(timeout=180)
-    timeout *= VALGRIND_TIMEOUT_MULTIPLIER if @valgrind
+    timeout = calc_instrumented_timeout(timeout)
 
     # As of yet, only storage has an explicit wait_until_all_services_up impl.
     # Use wait_until_ready for other services.
@@ -358,7 +385,7 @@ module TestBase
 
   # Waits until storage services and docprocs are ready.
   def wait_until_ready(timeout=180)
-    timeout *= VALGRIND_TIMEOUT_MULTIPLIER if @valgrind
+    timeout = calc_instrumented_timeout(timeout)
 
     vespa.search.each_value { |searchcluster| searchcluster.wait_until_ready(timeout) }
     vespa.storage.each_value { |stg| stg.wait_until_ready(timeout) }
@@ -823,8 +850,10 @@ module TestBase
     end
   end
 
-  def linux_distribution_CentOS?
-    File.open('/etc/redhat-release') { |f| f.readline }.start_with?('CentOS')
+  def has_active_sanitizers
+    return false if @sanitizers.nil?
+    return false if @sanitizers == [ 'none' ]
+    true
   end
 
   private
@@ -1047,9 +1076,9 @@ module TestBase
   end
 
   def assert_no_sanitizer_warnings
-    return if not @sanitizer
+    return unless has_active_sanitizers
     sanitizer_logs = Dir.glob(dirs.sanitizerlogdir+"/*")
-    assert_equal(0, sanitizer_logs.length, "#{sanitizer_logs.length} santizer log files present (on #{Socket.gethostname})")
+    assert_equal(0, sanitizer_logs.length, "#{sanitizer_logs.length} sanitizer log files present (on #{Socket.gethostname})")
   end
 
   def assert_result_hitcount(result, wanted_hitcount)
@@ -1216,9 +1245,14 @@ module TestBase
     expected.each do |name, score|
       puts "assert_features: #{name}:#{score}"
       assert(actual.has_key?(name), "Actual hash does not contain feature '#{name}'")
-      x = score.to_f
-      y = actual.fetch(name).to_f
-      assert_approx(x, y, eps,"Feature '#{name}' does not have expected score. Expected: #{x} ~ #{eps}. Actual: #{y}")
+      if score.is_a?(Hash)
+        act_score = actual.fetch(name)
+        assert_equal(score, act_score)
+      else
+        x = score.to_f
+        y = actual.fetch(name).to_f
+        assert_approx(x, y, eps,"Feature '#{name}' does not have expected score. Expected: #{x} ~ #{eps}. Actual: #{y}")
+      end
     end
   end
 

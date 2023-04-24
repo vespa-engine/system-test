@@ -8,31 +8,31 @@
         <output label="count()">1</output>
       </group>
       <group relevance="0.8888888888888888">
-        <id type="string">riaman</id>
-        <output label="count()">1</output>
-      </group>
-      <group relevance="0.7777777777777778">
-        <id type="string">riàman</id>
-        <output label="count()">1</output>
-      </group>
-      <group relevance="0.6666666666666666">
         <id type="string">riám </id>
         <output label="count()">1</output>
       </group>
-      <group relevance="0.5555555555555556">
+      <group relevance="0.7777777777777778">
         <id type="string">riâma</id>
         <output label="count()">1</output>
       </group>
+      <group relevance="0.6666666666666666">
+        <id type="string">riaman</id>
+        <output label="count()">1</output>
+      </group>
+      <group relevance="0.5555555555555556">
+        <id type="string">riàman</id>
+        <output label="count()">1</output>
+      </group>
       <group relevance="0.4444444444444444">
-        <id type="string">riäk</id>
+        <id type="string">riåma</id>
         <output label="count()">1</output>
       </group>
       <group relevance="0.3333333333333333">
-        <id type="string">riäka</id>
+        <id type="string">riäk</id>
         <output label="count()">1</output>
       </group>
       <group relevance="0.2222222222222222">
-        <id type="string">riåma</id>
+        <id type="string">riäka</id>
         <output label="count()">1</output>
       </group>
       <group relevance="0.1111111111111111">

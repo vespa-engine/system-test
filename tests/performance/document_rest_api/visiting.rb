@@ -14,7 +14,7 @@ class Visiting < PerformanceTest
     super
     set_description("Test throughput of visit operations through /document/v1")
     set_owner("jonmv")
-    @document_count = 1 << 21
+    @document_count = 1 << 22
     @document_template = '{ "put": "id:test:test::$seq()", "fields": { "text": "$words(5)", "number": $ints(1, 100) } }'
     @document_update = '{ "fields": { "number": { "increment": 100 } } }'
     @selection_1p = 10.times.map { |i| "test.number % 100 == #{i}" }
@@ -58,45 +58,20 @@ class Visiting < PerformanceTest
       args = ""
     end
     stderr_file = dirs.tmpdir + "stderr-" + parameters[:sliceId].to_s
-    documents = 0
-    doom = Time.now.to_f + @visit_seconds - 1
-    selections.each do |selection|
-      parameters[:selection] = selection
-      while Time.now.to_f < doom
-        timeout = doom - Time.now.to_f
-        timeout = timeout <= 1 ? 1 : timeout >= @visit_seconds ? visit_seconds : timeout
-        parameters[:timeout] = timeout
-        uri = to_uri(sub_path: sub_path, parameters: parameters)
-        command="curl -m #{2 * @visit_seconds} -X #{method} #{args} '#{endpoint}#{uri}' -d '#{body}'" +
-                " 2>#{stderr_file} | jq '{ continuation, documentCount, message }'"
-        json = JSON.parse(@container.execute(command))
-        return json['message'] if json['message']
-        if json['documentCount']
-          documents += json['documentCount']
-        else
-          return "No documentCount in response; stderr: '#{@container.readfile(stderr_file)}'"
-        end
-        if json['continuation']
-          parameters[:continuation] = json['continuation']
-        else
-          parameters.delete(:continuation)
-          break
-        end
-      end
-    end
+    documents = @container.count_visit_until(endpoint, args, @visit_seconds, stderr_file, selections, parameters, sub_path, method, body)
     documents
   end
   
   def run_get_visiting_benchmarks
     { "1-percent" => @selection_1p, "100-percent" => @selection_100p }.each do |s_name, s_value|
-      [[1, 1], [1, 8], [8, 1], [8, 8], [64, 1]].each do |concurrency, slices|
+      [[1, 1], [1, 8], [8, 1], [8, 8], [32, 1]].each do |concurrency, slices|
         parameters = { :timeout => "#{@visit_seconds}s", :cluster => "search", :concurrency => concurrency, :slices => slices }
 
         benchmark_operations(legend: "streamed-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
                              parameters: parameters.merge({ :stream => true }))
 
         benchmark_operations(legend: "chunked-#{s_name}-#{concurrency}c-#{slices}s", selections: s_value,
-                             parameters: parameters.merge({ :wantedDocumentCount => 1024 })) if slices < 8
+                             parameters: parameters.merge({ :wantedDocumentCount => 4096 })) if slices < 8
       end
     end
   end
@@ -143,14 +118,10 @@ class Visiting < PerformanceTest
     puts "#{document_count} documents visited in #{time_used} seconds"
 
     # If complete before timeout, verify exactly the documents for 1p or 100p were visited.
-    assert(document_count == 210699 || document_count == @document_count) if method == 'GET' and time_used + 3 < @visit_seconds
+    assert(document_count == 420524 || document_count == @document_count) if method == 'GET' and time_used + 3 < @visit_seconds
     fillers = [parameter_filler('legend', legend), metric_filler('throughput', document_count / time_used)]
     write_report(fillers)
     profiler_report(legend)
-  end
-
-  def to_uri(sub_path:, parameters:)
-    "/document/v1/#{sub_path}?#{parameters.map { |k, v| "#{ERB::Util.url_encode(k.to_s)}=#{ERB::Util.url_encode(v)}" } .join("&")}"
   end
 
 end

@@ -47,15 +47,6 @@ class ContainerTest < TestCase
     super_deploy(app_location, nil, params)
   end
 
-  def create_tmp_application(app_location, params)
-    tmp_application = vespa.create_tmp_application(app_location)
-    vespa.copy_params_files(tmp_application, params)
-
-    application_package = ApplicationPackage.new(tmp_application)
-    vespa.compile_and_add_bundles(@node, application_package, params)
-    application_package
-  end
-
   # Internal helper method to return the location of a possibly generated application
   def get_app_location(folder_or_generated)
     if folder_or_generated.is_a? String

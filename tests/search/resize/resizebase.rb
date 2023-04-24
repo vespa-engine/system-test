@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 # -*- coding: utf-8 -*-
 require 'search_test'
 
@@ -19,7 +19,7 @@ module ResizeApps
       @num_hosts = num_hosts
       @sps = sps
       @slack_minhits = 200
-      @slack_maxdocs_per_group = 1000
+      @slack_maxdocs_per_group = 1600
       assert(num_hosts == 1 || num_hosts == 2 || num_hosts >= nodes)
     end
 
@@ -183,7 +183,7 @@ module ResizeApps
     end
 
     def slack_mindocs
-      900
+      1100
     end
   end
 
@@ -818,7 +818,7 @@ class ResizePollState
           if @endtime.nil?
             if !poll_query_stats_changed_from_prev && !unsettled
               @poll_query_stats_settle = @poll_query_stats_settle + 1
-              if @poll_query_stats_settle >= 250
+              if @poll_query_stats_settle >= 50
                 puts "Setting poll move endtime"
                 @m.synchronize do
                   @endtime = @endtimecandidate
@@ -1151,7 +1151,7 @@ class ResizeContentClusterBase < SearchTest
   def start_select_nodes(startnodes)
     threadlist = []
     startnodes.each_value do |handle|
-      vespa.setup_sanitizer(handle)
+      vespa.setup_sanitizers(handle)
       vespa.setup_valgrind(handle)
       threadlist << Thread.new(handle) do |my_handle|
         my_handle.start_base
@@ -1400,7 +1400,7 @@ class ResizeContentClusterBase < SearchTest
     puts aapp.services_xml
     numdocs = rapp.numdocs
     num_child_docs = rapp.num_child_docs
-    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs, "resizefeed")
+    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs, dirs.tmpdir + "resizefeed")
     poll_state = start_poll_state
     redeploy(aapp)
     start_new_nodes
@@ -1428,7 +1428,7 @@ class ResizeContentClusterBase < SearchTest
     puts rapp.stopnodes
     numdocs = rapp.numdocs
     num_child_docs = rapp.num_child_docs
-    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs, "resizefeed")
+    startandfeed(bapp, rapp.feedname, rapp.dictsize, numdocs, num_child_docs, dirs.tmpdir + "/resizefeed")
     poll_state = start_poll_state
     poll_state.set_vespa_model(vespa)
     set_nodes_retired(rapp.stopnodes)

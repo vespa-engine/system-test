@@ -78,20 +78,23 @@ class ContainerHttp < PerformanceTest
   end
 
   def run_http1_tests
-    run_h2load_benchmark(128, 1, 30, HTTP1)
-    run_h2load_benchmark(32, 1, 10, HTTP1)
-    run_h2load_benchmark(1, 1, 10, HTTP1)
+    run_h2load_benchmark(128, 1, 10, HTTP1)
+    run_h2load_benchmark(32, 1, 5, HTTP1)
+    run_h2load_benchmark(1, 1, 5, HTTP1)
     run_fbench_benchmark(32, NON_PERSISTENT)
   end
 
   def run_http2_tests
-    run_h2load_benchmark(128, 1, 30, HTTP2)
-    run_h2load_benchmark(8, 32, 10, HTTP2)
-    run_h2load_benchmark(8, 64, 10, HTTP2)
-    run_h2load_benchmark(4, 64, 10, HTTP2)
-    run_h2load_benchmark(4, 128, 10, HTTP2)
-    run_h2load_benchmark(4, 256, 10, HTTP2)
-    run_h2load_benchmark(1, 512, 10, HTTP2)
+    run_h2load_benchmark(128, 1, 10, HTTP2)
+    run_h2load_benchmark(8,  16, 5, HTTP2)
+    run_h2load_benchmark(8,  32, 5, HTTP2)
+    run_h2load_benchmark(4,  32, 5, HTTP2)
+    run_h2load_benchmark(4,  64, 5, HTTP2)
+    run_h2load_benchmark(4, 128, 5, HTTP2)
+    run_h2load_benchmark(1,  32, 5, HTTP2)
+    run_h2load_benchmark(1,  64, 5, HTTP2)
+    run_h2load_benchmark(1, 128, 5, HTTP2)
+    run_h2load_benchmark(1, 256, 5, HTTP2)
   end
 
   def run_fbench_benchmark(clients, connection)
@@ -111,7 +114,7 @@ class ContainerHttp < PerformanceTest
     perf.start
     h2load = Perf::H2Load.new(@container)
     result = h2load.run_benchmark(clients: clients, threads: [clients, 16].min, concurrent_streams: concurrent_streams,
-                                  warmup: warmup, duration: 60, uri_port: 4443, uri_path: '/HelloWorld',
+                                  warmup: warmup, duration: 30, uri_port: 4443, uri_path: '/HelloWorld',
                                   protocols: [if protocol == HTTP2 then 'h2' else 'http/1.1' end])
     perf.end
     write_report([result.filler, perf.fill, parameter_filler('connection', PERSISTENT), parameter_filler('protocol', protocol),

@@ -18,13 +18,13 @@ public class SpoolingLogger extends AbstractSpoolingLogger {
 
     @Inject
     public SpoolingLogger(EventStore eventStore) {
-        super(new Spooler(Path.of(Defaults.getDefaults().underVespaHome("var/spool/vespa/events")), 3, Clock.systemUTC()));
+        super(new Spooler(Path.of(Defaults.getDefaults().underVespaHome("var/spool/vespa/events")), 3, Clock.systemUTC(), true));
         this.eventStore = eventStore;
     }
 
     @Override
     public boolean transport(LoggerEntry entry) {
-        eventStore.add(entry.serialize());
+        eventStore.add(entry);
         return true;
     }
 

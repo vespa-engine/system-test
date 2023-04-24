@@ -31,10 +31,14 @@ class ComponentGraphOnRedeployment < ContainerTest
       @container.logctl("#{service}:com.yahoo.container.di.componentgraph.core.ComponentNode", 'debug=on')
     end
 
+    # Wait for log control changes to take effect
+    sleep 10
+
     # Redeploy same app. This is similar to an internal reconfiguration in hosted Vespa.
     output = deploy(app)
-    wait_for_reconfig(get_generation(output).to_i)
+    @container.wait_for_config_generation(get_generation(output).to_i)
 
+    sleep 5 # Sleep to make sure logserver has gotten logs
     log_matches = vespa.logserver.find_log_matches(LOG_MSG_PATTERN)
     reconstructed_components = log_matches.flatten.sort.uniq
     assert_equal(ALLOWED_COMPONENTS_TO_RECONSTRUCT.sort, reconstructed_components)

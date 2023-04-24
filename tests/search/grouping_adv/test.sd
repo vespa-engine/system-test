@@ -10,6 +10,9 @@ schema test {
     field na type array<int> {
       indexing: attribute
     }
+    field nb type array<byte> {
+      indexing: attribute
+    }
     field nw type weightedset<int> {
       indexing: attribute
     }

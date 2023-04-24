@@ -1,0 +1,46 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1,
+    "fields": {
+      "totalCount": 5
+    },
+    "children": [
+      {
+        "id": "id:test:test::5",
+        "relevance": 5,
+        "fields": {
+          "documentid": "id:test:test::5"
+        }
+      },
+      {
+        "id": "id:test:test::4",
+        "relevance": 4,
+        "fields": {
+          "documentid": "id:test:test::4"
+        }
+      },
+      {
+        "id": "id:test:test::3",
+        "relevance": 3,
+        "fields": {
+          "documentid": "id:test:test::3"
+        }
+      },
+      {
+        "id": "id:test:test::2",
+        "relevance": 2,
+        "fields": {
+          "documentid": "id:test:test::2"
+        }
+      },
+      {
+        "id": "id:test:test::1",
+        "relevance": 1,
+        "fields": {
+          "documentid": "id:test:test::1"
+        }
+      }
+    ]
+  }
+}

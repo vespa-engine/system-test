@@ -139,12 +139,14 @@ class VespaModel
 
   def init_nodeproxies
     @testcase.hostlist.each do |hostname|
-      @nodeproxies[hostname] = NodeProxy.new(hostname, @testcase)
+      node_proxy = NodeProxy.new(hostname, @testcase)
+      detect_sanitizers(node_proxy)
+      @nodeproxies[hostname] = node_proxy
     end
   end
 
-  def deploy(application, sdfile, params)
-    @testcase.output("Deploying application #{application}")
+  def resolve_app(application, sdfile, params)
+    @testcase.output("Resolving application #{application}")
 
     tmp_application = create_tmp_application(application)
 
@@ -152,7 +154,7 @@ class VespaModel
     vespa_services = tmp_application + "/services.xml"
     validation_overrides = tmp_application + "/validation-overrides.xml"
 
-    if (not File.exists?(vespa_nodes) and @testcase.use_shared_configservers)
+    if (not File.exist?(vespa_nodes) and @testcase.use_shared_configservers)
       outf = File.new(vespa_nodes, "w")
       num_hosts = 1
       if (params[:num_hosts])
@@ -200,8 +202,8 @@ class VespaModel
 
     applicationbuffer = Dir.glob(tmp_application + "/*").join("\n") + "\n"
     applicationbuffer += "services.xml:\n" + File.open(vespa_services, "r").readlines.join('')
-    applicationbuffer += "hosts.xml:\n" + File.open(vespa_nodes, "r").readlines.join('') if File.exists?(vespa_nodes)
-    if (File.exists?(validation_overrides))
+    applicationbuffer += "hosts.xml:\n" + File.open(vespa_nodes, "r").readlines.join('') if File.exist?(vespa_nodes)
+    if (File.exist?(validation_overrides))
       applicationbuffer += "validation-overrides.xml:\n" + File.open(validation_overrides, "r").readlines.join('')
     else
       applicationbuffer += "No validation-overrides.xml\n"
@@ -209,7 +211,6 @@ class VespaModel
 
     @testcase.output(applicationbuffer)
 
-    # clean logs if this is the first deployment for the testcase
     if @deployments == 0 and not params[:no_init_logging]
       init_logging
     end
@@ -242,31 +243,62 @@ class VespaModel
       end
     end
 
-    # create temporary adminserver service for deploying the application
-    adminserver_service_entry = {"servicetype" => "adminserver", "hostname" => admin_hostname}
-    adminserver = @nodeproxies[admin_hostname].get_service(adminserver_service_entry)
+    adminserver = get_adminserver(admin_hostname)
+
+    application_package = ApplicationPackage.new(tmp_application, admin_hostname)
+    compile_and_add_bundles(adminserver, application_package, params)
+    return application_package
+  end
+
+  def get_adminserver(hostname)
+    adminserver_service_entry = {"servicetype" => "adminserver", "hostname" => hostname}
+    return @nodeproxies[hostname].get_service(adminserver_service_entry)
+  end
+
+  def get_logserver(hostname)
+    logserver_service_entry = {"servicetype" => "logserver", "hostname" => hostname}
+    return @nodeproxies[hostname].get_service(logserver_service_entry)
+  end
+
+  def deploy(application, sdfile, params)
+    resolved_app = resolve_app(application, sdfile, params)
+    app_handle = transfer_resolved(resolved_app, params)
+    deploy_transfered(app_handle, params)
+  end
+
+  def transfer_resolved(application, params)
+    # clean logs if this is the first deployment for the testcase
+    admin_hostname = application.admin_hostname
+    @testcase.output("Deploying application #{application.location} on adminserver #{admin_hostname}")
+    @adminserver = get_adminserver(admin_hostname)
 
     # create logserver service so that we can get the logs even if deployment fails
-    logserver_service_entry = {"servicetype" => "logserver", "hostname" => admin_hostname}
-    @logserver = @nodeproxies[admin_hostname].get_service(logserver_service_entry)
+    @logserver = get_logserver(admin_hostname)
 
-    application_package = ApplicationPackage.new(tmp_application)
-    compile_and_add_bundles(adminserver, application_package, params)
+    app_handle = nil
+    app_handle = transfer_app_to_adminserver(adminserver, application.location) if not params[:dryrun]
+    return app_handle
+  end
 
+  def deploy_transfered(app_handle, params)
     # Setup these in case of shared configservers 
     if @testcase.use_shared_configservers
       params = params.merge({:tenant => @testcase.tenant_name}) unless params[:tenant]
       params = params.merge({:application_name => @testcase.application_name()}) unless params[:application_name]
     end
-    output = deploy_on_adminserver(adminserver, tmp_application, params) if not params[:dryrun]
+    adminserver = @adminserver
+    if not params[:dryrun]
+      output = deploy_on_adminserver(adminserver, app_handle, params)
+      # Handle case where we get an array with output and timing values back (performance tests)
+      deploy_output = output.kind_of?(Array) ? output[0] : output
+      config_generation = @testcase.get_generation(deploy_output).to_i
 
-    if not params[:skip_create_model]
-      if @testcase.use_shared_configservers && !params[:no_activate]
-        # Handle case where we get an array with output and timing values back
-        deploy_output = output.kind_of?(Array) ? output[0] : output
-        adminserver.wait_for_config_activated(@testcase.get_generation(deploy_output).to_i, params)
+      if not params[:skip_create_model]
+        if @testcase.use_shared_configservers && !params[:no_activate]
+          adminserver.wait_for_config_activated(@testcase.get_generation(deploy_output).to_i, params)
+        end
+        create_model(adminserver.get_model_config(params, config_generation))
       end
-      create_model(adminserver.get_model_config(params)) 
     end
     @deployments += 1
 
@@ -277,10 +309,10 @@ class VespaModel
 
   def create_tmp_application(application)
     tmp_application = @testcase.dirs.tmpdir+File.basename(application)
-    if File.exists?(tmp_application)
+    if File.exist?(tmp_application)
       FileUtils.rm_rf(tmp_application)
     end
-    if File.exists?(tmp_application)
+    if File.exist?(tmp_application)
       @testcase.output(">>> Unable to properly remove old application")
     end
     FileUtils.cp_r(application, tmp_application)
@@ -355,7 +387,7 @@ class VespaModel
 
   def create_services_xml(applicationbuffer)
     tmp_application = @testcase.dirs.tmpdir+"tmp/generatedapp"
-    if File.exists?(tmp_application)
+    if File.exist?(tmp_application)
       FileUtils.rm_rf(tmp_application)
     end
     FileUtils.mkdir_p(tmp_application)
@@ -624,8 +656,7 @@ class VespaModel
         end
       end
       if @adminserver == nil && @logserver != nil
-        adminserver_service_entry = {"servicetype" => "adminserver", "hostname" => @logserver.hostname}
-        @adminserver = @nodeproxies[@logserver.hostname].get_service(adminserver_service_entry)
+        @adminserver = get_adminserver(@logserver.hostname)
       end
     rescue => e
         @testcase.output("ERROR #{e} while creating vespa model from JSON: #{modelconfig}")
@@ -692,21 +723,31 @@ class VespaModel
   end
 
   # Deploys _application_ on the adminserver node.
-  def deploy_on_adminserver(adminserver, application, params={})
+  def transfer_app_to_adminserver(adminserver, application)
     application_name = File.basename(application)
     application_dir = File.dirname(application)
     pid = Process.pid
+    @testcase.output("Start tgz creation of #{application_name}")
     `cd #{application_dir}; tar czf #{application_name}_#{pid}.tar.gz #{application_name}`
     application_content = ""
+    @testcase.output("Start read of tgz file #{application_name}")
     File.open("#{application_dir}/#{application_name}_#{pid}.tar.gz", 'rb') do |file|
       application_content = file.read
     end
+    @testcase.output("Delete temporary tgz file #{application_name}")
     File.delete("#{application_dir}/#{application_name}_#{pid}.tar.gz")
-    adminserver.deploy(nil, application_dir, application_name, params) do |fp|
+    @testcase.output("Transfer compressed content #{application_name} to adminserver")
+    app_handle = adminserver.transfer_app(application_dir, application_name) do |fp|
       application_content.bytes.each_slice(1024*1024) { |slice|
         fp.write(slice.pack('C*'))
       }
     end
+    return app_handle
+  end
+
+  def deploy_on_adminserver(adminserver, app_handle, params={})
+    @testcase.output("Deploy from admin server with remote handle = #{app_handle}")
+    adminserver.deploy(app_handle, params)
   end
 
   def set_addr_configservers(config_hostnames)
@@ -742,7 +783,7 @@ class VespaModel
   # Remove vespa logs, reset valgrind options, remove valgrind logs and start memory monitoring.
   def init_logging
     @nodeproxies.each_value do |handle|
-      reset_sanitizer(handle, true)
+      reset_sanitizers(handle, true)
       reset_valgrind(handle)
       handle.execute("rm -f #{@valgrind_logs_glob}")
       handle.execute("rm -rf #{Environment.instance.vespa_home}/logs/vespa/*")
@@ -750,12 +791,17 @@ class VespaModel
     end
   end
 
-  def setup_sanitizer(handle)
-    handle.setup_sanitizer(@testcase.sanitizer) if @testcase.sanitizer
+  def detect_sanitizers(handle)
+    sanitizers = handle.detect_sanitizers
+    @testcase.detected_sanitizers(sanitizers)
   end
 
-  def reset_sanitizer(handle, cleanup)
-    handle.reset_sanitizer(cleanup)
+  def setup_sanitizers(handle)
+    handle.setup_sanitizers if @testcase.has_active_sanitizers
+  end
+
+  def reset_sanitizers(handle, cleanup)
+    handle.reset_sanitizers(cleanup)
   end
 
   def setup_valgrind(handle)
@@ -772,7 +818,7 @@ class VespaModel
   def start_base
     threadlist = []
     @nodeproxies.each_value do |handle|
-      setup_sanitizer(handle)
+      setup_sanitizers(handle)
       setup_valgrind(handle)
       threadlist << Thread.new(handle) do |my_handle|
         my_handle.start_base
@@ -809,7 +855,7 @@ class VespaModel
   def stop_base(stop_nodes=@nodeproxies)
     threadlist = []
     stop_nodes.each_value do |handle|
-      reset_sanitizer(handle, false)
+      reset_sanitizers(handle, false)
       reset_valgrind(handle)
       threadlist << Thread.new(handle) do |my_handle|
         my_handle.stop_base
@@ -901,7 +947,7 @@ class VespaModel
         end
       end
       if not @testcase.keep_tmpdir
-        FileUtils.remove_dir(@testcase.dirs.tmpdir) if File.exists?(@testcase.dirs.tmpdir)
+        FileUtils.remove_dir(@testcase.dirs.tmpdir) if File.exist?(@testcase.dirs.tmpdir)
       else
         @testcase.output("Temporary testdir kept as: #{@testcase.dirs.tmpdir}")
       end
@@ -912,7 +958,7 @@ class VespaModel
         save_valgrind_logfiles(handle)
       end
     end
-    if @testcase.sanitizer
+    if @testcase.has_active_sanitizers
       @testcase.dirty_nodeproxies.each_value do |handle|
         save_sanitizer_logfiles(handle)
       end

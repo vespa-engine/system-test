@@ -83,7 +83,7 @@ class ProtobufSearchProtocolTest < SearchTest
   end
 
   def request_params(with_protobuf)
-    return "&dispatch.internal=#{with_protobuf}&dispatch.protobuf=#{with_protobuf}&nocache&tracelevel=5&format=xml"
+    return "&dispatch.protobuf=#{with_protobuf}&nocache&tracelevel=5&format=xml"
   end
 
   def assert_protobuf_search(result)

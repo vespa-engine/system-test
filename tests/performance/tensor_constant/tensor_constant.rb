@@ -70,7 +70,7 @@ class TensorConstantPerfTest < PerformanceTest
     total_file_distribution_time = 0.0
     iterations = 2
     iterations.times { |i|
-      out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true})
+      out, upload_time, prepare_time, activate_time = deploy_app(app, {:collect_timing => true, :skip_create_model => true})
       activate_finished = Time.now.to_f
       total_prepare_time = total_prepare_time + prepare_time
 

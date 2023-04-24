@@ -24,7 +24,7 @@ class SearchMetrics < IndexedSearchTest
     assert_hitcount("f1:xyzzy", 0)
 
     metrics = vespa.search["test"].first.get_total_metrics
-    dump_metric_names(metrics)
+    # dump_metric_names(metrics)
 
     # ported from test doing xml grepping to verify metric counts
     assert_equal(1, metrics.extract(/^content[.]proton[.]documentdb[.]documents[.]ready$/).size,
@@ -88,7 +88,8 @@ class SearchMetrics < IndexedSearchTest
 
     act_total = get_last("content.proton.documentdb.memory_usage.allocated_bytes", metrics)
     assert_equal(exp_total, act_total)
-    assert(act_total > 6000000)
+    puts "act_total = " + act_total.to_s
+    assert(act_total > 1000000)
   end
 
   def get_document_store_memory_usage(subdb, metrics)

@@ -41,7 +41,7 @@ class NodeServer
     @port_configserver_rpc = nil
     @configserver_pid = nil
     @configserver_started = false
-    @sanitizer = nil
+    @sanitizers = nil
     @tls_env = TlsEnv.new
     @executor = Executor.new(@short_hostname)
     @https_client = HttpsClient.new(@tls_env)
@@ -91,7 +91,7 @@ class NodeServer
 
   # Remove temporary file dir
   def remove_tmp_files
-    FileUtils.remove_dir(@testcase.dirs.tmpdir) if File.exists?(@testcase.dirs.tmpdir)
+    FileUtils.remove_dir(@testcase.dirs.tmpdir) if File.exist?(@testcase.dirs.tmpdir)
   end
 
   # Sets the address of the config server in the environment
@@ -240,6 +240,11 @@ class NodeServer
     execute("tar xzf #{localarchivename} --directory #{destination}")
     File.delete(localarchivename)
     filereader.delete(remotearchive)
+  end
+
+  def pid_running(pid)
+    system("ps -p #{pid} &> /dev/null")
+    $? == 0
   end
 
   # Returns an array of pids corresponding to _name_.
@@ -473,7 +478,7 @@ class NodeServer
 
   def wait_until_file_exists(filename, timeout)
     timeout.times {
-      if File.exists?(filename)
+      if File.exist?(filename)
         return true
       end
 
@@ -523,7 +528,7 @@ class NodeServer
 
   # Returns the content of _filename_.
   def readfile(filename)
-    if File.exists?(filename)
+    if File.exist?(filename)
       File.open(filename) do |file|
         while buf = file.read(1024*4096)
           yield buf
@@ -537,7 +542,7 @@ class NodeServer
 
   # Removes _filename_.
   def removefile(filename)
-    if File.exists?(filename)
+    if File.exist?(filename)
       File.delete(filename)
     end
   end
@@ -572,7 +577,7 @@ class NodeServer
     execute("cd #{sourcedir}; #{@testcase.maven_command} install #{mvnargs}")
 
     jarfile = sourcedir + "/target/" + File.basename(sourcedir) + ".jar"
-    if !(haspom && File.exists?(jarfile))
+    if !(haspom && File.exist?(jarfile))
       jarfile = sourcedir + "/target/" + bundle.generate_final_name + ".jar"
     end
     bundle = File.open(jarfile)
@@ -729,15 +734,14 @@ class NodeServer
 
   # Starts vespa_base on the node
   def start_base
-    cmd = "#{Environment.instance.vespa_home}/bin/vespa-prestart.sh"
-    cmd += Environment.instance.additional_start_base_commands
-    cmd += " && #{Environment.instance.vespa_home}/libexec/vespa/start-vespa-base.sh"
+    cmd = Environment.instance.additional_start_base_commands
+    cmd += "#{Environment.instance.vespa_home}/bin/vespa-start-services"
     execute(cmd)
   end
 
   # Stops vespa_base on the node.
   def stop_base
-    execute("#{Environment.instance.vespa_home}/libexec/vespa/stop-vespa-base.sh")
+    execute("#{Environment.instance.vespa_home}/bin/vespa-stop-services")
   end
 
   def ping_configserver(timeout=300)
@@ -787,7 +791,7 @@ class NodeServer
       # Optimization: Don't start unless it's necessary
       # Ping configserver to be sure that our assumption is correct
       begin
-        ping_configserver(5)
+        ping_configserver(10)
         return
       rescue StandardError => se
         testcase_output("Config server state: running, but not responding to ping, so starting it anyway")
@@ -909,17 +913,27 @@ class NodeServer
     return dir
   end
 
-  def setup_sanitizer(name)
-    @sanitizer = name
+  def detect_sanitizers
+    @sanitizers = execute("#{Environment.instance.vespa_home}/bin/vespa-print-default sanitizers", :noecho => true).chomp.split(',').sort
+  end
+
+  def setup_sanitizers
     dir = "#{Environment.instance.tmp_dir}/sanitizer"
     FileUtils.mkdir_p(dir)
     FileUtils.chown(Environment.instance.vespa_user, nil, dir)
-    if name == 'thread'
-      ENV['TSAN_OPTIONS'] = "suppressions=#{Environment.instance.vespa_home}/etc/vespa/tsan-suppressions.txt history_size=7 detect_deadlocks=1 second_deadlock_stack=1 log_path=#{dir}/tsan-log"
+    detect_sanitizers if @sanitizers.nil?
+    @sanitizers.each do |name|
+      if name == 'address'
+        ENV['ASAN_OPTIONS'] = "log_path=#{dir}/asan-log"
+      elsif name == 'thread'
+        ENV['TSAN_OPTIONS'] = "suppressions=#{Environment.instance.vespa_home}/etc/vespa/tsan-suppressions.txt history_size=7 detect_deadlocks=1 second_deadlock_stack=1 log_path=#{dir}/tsan-log"
+      elsif name == 'undefined'
+        ENV['UBSAN_OPTIONS'] = "print_stacktrace=1:log_path=#{dir}/ubsan-log"
+      end
     end
   end
 
-  def reset_sanitizer(cleanup)
+  def reset_sanitizers(cleanup)
     dir = "#{Environment.instance.tmp_dir}/sanitizer"
     FileUtils.rm_rf(dir) if cleanup
     ENV['ASAN_OPTIONS'] = nil

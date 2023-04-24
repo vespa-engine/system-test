@@ -29,7 +29,7 @@ class PartialUpdate < IndexedSearchTest
       end
     end
     feed(:file => tmp_file, :exceptiononfailure => exceptiononfailure)
-    File.delete(tmp_file) if File.exists?(tmp_file)
+    File.delete(tmp_file) if File.exist?(tmp_file)
   end
 
   def poll_cmp(expected, timeout=30)

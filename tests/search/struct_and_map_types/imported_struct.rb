@@ -129,7 +129,7 @@ class ImportedStructTest < SearchTest
   end
 
   def assert_same_element(field, same_element, exp_result)
-    query = "select * from sources * where #{field} contains sameElement(#{same_element})"
+    query = "select * from sources child where #{field} contains sameElement(#{same_element})"
     assert_result("yql", query, exp_result)
   end
 
@@ -140,6 +140,7 @@ class ImportedStructTest < SearchTest
     encoded_form=URI.encode_www_form(form)
     puts "Endoded form: #{encoded_form}"
     result = search(encoded_form)
+    assert_nil(result.errorlist)
     assert_equal(exp_result.size, result.hitcount)
     exp_result.size.times do |i|
       exp_hit = exp_result[i]

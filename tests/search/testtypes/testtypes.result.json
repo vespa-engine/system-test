@@ -27,7 +27,7 @@
                     "longfield": 10098765432100,
                     "floatfield": 1975.18,
                     "doublefield": 1975.181987234561,
-                    "rawfield": "dGhpcyBpcyByYXcgZGF0YQ==",
+                    "rawfield": "dGhpcyBpcyByYXcgZGF0YQ",
                     "timefield": 1087203341,
                     "boolfield": true,
                     "bytefield": 37

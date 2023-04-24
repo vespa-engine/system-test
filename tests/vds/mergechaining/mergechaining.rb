@@ -17,7 +17,7 @@ class MergeChainingTest < VdsMultiModelTest
 
   def teardown
     begin
-      if File.exists?("tmpfeed_mergechaining.xml")
+      if File.exist?("tmpfeed_mergechaining.xml")
         File.delete("tmpfeed_mergechaining.xml")
       end
     ensure

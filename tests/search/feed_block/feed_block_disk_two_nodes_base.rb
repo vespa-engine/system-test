@@ -9,7 +9,6 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
 
   def initialize(*args)
     super(*args)
-    @myuse = 1600 * 1024 * 1024
     @maxage = 90
     @num_hosts = 2
   end
@@ -49,7 +48,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
       ready_copies(1).
       group(create_group).
       tune_searchnode({ :flushstrategy => {:native => {:component => {:maxage => @maxage} } },
-                        :summary => {:store => {:logstore => { :maxfilesize => 160000000,
+                        :summary => {:store => {:logstore => { :maxfilesize => @myuse / 10,
                                                                :chunk => {:compression => { :type => :none } }
                                                              } } }
                        })
@@ -201,6 +200,17 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     get_node(node_idx).execute("cd #{Environment.instance.vespa_home}/var/db/vespa/search/cluster.test && date && hostname && df . && ( du || true )")
   end
 
+  def calculate_myuse(shared_disk)
+    if shared_disk
+      @myuse = 160 * 1024 * 1024
+    else
+      # If the containers for this test use shared disks while the
+      # argument shared_disk is false then this test is vulerable to
+      # disk usage changes caused by other containers (e.g. other tests).
+      @myuse = 1600 * 1024 * 1024
+    end
+  end
+
   def calculate_disklimit
     puts "Checking disk free on nodes"
     usage0 = get_resource_usage(0)
@@ -266,6 +276,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
   def run_feed_block_document_v1_api_two_nodes_disklimit_test(shared_disk)
     @num_parts = 2
     setup_strings
+    calculate_myuse(shared_disk)
     deploy_app(get_app(get_sc, shared_disk))
     start
     disklimit = calculate_disklimit

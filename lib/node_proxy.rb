@@ -150,13 +150,17 @@ class NodeProxy
   def create_tmp_bin_dir
     @node_server.create_tmp_bin_dir
   end
+
+  def detect_sanitizers
+    @node_server.detect_sanitizers
+  end
   
-  def setup_sanitizer(name)
-    @node_server.setup_sanitizer(name)
+  def setup_sanitizers
+    @node_server.setup_sanitizers
   end
 
-  def reset_sanitizer(cleanup)
-    @node_server.reset_sanitizer(cleanup)
+  def reset_sanitizers(cleanup)
+    @node_server.reset_sanitizers(cleanup)
   end
 
   # Copies/renames single file from local src to dst (file) on node_server.

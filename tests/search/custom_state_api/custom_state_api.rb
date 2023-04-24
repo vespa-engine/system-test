@@ -37,7 +37,7 @@ class CustomStateApi < SearchTest
   def assert_custom_component_api(page)
     # We only test part of the page as the details are unit tested in searchcore.
     puts "assert_custom_component_api: #{page}"
-    assert_keys(["documentdb", "threadpools", "flushengine", "matchengine", "tls", "hwinfo", "resourceusage"], page)
+    assert_keys(["documentdb", "threadpools", "flushengine", "matchengine", "tls", "hwinfo", "resourceusage", "session"], page)
 
     doc_dbs = page["documentdb"]
     assert_equal(1, doc_dbs.size)
@@ -56,7 +56,7 @@ class CustomStateApi < SearchTest
   end
 
   def assert_document_db(page)
-    assert_keys(["bucketdb", "documents", "documentType", "threadingservice", "maintenancecontroller", "session", "status", "subdb"], page)
+    assert_keys(["bucketdb", "documents", "documentType", "threadingservice", "maintenancecontroller", "status", "subdb"], page)
     assert_equal(1, page["bucketdb"]["numBuckets"].to_i)
     assert_bucket_db(get_page("/documentdb/test/bucketdb"))
   end

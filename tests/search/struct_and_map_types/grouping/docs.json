@@ -22,6 +22,9 @@
         "@foo": 10,
         "@bar": 20
       },
+      "str_str_map": {
+        "@foo": "@bar"
+      },
       "int_array": [ 10, 20 ],
       "int_single": 10,
       "key1": "@foo",
@@ -46,11 +49,24 @@
         "@foo": 20,
         "@bar": 30
       },
+      "str_str_map": {
+        "@foo": ""
+      },
       "int_array": [ 10 ],
       "int_single": 10,
       "key1": "@foo",
       "key2": "@bar",
       "key3": "@baz"
     }
+  },
+  {
+    "put": "id:test:test::2",
+    "fields": {
+      "key1": "@foo",
+      "str_str_map": {
+        "@bar": ""
+      }
+    }
   }
+
 ]

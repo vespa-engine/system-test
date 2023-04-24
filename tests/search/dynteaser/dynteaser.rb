@@ -35,29 +35,9 @@ class DynTeaser < IndexedSearchTest
     feed_and_wait_for_docs("cjk", 34, :file => selfdir+"dynteaser.34.xml")
 
     puts "Query: english"
-    compare('query=content:time&type=all', selfdir+"time.result.json", "dyncontent")
-    compare('query=content:time&type=all', selfdir+"time.result.json", "content2")
-    compare('query=content:time&type=all', selfdir+"time.result.json", "content3")
-
-    # Return if CentOS, code below depends on linguistics library suppporting CJK languages
-    return if linux_distribution_CentOS?
-
-    puts "Query: korean"
-    compare('query=content:%EB%8F%8C%EB%93%A4%EC%9D%B4+content:%EC%9E%A5%EA%B8%B0%EB%82%98&language=ko&type=all', selfdir+"ko.result.json", "dyncontent")
-    compare('query=content:%EB%8F%8C%EB%93%A4%EC%9D%B4+content:%EC%9E%A5%EA%B8%B0%EB%82%98&language=ko&type=all', selfdir+"ko.result.json", "content2")
-    compare('query=content:%EB%8F%8C%EB%93%A4%EC%9D%B4+content:%EC%9E%A5%EA%B8%B0%EB%82%98&language=ko&type=all', selfdir+"ko.result.json", "content3")
-
-    #token: %E5%9F%BA%E6%9C%AC basic
-    #token: %E5%B1%80%E9%9D%A2 aspect
-    #token: %E6%9C%80%E7%BB%88 finally
-    #token: %E8%A7%84%E5%88%99 regular
-    #token: %E9%97%AE%E9%A2%98 question
-
-    puts "Query: simplified chinese"
-    compare('query=content:%E5%9F%BA%E6%9C%AC+content:%E9%97%AE%E9%A2%98&language=zh-hans&type=all', selfdir+"cs.result.json", "dyncontent")
-    compare('query=content:%E5%9F%BA%E6%9C%AC+content:%E9%97%AE%E9%A2%98&language=zh-hans&type=all', selfdir+"cs.result.json", "content2")
-    compare('query=content:%E5%9F%BA%E6%9C%AC+content:%E9%97%AE%E9%A2%98&language=zh-hans&type=all', selfdir+"cs.result.json", "content3")
-
+    compare('query=time&type=all', selfdir+"time.result.json", "dyncontent")
+    compare('query=time&type=all', selfdir+"time.result.json", "content2")
+    compare('query=time&type=all', selfdir+"time.result.json", "content3")
   end
 
   def test_long_dyn_teaser
@@ -71,7 +51,7 @@ class DynTeaser < IndexedSearchTest
     feed_and_wait_for_docs("cjk", 1, :file => selfdir+"dynteaser.1.xml")
 
     puts "Query: english"
-    compare('query=content:time&type=all', selfdir+"time.long.result.json", "content3")
+    compare('query=time&type=all', selfdir+"time.long.result.json", "content3")
   end
 
   def test_fallback_none

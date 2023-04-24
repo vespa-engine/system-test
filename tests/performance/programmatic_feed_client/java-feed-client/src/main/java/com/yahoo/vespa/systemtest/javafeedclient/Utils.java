@@ -3,6 +3,7 @@ package com.yahoo.vespa.systemtest.javafeedclient;
 
 import ai.vespa.feed.client.FeedClient;
 import ai.vespa.feed.client.FeedClientBuilder;
+import ai.vespa.feed.client.FeedClientBuilder.Compression;
 import ai.vespa.feed.client.OperationStats;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -12,13 +13,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.Optional;
 import java.util.logging.LogManager;
 
+import static ai.vespa.feed.client.FeedClientBuilder.Compression.auto;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Objects.requireNonNullElse;
 
 /**
  * @author bjorncs
@@ -43,9 +46,8 @@ class Utils {
     static int documents() { return Integer.parseInt(System.getProperty("vespa.test.feed.documents")); }
     static int warmupSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.warmup.seconds")); }
     static int benchmarkSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.benchmark.seconds")); }
-    static int maxConcurrentStreamsPerConnection() {
-        return Integer.parseInt(System.getProperty("vespa.test.feed.max-concurrent-streams-per-connection"));
-    }
+    static int maxConcurrentStreamsPerConnection() { return Integer.parseInt(System.getProperty("vespa.test.feed.max-concurrent-streams-per-connection")); }
+    static Compression compression() { return Optional.ofNullable(System.getProperty("vespa.test.feed.compression")).map(Compression::valueOf).orElse(null); }
     static String fieldsJson() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (JsonGenerator generator = new JsonFactory().createGenerator(out)) {
@@ -89,6 +91,7 @@ class Utils {
                                 .setCaCertificatesFile(caCertificate())
                                 .setCertificate(certificate(), privateKey())
                                 .setHostnameVerifier(TRUST_ALL_VERIFIER)
+                                .setCompression(requireNonNullElse(compression(), auto))
                                 .build();
     }
 

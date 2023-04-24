@@ -87,10 +87,19 @@ class FastAccessAttributesTest < SearchTest
     assert_attribute_hitcount
   end
 
+  def enable_debug
+    vespa.adminserver.logctl("distributor:distributor.stripe_bucket_db_updater", "debug=on,spam=on")
+    vespa.adminserver.logctl("distributor2:distributor.stripe_bucket_db_updater", "debug=on,spam=on")
+    vespa.adminserver.logctl("searchnode:persistence.filestor.modifiedbucketchecker", "debug=on,spam=on")
+    vespa.adminserver.logctl("searchnode:persistence.bucketownershipnotifier", "debug=on,spam=on")
+    vespa.adminserver.logctl("searchnode:persistence.persistencehandler", "debug=on")
+  end
+
   def test_add_fast_access_attribute
     set_description("Verify that a fast access attribute can be added and populated in the not-ready sub database")
     deploy_app(get_app("sd1/test.sd"))
     start
+    enable_debug
     feed_and_wait_for_docs("test", 16, :file => selfdir + "docs.xml")
     assert_attributes_exist(false)
 
@@ -111,6 +120,7 @@ class FastAccessAttributesTest < SearchTest
     set_description("Verify that a fast access attribute can be removed and document store populated in the not-ready sub database")
     deploy_app(get_app("sd2/test.sd"))
     start
+    enable_debug
     feed_and_wait_for_docs("test", 16, :file => selfdir + "docs.xml")
     feed(:file => selfdir + "updates.xml")
     assert_attribute_hitcount

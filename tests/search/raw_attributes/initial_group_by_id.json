@@ -1,0 +1,75 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 5
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 5,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        },
+        "children": [
+          {
+            "id": "grouplist:id",
+            "relevance": 1.0,
+            "label": "id",
+            "children": [
+              {
+                "id": "group:long:0",
+                "relevance": 0.0,
+                "value": "0",
+                "fields": {
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
+                }
+              },
+              {
+                "id": "group:long:1",
+                "relevance": 0.0,
+                "value": "1",
+                "fields": {
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
+                }
+              },
+              {
+                "id": "group:long:2",
+                "relevance": 0.0,
+                "value": "2",
+                "fields": {
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
+                }
+              },
+              {
+                "id": "group:long:3",
+                "relevance": 0.0,
+                "value": "3",
+                "fields": {
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
+                }
+              },
+              {
+                "id": "group:long:4",
+                "relevance": 0.0,
+                "value": "4",
+                "fields": {
+                  "max(raw)": "dGhpcyBpcyByYXcgZGF0YQ"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

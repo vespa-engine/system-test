@@ -1,0 +1,19 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema test {
+  document test {
+    field raw type raw {
+      indexing: attribute | summary
+    }
+    field id type int {
+      indexing: attribute | summary
+    }
+    field value type int {
+      indexing: attribute | summary
+    }
+  }
+  document-summary id {
+    summary id type int {}
+  }
+
+}

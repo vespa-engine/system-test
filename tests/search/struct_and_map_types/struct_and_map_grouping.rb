@@ -53,28 +53,30 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
   end
 
   def create_app
-    SearchApp.new.sd(selfdir + "grouping/test.sd")
+    SearchApp.new.sd(selfdir + "grouping/test.sd").threads_per_search(1)
   end
 
   def test_struct_and_map_grouping
     deploy_app(create_app)
     start
-    feed_and_wait_for_docs('test', 2, :file => selfdir + "grouping/docs.json")
-    check_grouping("all(group(int_single) each(output(count())))", {"10"=>2})
+    feed_and_wait_for_docs('test', 3, :file => selfdir + "grouping/docs.json")
+    nan = if is_streaming then 0 else -2147483648 end
+    check_grouping("all(group(int_single) each(output(count())))", {"10"=>2,"#{nan}"=>1})
     check_grouping("all(group(int_array) each(output(count())))", {"10"=>2,"20"=>1})
     check_grouping("all(group(elem_array.weight) each(output(count())))", {"10"=>2,"20"=>1})
     check_grouping("all(group(elem_map.key) each(output(count())))", {"@bar"=>1, "@foo"=>2})
     check_grouping("all(group(elem_map.value.weight) each(output(count())))", {"10"=>2, "20"=>1})
-    check_grouping("all(group(elem_map{\"@foo\"}.weight) each(output(count())))", {"10"=>2})
+    check_grouping("all(group(elem_map{\"@foo\"}.weight) each(output(count())))", if is_streaming then {"10"=>2} else {"10"=>2,"#{nan}"=>1} end)
     check_grouping("all(group(str_int_map.key) each(output(count())))", {"@bar"=>2, "@foo"=>2})
     check_grouping("all(group(str_int_map.value) each(output(count())))", {"10"=>1, "20"=>2, "30"=>1})
-    check_grouping("all(group(str_int_map{\"@foo\"}) each(output(count())))", {"10"=>1, "20"=>1})
+    check_grouping("all(group(str_int_map{\"@foo\"}) each(output(count())))", if is_streaming then {"10"=>1, "20"=>1} else {"10"=>1, "20"=>1, "#{nan}"=>1} end)
     check_grouping("all(group(str_int_map.key) each(output(sum(str_int_map.value))))", {"@bar"=>80, "@foo"=>80}, "sum(str_int_map.value)")
-    check_grouping("all(group(\"my_group\") each(output(sum(str_int_map{\"@foo\"}))))", {"my_group"=>30}, "sum(str_int_map{\"@foo\"})")
+    check_grouping("all(group(str_str_map{\"@foo\"}) each(output(count())))", if is_streaming then {"@bar"=>1, ""=>1} else {"@bar"=>1, ""=>2} end)
+    check_grouping("all(group(\"my_group\") each(output(sum(str_int_map{\"@foo\"}))))", {"my_group"=>nan+30}, "sum(str_int_map{\"@foo\"})")
     unless is_streaming
-      check_grouping("all(group(elem_map{attribute(key1)}.weight) each(output(count())))", {"10"=>2})
-      check_grouping("all(group(elem_map{attribute(key2)}.weight) each(output(count())))", {"20"=>1,"-2147483648"=>1})
-      check_grouping("all(group(elem_map{attribute(key3)}.weight) each(output(count())))", {"-2147483648"=>2})
+      check_grouping("all(group(elem_map{attribute(key1)}.weight) each(output(count())))", {"10"=>2, "#{nan}"=>1})
+      check_grouping("all(group(elem_map{attribute(key2)}.weight) each(output(count())))", {"20"=>1, "#{nan}"=>2})
+      check_grouping("all(group(elem_map{attribute(key3)}.weight) each(output(count())))", {"#{nan}"=>3})
     end
   end
 

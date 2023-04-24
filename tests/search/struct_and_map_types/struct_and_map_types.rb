@@ -418,7 +418,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     size = features["attribute(#{attr_name}).count"].to_i
     result = []
     for i in 0...size do
-      hash_val = features["attribute(#{attr_name},#{i})"].to_i
+      hash_val = features["attribute(#{attr_name},#{i})"].to_f
       result.push(convert_hash_to_string(hash_val))
     end
     puts "convert_string_features_to_array(#{attr_name}): #{result}"
@@ -426,7 +426,8 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def convert_hash_to_string(hash)
-    {101574 => "foo", 97299 => "bar", 97307 => "baz", 2008198 => "@foo", 2003923 => "@bar", 2003931 => "@baz"}[hash]
+    puts "hash = #{hash}"
+    {-1.7357760893302906e-99 => "foo", -3.380451426976538e+98 => "bar", 8.297704231840785e-106 => "baz", 6.8832777709438165e+190 => "@foo", -7.163786353803082e+61 => "@bar", -4.907850049739115e-295 => "@baz"}[hash]
   end
 
   def convert_int_features_to_array(attr_name, features)

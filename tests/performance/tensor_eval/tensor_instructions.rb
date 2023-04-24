@@ -16,7 +16,8 @@ class TensorInstructionBenchmarkTest < PerformanceTest
     set_owner("arnej")
   end
 
-  def test_instruction_benchmark
+  # TODO add limits and graphs and reenable when necessary.
+  def ignore_test_instruction_benchmark
     set_description("Test performance of low-level tensor instructions")
     deploy_app(SearchApp.new.sd(selfdir+"dummy.sd"))
     searchnode = vespa.search['search'].first

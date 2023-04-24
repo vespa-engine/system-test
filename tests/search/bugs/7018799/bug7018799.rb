@@ -7,6 +7,7 @@ class RecoveryLosesAnnotations < SearchTest
 
   def setup
     set_owner("arnej")
+    @sps = [ "0/0", "1/0" ]
   end
 
   def qf(fieldname, word)
@@ -55,27 +56,9 @@ class RecoveryLosesAnnotations < SearchTest
     check("source", "Dr.eye")
   end
 
-  def wait_for_online_on(docs, node, nodeid)
-    c = -1
-    rx = /"onlineDocs", "(\d+)"/
-    snid = "multitest/search/cluster.multitest/#{nodeid}/realtimecontroller"
-    trycnt = 0
-    while (c != docs) && (trycnt < 180)
-      trycnt += 1
-      sleep 1
-      op = node.execute("vespa-proton-cmd --id=#{snid} getState", :exceptiononfailure => false)
-      #puts "GOT op: #{op}"
-      m = rx.match(op)
-      if m
-        #puts "got match: #{m}"
-        c = m[1].to_i
-      else
-        puts "no match: #{m} for #{op}"
-        c = -1
-      end
-      #puts "got c: #{c}"
-    end
-    assert_equal(docs, c)
+  def wait_for_docs_on(docs, nodeid)
+    sp = @sps[nodeid]
+    wait_for_hitcount("sddocname:rla&nocache&model.searchPath=#{sp}", docs, 120)
   end
 
   def test_bug7018799
@@ -102,15 +85,16 @@ class RecoveryLosesAnnotations < SearchTest
     checkAll
 
     sn0.start
-    wait_for_online_on(2, sn0, 0)
-    wait_for_hitcount("sddocname:rla", 4)
+    wait_for_docs_on(2, 0)
+    wait_for_docs_on(2, 1)
     checkAll
     feed_and_wait_for_docs("rla", 5, :file => selfdir+"xtra2.xml")
     checkAll
     checkAll
 
     sn1.stop
-    wait_for_online_on(5, sn0, 0)
+    wait_for_docs_on(5, 0)
+    wait_for_docs_on(0, 1)
     checkAll
     feed_and_wait_for_docs("rla", 6, :file => selfdir+"xtra3.xml")
     checkAll

@@ -12,7 +12,7 @@ class Configserver < VespaNode
 
   def get_logfile(filename)
     content = ""
-    if File.exists?(filename)
+    if File.exist?(filename)
       content = File.open(filename).read
     end
 

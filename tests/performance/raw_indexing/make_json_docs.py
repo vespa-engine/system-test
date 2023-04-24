@@ -23,13 +23,16 @@ def read_jsonl_file(number, filepath, filepath_out):
             id_counter += 1
 
 def extract_text(text):
-    data = json.loads(text)
+    try:
+         data = json.loads(text)
+    except json.decoder.JSONDecodeError as e:
+         print("Decoding json failed: ", e)
     return data["text"]
 
 def format_json(text, id_counter):
     document = {"text": text}
-    json_documet = {"fields": document ,"put": "id:doc:doc::"+str(id_counter)}
-    return json_documet
+    json_document = {"fields": document ,"put": "id:doc:doc::"+str(id_counter)}
+    return json_document
 
 def write_json_to_file(json_document, check, filepath_out):
     with open(filepath_out, "a") as outfile:
@@ -47,4 +50,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
