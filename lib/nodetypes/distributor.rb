@@ -31,7 +31,7 @@ class Distributor < VDSNode
     }
     if count == 0
       not_ready = get_ideal_replicas_not_ready()
-      count = not_ready.size / 2
+      count = not_ready.size
       result.push(not_ready) if count > 0
     else
       result.push(statuspage)
@@ -58,7 +58,7 @@ class Distributor < VDSNode
   # Should only be called on a distributor that has finished its regular ideal state
   # operations.
   def count_ideal_replicas_not_ready
-    get_ideal_replicas_not_ready().size/2
+    get_ideal_replicas_not_ready().size
   end
 
   def get_ideal_replicas_not_ready
@@ -68,7 +68,7 @@ class Distributor < VDSNode
       # This should generalize to always be true for indexed, store-only, flat and grouped setups.
       # We'd ideally check the active-flag as well, but clusters without indexed docs will
       # not activate any replicas.
-      non_ready.push(bucket_id, state) if not state[0].ready
+      non_ready.push([bucket_id, state]) if not state[0].ready
     end
     non_ready
   end
