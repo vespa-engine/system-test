@@ -989,7 +989,11 @@ class TestCase
     end
     node.stop
     node.start
-    wait_for_hitcount("sddocname:#{doc_type}&nocache&streaming.selection=true", exp_hits, 180)
+    query = "sddocname:#{doc_type}&nocache"
+    if is_streaming
+      query += "&streaming.selection=true"
+    end
+    wait_for_hitcount(query, exp_hits, 180)
   end
 
 end
