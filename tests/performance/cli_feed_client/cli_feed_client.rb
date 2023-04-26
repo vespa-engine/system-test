@@ -7,7 +7,6 @@ require 'json'
 
 class CliFeedClientTest < PerformanceTest
 
-  # These should match the numbers used in programmatic_feed_client.rb
   DOCUMENTS = 2000000
   TINY = 10
   LARGE = 10000
@@ -20,25 +19,27 @@ class CliFeedClientTest < PerformanceTest
 
   def setup
     set_owner('mpolden')
-    set_description('Benchmarking of the Vespa CLI feed client')
+    set_description('Benchmarking of the Vespa CLI feed client and vespa-feed-client (Java implementation)')
   end
 
   def test_throughput
     container_node = deploy_test_app
     vespa_destination_start
 
-    run_benchmark(container_node,  TINY, 32)
-    run_benchmark(container_node, LARGE, 32)
+    run_benchmark(container_node, "vespa-cli-feed",    TINY, 32)
+    run_benchmark(container_node, "vespa-cli-feed",    LARGE, 32)
+    run_benchmark(container_node, "vespa-feed-client", TINY, 32)
+    run_benchmark(container_node, "vespa-feed-client", LARGE, 32)
   end
 
   private
-  def run_benchmark(container_node, size, connections)
-    label = "vespa-cli-feed-#{size}b"
+  def run_benchmark(container_node, program_name, size, connections)
+    label = "#{program_name}-#{size}b"
     cpu_monitor = Perf::System.new(container_node)
     cpu_monitor.start
     profiler_start
-    result = run_benchmark_program(container_node, label, size, connections, DOCUMENTS)
-    profiler_report(label)
+    result, pid = run_benchmark_program(container_node, program_name, label, size, connections, DOCUMENTS)
+    profiler_report(label, { program_name => [ pid ] })
     cpu_monitor.end
     write_report(
       [
@@ -59,24 +60,39 @@ class CliFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark_program(container_node, label, size, connections, doc_count)
+  def run_benchmark_program(container_node, program_name, label, size, connections, doc_count)
     out_file = "#{label}.out"
     err_file = "#{label}.err"
     feed_file = "#{dirs.tmpdir}/docs_#{doc_count}_#{size}b.json"
-    feed_cmd = "env "+
-               "VESPA_CLI_DATA_PLANE_TRUST_ALL=true " +
-               "VESPA_CLI_DATA_PLANE_CA_CERT_FILE=#{tls_env.ca_certificates_file} " +
-               "VESPA_CLI_DATA_PLANE_CERT_FILE=#{tls_env.certificate_file} " +
-               "VESPA_CLI_DATA_PLANE_KEY_FILE=#{tls_env.private_key_file} " +
-               "vespa feed " +
-               "--target=https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/ " +
-               "--connections=#{connections} " +
-               "--route=#{DUMMY_ROUTE} " +
-               "#{feed_file} " +
-               "1> #{out_file} 2> #{err_file}"
+    endpoint = "https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/"
+    if program_name == "vespa-cli-feed"
+      feed_cmd = "env "+
+                 "VESPA_CLI_DATA_PLANE_TRUST_ALL=true " +
+                 "VESPA_CLI_DATA_PLANE_CA_CERT_FILE=#{tls_env.ca_certificates_file} " +
+                 "VESPA_CLI_DATA_PLANE_CERT_FILE=#{tls_env.certificate_file} " +
+                 "VESPA_CLI_DATA_PLANE_KEY_FILE=#{tls_env.private_key_file} " +
+                 "vespa feed " +
+                 "--target=#{endpoint} " +
+                 "--connections=#{connections} " +
+                 "--route=#{DUMMY_ROUTE} " +
+                 "#{feed_file} " +
+                 "1> #{out_file} 2> #{err_file}"
+    else
+      feed_cmd = "vespa-feed-client " +
+                 "--silent " +
+                 "--disable-ssl-hostname-verification " +
+                 "--ca-certificates #{tls_env.ca_certificates_file} " +
+                 "--certificate #{tls_env.certificate_file} " +
+                 "--private-key #{tls_env.private_key_file} " +
+                 "--endpoint #{endpoint} " +
+                 "--connections #{connections} " +
+                 "--route #{DUMMY_ROUTE} " +
+                 "--file #{feed_file} " +
+                 "2> #{out_file}"
+    end
     vespa.adminserver.write_document_operations(:put,
                                                 { :fields => { :text => generate_text(size) } },
-                                                "id:text:text::vespa-cli-feed-",
+                                                "id:text:text::mydoc-",
                                                 doc_count,
                                                 feed_file)
     pid = vespa.adminserver.execute_bg("exec #{feed_cmd}") # exec to let process inherit the subshell's PID
@@ -88,7 +104,7 @@ class CliFeedClientTest < PerformanceTest
     result = vespa.adminserver.readfile(out_file)
     puts("###### STDOUT #####\n#{result}")
     raise "Failed to complete benchmark within 5 minutes" unless complete
-    return format_output(JSON.parse(result))
+    return format_output(JSON.parse(result)), pid
   end
 
   private
