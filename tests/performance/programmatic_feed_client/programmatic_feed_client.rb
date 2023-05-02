@@ -27,10 +27,10 @@ class ProgrammaticFeedClientTest < PerformanceTest
     vespa_destination_start
     build_feed_client
 
-    run_benchmark(container_node, "VespaFeedClient",   TINY, 32)
-    run_benchmark(container_node, "VespaJsonFeeder",   TINY, 32)
-    run_benchmark(container_node, "VespaFeedClient",  LARGE, 32)
-    run_benchmark(container_node, "VespaJsonFeeder",  LARGE, 32)
+    run_benchmark(container_node, "VespaFeedClient",   TINY)
+    run_benchmark(container_node, "VespaJsonFeeder",   TINY)
+    run_benchmark(container_node, "VespaFeedClient",  LARGE)
+    run_benchmark(container_node, "VespaJsonFeeder",  LARGE)
   end
 
   private
@@ -39,12 +39,12 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark(container_node, program_name, size, connections, compression = nil)
+  def run_benchmark(container_node, program_name, size, compression = nil)
     label = "#{program_name}-#{compression.nil? ? "" : "#{compression}-"}#{size}b"
     cpu_monitor = Perf::System.new(container_node)
     cpu_monitor.start
     profiler_start
-    result, pid = run_benchmark_program(container_node, program_name, label, size, connections, compression)
+    result, pid = run_benchmark_program(container_node, program_name, label, size, compression)
     profiler_report(label, { program_name => [ pid ] })
     cpu_monitor.end
     write_report(
@@ -52,7 +52,6 @@ class ProgrammaticFeedClientTest < PerformanceTest
         json_to_filler(result),
         parameter_filler('size', size),
         parameter_filler('label', label),
-        parameter_filler('clients', connections),
         parameter_filler('compression', compression.nil? ? "default" : compression),
         cpu_monitor.fill
       ]
@@ -67,7 +66,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark_program(container_node, main_class, label, size, connections, compression)
+  def run_benchmark_program(container_node, main_class, label, size, compression)
     out_file = "#{label}.out"
     err_file = "#{label}.err"
     java_cmd =
@@ -78,8 +77,6 @@ class ProgrammaticFeedClientTest < PerformanceTest
         "-Dvespa.test.feed.warmup.seconds=#{10} " +
         "-Dvespa.test.feed.benchmark.seconds=#{30} " +
         "-Dvespa.test.feed.document-text='#{generate_text(size)}' " +
-        "-Dvespa.test.feed.connections=#{connections} " +
-        "-Dvespa.test.feed.max-concurrent-streams-per-connection=4096 " +
         "-Dvespa.test.feed.endpoint=https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/ " +
         "-Dvespa.test.feed.certificate=#{tls_env.certificate_file} " +
         "-Dvespa.test.feed.private-key=#{tls_env.private_key_file} " +

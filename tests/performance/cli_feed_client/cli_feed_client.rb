@@ -26,19 +26,19 @@ class CliFeedClientTest < PerformanceTest
     container_node = deploy_test_app
     vespa_destination_start
 
-    run_benchmark(container_node, "vespa-cli-feed",    TINY, 32)
-    run_benchmark(container_node, "vespa-cli-feed",    LARGE, 32)
-    run_benchmark(container_node, "vespa-feed-client", TINY, 32)
-    run_benchmark(container_node, "vespa-feed-client", LARGE, 32)
+    run_benchmark(container_node, "vespa-cli-feed",    TINY)
+    run_benchmark(container_node, "vespa-cli-feed",    LARGE)
+    run_benchmark(container_node, "vespa-feed-client", TINY)
+    run_benchmark(container_node, "vespa-feed-client", LARGE)
   end
 
   private
-  def run_benchmark(container_node, program_name, size, connections)
+  def run_benchmark(container_node, program_name, size)
     label = "#{program_name}-#{size}b"
     cpu_monitor = Perf::System.new(container_node)
     cpu_monitor.start
     profiler_start
-    result, pid = run_benchmark_program(container_node, program_name, label, size, connections, DOCUMENTS)
+    result, pid = run_benchmark_program(container_node, program_name, label, size, DOCUMENTS)
     profiler_report(label, { program_name => [ pid ] })
     cpu_monitor.end
     write_report(
@@ -46,7 +46,6 @@ class CliFeedClientTest < PerformanceTest
         json_to_filler(result),
         parameter_filler('size', size),
         parameter_filler('label', label),
-        parameter_filler('clients', connections),
         cpu_monitor.fill
       ]
     )
@@ -60,7 +59,7 @@ class CliFeedClientTest < PerformanceTest
   end
 
   private
-  def run_benchmark_program(container_node, program_name, label, size, connections, doc_count)
+  def run_benchmark_program(container_node, program_name, label, size, doc_count)
     out_file = "#{label}.out"
     err_file = "#{label}.err"
     feed_file = "#{dirs.tmpdir}/docs_#{doc_count}_#{size}b.json"
@@ -73,7 +72,6 @@ class CliFeedClientTest < PerformanceTest
                  "VESPA_CLI_DATA_PLANE_KEY_FILE=#{tls_env.private_key_file} " +
                  "vespa feed " +
                  "--target=#{endpoint} " +
-                 "--connections=#{connections} " +
                  "--route=#{DUMMY_ROUTE} " +
                  "#{feed_file} " +
                  "1> #{out_file} 2> #{err_file}"
@@ -85,7 +83,6 @@ class CliFeedClientTest < PerformanceTest
                  "--certificate #{tls_env.certificate_file} " +
                  "--private-key #{tls_env.private_key_file} " +
                  "--endpoint #{endpoint} " +
-                 "--connections #{connections} " +
                  "--route #{DUMMY_ROUTE} " +
                  "--file #{feed_file} " +
                  "2> #{out_file}"
