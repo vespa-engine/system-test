@@ -40,13 +40,11 @@ class Utils {
     static Path certificate() { return Paths.get(System.getProperty("vespa.test.feed.certificate")); }
     static Path privateKey() { return Paths.get(System.getProperty("vespa.test.feed.private-key")); }
     static Path caCertificate() { return Paths.get(System.getProperty("vespa.test.feed.ca-certificate")); }
-    static int connections() { return Integer.parseInt(System.getProperty("vespa.test.feed.connections")); }
     static String route() { return System.getProperty("vespa.test.feed.route"); }
     static URI endpoint() { return URI.create(System.getProperty("vespa.test.feed.endpoint")); }
     static int documents() { return Integer.parseInt(System.getProperty("vespa.test.feed.documents")); }
     static int warmupSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.warmup.seconds")); }
     static int benchmarkSeconds() { return Integer.parseInt(System.getProperty("vespa.test.feed.benchmark.seconds")); }
-    static int maxConcurrentStreamsPerConnection() { return Integer.parseInt(System.getProperty("vespa.test.feed.max-concurrent-streams-per-connection")); }
     static Compression compression() { return Optional.ofNullable(System.getProperty("vespa.test.feed.compression")).map(Compression::valueOf).orElse(null); }
     static String fieldsJson() throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -84,10 +82,7 @@ class Utils {
     }
 
     static FeedClient createFeedClient() {
-        int connections = connections();
         return FeedClientBuilder.create(endpoint())
-                                .setMaxStreamPerConnection(maxConcurrentStreamsPerConnection())
-                                .setConnectionsPerEndpoint(connections)
                                 .setCaCertificatesFile(caCertificate())
                                 .setCertificate(certificate(), privateKey())
                                 .setHostnameVerifier(TRUST_ALL_VERIFIER)
