@@ -16,16 +16,16 @@ class RawAttributesTest < IndexedStreamingSearchTest
     start
     feed_and_wait_for_docs('test', 5, :file => selfdir + 'docs.json')
     5.times do |id|
-      assert_field(['dGhpcyBpcyByYXcgZGF0YQ'], id.to_s)
+      assert_field(['dGhpcyBpcyByYXcgZGF0YQ=='], id.to_s)
     end
     assert_grouping('all(group(id) each(output(max(raw))))', selfdir + 'initial_group_by_id.json')
     assert_grouping('all(group(raw) each(output(sum(value))))', selfdir + 'initial_group_by_raw.json')
     feed(:file => selfdir + 'updates.json', :exceptiononfailure => true)
-    assert_field(['dGhpcyBpcyByYXcgZGF0YQ'], '0') # "this is raw data"
+    assert_field(['dGhpcyBpcyByYXcgZGF0YQ=='], '0') # "this is raw data"
     assert_field([nil], '1')
-    assert_field(['aGVsbG8gd29ybGQ'], '2')         # "hello world"
-    assert_field(['dGhpcyBpcyByYXcgZGF0YQ'], '3')
-    assert_field(['0IA'], '4')                     # "Ѐ", i.e. 0xd0 0x80
+    assert_field(['aGVsbG8gd29ybGQ='], '2')         # "hello world"
+    assert_field(['dGhpcyBpcyByYXcgZGF0YQ=='], '3')
+    assert_field(['0IA='], '4')                     # "Ѐ", i.e. 0xd0 0x80
     assert_grouping('all(group(id) each(output(max(raw))))', selfdir + 'final_group_by_id.json')
     assert_grouping('all(group(raw) each(output(sum(value))))', selfdir + 'final_group_by_raw.json')
     assert_sorting('-raw +id', selfdir + 'sort_by_desc_raw.json')

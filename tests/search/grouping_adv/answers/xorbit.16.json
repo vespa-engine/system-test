@@ -27,33 +27,33 @@
             "label": "xorbit(cat(a, b, c), 16)",
             "children": [
               {
-                "id": "group:raw:YDE",
+                "id": "group:raw:YDE=",
                 "relevance": 12111.719438207627,
-                "value": "YDE",
+                "value": "YDE=",
                 "fields": {
                   "count()": 7
                 }
               },
               {
-                "id": "group:raw:YDI",
+                "id": "group:raw:YDI=",
                 "relevance": 11111.709477840308,
-                "value": "YDI",
+                "value": "YDI=",
                 "fields": {
                   "count()": 8
                 }
               },
               {
-                "id": "group:raw:YDA",
+                "id": "group:raw:YDA=",
                 "relevance": 10977.31338339293,
-                "value": "YDA",
+                "value": "YDA=",
                 "fields": {
                   "count()": 6
                 }
               },
               {
-                "id": "group:raw:YDM",
+                "id": "group:raw:YDM=",
                 "relevance": 10011.709521325834,
-                "value": "YDM",
+                "value": "YDM=",
                 "fields": {
                   "count()": 7
                 }
