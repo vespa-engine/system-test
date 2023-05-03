@@ -27,33 +27,33 @@
             "label": "xorbit(cat(a, b, c), 8)",
             "children": [
               {
-                "id": "group:raw:UQ",
+                "id": "group:raw:UQ==",
                 "relevance": 12111.719438207627,
-                "value": "UQ",
+                "value": "UQ==",
                 "fields": {
                   "count()": 7
                 }
               },
               {
-                "id": "group:raw:Ug",
+                "id": "group:raw:Ug==",
                 "relevance": 11111.709477840308,
-                "value": "Ug",
+                "value": "Ug==",
                 "fields": {
                   "count()": 8
                 }
               },
               {
-                "id": "group:raw:UA",
+                "id": "group:raw:UA==",
                 "relevance": 10977.31338339293,
-                "value": "UA",
+                "value": "UA==",
                 "fields": {
                   "count()": 6
                 }
               },
               {
-                "id": "group:raw:Uw",
+                "id": "group:raw:Uw==",
                 "relevance": 10011.709521325834,
-                "value": "Uw",
+                "value": "Uw==",
                 "fields": {
                   "count()": 7
                 }

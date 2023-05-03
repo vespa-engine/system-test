@@ -27,9 +27,9 @@
             "label": "raw",
             "children": [
               {
-                "id": "group:raw:dGhpcyBpcyByYXcgZGF0YQ",
+                "id": "group:raw:dGhpcyBpcyByYXcgZGF0YQ==",
                 "relevance": 0.0,
-                "value": "dGhpcyBpcyByYXcgZGF0YQ",
+                "value": "dGhpcyBpcyByYXcgZGF0YQ==",
                 "fields": {
                   "sum(value)": 31
                 }

@@ -27,30 +27,30 @@
             "label": "cat(\"\", c)",
             "children": [
               {
-                "id": "group:raw:YzM",
+                "id": "group:raw:YzM=",
                 "relevance": 12111.719438207627,
-                "value": "YzM",
+                "value": "YzM=",
                 "fields": {
                   "count()": 9,
                   "max(cat(\"\", nb))": ""
                 }
               },
               {
-                "id": "group:raw:YzI",
+                "id": "group:raw:YzI=",
                 "relevance": 10977.31338339293,
-                "value": "YzI",
+                "value": "YzI=",
                 "fields": {
                   "count()": 10,
                   "max(cat(\"\", nb))": ""
                 }
               },
               {
-                "id": "group:raw:YzE",
+                "id": "group:raw:YzE=",
                 "relevance": 9751.807920622134,
-                "value": "YzE",
+                "value": "YzE=",
                 "fields": {
                   "count()": 9,
-                  "max(cat(\"\", nb))": "Bwk"
+                  "max(cat(\"\", nb))": "Bwk="
                 }
               }
             ]
