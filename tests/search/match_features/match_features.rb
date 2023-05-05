@@ -3,9 +3,9 @@
 require 'rubygems'
 require 'json'
 require 'set'
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class MatchFeatures < IndexedSearchTest
+class MatchFeatures < IndexedStreamingSearchTest
 
   def setup
     set_owner('arnej')
@@ -16,6 +16,7 @@ class MatchFeatures < IndexedSearchTest
     query += '&format=json'
     query += '&ranking.features.query(mix)={{x:x1,y:0}:1,{x:x2,y:1}:1}'
     query += '&ranking.features.query(vec)=[2.5,7.5]'
+    query += '&streaming.selection=true'
     query += '&ranking=withmf'
     #puts "Query: #{query}"
     result = search(query)
