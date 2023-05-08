@@ -3,24 +3,12 @@ require 'search_test'
 
 class InconsistentBucketsBase < SearchTest
 
-  def param_setup(params)
-    @params = params
-    setup_impl(params[:enable_3phase], params[:fast_restart])
-  end
-
-  def self.testparameters
-    # TODO remove parameterization once 3-phase updates are enabled by default.
-    { 'LEGACY'              => { :enable_3phase => false, :fast_restart => false },
-      'LEGACY_FAST_RESTART' => { :enable_3phase => false, :fast_restart => true },
-      'THREE_PHASE'         => { :enable_3phase => true,  :fast_restart => false } } # 3-phase implicitly enables fast restart
-  end
-
-  def setup_impl(enable_3phase, enable_fast_restart)
-    deploy_app(make_app(three_phase_updates: enable_3phase, fast_restart: enable_fast_restart))
+  def setup
+    deploy_app(make_app())
     start
   end
 
-  def make_app(fast_restart:, three_phase_updates:, disable_merges: true)
+  def make_app(disable_merges: true, enable_condition_probing: false)
     SearchApp.new.sd(SEARCH_DATA + 'music.sd').
       cluster_name('storage').
       num_parts(2).redundancy(2).ready_copies(2).
@@ -28,8 +16,7 @@ class InconsistentBucketsBase < SearchTest
       storage(StorageCluster.new('storage', 2).distribution_bits(8)).
       config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
              add('merge_operations_disabled', disable_merges).
-             add('restart_with_fast_update_path_if_all_get_timestamps_are_consistent', fast_restart).
-             add('enable_metadata_only_fetch_phase_for_inconsistent_updates', three_phase_updates))
+             add('enable_condition_probing', enable_condition_probing))
   end
 
   def updated_doc_id

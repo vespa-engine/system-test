@@ -35,9 +35,7 @@ class VisibilityForDeletedDocumentsInInconsistentBucketsTest < InconsistentBucke
     dump_bucket_contents
 
     puts_decorated 'Unblocking merges to allow remove-entries to be merged'
-    gen = get_generation(deploy_app(make_app(three_phase_updates: @params[:enable_3phase],
-                                             fast_restart: @params[:fast_restart],
-                                             disable_merges: false)))
+    gen = get_generation(deploy_app(make_app(disable_merges: false)))
     # Ensure that config is visible on nodes (and triggering ideal state ops) before running wait_until_ready
     content_cluster.wait_until_content_nodes_have_config_generation(gen.to_i)
 
