@@ -170,7 +170,7 @@ class TestRunner
 
         begin
           start_allocate = Time.now.to_i
-          nodes = @node_allocator.allocate(testcase.num_hosts, 3600)
+          nodes = @node_allocator.allocate(testcase.num_hosts)
           waited_for = Time.now.to_i - start_allocate
         rescue StandardError => e
           @log.error("Not enough nodes were available, could not run #{testcase.class} (required #{testcase.num_hosts}). Exception received #{e.message}")
