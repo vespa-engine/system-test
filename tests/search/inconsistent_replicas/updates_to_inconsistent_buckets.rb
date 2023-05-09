@@ -11,9 +11,9 @@ class UpdatesToInconsistentBucketsTest < InconsistentBucketsBase
   def maybe_enable_debug_logging(enable)
     return if not enable
     ['', '2'].each do |d|
-      vespa.adminserver.execute("vespa-logctl distributor#{d}:distributor.callback.twophaseupdate debug=on,spam=on")
-      vespa.adminserver.execute("vespa-logctl distributor#{d}:distributor.callback.doc.get debug=on,spam=on")
-      vespa.adminserver.execute("vespa-logctl distributor#{d}:distributor.callback.doc.update debug=on,spam=on")
+      vespa.adminserver.execute("vespa-logctl distributor#{d}:distributor.operations.external.two_phase_update debug=on,spam=on")
+      vespa.adminserver.execute("vespa-logctl distributor#{d}:distributor.operations.external.get debug=on,spam=on")
+      vespa.adminserver.execute("vespa-logctl distributor#{d}:distributor.operations.external.update debug=on,spam=on")
     end
   end
 
@@ -113,6 +113,56 @@ class UpdatesToInconsistentBucketsTest < InconsistentBucketsBase
     update_doc_with_field_value(title: 'really neat title', create_if_missing: false)
 
     verify_document_does_not_exist
+  end
+
+  def do_test_conditional_update_with_divergent_document_versions(create_if_missing:, condition:, expect_tas_failure:)
+    set_description('Test that conditional updates trigger write-repair when documents across ' +
+                    'replicas have diverging timestamps')
+
+    feed_doc_with_field_value(title: 'first title')
+    mark_content_node_down(1)
+    feed_doc_with_field_value(title: 'second title')
+    mark_content_node_up(1) # Node 1 will have old version of document
+
+    begin
+      update_doc_with_field_value(title: 'third title', create_if_missing: create_if_missing, condition: condition)
+      flunk('Should have failed with TaS failure, but operation succeeded') if expect_tas_failure
+    rescue HttpResponseError => e
+      assert_equal(412, e.response_code)
+      flunk('Did not expect to fail with TaS failure') if not expect_tas_failure
+    end
+
+    expected_title = expect_tas_failure ? 'second title' : 'third title'
+
+    # If we expect a failure, nothing should happen in the cluster and the documents will remain untouched (and out of sync).
+    # Otherwise, we expect both nodes to be forcefully converged to the same state.
+    if expect_tas_failure
+      verify_document_has_expected_contents(title: expected_title) # Just checks newest version
+    else
+      verify_document_has_expected_contents_on_all_nodes(title: expected_title)
+    end
+  end
+
+  def test_matching_conditional_update_with_divergent_document_versions_is_applied
+    do_test_conditional_update_with_divergent_document_versions(
+            create_if_missing: false,
+            condition: 'music.title=="second title"', # Matches newest document version
+            expect_tas_failure: false)
+  end
+
+  def test_mismatching_conditional_update_with_divergent_document_versions_is_not_applied
+    do_test_conditional_update_with_divergent_document_versions(
+            create_if_missing: false,
+            condition: 'music.title=="first title"', # Matches oldest, but _not_ newest document version
+            expect_tas_failure: true)
+  end
+
+  def test_mismatching_conditional_update_with_divergent_document_version_ignores_auto_create
+    # Sanity check that auto-create does not somehow override condition mismatch during write-repair
+    do_test_conditional_update_with_divergent_document_versions(
+            create_if_missing: true,
+            condition: 'music.title=="first title"',
+            expect_tas_failure: true)
   end
 
 end
