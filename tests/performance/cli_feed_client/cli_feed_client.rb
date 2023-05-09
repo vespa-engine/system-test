@@ -9,6 +9,7 @@ class CliFeedClientTest < PerformanceTest
 
   DOCUMENTS = 2000000
   TINY = 10
+  MEDIUM = 1000
   LARGE = 10000
 
   DUMMY_ROUTE = 'null/default'
@@ -27,8 +28,10 @@ class CliFeedClientTest < PerformanceTest
     vespa_destination_start
 
     run_benchmark(container_node, "vespa-cli-feed",    TINY)
+    run_benchmark(container_node, "vespa-cli-feed",    MEDIUM)
     run_benchmark(container_node, "vespa-cli-feed",    LARGE)
     run_benchmark(container_node, "vespa-feed-client", TINY)
+    run_benchmark(container_node, "vespa-feed-client", MEDIUM)
     run_benchmark(container_node, "vespa-feed-client", LARGE)
   end
 
