@@ -8,7 +8,7 @@ class InconsistentBucketsBase < SearchTest
     start
   end
 
-  def make_app(disable_merges: true, enable_condition_probing: false)
+  def make_app(disable_merges: true, enable_condition_probing: true)
     SearchApp.new.sd(SEARCH_DATA + 'music.sd').
       cluster_name('storage').
       num_parts(2).redundancy(2).ready_copies(2).
@@ -57,13 +57,17 @@ class InconsistentBucketsBase < SearchTest
     assert_equal(nil, doc)
   end
 
-  def update_doc_with_field_value(title:, create_if_missing:, artist: nil)
+  def update_doc_with_field_value(title:, create_if_missing:, artist: nil, condition: nil)
     update = DocumentUpdate.new('music', updated_doc_id)
     update.addOperation('assign', 'title', title)
     update.addOperation('assign', 'artist', artist) unless artist.nil?
     # Use 'create: true' update to ensure that not performing a write repair as
     # expected will create a document from scratch on the node.
-    vespa.document_api_v1.update(update, :create => create_if_missing)
+    if condition
+      vespa.document_api_v1.update(update, :create => create_if_missing, :condition => condition)
+    else
+      vespa.document_api_v1.update(update, :create => create_if_missing)
+    end
   end
 
   def teardown
