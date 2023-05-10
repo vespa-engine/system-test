@@ -495,12 +495,16 @@ class NodeServer
   #                           'id:ns:doctype::',
   #                           1 << 20,
   #                           '1M_ops.json')
-  def write_document_operations(type, operation, prefix, count, filename)
+  def write_document_operations(type, operation, prefix, count, filename, array = true)
     FileUtils.mkdir_p(File.dirname(filename))
     File.open(filename, "w") do |file|
-      file.puts('[')
+      if array
+        file.puts('[')
+      end
       count.times { |i| file.puts(operation.merge({type => (prefix + i.to_s)}).to_json + (i + 1 < count ? "," : "")) }
-      file.puts(']')
+      if array
+        file.puts(']')
+      end
     end
   end
 
