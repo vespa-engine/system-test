@@ -18,6 +18,11 @@ schema test {
     }
   }
 
+  constant model {
+    file: search/model.json
+    type: tensor(x{},y[2])
+  }
+
   rank-profile default {
     first-phase {
       expression: attribute(order)
@@ -30,7 +35,7 @@ schema test {
       query(vec) tensor(y[2])
     }
     function score_per_x() {
-      expression: reduce(query(mix) * tensor(x{},y[2]):{{x:"x1",y:0}:5.000,{x:"x1",y:1}:5.125,{x:"x2",y:0}:5.250,{x:"x2",y:1}:5.375,{x:"x3",y:0}:5.500,{x:"x3",y:0}:5.750} * attribute(mixed), sum, y)
+      expression: reduce(query(mix) * constant(model) * attribute(mixed), sum, y)
     }
     first-phase {
       expression: attribute(order)
