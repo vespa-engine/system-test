@@ -9,48 +9,12 @@ class UpdatesToInconsistentBucketsTest < InconsistentBucketsBase
   end
 
   def maybe_enable_debug_logging(enable)
-    return if not enable
+    return unless enable
     ['', '2'].each do |d|
       vespa.adminserver.execute("vespa-logctl distributor#{d}:distributor.operations.external.two_phase_update debug=on,spam=on")
       vespa.adminserver.execute("vespa-logctl distributor#{d}:distributor.operations.external.get debug=on,spam=on")
       vespa.adminserver.execute("vespa-logctl distributor#{d}:distributor.operations.external.update debug=on,spam=on")
     end
-  end
-
-  def incidental_doc_id
-    'id:storage_test:music:n=1:bar' # Must be in same location as updated_doc_id
-  end
-
-  def another_incidental_doc_id
-    'id:storage_test:music:n=1:baz' # Must be in same location as updated_doc_id
-  end
-
-  def feed_incidental_doc_to_same_bucket
-    doc = Document.new('music', incidental_doc_id).add_field('title', 'hello world')
-    vespa.document_api_v1.put(doc)
-  end
-
-  def feed_another_incidental_doc_to_same_bucket
-    doc = Document.new('music', another_incidental_doc_id).add_field('title', 'hello moon')
-    vespa.document_api_v1.put(doc)
-  end
-
-  def verify_document_has_expected_contents(title:)
-    fields = vespa.document_api_v1.get(updated_doc_id).fields
-    assert_equal(title, fields['title'])
-    # Existing field must have been preserved
-    assert_equal('cool dude', fields['artist'])
-  end
-
-  def verify_document_has_expected_contents_on_all_nodes(title:)
-    # Force reading from specific replicas
-    mark_content_node_up(0)
-    mark_content_node_down(1)
-    verify_document_has_expected_contents(title: title)
-
-    mark_content_node_up(1)
-    mark_content_node_down(0)
-    verify_document_has_expected_contents(title: title)
   end
 
   def do_test_updates_with_divergent_document_versions_are_write_repaired(create_if_missing:)
@@ -94,13 +58,6 @@ class UpdatesToInconsistentBucketsTest < InconsistentBucketsBase
     do_test_updates_with_document_missing_in_single_replica_are_write_repaired(create_if_missing: true)
   end
 
-  def make_replicas_inconsistent_and_contain_incidental_documents_only
-    feed_incidental_doc_to_same_bucket # Make sure bucket exists on all nodes
-    mark_content_node_down(1)
-    feed_another_incidental_doc_to_same_bucket # Document to update does not exist on any replicas
-    mark_content_node_up(1)
-  end
-
   def test_create_if_missing_update_succeeds_if_no_existing_document_on_any_replicas
     make_replicas_inconsistent_and_contain_incidental_documents_only
     update_doc_with_field_value(title: 'really neat title', artist: 'cool dude', create_if_missing: true)
@@ -129,7 +86,7 @@ class UpdatesToInconsistentBucketsTest < InconsistentBucketsBase
       flunk('Should have failed with TaS failure, but operation succeeded') if expect_tas_failure
     rescue HttpResponseError => e
       assert_equal(412, e.response_code)
-      flunk('Did not expect to fail with TaS failure') if not expect_tas_failure
+      flunk('Did not expect to fail with TaS failure') unless expect_tas_failure
     end
 
     expected_title = expect_tas_failure ? 'second title' : 'third title'

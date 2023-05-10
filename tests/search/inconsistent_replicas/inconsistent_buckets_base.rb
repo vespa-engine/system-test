@@ -23,6 +23,49 @@ class InconsistentBucketsBase < SearchTest
     'id:storage_test:music:n=1:foo'
   end
 
+  def incidental_doc_id
+    'id:storage_test:music:n=1:bar' # Must be in same location as updated_doc_id
+  end
+
+  def another_incidental_doc_id
+    'id:storage_test:music:n=1:baz' # Must be in same location as updated_doc_id
+  end
+
+  def feed_incidental_doc_to_same_bucket
+    doc = Document.new('music', incidental_doc_id).add_field('title', 'hello world')
+    vespa.document_api_v1.put(doc)
+  end
+
+  def feed_another_incidental_doc_to_same_bucket
+    doc = Document.new('music', another_incidental_doc_id).add_field('title', 'hello moon')
+    vespa.document_api_v1.put(doc)
+  end
+
+  def make_replicas_inconsistent_and_contain_incidental_documents_only
+    feed_incidental_doc_to_same_bucket # Make sure bucket exists on all nodes
+    mark_content_node_down(1)
+    feed_another_incidental_doc_to_same_bucket # Document to update does not exist on any replicas
+    mark_content_node_up(1)
+  end
+
+  def verify_document_has_expected_contents(title:)
+    fields = vespa.document_api_v1.get(updated_doc_id).fields
+    assert_equal(title, fields['title'])
+    # Existing field must have been preserved
+    assert_equal('cool dude', fields['artist'])
+  end
+
+  def verify_document_has_expected_contents_on_all_nodes(title:)
+    # Force reading from specific replicas
+    mark_content_node_up(0)
+    mark_content_node_down(1)
+    verify_document_has_expected_contents(title: title)
+
+    mark_content_node_up(1)
+    mark_content_node_down(0)
+    verify_document_has_expected_contents(title: title)
+  end
+
   def feed_doc_with_field_value(title:)
     # Also add a second field that updates won't touch so that we can detect if
     # a 'create: true' update erroneously resets the state on any replica.
@@ -63,11 +106,9 @@ class InconsistentBucketsBase < SearchTest
     update.addOperation('assign', 'artist', artist) unless artist.nil?
     # Use 'create: true' update to ensure that not performing a write repair as
     # expected will create a document from scratch on the node.
-    if condition
-      vespa.document_api_v1.update(update, :create => create_if_missing, :condition => condition)
-    else
-      vespa.document_api_v1.update(update, :create => create_if_missing)
-    end
+    args = {:create => create_if_missing}
+    args[:condition] = condition if condition
+    vespa.document_api_v1.update(update, **args)
   end
 
   def teardown
