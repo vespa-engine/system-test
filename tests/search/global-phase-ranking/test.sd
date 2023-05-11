@@ -32,8 +32,12 @@ schema test {
             query(query_vec) tensor<double>(d0[2])
         }
 
-        first-phase {
+        function fn_first_phase() {
             expression: -attribute(score)
+        }
+
+        first-phase {
+            expression: fn_first_phase
         }
 
         function fn_query_vec() {
@@ -52,10 +56,9 @@ schema test {
         }
     }
 
-    rank-profile second_phase inherits base {
-        second-phase {
-            rerank-count: 3
-            expression: sum(onnx(multiply_add).multiply_add_output - fn_query_vec)
+    rank-profile emulated_second_phase inherits base {
+        first-phase {
+            expression: if(fn_first_phase > -4.0, sum(onnx(multiply_add).multiply_add_output - fn_query_vec), fn_first_phase)
         }
     }
 

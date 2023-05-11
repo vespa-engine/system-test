@@ -1,7 +1,7 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class GlobalPhaseRanking < IndexedSearchTest
+class GlobalPhaseRanking < IndexedStreamingSearchTest
 
   DOCS = 5
 
@@ -16,8 +16,8 @@ class GlobalPhaseRanking < IndexedSearchTest
   end
 
   def test_global_phase
-    puts "Search with second-phase ranking"
-    result_sp = search("?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=second_phase")
+    puts "Search with emulated second-phase ranking"
+    result_sp = search("?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=emulated_second_phase")
     puts "Search with global-phase ranking"
     result_gp = search("?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=global_phase")
     puts "Hits second-phase ranking: #{result_sp}"
