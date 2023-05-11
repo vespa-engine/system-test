@@ -1,0 +1,36 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema doc {
+
+  document doc {
+
+    field text type string {
+      indexing: index | summary
+    }
+
+  }
+
+  field embedding type tensor<float>(x[384]) {
+      indexing: input text | embed huggingface | attribute
+      attribute {
+          distance-metric: angular
+      }
+  }
+
+  rank-profile default {
+    inputs {
+      query(embedding) tensor(x[384])
+   }
+
+    first-phase {
+      expression: nativeRank
+    }
+
+    summary-features {
+      query(embedding)
+      attribute(embedding)
+    }
+
+  }
+
+}
