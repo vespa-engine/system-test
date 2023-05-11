@@ -16,7 +16,6 @@ class MatchFeatures < IndexedStreamingSearchTest
     query += '&format=json'
     query += '&ranking.features.query(mix)={{x:x1,y:0}:1,{x:x2,y:1}:1}'
     query += '&ranking.features.query(vec)=[2.5,7.5]'
-    query += '&streaming.selection=true'
     query += '&ranking=withmf'
     #puts "Query: #{query}"
     result = search(query)

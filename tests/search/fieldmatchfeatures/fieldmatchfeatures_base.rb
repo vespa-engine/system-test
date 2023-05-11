@@ -139,7 +139,7 @@ module FieldMatchFeaturesBase
   end
 
   def assert_field_match(expected, query, docid)
-    result = search_with_timeout(5, query+"&streaming.userid=1")
+    result = search_with_timeout(5, query)
     found = false
     result.hit.each do |hit|
       if hit.field[@id_field] == "id:fieldmatch:fieldmatch:n=1:#{docid}"
@@ -200,7 +200,7 @@ module FieldMatchFeaturesBase
   end
 
   def assert_field_term_match(termidx, firstpos, occurrences, query, field = "a")
-    query = "query=" + query + "&parallel&type=any&streaming.userid=1"
+    query = "query=" + query + "&parallel&type=any"
     result = search_with_timeout(5, query)
     sf = result.hit[0].field["summaryfeatures"]
     fn = "fieldTermMatch(#{field},#{termidx})"
@@ -208,7 +208,7 @@ module FieldMatchFeaturesBase
   end
 
   def assert_struct_streaming(matches, fieldCompleteness, occurrences, query, field, docid)
-    query = "query=" + query + "&streaming.userid=1"
+    query = "query=" + query
     result = search_with_timeout(5, query)
     result.sort_results_by("documentid")
     exp = {"fieldMatch(#{field}).matches" => matches, \
@@ -218,7 +218,7 @@ module FieldMatchFeaturesBase
   end
 
   def run_phrase_test()
-    wait_for_hitcount("query=sddocname:fmphrase&streaming.userid=1", 1)
+    wait_for_hitcount("query=sddocname:fmphrase", 1)
 
     assert_phrase_streaming(3, "query=f1:%22a+b+c%22",  "f1")
     assert_phrase_streaming(3, "query=f1:a+b+c",      "f1")
@@ -250,12 +250,12 @@ module FieldMatchFeaturesBase
     assert_phrase_streaming(2, "query=%22a+b%22+%22x+d%22", "f2")
     assert_phrase_streaming(4, "query=a+b+x+d",         "f2")
 
-    assert_features({"fieldMatch(f1)" => 1}, search_with_timeout(5, "query=f1:%22a+b+c+d%22"+"&streaming.userid=1").hit[0].field['summaryfeatures'])
-    assert_features({"fieldMatch(f1)" => 1}, search_with_timeout(5, "query=f1:a+b+c+d"+"&streaming.userid=1").hit[0].field['summaryfeatures'])
+    assert_features({"fieldMatch(f1)" => 1}, search_with_timeout(5, "query=f1:%22a+b+c+d%22").hit[0].field['summaryfeatures'])
+    assert_features({"fieldMatch(f1)" => 1}, search_with_timeout(5, "query=f1:a+b+c+d").hit[0].field['summaryfeatures'])
   end
 
   def assert_phrase_streaming(matches, query, field)
-    result = search_with_timeout(5, query + "&streaming.userid=1")
+    result = search_with_timeout(5, query)
     assert_features({"fieldMatch(#{field}).matches" => matches}, result.hit[0].field['summaryfeatures'])
   end
 

@@ -45,7 +45,7 @@ class NativeRankFeature < IndexedStreamingSearchTest
   end
 
   def assert_native_field_match(score, query, ranking, hit)
-    query = query + "&ranking=" + ranking + "&streaming.userid=1"
+    query = query + "&ranking=" + ranking
     query = query + "&rankproperty.vespa.term.1.significance=1&rankproperty.vespa.term.2.significance=1"
     assert_relevancy(query, score, hit)
   end
@@ -67,7 +67,7 @@ class NativeRankFeature < IndexedStreamingSearchTest
   end
 
   def run_native_rank_test
-    wait_for_hitcount("query=sddocname:nativerank&streaming.userid=1", 11)
+    wait_for_hitcount("query=sddocname:nativerank", 11)
 
     # 1 term
     assert_native_rank("query=a")
@@ -90,17 +90,17 @@ class NativeRankFeature < IndexedStreamingSearchTest
     assert_native_rank("query=a+b+f4:a", "only-proximity")
 
     # zero field weights
-    query = "query=a+b+f4:a&streaming.userid=1&ranking=zero-weight"
+    query = "query=a+b+f4:a&ranking=zero-weight"
     assert_relevancy(query, 0.0, 0)
     assert_relevancy(query, 0.0, 1)
     assert_relevancy(query, 0.0, 2)
 
     # or query
-    assert_field("query=f1:first+f1:second&type=any&ranking=identity&streaming.userid=1", selfdir + "ortest.result", "documentid")
+    assert_field("query=f1:first+f1:second&type=any&ranking=identity", selfdir + "ortest.result", "documentid")
   end
 
   def assert_native_rank(query, ranking = "default")
-    query = query + "&ranking=" + ranking + "&streaming.userid=1"
+    query = query + "&ranking=" + ranking
     result = search(query)
     # the documents should be in this order
     assert_equal("id:nativerank:nativerank:n=1:0", result.hit[0].field["documentid"])
@@ -181,7 +181,7 @@ class NativeRankFeature < IndexedStreamingSearchTest
   end
 
   def assert_expnr(expected, query, ranking = "default")
-    query = query + "&streaming.userid=1&ranking=" + ranking
+    query = query + "&ranking=" + ranking
     puts "assert_expnr: #{query}"
     result = search(query)
     assert_features(expected, result.hit[0].field['summaryfeatures'], 1e-4)

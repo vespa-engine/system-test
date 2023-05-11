@@ -87,7 +87,6 @@ class MatchesFeature < IndexedStreamingSearchTest
   end
 
   def assert_matches(expected, query)
-    query = query + "&streaming.userid=1"
     result = search(query)
     assert_features(expected, result.hit[0].field['summaryfeatures'], 1e-4)
   end

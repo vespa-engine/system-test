@@ -8,6 +8,10 @@ require 'search/fieldmatchfeatures/fieldmatchfeatures_base'
 
 class FieldMatchFeaturesStreaming < StreamingSearchTest
 
+  def add_streaming_selection_query_parameter
+    true
+  end
+
   include FieldMatchFeaturesBase
 
   def test_struct
@@ -27,7 +31,7 @@ class FieldMatchFeaturesStreaming < StreamingSearchTest
                         { "sf" => "baz foo", "lf" => 1000 },
                         { "sf" => "qux foo", "lf" => 3000 } ])
     vespa.document_api_v1.put(doc)
-    wait_for_hitcount("query=sddocname:fmstruct&streaming.userid=1", 2)
+    wait_for_hitcount("query=sddocname:fmstruct", 2)
 
     assert_struct_streaming(1,     1, 1, "f1.lf:1000", "f1.lf", 0)
     assert_struct_streaming(1,     1, 1, "f1.lf:1000", "f1.lf", 1)
