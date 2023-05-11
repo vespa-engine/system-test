@@ -21,10 +21,7 @@ class UpdatesToInconsistentBucketsTest < InconsistentBucketsBase
     set_description('Test that updates trigger write-repair when documents across ' +
                     'replicas have diverging timestamps')
 
-    feed_doc_with_field_value(title: 'first title')
-    mark_content_node_down(1)
-    feed_doc_with_field_value(title: 'second title')
-    mark_content_node_up(1) # Node 1 will have old version of document
+    make_replicas_inconsistent_for_single_document
     update_doc_with_field_value(title: 'third title', create_if_missing: create_if_missing)
 
     verify_document_has_expected_contents_on_all_nodes(title: 'third title')
@@ -76,10 +73,7 @@ class UpdatesToInconsistentBucketsTest < InconsistentBucketsBase
     set_description('Test that conditional updates trigger write-repair when documents across ' +
                     'replicas have diverging timestamps')
 
-    feed_doc_with_field_value(title: 'first title')
-    mark_content_node_down(1)
-    feed_doc_with_field_value(title: 'second title')
-    mark_content_node_up(1) # Node 1 will have old version of document
+    make_replicas_inconsistent_for_single_document
 
     begin
       update_doc_with_field_value(title: 'third title', create_if_missing: create_if_missing, condition: condition)

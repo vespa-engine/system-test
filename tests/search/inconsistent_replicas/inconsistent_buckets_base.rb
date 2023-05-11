@@ -48,6 +48,17 @@ class InconsistentBucketsBase < SearchTest
     mark_content_node_up(1)
   end
 
+  # After call, updated_doc_id doc will have
+  #  title: 'first title' on node 1
+  #  title: 'second title' on node 0
+  # Both docs will have artist: 'cool dude'
+  def make_replicas_inconsistent_for_single_document
+    feed_doc_with_field_value(title: 'first title')
+    mark_content_node_down(1)
+    feed_doc_with_field_value(title: 'second title')
+    mark_content_node_up(1) # Node 1 will have old version of document
+  end
+
   def verify_document_has_expected_contents(title:)
     fields = vespa.document_api_v1.get(updated_doc_id).fields
     assert_equal(title, fields['title'])
@@ -64,6 +75,17 @@ class InconsistentBucketsBase < SearchTest
     mark_content_node_up(1)
     mark_content_node_down(0)
     verify_document_has_expected_contents(title: title)
+  end
+
+  def verify_document_is_removed_on_all_nodes
+    # Force reading from specific replicas
+    mark_content_node_up(0)
+    mark_content_node_down(1)
+    verify_document_does_not_exist
+
+    mark_content_node_up(1)
+    mark_content_node_down(0)
+    verify_document_does_not_exist
   end
 
   def feed_doc_with_field_value(title:)
@@ -109,6 +131,15 @@ class InconsistentBucketsBase < SearchTest
     args = {:create => create_if_missing}
     args[:condition] = condition if condition
     vespa.document_api_v1.update(update, **args)
+  end
+
+  def assert_precondition_failure
+    begin
+      yield
+      flunk('Expected TaS failure')
+    rescue HttpResponseError => e
+      assert_equal(412, e.response_code)
+    end
   end
 
   def teardown
