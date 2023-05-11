@@ -11,9 +11,6 @@ class AttributeMatchFeatures < IndexedStreamingSearchTest
   end
 
   def create_query(query)
-    if is_streaming
-      query += "&streaming.selection=true"
-    end
     return query
   end
 

@@ -17,7 +17,7 @@ class Addnewfield < IndexedStreamingSearchTest
     puts "Summary ids in summary config after first deploy"
     print_summary_config_ids
 
-    sddoc_query = "query=sddocname:music&streaming.selection=true&nocache"
+    sddoc_query = "query=sddocname:music&nocache"
 
     feed_and_wait_for_hitcount(sddoc_query, 15,  :file => selfdir+"music.xml")
 
@@ -46,7 +46,7 @@ class Addnewfield < IndexedStreamingSearchTest
     feed_and_wait_for_hitcount(sddoc_query, 16, :file => selfdir+"wnf.1.xml")
 
     # we should be able to search the new field
-    wait_for_hitcount("query=newfield:field&streaming.selection=true&nocache", 1)
+    wait_for_hitcount("query=newfield:field&nocache", 1)
 
     # we should now see the new field in summary (in the new document only)
     assert_result(sddoc_query + "&hits=99", selfdir + "result.16.proton.json", nil, fields.push("newfield"))

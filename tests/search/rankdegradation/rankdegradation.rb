@@ -28,7 +28,7 @@ class RankDegradation < IndexedStreamingSearchTest
   end
 
   def run_nan_test
-    r = search("query=f1:10&streaming.selection=true&ranking=nan")
+    r = search("query=f1:10&ranking=nan")
     assert_equal("-Infinity", r.hit[0].field["relevancy"])
     sf = r.hit[0].field['summaryfeatures']
     puts "summaryfeatures: #{sf.to_a.join(":")}"
@@ -36,7 +36,7 @@ class RankDegradation < IndexedStreamingSearchTest
   end
 
   def get_query(rank_profile)
-    return "query=f1:%3E0&streaming.selection=true&ranking=#{rank_profile}"
+    return "query=f1:%3E0&ranking=#{rank_profile}"
   end
 
   def get_result(rank_profile, hitcount = 4)

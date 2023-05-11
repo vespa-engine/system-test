@@ -41,8 +41,8 @@ class Vespa8GeoPositions < IndexedStreamingSearchTest
   end
 
   def check_q(query, hc, fn = nil)
-    xq = query + '&format=xml&streaming.selection=true'
-    jq = query + '&format=json&streaming.selection=true'
+    xq = query + '&format=xml'
+    jq = query + '&format=json'
     rf = "result-#{@rfn}"
     @rfn = @rfn + 1
     # save_result(xq, selfdir + rf + '.xml')

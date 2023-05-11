@@ -35,7 +35,7 @@ class RawAttributesTest < IndexedStreamingSearchTest
 
   def assert_field_helper(exp_value, id, search)
     if search
-      result = search(URI.encode_www_form([['query', "id:#{id}"], ['streaming.selection', 'true']]))
+      result = search(URI.encode_www_form([['query', "id:#{id}"]]))
       assert_equal(1, result.hit.size)
       assert_equal("#{@id_prefix}#{id}", result.hit[0].field['documentid'])
       field = result.hit[0].field['raw']
@@ -52,8 +52,8 @@ class RawAttributesTest < IndexedStreamingSearchTest
   end
 
   def assert_grouping(grouping, file)
-    assert_grouping_result('/search/?' + URI.encode_www_form([['hits', '0'], ['query', 'sddocname:test'], ['select', grouping], ['streaming.selection', 'true']]), file)
-    assert_grouping_result('/search/?' + URI.encode_www_form([['hits', '0'], ['yql', 'select * from test where sddocname contains "test" |' + grouping + ';'], ['streaming.selection', 'true']]), file)
+    assert_grouping_result('/search/?' + URI.encode_www_form([['hits', '0'], ['query', 'sddocname:test'], ['select', grouping]]), file)
+    assert_grouping_result('/search/?' + URI.encode_www_form([['hits', '0'], ['yql', 'select * from test where sddocname contains "test" |' + grouping + ';']]), file)
   end
 
   def assert_same_result_sets(exp, act)
@@ -71,7 +71,7 @@ class RawAttributesTest < IndexedStreamingSearchTest
   end
 
   def assert_sorting(sortspec, file)
-    form = [['query', 'sddocname:test'], ['sortspec', sortspec], ['streaming.selection', 'true']]
+    form = [['query', 'sddocname:test'], ['sortspec', sortspec]]
     query = "/search/?" + URI.encode_www_form(form)
     assert_result(query, file, nil, ['id','raw', 'value', 'documentid'])
     form.push(['summary', 'id'])
@@ -80,7 +80,7 @@ class RawAttributesTest < IndexedStreamingSearchTest
   end
 
   def assert_empty_raw_search
-    form = [['query', 'raw:boom'], ['streaming.selection', 'true']]
+    form = [['query', 'raw:boom']]
     query = "/search/?" + URI.encode_www_form(form)
     result = search(query)
     assert_equal(0, result.hitcount)

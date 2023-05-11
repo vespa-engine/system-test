@@ -10,7 +10,6 @@ class BoldingMultipleFieldsTest < IndexedStreamingSearchTest
   def my_search(query)
     form = [['model.type', 'all'],
             ["query", query],
-            ["streaming.selection", "true"],
             ["summary", @summary]]
     encoded_query = URI.encode_www_form(form)
     return search(encoded_query)

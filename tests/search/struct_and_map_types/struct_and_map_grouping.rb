@@ -41,8 +41,7 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
             ["select", select],
             ["hits", "0"],
             ["format", "tiled"],
-            ["presentation.format", "json"],
-            ["streaming.selection", "true"]]
+            ["presentation.format", "json"]]
     encoded_form = URI.encode_www_form(form)
     result = search("/?#{encoded_form}")
     puts "result is #{result.xmldata}"

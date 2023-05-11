@@ -227,14 +227,14 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def assert_same_element(field, same_element, exp_hitcount, extra_params = "")
-    query = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})&streaming.selection=true#{extra_params}"
+    query = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})#{extra_params}"
     puts "assert_same_element(#{query}, #{exp_hitcount})"
     assert_hitcount(query, exp_hitcount)
   end
 
   def assert_same_element_single(field, same_element, exp_hitcount, extra_params = "")
-    query = "yql=select %2a from sources %2a where #{field}.#{same_element}&streaming.selection=true#{extra_params}"
-    query_same = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})&streaming.selection=true#{extra_params}"
+    query = "yql=select %2a from sources %2a where #{field}.#{same_element}#{extra_params}"
+    query_same = "yql=select %2a from sources %2a where #{field} contains sameElement(#{same_element})#{extra_params}"
     assert_hitcount(query, exp_hitcount)
     assert_hitcount(query_same, exp_hitcount)
   end
@@ -344,7 +344,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def assert_result(exp_elem_array, exp_elem_map, exp_str_int_map)
-    result = search("query=sddocname:test&streaming.selection=true&presentation.format=json")
+    result = search("query=sddocname:test&presentation.format=json")
     assert_equal(1, result.hitcount)
     hit = result.hit[0]
     elem_array = hit.field["elem_array"]

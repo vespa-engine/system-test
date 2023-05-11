@@ -116,6 +116,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     # Parent-child is NOT supported in streaming search
     @params = { :search_type => "ELASTIC" }
     @mixed = false
+    @multipoint_mapping = nil
     deploy_app(SearchApp.new
                  .sd(selfdir + 'campaign.sd', { :global => true })
                  .sd(selfdir + 'ad.sd')
@@ -286,7 +287,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
       end
       vespa.document_api_v1.put(doc)
     end
-    wait_for_hitcount('?query=sddocname:test&streaming.selection=true', 10)
+    wait_for_hitcount('?query=sddocname:test', 10)
   end
 
   def feed_assign_updates
@@ -410,7 +411,6 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     result += " or text contains \"#{text}\"" if text
     result += "&ranking.features.query(#{query_tensor})=[#{x_0},#{x_1}]"
     result += "&ranking.profile=combined" if qprops[:combined]
-    result += "&streaming.selection=true"
     return result
   end
 
