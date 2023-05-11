@@ -44,7 +44,7 @@ class ForeachFeature < IndexedStreamingSearchTest
   end
 
   def run_foreach_test
-    result = search_with_timeout(60, "query=a+b+c")
+    result = search_with_timeout(60, "query=a+b+c&streaming.userid=1")
     assert_equal(13, result.hit[0].field["relevancy"].to_i) # 2*2+3*3
     assert_equal(5,  result.hit[1].field["relevancy"].to_i) # 1*1+2*2
 
@@ -58,7 +58,7 @@ class ForeachFeature < IndexedStreamingSearchTest
   end
 
   def assert_foreach(expected, ranking, docid)
-    query = "query=a!300+b!200+c&ranking=" + ranking
+    query = "query=a!300+b!200+c&streaming.userid=1&ranking=" + ranking
     result = search_with_timeout(60, query)
     assert_features(expected, result.hit[docid].field['summaryfeatures'], 1e-4)
   end

@@ -14,7 +14,7 @@ class DocumentFeatures < IndexedStreamingSearchTest
     start
     feed_and_wait_for_docs("attribute", 1, :file => selfdir + "attribute.xml")
 
-    result = search("query=idx:a")
+    result = search("query=idx:a&streaming.userid=1")
     puts "summaryfeatures: '#{result.hit[0].field["summaryfeatures"]}'"
 
     # integer attributes
@@ -54,7 +54,7 @@ class DocumentFeatures < IndexedStreamingSearchTest
   end
 
   def assert_attribute(feature, score)
-    result = search("query=idx:a")
+    result = search("query=idx:a&streaming.userid=1")
     assert_features({feature => score}, result.hit[0].field['summaryfeatures'])
   end
 
