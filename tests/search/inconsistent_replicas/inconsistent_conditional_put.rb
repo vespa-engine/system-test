@@ -19,10 +19,7 @@ class InconsistentConditionalPutTest < InconsistentBucketsBase
     set_description('Test that conditional Put is applied when document versions are inconsistent ' +
                     'across replicas and the condition _matches_ the newest document')
 
-    feed_doc_with_field_value(title: 'first title')
-    mark_content_node_down(1)
-    feed_doc_with_field_value(title: 'second title')
-    mark_content_node_up(1) # Node 1 will have old version of document
+    make_replicas_inconsistent_for_single_document
 
     put_with_condition(title: 'cool stuff', condition: 'music.title == "second title"', create: create)
     verify_document_has_expected_contents_on_all_nodes(title: 'cool stuff')
@@ -40,17 +37,11 @@ class InconsistentConditionalPutTest < InconsistentBucketsBase
     set_description('Test that conditional Put is NOT applied when document versions are inconsistent ' +
                     'across replicas and the condition _does not match_ the newest document')
 
-    feed_doc_with_field_value(title: 'first title')
-    mark_content_node_down(1)
-    feed_doc_with_field_value(title: 'second title')
-    mark_content_node_up(1)
+    make_replicas_inconsistent_for_single_document
 
-    begin
+    assert_precondition_failure {
       put_with_condition(title: 'cool stuff', condition: 'music.title == "first title"', create: create)
-      flunk('Expected TaS failure')
-    rescue HttpResponseError => e
-      assert_equal(412, e.response_code)
-    end
+    }
     verify_document_has_expected_contents(title: 'second title') # Just checks newest version
   end
 
@@ -90,14 +81,10 @@ class InconsistentConditionalPutTest < InconsistentBucketsBase
                     'document does not exist across any inconsistent replicas')
 
     make_replicas_inconsistent_and_contain_incidental_documents_only
-
-    begin
+    # TODO change semantics for Not Found...
+    assert_precondition_failure {
       put_with_condition(title: 'cool stuff', condition: 'music.title == "not matching"', create: false)
-      flunk('Expected TaS failure')
-    rescue HttpResponseError => e
-      assert_equal(412, e.response_code) # TODO change semantics for Not Found...
-    end
-
+    }
     verify_document_does_not_exist
   end
 
