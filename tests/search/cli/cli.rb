@@ -20,6 +20,7 @@ class Cli < IndexedSearchTest
   def create_app
     container = Container.new("default")
                   .http(Http.new.server(Server.new("default", vespa.default_document_api_port)))
+                  .search(Searching.new)
                   .documentapi(ContainerDocumentApi.new)
     app = SearchApp.new
             .sd(SEARCH_DATA+"music.sd")
@@ -75,7 +76,7 @@ class Cli < IndexedSearchTest
     assert_equal(0, status)
   end
 
-  def query(id, expected_title)
+  def get(id, expected_title)
     status, stdout, stderr = vespa_cli("-t", container_url, "document", "get", id)
     print_output(stdout, stderr)
     assert_equal(0, status)
@@ -91,10 +92,18 @@ class Cli < IndexedSearchTest
     assert_equal(expected, stdout)
   end
 
-  def feed_and_query(count, title)
+  def query(query, expected_hit_count)
+    status, stdout, stderr = vespa_cli("-t", container_url, "query", query)
+    print_output(stdout, stderr)
+    assert_equal(0, status)
+    response = JSON.parse(stdout)
+    assert_equal(expected_hit_count, response["root"]["fields"]["totalCount"])
+  end
+
+  def feed_and_get(count, title)
     feed(count, title)
     count.times do |n|
-      query(@doc_id_prefix + n.to_s, title)
+      get(@doc_id_prefix + n.to_s, title)
     end
   end
 
@@ -115,10 +124,12 @@ class Cli < IndexedSearchTest
 
   def test_cli
     deploy
-    # Feed and query single document with 'vespa document'
-    feed_and_query(1, "Battery")
-    # Feed multiple documents with 'vespa feed' and query with 'vespa document'
-    feed_and_query(3, "Master of Puppets")
+    # Feed and get single document with 'vespa document'
+    feed_and_get(1, "Battery")
+    query('"yql=select * from music where title contains \'battery\'"', 1)
+    # Feed multiple documents with 'vespa feed' and get each with 'vespa document'
+    feed_and_get(3, "Master of Puppets")
+    query('"yql=select * from music where title contains \'master\'"', 3)
   end
 
   def teardown
