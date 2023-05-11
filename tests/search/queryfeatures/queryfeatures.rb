@@ -32,7 +32,7 @@ class QueryFeatures < IndexedStreamingSearchTest
   end
 
   def assert_query(expected, rankproperties)
-    query = "query=a" + rankproperties
+    query = "query=a&streaming.userid=1" + rankproperties
     result = search(query)
     sf = result.hit[0].field["summaryfeatures"]
     assert_features(expected, sf)
@@ -54,7 +54,7 @@ class QueryFeatures < IndexedStreamingSearchTest
   end
 
   def assert_query_term_count(exp, query)
-    query = "query=" + query
+    query = "query=" + query + "&streaming.userid=1"
     assert_features({"queryTermCount" => exp}, search(query).hit[0].field['summaryfeatures'])
   end
 
@@ -144,7 +144,7 @@ class QueryFeatures < IndexedStreamingSearchTest
   end
 
   def assert_term(termidx, significance, weight, connectedness, query)
-    query = "query=" + query + "&parallel"
+    query = "query=" + query + "&parallel&streaming.userid=1"
     result = search(query)
     sf = result.hit[0].field["summaryfeatures"]
     fn = "term(#{termidx})"

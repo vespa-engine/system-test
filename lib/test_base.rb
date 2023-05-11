@@ -231,11 +231,6 @@ module TestBase
     RFC2396_PARSER.escape(uri, regex)
   end
 
-  # Used by search_base to append streaming.selection=true for streaming search
-  def add_streaming_selection_query_parameter
-    false
-  end
-
   def search_with_timeout(timeout, query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
     timeout = calculateQueryTimeout(timeout)
     query = query + "&timeout=" + timeout.to_s
@@ -248,9 +243,6 @@ module TestBase
   end
 
   def search_base(query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
-    if add_streaming_selection_query_parameter
-      query = query + "&streaming.selection=true"
-    end
     # insert / if missing
     if query.scan(/^\//).empty?
       # insert ? if missing

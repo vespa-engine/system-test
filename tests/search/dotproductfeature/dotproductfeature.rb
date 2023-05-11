@@ -47,7 +47,7 @@ class DotProductFeature < IndexedStreamingSearchTest
   end
 
   def assert_dotproduct(expected, vectors)
-    query = "query=sddocname:dotproduct&ranking=sum_dotproduct&ranking.queryCache=true"
+    query = "query=sddocname:dotproduct&streaming.userid=1&ranking=sum_dotproduct&ranking.queryCache=true"
     vectors.each do |vector|
       query += "&rankproperty.dotProduct." + vector
     end
