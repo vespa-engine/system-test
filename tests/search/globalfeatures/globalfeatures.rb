@@ -31,14 +31,14 @@ class GlobalFeatures < IndexedStreamingSearchTest
   end
 
   def assert_now(out, now)
-    query = "query=a&nocache&rankproperty.vespa.now=#{now}&streaming.userid=1"
+    query = "query=a&nocache&rankproperty.vespa.now=#{now}"
     search(query)
     exp = {"now" => out}
     assert_features(exp, search(query).hit[0].field['summaryfeatures'])
   end
 
   def assert_actual_now(epsilon)
-    query = "query=a&nocache&streaming.userid=1"
+    query = "query=a&nocache"
     search(query)
     timebefore = Time.now.to_i
     now = Time.now.to_i
@@ -73,7 +73,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
   end
 
   def assert_age(age, now = nil, epsilon = 6.0)
-    query = "query=a:86400&nocache&streaming.userid=1"
+    query = "query=a:86400&nocache"
     search(query)
     timebefore = Time.now.to_i
     exp = {"age(a)" => age}
@@ -88,7 +88,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
   end
 
   def assert_freshness(freshness, age)
-    query = "query=a:86400&nocache&streaming.userid=1&rankproperty.vespa.now=#{86400 + age}"
+    query = "query=a:86400&nocache&rankproperty.vespa.now=#{86400 + age}"
     exp = {"freshness(a)" => freshness}
     assert_features(exp, search(query).hit[0].field['summaryfeatures'], 1e-4)
   end
@@ -107,22 +107,22 @@ class GlobalFeatures < IndexedStreamingSearchTest
   end
 
   def run_random_test
-    sf = get_summary_features("query=a&nocache&streaming.userid=1")
+    sf = get_summary_features("query=a&nocache")
     puts "sf[0]: #{sf[0].to_a.join(",")}"
     puts "sf[1]: #{sf[1].to_a.join(",")}"
     assert_random(sf[0], sf[1])
 
-    sf = get_summary_features("query=a&nocache&ranking=seed&streaming.userid=1")
+    sf = get_summary_features("query=a&nocache&ranking=seed")
     puts "sf[0]: #{sf[0].to_a.join(",")}"
     puts "sf[1]: #{sf[1].to_a.join(",")}"
     assert_random(sf[0], sf[1])
     assert_different_random(sf[0])
     assert_different_random(sf[1])
 
-    sfa1 = get_summary_features("query=a&nocache&streaming.userid=1")
+    sfa1 = get_summary_features("query=a&nocache")
     sleep 2
-    sfa2 = get_summary_features("query=a&nocache&streaming.userid=1")
-    sfb =  get_summary_features("query=b&nocache&streaming.userid=1")
+    sfa2 = get_summary_features("query=a&nocache")
+    sfb =  get_summary_features("query=b&nocache")
     puts "sfb[0]: #{sfb[0].to_a.join(",")}"
     puts "sfb[1]: #{sfb[1].to_a.join(",")}"
     # same query -> same random value

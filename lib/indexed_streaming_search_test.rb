@@ -24,6 +24,10 @@ class IndexedStreamingSearchTest < SearchTest
     @params[:search_type] == "STREAMING"
   end
 
+  def add_streaming_selection_query_parameter
+    is_streaming
+  end
+
   def self.testparameters
     { "STREAMING" => { :search_type => "STREAMING" },
       "ELASTIC" => { :search_type => "ELASTIC" } }
