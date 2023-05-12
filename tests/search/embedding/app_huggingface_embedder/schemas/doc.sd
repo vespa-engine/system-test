@@ -10,6 +10,10 @@ schema doc {
 
   }
 
+  field tokens type tensor<float>(x[5]) {
+    indexing: input text | embed tokenizer | attribute | summary
+  }
+
   field embedding type tensor<float>(x[384]) {
       indexing: input text | embed huggingface | attribute
       attribute {
@@ -19,7 +23,8 @@ schema doc {
 
   rank-profile default {
     inputs {
-      query(embedding) tensor(x[384])
+      query(tokens) tensor<float>(x[5])
+      query(embedding) tensor<float>(x[384])
    }
 
     first-phase {
@@ -27,6 +32,8 @@ schema doc {
     }
 
     summary-features {
+      query(tokens)
+      attribute(tokens)
       query(embedding)
       attribute(embedding)
     }

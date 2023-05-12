@@ -29,6 +29,7 @@ class Embedding < IndexedSearchTest
     deploy(selfdir + "app_huggingface_embedder/")
     start
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
+    verify_huggingface_tokens
     verify_huggingface_embedding
   end
 
@@ -66,13 +67,33 @@ class Embedding < IndexedSearchTest
     assert_equal(queryFeature.to_s, attributeFeature.to_s)
   end
 
+  def verify_huggingface_tokens
+    result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hello%22%3B&ranking.features.query(tokens)=embed(tokenizer, \"Hello%20world\")&format=json").json
+    queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(tokens)"]
+    attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(tokens)"]
+    puts "queryFeature: '#{queryFeature}'"
+    puts "attributeFeature: '#{attributeFeature}'"
+    expectedEmbedding = JSON.parse('{"type":"tensor<float>(x[5])","values":[35378.0, 8999.0, 0.0, 0.0, 0.0]}')
+    assert_equal(expectedEmbedding.to_s, queryFeature.to_s)
+    assert_equal(expectedEmbedding.to_s, attributeFeature.to_s)
+  end
+
+
   def verify_huggingface_embedding
+    expected_embedding = JSON.parse(File.read(selfdir + 'hf-expected-vector.json'))
     result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hello%22%3B&ranking.features.query(embedding)=embed(huggingface, \"Hello%20world\")&format=json&format.tensors=short").json
     queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(embedding)"]
     attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding)"]
     puts "queryFeature: '#{queryFeature}'"
     puts "attributeFeature: '#{attributeFeature}'"
     assert_equal(queryFeature.to_s, attributeFeature.to_s)
+    expected_length = 384
+    assert_equal(expected_length, attributeFeature['values'].length)
+    (0..expected_length-1).each { |i|
+      expected = expected_embedding[i]
+      actual = attributeFeature['values'][i]
+      assert((expected - actual).abs < 1e-5, "#{expected} != #{actual} at index #{i}")
+    }
   end
 
   def teardown

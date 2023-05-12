@@ -14,6 +14,18 @@
                 <transformerOutput>output_0</transformerOutput>
             </config>
         </component>
+        <component id="tokenizer" class="com.yahoo.language.huggingface.HuggingFaceTokenizer" bundle="linguistics-components">
+            <config name="language.huggingface.hugging-face-tokenizer">
+                <addSpecialTokens>false</addSpecialTokens>
+                <model>
+                    <item>
+                        <language>unknown</language>
+                        <path model-id="ignored-on-selfhosted" url="https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json"/>
+                    </item>
+                </model>
+            </config>
+        </component>
+
 
         <search/>
         <document-api/>
