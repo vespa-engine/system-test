@@ -16,7 +16,8 @@ class HugeRankProperties < IndexedStreamingSearchTest
     start(360)
     feed_and_wait_for_docs("huge_expression", 1, :file => selfdir + "doc2.xml")
     # The huge expression should give 25000*1 relevancy
-    assert_relevancy("test&ranking=rank1", 25000, 0)
+    result = search_with_timeout(is_streaming ? 30 : 10, "test&ranking=rank1")
+    assert_relevancy(result, 25000, 0)
   end
   
   def teardown
