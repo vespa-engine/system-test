@@ -63,8 +63,8 @@ class CliFeedClientTest < PerformanceTest
 
   private
   def run_benchmark_program(container_node, program_name, label, size, doc_count)
-    out_file = "#{label}.out"
-    err_file = "#{label}.err"
+    out_file = "#{dirs.tmpdir}/#{label}.out"
+    err_file = "#{dirs.tmpdir}/#{label}.err"
     feed_file = "#{dirs.tmpdir}/docs_#{doc_count}_#{size}b.json"
     endpoint = "https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/"
     if program_name == "vespa-cli-feed"
