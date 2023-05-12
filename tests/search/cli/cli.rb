@@ -108,8 +108,8 @@ class Cli < IndexedSearchTest
   end
 
   def vespa_cli(*args)
-    out_file = "vespa_cli.out"
-    err_file  = "vespa_cli.err"
+    out_file = "#{dirs.tmpdir}/vespa_cli.out"
+    err_file  = "#{dirs.tmpdir}/vespa_cli.err"
     cmd = "env "+
           "VESPA_CLI_DATA_PLANE_TRUST_ALL=true " +
           "VESPA_CLI_DATA_PLANE_CA_CERT_FILE=#{tls_env.ca_certificates_file} " +
