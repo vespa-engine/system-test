@@ -28,7 +28,7 @@ schema doc {
    }
 
     first-phase {
-      expression: nativeRank
+      expression: closeness(embedding)
     }
 
     summary-features {
