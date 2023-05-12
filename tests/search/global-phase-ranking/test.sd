@@ -56,6 +56,7 @@ schema test {
         }
     }
 
+    # Streaming search uses a single rank phase. Emulate two rank phases.
     rank-profile emulated_second_phase inherits base {
         first-phase {
             expression: if(fn_first_phase > -4.0, sum(onnx(multiply_add).multiply_add_output - fn_query_vec), fn_first_phase)
