@@ -76,7 +76,7 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
   end
 
   def assert_summary_field(yql_filter, field_name, exp_field_value, summary = "default")
-    query = "yql=select * from sources * where #{yql_filter}&format=json&streaming.selection=true&summary=#{summary}"
+    query = "yql=select * from sources * where #{yql_filter}&format=json&summary=#{summary}"
     result = search(query)
     assert_hitcount(result, 1)
     hit = result.hit[0]

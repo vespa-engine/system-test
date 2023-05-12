@@ -54,8 +54,7 @@ class DynTeaserArrayTest < IndexedStreamingSearchTest
 
   def assert_teaser_field(query_field, query_term, summary_field, summary, exp_teaser)
     form = [["yql", "select * from sources * where #{query_field} contains #{query_term}"],
-            ["summary", summary ],
-            ["streaming.selection", "true"]]
+            ["summary", summary ]]
     query = URI.encode_www_form(form)
     result = search(query)
     assert_hitcount(result, 1)

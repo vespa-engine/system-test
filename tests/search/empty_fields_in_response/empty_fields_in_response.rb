@@ -148,7 +148,7 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
   end
 
   def assert_search()
-    result = search("query=sddocname:#{@doctype}&streaming.selection=true")
+    result = search("query=sddocname:#{@doctype}")
     assert(result.hit.size == 4)
     assert_fields(find_doc(result, "normal"), "find", "normal", :get_search_field_value, normal_search_values)
     assert_fields(find_doc(result, "not_set"), "find", "not_set", :get_search_field_value, not_set_search_values)

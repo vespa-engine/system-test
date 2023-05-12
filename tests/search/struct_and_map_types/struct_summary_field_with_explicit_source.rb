@@ -54,7 +54,7 @@ class StructSummaryFieldWithExplicitSource < IndexedStreamingSearchTest
     deploy_app(get_app)
     start
     feed(:file => "#{@testdir}/docs.json", :timeout => 240)
-    wait_for_hitcount("query=sddocname:test&streaming.selection=true", 1)
+    wait_for_hitcount("query=sddocname:test", 1)
     basic_result = get_summary('basic')
     check_result(basic_result, '')
     rename_result = get_summary('rename')
