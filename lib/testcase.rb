@@ -920,7 +920,7 @@ class TestCase
           puts "Got application checksum #{checksum}"
           break
         end
-      rescue RuntimeError => e
+      rescue StandardError => e
         puts "Failed getting application status: #{e}"
       end
     end
