@@ -1,0 +1,43 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema doc {
+
+  document doc {
+
+    field text type string {
+      indexing: index | summary
+    }
+
+  }
+
+  field tokens type tensor<float>(x[5]) {
+    indexing: input text | embed tokenizer | attribute | summary
+  }
+
+  field embedding type tensor<float>(x[384]) {
+      indexing: input text | embed huggingface | attribute
+      attribute {
+          distance-metric: angular
+      }
+  }
+
+  rank-profile default {
+    inputs {
+      query(tokens) tensor<float>(x[5])
+      query(embedding) tensor<float>(x[384])
+   }
+
+    first-phase {
+      expression: closeness(embedding)
+    }
+
+    summary-features {
+      query(tokens)
+      attribute(tokens)
+      query(embedding)
+      attribute(embedding)
+    }
+
+  }
+
+}

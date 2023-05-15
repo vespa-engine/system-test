@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<services version="1.0">
+
+    <admin version="2.0">
+        <adminserver hostalias="node1"/>
+    </admin>
+
+    <container version="1.0">
+        <component id="huggingface" class="ai.vespa.embedding.huggingface.HuggingFaceEmbedder" bundle="model-integration">
+            <config name="embedding.huggingface.hugging-face-embedder">
+                <transformerModel model-id="ignored-on-selfhosted" url="https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.onnx"/>
+                <tokenizerPath model-id="ignored-on-selfhosted" url="https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json"/>
+                <transformerOutput>output_0</transformerOutput>
+            </config>
+        </component>
+        <component id="tokenizer" class="com.yahoo.language.huggingface.HuggingFaceTokenizer" bundle="linguistics-components">
+            <config name="language.huggingface.hugging-face-tokenizer">
+                <addSpecialTokens>false</addSpecialTokens>
+                <model>
+                    <item>
+                        <language>unknown</language>
+                        <path model-id="ignored-on-selfhosted" url="https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json"/>
+                    </item>
+                </model>
+            </config>
+        </component>
+
+
+        <search/>
+        <document-api/>
+        <nodes>
+            <jvm options="-Xms4g -Xmx4g" />
+            <node hostalias="node1"/>
+        </nodes>
+    </container>
+
+    <content id="embeddings" version="1.0">
+        <redundancy>1</redundancy>
+        <documents>
+            <document type="doc" mode="index" />
+        </documents>
+        <nodes>
+            <node hostalias="node1" distribution-key="0" />
+        </nodes>
+    </content>
+
+</services>
