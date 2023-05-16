@@ -30,4 +30,13 @@ class InconsistentConditionalRemoveTest < InconsistentBucketsBase
     verify_document_has_expected_contents(title: 'second title') # Just checks newest version
   end
 
+  def test_conditional_remove_of_non_existent_document_in_inconsistent_bucket
+    set_description('condition probe decides that the document does not exist, ' +
+                    'this makes the remove fail with precondition failure')
+    make_replicas_inconsistent_and_contain_incidental_documents_only
+    assert_precondition_failure {
+      remove_with_condition('true')
+    }
+  end
+
 end
