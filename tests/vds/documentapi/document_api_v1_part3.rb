@@ -41,4 +41,14 @@ class DocumentApiVdsPart3 < DocumentApiV1Base
     assert_not_found(1, 8);
   end
 
+  def test_delete_non_existent_with_condition
+    # conditional delete of non existent document in a non existent bucket
+    api_http_delete("/document/v1/storage_test/music/number/3/5?condition=#{CGI.escape('true')}")
+
+    # conditional delete of non existent document in existing bucket
+    assert_fails_with_precondition_violation {
+      api_http_delete("/document/v1/storage_test/music/number/1/15?condition=#{CGI.escape('true')}")
+    }
+  end
+
 end
