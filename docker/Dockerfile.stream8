@@ -19,8 +19,8 @@ RUN dnf install -y gcc-c++ python3-devel && \
 ENV VESPA_CONFIGPROXY_JVMARGS="-XX:ThreadStackSize=1024k"
 
 RUN dnf config-manager --enable powertools && \
-    dnf module enable -y ruby:3.0 && \
-    dnf module enable -y maven:3.6 && \
+    dnf module enable -y ruby:3.1 && \
+    dnf module enable -y maven:3.8 && \
     dnf install -y \
         bind-utils \
         gcc-toolset-12-annobin-docs \
