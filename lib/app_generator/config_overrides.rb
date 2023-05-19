@@ -78,6 +78,22 @@ class MapConfig
   end
 end
 
+class ModelConfig
+  def initialize(name, id, path: nil, url: nil)
+    @name = name
+    @id = id
+    @path = path
+    @url = url
+    if path.nil? && url.nil?
+      raise "path or url must be specified for model config '#{name}','#{id}'"
+    end
+  end
+
+  def to_xml(indent)
+    XmlHelper.new(indent).
+      tag(@name, :id => @id, :url => @url, :path => @path).close_tag.to_s
+  end
+end
 
 class ConfigOverride
   include ChainedSetter
@@ -90,6 +106,8 @@ class ConfigOverride
     if key.is_a? ArrayConfig and value.nil?
       @overrides.push(key)
     elsif key.is_a? MapConfig and value.nil?
+      @overrides.push(key)
+    elsif key.is_a? ModelConfig and value.nil?
       @overrides.push(key)
     else
       @overrides.push(ConfigValue.new(key, value))
