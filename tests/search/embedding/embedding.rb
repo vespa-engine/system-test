@@ -2,23 +2,82 @@
 
 require 'rubygems'
 require 'json'
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class Embedding < IndexedSearchTest
+class Embedding < IndexedStreamingSearchTest
 
   def setup
     set_owner("bratseth")
   end
 
+  def sentencepiece_tokenizer_component
+    Component.new('tokenizer').
+      klass('com.yahoo.language.sentencepiece.SentencePieceEmbedder').
+      bundle('linguistics-components').
+      config(ConfigOverride.new('language.sentencepiece.sentence-piece').
+               add(ArrayConfig.new('model').
+                     add(0, ConfigValue.new('language', 'unknown')).
+                     add(0, ConfigValue.new('path', 'components/en.wiki.bpe.vs10000.model'))))
+  end
+
+  def bert_embedder_component
+    Component.new('transformer').
+      klass('ai.vespa.embedding.BertBaseEmbedder').
+      bundle('model-integration').
+      config(ConfigOverride.new('embedding.bert-base-embedder').
+               add(ModelConfig.new('transformerModel', 'ignored-on-selfhosted', url: 'https://data.vespa.oath.cloud/onnx_models/sentence_all_MiniLM_L6_v2.onnx')).
+               add(ModelConfig.new('tokenizerVocab', 'ignored-on-selfhosted', path: 'components/bert-base-uncased.txt')))
+  end
+
+  def huggingface_tokenizer_component
+    Component.new('tokenizer').
+      klass('com.yahoo.language.huggingface.HuggingFaceTokenizer').
+      bundle('linguistics-components').
+      config(ConfigOverride.new('language.huggingface.hugging-face-tokenizer').
+               add('addSpecialTokens', 'false').
+               add(ArrayConfig.new('model').
+                     add(0, ConfigValue.new('language', 'unknown')).
+                     add(0, ModelConfig.new('path', 'ignored-on-selfhosted', url: 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json'))))
+  end
+
+  def huggingface_embedder_component
+    Component.new('huggingface').
+      klass('ai.vespa.embedding.huggingface.HuggingFaceEmbedder').
+      bundle('model-integration').
+      config(ConfigOverride.new('embedding.huggingface.hugging-face-embedder').
+               add(ModelConfig.new('transformerModel', 'ignored-on-selfhosted', url: 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.onnx')).
+               add(ModelConfig.new('tokenizerPath', 'ignored-on-selfhosted', url: 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json')).
+               add('transformerOutput', 'output_0'))
+  end
+
   def test_default_embedding
-    deploy(selfdir + "app_one_embedder/")
+    deploy_app(
+      SearchApp.new.
+        container(
+          Container.new('default').
+            component(sentencepiece_tokenizer_component).
+            search(Searching.new).
+            docproc(DocumentProcessing.new)).
+        sd(selfdir + 'app_one_embedder/schemas/doc.sd').
+        components_dir(selfdir + 'app_one_embedder/model').
+        indexing_cluster('default').indexing_chain('indexing'))
     start
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_default_embedder
   end
 
   def test_embedding
-    deploy(selfdir + "app_two_embedders/")
+    deploy_app(
+      SearchApp.new.
+        container(
+          Container.new('default').
+            component(sentencepiece_tokenizer_component).
+            component(bert_embedder_component).
+            search(Searching.new).
+            docproc(DocumentProcessing.new)).
+        sd(selfdir + 'app_two_embedders/schemas/doc.sd').
+        components_dir(selfdir + 'app_two_embedders/model').
+        indexing_cluster('default').indexing_chain('indexing'))
     start
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_tokens
@@ -26,7 +85,17 @@ class Embedding < IndexedSearchTest
   end
 
   def test_huggingface_embedding
-    deploy(selfdir + "app_huggingface_embedder/")
+    deploy_app(
+      SearchApp.new.
+        container(
+          Container.new('default').
+            component(huggingface_tokenizer_component).
+            component(huggingface_embedder_component).
+            search(Searching.new).
+            docproc(DocumentProcessing.new).
+            jvmoptions('-Xms4g -Xmx4g')).
+        sd(selfdir + 'app_huggingface_embedder/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
     start
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_huggingface_tokens

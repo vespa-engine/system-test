@@ -551,6 +551,26 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
+  def test_model_config_path
+    config = ConfigOverride.new("myconfig").add(ModelConfig.new("mymodel", "myid", path: "mypath"))
+    actual = config.to_xml(" ")
+
+    expected_substr = '<config name="myconfig">
+      <mymodel id="myid" path="mypath" />
+    </config>'
+    assert_substring_ignore_whitespace(actual, expected_substr)
+  end
+
+  def test_model_config_url
+    config = ConfigOverride.new("myconfig").add(ModelConfig.new("mymodel", "myid", url: "myurl"))
+    actual = config.to_xml(" ")
+
+    expected_substr = '<config name="myconfig">
+      <mymodel id="myid" url="myurl" />
+    </config>'
+    assert_substring_ignore_whitespace(actual, expected_substr)
+  end
+
   def test_deploy_params
     app = SearchApp.new.sd("sd1").cluster(SearchCluster.new.sd("sd2")).
       rules_dir("dir3").
