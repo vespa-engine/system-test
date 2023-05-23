@@ -3,7 +3,7 @@ require 'app_generator/search_app'
 require 'environment'
 
 
-class Embedding < PerformanceTest
+class EmbeddingPerfTest < PerformanceTest
 
   def setup
     set_owner("bjorncs")
