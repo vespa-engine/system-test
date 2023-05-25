@@ -1,0 +1,26 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema test {
+  document test {
+    field id type int {
+      indexing: summary
+    }
+    field embedding type tensor<float>(x[384]) {
+      indexing: attribute | summary
+      attribute {
+        distance-metric: angular
+      }
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(qemb) tensor<float>(x[384])
+    }
+    first-phase {
+      expression: closeness(embedding)
+    }
+  }
+  document-summary minimal {
+    summary id type int {}
+  }
+}
