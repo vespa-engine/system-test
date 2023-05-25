@@ -2,12 +2,16 @@
 package com.yahoo.vespatest;
 
 import java.time.Instant;
+import java.util.Timer;
 
 import com.yahoo.jdisc.Request;
 import com.yahoo.jdisc.Response;
 import com.yahoo.jdisc.handler.*;
 
 public class HandlerLeakingThreads extends AbstractRequestHandler {
+
+    // Ensure timer and its thread is not stopped and GCed by cleaner
+    private static Timer timer = null;
 
     public HandlerLeakingThreads() {
         Thread t1 = new Thread(() -> {
@@ -24,6 +28,14 @@ public class HandlerLeakingThreads extends AbstractRequestHandler {
         };
         t2.setDaemon(true);
         t2.start();
+
+        var original = Thread.currentThread().getContextClassLoader();
+        Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+        try {
+            timer = new Timer("leak-using-context-classloader", true);
+        } finally {
+            Thread.currentThread().setContextClassLoader(original);
+        }
     }
 
     @Override
