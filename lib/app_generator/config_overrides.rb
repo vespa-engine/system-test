@@ -91,7 +91,7 @@ class ModelConfig
 
   def to_xml(indent)
     XmlHelper.new(indent).
-      tag(@name, :id => @id, :url => @url, :path => @path).close_tag.to_s
+      tag(@name, :"model-id" => @id, :url => @url, :path => @path).close_tag.to_s
   end
 end
 
