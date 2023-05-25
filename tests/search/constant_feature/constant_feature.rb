@@ -38,7 +38,7 @@ class ConstantFeatureTest < IndexedStreamingSearchTest
     redeploy(get_app("test2.sd"))
     if is_streaming
       # Wait for new config to be applied for SearchEnvironment::Env
-      sleep 10
+      sleep 20
     end
     check_ranking(223.0, 169.0, 92.0, 106.0)
     restart_proton("test", 3, "search")
