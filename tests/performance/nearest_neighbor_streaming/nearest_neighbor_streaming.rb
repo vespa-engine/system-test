@@ -109,14 +109,21 @@ class NearestNeighborStreamingTest < PerformanceTest
     query_and_profile(@qf100k, 100000)
   end
 
+  def copy_to_container(source_file)
+    dest_dir = dirs.tmpdir + "qf"
+    @container.copy(source_file, dest_dir)
+    dest_file = dest_dir + "/" + File.basename(source_file)
+  end
+
   def query_and_profile(query_file, docs_per_user)
+    container_query_file = copy_to_container(query_file)
     result_file = dirs.tmpdir + "fbench_result.#{docs_per_user}.dpu.txt"
     label = "query-#{docs_per_user}.dpu"
     fillers = [parameter_filler("type", "query"),
                parameter_filler("docs_per_user", docs_per_user)]
     profiler_start
     run_fbench2(@container,
-                query_file,
+                container_query_file,
                 {:runtime => 30,
                  :clients => 1,
                  :append_str => "&timeout=10s",
