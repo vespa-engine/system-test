@@ -556,7 +556,7 @@ class SearchAppGenTest < Test::Unit::TestCase
     actual = config.to_xml(" ")
 
     expected_substr = '<config name="myconfig">
-      <mymodel id="myid" path="mypath" />
+      <mymodel model-id="myid" path="mypath" />
     </config>'
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
@@ -566,7 +566,7 @@ class SearchAppGenTest < Test::Unit::TestCase
     actual = config.to_xml(" ")
 
     expected_substr = '<config name="myconfig">
-      <mymodel id="myid" url="myurl" />
+      <mymodel model-id="myid" url="myurl" />
     </config>'
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
