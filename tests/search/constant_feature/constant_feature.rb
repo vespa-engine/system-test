@@ -1,8 +1,8 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class ConstantFeatureTest < IndexedSearchTest
+class ConstantFeatureTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("toregge")
@@ -36,6 +36,10 @@ class ConstantFeatureTest < IndexedSearchTest
 
     check_ranking(201.0, 161.0, 82.0, 102.0)
     redeploy(get_app("test2.sd"))
+    if is_streaming
+      # Wait for new config to be applied for SearchEnvironment::Env
+      sleep 10
+    end
     check_ranking(223.0, 169.0, 92.0, 106.0)
     restart_proton("test", 3, "search")
     check_ranking(223.0, 169.0, 92.0, 106.0)
