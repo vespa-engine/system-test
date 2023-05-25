@@ -1,8 +1,8 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_streaming_search_test'
 require 'search/tensor_feed/tensor_feed_base.rb'
 
-class TensorModifyUpdateTest < SearchTest
+class TensorModifyUpdateTest < IndexedStreamingSearchTest
 
   include TensorFeedTestBase
 
