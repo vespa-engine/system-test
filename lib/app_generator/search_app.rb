@@ -14,6 +14,7 @@ class SearchApp < App
                   :doc_type => :doc_type,
                   :threads_per_search => :threads_per_search,
                   :allowed_lid_bloat => :allowed_lid_bloat,
+                  :allowed_lid_bloat_factor => :allowed_lid_bloat_factor,
                   :num_summary_threads => :num_summary_threads,
                   :initialize_threads => :initialize_threads,
                   :hwinfo_disk_writespeed => :hwinfo_disk_writespeed,

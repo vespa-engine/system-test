@@ -18,6 +18,7 @@ class LidSpaceCompactionPerfTest < PerformanceTest
   def get_app(lid_bloat_factor = 0.2)
     SearchApp.new.cluster(SearchCluster.new.sd(selfdir + "test.sd").
                           allowed_lid_bloat(10).
+			  allowed_lid_bloat_factor(lid_bloat_factor).
                           config(ConfigOverride.new("vespa.config.search.core.proton").
                                  add("maintenancejobs", ConfigValues.new.
                                      add("maxoutstandingmoveops", 100)).
@@ -25,8 +26,7 @@ class LidSpaceCompactionPerfTest < PerformanceTest
                                      add("write", ConfigValues.new.
                                          add("io", "NORMAL"))).
                                  add("lidspacecompaction", ConfigValues.new.
-                                     add("interval", 2.0).
-                                     add("allowedlidbloatfactor", lid_bloat_factor)))).
+                                     add("interval", 2.0)))).
                           search_dir(selfdir + "app")
   end
 
