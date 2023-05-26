@@ -133,8 +133,8 @@ class SearchCluster
     proton.add("numthreadspersearch", @threads_per_search)
     proton.add("numsummarythreads", @num_summary_threads) if @num_summary_threads != nil
     proton.add("initialize", ConfigValue.new("threads", @initialize_threads))
-    proton.add("lidspacecompaction", ConfigValue.new("allowedlidbloat", @allowed_lid_bloat))
-    proton.add("lidspacecompaction", ConfigValue.new("allowedlidbloatfactor", @allowed_lid_bloat_factor))
+    proton.add("lidspacecompaction", ConfigValue.new.add("allowedlidbloat", @allowed_lid_bloat).
+	                                             add("allowedlidbloatfactor", @allowed_lid_bloat_factor))
     if @hwinfo_disk_shared || !@hwinfo_disk_writespeed.nil?
       values = ConfigValues.new
       if @hwinfo_disk_shared
