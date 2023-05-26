@@ -772,6 +772,7 @@ class SearchAppGenTest < Test::Unit::TestCase
         </initialize>
         <lidspacecompaction>
           <allowedlidbloat>100</allowedlidbloat>
+          <allowedlidbloatfactor>0.01</allowedlidbloatfactor>
         </lidspacecompaction>
         <hwinfo>
           <disk>
