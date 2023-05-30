@@ -28,6 +28,8 @@ class Watchdog < ContainerTest
       /Thread 'leak-using-runnable' using bundle 'com.yahoo.vespatest.HandlerLeakingThreads \[.+\]'/, 90)
     assert_log_matches(
       /Thread 'leak-using-subclass' using bundle 'com.yahoo.vespatest.HandlerLeakingThreads \[.+\]'/, 1)
+    assert_log_matches(
+      /Thread 'leak-using-context-classloader' using bundle 'com.yahoo.vespatest.HandlerLeakingThreads \[.+\]'/, 1)
   end
 
   def teardown
