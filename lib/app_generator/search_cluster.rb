@@ -19,6 +19,7 @@ class SearchCluster
   chained_setter :garbagecollectioninterval
   chained_setter :threads_per_search
   chained_setter :allowed_lid_bloat
+  chained_setter :allowed_lid_bloat_factor
   chained_setter :num_summary_threads
   chained_setter :initialize_threads
   chained_setter :hwinfo_disk_writespeed
@@ -60,6 +61,7 @@ class SearchCluster
     @garbagecollectioninterval = nil
     @threads_per_search = 4
     @allowed_lid_bloat = 100
+    @allowed_lid_bloat_factor = 0.01
     @num_summary_threads = nil
     @initialize_threads = 16
     @dispatch = nil
@@ -131,7 +133,8 @@ class SearchCluster
     proton.add("numthreadspersearch", @threads_per_search)
     proton.add("numsummarythreads", @num_summary_threads) if @num_summary_threads != nil
     proton.add("initialize", ConfigValue.new("threads", @initialize_threads))
-    proton.add("lidspacecompaction", ConfigValue.new("allowedlidbloat", @allowed_lid_bloat))
+    proton.add("lidspacecompaction", ConfigValues.new.add("allowedlidbloat", @allowed_lid_bloat).
+                                                      add("allowedlidbloatfactor", @allowed_lid_bloat_factor))
     if @hwinfo_disk_shared || !@hwinfo_disk_writespeed.nil?
       values = ConfigValues.new
       if @hwinfo_disk_shared

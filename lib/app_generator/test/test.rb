@@ -133,7 +133,12 @@ class SearchAppGenTest < Test::Unit::TestCase
              cluster(SearchCluster.new("foo").sd("fo/ba/sd1.sd").sd("sd2.sd").
                      visibility_delay(5).selection("doc_sel").
                      flush_on_shutdown(true).
-                     redundancy(3).ready_copies(2).num_parts(3).threads_per_search(2).allowed_lid_bloat(3)).
+                     redundancy(3).
+                     ready_copies(2).
+                     num_parts(3).
+                     threads_per_search(2).
+                     allowed_lid_bloat(3).
+                     allowed_lid_bloat_factor(0.7)).
              services_xml
 
     expected_substr = '
@@ -146,6 +151,7 @@ class SearchAppGenTest < Test::Unit::TestCase
           </initialize>
           <lidspacecompaction>
             <allowedlidbloat>3</allowedlidbloat>
+	    <allowedlidbloatfactor>0.7</allowedlidbloatfactor>
           </lidspacecompaction>
           <hwinfo>
             <disk>
@@ -766,6 +772,7 @@ class SearchAppGenTest < Test::Unit::TestCase
         </initialize>
         <lidspacecompaction>
           <allowedlidbloat>100</allowedlidbloat>
+          <allowedlidbloatfactor>0.01</allowedlidbloatfactor>
         </lidspacecompaction>
         <hwinfo>
           <disk>
