@@ -1,0 +1,16 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema test {
+  document test {
+    field title type string {
+      indexing: index | summary
+      summary: dynamic
+    }
+    field visibility type string {
+      indexing: index | summary
+    }
+  }
+  fieldset default {
+    fields: title
+  }
+}
