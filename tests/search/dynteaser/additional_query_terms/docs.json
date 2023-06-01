@@ -1,0 +1,16 @@
+[
+    {
+	"put": "id:test:test::0",
+	"fields": {
+	    "title": "Hamster one",
+	    "visibility": "public 0"
+	}
+    },
+    {
+	"put": "id:test:test::1",
+	"fields": {
+	    "title": "product red medium",
+	    "visibility": "public 1"
+	}
+    }
+]
