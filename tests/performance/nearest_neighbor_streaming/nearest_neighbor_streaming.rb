@@ -17,11 +17,11 @@ class NearestNeighborStreamingTest < PerformanceTest
     deploy_app(create_app)
     @container = vespa.container.values.first
     compile_create_docs
-    batches = 5
-    write_query_files(batches)
+    chunks = 5
+    write_query_files(chunks)
     start
 
-    feed_and_profile(batches)
+    feed_and_profile(chunks)
     run_query_and_profile
   end
 
@@ -49,14 +49,15 @@ class NearestNeighborStreamingTest < PerformanceTest
     @container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{@create_docs} #{selfdir}/create_docs.cpp")
   end
 
-  def feed_and_profile(batches)
-    # We feed batches of 500k documents, where each batch has:
+  def feed_and_profile(chunks)
+    # We feed chunks * 500k documents, where each chunk has:
     #   - 100k docs with 10000 users with 10 docs each
     #   - 100k docs with 1000 users with 100 docs each
     #   - 100k docs with 100 users with 1k docs each
     #   - 100k docs with 10 users with 10k docs each
     #   - 100k docs with 1 user with 100k docs each
-    command = "#{@create_docs} #{batches} 384"
+    spec = "10 #{10000 * chunks} 100 #{1000 * chunks} 1000 #{100 * chunks} 10000 #{10 * chunks} 100000 #{1 * chunks}"
+    command = "#{@create_docs} -d 384 #{spec}"
     profiler_start
     run_stream_feeder(command, [parameter_filler("type", "feed")])
     profiler_report("feed")
@@ -65,7 +66,7 @@ class NearestNeighborStreamingTest < PerformanceTest
   def random_vector(count)
     res = []
     count.times do
-      res << rand(0...10000) / 10000.0
+      res << rand(0...100000) / 100000.0
     end
     res.to_s
   end
@@ -86,7 +87,7 @@ class NearestNeighborStreamingTest < PerformanceTest
     end
   end
 
-  def write_query_files(batches)
+  def write_query_files(chunks)
     @qf10 = dirs.tmpdir + "queries.10.dpu.txt"
     @qf100 = dirs.tmpdir + "queries.100.dpu.txt"
     @qf1k = dirs.tmpdir + "queries.1k.dpu.txt"
@@ -95,10 +96,10 @@ class NearestNeighborStreamingTest < PerformanceTest
     # Must match the same id range used in create_docs.cpp
     id_range = 10000000;
     write_queries(@qf10, 5000, id_range)
-    write_queries(@qf100, 1000 * batches, id_range * 2)
-    write_queries(@qf1k, 100 * batches, id_range * 3)
-    write_queries(@qf10k, 10 * batches, id_range * 4)
-    write_queries(@qf100k, 1 * batches, id_range * 5)
+    write_queries(@qf100, 1000 * chunks, id_range * 2)
+    write_queries(@qf1k, 100 * chunks, id_range * 3)
+    write_queries(@qf10k, 10 * chunks, id_range * 4)
+    write_queries(@qf100k, 1 * chunks, id_range * 5)
   end
 
   def run_query_and_profile
