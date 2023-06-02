@@ -194,7 +194,7 @@ class FeedAndQueryTestBase < SearchTest
   end
 
   def assert_odd_sized_groups
-    @query_counts_bias = get_num_queries_all([0, 0, 0, 0, 0, 0, 0, 0, 0])
+    @query_counts_bias = get_num_queries_all([0, 0, 0, 0, 0, 0, 0, 0, nil])
     for i in 1...4500 do
       assert_query_hitcount
     end
