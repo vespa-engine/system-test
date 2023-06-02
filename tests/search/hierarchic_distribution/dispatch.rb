@@ -22,23 +22,6 @@ class HierarchicDistributionDispatchTest < FeedAndQueryTestBase
     run_nodes_down_and_up_test(6)
   end
 
-  def align_fdispatch_to_use_group_0_next
-    assert_query_hitcount
-    search_nodes_dummy_counts = [0,0,0,0,0,0,0,0,0]
-    act_query_counts = get_num_queries_all(search_nodes_dummy_counts)
-    puts "align_fdispatch_to_use_group_0_next: act_query_counts=#{array_to_s(act_query_counts)}"
-    if act_query_counts == [1,1,1,0,0,0,0,0,0]
-      assert_query_hitcount
-      assert_query_hitcount
-    elsif act_query_counts == [0,0,0,1,1,1,0,0,0]
-      assert_query_hitcount
-    elsif act_query_counts != [0,0,0,0,0,0,1,1,1]
-      raise "Unexpected query counts from search nodes: #{array_to_s(act_query_counts)}. Something wrong with how queries are dispatched"
-    end
-    @query_counts_bias = get_num_queries_all(search_nodes_dummy_counts)
-    puts "align_fdispatch_to_use_group_0_next: query_counts_bias=#{array_to_s(@query_counts_bias)}"
-  end
-
   def clear_query_counts_bias(index_to_clear)
     @query_counts_bias[index_to_clear] = 0
     puts "clear_query_counts_bias(#{index_to_clear}): #{array_to_s(@query_counts_bias)}"
@@ -50,7 +33,7 @@ class HierarchicDistributionDispatchTest < FeedAndQueryTestBase
     start
     generate_and_feed_docs
     sleep 10 # This is a sleep to allow all services to complete startup and settle as many services start on the same host.
-    align_fdispatch_to_use_group_0_next
+    align_dispatch_to_use_group_0_next
 
     assert_query_hitcount # group 0
     assert_num_queries([1, 1, 1, 0, 0, 0, 0, 0, 0])
