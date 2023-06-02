@@ -19,10 +19,6 @@ class SearchMetrics < IndexedSearchTest
                                                                            :compression => {:type => :lz4, :level => 8}
                                                                          } } } })))
     start
-
-    # Search handler does a warmup query which may or may not hit the backend, since 8.170. We need to account for this in some search metrics below. 
-    search_count_bias = vespa.search["test"].first.get_total_metrics.get("content.proton.search_protocol.query.latency")["count"]
-
     feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.xml")
     assert_hitcount("f1:c", 2)
     assert_hitcount("f1:xyzzy", 0)
@@ -60,23 +56,23 @@ class SearchMetrics < IndexedSearchTest
     assert_equal(9, metrics.get("content.proton.transactionlog.entries")["last"])
 
     # query / docsum metrics
-    assert_equal(3, metrics.get("content.proton.search_protocol.query.latency")["count"] - search_count_bias)
+    assert_equal(3, metrics.get("content.proton.search_protocol.query.latency")["count"])
     assert_equal(1, metrics.get("content.proton.search_protocol.docsum.latency")["count"])
 
     # matching metrics
     assert_equal(3, metrics.get("content.proton.documentdb.matching.queries",
-                                {"documenttype" => "test"})["count"] - search_count_bias)
+                                {"documenttype" => "test"})["count"])
     assert_equal(3, metrics.get("content.proton.documentdb.matching.rank_profile.queries",
-                                {"documenttype" => "test", "rankProfile" => "default"})["count"] - search_count_bias)
+                                {"documenttype" => "test", "rankProfile" => "default"})["count"])
     assert_equal(3, metrics.get("content.proton.documentdb.matching.rank_profile.docid_partition.active_time",
-                                {"documenttype" => "test", "rankProfile" => "default", "docidPartition" => "docid_part03"})["count"] - search_count_bias)
+                                {"documenttype" => "test", "rankProfile" => "default", "docidPartition" => "docid_part03"})["count"])
 
     # document store cache metrics
     assert_equal(2, get_last("content.proton.documentdb.ready.document_store.cache.elements", metrics))
     assert_equal(370, get_last("content.proton.documentdb.ready.document_store.cache.memory_usage", metrics))
-    assert_equal(3, get_count("content.proton.documentdb.ready.document_store.cache.lookups", metrics) - search_count_bias)
+    assert_equal(3, get_count("content.proton.documentdb.ready.document_store.cache.lookups", metrics))
     assert_equal(1, get_count("content.proton.documentdb.ready.document_store.cache.invalidations", metrics))
-    assert_equal(3, get_count("content.proton.documentdb.ready.document_store.cache.hit_rate", metrics) - search_count_bias)
+    assert_equal(3, get_count("content.proton.documentdb.ready.document_store.cache.hit_rate", metrics))
 
     assert_document_db_total_memory_usage(metrics)
     assert_document_db_total_disk_usage(metrics)
