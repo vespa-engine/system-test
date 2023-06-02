@@ -153,29 +153,7 @@ class FeedAndQueryTestBase < SearchTest
     end
   end
 
-  def align_dispatch_to_use_group_0_next
-    dummy_counts = [0,0,0,0,0,0,0,0,0]
-    @query_counts_bias = get_num_queries_all(dummy_counts) # Search handler does a warmup query which may or may not hit the backend, since 8.170
-
-    assert_query_hitcount
-    act_query_counts = get_num_queries_all(dummy_counts)
-    puts "align_dispatch_to_use_group_0_next: act_query_counts=#{array_to_s(act_query_counts)}"
-    if act_query_counts == [1,1,1,0,0,0,0,0,0]
-      assert_query_hitcount
-      assert_query_hitcount
-    elsif act_query_counts == [0,0,0,1,1,1,0,0,0]
-      assert_query_hitcount
-    elsif act_query_counts != [0,0,0,0,0,0,1,1,1]
-      raise "Unexpected query counts from search nodes: #{array_to_s(act_query_counts)}. Something wrong with how queries are dispatched"
-    end
-    @query_counts_bias = nil
-    @query_counts_bias = get_num_queries_all(dummy_counts)
-    puts "align_dispatch_to_use_group_0_next: query_counts_bias=#{array_to_s(@query_counts_bias)}"
-  end
-
   def assert_even_sized_groups
-    align_dispatch_to_use_group_0_next
-
     assert_query_hitcount #group/row 0
     assert_num_queries([1, 1, 1, 0, 0, 0, 0, 0, 0])
     assert_query_hitcount #group/row 1
@@ -194,7 +172,6 @@ class FeedAndQueryTestBase < SearchTest
   end
 
   def assert_odd_sized_groups
-    @query_counts_bias = get_num_queries_all([0, 0, 0, 0, 0, 0, 0, 0, 0])
     for i in 1...4500 do
       assert_query_hitcount
     end
