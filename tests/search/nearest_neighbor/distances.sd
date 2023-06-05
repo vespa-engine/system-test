@@ -1,0 +1,54 @@
+schema distances {
+  document distances {
+    field euclidean type tensor(x[2]) {
+      indexing: attribute | summary
+      attribute {
+        distance-metric: euclidean
+      }
+    }
+    field angular type tensor(x[2]) {
+      indexing: attribute | summary
+      attribute {
+        distance-metric: angular
+      }
+    }
+    field prenorm type tensor(x[2]) {
+      indexing: attribute | summary
+      attribute {
+        distance-metric: prenormalized-angular
+      }
+    }
+    field geodegrees type tensor(x[2]) {
+      indexing: attribute | summary
+      attribute {
+        distance-metric: geodegrees
+      }
+    }
+    field hamming type tensor<int8>(x[2]) {
+      indexing: attribute | summary
+      attribute {
+        distance-metric: hamming
+      }
+    }
+    field dotproduct type tensor(x[2]) {
+      indexing: attribute | summary
+      attribute {
+        distance-metric: dotproduct
+      }
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(qpos) tensor(x[2])
+      query(qpos_int8) tensor<int8>(x[2])
+    }
+    first-phase {
+      expression: closeness(label,nns)
+    }
+    summary-features {
+      closeness(label,nns)
+      distance(label,nns)
+      itemRawScore(nns)
+    }
+  }
+}
