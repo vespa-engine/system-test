@@ -22,11 +22,9 @@ class Embedding < IndexedStreamingSearchTest
 
   def bert_embedder_component
     Component.new('transformer').
-      klass('ai.vespa.embedding.BertBaseEmbedder').
-      bundle('model-integration').
-      config(ConfigOverride.new('embedding.bert-base-embedder').
-               add(ModelConfig.new('transformerModel', 'ignored-on-selfhosted', url: 'https://data.vespa.oath.cloud/onnx_models/sentence_all_MiniLM_L6_v2.onnx')).
-               add(ModelConfig.new('tokenizerVocab', 'ignored-on-selfhosted', path: 'components/bert-base-uncased.txt')))
+      type('bert-embedder').
+      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/sentence_all_MiniLM_L6_v2.onnx' }).
+      param('tokenizer-vocab', '', {'model-id' => 'ignored-on-selfhosted', 'path' => 'components/bert-base-uncased.txt'})
   end
 
   def huggingface_tokenizer_component
