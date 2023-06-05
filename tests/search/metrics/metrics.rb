@@ -67,9 +67,9 @@ class SearchMetrics < IndexedSearchTest
     assert_equal(3, metrics.get("content.proton.documentdb.matching.queries",
                                 {"documenttype" => "test"})["count"] - search_count_bias)
     assert_equal(3, metrics.get("content.proton.documentdb.matching.rank_profile.queries",
-                                {"documenttype" => "test", "rankProfile" => "default"})["count"] - search_count_bias)
+                                {"documenttype" => "test", "rankProfile" => "default"})["count"])
     assert_equal(3, metrics.get("content.proton.documentdb.matching.rank_profile.docid_partition.active_time",
-                                {"documenttype" => "test", "rankProfile" => "default", "docidPartition" => "docid_part03"})["count"] - search_count_bias)
+                                {"documenttype" => "test", "rankProfile" => "default", "docidPartition" => "docid_part03"})["count"])
 
     # document store cache metrics
     assert_equal(2, get_last("content.proton.documentdb.ready.document_store.cache.elements", metrics))
