@@ -4,12 +4,10 @@
     <adminserver hostalias="node1"/>
   </admin>
   <container id="default" version="1.0">
-    <component id="hf" class="ai.vespa.embedding.huggingface.HuggingFaceEmbedder" bundle="model-integration">
-      <config name="embedding.huggingface.hugging-face-embedder">
-        <transformerModel url="https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.onnx"/>
-        <tokenizerPath url="https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json"/>
-        <transformerOutput>output_0</transformerOutput>
-      </config>
+    <component id="hf" type="hugging-face-embedder">
+      <transformer-model url="https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.onnx"/>
+      <tokenizer-model url="https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json"/>
+      <transformer-output>output_0</transformer-output>
     </component>
     <document-api/>
     <search/>

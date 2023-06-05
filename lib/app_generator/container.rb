@@ -236,10 +236,17 @@ class Component
   chained_setter :klass
   chained_setter :config
   chained_setter :bundle
+  chained_setter :type
 
   def initialize(id)
     @id = id
     @config = ConfigOverrides.new
+    @params = []
+  end
+
+  def param(tag, value = '', attrs = {})
+    @params.push(ComponentParam::new(tag, value, attrs))
+    self
   end
 
   def to_xml(indent="")
@@ -251,8 +258,25 @@ class Component
         tag(tagname,
             :id => @id,
             :bundle => @bundle,
-            :class => @klass).
-        to_xml(@config).to_s
+            :class => @klass,
+            :type => @type).
+        to_xml(@config).to_xml(@params).to_s
+  end
+end
+
+class ComponentParam
+  def initialize(tag, value, attrs)
+    @tag = tag
+    @value = value
+    @attrs = attrs
+  end
+
+  def to_xml(indent="")
+    dump_xml(indent)
+  end
+
+  def dump_xml(indent="")
+    XmlHelper.new(indent).tag(@tag, @attrs).to_xml(@value).to_s
   end
 end
 

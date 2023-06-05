@@ -31,23 +31,17 @@ class Embedding < IndexedStreamingSearchTest
 
   def huggingface_tokenizer_component
     Component.new('tokenizer').
-      klass('com.yahoo.language.huggingface.HuggingFaceTokenizer').
-      bundle('linguistics-components').
-      config(ConfigOverride.new('language.huggingface.hugging-face-tokenizer').
-               add('addSpecialTokens', 'false').
-               add(ArrayConfig.new('model').
-                     add(0, ConfigValue.new('language', 'unknown')).
-                     add(0, ModelConfig.new('path', 'ignored-on-selfhosted', url: 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json'))))
+      type('hugging-face-tokenizer').
+      param('special-tokens', 'false').
+      param('model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json'})
   end
 
   def huggingface_embedder_component
     Component.new('huggingface').
-      klass('ai.vespa.embedding.huggingface.HuggingFaceEmbedder').
-      bundle('model-integration').
-      config(ConfigOverride.new('embedding.huggingface.hugging-face-embedder').
-               add(ModelConfig.new('transformerModel', 'ignored-on-selfhosted', url: 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.onnx')).
-               add(ModelConfig.new('tokenizerPath', 'ignored-on-selfhosted', url: 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json')).
-               add('transformerOutput', 'output_0'))
+      type('hugging-face-embedder').
+      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.onnx'}).
+      param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json'}).
+      param('transformer-output', 'output_0')
   end
 
   def test_default_embedding
