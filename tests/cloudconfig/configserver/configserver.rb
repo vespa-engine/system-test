@@ -86,18 +86,18 @@ class ConfigServer < CloudConfigTest
   # See ticket http://bug.corp.yahoo.com/7072930
   def test_stop_should_not_leave_lockfiles
     deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
-    assert_equal("1", get_configserver_zookeeper_lock_files)
+    assert_equal(1, get_configserver_zookeeper_lock_files_count)
     start
     # 2 services that might run zookeeper: container and clustercontroller
-    assert_equal("2", get_services_zookeeper_lock_files)
+    assert_equal(2, get_services_zookeeper_lock_files_count)
     vespa.stop_base
     vespa.start_base
     wait_until_ready
-    assert_equal("2", get_services_zookeeper_lock_files)
+    assert_equal(2, get_services_zookeeper_lock_files_count, get_services_zookeeper_lock_files)
     vespa.configservers["0"].stop_configserver({:keep_everything => true})
     vespa.configservers["0"].start_configserver
     vespa.configservers["0"].ping_configserver
-    assert_equal("1", get_configserver_zookeeper_lock_files)
+    assert_equal(1, get_configserver_zookeeper_lock_files_count)
   end
 
   def test_redeploy_applications_on_upgrade
@@ -217,16 +217,19 @@ ENDER
     assert_equal(expected_status, JSON.parse(response.body)["status"]["code"])
   end
 
-  def get_configserver_zookeeper_lock_files
-    get_zookeeper_lock_files("ls #{Environment.instance.vespa_home}/logs/vespa/zookeeper.configserver*lck | wc -l")
+  def get_configserver_zookeeper_lock_files_count
+    run_command("ls #{Environment.instance.vespa_home}/logs/vespa/zookeeper.configserver*lck | wc -l").to_i
+  end
+
+  def get_services_zookeeper_lock_files_count
+    run_command("ls #{Environment.instance.vespa_home}/logs/vespa/zookeeper*lck | grep -v configserver | wc -l").to_i
   end
 
   def get_services_zookeeper_lock_files
-    get_zookeeper_lock_files("ls #{Environment.instance.vespa_home}/logs/vespa/zookeeper*lck | grep -v configserver | wc -l")
+    run_command("ls #{Environment.instance.vespa_home}/logs/vespa/zookeeper*lck | grep -v configserver")
   end
 
-  def get_zookeeper_lock_files(command)
-    puts "#{vespa.adminserver.execute("ls -l #{Environment.instance.vespa_home}/logs/vespa/", :exceptiononfailure => false)}"
+  def run_command(command)
     vespa.adminserver.execute(command, :exceptiononfailure => false).strip
   end
 
