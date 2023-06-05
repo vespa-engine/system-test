@@ -122,7 +122,6 @@ class DistanceMetricsTest < IndexedStreamingSearchTest
             add_field('hamming', make_pos([3, 7])).
             add_field('dotproduct', make_pos([2, 2]))
     vespa.document_api_v1.put(doc)
-#    wait_for_hitcount('?query=sddocname:distances', 1)
   end
 
   def teardown
