@@ -71,11 +71,12 @@ class DistanceMetricsTest < IndexedStreamingSearchTest
     { "values" => dpos }
   end
 
-  def search_pos(qpos, doc_tensor: nil, distance_threshold: nil, verbose: false)
+  def search_pos(qpos, doc_tensor: nil, distance_threshold: nil, or_true: false, verbose: false)
     qpos_name = (doc_tensor == 'hamming') ? 'qpos_int8' : 'qpos'
     yql = "select #{doc_tensor},summaryfeatures from sources * where {targetHits: 1,"
     yql += "distanceThreshold: #{distance_threshold}," if distance_threshold
     yql += "label: \"nns\"} nearestNeighbor(#{doc_tensor},#{qpos_name})"
+    yql += " or true" if or_true
     form = [['yql', yql],
             ["ranking.features.query(#{qpos_name})", qpos.to_s],
             ['hits', '1'],
@@ -91,13 +92,9 @@ class DistanceMetricsTest < IndexedStreamingSearchTest
     result
   end
 
-  def check_distance_metrics(field, metric, qpos, exp_relevancy, exp_distance, exp_closeness, exp_rawscore)
-    puts "Checking metric #{metric} using field #{field}"
-    eps = 1e-6
-    result = search_pos(qpos, doc_tensor: field, verbose: true)
+  def assert_distance_metrics(result, eps, exp_relevancy, exp_distance, exp_closeness, exp_rawscore)
     assert_hitcount(result, 1)
     hit = result.hit[0]
-    eps = 1e-6
     act_relevancy = hit.field['relevancy']
     assert_approx(exp_relevancy, act_relevancy, eps, "Expected relevancy #{exp_relevancy} but was #{act_relevancy}")
     sf = hit.field['summaryfeatures']
@@ -107,10 +104,20 @@ class DistanceMetricsTest < IndexedStreamingSearchTest
     assert_approx(exp_closeness, act_closeness, eps, "Expected closeness #{exp_closeness} but was #{act_closeness}")
     act_rawscore = sf['itemRawScore(nns)']
     assert_approx(exp_rawscore, act_rawscore, eps, "Expected rawscore #{exp_rawscore} but was #{act_rawscore}")
+  end
+
+  def check_distance_metrics(field, metric, qpos, exp_relevancy, exp_distance, exp_closeness, exp_rawscore)
+    puts "Checking metric #{metric} using field #{field}"
+    eps = 1e-6
+    result = search_pos(qpos, doc_tensor: field, verbose: true)
+    assert_distance_metrics(result, eps, exp_relevancy, exp_distance, exp_closeness, exp_rawscore)
     result0 = search_pos(qpos, doc_tensor: field, distance_threshold: exp_distance - eps)
     assert_hitcount(result0, 0)
     result1 = search_pos(qpos, doc_tensor: field, distance_threshold: exp_distance + eps)
     assert_hitcount(result1, 1)
+    result2 = search_pos(qpos, doc_tensor: field, distance_threshold: exp_distance - eps, or_true: true, verbose: true)
+    assert_hitcount(result2, 1)
+    assert_distance_metrics(result2, eps, exp_relevancy, exp_distance, exp_closeness, 0.0)
   end
 
   def feed_doc
