@@ -54,9 +54,14 @@ void gen_vector(size_t dimension) {
 }
 
 void gen_put(int user_id, size_t doc_id, int dimension) {
-    printf("{\"put\":\"id:test:test:n=%u:%zu\",\"fields\":{\"id\":%u,\"embedding\":[", user_id, doc_id, doc_id);
-    gen_vector(dimension);
-    printf("]}}");
+    printf("{\"put\":\"id:test:test:n=%u:%zu\",\"fields\":{\"id\":%zu", user_id, doc_id, doc_id);
+    if (dimension > 0) {
+        printf(",\"embedding\":[");
+        gen_vector(dimension);
+        printf("]}}");
+    } else {
+        printf("}}");
+    }
 }
 
 void gen_puts(const IntVec& user_ids, size_t start_doc_id, int dimension) {
@@ -100,6 +105,7 @@ int main(int argc, char *argv[]) {
                 std::cerr << "Example: -d 128 -p 2 -i 0 10 2000 100 50" << std::endl;
                 std::cerr << "    Where 2000 users have 10 documents each, and 50 users have 100 documents each." << std::endl;
                 std::cerr << "    In total 25000 documents, where this invocation generates part 0 (of 2 in total)." << std::endl;
+                std::cerr << "If <dimension> is set to 0, the embedding field is not generated" << std::endl;
                 return 1;
             default:
                 return 1;
