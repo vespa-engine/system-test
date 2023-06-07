@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 require 'environment'
 
@@ -6,15 +6,16 @@ class SemanticSearcher < IndexedSearchTest
 
   def setup
     set_owner("bratseth")
-    set_description("Simple test for semantics module")
+    set_description("Simple tests for semantics module")
+  end
+
+  def test_semantic_searcher
     deploy_app(SearchApp.new.sd(selfdir+"music.sd").rules_dir(selfdir+"rules"))
     vespa.container.each_value do |qrs|
       qrs.copy(selfdir+"stopwords.fsa", Environment.instance.vespa_home + "/etc/vespa/fsa")
     end
     start
-  end
 
-  def test_semantic_searcher
     feed_and_wait_for_docs("music", 777, :file => selfdir+"simpler.777.xml")
 
     puts "Details: query=bach"
@@ -61,6 +62,16 @@ class SemanticSearcher < IndexedSearchTest
     # (they are the encoding of the first brand in the brand list in that rule base):
     assert (result.xmldata.include? "brand:")
 
+  end
+
+  def test_rules_with_errors
+    begin
+      deploy_app(SearchApp.new.sd(selfdir+"music.sd").rules_dir(selfdir+"rules_with_errors"))
+      raise "Expected deployment to fail"
+    rescue ExecuteError => e
+      # TODO: Validate error message when rules validation has been done
+      puts "Deployment failed as expected"
+    end
   end
 
   def teardown
