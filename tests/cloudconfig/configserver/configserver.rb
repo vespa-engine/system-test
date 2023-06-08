@@ -82,22 +82,23 @@ class ConfigServer < CloudConfigTest
     start
   end
 
-  # Check that there is maximum one lock file when restarting many times.
+  # Check that there is maximum one lock file for { configserver, container, container-clustercontroller }
+  # when restarting many times.
   # See ticket http://bug.corp.yahoo.com/7072930
   def test_stop_should_not_leave_lockfiles
     deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
-    assert_equal(1, get_configserver_zookeeper_lock_files_count, get_configserver_zookeeper_lock_files)
+    assert(get_configserver_zookeeper_lock_files_count <= 1, get_configserver_zookeeper_lock_files)
     start
-    # 2 services that might run zookeeper: container and clustercontroller
-    assert_equal(2, get_services_zookeeper_lock_files_count, get_services_zookeeper_lock_files)
+    # 2 services create zookeeper lock files: container and container-clustercontroller
+    assert(get_services_zookeeper_lock_files_count <= 2, get_services_zookeeper_lock_files)
     vespa.stop_base
     vespa.start_base
     wait_until_ready
-    assert_equal(2, get_services_zookeeper_lock_files_count, get_services_zookeeper_lock_files)
+    assert(get_services_zookeeper_lock_files_count <= 2, get_services_zookeeper_lock_files)
     vespa.configservers["0"].stop_configserver({:keep_everything => true})
     vespa.configservers["0"].start_configserver
     vespa.configservers["0"].ping_configserver
-    assert_equal(1, get_configserver_zookeeper_lock_files_count, get_configserver_zookeeper_lock_files)
+    assert(get_configserver_zookeeper_lock_files_count <= 1, get_configserver_zookeeper_lock_files)
   end
 
   def test_redeploy_applications_on_upgrade
