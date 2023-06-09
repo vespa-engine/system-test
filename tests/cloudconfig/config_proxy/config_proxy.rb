@@ -98,7 +98,8 @@ class ConfigProxy < CloudConfigTest
     command_app_2 = "cd #{dirs.tmpdir}; #{CONFIG_SOURCE}; #{get_java_command('client2')}"
     multiple_subcribers_common(command_app_1, command_app_2)
     # Request a non-existing config and check that other subscribers work and can be reconfigured afterwards
-    vespa.adminserver.execute("vespa-get-config -n foo -v 1 -i habla")
+    (exitcode, out) = execute(vespa.adminserver, "vespa-get-config -n foo -v 1 -i habla")
+    assert_equal(exitcode, 1)
 
     out_file_1 = "#{dirs.tmpdir}app1.out"
     out_file_2 = "#{dirs.tmpdir}app2.out"

@@ -85,7 +85,8 @@ class ScalingConfigservers < CloudConfigTest
   end
 
   def get_config(node)
-    node.execute("vespa-get-config -n cloud.config.log.logd -i \"\" -p 19070 -w 10")
+    (exitcode, out) = execute(node, "vespa-get-config -n cloud.config.log.logd -i \"\" -p 19070 -w 10")
+    return out
   end
 
   def restart_configserver(node)
