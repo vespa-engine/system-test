@@ -8,6 +8,7 @@
       <transformer-model url="https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.onnx"/>
       <tokenizer-model url="https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json"/>
       <transformer-output>output_0</transformer-output>
+      <max-tokens>384</max-tokens>
     </component>
     <document-api/>
     <search/>
