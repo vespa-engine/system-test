@@ -64,14 +64,10 @@ class SemanticSearcher < IndexedSearchTest
 
   end
 
-  def test_rules_with_errors
-    begin
-      deploy_app(SearchApp.new.sd(selfdir+"music.sd").rules_dir(selfdir+"rules_with_errors"))
-      raise "Expected deployment to fail"
-    rescue ExecuteError => e
-      # TODO: Validate error message when rules validation has been done
-      puts "Deployment failed as expected"
-    end
+  def test_invalid_rules
+    output = deploy_app(SearchApp.new.sd(selfdir+"music.sd").rules_dir(selfdir+"rules_with_errors"),
+                        { :exceptiononfailure => false, :no_activate => true, :skip_create_model => true })
+    assert_match(/Unexpected error building default.default: Could not parse rule 'invalid': /, output)
   end
 
   def teardown
