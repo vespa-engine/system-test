@@ -30,7 +30,6 @@ class Embedding < IndexedStreamingSearchTest
   def huggingface_tokenizer_component
     Component.new('tokenizer').
       type('hugging-face-tokenizer').
-      param('special-tokens', 'false').
       param('model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json'})
   end
 
