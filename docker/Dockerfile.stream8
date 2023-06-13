@@ -12,7 +12,6 @@ RUN dnf install -y dnf-plugins-core && \
 
 RUN dnf install -y gcc-c++ python3-devel && \
     pip3 install --no-cache-dir --upgrade pip  && \
-    pip3 install --no-cache-dir tf2onnx && \
     dnf remove -y remove gcc-c++ python3-devel && \
     yum clean --enablerepo=* all
 
