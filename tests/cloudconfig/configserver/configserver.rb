@@ -204,7 +204,9 @@ ENDER
   # Remove the stored vespa version, config server will redeploy applications when it comes up
   # since there will now be an upgrade of the config server's version
   def restart_config_server_and_reset_version
-    vespa.configservers["0"].execute("echo \"set /config/v2/vespa_version 1.2.3\" | vespa-zkcli", :exceptiononfailure => false)
+    current_version = vespa.configservers["0"].execute("vespa-print-default version").strip
+    previous_version = current_version.gsub(/(\d+)\.(\d+)\.(\d+)/, '\1.\2.0') # Same major.minor version but micro version => always an earlier version
+    vespa.configservers["0"].execute("echo \"set /config/v2/vespa_version #{previous_version}\" | vespa-zkcli", :exceptiononfailure => false)
     vespa.configservers["0"].stop_configserver({:keep_everything => true})
     vespa.configservers["0"].execute("rm -rf #{Environment.instance.vespa_home}/var/db/vespa/config_server/serverdb/vespa_version")
     vespa.configservers["0"].start_configserver
