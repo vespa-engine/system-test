@@ -2,10 +2,10 @@
 
 schema test {
   document test {
-    field id type int {
+    field id type long {
       indexing: summary
     }
-    field embedding type tensor<float>(x[384]) {
+    field embedding type tensor<bfloat16>(x[384]) {
       indexing: attribute | summary
       attribute {
         distance-metric: angular
@@ -14,13 +14,13 @@ schema test {
   }
   rank-profile default {
     inputs {
-      query(qemb) tensor<float>(x[384])
+      query(qemb) tensor<bfloat16>(x[384])
     }
     first-phase {
-      expression: closeness(embedding)
+      expression: closeness(field,embedding)
     }
   }
   document-summary minimal {
-    summary id type int {}
+    summary id type long {}
   }
 }
