@@ -10,8 +10,8 @@ import com.yahoo.jdisc.handler.*;
 public class Fail2Handler extends AbstractRequestHandler {
 
     public Fail2Handler() {
-        List<Integer> list = new ArrayList<Integer>();
-        System.out.println("This will throw a NullPointerException: " + list.get(0).toString());
+        String nullString = null;
+        System.out.println("This will throw a NullPointerException: " + nullString.length());
     }
 
     @Override

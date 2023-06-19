@@ -11,7 +11,7 @@ public class Fail2Handler extends AbstractRequestHandler {
 
     public Fail2Handler() {
         String nullString = null;
-        System.out.println("This will throw an IndexOutOfBoundsException: " + nullString.length());
+        System.out.println("This will throw a NullPointerException: " + nullString.length());
     }
 
     @Override
