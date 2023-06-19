@@ -171,12 +171,12 @@ class FeedBlockTest < FeedBlockBase
     set_owner("geirst")
     set_description("Test resource based feed block (in distributor) using document v1 api, attribute resource limit, and node addition for recovery")
     @block_feed_in_distributor = true
-    run_feed_block_document_v1_api_two_nodes_test({ :address_space => /attribute-address-space:test\.ready\.a1\.multi-value on node/ })
+    run_feed_block_document_v1_api_two_nodes_test({ :address_space => /attribute-address-space:test\.ready\.a1\.enum-store on node/ })
   end
 
   def run_feed_block_document_v1_api_two_nodes_test(error_msg)
     @num_parts = 2
-    @beforelimit = 37
+    @beforelimit = 41
     # Allow feeding, but with very low multivalue limit, allows @beforelimit docs
     deploy_app_with_low_multivalue_limit
     start
