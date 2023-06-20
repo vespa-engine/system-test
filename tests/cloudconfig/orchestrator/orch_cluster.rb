@@ -112,8 +112,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     resp = orch_get("instances/#{instanceid}")
     assert_response_code(resp)
     resp_json = get_json(resp)
-    puts resp_json["hostInfos"]
-    assert_equal(hoststates, resp_json["hostInfos"])
+    assert_equal(hoststates, resp_json["hostStates"])
   end
 
   def assert_hosts(hosts, state)
@@ -141,7 +140,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     assert_response_code(resp)
     assert_equal(JSON.parse('["default:default:prod:default:default"]'), get_json(resp))
     
-    all_up = {confnode => { hostStatus => UP }, containerA => { hostStatus => UP }, containerB => { hostStatus => UP }}
+    all_up = {confnode => UP, containerA => UP, containerB => UP}
     assert_instance(all_up)
 
     assert_host(containerA, UP)
@@ -149,7 +148,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     
     assert_response_code(orch_suspend(containerA))
 
-    a_allowed_down = {confnode => { hostStatus => UP }, containerA => { hostStatus => DOWN }, containerB => { hostStatus => UP }}
+    a_allowed_down = {confnode => UP, containerA => DOWN, containerB => UP}
     assert_instance(a_allowed_down)
 
     resp = orch_suspend(containerB)
@@ -167,7 +166,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
 
     assert_response_code(orch_suspend(containerB))
 
-    b_allowed_down = {confnode => { hostStatus => UP }, containerA => { hostStatus => UP }, containerB => { hostStatus => DOWN }}
+    b_allowed_down = {confnode => UP, containerA => UP, containerB => DOWN}
     assert_instance(b_allowed_down)
 
     assert_response_code(orch_resume(containerB))
@@ -190,7 +189,8 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     assert_response_code(resp)
     assert_equal(JSON.parse('["default:default:prod:default:default"]'), get_json(resp))
 
-    @all_up = { configServer =>  { hostStatus => UP }, @contentC =>  { hostStatus => UP }, @contentD =>  { hostStatus => UP }, @contentE =>  { hostStatus => UP }}
+    @all_up = { configServer => UP, @contentC => UP, @contentD => UP,
+      @contentE => UP}
     assert_instance(@all_up)
     assert_hosts(@all_up.keys, UP)
   end
@@ -207,7 +207,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     assert_response_code(orch_suspend_until_no_conflict(@contentC))
 
     c_allowed_down = @all_up.clone
-    c_allowed_down[@contentC] =  { hostStatus => DOWN }
+    c_allowed_down[@contentC] = DOWN
     assert_instance(c_allowed_down)
 
     assert_host(@contentC, DOWN)
@@ -257,7 +257,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     assert_response_code(response)
 
     c_allowed_down = @all_up.clone
-    c_allowed_down[@contentC] = { hostStatus => DOWN }
+    c_allowed_down[@contentC] = DOWN
     assert_instance(c_allowed_down)
 
     assert_host(@contentC, DOWN)
