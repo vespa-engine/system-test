@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'uri'
 require 'net/http'
@@ -112,8 +112,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     resp = orch_get("instances/#{instanceid}")
     assert_response_code(resp)
     resp_json = get_json(resp)
-    puts resp_json["hostInfos"]
-    assert_equal(hoststates, resp_json["hostInfos"])
+    assert_equal(hoststates, resp_json["hostInfos"].map { | host, info | { host => info["hostStatus"]} })
   end
 
   def assert_hosts(hosts, state)
