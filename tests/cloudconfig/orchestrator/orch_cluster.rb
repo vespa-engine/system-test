@@ -111,7 +111,8 @@ class OrchestratorContainerClusterTest < CloudConfigTest
   def assert_instance(expected_host_infos, instanceid="default:default:prod:default:default")
     resp = orch_get("instances/#{instanceid}")
     assert_response_code(resp)
-    actual_host_infos = get_json(resp)["hostInfos"].map { | host, info | { host => info["hostStatus"]} }
+    host_infos = get_json(resp)["hostInfos"]
+    actual_host_infos = host_infos.map { |host, info| host_infos[key] = info["hostStatus"] }
     assert(expected_host_infos == actual_host_infos, "#{expected_host_infos.to_s} is not equal to #{actual_host_infos.to_s}")
   end
 
