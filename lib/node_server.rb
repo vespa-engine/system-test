@@ -995,6 +995,10 @@ def main(callback_endpoint)
   if callback_endpoint
     # This can be specified with :0 to pick an available port, but use the fixed port for now
     service_endpoint = "#{hostname}:#{TestBase::DRUBY_REMOTE_PORT}"
+
+    # This has to be created before the node_server_endpoint so that endpoint becomes the primary server
+    node_controller_endpoint = DrbEndpoint.new(callback_endpoint)
+    node_controller_client = node_controller_endpoint.create_client(with_object: nil)
   else
     service_endpoint = "#{hostname}:#{TestBase::DRUBY_REMOTE_PORT}"
   end
@@ -1003,27 +1007,25 @@ def main(callback_endpoint)
 
   front_object = NodeServer.new(hostname, short_hostname)
 
-  endpoint = DrbEndpoint.new(service_endpoint)
+  node_server_endpoint = DrbEndpoint.new(service_endpoint)
 
   while true
-    endpoint.start_service(for_object: front_object)
+    node_server_endpoint.start_service(for_object: front_object)
 
     node_server_uri = URI.parse(DRb.current_server.uri)
 
     puts("Node server endpoint: #{node_server_uri.host}:#{node_server_uri.port} " +
-             "(#{endpoint.secure? ? 'secure' : 'INSECURE'})")
+             "(#{node_server_endpoint.secure? ? 'secure' : 'INSECURE'})")
 
     if callback_endpoint
-      node_controller_endpoint = DrbEndpoint.new(callback_endpoint)
-      node_controller = node_controller_endpoint.create_client(with_object: nil)
-      node_controller.register_node_server(node_server_uri.host, node_server_uri.port, ENV['PARENT_NODE_NAME'])
+      node_controller_client.register_node_server(node_server_uri.host, node_server_uri.port, ENV['PARENT_NODE_NAME'])
       puts("Registered node server at #{callback_endpoint}")
     end
 
     begin
-      endpoint.join_service_thread
+      node_server_endpoint.join_service_thread
     rescue Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL, Errno::EPIPE, Errno::EINVAL, Errno::ECONNRESET, Errno::EHOSTUNREACH => e
-      puts("Node server got an exception: " + e.message())
+      puts("Node server got an exception: " + e.message)
     end
 
     if callback_endpoint
