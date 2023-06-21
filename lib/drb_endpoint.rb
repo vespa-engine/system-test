@@ -3,6 +3,8 @@ require 'ssl_config'
 require 'drb'
 
 class DrbEndpoint
+  @@self_service_mutex = Mutex.new
+  @@self_uri = nil
 
   def initialize(endpoint)
     @endpoint = endpoint
@@ -29,14 +31,20 @@ class DrbEndpoint
   end
 
   def create_tls_client(endpoint, object)
-    verify_cert_files_present
-    # DRb has a completely bonkers API and basically offers no way of setting
-    # client connection config aside from creating a dummy service and keeping
-    # it running before starting the proper client..!
-    # Luckily, setting a nil service object disallows anyone from calling
-    # remote methods on ourselves. Or so the docs say, anyway.
-    selfuri = "drbssl://#{Environment.instance.vespa_hostname}:0"
-    DRb.start_service(selfuri, nil, @ssl_config.to_drb_openssl_config)
+    # Only do this once per class to avoid dangling threads and open ports for every client
+    @@self_service_mutex.synchronize do
+      if @@self_uri.nil?
+        verify_cert_files_present
+        # DRb has a completely bonkers API and basically offers no way of setting
+        # client connection config aside from creating a dummy service and keeping
+        # it running before starting the proper client..!
+        # Luckily, setting a nil service object disallows anyone from calling
+        # remote methods on ourselves. Or so the docs say, anyway.
+        @@self_uri = "drbssl://#{Environment.instance.vespa_hostname}:0"
+        DRb.start_service(@@self_uri, nil, @ssl_config.to_drb_openssl_config)
+      end
+    end
+
     uri = tls_endpoint_uri(endpoint)
     DRbObject.new(nil, uri)
   end
