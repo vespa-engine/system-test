@@ -54,7 +54,7 @@ void gen_vector(size_t dimension) {
 }
 
 void gen_put(int user_id, size_t doc_id, int dimension) {
-    printf("{\"put\":\"id:test:test:n=%u:%zu\",\"fields\":{\"id\":%zu", user_id, doc_id, doc_id);
+    printf("{\"put\":\"id:test:test:g=%u:%zu\",\"fields\":{\"id\":%zu", user_id, doc_id, doc_id);
     if (dimension > 0) {
         printf(",\"embedding\":[");
         gen_vector(dimension);

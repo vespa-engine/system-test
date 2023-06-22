@@ -57,7 +57,7 @@ class NearestNeighborStreamingTest < PerformanceTest
   def get_query(user_id)
     "/search/?" + URI.encode_www_form("yql" => "select * from sources * where {targetHits:10}nearestNeighbor(embedding,qemb)",
                                       "input.query(qemb)" => random_vector(384),
-                                      "streaming.selection" => "id.user=#{user_id}",
+                                      "streaming.groupname" => "#{user_id}",
                                       "presentation.summary" => "minimal",
                                       "hits" => "10")
   end
