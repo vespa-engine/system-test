@@ -14,7 +14,8 @@ class NearestNeighborStreamingTest < PerformanceTest
 
   def test_nearest_neighbor_streaming_mode
     set_description("Test query performance of the nearestNeighbor query operator in streaming mode")
-    deploy_app(create_app)
+    add_bundle_dir(selfdir + 'java', 'streamingtest', {:mavenargs => '-Dmaven.test.skip=true'})
+    deploy(selfdir + 'app')
     @container = vespa.container.values.first
     compile_create_docs
     chunks = 5
@@ -23,24 +24,6 @@ class NearestNeighborStreamingTest < PerformanceTest
 
     feed_and_profile(chunks)
     run_query_and_profile
-  end
-
-  def create_app
-    SearchApp.new.sd(selfdir + "test.sd").
-      streaming().
-      container(Container.new("combinedcontainer").
-                jvmoptions('-Xms8g -Xmx8g').
-                search(Searching.new).
-                docproc(DocumentProcessing.new).
-                documentapi(ContainerDocumentApi.new)).
-      tune_searchnode({:summary => {:io => {:read => "directio"} } })
-    # We use the same summary io read setting as in Vespa Cloud (default is mmap),
-    # to avoid using the disk buffer cache of the OS.
-    
-    # The document store cache is default enabled, meaning that documents are eventually
-    # served from the cache when running queries.
-    # If the cache is disabled we instead end up benchmarking the disk read performance.
-    # tune_searchnode({:summary => {:store => {:cache => {:maxsize => 0} } } })
   end
 
   def compile_create_docs
@@ -57,7 +40,7 @@ class NearestNeighborStreamingTest < PerformanceTest
     #   - 100k docs with 10 users with 10k docs each
     #   - 100k docs with 1 user with 100k docs each
     spec = "10 #{10000 * chunks} 100 #{1000 * chunks} 1000 #{100 * chunks} 10000 #{10 * chunks} 100000 #{1 * chunks}"
-    command = "#{@create_docs} -d 384 #{spec}"
+    command = "#{@create_docs} -d 0 #{spec}"
     profiler_start
     run_stream_feeder(command, [parameter_filler("type", "feed")])
     profiler_report("feed")
