@@ -11,7 +11,7 @@ def random_vector(dimension):
 def get_query(target_hits, dimension, user_id):
     params = { 'yql': 'select * from sources * where {targetHits:%s}nearestNeighbor(embedding,qemb)' % target_hits,
                'input.query(qemb)': random_vector(dimension),
-               'streaming.selection': 'id.user=%i' % user_id,
+               'streaming.groupname': '%i' % user_id,
                'presentation.summary': 'minimal',
                'hits': target_hits }
     return '/search/?' + urllib.parse.urlencode(params)

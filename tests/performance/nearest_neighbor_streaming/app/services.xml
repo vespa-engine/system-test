@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root. -->
+<services version="1.0" xmlns:deploy="vespa" xmlns:preprocess="properties">
+
+<admin version="2.0">
+  <adminserver hostalias="node1"/>
+</admin>
+
+<container id="default" version="1.0">
+  <search/>
+  <document-processing>
+    <chain id="embedding-generator" inherits="indexing">
+      <documentprocessor id="ai.vespa.streamingtest.EmbeddingGenerator" bundle="streamingtest"/>
+    </chain>
+  </document-processing>
+  <document-api/>
+  <nodes>
+    <jvm options='-Xms8g -Xmx8g'/>
+    <node hostalias='node1'/>
+  </nodes>
+</container>
+
+<content id="test" version="1.0">
+  <redundancy>1</redundancy>
+  <documents>
+    <document mode="streaming" type="test"/>
+    <document-processing cluster="default" chain="embedding-generator"/>
+  </documents>
+  <nodes>
+    <node hostalias="node1" distribution-key="0" />
+  </nodes>
+  <engine>
+    <proton>
+      <tuning>
+        <searchnode>
+          <!--
+          We use the same document store io read setting as in Vespa Cloud (default is mmap),
+          to avoid using the disk buffer cache of the OS.
+          -->
+          <summary>
+            <io>
+              <read>directio</read>
+            </io>
+          </summary>
+        </searchnode>
+      </tuning>
+    </proton>
+  </engine>
+</content>
+
+</services>
