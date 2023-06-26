@@ -21,6 +21,7 @@ class HttpsClient
       http.cert = ssl_ctx.cert
       http.key = ssl_ctx.key
       http.verify_mode = ssl_ctx.verify_mode
+      http.ssl_version = :TLSv1_2 # TODO remove once https://bugs.ruby-lang.org/issues/19017 is resolved
     end
     http
   end
