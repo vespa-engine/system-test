@@ -249,6 +249,9 @@ module GroupingBase
     check_query_default_max('all(group(a)each(each(output(summary()))))', 'default-max2', 1, -1)
     check_query_default_max('all(group(a)each(each(output(summary()))))', 'default-max3', 1, 1)
     check_query_default_max('all(group(a)max(2)each(max(2)each(output(summary()))))', 'default-max4', 1, 1)
+
+    check_query("all(group(a)alias(myalias,count())each(output($myalias)))", 'alias-1')
+    check_query("all(group(a)order($myalias=count())each(output($myalias)))", 'alias-2')
   end
 
   # Tests that are known to fail
