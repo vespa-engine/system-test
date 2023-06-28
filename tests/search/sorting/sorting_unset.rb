@@ -29,8 +29,7 @@ class SortingUnset < IndexedStreamingSearchTest
   def check_sorted(sortspec, exp_ids)
     yql = 'select * from sources * where sddocname contains "unset"'
     form = [['yql', yql],
-            ['hits', '10'],
-            ['presentation.format', 'json']]
+            ['hits', '10']]
     form.push(['sortspec', sortspec]) unless sortspec.nil?
     encoded_form = URI.encode_www_form(form)
     puts "encoded_form='#{encoded_form}'"
