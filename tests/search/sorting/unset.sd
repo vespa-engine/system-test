@@ -1,0 +1,16 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema unset {
+  document unset {
+    field year type int {
+      indexing: attribute
+    }
+    field myrank type float {
+      indexing: attribute
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(myrank)
+    }
+  }
+}
