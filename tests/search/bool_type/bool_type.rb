@@ -63,6 +63,22 @@ class BoolTypeTest < SearchTest
     assert_hits([0], "!(b1 = true) and b2 = false")
     assert_hits([3], "!(b1 = false) and b2 = true")
     assert_hits([2], "!(b1 = true) and b2 = true")
+    check_summary_features
+  end
+
+  def check_hit_summary_features(hit, exp_val)
+    assert_features({'attribute(b1)' => exp_val}, hit.field['summaryfeatures'])
+  end
+
+  def check_summary_features
+    result = search(get_query('b1 = true'))
+    assert_hitcount(result, 2)
+    check_hit_summary_features(result.hit[0], 1.0)
+    check_hit_summary_features(result.hit[1], 1.0)
+    result = search(get_query('b1 = false'))
+    assert_hitcount(result, 2)
+    check_hit_summary_features(result.hit[0], 0.0)
+    check_hit_summary_features(result.hit[1], 0.0)
   end
 
   def assert_hits(exp_docids, expr)
