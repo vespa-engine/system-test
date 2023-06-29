@@ -69,7 +69,7 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
     check_grouping("all(group(str_int_map.key) each(output(count())))", {"@bar"=>2, "@foo"=>2})
     check_grouping("all(group(str_int_map.value) each(output(count())))", {"10"=>1, "20"=>2, "30"=>1})
     check_grouping("all(group(str_int_map{\"@foo\"}) each(output(count())))", if is_streaming then {"10"=>1, "20"=>1} else {"10"=>1, "20"=>1, "#{nan}"=>1} end)
-    check_grouping("all(group(str_int_map.key) each(output(sum(str_int_map.value))))", {"@bar"=>80, "@foo"=>80}, "sum(str_int_map.value)")
+    check_grouping("all(group(str_int_map.key) each(output(sum(str_int_map.value))))", if is_streaming then {"@bar"=>80, "@foo"=>80} else {"@bar"=>50, "@foo"=>30} end, "sum(str_int_map.value)")
     check_grouping("all(group(str_str_map{\"@foo\"}) each(output(count())))", if is_streaming then {"@bar"=>1, ""=>1} else {"@bar"=>1, ""=>2} end)
     check_grouping("all(group(\"my_group\") each(output(sum(str_int_map{\"@foo\"}))))", {"my_group"=>nan+30}, "sum(str_int_map{\"@foo\"})")
     unless is_streaming
