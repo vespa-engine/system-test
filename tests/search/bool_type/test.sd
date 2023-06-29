@@ -11,4 +11,9 @@ schema test {
       indexing: summary # No attribute
     }
   }
+  rank-profile default {
+    summary-features {
+      attribute(b1)
+    }
+  }
 }

@@ -12,4 +12,9 @@ schema child {
     summary b1 type bool {}
     summary b2 type bool {}
   }
+  rank-profile default {
+    summary-features {
+      attribute(b1)
+    }
+  }
 }
