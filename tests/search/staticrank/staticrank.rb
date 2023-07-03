@@ -24,6 +24,14 @@ class StaticRank < IndexedSearchTest
 
     puts "Search for ew:love, and see that results are ranked in order by static rank (weight)"
     assert_result("query=ew:love!0", selfdir+"staticrank_ew_love.result.json", nil, 'weight')
+
+    assert_hitcount("query=year:1980", 3)
+    assert_hitcount("query=year:1980&ranking.rankScoreDropLimit=43", 2)
+    assert_hitcount("query=year:1980&ranking.rankScoreDropLimit=45", 1)
+
+    assert_hitcount("query=year:1980&sortspec=pto", 3)
+    assert_hitcount("query=year:1980&sortspec=pto&ranking.rankScoreDropLimit=43", 2)
+    assert_hitcount("query=year:1980&sortspec=pto&ranking.rankScoreDropLimit=45", 1)
   end
 
   def test_update_rank
