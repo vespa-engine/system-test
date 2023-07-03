@@ -14,28 +14,24 @@ class StaticRank < IndexedSearchTest
     feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
 
     puts "Search for year:1980, and see that results are sorted in order by decreasing weight"
-    assert_result("query=year:1980&hits=100&sortspec=-weight",
-                  selfdir+"staticrank_year1980.result.json",
-                  nil,
-                  'weight')
+    assert_result("query=year:1980&sortspec=-weight", selfdir+"staticrank_year1980.result.json", nil, 'weight')
 
     puts "Search for year:1980, and see that results are sorted in order by static rank (weight)"
-    assert_result("query=year:1980&hits=100&sortspec=-[rank]",
-                  selfdir+"staticrank_year1980.result.json",
-                  nil,
-                  'weight')
+    assert_result("query=year:1980&sortspec=-[rank]", selfdir+"staticrank_year1980.result.json", nil, 'weight')
 
     puts "Search for year:1980, and see that results are ranked in order by static rank (weight)"
-    assert_result("query=year:1980&hits=100",
-                  selfdir+"staticrank_year1980.result.json",
-                  nil,
-                  'weight')
+    assert_result("query=year:1980", selfdir+"staticrank_year1980.result.json", nil, 'weight')
 
     puts "Search for ew:love, and see that results are ranked in order by static rank (weight)"
-    assert_result("query=ew:love!0&hits=100",
-                  selfdir+"staticrank_ew_love.result.json",
-                  nil,
-                  'weight')
+    assert_result("query=ew:love!0", selfdir+"staticrank_ew_love.result.json", nil, 'weight')
+
+    assert_hitcount("query=year:1980", 3)
+    assert_hitcount("query=year:1980&ranking.rankScoreDropLimit=43", 2)
+    assert_hitcount("query=year:1980&ranking.rankScoreDropLimit=45", 1)
+
+    assert_hitcount("query=year:1980&sortspec=pto", 3)
+    assert_hitcount("query=year:1980&sortspec=pto&ranking.rankScoreDropLimit=43", 2)
+    assert_hitcount("query=year:1980&sortspec=pto&ranking.rankScoreDropLimit=45", 1)
   end
 
   def test_update_rank
