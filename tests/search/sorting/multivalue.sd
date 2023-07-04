@@ -1,0 +1,33 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema multivalue {
+  document multivalue {
+    field years type array<int> {
+      indexing: attribute | summary
+    }
+    field years_wset type weightedset<int> {
+      indexing: attribute
+    }
+    field years_fs type array<int> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field years_wset_fs type weightedset<int> {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field years_s type array<string> {
+      indexing: attribute | summary
+    }
+    field years_s_wset type weightedset<string> {
+      indexing: attribute
+    }
+    field myrank type float {
+      indexing: attribute
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(myrank)
+    }
+  }
+}
