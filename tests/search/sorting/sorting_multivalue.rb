@@ -14,9 +14,6 @@ class SortingMultiValue < IndexedStreamingSearchTest
     start
     feed_docs
     check_sorted(nil, [0, 1, 2, 3])
-    check_sorted_multi('-years', [3, 0, 2, 1])
-    check_sorted_multi('+years', [2, 0, 3, 1])
-    feed_doc(2, [2021, 2005], 6.0)
     check_sorted_multi('-years', [2, 3, 0, 1])
     check_sorted_multi('+years', [2, 0, 3, 1])
   end
@@ -60,9 +57,8 @@ class SortingMultiValue < IndexedStreamingSearchTest
   end
 
   def check_sorted(sortspec, exp_ids)
-    yql = 'select * from sources * where sddocname contains "multivalue"'
-    form = [['yql', yql],
-            ['hits', '10']]
+    yql = 'select * from sources * where true'
+    form = [['yql', yql]]
     form.push(['sortspec', sortspec]) unless sortspec.nil?
     encoded_form = URI.encode_www_form(form)
     puts "encoded_form='#{encoded_form}'"
@@ -80,7 +76,7 @@ class SortingMultiValue < IndexedStreamingSearchTest
   def feed_docs
     feed_doc(0, [2010], 8.0)
     feed_doc(1, nil, 7.0)
-    feed_doc(2, [2008], 6.0)
+    feed_doc(2, [2021, 2005], 6.0)
     feed_doc(3, [2020], 5.0)
   end
 

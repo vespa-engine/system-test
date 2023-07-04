@@ -2,7 +2,7 @@
 schema multivalue {
   document multivalue {
     field years type array<int> {
-      indexing: attribute | summary
+      indexing: attribute
     }
     field years_wset type weightedset<int> {
       indexing: attribute
@@ -16,7 +16,7 @@ schema multivalue {
       attribute: fast-search
     }
     field years_s type array<string> {
-      indexing: attribute | summary
+      indexing: attribute
     }
     field years_s_wset type weightedset<string> {
       indexing: attribute
