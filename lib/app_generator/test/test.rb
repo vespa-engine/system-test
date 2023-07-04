@@ -671,37 +671,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
 
-  def test_explicit_dispatch_groups
-    actual = create_default.
-      cluster(SearchCluster.new("foo").dispatch(Dispatch.new.
-                                                group(DispatchGroup.new([0,1])).
-                                                group(DispatchGroup.new([2,3])))).services_xml
-
-    expected_substr = '
-      <dispatch>
-        <group>
-          <node distribution-key="0" />
-          <node distribution-key="1" />
-        </group>
-        <group>
-          <node distribution-key="2" />
-          <node distribution-key="3" />
-        </group>
-      </dispatch>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
-  def test_implicit_dispatch_groups
-    actual = create_default.
-      cluster(SearchCluster.new("foo").dispatch(Dispatch.new.num_dispatch_groups(2))).services_xml
-
-    expected_substr = '
-      <dispatch>
-        <num-dispatch-groups>2</num-dispatch-groups>
-      </dispatch>'
-    assert_substring_ignore_whitespace(actual, expected_substr)
-  end
-
   def test_that_global_document_type_can_be_specified
     actual = SearchApp.new.sd("test.sd", { :global => true }).services_xml
     expected_substr = '

@@ -24,7 +24,6 @@ class SearchCluster
   chained_setter :initialize_threads
   chained_setter :hwinfo_disk_writespeed
   chained_setter :hwinfo_disk_shared
-  chained_setter :dispatch
   chained_setter :search_coverage
   chained_setter :dispatch_policy
   chained_setter :min_node_ratio_per_group
@@ -64,7 +63,6 @@ class SearchCluster
     @allowed_lid_bloat_factor = 0.01
     @num_summary_threads = nil
     @initialize_threads = 16
-    @dispatch = nil
     @search_coverage = nil
     @hwinfo_disk_writespeed = 150.0
     @hwinfo_disk_shared = true
@@ -155,10 +153,6 @@ class SearchCluster
     XmlHelper.new(indent).to_xml(proton)
   end
 
-  def dispatch_xml(indent)
-    @dispatch.to_xml(indent) if @dispatch != nil
-  end
-
   def search_coverage_xml(indent)
     @search_coverage.to_xml(indent) if @search_coverage != nil
   end
@@ -170,7 +164,6 @@ class SearchCluster
       to_xml(@config).
       call {|indent| proton_config(indent)}.
       call {|indent| docdefinitions_xml(indent, search_type_tag)}.
-      call {|indent| dispatch_xml(indent)}.
       call {|indent| search_coverage_xml(indent)}.
       to_xml(get_node_groups[0].strip_name()).
       tag("engine").
