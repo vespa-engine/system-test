@@ -5,7 +5,7 @@ class QrsPing < IndexedSearchTest
 
   def setup
     set_owner("arnej")
-    set_description("Check QRS pinging actually communicates with dispatch")
+    set_description("Check QRS pinging actually communicates with search nodes")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
   end
@@ -13,7 +13,7 @@ class QrsPing < IndexedSearchTest
   def test_qrsping
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
 
-    puts "Stopping dispatch"
+    puts "Stopping search nodes"
     stop_searchcluster
 
     puts "Running query"
