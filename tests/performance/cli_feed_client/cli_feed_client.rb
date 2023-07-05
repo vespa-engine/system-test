@@ -79,7 +79,7 @@ class CliFeedClientTest < PerformanceTest
                  "#{feed_file} " +
                  "1> #{out_file} 2> #{err_file}"
     else
-      feed_cmd = "vespa-feed-client " +
+      feed_cmd = "env VESPA_FEED_EXPERIMENTAL_CLIENT=true vespa-feed-client " +
                  "--silent " +
                  "--disable-ssl-hostname-verification " +
                  "--ca-certificates #{tls_env.ca_certificates_file} " +
