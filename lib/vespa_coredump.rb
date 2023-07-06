@@ -1,5 +1,6 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'tempfile'
+require 'shellwords'
 
 class VespaCoredump
   attr_reader :coredir, :corefilename, :binaryfilename, :stacktrace
@@ -28,15 +29,15 @@ class VespaCoredump
     corename = File.join(@coredir, @corefilename)
     corename_tmp = corename + ".core"
     begin
-      ok = `lz4 -d -f < #{corename} > #{corename_tmp}`
-      binline = `gdb -batch --core #{corename_tmp}`
+      ok = `lz4 -d -f < #{corename.shellescape} > #{corename_tmp.shellescape}`
+      binline = `gdb -batch --core #{corename_tmp.shellescape}`
       if binline =~ /by `([^\s']+)/
-        @stacktrace = `gdb -batch #{$1} #{corename_tmp}  -x #{f.path} 2>&1`
+        @stacktrace = `gdb -batch #{$1} #{corename_tmp.shellescape} -x #{f.path} 2>&1`
       end
     rescue
       @stacktrace = "Unable to execute gdb"
     ensure
-      File.delete(corename_tmp)
+      File.delete(corename_tmp.shellescape)
       f.unlink
     end
   end
