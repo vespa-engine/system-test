@@ -1,9 +1,9 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'indexed_search_test'
 
 class Bug_253184 < IndexedSearchTest
-  # Feature: use "index-to" with multiple indexes, some different, some common
+  # Feature: Search in field set with multiple indexes
 
   def setup
     set_owner("bratseth")
