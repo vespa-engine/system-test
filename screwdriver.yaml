@@ -1,6 +1,8 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 shared:
   image: vespaengine/vespa-build-centos-stream8:latest
+  annotations:
+    screwdriver.cd/restrictPR: fork
   settings:
     email:
       addresses: [kraune@yahooinc.com]
