@@ -48,29 +48,6 @@ class BackendReporter
     @log = log
     @test_results = Concurrent::Hash.new
     @test_names = Concurrent::Array.new
-    @mutex = Mutex.new
-
-    addr = ":#{TestBase::DRUBY_REPORTER_PORT}"
-    endpoint = DrbEndpoint.new(addr)
-    server = endpoint.start_service(for_object: self)
-    uri = URI(server.uri)
-
-    @log.debug "Backend reporter endpoint: #{uri.host}:#{uri.port} (#{endpoint.secure? ? 'secure' : 'INSECURE'})"
-
-    reporter_up = false
-    endtime = Time.now.to_i + 10
-    while Time.now.to_i < endtime
-      begin
-        TCPSocket.new("127.0.0.1", TestBase::DRUBY_REPORTER_PORT).close
-        reporter_up = true
-        break
-      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
-      end
-      sleep 2
-    end
-    if ! reporter_up
-      raise "Could not connect to reporter at #{uri.host}:#{uri.port}"
-    end
   end
 
   def initialize_testrun(test_objects)
@@ -91,18 +68,9 @@ class BackendReporter
     nil
   end
 
-  # This method can be called from a different process or reactor on the same host
   def test_finished(test_case, test_result)
-    endpoint = DrbEndpoint.new("localhost:#{TestBase::DRUBY_REPORTER_PORT}")
-    reporter = endpoint.create_client(with_object: nil)
-    reporter.report_test_finished("#{test_case.class}::test_#{test_result.name}", test_result)
-  end
-
-  def report_test_finished(test_class_and_method, test_result)
-    @mutex.synchronize do
-      # The testresult.name chops of test_ and we do not have the original method name where this is called
-      @test_results[test_class_and_method] = test_result
-    end
+    # The testresult.name chops of test_ and we do not have the original method name where this is called
+    @test_results["#{test_case.class}::test_#{test_result.name}"] = test_result
   end
 
   def finalize_testrun
@@ -123,6 +91,7 @@ class BackendReporter
       tests_not_run.each { |klass| @log.info "  #{klass}" }
       @log.info "#################"
     end
+
     failed_tests.empty?
   end
 

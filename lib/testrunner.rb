@@ -10,7 +10,7 @@ require 'vds_test'
 require 'hosted_test'
 require 'test_node_pool'
 require 'backend_reporter'
-require 'parallel'
+require 'concurrent'
 require 'securerandom'
 
 class TestRunner
@@ -155,87 +155,88 @@ class TestRunner
   end
 
   def run_tests
-    max_procs = [@node_allocator.max_available, @nodelimit ? @nodelimit : 0, 1].max
-    @log.debug("Running tests with a process pool of #{max_procs} procs.")
+    max_threads = [@node_allocator.max_available, @nodelimit ? @nodelimit : 0, 1].max
+    @log.debug("Running tests with a thread pool of #{max_threads} threads.")
+    thread_pool = Concurrent::FixedThreadPool.new(max_threads)
 
     @backend.initialize_testrun(@test_objects)
 
-    client_endpoint = DrbEndpoint.new("localhost:#{TestBase::DRUBY_NODE_POOL_PORT}")
-    allocator_client = client_endpoint.create_client(with_object: nil)
-
-    Parallel.each(@backend.sort_testcases(@test_objects), in_processes: max_procs) do |testcase, test_method|
-      # If we are in a separate process, make sure that DRb is started with the correct SSL config
-      allocator_client = client_endpoint.create_client(with_object: nil, force_service_restart: true) unless DRb.thread && DRb.thread.alive?
+    @backend.sort_testcases(@test_objects).each do |testcase, test_method|
 
       testcase.valgrind = @backend.use_valgrind ? "all" : nil
 
-      @log.info "#{testcase.class}::#{test_method.to_s} requesting nodes"
-      begin
-        start_allocate = Time.now.to_i
-        nodes = allocator_client.allocate(testcase.num_hosts)
-        waited_for = Time.now.to_i - start_allocate
-      rescue StandardError => e
-        @log.error("Not enough nodes were available, could not run #{testcase.class} (required #{testcase.num_hosts}). Exception received #{e.message}")
-        next
-      end
-
-      @log.info "#{testcase.class}::#{test_method.to_s} allocated nodes #{nodes.join(', ')} after #{waited_for} seconds."
-
-      begin
-        testcase.dirty_nodeproxies = {}
-        testcase.hostlist = nodes
-
-        if @dns_settle_time > 0
-          # Sleep @dns_settle_time seconds to reduce probability for DNS errors when lookup up nodes in swarm
-          @log.info "Settling network (max #{@dns_settle_time} seconds) before running #{test_method} from #{testcase.class}"
-          end_by = Time.now + @dns_settle_time
-          begin
-            # Test hosts
-            testcase.hostlist.each { |host| Addrinfo.getaddrinfo(host, nil) }
-            # Configured configserver hosts
-            testcase.configserverhostlist.each { |host| Addrinfo.getaddrinfo(host, nil) }
-          rescue SocketError
-            sleep 1
-            retry if Time.now < end_by
-          end
-        end
+      thread_pool.post do
+        @log.info "#{testcase.class}::#{test_method.to_s} requesting nodes"
 
         begin
-          # If we got a bad set of nodes, dont bother trying to run the test
-          raise TestNodeFailure unless allocator_client.all_alive?(nodes)
-
-          @log.info "Running #{testcase.class}::#{test_method.to_s} on #{testcase.hostlist}"
-          @backend.test_running(testcase, test_method)
-          test_result = testcase.run([test_method]).first
-
-          # So our test failed in some way and one or more nodes are dead. We will retry.
-          raise TestNodeFailure unless test_result.passed? || allocator_client.all_alive?(nodes)
-        rescue TestNodeFailure => e
-          # Just re-raise this to the outer rescue
-          raise
+          start_allocate = Time.now.to_i
+          nodes = @node_allocator.allocate(testcase.num_hosts)
+          waited_for = Time.now.to_i - start_allocate
         rescue StandardError => e
-          @log.error "Exception of type #{e.class} leaked:  #{e.message}"
-          # The TestCase::run should not leak exceptions, but observations show is does. Make sure the error is recorded
-          # and sent to Vespa Factory so that we can observe what the failures are.
-          test_result = TestResult.new(test_method.to_s)
-          test_result.add_error(Error.new("#{testcase.class}::#{test_method.to_s}", e))
+          @log.error("Not enough nodes were available, could not run #{testcase.class} (required #{testcase.num_hosts}). Exception received #{e.message}")
+          next
         end
 
-        @backend.test_finished(testcase, test_result)
-        @log.info "Finished running #{testcase.class}::#{test_method.to_s} with status #{test_result.status}."
-      rescue TestNodeFailure
-        @log.warn("Retrying #{testcase.class}::#{test_method.to_s} due to observed node failures.")
-        allocator_client.free(nodes)
-        nodes = allocator_client.allocate(testcase.num_hosts, 3600)
-        @log.info "#{testcase.class}::#{test_method.to_s} allocated nodes #{nodes.join(', ')}"
-        retry
-      rescue StandardError => e
-        @log.error "Exception #{e.message} "
-        raise
-      ensure
-        allocator_client.free(nodes) unless @keeprunning
+        @log.info "#{testcase.class}::#{test_method.to_s} allocated nodes #{nodes.join(', ')} after #{waited_for} seconds."
+
+        begin
+          testcase.dirty_nodeproxies = {}
+          testcase.hostlist = nodes
+          if @dns_settle_time > 0
+            # Sleep @dns_settle_time seconds to reduce probability for DNS errors when lookup up nodes in swarm
+            @log.info "Settling network (max #{@dns_settle_time} seconds) before running #{test_method} from #{testcase.class}"
+            end_by = Time.now + @dns_settle_time
+            begin
+              # Test hosts
+              testcase.hostlist.each { |host| Addrinfo.getaddrinfo(host, nil) }
+              # Configured configserver hosts
+              testcase.configserverhostlist.each { |host| Addrinfo.getaddrinfo(host, nil) }
+            rescue SocketError
+              sleep 1
+              retry if Time.now < end_by
+            end
+          end
+
+          begin
+            # If we got a bad set of nodes, dont bother trying to run the test
+            raise TestNodeFailure unless @node_allocator.all_alive?(nodes)
+
+            @log.info "Running #{testcase.class}::#{test_method.to_s} on #{testcase.hostlist}"
+            @backend.test_running(testcase, test_method)
+            test_result = testcase.run([test_method]).first
+
+            # So our test failed in some way and one or more nodes are dead. We will retry.
+            raise TestNodeFailure unless test_result.passed? || @node_allocator.all_alive?(nodes)
+          rescue StandardError => e
+            @log.error "Exception of type #{e.class} leaked:  #{e.message}"
+            raise TestNodeFailure unless @node_allocator.all_alive?(nodes)
+
+            # The TestCase::run should not leak exceptions, but observations show is does. Make sure the error is recorded
+            # and sent to Vespa Factory so that we can observe what the failures are.
+            test_result = TestResult.new(test_method.to_s)
+            test_result.add_error(Error.new("#{testcase.class}::#{test_method.to_s}", e))
+          end
+
+          @backend.test_finished(testcase, test_result)
+          @log.info "Finished running #{testcase.class}::#{test_method.to_s} with status #{test_result.status}."
+        rescue TestNodeFailure
+          @log.warn("Retrying #{testcase.class}::#{test_method.to_s} due to observed node failures.")
+          @node_allocator.free(nodes)
+          nodes = @node_allocator.allocate(testcase.num_hosts, 3600)
+          @log.info "#{testcase.class}::#{test_method.to_s} allocated nodes #{nodes.join(', ')}"
+          retry
+        rescue StandardError => e
+          @log.error "Exception #{e.message} "
+          raise
+        ensure
+          @node_allocator.free(nodes) unless @keeprunning
+        end
       end
     end
+
+    thread_pool.shutdown
+    thread_pool.wait_for_termination
+
     @backend.finalize_testrun
   end
 

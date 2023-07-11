@@ -17,7 +17,7 @@ class TestNodePool
     @lock = Mutex.new
     @max_available_nodes = 0
 
-    addr = ":#{TestBase::DRUBY_NODE_POOL_PORT}"
+    addr = ":#{TestBase::DRUBY_REMOTE_PORT}"
     endpoint = DrbEndpoint.new(addr)
     endpoint.start_service(for_object: self)
     uri = URI.parse(DRb.current_server.uri)
@@ -29,7 +29,7 @@ class TestNodePool
 
     while Time.now.to_i < endtime
       begin
-        TCPSocket.new("127.0.0.1", TestBase::DRUBY_NODE_POOL_PORT).close
+        TCPSocket.new("127.0.0.1", TestBase::DRUBY_REMOTE_PORT).close
         node_allocator_up = true
         break
       rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
