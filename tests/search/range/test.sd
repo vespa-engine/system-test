@@ -13,5 +13,9 @@ schema test {
          indexing: attribute | summary
          attribute: fast-search
      }
+     field w1 type weightedset<int> {
+         indexing: attribute | summary
+         attribute: fast-search
+     }
   }
 }

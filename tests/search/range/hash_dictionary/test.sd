@@ -16,5 +16,10 @@ schema test {
          attribute: fast-search
          dictionary:hash
      }
+     field w1 type weightedset<int> {
+         indexing: attribute | summary
+         attribute: fast-search
+         dictionary:hash
+     }
   }
 }
