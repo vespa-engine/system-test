@@ -163,7 +163,7 @@ class TestRunner
     client_endpoint = DrbEndpoint.new("localhost:#{TestBase::DRUBY_NODE_POOL_PORT}")
     allocator_client = client_endpoint.create_client(with_object: nil)
 
-    Parallel.each(@backend.sort_testcases(@test_objects), in_processes: max_procs) do |testcase, test_method|
+    Parallel.each(@backend.sort_testcases(@test_objects), in_reactors: max_procs) do |testcase, test_method|
       # If we are in a separate process, make sure that DRb is started with the correct SSL config
       allocator_client = client_endpoint.create_client(with_object: nil, force_service_restart: true) unless DRb.thread && DRb.thread.alive?
 
