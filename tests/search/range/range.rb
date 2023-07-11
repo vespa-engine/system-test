@@ -42,6 +42,7 @@ class RangeSearch < IndexedSearchTest
     check_ranges("i1", support_range_limit)
     check_ranges("f1", support_range_limit)
     check_ranges("m1", support_range_limit)
+    check_ranges("w1", support_range_limit)
     check_range_optimizations
   end
 
