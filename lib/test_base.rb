@@ -62,7 +62,9 @@ module TestBase
     end
   end
 
-  DRUBY_REMOTE_PORT = 27183
+  DRUBY_REPORTER_PORT  = 27180
+  DRUBY_NODE_POOL_PORT = 27183  # Same as DRUBY_REMOTE_PORT for now
+  DRUBY_REMOTE_PORT    = 27183
 
   # absolute path to the systemtests/tests/
   INSTALL_DIR = $:.find {|path| path =~ /systemtests.*\/tests$/} || ""
