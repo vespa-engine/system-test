@@ -30,10 +30,10 @@ class DrbEndpoint
     end
   end
 
-  def create_tls_client(endpoint, object)
+  def create_tls_client(endpoint, object, force_service_restart)
     # Only do this once per class to avoid dangling threads and open ports for every client
     @@self_service_mutex.synchronize do
-      if @@self_uri.nil?
+      if @@self_uri.nil? || force_service_restart
         verify_cert_files_present
         # DRb has a completely bonkers API and basically offers no way of setting
         # client connection config aside from creating a dummy service and keeping
@@ -54,9 +54,9 @@ class DrbEndpoint
     DRbObject.new(nil, uri)
   end
 
-  def create_client(with_object: nil)
+  def create_client(with_object: nil, force_service_restart: false)
     if secure?
-      create_tls_client(@endpoint, with_object)
+      create_tls_client(@endpoint, with_object, force_service_restart)
     else
       create_insecure_client(@endpoint, with_object)
     end
