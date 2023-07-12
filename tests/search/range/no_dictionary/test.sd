@@ -13,5 +13,8 @@ schema test {
      field w1 type weightedset<int> {
          indexing: attribute | summary
      }
+     field w2 type weightedset<long> {
+         indexing: attribute | summary
+     }
   }
 }

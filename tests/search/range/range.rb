@@ -43,6 +43,7 @@ class RangeSearch < IndexedSearchTest
     check_ranges("f1", support_range_limit)
     check_ranges("m1", support_range_limit)
     check_ranges("w1", support_range_limit)
+    check_ranges("w2", support_range_limit)
     check_range_optimizations
   end
 
@@ -66,7 +67,7 @@ class RangeSearch < IndexedSearchTest
   def check_normal_ranges(field)
     check_normal_ranges_standard(field)
     check_normal_ranges_yql(field)
-    check_normal_ranges_not_quite_yql(field)
+    check_normal_ranges_not_quite_yql(field) if field != "w2"
   end
 
   def check_yql(field, term, hits)
