@@ -25,5 +25,11 @@ schema test {
          dictionary:hash
          dictionary:btree
      }
+     field w2 type weightedset<long> {
+         indexing: attribute | summary
+         attribute: fast-search
+         dictionary:hash
+         dictionary:btree
+     }
   }
 }

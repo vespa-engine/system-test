@@ -43,6 +43,7 @@ class RangeSearch < IndexedSearchTest
     check_ranges("f1", support_range_limit)
     check_ranges("m1", support_range_limit)
     check_ranges("w1", support_range_limit)
+    check_ranges("w2", support_range_limit)
     check_range_optimizations
   end
 
@@ -66,13 +67,55 @@ class RangeSearch < IndexedSearchTest
   def check_normal_ranges(field)
     check_normal_ranges_standard(field)
     check_normal_ranges_yql(field)
+    check_normal_ranges_not_quite_yql(field) if field != "w2"
   end
 
   def check_yql(field, term, hits)
     assert_hitcount("yql=select %2a from sources %2a where " + field + " contains \"" + term + "\"", hits)
   end
 
+  def assert_yql_hitcount(query, hits)
+    encoded_form=URI.encode_www_form([['yql', "select * from sources * where #{query}"]])
+    assert_hitcount(encoded_form, hits)
+  end
+
   def check_normal_ranges_yql(field)
+    assert_yql_hitcount("range(#{field}, 1, 2)", 3)
+    assert_yql_hitcount("range(#{field}, 1, 4)", 5)
+    assert_yql_hitcount("range(#{field}, 1, 3)", 5)
+    assert_yql_hitcount("({bounds:\"rightOpen\"}range(#{field}, 1, 3))", 3)
+    assert_yql_hitcount("({bounds:\"leftOpen\"}range(#{field}, 1, 2))", 1)
+    assert_yql_hitcount("({bounds:\"open\"}range(#{field}, 1, 3))", 1)
+    assert_yql_hitcount("({bounds:\"open\"}range(#{field}, 1, 2))", 0)
+    assert_yql_hitcount("range(#{field}, 1, Infinity)", 5)
+    assert_yql_hitcount("({bounds:\"rightOpen\"}range(#{field}, 1, Infinity))", 5)
+    assert_yql_hitcount("range(#{field}, -Infinity, 4)", 5)
+    assert_yql_hitcount("({bounds:\"leftOpen\"}range(#{field}, -Infinity, 4))", 5)
+    assert_yql_hitcount("range(#{field}, -Infinity, Infinity)", 5)
+    assert_yql_hitcount("({bounds:\"open\"}range(#{field}, -Infinity, Infinity))", 5)
+    assert_yql_hitcount("range(#{field}, 1.0, 1.7976931348623157E308)", 5)
+    assert_yql_hitcount("1 = #{field}", 2)
+    assert_yql_hitcount("2 = #{field}", 1)
+    assert_yql_hitcount("3 = #{field}", 2)
+    assert_yql_hitcount("1 <= #{field}", 5)
+    assert_yql_hitcount("2 <= #{field}", 3)
+    assert_yql_hitcount("3 <= #{field}", 2)
+    assert_yql_hitcount("4 <= #{field}", 0)
+    assert_yql_hitcount("0 < #{field}", 5)
+    assert_yql_hitcount("1 < #{field}", 3)
+    assert_yql_hitcount("2 < #{field}", 2)
+    assert_yql_hitcount("3 < #{field}", 0)
+    assert_yql_hitcount("4 > #{field}", 5)
+    assert_yql_hitcount("3 > #{field}", 3)
+    assert_yql_hitcount("2 > #{field}", 2)
+    assert_yql_hitcount("1 > #{field}", 0)
+    assert_yql_hitcount("3 >= #{field}", 5)
+    assert_yql_hitcount("2 >= #{field}", 3)
+    assert_yql_hitcount("1 >= #{field}", 2)
+    assert_yql_hitcount("0 >= #{field}", 0)
+  end
+
+  def check_normal_ranges_not_quite_yql(field)
     check_yql(field, "[1%3b2]", 3)
     check_yql(field, "[1%3b2]", 3)
     check_yql(field, "[1%3b4]", 5)

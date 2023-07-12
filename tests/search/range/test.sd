@@ -17,5 +17,9 @@ schema test {
          indexing: attribute | summary
          attribute: fast-search
      }
+     field w2 type weightedset<long> {
+         indexing: attribute | summary
+         attribute: fast-search
+     }
   }
 }
