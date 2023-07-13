@@ -11,7 +11,7 @@ class HttpClient
   end
 
   def getcmd(file, host, port, route, num_connections)
-    "java -DVESPA_FEED_EXPERIMENTAL_CLIENT=true -server -verbose:gc -XX:NewRatio=1 -Xms8g -Xmx8g -jar #{CLIENT_LIB} --vespaTls --file #{file} --host #{host} --port #{port} --route #{route} -v --numPersistentConnectionsPerEndpoint #{num_connections} --maxpending 20000"
+    "java -server -verbose:gc -XX:NewRatio=1 -Xms8g -Xmx8g -jar #{CLIENT_LIB} --vespaTls --file #{file} --host #{host} --port #{port} --route #{route} -v --numPersistentConnectionsPerEndpoint #{num_connections} --maxpending 20000"
   end
 
   def feed(file, host, port, route, num_connections=4)

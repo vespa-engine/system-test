@@ -82,7 +82,6 @@ class Utils {
     }
 
     static FeedClient createFeedClient() {
-        System.setProperty("VESPA_FEED_EXPERIMENTAL_CLIENT", "true");
         return FeedClientBuilder.create(endpoint())
                                 .setCaCertificatesFile(caCertificate())
                                 .setCertificate(certificate(), privateKey())
