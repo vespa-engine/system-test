@@ -77,7 +77,7 @@ class BackendClient
         path = File.join(dir, filename)
         if filename == "perf"
           testdata.concat(get_perf_data(path))
-        elsif filename == "performance"
+        elsif filename == "performance" && !testcase.has_active_sanitizers
           testdata.concat(get_performance_results(path))
         end
       end
