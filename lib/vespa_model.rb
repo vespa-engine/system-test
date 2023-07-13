@@ -838,19 +838,6 @@ class VespaModel
     end
   end
 
-  # Stop http server on all nodes
-  def stop_http_servers(stop_nodes=@nodeproxies)
-    threadlist = []
-    stop_nodes.each_value do |handle|
-      threadlist << Thread.new(handle) do |my_handle|
-        my_handle.http_server_stop
-      end
-    end
-    threadlist.each do |thread|
-      thread.join
-    end
-  end
-
   # Stops vespa_base on all the nodes given by _stopnodes_ (default is _@nodeproxies_).
   def stop_base(stop_nodes=@nodeproxies)
     threadlist = []
@@ -918,7 +905,6 @@ class VespaModel
     else
       if @testcase.dirty_nodeproxies.length > 0
         @testcase.output("Stopping vespa on #{@testcase.dirty_nodeproxies.length} node(s)...")
-        stop_http_servers
         stop_base(@testcase.dirty_nodeproxies)
         @stop_hooks.each do |hook|
           hook.call(@testcase.dirty_nodeproxies)

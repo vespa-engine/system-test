@@ -709,33 +709,6 @@ class NodeServer
     file.close()
   end
 
-  def http_server_make(port)
-    @http_servers[port] = Factory::WebServer.new(port)
-  end
-
-  def http_server_start(port)
-    unless @http_servers[port]
-      raise 'The http server must be made before it is started'
-    end
-    @http_servers[port].start
-    @http_servers[port].accept
-  end
-
-  def http_server_stop(port=nil)
-    if port
-      @http_servers[port].stop if @http_servers[port]
-      @http_servers.delete(port)
-    else
-      @http_servers.each do |k,v|
-        http_server_stop(k)
-      end
-    end
-  end
-
-  def http_server_handler(port, &block)
-    @http_servers[port].set_handler(&block)
-  end
-
   # Starts vespa_base on the node
   def start_base
     cmd = Environment.instance.additional_start_base_commands

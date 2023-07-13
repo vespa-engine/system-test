@@ -257,22 +257,6 @@ module NodeServerInterface
     @node_server.performance_snapshot
   end
 
-  def http_server_make(...)
-    @node_server.http_server_make(...)
-  end
-
-  def http_server_handler(port, &block)
-    @node_server.http_server_handler(port, &block)
-  end
-
-  def http_server_start(...)
-    @node_server.http_server_start(...)
-  end
-
-  def http_server_stop(...)
-    @node_server.http_server_stop(...)
-  end
-
   def file_exist?(...)
     @node_server.file_exist?(...)
   end
