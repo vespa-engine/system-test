@@ -25,7 +25,6 @@ class TestRunner
     @configservers = options[:configservers] ? options[:configservers] : []
     @consoleoutput = options[:consoleoutput] ? options[:consoleoutput] : false
     @perf_recording = options[:perf_recording] ? options[:perf_recording] : "off"
-    @ignore_performance = options[:ignore_performance] ? options[:ignore_performance] : true
     @keeprunning = options[:keeprunning] ? options[:keeprunning] : false
     @nodelimit = options[:nodelimit]
     @performance = options[:performance] ? options[:performance] : false
@@ -113,8 +112,7 @@ class TestRunner
                                                               :nostop => @keeprunning,
                                                               :nostop_if_failure => @keeprunning,
                                                               :configserverhostlist => [],
-                                                              :perf_recording => @perf_recording,
-                                                              :ignore_performance => @ignore_performance })
+                                                              :perf_recording => @perf_recording })
 
             # No need to do more as performance is a test class property
             break if @performance != testclass.performance?
