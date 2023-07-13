@@ -282,7 +282,7 @@ module Feeder
         return "#{testcase.feeder_binary} "
       end
     elsif params[:client] == :vespa_feed_client
-      return "env VESPA_FEED_EXPERIMENTAL_CLIENT=true vespa-feed-client"
+      return "vespa-feed-client"
     else
       raise "Unsupported feed client '#{client}'"
     end
