@@ -3,7 +3,6 @@
 
 require 'test_base'
 require 'digest/md5'
-require 'webserver'
 require 'data_generator'
 require 'executeerror'
 require 'nodetypes/metrics'
