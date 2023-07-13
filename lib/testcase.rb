@@ -56,7 +56,6 @@ class TestCase
     @valgrind_opt = args[:valgrind_opt]
     @keep_tmpdir = args[:keep_tmpdir]
     @leave_loglevels = args[:leave_loglevels]
-    @ignore_performance = args[:ignore_performance]
     @filereaders = []
     @num_hosts = 1
     @dirty_nodeproxies = {}
@@ -73,7 +72,6 @@ class TestCase
     @configserverhostlist = []
     @tenant_name = sanitize_name(self.class.name)
     @application_name = nil
-    @forked = args[:forked]
     @tls_env = TlsEnv.new()
     @https_client = HttpsClient.new(@tls_env)
     # To avoid mass test breakage in case of known warnings, maintain a workaround
@@ -118,18 +116,9 @@ class TestCase
     end
 
     @selfdir = File.expand_path(File.dirname(@testcase_file))+'/'
-    if not DRb.thread or not DRb.thread.alive?
-      DRb.start_service
-    end
     if @outputdir
       FileUtils.mkdir_p(@outputdir)
       raise 'Unable to create #{@outputdir}, make sure you have permission' unless File.directory?(@outputdir)
-    end
-
-    if @forked
-      require 'drb/drb'
-      DRb.start_service
-      @controller = DRbObject.new_with_uri(@forked)
     end
   end
 
@@ -277,7 +266,7 @@ class TestCase
                timeout_length.to_s)
         __send__(real_test_method)
       end
-      check_performance(test_method) if performance? unless @ignore_performance
+      check_performance(test_method) if performance?
     rescue DRb::DRbConnError => e
       if e.message =~ /Connection refused/
         output("CONNECTION ERROR: #{e.message}\nPlease make sure you have a node server running on all vespa nodes used in this test.")
@@ -354,9 +343,6 @@ class TestCase
       rescue Exception => e
         add_error(e)
       ensure
-        if @controller
-          @controller.testrun_ended(self.class.name, test_method, @result)
-        end
         test_results << @result
       end
     end
