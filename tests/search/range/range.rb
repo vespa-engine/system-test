@@ -67,7 +67,7 @@ class RangeSearch < IndexedSearchTest
   def check_normal_ranges(field)
     check_normal_ranges_standard(field)
     check_normal_ranges_yql(field)
-    check_normal_ranges_not_quite_yql(field) if field != "w2"
+    check_normal_ranges_not_quite_yql(field)
   end
 
   def check_yql(field, term, hits)
