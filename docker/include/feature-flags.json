@@ -38,5 +38,6 @@
         { "id" : "enable-nested-multivalue-grouping", "rules" : [ { "value" : true } ] },
         { "id" : "enable-global-phase", "rules" : [ { "value" : true } ] },
         { "id" : "enable-conditional-put-remove-write-repair", "rules" : [ { "value" : true } ] }
+        { "id" : "use-reconfigurable-dispatcher", "rules" : [ { "value" : true } ] }
     ]
 }
