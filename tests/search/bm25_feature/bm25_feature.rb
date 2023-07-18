@@ -47,15 +47,28 @@ class Bm25FeatureTest < SearchTest
     assert_bm25_array_scores(3, 8)
   end
 
-  def assert_bm25_scores(total_doc_count = 3, avg_field_length = 4)
-    assert_scores_for_query("content:a&type=all", [score(2, 3, idf(3, total_doc_count), avg_field_length),
+  def make_query(terms, ranking)
+    subqueries = []
+    for term in terms
+      subqueries.push("(content contains \"#{term}\")")
+    end
+    joined_subqueries = subqueries.join(" and ")
+    form = [['yql', "select * from sources * where #{joined_subqueries}"],
+            ['ranking', ranking]]
+    encoded_form = URI.encode_www_form(form)
+    puts "encoded form is #{encoded_form}"
+    return encoded_form
+  end
+
+  def assert_bm25_scores(total_doc_count = 3, avg_field_length = 4, ranking = 'default')
+    assert_scores_for_query(make_query(['a'], ranking), [score(2, 3, idf(3, total_doc_count), avg_field_length),
                                                    score(3, 7, idf(3, total_doc_count), avg_field_length),
                                                    score(1, 2, idf(3, total_doc_count), avg_field_length)])
 
-    assert_scores_for_query("content:b&type=all", [score(1, 3, idf(2, total_doc_count), avg_field_length),
+    assert_scores_for_query(make_query(['b'], ranking), [score(1, 3, idf(2, total_doc_count), avg_field_length),
                                                    score(1, 7, idf(2, total_doc_count), avg_field_length)])
 
-    assert_scores_for_query("content:a+content:d&type=all", [score(1, 2, idf(3, total_doc_count), avg_field_length) + score(1, 2, idf(2, total_doc_count), avg_field_length),
+    assert_scores_for_query(make_query(['a','d'], ranking), [score(1, 2, idf(3, total_doc_count), avg_field_length) + score(1, 2, idf(2, total_doc_count), avg_field_length),
                                                              score(3, 7, idf(3, total_doc_count), avg_field_length) + score(1, 7, idf(2, total_doc_count), avg_field_length)])
   end
 
