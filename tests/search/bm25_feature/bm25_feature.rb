@@ -1,21 +1,26 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_streaming_search_test'
 
-class Bm25FeatureTest < SearchTest
+class Bm25FeatureTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
   end
 
+  def self.final_test_methods
+    ['test_enable_bm25_feature']
+  end
+
   def test_bm25_feature
     set_description("Test basic functionality of the bm25 rank feature")
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
+    deploy_app(SearchApp.new.sd(selfdir + (is_streaming ? "streaming/test.sd" : "test.sd")))
     start
 
     # Note: Average field length for these documents = 4 ((7 + 3 + 2) / 3).
     feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.json")
 
     assert_bm25_scores
+    assert_bm25_scores(3, 100, 'avgfl100')
     
     vespa.search["search"].first.trigger_flush
     assert_bm25_scores
@@ -25,6 +30,7 @@ class Bm25FeatureTest < SearchTest
   end
 
   def test_enable_bm25_feature
+    @params = { :search_type => 'ELASTIC' }
     set_description("Test regeneration of interleaved features when enabling bm25 feature")
     @test_dir = selfdir + "regen/"
     deploy_app(SearchApp.new.sd("#{@test_dir}0/test.sd"))
@@ -47,10 +53,15 @@ class Bm25FeatureTest < SearchTest
     assert_bm25_array_scores(3, 8)
   end
 
-  def make_query(terms, ranking)
+  def make_query(terms, ranking, idfs)
     subqueries = []
     for term in terms
-      subqueries.push("(content contains \"#{term}\")")
+      if idfs.nil? || !idfs.include?(term)
+        significance = ''
+      else
+        significance = "{significance: #{idfs[term]}}"
+      end
+      subqueries.push("content contains (#{significance}\"#{term}\")")
     end
     joined_subqueries = subqueries.join(" and ")
     form = [['yql', "select * from sources * where #{joined_subqueries}"],
@@ -61,14 +72,22 @@ class Bm25FeatureTest < SearchTest
   end
 
   def assert_bm25_scores(total_doc_count = 3, avg_field_length = 4, ranking = 'default')
-    assert_scores_for_query(make_query(['a'], ranking), [score(2, 3, idf(3, total_doc_count), avg_field_length),
+    if is_streaming
+      idfs = {}
+      idfs['a'] = idf(3, total_doc_count)
+      idfs['b'] = idf(2, total_doc_count)
+      idfs['d'] = idf(2, total_doc_count)
+    else
+      idfs = nil
+    end
+    assert_scores_for_query(make_query(['a'], ranking, idfs), [score(2, 3, idf(3, total_doc_count), avg_field_length),
                                                    score(3, 7, idf(3, total_doc_count), avg_field_length),
                                                    score(1, 2, idf(3, total_doc_count), avg_field_length)])
 
-    assert_scores_for_query(make_query(['b'], ranking), [score(1, 3, idf(2, total_doc_count), avg_field_length),
+    assert_scores_for_query(make_query(['b'], ranking, idfs), [score(1, 3, idf(2, total_doc_count), avg_field_length),
                                                    score(1, 7, idf(2, total_doc_count), avg_field_length)])
 
-    assert_scores_for_query(make_query(['a','d'], ranking), [score(1, 2, idf(3, total_doc_count), avg_field_length) + score(1, 2, idf(2, total_doc_count), avg_field_length),
+    assert_scores_for_query(make_query(['a','d'], ranking, idfs), [score(1, 2, idf(3, total_doc_count), avg_field_length) + score(1, 2, idf(2, total_doc_count), avg_field_length),
                                                              score(3, 7, idf(3, total_doc_count), avg_field_length) + score(1, 7, idf(2, total_doc_count), avg_field_length)])
   end
 
@@ -112,6 +131,7 @@ class Bm25FeatureTest < SearchTest
 
   def assert_scores_for_query(query, exp_scores)
     result = search(query)
+    exp_scores = exp_scores.sort.reverse
     assert_hitcount(result, exp_scores.length)
     for i in 0...exp_scores.length do
       assert_relevancy(result, exp_scores[i], i)

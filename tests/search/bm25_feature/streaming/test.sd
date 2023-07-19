@@ -6,16 +6,17 @@ schema test {
       index: enable-bm25
     }
   }
-  rank-profile default {
+  rank-profile avgfl100 {
     first-phase {
       expression {
         bm25(content)
       }
     }
+    # Default average field length for streaming search is 100.0
   }
-  rank-profile avgfl100 inherits default {
+  rank-profile default inherits avgfl100 {
     rank-properties {
-      bm25(content).averageFieldLength: 100.0
+      bm25(content).averageFieldLength: 4.0
     }
   }
 }
