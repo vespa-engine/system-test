@@ -188,7 +188,7 @@ class VespaModel
     end
 
     substitute_sdfile(tmp_application, vespa_services, sdfile) if sdfile
-    add_perfmap_agent_to_container_jvm_options(vespa_services) if @testcase.performance?
+    add_perfmap_agent_to_container_jvm_options(vespa_services) if (@testcase.performance? && !@testcase.has_active_sanitizers)
     create_rules_dir(tmp_application, params[:rules_dir])
     create_components_dir(tmp_application, params[:components_dir])
     create_search_dir(tmp_application, params[:search_dir])
