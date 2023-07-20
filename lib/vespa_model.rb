@@ -729,18 +729,19 @@ class VespaModel
     pid = Process.pid
     @testcase.output("Start tgz creation of #{application_name}")
     `cd #{application_dir}; tar czf #{application_name}_#{pid}.tar.gz #{application_name}`
-    application_content = ""
-    @testcase.output("Start read of tgz file #{application_name}")
-    File.open("#{application_dir}/#{application_name}_#{pid}.tar.gz", 'rb') do |file|
-      application_content = file.read
-    end
-    @testcase.output("Delete temporary tgz file #{application_name}")
-    File.delete("#{application_dir}/#{application_name}_#{pid}.tar.gz")
+    @testcase.output("Finished tgz creation of #{application_name}")
     @testcase.output("Transfer compressed content #{application_name} to adminserver")
     app_handle = adminserver.transfer_app(application_dir, application_name) do |fp|
-      application_content.bytes.each_slice(1024*1024) { |slice|
-        fp.write(slice.pack('C*'))
-      }
+      begin
+        file = File.open("#{application_dir}/#{application_name}_#{pid}.tar.gz", "rb")
+        while (block = file.read(1024 * 1024))
+          fp.write(block)
+        end
+      ensure
+        file.close
+        @testcase.output("Delete temporary tgz file #{application_name}")
+        File.delete("#{application_dir}/#{application_name}_#{pid}.tar.gz")
+      end
     end
     return app_handle
   end
