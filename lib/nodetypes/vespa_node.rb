@@ -49,7 +49,7 @@ class VespaNode
     http.cert = OpenSSL::X509::Certificate.new(File.read(cert_file)) unless cert_file == nil
     http.key = OpenSSL::PKey::RSA.new(File.read(private_key_file)) unless private_key_file == nil
     http.verify_mode = tls_env.ssl_ctx.verify_mode
-    http.ssl_version = :TLSv1_2
+    http.ssl_version = :TLSv1_2  # TODO allow TLSv1.3 once https://bugs.ruby-lang.org/issues/19017 is resolved
     http.start { |conn|
       yield(conn)
     }
