@@ -211,7 +211,7 @@ class PerformanceTest < TestCase
 
   def perfmap_agent_jvmarg
     perfmap_agent = "#{Environment.instance.vespa_home}/lib64/libperfmap.so"
-    if File.file?(perfmap_agent) then "-agentpath:#{perfmap_agent}" else '' end
+    if File.file?(perfmap_agent) && !has_active_sanitizers then "-agentpath:#{perfmap_agent}" else '' end
   end
 
   def run_predicate_search_library_benchmark(node, benchmark_params)
