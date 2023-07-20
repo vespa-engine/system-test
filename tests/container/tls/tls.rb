@@ -47,7 +47,7 @@ class TlsTest < ContainerTest
     http.verify_mode =  OpenSSL::SSL::VERIFY_PEER
     http.read_timeout = 60
     http.ssl_timeout = 60
-    http.ssl_version = :TLSv1_2
+    http.ssl_version = :TLSv1_2  # TODO allow TLSv1.3 once https://bugs.ruby-lang.org/issues/19017 is resolved
     http.use_ssl = true
     http.ca_file = "#{dirs.tmpdir}#{CERT_FILE}"
     http.start do |http|
