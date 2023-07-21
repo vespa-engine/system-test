@@ -12,8 +12,8 @@ RUN dnf -y install epel-release && \
         dnf-plugins-core \
         dnf-plugin-ovl && \
     dnf config-manager --enable powertools && \
-    dnf -y module enable maven:3.6 && \
-    dnf -y module enable ruby:3.0 && \
+    dnf -y module enable maven:3.8 && \
+    dnf -y module enable ruby:3.1 && \
     dnf -y install \
         bind-utils \
         cmake \
