@@ -210,7 +210,7 @@ class PerformanceTest < TestCase
 
 
   def perfmap_jvmarg
-    "-XX:+DumpPerfMapAtExit"
+    "-XX:+UnlockDiagnosticVMOptions -XX:+DumpPerfMapAtExit"
   end
 
   def run_predicate_search_library_benchmark(node, benchmark_params)
