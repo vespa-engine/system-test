@@ -71,7 +71,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     err_file = "#{label}.err"
     java_cmd =
       "env LD_PRELOAD=$VESPA_HOME/lib64/vespa/malloc/libvespamallocd.so " +
-      "java #{perfmap_agent_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
+      "java #{perfmap_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{DUMMY_ROUTE} " +
         "-Dvespa.test.feed.documents=#{DOCUMENTS} " +
         "-Dvespa.test.feed.warmup.seconds=#{10} " +
