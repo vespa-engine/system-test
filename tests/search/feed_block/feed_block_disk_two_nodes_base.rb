@@ -131,7 +131,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
 
   def reached_disklimit(response)
     if @block_feed_in_distributor
-      response.code == "507" && response.body =~ /resource exhaustion: disk on node /
+      response.code == "507" && response.body =~ /resource exhaustion: in content cluster 'test': disk on node /
     else
       response.code == "507" && response.body =~ /diskLimitReached/
     end
