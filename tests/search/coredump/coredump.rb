@@ -24,11 +24,12 @@ class CoreDump < SearchTest
   def expected_core_file(node, binary, pid)
     corefile = show_kernel_core_pattern(node).split[-1].gsub('%e', binary).gsub('%p', pid)
     assert(corefile.start_with?("#{Environment.instance.vespa_home}/var/crash/"),
-           "/proc/sys/kernel/core_patern shall start with #{Environment.instance.vespa_home}/var/crash/")
+           "/proc/sys/kernel/core_pattern shall start with #{Environment.instance.vespa_home}/var/crash/")
     corefile
   end
 
   def test_coredump_compression
+    return if has_active_sanitizers
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
     feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
