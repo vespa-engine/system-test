@@ -29,15 +29,16 @@ class VespaCoredump
     corename = File.join(@coredir, @corefilename)
     corename_tmp = corename + ".core"
     begin
-      ok = `lz4 -d -f < #{corename.shellescape} > #{corename_tmp.shellescape}`
-      binline = `gdb -batch --core #{corename_tmp.shellescape}`
+      system("lz4 -d -f < #{corename.shellescape} > #{corename_tmp.shellescape}", exception: true)
+      binline = system("gdb -batch --core #{corename_tmp.shellescape}", exception: true)
       if binline =~ /by `([^\s']+)/
-        @stacktrace = `gdb -batch #{$1} #{corename_tmp.shellescape} -x #{f.path} 2>&1`
+        @stacktrace = system("gdb -batch #{$1} #{corename_tmp.shellescape} -x #{f.path} 2>&1", exception: true)
       end
     rescue
-      @stacktrace = "Unable to execute gdb"
+      coredir_listing = system("ls -la #{coredir.shellescape}", exception: true)
+      @stacktrace = "Unable generate stacktrace with gdb for #{corename}. Contents of core dump directory:\n#{coredir_listing}\n"
     ensure
-      File.delete(corename_tmp.shellescape)
+      File.delete(corename_tmp.shellescape) if File.exist?(corename_tmp.shellescape)
       f.unlink
     end
   end
