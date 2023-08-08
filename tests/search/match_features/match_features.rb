@@ -41,6 +41,12 @@ class MatchFeatures < IndexedStreamingSearchTest
     assert_mf_hit(result, 0, 250)
     assert_mf_hit(result, 1, 150)
 
+    # Verify that you also get match features if you are sorting.
+    result = s('query=bar&sorting=order')
+    assert(result.hit.size == 2)
+    assert_mf_hit(result, 0, 150)
+    assert_mf_hit(result, 1, 250)
+
     puts "Native rank scores: #{@seen}"
     assert_equal(5, @seen.size)
   end
