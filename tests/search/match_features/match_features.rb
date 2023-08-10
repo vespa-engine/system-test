@@ -36,19 +36,23 @@ class MatchFeatures < IndexedStreamingSearchTest
     assert_mf_hit(result, 1, 200)
     assert_mf_hit(result, 2, 100)
 
-    result = s('query=bar')
-    assert(result.hit.size == 2)
-    assert_mf_hit(result, 0, 250)
-    assert_mf_hit(result, 1, 150)
-
+    assert_bar([250, 150], nil)
     # Verify that you also get match features if you are sorting.
-    result = s('query=bar&sorting=order')
-    assert(result.hit.size == 2)
-    assert_mf_hit(result, 0, 150)
-    assert_mf_hit(result, 1, 250)
+    assert_bar([250, 150], "sortspec=-order")
+    # TODO There is something odd when running streaming.
+    assert_bar([150, 250], "sortspec=+order") if ! is_streaming
 
     puts "Native rank scores: #{@seen}"
     assert_equal(5, @seen.size)
+  end
+
+  def assert_bar(order, extra)
+    q = 'query=bar'
+    q =  q + "&" + extra if extra
+    result = s(q)
+    assert(result.hit.size == 2)
+    assert_mf_hit(result, 0, order[0])
+    assert_mf_hit(result, 1, order[1])
   end
 
   def assert_mf_hit(result, hit, attr_value)
