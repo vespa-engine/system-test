@@ -38,7 +38,7 @@ class ConstantFeatureTest < IndexedStreamingSearchTest
     redeploy(get_app("test2.sd"))
     if is_streaming
       puts "Wait for new config to be applied for SearchEnvironment::Env"
-      wait_for_relevancy("query=sddocname:test&test.age=kid&test.sex=f", 223.0)
+      wait_for_relevancy("query=sddocname:test&test.age=kid&test.sex=f", 223.0, 0, 60)
     end
     check_ranking(223.0, 169.0, 92.0, 106.0)
     restart_proton("test", 3, "search")
