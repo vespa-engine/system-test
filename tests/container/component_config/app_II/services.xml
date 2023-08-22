@@ -21,6 +21,10 @@
 Heal the </exampleString>
               <enumVal>Mind</enumVal>
             </config>
+            <config name="customer.extra-hit2">
+              <exampleString>Heal the </exampleString>
+              <enumVal>Body</enumVal>
+            </config>
           </searcher>
 
           <chain id="default">

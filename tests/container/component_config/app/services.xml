@@ -18,6 +18,10 @@
               <exampleString>Heal the </exampleString>
               <enumVal>World</enumVal>
             </config>
+            <config name="customer.extra-hit2">
+              <exampleString>Heal the </exampleString>
+              <enumVal>Body</enumVal>
+            </config>
           </searcher>
 
           <chain id="default">

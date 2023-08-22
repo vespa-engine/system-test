@@ -18,20 +18,22 @@ class ComponentConfig < SearchContainerTest
     @container = (vespa.qrserver.values.first or vespa.container.values.first)
     wait_for_application(@container, output)
 
-    verify_result("Heal the World!")
+    # title uses a config with namespace= inn config def, title2 uses a config with package= in config def
+    verify_result("title", "Heal the World!")
+    verify_result("title2", "Heal the Body!")
     assert_equal("app-component_config", @container.get_application_version)
 
     for i in (1..2)
       puts ">>>>>>>>>>>> Deploying app_II for the #{i}. time"
       output = deploy(selfdir + "app_II", nil, :bundles => [@searcher])
       wait_for_application(@container, output)
-      verify_result("(adding a newline, see ticket 3378196)\nHeal the Mind!")
+      verify_result("title", "(adding a newline, see ticket 3378196)\nHeal the Mind!")
       assert_equal("app_II-component_config", @container.get_application_version)
 
       puts ">>>>>>>>>>>> Deploying the original app for the #{i+1}. time"
       output = deploy(selfdir + "app", nil, :bundles => [@searcher])
       wait_for_application(@container, output)
-      verify_result("Heal the World!")
+      verify_result("title", "Heal the World!")
       assert_equal("app-component_config", @container.get_application_version)
     end
   end
@@ -47,9 +49,9 @@ class ComponentConfig < SearchContainerTest
     assert_log_matches(/The following builder parameters for extra-hit must be initialized: \[enumVal\]/)
   end
 
-  def verify_result(expected)
+  def verify_result(field, expected)
     result = search("query=test")
-    actual = result.hit[0].field["title"]
+    actual = result.hit[0].field[field]
     puts "Got response: '#{actual}' - expected: '#{expected}'"
     if expected != actual
       puts "xxxxxxxxxxxxx  Writing jstack output to file   xxxxxxxxxxxxxx"

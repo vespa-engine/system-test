@@ -1,0 +1,4 @@
+package=customer
+
+exampleString string default="Hello World (customer)"
+enumVal enum {Mind, Body, World}
