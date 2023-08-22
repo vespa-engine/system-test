@@ -22,7 +22,9 @@ class AccessLogTest < IndexedSearchTest
 
     assert_hitcount("query=sddocname:music", 777)
     sleep 10 # wait for log to be written to disk
-    log = vespa.container.values.first.get_query_access_log
+    container = vespa.container.values.first
+    container.stop
+    log = container.get_query_access_log
 
     puts "LOG:'" + log + "'"
 
