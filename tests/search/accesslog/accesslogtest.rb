@@ -21,7 +21,7 @@ class AccessLogTest < IndexedSearchTest
     feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
 
     assert_hitcount("query=sddocname:music", 777)
-    sleep 5 # wait for log to be written to disk
+    sleep 10 # wait for log to be written to disk
     log = vespa.container.values.first.get_query_access_log
 
     puts "LOG:'" + log + "'"
