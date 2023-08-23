@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <services version="1.0">
 
-    <admin version="2.0">
-      <adminserver hostalias="node1" />
-      <logserver hostalias="node1" />
-      <slobroks>
-        <slobrok hostalias="node1" />
-      </slobroks>
-    </admin>
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+  </admin>
 
-    <container version="1.0">
-        <nodes>
-            <node hostalias="node1" />
-        </nodes>
-        <search>
-                <searcher id="com.yahoo.vespatest.FileSearcher">
-                  <config name="com.yahoo.vespatest.files">
-                    <files>components/manyFiles</files>
-                  </config>
-                </searcher>
-                <chain ident="default">
-                    <searcher id="com.yahoo.vespatest.FileSearcher"/>
-                </chain>
-        </search>
-    </container>
+  <container version="1.0">
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+    <search>
+      <searcher id="com.yahoo.vespatest.FileSearcher">
+        <config name="com.yahoo.vespatest.files">
+          <dirWithFiles>components/manyFiles</dirWithFiles>
+        </config>
+      </searcher>
+      <chain ident="default">
+        <searcher id="com.yahoo.vespatest.FileSearcher"/>
+      </chain>
+    </search>
+  </container>
 
 </services>
