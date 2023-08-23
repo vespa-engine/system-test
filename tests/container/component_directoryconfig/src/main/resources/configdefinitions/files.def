@@ -1,4 +1,3 @@
 package=com.yahoo.vespatest
 
-files file
-
+dirWithFiles path

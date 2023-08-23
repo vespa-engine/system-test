@@ -1,4 +1,4 @@
-// Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+// Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 package com.yahoo.vespatest;
 
 import com.yahoo.search.Query;
@@ -8,27 +8,23 @@ import com.yahoo.search.result.Hit;
 import com.yahoo.search.searchchain.Execution;
 import com.yahoo.vespatest.FilesConfig;
 import com.yahoo.component.ComponentId;
-import com.yahoo.filedistribution.fileacquirer.FileAcquirer;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 import java.util.List;
 import java.util.ArrayList;
 
 public class FileSearcher extends Searcher {
-    private File files;
+    private Path dir;
 
-    public FileSearcher(FileAcquirer fileAcquirer, ComponentId id, FilesConfig config) {
-        try {
-            files = fileAcquirer.waitFor(config.files(), 5, TimeUnit.MINUTES);
-        } catch (InterruptedException e) {
-            throw new RuntimeException("InterruptedException: ", e);
-        }
+    public FileSearcher(ComponentId id, FilesConfig config) {
+        dir = config.dirWithFiles();
     }
 
     public @Override Result search(Query query, Execution execution) {
         Result result = execution.search(query);
-        for (File f : files.listFiles()) {
+        for (File f : dir.toFile().listFiles()) {
             Hit hit = new Hit(f.getAbsolutePath());
             hit.setField("title", readFile(f));
             result.hits().add(hit);
@@ -53,4 +49,5 @@ public class FileSearcher extends Searcher {
         }
         return ret.toString();
     }
+
 }
