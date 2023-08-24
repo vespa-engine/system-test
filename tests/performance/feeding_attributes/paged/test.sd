@@ -1,0 +1,61 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    field f1 type weightedset<string> {
+      indexing: attribute | summary
+      attribute {
+        fast-search
+        paged
+      }
+    }
+    field f2 type weightedset<string> {
+      indexing: attribute | summary
+      attribute {
+        fast-search
+        paged
+      }
+    }
+    field f3 type weightedset<string> {
+      indexing: attribute | summary
+      attribute {
+        fast-search
+        paged
+      }
+    }
+    field f4 type weightedset<string> {
+      indexing: attribute | summary
+      attribute {
+        fast-search
+        paged
+      }
+    }
+    field f5 type weightedset<string> {
+      indexing: attribute | summary
+      attribute {
+        fast-search
+        paged
+      }
+    }
+    field f6 type weightedset<string> {
+      indexing: attribute | summary
+      attribute {
+        fast-search
+        paged
+      }
+    }
+    field f7 type weightedset<string> {
+      indexing: attribute | summary
+      attribute {
+        fast-search
+        paged
+      }
+    }
+    field f8 type weightedset<string> {
+      indexing: attribute | summary
+      attribute {
+        fast-search
+        paged
+      }
+    }
+  }
+}
