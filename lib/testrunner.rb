@@ -246,6 +246,8 @@ if __FILE__ == $0
   options[:testfiles] = []
   options[:configservers] = []
   options[:perf_recording] = "off"
+  options[:nopreclean] = true
+  options[:nostop] = true
 
   OptionParser.new do |opts|
     opts.banner = "Usage: testrunner.rb [options]"
