@@ -35,19 +35,28 @@ class FeedingAttributesPerfTest < PerformanceTest
 
   def test_feeding_attributes
     set_description("Test feeding performance for attribute vectors with various number of attribute write threads")
-    deploy_app(get_app(1))
+    run_test_feeding_attributes(false)
+  end
+
+  def test_feeding_paged_attributes
+    set_description("Test feeding performance for paged attribute vectors with various number of attribute write threads")
+    run_test_feeding_attributes(true)
+  end
+
+  def run_test_feeding_attributes(paged)
+    deploy_app(get_app(1, paged))
     start
 
     run_feeding_attributes_test(1, { :count => 10000 })
 
     [4, 8].each do |attr_threads|
-      clean_indexes_and_deploy_app(get_app(attr_threads))
+      clean_indexes_and_deploy_app(get_app(attr_threads, paged))
       run_feeding_attributes_test(attr_threads, { :count => 50000 })
     end
   end
 
-  def get_app(attr_threads)
-    SearchApp.new.sd(selfdir + "test.sd").
+  def get_app(attr_threads, paged)
+    SearchApp.new.sd(selfdir + (paged ? "paged/" : "") + "test.sd").
       tune_searchnode({:feeding => {:concurrency => 0}}).
       visibility_delay(0.001).
       config(ConfigOverride.new("vespa.config.search.core.proton").
