@@ -60,6 +60,18 @@
           { "address": { "x": "b", "y": "0" }, "value": 3.0 },
           { "address": { "x": "b", "y": "1" }, "value": 4.0 }
         ]
+      },
+      "sparse_create_attr": {
+        "cells": {
+          "a": 1.0,
+          "b": 2.0
+        }
+      },
+      "sparse_create_field": {
+        "cells": {
+          "a": 1.0,
+          "b": 2.0
+        }
       }
     }
   }

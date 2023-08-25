@@ -32,6 +32,26 @@
             { "address": { "x": "a", "y":"1" }, "value": 1.0 }
           ]
         }
+      },
+      "sparse_create_attr": {
+        "modify": {
+          "operation": "add",
+          "create": true,
+          "cells": {
+            "b": 5.0,
+            "c": 6.0
+          }
+        }
+      },
+      "sparse_create_field": {
+        "modify": {
+          "operation": "add",
+          "create": true,
+          "cells": {
+            "b": 5.0,
+            "c": 6.0
+          }
+        }
       }
     }
   }
