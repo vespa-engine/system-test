@@ -69,6 +69,8 @@ class TensorModifyUpdateTest < IndexedStreamingSearchTest
     assert_dense_tensor_after_modify_add(doc, "dense_float_attr")
     assert_mixed_tensor_after_modify_add(doc, "mixed_attr")
     assert_mixed_tensor_after_modify_add(doc, "mixed_float_attr")
+    assert_sparse_tensor_after_modify_add_with_create_true(doc, "sparse_create_attr")
+    assert_sparse_tensor_after_modify_add_with_create_true(doc, "sparse_create_field")
   end
 
   def assert_dense_tensor_after_modify_add(doc, name)
@@ -82,6 +84,12 @@ class TensorModifyUpdateTest < IndexedStreamingSearchTest
                          {'address'=>{'x'=>'a','y'=>'1'}, 'value'=>3.0},
                          {'address'=>{'x'=>'b','y'=>'0'}, 'value'=>7.0},
                          {'address'=>{'x'=>'b','y'=>'1'}, 'value'=>8.0}], doc, name)
+  end
+
+  def assert_sparse_tensor_after_modify_add_with_create_true(doc, name)
+    assert_tensor_field([{'address'=>{'x'=>'a'}, 'value'=>1.0},
+                         {'address'=>{'x'=>'b'}, 'value'=>7.0},
+                         {'address'=>{'x'=>'c'}, 'value'=>6.0}], doc, name)
   end
 
   def assert_tensor_fields_after_modify_multiply(doc)

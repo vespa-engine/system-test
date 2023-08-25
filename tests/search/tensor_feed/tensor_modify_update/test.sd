@@ -28,6 +28,12 @@ schema test {
     field mixed_field type tensor(x{},y[2]) {
       indexing: summary
     }
+    field sparse_create_attr type tensor(x{}) {
+      indexing: attribute | summary
+    }
+    field sparse_create_field type tensor(x{}) {
+      indexing: summary
+    }
   }
   rank-profile default {
     first-phase {
