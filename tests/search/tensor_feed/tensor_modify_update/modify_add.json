@@ -52,6 +52,24 @@
             "c": 6.0
           }
         }
+      },
+      "dense_null_create_attr": {
+        "modify": {
+          "operation": "add",
+          "create": true,
+          "cells": [
+            { "address": { "x": "1" }, "value": 3.0 }
+          ]
+        }
+      },
+      "dense_null_create_field": {
+        "modify": {
+          "operation": "add",
+          "create": true,
+          "cells": [
+            { "address": { "x": "1" }, "value": 3.0 }
+          ]
+        }
       }
     }
   }
