@@ -34,6 +34,12 @@ schema test {
     field sparse_create_field type tensor(x{}) {
       indexing: summary
     }
+    field dense_null_create_attr type tensor(x[2]) {
+      indexing: attribute | summary
+    }
+    field dense_null_create_field type tensor(x[2]) {
+      indexing: summary
+    }
   }
   rank-profile default {
     first-phase {
