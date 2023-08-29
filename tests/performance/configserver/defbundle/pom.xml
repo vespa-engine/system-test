@@ -27,7 +27,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
     </dependency>
   </dependencies>
   
@@ -59,7 +58,6 @@
 		</plugin>
         <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.2.2</version>
           <configuration>
             <archive>
               <manifestFile>manifest.mf</manifestFile>
