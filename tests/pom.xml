@@ -30,7 +30,6 @@
   <properties>
     <vespa.version>8-SNAPSHOT</vespa.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <commons.logging.version>1.2</commons.logging.version>
   </properties>
 
   <build>
@@ -86,12 +85,7 @@
       <dependency>
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
-        <version>${commons.logging.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-logging</groupId>
-        <artifactId>commons-logging-api</artifactId>
-        <version>${commons.logging.version}</version>
+        <version>1.2</version>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
