@@ -6,6 +6,7 @@
   "dependencyDashboardApproval": true,
   "ignorePaths": [],
   "ignoreDeps": [
+    "org.apache.zookeeper:zookeeper",
     "sample:project1"
   ],
   "packageRules": [
