@@ -7,13 +7,6 @@
   <packaging>container-plugin</packaging>
   <name>concretedocs2</name>
 
-  <parent>
-    <groupId>com.yahoo.vespa.systemtest</groupId>
-    <artifactId>test-apps-parent</artifactId>
-    <version>8-SNAPSHOT</version>
-    <relativePath>../../../pom.xml</relativePath>
-  </parent>
-
   <build>
     <plugins>
       <plugin>
@@ -69,4 +62,8 @@
     </dependency>
   </dependencies>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <vespa.version>8-SNAPSHOT</vespa.version>
+  </properties>
 </project>

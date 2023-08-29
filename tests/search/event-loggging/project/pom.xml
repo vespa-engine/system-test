@@ -3,18 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.yahoo.vespa.systemtest</groupId>
-    <artifactId>eventloggingtesttest</artifactId>
+    <artifactId>test</artifactId>
     <packaging>container-plugin</packaging>
     <version>1.0</version>
-
-  <parent>
-    <groupId>com.yahoo.vespa.systemtest</groupId>
-    <artifactId>test-apps-parent</artifactId>
-    <version>8-SNAPSHOT</version>
-    <relativePath>../../../pom.xml</relativePath>
-  </parent>
-
-  <dependencies>
+    <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
