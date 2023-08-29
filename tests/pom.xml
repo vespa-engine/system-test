@@ -9,10 +9,27 @@
 
   <properties>
     <vespa.version>8-SNAPSHOT</vespa.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <modules>
+    <module>cloudconfig/config_class_plugin/app</module>
+    <module>cloudconfig/config_proxy/simplebundle</module>
+    <module>cloudconfig/integrationtests/config_test</module>
+    <module>cloudconfig/supermodel/supermodelbundle</module>
+    <module>container/assemble_container_plugin/project1</module>
+    <module>container/assemble_container_plugin/project2</module>
+    <module>container/jdischandler_logger/logging-bundle</module>
+    <module>container/onnx/onnx_bundle</module>
+    <module>container/zk_reconfig/zookeeper_test</module>
+    <module>performance/configserver/defbundle</module>
     <module>performance/programmatic_feed_client/java-feed-client</module>
+    <module>search/concretedocs/concretedocs2</module>
+    <module>search/concretedocs/concretedocs</module>
+    <module>search/documentapi/project</module>
+    <module>search/event-loggging/project</module>
+    <module>search/struct_and_map_types/inherited_struct/concretedocs</module>
+    <module>search/wasfound/project</module>
   </modules>
 
   <build>

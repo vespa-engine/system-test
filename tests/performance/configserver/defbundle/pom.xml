@@ -10,10 +10,12 @@
   <name>defbundle</name>
   <url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <vespa.version>8-SNAPSHOT</vespa.version>
-  </properties>
+  <parent>
+    <groupId>com.yahoo.vespa.systemtest</groupId>
+    <artifactId>test-apps-parent</artifactId>
+    <version>8-SNAPSHOT</version>
+    <relativePath>../../../pom.xml</relativePath>
+  </parent>
 
   <dependencies>
     <dependency>

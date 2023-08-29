@@ -5,6 +5,14 @@
   <artifactId>wasfound</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
+
+  <parent>
+    <groupId>com.yahoo.vespa.systemtest</groupId>
+    <artifactId>test-apps-parent</artifactId>
+    <version>8-SNAPSHOT</version>
+    <relativePath>../../../pom.xml</relativePath>
+  </parent>
+
   <dependencies>
     <dependency>
         <groupId>com.google.guava</groupId>

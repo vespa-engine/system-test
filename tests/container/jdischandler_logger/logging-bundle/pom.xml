@@ -10,6 +10,13 @@
       </description>
       <url>https://vespa.ai/</url>
 
+      <parent>
+        <groupId>com.yahoo.vespa.systemtest</groupId>
+        <artifactId>test-apps-parent</artifactId>
+        <version>8-SNAPSHOT</version>
+        <relativePath>../../../pom.xml</relativePath>
+      </parent>
+
       <build>
         <!-- hacks other places in this file depends on the order of the
              plugins.
