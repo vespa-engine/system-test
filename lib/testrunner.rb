@@ -26,6 +26,7 @@ class TestRunner
     @consoleoutput = options[:consoleoutput] ? options[:consoleoutput] : false
     @perf_recording = options[:perf_recording] ? options[:perf_recording] : "off"
     @keeprunning = options[:keeprunning] ? options[:keeprunning] : false
+    @nopreclean = options[:nopreclean] ? options[:nopreclean] : false
     @nodelimit = options[:nodelimit]
     @performance = options[:performance] ? options[:performance] : false
     @platform_label = options[:platform_label]
@@ -109,6 +110,7 @@ class TestRunner
                                                               :buildname => @buildname,
                                                               :vespa_version => @vespaversion,
                                                               :basedir => @basedir,
+                                                              :nopreclean => @nopreclean,
                                                               :nostop => @keeprunning,
                                                               :nostop_if_failure => @keeprunning,
                                                               :configserverhostlist => [],
