@@ -4,5 +4,13 @@
     "config:base"
   ],
   "dependencyDashboardApproval": true,
-  "ignorePaths": [] 
+  "ignorePaths": [],
+  "ignoreDeps": [
+    "sample:project1"
+  ],
+  "packageRules": [
+    {
+      "excludePackagePatterns": ["^com\\.yahoo\\.vespa"]
+    }
+  ]
 }

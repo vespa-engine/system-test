@@ -2,10 +2,18 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>concretedocs</groupId>
-  <artifactId>concretedocs</artifactId>
+  <artifactId>inheritedconcretedocs</artifactId>
   <version>1.0</version>
   <packaging>container-plugin</packaging>
   <name>concretedocs</name>
+
+  <parent>
+    <groupId>com.yahoo.vespa.systemtest</groupId>
+    <artifactId>test-apps-parent</artifactId>
+    <version>8-SNAPSHOT</version>
+    <relativePath>../../../../pom.xml</relativePath>
+  </parent>
+
 
   <build>
     <plugins>
@@ -50,7 +58,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
 
