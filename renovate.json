@@ -10,7 +10,9 @@
   ],
   "packageRules": [
     {
-      "excludePackagePatterns": ["^com\\.yahoo\\.vespa"]
+      "matchPackagePatterns": ["^com\\.yahoo\\.vespa"],
+      "matchManagers": ["maven"],
+      "enabled": false
     }
   ]
 }
