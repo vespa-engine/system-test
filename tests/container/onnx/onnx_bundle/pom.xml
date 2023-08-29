@@ -9,12 +9,10 @@
     <version>1.0.0</version>
     <packaging>container-plugin</packaging>  <!-- Use Vespa packaging -->
 
-    <parent>
-        <groupId>com.yahoo.vespa.systemtest</groupId>
-        <artifactId>test-apps-parent</artifactId>
-        <version>8-SNAPSHOT</version>
-        <relativePath>../../../pom.xml</relativePath>
-    </parent>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <vespa.version>8-SNAPSHOT</vespa.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -36,7 +34,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-
+                <version>3.10.1</version>
                 <configuration>
                     <optimize>true</optimize>
                     <showDeprecation>true</showDeprecation>
