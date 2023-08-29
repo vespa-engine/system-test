@@ -58,6 +58,10 @@ class VdsMetrics < VdsTest
     metric = nil
     360.times do
       metrics = JSONMetrics.new(node.get_state_v1_metrics)
+      if not metrics.has_metric_values?
+        sleep 1 # no snapshot yet
+        next
+      end
       metric = get_last_metric(metrics, name)
       break if expval == metric
       sleep 1

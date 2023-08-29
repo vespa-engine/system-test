@@ -15,6 +15,10 @@ class JSONMetrics
     @metrics
   end
 
+  def has_metric_values?
+    not (@metrics.nil? or @metrics['values'].nil?)
+  end
+
   # return a list of all metrics whose name match expr
   def extract(expr)
     result = []
