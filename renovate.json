@@ -6,11 +6,14 @@
   "dependencyDashboardApproval": true,
   "ignorePaths": [],
   "ignoreDeps": [
+    "org.apache.zookeeper:zookeeper",
     "sample:project1"
   ],
   "packageRules": [
     {
-      "excludePackagePatterns": ["^com\\.yahoo\\.vespa"]
+      "matchPackagePatterns": ["^com\\.yahoo\\.vespa"],
+      "matchManagers": ["maven"],
+      "enabled": false
     }
   ]
 }
