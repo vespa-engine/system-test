@@ -208,6 +208,13 @@ module Maven
       </description>
       <url>https://vespa.ai</url>
 
+      <parent>
+        <groupId>com.yahoo.vespa.systemtest</groupId>
+        <artifactId>test-apps-parent</artifactId>
+        <version>8-SNAPSHOT</version>
+        <relativePath/>
+      </parent>
+
       <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -224,7 +231,6 @@ module Maven
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version>
             <configuration>
               <release>17</release>
             </configuration>
