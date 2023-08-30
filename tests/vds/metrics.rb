@@ -53,7 +53,7 @@ class VdsMetrics < VdsTest
     end
   end
 
-  def assert_get_last_metric_loop(expval, node, name)
+  def assert_get_last_metric_loop(expval, node, name, allow_transient_mismatch: true)
     puts "Waiting for metric #{name} to become #{expval}"
     metric = nil
     360.times do
@@ -64,16 +64,28 @@ class VdsMetrics < VdsTest
       end
       metric = get_last_metric(metrics, name)
       break if expval == metric
+      if not allow_transient_mismatch
+        flunk("Expected metric value #{expval}, got #{metric}")
+      end
       sleep 1
     end
     assert_equal(expval, metric)
   end
 
-  def assert_doc_metrics(docs)
+  def assert_storage_doc_metrics(docs, allow_transient_mismatch: true)
     storagenode = vespa.content_node("storage", 0)
-    assert_get_last_metric_loop(docs, storagenode, "vds.datastored.alldisks.docs")
+    assert_get_last_metric_loop(docs, storagenode, "vds.datastored.alldisks.docs",
+                                allow_transient_mismatch: allow_transient_mismatch)
+  end
+
+  def assert_distributor_doc_metrics(docs)
     distributornode = vespa.storage["storage"].distributor["0"]
     assert_get_last_metric_loop(docs, distributornode, "vds.distributor.docsstored")
+  end
+
+  def assert_doc_metrics(docs)
+    assert_storage_doc_metrics(docs)
+    assert_distributor_doc_metrics(docs)
   end
 
   # Test that doc counts and sizes are available via state v1 metrics API
@@ -83,14 +95,16 @@ class VdsMetrics < VdsTest
     # At first startup, document counts should be zero
     assert_doc_metrics(0)
     feed_docs
-    # After feeding, both nodes should report to have 10 docs
+    # After feeding, both nodes should report having 10 docs
     assert_doc_metrics(10)
 
     restart_vds_node(vespa.content_node("storage", 0))
     restart_vds_node(vespa.storage["storage"].distributor["0"])
 
-    # After restart, both nodes should report to have 10 docs
-    assert_doc_metrics(10)
+    # After restart, both nodes should report having 10 docs.
+    # Storage node should never transiently report having 0 docs.
+    assert_storage_doc_metrics(10, allow_transient_mismatch: false)
+    assert_distributor_doc_metrics(10)
   end
 
   def teardown
