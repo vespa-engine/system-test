@@ -66,14 +66,14 @@ class GenericConfig < IndexedSearchTest
                     node(NodeSpec.new("node1", 1)))).
       storage(StorageCluster.new.
               sd(selfdir+"foo.sd").
-              config(ConfigOverride.new("vespa.config.content.core.stor-integritychecker").
-                     add("requestdelay", 2).
-                     add("mincycletime", 1000)).
+              config(ConfigOverride.new("vespa.config.content.core.stor-communicationmanager").
+                     add("mbus_distributor_node_max_pending_count", 2).
+                     add("mbus_content_node_max_pending_size", 1000)).
               default_group).
 
-      config(ConfigOverride.new("vespa.config.content.core.stor-integritychecker").
-               add("requestdelay", 3).
-               add("maxpending", 3))
+      config(ConfigOverride.new("vespa.config.content.core.stor-communicationmanager").
+               add("mbus_distributor_node_max_pending_count", 3).
+               add("mbus_content_node_max_pending_count", 3))
   end
 
   def setup
@@ -100,7 +100,7 @@ class GenericConfig < IndexedSearchTest
     dotest_searchcluster_config(scprefix)
     dotest_admin_config()
     #show_config_ids
-    dotest_stor_integritychecker
+    dotest_stor_communicationmanager
   end
 
   def dotest_searchcluster_config(prefix)
@@ -157,21 +157,21 @@ class GenericConfig < IndexedSearchTest
     assert(juniper =~ /override\[0\].prefix false/)
   end
 
-  def dotest_stor_integritychecker
+  def dotest_stor_communicationmanager
     storageId = "search" 
-    storIntegrity = vespa.adminserver.execute("#{@getconfig} -n vespa.config.content.core.stor-integritychecker -i #{storageId}")
-    assert(storIntegrity =~ /requestdelay 3/)
-    assert(storIntegrity =~ /maxpending 3/)
+    cfg = vespa.adminserver.execute("#{@getconfig} -n vespa.config.content.core.stor-communicationmanager -i #{storageId}")
+    assert(cfg =~ /mbus_distributor_node_max_pending_count 3/)
+    assert(cfg =~ /mbus_content_node_max_pending_count 3/)
 
     clusterId = "storage/storage"
-    storIntegrity = vespa.adminserver.execute("#{@getconfig} -n vespa.config.content.core.stor-integritychecker -i #{clusterId}")
-    assert(storIntegrity =~ /requestdelay 2/)
-    assert(storIntegrity =~ /mincycletime 1000/)
+    cfg = vespa.adminserver.execute("#{@getconfig} -n vespa.config.content.core.stor-communicationmanager -i #{clusterId}")
+    assert(cfg =~ /mbus_distributor_node_max_pending_count 2/)
+    assert(cfg =~ /mbus_content_node_max_pending_size 1000/)
 
     nodeId = "storage/storage/0"
-    storIntegrity = vespa.adminserver.execute("#{@getconfig} -n vespa.config.content.core.stor-integritychecker -i #{nodeId}")
-    assert(storIntegrity =~ /requestdelay 2/)
-    assert(storIntegrity =~ /mincycletime 1000/)
+    cfg = vespa.adminserver.execute("#{@getconfig} -n vespa.config.content.core.stor-communicationmanager -i #{nodeId}")
+    assert(cfg =~ /mbus_distributor_node_max_pending_count 2/)
+    assert(cfg =~ /mbus_content_node_max_pending_size 1000/)
   end
 
   def dotest_admin_config()
