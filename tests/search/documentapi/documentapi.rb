@@ -13,6 +13,7 @@ class DocumentApiTest < IndexedSearchTest
   def test_documentapi_java
     tmp = "#{dirs.tmpdir}/#{File.basename(selfdir)}"
     vespa.adminserver.copy("#{selfdir}/project", tmp)
+    install_maven_parent_pom(vespa.adminserver)
     vespa.adminserver.execute("cd #{tmp}; #{maven_command} -Dtest.hide=false test")
   end
 
