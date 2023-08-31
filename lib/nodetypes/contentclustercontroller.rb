@@ -96,6 +96,11 @@ class ContentClusterController < VespaNode
     if res.code.to_i != 200
       raise "Failed to set node state to '#{rest_state}' (HTTP #{res.code}): #{res.body}"
     end
+
+    json_body = JSON.parse(res.body)
+    if json_body['wasModified'] != true
+      raise "Cluster controller refused to set node state to '#{rest_state}'. Reason: #{json_body['reason']}"
+    end
   end
 
   def wait_for_stable_system(cluster)
