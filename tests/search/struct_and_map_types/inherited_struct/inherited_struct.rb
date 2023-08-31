@@ -22,8 +22,8 @@ class InheritedStruct < IndexedSearchTest
 
   # Use structs with various inheritance in concrete document types
   def test_inherited_structs_in_concrete_docs
-    add_bundle_dir(File.expand_path(selfdir + '/concretedocs'), 'concretedocs')
-    mydp = DocumentProcessor.new('concretedocs.ConcreteDocDocProc', 'indexingStart').bundle('concretedocs')
+    add_bundle_dir(File.expand_path(selfdir + '/concretedocs'), 'inheritedconcretedocs')
+    mydp = DocumentProcessor.new('concretedocs.ConcreteDocDocProc', 'indexingStart').bundle('inheritedconcretedocs')
     deploy_app(SearchApp.new.
                cluster(SearchCluster.new.
                        sd(selfdir + 'concretedocs/base.sd').
@@ -32,7 +32,7 @@ class InheritedStruct < IndexedSearchTest
                        indexing_chain('mydpchain')).
                container(Container.new('dpclust').
                          search(Searching.new).
-                         concretedoc(ConcreteDoc.new('usebase')).
+                         concretedoc(ConcreteDoc.new('usebase').bundle('inheritedconcretedocs')).
                          docproc(DocumentProcessing.new.
                                  chain(Chain.new('mydpchain', 'indexing').
                                        add(mydp)))))
