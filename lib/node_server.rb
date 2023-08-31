@@ -588,10 +588,6 @@ class NodeServer
     data
   end
 
-  def maven_install_parent(sourcedir)
-    execute("cd #{sourcedir}; #{@testcase.maven_command} install -N -f parent.pom.xml")
-  end
-
   # Returns a hashtable of file status information for all files residing in
   # path, recursively. Also provided is a selector function which selects which
   # field to store.

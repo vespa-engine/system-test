@@ -10,12 +10,10 @@
   <name>defbundle</name>
   <url>http://maven.apache.org</url>
 
-  <parent>
-    <groupId>com.yahoo.vespa.systemtest</groupId>
-    <artifactId>test-apps-parent</artifactId>
-    <version>8-SNAPSHOT</version>
-    <relativePath>../../../pom.xml</relativePath>
-  </parent>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <vespa.version>8-SNAPSHOT</vespa.version>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -27,6 +25,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <version>4.13.1</version>
     </dependency>
   </dependencies>
   
@@ -35,7 +34,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-
+          <version>3.10.1</version>
           <configuration>
             <release>17</release>
           </configuration>
@@ -58,6 +57,7 @@
 		</plugin>
         <plugin>
           <artifactId>maven-assembly-plugin</artifactId>
+          <version>2.2.2</version>
           <configuration>
             <archive>
               <manifestFile>manifest.mf</manifestFile>

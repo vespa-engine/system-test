@@ -221,10 +221,6 @@ module NodeServerInterface
     @node_server.maven_compile(...)
   end
 
-  def maven_install_parent(...)
-    @node_server.maven_install_parent(...)
-  end
-
   def compile_java(...)
     @node_server.compile_java(...)
   end
