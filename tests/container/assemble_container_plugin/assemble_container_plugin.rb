@@ -17,7 +17,6 @@ class AssembleContainerPlugin < SearchContainerTest
     node.execute("mkdir -p " + dirs.tmpdir + "/project2")
     node.copy(selfdir + '/project2', dirs.tmpdir + "/project2")
 
-    install_maven_parent_pom(node)
     node.execute("cd " + dirs.tmpdir + "/project1 ; #{maven_command} clean install ; cd ..")
     node.execute("cd " + dirs.tmpdir + "/project2 ; #{maven_command} clean install ; cd ..")
     output = node.execute("cd " + dirs.tmpdir + " ; unzip -l project2/target/project2-1.0-SNAPSHOT-deploy.jar")
