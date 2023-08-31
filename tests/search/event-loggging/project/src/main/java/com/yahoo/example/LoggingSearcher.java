@@ -39,7 +39,7 @@ public class LoggingSearcher extends Searcher {
 
 	@Override
 	public void deconstruct() {
-		logger.shutdown();
+		logger.deconstruct();
 	}
 
 }
