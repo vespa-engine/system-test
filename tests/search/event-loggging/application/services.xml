@@ -2,15 +2,15 @@
 <services version="1.0">
 
   <container version="1.0">
-    <component id="com.yahoo.example.SpoolingLogger" bundle="test" />
-    <component id="com.yahoo.example.EventStoreImpl" bundle="test" />
-    <handler id="com.yahoo.example.EventHandler" bundle="test">
+    <component id="com.yahoo.example.SpoolingLogger" bundle="eventloggingtest" />
+    <component id="com.yahoo.example.EventStoreImpl" bundle="eventloggingtest" />
+    <handler id="com.yahoo.example.EventHandler" bundle="eventloggingtest">
       <binding>http://*/events</binding>
     </handler>
 
     <search>
       <chain id="logging" inherits="vespa">
-        <searcher id="com.yahoo.example.LoggingSearcher" bundle="test" />
+        <searcher id="com.yahoo.example.LoggingSearcher" bundle="eventloggingtest" />
       </chain>
     </search>
     <document-api/>

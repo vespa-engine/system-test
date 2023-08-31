@@ -9,7 +9,7 @@ class EventLoggingTest < IndexedSearchTest
   end
 
   def test_event_logging
-    add_bundle_dir(File.expand_path(selfdir + '/project'), 'test')
+    add_bundle_dir(File.expand_path(selfdir + '/project'), 'eventloggingtest')
     deploy(selfdir + "application/", selfdir + 'schemas/music.sd')
     start
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA + "music.10.xml")

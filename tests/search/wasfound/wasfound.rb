@@ -14,6 +14,7 @@ class WasFound < IndexedSearchTest
     start
     tmpsource = dirs.tmpdir+File.basename(selfdir)
     vespa.adminserver.copy(selfdir+"project", tmpsource)
+    install_maven_parent_pom(vespa.adminserver)
     vespa.adminserver.execute("cd #{tmpsource}; #{maven_command} test")
   end
 

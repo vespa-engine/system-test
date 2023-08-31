@@ -24,6 +24,7 @@ class Integrationtests < CloudConfigTest
   def build_and_test(appdir, node)
     node.copy("#{selfdir}/#{appdir}/", @dirs.tmpdir + "#{appdir}/")
     dest = @dirs.tmpdir + appdir
+    install_maven_parent_pom(node)
     node.execute("cd #{dest} && #{maven_command} -Dtest.hide=false test")
   end
 

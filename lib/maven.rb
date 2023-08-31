@@ -44,6 +44,7 @@ module Maven
 
     haspom = Maven.create_pom_xml(vespa_version, tmp_sourcedir, bundle)
     admin_server.copy(tmp_sourcedir, tmp_sourcedir)
+    Maven.install_maven_parent_pom(admin_server, testcase)
     bundle_content = admin_server.maven_compile(tmp_sourcedir, bundle, haspom, to_pom_version(vespa_version))
     bundle_dir = testcase.dirs.bundledir
     bundlepath = bundle_file_path(bundle_dir, bundle)
@@ -53,6 +54,16 @@ module Maven
     bundlefile.close()
     admin_server.execute("mkdir -p #{File.dirname(bundlepath)}")
     admin_server.copy(bundlepath, File.dirname(bundle_file_path(bundle_dir, bundle)))
+  end
+
+  def Maven.install_maven_parent_pom(node, testcase)
+    # Find parent pom.xml by navigating up the directory tree and copies it to node
+    tests_root = File.expand_path("..", testcase.selfdir)
+    loop do
+      break if tests_root.end_with?("/tests") && File.exists?(File.join(tests_root, "pom.xml"))
+      tests_root = File.expand_path("..", tests_root)
+    end
+    node.maven_install_parent(tests_root)
   end
 
   def Maven.create_sourcedir(basedir, sourcefile, bundlename)
@@ -195,6 +206,13 @@ module Maven
       </description>
       <url>https://vespa.ai</url>
 
+      <parent>
+        <groupId>com.yahoo.vespa.systemtest</groupId>
+        <artifactId>test-apps-parent</artifactId>
+        <version>8-SNAPSHOT</version>
+        <relativePath/>
+      </parent>
+
       <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -211,7 +229,6 @@ module Maven
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version>
             <configuration>
               <release>17</release>
             </configuration>
