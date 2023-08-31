@@ -14,7 +14,6 @@ class ConfigClassPlugin < CloudConfigTest
     destproject = dirs.tmpdir + "app"
     @node.execute("mkdir -p #{destproject}")
     @node.copy(selfdir + "app", destproject)
-    install_maven_parent_pom(@node)
     output = @node.execute("cd #{destproject} && #{maven_command} compile && #{maven_command} javadoc:javadoc")
     output.split("\n").each { |line|
       if line =~ /\[WARNING\] Could not apply configuration for yahoo-public-repo/ or
