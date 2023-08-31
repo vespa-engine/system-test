@@ -193,33 +193,96 @@ class ClusterControllerTest < VdsTest
     }
   end
 
+  def get_cluster_v2_storage_bucket_count(node_idx, deadline)
+    while Time.now < deadline
+      response, data = vespa.clustercontrollers["0"].http_request("/cluster/v2/storage/storage/#{node_idx}")
+      if response.code.to_i == 200
+        json = JSON.parse(data)
+        if json == nil || json["metrics"] == nil || json["metrics"]["bucket-count"] == nil
+          next
+        else
+          return json["metrics"]["bucket-count"].to_i
+        end
+      else
+        puts "HTTP #{response.code.to_i}, retrying"
+      end
+      sleep 1
+    end
+    flunk "Did not manage to get bucket count within deadline"
+  end
+
+  def make_cc_deadline
+    Time.now + 60*5
+  end
+
   def test_state_rest_api_bucket_count
     feed_docs(2)
     puts "Waiting for bucket count metric to be visible in State Rest API"
-    1000000.times { |i|
-        response, data = vespa.clustercontrollers["0"].http_request(
-                "/cluster/v2/storage/storage/0")
-        if (response.code.to_i == 200)
-            json = JSON.parse(data)
-            if (json == nil || json["metrics"] == nil || json["metrics"]["bucket-count"] == nil)
-                print "."
-            else
-                count = json["metrics"]["bucket-count"].to_i
-                if (count > 0)
-                    puts "Bucket count found\n"
-                    break;
-                else
-                  print " #{count}"
-                end
-            end
-        elsif (i > 1000)
-            flunk("Did not manage to get bucket count within timeout")
-        else
-            print " x#{response.code.to_i}"
-        end
-        STDOUT.flush
-        sleep(1)
-    }
+    buckets = 0
+    deadline = make_cc_deadline
+    while true
+      buckets = get_cluster_v2_storage_bucket_count(0, deadline)
+      puts buckets
+      # At this point, bucket count will be either 0 or 2, but shall eventually be stable at 2
+      break if buckets != 0
+      sleep 1
+    end
+    assert_equal(2, buckets)
+
+    # Restarting a content node should never surface an outdated bucket count through the API
+    vespa.stop_content_node('storage', '0')
+    vespa.start_content_node('storage', '0')
+
+    buckets = get_cluster_v2_storage_bucket_count(0, deadline) # Waits for visibility
+    assert_equal(2, buckets)
+  end
+
+  def test_content_node_safe_down_is_well_defined_after_node_restart
+    set_description('Tests that content nodes do not transiently report erroneous bucket metrics to ' +
+                    'the cluster controller after process restart. Erroneous metrics may cause the cluster ' +
+                    'controller to believe a permanent Down transition is safe even when it is not.')
+    feed_docs # creates 10 buckets
+
+    cluster = vespa.storage['storage']
+    # Tag node 0 as retired. This is a precondition for triggering safe permanently Down checks
+    cluster.get_master_cluster_controller.set_node_state('storage', 'storage', 0, 's:r')
+    vespa.stop_content_node('storage', '0')
+    vespa.start_content_node('storage', '0', 60, false) # Don't wait until state Up
+    cluster.wait_for_current_node_state('storage', 0, 'r', 60)
+
+    cluster_state = cluster.get_master_cluster_controller.get_cluster_state('storage')
+    cluster.wait_for_cluster_state_propagate(cluster_state, 120, 'uir')
+
+    # The node must report a consistent number of buckets to the cluster controller upon first
+    # contact. This must in turn disallow safe permanently Down-edges, as these are only allowed
+    # when there are no buckets left on the node. Note that safe Maintenance mode _would_ have
+    # been allowed, as we expect those nodes to come back online again.
+    # We loop this until we get the expected error message, as SetNodeState calls may observe
+    # false negatives caused by transient cluster convergence issues (such as not yet having
+    # received host info matching the most recently published cluster state).
+    deadline = make_cc_deadline
+    while true
+      deny_reason = nil
+      begin
+        cluster.get_master_cluster_controller.set_node_state('storage', 'storage', 0, 's:d', 'safe')
+      rescue => e
+        deny_reason = e.message
+        puts "Failed to set node state (this is expected): #{e}"
+      end
+      if deny_reason.nil?
+        flunk 'Was allowed to set node down in safe mode even with buckets present'
+      end
+      # This is a bit too leaky for comfort, but we don't have any other mechanisms of
+      # knowing _why_ a particular SetNodeState request failed.
+      if deny_reason =~ /The storage node manages 10 buckets/
+        puts 'Got expected failure message, all is well'
+        break
+      end
+      if Time.now > deadline
+        flunk 'Timed out waiting for CC to give expected response'
+      end
+      sleep 1
+    end
   end
 
   def test_system_framework_able_to_get_state_with_index_0_down
