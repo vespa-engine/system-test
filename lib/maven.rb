@@ -44,7 +44,7 @@ module Maven
 
     haspom = Maven.create_pom_xml(vespa_version, tmp_sourcedir, bundle)
     admin_server.copy(tmp_sourcedir, tmp_sourcedir)
-    Maven.install_maven_parent_pom(admin_server, testcase)
+    Maven.install_maven_parent_pom(admin_server)
     bundle_content = admin_server.maven_compile(tmp_sourcedir, bundle, haspom, to_pom_version(vespa_version))
     bundle_dir = testcase.dirs.bundledir
     bundlepath = bundle_file_path(bundle_dir, bundle)
@@ -56,14 +56,8 @@ module Maven
     admin_server.copy(bundlepath, File.dirname(bundle_file_path(bundle_dir, bundle)))
   end
 
-  def Maven.install_maven_parent_pom(node, testcase)
-    # Find parent pom.xml by navigating up the directory tree and copies it to node
-    tests_root = File.expand_path("..", testcase.selfdir)
-    loop do
-      break if tests_root.end_with?("/tests") && File.exists?(File.join(tests_root, "pom.xml"))
-      tests_root = File.expand_path("..", tests_root)
-    end
-    node.maven_install_parent(tests_root)
+  def Maven.install_maven_parent_pom(node)
+    node.maven_install_parent("#{__dir__}/../tests")
   end
 
   def Maven.create_sourcedir(basedir, sourcefile, bundlename)

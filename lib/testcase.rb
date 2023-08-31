@@ -645,7 +645,7 @@ class TestCase
   end
 
   def install_maven_parent_pom(node)
-    Maven.install_maven_parent_pom(node, self)
+    Maven.install_maven_parent_pom(node)
   end
 
   def maven_command
