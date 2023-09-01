@@ -21,5 +21,13 @@ if [[ -n $(find /opt/rh -mindepth 1 -maxdepth 1 -type d -name "rh-maven*") ]]; t
   source /opt/rh/rh-maven*/enable
 fi
 
+readonly SHARED_MVN_OPTS="--threads 1C -Dvespa.version=${VESPA_VERSION} -Dmaven.repo.local=${LOCAL_M2_REPO} --batch-mode --file /opt/vespa-systemtests/tests/pom.xml"
+
+# Install parent pom
+mvn $SHARED_MVN_OPTS --non-recursive install
+# Resolve all dependencies recursively
+mvn $SHARED_MVN_OPTS dependency:resolve
+
+# TODO Remove maven_populator.rb if above Maven command downloads all necessary artifacts
 ruby /opt/vespa-systemtests/lib/maven_populator.rb --version $VESPA_VERSION --m2repo $LOCAL_M2_REPO
 
