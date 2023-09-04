@@ -27,7 +27,3 @@ readonly SHARED_MVN_OPTS="--threads 1C -Dvespa.version=${VESPA_VERSION} -Dmaven.
 mvn $SHARED_MVN_OPTS --non-recursive install
 # Resolve all dependencies recursively
 mvn $SHARED_MVN_OPTS dependency:go-offline
-
-# TODO Remove maven_populator.rb if above Maven command downloads all necessary artifacts
-ruby /opt/vespa-systemtests/lib/maven_populator.rb --version $VESPA_VERSION --m2repo $LOCAL_M2_REPO
-
