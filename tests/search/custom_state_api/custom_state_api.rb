@@ -59,6 +59,7 @@ class CustomStateApi < SearchTest
     assert_keys(["bucketdb", "documents", "documentType", "threadingservice", "maintenancecontroller", "status", "subdb"], page)
     assert_equal(1, page["bucketdb"]["numBuckets"].to_i)
     assert_bucket_db(get_page("/documentdb/test/bucketdb"))
+    assert_ready_subdb(get_page("/documentdb/test/subdb/ready"))
   end
 
   def assert_bucket_db(page)
@@ -67,8 +68,29 @@ class CustomStateApi < SearchTest
     assert_equal(1, page["buckets"].size)
   end
 
+  def assert_ready_subdb(page)
+    assert_keys(["documentmetastore", "documentstore", "attribute", "attributewriter", "index"], page)
+    assert_attribute_writer(get_page("/documentdb/test/subdb/ready/attributewriter"))
+    assert_index(get_page("/documentdb/test/subdb/ready/index"))
+  end
+
+  def assert_attribute_writer(page)
+    assert_keys(["write_contexts"], page)
+    assert(page["write_contexts"].size > 0)
+  end
+
+  def assert_index(page)
+    assert_keys(["lastSerialNum", "diskIndexes", "memoryIndexes", "write_contexts"], page)
+  end
+
   def assert_thread_pools(page)
     assert_keys(["shared", "match", "docsum", "flush", "proton", "warmup", "field_writer"], page)
+    assert_field_writer(get_page("/threadpools/field_writer"))
+  end
+
+  def assert_field_writer(page)
+    assert_keys(["type", "num_executors", "executor", "executors"], page)
+    assert(page["executors"].size > 0)
   end
 
   def assert_flush_engine(page)
