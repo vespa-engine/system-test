@@ -13,11 +13,15 @@ class FeedBlockDiskTwoNodesTest < FeedBlockDiskTwoNodesBase
 
   def test_proton_feed_block_document_v1_api_two_nodes_disklimit
     set_description("Test resource based feed block (in proton) using document v1 api, disk resource limit, and node addition for recovery")
+    return if has_active_sanitizers
+
     run_feed_block_document_v1_api_two_nodes_disklimit_test(false)
   end
 
   def test_distributor_feed_block_document_v1_api_two_nodes_disklimit
     set_description("Test resource based feed block (in distributor) using document v1 api, disk resource limit, and node addition for recovery")
+    return if has_active_sanitizers
+
     @block_feed_in_distributor = true
     run_feed_block_document_v1_api_two_nodes_disklimit_test(false)
   end
