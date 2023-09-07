@@ -8,27 +8,41 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
     set_description("Test that grouping works on struct and map fields")
   end
 
-  def extract_groups(json, fields_key_to_extract)
+  def extract_group(result, group, fields_key_to_extract)
+    value = group['value']
+    if value && group.key?('fields')
+      fields = group['fields']
+      if fields.key?(fields_key_to_extract)
+        result[group['value']] = fields[fields_key_to_extract]
+      end
+    end
+    if group.key?('children')
+      if value
+        next_result = Hash.new
+	result[value] = next_result
+	result = next_result
+      end
+      grouplists = group['children']
+      grouplists.each do | grouplist |
+        extract_grouplist(result, grouplist, fields_key_to_extract)
+      end
+    end
+  end
+
+  def extract_grouplist(result, grouplist, fields_key_to_extract)
+    grouplist['children'].each do |group|
+      extract_group(result, group, fields_key_to_extract)
+    end
+  end
+
+  def extract_groups_root(json, fields_key_to_extract)
     result = Hash.new
     if !json.nil? && json.kind_of?(Hash)
       if json.key?('root')
         root = json['root']
         if root.key?('children')
-          root['children'].each do |e|
-            if e.key?('children')
-              e['children'].each do |grouplist|
-                if grouplist.key?('children')
-                  grouplist['children'].each do |group|
-                    if group.key?('value') && group.key?('fields')
-                      fields = group['fields']
-                      if fields.key?(fields_key_to_extract)
-                        result[group['value']] = fields[fields_key_to_extract]
-                      end
-                    end
-                  end
-                end
-              end
-            end
+          root['children'].each do |group|
+            extract_group(result, group, fields_key_to_extract)
           end
         end
       end
@@ -46,7 +60,7 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
     result = search("/?#{encoded_form}")
     puts "result is #{result.xmldata}"
     json = result.json
-    groups = extract_groups(json, fields_key_to_extract)
+    groups = extract_groups_root(json, fields_key_to_extract)
     puts "result groups are #{groups}"
     assert_equal(exp_groups, groups)
   end
@@ -65,12 +79,45 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
     check_grouping("all(group(elem_array.weight) each(output(count())))", {"10"=>2,"20"=>1})
     check_grouping("all(group(elem_map.key) each(output(count())))", {"@bar"=>1, "@foo"=>2})
     check_grouping("all(group(elem_map.value.weight) each(output(count())))", {"10"=>2, "20"=>1})
-    check_grouping("all(group(elem_map{\"@foo\"}.weight) each(output(count())))", if is_streaming then {"10"=>2} else {"10"=>2,"#{nan}"=>1} end)
     check_grouping("all(group(str_int_map.key) each(output(count())))", {"@bar"=>2, "@foo"=>2})
     check_grouping("all(group(str_int_map.value) each(output(count())))", {"10"=>1, "20"=>2, "30"=>1})
-    check_grouping("all(group(str_int_map{\"@foo\"}) each(output(count())))", if is_streaming then {"10"=>1, "20"=>1} else {"10"=>1, "20"=>1, "#{nan}"=>1} end)
-    check_grouping("all(group(str_int_map.key) each(output(sum(str_int_map.value))))", if is_streaming then {"@bar"=>80, "@foo"=>80} else {"@bar"=>50, "@foo"=>30} end, "sum(str_int_map.value)")
-    check_grouping("all(group(str_str_map{\"@foo\"}) each(output(count())))", if is_streaming then {"@bar"=>1, ""=>1} else {"@bar"=>1, ""=>2} end)
+    check_grouping("all(group(strcat(str_int_map.key, str_int_map.value)) each(output(count())))",
+                   {""=>1, "@foo@bar1020"=>1, "@foo@bar2030"=>1})
+    check_grouping("all(group(str_int_map.value + int_array) each(output(count())))",
+                   {"20"=>1, "30"=>1, "40"=>2})
+    if is_streaming
+        check_grouping("all(group(str_int_map{\"@foo\"}) each(output(count())))", {"10"=>1, "20"=>1})
+        check_grouping("all(group(str_str_map{\"@foo\"}) each(output(count())))", {"@bar"=>1, ""=>1})
+        check_grouping("all(group(elem_map{\"@foo\"}.weight) each(output(count())))", {"10"=>2})
+        check_grouping("all(group(str_int_map.key) each(output(sum(str_int_map.value))))", {"@bar"=>80, "@foo"=>80}, "sum(str_int_map.value)")
+        check_grouping("all(group(str_int_map.key) each(group(str_int_map.value) each(output(sum(str_int_map.value)))))",
+                       {"@bar"=>{"10"=>30, "20"=>80, "30"=>50},
+                        "@foo"=>{"10"=>30, "20"=>80, "30"=>50}},
+                       "sum(str_int_map.value)")
+        check_grouping("all(group(str_int_map.key) each(group(strcat(str_int_map.key,str_int_map.value)) each(output(sum(str_int_map.value)))))",
+                       {"@bar"=>{"@foo@bar1020"=>30, "@foo@bar2030"=>50},
+                        "@foo"=>{"@foo@bar1020"=>30, "@foo@bar2030"=>50}},
+                       "sum(str_int_map.value)")
+        check_grouping("all(group(str_int_map.key) each(group(str_int_map.value + int_array) each(output(count()))))",
+                       {"@bar"=>{"20"=>1, "30"=>1, "40"=>2},
+                        "@foo"=>{"20"=>1, "30"=>1, "40"=>2}})
+    else
+        check_grouping("all(group(str_int_map{\"@foo\"}) each(output(count())))", {"10"=>1, "20"=>1, "#{nan}"=>1})
+        check_grouping("all(group(str_str_map{\"@foo\"}) each(output(count())))", {"@bar"=>1, ""=>2})
+        check_grouping("all(group(elem_map{\"@foo\"}.weight) each(output(count())))", {"10"=>2,"#{nan}"=>1})
+        check_grouping("all(group(str_int_map.key) each(output(sum(str_int_map.value))))", {"@bar"=>50, "@foo"=>30}, "sum(str_int_map.value)")
+        check_grouping("all(group(str_int_map.key) each(group(str_int_map.value) each(output(sum(str_int_map.value)))))",
+                       {"@bar"=>{"20"=>20, "30"=>30},
+                        "@foo"=>{"10"=>10, "20"=>20}},
+                       "sum(str_int_map.value)")
+        check_grouping("all(group(str_int_map.key) each(group(strcat(str_int_map.key,str_int_map.value)) each(output(sum(str_int_map.value)))))",
+                       {"@bar"=>{"@bar20"=>20, "@bar30"=>30},
+                        "@foo"=>{"@foo10"=>10, "@foo20"=>20}},
+                       "sum(str_int_map.value)")
+        check_grouping("all(group(str_int_map.key) each(group(str_int_map.value + int_array) each(output(count()))))",
+                       {"@bar"=>{"30"=>1, "40"=>2},
+                        "@foo"=>{"20"=>1, "30"=>2}})
+    end
     check_grouping("all(group(\"my_group\") each(output(sum(str_int_map{\"@foo\"}))))", {"my_group"=>nan+30}, "sum(str_int_map{\"@foo\"})")
     unless is_streaming
       check_grouping("all(group(elem_map{attribute(key1)}.weight) each(output(count())))", {"10"=>2, "#{nan}"=>1})
