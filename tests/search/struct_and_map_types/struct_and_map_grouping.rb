@@ -90,6 +90,10 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
 		       {"@bar"=>{"10"=>30, "20"=>80, "30"=>50},
 	                "@foo"=>{"10"=>30, "20"=>80, "30"=>50}},
 	               "sum(str_int_map.value)")
+        check_grouping("all(group(str_int_map.key) each(group(strcat(str_int_map.key,str_int_map.value)) each(output(sum(str_int_map.value)))))",
+		       {"@bar"=>{"@foo@bar1020"=>30, "@foo@bar2030"=>50},
+	                "@foo"=>{"@foo@bar1020"=>30, "@foo@bar2030"=>50}},
+	               "sum(str_int_map.value)")
     else
         check_grouping("all(group(str_int_map{\"@foo\"}) each(output(count())))", {"10"=>1, "20"=>1, "#{nan}"=>1})
         check_grouping("all(group(str_str_map{\"@foo\"}) each(output(count())))", {"@bar"=>1, ""=>2})
@@ -97,6 +101,10 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
         check_grouping("all(group(str_int_map.key) each(group(str_int_map.value) each(output(sum(str_int_map.value)))))",
 		       {"@bar"=>{"20"=>20, "30"=>30},
 	                "@foo"=>{"10"=>10, "20"=>20}},
+	               "sum(str_int_map.value)")
+        check_grouping("all(group(str_int_map.key) each(group(strcat(str_int_map.key,str_int_map.value)) each(output(sum(str_int_map.value)))))",
+		       {"@bar"=>{"@bar20"=>20, "@bar30"=>30},
+	                "@foo"=>{"@foo10"=>10, "@foo20"=>20}},
 	               "sum(str_int_map.value)")
     end
     check_grouping("all(group(\"my_group\") each(output(sum(str_int_map{\"@foo\"}))))", {"my_group"=>nan+30}, "sum(str_int_map{\"@foo\"})")
