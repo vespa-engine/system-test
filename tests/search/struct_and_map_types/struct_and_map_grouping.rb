@@ -83,6 +83,8 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
     check_grouping("all(group(str_int_map.value) each(output(count())))", {"10"=>1, "20"=>2, "30"=>1})
     check_grouping("all(group(strcat(str_int_map.key, str_int_map.value)) each(output(count())))",
                    {""=>1, "@foo@bar1020"=>1, "@foo@bar2030"=>1})
+    check_grouping("all(group(str_int_map.value + int_array) each(output(count())))",
+                   {"20"=>1, "30"=>1, "40"=>2})
     if is_streaming
         check_grouping("all(group(str_int_map{\"@foo\"}) each(output(count())))", {"10"=>1, "20"=>1})
         check_grouping("all(group(str_str_map{\"@foo\"}) each(output(count())))", {"@bar"=>1, ""=>1})
