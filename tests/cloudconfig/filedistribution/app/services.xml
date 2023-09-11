@@ -8,6 +8,7 @@
     <handler bundle="com.yahoo.vespatest.ExtraHitSearcher" id="com.yahoo.vespatest.ExtraHitSearcher">
       <config name="com.yahoo.vespatest.extra-hit">
         <path>dirWithFiles</path>
+        <optionalPath>dirWithFiles2</optionalPath>
       </config>
     </handler>
     <nodes>

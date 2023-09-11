@@ -2,3 +2,5 @@ package=com.yahoo.vespatest
 
 exampleString string default="Hello World"
 path path
+optionalPath path optional
+optionalPathEmpty path optional

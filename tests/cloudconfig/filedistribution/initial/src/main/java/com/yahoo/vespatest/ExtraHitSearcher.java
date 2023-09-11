@@ -9,6 +9,10 @@ import com.yahoo.search.searchchain.Execution;
 import com.yahoo.vespatest.ExtraHitConfig;
 import com.yahoo.component.ComponentId;
 
+import java.nio.file.Path;
+import java.util.Optional;
+
+
 public class ExtraHitSearcher extends Searcher {
 
     final String title;
@@ -16,6 +20,12 @@ public class ExtraHitSearcher extends Searcher {
     public ExtraHitSearcher(ComponentId id, ExtraHitConfig config) {
         super(id);
         title = "Searcher says: " + config.exampleString();
+        Path path = config.path();
+        Optional<Path> optionalPath = config.optionalPath();
+        Optional<Path> optionalPathEmpty = config.optionalPathEmpty();
+        System.out.println("path=" + path);
+        System.out.println("optionalPath=" + optionalPath.get());
+        System.out.println("optionalPathEmpty=" + optionalPathEmpty);
     }
 
     @Override
