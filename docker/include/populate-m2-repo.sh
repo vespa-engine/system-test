@@ -21,12 +21,16 @@ if [[ -n $(find /opt/rh -mindepth 1 -maxdepth 1 -type d -name "rh-maven*") ]]; t
   source /opt/rh/rh-maven*/enable
 fi
 
-readonly MVNW=/opt/vespa-systemtests/tests/mvnw
+readonly MVNW=/tmp/mvnw
 readonly MVN_VERSION=3.8.8
-readonly SHARED_MVN_OPTS="--threads 1C -Dvespa.version=${VESPA_VERSION} -Dmaven.repo.local=${LOCAL_M2_REPO} --batch-mode --file /opt/vespa-systemtests/tests/pom.xml"
+readonly TESTS_ROOT=/opt/vespa-systemtests
+readonly SHARED_MVN_OPTS="--threads 1C -Dvespa.version=${VESPA_VERSION} -Dmaven.repo.local=${LOCAL_M2_REPO} --batch-mode --file ${TESTS_ROOT}/tests/pom.xml"
 # Install Maven Wrapper
-mvn $SHARED_MVN_OPTS --show-version wrapper:wrapper -Dmaven=$MVN_VERSION
+cp $TESTS_ROOT/tests/pom.xml /tmp/pom.parent.xml
+mvn --file /tmp/pom.parent.xml $SHARED_MVN_OPTS --show-version --non-recursive -Dmaven=$MVN_VERSION wrapper:wrapper
 # Install parent pom
 $MVNW $SHARED_MVN_OPTS --show-version --non-recursive install
 # Resolve all dependencies recursively
 $MVNW $SHARED_MVN_OPTS dependency:go-offline
+# Cleanup
+rm -rf $MVNW /tmp/mvnw.cmd /tmp/.mvn/
