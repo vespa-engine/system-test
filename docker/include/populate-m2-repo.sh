@@ -24,7 +24,7 @@ fi
 readonly MVNW=/tmp/mvnw
 readonly MVN_VERSION=3.8.8
 readonly TESTS_ROOT=/opt/vespa-systemtests
-readonly SHARED_MVN_OPTS="--threads 1C -Dvespa.version=${VESPA_VERSION} -Dmaven.repo.local=${LOCAL_M2_REPO} --batch-mode --file ${TESTS_ROOT}/tests/pom.xml"
+readonly SHARED_MVN_OPTS="--threads 1 -Dvespa.version=${VESPA_VERSION} -Dmaven.repo.local=${LOCAL_M2_REPO} --batch-mode --file ${TESTS_ROOT}/tests/pom.xml"
 # Install Maven Wrapper
 cp $TESTS_ROOT/tests/pom.xml /tmp/pom.parent.xml
 mvn --file /tmp/pom.parent.xml $SHARED_MVN_OPTS --show-version --non-recursive -Dmaven=$MVN_VERSION wrapper:wrapper
