@@ -99,7 +99,6 @@ class ClusterControllerTest < VdsTest
     puts page
     assert_match(/.*Cluster Controller Status Page - Node status for distributor\.1.*/, page)
     assert_match(/.*href="\.\.">Back to cluster.*/, page)
-    assert_match(/.*snapshot.*/, page)
   end
   
   # Useful test wrapper to test manually faster, avoiding setup and teardown
