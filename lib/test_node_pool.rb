@@ -94,7 +94,7 @@ class TestNodePool
     nodes.each do |node|
       begin
         TCPSocket.new(node, TestBase::DRUBY_REMOTE_PORT).close
-      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, SocketError
+      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ETIMEDOUT, SocketError
         @log.warn "Unable to free node at #{node}:#{TestBase::DRUBY_REMOTE_PORT} due to connection failure. Node will be dangling and not used in further tests."
         next
       end
