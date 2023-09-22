@@ -1,0 +1,33 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema doc {
+
+  document doc {
+
+    field text type string {
+      indexing: index | summary
+    }
+
+  }
+
+  field embedding type tensor<int8>(dt{},x[4]) {
+      indexing: input text | embed colbert | attribute
+  }
+
+  rank-profile default {
+    inputs {
+      query(qt) tensor<float>(qt{},x[32])
+   }
+
+    first-phase {
+      expression: nativeRank(text) 
+    }
+
+    summary-features {
+      query(qt)
+      attribute(embedding)
+    }
+
+  }
+
+}

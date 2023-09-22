@@ -41,6 +41,13 @@ class Embedding < IndexedStreamingSearchTest
       param('transformer-output', 'output_0')
   end
 
+  def colbert_embedder_component
+     Component.new('colbert').
+       type('colbert-embedder').
+       param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/vespa-colMiniLM-L-6-dynamic-quantized.onnx'}).
+       param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/e5-small-v2/tokenizer.json'})
+    end
+
   def test_default_embedding
     deploy_app(
       SearchApp.new.
@@ -91,6 +98,22 @@ class Embedding < IndexedStreamingSearchTest
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_huggingface_tokens
     verify_huggingface_embedding
+  end
+
+  def test_colbert_embedding
+    deploy_app(
+      SearchApp.new.
+        container(
+          Container.new('default').
+            component(colbert_embedder_component).
+            search(Searching.new).
+            docproc(DocumentProcessing.new).
+            jvmoptions('-Xms4g -Xmx4g')).
+        sd(selfdir + 'app_colbert_embedder/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start
+    feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
+    verify_colbert_embedding
   end
 
 
@@ -154,6 +177,16 @@ class Embedding < IndexedStreamingSearchTest
       actual = attributeFeature['values'][i]
       assert((expected - actual).abs < 1e-5, "#{expected} != #{actual} at index #{i}")
     }
+  end
+
+  def verify_colbert_embedding
+    result = search("?query=text:hello&input.query(qt)=embed(colbert, \"Hello%20world\")&format=json&format.tensors=short-value").json
+    queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(qt)"]
+    attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding)"]
+    puts "queryFeature: '#{queryFeature}'"
+    assert_equal(32, queryFeature.length)
+    puts "attributeFeature: '#{attributeFeature}'"
+    assert_equal(5, attributeFeature.length)
   end
 
   def teardown
