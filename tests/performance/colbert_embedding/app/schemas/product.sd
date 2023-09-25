@@ -1,0 +1,84 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema product {
+
+    document product {
+
+        field locale type string {
+            indexing: "en" | set_language
+        }
+
+        field id type string {
+            indexing: summary | index 
+            rank:filter
+            match:word
+        }
+
+        field title type string {
+            indexing: summary
+        }
+
+        field description type string {
+            indexing: summary
+        }
+
+        field bullets type string {
+            indexing: summary
+        }
+
+        field brand type string {
+            indexing: summary
+        }
+
+        field color type string {
+            indexing: summary
+        }
+
+    }
+
+    field colbert_embedding type tensor<bfloat16>(dt{}, x[32]) {
+        indexing: input title | embed col | attribute
+    }
+
+    field colbert_embedding_fast type tensor<bfloat16>(dt{}, x[32]) {
+        indexing: input title | embed col | attribute
+        attribute: fast-rank
+    }
+
+    rank-profile default {
+        inputs {
+            query(qt) tensor<float>(qt{},x[32])
+        } 
+    }
+
+    rank-profile max-sim-default inherits default {
+        first-phase {
+                expression {
+                    sum(
+                        reduce(
+                            sum(
+                                query(qt) * cell_cast(attribute(colbert_embedding),float), x
+                             ),
+                             max, dt
+                         ),
+                        qt
+                    )
+                }
+        }
+    }
+    rank-profile max-sim-fast inherits default {
+        first-phase {
+                expression {
+                    sum(
+                        reduce(
+                            sum(
+                                query(qt) * cell_cast(attribute(colbert_embedding_fast),float), x
+                             ),
+                             max, dt
+                         ),
+                        qt
+                    )
+                }
+        }
+    }
+ }

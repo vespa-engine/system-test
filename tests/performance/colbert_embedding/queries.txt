@@ -1,0 +1,1 @@
+/search/?query=sddocname:product&hits=0&input.query%28qt%29=embed%28hello+world+ipad+2%29

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+  <admin version="2.0">
+    <adminserver hostalias="node1"/>
+  </admin>
+  <container id="default" version="1.0">
+    <component id="col" type="colbert-embedder">
+      <transformer-model url="https://data.vespa.oath.cloud/onnx_models/vespa-colMiniLM-L-6-dynamic-quantized.onnx"/>
+      <tokenizer-model url="https://data.vespa.oath.cloud/onnx_models/e5-small-v2/tokenizer.json"/>
+    </component>
+    <document-api/>
+    <search/>
+    <nodes>
+      <jvm options="-Xms4g -Xmx4g" />
+      <node hostalias="node1"/>
+    </nodes>
+  </container>
+
+  <content id="commerce" version="1.0">
+    <redundancy>1</redundancy>
+    <documents>
+      <document type="product" mode="index" />
+    </documents>
+    <nodes>
+      <node hostalias="node1" distribution-key="0"/>
+    </nodes>
+  </content>
+
+</services>
