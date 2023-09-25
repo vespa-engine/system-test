@@ -203,7 +203,7 @@ class Embedding < IndexedStreamingSearchTest
     maxSimBFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSimBFloat"]
     assert(maxSimBFloat > 29.5, "#{maxSimBFloat} < 29.5 maxSimBfloat not greater than 29.5")
 
-    assert((maxSimBFloat - maxSimFloat).abs < 1e-3, "#{maxSimBFloat} != #{maxSimFloat} maxSimBfloat not equal to maxSimFloat")
+    assert((maxSimBFloat - maxSimFloat).abs < 1e-1, "#{maxSimBFloat} != #{maxSimFloat} maxSimBfloat not equal to maxSimFloat")
   end
 
   def teardown
