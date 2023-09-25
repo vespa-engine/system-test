@@ -17,7 +17,7 @@ schema doc {
       indexing: input text | embed colbert | attribute
   }
 
-  field embedding_float type tensor<bfloat16>(dt{},x[32]) {
+  field embedding_float type tensor<float>(dt{},x[32]) {
       indexing: input text | embed colbert | attribute
   }
 
