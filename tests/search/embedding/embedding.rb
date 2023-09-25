@@ -182,11 +182,28 @@ class Embedding < IndexedStreamingSearchTest
   def verify_colbert_embedding
     result = search("?query=text:hello&input.query(qt)=embed(colbert, \"Hello%20world\")&format=json&format.tensors=short-value").json
     queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(qt)"]
-    attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding)"]
-    puts "queryFeature: '#{queryFeature}'"
     assert_equal(32, queryFeature.length)
-    puts "attributeFeature: '#{attributeFeature}'"
-    assert_equal(5, attributeFeature.length)
+    puts result
+    embedding_compressed = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding_compressed)"]
+    embedding_bfloat = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding_bfloat)"]
+    embedding_float = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding_float)"]
+
+    assert_equal(5, embedding_compressed.length)
+    assert_equal(4, embedding_compressed['0'].length)
+
+    assert_equal(5, embedding_bfloat.length)
+    assert_equal(32, embedding_bfloat['0'].length)
+
+    assert_equal(5, embedding_float.length)
+    assert_equal(32, embedding_float['0'].length)
+
+    maxSimFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSimFloat"]
+    assert(maxSimFloat > 29.5, "#{maxSimFloat} < 29.5 maxSimFloat not greater than 29.5")
+
+    maxSimBFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSimBFloat"]
+    assert(maxSimBFloat > 29.5, "#{maxSimBFloat} < 29.5 maxSimBfloat not greater than 29.5")
+
+    assert((maxSimBFloat - maxSimFloat).abs < 1e-3, "#{maxSimBFloat} != #{maxSimFloat} maxSimBfloat not equal to maxSimFloat")
   end
 
   def teardown
