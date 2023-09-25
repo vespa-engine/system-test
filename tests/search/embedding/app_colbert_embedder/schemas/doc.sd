@@ -10,14 +10,49 @@ schema doc {
 
   }
 
-  field embedding type tensor<int8>(dt{},x[4]) {
+  field embedding_compressed type tensor<int8>(dt{},x[4]) {
+      indexing: input text | embed colbert | attribute
+  }
+  field embedding_bfloat type tensor<bfloat16>(dt{},x[32]) {
+      indexing: input text | embed colbert | attribute
+  }
+
+  field embedding_float type tensor<bfloat16>(dt{},x[32]) {
       indexing: input text | embed colbert | attribute
   }
 
   rank-profile default {
     inputs {
       query(qt) tensor<float>(qt{},x[32])
-   }
+    }
+
+    function maxSimBFloat() {
+      expression {
+         sum(
+            reduce(
+                sum(
+                    query(qt) * cell_cast(attribute(embedding_bfloat),float), x
+                 ),
+                 max, dt
+            ),
+            qt
+          )
+      }
+    }
+
+    function maxSimFloat() {
+      expression {
+         sum(
+            reduce(
+                sum(
+                    query(qt) * attribute(embedding_float), x
+                 ),
+                 max, dt
+            ),
+            qt
+          )
+      }
+    }
 
     first-phase {
       expression: nativeRank(text) 
@@ -25,7 +60,11 @@ schema doc {
 
     summary-features {
       query(qt)
-      attribute(embedding)
+      maxSimBFloat
+      maxSimFloat
+      attribute(embedding_compressed)
+      attribute(embedding_bfloat)
+      attribute(embedding_float)
     }
 
   }
