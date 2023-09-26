@@ -116,7 +116,7 @@ class VespaDeploy < CloudConfigTest
 expected = <<EOS;
 Preparing session #{invalid_session_id} using #{@session_path}/#{invalid_session_id}/prepared
 Request failed. HTTP status code: 404
-Session 9999 was not found
+Local session 9999 for 'default' was not found
 EOS
     assert_equal(expected, output)
 
@@ -151,7 +151,7 @@ EOS
 expected = <<EOS;
 Activating session #{invalid_session_id} using #{@session_path}/#{invalid_session_id}/active
 Request failed. HTTP status code: 404
-Session 9999 was not found
+Local session 9999 for 'default' was not found
 EOS
     assert_equal(expected, output)
 
