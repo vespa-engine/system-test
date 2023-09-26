@@ -188,13 +188,13 @@ class Embedding < IndexedStreamingSearchTest
     embedding_bfloat = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding_bfloat)"]
     embedding_float = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding_float)"]
 
-    assert_equal(5, embedding_compressed.length)
+    assert_equal(4, embedding_compressed.length)
     assert_equal(4, embedding_compressed['0'].length)
 
-    assert_equal(5, embedding_bfloat.length)
+    assert_equal(4, embedding_bfloat.length)
     assert_equal(32, embedding_bfloat['0'].length)
 
-    assert_equal(5, embedding_float.length)
+    assert_equal(4, embedding_float.length)
     assert_equal(32, embedding_float['0'].length)
 
     maxSimFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSimFloat"]
