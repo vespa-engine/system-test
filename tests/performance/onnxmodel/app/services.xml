@@ -6,12 +6,6 @@
   <container id="default" version="1.0">
     <document-api/>
 
-    <component id="ai.vespa.tokenizer.WordPieceTokenizer" bundle="transformers">
-      <config name="ai.vespa.tokenizer.vocabulary">
-        <vocabulary>files/bert-base-uncased-vocab.txt</vocabulary>
-      </config>
-    </component>
-
     <document-processing>
       <chain id="transformer-processing" inherits="indexing">
         <documentprocessor id="ai.vespa.processor.TransformerProcessor" bundle="transformers"/>
