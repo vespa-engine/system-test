@@ -39,6 +39,6 @@
         { "id" : "use-reconfigurable-dispatcher", "rules" : [ { "value" : true } ] },
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
         { "id" : "dynamic-heap-size", "rules" : [ { "value" : true } ] },
-        { "id" : "unknown-config-definition", "rules" : [ { "value" : "warn" } ] }
+        { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] }
     ]
 }
