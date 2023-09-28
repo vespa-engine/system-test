@@ -10,9 +10,10 @@ class ColBertEmbeddingPerfTest < PerformanceTest
   end
 
   def test_colbert
-    set_description('Benchmark feed and throughput with ColBERT with fast-rank and without')
+    set_description('Benchmark feed and query throughput with ColBERT end2end or just max sim')
     deploy(selfdir + "app")
     start
+
     feed_file = "product-search-products.jsonl.zstd"
     remote_file = "https://data.vespa.oath.cloud/sample-apps-data/#{feed_file}"
     local_file =  dirs.tmpdir + feed_file
@@ -33,23 +34,31 @@ class ColBertEmbeddingPerfTest < PerformanceTest
     container = (vespa.qrserver["0"] or vespa.container.values.first)
     runtime=30
     for clients in [1, 2, 16] do
-        run_fbench(container, clients, runtime, get_query("max-sim-default"), selfdir + "queries.txt", "normal_attribute")
-        run_fbench(container, clients, runtime, get_query("max-sim-fast"), selfdir + "queries.txt", "fast_access_attribute")
+        run_fbench(container, clients, runtime, get_query("max-sim-default"), selfdir + "queries.txt", "end2end", false)
     end
+
+    for clients in [1, 2, 16, 32] do
+         run_fbench(container, clients, runtime, get_query("max-sim-default"), selfdir + "queries_post.txt", "max_sim", true)
+    end
+
   end
 
   def get_query(rank_profile)
       "&ranking.profile=#{rank_profile}&timeout=5s"
   end
 
-  def run_fbench(qrserver, clients, runtime, append_str, queries, legend)
+  def run_fbench(qrserver, clients, runtime, append_str, queries, legend, post)
     custom_fillers = [parameter_filler("legend", legend)]
+
     system_fbench = Perf::System.new(qrserver)
     system_fbench.start
     fbench = Perf::Fbench.new(qrserver, qrserver.name, qrserver.http_port)
     fbench.max_line_size = 100000
     fbench.runtime = runtime
     fbench.clients = clients
+    if post
+        fbench.use_post = true
+    end
     fbench.append_str = append_str if !append_str.empty?
     profiler_start
     fbench.query(queries)
