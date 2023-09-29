@@ -9,9 +9,7 @@ schema product {
         }
 
         field id type string {
-            indexing: summary | index 
-            rank:filter
-            match:word
+            indexing: summary | attribute 
         }
 
         field title type string {
@@ -33,21 +31,20 @@ schema product {
         field color type string {
             indexing: summary
         }
-
     }
 
-    field colbert_embedding type tensor<bfloat16>(dt{}, x[32]) {
-        indexing: input title | embed col | attribute
-    }
+	document-summary id {
+        summary id type string {}
+	}
 
-    field colbert_embedding_fast type tensor<bfloat16>(dt{}, x[32]) {
+    field colbert_embedding type tensor<bfloat16>(dt{}, x[128]) {
         indexing: input title | embed col | attribute
         attribute: fast-rank
     }
 
     rank-profile default {
         inputs {
-            query(qt) tensor<float>(qt{},x[32])
+            query(qt) tensor<float>(qt{},x[128])
         } 
     }
 
@@ -66,19 +63,4 @@ schema product {
                 }
         }
     }
-    rank-profile max-sim-fast inherits default {
-        first-phase {
-                expression {
-                    sum(
-                        reduce(
-                            sum(
-                                query(qt) * cell_cast(attribute(colbert_embedding_fast),float), x
-                             ),
-                             max, dt
-                         ),
-                        qt
-                    )
-                }
-        }
-    }
- }
+}

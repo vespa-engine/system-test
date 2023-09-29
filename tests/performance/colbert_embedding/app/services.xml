@@ -5,13 +5,13 @@
   </admin>
   <container id="default" version="1.0">
     <component id="col" type="colbert-embedder">
-      <transformer-model url="https://data.vespa.oath.cloud/onnx_models/vespa-colMiniLM-L-6-dynamic-quantized.onnx"/>
-      <tokenizer-model url="https://data.vespa.oath.cloud/onnx_models/e5-small-v2/tokenizer.json"/>
+      <transformer-model url="https://data.vespa.oath.cloud/onnx_models/colbert_v2.onnx"/>
+      <tokenizer-model url="https://data.vespa.oath.cloud/onnx_models/bert_tokenizer.json"/>
     </component>
     <document-api/>
     <search/>
     <nodes>
-      <jvm options="-Xms4g -Xmx4g" />
+      <jvm options="-Xms5g -Xmx5g" />
       <node hostalias="node1"/>
     </nodes>
   </container>
