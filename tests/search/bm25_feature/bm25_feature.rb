@@ -42,13 +42,11 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     assert_no_bm25_array_scores
 
     redeploy(SearchApp.new.sd("#{@test_dir}1/test.sd"))
-    assert_no_bm25_scores
-    assert_no_bm25_array_scores
-
-    # Trigger dump from memory to disk
-    vespa.search["search"].first.trigger_flush
-    # Trigger fusion
-    vespa.search["search"].first.trigger_flush
+    60.times do |i|
+      puts "Waiting for interleaved features (#{i + 1})"
+      break unless get_pending_urgent_flush
+      sleep 1
+    end
     assert_bm25_scores(3, 4)
     assert_bm25_array_scores(3, 8)
   end
@@ -136,6 +134,11 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     for i in 0...exp_scores.length do
       assert_relevancy(result, exp_scores[i], i)
     end
+  end
+
+  def get_pending_urgent_flush
+    result = vespa.search['search'].first.get_state_v1_custom_component("//documentdb/test/subdb/ready/index")
+    return result['pending_urgent_flush']
   end
 
   def teardown
