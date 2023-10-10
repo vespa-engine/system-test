@@ -1,6 +1,6 @@
-cd1a28704fa0af48e26ce574939189f8  vespa.config.search.rank-profiles.def
-dd052b6b384b47f4863427f52dc9baab  vespa.config.search.indexschema.def
-d2015faf357cb9be4ed242fb04e48a7f  vespa.config.search.attributes.def
-c2b3bcc53bc498146b49799e3056466b  vespa.config.search.summary.def
-02e36ee891aee58dad31fde5bcd3226c  vespa.config.search.summary.juniperrc.def
-a46efc990994404d95e746cf11b0e54c  document.documenttypes.def
+e0c3c429307180cb2661ad2958db2851  vespa.config.search.rank-profiles.def
+41dec265ac270e36016406a5b15d5de6  vespa.config.search.indexschema.def
+6340ddc624d9b151e8a5876f32f8b65e  vespa.config.search.attributes.def
+c52a1fc71bc11e4aed133e6432e609a3  vespa.config.search.summary.def
+1afa61b342362c59c618ed9869a473b0  vespa.config.search.summary.juniperrc.def
+63c77f1cba34ec13f434f0af7dda32f0  document.documenttypes.def
