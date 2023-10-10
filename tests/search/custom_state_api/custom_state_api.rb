@@ -80,7 +80,7 @@ class CustomStateApi < SearchTest
   end
 
   def assert_index(page)
-    assert_keys(["lastSerialNum", "diskIndexes", "memoryIndexes", "write_contexts"], page)
+    assert_keys(["lastSerialNum", "diskIndexes", "memoryIndexes", "pending_urgent_flush", "write_contexts"], page)
   end
 
   def assert_thread_pools(page)
