@@ -62,11 +62,13 @@ class ContainerHttp < PerformanceTest
         http(
           Http.new.
             server(
-              Server.new('http', @container.http_port)).
+              Server.new('http', @container.http_port).
+                config(ConfigOverride.new("jdisc.http.connector").
+                  add('http2', ConfigValues.new.add('maxConcurrentStreams', 2048)))).
             server(
               Server.new('https', '4443').
                 config(ConfigOverride.new("jdisc.http.connector").
-                  add("http2Enabled", true)).
+                  add("http2Enabled", true).add('http2', ConfigValues.new.add('maxConcurrentStreams', 2048))).
                 ssl(Ssl.new(private_key_file = "#{dirs.tmpdir}#{KEY_FILE}", certificate_file = "#{dirs.tmpdir}#{CERT_FILE}", ca_certificates_file=nil, client_authentication='disabled')))))
     deploy_container_app(app)
   end
@@ -91,10 +93,10 @@ class ContainerHttp < PerformanceTest
     run_h2load_benchmark(4,  32, 5, HTTP2)
     run_h2load_benchmark(4,  64, 5, HTTP2)
     run_h2load_benchmark(4, 128, 5, HTTP2)
-    run_h2load_benchmark(1,  32, 5, HTTP2)
-    run_h2load_benchmark(1,  64, 5, HTTP2)
     run_h2load_benchmark(1, 128, 5, HTTP2)
     run_h2load_benchmark(1, 256, 5, HTTP2)
+    run_h2load_benchmark(1, 512, 5, HTTP2)
+    run_h2load_benchmark(1, 1024, 5, HTTP2)
   end
 
   def run_fbench_benchmark(clients, connection)
