@@ -222,11 +222,12 @@ class ClusterControllerTest < VdsTest
     while true
       buckets = get_cluster_v2_storage_bucket_count(0, deadline)
       puts buckets
-      # At this point, bucket count will be either 0 or 2, but shall eventually be stable at 2
-      break if buckets != 0
+      # At this point, bucket count will be either 0, 1 or 2, but shall eventually be stable at 2
+      # It's possible that the internal DB bucket count snapshot happens _after_ doc 1 has been fed
+      # but _before_ doc 2 has been fed, hence the possibility of observing 1 document.
+      break if buckets == 2
       sleep 1
     end
-    assert_equal(2, buckets)
 
     # Restarting a content node should never surface an outdated bucket count through the API
     vespa.stop_content_node('storage', '0')
