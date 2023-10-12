@@ -136,7 +136,7 @@ class RangeSearchPerfTest < PerformanceTest
                 container_query_file,
                 {:runtime => 10,
                  :clients => 1,
-                 :append_str => "&timeout=10s",
+                 :append_str => "&timeout=10s&ranking.profile=unranked",
                  :result_file => result_file},
                 fillers)
     profiler_report(label)
