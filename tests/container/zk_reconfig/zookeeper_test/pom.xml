@@ -13,10 +13,6 @@
         <relativePath>../../../pom.xml</relativePath>
     </parent>
 
-    <properties>
-        <zookeeper.version>3.8.3</zookeeper.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.yahoo.vespa</groupId>
@@ -73,7 +69,6 @@
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
-            <version>${zookeeper.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
