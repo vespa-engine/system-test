@@ -55,20 +55,22 @@ class RangeSearchPerfTest < PerformanceTest
       for v in @values_in_range do
         hits = calc_hits(r)
         if v <= hits
-          query_and_profile(r, v, 0)
+          query_and_profile(r, v, true, 0)
         end
       end
     end
     for f in @hits_ratios do
-      for r in @hits_ratios do
-        if f != r
-          query_and_profile(r, 100, f)
+      for r in [100, 200, 500] do
+        for fs in [true, false] do
+          if f != r
+            query_and_profile(r, 100, fs, f)
+          end
         end
       end
     end
   end
 
-  def get_query(range_hits_ratio, values_in_range, filter_hits_ratio)
+  def get_query(range_hits_ratio, values_in_range, fast_search, filter_hits_ratio)
     # Lower and upper must match the spec in create_docs.cpp
     lower = range_hits_ratio * 100000 + values_in_range
     upper = lower + values_in_range
@@ -76,7 +78,8 @@ class RangeSearchPerfTest < PerformanceTest
     if filter_hits_ratio > 0
       filter = " and filter = #{filter_hits_ratio}"
     end
-    "/search/?" + URI.encode_www_form("yql" => "select * from sources * where range(values, #{lower}, #{upper})#{filter}",
+    field_name = fast_search ? "values_fast" : "values_slow"
+    "/search/?" + URI.encode_www_form("yql" => "select * from sources * where range(#{field_name}, #{lower}, #{upper})#{filter}",
                                       "hits" => "0")
   end
 
@@ -85,14 +88,19 @@ class RangeSearchPerfTest < PerformanceTest
                                  "hits" => "0")
   end
 
-  def query_file_name(range_hits_ratio, values_in_range, filter_hits_ratio)
-    dirs.tmpdir + "query_r#{range_hits_ratio}_v#{values_in_range}_f#{filter_hits_ratio}.txt"
+  def get_label(range_hits_ratio, values_in_range, fast_search, filter_hits_ratio)
+    "query_r#{range_hits_ratio}_v#{values_in_range}_fs#{fast_search}_f#{filter_hits_ratio}"
   end
 
-  def write_query_file(range_hits_ratio, values_in_range, filter_hits_ratio)
-    file_name = query_file_name(range_hits_ratio, values_in_range, filter_hits_ratio)
+  def query_file_name(range_hits_ratio, values_in_range, fast_search, filter_hits_ratio)
+    label = get_label(range_hits_ratio, values_in_range, fast_search, filter_hits_ratio)
+    dirs.tmpdir + "#{label}.txt"
+  end
+
+  def write_query_file(range_hits_ratio, values_in_range, fast_search, filter_hits_ratio)
+    file_name = query_file_name(range_hits_ratio, values_in_range, fast_search, filter_hits_ratio)
     File.open(file_name, 'w') do |f|
-      f.puts(get_query(range_hits_ratio, values_in_range, filter_hits_ratio))
+      f.puts(get_query(range_hits_ratio, values_in_range, fast_search, filter_hits_ratio))
     end
     file_name
   end
@@ -100,11 +108,13 @@ class RangeSearchPerfTest < PerformanceTest
   def validate_queries
     for r in @hits_ratios do
       for v in @values_in_range do
-        hits = calc_hits(r)
-        if v <= hits
-          query = get_query(r, v, 0)
-          puts query
-          assert_hitcount(query, hits)
+        for fs in [true, false] do
+          hits = calc_hits(r)
+          if v <= hits
+            query = get_query(r, v, fs, 0)
+            puts query
+            assert_hitcount(query, hits)
+          end
         end
       end
     end
@@ -122,15 +132,16 @@ class RangeSearchPerfTest < PerformanceTest
     dest_file = dest_dir + "/" + File.basename(source_file)
   end
 
-  def query_and_profile(range_hits_ratio, values_in_range, filter_hits_ratio)
-    local_query_file = write_query_file(range_hits_ratio, values_in_range, filter_hits_ratio)
+  def query_and_profile(range_hits_ratio, values_in_range, fast_search, filter_hits_ratio)
+    local_query_file = write_query_file(range_hits_ratio, values_in_range, fast_search, filter_hits_ratio)
     container_query_file = copy_to_container(local_query_file)
-    label = "query_r#{range_hits_ratio}_v#{values_in_range}_f#{filter_hits_ratio}"
+    label = get_label(range_hits_ratio, values_in_range, fast_search, filter_hits_ratio)
     result_file = dirs.tmpdir + "fbench_result_#{label}.txt"
-    fillers = [parameter_filler("range_hits_ratio", range_hits_ratio),
+    fillers = [parameter_filler("label", label),
+               parameter_filler("range_hits_ratio", range_hits_ratio),
                parameter_filler("values_in_range", values_in_range),
-               parameter_filler("filter_hits_ratio", filter_hits_ratio),
-               parameter_filler("fast_search", true)]
+               parameter_filler("fast_search", fast_search),
+               parameter_filler("filter_hits_ratio", filter_hits_ratio)]
     profiler_start
     run_fbench2(@container,
                 container_query_file,
