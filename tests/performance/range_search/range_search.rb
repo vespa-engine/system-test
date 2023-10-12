@@ -24,7 +24,7 @@ class RangeSearchPerfTest < PerformanceTest
     # This matches the documents created by create_docs.cpp
     @hits_ratios = [1, 10, 50, 100, 200, 500]
     @values_in_range = [1, 10, 100, 1000, 10000]
-    @num_docs = 5000000
+    @num_docs = 10000000
     feed_docs
     validate_queries
     run_query_and_profile
