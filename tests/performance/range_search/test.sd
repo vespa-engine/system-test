@@ -1,19 +1,57 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 schema test {
   document test {
-    field values_fast type array<int> {
+    # The following 5 fields has different number of unique values in the ranges ('values_in_range') used when querying:
+    # [1, 10, 100, 1000, 10000]
+    field v_1 type int {
+      indexing: attribute | summary
+      rank: filter
+    }
+    field v_10 type int {
+      indexing: attribute | summary
+      rank: filter
+    }
+    field v_100 type int {
+      indexing: attribute | summary
+      rank: filter
+    }
+    field v_1000 type int {
+      indexing: attribute | summary
+      rank: filter
+    }
+    field v_10000 type int {
+      indexing: attribute | summary
+      rank: filter
+    }
+    field filter type int {
       indexing: attribute | summary
       attribute: fast-search
       rank: filter
     }
-    field values_slow type array<int> {
-      indexing: attribute | summary
-      rank: filter
-    }
-    field filter type array<int> {
-      indexing: attribute | summary
-      attribute: fast-search
-      rank: filter
-    }
+  }
+  field v_1_fs type int {
+    indexing: input v_1 | attribute | summary
+    attribute: fast-search
+    rank: filter
+  }
+  field v_10_fs type int {
+    indexing: input v_10 | attribute | summary
+    attribute: fast-search
+    rank: filter
+  }
+  field v_100_fs type int {
+    indexing: input v_100 | attribute | summary
+    attribute: fast-search
+    rank: filter
+  }
+  field v_1000_fs type int {
+    indexing: input v_1000 | attribute | summary
+    attribute: fast-search
+    rank: filter
+  }
+  field v_10000_fs type int {
+    indexing: input v_10000 | attribute | summary
+    attribute: fast-search
+    rank: filter
   }
 }

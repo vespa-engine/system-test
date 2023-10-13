@@ -78,7 +78,7 @@ class RangeSearchPerfTest < PerformanceTest
     if filter_hits_ratio > 0
       filter = " and filter = #{filter_hits_ratio}"
     end
-    field_name = fast_search ? "values_fast" : "values_slow"
+    field_name = "v_#{values_in_range}#{fast_search ? '_fs' : ''}"
     "/search/?" + URI.encode_www_form("yql" => "select * from sources * where range(#{field_name}, #{lower}, #{upper})#{filter}",
                                       "hits" => "0")
   end
