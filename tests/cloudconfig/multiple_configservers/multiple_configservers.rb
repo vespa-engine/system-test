@@ -25,7 +25,7 @@ class MultipleConfigservers < CloudConfigTest
     @session_id = 1
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.vespatest.ExtraHitSearcher")
     vespa.nodeproxies.values.each do |node|
-      override_environment_setting(node, "cloudconfig_server__zookeeper_barrier_timeout", "70")
+      override_environment_setting(node, "VESPA_CONFIGSERVER_ZOOKEEPER_BARRIER_TIMEOUT", "70")
     end
     output = deploy_multiple_app(selfdir + "banana.sd")
     @session_id = get_generation(output).to_i
@@ -213,7 +213,7 @@ class MultipleConfigservers < CloudConfigTest
   def teardown
     stop
     vespa.nodeproxies.values.each do |node|
-      override_environment_setting(node, "cloudconfig_server__zookeeper_barrier_timeout", nil)
+      override_environment_setting(node, "VESPA_CONFIGSERVER_ZOOKEEPER_BARRIER_TIMEOUT", nil)
     end
   end
 
