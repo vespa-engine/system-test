@@ -1,0 +1,29 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    field stext type string {
+      indexing: index | summary
+    }
+    field atext type array<string> {
+      indexing: index | summary
+    }
+    field wtext type weightedset<string> {
+      indexing: index | summary
+    }
+  }
+  document-summary tokens {
+    summary stext_tokens type string {
+      source: stext
+      linguistics-tokens
+    }
+    summary atext_tokens type array<string> {
+      source: atext
+      linguistics-tokens
+    }
+    summary wtext_tokens type weightedset<string> {
+      source: wtext
+      linguistics-tokens
+    }
+    from-disk
+  }
+}
