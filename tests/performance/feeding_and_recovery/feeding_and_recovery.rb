@@ -392,7 +392,7 @@ class FeedingAndRecoveryTest < PerformanceTest
   end
 
   def test_feeding_and_recovery
-    @test_params = has_active_sanitizers ? SmallParams.new : LargeParams.new
+    @test_params = has_active_sanitizers ? SmallParams.new : FullParams.new
     sniffer = MetricSniffer.new(["feeder.throughput"])
     run_elastic_feeding_benchmark(3, [sniffer]) { stop }
     dps = (sniffer.get("feeder.throughput").to_i * 0.8).to_i
