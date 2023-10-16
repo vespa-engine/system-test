@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
-class DynTeaserArrayTest < IndexedSearchTest
+class LingusticsTokensTest < IndexedSearchTest
 
   def setup
     set_owner("toregge")
@@ -16,7 +16,7 @@ class DynTeaserArrayTest < IndexedSearchTest
   end
 
   def test_lingustics_tokens
-    set_description("Test linguistics tokens dfw")
+    set_description("Test linguistics tokens summary transform for inspecting indexed tokens")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
                enable_document_api)
     start

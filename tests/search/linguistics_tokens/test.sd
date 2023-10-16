@@ -12,9 +12,6 @@ schema test {
     }
   }
   document-summary tokens {
-    summary stext type string { }
-    summary atext type array<string> { }
-    summary wtext type weightedset<string> { }
     summary stext_tokens type string {
       source: stext
       linguistics-tokens
