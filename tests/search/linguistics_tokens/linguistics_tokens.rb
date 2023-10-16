@@ -17,7 +17,13 @@ class LingusticsTokensTest < IndexedSearchTest
 
   def test_lingustics_tokens
     set_description("Test linguistics tokens summary transform for inspecting indexed tokens")
+    # Explicitly use OpenNlpLinguistics to get the same results between public and internal system test runs.
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
+               indexing_cluster("my-container").
+               container(Container.new("my-container").
+                         search(Searching.new).
+                         docproc(DocumentProcessing.new).
+                         component(Component.new("com.yahoo.language.opennlp.OpenNlpLinguistics"))).
                enable_document_api)
     start
     feed_doc("0", { :stext => "Hello world",
