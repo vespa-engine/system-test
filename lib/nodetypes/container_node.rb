@@ -173,6 +173,13 @@ class ContainerNode < VespaNode
     return lines
   end
 
+  def get_connection_log
+    lines=`find #{Environment.instance.vespa_home}/logs/vespa/access -name 'ConnectionLog.default*'| xargs -n 1 cat`.
+      encode("UTF-8", invalid: :replace)
+    return lines
+  end
+
+
   def to_uri(sub_path:, parameters:)
     "/document/v1/#{sub_path}?#{parameters.map { |k, v| "#{ERB::Util.url_encode(k.to_s)}=#{ERB::Util.url_encode(v)}" } .join("&")}"
   end

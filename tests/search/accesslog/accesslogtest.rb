@@ -43,6 +43,10 @@ class AccessLogTest < IndexedSearchTest
     assert(count >= 1)
 
     puts log.inspect
+
+    connection_log = container.get_connection_log
+    puts "CONNECTION LOG:'" + connection_log + "'"
+    assert_match(/HTTP\/1.1/, connection_log)
   end
 
   def teardown
