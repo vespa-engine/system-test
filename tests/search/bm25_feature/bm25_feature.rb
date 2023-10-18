@@ -137,7 +137,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
   end
 
   def get_pending_urgent_flush
-    result = vespa.search['search'].first.get_state_v1_custom_component("//documentdb/test/subdb/ready/index")
+    result = vespa.search['search'].first.get_state_v1_custom_component("/documentdb/test/subdb/ready/index")
     return result['pending_urgent_flush']
   end
 
