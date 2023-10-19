@@ -41,6 +41,14 @@ class GlobalPhaseRanking < IndexedStreamingSearchTest
     puts "Verify global-phase with sorting is preemptively failed"
     query = "?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=global_phase&sorting=-score"
     assert_query_errors(query, ['Sorting is not supported with global phase'])
+
+    puts "Check that using function as match-feature works as expected"
+    query = "?input.query(query_vec)=[0.5,1.5]&query=sddocname:test&ranking=global_phase_fun&summary=minimal"
+    assert_result(query, selfdir + "answers/use-fun.json", nil, fields_to_compare)
+    query = "?input.query(query_vec)=[0.5,1.5]&query=sddocname:test&ranking=global_phase_fun_mf&summary=minimal"
+    assert_result(query, selfdir + "answers/use-fun.json", nil, fields_to_compare)
+    query = "?input.query(query_vec)=[0.5,1.5]&query=sddocname:test&ranking=global_phase_fun_mfre&summary=minimal"
+    assert_result(query, selfdir + "answers/use-fun.json", nil, fields_to_compare)
   end
 
   def teardown
