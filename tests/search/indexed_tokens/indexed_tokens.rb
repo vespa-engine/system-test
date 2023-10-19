@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
-class LingusticsTokensTest < IndexedSearchTest
+class IndexedTokensTest < IndexedSearchTest
 
   def setup
     set_owner("toregge")
@@ -16,7 +16,7 @@ class LingusticsTokensTest < IndexedSearchTest
   end
 
   def test_lingustics_tokens
-    set_description("Test linguistics tokens summary transform for inspecting indexed tokens")
+    set_description("Test tokens summary transform for inspecting indexed tokens")
     # Explicitly use OpenNlpLinguistics to get the same results between public and internal system test runs.
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
                indexing_cluster("my-container").

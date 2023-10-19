@@ -14,15 +14,15 @@ schema test {
   document-summary tokens {
     summary stext_tokens type string {
       source: stext
-      linguistics-tokens
+      tokens
     }
     summary atext_tokens type array<string> {
       source: atext
-      linguistics-tokens
+      tokens
     }
     summary wtext_tokens type weightedset<string> {
       source: wtext
-      linguistics-tokens
+      tokens
     }
     from-disk
   }
