@@ -12,15 +12,15 @@ schema test {
     }
   }
   document-summary tokens {
-    summary stext_tokens type string {
+    summary stext_tokens {
       source: stext
       tokens
     }
-    summary atext_tokens type array<string> {
+    summary atext_tokens {
       source: atext
       tokens
     }
-    summary wtext_tokens type weightedset<string> {
+    summary wtext_tokens {
       source: wtext
       tokens
     }
