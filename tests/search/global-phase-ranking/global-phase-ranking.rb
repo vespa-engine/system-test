@@ -49,6 +49,18 @@ class GlobalPhaseRanking < IndexedStreamingSearchTest
     assert_result(query, selfdir + "answers/use-fun.json", nil, fields_to_compare)
     query = "?input.query(query_vec)=[0.5,1.5]&query=sddocname:test&ranking=global_phase_fun_mfre&summary=minimal"
     assert_result(query, selfdir + "answers/use-fun.json", nil, fields_to_compare)
+
+    puts "Check that using normalize_linear works as expected"
+    query = "?input.query(query_vec)=[0.5,1.5]&query=bar&ranking=global_phase_norm_lin&summary=minimal"
+    assert_result(query, selfdir + "answers/norm-lin.json", nil, fields_to_compare)
+
+    puts "Check that using reciprocal_rank works as expected"
+    query = "?input.query(query_vec)=[0.5,1.5]&query=bar&ranking=global_phase_norm_rr&summary=minimal"
+    assert_result(query, selfdir + "answers/norm-rr.json", nil, fields_to_compare)
+
+    puts "Check that using reciprocal_rank_fusion works as expected"
+    query = "?input.query(query_vec)=[0.5,1.5]&query=bar&ranking=global_phase_rrf&summary=minimal"
+    assert_result(query, selfdir + "answers/rrf.json", nil, fields_to_compare)
   end
 
   def teardown
