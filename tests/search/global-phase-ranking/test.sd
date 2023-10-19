@@ -70,4 +70,17 @@ schema test {
         }
     }
 
+    rank-profile global_phase_fun_mf inherits base {
+        function foofun() {
+            expression: sum(onnx(multiply_add).multiply_add_output - fn_query_vec)
+        }
+        global-phase {
+            expression: 1 + foofun() + 2
+            rerank-count: 3
+        }
+        match-features {
+            foofun
+        }
+    }
+
 }
