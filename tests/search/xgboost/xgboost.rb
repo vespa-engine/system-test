@@ -65,7 +65,7 @@ class XGBoostServing < IndexedSearchTest
   end
 
   def run_command_or_fail(command)
-    output = `#{command}`
+    output = `set -x; #{command} 2>&1`
     if $?.exitstatus != 0
       raise "Running command '#{command}' failed: #{output}"
     end
