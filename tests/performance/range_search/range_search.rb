@@ -62,9 +62,7 @@ class RangeSearchPerfTest < PerformanceTest
     for f in @hits_ratios do
       for r in [100, 200, 500] do
         for fs in [true, false] do
-          if f != r
-            query_and_profile(r, 100, fs, f)
-          end
+          query_and_profile(r, 100, fs, f)
         end
       end
     end
