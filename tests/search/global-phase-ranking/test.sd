@@ -2,12 +2,18 @@
 
 schema test {
     document test {
+        field title type string {
+            indexing: index
+        }
         field doc_vec type tensor<double>(d0[2]) {
             indexing: attribute | summary
         }
         field score type int {
             indexing: attribute | summary
         }
+    }
+    fieldset default {
+        fields: title
     }
 
     constant matrix {
@@ -70,17 +76,86 @@ schema test {
         }
     }
 
+    rank-profile global_phase_fun inherits base {
+        function foofun() {
+            expression: sum(onnx(multiply_add).multiply_add_output - fn_query_vec)
+        }
+        global-phase {
+            expression: 1 + foofun() + 2
+        }
+    }
     rank-profile global_phase_fun_mf inherits base {
         function foofun() {
             expression: sum(onnx(multiply_add).multiply_add_output - fn_query_vec)
         }
         global-phase {
             expression: 1 + foofun() + 2
-            rerank-count: 3
         }
         match-features {
             foofun
         }
     }
+    rank-profile global_phase_fun_mfre inherits base {
+        function foofun() {
+            expression: sum(onnx(multiply_add).multiply_add_output - fn_query_vec)
+        }
+        global-phase {
+            expression: 1 + foofun() + 2
+        }
+        match-features {
+            rankingExpression(foofun)
+        }
+    }
 
+    rank-profile just_score {
+        first-phase {
+           expression: attribute(score) * 10000
+        }
+    }
+    rank-profile just_native_rank {
+        first-phase {
+            expression: nativeRank
+        }
+    }
+    rank-profile global_phase_norm_lin inherits base {
+        first-phase {
+           expression: attribute(score) * 10000
+        }
+        global-phase {
+            expression: normalize_linear(nativeRank) + normalize_linear(firstPhase)
+        }
+        match-features {
+            firstPhase
+            nativeRank
+        }
+    }
+
+    rank-profile global_phase_norm_rr inherits base {
+        first-phase {
+           expression: attribute(score) * 10000
+        }
+        global-phase {
+            expression: reciprocal_rank(nativeRank, 49.0) + reciprocal_rank(firstPhase)
+        }
+        match-features {
+            firstPhase
+            nativeRank
+        }
+    }
+
+    rank-profile global_phase_rrf inherits base {
+        first-phase {
+           expression: attribute(score) * 10000
+        }
+        function foofun() {
+            expression: sum(onnx(multiply_add).multiply_add_output - fn_query_vec)
+        }
+        global-phase {
+            expression: reciprocal_rank_fusion(nativeRank, firstPhase, foofun)
+        }
+        match-features {
+            firstPhase
+            nativeRank
+        }
+    }
 }

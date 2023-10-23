@@ -1,0 +1,64 @@
+{
+   "root" : {
+      "id" : "toplevel",
+      "children" : [
+         {
+            "relevance" : 35,
+            "source" : "search.test",
+            "fields" : {
+               "documentid" : "id:test:test::3",
+               "sddocname" : "test"
+            },
+            "id" : "id:test:test::3"
+         },
+         {
+            "relevance" : 23,
+            "source" : "search.test",
+            "fields" : {
+               "sddocname" : "test",
+               "documentid" : "id:test:test::1"
+            },
+            "id" : "id:test:test::1"
+         },
+         {
+            "id" : "id:test:test::4",
+            "source" : "search.test",
+            "relevance" : 11,
+            "fields" : {
+               "sddocname" : "test",
+               "documentid" : "id:test:test::4"
+            }
+         },
+         {
+            "id" : "id:test:test::2",
+            "fields" : {
+               "sddocname" : "test",
+               "documentid" : "id:test:test::2"
+            },
+            "source" : "search.test",
+            "relevance" : 9
+         },
+         {
+            "fields" : {
+               "sddocname" : "test",
+               "documentid" : "id:test:test::5"
+            },
+            "relevance" : 7,
+            "source" : "search.test",
+            "id" : "id:test:test::5"
+         }
+      ],
+      "relevance" : 1,
+      "fields" : {
+         "totalCount" : 5
+      },
+      "coverage" : {
+         "coverage" : 100,
+         "documents" : 5,
+         "results" : 1,
+         "full" : true,
+         "resultsFull" : 1,
+         "nodes" : 1
+      }
+   }
+}

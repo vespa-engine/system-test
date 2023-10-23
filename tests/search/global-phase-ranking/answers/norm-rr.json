@@ -1,0 +1,84 @@
+{
+   "root" : {
+      "coverage" : {
+         "results" : 1,
+         "documents" : 5,
+         "full" : true,
+         "coverage" : 100,
+         "nodes" : 1,
+         "resultsFull" : 1
+      },
+      "children" : [
+         {
+            "relevance" : 0.0361290322580645,
+            "source" : "search",
+            "fields" : {
+               "sddocname" : "test",
+               "documentid" : "id:test:test::4",
+               "matchfeatures" : {
+                  "nativeRank" : 0.404088045944759,
+                  "firstPhase" : 40000
+               }
+            },
+            "id" : "id:test:test::4"
+         },
+         {
+            "relevance" : 0.0352328431372549,
+            "source" : "search",
+            "fields" : {
+               "sddocname" : "test",
+               "matchfeatures" : {
+                  "firstPhase" : 20000,
+                  "nativeRank" : 0.381862383599512
+               },
+               "documentid" : "id:test:test::2"
+            },
+            "id" : "id:test:test::2"
+         },
+         {
+            "source" : "search",
+            "fields" : {
+               "matchfeatures" : {
+                  "nativeRank" : 0.146073025757855,
+                  "firstPhase" : 50000
+               },
+               "documentid" : "id:test:test::5",
+               "sddocname" : "test"
+            },
+            "relevance" : 0.0349119611414693,
+            "id" : "id:test:test::5"
+         },
+         {
+            "id" : "id:test:test::3",
+            "relevance" : 0.0347409404013178,
+            "fields" : {
+               "sddocname" : "test",
+               "documentid" : "id:test:test::3",
+               "matchfeatures" : {
+                  "firstPhase" : 30000,
+                  "nativeRank" : 0.15974580091895
+               }
+            },
+            "source" : "search"
+         },
+         {
+            "relevance" : 0.0346153846153846,
+            "fields" : {
+               "documentid" : "id:test:test::1",
+               "matchfeatures" : {
+                  "firstPhase" : 10000,
+                  "nativeRank" : 0.163438790320063
+               },
+               "sddocname" : "test"
+            },
+            "source" : "search",
+            "id" : "id:test:test::1"
+         }
+      ],
+      "id" : "toplevel",
+      "fields" : {
+         "totalCount" : 5
+      },
+      "relevance" : 1
+   }
+}

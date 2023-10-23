@@ -1,0 +1,84 @@
+{
+   "root" : {
+      "children" : [
+         {
+            "relevance" : 1.75,
+            "id" : "id:test:test::4",
+            "source" : "search",
+            "fields" : {
+               "documentid" : "id:test:test::4",
+               "sddocname" : "test",
+               "matchfeatures" : {
+                  "firstPhase" : 40000,
+                  "nativeRank" : 0.404088045944759
+               }
+            }
+         },
+         {
+            "id" : "id:test:test::2",
+            "source" : "search",
+            "fields" : {
+               "matchfeatures" : {
+                  "nativeRank" : 0.381862383599512,
+                  "firstPhase" : 20000
+               },
+               "documentid" : "id:test:test::2",
+               "sddocname" : "test"
+            },
+            "relevance" : 1.16385903685318
+         },
+         {
+            "relevance" : 1,
+            "fields" : {
+               "matchfeatures" : {
+                  "nativeRank" : 0.146073025757855,
+                  "firstPhase" : 50000
+               },
+               "documentid" : "id:test:test::5",
+               "sddocname" : "test"
+            },
+            "source" : "search",
+            "id" : "id:test:test::5"
+         },
+         {
+            "relevance" : 0.552992167476104,
+            "source" : "search",
+            "fields" : {
+               "sddocname" : "test",
+               "documentid" : "id:test:test::3",
+               "matchfeatures" : {
+                  "firstPhase" : 30000,
+                  "nativeRank" : 0.15974580091895
+               }
+            },
+            "id" : "id:test:test::3"
+         },
+         {
+            "id" : "id:test:test::1",
+            "source" : "search",
+            "fields" : {
+               "sddocname" : "test",
+               "documentid" : "id:test:test::1",
+               "matchfeatures" : {
+                  "firstPhase" : 10000,
+                  "nativeRank" : 0.163438790320063
+               }
+            },
+            "relevance" : 0.0673052466078443
+         }
+      ],
+      "relevance" : 1,
+      "coverage" : {
+         "results" : 1,
+         "full" : true,
+         "documents" : 5,
+         "coverage" : 100,
+         "resultsFull" : 1,
+         "nodes" : 1
+      },
+      "id" : "toplevel",
+      "fields" : {
+         "totalCount" : 5
+      }
+   }
+}
