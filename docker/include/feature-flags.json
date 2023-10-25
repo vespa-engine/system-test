@@ -23,6 +23,7 @@
         { "id" : "mbus-num-network-threads", "rules" : [ { "value" : 1 } ] },
         { "id" : "mbus-cpp-num-targets", "rules" : [ { "value" : 10 } ] },
         { "id" : "mbus-java-num-targets", "rules" : [ { "value" : 10 } ] },
+        { "id" : "feed-sequencer-type", "rules" : [ { "value" : "ADAPTIVE"} ] },
         { "id" : "rpc-num-targets", "rules" : [ { "value" : 10 } ] },
         { "id" : "query-dispatch-warmup", "rules" : [ { "value" : 0.1 } ] },
         { "id" : "mbus-cpp-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
