@@ -33,13 +33,13 @@ schema books {
   }
 
   document-summary foosum {
-    summary title type string {
+    summary title {
       full
     }
-    summary author type string {
+    summary author {
       full
     }
-    summary valfoo type int {
+    summary valfoo {
       full
     }
   }

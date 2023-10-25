@@ -13,10 +13,10 @@ schema child {
   import field ref.a2 as a2 {}
 
   document-summary mysummary {
-    summary documentid type string {}
-    summary ref type reference<parent> { }
-    summary a1 type int {}
-    summary a2 type int {}
-    summary a3 type int {}
+    summary documentid {}
+    summary ref { }
+    summary a1 {}
+    summary a2 {}
+    summary a3 {}
   }
 }

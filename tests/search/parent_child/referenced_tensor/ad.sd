@@ -25,11 +25,11 @@ schema ad {
   }
 
   document-summary mysummary {
-    summary documentid type string {}
-    summary my_indexed_tensor type tensor(x[2]) {}
-    summary my_mapped_tensor type tensor(x{}) {}
-    summary campaign_ref type reference<campaign> {}
-    summary fixup type double {}
+    summary documentid {}
+    summary my_indexed_tensor {}
+    summary my_mapped_tensor {}
+    summary campaign_ref {}
+    summary fixup {}
   }
 
 }

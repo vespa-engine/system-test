@@ -23,7 +23,7 @@ schema test {
     }
   }
   document-summary without_summary_features {
-    summary attr type int {}
+    summary attr {}
     omit-summary-features
   }
 }

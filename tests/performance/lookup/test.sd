@@ -47,18 +47,18 @@ schema test {
     match:cased
   }
   document-summary minimal {
-    summary id type long { source: id }
+    summary id { source: id }
   }
   document-summary raw_bytes {
-    summary id type long { source: id }
-    summary payload_raw type raw { source: payload_raw }
+    summary id { source: id }
+    summary payload_raw { source: payload_raw }
   }
   document-summary array_byte {
-    summary id type long { source: id }
-    summary payload_array_byte type array<byte> { source: payload_array_byte }
+    summary id { source: id }
+    summary payload_array_byte { source: payload_array_byte }
   }
   document-summary array_long {
-    summary id type long { source: id }
-    summary payload_array_long type array<long> { source: payload_array_long }
+    summary id { source: id }
+    summary payload_array_long { source: payload_array_long }
   }
 }

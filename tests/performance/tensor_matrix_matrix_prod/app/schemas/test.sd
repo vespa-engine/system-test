@@ -14,7 +14,7 @@ schema test {
     }
 
     document-summary no_summary {
-        summary id type int {
+        summary id {
             source: id
         }
     }

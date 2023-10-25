@@ -13,15 +13,15 @@ schema test {
     }
   }
   document-summary renamed {
-    summary a2 type string {
+    summary a2 {
        source: a
        bolding: on
     }
-    summary b2 type string {
+    summary b2 {
        source: b
        bolding: on
     }
-    summary c2 type string {
+    summary c2 {
        source: c
     }
   }

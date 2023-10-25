@@ -132,24 +132,24 @@ schema test {
     }
   }
   document-summary filtered {
-    summary documentid type string {}
-    summary elem_array_filtered type array<elem> {
+    summary documentid {}
+    summary elem_array_filtered {
       source: elem_array
       matched-elements-only
     }
-    summary elem_map_filtered type map<string, elem> {
+    summary elem_map_filtered {
       source: elem_map
       matched-elements-only
     }
-    summary elem_map_2_filtered type map<string, elem> {
+    summary elem_map_2_filtered {
       source: elem_map_2
       matched-elements-only
     }
-    summary str_int_map_filtered type map<string, int> {
+    summary str_int_map_filtered {
       source: str_int_map
       matched-elements-only
     }
-    summary complex_elem_map_filtered type map<string, complex_elem> {
+    summary complex_elem_map_filtered {
       source: complex_elem_map
       matched-elements-only
     }

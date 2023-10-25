@@ -42,18 +42,18 @@ schema test {
     }
   }
   document-summary minimal {
-    summary identity type string { source: identity}
+    summary identity { source: identity}
   }
   document-summary filtered_map_attr {
-    summary identity type string { source: identity}
-    summary map_attr_filtered type map<int, elem> {
+    summary identity { source: identity}
+    summary map_attr_filtered {
       source: elem_map_attr
       matched-elements-only
     }
   }
   document-summary filtered_map_mix {
-    summary identity type string { source: identity}
-    summary elem_map_mix_filtered type map<int, elem> {
+    summary identity { source: identity}
+    summary elem_map_mix_filtered {
       source: elem_map_mix
       matched-elements-only
     }

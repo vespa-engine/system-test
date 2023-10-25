@@ -22,8 +22,8 @@ schema campaign {
   }
 
   document-summary mysummary {
-    summary documentid type string {}
-    summary indexed_tensor type tensor(x[2]) {}
-    summary mapped_tensor type tensor(x{}) {}
+    summary documentid {}
+    summary indexed_tensor {}
+    summary mapped_tensor {}
   }
 }

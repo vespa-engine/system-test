@@ -9,7 +9,7 @@ schema test {
     }
   }
   document-summary my_sum {
-    summary content_2_dyn type array<string> {
+    summary content_2_dyn {
       source: content_2
       dynamic
     }

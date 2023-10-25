@@ -26,10 +26,10 @@ schema footype {
 
   }
   document-summary minimal {
-    summary id type long { source: id }
-    summary wset_attr_long_nofs type weightedset<long> { source: wset_attr_long_nofs }
-    summary wset_attr_long_fs type weightedset<long> { source: wset_attr_long_fs }
-    summary wset_attr_string_nofs type weightedset<string> { source: wset_attr_string_nofs }
-    summary wset_attr_string_fs type weightedset<string> { source: wset_attr_string_fs }
+    summary id { source: id }
+    summary wset_attr_long_nofs { source: wset_attr_long_nofs }
+    summary wset_attr_long_fs { source: wset_attr_long_fs }
+    summary wset_attr_string_nofs { source: wset_attr_string_nofs }
+    summary wset_attr_string_fs { source: wset_attr_string_fs }
   }
 }

@@ -15,7 +15,7 @@ schema test {
     summary-features: attribute(id)
   }
   document-summary s1 {
-    summary id type long { source: id }
-    summary f1 type string { source: f1 }
+    summary id { source: id }
+    summary f1 { source: f1 }
   }
 }

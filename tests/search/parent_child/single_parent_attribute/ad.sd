@@ -18,8 +18,8 @@ schema ad {
   }
 
   document-summary my_summary {
-    summary documentid type string {}
-    summary my_title type string {}
-    summary my_budget type int {}
+    summary documentid {}
+    summary my_title {}
+    summary my_budget {}
   }
 }

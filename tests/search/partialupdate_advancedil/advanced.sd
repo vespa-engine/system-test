@@ -73,15 +73,15 @@ schema advanced {
     }
 
     document-summary most {
-      summary id type string { }
-      summary field1 type string { }
-      summary field8 type int { }
-      summary extra1 type string { }
-      summary extra2 type array<string> { }
-      summary extra3 type float { }
-      summary extra4 type string { }
-      summary extra5 type int { }
-      summary extra6 type string { }
-      summary extra7 type int { }
+      summary id { }
+      summary field1 { }
+      summary field8 { }
+      summary extra1 { }
+      summary extra2 { }
+      summary extra3 { }
+      summary extra4 { }
+      summary extra5 { }
+      summary extra6 { }
+      summary extra7 { }
     }
 }

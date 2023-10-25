@@ -12,9 +12,9 @@ schema parent {
   import field ref.a1 as a1 {}
 
   document-summary mysummary {
-    summary documentid type string {}
-    summary ref type reference<grandparent> { }
-    summary a1 type int {}
-    summary a2 type int {}
+    summary documentid {}
+    summary ref { }
+    summary a1 {}
+    summary a2 {}
   }
 }

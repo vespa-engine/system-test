@@ -77,17 +77,17 @@ schema test {
   }
 
   document-summary normal {
-    summary a type string { source: a }
-    summary b type string { source: b }
-    summary c type string { source: c }
-    summary documentid type string { source: documentid }
-    summary from type int { source: from }
-    summary to type long { source: to }
-    summary body type string { source: body }
+    summary a { source: a }
+    summary b { source: b }
+    summary c { source: c }
+    summary documentid { source: documentid }
+    summary from { source: from }
+    summary to { source: to }
+    summary body { source: body }
   }
   
   document-summary summary1 {
-    summary a type string { source: a }
-    summary n type    int { source: n }
+    summary a { source: a }
+    summary n { source: n }
   }
 }

@@ -34,7 +34,7 @@ schema product {
     }
 
 	document-summary id {
-        summary id type string {}
+        summary id {}
 	}
 
     field colbert_embedding type tensor<bfloat16>(dt{}, x[128]) {

@@ -16,12 +16,12 @@ schema test {
     }
   }
   document-summary short {
-    summary  id type int { source: id }
-    summary key type int { source: key }
+    summary  id { source: id }
+    summary key { source: key }
   }
   document-summary slow {
-    summary slowkey type int { source: slowkey }
-    summary  id type int { source: id }
-    summary key type int { source: key }
+    summary slowkey { source: slowkey }
+    summary  id { source: id }
+    summary key { source: key }
   }
 }

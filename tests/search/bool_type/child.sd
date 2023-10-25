@@ -8,9 +8,9 @@ schema child {
   import field ref.b1 as b1 {}
   import field ref.b2 as b2 {}
   document-summary default {
-    summary documentid type string {}
-    summary b1 type bool {}
-    summary b2 type bool {}
+    summary documentid {}
+    summary b1 {}
+    summary b2 {}
   }
   rank-profile default {
     summary-features {
