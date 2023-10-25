@@ -22,7 +22,7 @@ schema test {
     }
 
     document-summary minimal {
-        summary documentid type string {}
+        summary documentid {}
     }
 
     rank-profile base {

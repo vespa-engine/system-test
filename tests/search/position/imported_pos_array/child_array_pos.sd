@@ -7,7 +7,7 @@ schema child_array_pos {
     }
     import field parent_ref.parent_pos as my_pos {}
     document-summary default {
-      summary my_pos type array<position> {}
+      summary my_pos {}
     }
     rank-profile default {
         summary-features: distance(my_pos)

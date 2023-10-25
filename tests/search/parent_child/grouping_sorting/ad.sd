@@ -18,10 +18,10 @@ schema ad {
   }
 
   document-summary mysummary {
-    summary documentid type string {}
-    summary my_budget type int {}
-    summary my_campaign_name type string {}
-    summary campaign_ref type reference<campaign> {}
-    summary score type int {}
+    summary documentid {}
+    summary my_budget  {}
+    summary my_campaign_name {}
+    summary campaign_ref {}
+    summary score {}
   }
 }

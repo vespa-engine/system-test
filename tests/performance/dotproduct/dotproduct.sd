@@ -57,6 +57,6 @@ schema dotproduct {
     }
 
     document-summary minSummary {
-        summary documentid type string {}
+        summary documentid {}
     }
 }

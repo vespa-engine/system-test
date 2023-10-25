@@ -8,7 +8,7 @@ schema grandparent {
   }
 
   document-summary mysummary {
-    summary documentid type string {}
-    summary a1 type int {}
+    summary documentid {}
+    summary a1 {}
   }
 }

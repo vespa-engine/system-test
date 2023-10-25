@@ -55,7 +55,7 @@ schema test {
     }
   }
   document-summary min_summary {
-    summary documentid type string {}
+    summary documentid {}
   }
   constant dense_matrix_10x10 {
     file: schemas/dense_matrix_10x10.json

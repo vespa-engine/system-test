@@ -40,24 +40,24 @@ schema test {
   }
   document-summary basic {
     from-disk
-    summary complex type array<my_struct> { }
-    summary complex_attr type array<my_struct> { }
-    summary complex3 type array<my_struct> { source: complex2 }
-    summary complex3_attr type array<my_struct> { source: complex2_attr }
-    summary simple type string { }
-    summary simple_attr type string { }
-    summary simple3 type string { source: simple2 }
-    summary simple3_attr type string { source: simple2_attr }
+    summary complex { }
+    summary complex_attr { }
+    summary complex3 { source: complex2 }
+    summary complex3_attr { source: complex2_attr }
+    summary simple { }
+    summary simple_attr { }
+    summary simple3 { source: simple2 }
+    summary simple3_attr { source: simple2_attr }
   }
   document-summary rename {
     from-disk
-    summary new_complex type array<my_struct> { source: complex }
-    summary new_complex_attr type array<my_struct> { source: complex_attr }
-    summary new_complex3 type array<my_struct> { source: complex2 }
-    summary new_complex3_attr type array<my_struct> { source: complex2_attr }
-    summary new_simple type string { source: simple }
-    summary new_simple_attr type string { source: simple_attr }
-    summary new_simple3 type string { source: simple2 }
-    summary new_simple3_attr type string { source: simple2_attr }
+    summary new_complex { source: complex }
+    summary new_complex_attr { source: complex_attr }
+    summary new_complex3 { source: complex2 }
+    summary new_complex3_attr { source: complex2_attr }
+    summary new_simple { source: simple }
+    summary new_simple_attr { source: simple_attr }
+    summary new_simple3 { source: simple2 }
+    summary new_simple3_attr { source: simple2_attr }
   }
 }

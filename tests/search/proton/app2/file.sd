@@ -91,7 +91,7 @@ schema file {  document file {
   }
 
   document-summary dynamic {
-    summary dyncode type string {
+    summary dyncode {
       dynamic
       source: code
     }

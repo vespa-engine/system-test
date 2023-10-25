@@ -47,11 +47,11 @@ schema test {
     }
   }
   document-summary all_fast {
-    summary id type long { source: id }
-    summary f1 type string { source: f1 }
-    summary match_count type long { source: match_count }
-    summary first_phase_count type long { source: first_phase_count }
-    summary second_phase_count type long { source: second_phase_count }
-    summary summary_count type long { source: summary_count }
+    summary id { source: id }
+    summary f1 { source: f1 }
+    summary match_count { source: match_count }
+    summary first_phase_count { source: first_phase_count }
+    summary second_phase_count { source: second_phase_count }
+    summary summary_count { source: summary_count }
   }
 }

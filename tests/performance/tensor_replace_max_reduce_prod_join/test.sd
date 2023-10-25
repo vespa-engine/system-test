@@ -17,7 +17,7 @@ schema test {
     }
 
     document-summary id {
-        summary id type int {
+        summary id {
             source: id
         }
     }

@@ -35,19 +35,19 @@ schema test {
     field int_wset_filtered type weightedset<int> {}
   }
   document-summary filtered {
-    summary str_array_filtered type array<string> {
+    summary str_array_filtered {
       source: str_array_src
       matched-elements-only
     }
-    summary int_array_filtered type array<int> {
+    summary int_array_filtered {
       source: int_array_src
       matched-elements-only
     }
-    summary str_wset_filtered type weightedset<string> {
+    summary str_wset_filtered {
       source: str_wset_src
       matched-elements-only
     }
-    summary int_wset_filtered type weightedset<int> {
+    summary int_wset_filtered {
       source: int_wset_src
       matched-elements-only
     }

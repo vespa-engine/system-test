@@ -11,7 +11,7 @@ schema test {
     }
   }
   document-summary s1 {
-    summary documentid type string {
+    summary documentid {
       source: documentid
     }
   }

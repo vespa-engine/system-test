@@ -15,11 +15,11 @@ schema music {
     fields: title
   }
   document-summary juniper {
-    summary jtitle type string {
+    summary jtitle {
       bolding: on
       source: title
     }
-    summary jcategories type string {
+    summary jcategories {
       bolding: on
       source: categories
     }
