@@ -3,6 +3,9 @@ require 'performance/tensor_eval/tensor_eval'
 
 class TensorSparseDotProductTest < TensorEvalPerfTest
 
+  STRING_FEATURE_DP = "string_feature_dp"
+  SPARSE_TENSOR_DOT_PRODUCT_WITHOUT_FAST_RANK = "sparse_tensor_dot_product_without_fast_rank"
+
   def setup
     super
     set_owner("arnej")
@@ -47,6 +50,7 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
       t_query_f = "queries.tensor.sparse_float.x.#{q_entries}.txt"
       run_fbench_helper(DOT_PRODUCT, FEATURE_DOT_PRODUCT, doc_entries, w_query_f, q_entries, clients)
       run_fbench_helper(DOT_PRODUCT, SPARSE_TENSOR_DOT_PRODUCT, doc_entries, t_query_f, q_entries, clients)
+      run_fbench_helper(DOT_PRODUCT, SPARSE_TENSOR_DOT_PRODUCT_WITHOUT_FAST_RANK, doc_entries, t_query_f, q_entries, clients)
       run_fbench_helper(DOT_PRODUCT, STRING_FEATURE_DP, doc_entries, w_query_f, q_entries, clients)
     end
   end
