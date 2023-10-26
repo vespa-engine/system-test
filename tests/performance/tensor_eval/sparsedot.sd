@@ -17,6 +17,9 @@ schema sparsedot {
       attribute: fast-rank
     }
   }
+  field sparse_vector_x_without_fast_rank type tensor<float>(x{}) {
+    indexing: input sparse_vector_x | attribute
+  }
   document-summary min_summary {
     summary documentid {}
   }
@@ -39,6 +42,12 @@ schema sparsedot {
     first-phase {
       keep-rank-count: 1000
       expression: sum(query(q_sparse_float_vector_x) * attribute(sparse_vector_x))
+    }
+  }
+  rank-profile sparse_tensor_dot_product_without_fast_rank inherits sparse_tensor_dot_product {
+    first-phase {
+      keep-rank-count: 1000
+      expression: sum(query(q_sparse_float_vector_x) * attribute(sparse_vector_x_without_fast_rank))
     }
   }
 }

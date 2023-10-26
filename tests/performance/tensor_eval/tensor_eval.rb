@@ -19,7 +19,6 @@ class TensorEvalPerfTest < PerformanceTest
   SPARSE_MULTIPLY = "sparse_multiply"
   MATRIX_PRODUCT = "matrix_product"
   FEATURE_DOT_PRODUCT = "feature_dot_product"
-  STRING_FEATURE_DP = "string_feature_dp"
   FEATURE_DOT_PRODUCT_ARRAY = "feature_dot_product_array"
   SPARSE_TENSOR_DOT_PRODUCT = "sparse_tensor_dot_product"
   SPARSE_MULTIPLY_NO_OVERLAP = "sparse_multiply_no_overlap"
