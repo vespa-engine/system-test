@@ -16,10 +16,8 @@ class Tuning < IndexedSearchTest
                                                    :component => {:maxmemorygain => 10000000, :diskbloatfactor => 0.4, :maxage => 3600 },
                                                    :transactionlog => {:maxsize => 32000 }
                                                  } },
-                   :resizing => {:initialdocumentcount => 32 },
-                   :index => {:io => {:write => :normal, :read =>:normal, :search => :mmap } },
-                   :attribute => {:io => {:write => :normal} },
-                   :summary => { :io => { :write => :normal, :read =>:directio},
+                   :index => {:io => {:search => :mmap } },
+                   :summary => { :io => { :read =>:directio},
                                  :store => { :cache => { :maxsize => 8192,
                                                          :compression => {:type => :lz4, :level => 8}
                                                        },

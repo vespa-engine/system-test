@@ -28,8 +28,7 @@ class LidSpaceCompactionTest < SearchTest
       allowed_lid_bloat_factor(lid_bloat_factor).
       config(ConfigOverride.new("vespa.config.search.core.proton").
              add("lidspacecompaction", ConfigValues.new.
-                 add("interval", 2.0))).
-      tune_searchnode({:resizing => {:'amortize-count' => 0}})
+                 add("interval", 2.0)))
     cluster.disable_flush_tuning if disable_flush
     setup_two_nodes(cluster) if two_nodes
     app = SearchApp.new.cluster(cluster)
