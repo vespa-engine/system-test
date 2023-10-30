@@ -202,7 +202,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
 
   def calculate_myuse(shared_disk)
     if shared_disk
-      @myuse = 160 * 1024 * 1024
+      @myuse = 320 * 1024 * 1024
     else
       # If the containers for this test use shared disks while the
       # argument shared_disk is false then this test is vulerable to
