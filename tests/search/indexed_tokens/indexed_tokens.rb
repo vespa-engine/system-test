@@ -11,7 +11,11 @@ class IndexedTokensTest < IndexedSearchTest
     doc = Document.new("test", "id:test:test::#{idsuffix}").
       add_field("stext", doc_template[:stext]).
       add_field("atext", doc_template[:atext]).
-      add_field("wtext", doc_template[:wtext])
+      add_field("wtext", doc_template[:wtext]).
+      add_field("sattr", doc_template[:stext]).
+      add_field("sattr_cased", doc_template[:stext]).
+      add_field("aattr", doc_template[:atext]).
+      add_field("wattr", doc_template[:wtext])
     vespa.document_api_v1.put(doc)
   end
 
@@ -34,6 +38,10 @@ class IndexedTokensTest < IndexedSearchTest
     assert_equal(['hello','world'], fields['stext_tokens'])
     assert_equal([['this','is','simply'],['more','elements']], fields['atext_tokens'])
     assert_equal([['weighted','here'],['and','there']].sort, fields['wtext_tokens'].sort)
+    assert_equal(['hello world'], fields['sattr_tokens'])
+    assert_equal(['Hello world'], fields['sattr_cased_tokens'])
+    assert_equal([['this is simply'],['(more elements)']], fields['aattr_tokens'])
+    assert_equal([['weighted here'],['and there']].sort, fields['wattr_tokens'].sort)
   end
 
 

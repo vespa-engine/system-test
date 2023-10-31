@@ -10,6 +10,19 @@ schema test {
     field wtext type weightedset<string> {
       indexing: index | summary
     }
+    field sattr type string {
+      indexing: attribute | summary
+    }
+    field sattr_cased type string {
+      indexing: attribute | summary
+      match: cased
+    }
+    field aattr type array<string> {
+      indexing: attribute | summary
+    }
+    field wattr type weightedset<string> {
+      indexing: attribute | summary
+    }
   }
   document-summary tokens {
     summary stext_tokens {
@@ -22,6 +35,22 @@ schema test {
     }
     summary wtext_tokens {
       source: wtext
+      tokens
+    }
+    summary sattr_tokens {
+      source: sattr
+      tokens
+    }
+    summary sattr_cased_tokens {
+      source: sattr_cased
+      tokens
+    }
+    summary aattr_tokens {
+      source: aattr
+      tokens
+    }
+    summary wattr_tokens {
+      source: wattr
       tokens
     }
     from-disk
