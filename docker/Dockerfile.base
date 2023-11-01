@@ -5,13 +5,13 @@ ARG BASE_IMAGE
 # Common base
 FROM $BASE_IMAGE AS base
 
-COPY /include /tmp/include
-
-RUN dnf -y install epel-release && \
+RUN --mount=type=bind,target=/include/,source=include/,rw \
+    dnf -y install epel-release && \
     dnf -y install \
         dnf-plugins-core \
         dnf-plugin-ovl && \
     dnf config-manager --enable powertools && \
+    dnf -y copr enable @vespa/vespa centos-stream-8 && \
     dnf -y module enable maven:3.8 && \
     dnf -y module enable ruby:3.1 && \
     dnf -y install \
@@ -46,21 +46,22 @@ RUN dnf -y install epel-release && \
         sudo \
         wget \
         zstd \
-        $(if [[ -e /tmp/include/additional-packages.txt ]]; then echo $(cat /tmp/include/additional-packages.txt | xargs); fi) && \
+        $(if [[ -e /include/additional-packages.txt ]]; then echo $(cat /include/additional-packages.txt | xargs); fi) && \
      alternatives --set java java-17-openjdk.$(arch) && \
      alternatives --set javac java-17-openjdk.$(arch) && \
      echo -e "#!/bin/bash\nsource /opt/rh/gcc-toolset-12/enable" > /etc/profile.d/enable-gcc-toolset-12.sh && \
      (source /opt/rh/gcc-toolset-12/enable && gem install ffi libxml-ruby) && \
      pip3 install --no-cache-dir awscli && \
-     dnf clean all && rm -rf /var/cache/dnf && \
-     rm -rf /tmp/include
+     dnf -y install vespa && \
+     (rpm -qa | grep "vespa.*$(rpm -q --queryformat '%{VERSION}' vespa).*" | xargs dnf -y remove --noautoremove) && \
+     dnf clean all && rm -rf /var/cache/dnf
 
 # Temporarily work around too old OpenJDK packages for CentOS Stream 8
 RUN dnf upgrade -y --nogpgcheck --disablerepo='*' --repofrompath alma-8-latest,https://repo.almalinux.org/almalinux/8/AppStream/$(arch)/os \
       $(rpm -qa --qf '%{NAME}\n' java-* | xargs) && \
     alternatives --set java java-17-openjdk.$(arch) && \
     alternatives --set javac java-17-openjdk.$(arch) && \
-    dnf clean all --repofrompath alma-8-latest,https://repo.almalinux.org/almalinux/8/AppStream/$(arch)/os
+    dnf clean all --repofrompath alma-8-latest,https://repo.almalinux.org/almalinux/8/AppStream/$(arch)/os && rm -rf /var/cache/dnf
 
 # Java requires proper locale for unicode
 ENV LANG en_US.UTF-8
