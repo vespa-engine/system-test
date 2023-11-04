@@ -16,7 +16,6 @@ require 'app_generator/test/test'
 require 'app_generator/test/storagetest'
 require 'app_generator/test/containertest'
 require 'app_generator/test/cloudconfigtest'
-require 'test/yamas_test.rb'
 require 'test/distr_bucketdb_parser_test'
 require 'test/distributionstates_test'
 
