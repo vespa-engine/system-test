@@ -88,6 +88,10 @@ class RetiringNode < MultiProviderStorageTest
   end
 
   def test_retire_doccount
+    ['', '2', '3'].each do |node|
+      vespa.storage['storage'].storage['0'].execute("vespa-logctl searchnode#{node}:persistence.filestor.manager debug=on")
+    end
+
     puts "Retire storage node 1"
     vespa.storage["storage"].get_master_fleet_controller().set_node_state("storage", 2, "s:r");
 
