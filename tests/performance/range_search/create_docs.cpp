@@ -1,6 +1,7 @@
 // Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 #include <algorithm>
+#include <cassert>
 #include <iostream>
 #include <numeric>
 #include <random>
@@ -8,6 +9,8 @@
 #include <vector>
 
 using IntVector = std::vector<int>;
+
+const IntVector hits_ratios = {1, 2, 4, 5, 6, 8, 10, 20, 40, 50, 60, 80, 100, 150, 200};
 
 /*
  * Generates the set of values to be inserted into a field.
@@ -21,7 +24,7 @@ using IntVector = std::vector<int>;
 IntVector make_range_values(int num_docs, int values_in_range) {
     IntVector result(num_docs, 0);
     int i = 0;
-    for (int hits_ratio : {1, 10, 50, 100, 200, 500}) {
+    for (int hits_ratio : hits_ratios) {
         int hits = ((size_t)num_docs * (size_t)hits_ratio) / 1000;
         if (hits >= values_in_range) {
             int hits_per_value = hits / values_in_range;
@@ -34,18 +37,20 @@ IntVector make_range_values(int num_docs, int values_in_range) {
             }
         }
     }
+    assert(i <= num_docs);
     return result;
 }
 
 IntVector make_filter(int num_docs) {
     IntVector result(num_docs, 0);
     int i = 0;
-    for (int hits_ratio : {1, 10, 50, 100, 200, 500}) {
+    for (int hits_ratio : hits_ratios) {
         int hits = ((size_t)num_docs * (size_t)hits_ratio) / 1000;
         for (int j = 0; j < hits; ++j) {
             result[i++] = hits_ratio;
         }
     }
+    assert(i <= num_docs);
     return result;
 }
 
@@ -100,16 +105,12 @@ void print_docs(int num_docs, const RangeValuesData& values, const IntVector& fi
  */
 int main(int argc, char *argv[]) {
     int num_docs = 10000;
-    bool verbose = false;
 
     int option;
-    while ((option = getopt(argc, argv, "d:v")) != -1) {
+    while ((option = getopt(argc, argv, "d:")) != -1) {
         switch (option) {
             case 'd':
                 num_docs = std::stoi(optarg);
-                break;
-            case 'v':
-                verbose = true;
                 break;
             default:
                 return 1;
