@@ -1,7 +1,7 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'multi_provider_storage_test'
+require 'vds_test'
 
-class JoinSparseBucketsTest < MultiProviderStorageTest
+class JoinSparseBucketsTest < VdsTest
 
   def setup
     set_owner("vekterli")
@@ -24,14 +24,6 @@ class JoinSparseBucketsTest < MultiProviderStorageTest
                config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
                       add('enable_join_for_sibling_less_buckets', 'true').
                       add('enable_inconsistent_join', params[:inconsistent_join] ? 'true' : 'false')))
-  end
-
-  def self.testparameters
-    { "PROTON" => { :provider => "PROTON" } }
-  end
-
-  def using_vds_provider?
-    @params[:provider] =~ /STORAGE/
   end
 
   def make_doc_id(n)

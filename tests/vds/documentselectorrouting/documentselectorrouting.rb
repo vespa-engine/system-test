@@ -1,16 +1,11 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'multi_provider_storage_test'
+require 'vds_test'
 
-class DocumentSelectorRoutingTest < MultiProviderStorageTest
+class DocumentSelectorRoutingTest < VdsTest
 
   def setup
     set_owner("vekterli")
   end
-
-  def self.testparameters
-    { "PROTON" => { :provider => "PROTON" }}
-  end
-
 
   def test_feeding_succeeds_for_docs_without_matching_route_doc_selector
     set_description("Test that feeding documents that do not match any of " +

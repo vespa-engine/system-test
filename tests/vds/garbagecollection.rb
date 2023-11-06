@@ -1,17 +1,11 @@
 # Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'multi_provider_storage_test'
+require 'vds_test'
 
-class GarbageCollection < MultiProviderStorageTest
+class GarbageCollection < VdsTest
 
   def setup
     @valgrind=false
     set_owner("vekterli")
-  end
-
-  def self.testparameters
-    { "PROTON" => { :provider => "PROTON" },
-      "DUMMY" => { :provider => "DUMMY" } }
-
   end
 
   def deploy_gc_app(gc_enabled)
