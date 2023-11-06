@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class BasicSearch < IndexedSearchTest
@@ -54,10 +54,11 @@ class BasicSearch < IndexedSearchTest
                    SEARCH_DATA+"music.10.result.json",
                    "title", ["title", "surl", "mid"])
     vespa.search["basicsearch"].first.
-      execute("vespa-proton-cmd --local getState")
+    execute("vespa-proton-cmd --local getState")
   end
 
   def teardown
     stop
   end
+
 end
