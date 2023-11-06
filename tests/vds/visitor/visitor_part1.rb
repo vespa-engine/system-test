@@ -5,11 +5,6 @@ require 'vds/visitor/visitor'
 
 class VisitorPart1Test < VisitorTest
 
-  def self.testparameters
-    { "PROTON" => { :provider => "PROTON" },
-      "DUMMY" => { :provider => "DUMMY" } }
-  end
-
   def test_visitsomebuckets
     doInserts()
 

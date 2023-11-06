@@ -5,11 +5,6 @@ require 'vds/visitor/visitor'
 
 class VisitorPart2Test < VisitorTest
 
-  def self.testparameters
-    { "PROTON" => { :provider => "PROTON" },
-      "DUMMY" => { :provider => "DUMMY" } }
-  end
-
   def test_visittimestamp
     doc = Document.new("music", "id:test:music::test:test")
     vespa.document_api_v1.put(doc)
