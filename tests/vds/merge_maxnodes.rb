@@ -1,7 +1,7 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'multi_provider_storage_test'
+require 'vds_test'
 
-class MergingMaxNodesTest < MultiProviderStorageTest
+class MergingMaxNodesTest < VdsTest
 
   def setup
     set_owner("vekterli")
@@ -13,16 +13,6 @@ class MergingMaxNodesTest < MultiProviderStorageTest
             max_nodes_per_merge(4).
             min_storage_up_ratio(0.1))
     start
-  end
-
-  def self.testparameters
-    # Max nodes merging is independent of backend. Only running with storage
-    # backend. Test address storage nodes directly which does not work with
-    # app generation for search, and old VDS setup does not have max nodes
-    # config override..
-      {
-        "PROTON" => { :provider => "PROTON" }
-      }
   end
 
   def content_cluster

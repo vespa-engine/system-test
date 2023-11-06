@@ -1,18 +1,13 @@
 # Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'multi_provider_storage_test'
+require 'vds_test'
 
-class BasicFunctionality < MultiProviderStorageTest
+class BasicFunctionality < VdsTest
 
   def setup
     @valgrind=false
     deploy_app(default_app)
     set_owner("vekterli")
     start
-  end
-
-  def self.testparameters
-    { "PROTON" => { :provider => "PROTON" },
-      "DUMMY" => { :provider => "DUMMY"} }
   end
 
   def test_partialupdatethroughvespafeeder
