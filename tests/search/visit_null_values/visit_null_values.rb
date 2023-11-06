@@ -35,7 +35,7 @@ class VisitNullValues < SearchTest
 
   def assert_visit(select_expr, result_count)
     count = vespa.adminserver.
-      execute("vespa-visit -s '" + select_expr + "' -i | wc -l", :nostderr => true).to_i
+      execute("vespa-visit -s '" + select_expr + "' -i | wc -l").to_i
     assert_equal(result_count, count)
   end
 
