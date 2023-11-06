@@ -101,7 +101,7 @@ class MetricsProxy < IndexedSearchTest
     def check(metrics, check_cpu)
       found = false
       metrics['metrics'].each do  |m|
-        if m['application'] == 'yamastest.container' and m['dimensions']['metrictype'] == 'system'
+        if m['application'] == 'vespa_app.container' and m['dimensions']['metrictype'] == 'system'
           found = true
           assert(m['metrics']['memory_virt'] > 0, "memory_virt should be more than zero")
           assert(m['metrics']['memory_rss'] > 0, "memory_virt should be more than zero")
@@ -111,23 +111,23 @@ class MetricsProxy < IndexedSearchTest
       assert(found, "System metrics for container should be found")
     end
     deploy_app(make_app.
-                 monitoring("yamastest", 60))
+                 monitoring("vespa_app", 60))
     start
     puts "Wait 70s for system metrics snapshot"
     sleep 70
-    metrics = get_metrics('yamastest.container')
+    metrics = get_metrics('vespa_app.container')
     # Cpu utilization will mostly likely not have been collected yet
     check(metrics, false)
     puts "Wait 70s for another system metrics snapshot"
     sleep 70
-    metrics = get_metrics('yamastest.container')
+    metrics = get_metrics('vespa_app.container')
     # After two intervals we should have cpu utilization
     check(metrics, true)
   end
 
-  def get_metrics(yamas_service_name)
+  def get_metrics(monitoring_service_name)
     wrapper = vespa.metricsproxies.values.first.get_wrapper
-    JSON.parse(wrapper.getMetricsForYamas(yamas_service_name)[0])
+    JSON.parse(wrapper.getMetricsForYamas(monitoring_service_name)[0])
   end 
 
   def teardown

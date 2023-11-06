@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'rubygems'
 require 'json'
 require 'indexed_search_test'
@@ -24,7 +24,7 @@ class ProtonStateServer < IndexedSearchTest
     assert_equal(generation, config["config"]["proton.documentdb.test"]["generation"])
   end
 
-  def test_yamas_snapshot_period
+  def test_monitoring_snapshot_period
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").monitoring("test", "60"))
     start
     feed_and_wait_for_docs("test", 5, :file => selfdir + "docs.xml")
