@@ -31,10 +31,10 @@ class Executor
 
     testcase_output("#{@short_hostname}$ #{command}", testcase) if not params[:noecho]
     # wrap command in order to see stderr when command is not found
-    if params[:stderr]
-      command = "( #{command} ) 2>&1"
-    else
+    if params[:nostderr]
       command = "( #{command} ) 2>/dev/null"
+    else
+      command = "( #{command} ) 2>&1"
     end
 
     stdout = IO.popen(command)
