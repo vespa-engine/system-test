@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_container_test'
 
 class ComponentUpdateSearcher < SearchContainerTest
@@ -40,8 +40,6 @@ class ComponentUpdateSearcher < SearchContainerTest
     start
     @qrs = (vespa.qrserver.values.first or vespa.container.values.first)
     wait_for_hitcount("query=test",0)  # Just wait for the Qrs to be up
-    # enable_all_log_levels
-    #system("vespa-get-config -n container.core.chains -i container/component/com.yahoo.search.handler.SearchHandler")
 
     res = search("query=test&tracelevel=3")
     puts "Result from query=test:"

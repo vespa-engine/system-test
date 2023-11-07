@@ -190,10 +190,6 @@ class MultipleConfigservers < CloudConfigTest
     assert_prepared_response(@node3, "message", "Session is active: #{@session_id}")
   end 
 
-  def get_config(node)
-    node.execute("vespa-get-config -n cloud.config.log.logd -i \"\" -p 19070 -w 10")
-  end
-
   def execute_on_all_configservers(command)
     vespa.configservers.each_value do |node|
       node.execute(command)
