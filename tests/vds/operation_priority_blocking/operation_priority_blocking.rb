@@ -57,12 +57,8 @@ class OperationPriorityBlocking < VdsTest
   # mappings on-demand.
   def priority_int_value_of(name)
     node = vespa.storage['storage'].storage['0']
-    config = node.execute("vespa-get-config -n vespa.config.content.core.stor-prioritymapping " +
-                          "-i #{node.config_id}", :noecho => true)
-    if config !~ /#{name} (\d+)/im
-      raise "Could not find a priority mapping for enum value #{name}"
-    end
-    return $~[1].to_i
+    config = getvespaconfig("vespa.config.content.core.stor-prioritymapping", node.config_id, nil, node.hostname)
+    config["#{name.downcase}"].to_i
   end
 
   def deploy_with_threshold(priority_name)
