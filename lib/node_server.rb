@@ -729,7 +729,7 @@ class NodeServer
     start = Time.now.to_i
     if (!@port_configserver_rpc)
       cmd = 'vespa-print-default configserver_rpc_port'
-      @port_configserver_rpc = execute(cmd, :exceptiononfailure => false, :noecho => true, :nostderr => true).chomp.to_i
+      @port_configserver_rpc = execute(cmd, :exceptiononfailure => false, :noecho => true).chomp.to_i
     end
     # TODO: Make configurable
     port_configserver_http = 19071
