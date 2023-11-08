@@ -57,7 +57,7 @@ class OperationPriorityBlocking < VdsTest
   # mappings on-demand.
   def priority_int_value_of(name)
     node = vespa.storage['storage'].storage['0']
-    config = getvespaconfig("vespa.config.content.core.stor-prioritymapping", node.config_id, nil, node.hostname)
+    config = getvespaconfig("vespa.config.content.core.stor-prioritymapping", node.config_id)
     config["#{name.downcase}"].to_i
   end
 
