@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'search_container_test'
 require 'app_generator/container_app'
@@ -23,7 +23,7 @@ class V3BasicDocprocWithReason < SearchContainerTest
 
   def test_v3_basicsearch_docproc
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.xml", :cluster => "worst")
-    output = feedfile(selfdir+"worst.1.json", :cluster => "worst", :exceptiononfailure => false)
+    output = feedfile(selfdir+"worst.1.json", :cluster => "worst", :exceptiononfailure => false, :stderr => true)
     assert_match(/Some detailed failure reason/, output)
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.json", :cluster => "worst")
   end

@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'indexed_search_test'
 
@@ -23,12 +23,12 @@ class ConstantTensorValidationTest < IndexedSearchTest
   def test_constant_tensor_validation_invalid
     set_description("Test that constant tensor validation feature fails deploy with invalid constant tensors")
     begin
-        deploy_app(create_app(tensordir: "invalid_tensors"))
-        start
+      deploy_app(create_app(tensordir: "invalid_tensors"), { :stderr => true })
+      start
     rescue ExecuteError => e
-        puts "ExecuteError: #{e}: '#{e.output}'"
-        assert_failed_deploy(e.output)
-        return
+      puts "ExecuteError: #{e}: '#{e.output}'"
+      assert_failed_deploy(e.output)
+      return
     end
 
     fail "Deploy should fail"

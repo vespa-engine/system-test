@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 require 'cloudconfig_test'
 require 'search_test'
@@ -85,7 +85,7 @@ class ScalingConfigservers < CloudConfigTest
   end
 
   def get_config(node)
-    (exitcode, out) = execute(node, "vespa-get-config -n cloud.config.log.logd -i \"\" -p 19070 -w 10")
+    (exitcode, out) = node.execute("vespa-get-config -n cloud.config.log.logd -i \"\" -p 19070 -w 10", { :exitcode => true, :stderr => true })
     return out
   end
 

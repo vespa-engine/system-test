@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class MbusTimeout < IndexedSearchTest
@@ -27,7 +27,7 @@ class MbusTimeout < IndexedSearchTest
     assert_equal(1, result.hit.size)
 
     puts("*** Feed document update.")
-    output = vespa.adminserver.feed(:file => "#{selfdir}/myupdate.xml", :timeout => 1, :exceptiononfailure => false)
+    output = vespa.adminserver.feed(:file => "#{selfdir}/myupdate.xml", :timeout => 1, :exceptiononfailure => false, :stderr => true)
 
     puts("*** Assert that feeding timed out.")
     assert(output.index("imed out after ") != nil)

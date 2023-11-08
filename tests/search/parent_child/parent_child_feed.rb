@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class ParentChildFeedTest < IndexedSearchTest
@@ -40,7 +40,7 @@ class ParentChildFeedTest < IndexedSearchTest
   end
 
   def feed_and_assert_that_invalid_reference_docid_fails
-    feed_output = feed(:file => @test_dir + "ad-doc.invalid.json", :exceptiononfailure => false)
+    feed_output = feed(:file => @test_dir + "ad-doc.invalid.json", :exceptiononfailure => false, :stderr => true)
     assert_match(Regexp.new(/Can't assign document ID 'id:test:invalid::0'/), feed_output)
   end
 

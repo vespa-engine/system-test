@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 
 class VespaDeploy < CloudConfigTest
@@ -21,97 +21,97 @@ class VespaDeploy < CloudConfigTest
 
   def test_deploy_output
     # Test help command
-    (exitcode, output) = execute(@node, "vespa-deploy")
+    output = execute_and_get_output("vespa-deploy")
     assert_help_output(output)
-    (exitcode, output) = execute(@node, "vespa-deploy -h")
+    output = execute_and_get_output("vespa-deploy -h")
     assert_help_output(output)
-    (exitcode, output) = execute(@node, "vespa-deploy help")
+    output = execute_and_get_output("vespa-deploy help")
     assert_help_output(output)
 
-    (exitcode, output) = execute(@node, "vespa-deploy help upload")
+    output = execute_and_get_output("vespa-deploy help upload")
     assert_equal("Usage: vespa-deploy upload <application package>", output.chomp)
 
-    (exitcode, output) = execute(@node, "vespa-deploy help prepare")
+    output = execute_and_get_output("vespa-deploy help prepare")
     assert_equal("Usage: vespa-deploy prepare [<session_id> | <application package>]", output.chomp)
 
-    (exitcode, output) = execute(@node, "vespa-deploy help activate")
+    output = execute_and_get_output("vespa-deploy help activate")
     assert_equal("Usage: vespa-deploy activate [<session_id>]", output.chomp)
 
-    (exitcode, output) = execute(@node, "vespa-deploy help fetch")
+    output = execute_and_get_output("vespa-deploy help fetch")
     assert_equal("Usage: vespa-deploy fetch <output directory>", output.chomp)
 
     # Test upload command
-    (exitcode, output) = execute(@node, "vespa-deploy upload " + @app_path)
+    (exitcode, output) = execute("vespa-deploy upload " + @app_path)
     assert_equal(0, exitcode.to_i)
     @session_id = @session_id + 1
     assert_equal(create_expected_upload_output, output)
 
     # Test upload command with port set
-    (exitcode, output) = execute(@node, "vespa-deploy -p 19071 upload " + @app_path)
+    (exitcode, output) = execute("vespa-deploy -p 19071 upload " + @app_path)
     assert_equal(0, exitcode.to_i)
     @session_id = @session_id + 1
     assert_equal(create_expected_upload_output, output)
 
     from_url = "#{@base_path}application/default/environment/prod/region/default/instance/default"
-    (exitcode, output) = execute(@node, "cd #{@app_path}; vespa-deploy -F #{from_url} upload .")
+    (exitcode, output) = execute("cd #{@app_path}; vespa-deploy -F #{from_url} upload .")
     assert_equal(0, exitcode.to_i)
     @session_id = @session_id + 1
     assert_equal("Session #{@session_id} for tenant 'default' created.\n", output)
 
     # Test upload command with RPC port set (http port should still use port 19071)
     override_environment_setting(@node, "VESPA_CONFIGSERVER_RPC_PORT", "9999")
-    (exitcode, output) = execute(@node, "vespa-deploy upload " + @app_path)
+    (exitcode, output) = execute("vespa-deploy upload " + @app_path)
     assert_equal(0, exitcode.to_i)
     @session_id = @session_id + 1
     assert_equal(create_expected_upload_output, output)
     override_environment_setting(@node, "VESPA_CONFIGSERVER_RPC_PORT", "19070")
     @dirty_environment_settings = true
 
-    (exitcode, output) = execute(@node, "cd #{@app_path}; vespa-deploy upload .")
+    (exitcode, output) = execute("cd #{@app_path}; vespa-deploy upload .")
     assert_equal(0, exitcode.to_i)
     @session_id = @session_id + 1
     assert_equal(create_expected_upload_output("."), output)
 
-    (exitcode, output) = execute(@node, "vespa-deploy upload non-existing")
+    (exitcode, output) = execute("vespa-deploy upload non-existing", { :stderr => true} )
     assert_equal(1, exitcode.to_i)
     assert_equal("Command failed. No such directory found: 'non-existing'", output.chomp)
 
-    (exitcode, output) = execute(@node, "vespa-deploy -p 12345 upload " + @app_path)
+    (exitcode, output) = execute("vespa-deploy -p 12345 upload " + @app_path, { :stderr => true })
     assert_equal(1, exitcode.to_i)
     assert_match(/Could not connect to.*12345/, output.chomp)
 
     # Test prepare command
-    (exitcode, output) = execute(@node, "vespa-deploy prepare")
+    (exitcode, output) = execute("vespa-deploy prepare")
     assert_equal(0, exitcode.to_i)
     assert_match(create_expected_prepare_output, output)
 
-    (exitcode, output) = execute(@node, "vespa-deploy prepare #{@session_id}")
+    (exitcode, output) = execute("vespa-deploy prepare #{@session_id}")
     assert_equal(0, exitcode.to_i)
     assert_match(create_expected_prepare_output, output)
 
-    (exitcode, output) = execute(@node, "vespa-deploy prepare " + @app_path)
+    (exitcode, output) = execute("vespa-deploy prepare " + @app_path)
     assert_equal(0, exitcode.to_i)
     @session_id = @session_id + 1
     expected = Regexp.union(Regexp.new(create_expected_upload_output), create_expected_prepare_output)
     assert_match(expected, output)
 
-    (exitcode, output) = execute(@node, "cd #{@app_path}; vespa-deploy prepare .")
+    (exitcode, output) = execute("cd #{@app_path}; vespa-deploy prepare .")
     assert_equal(0, exitcode.to_i)
     @session_id = @session_id + 1
     expected = Regexp.union(Regexp.new(create_expected_upload_output(".")), create_expected_prepare_output)
     assert_match(expected, output)
 
-    (exitcode, output) = execute(@node, "vespa-deploy prepare non-existing")
+    (exitcode, output) = execute("vespa-deploy prepare non-existing", { :stderr => true })
     assert_equal(1, exitcode.to_i)
     assert_equal("Command failed. No directory or zip file found: 'non-existing'", output.chomp)
 
     # test with timeout
-    (exitcode, output) = execute(@node, "vespa-deploy -t 30 prepare")
+    (exitcode, output) = execute("vespa-deploy -t 30 prepare")
     assert_equal(0, exitcode.to_i)
     assert_match(create_expected_prepare_output, output)
 
     invalid_session_id = 9999
-    (exitcode, output) = execute(@node, "vespa-deploy prepare #{invalid_session_id}")
+    (exitcode, output) = execute("vespa-deploy prepare #{invalid_session_id}", { :stderr => true })
     assert_equal(1, exitcode.to_i)
 expected = <<EOS;
 Preparing session #{invalid_session_id} using #{@session_path}/#{invalid_session_id}/prepared
@@ -122,17 +122,17 @@ EOS
 
 
     # Test activate command
-    (exitcode, output) = execute(@node, "vespa-deploy prepare " + @app_path)
+    (exitcode, output) = execute("vespa-deploy prepare " + @app_path)
     assert_equal(0, exitcode.to_i)
     @session_id = @session_id + 1
-    (exitcode, output) = execute(@node, "vespa-deploy activate")
+    (exitcode, output) = execute("vespa-deploy activate")
     assert_equal(0, exitcode.to_i)
     assert_match(create_expected_activate_output, output)
 
-    (exitcode, output) = execute(@node, "vespa-deploy prepare " + @app_path)
+    (exitcode, output) = execute("vespa-deploy prepare " + @app_path)
     assert_equal(0, exitcode.to_i)
     @session_id = @session_id + 1
-    (exitcode, output) = execute(@node, "vespa-deploy activate #{@session_id}")
+    (exitcode, output) = execute("vespa-deploy activate #{@session_id}")
     assert_equal(0, exitcode.to_i)
     assert_match(create_expected_activate_output, output)
 
@@ -140,13 +140,13 @@ EOS
 
     # Test fetch command
     outdir = "#{dirs.tmpdir}fetchedapp"
-    (exitcode, output) = execute(@node, "mkdir #{outdir}; vespa-deploy fetch #{outdir}")
+    (exitcode, output) = execute("mkdir #{outdir}; vespa-deploy fetch #{outdir}")
     assert_equal(0, exitcode.to_i)
     assert_match(create_expected_fetch_output(outdir), output)
     assert_file_equal(@app_path, outdir, "services.xml")
     assert_file_equal(@app_path, outdir, "extra_file")
 
-    (exitcode, output) = execute(@node, "vespa-deploy activate #{invalid_session_id}")
+    (exitcode, output) = execute("vespa-deploy activate #{invalid_session_id}", { :stderr => true })
     assert_equal(1, exitcode.to_i)
 expected = <<EOS;
 Activating session #{invalid_session_id} using #{@session_path}/#{invalid_session_id}/active
@@ -159,7 +159,7 @@ EOS
     @session_id = @session_id + 1
     unavailable_server = "unavailablehost.trondheim.corp.yahoo.com"
     @node.set_addr_configserver([unavailable_server, @node.hostname])
-    (exitcode, output) = execute(@node, "vespa-deploy prepare " + @app_path)
+    (exitcode, output) = execute("vespa-deploy prepare " + @app_path, { :stderr => true })
     assert_equal(0, exitcode.to_i)
     expected = <<EOS;
 Uploading application '#{@app_path}' using.*
@@ -197,7 +197,7 @@ EOS
 
   def assert_tenant_option_works
     tenant = "unknown"
-    (exitcode, output) = execute(@node, "vespa-deploy -e #{tenant} upload " + @app_path)
+    (exitcode, output) = execute("vespa-deploy -e #{tenant} upload " + @app_path, { :stderr => true })
     assert_equal(1, exitcode.to_i)
     expected = <<EOS;
 Uploading application '#{@app_path}' using http://#{@node.hostname}:19071/application/v2/tenant/#{tenant}/session
@@ -206,10 +206,10 @@ Tenant 'unknown' was not found.
 EOS
     assert_equal(expected, output)
 
-    (exitcode, output) = execute(@node, "vespa-deploy -e default upload #{@app_path}")
+    (exitcode, output) = execute("vespa-deploy -e default upload #{@app_path}")
     assert_equal(0, exitcode.to_i)
     @session_id = @session_id + 1
-    (exitcode, output) = execute(@node, "vespa-deploy -e default prepare")
+    (exitcode, output) = execute("vespa-deploy -e default prepare")
     assert_equal(0, exitcode.to_i)
     assert_match(create_expected_prepare_output, output)
   end
@@ -250,6 +250,15 @@ EOS
     base_content = File.new("#{base}/#{filename}", 'r').read
     fetched_content = @node.execute("cat #{fetched}/#{filename}")
     assert_equal(base_content, fetched_content)
+  end
+
+  def execute_and_get_output(command)
+    (exitcode, output) = execute(command)
+    output
+  end
+
+  def execute(command, params={})
+    @node.execute(command, params.merge({ :exitcode => true }))
   end
 
   def teardown

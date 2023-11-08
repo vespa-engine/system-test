@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 require 'search_test'
 require 'search_test'
@@ -124,7 +124,7 @@ class ConfigProxy < CloudConfigTest
     start
     node = vespa.adminserver
     assert_equal(19080, getvespaconfig('cloud.config.log.logd', 'client')['logserver']['rpcport'])
-    out = node.execute("vespa-get-config -n bar.baz.extra -i client -j", :exceptiononfailure => false)
+    out = node.execute("vespa-get-config -n bar.baz.extra -i client -j", :exceptiononfailure => false, :stderr => true)
     assert_equal("error 103: (RPC) Invocation timed out\n", out)
 
     # Wait until subscriber has been closed
