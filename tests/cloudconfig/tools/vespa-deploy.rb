@@ -176,13 +176,13 @@ EOS
   end
 
   def test_deploy_app_with_symbolic_link
-    (exitcode, output) = execute(@node, "cd #{dirs.tmpdir}; mkdir app_with_symbolic_link; cd app_with_symbolic_link; ln -s ../base/services.xml .; ls -l; cd ..; vespa-deploy -v prepare app_with_symbolic_link")
+    (exitcode, output) = execute("cd #{dirs.tmpdir}; mkdir app_with_symbolic_link; cd app_with_symbolic_link; ln -s ../base/services.xml .; ls -l; cd ..; vespa-deploy -v prepare app_with_symbolic_link")
     assert_equal(0, exitcode.to_i)
   end
 
   def test_deploy_zip_file
     zip_file = "application.zip"
-    (exitcode, output) = execute(@node, "cd #{dirs.tmpdir}base; zip -q #{zip_file} *; vespa-deploy prepare #{zip_file}")
+    (exitcode, output) = execute("cd #{dirs.tmpdir}base; zip -q #{zip_file} *; vespa-deploy prepare #{zip_file}")
     assert_equal(0, exitcode.to_i)
     @session_id = @session_id + 1
     expected = Regexp.union(Regexp.new(create_expected_upload_output(zip_file)), create_expected_prepare_output)
