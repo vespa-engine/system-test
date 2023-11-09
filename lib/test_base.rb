@@ -851,7 +851,7 @@ module TestBase
     cmd += " -p #{port}" if port
     cmd += " -V #{vespa_version}" if vespa_version
     cmd += " -d" if debug
-    (exitcode, output) = vespa.adminserver.execute(cmd, :noecho => true, :exitcode => true, :nostderr => true)
+    (exitcode, output) = vespa.adminserver.execute(cmd, :noecho => true, :exitcode => true)
     if exitcode.to_i == 0
       output = print_and_remove_debug_output_from_getvespaconfig(output) if debug
       JSON.parse(output)

@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 require 'environment'
 
@@ -66,7 +66,7 @@ class SemanticSearcher < IndexedSearchTest
 
   def test_invalid_rules
     output = deploy_app(SearchApp.new.sd(selfdir+"music.sd").rules_dir(selfdir+"rules_with_errors"),
-                        { :exceptiononfailure => false, :no_activate => true, :skip_create_model => true })
+                        { :exceptiononfailure => false, :no_activate => true, :skip_create_model => true, :stderr => true })
     assert_match(/Could not parse rule 'invalid': /, output)
   end
 

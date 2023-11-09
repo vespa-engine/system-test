@@ -312,7 +312,7 @@ class PartialUpdate < IndexedSearchTest
     start
 
     feed(:file => selfdir + "attrerrordocs.xml")
-    output = feedfile(selfdir + "attrerrorupdates.xml", :exceptiononfailure => false)
+    output = feedfile(selfdir + "attrerrorupdates.xml", :exceptiononfailure => false, :stderr => true)
 
     puts "\nFeeder output:\n#{output}\n"
 

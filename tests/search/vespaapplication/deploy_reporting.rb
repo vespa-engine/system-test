@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class DeployReporting < IndexedSearchTest
@@ -10,7 +10,7 @@ class DeployReporting < IndexedSearchTest
 
   def test_deploy_bad_sdfile
     begin
-      err = deploy_app(SearchApp.new.sd(selfdir + "bad.sd"))
+      err = deploy_app(SearchApp.new.sd(selfdir + "bad.sd"), { :stderr => true })
     rescue ExecuteError => e
       err = e.output
       msg = e.message

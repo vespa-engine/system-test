@@ -46,9 +46,7 @@ class VisitorTest < VdsTest
 
   def visitBogusSelection()
     args = " --selection \"bogus selection\""
-
-    result = vespa.adminserver.execute("vespa-visit --xmloutput" + args,
-        :exceptiononfailure => false)
+    result = vespa.adminserver.execute("vespa-visit --xmloutput" + args, { :exceptiononfailure => false, :stderr => true })
     assert(result =~ /Illegal document selection string/, result);
   end
 
@@ -60,9 +58,7 @@ class VisitorTest < VdsTest
 
   def visitClusterDown()
     args = " --abortonclusterdown"
-
-    result_java = vespa.adminserver.execute("vespa-visit" + args,
-        :exceptiononfailure => false)
+    result_java = vespa.adminserver.execute("vespa-visit" + args, { :exceptiononfailure => false, :stderr => true })
     verifyNoDistributorsError(result_java)
   end
 
@@ -123,7 +119,7 @@ class VisitorTest < VdsTest
   def checkVisiting(buckets, startTime, endTime, selection)
     puts "* checkVisiting() buckets:" + buckets.inspect + " start:" + startTime.to_s + " end:" + endTime.to_s + " selection:" + selection
 
-    results = visit(startTime, endTime, selection, buckets)
+    results = visit(startTime, endTime, selection, buckets, :stderr => true)
 
     puts " => " + results.length.to_s + " documents visited"
 

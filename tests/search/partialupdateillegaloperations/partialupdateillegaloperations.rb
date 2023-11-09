@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
 class PartialUpdateIllegalOperations < IndexedSearchTest
@@ -21,7 +21,7 @@ class PartialUpdateIllegalOperations < IndexedSearchTest
     wait_for_hitcount(query, 1)
     assert_result(query, srf, nil, ftc)
 
-    output = feedfile(selfdir + "dbzero-update.xml", :exceptiononfailure => false)
+    output = feedfile(selfdir + "dbzero-update.xml", :exceptiononfailure => false, :stderr => true)
 
     assert_output(output, "Division by zero")
 

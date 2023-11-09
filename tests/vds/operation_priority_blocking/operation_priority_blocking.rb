@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'vds_test'
 
 class OperationPriorityBlocking < VdsTest
@@ -34,7 +34,7 @@ class OperationPriorityBlocking < VdsTest
 
   def put_doc(doc, priority:'NORMAL_3')
     puts "Putting document '#{doc.documentid}'"
-    feedbuffer(doc.to_put_json(true), {:json => true, :client => :vespa_feed_client, :priority => priority, :port => 19020})
+    feedbuffer(doc.to_put_json(true), {:json => true, :client => :vespa_feed_client, :priority => priority, :port => 19020, :stderr => true})
   end
 
   def run_vespa_get(args)

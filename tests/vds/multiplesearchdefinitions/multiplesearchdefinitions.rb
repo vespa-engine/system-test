@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'vds_multi_model_test'
 
 class MultipleSearchDefs < VdsMultiModelTest
@@ -19,13 +19,13 @@ class MultipleSearchDefs < VdsMultiModelTest
     output = feedfile(selfdir+"music.xml")
     assert_no_match(/Must specify an existing document type/, output)
 
-    output = feedfile(selfdir+"music2.xml", :exceptiononfailure => false)
+    output = feedfile(selfdir+"music2.xml", :exceptiononfailure => false, :stderr => true)
     assert_match(/Must specify an existing document type/, output)
 
     # Test vespaget
     output = vespaget("id:storage_test:music:n=1234:music1")
     assert_match(/id:storage_test:music:n=1234:music1/, output)
-    output = vespaget("id:storage_test:music2:n=1234:music2", :exceptiononfailure => false)
+    output = vespaget("id:storage_test:music2:n=1234:music2", :exceptiononfailure => false, :stderr => true)
     assert_match(/Unknown bucket space mapping for document type 'music2'/, output)
     output = vespa.content_node("storage", 0).execute("vespa-visit --xmloutput")
     assert(/id:storage_test:music:n=1234:music1/, output)
@@ -36,14 +36,14 @@ class MultipleSearchDefs < VdsMultiModelTest
     wait_for_reconfig(config_generation)
 
     # music2 application is deployed => should fail to feed music documents but succeed in feeding music2 documents
-    output = feedfile(selfdir+"music.xml", :exceptiononfailure => false)
+    output = feedfile(selfdir+"music.xml", :exceptiononfailure => false, :stderr => true)
     assert_match(/Must specify an existing document type/, output)
 
     output = feedfile(selfdir+"music2.xml")
     assert_no_match(/Must specify an existing document type/, output)
 
     # Test vespaget
-    output = vespaget("id:storage_test:music:n=1234:music1", :exceptiononfailure => false)
+    output = vespaget("id:storage_test:music:n=1234:music1", :exceptiononfailure => false, :stderr => true)
     assert_match(/Unknown bucket space mapping for document type 'music'/, output)
     output = vespaget("id:storage_test:music2:n=1234:music2")
     assert_no_match(/ReturnCode/, output)
@@ -60,13 +60,13 @@ class MultipleSearchDefs < VdsMultiModelTest
     output = feedfile(selfdir+"music.xml", :retries => 3)
     assert_no_match(/Must specify an existing document type/, output)
 
-    output = feedfile(selfdir+"music2.xml", :exceptiononfailure => false)
+    output = feedfile(selfdir+"music2.xml", :exceptiononfailure => false, :stderr => true)
     assert_match(/Must specify an existing document type/, output)
 
     # Test vespaget
     output = vespaget("id:storage_test:music:n=1234:music1")
     assert_no_match(/ReturnCode/, output)
-    output = vespaget("id:storage_test:music2:n=1234:music2", :exceptiononfailure => false)
+    output = vespaget("id:storage_test:music2:n=1234:music2", :exceptiononfailure => false, :stderr => true)
     assert_match(/Unknown bucket space mapping for document type 'music2'/, output)
     output = vespa.content_node("storage", 0).execute("vespa-visit --xmloutput || true")
     assert_no_match(/Document type music2 not found/, output)

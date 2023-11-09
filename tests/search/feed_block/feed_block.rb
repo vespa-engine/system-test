@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require_relative 'feed_block_base'
 require 'http_client'
 
@@ -232,7 +232,7 @@ class FeedBlockTest < FeedBlockBase
   end
 
   def http_client_feed_file(file_name)
-    feed(:file => selfdir + file_name, :client => :vespa_feed_client, :port => 19020)
+    feed(:file => selfdir + file_name, :client => :vespa_feed_client, :port => 19020, :stderr => true)
   end
 
 end

@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_container_test'
 
 class IncludeXmlSchemaViolation < SearchContainerTest
@@ -10,7 +10,7 @@ class IncludeXmlSchemaViolation < SearchContainerTest
 
   def test_include_xml_schema_violation
     begin
-      err = deploy(selfdir + "app")
+      err = deploy(selfdir + "app", nil, { :stderr => true })
     rescue ExecuteError => e
       err = e.output
       msg = e.message
