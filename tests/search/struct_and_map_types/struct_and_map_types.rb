@@ -14,7 +14,8 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   def self.final_test_methods
     ["test_feed_and_retrieval_on_attribute_fields",
      "test_search_in_map_and_array_of_struct_paged_attribute",
-     "test_numeric_range_search_when_using_fast_search"]
+     "test_numeric_range_search_when_using_fast_search",
+     "test_phrase_element_nono"]
   end
 
   def create_app(test_case)
@@ -226,6 +227,20 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     assert_same_element_single_summary("complex_elem_map",     map_key_query, "default",  "complex_elem_map",          complex_map_full)
     assert_same_element_single_summary("complex_elem_map",     map_key_query, "filtered", "complex_elem_map_filtered", complex_map_filtered)
     assert_same_element_single_summary("complex_elem_map_meo", map_key_query, "default",  "complex_elem_map_meo",      complex_map_filtered)
+  end
+
+  def test_phrase_in_same_element
+#    @params = { :search_type => "STREAMING" }
+    set_description("Test that phrases are allowed with sameElement operator in streaming mode")
+    test_case = is_streaming ? "streaming_phrase_in_same_element" : "phrase_in_same_element"
+    deploy_and_start(test_case)
+    feed(:file => selfdir + "#{test_case}/docs.json")
+    result = search("query=sddocname:test")
+    assert_equal(1, result.hitcount)
+    elem_array_full= [{"weight"=>30, "name"=>"vespa_homepage", "name2"=>"vespa_homepage"},
+                      {"weight"=>40, "name"=>"vespa_docs", "name2"=>"vespa_docs"}]
+    assert_same_element_summary_yql("select * from sources * where elem_array contains sameElement(name contains 'vespa_homepage', weight contains '30')", "default", "elem_array", elem_array_full)
+    assert_same_element_summary_yql("select * from sources * where elem_array contains sameElement(name2 contains 'vespa_homepage', weight contains '30')", "default", "elem_array", elem_array_full)
   end
 
   def assert_same_element(field, same_element, exp_hitcount, extra_params = "")

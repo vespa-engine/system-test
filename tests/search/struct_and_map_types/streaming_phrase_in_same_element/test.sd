@@ -1,0 +1,18 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    struct elem {
+      field name type string { }
+      field name2 type string { }
+      field weight type int { }
+    }
+    field elem_array type array<elem> {
+      indexing: summary | index
+      struct-field name {
+        match: word
+      }
+      struct-field name2 {
+      }
+    }
+  }
+}

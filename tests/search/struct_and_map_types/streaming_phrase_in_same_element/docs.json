@@ -1,0 +1,19 @@
+[
+  {
+    "put": "id:test:test::0",
+    "fields": {
+      "elem_array": [
+        {
+          "name": "vespa_homepage",
+          "name2": "vespa_homepage",
+          "weight": 30
+        },
+        {
+          "name": "vespa_docs",
+          "name2": "vespa_docs",
+          "weight": 40
+        }
+      ]
+    }
+  }
+]
