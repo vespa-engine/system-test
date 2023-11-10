@@ -1,3 +1,4 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'cloudconfig_test'
 
 class ConfigRestApiV1 < CloudConfigTest
@@ -21,8 +22,7 @@ class ConfigRestApiV1 < CloudConfigTest
   end
 
   def base_url
-    path = "/config/v1/"
-    return "#{@urischeme}:\/\/#{@configserver}:#{@httpport}#{path}"
+    "#{@urischeme}:\/\/#{@configserver}:#{@httpport}/config/v1/"
   end
 
   def test_rest_basic
@@ -30,27 +30,27 @@ class ConfigRestApiV1 < CloudConfigTest
     
     sentinel_config_name = "cloud.config.sentinel"
     model_config_name = "cloud.config.model"
-    filedistributorrpc_config_name = "cloud.config.filedistribution.filedistributorrpc"
+    threadpool_config_name = "container.handler.threadpool.container-threadpool"
     
     # Test listing, non recursive (default). Includes first level of config id.
     resp = execute_http_request(base_url)
     assert_response_code_and_body(resp, 200, [sentinel_config_name,
-                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/"])
+                                              base_url + threadpool_config_name + "\/admin\/"])
 
     # Test listing, non recursive (explicit). Includes first level of config id.
     resp = execute_http_request(base_url + "?recursive=false")
     assert_response_code_and_body(resp, 200, [sentinel_config_name,
-                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/"])
+                                              base_url + threadpool_config_name + "\/admin\/"])
 
     # Test listing, recursive
     resp = execute_http_request(base_url + "?recursive=true")
     assert_response_code_and_body(resp, 200, [sentinel_config_name,
-                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/",
-                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/#{@configserver}"])
+                                              base_url + threadpool_config_name + "\/admin\/cluster-controllers\/component\/threadpool@default-handler-common",
+                                              base_url + threadpool_config_name + "\/admin\/metrics\/component\/threadpool@default-handler-common"])
 
     # Test named listing. Includes first level of config id.
-    resp = execute_http_request(base_url + filedistributorrpc_config_name + "/")
-    assert_response_code_and_body(resp, 200, [base_url + filedistributorrpc_config_name + "\/filedistribution\/"])
+    resp = execute_http_request(base_url + threadpool_config_name + "/")
+    assert_response_code_and_body(resp, 200, [base_url + threadpool_config_name + "\/admin\/"])
 
     # Test get config
     resp = execute_http_request(base_url + model_config_name + "/admin/model")
