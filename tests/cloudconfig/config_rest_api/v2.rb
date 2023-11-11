@@ -22,13 +22,11 @@ class ConfigRestApiV2 < CloudConfigTest
   end
 
   def base_url_long_appid
-    path = "/config/v2/tenant/default/application/default/environment/prod/region/default/instance/default/"
-    return "#{@urischeme}:\/\/#{@configserver}:#{@httpport}#{path}"
+    "#{@urischeme}:\/\/#{@configserver}:#{@httpport}/config/v2/tenant/default/application/default/environment/prod/region/default/instance/default/"
   end
 
   def base_url_short_appid
-    path = "/config/v2/tenant/default/application/default/"
-    return "http:\/\/#{@configserver}:#{@httpport}#{path}"
+    "http:\/\/#{@configserver}:#{@httpport}/config/v2/tenant/default/application/default/"
   end
   
   def verify_rest(base_url=base_url_long_appid())
@@ -36,7 +34,7 @@ class ConfigRestApiV2 < CloudConfigTest
     
     sentinel_config_name = "cloud.config.sentinel"
     model_config_name = "cloud.config.model"
-    filedistributorrpc_config_name = "cloud.config.filedistribution.filedistributorrpc"
+    threadpool_config_name = "container.handler.threadpool.container-threadpool"
 
     # Test get config
     resp = execute_http_request(base_url + model_config_name + "/admin/model")
@@ -45,22 +43,22 @@ class ConfigRestApiV2 < CloudConfigTest
     # Test listing, non recursive (default). Includes first level of config id.
     resp = execute_http_request(base_url)
     assert_response_code_and_body(resp, 200, [sentinel_config_name,
-                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/"])
+                                              base_url + threadpool_config_name + "\/admin\/"])
 
     # Test listing, non recursive (explicit). Includes first level of config id.
     resp = execute_http_request(base_url + "?recursive=false")
     assert_response_code_and_body(resp, 200, [sentinel_config_name,
-                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/"])
+                                              base_url + threadpool_config_name + "\/admin\/"])
 
     # Test listing, recursive
     resp = execute_http_request(base_url + "?recursive=true")
     assert_response_code_and_body(resp, 200, [sentinel_config_name,
-                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/",
-                                              base_url + filedistributorrpc_config_name + "\/filedistribution\/#{@configserver}"])
+                                              base_url + threadpool_config_name + "\/admin\/cluster-controllers\/component\/threadpool@default-handler-common",
+                                              base_url + threadpool_config_name + "\/admin\/metrics\/component\/threadpool@default-handler-common"])
 
     # Test named listing. Includes first level of config id.
-    resp = execute_http_request(base_url + filedistributorrpc_config_name + "/")
-    assert_response_code_and_body(resp, 200, [base_url + filedistributorrpc_config_name + "\/filedistribution\/"])
+    resp = execute_http_request(base_url + threadpool_config_name + "/")
+    assert_response_code_and_body(resp, 200, [base_url + threadpool_config_name + "\/admin\/"])
 
     # Test get config with nocache property set
     resp = execute_http_request(base_url + model_config_name + "/admin/model?nocache=true")
@@ -80,8 +78,7 @@ class ConfigRestApiV2 < CloudConfigTest
   end
 
   def test_rest_basic_short_appid
-    path = "/config/v2/tenant/default/application/default/"
-    verify_rest("#{@urischeme}:\/\/#{@configserver}:#{@httpport}#{path}")
+    verify_rest("#{@urischeme}:\/\/#{@configserver}:#{@httpport}/config/v2/tenant/default/application/default/")
   end
 
   def test_traverse_all_short_appid
