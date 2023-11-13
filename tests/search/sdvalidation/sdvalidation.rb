@@ -23,7 +23,7 @@ class SDValidation < SearchTest
   def test_rank_validation
     set_description("Tests that deploying fails when rank validation fails")
     begin
-      deploy_app(SearchApp.new.sd(selfdir+"invalid_rank.sd"), { :stderr => true })
+      deploy_app(SearchApp.new.sd(selfdir+"invalid_rank.sd"))
       assert(false)
     rescue ExecuteError => ee
       assert_match(Regexp.new("ERROR: rank profile 'fail1': FAIL"), ee.output)
@@ -33,7 +33,7 @@ class SDValidation < SearchTest
 
   def deploy_invalid_sd(sdname, error_message=nil)
     exception = assert_raise(ExecuteError) {
-      deploy_app(SearchApp.new.sd(sdname), { :stderr => true })
+      deploy_app(SearchApp.new.sd(sdname))
     }
     if error_message
       assert_match(Regexp.new(error_message), exception.output)

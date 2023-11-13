@@ -66,7 +66,7 @@ class SemanticSearcher < IndexedSearchTest
 
   def test_invalid_rules
     output = deploy_app(SearchApp.new.sd(selfdir+"music.sd").rules_dir(selfdir+"rules_with_errors"),
-                        { :exceptiononfailure => false, :no_activate => true, :skip_create_model => true, :stderr => true })
+                        { :exceptiononfailure => false, :no_activate => true, :skip_create_model => true})
     assert_match(/Could not parse rule 'invalid': /, output)
   end
 

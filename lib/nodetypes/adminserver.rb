@@ -68,6 +68,9 @@ class Adminserver < VespaNode
       cmd += " -V #{params[:vespa_version]}"
     end
 
+    # Need to see stderr when deploy fails
+    params = params.merge({:stderr => true})
+
     if params[:separate_upload_and_prepare]
       upload_start = Time.now
       execute("#{cmd} upload #{app_dir}", params)
