@@ -10,7 +10,7 @@ class DeployReporting < IndexedSearchTest
 
   def test_deploy_bad_sdfile
     begin
-      err = deploy_app(SearchApp.new.sd(selfdir + "bad.sd"), { :stderr => true })
+      err = deploy_app(SearchApp.new.sd(selfdir + "bad.sd"))
     rescue ExecuteError => e
       err = e.output
       msg = e.message

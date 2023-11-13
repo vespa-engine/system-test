@@ -10,7 +10,7 @@ class IncludeXmlSchemaViolation < SearchContainerTest
 
   def test_include_xml_schema_violation
     begin
-      err = deploy(selfdir + "app", nil, { :stderr => true })
+      err = deploy(selfdir + "app")
     rescue ExecuteError => e
       err = e.output
       msg = e.message

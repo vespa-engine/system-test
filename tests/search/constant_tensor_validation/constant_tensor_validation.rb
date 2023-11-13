@@ -23,7 +23,7 @@ class ConstantTensorValidationTest < IndexedSearchTest
   def test_constant_tensor_validation_invalid
     set_description("Test that constant tensor validation feature fails deploy with invalid constant tensors")
     begin
-      deploy_app(create_app(tensordir: "invalid_tensors"), { :stderr => true })
+      deploy_app(create_app(tensordir: "invalid_tensors"))
       start
     rescue ExecuteError => e
       puts "ExecuteError: #{e}: '#{e.output}'"
