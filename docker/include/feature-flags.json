@@ -39,6 +39,7 @@
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
         { "id" : "dynamic-heap-size", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
-        { "id" : "merging-max-memory-usage-per-node", "rules" : [ { "value" : 0 } ] }
+        { "id" : "merging-max-memory-usage-per-node", "rules" : [ { "value" : 0 } ] },
+        { "id" : "use-per-document-throttled-delete-bucket", "rules" : [ { "value" : true } ] }
     ]
 }
