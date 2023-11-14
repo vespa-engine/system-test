@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 # This class stores the result from executing a test_ method in
 # a TestCase subclass. Values like number of assertions, errors,
 # and the execution log are stored here.

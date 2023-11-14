@@ -1,4 +1,4 @@
-# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 # This module contains methods for managing feeding through a feeder (vespa-feeder or vespa http client).
 # There are convenience methods for creating <vespafeed> start and end tags, plus concatenation of feed files.
 # The module is included in the NodeServer class, and the public method signatures are implemented
