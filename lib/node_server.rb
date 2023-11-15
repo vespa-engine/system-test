@@ -963,11 +963,18 @@ def symbol_to_string_keys(hsh)
   hsh.map { |k,v| [k.to_s, v] }.to_h
 end
 
+def toggle_config_sentinel_no_new_privs_process_bit
+  # Applies to all processes launched by the config sentinel.
+  # See https://www.kernel.org/doc/Documentation/prctl/no_new_privs.txt
+  ENV['VESPA_PR_SET_NO_NEW_PRIVS'] = 'true'
+end
+
 def main(callback_endpoint)
   # Instantiates a NodeServer object and publishes it through DRb.
   hostname = Environment.instance.vespa_hostname
   short_hostname = Environment.instance.vespa_short_hostname
   ENV['PATH'] = "#{Environment.instance.path_env_variable}:#{ENV['PATH']}"
+  toggle_config_sentinel_no_new_privs_process_bit
 
   if callback_endpoint
     # This can be specified with :0 to pick an available port, but use the fixed port for now
