@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 shared:
-  image: vespaengine/vespa-build-almalinux-8:latest
+  image: docker.io/vespaengine/vespa-build-almalinux-8:latest
   annotations:
     screwdriver.cd/restrictPR: fork
   settings:
@@ -50,7 +50,7 @@ jobs:
           cd docker
           docker build --file Dockerfile.base \
                        --build-arg BASE_IMAGE=quay.io/centos/centos:stream8 \
-                       --tag vespaengine/vespa-systemtest-base-centos-stream8:latest .
+                       --tag docker.io/vespaengine/vespa-systemtest-base-centos-stream8:latest .
       - publish: |
           if [[ -z "$SD_PULL_REQUEST" ]]; then
             OPT_STATE="$(set +o)"
@@ -82,7 +82,7 @@ jobs:
           cd docker
           docker build --file Dockerfile.base \
                        --build-arg BASE_IMAGE=docker.io/almalinux:8 \
-                       --tag vespaengine/vespa-systemtest-base-el8:latest .
+                       --tag docker.io/vespaengine/vespa-systemtest-base-el8:latest .
       - publish: |
           if [[ -z "$SD_PULL_REQUEST" ]]; then
             OPT_STATE="$(set +o)"
