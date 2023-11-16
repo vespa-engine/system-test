@@ -1,1 +1,1 @@
-Dockerfile.stream8
+Dockerfile.almalinux8

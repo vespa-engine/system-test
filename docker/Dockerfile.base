@@ -11,7 +11,7 @@ RUN --mount=type=bind,target=/include/,source=include/,rw \
         dnf-plugins-core \
         dnf-plugin-ovl && \
     dnf config-manager --enable powertools && \
-    dnf -y copr enable @vespa/vespa centos-stream-8 && \
+    dnf -y copr enable @vespa/vespa epel-8-$(arch) && \
     dnf -y module enable maven:3.8 && \
     dnf -y module enable ruby:3.1 && \
     dnf -y install \
@@ -52,16 +52,9 @@ RUN --mount=type=bind,target=/include/,source=include/,rw \
      echo -e "#!/bin/bash\nsource /opt/rh/gcc-toolset-12/enable" > /etc/profile.d/enable-gcc-toolset-12.sh && \
      (source /opt/rh/gcc-toolset-12/enable && gem install ffi libxml-ruby) && \
      pip3 install --no-cache-dir awscli && \
-     dnf -y install vespa && \
+     (dnf -y install vespa || (dnf -y install --releasever 8.$(( $([[ $(cat /etc/system-release) =~ ^.*\ 8\.([0-9]+).* ]] && echo ${BASH_REMATCH[1]}) + 1 ))-beta llvm-libs && dnf -y install vespa)) && \
      (rpm -qa | grep "vespa.*$(rpm -q --queryformat '%{VERSION}' vespa).*" | xargs dnf -y remove --noautoremove) && \
      dnf clean all && rm -rf /var/cache/dnf
-
-# Temporarily work around too old OpenJDK packages for CentOS Stream 8
-RUN dnf upgrade -y --nogpgcheck --disablerepo='*' --repofrompath alma-8-latest,https://repo.almalinux.org/almalinux/8/AppStream/$(arch)/os \
-      $(rpm -qa --qf '%{NAME}\n' java-* | xargs) && \
-    alternatives --set java java-17-openjdk.$(arch) && \
-    alternatives --set javac java-17-openjdk.$(arch) && \
-    dnf clean all --repofrompath alma-8-latest,https://repo.almalinux.org/almalinux/8/AppStream/$(arch)/os && rm -rf /var/cache/dnf
 
 # Java requires proper locale for unicode
 ENV LANG en_US.UTF-8
