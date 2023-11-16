@@ -10,7 +10,7 @@ class ColBertEmbeddingPerfTest < PerformanceTest
   end
 
   def test_colbert
-    set_description('Benchmark feed and query throughput with ColBERT end2end or just max sim')
+    set_description('Benchmark feed and query throughput with ColBERT end2end or just max sim with and without unpacking')
     deploy(selfdir + "app")
     start
 
@@ -39,6 +39,10 @@ class ColBertEmbeddingPerfTest < PerformanceTest
 
     for clients in [1, 2, 16, 32] do
          run_fbench(container, clients, runtime, get_query("max-sim-default"), selfdir + "queries_post.txt", "max_sim", true)
+    end
+
+    for clients in [1, 2, 16, 32] do
+      run_fbench(container, clients, runtime, get_query("max-sim-unpack"), selfdir + "queries_post.txt", "max_sim_unpack", true)
     end
 
   end

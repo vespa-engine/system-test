@@ -42,6 +42,11 @@ schema product {
         attribute: fast-rank
     }
 
+    field colbert_embedding_packed type tensor<int8>(dt{}, x[16]) {
+        indexing: input title | embed col | attribute
+        attribute: fast-rank
+    }
+
     rank-profile default {
         inputs {
             query(qt) tensor<float>(qt{},x[128])
@@ -55,6 +60,26 @@ schema product {
                         reduce(
                             sum(
                                 query(qt) * cell_cast(attribute(colbert_embedding),float), x
+                             ),
+                             max, dt
+                         ),
+                        qt
+                    )
+                }
+        }
+    }
+
+    rank-profile max-sim-unpack inherits default {
+        function unpack() {
+            expression: unpack_bits(attribute(colbert_embedding_packed))
+        }
+
+        first-phase {
+                expression {
+                    sum(
+                        reduce(
+                            sum(
+                                query(qt) * unpack , x
                              ),
                              max, dt
                          ),
