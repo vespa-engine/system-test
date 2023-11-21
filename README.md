@@ -32,7 +32,7 @@ for the RPC calls.
 ## Install
 
 Before running system tests, build and install Vespa following the steps in the development guide:
-[Vespa development on CentOS Stream 8](https://github.com/vespa-engine/docker-image-dev#vespa-development-on-centos-stream-8).
+[Vespa development on CentOS Stream 8](https://github.com/vespa-engine/docker-image-dev#vespa-development-on-almalinux-8).
 
 ## Usage
 ### Vespa development
