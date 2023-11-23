@@ -18,7 +18,7 @@ class ZkReconfig < CloudConfigTest
     install_maven_parent_pom(node)
     node.copy("#{selfdir}/#{appdir}/", @dirs.tmpdir + "#{appdir}/")
     dest = @dirs.tmpdir + appdir
-    node.execute("cd #{dest} && #{maven_command} -Dtest.hide=false test")
+    node.execute("cd #{dest} && #{maven_command} -Dtest.hide=false test 2>&1")
   end
 
   def teardown
