@@ -17,11 +17,11 @@ RUN --mount=type=bind,target=/include/,source=include/,rw \
     dnf -y install \
         bind-utils \
         cmake \
-        gcc-toolset-12-annobin-docs \
-        gcc-toolset-12-annobin-plugin-gcc \
-        gcc-toolset-12-binutils \
-        gcc-toolset-12-gcc-c++ \
-        gcc-toolset-12-libatomic-devel \
+        gcc-toolset-13-annobin-docs \
+        gcc-toolset-13-annobin-plugin-gcc \
+        gcc-toolset-13-binutils \
+        gcc-toolset-13-gcc-c++ \
+        gcc-toolset-13-libatomic-devel \
         file \
         git \
         hostname \
@@ -49,11 +49,10 @@ RUN --mount=type=bind,target=/include/,source=include/,rw \
         $(if [[ -e /include/additional-packages.txt ]]; then echo $(cat /include/additional-packages.txt | xargs); fi) && \
      alternatives --set java java-17-openjdk.$(arch) && \
      alternatives --set javac java-17-openjdk.$(arch) && \
-     echo -e "#!/bin/bash\nsource /opt/rh/gcc-toolset-12/enable" > /etc/profile.d/enable-gcc-toolset-12.sh && \
-     (source /opt/rh/gcc-toolset-12/enable && gem install ffi libxml-ruby) && \
-     pip3 install --no-cache-dir awscli && \
      (dnf -y install vespa || (dnf -y install --releasever 8.$(( $([[ $(cat /etc/system-release) =~ ^.*\ 8\.([0-9]+).* ]] && echo ${BASH_REMATCH[1]}) + 1 ))-beta llvm-libs && dnf -y install vespa)) && \
      (rpm -qa | grep "vespa.*$(rpm -q --queryformat '%{VERSION}' vespa).*" | xargs dnf -y remove --noautoremove) && \
+     (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby) && \
+     pip3 install --no-cache-dir awscli && \
      dnf clean all && rm -rf /var/cache/dnf
 
 # Java requires proper locale for unicode
