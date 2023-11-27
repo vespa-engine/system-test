@@ -69,7 +69,7 @@ class TensorEvalPerfTest < PerformanceTest
   def feed_docs(num_docs)
     container = (vespa.qrserver["0"] or vespa.container.values.first)
     tmp_bin_dir = container.create_tmp_bin_dir
-    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{tmp_bin_dir}/docs #{selfdir}/docs.cpp")
+    container.execute("g++ -Wl,-rpath,#{Environment.instance.vespa_home}/lib64/ -g -O3 -o #{tmp_bin_dir}/docs #{selfdir}/docs.cpp", { :stderr => true })
     container.execute("#{tmp_bin_dir}/docs #{num_docs} | vespa-feeder")
   end
 
