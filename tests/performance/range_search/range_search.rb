@@ -71,6 +71,7 @@ class RangeSearchPerfTest < PerformanceTest
       for r in [100, 200] do
         for fs in [true, false] do
           query_and_profile(r, 100, fs, f)
+          query_and_profile(r, 1000000, fs, f)
         end
       end
     end
