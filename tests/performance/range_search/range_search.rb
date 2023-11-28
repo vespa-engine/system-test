@@ -25,6 +25,7 @@ class RangeSearchPerfTest < PerformanceTest
     @range_hits_ratios = [1, 5, 10, 50, 100, 200]
     @filter_hits_ratios = [1, 5, 10, 50, 100, 150, 200]
     @values_in_range = [1, 100, 10000]
+    @large_values_in_range = [100000, 1000000]
     @num_docs = 10000000
     feed_docs
     validate_queries
@@ -60,6 +61,12 @@ class RangeSearchPerfTest < PerformanceTest
         end
       end
     end
+    for v in @large_values_in_range do
+      hits = calc_hits(100)
+      if v <= hits
+        query_and_profile(100, v, true, 0)
+      end
+    end
     for f in @filter_hits_ratios do
       for r in [100, 200] do
         for fs in [true, false] do
@@ -71,7 +78,7 @@ class RangeSearchPerfTest < PerformanceTest
 
   def get_query(range_hits_ratio, values_in_range, fast_search, filter_hits_ratio)
     # Lower and upper must match the spec in create_docs.cpp
-    lower = range_hits_ratio * 100000 + values_in_range
+    lower = range_hits_ratio * 10000000 + values_in_range
     upper = lower + values_in_range
     filter = ""
     if filter_hits_ratio > 0
@@ -115,6 +122,14 @@ class RangeSearchPerfTest < PerformanceTest
             assert_hitcount(query, hits)
           end
         end
+      end
+    end
+    for v in @large_values_in_range do
+      hits = calc_hits(100)
+      if v <= hits
+        query = get_query(100, v, true, 0)
+        puts query
+        assert_hitcount(query, hits)
       end
     end
     for f in @filter_hits_ratios do

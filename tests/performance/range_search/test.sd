@@ -23,6 +23,14 @@ schema test {
       indexing: attribute | summary
       rank: filter
     }
+    field v_100000 type int {
+      indexing: attribute | summary
+      rank: filter
+    }
+    field v_1000000 type int {
+      indexing: attribute | summary
+      rank: filter
+    }
     field filter type int {
       indexing: attribute | summary
       attribute: fast-search
@@ -51,6 +59,16 @@ schema test {
   }
   field v_10000_fs type int {
     indexing: input v_10000 | attribute | summary
+    attribute: fast-search
+    rank: filter
+  }
+  field v_100000_fs type int {
+    indexing: input v_100000 | attribute | summary
+    attribute: fast-search
+    rank: filter
+  }
+  field v_1000000_fs type int {
+    indexing: input v_1000000 | attribute | summary
     attribute: fast-search
     rank: filter
   }
