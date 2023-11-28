@@ -1,0 +1,96 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field is type int {
+      indexing: attribute | summary
+    }
+    field ia type array<int> {
+      indexing: attribute | summary
+    }
+    field iw type weightedset<int> {
+      indexing: attribute | summary
+    }
+    field ss type string {
+      indexing: attribute | summary
+    }
+    field sa type array<string> {
+      indexing: attribute | summary
+    }
+    field sw type weightedset<string> {
+      indexing: attribute | summary
+    }
+  }
+  field isfs type int {
+      indexing: input is | attribute | summary
+      attribute: fast-search
+  }
+  field iafs type array<int> {
+      indexing: input ia | attribute | summary
+      attribute: fast-search
+  }
+  field iwfs type weightedset<int> {
+      indexing: input iw | attribute | summary
+      attribute: fast-search
+  }
+  field ssfs type string {
+      indexing: input ss | attribute | summary
+      attribute: fast-search
+  }
+  field safs type array<string> {
+      indexing: input sa | attribute | summary
+      attribute: fast-search
+  }
+  field swfs type weightedset<string> {
+      indexing: input sw | attribute | summary
+      attribute: fast-search
+  }
+  field ssc type string {
+      indexing: input ss | attribute | summary
+      match: cased
+  }
+  field sac type array<string> {
+      indexing: input sa | attribute | summary
+      match: cased
+  }
+  field swc type weightedset<string> {
+      indexing: input sw | attribute | summary
+      match: cased
+  }
+  field ssfsc type string {
+      indexing: input ss | attribute | summary
+      attribute: fast-search
+      dictionary {
+        btree
+	cased
+      }
+      match: cased
+  }
+  field safsc type array<string> {
+      indexing: input sa | attribute | summary
+      attribute: fast-search
+      dictionary {
+        btree
+	cased
+      }
+      match: cased
+  }
+  field swfsc type weightedset<string> {
+      indexing: input sw | attribute | summary
+      attribute: fast-search
+      dictionary {
+        btree
+	cased
+      }
+      match: cased
+  }
+  rank-profile default {
+    first-phase {
+      expression {
+        -attribute(id)
+      }
+    }
+  }
+}
