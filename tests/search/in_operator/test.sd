@@ -86,6 +86,15 @@ schema test {
       }
       match: cased
   }
+  field ssi type string {
+      indexing: input ss | index | summary
+  }
+  field sai type array<string> {
+      indexing: input sa | index | summary
+  }
+  field swi type weightedset<string> {
+      indexing: input sw | index | summary
+  }
   rank-profile default {
     first-phase {
       expression {
