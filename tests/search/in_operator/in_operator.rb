@@ -56,8 +56,7 @@ class InOperator < IndexedSearchTest
         assert_equal([1,2], my_query("sa#{fs}#{c} in (@foo)", [['foo', 'w33,w39']]))
       end
     end
-    # Empty result in line below is due to query term not being lowercased
-    assert_equal([], my_query("ss in ('W24')", []))
+    assert_equal([0], my_query("ss in ('W24')", []))
     assert_equal([0], my_query("ssfs in ('W24')", []))
     assert_equal([], my_query("ssc in ('W24')", []))
     assert_equal([], my_query("ssfsc in ('W24')", []))
