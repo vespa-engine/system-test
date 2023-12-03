@@ -1,0 +1,20 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+     field i1 type int {
+         indexing: index | summary
+     }
+     field f1 type int {
+         indexing: index | summary
+     }
+     field m1 type array<int> {
+         indexing: index | summary
+     }
+     field w1 type weightedset<int> {
+         indexing: index | summary
+     }
+     field w2 type weightedset<long> {
+         indexing: index | summary
+     }
+  }
+}
