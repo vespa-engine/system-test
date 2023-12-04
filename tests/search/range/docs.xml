@@ -4,6 +4,8 @@
     <m1><item>1</item></m1>
     <w1><item weight='1'>1</item></w1>
     <w2><item weight='1'>1</item></w2>
+    <sf>1.0</sf>
+    <sd>1.0</sd>
 </document>
 <document documenttype="test" id="id:a:test::2">
     <i1>1</i1>
@@ -11,6 +13,8 @@
     <m1><item>1</item></m1>
     <w1><item weight='1'>1</item></w1>
     <w2><item weight='1'>1</item></w2>
+    <sf>1.0</sf>
+    <sd>1.0</sd>
 </document>
 <document documenttype="test" id="id:a:test::3">
     <i1>2</i1>
@@ -18,6 +22,8 @@
     <m1><item>2</item></m1>
     <w1><item weight='1'>2</item></w1>
     <w2><item weight='1'>2</item></w2>
+    <sf>2.0</sf>
+    <sd>2.0</sd>
 </document>
 <document documenttype="test" id="id:a:test::4">
     <i1>3</i1>
@@ -25,6 +31,8 @@
     <m1><item>3</item></m1>
     <w1><item weight='1'>3</item></w1>
     <w2><item weight='1'>3</item></w2>
+    <sf>3.0</sf>
+    <sd>3.0</sd>
 </document>
 <document documenttype="test" id="id:a:test::5">
     <i1>3</i1>
@@ -32,4 +40,6 @@
     <m1><item>3</item></m1>
     <w1><item weight='1'>3</item></w1>
     <w2><item weight='1'>3</item></w2>
+    <sf>3.0</sf>
+    <sd>3.0</sd>
 </document>

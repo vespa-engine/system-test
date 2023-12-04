@@ -26,5 +26,15 @@ schema test {
          attribute: fast-search
          dictionary:hash
      }
+     field sf type float {
+         indexing: attribute | summary
+         attribute: fast-search
+         dictionary:hash
+     }
+     field sd type double {
+         indexing: attribute | summary
+         attribute: fast-search
+         dictionary:hash
+     }
   }
 }
