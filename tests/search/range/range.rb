@@ -1,14 +1,23 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class RangeSearch < IndexedSearchTest
+class RangeSearch < IndexedStreamingSearchTest
 
   def setup
     set_owner("balder")
     set_description("Test range search")
   end
 
+  def self.final_test_methods
+    ['test_range',
+     'test_range_with_hash_dictionary',
+     'test_range_with_btree_and_hash_dictionary',
+     'test_range_with_no_dictionary',
+     'test_range_streaming']
+  end
+
   def test_range
+    @params = { :search_type => "ELASTIC" }
     deploy_app(SearchApp.new.
                cluster_name("test").
                sd(selfdir+"test.sd"))
@@ -16,6 +25,7 @@ class RangeSearch < IndexedSearchTest
   end
 
   def test_range_with_hash_dictionary
+    @params = { :search_type => "ELASTIC" }
     deploy_app(SearchApp.new.
                cluster_name("test").
                sd(selfdir+"hash_dictionary/test.sd"))
@@ -23,6 +33,7 @@ class RangeSearch < IndexedSearchTest
   end
 
   def test_range_with_btree_and_hash_dictionary
+    @params = { :search_type => "ELASTIC" }
     deploy_app(SearchApp.new.
                cluster_name("test").
                sd(selfdir+"btree_and_hash_dictionary/test.sd"))
@@ -30,9 +41,18 @@ class RangeSearch < IndexedSearchTest
   end
 
   def test_range_with_no_dictionary
+    @params = { :search_type => "ELASTIC" }
     deploy_app(SearchApp.new.
                cluster_name("test").
                sd(selfdir+"no_dictionary/test.sd"))
+    start_feed_and_check(false)
+  end
+
+  def test_range_streaming
+    @params = { :search_type => "STREAMING" }
+    deploy_app(SearchApp.new.
+               cluster_name("test").
+               sd(selfdir+"streaming/test.sd"))
     start_feed_and_check(false)
   end
 
