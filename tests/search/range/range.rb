@@ -64,6 +64,10 @@ class RangeSearch < IndexedStreamingSearchTest
     check_ranges("m1", support_range_limit)
     check_ranges("w1", support_range_limit)
     check_ranges("w2", support_range_limit)
+    check_ranges("sf", support_range_limit)
+    check_ranges("sd", support_range_limit)
+    check_fp_ranges("sf")
+    check_fp_ranges("sd")
     check_range_optimizations
   end
 
@@ -189,6 +193,27 @@ class RangeSearch < IndexedStreamingSearchTest
     assert_hitcount('query=m1:%3E2%20m1:%3C4&type=all', 2)
     assert(! search('query=m1:%3E2%20m1:%3C4&tracelevel=2&type=all').xmldata.match("Optimized query ranges"),
            "Query ranges are optimized")                                                                                                                                                     
+  end
+
+  def assert_term_hitcount(field, term, hits)
+    form = [['yql', "select * from sources * where #{field} contains '#{term}'"]]
+    encoded_form=URI.encode_www_form(form)
+    assert_hitcount(encoded_form, hits)
+  end
+
+  def check_fp_ranges(field)
+    assert_term_hitcount(field, "[1.0;3.0]", 5)
+    assert_term_hitcount(field, "<1.0;3.0]", 3)
+    assert_term_hitcount(field, "[2.0;3.0]", 3)
+    assert_term_hitcount(field, "<2.0;3.0]", 2)
+    assert_term_hitcount(field, "[3.0;3.0]", 2)
+    assert_term_hitcount(field, "<3.0;3.0]", 0)
+    assert_term_hitcount(field, "[1.0;3.0>", 3)
+    assert_term_hitcount(field, "[1.0;2.0]", 3)
+    assert_term_hitcount(field, "[1.0;2.0>", 2)
+    assert_term_hitcount(field, "[1.0;1.0]", 2)
+    assert_term_hitcount(field, "[1.0;1.0>", 0)
+    assert_term_hitcount(field, "<1.0;3.0>", 1)
   end
 
   def teardown

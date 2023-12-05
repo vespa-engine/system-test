@@ -31,5 +31,17 @@ schema test {
          dictionary:hash
          dictionary:btree
      }
+     field sf type float {
+         indexing: attribute | summary
+         attribute: fast-search
+         dictionary:hash
+         dictionary:btree
+     }
+     field sd type double {
+         indexing: attribute | summary
+         attribute: fast-search
+         dictionary:hash
+         dictionary:btree
+     }
   }
 }

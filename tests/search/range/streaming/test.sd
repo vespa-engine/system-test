@@ -16,5 +16,11 @@ schema test {
      field w2 type weightedset<long> {
          indexing: index | summary
      }
+     field sf type float {
+         indexing: index | summary
+     }
+     field sd type double {
+         indexing: index | summary
+     }
   }
 }

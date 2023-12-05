@@ -21,5 +21,13 @@ schema test {
          indexing: attribute | summary
          attribute: fast-search
      }
+     field sf type float {
+         indexing: attribute | summary
+         attribute: fast-search
+     }
+     field sd type double {
+         indexing: attribute | summary
+         attribute: fast-search
+     }
   }
 }
