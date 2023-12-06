@@ -68,6 +68,9 @@ class InOperator < IndexedSearchTest
     assert_equal([1,2], my_query("sai in (@foo)", [['foo', 'w33,w39']]))
     assert_equal([1,2], my_query("swi in (@foo)", [['foo', 'w33,w39']]))
     assert_equal([0,1], my_query("swi in ('w30')", []))
+    assert_equal([0], my_query("ssit in ('w24')", []))
+    assert_equal([0,1], my_query("ssit in ('w30')", []))
+    assert_equal([1,2], my_query("ssit in ('w36')", []))
   end
 
   def my_query(query_string, query_params)

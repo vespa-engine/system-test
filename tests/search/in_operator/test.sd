@@ -95,6 +95,9 @@ schema test {
   field swi type weightedset<string> {
       indexing: input sw | index | summary
   }
+  field ssit type string {
+      indexing: input sa | join " " | index | summary
+  }
   rank-profile default {
     first-phase {
       expression {
