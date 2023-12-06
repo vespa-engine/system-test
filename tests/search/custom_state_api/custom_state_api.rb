@@ -84,7 +84,7 @@ class CustomStateApi < SearchTest
   end
 
   def assert_thread_pools(page)
-    assert_keys(["shared", "match", "docsum", "flush", "proton", "warmup", "field_writer"], page)
+    assert_keys(["shared", "match", "docsum", "flush", "proton", "field_writer"], page)
     assert_field_writer(get_page("/threadpools/field_writer"))
   end
 
