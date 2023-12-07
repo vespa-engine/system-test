@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class InOperator < IndexedSearchTest
+class InOperator < IndexedStreamingSearchTest
   def setup
     set_owner("toregge")
   end
@@ -20,7 +20,9 @@ class InOperator < IndexedSearchTest
 
   def test_in_operator
     set_description("test yql in operator")
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd").enable_document_api)
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd").
+                 indexing_cluster('default').indexing_chain('indexing').
+                 enable_document_api)
     start
     feed_doc(0, { :is => 24,
                   :ia => [ 24, 27, 30],
