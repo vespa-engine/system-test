@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_streaming_search_test'
 
@@ -10,9 +11,11 @@ class InOperator < IndexedStreamingSearchTest
     doc = Document.new("test", "id:test:test::#{id}").
             add_field("id", id).
             add_field("is", doc_template[:is]).
+            add_field("is2", doc_template[:is2]).
             add_field("ia", doc_template[:ia]).
             add_field("iw", doc_template[:iw]).
             add_field("ss", doc_template[:ss]).
+            add_field("ss2", doc_template[:ss2]).
             add_field("sa", doc_template[:sa]).
             add_field("sw", doc_template[:sw])
     vespa.document_api_v1.put(doc)
@@ -25,21 +28,27 @@ class InOperator < IndexedStreamingSearchTest
                  enable_document_api)
     start
     feed_doc(0, { :is => 24,
+                  :is2 => 25,
                   :ia => [ 24, 27, 30],
                   :iw => { 24 => 1, 27 => 1, 30 => 1 },
                   :ss => "w24",
+                  :ss2 => "w25",
                   :sa => [ "w24", "w27", "w30" ],
                   :sw => { "w24" => 1, "w27" => 1, "w30" => 1 } })
     feed_doc(1, { :is => 30,
+                  :is2 => 31,
                   :ia => [ 30, 33, 36],
                   :iw => { 30 => 1, 33 => 1, 36 => 1 },
                   :ss => "w30",
+                  :ss2 => "w31",
                   :sa => [ "w30", "w33", "w36" ],
                   :sw => { "w30" => 1, "w33" => 1, "w36" => 1 } })
     feed_doc(2, { :is => 36,
+                  :is2 => 37,
                   :ia => [ 36, 39, 42],
                   :iw => { 36 => 1, 39 => 1, 42 => 1 },
                   :ss => "w36",
+                  :ss2 => "w37",
                   :sa => [ "w36", "w39", "w42" ],
                   :sw => { "w36" => 1, "w39" => 1, "w42" => 1 } })
     for fs in ['', 'fs']
@@ -73,6 +82,13 @@ class InOperator < IndexedStreamingSearchTest
     assert_equal([0], my_query("ssit in ('w24')", []))
     assert_equal([0,1], my_query("ssit in ('w30')", []))
     assert_equal([1,2], my_query("ssit in ('w36')", []))
+    assert_equal({0 => ['is'], 1 => ['is2'], 2 => ['is', 'is2']}, check_matches("ints in (24,31,36,37)"))
+    assert_equal({0 => ['ia', 'is', 'iw'], 1 => ['is2'], 2 => ['ia', 'is2','iw']}, check_matches("ints2 in (24,31,37,39)"))
+    assert_equal({0 => ['ss'], 1 => ['ss2'], 2 => ['ss', 'ss2']}, check_matches("strings in ('w24','w31','w36','w37')"))
+    assert_equal({0 => ['sa', 'ss', 'sw'], 1 => ['ss2'], 2 => ['sa', 'ss2', 'sw']}, check_matches("strings2 in ('w24','w31','w37','w39')"))
+    assert_equal({0 => ['ssi'], 1 => ['ss2i'], 2 => ['ss2i', 'ssi']}, check_matches("stringsi in ('w24','w31','w36','w37')"))
+    assert_equal({0 => ['sai', 'ssi', 'swi'], 1 => ['ss2i'], 2 => ['sai', 'ss2i', 'swi']}, check_matches("strings2i in ('w24','w31','w37','w39')"))
+    assert_equal({0 => ['ss'], 1 => ['ss2i'], 2 => ['ss', 'ss2i']}, check_matches("stringsai in ('w24','w31','w36','w37')"))
   end
 
   def my_query(query_string, query_params)
@@ -85,6 +101,27 @@ class InOperator < IndexedStreamingSearchTest
       id_result.push(hit.field['id'])
     end
     return id_result
+  end
+
+  def check_matches(query_string)
+    form = [['yql', "select * from sources * where #{query_string}"]]
+    encoded_query_form = URI.encode_www_form(form)
+    result = search(encoded_query_form)
+    matches_fields_result = Hash.new
+    result.hit.each do |hit|
+      summaryfeatures = hit.field['summaryfeatures']
+      matches_fields = Array.new
+      for sf in summaryfeatures.keys
+        if sf.match('^matches\(([0-9a-z]*)\)')
+          matches_field = $1
+          if summaryfeatures[sf] > 0
+            matches_fields.push(matches_field)
+          end
+        end
+      end
+      matches_fields_result[hit.field['id']] = matches_fields.sort
+    end
+    return matches_fields_result
   end
 
   def teardown
