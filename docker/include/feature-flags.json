@@ -39,6 +39,7 @@
         { "id" : "dynamic-heap-size", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
         { "id" : "merging-max-memory-usage-per-node", "rules" : [ { "value" : 0 } ] },
+        { "id" : "use-estimate-for-fetch-postings", "rules" : [ { "value" : true } ] },
         { "id" : "use-per-document-throttled-delete-bucket", "rules" : [ { "value" : true } ] }
     ]
 }
