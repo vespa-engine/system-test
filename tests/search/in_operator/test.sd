@@ -22,6 +22,12 @@ schema test {
     field sw type weightedset<string> {
       indexing: attribute | summary
     }
+    field is2 type int {
+      indexing: attribute | summary
+    }
+    field ss2 type string {
+      indexing: attribute | summary
+    }
   }
   field isfs type int {
       indexing: input is | attribute | summary
@@ -98,11 +104,49 @@ schema test {
   field ssit type string {
       indexing: input sa | join " " | index | summary
   }
+  field ss2i type string {
+      indexing: input ss2 | index | summary
+  }
+  fieldset ints {
+    fields: is, is2
+  }
+  fieldset ints2 {
+    fields: is, is2, ia, iw
+  }
+  fieldset strings {
+    fields: ss, ss2
+  }
+  fieldset strings2 {
+    fields: ss, ss2, sa, sw
+  }
+  fieldset stringsi {
+    fields: ssi, ss2i
+  }
+  fieldset strings2i {
+    fields: ssi, ss2i, sai, swi
+  }
+  fieldset stringsai {
+    fields: ss, ss2i
+  }
   rank-profile default {
     first-phase {
       expression {
         -attribute(id)
       }
+    }
+    summary-features {
+      matches(ia)
+      matches(is)
+      matches(is2)
+      matches(iw)
+      matches(sa)
+      matches(ss)
+      matches(ss2)
+      matches(sw)
+      matches(sai)
+      matches(ssi)
+      matches(ss2i)
+      matches(swi)
     }
   }
 }
