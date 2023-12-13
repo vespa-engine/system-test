@@ -34,7 +34,7 @@ class RangeSearchPerfTest < PerformanceTest
 
   def create_app
     SearchApp.new.sd(selfdir + "test.sd").
-       threads_per_search(1)
+       threads_per_search(4)
   end
 
   def compile_create_docs
