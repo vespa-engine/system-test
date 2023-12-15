@@ -1,0 +1,45 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    field v_1 type int {
+      indexing: attribute | summary
+      attribute: fast-search
+      rank: filter
+    }
+    field v_10 type int {
+      indexing: attribute | summary
+      attribute: fast-search
+      rank: filter
+    }
+    field v_100 type int {
+      indexing: attribute | summary
+      attribute: fast-search
+      rank: filter
+    }
+    field v_1000 type int {
+      indexing: attribute | summary
+      attribute: fast-search
+      rank: filter
+    }
+    field v_10000 type int {
+      indexing: attribute | summary
+      attribute: fast-search
+      rank: filter
+    }
+    field v_100000 type int {
+      indexing: attribute | summary
+      attribute: fast-search
+      rank: filter
+    }
+    field v_1000000 type int {
+      indexing: attribute | summary
+      attribute: fast-search
+      rank: filter
+    }
+    field filter type int {
+      indexing: attribute | summary
+      attribute: fast-search
+      rank: filter
+    }
+  }
+}
