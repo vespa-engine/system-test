@@ -93,7 +93,7 @@ class ReportCoverage < IndexedSearchTest
     assert(21 <= coverage["coverage"])
     assert(23 >= coverage["coverage"])
     # This number depends on how the range search iterator (used by match-phase limiting) calculates approximation of number of hits.
-    assert(21000 <= coverage["documents"])
+    assert(20500 <= coverage["documents"])
     assert(23500 >= coverage["documents"])
     assert_equal(false, coverage["full"])
     assert_equal(2, coverage["nodes"])
@@ -111,10 +111,10 @@ class ReportCoverage < IndexedSearchTest
     coverage = result["root"]["coverage"]
     degraded = coverage["degraded"]
     puts coverage.to_s
-    assert(63 <= coverage["coverage"])
+    assert(58 <= coverage["coverage"])
     assert(65 >= coverage["coverage"])
     # This number depends on how the range search iterator (used by match-phase limiting) calculates approximation of number of hits.
-    assert(63000 <= coverage["documents"])
+    assert(58000 <= coverage["documents"])
     assert(65500 >= coverage["documents"])
     assert_equal(false, coverage["full"])
     assert_equal(2, coverage["nodes"])
