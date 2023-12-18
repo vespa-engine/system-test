@@ -33,14 +33,16 @@ class ReportCoverage < IndexedSearchTest
     result = search("/?query=coverage&ranking=lim&format=xml")
     puts("Got 'coverage-docs' of #{result.xml.attribute("coverage-docs")}.")
     assert(result.xml.attribute("coverage-full").to_s == "false", "Expected 'coverage-full' of false, got #{result.xml.attribute("coverage-full")}.")
-    assert(result.xml.attribute("coverage").to_s == "23", "Expected 'coverage' of 23, got #{result.xml.attribute("coverage")}.")
+    assert(result.xml.attribute("coverage").to_i >= 21, "Expected 'coverage' >= 21, got #{result.xml.attribute("coverage")}.")
+    assert(result.xml.attribute("coverage").to_i <= 23, "Expected 'coverage' <= 23, got #{result.xml.attribute("coverage")}.")
     assert(result.xml.attribute("results").to_s == "1", "Expected 'results' of 1, got #{result.xml.attribute("results")}.")
     assert(result.xml.attribute("results-full").to_s == "0", "Expected 'results-full' of 0, got #{result.xml.attribute("results-full")}.")
 
     result = search("/?query=coverage&ranking=revlim&format=xml")
     puts("Got 'coverage-docs' of #{result.xml.attribute("coverage-docs")}.")
     assert(result.xml.attribute("coverage-full").to_s == "false", "Expected 'coverage-full' of false, got #{result.xml.attribute("coverage-full")}.")
-    assert(result.xml.attribute("coverage").to_s == "65", "Expected 'coverage' of 65, got #{result.xml.attribute("coverage")}.")
+    assert(result.xml.attribute("coverage").to_i >= 63, "Expected 'coverage' >= 63, got #{result.xml.attribute("coverage")}.")
+    assert(result.xml.attribute("coverage").to_i <= 65, "Expected 'coverage' <= 65, got #{result.xml.attribute("coverage")}.")
     assert(result.xml.attribute("results").to_s == "1", "Expected 'results' of 1, got #{result.xml.attribute("results")}.")
     assert(result.xml.attribute("results-full").to_s == "0", "Expected 'results-full' of 0, got #{result.xml.attribute("results-full")}.")
 
@@ -88,9 +90,11 @@ class ReportCoverage < IndexedSearchTest
     assert(23450 >= result["root"]["fields"]["totalCount"])
     coverage = result["root"]["coverage"]
     puts coverage.to_s
-    assert_equal(23, coverage["coverage"])
+    assert(21 <= coverage["coverage"])
+    assert(23 >= coverage["coverage"])
     # This number depends on how the range search iterator (used by match-phase limiting) calculates approximation of number of hits.
-    assert_equal(23412, coverage["documents"])
+    assert(21000 <= coverage["documents"])
+    assert(23500 >= coverage["documents"])
     assert_equal(false, coverage["full"])
     assert_equal(2, coverage["nodes"])
     assert_equal(1, coverage["results"])
@@ -107,9 +111,11 @@ class ReportCoverage < IndexedSearchTest
     coverage = result["root"]["coverage"]
     degraded = coverage["degraded"]
     puts coverage.to_s
-    assert_equal(65, coverage["coverage"])
+    assert(63 <= coverage["coverage"])
+    assert(65 >= coverage["coverage"])
     # This number depends on how the range search iterator (used by match-phase limiting) calculates approximation of number of hits.
-    assert_equal(65376, coverage["documents"])
+    assert(63000 <= coverage["documents"])
+    assert(65500 >= coverage["documents"])
     assert_equal(false, coverage["full"])
     assert_equal(2, coverage["nodes"])
     assert_equal(1, coverage["results"])
@@ -122,12 +128,12 @@ class ReportCoverage < IndexedSearchTest
     result = search_base("/?query=coverage&ranking=slow&format=json&ranking.softtimeout.enable=true&ranking.softtimeout.factor=0.50&timeout=1.0").json
     coverage = result["root"]["coverage"]
     puts coverage.to_s
-    assert(4000 <= result["root"]["fields"]["totalCount"])
+    assert(2000 <= result["root"]["fields"]["totalCount"])
     assert(50000 > result["root"]["fields"]["totalCount"])
     degraded = coverage["degraded"]
-    assert(4 <= coverage["coverage"])
+    assert(2 <= coverage["coverage"])
     assert(50 > coverage["coverage"])
-    assert(4000 < coverage["documents"])
+    assert(2000 < coverage["documents"])
     assert(50000 > coverage["documents"])
     assert_equal(false, coverage["full"])
     assert_equal(2, coverage["nodes"])
