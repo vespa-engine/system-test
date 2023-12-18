@@ -78,7 +78,7 @@ class InOperatorPerfTest < PerformanceTest
       filter = " and filter = #{filter_hits_ratio}"
     end
     field_name = "v_#{tokens_in_op}"
-    "/search/?" + URI.encode_www_form("yql" => "select * from sources * where #{field_name} in (@tokens)",
+    "/search/?" + URI.encode_www_form("yql" => "select * from sources * where #{field_name} in (@tokens)#{filter}",
                                       "tokens" => tokens.join(","),
                                       "hits" => "0")
   end
