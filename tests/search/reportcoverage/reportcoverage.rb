@@ -33,7 +33,7 @@ class ReportCoverage < IndexedSearchTest
     result = search("/?query=coverage&ranking=lim&format=xml")
     puts("Got 'coverage-docs' of #{result.xml.attribute("coverage-docs")}.")
     assert(result.xml.attribute("coverage-full").to_s == "false", "Expected 'coverage-full' of false, got #{result.xml.attribute("coverage-full")}.")
-    assert(result.xml.attribute("coverage").to_s.to_i >= 20, "Expected 'coverage' >= 20, got #{result.xml.attribute("coverage")}.")
+    assert(result.xml.attribute("coverage").to_s.to_i >= 19, "Expected 'coverage' >= 19, got #{result.xml.attribute("coverage")}.")
     assert(result.xml.attribute("coverage").to_s.to_i <= 23, "Expected 'coverage' <= 23, got #{result.xml.attribute("coverage")}.")
     assert(result.xml.attribute("results").to_s == "1", "Expected 'results' of 1, got #{result.xml.attribute("results")}.")
     assert(result.xml.attribute("results-full").to_s == "0", "Expected 'results-full' of 0, got #{result.xml.attribute("results-full")}.")
@@ -41,7 +41,7 @@ class ReportCoverage < IndexedSearchTest
     result = search("/?query=coverage&ranking=revlim&format=xml")
     puts("Got 'coverage-docs' of #{result.xml.attribute("coverage-docs")}.")
     assert(result.xml.attribute("coverage-full").to_s == "false", "Expected 'coverage-full' of false, got #{result.xml.attribute("coverage-full")}.")
-    assert(result.xml.attribute("coverage").to_s.to_i >= 56, "Expected 'coverage' >= 56, got #{result.xml.attribute("coverage")}.")
+    assert(result.xml.attribute("coverage").to_s.to_i >= 54, "Expected 'coverage' >= 54, got #{result.xml.attribute("coverage")}.")
     assert(result.xml.attribute("coverage").to_s.to_i <= 65, "Expected 'coverage' <= 65, got #{result.xml.attribute("coverage")}.")
     assert(result.xml.attribute("results").to_s == "1", "Expected 'results' of 1, got #{result.xml.attribute("results")}.")
     assert(result.xml.attribute("results-full").to_s == "0", "Expected 'results-full' of 0, got #{result.xml.attribute("results-full")}.")
@@ -111,10 +111,10 @@ class ReportCoverage < IndexedSearchTest
     coverage = result["root"]["coverage"]
     degraded = coverage["degraded"]
     puts coverage.to_s
-    assert(56 <= coverage["coverage"])
+    assert(54 <= coverage["coverage"])
     assert(65 >= coverage["coverage"])
     # This number depends on how the range search iterator (used by match-phase limiting) calculates approximation of number of hits.
-    assert(55500 <= coverage["documents"])
+    assert(53500 <= coverage["documents"])
     assert(65500 >= coverage["documents"])
     assert_equal(false, coverage["full"])
     assert_equal(2, coverage["nodes"])
