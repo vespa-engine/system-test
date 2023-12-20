@@ -6,6 +6,10 @@ schema test {
     field r type int { indexing: summary|attribute }
   }
 
+  fieldset default {
+    fields: s
+  }
+
   rank-profile order {
       first-phase { expression: 1.0/attribute(r) }
   }
