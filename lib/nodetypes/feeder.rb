@@ -160,6 +160,9 @@ module Feeder
       # Set default feeder to 'vespa-feeder'
       params[:client] = :vespa_feeder
     end
+    if !params[:stderr]
+      params[:stderr] = :true
+    end
 
     feeder = select_feeder(params)
     feedercmd = "#{command} | #{feeder} "
