@@ -14,12 +14,12 @@ class AccentDrop < IndexedStreamingSearchTest
 
     feed_and_wait_for_docs("test", 6, :file => selfdir+"docs.json")
 
-    assert_docs([1, 2], "query=s:haland&tracelevel=1")
-    assert_docs([1, 2], "query=s:håland&tracelevel=1")
-    assert_docs([3, 4], "query=s:orret&tracelevel=1")
-    assert_docs([3, 4], "query=s:ørret&tracelevel=1")
-    assert_docs([5, 6], "query=s:ære&tracelevel=1")
-    assert_docs([5, 6], "query=s:ære&tracelevel=1")
+    assert_docs([1, 2], "query=s:haland&ranking=order&tracelevel=1")
+    assert_docs([1, 2], "query=s:håland&ranking=order&tracelevel=1")
+    assert_docs([3, 4], "query=s:orret&ranking=order&tracelevel=1")
+    assert_docs([3, 4], "query=s:ørret&ranking=order&tracelevel=1")
+    assert_docs([5, 6], "query=s:ære&ranking=order&tracelevel=1")
+    assert_docs([5, 6], "query=s:ære&ranking=order&tracelevel=1")
   end
 
   def get_docid(docid)
