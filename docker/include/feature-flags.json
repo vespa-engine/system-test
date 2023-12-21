@@ -38,7 +38,7 @@
         { "id" : "dynamic-heap-size", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
         { "id" : "merging-max-memory-usage-per-node", "rules" : [ { "value" : 0 } ] },
-        { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : true } ] },
+        { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : false } ] },
         { "id" : "use-per-document-throttled-delete-bucket", "rules" : [ { "value" : true } ] }
     ]
 }
