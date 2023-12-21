@@ -12,9 +12,10 @@ class ExactMatch < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir+"exactmatch.sd"))
     start
 
-    feed_and_wait_for_docs("exactmatch", 1, :file => selfdir+"feed.xml")
+    feed_and_wait_for_docs("exactmatch", 2, :file => selfdir+"feed.xml")
 
     exactmatch_common
+    exactmatch_no_accent_removal
     if is_streaming
       exactmatch_streaming
     else
@@ -44,6 +45,17 @@ class ExactMatch < IndexedStreamingSearchTest
     assert_hitcount("query=field10:york", 0)
     assert_hitcount("query=field10:%22wham!%22!", 1)
     assert_hitcount("query=field10:a*teens!", 1)
+  end
+
+  def exactmatch_no_accent_removal
+    assert_hitcount("query=field1:Håland", 1)
+    assert_hitcount("query=field1:håland", 1)
+    assert_hitcount("query=field1:Haland", 1)
+    assert_hitcount("query=field1:haland", 1)
+    assert_hitcount("query=field2:Håland", 1)
+    assert_hitcount("query=field2:håland", 1)
+    assert_hitcount("query=field2:Haland", 0)
+    assert_hitcount("query=field2:haland", 0)
   end
 
   def exactmatch_indexed
