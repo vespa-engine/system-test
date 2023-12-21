@@ -48,14 +48,14 @@ class ExactMatch < IndexedStreamingSearchTest
   end
 
   def exactmatch_no_accent_removal
-    assert_hitcount("query=field1:Håland", 1)
-    assert_hitcount("query=field1:håland", 1)
-    assert_hitcount("query=field1:Haland", 1)
-    assert_hitcount("query=field1:haland", 1)
-    assert_hitcount("query=field2:Håland", 1)
-    assert_hitcount("query=field2:håland", 1)
-    assert_hitcount("query=field2:Haland", 0)
-    assert_hitcount("query=field2:haland", 0)
+    assert_hitcount("query=field1:Hûtte", 1)
+    assert_hitcount("query=field1:hûtte", 1)
+    assert_hitcount("query=field1:Hutte", 1)
+    assert_hitcount("query=field1:hutte", 1)
+    assert_hitcount("query=field2:Hûtte", 1)
+    assert_hitcount("query=field2:hûtte", 1)
+    assert_hitcount("query=field2:Hutte", 0)
+    assert_hitcount("query=field2:hutte", 0)
   end
 
   def exactmatch_indexed
