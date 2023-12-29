@@ -806,13 +806,17 @@ class VespaModel
   end
 
   def setup_valgrind(handle)
-    handle.set_bash_variable("VESPA_USE_VALGRIND", @testcase.valgrind) if @testcase.valgrind
-    handle.set_bash_variable("VESPA_VALGRIND_OPT", @testcase.valgrind_opt) if @testcase.valgrind_opt
+    if @testcase.valgrind
+      handle.set_bash_variable("VESPA_USE_VALGRIND", @testcase.valgrind)
+      handle.set_bash_variable("VESPA_VALGRIND_OPT", @testcase.valgrind_opt) if @testcase.valgrind_opt
+      handle.set_bash_variable("OPENBLAS_CORETYPE", "NEOVERSEN1") if `arch`.include?("aarch64")
+    end
   end
 
   def reset_valgrind(handle)
       handle.unset_bash_variable("VESPA_USE_VALGRIND")
       handle.unset_bash_variable("VESPA_VALGRIND_OPT")
+      handle.unset_bash_variable("OPENBLAS_CORETYPE")
   end
 
   # Starts vespa_base on all nodes.
