@@ -23,6 +23,13 @@ schema test {
     field wattr type weightedset<string> {
       indexing: attribute | summary
     }
+    field stext_long1 type string {
+      indexing: index | summary
+    }
+    field stext_long2 type string {
+      indexing: index | summary
+      match { max-occurrences: 10 }
+    }
   }
   document-summary tokens {
     summary stext_tokens {
@@ -51,6 +58,14 @@ schema test {
     }
     summary wattr_tokens {
       source: wattr
+      tokens
+    }
+    summary stext_long1_tokens {
+      source: stext_long1
+      tokens
+    }
+    summary stext_long2_tokens {
+      source: stext_long2
       tokens
     }
     from-disk
