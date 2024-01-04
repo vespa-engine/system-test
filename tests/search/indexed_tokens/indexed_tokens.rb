@@ -15,7 +15,9 @@ class IndexedTokensTest < IndexedSearchTest
       add_field("sattr", doc_template[:stext]).
       add_field("sattr_cased", doc_template[:stext]).
       add_field("aattr", doc_template[:atext]).
-      add_field("wattr", doc_template[:wtext])
+      add_field("wattr", doc_template[:wtext]).
+      add_field("stext_long1", doc_template[:stext_long]).
+      add_field("stext_long2", doc_template[:stext_long])
     vespa.document_api_v1.put(doc)
   end
 
@@ -32,7 +34,8 @@ class IndexedTokensTest < IndexedSearchTest
     start
     feed_doc("0", { :stext => "Hello world",
                     :atext => [ "This is simply", "(more elements)"],
-                    :wtext => { "Weighted here" => 24, "and there" => -3} })
+                    :wtext => { "Weighted here" => 24, "and there" => -3},
+                    :stext_long => repeated_terms_string(20) })
     result = my_query('stext', 'hello')
     fields = result['root']['children'][0]['fields']
     assert_equal(['hello','world'], fields['stext_tokens'])
@@ -42,6 +45,8 @@ class IndexedTokensTest < IndexedSearchTest
     assert_equal(['Hello world'], fields['sattr_cased_tokens'])
     assert_equal([['this is simply'],['(more elements)']], fields['aattr_tokens'])
     assert_equal([['weighted here'],['and there']].sort, fields['wattr_tokens'].sort)
+    assert_equal(repeated_terms_tokens(20, 100), fields['stext_long1_tokens'])
+    assert_equal(repeated_terms_tokens(20, 10), fields['stext_long2_tokens'])
   end
 
 
@@ -52,6 +57,18 @@ class IndexedTokensTest < IndexedSearchTest
     result = search(query)
     assert_hitcount(result, 1)
     return JSON.parse(result.xmldata)
+  end
+
+  def repeated_terms_string(repeats)
+    (1..repeats).to_a.join(" x ").concat(" x")
+  end
+
+  def repeated_terms_tokens(repeats, limit)
+    if limit >= repeats
+      repeated_terms_string(repeats).split
+    else
+      repeated_terms_string(limit).concat(" ", ((limit+1)..repeats).to_a.join(" ")).split
+    end
   end
 
   def teardown
