@@ -1,0 +1,31 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema doc {
+
+  document doc {
+
+    field text type string {
+      indexing: index | summary
+    }
+
+  }
+
+  field dt type tensor<bfloat16>(t{}) {
+      indexing: input text | embed splade | attribute
+  }
+
+  rank-profile default {
+    inputs {
+      query(qt) tensor<float>(tt{})
+    }
+
+    first-phase {
+      expression: nativeRank(text) + sum(query(qt) * attribute(dt))
+    }
+
+    summary-features {
+      query(qt)
+      attribute(dt)
+    }
+  }
+}
