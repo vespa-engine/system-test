@@ -665,7 +665,6 @@ module TestBase
   end
 
   # count number of hits with a matching field value
-  # in a field, for a given hit number.
   def count_hits_with_field_value(query_or_result, fieldname, expectedvalue)
     result = (query_or_result.is_a?(String) ? search(query_or_result, 0) : query_or_result)
     count = 0
