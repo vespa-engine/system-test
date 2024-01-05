@@ -1,8 +1,8 @@
 [
- { "put":"id:test:test::1", "fields":{ "s":"haland", "r":1} },
- { "put":"id:test:test::2", "fields":{ "s":"håland", "r":2} },
- { "put":"id:test:test::3", "fields":{ "s":"orret", "r":3} },
- { "put":"id:test:test::4", "fields":{ "s":"ørret", "r":4} },
- { "put":"id:test:test::5", "fields":{ "s":"være", "r":5} },
- { "put":"id:test:test::6", "fields":{ "s":"være", "r":6} }
+ { "put":"id:test:test::1", "fields":{ "s":"haland", "s_a":"haland", "s_f":"haland", "r":1} },
+ { "put":"id:test:test::2", "fields":{ "s":"håland", "s_a":"håland", "s_f":"håland", "r":2} },
+ { "put":"id:test:test::3", "fields":{ "s":"orret", "s_a":"orret", "s_f":"orret", "r":3} },
+ { "put":"id:test:test::4", "fields":{ "s":"ørret", "s_a":"ørret", "s_f":"ørret", "r":4} },
+ { "put":"id:test:test::5", "fields":{ "s":"vere", "s_a":"vere", "s_f":"vere", "r":5} },
+ { "put":"id:test:test::6", "fields":{ "s":"være", "s_a":"være", "s_f":"være", "r":6} }
 ]

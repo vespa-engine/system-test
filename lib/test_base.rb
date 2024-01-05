@@ -664,6 +664,16 @@ module TestBase
     assert_equal(to_utf8(expectedvalue), result.hit[hitnumber].field[fieldname].to_s, explanationstring)
   end
 
+  # count number of hits with a matching field value
+  def count_hits_with_field_value(query_or_result, fieldname, expectedvalue)
+    result = (query_or_result.is_a?(String) ? search(query_or_result, 0) : query_or_result)
+    count = 0
+    result.hit.each do |hit|
+      count += 1 if hit.field[fieldname].to_s == to_utf8(expectedvalue)
+    end
+    count
+  end
+
   # Asserts that the result from query_or_result has the expected tensor cells in the given tensor field, for a given hit number.
   def assert_tensor_field(expected_cells, query_or_result, field_name, hit=0)
     result = (query_or_result.is_a?(String) ? search(query_or_result, 0) : query_or_result)

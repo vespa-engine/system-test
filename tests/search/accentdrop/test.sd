@@ -4,6 +4,13 @@ schema test {
   document test {
     field s type string { indexing: index | summary }
     field r type int { indexing: summary|attribute }
+    field s_a type string {
+      indexing: attribute | summary
+    }
+    field s_f type string {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
   }
 
   fieldset default {
