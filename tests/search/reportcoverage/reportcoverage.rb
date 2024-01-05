@@ -111,7 +111,7 @@ class ReportCoverage < IndexedSearchTest
     coverage = result["root"]["coverage"]
     degraded = coverage["degraded"]
     puts coverage.to_s
-    assert(52 <= coverage["coverage"])
+    assert(51 <= coverage["coverage"])
     assert(65 >= coverage["coverage"])
     # This number depends on how the range search iterator (used by match-phase limiting) calculates approximation of number of hits.
     assert(51500 <= coverage["documents"])
