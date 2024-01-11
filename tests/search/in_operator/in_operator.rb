@@ -69,14 +69,8 @@ class InOperator < IndexedStreamingSearchTest
     end
     assert_equal([0], my_query("ss in ('W24')", []))
     assert_equal([0], my_query("ssfs in ('W24')", []))
-    if is_streaming
-      # This is due to streaming search incorrectly handles case sensitivity
-      assert_equal([0], my_query("ssc in ('W24')", []))
-      assert_equal([0], my_query("ssfsc in ('W24')", []))
-    else
-      assert_equal([], my_query("ssc in ('W24')", []))
-      assert_equal([], my_query("ssfsc in ('W24')", []))
-    end
+    assert_equal([], my_query("ssc in ('W24')", []))
+    assert_equal([], my_query("ssfsc in ('W24')", []))
     assert_equal([0], my_query("ssi in ('w24')", []))
     assert_equal([0], my_query("sai in ('w24')", []))
     assert_equal([0], my_query("swi in ('w24')", []))
