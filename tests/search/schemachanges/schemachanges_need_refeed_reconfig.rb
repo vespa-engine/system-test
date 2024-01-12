@@ -43,6 +43,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     gen = get_generation(redeploy_output).to_i
     assert_match(/Consider re-indexing document type 'test' in cluster 'search'.*\n.*Field 'f2' changed: add index aspect/, redeploy_output)
 
+    reindexing_ready_millis = get_reindexing_initial_ready_millis
     wait_for_convergence(gen)
 
     # Feed should be accepted
@@ -52,8 +53,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     assert_hitcount("f1:b&nocache", 2)
     assert_hitcount("f3:%3E29&nocache", 2)
 
-    trigger_reindexing
-
+    wait_for_reindexing_to_be_ready(reindexing_ready_millis)
     # Redeploy again to trigger reindexing, then wait for up to 2 minutes for document 1 to be reindexed
     redeploy("test.1.sd")
     start_time = Time.now
@@ -100,6 +100,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     assert_match(/Document type 'test' in cluster 'search' changed indexing mode from 'streaming' to 'indexed'/, redeploy_output)
 
     start
+    reindexing_ready_millis = get_reindexing_initial_ready_millis
     wait_for_convergence(gen)
 
     # Feed should be accepted
@@ -109,8 +110,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
     assert_hitcount("f1:b&nocache", 1)          # No index for old document
     assert_hitcount("f3:%3E29&nocache", 2)      # But attributes work
 
-    trigger_reindexing
-
+    wait_for_reindexing_to_be_ready(reindexing_ready_millis)
     # Redeploy again to trigger reindexing, then wait for up to 2 minutes for document 1 to be reindexed
     deploy_app(app)
     start_time = Time.now
@@ -134,21 +134,28 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
   end
 
   # Wait for new document types to be discovered by the reindexer, and then trigger reindexing of the whole corpus
-  def trigger_reindexing
+  def get_reindexing_initial_ready_millis
     # Read baseline reindexing status — very first reindexing is a no-op in the reindexer controller
     response = http_request(URI(application_url + "reindexing"), {})
     assert(response.code.to_i == 200, "Request should be successful")
-    previous_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["test"]["readyMillis"]
+    get_json(response)["clusters"]["search"]["ready"]["test"]["readyMillis"]
+  end
 
-    # Trigger reindexing through reindexing API in /application/v2, and verify it was triggered
-    response = http_request_post(URI(application_url + "reindex"), {})
-    assert(response.code.to_i == 200, "Request should be successful")
-
-    response = http_request(URI(application_url + "reindexing"), {})
-    assert(response.code.to_i == 200, "Request should be successful")
-    current_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["test"]["readyMillis"]
-    assert(previous_reindexing_timestamp.nil? || previous_reindexing_timestamp < current_reindexing_timestamp,
-           "Previous reindexing timestamp (#{previous_reindexing_timestamp}) should be after current (#{current_reindexing_timestamp})")
+  # Verify reindexing is automatically triggered by the new schema activation, after convergence
+  def wait_for_reindexing_to_be_ready(previous_reindexing_timestamp)
+    start_time = Time.now
+    until Time.now - start_time > 210 # seconds
+      response = http_request(URI(application_url + "reindexing"), {})
+      assert(response.code.to_i == 200, "Request should be successful")
+      current_reindexing_timestamp = get_json(response)["clusters"]["search"]["ready"]["test"]["readyMillis"]
+      if current_reindexing_timestamp.nil?
+        next
+      elsif previous_reindexing_timestamp.nil? || previous_reindexing_timestamp < current_reindexing_timestamp
+        break
+      end
+      sleep 1
+    end
+    assert(Time.now - start_time < 210, "Reindexing should be ready within a few minutes of service convergence")
   end
 
   def test_that_changing_the_tensor_type_of_a_tensor_attribute_needs_refeed
