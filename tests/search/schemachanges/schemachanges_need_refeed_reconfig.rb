@@ -155,7 +155,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedSearchTest
       end
       sleep 1
     end
-    assert(Time.now - start_time < 210, "Reindexing should be ready within a few minutes of service convergence, but status was: " + get_json(response))
+    assert(Time.now - start_time < 210, "Reindexing should be ready within a few minutes of service convergence, but status was: #{get_json(response)}")
   end
 
   def test_that_changing_the_tensor_type_of_a_tensor_attribute_needs_refeed
