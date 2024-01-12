@@ -63,7 +63,9 @@ class InOperatorPerfTest < PerformanceTest
       end
     end
     for f in @filter_hits_ratios do
-      query_and_profile(100, 100, f)
+      for t in [10, 100] do
+        query_and_profile(100, t, f)
+      end
     end
   end
 
