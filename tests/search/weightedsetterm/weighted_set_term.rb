@@ -1,14 +1,15 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'search/weightedsetterm/weighted_set_term_base'
 
-class WeightedSetTerm < IndexedSearchTest
+class WeightedSetTerm < IndexedStreamingSearchTest
 
   include WeightedSetTermBase
 
   def prepare_system(sdfile)
     add_bundle(selfdir + "WeightedSetTermTester.java")
     deploy_app(SearchApp.new.sd(sdfile).
+                      indexing_cluster('default').indexing_chain('indexing').
                       search_chain(SearchChain.new.add(Searcher.new(
                             "com.yahoo.test.WeightedSetTermTester"))))
     start
