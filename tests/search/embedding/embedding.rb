@@ -214,14 +214,14 @@ class Embedding < IndexedStreamingSearchTest
     embedding_bfloat = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding_bfloat)"]
     embedding_float = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding_float)"]
 
-    assert_equal(4, embedding_compressed.length)
-    assert_equal(4, embedding_compressed['0'].length)
+    assert_equal(5, embedding_compressed.length) # 5 tokens
+    assert_equal(4, embedding_compressed['0'].length) #1 token embedding dim is 4
 
-    assert_equal(4, embedding_bfloat.length)
-    assert_equal(32, embedding_bfloat['0'].length)
+    assert_equal(5, embedding_bfloat.length) # 5 tokens
+    assert_equal(32, embedding_bfloat['0'].length) # token embedding is 32
 
-    assert_equal(4, embedding_float.length)
-    assert_equal(32, embedding_float['0'].length)
+    assert_equal(5, embedding_float.length) # 5 tokens
+    assert_equal(32, embedding_float['0'].length) # token embedding is 32
 
     maxSimFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSimFloat"]
     assert(maxSimFloat > 29.5, "#{maxSimFloat} < 29.5 maxSimFloat not greater than 29.5")
