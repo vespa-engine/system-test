@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="1">
-  <hit relevancy="0" source="search">
-    <field name="relevancy">0</field>
-    <field name="sddocname">test</field>
-    <field name="f1">a b c</field>
-    <field name="documentid">id:test:test::0</field>
-  </hit>
-</result>
