@@ -125,15 +125,19 @@ class VespaRoute < VdsTest
     app = SearchApp.new.streaming.sd(music_sd).qrserver(QrserverCluster.new)
     deploy_app(app)
     assertDump("<protocol name='document'>\n" +
+               "    <hop name='default/chain.indexing' selector='[LoadBalancer:cluster=default;session=chain.indexing]' />\n" +
                "    <hop name='indexing' selector='[DocumentRouteSelector]'>\n" +
                "        <recipient session='search' />\n" +
                "    </hop>\n" +
                "    <route name='default' hops='indexing' />\n" +
                "    <route name='default-get' hops='[Content:cluster=search]' />\n" +
-               "    <route name='search' hops='[Content:cluster=search]' />\n" +
+               "    <route name='search' hops='[MessageType:search]' />\n" +
+               "    <route name='search-direct' hops='[Content:cluster=search]' />\n" +
+               "    <route name='search-index' hops='default/chain.indexing [Content:cluster=search]' />\n" +
                "    <route name='storage/cluster.search' hops='route:search' />\n" +
                "</protocol>\n",
-               [ "storage/cluster.search/distributor/0/default",
+               [ "default/container.0/chain.indexing",
+                 "storage/cluster.search/distributor/0/default",
                  "storage/cluster.search/storage/0/default" ])
   end
 
@@ -142,15 +146,19 @@ class VespaRoute < VdsTest
     deploy_app(app)
 
     assertDump("<protocol name='document'>\n" +
+               "    <hop name='default/chain.indexing' selector='[LoadBalancer:cluster=default;session=chain.indexing]' />\n" +
                "    <hop name='indexing' selector='[DocumentRouteSelector]'>\n" +
                "        <recipient session='storage' />\n" +
                "    </hop>\n" +
                "    <route name='default' hops='indexing' />\n" +
                "    <route name='default-get' hops='[Content:cluster=storage]' />\n" +
-               "    <route name='storage' hops='[Content:cluster=storage]' />\n" +
+               "    <route name='storage' hops='[MessageType:storage]' />\n" +
+               "    <route name='storage-direct' hops='[Content:cluster=storage]' />\n" +
+               "    <route name='storage-index' hops='default/chain.indexing [Content:cluster=storage]' />\n" +
                "    <route name='storage/cluster.storage' hops='route:storage' />\n" +
                "</protocol>",
-               [ "storage/cluster.storage/storage/0/default",
+               [ "default/container.0/chain.indexing",
+                 "storage/cluster.storage/storage/0/default",
                  "storage/cluster.storage/distributor/0/default" ])
   end
 
@@ -159,15 +167,19 @@ class VespaRoute < VdsTest
     deploy_app(app)
 
     assertDump("<protocol name='document'>\n" +
+               "    <hop name='default/chain.indexing' selector='[LoadBalancer:cluster=default;session=chain.indexing]' />\n" +
                "    <hop name='indexing' selector='[DocumentRouteSelector]'>\n" +
                "        <recipient session='nonstandard' />\n" +
                "    </hop>\n" +
                "    <route name='default' hops='indexing' />\n" +
                "    <route name='default-get' hops='[Content:cluster=nonstandard]' />\n" +
-               "    <route name='nonstandard' hops='[Content:cluster=nonstandard]' />\n" +
+               "    <route name='nonstandard' hops='[MessageType:nonstandard]' />\n" +
+               "    <route name='nonstandard-direct' hops='[Content:cluster=nonstandard]' />\n" +
+               "    <route name='nonstandard-index' hops='default/chain.indexing [Content:cluster=nonstandard]' />\n" +
                "    <route name='storage/cluster.nonstandard' hops='route:nonstandard' />\n" +
                "</protocol>",
-               [ "storage/cluster.nonstandard/distributor/0/default",
+               [ "default/container.0/chain.indexing",
+                 "storage/cluster.nonstandard/distributor/0/default",
                  "storage/cluster.nonstandard/storage/0/default" ])
   end
 
@@ -176,15 +188,19 @@ class VespaRoute < VdsTest
     deploy_app(app)
 
     assertDump("<protocol name='document'>\n" +
+               "    <hop name='default/chain.indexing' selector='[LoadBalancer:cluster=default;session=chain.indexing]' />\n" +
                "    <hop name='indexing' selector='[DocumentRouteSelector]'>\n" +
                "        <recipient session='storage' />\n" +
                "    </hop>\n" +
                "    <route name='default' hops='indexing' />\n" +
                "    <route name='default-get' hops='[Content:cluster=storage]' />\n" +
-               "    <route name='storage' hops='[Content:cluster=storage]' />\n" +
+               "    <route name='storage' hops='[MessageType:storage]' />\n" +
+               "    <route name='storage-direct' hops='[Content:cluster=storage]' />\n" +
+               "    <route name='storage-index' hops='default/chain.indexing [Content:cluster=storage]' />\n" +
                "    <route name='storage/cluster.storage' hops='route:storage' />\n" +
                "</protocol>",
-               [ "storage/cluster.storage/distributor/0/default",
+               [ "default/container.0/chain.indexing",
+                 "storage/cluster.storage/distributor/0/default",
                  "storage/cluster.storage/distributor/1/default",
                  "storage/cluster.storage/storage/0/default",
                  "storage/cluster.storage/storage/1/default" ])
