@@ -25,8 +25,10 @@ class FieldSets < IndexedStreamingSearchTest
     assert_hitcount("fs1:onlyindoc", 3)
     assert_hitcount("fs4:%3C20", 3)
     # stemming
+    # Stemming is not supported in streaming mode
     assert_hitcount("fs1:fishes", 1) unless is_streaming
     assert_hitcount("fs1:fish", 1)
+    # Stemming is not supported in streaming mode
     assert_hitcount("sa:fishes", 1) unless is_streaming
     assert_hitcount("sa:fish", 1)
     # normalization
@@ -39,6 +41,7 @@ class FieldSets < IndexedStreamingSearchTest
     assert_hitcount("exact34:G 3Arnold", 2)
     assert_hitcount("exact34:h3Arnold", 1)
     # ngram
+    # ngram is not supported in streaming mode
     assert_hitcount("ngram:bc", 3) unless is_streaming
     # prefix
     assert_hitcount("pref:fo%2A", 1)
