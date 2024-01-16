@@ -1,10 +1,10 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'resultset'
 
 
-class CompressedOutput < IndexedSearchTest
+class CompressedOutput < IndexedStreamingSearchTest
   def setup
     set_owner("bjorncs")
     set_description("Test that checks if compression works")
