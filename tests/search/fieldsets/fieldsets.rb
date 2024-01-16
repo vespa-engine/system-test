@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class FieldSets < IndexedSearchTest
+class FieldSets < IndexedStreamingSearchTest
 
   def setup
     set_owner("musum")
@@ -25,9 +25,11 @@ class FieldSets < IndexedSearchTest
     assert_hitcount("fs1:onlyindoc", 3)
     assert_hitcount("fs4:%3C20", 3)
     # stemming
-    assert_hitcount("fs1:fishes", 1)
+    # Stemming is not supported in streaming mode
+    assert_hitcount("fs1:fishes", 1) unless is_streaming
     assert_hitcount("fs1:fish", 1)
-    assert_hitcount("sa:fishes", 1)
+    # Stemming is not supported in streaming mode
+    assert_hitcount("sa:fishes", 1) unless is_streaming
     assert_hitcount("sa:fish", 1)
     # normalization
     assert_hitcount("fs1:pass%C3%A9", 1)
@@ -39,7 +41,8 @@ class FieldSets < IndexedSearchTest
     assert_hitcount("exact34:G 3Arnold", 2)
     assert_hitcount("exact34:h3Arnold", 1)
     # ngram
-    assert_hitcount("ngram:bc", 3)
+    # ngram is not supported in streaming mode
+    assert_hitcount("ngram:bc", 3) unless is_streaming
     # prefix
     assert_hitcount("pref:fo%2A", 1)
   end
