@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'cgi'
 
 
-class RegExp < IndexedSearchTest
+class RegExp < IndexedStreamingSearchTest
 
   def setup
     set_owner("havardpe")
@@ -151,12 +151,15 @@ class RegExp < IndexedSearchTest
     assert_hitcount(make_query(make_term("title", "test2")), 3);
     assert_hitcount(make_query(make_term("title", "test3")), 3);
     check_uncased
-    check_cased
+    # Cased regexp doesn't work in streaming mode
+    check_cased unless is_streaming
 
-    # Verify that indexed fields will fallback to 'contains'.
-    assert_hitcount(make_query(make_term("single_index", "thisisafox")), 3);
-    assert_hitcount(make_query(make_regexp("single_index", "thisisafox")), 3);
-    assert_hitcount(make_query(make_regexp("single_index", "^thisisafox")), 0);
+    unless is_streaming
+      # Verify that indexed fields will fallback to 'contains'.
+      assert_hitcount(make_query(make_term("single_index", "thisisafox")), 3)
+      assert_hitcount(make_query(make_regexp("single_index", "thisisafox")), 3)
+      assert_hitcount(make_query(make_regexp("single_index", "^thisisafox")), 0)
+    end
 
     # Invalid regexp
     assert_query_errors(make_query(make_regexp("single_index", "*")),
