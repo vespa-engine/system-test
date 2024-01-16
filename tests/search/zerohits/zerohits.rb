@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class ZeroHits < IndexedSearchTest
+class ZeroHits < IndexedStreamingSearchTest
 
   def setup
     set_owner('arnej')
@@ -18,8 +18,9 @@ class ZeroHits < IndexedSearchTest
     assert_hitcount('query=metallica&hits=0', 1)
 
     puts 'Search for docs in the normal way'
-    assert_result('query=metallica', selfdir+'1m.result.json')
-    assert_result('query=cure',      selfdir+'1c.result.json')
+    check_fields = [ "title", "artist"]
+    assert_result('query=metallica', selfdir+'1m.result.json', nil, check_fields)
+    assert_result('query=cure',      selfdir+'1c.result.json', nil, check_fields)
 
     puts 'Search for docs with zero hits'
     assert_result('query=metallica&hits=0', selfdir+'0.result.json')
