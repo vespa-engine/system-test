@@ -151,8 +151,7 @@ class RegExp < IndexedStreamingSearchTest
     assert_hitcount(make_query(make_term("title", "test2")), 3);
     assert_hitcount(make_query(make_term("title", "test3")), 3);
     check_uncased
-    # Cased regexp doesn't work in streaming mode
-    check_cased unless is_streaming
+    check_cased
 
     unless is_streaming
       # Verify that indexed fields will fallback to 'contains'.
