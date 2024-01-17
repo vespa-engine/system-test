@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'search_test'
 require 'environment'
 
-class ConfigDefinitionsNotChangingTest < IndexedSearchTest
+class ConfigDefinitionsNotChangingTest < SearchTest
 
   def setup
     set_owner("geirst")
@@ -16,8 +16,7 @@ class ConfigDefinitionsNotChangingTest < IndexedSearchTest
     # If a compatible change has been made, update the versions file of this test.
     # If a non-compatible change has been made, this must be reverted. Older persisted configs on a live system must
     # be compatible with a new config definition file that is introduced with a Vespa upgrade.
-    deploy_app(SearchApp.new.sd(SEARCH_DATA + "test.sd"))
-    start
+    node_proxy = vespa.nodeproxies.values.first
 
     dir_name = Environment.instance.vespa_home + "/share/vespa/configdefinitions";
     configs = [ "vespa.config.search.rank-profiles", 
@@ -28,7 +27,7 @@ class ConfigDefinitionsNotChangingTest < IndexedSearchTest
                 "document.documenttypes" ]
     mymd5cmd = "cd #{dir_name} && md5sum " + configs.join(".def ") + ".def"
 
-    act_content = vespa.adminserver.execute(mymd5cmd).split("\n")
+    act_content = node_proxy.execute(mymd5cmd).split("\n")
     for i in 0..act_content.size-1
       act_content[i] += "\n"
     end
