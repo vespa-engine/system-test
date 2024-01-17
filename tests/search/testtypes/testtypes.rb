@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class TestTypes < IndexedSearchTest
+class TestTypes < IndexedStreamingSearchTest
 
   def setup
     set_owner("musum")
@@ -35,11 +35,12 @@ class TestTypes < IndexedSearchTest
   end
 
   def verify(expected)
+    check_fields = [ "stringfield", "urlfield", "intfield", "longfield", "floatfield", "doublefield", "rawfield", "timefield", "boolfield", "bytefield" ]
     # Query: String search
-    assert_result("query=%2bstringfield:is%20%2bstringfield:a", expected)
+    assert_result("query=%2bstringfield:is%20%2bstringfield:a", expected, nil, check_fields)
 
     # Query: String search with exact match
-    assert_result("query=ematchfield:this+HAS+to+be+like+this@@", expected)
+    assert_result("query=ematchfield:this+HAS+to+be+like+this@@", expected, nil, check_fields)
 
     assert_hitcount("query=boolfield:true", 1)
     assert_hitcount("query=boolfield:false", 0)
