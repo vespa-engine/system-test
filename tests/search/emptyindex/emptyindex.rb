@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class EmptyIndex < IndexedSearchTest
+class EmptyIndex < IndexedStreamingSearchTest
 
   # with 2 columns and 1 document, one of the columns will get an empty index.
 
@@ -16,7 +16,7 @@ class EmptyIndex < IndexedSearchTest
     feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.xml")
 
     puts "Query: Return the one doc"
-    assert_result("query=concerto", selfdir + "emptyindex.result.json")
+    assert_result("query=concerto", selfdir + "emptyindex.result.json", nil, ["surl"])
   end
 
   def teardown
