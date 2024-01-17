@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'search/tensor_feed/tensor_feed_base.rb'
 
-class TensorFeedHexTest < IndexedSearchTest
+class TensorFeedHexTest < IndexedStreamingSearchTest
 
   include TensorFeedTestBase
 
