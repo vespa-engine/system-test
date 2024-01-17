@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'search_test'
 
-class SanitizerGuardTest < IndexedSearchTest
+class SanitizerGuardTest < SearchTest
 
   def setup
     set_owner('havardpe')
