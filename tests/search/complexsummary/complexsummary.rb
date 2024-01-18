@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class ComplexSummary < IndexedSearchTest
+class ComplexSummary < IndexedStreamingSearchTest
   
   def setup
     set_owner("musum")
@@ -13,8 +13,9 @@ class ComplexSummary < IndexedSearchTest
     start
     feed(:file => selfdir + "doc.xml")
     wait_for_hitcount("query=sddocname:complexsummary", 2)
-    assert_result("/search/?query=title:Title1", selfdir+"res1.json")
-    assert_result("/search/?query=title:Title2", selfdir+"res2.json")
+    check_fields = [ 'nallestruct', 'nallestructarray', 'title' ]
+    assert_result("/search/?query=title:Title1", selfdir+"res1.json", nil, check_fields)
+    assert_result("/search/?query=title:Title2", selfdir+"res2.json", nil, check_fields)
   end
 
   def teardown
