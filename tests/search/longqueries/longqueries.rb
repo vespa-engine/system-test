@@ -1,10 +1,10 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'app_generator/http'
 require 'environment'
 
-class LongQueries < IndexedSearchTest
+class LongQueries < IndexedStreamingSearchTest
 
   def setup
     set_owner("arnej")
@@ -33,7 +33,7 @@ class LongQueries < IndexedSearchTest
     file = File.new(selfdir+"do.query")
     query = file.read()
 
-    assert_result(query, selfdir+"do.result.json")
+    assert_result(query, selfdir+"do.result.json", nil, ["title", "pto", "mid", "surl", "categories", "bgnsellers"])
   end
 
   def teardown
