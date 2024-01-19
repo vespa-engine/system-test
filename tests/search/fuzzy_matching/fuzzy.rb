@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'cgi'
 
-class FuzzySearch < IndexedSearchTest
+class FuzzySearch < IndexedStreamingSearchTest
 
   def setup
     set_owner("alexeyche")
@@ -99,7 +99,7 @@ class FuzzySearch < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
     feed_and_wait_for_docs("test", 6, :file => selfdir + "docs.json")
-    
+
     UNCASED_FIELDS.each { |f| 
       run_fuzzysearch_default_tests(f) 
       run_fuzzysearch_max_edit_tests(f)
@@ -113,7 +113,7 @@ class FuzzySearch < IndexedSearchTest
     CASED_FIELDS.each { |f| 
       run_fuzzysearch_default_cased_tests(f)
     }
-    
+
     # Indexing field is not supported
     assert_query_errors(
       make_query(make_fuzzy("single_index", "query", 2, 0)),
