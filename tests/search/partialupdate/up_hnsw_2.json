@@ -1,0 +1,12 @@
+[
+  { "update": "id:foobar:hnsw_search::1",
+    "fields": {
+        "my_structs": {
+            "add": [{
+                "mysf1": "cde",
+                "mysf2": 2
+	    }]
+	}
+    }
+  }
+]
