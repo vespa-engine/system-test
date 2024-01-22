@@ -1,0 +1,33 @@
+schema hnsw_search {
+
+    struct mystructtype {
+        field mysf1 type string {}
+        field mysf2 type int {}
+    }
+
+    document hnsw_search {
+
+        field my_title type array<string> {
+            indexing: summary | index
+        }
+
+        field my_embeddings type tensor<float>(p{}, x[2]) {
+            indexing: attribute | index | summary
+        }
+
+        field my_structs type array<mystructtype> {
+            indexing: summary
+            struct-field mysf1 {
+                indexing: attribute
+            }
+            struct-field mysf2 {
+                indexing: attribute
+            }
+        }
+    }
+
+    fieldset default {
+        fields: my_title
+    }
+
+}

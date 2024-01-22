@@ -525,6 +525,19 @@ class PartialUpdate < IndexedSearchTest
     @fbench_thread.join
   end
 
+  def test_disappearing_tensor
+    set_description('ensure tensor does not disappear')
+    deploy_app(SearchApp.new.sd(selfdir + 'hnsw_search.sd'))
+    start
+    feed_and_wait_for_docs('hnsw_search', 1, :file => selfdir + 'doc_hnsw.json')
+    assert_hitcount('query=my_title:abc', 1)
+    assert_result('query=my_title:abc', 'res_hnsw_1.json')
+    feedfile(selfdir + 'up_hnsw_1.json')
+    assert_result('query=my_title:abc', 'res_hnsw_2.json')
+    feedfile(selfdir + 'up_hnsw_2.json')
+    assert_result('query=my_title:abc', 'res_hnsw_3.json')
+  end
+
   def teardown
     stop
   end

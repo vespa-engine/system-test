@@ -1,0 +1,13 @@
+[
+  { "id": "id:foobar:hnsw_search::1",
+    "fields": {
+        "my_title": [ "abc", "abc" ],
+        "my_structs": [
+            {
+                "mysf1": "abc",
+                "mysf2": 1
+            }
+        ]
+    }
+  }
+]
