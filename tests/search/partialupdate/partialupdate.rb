@@ -531,11 +531,11 @@ class PartialUpdate < IndexedSearchTest
     start
     feed_and_wait_for_docs('hnsw_search', 1, :file => selfdir + 'doc_hnsw.json')
     assert_hitcount('query=my_title:abc', 1)
-    assert_result('query=my_title:abc', 'res_hnsw_1.json')
+    assert_result('query=my_title:abc', selfdir + 'res_hnsw_1.json')
     feedfile(selfdir + 'up_hnsw_1.json')
-    assert_result('query=my_title:abc', 'res_hnsw_2.json')
+    assert_result('query=my_title:abc', selfdir + 'res_hnsw_2.json')
     feedfile(selfdir + 'up_hnsw_2.json')
-    assert_result('query=my_title:abc', 'res_hnsw_3.json')
+    assert_result('query=my_title:abc', selfdir + 'res_hnsw_3.json')
   end
 
   def teardown
