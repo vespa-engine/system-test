@@ -28,7 +28,7 @@
                         "children": [
                             {
                                 "id": "group:long:1",
-                                "relevance": 0.32620952830819305,
+                                "relevance": 0.3376349882434168,
                                 "value": "1",
                                 "fields": {
                                     "count()": 1
@@ -36,7 +36,7 @@
                             },
                             {
                                 "id": "group:long:3",
-                                "relevance": 0.07859447078383065,
+                                "relevance": 0.07004519585145552,
                                 "value": "3",
                                 "fields": {
                                     "count()": 1
@@ -44,7 +44,7 @@
                             },
                             {
                                 "id": "group:long:2",
-                                "relevance": 0.07681858546907547,
+                                "relevance": 0.06846248610812149,
                                 "value": "2",
                                 "fields": {
                                     "count()": 1
@@ -56,8 +56,8 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709",
-                "relevance": 0.32620952830819305,
-                "source": "basicsearch",
+                "relevance": 0.3376349882434168,
+                "source": "basicsearch.music",
                 "fields": {
                     "sddocname": "music",
                     "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709",
@@ -71,30 +71,30 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711",
-                "relevance": 0.07859447078383065,
-                "source": "basicsearch",
+                "relevance": 0.07004519585145552,
+                "source": "basicsearch.music",
                 "fields": {
                     "sddocname": "music",
                     "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711",
                     "title": "Electric Blues",
                     "name": {
-                        "Blues": 78,
-                        "Electric": 2
+                        "Electric": 2,
+                        "Blues": 78
                     },
                     "score": 3
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710",
-                "relevance": 0.07681858546907547,
-                "source": "basicsearch",
+                "relevance": 0.06846248610812149,
+                "source": "basicsearch.music",
                 "fields": {
                     "sddocname": "music",
                     "documentid": "id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710",
                     "title": "Modern Electric Blues",
                     "name": {
-                        "Blues": 78,
                         "Electric": 2,
+                        "Blues": 78,
                         "Modern": 2
                     },
                     "score": 2

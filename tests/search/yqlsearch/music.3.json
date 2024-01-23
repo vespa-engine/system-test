@@ -1,0 +1,5 @@
+[
+{"id":"id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709","fields":{"title":"Country Blues","score":1,"name":{"Blues":78,"Country":2}}},
+{"id":"id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710","fields":{"title":"Modern Electric Blues","score":2,"name":{"Electric":2,"Blues":78,"Modern":2}}},
+{"id":"id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711","fields":{"title":"Electric Blues","score":3,"name":{"Electric":2,"Blues":78}}}
+]

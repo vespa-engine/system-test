@@ -1,8 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'resultset'
+require 'cgi'
 
-class YqlSearch < IndexedSearchTest
+class YqlSearch < IndexedStreamingSearchTest
 
   # This is in search because this test needs to be expanded with
   # "funky stuff" which needs to be tested in a search context.
@@ -27,7 +28,8 @@ class YqlSearch < IndexedSearchTest
   def assert_result_matches_wset_order_normalized(query, expected_file)
     query += '&renderer.json.jsonMaps=true'
     query += '&renderer.json.jsonWsets=true'
-    assert_result(query, expected_file)
+    fields = ['title', 'name', 'score', 'documentid']
+    assert_result(query, expected_file, nil, fields)
   end
 
   def check_yql_hits(yql, hitcount)
@@ -38,7 +40,7 @@ class YqlSearch < IndexedSearchTest
   end
 
   def feed_and_check
-    feed(:file => selfdir+"music.3.xml", :timeout => 240)
+    feed(:file => selfdir+"music.3.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 3)
 
     check_yql_hits('select * from sources * where false', 0)
@@ -54,11 +56,11 @@ class YqlSearch < IndexedSearchTest
 
     assert_result("query=select+ignoredfield+from+ignoredsource+where+wand%28name%2C%7B%22electric%22%3A10%2C%22modern%22%3A20%7D%29&ranking=weightedSet&type=yql&tracelevel=1", selfdir + "result.json", nil, [ 'relevancy' ])
 
-
-    # YQL: select * from sources * where rank(title contains "blues",title contains "country") | all(group(score)each(output(count())));
-
-    yql = 'select+%2A+from+sources+%2A+where+rank%28title+contains+%22blues%22%2Ctitle+contains+%22country%22%29+%7C+all%28group%28score%29each%28output%28count%28%29%29%29%29'
-    assert_result_matches_wset_order_normalized("/search/?yql=#{yql}", selfdir + "group-result.json")
+    # if RANK does not work, try OR:
+  # yql = 'select * from sources * where (title contains ({significance:0.75}"blues")) OR (title contains ({significance:1.0}"country")) | all(group(score)each(output(count())))'
+    yql = 'select * from sources * where rank(title contains ({significance:0.75}"blues"), title contains ({significance:1.0}"country")) | all(group(score)each(output(count())))'
+    query = "/search/?yql=#{CGI::escape(yql)}"
+    assert_result_matches_wset_order_normalized(query, selfdir + "group-result.json")
   end
 
   def teardown
