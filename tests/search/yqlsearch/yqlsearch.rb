@@ -40,7 +40,7 @@ class YqlSearch < IndexedStreamingSearchTest
   end
 
   def feed_and_check
-    feed(:file => selfdir+"music.3.xml", :timeout => 240)
+    feed(:file => selfdir+"music.3.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 3)
 
     check_yql_hits('select * from sources * where false', 0)
