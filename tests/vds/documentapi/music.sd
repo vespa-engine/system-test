@@ -37,5 +37,6 @@ schema music {
     field position_array type array<position> {
       indexing: attribute
     }
+    field nested type array<array<weightedset<string>> { }
   }
 }
