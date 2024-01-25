@@ -282,7 +282,8 @@ class DocumentV1Test < SearchTest
 
     assert(verify_with_retries(
              http,
-             { "PUT" => 3504, "UPDATE" => 3, "REMOVE" => 2 },
+             { "GET" => 2, "PUT" => 3504, "UPDATE" => 3, "REMOVE" => 2 },
+             { "GET" => 2 },
              { "PUT" => 2 },
              { "PUT" => 2, "REMOVE" => 1 },
              { "httpapi_condition_not_met" => 3, "httpapi_not_found" => 1, "httpapi_succeeded" => 3508 }))
@@ -304,21 +305,21 @@ class DocumentV1Test < SearchTest
     http
   end
 
-  def verify_with_retries(http, success_ops, failed_ops, condition_failed_ops, http_api_metrics)
+  def verify_with_retries(http, success_ops, not_found_ops, failed_ops, condition_failed_ops, http_api_metrics)
     for i in 0..10
-      if verify_metrics(http, success_ops, failed_ops, condition_failed_ops, http_api_metrics)
+      if verify_metrics(http, success_ops, not_found_ops, failed_ops, condition_failed_ops, http_api_metrics)
         return true
       end
       sleep(0.5)
     end
-    return verify_metrics(http, success_ops, failed_ops, condition_failed_ops, http_api_metrics, true)
+    return verify_metrics(http, success_ops, not_found_ops, failed_ops, condition_failed_ops, http_api_metrics, true)
   end
 
-  def verify_metrics(http, success_ops, failed_ops, condition_failed_ops, http_api_metrics, errors = false)
+  def verify_metrics(http, success_ops, not_found_ops, failed_ops, condition_failed_ops, http_api_metrics, errors = false)
     metrics_json = JSON.parse(http.get("/state/v1/metrics").body)
     metrics = metrics_json["metrics"]["values"]
 
-    expect_metrics = {"OK" => success_ops, "REQUEST_ERROR" => failed_ops, "CONDITION_FAILED" => condition_failed_ops}
+    expect_metrics = {"OK" => success_ops, "NOT_FOUND" => not_found_ops, "REQUEST_ERROR" => failed_ops, "CONDITION_FAILED" => condition_failed_ops}
     actual_metrics = {}
     actual_http_metrics = {}
     for metric in metrics
