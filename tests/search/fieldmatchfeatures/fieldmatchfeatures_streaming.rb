@@ -37,10 +37,10 @@ class FieldMatchFeaturesStreaming < StreamingSearchTest
     assert_struct_streaming(1,     1, 1, "f1.lf:1000", "f1.lf", 1)
     assert_struct_streaming(1, 0.333, 1, "f1.sf:foo",  "f1.sf", 0)
     assert_struct_streaming(1,   0.5, 2, "f1.sf:foo",  "f1.sf", 1)
-    assert_struct_streaming(1, 0.333, 2, "f2.lf:1000", "f2.lf", 0)
-    assert_struct_streaming(1,  0.25, 2, "f2.lf:1000", "f2.lf", 1)
-    assert_struct_streaming(1, 0.143, 3, "f2.sf:foo",  "f2.sf", 0)
-    assert_struct_streaming(1,   0.1, 4, "f2.sf:foo",  "f2.sf", 1)
+    assert_struct_streaming(1,     1, 2, "f2.lf:1000", "f2.lf", 0)
+    assert_struct_streaming(1,     1, 2, "f2.lf:1000", "f2.lf", 1)
+    assert_struct_streaming(1, 0.333, 3, "f2.sf:foo",  "f2.sf", 0)
+    assert_struct_streaming(1,  0.25, 4, "f2.sf:foo",  "f2.sf", 1)
   end
 
 end
