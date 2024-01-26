@@ -36,6 +36,7 @@
         { "id" : "summary-decode-policy", "rules" : [ { "value" : "on-demand" } ] },
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
-        { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : false } ] }
+        { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : false } ] },
+        { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] }
     ]
 }
