@@ -74,7 +74,7 @@ class DocumentApiVdsPart2 < DocumentApiV1Base
     api_http_post('/document/v1/storage_test/music/number/2/9', '{"fields":{"nested":[[],[{"first":1},{"second":2}]]}}')
     # Let's change to 0-indexing, and add a third element ...
     api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"nested[1][0]{first}":{"increment":-1}}}')
-    api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"nested[1][0]{second}":{"assign":1}}}')
+    api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"nested[1][1]{second}":{"assign":1}}}')
     # FIXME: this is bugged, FP to wset assumes array add ???
     # api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"nested[1][0]":{"add":{"third":2}}}}')
 
@@ -88,7 +88,7 @@ class DocumentApiVdsPart2 < DocumentApiV1Base
     api_http_post('/document/v1/storage_test/music/number/2/9', '{"fields":{"nested":[[],[{"first":1},{"second":2}]]}}')
     # ... and then do the same with match syntax.
     api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"nested":{"match":{"element":1,"match":{"element":0,"match":{"element":"first","increment":-1}}}}}}')
-    api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"nested":{"match":{"element":1,"match":{"element":0,"match":{"element":"second","assign":1}}}}}}')
+    api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"nested":{"match":{"element":1,"match":{"element":1,"match":{"element":"second","assign":1}}}}}}')
     # add not implemented for match syntax
     # api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"nested":{"match":{"element":1,"match":{"element":0,"add":{"third":2}}}}}}')
 
