@@ -61,7 +61,7 @@ class DocumentApiVdsPart2 < DocumentApiV1Base
     # Should be able to give Jerry a last name as well
     api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"person_array[0].lastname":{"assign":"Seinfeld"}}}')
     # ...Newman...! But with element match syntax. Replace the whole struct element.
-    api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"person_array":{"match":{"element":2,"assign":{"lastname":"Newman"}}}}}}')
+    api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"person_array":{"match":{"element":2,"assign":{"lastname":"Newman"}}}}}')
 
     response = api_http_get('/document/v1/storage_test/music/number/2/9')
     arrayData = JSON.parse(response)['fields']['person_array']
