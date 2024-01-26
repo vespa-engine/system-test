@@ -48,8 +48,8 @@ class AttributeSearch < IndexedStreamingSearchTest
 
   # helper method
   def a_r_w_e(word, resnam, explain)
-    assert_result("query=title:#{word}&type=all", selfdir + "case.#{resnam}.result.json", nil, nil, 0, explain)
-    assert_result("query=fstitle:#{word}&type=all", selfdir + "case.#{resnam}.result.json", nil, nil, 0, explain)
+    assert_result("query=title:#{word}&type=all", selfdir + "case.#{resnam}.result.json", nil, ["documentid", "title", "fstitle"], 0, explain)
+    assert_result("query=fstitle:#{word}&type=all", selfdir + "case.#{resnam}.result.json", nil, ["documentid", "title", "fstitle"], 0, explain)
   end
 
   # helper method
