@@ -48,8 +48,8 @@ class AttributeSearch < IndexedStreamingSearchTest
 
   # helper method
   def a_r_w_e(word, resnam, explain)
-    assert_result("query=title:#{word}&type=all", selfdir + "case.#{resnam}.result.json", nil, nil, 0, explain)
-    assert_result("query=fstitle:#{word}&type=all", selfdir + "case.#{resnam}.result.json", nil, nil, 0, explain)
+    assert_result("query=title:#{word}&type=all", selfdir + "case.#{resnam}.result.json", nil, ["documentid", "title", "fstitle"], 0, explain)
+    assert_result("query=fstitle:#{word}&type=all", selfdir + "case.#{resnam}.result.json", nil, ["documentid", "title", "fstitle"], 0, explain)
   end
 
   # helper method
@@ -391,7 +391,7 @@ class AttributeSearch < IndexedStreamingSearchTest
     assert_hitcount('query=flag:[8%3B127]&type=all', 3)
     assert_hitcount('query=flag:[-129%3B-8]&type=all', 2)
     assert_hitcount('query=flag:[8%3B128]&type=all', 3)
-    assert_result('query=sddocname:test&type=all', selfdir+"attrflag/result.json", "documentid")
+    assert_result('query=sddocname:test&type=all', selfdir+"attrflag/result.json", "documentid", ["documentid"])
   end
 
   def teardown
