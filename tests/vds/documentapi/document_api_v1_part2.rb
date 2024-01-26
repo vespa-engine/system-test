@@ -59,7 +59,7 @@ class DocumentApiVdsPart2 < DocumentApiV1Base
     # Whoops we typoed, let's fix that with an update
     api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"person_array[1]":{"assign":{"firstname": "Cosmo","lastname":"Kramer"}}}}')
     # Should be able to give Jerry a last name as well
-    api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"person_array[0].lastname":{"assign":"Seinfeld"}}}}')
+    api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"person_array[0].lastname":{"assign":"Seinfeld"}}}')
     # ...Newman...! But with element match syntax. Replace the whole struct element.
     api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"person_array":{"match":{"element":2,"assign":{"lastname":"Newman"}}}}}}')
 
