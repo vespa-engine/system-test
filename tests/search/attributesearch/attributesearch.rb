@@ -391,7 +391,7 @@ class AttributeSearch < IndexedStreamingSearchTest
     assert_hitcount('query=flag:[8%3B127]&type=all', 3)
     assert_hitcount('query=flag:[-129%3B-8]&type=all', 2)
     assert_hitcount('query=flag:[8%3B128]&type=all', 3)
-    assert_result('query=sddocname:test&type=all', selfdir+"attrflag/result.json", "documentid")
+    assert_result('query=sddocname:test&type=all', selfdir+"attrflag/result.json", "documentid", ["documentid"])
   end
 
   def teardown
