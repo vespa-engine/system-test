@@ -274,7 +274,7 @@ class ClusterControllerTest < VdsTest
       end
       # This is a bit too leaky for comfort, but we don't have any other mechanisms of
       # knowing _why_ a particular SetNodeState request failed.
-      if deny_reason =~ /The storage node manages 10 buckets/
+      if deny_reason =~ /The storage node stores 10 documents and 0 tombstones across 10 buckets/
         puts 'Got expected failure message, all is well'
         break
       end
