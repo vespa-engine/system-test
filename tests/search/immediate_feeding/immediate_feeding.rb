@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class ImmediateFeeding < IndexedSearchTest
+class ImmediateFeeding < IndexedStreamingSearchTest
 
   def setup
     set_owner("valerijf")
@@ -14,7 +14,8 @@ class ImmediateFeeding < IndexedSearchTest
 
   def test_immediate_feeding
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :maxretries => "5")
-    assert_result("query=sddocname:music", selfdir+"music.10.result.json", "title")
+    check_fields=['bgnsellers','categories','ew','mid','pto','surl','title']
+    assert_result("query=sddocname:music", selfdir+"music.10.result.json", "title", check_fields)
   end
 
   def teardown
