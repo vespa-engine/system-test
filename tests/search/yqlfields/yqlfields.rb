@@ -13,8 +13,9 @@ class YqlFields < IndexedSearchTest
     start
     feed(:file => SEARCH_DATA+"music.10.xml", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 10)
-    assert_result("query=sddocname:music&yql=select%20ew,surl%20from%20music%20where%20userQuery%28%29%3B&sorting=surl", selfdir + "filteredresult.json")
-    assert_result("query=sddocname:music&yql=select%20*%20from%20music%20where%20userQuery%28%29%3B&sorting=surl", selfdir + "unfilteredresult.json")
+    check_fields=['bgnsellers','categories','ew','mid','pto','surl','title']
+    assert_result("query=sddocname:music&yql=select%20ew,surl%20from%20music%20where%20userQuery%28%29%3B&sorting=surl", selfdir + "filteredresult.json", nil, check_fields)
+    assert_result("query=sddocname:music&yql=select%20*%20from%20music%20where%20userQuery%28%29%3B&sorting=surl", selfdir + "unfilteredresult.json", nil, check_fields)
   end
 
   def teardown
