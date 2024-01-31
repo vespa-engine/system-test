@@ -16,7 +16,7 @@
         "children": [
             {
                 "id": "id:test:multipoint::1",
-                "relevance": 0.99423836495425,
+                "relevance": 0.9942375412127828,
                 "source": "multitest",
                 "fields": {
                     "sddocname": "multipoint",
@@ -41,7 +41,7 @@
                         "lng": 19.937473
                     },
                     "summaryfeatures": {
-                        "distance(latlong)": 51931.37396603329,
+                        "distance(latlong)": 51938.79859911806,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }

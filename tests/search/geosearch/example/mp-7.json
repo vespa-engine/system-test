@@ -9,13 +9,13 @@
                     {
                         "children": [
                             {
-                                "message": "sc0.num0 search to dispatch: query=[OR GEO_LOCATION vacationll:(2,120000000,-60000000,901337,0,1,0,2147483647) GEO_LOCATION homell:(2,10500000,63500000,1802674,0,1,0,1916405014) GEO_LOCATION workll:(2,0,0,2704012,0,1,0,4294967295) GEO_LOCATION latlong:(2,14250000,40800000,90133,0,1,0,3251269006)] timeout=9975ms offset=0 hits=10 groupingSessionCache=true sessionId=6077a90a-fdc8-47e8-b0f5-15b363ae7ed7.1653300788825.28.default grouping=0 :  restrict=[multipoint]"
+                                "message": "sc0.num0 search to dispatch: query=[OR GEO_LOCATION vacationll:(2,120000000,-60000000,901337,0,1,0,2147483647) GEO_LOCATION homell:(2,10500000,63500000,1802674,0,1,0,1916405014) GEO_LOCATION workll:(2,0,0,2704012,0,1,0,4294967295) GEO_LOCATION latlong:(2,14250000,40800000,90133,0,1,0,3251269006)] timeout=9992ms offset=0 hits=10 groupingSessionCache=true sessionId=828b7a39-d16c-4512-b75e-17e1cde5136e.1706623235868.29.default grouping=0 :  restrict=[multipoint]"
                             },
                             {
                                 "message": "sc0.num0 dispatch response: Result (2 of total 2 hits)"
                             },
                             {
-                                "message": "sc0.num0 fill to dispatch: query=[OR GEO_LOCATION vacationll:(2,120000000,-60000000,901337,0,1,0,2147483647) GEO_LOCATION homell:(2,10500000,63500000,1802674,0,1,0,1916405014) GEO_LOCATION workll:(2,0,0,2704012,0,1,0,4294967295) GEO_LOCATION latlong:(2,14250000,40800000,90133,0,1,0,3251269006)] timeout=9975ms offset=0 hits=10 groupingSessionCache=true sessionId=6077a90a-fdc8-47e8-b0f5-15b363ae7ed7.1653300788825.28.default grouping=0 :  restrict=[multipoint] summary=[null]"
+                                "message": "sc0.num0 fill to dispatch: query=[OR GEO_LOCATION vacationll:(2,120000000,-60000000,901337,0,1,0,2147483647) GEO_LOCATION homell:(2,10500000,63500000,1802674,0,1,0,1916405014) GEO_LOCATION workll:(2,0,0,2704012,0,1,0,4294967295) GEO_LOCATION latlong:(2,14250000,40800000,90133,0,1,0,3251269006)] timeout=9992ms offset=0 hits=10 groupingSessionCache=true sessionId=828b7a39-d16c-4512-b75e-17e1cde5136e.1706623235868.29.default grouping=0 :  restrict=[multipoint] summary=[null]"
                             }
                         ]
                     }
@@ -40,7 +40,7 @@
         "children": [
             {
                 "id": "id:test:multipoint::3",
-                "relevance": 0.9963018035049203,
+                "relevance": 0.9963018035049199,
                 "source": "multitest",
                 "fields": {
                     "sddocname": "multipoint",
@@ -57,7 +57,7 @@
                         "lng": 14.25
                     },
                     "summaryfeatures": {
-                        "distance(latlong)": 33333.0,
+                        "distance(latlong)": 33333.00000000297,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }
@@ -89,7 +89,7 @@
                         "lng": 19.937473
                     },
                     "summaryfeatures": {
-                        "distance(latlong)": 1.0324068960545923E8,
+                        "distance(latlong)": 92196318.44726005,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }
