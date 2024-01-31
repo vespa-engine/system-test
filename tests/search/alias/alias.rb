@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class Alias < IndexedSearchTest
+class Alias < IndexedStreamingSearchTest
 
   def setup
     set_owner("yngve")
@@ -69,8 +69,11 @@ class Alias < IndexedSearchTest
     puts "Query: Search using alias for an attribute via default-index"
     comp('query=1700000&default-index=testalias3&type=all', "weight.result.json", regexp)
 
-    puts "Query: Search using alias for a part of a URL"
-    assert_hitcount('query=site:www.bigband.com&type=all', 1)
+    # URL indexing doesn't work the same way in streaming
+    if ! is_streaming
+      puts "Query: Search using alias for a part of a URL"
+      assert_hitcount('query=site:www.bigband.com&type=all', 1)
+    end
 
   end
 
