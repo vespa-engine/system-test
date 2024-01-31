@@ -29,7 +29,7 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     super
   end
 
-  def create_app(enable_stale_reads:, use_btree_db: false)
+  def create_app(enable_stale_reads:)
     SearchApp.new.sd(SEARCH_DATA + 'music.sd').
     num_parts(3).redundancy(2).ready_copies(1).
     container(Container.new("combinedcontainer").
@@ -39,8 +39,7 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
                           add('simulated_db_pruning_latency_msec', 2000).
                           add('simulated_db_merging_latency_msec', 3000).
-                          add('allow_stale_reads_during_cluster_state_transitions', enable_stale_reads).
-                          add('use_btree_database', use_btree_db)).
+                          add('allow_stale_reads_during_cluster_state_transitions', enable_stale_reads)).
     config(ConfigOverride.new('vespa.config.content.core.stor-server').
                           add('enable_dead_lock_detector', true).      # TODO temporary for debugging
                           add('dead_lock_detector_timeout_slack', 60). # TODO temporary for debugging
@@ -193,7 +192,7 @@ class GetsDuringStateTransitionsTest < PerformanceTest
 
   def do_test_gets_during_state_transitions(stale_reads:)
     puts_header "Starting benchmark run of (stale reads: #{stale_reads})"
-    deploy_app(create_app(enable_stale_reads: stale_reads == ENABLED, use_btree_db: true))
+    deploy_app(create_app(enable_stale_reads: stale_reads == ENABLED))
     if not @is_set_up
       start
       prepare_feed_and_query
