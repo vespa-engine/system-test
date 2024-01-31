@@ -210,13 +210,7 @@ class SearchCluster
   end
 
   def streaming_cluster_parameters_xml(indent)
-    if @sd_files.size != 1
-      raise "Streaming search only supports 1 sd file per cluster, " +
-            "got #{@sd_files.size} (#{@sd_files.join(",")})"
-    end
-
-    sd_name = File.basename(@sd_files[0].file_name, '.sd')
-    cluster_parameters_xml(indent, "streaming", { :name => sd_name })
+    cluster_parameters_xml(indent, "streaming")
   end
 
   def disable_flush_tuning
