@@ -4,28 +4,28 @@
     <field name="relevancy">0.004</field>
     <field name="sddocname">multiplepos2d</field>
     <field name="title">Trondheim2</field>
-    <field name="summaryfeatures">{"distance(ll)":6.4E9,"distance(ll).km":711648.5134946106,"distance(ll).latitude":90.0,"distance(ll).longitude":-180.0,"distance(workplaces).km":711648.5134946106,"distance(workplaces).latitude":90.0,"distance(workplaces).longitude":-180.0,"great_circle_distance(field,ll).km":1.7976931348623157E308,"great_circle_distance(field,ll).latitude":90.0,"great_circle_distance(field,ll).longitude":-180.0,"great_circle_distance(field,workplaces).km":1.7976931348623157E308,"great_circle_distance(field,workplaces).latitude":90.0,"great_circle_distance(field,workplaces).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(ll)":6.4E9,"distance(ll).km":40000.0,"distance(ll).latitude":90.0,"distance(ll).longitude":-180.0,"distance(workplaces).km":40000.0,"distance(workplaces).latitude":90.0,"distance(workplaces).longitude":-180.0,"great_circle_distance(field,ll).km":1.7976931348623157E308,"great_circle_distance(field,ll).latitude":90.0,"great_circle_distance(field,ll).longitude":-180.0,"great_circle_distance(field,workplaces).km":1.7976931348623157E308,"great_circle_distance(field,workplaces).latitude":90.0,"great_circle_distance(field,workplaces).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:multiplepos2d::TRD2</field>
   </hit>
   <hit relevancy="0.003" source="search">
     <field name="relevancy">0.003</field>
     <field name="sddocname">multiplepos2d</field>
     <field name="title">equator/greenwich</field>
-    <field name="summaryfeatures">{"distance(ll)":6.4E9,"distance(ll).km":711648.5134946106,"distance(ll).latitude":90.0,"distance(ll).longitude":-180.0,"distance(workplaces).km":711648.5134946106,"distance(workplaces).latitude":90.0,"distance(workplaces).longitude":-180.0,"great_circle_distance(field,ll).km":1.7976931348623157E308,"great_circle_distance(field,ll).latitude":90.0,"great_circle_distance(field,ll).longitude":-180.0,"great_circle_distance(field,workplaces).km":1.7976931348623157E308,"great_circle_distance(field,workplaces).latitude":90.0,"great_circle_distance(field,workplaces).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(ll)":6.4E9,"distance(ll).km":40000.0,"distance(ll).latitude":90.0,"distance(ll).longitude":-180.0,"distance(workplaces).km":40000.0,"distance(workplaces).latitude":90.0,"distance(workplaces).longitude":-180.0,"great_circle_distance(field,ll).km":1.7976931348623157E308,"great_circle_distance(field,ll).latitude":90.0,"great_circle_distance(field,ll).longitude":-180.0,"great_circle_distance(field,workplaces).km":1.7976931348623157E308,"great_circle_distance(field,workplaces).latitude":90.0,"great_circle_distance(field,workplaces).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:multiplepos2d::GCEQGW</field>
   </hit>
   <hit relevancy="0.002" source="search">
     <field name="relevancy">0.002</field>
     <field name="sddocname">multiplepos2d</field>
     <field name="title">equator/dateline</field>
-    <field name="summaryfeatures">{"distance(ll)":6.4E9,"distance(ll).km":711648.5134946106,"distance(ll).latitude":90.0,"distance(ll).longitude":-180.0,"distance(workplaces).km":711648.5134946106,"distance(workplaces).latitude":90.0,"distance(workplaces).longitude":-180.0,"great_circle_distance(field,ll).km":1.7976931348623157E308,"great_circle_distance(field,ll).latitude":90.0,"great_circle_distance(field,ll).longitude":-180.0,"great_circle_distance(field,workplaces).km":1.7976931348623157E308,"great_circle_distance(field,workplaces).latitude":90.0,"great_circle_distance(field,workplaces).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(ll)":6.4E9,"distance(ll).km":40000.0,"distance(ll).latitude":90.0,"distance(ll).longitude":-180.0,"distance(workplaces).km":40000.0,"distance(workplaces).latitude":90.0,"distance(workplaces).longitude":-180.0,"great_circle_distance(field,ll).km":1.7976931348623157E308,"great_circle_distance(field,ll).latitude":90.0,"great_circle_distance(field,ll).longitude":-180.0,"great_circle_distance(field,workplaces).km":1.7976931348623157E308,"great_circle_distance(field,workplaces).latitude":90.0,"great_circle_distance(field,workplaces).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:multiplepos2d::GCEQDL</field>
   </hit>
   <hit relevancy="0.001" source="search">
     <field name="relevancy">0.001</field>
     <field name="sddocname">multiplepos2d</field>
     <field name="title">Trondheim1</field>
-    <field name="summaryfeatures">{"distance(ll)":6.4E9,"distance(ll).km":711648.5134946106,"distance(ll).latitude":90.0,"distance(ll).longitude":-180.0,"distance(workplaces).km":711648.5134946106,"distance(workplaces).latitude":90.0,"distance(workplaces).longitude":-180.0,"great_circle_distance(field,ll).km":1.7976931348623157E308,"great_circle_distance(field,ll).latitude":90.0,"great_circle_distance(field,ll).longitude":-180.0,"great_circle_distance(field,workplaces).km":1.7976931348623157E308,"great_circle_distance(field,workplaces).latitude":90.0,"great_circle_distance(field,workplaces).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(ll)":6.4E9,"distance(ll).km":40000.0,"distance(ll).latitude":90.0,"distance(ll).longitude":-180.0,"distance(workplaces).km":40000.0,"distance(workplaces).latitude":90.0,"distance(workplaces).longitude":-180.0,"great_circle_distance(field,ll).km":1.7976931348623157E308,"great_circle_distance(field,ll).latitude":90.0,"great_circle_distance(field,ll).longitude":-180.0,"great_circle_distance(field,workplaces).km":1.7976931348623157E308,"great_circle_distance(field,workplaces).latitude":90.0,"great_circle_distance(field,workplaces).longitude":-180.0,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:multiplepos2d::TRD1</field>
   </hit>
 </result>

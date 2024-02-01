@@ -1,1 +1,71 @@
-{"root":{"id":"toplevel","relevance":1.0,"fields":{"totalCount":2},"coverage":{"coverage":100,"documents":4,"full":true,"nodes":1,"results":1,"resultsFull":1},"children":[{"id":"id:test:multiplepos2d::TRD2","relevance":0.6279044000077671,"source":"search","fields":{"sddocname":"multiplepos2d","documentid":"id:test:multiplepos2d::TRD2","title":"Trondheim2","summaryfeatures":{"distance(ll)":3389864.3518879926,"distance(ll).km":376.9362385889783,"distance(ll).latitude":63.384299999999996,"distance(ll).longitude":10.3883,"distance(workplaces).km":815.6310982159222,"distance(workplaces).latitude":71.0,"distance(workplaces).longitude":15.0,"great_circle_distance(field,ll).km":376.8722695529334,"great_circle_distance(field,ll).latitude":63.3843,"great_circle_distance(field,ll).longitude":10.3883,"great_circle_distance(field,workplaces).km":806.2597167601971,"great_circle_distance(field,workplaces).latitude":71.0,"great_circle_distance(field,workplaces).longitude":15.0,"vespa.summaryFeatures.cached":0.0}}},{"id":"id:test:multiplepos2d::TRD1","relevance":0.6238347176937632,"source":"search","fields":{"sddocname":"multiplepos2d","documentid":"id:test:multiplepos2d::TRD1","title":"Trondheim1","summaryfeatures":{"distance(ll)":3399505.724837215,"distance(ll).km":378.0083118276285,"distance(ll).latitude":63.394,"distance(ll).longitude":10.3868,"distance(workplaces).km":347.5389119902264,"distance(workplaces).latitude":61.0,"distance(workplaces).longitude":12.0,"great_circle_distance(field,ll).km":377.9448327022413,"great_circle_distance(field,ll).latitude":63.394,"great_circle_distance(field,ll).longitude":10.3868,"great_circle_distance(field,workplaces).km":348.9900907736793,"great_circle_distance(field,workplaces).latitude":61.0,"great_circle_distance(field,workplaces).longitude":12.0,"vespa.summaryFeatures.cached":0.0}}}]}}
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:multiplepos2d::TRD2",
+                "relevance": 0.6279682263808489,
+                "source": "search",
+                "fields": {
+                    "sddocname": "multiplepos2d",
+                    "documentid": "id:test:multiplepos2d::TRD2",
+                    "title": "Trondheim2",
+                    "summaryfeatures": {
+                        "distance(ll)": 3389289.0653203623,
+                        "distance(ll).km": 376.8722695529334,
+                        "distance(ll).latitude": 63.3843,
+                        "distance(ll).longitude": 10.3883,
+                        "distance(workplaces).km": 806.2597167601971,
+                        "distance(workplaces).latitude": 71.0,
+                        "distance(workplaces).longitude": 15.0,
+                        "great_circle_distance(field,ll).km": 376.8722695529334,
+                        "great_circle_distance(field,ll).latitude": 63.3843,
+                        "great_circle_distance(field,ll).longitude": 10.3883,
+                        "great_circle_distance(field,workplaces).km": 806.2597167601971,
+                        "great_circle_distance(field,workplaces).latitude": 71.0,
+                        "great_circle_distance(field,workplaces).longitude": 15.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            },
+            {
+                "id": "id:test:multiplepos2d::TRD1",
+                "relevance": 0.6238980552487802,
+                "source": "search",
+                "fields": {
+                    "sddocname": "multiplepos2d",
+                    "documentid": "id:test:multiplepos2d::TRD1",
+                    "title": "Trondheim1",
+                    "summaryfeatures": {
+                        "distance(ll)": 3398934.844135893,
+                        "distance(ll).km": 377.9448327022413,
+                        "distance(ll).latitude": 63.394,
+                        "distance(ll).longitude": 10.3868,
+                        "distance(workplaces).km": 348.9900907736793,
+                        "distance(workplaces).latitude": 61.0,
+                        "distance(workplaces).longitude": 12.0,
+                        "great_circle_distance(field,ll).km": 377.9448327022413,
+                        "great_circle_distance(field,ll).latitude": 63.394,
+                        "great_circle_distance(field,ll).longitude": 10.3868,
+                        "great_circle_distance(field,workplaces).km": 348.9900907736793,
+                        "great_circle_distance(field,workplaces).latitude": 61.0,
+                        "great_circle_distance(field,workplaces).longitude": 12.0,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

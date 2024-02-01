@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <result total-hit-count="2" coverage-docs="4" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
-  <hit relevancy="1.0024076101080943" source="search">
-    <field name="relevancy">1.0024076101080943</field>
+  <hit relevancy="1.002407687354056" source="search">
+    <field name="relevancy">1.002407687354056</field>
     <field name="sddocname">multiplepos2d</field>
     <field name="title">Trondheim2</field>
-    <field name="summaryfeatures">{"distance(ll)":14352.695774661985,"distance(ll).km":1.595949158231028,"distance(ll).latitude":63.4345,"distance(ll).longitude":10.3461,"distance(workplaces).km":873.580830165856,"distance(workplaces).latitude":71.0,"distance(workplaces).longitude":15.0,"great_circle_distance(field,ll).km":1.5958717396113031,"great_circle_distance(field,ll).latitude":63.4345,"great_circle_distance(field,ll).longitude":10.3461,"great_circle_distance(field,workplaces).km":865.3037231794787,"great_circle_distance(field,workplaces).latitude":71.0,"great_circle_distance(field,workplaces).longitude":15.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(ll)":14351.999533249484,"distance(ll).km":1.5958717396113031,"distance(ll).latitude":63.4345,"distance(ll).longitude":10.3461,"distance(workplaces).km":865.3037231794787,"distance(workplaces).latitude":71.0,"distance(workplaces).longitude":15.0,"great_circle_distance(field,ll).km":1.5958717396113031,"great_circle_distance(field,ll).latitude":63.4345,"great_circle_distance(field,ll).longitude":10.3461,"great_circle_distance(field,workplaces).km":865.3037231794787,"great_circle_distance(field,workplaces).latitude":71.0,"great_circle_distance(field,workplaces).longitude":15.0,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:multiplepos2d::TRD2</field>
   </hit>
   <hit relevancy="1.001" source="search">
     <field name="relevancy">1.001</field>
     <field name="sddocname">multiplepos2d</field>
     <field name="title">Trondheim1</field>
-    <field name="summaryfeatures">{"distance(ll)":0.0,"distance(ll).km":0.0,"distance(ll).latitude":63.4225,"distance(ll).longitude":10.3637,"distance(workplaces).km":281.4019150648428,"distance(workplaces).latitude":61.0,"distance(workplaces).longitude":12.0,"great_circle_distance(field,ll).km":0.0,"great_circle_distance(field,ll).latitude":63.4225,"great_circle_distance(field,ll).longitude":10.3637,"great_circle_distance(field,workplaces).km":282.3876471987717,"great_circle_distance(field,workplaces).latitude":61.0,"great_circle_distance(field,workplaces).longitude":12.0,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(ll)":0.0,"distance(ll).km":0.0,"distance(ll).latitude":63.4225,"distance(ll).longitude":10.3637,"distance(workplaces).km":282.3876471987717,"distance(workplaces).latitude":61.0,"distance(workplaces).longitude":12.0,"great_circle_distance(field,ll).km":0.0,"great_circle_distance(field,ll).latitude":63.4225,"great_circle_distance(field,ll).longitude":10.3637,"great_circle_distance(field,workplaces).km":282.3876471987717,"great_circle_distance(field,workplaces).latitude":61.0,"great_circle_distance(field,workplaces).longitude":12.0,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:multiplepos2d::TRD1</field>
   </hit>
 </result>
