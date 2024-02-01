@@ -16,7 +16,7 @@
         "children": [
             {
                 "id": "id:test:multipoint::3",
-                "relevance": 0.9944044451813551,
+                "relevance": 0.9944051740618881,
                 "source": "multitest",
                 "fields": {
                     "sddocname": "multipoint",
@@ -33,14 +33,14 @@
                         "lng": 14.25
                     },
                     "summaryfeatures": {
-                        "distance(latlong)": 50434.46926458134,
+                        "distance(latlong)": 50427.899642029086,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }
             },
             {
                 "id": "id:test:multipoint::1",
-                "relevance": 0.985228103326878,
+                "relevance": 0.9852266607427955,
                 "source": "multitest",
                 "fields": {
                     "sddocname": "multipoint",
@@ -65,7 +65,7 @@
                         "lng": 19.937473
                     },
                     "summaryfeatures": {
-                        "distance(latlong)": 133143.6101433336,
+                        "distance(latlong)": 133156.6125936578,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }

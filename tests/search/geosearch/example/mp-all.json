@@ -33,7 +33,7 @@
                         "lng": 14.25
                     },
                     "summaryfeatures": {
-                        "distance(latlong)": 6.4E9,
+                        "distance(latlong)": 6.4E+9,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }
@@ -47,7 +47,7 @@
                     "documentid": "id:test:multipoint::2",
                     "title": "pizza hut nowhere",
                     "summaryfeatures": {
-                        "distance(latlong)": 6.4E9,
+                        "distance(latlong)": 6.4E+9,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }
@@ -79,7 +79,7 @@
                         "lng": 19.937473
                     },
                     "summaryfeatures": {
-                        "distance(latlong)": 6.4E9,
+                        "distance(latlong)": 6.4E+9,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }
