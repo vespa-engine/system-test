@@ -9,85 +9,85 @@
     <field name="summaryfeatures">{"distance(field,ll).km":0.0,"distance(ll)":0.0,"distance(ll).km":0.0,"distance(ll).latitude":63.4225,"distance(ll).longitude":10.3637,"great_circle_distance(field,ll).km":0.0,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCQMGM</field>
   </hit>
-  <hit relevancy="998.875260576185" source="search">
-    <field name="relevancy">998.875260576185</field>
+  <hit relevancy="998.8752618879876" source="search">
+    <field name="relevancy">998.8752618879876</field>
     <field name="sddocname">singlepos2d</field>
     <field name="title">Kjro#2 - Ilsvika seaside GCPCRW</field>
     <field name="ll.position"><position y="63432500" x="10360300" latlong="N63.432500;E10.360300" /></field>
     <field name="ll.distance">10115</field>
-    <field name="summaryfeatures">{"distance(field,ll).km":1.1247394238150106,"distance(ll)":10115.010677206426,"distance(ll).km":1.1247394238150106,"distance(ll).latitude":63.4325,"distance(ll).longitude":10.360299999999999,"great_circle_distance(field,ll).km":1.1247381120124027,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":1.1247381120124027,"distance(ll)":10114.998879898441,"distance(ll).km":1.1247381120124027,"distance(ll).latitude":63.4325,"distance(ll).longitude":10.3603,"great_circle_distance(field,ll).km":1.1247381120124027,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCPCRW</field>
   </hit>
-  <hit relevancy="998.4040508417689" source="search">
-    <field name="relevancy">998.4040508417689</field>
+  <hit relevancy="998.4041282603887" source="search">
+    <field name="relevancy">998.4041282603887</field>
     <field name="sddocname">singlepos2d</field>
     <field name="title">Kjro#1 - Ilsvika overview GCPAKJ</field>
     <field name="ll.position"><position y="63434500" x="10346100" latlong="N63.434500;E10.346100" /></field>
     <field name="ll.distance">14352</field>
-    <field name="summaryfeatures">{"distance(field,ll).km":1.595949158231028,"distance(ll)":14352.695774661985,"distance(ll).km":1.595949158231028,"distance(ll).latitude":63.4345,"distance(ll).longitude":10.3461,"great_circle_distance(field,ll).km":1.5958717396113031,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":1.5958717396113031,"distance(ll)":14351.999533249484,"distance(ll).km":1.5958717396113031,"distance(ll).latitude":63.4345,"distance(ll).longitude":10.3461,"great_circle_distance(field,ll).km":1.5958717396113031,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCPAKJ</field>
   </hit>
-  <hit relevancy="998.3020208723228" source="search">
-    <field name="relevancy">998.3020208723228</field>
+  <hit relevancy="998.3017989906999" source="search">
+    <field name="relevancy">998.3017989906999</field>
     <field name="sddocname">singlepos2d</field>
     <field name="title">Overlook Byåsen GCQHZ5</field>
     <field name="ll.position"><position y="63412400" x="10338100" latlong="N63.412400;E10.338100" /></field>
     <field name="ll.distance">15270</field>
-    <field name="summaryfeatures">{"distance(field,ll).km":1.6979791276772114,"distance(ll)":15270.272066993437,"distance(ll).km":1.6979791276772114,"distance(ll).latitude":63.4124,"distance(ll).longitude":10.338099999999999,"great_circle_distance(field,ll).km":1.6982010093000948,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":1.6982010093000948,"distance(ll)":15272.267493611389,"distance(ll).km":1.6982010093000948,"distance(ll).latitude":63.4124,"distance(ll).longitude":10.3381,"great_circle_distance(field,ll).km":1.6982010093000948,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCQHZ5</field>
   </hit>
-  <hit relevancy="996.6290056030537" source="search">
-    <field name="relevancy">996.6290056030537</field>
+  <hit relevancy="996.6288061927089" source="search">
+    <field name="relevancy">996.6288061927089</field>
     <field name="sddocname">singlepos2d</field>
     <field name="title">A Bridge Too Far GCNHK9</field>
     <field name="ll.position"><position y="63394000" x="10386800" latlong="N63.394000;E10.386800" /></field>
     <field name="ll.distance">30316</field>
-    <field name="summaryfeatures">{"distance(field,ll).km":3.3709943969463927,"distance(ll)":30316.0390717521,"distance(ll).km":3.3709943969463927,"distance(ll).latitude":63.394,"distance(ll).longitude":10.3868,"great_circle_distance(field,ll).km":3.371193807291094,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":3.371193807291094,"distance(ll)":30317.832409589366,"distance(ll).km":3.371193807291094,"distance(ll).latitude":63.394,"distance(ll).longitude":10.3868,"great_circle_distance(field,ll).km":3.371193807291094,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCNHK9</field>
   </hit>
-  <hit relevancy="995.5795626400272" source="search">
-    <field name="relevancy">995.5795626400272</field>
+  <hit relevancy="995.5793296627229" source="search">
+    <field name="relevancy">995.5793296627229</field>
     <field name="sddocname">singlepos2d</field>
     <field name="title">Fossekaill'n GCNVM8</field>
     <field name="ll.position"><position y="63384300" x="10388300" latlong="N63.384300;E10.388300" /></field>
     <field name="ll.distance">39753</field>
-    <field name="summaryfeatures">{"distance(field,ll).km":4.420437359972819,"distance(ll)":39753.89334392293,"distance(ll).km":4.420437359972819,"distance(ll).latitude":63.384299999999996,"distance(ll).longitude":10.3883,"great_circle_distance(field,ll).km":4.4206703372770635,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":4.4206703372770635,"distance(ll)":39755.98855626285,"distance(ll).km":4.4206703372770635,"distance(ll).latitude":63.3843,"distance(ll).longitude":10.3883,"great_circle_distance(field,ll).km":4.4206703372770635,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCNVM8</field>
   </hit>
-  <hit relevancy="994.2317444952973" source="search">
-    <field name="relevancy">994.2317444952973</field>
+  <hit relevancy="994.2336519887017" source="search">
+    <field name="relevancy">994.2336519887017</field>
     <field name="sddocname">singlepos2d</field>
     <field name="title">Starte #2 - Ladestien GCG5KZ</field>
     <field name="ll.position"><position y="63447000" x="10465900" latlong="N63.447000;E10.465900" /></field>
     <field name="ll.distance">51875</field>
-    <field name="summaryfeatures">{"distance(field,ll).km":5.768255504702657,"distance(ll)":51875.09638545263,"distance(ll).km":5.768255504702657,"distance(ll).latitude":63.446999999999996,"distance(ll).longitude":10.4659,"great_circle_distance(field,ll).km":5.766348011298293,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":5.766348011298293,"distance(ll)":51857.94190883047,"distance(ll).km":5.766348011298293,"distance(ll).latitude":63.447,"distance(ll).longitude":10.4659,"great_circle_distance(field,ll).km":5.766348011298293,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCG5KZ</field>
   </hit>
-  <hit relevancy="994.0526385941769" source="search">
-    <field name="relevancy">994.0526385941769</field>
+  <hit relevancy="994.0547470748679" source="search">
+    <field name="relevancy">994.0547470748679</field>
     <field name="sddocname">singlepos2d</field>
     <field name="title">Johela#12 - Sponhuset GCPKHQ</field>
     <field name="ll.position"><position y="63453700" x="10460800" latlong="N63.453700;E10.460800" /></field>
     <field name="ll.distance">53485</field>
-    <field name="summaryfeatures">{"distance(field,ll).km":5.947361405823168,"distance(ll)":53485.83222686172,"distance(ll).km":5.947361405823168,"distance(ll).latitude":63.4537,"distance(ll).longitude":10.460799999999999,"great_circle_distance(field,ll).km":5.945252925132038,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":5.945252925132038,"distance(ll)":53466.87023064118,"distance(ll).km":5.945252925132038,"distance(ll).latitude":63.4537,"distance(ll).longitude":10.4608,"great_circle_distance(field,ll).km":5.945252925132038,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCPKHQ</field>
   </hit>
-  <hit relevancy="992.6315658041592" source="search">
-    <field name="relevancy">992.6315658041592</field>
+  <hit relevancy="992.6316577025417" source="search">
+    <field name="relevancy">992.6316577025417</field>
     <field name="sddocname">singlepos2d</field>
     <field name="title">The Fir Forest GCN9G0</field>
     <field name="ll.position"><position y="63423300" x="10511800" latlong="N63.423300;E10.511800" /></field>
     <field name="ll.distance">66265</field>
-    <field name="summaryfeatures">{"distance(field,ll).km":7.368434195840761,"distance(ll)":66265.82921083838,"distance(ll).km":7.368434195840761,"distance(ll).latitude":63.4233,"distance(ll).longitude":10.5118,"great_circle_distance(field,ll).km":7.368342297458255,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":7.368342297458255,"distance(ll)":66265.00274997056,"distance(ll).km":7.368342297458255,"distance(ll).latitude":63.4233,"distance(ll).longitude":10.5118,"great_circle_distance(field,ll).km":7.368342297458255,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCN9G0</field>
   </hit>
-  <hit relevancy="991.3242765809667" source="search">
-    <field name="relevancy">991.3242765809667</field>
+  <hit relevancy="991.3217389967613" source="search">
+    <field name="relevancy">991.3217389967613</field>
     <field name="sddocname">singlepos2d</field>
     <field name="title">Pandora - Trondheim GCJZFF</field>
     <field name="ll.position"><position y="63405500" x="10533900" latlong="N63.405500;E10.533900" /></field>
     <field name="ll.distance">78022</field>
-    <field name="summaryfeatures">{"distance(field,ll).km":8.675723419033236,"distance(ll)":78022.54740778463,"distance(ll).km":8.675723419033236,"distance(ll).latitude":63.405499999999996,"distance(ll).longitude":10.5339,"great_circle_distance(field,ll).km":8.678261003238715,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":8.678261003238715,"distance(ll)":78045.36841929116,"distance(ll).km":8.678261003238715,"distance(ll).latitude":63.4055,"distance(ll).longitude":10.5339,"great_circle_distance(field,ll).km":8.678261003238715,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCJZFF</field>
   </hit>
 </result>

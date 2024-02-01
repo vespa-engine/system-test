@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <result total-hit-count="1" coverage-docs="12" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
-  <hit relevancy="-710648.5134946106" source="search">
-    <field name="relevancy">-710648.5134946106</field>
+  <hit relevancy="-39000.0" source="search">
+    <field name="relevancy">-39000.0</field>
     <field name="sddocname">singlepos2d</field>
     <field name="title">BP#02 Steinberget GCQMGM</field>
     <field name="ll.position"><position y="63422500" x="10363700" latlong="N63.422500;E10.363700" /></field>
-    <field name="summaryfeatures">{"distance(field,ll).km":711648.5134946106,"distance(ll)":6.4E9,"distance(ll).km":711648.5134946106,"distance(ll).latitude":90.0,"distance(ll).longitude":-180.0,"great_circle_distance(field,ll).km":1.7976931348623157E308,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":40000.0,"distance(ll)":6.4E9,"distance(ll).km":40000.0,"distance(ll).latitude":90.0,"distance(ll).longitude":-180.0,"great_circle_distance(field,ll).km":1.7976931348623157E308,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCQMGM</field>
   </hit>
 </result>

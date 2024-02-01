@@ -1,1 +1,43 @@
-{"root":{"id":"toplevel","relevance":1.0,"fields":{"totalCount":1},"coverage":{"coverage":100,"documents":12,"full":true,"nodes":1,"results":1,"resultsFull":1},"children":[{"id":"id:test:singlepos2d::GCQMGM","relevance":-710648.5134946106,"source":"search","fields":{"sddocname":"singlepos2d","documentid":"id:test:singlepos2d::GCQMGM","title":"BP#02 Steinberget GCQMGM","ll.position":{"y":63422500,"x":10363700,"latlong":"N63.422500;E10.363700"},"summaryfeatures":{"distance(field,ll).km":711648.5134946106,"distance(ll)":6.4E9,"distance(ll).km":711648.5134946106,"distance(ll).latitude":90.0,"distance(ll).longitude":-180.0,"great_circle_distance(field,ll).km":1.7976931348623157E308,"vespa.summaryFeatures.cached":0.0}}}]}}
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 12,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:test:singlepos2d::GCQMGM",
+                "relevance": -39000.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "singlepos2d",
+                    "documentid": "id:test:singlepos2d::GCQMGM",
+                    "title": "BP#02 Steinberget GCQMGM",
+                    "ll.position": {
+                        "y": 63422500,
+                        "x": 10363700,
+                        "latlong": "N63.422500;E10.363700"
+                    },
+                    "summaryfeatures": {
+                        "distance(field,ll).km": 40000.0,
+                        "distance(ll)": 6.4E+9,
+                        "distance(ll).km": 40000.0,
+                        "distance(ll).latitude": 90.0,
+                        "distance(ll).longitude": -180.0,
+                        "great_circle_distance(field,ll).km": 1.7976931348623157E+308,
+                        "vespa.summaryFeatures.cached": 0.0
+                    }
+                }
+            }
+        ]
+    }
+}

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <result total-hit-count="1" coverage-docs="12" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
-  <hit relevancy="997.2857912743636" source="search">
-    <field name="relevancy">997.2857912743636</field>
+  <hit relevancy="997.2860267983729" source="search">
+    <field name="relevancy">997.2860267983729</field>
     <field name="sddocname">singlepos2d</field>
     <field name="title">BP#02 Steinberget GCQMGM</field>
     <field name="ll.position"><position y="63422500" x="10363700" latlong="N63.422500;E10.363700" /></field>
     <field name="ll.distance">24409</field>
-    <field name="summaryfeatures">{"distance(field,ll).km":2.7142087256364,"distance(ll)":24409.431783636424,"distance(ll).km":2.7142087256364,"distance(ll).latitude":63.4225,"distance(ll).longitude":10.3637,"great_circle_distance(field,ll).km":2.7139732016271156,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":2.7139732016271156,"distance(ll)":24407.313668259467,"distance(ll).km":2.7139732016271156,"distance(ll).latitude":63.4225,"distance(ll).longitude":10.3637,"great_circle_distance(field,ll).km":2.7139732016271156,"vespa.summaryFeatures.cached":0.0}</field>
     <field name="documentid">id:test:singlepos2d::GCQMGM</field>
   </hit>
 </result>

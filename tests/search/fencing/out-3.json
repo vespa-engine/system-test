@@ -26,13 +26,13 @@
                         "lat": 0.0,
                         "lng": 0.0
                     },
-                    "fenceradius": 1.0E9,
+                    "fenceradius": 1.0E+9,
                     "order": 42,
                     "summaryfeatures": {
-                        "attribute(fenceradius)": 1.0E9,
+                        "attribute(fenceradius)": 1.0E+9,
                         "attribute(maybecenter_zcurve).count": 0.0,
-                        "distance(center)": 1.3011175420695934E8,
-                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(center)": 136735474.58734798,
+                        "distance(maybecenter)": 6.4E+9,
                         "distance(maybecenter).index": -1.0,
                         "distance(maybecenter).latitude": 90.0,
                         "distance(maybecenter).longitude": -180.0,
@@ -52,8 +52,8 @@
                     "summaryfeatures": {
                         "attribute(fenceradius)": null,
                         "attribute(maybecenter_zcurve).count": 0.0,
-                        "distance(center)": 2.117414742653267E9,
-                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(center)": 146248024.20136428,
+                        "distance(maybecenter)": 6.4E+9,
                         "distance(maybecenter).index": -1.0,
                         "distance(maybecenter).latitude": 90.0,
                         "distance(maybecenter).longitude": -180.0,
