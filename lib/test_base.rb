@@ -8,6 +8,7 @@ require 'optparse'
 require 'rexml/document'
 require 'socket'
 require 'net/http'
+require 'uri'
 require 'vespa_model'
 require 'node_server_interface'
 require 'node_proxy'
@@ -240,7 +241,11 @@ module TestBase
 
   def search_with_timeout(timeout, query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
     timeout = calculateQueryTimeout(timeout)
-    query = query + "&timeout=" + timeout.to_s
+    if query.is_a?(Hash)
+      query = query.merge({ 'timeout' => timeout.to_s })
+    else
+      query = query + "&timeout=" + timeout.to_s
+    end
     search_base(query, qrserver_id, requestheaders, verbose, params)
   end
 
@@ -251,7 +256,15 @@ module TestBase
 
   def search_base(query, qrserver_id=0, requestheaders = {}, verbose = false, params = {})
     if add_streaming_selection_query_parameter
-      query = query + "&streaming.selection=true"
+      if query.is_a?(Hash)
+        query = query.merge({ 'streaming.selection' => 'true' })
+      else
+        query = query + "&streaming.selection=true"
+      end
+    end
+    if query.is_a?(Hash)
+      # Convert query with parameters to string
+      query = URI.encode_www_form(query.to_a)
     end
     # insert / if missing
     if query.scan(/^\//).empty?
@@ -521,11 +534,19 @@ module TestBase
   # simple diff or the result XML
   def assert_xml_result_with_timeout(timeout, query, savedresultfile, qrserver_id=0)
     timeout = calculateQueryTimeout(timeout)
-    query = query + "&timeout=" + timeout.to_s
+    if query.is_a?(Hash)
+      query = query.merge({ 'timeout' => timeout.to_s })
+    else
+      query = query + "&timeout=" + timeout.to_s
+    end
     assert_xml_result(query, savedresultfile, qrserver_id)
   end
   def assert_xml_result(query, savedresultfile, qrserver_id=0)
-    result = search_base(query + '&format=xml', qrserver_id)
+    if query.is_a?(Hash)
+      result = search_base(query.merge({'format' => 'xml'}), qrserver_id)
+    else
+      result = search_base(query + '&format=xml', qrserver_id)
+    end
     assert_xml(result.xmldata, savedresultfile)
   end
   def assert_xml(xml, savedresultfile)
@@ -1123,7 +1144,11 @@ module TestBase
   # Asserts that the _query_or_result_ has a total hit count equal to _wanted_hitcount_
   def assert_hitcount_with_timeout(timeout, query, wanted_hitcount, qrserver_id=0, params = {})
     timeout = calculateQueryTimeout(timeout)
-    query = query + "&timeout=" + timeout.to_s
+    if query.is_a?(Hash)
+      query = query.merge({'timeout' => timeout.to_s })
+    else
+      query = query + "&timeout=" + timeout.to_s
+    end
     assert_hitcount_withouttimeout(query, wanted_hitcount, qrserver_id, params)
   end
 
@@ -1162,7 +1187,11 @@ module TestBase
     timeout = timeout_in
     timeout = calculateQueryTimeout(timeout)
 
-    query += "&hits=0"
+    if query.is_a?(Hash)
+      query = query.merge({'hits' => '0'})
+    else
+      query += "&hits=0"
+    end
 
     puts "Waiting for #{wanted_hitcount} hits, timeout: #{timeout}"
     trynum = 0
@@ -1196,7 +1225,11 @@ module TestBase
     timeout = timeout_in
     timeout = calculateQueryTimeout(timeout)
 
-    query += "&hits=0"
+    if query.is_a?(Hash)
+      query = query.merge({'hits' => '0'})
+    else
+      query += "&hits=0"
+    end
 
     puts "Waiting until not #{wanted_hitcount} hits, timeout: #{timeout}"
     trynum = 0
