@@ -126,6 +126,7 @@ class Hit
     else
       comp_fields.delete("relevancy")
       comp_fields.delete("documentid")
+      comp_fields.delete("source")
       comp_fields.delete_if {|key,value| key =~ /^[as]_\d+$/ and value == ""}
       comp_fields.delete_if {|key,value| key =~ /summaryfeatures/ and value == ""}
     end
