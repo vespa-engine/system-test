@@ -100,9 +100,15 @@ class TestRunner
     ObjectSpace.each_object(Class) do |klass|
       superclasses.each do |superclass|
         if !@tests.has_key?(klass) && klass < superclass
-          testfile = klass.instance_method(klass.instance_methods(false).first).source_location.first
 
           @tests[klass] = []
+
+          begin
+            testfile = klass.instance_method(klass.instance_methods(false).first).source_location.first
+          rescue StandardError => e
+            @log.warn("Skipping parsing of class #{klass.name} as no instance methods was found.")
+            next
+          end
 
           scan_for_test_methods(klass, testfile).each do |method|
             testclass = klass.new(@consoleoutput, testfile, { :platform_label => @platform_label,
