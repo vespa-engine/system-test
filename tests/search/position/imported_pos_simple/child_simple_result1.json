@@ -7,11 +7,11 @@
         },
         "coverage": {
             "coverage": 100,
-            "documents": 8,
+            "documents": 12,
             "full": true,
-            "nodes": 2,
-            "results": 2,
-            "resultsFull": 2
+            "nodes": 3,
+            "results": 3,
+            "resultsFull": 3
         },
         "children": [
             {
@@ -34,7 +34,7 @@
             },
             {
                 "id": "id:test:child_simple_pos::2",
-                "relevance": 0.999892179914951,
+                "relevance": 0.9998920711025904,
                 "source": "search",
                 "fields": {
                     "sddocname": "child_simple_pos",
@@ -45,7 +45,7 @@
                     },
                     "parent_ref": "id:test:parent_simple_pos::2",
                     "summaryfeatures": {
-                        "distance(my_pos)": 971.8153116719246,
+                        "distance(my_pos)": 972.7960706668572,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }

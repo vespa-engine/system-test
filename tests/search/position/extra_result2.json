@@ -33,7 +33,7 @@
             },
             {
                 "id": "id:test:extra_pos::3",
-                "relevance": 0.999892179914951,
+                "relevance": 0.9998920711025904,
                 "source": "search",
                 "fields": {
                     "sddocname": "extra_pos",
@@ -43,7 +43,7 @@
                         "lng": 98.987
                     },
                     "summaryfeatures": {
-                        "distance(my_pos)": 971.8153116719246,
+                        "distance(my_pos)": 972.7960706668572,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }

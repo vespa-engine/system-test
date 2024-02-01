@@ -7,11 +7,11 @@
         },
         "coverage": {
             "coverage": 100,
-            "documents": 4,
+            "documents": 6,
             "full": true,
-            "nodes": 2,
-            "results": 2,
-            "resultsFull": 2
+            "nodes": 3,
+            "results": 3,
+            "resultsFull": 3
         },
         "children": [
             {
