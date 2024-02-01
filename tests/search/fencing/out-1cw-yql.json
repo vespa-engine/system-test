@@ -37,12 +37,12 @@
                     "summaryfeatures": {
                         "attribute(fenceradius)": 500000.0,
                         "attribute(maybecenter_zcurve).count": 1.0,
-                        "distance(center)": 51931.37396603329,
+                        "distance(center)": 51938.79859911806,
                         "distance(label,foobar)": 5.7745132947906725,
-                        "distance(maybecenter)": 51931.37396603329,
+                        "distance(maybecenter)": 51938.79859911806,
                         "distance(maybecenter).index": 0.0,
                         "distance(maybecenter).latitude": 37.374821,
-                        "distance(maybecenter).longitude": -122.05717399999999,
+                        "distance(maybecenter).longitude": -122.057174,
                         "rawScore(center_zcurve)": 0.14761208023149938,
                         "rawScore(maybecenter_zcurve)": 0.0,
                         "vespa.summaryFeatures.cached": 0.0
@@ -72,12 +72,12 @@
                     "summaryfeatures": {
                         "attribute(fenceradius)": 500000.0,
                         "attribute(maybecenter_zcurve).count": 1.0,
-                        "distance(center)": 51931.37396603329,
+                        "distance(center)": 51938.79859911806,
                         "distance(label,foobar)": 5.7745132947906725,
-                        "distance(maybecenter)": 51931.37396603329,
+                        "distance(maybecenter)": 51938.79859911806,
                         "distance(maybecenter).index": 0.0,
                         "distance(maybecenter).latitude": 37.374821,
-                        "distance(maybecenter).longitude": -122.05717399999999,
+                        "distance(maybecenter).longitude": -122.057174,
                         "rawScore(center_zcurve)": 0.14761208023149938,
                         "rawScore(maybecenter_zcurve)": 0.0,
                         "vespa.summaryFeatures.cached": 0.0
@@ -96,18 +96,18 @@
                         "lat": 0.0,
                         "lng": 0.0
                     },
-                    "fenceradius": 1.0E9,
+                    "fenceradius": 1.0E+9,
                     "order": 42,
                     "summaryfeatures": {
-                        "attribute(fenceradius)": 1.0E9,
+                        "attribute(fenceradius)": 1.0E+9,
                         "attribute(maybecenter_zcurve).count": 0.0,
-                        "distance(center)": 1.0388441524467416E8,
+                        "distance(center)": 114896197.23371337,
                         "distance(label,foobar)": 11551.435888145192,
-                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(maybecenter)": 6.4E+9,
                         "distance(maybecenter).index": -1.0,
                         "distance(maybecenter).latitude": 90.0,
                         "distance(maybecenter).longitude": -180.0,
-                        "rawScore(center_zcurve)": 8.65618307413568E-5,
+                        "rawScore(center_zcurve)": 0.0000865618307413568,
                         "rawScore(maybecenter_zcurve)": 0.0,
                         "vespa.summaryFeatures.cached": 0.0
                     }
@@ -125,13 +125,13 @@
                     "summaryfeatures": {
                         "attribute(fenceradius)": null,
                         "attribute(maybecenter_zcurve).count": 0.0,
-                        "distance(center)": 2.1870321824400563E9,
+                        "distance(center)": 106220899.35804784,
                         "distance(label,foobar)": 243187.2189997406,
-                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(maybecenter)": 6.4E+9,
                         "distance(maybecenter).index": -1.0,
                         "distance(maybecenter).latitude": 90.0,
                         "distance(maybecenter).longitude": -180.0,
-                        "rawScore(center_zcurve)": 4.112041299176037E-6,
+                        "rawScore(center_zcurve)": 0.000004112041299176037,
                         "rawScore(maybecenter_zcurve)": 0.0,
                         "vespa.summaryFeatures.cached": 0.0
                     }

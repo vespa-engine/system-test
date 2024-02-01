@@ -37,11 +37,11 @@
                     "summaryfeatures": {
                         "attribute(fenceradius)": 500000.0,
                         "attribute(maybecenter_zcurve).count": 1.0,
-                        "distance(center)": 31896.46779817477,
-                        "distance(maybecenter)": 31896.46779817477,
+                        "distance(center)": 31896.327589508768,
+                        "distance(maybecenter)": 31896.327589508768,
                         "distance(maybecenter).index": 0.0,
-                        "distance(maybecenter).latitude": 63.431692999999996,
-                        "distance(maybecenter).longitude": 10.391964999999999,
+                        "distance(maybecenter).latitude": 63.431693,
+                        "distance(maybecenter).longitude": 10.391965,
                         "vespa.summaryFeatures.cached": 0.0
                     }
                 }
@@ -58,13 +58,13 @@
                         "lat": 0.0,
                         "lng": 0.0
                     },
-                    "fenceradius": 1.0E9,
+                    "fenceradius": 1.0E+9,
                     "order": 42,
                     "summaryfeatures": {
-                        "attribute(fenceradius)": 1.0E9,
+                        "attribute(fenceradius)": 1.0E+9,
                         "attribute(maybecenter_zcurve).count": 0.0,
-                        "distance(center)": 6.357078573534887E7,
-                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(center)": 63870398.93137458,
+                        "distance(maybecenter)": 6.4E+9,
                         "distance(maybecenter).index": -1.0,
                         "distance(maybecenter).latitude": 90.0,
                         "distance(maybecenter).longitude": -180.0,
@@ -84,8 +84,8 @@
                     "summaryfeatures": {
                         "attribute(fenceradius)": null,
                         "attribute(maybecenter_zcurve).count": 0.0,
-                        "distance(center)": 2.2108885520968256E9,
-                        "distance(maybecenter)": 4.294967296E9,
+                        "distance(center)": 51411988.32545693,
+                        "distance(maybecenter)": 6.4E+9,
                         "distance(maybecenter).index": -1.0,
                         "distance(maybecenter).latitude": 90.0,
                         "distance(maybecenter).longitude": -180.0,
