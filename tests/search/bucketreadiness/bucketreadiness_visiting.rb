@@ -35,8 +35,6 @@ class BucketReadiness < BucketReadinessBase
 
   def create_app_for_visiting
     app = create_app("regular/test.sd")
-    app.config(ConfigOverride.new("vespa.config.content.core.stor-distributormanager").
-               add("maxpendingidealstateoperations", 10000000))
     app.config(ConfigOverride.new("vespa.config.content.core.stor-server").
                add("max_merge_queue_size", 10000).
                add("max_merges_per_node", 40))

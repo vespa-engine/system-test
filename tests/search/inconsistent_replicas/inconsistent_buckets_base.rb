@@ -8,15 +8,14 @@ class InconsistentBucketsBase < SearchTest
     start
   end
 
-  def make_app(disable_merges: true, enable_condition_probing: true)
+  def make_app(disable_merges: true)
     SearchApp.new.sd(SEARCH_DATA + 'music.sd').
       cluster_name('storage').
       num_parts(2).redundancy(2).ready_copies(2).
       enable_document_api.
       storage(StorageCluster.new('storage', 2).distribution_bits(8)).
       config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
-             add('merge_operations_disabled', disable_merges).
-             add('enable_condition_probing', enable_condition_probing))
+             add('merge_operations_disabled', disable_merges))
   end
 
   def updated_doc_id
