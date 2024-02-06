@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'json'
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'environment'
 
-class BasicMLR < IndexedSearchTest
+class BasicMLR < IndexedStreamingSearchTest
 
   def setup
     set_owner("lesters")
@@ -56,7 +56,7 @@ class BasicMLR < IndexedSearchTest
 
     # wait until container and proton has gotten new config
     wait_for_application(vespa.container.values.first, deploy_output)
-    vespa.search['search'].first.wait_for_config_generation(get_generation(deploy_output).to_i)
+    vespa.storage['search'].wait_until_content_nodes_have_config_generation(get_generation(deploy_output).to_i)
 
     assertDocuments
 
