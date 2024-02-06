@@ -1,7 +1,7 @@
 # encoding: iso8859-1
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class EncodingTest < IndexedSearchTest
+class EncodingTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("johansen")
@@ -32,6 +32,7 @@ class EncodingTest < IndexedSearchTest
     assert_equal(1, result.hit.size)
     assert(result.xmldata.index("encoding=\"iso-8859-1\""))
     assert_equal("test test document1", result.hit[0].field["title"]);
+    puts("hit[0].description=" + result.hit[0].field["description"].to_s)
 
     # check that raw result contains correct text:
     assert(result.xmldata.index(to_ascii_8bit("description\">Bjørnen spiser <hi>blåbær</hi> på en øy i nærheten.<")))
