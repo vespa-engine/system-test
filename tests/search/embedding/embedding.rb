@@ -125,6 +125,22 @@ class Embedding < IndexedStreamingSearchTest
     verify_colbert_embedding
   end
 
+  def test_colbert_multivector_embedding
+    deploy_app(
+      SearchApp.new.
+        container(
+          Container.new('default').
+            component(colbert_embedder_component).
+            search(Searching.new).
+            docproc(DocumentProcessing.new).
+            jvmoptions('-Xms4g -Xmx4g')).
+        sd(selfdir + 'app_colbert_multivector_embedder/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start
+    feed_and_wait_for_docs("doc", 1, :file => selfdir + "multivector-docs.json")
+    verify_colbert_multivector_embedding
+  end
+
   def test_splade_embedding
     deploy_app(
       SearchApp.new.
@@ -222,6 +238,25 @@ class Embedding < IndexedStreamingSearchTest
 
     assert_equal(5, embedding_float.length) # 5 tokens
     assert_equal(32, embedding_float['0'].length) # token embedding is 32
+
+    maxSimFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSimFloat"]
+    assert(maxSimFloat > 29.5, "#{maxSimFloat} < 29.5 maxSimFloat not greater than 29.5")
+
+    maxSimBFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSimBFloat"]
+    assert(maxSimBFloat > 29.5, "#{maxSimBFloat} < 29.5 maxSimBfloat not greater than 29.5")
+
+    assert((maxSimBFloat - maxSimFloat).abs < 1e-1, "#{maxSimBFloat} != #{maxSimFloat} maxSimBfloat not equal to maxSimFloat")
+  end
+
+  def verify_colbert_multivector_embedding
+    result = search("?query=text:hello&input.query(qt)=embed(colbert, \"Hello%20world\")&format=json&format.tensors=short-value").json
+    queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(qt)"]
+    assert_equal(32, queryFeature.length)
+    puts result
+    embedding = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding)"]
+
+    assert_equal(5, embedding.length) # 5 tokens
+    assert_equal(32, embedding['0'].length) # token embedding is 32
 
     maxSimFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSimFloat"]
     assert(maxSimFloat > 29.5, "#{maxSimFloat} < 29.5 maxSimFloat not greater than 29.5")
