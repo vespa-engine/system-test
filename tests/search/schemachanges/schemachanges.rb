@@ -1,7 +1,7 @@
-require 'indexed_search_test'
+require 'indexed_only_search_test'
 require 'search/schemachanges/schemachanges_base'
 
-class SchemaChanges < IndexedSearchTest
+class SchemaChanges < IndexedOnlySearchTest
 
   include SchemaChangesBase
 

@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 # -*- coding: utf-8 -*-
-require 'indexed_search_test'
+require 'indexed_only_search_test'
 require 'document'
 require 'thread'
 require 'simple_http_feeder'
@@ -115,7 +115,7 @@ class VisibilityFeeder < SimpleHTTPFeeder
   end
 end
 
-class Visibility < IndexedSearchTest
+class Visibility < IndexedOnlySearchTest
 
   def setup
     set_owner("toregge")

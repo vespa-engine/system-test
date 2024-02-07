@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_only_search_test'
 require 'json'
 
-class Explain < IndexedSearchTest
+class Explain < IndexedOnlySearchTest
 
   def setup
     set_owner("balder")
