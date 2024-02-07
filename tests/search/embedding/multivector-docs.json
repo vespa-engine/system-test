@@ -1,0 +1,7 @@
+[
+  { "put": "id:test:doc::1",
+    "fields": {
+      "text": ["Hello world", "Goodbye world"]
+    }
+  }
+]
