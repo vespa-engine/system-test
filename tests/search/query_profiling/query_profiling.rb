@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_only_search_test'
 require 'json'
 
-class QueryProfiling < IndexedSearchTest
+class QueryProfiling < IndexedOnlySearchTest
   
   def setup
     @global_filter_tag = "global_filter_profiling"

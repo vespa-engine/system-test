@@ -5,7 +5,7 @@ class RpcSummary < IndexedSearchTest
 
   def setup
     set_owner("balder")
-    set_description("Test that we can fetch summary both with rpc and with deprecated packet protocol.")
+    set_description("Test that we can fetch summary both with and without ranking.queryCache.")
   end
 
   def test_rpcsummary
@@ -26,13 +26,10 @@ class RpcSummary < IndexedSearchTest
     assert_result(query, selfdir + "result.json", nil, ["id", "f1", "relevancy"])
     assert_result(query, selfdir + "result.json", nil, ["id", "f1", "relevancy", "summaryfeatures"])
 
-    # Silently ignore the dispatch.summaries setting as it won't work in this case
-    assert_result(query + "&dispatch.summaries=true", selfdir + "result.json", nil, ["id", "f1", "relevancy", "summaryfeatures"])
-
-    assert_result(query + "&dispatch.summaries=true&ranking.queryCache", selfdir + "result.json", nil, ["id", "f1", "relevancy", "summaryfeatures"])
+    assert_result(query + "&ranking.queryCache", selfdir + "result.json", nil, ["id", "f1", "relevancy", "summaryfeatures"])
     gquery="#{query}&select=all(group(id) each(each(output(summary(s1)))))&hits=0"
     assert_xml_result_with_timeout(2.0, gquery, selfdir + "#{type}-group.xml")
-    assert_xml_result_with_timeout(2.0, gquery + "&dispatch.summaries=true&ranking.queryCache", selfdir + "#{type}-group.xml")
+    assert_xml_result_with_timeout(2.0, gquery + "&ranking.queryCache", selfdir + "#{type}-group.xml")
   end
 
   def teardown
