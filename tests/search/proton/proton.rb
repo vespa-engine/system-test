@@ -1,10 +1,10 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_only_search_test'
 require 'search/proton/mixed_feed_generator'
 require 'securerandom'
 
-class ProtonTest < IndexedSearchTest
+class ProtonTest < IndexedOnlySearchTest
   include MixedFeedGenerator
 
   def setup

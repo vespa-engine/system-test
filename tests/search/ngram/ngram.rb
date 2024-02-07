@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 # encoding: utf-8
-require 'indexed_search_test'
+require 'indexed_only_search_test'
 
-class NGram < IndexedSearchTest
+class NGram < IndexedOnlySearchTest
 
   def setup
     set_owner("bratseth")
