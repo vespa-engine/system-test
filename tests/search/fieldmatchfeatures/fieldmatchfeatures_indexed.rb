@@ -2,11 +2,11 @@
 
 require 'rubygems'
 require 'json'
-require 'indexed_search_test'
+require 'indexed_only_search_test'
 require 'search/fieldmatchfeatures/fieldmatchfeatures_base'
 
 
-class FieldMatchFeaturesIndexed < IndexedSearchTest
+class FieldMatchFeaturesIndexed < IndexedOnlySearchTest
 
   include FieldMatchFeaturesBase
 
