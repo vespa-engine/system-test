@@ -7,8 +7,7 @@ class DisjointSourceOnlyDocuments < SearchTest
   def make_app(disable_merges:)
     SearchApp.new.sd(selfdir + 'test.sd').
         config(ConfigOverride.new('vespa.config.content.stor-filestor').
-               add('bucket_merge_chunk_size', 1024). # Enforce triggering chunk limit edge case
-               add('common_merge_chain_optimalization_minimum_size', 8)).
+               add('bucket_merge_chunk_size', 1024)). # Enforce triggering chunk limit edge case
         config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
                add('merge_operations_disabled', disable_merges)).
         enable_document_api.
