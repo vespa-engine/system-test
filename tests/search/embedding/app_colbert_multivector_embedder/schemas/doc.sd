@@ -10,7 +10,7 @@ schema doc {
     }
 
     field embedding type tensor<float>(p{}, dt{}, x[128]) {
-        indexing: input chunks | embed colbert p | attribute
+        indexing: input text | embed colbert p | attribute
     }
 
     rank-profile default inherits default {
