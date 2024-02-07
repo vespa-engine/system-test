@@ -124,7 +124,7 @@ class StorageCluster
     end
   end
 
-  def cluster_parameters_xml(indent, redundancy)
+  def cluster_parameters_xml(indent, redundancy=nil)
     xml = XmlHelper.new(indent).
       tag("redundancy").content(redundancy).close_tag.
       to_xml(@config).
