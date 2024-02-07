@@ -124,8 +124,9 @@ class StorageCluster
     end
   end
 
-  def cluster_parameters_xml(indent)
+  def cluster_parameters_xml(indent, redundancy)
     xml = XmlHelper.new(indent).
+      tag("redundancy").content(redundancy).close_tag.
       to_xml(@config).
       call {|indent| distributormanager_config(indent)}.
       tag("tuning").
@@ -141,8 +142,8 @@ class StorageCluster
       call {|indent| documentdefinitions_xml(indent)}.to_s
   end
 
-  def streaming_cluster_parameters_xml(indent)
-    cluster_parameters_xml(indent) +
+  def streaming_cluster_parameters_xml(indent, include_redundancy = true)
+    cluster_parameters_xml(indent, include_redundancy ? @redundancy : nil) +
     provider_xml(indent)
   end
 
@@ -161,7 +162,7 @@ class StorageCluster
                      :"distributor-base-port" => @distributor_base_port).
         tag("redundancy", :"reply-after" => replyafter).content(@redundancy).close_tag.
         to_xml(@groups).
-        call {|indent| streaming_cluster_parameters_xml(indent)}.to_s
+        call {|indent| streaming_cluster_parameters_xml(indent, false)}.to_s
   end
 
 end
