@@ -1,12 +1,12 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_only_search_test'
 require 'search/indexmanager/indexmanagerdocgenerator'
 
 IndexManagerConfig = Struct.new(:num_doc_sets, :num_puts, :num_removes, :num_updates, :num_unique_words)
 IndexManagerFlushStats = Struct.new(:num_memory_index_flush, :num_disk_index_fusion, :num_trigger_flush, :fusion_during_last_flush)
 
-class IndexManagerTest < IndexedSearchTest
+class IndexManagerTest < IndexedOnlySearchTest
   
   def setup
     set_owner("geirst")
