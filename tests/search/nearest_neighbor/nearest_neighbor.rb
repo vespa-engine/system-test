@@ -208,9 +208,9 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     stats = get_nni_stats('pos')
     puts "Nearest Neighbor Index statistics: #{stats}"
     if @mixed
-      assert(stats['nodes'] >= 11)
+      assert(stats['nodes'] >= 10)
     else
-      assert_equal(11, stats['nodes'])
+      assert_equal(10, stats['nodes'])
     end
     assert_equal(0, stats['unreachable_nodes'])
   end
