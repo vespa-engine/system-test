@@ -127,6 +127,10 @@ class Content
     end
 
     def to_streaming_xml(indent)
+      if @search && @storage
+        #This is a dirty hack so that redundancy is taken from search if present
+        @storage.redundancy(nil)
+      end
       XmlHelper.new(indent).tag("content", :id => @name, :version => "1.0").
         to_xml(@search, :streaming_cluster_parameters_xml).
         to_xml(@storage, :streaming_cluster_parameters_xml).to_s
