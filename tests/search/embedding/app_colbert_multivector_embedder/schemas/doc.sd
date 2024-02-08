@@ -36,7 +36,7 @@ schema doc {
         }
         second-phase {
             rerank-count: 100
-            expression: reduce(max_sim, max, p)
+            expression: reduce(maxSim, max, p)
         }
         summary-features {
             query(qt)
