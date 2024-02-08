@@ -9,13 +9,13 @@ schema doc {
         }
     }
 
-    field embedding type tensor<float>(p{}, dt{}, x[128]) {
+    field embedding type tensor<float>(p{}, dt{}, x[32]) {
         indexing: input text | embed colbert p | attribute
     }
 
     rank-profile default inherits default {
         inputs {
-            query(qt) tensor<float>(qt{}, x[128])
+            query(qt) tensor<float>(qt{}, x[32])
         }
 
         function maxSim() {
