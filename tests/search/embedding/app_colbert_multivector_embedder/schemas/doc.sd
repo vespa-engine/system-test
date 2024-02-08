@@ -18,7 +18,7 @@ schema doc {
             query(qt) tensor<float>(qt{}, x[128])
         }
 
-        function max_sim() {
+        function maxSim() {
             expression {
                 sum(
                     reduce(
@@ -40,8 +40,7 @@ schema doc {
         }
         summary-features {
             query(qt)
-            maxSimBFloat
-            maxSimFloat
+            maxSim
             attribute(embedding)
         }
 

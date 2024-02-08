@@ -258,11 +258,8 @@ class Embedding < IndexedStreamingSearchTest
     assert_equal(5, embedding.length) # 5 tokens
     assert_equal(32, embedding['0'].length) # token embedding is 32
 
-    maxSimFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSimFloat"]
-    assert(maxSimFloat > 29.5, "#{maxSimFloat} < 29.5 maxSimFloat not greater than 29.5")
-
-    maxSimBFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSimBFloat"]
-    assert(maxSimBFloat > 29.5, "#{maxSimBFloat} < 29.5 maxSimBfloat not greater than 29.5")
+    maxSimFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSim"]
+    assert(maxSimFloat > 29.5, "#{maxSim} < 29.5 maxSim not greater than 29.5")
 
     assert((maxSimBFloat - maxSimFloat).abs < 1e-1, "#{maxSimBFloat} != #{maxSimFloat} maxSimBfloat not equal to maxSimFloat")
   end
