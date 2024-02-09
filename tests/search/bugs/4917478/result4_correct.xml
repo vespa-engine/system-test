@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <group relevance="1.0">
+    <id type="root"/>
+    <grouplist label="iprd">
+      <group relevance="0.16343879032006287">
+        <id type="long">1</id>
+        <output label="count()">1</output>
+      </group>
+    </grouplist>
+    <grouplist label="pmid">
+      <group relevance="0.16343879032006287">
+        <id type="long">2</id>
+        <output label="count()">1</output>
+        <hitlist label="hits">
+          <hit relevancy="0.16343879032006287" source="search">
+            <field name="relevancy">0.16343879032006287</field>
+            <field name="sddocname">bold</field>
+            <field name="pttl">buy <hi>iPhone</hi> 4 for BlingBling</field>
+          </hit>
+        </hitlist>
+      </group>
+    </grouplist>
+  </group>
+  <hit relevancy="0.16343879032006287" source="search">
+    <field name="relevancy">0.16343879032006287</field>
+    <field name="sddocname">bold</field>
+    <field name="pttl">buy <hi>iPhone</hi> 4 for BlingBling</field>
+    <field name="pdkw">iphone</field>
+    <field name="documentid">id:bold:bold::1</field>
+  </hit>
+</result>
