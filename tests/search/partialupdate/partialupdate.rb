@@ -1,13 +1,17 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'json'
 require 'rexml/document'
 require 'search/partialupdate/attributetestcase'
 
-class PartialUpdate < IndexedSearchTest
+class PartialUpdate < IndexedStreamingSearchTest
 
   @@fctr = Process.pid * 100
+
+  def self.final_test_methods
+    ['test_arithmetic_updates_with_undefined_values']
+  end
 
   def setup
     set_owner("geirst")
