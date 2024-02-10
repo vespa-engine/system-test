@@ -256,7 +256,8 @@ class Embedding < IndexedStreamingSearchTest
     embedding = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding)"]
 
     assert_equal(10, embedding.length) # 10 tokens
-    assert_equal(32, embedding['0'].length) # token embedding is 32
+    prinf("embedding: #{embedding}")
+    assert_equal(32, embedding['0']['0'].length) # token embedding is 32
 
     maxSimFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSim"]
     assert(maxSimFloat > 29.5, "#{maxSim} < 29.5 maxSim not greater than 29.5")
