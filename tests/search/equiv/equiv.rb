@@ -2,9 +2,9 @@
 
 require 'rubygems'
 require 'json'
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class Equiv < IndexedSearchTest
+class Equiv < IndexedStreamingSearchTest
 
   def setup
     set_owner("havardpe")
@@ -76,11 +76,13 @@ class Equiv < IndexedSearchTest
             "queryTermCount" => 1 }
     assert_features(exp, result.hit[0].field['summaryfeatures'])
 
-    puts "==== ==== ==== ==== ==== ==== ==== ==== ==== ===="
-    puts "test that EQUIV and multiple alternatives can be combined"
-    result = search({'yql' => 'select * from sources * where bodymultiple contains equiv("cars", "vehicles");'})
-    puts result.to_s
-    assert_equal(1, result.hit.size)
+    unless is_streaming
+      puts "==== ==== ==== ==== ==== ==== ==== ==== ==== ===="
+      puts "test that EQUIV and multiple alternatives can be combined"
+      result = search({'yql' => 'select * from sources * where bodymultiple contains equiv("cars", "vehicles");'})
+      puts result.to_s
+      assert_equal(1, result.hit.size)
+    end
 
     puts "==== ==== ==== ==== ==== ==== ==== ==== ==== ===="
     puts "test for phrase size"
@@ -121,6 +123,8 @@ class Equiv < IndexedSearchTest
             "fieldInfo(body).last" => 7,
             "fieldInfo(body).cnt" => 6 }
     assert_features(exp, result.hit[0].field['summaryfeatures'])
+
+    return if is_streaming
 
     puts "==== ==== ==== ==== ==== ==== ==== ==== ==== ===="
     puts "test for document frequency merging"
