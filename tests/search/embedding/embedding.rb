@@ -256,13 +256,11 @@ class Embedding < IndexedStreamingSearchTest
     embedding = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding)"]
 
     assert_equal(10, embedding.length) # 10 tokens
-    printf("embedding: #{embedding}")
     assert_equal(32, embedding[0]['values'].length) # token embedding is 32
 
-    maxSimFloat = result['root']['children'][0]['fields']['summaryfeatures']["maxSim"]
-    assert(maxSimFloat > 29.5, "#{maxSim} < 29.5 maxSim not greater than 29.5")
-
-    assert((maxSimBFloat - maxSimFloat).abs < 1e-1, "#{maxSimBFloat} != #{maxSimFloat} maxSimBfloat not equal to maxSimFloat")
+    maxSim = result['root']['children'][0]['fields']['summaryfeatures']["maxSim"]
+    assert(maxSim['0'] > 29.5, "#{maxSim['0']} < 29.5 maxSim['0'] not greater than 29.5")
+    assert(maxSim['1'] > 21.5, "#{maxSim['0']} < 21.5 maxSim['1'] not greater than 21.5")
   end
 
   def verify_splade_embedding
