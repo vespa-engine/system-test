@@ -13,6 +13,10 @@ schema doc {
         indexing: input text | embed colbert p | attribute
     }
 
+    field embedding_compressed type tensor<int8>(p{}, dt{}, x[4]) {
+        indexing: input text | embed colbert p | attribute
+    }
+
     rank-profile default inherits default {
         inputs {
             query(qt) tensor<float>(qt{}, x[32])
@@ -42,6 +46,7 @@ schema doc {
             query(qt)
             maxSim
             attribute(embedding)
+            attribute(embedding_compressed)
         }
 
     }
