@@ -133,6 +133,8 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     assert_hitcount(result, exp_scores.length)
     for i in 0...exp_scores.length do
       assert_relevancy(result, exp_scores[i], i)
+      sf = result.hit[i].field["summaryfeatures"]
+      assert_features({"bm25(content)" => exp_scores[i]}, sf)
     end
   end
 
