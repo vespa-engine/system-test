@@ -18,6 +18,7 @@ search test {
     }
     summary-features {
       bm25(content)
+      bm25(contenta)
     }
   }
 }
