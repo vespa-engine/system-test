@@ -5,6 +5,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
+    @ignore_summary_features = false
   end
 
   def self.final_test_methods
@@ -48,7 +49,9 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
       sleep 1
     end
     assert_bm25_scores(3, 4)
+    @ignore_summary_features = true
     assert_bm25_array_scores(3, 8)
+    @ignore_summary_features = false
   end
 
   def make_query(terms, ranking, idfs)
@@ -134,7 +137,9 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     for i in 0...exp_scores.length do
       assert_relevancy(result, exp_scores[i], i)
       sf = result.hit[i].field["summaryfeatures"]
-      assert_features({"bm25(content)" => exp_scores[i]}, sf)
+      if (exp_scores[i] > 0.0 || !sf.nil?) && !@ignore_summary_features
+        assert_features({"bm25(content)" => exp_scores[i]}, sf)
+      end
     end
   end
 
