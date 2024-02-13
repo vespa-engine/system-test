@@ -137,6 +137,10 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
       if (exp_scores[i] > 0.0 || !sf.nil?)
         assert_features({"bm25(#{field})" => exp_scores[i]}, sf)
       end
+      mf = result.hit[i].field["matchfeatures"]
+      if (exp_scores[i] > 0.0 || !mf.nil?)
+        assert_features({"bm25(#{field})" => exp_scores[i]}, mf)
+      end
     end
   end
 
