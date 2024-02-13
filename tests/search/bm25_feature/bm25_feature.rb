@@ -5,7 +5,6 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
-    @ignore_summary_features = false
   end
 
   def self.final_test_methods
@@ -49,9 +48,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
       sleep 1
     end
     assert_bm25_scores(3, 4)
-    @ignore_summary_features = true
     assert_bm25_array_scores(3, 8)
-    @ignore_summary_features = false
   end
 
   def make_query(terms, ranking, idfs)
@@ -83,41 +80,41 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     end
     assert_scores_for_query(make_query(['a'], ranking, idfs), [score(2, 3, idf(3, total_doc_count), avg_field_length),
                                                    score(3, 7, idf(3, total_doc_count), avg_field_length),
-                                                   score(1, 2, idf(3, total_doc_count), avg_field_length)])
+                                                   score(1, 2, idf(3, total_doc_count), avg_field_length)], 'content')
 
     assert_scores_for_query(make_query(['b'], ranking, idfs), [score(1, 3, idf(2, total_doc_count), avg_field_length),
-                                                   score(1, 7, idf(2, total_doc_count), avg_field_length)])
+                                                   score(1, 7, idf(2, total_doc_count), avg_field_length)], 'content')
 
     assert_scores_for_query(make_query(['a','d'], ranking, idfs), [score(1, 2, idf(3, total_doc_count), avg_field_length) + score(1, 2, idf(2, total_doc_count), avg_field_length),
-                                                             score(3, 7, idf(3, total_doc_count), avg_field_length) + score(1, 7, idf(2, total_doc_count), avg_field_length)])
+                                                             score(3, 7, idf(3, total_doc_count), avg_field_length) + score(1, 7, idf(2, total_doc_count), avg_field_length)], 'content')
   end
 
   def assert_bm25_array_scores(total_doc_count, avg_field_length)
     assert_scores_for_query("contenta:a&type=all", [score(2, 6, idf(3, total_doc_count), avg_field_length),
                                                     score(3, 14, idf(3, total_doc_count), avg_field_length),
-                                                    score(1, 4, idf(3, total_doc_count), avg_field_length)])
+                                                    score(1, 4, idf(3, total_doc_count), avg_field_length)], 'contenta')
 
     assert_scores_for_query("contenta:b&type=all", [score(1, 6, idf(2, total_doc_count), avg_field_length),
-                                                    score(1, 14, idf(2, total_doc_count), avg_field_length)])
+                                                    score(1, 14, idf(2, total_doc_count), avg_field_length)], 'contenta')
 
     assert_scores_for_query("content:a+content:d&type=all", [score(1, 4, idf(3, total_doc_count), avg_field_length) + score(1, 4, idf(2, total_doc_count), avg_field_length),
-                                                             score(3, 14, idf(3, total_doc_count), avg_field_length) + score(1, 14, idf(2, total_doc_count), avg_field_length)])
+                                                             score(3, 14, idf(3, total_doc_count), avg_field_length) + score(1, 14, idf(2, total_doc_count), avg_field_length)], 'content')
   end
 
   def assert_no_bm25_scores
-    assert_scores_for_query("content:a&type=all", [0.0, 0.0, 0.0])
+    assert_scores_for_query("content:a&type=all", [0.0, 0.0, 0.0], 'content')
 
-    assert_scores_for_query("content:b&type=all", [0.0, 0.0])
+    assert_scores_for_query("content:b&type=all", [0.0, 0.0], 'content')
 
-    assert_scores_for_query("content:a+content:d&type=all", [0.0, 0.0])
+    assert_scores_for_query("content:a+content:d&type=all", [0.0, 0.0], 'content')
   end
 
   def assert_no_bm25_array_scores
-    assert_scores_for_query("contenta:a&type=all", [0.0, 0.0, 0.0])
+    assert_scores_for_query("contenta:a&type=all", [0.0, 0.0, 0.0], 'contenta')
 
-    assert_scores_for_query("contenta:b&type=all", [0.0, 0.0])
+    assert_scores_for_query("contenta:b&type=all", [0.0, 0.0], 'contenta')
 
-    assert_scores_for_query("content:a+content:d&type=all", [0.0, 0.0])
+    assert_scores_for_query("content:a+content:d&type=all", [0.0, 0.0], 'content')
   end
 
   def idf(matching_doc_count, total_doc_count = 3)
@@ -130,15 +127,15 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     inverse_doc_freq * (num_occs * 2.2) / (num_occs + (1.2 * (0.25 + 0.75 * field_length / avg_field_length)))
   end
 
-  def assert_scores_for_query(query, exp_scores)
+  def assert_scores_for_query(query, exp_scores, field)
     result = search(query)
     exp_scores = exp_scores.sort.reverse
     assert_hitcount(result, exp_scores.length)
     for i in 0...exp_scores.length do
       assert_relevancy(result, exp_scores[i], i)
       sf = result.hit[i].field["summaryfeatures"]
-      if (exp_scores[i] > 0.0 || !sf.nil?) && !@ignore_summary_features
-        assert_features({"bm25(content)" => exp_scores[i]}, sf)
+      if (exp_scores[i] > 0.0 || !sf.nil?)
+        assert_features({"bm25(#{field})" => exp_scores[i]}, sf)
       end
     end
   end
