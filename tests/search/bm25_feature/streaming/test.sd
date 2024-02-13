@@ -13,6 +13,9 @@ schema test {
       }
     }
     # Default average field length for streaming search is 100.0
+    summary-features {
+      bm25(content)
+    }
   }
   rank-profile default inherits avgfl100 {
     rank-properties {

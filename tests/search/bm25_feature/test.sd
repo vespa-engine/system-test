@@ -12,6 +12,9 @@ schema test {
         bm25(content)
       }
     }
+    summary-features {
+      bm25(content)
+    }
   }
   rank-profile avgfl100 inherits default {
     rank-properties {
