@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class DynTeaser < IndexedSearchTest
+class DynTeaser < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
@@ -34,10 +34,13 @@ class DynTeaser < IndexedSearchTest
 
     feed_and_wait_for_docs("cjk", 34, :file => selfdir+"dynteaser.34.xml")
 
-    puts "Query: english"
-    compare('query=time&type=all', selfdir+"time.result.json", "dyncontent")
-    compare('query=time&type=all', selfdir+"time.result.json", "content2")
-    compare('query=time&type=all', selfdir+"time.result.json", "content3")
+    expected = "Hot Rod Lincoln;One Piece At A <hi>Time</hi>;Pancho And Lefty;Coat Of Many Colors"
+
+    result = search('query=time&type=all')
+    puts "Hit[0] = " + result.hit[0].to_s
+    assert(result.hit[0].field["dyncontent"].include? expected)
+    assert(result.hit[0].field["content2"].include? expected)
+    assert(result.hit[0].field["content3"].include? expected)
   end
 
   def test_long_dyn_teaser
@@ -47,11 +50,12 @@ class DynTeaser < IndexedSearchTest
                                                    add("surround_max", 360).
                                                    add("min_length", 300)))
     start
-
     feed_and_wait_for_docs("cjk", 1, :file => selfdir+"dynteaser.1.xml")
 
-    puts "Query: english"
-    compare('query=time&type=all', selfdir+"time.long.result.json", "content3")
+    expected = "Thousand Drums;Hot Rod Lincoln;One Piece At A <hi>Time</hi>;Pancho And Lefty;Coat Of Many Colors. Additional"
+
+    result = search('query=time&type=all')
+    assert(result.hit[0].field["content3"].include? expected)
   end
 
   def test_fallback_none
@@ -66,8 +70,7 @@ class DynTeaser < IndexedSearchTest
 
     result = search("report")
     assert_equal(1, result.hitcount)
-    assert_equal("<hi>Report</hi> Kaw-Liga;Johnny<sep />",
-                 result.hit[0].field["dyncontent"])
+    assert( result.hit[0].field["dyncontent"].include? "<hi>Report</hi> Kaw-Liga;Johnny")
     assert_equal("", result.hit[0].field["content2"])
     assert_equal("", result.hit[0].field["content3"])
     assert_equal(nil, result.hit[0].field["content4"])
@@ -76,8 +79,7 @@ class DynTeaser < IndexedSearchTest
     result = search("system")
     assert_equal(1, result.hitcount)
     assert_equal("", result.hit[0].field["dyncontent"])
-    assert_equal("<hi>System</hi> Kaw-Liga;Johnny<sep />",
-                 result.hit[0].field["content2"])
+    assert(result.hit[0].field["content2"].include? "<hi>System</hi> Kaw-Liga;Johnny")
     assert_equal("", result.hit[0].field["content3"])
     assert_equal(nil, result.hit[0].field["content4"])
     assert_equal(nil, result.hit[0].field["content5"])
@@ -95,23 +97,17 @@ class DynTeaser < IndexedSearchTest
 
     result = search("report")
     assert_equal(1, result.hitcount)
-    assert_equal("<hi>Report</hi> Kaw-Liga;Johnny<sep />",
-                 result.hit[0].field["dyncontent"])
-    assert_equal("System Kaw-Liga<sep />",
-                 result.hit[0].field["content2"])
-    assert_equal("Search Kaw-Liga<sep />",
-                 result.hit[0].field["content3"])
+    assert(result.hit[0].field["dyncontent"].include? "<hi>Report</hi> Kaw-Liga;Johnny")
+    assert(result.hit[0].field["content2"].include? "System Kaw-Liga")
+    assert(result.hit[0].field["content3"].include? "Search Kaw-Liga")
     assert_equal(nil, result.hit[0].field["content4"])
     assert_equal(nil, result.hit[0].field["content5"])
 
     result = search("system")
     assert_equal(1, result.hitcount)
-    assert_equal("Report Kaw-Liga<sep />",
-                 result.hit[0].field["dyncontent"])
-    assert_equal("<hi>System</hi> Kaw-Liga;Johnny<sep />",
-                 result.hit[0].field["content2"])
-    assert_equal("Search Kaw-Liga<sep />",
-                 result.hit[0].field["content3"])
+    assert(result.hit[0].field["dyncontent"].include? "Report Kaw-Liga")
+    assert(result.hit[0].field["content2"].include? "<hi>System</hi> Kaw-Liga;Johnny")
+    assert(result.hit[0].field["content3"].include? "Search Kaw-Liga")
     assert_equal(nil, result.hit[0].field["content4"])
     assert_equal(nil, result.hit[0].field["content5"])
   end

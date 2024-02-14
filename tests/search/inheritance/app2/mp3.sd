@@ -4,15 +4,15 @@ schema mp3 {
     document mp3 inherits multimedia {
 
         field artist type string {
-            indexing: summary | attribute | index
+            indexing: summary | index
             bolding:on
         }
         field album type string {
-            indexing: summary | attribute | index
+            indexing: summary | index
             bolding:on
         }
         field title type string {
-            indexing: summary | attribute | index
+            indexing: summary | index
             bolding:on
             alias: track
         }

@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'app_generator/http'
 
-class VespaApplication < IndexedSearchTest
+class VespaApplication < IndexedStreamingSearchTest
 
   def setup
     set_owner("gjoranv")
@@ -29,6 +29,7 @@ class VespaApplication < IndexedSearchTest
   def http_get(uri_str)
     uri = URI.parse(uri_str)
     response = https_client.get(uri.host, uri.port, uri.path, query: uri.query)
+    puts "Response: " + response.message
     assert(response.code == "200", "HTTP GET to #{uri_str} returned response code #{response.code}. Expected code was 200.")
   end
 
@@ -45,11 +46,15 @@ class VespaApplication < IndexedSearchTest
     qrs0 = "http://#{hostname}:16666/"
 
     puts "Details: Running query to see that qrs.0 listens at correct port"
-    send_query(qrs0, "metallica")
+    send_query(qrs0, "metallica&streaming.selection=true")
 
     puts "Run a query to test custom juniper config"
     feed_and_wait_for_docs("music", 779, :file => SEARCH_DATA+"music.777.xml")
-    assert_result('query=english+band+major&type=all', selfdir + "junipertest.json", nil, ["song"])
+    expected_song = "for military <hi>band</hi> in B flat <hi>major</hi>;<hi>English</hi> Folk"
+    result = search('query=english+band+major&type=all')
+    song = result.hit[0].field["song"]
+    puts "Hit[0].song = '#{song}'"
+    assert(song.include? expected_song)
   end
 
   def teardown
