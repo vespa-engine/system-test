@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class Inheritance < IndexedSearchTest
+class Inheritance < IndexedStreamingSearchTest
 
   def setup
     set_owner("musum")
@@ -28,10 +28,13 @@ class Inheritance < IndexedSearchTest
     wait_for_hitcount("query=make:foo&search=image", 1)
     assert_hitcount("query=rida&search=mp3", 1)
     assert_result("query=rida&search=mp3", selfdir+"rida.result.json")
-    assert_hitcount("query=uri.path:path&search=mp3", 1)
-    assert_hitcount("query=site:foo.bar.com&search=mp3", 1)
-    assert_hitcount("query=uri.path:path&search=image", 0)
-    assert_hitcount("query=site:foo.bar.com&search=image", 0)
+    if not is_streaming
+      # URI search not supported in streaming
+      assert_hitcount("query=uri.path:path&search=mp3", 1)
+      assert_hitcount("query=site:foo.bar.com&search=mp3", 1)
+      assert_hitcount("query=uri.path:path&search=image", 0)
+      assert_hitcount("query=site:foo.bar.com&search=image", 0)
+    end
     assert_result("query=make:foo&search=image", selfdir+"foo.result.json")
   end
 
