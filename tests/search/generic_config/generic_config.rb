@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class GenericConfig < IndexedSearchTest
+class GenericConfig < IndexedStreamingSearchTest
 
   def can_share_configservers?(method_name=nil)
     false
@@ -104,7 +104,7 @@ class GenericConfig < IndexedSearchTest
   end
 
   def dotest_searchcluster_config(prefix)
-    id = prefix + "/cluster.search"
+    id = is_streaming ? prefix : "#{prefix}/cluster.search"
     assert(vespa.adminserver.execute("#{@getconfig} -n vespa.config.search.core.proton -i #{id}/0") =~ /numsummarythreads 34/)
     assert(vespa.adminserver.execute("#{@getconfig} -n vespa.config.search.core.proton -i #{id}/1") =~ /numsummarythreads 32/)
     assert(vespa.adminserver.execute("#{@getconfig} -n vespa.config.search.core.proton -i #{id}/0") =~ /flush.idleinterval 700/)
@@ -144,7 +144,7 @@ class GenericConfig < IndexedSearchTest
 
   def dotest_juniperrc(prefix)
     suffix = "foo"
-    nodeId = prefix + "/cluster.search/" + suffix
+    nodeId = is_streaming ? "#{prefix}/#{suffix}" : "#{prefix}/cluster.search/#{suffix}"
     puts "nodeId = " + nodeId
     juniper = vespa.adminserver.execute("#{@getconfig} -n vespa.config.search.summary.juniperrc -i #{nodeId}")
     puts "juniper = " + juniper
