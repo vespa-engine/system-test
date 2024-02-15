@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'rubygems'
 require 'json'
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class Weighting < IndexedSearchTest
+class Weighting < IndexedStreamingSearchTest
 
   def setup
     set_owner("arnej")
@@ -17,7 +17,7 @@ class Weighting < IndexedSearchTest
     q1 = '/search/?yql=select+%2A+from+sources+%2A+where+%28'
     q2 = 'title+contains+%22jackson%22'
     q3 = '+OR+artist+contains+%22jackson%22'
-    q4 = '%29+limit+21%3B&format=xml'
+    q4 = '%29+limit+11%3B&formal=xml'
     if tw
       q2 = 'title+contains+%28%5B%7B%22weight%22%3A+' + tw.to_s + '%7D%5D%22jackson%22%29'
     end
@@ -38,12 +38,12 @@ class Weighting < IndexedSearchTest
     assert_not_queries_match(q(250), q(), 'name="surl"', false)
 
     puts "Check that !(bang) equals a weight of 150%"
-    assert_queries_match("query=title:jackson!+artist:jackson&type=any&hits=21",
-			 "query=title:jackson!150+artist:jackson&type=any&hits=21")
+    assert_queries_match("query=title:jackson!+artist:jackson&type=any&hits=11",
+			 "query=title:jackson!150+artist:jackson&type=any&hits=11")
 
     puts "Check that !!(double bang) equals a weight of 200%"
-    assert_queries_match("query=title:jackson!!+artist:jackson&type=any&hits=21",
-			 "query=title:jackson!200+artist:jackson&type=any&hits=21")
+    assert_queries_match("query=title:jackson!!+artist:jackson&type=any&hits=11",
+			 "query=title:jackson!200+artist:jackson&type=any&hits=11")
   end
 
   def test_weighting_cap
