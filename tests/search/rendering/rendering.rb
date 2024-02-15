@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class Rendering < IndexedSearchTest
+class Rendering < IndexedStreamingSearchTest
   SAVE_RESULT = false
 
   def setup
@@ -24,8 +24,8 @@ class Rendering < IndexedSearchTest
   def test_rendering
     simple_renderer_with_config
     empty_result
-    error_message
     grouping_rendering
+    error_message if not is_streaming
   end
 
   def simple_renderer_with_config

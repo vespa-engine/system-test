@@ -1,17 +1,22 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class Grouping < IndexedSearchTest
+class Grouping < IndexedStreamingSearchTest
 
   SAVE_RESULT = false
 
   def setup
     set_owner("bjorncs")
-    deploy_app(SearchApp.new.sd("#{selfdir}/purchase.sd").sd("#{selfdir}/simple.sd").num_parts(2))
-    start
   end
 
   def test_grouping
+    deploy_app(SearchApp.new.sd("#{selfdir}/purchase.sd").sd("#{selfdir}/simple.sd").num_parts(2))
+    start
+    grouping_full
+    grouping_summary
+  end
+
+  def grouping_full()
     feed_and_wait_for_docs("purchase", 20, :file => "#{selfdir}/docs.xml", :maxpending => 1)
 
     # Basic Grouping
@@ -33,27 +38,30 @@ class Grouping < IndexedSearchTest
                     "#{selfdir}/example5.json")
 
     # Presenting Hits per Group
+    exp_hits = is_streaming ? "example6.streaming" : "example6"
     assert_grouping("purchase", "all(group(customer) each(max(3) each(output(summary()))))",
-                    "#{selfdir}/example6.json")
+                    "#{selfdir}/#{exp_hits}.json")
 
     # Nested Groups
     assert_grouping("purchase", "all(group(customer) each(group(time.date(date)) each(output(sum(price)))))",
                     "#{selfdir}/example7.json")
 
+    exp_hits = is_streaming ? "example8.streaming" : "example8"
     assert_grouping("purchase", "all(group(customer) each(max(1) output(sum(price)) each(output(summary()))) as(sumtotal)" +
                     "                    each(group(time.date(date)) each(max(10) output(sum(price)) each(output(summary())))))",
-                    "#{selfdir}/example8.json")
+                    "#{selfdir}/#{exp_hits}.json")
   end
 
-  def test_grouping_summary
+  def grouping_summary()
     feed_and_wait_for_docs("simple", 1, :file => "#{selfdir}/simple-feed.xml", :maxpending => 1)
+    exp_hits = is_streaming ? "simple-result.streaming" : "simple-result"
     assert_grouping("simple", "all(group(str_attr)max(1)each(max(1)each(output(summary()))))",
-                    "#{selfdir}/simple-result.json")
+                    "#{selfdir}/#{exp_hits}.json")
   end
 
   def assert_grouping(doc_type, grouping, file)
-    my_assert_query("/search/?hits=0&query=sddocname:#{doc_type}&select=#{grouping}", file)
-    my_assert_query("/search/?hits=0&yql=select%20%2A%20from%20search%20where%20sddocname%20contains%20%22#{doc_type}%22%20%7C#{grouping}%3B", file)
+    my_assert_query("/search/?hits=0&query=sddocname:#{doc_type}&select=#{grouping}&restrict=#{doc_type}", file)
+    my_assert_query("/search/?hits=0&yql=select%20%2A%20from%20search%20where%20sddocname%20contains%20%22#{doc_type}%22%20%7C#{grouping}%3B&restrict=#{doc_type}", file)
   end
 
   def my_assert_query(query, file)
@@ -62,7 +70,9 @@ class Grouping < IndexedSearchTest
     assert_equal(exp.hitcount, act.hitcount)
     actjson = act.json
     expjson = exp.json
-    assert_equal(actjson['root']['coverage'], expjson['root']['coverage'])
+    assert_equal(actjson['root']['coverage']['coverage'], expjson['root']['coverage']['coverage'])
+    assert_equal(actjson['root']['coverage']['documents'], expjson['root']['coverage']['documents'])
+    assert_equal(actjson['root']['coverage']['full'], expjson['root']['coverage']['full'])
     assert_equal(expjson['root']['children'], actjson['root']['children'])
   end
 

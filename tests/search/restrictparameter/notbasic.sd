@@ -5,7 +5,6 @@ schema notbasic {
 
     field uniq type string {
       indexing: summary | index
-      query-command: phrase-segmenting
     }
 
   }

@@ -5,7 +5,6 @@ schema basic {
 
     field bothtypes type string {
       indexing: summary | index
-      query-command: phrase-segmenting
     }
 
   }
