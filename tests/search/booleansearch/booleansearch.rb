@@ -43,6 +43,11 @@ class BooleanSearchTest < SearchTest
     wait_for_log_matches(/.*flush\.complete.*attribute\.flush\.predicate_field/, 1)
   end
 
+  def restart_proton_helper
+    exp_hits = search({'query' => 'sddocname:test', 'hits' => '0'}).hitcount
+    restart_proton('test', exp_hits, skip_trigger_flush: true)
+  end
+
   def teardown
     File.delete(@feed_file) if File.exist?(@feed_file)
     File.delete(@update_file) if File.exist?(@update_file)
@@ -151,6 +156,8 @@ class BooleanSearchTest < SearchTest
     run_value_query_terms_test
     flush_predicate_attribute
     run_value_query_terms_test
+    restart_proton_helper
+    run_value_query_terms_test
   end
 
   def run_value_query_terms_test
@@ -195,6 +202,8 @@ class BooleanSearchTest < SearchTest
     run_range_query_terms_test
     flush_predicate_attribute
     run_range_query_terms_test
+    restart_proton_helper
+    run_range_query_terms_test
   end
 
   def run_range_query_terms_test()
@@ -214,6 +223,8 @@ class BooleanSearchTest < SearchTest
 
     run_mix_impressions_test
     flush_predicate_attribute
+    run_mix_impressions_test
+    restart_proton_helper
     run_mix_impressions_test
   end
 
@@ -274,6 +285,8 @@ class BooleanSearchTest < SearchTest
 
     run_mix_contracts_test
     flush_predicate_attribute
+    run_mix_contracts_test
+    restart_proton_helper
     run_mix_contracts_test
   end
 
@@ -376,6 +389,8 @@ class BooleanSearchTest < SearchTest
     run_odd_range_query_terms_test
     flush_predicate_attribute
     run_odd_range_query_terms_test
+    restart_proton_helper
+    run_odd_range_query_terms_test
   end
 
   def run_odd_range_query_terms_test
@@ -399,6 +414,8 @@ class BooleanSearchTest < SearchTest
     run_empty_boolean_documents_test
     flush_predicate_attribute
     run_empty_boolean_documents_test
+    restart_proton_helper
+    run_empty_boolean_documents_test
   end
 
   def run_empty_boolean_documents_test
@@ -419,6 +436,8 @@ class BooleanSearchTest < SearchTest
 
     run_minimum_range_value_test
     flush_predicate_attribute
+    run_minimum_range_value_test
+    restart_proton_helper
     run_minimum_range_value_test
   end
 
