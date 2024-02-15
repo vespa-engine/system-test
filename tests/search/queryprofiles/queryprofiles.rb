@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class QueryProfiles < IndexedSearchTest
+class QueryProfiles < IndexedStreamingSearchTest
 
   def setup
     set_owner("bratseth")
@@ -64,7 +64,8 @@ class QueryProfiles < IndexedSearchTest
     assert_result("query=best&queryProfile=rootStrict&foo=bar&hits=0", selfdir + "illegalAssignment.result.json")
 
     # ...while setting default-index still works
-    assert_hitcount("query=best&queryProfile=rootStrict&default-index=title", 18)
+    puts search("query=best&queryProfile=rootStrict&default-index=title").json
+    assert_hitcount("query=best&queryProfile=rootStrict&default-index=title", 18) if not is_streaming # Not allow to set streaming.selection with strict query profile
 
     # Setting a non-declared value in a native typed top-level profile works (not bothering to check that it's accessible)
     assert_hitcount("query=best&queryProfile=root&foo=bar", 29)
