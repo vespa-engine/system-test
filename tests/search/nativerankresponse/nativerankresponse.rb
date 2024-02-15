@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'rubygems'
 require 'json'
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class NativeRankResponse < IndexedSearchTest
+class NativeRankResponse < IndexedStreamingSearchTest
 
 # Check that max response of 1 is reachable by nativeRank fieldmatch,
 # proximity and attributematch when table normalization is used
@@ -27,7 +27,7 @@ class NativeRankResponse < IndexedSearchTest
   end
 
   def run_native_rank_reponse_test
-    wait_for_hitcount("query=sddocname:nativerank&streaming.userid=1", 5)
+    wait_for_hitcount("query=sddocname:nativerank", 5)
 
     # single term max fieldmatch response = 1
     # one hit has a in field f2 > 256 times
@@ -74,7 +74,7 @@ class NativeRankResponse < IndexedSearchTest
   end
 
   def assert_native_rank(score, query, ranking, hit)
-    query = query + "&ranking=" + ranking + "&streaming.userid=1"
+    query = query + "&ranking=" + ranking
     query = query + "&rankproperty.vespa.term.0.significance=1&rankproperty.vespa.term.1.significance=1"
     assert_relevancy(query, score, hit, 0.001)
   end
