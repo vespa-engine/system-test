@@ -41,7 +41,7 @@ class MultipleDocumentTypes < IndexedSearchTest
 
     # search all document types
     assert_result("query=year:%3C2010&ranking=year&hits=4", selfdir + "result.all.json", nil, fields)
-    assert_result("query=year:%3E1982&ranking=year&hits=4&sorting=%2Byear", selfdir + "result.all.sort.json", nil, fields)
+    assert_result("query=year:%3E1982&ranking=unranked&hits=4&sorting=%2Byear", selfdir + "result.all.sort.json", nil, fields)
     result = search('query=stallone&ranking=year')
     assert_equal('id:video:video::0', result.hit[0].field['documentid'])
     assert_equal('id:book:book::4', result.hit[1].field['documentid'])
