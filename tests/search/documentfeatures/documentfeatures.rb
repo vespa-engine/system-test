@@ -9,11 +9,21 @@ class DocumentFeatures < IndexedStreamingSearchTest
   end
 
   def test_attribute
-    set_description("Test the attribute feature")
-    deploy_app(SearchApp.new.sd(selfdir+"attribute.sd"))
+    set_description("Test the attribute feature, fieldlength")
+    deploy_app(SearchApp.new.
+               sd(selfdir+"attribute.sd").
+               sd(selfdir+"fieldlength.sd").
+               sd(selfdir+"flexactstring.sd"))
     start
     feed_and_wait_for_docs("attribute", 1, :file => selfdir + "attribute.xml")
+    feed_and_wait_for_docs("fieldlength", 3, :file => selfdir + "fieldlength.xml")
+    feed_and_wait_for_docs("flexactstring", 2, :file => selfdir + "flexactstring.xml")
+    attribute_test
+    field_length_test
+    field_length_with_exact_match_test
+  end
 
+  def attribute_test()
     result = search("query=idx:a")
     puts "summaryfeatures: '#{result.hit[0].field["summaryfeatures"]}'"
 
@@ -59,12 +69,8 @@ class DocumentFeatures < IndexedStreamingSearchTest
   end
 
   #---------- fieldLength ----------#
-  def test_field_length
-    set_description("Test the fieldLength feature")
-    deploy_app(SearchApp.new.sd(selfdir+"fieldlength.sd"))
-    start
-    feed_and_wait_for_docs("fieldlength", 3, :file => selfdir + "fieldlength.xml")
-    wait_for_hitcount("query=sddocname:fieldlength", 3)
+  def field_length_test
+    puts("Test the fieldLength feature")
 
     assert_field_length(1, "a", "a",   0)
     assert_field_length(2, "b", "b",   0)
@@ -96,12 +102,8 @@ class DocumentFeatures < IndexedStreamingSearchTest
   end
 
   #---------- fieldLength with exact match ----------#
-  def test_field_length_with_exact_match
-    set_description("Test the fieldLength feature with exact match")
-    deploy_app(SearchApp.new.sd(selfdir+"flexactstring.sd"))
-    start
-    feed_and_wait_for_docs("flexactstring", 2, :file => selfdir + "flexactstring.xml")
-    wait_for_hitcount("query=sddocname:flexactstring", 2)
+  def field_length_with_exact_match_test
+    puts("Test the fieldLength feature with exact match")
 
     expected_field_length = is_streaming ? 1 : 1000000
     assert_field_length_exactstring(expected_field_length, "a", "a:unique", 0) # match: exact triggers bitvector.
