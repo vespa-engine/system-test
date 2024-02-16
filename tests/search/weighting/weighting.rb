@@ -38,12 +38,12 @@ class Weighting < IndexedStreamingSearchTest
     assert_not_queries_match(q(250), q(), 'name="surl"', false)
 
     puts "Check that !(bang) equals a weight of 150%"
-    assert_queries_match("query=title:jackson!+artist:jackson&type=any&hits=12",
-			 "query=title:jackson!150+artist:jackson&type=any&hits=12")
+    assert_queries_match("query=title:jackson!+artist:jackson&type=any&sorting=-[rank]-year&hits=21",
+			 "query=title:jackson!150+artist:jackson&type=any&sorting=-[rank]-year&hits=21")
 
     puts "Check that !!(double bang) equals a weight of 200%"
-    assert_queries_match("query=title:jackson!!+artist:jackson&type=any&hits=12",
-			 "query=title:jackson!200+artist:jackson&type=any&hits=12")
+    assert_queries_match("query=title:jackson!!+artist:jackson&type=any&sorting=-[rank]-year&hits=21",
+			 "query=title:jackson!200+artist:jackson&type=any&sorting=-[rank]-year&hits=21")
   end
 
   def test_weighting_cap
