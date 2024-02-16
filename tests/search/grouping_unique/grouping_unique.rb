@@ -1,10 +1,10 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'document'
 require 'document_set'
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'uri'
 
-class GroupingUnique < IndexedSearchTest
+class GroupingUnique < IndexedStreamingSearchTest
 
   SAVE_RESULT = false
 
@@ -38,8 +38,8 @@ class GroupingUnique < IndexedSearchTest
     assert_hitcount("query=sddocname:test&unique=b", 10)
     assert_hitcount("query=sddocname:test&unique=c", 15)
 
-    check_query("/?query=sddocname:test&hits=10&unique=a&sortspec=%2Bn", "#{selfdir}/result_ab.xml")
-    check_query("/?query=sddocname:test&hits=10&unique=a&sortspec=%2Dn", "#{selfdir}/result_dc.xml")
+    check_query("/?query=sddocname:test&hits=10&unique=a&sortspec=%2Bn&ranking=unranked", "#{selfdir}/result_ab.xml")
+    check_query("/?query=sddocname:test&hits=10&unique=a&sortspec=%2Dn&ranking=unranked", "#{selfdir}/result_dc.xml")
   end
 
   def check_query(query, file)
