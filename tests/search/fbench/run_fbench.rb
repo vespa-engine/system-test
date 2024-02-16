@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_only_search_test'
 
-class RunFbench < IndexedSearchTest
+class RunFbench < IndexedOnlySearchTest
 
   def setup
     set_owner("toregge")
@@ -62,6 +62,7 @@ class RunFbench < IndexedSearchTest
     assert( result.scan(/URL: \/search\/\?query=sddocname:banana/).size > 0 , "Output not printing URL")
 
     # Assert all extended info is printed
+    puts "Result: " + result.to_s
     check_log_field(result, "NumHits")
     check_log_field(result, "NumFastHits")
     check_log_field(result, "QueryHits")
@@ -81,7 +82,7 @@ class RunFbench < IndexedSearchTest
   end
 end
 
-class Fbench2 < IndexedSearchTest
+class Fbench2 < IndexedOnlySearchTest
 
   def setup
     set_owner("toregge")
