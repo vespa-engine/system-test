@@ -12,6 +12,7 @@ public class HighlightSearcher extends Searcher {
 
     public Result search(Query query, Execution execution) {
         Highlight highlight = new Highlight();
+        highlight.addHighlightTerm("title", "testing");
         highlight.addHighlightTerm("title", "test");
         highlight.addHighlightTerm("title", "\u9001\u82B1\u9053\u6B49");
         highlight.addHighlightTerm("categories", "jazz");
