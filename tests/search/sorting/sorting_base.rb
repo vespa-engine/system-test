@@ -127,14 +127,16 @@ module SortingBase
     puts "check sorting that is only valid in one of two clusters:"
     qallww = "sddocname:strong+weight:[-9999%3B9999]"
 
-    compare("query=#{qallww}&sortspec=-weight&hits=5",                  "strong_weight_5_d", "weight")
-    compare("query=#{qallww}&sortspec=%2Bweight&hits=5",                "strong_weight_5_a", "weight")
-    compare("query=#{qallww}&sortspec=-weight&hits=5",                  "strong_weight_5_d", "year")
-    compare("query=#{qallww}&sortspec=%2Bweight&hits=5",                "strong_weight_5_a", "year")
+    if not is_streaming # Different error handling, making this index only
+      compare("query=#{qallww}&sortspec=-weight&hits=5",                  "strong_weight_5_d", "weight")
+      compare("query=#{qallww}&sortspec=%2Bweight&hits=5",                "strong_weight_5_a", "weight")
+      compare("query=#{qallww}&sortspec=-weight&hits=5",                  "strong_weight_5_d", "year")
+      compare("query=#{qallww}&sortspec=%2Bweight&hits=5",                "strong_weight_5_a", "year")
+      puts "check docid sorting (depends on ordered feed):"
+      compare("query=sddocname:strong&sortspec=-[docid]",                 "strong_docid_d", "name")
+      compare("query=sddocname:strong&sortspec=%2B[docid]",               "strong_docid_a", "name")
+    end
 
-    puts "check docid sorting (depends on ordered feed):"
-    compare("query=sddocname:strong&sortspec=-[docid]",                 "strong_docid_d", "name")
-    compare("query=sddocname:strong&sortspec=%2B[docid]",               "strong_docid_a", "name")
   end
 
   def teardown

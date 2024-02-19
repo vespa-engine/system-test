@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'search/sorting/sorting_base'
 
-class Sorting < IndexedSearchTest
+class Sorting < IndexedStreamingSearchTest
   # Description: Sorting on a field, ascending, descending, multiple fields
   # Component: Search
   # Feature: Query functionality
