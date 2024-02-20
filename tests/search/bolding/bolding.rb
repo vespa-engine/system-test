@@ -21,10 +21,12 @@ class Bolding < IndexedSearchTest
 
   def test_bolding_stemming
     do_test("stemming-shortest")
+    do_test_stemmed
   end
 
   def test_bolding_multiplestems
     do_test("stemming-multiple")
+    do_test_stemmed
   end
 
   def do_test(testname)
@@ -47,23 +49,26 @@ class Bolding < IndexedSearchTest
     check_result("song:chicago",                          "song-chicago")
     check_result("chicago&bolding=false",                 "chicagonb")
     check_result("electrics",                             "bolding")
-    check_result("electric",                              "bolding")      if testname != "stemming-none"
     check_result("sddocname:bolding&filter=%2Belectrics", "notrybolding")
-    check_result("sddocname:bolding&filter=%2Belectric",  "notrybolding") if testname != "stemming-none"
     check_result("electrics&bolding",                     "bolding")
-    check_result("electric&bolding",                      "bolding")      if testname != "stemming-none"
     check_result("electrics&bolding=true",                "bolding")
-    check_result("electric&bolding=true",                 "bolding")      if testname != "stemming-none"
     check_result("electrics&bolding=false",               "nobolding")
-    check_result("electric&bolding=false",                "nobolding")    if testname != "stemming-none"
 
     puts "Query: bolding with summary-to checks"
     check_result("chicago&summary=small",                "csmall")
     check_result("chicago&summary=large",                "clarge")
     check_result("electrics&summary=small",              "esmall")
-    check_result("electric&summary=small",               "esmall")       if testname != "stemming-none"
     check_result("electrics&summary=large",              "elarge")
-    check_result("electric&summary=large",               "elarge")       if testname != "stemming-none"
+  end
+
+  def do_test_stemmed()
+    check_result("electric",                              "bolding")
+    check_result("sddocname:bolding&filter=%2Belectric",  "notrybolding")
+    check_result("electric&bolding",                      "bolding")
+    check_result("electric&bolding=true",                 "bolding")
+    check_result("electric&bolding=false",                "nobolding")
+    check_result("electric&summary=small",                "esmall")
+    check_result("electric&summary=large",                "elarge")
   end
 
   def test_bolding_in_addition_to_advanced_search_operators
