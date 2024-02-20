@@ -8,17 +8,23 @@ class BoolTypeTest < IndexedStreamingSearchTest
     set_owner("geirst")
   end
 
+  def self.final_test_methods
+    ['test_imported_bool_attribute_search']
+  end
+
   def test_bool_attribute_search
-    set_description("Test search on attributes of type 'bool'")
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
+    set_description("Test search on attributes of type 'bool', and use in document selections, both with and without attribute backing")
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd").enable_document_api)
     @doctype = "test"
     start
     feed(:file => selfdir + "docs.json")
 
     run_search_test
+    bool_fields_can_be_used_in_document_selections
   end
 
   def test_imported_bool_attribute_search
+    @params = { :search_type => 'ELASTIC' }
     set_description("Test search on imported attributes of type 'bool'")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd", { :global => true }).sd(selfdir + "child.sd"))
     @doctype = "child"
@@ -29,16 +35,7 @@ class BoolTypeTest < IndexedStreamingSearchTest
     run_search_test
   end
 
-  def test_bool_fields_can_be_used_in_document_selections
-    set_description('Test that bool type fields can be used in document selections, ' +
-                    'both with and without attribute backing')
-    set_owner('vekterli')
-
-    deploy_app(SearchApp.new.sd(selfdir + 'test.sd').enable_document_api)
-    @doctype = 'test'
-    start
-    feed(:file => selfdir + "docs.json")
-
+  def bool_fields_can_be_used_in_document_selections
     # b1 and b2 are attributes, b3 is not
     assert_visit_matches([1, 3], 'test.b1 == true')
     assert_visit_matches([0, 2], 'test.b1 == false')
