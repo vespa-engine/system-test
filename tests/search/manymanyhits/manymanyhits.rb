@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'environment'
 
-class ManyManyHits < IndexedSearchTest
+class ManyManyHits < IndexedStreamingSearchTest
 
   def initialize(*args)
     super(*args)
@@ -17,10 +17,6 @@ class ManyManyHits < IndexedSearchTest
     set_description("Test with 'big' resultsets")
   end
 
-  def self.final_test_methods
-    ["test_manymanyhits"]
-  end
-
   def test_manymanyhits
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
                    search_dir(selfdir + "search"))
@@ -33,33 +29,34 @@ class ManyManyHits < IndexedSearchTest
     puts "running query once..."
     result = save_result_with_timeout(timeout, query, "#{Environment.instance.vespa_home}/tmp/mmhresult.1.xml")
     puts "got #{result.xmldata.length} bytes"
+    len1 = result.xmldata.length
 
     puts "running query twice..."
     result = save_result_with_timeout(timeout, query, "#{Environment.instance.vespa_home}/tmp/mmhresult.2.xml")
     puts "got #{result.xmldata.length} bytes"
-    diff1 = `diff #{Environment.instance.vespa_home}/tmp/mmhresult.1.xml #{Environment.instance.vespa_home}/tmp/mmhresult.2.xml`
-    puts "diff mmhresult.1.xml vs mmhresult.2.xml: #{diff1}"
+    len2 = result.xmldata.length
+    unless is_streaming
+      diff1 = `diff #{Environment.instance.vespa_home}/tmp/mmhresult.1.xml #{Environment.instance.vespa_home}/tmp/mmhresult.2.xml`
+      puts "diff mmhresult.1.xml vs mmhresult.2.xml: #{diff1}"
+    end
 
     puts "running query thrice..."
     result = save_result_with_timeout(timeout, query, "#{Environment.instance.vespa_home}/tmp/mmhresult.3.xml")
     puts "got #{result.xmldata.length} bytes"
-    diff2 = `diff #{Environment.instance.vespa_home}/tmp/mmhresult.2.xml #{Environment.instance.vespa_home}/tmp/mmhresult.3.xml`
-    puts "diff mmhresult.2.xml vs mmhresult.3.xml: #{diff2}"
-
-    hitcount = 0
-    # Note: Trying to actually parse the XML would crash Ruby version
-    # available when writing this test
-    xmldata = result.xmldata
-    offset = xmldata.index("<hit ")
-    while offset do
-      hitcount += 1
-      # Offset 5 to index = "<hit ".length
-      offset = xmldata.index("<hit ", offset+5)
+    len3 = result.xmldata.length
+    unless is_streaming
+      diff2 = `diff #{Environment.instance.vespa_home}/tmp/mmhresult.2.xml #{Environment.instance.vespa_home}/tmp/mmhresult.3.xml`
+      puts "diff mmhresult.2.xml vs mmhresult.3.xml: #{diff2}"
     end
-    puts "counted #{hitcount} hits"
-    assert_equal(10000, hitcount)
-    assert_equal("", diff1)
-    assert_equal("", diff2)
+
+    puts "counted #{result.hitcount} hits"
+    assert_equal(10000, result.hitcount)
+    unless is_streaming
+      assert_equal("", diff1)
+      assert_equal("", diff2)
+    end
+    assert_equal(len1, len2)
+    assert_equal(len1, len3)
   end
 
   def test_manymanyhitsbutno
@@ -74,17 +71,7 @@ class ManyManyHits < IndexedSearchTest
     search_with_timeout(timeout, query)
     search_with_timeout(timeout, query)
     result = search_with_timeout(timeout, query)
-    hitcount = 0
-    # Note: Trying to actually parse the XML would crash Ruby version
-    # available when writing this test
-    offset = result.xmldata.index("<hit ")
-    while offset do
-      hitcount += 1
-      # Offset 5 to index = "<hit ".length
-      offset = result.xmldata.index("<hit ", offset+5)
-    end
-    # Should get an error message instead of hits
-    assert_equal(0, hitcount)
+    assert_equal(0, result.hitcount)
   end
 
   def teardown
