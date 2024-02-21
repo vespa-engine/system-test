@@ -1,0 +1,17 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field a type string {
+      indexing: index
+    }
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: 1000000.0 - attribute(id)
+    }
+  }
+}
