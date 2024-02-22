@@ -6,7 +6,7 @@
                 {
                     "value" : [
                         "VESPA_BITVECTOR_RANGE_CHECK=true",
-                        "VESPA_USE_MPROTECT_TRAP=yes"
+                        "VESPA_MBUS_DOCUMENTAPI_USE_PROTOBUF=true"
                     ]
                 }
             ]
