@@ -8,7 +8,7 @@
 
   <container version="1.0">
     <nodes>
-      <node hostalias="node2" />
+      <node hostalias="node1" />
     </nodes>
 
       <search>
@@ -73,7 +73,7 @@
           </searcher>
 
           <searcher id="com.yahoo.prelude.statistics.StatisticsSearcher" />
-          <searcher id="com.yahoo.search.searchchain.example.ExampleSearcher" />
+          <searcher id="AddHitSearcher2" class="com.yahoo.example.AddHitSearcher" />
         </chain>
 
         <chain id="derived_6" inherits="base_6">
@@ -93,7 +93,7 @@
           </searcher>
 
           <searcher id="com.yahoo.prelude.statistics.StatisticsSearcher" />
-          <searcher id="com.yahoo.search.searchchain.example.ExampleSearcher" />
+          <searcher id="AddHitSearcher2" class="com.yahoo.example.AddHitSearcher" />
         </chain>
 
         <chain id="derived_7" inherits="base_7">
@@ -113,7 +113,7 @@
           </searcher>
 
           <searcher id="com.yahoo.prelude.statistics.StatisticsSearcher" />
-          <searcher id="com.yahoo.search.searchchain.example.ExampleSearcher" />
+          <searcher id="AddHitSearcher2" class="com.yahoo.example.AddHitSearcher" />
         </chain>
 
         <chain id="derived_8" inherits="base_8" excludes="AddHitSearcher com.yahoo.prelude.statistics.StatisticsSearcher" />
