@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<hosts>
-  <host name="foo1">
-    <alias>node1</alias>
-  </host>
-  <host name="foo2">
-    <alias>node2</alias>
-  </host>
-</hosts>

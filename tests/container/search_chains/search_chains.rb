@@ -5,17 +5,17 @@ class SearchChainsTest < SearchContainerTest
 
   def initialize(*args)
     super(*args)
-    @num_hosts = 2
   end
 
   def setup
     set_owner("nobody")
-    set_description("Tests the new search chain config, as explained in the search-chain.html vespadoc")
+    set_description("Tests the search chain config, as explained in https://docs.vespa.ai/en/components/chained-components.html")
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.example.AddHitSearcher")
     deploy(selfdir+"app")
     start
   end
 
+  # Gives as many hits as there are AddHitSearcher instances in the chain, see services.xml
   def test_resultset_lengths
     assert_length(0, ["simple_1"])
 
