@@ -76,8 +76,6 @@ class VipStatus < IndexedSearchTest
   end
 
   def teardown
-    qrserver = vespa.container.values.first
-    qrserver.execute("rm -rf #{Environment.instance.vespa_home}/share/qrsdocs") if qrserver
     stop
   end
 
