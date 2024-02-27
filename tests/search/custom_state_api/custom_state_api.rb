@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'search_test'
+require 'indexed_streaming_search_test'
 
-class CustomStateApi < SearchTest
+class CustomStateApi < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
@@ -43,7 +43,7 @@ class CustomStateApi < SearchTest
     assert_equal(1, doc_dbs.size)
     assert_equal("ONLINE", doc_dbs["test"]["status"]["state"])
     assert_equal("test", doc_dbs["test"]["documentType"])
-    assert_equal(1, doc_dbs["test"]["documents"]["active"].to_i)
+    assert_equal(1, doc_dbs["test"]["documents"]["active"].to_i) unless is_streaming
 
     assert_equal("ONLINE", page["matchengine"]["status"]["state"])
 
@@ -76,7 +76,7 @@ class CustomStateApi < SearchTest
 
   def assert_attribute_writer(page)
     assert_keys(["write_contexts"], page)
-    assert(page["write_contexts"].size > 0)
+    assert(page["write_contexts"].size > 0) unless is_streaming
   end
 
   def assert_index(page)
