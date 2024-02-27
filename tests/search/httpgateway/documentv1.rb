@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_only_search_test'
 require 'cgi'
 require 'app_generator/search_app'
 
-class DocumentV1Test < SearchTest
+class DocumentV1Test < IndexedOnlySearchTest
 
   def setup
     set_owner("jonmv")
