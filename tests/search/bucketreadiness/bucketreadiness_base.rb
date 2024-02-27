@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'search_test'
+require 'indexed_only_search_test'
 require 'search/utils/elastic_doc_generator'
 
-class BucketReadinessBase < SearchTest
+class BucketReadinessBase < IndexedOnlySearchTest
 
   def setup
     @valgrind=false
