@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_only_search_test'
 require 'document_set'
 require 'json'
 
-class HttpClientDocProcTest < SearchTest
+class HttpClientDocProcTest < IndexedOnlySearchTest
 
   def setup
     @valgrind = false
