@@ -29,7 +29,6 @@ class MapInSummaryBug < SearchTest
     start
     feed_and_wait_for_docs("withmap", 1, :file => selfdir+"feed.xml")
 
-    # save_result("query=title:pizza", selfdir+"pizza.js")
     assert_result("query=title:pizza", selfdir+"pizza.json")
   end
 
