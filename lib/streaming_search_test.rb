@@ -32,7 +32,13 @@ class StreamingSearchTest < SearchTest
   def apply_timeout_multiplier(params, mult)
     query = params[0]
     # Timeout gets pre-baked into the query string by the framework instead of being a parameter. Not beautiful.
-    params[0] = query.gsub(/&timeout=(\d+)/) { |s| "&timeout=#{$1.to_i * mult}" }
+    if query.is_a?(Hash)
+      if query.has_key?('timeout')
+        query['timeout'] = (query['timeout'].to_i * mult).to_s
+      end
+    else
+      params[0] = query.gsub(/&timeout=(\d+)/) { |s| "&timeout=#{$1.to_i * mult}" }
+    end
   end
 
   # Wrapping of `search_base` to help avoid initial query timeout issues due to warm-up.
