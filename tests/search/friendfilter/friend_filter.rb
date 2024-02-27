@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_only_search_test'
 
-class FriendFilter < SearchTest
+class FriendFilter < IndexedOnlySearchTest
 
   def timeout_seconds
     return 1200
