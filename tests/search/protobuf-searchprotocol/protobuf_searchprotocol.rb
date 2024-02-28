@@ -1,11 +1,11 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'search_test'
+require 'indexed_only_search_test'
 require 'app_generator/container_app'
 require 'document'
 require 'document_set'
 
-class ProtobufSearchProtocolTest < SearchTest
+class ProtobufSearchProtocolTest < IndexedOnlySearchTest
 
   def setup
     set_owner('ovirtanen')
@@ -41,9 +41,9 @@ class ProtobufSearchProtocolTest < SearchTest
   end
 
   def app_definition
-    ContainerApp.new
+    SearchApp.new
     .container(Container.new.search(Searching.new).docproc(DocumentProcessing.new))
-    .search(
+    .cluster(
       SearchCluster.new("mycluster")
       .sd(selfdir + "test.sd")
       .redundancy(1)
