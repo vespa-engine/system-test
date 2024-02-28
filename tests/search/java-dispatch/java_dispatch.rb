@@ -1,11 +1,10 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'search_test'
-require 'app_generator/container_app'
+require 'indexed_only_search_test'
 require 'document'
 require 'document_set'
 
-class JavaDispatchTest < SearchTest
+class JavaDispatchTest < IndexedOnlySearchTest
 
   def setup
     set_owner('ovirtanen')
@@ -98,12 +97,12 @@ class JavaDispatchTest < SearchTest
       topgroup.group(nodegroup)
     end
 
-    ContainerApp.new
+    SearchApp.new
     .container(
       Container.new("mycc")
       .search(Searching.new.chain(Chain.new("default", "vespa").add(searcher)))
       .docproc(DocumentProcessing.new))
-    .search(
+    .cluster(
       SearchCluster.new("mycluster")
       .sd(selfdir + "test.sd")
       .redundancy(2)
