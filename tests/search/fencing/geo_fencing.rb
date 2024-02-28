@@ -1,11 +1,11 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'search_test'
+require 'indexed_only_search_test'
 require 'app_generator/container_app'
 require 'app_generator/search_app'
 require 'environment'
 
-class GeoFencingTest < SearchTest
+class GeoFencingTest < IndexedOnlySearchTest
 
   def setup
     set_owner("arnej")
@@ -16,16 +16,10 @@ class GeoFencingTest < SearchTest
     3600
   end
 
-def test_with_geo_fencing
-    deploy_app(
-        ContainerApp.new.
-               container(
-                         Container.new("mycc").
-                         search(Searching.new).
-                         docproc(DocumentProcessing.new)).
-               search(SearchCluster.new("fencing").
-                      sd(selfdir+"withfence.sd").
-                      indexing("mycc")))
+  def test_with_geo_fencing
+    deploy_app(SearchApp.new.
+               cluster_name("fencing").
+               sd(selfdir+"withfence.sd"))
     start
     feed_and_wait_for_docs("withfence", 6, :file => selfdir+"docs.json")
     # save_result("query=title:pizza", selfdir+"out-all.json")
