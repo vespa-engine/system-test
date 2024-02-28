@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 # -*- coding: utf-8 -*-
-require 'search_test'
+require 'indexed_only_search_test'
 
 module ResizeApps
   
@@ -946,7 +946,7 @@ class ResizePollState
   end
 end
 
-class ResizeContentClusterBase < SearchTest
+class ResizeContentClusterBase < IndexedOnlySearchTest
 
   def setup
     set_owner("toregge")
