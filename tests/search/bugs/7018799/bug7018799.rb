@@ -1,10 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_search_test'
 require 'app_generator/container_app'
 require 'environment'
 
-class RecoveryLosesAnnotations < SearchTest
-
+class RecoveryLosesAnnotations < IndexedSearchTest
   def setup
     set_owner("arnej")
     @sps = [ "0/0", "1/0" ]
@@ -63,14 +62,10 @@ class RecoveryLosesAnnotations < SearchTest
 
   def test_bug7018799
     deploy_app(
-        ContainerApp.new.
-               container(Container.new("mycc").
-                         search(Searching.new).
-                         docproc(DocumentProcessing.new)).
-               search(SearchCluster.new("multitest").
-                      num_parts(2).redundancy(2).ready_copies(1).
-                      sd(selfdir+"rla.sd").
-                      indexing("mycc")))
+      SearchApp.new.
+        cluster_name("multitest").
+        num_parts(2).redundancy(2).ready_copies(1).
+        sd(selfdir+"rla.sd"))
     start
     feed_and_wait_for_docs("rla", 3, :file => selfdir+"feed.xml")
     saveAll
