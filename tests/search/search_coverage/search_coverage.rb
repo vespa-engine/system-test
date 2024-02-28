@@ -1,11 +1,10 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
-require 'app_generator/container_app'
+require 'indexed_only_search_test'
 require 'app_generator/search_coverage'
 require 'document'
 require 'document_set'
 
-class SearchCoverageTest < SearchTest
+class SearchCoverageTest < IndexedOnlySearchTest
 
   def setup
     set_owner('ovirtanen')
@@ -56,12 +55,12 @@ class SearchCoverageTest < SearchTest
   end
 
   def create_app(minimum_coverage, min_wait, max_wait)
-    ContainerApp.new
+    SearchApp.new
     .container(
       Container.new
       .search(Searching.new.chain(Chain.new("default", "vespa")))
       .docproc(DocumentProcessing.new))
-    .search(
+    .cluster(
       SearchCluster.new("mycluster")
       .sd(selfdir + "test.sd")
       .redundancy(1)
