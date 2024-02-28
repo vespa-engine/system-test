@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_streaming_search_test'
 
-class TestAndSetTest < SearchTest
+class TestAndSetTest < IndexedStreamingSearchTest
   def setup
     set_owner("nobody")
     set_description("Test test and set functionality in Vespa")
