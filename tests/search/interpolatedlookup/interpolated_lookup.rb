@@ -1,9 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'search_test'
-require 'app_generator/container_app'
+require 'indexed_only_search_test'
 
-class InterpolatedLookupTest < SearchTest
+class InterpolatedLookupTest < IndexedOnlySearchTest
 
   def setup
     set_owner("arnej")
@@ -13,12 +12,12 @@ class InterpolatedLookupTest < SearchTest
 
   def test_doc_example
     deploy_app(
-        ContainerApp.new.
+        SearchApp.new.
                container(
                          Container.new("mycc").
                          search(Searching.new).
                          docproc(DocumentProcessing.new)).
-               search(SearchCluster.new("multitest").
+               cluster(SearchCluster.new("multitest").
                       sd(selfdir+"sad.sd").
                       indexing("mycc")))
     start
@@ -62,12 +61,12 @@ class InterpolatedLookupTest < SearchTest
 
   def test_basic_lookup
     deploy_app(
-        ContainerApp.new.
+        SearchApp.new.
                container(
                          Container.new("mycc").
                          search(Searching.new).
                          docproc(DocumentProcessing.new)).
-               search(SearchCluster.new("multitest").
+               cluster(SearchCluster.new("multitest").
                       sd(selfdir+"sad.sd").
                       indexing("mycc")))
     start
@@ -98,12 +97,12 @@ class InterpolatedLookupTest < SearchTest
   def test_big_lookup
     @valgrind = false
     deploy_app(
-        ContainerApp.new.
+        SearchApp.new.
                container(
                          Container.new("mycc").
                          search(Searching.new).
                          docproc(DocumentProcessing.new)).
-               search(SearchCluster.new("multitest").
+               cluster(SearchCluster.new("multitest").
                       sd(selfdir+"sad.sd").
                       threads_per_search(1).
                       indexing("mycc")))
