@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_only_search_test'
 require 'json_document_writer'
 
-class SplitJoinReadinessTest < SearchTest
+class SplitJoinReadinessTest < IndexedOnlySearchTest
 
   def create_app(split_count: 2)
     SearchApp.new.sd(SEARCH_DATA + 'test.sd').
