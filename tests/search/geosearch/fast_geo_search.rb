@@ -1,36 +1,33 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'search_test'
+require 'indexed_streaming_search_test'
 require 'app_generator/container_app'
 require 'performance_test'
 require 'app_generator/search_app'
 require 'performance/fbench'
 require 'environment'
 
-class FastGeoSearchTest < SearchTest
+class FastGeoSearchTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("arnej")
-    set_description("perform geo search speed test")
+    set_description("perform geo search multi-point test")
   end
 
   def timeout_seconds
     3600
   end
 
-def test_multiple_position_fields
+  def test_multiple_position_fields
     add_bundle(selfdir + "MultiPointTester.java")
     deploy_app(
-        ContainerApp.new.
-               container(
-                         Container.new("mycc").
-                         search(Searching.new.
-                             chain(Chain.new("default", "vespa").add(
-                                 Searcher.new("com.yahoo.test.MultiPointTester")))).
-                         docproc(DocumentProcessing.new)).
-               search(SearchCluster.new("multitest").
-                      sd(selfdir+"multipoint.sd").
-                      indexing("mycc")))
+      SearchApp.new.
+        cluster_name("multitest").
+        sd(selfdir+"multipoint.sd").
+        container(Container.new("mycc").
+                    search(Searching.new.
+                             chain(Chain.new("default", "vespa").add(Searcher.new("com.yahoo.test.MultiPointTester")))).
+                    docproc(DocumentProcessing.new)))
     start
     feed_and_wait_for_docs("multipoint", 3, :file => selfdir+"feed-mp.xml")
     # save_result("query=title:pizza", selfdir+"example/mp-all.json")
