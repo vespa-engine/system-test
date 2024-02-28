@@ -1,10 +1,10 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_only_search_test'
 require 'search/utils/elastic_doc_generator'
 
 LidUsageStats = Struct.new(:lid_limit, :used_lids, :lowest_free_lid, :highest_used_lid, :lid_bloat_factor)
 
-class LidSpaceCompactionTest < SearchTest
+class LidSpaceCompactionTest < IndexedOnlySearchTest
 
   def setup
     set_owner("geirst")
