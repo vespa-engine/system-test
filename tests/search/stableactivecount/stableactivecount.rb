@@ -1,12 +1,12 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_only_search_test'
 require 'search/utils/elastic_doc_generator'
 require 'document'
 require 'document_set'
 require 'thread'
 require 'fileutils'
 
-class StableActiveCount < SearchTest
+class StableActiveCount < IndexedOnlySearchTest
 
   def setup
     @valgrind = false
@@ -26,7 +26,6 @@ class StableActiveCount < SearchTest
 
   def create_app
     SearchApp.new.sd(selfdir+'test.sd').
-      search_type("ELASTIC").
       cluster_name("mycluster").
       num_parts(4).redundancy(2).ready_copies(2).
       storage(StorageCluster.new("mycluster", 4).
