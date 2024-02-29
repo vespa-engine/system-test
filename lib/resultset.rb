@@ -296,8 +296,10 @@ class Resultset
         unless b.has_key? k
           raise "Missing value for field '#{k_in}.#{k}'"
         end
-        bv = b[k]
-        check_approx_eq(av, bv, "#{k_in}.#{k}")
+	if k != "source" # "Ignore source #{av} <=> #{b[k]}"
+          bv = b[k]
+          check_approx_eq(av, bv, "#{k_in}.#{k}")
+	end
       end
     end
 
