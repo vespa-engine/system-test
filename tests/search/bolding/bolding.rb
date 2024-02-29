@@ -132,6 +132,7 @@ class Bolding < IndexedStreamingSearchTest
     verify_bolding("song:chicago",                          @song_chicago_exp)
     verify_bolding("chicago&bolding=false",                 @chicagonb_exp)
     verify_bolding("electrics",                             @bolding_exp)
+    verify_bolding("electrics&ranking.queryCache=true",     @bolding_exp)
     verify_bolding("sddocname:bolding&filter=%2Belectrics", @notrybolding_exp)
     verify_bolding("electrics&bolding",                     @bolding_exp)
     verify_bolding("electrics&bolding=true",                @bolding_exp)
