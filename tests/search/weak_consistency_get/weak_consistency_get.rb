@@ -1,6 +1,6 @@
-require 'search_test'
+require 'indexed_streaming_search_test'
 
-class WeakInternalConsistencyGetTest < SearchTest
+class WeakInternalConsistencyGetTest < IndexedStreamingSearchTest
 
   def setup
     set_owner('vekterli')
