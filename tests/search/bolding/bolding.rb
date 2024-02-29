@@ -46,13 +46,43 @@ class Bolding < IndexedStreamingSearchTest
         "song" => "<hi>Electrics</hi> Blues",
       }
     ]
-  end
-
-  def check_result(q, fn)
-    fnam = selfdir+@subdir+"/"+fn+".result.json"
-    puts "checking #{fnam}"
-    # save_result("query=#{q}", fnam)
-    assert_result("query=#{q}", fnam)
+    @esmall_exp = [
+      {
+        "title" => "random random random random random random random random random random <hi>Electrics</hi> random random random random random random random random random random random random random random random random random random random random random random random random random FUBAR"
+      }, {
+        "title" => "<hi>Electrics</hi> Blues songs numbers eight and on"
+      }
+    ]
+    @csmall_exp = [ { "title" => "<hi>Chicago</hi> Blues the number is increasing" } ]
+    @clarge_exp = [ { "song" => "<hi>Chicago</hi> Blues" } ]
+    @chicago_exp = [
+      {
+        "song" => "<hi>Chicago</hi> Blues",
+        "title" => "<hi>Chicago</hi> Blues the number is increasing",
+        "documentid" => "id:test:bolding::/shopping?id=1804905710",
+      }
+    ]
+    @song_chicago_exp = [
+      {
+        "song" => "<hi>Chicago</hi> Blues",
+        "title" => "Chicago Blues the number is increasing",
+        "documentid" => "id:test:bolding::/shopping?id=1804905710",
+      }
+    ]
+    @title_chicago_exp = [
+      {
+	"song" => "Chicago Blues",
+        "title" => "<hi>Chicago</hi> Blues the number is increasing",
+        "documentid" => "id:test:bolding::/shopping?id=1804905710",
+      }
+    ]
+    @chicagonb_exp = [
+      {
+	"song" => "Chicago Blues",
+        "title" => "Chicago Blues the number is increasing",
+        "documentid" => "id:test:bolding::/shopping?id=1804905710",
+      }
+    ]
   end
 
   def setup
@@ -61,37 +91,31 @@ class Bolding < IndexedStreamingSearchTest
 
   def test_bolding
     def_expected()
-    testname = "stemming-none"
-    deploy_app(SearchApp.new.sd(selfdir+testname+"/bolding.sd"))
+    deploy_app(SearchApp.new.sd(selfdir+"stemming-none/bolding.sd"))
     start
-    do_test(testname)
+    do_test()
 
     if not is_streaming
-      testname = "stemming-shortest"
-      redeploy(SearchApp.new.sd(selfdir+testname+"/bolding.sd").validation_override("indexing-change"))
-      do_test_stemmed(testname)
+      redeploy(SearchApp.new.sd(selfdir+"stemming-shortest/bolding.sd").validation_override("indexing-change"))
+      do_test_stemmed()
 
-      testname = "stemming-multiple"
-      redeploy(SearchApp.new.sd(selfdir+testname+"/bolding.sd").validation_override("indexing-change"))
-      do_test_stemmed(testname)
+      redeploy(SearchApp.new.sd(selfdir+"stemming-multiple/bolding.sd").validation_override("indexing-change"))
+      do_test_stemmed()
     end
   end
 
   def verify_bolding(query, expected)
     res = search(query)
-    puts "res = " + res.to_s
     assert(res.hit.length() == expected.length())
     res.hit.length.times do |i|
       exp_hit = expected[i]
       exp_hit.each do |field, value|
-        puts "#{i}: #{field}: " + res.hit[i].field[field] + " == " + value
 	assert(res.hit[i].field[field].include? value)
       end
     end
   end
 
-  def do_test(testname)
-    @subdir = testname
+  def do_test()
 
     puts "Description: Bolding of words from query in displayed summary"
     puts "Component: Config, Indexing, Search etc"
@@ -103,10 +127,10 @@ class Bolding < IndexedStreamingSearchTest
     assert_hitcount("query=sddocname:bolding", 10)
 
     puts "Query: bolding checks"
-    check_result("chicago",                                 "chicago")
-    check_result("title:chicago",                           "title-chicago")
-    check_result("song:chicago",                            "song-chicago")
-    check_result("chicago&bolding=false",                   "chicagonb")
+    verify_bolding("chicago",                               @chicago_exp)
+    verify_bolding("title:chicago",                         @title_chicago_exp)
+    verify_bolding("song:chicago",                          @song_chicago_exp)
+    verify_bolding("chicago&bolding=false",                 @chicagonb_exp)
     verify_bolding("electrics",                             @bolding_exp)
     verify_bolding("sddocname:bolding&filter=%2Belectrics", @notrybolding_exp)
     verify_bolding("electrics&bolding",                     @bolding_exp)
@@ -114,20 +138,20 @@ class Bolding < IndexedStreamingSearchTest
     verify_bolding("electrics&bolding=false",               @nobolding_exp)
 
     puts "Query: bolding with summary-to checks"
-    check_result("chicago&summary=small",                  "csmall")
-    check_result("chicago&summary=large",                  "clarge")
-    check_result("electrics&summary=small",                "esmall")
-    verify_bolding("electrics&summary=large",              @elarge_exp)
+    verify_bolding("chicago&summary=small",                 @csmall_exp)
+    verify_bolding("chicago&summary=large",                 @clarge_exp)
+    verify_bolding("electrics&summary=small",               @esmall_exp)
+    verify_bolding("electrics&summary=large",               @elarge_exp)
   end
 
-  def do_test_stemmed(testname)
-    do_test(testname)
+  def do_test_stemmed()
+    do_test()
     verify_bolding("electric",                              @bolding_exp)
     verify_bolding("sddocname:bolding&filter=%2Belectric",  @notrybolding_exp)
     verify_bolding("electric&bolding",                      @bolding_exp)
     verify_bolding("electric&bolding=true",                 @bolding_exp)
     verify_bolding("electric&bolding=false",                @nobolding_exp)
-    check_result("electric&summary=small",                  "esmall")
+    verify_bolding("electric&summary=small",                @esmall_exp)
     verify_bolding("electrics&summary=large",               @elarge_exp)
   end
 
