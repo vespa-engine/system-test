@@ -292,14 +292,15 @@ class Resultset
           end
         end
       end
+      ignore_source = a.has_key?('fields')
       a.each do |k,av|
         unless b.has_key? k
           raise "Missing value for field '#{k_in}.#{k}'"
         end
-	if k != "source" # "Ignore source #{av} <=> #{b[k]}"
+        if k != "source" || ! ignore_source # "Ignore source #{av} <=> #{b[k]}"
           bv = b[k]
           check_approx_eq(av, bv, "#{k_in}.#{k}")
-	end
+        end
       end
     end
 
