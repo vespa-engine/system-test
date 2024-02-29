@@ -1,17 +1,26 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_streaming_search_test'
 
-class NfkcNormalization < SearchTest
+class NfkcNormalization < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
     set_description("Check NFKC normalization is actually performed.")
+  end
+
+  def deploy_start_and_feed
     deploy_app(SearchApp.new.sd(selfdir+"simple.sd"))
     start
     feed_and_wait_for_docs("simple", 6, :file => selfdir+"simple.6.xml", :timeout => 240)
   end
 
+  def self.final_test_methods
+    ['test_nfkc']
+  end
+
   def test_nfkc
+    @params = { :search_type => 'ELASTIC' }
+    deploy_start_and_feed
     # check symbol to ascii
     assert_hitcount("/search/?query=xii", 1)
 
@@ -22,6 +31,7 @@ class NfkcNormalization < SearchTest
   end
 
   def test_doublewidth
+    deploy_start_and_feed
     # check a fullwidth, uppercased word which has been changed in stemming
     assert_hitcount("/search/?query=raised", 1)
     # check a fullwidth, lowercased word which has been changed in stemming
@@ -43,6 +53,7 @@ class NfkcNormalization < SearchTest
   end
 
   def test_doublewidth_numeric
+    deploy_start_and_feed
     # check a fullwidth, lowercased numeric which has not been changed in stemming
     assert_hitcount("/search/?query=168", 1)
     # "168" in fullwidth
