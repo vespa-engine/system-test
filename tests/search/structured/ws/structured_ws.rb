@@ -1,8 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
-require 'app_generator/container_app'
+require 'indexed_streaming_search_test'
 
-class StructuredWeightedSetTest < SearchTest
+class StructuredWeightedSetTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("arnej")
@@ -13,13 +12,13 @@ class StructuredWeightedSetTest < SearchTest
     add_bundle(selfdir + "SimpleTestSearcher.java")
     searcher = Searcher.new("com.yahoo.test.SimpleTestSearcher")
     deploy_app(
-        ContainerApp.new.
-               container(Container.new("mycc").
-                         search(Searching.new.chain(Chain.new("default", "vespa").add(searcher))).
-                         docproc(DocumentProcessing.new)).
-               search(SearchCluster.new("wstsc").
-                      sd(selfdir+"wstest.sd").
-                      indexing("mycc")))
+      SearchApp.new.
+        cluster_name("wstsc").
+        sd(selfdir+"wstest.sd").
+        container(Container.new("mycc").
+                    search(Searching.new.
+                             chain(Chain.new("default", "vespa").add(searcher))).
+                    docproc(DocumentProcessing.new)))
     start
     feed_and_wait_for_docs("wstest", 1, :file => selfdir+"feed-3.xml")
     # save_result("query=titles:%22james%20bond%22", selfdir+"result.ws.json")
