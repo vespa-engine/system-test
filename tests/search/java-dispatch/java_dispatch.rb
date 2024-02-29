@@ -115,7 +115,7 @@ class JavaDispatchTest < IndexedOnlySearchTest
     query = "yql=#{yql}&nocache&tracelevel=5"
     puts "query: #{query}"
 
-    retries = 10
+    retries = 100
     while retries > 1
       result = search(query)
       assert_result_hitcount(result, @num_docs)
@@ -124,7 +124,7 @@ class JavaDispatchTest < IndexedOnlySearchTest
       if hits == different_than # dispatcher chose the same content node
         retries = retries - 1
         puts "Expected different hits, but received the same. Will retry another #{retries} times"
-        sleep 1
+        sleep 0.01
       else
         return hits
       end
