@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_streaming_search_test'
 
-class VisitNullValues < SearchTest
+class VisitNullValues < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
@@ -21,9 +21,11 @@ class VisitNullValues < SearchTest
     # Feeding undefined value has no effect unless attribute.
     assert_visit_null('test.integer_summary', 9, 2)
 
-    assert_visit_null('test.integer_attribute', 10, 1)
+    exp_svattr_nulls = is_streaming ? 9 : 10
+    exp_svattr_nonnulls = is_streaming ? 2 : 1
+    assert_visit_null('test.integer_attribute', exp_svattr_nulls, exp_svattr_nonnulls)
     assert_visit_null('test.string_index', 10, 1)
-    assert_visit_null('test.string_attribute', 10, 1)
+    assert_visit_null('test.string_attribute', exp_svattr_nulls, exp_svattr_nonnulls)
     assert_visit_null('test.string_array_index', 10, 1)
     assert_visit_null('test.string_array_attribute', 10, 1)
   end
