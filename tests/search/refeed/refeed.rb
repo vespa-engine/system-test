@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_streaming_search_test'
 require 'environment'
 
-class Refeed < SearchTest
+class Refeed < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
@@ -37,10 +37,12 @@ class Refeed < SearchTest
   end
 
   def check_search
-    assert_predicate_search('', '%7Ba:7%7D', ["1"])
-    assert_predicate_search('%7Bb:c%7D', '', ["1"])
-    assert_predicate_search('%7Bb:c,d:e%7D', '', [])
-    assert_predicate_search('%7Bb:c,d:e%7D', '%7Ba:7%7D', ["1"])
+    unless is_streaming
+      assert_predicate_search('', '%7Ba:7%7D', ["1"])
+      assert_predicate_search('%7Bb:c%7D', '', ["1"])
+      assert_predicate_search('%7Bb:c,d:e%7D', '', [])
+      assert_predicate_search('%7Bb:c,d:e%7D', '%7Ba:7%7D', ["1"])
+    end
 
     assert_hitcount('query=string:foo', 1)
     assert_hitcount('query=int:1000000000', 1)
