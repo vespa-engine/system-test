@@ -5,7 +5,7 @@ require 'app_generator/container_app'
 class AssembleContainerPlugin < SearchContainerTest
 
   def setup
-    set_owner("nobody")
+    set_owner("gjoranv")
     set_description("Test that container assembly plugin supports config definitions in bundled jars.")
   end
 
