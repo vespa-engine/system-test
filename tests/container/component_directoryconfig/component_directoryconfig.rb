@@ -5,7 +5,7 @@ class ComponentDirectoryconfig < SearchContainerTest
 
   def setup
     @valgrind = false
-    set_owner("nobody")
+    set_owner("hmusum")
     set_description("Verify that a directory can be distributed using file distribution.")
   end
 
