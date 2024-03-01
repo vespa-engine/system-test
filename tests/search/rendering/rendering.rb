@@ -5,7 +5,7 @@ class Rendering < IndexedStreamingSearchTest
   SAVE_RESULT = false
 
   def setup
-    set_owner("nobody")
+    set_owner("bjorncs")
     set_description("Test the search rendering api and deployment of renderers. [Depends on working grouping test.]")
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.vespatest.DemoRenderer")
     deploy_app(SearchApp.new.
