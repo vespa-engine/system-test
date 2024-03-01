@@ -3,7 +3,7 @@ require 'indexed_search_test'
 
 class YqlQueryProfile < IndexedSearchTest
   def setup
-    set_owner("nobody")
+    set_owner("bjorncs")
     set_description("Test Query Profiles with userQuery() in YQL+")
   end
 
