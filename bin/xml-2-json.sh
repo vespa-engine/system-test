@@ -4,3 +4,4 @@
 
 base=$(basename $1 ".xml")
 wrap-xml-feed.sh $1 | vespa-feed-perf -o "$base.json"
+echo "" >> "$base.json"
