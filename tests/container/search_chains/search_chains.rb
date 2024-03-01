@@ -8,7 +8,7 @@ class SearchChainsTest < SearchContainerTest
   end
 
   def setup
-    set_owner("nobody")
+    set_owner("gjoranv")
     set_description("Tests the search chain config, as explained in https://docs.vespa.ai/en/components/chained-components.html")
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.example.AddHitSearcher")
     deploy(selfdir+"app")

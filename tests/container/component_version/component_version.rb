@@ -3,7 +3,7 @@ require 'search_container_test'
 
 class ComponentVersion < SearchContainerTest
   def setup
-    set_owner("nobody")
+    set_owner("gjoranv")
     set_description("Tests that different versions of bundles are supported.")
     add_version_test_bundle("1.0")
     add_version_test_bundle("1.0.1")

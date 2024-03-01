@@ -4,7 +4,7 @@ require 'search_container_test'
 class SearchChainsDependencies < SearchContainerTest
 
   def setup
-    set_owner("nobody")
+    set_owner("gjoranv")
     set_description("Test that before/after for searchers and phases.")
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.example.AddHitSearcher")
     deploy(selfdir+"app")
