@@ -6,7 +6,7 @@ require 'app_generator/search_app'
 class CpuPinning < SearchTest
 
   def setup
-    set_owner('nobody')
+    set_owner('baldersheim')
 
     deploy_app(SearchApp.new.
                container(Container.new.cpu_socket_affinity(true).search(Searching.new)).
