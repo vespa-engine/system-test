@@ -121,7 +121,7 @@ class Bolding < IndexedStreamingSearchTest
     puts "Component: Config, Indexing, Search etc"
     puts "Feature: Bolding"
 
-    feed_and_wait_for_docs("bolding", 10, :file => selfdir + "input.xml")
+    feed_and_wait_for_docs("bolding", 10, :file => selfdir + "input.json")
 
     puts "Query: sanity check"
     assert_hitcount("query=sddocname:bolding", 10)
