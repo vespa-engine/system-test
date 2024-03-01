@@ -22,41 +22,43 @@ class InterpolatedLookupTest < IndexedOnlySearchTest
                       indexing("mycc")))
     start
     feed_and_wait_for_docs("sad", 1, :file => selfdir+"feed-0.xml")
-    # save_result("query=title:foo", selfdir+"example/foo.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo", selfdir+"example/foo.xml")
+    query = { 'query' => 'title:foo' }
+    # save_result(query, selfdir+"example/foo.xml")
+    assert_xml_result_with_timeout(@@timeout, query, selfdir+"example/foo.xml")
 
-    grouping = "select=all%28group%28%22impressions%22%29each%28"
-    grouping += "output%28count%28%29as%28uniqueusercount%29%29"
-    grouping += "output%28sum%28interpolatedlookup%28pos1impr,relevance%28%29%29%29as%28totalinpos1%29%29"
-    grouping += "output%28sum%28interpolatedlookup%28pos2impr,relevance%28%29%29%29as%28totalinpos2%29%29"
-    grouping += "%29as%28impressiondata%29%29"
+    grouping = 'all(group("impressions")each('
+    grouping += 'output(count()as(uniqueusercount))'
+    grouping += 'output(sum(interpolatedlookup(pos1impr,relevance()))as(totalinpos1))'
+    grouping += 'output(sum(interpolatedlookup(pos2impr,relevance()))as(totalinpos2))'
+    grouping += ')as(impressiondata))'
 
-    # save_result("query=title:foo&#{grouping}", selfdir+"example/foo-grp.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}", selfdir+"example/foo-grp.xml")
+    query = { 'query' => 'title:foo', 'select' => grouping }
+    # save_result(query, selfdir+"example/foo-grp.xml")
+    assert_xml_result_with_timeout(@@timeout, query, selfdir+"example/foo-grp.xml")
 
-    rpo = "rankfeature.query%28bid%29=0.420"
-    # save_result("query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.420.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.420.xml")
+    rpo = { 'rankfeature.query(bid)' => '0.420' }
+    # save_result(query.merge(rpo), selfdir+"example/foo-grp.420.xml")
+    assert_xml_result_with_timeout(@@timeout, query.merge(rpo), selfdir+"example/foo-grp.420.xml")
 
-    rpo = "ranking.features.query%28bid%29=0.490"
-    # save_result("query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.490.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.490.xml")
+    rpo = { 'ranking.features.query(bid)' => '0.490' }
+    # save_result(query.merge(rpo), selfdir+"example/foo-grp.490.xml")
+    assert_xml_result_with_timeout(@@timeout, query.merge(rpo), selfdir+"example/foo-grp.490.xml")
 
-    rpo = "rankfeature.query%28bid%29=0.111"
-    # save_result("query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.111.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.111.xml")
+    rpo = { 'rankfeature.query(bid)' => '0.111' }
+    # save_result(query.merge(rpo), selfdir+"example/foo-grp.111.xml")
+    assert_xml_result_with_timeout(@@timeout, query.merge(rpo), selfdir+"example/foo-grp.111.xml")
 
-    rpo = "rankfeature.query%28bid%29=0.200"
-    # save_result("query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.200.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.200.xml")
+    rpo = { 'rankfeature.query(bid)' => '0.200' }
+    # save_result(query.merge(rpo), selfdir+"example/foo-grp.200.xml")
+    assert_xml_result_with_timeout(@@timeout, query.merge(rpo), selfdir+"example/foo-grp.200.xml")
 
-    rpo = "rankfeature.query%28bid%29=0.205"
-    # save_result("query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.205.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.205.xml")
+    rpo = { 'rankfeature.query(bid)' => '0.205' }
+    # save_result(query.merge(rpo), selfdir+"example/foo-grp.205.xml")
+    assert_xml_result_with_timeout(@@timeout, query.merge(rpo), selfdir+"example/foo-grp.205.xml")
 
-    rpo = "rankfeature.query%28bid%29=0.208"
-    # save_result("query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.208.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}&#{rpo}", selfdir+"example/foo-grp.208.xml")
+    rpo = { 'rankfeature.query(bid)' => '0.208' }
+    # save_result(query.merge(rpo), selfdir+"example/foo-grp.208.xml")
+    assert_xml_result_with_timeout(@@timeout, query.merge(rpo), selfdir+"example/foo-grp.208.xml")
   end
 
   def test_basic_lookup
@@ -71,26 +73,29 @@ class InterpolatedLookupTest < IndexedOnlySearchTest
                       indexing("mycc")))
     start
     feed_and_wait_for_docs("sad", 2, :file => selfdir+"feed-1.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo", selfdir+"small/result.foo.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:bar", selfdir+"small/result.bar.xml")
+    assert_xml_result_with_timeout(@@timeout, { 'query' => 'title:foo' }, selfdir+"small/result.foo.xml")
+    assert_xml_result_with_timeout(@@timeout, { 'query' => 'title:bar' }, selfdir+"small/result.bar.xml")
 
-    grouping = "select=all%28group%28%22impressions%22%29each%28"
-    grouping += "output%28count%28%29as%28uniqueusercount%29%29"
-    grouping += "output%28sum%28interpolatedlookup%28pos1impr,relevance%28%29%29%29as%28totalinpos1%29%29"
-    grouping += "output%28sum%28interpolatedlookup%28pos2impr,relevance%28%29%29%29as%28totalinpos2%29%29"
-    grouping += "%29as%28impressiondata%29%29"
+    grouping = 'all(group("impressions")each('
+    grouping += 'output(count()as(uniqueusercount))'
+    grouping += 'output(sum(interpolatedlookup(pos1impr,relevance()))as(totalinpos1))'
+    grouping += 'output(sum(interpolatedlookup(pos2impr,relevance()))as(totalinpos2))'
+    grouping += ')as(impressiondata))'
 
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}", selfdir+"small/result.foo-grp.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:bar&#{grouping}", selfdir+"small/result.bar-grp.xml")
+    fooquery = { 'query' => 'title:foo', 'select' => grouping }
+    barquery = { 'query' => 'title:bar', 'select' => grouping }
+
+    assert_xml_result_with_timeout(@@timeout, fooquery, selfdir+"small/result.foo-grp.xml")
+    assert_xml_result_with_timeout(@@timeout, barquery, selfdir+"small/result.bar-grp.xml")
 
     for i in 0..9 do
-      rpo = "rankfeature.query%28bid%29=#{i*0.111}"
-      assert_xml_result_with_timeout(@@timeout, "query=title:bar&#{grouping}&#{rpo}", selfdir+"small/result.bar-grp.#{i}.xml")
-      assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}&#{rpo}", selfdir+"small/result.foo-grp.#{i}.xml")
+      rpo = { 'rankfeature.query(bid)' => "#{i*0.111}" }
+      assert_xml_result_with_timeout(@@timeout, barquery.merge(rpo), selfdir+"small/result.bar-grp.#{i}.xml")
+      assert_xml_result_with_timeout(@@timeout, fooquery.merge(rpo), selfdir+"small/result.foo-grp.#{i}.xml")
 
-      rpo = "ranking.features.query%28bid%29=#{i*0.111}"
-      assert_xml_result_with_timeout(@@timeout, "query=title:bar&#{grouping}&#{rpo}", selfdir+"small/result.bar-grp.#{i}.xml")
-      assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}&#{rpo}", selfdir+"small/result.foo-grp.#{i}.xml")
+      rpo = { 'ranking.features.query(bid)' => "#{i*0.111}" }
+      assert_xml_result_with_timeout(@@timeout, barquery.merge(rpo), selfdir+"small/result.bar-grp.#{i}.xml")
+      assert_xml_result_with_timeout(@@timeout, fooquery.merge(rpo), selfdir+"small/result.foo-grp.#{i}.xml")
     end
   end
 
@@ -121,26 +126,29 @@ class InterpolatedLookupTest < IndexedOnlySearchTest
 
     wait_for_hitcount("sddocname:sad", 123456, 30)
 
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo", selfdir+"big/bigresult.foo.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:bar", selfdir+"big/bigresult.bar.xml")
+    assert_xml_result_with_timeout(@@timeout, { 'query' => 'title:foo' }, selfdir+"big/bigresult.foo.xml")
+    assert_xml_result_with_timeout(@@timeout, { 'query' => 'title:bar' }, selfdir+"big/bigresult.bar.xml")
 
-    grouping = "select=all%28group%28%22impressions%22%29each%28"
-    grouping += "output%28count%28%29as%28uniqueusercount%29%29"
-    grouping += "output%28sum%28interpolatedlookup%28pos1impr,relevance%28%29%29%29as%28totalinpos1%29%29"
-    grouping += "output%28sum%28interpolatedlookup%28pos2impr,relevance%28%29%29%29as%28totalinpos2%29%29"
-    grouping += "%29as%28impressiondata%29%29"
+    grouping = 'all(group("impressions")each('
+    grouping += 'output(count()as(uniqueusercount))'
+    grouping += 'output(sum(interpolatedlookup(pos1impr,relevance()))as(totalinpos1))'
+    grouping += 'output(sum(interpolatedlookup(pos2impr,relevance()))as(totalinpos2))'
+    grouping += ')as(impressiondata))'
 
-    assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}", selfdir+"big/bigresult.foo-grp.xml")
-    assert_xml_result_with_timeout(@@timeout, "query=title:bar&#{grouping}", selfdir+"big/bigresult.bar-grp.xml")
+    fooquery = { 'query' => 'title:foo', 'select' => grouping }
+    barquery = { 'query' => 'title:bar', 'select' => grouping }
+
+    assert_xml_result_with_timeout(@@timeout, fooquery, selfdir+"big/bigresult.foo-grp.xml")
+    assert_xml_result_with_timeout(@@timeout, barquery, selfdir+"big/bigresult.bar-grp.xml")
 
     for i in 0..9 do
-      rpo = "rankfeature.query%28bid%29=#{i*0.111}"
-      assert_xml_result_with_timeout(@@timeout, "query=title:bar&#{grouping}&#{rpo}", selfdir+"big/bigresult.bar-grp.#{i}.xml")
-      assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}&#{rpo}", selfdir+"big/bigresult.foo-grp.#{i}.xml")
+      rpo = { 'rankfeature.query(bid)' => "#{i*0.111}" }
+      assert_xml_result_with_timeout(@@timeout, barquery.merge(rpo), selfdir+"big/bigresult.bar-grp.#{i}.xml")
+      assert_xml_result_with_timeout(@@timeout, fooquery.merge(rpo), selfdir+"big/bigresult.foo-grp.#{i}.xml")
 
-      rpo = "ranking.features.query%28bid%29=#{i*0.111}"
-      assert_xml_result_with_timeout(@@timeout, "query=title:bar&#{grouping}&#{rpo}", selfdir+"big/bigresult.bar-grp.#{i}.xml")
-      assert_xml_result_with_timeout(@@timeout, "query=title:foo&#{grouping}&#{rpo}", selfdir+"big/bigresult.foo-grp.#{i}.xml")
+      rpo = { 'ranking.features.query(bid)' => "#{i*0.111}" }
+      assert_xml_result_with_timeout(@@timeout, barquery.merge(rpo), selfdir+"big/bigresult.bar-grp.#{i}.xml")
+      assert_xml_result_with_timeout(@@timeout, fooquery.merge(rpo), selfdir+"big/bigresult.foo-grp.#{i}.xml")
     end
   end
 
