@@ -3,7 +3,7 @@ require 'indexed_streaming_search_test'
 
 class TestAndSetTest < IndexedStreamingSearchTest
   def setup
-    set_owner("nobody")
+    set_owner("vekterli")
     set_description("Test test and set functionality in Vespa")
     deploy_app(SearchApp.new.
                 sd(selfdir + "weather.sd").
