@@ -19,7 +19,7 @@ class FederationTimeoutsTest < SearchContainerTest
     # (such that we do not timeout the test), while the query timeout
     # exposed to the chain is the requestTimeout (logged by the WaitingSearcher)
     # Note also that we could use the functionality of WaitingSearcher for various other tests
-    # by passing the pause time dowwards.
+    # by passing the pause time downwards.
     result=search_base("query=test")
     assert_log_matches("Query timeout in one: 1000000")
     assert_log_matches("Query timeout in two: 1000")
