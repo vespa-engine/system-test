@@ -11,7 +11,7 @@ class EncodingTest < IndexedStreamingSearchTest
   end
 
   def test_encoding
-    feed_and_wait_for_docs("simple", 3, :file => selfdir+"simple.docs.3.xml")
+    feed_and_wait_for_docs("simple", 3, :file => selfdir+"simple.docs.3.json")
 
     wait_for_hitcount("query=test", 2)
 

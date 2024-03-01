@@ -1,0 +1,5 @@
+[
+{"id":"id:test:simple::http://www.eventyr.no/matprat","fields":{"description":"Bjørnen spiser blåbær på en øy i nærheten.","language":"ja","title":"test test document1","date":1091356845,"surl":"http://www.eventyr.no/matprat"}},
+ {"id":"id:test:simple::http://headlines.yahoo.co.jp/hl?a=20040801-00000105-kyodo-spo","fields":{"description":"香川県産","language":"ja","title":"document2 test","date":1091356845,"surl":"http://headlines.yahoo.co.jp/hl?a=20040801-00000105-kyodo-spo"}},
+ {"id":"id:test:simple::http://headlines.yahoo.co.jp/fake2","fields":{"description":"fake with some short text first 香 letter 川 letter 県 letter 産 letter","language":"ja","title":"test2 fake","date":1091356845,"surl":"http://headlines.yahoo.co.jp/fake2"}}
+]
