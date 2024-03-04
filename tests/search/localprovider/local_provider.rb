@@ -4,7 +4,7 @@ require 'indexed_search_test'
 class LocalProvider < IndexedSearchTest
 
   def setup
-    set_owner("nobody")
+    set_owner("baldersheim")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
                       search_chain(
                         Provider.new("local-provider", "local").cluster("search")))

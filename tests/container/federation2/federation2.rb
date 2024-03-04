@@ -4,7 +4,7 @@ require 'search_container_test'
 class FederationTest2 < SearchContainerTest
 
   def setup
-    set_owner("nobody")
+    set_owner("baldersheim")
     set_description("Tests the new federation, as explained in the federation.html vespadoc")
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.example.AddHitSearcher")
     deploy(selfdir+"app")

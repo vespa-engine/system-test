@@ -4,7 +4,7 @@ require 'indexed_search_test'
 class SourceProvider < IndexedSearchTest
 
   def setup
-    set_owner("nobody")
+    set_owner("baldersheim")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
                cluster_name('mysearch').
                         search_dir(selfdir + "search").
