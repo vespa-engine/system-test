@@ -16,11 +16,10 @@
         "children": [
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_slim-slo-slider-home-grown_music_1921351103",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1999,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_slim-slo-slider-home-grown_music_1921351103",
                     "title": "Slim Slo Slider/Home Grown",
                     "artist": "Johnny Rivers",
@@ -42,6 +41,7 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/151307/amg1921351103_1940.jpg?rm_____DnuyQ19g7\" height=68 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927176100",
                     "newestedition": 19990825,
+                    "year": 1999,
                     "did": 66,
                     "scorekey": 0,
                     "cbid": 2
@@ -49,11 +49,10 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_sound-of-65-there-s-a-bond-between-us_music_1921370588",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1999,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_sound-of-65-there-s-a-bond-between-us_music_1921370588",
                     "title": "Sound of 65/There's a Bond Between Us",
                     "artist": "The Graham Bond Organization",
@@ -75,17 +74,17 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/152276/amg1921370588_1940.jpg?rm_____DOupLfvy3\" height=69 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927012413",
                     "newestedition": 19991214,
+                    "year": 1999,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_esther-williams_music_1921480604",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2000,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_esther-williams_music_1921480604",
                     "title": "Esther Williams",
                     "artist": "Esther Williams",
@@ -107,17 +106,17 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/147451/amg1921480604_1940.jpg?rm_____DB9KijwgI\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927017541",
                     "newestedition": 20000919,
+                    "year": 2000,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_original-gold_music_1921490854",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2000,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_original-gold_music_1921490854",
                     "title": "Original Gold",
                     "artist": "Belinda Carlisle",
@@ -140,6 +139,7 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/148708/amg1921490854_1940.jpg?rm_____DKLrbUH6G\" height=69 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927003250",
                     "newestedition": 20001212,
+                    "year": 2000,
                     "did": 66,
                     "scorekey": 0,
                     "cbid": 2
@@ -147,11 +147,10 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_50-weekend-classics_music_1921587212",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2000,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_50-weekend-classics_music_1921587212",
                     "title": "50 Weekend Classics",
                     "song": "The Marriage Of Figaro: Ov;Reveries;Sym No.5: II. Andante;Con in d: II. Largo;Sevilla;Vc Ste No.2 in d: I. Prld;Differencias Sobre La Gallardo;Menuet No.4;Vn Con: II. Canzonetta;Gtr Son in C: I. Allegro;Sym No.1: II. Andante;Divert No.7: III. Adagio;Con Grosso No.9, Op.6: VI. Gigue;Capriccio Espagnol Y: Fandango;Golliwogg's Cakewalk;Vn Con No.6: III. Vivace;Prld No.11;Vn Con 'The Hunt': II. Andante;Sym No.5: III. Waltz;Water Music: III. Bouree;Ste No.1: V. Menuet 1&2;Trio No.6 in E flat: III. Allegro Ma Non Tanto;Con Grosso No.8, Op.6: II. Allegro;Tritsch-Tratsch Polka;Light Cavalry Ov;Str Sym No.4: II. Andante;Ob Con No.3: II. Adagio;Pno Con No.4: II. Andante;Nata Waltz;Con Grosso No.4, Op.6: I. Larghetto;Con: II. Andantino;Sym No.8 'Unfinished': II. Andante;Tpt Con: II. Larghetto;Prld To The Afternoon Of A Faun;Ob Con in D: II. Adagio;Sym No.9 'From The New World': II. Largo;Les Prlds;Ob Son No.1: II. Adagio;Tpt Con No.2: II. Largo;Ob Con in a, RV46: III. Larghetto;Vc Ste No.1 in G: III. Courante;Psthn Con: II. Aria;Norwegian Dance No.2;Sym No.6 'The Morning': I. Adagio;Con in G: III. Rondo;Con Grosso No.2, Op.7 in B flat: IV. Cantabile;Adagio in E;Son in g: III. Largo;Sym No.21: III. Menuetto;Prld No.8",
@@ -171,6 +170,7 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/152851/amg1921587212_1940.jpg?rm_____De_vGN4nI\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 20000101,
+                    "year": 2000,
                     "did": 66,
                     "cbid": 2
                 }

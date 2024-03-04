@@ -16,11 +16,10 @@
         "children": [
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_pianist-extraordinaire-2-deluxe-box-set-_music_1921950529",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2003,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_pianist-extraordinaire-2-deluxe-box-set-_music_1921950529",
                     "title": "Pianist Extraordinaire 2 (Deluxe Box Set)",
                     "artist": "Don Shirley",
@@ -42,48 +41,17 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/144071/amg1921950529_1940.jpg?rm_____DmJd0xLk.\" height=70 width=58 border=0 hspace=0 vspace=0",
                     "artistspid": "1927008643",
                     "newestedition": 20030218,
-                    "did": 66,
-                    "cbid": 2
-                }
-            },
-            {
-                "id": "id:test:music::http://shopping.yahoo.com/p_little-games-bonus-tracks-_music_1921961815",
-                "relevance": 4.97976968565204E-4,
-                "source": "storage.music",
-                "fields": {
-                    "sddocname": "music",
                     "year": 2003,
-                    "documentid": "id:test:music::http://shopping.yahoo.com/p_little-games-bonus-tracks-_music_1921961815",
-                    "title": "Little Games [Bonus Tracks]",
-                    "artist": "The Yardbirds",
-                    "song": "Little Games;Smile on Me [2002 Stereo Mix];White Summer;Tinker, Tailor, Soldier, Sailor [2002 Stereo Mix];Glimpses;Drinking Muddy Water;No Excess Baggage;Stealing Stealing;Only the Black Rose;Little Soldier Boy;Puzzles [1991 US Stereo Mix];I Remember the Night [1991 US Stereo Mix];Ha! Ha! Said the Clown;Ten Little Indians [1991 US Stereo Mix];Goodnight Sweet Josephine [Version 1 Unphased Version];Think About It;Goodnight Sweet Josephine [Phased (US Single) Version];Most Likely You Go Your Way (And I'll Go Mine) [Live];Little Games [Live];Drinking Muddy Water [Live];Think About It [Live];Goodnight Sweet Josephine [Live];My Baby [Live];White Summer [Live][#];Dazed and Confused [Live][#]",
-                    "bgndata": "CD",
-                    "pto": 2418,
-                    "mid": 2,
-                    "ew": "games",
-                    "surl": "http://shopping.yahoo.com/p_little-games-bonus-tracks-_music_1921961815",
-                    "pid": "1921961815",
-                    "weight": 44.0,
-                    "isbn": "724354081323",
-                    "fmt": "CD",
-                    "disp_song": "Little Games;Smile on Me [2002 Stereo Mix];White Summer",
-                    "pfrom": 2418,
-                    "categories": "1804905848 1804893726",
-                    "data": "CD24.18724354081323",
-                    "bgnsellers": 0,
-                    "artistspid": "1927005080",
-                    "newestedition": 20030211,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_in-bright-mansions_music_1921945828",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2003,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_in-bright-mansions_music_1921945828",
                     "title": "In Bright Mansions",
                     "artist": "Fisk Jubilee Singers",
@@ -105,18 +73,49 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/143580/amg1921945828_1940.jpg?rm_____D69vlSjfU\" height=62 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927378374",
                     "newestedition": 20030128,
+                    "year": 2003,
                     "did": 66,
                     "scorekey": 0,
                     "cbid": 2
                 }
             },
             {
-                "id": "id:test:music::http://shopping.yahoo.com/p_vladimir-horowitz-piano_music_1921945354",
-                "relevance": 4.97976968565204E-4,
+                "id": "id:test:music::http://shopping.yahoo.com/p_little-games-bonus-tracks-_music_1921961815",
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2002,
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_little-games-bonus-tracks-_music_1921961815",
+                    "title": "Little Games [Bonus Tracks]",
+                    "artist": "The Yardbirds",
+                    "song": "Little Games;Smile on Me [2002 Stereo Mix];White Summer;Tinker, Tailor, Soldier, Sailor [2002 Stereo Mix];Glimpses;Drinking Muddy Water;No Excess Baggage;Stealing Stealing;Only the Black Rose;Little Soldier Boy;Puzzles [1991 US Stereo Mix];I Remember the Night [1991 US Stereo Mix];Ha! Ha! Said the Clown;Ten Little Indians [1991 US Stereo Mix];Goodnight Sweet Josephine [Version 1 Unphased Version];Think About It;Goodnight Sweet Josephine [Phased (US Single) Version];Most Likely You Go Your Way (And I'll Go Mine) [Live];Little Games [Live];Drinking Muddy Water [Live];Think About It [Live];Goodnight Sweet Josephine [Live];My Baby [Live];White Summer [Live][#];Dazed and Confused [Live][#]",
+                    "bgndata": "CD",
+                    "pto": 2418,
+                    "mid": 2,
+                    "ew": "games",
+                    "surl": "http://shopping.yahoo.com/p_little-games-bonus-tracks-_music_1921961815",
+                    "pid": "1921961815",
+                    "weight": 44.0,
+                    "isbn": "724354081323",
+                    "fmt": "CD",
+                    "disp_song": "Little Games;Smile on Me [2002 Stereo Mix];White Summer",
+                    "pfrom": 2418,
+                    "categories": "1804905848 1804893726",
+                    "data": "CD24.18724354081323",
+                    "bgnsellers": 0,
+                    "artistspid": "1927005080",
+                    "newestedition": 20030211,
+                    "year": 2003,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_vladimir-horowitz-piano_music_1921945354",
+                "relevance": 0.000497976968565204,
+                "source": "storage.music",
+                "fields": {
+                    "sddocname": "music",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_vladimir-horowitz-piano_music_1921945354",
                     "title": "Vladimir Horowitz: Piano",
                     "artist": "Vladimir Horowitz",
@@ -137,17 +136,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/143475/amg1921945354_1940.jpg?rm_____DDNdNro0Z\" height=67 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 20020101,
+                    "year": 2002,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_when-sun-goes-down-4-that-s-all-right-rmst-va_music_1921885946",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2002,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_when-sun-goes-down-4-that-s-all-right-rmst-va_music_1921885946",
                     "title": "When Sun Goes Down 4: That's All Right (Rmst) / Va",
                     "artist": "Various Artists",
@@ -168,17 +167,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/141872/amg1921885946_1940.jpg?rm_____D.fKf77dd\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 20020820,
+                    "year": 2002,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_red-letter-days_music_1921927046",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2002,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_red-letter-days_music_1921927046",
                     "title": "Red Letter Days",
                     "artist": "The Wallflowers",
@@ -201,6 +200,7 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/138018/amg1921927046_1940.jpg?rm_____Dr_RsiUY9\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927019477",
                     "newestedition": 20021105,
+                    "year": 2002,
                     "did": 66,
                     "scorekey": 0,
                     "cbid": 2
@@ -208,11 +208,10 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_not-your-standard-spike-jones-collection_music_1921943761",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2002,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_not-your-standard-spike-jones-collection_music_1921943761",
                     "title": "Not Your Standard Spike Jones Collection",
                     "artist": "Spike Jones",
@@ -234,48 +233,18 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/267071/amgttn.f84096zb24v.jpg?rm_____Dg80IEZhQ\" height=63 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927005850",
                     "newestedition": 20020101,
+                    "year": 2002,
                     "did": 66,
                     "scorekey": 0,
                     "cbid": 2
                 }
             },
             {
-                "id": "id:test:music::http://shopping.yahoo.com/p_just-spring-art-songs-of-john-duke_music_1921598417",
-                "relevance": 4.97976968565204E-4,
-                "source": "storage.music",
-                "fields": {
-                    "sddocname": "music",
-                    "year": 2002,
-                    "documentid": "id:test:music::http://shopping.yahoo.com/p_just-spring-art-songs-of-john-duke_music_1921598417",
-                    "title": "Just-Spring: Art Songs of John Duke",
-                    "artist": "Lauralyn Kolb",
-                    "song": "Just-Spring;Acquainted With The Night;Water That Falls And Runs Away;I Carry Your Heart;The Mountains Are Dancing;April Elegy;Morning In Paris;There Will Be Stars;Good Morning, Midnight;Heart! We Will Forget Him!;Let Down The Bars, Oh Death;Bee! I'm Expecting You!;The Bird;Little Elegy;All Music, All Delight;She's Somewhere In The Sunlight Strong;Bells In The Rain;Penguin Geometry;O, It Was Out By Donnycarney;Aubade;I Can't Be Talkin' Of Love;Walking In The Rain;Merry-go-round",
-                    "bgndata": "CD",
-                    "pto": 1799,
-                    "mid": 2,
-                    "surl": "http://shopping.yahoo.com/p_just-spring-art-songs-of-john-duke_music_1921598417",
-                    "pid": "1921598417",
-                    "weight": 48.0,
-                    "isbn": "093228057628",
-                    "fmt": "CD",
-                    "disp_song": "Just-Spring;Acquainted With The Night;Water That Falls And Runs Away",
-                    "pfrom": 1399,
-                    "categories": "1804951797 1804893726",
-                    "data": "CD13.99-17.99093228057628",
-                    "bgnsellers": 0,
-                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/153252/amg1921598417_1940.jpg?rm_____DyhmGVCz0\" height=70 width=70 border=0 hspace=0 vspace=0",
-                    "newestedition": 20020101,
-                    "did": 66,
-                    "cbid": 2
-                }
-            },
-            {
                 "id": "id:test:music::http://shopping.yahoo.com/p_ibiza-lounge_music_1921882181",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2002,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_ibiza-lounge_music_1921882181",
                     "title": "Ibiza Lounge",
                     "artist": "Rietveldt and Damen",
@@ -297,17 +266,47 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/140975/amg1921882181_1940.jpg?rm_____D8uVK8i5k\" height=60 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927632144",
                     "newestedition": 20020716,
+                    "year": 2002,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_just-spring-art-songs-of-john-duke_music_1921598417",
+                "relevance": 0.000497976968565204,
+                "source": "storage.music",
+                "fields": {
+                    "sddocname": "music",
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_just-spring-art-songs-of-john-duke_music_1921598417",
+                    "title": "Just-Spring: Art Songs of John Duke",
+                    "artist": "Lauralyn Kolb",
+                    "song": "Just-Spring;Acquainted With The Night;Water That Falls And Runs Away;I Carry Your Heart;The Mountains Are Dancing;April Elegy;Morning In Paris;There Will Be Stars;Good Morning, Midnight;Heart! We Will Forget Him!;Let Down The Bars, Oh Death;Bee! I'm Expecting You!;The Bird;Little Elegy;All Music, All Delight;She's Somewhere In The Sunlight Strong;Bells In The Rain;Penguin Geometry;O, It Was Out By Donnycarney;Aubade;I Can't Be Talkin' Of Love;Walking In The Rain;Merry-go-round",
+                    "bgndata": "CD",
+                    "pto": 1799,
+                    "mid": 2,
+                    "surl": "http://shopping.yahoo.com/p_just-spring-art-songs-of-john-duke_music_1921598417",
+                    "pid": "1921598417",
+                    "weight": 48.0,
+                    "isbn": "093228057628",
+                    "fmt": "CD",
+                    "disp_song": "Just-Spring;Acquainted With The Night;Water That Falls And Runs Away",
+                    "pfrom": 1399,
+                    "categories": "1804951797 1804893726",
+                    "data": "CD13.99-17.99093228057628",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/153252/amg1921598417_1940.jpg?rm_____DyhmGVCz0\" height=70 width=70 border=0 hspace=0 vspace=0",
+                    "newestedition": 20020101,
+                    "year": 2002,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_revelling-reckoning_music_1921504950",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2001,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_revelling-reckoning_music_1921504950",
                     "title": "Revelling: Reckoning",
                     "artist": "Ani DiFranco",
@@ -330,6 +329,7 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/137570/amg1921504950_1940.jpg?rm_____Dgd7RD2b6\" height=64 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927030204",
                     "newestedition": 20010410,
+                    "year": 2001,
                     "did": 66,
                     "scorekey": 0,
                     "cbid": 2
@@ -337,11 +337,10 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_gothic-rock-the-ultimate-collection_music_1921506203",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2001,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_gothic-rock-the-ultimate-collection_music_1921506203",
                     "title": "Gothic Rock: The Ultimate Collection",
                     "artist": "Various Artists",
@@ -361,17 +360,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/138432/amg1921506203_1940.jpg?rm_____D_VMW0x.q\" height=63 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 20010403,
+                    "year": 2001,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_handel-water-music_music_1921594233",
-                "relevance": 7.469654528478058E-4,
+                "relevance": 0.0007469654528478058,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2001,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_handel-water-music_music_1921594233",
                     "title": "Handel: Water Music",
                     "song": "Water Music - Ste No.1: Ov. Largo - Allegro;Water Music - Ste No.1: Adagio E Staccato;Water Music - Ste No.1: Allegro - Andante - Allegro;Water Music - Ste No.1: Passepeid;Water Music - Ste No.1: Air;Water Music - Ste No.1: Menuet;Water Music - Ste No.1: Bourree;Water Music - Ste No.1: Hornpipe;Water Music - Ste No.1: Allegro;Water Music - Ste No.2 in D/Ste No.3 in G: Ov;Water Music - Ste No.2 in D/Ste No.3 in G: Alla Hornpipe;Water Music - Ste No.2 in D/Ste No.3 in G: Sarabande;Water Music - Ste No.2 in D/Ste No.3 in G: Rigaudon;Water Music - Ste No.2 in D/Ste No.3 in G: Lentement;Water Music - Ste No.2 in D/Ste No.3 in G: Bourree;Water Music - Ste No.2 in D/Ste No.3 in G: Menuet;Water Music - Ste No.2 in D/Ste No.3 in G: Andante;Water Music - Ste No.2 in D/Ste No.3 in G: Gigue 1 - Gigue 2 - Gigue 1;Water Music - Ste No.2 in D/Ste No.3 in G: Menuet - Coro",
@@ -391,17 +390,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/153127/amg1921594233_1940.jpg?rm_____Dq6Ii.Yvk\" height=69 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 20010101,
+                    "year": 2001,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_esther-williams_music_1921480604",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2000,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_esther-williams_music_1921480604",
                     "title": "Esther Williams",
                     "artist": "Esther Williams",
@@ -423,17 +422,17 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/147451/amg1921480604_1940.jpg?rm_____DB9KijwgI\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927017541",
                     "newestedition": 20000919,
+                    "year": 2000,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_original-gold_music_1921490854",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2000,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_original-gold_music_1921490854",
                     "title": "Original Gold",
                     "artist": "Belinda Carlisle",
@@ -456,6 +455,7 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/148708/amg1921490854_1940.jpg?rm_____DKLrbUH6G\" height=69 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927003250",
                     "newestedition": 20001212,
+                    "year": 2000,
                     "did": 66,
                     "scorekey": 0,
                     "cbid": 2
@@ -463,11 +463,10 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_50-weekend-classics_music_1921587212",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2000,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_50-weekend-classics_music_1921587212",
                     "title": "50 Weekend Classics",
                     "song": "The Marriage Of Figaro: Ov;Reveries;Sym No.5: II. Andante;Con in d: II. Largo;Sevilla;Vc Ste No.2 in d: I. Prld;Differencias Sobre La Gallardo;Menuet No.4;Vn Con: II. Canzonetta;Gtr Son in C: I. Allegro;Sym No.1: II. Andante;Divert No.7: III. Adagio;Con Grosso No.9, Op.6: VI. Gigue;Capriccio Espagnol Y: Fandango;Golliwogg's Cakewalk;Vn Con No.6: III. Vivace;Prld No.11;Vn Con 'The Hunt': II. Andante;Sym No.5: III. Waltz;Water Music: III. Bouree;Ste No.1: V. Menuet 1&2;Trio No.6 in E flat: III. Allegro Ma Non Tanto;Con Grosso No.8, Op.6: II. Allegro;Tritsch-Tratsch Polka;Light Cavalry Ov;Str Sym No.4: II. Andante;Ob Con No.3: II. Adagio;Pno Con No.4: II. Andante;Nata Waltz;Con Grosso No.4, Op.6: I. Larghetto;Con: II. Andantino;Sym No.8 'Unfinished': II. Andante;Tpt Con: II. Larghetto;Prld To The Afternoon Of A Faun;Ob Con in D: II. Adagio;Sym No.9 'From The New World': II. Largo;Les Prlds;Ob Son No.1: II. Adagio;Tpt Con No.2: II. Largo;Ob Con in a, RV46: III. Larghetto;Vc Ste No.1 in G: III. Courante;Psthn Con: II. Aria;Norwegian Dance No.2;Sym No.6 'The Morning': I. Adagio;Con in G: III. Rondo;Con Grosso No.2, Op.7 in B flat: IV. Cantabile;Adagio in E;Son in g: III. Largo;Sym No.21: III. Menuetto;Prld No.8",
@@ -487,17 +486,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/152851/amg1921587212_1940.jpg?rm_____De_vGN4nI\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 20000101,
+                    "year": 2000,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_baby-s-first-music_music_1921996558",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2000,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_baby-s-first-music_music_1921996558",
                     "title": "Baby's First Music",
                     "artist": "London Symphony Orchestra",
@@ -518,17 +517,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/455284/amgttn.f98334jdswo.jpg?rm_____DPbplE1_5\" height=68 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 20000101,
+                    "year": 2000,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_big-band-box-set-_music_1921490548",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2000,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_big-band-box-set-_music_1921490548",
                     "title": "Big Band [Box Set]",
                     "artist": "Various Artists",
@@ -549,49 +548,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/148666/amg1921490548_1940.jpg?rm_____DAoII_ECn\" height=51 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 20001212,
-                    "did": 66,
-                    "cbid": 2
-                }
-            },
-            {
-                "id": "id:test:music::http://shopping.yahoo.com/p_sound-of-65-there-s-a-bond-between-us_music_1921370588",
-                "relevance": 4.97976968565204E-4,
-                "source": "storage.music",
-                "fields": {
-                    "sddocname": "music",
-                    "year": 1999,
-                    "documentid": "id:test:music::http://shopping.yahoo.com/p_sound-of-65-there-s-a-bond-between-us_music_1921370588",
-                    "title": "Sound of 65/There's a Bond Between Us",
-                    "artist": "The Graham Bond Organization",
-                    "song": "(I'm Your) Hoochie Coochie Man;Baby Make Love to Me;Neighbour, Neighbour;Early in the Morning;Spanish Blues;Oh Baby;Little Girl;I Want You;Wade in the Water;Got My Mojo Working;Train Time;Baby Be Good to Me;Half a Man;Tammy;Who's Afraid of Virginia Woolf?;Hear Me Calling Your Name;Night Time Is the Right Time;Walking in the Park;Last Night;Baby Can It Be True?;What'd I Say;Dick's Instrumental;Don't Let Go;Keep A-Drivin';Have You Ever Loved a Woman?;Camels and Elephants",
-                    "bgndata": "CD",
-                    "pto": 3260,
-                    "mid": 2,
-                    "ew": "us",
-                    "surl": "http://shopping.yahoo.com/p_sound-of-65-there-s-a-bond-between-us_music_1921370588",
-                    "pid": "1921370588",
-                    "weight": 48.0,
-                    "isbn": "5017261205001",
-                    "fmt": "CD",
-                    "disp_song": "(I'm Your) Hoochie Coochie Man;Baby Make Love to Me;Neighbour, Neighbour",
-                    "pfrom": 3260,
-                    "categories": "1804905773 1804893726",
-                    "data": "CD32.605017261205001",
-                    "bgnsellers": 0,
-                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/152276/amg1921370588_1940.jpg?rm_____DOupLfvy3\" height=69 width=70 border=0 hspace=0 vspace=0",
-                    "artistspid": "1927012413",
-                    "newestedition": 19991214,
+                    "year": 2000,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_slim-slo-slider-home-grown_music_1921351103",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1999,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_slim-slo-slider-home-grown_music_1921351103",
                     "title": "Slim Slo Slider/Home Grown",
                     "artist": "Johnny Rivers",
@@ -613,18 +580,50 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/151307/amg1921351103_1940.jpg?rm_____DnuyQ19g7\" height=68 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927176100",
                     "newestedition": 19990825,
+                    "year": 1999,
                     "did": 66,
                     "scorekey": 0,
                     "cbid": 2
                 }
             },
             {
-                "id": "id:test:music::http://shopping.yahoo.com/p_cinema-classics-6_music_1921564949",
-                "relevance": 4.97976968565204E-4,
+                "id": "id:test:music::http://shopping.yahoo.com/p_sound-of-65-there-s-a-bond-between-us_music_1921370588",
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1998,
+                    "documentid": "id:test:music::http://shopping.yahoo.com/p_sound-of-65-there-s-a-bond-between-us_music_1921370588",
+                    "title": "Sound of 65/There's a Bond Between Us",
+                    "artist": "The Graham Bond Organization",
+                    "song": "(I'm Your) Hoochie Coochie Man;Baby Make Love to Me;Neighbour, Neighbour;Early in the Morning;Spanish Blues;Oh Baby;Little Girl;I Want You;Wade in the Water;Got My Mojo Working;Train Time;Baby Be Good to Me;Half a Man;Tammy;Who's Afraid of Virginia Woolf?;Hear Me Calling Your Name;Night Time Is the Right Time;Walking in the Park;Last Night;Baby Can It Be True?;What'd I Say;Dick's Instrumental;Don't Let Go;Keep A-Drivin';Have You Ever Loved a Woman?;Camels and Elephants",
+                    "bgndata": "CD",
+                    "pto": 3260,
+                    "mid": 2,
+                    "ew": "us",
+                    "surl": "http://shopping.yahoo.com/p_sound-of-65-there-s-a-bond-between-us_music_1921370588",
+                    "pid": "1921370588",
+                    "weight": 48.0,
+                    "isbn": "5017261205001",
+                    "fmt": "CD",
+                    "disp_song": "(I'm Your) Hoochie Coochie Man;Baby Make Love to Me;Neighbour, Neighbour",
+                    "pfrom": 3260,
+                    "categories": "1804905773 1804893726",
+                    "data": "CD32.605017261205001",
+                    "bgnsellers": 0,
+                    "image": "img src=\"http://us.f1.yahoofs.com/shopping/152276/amg1921370588_1940.jpg?rm_____DOupLfvy3\" height=69 width=70 border=0 hspace=0 vspace=0",
+                    "artistspid": "1927012413",
+                    "newestedition": 19991214,
+                    "year": 1999,
+                    "did": 66,
+                    "cbid": 2
+                }
+            },
+            {
+                "id": "id:test:music::http://shopping.yahoo.com/p_cinema-classics-6_music_1921564949",
+                "relevance": 0.000497976968565204,
+                "source": "storage.music",
+                "fields": {
+                    "sddocname": "music",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_cinema-classics-6_music_1921564949",
                     "title": "Cinema Classics 6",
                     "song": "Prelude To Tristan And Isolde: Excalibur;A Midsummer Night's Dream, Op. 61: Scherzo: A Midsummer Night's Sex Comedy;Tombeau 'Les Regrets': Tous les matins du monde;Prelude, Op. 28, No. 4: Five Easy Pieces;Gianni Schicchi - Firenze e come un albero fiorito: A Room With A View;Symphony No. 3 In F Major, Op. 90: Poco allegretto: Goodbye Again;Brandenburg Concerto No. 4 In G Major, BWV 1049: Presto: Slaughterhouse-Five;1812 Overture, Op. 49: The Music Lovers;Waltz Of The Flowers From The Nutcracker: Fantasia;Allegro vivace From Piano Concerto In A Minor Op. 54: Madame Sousatzka;Adagio From Oboe Concerto In D Minor: Anonimo Veneziano;Dammi tu forza From La Traviata: Pretty Woman;Minuetto From String Quintet In E Major G 275: The Ladykillers;Ave Verum Corpus K. 618: Lorenzo's Oil;Allegro moderato From Piano Trio In B Flat Major Op. 97: Swing Kids;Overture To Tannhauser: Meeting Venus;Nocturne No. 2 E Flat Major Op. 9: Man Trouble;Largo From Serse: Dangerous Liaisons;Allegro vivo - Appassionato From String Quartet No. 1 In E Minor: Sneakers;Moment Musical No. 2: Au revoir les enfants;Misere: Chariots Of Fire;Adagio From Piano Concerto No. 2: A Midsummer Night's Sex Comedy;Overture To The Marriage Of Figaro K. 492: Trading Places;Waltz No. 15 In E Minor Op. Posth.: Sneakers;Siegfried's Death And Funeral March From Gotterdammerung: Excalibur;Anvil Chorus From Il Trovatore: A Night At The Opera;Allegro assai Form Piano Sonata No. 23 In F Minor Op. 57 'Appassionata': Madame Sousatzka;Allegro - Andante From Water Music: Dead Poets Society;ANdante un poco mosso From Piano Concerto No. 5 In E Flat Major Op. 73 'Emperor': Picnic At Hanging Rock;Dance Of The Hours From La Gioconda: Fantasia;Arrival Of The Queen Of Sheba From Solomon: Heartburn;Andante - Allegro non troppo from Violin Concerto In E Minor Op. 64: A Month In The Country;Sonnerie de Sainte Genevieve du Mont de Paris: Tours les matins du monde;Allegro From Organ Concerto No. 13 In F Major: Dangerous Liaisons;ANdante nobilmente e semplice Frm Symphony No. 1 In A Flat Major Op. 55: Greystoke: The Legend Of Tarzan, Lord Of The Apes;Troika From Lieutenant Kije: Love And Death;Il mio tesoro From Don Giovanni K. 527: Kind Hearts And Coronets;A Night On The Bare Mountain: Fantasia",
@@ -644,17 +643,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/376383/amgttn.l45594sv515.jpg?rm_____Dz7wEDkSB\" height=69 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 19980101,
+                    "year": 1998,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_heritage_music_1921619539",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1997,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_heritage_music_1921619539",
                     "title": "Heritage",
                     "artist": "Various Artists",
@@ -675,17 +674,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/141465/amg1921619539_1940.jpg?rm_____DQ6jgunek\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 19970916,
+                    "year": 1997,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_what-s-up-matador_music_1921619246",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1997,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_what-s-up-matador_music_1921619246",
                     "title": "What's Up Matador",
                     "artist": "Various Artists",
@@ -708,17 +707,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/141297/amg1921619246_1940.jpg?rm_____DcyhWPOgg\" height=69 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 19970701,
+                    "year": 1997,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_edward-macdowell-s-woodland-sketches-opus-51_music_1921601568",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1997,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_edward-macdowell-s-woodland-sketches-opus-51_music_1921601568",
                     "title": "Edward MacDowell's Woodland Sketches, Opus 51",
                     "artist": "The Beau Hunks",
@@ -740,17 +739,17 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/135008/amg1921601568_1940.jpg?rm_____D7YFVvn7p\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927137980",
                     "newestedition": 19971230,
+                    "year": 1997,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_weekend-classics_music_1921531745",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1997,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_weekend-classics_music_1921531745",
                     "title": "Weekend Classics",
                     "song": "'Eine kleine Nachtmusik': Allegro;'Soloman': Arrival Of The Queen Of Sheba;Canon In D;'Brandenburg' Concerto No. 3: (Allegro);Adagio For Strings And Organ;Harpischord Suite No. 5: Air And Variations ('The Harmonious Blacksmith');'The Four Seasons' (The Autumn): The Hunt: Allegro;Piano Concerto No. 21 ('Elvira Madigan' Theme): Andante;'Moonlight' Sonata: Adagio sostenuto;Symphony No. 4,  'Italian': Introduction;Polovstian Dance No. 17: Excerpt From Polovstian Dance No. 17;'The Tales Of Hoffman': Barcarolle;Symphony No.9, 'From The New World': Largo;'Trois Gymnopedies': Lent et douloureux;'Thais': Meditation;'The Four Seasons' (The Spring): Allegro;Air For The 'G' String;Concerto For Two Violins And Orchestra, 'Double': Vivace;'Xerxes': Largo;Allegro For Brass;Sheep May Safely Graze;Piano Sonata No. 11: Rondo 'alla turca';Divertimento No. 1: Allegro;'Pathetique' Sonata: Adagio cantabile;21 Hungarian Dances: No. 4 In F-Sharp Minor;21 Hungarian Dances: No. 5 In G Minor;21 Hungarian Dances: No. 6 In D Major;'Cavalleria rusticana': Intermezzo;'Peer Gynt': Dawn;Serenade For Strings: Waltz;Pavan For A Dead Princess;'Concierto de Aranjuez': Adagio;'Brandenburg' Concerto No. 5: Allegro;'Water Music': Alla Hornpipe;Jesu, Joy Of Man's Desiring;Oboe Concerto: Highlights From Oboe Concerto - Adagio;Oboe Concerto: Highlights From Oboe Concerto - Presto;Arioso For Brass;Concerto For Two Violins And Orchestra, 'Double': Largo ma non tanto;Clarinet Concerto: Adagio;Fur Elise;Symphony No. 6, 'Pastoral': Andante molto mosso;The 24 Preludes, Op. 28: No. 4 In E Minor;The 24 Preludes, Op. 28: No. 7 In A Major;The 24 Preludes, Op. 28: No. 20 In C Minor;'On The Beautiful Blue Danube': Excerpt From 'On The Beautiful Blue Danube';'Donna Diana': Overture;'Giselle': Adagio; Waltz;Clair de lune;String Quintet In E Major, Op. 13, No. 5: Minuet;Orchestral Suite No. 2: Minuet And Badinerie;'Royal Fireworks Music': La Rejouissance: Allegro;Prelude And Fugue In C Major;Flute Concerto, Op. 44, No. 11: Largo Flute Concerto, Op. 44, No. 11;'Water Music': Air;'Emperor' String Quartet No. 3: Poco Adagio;'Eine kleine Nachtmusik': Romanze: Andante;Symphony No. 5: Allegro;'Swan Lake': Scene: Enchanted Lake;Slavonic Dance No. 3;'La Belle Helene': Overture;Melody In F;'The Carnival Of The Animals': The Swan;Adagio For Strings",
@@ -770,17 +769,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/1645722/amgttn.l190169v0mr.jpg?rm_____DmbNA7tK6\" height=61 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 19970101,
+                    "year": 1997,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_ulrich-herkehoff-the-art-of-pan_music_1921572370",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1996,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_ulrich-herkehoff-the-art-of-pan_music_1921572370",
                     "title": "Ulrich Herkehoff: The Art of Pan",
                     "artist": "Ulrich Herkenhoff",
@@ -800,17 +799,17 @@
                     "data": "CD16.98099923645528",
                     "bgnsellers": 0,
                     "newestedition": 19960101,
+                    "year": 1996,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_shenandoah-an-american-chorister-1890-1990_music_1921596901",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1994,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_shenandoah-an-american-chorister-1890-1990_music_1921596901",
                     "title": "Shenandoah: An American Chorister, 1890-1990",
                     "artist": "Los Angeles Chamber Singers",
@@ -831,17 +830,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/153227/amg1921596901_1940.jpg?rm_____DXHNFlcG5\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 19940101,
+                    "year": 1994,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_great-melodies-of-the-classics_music_1921527170",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1992,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_great-melodies-of-the-classics_music_1921527170",
                     "title": "Great Melodies Of The Classics",
                     "song": "Fanfare (Masterpiece Theater Theme);Orchestral Suite No.3 in D Major, BWV 1068: Air For The G String;Canon In D Major;The Spring In E Major, Op.8, No.1: Allegro;The Spring In E Major, Op.8, No.1: Largo e pianissimo sempre;The Spring In E Major, Op.8, No.1: Allegro: Rustic Dance;Water Music Suite: Allegro;Water Music Suite: Air;Water Music Suite: Bouree;Water Music Suite: Hornpipe;Water Music Suite: Andante expressivo;Water Music Suite: Hornpipe;Brandenburg Concerto No.2 In F Major, BWV1047: (Allegro);Brandenburg Concerto No.2 In F Major, BWV1047: Andante;Brandenburg Concerto No.2 In F Major, BWV1047: Allegro assai;Table Music Overture;Toccata And Fugue In D Minor, BWV565;Symphony No.5 In C Minor, Op.67: Allegro Con Brio;Eine kleine Nachtmusik, K.525: Allegro;Eine kleine Nachtmusik, K.525: Romanze: Andante;Eine kleine Nachtmusik, K.525: Menuetto: Allegretto;Eine kleine Nachtmusik, K.525: Rondo: Allegro;Symphony No.94 In G Major, Surprise: Adagio: Vivace Assai;Symphony No.94 In G Major, Surprise: Andante;Symphony No.94 In G Major, Surprise: Menuet: Allegro Molto;Symphony No.94 In G Major, Surprise: Finale: Allegro Di Molto;Symphony no.5 In B-Flat Major: Allegro Vivace;Piano Concerto No.21 In C Major, K.467: Andante;Beethoven: Allegro Ma Non Troppo;Light Cavalry Overture;Symphony No.5 in E minor, Op.64: Valse: Allegro moderato;William Tell: Overture;Bolero;Die Fledermaus (The Bat): Overture;A Midsummer Night's Dream Suite: Overture;A Midsummer Night's Dream Suite: Scherzo;A Midsummer Night's Dream Suite: Nocturne;A Midsummer Night's Dream Suite: Wedding March;A Midsummer Night's Dream Suite: Puck's Dance;The Valkyrie: Ride Of The Valkyries;Peer Gynt Suite No.1, Op.46: Dawn;Peer Gynt Suite No.1, Op.46: Death Of Ase;Peer Gynt Suite No.1, Op.46: Anitra's Dance;Peer Gynt Suite No.1, Op.46: In The Hall Of The Moutain King;Les Preludes;Orpheus In The Underworld: Overture;My Country: The Moldau;The Afternoon Of A Faun: Prelude;Carmen: The Toreadors;Carmen: Habanera;Carmen: March Of The Smugglers",
@@ -863,17 +862,17 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/146761/amg1921527170_1940.jpg?rm_____D1rI95CRz\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 19920101,
                     "bgnpto": "7.48",
+                    "year": 1992,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_to-be-continued-_music_1921008586",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1990,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_to-be-continued-_music_1921008586",
                     "title": "To Be Continued...",
                     "artist": "Elton John",
@@ -896,17 +895,17 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/137673/amg1921008586_1940.jpg?rm_____DEB7qx9RU\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927523179",
                     "newestedition": 19900101,
+                    "year": 1990,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_been-in-the-storm-so-long_music_1921075229",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1990,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_been-in-the-storm-so-long_music_1921075229",
                     "title": "Been in the Storm So Long",
                     "artist": "Various Artists",
@@ -927,6 +926,7 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/147451/amg1921075229_1940.jpg?rm_____DCsJNuKic\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 19900101,
+                    "year": 1990,
                     "did": 66,
                     "cbid": 2
                 }

@@ -16,11 +16,10 @@
         "children": [
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_to-be-continued-_music_1921008586",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1990,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_to-be-continued-_music_1921008586",
                     "title": "To Be Continued...",
                     "artist": "Elton John",
@@ -43,17 +42,17 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/137673/amg1921008586_1940.jpg?rm_____DEB7qx9RU\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927523179",
                     "newestedition": 19900101,
+                    "year": 1990,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_been-in-the-storm-so-long_music_1921075229",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1990,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_been-in-the-storm-so-long_music_1921075229",
                     "title": "Been in the Storm So Long",
                     "artist": "Various Artists",
@@ -74,17 +73,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/147451/amg1921075229_1940.jpg?rm_____DCsJNuKic\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 19900101,
+                    "year": 1990,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_great-melodies-of-the-classics_music_1921527170",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1992,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_great-melodies-of-the-classics_music_1921527170",
                     "title": "Great Melodies Of The Classics",
                     "song": "Fanfare (Masterpiece Theater Theme);Orchestral Suite No.3 in D Major, BWV 1068: Air For The G String;Canon In D Major;The Spring In E Major, Op.8, No.1: Allegro;The Spring In E Major, Op.8, No.1: Largo e pianissimo sempre;The Spring In E Major, Op.8, No.1: Allegro: Rustic Dance;Water Music Suite: Allegro;Water Music Suite: Air;Water Music Suite: Bouree;Water Music Suite: Hornpipe;Water Music Suite: Andante expressivo;Water Music Suite: Hornpipe;Brandenburg Concerto No.2 In F Major, BWV1047: (Allegro);Brandenburg Concerto No.2 In F Major, BWV1047: Andante;Brandenburg Concerto No.2 In F Major, BWV1047: Allegro assai;Table Music Overture;Toccata And Fugue In D Minor, BWV565;Symphony No.5 In C Minor, Op.67: Allegro Con Brio;Eine kleine Nachtmusik, K.525: Allegro;Eine kleine Nachtmusik, K.525: Romanze: Andante;Eine kleine Nachtmusik, K.525: Menuetto: Allegretto;Eine kleine Nachtmusik, K.525: Rondo: Allegro;Symphony No.94 In G Major, Surprise: Adagio: Vivace Assai;Symphony No.94 In G Major, Surprise: Andante;Symphony No.94 In G Major, Surprise: Menuet: Allegro Molto;Symphony No.94 In G Major, Surprise: Finale: Allegro Di Molto;Symphony no.5 In B-Flat Major: Allegro Vivace;Piano Concerto No.21 In C Major, K.467: Andante;Beethoven: Allegro Ma Non Troppo;Light Cavalry Overture;Symphony No.5 in E minor, Op.64: Valse: Allegro moderato;William Tell: Overture;Bolero;Die Fledermaus (The Bat): Overture;A Midsummer Night's Dream Suite: Overture;A Midsummer Night's Dream Suite: Scherzo;A Midsummer Night's Dream Suite: Nocturne;A Midsummer Night's Dream Suite: Wedding March;A Midsummer Night's Dream Suite: Puck's Dance;The Valkyrie: Ride Of The Valkyries;Peer Gynt Suite No.1, Op.46: Dawn;Peer Gynt Suite No.1, Op.46: Death Of Ase;Peer Gynt Suite No.1, Op.46: Anitra's Dance;Peer Gynt Suite No.1, Op.46: In The Hall Of The Moutain King;Les Preludes;Orpheus In The Underworld: Overture;My Country: The Moldau;The Afternoon Of A Faun: Prelude;Carmen: The Toreadors;Carmen: Habanera;Carmen: March Of The Smugglers",
@@ -106,17 +105,17 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/146761/amg1921527170_1940.jpg?rm_____D1rI95CRz\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 19920101,
                     "bgnpto": "7.48",
+                    "year": 1992,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_shenandoah-an-american-chorister-1890-1990_music_1921596901",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1994,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_shenandoah-an-american-chorister-1890-1990_music_1921596901",
                     "title": "Shenandoah: An American Chorister, 1890-1990",
                     "artist": "Los Angeles Chamber Singers",
@@ -137,17 +136,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/153227/amg1921596901_1940.jpg?rm_____DXHNFlcG5\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 19940101,
+                    "year": 1994,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_ulrich-herkehoff-the-art-of-pan_music_1921572370",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 1996,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_ulrich-herkehoff-the-art-of-pan_music_1921572370",
                     "title": "Ulrich Herkehoff: The Art of Pan",
                     "artist": "Ulrich Herkenhoff",
@@ -167,6 +166,7 @@
                     "data": "CD16.98099923645528",
                     "bgnsellers": 0,
                     "newestedition": 19960101,
+                    "year": 1996,
                     "did": 66,
                     "cbid": 2
                 }
