@@ -16,11 +16,10 @@
         "children": [
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_pianist-extraordinaire-2-deluxe-box-set-_music_1921950529",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2003,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_pianist-extraordinaire-2-deluxe-box-set-_music_1921950529",
                     "title": "Pianist Extraordinaire 2 (Deluxe Box Set)",
                     "artist": "Don Shirley",
@@ -42,17 +41,17 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/144071/amg1921950529_1940.jpg?rm_____DmJd0xLk.\" height=70 width=58 border=0 hspace=0 vspace=0",
                     "artistspid": "1927008643",
                     "newestedition": 20030218,
+                    "year": 2003,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_in-bright-mansions_music_1921945828",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2003,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_in-bright-mansions_music_1921945828",
                     "title": "In Bright Mansions",
                     "artist": "Fisk Jubilee Singers",
@@ -74,6 +73,7 @@
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/143580/amg1921945828_1940.jpg?rm_____D69vlSjfU\" height=62 width=70 border=0 hspace=0 vspace=0",
                     "artistspid": "1927378374",
                     "newestedition": 20030128,
+                    "year": 2003,
                     "did": 66,
                     "scorekey": 0,
                     "cbid": 2
@@ -81,11 +81,10 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_little-games-bonus-tracks-_music_1921961815",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2003,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_little-games-bonus-tracks-_music_1921961815",
                     "title": "Little Games [Bonus Tracks]",
                     "artist": "The Yardbirds",
@@ -106,17 +105,17 @@
                     "bgnsellers": 0,
                     "artistspid": "1927005080",
                     "newestedition": 20030211,
+                    "year": 2003,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_vladimir-horowitz-piano_music_1921945354",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2002,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_vladimir-horowitz-piano_music_1921945354",
                     "title": "Vladimir Horowitz: Piano",
                     "artist": "Vladimir Horowitz",
@@ -137,17 +136,17 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/143475/amg1921945354_1940.jpg?rm_____DDNdNro0Z\" height=67 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 20020101,
+                    "year": 2002,
                     "did": 66,
                     "cbid": 2
                 }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_when-sun-goes-down-4-that-s-all-right-rmst-va_music_1921885946",
-                "relevance": 4.97976968565204E-4,
+                "relevance": 0.000497976968565204,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "year": 2002,
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_when-sun-goes-down-4-that-s-all-right-rmst-va_music_1921885946",
                     "title": "When Sun Goes Down 4: That's All Right (Rmst) / Va",
                     "artist": "Various Artists",
@@ -168,6 +167,7 @@
                     "bgnsellers": 0,
                     "image": "img src=\"http://us.f1.yahoofs.com/shopping/141872/amg1921885946_1940.jpg?rm_____D.fKf77dd\" height=70 width=70 border=0 hspace=0 vspace=0",
                     "newestedition": 20020820,
+                    "year": 2002,
                     "did": 66,
                     "cbid": 2
                 }

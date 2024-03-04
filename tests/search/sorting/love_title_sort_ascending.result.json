@@ -16,12 +16,12 @@
         "children": [
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_1929_music_1921161693",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "1929",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_1929_music_1921161693",
+                    "title": "1929",
                     "artist": "Clarence Williams",
                     "song": "Hot Lovin';Mama Stayed Out;Nobody's Business (How I Love That Man);Endurance Stomp;Some Do And Some Don't;Scufflin' Blues;If You Like Me Like I Like You;Have You Ever Felt That Way?;A Pane In The Glass;Too Low;Mississippi Blues (Home Town Toddle);Steamboat Days;Close Fit Blues;Baby, Won't You Please Come Home?;Breeze (Blow My Baby Back To Me);Mountain City Blues;I'm Not Worryin';Touch-Down;In Our Cottage Of Love;Lazy Mama;In Our Cottage Of Love;Them Things Got Me",
                     "bgndata": "CD",
@@ -47,12 +47,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_200-km-h-in-the-wrong-lane-bonus-tracks-ltd-_music_1922010651",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "200 Km/H In The Wrong Lane (Bonus Tracks) (Ltd)",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_200-km-h-in-the-wrong-lane-bonus-tracks-ltd-_music_1922010651",
+                    "title": "200 Km/H In The Wrong Lane (Bonus Tracks) (Ltd)",
                     "artist": "Tatu",
                     "song": "Not Gonna Get Us;All the Things She Said;Show Me Love;30 Minutes;How Soon Is Now;Clowns;Malchik Gay;Stars;[Untranslated] (Ya Shosla S Uma);[Untranslated] (Nas Ne Dagoniat);Show Me Love [Extended Version];30 Minutes [Remix];Malchik Gay [Remix][*];Ne Ver, Ne Boisia [Eurovision 2003];Bonus DVD",
                     "bgndata": "CD",
@@ -79,12 +79,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_22-all-time-big-band-favorites_music_1921048563",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "22 All Time Big Band Favorites",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_22-all-time-big-band-favorites_music_1921048563",
+                    "title": "22 All Time Big Band Favorites",
                     "artist": "Lawrence Welk",
                     "song": "Take The 'A' Train;Sentimental Journey;Heartaches;String Of Pearls;Who Wouldn't Love You;Boogie Woogie;Sunrise Serenade;And The Angels Sing;The Waltz You Saved For Me;Tangerine;King Porter Stomp;One O'Clock Jump;Boo Hoo;Ciribiribin;Got A Date With An Angel;Cumana;Christopher Columbus;Begin The Beguine;Does Your Heart Beat For Me;Woodchopper's Ball;Oh Johnny, Oh Johnny, Oh;South Rampart Street Parade",
                     "bgndata": "CDCA",
@@ -111,12 +111,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_30-sizzling-slabs-_music_1921170010",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "30 Sizzling Slabs!",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_30-sizzling-slabs-_music_1921170010",
+                    "title": "30 Sizzling Slabs!",
                     "artist": "The Devil Dogs",
                     "song": "Strip Search;Get In Line;So Young;Baby I'm A King;Whip It On;Gonna See You Tonight;Don't Do It;Rock City USA;Get Out;North Shore Bitch;Time Enough For Love;Go On Girl;I'm Gonna Make You Mine;Stay Out All Night;One That Got Away;Cheesecake;Palisades Park;Action;Ball Me Out;354;Stay With Me;Be True To Your School;Suck The Dog;They're Not Around;C'mon Little Baby;Chinatown;Chinatown;Annalisa;Gimme That Girl;Best Part Of Breaking Up;Pussywhipped;Brand New Chevy",
                     "bgndata": "CD",
@@ -143,12 +143,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_a-s-b-s-ep-s_music_1921980937",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "A's B's & EP's",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_a-s-b-s-ep-s_music_1921980937",
+                    "title": "A's B's & EP's",
                     "artist": "Adam Faith",
                     "song": "What Do You Want?;Poor Me;Someone Else's Baby;When Johnny Comes Marching Home;Wonderful Time;Diamond Ring;Summertime {From Porgy & Bess, Act 1, Scene 1};Greenfinger;How About That;Easy Going Me;Who Am I?;Lonely Pup (In a Christmas Shop);Time Has Come;Help Each Other Romance;As You Like It;Face to Face;Don't That Beat All;Mix Me a Person {From 'Mix Me a Person'};First Time;So Long Baby;We Are in Love;Made for Me;Message to Martha (Kentucky Bluebird);It Sounds Good to Me",
                     "bgndata": "CD",
@@ -174,12 +174,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_and-this-is-maxwell-street_music_1921351577",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "And This Is Maxwell Street",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_and-this-is-maxwell-street_music_1921351577",
+                    "title": "And This Is Maxwell Street",
                     "artist": "Various Artists",
                     "song": "Sun Is Shining;Can't Hold Out Much Longer;Juke Medley;That's All Right;Red Top/Ornithology;Maxwell Street Jam;Lucille;Corrina, Corrina;Power to Live Right;Cheating and Lying Blues;Honky Tonk;Dust My Broom;Peter Gunn Jam;I Need Love So Bad;All I Want for My Breakfast;Take It Easy Baby;Long Gone John;Mama Talk to Your Daughter;I'm Ready;Carey'n On;When the Saints Go Marching In;Back off Jam;John Henry;Anna Lee/Sweet Black Angel;Love You Tonight;Time Have Come;Cruisin' in a Cadillac;Honey Hush;I'll Fly Away;I Shall Overcome",
                     "bgndata": "CD",
@@ -205,12 +205,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_anthology_music_1921870729",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Anthology",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_anthology_music_1921870729",
+                    "title": "Anthology",
                     "artist": "Rick James",
                     "song": "You And I;Mary Jane;Hollywood;Bustin' Out (On Funk);Fire It Up;Love Gun;Come Into My Life;When Love Is Gone;Big Time;Island Lady;Give It To Me Baby;Super Freak;Fire And Desire;Dance Wit' Me;Standing On The Top (12 Inch Version);Hard To Get;Happy;69 Times;My Love;U Bring The Freak Out;Cold Blooded;Ebony Eyes;P.I.M.P. The S.I.M.P.;17 (Single Version);Glow;Moon Child;Sweet And Sexy Thing;Loosey's Rap",
                     "bgndata": "CD",
@@ -238,12 +238,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_anthology-1968-1979-charly-_music_1921297513",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Anthology: 1968-1979 [Charly]",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_anthology-1968-1979-charly-_music_1921297513",
+                    "title": "Anthology: 1968-1979 [Charly]",
                     "artist": "Townes Van Zandt",
                     "song": "Be Here to Love Me;Kathleen;Out Mother the Mountain;St. John the Gambler;Snake Mountain Blues;For the Sake of the Song;Waiting Around to Die;Don't Take It Too Bad;Colorado Girl;I'll Be Here in the Morning;None But the Rain;Delta Momma Blues;Turnstyled, Junkpiled;Tower Song;Come Tomorrow;Brand New Companion;Where I Lead Me;Two Hands;Standin';No Deal;To Live Is to Fly;Mr. Gold and Mr. Mud;High, Low and In Between;No Lonesome Tune;Don't Let the Sunshine Fool Ya';Honky Tonkin';Fraulein;Pancho and Lefty;If I Needed You;Heavenly Houseboat Blues;Fraternity Blues [Live];Tecumseh Valley [Live];Lungs [Live];Only Him or Me [Live];Loretta;No Place to Fall;Flying Shoes;Who Do You Love;When She Don't Need Me;Snake Song",
                     "bgndata": "CD",
@@ -270,12 +270,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_aspects-of-andrew-lloyd-webber-1-_music_1921141774",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Aspects of Andrew Lloyd Webber [#1]",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_aspects-of-andrew-lloyd-webber-1-_music_1921141774",
+                    "title": "Aspects of Andrew Lloyd Webber [#1]",
                     "artist": "Andrew Lloyd Webber",
                     "song": "Music Of The Night (From Phantom Of The Opera);Memory (From Cats);Variations: Introduction And Theme (From Song And Dance);Don't Cry For Me Argentina (From Evita);Anything But Lonely (From Aspects Of Love);Tell Me On A Sunday (From Song And Dance);The Jellicle Ball (From Cats);Love Changes Everything (From Aspects Of Love);I Only Want To Say (From Jesus Christ Superstar);Pie Jesu (From Requiem);Close Every Door To Me (From Joseph And The Amazing Technicolour Dreamcoat);Buenos Aires (From Evita);I Don't Know How To Love Him (From Jesus Christ Superstar);Aspects Of Andrew: Jesus Christ Superstar/The Phantom Of The Opera/All I Ask Of You/Herod's Song",
                     "bgndata": "CDCA",
@@ -303,12 +303,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_autumn-in-new-york_music_1921413629",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Autumn in New York",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_autumn-in-new-york_music_1921413629",
+                    "title": "Autumn in New York",
                     "artist": "Original Soundtrack",
                     "song": "Beautiful;Getting Some Fun Out Of Life;Autumn In New York;Our Love Never Ends;Charlotte And Will;Autumn Forever;Elegy For Charlotte;Autumn In New York-Opening Titles;First Kiss;Memories;A Rude Awakening;Walking Through The Park;Lunch;Thinking About Lisa;Butterflies;Break-up;Thinking It Over;Apart;Can You Let Me Love You?;Searching For A Doctor;Katy;The Chances For Success;What Can I Give You?;I Don't Want To Leave You;First/Last Snow;To The Hospital;No Thing That Ever Flew;The Gift",
                     "bgndata": "CD6.99|1",
@@ -339,12 +339,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_awakening-at-the-inn-of-the-birds_music_1921969004",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Awakening At The Inn Of The Birds",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_awakening-at-the-inn-of-the-birds_music_1921969004",
+                    "title": "Awakening At The Inn Of The Birds",
                     "artist": "Byron / Cahill / Kubera / Supove / Flux Quartet",
                     "song": "Continents of city and love, for 2 pianos, synthesizer, string quartet & double bass;Tidal, for 2 pianos, synthesizer, string quartet & double bass;Evaporated pleasure, for 2 pianos;Awakening at the inn of the birds, for string quartet;As she sleeps, for piano",
                     "bgndata": "CD",
@@ -370,12 +370,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_bad-boys-best-2001_music_1921464673",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Bad Boys Best 2001",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_bad-boys-best-2001_music_1921464673",
+                    "title": "Bad Boys Best 2001",
                     "artist": "Bad Boys Blue",
                     "song": "You're a Woman '98;Back to the Future;L.O.V.E. In My Car '98;Jungle in My Heart '99;From Heaven to Heartache;Lady in Black '98;Don't Walk Away Suzanne [et Cetera Remix];I'll Be Good;World Without You (Michelle);Queen of Hearts '99;Come Back and Stay '98;Lovers in the Sand '98;Do What You Do;Save Your Love '99;Have You Ever Had a Love Like This;Hungry for Love [Rap Version];Kiss You All Over, Baby '99;S.O.S. For Love;Love Really Hurts Without You;House of Silence '99;Don't Want Your Love;Sweet Little Things",
                     "bgndata": "CD",
@@ -403,12 +403,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_barry-white-friends_music_1921955430",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Barry White & Friends",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_barry-white-friends_music_1921955430",
+                    "title": "Barry White & Friends",
                     "artist": "Barry White",
                     "song": "Love Theme;Man Ain't Nothin';I Got Love;All in the Run of a Day;Come on in Love;Lost Without the Love of My Life;This Thing Called Love;To Whom It May Concern;Don't Kiss Me Hello;It May Be Winter Outside (But in My Heart It's Spring);Don't Take Your Love from Me;Everybody's Going Mod;I Feel Love Coming On;I Don't Need It;Together Forever;Under the Influence of Love",
                     "bgndata": "CD",
@@ -436,12 +436,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_bed-by-the-window_music_1921304138",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Bed by the Window",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_bed-by-the-window_music_1921304138",
+                    "title": "Bed by the Window",
                     "artist": "James King",
                     "song": "Wear A Red Rose;Big House On The Corner;Bed By The Window;Tall Pines;Sweeter Than The Flowers;I Don't Do Floors;They'll Never Take Her Love From Me;Pack Up Your Sorrows;Love Me One More Time;Yesterday's Winner Is A Loser Today;Called From Potter's Field;The Lonely Years Belong To Me",
                     "bgndata": "CDCA",
@@ -469,12 +469,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_best-of-car-talk-vol-2_music_1921213853",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Best of Car Talk, Vol. 2",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_best-of-car-talk-vol-2_music_1921213853",
+                    "title": "Best of Car Talk, Vol. 2",
                     "artist": "Various Artists",
                     "song": "Clinton Sends Vowels To Bosnia;The Toll-Gate Fugitive;The Famous Montreal Hotel Fire Of 1985;Love And The Disinterested Mechanic;The Pinkwater Files: Circumferentially Challenged;The Real Guy Test;The Ingrate Sold Your Car;Who's Click And Who's Clack?;Car Broken? Call A Clobber!;Technological Advances In French Cars;Talk About A Bad Trip To The Office;Max And The Schnauzer;Bonus Tom And Ray Laugh Track;Bonus Tom And Ray Laugh Track II;Bonus Tom And Ray Laugh Track III",
                     "bgndata": "CDCA",
@@ -500,12 +500,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_best-of-the-chiffons-dj-specialist-_music_1921306697",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Best of the Chiffons [DJ Specialist]",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_best-of-the-chiffons-dj-specialist-_music_1921306697",
+                    "title": "Best of the Chiffons [DJ Specialist]",
                     "artist": "The Chiffons",
                     "song": "He's So Fine;Keep the Boy Happy;Sailor Boy;When the Boy's Happy (The Girl's Happy Too);Did You Ever Go Steady;My Boyfriend's Back;He's a Bad One;I Have a Boyfriend;Sweet Talkin' Guy;Tonight I Met an Angel;One Fine Day;Will You Love Me Tomorrow;Just for Tonight;Love So Fine;Stop Look and Listen;Loco-Motion;It's My Party;I Wonder Why",
                     "bgndata": "CD",
@@ -533,12 +533,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_big-band-box-set-_music_1921490548",
-                "relevance": 3.8731541999515855E-4,
+                "relevance": 0.00038731541999515855,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Big Band [Box Set]",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_big-band-box-set-_music_1921490548",
+                    "title": "Big Band [Box Set]",
                     "artist": "Various Artists",
                     "song": "Jump for Joy;Chelsea Bridge;Johnny Come Lately;Moon Mist;Main Stem;What Am I Here For?;Perdido;C Jam Blues;I'm Beginning to See the Light;Things Ain't What They Used to Be;In a Sentimental Mood;Caravan;Black and Tan Fantasy;It Don't Mean a Thing (If It Ain't Got That Swing);Sultry Sunset;Blue Skies [Trumpet No End];Magenta Haze;On a Turquoise Cloud;Park at 106th;Do Nothin' Till You Hear from Me;Ain't Got Nothin' But the Blues;I'm Beginning to See the Light;Don't You Know I Care (Or Don't You Care to Know);I Didn't Know About You;Word Song;Come Sunday;Blues;Three Dances;Carnegie Blues;Blue Cellophane;Mood to Be Wooed;My Heart Sings;Mood Indigo;Bug in a Rug;Mooche;Kandylamb;Perfume Suite, Pt. 1: Under the Blacony/Strange Feeling;Perfume Suite, Pt. 2: Dancers in Love/Coloatura;Jumpin' at the Woodside;One O'Clock Jump;Swingin' in the Blues;Topsy;Every Tub;Twelfth Street Rag;Oh, Lady Be Good;Jive at Five;Texas Shuffle;Clap Hands! Here Comes Charley;Tickle Toe;I Never Knew;Love Jumped Out;Super Chief;Red Bank Boogie [G.I. Stomp];Rhythm Man;Fiesta in Blue;Yeah Man!;Dance of the Gremlins;G.I. Stomp;Yeah Man;Rhythm Man;Kansas City Stride;Beaver Junction;Circus in Rhythm;Aunt Hagar's Country Home;Gee, Baby Ain't I Good to You?;Basie Strides Again (Along Avenue C);Harvard Blues;Jimmy's Blues;I Didn't Know About You;Red Bank Boogie;Taps Miller;Jimmy's Blues;Take Me Back, Baby;Playhouse No. 2 Stomp [Variations on \"I Got Rhythm\"];Old Manuscript;On the Upbeat;Camel Hop;True Confession;Life Goes to a Party;I'm a Ding Dong Daddy (from Dumas);It's Wonderful;Thanks for the Memory;Life Goes to a Party;If Dreams Come True;I'm Like a Fish Out of Water;Sweet Stranger;Please Be Kind;Ti-Pi-Tin;Ooooo-Oh Boom;Always and Always;Make Believe;Blue Room;I Can't Give You Anything But Love;Silhouetted in the Moonlight;Loch Lomond;Thanks for the Memory;Bei Mir Bist du Schön, Pt. 1-2;I Let a Song Go Out of My Heart;This Can't Be Love;And the Angels Sing;Get Rhythm in Your Feet (and Music in Your Soul);It's Been So Long;Goody Goody;All My Life;Too Good to Be True;These Foolish Things (Remind Me of You);There's a Small Hotel;You Turned the Tables on Me;Little Brown Jug;Sunrise Serenade;Jumpin' Jive;Moonlight Serenade;Hallelujah!;In the Mood;Farewell Blues;Johnson Rag;My Melancholy Baby;Tuxedo Junction;Pennsylvania 6-5-0-0;Anvil Chorus;Under a Blanket of Blue;Song of the Volga Boatman;Sun Valley Jump;Perfidia;Chattanooga Choo Choo;String of Pearls;American Patrol;(I've Got a Gal In) Kalamazoo;Serenade in Blue;St. Luois Blues;Anvil Chorus;Farewell Blues;St. Louis Blues March;Stardust;Tuxedo Junction;Poinciana;Blues in My Heart;Begin the Beguine;Over There;Here We Go Again;Everybody Loves My Baby;Sun Valley Jump;Juke Box Saturday Night;My Blue Heaven;Jeep Jockey Jump;Flying Home;Where Are You?;That Foolish Feeling;There's Frost on the Moon;Tea on the Terrace;I'm in a Dancing Mood;Jamboree;Keepin' Out of Mischief Now;Goona Goo;If My Heart Could Only Talk;Mr. Ghost Goes to Town;Lookin' Around Corners for You;Who'll Buy My Violets?;On a Little Bamboo Bridge;How Could You?;Melody in F;You're Here, You're There, You're Everywhere;Song of Indio;Marie;Dedicated to You;Sweet Is the World for You;In a Little Hula Heaven;I'll Dream My Way to Heaven;Weary Blues;Royal Garden Blues;Liebestraum;Mendelssohn's Spring Song;Sheik of Araby;Boogie Woogie;Hawaiian War Chant;Imagination;East of the Sun (And West of the Moon);Whispering;Stardust;Swing Low, Sweet Chariot;Yes, Indeed!;Blue Skies;What Is This Thing Called Love?;Well Git It;There Are Such Things;Opus One;On the Sunny Side of the Street;Chicago;I'm Getting Sentimental Over You;Jubilee;When We're Alone;Can't I?;Life Goes to a Party;Texas Chatter;Song of the Wanderer;It's the Dreamer in Me;One O'Clock Jump;Out of Nowhere;Wrap Your Troubles in Dreams (And Dream Your Troubles Away);Lullaby in Rhythm;Little White Lies;Boo Woo;Woo-Woo;Home James;Jesse;Ciribiribin (They're So in Love);Sweet Georgia Brown;Blame It on My Last Affair;Love's a Necessary Thing;'Tain't What You Do (It's the Way That You Do It);Two O'Clock Jump;And the Angels Sing;(Back Home Again In) Indiana;Got No Time;King Porter Stomp;Comes Love;I Can't Afford to Dream;I Found a New Baby;Fannie May;From the Bottom of My Heart;Sugar Daddy;Melancholy Mood;Avalon;My Buddy;Vol Vistu Gaily Star;Flash;It's Funny to Everyone But Me;Here Comes the Night;Willow Weep for Me;Feet Draggin' Blues;All or Nothing at All;On a Little Street in Singapore;Who Told You I Cared?;Sleepy Time Gal;Concerto for Clarinet, Pt. 1-2 [from the Paramountfilm Desond Chorus];King for a Day;Stardust;Prelude in C Major;Chantez Les Bas [Sing 'em Low];What Is There to Say?;Who's Excited;Confessin' (That I Love You);Solid Sam;Take Your Shoes off Baby (And Start Runnin' Through My Mind);Love Me a Little Little;Blues in the Night {from Blues in the Night};Beyond the Blue Horizon {from the Paramount Film \"Monte Carlo\"};Deuces Wild;Someone's Rocking My Dreamboat;Rockin' Chair;Just Kiddin' Around;Carnival;St. James Infirmary;Needlenose;Two in One Blues;Japanese Sandman;Pretty Girl Is Like a Melody;I Used to Be Above Love;No Regrets;South Sea Island Magic;It Ain't Right;Sugar Foot Stomp;Thou Swell;You're Giving Me a Song and a Dance;One, Two, Button Your Shoe;Let's Call a Heart a Heart;Skeleton in the Closet;There's Something in the Air;Take Another Guess;There's Frost on the Moon;Love and Learn;Moon Face;Same Old Line;You Can Tell She Comes from Dixie;Woodchopper's Ball;Northwest Passage;I've Got News for You;Bijou (Rhumba a la Jazz);Goof and I;Happiness Is a Thing Called Joe;Early Autumn [Summer Sequence Pt. 4];Sidewalks of Cuba;Keen and Peachy;Everywhere;Four Brothers;Goosey Gander;Blowin' Up a Storm;Keeper of the Flame;Early Autumn;Lemon Drop;At the Woodchoppers Ball;It's a Blue World;Indian Boogie Woogie;Four of Five Times;East Side Kick;Blues Downstair;Yardbird Shuffle;Golden Wedding;Fan It;Careless;Who's Dat Up Dere?;South;Get Your Boots Laced Pa;Blue Ink;Fort Worth Jail;Blues;Herman at the Sherman;Too Late;Junkin';Blues on Parade;Woodsheddin With Woody;Virginia, Georgia and Caroline;I See a Million People (But All I Can See Is You );Blues in the Night;Mermaid Song;Tappin' Off;I Get the Neck of the Chicken;Lordy;Conchita;Hey, Doc!;Moment I Laid Eyes on You;I Want to Rock;Says Who? Says You, Says I!;Who Calls?;I'll Be Around;Minnie the Moocher;Let's Go Joe;Nain Nain (No No);Tain't No Good;Ogeechee River Lullaby;I Get the Neck of the Chicken;Mrs. Finnigan;Smo-O-O-Oth One;Hep Cat's Love Song;Hot Sir;Willow Weep for Me;Chattanooga Choo Choo;Special Delivery;St. James Infirmary;St. James Infirmary;Chicken Ain't Nothin' But a Bird;Make Yourself at Home;You Are the One in My Heart;Goin' Conga;Lonesome Nights;Workers` Train;Take the \"A\" Train;Ebony Silhouette;Are You All Reet?;Jonah Joins the Cab;Run Little Rabbit;My Gal;We Go Well Together;North of the Mohawk Trail;Geechy Joe;You're Breaking My Heart All Over Again;Down Argentina Way;Moon Over Burma;High on a Windy Hill;I Hear Music;Like the Fella Once Said;Somewhere;I'd Know You Anywhere;How 'Bout That Mess?;You Danced With Dynamite;When You Awake;It All Comes Back to Me Now;Hamtramck;Yes, My Darling Daughter;Full Dress Hop;Sweet Georgia Brown;Oh! They're Making Me All Over in the Army;Deep in the Blues;You Are the One;Isn't That Just Like Love?;You Forgot About Me;Bolero at the Savoy;I Know That You Know;Fare Thee Well, Annie Laurie;Wire Brush Stomp;Nagasaki;Jeepers Creepers;Murdy Purdy;To-Ra-Ra-Boom-Der-E;Grandfather's Clock;Apurksody;Never Felt Bette, Never Had Less;Do Youwanna Jump Children;Madam Swings It;Dracula;Symphony in Riffs;Drummin' Man;Georgia on My Mind;Fool Am I;Intermission Riff;Artistry Jumps;Painted Rhythm;Peg O' My Heart;Ecuador;Opus in Pastels;Capitol Punishment;Rhythm Incorporated;Lover;Chorale for Brass, Piano and Bongo;Abstraction;Cuban Carnival;Journey to Brazil;Two Moose in a Caboose;Body and Soul;I Never Throught I'd Sing the Blues;Solitude;On the Sunny Side of the Street;Begin the Beguine;Scotch and Water;Yesterdays;Easy Street;No Baby, Nobody But You;Lover;Everybody Swing;I Got the Sun in the Morning;It's Never Too Late to Pray;Who's Got a Tent Fo Rent;Tea for Two;Come Rain or Come Shine;Reed Rapture;One Twenty;Lover Man;Cocktails for Two;I Surrender Dear;End of the World;Are You Here to Stay?;Moonlight and Magnolias;I May Be Wrong (But I Think You're Wonderful);Facts and Figures;Go Harlem;Love Marches On;There's Frost on the Moon;Gee But You're Swell;Rusty Hinge;Wake up and Live;It's Swell of You;Clap Hands! Here Comes Charlie;That Naughty Waltz;In a Little Spanish Town;I Got Rhythm;I Ain't Got Nobody;Strictly Jive;Stompin' at the Savoy;That's My Home;If Dreams Come True;Don't Be That Way;Down Home Rag;Love and Kisses;Rhythm and Romance;Sweet Sue, Just You;Squeeze Me;Harlem Congo;Hallelujah;Midnite in a Madhouse (Midnite in Harlem);Dipsy Doodle;Azure;Liza (All the Clouds'll Roll Away);Spinnin' the Webb;Who Ya Hunchin'?;Four or Five Times;Organ Grinder's Swing;Harlem Shout;For Dancers Only;Margie;'Tain't What You Do (It's the Way That You Do It);Jazz Hot;Cheatin' on Me;Baby, Won't You Please Come Home;Lonesome Road;Mandy, Make up Your Mind;Ain't She Sweet;Well, All Right Then;Uptown Blues;Twenty-Four Robbers;Blues in the Night, Pts. 1 & 2;I'm Gonna Move to the Outskirts of Town, Pt. 1-2;Back Door Stuff, Pts. 1 & 2;Strictly Instrumental;I'm Gonna See My Baby;Knock Me a Kiss;I Dream a Lot About You;Keep Smilin', Keep Laughin', Be Happy;Easy Street;I'm Losing My Mind (Because of You);It Had to Be You;I'm in a Jam With Baby;Life Is Fine;Baby, Are You Kiddin'?;Honeydripper;Buzz-Buzz-Buzz;That Someone Must Be You;This Is My Confession to You;Jeep Rhythm;Blue Lou;Shipyard Ramble;Nona;Someone's Rocking My Dream Boat;Soft Winds;Night After Night;Riff Time;Keep Cool, Fool;Hey Doc!;Blackout;I Know a Secret;I Love You Truly;Jumpin' in a Julep Joint;Who's Beatin' My Time With You?;S'posin';Tonight You Belong to Me;No Use Squawkin;Sometimes;So Long, Shorty;Uncke Bud;I Don't Want to Walk Without You;I'm in a Low Down Groove;Blue Sea;Tippin' In;I Hope to Die of I Told a Lie;Caldonia;No, Baby, Nobodybut You;Drifting Alone;Bicycle Bounce;Good Dip;Don't Cry Baby;'Tain't No Good;I Guess I'll Have to Get Along Without You;Knock Me a Kiss;Wrap Your Troubles in Dreams;Lucky Seven (Bill's Tune);Bear Mash Blues;Fifteen Years (I'm Still Serving Time);Remember;Country Boys;Let's Have Fun Tonight;Prove It by the Things You Do;Holiday for Swing;Stempede;It's Wearin' Me Down;Back in Your Own Backyard;You're in Love With Love;All God's Chillun Got Rhythm;What's Your Story;Posin';If You Ever Should Leave;Sing You Sinners;(I've Been) Saving Myself for You;There's Rain in My Eyes;Rose Room;Rhythm of the Tambourine;Slumming on Park Avenue;If It's the Last Thing I Do;What Do You Hear from the Mob in Scotland;Trees;Let 'Er Go;It's the Little Things That Count;Worried Over You;Stealin' Apples;Moten Stomp;Don't Let the Rhythm Go to Your Head;Great Caesar's Ghost;Chris and His Gang;Rug Cutter's Swing;Where There's You There's Me;Liza (All the Clouds'll Roll Away);I'll Always Be in Love With You;Do You or Don't You Love Me?;Hotter Than 'Ell;Christopher Columbus;I'm a Fool for Loving You;Grand Terrace Rhythm;Jim Town Blues;Moonrise on the Lawnlands;Sing, Sing, Sing;Big Chief de Sota;Riffin';Mary Had Little Lamb;Shoe Shine Boy;Stealin' Apples;Knock, Knock Who's There?;What Will I Tell My Heart?;Until Today;Wild Party;You Can Depend on Me;Blue Lou;Jangled Nerves;Swing Street Strut;Echoes of Harlem;Scotch and Soda;Only a Rose;I Never Knew;Miss Annabelle Lee;Lazy Bug;Ebony Thapsody;Lament for a Lost Love [Solace];Cherokee;All Night Record Man (Stay Up \"Stan\");Last Jump (A Jump to End All Jumps);Duke's Idea;Counts Idea;Right Idea;Wrong Idea (Swing and Sweat With Charlie Barnet);Ogoun Badagris (Voodoo War God);Oh What You Said (Are We Burnt Up?);Night Clow;Between 18th and 19th on Chestnut Street;Leapin' at the Lincoln;Leapin' at a Moax (Shake, Rattle'n Roll);Clap Hands, Here Comes Charlie;Flying Home;Rockin' in Rhythm;Pompton Turnpike;Wild Mab of the Fish Pond;Southern Fried;Redskin Rhumba;Lumby;Charleston Alley;You're My Thrill;Things Ain't What They Used to Be;Washington Whirligig;Moose;Pow-Wow;Strollin';Great Lie;Flat Top Flips the Lid;Gulf Coast Blues;Drop Me off in Harlem;Sharecroppin' Blues;West End Blues;Xango;E-Bob-O-Lee-Bob;Skyliner;Patience and Fortitude;Malibu;Who's Sorry Now;Poinciana;Forever Blue;Just a Baby's Prayer at Twilight;Jump Call;Hurry, Hurry!;Love for Sale;Some of These Days;Prelude to a Kiss;I Can't Escape from You;Rose Room;I Surrender, Dear;I'm the Caring Kind;I'm Lost;Good Deal;I Can't Get Started;Looking for a Boy;Daddy-O;Diga Diga Doo;Just You, Just Me;Black Bottom;Night Fall;Swinging the Blues;Gloaming;Carry Me Back to Old Virginia;I've Got Two Lips;When Day Is Done;Jingle Bells;Gin and Jive;New Street Swing;There'll Be Some Changes Made;Nagasaki;There's a Small Hotel;I Gotta Go;Bugle Call Rag;I'm in the Mood for Swing;Swingin' at Maida Vale;Hiegh-Ho [the Dwarfs' Marching Song];Serenade to the Stars;Sophisticated Swing;Never Felt Better, Never Had Less;Moonshine Over Kentucky;Down Stream;I've Got a Guy;Piano Tuner Man;Can't Help Lovin' Dat Man;Azure;Little Gare's Special;There'll Be Some Changes Made;Peg O' My Heart;Gangbuster's Holiday;Walkin' the Dog;Patty Cake, Patty Cake (Baker Man);Y'had It Comin' to You;Night Song;In the Dark;Jazz Me Blues;Moonshine Over Kentucky;Lovelight in the Starlight;Russian Lullaby;Outside of Paradise;Rinka Tinka Man;'Round My Old Deserted Farm;I Dance Alone;Wearin' of the Green;It's the Little Things That Count;Somewhere With Somebody Else;Wacky Dust;Trees;Skylark;Me and My Melinda;My Little Cousin;Somebody Else Is Taking My Place;Ay-Ay-Ay;Ain't She Sweet?;Wolverine Blues;You Rascal You;Cut off My Legs and Call Me \"Shorty\";Satchel Mouth Swing;Love Walked In;Swing That Music;Dusky Stevedore;That's My Home;I'm Shooting High;(Was I to Blame For) Falling in Love With You?;Solitude;I Hope Gabriel Likes My Music;It's Wonderful;Flat Foor Floogie;On the Sunny Side of the Street;Rockin' Chair;Lazybones;Cain and Abel;When It's Sleepy Time Down South;Leap Frog;I Used to Love You (But It's All Over Now);(Get Some) Cash for Your Trash;Among My Souvernirs;Coquette;Our Delight;Ray's Idea;Things to Come;Emanon;Ow!;Oop-Pop-A-Da;Two Bass Hit;Stay on It;Algo Bueno (Woody 'N' You);Cool Breeze;Cubana Be;Cubana Bop;Manteva;Good Bait;Ool Ya Koo;Minor Walk;Lover, Come Back to Me;I'm Beboppin' Too;Duff Capes;Vibe Boogie;Screamin' Boogie;Doublin' With Dublin;Ribs and Hot Sauce;Blow Top Blues;Two Finger Boogie;Somebody;Beulah's Boogie;Playboy;Punch and Judy;Pinetop's Boogie Woogie;On the Sunny Side of the Street;Rockin' in Rhythm, Pt. 1;Rockin' in Rhythm, Pt. 2;Gay Notes;Tempo's Birthday;Hamp's Salty Blues;Ridin' on the L & N;Frantic Fantasy;It Don't Mean a Thing (If It Ain't Got That Swing);Black, Brown and Beige, Pt. 1: Blues;Black, Brown and Biege, Pt. 2: West Indian Dance/Emancipation Celebrati;Kissing Bug;Everything But You;(Otto Make That) Riff Staccato;Prelude to a Kiss;Caravan;Black and Tan Fantasy;Mood Indigo;Harlem Air Shaft;Minor Goes Muggin';It Don't Mean a Thing (If It Ain't Got That Swing);Sophisticated Lady;Tonight I Shall Sleep (With a Smile on My Face);I Let a Song Go Out of My Heart;Solitude",
                     "bgndata": "CD",
@@ -564,12 +564,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_blood-sweat-tears-greatest-hits-remastered-_music_1921321392",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Blood, Sweat & Tears' Greatest Hits [Remastered]",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_blood-sweat-tears-greatest-hits-remastered-_music_1921321392",
+                    "title": "Blood, Sweat & Tears' Greatest Hits [Remastered]",
                     "artist": "Blood, Sweat & Tears",
                     "song": "You've Made Me So Very Happy;I Can't Quit Her;Go Down Gamblin';Hi-De-Ho That Old Sweet Roll;Sometimes In Winter;And When I Die;Spinning Wheel;Lisa, Listen To Me;I Love You More Than You'll Ever Know;Lucretia Mac Evil;God Bless The Child;So Long Dixie;More And More",
                     "bgndata": "CDCA",
@@ -598,12 +598,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_blue-guitars-vol-1-2_music_1921306618",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Blue Guitars, Vol. 1-2",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_blue-guitars-vol-1-2_music_1921306618",
+                    "title": "Blue Guitars, Vol. 1-2",
                     "artist": "Eddie Lang/Lonnie Johnson",
                     "song": "Hot Fingers;Eddie's Twister;Playing With the Strings;Have to Change Keys (To Play These Blues);Little Love, a Little Kiss;Stompin' Em Along Slow;Midnight Call Blues;Knockin' a Jug;Blue Room Blues;Add a Little Wiggle;Away Down in the Alley Blues;Blue Guitars;Rainbow Dreams;Blues in G;Deep Minor Rhythm Stomp;Mahogany Hall Stomp;I'll Never Be the Same;April Kisses;Prelude in C Sharp Minor;Melody Man's Dream;Perfect;Church Street Sobbin' Blues;There'll Be Some Changes Made;Jeannine (I Dream of Lilac Time);Two-Tone Stomp;Guitar Blues;Bull Frog Moan;Handful of Riffs;Work Ox Blues;Risin' Sun;Jet Black Blues;Blue Blood Blues",
                     "bgndata": "CD",
@@ -630,12 +630,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_blue-note-jazzmen_music_1921299025",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Blue Note Jazzmen",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_blue-note-jazzmen_music_1921299025",
+                    "title": "Blue Note Jazzmen",
                     "artist": "Various Artists",
                     "song": "High Society (Alt Tk #1);High Society (Alt Tk #2);High Society;Blues At Blue Note (Alt Tk);Blues At Blue Note;Night Shift Blues (Alt Tk);Night Shift Blues;Royal Garden Blues (Alt Tk);Royal Garden Blues;Blue Note Boogie;Everybody Loves My Baby;Everybody Loves My Baby (Alt Tk);Ballin' The Jack;Who's Sorry Now (Alt Tk);Who's Sorry Now;The Call Of The Blues;Blue Mizz;Blue Mizz (Alt Tk);Victory Stride (Alt Tk);Victory Stride;Joy Mentin';After You've Gone;Tishomingo Blues (Alt Tk);Tishomingo Blues;Walkin' The Dog (Alt Tk);Walkin' The Dog;Easy Rider;At The Ball (Alt Tk);At The Ball",
                     "bgndata": "CD",
@@ -661,12 +661,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_blues-2-0_music_1921997828",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Blues 2.0",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_blues-2-0_music_1921997828",
+                    "title": "Blues 2.0",
                     "artist": "Fruteland Jackson",
                     "song": "Blues 2.0;My Pencil Don't Write No More;Laura Marie;Long Distance Love Affair;I Wonder;Moon Man Rag;I Can Still Rock And Roll;How Could We Live Without Love;Big Road Blues;Lucky Lady;Sometimes Bad Man Blues;Blues On The Banjo;The Lonely Traveler",
                     "bgndata": "CD",
@@ -695,12 +695,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_born-out-of-time-1979-88-australian-indie-var_music_1921867447",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Born Out Of Time: 1979-88 Australian Indie / Var",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_born-out-of-time-1979-88-australian-indie-var_music_1921867447",
+                    "title": "Born Out Of Time: 1979-88 Australian Indie / Var",
                     "artist": "Various Artists",
                     "song": "Hanging On;Hindu Gods [Of Love];Chelsea Kids;Brother John;I Don't Mind;Voodoo Slaves;Crying Sun;Swampland;Igloo;(Lets All) Turn on;Drop out;Frozen World;Wild Desire;Out Of The Unknown;Born Out Of Time;Slave Girl;Julie Is A Junkie;Make You Mine;Girl In The Sweater;Albuquerque (Wild Scenes);Explosion In A Room;Blaze Of Glory",
                     "bgndata": "CD",
@@ -727,12 +727,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_box-hits-98_music_1921305799",
-                "relevance": 3.8731541999515855E-4,
+                "relevance": 0.00038731541999515855,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Box Hits '98",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_box-hits-98_music_1921305799",
+                    "title": "Box Hits '98",
                     "artist": "Various Artists",
                     "song": "Crush;Sex on the Beach;Because We Want To;Someone Loves You Honey;One for Sorrow;Real Good Time;My Oh My;How Do I Live;Be Careful [Featuring R. Kelly];High;I've Got This Feeling;Let the Music Heal Your Soul;Searching for a Soul;Don't Rush [Take Love Slowly];Jesus Says;Generation Sex;Only When I Lose Myself;Hundred Mile High City;Morning Afterglow;Tell Me;Got to Get Up;Horny [Horny '98 Radio Edit];Mysterious Times;Rockafeller Skank;Delicious;Rock With You [Di Extended Mix];House Music [Full Intention Radio Edit];Shame [Full on Vocal Radio Mix];Burning [Blockbuster Edit];Everybody (Backstreet's Back) [Sharp London Vocal Remix];Teardrops [Flava Mix 7\"];New Kind of Medicine;Honey;Deep Menace (Spank) [Joey Negro's Sitone Radio Edit];I Wanna Love You;It's True [Main Mix];Eyes Don't Lie;Kiss the Girl;Never Gonna Change My Mind [Jason Nevins Radio Remix];Paradise City",
                     "bgndata": "CD",
@@ -758,12 +758,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_brave-remastered-_music_1921943379",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Brave (Remastered)",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_brave-remastered-_music_1921943379",
+                    "title": "Brave (Remastered)",
                     "artist": "Marillion",
                     "song": "Bridge;Living With The Big Lie;Runaway;Goodbye To All That: (I) Wave (II) Mad (III) The Opium Den (IV) The Slide (V) Standing In The Swing;Hard As Love;The Hollow Man;The Lap Of Luxury/Now Wash Your Hands;Paper Lies;Brave;The Great Escape;Made Again;The Great Escape (Orchestral Version);Marouette Jam;The Hollow Man (Acoustic);Winter Trees;Alone Again In The Lap Of Luxury (Acoustic);Runway (Acoustic);Hard As Love (Instrumental) Previously Unreleased;Living With The Big Lie Previously Unreleased Demo;Alone Again In The Lap Of Luxury Previously Unreleased Demo;The Great Escape (Spiral Remake);The Great Escape (Spiral Remake)",
                     "bgndata": "CDCA",
@@ -792,12 +792,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_british-film-music-volume-3_music_1921590471",
-                "relevance": 3.8731541999515855E-4,
+                "relevance": 0.00038731541999515855,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "British Film Music, Volume 3",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_british-film-music-volume-3_music_1921590471",
+                    "title": "British Film Music, Volume 3",
                     "song": "The First Of The Few: Spitfire Prelude;The First Of The Few: Spitfire Fugue;Spellbound: Theme From The Concerto;Henry The Fifth: The Death Of Flastaff;Henry The Fifth: Touch Her Soft Lips And Part;Odette: The Saga Of Odette;Desert Victory: March;A Matter Of Life And Death: Prelude;This Man Is Mine: Theme;Sleeping Car To Trieste: Sleeping Car Train;Sleeping Car To Trieste: Waltz;The Rake's Progress: Calypso;Wanted For Murder: A Voice In The Night;Hungry Hill: Waltz Into Jig;Esther Waters: Derby Day 1886;The Loves Of Joanna Godden: Romney Marsh/Joanna Godden/Sheepshearing/Work On The Farm/The Fair...;The Loves Of Joanna Godden: Ellen And Harry Trevor/Adoption Of Motherless Lamb...;Woman Hater: People In Love;Woman Hater: Dinner At Lady Datchett's;The Weaker Sex: Victory Parade Montage;The Weaker Sex: London Scene;So Long At The Fair: Carriage & Pair... Long Forgotten Melody",
                     "bgndata": "CD",
                     "pto": 1798,
@@ -820,12 +820,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_buddy-and-ella-johnson-1953-1964_music_1921058814",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Buddy and Ella Johnson 1953-1964",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_buddy-and-ella-johnson-1953-1964_music_1921058814",
+                    "title": "Buddy and Ella Johnson 1953-1964",
                     "artist": "Budd and Ella Johnson",
                     "song": "That's How I Feel About You;Ecstasy;Hittin' On Me;Jit Jit;I'm Just Your Fool;A-12;I Never Had It So Good;Ain'tcha Got Me (Where You Want Me);Bring It Up, Van Dyke;My Old Man;One More Time;Let's Start All Over Again (Down On Bended Knee);Shut Your Big Mouth (Girl);Mush Mouth;Mush Mouth;Any Day Now;A Pretty Girl (A Cadillac And Some Money);Ain't But One;There's No One Like You;Thinking It OVer;If You'd Say Yes;It Used To Hurt Me;Well Do It;Bitter Sweet;Crazy 'Bout A Saxophone;Send Out For A Bucket Of Beer;(Gotta Go) Upside Your Head;Someday;Someday;Alright, Okay You Win;If You Would Only Say You're Sorry;It's Bout To Break My Heart In Two;It's Obdacious;Save Your Love For Me;So Good;Gone Walkin';Doot Doot Dow;I Don't Want Nobody (To Have My Love But You);You Got It Made;Bring It Home To Me;Buddy's Boogie;Why Don'tcha Stop It;I'll Dearly Love You;Kool Kitty;What A Day;Good Bye Baby Here I Go;That's What You Gotta Do;I Still Love You;Oh! Baby, Don't You Know;You'd Better Believe Me;You're Everything My Heart Desires;Rock On;Rock On;Rockin' Time;They Don't Want Me To Rock No More;I've Surrendered;Slide's Mambo;You're The One For Me;Don't Shout At Me Daddy;No! I Ain't Gonna Let You Go;Don't Turn Your Back On Me;They All Say I'm The Biggest Fool;I Cry;Baby Don't You cry;Goodbye Baby Here I Go;I Don't Care Who Knows;You'll Get Them Blues;Stop Pretending;Please Mister Johnson;Since I Fell For You;I Wonder Where Our Love Has Gone;Lil' Dog;Minglin';Far Cry;Lover Bird;No More;Buddy's Tune;Don't Fail Me Baby;Small Taste;Baby Hear My Humble Plea;Tuke Number One;Going To New York;Have Mercy On A Fool;Buddy's Song;Real Fine Frame;Walk'em;I'm Tired Of Cryin' Over You;You Better Change Your Ways;Down Yonder;Go Ahead And Rock;Get Down On The Road;Sliding Horns;Come Here, Lovely Dovey;Keeping My Love For You;Buddy's Rock;A Woman, A Lover, A Friend;I'll Be Glad;(Ha! Ha! Baby) The Last Laugh's On You;Ever So Grateful;Good-Time Man;Don't Be Messin';Like You Do;I Gotta Talk To Somebody;Keep On Loving You",
                     "bgndata": "CD",
@@ -852,12 +852,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_cantos-de-espa-a_music_1921532126",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Cantos De España",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_cantos-de-espa-a_music_1921532126",
+                    "title": "Cantos De España",
                     "artist": "Christensen, Jacob/Fukacová, Michaela",
                     "song": "Andaluza (Playera) (No.5 of \"Spanish Dances (12)\"), various guitar & other non-piano arrangements;España, 6 album leaves for piano, Op. 165, B. 37;España, 6 album leaves for piano, Op. 165, B. 37;España, 6 album leaves for piano, Op. 165, B. 37;Sicilienne, for cello & piano, Op. 78;Berceuse, for violin & piano (or orchestra) in D Major, Op. 16;Après un rêve (\"Levati sol que luna è levata\"), song for voice & piano, Op. 7/1;Vocalise-Étude en forme de Habanera, for  voice & piano;Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Suite Populaire Espagnole, for piano (arr. from \"Popular Spanish Songs\" by Kochans);Cantos de España, 5 pieces for piano, Op. 232, B. 44;Spanish Suite, for cello & piano;Spanish Suite, for cello & piano;Spanish Suite, for cello & piano;Spanish Suite, for cello & piano;Goyescas (Guys in Love), 6 pieces in 2 books for piano, H. 64;Danza Espanola, for orchestra (from \"La Vida Breve\")",
                     "bgndata": "CD",
@@ -880,12 +880,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_capitol-rockabilly-pt-2_music_1921373037",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Capitol Rockabilly, Pt. 2",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_capitol-rockabilly-pt-2_music_1921373037",
+                    "title": "Capitol Rockabilly, Pt. 2",
                     "artist": "Various Artists",
                     "song": "Heartbreakin' Mama;Bop Cat Bop;Baby I Love You;I Can't Dance;Mister Whiz;Honey Bop;Deep Elm;Everybody's Talkin';Playin' the Field;Hey Mr. Cotton Picker;Don't Push Me Too Far;Last Night at the Party;I'm Stuck;Red Hen Hop;Move It on Over;You Told a Fib;You're Gonna Have to Ball, That's All;Cell of Love;I Chickened Out;Party Line;My Baby Done Left Me;Jeopardy;Alone With You;I Wanna Waltz;Draggin' the River;Mr. Big Feet;Texas Boogie;Baby Buggie Boogie;Go Ahead On;Mexicali Baby",
                     "bgndata": "CD",
@@ -911,12 +911,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_cbe-a-celebration_music_1921933376",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Cbe A Celebration",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_cbe-a-celebration_music_1921933376",
+                    "title": "Cbe A Celebration",
                     "artist": "Richard Hickox",
                     "song": "Pageantry for brass band;Country Gardens, for orchestra, BFMS Unnum;Apocalypse, for orchestra;Poems (2) for orchestra;King Arthur, suite for orchestra;Guitar Concerto, for guitar & chamber orchestra, Op. 67;Elizabethan Dances for orchestra;Symphony No. 2 in G major (\"A London Symphony\");St. Paul's Suite, for strings, Op. 29/2, H. 118;Symphony No. 104 in D major (\"London\"), H. 1/104;Concerto for Small Orchestra and Solo Violin;Ancient Airs and Dances, Set 3, 4 arrangements for strings, P. 172;Colonel Bogey March for orchestra/band;Caractacus, cantata for soloists, chorus & orchestra, Op. 35;Magnificat in D major, BWV 243;Canterbury Pilgrims;War Requiem, for soprano, tenor, baritone, boys' voices, chorus, chamber orchestra, orchestra & organ, Op. 66;Paulus (Saint Paul), oratorio, Op. 36;Hymnus Paradisi for soprano, tenor, chorus, & orchestra;Requiem Mass, for soloists, chorus & orchestra (Manzoni Requiem);Sea Drift, for baritone, chorus & orchestra, RT ii/3;Missa in tempore belli, for soloists, chorus, organ & orchestra in C major (\"Paukenmesse\"), H. 22/9;Scenes From the Bavarian Highlands, 6 songs arranged for chorus & piano (or orchestra), Op. 27a;Scotch Strathspey and Reel, for 4-part men's chorus & orchestra, BFMS 28;Song of the Soul (in intimate communication and union with the love of God) for chorus & string orchestra, Op. 78;Stabat mater for 2 sopranos, tenor, bass, chorus, & orchestra",
                     "bgndata": "CD",
@@ -942,12 +942,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_champs-elysees-cafe_music_1921652135",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Champs Elysees Cafe",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_champs-elysees-cafe_music_1921652135",
+                    "title": "Champs Elysees Cafe",
                     "artist": "Various Artists",
                     "song": "Modelled;I Cry (Ernest St-Laurent Remix);The Promise;IC Le Funk;Sucubz (Ark Original Mix);Silence;Free At Last;La Papaye Mobile;Innerscar (Belleville Meditation Blues Mix By Kid Loco);Still (Egyptian Shuffle Version By Pyjaman);Sex (Les Petroleuses Remix);Lost In Da Machine (Couz 1 Remix);OK Skorpios (Mekon Remix);Sore Fingers;Fallin' In Love (PT. G Remix);Chocolate Girl (Julien Jabre Remix);Eve;Unplug (Hypno Club Mix Edit)",
                     "bgndata": "CD",
@@ -973,12 +973,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_children-s-classic-film-favorites-vol-2_music_1921614245",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Children's Classic Film Favorites, Vol. 2",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_children-s-classic-film-favorites-vol-2_music_1921614245",
+                    "title": "Children's Classic Film Favorites, Vol. 2",
                     "artist": "The Starlite Singers",
                     "song": "Toy Story: You've Got A Friend In Me;Hunchback Of Notre Dame: Someday;Pocahontas: Colors Of The Wind;Lion King: Can You Feel The Love Tonight;Pinocchio: When You Wish Upon A Star;The Little Mermaid: Under The Sea;Snow White: Whistle While You Work;Fox & The Hound: The Best Of Friends;The Aristocats: Everybody Wants To Be A Cat;Mary Poppins: Chim - Chim - Cheree",
                     "bgndata": "CD",
@@ -1005,12 +1005,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_christ-rising_music_1921595849",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Christ Rising",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_christ-rising_music_1921595849",
+                    "title": "Christ Rising",
                     "artist": "Choir of the Queen's College, Oxford",
                     "song": "The Last Supper: Verily, Verily, I Say Unto You;Gethsemane; The Arrest Of Jesus: Tristis Est Anima Mea;For Good Friday: Christe, Du Lamm Gottes, BWV 619;Jesus Condemned: Vinea Mea Electa;The Crucifixtion: What Love Is This Of Thine;The Crucifixion: Hilf, Gott, Dass Mir's Gelinge, BWV 624;Sacred & Profane: Eight Medieval Lyrics, Op.91: Yif Ic Of Luve Can;Sacred & Profane: Eight Medieval Lyrics, Op.91: Ye That Pasen By;Da Jesus An Dem Kreuze Stund, BWV 621;The Death Of Jesus: Tenebrae Factae Sunt;The Death Of Jesus: Vere Languores;The Death Of Jesus: A Litany;Jesus's Rest In The Tomb: Sepulto Domino;For Easter Day: Eheu Sustulerunt Dominum Meum;For Easter Day: Christ Lag In Todesbanden, BWV 625;Mass Propers For Easter Day, From Gradualia: Introit: Resurrexi;Mass Propers For Easter Day, From Gradualia: Gradual: Haec Dies;Mass Propers For Easter Day, From Gradualia: Offertory: Terra Tremuit;Mass Propers For Easter Day, From Gradualia: Communion: Pascha Nostrum;Surrexit Pastor Bonus;Christ Rising",
                     "bgndata": "CD",
@@ -1036,12 +1036,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_christopher-peacock-opus-5-broadway_music_1921531911",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Christopher Peacock - Opus 5 - Broadway",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_christopher-peacock-opus-5-broadway_music_1921531911",
+                    "title": "Christopher Peacock - Opus 5 - Broadway",
                     "song": "One Hand, One Heart/Somewhere from 'West Side Story';Memory from 'Cats';I Don't Know How To Love Him from 'Jesus Christ Superstar';Sun & Moon /Why God Why from 'Miss Saigon';Think Of Me from 'The Phantom Of The Opera';The Ballad Of The Sad Young Men from 'The Nervous Set';Love Changes Everything from 'Aspects Of Love';Without A Song from 'Great Day';Embraceable You/Summertime from 'Crazy For You And Porgy & Bess';Don't Cry For Me Argentina from 'Evita';Where Is Love from 'Oliver';With One Look from 'Sunset Blvd.'",
                     "bgndata": "CDCA",
                     "pto": 1998,
@@ -1065,12 +1065,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_cinema-classics-6_music_1921564949",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Cinema Classics 6",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_cinema-classics-6_music_1921564949",
+                    "title": "Cinema Classics 6",
                     "song": "Prelude To Tristan And Isolde: Excalibur;A Midsummer Night's Dream, Op. 61: Scherzo: A Midsummer Night's Sex Comedy;Tombeau 'Les Regrets': Tous les matins du monde;Prelude, Op. 28, No. 4: Five Easy Pieces;Gianni Schicchi - Firenze e come un albero fiorito: A Room With A View;Symphony No. 3 In F Major, Op. 90: Poco allegretto: Goodbye Again;Brandenburg Concerto No. 4 In G Major, BWV 1049: Presto: Slaughterhouse-Five;1812 Overture, Op. 49: The Music Lovers;Waltz Of The Flowers From The Nutcracker: Fantasia;Allegro vivace From Piano Concerto In A Minor Op. 54: Madame Sousatzka;Adagio From Oboe Concerto In D Minor: Anonimo Veneziano;Dammi tu forza From La Traviata: Pretty Woman;Minuetto From String Quintet In E Major G 275: The Ladykillers;Ave Verum Corpus K. 618: Lorenzo's Oil;Allegro moderato From Piano Trio In B Flat Major Op. 97: Swing Kids;Overture To Tannhauser: Meeting Venus;Nocturne No. 2 E Flat Major Op. 9: Man Trouble;Largo From Serse: Dangerous Liaisons;Allegro vivo - Appassionato From String Quartet No. 1 In E Minor: Sneakers;Moment Musical No. 2: Au revoir les enfants;Misere: Chariots Of Fire;Adagio From Piano Concerto No. 2: A Midsummer Night's Sex Comedy;Overture To The Marriage Of Figaro K. 492: Trading Places;Waltz No. 15 In E Minor Op. Posth.: Sneakers;Siegfried's Death And Funeral March From Gotterdammerung: Excalibur;Anvil Chorus From Il Trovatore: A Night At The Opera;Allegro assai Form Piano Sonata No. 23 In F Minor Op. 57 'Appassionata': Madame Sousatzka;Allegro - Andante From Water Music: Dead Poets Society;ANdante un poco mosso From Piano Concerto No. 5 In E Flat Major Op. 73 'Emperor': Picnic At Hanging Rock;Dance Of The Hours From La Gioconda: Fantasia;Arrival Of The Queen Of Sheba From Solomon: Heartburn;Andante - Allegro non troppo from Violin Concerto In E Minor Op. 64: A Month In The Country;Sonnerie de Sainte Genevieve du Mont de Paris: Tours les matins du monde;Allegro From Organ Concerto No. 13 In F Major: Dangerous Liaisons;ANdante nobilmente e semplice Frm Symphony No. 1 In A Flat Major Op. 55: Greystoke: The Legend Of Tarzan, Lord Of The Apes;Troika From Lieutenant Kije: Love And Death;Il mio tesoro From Don Giovanni K. 527: Kind Hearts And Coronets;A Night On The Bare Mountain: Fantasia",
                     "bgndata": "CD",
                     "pto": 698,
@@ -1095,12 +1095,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_close-to-you_music_1921501412",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Close to You",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_close-to-you_music_1921501412",
+                    "title": "Close to You",
                     "artist": "Burt Bacharach",
                     "song": "Raindrops Keep Falling on My Head;I'll Never Fall in Love Again;What's New Pussycat?;(They Long to Be) Close to You;I Say a Little Prayer;Walk on By;(The Man Who Shot) Liberty Valance;Wives and Lovers;On My Own;Do You Know the Way to San Jose?;Promises, Promises;Casino Royale;Arthur's Theme (Best That You Can Do);Magic Moments;That's What Friends Are For;Alfie;What the World Needs Now Is Love;Wishin' and Hopin'",
                     "bgndata": "CD",
@@ -1127,12 +1127,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_columbia-albums-of-irving-berlin-1-2_music_1922002959",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Columbia Albums Of Irving Berlin 1 & 2",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_columbia-albums-of-irving-berlin-1-2_music_1922002959",
+                    "title": "Columbia Albums Of Irving Berlin 1 & 2",
                     "artist": "Frank DeVol",
                     "song": "It's a Lovely Day/Blue Skies;Maybe It's Because I Love You Too Much/I Got Lost in His Arms;You'd Be Surprised/I'll See You in C-U-B-A;Always/Remember;Shaking the Blues Away/Play a Simple Melody/Alexander's Ragtime Band;There's No Buisness Like Show Business/I Got the Sun in the Morning/The;Say It With Music/Cheek to Cheek;It's a Lovely Day Tomorrow/Now It Can Be Told;This Year's Kisses/Be Careful! It's My Heart;Lady of the Evening/Better Luck Next Time;Steppin' Out With My Baby/You're Just in Love;Let's Face the Music and Dance/Say It Isn't So;How Deep Is the Ocean/I Never Had a Chance;Change Partners/Mandy;You Can't Brush Me Off/Everybody Step/Waiting at the End of the Road;Soft Lights and Sweet Music/They Say It's Wonderful;Puttin' on the Ritz/Marie;I've Got My Love to Keep Me Warm/Top Hat, White Tie and Tails;What'll I Do/All Alone;Pretty Girl Is Like a Melody/Isn't This a Lovely Day;Lazy/I'm Getting Tired So I Can Sleep;I'm Playing With Fire/Let's Have Another Cup of Coffee;Heat Wave/Let Yourself Go;Piccolino/No Strings",
                     "bgndata": "CD",
@@ -1159,12 +1159,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_compilation-kingz-various_music_1921868126",
-                "relevance": 1.9365770999757928E-4,
+                "relevance": 0.00019365770999757928,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Compilation Kingz / Various",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_compilation-kingz-various_music_1921868126",
+                    "title": "Compilation Kingz / Various",
                     "artist": "Various Artists",
                     "song": "State Penn;Murder Makes Mo' Mail;Bomb Shit;California Lifestyles;Playa Shit (Remix);Keep It Real;Spread Yo' Hustle;We Bring The Funk;Fonky Situation;West Coast Parlae;Money;Hustler;You Should Never Be Broke;You Can't Hang;Vicious;Livin' A Dream;Bomb, Blow & Bank Money;Contact;What U Want;Premeditated;Who Got Dat Yayo?;I'm A Savage;Pop Yo' Colla;Peanut Butter & Jelly;Chrome Wheels;Ain't No Love;Gorilla Milk;Gladiator Tank;535 %;Give It Up;Put That On Something;Always On My Tip Toes;Brand Nu Playa;Vallejo Money Makaz",
                     "bgndata": "CD",
@@ -1190,12 +1190,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_complete-new-english-hymnal-4-various_music_1921868015",
-                "relevance": 3.8731541999515855E-4,
+                "relevance": 0.00038731541999515855,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Complete New English Hymnal 4 / Various",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_complete-new-english-hymnal-4-various_music_1921868015",
+                    "title": "Complete New English Hymnal 4 / Various",
                     "artist": "Complete New English Hymnal 4 / Various",
                     "song": "The National Anthem;Love Divine, All Loves Excelling;Father, Hear The Prayer We Offer;All Creatures Of Our God And King;Mary, Weep Not, Weep No Longer;Thine Be The Glory;The Royal Banners Forward Go;Bethlehem Of Noblest Cities;God Rest You Merry, Gentlemen;O Come, All Ye Faithful;Now Is Eternal Life;Thou Hallowed Chosen Morn Of Praise;Lift Up Your Heads Ye Mighty Gates;The Day Of Resurrection!;Nature With Open Volume Stands;Stars Of The Morning, So Gloriously Bright;Forty Days And Forty Nights;This Day The First Of Days Was Made;Come, Let Us With Our Lord Arise;Creator Of The Earth And Sky;Let Our Choirs New Anthems Raise;Now Thank We All Our God;Of The Father's Heart Begotten",
                     "bgndata": "CD",
@@ -1221,12 +1221,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_complete-recordings_music_1921631165",
-                "relevance": 3.8731541999515855E-4,
+                "relevance": 0.00038731541999515855,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Complete Recordings",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_complete-recordings_music_1921631165",
+                    "title": "Complete Recordings",
                     "artist": "Billie Holiday & Lester Young",
                     "song": "He Ain't Got Rhythm;This Year's Kisses;Why Was I Born?;I Must Have That Man!;Sun Showers;Yours and Mine;Mean to Me;Foolin' Myself;Easy Living;I'll Never Be the Same;Me, Myself and I;Sailboat in the Moonlight;Born to Love;Without Your Love;Getting Some Fun Out of Life;Who Wants Love?;Trav'lin' All Alone;He's Funny That Way;My First Impression of You;When You're Smiling;I Can't Get Started [*];I Can't Believe That You're in Love With Me;If Dreams Come True;Now They Call It Swing;Back in Your Own Backyard;When a Woman Loves a Man;Very Thought of You;I Can't Get Started;I've Got a Date With a Dream;You Can't Be Mine (And Someone Else's Too);Everybody's Laughing;Here It Is Tomorrow Again;Say It With a Kiss;Man I Love;You're Just a No Account;You're a Lucky Guy;I'm Pulling Through;Laughing at Life;Time on My Hands;Let's Do It (Let's Fall in Love);All of Me;Man I Love [*]",
                     "bgndata": "CD",
@@ -1253,12 +1253,12 @@
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_complete-recordings-vol-2-1946-1948_music_1921495174",
-                "relevance": 3.8731541999515855E-4,
+                "relevance": 0.00038731541999515855,
                 "source": "storage.music",
                 "fields": {
                     "sddocname": "music",
-                    "title": "Complete Recordings, Vol. 2: 1946-1948",
                     "documentid": "id:test:music::http://shopping.yahoo.com/p_complete-recordings-vol-2-1946-1948_music_1921495174",
+                    "title": "Complete Recordings, Vol. 2: 1946-1948",
                     "artist": "Memphis Slim",
                     "song": "(Now I) Got The Blues;Don't Ration (My) Love;Mistake In Life;Grinder Man Blues;Slim's Boogie;Little Mary;Cheatin' Around;A Letter Home;Kilroy Has Been Here;Rockin' The House;Lend Me Your Love;Darling I Miss You;Pacemaker Boogie;(Sometimes I Feel Like A) Motherless Child;Harlem Bound;Life Is Like That;Nobody Loves Me (Everyday I Have The Blues);Nobody Loves Me (Master);Believe I'll Settle Down;Throw This Poor Dog A Bone;Help Me Some;Country Girl;Blue And Lonesome;Angel Child",
                     "bgndata": "CD",
