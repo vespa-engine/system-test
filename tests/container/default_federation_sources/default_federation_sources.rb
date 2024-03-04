@@ -8,7 +8,7 @@ class DefaultFederationSources < SearchContainerTest
   end
 
   def setup
-    set_owner("nobody")
+    set_owner("baldersheim")
     set_description("Tests setting the federation option 'default'.")
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.example.AddHitSearcher")
     deploy(selfdir+"app")
