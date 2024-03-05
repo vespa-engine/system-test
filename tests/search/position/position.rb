@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class Position < IndexedSearchTest
+class Position < IndexedStreamingSearchTest
 
   SAVE_RESULT = false
 
@@ -16,10 +16,6 @@ class Position < IndexedSearchTest
 
   def test_position_array
     run_test("array", 2)
-  end
-
-  def test_position_extra
-    run_test("extra", 4)
   end
 
   def test_position_update
