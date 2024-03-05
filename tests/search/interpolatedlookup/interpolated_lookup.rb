@@ -1,13 +1,17 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_only_search_test'
+require 'indexed_streaming_search_test'
 
-class InterpolatedLookupTest < IndexedOnlySearchTest
+class InterpolatedLookupTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("arnej")
     set_description("perform interpolated lookup grouping operation")
     @@timeout = 2.0
+  end
+
+  def self.final_test_methods
+    ['test_big_lookup']
   end
 
   def test_doc_example
@@ -100,6 +104,8 @@ class InterpolatedLookupTest < IndexedOnlySearchTest
   end
 
   def test_big_lookup
+    # Depends on default keep-rank-count (10000) in elastic mode
+    @params = { :search_type => "ELASTIC" }
     @valgrind = false
     deploy_app(
         SearchApp.new.
