@@ -1,0 +1,16 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema lucene {
+
+    document lucene {
+        field language type string {
+            indexing: set_language
+        }
+        field mytext type string {
+            indexing: summary | index
+        }
+    }
+
+    fieldset default {
+        fields: mytext
+    }
+}
