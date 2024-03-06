@@ -24,8 +24,7 @@
                     "title": "doc 5727 hash 42 val5727",
                     "author": "Famous writer 5727",
                     "uri": "http://5727.yahoo.com/",
-                    "foobar": "http://11455.yahoo.com/",
-                    "myrank": 5727.5
+                    "foobar": "http://11455.yahoo.com/"
                 }
             },
             {
@@ -52,8 +51,7 @@
                     "title": "doc 7150 hash 42 val7150",
                     "author": "Famous writer 7150",
                     "uri": "http://7150.yahoo.com/",
-                    "foobar": "http://14301.yahoo.com/",
-                    "myrank": 7150.5
+                    "foobar": "http://14301.yahoo.com/"
                 }
             },
             {
@@ -80,8 +78,7 @@
                     "title": "doc 8573 hash 42 val8573",
                     "author": "Famous writer 8573",
                     "uri": "http://8573.yahoo.com/",
-                    "foobar": "http://17147.yahoo.com/",
-                    "myrank": 8573.5
+                    "foobar": "http://17147.yahoo.com/"
                 }
             },
             {
@@ -122,8 +119,7 @@
                     "title": "doc 9996 hash 42 val9996",
                     "author": "Famous writer 9996",
                     "uri": "http://9996.yahoo.com/",
-                    "foobar": "http://19993.yahoo.com/",
-                    "myrank": 9996.5
+                    "foobar": "http://19993.yahoo.com/"
                 }
             },
             {

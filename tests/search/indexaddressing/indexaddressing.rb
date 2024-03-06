@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class IndexAddressing < IndexedSearchTest
+class IndexAddressing < IndexedStreamingSearchTest
 
   def dwrite(tmp, val)
     @docid += 1
@@ -64,17 +64,18 @@ class IndexAddressing < IndexedSearchTest
 
     puts "Query: Blend matches from both"
 
-    assert_result("query=42",                    selfdir+"42.result.json")
-    assert_result("query=42&hits=51",            selfdir+"42-all.result.json")
-    assert_result("query=doc.42",                selfdir+"doc42.result.json")
-    assert_result("query=42&sortspec=%2Bfoobar", selfdir+"fs.result.json")
+    check_fields = [ 'artist', 'author', 'foobar', 'title', 'uri' ]
+    assert_result("query=42",                    selfdir+"42.result.json", nil, check_fields)
+    assert_result("query=42&hits=51",            selfdir+"42-all.result.json", nil, check_fields)
+    assert_result("query=doc.42",                selfdir+"doc42.result.json", nil, check_fields)
+    assert_result("query=42&sortspec=%2Bfoobar", selfdir+"fs.result.json", nil, check_fields)
 
     # hitting the cache should work too:
 
-    assert_result("query=42",                    selfdir+"42.result.json")
-    assert_result("query=42&hits=51",            selfdir+"42-all.result.json")
-    assert_result("query=doc.42",                selfdir+"doc42.result.json")
-    assert_result("query=42&sortspec=%2Bfoobar", selfdir+"fs.result.json")
+    assert_result("query=42",                    selfdir+"42.result.json", nil, check_fields)
+    assert_result("query=42&hits=51",            selfdir+"42-all.result.json", nil, check_fields)
+    assert_result("query=doc.42",                selfdir+"doc42.result.json", nil, check_fields)
+    assert_result("query=42&sortspec=%2Bfoobar", selfdir+"fs.result.json", nil, check_fields)
 
   end
 
