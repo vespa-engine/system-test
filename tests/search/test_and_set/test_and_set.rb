@@ -110,7 +110,7 @@ class TestAndSetTest < IndexedStreamingSearchTest
     feeder.call("weather")
 
     feeder.call("weather_non_existing_document")
-    assert_hitcount_withouttimeout("sddocname:weather", 4)
+    assert_hitcount("sddocname:weather", 4)
   end
   
   def document_field_path_syntax_in_condition_should_not_fail_getting_the_attribute_name(feeder)
