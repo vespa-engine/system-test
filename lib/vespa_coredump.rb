@@ -32,14 +32,16 @@ class VespaCoredump
     begin
       if corename.end_with?("lz4")
         out, err, status = Open3.capture3("lz4 -d -f < #{corename.shellescape} > #{corename_tmp.shellescape}")
-        raise err if ! status
+        raise err unless status
         corename = corename_tmp
       end
-      binline, err, status = Open3.capture3("gdb -batch --core #{corename.shellescape}")
-      raise err if ! status
+      binline, err, status = Open3.capture3("gdb -batch --core #{corename.shellescape} 2&>1")
+      raise err unless status
       if binline =~ /by `([^\s']+)/
         @stacktrace, err, status = Open3.capture3("gdb -batch #{$1} #{corename.shellescape} -x #{f.path} 2>&1")
-        raise err if ! status
+        raise err unless status
+      else
+        raise "Unable to find binary for core dump. binline was: #{binline}"
       end
     rescue StandardError => e
       coredir_listing, err, status = Open3.capture3("ls -la #{coredir.shellescape}")
