@@ -1,0 +1,6 @@
+[
+{"remove":"id:test:worst::1"},
+ {"remove":"id:test:worst::2"},
+ {"remove":"id:test:worst::3"},
+ {"remove":"id:test:worst::4"}
+]
