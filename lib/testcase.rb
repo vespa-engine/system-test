@@ -98,7 +98,8 @@ class TestCase
       @@log_messages[:shutdownguard_forcing_exit],
       @@log_messages[:max_query_timeout],
       @@log_messages[:failed_find_2_consecutive],
-      @@log_messages[:no_tick_registered]
+      @@log_messages[:no_tick_registered],
+      @@log_messages[:slobrok_failed_listnames_check]
     ]
     @https_downgrade_warnings = Set.new
 
@@ -732,7 +733,8 @@ class TestCase
     :empty_idx_file => /We detected an empty idx file for part/,
     :remove_dangling_file => /Removing dangling file/,
     :canonical_hostname_warning => /Host named '.+' may not receive any config since it differs from its canonical hostname/,
-    :no_snapshot_from_instance => /no snapshot from instance of /
+    :no_snapshot_from_instance => /no snapshot from instance of /,
+    :slobrok_failed_listnames_check => /failed check using listNames callback/
   }
 
   # Allow that certain log messages may be ignored without the individual
