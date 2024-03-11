@@ -1,6 +1,0 @@
-  <update documenttype="simple" documentid="id:test:simple::1">
-    <assign field="isbn">isbn1</assign>
-  </update>
-  <update documenttype="simple" documentid="id:test:simple::2">
-    <assign field="isbn">isbn2</assign>
-  </update>

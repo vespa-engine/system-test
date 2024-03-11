@@ -1,0 +1,4 @@
+[
+{"id":"id:test:simple::1","fields":{"artist":"Artist1","title":"Title1"}},
+ {"id":"id:test:simple::2","fields":{"artist":"Artist2","title":"Title2"}}
+]

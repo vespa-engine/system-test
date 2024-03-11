@@ -14,10 +14,10 @@ class SchemaMapping < DocprocTest
   end
 
   def test_schemamapping_basic
-    feed_and_wait_for_docs("simple", 2, :file => selfdir+"simple.xml", :cluster => "simple", :route => "\"default/chain.apple default/chain.banana indexing\"")
+    feed_and_wait_for_docs("simple", 2, :file => selfdir+"simple.json", :cluster => "simple", :route => "\"default/chain.apple default/chain.banana indexing\"")
     assert_hitcount("query=title:Apple", 2)
     assert_hitcount("query=title:Banana", 2)
-    feed(:file => selfdir+"simpleupdate.xml", :cluster => "simple", :route => "\"default/chain.apple indexing\"")
+    feed(:file => selfdir+"simpleupdate.json", :cluster => "simple", :route => "\"default/chain.apple indexing\"")
     wait_for_hitcount("query=isbn:Pear", 2)
   end
 
