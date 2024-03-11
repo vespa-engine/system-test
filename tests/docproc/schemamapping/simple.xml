@@ -1,8 +1,0 @@
-  <document documenttype="simple" documentid="id:test:simple::1">
-    <title>Title1</title>
-    <artist>Artist1</artist>
-  </document>
-  <document documenttype="simple" documentid="id:test:simple::2">
-    <title>Title2</title>
-    <artist>Artist2</artist>
-  </document>
