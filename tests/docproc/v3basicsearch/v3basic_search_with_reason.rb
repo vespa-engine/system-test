@@ -22,7 +22,7 @@ class V3BasicDocprocWithReason < SearchContainerTest
   end
 
   def test_v3_basicsearch_docproc
-    feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.xml", :cluster => "worst")
+    feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.json", :cluster => "worst")
     output = feedfile(selfdir+"worst.1.json", :cluster => "worst", :exceptiononfailure => false, :stderr => true)
     assert_match(/Some detailed failure reason/, output)
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.json", :cluster => "worst")

@@ -10,7 +10,7 @@ class EmptyChain < DocprocTest
   end
 
   def test_emptychain
-    feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.xml", :cluster => "worst")
+    feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.json", :cluster => "worst")
     assert_result("query=sddocname:worst", DOCPROC + "data/worst-output.json")
   end
 
