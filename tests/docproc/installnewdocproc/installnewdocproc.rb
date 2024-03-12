@@ -12,7 +12,7 @@ class InstallNewDocprocDocproc < DocprocTest
   end
 
   def test_install_new_docproc
-    feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.xml")
+    feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.json")
     assert_result("query=sddocname:worst", DOCPROC + "data/worst-processed.json")
 
     #So far, so good...
@@ -24,13 +24,13 @@ class InstallNewDocprocDocproc < DocprocTest
     deploy(selfdir+"/setup-1x1-terrible", DOCPROC + "data/worst.sd")
 
     # we should still get the same 10 results through the default chain
-    feed_and_wait_for_docs("worst", 0, {:file => DOCPROC + "data/worst-remove.xml"})
-    feed_and_wait_for_docs("worst", 4, {:file => DOCPROC + "data/worst-input.xml"})
+    feed_and_wait_for_docs("worst", 0, {:file => DOCPROC + "data/worst-remove.json"})
+    feed_and_wait_for_docs("worst", 4, {:file => DOCPROC + "data/worst-input.json"})
     assert_result("query=sddocname:worst", DOCPROC + "data/worst-processed.json")
 
     #we should get other results if feeding through "terrible" chain
-    feed_and_wait_for_docs("worst", 0, {:file => DOCPROC + "data/worst-remove.xml"})
-    feed_and_wait_for_docs("worst", 4, {:file => DOCPROC + "data/worst-input.xml", :route => "\"container/chain.terrible indexing\""})
+    feed_and_wait_for_docs("worst", 0, {:file => DOCPROC + "data/worst-remove.json"})
+    feed_and_wait_for_docs("worst", 4, {:file => DOCPROC + "data/worst-input.json", :route => "\"container/chain.terrible indexing\""})
     assert_result("query=sddocname:worst", selfdir+"terrible.result.json")
   end
 
