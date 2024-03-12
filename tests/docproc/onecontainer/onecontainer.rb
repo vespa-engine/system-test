@@ -11,7 +11,7 @@ class OneContainer < DocprocTest
   end
 
   def test_onecontainer
-    feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.xml", :cluster => "worst")
+    feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.json", :cluster => "worst")
     assert_result("query=sddocname:worst", DOCPROC + "data/worst-processed.json")
     assert_result("query=title:worst", DOCPROC + "data/worst-processed.json")
   end

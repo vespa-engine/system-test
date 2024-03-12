@@ -23,7 +23,7 @@ class V3BasicDocproc < SearchContainerTest
   end
 
   def test_v3_basicsearch_docproc
-    feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.xml", :cluster => "worst")
+    feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.json", :cluster => "worst")
     assert_result("query=sddocname:worst", DOCPROC + "data/worst-processed.json")
     assert_result("query=title:worst", DOCPROC + "data/worst-processed.json")
   end
