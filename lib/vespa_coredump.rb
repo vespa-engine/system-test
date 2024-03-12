@@ -35,10 +35,10 @@ class VespaCoredump
         raise err unless status
         corename = corename_tmp
       end
-      binline, err, status = Open3.capture3("gdb -batch --core #{corename.shellescape} 2&>1")
+      binline, err, status = Open3.capture3("gdb -batch --core #{corename.shellescape}")
       raise err unless status
       if binline =~ /by `([^\s']+)/
-        @stacktrace, err, status = Open3.capture3("gdb -batch #{$1} #{corename.shellescape} -x #{f.path} 2>&1")
+        @stacktrace, err, status = Open3.capture3("gdb -batch #{$1} #{corename.shellescape} -x #{f.path}")
         raise err unless status
       else
         raise "Unable to find binary for core dump. binline was: #{binline}"
