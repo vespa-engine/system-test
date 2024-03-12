@@ -16,7 +16,7 @@ class ProcessOnly < IndexedSearchTest
   end
   
   def test_process_only
-    feedfile("#{selfdir}/feed.xml", :route => "default/chain.default")
+    feedfile("#{selfdir}/feed.json", :route => "default/chain.default")
     wait_for_log_matches(/PROCESSED: id:test:test::/, 10)
   end
 
