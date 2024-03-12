@@ -123,6 +123,15 @@ class ImportedFieldsInSelectionsTest < IndexedOnlySearchTest
                  enumerate_docs_matching('parent.a1 == 5', 'global'))
     assert_equal(['id:test:parent::3'],
                  enumerate_docs_matching('parent.a1 == 5 and parent.a2 == 13', 'global'))
+
+    # Can reference non-attribute field as part of selection. ID-related fields must be fetched
+    # from the doc store and cannot be satisfied from attributes alone.
+    # Match case:
+    assert_equal(['id:test:child::1', 'id:test:child::5'],
+                 enumerate_docs_matching('child.a2 == 11 and id.namespace == "test"'))
+    # Mismatch case:
+    assert_equal([],
+                 enumerate_docs_matching('child.a2 == 11 and id.namespace == "toast"'))
   end
 
   def wait_until_doc_set_is(expected, bucket_space = 'default')
