@@ -1,0 +1,4 @@
+[
+{"id":"id:attributematch:attributematch::0","fields":{"a":"a","b":["b","b","c","d"],"c":{"d":20,"e":70,"c":10}}},
+ {"id":"id:attributematch:attributematch::1","fields":{"a":"a","b":["b"],"c":{"d":-20,"e":-70,"c":-10}}}
+]
