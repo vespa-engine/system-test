@@ -18,7 +18,7 @@ class AttributeMatchFeatures < IndexedStreamingSearchTest
     set_description("Test the attributeMatch feature")
     deploy_app(SearchApp.new.sd(selfdir + "attributematch.sd"))
     start
-    feed_and_wait_for_docs("attributematch", 2, :file => selfdir + "attributematch.xml")
+    feed_and_wait_for_docs("attributematch", 2, :file => selfdir + "attributematch.json")
     assert_hitcount(create_query("query=sddocname:attributematch"), 2)
 
     # single value attribute
