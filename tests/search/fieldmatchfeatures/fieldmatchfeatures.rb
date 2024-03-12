@@ -14,7 +14,7 @@ class FieldMatchFeatures < IndexedStreamingSearchTest
     set_description("Test the fieldMatch feature")
     deploy_app(SearchApp.new.sd(selfdir + "fieldmatch.sd").enable_document_api)
     start
-    feed_and_wait_for_docs("fieldmatch", 23, :file => selfdir + "fieldmatch.xml")
+    feed_and_wait_for_docs("fieldmatch", 23, :file => selfdir + "fieldmatch.json")
     run_field_match
   end
 
@@ -22,7 +22,7 @@ class FieldMatchFeatures < IndexedStreamingSearchTest
     set_description("Test the fieldTermMatch feature")
     deploy_app(SearchApp.new.sd(selfdir + "fieldtermmatch.sd").enable_document_api)
     start
-    feed_and_wait_for_docs("fieldtermmatch", 1, :file => selfdir + "fieldtermmatch.xml")
+    feed_and_wait_for_docs("fieldtermmatch", 1, :file => selfdir + "fieldtermmatch.json")
 
     run_field_term_match
 
@@ -41,7 +41,7 @@ class FieldMatchFeatures < IndexedStreamingSearchTest
     set_description("Test fieldMatch feature when using phrase search")
     deploy_app(SearchApp.new.sd(selfdir + "fmphrase.sd").enable_document_api)
     start
-    feed_and_wait_for_docs("fmphrase", 1, :file => selfdir + "fmphrase.xml")
+    feed_and_wait_for_docs("fmphrase", 1, :file => selfdir + "fmphrase.json")
     run_phrase_test
   end
 
