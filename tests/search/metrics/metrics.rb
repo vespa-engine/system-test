@@ -23,7 +23,7 @@ class SearchMetrics < IndexedOnlySearchTest
     # Search handler does a warmup query which may or may not hit the backend, since 8.170. We need to account for this in some search metrics below. 
     search_count_bias = vespa.search["test"].first.get_total_metrics.get("content.proton.search_protocol.query.latency")["count"]
 
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.json")
     assert_hitcount("f1:c", 2)
     assert_hitcount("f1:xyzzy", 0)
 
