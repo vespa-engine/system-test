@@ -19,26 +19,21 @@ class XGBoostServing < IndexedStreamingSearchTest
     end
   end
 
-  def make_services_xml(app_dir)
-    app = SearchApp.new.sd(app_dir + '/schemas/x.sd')
-    app.search_type(@params[:search_type])
-    f = File.open("#{app_dir}/services.xml", 'w')
-    f.write(app.services_xml)
-    f.close
+  def make_app
+    SearchApp.new.sd(selfdir + 'app/schemas/x.sd')
   end
 
   def test_xgboost
     run_command_or_fail('pip3 install xgboost scikit-learn --user')
-    tmp_dir = dirs.tmpdir + "/tmp"
-    run_command_or_fail("mkdir -p #{tmp_dir}")
-    # We are mutating the app contents and need to copy to a writable area. Do not put the copy
-    # in dirs.tmpdir/app because this is cleaned and used by the framework to store an app copy.
-    run_command_or_fail("cp -a #{selfdir}/app #{tmp_dir}")
-    run_command_or_fail("mkdir -p #{tmp_dir}/app/models")
-    run_command_or_fail("python3 #{selfdir}/train.py #{selfdir} #{tmp_dir}/app/models/ #{tmp_dir}/ #{tmp_dir}/predictions.json")
+    tmp_dir = dirs.tmpdir + "/training"
+    FileUtils.mkdir_p("#{tmp_dir}/models")
+    run_command_or_fail("python3 #{selfdir}/train.py #{selfdir} #{tmp_dir}/models/ #{tmp_dir}/ #{tmp_dir}/predictions.json")
     @predictions = JSON.parse(File.read("#{tmp_dir}/predictions.json"))
-    make_services_xml("#{tmp_dir}/app")
-    deploy("#{tmp_dir}/app")
+    deploy_files = { selfdir + 'app/search/query-profiles/default.xml' => 'search/query-profiles/default.xml' }
+    for model in Dir.children("#{tmp_dir}/models")
+      deploy_files[tmp_dir + '/models/' + model] = 'models/' + model
+    end
+    deploy_app(make_app, :files => deploy_files)
     start
 
     #Feed files generated from setup/train.py
