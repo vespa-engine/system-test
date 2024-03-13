@@ -8,8 +8,15 @@ class ProtonVisitDemo < SearchTest
     set_description("Automatic demo of end-to-end visiting of documents with proton as persistence layer")
   end
 
+  def make_app
+    app = SearchApp.new
+    app.storage_clusters.push(StorageCluster.new('search').default_group.sd(SEARCH_DATA + 'music.sd'))
+    app.sd(SEARCH_DATA + 'music.sd').no_search().enable_document_api
+    app
+  end
+
   def test_proton_feed_and_visit
-    deploy(selfdir+"singlenode-proton-only", SEARCH_DATA+"music.sd")
+    deploy_app(make_app)
     start
     feed(:file => SEARCH_DATA+"music.10.xml", :timeout => 240)
     vespa.storage["storage"].assert_document_count(10)
