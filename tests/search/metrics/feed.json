@@ -1,0 +1,7 @@
+[
+  {"id":"id:test:test::0","fields":{"f2":1,"f1":"xyzzy"}},
+  {"remove":"id:test:test::0"},
+  {"id":"id:test:test::1","fields":{"f2":2,"f1":"foobar"}},
+  {"update":"id:test:test::1","fields":{"f1":{"assign":"c d e"}}},
+  {"id":"id:test:test::2","fields":{"f2":3,"f1":"a b c"}}
+]
