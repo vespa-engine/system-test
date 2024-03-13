@@ -3,14 +3,37 @@ require 'indexed_search_test'
 
 class EventLoggingTest < IndexedSearchTest
 
+  BUNDLE_NAME = 'eventloggingtest'
+
   def setup
     set_owner("hmusum")
     set_description("Tests event logging API with a mock backend")
   end
 
+  def make_logging_search_chain
+    Chain.new('logging', "vespa").add(Searcher.new('com.yahoo.example.LoggingSearcher', nil, nil, nil, BUNDLE_NAME))
+  end
+
+  def make_app_container(slow)
+    eventstore = slow  ? 'EventStoreSlowReceiver' : 'EventStoreImpl'
+    container = Container.new('default')
+    container.component(Component.new('com.yahoo.example.SpoolingLogger').bundle(BUNDLE_NAME))
+    container.component(Component.new("com.yahoo.example.#{eventstore}").bundle(BUNDLE_NAME))
+    container.handler(Handler.new('com.yahoo.example.EventHandler').binding('http://*/events').bundle(BUNDLE_NAME))
+    container.search(Searching.new.chain(make_logging_search_chain))
+    container
+  end
+
+  def make_app(slow)
+    app = SearchApp.new
+    app.container(make_app_container(slow))
+    app.sd(selfdir + 'schemas/music.sd')
+    app
+  end
+
   def test_event_logging
-    add_bundle_dir(File.expand_path(selfdir + '/project'), 'eventloggingtest')
-    deploy(selfdir + "application/", selfdir + 'schemas/music.sd')
+    add_bundle_dir(File.expand_path(selfdir + '/project'), BUNDLE_NAME)
+    deploy_app(make_app(false))
     start
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA + "music.10.xml")
 
@@ -20,7 +43,7 @@ class EventLoggingTest < IndexedSearchTest
     container = vespa.container.values.first
     assert_equal("foo", get_last_blob(container.http_get2("/events")))
 
-    deploy_output = deploy(selfdir + "application_slow_receiver/", selfdir + 'schemas/music.sd')
+    deploy_output = deploy_app(make_app(true))
     wait_for_application(container, deploy_output)
 
     count = 100
