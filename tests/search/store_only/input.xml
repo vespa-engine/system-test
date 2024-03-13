@@ -1,8 +1,0 @@
-<vespafeed>
-  <document documenttype="index_me" documentid="id:test:index_me::foo">
-    <my_str>foo</my_str>
-  </document>
-  <document documenttype="store_me" documentid="id:test:store_me::bar">
-    <my_str>bar</my_str>
-  </document>
-</vespafeed>
