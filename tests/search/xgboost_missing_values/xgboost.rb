@@ -15,24 +15,18 @@ class XGBoostMissingValues < IndexedStreamingSearchTest
     stop
   end
 
-  def make_services_xml(app_dir)
+  def make_app
     app = SearchApp.new
     container = Container.new('default').search(Searching.new)
     container.component("    <model-evaluation />\n")
     app.container(container)
-    app.sd(app_dir + '/schemas/xgboost.sd')
-    app.search_type(@params[:search_type])
-    f = File.open("#{app_dir}/services.xml", 'w')
-    f.write(app.services_xml)
-    f.close
+    app.sd(selfdir + 'app/schemas/xgboost.sd')
+    app
   end
 
   def test_xgboost_missing_values
-    tmp_dir = dirs.tmpdir + '/tmp'
-    FileUtils.mkdir_p("#{tmp_dir}")
-    FileUtils.cp_r(selfdir + "app", "#{tmp_dir}/app", verbose: true)
-    make_services_xml("#{tmp_dir}/app")
-    deploy("#{tmp_dir}/app")
+    deploy_app(make_app,
+               :files => { selfdir + 'app/models/xgboost.if_inversion.json' => 'models/xgboost.if_inversion.json'})
     start
     feed_and_wait_for_docs("xgboost", 9, :file => selfdir + "feed.json")
 
