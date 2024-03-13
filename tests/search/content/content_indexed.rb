@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'search_test'
+require 'indexed_only_search_test'
 require_relative 'content_smoke_common'
 
-class ContentIndexedSmokeTest < SearchTest
+class ContentIndexedSmokeTest < IndexedOnlySearchTest
 
   include ContentSmokeCommon
 
@@ -11,25 +11,33 @@ class ContentIndexedSmokeTest < SearchTest
     set_description('Test basic indexed searching with content setup')
   end
 
+  def self.final_test_methods
+    [ 'test_contentsmoke_proton_only' ]
+  end
+
   def test_contentsmoke_indexed
-    deploy(selfdir+'singlenode-indexed', SEARCH_DATA+'music.sd')
+    deploy_app(SearchApp.new.sd(SEARCH_DATA + 'music.sd'))
     start_feed_and_check
   end
 
   def test_contentsmoke_indexed_get
-    deploy(selfdir+'singlenode-indexed', SEARCH_DATA+'music.sd')
+    deploy_app(SearchApp.new.sd(SEARCH_DATA + 'music.sd').enable_document_api)
     start_feed_and_check
     verify_get
   end
 
   def test_contentsmoke_indexed_4nodes_redundancy2
-    deploy(selfdir+'multinode-indexed', SEARCH_DATA+'music.sd')
+    deploy_app(SearchApp.new.sd(SEARCH_DATA + 'music.sd').num_parts(4).enable_document_api)
     start_feed_and_check
     verify_get
   end
 
   def test_contentsmoke_proton_only
-    deploy(selfdir+'singlenode-proton-only', SEARCH_DATA+'music.sd')
+    @params = { :search_type => "NONE" }
+    app = SearchApp.new
+    app.storage_clusters.push(StorageCluster.new("search").default_group.sd(SEARCH_DATA + 'music.sd'))
+    app.sd(SEARCH_DATA + 'music.sd').enable_document_api
+    deploy_app(app)
     start
     feed_only
     verify_get
