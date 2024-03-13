@@ -18,7 +18,7 @@ class DocprocOrdering < DocprocTest
   end
 
   def test_docproc_ordering
-    feed_and_wait_for_docs("docprocordering", 1, {:file => selfdir+"docprocordering.1.xml"})
+    feed_and_wait_for_docs("docprocordering", 1, {:file => selfdir+"docprocordering.1.json"})
   end
 
   def teardown
