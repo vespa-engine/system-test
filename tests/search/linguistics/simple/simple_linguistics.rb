@@ -8,8 +8,19 @@ class SimpleLinguistics < IndexedSearchTest
     set_description("Tests that we can specify using the simple linguistcs implementation")
   end
 
+  def make_app
+    app = SearchApp.new
+    container = Container.new('container').search(Searching.new)
+    container.docproc(DocumentProcessing.new)
+    container.component(Component.new('com.yahoo.language.simple.SimpleLinguistics'))
+    app.container(container)
+    app.indexing_cluster('container')
+    app.sd(selfdir + 'app/schemas/test.sd')
+    app
+  end
+
   def test_simple_linguistics
-    deploy(selfdir + "app/")
+    deploy_app(make_app)
     start
     feed_and_wait_for_docs("test", 2, :file => selfdir + "documents.xml")
 
