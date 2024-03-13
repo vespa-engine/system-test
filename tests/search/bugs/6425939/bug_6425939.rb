@@ -12,7 +12,9 @@ class Bug6425939Test < IndexedOnlySearchTest
   end
 
   def test_java_document_deserialization_error
-    deploy(selfdir + 'conf')
+    deploy_app(SearchApp.new.
+                 cluster_name("cars").
+                 sd(selfdir + 'conf/schemas/cars.sd'))
     start
 
     feed(:file => selfdir + 'singledoc.xml')
