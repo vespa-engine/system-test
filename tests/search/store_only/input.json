@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:index_me::foo","fields":{"my_str":"foo"}},
+  {"id":"id:test:store_me::bar","fields":{"my_str":"bar"}}
+]
