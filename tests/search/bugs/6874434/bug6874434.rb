@@ -11,7 +11,8 @@ class PositionsBug < StreamingSearchTest
 
 
   def test_bug6874434
-    deploy(selfdir + "app")
+    deploy_app(SearchApp.new.
+                 sd(selfdir + 'app/schemas/test.sd'))
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir+"feed.xml")
     vespa.adminserver.execute("vespa-visit --xmloutput")
