@@ -1,0 +1,3 @@
+[
+  {"update":"id:scheme:simple::","fields":{"my_str":{"assign":"foo"}}}
+]

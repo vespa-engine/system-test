@@ -1,5 +1,0 @@
-<vespafeed>
-  <update documenttype="simple" documentid="id:scheme:simple::">
-    <assign field="my_str">foo</assign>
-  </update>
-</vespafeed>
