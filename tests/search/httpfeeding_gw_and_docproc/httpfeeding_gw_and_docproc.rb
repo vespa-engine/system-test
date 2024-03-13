@@ -8,13 +8,23 @@ class HttpfeedingGwAndDocproc < IndexedSearchTest
 
     set_owner("valerijf")
     set_description("Test feeding through HTTP client API with document processing in same container, ticket 6390014")
-    # app generator didn't include support for building this config at the time
-    # of writing
-    deploy(selfdir + "setup", selfdir + "../data/simple.sd")
-    start
+  end
+
+  def make_app
+    app = SearchApp.new
+    app.container(Container.new('default').search(Searching.new))
+    container = Container.new('doc-api')
+    container.documentapi(ContainerDocumentApi.new)
+    container.http(Http.new.server(Server.new('default', 19020)))
+    container.docproc(DocumentProcessing.new)
+    app.container(container)
+    app.sd(selfdir + '../data/simple.sd')
+    return app
   end
 
   def test_feed
+    deploy_app(make_app)
+    start
     require_that_feeding_with_json_works
     require_that_feeding_with_json_works_tas
   end
