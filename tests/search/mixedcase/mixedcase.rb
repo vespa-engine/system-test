@@ -11,7 +11,7 @@ class MixedCase < IndexedStreamingSearchTest
   end
 
   def test_mixedcase
-    feed_and_wait_for_docs("music", 3, :file => selfdir+"mixedcase.2.xml")
+    feed_and_wait_for_docs("music", 3, :file => selfdir+"mixedcase.2.json")
 
     puts "Details: Checking no docs are available for the search term without index."
     assert_hitcount("query=2000", 0)

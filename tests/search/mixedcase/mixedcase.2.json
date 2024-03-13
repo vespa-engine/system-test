@@ -1,0 +1,5 @@
+[
+  {"id":"id:test:music::http://invalid.url./master","fields":{"pto":9,"artist":"Metallica","title":"Master Of Puppets","surl":"http://invalid.url./master","YearSet":{"nineteeneightysix":56,"1986":3},"YeaR":"1986","AnnO":"1986"}},
+  {"id":"id:test:music::http://invalid.url./blood","fields":{"pto":9,"artist":"The Cure","title":"Bloodflowers","surl":"http://invalid.url./blood","YearSet":{"2000":3,"twothousand":56},"YeaR":"2000","AnnO":"2000"}},
+  {"id":"id:test:music::http://invalid.url./reign","fields":{"pto":9,"artist":"Slayer","title":"Reign In Blood","surl":"http://invalid.url./reign","YearSet":{"2004":4,"threethousand////one/lolz]]":57},"YeaR":"1985-12","AnnO":"1985-12"}}
+]
