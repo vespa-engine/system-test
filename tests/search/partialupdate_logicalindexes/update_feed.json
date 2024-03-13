@@ -1,0 +1,5 @@
+[
+  {"update":"id:hotcars:hotcars::0","fields":{"orders_per_state":{"assign":{"TX":150,"IL":200,"MX":50}},"shops_src":{"assign":["God's Speed Cars","Cars R Us","Evil Car Chain I","Evil Car Chain II"]},"popularity":{"assign":30}}},
+  {"update":"id:hotcars:hotcars::1","fields":{"orders_per_state":{"assign":{"TX":5000,"TN":400}},"popularity":{"assign":50}}},
+  {"update":"id:airplanes:airplanes::0","fields":{"rating":{"assign":70.44},"airlines":{"assign":["SAS Braathens","American Airlines"]},"popularity":{"assign":100}}}
+]

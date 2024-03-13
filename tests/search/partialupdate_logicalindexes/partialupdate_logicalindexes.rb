@@ -35,7 +35,7 @@ class PartialUpdateLogicalIndexes < IndexedSearchTest
   end
 
   def test_pu_logicalindexes
-    feed_and_wait_for_docs("hotcars", 2, :file => selfdir+"initial_feed.xml")
+    feed_and_wait_for_docs("hotcars", 2, :file => selfdir+"initial_feed.json")
 
     wait_for_hitcount("popularity:>0", 3)
     validate_doc1_before_pu("query=manufacturer:lambourghini")
@@ -49,7 +49,7 @@ class PartialUpdateLogicalIndexes < IndexedSearchTest
     validate_doc3_before_pu("query=manufacturer:boeing")
     validate_doc3_before_pu("query=manufacturer:boeing&search=airplanes")
 
-    feedfile(selfdir+"update_feed.xml")
+    feedfile(selfdir+"update_feed.json")
     sleep 2
 
     assert_hitcount("popularity:>0", 3)
