@@ -14,7 +14,7 @@ class ExpressionsAsArguments < IndexedSearchTest
   end
 
   def test_expressions_as_args
-    deploy(selfdir + "app/")
+    deploy_app(SearchApp.new.sd(selfdir + 'app/schemas/test.sd'))
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir + "feed.json")
     result = search("query=sddocname:test&ranking=test")
