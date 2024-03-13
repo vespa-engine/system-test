@@ -36,11 +36,11 @@ class ShoppingUrlCompress < DocprocTest
 
   def test_compress_url
     #feed some docs
-    feed_and_wait_for_docs("shopping", 10, :file => selfdir+"feed-init.xml")
+    feed_and_wait_for_docs("shopping", 10, :file => selfdir+"feed-init.json")
     assert_result("query=sddocname:shopping&nocache", selfdir+"result-first.json")
 
     #partial update some docs, add some more
-    feed_and_wait_for_docs("shopping", 20, :file => selfdir+"feed-with-updates.xml")
+    feed_and_wait_for_docs("shopping", 20, :file => selfdir+"feed-with-updates.json")
     assert_result("query=sddocname:shopping&nocache", selfdir+"result-second.json")
   end
 
