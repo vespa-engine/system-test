@@ -21,7 +21,7 @@ class NativeRankResponse < IndexedStreamingSearchTest
     # vespa.adminserver.logctl("configserver", "debug=on")
     start
 
-    feed_and_wait_for_docs("nativerank", 5, :file => selfdir + "nativerank.xml")
+    feed_and_wait_for_docs("nativerank", 5, :file => selfdir + "nativerank.json")
 
     run_native_rank_reponse_test
   end
