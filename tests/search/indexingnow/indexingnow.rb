@@ -10,10 +10,10 @@ class IndexingNow < IndexedSearchTest
   def test_indexing_now
     deploy_app(SearchApp.new.sd("#{selfdir}/simple.sd"))
     start
-    feed_and_wait_for_docs("simple", 1, :file => "#{selfdir}/doc.xml")
+    feed_and_wait_for_docs("simple", 1, :file => "#{selfdir}/doc.json")
     save_result("/?query=sddocname:simple", "result.xml")
     sleep(1) # need time to change
-    feedfile("#{selfdir}/upd.xml")
+    feedfile("#{selfdir}/upd.json")
     assert_result("/?query=sddocname:simple", "result.xml");
   end
 
