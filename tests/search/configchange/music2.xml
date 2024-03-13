@@ -1,5 +1,0 @@
-  <document documenttype="music2" documentid="id:test:music2::http://music.com/testdoc>">
-			<title2>Title in doctype music2</title2>
-			<artist2>strangelove</artist2>
-            <base64test>asdf</base64test>
-		</document>
