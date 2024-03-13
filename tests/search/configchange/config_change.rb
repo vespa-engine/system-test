@@ -16,7 +16,7 @@ class ConfigChange < IndexedSearchTest
 
   def test_doctypeswitch
     puts "* Insert music doc"
-    feed_and_wait_for_docs("music", 1, :file => selfdir+"music.xml", :timeout => 240)
+    feed_and_wait_for_docs("music", 1, :file => selfdir+"music.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 1)
 
     puts "* Compare search result 1"
@@ -29,7 +29,7 @@ class ConfigChange < IndexedSearchTest
     wait_for_config(deploy_output)
 
     puts "* Insert music2 doc"
-    feed_and_wait_for_docs("music2", 1, :file => selfdir+"music2.xml", :timeout => 240)
+    feed_and_wait_for_docs("music2", 1, :file => selfdir+"music2.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:music2", 1)
 
     puts "* Compare search result 2"

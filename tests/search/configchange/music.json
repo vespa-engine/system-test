@@ -1,0 +1,3 @@
+[
+  {"id":"id:test:music::http://music.com/testdoc","fields":{"artist":"strangelove","title":"Title in doctype music","base64test":"asdf"}}
+]
