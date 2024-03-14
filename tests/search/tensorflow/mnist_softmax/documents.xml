@@ -1,7 +1,0 @@
-<document documenttype="test" documentid="id:test:test::doc1">
-  <text>Just some text.</text>
-</document>
-
-<document documenttype="test" documentid="id:test:test::doc2">
-  <text>Another text.</text>
-</document>
