@@ -12,14 +12,14 @@ class SummaryFeatures < IndexedStreamingSearchTest
   def test_summaryfeatures
     deploy_app(SearchApp.new.sd(selfdir + "sd2/test.sd"))
     start
-    feed(:file => selfdir + "doc.xml")
+    feed(:file => selfdir + "doc.json")
     assert_summaryfeatures
   end
 
   def test_summaryfeatures_reload_config
     deploy_app(SearchApp.new.sd(selfdir + "sd1/test.sd"))
     start
-    feed_and_wait_for_docs("test", 6, :file => selfdir + "doc.xml")
+    feed_and_wait_for_docs("test", 6, :file => selfdir + "doc.json")
 
     # Change to sd containing summaryfeatures, reload config, but no reindexing
     deploy_app(SearchApp.new.sd(selfdir + "sd2/test.sd"))
@@ -44,7 +44,7 @@ class SummaryFeatures < IndexedStreamingSearchTest
     set_description("Test that summary features can be omitted for a given document summary")
     deploy_app(SearchApp.new.sd(selfdir + "sd2/test.sd"))
     start
-    feed(:file => selfdir + "doc.xml")
+    feed(:file => selfdir + "doc.json")
 
     result = search("query=body:test&summary=without_summary_features")
     assert_hitcount(result, 1)

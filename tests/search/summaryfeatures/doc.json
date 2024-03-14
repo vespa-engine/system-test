@@ -1,0 +1,8 @@
+[
+  {"id":"id:test:test::1","fields":{"body":"test both","attr":200}},
+  {"id":"id:test:test::2","fields":{"body":"both","attr":100}},
+  {"id":"id:test:test::3","fields":{"body":"rest","attr":300}},
+  {"id":"id:test:test::4","fields":{"body":"rest","attr":400}},
+  {"id":"id:test:test::5","fields":{"body":"rest","attr":500}},
+  {"id":"id:test:test::6","fields":{"body":"rest","attr":600}}
+]
