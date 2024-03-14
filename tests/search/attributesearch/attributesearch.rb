@@ -109,19 +109,19 @@ class AttributeSearch < IndexedStreamingSearchTest
     expect_fail("intermixedcase", "lowercase search for uppercase search failed")
   end
 
-  def no_test_attributesearch_cased_hash
+  def test_attributesearch_cased_hash
     puts "Test cased search for hashed dictionaries"
     deploy_app(SearchApp.new.sd(selfdir+"cased_hash/test.sd"))
     run_cased_search
   end
 
-  def no_test_attributesearch_cased_btree
+  def test_attributesearch_cased_btree
     puts "Test cased search for btree dictionaries"
     deploy_app(SearchApp.new.sd(selfdir+"cased_btree/test.sd"))
     run_cased_search
   end
 
-  def no_test_attributesearch_single_value
+  def test_attributesearch_single_value
     deploy_app(SearchApp.new.sd(selfdir+"attrsingle.sd"))
     start
     feed_and_wait_for_docs("attrsingle", 5, :file => selfdir+"attrsingle.json")
@@ -256,7 +256,7 @@ class AttributeSearch < IndexedStreamingSearchTest
 
   end
 
-  def no_test_attributesearch_array
+  def test_attributesearch_array
     deploy_app(SearchApp.new.sd(selfdir+"attrarray/attrmulti.sd"))
     start
     feed_and_wait_for_docs("attrmulti", 5, :file => selfdir+"attrarray/attrmulti.json")
@@ -264,7 +264,7 @@ class AttributeSearch < IndexedStreamingSearchTest
     check_attributesearch_multivalue(true)
   end
 
-  def no_test_attributesearch_weightedset
+  def test_attributesearch_weightedset
     deploy_app(SearchApp.new.sd(selfdir+"attrweighted/attrmulti.sd"))
     start
     feed_and_wait_for_docs("attrmulti", 5, :file => selfdir+"attrweighted/attrmulti.json")
@@ -365,7 +365,7 @@ class AttributeSearch < IndexedStreamingSearchTest
     assert_hitcount("query=#{field}:UUUU*&type=all", 0)
   end
 
-  def no_test_attribute_prefix
+  def test_attribute_prefix
     deploy_app(SearchApp.new.sd(selfdir+"prefix.sd"))
     start
     feed_and_wait_for_docs("prefix", 20, :file => selfdir+"prefix.json")
