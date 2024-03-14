@@ -20,7 +20,7 @@ class Alias < IndexedStreamingSearchTest
   end
 
   def test_alias
-    feed_and_wait_for_docs("music", 19, :file => selfdir+"music.19.xml")
+    feed_and_wait_for_docs("music", 19, :file => selfdir+"music.19.json")
 
     regexp = /"title"|total-hit-count/
     puts "Query: Search using no explicit index"
