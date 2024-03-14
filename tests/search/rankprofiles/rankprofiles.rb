@@ -1,17 +1,27 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'rubygems'
 require 'json'
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class RankProfiles < IndexedSearchTest
+class RankProfiles < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
-    deploy(selfdir + "app")
-    start
   end
 
   def test_rankProfiles
+    deploy_files = { }
+    for file in [ 'schemas/type1/first.profile',
+                  'schemas/type1/subdir/default.profile',
+                  'schemas/type2/first.profile',
+                  'schemas/type2/myvalue.profile' ]
+      deploy_files[selfdir + 'app/' + file] = file
+    end
+    deploy_app(SearchApp.new.cluster_name('test').
+                 sd(selfdir + 'app/schemas/type1.sd').
+                 sd(selfdir + 'app/schemas/type2.sd'),
+               :files => deploy_files)
+    start
     feed(:file => selfdir + "documents.xml", :cluster => "test")
     wait_for_hitcount("query=sddocname:type1", 1)
     wait_for_hitcount("query=sddocname:type2", 1)
