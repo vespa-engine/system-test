@@ -1,0 +1,7 @@
+[
+  {"id":"id:test:test::0","fields":{"flag":[-128]}},
+  {"id":"id:test:test::1","fields":{"flag":[-64,-8]}},
+  {"id":"id:test:test::2","fields":{"flag":[0,8]}},
+  {"id":"id:test:test::3","fields":{"flag":[64,24]}},
+  {"id":"id:test:test::4","fields":{"flag":[127]}}
+]
