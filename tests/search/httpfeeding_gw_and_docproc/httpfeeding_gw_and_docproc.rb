@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require "indexed_search_test"
+require "indexed_streaming_search_test"
 
-class HttpfeedingGwAndDocproc < IndexedSearchTest
+class HttpfeedingGwAndDocproc < IndexedStreamingSearchTest
   def setup
     @feed_file_json = selfdir + "../data/simple.docs.3.json"
     @feed_file_tas_json = selfdir + "../data/simple.test-and-set.json"
