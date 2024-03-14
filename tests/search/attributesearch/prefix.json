@@ -1,0 +1,22 @@
+[
+  {"id":"id:prefix:prefix::1","fields":{"title":"1","scan_cased":"t","popularity":100}},
+  {"id":"id:prefix:prefix::2","fields":{"title":"2","scan_cased":"tT","popularity":99}},
+  {"id":"id:prefix:prefix::3","fields":{"title":"3","scan_cased":"tTt","popularity":98}},
+  {"id":"id:prefix:prefix::4","fields":{"title":"4","scan_cased":"tTtT","popularity":97}},
+  {"id":"id:prefix:prefix::5","fields":{"title":"5","scan_cased":"tTtTt","popularity":96}},
+  {"id":"id:prefix:prefix::6","fields":{"title":"6","scan_cased":"tTtTtT","popularity":95}},
+  {"id":"id:prefix:prefix::7","fields":{"title":"7","scan_cased":"tTtTtTt","popularity":94}},
+  {"id":"id:prefix:prefix::8","fields":{"title":"8","scan_cased":"tTtTtTtT","popularity":93}},
+  {"id":"id:prefix:prefix::9","fields":{"title":"9","scan_cased":"tTtTtTtTt","popularity":92}},
+  {"id":"id:prefix:prefix::10","fields":{"title":"10","scan_cased":"tTtTtTtTtT","popularity":91}},
+  {"id":"id:prefix:prefix::11","fields":{"title":"11","scan_cased":"tTtTtTtTtTt","popularity":90}},
+  {"id":"id:prefix:prefix::12","fields":{"title":"12","scan_cased":"tTtTtTtTtTtT","popularity":89}},
+  {"id":"id:prefix:prefix::13","fields":{"title":"13","scan_cased":"tTtTtTtTtTtTt","popularity":88}},
+  {"id":"id:prefix:prefix::14","fields":{"title":"14","scan_cased":"tTtTtTtTtTtTtT","popularity":87}},
+  {"id":"id:prefix:prefix::15","fields":{"title":"15","scan_cased":"tTtTtTtTtTtTtTt","popularity":86}},
+  {"id":"id:prefix:prefix::16","fields":{"title":"16","scan_cased":"tTtTtTtTtTtTtTtT","popularity":85}},
+  {"id":"id:prefix:prefix::17","fields":{"title":"17","scan_cased":"U","popularity":50}},
+  {"id":"id:prefix:prefix::18","fields":{"title":"18","scan_cased":"Uu","popularity":49}},
+  {"id":"id:prefix:prefix::19","fields":{"title":"19","scan_cased":"UuU","popularity":48}},
+  {"id":"id:prefix:prefix::20","fields":{"title":"20","scan_cased":"UuUu","popularity":47}}
+]

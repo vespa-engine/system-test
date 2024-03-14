@@ -62,7 +62,7 @@ class AttributeSearch < IndexedStreamingSearchTest
   def test_attributesearch_uncased
     deploy_app(SearchApp.new.sd(selfdir+"uncased/test.sd"))
     start
-    feed_and_wait_for_docs("test", 5, :file => selfdir+"docs_casing.xml")
+    feed_and_wait_for_docs("test", 5, :file => selfdir+"docs_casing.json")
 
     puts "test uncased (case insenitive search)"
 
@@ -87,7 +87,7 @@ class AttributeSearch < IndexedStreamingSearchTest
 
   def run_cased_search
     start
-    feed_and_wait_for_docs("test", 5, :file => selfdir+"docs_casing.xml")
+    feed_and_wait_for_docs("test", 5, :file => selfdir+"docs_casing.json")
 
 
     a_r_w_e("lower",    "lower",          "lowercase search failed")
@@ -124,7 +124,7 @@ class AttributeSearch < IndexedStreamingSearchTest
   def test_attributesearch_single_value
     deploy_app(SearchApp.new.sd(selfdir+"attrsingle.sd"))
     start
-    feed_and_wait_for_docs("attrsingle", 5, :file => selfdir+"attrsingle.xml")
+    feed_and_wait_for_docs("attrsingle", 5, :file => selfdir+"attrsingle.json")
 
     numeric = Hash.new
     numeric["intfield"] = @ints
@@ -259,7 +259,7 @@ class AttributeSearch < IndexedStreamingSearchTest
   def test_attributesearch_array
     deploy_app(SearchApp.new.sd(selfdir+"attrarray/attrmulti.sd"))
     start
-    feed_and_wait_for_docs("attrmulti", 5, :file => selfdir+"attrarray/attrmulti.xml")
+    feed_and_wait_for_docs("attrmulti", 5, :file => selfdir+"attrarray/attrmulti.json")
 
     check_attributesearch_multivalue(true)
   end
@@ -267,7 +267,7 @@ class AttributeSearch < IndexedStreamingSearchTest
   def test_attributesearch_weightedset
     deploy_app(SearchApp.new.sd(selfdir+"attrweighted/attrmulti.sd"))
     start
-    feed_and_wait_for_docs("attrmulti", 5, :file => selfdir+"attrweighted/attrmulti.xml")
+    feed_and_wait_for_docs("attrmulti", 5, :file => selfdir+"attrweighted/attrmulti.json")
 
     check_attributesearch_multivalue(false)
   end
@@ -368,7 +368,7 @@ class AttributeSearch < IndexedStreamingSearchTest
   def test_attribute_prefix
     deploy_app(SearchApp.new.sd(selfdir+"prefix.sd"))
     start
-    feed_and_wait_for_docs("prefix", 20, :file => selfdir+"prefix.xml")
+    feed_and_wait_for_docs("prefix", 20, :file => selfdir+"prefix.json")
 
     verify_prefix_uncased("scan_uncased")
     verify_prefix_uncased("btree_uncased")
@@ -381,7 +381,7 @@ class AttributeSearch < IndexedStreamingSearchTest
     set_description("Test the byte range of the flag attribute (array<byte>, fast-search)")
     deploy_app(SearchApp.new.sd(selfdir+"attrflag/test.sd"))
     start
-    feed_and_wait_for_docs("test", 5, :file => selfdir+"attrflag/feed.xml")
+    feed_and_wait_for_docs("test", 5, :file => selfdir+"attrflag/feed.json")
     assert_hitcount('query=flag:-128&type=all', 1)
     assert_hitcount('query=flag:127&type=all', 1)
     assert_hitcount('query=flag:>-128&type=all', 4)

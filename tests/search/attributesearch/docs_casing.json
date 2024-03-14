@@ -1,0 +1,7 @@
+[
+  {"id":"id:test:test::1804905709","fields":{"weight":2900,"fstitle":["lower"],"title":["lower"]}},
+  {"id":"id:test:test::1804905710","fields":{"weight":2800,"fstitle":["UPPER","shouting"],"title":["UPPER","shouting"]}},
+  {"id":"id:test:test::1804905711","fields":{"weight":2700,"fstitle":["Firstupper","name"],"title":["Firstupper","name"]}},
+  {"id":"id:test:test::1804905712","fields":{"weight":2600,"fstitle":["MixedCase","plus"],"title":["MixedCase","plus"]}},
+  {"id":"id:test:test::1804905713","fields":{"weight":2500,"fstitle":["interMixedCase","more"],"title":["interMixedCase","more"]}}
+]
