@@ -2,6 +2,7 @@
 package com.yahoo.vespatest;
 
 import com.yahoo.docproc.Processing;
+import com.yahoo.document.DataType;
 import com.yahoo.document.Document;
 import com.yahoo.document.DocumentOperation;
 import com.yahoo.document.DocumentPut;
@@ -21,6 +22,8 @@ public class FirstDocumentProcessor extends OrderDocumentProcessor {
             if (op instanceof DocumentPut) {
                 Document document = ((DocumentPut)op).getDocument();
                 Array<StringFieldValue> stringArray = (Array<StringFieldValue>) document.getFieldValue("stringarray");
+                if (stringArray = null)
+                    stringArray = new Array(DataType.STRING);
 
                 assertArraySize(stringArray, 0);
 
