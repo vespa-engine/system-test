@@ -15,8 +15,18 @@ class LightGBMEvaluationTest < IndexedSearchTest
     stop
   end
 
+  def make_app
+    app = SearchApp.new
+    container = Container.new('default').search(Searching.new)
+    container.component("    <model-evaluation />\n")
+    app.container(container)
+    app.sd(selfdir + 'app/schemas/lightgbm.sd')
+    app
+  end
+
   def test_lightgbm_evaluation
-    deploy(selfdir + "app/")
+    deploy_app(make_app,
+               :files => { selfdir + '/app/models/lightgbm_classification.json' => 'models/lightgbm_classification.json' })
     start
     feed_and_wait_for_docs("lightgbm", 100, :file => selfdir + "feed.json")
 
