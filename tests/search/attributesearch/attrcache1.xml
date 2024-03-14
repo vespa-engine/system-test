@@ -1,8 +1,0 @@
-<vespafeed>
-<update documenttype="attrcache" documentid="id:attr/attr:attrcache::0">
-    <assign field="stringfield">none</assign>
-</update>
-<update documenttype="attrcache" documentid="id:attr/attr:attrcache::1">
-    <assign field="stringfield">alpha</assign>
-</update>
-</vespafeed>
