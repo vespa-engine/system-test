@@ -12,7 +12,11 @@ class Bug6559464Test < IndexedOnlySearchTest
   end
 
   def test_default_get_is_merged_correctly_from_all_clusters
-    deploy(selfdir + 'application')
+    deploy_app(SearchApp.new.
+                 cluster(SearchCluster.new('musicsearch').sd(selfdir + 'application/schemas/music.sd')).
+                 cluster(SearchCluster.new('booksearch').sd(selfdir + 'application/schemas/book.sd')).
+                 cluster(SearchCluster.new('applesearch').sd(selfdir + 'application/schemas/apple.sd')).
+                 enable_document_api)
     start
 
     feed(:file => selfdir + 'feed.xml')
