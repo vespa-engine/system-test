@@ -14,7 +14,7 @@ class FieldMatchFeaturesIndexed < IndexedOnlySearchTest
     set_description("Test the fieldMatch feature together with literal boost")
     deploy_app(SearchApp.new.sd(selfdir + "fmliteral.sd"))
     start
-    feed_and_wait_for_docs("fmliteral", 2, :file => selfdir + "fmliteral.xml")
+    feed_and_wait_for_docs("fmliteral", 2, :file => selfdir + "fmliteral.json")
 
     assert_literal_best(0, "a:book")
     assert_literal_best(1, "a:booked")
@@ -29,7 +29,7 @@ class FieldMatchFeaturesIndexed < IndexedOnlySearchTest
     set_description("Test the fieldMatch feature together with filter index")
     deploy_app(SearchApp.new.sd(selfdir + "fmfilter.sd"))
     start
-    feed_and_wait_for_docs("fmfilter", 1, :file => selfdir + "fmfilter.xml")
+    feed_and_wait_for_docs("fmfilter", 1, :file => selfdir + "fmfilter.json")
 
     assert_fmfilter(0,     1,     1, 1, "a:a")
     assert_fmfilter(0,     1,     1, 2, "a:a+a:b")
