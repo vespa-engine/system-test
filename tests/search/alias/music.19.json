@@ -1,0 +1,21 @@
+[
+  {"id":"id:test:music::p_big-band-box-set-_music_1921490548","fields":{"artist":"none","weight":1900000,"song":"none","title":"hate","year":2000,"url":"http://www.bigband.com/foo"}},
+  {"id":"id:test:music::p_pianist-extraordinaire-2-deluxe-box-set-_music_1921950529","fields":{"artist":"hate","weight":1700000,"song":"none","title":"whatever","year":2003}},
+  {"id":"id:test:music::p_barry-white-friends_music_1921955430","fields":{"artist":"none","weight":1600000,"song":"hate","title":"foo","year":2003}},
+  {"id":"id:test:music::p_oh-that-kiss-1932-1945_music_1921272624","fields":{"artist":"not","weight":1500000,"song":"not","title":"not","year":1998}},
+  {"id":"id:test:music::p_complete-recordings-vol-2-1946-1948_music_1921495174","fields":{"artist":"else","weight":1400000,"song":"else","title":"else","year":2001}},
+  {"id":"id:test:music::p_columbia-albums-of-irving-berlin-1-2_music_1922002959","fields":{"artist":"hate","weight":1300000,"song":"hate","title":"hate 2k","year":2000}},
+  {"id":"id:test:music::p_dj-mix-97-vols-1-2_music_1921614163","fields":{"weight":1200000,"year":1997}},
+  {"id":"id:test:music::p_daddy-s-home-the-very-best-of-shep-the-limelites_music_1921492307","fields":{"weight":1100000,"song":"xzy","year":2001}},
+  {"id":"id:test:music::p_crazy-cajun-recordings_music_1921343820","fields":{"artist":"xyz","weight":900000,"song":"xyz","title":"xyz","year":1999}},
+  {"id":"id:test:music::p_lost-hits-golden-memories-vol-1_music_1921503688","fields":{"artist":"xyz","weight":800000,"song":"xyz","title":"xyz","year":2001}},
+  {"id":"id:test:music::p_sings-cole-porter_music_1921237728","fields":{"artist":"xyz","weight":700000,"song":"xyz","title":"xyz","year":1995}},
+  {"id":"id:test:music::p_try-this-clean-bonus-dvd-_music_1922003403","fields":{"artist":"xyz","weight":600000,"song":"hate","title":"xyz","year":2000}},
+  {"id":"id:test:music::p_complete-recordings_music_1921631165","fields":{"artist":"xyz","weight":500000,"song":"xyz","title":"xyz","year":2002}},
+  {"id":"id:test:music::p_world-war-ii-love-songs_music_1921338274","fields":{"artist":"xyz","weight":400000,"song":"xyz","title":"xyz","year":1999}},
+  {"id":"id:test:music::p_singin-the-gospel-1933-1936_music_1921456802","fields":{"artist":"xyz","weight":300000,"song":"hate","title":"hate 2","year":2001}},
+  {"id":"id:test:music::p_revelling-reckoning_music_1921504950","fields":{"artist":"2k","weight":200000,"song":"2k","title":"2k","year":2000}},
+  {"id":"id:test:music::p_kontor-vol-10_music_1921506158","fields":{"artist":"two thousand","weight":100000,"song":"two thousand","title":"two thousand","year":2000}},
+  {"id":"id:test:music::p_this-is-country-giants-of-country-cleopatra-big-eye-_music_1921307500","fields":{"artist":"none","weight":50000,"song":"none","title":"none","year":1998}},
+  {"id":"id:test:music::p_box-hits-98_music_1921305799","fields":{"artist":"none","weight":1,"song":"none","title":"none","year":1998}}
+]
