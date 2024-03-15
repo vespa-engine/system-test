@@ -20,6 +20,11 @@ class RankFilter < IndexedStreamingSearchTest
     vespa.adminserver.logctl("searchnode:proton.memoryindex.memoryindex", "debug=on")
     feed_and_wait_for_docs("test", 1, :file => selfdir + "test.xml")
 
+    if is_streaming
+      puts "Run tests for streaming search"
+      run_rank_filter_test
+      return
+    end
     puts "Run tests for memory index"
     run_rank_filter_test
 
