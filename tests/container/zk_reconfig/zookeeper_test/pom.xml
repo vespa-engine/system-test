@@ -14,7 +14,7 @@
     </parent>
 
     <properties>
-        <zookeeper.version>3.9.1</zookeeper.version>
+        <zookeeper.version>3.9.2</zookeeper.version>
     </properties>
 
     <dependencies>
