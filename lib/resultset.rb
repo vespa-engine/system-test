@@ -72,6 +72,9 @@ class Resultset
         if groupid.start_with? 'index:search/'
           group.delete('id')
         end
+        if groupid.start_with? 'index:storage/'
+          group.delete('id')
+        end
         if groupid.start_with? 'index:storage.test/'
           group.delete('id')
         end
@@ -87,7 +90,9 @@ class Resultset
       if group['sddocname'] == 'test'
         group.delete('sddocname')
       end
-      group.delete('source')
+      if group['source'] == 'search' || group['source'] == 'storage.test' group['source'] == 'storage'
+        group.delete('source')
+      end
       group.each_value { |g| fixup_groupings(g) }
     elsif group.is_a? Array
       group.each { |g| fixup_groupings(g) }
