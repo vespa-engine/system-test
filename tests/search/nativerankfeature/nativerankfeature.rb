@@ -13,7 +13,7 @@ class NativeRankFeature < IndexedStreamingSearchTest
     set_description("Test the nativeFieldMatch feature")
     deploy_app(SearchApp.new.sd(selfdir+"fieldmatch.sd"))
     start
-    feed_and_wait_for_docs("fieldmatch", 2, :file => selfdir + "fieldmatch.xml")
+    feed_and_wait_for_docs("fieldmatch", 2, :file => selfdir + "fieldmatch.json")
 
     # query=a
     # doc 0
@@ -55,7 +55,7 @@ class NativeRankFeature < IndexedStreamingSearchTest
     set_description("Test the nativeRank feature")
     deploy_app(SearchApp.new.sd(selfdir+"nativerank.sd"))
     start
-    feed_and_wait_for_docs("nativerank", 11, :file => selfdir + "nativerank.xml")
+    feed_and_wait_for_docs("nativerank", 11, :file => selfdir + "nativerank.json")
     run_native_rank_test
 
     # attribute tests
@@ -115,7 +115,7 @@ class NativeRankFeature < IndexedStreamingSearchTest
     set_description("Test the nativeRank feature when explicit specifying which fields to include in the score calculation")
     deploy_app(SearchApp.new.sd(selfdir+"expnr.sd"))
     start
-    feed_and_wait_for_docs("expnr", 1, :file => selfdir + "expnr.xml")
+    feed_and_wait_for_docs("expnr", 1, :file => selfdir + "expnr.json")
     run_explicit_native_rank_test
 
     # default nativeRank
