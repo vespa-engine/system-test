@@ -90,7 +90,7 @@ class Resultset
       if group['sddocname'] == 'test'
         group.delete('sddocname')
       end
-      if group['source'] == 'search' || group['source'] == 'storage.test' group['source'] == 'storage'
+      if group['source'] == 'search' || group['source'] == 'storage.test' || group['source'] == 'storage'
         group.delete('source')
       end
       group.each_value { |g| fixup_groupings(g) }
