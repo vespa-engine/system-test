@@ -102,7 +102,7 @@ class FastAccessAttributesTest < IndexedOnlySearchTest
     deploy_app(get_app("sd1/test.sd"))
     start
     enable_debug
-    feed_and_wait_for_docs("test", 16, :file => selfdir + "docs.xml")
+    feed_and_wait_for_docs("test", 16, :file => selfdir + "docs.json")
     assert_attributes_exist(false)
 
     redeploy("sd2/test.sd")
@@ -111,7 +111,7 @@ class FastAccessAttributesTest < IndexedOnlySearchTest
     # node 1
     assert_log_matches(/.populate\.attribute\.complete.*test\.2\.notready\.attribute\.a1.*documents\.populated":7/)
 
-    feed(:file => selfdir + "updates.xml")
+    feed(:file => selfdir + "updates.json")
     assert_attribute_hitcount
     assert_attributes_exist(true)
 
@@ -123,8 +123,8 @@ class FastAccessAttributesTest < IndexedOnlySearchTest
     deploy_app(get_app("sd2/test.sd"))
     start
     enable_debug
-    feed_and_wait_for_docs("test", 16, :file => selfdir + "docs.xml")
-    feed(:file => selfdir + "updates.xml")
+    feed_and_wait_for_docs("test", 16, :file => selfdir + "docs.json")
+    feed(:file => selfdir + "updates.json")
     assert_attribute_hitcount
     assert_attributes_exist(true)
 
