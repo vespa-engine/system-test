@@ -58,12 +58,10 @@ class NativeRankFeature < IndexedStreamingSearchTest
     feed_and_wait_for_docs("nativerank", 11, :file => selfdir + "nativerank.xml")
     run_native_rank_test
 
-    if !is_streaming
-      # attribute tests
-      assert_native_rank("query=f4:a")
-      assert_native_rank("query=f4:a", "only-attribute-match")
-      assert_native_rank("query=a+b+f4:a", "only-attribute-match")
-    end
+    # attribute tests
+    assert_native_rank("query=f4:a")
+    assert_native_rank("query=f4:a", "only-attribute-match")
+    assert_native_rank("query=a+b+f4:a", "only-attribute-match")
   end
 
   def run_native_rank_test
@@ -120,28 +118,13 @@ class NativeRankFeature < IndexedStreamingSearchTest
     feed_and_wait_for_docs("expnr", 1, :file => selfdir + "expnr.xml")
     run_explicit_native_rank_test
 
-    if !is_streaming
-      # default nativeRank
-      assert_expnr(get_basic(0, 0,   0,  0), "query=f3:a")
-      assert_expnr(get_basic(0, 0,   0,  0), "query=f3:a+f3:b")
+    # default nativeRank
+    assert_expnr(get_basic(0, 0,   0,  0), "query=f3:a")
+    assert_expnr(get_basic(0, 0,   0,  0), "query=f3:a+f3:b")
 
-      # only f3
-      assert_expnr(get_explicit(0, 0, nil, 0, "f3"), "query=f3:a",      "only-f3")
-      assert_expnr(get_explicit(0, 0, nil, 0, "f3"), "query=f3:a+f3:b", "only-f3")
-
-      # only f4
-    else
-      # rank:filter only works for indexed search (test cases with f3 different).
-      # nativeAttributeMatch only works for indexed search (test cases with f4 and f5 different, behaves as index fields).
-
-      # default nativeRank
-      assert_expnr(get_basic(800,   0, 0, 400), "query=f3:a")
-      assert_expnr(get_basic(800, 800, 0, 600), "query=f3:a+f3:b")
-
-      # only f3 (rank:filter only works for indexed search)
-      assert_expnr(get_explicit(800,   0, nil, 400, "f3"), "query=f3:a",      "only-f3")
-      assert_expnr(get_explicit(800, 800, nil, 600, "f3"), "query=f3:a+f3:b", "only-f3")
-    end
+    # only f3
+    assert_expnr(get_explicit(0, 0, nil, 0, "f3"), "query=f3:a",      "only-f3")
+    assert_expnr(get_explicit(0, 0, nil, 0, "f3"), "query=f3:a+f3:b", "only-f3")
   end
 
   def run_explicit_native_rank_test
