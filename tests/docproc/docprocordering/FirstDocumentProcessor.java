@@ -24,7 +24,7 @@ public class FirstDocumentProcessor extends OrderDocumentProcessor {
                 Document document = ((DocumentPut)op).getDocument();
                 Array<StringFieldValue> stringArray;
                 if (document.getFieldValue("stringarray") == null)
-                    stringArray = new Array<>(DataType.STRING);
+                    stringArray = new Array<>(DataType.getArray(DataType.STRING));
                 else
                     stringArray = (Array<StringFieldValue>) document.getFieldValue("stringarray");
 
