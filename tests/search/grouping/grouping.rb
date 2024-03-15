@@ -38,25 +38,22 @@ class Grouping < IndexedStreamingSearchTest
                     "#{selfdir}/example5.json")
 
     # Presenting Hits per Group
-    exp_hits = is_streaming ? "example6.streaming" : "example6"
     assert_grouping("purchase", "all(group(customer) each(max(3) each(output(summary()))))",
-                    "#{selfdir}/#{exp_hits}.json")
+                    "#{selfdir}/example6.json")
 
     # Nested Groups
     assert_grouping("purchase", "all(group(customer) each(group(time.date(date)) each(output(sum(price)))))",
                     "#{selfdir}/example7.json")
 
-    exp_hits = is_streaming ? "example8.streaming" : "example8"
     assert_grouping("purchase", "all(group(customer) each(max(1) output(sum(price)) each(output(summary()))) as(sumtotal)" +
                     "                    each(group(time.date(date)) each(max(10) output(sum(price)) each(output(summary())))))",
-                    "#{selfdir}/#{exp_hits}.json")
+                    "#{selfdir}/example8.json")
   end
 
   def grouping_summary()
     feed_and_wait_for_docs("simple", 1, :file => "#{selfdir}/simple-feed.xml", :maxpending => 1)
-    exp_hits = is_streaming ? "simple-result.streaming" : "simple-result"
     assert_grouping("simple", "all(group(str_attr)max(1)each(max(1)each(output(summary()))))",
-                    "#{selfdir}/#{exp_hits}.json")
+                    "#{selfdir}/simple-result.json")
   end
 
   def assert_grouping(doc_type, grouping, file)
