@@ -123,7 +123,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
 
   def test_exact_match_search
     set_description("Test exact match and regular word match in the struct field attributes of a map field")
-    deploy_and_start(is_streaming ? "streaming_exact_match" : "exact_match")
+    deploy_and_start("exact_match")
     feed(:file => selfdir + "exact_match/docs.json")
 
     assert_exact_match_queries("props_exact")
