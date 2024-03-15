@@ -21,7 +21,7 @@ class TestRecovery < IndexedSearchTest
     deploy_app(app)
     start
     vespa.storage["storage"].wait_until_ready
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA + "music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA + "music.10.json")
     assert_result("query=sddocname:music",
                    SEARCH_DATA+"music.10.result.json",
                    "title")
