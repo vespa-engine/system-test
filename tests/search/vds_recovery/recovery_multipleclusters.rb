@@ -23,9 +23,9 @@ class TestRecoveryMultiCluster < IndexedSearchTest
     deploy_app(app)
     start
     puts "Test starting"
-    feed_and_wait_for_docs("music", 10, :file => selfdir + "music.10.xml",
+    feed_and_wait_for_docs("music", 10, :file => selfdir + "music.10.json",
 	:route => "\"[AND:storage music]\"")
-    feed_and_wait_for_docs("books", 15, :file => selfdir + "books.15.xml",
+    feed_and_wait_for_docs("books", 15, :file => selfdir + "books.15.json",
 	:route => "\"[AND:storage books]\"")
 
     puts "Stopping"
