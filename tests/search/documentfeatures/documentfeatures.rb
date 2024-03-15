@@ -105,7 +105,7 @@ class DocumentFeatures < IndexedStreamingSearchTest
   def field_length_with_exact_match_test
     puts("Test the fieldLength feature with exact match")
 
-    expected_field_length = is_streaming ? 1 : 1000000
+    expected_field_length = 1000000
     assert_field_length_exactstring(expected_field_length, "a", "a:unique", 0) # match: exact triggers bitvector.
     assert_field_length_exactstring(1000000, "a", "sddocname:flexactstring", 0)
     assert_field_length_exactstring(1000000, "a", "sddocname:flexactstring", 1)
