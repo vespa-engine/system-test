@@ -21,14 +21,15 @@ public class FirstDocumentProcessor extends OrderDocumentProcessor {
         for (DocumentOperation op : processing.getDocumentOperations()) {
             if (op instanceof DocumentPut) {
                 Document document = ((DocumentPut)op).getDocument();
-                Array<StringFieldValue> stringArray = (Array<StringFieldValue>) document.getFieldValue("stringarray");
+                FieldValue stringArray = document.getFieldValue("stringarray");
                 if (stringArray == null)
                     stringArray = new Array<>(DataType.STRING);
 
                 assertArraySize(stringArray, 0);
 
-                stringArray.add(new StringFieldValue("first"));
+                ((Array<StringFieldValue>) stringArray).add(new StringFieldValue("first"));
             }
+
         }
         return Progress.DONE;
     }
