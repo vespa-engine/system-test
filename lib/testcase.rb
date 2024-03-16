@@ -735,7 +735,7 @@ class TestCase
     :remove_dangling_file => /Removing dangling file/,
     :canonical_hostname_warning => /Host named '.+' may not receive any config since it differs from its canonical hostname/,
     :no_snapshot_from_instance => /no snapshot from instance of /,
-    :taking_search_node_oos => /Taking search node in cluster = '.+' in group '.+' out of service/,
+    :taking_search_node_oos => /Taking search node in cluster = .+ in group .+ out of service/,
     :slobrok_failed_listnames_check => /failed check using listNames callback/
   }
 
