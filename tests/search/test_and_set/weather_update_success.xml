@@ -1,4 +1,0 @@
-<update documenttype="weather" documentid="id:weather:weather::0" condition="weather.revision == 1">
-  <assign field="forecast">raining blood</assign>
-  <assign field="revision">2</assign>
-</update>

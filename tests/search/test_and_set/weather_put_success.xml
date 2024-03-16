@@ -1,9 +1,0 @@
-<document documenttype="weather" documentid="id:weather:weather::0" condition="weather.revision == 1">
-  <timestamp>1000</timestamp>
-  <forecast>snowing</forecast>
-  <snowstats>
-      <item><key>height</key><value>80</value></item>
-      <item><key>fluffyness</key><value>3</value></item>
-  </snowstats>
-  <revision>2</revision>
-</document>
