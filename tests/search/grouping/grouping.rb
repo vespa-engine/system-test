@@ -17,7 +17,7 @@ class Grouping < IndexedStreamingSearchTest
   end
 
   def grouping_full()
-    feed_and_wait_for_docs("purchase", 20, :file => "#{selfdir}/docs.xml", :maxpending => 1)
+    feed_and_wait_for_docs("purchase", 20, :file => "#{selfdir}/docs.json", :maxpending => 1)
 
     # Basic Grouping
     assert_grouping("purchase", "all(group(customer) each(output(sum(price))))",
@@ -51,7 +51,7 @@ class Grouping < IndexedStreamingSearchTest
   end
 
   def grouping_summary()
-    feed_and_wait_for_docs("simple", 1, :file => "#{selfdir}/simple-feed.xml", :maxpending => 1)
+    feed_and_wait_for_docs("simple", 1, :file => "#{selfdir}/simple-feed.json", :maxpending => 1)
     assert_grouping("simple", "all(group(str_attr)max(1)each(max(1)each(output(summary()))))",
                     "#{selfdir}/simple-result.json")
   end
