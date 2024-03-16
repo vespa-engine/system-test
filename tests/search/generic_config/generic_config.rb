@@ -104,7 +104,7 @@ class GenericConfig < IndexedStreamingSearchTest
   end
 
   def dotest_searchcluster_config(prefix)
-    id = is_streaming ? prefix : "#{prefix}/cluster.search"
+    id = "#{prefix}/cluster.search"
     assert(vespa.adminserver.execute("#{@getconfig} -n vespa.config.search.core.proton -i #{id}/0") =~ /numsummarythreads 34/)
     assert(vespa.adminserver.execute("#{@getconfig} -n vespa.config.search.core.proton -i #{id}/1") =~ /numsummarythreads 32/)
     assert(vespa.adminserver.execute("#{@getconfig} -n vespa.config.search.core.proton -i #{id}/0") =~ /flush.idleinterval 700/)
