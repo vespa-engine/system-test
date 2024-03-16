@@ -89,7 +89,7 @@ class Resultset
       end
       source = group['source']
       if source
-        if source == 'search'
+        if source == 'search' || source == 'storage'
           group.delete('source')
         elsif source.start_with? 'storage.'
           group.delete('source')
