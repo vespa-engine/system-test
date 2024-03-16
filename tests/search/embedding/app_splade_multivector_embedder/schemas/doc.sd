@@ -20,7 +20,7 @@ schema doc {
     }
 
     first-phase {
-      expression: nativeRank(text) + reduce(sum(query(qt) * attribute(dt), max, chunk))
+      expression: nativeRank(text) + reduce(sum(query(qt) * attribute(dt)), max, chunk)
     }
 
     summary-features {
