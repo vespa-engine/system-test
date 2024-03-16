@@ -1,4 +1,0 @@
-<update documenttype="weather" documentid="id:weather:weather::2" condition="weather.snowstats{fluffyness} == 4">
-  <assign field="forecast">fluffy snow and godzilla attack</assign>
-  <assign field="revision">2</assign>
-</update>
