@@ -158,6 +158,23 @@ class Embedding < IndexedStreamingSearchTest
     verify_splade_embedding
   end
 
+  def test_splade_multivector_embedding
+    deploy_app(
+      SearchApp.new.
+        container(
+          Container.new('default').
+            component(splade_embedder_component).
+            search(Searching.new).
+            docproc(DocumentProcessing.new).
+            jvmoptions('-Xms4g -Xmx4g')).
+        sd(selfdir + 'app_splade_multivector_embedder/schemas/doc.sd').
+        components_dir(selfdir + 'app_splade_embedder/models').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start
+    feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
+    verify_splade_multivector_embedding
+  end
+
 
   def verify_default_embedder
     result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hello%22%3B&ranking.features.query(tokens)=embed(Hello%20world)&format=json").json
@@ -268,6 +285,19 @@ class Embedding < IndexedStreamingSearchTest
   end
 
   def verify_splade_embedding
+    result = search("?query=text:hello&input.query(qt)=embed(splade, \"Hello%20world\")&format=json&format.tensors=short-value").json
+    querySpladeEmbedding     = result['root']['children'][0]['fields']['summaryfeatures']["query(qt)"]
+    assert(querySpladeEmbedding.length > 0, "#{querySpladeEmbedding} length is 0")
+    puts "querySpladeEmbedding: '#{querySpladeEmbedding}'"
+    docSpladeEmbedding = result['root']['children'][0]['fields']['summaryfeatures']["attribute(dt)"]
+    puts(docSpladeEmbedding.length)
+    puts "docSpladeEmbedding: '#{docSpladeEmbedding}'"
+    assert(docSpladeEmbedding.length > 0, "#{docSpladeEmbedding} lenght is 0.")
+    relevance = result['root']['children'][0]['relevance']
+    assert(relevance > 0, "#{relevance} is 0, which is not expected.")
+  end
+
+  def verify_splade_multivector_embedding
     result = search("?query=text:hello&input.query(qt)=embed(splade, \"Hello%20world\")&format=json&format.tensors=short-value").json
     querySpladeEmbedding     = result['root']['children'][0]['fields']['summaryfeatures']["query(qt)"]
     assert(querySpladeEmbedding.length > 0, "#{querySpladeEmbedding} length is 0")
