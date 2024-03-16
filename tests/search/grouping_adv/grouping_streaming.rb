@@ -9,7 +9,7 @@ class GroupingStreaming < StreamingSearchTest
   def test_advgrouping_struct_vds
     deploy_app(singlenode_streaming_2storage("#{selfdir}/structtest.sd").search_dir(selfdir + 'search'))
     start
-    feed_and_wait_for_docs('structtest', 1, :file => "#{selfdir}/structdocs.xml")
+    feed_and_wait_for_docs('structtest', 1, :file => "#{selfdir}/structdocs.json")
     # Test struct
     check_wherequery('sddocname:structtest', 'all(group(ssf1.s1) each(output(count())))', 'ssf1.s1')
     check_wherequery('sddocname:structtest', 'all(group(ssf1.l1) each(output(count())))', 'ssf1.l1')

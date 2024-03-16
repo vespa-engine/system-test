@@ -91,6 +91,7 @@ class TestCase
       @@log_messages[:canonical_hostname_warning],
       @@log_messages[:metrics_proxy_connection_refused],
       @@log_messages[:empty_idx_file],
+      @@log_messages[:taking_search_node_oos],
       @@log_messages[:no_snapshot_from_instance]
     ]
     @valgrind_ignorable_messages = [
@@ -734,6 +735,7 @@ class TestCase
     :remove_dangling_file => /Removing dangling file/,
     :canonical_hostname_warning => /Host named '.+' may not receive any config since it differs from its canonical hostname/,
     :no_snapshot_from_instance => /no snapshot from instance of /,
+    :taking_search_node_oos => /Taking search node in cluster = '.+' in group '.+' out of service/,
     :slobrok_failed_listnames_check => /failed check using listNames callback/
   }
 
