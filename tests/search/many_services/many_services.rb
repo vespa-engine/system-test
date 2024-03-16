@@ -28,7 +28,7 @@ class Many_Services < IndexedSearchTest
     vespa.start
 
     wait_until_ready(900)
-    push_realtime("music.10.ranked.xml")
+    push_realtime("music.10.ranked.json")
 
     query = "query=sddocname:music&format=xml"
     for qrs_id in (0..vespa.qrserver.length-1)
