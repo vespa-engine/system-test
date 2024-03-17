@@ -19,7 +19,7 @@ class Addnewfield < IndexedStreamingSearchTest
 
     sddoc_query = "query=sddocname:music&nocache"
 
-    feed_and_wait_for_hitcount(sddoc_query, 15,  :file => selfdir+"music.xml")
+    feed_and_wait_for_hitcount(sddoc_query, 15,  :file => selfdir+"music.json")
 
     fields = ["title", "popularity", "documentid"]
 
@@ -43,7 +43,7 @@ class Addnewfield < IndexedStreamingSearchTest
     assert_result(sddoc_query, selfdir + "result.10.proton.json", nil, fields)
 
     # add 1 document, this should force summary.cf merging:
-    feed_and_wait_for_hitcount(sddoc_query, 16, :file => selfdir+"wnf.1.xml")
+    feed_and_wait_for_hitcount(sddoc_query, 16, :file => selfdir+"wnf.1.json")
 
     # we should be able to search the new field
     wait_for_hitcount("query=newfield:field&nocache", 1)
