@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:bigindexclosure::1","fields":{"s":"testS1","t":"testT1","i":"testI1","l":"testL1","b":"testB1","a":"testA1","h":"testH1","c":"testC1","j":"testJ1","n":"testN1","e":"testE1","m":"testM1","q":"testQ1","d":"testD1","g":"testG1","f":"testF1","k":"testK1","r":"testR1","p":"testP1","o":"testO1"}},
+  {"id":"id:test:bigindexclosure::2","fields":{"s":"testS2","t":"testT2","i":"testI2","l":"testL2","b":"testB2","a":"testA2","h":"testH2","c":"testC2","j":"testJ2","n":"testN2","e":"testE2","m":"testM2","q":"testQ2","d":"testD2","g":"testG2","f":"testF2","k":"testK2","r":"testR2","p":"testP2","o":"testO2"}}
+]
