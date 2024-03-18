@@ -146,7 +146,7 @@ class RegExp < IndexedStreamingSearchTest
   def test_regexp
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 9, :file => selfdir + "docs.xml")
+    feed_and_wait_for_docs("test", 9, :file => selfdir + "docs.json")
     assert_hitcount(make_query(make_term("title", "test1")), 3);
     assert_hitcount(make_query(make_term("title", "test2")), 3);
     assert_hitcount(make_query(make_term("title", "test3")), 3);
