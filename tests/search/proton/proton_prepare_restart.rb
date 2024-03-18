@@ -13,7 +13,7 @@ class ProtonPrepareRestartTest < IndexedOnlySearchTest
     # Needed for logging messages that are verified later in this test
     vespa.adminserver.logctl("searchnode:proton.flushengine.prepare_restart_flush_strategy", "debug=on,spam=on")
     start
-    feed_and_wait_for_docs("test", 100, :file => "#{selfdir}/docs.4.xml")
+    feed_and_wait_for_docs("test", 100, :file => "#{selfdir}/docs.4.json")
     vespa.search["search"].first.prepare_restart
 
     expected_flush_targets = ['test.0.ready.attribute.flush.iattr',

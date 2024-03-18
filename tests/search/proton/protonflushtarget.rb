@@ -44,16 +44,16 @@ class ProtonFlushTargetTest < IndexedOnlySearchTest
     init_summary_size = status["summary"]
     puts "summary: init size(#{status["summary"]})"
 
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.xml")
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.json")
 
     assert_files_flushed(90, status, "snapshot-")
 
     assert_log_matches("Pruned TLS to token 6", 20)
     assert_log_matches("New target, Num flushed: 1", 20)
-    feed(:file => selfdir + "docs.5.xml")
+    feed(:file => selfdir + "docs.5.json")
     assert_hitcount_after_flush
     assert_log_matches(/.*flush\.complete.*memoryindex.*flush\.2/, 60)
-    feed(:file => selfdir + "docs.5.xml")
+    feed(:file => selfdir + "docs.5.json")
     assert_hitcount_after_flush
     assert_log_matches(/.*flush\.complete.*memoryindex.*flush\.3/, 60)
     assert_log_matches(/.*fusion\.start.*flush\.1.*flush\.2.*flush\.3/, 60)
@@ -78,12 +78,12 @@ class ProtonFlushTargetTest < IndexedOnlySearchTest
     vespa.adminserver.logctl("searchnode:proton.server.indexfusiontarget","debug=on")
     searchnode = vespa.search["search"].first
     status = get_dir_status
-    feed_and_wait_for_docs("test", 2, :file => "#{selfdir}/docs.xml")
+    feed_and_wait_for_docs("test", 2, :file => "#{selfdir}/docs.json")
     searchnode.trigger_flush
     assert_files_flushed(1, status, "snapshot-")
 
     status_before = get_index_status(searchnode)
-    feed_and_wait_for_docs("test", 3, :file => "#{selfdir}/docs.2.xml")
+    feed_and_wait_for_docs("test", 3, :file => "#{selfdir}/docs.2.json")
     timeout = Time.now + 20
     while (Time.now < timeout) do
       pre = Time.now

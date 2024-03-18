@@ -11,7 +11,7 @@ class ProtonFlushOnShutdownTest < IndexedOnlySearchTest
   def test_turn_off_flush_on_shutdown
     deploy_app(SearchApp.new.sd(selfdir+"test.sd").flush_on_shutdown(false))
     start
-    feed_and_wait_for_docs("test", 100, :file => "#{selfdir}/docs.4.xml")
+    feed_and_wait_for_docs("test", 100, :file => "#{selfdir}/docs.4.json")
     vespa.search["search"].first.stop
     vespa.search["search"].first.start
     wait_for_hitcount("sddocname:test", 100)
