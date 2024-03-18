@@ -13,7 +13,7 @@ class RankFeaturesStreaming < StreamingSearchTest
     set_description("Test that the expected rank features are dumped using streaming search")
     deploy_app(SearchApp.new.sd(selfdir + "streaming/dump.sd"))
     start
-    feed_and_wait_for_docs("dump", 1, :file => selfdir+"dumpss.xml")
+    feed_and_wait_for_docs("dump", 1, :file => selfdir+"dumpss.json")
 
     expected = []
     File.open(selfdir + "dumpss.txt", "r").each do |line|
