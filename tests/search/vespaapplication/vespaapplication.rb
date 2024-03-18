@@ -6,7 +6,7 @@ class VespaApplication < IndexedStreamingSearchTest
 
   def setup
     set_owner("gjoranv")
-    set_description("Test that application packages work, including summar config overrides")
+    set_description("Test that application packages work, including juniper summary config overrides")
     app = SearchApp.new.sd(selfdir+"music.sd").
             config(ConfigOverride.new("vespa.config.search.summary.juniperrc").
               add("prefix", false).
