@@ -12,7 +12,7 @@ class TextSimilarityFeature < IndexedSearchTest
   def test_text_similarity_feature
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.xml")
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.json")
 
     result = search("query=select%20%2A%20from%20sources%20%2A%20where%20%28both%20contains%20%22a%22%20OR%20both%20contains%20%22b%22%20OR%20both%20contains%20%22c%22%20OR%20both%20contains%20%22d%22%20OR%20both%20contains%20%22e%22%29%3B&type=yql")
     assert(result.hit.size == 1)
