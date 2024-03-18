@@ -16,7 +16,7 @@ class ProgrammaticQuery < IndexedSearchTest
                         search_chain(Provider.new("local-vespa", "local").cluster("search"))
                      )
     start
-    feed_and_wait_for_docs("simple", 1, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("simple", 1, :file => selfdir + "feed.json")
     wait_for_hitcount("query=sddocname:simple", 1)
   end
 
