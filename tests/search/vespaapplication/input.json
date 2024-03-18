@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:music::http://www.cdplanet.no/showarticle.asp?artid=476777","fields":{"pto":189,"artist":"Metallica","title":"Master Of Puppets","year":1989,"surl":"http://www.cdplanet.no/showarticle.asp?artid=476777"}},
+  {"id":"id:test:music::http://www.cdplanet.no/showarticle.asp?artid=1623430","fields":{"pto":229,"artist":"The Cure","title":"Bloodflowers","year":2000,"surl":"http://www.cdplanet.no/showarticle.asp?artid=1623430"}}
+]

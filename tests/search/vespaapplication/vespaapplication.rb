@@ -6,7 +6,7 @@ class VespaApplication < IndexedStreamingSearchTest
 
   def setup
     set_owner("gjoranv")
-    set_description("Test that application packages work, including config.xml and templates")
+    set_description("Test that application packages work, including juniper summary config overrides")
     app = SearchApp.new.sd(selfdir+"music.sd").
             config(ConfigOverride.new("vespa.config.search.summary.juniperrc").
               add("prefix", false).
@@ -38,7 +38,7 @@ class VespaApplication < IndexedStreamingSearchTest
   end
 
   def test_vespa_application
-    feed_and_wait_for_docs("music", 2, :file => selfdir+"input.xml")
+    feed_and_wait_for_docs("music", 2, :file => selfdir+"input.json")
 
     wait_for_hitcount('query=metallica&type=all', 1, 60, 0)
 
