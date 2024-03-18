@@ -1,8 +1,0 @@
-<document type="testb" documentid="id:testb:testb::0">
-  <id>1</id>
-  <f1>bar</f1>
-</document>
-<document type="testb" documentid="id:testb:testb::1">
-  <id>2</id>
-  <f1>bar-foo</f1>
-</document>

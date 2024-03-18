@@ -15,8 +15,8 @@ class RpcSummary < IndexedStreamingSearchTest
       deploy_app(SearchApp.new.sd(selfdir+"test.sd").sd(selfdir+"testb.sd"))
     end
     start
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.xml")
-    feed_and_wait_for_docs("testb", 2, :file => selfdir + "feedb.xml")
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.json")
+    feed_and_wait_for_docs("testb", 2, :file => selfdir + "feedb.json")
     verify_doctype("test")
     verify_doctype("testb")
   end
