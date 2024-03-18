@@ -171,7 +171,7 @@ class Embedding < IndexedStreamingSearchTest
         components_dir(selfdir + 'app_splade_embedder/models').
         indexing_cluster('default').indexing_chain('indexing'))
     start
-    feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
+    feed_and_wait_for_docs("doc", 1, :file => selfdir + "multivector-docs.json")
     verify_splade_multivector_embedding
   end
 
