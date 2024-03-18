@@ -1,0 +1,5 @@
+[
+  {"id":"id:test:multipoint::1","fields":{"workll":[{"lat":37.41682,"lng":-122.02527},{"lat":63.431693,"lng":10.391965},{"lat":51.513912,"lng":-0.128381}],"homell":{"lat":63.429722,"lng":10.393333},"title":"pizza hut sunnyvale","latlong":{"lat":37.374821,"lng":-122.057174},"order":0,"vacationll":{"lat":50.061598,"lng":19.937473}}},
+  {"id":"id:test:multipoint::2","fields":{"title":"pizza hut nowhere","order":1}},
+  {"id":"id:test:multipoint::3","fields":{"workll":[{"lat":40.833333,"lng":14.25}],"homell":{"lat":40.833333,"lng":14.25},"title":"napoli, the home of neapolitan pizza","latlong":{"lat":40.833333,"lng":14.25},"order":3,"vacationll":{"lat":40.833333,"lng":14.25}}}
+]

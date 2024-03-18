@@ -29,7 +29,7 @@ class FastGeoSearchTest < IndexedStreamingSearchTest
                              chain(Chain.new("default", "vespa").add(Searcher.new("com.yahoo.test.MultiPointTester")))).
                     docproc(DocumentProcessing.new)))
     start
-    feed_and_wait_for_docs("multipoint", 3, :file => selfdir+"feed-mp.xml")
+    feed_and_wait_for_docs("multipoint", 3, :file => selfdir+"feed-mp.json")
     # save_result("query=title:pizza", selfdir+"example/mp-all.json")
     assert_geo_result("query=title:pizza", selfdir+"example/mp-all.json")
 
