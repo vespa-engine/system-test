@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_search_test'
 
-class StaticRank_2SDs < IndexedSearchTest
+class StaticRank_2_Schemas < IndexedSearchTest
 
   def setup
     set_owner("geirst")
@@ -10,7 +10,7 @@ class StaticRank_2SDs < IndexedSearchTest
     start
   end
 
-  def test_staticrank_2sds
+  def test_staticrank_2_schemas
     feed(:file => selfdir+"one-and-two.4.json")
     wait_for_hitcount("query=sddocname:one", 2)
     wait_for_hitcount("query=sddocname:two", 2)
