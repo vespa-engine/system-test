@@ -13,7 +13,7 @@ class ExternPolicy < IndexedSearchTest
   end
 
   def test_externPolicy
-    assert(feedfile(selfdir + "music.xml",
+    assert(feedfile(selfdir + "music.json",
                     :route => "\"[Extern:tcp/localhost:#{vespa.slobrok["0"].ports[0]};extern/*/chain.extern] default\"").
            include?("/chain.extern"))
   end
