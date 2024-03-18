@@ -11,7 +11,7 @@ class StaticRank_2SDs < IndexedSearchTest
   end
 
   def test_staticrank_2sds
-    feed(:file => selfdir+"one-and-two.4.xml")
+    feed(:file => selfdir+"one-and-two.4.json")
     wait_for_hitcount("query=sddocname:one", 2)
     wait_for_hitcount("query=sddocname:two", 2)
 
