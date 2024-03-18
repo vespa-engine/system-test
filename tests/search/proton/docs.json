@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:test::1","fields":{"iattr":10,"body":"first test body bar","title":"first test title foo","sattr":"first"}},
+  {"id":"id:test:test::2","fields":{"iattr":20,"body":"second test body cox","title":"second test title baz","sattr":"second"}}
+]
