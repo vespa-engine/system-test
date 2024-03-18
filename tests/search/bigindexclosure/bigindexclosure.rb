@@ -11,7 +11,7 @@ class BigIndexClosure < IndexedStreamingSearchTest
   def test_big_index_closure
     deploy_app(SearchApp.new.sd(selfdir + "bigindexclosure.sd"))
     start
-    feed_and_wait_for_docs("bigindexclosure", 2, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("bigindexclosure", 2, :file => selfdir + "feed.json")
 
     for q in [ 'a:testA1', 'b:testB1', 'c:testC1', 'd:testD1', 'e:testE1',
                'f:testF1', 'g:testG1', 'h:testH1', 'i:testI1', 'j:testJ1',
