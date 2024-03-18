@@ -1,0 +1,4 @@
+[
+  {"id":"id:testb:testb::0","fields":{"id":1,"f1":"bar"}},
+  {"id":"id:testb:testb::1","fields":{"id":2,"f1":"bar-foo"}}
+]
