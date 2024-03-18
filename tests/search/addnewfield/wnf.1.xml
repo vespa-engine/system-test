@@ -1,5 +1,0 @@
-<document documenttype="music" documentid="id:test:music::special.doc.with.new.field">
-    <title><![CDATA[Guitar Concerto op. 88 by Lennox Berkeley]]></title>
-    <popularity>999999</popularity>
-    <newfield>this is the new data field</newfield>
-</document>

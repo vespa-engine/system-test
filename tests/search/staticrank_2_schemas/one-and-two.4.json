@@ -1,0 +1,6 @@
+[
+  {"id":"id:test:one::pushyss://0/","fields":{"surl":"http://fake.com/1","about":"test document","popularity":1000}},
+  {"id":"id:test:one::pushyss://1/","fields":{"surl":"http://fake.com/2","about":"document test two","popularity":17}},
+  {"id":"id:test:two::pushyss://2/","fields":{"weight":5000,"title":"a foo bar","date":1091356845,"surl":"http://shopping.yahoo.com/1"}},
+  {"id":"id:test:two::pushyss://3/","fields":{"weight":42,"title":"foo bar","date":1112215893,"surl":"http://shopping.yahoo.com/2"}}
+]
