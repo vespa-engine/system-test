@@ -18,7 +18,7 @@ class ProtonTest < IndexedOnlySearchTest
   def test_proton_restart
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.xml")
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.json")
 
     # single term queries
     assert_hitcount('query=title:test&nocache&type=all', 2)
@@ -36,13 +36,13 @@ class ProtonTest < IndexedOnlySearchTest
 
   def run_proton_feeding_test
     puts "Initial feed"
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.xml")
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.json")
     assert_hitcount('query=title:third&nocache&type=all', 0)
     assert_hitcount('query=sattr:third&nocache&type=all', 0)
     assert_hitcount('query=title:title&nocache&type=all', 2)
 
     puts "Feed 1 extra document"
-    feed(:file => selfdir + "docs.2.xml") # add 1 extra document
+    feed(:file => selfdir + "docs.2.json") # add 1 extra document
     assert_hitcount('query=sddocname:test&nocache&type=all', 3)
     assert_hitcount('query=title:third&nocache&type=all', 1)
     assert_hitcount('query=sattr:third&nocache&type=all', 1)
@@ -52,7 +52,7 @@ class ProtonTest < IndexedOnlySearchTest
     assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.2.result.json", "iattr", fields)
 
     puts "Refeed first document"
-    feed(:file => selfdir + "docs.3.xml") # replace first document
+    feed(:file => selfdir + "docs.3.json") # replace first document
     assert_hitcount('query=title:refeedtitle&nocache&type=all', 1)
     assert_hitcount('query=title:first&nocache&type=all', 1)
     assert_hitcount('query=sattr:refeedfirst&nocache&type=all', 1)
@@ -66,7 +66,7 @@ class ProtonTest < IndexedOnlySearchTest
     assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.3.result.json", "iattr", fields)
 
     puts "Remove second document"
-    feed(:file => selfdir + "remove.xml") # remove second document
+    feed(:file => selfdir + "remove.json") # remove second document
     assert_hitcount('query=sddocname:test&nocache&type=all', 2)
     assert_hitcount('query=title:second&nocache&type=all', 0)
     assert_hitcount('query=body:second&nocache&type=all', 0)
@@ -75,18 +75,18 @@ class ProtonTest < IndexedOnlySearchTest
     assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.4.result.json", "iattr", fields)
 
     puts "Remove non-existing document"
-    feed(:file => selfdir + "remove.2.xml")
+    feed(:file => selfdir + "remove.2.json")
     assert_hitcount('query=sddocname:test&nocache&type=all', 2)
     assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.4.result.json", "iattr", fields)
 
     puts "Update first document"
     assert_hitcount('query=iattr:1000&nocache&type=all', 0)
-    feed(:file => selfdir + "upd.xml")
+    feed(:file => selfdir + "upd.json")
     assert_hitcount('query=iattr:1000&nocache&type=all', 1)
     assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.5.result.json", "iattr", fields)
 
     puts "Update non-existing document"
-    feed(:file => selfdir + "upd.2.xml", :trace => 1)
+    feed(:file => selfdir + "upd.2.json", :trace => 1)
     assert_hitcount('query=iattr:1000&nocache&type=all', 1)
     assert_result('query=sddocname:test&nocache&type=all', selfdir + "docs.all.5.result.json", "iattr", fields)
   end
@@ -101,7 +101,7 @@ class ProtonTest < IndexedOnlySearchTest
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
     assert_hitcount('query=sddocname:test&nocache&type=all', 0)
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.xml")
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "docs.json")
 
     puts "single term queries (index fields)"
     assert_hitcount('query=title:test&nocache&type=all', 2)
@@ -272,7 +272,7 @@ class ProtonTest < IndexedOnlySearchTest
     vespa.adminserver.logctl("searchnode:proton.server.proton",     "debug=on")
     vespa.adminserver.logctl("searchnode:proton.server.feedstates", "debug=on")
 
-    feed(:file => selfdir + "replay.xml")
+    feed(:file => selfdir + "replay.json")
 
     wait_for_hitcount("sddocname:banana&nocache", 600)
     wait_for_hitcount("age:%3E#{1000}", 266)
@@ -311,14 +311,14 @@ class ProtonTest < IndexedOnlySearchTest
     deploy_app(SearchApp.new.sd(selfdir + "app2/revision.sd").
                                     sd(selfdir + "app2/file.sd"))
     start
-    feed(:file => selfdir + "admin.xml")
-    feed(:file => selfdir + "admin_files.xml")
+    feed(:file => selfdir + "admin.json")
+    feed(:file => selfdir + "admin_files.json")
 #    vespa.search["search"].first.stop
 #    sleep 5
 #    vespa.search["search"].first.start
 #    sleep 5
     vespa.search["search"].first.trigger_flush
-    feed(:file => selfdir + "admin.xml")
+    feed(:file => selfdir + "admin.json")
     assert_log_not_matches("vespa-proton-bin: filechunk.cpp:588:")
   end
 

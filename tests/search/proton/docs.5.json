@@ -1,0 +1,6 @@
+[
+  {"id":"id:test:test::3","fields":{"iattr":30,"body":"third body","title":"third title","sattr":"third"}},
+  {"id":"id:test:test::4","fields":{"iattr":30,"body":"third body","title":"third title","sattr":"third"}},
+  {"id":"id:test:test::5","fields":{"iattr":30,"body":"third body","title":"third title","sattr":"third"}},
+  {"id":"id:test:test::6","fields":{"iattr":30,"body":"third body","title":"third title","sattr":"third"}}
+]
