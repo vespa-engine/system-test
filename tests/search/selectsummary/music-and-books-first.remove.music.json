@@ -1,0 +1,7 @@
+[
+  {"remove":"id:test:music::pushyss://3/"},
+  {"remove":"id:test:music::pushyss://4/"},
+  {"remove":"id:test:music::pushyss://7/"},
+  {"remove":"id:test:music::pushyss://12/"},
+  {"remove":"id:test:music::pushyss://13/"}
+]
