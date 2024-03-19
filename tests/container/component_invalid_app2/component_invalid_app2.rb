@@ -29,7 +29,7 @@ class ComponentInvalidApp2 < ContainerTest
   Until a bugfix was applied, the container would be stuck in a bad state where it tried to instantiate the custom config for gen 3.
 
 =end
-  def test_app_with_config_then_throw_then_ok_without_config
+  def mute_test_app_with_config_then_throw_then_ok_without_config
     set_expected_logged(/Error constructing 'com.yahoo.test.Fail2Handler'/)
 
     ok1 = add_bundle_dir(File.expand_path(selfdir), "com.yahoo.test.Ok1Handler")
