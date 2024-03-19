@@ -1,0 +1,4 @@
+[
+  {"id":"id:complexsummary:complexsummary::1","fields":{"nallestructarray":[{"bar":"one","foo":1},{"bar":"two","foo":2},{"bar":"three","foo":3}],"title":"Title1","nallestruct":{"bar":"eighty","foo":80}}},
+  {"id":"id:complexsummary:complexsummary::2","fields":{"nallestructarray":[{"bar":"four","foo":4},{"bar":"five","foo":5},{"bar":"six","foo":6}],"title":"Title2","nallestruct":{"bar":"ninety","foo":90}}}
+]

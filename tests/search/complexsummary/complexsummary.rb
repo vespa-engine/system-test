@@ -11,7 +11,7 @@ class ComplexSummary < IndexedStreamingSearchTest
   def test_complex_summary
     deploy_app(SearchApp.new.sd(selfdir + "complexsummary.sd"))
     start
-    feed(:file => selfdir + "doc.xml")
+    feed(:file => selfdir + "doc.json")
     wait_for_hitcount("query=sddocname:complexsummary", 2)
     check_fields = [ 'nallestruct', 'nallestructarray', 'title' ]
     assert_result("/search/?query=title:Title1", selfdir+"res1.json", nil, check_fields)
