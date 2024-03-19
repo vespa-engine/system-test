@@ -17,8 +17,8 @@ class Equiv < IndexedStreamingSearchTest
       add(Searcher.new("com.yahoo.test.EquivTestSearcher"))
     deploy_app(SearchApp.new.sd(selfdir+"test.sd").search_chain(search_chain))
     start
-    numdocs = `grep -c "<document" #{selfdir + "docs.xml"}`.to_i
-    feed_and_wait_for_docs("test", numdocs, :file => selfdir + "docs.xml")
+    numdocs = `grep -c "\"id\":" #{selfdir + "docs.json"}`.to_i
+    feed_and_wait_for_docs("test", numdocs, :file => selfdir + "docs.json")
 
     result = search({'yql' => 'select * from sources * where (body contains "a" AND range(id, 10, 19));', 'equivtrigger' => 'a', 'tracelevel' => '2'})
     #puts "==> TRIGGER TEST ==>"
@@ -30,8 +30,8 @@ class Equiv < IndexedStreamingSearchTest
   def test_equiv
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    numdocs = `grep -c "<document" #{selfdir + "docs.xml"}`.to_i
-    feed_and_wait_for_docs("test", numdocs, :file => selfdir + "docs.xml")
+    numdocs = `grep -c "\"id\":" #{selfdir + "docs.json"}`.to_i
+    feed_and_wait_for_docs("test", numdocs, :file => selfdir + "docs.json")
     assert_equiv
   end
 
