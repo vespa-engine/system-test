@@ -13,7 +13,7 @@ class RankFeatures < IndexedOnlySearchTest
     set_description("Test basic rank features")
     deploy_app(SearchApp.new.sd(selfdir + "basic.sd"))
     start
-    feed_and_wait_for_docs("basic", 3, :file => selfdir + "basic.xml")
+    feed_and_wait_for_docs("basic", 3, :file => selfdir + "basic.json")
 
     result = search("query=title:alpha&rankfeatures&skipnormalizing")
     last_score = Float::MAX
@@ -39,7 +39,7 @@ class RankFeatures < IndexedOnlySearchTest
     deploy_app(SearchApp.new.sd(selfdir + "dump.sd"))
     start
 
-    feed_and_wait_for_docs("dump", 1, :file => selfdir + "dump.xml")
+    feed_and_wait_for_docs("dump", 1, :file => selfdir + "dump.json")
 
     # The rankfeatures dumped should be in accordance with:
     # http://vespa/4.0/documentation/search/reference/rank-features.html
