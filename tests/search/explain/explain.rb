@@ -37,7 +37,7 @@ class Explain < IndexedOnlySearchTest
 
   def verify_to_dispatch(result)
     to_dispatch = result["message"]
-    assert_match(/sc0.num0 search to dispatch: query=\[\[documentmetastore\]:\*music\*\] timeout=[0-9]+ms offset=0 hits=1 groupingSessionCache=true sessionId=[0-9a-f\-]+.[0-9]+.[0-9].default grouping=0 :  restrict=\[music\]/, to_dispatch)
+    assert_match(/basicsearch.num0 search to dispatch: query=\[\[documentmetastore\]:\*music\*\] timeout=[0-9]+ms offset=0 hits=1 groupingSessionCache=true sessionId=[0-9a-f\-]+.[0-9]+.[0-9].default grouping=0 :  restrict=\[music\]/, to_dispatch)
   end
 
   def verify_query_setup(trace)
