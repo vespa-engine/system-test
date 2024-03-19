@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:type1::0","fields":{"field13":13,"field14":"type1 document data","field12":12,"field15":"type1 document data","field11":"f11d1"}},
+  {"id":"id:test:type2::1","fields":{"field22":22,"field24":"type2 document document document document data","field23":23,"field21":"f21d2"}}
+]

@@ -22,7 +22,7 @@ class RankProfiles < IndexedStreamingSearchTest
                  sd(selfdir + 'app/schemas/type2.sd'),
                :files => deploy_files)
     start
-    feed(:file => selfdir + "documents.xml", :cluster => "test")
+    feed(:file => selfdir + "documents.json", :cluster => "test")
     wait_for_hitcount("query=sddocname:type1", 1)
     wait_for_hitcount("query=sddocname:type2", 1)
 
