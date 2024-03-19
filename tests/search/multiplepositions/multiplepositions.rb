@@ -81,7 +81,7 @@ class MultiplePositions < IndexedOnlySearchTest
                sd(selfdir+'singlepos2d.sd').
                sd(selfdir+'multiplepos2d.sd'))
     start
-    feed_and_wait_for_docs('singlepos2d', 12, :file => selfdir+'docs-sp.xml')
+    feed_and_wait_for_docs('singlepos2d', 12, :file => selfdir+'docs-sp.json')
     puts 'Query: Search with single position'
 
     check_spos('pos.ll=63.4225N+10.3637E', 10, 'res-sp1')
