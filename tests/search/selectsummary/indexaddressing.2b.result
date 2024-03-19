@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="1">
-  <hit relevancy="25.0" source="sc0.num0">
-    <field name="relevancy">25.0</field>
-    <field name="title">English Orgran Music</field>
-    <field name="nicefoo">nice</field>
-    <field name="artist">Colin Walsh</field>
-  </hit>
-</result>

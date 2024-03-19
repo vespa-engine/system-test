@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<result total-hit-count="1">
-  <hit relevancy="1000.0" source="sc0.num0">
-    <field name="relevancy">1000.0</field>
-    <field name="sddocname">derived2</field>
-    <field name="field1">common</field>
-    <field name="field5">f5d1</field>
-   </hit>
-</result>
