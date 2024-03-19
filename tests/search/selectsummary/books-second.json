@@ -1,0 +1,9 @@
+[
+  {"id":"id:test:books::pushyss://9/","fields":{"title":"Remember Lot's Wife: And Other Unnamed Women of the Bible","author":"April Yamasaki","weight":50.0}},
+  {"id":"id:test:books::pushyss://11/","fields":{"title":"American Paintings in the Detroit Institute of Arts Vol. 1: Works by Artists Born Before 1816","author":"Gerald Carr,Mary Black,Richard Saunders","weight":57.5}},
+  {"id":"id:test:books::pushyss://14/","fields":{"title":"Charmed Life: Vince Cobretti","author":"John J. Patrick,Vince Cobretti","weight":13.0}},
+  {"id":"id:test:books::pushyss://15/","fields":{"title":"Reading for Today Level-4","author":"Linda Beech,Linda Ward Beech","weight":11.0}},
+  {"id":"id:test:books::pushyss://16/","fields":{"valfoo":17,"valsum":17,"title":"Celts, Will Travel: Set 2 vols.","author":"John Rea","valatt":17,"weight":19.0}},
+  {"id":"id:test:books::pushyss://17/","fields":{"valfoo":42,"valsum":42,"title":"Constructional Steel Design 2: An International Guide","author":"Reidar Bjorhovde,Patrick J. Dowling,John E. Harding","valatt":42,"weight":3.0}},
+  {"id":"id:test:books::pushyss://18/","fields":{"valfoo":17,"valsum":17,"title":"Peasant Uprisings in Japan: A Critical Anthology of Peasant Histories","author":"Anne Walthall","valatt":17,"weight":66.0}}
+]

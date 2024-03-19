@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:derived::pushyss://0/","fields":{"field2":"f2d1","field3":"f3d1","field1":"f1-0","url":"http://test1","field4":"f4d1"}},
+  {"id":"id:test:derived::pushyss://1/","fields":{"field2":"f2d2","field3":"f3d2","field1":"f1-1","url":"http://test2","field4":"f4d2"}}
+]

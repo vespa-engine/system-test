@@ -1,0 +1,6 @@
+[
+  {"id":"id:test:derived2::pushyss://0/","fields":{"field2":"f2d1","field6":"f6d1","field3":"f3d1","field5":"f5d1","field1":"common","url":"http://test1","field4":"f4d1","field8":"f8d1","field7":"f7d1"}},
+  {"id":"id:test:base1::pushyss://1/","fields":{"field2":"f2d2","field3":"f3d2","field1":"common"}},
+  {"id":"id:test:base2::pushyss://2/","fields":{"field6":"f6d3","field5":"f5d3","field4":"common"}},
+  {"id":"id:test:derived3::pushyss://3/","fields":{"field2":"f2d3","field6":"f6d3","field3":"f3d3","field5":"f5d3","field1":"common","url":"http://test3","field4":"f4d3","field42":"f42d3","field7":"f7d3"}}
+]

@@ -14,10 +14,9 @@ class SelectSummary < IndexedSearchTest
 
   def test_selectsummary_twophase
     puts "Details: Setting up twophase config"
-    deploy_app(SearchApp.new.
-               sd(selfdir + "selsum.sd"))
+    deploy_app(SearchApp.new.sd(selfdir + "selsum.sd"))
     start
-    feed_and_wait_for_docs("selsum", 1, :file => selfdir + "selsum.xml")
+    feed_and_wait_for_docs("selsum", 1, :file => selfdir + "selsum.json")
     puts "# sanity check"
     assert_hitcount("query=sddocname:selsum", 1)
 
@@ -35,7 +34,7 @@ class SelectSummary < IndexedSearchTest
                cluster(SearchCluster.new("music").sd(selfdir+"music.sd")).
                cluster(SearchCluster.new("books").sd(selfdir+"books.sd")))
     start
-    feed_and_wait_for_docs("music", 5, :file => selfdir + "music-and-books-first.xml", :cluster => "music")
+    feed_and_wait_for_docs("music", 5, :file => selfdir + "music-and-books-first.json", :cluster => "music")
     wait_for_hitcount("query=sddocname:books", 6)
     assert_hitcount("query=sddocname:music", 5)
 
@@ -64,8 +63,8 @@ class SelectSummary < IndexedSearchTest
     wait_for_hitcount("query=sddocname:music", 5)
     assert_hitcount("query=(sddocname:books+sddocname:music+)&summary=foosum&nocache", 11)
 
-    feed_and_wait_for_docs("music", 0, :file => selfdir + "music-and-books-first.remove.music.xml", :cluster => "music")
-    feed_and_wait_for_docs("music", 4, :file => selfdir + "music-second.xml", :cluster => "music")
+    feed_and_wait_for_docs("music", 0, :file => selfdir + "music-and-books-first.remove.music.json", :cluster => "music")
+    feed_and_wait_for_docs("music", 4, :file => selfdir + "music-second.json", :cluster => "music")
     puts "# sanity checks"
     assert_hitcount("query=sddocname:books&nocache", 6)
     assert_hitcount("query=sddocname:music&nocache", 4)
@@ -76,8 +75,8 @@ class SelectSummary < IndexedSearchTest
     puts "Query: Match the new docs in music"
     comp("query=2&search=music&summary=foosum", "indexaddressing.2b.result.json", nil, ["relevancy", "title", "nicefoo", "artist", "summaryfeatures"])
 
-    feed_and_wait_for_docs("books", 0, :file => selfdir + "music-and-books-first.remove.books.xml", :cluster => "books")
-    feed_and_wait_for_docs("books", 7, :file => selfdir + "books-second.xml", :cluster => "books")
+    feed_and_wait_for_docs("books", 0, :file => selfdir + "music-and-books-first.remove.books.json", :cluster => "books")
+    feed_and_wait_for_docs("books", 7, :file => selfdir + "books-second.json", :cluster => "books")
 
     puts "# sanity checks"
     assert_hitcount("query=sddocname:music&nocache", 4)
@@ -107,7 +106,7 @@ class SelectSummary < IndexedSearchTest
                sd(dir + "base_nosearch.sd").
                sd(dir + "derived.sd"))
     start
-    feed_and_wait_for_docs("derived", 2, :file => selfdir + "testsimpleinheritance.2.xml")
+    feed_and_wait_for_docs("derived", 2, :file => selfdir + "testsimpleinheritance.2.json")
     puts "# sanity checks"
     assert_hitcount("query=sddocname:derived", 2)
 
@@ -134,7 +133,7 @@ class SelectSummary < IndexedSearchTest
                sd(dir + "base.sd").
                sd(dir + "derived.sd"))
     start
-    feed_and_wait_for_docs("derived", 2, :file => selfdir + "testsimpleinheritance.2.xml")
+    feed_and_wait_for_docs("derived", 2, :file => selfdir + "testsimpleinheritance.2.json")
     puts "# sanity checks"
     assert_hitcount("query=sddocname:derived", 2)
 
@@ -171,7 +170,7 @@ class SelectSummary < IndexedSearchTest
                sd(dir + "derived2.sd").
                sd(dir + "derived3.sd"))
     start
-    feed_and_wait_for_docs("derived2", 1, :file => selfdir + "testmultiinheritance.3.xml", :cluster => "logical")
+    feed_and_wait_for_docs("derived2", 1, :file => selfdir + "testmultiinheritance.3.json", :cluster => "logical")
     puts "# sanity checks"
 
     assert_hitcount("query=sddocname:derived2", 1)

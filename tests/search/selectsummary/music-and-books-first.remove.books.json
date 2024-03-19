@@ -1,0 +1,8 @@
+[
+  {"remove":"id:test:books::pushyss://0/"},
+  {"remove":"id:test:books::pushyss://2/"},
+  {"remove":"id:test:books::pushyss://6/"},
+  {"remove":"id:test:books::pushyss://8/"},
+  {"remove":"id:test:books::pushyss://9/"},
+  {"remove":"id:test:books::pushyss://11/"}
+]
