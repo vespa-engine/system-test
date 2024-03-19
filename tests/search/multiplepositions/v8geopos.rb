@@ -70,7 +70,7 @@ class Vespa8GeoPositions < IndexedStreamingSearchTest
                legacy_override('v7-geo-positions', 'false').
                sd(selfdir+'singlepos2d.sd'))
     start
-    feed_and_wait_for_docs('singlepos2d', 12, :file => selfdir+'docs-sp.xml')
+    feed_and_wait_for_docs('singlepos2d', 12, :file => selfdir+'docs-sp.json')
     #vespa.adminserver.execute('vespa-logctl searchnode:vsm debug=on')
     #vespa.adminserver.execute('vespa-logctl searchnode:searchvisitor debug=on')
     #vespa.adminserver.execute('vespa-logctl searchnode:visitor.instance.searchvisitor debug=on')
