@@ -20,7 +20,7 @@ class GlobalFeaturesIndexed < IndexedStreamingSearchTest
 #    vespa.adminserver.logctl("storagenode:vsm.common.documenttypemapping", "debug=on")
 #    vespa.adminserver.logctl("storagenode:vsm.fieldsearchspec", "debug=on")
 #    vespa.adminserver.logctl("storagenode:features.distancefeature", "debug=on")
-    feed_and_wait_for_docs("distance", 1, :file => selfdir + "distance.xml")
+    feed_and_wait_for_docs("distance", 1, :file => selfdir + "distance.json")
 
     # location = 5,-5
     assert_distance(Math.sqrt(650),  10,  20);
