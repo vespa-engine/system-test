@@ -192,14 +192,22 @@ class SelectSummary < IndexedSearchTest
     puts "Query: Test with bar summary class"
     comp("query=sddocname:base1&summary=barsum", "mib1-bar.result.json")
     comp("query=sddocname:base2&summary=barsum", "mib2-bar.result.json", "sddocname")
-    comp("query=common&summary=barsum",          "mic-bar.result.json", "relevancy")
+
+    if is_streaming
+      comp("query=common&summary=barsum", "mic-bar.result.streaming.json", "relevancy")
+    else
+      comp("query=common&summary=barsum", "mic-bar.result.json", "relevancy")
+    end
 
     puts "Query: Test with quux summary class"
-    comp("query=common&summary=quuxsum",         "mic-quux.result.json", "relevancy")
+    if is_streaming
+      comp("query=common&summary=quuxsum", "mic-quux.result.streaming.json", "relevancy")
+    else
+      comp("query=common&summary=quuxsum", "mic-quux.result.json", "relevancy")
+    end
 
     puts "Query: Test that common is present, searching derived2 only"
-    comp("query=common&search=derived2&summary=foosum", \
-         "testmultiinherit.result.json", "sddocname")
+    comp("query=common&search=derived2&summary=foosum", "testmultiinherit.result.json", "sddocname")
   end
 
   def teardown

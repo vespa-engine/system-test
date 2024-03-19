@@ -1,0 +1,35 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 1,
+            "full": true,
+            "nodes": 4,
+            "results": 4,
+            "resultsFull": 4
+        },
+        "errors": [
+            {
+                "code": 3,
+                "summary": "Illegal query",
+                "message": "invalid presentation.summary=quuxsum"
+            }
+        ],
+        "children": [
+            {
+                "id": "index:search/0/a53c51468db18a698eb401c7",
+                "relevance": 4.0,
+                "source": "search",
+                "fields": {
+                    "sddocname": "derived3",
+                    "field42": "f42d3"
+                }
+            }
+        ]
+    }
+}
