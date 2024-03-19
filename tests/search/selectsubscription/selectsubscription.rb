@@ -16,7 +16,7 @@ class SelectSubscription < IndexedSearchTest
   end
 
   def test_selectNoSubscriptions
-    feedoutput = feed_and_wait_for_docs("books", 0, :file => selfdir + "books.0.xml", :clusters => [ "books1", "books2" ], :exceptiononfailure => false);
+    feedoutput = feed_and_wait_for_docs("books", 0, :file => selfdir + "books.0.json", :clusters => [ "books1", "books2" ], :exceptiononfailure => false);
     assert_correct_output(["ok: 0"],  feedoutput)
     assert_correct_output(["ignored: 10"],  feedoutput)
 
@@ -28,7 +28,7 @@ class SelectSubscription < IndexedSearchTest
   end
 
   def test_selectOneSubscription
-    feedoutput = feed_and_wait_for_docs("books", 5, :file => selfdir + "books.1.xml", :clusters => [ "books1", "books2" ], :exceptiononfailure => false)
+    feedoutput = feed_and_wait_for_docs("books", 5, :file => selfdir + "books.1.json", :clusters => [ "books1", "books2" ], :exceptiononfailure => false)
     assert_correct_output(["ok: 5"], feedoutput)
 
     assert_result("query=mid:1", selfdir + "ssub.1.result.json", "title")
@@ -37,7 +37,7 @@ class SelectSubscription < IndexedSearchTest
   end
 
   def test_selectSomeSubscriptions
-    feedoutput = feed_and_wait_for_docs("books", 5, :file => selfdir + "books.01.xml", :clusters => [ "books1", "books2" ], :exceptiononfailure => false);
+    feedoutput = feed_and_wait_for_docs("books", 5, :file => selfdir + "books.01.json", :clusters => [ "books1", "books2" ], :exceptiononfailure => false);
     assert_correct_output(["ok: 5"], feedoutput)
     assert_correct_output(["ignored: 10"], feedoutput)
 
