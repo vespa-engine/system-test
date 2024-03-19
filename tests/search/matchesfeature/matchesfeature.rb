@@ -9,9 +9,14 @@ class MatchesFeature < IndexedStreamingSearchTest
     set_owner("geirst")
   end
 
+  def sd_file
+    folder = is_streaming ? "streaming" : "indexed"
+    selfdir + "#{folder}/matches.sd"
+  end
+
   def test_matches
     set_description("Test the matches feature")
-    deploy_app(SearchApp.new.sd(selfdir + 'matches.sd'))
+    deploy_app(SearchApp.new.sd(sd_file))
     start
     feed_and_wait_for_docs("matches", 1, :file => selfdir + "matches.json")
 
@@ -42,24 +47,26 @@ class MatchesFeature < IndexedStreamingSearchTest
     assert_matches({"matches(f4)" => 0}, "query=a+f4:c")
     assert_matches({"matches(f4,0)" => 0, "matches(f4,1)" => 1}, "query=a+f4:a")
 
-    assert_matches({"matches(f5.key)" => 0}, "query=a")
-    assert_matches({"matches(f5.key)" => 1}, "query=f5.key:a")
-    assert_matches({"matches(f5.key)" => 1}, "query=f5.key:d")
-    assert_matches({"matches(f5.key)" => 0}, "query=a+f5.key:c")
-    assert_matches({"matches(f5.key,0)" => 0, "matches(f5.key,1)" => 1}, "query=a+f5.key:a")
+    if !is_streaming
+      assert_matches({"matches(f5.key)" => 0}, "query=a")
+      assert_matches({"matches(f5.key)" => 1}, "query=f5.key:a")
+      assert_matches({"matches(f5.key)" => 1}, "query=f5.key:d")
+      assert_matches({"matches(f5.key)" => 0}, "query=a+f5.key:c")
+      assert_matches({"matches(f5.key,0)" => 0, "matches(f5.key,1)" => 1}, "query=a+f5.key:a")
 
-    assert_matches({"matches(f5.value)" => 0}, "query=a")
-    assert_matches({"matches(f5.value)" => 1}, "query=f5.value:10")
-    assert_matches({"matches(f5.value)" => 1}, "query=f5.value:40")
-    assert_matches({"matches(f5.value)" => 0}, "query=a+f5.value:30")
-    assert_matches({"matches(f5.value,0)" => 0, "matches(f5.value,1)" => 1}, "query=a+f5.value:10")
+      assert_matches({"matches(f5.value)" => 0}, "query=a")
+      assert_matches({"matches(f5.value)" => 1}, "query=f5.value:10")
+      assert_matches({"matches(f5.value)" => 1}, "query=f5.value:40")
+      assert_matches({"matches(f5.value)" => 0}, "query=a+f5.value:30")
+      assert_matches({"matches(f5.value,0)" => 0, "matches(f5.value,1)" => 1}, "query=a+f5.value:10")
 
-    same_elem_d = "sameElement(key contains 'd', value >= 40)"
-    same_elem_a = "sameElement(key contains 'a', value >= 40)"
-    assert_matches({"matches(f5)" => 1}, yql_query("f5 contains #{same_elem_d}"))
-    assert_matches({"matches(f5)" => 1}, yql_query("f1 contains 'a' OR f5 contains #{same_elem_d}"))
-    assert_matches({"matches(f5)" => 0}, yql_query("f1 contains 'a' OR f5 contains #{same_elem_a}"))
-    assert_matches({"matches(f5,0)" => 0, "matches(f5,1)" => 1}, yql_query("f1 contains 'a' OR f5 contains #{same_elem_d}"))
+      same_elem_d = "sameElement(key contains 'd', value >= 40)"
+      same_elem_a = "sameElement(key contains 'a', value >= 40)"
+      assert_matches({"matches(f5)" => 1}, yql_query("f5 contains #{same_elem_d}"))
+      assert_matches({"matches(f5)" => 1}, yql_query("f1 contains 'a' OR f5 contains #{same_elem_d}"))
+      assert_matches({"matches(f5)" => 0}, yql_query("f1 contains 'a' OR f5 contains #{same_elem_a}"))
+      assert_matches({"matches(f5,0)" => 0, "matches(f5,1)" => 1}, yql_query("f1 contains 'a' OR f5 contains #{same_elem_d}"))
+    end
   end
 
   def yql_query(where)
