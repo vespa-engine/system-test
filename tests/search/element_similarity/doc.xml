@@ -1,3 +1,0 @@
-<document type="test" documentid="id:test:test::1">
-  <foo><item weight="10">a b c d e</item><item weight="20">e d c b a</item><item weight="30">b a c e d</item></foo>
-</document>
