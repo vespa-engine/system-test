@@ -1,8 +1,0 @@
-<document documenttype="test" documentid="id:test/test:test::0">
-    <a>foo &amp; bar &lt; baz &gt;</a>
-    <b><item>foo &amp; bar &lt; baz &gt;</item></b>
-    <c><item weight="10">foo &amp; bar &lt; baz &gt;</item></c>
-    <d>foo &amp; bar &lt; baz &gt;</d>
-    <e><item>foo &amp; bar &lt; baz &gt;</item></e>
-    <f><item weight="10">foo &amp; bar &lt; baz &gt;</item></f>
-</document>

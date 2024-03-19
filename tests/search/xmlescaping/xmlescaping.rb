@@ -11,7 +11,7 @@ class XMLEscaping < IndexedStreamingSearchTest
     set_description("Test that '&', '<', and '>' are escaped correctly in document summary.")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "feed.json")
 
     # save_result("query=sddocname:test", selfdir + "result.j")
     assert_result("query=sddocname:test", selfdir + "result.json", nil, ["a", "b", "c", "d", "e", "f"])
