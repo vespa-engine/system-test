@@ -16,7 +16,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
     set_description("Test the now feature")
     deploy_app(SearchApp.new.sd(selfdir + "now.sd"))
     start
-    feed_and_wait_for_docs("now", 1, :file => selfdir + "now.xml")
+    feed_and_wait_for_docs("now", 1, :file => selfdir + "now.json")
     run_now_test(30)
   end
 
@@ -54,7 +54,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
     set_description("Test the age and the freshness feature")
     deploy_app(SearchApp.new.sd(selfdir + "age.sd"))
     start
-    feed_and_wait_for_docs("age", 1, :file => selfdir + "age.xml")
+    feed_and_wait_for_docs("age", 1, :file => selfdir + "age.json")
     run_age_and_freshness_test
   end
 
@@ -99,7 +99,7 @@ class GlobalFeatures < IndexedStreamingSearchTest
     set_description("Test the random feature")
     deploy_app(SearchApp.new.sd(selfdir + "random.sd"))
     start
-    feed_and_wait_for_docs("random", 2, :file => selfdir + "random.xml")
+    feed_and_wait_for_docs("random", 2, :file => selfdir + "random.json")
     if is_streaming
       @id_field = "uri"
     end
