@@ -12,7 +12,7 @@ class DocumentId < IndexedStreamingSearchTest
   def test_documentid
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "feed.json")
 
     result = search('query=sddocname:test')
     assert_equal(1, result.hitcount)
