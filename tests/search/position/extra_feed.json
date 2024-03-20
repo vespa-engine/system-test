@@ -1,0 +1,6 @@
+[
+  {"id":"id:test:extra_pos::0","fields":{"my_str":"-117752900;33544000"}},
+  {"id":"id:test:extra_pos::1","fields":{"my_str":"123123123;987987987"}},
+  {"id":"id:test:extra_pos::2","fields":{"my_str":"N12.123123;E98.987987"}},
+  {"id":"id:test:extra_pos::3","fields":{"my_str":"E98.987000;N12.123000"}}
+]

@@ -37,7 +37,7 @@ class Position < IndexedStreamingSearchTest
   def run_test(type, hits)
     deploy_app(SearchApp.new.sd("#{selfdir}/#{type}_pos.sd"))
     start
-    feed_and_wait_for_docs("#{type}_pos", hits, :file => "#{selfdir}/#{type}_feed.xml")
+    feed_and_wait_for_docs("#{type}_pos", hits, :file => "#{selfdir}/#{type}_feed.json")
     run_query("yql=select * from sources * where geoLocation(\"my_pos\", 12.123000, 98.987000, \"500 km\")%3B",
               "#{selfdir}/#{type}_result1.json");
     run_query("yql=select * from sources * where geoLocation(\"my_pos\", 12.123123, 98.987987, \"500 km\")%3B",
