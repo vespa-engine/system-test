@@ -1,0 +1,8 @@
+[
+  {"id":"id:test:simple::http://vespa.yahoo.com/search/?id=1","fields":{"marker":"Ⅻ"}},
+  {"id":"id:test:simple::http://vespa.yahoo.com/search/?id=2","fields":{"marker":"ＲＡＩＳＥＤ"}},
+  {"id":"id:test:simple::http://vespa.yahoo.com/search/?id=3","fields":{"marker":"ｌｏｗｅｒ"}},
+  {"id":"id:test:simple::http://vespa.yahoo.com/search/?id=4","fields":{"marker":"ＦＯＯ"}},
+  {"id":"id:test:simple::http://vespa.yahoo.com/search/?id=5","fields":{"marker":"ｂａｒ"}},
+  {"id":"id:test:simple::http://vespa.yahoo.com/search/?id=6","fields":{"marker":"１６８"}}
+]
