@@ -15,7 +15,7 @@ class NearSearch < IndexedStreamingSearchTest
       add(Searcher.new("com.yahoo.nearsearch.PhraseToONearSearcher", "transformedQuery", "blendedResult"))
     deploy_app(SearchApp.new.sd(selfdir+"music.sd").search_chain(search_chain))
     start
-    feed_and_wait_for_docs("music", 256, :file => "#{selfdir}/documents.xml")
+    feed_and_wait_for_docs("music", 256, :file => "#{selfdir}/documents.json")
 
     run_phrases_via_near_test
     vespa.search["search"].first.trigger_flush
@@ -28,9 +28,9 @@ class NearSearch < IndexedStreamingSearchTest
     trace = result.json['trace']
     assert(trace.to_s =~ /there is no spoon returns/)
     docs = []
-    File.open("#{selfdir}/documents.xml") do |file|
+    File.open("#{selfdir}/documents.json") do |file|
       file.each do |line|
-        if line.match(/<title>/)
+        if line.match(/id/)
           docs.push(line)
         end
       end
@@ -59,7 +59,7 @@ class NearSearch < IndexedStreamingSearchTest
       add(Searcher.new("com.yahoo.nearsearch.PhraseToNearSearcher", "transformedQuery", "blendedResult"))
     deploy_app(SearchApp.new.sd(selfdir+"music.sd").search_chain(search_chain))
     start
-    feed_and_wait_for_docs("music", 256, :file => "#{selfdir}/documents.xml")
+    feed_and_wait_for_docs("music", 256, :file => "#{selfdir}/documents.json")
 
     run_near_for_array_test
     vespa.search["search"].first.trigger_flush
