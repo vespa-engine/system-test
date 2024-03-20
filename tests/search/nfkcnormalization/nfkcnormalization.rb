@@ -11,7 +11,7 @@ class NfkcNormalization < IndexedStreamingSearchTest
   def deploy_start_and_feed
     deploy_app(SearchApp.new.sd(selfdir+"simple.sd"))
     start
-    feed_and_wait_for_docs("simple", 6, :file => selfdir+"simple.6.xml", :timeout => 240)
+    feed_and_wait_for_docs("simple", 6, :file => selfdir+"simple.6.json", :timeout => 240)
   end
 
   def self.final_test_methods
