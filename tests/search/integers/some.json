@@ -1,0 +1,19 @@
+[
+  {"id":"id:test:simple::id0 from 0","fields":{"uri":"id0 from 0","year":0}},
+  {"id":"id:test:simple::id1 from 1969","fields":{"uri":"id1 from 1969","year":1969}},
+  {"id":"id:test:simple::id2 from 1970","fields":{"uri":"id2 from 1970","year":1970}},
+  {"id":"id:test:simple::id3 from 1971","fields":{"uri":"id3 from 1971","year":1971}},
+  {"id":"id:test:simple::id4 from 1972","fields":{"uri":"id4 from 1972","year":1972}},
+  {"id":"id:test:simple::id5 from 1973","fields":{"uri":"id5 from 1973","year":1973}},
+  {"id":"id:test:simple::id6 from 1974","fields":{"uri":"id6 from 1974","year":1974}},
+  {"id":"id:test:simple::id14 from 4294967296 (invalid year)","fields":{"uri":"id14 from 4294967296 (invalid year)","year":4294967296}},
+  {"id":"id:test:simple::id16 from -2147483649 (invalid year)","fields":{"uri":"id16 from -2147483649 (invalid year)","year":-2147483649}},
+  {"id":"id:test:simple::id7 from 1974","fields":{"uri":"id7 from 1974","year":1974}},
+  {"id":"id:test:simple::id8 from 1975","fields":{"uri":"id8 from 1975","year":1975}},
+  {"id":"id:test:simple::id9 from 2147483647","fields":{"uri":"id9 from 2147483647","year":2147483647}},
+  {"id":"id:test:simple::id10 from 2147483648 (the reserved value)","fields":{"uri":"id10 from 2147483648 (the reserved value)","year":-2147483648}},
+  {"id":"id:test:simple::id11 from -2147483648 (the reserved value)","fields":{"uri":"id11 from -2147483648 (the reserved value)","year":-2147483648}},
+  {"id":"id:test:simple::id12 from 2147483649 Will show as -2147483647","fields":{"uri":"id12 from 2147483649","year":-2147483647}},
+  {"id":"id:test:simple::id13 from 4294967295 Will show as -1","fields":{"uri":"id13 from 4294967295","year":-1}},
+  {"id":"id:test:simple::id15 from -2147483648 (the reserved value)","fields":{"uri":"id15 from -2147483648","year":-2147483648}}
+]
