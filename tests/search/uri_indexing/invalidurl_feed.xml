@@ -1,9 +1,0 @@
-  <document documenttype="simple_def" documentid="id:test:simple_def::invalidurl">
-    <title><![CDATA[Invalidurl]]></title>
-    <pto>-1</pto>
-    <surl><![CDATA[http://host:fail/]]></surl>
-    <bgnsellers>0</bgnsellers>
-    <mid>2</mid>
-    <ew><![CDATA[blues]]></ew>
-    <categories><![CDATA[Blues]]></categories>
-  </document>

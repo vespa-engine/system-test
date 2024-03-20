@@ -26,14 +26,14 @@ class UriIndexing < IndexedOnlySearchTest
     deploy_app(SearchApp.new.sd("#{selfdir}/simple_def.sd"))
     start
     assert_raise(ExecuteError) do
-      feed(:file => "#{selfdir}/invalidurl_feed.xml")
+      feed(:file => "#{selfdir}/invalidurl_feed.json")
     end
   end
 
   def try_type(type)
     deploy_app(SearchApp.new.sd("#{selfdir}/#{type}_def.sd"))
     start
-    feed_and_wait_for_docs("#{type}_def", 7, :file => "#{selfdir}/#{type}_feed.xml")
+    feed_and_wait_for_docs("#{type}_def", 7, :file => "#{selfdir}/#{type}_feed.json")
 
     puts "Query: Search for full url / and check that port number 80 and " +
       "443 is ignored"
