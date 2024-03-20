@@ -17,7 +17,7 @@ class RankingMacros < IndexedSearchTest
     set_description("Test macro snippets in rank expression")
     deploy_app(SearchApp.new.sd("#{selfdir}/rankingmacros.sd"))
     start
-    feed_and_wait_for_docs("rankingmacros", 1, :file => selfdir+"rankingmacros.xml")
+    feed_and_wait_for_docs("rankingmacros", 1, :file => selfdir+"rankingmacros.json")
     result = search("query=title:foo&ranking=standalone");
     score = result.hit[0].field["relevancy"].to_i;
     assert_features({"firstPhase" => 548,
