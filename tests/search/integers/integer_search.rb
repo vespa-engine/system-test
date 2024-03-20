@@ -19,7 +19,7 @@ class IntegerSearch < IndexedSearchTest
   end
 
   def test_integersearch
-    feed_and_wait_for_docs("simple", 15, :file => selfdir+"some.xml", :exceptiononfailure => false)
+    feed_and_wait_for_docs("simple", 15, :file => selfdir+"some.json", :exceptiononfailure => false)
 
     # Query: sanity check
     assert_hitcount("query=sddocname:simple", 15)
