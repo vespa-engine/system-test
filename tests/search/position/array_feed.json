@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:array_pos::0","fields":{"my_pos":[{"lat":33.544,"lng":-117.7529},{"lat":987.987987,"lng":123.123123}]}},
+  {"id":"id:test:array_pos::1","fields":{"my_pos":[{"lat":12.123123,"lng":98.987987},{"lat":12.123,"lng":98.987}]}}
+]

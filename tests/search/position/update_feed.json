@@ -1,0 +1,8 @@
+[
+  {"id":"id:test:update_pos::0","fields":{"my_pos":{"lat":33.544,"lng":-117.7529}}},
+  {"id":"id:test:update_pos::1","fields":{"my_pos":{"lat":987.987987,"lng":123.123123}}},
+  {"id":"id:test:update_pos::2","fields":{"my_pos":{"lat":12.123123,"lng":98.987987}}},
+  {"id":"id:test:update_pos::3","fields":{"my_pos":{"lat":12.123,"lng":98.987}}},
+  {"update":"id:test:update_pos::1","fields":{"my_pos":{"assign":{"lat":12.123,"lng":98.987}}}},
+  {"update":"id:test:update_pos::3","fields":{"my_pos":{"assign":{"lat":987.987987,"lng":123.123123}}}}
+]

@@ -1,4 +1,4 @@
-# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+2# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'indexed_only_search_test'
 
 class PositionExtra < IndexedOnlySearchTest
@@ -17,7 +17,7 @@ class PositionExtra < IndexedOnlySearchTest
   def run_test(type, hits)
     deploy_app(SearchApp.new.sd("#{selfdir}/#{type}_pos.sd"))
     start
-    feed_and_wait_for_docs("#{type}_pos", hits, :file => "#{selfdir}/#{type}_feed.xml")
+    feed_and_wait_for_docs("#{type}_pos", hits, :file => "#{selfdir}/#{type}_feed.json")
     run_query('yql=select * from sources * where geoLocation("my_pos", 12.123000, 98.987000, "500 km")',
               "#{selfdir}/#{type}_result1.json");
     run_query('yql=select * from sources * where geoLocation("my_pos", 12.123123, 98.987987, "500 km")',
