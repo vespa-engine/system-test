@@ -21,7 +21,7 @@ class StoreUnknownRemoves < IndexedOnlySearchTest
                        ready_copies(1)))
     start
 
-    feed(:file => selfdir+"feed.xml", :timeout => 240)
+    feed(:file => selfdir+"feed.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:test", 1)
 
     @stopped = []
@@ -33,7 +33,7 @@ class StoreUnknownRemoves < IndexedOnlySearchTest
       end
     end
 
-    feed(:file => selfdir+"remove.xml", :timeout => 240)
+    feed(:file => selfdir+"remove.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:test", 0)
 
     has_removed_doc = []
