@@ -12,7 +12,7 @@ class QueryTokenizer < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "combine.sd"))
     start
 
-    feed_and_wait_for_docs("combine", 1, :file => selfdir+"doc-combine.xml")
+    feed_and_wait_for_docs("combine", 1, :file => selfdir+"doc-combine.json")
     assert_hitcount("text", 1)
 
     assert_hitcount("one:foo/bar", 1)
@@ -32,7 +32,7 @@ class QueryTokenizer < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir+"wind.sd"))
     start
 
-    feed(:file => selfdir+"doc-wind.xml")
+    feed(:file => selfdir+"doc-wind.json")
 
     wait_for_hitcount("sddocname:wind", 1)
 
@@ -47,7 +47,7 @@ class QueryTokenizer < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir+"tinde.sd"))
     start
 
-    feed(:file => selfdir+"doc-tinde.xml")
+    feed(:file => selfdir+"doc-tinde.json")
 
     wait_for_hitcount("sddocname:tinde", 1)
 

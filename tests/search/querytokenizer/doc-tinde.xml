@@ -1,5 +1,0 @@
-  <document documenttype="tinde" documentid="id:tinde:tinde::1">
-    <one>foo/bar</one>
-    <two><item>qux/baz</item></two>
-    <text>text</text>
-  </document>
