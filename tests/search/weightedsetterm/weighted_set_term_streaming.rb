@@ -12,7 +12,7 @@ class WeightedSetTermStreaming < StreamingSearchTest
                       search_chain(SearchChain.new.add(Searcher.new(
                             "com.yahoo.test.WeightedSetTermTester"))))
     start
-    feed(:file => selfdir+"docs.xml")
+    feed(:file => selfdir+"docs.json")
     wait_for_hitcount("title:title&streaming.selection=true", 15)
   end
 
