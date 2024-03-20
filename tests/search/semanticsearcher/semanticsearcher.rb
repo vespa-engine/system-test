@@ -16,7 +16,7 @@ class SemanticSearcher < IndexedSearchTest
     end
     start
 
-    feed_and_wait_for_docs("music", 777, :file => selfdir+"simpler.777.xml")
+    feed_and_wait_for_docs("music", 777, :file => selfdir+"simpler.777.json")
 
     puts "Details: query=bach"
     assert_result_with_timeout(10, 'query=bach&hits=8&type=all', selfdir+"bach.result.json", "title")
