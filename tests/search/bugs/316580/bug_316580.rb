@@ -12,7 +12,7 @@ class Bug_316580 < IndexedSearchTest
   end
 
   def test_input_without_space
-    feed_and_wait_for_docs("music", 3, :file => selfdir+"bug316580.docs.3.xml")
+    feed_and_wait_for_docs("music", 3, :file => selfdir+"bug316580.docs.3.json")
 
     # Query: Ask for service, get 3 hits
     result = search("/?query=service")
