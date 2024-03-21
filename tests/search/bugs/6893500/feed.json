@@ -1,0 +1,3 @@
+[
+  {"id":"id:test:withmap::1","fields":{"bad_map":{"42":{"name":"the restaurant","addr":"at the end of the universe","postcode":42},"7042":{"name":"lademoen","addr":"trondheim","postcode":7042}},"title":"pizza hut sunnyvale","meta_tags":{"789":"foobar","456":"bar","123":"foo"},"good_map":{"hitchhiker":{"bar":"fortytwo","foo":42},"adams":{"bar":"one","foo":1}}}}
+]
