@@ -18,7 +18,7 @@ class AccessLogTest < IndexedSearchTest
   end
 
   def test_accesslog
-    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
+    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.json")
 
     assert_hitcount("query=sddocname:music", 777)
     sleep 10 # wait for log to be written to disk

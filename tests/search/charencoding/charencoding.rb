@@ -16,7 +16,7 @@ class CharEncoding < IndexedSearchTest
   end
 
   def test_char_encoding
-    feed_and_wait_for_docs('music', 10000, :file => SEARCH_DATA+'music.10000.xml')
+    feed_and_wait_for_docs('music', 10000, :file => SEARCH_DATA+'music.10000.json')
 
     common()
     if is_streaming

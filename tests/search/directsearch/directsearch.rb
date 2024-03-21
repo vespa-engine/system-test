@@ -12,7 +12,7 @@ class DirectSearch < IndexedOnlySearchTest
   def test_directsearch
     deploy_app(SearchApp.new.sd(selfdir + "music.sd"))
     start
-    feed_and_wait_for_docs("music", 777, :file => selfdir + "../data/music.777.xml")
+    feed_and_wait_for_docs("music", 777, :file => selfdir + "../data/music.777.json")
 
     directquery='query=best%20albert&presentation.format=xml&type=all'
 

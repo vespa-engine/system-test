@@ -16,7 +16,7 @@ class SearchPath < IndexedOnlySearchTest
                        ready_copies(3).
                        group(create_groups())))
     start
-    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
+    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.json")
 
     puts "Fetch 777 total documents from all nodes"
     assert_hitcount("query=sddocname:music", 777)

@@ -15,7 +15,7 @@ class QueryProfiles < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "music.sd").
                              search_dir(selfdir + "search"))
     start
-    feed_and_wait_for_docs("music", 777, :file => selfdir + "../data/music.777.xml")
+    feed_and_wait_for_docs("music", 777, :file => selfdir + "../data/music.777.json")
 
     # This uses the "default" query profile, which sets default-index to "title", causing 18 hits
     assert_hitcount("query=best", 18)

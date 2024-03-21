@@ -34,7 +34,7 @@ class BucketReplicaActivationTest < IndexedOnlySearchTest
   end
 
   def test_single_replica_is_activated_per_bucket
-    feed(:file => SEARCH_DATA + 'music.10000.xml')
+    feed(:file => SEARCH_DATA + 'music.10000.json')
 
     # All data shall have been fully activated as part of the feeding.
     verify_single_replica_active_per_bucket

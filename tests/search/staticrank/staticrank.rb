@@ -11,7 +11,7 @@ class StaticRank < IndexedStreamingSearchTest
     set_description("Test for static rank")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
-    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
+    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.json")
 
     puts "Search for year:1980, and see that results are sorted in order by decreasing weight"
     assert_result("query=year:1980&sortspec=-weight", selfdir+"staticrank_year1980.result.json", nil, 'weight')

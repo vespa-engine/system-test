@@ -12,7 +12,7 @@ class ReindexUptime < IndexedSearchTest
   end
 
   def test_reindex_uptime
-    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
+    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.json")
 
     wait_for_hitcount("query=frank", 40);
 
@@ -26,7 +26,7 @@ class ReindexUptime < IndexedSearchTest
       end
     end
 
-    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
+    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.json")
 
     done = true
     thread.join

@@ -20,7 +20,7 @@ class SourceProvider < IndexedSearchTest
                         search_chain(Provider.new("local_other", "local").cluster('mysearch'))
                      )
     start
-    feed(:file => SEARCH_DATA+"music.777.xml")
+    feed(:file => SEARCH_DATA+"music.777.json")
     wait_for_hitcount("sddocname:music&sources=mysearch&hits=0", 777)
   end
 

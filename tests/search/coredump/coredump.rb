@@ -32,7 +32,7 @@ class CoreDump < IndexedOnlySearchTest
     return if has_active_sanitizers
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
-    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
+    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.json")
 
     pid = vespa.adminserver.execute("pgrep vespa-proton-bi").strip
     fullcorefile = expected_core_file(vespa.adminserver, 'vespa-proton-bi', pid)
@@ -78,7 +78,7 @@ class CoreDump < IndexedOnlySearchTest
   def test_coredump_overwrite
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
-    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
+    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.json")
     show_kernel_core_pattern(vespa.adminserver)
     execute_result = vespa.adminserver.execute("/sbin/sysctl kernel.core_pattern=\"|/usr/bin/lz4 -3 - #{Environment.instance.vespa_home}/var/crash/%e.core.lz4\"", :exitcode => true)
 

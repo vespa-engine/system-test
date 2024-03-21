@@ -10,7 +10,7 @@ class Weighting < IndexedStreamingSearchTest
     set_description("Rank using weighting of terms")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
-    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
+    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.json")
   end
 
   def q(tw = nil)

@@ -27,7 +27,7 @@ class QueryTypes < IndexedSearchTest
   end
 
   def test_querytypes
-    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
+    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.json")
 
     # Search for terms 'do or not',   not using explicit type
     # Search for terms 'do or not',   using type 'all'

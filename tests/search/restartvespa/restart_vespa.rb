@@ -15,7 +15,7 @@ class RestartVespa < IndexedSearchTest
   end
 
   def test_restart
-    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
+    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.json")
 
     puts "# Query: Before stopping VESPA"
     assert_result("query=song:yellow+-title:yellow", selfdir+"query1.result.json", "surl", ["surl","title"])
