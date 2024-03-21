@@ -17,7 +17,7 @@ class Bug6425939Test < IndexedStreamingSearchTest
                  sd(selfdir + 'conf/schemas/cars.sd'))
     start
 
-    feed(:file => selfdir + 'singledoc.xml')
+    feed(:file => selfdir + 'singledoc.json')
 
     vespa.adminserver.execute('vespa-visit')
   end
