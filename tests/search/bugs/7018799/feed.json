@@ -1,0 +1,5 @@
+[
+  {"id":"id:test:rla::1","fields":{"onlyidx":"foo","title":"foo only","source":"Dr.eye","onlyattr":"foo","order":1,"both":"foo"}},
+  {"id":"id:test:rla::2","fields":{"onlyidx":"bar","title":"bar only","source":"Dr.eye","onlyattr":"bar","order":2,"both":"bar"}},
+  {"id":"id:test:rla::3","fields":{"onlyidx":"foo bar","title":"foo and bar","source":"Dr.eye","onlyattr":"foo bar","order":3,"both":"foo bar"}}
+]
