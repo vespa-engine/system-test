@@ -22,7 +22,7 @@ class FieldSearch < IndexedSearchTest
   end
 
   def test_medium_advanced
-    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.xml")
+    feed_and_wait_for_docs("music", 10000, :file => SEARCH_DATA+"music.10000.json")
     puts "Waiting for result with docsum"
     assert_result_with_timeout(30, 'query=rock%20year:%5B1999%3B2002%5D&hits=100&type=all', selfdir + "1.result.json", "surl", ["surl"])
 

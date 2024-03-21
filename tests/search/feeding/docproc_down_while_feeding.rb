@@ -13,7 +13,7 @@ class DocprocDownWhileFeeding < IndexedSearchTest
 
   def test_restart_docproc_while_feeding
     thread = Thread.new do
-      feed(:file => "#{SEARCH_DATA}/music.10000.xml",
+      feed(:file => "#{SEARCH_DATA}/music.10000.json",
            :timeout => 120,
            :verbose => true,
            :maxpending => 1)
