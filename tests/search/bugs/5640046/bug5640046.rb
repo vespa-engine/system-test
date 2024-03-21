@@ -11,14 +11,14 @@ class Bug5640046 < IndexedOnlySearchTest
   def test_bug5640046
     deploy_app(SearchApp.new.sd(selfdir+"sd1/test.sd"))
     start
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.1.xml")
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.1.json")
 
     # create a disk index
     vespa.search["search"].first.trigger_flush
     assert_log_matches(/.*flush\.complete.*memoryindex.*flush\.1/, 60)
 
     # remove id:test:test::2
-    feed(:file => selfdir + "feed.2.xml")
+    feed(:file => selfdir + "feed.2.json")
     wait_for_hitcount("f1:foo", 1)
 
     # redeploy with new field
