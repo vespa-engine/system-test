@@ -14,7 +14,7 @@ class Bug_341054 < IndexedSearchTest
   end
 
   def test_bug_341054
-    feed_and_wait_for_docs("knowledge", 1, :file => selfdir+"onedoc.db.utf8.xml")
+    feed_and_wait_for_docs("knowledge", 1, :file => selfdir+"onedoc.db.utf8.json")
 
     puts "Query: basic test"
     result = to_utf8(search("query=ipod&language=zh-hant").xmldata).split("\n")
