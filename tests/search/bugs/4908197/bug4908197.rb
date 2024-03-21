@@ -12,7 +12,7 @@ class Bug4908197 < IndexedSearchTest
   def test_bug4908197
     deploy_app(SearchApp.new.sd(selfdir+"strarr.sd"))
     start
-    feed(:file => selfdir+"feed.xml")
+    feed(:file => selfdir+"feed.json")
     assert_result("query=foo", selfdir+"result.json")
   end
 
