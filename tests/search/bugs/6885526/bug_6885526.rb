@@ -16,7 +16,7 @@ class Bug6885526Test < IndexedStreamingSearchTest
     set_description("Test that new line character is preserved when using bolding (ticket 6885526)")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.xml")
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.json")
     assert_result("title:best", selfdir + "result.json")
   end
 
