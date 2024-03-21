@@ -117,7 +117,7 @@ class SearchCluster
         tag("document-processing",  "cluster".to_sym => @indexing_cluster, "chain".to_sym => @indexing_chain).close_tag.
         list_do(sds) { |helper, sd|
           helper.tag("document", :type => File.basename(sd.file_name, '.sd'),
-		                 :mode => (sd.mode ? sd.mode : indexing_mode),
+                                 :mode => (sd.mode ? sd.mode : indexing_mode),
                                  :global => (sd.global ? "true" : nil),
                                  :selection => sd.selection).
           close_tag }.
