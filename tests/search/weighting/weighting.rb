@@ -21,7 +21,7 @@ class Weighting < IndexedStreamingSearchTest
     if tw
       q2 = 'title+contains+%28%5B%7B%22weight%22%3A+' + tw.to_s + '%7D%5D%22jackson%22%29'
     end
-    sorting="-[rank] isbn"
+    sorting="-[rank] surl"
     query = q1 + q2 + q3 + q4 + "&sorting=#{sorting}"
     return query
   end
@@ -37,7 +37,7 @@ class Weighting < IndexedStreamingSearchTest
     puts "Increase the weight of a term by 150%, check that hits are the same, but ordering different"
     assert_queries_match(q(250), q(), 'name="surl"', true)
 
-    sorting="-[rank] isbn&hits=100"
+    sorting="-[rank] surl&hits=100"
 
     puts "Check that !(bang) equals a weight of 150%"
     assert_queries_match("query=title:jackson!+artist:jackson&type=any&sorting=#{sorting}",
