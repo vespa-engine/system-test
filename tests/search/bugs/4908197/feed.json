@@ -1,0 +1,3 @@
+[
+  {"id":"id:strarr:strarr::1","fields":{"sum":["simple","with double \" quote","with back \\ slash","with both backslash \\\" and double quote","more simple"],"title":"foo","attr":["simple","with double \" quote","with back \\ slash","with both backslash \\\" and double quote","more simple"]}}
+]
