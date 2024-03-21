@@ -23,7 +23,7 @@ class AutomaticOutOfServiceTest < IndexedOnlySearchTest
     start
     assert_response_code_from_vip_handler("200")
 
-    feed_and_wait_for_docs("music", 2, :file => selfdir + "music.2.xml")
+    feed_and_wait_for_docs("music", 2, :file => selfdir + "music.2.json")
     assert_response_code_from_vip_handler("200")
 
     stop_searchnodes("orangemusic")
