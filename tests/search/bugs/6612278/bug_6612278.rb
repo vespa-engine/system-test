@@ -36,7 +36,7 @@ class Bug6612278Test < IndexedOnlySearchTest
   def test_merge_with_node_limits
     deploy_app(generate_app(4, 4))
     start
-    feed(:file => "#{selfdir}/feed1.xml")
+    feed(:file => "#{selfdir}/feed1.json")
 
     # We now have 4 copies. Take down 2 and feed over the remaining 2 buckets
     # so that the buckets on the downed nodes are guaranteed to be out of sync
@@ -46,7 +46,7 @@ class Bug6612278Test < IndexedOnlySearchTest
     set_node_down('storage', 1)
     wait_until_ready
 
-    feed(:file => "#{selfdir}/feed2.xml")
+    feed(:file => "#{selfdir}/feed2.json")
     config_generation = get_generation(deploy_app(generate_app(4, 2))).to_i
     wait_for_reconfig(config_generation) # To ensure new distribution config has kicked.
 
