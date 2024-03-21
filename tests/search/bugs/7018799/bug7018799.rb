@@ -67,14 +67,14 @@ class RecoveryLosesAnnotations < IndexedOnlySearchTest
         num_parts(2).redundancy(2).ready_copies(1).
         sd(selfdir+"rla.sd"))
     start
-    feed_and_wait_for_docs("rla", 3, :file => selfdir+"feed.xml")
+    feed_and_wait_for_docs("rla", 3, :file => selfdir+"feed.json")
     saveAll
 
     sn0 = vespa.search["multitest"].searchnode[0]
     sn1 = vespa.search["multitest"].searchnode[1]
 
     sn0.stop
-    feed_and_wait_for_docs("rla", 4, :file => selfdir+"xtra1.xml")
+    feed_and_wait_for_docs("rla", 4, :file => selfdir+"xtra1.json")
     checkAll
     sn0.execute("rm -rf #{Environment.instance.vespa_home}/var/db/vespa/search/cluster.multitest/n0")
     checkAll
@@ -83,7 +83,7 @@ class RecoveryLosesAnnotations < IndexedOnlySearchTest
     wait_for_docs_on(2, 0)
     wait_for_docs_on(2, 1)
     checkAll
-    feed_and_wait_for_docs("rla", 5, :file => selfdir+"xtra2.xml")
+    feed_and_wait_for_docs("rla", 5, :file => selfdir+"xtra2.json")
     checkAll
     checkAll
 
@@ -91,7 +91,7 @@ class RecoveryLosesAnnotations < IndexedOnlySearchTest
     wait_for_docs_on(5, 0)
     wait_for_docs_on(0, 1)
     checkAll
-    feed_and_wait_for_docs("rla", 6, :file => selfdir+"xtra3.xml")
+    feed_and_wait_for_docs("rla", 6, :file => selfdir+"xtra3.json")
     checkAll
   end
 
