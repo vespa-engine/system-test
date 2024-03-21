@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:simple::http://fake1.fake/","fields":{"description":"test SONY test","title":"ON test document","surl":"http://fake1.fake/"}},
+  {"id":"id:test:simple::http://fake2.fake/","fields":{"description":"ｓｏｎｙ doublewidth","title":"doublewidth test document ｏｎ","surl":"http://fake2.fake/"}}
+]
