@@ -12,7 +12,7 @@ class Default_Index < IndexedStreamingSearchTest
   end
 
   def test_default_index
-    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.xml")
+    feed_and_wait_for_docs("music", 777, :file => SEARCH_DATA+"music.777.json")
 
     filterexp = /total-hit-count|"surl"/
 
