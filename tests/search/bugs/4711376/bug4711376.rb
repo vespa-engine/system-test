@@ -18,7 +18,7 @@ class Bug4711376 < IndexedStreamingSearchTest
                   group(NodeGroup.new(0, "mycluster").default_nodes(1, 0)))
     deploy_app(app)
     start
-    feed(:file => selfdir+"combineddata.xml")
+    feed(:file => selfdir+"combineddata.json")
     query = "?query=sddocname:image sddocname:music&type=any&sorting=-uca(comment) title"
     for i in 1...3 do
         search_with_timeout(20, query)
