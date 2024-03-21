@@ -1,0 +1,295 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 13
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 10000,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_francois-reinhart_music_1927562972",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_francois-reinhart_music_1927562972",
+          "title": "Francois Reinhart",
+          "pto": -1,
+          "mid": 2,
+          "ew": "reinhart",
+          "surl": "http://shopping.yahoo.com/p_francois-reinhart_music_1927562972",
+          "categories": "Artists",
+          "bgnsellers": 0
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_opus-3-8_music_1921276484",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_opus-3-8_music_1921276484",
+          "title": "Opus 3.8",
+          "artist": "Francois Marcaurelle",
+          "song": "Funkish, Part I/Part II;Francis Blues;Chiccoree;Orange;Epidemie;Samtangue;Reggae Day;Nadonite Aigue",
+          "bgndata": "CD",
+          "pto": 1682,
+          "mid": 2,
+          "surl": "http://shopping.yahoo.com/p_opus-3-8_music_1921276484",
+          "pid": "1921276484",
+          "weight": 44.0,
+          "isbn": "774204101121",
+          "fmt": "CD",
+          "disp_song": "Funkish, Part I/Part II;Francis Blues;Chiccoree",
+          "pfrom": 1199,
+          "categories": "1804905773 1804893726",
+          "data": "CD11.99-16.82774204101121",
+          "bgnsellers": 0,
+          "image": "img src=\"http://us.f1.yahoofs.com/shopping/150687/amg1921276484_1940.jpg?rm_____DJTQLx1hk\" height=70 width=70 border=0 hspace=0 vspace=0",
+          "artistspid": "1927302154",
+          "newestedition": 19980505,
+          "year": 1998,
+          "did": 66,
+          "cbid": 2
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_res_music_1921320175",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_res_music_1921320175",
+          "title": "Res",
+          "artist": "Malawi Rocks",
+          "song": "Somethin' to Smile About;My Dream;Likoma;Romy and Michell;Shine;Somethin' to Smile About (Francois K. Main Vocal Pass);Somethin' to Smile About [Francois K. Dub Mix]",
+          "bgndata": "CD",
+          "pto": -100,
+          "mid": 2,
+          "ew": "res",
+          "surl": "http://shopping.yahoo.com/p_res_music_1921320175",
+          "pid": "1921320175",
+          "weight": 14.0,
+          "isbn": "4988010735722",
+          "fmt": "CD",
+          "disp_song": "Somethin' to Smile About;My Dream;Likoma",
+          "categories": "1804905743 1804893726",
+          "data": "CD4988010735722",
+          "bgnsellers": 0,
+          "image": "img src=\"http://us.f1.yahoofs.com/shopping/141575/amg1921320175_1940.jpg?rm_____DtY_xu7wH\" height=69 width=70 border=0 hspace=0 vspace=0",
+          "artistspid": "1927305988",
+          "newestedition": 19990216,
+          "year": 1999,
+          "did": 66,
+          "cbid": 2
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_la-famille-bach-a-l-orgue_music_1921575462",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_la-famille-bach-a-l-orgue_music_1921575462",
+          "title": "La Famille Bach A L'Orgue",
+          "artist": "François-Henri Houbart",
+          "song": "Chorale for organ, \"Van Gott will ich nicht lassen\";Chorale for organ, \"Aus tiefer Not\";Chorale Prelude for organ, \"Aus meines Herzens Grunde\";Chorale for organ \"Von Gott will ich nicht lassen\";Partita sopra \"Du Friedefürst, Herr Jesu Christ\";Prelude and Fugue for organ in F minor, BWV534;Chorale prelude for organ (\"O Mensch, bewein dein Sünde gross\"), BWV 622;Fantasia for organ in G major, BWV 572;Wir danken dir, Herr Jesu Christ, chorale prelude for organ, F. 38/1/7 (BR A99);Fantasia & Fugue à 4, for keyboard in C minor \"No. 7\", H. 75.5, Wq. 119/7;Sonata, for organ in D major, H. 86, Wq. 70/5",
+          "bgndata": "CD",
+          "pto": -100,
+          "mid": 2,
+          "surl": "http://shopping.yahoo.com/p_la-famille-bach-a-l-orgue_music_1921575462",
+          "pid": "1921575462",
+          "weight": 10.0,
+          "isbn": "034069912820",
+          "fmt": "CD",
+          "disp_song": "Chorale for organ, \"Van Gott will ich nicht lassen\";Chorale for organ, \"Aus tiefer Not\";Chorale Prelude for organ, \"Aus meines Herzens Grunde\"",
+          "categories": "1804951797 1804893726",
+          "data": "CD034069912820",
+          "bgnsellers": 0,
+          "image": "img src=\"http://us.f1.yahoofs.com/shopping/151929/amg1921575462_1940.jpg?rm_____DaK4KjFRO\" height=70 width=70 border=0 hspace=0 vspace=0",
+          "did": 66,
+          "cbid": 2
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_fran-ois-granier_music_1927523970",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_fran-ois-granier_music_1927523970",
+          "title": "François Granier",
+          "pto": -1,
+          "mid": 2,
+          "ew": "granier",
+          "surl": "http://shopping.yahoo.com/p_fran-ois-granier_music_1927523970",
+          "categories": "Artists",
+          "bgnsellers": 0
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_fran-ois-meyer_music_1927616151",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_fran-ois-meyer_music_1927616151",
+          "title": "François Meyer",
+          "pto": -1,
+          "mid": 2,
+          "ew": "meyer",
+          "surl": "http://shopping.yahoo.com/p_fran-ois-meyer_music_1927616151",
+          "categories": "Artists",
+          "bgnsellers": 0
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_francois-macchiagodena_music_1927497459",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_francois-macchiagodena_music_1927497459",
+          "title": "Francois Macchiagodena",
+          "pto": -1,
+          "mid": 2,
+          "ew": "macchiagodena",
+          "surl": "http://shopping.yahoo.com/p_francois-macchiagodena_music_1927497459",
+          "categories": "Artists",
+          "bgnsellers": 0
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_francois-ancelet_music_1927037826",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_francois-ancelet_music_1927037826",
+          "title": "Francois Ancelet",
+          "pto": -1,
+          "mid": 2,
+          "ew": "ancelet",
+          "surl": "http://shopping.yahoo.com/p_francois-ancelet_music_1927037826",
+          "categories": "Artists",
+          "bgnsellers": 0
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_liszt-marghieri-a-l-orgue-de-saint-fran-ois-de-sales-lyon-_music_1921540936",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_liszt-marghieri-a-l-orgue-de-saint-fran-ois-de-sales-lyon-_music_1921540936",
+          "title": "Liszt/Marghieri/A L'orgue De Saint-François De Sales (Lyon)",
+          "song": "Aux cypres de la vill d'Este I;Consolations en mi majeur;Trauerode;Angelus!;Evocation a la Chapelle Sixtine;Ouverture de l'oratorio La Legende de sainte Elisabeth;Aux cypres de la villa d'Este II",
+          "bgndata": "CD",
+          "pto": 1398,
+          "mid": 2,
+          "surl": "http://shopping.yahoo.com/p_liszt-marghieri-a-l-orgue-de-saint-fran-ois-de-sales-lyon-_music_1921540936",
+          "pid": "1921540936",
+          "weight": 35.0,
+          "isbn": "794881400423",
+          "fmt": "CD",
+          "disp_song": "Aux cypres de la vill d'Este I;Consolations en mi majeur;Trauerode",
+          "pfrom": 1398,
+          "categories": "1804951797 1804893726",
+          "data": "CD13.98794881400423",
+          "bgnsellers": 0,
+          "image": "img src=\"http://us.f1.yahoofs.com/shopping/148827/amg1921540936_1940.jpg?rm_____DFsHR_z9O\" height=70 width=70 border=0 hspace=0 vspace=0",
+          "did": 66,
+          "cbid": 2
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_jean-francois-abert_music_1927344513",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_jean-francois-abert_music_1927344513",
+          "title": "Jean-Francois Abert",
+          "pto": -1,
+          "mid": 2,
+          "ew": "abert",
+          "surl": "http://shopping.yahoo.com/p_jean-francois-abert_music_1927344513",
+          "categories": "Artists",
+          "bgnsellers": 0
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_jean-francois-lagrave_music_1927034315",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_jean-francois-lagrave_music_1927034315",
+          "title": "Jean-Francois Lagrave",
+          "pto": -1,
+          "mid": 2,
+          "ew": "lagrave",
+          "surl": "http://shopping.yahoo.com/p_jean-francois-lagrave_music_1927034315",
+          "categories": "Artists",
+          "bgnsellers": 0
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_jean-fran-ois-detroy_music_1927700780",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_jean-fran-ois-detroy_music_1927700780",
+          "title": "Jean-François Detroy",
+          "pto": -1,
+          "mid": 2,
+          "ew": "detroy",
+          "surl": "http://shopping.yahoo.com/p_jean-fran-ois-detroy_music_1927700780",
+          "categories": "Artists",
+          "bgnsellers": 0
+        }
+      },
+      {
+        "id": "id:test:music::http://shopping.yahoo.com/p_hed-kandi-disco-heaven-various_music_1921864602",
+        "relevance": 0.0005809731299927379,
+        "source": "search",
+        "fields": {
+          "sddocname": "music",
+          "documentid": "id:test:music::http://shopping.yahoo.com/p_hed-kandi-disco-heaven-various_music_1921864602",
+          "title": "Hed Kandi: Disco Heaven / Various",
+          "artist": "Various Artists",
+          "song": "Good for You [Main Mix];Believe [Kenny Dope Remix];Save Your Life [Grant Nelson Remix];I Will Follow You [Full Intention Club Mix];Dancin' in Paradise [JJK Mix];Can't Give Up [Ron Carroll's Body Music Original];New Horizons [Class A Vocal Mix];Everyday [Maurice Joshua Vocal Mix];Home [Knee Deep Club Mix];More Love [Original Edit];Reachin' [Stefano Gamma Tribute Mix];Take It or Leave It [Extended Mix];At Night [Original] [Original Version];Thrill Me [Original Version by Junior Jack];So Good [Original Mix];Young Hearts [Extended Original];Take Me in Your Arms [Vocal Mix];Stars [Full Intention Main Mix];Feels Like It's Better [Disco Re-Make];And It Hurts [Stone's 2001 12\" Mix];Love Foolosophy [Knee Deep's Re-Edit];High [Francois K Vocal 12\" (Pt. 1 & 2)]",
+          "bgndata": "CDLP",
+          "pto": 4139,
+          "mid": 2,
+          "ew": "kandi",
+          "surl": "http://shopping.yahoo.com/p_hed-kandi-disco-heaven-various_music_1921864602",
+          "pid": "1921864602",
+          "weight": 49.0,
+          "isbn": "822334004628,822334004987",
+          "fmt": "CD LP",
+          "disp_song": "Good for You [Main Mix];Believe [Kenny Dope Remix];Save Your Life [Grant Nelson Remix]",
+          "pfrom": 1563,
+          "categories": "1804905743 1804893726",
+          "data": "CD15.63-41.39822334004628LP822334004987",
+          "bgnsellers": 0,
+          "image": "img src=\"http://us.f1.yahoofs.com/shopping/134372/amg1921864602_1940.jpg?rm_____DiQ2qD5N8\" height=70 width=70 border=0 hspace=0 vspace=0",
+          "newestedition": 20020423,
+          "year": 2002,
+          "did": 66,
+          "scorekey": 0,
+          "cbid": 2
+        }
+      }
+    ]
+  }
+}
