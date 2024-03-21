@@ -1,0 +1,5 @@
+[
+  {"id":"id:test:music::http://invalid.url./bug.316580.1","fields":{"pto":9,"artist":"Bogus","song":"yahoo!,yahoo!,yahoo!,yahoo!,yahoo!,yahoo!,yahoo!,yahoo!,yahoo!,yahoo!,yahoo!,yahoo!,service,yahoo!,yahoo!,yahoo!","title":"Bug 316580","year":2005,"surl":"http://invalid.url./bug.316580.1"}},
+  {"id":"id:test:music::http://invalid.url./bug.316580.2","fields":{"pto":9,"artist":"Bogus","song":"yahoo!yahoo!yahoo!yahoo!yahoo!yahoo!yahoo!yahoo!yahoo!yahoo!yahoo!yahoo!yahoo!yahoo!service!yahoo!yahoo!yahoo!","title":"Bug 316580","year":2005,"surl":"http://invalid.url./bug.316580.2"}},
+  {"id":"id:test:music::http://invalid.url./bug.316580.3","fields":{"pto":9,"artist":"Bogus","song":"yahoo,yahoo,yahoo,yahoo,yahoo,yahoo,yahoo,yahoo,yahoo,yahoo,yahoo,yahoo,yahoo,yahoo,service,yahoo,yahoo,yahoo!","title":"Bug 316580","year":2005,"surl":"http://invalid.url./bug.316580.3"}}
+]
