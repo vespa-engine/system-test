@@ -1,0 +1,11 @@
+schema a1storeonly {
+  document a1storeonly {
+    field text type string { indexing: index | summary }
+    field id type int { indexing: attribute | summary }
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(id)
+    }
+  }
+}

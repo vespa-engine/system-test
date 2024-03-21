@@ -1,0 +1,11 @@
+schema a1streaming {
+  document a1streaming {
+    field text type string { indexing: index | summary }
+    field id type int { indexing: attribute | summary }
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(id)
+    }
+  }
+}
