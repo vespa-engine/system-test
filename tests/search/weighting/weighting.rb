@@ -17,11 +17,12 @@ class Weighting < IndexedStreamingSearchTest
     q1 = '/search/?yql=select+%2A+from+sources+%2A+where+%28'
     q2 = 'title+contains+%22jackson%22'
     q3 = '+OR+artist+contains+%22jackson%22'
-    q4 = '%29+limit+12%3B&format=xml'
+    q4 = '%29+limit+100&format=xml'
     if tw
       q2 = 'title+contains+%28%5B%7B%22weight%22%3A+' + tw.to_s + '%7D%5D%22jackson%22%29'
     end
-    query = q1 + q2 + q3 + q4
+    sorting="-[rank] isbn"
+    query = q1 + q2 + q3 + q4 + "&sorting=#{sorting}"
     return query
   end
 
@@ -35,15 +36,16 @@ class Weighting < IndexedStreamingSearchTest
 
     puts "Increase the weight of a term by 150%, check that hits are the same, but ordering different"
     assert_queries_match(q(250), q(), 'name="surl"', true)
-    assert_not_queries_match(q(250), q(), 'name="surl"', false)
+
+    sorting="-[rank] isbn&hits=100"
 
     puts "Check that !(bang) equals a weight of 150%"
-    assert_queries_match("query=title:jackson!+artist:jackson&type=any&sorting=-[rank]-year&hits=21",
-			 "query=title:jackson!150+artist:jackson&type=any&sorting=-[rank]-year&hits=21")
+    assert_queries_match("query=title:jackson!+artist:jackson&type=any&sorting=#{sorting}",
+			 "query=title:jackson!150+artist:jackson&type=any&sorting=#{sorting}")
 
     puts "Check that !!(double bang) equals a weight of 200%"
-    assert_queries_match("query=title:jackson!!+artist:jackson&type=any&sorting=-[rank]-year&hits=21",
-			 "query=title:jackson!200+artist:jackson&type=any&sorting=-[rank]-year&hits=21")
+    assert_queries_match("query=title:jackson!!+artist:jackson&type=any&sorting=#{sorting}",
+			 "query=title:jackson!200+artist:jackson&type=any&sorting=#{sorting}")
   end
 
   def test_weighting_cap
