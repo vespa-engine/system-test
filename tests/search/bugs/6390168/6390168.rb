@@ -12,7 +12,7 @@ class Bug6390168 < IndexedSearchTest
   def test_aba_in_array
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
-    feed(:file => selfdir+"feed.xml", :timeout => 240)
+    feed(:file => selfdir+"feed.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:test", 1)
     assert_hitcount("query=sddocname:test", 1)
   end
