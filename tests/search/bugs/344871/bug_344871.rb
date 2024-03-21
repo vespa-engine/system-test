@@ -11,7 +11,7 @@ class Bug_344871 < IndexedSearchTest
   end
 
   def test_bold_doublewidth
-    feed_and_wait_for_docs("simple", 2, :file => "#{selfdir}/input.xml")
+    feed_and_wait_for_docs("simple", 2, :file => "#{selfdir}/input.json")
 
     # "Query: basic test"
     assert_result("query=test", 
