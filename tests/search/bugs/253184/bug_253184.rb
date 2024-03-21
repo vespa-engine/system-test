@@ -12,7 +12,7 @@ class Bug_253184 < IndexedSearchTest
   end
 
   def test_indexto_several
-    feed_and_wait_for_docs("musicsearch", 2, :file => selfdir+"musicsearch.2.xml")
+    feed_and_wait_for_docs("musicsearch", 2, :file => selfdir+"musicsearch.2.json")
 
     assert_field("query=all:one",     selfdir + "one.result.json", "f1")
     assert_field("query=all:three",   selfdir + "one.result.json", "f1")

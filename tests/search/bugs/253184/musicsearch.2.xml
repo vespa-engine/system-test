@@ -1,8 +1,0 @@
-  <document documenttype="musicsearch" documentid="id:test:musicsearch::pushyss://0/">
-			<f1><![CDATA[one]]></f1>
-			<f2><![CDATA[three]]></f2>
-		</document>
-  <document documenttype="musicsearch" documentid="id:test:musicsearch::pushyss://1/">
-			<f1><![CDATA[two]]></f1>
-			<f2><![CDATA[four]]></f2>
-		</document>
