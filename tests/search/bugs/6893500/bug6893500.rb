@@ -25,7 +25,7 @@ class MapInSummaryBug < IndexedStreamingSearchTest
                              chain(Chain.new("default", "vespa").add(searcher))).
                     docproc(DocumentProcessing.new)))
     start
-    feed_and_wait_for_docs("withmap", 1, :file => selfdir+"feed.xml")
+    feed_and_wait_for_docs("withmap", 1, :file => selfdir+"feed.json")
 
     assert_result("query=title:pizza", selfdir+"pizza.json")
   end
