@@ -38,10 +38,11 @@ class SourceProvider < IndexedSearchTest
   end
 
   def test_settings
+    sorting="sorting=isbn"
     wait_for_atleast_hitcount("sddocname:music&sources=mysearch,local", 777*2)
-    singleresult = search("sddocname:music&sources=mysearch")
+    singleresult = search("sddocname:music&sources=mysearch&#{sorting}")
     assert_equal(777, singleresult.hitcount)
-    multiresult = search("sddocname:music&sources=mysearch,local&rankfeature.$now=42")
+    multiresult = search("sddocname:music&sources=mysearch,local&rankfeature.$now=42&#{sorting}")
     assert_equal(777*2, multiresult.hitcount)
 
 
@@ -53,7 +54,7 @@ class SourceProvider < IndexedSearchTest
     }
 
     ##Test out properties
-    sourceresult = search("sddocname:music&sources=mysearch,local&source.mysearch.hits=5&source.mysearch.offset=5&source.local.offset=10&source.local.hits=15")
+    sourceresult = search("sddocname:music&sources=mysearch,local&source.mysearch.hits=5&source.mysearch.offset=5&source.local.offset=10&source.local.hits=15&#{sorting}")
 
     sourcegroups = parseGroups(sourceresult)
 
@@ -61,7 +62,7 @@ class SourceProvider < IndexedSearchTest
     assert_equal(5, sourcegroups['mysearch'].size)
     assert_equal(groups['mysearch'][5], sourcegroups['mysearch'][0])
 
-    providerresult = search("sddocname:music&sources=local&provider.local.hits=15&source.local.hits=5&provider.local.offset=5")
+    providerresult = search("sddocname:music&sources=local&provider.local.hits=15&source.local.hits=5&provider.local.offset=5&#{sorting}")
 
     providergroups = parseGroups(providerresult)
 
