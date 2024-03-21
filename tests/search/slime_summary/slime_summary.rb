@@ -14,7 +14,7 @@ class SlimeSummary < IndexedSearchTest
     search_chain = SearchChain.new.add(Searcher.new("com.yahoo.test.SummaryInspector"))
     deploy_app(SearchApp.new.sd(selfdir+"test.sd").search_chain(search_chain))
     start
-    feed(:file => selfdir + "docs.xml")
+    feed(:file => selfdir + "docs.json")
 
     result = search("query=test&slime_docsum")
     assert(result.hit.size == 1)
