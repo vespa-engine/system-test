@@ -1,0 +1,12 @@
+[
+  {"id":"id:test:base::1","fields":{"uri":"1","title":"title","doctime":1,"date":1}},
+  {"id":"id:test:base::2","fields":{"uri":"2","title":"title","doctime":2,"date":2}},
+  {"id":"id:test:base::3","fields":{"uri":"3","title":"title","doctime":3,"date":3}},
+  {"id":"id:test:base::4","fields":{"uri":"4","title":"title","doctime":4,"date":4}},
+  {"id":"id:test:base::5","fields":{"uri":"5","title":"title","doctime":5,"date":5}},
+  {"id":"id:test:base::6","fields":{"uri":"6","title":"title","doctime":6,"date":6}},
+  {"id":"id:test:base::7","fields":{"uri":"7","title":"title","doctime":7,"date":7}},
+  {"id":"id:test:base::8","fields":{"uri":"8","title":"title","doctime":8,"date":8}},
+  {"id":"id:test:base::9","fields":{"uri":"9","title":"title","doctime":9,"date":9}},
+  {"id":"id:test:base::10","fields":{"uri":"10","title":"title","doctime":10,"date":10}}
+]

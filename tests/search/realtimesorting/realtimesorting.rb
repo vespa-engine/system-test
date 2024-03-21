@@ -11,14 +11,14 @@ class RealtimeSorting < IndexedSearchTest
   end
 
   def test_realtimesorting
-    feed_and_wait_for_docs("base", 10, :file => selfdir+"1-10.xml")
+    feed_and_wait_for_docs("base", 10, :file => selfdir+"1-10.json")
 
     filter = /<field name="date">/
     query= "query=title:title&sorting=%2ddate&hits=10&nocache"
     puts "Detail: " + query
     assert_result(query,selfdir+"1-10.result.json", nil, [ 'date' ])
 
-    feed_and_wait_for_docs("base", 20, :file => selfdir+"11-20.xml")
+    feed_and_wait_for_docs("base", 20, :file => selfdir+"11-20.json")
     puts "Detail: " + query
     assert_result(query,selfdir+"11-20.result.json", nil, [ 'date' ])
 
