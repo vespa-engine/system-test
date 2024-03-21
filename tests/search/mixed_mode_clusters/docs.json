@@ -1,0 +1,14 @@
+[
+  { "put": "id:test:a1indexed::0", "fields": { "id": 0, "text": "First document" } },
+  { "put": "id:test:a1indexed::1", "fields": { "id": 1, "text": "Second document" } },
+  { "put": "id:test:a1indexed::2", "fields": { "id": 2, "text": "Third document" } },
+  { "put": "id:test:a1indexed::3", "fields": { "id": 3, "text": "Fourth document" } },
+  { "put": "id:test:a1storeonly::0", "fields": { "id": 0, "text": "First document" } },
+  { "put": "id:test:a1storeonly::1", "fields": { "id": 1, "text": "Second document" } },
+  { "put": "id:test:a1storeonly::2", "fields": { "id": 2, "text": "Third document" } },
+  { "put": "id:test:a1storeonly::3", "fields": { "id": 3, "text": "Fourth document" } },
+  { "put": "id:test:a1streaming::0", "fields": { "id": 0, "text": "First document" } },
+  { "put": "id:test:a1streaming::1", "fields": { "id": 1, "text": "Second document" } },
+  { "put": "id:test:a1streaming::2", "fields": { "id": 2, "text": "Third document" } },
+  { "put": "id:test:a1streaming::3", "fields": { "id": 3, "text": "Fourth document" } }
+]
