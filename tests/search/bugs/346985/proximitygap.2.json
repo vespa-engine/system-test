@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:proximitygap::proximitygap1","fields":{"f2":"fuzz","id":"proximitygap1","f1":"bar"}},
+  {"id":"id:test:proximitygap::proximitygap2","fields":{"f2":"ball","id":"proximitygap2","f1":"a b c d e f g foo bar fuzz"}}
+]
