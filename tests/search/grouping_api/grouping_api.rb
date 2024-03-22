@@ -13,7 +13,7 @@ class GroupingApi < IndexedSearchTest
   end
 
   def test_groupingapi
-    feed_and_wait_for_docs("test", 4, :file => "#{selfdir}/docs.xml")
+    feed_and_wait_for_docs("test", 4, :file => "#{selfdir}/docs.json")
     result = search("query=test")
     puts(result.xmldata);
     assert_equal(4, result.hitcount)
