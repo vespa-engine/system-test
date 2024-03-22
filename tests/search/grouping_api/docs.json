@@ -1,0 +1,6 @@
+[
+  {"id":"id:test:test::1","fields":{"price":101,"body":"test","value":11}},
+  {"id":"id:test:test::2","fields":{"price":201,"body":"test","value":21}},
+  {"id":"id:test:test::3","fields":{"price":301,"body":"test","value":31}},
+  {"id":"id:test:test::4","fields":{"price":401,"body":"test","value":41}}
+]
