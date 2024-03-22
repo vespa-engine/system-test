@@ -6,10 +6,10 @@ class FilterIndexesLogical < IndexedSearchTest
 
   def setup
     set_owner("musum")
-    set_description("Test filter indexes using inheritance in SD files")
+    set_description("Test filter indexes using inheritance in schema")
     deploy_app(SearchApp.new.sd(selfdir+"father.sd").sd(selfdir+"music.sd"))
     start
-    feed_and_wait_for_docs("music", 2, :file => selfdir+"../musicdata.xml")
+    feed_and_wait_for_docs("music", 2, :file => selfdir+"../musicdata.json")
   end
 
   def test_filterindexes
@@ -22,7 +22,6 @@ class FilterIndexesLogical < IndexedSearchTest
     assert_not_equal(0.0, result3.hit[0].field["relevancy"].to_f);
     assert_equal(0.0, result4.hit[0].field["relevancy"].to_f);
   end
-
 
   def teardown
     stop
