@@ -36,7 +36,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
     #vespa.adminserver.logctl("searchnode:engine.transportserver", "debug=on,spam=on")
     proton = vespa.search["search"].first
     proton.logctl2("proton.docsummary.documentstoreadapter", "all=on")
-    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
+    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")
 
     puts "need refeed reconfig of f2"
     reindexing_ready_millis = get_reindexing_initial_ready_millis
@@ -47,7 +47,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
     wait_for_convergence(gen)
 
     # Feed should be accepted
-    feed_output = feed(:file => @test_dir + "feed.1.json", :timeout => 20, :exceptiononfailure => false)
+    feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
     # Search & docsum should still work
     assert_result("sddocname:test", @test_dir + "result.1.json")
     assert_hitcount("f1:b", 2)
@@ -91,7 +91,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
     #vespa.adminserver.logctl("searchnode:engine.transportserver", "debug=on,spam=on")
     proton = vespa.search["search"].first
     proton.logctl2("proton.docsummary.documentstoreadapter", "all=on")
-    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
+    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")
 
     @params[:search_type] = "ELASTIC"
     reindexing_ready_millis = get_reindexing_initial_ready_millis
@@ -104,7 +104,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
     wait_for_convergence(gen)
 
     # Feed should be accepted
-    feed_output = feed(:file => @test_dir + "feed.1.json", :timeout => 20, :exceptiononfailure => false)
+    feed_output = feed(:file => @test_dir + "feed.1.xml", :timeout => 20, :exceptiononfailure => false)
     # Search & docsum should still work also for genrated fields
     assert_result("sddocname:test", @test_dir + "result.2.json")
     assert_hitcount("f1:b", 1)          # No index for old document

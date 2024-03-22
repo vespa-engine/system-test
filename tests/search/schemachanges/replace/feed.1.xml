@@ -1,0 +1,5 @@
+<document type="test" documentid="id:test:test::1">
+  <f1>c d</f1>
+  <f2><item>d e</item><item>e f</item></f2>
+  <f3><item>31</item><item>32</item></f3>
+</document>
