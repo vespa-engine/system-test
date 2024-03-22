@@ -12,7 +12,7 @@ class Bug4917478 < IndexedStreamingSearchTest
     timeout=2.0
     deploy_app(SearchApp.new.sd(selfdir+"bold.sd"))
     start
-    feed(:file => selfdir+"feed.xml")
+    feed(:file => selfdir+"feed.json")
     wait_for_hitcount("query=sddocname:bold", 1)
 
     ogrp="all(group(iprd)+each(output(count())))"
