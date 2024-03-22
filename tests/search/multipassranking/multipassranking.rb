@@ -11,7 +11,7 @@ class MultipassRanking < IndexedOnlySearchTest
   end
 
   def test_multipass_ranking
-    feed_and_wait_for_docs("test", 4, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("test", 4, :file => selfdir + "feed.json")
     assert_hitcount("query=sddocname:test", 4);
 
     @heap_size = 2

@@ -1,0 +1,6 @@
+[
+  {"id":"id:test/test:test::1","fields":{"a1":10,"a4":30,"a3":400,"a2":100}},
+  {"id":"id:test/test:test::2","fields":{"a1":20,"a4":40,"a3":300,"a2":200}},
+  {"id":"id:test/test:test::3","fields":{"a1":30,"a4":50,"a3":200,"a2":300}},
+  {"id":"id:test/test:test::4","fields":{"a1":40,"a4":60,"a3":100,"a2":400}}
+]
