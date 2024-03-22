@@ -1,0 +1,4 @@
+[
+  {"update":"id:test:test::0","fields":{"f2":{"assign":"bay"},"f1":{"assign":"baz"},"f3":{"assign":"bag"}}},
+  {"update":"id:test:test::1","fields":{"f2":{"assign":"bay"},"f1":{"assign":"baz"},"f3":{"assign":"bag"}}}
+]
