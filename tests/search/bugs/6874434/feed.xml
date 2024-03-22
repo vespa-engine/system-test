@@ -1,7 +1,0 @@
-<vespafeed>
-<document type="test" id="id:foo:test:n=27959:doc1">
-<title>test</title>
-<latlong>N63.4;E10.4</latlong>
-<price>4200</price>
-</document>
-</vespafeed>
