@@ -13,7 +13,7 @@ class SimpleInheritance < IndexedSearchTest
     #vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config", "debug=on")
     #vespa.adminserver.logctl("configserver", "debug=on")
     start
-    feed_and_wait_for_docs("derived", 1, :file => selfdir+"testsimpleinheritance.xml")
+    feed_and_wait_for_docs("derived", 1, :file => selfdir+"testsimpleinheritance.json")
 
     attrtocompare =  ["sddocname","field1","field2","field3","field4","url"]
 
@@ -34,7 +34,7 @@ class SimpleInheritance < IndexedSearchTest
     deploy_app(SearchApp.new.sd(selfdir+"simple/base.sd").sd(selfdir+"simple/simple.sd"))
     start
 
-    feed_and_wait_for_docs("simple", 1, :file => selfdir+"simple.xml")
+    feed_and_wait_for_docs("simple", 1, :file => selfdir+"simple.json")
 
     puts "Query: Test that field 2 is present"
     assert_hitcount("query=field2:f2", 1)
