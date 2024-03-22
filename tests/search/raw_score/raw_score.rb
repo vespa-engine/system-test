@@ -15,7 +15,7 @@ class RawScore < IndexedSearchTest
       add(Searcher.new("com.yahoo.test.ItemRawScoreTestSearcher"))
     deploy_app(SearchApp.new.sd(selfdir+"test.sd").search_chain(search_chain))
     start
-    feed(:file => selfdir + "docs.xml")
+    feed(:file => selfdir + "docs.json")
 
     result = search("query=")
     assert(result.hit.size == 1)
