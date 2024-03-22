@@ -29,7 +29,7 @@ class SchemaChangesElastic < IndexedOnlySearchTest
                                            search(Searching.new)))
     start
     postdeploy_wait(deploy_output)
-    feed_and_wait_for_docs("testa", 1, :file => @test_dir + "feed.0.xml")
+    feed_and_wait_for_docs("testa", 1, :file => @test_dir + "feed.0.json")
 
     puts "add 'testb' documentdb"
     deploy_output = deploy_app(SearchApp.new.
@@ -41,7 +41,7 @@ class SchemaChangesElastic < IndexedOnlySearchTest
     wait_for_content_cluster_config_generation(deploy_output)
     postdeploy_wait(deploy_output)
 
-    feed_output = feed(:file => @test_dir + "feed.1.xml")
+    feed_output = feed(:file => @test_dir + "feed.1.json")
     wait_for_get_result("id:testb:testb::1", Document.new("testb", "id:testb:testb::1").add_field("f2", "b c d e").add_field("f3", 31))
   end
 
@@ -51,8 +51,8 @@ class SchemaChangesElastic < IndexedOnlySearchTest
     deploy_output = deploy_app(get_app(2))
     start
     postdeploy_wait(deploy_output)
-    feed(:file => @test_dir + "feed.10.xml")
-    feed(:file => @test_dir + "feed.11.xml")
+    feed(:file => @test_dir + "feed.10.json")
+    feed(:file => @test_dir + "feed.11.json")
     assert_hitcount(hcs("testa"), 1)
     assert_hitcount(hcs("testb"), 1)
     buckets = get_buckets
@@ -73,13 +73,13 @@ class SchemaChangesElastic < IndexedOnlySearchTest
     start
     postdeploy_wait(deploy_output)
     enable_proton_debug_log(0)
-    feed(:file => @test_dir + "feed.10.xml")
+    feed(:file => @test_dir + "feed.10.json")
     assert_hitcount(hcs("testa"), 1)
     deploy_output = deploy_app(get_app(2))
     wait_for_content_cluster_config_generation(deploy_output)
     postdeploy_wait(deploy_output)
     sleep 4
-    feed(:file => @test_dir + "feed.11.xml")
+    feed(:file => @test_dir + "feed.11.json")
     assert_hitcount(hcs("testb"), 1)
   end
 
@@ -142,7 +142,7 @@ class SchemaChangesElastic < IndexedOnlySearchTest
     assert_remove_attribute_hitcount(2, 0, 2, 0)
 
     # Feed partial updates to f1, f2 and f3
-    feed(:file => @test_dir + "update.1.xml")
+    feed(:file => @test_dir + "update.1.json")
 
     assert_result("query=sddocname:test&nocache",
                   @test_dir + "test.1.result.json",

@@ -17,7 +17,7 @@ class SchemaChangesReplaceTest < IndexedOnlySearchTest
     start
     postdeploy_wait(deploy_output)
     proton = vespa.search["search"].first
-    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")
+    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
 
     puts "remove f2 & f3"
     redeploy("test.1.sd")
@@ -25,7 +25,7 @@ class SchemaChangesReplaceTest < IndexedOnlySearchTest
 
     puts "re-add f2 & f3 with new data types"
     redeploy("test.2.sd")
-    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.1.xml")
+    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.1.json")
     assert_hitcount("f2:b&nocache", 0)
     assert_hitcount("f3:30&nocache", 0)
     assert_hitcount("f2:d&nocache", 1)
@@ -46,7 +46,7 @@ class SchemaChangesReplaceTest < IndexedOnlySearchTest
     proton = vespa.search["search"].first
     # proton.logctl("searchnode:proton.server.attributeproxy", "all=on")
     # proton.logctl("searchnode", "all=on")
-    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.xml")
+    feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
 
     assert_hitcount("f2:b&nocache", 1)
     assert_hitcount("f3:30&nocache", 1)
@@ -58,7 +58,7 @@ class SchemaChangesReplaceTest < IndexedOnlySearchTest
 
     puts "re-add f2 & f3 with new data types"
     redeploy("test.2.sd")
-    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.1.xml")
+    feed_and_wait_for_docs("test", 2, :file => @test_dir + "feed.1.json")
     assert_hitcount("f2:b&nocache", 0)
     assert_hitcount("f3:30&nocache", 0)
     assert_hitcount("f2:31&nocache", 1)
