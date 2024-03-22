@@ -19,7 +19,7 @@ class Bug6559464Test < IndexedStreamingSearchTest
                  enable_document_api)
     start
 
-    feed(:file => selfdir + 'feed.xml')
+    feed(:file => selfdir + 'feed.json')
 
     puts "Get document with document v1 API"
     output = vespa.document_api_v1.http_get('/document/v1/music/music/docid/taz')
