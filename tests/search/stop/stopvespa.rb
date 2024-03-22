@@ -15,7 +15,7 @@ class StopVespa < IndexedSearchTest
   end
 
   def test_stop_configserver_first
-    feed(:file => selfdir+"docs.xml")
+    feed(:file => selfdir+"docs.json")
     wait_for_hitcount("query=sddocname:simple", 2)
 
     vespa.configservers["0"].stop_configserver
