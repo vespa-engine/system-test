@@ -15,7 +15,7 @@ class DynTeaserStreaming < StreamingSearchTest
                                                    add("stem_min_length", 1).
                                                    add("stem_max_extend", 8)))
     start
-    feed(:file => selfdir + "stem.xml")
+    feed(:file => selfdir + "stem.json")
     wait_for_hitcount("query=sddocname:stem&streaming.userid=1", 1)
 
     assert_stem_config("stop receiving announcements",          "query=s")

@@ -32,7 +32,7 @@ class DynTeaser < IndexedStreamingSearchTest
     start
     enable_dyn_teaser_debug_logging if @debug_log_enabled
 
-    feed_and_wait_for_docs("cjk", 34, :file => selfdir+"dynteaser.34.xml")
+    feed_and_wait_for_docs("cjk", 34, :file => selfdir+"dynteaser.34.json")
 
     expected = "Hot Rod Lincoln;One Piece At A <hi>Time</hi>;Pancho And Lefty;Coat Of Many Colors"
 
@@ -50,7 +50,7 @@ class DynTeaser < IndexedStreamingSearchTest
                                                    add("surround_max", 360).
                                                    add("min_length", 300)))
     start
-    feed_and_wait_for_docs("cjk", 1, :file => selfdir+"dynteaser.1.xml")
+    feed_and_wait_for_docs("cjk", 1, :file => selfdir+"dynteaser.1.json")
 
     expected = "Thousand Drums;Hot Rod Lincoln;One Piece At A <hi>Time</hi>;Pancho And Lefty;Coat Of Many Colors. Additional"
 
@@ -66,7 +66,7 @@ class DynTeaser < IndexedStreamingSearchTest
                                                    add("min_length", 32)))
     start
 
-    feed_and_wait_for_docs("fallback", 1, :file => selfdir+"fallback.1.xml")
+    feed_and_wait_for_docs("fallback", 1, :file => selfdir+"fallback.1.json")
 
     result = search("report")
     assert_equal(1, result.hitcount)
@@ -93,7 +93,7 @@ class DynTeaser < IndexedStreamingSearchTest
                                                    add("min_length", 32)))
     start
 
-    feed_and_wait_for_docs("fallback", 1, :file => selfdir+"fallback.1.xml")
+    feed_and_wait_for_docs("fallback", 1, :file => selfdir+"fallback.1.json")
 
     result = search("report")
     assert_equal(1, result.hitcount)
