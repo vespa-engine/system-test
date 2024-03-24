@@ -1,0 +1,12 @@
+[
+  {"id":"id:test:music::0","fields":{"title":"Blues","product_src":"foo"}},
+  {"id":"id:test:music::1","fields":{"title":"Chicago Blues","product_src":"foo"}},
+  {"id":"id:test:music::2","fields":{"title":"Classic Female Blues","product_src":"foo"}},
+  {"id":"id:test:music::3","fields":{"title":"Contemporary Blues"}},
+  {"id":"id:test:music::4","fields":{"title":"Country Blues","product_src":"foo"}},
+  {"id":"id:test:music::5","fields":{"title":"Delta Blues","product_src":"foo"}},
+  {"id":"id:test:music::6","fields":{"title":"East Coast Blues","product_src":"bar"}},
+  {"id":"id:test:music::7","fields":{"title":"Electric Blues","product_src":"baz"}},
+  {"id":"id:test:music::8","fields":{"title":"Louisiana Blues"}},
+  {"id":"id:test:music::9","fields":{"title":"Modern Electric Blues"}}
+]
