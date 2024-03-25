@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 # -*- coding: utf-8 -*-
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class TagsAccents < IndexedSearchTest
+class TagsAccents < IndexedStreamingSearchTest
 
   @@fctr = Process.pid * 100
 

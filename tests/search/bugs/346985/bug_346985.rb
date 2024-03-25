@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class Bug_346985 < IndexedSearchTest
+class Bug_346985 < IndexedStreamingSearchTest
 
   # Description: Test proximitygap. It is in most cases not desirable to get
   #              proximity score from terms matching in separate consecutive fields.

@@ -1,9 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'document'
 require 'document_set'
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class LargeText < IndexedSearchTest
+class LargeText < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
