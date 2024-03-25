@@ -2,10 +2,10 @@
 
 require 'rubygems'
 require 'json'
-require 'indexed_streaming_search_test'
+require 'indexed_only_search_test'
 require 'search/utils/elastic_doc_generator'
 
-class FlushMetricsTest < IndexedStreamingSearchTest
+class FlushMetricsTest < IndexedOnlySearchTest
 
   def setup
     set_owner("geirst")
