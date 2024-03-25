@@ -30,7 +30,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
   end
 
   def test_enable_bm25_feature
-    @params = { :search_type => 'ELASTIC' }
+    @params = { :search_type => 'INDEXED' }
     set_description("Test regeneration of interleaved features when enabling bm25 feature")
     @test_dir = selfdir + "regen/"
     deploy_app(SearchApp.new.sd("#{@test_dir}0/test.sd"))

@@ -30,7 +30,7 @@ public class VisitorSessionTest {
 
     @Before
     public void requireElasticSetup() {
-        assumeTrue("ELASTIC".equals(System.getProperty("searchType")));
+        assumeTrue("INDEXED".equals(System.getProperty("searchType")));
     }
 
     @Test

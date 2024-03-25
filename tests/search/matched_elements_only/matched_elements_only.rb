@@ -23,7 +23,7 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
   end
 
   def test_array_and_wset_fields_indexed_fs
-    @params = { :search_type => "ELASTIC" }
+    @params = { :search_type => "INDEXED" }
     run_test("indexed_fs")
   end
 

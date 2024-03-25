@@ -24,7 +24,7 @@ class BoolTypeTest < IndexedStreamingSearchTest
   end
 
   def test_imported_bool_attribute_search
-    @params = { :search_type => 'ELASTIC' }
+    @params = { :search_type => 'INDEXED' }
     set_description("Test search on imported attributes of type 'bool'")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd", { :global => true }).sd(selfdir + "child.sd"))
     @doctype = "child"

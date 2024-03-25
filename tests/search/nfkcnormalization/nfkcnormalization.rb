@@ -19,7 +19,7 @@ class NfkcNormalization < IndexedStreamingSearchTest
   end
 
   def test_nfkc
-    @params = { :search_type => 'ELASTIC' }
+    @params = { :search_type => 'INDEXED' }
     deploy_start_and_feed
     # check symbol to ascii
     assert_hitcount("/search/?query=xii", 1)

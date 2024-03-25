@@ -150,7 +150,7 @@ class BucketReadinessBase < IndexedOnlySearchTest
 
   def create_app(sd_file)
     SearchApp.new.sd(selfdir + sd_file).
-      search_type("ELASTIC").cluster_name("mycluster").num_parts(4).redundancy(3).ready_copies(2).
+      cluster_name("mycluster").num_parts(4).redundancy(3).ready_copies(2).
       storage(StorageCluster.new("mycluster", 4).distribution_bits(8))
   end
 

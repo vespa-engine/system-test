@@ -78,8 +78,8 @@ class SearchApp < App
   end
 
   def search_type(value)
-    if value == "ELASTIC"
-      elastic
+    if value == "INDEXED"
+      indexed
     elsif value == "STREAMING"
       streaming
     elsif value == "NONE"
@@ -88,7 +88,7 @@ class SearchApp < App
     self
   end
 
-  def elastic()
+  def indexed()
     @content.search_type(:indexed)
     self
   end

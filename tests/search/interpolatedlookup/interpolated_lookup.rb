@@ -104,8 +104,8 @@ class InterpolatedLookupTest < IndexedStreamingSearchTest
   end
 
   def test_big_lookup
-    # Depends on default keep-rank-count (10000) in elastic mode
-    @params = { :search_type => "ELASTIC" }
+    # Depends on default keep-rank-count (10000) in indexed mode
+    @params = { :search_type => "INDEXED" }
     @valgrind = false
     deploy_app(
         SearchApp.new.

@@ -326,7 +326,7 @@ class PartialUpdate < IndexedStreamingSearchTest
   end
 
   def test_arithmetic_updates_with_undefined_values
-    @params = { :search_type => 'ELASTIC' }
+    @params = { :search_type => 'INDEXED' }
     set_description("Check that arithmetic updates are ignored if the current value is undefined")
     deploy_app(SearchApp.new.sd(selfdir + "attrundefined.sd"))
     start

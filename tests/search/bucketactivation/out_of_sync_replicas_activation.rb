@@ -15,7 +15,7 @@ class OutOfSyncReplicasActivationTest < IndexedOnlySearchTest
 
   def make_app(disable_merges:)
     SearchApp.new.sd(SEARCH_DATA+'test.sd').
-        elastic.cluster_name("storage").num_parts(2).redundancy(2).
+        cluster_name("storage").num_parts(2).redundancy(2).
         config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
                add('merge_operations_disabled', disable_merges)).
         enable_document_api.

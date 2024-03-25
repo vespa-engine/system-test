@@ -17,7 +17,7 @@ class RangeSearch < IndexedStreamingSearchTest
   end
 
   def test_range
-    @params = { :search_type => "ELASTIC" }
+    @params = { :search_type => "INDEXED" }
     deploy_app(SearchApp.new.
                cluster_name("test").
                sd(selfdir+"test.sd"))
@@ -25,7 +25,7 @@ class RangeSearch < IndexedStreamingSearchTest
   end
 
   def test_range_with_hash_dictionary
-    @params = { :search_type => "ELASTIC" }
+    @params = { :search_type => "INDEXED" }
     deploy_app(SearchApp.new.
                cluster_name("test").
                sd(selfdir+"hash_dictionary/test.sd"))
@@ -33,7 +33,7 @@ class RangeSearch < IndexedStreamingSearchTest
   end
 
   def test_range_with_btree_and_hash_dictionary
-    @params = { :search_type => "ELASTIC" }
+    @params = { :search_type => "INDEXED" }
     deploy_app(SearchApp.new.
                cluster_name("test").
                sd(selfdir+"btree_and_hash_dictionary/test.sd"))
@@ -41,7 +41,7 @@ class RangeSearch < IndexedStreamingSearchTest
   end
 
   def test_range_with_no_dictionary
-    @params = { :search_type => "ELASTIC" }
+    @params = { :search_type => "INDEXED" }
     deploy_app(SearchApp.new.
                cluster_name("test").
                sd(selfdir+"no_dictionary/test.sd"))

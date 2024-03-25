@@ -64,7 +64,7 @@ class AddPartition < IndexedStreamingSearchTest
     vespa.stop
     @leave_loglevels = false
     deploy_app(SearchApp.new.sd(selfdir + "addpartition.sd").
-	              search_type("ELASTIC").num_parts(2),
+	              num_parts(2),
 	              :no_init_logging => true)
     vespa.start
     enable_proton_debug_log(0)

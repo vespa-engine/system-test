@@ -93,7 +93,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
     proton.logctl2("proton.docsummary.documentstoreadapter", "all=on")
     feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
 
-    @params[:search_type] = "ELASTIC"
+    @params[:search_type] = "INDEXED"
     reindexing_ready_millis = get_reindexing_initial_ready_millis
     vespa.stop_base # Indexing mode change leads to changed config id for search nodes, a restart is required
     redeploy_output = deploy_app(app)
