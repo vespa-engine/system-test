@@ -16,7 +16,7 @@ class DistanceRanking1D < IndexedStreamingSearchTest
   end
 
   def test_1d_distance_ranking
-    feed_and_wait_for_docs("local", 10, :file => selfdir+"local.10.xml")
+    feed_and_wait_for_docs("local", 10, :file => selfdir+"local.10.json")
 
     # no ranking, so sort results by id
     assert_result("query=poi&hits=10", selfdir+"allhits.result.json", "id", ["id","len"])
