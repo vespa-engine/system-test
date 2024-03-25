@@ -16,7 +16,7 @@ class LongWords < IndexedStreamingSearchTest
 
   def test_longwords
 
-    feed_and_wait_for_docs("simple", 99, :file => selfdir + "longwords.input.xml")
+    feed_and_wait_for_docs("simple", 99, :file => selfdir + "longwords.input.json")
 
     str = "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUV"
 
