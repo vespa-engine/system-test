@@ -16,7 +16,7 @@ class SchemaChangesElastic < IndexedOnlySearchTest
   end
 
   def self.testparameters
-    { "ELASTIC" => { :search_type => "ELASTIC"} }
+    { "INDEXED" => { :search_type => "INDEXED"} }
   end
 
   def test_get_after_new_doctype

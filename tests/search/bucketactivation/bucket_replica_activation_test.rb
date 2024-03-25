@@ -11,7 +11,7 @@ class BucketReplicaActivationTest < IndexedOnlySearchTest
                     "which bucket replicas are active across the cluster")
 
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
-               elastic.cluster_name("storage").num_parts(3).redundancy(2).
+                 cluster_name("storage").num_parts(3).redundancy(2).
                storage(StorageCluster.new("storage", 3).distribution_bits(10)))
     start
   end

@@ -14,7 +14,7 @@ class IndexedOnlySearchTest < SearchTest
   end
 
   def self.testparameters
-    { "ELASTIC" => { :search_type => "ELASTIC" } }
+    { "INDEXED" => { :search_type => "INDEXED" } }
   end
 
 end

@@ -24,7 +24,7 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
 
   def test_empty_reference_field_in_search_and_get_response
     @doctype = 'child'
-    @params = { :search_type => "ELASTIC" }
+    @params = { :search_type => "INDEXED" }
     deploy_app(SearchApp.new.sd(selfdir+"child.sd").sd(selfdir + "parent.sd", { :global => true }).enable_document_api)
     start
     feed_and_wait_for_docs("child", 4, :file => selfdir + "child_docs.json")

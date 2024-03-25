@@ -96,7 +96,7 @@ class SearchAppGenTest < Test::Unit::TestCase
                        add(Hop.new("hop name2", "elastic-selector2").
                            recipient("session2")).
                        add(Route.new("route name", "hops")))
-    actual = app.elastic.services_xml
+    actual = app.indexed.services_xml
     expected_substr = '
       <routing version="1.0">
         <routingtable protocol="document">
@@ -339,7 +339,7 @@ class SearchAppGenTest < Test::Unit::TestCase
       cluster(SearchCluster.new("foo").sd("sd1.sd").
               config(ConfigOverride.new("content-cfg").add("bar", 2)))
 
-    actual_elastic = app.services_xml
+    actual_indexed = app.services_xml
     actual_streaming = app.streaming.services_xml
 
     expected_substr_content = '
@@ -347,7 +347,7 @@ class SearchAppGenTest < Test::Unit::TestCase
       <bar>2</bar>
     </config>'
     assert_substring_ignore_whitespace(actual_streaming, expected_substr_content)
-    assert_substring_ignore_whitespace(actual_elastic, expected_substr_content)
+    assert_substring_ignore_whitespace(actual_indexed, expected_substr_content)
   end
 
   def test_admin_metrics
@@ -428,8 +428,8 @@ class SearchAppGenTest < Test::Unit::TestCase
                            node(NodeSpec.new("node1", 0).
                                 config(ConfigOverride.new("cfg2").
                                        add("key2", "val2")))))
-    actual_elastic = app.services_xml
-    expected_elastic = '
+    actual_indexed = app.services_xml
+    expected_indexed = '
     <group cpu-socket-affinity="true">
       <config name="cfg1">
         <key1>val1</key1>
@@ -440,7 +440,7 @@ class SearchAppGenTest < Test::Unit::TestCase
         </config>
       </node>
     </group>'
-    assert_substring_ignore_whitespace(actual_elastic, expected_elastic)
+    assert_substring_ignore_whitespace(actual_indexed, expected_indexed)
   end
 
   def test_content_cluster_config

@@ -114,7 +114,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
   def test_nns_via_parent
     set_description('Test the nearest neighbor search operator with imported attribute')
     # Parent-child is NOT supported in streaming search
-    @params = { :search_type => "ELASTIC" }
+    @params = { :search_type => "INDEXED" }
     @mixed = false
     @multipoint_mapping = nil
     deploy_app(SearchApp.new

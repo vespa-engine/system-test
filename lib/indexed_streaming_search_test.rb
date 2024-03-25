@@ -30,7 +30,7 @@ class IndexedStreamingSearchTest < SearchTest
 
   def self.testparameters
     { "STREAMING" => { :search_type => "STREAMING" },
-      "ELASTIC" => { :search_type => "ELASTIC" } }
+      "INDEXED" => { :search_type => "INDEXED" } }
   end
 
 end

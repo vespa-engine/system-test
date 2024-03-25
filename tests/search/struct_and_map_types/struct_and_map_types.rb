@@ -40,7 +40,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def test_feed_and_retrieval_on_attribute_fields
-    @params = { :search_type => "ELASTIC" }
+    @params = { :search_type => "INDEXED" }
     set_description("Test feed operations and retrieval on attribute array of struct and map of struct fields")
     deploy_and_start("attribute_fields")
     @has_summary_features = true
@@ -115,7 +115,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def test_search_in_map_and_array_of_struct_paged_attribute
-    @params = { :search_type => "ELASTIC" }
+    @params = { :search_type => "INDEXED" }
     set_description("Test search in map and array of struct paged attributes")
     deploy_and_start("paged_attribute_fields")
     run_test_search_in_map_and_array_of_struct_attribute
@@ -139,7 +139,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   end
 
   def test_numeric_range_search_when_using_fast_search
-    @params = { :search_type => "ELASTIC" }
+    @params = { :search_type => "INDEXED" }
     set_description("Test that numeric range search with 'fast-search' (that triggers use of bit vectors) works with sameElement operator")
     deploy_and_start("range_fast_search")
     feed(:file => selfdir + "range_fast_search/docs.json")

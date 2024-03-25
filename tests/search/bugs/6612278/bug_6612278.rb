@@ -17,7 +17,7 @@ class Bug6612278Test < IndexedOnlySearchTest
 
   def generate_app(nodes, redundancy)
     SearchApp.new.sd(selfdir+'test.sd').
-      search_type("ELASTIC").cluster_name("mycluster").num_parts(nodes).
+      cluster_name("mycluster").num_parts(nodes).
       redundancy(redundancy).ready_copies(redundancy).
       config(ConfigOverride.new("vespa.config.content.core.stor-distributormanager").
              add("maximum_nodes_per_merge", 2)).

@@ -33,7 +33,7 @@ class BucketActivationTest < IndexedOnlySearchTest
   def test_bucket_activation
     set_description("Test basic searching with bucket activation")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
-               search_type("ELASTIC").cluster_name("mycluster").num_parts(4).redundancy(2).
+               cluster_name("mycluster").num_parts(4).redundancy(2).
                storage(StorageCluster.new("mycluster", 4).distribution_bits(16)))
 
     start
