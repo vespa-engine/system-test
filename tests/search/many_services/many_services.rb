@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 require 'app_generator/http'
 
-class Many_Services < IndexedSearchTest
+class Many_Services < IndexedStreamingSearchTest
 
   def timeout_seconds
     return 1800

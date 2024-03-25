@@ -2,9 +2,9 @@
 
 require 'rubygems'
 require 'json'
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class FieldSlicing < IndexedSearchTest
+class FieldSlicing < IndexedStreamingSearchTest
 
   def setup
     set_owner("havardpe")

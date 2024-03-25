@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class Test_LogicalRank < IndexedSearchTest
+class Test_LogicalRank < IndexedStreamingSearchTest
   # Description: Test with logical indexes with different static rank
   # Component: Search and Config
   # Feature: Ranking

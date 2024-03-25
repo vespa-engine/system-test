@@ -2,9 +2,9 @@
 
 require 'document'
 require 'document_set'
-require 'indexed_search_test'
+require 'indexed_streaming_search_test'
 
-class FeedDuringReconfig < IndexedSearchTest
+class FeedDuringReconfig < IndexedStreamingSearchTest
 
   def setup
     set_owner("geirst")
