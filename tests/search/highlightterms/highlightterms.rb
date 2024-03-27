@@ -16,7 +16,7 @@ class HighlightTerms < IndexedStreamingSearchTest
                                              "rawQuery", "transformedQuery"))))
     start
     vespa.adminserver.logctl("searchnode:visitor.instance.searchvisitor", "debug=on")
-    feed_and_wait_for_docs("music", 4, :file => selfdir+"music.10.xml", :timeout => 240)
+    feed_and_wait_for_docs("music", 4, :file => selfdir+"music.json", :timeout => 240)
     assert_result("query=sddocname:music",
                    selfdir + "music.result.json",
                    "jtitle", ["jtitle", "jcategories"])
@@ -29,7 +29,7 @@ class HighlightTerms < IndexedStreamingSearchTest
                             add(Searcher.new("com.yahoo.prelude.systemtest.HighlightSearcher",
                                              "rawQuery", "transformedQuery"))))
     start
-    feed_and_wait_for_docs("music", 4, :file => selfdir + "musicbooks.10.xml")
+    feed_and_wait_for_docs("music", 4, :file => selfdir + "musicbooks.json")
     assert_result("query=blues", selfdir + "musicbooks.result.json", "title", ["title", "categories"])
   end
 

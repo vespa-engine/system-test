@@ -1,0 +1,6 @@
+[
+  {"id":"id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905709","fields":{"title":"Blues test","surl":"http://shopping.yahoo.com/shop?d=hab&id=1804905709","categories":"Blues"}},
+  {"id":"id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905710","fields":{"title":"Chicago Blues (kentucky fried chicken)","surl":"http://shopping.yahoo.com/shop?d=hab&id=1804905710","categories":"jazz"}},
+  {"id":"id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905711","fields":{"title":"Classic testing Female Blues 送花道歉","surl":"http://shopping.yahoo.com/shop?d=hab&id=1804905711","categories":"Jazz"}},
+  {"id":"id:test:music::http://shopping.yahoo.com/shop?d=hab&id=1804905713","fields":{"title":"Country Blues","surl":"http://shopping.yahoo.com/shop?d=hab&id=1804905713","categories":"Blues"}}
+]
