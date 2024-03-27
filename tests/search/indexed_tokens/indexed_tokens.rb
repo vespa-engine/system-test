@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_only_search_test'
+require 'indexed_streaming_search_test'
 
-class IndexedTokensTest < IndexedOnlySearchTest
+class IndexedTokensTest < IndexedStreamingSearchTest
 
   def setup
     set_owner("toregge")
@@ -46,7 +46,7 @@ class IndexedTokensTest < IndexedOnlySearchTest
     assert_equal([['this is simply'],['(more elements)']], fields['aattr_tokens'])
     assert_equal([['weighted here'],['and there']].sort, fields['wattr_tokens'].sort)
     assert_equal(repeated_terms_tokens(20, 100), fields['stext_long1_tokens'])
-    assert_equal(repeated_terms_tokens(20, 10), fields['stext_long2_tokens'])
+    assert_equal(repeated_terms_tokens(20, is_streaming ? 20 : 10), fields['stext_long2_tokens'])
   end
 
 
