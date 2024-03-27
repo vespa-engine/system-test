@@ -1,0 +1,14 @@
+[
+  {"update":"id:test:test:n=1:1","create":true,"fields":{"a_int":{"assign":10}}},
+  {"update":"id:test:test:n=1:2","create":true,"fields":{"a_arr":{"assign":[10]}}},
+  {"update":"id:test:test:n=1:3","create":true,"fields":{"a_arr":{"add":[10]}}},
+  {"update":"id:test:test:n=2:4","create":true,"fields":{"a_wset":{"assign":{"10":5}}}},
+  {"update":"id:test:test:n=2:5","create":true,"fields":{"a_wset":{"add":{"10":5}}}},
+  {"update":"id:test:test:n=2:6","create":true,"fields":{"i_str":{"assign":"foo"}}},
+  {"update":"id:test:test:n=3:7","create":true,"fields":{"i_wset":{"assign":{"foo":5}}}},
+  {"update":"id:test:test:n=3:8","create":true,"fields":{"i_wset":{"add":{"foo":5}}}},
+  {"update":"id:test:test:n=3:9","create":true,"fields":{"a_int":{"increment":2.0}}},
+  {"update":"id:test:test:n=4:10","create":true,"fields":{"s_str":{"assign":"bar"}}},
+  {"update":"id:test:test:n=4:11","fields":{"a_int":{"assign":10}}},
+  {"update":"id:test:test:n=5:12","fields":{"a_int":{"assign":10}}}
+]
