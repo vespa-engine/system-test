@@ -13,7 +13,7 @@ class PartialUpdateCreateIfNonExistentTest < IndexedOnlySearchTest
     start
     search_node = vespa.search["search"].first
 
-    feed(:file => selfdir + "updates.xml")
+    feed(:file => selfdir + "updates.json")
     assert_updates
 
     search_node.stop
@@ -42,8 +42,8 @@ class PartialUpdateCreateIfNonExistentTest < IndexedOnlySearchTest
     set_description("Test that increment update works on wset for a document that does not exists (see bug 7098648)")
     deploy_app(SearchApp.new.sd(selfdir + "increment/test.sd"))
     start
-    feed(:file => selfdir + "increment/docs.xml")
-    feed(:file => selfdir + "increment/updates.xml")
+    feed(:file => selfdir + "increment/docs.json")
+    feed(:file => selfdir + "increment/updates.json")
     assert_result("sddocname:test", selfdir + "increment/result.json", "documentid", ["wset"])
   end
 

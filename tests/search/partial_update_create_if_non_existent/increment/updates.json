@@ -1,0 +1,4 @@
+[
+  {"update":"id:test:test::0","create":true,"fields":{"wset":{"match":{"element":"bar","increment":10.0}}}},
+  {"update":"id:test:test::1","create":true,"fields":{"wset":{"match":{"element":"bar","increment":10.0}}}}
+]
