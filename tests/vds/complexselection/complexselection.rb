@@ -11,8 +11,7 @@ class ComplexSelection < VdsTest
   end
 
   def test_complex_selection
-    # Put docment with array attribute using vespa-feeder
-    feedfile(selfdir+"complex.xml")
+    feedfile(selfdir+"complex.json")
 
     assert_output([ "id:test:banana::1", "id:test:banana::2", "id:test:banana::3" ], "banana.stringmap")
     assert_output([ "id:test:banana::1", "id:test:banana::2", "id:test:banana::3" ], "banana.stringmap{5}")
