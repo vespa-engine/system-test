@@ -13,7 +13,7 @@ class MixedRecall < IndexedStreamingSearchTest
     vespa.start
 
     # this will wait for sddocname:music returning 10 hits
-    feed_and_wait_for_docs("music", 10, {:file => selfdir+"/data/music-basic.xml"})
+    feed_and_wait_for_docs("music", 10, {:file => selfdir+"/data/music-basic.json"})
 
     query = "query=bad"
     wait_for_hitcount(query, 5)
