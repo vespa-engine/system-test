@@ -46,15 +46,22 @@ class Embedding < IndexedStreamingSearchTest
        type('colbert-embedder').
        param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/vespa-colMiniLM-L-6-dynamic-quantized.onnx'}).
        param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/e5-small-v2/tokenizer.json'})
-    end
+  end
 
-    def splade_embedder_component
+  def colbert_embedder_component_fp16
+    Component.new('colbert').
+      type('colbert-embedder').
+      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/mixedbread-ai/mxbai-colbert-large-v1/resolve/main/onnx/model_fp16.onnx'}).
+      param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/mixedbread-ai/mxbai-colbert-large-v1/raw/main/tokenizer.json'})
+ end
+
+  def splade_embedder_component
       Component.new('splade').
         type('splade-embedder').
         param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'path' => 'components/dummy.onnx'}).
         param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'path' => 'components/tokenizer.json'}).
         param('term-score-threshold', 1.15)
-     end
+  end
   
 
   def test_default_embedding
@@ -115,6 +122,22 @@ class Embedding < IndexedStreamingSearchTest
         container(
           Container.new('default').
             component(colbert_embedder_component).
+            search(Searching.new).
+            docproc(DocumentProcessing.new).
+            jvmoptions('-Xms4g -Xmx4g')).
+        sd(selfdir + 'app_colbert_embedder/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start
+    feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
+    verify_colbert_embedding
+  end
+
+  def test_colbert_embedding_fp16
+    deploy_app(
+      SearchApp.new.
+        container(
+          Container.new('default').
+            component(colbert_embedder_component_fp16).
             search(Searching.new).
             docproc(DocumentProcessing.new).
             jvmoptions('-Xms4g -Xmx4g')).
