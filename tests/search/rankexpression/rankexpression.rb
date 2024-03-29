@@ -33,15 +33,15 @@ class RankExpression < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "rankexpression.sd").
                       rank_expression_file(selfdir + "ranking1.expression"))
     start
-    indexData();
-    result = search("query=sddocname:rankexpression&parallel&skipnormalizing&hits=100");
+    indexData()
+    result = search("query=sddocname:rankexpression&parallel&skipnormalizing&hits=100")
     result.hit.each_index do |i|
-      score = result.hit[i].field["relevancy"].to_i;
-      exp = 100 - i;
+      score = result.hit[i].field["relevancy"].to_i
+      exp = 100 - i
       if (i < 10)
-        exp = exp * exp;
+        exp = exp * exp
       end
-      assert(score == exp, "Expected relevancy #{exp} for document #{i}.");
+      assert(score == exp, "Expected relevancy #{exp} for document #{i}.")
     end
   end
 
@@ -49,39 +49,39 @@ class RankExpression < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "rankexpression.sd").
                       rank_expression_file(selfdir + "ranking1.expression"))
     start
-    indexData();
-    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params1");
-    assert(result.hit[0].field["relevancy"].to_i == 0 * 10);
+    indexData()
+    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params1")
+    assert(result.hit[0].field["relevancy"].to_i == 0 * 10)
 
-    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params2");
-    assert(result.hit[0].field["relevancy"].to_i == 1 * 10);
+    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params2")
+    assert(result.hit[0].field["relevancy"].to_i == 1 * 10)
 
-    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params1&rankproperty.var1=2");
-    assert(result.hit[0].field["relevancy"].to_i == 2 * 10);
+    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params1&rankproperty.var1=2")
+    assert(result.hit[0].field["relevancy"].to_i == 2 * 10)
 
-    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params1&rankfeature.$var1=2");
-    assert(result.hit[0].field["relevancy"].to_i == 2 * 10);
+    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params1&rankfeature.$var1=2")
+    assert(result.hit[0].field["relevancy"].to_i == 2 * 10)
 
-    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params1&rankfeature.query(var1)=2");
-    assert(result.hit[0].field["relevancy"].to_i == 2 * 10);
+    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params1&rankfeature.query(var1)=2")
+    assert(result.hit[0].field["relevancy"].to_i == 2 * 10)
 
-    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params1&rankfeature.query(var1)=2");
-    assert(result.hit[0].field["relevancy"].to_i == 2 * 10);
+    result = search("query=myrank:10&parallel&skipnormalizing&ranking=params1&rankfeature.query(var1)=2")
+    assert(result.hit[0].field["relevancy"].to_i == 2 * 10)
   end
 
   def test_RankExpressionFile
     deploy_app(SearchApp.new.sd(selfdir + "rankexpression.sd").
                       rank_expression_file(selfdir + "ranking1.expression"))
     start
-    indexData();
-    result = search("query=sddocname:rankexpression&parallel&skipnormalizing&hits=100&ranking=file1");
+    indexData()
+    result = search("query=sddocname:rankexpression&parallel&skipnormalizing&hits=100&ranking=file1")
         result.hit.each_index do |i|
-          score = result.hit[i].field["relevancy"].to_i;
-          exp = 100 - i;
+          score = result.hit[i].field["relevancy"].to_i
+          exp = 100 - i
           if (i < 10)
-            exp = exp * exp * exp;
+            exp = exp * exp * exp
           end
-          assert(score == exp, "Expected relevancy #{exp} for document #{i}.");
+          assert(score == exp, "Expected relevancy #{exp} for document #{i}.")
         end
   end
 
@@ -90,15 +90,15 @@ class RankExpression < IndexedStreamingSearchTest
                       sd(selfdir + "rankexpression2.sd").
                       rank_expression_file(selfdir + "ranking1.expression"))
     start
-    indexData();
-    result = search("query=sddocname:rankexpression&parallel&skipnormalizing&hits=100&ranking=file1&search=rankexpression");
+    indexData()
+    result = search("query=sddocname:rankexpression&parallel&skipnormalizing&hits=100&ranking=file1&search=rankexpression")
         result.hit.each_index do |i|
-          score = result.hit[i].field["relevancy"].to_i;
-          exp = 100 - i;
+          score = result.hit[i].field["relevancy"].to_i
+          exp = 100 - i
           if (i < 10)
-            exp = exp * exp * exp;
+            exp = exp * exp * exp
           end
-          assert(score == exp, "Expected relevancy #{exp} for document #{i}.");
+          assert(score == exp, "Expected relevancy #{exp} for document #{i}.")
         end
   end
 
@@ -106,10 +106,10 @@ class RankExpression < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "rankexpression.sd").
                rank_expression_file(selfdir + "ranking1.expression"))
     start
-    indexData();
-    result = search("query=sddocname:rankexpression&parallel&skipnormalizing&hits=100&ranking=in1");
+    indexData()
+    result = search("query=sddocname:rankexpression&parallel&skipnormalizing&hits=100&ranking=in1")
     result.hit.each_index do |i|
-      score = result.hit[i].field["relevancy"].to_i;
+      score = result.hit[i].field["relevancy"].to_i
       if (i == 0)
         exp = 9
       elsif (i == 1)
@@ -117,29 +117,32 @@ class RankExpression < IndexedStreamingSearchTest
       else
         exp = 0
       end
-      assert(score == exp, "Expected relevancy #{exp} for document #{i}.");
+      assert(score == exp, "Expected relevancy #{exp} for document #{i}.")
     end
   end
 
   def indexData
-    str =""
+    str ="[\n"
     0.upto(99) do |i|
-      str += "<document id=\"id:scheme:rankexpression::#{i}\" type=\"rankexpression\">";
-      str += "<title>document #{i}</title>";
-      str += "<myrank>#{100 - i}</myrank>";
-      str += "</document>\n";
+      str += "{ \"id\": \"id:scheme:rankexpression::#{i}\", \"fields\": {"
+      str += "  \"title\": \"document #{i}\", \"myrank\": #{100 - i} } }"
+      unless (i == 99)
+        str += ",\n"
+      end
     end
-    feed = File.open("#{dirs.tmpdir}/feed.xml", "w")
-    feed.print(str);
-    feed.close();
-    feed_and_wait_for_docs("rankexpression", 100, :file => "#{dirs.tmpdir}/feed.xml");
+    str += "]"
+    puts str
+    feed = File.open("#{dirs.tmpdir}/feed.json", "w")
+    feed.print(str)
+    feed.close()
+    feed_and_wait_for_docs("rankexpression", 100, :file => "#{dirs.tmpdir}/feed.json")
   end
 
   def test_isnan
     set_description("Test that isNan function works")
     deploy_app(SearchApp.new.sd(selfdir + "isnan.sd"))
     start
-    feed_and_wait_for_docs("isnan", 2, :file => selfdir + "isnan.xml")
+    feed_and_wait_for_docs("isnan", 2, :file => selfdir + "isnan.json")
     assert_relevancy("query=sddocname:isnan&ranking=rp1", 31, 0)
     assert_relevancy("query=sddocname:isnan&ranking=rp1", 11, 1)
     assert_relevancy("query=sddocname:isnan&ranking=rp2", 32.2, 0)
