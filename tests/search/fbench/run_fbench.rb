@@ -22,7 +22,7 @@ class RunFbench < IndexedOnlySearchTest
                container(container_cluster))
     start
     @qrs = (vespa.qrserver.values.first or vespa.container.values.first)
-    feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.xml")
+    feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.json")
     @node = vespa.logserver
   end
 
@@ -107,7 +107,7 @@ class Fbench2 < IndexedOnlySearchTest
                  container(c_cluster_a).
                  container(c_cluster_b))
     start
-    feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.xml")
+    feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.json")
     @node = vespa.logserver
   end
 
