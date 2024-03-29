@@ -1,0 +1,72 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema doc {
+
+  document doc {
+
+    field text type string {
+      indexing: index | summary
+    }
+
+  }
+
+  field embedding_compressed type tensor<int8>(dt{},x[16]) {
+      indexing: input text | embed colbert | attribute
+  }
+  field embedding_bfloat type tensor<bfloat16>(dt{},x[128]) {
+      indexing: input text | embed colbert | attribute
+  }
+
+  field embedding_float type tensor<float>(dt{},x[128]) {
+      indexing: input text | embed colbert | attribute
+  }
+
+  rank-profile default {
+    inputs {
+      query(qt) tensor<float>(qt{},x[128])
+    }
+
+    function maxSimBFloat() {
+      expression {
+         sum(
+            reduce(
+                sum(
+                    query(qt) * cell_cast(attribute(embedding_bfloat),float), x
+                 ),
+                 max, dt
+            ),
+            qt
+          )
+      }
+    }
+
+    function maxSimFloat() {
+      expression {
+         sum(
+            reduce(
+                sum(
+                    query(qt) * attribute(embedding_float), x
+                 ),
+                 max, dt
+            ),
+            qt
+          )
+      }
+    }
+
+    first-phase {
+      expression: nativeRank(text) 
+    }
+
+    summary-features {
+      query(qt)
+      maxSimBFloat
+      maxSimFloat
+      attribute(embedding_compressed)
+      attribute(embedding_bfloat)
+      attribute(embedding_float)
+    }
+
+  }
+
+}
