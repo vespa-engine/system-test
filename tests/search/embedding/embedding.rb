@@ -141,7 +141,7 @@ class Embedding < IndexedStreamingSearchTest
             search(Searching.new).
             docproc(DocumentProcessing.new).
             jvmoptions('-Xms4g -Xmx4g')).
-        sd(selfdir + 'app_colbert_embedder/schemas/doc.sd').
+        sd(selfdir + 'app_colbert_embedder_fp16/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
     start
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
