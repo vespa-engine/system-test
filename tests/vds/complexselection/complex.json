@@ -1,0 +1,5 @@
+[
+  {"id":"id:test:banana::1","fields":{"structmap":{"1":{"title":"goodbye"},"2":{"title":"bye"}},"structarr":[{"title":"star wars","director":"george lucas"},{"title":"empire strikes back","director":"irwin kershner"},{"title":"return of the jedi","director":"richard marquand"}],"stringmap":{"5":"howdy","3":"hello"}}},
+  {"id":"id:test:banana::2","fields":{"stringmap":{"4":"buongiorno","5":"howdy"}}},
+  {"id":"id:test:banana::3","fields":{"structmap":{"1":{"title":"arrivederci"},"2":{"title":"ciao ciao"}},"structarr":[{"title":"star wars","director":"george lucas"},{"title":"empire strikes back","director":"george lucas"},{"title":"return of the jedi","director":"george lucas"}],"stringmap":{"4":"buongiorno","5":"hello","3":"ciao"}}}
+]
