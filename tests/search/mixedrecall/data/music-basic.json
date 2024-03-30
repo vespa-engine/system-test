@@ -1,0 +1,12 @@
+[
+  {"id":"id:music:music::1","fields":{"artist":"Michael Jackson","title":"Bad","year":1987,"album":"Bad"}},
+  {"id":"id:music:music::2","fields":{"artist":"Eminem","title":"So Bad","year":2010,"album":"Recovery"}},
+  {"id":"id:music:music::3","fields":{"artist":"R.E.M.","title":"Losing my Religion","year":1991,"album":"Out of Time"}},
+  {"id":"id:music:music::4","fields":{"artist":"Bad English","title":"When I See You Smile","year":1989,"album":"Bad English"}},
+  {"id":"id:music:music::5","fields":{"artist":"Bad Religion","title":"Bad Religion","year":1981,"album":"Bad Religion (EP)"}},
+  {"id":"id:music:music::6","fields":{"artist":"Britney Spears","title":"Lucky","year":2000,"album":"Oops!... I Did It Again"}},
+  {"id":"id:music:music::7","fields":{"artist":"Radiohead","title":"Paranoid Android","year":1997,"album":"OK Computer"}},
+  {"id":"id:music:music::8","fields":{"artist":"Bad Company","title":"Seagull","year":1974,"album":"Bad Company"}},
+  {"id":"id:music:music::9","fields":{"artist":"Radiohead","title":"Lucky","year":1997,"album":"OK Computer"}},
+  {"id":"id:music:music::10","fields":{"artist":"Radiohead","title":"How to Disappear Completely","year":2000,"album":"Kid A"}}
+]
