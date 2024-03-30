@@ -13,7 +13,7 @@ class Recall < IndexedStreamingSearchTest
   end
 
   def test_recall
-    feed_and_wait_for_docs("recall", 1, :file => selfdir + "recall.xml")
+    feed_and_wait_for_docs("recall", 1, :file => selfdir + "recall.json")
 
     assert_recall(2, 2, "query=foo bar")
     assert_recall(2, 2, "query=foo&filter=%2bbar")
