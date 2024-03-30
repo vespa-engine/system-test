@@ -12,7 +12,7 @@ class ExactMatch < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir+"exactmatch.sd"))
     start
 
-    feed_and_wait_for_docs("exactmatch", 2, :file => selfdir+"feed.xml")
+    feed_and_wait_for_docs("exactmatch", 2, :file => selfdir+"feed.json")
 
     exactmatch_common
     exactmatch_no_accent_removal
