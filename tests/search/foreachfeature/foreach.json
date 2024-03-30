@@ -1,0 +1,4 @@
+[
+  {"id":"id:foreach:foreach:n=1:0","fields":{"f2":"a b c","f3":4,"f4":8,"f1":"a b"}},
+  {"id":"id:foreach:foreach:n=1:1","fields":{"f2":"b c","f3":16,"f4":32,"f1":"a"}}
+]

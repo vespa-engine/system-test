@@ -14,7 +14,7 @@ class ForeachFeature < IndexedStreamingSearchTest
     set_description("Test the foreach feature")
     deploy_app(SearchApp.new.sd(selfdir+"foreach.sd"))
     start
-    feed_and_wait_for_docs("foreach", 2, :file => selfdir + "foreach.xml")
+    feed_and_wait_for_docs("foreach", 2, :file => selfdir + "foreach.json")
 
     run_foreach_test
 
@@ -62,7 +62,6 @@ class ForeachFeature < IndexedStreamingSearchTest
     result = search_with_timeout(60, query)
     assert_features(expected, result.hit[docid].field['summaryfeatures'], 1e-4)
   end
-
 
   def teardown
     stop
