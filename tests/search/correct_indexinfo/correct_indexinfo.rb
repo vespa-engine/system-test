@@ -20,7 +20,7 @@ class Bug_401679 < IndexedStreamingSearchTest
   end
 
   def test_correct_indexinfo
-    feed_and_wait_for_docs("newsarticle", 3, :file => "#{selfdir}/all.xml", 
+    feed_and_wait_for_docs("newsarticle", 3, :file => "#{selfdir}/all.json",
                            :cluster => "shortcuts")
 
     puts "Query: sanity checks"
