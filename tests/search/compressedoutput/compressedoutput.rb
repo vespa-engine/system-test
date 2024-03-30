@@ -27,7 +27,7 @@ class CompressedOutput < IndexedStreamingSearchTest
   end
 
   def test_compression
-    feed(:file => selfdir+"largefile.1.xml")
+    feed(:file => selfdir+"largefile.1.json")
     wait_for_hitcount("query=sddocname:music&hits=0", 2)
 
     longsearchstring = "/?query=title:First"
