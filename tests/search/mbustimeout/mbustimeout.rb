@@ -20,19 +20,19 @@ class MbusTimeout < IndexedStreamingSearchTest
 
   def test_mbusTimeout
     puts("*** Feed initial document.")
-    feed_and_wait_for_docs("simple", 1, :file => "#{selfdir}/myfeed.xml")
+    feed_and_wait_for_docs("simple", 1, :file => "#{selfdir}/myfeed.json")
 
     puts("*** Assert that content of index matches feed.")
     result = search("/?query=myint:777")
     assert_equal(1, result.hit.size)
 
     puts("*** Feed document update.")
-    output = vespa.adminserver.feed(:file => "#{selfdir}/myupdate.xml", :timeout => 1, :exceptiononfailure => false, :stderr => true)
+    output = vespa.adminserver.feed(:file => "#{selfdir}/myupdate.json", :timeout => 1, :exceptiononfailure => false, :stderr => true)
 
     puts("*** Assert that feeding timed out.")
     assert(output.index("imed out after ") != nil)
 
-    feed_and_wait_for_docs("simple", 2, :file => "#{selfdir}/mytoken.xml")
+    feed_and_wait_for_docs("simple", 2, :file => "#{selfdir}/mytoken.json")
 
     puts("*** Assert that content of index did not change.")
     result = search("/?query=myint:777")
