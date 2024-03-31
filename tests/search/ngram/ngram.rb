@@ -16,7 +16,7 @@ class NGram < IndexedOnlySearchTest
   def test_ngram
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
-    feed_and_wait_for_docs("test", 3, :file => "#{selfdir}/documents.json")
+    feed_and_wait_for_docs("test", 3, :file => "#{selfdir}/documents.xml")
 
     # Whole word which is in both title and body
     assert_hitcount('query=title:java&type=all', 2)
