@@ -41,6 +41,14 @@ class Embedding < IndexedStreamingSearchTest
       param('transformer-output', 'output_0')
   end
 
+  def huggingface_embedder_binarization_component
+    Component.new('mixed').
+      type('hugging-face-embedder').
+      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/mixedbread-ai/mxbai-embed-large-v1/resolve/main/onnx/model.onnx'}).
+      param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/mixedbread-ai/mxbai-embed-large-v1/raw/main/tokenizer.json'}).
+      param('pooling-strategy', 'cls')
+  end
+
   def colbert_embedder_component
      Component.new('colbert').
        type('colbert-embedder').
@@ -114,6 +122,22 @@ class Embedding < IndexedStreamingSearchTest
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_huggingface_tokens
     verify_huggingface_embedding
+  end
+
+  def test_huggingface_embedding_binary_quantization
+    deploy_app(
+      SearchApp.new.
+        container(
+          Container.new('default').
+            component(huggingface_embedder_binarization_component).
+            search(Searching.new).
+            docproc(DocumentProcessing.new).
+            jvmoptions('-Xms4g -Xmx4g')).
+        sd(selfdir + 'app_huggingface_embedder_binarization_matryoshka/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start
+    feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
+    verify_huggingface_embedding_binary_quantization
   end
 
   def test_colbert_embedding
@@ -259,6 +283,54 @@ class Embedding < IndexedStreamingSearchTest
       actual = attributeFeature['values'][i]
       assert((expected - actual).abs < 1e-5, "#{expected} != #{actual} at index #{i}")
     }
+  end
+
+  def verify_huggingface_embedding_binary_quantization
+    result = search("?yql=select%20*%20from%20sources%20*%20where%20true&input.query(embedding)=embed(mixed, \"Hello%20world\")&input.query(binary_embedding)=embed(mixed, \"Hello%20world\")&format=json&format.tensors=short").json
+    queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(embedding)"]
+    queryBinaryFeature = result['root']['children'][0]['fields']['summaryfeatures']["query(binary_embedding)"]
+    attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(binary_embedding)"]
+    attributeFeatureShort = result['root']['children'][0]['fields']['summaryfeatures']["attribute(binary_embedding_short)"]
+    attributeUnpackedFeature = result['root']['children'][0]['fields']['summaryfeatures']["unpacked"]
+
+    puts "queryFeature: '#{queryFeature}'"
+    puts "queryBinaryFeature: '#{queryBinaryFeature}'"
+    puts "attributeFeature: '#{attributeFeature}'"
+    puts "attributeFeatureShort: '#{attributeFeatureShort}'"
+    puts "attributeUnpackedFeature: '#{attributeUnpackedFeature}'"
+
+    relevance = result['root']['children'][0]['relevance']
+    assert(relevance > 0, "#{relevance} is 0, which is not expected.")
+
+    assert_equal(queryBinaryFeature.to_s, attributeFeature.to_s) # same input text for query and document
+    
+    expected_length = 128
+    assert_equal(expected_length, attributeFeature['values'].length)
+    assert_equal(expected_length, queryBinaryFeature['values'].length)
+    assert_equal(8*expected_length, queryFeature['values'].length)
+    assert_equal(8*expected_length, attributeUnpackedFeature['values'].length)
+    
+    assert_equal(2, attributeFeatureShort['values'].length)
+
+    expected_embedding = JSON.parse(File.read(selfdir + 'hf-binarized-expected-vector.json'))
+    (0..expected_length-1).each { |i|
+      expected = expected_embedding[i]
+      actual = attributeFeature['values'][i]
+      assert_equal(expected, actual)
+    }
+    # Matryoshka chop 16 first float dims and binaryze to int8
+    # should be the same as the first two dims as when using longer float dims
+    result = search("?yql=select%20*%20from%20sources%20*%20where%20true&input.query(binary_embedding_short)=embed(mixed, \"Hello%20world\")&format=json&format.tensors=short").json
+    queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(binary_embedding_short)"]
+    puts "queryFeature: '#{queryFeature}'"
+    assert_equal(2, queryFeature['values'].length)
+
+    assert_equal(expected_embedding[0], queryFeature['values'][0])
+    assert_equal(expected_embedding[1], queryFeature['values'][1])
+
+    assert_equal(expected_embedding[0], attributeFeatureShort['values'][0])
+    assert_equal(expected_embedding[1], attributeFeatureShort['values'][1])
+
   end
 
   def verify_colbert_embedding
