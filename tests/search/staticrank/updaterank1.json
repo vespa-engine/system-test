@@ -1,0 +1,6 @@
+[
+  {"update":"id:attr/attr:updaterank::0","fields":{"rankfield":{"assign":400}}},
+  {"update":"id:attr/attr:updaterank::1","fields":{"rankfield":{"assign":600}}},
+  {"update":"id:attr/attr:updaterank::2","fields":{"rankfield":{"assign":800}}},
+  {"update":"id:attr/attr:updaterank::3","fields":{"rankfield":{"assign":1000}}}
+]

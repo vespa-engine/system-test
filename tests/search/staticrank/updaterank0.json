@@ -1,0 +1,6 @@
+[
+  {"id":"id:attr/attr:updaterank::0","fields":{"attributefield":"attribute","body":"doc0","rankfield":1000,"indexfield":"index"}},
+  {"id":"id:attr/attr:updaterank::1","fields":{"attributefield":"attribute","body":"doc1","rankfield":800,"indexfield":"index"}},
+  {"id":"id:attr/attr:updaterank::2","fields":{"attributefield":"attribute","body":"doc2","rankfield":600,"indexfield":"index"}},
+  {"id":"id:attr/attr:updaterank::3","fields":{"attributefield":"attribute","body":"doc3","rankfield":400,"indexfield":"index"}}
+]
