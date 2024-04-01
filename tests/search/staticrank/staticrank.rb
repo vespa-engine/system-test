@@ -38,7 +38,7 @@ class StaticRank < IndexedStreamingSearchTest
     set_description("Test that static rank can be updated")
     deploy_app(SearchApp.new.sd(selfdir+"updaterank.sd"))
     start
-    feed_and_wait_for_docs("updaterank", 4, :file => selfdir+"updaterank0.xml")
+    feed_and_wait_for_docs("updaterank", 4, :file => selfdir+"updaterank0.json")
 
     query_index = "query=indexfield:index&nocache"
     query_attribute = "query=attributefield:attribute&nocache"
@@ -48,13 +48,13 @@ class StaticRank < IndexedStreamingSearchTest
     assert_result(query_attribute, selfdir+"updaterank0.result.json", nil, ["body", "relevancy"])
 
     # descending doc id
-    feedfile(selfdir+"updaterank1.xml")
+    feedfile(selfdir+"updaterank1.json")
     wait_for_hitcount(query_index, 4);
     assert_result(query_index, selfdir+"updaterank1.result.json", nil, ["body", "relevancy"])
     assert_result(query_attribute, selfdir+"updaterank1.result.json", nil, ["body", "relevancy"])
 
     # ascending doc id
-    feedfile(selfdir+"updaterank2.xml")
+    feedfile(selfdir+"updaterank2.json")
     wait_for_hitcount(query_index, 4);
     assert_result(query_index, selfdir+"updaterank0.result.json", nil, ["body", "relevancy"])
     assert_result(query_attribute, selfdir+"updaterank0.result.json", nil, ["body", "relevancy"])
