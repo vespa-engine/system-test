@@ -8,7 +8,7 @@ class IndexWeightedSets < IndexedStreamingSearchTest
     set_description("Check indexing of weighted sets behaves like term boost used to do.")
     deploy_app(SearchApp.new.sd(selfdir + "settest.sd"))
     start
-    feed_and_wait_for_docs("settest", 2, :file => selfdir + "settest.xml")
+    feed_and_wait_for_docs("settest", 2, :file => selfdir + "settest.json")
   end
 
   def test_indexweightedsets
