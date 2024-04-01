@@ -1,0 +1,54 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema doc {
+
+  document doc {
+
+    field text type string {
+      indexing: index | summary
+    }
+
+  }
+
+  field binary_embedding type tensor<int8>(x[128]) {
+      indexing: input text | embed mixed | attribute
+      attribute {
+          distance-metric: hamming 
+      }
+  }
+
+  field binary_embedding_short type tensor<int8>(x[2]) {
+      indexing: input text | embed mixed | attribute
+      attribute {
+          distance-metric: hamming 
+      }
+  }
+
+  rank-profile default {
+    inputs {
+      query(embedding) tensor<float>(x[1024])
+      query(binary_embedding) tensor<int8>(x[128])
+      query(binary_embedding_short) tensor<int8>(x[2])
+   }
+
+    first-phase {
+      expression: closeness(field,binary_embedding)
+    }
+
+    function unpacked() {
+      expression: unpack_bits(attribute(binary_embedding))
+    }
+
+    second-phase {
+      expression: sum( (2*unpacked + 1) * query(embedding))
+    }
+    summary-features {
+      unpacked
+      query(binary_embedding)
+      query(binary_embedding_short)
+      query(embedding)
+      attribute(binary_embedding)
+      attribute(binary_embedding_short)
+    }
+  }
+}
