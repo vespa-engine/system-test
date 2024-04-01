@@ -9,7 +9,7 @@ class Christmas < IndexedStreamingSearchTest
     set_description("Ensure that 'Christmas' and 'christmas' is indexed equally.")
     deploy_app(SearchApp.new.sd(selfdir+"jul.sd"))
     start
-    feed_and_wait_for_docs("jul", 2, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("jul", 2, :file => selfdir + "feed.json")
   end
 
   def test_symmetric_lowercasing
