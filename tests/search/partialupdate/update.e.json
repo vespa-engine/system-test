@@ -1,0 +1,10 @@
+[
+  {"update":"id:partial/update:update::0","fields":{"intfield":{"assign":111111}}},
+  {"update":"id:partial/update:update::1","fields":{"intfield":{"assign":-222222}}},
+  {"update":"id:partial/update:update::2","fields":{"intfield":{"assign":333333}}},
+  {"id":"id:partial/update:update::1","fields":{"doublefield":-205.0,"intfield":-200005,"body":"doc1 upd","floatfield":-25.0,"longfield":-20000000005,"bytefield":25}},
+  {"id":"id:partial/update:update::2","fields":{"doublefield":300.0,"intfield":300000,"body":"doc2 upd","floatfield":30.0,"longfield":30000000000,"bytefield":30}},
+  {"update":"id:partial/update:update::0","fields":{"longfield":{"assign":11111111111}}},
+  {"update":"id:partial/update:update::1","fields":{"longfield":{"assign":-22222222222}}},
+  {"update":"id:partial/update:update::2","fields":{"longfield":{"assign":33333333333}}}
+]

@@ -1,0 +1,12 @@
+[
+  {"update":"id:partial/update:update::0","fields":{"bytefield":{"assign":11}}},
+  {"update":"id:partial/update:update::1","fields":{"bytefield":{"assign":22}}},
+  {"update":"id:partial/update:update::2","fields":{"bytefield":{"assign":33}}},
+  {"update":"id:partial/update:update::3","fields":{"bytefield":{"assign":44}}},
+  {"id":"id:partial/update:update::2","fields":{"doublefield":305.0,"intfield":300005,"body":"doc2 upd","floatfield":35.0,"longfield":30000000005,"bytefield":35}},
+  {"id":"id:partial/update:update::3","fields":{"doublefield":-400.0,"intfield":-400000,"body":"doc3 upd","floatfield":-40.0,"longfield":-40000000000,"bytefield":40}},
+  {"update":"id:partial/update:update::0","fields":{"floatfield":{"assign":11.1}}},
+  {"update":"id:partial/update:update::1","fields":{"floatfield":{"assign":-22.2}}},
+  {"update":"id:partial/update:update::2","fields":{"floatfield":{"assign":33.3}}},
+  {"update":"id:partial/update:update::3","fields":{"floatfield":{"assign":-44.4}}}
+]

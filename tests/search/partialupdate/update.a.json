@@ -1,0 +1,4 @@
+[
+  {"update":"id:partial/update:update::0","fields":{"bytefield":{"assign":11},"intfield":{"assign":111111},"longfield":{"assign":11111111111},"doublefield":{"assign":111.1},"floatfield":{"assign":11.1}}},
+  {"update":"id:partial/update:update::1","fields":{"bytefield":{"assign":22},"intfield":{"assign":-222222},"longfield":{"assign":-22222222222},"doublefield":{"assign":-222.2},"floatfield":{"assign":-22.2}}}
+]

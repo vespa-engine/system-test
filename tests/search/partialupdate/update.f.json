@@ -1,0 +1,5 @@
+[
+  {"update":"id:partial/update:update::0","fields":{"intfield":{"assign":555555}}},
+  {"update":"id:partial/update:update::1","fields":{"intfield":{"assign":-666666}}},
+  {"update":"id:partial/update:update::2","fields":{"intfield":{"assign":777777}}}
+]

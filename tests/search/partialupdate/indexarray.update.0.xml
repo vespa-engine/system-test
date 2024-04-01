@@ -1,9 +1,0 @@
-<update documenttype="indexarray" documentid="id:indexarray:indexarray::1">
-    <add field="fa"><item>bbb</item></add>
-    <add field="fa"><item>bbb</item></add>
-    <add field="fa"><item>ccc</item></add>
-    <add field="fb"><item>bbb</item></add>
-    <add field="fb"><item>bbb</item></add>
-    <add field="fb"><item>ccc</item></add>
-</update>
-

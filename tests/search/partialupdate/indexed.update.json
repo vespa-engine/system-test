@@ -1,0 +1,3 @@
+[
+  {"update":"id:indexed/indexed:indexed::1","fields":{"so":{"assign":"Updated so field"},"aiso":{"assign":"Updated aiso field"},"iso":{"assign":"Updated iso field"},"io":{"assign":"Updated io field"}}}
+]

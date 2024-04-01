@@ -51,60 +51,60 @@ class PartialUpdate < IndexedStreamingSearchTest
 
   def feed_and_check()
     # ignore partial updates
-    feedfile(selfdir + "update.a.xml")
+    feedfile(selfdir + "update.a.json")
 
     result = search("/?query=upd&nocache")
     assert_equal(0, result.hit.size)
 
     # new feed, documents and partial updates interleaved
-    feedfile(selfdir + "update.b.xml")
-    feedfile(selfdir + "update.j.xml")
+    feedfile(selfdir + "update.b.json")
+    feedfile(selfdir + "update.j.json")
     poll_cmp("update.b.result.json")
 
     # new feed, only documents
-    feed_docs("update.c.xml")
+    feed_docs("update.c.json")
     poll_cmp("update.c.result.json")
 
     # apply partial updates
-    feedfile(selfdir + "update.a.xml")
+    feedfile(selfdir + "update.a.json")
     poll_cmp("update.a.result.json")
 
     # new feed, replace partial updates
-    feed_docs("update.c.xml")
+    feed_docs("update.c.json")
     poll_cmp("update.c.result.json")
 
     # apply partial updates
-    feedfile(selfdir + "update.a.xml")
+    feedfile(selfdir + "update.a.json")
     poll_cmp("update.a.result.json")
 
     # apply more partial updates
-    feedfile(selfdir + "update.d.xml")
+    feedfile(selfdir + "update.d.json")
     poll_cmp("update.d.result.json")
 
     # apply partial updates for updateable fields
-    feedfile(selfdir + "update.a.xml")
+    feedfile(selfdir + "update.a.json")
     poll_cmp("update.a.result.json")
   end
 
   def feed_and_check_2()
     # new feed (increment 0)
-    feed_docs("update.c.xml")
+    feed_docs("update.c.json")
     poll_cmp("update.c.result.json")
 
     # increment 1
-    feed_docs("update.e.xml")
+    feed_docs("update.e.json")
     poll_cmp("update.e.result.json")
 
     # apply partial updates
-    feedfile(selfdir + "update.f.xml")
+    feedfile(selfdir + "update.f.json")
     poll_cmp("update.f.result.json")
 
     # increment 2
-    feed_docs("update.g.xml")
+    feed_docs("update.g.json")
     poll_cmp("update.g.result.json")
 
     # apply partial updates
-    feedfile(selfdir + "update.h.xml")
+    feedfile(selfdir + "update.h.json")
     poll_cmp("update.h.result.json")
   end
 
@@ -115,10 +115,10 @@ class PartialUpdate < IndexedStreamingSearchTest
     feed_and_check_2()
 
     # remove all documents
-    feedfile(selfdir+"update.k.xml")
+    feedfile(selfdir+"update.k.json")
     poll_cmp("update.k.result.json", 60)
 
-    # the RTC should start up again with the correct sync token
+    # the searchnode should start up again with the correct sync token
     vespa.search["search"].first.softdie
     sleep 10
 
@@ -136,7 +136,7 @@ class PartialUpdate < IndexedStreamingSearchTest
   def test_indexed_attribute_summary
     deploy_app(SearchApp.new.sd(selfdir + "indexed.sd"))
     start
-    feed_and_wait_for_docs("indexed", 1, :file => selfdir + "indexed.doc.xml", :trace => 9)
+    feed_and_wait_for_docs("indexed", 1, :file => selfdir + "indexed.doc.json", :trace => 9)
     assert_hitcount('query=io:index io:only&nocache', 1)
     assert_hitcount('query=io:%22index only%22&nocache', 1)
     assert_hitcount('query=iso:%22index&7Csummary%22&nocache', 1)
@@ -146,7 +146,7 @@ class PartialUpdate < IndexedStreamingSearchTest
     assert_hitcount('query=iso:Updated&nocache', 0)
     assert_hitcount('query=aiso:Updated&nocache', 0)
 
-    feed_and_wait_for_docs("indexed", 1, :file => selfdir + "indexed.doc2.xml", :trace => 9)
+    feed_and_wait_for_docs("indexed", 1, :file => selfdir + "indexed.doc2.json", :trace => 9)
 
     assert_hitcount('query=io:Initial&nocache', 0)
     assert_hitcount('query=io:Initial&nocache', 0)
@@ -157,7 +157,7 @@ class PartialUpdate < IndexedStreamingSearchTest
     assert_hitcount('query=iso:Second&nocache', 1)
     assert_hitcount('query=aiso:Second&nocache', 1)
 
-    feed_and_wait_for_docs("indexed", 1, :file => selfdir + "indexed.update.xml", :trace => 9)
+    feed_and_wait_for_docs("indexed", 1, :file => selfdir + "indexed.update.json", :trace => 9)
 
     assert_hitcount('query=io:index io:only&nocache', 0)
     assert_hitcount('query=io:%22index only%22&nocache', 0)
@@ -243,7 +243,7 @@ class PartialUpdate < IndexedStreamingSearchTest
     wait_for_hitcount_not_equal(test_case.check_docs_query, test_case.max_doc)
     poll_compare(test_case.query + '&format=xml', result, test_case.sort_field, test_case.fields_to_compare, 30)
 
-    # the RTC should start up again in the same state
+    # the searchnode should start up again in the same state
     vespa.search["search"].first.softdie
     vespa.search["search"].wait_until_ready
     wait_for_hitcount("/?query=sddocname:#{doc_type}", test_case.max_doc + 1)
@@ -315,8 +315,8 @@ class PartialUpdate < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "attrerror.sd"))
     start
 
-    feed(:file => selfdir + "attrerrordocs.xml")
-    output = feedfile(selfdir + "attrerrorupdates.xml", :exceptiononfailure => false, :stderr => true)
+    feed(:file => selfdir + "attrerrordocs.json")
+    output = feedfile(selfdir + "attrerrorupdates.json", :exceptiononfailure => false, :stderr => true)
 
     puts "\nFeeder output:\n#{output}\n"
 
@@ -330,12 +330,12 @@ class PartialUpdate < IndexedStreamingSearchTest
     set_description("Check that arithmetic updates are ignored if the current value is undefined")
     deploy_app(SearchApp.new.sd(selfdir + "attrundefined.sd"))
     start
-    feed(:file => selfdir + "attrundefineddocs.xml")
+    feed(:file => selfdir + "attrundefineddocs.json")
     wait_for_hitcount("query=sddocname:attrundefined&nocache", 1)
 
     poll_compare("query=sddocname:attrundefined&nocache", selfdir + "attrundefinedresult.xml", nil, \
                  ["sbyte", "sint", "slong", "sfloat", "sdouble", "documentid"], 5)
-    feedfile(selfdir + "attrundefinedupdates.xml")
+    feedfile(selfdir + "attrundefinedupdates.json")
     poll_compare("query=sddocname:attrundefined&nocache", selfdir + "attrundefinedresult.xml", nil, \
                  ["sbyte", "sint", "slong", "sfloat", "sdouble", "documentid"], 5)
   end
@@ -347,17 +347,17 @@ class PartialUpdate < IndexedStreamingSearchTest
     set_description('Test that we can update an index and a summary field simultaneously in the same update')
     deploy_app(SearchApp.new.sd(selfdir + 'complex.sd'))
     start
-    feed_and_wait_for_docs('complex', 1, :file => selfdir + 'complex.doc.xml')
+    feed_and_wait_for_docs('complex', 1, :file => selfdir + 'complex.doc.json')
     result = search('query=sddocname:complex&nocache')
     assert_equal(1, result.hitcount)
     assert_equal('bbb', result.hit[0].field['fb'])
     assert_equal('ccc', result.hit[0].field['fc'])
-    feed(:file => selfdir + 'complex.update.0.xml')
+    feed(:file => selfdir + 'complex.update.0.json')
     assert_hitcount('query=fa:eee', 1)
     result = search('query=sddocname:complex&nocache')
     assert_equal(1, result.hitcount)
     assert_equal('fff', result.hit[0].field['fb'])
-    feed(:file => selfdir + 'complex.update.1.xml')
+    feed(:file => selfdir + 'complex.update.1.json')
     result = search('query=sddocname:complex&nocache')
     assert_equal(1, result.hitcount)
     assert_equal('ggg', result.hit[0].field['fc'])
@@ -368,17 +368,17 @@ class PartialUpdate < IndexedStreamingSearchTest
     set_description("Test that we can update two indexed fields one by one")
     deploy_app(SearchApp.new.sd(selfdir + "complex.sd"))
     start
-    feed_and_wait_for_docs("complex", 1, :file => selfdir + "complex.doc.xml")
+    feed_and_wait_for_docs("complex", 1, :file => selfdir + "complex.doc.json")
     assert_hitcount("query=fa:aaa&nocache", 1)
     assert_hitcount("query=fa:eee&nocache", 0)
     assert_hitcount("query=fd:ddd&nocache", 1)
     assert_hitcount("query=fd:hhh&nocache", 0)
-    feed(:file => selfdir + "complex.update.2.xml")
+    feed(:file => selfdir + "complex.update.2.json")
     assert_hitcount("query=fa:aaa&nocache", 0)
     assert_hitcount("query=fa:eee&nocache", 1)
     assert_hitcount("query=fd:ddd&nocache", 1)
     assert_hitcount("query=fd:hhh&nocache", 0)
-    feed(:file => selfdir + "complex.update.3.xml")
+    feed(:file => selfdir + "complex.update.3.json")
     assert_hitcount("query=fa:aaa&nocache", 0)
     assert_hitcount("query=fa:eee&nocache", 1)
     assert_hitcount("query=fd:ddd&nocache", 0)
@@ -399,9 +399,9 @@ class PartialUpdate < IndexedStreamingSearchTest
     set_description("Test that we can feed the same index update twice")
     deploy_app(SearchApp.new.sd(selfdir + "complex.sd"))
     start
-    feed_and_wait_for_docs("complex", 1, :file => selfdir + "complex.doc.xml")
-    feed(:file => selfdir + "complex.update.2.xml")
-    feed(:file => selfdir + "complex.update.2.xml")
+    feed_and_wait_for_docs("complex", 1, :file => selfdir + "complex.doc.json")
+    feed(:file => selfdir + "complex.update.2.json")
+    feed(:file => selfdir + "complex.update.2.json")
     assert_hitcount("query=fa:eee", 1)
   end
 
@@ -410,13 +410,13 @@ class PartialUpdate < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "indexarray.sd"))
     start
     feed_and_wait_for_docs("indexarray", 1,
-	 :file => selfdir + "indexarray.doc.xml")
+	 :file => selfdir + "indexarray.doc.json")
     assert_hitcount("query=fa:aaa&nocache", 1)
     assert_hitcount("query=fa:bbb&nocache", 1)
     assert_hitcount("query=fa:ccc&nocache", 0)
     assert_fieldcount("fa", "fa:aaa", 1.0, 0)
     assert_fieldcount("fa", "fa:bbb", 2.0, 0)
-    feed(:file => selfdir + "indexarray.update.0.xml")
+    feed(:file => selfdir + "indexarray.update.0.json")
     assert_hitcount("query=fa:aaa&nocache", 1)
     assert_hitcount("query=fa:bbb&nocache", 1)
     assert_hitcount("query=fa:ccc&nocache", 1)
@@ -499,13 +499,13 @@ class PartialUpdate < IndexedStreamingSearchTest
     proton = vespa.search["search"].first
     transfer_fbench_queries(selfdir + "slowqueries")
     feed_and_wait_for_docs("compaction", 1,
-	 :file => selfdir + "compaction.doc.xml")
+	 :file => selfdir + "compaction.doc.json")
     @fbench_thread = create_fbench_thread
     assert_hitcount("query=fa:aaa&nocache", 1)
     assert_hitcount("query=fb:bbb&nocache", 1)
     assert_hitcount("query=fb:ccc&nocache", 0)
     assert_hitcount("query=fb:ddd55&nocache", 0)
-    feed(:file => selfdir + "compaction.update.0.xml")
+    feed(:file => selfdir + "compaction.update.0.json")
     assert_hitcount("query=fa:aaa&nocache", 1)
     assert_hitcount("query=fb:bbb&nocache", 0)
     assert_hitcount("query=fb:ccc&nocache", 1)

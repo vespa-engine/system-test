@@ -1,0 +1,8 @@
+[
+  {"update":"id:partial/update:update::0","fields":{"intfield":{"assign":111111},"longfield":{"assign":11111111111}}},
+  {"id":"id:partial/update:update::0","fields":{"doublefield":100.0,"intfield":100000,"body":"doc0 upd","floatfield":10.0,"longfield":10000000000,"bytefield":10}},
+  {"update":"id:partial/update:update::0","fields":{"bytefield":{"assign":11},"doublefield":{"assign":111.1},"floatfield":{"assign":11.1}}},
+  {"update":"id:partial/update:update::1","fields":{"intfield":{"assign":-222222},"longfield":{"assign":-22222222222}}},
+  {"id":"id:partial/update:update::1","fields":{"doublefield":-200.0,"intfield":-200000,"body":"doc1 upd","floatfield":-20.0,"longfield":-20000000000,"bytefield":20}},
+  {"update":"id:partial/update:update::1","fields":{"bytefield":{"assign":22},"doublefield":{"assign":-222.2},"floatfield":{"assign":-22.2}}}
+]

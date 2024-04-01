@@ -1,8 +1,0 @@
-<vespafeed>
-<update documenttype="attrerror" documentid="id:attr/attr:attrerror::0">
-  <assign field="intidx">2000</assign>
-</update>
-<update documenttype="attrerror" documentid="id:attr/attr:attrerror::0">
-  <add field="intattr">2000</add>
-</update>
-</vespafeed>

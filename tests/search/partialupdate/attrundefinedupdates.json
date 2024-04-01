@@ -1,0 +1,3 @@
+[
+  {"update":"id:attrundefined:attrundefined::0","fields":{"sbyte":{"increment":10.0},"sfloat":{"increment":10.0},"sdouble":{"increment":10.0},"sint":{"increment":10.0},"slong":{"increment":10.0}}}
+]

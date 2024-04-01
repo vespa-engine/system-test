@@ -1,0 +1,4 @@
+[
+  {"id":"id:partial/update:update::0","fields":{"doublefield":100.0,"intfield":100000,"body":"doc0 upd","floatfield":10.0,"longfield":10000000000,"bytefield":10}},
+  {"id":"id:partial/update:update::1","fields":{"doublefield":-200.0,"intfield":-200000,"body":"doc1 upd","floatfield":-20.0,"longfield":-20000000000,"bytefield":20}}
+]

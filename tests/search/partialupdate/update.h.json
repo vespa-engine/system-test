@@ -1,0 +1,6 @@
+[
+  {"update":"id:partial/update:update::0","fields":{"bytefield":{"assign":55}}},
+  {"update":"id:partial/update:update::1","fields":{"bytefield":{"assign":66}}},
+  {"update":"id:partial/update:update::2","fields":{"bytefield":{"assign":77}}},
+  {"update":"id:partial/update:update::3","fields":{"bytefield":{"assign":88}}}
+]
