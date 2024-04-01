@@ -19,7 +19,7 @@ class UpdateSingleIndex < IndexedStreamingSearchTest
                         SearchCluster.new("books").sd(selfdir + "books.sd")))
     vespa.start
     wait_until_ready
-    feed_and_wait_for_docs("music", 10000, :file => selfdir + "testlogicaladv.20000.xml", :clusters => ["music", "books"])
+    feed_and_wait_for_docs("music", 10000, :file => selfdir + "testlogicaladv.20000.json", :clusters => ["music", "books"])
     wait_for_hitcount('query=sddocname:music&search=music&type=all', 10000)
     wait_for_hitcount('query=sddocname:books&search=books&type=all', 10000)
 
@@ -50,8 +50,8 @@ class UpdateSingleIndex < IndexedStreamingSearchTest
     wait_for_hitcount('query=sddocname:music&search=music&type=all', 10000)
     wait_for_hitcount('query=sddocname:books&search=books&type=all', 10000)
 
-    feed_and_wait_for_docs("music", 0, :file => selfdir + "testlogicaladv.20000.remove.music.xml", :clusters => ["music", "books"], :encoding => "iso-8859-1")
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :cluster => "music")
+    feed_and_wait_for_docs("music", 0, :file => selfdir + "testlogicaladv.20000.remove.music.json", :clusters => ["music", "books"], :encoding => "iso-8859-1")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json", :cluster => "music")
     wait_for_hitcount('query=sddocname:music&search=music&type=all', 10)
 
     puts "Query: Match the 10 new docs in music"
@@ -61,9 +61,9 @@ class UpdateSingleIndex < IndexedStreamingSearchTest
                   [ "author", "artist", "mid" ])
     puts "Query: Match all documents in books"
     assert_hitcount('query=sddocname:books&search=books&type=all', 10000)
-    feed_and_wait_for_docs("books", 0, :file => selfdir + "testlogicaladv.20000.remove.books.xml", :clusters => ["music", "books"])
+    feed_and_wait_for_docs("books", 0, :file => selfdir + "testlogicaladv.20000.remove.books.json", :clusters => ["music", "books"])
 
-    feed_and_wait_for_docs("books", 15, :file => selfdir + "books.15.xml", :cluster => "books")
+    feed_and_wait_for_docs("books", 15, :file => selfdir + "books.15.json", :cluster => "books")
     wait_for_hitcount('query=sddocname:books&search=books&type=all', 15)
 
     puts "Query: Match the 15 new docs in books"
