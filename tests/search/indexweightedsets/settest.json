@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:settest::1","fields":{"tokenized":{"year=2011,name=critic_X":98,"year=2010,name=critic_X":100,"year=2011,name=other critic Y":60},"other_ratings":{"year=2011,highest_rate":98,"year=2011,lowest_rate":60,"lastrated,name=critic_X":98},"critics_ratings":{"year=2011,name=critic_X":98,"year=2010,name=critic_X":100,"year=2011,name=other critic Y":60},"weight":{"a":1,"B":10},"marker":"dok1 c d"}},
+  {"id":"id:test:settest::2","fields":{"tokenized":{"year=2011,name=critic xx":49,"year=2010,name=critic xx":42,"year=2011,name=other critic yy":63},"other_ratings":{"lastrated,name=critic xx":49,"year=2011,highest_rate":63,"year=2011,lowest_rate":49},"critics_ratings":{"year=2011,name=critic xx":49,"year=2010,name=critic xx":42,"year=2011,name=other critic yy":63},"weight":{"a":10,"B":1},"marker":"dok2 c d"}}
+]
