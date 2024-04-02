@@ -13,7 +13,7 @@ class ProtonStateServer < IndexedStreamingSearchTest
   def test_proton_state
     generation = get_generation(deploy_app(SearchApp.new.sd(selfdir + "test.sd"))).to_i
     start
-    feed_and_wait_for_docs("test", 5, :file => selfdir + "docs.xml")
+    feed_and_wait_for_docs("test", 5, :file => selfdir + "docs.json")
     node = @vespa.search["search"].first
     metrics = node.get_state_v1_metrics
     # node should be reporting itself as up
@@ -27,7 +27,7 @@ class ProtonStateServer < IndexedStreamingSearchTest
   def test_monitoring_snapshot_period
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").monitoring("test", "60"))
     start
-    feed_and_wait_for_docs("test", 5, :file => selfdir + "docs.xml")
+    feed_and_wait_for_docs("test", 5, :file => selfdir + "docs.json")
     node = @vespa.search["search"].first
     period = 0
     sleep(60) # wait for metrics snapshot
