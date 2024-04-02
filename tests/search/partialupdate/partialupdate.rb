@@ -321,7 +321,7 @@ class PartialUpdate < IndexedStreamingSearchTest
     puts "\nFeeder output:\n#{output}\n"
 
     # check output
-    tofind = ".*Add operation only applicable to multivalue lists.*"
+    tofind = ".*Expected start of composite, got VALUE_NUMBER_INT*"
     assert(Regexp.new(tofind).match(output), "Did not find in feeder output: #{tofind}")
   end
 
