@@ -1,7 +1,0 @@
-<update documenttype="indexed" documentid="id:indexed/indexed:indexed::1">
-    <assign field="io">Updated io field</assign>
-    <assign field="so">Updated so field</assign>
-    <assign field="iso">Updated iso field</assign>
-    <assign field="aiso">Updated aiso field</assign>
-</update>
-

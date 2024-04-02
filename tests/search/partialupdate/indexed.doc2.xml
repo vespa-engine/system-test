@@ -1,6 +1,0 @@
-<document documenttype="indexed" documentid="id:indexed/indexed:indexed::1">
-    <io>Second value in index only single value field</io>
-    <so>Second value in summary only single value field</so>
-    <iso>Second value in index summary single value field</iso>
-    <aiso>Second value in index attribute summary single value field</aiso>
-</document>

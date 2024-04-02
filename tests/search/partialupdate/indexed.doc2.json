@@ -1,0 +1,3 @@
+[
+  {"id":"id:indexed/indexed:indexed::1","fields":{"iso":"Second value in index summary single value field","so":"Second value in summary only single value field","io":"Second value in index only single value field","aiso":"Second value in index attribute summary single value field"}}
+]

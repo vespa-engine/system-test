@@ -1,6 +1,0 @@
-<vespafeed>
-  <remove documentid="id:partial/update:update::0"/>
-  <remove documentid="id:partial/update:update::1"/>
-  <remove documentid="id:partial/update:update::2"/>
-  <remove documentid="id:partial/update:update::3"/>
-</vespafeed>

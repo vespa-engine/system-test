@@ -1,9 +1,0 @@
-<vespafeed>
-<update documenttype="attrundefined" documentid="id:attrundefined:attrundefined::0">
-  <increment field="sbyte" by="10" />
-  <increment field="sint" by="10" />
-  <increment field="slong" by="10" />
-  <increment field="sfloat" by="10" />
-  <increment field="sdouble" by="10" />
-</update>
-</vespafeed>

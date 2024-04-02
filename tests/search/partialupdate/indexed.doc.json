@@ -1,0 +1,3 @@
+[
+  {"id":"id:indexed/indexed:indexed::1","fields":{"iso":"Initial value in index summary single value field","so":"Initial value in summary only single value field","io":"Initial value in index only single value field","aiso":"Initial value in index attribute summary single value field"}}
+]
