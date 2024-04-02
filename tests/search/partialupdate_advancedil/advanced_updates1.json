@@ -1,0 +1,4 @@
+[
+  {"update":"id:adv/adv:advanced::0","fields":{"field8":{"assign":15}}},
+  {"update":"id:adv/adv:advanced::1","fields":{"field6":{"decrement":15.0},"field3":{"assign":50}}}
+]
