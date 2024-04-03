@@ -1,0 +1,13 @@
+[
+  {"id":"id:test:test::1","fields":{}},
+  {"id":"id:test:test::2","fields":{}},
+  {"id":"id:test:test::3","fields":{}},
+  {"id":"id:test:test::4","fields":{}},
+  {"id":"id:test:test::5","fields":{}},
+  {"id":"id:test:test::6","fields":{}},
+  {"id":"id:test:test::7","fields":{}},
+  {"id":"id:test:test::8","fields":{}},
+  {"id":"id:test:test::9","fields":{}},
+  {"id":"id:test:test::defined-as-undefined","fields":{"integer_summary":-2147483648,"integer_attribute":-2147483648}},
+  {"id":"id:test:test::defined","fields":{"string_index":"foo","string_attribute":"bar","string_array_attribute":["qux"],"string_array_index":["baz"],"integer_summary":42,"integer_attribute":42}}
+]
