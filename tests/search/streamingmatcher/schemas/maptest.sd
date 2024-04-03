@@ -1,0 +1,43 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search maptest {
+  document maptest {
+    field name type string {
+        indexing: index | attribute | summary
+    }
+    struct s1 {
+        field a type string { }
+        field b type string { }
+    }
+    field m1 type map<string, string> {
+        indexing: index | summary
+    }
+    field m2 type map<string, s1> {
+        indexing: index | summary
+    }
+    field m3 type map<string, array<string>> {
+        indexing: index | summary
+    }
+    field m4 type map<string, map<string, string>> {
+        indexing: index | summary
+    }
+  }
+  rank-profile default {
+    summary-features {
+      fieldTermMatch(m1.key,0).firstPosition
+      fieldTermMatch(m1.key,0).occurrences
+      fieldLength(m1.key)
+      fieldTermMatch(m1.value,0).firstPosition
+      fieldTermMatch(m1.value,0).occurrences
+      fieldLength(m1.value)
+      fieldTermMatch(m2.value.a,0).firstPosition
+      fieldTermMatch(m2.value.a,0).occurrences
+      fieldLength(m2.value.a)
+      fieldTermMatch(m3.value,0).firstPosition
+      fieldTermMatch(m3.value,0).occurrences
+      fieldLength(m3.value)
+      fieldTermMatch(m4.value.value,0).firstPosition
+      fieldTermMatch(m4.value.value,0).occurrences
+      fieldLength(m4.value.value)
+    }
+  }
+}

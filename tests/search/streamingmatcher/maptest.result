@@ -1,0 +1,80 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:maptest:maptest:n=1:0",
+                "relevance": 0.0017429193899782135,
+                "source": "search.maptest",
+                "fields": {
+                    "sddocname": "maptest",
+                    "documentid": "id:maptest:maptest:n=1:0",
+                    "name": "id0",
+                    "m1": {
+                        "k0": "m1 v00 p0",
+                        "k1": "m1 v01 p1"
+                    },
+                    "m2": {
+                        "k0": {
+                            "b": "m2 b00 p0",
+                            "a": "m2 a00 p0"
+                        },
+                        "k1": {
+                            "b": "m2 b01 p1",
+                            "a": "m2 a01 p1"
+                        }
+                    },
+                    "m3": {
+                        "k0": [
+                            "m3 i000 p0",
+                            "m3 i001 p0"
+                        ],
+                        "k1": [
+                            "m3 i010 p1",
+                            "m3 i011 p1"
+                        ]
+                    },
+                    "m4": {
+                        "k0": {
+                            "k01": "q1",
+                            "k00": "m4 v00 p0 q0"
+                        },
+                        "k1": {
+                            "k10": "m4 v01 p1"
+                        }
+                    },
+                    "summaryfeatures": {
+                        "fieldLength(m1.key)": 1000000.0,
+                        "fieldLength(m1.value)": 1000000.0,
+                        "fieldLength(m2.value.a)": 1000000.0,
+                        "fieldLength(m3.value)": 1000000.0,
+                        "fieldLength(m4.value.value)": 1000000.0,
+                        "fieldTermMatch(m1.key,0).firstPosition": 1000000.0,
+                        "fieldTermMatch(m1.key,0).occurrences": 0.0,
+                        "fieldTermMatch(m1.value,0).firstPosition": 1000000.0,
+                        "fieldTermMatch(m1.value,0).occurrences": 0.0,
+                        "fieldTermMatch(m2.value.a,0).firstPosition": 1000000.0,
+                        "fieldTermMatch(m2.value.a,0).occurrences": 0.0,
+                        "fieldTermMatch(m3.value,0).firstPosition": 1000000.0,
+                        "fieldTermMatch(m3.value,0).occurrences": 0.0,
+                        "fieldTermMatch(m4.value.value,0).firstPosition": 1000000.0,
+                        "fieldTermMatch(m4.value.value,0).occurrences": 0.0,
+                        "vespa.summaryFeatures.cached": 1.0
+                    }
+                }
+            }
+        ]
+    }
+}

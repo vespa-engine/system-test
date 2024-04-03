@@ -1,0 +1,12 @@
+[
+{
+  "update": "id:mapupdatetest:mapupdatetest:n=1:0",
+  "fields":  {
+      "tagset": {
+          "add": {
+            "britney":1
+          }
+      }
+  }
+}
+]

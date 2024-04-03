@@ -1,0 +1,140 @@
+<vespafeed>
+  <document type="maptest" id="id:maptest:maptest:n=1:0">
+    <name>id0</name>
+    <m1>
+      <item>
+        <key>k0</key>
+        <value>m1 v00 p0</value>
+      </item>
+      <item>
+        <key>k1</key>
+        <value>m1 v01 p1</value>
+      </item>
+    </m1>
+    <m2>
+      <item>
+        <key>k0</key>
+        <value>
+          <a>m2 a00 p0</a>
+          <b>m2 b00 p0</b>
+        </value>
+      </item>
+      <item>
+        <key>k1</key>
+        <value>
+          <a>m2 a01 p1</a>
+          <b>m2 b01 p1</b>
+        </value>
+      </item>
+    </m2>
+    <m3>
+      <item>
+        <key>k0</key>
+        <value>
+          <item>m3 i000 p0</item>
+          <item>m3 i001 p0</item>
+        </value>
+      </item>
+      <item>
+        <key>k1</key>
+        <value>
+          <item>m3 i010 p1</item>
+          <item>m3 i011 p1</item>
+        </value>
+      </item>
+    </m3>
+    <m4>
+      <item>
+        <key>k0</key>
+        <value>
+          <item>
+            <key>k00</key>
+            <value>m4 v00 p0 q0</value>
+          </item>
+          <item>
+            <key>k01</key>
+            <value>q1</value>
+          </item>
+        </value>
+      </item>
+      <item>
+        <key>k1</key>
+        <value>
+          <item>
+            <key>k10</key>
+            <value>m4 v01 p1</value>
+          </item>
+        </value>
+      </item>
+    </m4>
+  </document>
+  <document type="maptest" id="id:maptest:maptest:n=1:1">
+    <name>id1</name>
+    <m1>
+      <item>
+        <key>k0</key>
+        <value>m1 v10 p1</value>
+      </item>
+      <item>
+        <key>k1</key>
+        <value>m1 v11 p0</value>
+      </item>
+    </m1>
+    <m2>
+      <item>
+        <key>k0</key>
+        <value>
+          <a>m2 a10 p1</a>
+          <b>m2 b10 p1</b>
+        </value>
+      </item>
+      <item>
+        <key>k1</key>
+        <value>
+          <a>m2 a11 p0</a>
+          <b>m2 b11 p0</b>
+        </value>
+      </item>
+    </m2>
+    <m3>
+      <item>
+        <key>k0</key>
+        <value>
+          <item>m3 i100 p1</item>
+          <item>m3 i101 p1</item>
+        </value>
+      </item>
+      <item>
+        <key>k1</key>
+        <value>
+          <item>m3 i110 p0</item>
+          <item>m3 i111 p0</item>
+        </value>
+      </item>
+    </m3>
+    <m4>
+      <item>
+        <key>k0</key>
+        <value>
+          <item>
+            <key>k00</key>
+            <value>m4 v10 p1 q1</value>
+          </item>
+          <item>
+            <key>k01</key>
+            <value>q0</value>
+          </item>
+        </value>
+      </item>
+      <item>
+        <key>k1</key>
+        <value>
+          <item>
+            <key>k10</key>
+            <value>m4 v11 p0</value>
+          </item>
+        </value>
+      </item>
+    </m4>
+  </document>
+</vespafeed>
