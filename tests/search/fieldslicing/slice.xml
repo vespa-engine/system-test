@@ -1,8 +1,0 @@
-<document documenttype="slice" documentid="id:slice:slice::0">
-    <f1>a b</f1>
-    <f2>a x b x a x b</f2>
-</document>
-<document documenttype="slice" documentid="id:slice:slice::1">
-    <f1>x x x x x x x x x x a x x b</f1>
-    <f2>x x x x x x x x x x x x x a x b x x x x x x x a x b x x a x b</f2>
-</document>

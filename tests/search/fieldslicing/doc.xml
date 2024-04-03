@@ -1,6 +1,0 @@
-<document type="test" documentid="id:test:test::1">
-  <default1>a b c c b a</default1>
-  <default2>a a b b c c c c b b a a</default2>
-  <default3>a a a b b b c c c c c c b b b a a a</default3>
-  <alone>a b c</alone>
-</document>

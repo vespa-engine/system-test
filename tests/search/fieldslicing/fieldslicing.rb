@@ -13,7 +13,7 @@ class FieldSlicing < IndexedStreamingSearchTest
   def test_slicing
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.xml")
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.json")
     assert_hitcount("query=a", 1)
 
     # GROUP: alone
@@ -126,7 +126,7 @@ class FieldSlicing < IndexedStreamingSearchTest
     set_description("Test that field slicing is working both during first and second phase ranking")
     deploy_app(SearchApp.new.sd(selfdir + "slice.sd"))
     start
-    feed_and_wait_for_docs("slice", 2, :file => selfdir + "slice.xml")
+    feed_and_wait_for_docs("slice", 2, :file => selfdir + "slice.json")
     wait_for_hitcount("query=a+b", 2)
 
     a = search("query=a+b&ranking=slice-in-second&nocache")
