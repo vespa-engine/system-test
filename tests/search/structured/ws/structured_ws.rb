@@ -20,7 +20,7 @@ class StructuredWeightedSetTest < IndexedStreamingSearchTest
                              chain(Chain.new("default", "vespa").add(searcher))).
                     docproc(DocumentProcessing.new)))
     start
-    feed_and_wait_for_docs("wstest", 1, :file => selfdir+"feed-3.xml")
+    feed_and_wait_for_docs("wstest", 1, :file => selfdir+"feed-3.json")
     # save_result("query=titles:%22james%20bond%22", selfdir+"result.ws.json")
     assert_result("query=titles:%22james%20bond%22", selfdir+"result.ws.json")
   end

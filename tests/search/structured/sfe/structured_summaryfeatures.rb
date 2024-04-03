@@ -20,7 +20,7 @@ class StructuredSummaryFeaturesTest < IndexedStreamingSearchTest
                              chain(Chain.new("default", "vespa").add(searcher))).
                     docproc(DocumentProcessing.new)))
     start
-    feed_and_wait_for_docs("sfdtest", 3, :file => selfdir+"feed-2.xml")
+    feed_and_wait_for_docs("sfdtest", 3, :file => selfdir+"feed-2.json")
     # save_result("query=title:word",                         selfdir+"result.wd.json")
     assert_result("query=title:word",                         selfdir+"result.wd.json")
     assert_result("query=title:word&ranking.queryCache=true", selfdir+"result.wd.json")

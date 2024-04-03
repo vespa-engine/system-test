@@ -1,0 +1,5 @@
+[
+  {"id":"id:test:sfdtest::1","fields":{"title":"word","quality":0.125}},
+  {"id":"id:test:sfdtest::2","fields":{"title":"the final word","quality":0.5}},
+  {"id":"id:test:sfdtest::3","fields":{"title":"in this title text (but not very early) somewhere the mystical word appears, followed by more text","quality":0.9375}}
+]
