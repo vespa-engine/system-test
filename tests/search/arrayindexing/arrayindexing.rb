@@ -12,7 +12,7 @@ class ArrayIndexing < IndexedStreamingSearchTest
   def test_arrayindexing
     deploy_app(SearchApp.new.sd(selfdir+"arrayindexing.sd"))
     start
-    feed_and_wait_for_docs("arrayindexing", 1, :file => selfdir+"feed.xml")
+    feed_and_wait_for_docs("arrayindexing", 1, :file => selfdir+"feed.json")
     assert_hitcount("query=misunderstood", 1)
     assert_hitcount("query=songtitle:misunderstood", 1)
     assert_hitcount("query=say you miss me", 1)
