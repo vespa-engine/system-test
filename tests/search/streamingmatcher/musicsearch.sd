@@ -1,0 +1,111 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search musicsearch {
+  fieldset default {
+    fields: artist, title, lyrics
+  }
+  document musicsearch {
+    field artist type string {
+      indexing: summary | index
+      match: substring
+      query-command: phrase-segmenting
+    }
+    field title type string {
+      indexing: summary | index
+      query-command: phrase-segmenting
+    }
+    field lyrics type string {
+      indexing: summary | index
+      match: substring
+      query-command: phrase-segmenting
+    }
+    field year type int {
+       indexing: summary | index
+    }
+    field popularity type int {
+       indexing: summary | index
+    }
+    field flags type weightedset<byte> {
+       indexing: summary | index
+    }
+    field folder type int {
+       indexing: summary | index
+    }
+  }
+
+  rank-profile title-0-fp {
+    first-phase {
+      expression: fieldTermMatch(title,0).firstPosition
+    }
+  }
+
+  rank-profile title-1-fp {
+    first-phase {
+      expression: fieldTermMatch(title,1).firstPosition
+    }
+  }
+
+  rank-profile lyrics-0-fp {
+    first-phase {
+      expression: fieldTermMatch(lyrics,0).firstPosition
+    }
+  }
+
+  rank-profile title-0-occ {
+    first-phase {
+      expression: fieldTermMatch(title,0).occurrences
+    }
+  }
+
+  rank-profile title-1-occ {
+    first-phase {
+      expression: fieldTermMatch(title,1).occurrences
+    }
+  }
+
+  rank-profile lyrics-0-occ {
+    first-phase {
+      expression: fieldTermMatch(lyrics,0).occurrences
+    }
+  }
+
+  rank-profile year {
+    first-phase {
+      expression: attribute(year)
+    }
+  }
+
+  rank-profile twophase {
+    first-phase {
+      expression: fieldTermMatch(title,0).occurrences
+    }
+    second-phase {
+      expression: 10 * fieldTermMatch(title,0).occurrences
+      rerank-count: 2
+    }
+    summary-features {
+      firstPhase
+    }
+  }
+
+  rank-profile twophase-scaling {
+    first-phase {
+      expression: 100 * fieldTermMatch(title,0).occurrences
+    }
+    second-phase {
+      expression: 10 * fieldTermMatch(title,0).occurrences
+      rerank-count: 2
+    }
+    summary-features {
+      firstPhase
+    }
+  }
+
+  rank-profile sf {
+    summary-features {
+      fieldTermMatch(title,0).firstPosition
+      fieldTermMatch(title,0).occurrences
+      fieldTermMatch(lyrics,0).firstPosition
+      fieldTermMatch(lyrics,0).occurrences
+    }
+  }
+}
