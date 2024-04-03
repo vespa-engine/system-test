@@ -1,0 +1,51 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 5
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 5,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "group:root:0",
+                "relevance": 1.0,
+                "continuation": {
+                    "this": ""
+                },
+                "children": [
+                    {
+                        "id": "grouplist:normalizesubject(title)",
+                        "relevance": 1.0,
+                        "label": "normalizesubject(title)",
+                        "children": [
+                            {
+                                "id": "group:string:Hello world",
+                                "relevance": 0.0,
+                                "value": "Hello world",
+                                "fields": {
+                                    "count()": 3
+                                }
+                            },
+                            {
+                                "id": "group:string:Howdy",
+                                "relevance": 0.0,
+                                "value": "Howdy",
+                                "fields": {
+                                    "count()": 2
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
