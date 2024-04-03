@@ -1,0 +1,3 @@
+[
+  {"id":"id:test:attr::a1","fields":{"doublefield":8.25,"intfield":1234567,"body":"x","floatfield":4.5,"stringfield":"stringvalue","bytefield2":64,"bytefield1":42,"int64field":10000000000}}
+]
