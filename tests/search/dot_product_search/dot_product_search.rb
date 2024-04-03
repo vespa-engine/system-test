@@ -69,7 +69,7 @@ class DotProductSearch < IndexedStreamingSearchTest
       add(Searcher.new("com.yahoo.test.DotProductTestSearcher"))
     deploy_app(SearchApp.new.sd(selfdir+"test.sd").search_chain(search_chain))
     start
-    feed(:file => selfdir + "docs.xml")
+    feed(:file => selfdir + "docs.json")
     verify_result([[500],[400],[300],[200],[100]], [{"test"=>10}])
     verify_result([[5000],[4000],[3000],[2000],[1000]], [{"test"=>100}])
     verify_result([[(10*30), (1 * 9)],               # doc 3
@@ -84,7 +84,7 @@ class DotProductSearch < IndexedStreamingSearchTest
       add(Searcher.new("com.yahoo.test.DotProductTestSearcher"))
     deploy_app(SearchApp.new.sd(selfdir+"test.sd").search_chain(search_chain))
     start
-    feed(:file => selfdir + "docs.xml")
+    feed(:file => selfdir + "docs.json")
     verify_result([[-100]], [{"bad1"=>10}])
     verify_result([[-100],[-200],[-300],[-400],[-500]], [{"test"=>-10}])
     verify_result([[100]], [{"bad1"=>-10}])

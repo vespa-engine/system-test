@@ -1,0 +1,7 @@
+[
+  {"id":"id:test:test::1","fields":{"features":{"bar1":2,"baz1":3,"bad1":-10,"foo1":1,"test":10}}},
+  {"id":"id:test:test::2","fields":{"features":{"bar2":4,"baz2":6,"bad2":-20,"test":20,"foo2":2}}},
+  {"id":"id:test:test::3","fields":{"features":{"bad3":-30,"test":30,"foo3":3,"bar3":6,"baz3":9}}},
+  {"id":"id:test:test::4","fields":{"features":{"bad4":-40,"test":40,"foo4":4,"bar4":8,"baz4":12}}},
+  {"id":"id:test:test::5","fields":{"features":{"test":50,"bar5":10,"baz5":15,"bad5":-50,"foo5":5}}}
+]
