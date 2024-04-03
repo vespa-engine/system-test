@@ -1,0 +1,4 @@
+[
+  {"id":"id:adv/adv:advanced::0","fields":{"field2":"bar","field5":"foo;bar;baz","field1":"foobar","field3":20,"field6":10,"id":"id:adv/adv:advanced::0"}},
+  {"id":"id:adv/adv:advanced::1","fields":{"field2":"test2","field1":"testing","field3":5,"field6":20,"id":"id:adv/adv:advanced::1"}}
+]
