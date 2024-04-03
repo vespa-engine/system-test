@@ -22,8 +22,8 @@ class Inheritance < IndexedStreamingSearchTest
                         search(Searching.new).
                         docproc(DocumentProcessing.new)))
     start
-    feed_and_wait_for_docs("mp3", 1, :file => selfdir+"onemp3.xml", :cluster => "mp3")
-    feed_and_wait_for_docs("image", 1, :file => selfdir+"oneimage.xml", :cluster => "image")
+    feed_and_wait_for_docs("mp3", 1, :file => selfdir+"onemp3.json", :cluster => "mp3")
+    feed_and_wait_for_docs("image", 1, :file => selfdir+"oneimage.json", :cluster => "image")
     wait_for_hitcount("query=rida&search=mp3", 1)
     wait_for_hitcount("query=make:foo&search=image", 1)
     assert_hitcount("query=rida&search=mp3", 1)
