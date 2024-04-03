@@ -25,7 +25,7 @@ class TypedSorting < IndexedStreamingSearchTest
   end
 
   def test_typedsorting
-    feed_and_wait_for_docs("music", 20, :file => selfdir + "titlesorting.20.xml", :cluster => "music1")
+    feed_and_wait_for_docs("music", 20, :file => selfdir + "titlesorting.20.json", :cluster => "music1")
 
     compare("query=categories:blues&sorting=%2Btitle&hits=3",            "A3")
     compare("query=categories:blues&sorting=%2Btitle_lowercase&hits=3",  "B3")
