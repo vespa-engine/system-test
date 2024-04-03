@@ -1,0 +1,11 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search mapupdatetest {
+  document mapupdatetest {
+    field name type string {
+        indexing: index | attribute | summary
+    }
+    field tagset type weightedset<string> {
+        indexing: summary | attribute
+    }
+  }
+}
