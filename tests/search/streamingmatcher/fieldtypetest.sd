@@ -1,0 +1,85 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search fieldtypetest {
+  raw-as-base64-in-summary: false
+  document fieldtypetest {
+
+    field teststring type string {
+        indexing: summary | index
+    }
+    field testexactmatch type string {
+        indexing: summary | index
+    }
+    field testint type int {
+        indexing: summary | index
+    }
+    field testlong type long {
+        indexing: summary | attribute
+    }
+    field testbyte type byte {
+        indexing: summary | index
+    }
+    field testbool type bool {
+        indexing: summary | attribute
+    }
+    field testfloat type float {
+        indexing: summary | index
+    }
+    field testdouble type double {
+        indexing: summary | index
+    }
+    field testraw type raw {
+        indexing: summary
+    }
+    field testuri type uri {
+        indexing: summary | index
+    }
+    field testtermboost type tag {
+        indexing: summary | index
+    }
+    field testcontent type string {
+        indexing: summary | index
+    }
+    field testlatlong type position {
+        indexing: summary
+    }
+    field testarraystring type array<string> {
+        indexing: summary | index
+    }
+    field testarraybyte type array<byte> {
+        indexing: summary | index
+    }
+    field testarrayint type array<int> {
+        indexing: summary | index
+    }
+    field testarraylong type array<long> {
+        indexing: summary | index
+    }
+    field testarrayfloat type array<float> {
+        indexing: summary | index
+    }
+    field testarraydouble type array<double> {
+        indexing: summary | index
+    }
+    field testarraylatlong type array<position> {
+        indexing: summary
+    }
+    field testwsetstring type weightedset<string> {
+        indexing: summary | index
+    }
+    field testwsetbyte type weightedset<byte> {
+        indexing: summary | index
+    }
+    field testwsetint type weightedset<int> {
+        indexing: summary | index
+    }
+    field testwsetlong type weightedset<long> {
+        indexing: summary | index
+    }
+    field testweightedset type weightedset<string> {
+        indexing: summary | index
+    }
+    field testtag type tag {
+        indexing: summary | index
+    }
+  }
+}

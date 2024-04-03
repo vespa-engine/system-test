@@ -1,0 +1,14 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search phrase {
+  fieldset default {
+    fields: f1, f2
+  }
+  document phrase {
+    field f1 type string {
+      indexing: index | summary
+    }
+    field f2 type string {
+      indexing: index | summary
+    }
+  }
+}

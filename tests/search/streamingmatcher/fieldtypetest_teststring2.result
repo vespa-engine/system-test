@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1" coverage-docs="2" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
+  <hit relevancy="0.38186238359951247" source="search.fieldtypetest">
+    <field name="relevancy">0.38186238359951247</field>
+    <field name="sddocname">fieldtypetest</field>
+    <field name="teststring">teststring2</field>
+    <field name="testexactmatch">testexactmatch2</field>
+    <field name="testint">2147483647</field>
+    <field name="testlong">2147483647</field>
+    <field name="testbyte">127</field>
+    <field name="testbool">false</field>
+    <field name="testfloat">5.678</field>
+    <field name="testdouble">12345.6789</field>
+    <field name="testraw">testraw2</field>
+    <field name="testuri">http://www0.testuri2.se:8080/path/p?arg1=1&amp;arg2=2#frag1</field>
+    <field name="testtermboost">
+      <item weight="1">term1</item>
+    </field>
+    <field name="testcontent">testcontent2</field>
+    <field name="testlatlong">
+      <struct-field name="lat">-4.62325</struct-field>
+      <struct-field name="lng">55.452306</struct-field>
+    </field>
+    <field name="testarraystring">
+      <item>item2</item>
+      <item>item3</item>
+    </field>
+    <field name="testarraybyte">
+      <item>4</item>
+      <item>5</item>
+      <item>6</item>
+    </field>
+    <field name="testarrayint">
+      <item>4</item>
+      <item>5</item>
+      <item>6</item>
+    </field>
+    <field name="testarraylong">
+      <item>4</item>
+      <item>5</item>
+      <item>6</item>
+    </field>
+    <field name="testarrayfloat">
+      <item>4.0</item>
+      <item>5.0</item>
+      <item>6.0</item>
+    </field>
+    <field name="testarraydouble">
+      <item>4.0</item>
+      <item>5.0</item>
+      <item>6.0</item>
+    </field>
+    <field name="testarraylatlong">
+      <item>
+        <struct-field name="lat">-4.444004</struct-field>
+        <struct-field name="lng">55.404004</struct-field>
+      </item>
+      <item>
+        <struct-field name="lat">-4.555005</struct-field>
+        <struct-field name="lng">55.505005</struct-field>
+      </item>
+      <item>
+        <struct-field name="lat">-4.666006</struct-field>
+        <struct-field name="lng">55.606006</struct-field>
+      </item>
+    </field>
+    <field name="testwsetstring">
+      <item weight="2">item3</item>
+      <item weight="1">item2</item>
+    </field>
+    <field name="testwsetbyte">
+      <item weight="2">5</item>
+      <item weight="3">6</item>
+      <item weight="1">4</item>
+    </field>
+    <field name="testwsetint">
+      <item weight="2">5</item>
+      <item weight="3">6</item>
+      <item weight="1">4</item>
+    </field>
+    <field name="testwsetlong">
+      <item weight="2">5</item>
+      <item weight="3">6</item>
+      <item weight="1">4</item>
+    </field>
+    <field name="testweightedset">
+      <item weight="4">item3</item>
+      <item weight="3">item2</item>
+    </field>
+    <field name="testtag">
+      <item weight="4">item3</item>
+      <item weight="3">item2</item>
+    </field>
+    <field name="documentid">id:fieldtypetest:fieldtypetest:n=1:1</field>
+  </hit>
+</result>

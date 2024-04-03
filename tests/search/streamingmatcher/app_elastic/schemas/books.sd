@@ -1,0 +1,54 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search books {
+
+  fieldset default {
+    fields: author, title
+  }
+
+  document books {
+
+
+    field author type string {
+      indexing: summary| index
+      weight: 25
+      summary-to: trySummary
+    }
+
+    field pages type long {
+      indexing: summary | attribute
+    }
+
+    field grade type byte {
+      indexing: summary | attribute
+    }
+
+    field randomFloat type float {
+      indexing: summary | attribute
+    }
+
+    field title type string {
+      indexing: summary | index
+      weight: 75
+    }
+
+
+    field year type int {
+      indexing: summary | attribute
+    }
+
+    field popularity type int {
+      indexing: summary | attribute
+    }
+
+
+    field price type float {
+      indexing: summary | attribute
+    }
+
+    field genre type tag {
+      indexing: attribute | summary
+    }
+
+
+ }
+}

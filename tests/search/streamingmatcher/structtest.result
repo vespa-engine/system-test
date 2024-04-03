@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit type="summary" relevancy="0" source="search">
+    <field name="relevancy">0</field>
+    <field name="uri">id:structtest:structtest:n=1:0</field>
+    <field name="sddocname">structtest</field>
+    <field name="ssf1">
+      <struct-field name="as1">
+        <item>per</item>
+        <item>paal</item>
+      </struct-field>
+      <struct-field name="l1">1122334455667788991</struct-field>
+      <struct-field name="d1">81.79</struct-field>
+      <struct-field name="i1">1</struct-field>
+      <struct-field name="al1">
+        <item>11223344556677881</item>
+        <item>11223344556677883</item>
+      </struct-field>
+      <struct-field name="s1">string españa ssf1.s1</struct-field>
+    </field>
+    <field name="ssf4">
+      <struct-field name="as1">
+        <item>per</item>
+        <item>paal</item>
+      </struct-field>
+      <struct-field name="d1">84.79</struct-field>
+      <struct-field name="i1">4</struct-field>
+      <struct-field name="al1">
+        <item>11223344556677881</item>
+        <item>11223344556677883</item>
+      </struct-field>
+    </field>
+    <field name="ssf5">
+      <struct-field name="s2">string españa ssf5.s2</struct-field>
+      <struct-field name="nss1">
+        <struct-field name="as1">
+          <item>per</item>
+          <item>paal</item>
+        </struct-field>
+        <struct-field name="l1">1122334455667788995</struct-field>
+        <struct-field name="d1">85.79</struct-field>
+        <struct-field name="i1">5</struct-field>
+        <struct-field name="al1">
+          <item>11223344556677881</item>
+          <item>11223344556677883</item>
+        </struct-field>
+        <struct-field name="s1">string españa ssf5.nss1.s1</struct-field>
+      </struct-field>
+    </field>
+    <field name="ssf8">
+      <struct-field name="s2">string españa ssf8.s2</struct-field>
+      <struct-field name="nss1">
+        <struct-field name="as1">
+          <item>per</item>
+          <item>paal</item>
+        </struct-field>
+        <struct-field name="d1">88.79</struct-field>
+        <struct-field name="i1">8</struct-field>
+        <struct-field name="al1">
+          <item>11223344556677881</item>
+          <item>11223344556677883</item>
+        </struct-field>
+      </struct-field>
+    </field>
+    <field name="asf1">
+      <item>
+        <struct-field name="as1">
+          <item>per</item>
+          <item>paal</item>
+        </struct-field>
+        <struct-field name="l1">1122334455667788994</struct-field>
+        <struct-field name="d1">74.79</struct-field>
+        <struct-field name="i1">14</struct-field>
+        <struct-field name="s1">string españa asf1[0].s1</struct-field>
+        <struct-field name="al1">
+          <item>11223344556677881</item>
+          <item>11223344556677883</item>
+        </struct-field>
+      </item>
+      <item>
+        <struct-field name="as1">
+          <item>per</item>
+          <item>paal</item>
+        </struct-field>
+        <struct-field name="d1">75.79</struct-field>
+        <struct-field name="i1">15</struct-field>
+        <struct-field name="s1">string españa asf1[1].s1</struct-field>
+        <struct-field name="al1">
+          <item>11223344556677881</item>
+          <item>11223344556677883</item>
+        </struct-field>
+        <struct-field name="l1">1122334455667788995</struct-field>
+      </item>
+    </field>
+    <field name="wssf1">
+      <item weight="10">
+        <struct-field name="as1">
+          <item>per</item>
+          <item>paal</item>
+        </struct-field>
+        <struct-field name="d1">87.79</struct-field>
+        <struct-field name="i1">7</struct-field>
+        <struct-field name="s1">string españa wssf1.s1[0]</struct-field>
+        <struct-field name="al1">
+          <item>11223344556677881</item>
+          <item>11223344556677883</item>
+        </struct-field>
+        <struct-field name="l1">1122334455667788997</struct-field>
+      </item>
+      <item weight="20">
+        <struct-field name="as1">
+          <item>per</item>
+          <item>paal</item>
+        </struct-field>
+        <struct-field name="d1">88.79</struct-field>
+        <struct-field name="i1">8</struct-field>
+        <struct-field name="s1">string españa wssf1.s1[1]</struct-field>
+        <struct-field name="al1">
+          <item>11223344556677881</item>
+          <item>11223344556677883</item>
+        </struct-field>
+        <struct-field name="l1">1122334455667788998</struct-field>
+      </item>
+    </field>
+    <field name="documentid">id:structtest:structtest:n=1:0</field>
+  </hit>
+</result>

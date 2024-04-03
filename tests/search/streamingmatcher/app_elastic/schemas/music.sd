@@ -1,0 +1,75 @@
+# Copyright 2019 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search music {
+
+  field doctime type long {
+    indexing: input doctime_orig | now | summary | attribute
+  }
+
+  field phrase type string {
+    indexing:  input artist . " : " . input title | summary | index
+  }
+
+  field randomdouble type double {
+    indexing: if ( input randomdouble_orig < 10.5 )  { input randomdouble_orig * 10 | summary  | attribute } else { input randomdouble_orig | summary | attribute }
+  }
+
+  field popularity type int {
+    indexing: input year - 1000 | attribute | summary
+  }
+
+  field rating type string {
+    indexing: input rating_orig | lowercase | summary | attribute | index
+  }
+
+  fieldset default {
+    fields: tracks, title
+  }
+
+  document music {
+
+    field artist type array<string> {
+      indexing: summary | index
+    }
+
+
+    field url type uri {
+      indexing: summary | index
+    }
+
+    field tracks type weightedset<string> {
+      indexing: summary | index
+    }
+
+    field title type string {
+      indexing: summary | index
+      weight: 75
+    }
+
+
+    field year type int {
+      indexing: summary | attribute
+    }
+
+    field genre type tag {
+      indexing: attribute | summary
+    }
+
+    field body type string { }
+    field randomdouble_orig type double { }
+    field doctime_orig type long { }
+    field rating_orig type string { }
+  }
+
+  rank-profile rank1 {
+    first-phase {
+        expression : $EXPR
+    }
+
+    rank-properties{
+        elementCompleteness(tracks).fieldCompletenessImportance : .5
+    }
+
+    summary-features: elementCompleteness(tracks).fieldCompleteness elementCompleteness(tracks).queryCompleteness elementCompleteness(tracks).completeness elementCompleteness(tracks).elementWeight
+  }
+
+}

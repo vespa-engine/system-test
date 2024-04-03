@@ -1,0 +1,181 @@
+  <document type="books" id="id:books:books::http://books.yahoo.com/aynrand/Fountainhead">
+    <title>The Fountainhead</title>
+    <author>Ayn Rand</author>
+    <pages>8888888888888888888</pages>
+    <grade>10</grade>
+    <price>30</price>
+    <genre>
+        <item weight="2">fiction</item>
+        <item wieght="1">architecture</item>
+    </genre>
+    <year>1957</year>
+    <popularity>500</popularity>
+    <randomFloat>12.45</randomFloat>
+  </document>
+
+  <document type="books" id="id:books:books::http://books.yahoo.com/aynrand/BestOf">
+    <title>Atlas Shrugged</title>
+    <author>Ayn Rand</author>
+    <pages>9223372036854775807</pages>
+    <grade>20</grade>
+    <price>20.5</price>
+    <genre>
+        <item weight="2">fiction</item>
+        <item wieght="1">collection</item>
+    </genre>
+    <year>2001</year>
+    <popularity>100</popularity>
+    <randomFloat>12.45</randomFloat>
+  </document>
+
+  <document type="books" id="id:books:books::http://books.yahoo.com/vikramseth/GoldenGate">
+    <title>The Golden Gate</title>
+    <author>Vikram Seth Ran</author>
+    <pages>3333333333333333333</pages>
+    <grade>30</grade>
+    <price>30.52</price>
+    <genre>
+        <item weight="2">poetry</item>
+        <item wieght="1">indian</item>
+    </genre>
+    <year>1997</year>
+    <popularity>400</popularity>
+    <randomFloat>12</randomFloat>
+  </document>
+
+  <document type="books" id="id:books:books::http://books.yahoo.com/thomashardy/Caterbridge">
+    <title>The Mayor of Casterbridge</title>
+    <author>Thomas Hardy</author>
+    <pages>444</pages>
+    <grade>10</grade>
+    <price>30</price>
+    <genre>
+        <item weight="2">fiction</item>
+        <item wieght="1">tragedy</item>
+    </genre>
+    <year>1857</year>
+    <popularity>500</popularity>
+    <randomFloat>12.45</randomFloat>
+  </document>
+
+  <document type="books" id="id:books:books::http://books.yahoo.com/bulgakov/margherita">
+    <title>The Master and his Margherita</title>
+    <author>Mikhail Bulgakov</author>
+    <pages>723</pages>
+    <grade>20</grade>
+    <price>20.5</price>
+    <genre>
+        <item weight="2">fiction</item>
+        <item wieght="1">collection</item>
+    </genre>
+    <year>2001</year>
+    <popularity>100</popularity>
+    <randomFloat>12.45</randomFloat>
+  </document>
+
+  <document type="books" id="id:books:books::http://books.yahoo.com/dostoevsky/idiot">
+    <title>The Idiot</title>
+    <author>Fyodor Dostoevsky</author>
+    <pages>855</pages>
+    <grade>30</grade>
+    <price>30.52</price>
+    <genre>
+        <item weight="2">poetry</item>
+        <item wieght="1">indian</item>
+    </genre>
+    <year>1997</year>
+    <popularity>400</popularity>
+    <randomFloat>12</randomFloat>
+  </document>
+
+
+  <document type="books" id="id:books:books::http://books.yahoo.com/dostoevsky/brothers">
+    <title>The Brother's Karamazov</title>
+    <author>Fyodor Dostoevsky</author>
+    <pages>700</pages>
+    <grade>10</grade>
+    <price>30</price>
+    <genre>
+        <item weight="2">fiction</item>
+        <item wieght="1">architecture</item>
+    </genre>
+    <year>1957</year>
+    <popularity>500</popularity>
+    <randomFloat>12.45</randomFloat>
+  </document>
+
+  <document type="books" id="id:books:books::http://books.yahoo.com/murakami/norwegianwood">
+    <title>Norwegian Wood</title>
+    <author>Murakami</author>
+    <pages>540</pages>
+    <grade>20</grade>
+    <price>20.5</price>
+    <genre>
+        <item weight="2">fiction</item>
+        <item wieght="1">collection</item>
+    </genre>
+    <year>2001</year>
+    <popularity>100</popularity>
+    <randomFloat>12.45</randomFloat>
+  </document>
+
+  <document type="books" id="id:books:books::http://books.yahoo.com/wodehouse/laughinggas">
+    <title>Laughing Gas</title>
+    <author>P.G. Wodehouse</author>
+    <pages>233</pages>
+    <grade>30</grade>
+    <price>30.52</price>
+    <genre>
+        <item weight="2">poetry</item>
+        <item wieght="1">indian</item>
+    </genre>
+    <year>1997</year>
+    <popularity>400</popularity>
+    <randomFloat>12</randomFloat>
+  </document>
+
+
+  <document type="books" id="id:books:books::http://books.yahoo.com/agassi/open">
+    <title>Open</title>
+    <author>Andre Agassi</author>
+    <pages>8888888888888888888</pages>
+    <grade>10</grade>
+    <price>30</price>
+    <genre>
+        <item weight="2">fiction</item>
+        <item wieght="1">architecture</item>
+    </genre>
+    <year>1957</year>
+    <popularity>500</popularity>
+    <randomFloat>12.45</randomFloat>
+  </document>
+
+  <document type="books" id="id:books:books::http://books.yahoo.com/jeromekjerome/3meninaboat">
+    <title>3 Men In a Boat</title>
+    <author>Jerome K. Jerome</author>
+    <pages>154</pages>
+    <grade>20</grade>
+    <price>20.5</price>
+    <genre>
+        <item weight="2">fiction</item>
+        <item wieght="1">collection</item>
+    </genre>
+    <year>2001</year>
+    <popularity>100</popularity>
+    <randomFloat>12.45</randomFloat>
+  </document>
+
+  <document type="books" id="id:books:books::http://books.yahoo.com/jdsalinger/catcherintherye">
+    <title>The Catcher In the Rye</title>
+    <author>J.D. Salinger</author>
+    <pages>233</pages>
+    <grade>30</grade>
+    <price>30.52</price>
+    <genre>
+        <item weight="2">poetry</item>
+        <item wieght="1">indian</item>
+    </genre>
+    <year>1997</year>
+    <popularity>400</popularity>
+    <randomFloat>12</randomFloat>
+  </document>

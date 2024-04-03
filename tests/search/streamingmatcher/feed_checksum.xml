@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<vespafeed>
+      <document type="musicsearch" id="id:mail:musicsearch:n=1234:barmuda">
+		<flags>
+                   <item>82</item>
+                   <item>87</item>
+                   <item>65</item>
+                </flags>
+		<folder>32</folder>
+      </document>
+</vespafeed>
+
+
