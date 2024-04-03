@@ -25,9 +25,9 @@ class VisitNullValues < IndexedStreamingSearchTest
     expected_fields_with_null_value = is_streaming ? 9 : 10
     assert_visit_null('test.integer_attribute', expected_fields_with_null_value)
     assert_visit_null('test.string_index', 10)
-    assert_visit_null('test.string_attribute', expected_fields_with_null_value)
-    assert_visit_null('test.string_array_index', 9)
-    assert_visit_null('test.string_array_attribute', 9)
+    assert_visit_null('test.string_attribute', 10)
+    assert_visit_null('test.string_array_index', 10)
+    assert_visit_null('test.string_array_attribute', 10)
   end
 
   def assert_visit_null(field, null_count)
