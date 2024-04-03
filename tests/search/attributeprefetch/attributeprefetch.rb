@@ -16,7 +16,7 @@ class AttributePrefetch < IndexedOnlySearchTest
   end
 
   def test_attributeprefetch
-    feed_and_wait_for_docs("attr", 1, :file => selfdir+"attr.xml")
+    feed_and_wait_for_docs("attr", 1, :file => selfdir+"attr.json")
     3.times do
       result = search("/?query=x")
       assert (result.xmldata.include? "TEST SEARCHER: OK")
