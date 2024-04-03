@@ -11,7 +11,7 @@ class FieldSets < IndexedStreamingSearchTest
   def test_fieldset_search
     deploy_app(SearchApp.new.sd(selfdir+"fieldsets.sd"))
     start
-    feed_and_wait_for_docs("fieldsets", 4, :file => selfdir+"fieldsets.xml")
+    feed_and_wait_for_docs("fieldsets", 4, :file => selfdir+"fieldsets.json")
     assert_hitcount("fs1:se", 4)
     assert_hitcount("fs1:%22test se 2%22", 1)
     assert_hitcount("fs1:sf", 4)
