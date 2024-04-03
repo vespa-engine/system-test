@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:simple::4","fields":{"array_1":["1000","3000 test"],"array_3":["1000","3000 test"],"brand_name":"nike"}},
+  {"id":"id:test:simple::3","fields":{"array_1":["1000","3000@test"],"array_3":["1000","3000@test"],"brand_name":"adidas nike"}}
+]
