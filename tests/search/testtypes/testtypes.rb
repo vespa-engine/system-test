@@ -20,7 +20,7 @@ class TestTypes < IndexedStreamingSearchTest
 
   def run_test(expected)
     doc_id = "id:test:typetest::http://this-is-a-host.com/path_name"
-    feed_and_wait_for_docs("typetest", 1, :file => selfdir + "testtypes.1.xml")
+    feed_and_wait_for_docs("typetest", 1, :file => selfdir + "testtypes.1.json")
     verify(expected)
     doc = vespa.document_api_v1.get(doc_id)
     vespa.document_api_v1.put(doc)

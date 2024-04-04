@@ -1,0 +1,3 @@
+[
+  {"id":"id:test:typetest::http://this-is-a-host.com/path_name","fields":{"rawfield":"dGhpcyBpcyByYXcgZGF0YQ==","doublefield":1975.181987234561,"intfield":1807,"boolfield":true,"floatfield":1975.18,"stringfield":"This is-a little STRING","urlfield":"http://this-is-a-host.com/path_name","ematchfield":"this HAS to be like this","longfield":10098765432100,"timefield":1087203341,"bytefield":37}}
+]
