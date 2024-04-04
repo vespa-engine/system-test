@@ -11,7 +11,7 @@ class ArrayMatching < IndexedStreamingSearchTest
   def test_array_match
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 5, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("test", 5, :file => selfdir + "feed.json")
     assert_hitcount("/search/?yql=select%20%2A%20from%20sources%20%2A%20where%20IDs%20contains%20%221%22%20AND%20IDs%20contains%20%225%22%3B", 1)
     assert_hitcount("/search/?yql=select%20%2A%20from%20sources%20%2A%20where%20IDs%20contains%20%221%22%20OR%20IDs%20contains%20%225%22%3B", 5)
     assert_hitcount("/?query=IDs:1%20IDs:5&type=all", 1)
