@@ -12,7 +12,7 @@ class PartialUpdateIllegalOperations < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "dbzero.sd"))
     start
 
-    feed_and_wait_for_docs("dbzero", 1, :file => selfdir + "dbzero-feed.xml")
+    feed_and_wait_for_docs("dbzero", 1, :file => selfdir + "dbzero-feed.json")
 
     query = "query=sddocname:dbzero"
     srf = selfdir + "dbzero-result.json"
@@ -21,7 +21,7 @@ class PartialUpdateIllegalOperations < IndexedStreamingSearchTest
     wait_for_hitcount(query, 1)
     assert_result(query, srf, nil, ftc)
 
-    output = feedfile(selfdir + "dbzero-update.xml", :exceptiononfailure => false, :stderr => true)
+    output = feedfile(selfdir + "dbzero-update.json", :exceptiononfailure => false, :stderr => true)
 
     assert_output(output, "Division by zero")
 
