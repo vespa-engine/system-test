@@ -1,0 +1,12 @@
+[
+  {"id":"id:test:errordoc::http://shopping.yahoo.com/shop?d=hab&id=1804905709","fields":{"srank":1003,"b64field":"zcIoHQ","skey":"foo#3:bar#10","id":"Blues","intfield":"1000","hexfield":"FFFF"}},
+  {"id":"id:test:errordoc::http://shopping.yahoo.com/shop?d=hab&id=1804905710","fields":{"id":"Chicago Blues"}},
+  {"id":"id:test:errordoc::http://shopping.yahoo.com/shop?d=hab&id=1804905711","fields":{"skey":"foobar","id":"Classic Female Blues"}},
+  {"id":"id:test:errordoc::http://shopping.yahoo.com/shop?d=hab&id=1804905712","fields":{"skey":"foo#3:bar","id":"Contemporary Blues"}},
+  {"id":"id:test:errordoc::http://shopping.yahoo.com/shop?d=hab&id=1804905713","fields":{"srank":1003,"b64field":"A@@~~~*","skey":"foo#3:bar#10","id":"Country Blues","intfield":"1000"}},
+  {"id":"id:test:errordoc::http://shopping.yahoo.com/shop?d=hab&id=1804905714","fields":{"srank":1003,"skey":"foo#3:bar#10","id":"Delta Blues","intfield":"1000","hexfield":"ziggystardusthex"}},
+  {"id":"id:test:errordoc::http://shopping.yahoo.com/shop?d=hab&id=1807865251","fields":{"id":"East Coast Blues","intfield":"foobar"}},
+  {"id":"id:test:errordoc::http://shopping.yahoo.com/shop?d=hab&id=1807865261","fields":{"intfield2":"foobar","id":"Electric Blues"}},
+  {"id":"id:test:errordoc::http://shopping.yahoo.com/shop?d=hab&id=1807865263","fields":{"id":"Louisiana Blues"}},
+  {"id":"id:test:errordoc::http://shopping.yahoo.com/shop?d=hab&id=1807865264","fields":{"id":"Modern Electric Blues"}}
+]
