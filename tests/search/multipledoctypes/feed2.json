@@ -1,0 +1,15 @@
+[
+  {"id":"id:book:book::0","fields":{"pages":1312,"title":"Introduction to Algorithms, Second Edition","year":2001,"author":"Thomas H. Cormen","rating":8}},
+  {"id":"id:book:book::1","fields":{"pages":832,"title":"The C++ Standard Library: A Tutorial and Reference","year":1999,"author":"Nicolai M. Josuttis","rating":9}},
+  {"id":"id:book:book::2","fields":{"pages":416,"title":"Design Patterns: Elements of Reusable Object-Oriented Software","year":1994,"author":"Erich Gamma","rating":9}},
+  {"id":"id:book:book::3","fields":{"pages":464,"title":"Clean Code: A Handbook of Agile Software Craftsmanship","year":2008,"author":"Robert C. Martin","rating":8}},
+  {"id":"id:book:book::4","fields":{"pages":224,"title":"Sly Moves: My Proven Program to Lose Weight, Build Strength, Gain Will Power, and Live your Dream","year":2005,"author":"Sylvester Stallone","rating":9}},
+  {"id":"id:music:music::0","fields":{"artist":"Metallica","title":"...And Justice For All","year":1988,"rating":10}},
+  {"id":"id:music:music::1","fields":{"artist":"Iron Maiden","title":"Run To The Hills","year":1982,"rating":8}},
+  {"id":"id:music:music::2","fields":{"artist":"ACDC","title":"For Those About To Rock (We Salute You)","year":1981,"rating":7}},
+  {"id":"id:music:music::3","fields":{"artist":"Turboneger","title":"Everybody Loves A Chubby Dude","year":2007,"rating":6}},
+  {"id":"id:video:video::0","fields":{"title":"The Expendables","year":2010,"rating":6,"director":"Sylvester Stallone"}},
+  {"id":"id:video:video::1","fields":{"title":"The Rock","year":1996,"rating":7,"director":"Michael Bay"}},
+  {"id":"id:video:video::2","fields":{"title":"Heat","year":1995,"rating":8,"director":"Michael Mann"}},
+  {"id":"id:video:video::3","fields":{"title":"Inglourious Basterds","year":2009,"rating":8,"director":"Quentin Tarantino"}}
+]
