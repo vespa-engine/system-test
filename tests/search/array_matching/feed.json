@@ -1,0 +1,7 @@
+[
+  {"id":"id:test:test::0","fields":{"IDs":[1,2,3,4,5]}},
+  {"id":"id:test:test::1","fields":{"IDs":[2,3,4,5]}},
+  {"id":"id:test:test::2","fields":{"IDs":[3,4,5]}},
+  {"id":"id:test:test::3","fields":{"IDs":[4,5]}},
+  {"id":"id:test:test::4","fields":{"IDs":[5]}}
+]
