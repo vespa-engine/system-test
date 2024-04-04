@@ -14,7 +14,7 @@ class DistanceToPath < IndexedStreamingSearchTest
   end
 
   def test_basics
-    feed_and_wait_for_docs("local", 2, :file => "#{selfdir}/basics.xml")
+    feed_and_wait_for_docs("local", 2, :file => "#{selfdir}/basics.json")
     assert_hitcount("query=sddocname:local", 2)
     assert_hitcount("query=one", 1)
     assert_hitcount("query=two", 1)
@@ -52,7 +52,7 @@ class DistanceToPath < IndexedStreamingSearchTest
   end
 
   def test_advanced
-    feed_and_wait_for_docs("local", 4, :file => "#{selfdir}/advanced.xml");
+    feed_and_wait_for_docs("local", 4, :file => "#{selfdir}/advanced.json");
     assert_hitcount("query=sddocname:local", 4);
     assert_hitcount("query=a", 1);
     assert_hitcount("query=b", 1);

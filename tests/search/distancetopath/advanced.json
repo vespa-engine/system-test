@@ -1,0 +1,6 @@
+[
+  {"id":"id:local:local::0","fields":{"title":"A","gps":[{"lat":0.000002,"lng":0.000005}]}},
+  {"id":"id:local:local::1","fields":{"title":"B","gps":[{"lat":0.000003,"lng":0.000006}]}},
+  {"id":"id:local:local::2","fields":{"title":"C","gps":[{"lat":0.0,"lng":0.000015},{"lat":0.000002,"lng":0.000015}]}},
+  {"id":"id:local:local::3","fields":{"title":"D","gps":[{"lat":0.000001,"lng":0.00002}]}}
+]
