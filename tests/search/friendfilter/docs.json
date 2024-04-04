@@ -1,0 +1,16 @@
+[
+  {"id":"id:friendslist:friendslist::doc1","fields":{"friends":{"havardpe":3,"yngve":1,"bergum":2},"me":"arnej"}},
+  {"id":"id:friendslist:friendslist::doc2","fields":{"friends":{"fangirl5":1,"fangirl6":1,"tv":2,"fangirl3":1,"bff":3,"fangirl4":1,"fangirl1":1,"tabloids":2,"fangirl2":1,"magazines":2,"fangirl7":1},"me":"paris hilton"}},
+  {"id":"id:blogpost:blogpost::techlist.1","fields":{"title":"foo bar","author":"havardpe","timestamp":1}},
+  {"id":"id:blogpost:blogpost::techlist.2","fields":{"title":"Re: foo bar","author":"arnej","timestamp":2}},
+  {"id":"id:blogpost:blogpost::techlist.3","fields":{"title":"Re: foo bar","author":"bergum","timestamp":3}},
+  {"id":"id:blogpost:blogpost::techlist.4","fields":{"title":"Re: Re: foo bar","author":"yngve","timestamp":4}},
+  {"id":"id:blogpost:blogpost::chat.1","fields":{"title":"omg! foo bar is so cool!","author":"fangirl1","timestamp":11}},
+  {"id":"id:blogpost:blogpost::chat.2","fields":{"title":"omg! foo bar is so uncool!","author":"fangirl2","timestamp":12}},
+  {"id":"id:blogpost:blogpost::chat.3","fields":{"title":"No way! (was: omg! foo bar is so uncool!)","author":"fangirl1","timestamp":13}},
+  {"id":"id:blogpost:blogpost::chat.4","fields":{"title":"omg! way! (was: omg! foo bar is so uncool!)","author":"fangirl7","timestamp":14}},
+  {"id":"id:blogpost:blogpost::chat.5","fields":{"title":"No ***ing way! (was: omg! way! (was: omg! foo bar is so uncool!))","author":"bff","timestamp":15}},
+  {"id":"id:blogpost:blogpost::chat.6","fields":{"title":"Paris Hilton's new BFF in fight with fangirls! Is foo bar cool or uncool?","author":"tabloid","timestamp":16}},
+  {"id":"id:blogpost:blogpost::chat.7","fields":{"title":"Paris Hilton's new BFF shows off her new look, fights with fangirls","author":"magazines","timestamp":17}},
+  {"id":"id:blogpost:blogpost::chat.8","fields":{"title":"Interview: Paris Hilton's talks about her new BFF,\n       denies rumours of fall-out over fight with fangirls about foo bar coolness","author":"tv","timestamp":18}}
+]

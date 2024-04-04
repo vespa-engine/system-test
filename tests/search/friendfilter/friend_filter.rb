@@ -25,7 +25,7 @@ class FriendFilter < IndexedOnlySearchTest
                search_chain(SearchChain.new.add(Searcher.new("com.yahoo.test.FriendFilterSearcher"))))
 
     start
-    feed(:file => selfdir+"casings.xml")
+    feed(:file => selfdir+"casings.json")
     wait_for_hitcount("sddocname:friendslist", 3)
     wait_for_hitcount("sddocname:blogpost", 12)
 
@@ -59,7 +59,7 @@ class FriendFilter < IndexedOnlySearchTest
                search_chain(SearchChain.new.add(Searcher.new("com.yahoo.test.FriendFilterSearcher"))))
 
     start
-    feed(:file => selfdir+"docs.xml")
+    feed(:file => selfdir+"docs.json")
     wait_for_hitcount("sddocname:friendslist", 2)
     wait_for_hitcount("sddocname:blogpost", 12)
 

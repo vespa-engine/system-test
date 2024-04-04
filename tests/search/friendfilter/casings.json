@@ -1,0 +1,17 @@
+[
+  {"id":"id:friendslist:friendslist::doc1","fields":{"friends":{"null":1},"me":"a1"}},
+  {"id":"id:friendslist:friendslist::doc2","fields":{"friends":{"NULL":2},"me":"b2"}},
+  {"id":"id:friendslist:friendslist::doc3","fields":{"friends":{"Null":3},"me":"c3"}},
+  {"id":"id:blogpost:blogpost::techlist.1","fields":{"title":"foo 1","author":"null","timestamp":1}},
+  {"id":"id:blogpost:blogpost::techlist.2","fields":{"title":"foo 2","author":"NULL","timestamp":2}},
+  {"id":"id:blogpost:blogpost::techlist.3","fields":{"title":"foo 3","author":"0","timestamp":3}},
+  {"id":"id:blogpost:blogpost::techlist.4","fields":{"title":"foo 4","author":"0","timestamp":4}},
+  {"id":"id:blogpost:blogpost::chat.1","fields":{"title":"foo 5","author":"0","timestamp":5}},
+  {"id":"id:blogpost:blogpost::chat.2","fields":{"title":"foo 6","author":"0","timestamp":6}},
+  {"id":"id:blogpost:blogpost::chat.3","fields":{"title":"bar 7","author":"null","timestamp":7}},
+  {"id":"id:blogpost:blogpost::chat.4","fields":{"title":"bar 8","author":"NULL","timestamp":8}},
+  {"id":"id:blogpost:blogpost::chat.5","fields":{"title":"bar 9","author":"0","timestamp":9}},
+  {"id":"id:blogpost:blogpost::chat.6","fields":{"title":"bar 10","author":"0","timestamp":10}},
+  {"id":"id:blogpost:blogpost::chat.7","fields":{"title":"bar 11","author":"0","timestamp":11}},
+  {"id":"id:blogpost:blogpost::chat.8","fields":{"title":"bar 12","author":"nUlL","timestamp":12}}
+]
