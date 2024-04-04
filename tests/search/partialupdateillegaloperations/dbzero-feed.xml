@@ -1,6 +1,0 @@
-<document documenttype="dbzero" documentid="id:test/test:dbzero::0">
-    <sint>100</sint>
-    <sfloat>100.0</sfloat>
-    <wsint><item weight="100">100</item></wsint>
-    <wsstr><item weight="100">string</item></wsstr>
-</document>

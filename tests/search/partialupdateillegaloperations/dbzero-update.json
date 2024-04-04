@@ -1,0 +1,6 @@
+[
+  {"update":"id:test/test:dbzero::0","fields":{"sint":{"divide":0.0}}},
+  {"update":"id:test/test:dbzero::0","fields":{"sfloat":{"divide":0.0}}},
+  {"update":"id:test/test:dbzero::0","fields":{"wsint":{"match":{"element":100,"divide":0.0}}}},
+  {"update":"id:test/test:dbzero::0","fields":{"wsstr":{"match":{"element":"string","divide":0.0}}}}
+]

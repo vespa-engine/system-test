@@ -1,0 +1,3 @@
+[
+  {"id":"id:test/test:dbzero::0","fields":{"sint":100,"sfloat":100.0,"wsstr":{"string":100},"wsint":{"100":100}}}
+]
