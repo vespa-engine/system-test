@@ -1,0 +1,5 @@
+[
+  {"id":"id:test:simple::http://vespa.yahoo.com/?query=a","fields":{"id":"a","marker":"all"}},
+  {"id":"id:test:simple::http://vespa.yahoo.com/?query=b","fields":{"id":"b","marker":"all"}},
+  {"id":"id:test:simple::http://vespa.yahoo.com/?query=c","fields":{"id":"c","marker":"all"}}
+]

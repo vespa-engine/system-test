@@ -15,7 +15,7 @@ class DupRemove < IndexedStreamingSearchTest
                          cluster(SearchCluster.new("simple2").
                                                sd(selfdir+"simple.sd")))
     start
-    feed_and_wait_for_docs("simple", 6, :file => selfdir + "simple.3.xml", :clusters => ["simple1", "simple2"])
+    feed_and_wait_for_docs("simple", 6, :file => selfdir + "simple.3.json", :clusters => ["simple1", "simple2"])
   end
 
   def test_blendingdupremove
