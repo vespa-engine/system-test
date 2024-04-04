@@ -14,7 +14,6 @@ class CheckAutoRestart < IndexedStreamingSearchTest
     vespa.nodeproxies.each_value do |node|
       @ps[app][node.name] = Hash.new
       pids = node.kill_process(app)
-      puts(node.execute("ps auxwww")) if pids.empty?  #TODO: Remove. Only for debug.
       raise "Unable to kill #{app}" if pids.empty?
       pids.each do |pid|
         @ps[app][node.name][pid] = true
@@ -78,7 +77,7 @@ class CheckAutoRestart < IndexedStreamingSearchTest
     wait_for_application(vespa.container.values.first, output)
 
     puts "Feeding..."
-    feed_and_wait_for_docs("banana", 2, :file => selfdir+"feed1.xml")
+    feed_and_wait_for_docs("banana", 2, :file => selfdir+"feed1.json")
     wait_for_hitcount("query=sddocname:banana", 2);
   end
 
