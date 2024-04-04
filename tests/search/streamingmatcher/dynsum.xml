@@ -1,0 +1,52 @@
+<document type="dynsum" id="id:dynsum:dynsum:n=1:0">
+    <f1>
+        <item>a</item>
+        <item>b</item>
+        <item>xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz</item>
+        <item>a</item>
+        <item>b</item>
+    </f1>
+    <f2>
+        <item>
+            <s1>a</s1>
+            <s2>x</s2>
+        </item>
+        <item>
+            <s1>b</s1>
+            <s2>x</s2>
+        </item>
+        <item>
+            <s1>xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz</s1>
+            <s2>x</s2>
+        </item>
+        <item>
+            <s1>a</s1>
+            <s2>x</s2>
+        </item>
+        <item>
+            <s1>b</s1>
+            <s2>x</s2>
+        </item>
+    </f2>
+</document>
+<document type="dynsum" id="id:dynsum:dynsum:n=1:1">
+    <f1>
+        <item>x</item>
+        <item>y</item>
+        <item>z</item>
+    </f1>
+    <f2>
+        <item>
+            <s1>x</s1>
+            <s2>x</s2>
+        </item>
+        <item>
+            <s1>y</s1>
+            <s2>y</s2>
+        </item>
+        <item>
+            <s1>z</s1>
+            <s2>z</s2>
+        </item>
+    </f2>
+</document>

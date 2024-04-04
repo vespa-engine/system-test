@@ -1,0 +1,31 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search sortaggr {
+  document sortaggr {
+    struct st1 {
+      field s1 type string { }
+      field i1 type int { }
+    }
+    struct st2 {
+      field s1 type string { }
+    }
+    struct st3 {
+      field u1 type st1 {}
+      field u2 type st2 {}
+    }
+    field f1 type st1 {
+      indexing: index | summary
+    }
+    field f2 type array<st2> {
+      indexing: index | summary
+    }
+    field f3 type array<string> {
+      indexing: index | summary
+    }
+    field f4 type int {
+      indexing: index | summary
+    }
+    field f5 type st3 {
+      indexing: index | summary
+    }
+  }
+}

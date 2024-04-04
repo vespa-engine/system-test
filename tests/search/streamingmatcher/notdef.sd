@@ -1,0 +1,23 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search notdef {
+  document notdef {
+    field f1 type byte {
+      indexing: index | summary
+    }
+    field f2 type int {
+      indexing: index | summary
+    }
+    field f3 type long {
+      indexing: index | summary
+    }
+    field f4 type float {
+      indexing: index | summary
+    }
+    field f5 type double {
+      indexing: index | summary
+    }
+    field f6 type string {
+      indexing: index | summary
+    }
+  }
+}

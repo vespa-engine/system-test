@@ -1,0 +1,82 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search structtest {
+  document structtest {
+    struct ss1 {
+      field s1 type string { }
+      field l1 type long { }
+      field i1 type int { }
+      field d1 type double { }
+      field as1 type array<string> { }
+      field al1 type array<long> { }
+    }
+    struct ss2 {
+      field nss1 type ss1 { }
+      field s2 type string { }
+    }
+    field ssf1 type ss1 {
+      indexing: index | summary
+    }
+    field ssf2 type ss1 {
+      indexing: index
+    }
+    field ssf4 type ss1 {
+      struct-field s1 {
+        indexing: index
+      }
+      struct-field l1 {
+        indexing: index
+      }
+      struct-field i1 {
+        indexing: summary
+      }
+      struct-field d1 {
+        indexing: index | summary
+        summary: dynamic
+      }
+      struct-field as1 {
+        indexing: index | summary
+      }
+      struct-field al1 {
+        indexing: summary
+      }
+    }
+    field ssf5 type ss2 {
+      indexing: index | summary
+    }
+    field ssf6 type ss2 {
+      indexing: index
+    }
+    field ssf8 type ss2 {
+      struct-field nss1 {
+        struct-field s1 {
+          indexing: index
+        }
+        struct-field l1 {
+          indexing: index
+        }
+        struct-field i1 {
+          indexing: summary
+        }
+        struct-field d1 {
+          indexing: index | summary
+        }
+        struct-field as1 {
+          indexing: index | summary
+        }
+        struct-field al1 {
+          indexing: summary
+        }
+      }
+      struct-field s2 {
+        indexing: index | summary
+      }
+    }
+
+    field asf1 type array<ss1> {
+        indexing: index | summary
+    }
+    field asf2 type array<ss1> {
+        indexing: index
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 2
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:dynsum:dynsum:n=1:0",
+                "relevance": 0.0,
+                "source": "search.dynsum",
+                "fields": {
+                    "sddocname": "dynsum",
+                    "sum1": "a<sep />b<sep />xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz<sep />a<sep />b<sep />a<sep />b<sep />xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz<sep />",
+                    "documentid": "id:dynsum:dynsum:n=1:0",
+                    "sum2": "a b xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz a b a b xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz a b",
+                    "f1": [
+                        "a",
+                        "b",
+                        "xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz",
+                        "a",
+                        "b"
+                    ],
+                    "f2": [
+                        {
+                            "s2": "x",
+                            "s1": "a"
+                        },
+                        {
+                            "s2": "x",
+                            "s1": "b"
+                        },
+                        {
+                            "s2": "x",
+                            "s1": "xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz"
+                        },
+                        {
+                            "s2": "x",
+                            "s1": "a"
+                        },
+                        {
+                            "s2": "x",
+                            "s1": "b"
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "id:dynsum:dynsum:n=1:1",
+                "relevance": 0.0,
+                "source": "search.dynsum",
+                "fields": {
+                    "sddocname": "dynsum",
+                    "sum1": "x<sep />y<sep />z<sep />x<sep />y<sep />z",
+                    "documentid": "id:dynsum:dynsum:n=1:1",
+                    "sum2": "x y z x y z",
+                    "f1": [
+                        "x",
+                        "y",
+                        "z"
+                    ],
+                    "f2": [
+                        {
+                            "s2": "x",
+                            "s1": "x"
+                        },
+                        {
+                            "s2": "y",
+                            "s1": "y"
+                        },
+                        {
+                            "s2": "z",
+                            "s1": "z"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,8 @@
+<document type="phrase" id="id:phrase:phrase:n=1:0">
+    <f1>a b</f1>
+    <f2>c d e f</f2>
+</document>
+<document type="phrase" id="id:phrase:phrase:n=1:1">
+    <f1>a x b</f1>
+    <f2>c x d x e x f</f2>
+</document>

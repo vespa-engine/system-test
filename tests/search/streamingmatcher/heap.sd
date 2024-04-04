@@ -1,0 +1,19 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search heap {
+  fieldset default {
+    fields: f1
+  }
+  document heap {
+    field f1 type int {
+      indexing: index | summary
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: 10 * attribute(f1)
+    }
+    summary-features: attribute(f1)
+    ignore-default-rank-features
+    rank-features: attribute(f1)
+  }
+}

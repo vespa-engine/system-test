@@ -1,0 +1,28 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search dynsum {
+  fieldset default {
+    fields: f1, f2
+  }
+  document dynsum {
+    struct sct {
+      field s1 type string {}
+      field s2 type string {}
+    }
+    field f1 type array<string> {
+      indexing: index | summary f1
+      summary-to: default
+    }
+    field f2 type array<sct> {
+      indexing: index | summary f2
+    }
+  }
+  document-summary default {
+    summary sum1 {
+      source: f1, f2.s1
+      dynamic
+    }
+    summary sum2 {
+      source: f1, f2.s1
+    }
+  }
+}

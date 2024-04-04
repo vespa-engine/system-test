@@ -1,0 +1,122 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search manyfields {
+  fieldset default {
+    fields: f1, f2, f3, f4, f30, f31, f32, f33
+  }
+  document manyfields {
+    field f1 type string {
+      indexing: index | summary
+    }
+    field f2 type string {
+      indexing: index | summary
+    }
+    field f3 type string {
+      indexing: index | summary
+    }
+    field f4 type string {
+      indexing: index | summary
+    }
+    field f5 type string {
+      indexing: index | summary
+    }
+    field f6 type string {
+      indexing: index | summary
+    }
+    field f7 type string {
+      indexing: index | summary
+    }
+    field f8 type string {
+      indexing: index | summary
+    }
+    field f9 type string {
+      indexing: index | summary
+    }
+    field f10 type string {
+      indexing: index | summary
+    }
+    field f11 type string {
+      indexing: index | summary
+    }
+    field f12 type string {
+      indexing: index | summary
+    }
+    field f13 type string {
+      indexing: index | summary
+    }
+    field f14 type string {
+      indexing: index | summary
+    }
+    field f15 type string {
+      indexing: index | summary
+    }
+    field f16 type string {
+      indexing: index | summary
+    }
+    field f17 type string {
+      indexing: index | summary
+    }
+    field f18 type string {
+      indexing: index | summary
+    }
+    field f19 type string {
+      indexing: index | summary
+    }
+    field f20 type string {
+      indexing: index | summary
+    }
+    field f21 type string {
+      indexing: index | summary
+    }
+    field f22 type string {
+      indexing: index | summary
+    }
+    field f23 type string {
+      indexing: index | summary
+    }
+    field f24 type string {
+      indexing: index | summary
+    }
+    field f25 type string {
+      indexing: index | summary
+    }
+    field f26 type string {
+      indexing: index | summary
+    }
+    field f27 type string {
+      indexing: index | summary
+    }
+    field f28 type string {
+      indexing: index | summary
+    }
+    field f29 type string {
+      indexing: index | summary
+    }
+    field f30 type string {
+      indexing: index | summary
+    }
+    field f31 type string {
+      indexing: index | summary
+    }
+    field f32 type string {
+      indexing: index | summary
+    }
+    field f33 type string {
+      indexing: index | summary
+    }
+  }
+
+  rank-profile sf {
+    summary-features {
+      fieldTermMatch(f1,0).firstPosition
+      fieldTermMatch(f2,0).firstPosition
+      fieldTermMatch(f3,0).firstPosition
+      fieldTermMatch(f4,0).firstPosition
+      fieldTermMatch(f5,0).firstPosition
+      fieldTermMatch(f29,0).firstPosition
+      fieldTermMatch(f30,0).firstPosition
+      fieldTermMatch(f31,0).firstPosition
+      fieldTermMatch(f32,0).firstPosition
+      fieldTermMatch(f33,0).firstPosition
+    }
+  }
+}

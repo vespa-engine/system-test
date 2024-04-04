@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="1">
+  <hit type="summary" relevancy="0" source="StreamingSearcher">
+    <field name="uri">id:notdef:notdef:n=1:0</field>
+    <field name="relevancy">0</field>
+    <field name="sddocname">notdef</field>
+    <field name="documentid">id:notdef:notdef:n=1:0</field>
+  </hit>
+</result>

@@ -1,0 +1,22 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search attrrank {
+  document attrrank {
+    field si type int {
+      indexing: attribute | summary
+    }
+    field sf type float {
+      indexing: attribute | summary
+    }
+    field ss type string {
+      indexing: attribute | summary
+    }
+  }
+
+  rank-profile sf {
+    summary-features {
+      attribute(si)
+      attribute(sf)
+      attribute(ss)
+    }
+  }
+}

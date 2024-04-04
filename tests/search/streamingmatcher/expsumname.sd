@@ -1,0 +1,23 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search expsumname {
+  document expsumname {
+    field flong type long {
+      indexing: index | summary
+      summary slong {
+        source: flong
+      }
+    }
+    field fdouble type double {
+      indexing: index | summary
+      summary sdouble {
+        source: fdouble
+      }
+    }
+    field fstring type string {
+      indexing: index | summary
+      summary sstring {
+        source: fstring
+      }
+    }
+  }
+}

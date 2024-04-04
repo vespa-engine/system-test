@@ -1,0 +1,59 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 2,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:dynsum:dynsum:n=1:0",
+                "relevance": 0.2070680757820479,
+                "source": "search.dynsum",
+                "fields": {
+                    "sddocname": "dynsum",
+                    "sum1": "a<sep />b<sep /><hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi><sep />a<sep />b<sep />a<sep />b<sep /><hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi> <hi>xyz</hi><sep />",
+                    "documentid": "id:dynsum:dynsum:n=1:0",
+                    "sum2": "a b xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz a b a b xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz a b",
+                    "f1": [
+                        "a",
+                        "b",
+                        "xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz",
+                        "a",
+                        "b"
+                    ],
+                    "f2": [
+                        {
+                            "s2": "x",
+                            "s1": "a"
+                        },
+                        {
+                            "s2": "x",
+                            "s1": "b"
+                        },
+                        {
+                            "s2": "x",
+                            "s1": "xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz"
+                        },
+                        {
+                            "s2": "x",
+                            "s1": "a"
+                        },
+                        {
+                            "s2": "x",
+                            "s1": "b"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,186 @@
+  <document type="music" id="id:music:music::music1">
+    <title>Best of Bob Dylan</title>
+    <artist>
+	<item>Bob Dylan</item>
+	<item>Bob</item>
+	<item>Dylan</item>
+    </artist>
+    <randomdouble_orig>10</randomdouble_orig>
+    <tracks>
+	<item weight="60">Blowin' in the Wind</item>
+	<item weight="40">Mr. Tambourine Man</item>
+    </tracks>
+    <genre>
+        <item weight="2">pop</item>
+        <item weight="1">collection</item>
+    </genre>
+    <year>1997</year>
+    <rating_orig>NOT BAD</rating_orig>
+  </document>
+
+  <document type="music" id="id:music:music::music2">
+    <title>Best of Metallica</title>
+    <artist>
+	<item>Metallica</item>
+    </artist>
+    <randomdouble_orig>10.5</randomdouble_orig>
+    <rating_orig>AWESOME</rating_orig>
+    <tracks>
+        <item weight="20">Don't tread on me</item>
+        <item weight="80">Enter Sandman</item>
+	<item weight="100">Redundant bla</item>
+    </tracks>
+    <genre>
+        <item weight="2">rock</item>
+        <item weight="1">collection</item>
+    </genre>
+    <year>2001</year>
+  </document>
+
+<document type="music" id="id:music:music::music3">
+    <title>Best of Nirvana</title>
+    <artist>
+        <item>Nirvana</item>
+	<item>random bla</item>
+    </artist>
+    <randomdouble_orig>10.8</randomdouble_orig>
+    <rating_orig>Amazing</rating_orig>
+    <tracks>
+        <item weight="60">Nevermind redundant</item>
+        <item weight="40">Unplugged redundant extra</item>
+    </tracks>
+    <genre>
+        <item weight="2">rock</item>
+        <item weight="1">kobain</item>
+    </genre>
+    <year>2997</year>
+  </document>
+
+  <document type="music" id="id:music:music::music4">
+    <title>Brothers in Arms</title>
+    <artist>
+	<item>Dire Straits</item>
+	<item>Dire</item>
+	<item>Straits</item>
+    </artist>
+    <randomdouble_orig>20.5</randomdouble_orig>
+    <rating_orig>good</rating_orig>
+    <tracks>
+        <item weight="20">Romeo or Juliet</item>
+        <item weight="80">Money For Nothing</item>
+	<item weight="30">Bla</item>
+    </tracks>
+    <genre>
+        <item weight="2">soft rock</item>
+        <item weight="1">alternative</item>
+    </genre>
+    <year>2001</year>
+  </document>
+
+  <document type="music" id="id:music:music::music5">
+    <title>Best of the Beatles</title>
+    <artist>
+        <item>Beatles</item>
+    </artist>
+    <rating_orig>Cool</rating_orig>
+    <tracks>
+        <item weight="60">Hey Jude</item>
+        <item weight="40">Yellow Submarine</item>
+	<item weight="70">Not a second time</item>
+    </tracks>
+    <genre>
+        <item weight="2">pop</item>
+        <item weight="1">collection</item>
+    </genre>
+    <year>1997</year>
+  </document>
+
+  <document type="music" id="id:music:music::music6">
+    <title>Parachutes</title>
+    <artist>
+        <item>Coldplay</item>
+    </artist>
+    <tracks>
+        <item weight="20">Yellow</item>
+        <item weight="80">Spies</item>
+    </tracks>
+    <randomdouble_orig>20</randomdouble_orig>
+    <rating_orig>Cool</rating_orig>
+    <genre>
+        <item weight="2">soft rock</item>
+        <item weight="1">collection</item>
+    </genre>
+    <year>2001</year>
+  </document>
+
+  <document type="music" id="id:music:music::music7">
+    <title>Greatest Hits</title>
+    <artist>
+        <item>Abba</item>
+    </artist>
+    <tracks>
+        <item weight="60">Dancing Queen</item>
+        <item weight="40">Mama Mia</item>
+    </tracks>
+    <genre>
+        <item weight="2">pop</item>
+        <item weight="1">collection</item>
+    </genre>
+  </document>
+
+  <document type="music" id="id:music:music::music8">
+    <title>Jagged Little Pill</title>
+    <artist>
+	<item>Alanis Morissette</item>
+	<item>Alanis</item>
+	<item>Morisette</item>
+    </artist>
+    <randomdouble_orig>-3</randomdouble_orig>
+    <rating_orig>AWESOME</rating_orig>
+    <tracks>
+        <item weight="20">Not the Doctor</item>
+        <item weight="80">Ironic</item>
+    </tracks>
+    <genre>
+        <item weight="2">rock</item>
+        <item weight="1">alternative</item>
+    </genre>
+    <year>2001</year>
+  </document>
+
+  <document type="music" id="id:music:music::music9">
+    <title>Under rug swept</title>
+    <artist>
+        <item>Alanis Morissette</item>
+        <item>Alanis</item>
+        <item>Morisette</item>
+    </artist>
+    <randomdouble_orig>0</randomdouble_orig>
+    <rating_orig></rating_orig>
+    <tracks>
+        <item weight="60">Under rug swept</item>
+        <item weight="40">Narcissist</item>
+    </tracks>
+    <genre>
+        <item weight="2">rock</item>
+        <item weight="1">alanis</item>
+    </genre>
+    <year>1997</year>
+  </document>
+
+  <document type="music" id="id:music:music::music10">
+    <title>Ten</title>
+    <artist>
+        <item>Pearl Jam</item>
+        <item>Pearl</item>
+        <item>Jam</item>
+    </artist>
+    <tracks>
+        <item weight="20">Black</item>
+        <item weight="80">Alive</item>
+    </tracks>
+    <genre>
+        <item weight="2">rock</item>
+        <item weight="1">collection</item>
+    </genre>
+  </document>
