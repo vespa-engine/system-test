@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:test::doc1","fields":{"text":"Used as the signalling word: 'running'."}},
+  {"id":"id:test:test::doc2","fields":{"text":"Contains the stem, run."}}
+]
