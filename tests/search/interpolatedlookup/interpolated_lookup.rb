@@ -25,7 +25,7 @@ class InterpolatedLookupTest < IndexedStreamingSearchTest
                       sd(selfdir+"sad.sd").
                       indexing("mycc")))
     start
-    feed_and_wait_for_docs("sad", 1, :file => selfdir+"feed-0.xml")
+    feed_and_wait_for_docs("sad", 1, :file => selfdir+"feed-0.json")
     query = { 'query' => 'title:foo' }
     # save_result(query, selfdir+"example/foo.xml")
     assert_xml_result_with_timeout(@@timeout, query, selfdir+"example/foo.xml")
@@ -76,7 +76,7 @@ class InterpolatedLookupTest < IndexedStreamingSearchTest
                       sd(selfdir+"sad.sd").
                       indexing("mycc")))
     start
-    feed_and_wait_for_docs("sad", 2, :file => selfdir+"feed-1.xml")
+    feed_and_wait_for_docs("sad", 2, :file => selfdir+"feed-1.json")
     assert_xml_result_with_timeout(@@timeout, { 'query' => 'title:foo' }, selfdir+"small/result.foo.xml")
     assert_xml_result_with_timeout(@@timeout, { 'query' => 'title:bar' }, selfdir+"small/result.bar.xml")
 
@@ -124,10 +124,10 @@ class InterpolatedLookupTest < IndexedStreamingSearchTest
     node.copy(selfdir + "gendata.c", dirs.tmpdir)
 
     tmp_bin_dir = node.create_tmp_bin_dir
-    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c -o #{tmp_bin_dir}/a.out && #{tmp_bin_dir}/a.out > feed-2.xml")
+    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c -o #{tmp_bin_dir}/a.out && #{tmp_bin_dir}/a.out > feed-2.json")
     puts "compile output: #{output}"
 
-    (exitcode, output) = execute(node, "vespa-feed-perf < #{dirs.tmpdir}/feed-2.xml")
+    (exitcode, output) = execute(node, "vespa-feed-perf < #{dirs.tmpdir}/feed-2.json")
     puts "feeder output: #{output}"
 
     wait_for_hitcount("sddocname:sad", 123456, 30)
