@@ -1,4 +1,4 @@
-  <document type="books" id="id:books:books::http://books.yahoo.com/aynrand/Fountainhead">
+  <document type="books" id="id:books:books::aynrand/Fountainhead">
     <title>The Fountainhead</title>
     <author>Ayn Rand</author>
     <pages>8888888888888888888</pages>
@@ -13,7 +13,7 @@
     <randomFloat>12.45</randomFloat>
   </document>
 
-  <document type="books" id="id:books:books::http://books.yahoo.com/aynrand/BestOf">
+  <document type="books" id="id:books:books::aynrand/BestOf">
     <title>Atlas Shrugged</title>
     <author>Ayn Rand</author>
     <pages>9223372036854775807</pages>
@@ -28,7 +28,7 @@
     <randomFloat>12.45</randomFloat>
   </document>
 
-  <document type="books" id="id:books:books::http://books.yahoo.com/vikramseth/GoldenGate">
+  <document type="books" id="id:books:books::vikramseth/GoldenGate">
     <title>The Golden Gate</title>
     <author>Vikram Seth Ran</author>
     <pages>3333333333333333333</pages>
@@ -43,7 +43,7 @@
     <randomFloat>12</randomFloat>
   </document>
 
-  <document type="books" id="id:books:books::http://books.yahoo.com/thomashardy/Caterbridge">
+  <document type="books" id="id:books:books::thomashardy/Caterbridge">
     <title>The Mayor of Casterbridge</title>
     <author>Thomas Hardy</author>
     <pages>444</pages>
@@ -58,7 +58,7 @@
     <randomFloat>12.45</randomFloat>
   </document>
 
-  <document type="books" id="id:books:books::http://books.yahoo.com/bulgakov/margherita">
+  <document type="books" id="id:books:books::bulgakov/margherita">
     <title>The Master and his Margherita</title>
     <author>Mikhail Bulgakov</author>
     <pages>723</pages>
@@ -73,7 +73,7 @@
     <randomFloat>12.45</randomFloat>
   </document>
 
-  <document type="books" id="id:books:books::http://books.yahoo.com/dostoevsky/idiot">
+  <document type="books" id="id:books:books::dostoevsky/idiot">
     <title>The Idiot</title>
     <author>Fyodor Dostoevsky</author>
     <pages>855</pages>
@@ -89,7 +89,7 @@
   </document>
 
 
-  <document type="books" id="id:books:books::http://books.yahoo.com/dostoevsky/brothers">
+  <document type="books" id="id:books:books::dostoevsky/brothers">
     <title>The Brother's Karamazov</title>
     <author>Fyodor Dostoevsky</author>
     <pages>700</pages>
@@ -104,7 +104,7 @@
     <randomFloat>12.45</randomFloat>
   </document>
 
-  <document type="books" id="id:books:books::http://books.yahoo.com/murakami/norwegianwood">
+  <document type="books" id="id:books:books::murakami/norwegianwood">
     <title>Norwegian Wood</title>
     <author>Murakami</author>
     <pages>540</pages>
@@ -119,7 +119,7 @@
     <randomFloat>12.45</randomFloat>
   </document>
 
-  <document type="books" id="id:books:books::http://books.yahoo.com/wodehouse/laughinggas">
+  <document type="books" id="id:books:books::wodehouse/laughinggas">
     <title>Laughing Gas</title>
     <author>P.G. Wodehouse</author>
     <pages>233</pages>
@@ -135,7 +135,7 @@
   </document>
 
 
-  <document type="books" id="id:books:books::http://books.yahoo.com/agassi/open">
+  <document type="books" id="id:books:books::agassi/open">
     <title>Open</title>
     <author>Andre Agassi</author>
     <pages>8888888888888888888</pages>
@@ -150,7 +150,7 @@
     <randomFloat>12.45</randomFloat>
   </document>
 
-  <document type="books" id="id:books:books::http://books.yahoo.com/jeromekjerome/3meninaboat">
+  <document type="books" id="id:books:books::jeromekjerome/3meninaboat">
     <title>3 Men In a Boat</title>
     <author>Jerome K. Jerome</author>
     <pages>154</pages>
@@ -165,7 +165,7 @@
     <randomFloat>12.45</randomFloat>
   </document>
 
-  <document type="books" id="id:books:books::http://books.yahoo.com/jdsalinger/catcherintherye">
+  <document type="books" id="id:books:books::jdsalinger/catcherintherye">
     <title>The Catcher In the Rye</title>
     <author>J.D. Salinger</author>
     <pages>233</pages>

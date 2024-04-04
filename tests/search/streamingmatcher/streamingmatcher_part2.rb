@@ -254,7 +254,6 @@ class StreamingMatcherPart2 < StreamingMatcher
   end
 
   def test_elastic
-    # http://bug.corp.yahoo.com/show_bug.cgi?id=6064987
     set_owner("musum")
     deploy(selfdir + "app_elastic")
     start
