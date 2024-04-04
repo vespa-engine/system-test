@@ -11,7 +11,7 @@ class MatchCount < IndexedOnlySearchTest
   def test_match_and_rerank_count_in_query
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
-    feed_and_wait_for_docs("test", 3, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("test", 3, :file => selfdir + "feed.json")
     verify_counting("test")
   end
 
@@ -67,7 +67,7 @@ class MatchCount < IndexedOnlySearchTest
   def test_on_xxx_in_rank_profile
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
-    feed_and_wait_for_docs("test", 3, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("test", 3, :file => selfdir + "feed.json")
     query="query=sddocname:test&summary=all_fast&format=xml"
     all = Hits.new([{"id" => "0"},
 		    {"id" => "1"},
