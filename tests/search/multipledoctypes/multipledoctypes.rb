@@ -27,7 +27,7 @@ class MultipleDocumentTypes < IndexedStreamingSearchTest
     set_expected_logged(/proton\.groupingmanager.*Could not locate attribute for grouping number 0 : Failed locating attribute vector 'pages'/)
     deploy_app(SearchApp.new.sd(selfdir+"common.sd").sd(selfdir+"book.sd").sd(selfdir+"music.sd").sd(selfdir+"video.sd"))
     start
-    feedfile(selfdir + "feed2.xml")
+    feedfile(selfdir + "feed2.json")
     wait_for_hitcount("query=sddocname:book", 5)
     wait_for_hitcount("query=sddocname:music", 4)
     wait_for_hitcount("query=sddocname:video", 4)
