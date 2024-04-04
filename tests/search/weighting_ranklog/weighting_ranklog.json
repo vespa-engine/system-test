@@ -1,0 +1,15 @@
+[
+  {"id":"id:test:weight::http://2","fields":{"title":"the fat cat","url":"http://2","desc":"cat"}},
+  {"id":"id:test:weight::http://3","fields":{"title":"black dog eats too much food","url":"http://3","desc":"cat"}},
+  {"id":"id:test:weight::http://4","fields":{"title":"there are no black rats","url":"http://4","desc":"cat food for life"}},
+  {"id":"id:test:weight::http://5","fields":{"title":"how many worms did the black bird eat","url":"http://5","desc":"cat"}},
+  {"id":"id:test:weight::http://6","fields":{"title":"black camel","url":"http://6","desc":"cat"}},
+  {"id":"id:test:weight::http://7","fields":{"title":"black rat","url":"http://7","desc":"cat"}},
+  {"id":"id:test:weight::http://7","fields":{"title":"black brat","url":"http://7","desc":"cat"}},
+  {"id":"id:test:weight::http://7","fields":{"title":"black gnat","url":"http://7","desc":"cat"}},
+  {"id":"id:test:weight::http://7","fields":{"title":"black bat","url":"http://7","desc":"cat"}},
+  {"id":"id:test:weight::http://7","fields":{"title":"black splat","url":"http://7","desc":"cat"}},
+  {"id":"id:test:weight::http://7","fields":{"title":"black spat","url":"http://7","desc":"cat"}},
+  {"id":"id:test:weight::http://7","fields":{"title":"black hat","url":"http://7","desc":"cat"}},
+  {"id":"id:test:weight::http://7","fields":{"title":"black black cat","url":"http://7","desc":"dogs and birds and cats are not black"}}
+]

@@ -13,7 +13,7 @@ class Weighting_Ranklog < IndexedStreamingSearchTest
   end
 
   def test_weighting_summaryfeatures
-    feed_and_wait_for_docs("weight", 6, :file => selfdir+"weighting_ranklog.xml")
+    feed_and_wait_for_docs("weight", 6, :file => selfdir+"weighting_ranklog.json")
 
     puts "Query: no weighting"
     expected = {
