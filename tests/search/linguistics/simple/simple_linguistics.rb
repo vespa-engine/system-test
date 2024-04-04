@@ -22,7 +22,7 @@ class SimpleLinguistics < IndexedStreamingSearchTest
   def test_simple_linguistics
     deploy_app(make_app)
     start
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "documents.xml")
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "documents.json")
 
     # simple linguistics (kstem) does not stem 'run' and 'running' to the same stem
     assert_hitcount("query=text:run", 1)
