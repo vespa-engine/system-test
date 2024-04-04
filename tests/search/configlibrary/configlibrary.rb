@@ -15,12 +15,10 @@ class ConfigLibrary < IndexedStreamingSearchTest
     start
   end
 
-  # See ticket 4342580
   def test_proxy_crashing
-    #turn_on_debug_logging
     @query="you"
 
-    feed_and_wait_for_docs("book", 2, :file =>selfdir+"feed.xml")
+    feed_and_wait_for_docs("book", 2, :file =>selfdir+"feed.json")
 
     # check correct results with sd1
     assert_result("query=#{@query}", selfdir+"result.sd1.json")
