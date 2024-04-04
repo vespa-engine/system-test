@@ -24,6 +24,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   def test_throughput
     container_node = deploy_test_app
+    container_node.logctl("container:com.yahoo.messagebus.DynamicThrottlePolicy", "debug=on")
     vespa_destination_start
     build_feed_client
 
