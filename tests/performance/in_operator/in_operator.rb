@@ -60,7 +60,7 @@ class InOperatorPerfTest < PerformanceTest
       for t in [100] do
         hits = calc_hits(o)
         if t <= hits
-          query_and_profile(o, t, 0)
+          query_and_profile(o, t, 0, false)
         end
       end
     end
@@ -68,18 +68,20 @@ class InOperatorPerfTest < PerformanceTest
       for o in [10, 100] do
         hits = calc_hits(o)
         if t <= hits
-          query_and_profile(o, t, 0)
+          query_and_profile(o, t, 0, false) unless t == 100 # This case is already tested above
+          query_and_profile(o, t, 0, true)
         end
       end
     end
     for f in @filter_hits_ratios do
-      for t in [10, 100] do
-        query_and_profile(100, t, f)
+      for t in [100, 100000] do
+        query_and_profile(100, t, f, false)
+        query_and_profile(100, t, f, true)
       end
     end
   end
 
-  def get_query(op_hits_ratio, tokens_in_op, filter_hits_ratio)
+  def get_query(op_hits_ratio, tokens_in_op, filter_hits_ratio, not_in)
     # Lower and upper must match the spec in create_docs.cpp
     lower = op_hits_ratio * 10000000 + tokens_in_op
     upper = lower + tokens_in_op
@@ -88,7 +90,7 @@ class InOperatorPerfTest < PerformanceTest
       filter = " and filter = #{filter_hits_ratio}"
     end
     field_name = "v_#{tokens_in_op}"
-    "/search/?" + URI.encode_www_form("yql" => "select * from sources * where #{field_name} in (#{lower})#{filter}",
+    "/search/?" + URI.encode_www_form("yql" => "select * from sources * where #{not_in ? '!' : ''}(#{field_name} in (#{lower}))#{filter}",
                                       "inbuilder.lower" => lower + 1,
                                       "inbuilder.upper" => upper,
                                       "hits" => "0")
@@ -99,19 +101,19 @@ class InOperatorPerfTest < PerformanceTest
                                  "hits" => "0")
   end
 
-  def get_label(op_hits_ratio, tokens_in_op, filter_hits_ratio)
-    "query_o#{op_hits_ratio}_t#{tokens_in_op}_f#{filter_hits_ratio}"
+  def get_label(op_hits_ratio, tokens_in_op, filter_hits_ratio, not_in)
+    "query_o#{op_hits_ratio}_t#{tokens_in_op}_f#{filter_hits_ratio}#{not_in ? '_not' : ''}"
   end
 
-  def query_file_name(op_hits_ratio, tokens_in_op, filter_hits_ratio)
-    label = get_label(op_hits_ratio, tokens_in_op, filter_hits_ratio)
+  def query_file_name(op_hits_ratio, tokens_in_op, filter_hits_ratio, not_in)
+    label = get_label(op_hits_ratio, tokens_in_op, filter_hits_ratio, not_in)
     dirs.tmpdir + "#{label}.txt"
   end
 
-  def write_query_file(op_hits_ratio, tokens_in_op, filter_hits_ratio)
-    file_name = query_file_name(op_hits_ratio, tokens_in_op, filter_hits_ratio)
+  def write_query_file(op_hits_ratio, tokens_in_op, filter_hits_ratio, not_in)
+    file_name = query_file_name(op_hits_ratio, tokens_in_op, filter_hits_ratio, not_in)
     File.open(file_name, 'w') do |f|
-      f.puts(get_query(op_hits_ratio, tokens_in_op, filter_hits_ratio))
+      f.puts(get_query(op_hits_ratio, tokens_in_op, filter_hits_ratio, not_in))
     end
     file_name
   end
@@ -121,8 +123,11 @@ class InOperatorPerfTest < PerformanceTest
       for t in @tokens_in_op do
         hits = calc_hits(o)
         if t <= hits
-          query = get_query(o, t, 0)
+          query = get_query(o, t, 0, false)
           assert_hitcount(query, hits)
+
+          query = get_query(o, t, 0, true)
+          assert_hitcount(query, @num_docs - hits)
         end
       end
     end
@@ -139,15 +144,16 @@ class InOperatorPerfTest < PerformanceTest
     dest_file = dest_dir + "/" + File.basename(source_file)
   end
 
-  def query_and_profile(op_hits_ratio, tokens_in_op, filter_hits_ratio)
-    local_query_file = write_query_file(op_hits_ratio, tokens_in_op, filter_hits_ratio)
+  def query_and_profile(op_hits_ratio, tokens_in_op, filter_hits_ratio, not_in)
+    local_query_file = write_query_file(op_hits_ratio, tokens_in_op, filter_hits_ratio, not_in)
     container_query_file = copy_to_container(local_query_file)
-    label = get_label(op_hits_ratio, tokens_in_op, filter_hits_ratio)
+    label = get_label(op_hits_ratio, tokens_in_op, filter_hits_ratio, not_in)
     result_file = dirs.tmpdir + "fbench_result_#{label}.txt"
     fillers = [parameter_filler("label", label),
                parameter_filler("op_hits_ratio", op_hits_ratio),
                parameter_filler("tokens_in_op", tokens_in_op),
-               parameter_filler("filter_hits_ratio", filter_hits_ratio)]
+               parameter_filler("filter_hits_ratio", filter_hits_ratio),
+               parameter_filler("not_in", not_in)]
     profiler_start
     run_fbench2(@container,
                 container_query_file,
