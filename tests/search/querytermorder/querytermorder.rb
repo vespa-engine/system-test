@@ -12,7 +12,7 @@ class QueryTermOrder < IndexedStreamingSearchTest
   def test_order
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.xml")
+    feed_and_wait_for_docs("test", 3, :file => selfdir + "docs.json")
 
     assert_order
   end
