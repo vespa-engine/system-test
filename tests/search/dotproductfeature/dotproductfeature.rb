@@ -14,7 +14,7 @@ class DotProductFeature < IndexedStreamingSearchTest
     set_description("Test the dotproduct feature")
     deploy_app(SearchApp.new.sd(selfdir+"dotproduct.sd"))
     start
-    feed_and_wait_for_docs("dotproduct", 1, :file => selfdir + "dotproduct.xml")
+    feed_and_wait_for_docs("dotproduct", 1, :file => selfdir + "dotproduct.json")
 
     assert_dotproduct({"rankingExpression(sum_dp)" => 0, "dotProduct(a,x)" => 0,  "dotProduct(b,x)" => 0,  "dotProduct(i,vi)" => 0, "dotProduct(f,vf)" => 0,
                        "dotProduct(a2,x)" => 0,  "dotProduct(b2,x)" => 0,  "dotProduct(i2,vi)" => 0, "dotProduct(f2,vf)" => 0}, [])
