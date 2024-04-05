@@ -36,8 +36,8 @@ class SearchchainsClusterConnections < IndexedStreamingSearchTest
 
   def start_and_feed
     start
-    feed_and_wait_for_docs("music", 10, {:file => SEARCH_DATA+"music.10.xml"}, "", {:cluster => "container1"})
-    feed_and_wait_for_docs("books", 5, {:file => selfdir + "books.1.xml", :clusters => [ "books"]}, "", {:cluster => "container2"})
+    feed_and_wait_for_docs("music", 10, {:file => SEARCH_DATA+"music.10.json"}, "", {:cluster => "container1"})
+    feed_and_wait_for_docs("books", 5, {:file => selfdir + "books.1.json", :clusters => [ "books"]}, "", {:cluster => "container2"})
    end
 
   def check_hits_from_each_cluster
