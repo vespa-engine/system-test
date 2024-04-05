@@ -15,7 +15,7 @@ class DoubleRank < IndexedStreamingSearchTest
                         sd(selfdir + "doublerank.sd").
                         doc_type("doublerank", "doublerank.cluster==2")))
     start
-    feed_and_wait_for_docs("doublerank", 6, :file => selfdir + "doublerank.6.xml", :clusters => ["doublerank1", "doublerank2"])
+    feed_and_wait_for_docs("doublerank", 6, :file => selfdir + "doublerank.6.json", :clusters => ["doublerank1", "doublerank2"])
   end
 
   def test_doublerank
