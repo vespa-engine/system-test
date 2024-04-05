@@ -16,7 +16,7 @@ class Sorting < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir+"sortspec.sd"))
     start
     #vespa.adminserver.logctl("configproxy:com.yahoo.vespa.config.proxy.RpcConfigSourceClient", "debug=on")
-    feed_and_wait_for_docs("sortspec", 8, :file => selfdir+"docs-sortspec.xml", :clusters => ["search"])
+    feed_and_wait_for_docs("sortspec", 8, :file => selfdir+"docs-sortspec.json", :clusters => ["search"])
     wait_for_hitcount("query=sddocname:sortspec", 8)
     # Explicitt sort set in sortspec
     compare("query=sddocname:sortspec&sortspec=-raw(name)",                      "sortspec-attr", "name")
@@ -79,7 +79,7 @@ class Sorting < IndexedStreamingSearchTest
   def test_sorting
     deploy_app(SearchApp.new.sd(selfdir+"simple.sd"))
     start
-    feed_and_wait_for_docs("simple", 10000, :file => selfdir+"docs-simple.xml", :clusters => ["search"])
+    feed_and_wait_for_docs("simple", 10000, :file => selfdir+"docs-simple.json", :clusters => ["search"])
     compare_onecluster()
   end
 
@@ -88,8 +88,8 @@ class Sorting < IndexedStreamingSearchTest
                cluster(SearchCluster.new("search").sd(selfdir+"simple.sd")).
                cluster(SearchCluster.new("search2").sd(selfdir+"strong.sd")))
     start
-    feed_and_wait_for_docs("simple", 10000, :file => selfdir+"docs-simple.xml", :clusters => ["search"])
-    feed_and_wait_for_docs("strong", 30, :file => selfdir+"docs-strong.xml", :clusters => ["search2"])
+    feed_and_wait_for_docs("simple", 10000, :file => selfdir+"docs-simple.json", :clusters => ["search"])
+    feed_and_wait_for_docs("strong", 30, :file => selfdir+"docs-strong.json", :clusters => ["search2"])
     compare_onecluster()
     compare_clustertwo()
     compare_twoclusters()
