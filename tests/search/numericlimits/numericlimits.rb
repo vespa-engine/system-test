@@ -12,7 +12,7 @@ class NumericLimits < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
 
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.json")
 
     # min values
     assert_hitcount("query=sbytea:-127", 1)
