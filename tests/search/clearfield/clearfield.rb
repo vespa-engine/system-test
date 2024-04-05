@@ -21,7 +21,7 @@ class ClearField < IndexedStreamingSearchTest
 
   def clear_field
     start
-    feed_and_wait_for_docs("test", 1, :file => "#{selfdir}/feed.xml")
+    feed_and_wait_for_docs("test", 1, :file => "#{selfdir}/feed.json")
     run_query("sddocname:test", "#{selfdir}/full.json")
     feed_and_wait_for_docs("test", 1, :file => "#{selfdir}/clear.json")
     run_query("sddocname:test", "#{selfdir}/cleared.json")
