@@ -27,7 +27,7 @@ class SyntheticMinus < IndexedStreamingSearchTest
   end
 
   def test_synthetic_minus
-    feed_and_wait_for_docs("music", 64, :file => selfdir+"minus.docs.xml")
+    feed_and_wait_for_docs("music", 64, :file => selfdir+"minus.docs.json")
 
     puts "searching combinations 1..."
     each_comb(["use", "the", "force", "luke"], 2) do |words|
