@@ -1,9 +1,0 @@
-<document type="test" documentid="id:test:test::1">
-  <body>test a b c</body>
-</document>
-<document type="test" documentid="id:test:test::2">
-  <body>test a b</body>
-</document>
-<document type="test" documentid="id:test:test::3">
-  <body>test a</body>
-</document>
