@@ -19,6 +19,7 @@ class InOperatorPerfTest < PerformanceTest
     # In this test we use explicit ranges by searching for all numbers (tokens) that
     # are included in a range.
     # TODO: Refactor to share common code between RangeSearchPerfTest and this class.
+    add_bundle(selfdir + "InItemBuilder.java")
     deploy_app(create_app)
     @container = vespa.container.values.first
     compile_create_docs
@@ -26,7 +27,7 @@ class InOperatorPerfTest < PerformanceTest
 
     @op_hits_ratios = [1, 5, 10, 50, 100, 200]
     @filter_hits_ratios = [1, 5, 10, 50, 100, 150, 200]
-    @tokens_in_op = [1, 10, 100, 1000]
+    @tokens_in_op = [1, 10, 100, 1000, 10000, 100000]
     @num_docs = 10000000
     feed_docs
     validate_queries
@@ -35,7 +36,8 @@ class InOperatorPerfTest < PerformanceTest
 
   def create_app
     SearchApp.new.sd(selfdir + "test.sd").
-       threads_per_search(1)
+      threads_per_search(1).
+      search_chain(SearchChain.new.add(Searcher.new("ai.vespa.test.InItemBuilder")))
   end
 
   def compile_create_docs
@@ -55,7 +57,15 @@ class InOperatorPerfTest < PerformanceTest
 
   def run_query_and_profile
     for o in @op_hits_ratios do
-      for t in @tokens_in_op do
+      for t in [100] do
+        hits = calc_hits(o)
+        if t <= hits
+          query_and_profile(o, t, 0)
+        end
+      end
+    end
+    for t in @tokens_in_op do
+      for o in [10, 100] do
         hits = calc_hits(o)
         if t <= hits
           query_and_profile(o, t, 0)
@@ -73,15 +83,14 @@ class InOperatorPerfTest < PerformanceTest
     # Lower and upper must match the spec in create_docs.cpp
     lower = op_hits_ratio * 10000000 + tokens_in_op
     upper = lower + tokens_in_op
-    # This creates an explicit range with all numbers (tokens) in the range.
-    tokens = [*lower...upper]
     filter = ""
     if filter_hits_ratio > 0
       filter = " and filter = #{filter_hits_ratio}"
     end
     field_name = "v_#{tokens_in_op}"
-    "/search/?" + URI.encode_www_form("yql" => "select * from sources * where #{field_name} in (@tokens)#{filter}",
-                                      "tokens" => tokens.join(","),
+    "/search/?" + URI.encode_www_form("yql" => "select * from sources * where #{field_name} in (#{lower})#{filter}",
+                                      "inbuilder.lower" => lower + 1,
+                                      "inbuilder.upper" => upper,
                                       "hits" => "0")
   end
 
