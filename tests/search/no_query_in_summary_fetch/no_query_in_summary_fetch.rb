@@ -11,7 +11,7 @@ class NoQueryInSummaryFetch < IndexedOnlySearchTest
   def test_no_query_in_summary_fetch
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").search_dir(selfdir + "search"))
     start
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "data.xml")
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "data.json")
 
     save_result("query=title:foo&tracelevel=3&ranking.profile=test1&ranking.queryCache=false&timeout=9.9", "foo.xml")
 
