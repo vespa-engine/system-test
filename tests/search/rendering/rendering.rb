@@ -18,7 +18,7 @@ class Rendering < IndexedStreamingSearchTest
                                         bundle("com.yahoo.vespatest.DemoRenderer").
                                         config(ConfigOverride.new("com.yahoo.vespatest.simple-renderer").add("text", "Number of hits:"))))))
     start
-    feed_and_wait_for_docs("purchase", 20, :file => "#{selfdir}/docs.xml");
+    feed_and_wait_for_docs("purchase", 20, :file => "#{selfdir}/docs.json");
   end
 
   def test_rendering
