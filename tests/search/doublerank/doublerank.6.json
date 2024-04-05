@@ -1,0 +1,8 @@
+[
+  {"id":"id:test:doublerank::http://vespa.yahoo.com/?query=a","fields":{"cluster":1,"rankscore":0.0,"id":"a"}},
+  {"id":"id:test:doublerank::http://vespa.yahoo.com/?query=b","fields":{"cluster":1,"rankscore":-1000.0,"id":"b"}},
+  {"id":"id:test:doublerank::http://vespa.yahoo.com/?query=c","fields":{"cluster":1,"rankscore":1000.0,"id":"c"}},
+  {"id":"id:test:doublerank::http://vespa.yahoo.com/?query=X","fields":{"cluster":2,"rankscore":-4.123123123123E12,"id":"X"}},
+  {"id":"id:test:doublerank::http://vespa.yahoo.com/?query=Y","fields":{"cluster":2,"rankscore":4.123123123123E12,"id":"Y"}},
+  {"id":"id:test:doublerank::http://vespa.yahoo.com/?query=Z","fields":{"cluster":2,"rankscore":2.718281828459045,"id":"Z"}}
+]
