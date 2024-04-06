@@ -12,7 +12,7 @@ class Filter < IndexedStreamingSearchTest
   end
 
   def test_filter
-    feed_and_wait_for_docs("f", 7, :file => selfdir+"f.7.xml")
+    feed_and_wait_for_docs("f", 7, :file => selfdir+"f.7.json")
 
     puts "Sanity check"
     assert_hitcount("/?query=sddocname:f&type=all", 7)
