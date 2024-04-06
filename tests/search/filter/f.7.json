@@ -1,0 +1,9 @@
+[
+  {"id":"id:test:f::1","fields":{"artist":"1 whatever","title":"1 same title something"}},
+  {"id":"id:test:f::2","fields":{"artist":"2 x x x x foobar","title":"2 same title something and something else"}},
+  {"id":"id:test:f::3","fields":{"artist":"3 notfound","title":"3 another title"}},
+  {"id":"id:test:f::4","fields":{"artist":"4 foobar","title":"4 same something title"}},
+  {"id":"id:test:f::5","fields":{"artist":"5 foobar foobar","title":"5 same something something more"}},
+  {"id":"id:test:f::6","fields":{"artist":"6 six","title":"6 whatever"}},
+  {"id":"id:test:f::7","fields":{"artist":"7 foobar foobar foobar","title":"7 same this is not really like something"}}
+]
