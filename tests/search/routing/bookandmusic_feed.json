@@ -1,0 +1,4 @@
+[
+  {"id":"id:music:music::http://music.yahoo.com/metallica/BestOf","fields":{"artist":"Metallica","title":"Best of Metallica","year":1977}},
+  {"id":"id:book:book::lepetitprince","fields":{"title":"Le Petit Prince","year":1943,"author":"Antoine de Saint-Exupery"}}
+]
