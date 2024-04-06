@@ -11,7 +11,7 @@ class RankProperties < IndexedStreamingSearchTest
   def test_rankproperties
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.xml")
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.json")
 
     result = search("query=test&rankfeatures&ranking=rank1&ranking.properties.foo=40")
     assert(result.hit.size == 1)

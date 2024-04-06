@@ -14,7 +14,7 @@ class HugeRankProperties < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "huge_expression.sd").
                           rank_expression_file(selfdir + "huge.expression"))
     start(360)
-    feed_and_wait_for_docs("huge_expression", 1, :file => selfdir + "doc2.xml")
+    feed_and_wait_for_docs("huge_expression", 1, :file => selfdir + "doc2.json")
     # The huge expression should give 25000*1 relevancy
     result = search_with_timeout(is_streaming ? 60 : 10, "test&ranking=rank1")
     assert_relevancy(result, 25000, 0)
