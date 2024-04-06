@@ -13,7 +13,7 @@ class DocumentIdSchema < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.cluster(SearchCluster.new('test').
                                      sd(selfdir + "test.sd")))
     start
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.xml")
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "feed.json")
     assert_hitcount("f1:c", 2)
   end
 
