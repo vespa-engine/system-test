@@ -14,7 +14,7 @@ class LogicalIndexes < IndexedStreamingSearchTest
     puts "Component: Config, Indexing, Search etc"
     puts "Feature: Logical indexes"
 
-    feed_and_wait_for_docs("type2", 1, :file => SEARCH_DATA+"testlogical.1.xml", :cluster => "logical")
+    feed_and_wait_for_docs("type2", 1, :file => selfdir + "testlogical.1.json", :cluster => "logical")
 
     puts "Query: Second doctype"
     assert_result("query=f21d2&search=type2", selfdir + "type2.result.json")

@@ -12,7 +12,7 @@ class FreshnessBoost < IndexedStreamingSearchTest
     set_description("Test freshnessboost ranking")
     deploy_app(SearchApp.new.sd(selfdir+"musicdate.sd"))
     start
-    feed_and_wait_for_docs("musicdate", 10, :file => selfdir+"musicdate.10.xml")
+    feed_and_wait_for_docs("musicdate", 10, :file => selfdir+"musicdate.10.json")
 
     puts "Testing that the newests documents come first"
     assert_result("query=blues&datetime=19678000", selfdir+"modelblues.result.json", nil, ["title"])

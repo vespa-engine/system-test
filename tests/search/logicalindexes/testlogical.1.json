@@ -1,0 +1,4 @@
+[
+  {"id":"id:test-type1:type1::pushyss://0/","fields":{"field13":13,"field14":"type1 document data","field12":"f12d1","field11":"f11d1"}},
+  {"id":"id:test-type2:type2::pushyss://1/","fields":{"field24":"type2 document data","field22":"f22d2","field23":23,"field21":"f21d2"}}
+]
