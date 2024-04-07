@@ -10,7 +10,7 @@ class MultipleWeightedSets < IndexedStreamingSearchTest
     set_description("Check ranking of multiple weighted sets behave in a sane manner")
     deploy_app(SearchApp.new.sd(selfdir + "multiweight.sd"))
     start
-    feed_and_wait_for_docs("multiweight", 1, :file => selfdir + "multiweight.xml")
+    feed_and_wait_for_docs("multiweight", 1, :file => selfdir + "multiweight.json")
   end
 
   def assert_summaryfeatures(expected, result)
