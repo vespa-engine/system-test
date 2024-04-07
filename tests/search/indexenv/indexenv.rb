@@ -92,7 +92,7 @@ class IndexEnv < IndexedOnlySearchTest
   def test_profiles
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.xml")
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.json")
     assert_hitcount("query=test", 1)
 
     # uri1
