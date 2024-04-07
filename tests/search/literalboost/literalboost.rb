@@ -14,7 +14,7 @@ class LiteralBoost < IndexedOnlySearchTest
   end
 
   def test_literalboost
-    feed_and_wait_for_docs("literalboost", 2, { :file => selfdir+"input.2.xml", :maxpending => "1" })
+    feed_and_wait_for_docs("literalboost", 2, { :file => selfdir+"input.2.json", :maxpending => "1" })
 
     puts "run queries"
     compare("query=content:book",    "book.result")

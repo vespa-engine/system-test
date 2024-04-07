@@ -14,7 +14,7 @@ class RankDegradation < IndexedStreamingSearchTest
     set_description("Test rank degradation in parallel query evaluation")
     deploy_app(SearchApp.new.sd(selfdir + "rankd.sd"))
     start
-    feed_and_wait_for_docs("rankd", 4, :file => selfdir + "rankd.xml")
+    feed_and_wait_for_docs("rankd", 4, :file => selfdir + "rankd.json")
 
     assert_degradation_exact(40, 0, "default")
     assert_degradation_exact(30, 1, "default")
