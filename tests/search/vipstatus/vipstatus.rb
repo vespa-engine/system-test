@@ -11,7 +11,8 @@ class VipStatus < IndexedStreamingSearchTest
     @vip_status_file = dirs.tmpdir + "/status2.html"
   end
 
-  def test_without_fileserverport_with_disc_access
+  def test_vip_status
+    #  test without fileserverport with disc access
     deploy_app(SearchApp.new.sd(selfdir+"music.sd").config(
         ConfigOverride.new("container.core.vip-status")\
             .add("accessdisk", "true")\
@@ -26,9 +27,8 @@ class VipStatus < IndexedStreamingSearchTest
     assert_response_code_from_vip_handler("200")
     remove_vip_status_file
     assert_response_code_from_vip_handler("404")
-  end
 
-  def test_without_fileserverport_without_file
+    # test without fileserverport without file
     deploy_app(SearchApp.new.sd(selfdir+"music.sd").config(
         ConfigOverride.new("container.core.vip-status")\
             .add("accessdisk", "true")\
@@ -37,11 +37,9 @@ class VipStatus < IndexedStreamingSearchTest
     feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.json", :cluster => "music")
     sleep 2
 
-    #wget (search port) status.html, check status 404, fail test otherwise
     assert_response_code_from_vip_handler("404")
-  end
 
-  def test_without_fileserverport_without_disc_access
+    # test without fileserverport without disc access
     deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
     start
     feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.json", :cluster => "music")
