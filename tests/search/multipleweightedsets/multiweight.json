@@ -1,0 +1,3 @@
+[
+  {"id":"id:test:multiweight::1","fields":{"weight2":{"a":10,"b":10,"c":10},"weight3":{"a":1,"b":10,"c":100},"weight1":{"a":100,"b":10,"c":1},"marker":"dok1"}}
+]
