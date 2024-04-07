@@ -11,7 +11,7 @@ class ImplitictIndexPhrase < IndexedStreamingSearchTest
   end
 
   def test_implicitindexphrase
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json")
 
     puts "Query: Querying, checking implicit phrase"
     result = search("query=notanindex:blues&tracelevel=1")

@@ -15,7 +15,7 @@ class IndexingDocproc < IndexedStreamingSearchTest
                          search(Searching.new).
                          docproc(DocumentProcessing.new)))
     start
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json")
   end
 
   def test_indexing_docproc_explicit_cluster_explicit_chain
@@ -28,7 +28,7 @@ class IndexingDocproc < IndexedStreamingSearchTest
                          docproc(DocumentProcessing.new.chain(Chain.new("banana", "indexing").add(
                                     DocumentProcessor.new("com.yahoo.vespatest.WorstMusicDocProc", "indexingStart"))))))
     start
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json")
     assert_result("query=sddocname:music",
                    selfdir+"music.10.result.json",
                    "surl")

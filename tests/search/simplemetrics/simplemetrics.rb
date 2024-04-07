@@ -17,7 +17,7 @@ class SimpleMetrics < SearchTest
                cluster_name("simplemetrics").
                sd(SEARCH_DATA+"music.sd"))
     start
-    feed(:file => SEARCH_DATA+"music.10.xml", :timeout => 240)
+    feed(:file => SEARCH_DATA+"music.10.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 10)
     assert_query_errors("/search/?yql=this+is+not+valid+yql")
     sleep 2

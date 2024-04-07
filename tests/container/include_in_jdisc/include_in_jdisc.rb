@@ -12,7 +12,7 @@ class IncludeInJdisc < SearchContainerTest
   end
   
   def test_include_in_jdisc    
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :cluster => "music")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json", :cluster => "music")
     assert_hitcount("query=title:foo bar baz", 10)
   end
   

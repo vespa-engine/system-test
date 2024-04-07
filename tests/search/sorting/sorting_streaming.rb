@@ -10,7 +10,7 @@ class SortingStreaming < StreamingSearchTest
     set_owner("vekterli")
     deploy_app(singlenode_streaming_2storage(selfdir+"music.sd"))
     start
-    feedfile(SEARCH_DATA+"musicstreaming.777.xml")
+    feedfile(SEARCH_DATA+"musicstreaming.777.json")
 
     puts "sanity check"
     wait_for_hitcount('query=sddocname:music&streaming.selection=true&type=all', 777)

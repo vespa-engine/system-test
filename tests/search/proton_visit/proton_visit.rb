@@ -18,7 +18,7 @@ class ProtonVisitDemo < SearchTest
   def test_proton_feed_and_visit
     deploy_app(make_app)
     start
-    feed(:file => SEARCH_DATA+"music.10.xml", :timeout => 240)
+    feed(:file => SEARCH_DATA+"music.10.json", :timeout => 240)
     vespa.storage["storage"].assert_document_count(10)
     vespa.adminserver.execute("vespa-visit")
   end

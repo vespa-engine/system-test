@@ -15,7 +15,7 @@ class QrsSummary < IndexedStreamingSearchTest
             "proton.proton.server.documentdb	error	Cannot apply new config snapshot, new schema is in conflict with old schema or history"))
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
-    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.xml")
+    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.json")
 
     puts "Query: search for concerto in music"
     exp_result = selfdir + "music.result.json"

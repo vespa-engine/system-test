@@ -11,7 +11,7 @@ class SingleTermPhrase < IndexedStreamingSearchTest
   end
 
   def test_singletermphrase
-    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.xml")
+    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.json")
 
     puts "Query: Querying, old problem query"
     assert_result("query=CET-4%E6%88%90%E7%BB%A9&tracelevel=5&language=zh-hans&format=xml",

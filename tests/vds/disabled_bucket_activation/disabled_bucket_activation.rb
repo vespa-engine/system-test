@@ -49,7 +49,7 @@ class DisabledBucketActivationTest < VdsTest
     deploy_app(app)
     start
 
-    feed(:file => SEARCH_DATA + 'music.10.xml')
+    feed(:file => SEARCH_DATA + 'music.10.json')
 
     force_bucket_bucket_activation_to_take_place_if_enabled
 

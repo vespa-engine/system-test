@@ -25,7 +25,7 @@ class CheckLogs < IndexedStreamingSearchTest
   end
 
   def test_check_for_log_from_services
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json")
 
     log = ""
     vespa.logserver.get_vespalog do |buf|

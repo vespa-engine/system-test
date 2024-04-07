@@ -28,7 +28,7 @@ class BenchmarkingHeaders < IndexedStreamingSearchTest
 
     puts "Actual test"
 
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :timeout => 240)
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json", :timeout => 240)
 
     responseheaders = { "X-Yahoo-Vespa-NumHits" => "10",
                         "X-Yahoo-Vespa-NumFastHits" => "10",

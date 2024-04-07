@@ -9,7 +9,7 @@ class TimingOutput < IndexedStreamingSearchTest
     set_description("Check timing output does not disappear.");
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
-    feed_and_wait_for_docs("music", 10, { :file => SEARCH_DATA+"music.10.xml" })
+    feed_and_wait_for_docs("music", 10, { :file => SEARCH_DATA+"music.10.json" })
   end
 
   def test_timing_is_emitted

@@ -12,7 +12,7 @@ class QrsRandomInput < IndexedStreamingSearchTest
   end
 
   def test_qrs_randominput
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json")
 
     queries = [
       "%00%01%02%03%04",

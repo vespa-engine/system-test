@@ -11,7 +11,7 @@ class QrsPing < IndexedOnlySearchTest
   end
 
   def test_qrsping
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json")
 
     puts "Stopping search nodes"
     stop_searchcluster

@@ -20,7 +20,7 @@ class VipStatus < IndexedStreamingSearchTest
     # Create file before starting services
     create_vip_status_file
     start
-    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.xml", :cluster => "music")
+    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.json", :cluster => "music")
     sleep 2
 
     assert_response_code_from_vip_handler("200")
@@ -34,7 +34,7 @@ class VipStatus < IndexedStreamingSearchTest
             .add("accessdisk", "true")\
             .add("statusfile", "/ThisFileShouldNotExist")))
     start
-    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.xml", :cluster => "music")
+    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.json", :cluster => "music")
     sleep 2
 
     #wget (search port) status.html, check status 404, fail test otherwise
@@ -44,7 +44,7 @@ class VipStatus < IndexedStreamingSearchTest
   def test_without_fileserverport_without_disc_access
     deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
     start
-    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.xml", :cluster => "music")
+    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.json", :cluster => "music")
     sleep 2
 
     assert_response_code_from_vip_handler("200")

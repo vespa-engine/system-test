@@ -13,7 +13,7 @@ class EmptyIndex < IndexedStreamingSearchTest
   end
 
   def test_emptyindex
-    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.xml")
+    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.json")
 
     puts "Query: Return the one doc"
     assert_result("query=concerto", selfdir + "emptyindex.result.json", nil, ["surl"])

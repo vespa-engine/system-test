@@ -26,7 +26,7 @@ module ContentSmokeCommon
   end
 
   def feed_only
-    feed(:file => SearchTest::SEARCH_DATA+"music.10.xml", :timeout => 240)
+    feed(:file => SearchTest::SEARCH_DATA+"music.10.json", :timeout => 240)
   end
 
   def verify_get(params = {})

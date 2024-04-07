@@ -30,7 +30,7 @@ class AddContainer < IndexedOnlySearchTest
     deploy_app(app_one_qrserver)
     start
 
-    feed(:file => SEARCH_DATA + "music.10.xml")
+    feed(:file => SEARCH_DATA + "music.10.json")
     wait_for_hitcount("query=sddocname:music", 10)
 
     deploy_app(SearchApp.new.num_hosts(2).sd(SEARCH_DATA + "music.sd").
