@@ -9,7 +9,7 @@ class LocalProvider < IndexedStreamingSearchTest
                       search_chain(
                         Provider.new("local-provider", "local").cluster("search")))
     start
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :timeout => 240)
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json", :timeout => 240)
   end
 
   def test_search_localprovider

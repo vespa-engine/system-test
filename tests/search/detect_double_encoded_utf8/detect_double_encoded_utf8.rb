@@ -13,7 +13,7 @@ class DetectDoubleEncodedUtf < IndexedStreamingSearchTest
           "container-search-and-docproc"))
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").search_chain(search_chain))
     start
-    feed_and_wait_for_docs("music", 10, { :file => SEARCH_DATA+"music.10.xml" })
+    feed_and_wait_for_docs("music", 10, { :file => SEARCH_DATA+"music.10.json" })
   end
 
   def test_double_encoded_utf_is_rejected

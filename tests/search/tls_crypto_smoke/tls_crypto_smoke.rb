@@ -36,7 +36,7 @@ class TlsCryptoSmokeTest < IndexedStreamingSearchTest
 
   def verify_basic_api_functionality
     # Basic feeding and searching must work as expected
-    feed(:file => SEARCH_DATA + 'music.10.xml', :timeout => 240)
+    feed(:file => SEARCH_DATA + 'music.10.json', :timeout => 240)
     wait_for_hitcount('query=sddocname:music', 10)
 
     # TODO test document API, tooling

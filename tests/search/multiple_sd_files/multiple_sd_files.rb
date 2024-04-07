@@ -11,7 +11,7 @@ class MultipleSdFiles < IndexedStreamingSearchTest
   def test_search_two_searchdefs
     deploy_app(SearchApp.new.sd(selfdir+"music.sd").sd((selfdir+"attributefilter.sd")))
     start
-    feed_and_wait_for_docs("music", 10, :file => "#{SEARCH_DATA}/music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => "#{SEARCH_DATA}/music.10.json")
     assert_result("query=sddocname:music", "#{SEARCH_DATA}/music.10.nouri.result.json", "title", ["title", "surl", "mid", "sddocname"])
     assert(JSON.generate(getvespaconfig("document.config.documentmanager", "client")) =~ /"name":"attributefilter",/)
   end

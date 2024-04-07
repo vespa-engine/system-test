@@ -16,7 +16,7 @@ class HttpHeaders < IndexedStreamingSearchTest
 
     headername = "X-Vespa-System-Test"
     headervalue = "Vespa HTTP header test"
-    feed_and_wait_for_docs("music", 10, { :file => SEARCH_DATA+"music.10.xml" })
+    feed_and_wait_for_docs("music", 10, { :file => SEARCH_DATA+"music.10.json" })
     result = search("/?query=blues", 0, { headername => headervalue })
     assert_equal(10, result.hit.size)
     assert_equal(headervalue, result.header(headername).first)

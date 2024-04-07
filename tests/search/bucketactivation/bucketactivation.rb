@@ -41,7 +41,7 @@ class BucketActivationTest < IndexedOnlySearchTest
     vespa.stop_content_node("mycluster", "2")
     vespa.stop_content_node("mycluster", "1")
 
-    feed(:file => SEARCH_DATA+"music.10.xml", :timeout => 240)
+    feed(:file => SEARCH_DATA+"music.10.json", :timeout => 240)
     check("0/0")
     wait_for_hitcount(get_query("1/0"), 0)
     wait_for_hitcount(get_query("2/0"), 0)

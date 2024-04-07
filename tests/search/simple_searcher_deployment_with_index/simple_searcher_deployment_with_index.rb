@@ -14,7 +14,7 @@ class SimpleSearcherDeploymentWithIndex < IndexedStreamingSearchTest
                         search_chain(SearchChain.new.add(Searcher.new(
                             "com.yahoo.search.example.SimpleSearcher"))))
     start
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA + "music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA + "music.10.json")
 
     assert_result("query=classic", selfdir+"hello_world_result.json")
   end

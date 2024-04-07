@@ -11,7 +11,7 @@ class HitcountEstimate < IndexedOnlySearchTest
   end
 
   def test_hitcountestimate
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :name => "music")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json", :name => "music")
     result = search("/?query=sddocname:music&hitcountestimate&nocache")
     assert(result.hit.size == 0, "Expected no hits returned for an estimate query, got #{result.hit.size}")
     assert(result.hitcount == 10, "Expected 10 in total result size, got #{result.hitcount}")

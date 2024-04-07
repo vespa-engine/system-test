@@ -21,7 +21,7 @@ class NoAdminInServices < IndexedStreamingSearchTest
 
   def start_and_feed
     start
-    feed(:file => SEARCH_DATA+"music.10.xml")
+    feed(:file => SEARCH_DATA+"music.10.json")
     wait_for_hitcount("query=sddocname:music", 10)
   end
 

@@ -19,7 +19,7 @@ class CpuPinning < SearchTest
   end
 
   def test_cpu_pinning
-    feed(:file => SEARCH_DATA+"music.10.xml", :timeout => 240)
+    feed(:file => SEARCH_DATA+"music.10.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 10)
   end
 

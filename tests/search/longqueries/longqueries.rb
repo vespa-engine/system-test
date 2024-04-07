@@ -28,7 +28,7 @@ class LongQueries < IndexedStreamingSearchTest
   end
 
   def test_longqueries
-    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.xml")
+    feed_and_wait_for_docs("music", 1, :file => SEARCH_DATA+"music.1.json")
 
     file = File.new(selfdir+"do.query")
     query = file.read()

@@ -35,7 +35,7 @@ class EventLoggingTest < IndexedStreamingSearchTest
     add_bundle_dir(File.expand_path(selfdir + '/project'), BUNDLE_NAME)
     deploy_app(make_app(false))
     start
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA + "music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA + "music.10.json")
 
     count = 4
     do_queries(count)

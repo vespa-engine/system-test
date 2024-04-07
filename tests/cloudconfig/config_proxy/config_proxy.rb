@@ -46,7 +46,7 @@ class ConfigProxy < CloudConfigTest
     deploy_app_with_routes
     start
     # feed to make sure we have documentmanager config in proxy cache
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json")
     node = vespa.adminserver
     assert_equal("default\n", get_proxy_mode(node))
 
@@ -54,7 +54,7 @@ class ConfigProxy < CloudConfigTest
     assert_equal("memorycache\n", get_proxy_mode(node))
 
     # all operations below gets config from cache in config proxy
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json")
     #restart qrserver, which will get config from cache in config proxy
     restart_qrserver(vespa, 10, "query=sddocname:music&nocache")
 

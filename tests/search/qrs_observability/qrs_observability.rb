@@ -7,7 +7,7 @@ class QrsObservability < IndexedStreamingSearchTest
     set_owner("musum")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :timeout => 240)
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json", :timeout => 240)
     wait_for_hitcount("sddocname:music", 10)
   end
 

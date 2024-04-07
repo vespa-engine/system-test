@@ -13,7 +13,7 @@ class ImmediateFeeding < IndexedStreamingSearchTest
   end
 
   def test_immediate_feeding
-    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.xml", :maxretries => "5")
+    feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json", :maxretries => "5")
     check_fields=['bgnsellers','categories','ew','mid','pto','surl','title']
     assert_result("query=sddocname:music", selfdir+"music.10.result.json", "title", check_fields)
   end

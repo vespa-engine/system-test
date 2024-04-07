@@ -58,7 +58,7 @@ class StatusPages < IndexedStreamingSearchTest
       vespa.qrserver.each { |index, node|
         assert_status_ok(node.name, node.http_port)
       }
-      feed(:file => SEARCH_DATA+"music.10.xml")
+      feed(:file => SEARCH_DATA+"music.10.json")
       wait_for_hitcount("query=sddocname:music", 10)
       sleep 3
       puts "Checking that qrservers have status pages online"
