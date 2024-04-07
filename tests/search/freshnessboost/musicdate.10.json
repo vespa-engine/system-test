@@ -1,0 +1,12 @@
+[
+  {"id":"id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905709","fields":{"weight":1,"title":"Blues","docdate":19178000}},
+  {"id":"id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905710","fields":{"weight":2,"title":"Chicago Blues","docdate":19478000}},
+  {"id":"id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905711","fields":{"weight":3,"title":"Classic Female Blues","docdate":19578000}},
+  {"id":"id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905712","fields":{"weight":4,"title":"Contemporary Blues","docdate":19658000}},
+  {"id":"id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905713","fields":{"weight":5,"title":"Country Blues","docdate":19278000}},
+  {"id":"id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1804905714","fields":{"weight":6,"title":"Delta Blues","docdate":19208000}},
+  {"id":"id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865251","fields":{"weight":7,"title":"East Coast Blues","docdate":19318000}},
+  {"id":"id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865261","fields":{"weight":8,"title":"Electric Blues","docdate":19578000}},
+  {"id":"id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865263","fields":{"weight":9,"title":"Louisiana Blues","docdate":19378000}},
+  {"id":"id:test:musicdate::http://shopping.yahoo.com/shop?d=hab&id=1807865264","fields":{"weight":10,"title":"Modern Electric Blues","docdate":19678000}}
+]
