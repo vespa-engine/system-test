@@ -72,7 +72,7 @@ class RangeSearch < IndexedStreamingSearchTest
   end
 
   def feed_docs
-    feed(:file => selfdir + "docs.xml", :timeout => 240)
+    feed(:file => selfdir + "docs.json", :timeout => 240)
     wait_for_hitcount('query=sddocname:test&type=all', 5)
   end
 
