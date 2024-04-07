@@ -14,8 +14,8 @@ class MultipleInherit < IndexedStreamingSearchTest
   end
 
   def test_multiple_inherit
-    feed_and_wait_for_docs("derived", 1, :file => SEARCH_DATA+"testmultiinheritance.3.xml")
-# Only one result, since sddocname now names the most derived type.
+    feed_and_wait_for_docs("derived", 1, :file => selfdir+"testmultiinheritance.3.json")
+    # Only one result, since sddocname now names the most derived type.
     wait_for_hitcount("query=common&search=base1", 1)
 
     regexp = /total-hit-count|common|sddocname/
@@ -30,7 +30,6 @@ class MultipleInherit < IndexedStreamingSearchTest
 
     puts "Query: Test that all fields are in the derived class"
     assert_result("query=field2:f2d1+field5:f5d1&search=derived", selfdir+"test4.result.json")
-
   end
 
   def teardown
