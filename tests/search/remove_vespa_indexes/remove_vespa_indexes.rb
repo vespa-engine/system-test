@@ -14,7 +14,7 @@ class RemoveIndexes < IndexedStreamingSearchTest
     start
 
     # Feed some documents
-    feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.xml")
+    feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.json")
 
     @node = vespa.adminserver
 
@@ -40,7 +40,7 @@ class RemoveIndexes < IndexedStreamingSearchTest
     assert_hitcount("query=sddocname:banana", 0)
 
     # Feed some documents
-    feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.xml")
+    feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.json")
   end
 
   def teardown
