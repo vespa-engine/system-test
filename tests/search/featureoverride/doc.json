@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:test::1","fields":{"body":"test both","attr":200}},
+  {"id":"id:test:test::2","fields":{"body":"both","attr":100}}
+]

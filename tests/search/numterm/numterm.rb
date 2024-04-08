@@ -12,7 +12,7 @@ class NumTerm < IndexedStreamingSearchTest
   def test_numterm
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
-    feed_and_wait_for_docs("test", 2, :file => "#{selfdir}/docs.xml")
+    feed_and_wait_for_docs("test", 2, :file => "#{selfdir}/docs.json")
 
     assert_hitcount("query=num:5.7",1)
     assert_hitcount("query=str:5.8",1)

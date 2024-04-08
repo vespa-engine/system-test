@@ -13,7 +13,7 @@ class FeatureOverride < IndexedStreamingSearchTest
   def test_featureoverride
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 2, :file => selfdir + "doc.xml")
+    feed_and_wait_for_docs("test", 2, :file => selfdir + "doc.json")
     run_featureoverride_test
   end
 
