@@ -1,0 +1,4 @@
+[
+  {"id":"id:phrase:phrase:n=1:0","fields":{"f2":"c d e f","f1":"a b"}},
+  {"id":"id:phrase:phrase:n=1:1","fields":{"f2":"c x d x e x f","f1":"a x b"}}
+]

@@ -1,0 +1,6 @@
+[
+  {"id":"id:music:musicsearch:n=1:0","fields":{"title":"a"}},
+  {"id":"id:music:musicsearch:n=1:1","fields":{"title":"a a"}},
+  {"id":"id:music:musicsearch:n=1:2","fields":{"title":"a a a"}},
+  {"id":"id:music:musicsearch:n=1:3","fields":{"title":"a a a a"}}
+]

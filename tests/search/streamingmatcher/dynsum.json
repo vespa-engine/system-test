@@ -1,0 +1,4 @@
+[
+  {"id":"id:dynsum:dynsum:n=1:0","fields":{"f2":[{"s2":"x","s1":"a"},{"s2":"x","s1":"b"},{"s2":"x","s1":"xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz"},{"s2":"x","s1":"a"},{"s2":"x","s1":"b"}],"f1":["a","b","xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz xyz","a","b"]}},
+  {"id":"id:dynsum:dynsum:n=1:1","fields":{"f2":[{"s2":"x","s1":"x"},{"s2":"y","s1":"y"},{"s2":"z","s1":"z"}],"f1":["x","y","z"]}}
+]

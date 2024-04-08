@@ -1,0 +1,7 @@
+[
+  {"id":"id:mail:musicsearch:n=1234:1","fields":{"title":"Hello world"}},
+  {"id":"id:mail:musicsearch:n=1234:2","fields":{"title":"Re: Hello world"}},
+  {"id":"id:mail:musicsearch:n=1234:3","fields":{"title":"Fwd: Hello world"}},
+  {"id":"id:mail:musicsearch:n=1234:4","fields":{"title":"Howdy"}},
+  {"id":"id:mail:musicsearch:n=1234:5","fields":{"title":"Howdy"}}
+]

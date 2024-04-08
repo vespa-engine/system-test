@@ -12,7 +12,7 @@ class StreamingMatcherPart2 < StreamingMatcher
     set_description("Test phrase search for streaming matcher")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"phrase.sd"))
     start
-    feed(:file => selfdir + "phrase.xml")
+    feed(:file => selfdir + "phrase.json")
     wait_for_hitcount('query=a+b&streaming.userid=1&type=all', 2)
 
     assert_hitcount('query=%22a%22&streaming.userid=1&type=all', 2)
@@ -39,7 +39,7 @@ class StreamingMatcherPart2 < StreamingMatcher
     set_description("Test sorting on nested fields")
     deploy_app(SearchApp.new.enable_document_api.streaming().sd(selfdir+"sortaggr.sd"))
     start
-    feed(:file => selfdir + "sortingfeed.xml")
+    feed(:file => selfdir + "sortingfeed.json")
     wait_for_hitcount('query=sddocname:sortaggr&streaming.userid=1&type=all', 8)
 
     assert_result_order('query=sddocname:sortaggr&sorting=-f1.s1 %2b[docid]&streaming.userid=1&type=all',     [2, 1, 4, 7, 0, 3, 5, 6])
@@ -61,7 +61,7 @@ class StreamingMatcherPart2 < StreamingMatcher
     set_description("Test sorting on nested fields")
     deploy_app(SearchApp.new.enable_document_api.streaming().sd(selfdir+"sortaggr.sd"))
     start
-    feed(:file => selfdir + "sortaggr.xml")
+    feed(:file => selfdir + "sortaggr.json")
     wait_for_hitcount('query=sddocname:sortaggr&streaming.userid=1&type=all', 8)
 
     # sorting on nested fields
@@ -76,7 +76,7 @@ class StreamingMatcherPart2 < StreamingMatcher
     set_description("Test that not defined values are shown correctly in document summary")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"notdef.sd"))
     start
-    feed(:file => selfdir + "notdef.xml")
+    feed(:file => selfdir + "notdef.json")
     wait_for_hitcount('query=sddocname:notdef&streaming.userid=1&type=all', 1)
 
     assert_result_matches('query=sddocname:notdef&streaming.userid=1&format=xml&type=all', selfdir + "notdef.result", /field name="f/)
@@ -91,7 +91,7 @@ class StreamingMatcherPart2 < StreamingMatcher
                           add("summary", ConfigValue.new("cache", ConfigValue.new("allowvisitcaching", "true")))).
                    tune_searchnode({:summary => {:store => {:cache => {:maxsize => 10000000}}}}))
     start
-    feed(:file => selfdir + "matchtypes.xml")
+    feed(:file => selfdir + "matchtypes.json")
     wait_for_hitcount('query=sddocname:matchtypes&streaming.userid=1&type=all', 1)
 
     puts "complete match"
@@ -174,7 +174,7 @@ class StreamingMatcherPart2 < StreamingMatcher
     set_description("Test dynamic summary with multiple input fields")
     deploy_app(SearchApp.new.enable_document_api.streaming().sd(selfdir+"dynsum.sd"))
     start
-    feed(:file => selfdir + "dynsum.xml")
+    feed(:file => selfdir + "dynsum.json")
     wait_for_hitcount('query=sddocname:dynsum&streaming.userid=1&type=all', 2)
 
     assert_result('query=a&streaming.userid=1&type=all',   selfdir + "dynsum.a.result.json", nil, ["sum1","sum2"])
@@ -191,7 +191,7 @@ class StreamingMatcherPart2 < StreamingMatcher
     set_description("Test summary fields with explicit names different than the field names.")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"expsumname.sd"))
     start
-    feed(:file => selfdir + "expsumname.xml")
+    feed(:file => selfdir + "expsumname.json")
     wait_for_hitcount('query=sddocname:expsumname&streaming.userid=1&type=all', 1)
 
     result = search('query=sddocname:expsumname&streaming.userid=1&format=xml&type=all')
@@ -215,7 +215,7 @@ class StreamingMatcherPart2 < StreamingMatcher
       return
     end
     start
-    feed(:file => selfdir + "illegalrank.xml")
+    feed(:file => selfdir + "illegalrank.json")
     wait_for_hitcount('query=f1:illegal&streaming.userid=1&type=all', 0)
     assert_log_matches(/.*\(re-\)configuration of rank manager failed/)
   end
@@ -226,7 +226,7 @@ class StreamingMatcherPart2 < StreamingMatcher
     set_description("Test that the hit heap in streaming works as expected")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"heap.sd"))
     start
-    feed(:file => selfdir + "heap.xml")
+    feed(:file => selfdir + "heap.json")
     wait_for_hitcount('query=sddocname:heap&streaming.userid=1&type=all', 12)
 
     # ranking (summary/rank features should be available for all hits)
@@ -257,8 +257,8 @@ class StreamingMatcherPart2 < StreamingMatcher
     set_owner("musum")
     deploy(selfdir + "app_elastic")
     start
-    feed(:file => selfdir + "app_elastic/books.xml")
-    feed(:file => selfdir + "app_elastic/music.xml")
+    feed(:file => selfdir + "app_elastic/books.json")
+    feed(:file => selfdir + "app_elastic/music.json")
     wait_for_hitcount('query=best&streaming.selection=true&type=all', 4)
   end
 
@@ -267,8 +267,8 @@ class StreamingMatcherPart2 < StreamingMatcher
     set_description("Test that content cluster takes multiple schemas")
     deploy(selfdir + "app_multiple_sd_in_content", [selfdir + "app_elastic/schemas/music.sd", selfdir + "app_elastic/schemas/books.sd"])
     start
-    feed(:file => selfdir + "app_elastic/books.xml")
-    feed(:file => selfdir + "app_elastic/music.xml")
+    feed(:file => selfdir + "app_elastic/books.json")
+    feed(:file => selfdir + "app_elastic/music.json")
     wait_for_hitcount('query=best&streaming.selection=true&type=all', 4)
   end
 

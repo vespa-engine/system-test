@@ -1,0 +1,14 @@
+[
+  {"id":"id:books:books::aynrand/Fountainhead","fields":{"title":"The Fountainhead","year":1957,"author":"Ayn Rand","randomFloat":12.45,"pages":8888888888888888888,"genre":{"fiction":2,"architecture":1},"price":30.0,"popularity":500,"grade":10}},
+  {"id":"id:books:books::aynrand/BestOf","fields":{"title":"Atlas Shrugged","year":2001,"author":"Ayn Rand","randomFloat":12.45,"pages":9223372036854775807,"genre":{"fiction":2,"collection":1},"price":20.5,"popularity":100,"grade":20}},
+  {"id":"id:books:books::vikramseth/GoldenGate","fields":{"title":"The Golden Gate","year":1997,"author":"Vikram Seth Ran","randomFloat":12.0,"pages":3333333333333333333,"genre":{"indian":1,"poetry":2},"price":30.52,"popularity":400,"grade":30}},
+  {"id":"id:books:books::thomashardy/Caterbridge","fields":{"title":"The Mayor of Casterbridge","year":1857,"author":"Thomas Hardy","randomFloat":12.45,"pages":444,"genre":{"tragedy":1,"fiction":2},"price":30.0,"popularity":500,"grade":10}},
+  {"id":"id:books:books::bulgakov/margherita","fields":{"title":"The Master and his Margherita","year":2001,"author":"Mikhail Bulgakov","randomFloat":12.45,"pages":723,"genre":{"fiction":2,"collection":1},"price":20.5,"popularity":100,"grade":20}},
+  {"id":"id:books:books::dostoevsky/idiot","fields":{"title":"The Idiot","year":1997,"author":"Fyodor Dostoevsky","randomFloat":12.0,"pages":855,"genre":{"indian":1,"poetry":2},"price":30.52,"popularity":400,"grade":30}},
+  {"id":"id:books:books::dostoevsky/brothers","fields":{"title":"The Brother's Karamazov","year":1957,"author":"Fyodor Dostoevsky","randomFloat":12.45,"pages":700,"genre":{"fiction":2,"architecture":1},"price":30.0,"popularity":500,"grade":10}},
+  {"id":"id:books:books::murakami/norwegianwood","fields":{"title":"Norwegian Wood","year":2001,"author":"Murakami","randomFloat":12.45,"pages":540,"genre":{"fiction":2,"collection":1},"price":20.5,"popularity":100,"grade":20}},
+  {"id":"id:books:books::wodehouse/laughinggas","fields":{"title":"Laughing Gas","year":1997,"author":"P.G. Wodehouse","randomFloat":12.0,"pages":233,"genre":{"indian":1,"poetry":2},"price":30.52,"popularity":400,"grade":30}},
+  {"id":"id:books:books::agassi/open","fields":{"title":"Open","year":1957,"author":"Andre Agassi","randomFloat":12.45,"pages":8888888888888888888,"genre":{"fiction":2,"architecture":1},"price":30.0,"popularity":500,"grade":10}},
+  {"id":"id:books:books::jeromekjerome/3meninaboat","fields":{"title":"3 Men In a Boat","year":2001,"author":"Jerome K. Jerome","randomFloat":12.45,"pages":154,"genre":{"fiction":2,"collection":1},"price":20.5,"popularity":100,"grade":20}},
+  {"id":"id:books:books::jdsalinger/catcherintherye","fields":{"title":"The Catcher In the Rye","year":1997,"author":"J.D. Salinger","randomFloat":12.0,"pages":233,"genre":{"indian":1,"poetry":2},"price":30.52,"popularity":400,"grade":30}}
+]
