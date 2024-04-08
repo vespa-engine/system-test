@@ -13,7 +13,7 @@ class ElementCompleteness < IndexedStreamingSearchTest
   def test_elementcompleteness
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.xml")
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "doc.json")
     result = search("query=select%20%2A%20from%20sources%20%2A%20where%20%28title%20contains%20%22test%22%20OR%20foobar%20contains%20%22a%22%20OR%20foobar%20contains%20%22b%22%20OR%20foobar%20contains%20%22c%22%20OR%20foobar%20contains%20%22d%22%29%3B&type=yql")
     assert(result.hit.size == 1)
     rf = result.hit[0].field["summaryfeatures"]

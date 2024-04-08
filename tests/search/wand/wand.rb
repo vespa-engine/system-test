@@ -144,7 +144,7 @@ class WeakAnd < IndexedStreamingSearchTest
     set_owner("geirst")
     deploy_app(SearchApp.new.sd(selfdir + "sdfiles/#{sd_folder}/test.sd"))
     start
-    feed_and_wait_for_docs("test", 3, :file => selfdir+"docs/empty-wset.xml")
+    feed_and_wait_for_docs("test", 3, :file => selfdir+"docs/empty-wset.json")
 
     assert_hitcount("?#{get_wand('a:1', wand_type)}", 2)
   end
@@ -153,7 +153,7 @@ class WeakAnd < IndexedStreamingSearchTest
     set_description("Test that we can specify an initial score threshold using Parallel WAND")
     run_wand_with_score_threshold_test("parallel", "parallel")
 
-    feed_and_wait_for_docs("test", 73, :file => selfdir+"docs/large-score-threshold.xml")
+    feed_and_wait_for_docs("test", 73, :file => selfdir+"docs/large-score-threshold.json")
     query = "?" + get_wand("b:70000", @wand_type) + "&wand.scoreThreshold=4200000000&hits=100"
     assert_topk_hits(search(query), 1, [["id:test:test::101",4.9E9]])
   end
