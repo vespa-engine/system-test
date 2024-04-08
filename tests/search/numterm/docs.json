@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:test:n=1234:01","fields":{"str":"Here you can read the number 5.8 in a text field.","b":"23.5","d":"23.92","arr":["five","5.9","dot nine"],"num":5.7}},
+  {"id":"id:test:test:n=1234:02","fields":{"str":"complex words: yapache-1.155.6 1.2-3,4 a9.4zon 1,2,3a and so on","b":"a 1.55.3 b","d":"c 1,2,3a d","arr":["forty-two","1-2.2-3.3.3"],"num":42.42}}
+]
