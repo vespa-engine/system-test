@@ -1,0 +1,5 @@
+[
+  {"id":"id:test:test::1","fields":{"features":{"a":1}}},
+  {"id":"id:test:test::2","fields":{}},
+  {"id":"id:test:test::3","fields":{"features":{"a":2}}}
+]
