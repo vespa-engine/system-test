@@ -1,0 +1,12 @@
+[
+  {"id":"id:music:music::music1","fields":{"tracks":{"Mr. Tambourine Man":40,"Blowin' in the Wind":60},"randomdouble_orig":10.0,"title":"Best of Bob Dylan","year":1997,"rating_orig":"NOT BAD","genre":{"pop":2,"collection":1},"artist":["Bob Dylan","Bob","Dylan"]}},
+  {"id":"id:music:music::music2","fields":{"tracks":{"Don't tread on me":20,"Enter Sandman":80,"Redundant bla":100},"randomdouble_orig":10.5,"title":"Best of Metallica","year":2001,"rating_orig":"AWESOME","genre":{"rock":2,"collection":1},"artist":["Metallica"]}},
+  {"id":"id:music:music::music3","fields":{"tracks":{"Nevermind redundant":60,"Unplugged redundant extra":40},"randomdouble_orig":10.8,"title":"Best of Nirvana","year":2997,"rating_orig":"Amazing","genre":{"rock":2,"kobain":1},"artist":["Nirvana","random bla"]}},
+  {"id":"id:music:music::music4","fields":{"tracks":{"Bla":30,"Romeo or Juliet":20,"Money For Nothing":80},"randomdouble_orig":20.5,"title":"Brothers in Arms","year":2001,"rating_orig":"good","genre":{"alternative":1,"soft rock":2},"artist":["Dire Straits","Dire","Straits"]}},
+  {"id":"id:music:music::music5","fields":{"tracks":{"Yellow Submarine":40,"Hey Jude":60,"Not a second time":70},"title":"Best of the Beatles","year":1997,"rating_orig":"Cool","genre":{"pop":2,"collection":1},"artist":["Beatles"]}},
+  {"id":"id:music:music::music6","fields":{"tracks":{"Spies":80,"Yellow":20},"randomdouble_orig":20.0,"title":"Parachutes","year":2001,"rating_orig":"Cool","genre":{"soft rock":2,"collection":1},"artist":["Coldplay"]}},
+  {"id":"id:music:music::music7","fields":{"tracks":{"Mama Mia":40,"Dancing Queen":60},"title":"Greatest Hits","genre":{"pop":2,"collection":1},"artist":["Abba"]}},
+  {"id":"id:music:music::music8","fields":{"tracks":{"Not the Doctor":20,"Ironic":80},"randomdouble_orig":-3.0,"title":"Jagged Little Pill","year":2001,"rating_orig":"AWESOME","genre":{"rock":2,"alternative":1},"artist":["Alanis Morissette","Alanis","Morisette"]}},
+  {"id":"id:music:music::music9","fields":{"tracks":{"Under rug swept":60,"Narcissist":40},"randomdouble_orig":0.0,"title":"Under rug swept","year":1997,"genre":{"rock":2,"alanis":1},"artist":["Alanis Morissette","Alanis","Morisette"]}},
+  {"id":"id:music:music::music10","fields":{"tracks":{"Black":20,"Alive":80},"title":"Ten","genre":{"rock":2,"collection":1},"artist":["Pearl Jam","Pearl","Jam"]}}
+]

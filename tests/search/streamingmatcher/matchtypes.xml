@@ -1,6 +1,0 @@
-<document type="matchtypes" id="id:matchtypes:matchtypes:n=1:0">
-    <f1>this field has match type default</f1>
-    <f2>this field has match type prefix</f2>
-    <f3>this field has match type substring</f3>
-    <f4>this field has match type suffix</f4>
-</document>

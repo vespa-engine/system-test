@@ -1,9 +1,0 @@
-<vespafeed>
-  <document type="mapupdatetest" id="id:mapupdatetest:mapupdatetest:n=1:0">
-    <name>id0</name>
-    <tagset>
-      <item weight="1">balder</item>
-      <item weight="2">bergum</item>
-    </tagset>
-  </document>
-</vespafeed>

@@ -8,7 +8,7 @@ class StreamingMatcherPart1 < StreamingMatcher
     set_description("Simple test for streaming matcher (config model and basic functionality)")
     deploy_app(singlenode_streaming_2storage(selfdir+"musicsearch.sd"))
     start
-    feedfile(selfdir+"feed_checksum.xml")
+    feedfile(selfdir+"feed_checksum.json")
 
     result = search("query=sddocname:musicsearch&streaming.userid=1234&select=all(group(folder) each(output(count(), xor(md5(cat(docidnsspecific(),folder,sort(flags)), 64)) as(checksum))))&format=xml")
     exp_checksum = "<output label=\"checksum\">2451403077069017125<\/output>"
@@ -82,7 +82,7 @@ class StreamingMatcherPart1 < StreamingMatcher
     set_description("Simple test for streaming matcher using the new relevancy framework for rank calculation")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"musicsearch.sd"))
     start
-    feedfile(selfdir+"feed2.xml")
+    feedfile(selfdir+"feed2.json")
     wait_for_hitcount("query=b&streaming.userid=1", 2)
 
     assert_hitcount("query=title:a&streaming.userid=1", 1)
@@ -162,7 +162,7 @@ class StreamingMatcherPart1 < StreamingMatcher
     set_description("Test for streaming matcher using twophase ranking")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"musicsearch.sd"))
     start
-    feedfile(selfdir + "twophase.xml")
+    feedfile(selfdir + "twophase.json")
     wait_for_hitcount("query=title:a&streaming.userid=1", 4)
 
     # test basic two-phase ranking (both expressions are executed before adding to the heap)
@@ -198,7 +198,7 @@ class StreamingMatcherPart1 < StreamingMatcher
 				docproc(DocumentProcessing.new.
 					chain(Chain.new.add(DocProc.new("com.yahoo.vespatest.StructDocProc"))))))
     start
-    feedfile(selfdir+"feedstruct.xml")
+    feedfile(selfdir+"feedstruct.json")
     wait_for_hitcount("query=ssf1:ssf1&streaming.userid=1", 1)
 
     puts "queries for ssf1"
@@ -356,13 +356,12 @@ class StreamingMatcherPart1 < StreamingMatcher
     end
   end
 
-
   def test_field_types
     set_owner("balder")
     set_description("Simple test for streaming matcher using different field types")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"fieldtypetest.sd"))
     start
-    feedfile(selfdir + "feedfieldtypetest.xml")
+    feedfile(selfdir + "feedfieldtypetest.json")
     wait_for_hitcount("query=teststring:teststring1&streaming.userid=1", 1)
 
     assert_hitcount("query=teststring:teststring1&streaming.userid=1", 1)
@@ -498,7 +497,7 @@ class StreamingMatcherPart1 < StreamingMatcher
     set_description("Test for streaming matcher using many fields (>32)")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"manyfields.sd"))
     start
-    feed(:file => selfdir + "manyfields.xml")
+    feed(:file => selfdir + "manyfields.json")
     wait_for_hitcount("query=f1:a&streaming.userid=1", 1)
     npos = 1000000
 
@@ -532,7 +531,7 @@ class StreamingMatcherPart1 < StreamingMatcher
     set_description("Test for streaming matcher using attribute rank features")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"attrrank.sd"))
     start
-    feed(:file => selfdir + "attrrank.xml")
+    feed(:file => selfdir + "attrrank.json")
     wait_for_hitcount("query=ss:first&streaming.userid=1", 1)
 
     assert_attribute_rank(100.0,      "si")

@@ -29,7 +29,7 @@ class MapTypeTest < StreamingSearchTest
     set_owner("balder")
     deploy_app(get_app.sd(selfdir + "schemas/mapupdatetest.sd"))
     start
-    feedfile(selfdir+"feedmapupdate.xml")
+    feedfile(selfdir+"feedmapupdate.json")
     wait_for_hitcount(get_query("sddocname:mapupdatetest"), 1)
     http = https_client.create_client(vespa.document_api_v1.host, Environment.instance.vespa_web_service_port)
     http.read_timeout=190
@@ -55,7 +55,7 @@ class MapTypeTest < StreamingSearchTest
     set_description("Test for streaming search in map type")
     deploy_app(get_app.sd(selfdir + "schemas/maptest.sd"))
     start
-    feedfile(selfdir+"feedmap.xml")
+    feedfile(selfdir+"feedmap.json")
     wait_for_hitcount(get_query("sddocname:maptest"), 2)
 
     puts "Test grouping"

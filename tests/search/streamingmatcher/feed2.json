@@ -1,0 +1,4 @@
+[
+  {"id":"id:music:musicsearch:n=1:0","fields":{"artist":"a","title":"x a b x a b","year":2008,"lyrics":"y y a b y y a b y y a b"}},
+  {"id":"id:music:musicsearch:n=1:1","fields":{"artist":"b","title":"x b c x b c x b c","year":2009,"lyrics":"y y b c y y b c y y b c y y b c"}}
+]

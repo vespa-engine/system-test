@@ -1,0 +1,3 @@
+[
+  {"id":"id:matchtypes:matchtypes:n=1:0","fields":{"f4":"this field has match type suffix","f3":"this field has match type substring","f2":"this field has match type prefix","f1":"this field has match type default"}}
+]
