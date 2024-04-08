@@ -11,7 +11,7 @@ class IndexingScript < IndexedStreamingSearchTest
   end
 
   def test_indexingscript_types
-    feed_and_wait_for_docs("test", 10, :file => "#{selfdir}/input.xml")
+    feed_and_wait_for_docs("test", 10, :file => "#{selfdir}/input.json")
     assert_result("query=sddocname:test", "#{selfdir}/result.json", "a")
   end
 
