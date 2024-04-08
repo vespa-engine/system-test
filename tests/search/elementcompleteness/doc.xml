@@ -1,8 +1,0 @@
-<document type="test" documentid="id:test:test::1">
-  <title>test</title>
-  <foo><item>a b x</item><item>a b</item><item>a b c x</item><item>a c d</item></foo>
-  <bar><item weight="16">a b x</item><item weight="17">a b</item><item weight="18">a b c x</item><item weight="19">a c d</item></bar>
-
-  <productid><item weight="16">a b x</item><item weight="17">a b</item><item weight="18">a b c x</item><item weight="19">a c d</item></productid>
-  <hash><item weight="16">a b x</item><item weight="17">a b</item><item weight="18">a b c x</item><item weight="19">a c d</item></hash>
-</document>
