@@ -1,9 +1,0 @@
-<document documenttype="banana" documentid="id:banana:banana::doc1">
-  <colour>yellow</colour>
-  <age>13332552</age>
-</document>
-
-<document documenttype="banana" documentid="id:banana:banana::doc2">
-  <colour>spotted brown</colour>
-  <age>13332600</age>
-</document>
