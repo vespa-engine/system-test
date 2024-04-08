@@ -11,7 +11,7 @@ class Fieldnames < IndexedStreamingSearchTest
   end
 
   def test_fieldnamewithunderscore
-    feed_and_wait_for_docs("music", 2, :file => selfdir+"music.2.xml", :timeout => 240)
+    feed_and_wait_for_docs("music", 2, :file => selfdir+"music.2.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 2)
   end
 
