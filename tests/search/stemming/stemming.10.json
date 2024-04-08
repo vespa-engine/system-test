@@ -1,0 +1,12 @@
+[
+  {"id":"id:test:music::http://ping.oo.com/shop?d=01","fields":{"pto":-1,"artist":"tower of power","song":"make peace after war","bgnsellers":0,"title":"doc1","surl":"http://ping.oo.com/shop?d=01","ew":"blues","mid":2}},
+  {"id":"id:test:music::http://ping.oo.com/shop?d=02","fields":{"pto":-1,"artist":"towers of power","song":"make peace between wars","bgnsellers":0,"title":"doc2","surl":"http://ping.oo.com/shop?d=02","ew":"blues","mid":2}},
+  {"id":"id:test:music::http://ping.oo.com/shop?d=03","fields":{"pto":-1,"artist":"by the number","song":"makes peace","bgnsellers":0,"title":"doc3","surl":"http://ping.oo.com/shop?d=03","ew":"blues","mid":2}},
+  {"id":"id:test:music::http://ping.oo.com/shop?d=04","fields":{"pto":-1,"artist":"by the numbers","song":"can a man find a car?","bgnsellers":0,"title":"doc4","surl":"http://ping.oo.com/shop?d=04","ew":"blues","mid":2}},
+  {"id":"id:test:music::http://ping.oo.com/shop?d=05","fields":{"pto":-1,"artist":"christmas","song":"can two men find a car","bgnsellers":0,"title":"doc5","surl":"http://ping.oo.com/shop?d=05","ew":"blues","mid":2}},
+  {"id":"id:test:music::http://ping.oo.com/shop?d=06","fields":{"pto":-1,"artist":"Christmas","song":"can a man find two cars","bgnsellers":0,"title":"doc6","surl":"http://ping.oo.com/shop?d=06","ew":"blues","mid":2}},
+  {"id":"id:test:music::http://ping.oo.com/shop?d=07","fields":{"pto":-1,"artist":"CHRISTMAS","song":"a man found a car","bgnsellers":0,"title":"doc7","surl":"http://ping.oo.com/shop?d=07","ew":"blues","mid":2}},
+  {"id":"id:test:music::http://ping.oo.com/shop?d=08","fields":{"pto":-1,"artist":"INXS","song":"finding the right cars","bgnsellers":0,"title":"doc8","surl":"http://ping.oo.com/shop?d=08","ew":"blues","mid":2}},
+  {"id":"id:test:music::http://ping.oo.com/shop?d=09","fields":{"pto":-1,"artist":"Inxs","song":"men goes to war to find cars","bgnsellers":0,"title":"doc9","surl":"http://ping.oo.com/shop?d=09","ew":"blues","mid":2}},
+  {"id":"id:test:music::http://ping.oo.com/shop?d=10","fields":{"pto":-1,"artist":"inxs","song":"men makes cars","bgnsellers":0,"title":"doc10","surl":"http://ping.oo.com/shop?d=10","ew":"blues","mid":2}}
+]
