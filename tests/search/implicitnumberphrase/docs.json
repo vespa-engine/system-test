@@ -1,0 +1,5 @@
+[
+  {"id":"id:test:test::1","fields":{"body":"test 2.2"}},
+  {"id":"id:test:test::2","fields":{"body":"test -3.3"}},
+  {"id":"id:test:test::3","fields":{"body":"test -5"}}
+]

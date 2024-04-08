@@ -11,7 +11,7 @@ class ImplicitNumberPhrase < IndexedStreamingSearchTest
   end
 
   def test_implicitnumberphrase
-    feed_and_wait_for_docs("test", 3, :file => selfdir+"docs.xml")
+    feed_and_wait_for_docs("test", 3, :file => selfdir+"docs.json")
     assert_hitcount("query=test", 3)
     assert_hitcount("query=body:test", 3)
 
