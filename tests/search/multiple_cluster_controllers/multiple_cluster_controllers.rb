@@ -17,7 +17,7 @@ class MultipleClusterControllers < IndexedStreamingSearchTest
     set_owner("vekterli")
     deploy_multiple_app(selfdir + "banana.sd")
     start
-    feed_and_wait_for_docs("banana", 2, :file => selfdir+"bananafeed.xml")
+    feed_and_wait_for_docs("banana", 2, :file => selfdir+"bananafeed.json")
   end
 
   def deploy_multiple_app(sd)
