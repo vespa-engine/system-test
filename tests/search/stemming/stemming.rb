@@ -12,7 +12,7 @@ class Stemming < IndexedOnlySearchTest
   end
 
   def test_stemming
-    feed_and_wait_for_docs("music", 10, :file => selfdir+"stemming.10.xml")
+    feed_and_wait_for_docs("music", 10, :file => selfdir+"stemming.10.json")
 
     wait_for_hitcount("query=war", 3)
     puts "Query: testing singular and plural"
