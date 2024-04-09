@@ -2,7 +2,7 @@
 
 require 'indexed_streaming_search_test'
 
-class Vespafeeder < IndexedStreamingSearchTest
+class VespaFeedClient < IndexedStreamingSearchTest
 
   def setup
     set_owner("vekterli")
