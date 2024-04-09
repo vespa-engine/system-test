@@ -18,7 +18,7 @@ class RankFilter < IndexedStreamingSearchTest
     start
     vespa.adminserver.logctl("searchnode:diskindex.disktermblueprint", "debug=on")
     vespa.adminserver.logctl("searchnode:proton.memoryindex.memoryindex", "debug=on")
-    feed_and_wait_for_docs("test", 1, :file => selfdir + "test.xml")
+    feed_and_wait_for_docs("test", 1, :file => selfdir + "test.json")
 
     if is_streaming
       puts "Run tests for streaming search"
