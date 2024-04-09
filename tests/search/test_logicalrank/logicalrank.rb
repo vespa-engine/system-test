@@ -13,7 +13,7 @@ class Test_LogicalRank < IndexedStreamingSearchTest
   end
 
   def test_logicalrank
-     feed(:file => selfdir + "lr.8.xml")
+     feed(:file => selfdir + "lr.8.json")
 
      puts "sanity check"
      wait_for_hitcount("query=test", 8)
