@@ -33,4 +33,16 @@ schema doc {
             distance-metric: angular
         }
     }
+    field short_embedding type tensor<float>(x[512]) {
+        indexing: input text | embed hf | attribute
+        attribute {
+            distance-metric: angular
+        }
+    }
+    field binary_embedding type tensor<int8>(x[96]) {
+        indexing: input text | embed hf | attribute
+        attribute {
+            distance-metric: angular
+        }
+    }
 }
