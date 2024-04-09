@@ -1,0 +1,5 @@
+[
+  {"id":"id:test:music::1","fields":{"title":"Blues"}},
+  {"id":"id:test:music::2","fields":{"wrong":"Folk"}},
+  {"id":"id:test:music::3","fields":{"title":"Country"}}
+]

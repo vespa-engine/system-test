@@ -6,41 +6,29 @@ class Vespafeeder < IndexedStreamingSearchTest
 
   def setup
     set_owner("vekterli")
-    deploy_app(SearchApp.new.sd(SEARCH_DATA + "music.sd"))
+    deploy_app(SearchApp.new.sd(SEARCH_DATA + "music.sd").enable_document_api)
     start
   end
 
   def test_error_behaviour
     node = vespa.nodeproxies.values.first
 
-    # Would be nice to have each test in a separate function so we could see
-    # all that was failing and not just first, but as it's so much overhead
-    # to start stop test, keep all tests in one function for now
-    node.copy(selfdir + "unknown_doctype.json", "/tmp/")
-    node.copy(selfdir + "music.xml", "/tmp/")
-    node.copy(selfdir + "wrongfield.xml", "/tmp/")
+    # Feed with valid docs
+    (exitcode, output) = feed(:file => selfdir + 'music.json', :client => :vespa_feed_client, :port => 19020, :exitcode => true, :stderr => true)
+    assert_equal(0, exitcode.to_i)
 
     # Test that we fail decently when using unknown document type
-    (exitcode, output) = node.execute("VESPA_LOG_TARGET='file:/dev/null' vespa-feed-client /tmp/unknown_doctype.json /tmp/music.json", { :exitcode => true, :stderr => true })
-    assert_equal(1, exitcode.to_i)
-    assert(output.index("Must specify an existing document type") != nil)
+    (exitcode, output) = feed(:file => selfdir + 'unknown_doctype.json', :client => :vespa_feed_client, :port => 19020, :exitcode => true, :stderr => true)
+    assert_equal(0, exitcode.to_i) # Some docs fed successfully, so expect 0
+    assert(output.index("Document type nonexistingtype does not exist"))
 
-    # Test that we fail decently when input file does not exist
-    (exitcode, output) = node.execute("VESPA_LOG_TARGET='file:/dev/null' vespa-feed-client nonexisting.json 2>&1", { :exitcode => true, :stderr => true })
-    assert_equal(1, exitcode.to_i)
-    assert(output.index("Could not open file") != nil);
-
-    # Test that we fail decently when having document XML with field that does not exist
-    (exitcode, output) = node.execute("VESPA_LOG_TARGET='file:/dev/null' vespa-feed-client /tmp/wrongfield.xml 2>&1", { :exitcode => true, :stderr => true })
-    assert_equal(1, exitcode.to_i)
-    assert(output.index("Field wrong not found") != nil);
+    # Test that we fail decently when having a document with a field that does not exist
+    (exitcode, output) = feed(:file => selfdir + 'wrongfield.json', :client => :vespa_feed_client, :port => 19020, :exitcode => true, :stderr => true)
+    assert_equal(0, exitcode.to_i) # Some docs fed successfully, so expect 0
+    assert(output.index("No field 'wrong' in the structure of type 'music'"))
   end
 
   def teardown
-    node = vespa.nodeproxies.values.first
-    node.execute("rm -f /tmp/unknown_doctype.xml")
-    node.execute("rm -f /tmp/music.xml")
-    node.execute("rm -f /tmp/wrongfield.xml")
     stop
   end
 
