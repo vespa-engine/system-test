@@ -1,0 +1,11 @@
+[
+  {"id":"id:music:music::http://music.yahoo.com/metallica/BestOf","fields":{"tracks":["riáman"],"title":"Bob1","lang":"riám "}},
+  {"id":"id:music:music::http://music.yahoo.com/britallica/BestOf","fields":{"tracks":["riâman"],"title":"Bob1","lang":"riâma"}},
+  {"id":"id:music:music::http://music.yahoo.com/zimbalica/BestOf","fields":{"tracks":["riàman"],"title":"Bob1","lang":"riàman"}},
+  {"id":"id:music:music::http://music.yahoo.com/ambalica/BestOf","fields":{"tracks":["riaman"],"title":"Bob1","lang":"riaman"}},
+  {"id":"id:music:music::http://music.yahoo.com/bimbalica/BestOf","fields":{"tracks":["riäkan"],"title":"Bob1","lang":"riäk"}},
+  {"id":"id:music:music::http://music.yahoo.com/rombalica/BestOf","fields":{"tracks":["riæman"],"title":"Bob1","lang":"riæma"}},
+  {"id":"id:music:music::http://music.yahoo.com/gambalica/BestOf","fields":{"tracks":["riäkan"],"title":"Bob1","lang":"riäka"}},
+  {"id":"id:music:music::http://music.yahoo.com/jambalica/BestOf","fields":{"tracks":["riåman"],"title":"Bob1","lang":"riåma"}},
+  {"id":"id:music:music::http://music.yahoo.com/simbalica/BestOf","fields":{"tracks":["raåman"],"title":"Bob1","lang":"raåma"}}
+]
