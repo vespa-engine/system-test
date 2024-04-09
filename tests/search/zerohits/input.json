@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:music::http://www.cdplanet.no/showarticle.asp?artid=476777","fields":{"artist":"Metallica","price":189,"title":"Master Of Puppets","year":1989,"surl":"http://www.cdplanet.no/showarticle.asp?artid=476777"}},
+  {"id":"id:test:music::http://www.cdplanet.no/showarticle.asp?artid=1623430","fields":{"artist":"The Cure","price":229,"title":"Bloodflowers","year":2000,"surl":"http://www.cdplanet.no/showarticle.asp?artid=1623430"}}
+]

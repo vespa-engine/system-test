@@ -1,0 +1,22 @@
+[
+  {"id":"id:banana:banana::doc0","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":0}},
+  {"id":"id:banana:banana::doc1","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":1}},
+  {"id":"id:banana:banana::doc2","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":2}},
+  {"id":"id:banana:banana::doc3","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":3}},
+  {"id":"id:banana:banana::doc4","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":4}},
+  {"id":"id:banana:banana::doc5","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":5}},
+  {"id":"id:banana:banana::doc6","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":6}},
+  {"id":"id:banana:banana::doc7","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":7}},
+  {"id":"id:banana:banana::doc8","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":8}},
+  {"id":"id:banana:banana::doc9","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":9}},
+  {"id":"id:banana:banana::doc10","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":10}},
+  {"id":"id:banana:banana::doc11","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":11}},
+  {"id":"id:banana:banana::doc12","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":12}},
+  {"id":"id:banana:banana::doc13","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":13}},
+  {"id":"id:banana:banana::doc14","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":14}},
+  {"id":"id:banana:banana::doc15","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":15}},
+  {"id":"id:banana:banana::doc16","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":16}},
+  {"id":"id:banana:banana::doc17","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":17}},
+  {"id":"id:banana:banana::doc18","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":18}},
+  {"id":"id:banana:banana::doc19","fields":{"colour":"yellow0","similarfruits":["old0","new0"],"age":19}}
+]
