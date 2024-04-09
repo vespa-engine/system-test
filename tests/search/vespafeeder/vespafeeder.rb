@@ -16,22 +16,22 @@ class Vespafeeder < IndexedStreamingSearchTest
     # Would be nice to have each test in a separate function so we could see
     # all that was failing and not just first, but as it's so much overhead
     # to start stop test, keep all tests in one function for now
-    node.copy(selfdir + "unknown_doctype.xml", "/tmp/")
+    node.copy(selfdir + "unknown_doctype.json", "/tmp/")
     node.copy(selfdir + "music.xml", "/tmp/")
     node.copy(selfdir + "wrongfield.xml", "/tmp/")
 
     # Test that we fail decently when using unknown document type
-    (exitcode, output) = node.execute("VESPA_LOG_TARGET='file:/dev/null' vespa-feeder /tmp/unknown_doctype.xml /tmp/music.xml", { :exitcode => true, :stderr => true })
+    (exitcode, output) = node.execute("VESPA_LOG_TARGET='file:/dev/null' vespa-feed-client /tmp/unknown_doctype.json /tmp/music.json", { :exitcode => true, :stderr => true })
     assert_equal(1, exitcode.to_i)
     assert(output.index("Must specify an existing document type") != nil)
 
     # Test that we fail decently when input file does not exist
-    (exitcode, output) = node.execute("VESPA_LOG_TARGET='file:/dev/null' vespa-feeder nonexisting.xml 2>&1", { :exitcode => true, :stderr => true })
+    (exitcode, output) = node.execute("VESPA_LOG_TARGET='file:/dev/null' vespa-feed-client nonexisting.json 2>&1", { :exitcode => true, :stderr => true })
     assert_equal(1, exitcode.to_i)
     assert(output.index("Could not open file") != nil);
 
-    # Test that we fail decently when having document XML with field that
-    (exitcode, output) = node.execute("VESPA_LOG_TARGET='file:/dev/null' vespa-feeder /tmp/wrongfield.xml 2>&1", { :exitcode => true, :stderr => true })
+    # Test that we fail decently when having document XML with field that does not exist
+    (exitcode, output) = node.execute("VESPA_LOG_TARGET='file:/dev/null' vespa-feed-client /tmp/wrongfield.xml 2>&1", { :exitcode => true, :stderr => true })
     assert_equal(1, exitcode.to_i)
     assert(output.index("Field wrong not found") != nil);
   end
