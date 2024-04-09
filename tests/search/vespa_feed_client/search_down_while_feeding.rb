@@ -12,7 +12,7 @@ class SearchDownWhileFeeding < IndexedStreamingSearchTest
 
   def test_stop_search
     puts "Feeding when all is up"
-    result = feedfile(selfdir+"music.xml")
+    result = feedfile(selfdir+"music.json")
     puts "1 RESULT *****************"
     puts result
     puts "1 ************************"
@@ -24,7 +24,7 @@ class SearchDownWhileFeeding < IndexedStreamingSearchTest
 
     puts "Feeding with searchnode down"
 
-    result = feedfile(selfdir+"music.xml", { :exceptiononfailure => false, :timeout => 10 })
+    result = feedfile(selfdir+"music.json", { :exceptiononfailure => false, :timeout => 10 })
 
     puts "2 RESULT *****************"
     puts result
@@ -36,7 +36,7 @@ class SearchDownWhileFeeding < IndexedStreamingSearchTest
     puts "Starting searchnode again"
     vespa.search["search"].first.start
 
-    result = feedfile(selfdir+"music.xml", :exceptiononfailure => false)
+    result = feedfile(selfdir+"music.json", :exceptiononfailure => false)
     puts "3 RESULT *****************"
     puts result
     puts "3 ************************"
