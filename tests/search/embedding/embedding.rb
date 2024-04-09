@@ -288,14 +288,18 @@ class Embedding < IndexedStreamingSearchTest
   def verify_huggingface_embedding_binary_quantization
     result = search("?yql=select%20*%20from%20sources%20*%20where%20true&input.query(embedding)=embed(mixed, \"Hello%20world\")&input.query(binary_embedding)=embed(mixed, \"Hello%20world\")&format=json&format.tensors=short").json
     queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(embedding)"]
-    queryBinaryFeature = result['root']['children'][0]['fields']['summaryfeatures']["query(binary_embedding)"]
+    attributeFeatureShortFloat = result['root']['children'][0]['fields']['summaryfeatures']["attribute(shortened_embedding)"]
+    
     attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(binary_embedding)"]
+    queryBinaryFeature = result['root']['children'][0]['fields']['summaryfeatures']["query(binary_embedding)"]
+    
     attributeFeatureShort = result['root']['children'][0]['fields']['summaryfeatures']["attribute(binary_embedding_short)"]
     attributeUnpackedFeature = result['root']['children'][0]['fields']['summaryfeatures']["unpacked"]
 
     puts "queryFeature: '#{queryFeature}'"
     puts "queryBinaryFeature: '#{queryBinaryFeature}'"
     puts "attributeFeature: '#{attributeFeature}'"
+    puts "attributeFeatureShortFloat: '#{attributeFeatureShortFloat}'"
     puts "attributeFeatureShort: '#{attributeFeatureShort}'"
     puts "attributeUnpackedFeature: '#{attributeUnpackedFeature}'"
 
@@ -303,6 +307,11 @@ class Embedding < IndexedStreamingSearchTest
     assert(relevance > 0, "#{relevance} is 0, which is not expected.")
 
     assert_equal(queryBinaryFeature.to_s, attributeFeature.to_s) # same input text for query and document
+
+    # the first 512 values should be the same
+    (0..511).each { |i|
+      assert((queryFeature['values'][i] - attributeFeatureShortFloat['values'][i]).abs < 1e-5, "#{queryFeature['values'][i]} != #{attributeFeatureShortFloat['values'][i]} at index #{i}")
+    }
     
     expected_length = 128
     assert_equal(expected_length, attributeFeature['values'].length)
@@ -319,7 +328,7 @@ class Embedding < IndexedStreamingSearchTest
       assert_equal(expected, actual)
     }
     # Matryoshka chop 16 first float dims and binaryze to int8
-    # should be the same as the first two dims as when using longer float dims
+    # should be the same as the first two dims as when binarizing with more dimensions
     result = search("?yql=select%20*%20from%20sources%20*%20where%20true&input.query(binary_embedding_short)=embed(mixed, \"Hello%20world\")&format=json&format.tensors=short").json
     queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(binary_embedding_short)"]
     puts "queryFeature: '#{queryFeature}'"
