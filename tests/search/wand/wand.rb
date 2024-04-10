@@ -21,11 +21,8 @@ class WeakAnd < IndexedStreamingSearchTest
 
   def gen_and_feed(gen_mod, num_docs, gen_function)
     gen = WandDocGenerator.new(gen_mod)
-    file = dirs.tmpdir + "temp.#{gen_function}.#{gen_mod}.#{num_docs}.json"
-    gen.send(gen_function, 1, num_docs).write_vespafeed_json(file)
-    read = File.open(file)
-    file_data = read.read
-    puts file_data
+    file = dirs.tmpdir + "temp.#{gen_function}.#{gen_mod}.#{num_docs}.xml"
+    gen.send(gen_function, 1, num_docs).write_xml(file)
     feed_and_wait_for_docs("test", num_docs, :file => file)
     return gen
   end
@@ -35,12 +32,12 @@ class WeakAnd < IndexedStreamingSearchTest
     run_wset_wand_ranking_test("vespa", "")
   end
 
-  def no_test_wset_wand_ranking_parallel
+  def test_wset_wand_ranking_parallel
     set_description("Test Parallel Wand ranking with weighted set field")
     run_wset_wand_ranking_test("parallel", "parallel")
   end
 
-  def no_test_wset_wand_ranking_parallel_no_upper_bounds
+  def test_wset_wand_ranking_parallel_no_upper_bounds
     set_description("Test Parallel Wand ranking with weighted set field when no real upper bounds are available")
     run_wset_wand_ranking_test("parallel_noupperbounds", "parallel")
   end
@@ -87,17 +84,17 @@ class WeakAnd < IndexedStreamingSearchTest
   end
 
 
-  def no_test_wset_wand_filter_vespa
+  def test_wset_wand_filter_vespa
     set_description("Test Vespa Wand with weighted set field and additional filter")
     run_wset_wand_filter_test("vespa", "")
   end
 
-  def no_test_wset_wand_filter_parallel
+  def test_wset_wand_filter_parallel
     set_description("Test Parallel Wand with weighted set field and additional filter")
     run_wset_wand_filter_test("parallel", "parallel")
   end
 
-  def no_test_wset_wand_filter_parallel_no_upper_bounds
+  def test_wset_wand_filter_parallel_no_upper_bounds
     set_description("Test Parallel Wand with weighted set field and additional filter when no real upper bounds are available")
     run_wset_wand_filter_test("parallel_noupperbounds", "parallel")
   end
@@ -133,12 +130,12 @@ class WeakAnd < IndexedStreamingSearchTest
     end
   end
 
-  def no_test_empty_wset_wand_vespa
+  def test_empty_wset_wand_vespa
     set_description("Test Vespa Wand with empty weighted set field")
     run_empty_wset_wand_test("vespa", "")
   end
 
-  def no_test_empty_wset_wand_parallel
+  def test_empty_wset_wand_parallel
     set_description("Test Parallel Wand with empty weighted set field")
     run_empty_wset_wand_test("parallel", "parallel")
   end
@@ -152,7 +149,7 @@ class WeakAnd < IndexedStreamingSearchTest
     assert_hitcount("?#{get_wand('a:1', wand_type)}", 2)
   end
 
-  def no_test_wand_with_score_threshold_parallel
+  def test_wand_with_score_threshold_parallel
     set_description("Test that we can specify an initial score threshold using Parallel WAND")
     run_wand_with_score_threshold_test("parallel", "parallel")
 
