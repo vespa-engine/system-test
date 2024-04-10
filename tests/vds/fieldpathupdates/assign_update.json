@@ -1,0 +1,10 @@
+[
+  {"update":"id:banana:banana::complex",
+    "fields":{
+      "colour":{"assign":"cafe latte"},
+      "stringmap{\"foo1 hello\"}":{"assign":"raspeballer"},
+      "stringmap{foo4}":{ "assign":"new and shiny"},
+      "structmap{4}.mymap{foo}":{"assign":"should not happen"}
+    }
+  }
+]

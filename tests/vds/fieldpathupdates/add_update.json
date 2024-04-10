@@ -1,0 +1,3 @@
+[
+  {"update":"id:banana:banana::complex","fields":{"structarr":{"add":[{"bytearr":[30,55],"mymap":{"duke":"nukem"}},{"bytearr":[12,56],"mymap":{"emacs":"is fun and cool!!"}}]}}}
+]
