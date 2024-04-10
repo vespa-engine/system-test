@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<vespafeed>
-<update documentid="id:banana:banana::complex" documenttype="banana">
-  <remove where="banana.structarr[$x].bytearr == 9" fieldpath="structarr[$x]"/>
-  <remove fieldpath="stringmap{foo2}"/>
-</update>
-</vespafeed>
-
