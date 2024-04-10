@@ -16,11 +16,11 @@ class MultipleSearchDefs < VdsMultiModelTest
 
   def test_twosearchdefs
     # music application is deployed => should fail to feed music2 documents but succeed in feeding music documents
-    output = feedfile(selfdir+"music.xml")
-    assert_no_match(/Must specify an existing document type/, output)
+    output = feedfile(selfdir+"music.json")
+    assert_no_match(/Document type music does not exist/, output)
 
-    output = feedfile(selfdir+"music2.xml", :exceptiononfailure => false, :stderr => true)
-    assert_match(/Must specify an existing document type/, output)
+    output = feedfile(selfdir+"music2.json", :exceptiononfailure => false, :stderr => true)
+    assert_match(/Document type music2 does not exist/, output)
 
     # Test vespaget
     output = vespaget("id:storage_test:music:n=1234:music1")
@@ -36,11 +36,11 @@ class MultipleSearchDefs < VdsMultiModelTest
     wait_for_reconfig(config_generation)
 
     # music2 application is deployed => should fail to feed music documents but succeed in feeding music2 documents
-    output = feedfile(selfdir+"music.xml", :exceptiononfailure => false, :stderr => true)
-    assert_match(/Must specify an existing document type/, output)
+    output = feedfile(selfdir+"music.json", :exceptiononfailure => false, :stderr => true)
+    assert_match(/Document type music does not exist/, output)
 
-    output = feedfile(selfdir+"music2.xml")
-    assert_no_match(/Must specify an existing document type/, output)
+    output = feedfile(selfdir+"music2.json")
+    assert_no_match(/Document type music2 does not exist/, output)
 
     # Test vespaget
     output = vespaget("id:storage_test:music:n=1234:music1", :exceptiononfailure => false, :stderr => true)
@@ -57,11 +57,11 @@ class MultipleSearchDefs < VdsMultiModelTest
     wait_for_reconfig(config_generation)
 
     # music application is deployed => should fail to feed music2 documents but succeed in feeding music documents
-    output = feedfile(selfdir+"music.xml", :retries => 3)
-    assert_no_match(/Must specify an existing document type/, output)
+    output = feedfile(selfdir+"music.json", :retries => 3)
+    assert_no_match(/Document type music does not exist/, output)
 
-    output = feedfile(selfdir+"music2.xml", :exceptiononfailure => false, :stderr => true)
-    assert_match(/Must specify an existing document type/, output)
+    output = feedfile(selfdir+"music2.json", :exceptiononfailure => false, :stderr => true)
+    assert_match(/Document type music2 does not exist/, output)
 
     # Test vespaget
     output = vespaget("id:storage_test:music:n=1234:music1")
@@ -84,11 +84,11 @@ class MultipleSearchDefs < VdsMultiModelTest
     output = vespaget("id:storage_test:music2:n=1234:music2")
     assert_no_match(/ReturnCode/, output)
 
-    output = feedfile(selfdir+"music.xml", :retries => 3)
-    assert_no_match(/Must specify an existing document type/, output)
+    output = feedfile(selfdir+"music.json", :retries => 3)
+    assert_no_match(/Document type music does not exist/, output)
 
-    output = feedfile(selfdir+"music2.xml", :retries => 3)
-    assert_no_match(/Must specify an existing document type/, output)
+    output = feedfile(selfdir+"music2.json", :retries => 3)
+    assert_no_match(/Document type music2 does not exist/, output)
 
     output = vespa.content_node("storage", 0).execute("vespa-visit --xmloutput || true")
     assert_match(/id:storage_test:music:n=1234:music1/, output)
