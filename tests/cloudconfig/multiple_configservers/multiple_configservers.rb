@@ -35,7 +35,7 @@ class MultipleConfigservers < CloudConfigTest
     assert_activation_status
     verify_configs(@node1, [@node1.hostname, @node2.hostname, @node3.hostname])
     start
-    feed_and_wait_for_docs("banana", 3, :file => selfdir+"bananafeed.xml")
+    feed_and_wait_for_docs("banana", 3, :file => selfdir+"bananafeed.json")
     debug("started")
   end
 
@@ -67,7 +67,7 @@ class MultipleConfigservers < CloudConfigTest
 
     wait_for_config_generation_on_all_configservers(@session_id)
     wait_for_reconfig(@session_id, 600, true)
-    feed_and_wait_for_docs("banana", 5, :file => selfdir + "bananafeed-extended.xml")
+    feed_and_wait_for_docs("banana", 5, :file => selfdir + "bananafeed-extended.json")
   end
 
   def test_deploy_robustness
@@ -115,7 +115,7 @@ class MultipleConfigservers < CloudConfigTest
     @session_id = @session_id + 1
     debug("9")
     wait_for_config_generation_on_all_configservers(@session_id)
-    feed_and_wait_for_docs("banana", 5, :file => selfdir+"bananafeed-extended.xml")
+    feed_and_wait_for_docs("banana", 5, :file => selfdir+"bananafeed-extended.json")
     debug("10")
 
     # stop the second configserver and restart vespa, the other configservers should serve config
