@@ -1,0 +1,4 @@
+[
+  {"id":"id:test-basic:basic::pushyss://0/","fields":{"bothtypes":"both types"}},
+  {"id":"id:test-notbasic:notbasic::pushyss://1/","fields":{"bothtypes":"both types","uniq":"recall"}}
+]
