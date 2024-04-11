@@ -12,7 +12,7 @@ class VdsBasicFeeding < VdsTest
     start
 
     # Put document using vespa-feeder
-    feedfile(selfdir+"data/docid.xml")
+    feedfile(selfdir+"data/docid.json")
 
     docid = "id:test:music::http://localhost:5810/?query=foo&hits=1"
     # Create document here for comparison
@@ -46,7 +46,7 @@ class VdsBasicFeeding < VdsTest
     start
 
     # Put docment with array attribute using vespa-feeder
-    feedfile(selfdir+"data/array.xml")
+    feedfile(selfdir+"data/array.json")
 
     # Create the same document for comparison
     doc1 = Document.new("music",
@@ -82,7 +82,7 @@ class VdsBasicFeeding < VdsTest
     start
 
     # Put document with array attribute using vespa-feeder
-    feedfile(selfdir+"data/weightedset.xml")
+    feedfile(selfdir+"data/weightedset.json")
 
     # Create the same document for comparison
     doc1 = Document.new("music",
@@ -113,34 +113,12 @@ class VdsBasicFeeding < VdsTest
     assert_equal(doc3, doc4)
   end
 
-  def test_mixed_case_doctype_vespafeeder
+  def test_mixed_case_doctype_vespa_feeder
     deploy_app(default_app.sd(VDS + "schemas/MiXedCase.sd"))
     start
 
     set_owner("vekterli")
-    feedfile(selfdir+"data/mixedcase.xml")
-
-    doc1 = Document.new("MiXedCase", "id:MiXedCase:MiXedCase::DaisyDaisy").
-      add_field("title", "title #1").
-      add_field("description", "description #1")
-
-    doc2 = Document.new("MiXedCase", "id:MiXedCase:MiXedCase::GiveMeYourAnswerTrue").
-      add_field("title", "title #2").
-      add_field("description", "description #2")
-
-    doc1_get = vespa.document_api_v1.get("id:MiXedCase:MiXedCase::DaisyDaisy")
-    doc2_get = vespa.document_api_v1.get("id:MiXedCase:MiXedCase::GiveMeYourAnswerTrue")
-
-    assert_equal(doc1, doc1_get)
-    assert_equal(doc2, doc2_get)
-  end
-
-  def test_mixed_case_doctype_vespa_feed_client
-    deploy_app(default_app.sd(VDS + "schemas/MiXedCase.sd"))
-    start
-
-    set_owner("vekterli")
-    feedfile(selfdir+"data/mixedcase.xml", :client => :vespa_feeder)
+    feedfile(selfdir+"data/mixedcase.json", :client => :vespa_feeder)
 
     doc1 = Document.new("MiXedCase", "id:MiXedCase:MiXedCase::DaisyDaisy").
       add_field("title", "title #1").

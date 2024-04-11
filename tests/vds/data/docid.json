@@ -1,0 +1,4 @@
+[
+  {"id":"id:test:music::http://localhost:5810/?query=foo&hits=1","fields":{"artist":"Unknown artist","title":"QRS url 1"}},
+  {"id":"id:test:music::http://localhost:5810/?query=bar&hits=1","fields":{"artist":"Known artist","title":"QRS url 2"}}
+]
