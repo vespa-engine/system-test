@@ -1,8 +1,0 @@
-<vespafeed>
-  <document type="music" id="id:music:music::http://music.yahoo.com/metallica/BestOf">
-    <urls>
-     <item weight="1123456">http://music.yahoo.com/Bob0/MetallicaOf/2</item>
-     <item weight="-78">http://music.yahoo.com/Bob0/MetallicaOf/1</item>
-    </urls>
-   </document>
-</vespafeed>
