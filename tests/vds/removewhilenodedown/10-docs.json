@@ -1,0 +1,12 @@
+[
+  {"id":"id:music:music::http://music.yahoo.com/Bob0/BestOf","fields":{"artist":"Bob0","title":"Creation of Bob0","year":0,"band":"band0","url":"http://music.yahoo.com/Bob0/BestOf"}},
+  {"id":"id:music:music::http://music.yahoo.com/Bob1/BestOf","fields":{"artist":"Bob1","title":"Creation of Bob1","year":0,"band":"BAND0","url":"http://music.yahoo.com/Bob1/BestOf"}},
+  {"id":"id:music:music::http://music.yahoo.com/Bob2/BestOf","fields":{"artist":"Bob2","title":"Creation of Bob2","year":0,"band":"band0","url":"http://music.yahoo.com/Bob2/BestOf"}},
+  {"id":"id:music:music::http://music.yahoo.com/Bob3/BestOf","fields":{"artist":"Bob3","title":"Creation of Bob3","year":0,"band":"BAND0","url":"http://music.yahoo.com/Bob3/BestOf"}},
+  {"id":"id:music:music::http://music.yahoo.com/Bob4/BestOf","fields":{"artist":"Bob4","title":"Creation of Bob4","year":0,"band":"band0","url":"http://music.yahoo.com/Bob4/BestOf"}},
+  {"id":"id:music:music::http://music.yahoo.com/Bob5/BestOf","fields":{"artist":"Bob5","title":"Creation of Bob5","year":0,"band":"BAND1","url":"http://music.yahoo.com/Bob5/BestOf"}},
+  {"id":"id:music:music::http://music.yahoo.com/Bob6/BestOf","fields":{"artist":"Bob6","title":"Creation of Bob6","year":0,"band":"band1","url":"http://music.yahoo.com/Bob6/BestOf"}},
+  {"id":"id:music:music::http://music.yahoo.com/Bob7/BestOf","fields":{"artist":"Bob6","title":"Creation of Bob6","year":0,"band":"band1","url":"http://music.yahoo.com/Bob6/BestOf"}},
+  {"id":"id:music:music::http://music.yahoo.com/Bob8/BestOf","fields":{"artist":"Bob6","title":"Creation of Bob6","year":0,"band":"band1","url":"http://music.yahoo.com/Bob6/BestOf"}},
+  {"id":"id:music:music::http://music.yahoo.com/Bob9/BestOf","fields":{"artist":"Bob6","title":"Creation of Bob6","year":0,"band":"band1","url":"http://music.yahoo.com/Bob6/BestOf"}}
+]

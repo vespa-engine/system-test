@@ -12,7 +12,7 @@ class ReturnTimestamps < VdsTest
 
   def test_return_timestamps
     # Put document using vespa-feeder
-    output = feedfile(selfdir+"data/returntimestamps.xml", { :trace => 9, :maxpending => 1 })
+    output = feedfile(selfdir+"data/returntimestamps.json", { :trace => 9, :maxpending => 1 })
 
     set = Set.new
     output.each_line { |s|

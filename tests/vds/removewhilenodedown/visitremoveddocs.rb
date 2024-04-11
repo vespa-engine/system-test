@@ -12,14 +12,14 @@ class VisitRemovedDocs < PersistentProviderTest
   end
 
   def test_getremoveddocs
-    feedfile(selfdir + "10-docs.xml")
+    feedfile(selfdir + "10-docs.json")
     # Down storage node 0
     vespa.storage["storage"].get_master_fleet_controller().set_node_state("storage", 0, "s:d")
     # Wait until state is "down"
     vespa.storage["storage"].storage["0"].wait_for_current_node_state('d')
 
     # Remove docs using <remove> tag
-    feedfile(selfdir + "10-remove-docs.xml")
+    feedfile(selfdir + "10-remove-docs.json")
     #Bring the node UP
     vespa.storage["storage"].get_master_fleet_controller().set_node_state("storage", 0, "s:u")
     # Wait until state is "up"
@@ -31,7 +31,6 @@ class VisitRemovedDocs < PersistentProviderTest
     output = vespa.adminserver.execute("VESPA_LOG_TARGET=file:/dev/null vespa-visit -i | sort -u | wc -l")
     assert_equal(0, output.to_i)
   end
-
 
   def teardown
     stop
