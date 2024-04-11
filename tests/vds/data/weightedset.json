@@ -1,0 +1,4 @@
+[
+  {"id":"id:music:music::http://music.yahoo.com/bobdylan/BestOf","fields":{"artist":"Bob Dylan","title":"Best of Bob Dylan","year":1997,"popularity":{"1":11,"2":12,"0":10},"url":"http://music.yahoo.com/bobdylan/BestOf"}},
+  {"id":"id:music:music::http://music.yahoo.com/metallica/BestOf","fields":{"artist":"Metallica","title":"Best of Metallica","year":2001,"popularity":{"5":50,"6":60,"4":40},"url":"http://music.yahoo.com/metallica/BestOf"}}
+]
