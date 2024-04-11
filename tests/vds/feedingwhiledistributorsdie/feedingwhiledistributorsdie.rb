@@ -24,7 +24,7 @@ class FeedingWhileDistributorsDieTest < VdsTest
 
     feederoutput = ""
     feederthread = Thread.new do
-      feederoutput = vespa.storage["storage"].storage["0"].feedfile(selfdir + "data.xml", :maxretries => 5)
+      feederoutput = vespa.storage["storage"].storage["0"].feedfile(selfdir + "data.json", :maxretries => 5)
     end
 
     stop_distributor 0
