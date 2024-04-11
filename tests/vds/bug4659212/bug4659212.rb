@@ -11,8 +11,8 @@ class Bug4659212 < VdsTest
   end
 
   def test_bug4659212
-    feedfile(selfdir+"musictest.xml")
-    feedfile(selfdir+"update_arr_uri_add.xml")
+    feedfile(selfdir+"musictest.json")
+    feedfile(selfdir+"update_arr_uri_add.json")
     vespa.adminserver.execute("vespa-visit -i")
   end
 
