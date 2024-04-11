@@ -1,0 +1,7 @@
+[
+  {"id":"id:mail:music:n=1234:1","fields":{"artist":"Unknown artist","title":"QRS url 1"}},
+  {"remove":"id:mail:music:n=1234:2"},
+  {"update":"id:mail:music:n=1234:1","fields":{"title":{"assign":"QRS url 2"}}},
+  {"remove":"id:mail:music:n=1234:3"},
+  {"remove":"id:mail:music:n=1234:4"}
+]
