@@ -12,7 +12,7 @@ class Bug4069929 < VdsTest
   end
 
   def test_bug4069929
-    feedfile(selfdir+"feed.xml")
+    feedfile(selfdir+"feed.json")
     vespa.adminserver.execute("vespa-visit -i")
   end
 
