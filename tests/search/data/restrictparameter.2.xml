@@ -1,8 +1,0 @@
-  <document documenttype="basic" documentid="id:test-basic:basic::pushyss://0/">
-    <bothtypes>both types</bothtypes>
-  </document>
-
-  <document documenttype="notbasic" documentid="id:test-notbasic:notbasic::pushyss://1/">
-    <uniq>recall</uniq>
-    <bothtypes>both types</bothtypes>
-  </document>

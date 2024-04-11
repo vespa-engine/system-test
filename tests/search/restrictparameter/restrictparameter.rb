@@ -12,7 +12,7 @@ class RestrictParameter < IndexedOnlySearchTest
   end
 
   def test_restrictparameter
-    feed_and_wait_for_docs("notbasic", 1, :file => SEARCH_DATA+"restrictparameter.2.xml", :cluster => "logical")
+    feed_and_wait_for_docs("notbasic", 1, :file => selfdir+"restrictparameter.2.json", :cluster => "logical")
 
     query = "/?query=bothtypes:type"
     puts "Controlling recall for both document types"

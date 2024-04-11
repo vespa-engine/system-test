@@ -1,7 +1,0 @@
-<vespafeed>
-<update documenttype="music" documentid="id:music:music::http://music.yahoo.com/Bob0/BestOf">
-<add field="group7">
-<item>http://music.yahoo.com/Bob0/BestOf/1</item>
-</add>
-</update>
-</vespafeed>
