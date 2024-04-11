@@ -11,6 +11,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     super(*args)
     @maxage = 90
     @num_hosts = 2
+    @debug_log_enabled = false
   end
 
   def setup(*args)
@@ -273,12 +274,23 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     perform_du(upnode)
   end
 
+  def enable_debug_logging
+    vespa.search["test"].searchnode.each_value do |proton|
+      proton.logctl2("persistence.filestor.service_layer_host_info_reporter", "all=on")
+      proton.logctl2("state.manager", "all=on")
+    end
+    vespa.storage["test"].distributor.each_value do |distributor|
+      distributor.logctl2("state.manager", "all=on")
+    end
+  end
+
   def run_feed_block_document_v1_api_two_nodes_disklimit_test(shared_disk)
     @num_parts = 2
     setup_strings
     calculate_myuse(shared_disk)
     deploy_app(get_app(get_sc, shared_disk))
     start
+    enable_debug_logging if @debug_log_enabled
     disklimit = calculate_disklimit
     redeploy_with_reduced_disk_limit(disklimit.disklimit, shared_disk)
     stop_node_to_be_down_during_initial_feeding(disklimit.downnode)
