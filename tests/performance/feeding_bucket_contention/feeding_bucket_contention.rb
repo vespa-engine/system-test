@@ -52,7 +52,7 @@ class FeedingWithBucketContentionTest < PerformanceTest
     start
     # Initially feed with shuffled documents to measure baseline case, then re-feed docs sequentially.
     [true, false].each do |shuffle_feed|
-      feed_docs_to_locations(locations: 500, docs_per_location: 1000, shuffle: shuffle_feed)
+      feed_docs_to_locations(locations: 2000, docs_per_location: 1000, shuffle: shuffle_feed)
     end
     stop
   end
