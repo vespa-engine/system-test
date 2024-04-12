@@ -27,8 +27,8 @@ class ConcreteDocs < IndexedStreamingSearchTest
                                        add(DocumentProcessor.new('concretedocs.ConcreteDocDocProc').
                                            bundle('concretedocs'))))))
     start
-    feed_and_wait_for_docs('vehicle', 2, :file => selfdir+'vehicle.xml')
-    feed_and_wait_for_docs('disease', 2, :file => selfdir+'disease.xml')
+    feed_and_wait_for_docs('vehicle', 2, :file => selfdir+'vehicle.json')
+    feed_and_wait_for_docs('disease', 2, :file => selfdir+'disease.json')
 
     # Check docs in index
     assert_hitcount('query=year:2013', 2)
