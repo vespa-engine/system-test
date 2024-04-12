@@ -16,12 +16,12 @@ class AddNodeAndFeed < VdsTest
     vespa.storage["storage"].storage["1"].wait_for_current_node_state('d')
     vespa.storage["storage"].distributor["1"].wait_for_current_node_state('d')
 
-    feedfile(selfdir+"data/base64.xml")	
+    feedfile(selfdir+"data/base64.json")
 
     vespa.start_content_node("storage", "1")
     vespa.storage["storage"].distributor["1"].start
 
-    feedfile(selfdir+"data/base64.xml")
+    feedfile(selfdir+"data/base64.json")
     vespa.storage["storage"].distributor["1"].wait_for_current_node_state('u')
   end
 
