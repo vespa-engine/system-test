@@ -48,10 +48,10 @@ class AddPartition < IndexedStreamingSearchTest
     dg = SimpleDocGenerator.new(@doc_type, @id_prefix)
     docs1 = dg.generate(0, 10)
     docs2 = dg.generate(10, 10)
-    docs1.write_xml("add1")
-    docs1.write_rm_xml("rm1")
-    docs2.write_xml("add2")
-    docs2.write_rm_xml("rm2")
+    docs1.write_json("add1")
+    docs1.write_remove_json("rm1")
+    docs2.write_json("add2")
+    docs2.write_remove_json("rm2")
     start
     enable_proton_debug_log(0)
     proton = vespa.search["search"].first

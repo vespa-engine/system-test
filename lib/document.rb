@@ -65,6 +65,14 @@ class Document
     end
   end
 
+  def to_remove_json(in_array = false)
+    if in_array
+      JSON.dump([{"remove" => @documentid, "fields" => @fields}])
+    else
+      JSON.dump({"remove" => @documentid, "fields" => @fields})
+    end
+  end
+
   def xmlQuote(s, isAttr=false)
     r = ""
     s.each_char do |c|
@@ -133,6 +141,14 @@ class Document
 
   def write_rm_xml(f)
     f.write(to_rm_xml)
+  end
+
+  def write_json(f)
+    f.write(to_put_json)
+  end
+
+  def write_remove_json(f)
+    f.write(to_remove_json)
   end
 
   def ==(other)

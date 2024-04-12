@@ -22,7 +22,7 @@ class MassiveHttpClientFeedingTest < IndexedOnlySearchTest
     @valgrind = false
 
     @feed_file = dirs.tmpdir + "temp.feed.json"
-    generate_documents(0, DOCUMENTS).write_vespafeed_json(@feed_file)
+    generate_documents(0, DOCUMENTS).write_json(@feed_file)
   end
 
   def test_vespa_feed_client_with_tls
