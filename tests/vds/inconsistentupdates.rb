@@ -35,7 +35,7 @@ class InconsistentUpdates < VdsTest
 
     vespa.storage["storage"].storage["0"].wait_for_current_node_state('ui')
 
-    feedfile(selfdir + "data/inconsistentupdate.xml")
+    feedfile(selfdir + "data/inconsistentupdate.json")
 
     vespa.storage["storage"].get_master_fleet_controller().set_node_state("storage", 0, "s:d");
 
