@@ -1,5 +1,5 @@
 [
   {"id":"id:vehicle:vehicle::0","fields":{"reg":"FOO 1234","year":2012}},
-  {"id":"id:vehicle:vehicle::1","fields":{"reg":"BAR 5678","year":2012}},
+  {"id":"id:vehicle:vehicle::1","fields":{"reg":"BAR 5678","year":2012}}
 ]
 
