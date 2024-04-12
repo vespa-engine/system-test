@@ -1,5 +1,0 @@
-<vespafeed>
-  <document documenttype="test" documentid="id:ns:test::">
-    <my_byte>-129</my_byte>
-  </document>
-</vespafeed>
