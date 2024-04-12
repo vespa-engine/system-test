@@ -15,12 +15,10 @@ class BasicFunctionality < VdsTest
     doc = Document.new("music", "id:storage_test:music:n=1234:vespafeeder")
     vespa.document_api_v1.put(doc)
 
-    feedfile(selfdir + "data/partialupdate.xml")
+    feedfile(selfdir + "data/partialupdate.json")
 
     # Get the document we just stored.
     doc2 = vespa.document_api_v1.get("id:storage_test:music:n=1234:vespafeeder")
-
-    puts "houhou" + doc2.to_s
 
     # Apply change to document object here and assert it is equal to
     # retrieved document.

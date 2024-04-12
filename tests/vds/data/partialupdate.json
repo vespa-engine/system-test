@@ -1,0 +1,8 @@
+[
+  {"update":"id:storage_test:music:n=1234:vespafeeder","fields":{"year":{"assign":1982},"title":{"assign":"TestTitle"},"tracks":{"assign":["track 0","track 1"]}}},
+  {"update":"id:storage_test:music:n=1234:vespafeeder","fields":{"tracks":{"add":["track 2","track 3"]}}},
+  {"update":"id:storage_test:music:n=1234:vespafeeder","fields":{"tracks":{"remove":["track 0","track 2"]}}},
+  {"update":"id:storage_test:music:n=1234:vespafeeder","fields":{"popularity":{"assign":{"1":34,"2":-4,"0":3}}}},
+  {"update":"id:storage_test:music:n=1234:vespafeeder","fields":{"popularity":{"add":{"3":23,"0":3,"4":89}}}},
+  {"update":"id:storage_test:music:n=1234:vespafeeder","fields":{"popularity":{"remove":{"1":-1234,"3":235}}}}
+]
