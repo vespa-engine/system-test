@@ -37,7 +37,7 @@ class DocumentSet
     f.close()
   end
 
-  def write_vespafeed_json(name)
+  def write_json(name, remove=false)
     f = File.open(name, "w")
     f.write("[\n")
     first = true
@@ -47,10 +47,18 @@ class DocumentSet
       else
         f.write(",\n")
       end
-      f.write(document.to_put_json(false))
+      if (remove)
+        f.write(document.to_remove_json(false))
+      else
+        f.write(document.to_put_json(false))
+      end
     end
     f.write("\n]\n")
     f.close()
+  end
+
+  def write_remove_json(name)
+    write_json(name, true)
   end
 
   def write_xml(name)

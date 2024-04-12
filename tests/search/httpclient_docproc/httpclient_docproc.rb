@@ -27,7 +27,7 @@ class HttpClientDocProcTest < IndexedOnlySearchTest
     
     @feed_file = dirs.tmpdir + "temp.feed.json"
     num_docs = 10000
-    generate_documents(0, num_docs).write_vespafeed_json(@feed_file)
+    generate_documents(0, num_docs).write_json(@feed_file)
     container = @vespa.container.values.first
     wait_for_application(container, output)
     feedfile(@feed_file, {:client => :vespa_feed_client, :host => container.name, :port => container.http_port})
