@@ -1,7 +1,0 @@
-<vespafeed>
-  <document documenttype="test" documentid="id:ns:test::">
-    <my_byte_arr>
-      <item>-129</item>
-    </my_byte_arr>
-  </document>
-</vespafeed>

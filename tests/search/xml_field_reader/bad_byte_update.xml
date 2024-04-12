@@ -1,5 +1,0 @@
-<vespafeed>
-  <update documenttype="test" documentid="id:ns:test::">
-    <assign field="my_byte">-129</assign>
-  </update>
-</vespafeed>
