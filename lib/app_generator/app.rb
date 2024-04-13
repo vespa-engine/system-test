@@ -4,7 +4,6 @@ require 'app_generator/node_base'
 require 'app_generator/chained_setter'
 require 'app_generator/admin'
 require 'app_generator/binding'
-require 'app_generator/clients'
 require 'app_generator/config_overrides'
 require 'app_generator/container'
 require 'app_generator/content'
@@ -89,9 +88,6 @@ class App
                   :monitoring => :monitoring,
                   :admin_metrics => :metrics
   chained_forward :docprocs, :docproc => :cluster
-  chained_forward :clients,
-                  :feeder_options => :feeder_options,
-                  :load_type => :load_type
 
   def initialize
     @rank_files = []
@@ -104,7 +100,6 @@ class App
     @content = Content.new
     @docprocs = DocProcs.new
     @admin = Admin.new
-    @clients = Clients.new
     @containers = Containers.new
     @validation_overrides = ValidationOverrides.new
     @legacy_overrides = {}
@@ -189,7 +184,6 @@ class App
     services << newline(@docprocs.to_xml("  "))
     services << newline(@content.to_xml("  "))
     services << newline(@containers.to_xml("  "))
-    services << @clients.to_xml("  ")
     services << footer
   end
 
