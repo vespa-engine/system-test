@@ -188,7 +188,6 @@ class ContainerDocumentApi
   chained_setter :feeder_options
 
   def initialize()
-    @abortondocumenterror = nil
     @timeout = nil
     @feeder_options = nil
   end

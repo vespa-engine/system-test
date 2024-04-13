@@ -88,7 +88,6 @@ class App
                   :monitoring => :monitoring,
                   :admin_metrics => :metrics
   chained_forward :docprocs, :docproc => :cluster
-  chained_forward :feeder_options => :feeder_options
 
   def initialize
     @rank_files = []

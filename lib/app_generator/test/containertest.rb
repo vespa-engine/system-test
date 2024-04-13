@@ -128,7 +128,7 @@ class ContainerAppGenTest < Test::Unit::TestCase
   def test_basic_documentapi
     app = ContainerApp.new
             .container(Container.new.documentapi(ContainerDocumentApi.new
-                         .feeder_options(FeederOptions.new.abortondocumenterror(false).timeout(55.5))))
+                         .feeder_options(FeederOptions.new.timeout(55.5))))
     verify('basic_documentapi.xml', app)
   end
 
