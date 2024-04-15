@@ -727,10 +727,10 @@ class VespaModel
     application_name = File.basename(application)
     application_dir = File.dirname(application)
     pid = Process.pid
-    @testcase.output("Start tgz creation of #{application_name}")
+    #@testcase.output("Start tgz creation of #{application_name}")
     `cd #{application_dir}; tar czf #{application_name}_#{pid}.tar.gz #{application_name}`
-    @testcase.output("Finished tgz creation of #{application_name}")
-    @testcase.output("Transfer compressed content #{application_name} to adminserver")
+    #@testcase.output("Finished tgz creation of #{application_name}")
+    #@testcase.output("Transfer compressed content #{application_name} to adminserver")
     app_handle = adminserver.transfer_app(application_dir, application_name) do |fp|
       begin
         file = File.open("#{application_dir}/#{application_name}_#{pid}.tar.gz", "rb")
@@ -739,7 +739,7 @@ class VespaModel
         end
       ensure
         file.close
-        @testcase.output("Delete temporary tgz file #{application_name}")
+        #@testcase.output("Delete temporary tgz file #{application_name}")
         File.delete("#{application_dir}/#{application_name}_#{pid}.tar.gz")
       end
     end

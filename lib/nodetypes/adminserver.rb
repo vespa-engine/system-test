@@ -18,7 +18,7 @@ class Adminserver < VespaNode
     end
 
     FileUtils.remove_dir(app_path) if File.exist?(app_path)
-    execute("tar xzvf #{app_path}.tar.gz " \
+    execute("tar xzf #{app_path}.tar.gz " \
             "--directory #{application_dir}")
     return app_path
   end
