@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+    <admin version="2.0">
+      <adminserver hostalias="node1" />
+      <logserver hostalias="node1" />
+      <slobroks>
+        <slobrok hostalias="node1" />
+      </slobroks>
+    </admin>
+
+    <container version="1.0">
+
+        <component id="localllm" class="ai.vespa.llm.clients.LocalLLM">
+            <config name="ai.vespa.llm.clients.llm-local-client">
+
+                <!-- File is approx 130Mb" -->
+                <model url="https://data.vespa.oath.cloud/gguf_models/Llama-160M-Chat-v1.Q6_K.gguf" />
+
+                <contextSize>512</contextSize>
+                <parallelRequests>1</parallelRequests>
+                <maxQueueSize>0</maxQueueSize>
+                <maxTokens>10</maxTokens>
+            </config>
+        </component>
+
+        <search>
+            <chain id="llm" inherits="vespa">
+                <searcher id="ai.vespa.search.llm.LLMSearcher">
+                    <config name="ai.vespa.search.llm.llm-searcher">
+                        <providerId>localllm</providerId>
+                    </config>
+                </searcher>
+            </chain>
+        </search>
+
+        <nodes>
+            <node hostalias="node1" />
+        </nodes>
+
+    </container>
+
+</services>
