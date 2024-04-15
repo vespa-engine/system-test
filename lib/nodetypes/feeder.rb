@@ -157,8 +157,8 @@ module Feeder
       execute("sync")
     end
     if !params[:client]
-      # Set default feeder to 'vespa-feeder'
-      params[:client] = :vespa_feeder
+      # Set default feeder to 'vespa-feed-client'
+      params[:client] = :vespa_feed_client
     end
     if !params[:stderr]
       params[:stderr] = :true
