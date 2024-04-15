@@ -1,0 +1,103 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema product {
+
+    document product {
+
+        field locale type string {
+            indexing: "en" | set_language
+        }
+
+        field id type string {
+            indexing: summary | attribute 
+        }
+
+        field title type string {
+            indexing: summary
+        }
+
+        field description type string {
+            indexing: summary
+        }
+
+        field bullets type string {
+            indexing: summary
+        }
+
+        field brand type string {
+            indexing: summary
+        }
+
+        field color type string {
+            indexing: summary
+        }
+    }
+
+	document-summary id {
+        summary id {}
+	}
+
+    field float_embedding_1024 type tensor<float>(x[1024]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: prenormalized-angular
+        }
+    }
+
+
+    field float_embedding_512 type tensor<float>(x[512]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: prenormalized-angular
+        }
+    }
+
+    field int8_embedding_128 type tensor<int8>(x[128]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: hamming
+        }
+    }
+
+    field int8_embedding_64 type tensor<int8>(x[64]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: hamming
+        }
+    }
+
+
+    rank-profile default {
+        inputs {
+            query(float_q_1024) tensor<float>(x[1024])
+            query(float_q_512) tensor<float>(x[512])
+            query(int8_q_128) tensor<int8>(x[128])
+            query(int8_q_64) tensor<int8>(x[64])
+        } 
+    }
+
+    rank-profile prenormalized-angular-float-1024 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_1024)
+        }
+    }
+
+    rank-profile prenormalized-angular-float-512 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_512)
+        }
+    }
+
+    rank-profile hamming-128 inherits default {
+        first-phase {
+            expression: closeness(field, int8_embedding_128)
+        }
+    }
+
+    rank-profile hamming-64 inherits default {
+        first-phase {
+            expression: closeness(field, int8_embedding_64)
+        }
+    }
+    
+}

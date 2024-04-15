@@ -1,0 +1,2 @@
+/search/
+{"yql": "select id from product where {targetHits:100}nearestNeighbor(int8_embedding_128,int8_q_128)", "hits": 1, "input.query(int8_q_128)": "20e00cff08039a4ef0815bbf5dd53db9b34fd2c7f5f723bb9467effe9ff5bed946f0829843036cde4414617311f12465ec8e15dab30a9a63e8a6f228a8b1ba8e6936a202b387812c9a1288f81dbed6e904e19040aa2c08ab9a195ca8b4a41f8d64afb35d3a92467472d59773223dd00fdd6c9c8bffec21d99c62444d3a23c534"}
