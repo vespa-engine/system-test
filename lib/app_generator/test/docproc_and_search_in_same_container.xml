@@ -41,7 +41,6 @@
 
   <container id="default" version="1.0">
     <search />
-    <document-api>
     <document-processing>
       <chain id="default">
         <documentprocessor id="com.yahoo.vespatest.WorstMusicDocProc" />
