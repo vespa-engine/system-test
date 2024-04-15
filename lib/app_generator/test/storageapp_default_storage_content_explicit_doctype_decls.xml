@@ -6,7 +6,6 @@
 
   <container id="default" version="1.0">
     <search />
-    <document-api />
     <document-processing />
     <nodes>
       <node hostalias="node1" />

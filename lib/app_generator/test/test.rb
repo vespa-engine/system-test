@@ -79,7 +79,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     expected_substr = '
       <container id="default" version="1.0">
         <search />
-        <document-api />
         <document-processing />
         <handler id="foo" />
         <handler id="bar">
@@ -220,14 +219,12 @@ class SearchAppGenTest < Test::Unit::TestCase
     expected_substr = '
       <container id="foo" version="1.0">
         <search />
-        <document-api />
         <nodes>
           <node hostalias="node1" />
         </nodes>
       </container>
       <container baseport="4090" id="bar" version="1.0">
         <search />
-
         <nodes>
           <node hostalias="node1" />
         </nodes>
@@ -244,7 +241,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     expected_substr = '
  <container id="foo" version="1.0">
       <search />
-      <document-api />
       <nodes>
         <node hostalias="node1" />
       </nodes>
@@ -401,7 +397,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     expected_substr = '
     <container id="default" version="1.0">
       <search />
-      <document-api />
       <nodes>
         <node hostalias="node1">
           <config name="cfg">
@@ -501,7 +496,6 @@ class SearchAppGenTest < Test::Unit::TestCase
       <search>
         <chain id="default" inherits="vespa" />
       </search>
-      <document-api />
       <document-processing />
       <nodes>
         <node hostalias="node1" />
@@ -522,7 +516,6 @@ class SearchAppGenTest < Test::Unit::TestCase
     expected_substr = '
       <container id="default" version="1.0">
       <search />
-      <document-api />
           <nodes>
             <jvm options="-Option" />
             <node hostalias="node1" />
@@ -733,7 +726,6 @@ class SearchAppGenTest < Test::Unit::TestCase
 
     <container id="default" version="1.0">
       <search />
-      <document-api />
       <document-processing />
       <nodes>
         <node hostalias="node1" />

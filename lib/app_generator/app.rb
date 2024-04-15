@@ -168,7 +168,6 @@ class App
   end
 
   def services_xml
-    @content._qrservers.qrserver_list[0].add_default_document_api
     if @content._qrservers.implicit_qrserver? && @docprocs.empty?
       # Avoid having a separate docproc cluster if no docprocs
       @content._qrservers.qrserver_list[0].add_default_docproc

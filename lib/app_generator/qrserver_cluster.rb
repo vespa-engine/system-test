@@ -26,7 +26,6 @@ class QrserverCluster
     @processing = nil
     @hhttp = nil
     @should_add_default_docproc = false
-    @should_add_default_document_api = false
   end
 
   class ComponentWithType
@@ -104,12 +103,8 @@ class QrserverCluster
     @baseport = baseport
   end
 
-  def add_default_docproc
+  def add_default_docproc()
     @should_add_default_docproc = true
-  end
-
-  def add_default_document_api
-    @should_add_default_document_api = true
   end
 
   def to_container_xml(indent)
@@ -120,7 +115,6 @@ class QrserverCluster
       helper.tag("container", :version => "1.0", :id => @name)
     end
     helper.tag_always("search").to_xml(@search_chains, :to_container_xml).close_tag
-    helper.tag_always("document-api").close_tag if @should_add_default_document_api
     helper.tag_always("document-processing").close_tag if @should_add_default_docproc
     jvm_options = @_jvm_options ? { :options => @_jvm_options } : {}
     helper.
