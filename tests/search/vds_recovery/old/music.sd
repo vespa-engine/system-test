@@ -128,7 +128,7 @@ search music {
     }
 
     field did type int {
-      indexing: summary | attribute | index
+      indexing: summary | attribute
     }
 
     field scorekey type int {
