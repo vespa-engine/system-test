@@ -1,0 +1,45 @@
+<services>
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />
+    <configservers>
+      <configserver hostalias="node1" />
+    </configservers>
+  </admin>
+
+
+  <container version="1.0" id="container">
+
+    <component id="llama" class="ai.vespa.llm.clients.LocalLLM">
+      <config name="ai.vespa.llm.clients.llm-local-client">
+
+        <!-- File is approx 5.5Gb" -->
+        <!-- <model url="https://data.vespa.oath.cloud/gguf_models/mistral-7b-instruct-v0.1.Q6_K.gguf" /> -->
+
+        <!-- File is approx 130Mb" -->
+        <model url="https://data.vespa.oath.cloud/gguf_models/Llama-160M-Chat-v1.Q6_K.gguf" />
+
+        <contextSize>2048</contextSize>
+        <parallelRequests>10</parallelRequests>
+        <maxQueueSize>5</maxQueueSize>
+        <maxTokens>100</maxTokens>
+      </config>
+    </component>
+
+    <search>
+      <chain id="llm" inherits="vespa">
+        <searcher id="ai.vespa.search.llm.LLMSearcher">
+          <config name="ai.vespa.search.llm.llm-searcher">
+            <providerId>llama</providerId>
+          </config>
+        </searcher>
+      </chain>
+    </search>
+
+    <nodes>
+      <node hostalias="node1"/>
+    </nodes>
+
+  </container>
+
+</services>
