@@ -27,7 +27,7 @@ schema books {
     }
 
     field mid type int {
-      indexing: summary | attribute | index
+      indexing: summary | attribute
     }
 
     field weight type float {

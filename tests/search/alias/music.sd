@@ -27,7 +27,7 @@ schema music {
     }
 
     field year type int {
-      indexing: summary | attribute | index
+      indexing: summary | attribute
       alias: testalias2
     }
 

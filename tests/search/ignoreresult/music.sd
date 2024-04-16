@@ -11,7 +11,7 @@ schema music {
     }
 
     field year type int {
-      indexing: summary | index
+      indexing: summary | attribute
     }
 
   }

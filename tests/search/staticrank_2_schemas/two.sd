@@ -8,7 +8,7 @@ schema two {
       indexing: summary | attribute
     }
     field date type long {
-      indexing: summary | index | attribute
+      indexing: summary | attribute
     }
     field weight type int {
       indexing: summary | attribute

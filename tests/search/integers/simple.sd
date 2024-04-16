@@ -5,7 +5,7 @@ schema simple {
       indexing: summary | index
     }
     field year type int {
-      indexing: attribute | summary | index
+      indexing: attribute | summary
     }
   }
   fieldset default {

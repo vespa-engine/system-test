@@ -12,7 +12,7 @@ schema music {
       rank-type: about
     }
     field date type long {
-      indexing: summary | index | attribute
+      indexing: summary | attribute
     }
     field surl type string {
       indexing: summary

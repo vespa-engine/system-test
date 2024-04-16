@@ -5,7 +5,7 @@ search heap {
   }
   document heap {
     field f1 type int {
-      indexing: index | summary
+      indexing: attribute | summary
     }
   }
   rank-profile default {

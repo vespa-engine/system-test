@@ -21,7 +21,7 @@ schema attr {
       indexing: attribute
     }
     field intfield type int {
-      indexing: attribute | summary | index
+      indexing: attribute | summary
     }
     field body type string {
       indexing: summary | index

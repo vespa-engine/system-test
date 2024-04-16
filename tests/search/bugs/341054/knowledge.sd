@@ -27,22 +27,22 @@ schema knowledge {
 			indexing: summary
 		}
 		field maincatid type int { 
-			indexing: summary | index
+			indexing: summary | attribute
 		}
 		field subcatid type int {
-			indexing: summary | index
+			indexing: summary | attribute
 		}
 		field catid type int {
-			indexing: summary | index
+			indexing: summary | attribute
 		}
 		field nick type string { 
-			indexing: summary | index
+			indexing: summary | attribute
 		}
 		field state type int {
-			indexing: attribute | summary | index
+			indexing: attribute | summary | attribute
 		}
 		field vote_count type int {
-			indexing: summary | index
+			indexing: summary | attribute
 		}
 		field qid type string {
 			indexing: summary
@@ -51,16 +51,16 @@ schema knowledge {
 			indexing: attribute
 		}
 		field award_points type int {
-			indexing: attribute | summary | index
+			indexing: attribute | summary
 		}
 		field date type long {
-			indexing: attribute | summary | index
+			indexing: attribute | summary
 		}
 		field answer_count type int { 
 			indexing: summary
 		}
 		field prate type int { 
-			indexing: attribute | summary | index
+			indexing: attribute | summary
 		}
 		field url type string { 
 			indexing: summary
