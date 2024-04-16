@@ -8,10 +8,10 @@ schema base {
       indexing: summary | index | attribute
     }
     field date type long {
-      indexing: summary | index | attribute
+      indexing: summary | attribute
     }
     field doctime type long {
-      indexing: summary | index | attribute
+      indexing: summary | attribute
     }
   }
 }

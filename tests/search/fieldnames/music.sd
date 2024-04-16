@@ -15,7 +15,7 @@ schema music {
     }
 
     field year type int {
-      indexing: summary | attribute | index
+      indexing: summary | attribute
     }
 
     # Increase rank score of popular documents regardless of query

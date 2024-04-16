@@ -11,7 +11,7 @@ schema music {
     }
 
     field mid type int {
-      indexing: summary | attribute | index
+      indexing: summary | attribute
     }
 
     field categories type string {

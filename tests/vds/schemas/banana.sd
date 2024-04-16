@@ -5,13 +5,13 @@ schema banana {
       indexing: index | summary
     }
     field siblings type int {
-      indexing: index | summary
+      indexing: attribute | summary
     }
     field seeds type long {
-      indexing: index | summary
+      indexing: attribute | summary
     }
     field prosperity type byte {
-      indexing: index | summary
+      indexing: attribute | summary
     }
     field curving type float {
       indexing: attribute | summary
@@ -20,7 +20,7 @@ schema banana {
       indexing: attribute | summary
     }
     field age type long {
-      indexing: index | summary
+      indexing: attribute | summary
     }
     field uri type uri {
       indexing: index | summary

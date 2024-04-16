@@ -5,7 +5,7 @@ schema test {
       indexing: summary | index
     }
     field int1 type int {
-      indexing: summary | index
+      indexing: summary | attribute
     }
     field default1 type string {
       indexing: summary | index

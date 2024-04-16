@@ -70,10 +70,10 @@ search fieldsets {
 
     # integer fields
     field ia type int {
-      indexing: index
+      indexing: attribute
     }
     field ib type int {
-      indexing: index
+      indexing: attribute
     }
     field ic type int {
       indexing: attribute

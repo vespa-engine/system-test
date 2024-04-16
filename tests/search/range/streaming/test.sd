@@ -2,25 +2,25 @@
 schema test {
   document test {
      field i1 type int {
-         indexing: index | summary
+         indexing: attribute | summary
      }
      field f1 type int {
-         indexing: index | summary
+         indexing: attribute | summary
      }
      field m1 type array<int> {
-         indexing: index | summary
+         indexing: attribute | summary
      }
      field w1 type weightedset<int> {
-         indexing: index | summary
+         indexing: attribute | summary
      }
      field w2 type weightedset<long> {
-         indexing: index | summary
+         indexing: attribute | summary
      }
      field sf type float {
-         indexing: index | summary
+         indexing: attribute | summary
      }
      field sd type double {
-         indexing: index | summary
+         indexing: attribute | summary
      }
   }
 }

@@ -10,22 +10,22 @@ search fieldtypetest {
         indexing: summary | index
     }
     field testint type int {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testlong type long {
         indexing: summary | attribute
     }
     field testbyte type byte {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testbool type bool {
         indexing: summary | attribute
     }
     field testfloat type float {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testdouble type double {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testraw type raw {
         indexing: summary
@@ -46,19 +46,19 @@ search fieldtypetest {
         indexing: summary | index
     }
     field testarraybyte type array<byte> {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testarrayint type array<int> {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testarraylong type array<long> {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testarrayfloat type array<float> {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testarraydouble type array<double> {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testarraylatlong type array<position> {
         indexing: summary
@@ -67,13 +67,13 @@ search fieldtypetest {
         indexing: summary | index
     }
     field testwsetbyte type weightedset<byte> {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testwsetint type weightedset<int> {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testwsetlong type weightedset<long> {
-        indexing: summary | index
+        indexing: summary | attribute
     }
     field testweightedset type weightedset<string> {
         indexing: summary | index

@@ -2,13 +2,13 @@
 search expsumname {
   document expsumname {
     field flong type long {
-      indexing: index | summary
+      indexing: attribute | summary
       summary slong {
         source: flong
       }
     }
     field fdouble type double {
-      indexing: index | summary
+      indexing: attribute | summary
       summary sdouble {
         source: fdouble
       }

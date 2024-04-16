@@ -1,6 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 schema simple {
+
   document simple {
     field language type string {
       indexing: set_language
@@ -17,7 +18,7 @@ schema simple {
       bolding: on
     }
     field date type long {
-      indexing: summary | index | attribute
+      indexing: summary | attribute
     }
     field surl type string {
       indexing: summary
@@ -26,4 +27,5 @@ schema simple {
   fieldset default {
     fields: title, description
   }
+
 }

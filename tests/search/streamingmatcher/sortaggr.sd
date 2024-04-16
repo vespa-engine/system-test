@@ -22,7 +22,7 @@ search sortaggr {
       indexing: index | summary
     }
     field f4 type int {
-      indexing: index | summary
+      indexing: attribute | summary
     }
     field f5 type st3 {
       indexing: index | summary
