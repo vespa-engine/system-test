@@ -40,8 +40,7 @@ class PerformanceTest < TestCase
   end
 
   def timeout_seconds
-    # Two hours
-    3600*2
+    3600
   end
 
   def can_share_configservers?(method_name=nil)
