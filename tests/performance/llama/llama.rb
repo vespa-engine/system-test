@@ -18,6 +18,10 @@ class LlamaPerformanceTest < PerformanceTest
     super
   end
 
+  def timeout_seconds
+    5000
+  end
+
   def test_llama_inference
     set_description("Test inference of a local llm")
 
@@ -29,7 +33,6 @@ class LlamaPerformanceTest < PerformanceTest
 
     warmup
     run_queries
-
   end
 
   def generate_queries
