@@ -194,7 +194,7 @@ attributeMatch(position_exp_zcurve).significance#0.0
 attributeMatch(position_exp_zcurve).totalWeight#0.0
 attributeMatch(position_exp_zcurve).weight#0.0
 bm25(string_arr)#0.0
-bm25(string_exp)#21.264419046509754
+bm25(string_exp)#0.28768207245178085
 bm25(string_wset)#0.0
 bm25(url_arr)#0.0
 bm25(url_arr.fragment)#0.0
