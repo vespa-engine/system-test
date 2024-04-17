@@ -12,7 +12,7 @@ class FlushMetricsTest < IndexedOnlySearchTest
   end
 
   def feed_docs
-    feed_file = dirs.tmpdir + "feed.xml"
+    feed_file = dirs.tmpdir + "feed.json"
     ElasticDocGenerator.write_docs(0, 10, feed_file)
     feed_and_wait_for_docs("test", 10, :file => feed_file)
   end

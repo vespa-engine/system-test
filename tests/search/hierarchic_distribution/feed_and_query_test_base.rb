@@ -48,8 +48,9 @@ class FeedAndQueryTestBase < IndexedOnlySearchTest
   end
 
   def generate_and_feed_docs(n_docs = 20)
-    ElasticDocGenerator.write_docs(0, n_docs, dirs.tmpdir + "generated/docs.xml")
-    feed(:file => dirs.tmpdir + "generated/docs.xml")
+    feed_file = dirs.tmpdir + "generated/docs.json"
+    ElasticDocGenerator.write_docs(0, n_docs, feed_file)
+    feed(:file => feed_file)
   end
 
   def assert_query_hitcount(exp_hitcount = 20, search_path = nil)
