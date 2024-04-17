@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-
 require 'indexed_only_search_test'
 require 'base64'
+require 'document_set'
 
 class Boolean30KResultsTest < IndexedOnlySearchTest
   DOCUMENT_COUNT = 15000
@@ -22,18 +22,19 @@ class Boolean30KResultsTest < IndexedOnlySearchTest
     stop
   end
 
-  def write_doc(file, id, predicate)
-    doc = Document.new("test", "id:test:test::#{id}").
-      add_field("predicate_field", predicate)
-    file.write(doc.to_xml)
+  def generate_doc(id, predicate)
+     Document.new("test", "id:test:test::#{id}").
+       add_field("predicate_field", predicate)
   end
 
   def write_value_documents(file)
+    documents = DocumentSet.new
     for i in 1..DOCUMENT_COUNT
-      write_doc(file, "feature-#{i}", "feature1 in [true]")
-      write_doc(file, "range-#{i}", "range in [100..199]")
-      write_doc(file, "no-hit-#{i}", "range in [300..399]")
+         documents.add(generate_doc("feature-#{i}", "feature1 in [true]"))
+         documents.add(generate_doc("range-#{i}", "range in [100..199]"))
+         documents.add(generate_doc("no-hit-#{i}", "range in [300..399]"))
     end
+    documents.write_json(file)
   end
 
   def test_boolean_search_30k_hits

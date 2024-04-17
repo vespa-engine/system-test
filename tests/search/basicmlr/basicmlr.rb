@@ -2,6 +2,7 @@
 require 'json'
 require 'indexed_streaming_search_test'
 require 'environment'
+require 'document_set'
 
 class BasicMLR < IndexedStreamingSearchTest
 
@@ -24,16 +25,15 @@ class BasicMLR < IndexedStreamingSearchTest
     puts("Building Vespa feed..")
 
     feed = ""
+    documents = DocumentSet.new
     0.upto(9) do |a|
       0.upto(9) do |b|
         0.upto(9) do |c|
-          feed = feed + createDocument(a / 10.0, b / 10.0, c / 10.0).to_xml + "\n"
+          documents.add(createDocument(a / 10.0, b / 10.0, c / 10.0))
         end
       end
     end
-    File.open(@feed_file, "w") do |file|
-      file.write(feed)
-    end
+    documents.write_json(@feed_file)
 
     feedDocuments
     assertDocuments
