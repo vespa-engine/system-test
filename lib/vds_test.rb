@@ -74,21 +74,6 @@ class VdsTest < TestCase
     file.close
   end
 
-  # Creates a feed file with docIdStop-docIdStart documents of type 'type' that would be placed into the desired bucket.
-  def make_feed_file2(fileName, type, bucketId, docIdStart, docIdStop)
-    file = File.new(fileName, "w")
-
-    file.syswrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
-    file.syswrite("<vespafeed>\n")
-    (1+docIdStop-docIdStart).times{|i|
-      docId=docIdStart+i
-      file.syswrite("  <document type=\"#{type}\" id=\"id:#{type}:#{type}:n=#{bucketId}:#{docId}\"/>\n")
-    }
-    file.syswrite("</vespafeed>\n")
-
-    file.close
-  end
-
   def get_default_log_check_levels
     return [:warning, :error, :fatal]
   end
