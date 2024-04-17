@@ -10,7 +10,7 @@ class LLMInContainerTest < SearchContainerTest
   end
 
   def timeout_seconds
-    return 600
+    600
   end
 
   def test_local_llm_in_container
@@ -56,9 +56,9 @@ class LLMInContainerTest < SearchContainerTest
     query = "/search/?" + URI.encode_www_form(query.to_a)
     puts "Query is: #{query}"
     container = vespa.container.values.first
-    result = container.http_get("localhost", 8080, query, nil, {})
+    result = container.http_get("localhost", Environment.instance.vespa_web_service_port, query, nil, {})
     assert_equal(200, result.code.to_i)
-    return result.body
+    result.body
   end
 
   def extract_tokens(event_stream)
@@ -70,9 +70,7 @@ class LLMInContainerTest < SearchContainerTest
         tokens << token_data[1] if token_data
       end
     end
-    return tokens
+    tokens
   end
-
-
 
 end
