@@ -139,14 +139,14 @@ class StableActiveCount < IndexedOnlySearchTest
     puts "Generating feed 1"
     first_pass_docs = 100_000
     content = { :field1 => 'hello', :field2 => '2000' }
-    feed_file_1 = "#{dirs.tmpdir}1stfeed.xml"
+    feed_file_1 = "#{dirs.tmpdir}1stfeed.json"
     ElasticDocGenerator.write_docs(0, first_pass_docs,
                                    feed_file_1, content)
 
     puts "Generating feed 2"
     second_pass_docs = 200_000
     content = { :field1 => 'world', :field2 => '2001' }
-    feed_file_2 = "#{dirs.tmpdir}2ndfeed.xml"
+    feed_file_2 = "#{dirs.tmpdir}2ndfeed.json"
     ElasticDocGenerator.write_docs(first_pass_docs, second_pass_docs,
                                    feed_file_2, content)
 

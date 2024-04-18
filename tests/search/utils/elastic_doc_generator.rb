@@ -45,19 +45,19 @@ class ElasticDocGenerator
   end
 
   def self.write_docs(doc_begin, num_docs, file_name, content=nil)
-    generate_docs(doc_begin, num_docs, content).write_xml(file_name)
+    generate_docs(doc_begin, num_docs, content).write_json(file_name)
   end
 
   def self.write_removes(doc_begin, num_docs, file_name)
-    generate_docs(doc_begin, num_docs).write_rm_xml(file_name)
+    generate_docs(doc_begin, num_docs).write_removes_json(file_name)
   end
 
   def self.write_random_removes(doc_begin, doc_end, num_removes, file_name)
-    generate_random_docs(doc_begin, doc_end, num_removes).write_rm_xml(file_name)
+    generate_random_docs(doc_begin, doc_end, num_removes).write_remove_json(file_name)
   end
 
   def self.write_updates(doc_begin, num_docs, file_name, assign_value = 2012)
-    generate_updates(doc_begin, num_docs, assign_value).write_xml(file_name)
+    generate_updates(doc_begin, num_docs, assign_value).write_remove_json(file_name)
   end
 
 end
