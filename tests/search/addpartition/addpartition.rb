@@ -49,9 +49,9 @@ class AddPartition < IndexedStreamingSearchTest
     docs1 = dg.generate(0, 10)
     docs2 = dg.generate(10, 10)
     docs1.write_json("add1")
-    docs1.write_remove_json("rm1")
+    docs1.write_removes_json("rm1")
     docs2.write_json("add2")
-    docs2.write_remove_json("rm2")
+    docs2.write_removes_json("rm2")
     start
     enable_proton_debug_log(0)
     proton = vespa.search["search"].first

@@ -57,7 +57,7 @@ class DocumentSet
     f.close()
   end
 
-  def write_remove_json(name)
+  def write_removes_json(name)
     write_json(name, true)
   end
 
