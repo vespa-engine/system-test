@@ -31,7 +31,7 @@ class LlamaPerformanceTest < PerformanceTest
     deploy_app
     copy_query_file
 
-    warmup
+    # warmup
     run_queries
   end
 
