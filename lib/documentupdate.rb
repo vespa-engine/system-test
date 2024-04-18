@@ -1,4 +1,5 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'json'
 class Update
   attr_reader :operation, :fieldname, :arraytype, :params
 
@@ -165,6 +166,10 @@ class DocumentUpdate
   end
 
   def fields_to_json
+    JSON.dump({"fields" => fields})
+  end
+
+  def fields
     fields = {}
     @updateops.each do |u|
       if u.arraytype
@@ -173,7 +178,11 @@ class DocumentUpdate
         fields[u.fieldname] = { u.operation => u.params[0] }
       end
     end
-    { 'fields' => fields }.to_json
+    fields
+  end
+
+  def to_update_json
+    JSON.dump({"update" => @documentid, "fields" => fields})
   end
 
 end
