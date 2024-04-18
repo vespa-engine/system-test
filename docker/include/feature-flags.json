@@ -38,6 +38,6 @@
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
         { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : true } ] },
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
-        { "id" : "persistence-thread-max-feed-op-batch-size", "rules" : [ { "value" : 128 } ] }
+        { "id" : "persistence-thread-max-feed-op-batch-size", "rules" : [ { "value" : 256 } ] }
     ]
 }
