@@ -8,7 +8,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
   end
 
   def self.final_test_methods
-    ['test_enable_bm25_feature']
+    ['test_enable_bm25_feature', 'test_bm25_idf']
   end
 
   def test_bm25_feature
@@ -49,6 +49,37 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     end
     assert_bm25_scores(3, 4)
     assert_bm25_array_scores(3, 8)
+  end
+
+  def test_bm25_idf
+    @params = { :search_type => 'INDEXED' }
+    set_description("Test idf calculation for indexed bm25 feature")
+    @test_dir = selfdir + "idf/"
+    deploy_app(SearchApp.new.sd("#{@test_dir}/test.sd"))
+    start
+
+    total_doc_count = 7
+    feed_and_wait_for_docs("test", total_doc_count, :file => @test_dir + "docs1.json")
+    assert_matching_doc_count_is_saturated_sum_for_fields
+    vespa.search["search"].first.trigger_flush
+    assert_matching_doc_count_is_saturated_sum_for_fields
+    total_doc_count = 10
+    feed_and_wait_for_docs("test", total_doc_count, :file => @test_dir + "docs2.json")
+    # matching doc count for a field is calculated as max of matching
+    # doc counts for each index, cf. SourceBlenderBlueprint::combine
+    #
+    # For field "content", "a" matches 3 documents in disk index and 3
+    # documents in memory index.
+    assert_matching_doc_count_is_saturated_sum_for_fields(total_doc_count: total_doc_count)
+    # Flush memory index to disk
+    vespa.search["search"].first.trigger_flush
+    # For field "content", "a" matches 3 documents in first disk index and 3
+    # documents in second disk index.
+    assert_matching_doc_count_is_saturated_sum_for_fields(total_doc_count: total_doc_count)
+    # Run fusion on two disk indexes
+    vespa.search["search"].first.trigger_flush
+    # For field "content", "a" matches 6 documents in disk index.
+    assert_matching_doc_count_is_saturated_sum_for_fields(total_doc_count: total_doc_count, matching_doc_count_content: 6)
   end
 
   def make_query(terms, ranking, idfs)
@@ -147,6 +178,45 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
   def get_pending_urgent_flush
     result = vespa.search['search'].first.get_state_v1_custom_component("/documentdb/test/subdb/ready/index")
     return result['pending_urgent_flush']
+  end
+
+  def assert_matching_doc_count_is_saturated_sum_for_fields(total_doc_count: 7, avg_field_length_content: 4, avg_field_length_extra: 4, matching_doc_count_content: 3, matching_doc_count_extra: 5)
+    assert_scores_for_id_index_term_query(make_id_index_term_query('1', 'content', 'a'),
+                                          score(2, 3, idf(matching_doc_count_content, total_doc_count), avg_field_length_content),
+                                          0.0)
+    assert_scores_for_id_index_term_query(make_id_index_term_query('1', 'extra', 'a'),
+                                          0.0,
+                                          score(3, 7, idf(matching_doc_count_extra, total_doc_count), avg_field_length_extra))
+    matching_doc_count_both = saturated_sum([matching_doc_count_content, matching_doc_count_extra], total_doc_count)
+    assert_scores_for_id_index_term_query(make_id_index_term_query('1', 'both', 'a'),
+                                          score(2, 3, idf(matching_doc_count_both, total_doc_count), avg_field_length_content),
+                                          score(3, 7, idf(matching_doc_count_both, total_doc_count), avg_field_length_extra))
+  end
+
+  def saturated_sum(counts, limit)
+    # Calculate saturated sum, cf. OrBlueprint::combine
+    sum = counts.sum
+    sum = limit if sum > limit
+    sum
+  end
+
+  def make_id_index_term_query(id, index, term)
+    form = [['yql', "select * from sources * where #{index} contains \"#{term}\" and id contains \"#{id}\""]]
+    encoded_form = URI.encode_www_form(form)
+    puts "encoded form is #{encoded_form}"
+    return encoded_form
+  end
+
+  def assert_scores_for_id_index_term_query(query, exp_score_content, exp_score_extra)
+    result = search(query)
+    assert_hitcount(result, 1)
+    exp_features = {'bm25(content)' => exp_score_content, 'bm25(extra)' => exp_score_extra}
+    puts "Expected features: #{exp_features}"
+    assert_relevancy(result, exp_score_content + exp_score_extra, 0)
+    sf = result.hit[0].field['summaryfeatures']
+    assert_features(exp_features, sf)
+    mf = result.hit[0].field['matchfeatures']
+    assert_features(exp_features, mf)
   end
 
   def teardown
