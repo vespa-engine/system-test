@@ -36,15 +36,15 @@ class LidSpaceCompactionTest < IndexedOnlySearchTest
   end
 
   def file_name_puts(begin_docs, num_docs)
-    dirs.tmpdir + "generated/puts.#{begin_docs}.#{num_docs}.json"
+    dirs.tmpdir + "generated/puts.#{begin_docs}.#{num_docs}.xml"
   end
 
   def file_name_updates(begin_docs, num_docs)
-    dirs.tmpdir + "generated/updates.#{begin_docs}.#{num_docs}.json"
+    dirs.tmpdir + "generated/updates.#{begin_docs}.#{num_docs}.xml"
   end
 
   def file_name_removes(begin_docs, end_docs, num_docs)
-    dirs.tmpdir + "generated/removes.#{begin_docs}-#{end_docs}.#{num_docs}.json"
+    dirs.tmpdir + "generated/removes.#{begin_docs}-#{end_docs}.#{num_docs}.xml"
   end
 
   def gen_puts(begin_docs, num_docs)

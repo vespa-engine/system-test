@@ -22,38 +22,38 @@ class BucketReadinessBase < IndexedOnlySearchTest
 
   def run_readiness_while_nodes_down_and_up_test
     chunks = 200
-    generate_docs("doc.0.json", 0, 5*chunks)
-    generate_removes("rem.00.json", 0, chunks)
-    generate_removes("rem.01.json", chunks, chunks)
-    generate_removes("rem.02.json", 2*chunks, chunks)
-    generate_removes("rem.03.json", 3*chunks, chunks)
-    generate_docs("doc.00.json", 0, chunks)
-    generate_docs("doc.01.json", chunks, chunks)
-    generate_docs("doc.02.json", 2*chunks, chunks)
-    generate_docs("doc.03.json", 3*chunks, chunks)
-    generate_updates("upd.00.json", 0, chunks)
-    generate_updates("upd.01.json", chunks, chunks)
-    generate_updates("upd.02.json", 2*chunks, chunks)
-    generate_updates("upd.03.json", 3*chunks, chunks)
+    generate_docs("doc.0.xml", 0, 5*chunks)
+    generate_removes("rem.00.xml", 0, chunks)
+    generate_removes("rem.01.xml", chunks, chunks)
+    generate_removes("rem.02.xml", 2*chunks, chunks)
+    generate_removes("rem.03.xml", 3*chunks, chunks)
+    generate_docs("doc.00.xml", 0, chunks)
+    generate_docs("doc.01.xml", chunks, chunks)
+    generate_docs("doc.02.xml", 2*chunks, chunks)
+    generate_docs("doc.03.xml", 3*chunks, chunks)
+    generate_updates("upd.00.xml", 0, chunks)
+    generate_updates("upd.01.xml", chunks, chunks)
+    generate_updates("upd.02.xml", 2*chunks, chunks)
+    generate_updates("upd.03.xml", 3*chunks, chunks)
 
     enable_merge_debug_logging if @debug_log_enabled
 
-    feed_and_wait_for_hitcount(get_query(), 5*chunks, :file => @generated_dir + "doc.0.json")
+    feed_and_wait_for_hitcount(get_query(), 5*chunks, :file => @generated_dir + "doc.0.xml")
 
     # feed removes
-    feed_and_wait_for_hitcount(get_query(), 4*chunks, :file => @generated_dir + "rem.00.json")
+    feed_and_wait_for_hitcount(get_query(), 4*chunks, :file => @generated_dir + "rem.00.xml")
 
     stop_and_wait(0)
     verify_hitcount("1,2,3", 4*chunks)
-    feed_and_wait_for_hitcount(get_query("1,2,3"), 3*chunks, :file => @generated_dir + "rem.01.json")
+    feed_and_wait_for_hitcount(get_query("1,2,3"), 3*chunks, :file => @generated_dir + "rem.01.xml")
 
     stop_and_wait(1)
     verify_hitcount("2,3", 3*chunks)
-    feed_and_wait_for_hitcount(get_query("2,3"), 2*chunks, :file => @generated_dir + "rem.02.json")
+    feed_and_wait_for_hitcount(get_query("2,3"), 2*chunks, :file => @generated_dir + "rem.02.xml")
 
     stop_and_wait(2)
     verify_hitcount("3", 2*chunks)
-    feed_and_wait_for_hitcount(get_query("3"), chunks, :file => @generated_dir + "rem.03.json")
+    feed_and_wait_for_hitcount(get_query("3"), chunks, :file => @generated_dir + "rem.03.xml")
 
     start_and_wait(0)
     verify_hitcount("0,3", chunks)
@@ -63,19 +63,19 @@ class BucketReadinessBase < IndexedOnlySearchTest
     verify_hitcount(nil, chunks)
 
     # feed documents
-    feed_and_wait_for_hitcount(get_query(), 2*chunks, :file => @generated_dir + "doc.00.json")
+    feed_and_wait_for_hitcount(get_query(), 2*chunks, :file => @generated_dir + "doc.00.xml")
 
     stop_and_wait(3)
     verify_hitcount("0,1,2", 2*chunks)
-    feed_and_wait_for_hitcount(get_query("0,1,2"), 3*chunks, :file => @generated_dir + "doc.01.json")
+    feed_and_wait_for_hitcount(get_query("0,1,2"), 3*chunks, :file => @generated_dir + "doc.01.xml")
 
     stop_and_wait(2)
     verify_hitcount("0,1", 3*chunks)
-    feed_and_wait_for_hitcount(get_query("0,1"), 4*chunks, :file => @generated_dir + "doc.02.json")
+    feed_and_wait_for_hitcount(get_query("0,1"), 4*chunks, :file => @generated_dir + "doc.02.xml")
 
     stop_and_wait(1)
     verify_hitcount("0", 4*chunks)
-    feed_and_wait_for_hitcount(get_query("0"), 5*chunks, :file => @generated_dir + "doc.03.json")
+    feed_and_wait_for_hitcount(get_query("0"), 5*chunks, :file => @generated_dir + "doc.03.xml")
 
     start_and_wait(3)
     verify_hitcount("0,3", 5*chunks)
@@ -88,19 +88,19 @@ class BucketReadinessBase < IndexedOnlySearchTest
     # feed updates
     @base_query = "query=f2:2012&nocache"
     verify_hitcount(nil, 0)
-    feed_and_wait_for_hitcount(get_query(), chunks, :file => @generated_dir + "upd.00.json")
+    feed_and_wait_for_hitcount(get_query(), chunks, :file => @generated_dir + "upd.00.xml")
 
     stop_and_wait(3)
     verify_hitcount("0,1,2", chunks)
-    feed_and_wait_for_hitcount(get_query("0,1,2"), 2*chunks, :file => @generated_dir + "upd.01.json")
+    feed_and_wait_for_hitcount(get_query("0,1,2"), 2*chunks, :file => @generated_dir + "upd.01.xml")
 
     stop_and_wait(2)
     verify_hitcount("0,1", 2*chunks)
-    feed_and_wait_for_hitcount(get_query("0,1"), 3*chunks, :file => @generated_dir + "upd.02.json")
+    feed_and_wait_for_hitcount(get_query("0,1"), 3*chunks, :file => @generated_dir + "upd.02.xml")
 
     stop_and_wait(1)
     verify_hitcount("0", 3*chunks)
-    feed_and_wait_for_hitcount(get_query("0"), 4*chunks, :file => @generated_dir + "upd.03.json")
+    feed_and_wait_for_hitcount(get_query("0"), 4*chunks, :file => @generated_dir + "upd.03.xml")
 
     start_and_wait(3)
     verify_hitcount("0,3", 4*chunks)

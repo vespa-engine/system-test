@@ -29,19 +29,19 @@ class SearchWhileFeedingAndNodesDownAndUpTest < FeedAndQueryTestBase
   end
 
   def generate_feed_files(chunks)
-    generate_docs("doc.0.json", 0, 5*chunks)
-    generate_removes("rem.00.json", 0, chunks)
-    generate_removes("rem.01.json", chunks, chunks)
-    generate_removes("rem.02.json", 2*chunks, chunks)
-    generate_removes("rem.03.json", 3*chunks, chunks)
-    generate_docs("doc.00.json", 0, chunks)
-    generate_docs("doc.01.json", chunks, chunks)
-    generate_docs("doc.02.json", 2*chunks, chunks)
-    generate_docs("doc.03.json", 3*chunks, chunks)
-    generate_updates("upd.00.json", 0, chunks)
-    generate_updates("upd.01.json", chunks, chunks)
-    generate_updates("upd.02.json", 2*chunks, chunks)
-    generate_updates("upd.03.json", 3*chunks, chunks)
+    generate_docs("doc.0.xml", 0, 5*chunks)
+    generate_removes("rem.00.xml", 0, chunks)
+    generate_removes("rem.01.xml", chunks, chunks)
+    generate_removes("rem.02.xml", 2*chunks, chunks)
+    generate_removes("rem.03.xml", 3*chunks, chunks)
+    generate_docs("doc.00.xml", 0, chunks)
+    generate_docs("doc.01.xml", chunks, chunks)
+    generate_docs("doc.02.xml", 2*chunks, chunks)
+    generate_docs("doc.03.xml", 3*chunks, chunks)
+    generate_updates("upd.00.xml", 0, chunks)
+    generate_updates("upd.01.xml", chunks, chunks)
+    generate_updates("upd.02.xml", 2*chunks, chunks)
+    generate_updates("upd.03.xml", 3*chunks, chunks)
   end
 
   def feed_and_assert_hitcount(exp_hitcount, feed_file)
@@ -76,47 +76,47 @@ class SearchWhileFeedingAndNodesDownAndUpTest < FeedAndQueryTestBase
     chunks = 10
     generate_feed_files(chunks)
 
-    feed_and_assert_hitcount(5*chunks, "doc.0.json")
+    feed_and_assert_hitcount(5*chunks, "doc.0.xml")
 
     # feed removes
-    feed_and_assert_hitcount(4*chunks, "rem.00.json")
+    feed_and_assert_hitcount(4*chunks, "rem.00.xml")
     stop_and_wait_for_0_and_3(4*chunks)
 
-    feed_and_assert_hitcount(3*chunks, "rem.01.json")
+    feed_and_assert_hitcount(3*chunks, "rem.01.xml")
     stop_and_wait_for_6_and_1(3*chunks)
 
-    feed_and_assert_hitcount(2*chunks, "rem.02.json")
+    feed_and_assert_hitcount(2*chunks, "rem.02.xml")
     stop_and_wait_for_4_and_7(2*chunks)
 
-    feed_and_assert_hitcount(chunks, "rem.03.json")
+    feed_and_assert_hitcount(chunks, "rem.03.xml")
     start_and_wait_for_all(chunks) #_
 
     # feed documents
-    feed_and_assert_hitcount(2*chunks, "doc.00.json")
+    feed_and_assert_hitcount(2*chunks, "doc.00.xml")
     stop_and_wait_for_0_and_3(2*chunks)
 
-    feed_and_assert_hitcount(3*chunks, "doc.01.json")
+    feed_and_assert_hitcount(3*chunks, "doc.01.xml")
     stop_and_wait_for_6_and_1(3*chunks)
 
-    feed_and_assert_hitcount(4*chunks, "doc.02.json")
+    feed_and_assert_hitcount(4*chunks, "doc.02.xml")
     stop_and_wait_for_4_and_7(4*chunks)
 
-    feed_and_assert_hitcount(5*chunks, "doc.03.json")
+    feed_and_assert_hitcount(5*chunks, "doc.03.xml")
     start_and_wait_for_all(5*chunks)
 
     # feed updates
     @base_query = "query=f2:2012&nocache"
     assert_group_hitcount(0)
-    feed_and_assert_hitcount(chunks, "upd.00.json")
+    feed_and_assert_hitcount(chunks, "upd.00.xml")
     stop_and_wait_for_0_and_3(chunks)
 
-    feed_and_assert_hitcount(2*chunks, "upd.01.json")
+    feed_and_assert_hitcount(2*chunks, "upd.01.xml")
     stop_and_wait_for_6_and_1(2*chunks)
 
-    feed_and_assert_hitcount(3*chunks, "upd.02.json")
+    feed_and_assert_hitcount(3*chunks, "upd.02.xml")
     stop_and_wait_for_4_and_7(3*chunks)
 
-    feed_and_assert_hitcount(4*chunks, "upd.03.json")
+    feed_and_assert_hitcount(4*chunks, "upd.03.xml")
     start_and_wait_for_all(4*chunks)
   end
 
