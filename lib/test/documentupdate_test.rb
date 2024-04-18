@@ -16,7 +16,15 @@ class DocumentUpdateTest < Test::Unit::TestCase
       }
     }
     assert_equal(expected, JSON.parse(json))
+
+    expected_with_update = {
+      'update' => 'id:foo:music::bar',
+      'fields' => {
+        'title'  => { 'assign' => 'cool titles for cool people' },
+        'artist' => { 'assign' => 'groovy lads' }
+      }
+    }
+    assert_equal(expected_with_update, JSON.parse(update.to_update_json))
   end
 
 end
-

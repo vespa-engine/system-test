@@ -37,7 +37,11 @@ class DocumentSet
     f.close()
   end
 
-  def write_json(name, remove=false)
+  def write_json(name)
+    write_json(name, :put)
+  end
+
+  def write_json(name, operation=:put)
     f = File.open(name, "w")
     f.write("[\n")
     first = true
@@ -47,10 +51,15 @@ class DocumentSet
       else
         f.write(",\n")
       end
-      if (remove)
+      case operation
+      when :remove
         f.write(document.to_remove_json(false))
-      else
+      when :put
         f.write(document.to_put_json(false))
+      when :update
+        f.write(document.to_update_json)
+      else
+        raise "Unknown operation #{operation}"
       end
     end
     f.write("\n]\n")
@@ -58,7 +67,11 @@ class DocumentSet
   end
 
   def write_removes_json(name)
-    write_json(name, true)
+    write_json(name, :remove)
+  end
+
+  def write_updates_json(name)
+    write_json(name, :update)
   end
 
   def write_xml(name)

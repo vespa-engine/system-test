@@ -57,7 +57,7 @@ class ElasticDocGenerator
   end
 
   def self.write_updates(doc_begin, num_docs, file_name, assign_value = 2012)
-    generate_updates(doc_begin, num_docs, assign_value).write_removes_json(file_name)
+    generate_updates(doc_begin, num_docs, assign_value).write_updates_json(file_name)
   end
 
 end
