@@ -31,7 +31,7 @@ class LlamaPerformanceTest < PerformanceTest
     deploy_app
     copy_query_file
 
-    # warmup
+    warmup
     run_queries
   end
 
@@ -77,8 +77,8 @@ class LlamaPerformanceTest < PerformanceTest
 
   def run_queries
     run_fbench_helper(1)
-    # run_fbench_helper(5)
-    # run_fbench_helper(10)
+    run_fbench_helper(5)
+    run_fbench_helper(10)
     # run_fbench_helper(20)  # will cause a lot of 429's - as parallel is set to 10 and queue to 5
   end
 
@@ -87,7 +87,7 @@ class LlamaPerformanceTest < PerformanceTest
     fillers = [
       parameter_filler("clients", num_clients.to_s),
     ]
-    tokens_to_generate = 10
+    tokens_to_generate = 100
     profiler_start
     run_fbench2(@container,
                 @queries_file_name,
