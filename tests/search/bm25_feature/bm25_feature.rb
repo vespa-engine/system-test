@@ -96,11 +96,8 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     # For field "content", "a" matches 3 documents in disk index and 4
     # documents in memory index.
     assert_matching_doc_count_is_saturated_sum_for_fields(doc_counts: doc_counts)
-    # Flush memory index to disk
+    # Flush memory index to disk (will occasionally also run fusion)
     vespa.search["search"].first.trigger_flush
-    # For field "content", "a" matches 3 documents in first disk index and 4
-    # documents in second disk index.
-    assert_matching_doc_count_is_saturated_sum_for_fields(doc_counts: doc_counts)
     # Run fusion on two disk indexes
     vespa.search["search"].first.trigger_flush
     doc_counts.merge_indexes
