@@ -12,27 +12,24 @@ class IndexManagerTest < IndexedOnlySearchTest
     set_owner("geirst")
   end
 
-  def timeout_seconds
-    60*20
-  end
-
-  def test_index_flush_and_fusion_vespa_with_warmup
-    set_description("Test the interaction between flush, fusion, and source selector when using Vespa index manager")
+  def test_index_flush_and_fusion_with_warmup
+    set_description("Test the interaction between flush, fusion, and source selector when using index manager")
     run_index_flush_and_fusion_test(
-        create_app("vespa").
+        create_app().
             config(ConfigOverride.new("vespa.config.search.core.proton").
                 add("index", ConfigValues.new.
                     add("warmup", ConfigValues.new.add("time",5)))))
   end
 
-  def test_index_flush_and_fusion_vespa
-    set_description("Test the interaction between flush, fusion, and source selector when using Vespa index manager")
-    run_index_flush_and_fusion_test(create_app("vespa"))
+  def test_index_flush_and_fusion
+    set_description("Test the interaction between flush, fusion, and source selector when using index manager")
+    run_index_flush_and_fusion_test(create_app())
   end
 
-  def create_app(index_type)
-    SearchApp.new.sd(selfdir+"#{index_type}/test.sd")
+  def create_app
+    SearchApp.new.sd(selfdir+"test.sd")
   end
+
   def run_index_flush_and_fusion_test(app)
     deploy_app(app)
     start
