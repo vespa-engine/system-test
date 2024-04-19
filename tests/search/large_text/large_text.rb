@@ -31,8 +31,8 @@ class LargeText < IndexedStreamingSearchTest
     docs = DocumentSet.new()
     docs.add(doc)
 
-    file = "#{dirs.tmpdir}/input#{num_tokens}.xml";
-    docs.write_xml(file)
+    file = "#{dirs.tmpdir}/input#{num_tokens}.json";
+    docs.write_json(file)
 
     time = Time.now.getutc
     feed_and_wait_for_docs("test", 1, :file => file, 

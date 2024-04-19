@@ -40,8 +40,8 @@ class FeedDuringReconfig < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "sd.0/test.sd"))
     start
 
-    @feed_file = dirs.tmpdir + "temp.feed.xml"
-    generate_documents(0, 50000).write_xml(@feed_file)
+    @feed_file = dirs.tmpdir + "temp.feed.json"
+    generate_documents(0, 50000).write_json(@feed_file)
     @mutex = Mutex.new
     @should_feed = true
     thread = Thread.new do
