@@ -120,8 +120,8 @@ class ContainsAndMatchesTest < IndexedOnlySearchTest
     for i in 0 ... @num_docs do
       docs.add(generate_doc(i))
     end
-    feed_file = "#{dirs.tmpdir}/docs.xml"
-    docs.write_xml(feed_file)
+    feed_file = "#{dirs.tmpdir}/docs.json"
+    docs.write_json(feed_file)
     feed(:file => feed_file)
   end
 
