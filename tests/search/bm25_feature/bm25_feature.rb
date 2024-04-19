@@ -8,7 +8,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
   end
 
   def self.final_test_methods
-    ['test_enable_bm25_feature']
+    ['test_enable_bm25_feature', 'test_bm25_idf']
   end
 
   def test_bm25_feature
@@ -49,6 +49,63 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     end
     assert_bm25_scores(3, 4)
     assert_bm25_array_scores(3, 8)
+  end
+
+  class DocCounts
+    attr_accessor :total, :matching
+
+    def initialize(total, matching)
+      @total = total
+      @matching = matching # matching[index][field]
+    end
+
+    def max_of_saturated_sums
+      # Calculate saturated sum for each index, cf. OrBlueprint::combine
+      # then max, cf. SourceBlenderBlueprint::combine
+      @matching.map { |index| [ index.sum, @total ].min }.max
+    end
+
+    def max_of_field(field)
+      # Calculate max, cf. SourceBlenderBlueprint::combine
+      @matching.transpose[field].max
+    end
+
+    def merge_indexes
+      @matching = @matching.transpose.map { |field| [ field.sum ] }.transpose
+    end
+  end
+
+  def test_bm25_idf
+    @params = { :search_type => 'INDEXED' }
+    set_description("Test idf calculation for indexed bm25 feature")
+    @test_dir = selfdir + "idf/"
+    deploy_app(SearchApp.new.sd("#{@test_dir}/test.sd"))
+    start
+
+    doc_counts = DocCounts.new(7, [[3, 5]])
+    feed_and_wait_for_docs("test", doc_counts.total, :file => @test_dir + "docs1.json")
+    # For field "content", "a" matches 3 documents in memory index.
+    assert_matching_doc_count_is_saturated_sum_for_fields(doc_counts: doc_counts)
+    # Flush memory index to disk
+    vespa.search["search"].first.trigger_flush
+    # For field "content", "a" matches 3 documents in disk index.
+    assert_matching_doc_count_is_saturated_sum_for_fields(doc_counts: doc_counts)
+    doc_counts.total = 11
+    doc_counts.matching.push([4, 0])
+    feed_and_wait_for_docs("test", doc_counts.total, :file => @test_dir + "docs2.json")
+    # For field "content", "a" matches 3 documents in disk index and 4
+    # documents in memory index.
+    assert_matching_doc_count_is_saturated_sum_for_fields(doc_counts: doc_counts)
+    # Flush memory index to disk
+    vespa.search["search"].first.trigger_flush
+    # For field "content", "a" matches 3 documents in first disk index and 4
+    # documents in second disk index.
+    assert_matching_doc_count_is_saturated_sum_for_fields(doc_counts: doc_counts)
+    # Run fusion on two disk indexes
+    vespa.search["search"].first.trigger_flush
+    doc_counts.merge_indexes
+    # For field "content", "a" matches 7 documents in disk index.
+    assert_matching_doc_count_is_saturated_sum_for_fields(doc_counts: doc_counts)
   end
 
   def make_query(terms, ranking, idfs)
@@ -147,6 +204,44 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
   def get_pending_urgent_flush
     result = vespa.search['search'].first.get_state_v1_custom_component("/documentdb/test/subdb/ready/index")
     return result['pending_urgent_flush']
+  end
+
+  def assert_matching_doc_count_is_saturated_sum_for_fields(doc_counts:, avg_field_length_content: 4, avg_field_length_extra: 4)
+    assert_scores_for_id_index_term_query(make_id_index_term_query('1', 'content', 'a'),
+                                          score(2, 3, idf(doc_counts.max_of_field(0), doc_counts.total), avg_field_length_content),
+                                          0.0)
+    assert_scores_for_id_index_term_query(make_id_index_term_query('1', 'extra', 'a'),
+                                          0.0,
+                                          score(3, 7, idf(doc_counts.max_of_field(1), doc_counts.total), avg_field_length_extra))
+    assert_scores_for_id_index_term_query(make_id_index_term_query('1', 'both', 'a'),
+                                          score(2, 3, idf(doc_counts.max_of_saturated_sums, doc_counts.total), avg_field_length_content),
+                                          score(3, 7, idf(doc_counts.max_of_saturated_sums, doc_counts.total), avg_field_length_extra))
+  end
+
+  def saturated_sum(counts, limit)
+    # Calculate saturated sum, cf. OrBlueprint::combine
+    sum = counts.sum
+    sum = limit if sum > limit
+    sum
+  end
+
+  def make_id_index_term_query(id, index, term)
+    form = [['yql', "select * from sources * where #{index} contains \"#{term}\" and id contains \"#{id}\""]]
+    encoded_form = URI.encode_www_form(form)
+    puts "encoded form is #{encoded_form}"
+    return encoded_form
+  end
+
+  def assert_scores_for_id_index_term_query(query, exp_score_content, exp_score_extra)
+    result = search(query)
+    assert_hitcount(result, 1)
+    exp_features = {'bm25(content)' => exp_score_content, 'bm25(extra)' => exp_score_extra}
+    puts "Expected features: #{exp_features}"
+    assert_relevancy(result, exp_score_content + exp_score_extra, 0)
+    sf = result.hit[0].field['summaryfeatures']
+    assert_features(exp_features, sf)
+    mf = result.hit[0].field['matchfeatures']
+    assert_features(exp_features, mf)
   end
 
   def teardown
