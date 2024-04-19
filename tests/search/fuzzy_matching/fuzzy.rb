@@ -44,22 +44,22 @@ class FuzzySearch < IndexedStreamingSearchTest
     field, 
     word, 
     max_edit_distance,
-    prefix_length
+    prefix_length,
+    prefix_match
   )
     is_max_edit_distance_set = max_edit_distance != MAX_EDIT_DISTANCE_DEFAULT
     is_prefix_length_set = prefix_length != PREFIX_LENGTH_DEFAULT
 
-    annotations = ""
-    annotations += is_max_edit_distance_set || is_prefix_length_set ? "{" : ""
-    annotations += is_max_edit_distance_set ? "maxEditDistance:#{max_edit_distance}" : ""
-    annotations += is_max_edit_distance_set && is_prefix_length_set ? "," : ""
-    annotations += is_prefix_length_set ? "prefixLength:#{prefix_length}" : ""
-    annotations += is_max_edit_distance_set || is_prefix_length_set ? "}" : ""
+    annotations = []
+    annotations.append("maxEditDistance:#{max_edit_distance}") if is_max_edit_distance_set
+    annotations.append("prefixLength:#{prefix_length}")        if is_prefix_length_set
+    annotations.append("prefix:true")                          if prefix_match
+    annotations_str = annotations.empty? ? '' : "{#{annotations.join(',')}}"
 
     where_clause = "#{field} contains "
-    where_clause += is_max_edit_distance_set || is_prefix_length_set ? "(" : ""
-    where_clause += "#{annotations}fuzzy(\"#{word}\")"
-    where_clause += is_max_edit_distance_set || is_prefix_length_set ? ")" : ""
+    where_clause += annotations.empty? ? "" : "("
+    where_clause += "#{annotations_str}fuzzy(\"#{word}\")"
+    where_clause += annotations.empty? ? "" : ")"
     where_clause
   end
 
@@ -84,13 +84,15 @@ class FuzzySearch < IndexedStreamingSearchTest
     query, 
     exp_docids,
     max_edit_distance: MAX_EDIT_DISTANCE_DEFAULT,
-    prefix_length: PREFIX_LENGTH_DEFAULT
+    prefix_length: PREFIX_LENGTH_DEFAULT,
+    prefix_match: false
   )
     q = make_query(make_fuzzy(
       field, 
       query, 
       max_edit_distance, 
-      prefix_length
+      prefix_length,
+      prefix_match
     ))
     assert_documents(q, exp_docids)
   end
@@ -104,6 +106,8 @@ class FuzzySearch < IndexedStreamingSearchTest
       run_fuzzysearch_default_tests(f) 
       run_fuzzysearch_max_edit_tests(f)
       run_fuzzysearch_prefix_length_tests(f)
+      run_fuzzy_search_prefix_match_tests(f)
+      run_fuzzy_search_prefix_locking_and_prefix_match_tests(f)
     }
 
     ARRAY_FIELDS.each { |f|
@@ -116,7 +120,7 @@ class FuzzySearch < IndexedStreamingSearchTest
 
     # Indexing field is not supported
     assert_query_errors(
-      make_query(make_fuzzy("single_index", "query", 2, 0)),
+      make_query(make_fuzzy("single_index", "query", 2, 0, false)),
       [".* single_index:query field is not a string attribute"]
     )
   end
@@ -163,6 +167,32 @@ class FuzzySearch < IndexedStreamingSearchTest
     assert_fuzzy(f, "Thisisafox", [1, 2, 3, 4, 5], prefix_length: 6, max_edit_distance: 100)
     assert_fuzzy(f, "T", [1, 2, 3, 4, 5], prefix_length: 1, max_edit_distance: 100)
     assert_fuzzy(f, "ThisIsA", [1, 2, 3, 4], prefix_length: 7, max_edit_distance: 100)
+  end
+
+  def run_fuzzy_search_prefix_match_tests(f)
+    puts "Running fuzzy search for `prefix:true`: #{f}"
+
+    assert_fuzzy(f, "This",       [1, 2, 3, 4, 5],    max_edit_distance: 0, prefix_match: true)
+    assert_fuzzy(f, "Thus",       [1, 2, 3, 4, 5],    max_edit_distance: 1, prefix_match: true)
+    assert_fuzzy(f, "his",        [1, 2, 3, 4, 5, 6], max_edit_distance: 1, prefix_match: true)
+    assert_fuzzy(f, "is",         [6],                max_edit_distance: 1, prefix_match: true)
+    assert_fuzzy(f, "is",         [1, 2, 3, 4, 5, 6], max_edit_distance: 2, prefix_match: true)
+    assert_fuzzy(f, "thisisafox", [1, 2, 3, 4],       max_edit_distance: 1, prefix_match: true)
+    assert_fuzzy(f, "thisisafox", [1, 2, 3, 4, 6],    max_edit_distance: 2, prefix_match: true)
+    assert_fuzzy(f, "thXsisafox", [1, 2, 3, 4],       max_edit_distance: 2, prefix_match: true)
+    assert_fuzzy(f, "thXsisafox", [1, 2, 3, 4, 6],    max_edit_distance: 3, prefix_match: true)
+    assert_fuzzy(f, "thisisafox", [1, 2, 3, 4, 5, 6], max_edit_distance: 4, prefix_match: true)
+  end
+
+  def run_fuzzy_search_prefix_locking_and_prefix_match_tests(f)
+    puts "Running fuzzy search for prefixLength combined with `prefix:true`: #{f}"
+
+    assert_fuzzy(f, "thisisafox", [1, 2],          max_edit_distance: 1, prefix_length: 10, prefix_match: true)
+    assert_fuzzy(f, "thus",       [1, 2, 3, 4, 5], max_edit_distance: 1, prefix_length: 2, prefix_match: true)
+    assert_fuzzy(f, "that",       [],              max_edit_distance: 1, prefix_length: 2, prefix_match: true)
+    assert_fuzzy(f, "that",       [1, 2, 3, 4, 5], max_edit_distance: 2, prefix_length: 2, prefix_match: true)
+    assert_fuzzy(f, "IsThisA",    [],              max_edit_distance: 1, prefix_length: 2, prefix_match: true)
+    assert_fuzzy(f, "IsThisA",    [6],             max_edit_distance: 2, prefix_length: 2, prefix_match: true)
   end
 
   def run_fuzzysearch_default_cased_tests(f)
