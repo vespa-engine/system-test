@@ -21,8 +21,8 @@ class WeakAnd < IndexedStreamingSearchTest
 
   def gen_and_feed(gen_mod, num_docs, gen_function)
     gen = WandDocGenerator.new(gen_mod)
-    file = dirs.tmpdir + "temp.#{gen_function}.#{gen_mod}.#{num_docs}.json"
-    gen.send(gen_function, 1, num_docs).write_json(file)
+    file = dirs.tmpdir + "temp.#{gen_function}.#{gen_mod}.#{num_docs}.xml"
+    gen.send(gen_function, 1, num_docs).write_xml(file)
     feed_and_wait_for_docs("test", num_docs, :file => file)
     return gen
   end
