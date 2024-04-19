@@ -28,8 +28,8 @@ class GroupingWand < IndexedStreamingSearchTest
         end
       end
     end
-    feedfile = dirs.tmpdir + "input.json"
-    docs.write_json(feedfile)
+    feedfile = dirs.tmpdir + "input.xml"
+    docs.write_xml(feedfile)
 
     num_docs = docs.documents.length
     feed_and_wait_for_docs("test", num_docs, :file => feedfile)

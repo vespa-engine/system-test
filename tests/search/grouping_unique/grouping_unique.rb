@@ -30,8 +30,8 @@ class GroupingUnique < IndexedStreamingSearchTest
         end
       end
     end
-    feedfile = dirs.tmpdir + "input.json"
-    docs.write_json(feedfile)
+    feedfile = dirs.tmpdir + "input.xml"
+    docs.write_xml(feedfile)
 
     feed_and_wait_for_docs("test", 750, :file => feedfile)
     assert_hitcount("query=sddocname:test&unique=a", 5)
