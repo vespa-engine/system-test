@@ -702,11 +702,11 @@ class TestCase
     STDOUT.flush
   end
 
-  # Get an array of log components (i.e. ['qrserver\\d+']) that should be
+  # Get an array of log services (i.e. ['qrserver\\d+']) that should be
   # checked, specified using regular expressions.
-  # Override this in component-specific test base classes
-  def get_default_log_check_components
-    return ['[\\w-]+'] # All components
+  # Override this in service-specific test base classes
+  def get_default_log_check_services
+    return ['[\\w-]+'] # All services
   end
 
   # Override this in component-specific test base classes (if needed)
@@ -858,7 +858,7 @@ class TestCase
     [report, dupes_eliminated]
   end
 
-  # Filter log, applying block to each log entry matching both the component(s) and
+  # Filter log, applying block to each log entry matching both the service(s) and
   # the log level(s) to be checked. If the block returns false, the function triggers
   # an assertion.
   # Common usage:
@@ -866,16 +866,16 @@ class TestCase
   # or simply (to use defaults):
   #   assert_only_expected_logged
   #
-  # Check can be limited to specific components (regex) and levels:
+  # Check can be limited to specific services (regex) and levels:
   #   assert_only_expected_logged(['qrserver\\d*'], :error) { |line| line =~ /foo/ }
   #
-  def assert_only_expected_logged(components=[], *levels)
+  def assert_only_expected_logged(services=[], *levels)
     return unless (vespa && vespa.logserver)
-    components = get_default_log_check_components if components.empty?
+    services = get_default_log_check_services if services.empty?
     levels = get_default_log_check_levels if levels.empty?
 
     log = read_log_from_logserver()
-    log_errors = scan_log_for_unexpected_entries(log, components, levels)
+    log_errors = scan_log_for_unexpected_entries(log, services, levels)
 
     max_errors_reported = 10
     report, dupes_eliminated = eliminate_log_duplicates_and_return_n_first(log_errors, max_errors_reported)

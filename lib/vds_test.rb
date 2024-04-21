@@ -78,9 +78,9 @@ class VdsTest < TestCase
     return [:warning, :error, :fatal]
   end
 
-  def get_default_log_check_components
-    return ['storagenode\\d*', 'distributor\\d*',
-            'searchnode\\d*', 'fleetcontroller']
+  def get_default_log_check_services
+    ['storagenode\\d*', 'distributor\\d*',
+     'searchnode\\d*', 'container-clustercontroller']
   end
 
 end

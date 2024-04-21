@@ -20,7 +20,7 @@ class CheckVespaLogTest < VdsTest
     start
   end
 
-  def get_default_log_check_components
+  def get_default_log_check_services
     return ['[\\w-]+'] # All components
   end
 
