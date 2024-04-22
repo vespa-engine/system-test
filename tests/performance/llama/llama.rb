@@ -19,7 +19,7 @@ class LlamaPerformanceTest < PerformanceTest
   end
 
   def timeout_seconds
-    5000
+    1200
   end
 
   def test_llama_inference
@@ -76,10 +76,11 @@ class LlamaPerformanceTest < PerformanceTest
   end
 
   def run_queries
-    run_fbench_helper(1)
     run_fbench_helper(5)
     run_fbench_helper(10)
-    # run_fbench_helper(20)  # will cause a lot of 429's - as parallel is set to 10 and queue to 5
+    run_fbench_helper(20)
+    run_fbench_helper(30)
+    run_fbench_helper(40)
   end
 
   def run_fbench_helper(num_clients)
