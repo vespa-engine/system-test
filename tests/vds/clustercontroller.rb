@@ -9,6 +9,7 @@ class ClusterControllerTest < VdsTest
     @docnr = 0
     @valgrind=false
     set_owner("vekterli")
+    add_expected_logged(/No known master cluster controller currently exists./)
     app = default_app.provider("PROTON")
     app.admin(Admin.new.clustercontroller("node1").
                         clustercontroller("node1").

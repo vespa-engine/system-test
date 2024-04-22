@@ -32,6 +32,7 @@ class ClusterControllerMultiNodeTest < VdsTest
   end
 
   def test_live_reconfig
+    add_expected_logged(/No known master cluster controller currently exists./)
     verify_node_count(4)
     decrease_cluster_to_two_nodes()
     verify_node_count(2, 1)
