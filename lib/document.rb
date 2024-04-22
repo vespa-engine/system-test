@@ -57,19 +57,11 @@ class Document
     JSON.dump({"fields" => @fields})
   end
 
-  def to_put_json(in_array = false)
+  def to_json(operation = :put, in_array = false)
     if in_array
-      JSON.dump([{"put" => @documentid, "fields" => @fields}])
+      JSON.dump([{operation.to_s => @documentid, "fields" => @fields}])
     else
-      JSON.dump({"put" => @documentid, "fields" => @fields})
-    end
-  end
-
-  def to_remove_json(in_array = false)
-    if in_array
-      JSON.dump([{"remove" => @documentid, "fields" => @fields}])
-    else
-      JSON.dump({"remove" => @documentid, "fields" => @fields})
+      JSON.dump({operation.to_s => @documentid, "fields" => @fields})
     end
   end
 
@@ -143,12 +135,8 @@ class Document
     f.write(to_rm_xml)
   end
 
-  def write_json(f)
-    f.write(to_put_json)
-  end
-
-  def write_remove_json(f)
-    f.write(to_remove_json)
+  def write_json(f, operation = :put)
+    f.write(to_json(operation))
   end
 
   def ==(other)

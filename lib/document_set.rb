@@ -51,16 +51,7 @@ class DocumentSet
       else
         f.write(",\n")
       end
-      case operation
-      when :remove
-        f.write(document.to_remove_json(false))
-      when :put
-        f.write(document.to_put_json(false))
-      when :update
-        f.write(document.to_update_json)
-      else
-        raise "Unknown operation #{operation}"
-      end
+      f.write(document.to_json(operation, false))
     end
     f.write("\n]\n")
     f.close()
