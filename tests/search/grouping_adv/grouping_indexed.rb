@@ -65,7 +65,7 @@ class GroupingIndexed < IndexedOnlySearchTest
       docs.add(doc)
     end
     feedfile = dirs.tmpdir + 'input.json'
-    docs.write_xml(feedfile)
+    docs.write_json(feedfile)
 
     feed_and_wait_for_docs('test2', 2048, {:file => feedfile})
 
