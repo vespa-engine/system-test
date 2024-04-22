@@ -169,6 +169,10 @@ class DocumentUpdate
     JSON.dump({"fields" => fields})
   end
 
+  def to_json(operation, in_array = false)
+    to_update_json
+  end
+
   def fields
     fields = {}
     @updateops.each do |u|
