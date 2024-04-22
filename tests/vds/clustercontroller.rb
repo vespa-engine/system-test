@@ -135,6 +135,7 @@ class ClusterControllerTest < VdsTest
   end
 
   def test_state_rest_api_recursive_get
+    add_expected_logged(/No known master cluster controller currently exists./)
     page = vespa.clustercontrollers["0"].get_status_page(
             "/cluster/v2/?recursive=true")
     puts page
