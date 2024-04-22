@@ -9,6 +9,7 @@ class ClusterControllerTest < VdsTest
     @docnr = 0
     @valgrind=false
     set_owner("vekterli")
+    add_expected_logged(/No known master cluster controller currently exists./)
     app = default_app.provider("PROTON")
     app.admin(Admin.new.clustercontroller("node1").
                         clustercontroller("node1").
@@ -135,7 +136,6 @@ class ClusterControllerTest < VdsTest
   end
 
   def test_state_rest_api_recursive_get
-    add_expected_logged(/No known master cluster controller currently exists./)
     page = vespa.clustercontrollers["0"].get_status_page(
             "/cluster/v2/?recursive=true")
     puts page
