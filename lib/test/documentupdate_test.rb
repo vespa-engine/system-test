@@ -25,6 +25,7 @@ class DocumentUpdateTest < Test::Unit::TestCase
       }
     }
     assert_equal(expected_with_update, JSON.parse(update.to_update_json))
+    assert_equal(expected_with_update, JSON.parse(update.to_json(:update)))
   end
 
 end
