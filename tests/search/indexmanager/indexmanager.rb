@@ -110,20 +110,20 @@ class IndexManagerTest < IndexedOnlySearchTest
   end
 
   def feed_puts(doc_set, doc_set_id)
-    file = dirs.tmpdir + "feed-puts-#{doc_set_id}.json"
-    doc_set.write_json(file)
+    file = dirs.tmpdir + "feed-puts-#{doc_set_id}.xml"
+    doc_set.write_xml(file)
     feed_and_verify(file)
   end
 
   def feed_removes(doc_set, doc_set_id, phase_id)
-    file = dirs.tmpdir + "feed-removes-#{doc_set_id}-#{phase_id}.json"
-    doc_set.write_json(file, :remove)
+    file = dirs.tmpdir + "feed-removes-#{doc_set_id}-#{phase_id}.xml"
+    doc_set.write_rm_xml(file)
     feed_and_verify(file)
   end
 
   def feed_updates(doc_set, doc_set_id, phase_id)
-    file = dirs.tmpdir + "feed-updates-#{doc_set_id}-#{phase_id}.json"
-    doc_set.write_json(file, :update)
+    file = dirs.tmpdir + "feed-updates-#{doc_set_id}-#{phase_id}.xml"
+    doc_set.write_xml(file)
     feed_and_verify(file)
   end
 

@@ -19,8 +19,8 @@ class FeedDuringReconfig < IndexedStreamingSearchTest
     for i in docid_begin...docid_begin + num_docs do
       doc = Document.new("test", "id:test:test::" + "%05d" % i)
       doc.add_field("f1", "But if you meet a friendly horse. Will you communicate by morse?")
-      doc.add_field("tags", {"No, I speak only kaudervelsk" => 1, "No, I speak only kaudervelsk" => 2, "No, I speak only kaudervelsk" => 3})
-      doc.add_field("wset", {"No, I speak only kaudervelsk" => 1, "No, I speak only kaudervelsk" => 2, "No, I speak only kaudervelsk" => 3})
+      doc.add_field("tags", [["No, I speak only kaudervelsk", 1], ["No, I speak only kaudervelsk", 2], ["No, I speak only kaudervelsk", 3]])
+      doc.add_field("wset", [["No, I speak only kaudervelsk", 1], ["No, I speak only kaudervelsk", 2], ["No, I speak only kaudervelsk", 3]])
       doc.add_field("arraystring", ["No, I speak only kaudervelsk", "No, I speak only kaudervelsk", "No, I speak only kaudervelsk"])
       ds.add(doc)
     end
