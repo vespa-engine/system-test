@@ -38,7 +38,7 @@ class WandDocGenerator
 
   def ranking_gen_func(doc, docid)
       word = handle_put_doc(docid % @mod, docid)
-      doc.add_field("features", [[word, docid]])
+      doc.add_field("features", {word => docid})
   end
 
   def gen_ranking_docs(docid_begin, num_docs)
@@ -47,7 +47,7 @@ class WandDocGenerator
      
   def filter_gen_func(doc, docid)
       word = handle_put_doc(docid % @mod, docid)
-      doc.add_field("features", [["all", docid]])
+      doc.add_field("features", {"all" => docid})
       doc.add_field("filter", word)
   end
 
@@ -56,17 +56,17 @@ class WandDocGenerator
   end
 
   def wand_no_hit(doc)
-    doc.add_field("features", [["nohit", 1]])
+    doc.add_field("features", {"nohit" => 1})
     doc.add_field("filter", "hit")
   end
 
   def wand_good_hit(doc)
-    doc.add_field("features", [["hit", 100]])
+    doc.add_field("features", {"hit" => 100})
     doc.add_field("filter", "nohit")
   end
 
   def wand_bad_hit(doc)
-    doc.add_field("features", [["hit", 1]])
+    doc.add_field("features", {"hit" => 1})
     doc.add_field("filter", "hit")
   end
 
