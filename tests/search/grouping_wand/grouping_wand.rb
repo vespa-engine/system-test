@@ -22,14 +22,14 @@ class GroupingWand < IndexedStreamingSearchTest
           doc.add_field("a", a)
           doc.add_field("b", b)
           doc.add_field("c", c)
-          doc.add_field("wset", {"a#{a}" => 1, "b#{b}" => 1, "c#{c}" => 1})
+          doc.add_field("wset", [ ["a#{a}", 1], ["b#{b}", 1], ["c#{c}", 1] ])
           doc.add_field("n", docs.documents.length)
           docs.add(doc)
         end
       end
     end
-    feedfile = dirs.tmpdir + "input.json"
-    docs.write_json(feedfile)
+    feedfile = dirs.tmpdir + "input.xml"
+    docs.write_xml(feedfile)
 
     num_docs = docs.documents.length
     feed_and_wait_for_docs("test", num_docs, :file => feedfile)
