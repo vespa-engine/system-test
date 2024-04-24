@@ -302,7 +302,11 @@ class VespaModel
     end
     @deployments += 1
 
-    @document_api_v1 = DocumentApiV1.new(adminserver.hostname, @default_document_api_port, @testcase)
+    document_api_port = Environment.instance.vespa_web_service_port
+    if (@qrserver["0"] and @qrserver["0"].http_port == @default_document_api_port)
+      document_api_port = @default_document_api_port
+    end
+    @document_api_v1 = DocumentApiV1.new(adminserver.hostname, document_api_port, @testcase)
 
     return output
   end
