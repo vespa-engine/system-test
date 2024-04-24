@@ -25,7 +25,7 @@ class NearestNeighborDistanceMetricPerfTest < PerformanceTest
     #Feed max 100K docs
     script = selfdir + "export.py"
     puts "Result: #{result}"
-    cmd2 = "zstdcat '#{local_file}' | head -1000000 | python3 '#{script}' > '#{local_feed_file}'"
+    cmd2 = "zstdcat '#{local_file}' | head -100000 | python3 '#{script}' > '#{local_feed_file}'"
     puts "Running command #{cmd2}"
     result2 = `#{cmd2}`
     puts "Result2: #{result2}"
