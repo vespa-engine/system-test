@@ -37,40 +37,180 @@ schema product {
         summary id {}
 	}
 
-    field float_embedding_1024 type tensor<float>(x[1024]) {
+    field float_embedding_1024_prenormalized_angular type tensor<float>(x[1024]) {
         indexing: input title | embed mxbai | attribute
         attribute {
             distance-metric: prenormalized-angular
         }
     }
 
+    field float_embedding_1024_angular type tensor<float>(x[1024]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: angular
+        }
+    }
 
-    field float_embedding_512 type tensor<float>(x[512]) {
+    field float_embedding_1024_euclidean type tensor<float>(x[1024]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: euclidean
+        }
+    }
+
+    field float_embedding_1024_dotproduct type tensor<float>(x[1024]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: dotproduct
+        }
+    }
+
+    field float_embedding_768_prenormalized_angular type tensor<float>(x[768]) {
         indexing: input title | embed mxbai | attribute
         attribute {
             distance-metric: prenormalized-angular
         }
     }
 
-    field int8_embedding_128 type tensor<int8>(x[128]) {
+    field float_embedding_768_angular type tensor<float>(x[768]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: angular
+        }
+    }
+
+    field float_embedding_768_euclidean type tensor<float>(x[768]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: euclidean
+        }
+    }
+
+    field float_embedding_768_dotproduct type tensor<float>(x[768]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: dotproduct
+        }
+    }
+
+    field float_embedding_512_prenormalized_angular type tensor<float>(x[512]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: prenormalized-angular
+        }
+    }
+
+    field float_embedding_512_angular type tensor<float>(x[512]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: angular
+        }
+    }
+
+    field float_embedding_512_euclidean type tensor<float>(x[512]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: euclidean
+        }
+    }
+
+    field float_embedding_512_dotproduct type tensor<float>(x[512]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: dotproduct
+        }
+    }
+
+    field float_embedding_384_prenormalized_angular type tensor<float>(x[384]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: prenormalized-angular
+        }
+    }
+
+    field float_embedding_384_angular type tensor<float>(x[384]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: angular
+        }
+    }
+
+    field float_embedding_384_euclidean type tensor<float>(x[384]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: euclidean
+        }
+    }
+
+    field float_embedding_384_dotproduct type tensor<float>(x[384]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: dotproduct
+        }
+    }
+
+    field int8_embedding_128_hamming type tensor<int8>(x[128]) {
         indexing: input title | embed mxbai | attribute
         attribute {
             distance-metric: hamming
         }
     }
 
-    field int8_embedding_64 type tensor<int8>(x[64]) {
+    field int8_embedding_128_angular type tensor<int8>(x[128]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: angular
+        }
+    }
+
+    field int8_embedding_128_euclidean type tensor<int8>(x[128]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: euclidean
+        }
+    }
+
+    field int8_embedding_128_dotproduct type tensor<int8>(x[128]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: dotproduct
+        }
+    }
+
+    field int8_embedding_64_hamming type tensor<int8>(x[64]) {
         indexing: input title | embed mxbai | attribute
         attribute {
             distance-metric: hamming
         }
     }
 
+    field int8_embedding_64_angular type tensor<int8>(x[64]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: angular
+        }
+    }
+
+    field int8_embedding_64_euclidean type tensor<int8>(x[64]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: euclidean
+        }
+    }
+
+    field int8_embedding_64_dotproduct type tensor<int8>(x[64]) {
+        indexing: input title | embed mxbai | attribute
+        attribute {
+            distance-metric: dotproduct
+        }
+    }
 
     rank-profile default {
         inputs {
             query(float_q_1024) tensor<float>(x[1024])
+            query(float_q_768) tensor<float>(x[768])
             query(float_q_512) tensor<float>(x[512])
+            query(float_q_384) tensor<float>(x[384])
             query(int8_q_128) tensor<int8>(x[128])
             query(int8_q_64) tensor<int8>(x[64])
         } 
@@ -78,26 +218,146 @@ schema product {
 
     rank-profile prenormalized-angular-float-1024 inherits default {
         first-phase {
-            expression: closeness(field, float_embedding_1024)
+            expression: closeness(field, float_embedding_1024_prenormalized_angular)
+        }
+    }
+
+    rank-profile angular-float-1024 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_1024_angular)
+        }
+    }
+
+    rank-profile euclidean-float-1024 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_1024_euclidean)
+        }
+    }
+
+    rank-profile dotproduct-float-1024 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_1024_dotproduct)
+        }
+    }
+
+    rank-profile prenormalized-angular-float-768 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_768_prenormalized_angular)
+        }
+    }
+
+    rank-profile angular-float-768 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_768_angular)
+        }
+    }
+
+    rank-profile euclidean-float-768 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_768_euclidean)
+        }
+    }
+
+    rank-profile dotproduct-float-768 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_768_dotproduct)
         }
     }
 
     rank-profile prenormalized-angular-float-512 inherits default {
         first-phase {
-            expression: closeness(field, float_embedding_512)
+            expression: closeness(field, float_embedding_512_prenormalized_angular)
         }
     }
 
-    rank-profile hamming-128 inherits default {
+    rank-profile angular-float-512 inherits default {
         first-phase {
-            expression: closeness(field, int8_embedding_128)
+            expression: closeness(field, float_embedding_512_angular)
         }
     }
 
-    rank-profile hamming-64 inherits default {
+    rank-profile euclidean-float-512 inherits default {
         first-phase {
-            expression: closeness(field, int8_embedding_64)
+            expression: closeness(field, float_embedding_512_euclidean)
         }
     }
-    
+
+    rank-profile dotproduct-float-512 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_512_dotproduct)
+        }
+    }
+
+    rank-profile prenormalized-angular-float-384 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_384_prenormalized_angular)
+        }
+    }
+
+    rank-profile angular-float-384 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_384_angular)
+        }
+    }
+
+    rank-profile euclidean-float-384 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_384_euclidean)
+        }
+    }
+
+    rank-profile dotproduct-float-384 inherits default {
+        first-phase {
+            expression: closeness(field, float_embedding_384_dotproduct)
+        }
+    }
+
+
+    rank-profile hamming-int8-128 inherits default {
+        first-phase {
+            expression: closeness(field, int8_embedding_128_hamming)
+        }
+    }
+
+    rank-profile angular-int8-128 inherits default {
+        first-phase {
+            expression: closeness(field, int8_embedding_128_angular)
+        }
+    }
+
+    rank-profile euclidean-int8-128 inherits default {
+        first-phase {
+            expression: closeness(field, int8_embedding_128_euclidean)
+        }
+    }
+
+    rank-profile dotproduct-int8-128 inherits default {
+        first-phase {
+            expression: closeness(field, int8_embedding_128_dotproduct)
+        }
+    }
+
+    rank-profile hamming-int8-64 inherits default {
+        first-phase {
+            expression: closeness(field, int8_embedding_64_hamming)
+        }
+    }
+
+    rank-profile angular-int8-64 inherits default {
+        first-phase {
+            expression: closeness(field, int8_embedding_64_angular)
+        }
+    }
+
+    rank-profile euclidean-int8-64 inherits default {
+        first-phase {
+            expression: closeness(field, int8_embedding_64_euclidean)
+        }
+    }
+
+    rank-profile dotproduct-int8-64 inherits default {
+        first-phase {
+            expression: closeness(field, int8_embedding_64_dotproduct)
+        }
+    }    
 }
