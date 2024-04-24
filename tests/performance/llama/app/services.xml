@@ -16,7 +16,7 @@
         <!-- File is approx 130Mb" -->
         <model url="https://data.vespa.oath.cloud/gguf_models/Llama-160M-Chat-v1.Q6_K.gguf" />
 
-        <contextSize>2048</contextSize>
+        <contextSize>8192</contextSize>
         <parallelRequests>40</parallelRequests>
         <maxQueueSize>5</maxQueueSize>
         <maxTokens>100</maxTokens>
