@@ -12,7 +12,7 @@ class RawAttributesTest < IndexedStreamingSearchTest
   end
 
   def test_raw_attribute
-    deploy_app(SearchApp.new.sd(selfdir+'test.sd').enable_document_api)
+    deploy_app(SearchApp.new.sd(selfdir+'test.sd'))
     start
     feed_and_wait_for_docs('test', 5, :file => selfdir + 'docs.json')
     5.times do |id|
