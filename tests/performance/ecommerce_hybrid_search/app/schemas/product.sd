@@ -1,0 +1,73 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema product {
+
+  document product {
+
+    field id type int {
+      indexing: attribute | summary
+    }
+
+    field title type string {
+      indexing: index | summary
+      index: enable-bm25
+    }
+
+    field description type string {
+      indexing: index | summary
+      index: enable-bm25
+    }
+
+    field price type int {
+      indexing: attribute | summary
+    }
+
+    field average_rating type float {
+      indexing: attribute | summary
+    }
+
+    field embedding type tensor<float>(x[384]) {
+      indexing: attribute | index | summary
+      attribute {
+        distance-metric: angular
+      }
+      index {
+        hnsw {
+          max-links-per-node: 16 # Same as the default
+          neighbors-to-explore-at-insert: 200 # Same as the default
+        }
+      }
+    }
+
+  }
+
+  fieldset default {
+    fields: title, description
+  }
+
+  rank-profile bm25 {
+    first-phase {
+      expression: bm25(title) + bm25(description)
+    }
+  }
+
+  rank-profile closeness {
+    inputs {
+      query(q_embedding) tensor<float>(x[384])
+    }
+    first-phase {
+      expression: closeness(field, embedding)
+    }
+  }
+
+  rank-profile hybrid inherits closeness {
+    first-phase {
+      expression: 0.5 * (bm25(title) + bm25(description)) + 0.5 * closeness(field, embedding)
+    }
+  }
+
+  document-summary minimal {
+    summary id {}
+  }
+
+}
