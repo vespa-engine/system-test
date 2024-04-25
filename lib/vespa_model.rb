@@ -302,37 +302,9 @@ class VespaModel
     end
     @deployments += 1
 
-    create_document_api
-    output
-  end
+    @document_api_v1 = DocumentApiV1.new(adminserver.hostname, @default_document_api_port, @testcase)
 
-  def create_document_api
-    # TODO: Remove debug logging
-
-    # Use port 19020 for DocumentApiV1 if a qrserver or container is setup to use that port,
-    # otherwise use default web service port
-    document_api_port = nil
-    @qrserver.each_with_index do | qrs, index |
-      if (qrs["#{index}"] and qrs["#{index}"].http_port and qrs["#{index}"].http_port.to_i == @default_document_api_port)
-        puts "Found qrs with port #{@default_document_api_port} for qrs index #{index}"
-        document_api_port = @default_document_api_port
-        break
-      end
-    end
-    puts "@default_document_api_port=#{@default_document_api_port}"
-    unless document_api_port
-      @container.each_value do | container |
-        if (container and container.ports.include?(@default_document_api_port))
-          puts "Found container with port #{@default_document_api_port} for container #{container}"
-          document_api_port = @default_document_api_port
-          break
-        end
-      end
-    end
-
-    document_api_port = Environment.instance.vespa_web_service_port unless document_api_port
-
-    @document_api_v1 = DocumentApiV1.new(adminserver.hostname, document_api_port, @testcase)
+    return output
   end
 
   def create_tmp_application(application)
