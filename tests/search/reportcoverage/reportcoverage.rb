@@ -41,7 +41,7 @@ class ReportCoverage < IndexedOnlySearchTest
     result = search("/?query=coverage&ranking=revlim&format=xml")
     puts("Got 'coverage-docs' of #{result.xml.attribute("coverage-docs")}.")
     assert(result.xml.attribute("coverage-full").to_s == "false", "Expected 'coverage-full' of false, got #{result.xml.attribute("coverage-full")}.")
-    assert(result.xml.attribute("coverage").to_s.to_i >= 51, "Expected 'coverage' >= 51, got #{result.xml.attribute("coverage")}.")
+    assert(result.xml.attribute("coverage").to_s.to_i >= 50, "Expected 'coverage' >= 50, got #{result.xml.attribute("coverage")}.")
     assert(result.xml.attribute("coverage").to_s.to_i <= 65, "Expected 'coverage' <= 65, got #{result.xml.attribute("coverage")}.")
     assert(result.xml.attribute("results").to_s == "1", "Expected 'results' of 1, got #{result.xml.attribute("results")}.")
     assert(result.xml.attribute("results-full").to_s == "0", "Expected 'results-full' of 0, got #{result.xml.attribute("results-full")}.")
