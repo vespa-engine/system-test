@@ -83,6 +83,23 @@ class SearchMetrics < IndexedOnlySearchTest
     assert_document_db_attribute_memory_usage(metrics)
   end
 
+  def test_metrics_imported_attributes
+    set_description("Check reporting of metrics with imported attributes")
+    deploy_app(SearchApp.new.cluster(SearchCluster.new('test').
+                      sd(selfdir + "parent.sd", { :global => true }).
+                      sd(selfdir + "child.sd").
+                      visibility_delay(0.001).
+                      tune_searchnode({:summary => {:store => {:cache => { :maxsize => 8192,
+                                                                           :compression => {:type => :lz4, :level => 8}
+                                                                         } } } })))
+    start
+    metrics = vespa.search["test"].first.get_total_metrics
+    assert_equal(2, metrics.extract(/^content[.]proton[.]documentdb[.]documents[.]ready$/).size,
+                 "There should be two documentdbs.")
+    assert(1000 < get_parent_attribute_memory_usage("f3", metrics))
+    assert(100 < get_child_attribute_memory_usage("my_f3", metrics))
+  end
+
   def assert_document_db_total_memory_usage(metrics)
     exp_total = get_document_store_memory_usage("ready", metrics)
     exp_total += get_document_store_memory_usage("notready", metrics)
@@ -126,6 +143,16 @@ class SearchMetrics < IndexedOnlySearchTest
   def get_attribute_memory_usage(subdb, attr_name, metrics)
     metrics.get("content.proton.documentdb.#{subdb}.attribute.memory_usage.allocated_bytes",
                 {"documenttype" => "test", "field" => attr_name})["last"]
+  end
+
+  def get_parent_attribute_memory_usage(attr_name, metrics)
+    metrics.get("content.proton.documentdb.ready.attribute.memory_usage.allocated_bytes",
+                {"documenttype" => "parent", "field" => attr_name})["last"]
+  end
+
+  def get_child_attribute_memory_usage(attr_name, metrics)
+    metrics.get("content.proton.documentdb.ready.attribute.memory_usage.allocated_bytes",
+                {"documenttype" => "child", "field" => attr_name})["last"]
   end
 
   def get_last(name, metrics)
