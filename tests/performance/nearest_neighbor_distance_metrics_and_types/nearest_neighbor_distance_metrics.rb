@@ -1,3 +1,5 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
 require 'performance_test'
 require 'app_generator/search_app'
 require 'environment'
@@ -10,12 +12,12 @@ class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
   end
 
   def test_metrics_and_types
-    set_description('Benchmark distance metrics and types using 500K documents. Exact nearest neighbor search.')
+    set_description('Benchmark distance metrics and types using 100K documents. Exact nearest neighbor search.')
     deploy_app(SearchApp.new.sd(selfdir + 'vector.sd'))
     start
   
-    remote_file = "https://data.vespa.oath.cloud/tests/performance/vectors.perf.json.zstd"
-    cmd = "curl '#{remote_file}' | zstdcat"
+    remote_file = "https://data.vespa.oath.cloud/tests/performance/vectors.100k.perf.json.zst"
+    cmd = "curl -s '#{remote_file}' | zstdcat"
     run_stream_feeder(cmd, [])
 
     container = (vespa.qrserver["0"] or vespa.container.values.first)
