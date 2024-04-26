@@ -3,16 +3,11 @@
 require 'performance_test'
 require 'app_generator/search_app'
 require 'performance/fbench'
-require 'etc'
 
 class NearestNeighborPerformanceTest < PerformanceTest
 
   def initialize(*args)
     super(*args)
-  end
-
-  def timeout_seconds
-    1800
   end
 
   def setup
@@ -127,7 +122,7 @@ class NearestNeighborPerformanceTest < PerformanceTest
   end
 
   def run_benchmarks(query_file, legend, want_rawscore)
-    num_threads = Etc.nprocessors
+    num_threads = 30
     # Basic search
     qrserver = @vespa.container["combinedcontainer/0"]
     qd = dirs.tmpdir + "qd"
