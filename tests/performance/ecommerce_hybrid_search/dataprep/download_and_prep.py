@@ -258,9 +258,7 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    download_model_weights(
-        overwrite=args.overwrite
-    )  # Download model weights once at the beginning
+    download_model_weights()  # Download model weights once at the beginning
     categories = [
         "All_Beauty",
         "Amazon_Fashion",
@@ -297,8 +295,8 @@ if __name__ == "__main__":
         "Video_Games",
         "Unknown",
     ]
-
-    results = main_parallel(categories, args.num_processes)
+    overwrite = args.overwrite
+    results = main_parallel(categories, num_processes=args.num_processes)
     print(results)
     # Will merge later. Not properly tested yet.
     # merge_files(categories, overwrite=args.overwrite)
