@@ -1,12 +1,6 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 schema child {
   document child {
-    field f1 type string {
-      indexing: index | summary
-    }
-    field f2 type int {
-      indexing: attribute
-    }
     field ref type reference<parent> {
       indexing: attribute | summary
     }
@@ -14,10 +8,4 @@ schema child {
 
   import field ref.f3 as my_f3 {}
 
-  rank-profile default {
-    second-phase {
-      expression: 100
-      rerank-count: 2
-    }
-  }
 }

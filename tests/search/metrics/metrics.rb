@@ -87,11 +87,7 @@ class SearchMetrics < IndexedOnlySearchTest
     set_description("Check reporting of metrics with imported attributes")
     deploy_app(SearchApp.new.cluster(SearchCluster.new('test').
                       sd(selfdir + "parent.sd", { :global => true }).
-                      sd(selfdir + "child.sd").
-                      visibility_delay(0.001).
-                      tune_searchnode({:summary => {:store => {:cache => { :maxsize => 8192,
-                                                                           :compression => {:type => :lz4, :level => 8}
-                                                                         } } } })))
+                      sd(selfdir + "child.sd")))
     start
     metrics = vespa.search["test"].first.get_total_metrics
     assert_equal(2, metrics.extract(/^content[.]proton[.]documentdb[.]documents[.]ready$/).size,
