@@ -13,7 +13,7 @@ class TensorAddRemoveUpdateTest < IndexedStreamingSearchTest
 
   def test_add_and_remove_updates
     set_description("Test tensor add and remove updates on sparse and mixed tensor attributes and fields")
-    deploy_app(SearchApp.new.sd(@base_dir + "test.sd").enable_document_api.
+    deploy_app(SearchApp.new.sd(@base_dir + "test.sd").
                config(ConfigOverride.new("vespa.config.search.core.proton").
                       add("tensor_implementation", "FAST_VALUE")))
     start

@@ -10,7 +10,7 @@ class SortingMultiValue < IndexedStreamingSearchTest
   end
 
   def test_sorting_multivalue_fields
-    deploy_app(SearchApp.new.sd(selfdir+'multivalue.sd').enable_document_api)
+    deploy_app(SearchApp.new.sd(selfdir+'multivalue.sd'))
     start
     feed_docs
     check_sorted(nil, [0, 1, 2, 3])
