@@ -15,8 +15,7 @@ class Bug6559464Test < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.
                  cluster(SearchCluster.new('musicsearch').sd(selfdir + 'application/schemas/music.sd')).
                  cluster(SearchCluster.new('booksearch').sd(selfdir + 'application/schemas/book.sd')).
-                 cluster(SearchCluster.new('applesearch').sd(selfdir + 'application/schemas/apple.sd')).
-                 enable_document_api)
+                 cluster(SearchCluster.new('applesearch').sd(selfdir + 'application/schemas/apple.sd')))
     start
 
     feed(:file => selfdir + 'feed.json')

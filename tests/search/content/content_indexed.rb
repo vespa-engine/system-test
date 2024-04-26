@@ -21,13 +21,13 @@ class ContentIndexedSmokeTest < IndexedOnlySearchTest
   end
 
   def test_contentsmoke_indexed_get
-    deploy_app(SearchApp.new.sd(SEARCH_DATA + 'music.sd').enable_document_api)
+    deploy_app(SearchApp.new.sd(SEARCH_DATA + 'music.sd'))
     start_feed_and_check
     verify_get
   end
 
   def test_contentsmoke_indexed_4nodes_redundancy2
-    deploy_app(SearchApp.new.sd(SEARCH_DATA + 'music.sd').num_parts(4).enable_document_api)
+    deploy_app(SearchApp.new.sd(SEARCH_DATA + 'music.sd').num_parts(4))
     start_feed_and_check
     verify_get
   end
@@ -36,7 +36,7 @@ class ContentIndexedSmokeTest < IndexedOnlySearchTest
     @params = { :search_type => "NONE" }
     app = SearchApp.new
     app.storage_clusters.push(StorageCluster.new("search").default_group.sd(SEARCH_DATA + 'music.sd'))
-    app.sd(SEARCH_DATA + 'music.sd').enable_document_api
+    app.sd(SEARCH_DATA + 'music.sd')
     deploy_app(app)
     start
     feed_only
