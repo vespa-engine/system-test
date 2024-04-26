@@ -24,8 +24,7 @@ class InOperator < IndexedStreamingSearchTest
   def test_in_operator
     set_description("test yql in operator")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
-                 indexing_cluster('default').indexing_chain('indexing').
-                 enable_document_api)
+                 indexing_cluster('default').indexing_chain('indexing'))
     start
     feed_doc(0, { :is => 24,
                   :is2 => 25,

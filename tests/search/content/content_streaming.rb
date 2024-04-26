@@ -12,7 +12,7 @@ class ContentStreamingSmokeTest < StreamingSearchTest
   end
 
   def test_contentsmoke_streaming
-    deploy_app(SearchApp.new.sd(SEARCH_DATA + 'music.sd').enable_document_api)
+    deploy_app(SearchApp.new.sd(SEARCH_DATA + 'music.sd'))
     @node = vespa.storage['search'].storage['0']
     start_feed_and_check
     verify_get
@@ -21,7 +21,7 @@ class ContentStreamingSmokeTest < StreamingSearchTest
   def test_contentsmoke_proton_streaming
     app = SearchApp.new
     app.storage_clusters.push(StorageCluster.new("search").default_group)
-    app.sd(SEARCH_DATA + 'music.sd').provider('PROTON').enable_document_api
+    app.sd(SEARCH_DATA + 'music.sd').provider('PROTON')
     deploy_app(app)
     @node = nil
     start
@@ -33,7 +33,7 @@ class ContentStreamingSmokeTest < StreamingSearchTest
   def test_contentsmoke_dummy_streaming
     app = SearchApp.new
     app.storage_clusters.push(StorageCluster.new("search").default_group)
-    app.sd(SEARCH_DATA + 'music.sd').provider('DUMMY').enable_document_api
+    app.sd(SEARCH_DATA + 'music.sd').provider('DUMMY')
     deploy_app(app)
     @node = nil
     start_feed_and_check
