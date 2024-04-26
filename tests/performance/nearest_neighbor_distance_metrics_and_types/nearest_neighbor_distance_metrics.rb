@@ -13,16 +13,21 @@ class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
     set_description('Benchmark distance metrics and types using 500K documents. Exact nearest neighbor search.')
     deploy_app(SearchApp.new.sd(selfdir + 'vector.sd'))
     start
-
+  
     feed_file = 'vectors.perf.json.zstd'
     remote_file = "https://data.vespa.oath.cloud/tests/performance/#{feed_file}"
     local_file =  dirs.tmpdir + feed_file
+    local_feed_file =  dirs.tmpdir + "feed.json"
     cmd = "wget -O'#{local_file}' '#{remote_file}'"
     puts "Running command #{cmd}"
     result = `#{cmd}`
     puts "Result: #{result}"
-    run_feeder(local_file, [])
 
+    cmd2 = "zstdcat '#{local_file}' > '#{local_feed_file}'"
+    puts "Running command #{cmd2}"
+    result2 = `#{cmd2}`
+    puts "Result2: #{result2}"
+    run_feeder(local_feed_file, [])
 
     container = (vespa.qrserver["0"] or vespa.container.values.first)
     runtime=20 # The runtime in seconds
