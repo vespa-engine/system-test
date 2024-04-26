@@ -3,6 +3,7 @@
 require 'performance_test'
 require 'app_generator/search_app'
 require 'performance/fbench'
+require 'etc'
 
 class NearestNeighborPerformanceTest < PerformanceTest
 
@@ -126,22 +127,24 @@ class NearestNeighborPerformanceTest < PerformanceTest
   end
 
   def run_benchmarks(query_file, legend, want_rawscore)
+    num_threads = Etc.nprocessors
     # Basic search
     qrserver = @vespa.container["combinedcontainer/0"]
     qd = dirs.tmpdir + "qd"
     qrserver.copy(query_file, qd)
     qf = qd + "/" + File.basename(query_file)
     puts "qf: #{qf}"
+    puts "Running fbench with #{num_threads} threads"
 
     if legend == 'hamming'
-      run_fbench(qrserver, 48, 20, qf, legend, '&ranking=hamming')
+      run_fbench(qrserver, num_threads, 20, qf, legend, '&ranking=hamming')
       return
     end
 
-    run_fbench(qrserver, 48, 20, qf, legend + '_simple')
-    run_fbench(qrserver, 48, 20, qf, legend + '_joinsq',     "&ranking=joinsqdiff")
-    run_fbench(qrserver, 48, 20, qf, legend + '_dotproduct', "&ranking=dotproduct")
-    run_fbench(qrserver, 48, 20, qf, legend + '_rawscore',   "&ranking=rawscore") if want_rawscore
+    run_fbench(qrserver, num_threads, 20, qf, legend + '_simple')
+    run_fbench(qrserver, num_threads, 20, qf, legend + '_joinsq',     "&ranking=joinsqdiff")
+    run_fbench(qrserver, num_threads, 20, qf, legend + '_dotproduct', "&ranking=dotproduct")
+    run_fbench(qrserver, num_threads, 20, qf, legend + '_rawscore',   "&ranking=rawscore") if want_rawscore
   end
 
   def run_fbench(qrserver, clients, runtime, qf, legend, append_str = "")
