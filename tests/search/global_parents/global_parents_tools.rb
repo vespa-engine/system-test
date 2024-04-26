@@ -15,8 +15,7 @@ class GlobalParentsToolTest < IndexedOnlySearchTest
       sd(@test_dir + "ad.sd").
       cluster_name(@cluster_name).
       redundancy(1).
-      num_parts(1).
-      enable_document_api
+      num_parts(1)
   end
 
   def test_tools_with_global_parents
@@ -90,8 +89,8 @@ class GlobalParentsToolTest < IndexedOnlySearchTest
   end
 
   def http_connection
-    container = vespa.container["doc-api/0"]
-    http = https_client.create_client(container.name, container.http_port)
+    qrs = vespa.container.values.first
+    http = https_client.create_client(qrs.name, qrs.http_port)
     http.read_timeout=190
     http
   end

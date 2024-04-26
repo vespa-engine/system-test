@@ -12,7 +12,6 @@ class InconsistentBucketsBase < IndexedOnlySearchTest
     SearchApp.new.sd(SEARCH_DATA + 'music.sd').
       cluster_name('storage').
       num_parts(2).redundancy(2).ready_copies(2).
-      enable_document_api.
       storage(StorageCluster.new('storage', 2).distribution_bits(8)).
       config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
              add('merge_operations_disabled', disable_merges))

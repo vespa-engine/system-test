@@ -10,7 +10,6 @@ class DisjointSourceOnlyDocuments < IndexedOnlySearchTest
                add('bucket_merge_chunk_size', 1024)). # Enforce triggering chunk limit edge case
         config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
                add('merge_operations_disabled', disable_merges)).
-        enable_document_api.
         cluster_name("storage").num_parts(3).redundancy(1).
         storage(StorageCluster.new("storage", 3).distribution_bits(8))
   end
