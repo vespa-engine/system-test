@@ -18,7 +18,7 @@ class TestAndSetTest < IndexedStreamingSearchTest
 
   def test_with_vespa_http_client
     run_tests(->(feedfile) {
-      feed(:file => feed_filename(feedfile, :json), :client => :vespa_feed_client, :port => 19020)
+      feed(:file => feed_filename(feedfile, :json), :client => :vespa_feed_client)
     })
   end
 
