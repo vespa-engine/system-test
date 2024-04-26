@@ -34,7 +34,6 @@ class ImportedFieldsInSelectionsTest < IndexedOnlySearchTest
         cluster_name('storage').
         garbagecollection(with_gc).
         garbagecollectioninterval(gc_interval_secs).
-        enable_document_api.
         num_parts(n_nodes).redundancy(redundancy).ready_copies(ready_copies).
         storage(StorageCluster.new('storage', n_nodes).distribution_bits(8))
     app
