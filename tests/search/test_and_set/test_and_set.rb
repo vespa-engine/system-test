@@ -6,8 +6,7 @@ class TestAndSetTest < IndexedStreamingSearchTest
     set_owner("vekterli")
     set_description("Test test and set functionality in Vespa")
     deploy_app(SearchApp.new.
-                sd(selfdir + "weather.sd").
-                enable_document_api)
+                sd(selfdir + "weather.sd"))
     start
   end
 

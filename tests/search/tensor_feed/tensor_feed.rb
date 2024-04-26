@@ -13,7 +13,7 @@ class TensorFeedTest < IndexedStreamingSearchTest
 
   def test_tensor_json_feed
     set_description("Test feeding of tensor field and retrieval via search and visit")
-    deploy_app(SearchApp.new.sd(@base_dir + "test.sd").enable_document_api)
+    deploy_app(SearchApp.new.sd(@base_dir + "test.sd"))
     start
     feed_and_wait_for_docs("test", 4, :file => @base_dir + "docs.json")
 

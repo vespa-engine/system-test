@@ -14,7 +14,7 @@ class BoolTypeTest < IndexedStreamingSearchTest
 
   def test_bool_attribute_search
     set_description("Test search on attributes of type 'bool', and use in document selections, both with and without attribute backing")
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd").enable_document_api)
+    deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     @doctype = "test"
     start
     feed(:file => selfdir + "docs.json")

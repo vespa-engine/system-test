@@ -13,7 +13,7 @@ class TensorModifyUpdateTest < IndexedStreamingSearchTest
 
   def test_modify_updates
     set_description("Test tensor modify updates (replace, add, multiply) in dense, sparse and mixed tensor attributes and fields")
-    deploy_app(SearchApp.new.sd(@base_dir + "test.sd").enable_document_api)
+    deploy_app(SearchApp.new.sd(@base_dir + "test.sd"))
     start
     feed_and_wait_for_docs("test", 1, :file => @base_dir + "docs.json")
 

@@ -73,8 +73,7 @@ class GeoNnsTest < IndexedStreamingSearchTest
     app = SearchApp.new.
         sd(selfdir + "geo.sd").
         num_parts(2).redundancy(2).ready_copies(num_ready_copies).
-        threads_per_search(1).
-        enable_document_api
+        threads_per_search(1)
     deploy_app(app)
   end
 
