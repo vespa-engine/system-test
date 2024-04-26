@@ -28,6 +28,7 @@ class IndexedTokensTest < IndexedStreamingSearchTest
                indexing_cluster("my-container").
                container(Container.new("my-container").
                          search(Searching.new).
+                         documentapi(ContainerDocumentApi.new).
                          docproc(DocumentProcessing.new).
                          component(Component.new("com.yahoo.language.opennlp.OpenNlpLinguistics"))))
     start
