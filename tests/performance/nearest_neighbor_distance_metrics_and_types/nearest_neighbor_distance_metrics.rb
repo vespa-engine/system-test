@@ -13,16 +13,10 @@ class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
     set_description('Benchmark distance metrics and types using 500K documents. Exact nearest neighbor search.')
     deploy_app(SearchApp.new.sd(selfdir + 'vector.sd'))
     start
-
-    feed_file = 'vectors.perf.json.zstd'
-    remote_file = "https://data.vespa.oath.cloud/tests/performance/#{feed_file}"
-    local_file =  dirs.tmpdir + feed_file
-    cmd = "wget -O'#{local_file}' '#{remote_file}'"
-    puts "Running command #{cmd}"
-    result = `#{cmd}`
-    puts "Result: #{result}"
-    run_feeder(local_file, [])
-
+  
+    remote_file = "https://data.vespa.oath.cloud/tests/performance/vectors.perf.json.zstd"
+    cmd = "curl '#{remote_file}' | zstdcat"
+    run_stream_feeder(cmd, [])
 
     container = (vespa.qrserver["0"] or vespa.container.values.first)
     runtime=20 # The runtime in seconds
@@ -38,7 +32,7 @@ class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
       end
     end
 
-    for client in [1,16] do
+    for client in [1, 16] do
       for dimension in [256, 384, 768, 1024] do
         for metric in ["angular", "euclidean", "dotproduct"] do
           query_file = selfdir + "queries/scalar-int8-#{dimension}-#{metric}.txt"
@@ -49,7 +43,7 @@ class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
       end
     end
 
-    for client in [1,16] do
+    for client in [1, 16] do
       for dimension in [64, 96, 128] do
         metric = "hamming"
         query_file = selfdir + "queries/binary-int8-#{dimension}-#{metric}.txt"
