@@ -15,8 +15,7 @@ class GlobalParentsFeedTest < IndexedOnlySearchTest
       sd(@test_dir + "ad.sd").
       cluster_name("my_cluster").
       redundancy(2).
-      num_parts(4).
-      enable_document_api
+      num_parts(4)
   end
 
   def test_feeding_and_redistribution_of_global_parents
