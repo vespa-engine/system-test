@@ -33,7 +33,6 @@ class DocumentApiV1Base < SearchTest
     SearchApp.new.sd(selfdir + 'music.sd').
       cluster_name('storage').
       num_parts(1).redundancy(1).ready_copies(1).
-      enable_document_api.
       storage(StorageCluster.new('storage', 1).distribution_bits(8))
   end
 
