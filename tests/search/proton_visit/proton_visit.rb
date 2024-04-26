@@ -1,3 +1,4 @@
+
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'search_test'
 
@@ -11,7 +12,7 @@ class ProtonVisitDemo < SearchTest
   def make_app
     app = SearchApp.new
     app.storage_clusters.push(StorageCluster.new('search').default_group.sd(SEARCH_DATA + 'music.sd'))
-    app.sd(SEARCH_DATA + 'music.sd').no_search().enable_document_api
+    app.sd(SEARCH_DATA + 'music.sd').no_search()
     app
   end
 

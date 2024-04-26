@@ -36,7 +36,7 @@ class FastAccessAttributesPerfTest < PerformanceTest
     # documents on each of the 2 search nodes. The normal_access attribute will not be loaded for these
     # non-ready documents while the fast_access attribute will. Updates to the normal_access attribute
     # will have worse feed performance as these documents must be fetched from disk for applying the updates.
-    app = SearchApp.new.enable_document_api.sd(sd_file).
+    app = SearchApp.new.sd(sd_file).
       container(Container.new("combinedcontainer").
                     jvmoptions('-Xms8g -Xmx8g').
                     search(Searching.new).

@@ -29,8 +29,7 @@ class IndexedTokensTest < IndexedStreamingSearchTest
                container(Container.new("my-container").
                          search(Searching.new).
                          docproc(DocumentProcessing.new).
-                         component(Component.new("com.yahoo.language.opennlp.OpenNlpLinguistics"))).
-               enable_document_api)
+                         component(Component.new("com.yahoo.language.opennlp.OpenNlpLinguistics"))))
     start
     feed_doc("0", { :stext => "Hello world",
                     :atext => [ "This is simply", "(more elements)"],
