@@ -10,7 +10,7 @@ class SortingUnset < IndexedStreamingSearchTest
   end
 
   def test_sorting_unset_fields
-    deploy_app(SearchApp.new.sd(selfdir+'unset.sd').enable_document_api)
+    deploy_app(SearchApp.new.sd(selfdir+'unset.sd'))
     start
     feed_docs
     check_sorted(nil, [0, 1, 2, 3])

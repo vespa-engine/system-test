@@ -37,7 +37,7 @@ class StreamingMatcherPart2 < StreamingMatcher
   def test_multilevel_sorting
     set_owner("balder")
     set_description("Test sorting on nested fields")
-    deploy_app(SearchApp.new.enable_document_api.streaming().sd(selfdir+"sortaggr.sd"))
+    deploy_app(SearchApp.new.streaming().sd(selfdir+"sortaggr.sd"))
     start
     feed(:file => selfdir + "sortingfeed.json")
     wait_for_hitcount('query=sddocname:sortaggr&streaming.userid=1&type=all', 8)
@@ -59,7 +59,7 @@ class StreamingMatcherPart2 < StreamingMatcher
   def test_sorting
     set_owner("balder")
     set_description("Test sorting on nested fields")
-    deploy_app(SearchApp.new.enable_document_api.streaming().sd(selfdir+"sortaggr.sd"))
+    deploy_app(SearchApp.new.streaming().sd(selfdir+"sortaggr.sd"))
     start
     feed(:file => selfdir + "sortaggr.json")
     wait_for_hitcount('query=sddocname:sortaggr&streaming.userid=1&type=all', 8)
@@ -172,7 +172,7 @@ class StreamingMatcherPart2 < StreamingMatcher
   def test_dynamic_summary
     set_owner("geirst")
     set_description("Test dynamic summary with multiple input fields")
-    deploy_app(SearchApp.new.enable_document_api.streaming().sd(selfdir+"dynsum.sd"))
+    deploy_app(SearchApp.new.streaming().sd(selfdir+"dynsum.sd"))
     start
     feed(:file => selfdir + "dynsum.json")
     wait_for_hitcount('query=sddocname:dynsum&streaming.userid=1&type=all', 2)
