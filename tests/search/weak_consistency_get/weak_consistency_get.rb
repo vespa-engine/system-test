@@ -16,7 +16,6 @@ class WeakInternalConsistencyGetTest < IndexedStreamingSearchTest
     SearchApp.new.sd(SEARCH_DATA + 'simple.sd').
       cluster_name('storage').
       num_parts(1).redundancy(1).ready_copies(1).
-      enable_document_api.
       storage(StorageCluster.new('storage', 1).distribution_bits(8)).
       config(ConfigOverride.new('vespa.config.content.core.stor-distributormanager').
              add('use_weak_internal_read_consistency_for_client_gets', true))
