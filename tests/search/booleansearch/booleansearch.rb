@@ -201,16 +201,11 @@ class BooleanSearchTest < IndexedOnlySearchTest
   end
 
   def write_range_documents(file)
-    docs = DocumentSet.new
-    docs.add(generate_doc("teen", "age in [13..19]"))
-    docs.add(generate_doc("twenties", "age in [20..29]"))
-    docs.add(generate_doc("below-40", "age in [..39]"))
-    docs.add(generate_doc("above-20", "age in [20..]"))
     generate_range_documents.write_json(file)
   end
 
   def test_boolean_searcher_range_query_terms
-    write_range_documents(file).write_json(@feed_file)
+    write_range_documents(@feed_file)
     deploy_and_feed
 
     run_range_query_terms_test
@@ -398,7 +393,9 @@ class BooleanSearchTest < IndexedOnlySearchTest
   end
 
   def write_odd_range_documents(file)
-    DocumentSet.new.docs.add(generate_doc("0", "value in [0..46]")).write_json(file)
+    docs = DocumentSet.new
+    docs.add(generate_doc("0", "value in [0..46]"))
+    docs.write_json(file)
   end
 
   def test_boolean_searcher_odd_range_query_terms
@@ -529,16 +526,17 @@ class BooleanSearchTest < IndexedOnlySearchTest
 
     unoptimized_predicate = "not (not (gender in ['Male'] and age in [20..29] and true)) and country not in ['Sweden']"
     doc_id = "unoptimized-1"
-    DocumentSet.new.add(generate_doc(doc_id, unoptimized_predicate)).write_json(@feed_file)
+    docs = DocumentSet.new
+    docs.add(generate_doc(doc_id, unoptimized_predicate))
+    docs.write_json(@feed_file)
     deploy_and_feed
 
-    container_port = Environment.instance.vespa_web_service_port
-    optimized_doc = vespa.document_api_v1.get("id:test:test::#{doc_id}", :port => container_port)
+    optimized_doc = vespa.document_api_v1.get("id:test:test::#{doc_id}")
     expected_optimized_predicate = "country not in [Sweden] and gender in [Male] and age in [20..29]"
     assert_equal(expected_optimized_predicate, optimized_doc.fields['predicate_field'])
 
-    vespa.document_api_v1.put(optimized_doc, :port => container_port)
-    reoptimized_doc = vespa.document_api_v1.get("id:test:test::#{doc_id}", :port => container_port)
+    vespa.document_api_v1.put(optimized_doc)
+    reoptimized_doc = vespa.document_api_v1.get("id:test:test::#{doc_id}")
     assert_equal(expected_optimized_predicate, reoptimized_doc.fields['predicate_field'])
   end
 
