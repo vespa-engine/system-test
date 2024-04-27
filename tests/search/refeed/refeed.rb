@@ -1,6 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_streaming_search_test'
+require 'document_set'
 require 'environment'
+require 'indexed_streaming_search_test'
 
 class Refeed < IndexedStreamingSearchTest
 
@@ -56,32 +57,29 @@ class Refeed < IndexedStreamingSearchTest
   end
 
   def generate_documents
-    File.open(@feed_file, "w") {|file| write_documents(file) }
+    docs = DocumentSet.new
+    docs.add(generate_doc("1", "predicate",
+              "a in [7..231] and true or b in [c] and d not in [e]"))
+    docs.add(generate_doc("2", "string", "foo bar baz"))
+    docs.add(generate_doc("3", "int", "1000000000"))
+    docs.add(generate_doc("4", "long", "9223372036854775807"))
+    docs.add(generate_doc("5", "byte", "127"))
+    docs.add(generate_doc("6", "float", "42.21"))
+    docs.add(generate_doc("7", "double", "123.456"))
+    docs.add(generate_doc("8", "pos", "N37.374821;W122.057174"))
+    docs.add(generate_doc("9", "raw", "baz qux quux"))
+    docs.add(generate_doc("10", "uri",
+              "http://shopping.yahoo-inc.com:8080/yahoo/path/shop?d=hab#frag1"))
+    docs.add(generate_doc("11", "array", ["foo", "bar"]))
+    docs.add(generate_doc("12", "map", { "foo" => "bar" }))
+    docs.add(generate_doc("13", "wset", {"foo" => 10, "bar" => 20}))
+    docs.add(generate_doc("14", "struct", {"string" => "foo"}))
+    docs.write_json(@feed_file)
   end
 
-  def write_documents(file)
-    write_doc(file, "1", "predicate",
-              "a in [7..231] and true or b in [c] and d not in [e]")
-    write_doc(file, "2", "string", "foo bar baz")
-    write_doc(file, "3", "int", "1000000000")
-    write_doc(file, "4", "long", "9223372036854775807")
-    write_doc(file, "5", "byte", "127")
-    write_doc(file, "6", "float", "42.21")
-    write_doc(file, "7", "double", "123.456")
-    write_doc(file, "8", "pos", "N37.374821;W122.057174")
-    write_doc(file, "9", "raw", "baz qux quux")
-    write_doc(file, "10", "uri",
-              "http://shopping.yahoo-inc.com:8080/yahoo/path/shop?d=hab#frag1")
-    write_doc(file, "11", "array", ["foo", "bar"])
-    write_doc(file, "12", "map", { "foo" => "bar" })
-    write_doc(file, "13", "wset", [["foo", 10], ["bar", 20]])
-    write_doc(file, "14", "struct", Struct.new(:string).new("foo"))
-  end
-
-  def write_doc(file, id, field, content)
-    doc = Document.new("test", "id:test:test::#{id}").add_field(field, content)
-    file.write(doc.to_xml())
+  def generate_doc(id, field, content)
     @numdocs += 1
+    Document.new("test", "id:test:test::#{id}").add_field(field, content)
   end
 
   def assert_predicate_search(attributes, range_attributes, expected_hits)
