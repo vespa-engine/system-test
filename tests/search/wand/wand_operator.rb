@@ -1,4 +1,5 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'document_set'
 require 'indexed_streaming_search_test'
 
 class WeakAndOperator < IndexedStreamingSearchTest
@@ -8,27 +9,26 @@ class WeakAndOperator < IndexedStreamingSearchTest
 
   def gen_docs(tfn)
     puts "generating feed in #{tfn}"
-    File.open(tfn, "w") do |file|
-      (11111..33333).each do |num|
-        doc = Document.new("foo", "id:foo:foo::bar." + num.to_s).
-          add_field("title", num.to_s)
-        d = ""
-        (2..9).each do |x|
-          if (num % x == 0)
-            d += " #{x}"
-          end
+    docs = DocumentSet.new
+    (11111..33333).each do |num|
+      doc = Document.new("foo", "id:foo:foo::bar." + num.to_s).
+              add_field("title", num.to_s)
+      d = ""
+      (2..9).each do |x|
+        if (num % x == 0)
+          d += " #{x}"
         end
-        (1111..1113).each do |x|
-          if (num % x == 0)
-            d += " #{x}"
-          end
-        end
-        doc.add_field("desc", d).
-          add_field("tstamp", 1000000+num)
-        file.write(doc.to_xml)
-        file.write("\n")
       end
+      (1111..1113).each do |x|
+        if (num % x == 0)
+          d += " #{x}"
+        end
+      end
+      doc.add_field("desc", d).
+        add_field("tstamp", 1000000+num)
+      docs.add(doc)
     end
+    docs.write_json(tfn)
   end
 
   def check_rank(query, savedresultfile, explanationstring="")
@@ -72,7 +72,7 @@ class WeakAndOperator < IndexedStreamingSearchTest
     set_description("test WeakAnd operator searching")
     deploy_app(SearchApp.new.sd(selfdir + "foo.sd"))
     start
-    tfn = dirs.tmpdir + "temp-wandfeed.xml"
+    tfn = dirs.tmpdir + "temp-wandfeed.json"
     gen_docs(tfn)
     feed(:file => tfn)
     wait_for_hitcount("2", 11111)
