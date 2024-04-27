@@ -41,19 +41,9 @@ class DocumentSet
     write_json(name, :put)
   end
 
-  def write_json(name, operation=:put)
+  def write_json(name, operation = :put)
     f = File.open(name, "w")
-    f.write("[\n")
-    first = true
-    @documents.each do |document|
-      if first
-        first = false
-      else
-        f.write(",\n")
-      end
-      f.write(document.to_json(operation, false))
-    end
-    f.write("\n]\n")
+    f.write(to_json(operation))
     f.close()
   end
 
@@ -63,6 +53,21 @@ class DocumentSet
 
   def write_updates_json(name)
     write_json(name, :update)
+  end
+
+  def to_json(operation = :put)
+    out = "[\n"
+    first = true
+    @documents.each do |document|
+      if first
+        first = false
+      else
+        out += ",\n"
+      end
+      out += document.to_json(operation, false)
+    end
+    out += "\n]\n"
+    out
   end
 
   def write_xml(name)

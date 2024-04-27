@@ -7,7 +7,6 @@ require 'pp'
 require 'document_set'
 require 'document'
 
-
 class RpcSummaryTest < PerformanceTest
 
   def initialize(*args)
@@ -24,7 +23,7 @@ class RpcSummaryTest < PerformanceTest
       doc.add_field("f1", "approximately-fixed-string-#{doc_id}")
       ds.add(doc)
     end
-    ds.to_xml
+    ds.to_json
   end
 
   def prepare
@@ -44,7 +43,6 @@ class RpcSummaryTest < PerformanceTest
     profiler_report("profile-summary") if run_profiler
   end
 
-
   def test_summary_performance
     set_description("Test performance fetching many summaries.")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd").
@@ -63,4 +61,5 @@ class RpcSummaryTest < PerformanceTest
   def teardown
     super
   end
+
 end
