@@ -108,6 +108,8 @@ def clean_data(cat: str, overwrite: bool = False) -> ProcessingResult:
     use_cols = ["title", "description", "average_rating", "price"]
     ds = ds.remove_columns([col for col in ds.column_names if col not in use_cols])
     df = ds.to_pandas()
+    # Drop duplicates on title and description (both must be the same)
+    df.drop_duplicates(subset=["title", "description"], inplace=True)
     df["price"] = df["price"].astype(int)
     # Use incrementing id per category for new. Must remember to make unique when merging.
     df["id"] = range(1, len(df) + 1)
