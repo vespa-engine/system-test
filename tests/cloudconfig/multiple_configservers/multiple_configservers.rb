@@ -71,7 +71,7 @@ class MultipleConfigservers < CloudConfigTest
   end
 
   def test_deploy_robustness
-    set_expected_logged(Regexp.union(/Connection timed out for connection string/ , /Sequential path not found/, /Fleetcontroller \d: Got no data from node entry at/, /has content that does not match its hash, deleting everything in/))
+    set_expected_logged(Regexp.union(/Connection timed out for connection string/ , /Sequential path not found/, /has content that does not match its hash, deleting everything in/, /Failed to get \/vespa\/fleetcontroller\/search\/latestversion/))
     wait_for_config_generation_on_all_configservers(@session_id)
     @session_id = @session_id + 1
     create_session_from_url = "http://#{@node1.hostname}:19071/application/v2/tenant/default/application/default/environment/prod/region/default/instance/default"
