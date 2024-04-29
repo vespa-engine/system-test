@@ -360,13 +360,13 @@ schema vector {
         }
     }
 
-    rank-profile float-512-angular inherits default {
+    rank-profile float_512_angular inherits default {
         first-phase {
             expression: closeness(field, float_512_angular)
         }
     }
 
-    rank-profile float-512-euclidean inherits default {
+    rank-profile float_512_euclidean inherits default {
         first-phase {
             expression: closeness(field, float_512_euclidean)
         }
