@@ -174,7 +174,7 @@ class DocumentUpdate
     JSON.dump({"fields" => fields})
   end
 
-  def to_json
+  def to_json(operation = :update, in_array = false)
     JSON.dump({"update" => @documentid, "fields" => fields})
   end
 
