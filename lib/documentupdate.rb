@@ -86,11 +86,16 @@ class AlterUpdate
 end
 
 class SimpleAlterUpdate
+
+  attr_reader :arraytype, :fieldname, :operation, :params
+
   def initialize(operation, fieldname, number, key = nil)
     @operation = operation
     @fieldname = fieldname
     @number = number
     @key = key
+    @arraytype = false
+    @params = [number]
   end
 
   def to_xml
@@ -169,8 +174,8 @@ class DocumentUpdate
     JSON.dump({"fields" => fields})
   end
 
-  def to_json(operation, in_array = false)
-    to_update_json
+  def to_json(operation = :update, in_array = false)
+    JSON.dump({"update" => @documentid, "fields" => fields})
   end
 
   def fields
@@ -183,10 +188,6 @@ class DocumentUpdate
       end
     end
     fields
-  end
-
-  def to_update_json
-    JSON.dump({"update" => @documentid, "fields" => fields})
   end
 
 end

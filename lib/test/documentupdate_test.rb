@@ -24,8 +24,19 @@ class DocumentUpdateTest < Test::Unit::TestCase
         'artist' => { 'assign' => 'groovy lads' }
       }
     }
-    assert_equal(expected_with_update, JSON.parse(update.to_update_json))
-    assert_equal(expected_with_update, JSON.parse(update.to_json(:update)))
+    assert_equal(expected_with_update, JSON.parse(update.to_json))
+  end
+
+  def test_simple_alter_update
+    update = DocumentUpdate.new('doctype', 'id:foo:music::bar')
+    update.addSimpleAlterOperation('increment', 'increment_field', 10)
+    expected = {
+      'update' => 'id:foo:music::bar',
+      'fields' => {
+        'increment_field' => { 'increment' => 10 }
+      }
+    }
+    assert_equal(expected, JSON.parse(update.to_json))
   end
 
 end
