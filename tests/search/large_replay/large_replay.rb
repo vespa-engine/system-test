@@ -1,5 +1,6 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
+require 'document_set'
 require 'indexed_only_search_test'
 
 class LargeReplay < IndexedOnlySearchTest
@@ -18,19 +19,10 @@ class LargeReplay < IndexedOnlySearchTest
     deploy_app(SearchApp.new.cluster(SearchCluster.new.sd(selfdir+"test.sd").disable_flush_tuning))
     vespa.adminserver.logctl("searchnode:proton.persistenceengine.persistenceengine", "debug=on")
     start
+
     num_docs = 800000
-    feed_file = dirs.tmpdir+"feed.xml"
-    feed = File.open(feed_file, "w")
-    puts "About to generate feed with #{num_docs} docs"
-    for i in 0...num_docs
-      doc = Document.new("test", "id:test:test::#{i}").
-            add_field("f1", i.to_s).
-            add_field("f2", i.to_s)
-      feed.write(doc.to_xml + "\n")
-    end
-    feed.close
-    puts "About to feed #{num_docs} docs"
-    feed_and_wait_for_docs("test", num_docs, :file => feed_file)
+    generate_and_feed_docs(num_docs)
+
     vespa.logserver.delete_vespalog
     vespa.search["search"].first.stop
     vespa.search["search"].first.start
@@ -42,6 +34,22 @@ class LargeReplay < IndexedOnlySearchTest
     assert_log_not_matches("still trying to connect to peer at")
     num_matches = assert_log_matches("Done initializing persistence handlers")
     assert(1, num_matches)
+  end
+
+
+  def generate_and_feed_docs(num_docs)
+    feed_file = dirs.tmpdir+"feed.json"
+
+    docs = DocumentSet.new
+    for i in 0...num_docs
+      doc = Document.new("test", "id:test:test::#{i}").
+            add_field("f1", i.to_s).
+            add_field("f2", i.to_s)
+      docs.add(doc)
+    end
+    docs.write_xml(feed_file)
+
+    feed_and_wait_for_docs("test", num_docs, :file => feed_file)
   end
 
   def teardown
