@@ -82,7 +82,7 @@ def clean_data(cat: str, overwrite: bool = False) -> ProcessingResult:
         return ProcessingResult(cat=cat, length=len(df))
 
     # prices should be a numpy array of 1000 integers between 0 and 1000
-    prices = np.random.randint(1, 1000, 1000)
+    prices = np.random.randint(1, 100, 1000)
 
     def process_entry(entry: Dict[str, Any]) -> Dict[str, Union[str, float, None]]:
         price_str = entry["price"]
@@ -112,7 +112,7 @@ def clean_data(cat: str, overwrite: bool = False) -> ProcessingResult:
     df = ds.to_pandas()
     # Drop duplicates on title and description (both must be the same)
     df.drop_duplicates(subset=["title", "description"], inplace=True)
-    df["price"] = df["price"].astype(int)
+    df["price"] = (df["price"] * 100).astype(int)
     # Use incrementing id per category for new. Must remember to make unique when merging.
     df["id"] = range(1, len(df) + 1)
     if len(df) > 0:
