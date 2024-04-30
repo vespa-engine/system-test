@@ -27,6 +27,45 @@ VESPA_NAMESPACE = "product"
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
 
+categories = [
+    "All_Beauty",
+    "Amazon_Fashion",
+    "Appliances",
+    "Arts_Crafts_and_Sewing",
+    "Automotive",
+    "Baby_Products",
+    "Beauty_and_Personal_Care",
+    "Books",
+    "CDs_and_Vinyl",
+    "Cell_Phones_and_Accessories",
+    "Clothing_Shoes_and_Jewelry",
+    "Digital_Music",
+    "Electronics",
+    "Gift_Cards",
+    "Grocery_and_Gourmet_Food",
+    "Handmade_Products",
+    "Health_and_Household",
+    "Health_and_Personal_Care",
+    "Home_and_Kitchen",
+    "Industrial_and_Scientific",
+    "Kindle_Store",
+    "Magazine_Subscriptions",
+    "Movies_and_TV",
+    "Musical_Instruments",
+    "Office_Products",
+    "Patio_Lawn_and_Garden",
+    "Pet_Supplies",
+    "Software",
+    "Sports_and_Outdoors",
+    "Subscription_Boxes",
+    "Tools_and_Home_Improvement",
+    "Toys_and_Games",
+    "Video_Games",
+    "Unknown",
+]
+# Create a mapping from category to index, increase with 10_000_000 for each category to avoid id clashes
+category_start_id = {cat: i * 10_000_000 for i, cat in enumerate(categories)}
+
 
 # Dataclass to store processing results
 @dataclass
@@ -36,6 +75,7 @@ class ProcessingResult:
     cleaned: bool = False
     embeddings_added: bool = False
     vespa_format_saved: bool = False
+    es_format_saved: bool = False
     merged: bool = False
 
     # Add str method suited for logging
@@ -43,7 +83,8 @@ class ProcessingResult:
         return (
             f"Category: {self.cat}, Length: {self.length}, "
             f"Cleaned: {self.cleaned}, Embeddings Added: {self.embeddings_added}, "
-            f"Vespa Format Saved: {self.vespa_format_saved}"
+            f"Vespa Format Saved: {self.vespa_format_saved}, "
+            f"ES Format Saved: {self.es_format_saved}, Merged: {self.merged}"
         )
 
 
@@ -138,25 +179,31 @@ def add_embeddings(
     return df
 
 
-def merge_files(categories: List[str]) -> ProcessingResult:
-    merged_path = f"{OUTPUT_DIR}/merged.json.gz"
-    if os.path.exists(merged_path):
-        return
+def merge_files(
+    categories: List[str], save_format: str = "common", overwrite: bool = False
+) -> ProcessingResult:
+    merged_path = f"{OUTPUT_DIR}/merged_{save_format}.json.gz"
+    read_file = {"common": "embeddings", "vespa": "vespa", "es": "es"}[save_format]
+    if os.path.exists(merged_path) and not overwrite:
+        print("File already exists. Set overwrite to True to merge again.")
+        return ProcessingResult(cat="all", length=0, merged=True)
 
     dfs = []
     for cat in categories:
+        print(f"Merging {cat}")
         try:
             df = pd.read_json(
-                f"{OUTPUT_DIR}/{cat}_embeddings.json.gz", compression="gzip"
+                f"{OUTPUT_DIR}/{cat}_{read_file}.json.gz",
+                compression="gzip",
+                lines=True if save_format == "vespa" else False,
             )
             dfs.append(df)
-        except FileNotFoundError:
-            print(f"File {cat}_embeddings.json.gz not found")
-
+        except Exception as _e:
+            print(f"Error: {_e}")
     if dfs:
         merged = pd.concat(dfs, ignore_index=True)
         # Make sure id is unique
-        merged["id"] = range(1, len(merged) + 1)
+        print(f"Length of merged: {len(merged)}")
         merged.to_json(merged_path, compression="gzip")
         return ProcessingResult(cat="all", length=len(merged), merged=True)
 
@@ -168,14 +215,15 @@ def save_df_to_vespa_format(
     Transform the DataFrame to a Vespa-compatible format.
     Save transformed data to a newline-separated JSON file.
     """
-    df["docid"] = f"id:{VESPA_DOCTYPE}:{VESPA_NAMESPACE}::" + df["id"].astype(str)
+    df["docid"] = f"id:{VESPA_DOCTYPE}:{VESPA_NAMESPACE}::" + cat + df["id"].astype(str)
     df.rename(columns={"embeddings": "embedding"}, inplace=True)
     df = df.apply(
         lambda row: {
             "put": row["docid"],
             "fields": {
-                "id": row["id"],
+                "id": row["id"] + category_start_id[cat],
                 "title": row["title"],
+                "category": cat,
                 "description": row["description"],
                 "price": row["price"],
                 "average_rating": row["average_rating"],
@@ -186,6 +234,34 @@ def save_df_to_vespa_format(
     )
     df.to_json(file_name, orient="records", lines=True, compression="gzip")
     temp_result.vespa_format_saved = True
+    return temp_result
+
+
+def save_df_to_es_format(
+    df: pd.DataFrame, cat: str, file_name: str, temp_result: ProcessingResult
+) -> ProcessingResult:
+    """
+    Transform the DataFrame to a Elasticsearch-compatible format.
+    Save transformed data to a newline-separated JSON file.
+    """
+    df.rename(columns={"embeddings": "embedding"}, inplace=True)
+    df = df.apply(
+        lambda row: {
+            "put": row["docid"],
+            "fields": {
+                "id": row["id"] + category_start_id[cat],
+                "title": row["title"],
+                "category": cat,
+                "description": row["description"],
+                "price": row["price"],
+                "average_rating": row["average_rating"],
+                "embedding": row["embedding"],
+            },
+        },
+        axis=1,
+    )
+    df.to_json(file_name, orient="records", lines=True, compression="gzip")
+    temp_result.es_format_saved = True
     return temp_result
 
 
@@ -251,7 +327,7 @@ def parse_args():
     parser.add_argument(
         "--overwrite",
         type=bool,
-        default=False,
+        default=True,
         help="a flag to overwrite existing files",
     )
     parser.add_argument(
@@ -262,45 +338,10 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    download_model_weights()  # Download model weights once at the beginning
-    categories = [
-        "All_Beauty",
-        "Amazon_Fashion",
-        "Appliances",
-        "Arts_Crafts_and_Sewing",
-        "Automotive",
-        "Baby_Products",
-        "Beauty_and_Personal_Care",
-        "Books",
-        "CDs_and_Vinyl",
-        "Cell_Phones_and_Accessories",
-        "Clothing_Shoes_and_Jewelry",
-        "Digital_Music",
-        "Electronics",
-        "Gift_Cards",
-        "Grocery_and_Gourmet_Food",
-        "Handmade_Products",
-        "Health_and_Household",
-        "Health_and_Personal_Care",
-        "Home_and_Kitchen",
-        "Industrial_and_Scientific",
-        "Kindle_Store",
-        "Magazine_Subscriptions",
-        "Movies_and_TV",
-        "Musical_Instruments",
-        "Office_Products",
-        "Patio_Lawn_and_Garden",
-        "Pet_Supplies",
-        "Software",
-        "Sports_and_Outdoors",
-        "Subscription_Boxes",
-        "Tools_and_Home_Improvement",
-        "Toys_and_Games",
-        "Video_Games",
-        "Unknown",
-    ]
+    # download_model_weights()  # Download model weights once at the beginning
+    subset = categories[:3]  # For testing purposes
     overwrite = args.overwrite
-    results = main_parallel(categories, num_processes=args.num_processes)
-    print(results)
+    # results = main_parallel(subset, num_processes=args.num_processes)
+    # print(results)
     # Will merge later. Not properly tested yet.
-    # merge_files(categories, overwrite=args.overwrite)
+    merge_files(subset, save_format="vespa", overwrite=args.overwrite)
