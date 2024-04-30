@@ -1,12 +1,12 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'json'
 class Update
-  attr_reader :operation, :fieldname, :arraytype, :params
+  attr_reader :operation, :fieldname, :value_type, :params
 
-  def initialize(op, fieldname, arraytype)
+  def initialize(op, fieldname, value_type = :single)
     @operation = op
     @fieldname = fieldname
-    @arraytype = arraytype
+    @value_type = value_type
     @params = Array.new
 
     validops = ["assign", "add", "remove"]
@@ -26,7 +26,7 @@ class Update
 
   def to_xml
     res = "  <" + @operation + " field=\"" + @fieldname + "\">"
-    if !@arraytype
+    if @value_type != :array
       res += @params.first.to_s + "</" + @operation + ">\n"
     else
       if @params.size == 0
@@ -87,14 +87,14 @@ end
 
 class SimpleAlterUpdate
 
-  attr_reader :arraytype, :fieldname, :operation, :params
+  attr_reader :value_type, :fieldname, :operation, :params
 
   def initialize(operation, fieldname, number, key = nil)
     @operation = operation
     @fieldname = fieldname
     @number = number
     @key = key
-    @arraytype = false
+    @value_type == :single
     @params = [number]
   end
 
@@ -128,16 +128,18 @@ class DocumentUpdate
   # "values" is an array of params or a single value to the specified "operation" on the specified "fieldname" field
   def addOperation(operation, fieldname, values)
     if values.class == Array
-      up = Update.new(operation, fieldname, true)
+      up = Update.new(operation, fieldname, :array)
       values.each { | value |
         up.params.push(value)
       }
-      @updateops.push(up)
-    else
-      up = Update.new(operation, fieldname, false)
+    elsif values.class == Hash
+      up = Update.new(operation, fieldname, :hash)
       up.params.push(values)
-      @updateops.push(up)
+    else
+      up = Update.new(operation, fieldname, :single)
+      up.params.push(values)
     end
+    @updateops.push(up)
   end
 
   def addAlterOperation(fieldname, values)
@@ -181,7 +183,7 @@ class DocumentUpdate
   def fields
     fields = {}
     @updateops.each do |u|
-      if u.arraytype
+      if u.value_type == :array
         fields[u.fieldname] = { u.operation => u.params }
       else
         fields[u.fieldname] = { u.operation => u.params[0] }
