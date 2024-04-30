@@ -36,8 +36,7 @@ class MultiClusterMultiGroup < VdsMultiModelTest
                                        node(NodeSpec.new("node1", 4)).
                                        node(NodeSpec.new("node1", 5)))).
                            sd(VDS + "/schemas/music.sd").
-                           transition_time(0).
-                           disable_fleet_controllers(true)).
+                           transition_time(0)).
            storage_cluster(
                            StorageCluster.new("clusterB").
                            redundancy(2).
@@ -59,8 +58,7 @@ class MultiClusterMultiGroup < VdsMultiModelTest
                                        node(NodeSpec.new("node1", 8)).
                                        node(NodeSpec.new("node1", 9)))).
                            sd(VDS + "/schemas/music.sd").
-                           transition_time(0).
-                           disable_fleet_controllers(true)).
+                           transition_time(0)).
                clustercontroller("node1").
                sd(VDS + "/schemas/music.sd"));
     start

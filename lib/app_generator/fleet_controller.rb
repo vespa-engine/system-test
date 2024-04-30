@@ -15,7 +15,6 @@ class FleetControllers
   chained_setter :min_distributor_up_ratio
   chained_setter :transition_time
   chained_setter :min_time_between_cluster_states
-  chained_setter :disable
 
   def initialize
     @min_storage_up_ratio = nil
@@ -23,22 +22,12 @@ class FleetControllers
     @transition_time = nil
     @fleet_controllers = []
     @min_time_between_cluster_states = 0
-    @disable = false
   end
 
   def fleet_controller(hostalias)
     @fleet_controllers.push(
       FleetController.new(hostalias, @fleet_controllers.length))
     self
-  end
-
-  def fleet_controller_list
-    if (@disable) 
-      return []
-    end
-
-    return @fleet_controllers unless @fleet_controllers.empty?
-    return [FleetController.new("node1", 0, nil)]
   end
 
   def tuning_xml(indent)
