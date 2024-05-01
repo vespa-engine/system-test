@@ -20,7 +20,7 @@
         <parallelRequests>40</parallelRequests>
         <maxQueueSize>5</maxQueueSize>
         <maxTokens>100</maxTokens>
-        <threads>1</threads>
+        <threads>2</threads>
       </config>
     </component>
 
