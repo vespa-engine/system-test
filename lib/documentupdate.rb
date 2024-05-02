@@ -111,14 +111,6 @@ class DocumentUpdate
     @updateops.push(up)
   end
 
-  def addAlterOperation(fieldname, values)
-    alter = AlterUpdate.new(fieldname)
-    values.each do |value|
-      alter.operations.push(value)
-    end
-    @updateops.push(alter)
-  end
-
   def addSimpleAlterOperation(operation, fieldname, number, key = nil)
     alter = SimpleAlterUpdate.new(operation, fieldname, number, key)
     @updateops.push(alter)
