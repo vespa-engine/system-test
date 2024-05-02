@@ -31,7 +31,6 @@ class Llama7BPerformanceTest < PerformanceTest
     deploy_app
     copy_query_file
 
-    warmup
     run_queries
   end
 
@@ -65,14 +64,6 @@ class Llama7BPerformanceTest < PerformanceTest
     start(600)
     puts "Application started."
     @container = (vespa.qrserver["0"] or vespa.container.values.first)
-  end
-
-  def warmup
-    puts "Warming up... (encoding all prompts)"
-    run_fbench2(@container, @queries_file_name,
-                {:runtime => 30, :clients => 1, :append_str => "&searchChain=llm&format=sse"},
-                [])
-    puts "Warming up complete"
   end
 
   def run_queries
