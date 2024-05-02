@@ -54,37 +54,6 @@ class Update
 end
 
 
-class AlterUpdate
-  def initialize(fieldname)
-    @fieldname = fieldname
-    @operations = []
-  end
-
-  def operations
-    @operations # array of [operation, num, (key)]
-  end
-
-  def to_xml
-    res = "  <alter field=\"" + @fieldname + "\">\n"
-    @operations.each do |op|
-      if op.class == Array
-        if op.size == 2 # single value alter
-          res += "    <" + op[0] + " by=\"" + op[1].to_s + "\"/>\n"
-        elsif op.size == 3 # weighted set alter
-          res += "    <" + op[0] + " by=\"" + op[1].to_s + "\">\n"
-          res += "      <key>" + op[2].to_s + "</key>\n"
-          res += "    </" + op[0] + ">\n"
-        else
-          raise "ERROR: Bug in operation"
-        end
-      else
-        raise "ERROR: Bug in operations array"
-      end
-    end
-    res += "  </alter>\n"
-  end
-end
-
 class SimpleAlterUpdate
 
   attr_reader :value_type, :fieldname, :operation, :params
