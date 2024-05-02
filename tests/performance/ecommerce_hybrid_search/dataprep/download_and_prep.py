@@ -117,9 +117,9 @@ def strip_brackets(text: Union[str, List[str]]) -> Union[str, None]:
 
 
 def clean_data(cat: str, overwrite: bool = False) -> ProcessingResult:
-    file_path = f"{OUTPUT_DIR}/{cat}.json.gz"
+    file_path = f"{OUTPUT_DIR}/{cat}.json.bz2"
     if os.path.exists(file_path) and not overwrite:
-        df = pd.read_json(file_path, compression="gzip")
+        df = pd.read_json(file_path, compression="bz2")
         return ProcessingResult(cat=cat, length=len(df))
 
     # prices should be a numpy array of 1000 integers between 0 and 1000
@@ -157,7 +157,7 @@ def clean_data(cat: str, overwrite: bool = False) -> ProcessingResult:
     # Use incrementing id per category for new. Must remember to make unique when merging.
     df["id"] = range(1, len(df) + 1)
     if len(df) > 0:
-        df.to_json(file_path, compression="gzip")
+        df.to_json(file_path, compression="bz2")
     return ProcessingResult(cat=cat, length=len(df), cleaned=True)
 
 
@@ -165,11 +165,11 @@ def add_embeddings(
     cat: str, embeddings_path=str, raw_path=str, overwrite: bool = False
 ) -> Union[pd.DataFrame, None]:
     if os.path.exists(embeddings_path) and not overwrite:
-        return pd.read_json(embeddings_path, compression="gzip")
+        return pd.read_json(embeddings_path, compression="bz2")
     try:
-        df = pd.read_json(raw_path, compression="gzip")
+        df = pd.read_json(raw_path, compression="bz2")
     except FileNotFoundError:
-        print(f"File {cat}.json.gz not found")
+        print(f"File {cat}.json.bz2 not found.")
         return None
     # initialize model from cache
     model = SentenceTransformer(model_name_or_path=MODEL_NAME, cache_folder=CACHE_PATH)
@@ -182,7 +182,7 @@ def add_embeddings(
 def merge_files(
     categories: List[str], save_format: str = "common", overwrite: bool = False
 ) -> ProcessingResult:
-    merged_path = f"{OUTPUT_DIR}/merged_{save_format}.json.gz"
+    merged_path = f"{OUTPUT_DIR}/merged_{save_format}.json.bz2"
     read_file = {"common": "embeddings", "vespa": "vespa", "es": "es"}[save_format]
     if os.path.exists(merged_path) and not overwrite:
         print("File already exists. Set overwrite to True to merge again.")
@@ -193,8 +193,8 @@ def merge_files(
         print(f"Merging {cat}")
         try:
             df = pd.read_json(
-                f"{OUTPUT_DIR}/{cat}_{read_file}.json.gz",
-                compression="gzip",
+                f"{OUTPUT_DIR}/{cat}_{read_file}.json.bz2",
+                compression="bz2",
                 lines=True if save_format == "vespa" else False,
             )
             dfs.append(df)
@@ -204,7 +204,7 @@ def merge_files(
         merged = pd.concat(dfs, ignore_index=True)
         # Make sure id is unique
         print(f"Length of merged: {len(merged)}")
-        merged.to_json(merged_path, compression="gzip")
+        merged.to_json(merged_path, compression="bz2")
         return ProcessingResult(cat="all", length=len(merged), merged=True)
 
 
@@ -232,7 +232,7 @@ def save_df_to_vespa_format(
         },
         axis=1,
     )
-    df.to_json(file_name, orient="records", lines=True, compression="gzip")
+    df.to_json(file_name, orient="records", lines=True, compression="bz2")
     temp_result.vespa_format_saved = True
     return temp_result
 
@@ -260,7 +260,7 @@ def save_df_to_es_format(
         },
         axis=1,
     )
-    df.to_json(file_name, orient="records", lines=True, compression="gzip")
+    df.to_json(file_name, orient="records", lines=True, compression="bz2")
     temp_result.es_format_saved = True
     return temp_result
 
@@ -284,10 +284,10 @@ def process_category(
     cat: str,
     overwrite: bool = False,
 ) -> ProcessingResult:
-    RAW_PATH = f"{OUTPUT_DIR}/{cat}.json.gz"
-    EMBEDDING_PATH = f"{OUTPUT_DIR}/{cat}_embeddings.json.gz"
-    VESPA_PATH = f"{OUTPUT_DIR}/{cat}_vespa.json.gz"
-    ES_PATH = f"{OUTPUT_DIR}/{cat}_es.json.gz"
+    RAW_PATH = f"{OUTPUT_DIR}/{cat}.json.bz2"
+    EMBEDDING_PATH = f"{OUTPUT_DIR}/{cat}_embeddings.json.bz2"
+    VESPA_PATH = f"{OUTPUT_DIR}/{cat}_vespa.json.bz2"
+    ES_PATH = f"{OUTPUT_DIR}/{cat}_es.json.bz2"
     # Download and clean data
     clean_result: ProcessingResult = clean_data(cat, overwrite=overwrite)
     logging.info(f"{clean_result}")
@@ -339,9 +339,6 @@ def parse_args():
 if __name__ == "__main__":
     args = parse_args()
     # download_model_weights()  # Download model weights once at the beginning
-    subset = categories[:3]  # For testing purposes
     overwrite = args.overwrite
-    # results = main_parallel(subset, num_processes=args.num_processes)
-    # print(results)
-    # Will merge later. Not properly tested yet.
-    merge_files(subset, save_format="vespa", overwrite=args.overwrite)
+    results = main_parallel(categories=categories, num_processes=args.num_processes)
+    merge_files(categories=categories, save_format="vespa", overwrite=args.overwrite)
