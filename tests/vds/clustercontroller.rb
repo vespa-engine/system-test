@@ -15,6 +15,10 @@ class ClusterControllerTest < VdsTest
                         clustercontroller("node1").
                         clustercontroller("node1"))
     app.redundancy(2).num_nodes(2)
+    if not valgrind
+      app.config(ConfigOverride.new('vespa.config.content.fleetcontroller')
+                               .add('get_node_state_request_timeout', 10.0))
+    end
     deploy_app(app)
     start
   end
