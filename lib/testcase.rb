@@ -52,7 +52,7 @@ class TestCase
     @hostlist = args[:hostlist]
     @outputdir = args[:outputdir]
     @sanitizers = nil
-    @perf_recording = arg[:perf_recording]
+    @perf_recording = args[:perf_recording]
     @valgrind = args[:valgrind]
     @valgrind_opt = args[:valgrind_opt]
     @keep_tmpdir = args[:keep_tmpdir]
