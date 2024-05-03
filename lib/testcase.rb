@@ -30,7 +30,7 @@ class TestCase
   include Assertions
   include TestBase
 
-  attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client, :perf_recording
+  attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client
   attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :required_hostnames, :expected_logged, :method_name
   attr_accessor :dirty_nodeproxies, :dirty_environment_settings
   attr_accessor :sanitizers
@@ -52,7 +52,6 @@ class TestCase
     @hostlist = args[:hostlist]
     @outputdir = args[:outputdir]
     @sanitizers = nil
-    @perf_recording = arg[:perf_recording]
     @valgrind = args[:valgrind]
     @valgrind_opt = args[:valgrind_opt]
     @keep_tmpdir = args[:keep_tmpdir]
