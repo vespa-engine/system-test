@@ -36,6 +36,7 @@ class PerformanceTest < TestCase
     @perf_data_file = File.join(@perf_data_dir,'record.data')
     @perf_stat_file = File.join(@perf_data_dir,'perf_stats')
     @script_user = get_script_user
+    @perf_recording = arg_pack[:perf_recording]
   end
 
   def timeout_seconds
