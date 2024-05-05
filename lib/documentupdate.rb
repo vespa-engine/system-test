@@ -94,7 +94,11 @@ class DocumentUpdate
     return @documentid<=>other.documentid
   end
 
-  # "values" is an array of params or a single value to the specified "operation" on the specified "fieldname" field
+  # 'values' is:
+  # * a single value
+  # * an array of params
+  # * hash (for weighted sets and structs)
+  # to be used for the 'operation' on the 'fieldname' field
   def addOperation(operation, fieldname, values)
     if values.class == Array
       up = Update.new(operation, fieldname, :array)

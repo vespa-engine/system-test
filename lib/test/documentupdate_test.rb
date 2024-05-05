@@ -41,10 +41,10 @@ class DocumentUpdateTest < Test::Unit::TestCase
 
   def test_add_operation
     # Single value
-    update = DocumentUpdate.new('doctype', 'id:foo:music::bar')
+    update = DocumentUpdate.new('doctype', 'id:foo:music::bar0')
     update.addOperation('assign', 'some_field', 10)
     expected = {
-      'update' => 'id:foo:music::bar',
+      'update' => 'id:foo:music::bar0',
       'fields' => {
         'some_field' => { 'assign' => 10 }
       }
@@ -52,10 +52,10 @@ class DocumentUpdateTest < Test::Unit::TestCase
     assert_equal(expected, JSON.parse(update.to_json))
 
     # Array as value
-    update = DocumentUpdate.new('doctype', 'id:foo:music::bar')
+    update = DocumentUpdate.new('doctype', 'id:foo:music::bar1')
     update.addOperation('assign', 'some_array_field', [10, 20])
     expected = {
-      'update' => 'id:foo:music::bar',
+      'update' => 'id:foo:music::bar1',
       'fields' => {
         'some_array_field' => { 'assign' => [10, 20] }
       }
@@ -63,10 +63,22 @@ class DocumentUpdateTest < Test::Unit::TestCase
     assert_equal(expected, JSON.parse(update.to_json))
 
     # Weighted set as value
-    update = DocumentUpdate.new('doctype', 'id:foo:music::bar')
+    update = DocumentUpdate.new('doctype', 'id:foo:music::bar2')
     update.addOperation('assign', 'some_weighted_set_field', {"10" => 50, "20" => 100})
     expected = {
-      'update' => 'id:foo:music::bar',
+      'update' => 'id:foo:music::bar2',
+      'fields' => {
+        'some_weighted_set_field' => { 'assign' => {"10" => 50, "20" => 100} }
+      }
+    }
+    assert_equal(expected, JSON.parse(update.to_json))
+
+
+    # Weighted set as value and increment operation
+    update = DocumentUpdate.new('doctype', 'id:foo:music::bar3')
+    update.addOperation('assign', 'some_weighted_set_field', {"10" => 50, "20" => 100})
+    expected = {
+      'update' => 'id:foo:music::bar3',
       'fields' => {
         'some_weighted_set_field' => { 'assign' => {"10" => 50, "20" => 100} }
       }

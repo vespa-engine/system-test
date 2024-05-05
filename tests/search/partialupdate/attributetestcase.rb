@@ -1,5 +1,6 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'document'
+require 'document_set'
 require 'documentupdate'
 require 'search/partialupdate/vesparesult'
 
@@ -39,6 +40,14 @@ class AttributeTestCase
       file.write(obj.to_xml + "\n")
     end
     file.write("</vespafeed>\n")
+  end
+
+  def write_json(file, objects, operation)
+    docs = DocumentSet.new
+    objects.each do |obj|
+      docs.add(obj)
+    end
+    docs.write_json(file, operation)
   end
 
   def generate_max_doc(file)
@@ -120,7 +129,7 @@ class SingleAttributeTestCase < AttributeTestCase
       documents.push(doc)
     end
     testcase.output("generated #{@max_doc} documents") if testcase
-    write(file, documents)
+    write_json(file, documents, :put)
   end
 
   def generate_max_doc(file)
@@ -129,7 +138,7 @@ class SingleAttributeTestCase < AttributeTestCase
     @fields.each do |fd|
       doc.add_field(fd.name, 0)
     end
-    write(file, [doc])
+    write_json(file, [doc], :put)
   end
 
   def add_operation(update, operation, id)
@@ -335,7 +344,7 @@ class ArrayAttributeTestCase < AttributeTestCase
       end
       documents.push(doc)
     end
-    write(file, documents)
+    write_json(file, documents, :put)
   end
 
   def add_operation(update, operation, idx)
@@ -484,6 +493,7 @@ class WeightedSetAttributeTestCase < AttributeTestCase
   def initialize(doc_type = "attrweightedset")
     super(doc_type, 28)
 
+    # TODO: Use maps instead of arrays?
     int = [[100000, 10], [-200000, -20], [25, 25], [30, 30]]
     long = [[10000000000, 10], [-20000000000, -20], [2500, 25], [3000, 30]]
     byte = [[10, 10], [20, -20], [25, 25], [30, 30]]
@@ -537,11 +547,11 @@ class WeightedSetAttributeTestCase < AttributeTestCase
       doc.add_field("sortfield", i.to_s)
       doc.add_field("hitfield", "hit")
       @fields.each do |fd|
-        doc.add_field(fd.name, [fd.values[3]])
+        doc.add_field(fd.name, { "#{fd.values[3][0]}" => fd.values[3][1]})
       end
       documents.push(doc)
     end
-    write(file, documents)
+    write_json(file, documents, :put)
   end
 
   def add_operation(update, operation, idx)

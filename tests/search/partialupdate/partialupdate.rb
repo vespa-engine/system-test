@@ -206,7 +206,7 @@ class PartialUpdate < IndexedStreamingSearchTest
     pid = Process.pid
     doc_type = test_case.doc_type
 
-    docs = dirs.tmpdir+"#{doc_type}docs.#{pid}.xml"
+    docs = dirs.tmpdir+"#{doc_type}docs.#{pid}.json"
     updates = dirs.tmpdir+"#{doc_type}updates.#{pid}.xml"
     max_doc = dirs.tmpdir+"#{doc_type}maxdoc.#{pid}.xml"
     result = dirs.tmpdir+"#{doc_type}result.#{pid}.xml"
@@ -263,7 +263,6 @@ class PartialUpdate < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "attrsinglesummary.sd"))
     start
     feed_and_check_attribute_updates(SingleAttributeSummaryTestCase.new)
-    dnode = vespa.search["search"].first
   end
 
   def x_test_single_value_attribute_extra
