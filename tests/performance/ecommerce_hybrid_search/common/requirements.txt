@@ -1,4 +1,0 @@
-elasticsearch
-pyvespa
-ipykernel
-pandas
