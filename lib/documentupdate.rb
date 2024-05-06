@@ -9,7 +9,7 @@ class Update
     @value_type = value_type
     @params = Array.new
 
-    validops = ["assign", "add", "remove"]
+    validops = ["assign", "add", "remove", "decrement", "divide", "increment", "multiply"]
     if validops.index(@operation) == nil
       raise @operation + " is an invalid operation"
     end
@@ -146,12 +146,18 @@ class DocumentUpdate
   end
 
   def fields
+    arithmetic_operations = ['decrement', 'divide', 'increment', 'multiply']
     fields = {}
     @updateops.each do |u|
       if u.value_type == :array
         fields[u.fieldname] = { u.operation => u.params }
       else
-        fields[u.fieldname] = { u.operation => u.params[0] }
+        values = u.params[0]
+        if values.class == Hash and arithmetic_operations.include? u.operation
+          fields[u.fieldname] = { 'match' => { 'element' => values.each_key.first, u.operation => values.values.first } }
+        else
+          fields[u.fieldname] = { u.operation => values }
+        end
       end
     end
     fields

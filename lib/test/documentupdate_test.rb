@@ -76,11 +76,11 @@ class DocumentUpdateTest < Test::Unit::TestCase
 
     # Weighted set as value and increment operation
     update = DocumentUpdate.new('doctype', 'id:foo:music::bar3')
-    update.addOperation('assign', 'some_weighted_set_field', {"10" => 50, "20" => 100})
+    update.addOperation('increment', 'some_weighted_set_field', {"10" => 50})
     expected = {
       'update' => 'id:foo:music::bar3',
       'fields' => {
-        'some_weighted_set_field' => { 'assign' => {"10" => 50, "20" => 100} }
+        'some_weighted_set_field' => { 'match' => {'element' =>'10', 'increment' => 50}}
       }
     }
     assert_equal(expected, JSON.parse(update.to_json))
