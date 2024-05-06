@@ -24,8 +24,10 @@ class ExactMatch < IndexedStreamingSearchTest
   end
 
   def exactmatch_common
+    assert_hitcount("query=field1:Motors", 1)
     assert_hitcount("query=field1:motors", 1)
     assert_hitcount("query=field2:motor", 0)
+    assert_hitcount("query=field2:Motors", 1)
     assert_hitcount("query=field2:motors", 1)
     assert_hitcount("query=field3:Alice spends 400 000$ on a flashy red car.*!*", 1)
     assert_hitcount("query=field4:Alice spends 400 000$ on a flashy red car.//END//", 1)
