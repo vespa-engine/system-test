@@ -1,0 +1,40 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+# A description of a type of data, how to store and index it, and what to compute over the data elements
+#
+# See:
+#  - https://docs.vespa.ai/en/schemas.html
+schema doc {
+
+    document doc {
+
+        field text type string {
+            indexing: index | summary
+            stemming: none
+            index: enable-bm25
+        }
+    }
+
+    fieldset default {
+        fields: text
+    }
+
+    rank-profile default inherits default {
+        significance {
+            use-model: true
+        }
+        rank-properties {
+                bm25(text).averageFieldLength: 200
+        }
+
+        first-phase {
+            expression: bm25(text)
+        }
+
+        summary-features {
+                  term(0).significance
+                  fieldTermMatch(text,0).occurrences
+                  fieldTermMatch(text,1).occurrences
+        }
+    }
+}
