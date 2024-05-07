@@ -71,16 +71,19 @@ def load_model() -> SentenceTransformer:
     return model
 
 
-def strip_brackets(text: str) -> str:
-    return " ".join(re.findall(r"\[([^][]+)\]", text))
+def strip_brackets(text):
+    if isinstance(text, str):
+        return " ".join(re.findall(r"\[([^][]+)\]", text))
+    elif isinstance(text, list):
+        return " ".join(strip_brackets(t) for t in text if t)
 
 
 def clean_data(category: str) -> Optional[pd.DataFrame]:
     logging.info(f"Processing category: {category}")
-    file_path: str = f"{OUTPUT_DIR}/{category}_processed.parquet"
-    if os.path.exists(file_path):
-        logging.info(f"Already processed {category}")
-        return None
+    # file_path: str = f"{OUTPUT_DIR}/{category}_processed.parquet"
+    # if os.path.exists(file_path):
+    #     logging.info(f"Already processed {category}")
+    #     return None
     prices = np.random.randint(1, 100, 1000)
 
     ds = load_dataset(
@@ -98,7 +101,7 @@ def clean_data(category: str) -> Optional[pd.DataFrame]:
     df["id"] = df.index + category_start_id[category]
     df["category"] = category
     df.drop_duplicates(subset=["title", "description"], inplace=True)
-    df.loc[df["description"].str.strip() == "", "description"] = None
+    # df.loc[df["description"].str.strip() == "", "description"] = None
     df.dropna(subset=["title", "description"], inplace=True)
     df["price"] = (df["price"] * 100).astype(int)
     return df
