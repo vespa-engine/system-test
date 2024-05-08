@@ -128,7 +128,7 @@ def save_df_to_es_format(df: pd.DataFrame, file_name: Path) -> None:
 
 
 def title_to_query(title: str) -> str:
-    # If the title is more than 8 words, use the first 4 words.
+    # If the title is more than 8 words, use the first 8 words.
     # If it is less than 8 words, use the whole title.
     return " ".join(title.split()[:8])
 
@@ -148,29 +148,7 @@ def save_vespa_query_files_from_df(
     query_type: QueryTypeEnum = QueryTypeEnum.WEAK_AND,
 ) -> None:
     """
-    # 1. weakAnd + bm25 ranking:
-
-    vespa query "yql=select * from product where userQuery()" ranking.profile=bm25 "query=Small MONEY CLIP Leather Wallet"
-
-    # 2. nearestNeighbor + closeness ranking:
-
-    vespa query "yql=select * from product where ({targetHits:100}nearestNeighbor(embedding,q_embedding))" ranking.profile=closeness "input.query(q_embedding)=[]"
-
-    Note: Use embedding from id:product:product::4, title:"Small MONEY CLIP Leather Wallet ID Bag Cash Holder Credit Card Cover Case Pouch"
-
-    # 3. Hybrid:
-
-    vespa query "yql=select * from product where ({targetHits:10}nearestNeighbor(embedding,q_embedding)) or userQuery()" ranking.profile=hybrid "query=Small MONEY CLIP Leather Wallet" "input.query(q_embedding)=[]"
-
-
-    Format needed by fbench (POST):
-    Ref: https://docs.vespa.ai/en/performance/vespa-benchmarking.html#prepare-queries
-    Two lines per query, example:
-
-    /search/
-    {"yql": "select * from sources * where userQuery()", "ranking.profile": "bm25", "query": "small money clip leather wallet"}
-    /search/
-    {"yql": "select * from sources * where userQuery()", "ranking.profile": "bm25", "query": "blue nike shoes"}
+    Create a query file to benchmark Vespa using vespa-fbench.
     """
     endpoint = "/search/"
     # Validate number of queries requested is less than the total number of samples
@@ -236,16 +214,9 @@ def save_es_query_files_from_df(
     query_type: QueryTypeEnum = QueryTypeEnum.WEAK_AND,
 ) -> None:
     """
-    Format needed by fbench (POST):
-    Ref: https://docs.vespa.ai/en/performance/vespa-benchmarking.html#prepare-queries
-    Two lines per query, example:
-
-    /search/
-    {"query": {"match": {"title": "small money clip leather wallet"}}}
-    /search/
-    {"query": {"match": {"title": "blue nike shoes"}}}
+    Create a query file to benchmark Elasticsearch using vespa-fbench.
     """
-    endpoint = "/search/"
+    endpoint = "/_search/"
     # Validate number of queries requested is less than the total number of samples
     if num_queries > len(df):
         raise ValueError(
@@ -259,7 +230,7 @@ def save_es_query_files_from_df(
         "_source": False,
     }
     # Generate list of queries
-    queries = df["title"].tolist()
+    queries = df["title"].apply(title_to_query).tolist()
     if query_type == QueryTypeEnum.WEAK_AND:
         full_queries = [
             {
