@@ -17,7 +17,9 @@ class IndexedTokensTest < IndexedStreamingSearchTest
       add_field("aattr", doc_template[:atext]).
       add_field("wattr", doc_template[:wtext]).
       add_field("stext_long1", doc_template[:stext_long]).
-      add_field("stext_long2", doc_template[:stext_long])
+      add_field("stext_long2", doc_template[:stext_long]).
+      add_field("stext_longwords1", doc_template[:stext_longwords]).
+      add_field("stext_longwords2", doc_template[:stext_longwords])
     vespa.document_api_v1.put(doc)
   end
 
@@ -35,7 +37,8 @@ class IndexedTokensTest < IndexedStreamingSearchTest
     feed_doc("0", { :stext => "Hello world",
                     :atext => [ "This is simply", "(more elements)"],
                     :wtext => { "Weighted here" => 24, "and there" => -3},
-                    :stext_long => repeated_terms_string(20) })
+                    :stext_long => repeated_terms_string(20),
+                    :stext_longwords => long_words_string })
     result = my_query('stext', 'hello')
     fields = result['root']['children'][0]['fields']
     assert_equal(['hello','world'], fields['stext_tokens'])
@@ -47,6 +50,8 @@ class IndexedTokensTest < IndexedStreamingSearchTest
     assert_equal([['weighted here'],['and there']].sort, fields['wattr_tokens'].sort)
     assert_equal(repeated_terms_tokens(20, 100), fields['stext_long1_tokens'])
     assert_equal(repeated_terms_tokens(20, is_streaming ? 20 : 10), fields['stext_long2_tokens'])
+    assert_equal(long_words_tokens(100), fields['stext_longwords1_tokens'])
+    assert_equal(long_words_tokens(is_streaming ? 100 : 10), fields['stext_longwords2_tokens'])
   end
 
 
@@ -57,6 +62,14 @@ class IndexedTokensTest < IndexedStreamingSearchTest
     result = search(query)
     assert_hitcount(result, 1)
     return JSON.parse(result.xmldata)
+  end
+
+  def long_words_string
+    "these are looooooong xlooooooong words"
+  end
+
+  def long_words_tokens(limit)
+    long_words_string.split.select{|token| token.length <= limit }
   end
 
   def repeated_terms_string(repeats)
