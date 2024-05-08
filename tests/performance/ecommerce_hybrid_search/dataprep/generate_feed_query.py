@@ -200,11 +200,15 @@ def save_vespa_query_files_from_df(
     for query in full_queries:
         data += endpoint + "\n"
         data += json.dumps(query, ensure_ascii=True) + "\n"
-
-    cctx = zstd.ZstdCompressor()
-    compressed_data = cctx.compress(data.encode("utf-8"))
-    with open(query_save_path, "wb") as f:
-        f.write(compressed_data)
+    if num_queries < 1000:
+        with open(query_save_path.with_suffix(""), "w") as f:
+            f.write(data)
+        return
+    else:
+        cctx = zstd.ZstdCompressor()
+        compressed_data = cctx.compress(data.encode("utf-8"))
+        with open(query_save_path, "wb") as f:
+            f.write(compressed_data)
 
 
 def save_es_query_files_from_df(
@@ -283,11 +287,16 @@ def save_es_query_files_from_df(
     for query in full_queries:
         data += endpoint + "\n"
         data += json.dumps(query, ensure_ascii=True) + "\n"
-
-    cctx = zstd.ZstdCompressor()
-    compressed_data = cctx.compress(data.encode("utf-8"))
-    with open(query_save_path, "wb") as f:
-        f.write(compressed_data)
+    # Write to json if num_queries < 1000
+    if num_queries < 1000:
+        with open(query_save_path.with_suffix(""), "w") as f:
+            f.write(data)
+        return
+    else:
+        cctx = zstd.ZstdCompressor()
+        compressed_data = cctx.compress(data.encode("utf-8"))
+        with open(query_save_path, "wb") as f:
+            f.write(compressed_data)
 
 
 def main():
@@ -336,7 +345,7 @@ def main():
             )
             logging.info(f"Generating {query_type} queries")
             save_vespa_query_files_from_df(df, query_save_path, num_queries, query_type)
-            # save_es_query_files_from_df(df, query_save_path, num_queries, query_type)
+            save_es_query_files_from_df(df, query_save_path, num_queries, query_type)
 
 
 if __name__ == "__main__":
