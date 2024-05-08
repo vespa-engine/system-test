@@ -339,13 +339,17 @@ def main():
     if args.mode in ["query", "both"]:
         shorthand_queries = human_readable_number(num_queries)
         for query_type in QueryTypeEnum:
-            query_save_path = (
+            vespa_save_path = (
                 Path(FINAL_DIR)
                 / f"vespa_queries-{query_type}-{shorthand_queries}.json.zst"
             )
             logging.info(f"Generating {query_type} queries")
-            save_vespa_query_files_from_df(df, query_save_path, num_queries, query_type)
-            save_es_query_files_from_df(df, query_save_path, num_queries, query_type)
+            save_vespa_query_files_from_df(df, vespa_save_path, num_queries, query_type)
+            es_save_path = (
+                Path(FINAL_DIR)
+                / f"es_queries-{query_type}-{shorthand_queries}.json.zst"
+            )
+            save_es_query_files_from_df(df, es_save_path, num_queries, query_type)
 
 
 if __name__ == "__main__":
