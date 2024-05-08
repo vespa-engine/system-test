@@ -39,7 +39,7 @@ class XGBoostServing < IndexedStreamingSearchTest
     #Feed files generated from setup/train.py
     feed(:file => "#{tmp_dir}/diabetes-feed.json")
     feed(:file => "#{tmp_dir}/breast_cancer-feed.json")
-    wait_for_hitcount("query=sddocname:x", 569 + 442)
+    wait_for_hitcount("query=sddocname:x", 569 + 442, is_streaming ? 120 : 60)
 
     regression_diabetes = getVespaPrediction("diabetes", "regression-diabetes")
     compare(regression_diabetes, "regression_diabetes")
