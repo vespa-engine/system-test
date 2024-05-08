@@ -30,6 +30,13 @@ schema test {
       indexing: index | summary
       match { max-occurrences: 10 }
     }
+    field stext_longwords1 type string {
+      indexing: index | summary
+    }
+    field stext_longwords2 type string {
+      indexing: index | summary
+      match { max-token-length: 10 }
+    }
   }
   document-summary tokens {
     summary stext_tokens {
@@ -66,6 +73,14 @@ schema test {
     }
     summary stext_long2_tokens {
       source: stext_long2
+      tokens
+    }
+    summary stext_longwords1_tokens {
+      source: stext_longwords1
+      tokens
+    }
+    summary stext_longwords2_tokens {
+      source: stext_longwords2
       tokens
     }
     from-disk
