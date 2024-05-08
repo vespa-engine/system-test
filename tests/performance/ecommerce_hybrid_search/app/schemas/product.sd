@@ -18,6 +18,10 @@ schema product {
       index: enable-bm25
     }
 
+    field category type string {
+      indexing: attribute | summary
+    }
+
     field price type int {
       indexing: attribute | summary
     }
@@ -68,6 +72,12 @@ schema product {
 
   document-summary minimal {
     summary id {}
+  }
+
+  document-summary medium {
+    summary id {}
+    summary title {}
+    summary description {}
   }
 
 }
