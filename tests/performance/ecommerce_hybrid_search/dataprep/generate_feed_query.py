@@ -216,7 +216,7 @@ def save_es_query_files_from_df(
     """
     Create a query file to benchmark Elasticsearch using vespa-fbench.
     """
-    endpoint = "/_search/"
+    endpoint = "/" + ES_INDEX + "/_search/"
     # Validate number of queries requested is less than the total number of samples
     if num_queries > len(df):
         raise ValueError(
