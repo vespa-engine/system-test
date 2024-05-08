@@ -2,32 +2,29 @@
 
 import os
 import re
+import logging
+from pathlib import Path
+from typing import Optional, Dict
+
 import numpy as np
 import pandas as pd
 from datasets import load_dataset
 from sentence_transformers import SentenceTransformer
-from multiprocessing import Pool
-from typing import Any, Dict, List, Union
-import subprocess
-from dataclasses import dataclass
-import logging
-import argparse
 
-logging.basicConfig(format="%(asctime)s - %(message)s", level=logging.INFO)
+# Constants
+MODEL_NAME: str = "Snowflake/snowflake-arctic-embed-xs"
+CACHE_PATH: str = "./model_cache"
+OUTPUT_DIR: str = "./output-data"
 
-# Global configurations
-CACHE_PATH = "./model_cache"
-MODEL_NAME = "Snowflake/snowflake-arctic-embed-xs"
-OUTPUT_DIR = "./output-data"
+# Setup logger
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
-VESPA_DOCTYPE = "product"
-VESPA_NAMESPACE = "product"
+# Ensure the output directory exists
+Path(OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
 
-# Ensure output directory exists
-if not os.path.exists(OUTPUT_DIR):
-    os.makedirs(OUTPUT_DIR)
-
-categories = [
+categories: list[str] = [
     "All_Beauty",
     "Amazon_Fashion",
     "Appliances",
@@ -63,282 +60,92 @@ categories = [
     "Video_Games",
     "Unknown",
 ]
-# Create a mapping from category to index, increase with 10_000_000 for each category to avoid id clashes
-category_start_id = {cat: i * 10_000_000 for i, cat in enumerate(categories)}
+
+# Create a mapping from category to index
+category_start_id: Dict[str, int] = {
+    cat: i * 10_000_000 for i, cat in enumerate(categories)
+}
 
 
-# Dataclass to store processing results
-@dataclass
-class ProcessingResult:
-    cat: str
-    length: int
-    cleaned: bool = False
-    embeddings_added: bool = False
-    vespa_format_saved: bool = False
-    es_format_saved: bool = False
-    merged: bool = False
-
-    # Add str method suited for logging
-    def __str__(self) -> str:
-        return (
-            f"Category: {self.cat}, Length: {self.length}, "
-            f"Cleaned: {self.cleaned}, Embeddings Added: {self.embeddings_added}, "
-            f"Vespa Format Saved: {self.vespa_format_saved}, "
-            f"ES Format Saved: {self.es_format_saved}, Merged: {self.merged}"
-        )
-
-
-def download_model_weights() -> None:
+def load_model() -> SentenceTransformer:
     model = SentenceTransformer(model_name_or_path=MODEL_NAME, cache_folder=CACHE_PATH)
-    print(f"Model {model} downloaded to {CACHE_PATH}")
-    # Print device - want to make sure it's using mps
-    print(f"Device: {model.device}")
-    # Save model to cache
-    model.save(f"{CACHE_PATH}/{MODEL_NAME}")
+    logging.info(f"Loaded model from {CACHE_PATH}")
+    return model
 
 
-def strip_brackets(text: Union[str, List[str]]) -> Union[str, None]:
-    """
-    Strips content within brackets from a string.
-    Used for cleaning the description column.
-
-    If the input is a list, it joins the elements.
-    Examples:
-    - strip_brackets("This is a [text]") -> "text"
-    - strip_brackets(["This is a [text]", "Another [text]"]) -> "text text"
-
-    """
+def strip_brackets(text):
     if isinstance(text, str):
-        pattern = r"\[([^][]+)\]"
-        res = re.findall(pattern, text)
-        return " ".join(res) if res else text
+        return " ".join(re.findall(r"\[([^][]+)\]", text))
     elif isinstance(text, list):
-        return "".join(text) if len(text) > 0 else None
+        return " ".join(strip_brackets(t) for t in text if t)
 
 
-def clean_data(cat: str, overwrite: bool = False) -> ProcessingResult:
-    file_path = f"{OUTPUT_DIR}/{cat}.json.bz2"
-    if os.path.exists(file_path) and not overwrite:
-        df = pd.read_json(file_path, compression="bz2")
-        return ProcessingResult(cat=cat, length=len(df))
-
-    # prices should be a numpy array of 1000 integers between 0 and 1000
+def clean_data(category: str) -> Optional[pd.DataFrame]:
+    logging.info(f"Processing category: {category}")
+    # file_path: str = f"{OUTPUT_DIR}/{category}_processed.parquet"
+    # if os.path.exists(file_path):
+    #     logging.info(f"Already processed {category}")
+    #     return None
     prices = np.random.randint(1, 100, 1000)
 
-    def process_entry(entry: Dict[str, Any]) -> Dict[str, Union[str, float, None]]:
-        price_str = entry["price"]
-        try:
-            price = float(re.sub(r"[^\d.]", "", price_str))
-        except ValueError:
-            price = np.random.choice(prices)
-
-        description = (
-            strip_brackets(entry["description"]) if entry["description"] else None
-        )
-        return {
-            "title": entry["title"],
-            "description": description,
-            "average_rating": entry["average_rating"],
-            "price": price,
-        }
-
     ds = load_dataset(
-        "McAuley-Lab/Amazon-Reviews-2023", f"raw_meta_{cat}", split="full"
+        "McAuley-Lab/Amazon-Reviews-2023", f"raw_meta_{category}", split="full"
     )
-    ds = ds.map(process_entry, batched=False)
+    cols_to_keep = ["title", "description", "average_rating", "price"]
+    ds = ds.map(
+        lambda entry: process_entry(entry, prices),
+        batched=False,
+        remove_columns=[c for c in ds.column_names if c not in cols_to_keep],
+    )
     ds = ds.filter(lambda x: x["description"] is not None)
-    # Remove columns not needed
-    use_cols = ["title", "description", "average_rating", "price"]
-    ds = ds.remove_columns([col for col in ds.column_names if col not in use_cols])
     df = ds.to_pandas()
-    # Drop duplicates on title and description (both must be the same)
+    del ds
+    df["id"] = df.index + category_start_id[category]
+    df["category"] = category
     df.drop_duplicates(subset=["title", "description"], inplace=True)
+    # df.loc[df["description"].str.strip() == "", "description"] = None
+    df.dropna(subset=["title", "description"], inplace=True)
     df["price"] = (df["price"] * 100).astype(int)
-    # Use incrementing id per category for new. Must remember to make unique when merging.
-    df["id"] = range(1, len(df) + 1)
-    if len(df) > 0:
-        df.to_json(file_path, compression="bz2")
-    return ProcessingResult(cat=cat, length=len(df), cleaned=True)
-
-
-def add_embeddings(
-    cat: str, embeddings_path=str, raw_path=str, overwrite: bool = False
-) -> Union[pd.DataFrame, None]:
-    if os.path.exists(embeddings_path) and not overwrite:
-        return pd.read_json(embeddings_path, compression="bz2")
-    try:
-        df = pd.read_json(raw_path, compression="bz2")
-    except FileNotFoundError:
-        print(f"File {cat}.json.bz2 not found.")
-        return None
-    # initialize model from cache
-    model = SentenceTransformer(model_name_or_path=MODEL_NAME, cache_folder=CACHE_PATH)
-    documents = "Item: Title: " + df["title"] + " Description: " + df["description"]
-    document_embeddings = model.encode(documents.tolist())
-    df["embedding"] = document_embeddings.tolist()
     return df
 
 
-def merge_files(
-    categories: List[str], save_format: str = "common", overwrite: bool = False
-) -> ProcessingResult:
-    merged_path = f"{OUTPUT_DIR}/merged_{save_format}.json.bz2"
-    read_file = {"common": "embeddings", "vespa": "vespa", "es": "es"}[save_format]
-    if os.path.exists(merged_path) and not overwrite:
-        print("File already exists. Set overwrite to True to merge again.")
-        return ProcessingResult(cat="all", length=0, merged=True)
-
-    dfs = []
-    for cat in categories:
-        print(f"Merging {cat}")
-        try:
-            df = pd.read_json(
-                f"{OUTPUT_DIR}/{cat}_{read_file}.json.bz2",
-                compression="bz2",
-                lines=True if save_format == "vespa" else False,
-            )
-            dfs.append(df)
-        except Exception as _e:
-            print(f"Error: {_e}")
-    if dfs:
-        merged = pd.concat(dfs, ignore_index=True)
-        # Make sure id is unique
-        print(f"Length of merged: {len(merged)}")
-        merged.to_json(merged_path, compression="bz2")
-        return ProcessingResult(cat="all", length=len(merged), merged=True)
-
-
-def save_df_to_vespa_format(
-    df: pd.DataFrame, cat: str, file_name: str, temp_result: ProcessingResult
-) -> ProcessingResult:
-    """
-    Transform the DataFrame to a Vespa-compatible format.
-    Save transformed data to a newline-separated JSON file.
-    """
-    df["docid"] = f"id:{VESPA_DOCTYPE}:{VESPA_NAMESPACE}::" + cat + df["id"].astype(str)
-    df.rename(columns={"embeddings": "embedding"}, inplace=True)
-    df = df.apply(
-        lambda row: {
-            "put": row["docid"],
-            "fields": {
-                "id": row["id"] + category_start_id[cat],
-                "title": row["title"],
-                "category": cat,
-                "description": row["description"],
-                "price": row["price"],
-                "average_rating": row["average_rating"],
-                "embedding": row["embedding"],
-            },
-        },
-        axis=1,
-    )
-    df.to_json(file_name, orient="records", lines=True, compression="bz2")
-    temp_result.vespa_format_saved = True
-    return temp_result
-
-
-def save_df_to_es_format(
-    df: pd.DataFrame, cat: str, file_name: str, temp_result: ProcessingResult
-) -> ProcessingResult:
-    """
-    Transform the DataFrame to a Elasticsearch-compatible format.
-    Save transformed data to a newline-separated JSON file.
-    """
-    df.rename(columns={"embeddings": "embedding"}, inplace=True)
-    df = df.apply(
-        lambda row: {
-            "put": row["docid"],
-            "fields": {
-                "id": row["id"] + category_start_id[cat],
-                "title": row["title"],
-                "category": cat,
-                "description": row["description"],
-                "price": row["price"],
-                "average_rating": row["average_rating"],
-                "embedding": row["embedding"],
-            },
-        },
-        axis=1,
-    )
-    df.to_json(file_name, orient="records", lines=True, compression="bz2")
-    temp_result.es_format_saved = True
-    return temp_result
-
-
-def subprocess_download(file_name: str) -> bool:
-    """
-    Download a file with modal CLI using subprocess.
-    Print output to stdout.
-    """
-    cmd = f"modal volume get output-data {file_name}"
+def process_entry(entry: Dict, prices: np.ndarray) -> Dict:
+    price_str = entry["price"]
     try:
-        out = subprocess.run(cmd, shell=True, check=True)
-        print(out.stdout)
-        return True
-    except Exception as e:
-        print(f"Error: {e}")
-        return False
+        price = float(re.sub(r"[^\d.]", "", price_str))
+    except ValueError:
+        price = np.random.choice(prices)
+    description = strip_brackets(entry["description"]) if entry["description"] else None
+    return {
+        "title": entry["title"],
+        "description": description,
+        "average_rating": entry["average_rating"],
+        "price": price,
+    }
 
 
-def process_category(
-    cat: str,
-    overwrite: bool = False,
-) -> ProcessingResult:
-    RAW_PATH = f"{OUTPUT_DIR}/{cat}.json.bz2"
-    EMBEDDING_PATH = f"{OUTPUT_DIR}/{cat}_embeddings.json.bz2"
-    VESPA_PATH = f"{OUTPUT_DIR}/{cat}_vespa.json.bz2"
-    ES_PATH = f"{OUTPUT_DIR}/{cat}_es.json.bz2"
-    # Download and clean data
-    clean_result: ProcessingResult = clean_data(cat, overwrite=overwrite)
-    logging.info(f"{clean_result}")
-    if clean_result.length == 0:
-        return clean_result
-    # Add embeddings
-    df_emb: pd.DataFrame = add_embeddings(
-        cat=cat, embeddings_path=EMBEDDING_PATH, raw_path=RAW_PATH, overwrite=overwrite
-    )
-    if overwrite or not os.path.exists(EMBEDDING_PATH):
-        df_emb.to_json(EMBEDDING_PATH, compression="gzip")
-    result = ProcessingResult(
-        cat=cat, length=len(df_emb), cleaned=True, embeddings_added=True
-    )
-    logging.info(f"{result}")
-    # Save to Vespa format
-    if overwrite or not os.path.exists(VESPA_PATH):
-        result: ProcessingResult = save_df_to_vespa_format(
-            df=df_emb,
-            cat=cat,
-            file_name=VESPA_PATH,
-            temp_result=result,
-        )
-    logging.info(f"{result}")
-    # TODO: Save to es-format
-    return result
+def add_embeddings(df: pd.DataFrame, model: SentenceTransformer) -> pd.DataFrame:
+    logging.info("Adding embeddings...")
+    documents = "Item: Title: " + df["title"] + " Description: " + df["description"]
+    embs = model.encode(documents.tolist(), show_progress_bar=True)
+    df["embedding"] = embs.tolist()
+    del embs
+    logging.info("Embeddings added.")
+    return df
 
 
-def main_parallel(categories: List[str], num_processes: int) -> List[ProcessingResult]:
-    with Pool(processes=num_processes) as pool:
-        results = pool.map(process_category, categories)
-    return results
+def process_category(category: str) -> Optional[pd.DataFrame]:
+    model = load_model()
+    df = clean_data(category)
+    if df is not None:
+        df = add_embeddings(df, model)
+    return df
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Process some integers.")
-    parser.add_argument(
-        "--overwrite",
-        type=bool,
-        default=True,
-        help="a flag to overwrite existing files",
-    )
-    parser.add_argument(
-        "--num_processes", type=int, default=4, help="number of processes to use"
-    )
-    return parser.parse_args()
-
-
-if __name__ == "__main__":
-    args = parse_args()
-    # download_model_weights()  # Download model weights once at the beginning
-    overwrite = args.overwrite
-    results = main_parallel(categories=categories, num_processes=args.num_processes)
-    merge_files(categories=categories, save_format="vespa", overwrite=args.overwrite)
+for category in categories:
+    df_processed = process_category(category)
+    if df_processed is None:
+        continue
+    output_path = os.path.join(OUTPUT_DIR, f"{category}_processed.parquet")
+    df_processed.to_parquet(output_path)
+    logging.info(f"Data saved to {output_path}")
