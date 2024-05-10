@@ -133,6 +133,8 @@ class Visibility < IndexedOnlySearchTest
       num_parts(parts).
       redundancy(r).
       indexing("default").
+      allowed_lid_bloat(1000000).
+      allowed_lid_bloat_factor(2.0).
       ready_copies(rc)
   end
 
