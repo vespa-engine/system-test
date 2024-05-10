@@ -230,7 +230,7 @@ def save_es_query_files_from_df(
     df = df.sample(num_queries, random_state=42)
     base_parameters = {
         "size": 10,
-        "fields": ["title", "description"],
+        "fields": ["id"],
         "_source": False,
     }
     # Generate list of queries
@@ -241,7 +241,7 @@ def save_es_query_files_from_df(
                 **base_parameters,
                 "query": {
                     "multi_match": {
-                        "query": query,
+                        "query": remove_quote_chars(query),
                         "fields": ["title", "description"],
                         "type": "best_fields",
                     }
@@ -269,7 +269,7 @@ def save_es_query_files_from_df(
                     **base_parameters,
                     "query": {
                         "multi_match": {
-                            "query": query,
+                            "query": remove_quote_chars(query),
                             "fields": ["title", "description"],
                             "type": "best_fields",
                         },
@@ -316,7 +316,7 @@ def main():
     parser.add_argument(
         "--num_queries",
         type=int,
-        default=100,
+        default=10_000,
         help="Number of queries to generate",
     )
     args = parser.parse_args()
