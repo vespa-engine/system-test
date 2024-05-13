@@ -34,6 +34,14 @@ class AttributeTestCase
     return retval
   end
 
+  def write(file, objects)
+    file.write("<vespafeed>\n")
+    objects.each do |obj|
+      file.write(obj.to_xml + "\n")
+    end
+    file.write("</vespafeed>\n")
+  end
+
   def write_json(file, objects, operation)
     docs = DocumentSet.new
     objects.each do |obj|
@@ -44,7 +52,7 @@ class AttributeTestCase
 
   def generate_max_doc(file)
     doc = Document.new(@doc_type, @id_prefix + @max_doc.to_s)
-    write_json(file, [doc])
+    write(file, [doc])
   end
 
   def create_update(id)
@@ -175,7 +183,7 @@ class SingleAttributeTestCase < AttributeTestCase
     #add_simple_alter_operation(upd, "multiply", 100)
     #add_simple_alter_operation(upd, "divide", 10)
 
-    write_json(file, @updates, :update)
+    write(file, @updates)
     @updates.clear
   end
 
@@ -266,7 +274,7 @@ class SingleAttributeTestCaseExtra < SingleAttributeTestCase
     add_simple_alter_operation(upd, "multiply", 100)
     add_simple_alter_operation(upd, "divide", 10)
 
-    write_json(file, @updates)
+    write(file, @updates)
     @updates.clear
   end
 
@@ -376,7 +384,7 @@ class ArrayAttributeTestCase < AttributeTestCase
     #add_operation(upd, "add", [2])
     #add_operation(upd, "assign", [0, 1])
 
-    write_json(file, @updates, :update)
+    write(file, @updates)
     @updates.clear
   end
 
@@ -460,7 +468,7 @@ class ArrayAttributeTestCaseExtra < ArrayAttributeTestCase
     add_operation(upd, "add", [2])
     add_operation(upd, "assign", [0, 1])
 
-    write_json(file, @updates, :update)
+    write(file, @updates)
     @updates.clear
   end
 
@@ -485,6 +493,7 @@ class WeightedSetAttributeTestCase < AttributeTestCase
   def initialize(doc_type = "attrweightedset")
     super(doc_type, 28)
 
+    # TODO: Use maps instead of arrays?
     int = [[100000, 10], [-200000, -20], [25, 25], [30, 30]]
     long = [[10000000000, 10], [-20000000000, -20], [2500, 25], [3000, 30]]
     byte = [[10, 10], [20, -20], [25, 25], [30, 30]]
@@ -547,12 +556,12 @@ class WeightedSetAttributeTestCase < AttributeTestCase
 
   def add_operation(update, operation, idx)
     @fields.each do |fd|
-      arg = Hash.new
+      arg = []
       idx.each do |i|
         if operation == "remove"
-          arg["#{fd.values[i][0]}"] = 0 # value does not matter, but cannot be omitted
+          arg.push(fd.values[i][0])
         else
-          arg["#{fd.values[i][0]}"] = fd.values[i][1]
+        arg.push(fd.values[i])
         end
       end
       update.addOperation(operation, fd.name, arg)
@@ -561,7 +570,7 @@ class WeightedSetAttributeTestCase < AttributeTestCase
 
   def add_simple_alter_operation(update, operation, number, idx)
     @fields.each do |fd|
-      update.addOperation(operation, fd.name, { fd.values[idx][0] => number })
+      update.addSimpleAlterOperation(operation, fd.name, number, fd.values[idx][0])
     end
   end
 
@@ -640,33 +649,31 @@ class WeightedSetAttributeTestCase < AttributeTestCase
 
     upd = create_update(23) # several on same key
     add_simple_alter_operation(upd, "increment", 20, 3)
-    upd = create_update(23) # several on same key
     add_simple_alter_operation(upd, "decrement", 10, 3)
-    upd = create_update(23) # several on same key
     add_simple_alter_operation(upd, "multiply", 100, 3)
-    upd = create_update(23) # several on same key
     add_simple_alter_operation(upd, "divide", 10, 3)
 
     upd = create_update(24) # several on different keys
     add_operation(upd, "assign", [0, 1, 2, 3])
     upd = create_update(24) # several on different keys
     add_simple_alter_operation(upd, "increment", 10, 0)
-    upd = create_update(24) # several on different keys
     add_simple_alter_operation(upd, "increment", 10, 1)
-    upd = create_update(24) # several on different keys
     add_simple_alter_operation(upd, "increment", 10, 2)
-    upd = create_update(24) # several on different keys
     add_simple_alter_operation(upd, "increment", 10, 3)
 
     # remove if zero
     upd = create_update(25)
-    add_simple_alter_operation(upd, "decrement", 30, 3)
+    @fields.each do |fd|
+      upd.addSimpleAlterOperation("decrement", fd.name, 30, fd.values[3][0])
+    end
 
     # create if non existant
     upd = create_update(26)
-    add_simple_alter_operation(upd, "increment", 25, 2)
+    @fields.each do |fd|
+      upd.addSimpleAlterOperation("increment", fd.name, 25, fd.values[2][0])
+    end
 
-    write_json(file, @updates, :update)
+    write(file, @updates)
     @updates.clear
   end
 
