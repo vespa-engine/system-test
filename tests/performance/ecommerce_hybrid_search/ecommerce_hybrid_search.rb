@@ -40,7 +40,7 @@ class EcommerceHybridSearchTest < PerformanceTest
     run_feeder(local_file, fillers, {:client => :vespa_feed_client,
                                      :localfile => true,
                                      :silent => true,
-                                     :disable_tls => true})
+                                     :disable_tls => false})
   end
 
   def run_fbench_helper(query_file, query_phase, query_type)
