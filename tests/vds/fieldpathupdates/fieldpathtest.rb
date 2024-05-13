@@ -16,14 +16,13 @@ class FieldPath < VdsTest
     stop
   end
 
-  def visit_with_removed_timestamp
-    output = vespa.storage["storage"].storage["0"].execute("vespa-visit --xmloutput")
-    output.gsub(/\s*lastmodifiedtime="(\d+)"\s*/, "")
+  def visit
+    output = vespa.storage["storage"].storage["0"].execute("vespa-visit")
   end
 
   def do_test_feed_and_update(feed_file, correct_file)
     feedfile(selfdir + feed_file)
-    output = GatewayXMLParser.new(visit_with_removed_timestamp).documents
+    output = GatewayXMLParser.new(visit).documents
     wanted = GatewayXMLParser.new(File.read(selfdir + correct_file)).documents
     assert_equal(wanted, output)
   end

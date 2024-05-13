@@ -16,15 +16,14 @@ class AdvancedGet < VdsTest
 
     vespa.document_api_v1.put(doc)
 
-    ret = get_doc_as_xml("id:storage_test:music:n=1234:0")
+    ret = get_doc("id:storage_test:music:n=1234:0")
 
-    assert_equal(doc, Document.create_from_xml(ret.root))
-    assert(ret.root.attributes["lastmodifiedtime"].to_i > 0)
+    assert_equal(doc, Document.create_from_json(ret, "music"))
   end
 
-  def get_doc_as_xml(id)
-    output = vespa.storage['storage'].storage["0"].execute("vespa-get --xmloutput #{id}")
-    REXML::Document.new(output)
+  def get_doc(id)
+    output = vespa.storage['storage'].storage["0"].execute("vespa-get #{id}")
+    JSON.parse(output).first
   end
 
   def teardown
