@@ -1,0 +1,3 @@
+[
+{"id":"id:test:literalboost::bookdoc","fields":{"uri":"bookdoc","content":"bogo book bogo","weight":1000.0,"content_literal":"bogo book bogo"}},
+{"id":"id:test:literalboost::bookeddoc","fields":{"uri":"bookeddoc","content":"bogo booked bogo","weight":900.0,"content_literal":"bogo booked bogo"}}]
