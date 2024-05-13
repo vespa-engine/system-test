@@ -122,7 +122,7 @@ class NearestNeighborPerformanceTest < PerformanceTest
   end
 
   def run_benchmarks(query_file, legend, want_rawscore)
-    num_threads = 30
+    num_threads = 48
     # Basic search
     qrserver = @vespa.container["combinedcontainer/0"]
     qd = dirs.tmpdir + "qd"
