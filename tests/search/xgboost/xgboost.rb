@@ -25,7 +25,6 @@ class XGBoostServing < IndexedStreamingSearchTest
 
   def test_xgboost
     node_proxy = vespa.nodeproxies.values.first
-    node_proxy.execute('pip3 install xgboost scikit-learn --user')
     tmp_dir = dirs.tmpdir + "/training"
     node_proxy.execute("mkdir -p #{tmp_dir}/models")
     for file in ['train.py', 'feature-map-10.txt', 'feature-map-30.txt']
