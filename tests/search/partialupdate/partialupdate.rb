@@ -207,8 +207,8 @@ class PartialUpdate < IndexedStreamingSearchTest
     doc_type = test_case.doc_type
 
     docs = dirs.tmpdir+"#{doc_type}docs.#{pid}.json"
-    updates = dirs.tmpdir+"#{doc_type}updates.#{pid}.xml"
-    max_doc = dirs.tmpdir+"#{doc_type}maxdoc.#{pid}.xml"
+    updates = dirs.tmpdir+"#{doc_type}updates.#{pid}.json"
+    max_doc = dirs.tmpdir+"#{doc_type}maxdoc.#{pid}.json"
     result = dirs.tmpdir+"#{doc_type}result.#{pid}.xml"
 
     File.open(docs, "w") do |file|
