@@ -34,7 +34,7 @@ class AttributeTestCase
     return retval
   end
 
-  def write_json(file, objects, operation)
+  def write_json(file, objects, operation = :put)
     docs = DocumentSet.new
     objects.each do |obj|
       docs.add(obj)
@@ -44,7 +44,7 @@ class AttributeTestCase
 
   def generate_max_doc(file)
     doc = Document.new(@doc_type, @id_prefix + @max_doc.to_s)
-    write_json(file, [doc])
+    write_json(file, [doc], :put)
   end
 
   def create_update(id)
@@ -266,7 +266,7 @@ class SingleAttributeTestCaseExtra < SingleAttributeTestCase
     add_simple_alter_operation(upd, "multiply", 100)
     add_simple_alter_operation(upd, "divide", 10)
 
-    write_json(file, @updates)
+    write_json(file, @updates, :update)
     @updates.clear
   end
 
