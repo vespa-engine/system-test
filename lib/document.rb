@@ -58,11 +58,13 @@ class Document
   end
 
   def to_json(operation = :put, in_array = false)
-    if in_array
-      JSON.dump([{operation.to_s => @documentid, "fields" => @fields}])
+    content = ""
+    if operation == :remove
+      content = {operation.to_s => @documentid}
     else
-      JSON.dump({operation.to_s => @documentid, "fields" => @fields})
+      content = {operation.to_s => @documentid, "fields" => @fields}
     end
+    JSON.dump(in_array ? [content] : content)
   end
 
   def xmlQuote(s, isAttr=false)
