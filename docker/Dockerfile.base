@@ -53,6 +53,7 @@ RUN --mount=type=bind,target=/include/,source=include/,rw \
      (rpm -qa | grep "vespa.*$(rpm -q --queryformat '%{VERSION}' vespa).*" | xargs dnf -y remove --noautoremove) && \
      (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby) && \
      pip3 install --no-cache-dir awscli && \
+     (source /opt/rh/gcc-toolset/enable && pip3 install --no-cache-dir --user xgboost scikit-learn) && \
      dnf clean all && rm -rf /var/cache/dnf
 
 # Java requires proper locale for unicode
