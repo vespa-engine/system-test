@@ -1,4 +1,5 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'document_set'
 require 'indexed_streaming_search_test'
 
 class BigDocument < IndexedStreamingSearchTest
@@ -11,26 +12,29 @@ class BigDocument < IndexedStreamingSearchTest
     set_owner("aressem")
     deploy_app(SearchApp.new.sd(selfdir+"big.sd"))
     start
-    @feed = dirs.tmpdir + "bigfeed.xml"
+    @feed = dirs.tmpdir + "bigfeed.json"
   end
 
   def gendocs
+    docs = DocumentSet.new
     size = [1000, 10000, 42, 17, 100000, 1400000, 200000, 17, 500001, 42]
-    File.open(@feed, "w") do |file|
-      10.times do |i|
-        docid="id:test:big::doc#{i}"
-        file.print("        <document type=\"big\" id=\"#{docid}\">\n")
-        file.print("            <title>")
-	(i+1).times { |j| file.print("#{j} ") }
-        file.print("</title>\n")
-        file.print("            <body>")
-        size[i].times do |x|
-          file.print("#{x} ");
-        end
-        file.print("</body>\n")
-        file.print("        </document>\n")
+
+    10.times do |i|
+      doc = Document.new("big", "id:test:big::doc#{i}")
+
+      title = ""
+      (i+1).times { |j| title << "#{j} " }
+      doc.add_field("title", title)
+
+      body = ""
+      size[i].times do |x|
+        body << "#{x} "
       end
+      doc.add_field("body", body)
+
+      docs.add(doc)
     end
+    docs.write_json(@feed)
   end
 
   def test_bigdocument

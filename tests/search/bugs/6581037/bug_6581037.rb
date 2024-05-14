@@ -5,6 +5,7 @@ class Bug6581037Test < IndexedStreamingSearchTest
 
   def setup
     set_owner('balder')
+    @feed_file = dirs.tmpdir + "feed.json"
   end
 
   def timeout_seconds
@@ -20,13 +21,11 @@ class Bug6581037Test < IndexedStreamingSearchTest
     start
     verify_uca_sorting("zh", 157)
     verify_uca_sorting("ar", 34)
-    
   end
 
   def verify_uca_sorting(lang, count)
-
-    system("cat " + selfdir + "input-" + lang + ".txt | " + selfdir + "generatefeed.sh " + lang + " > " + dirs.tmpdir + "feed.xml")
-    feed(:file => dirs.tmpdir + "feed.xml")
+    system("cat " + selfdir + "input-" + lang + ".txt | " + selfdir + "generatefeed.sh " + lang + " > " + @feed_file)
+    feed(:file => @feed_file)
 
     for i in 1...3  do
       search_with_timeout(20, gen_query(lang, count))
