@@ -225,5 +225,43 @@ class Distributor < VDSNode
     end
   end
 
+  def create_dummy_feed(count, size)
+    f = File.open("#{Environment.instance.vespa_home}/tmp/feedtmp", "w")
+    f.write("<vespafeed>\n");
+    count.times { |id|
+      f.write("<document type=\"music\" documentid=\"id:test:music:n=" + id.to_s + ":1\">\n")
+      f.write("<bodyfield>")
+      (size / 50).times {
+         f.write("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n")
+      }
+      f.write("</bodyfield>")
+      f.write("</document>")
+    }
+    f.write("</vespafeed>")
+    f.close
+
+    execute("vespa-feeder --maxpending 1 #{Environment.instance.vespa_home}/tmp/feedtmp")
+    File.delete("#{Environment.instance.vespa_home}/tmp/feedtmp")
+  end
+
+  def check_dummy_feed(count, size)
+    count.times { |id|
+      documentid="id:test:music:n=" + id.to_s + ":1"
+      execute("vespa-get " + documentid + " >#{Environment.instance.vespa_home}/tmp/gettmp")
+
+      filesize = File.size("#{Environment.instance.vespa_home}/tmp/gettmp")
+      File.delete("#{Environment.instance.vespa_home}/tmp/gettmp")
+
+      return false if filesize < size
+    }
+
+    execute("vespa-visit --xmloutput --maxpending 1 --maxpendingsuperbuckets 1 --maxbuckets 1 >#{Environment.instance.vespa_home}/tmp/visittmp")
+    filesize = File.size("#{Environment.instance.vespa_home}/tmp/visittmp")
+
+    File.delete("#{Environment.instance.vespa_home}/tmp/visittmp")
+    return false if filesize < (size * count)
+
+    return true
+  end
 
 end
