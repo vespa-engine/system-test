@@ -56,7 +56,7 @@ class LargeDocuments < VdsTest
       return false if filesize < size
     }
 
-    target_node.execute("vespa-visit --xmloutput --maxpending 1 --maxpendingsuperbuckets 1 --maxbuckets 1 >#{Environment.instance.vespa_home}/tmp/visittmp")
+    target_node.execute("vespa-visit --maxpending 1 --maxpendingsuperbuckets 1 --maxbuckets 1 >#{Environment.instance.vespa_home}/tmp/visittmp")
     filesize = File.size("#{Environment.instance.vespa_home}/tmp/visittmp")
 
     File.delete("#{Environment.instance.vespa_home}/tmp/visittmp")
