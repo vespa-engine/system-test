@@ -1,8 +1,9 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-require 'rubygems'
-require 'json'
+require 'document_set'
 require 'indexed_streaming_search_test'
+require 'json'
+require 'rubygems'
 
 class FeatureNameQuoting < IndexedStreamingSearchTest
 
@@ -14,16 +15,15 @@ class FeatureNameQuoting < IndexedStreamingSearchTest
 
   def test_featureNameQuoting
     # Create and feed some synthetic data.
-    str = "";
+    docs = DocumentSet.new
     0.upto(9) do |i|
-      str += "<document id=\"id:scheme:featurenamequoting::#{i}\" type=\"featurenamequoting\">";
-      str += "<foo>#{i}</foo>";
-      str += "</document>\n";
+      doc = Document.new("featurenamequoting", "id:scheme:featurenamequoting::#{i}")
+      doc.add_field("foo", i)
+      docs.add(doc)
     end
-    feed_file = "#{dirs.tmpdir}/feed.xml"
-    feed = File.open(feed_file, "w")
-    feed.print(str);
-    feed.close();
+
+    feed_file = "#{dirs.tmpdir}/feed.json"
+    docs.write_json(feed_file)
     feed_and_wait_for_docs("featurenamequoting", 10, :file => feed_file);
 
     # Assert the ranking expression of profile 1.
