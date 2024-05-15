@@ -39,11 +39,11 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
     feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
 
     puts "need refeed reconfig of f2"
-    reindexing_ready_millis = get_reindexing_initial_ready_millis
     redeploy_output = redeploy("test.1.sd", "indexing-change")
     gen = get_generation(redeploy_output).to_i
     assert_match(/Consider re-indexing document type 'test' in cluster 'search'.*\n.*Field 'f2' changed: add index aspect/, redeploy_output)
 
+    reindexing_ready_millis = get_reindexing_initial_ready_millis
     wait_for_convergence(gen)
 
     # Feed should be accepted
@@ -94,13 +94,13 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
     feed_and_wait_for_docs("test", 1, :file => @test_dir + "feed.0.json")
 
     @params[:search_type] = "INDEXED"
-    reindexing_ready_millis = get_reindexing_initial_ready_millis
     vespa.stop_base # Indexing mode change leads to changed config id for search nodes, a restart is required
     redeploy_output = deploy_app(app)
     gen = get_generation(redeploy_output).to_i
     assert_match(/Document type 'test' in cluster 'search' changed indexing mode from 'streaming' to 'indexed'/, redeploy_output)
 
     start
+    reindexing_ready_millis = get_reindexing_initial_ready_millis
     wait_for_convergence(gen)
 
     # Feed should be accepted
