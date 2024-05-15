@@ -13,9 +13,10 @@ class DynTeaserArrayTest < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "dynteaser_array/test.sd").
                indexing_cluster("my-container").
                container(Container.new("my-container").
-                         search(Searching.new).
-                         docproc(DocumentProcessing.new).
-                         component(Component.new("com.yahoo.language.opennlp.OpenNlpLinguistics"))))
+                           docproc(DocumentProcessing.new).
+                           documentapi(ContainerDocumentApi.new).
+                           search(Searching.new).
+                           component(Component.new("com.yahoo.language.opennlp.OpenNlpLinguistics"))))
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir + "dynteaser_array/docs.json")
 

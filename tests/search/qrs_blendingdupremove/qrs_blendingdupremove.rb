@@ -6,14 +6,15 @@ class DupRemove < IndexedStreamingSearchTest
   def setup
     set_owner("arnej")
     deploy_app(SearchApp.new.
-                         container(Container.new.
-                                             search(Searching.new).
-                                             config(ConfigOverride.new("container.qr-searchers").
-                                                                   add("com", ConfigValue.new("yahoo", ConfigValue.new("prelude", ConfigValue.new("searcher", ConfigValue.new("BlendingSearcher", ConfigValue.new("docid", "marker")))))))).
-                         cluster(SearchCluster.new("simple1").
-                                               sd(selfdir+"simple.sd")).
-                         cluster(SearchCluster.new("simple2").
-                                               sd(selfdir+"simple.sd")))
+                 container(Container.new.
+                             documentapi(ContainerDocumentApi.new).
+                             search(Searching.new).
+                             config(ConfigOverride.new("container.qr-searchers").
+                                      add("com", ConfigValue.new("yahoo", ConfigValue.new("prelude", ConfigValue.new("searcher", ConfigValue.new("BlendingSearcher", ConfigValue.new("docid", "marker")))))))).
+                 cluster(SearchCluster.new("simple1").
+                           sd(selfdir+"simple.sd")).
+                 cluster(SearchCluster.new("simple2").
+                           sd(selfdir+"simple.sd")))
     start
     feed_and_wait_for_docs("simple", 6, :file => selfdir + "simple.3.json", :clusters => ["simple1", "simple2"])
   end

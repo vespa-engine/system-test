@@ -15,6 +15,7 @@
     <nodes>
       <node hostalias="node1"/>
     </nodes>
+    <document-api/>
     <search/>
     <document-processing>
       <chain id="default">
