@@ -10,6 +10,7 @@ class AccessLogTest < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.
                container(Container.new.
                    search(Searching.new).
+                   documentapi(ContainerDocumentApi.new).
                    docproc(DocumentProcessing.new).
                    component(AccessLog.new("vespa").
                        fileNamePattern("logs/vespa/access/QueryAccessLog.default"))).
