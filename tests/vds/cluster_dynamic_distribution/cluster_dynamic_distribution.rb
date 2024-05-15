@@ -13,7 +13,7 @@ class ClusterDynamicDistributionTest < VdsTest
     @num_users = 100
     set_owner("vekterli")
     set_expected_logged(/pidfile/)
-    @feedfile = "#{SecureRandom.urlsafe_base64}_tmpfeed_cluster_dynamic.xml"
+    @feedfile = "#{SecureRandom.urlsafe_base64}_tmpfeed_cluster_dynamic.json"
     make_feed_file(@feedfile, "music", 0, @num_users - 1, @num_docs / @num_users)
     deploy_app(default_app.num_nodes(3).redundancy(2).distribution_bits(8))
     start
