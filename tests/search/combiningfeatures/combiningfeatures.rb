@@ -14,7 +14,7 @@ class CombiningFeatures < IndexedStreamingSearchTest
     set_description("Test the match feature")
     deploy_app(SearchApp.new.sd(selfdir + "match.sd"))
     start
-    feed_and_wait_for_docs("match", 2, :file => selfdir + "match.xml")
+    feed_and_wait_for_docs("match", 2, :file => selfdir + "match.json")
     assert_hitcount("query=sddocname:match", 2)
 
     assert_feature({"match" => 1.0, "match.totalWeight" => 200.0}, "a:a")
