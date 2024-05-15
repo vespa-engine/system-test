@@ -1,5 +1,0 @@
-<update documenttype="attribute" documentid="id:attribute:attribute:n=1:0">
-  <add field="ai"><item>40</item><item>30</item></add>
-  <add field="af"><item>40.5</item><item>30.5</item></add>
-  <add field="as"><item>fourth</item><item>third</item></add>
-</update>
