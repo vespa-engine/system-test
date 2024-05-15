@@ -1,5 +1,6 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 # -*- coding: utf-8 -*-
+require 'document_set'
 require 'indexed_streaming_search_test'
 
 class TagsAccents < IndexedStreamingSearchTest
@@ -28,33 +29,6 @@ class TagsAccents < IndexedStreamingSearchTest
              "ù", "u", "ú", "u", "û", "u", "ü", "ue", "ý",  \
              "y", "þ", "th", "ÿ", "y" \
            ]
-
-  def dwrite(tmp, val)
-    @docid += 1
-    tmp << "<document type=\"tagsaccents\" documentid=\"id:test:tagsaccents::#{@docid}\">\n"
-    tmp << "  <title>doc #{@docid}</title>\n"
-    [ "sfield1", "sfield2", "sfield3", "sfield4", "sfield5" ].each do |fn|
-      tmp << "  <#{fn}>#{val}</#{fn}>\n"
-    end
-    [ "wfield1", "wfield2", "wfield3", "wfield4", "wfield5" ].each do |fn|
-      tmp << "  <#{fn}>\n"
-      tmp << "    <item weight=\"17\">#{val}</item>\n"
-      tmp << "    <item weight=\"33\">#{val}#{val}#{val}</item>\n"
-      tmp << "  </#{fn}>\n"
-    end
-    tmp << "  <wpref>#{val} #{val}</wpref>\n"
-    tmp << "</document>\n"
-  end
-
-  def generate_feed(type)
-    @@fctr += 1
-    @docid = 0
-    tmp_file = dirs.tmpdir+"#{type}.#{@@fctr}.xml"
-    File.open(tmp_file, "w") do |tmp|
-      @@vals.each { |val| dwrite(tmp, val) }
-    end
-    return tmp_file
-  end
 
   def timeout_seconds
     return 1800
@@ -110,6 +84,32 @@ class TagsAccents < IndexedStreamingSearchTest
         assert_hitcount("query=#{field}:#{urlcoded}@*+#{docidnum}&tracelevel=1&type=all", 1)
       end
     end
+  end
+
+  def generate_doc(val)
+    @docid += 1
+    doc = Document.new("tagsaccents", "id:test:tagsaccents::#{@docid}")
+    doc.add_field("title", "doc #{@docid}")
+    [ "sfield1", "sfield2", "sfield3", "sfield4", "sfield5" ].each do |fn|
+      doc.add_field(fn, "#{val}")
+    end
+    [ "wfield1", "wfield2", "wfield3", "wfield4", "wfield5" ].each do |fn|
+      doc.add_field(fn, {"#{val}" => 17, "#{val}#{val}#{val}" => 33})
+    end
+    doc.add_field("wpref", "#{val} #{val}")
+    doc
+  end
+
+  def generate_feed(type)
+    @@fctr += 1
+    @docid = 0
+    docs = DocumentSet.new
+    tmp_file = dirs.tmpdir+"#{type}.#{@@fctr}.json"
+    @@vals.each { |val|
+      docs.add(generate_doc(val))
+    }
+    docs.write_json(tmp_file)
+    tmp_file
   end
 
   def teardown
