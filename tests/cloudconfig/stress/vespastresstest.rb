@@ -22,7 +22,7 @@ class VespaConfigStressTest < CloudConfigTest
     system("cp -r #{orig_app} #{app}")
 
     services = app + 'services.xml'
-    feedfile = selfdir + 'vespa_feed.xml'
+    feedfile = selfdir + 'vespa_feed.json'
     sd1 = selfdir + 'sd_1/test.sd'
     sd2 = selfdir + 'sd_2/test.sd'
 

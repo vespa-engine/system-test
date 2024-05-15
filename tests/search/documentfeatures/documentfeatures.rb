@@ -15,9 +15,9 @@ class DocumentFeatures < IndexedStreamingSearchTest
                sd(selfdir+"fieldlength.sd").
                sd(selfdir+"flexactstring.sd"))
     start
-    feed_and_wait_for_docs("attribute", 1, :file => selfdir + "attribute.xml")
-    feed_and_wait_for_docs("fieldlength", 3, :file => selfdir + "fieldlength.xml")
-    feed_and_wait_for_docs("flexactstring", 2, :file => selfdir + "flexactstring.xml")
+    feed_and_wait_for_docs("attribute", 1, :file => selfdir + "attribute.json")
+    feed_and_wait_for_docs("fieldlength", 3, :file => selfdir + "fieldlength.json")
+    feed_and_wait_for_docs("flexactstring", 2, :file => selfdir + "flexactstring.json")
     attribute_test
     field_length_test
     field_length_with_exact_match_test
@@ -54,7 +54,7 @@ class DocumentFeatures < IndexedStreamingSearchTest
     assert_attribute("attribute(ws,second).contains", 0)
 
     # partial updates on array fields
-    feed(:file => selfdir + "attribute.upd.xml")
+    feed(:file => selfdir + "attribute.upd.json")
     assert_attribute("attribute(ai,2)", 40)
     assert_attribute("attribute(af,2)", 40.5)
     assert_attribute("attribute(as,2)", -9.774744375149687e-197) # hash of 'fourth'
