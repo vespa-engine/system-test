@@ -2,6 +2,7 @@
 require 'performance_test'
 require 'app_generator/search_app'
 require 'environment'
+require 'document_set'
 
 class GroupingTest < PerformanceTest
 
@@ -140,18 +141,17 @@ class GroupingTest < PerformanceTest
     f.close
   end
 
-  def generatefeed(f, num_docs, attr_prefix, num_attr, num_unique)
+  def generatefeed(filename, num_docs, attr_prefix, num_attr, num_unique)
+    docs = DocumentSet.new
     for i in 0..(num_docs - 1)
-      docid = "#{i}"
-      doc = "<document type=\"groupingbench\" documentid=\"id:groupingbench:groupingbench::#{docid}\">\n"
+      doc = Document.new("groupingbench", "id:groupingbench:groupingbench::#{i}")
       somevalue = (i % num_unique)
       for attr in 0..(num_attr - 1)
-        doc += "<a#{attr}>val_#{attr}_#{somevalue}</a#{attr}>\n"
+        doc.add_field("a#{attr}", "val_#{attr}_#{somevalue}")
       end
-      doc += "</document>\n"
-      f.puts(doc)
+      docs.add(doc)
     end
-    f.close
+    docs.write_json(filename)
   end
 
   def incattr(attr, numinc, num_attr)
