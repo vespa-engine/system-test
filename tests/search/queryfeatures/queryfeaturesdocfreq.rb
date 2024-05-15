@@ -12,7 +12,7 @@ class QueryFeaturesDocFreq < IndexedOnlySearchTest
     set_description("Test for the term.significance feature using backend document frequency")
     deploy_app(SearchApp.new.sd(selfdir+"docfreq.sd"))
     start
-    feed_and_wait_for_docs("docfreq", 10, :file => selfdir + "docfreq.xml")
+    feed_and_wait_for_docs("docfreq", 10, :file => selfdir + "docfreq.json")
 
     last = assert_greater_significance(0.0,  "a")
     last = assert_greater_significance(last, "b")
