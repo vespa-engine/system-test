@@ -9,7 +9,9 @@ class CpuPinning < SearchTest
     set_owner('baldersheim')
 
     deploy_app(SearchApp.new.
-               container(Container.new.cpu_socket_affinity(true).search(Searching.new)).
+                 container(Container.new.cpu_socket_affinity(true).
+                             documentapi(ContainerDocumentApi.new).
+                             search(Searching.new)).
                cluster(SearchCluster.new.
                   sd(SEARCH_DATA + 'music.sd').
                   group(NodeGroup.new(0, nil).

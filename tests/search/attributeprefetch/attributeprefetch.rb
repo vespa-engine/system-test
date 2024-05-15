@@ -10,8 +10,9 @@ class AttributePrefetch < IndexedOnlySearchTest
     search_chain = Chain.new("default", "vespa").
         add(Searcher.new("com.yahoo.vespatest.attributeprefetch.AttributePrefetchTestSearcher", "transformedQuery", "blendedResult"))
     deploy_app(SearchApp.new.sd(selfdir+"attr.sd").container(
-                   Container.new.search(
-                       Searching.new.chain(search_chain))))
+                 Container.new.
+                   search(Searching.new.chain(search_chain)).
+                   documentapi(ContainerDocumentApi.new)))
     start
   end
 
