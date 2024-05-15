@@ -1,4 +1,5 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'document_set'
 require 'testcase'
 require 'app_generator/storage_app'
 
@@ -56,22 +57,18 @@ class VdsTest < TestCase
     end
   end
 
-
   # Creates a feed file with bucketIdStop-bucketIdStart buckets with numDocs documents of type 'type' that would be placed into the desired buckets.
   def make_feed_file(fileName, type, bucketIdStart, bucketIdStop, numDocs)
-    file = File.new(fileName, "w")
+    docs = DocumentSet.new
 
-    file.syswrite("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
-    file.syswrite("<vespafeed>\n")
     (1+bucketIdStop-bucketIdStart).times{|i|
       bucketId=bucketIdStart+i
       numDocs.times{|n|
-        file.syswrite("  <document type=\"#{type}\" id=\"id:#{type}:#{type}:n=#{bucketId}:#{n}:system_test\"/>\n")
+        doc = Document.new(type, "id:#{type}:#{type}:n=#{bucketId}:#{n}:system_test")
+        docs.add(doc)
       }
     }
-    file.syswrite("</vespafeed>\n")
-
-    file.close
+    docs.write_json(fileName)
   end
 
   def get_default_log_check_levels
