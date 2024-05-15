@@ -43,24 +43,18 @@ class DocumentSet
 
   def write_json(name, operation=:put)
     f = File.open(name, "w")
-    f.write(to_json)
-    f.close()
-  end
-
-  def to_json(operation=:put)
-    content = "[\n"
+    f.write("[\n")
     first = true
     @documents.each do |document|
       if first
         first = false
       else
-        content << ",\n"
+        f.write(",\n")
       end
-      content << document.to_json(operation, false)
+      f.write(document.to_json(operation, false))
     end
-    content << "\n]\n"
-    puts "content=#{content}"
-    content
+    f.write("\n]\n")
+    f.close()
   end
 
   def write_removes_json(name)
@@ -88,5 +82,4 @@ class DocumentSet
     end
     f.close()
   end
-
 end
