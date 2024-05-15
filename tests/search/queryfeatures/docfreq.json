@@ -1,0 +1,12 @@
+[
+  {"id":"id:docfreq:docfreq::0","fields":{"a":"a"}},
+  {"id":"id:docfreq:docfreq::1","fields":{"a":"a b"}},
+  {"id":"id:docfreq:docfreq::2","fields":{"a":"a b c"}},
+  {"id":"id:docfreq:docfreq::3","fields":{"a":"a b c d"}},
+  {"id":"id:docfreq:docfreq::4","fields":{"a":"a b c d e"}},
+  {"id":"id:docfreq:docfreq::5","fields":{"a":"a b c d e f"}},
+  {"id":"id:docfreq:docfreq::6","fields":{"a":"a b c d e f g"}},
+  {"id":"id:docfreq:docfreq::7","fields":{"a":"a b c d e f g h"}},
+  {"id":"id:docfreq:docfreq::8","fields":{"a":"a b c d e f g h i"}},
+  {"id":"id:docfreq:docfreq::9","fields":{"a":"a b c d e f g h i j"}}
+]

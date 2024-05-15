@@ -12,7 +12,7 @@ class QueryFeatures < IndexedStreamingSearchTest
     set_description("Test the query feature")
     deploy_app(SearchApp.new.sd(selfdir+"query.sd"))
     start
-    feed_and_wait_for_docs("query", 1, :file => selfdir + "query.xml", :name => "query")
+    feed_and_wait_for_docs("query", 1, :file => selfdir + "query.json", :name => "query")
 
     assert_query({"query(foo)" => 5.5},  "")
     assert_query({"query(foo)" => 10.5}, "&rankproperty.foo=10.5")
@@ -44,7 +44,7 @@ class QueryFeatures < IndexedStreamingSearchTest
     set_description("Test the queryTermCount feature")
     deploy_app(SearchApp.new.sd(selfdir+"querytermcount.sd"))
     start
-    feed_and_wait_for_docs("querytermcount", 1, :file => selfdir + "querytermcount.xml")
+    feed_and_wait_for_docs("querytermcount", 1, :file => selfdir + "querytermcount.json")
 
     assert_query_term_count(1, "a:a")
     assert_query_term_count(1, "b:b")
@@ -71,7 +71,7 @@ class QueryFeatures < IndexedStreamingSearchTest
       add(Searcher.new("com.yahoo.queryfeatures.ReverseSearcher", "significance", "backend").provides("reverse"))
     deploy_app(SearchApp.new.sd(selfdir+"term.sd").search_chain(search_chain))
     start
-    feed_and_wait_for_docs("term", 1, :file => selfdir + "term.xml")
+    feed_and_wait_for_docs("term", 1, :file => selfdir + "term.json")
 
     # default significance (search::features::util::getSignificance(1.0))
     ds = (is_streaming ? 1.0 : 0.5)
