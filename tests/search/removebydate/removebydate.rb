@@ -1,5 +1,4 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'document_set'
 require 'indexed_streaming_search_test'
 
 class RemoveByDate < IndexedStreamingSearchTest
@@ -72,16 +71,21 @@ class RemoveByDate < IndexedStreamingSearchTest
   end
 
   def generatefeed(numdocs, startage, agestep)
-    docs = DocumentSet.new
+    feed = ""
     age = startage
     for i in 1..numdocs
-      doc = Document.new("newsarticle", "id:test:newsarticle::http://foo.bar.com/#{i}")
-      doc.add_field("title","foo#{i}")
-      doc.add_field("pubdate", age)
-      docs.add(doc)
+      docid = "id:test:newsarticle::http://foo.bar.com/#{i}"
+      title = "foo#{i}"
+      pubdate = "#{age}"
+
+      feed += "<document documenttype=\"newsarticle\" documentid=\"#{docid}\">\n"
+      feed += "    <title>#{title}</title>\n"
+      feed += "    <pubdate>#{pubdate}</pubdate>\n"
+      feed += "</document>\n"
+
       age = age + agestep
     end
-    docs.to_json
+    return feed
   end
 
   def feed_until_correct_output(feed, expected_ok, expected_ignored, expected_failed, timeout=240)
