@@ -43,7 +43,7 @@ class DocumentSet
 
   def write_json(name, operation=:put)
     f = File.open(name, "w")
-    f.write(to_json)
+    f.write(to_json(operation))
     f.close()
   end
 
@@ -59,7 +59,6 @@ class DocumentSet
       content << document.to_json(operation, false)
     end
     content << "\n]\n"
-    puts "content=#{content}"
     content
   end
 
