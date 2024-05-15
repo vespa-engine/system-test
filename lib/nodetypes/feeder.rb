@@ -238,6 +238,9 @@ module Feeder
       if params[:mode] == "benchmark"
         p += "--benchmark "
       end
+      if params[:silent]
+        p += "--silent "
+      end
       unless params[:ignore_errors]
         p += "--show-errors "
       end

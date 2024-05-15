@@ -15,9 +15,7 @@ class PositionsBug < StreamingSearchTest
                  sd(selfdir + 'app/schemas/test.sd'))
     start
     feed_and_wait_for_docs("test", 1, :file => selfdir+"feed.json")
-    vespa.adminserver.execute("vespa-visit --xmloutput")
-    #     save_result("query=title:test&streaming.userid=27959&format=xml", selfdir+"result.xml")
-    assert_xml_result_with_timeout(2.0, "query=title:test&streaming.userid=27959", selfdir+"result.xml")
+    vespa.adminserver.execute("vespa-visit")
     # save_result("query=title:test&streaming.userid=27959", selfdir+"result.json")
     assert_result_with_timeout(2.0, "query=title:test&streaming.userid=27959", selfdir+"result.json")
   end

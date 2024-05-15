@@ -1,14 +1,15 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'json'
 class Update
-  attr_reader :operation, :fieldname, :arraytype, :params
+  attr_reader :operation, :fieldname, :value_type, :params
 
-  def initialize(op, fieldname, arraytype)
+  def initialize(op, fieldname, value_type = :single)
     @operation = op
     @fieldname = fieldname
-    @arraytype = arraytype
+    @value_type = value_type
     @params = Array.new
 
-    validops = ["assign", "add", "remove"]
+    validops = ["assign", "add", "remove", "decrement", "divide", "increment", "multiply"]
     if validops.index(@operation) == nil
       raise @operation + " is an invalid operation"
     end
@@ -25,7 +26,7 @@ class Update
 
   def to_xml
     res = "  <" + @operation + " field=\"" + @fieldname + "\">"
-    if !@arraytype
+    if @value_type != :array
       res += @params.first.to_s + "</" + @operation + ">\n"
     else
       if @params.size == 0
@@ -53,43 +54,17 @@ class Update
 end
 
 
-class AlterUpdate
-  def initialize(fieldname)
-    @fieldname = fieldname
-    @operations = []
-  end
-
-  def operations
-    @operations # array of [operation, num, (key)]
-  end
-
-  def to_xml
-    res = "  <alter field=\"" + @fieldname + "\">\n"
-    @operations.each do |op|
-      if op.class == Array
-        if op.size == 2 # single value alter
-          res += "    <" + op[0] + " by=\"" + op[1].to_s + "\"/>\n"
-        elsif op.size == 3 # weighted set alter
-          res += "    <" + op[0] + " by=\"" + op[1].to_s + "\">\n"
-          res += "      <key>" + op[2].to_s + "</key>\n"
-          res += "    </" + op[0] + ">\n"
-        else
-          raise "ERROR: Bug in operation"
-        end
-      else
-        raise "ERROR: Bug in operations array"
-      end
-    end
-    res += "  </alter>\n"
-  end
-end
-
 class SimpleAlterUpdate
+
+  attr_reader :value_type, :fieldname, :operation, :params
+
   def initialize(operation, fieldname, number, key = nil)
     @operation = operation
     @fieldname = fieldname
     @number = number
     @key = key
+    @value_type == :single
+    @params = [number]
   end
 
   def to_xml
@@ -119,27 +94,25 @@ class DocumentUpdate
     return @documentid<=>other.documentid
   end
 
-  # "values" is an array of params or a single value to the specified "operation" on the specified "fieldname" field
+  # 'values' is:
+  # * a single value
+  # * an array of params
+  # * hash (for weighted sets and structs)
+  # to be used for the 'operation' on the 'fieldname' field
   def addOperation(operation, fieldname, values)
     if values.class == Array
-      up = Update.new(operation, fieldname, true)
+      up = Update.new(operation, fieldname, :array)
       values.each { | value |
         up.params.push(value)
       }
-      @updateops.push(up)
-    else
-      up = Update.new(operation, fieldname, false)
+    elsif values.class == Hash
+      up = Update.new(operation, fieldname, :hash)
       up.params.push(values)
-      @updateops.push(up)
+    else
+      up = Update.new(operation, fieldname, :single)
+      up.params.push(values)
     end
-  end
-
-  def addAlterOperation(fieldname, values)
-    alter = AlterUpdate.new(fieldname)
-    values.each do |value|
-      alter.operations.push(value)
-    end
-    @updateops.push(alter)
+    @updateops.push(up)
   end
 
   def addSimpleAlterOperation(operation, fieldname, number, key = nil)
@@ -165,15 +138,29 @@ class DocumentUpdate
   end
 
   def fields_to_json
+    JSON.dump({"fields" => fields})
+  end
+
+  def to_json(operation = :update, in_array = false)
+    JSON.dump({"update" => @documentid, "fields" => fields})
+  end
+
+  def fields
+    arithmetic_operations = ['decrement', 'divide', 'increment', 'multiply']
     fields = {}
     @updateops.each do |u|
-      if u.arraytype
+      if u.value_type == :array
         fields[u.fieldname] = { u.operation => u.params }
       else
-        fields[u.fieldname] = { u.operation => u.params[0] }
+        values = u.params[0]
+        if values.class == Hash and arithmetic_operations.include? u.operation
+          fields[u.fieldname] = { 'match' => { 'element' => values.each_key.first, u.operation => values.values.first } }
+        else
+          fields[u.fieldname] = { u.operation => values }
+        end
       end
     end
-    { 'fields' => fields }.to_json
+    fields
   end
 
 end

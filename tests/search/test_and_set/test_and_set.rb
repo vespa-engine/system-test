@@ -6,8 +6,7 @@ class TestAndSetTest < IndexedStreamingSearchTest
     set_owner("vekterli")
     set_description("Test test and set functionality in Vespa")
     deploy_app(SearchApp.new.
-                sd(selfdir + "weather.sd").
-                enable_document_api)
+                sd(selfdir + "weather.sd"))
     start
   end
 
@@ -19,7 +18,7 @@ class TestAndSetTest < IndexedStreamingSearchTest
 
   def test_with_vespa_http_client
     run_tests(->(feedfile) {
-      feed(:file => feed_filename(feedfile, :json), :client => :vespa_feed_client, :port => 19020)
+      feed(:file => feed_filename(feedfile, :json), :client => :vespa_feed_client)
     })
   end
 

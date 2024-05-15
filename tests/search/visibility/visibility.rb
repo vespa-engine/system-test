@@ -30,6 +30,17 @@ class VisibilityFeeder < SimpleHTTPFeeder
     end
   end
 
+  def docquery(i)
+    timeout = @testcase.valgrind ? 60 : 5
+    "/search/?query=w#{i.to_s}&nocache&hits=10&ranking=unranked&format=json&timeout=#{timeout}"
+  end
+
+  def fmt_result(result)
+    hitcount = result.hitcount
+    docids = result.get_field_array('documentid')
+    "#{hitcount} #{docids}"
+  end
+
   def pollfeed(verbose = false)
     # puts "#### starting pollfeed thread ####"
     iters = 0
@@ -48,18 +59,21 @@ class VisibilityFeeder < SimpleHTTPFeeder
       docid = gen_docid(i)
       dq = docquery(i)
       doc = gen_doc_docid(i, docid)
+      beforeput = @qrserver.search(dq)
       @testcase.
-        assert_equal(0, @qrserver.search(dq).hitcount,
-                     "Unexpected number of hits before put of #{docid}.") 
+        assert_equal(0, beforeput.hitcount,
+                     "Unexpected number of hits before put of #{docid}: #{fmt_result(beforeput)}")
       @document_api_v1.put(doc, :brief => !verbose)
-    @testcase.
-      assert_equal(1, @qrserver.search(dq).hitcount,
-                   "Unexpected number of hits after put of #{docid}.")
+      afterput = @qrserver.search(dq)
+      @testcase.
+      assert_equal(1, afterput.hitcount,
+                   "Unexpected number of hits after put of #{docid}: #{fmt_result(afterput)}")
       if iters % 3 == 0
         @document_api_v1.remove(docid, :brief => !verbose)
+        afterremove = @qrserver.search(dq)
         @testcase.
-          assert_equal(0, @qrserver.search(dq).hitcount,
-                       "Unexpected number of hits after remove of #{docid}.")
+          assert_equal(0, afterremove.hitcount,
+                       "Unexpected number of hits after remove of #{docid}: #{fmt_result(afterremove)}")
       end
       iters = iters + 1
     end
@@ -128,11 +142,14 @@ class Visibility < IndexedOnlySearchTest
   end
 
   def get_base_sc(parts, r, rc)
+    # Disable lid space compaction to avoid occasional visibility glitches
     SearchCluster.new("visibility").
       sd(selfdir + "visibility.sd").
       num_parts(parts).
       redundancy(r).
       indexing("default").
+      allowed_lid_bloat(1000000).
+      allowed_lid_bloat_factor(2.0).
       ready_copies(rc)
   end
 

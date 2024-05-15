@@ -18,7 +18,6 @@ class RestartDataRetentionTest < IndexedOnlySearchTest
         sd(@data_dir + "parent.sd", { :global => true }).
         sd(@data_dir + "child.sd").
         cluster_name('storage').
-        enable_document_api.
         num_parts(1).redundancy(1).ready_copies(1).
         storage(StorageCluster.new('storage', 1).distribution_bits(8))
     app

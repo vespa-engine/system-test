@@ -21,8 +21,7 @@ class StorageCluster
                   :min_distributor_up_ratio => :min_distributor_up_ratio,
                   :transition_time => :transition_time,
                   :fleet_controller => :fleet_controller,
-                  :min_time_between_cluster_states => :min_time_between_cluster_states,
-                  :disable_fleet_controllers => :disable
+                  :min_time_between_cluster_states => :min_time_between_cluster_states
   chained_forward :config, :config => :add
   chained_forward :groups, :group => :push
 

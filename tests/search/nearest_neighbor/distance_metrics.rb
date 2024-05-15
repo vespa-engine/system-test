@@ -12,7 +12,7 @@ class DistanceMetricsTest < IndexedStreamingSearchTest
   end
 
   def test_distance_metrics
-    deploy_app(SearchApp.new.sd(selfdir+'distances.sd').threads_per_search(1).enable_document_api)
+    deploy_app(SearchApp.new.sd(selfdir+'distances.sd').threads_per_search(1))
     start
     feed_doc
     check_euclidean_distance_metrics

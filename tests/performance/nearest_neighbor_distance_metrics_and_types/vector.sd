@@ -1,0 +1,539 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema vector {
+
+    document vector {
+
+        field id type string {
+            indexing: summary | attribute 
+        }
+
+        field float_1024_prenormalized_angular type tensor<float>(x[1024]) {
+            indexing: attribute
+            attribute {
+                distance-metric: prenormalized-angular
+            }
+        }
+
+        field float_768_prenormalized_angular type tensor<float>(x[768]) {
+            indexing: attribute
+            attribute {
+                distance-metric: prenormalized-angular
+            }
+        }
+
+        field float_512_prenormalized_angular type tensor<float>(x[512]) {
+            indexing: attribute
+            attribute {
+                distance-metric: prenormalized-angular
+            }
+        }
+
+        field float_384_prenormalized_angular type tensor<float>(x[384]) {
+            indexing: attribute
+            attribute {
+                distance-metric: prenormalized-angular
+            }
+        }
+
+        field float_256_prenormalized_angular type tensor<float>(x[256]) {
+            indexing: attribute
+            attribute {
+                distance-metric: prenormalized-angular
+            }
+        }
+
+        field float_1024_angular type tensor<float>(x[1024]) {
+            indexing: attribute
+            attribute {
+                distance-metric: angular
+            }
+        }
+
+        field float_768_angular type tensor<float>(x[768]) {
+            indexing: attribute
+            attribute {
+                distance-metric: angular
+            }
+        }
+
+        field float_512_angular type tensor<float>(x[512]) {
+            indexing: attribute
+            attribute {
+                distance-metric: angular
+            }
+        }
+
+        field float_384_angular type tensor<float>(x[384]) {
+            indexing: attribute
+            attribute {
+                distance-metric: angular
+            }
+        }
+
+        field float_256_angular type tensor<float>(x[256]) {
+            indexing: attribute
+            attribute {
+                distance-metric: angular
+            }
+        }
+
+        field float_1024_euclidean type tensor<float>(x[1024]) {
+            indexing: attribute
+            attribute {
+                distance-metric: euclidean
+            }
+        }
+
+        field float_768_euclidean type tensor<float>(x[768]) {
+            indexing: attribute
+            attribute {
+                distance-metric: euclidean
+            }
+        }
+
+        field float_512_euclidean type tensor<float>(x[512]) {
+            indexing: attribute
+            attribute {
+                distance-metric: euclidean
+            }
+        }
+
+        field float_384_euclidean type tensor<float>(x[384]) {
+            indexing: attribute
+            attribute {
+                distance-metric: euclidean
+            }
+        }
+
+        field float_256_euclidean type tensor<float>(x[256]) {
+            indexing: attribute
+            attribute {
+                distance-metric: euclidean
+            }
+        }
+
+        field float_1024_dotproduct type tensor<float>(x[1024]) {
+            indexing: attribute
+            attribute {
+                distance-metric: dotproduct
+            }
+        }
+
+        field float_768_dotproduct type tensor<float>(x[768]) {
+            indexing: attribute
+            attribute {
+                distance-metric: dotproduct
+            }
+        }
+
+        field float_512_dotproduct type tensor<float>(x[512]) {
+            indexing: attribute
+            attribute {
+                distance-metric: dotproduct
+            }
+        }
+
+        field float_384_dotproduct type tensor<float>(x[384]) {
+            indexing: attribute
+            attribute {
+                distance-metric: dotproduct
+            }
+        }
+
+        field float_256_dotproduct type tensor<float>(x[256]) {
+            indexing: attribute
+            attribute {
+                distance-metric: dotproduct
+            }
+        }
+
+
+        field scalar_int8_1024_dotproduct type tensor<int8>(x[1024]) {
+            indexing: attribute
+            attribute {
+                distance-metric: dotproduct
+            }
+        }
+
+        field scalar_int8_1024_euclidean type tensor<int8>(x[1024]) {
+            indexing: attribute
+            attribute {
+                distance-metric: euclidean
+            }
+        }
+
+        field scalar_int8_1024_angular type tensor<int8>(x[1024]) {
+            indexing: attribute
+            attribute {
+                distance-metric: angular
+            }
+        }
+
+        field scalar_int8_768_dotproduct type tensor<int8>(x[768]) {
+            indexing: attribute
+            attribute {
+                distance-metric: dotproduct
+            }
+        }
+
+        field scalar_int8_768_euclidean type tensor<int8>(x[768]) {
+            indexing: attribute
+            attribute {
+                distance-metric: euclidean
+            }
+        }
+
+        field scalar_int8_768_angular type tensor<int8>(x[768]) {
+            indexing: attribute
+            attribute {
+                distance-metric: angular
+            }
+        }
+
+        field scalar_int8_512_dotproduct type tensor<int8>(x[512]) {
+            indexing: attribute
+            attribute {
+                distance-metric: dotproduct
+            }
+        }
+
+        field scalar_int8_512_euclidean type tensor<int8>(x[512]) {
+            indexing: attribute
+            attribute {
+                distance-metric: euclidean
+            }
+        }
+
+        field scalar_int8_512_angular type tensor<int8>(x[512]) {
+            indexing: attribute
+            attribute {
+                distance-metric: angular
+            }
+        }
+
+        field scalar_int8_384_dotproduct type tensor<int8>(x[384]) {
+            indexing: attribute
+            attribute {
+                distance-metric: dotproduct
+            }
+        }
+
+        field scalar_int8_384_euclidean type tensor<int8>(x[384]) {
+            indexing: attribute
+            attribute {
+                distance-metric: euclidean
+            }
+        }
+
+        field scalar_int8_384_angular type tensor<int8>(x[384]) {
+            indexing: attribute
+            attribute {
+                distance-metric: angular
+            }
+        }
+
+        
+
+
+        field scalar_int8_256_dotproduct type tensor<int8>(x[256]) {
+            indexing: attribute
+            attribute {
+                distance-metric: dotproduct
+            }
+        }
+
+
+        field scalar_int8_256_euclidean type tensor<int8>(x[256]) {
+            indexing: attribute
+            attribute {
+                distance-metric: euclidean
+            }
+        }
+
+        field scalar_int8_256_angular type tensor<int8>(x[256]) {
+            indexing: attribute
+            attribute {
+                distance-metric: angular
+            }
+        }
+
+        field binary_int8_128_hamming type tensor<int8>(x[128]) {
+            indexing: attribute
+            attribute {
+                distance-metric: hamming
+            }
+        }
+
+        field binary_int8_96_hamming type tensor<int8>(x[96]) {
+            indexing: attribute
+            attribute {
+                distance-metric: hamming
+            }
+        }
+
+        field binary_int8_64_hamming type tensor<int8>(x[64]) {
+            indexing: attribute
+            attribute {
+                distance-metric: hamming
+            }
+        }
+        
+    }
+
+	document-summary id {
+        summary id {}
+	}
+
+
+    rank-profile default {
+        inputs {
+            query(float_q_1024) tensor<float>(x[1024])
+            query(float_q_768) tensor<float>(x[768])
+            query(float_q_512) tensor<float>(x[512])
+            query(float_q_384) tensor<float>(x[384])
+            query(float_q_256) tensor<float>(x[256])
+
+            query(int8_q_1024) tensor<int8>(x[1024])
+            query(int8_q_768) tensor<int8>(x[768])
+            query(int8_q_512) tensor<int8>(x[512])
+            query(int8_q_384) tensor<int8>(x[384])
+            query(int8_q_256) tensor<int8>(x[256])
+            
+            query(int8_q_128) tensor<int8>(x[128])
+            query(int8_q_96) tensor<int8>(x[96])
+            query(int8_q_64) tensor<int8>(x[64])
+        } 
+    }
+
+    rank-profile float_1024_prenormalized_angular inherits default {
+        first-phase {
+            expression: closeness(field, float_1024_prenormalized_angular)
+        }
+    }
+
+    rank-profile float_1024_angular inherits default {
+        first-phase {
+            expression: closeness(field, float_1024_angular)
+        }
+    }
+
+    rank-profile float_1024_euclidean inherits default {
+        first-phase {
+            expression: closeness(field, float_1024_euclidean)
+        }
+    }
+
+    rank-profile float_1024_dotproduct inherits default {
+        first-phase {
+            expression: closeness(field, float_1024_dotproduct)
+        }
+    }
+
+    rank-profile float_768_prenormalized_angular inherits default {
+        first-phase {
+            expression: closeness(field, float_768_prenormalized_angular)
+        }
+    }
+
+    rank-profile float_768_angular inherits default {
+        first-phase {
+            expression: closeness(field, float_768_angular)
+        }
+    }
+
+    rank-profile float_768_euclidean inherits default {
+        first-phase {
+            expression: closeness(field, float_768_euclidean)
+        }
+    }
+
+    rank-profile float_768_dotproduct inherits default {
+        first-phase {
+            expression: closeness(field, float_768_dotproduct)
+        }
+    }
+
+    rank-profile float_512_prenormalized_angular inherits default {
+        first-phase {
+            expression: closeness(field, float_512_prenormalized_angular)
+        }
+    }
+
+    rank-profile float_512_angular inherits default {
+        first-phase {
+            expression: closeness(field, float_512_angular)
+        }
+    }
+
+    rank-profile float_512_euclidean inherits default {
+        first-phase {
+            expression: closeness(field, float_512_euclidean)
+        }
+    }
+
+    rank-profile float_512_dotproduct inherits default {
+        first-phase {
+            expression: closeness(field, float_512_dotproduct)
+        }
+    }
+
+    rank-profile float_384_prenormalized_angular inherits default {
+        first-phase {
+            expression: closeness(field, float_384_prenormalized_angular)
+        }
+    }
+
+    rank-profile float_384_angular inherits default {
+        first-phase {
+            expression: closeness(field, float_384_angular)
+        }
+    }
+
+    rank-profile float_384_euclidean inherits default {
+        first-phase {
+            expression: closeness(field, float_384_euclidean)
+        }
+    }
+
+    rank-profile float_384_dotproduct inherits default {
+        first-phase {
+            expression: closeness(field, float_384_dotproduct)
+        }
+    }
+
+    rank-profile float_256_prenormalized_angular inherits default {
+        first-phase {
+            expression: closeness(field, float_256_prenormalized_angular)
+        }
+    }
+
+    rank-profile float_256_angular inherits default {
+        first-phase {
+            expression: closeness(field, float_256_angular)
+        }
+    }
+
+    rank-profile float_256_euclidean inherits default {
+        first-phase {
+            expression: closeness(field, float_256_euclidean)
+        }
+    }
+
+    rank-profile float_256_dotproduct inherits default {
+        first-phase {
+            expression: closeness(field, float_256_dotproduct)
+        }
+    }
+
+
+    rank-profile binary_int8_128_hamming inherits default {
+        first-phase {
+            expression: closeness(field, binary_int8_128_hamming)
+        }
+    }
+
+    rank-profile binary_int8_96_hamming inherits default {
+        first-phase {
+            expression: closeness(field, binary_int8_96_hamming)
+        }
+    }
+
+    rank-profile binary_int8_64_hamming inherits default {
+        first-phase {
+            expression: closeness(field, binary_int8_64_hamming)
+        }
+    }
+
+
+    rank-profile scalar_int8_1024_angular inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_1024_angular)
+        }
+    }
+
+    rank-profile scalar_int8_768_angular inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_768_angular)
+        }
+    }
+
+    rank-profile scalar_int8_512_angular inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_512_angular)
+        }
+    }
+
+    rank-profile scalar_int8_384_angular inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_384_angular)
+        }
+    }
+
+    rank-profile scalar_int8_256_angular inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_256_angular)
+        }
+    }
+
+    rank-profile scalar_int8_1024_euclidean inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_1024_euclidean)
+        }
+    }
+
+    rank-profile scalar_int8_768_euclidean inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_768_euclidean)
+        }
+    }
+
+    rank-profile scalar_int8_512_euclidean inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_512_euclidean)
+        }
+    }
+
+    rank-profile scalar_int8_384_euclidean inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_384_euclidean)
+        }
+    }
+
+    rank-profile scalar_int8_256_euclidean inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_256_euclidean)
+        }
+    }
+
+    rank-profile scalar_int8_1024_dotproduct inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_1024_dotproduct)
+        }
+    }
+
+    rank-profile scalar_int8_768_dotproduct inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_768_dotproduct)
+        }
+    }
+
+    rank-profile scalar_int8_512_dotproduct inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_512_dotproduct)
+        }
+    }
+
+    rank-profile scalar_int8_384_dotproduct inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_384_dotproduct)
+        }
+    }
+
+    rank-profile scalar_int8_256_dotproduct inherits default {
+        first-phase {
+            expression: closeness(field, scalar_int8_256_dotproduct)
+        }
+    }
+    
+}

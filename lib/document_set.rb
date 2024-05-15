@@ -37,7 +37,11 @@ class DocumentSet
     f.close()
   end
 
-  def write_json(name, remove=false)
+  def write_json(name)
+    write_json(name, :put)
+  end
+
+  def write_json(name, operation=:put)
     f = File.open(name, "w")
     f.write("[\n")
     first = true
@@ -47,18 +51,18 @@ class DocumentSet
       else
         f.write(",\n")
       end
-      if (remove)
-        f.write(document.to_remove_json(false))
-      else
-        f.write(document.to_put_json(false))
-      end
+      f.write(document.to_json(operation, false))
     end
     f.write("\n]\n")
     f.close()
   end
 
-  def write_remove_json(name)
-    write_json(name, true)
+  def write_removes_json(name)
+    write_json(name, :remove)
+  end
+
+  def write_updates_json(name)
+    write_json(name, :update)
   end
 
   def write_xml(name)

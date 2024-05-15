@@ -31,35 +31,75 @@ class NearestNeighborDistanceMetricPerfTest < PerformanceTest
     puts "Result2: #{result2}"
     run_feeder(local_feed_file, [])
 
-    container = (vespa.qrserver["0"] or vespa.container.values.first)
-    runtime=30
-    
+    c = (vespa.qrserver["0"] or vespa.container.values.first)
+    t=20 # The runtime in seconds
 
     for clients in [1, 16] do
-         run_fbench(container, clients, runtime, get_query("hamming-64"), selfdir + "queries_int8_64.txt", "hamming-int8-64", true)
+        query_file = selfdir + "queries_int8_64.txt"
+        run_fbench(c, clients, t, rewrite(c,query_file, "int8_embedding_64_hamming"), "hamming-int8-64")
+        run_fbench(c, clients, t, rewrite(c,query_file, "int8_embedding_64_angular"), "angular-int8-64")
+        run_fbench(c, clients, t, rewrite(c,query_file, "int8_embedding_64_euclidean"), "euclidean-int8-64")
+        run_fbench(c, clients, t, rewrite(c,query_file, "int8_embedding_64_dotproduct"), "dotproduct-int8-64") 
     end
 
     for clients in [1, 16] do
-      run_fbench(container, clients, runtime, get_query("hamming-128"), selfdir + "queries_int8_128.txt", "hamming-int8-128", true)
+      query_file = selfdir + "queries_int8_128.txt"
+      run_fbench(c, clients, t, rewrite(c,query_file, "int8_embedding_128_hamming"), "hamming-int8-128")
+      run_fbench(c, clients, t, rewrite(c,query_file, "int8_embedding_128_angular"), "angular-int8-128")
+      run_fbench(c, clients, t, rewrite(c,query_file, "int8_embedding_128_euclidean"), "euclidean-int8-128")
+      run_fbench(c, clients, t, rewrite(c,query_file, "int8_embedding_128_dotproduct"), "dotproduct-int8-128")
     end
 
     for clients in [1, 16] do
-      run_fbench(container, clients, runtime, get_query("prenormalized-angular-512"), selfdir + "queries_float_512.txt", "prenormalized-angular-float-512", true)
+      query_file = selfdir + "queries_float_384.txt"
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_384_prenormalized_angular"), "prenormalized-angular-float-384")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_384_angular"), "angular-float-384")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_384_euclidean"), "euclidean-float-384")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_384_dotproduct"), "dotproduct-float-384")
     end
 
     for clients in [1, 16] do
-      run_fbench(container, clients, runtime, get_query("prenormalized-angular-1024"), selfdir + "queries_float_1024.txt", "prenormalized-angular-float-1024", true)
+      query_file = selfdir + "queries_float_512.txt"
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_512_prenormalized_angular"), "prenormalized-angular-float-512")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_512_angular"), "angular-float-512")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_512_euclidean"), "euclidean-float-512")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_512_dotproduct"), "dotproduct-float-512")
     end
 
+    for clients in [1, 16] do
+      query_file = selfdir + "queries_float_768.txt"
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_768_prenormalized_angular"), "prenormalized-angular-float-768")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_768_angular"), "angular-float-768")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_768_euclidean"), "euclidean-float-768")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_768_dotproduct"), "dotproduct-float-768")
+    end
+
+    for clients in [1, 16] do
+      query_file = selfdir + "queries_float_1024.txt"
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_1024_prenormalized_angular"), "prenormalized-angular-float-1024")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_1024_angular"), "angular-float-1024")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_1024_euclidean"), "euclidean-float-1024")
+      run_fbench(c, clients, t, rewrite(c,query_file, "float_embedding_1024_dotproduct"), "dotproduct-float-1024")
+    end
   end
 
-  def get_query(rank_profile)
-      "&ranking.profile=#{rank_profile}&timeout=5s"
-  end
+  def rewrite(c, file, tensor_field_name)
+    # Read the file and replace FIELD_NAME wih field and return the new file
+    lines = File.readlines(file)
+    lines.each do |line|
+        line.gsub!("FIELD_NAME", tensor_field_name)
+    end
 
-  def run_fbench(qrserver, clients, runtime, append_str, queries, legend, post)
+    query_file = "#{tensor_field_name}.txt"
+    query_directory = dirs.tmpdir + "qd"
+    remote_file = query_directory + "/" + File.basename(query_file)
+    File.open(query_file, "w") { |f| f.puts lines }
+    c.copy(query_file, query_directory)
+    return remote_file
+  end 
+
+  def run_fbench(qrserver, clients, runtime, queries, legend, post=true)
     custom_fillers = [parameter_filler("legend", legend)]
-
     system_fbench = Perf::System.new(qrserver)
     system_fbench.start
     fbench = Perf::Fbench.new(qrserver, qrserver.name, qrserver.http_port)
@@ -69,7 +109,7 @@ class NearestNeighborDistanceMetricPerfTest < PerformanceTest
     if post
         fbench.use_post = true
     end
-    fbench.append_str = append_str if !append_str.empty?
+    fbench.append_str = "&ranking.profile=#{legend}&timeout=5s"
     profiler_start
     fbench.query(queries)
     system_fbench.end

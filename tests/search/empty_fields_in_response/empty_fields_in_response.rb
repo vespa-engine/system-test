@@ -15,7 +15,7 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
 
   def test_empty_fields_in_search_and_get_response
     @doctype = 'test'
-    deploy_app(SearchApp.new.sd(selfdir+"test.sd").enable_document_api)
+    deploy_app(SearchApp.new.sd(selfdir+"test.sd"))
     start
     feed_and_wait_for_docs("test", 4, :file => selfdir + "docs.json")
     assert_search
@@ -25,7 +25,7 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
   def test_empty_reference_field_in_search_and_get_response
     @doctype = 'child'
     @params = { :search_type => "INDEXED" }
-    deploy_app(SearchApp.new.sd(selfdir+"child.sd").sd(selfdir + "parent.sd", { :global => true }).enable_document_api)
+    deploy_app(SearchApp.new.sd(selfdir+"child.sd").sd(selfdir + "parent.sd", { :global => true }))
     start
     feed_and_wait_for_docs("child", 4, :file => selfdir + "child_docs.json")
     assert_search

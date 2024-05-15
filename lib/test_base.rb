@@ -341,7 +341,7 @@ module TestBase
 
   def check_for_hanging_config_server_HACK
     begin
-      return if !can_check_for_hanging_config_server
+      return unless can_check_for_hanging_config_server
 
       matches = @vespa.logserver.log_matches('ConfigurationRuntimeException')
       return if matches == 0
@@ -349,7 +349,7 @@ module TestBase
       output("Config server might be hanging. Dumping process stack " +
              "(see Vespa log for output)")
       @vespa.configservers.each do |idx, server|
-        server.execute("pkill -QUIT -u yahoo -f 'configserver'")
+        server.execute("pkill -QUIT -u #{Environment.instance.vespa_user} -f 'configserver'")
       end
     rescue => e
       output("Got exception while checking if config server is hanging: #{e}")

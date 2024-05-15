@@ -73,7 +73,7 @@ class IndexManagerDocGenerator
     for i in docid_begin...docid_begin + num_docs do
       doc = Document.new("test", get_docid(i))
       word = send(handle_doc_func, i % @mod, i)
-      doc.add_field("features", [[word,i+1]])
+      doc.add_field("features", word => i+1)
       doc.add_field("staticscore", i+1)
       ds.add(doc)
     end
@@ -85,7 +85,15 @@ class IndexManagerDocGenerator
   end
 
   def gen_updates(docid_begin, num_docs)
-    gen_doc_set(docid_begin, num_docs, :handle_update_doc)
+    ds = DocumentSet.new()
+    for i in docid_begin...docid_begin + num_docs do
+      doc = DocumentUpdate.new("test", get_docid(i))
+      word = send(:handle_update_doc, i % @mod, i)
+      doc.addOperation("assign", "features", word => i+1)
+      doc.addOperation("assign", "staticscore", i+1)
+      ds.add(doc)
+      end
+    ds
   end
 
   def gen_removes(docid_begin, num_docs)

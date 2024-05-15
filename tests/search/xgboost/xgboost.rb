@@ -24,22 +24,29 @@ class XGBoostServing < IndexedStreamingSearchTest
   end
 
   def test_xgboost
-    run_command_or_fail('pip3 install xgboost scikit-learn --user')
+    node_proxy = vespa.nodeproxies.values.first
     tmp_dir = dirs.tmpdir + "/training"
-    FileUtils.mkdir_p("#{tmp_dir}/models")
-    run_command_or_fail("python3 #{selfdir}/train.py #{selfdir} #{tmp_dir}/models/ #{tmp_dir}/ #{tmp_dir}/predictions.json")
-    @predictions = JSON.parse(File.read("#{tmp_dir}/predictions.json"))
+    node_proxy.execute("mkdir -p #{tmp_dir}/models")
+    for file in ['train.py', 'feature-map-10.txt', 'feature-map-30.txt']
+      node_proxy.copy(selfdir + file, tmp_dir)
+    end
+    node_proxy.execute("python3 #{tmp_dir}/train.py #{tmp_dir}/ #{tmp_dir}/models/ #{tmp_dir}/ #{tmp_dir}/predictions.json")
+    @predictions = JSON.parse(node_proxy.readfile("#{tmp_dir}/predictions.json"))
     deploy_files = { selfdir + 'app/search/query-profiles/default.xml' => 'search/query-profiles/default.xml' }
-    for model in Dir.children("#{tmp_dir}/models")
-      deploy_files[tmp_dir + '/models/' + model] = 'models/' + model
+    FileUtils.mkdir_p("#{tmp_dir}/models")
+    models = node_proxy.execute("cd #{tmp_dir}/models && echo *").split
+    for model in models
+      model_file = tmp_dir + '/models/' + model
+      File.write(model_file, node_proxy.readfile("#{tmp_dir}/models/" + model))
+      deploy_files[model_file] = 'models/' + model
     end
     deploy_app(make_app, :files => deploy_files)
     start
 
     #Feed files generated from setup/train.py
-    feed(:file => "#{tmp_dir}/diabetes-feed.json")
-    feed(:file => "#{tmp_dir}/breast_cancer-feed.json")
-    wait_for_hitcount("query=sddocname:x", 569 + 442)
+    feed(:file => "#{tmp_dir}/diabetes-feed.json", :localfile => true)
+    feed(:file => "#{tmp_dir}/breast_cancer-feed.json", :localfile => true)
+    wait_for_hitcount("query=sddocname:x", 569 + 442, is_streaming ? 120 : 60)
 
     regression_diabetes = getVespaPrediction("diabetes", "regression-diabetes")
     compare(regression_diabetes, "regression_diabetes")
@@ -66,13 +73,6 @@ class XGBoostServing < IndexedStreamingSearchTest
       predictions_array.push(predictions[id])
     end
     return predictions_array
-  end
-
-  def run_command_or_fail(command)
-    output = `set -x; #{command} 2>&1`
-    if $?.exitstatus != 0
-      raise "Running command '#{command}' failed: #{output}"
-    end
   end
 
   def teardown

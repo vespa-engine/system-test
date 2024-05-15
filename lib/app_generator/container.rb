@@ -141,6 +141,12 @@ class Searching
     @config = ConfigOverrides.new
     @chains = []
     @renderers = []
+    @significance = nil
+  end
+
+  def significance(significance)
+    @significance = significance
+    self
   end
 
   def to_xml(indent)
@@ -149,6 +155,7 @@ class Searching
       .to_xml(@config)\
       .to_xml(@chains)\
       .to_xml(@renderers)\
+      .to_xml(@significance)\
       .to_s
   end
 
@@ -263,6 +270,29 @@ class Component
   end
 end
 
+class Significance
+  include ChainedSetter
+
+  def initialize
+    @models = []
+  end
+
+  def model(path)
+    @models.push(Model::new(path))
+    self
+  end
+
+  def to_xml(indent="")
+    dump_xml(indent)
+  end
+
+  def dump_xml(indent="", tagname="significance")
+    XmlHelper.new(indent).
+      tag(tagname).
+      to_xml(@models).to_s
+  end
+end
+
 class ComponentParam
   def initialize(tag, value, attrs)
     @tag = tag
@@ -276,6 +306,25 @@ class ComponentParam
 
   def dump_xml(indent="")
     XmlHelper.new(indent).tag(@tag, @attrs).to_xml(@value).to_s
+  end
+end
+
+class Model
+  def initialize(path, url=nil, model_id=nil)
+    @path = path
+    @url = url
+    @model_id = model_id
+  end
+
+  def to_xml(indent="")
+    dump_xml(indent)
+  end
+
+  def dump_xml(indent="")
+    XmlHelper.new(indent).
+      tag("model", {"path" => @path}). # TODO handle all params if empty etc
+      to_xml("").
+      to_s
   end
 end
 

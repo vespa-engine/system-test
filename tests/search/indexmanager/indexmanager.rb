@@ -12,27 +12,24 @@ class IndexManagerTest < IndexedOnlySearchTest
     set_owner("geirst")
   end
 
-  def timeout_seconds
-    60*20
-  end
-
-  def test_index_flush_and_fusion_vespa_with_warmup
-    set_description("Test the interaction between flush, fusion, and source selector when using Vespa index manager")
+  def test_index_flush_and_fusion_with_warmup
+    set_description("Test the interaction between flush, fusion, and source selector when using index manager")
     run_index_flush_and_fusion_test(
-        create_app("vespa").
+        create_app().
             config(ConfigOverride.new("vespa.config.search.core.proton").
                 add("index", ConfigValues.new.
                     add("warmup", ConfigValues.new.add("time",5)))))
   end
 
-  def test_index_flush_and_fusion_vespa
-    set_description("Test the interaction between flush, fusion, and source selector when using Vespa index manager")
-    run_index_flush_and_fusion_test(create_app("vespa"))
+  def test_index_flush_and_fusion
+    set_description("Test the interaction between flush, fusion, and source selector when using index manager")
+    run_index_flush_and_fusion_test(create_app())
   end
 
-  def create_app(index_type)
-    SearchApp.new.sd(selfdir+"#{index_type}/test.sd")
+  def create_app
+    SearchApp.new.sd(selfdir+"test.sd")
   end
+
   def run_index_flush_and_fusion_test(app)
     deploy_app(app)
     start
@@ -113,20 +110,20 @@ class IndexManagerTest < IndexedOnlySearchTest
   end
 
   def feed_puts(doc_set, doc_set_id)
-    file = dirs.tmpdir + "feed-puts-#{doc_set_id}.xml"
-    doc_set.write_xml(file)
+    file = dirs.tmpdir + "feed-puts-#{doc_set_id}.json"
+    doc_set.write_json(file)
     feed_and_verify(file)
   end
 
   def feed_removes(doc_set, doc_set_id, phase_id)
-    file = dirs.tmpdir + "feed-removes-#{doc_set_id}-#{phase_id}.xml"
-    doc_set.write_rm_xml(file)
+    file = dirs.tmpdir + "feed-removes-#{doc_set_id}-#{phase_id}.json"
+    doc_set.write_json(file, :remove)
     feed_and_verify(file)
   end
 
   def feed_updates(doc_set, doc_set_id, phase_id)
-    file = dirs.tmpdir + "feed-updates-#{doc_set_id}-#{phase_id}.xml"
-    doc_set.write_xml(file)
+    file = dirs.tmpdir + "feed-updates-#{doc_set_id}-#{phase_id}.json"
+    doc_set.write_json(file, :update)
     feed_and_verify(file)
   end
 

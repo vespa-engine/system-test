@@ -10,20 +10,28 @@ class SortingUnset < IndexedStreamingSearchTest
   end
 
   def test_sorting_unset_fields
-    deploy_app(SearchApp.new.sd(selfdir+'unset.sd').enable_document_api)
+    deploy_app(SearchApp.new.sd(selfdir+'unset.sd'))
     start
     feed_docs
     check_sorted(nil, [0, 1, 2, 3])
     check_sorted('-year', [3, 0, 2, 1])
     check_sorted('+year', [1, 2, 0, 3])
     check_sorted('year', [1, 2, 0, 3]) unless is_streaming
+    check_sorted('-year_s', [3, 0, 2, 1])
+    check_sorted('+year_s', [1, 2, 0, 3])
+    check_sorted('year_s', [1, 2, 0, 3]) unless is_streaming
   end
 
   def feed_doc(id, year, myrank)
     doc = Document.new('unset', "id:ns:unset::#{id}")
     doc.add_field('year', year) unless year.nil?
+    doc.add_field('year_s', make_string(year)) unless year.nil?
     doc.add_field('myrank', myrank)
     vespa.document_api_v1.put(doc)
+  end
+
+  def make_string(value)
+    "%06d" % value
   end
 
   def check_sorted(sortspec, exp_ids)

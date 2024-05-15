@@ -9,7 +9,7 @@ class ApproximateNearestNeighborWithFilterTest < IndexedOnlySearchTest
 
   def test_ann_with_filters
     set_description("Test approximate nearest neighbor search with filters and tuning of strategies (pre- vs post-filter)")
-    deploy_app(SearchApp.new.sd(selfdir + "ann_with_filter/test.sd").threads_per_search(1).enable_document_api)
+    deploy_app(SearchApp.new.sd(selfdir + "ann_with_filter/test.sd").threads_per_search(1))
     start
     feed_docs
 

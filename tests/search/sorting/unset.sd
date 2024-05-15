@@ -4,6 +4,9 @@ schema unset {
     field year type int {
       indexing: attribute
     }
+    field year_s type string {
+      indexing: attribute
+    }
     field myrank type float {
       indexing: attribute
     }

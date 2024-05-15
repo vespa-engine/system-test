@@ -27,7 +27,7 @@ class FeedingAndRemovingBase < PerformanceTest
 
   def create_app(visibility_delay = 0, index_threads = 1)
     sd_file = selfdir + "test.sd"
-    app = SearchApp.new.enable_document_api.sd(sd_file).
+    app = SearchApp.new.sd(sd_file).
       container(Container.new("combinedcontainer").
                 jvmoptions('-Xms8g -Xmx8g').
                 search(Searching.new).

@@ -19,7 +19,6 @@ class StorageApp < App
                   :documentselection => :documentselection,
                   :garbagecollection => :garbagecollection,
                   :garbagecollectioninterval => :garbagecollectioninterval,
-                  :disable_fleet_controllers => :disable_fleet_controllers,
                   :distributor_base_port => :distributor_base_port,
                   :doc_type => :doc_type,
                   :streaming => :streaming,

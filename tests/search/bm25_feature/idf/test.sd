@@ -1,0 +1,42 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    field id type string {
+      indexing: index | summary
+    }
+    field content type string {
+      indexing: index | summary
+      index: enable-bm25
+    }
+    field extra type string {
+      indexing: index | summary
+      index: enable-bm25
+    }
+  }
+  fieldset both {
+    fields: content, extra
+  }
+  rank-profile default {
+    rank-properties {
+      bm25(content).averageFieldLength: 4.0
+      bm25(extra).averageFieldLength: 4.0
+    }
+    first-phase {
+      expression {
+        bm25(content) + bm25(extra)
+      }
+    }
+    summary-features {
+      bm25(content)
+      bm25(extra)
+      term(0).significance
+      term(1).significance
+    }
+    match-features {
+      bm25(content)
+      bm25(extra)
+      term(0).significance
+      term(1).significance
+    }
+  }
+}

@@ -1,0 +1,8 @@
+pandas
+numpy
+datasets
+transformers
+sentence-transformers
+torch
+huggingface-hub
+zstandard

@@ -145,6 +145,7 @@ class Storage
           #@testcase.output("Checking #{node.type}.#{index}")
           if (index.to_i == node.index)
             max_fetch_time = 0
+            lastSeenVersion = 0
             while true
               time_started = Time.now
               currVersion = vdsnode.get_cluster_state_version
@@ -160,7 +161,10 @@ class Storage
                 @testcase.output("Cluster state parsed from it: '#{clusterstate}'")
                 raise "Node #{node.type}.#{index} still has version #{currVersion} after timeout of #{timeout} seconds."
               end
-              @testcase.output("Waiting for #{node.type}.#{index} to get version >= #{clusterstate.version}. Now has #{currVersion}")
+              if currVersion > lastSeenVersion
+                @testcase.output("Waiting for #{node.type}.#{index} to get version >= #{clusterstate.version}. Now has #{currVersion}")
+                lastSeenVersion = currVersion
+              end
               sleep 0.1
             end
             node_key = "#{node.type}.#{node.index}"

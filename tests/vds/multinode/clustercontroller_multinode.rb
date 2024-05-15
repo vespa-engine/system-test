@@ -32,6 +32,9 @@ class ClusterControllerMultiNodeTest < VdsTest
   end
 
   def test_live_reconfig
+    add_expected_logged(/No known master cluster controller currently exists./)
+    add_expected_logged(/Failure code -\d+ when listening to node at \/vespa\/fleetcontroller\/storage\/indexes\/\d, will assume it's down./)
+    add_expected_logged(/Got vote from fleetcontroller \d which is not alive according to current state. Ignoring it./)
     verify_node_count(4)
     decrease_cluster_to_two_nodes()
     verify_node_count(2, 1)

@@ -16,7 +16,7 @@ class FieldMatchFeaturesStreaming < StreamingSearchTest
 
   def test_struct
     set_description("Test fieldMatch and fieldTermMatch features when using structs with both string and numeric fields")
-    deploy_app(SearchApp.new.sd(selfdir + "fmstruct.sd").enable_document_api)
+    deploy_app(SearchApp.new.sd(selfdir + "fmstruct.sd"))
     start
     doc = Document.new("fmstruct", "id:fmstruct:fmstruct:n=1:0").
       add_field("f1", { "sf" => "foo bar baz", "lf" => 1000 }).

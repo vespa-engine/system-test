@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-# -*- coding: utf-8 -*-
-require 'indexed_only_search_test'
 require 'base64'
+require 'document_set'
+require 'indexed_only_search_test'
 require 'json'
 
 class BooleanSearchTest < IndexedOnlySearchTest
@@ -54,7 +53,7 @@ class BooleanSearchTest < IndexedOnlySearchTest
     stop
   end
 
-  def write_doc(file, id, predicate, field_names = ["predicate_field"])
+  def generate_doc(id, predicate, field_names = ["predicate_field"])
     @numdocs += 1
     doc = Document.new("test", "id:test:test::#{id}")
     if predicate
@@ -62,31 +61,35 @@ class BooleanSearchTest < IndexedOnlySearchTest
         doc.add_field(field_name, predicate)
       end
     end
-    file.write(doc.to_xml())
+    doc
   end
 
-  def write_update(file, id, predicate, field_names = ["predicate_field"])
+  def generate_update(id, predicate, field_names = ["predicate_field"])
     upd = DocumentUpdate.new("test", "id:test:test::#{id}")
     for field_name in field_names
       upd.addOperation("assign", field_name, predicate)
     end
-    file.write(upd.to_xml())
+    upd
+  end
+
+  def generate_value_documents()
+    docs = DocumentSet.new
+    docs.add(generate_doc("female", "gender in [Female]"))
+    docs.add(generate_doc("male", "gender in [Male]"))
+    docs.add(generate_doc("not male", "gender not in [Male]"))
+    docs.add(generate_doc("female-NO", "gender in [Female] or country in [Norway]"))
+    docs.add(generate_doc("female-SE", "gender in [Female] or country in [Sweden]"))
+    docs.add(generate_doc("female-DK", "gender in [Female] or country in [Denmark]"))
+    docs.add(generate_doc("male-NO", "gender in [Male] or country in [Norway]"))
+    docs.add(generate_doc("male-JP", "gender in [Male] or country in ['日本']"))
+    docs.add(generate_doc("male-GB", "gender in [Male] or country in ['Great Britain']"))
+    docs.add(generate_doc("second field", "gender in [Female]", ["second_predicate"]))
+    docs.add(generate_doc("not-female-or-NO", "not(gender in [Female] or country in [Norway])"))
+    docs
   end
 
   def write_value_documents(file)
-    write_doc(file, "female", "gender in [Female]")
-    write_doc(file, "male", "gender in [Male]")
-    write_doc(file, "not male", "gender not in [Male]")
-    write_doc(file, "female-NO", "gender in [Female] or country in [Norway]")
-    write_doc(file, "female-SE", "gender in [Female] or country in [Sweden]")
-    write_doc(file, "female-DK", "gender in [Female] or country in [Denmark]")
-    write_doc(file, "male-NO", "gender in [Male] or country in [Norway]")
-    write_doc(file, "male-JP", "gender in [Male] or country in ['日本']")
-    write_doc(file, "male-GB",
-              "gender in [Male] or country in ['Great Britain']")
-    write_doc(file, "second field", "gender in [Female]", ["second_predicate"])
-    write_doc(file, "not-female-or-NO",
-              "not(gender in [Female] or country in [Norway])")
+    generate_value_documents().write_json(file)
   end
 
   def test_issue_18637()
@@ -144,13 +147,13 @@ class BooleanSearchTest < IndexedOnlySearchTest
   end
 
   def test_that_rankfeatures_does_not_core
-    File.open(@feed_file, "w") {|file| write_value_documents(file) }
+    write_value_documents(@feed_file)
     deploy_and_feed
     assert_hitcount_with_timeout(1, "query=sddocname:test&rankfeatures", @numdocs)
   end
 
   def test_boolean_searcher_value_query_terms
-    File.open(@feed_file, "w") {|file| write_value_documents(file) }
+    write_value_documents(@feed_file)
     deploy_and_feed
 
     run_value_query_terms_test
@@ -188,15 +191,21 @@ class BooleanSearchTest < IndexedOnlySearchTest
                   "second_predicate")
   end
 
+  def generate_range_documents
+    docs = DocumentSet.new
+    docs.add(generate_doc("teen", "age in [13..19]"))
+    docs.add(generate_doc("twenties", "age in [20..29]"))
+    docs.add(generate_doc("below-40", "age in [..39]"))
+    docs.add(generate_doc("above-20", "age in [20..]"))
+    docs
+  end
+
   def write_range_documents(file)
-    write_doc(file, "teen", "age in [13..19]")
-    write_doc(file, "twenties", "age in [20..29]")
-    write_doc(file, "below-40", "age in [..39]")
-    write_doc(file, "above-20", "age in [20..]")
+    generate_range_documents.write_json(file)
   end
 
   def test_boolean_searcher_range_query_terms
-    File.open(@feed_file, "w") {|file| write_range_documents(file) }
+    write_range_documents(@feed_file)
     deploy_and_feed
 
     run_range_query_terms_test
@@ -215,10 +224,12 @@ class BooleanSearchTest < IndexedOnlySearchTest
   end
 
   def test_boolean_searcher_mix_impressions
-    File.open(@feed_file, "w") {|file|
-      write_value_documents(file)
-      write_range_documents(file)
+    docs = generate_value_documents
+    range_docs = generate_range_documents
+    range_docs.documents.each { | doc|
+      docs.add(doc)
     }
+    docs.write_json(@feed_file)
     deploy_and_feed
 
     run_mix_impressions_test
@@ -266,17 +277,19 @@ class BooleanSearchTest < IndexedOnlySearchTest
   end
 
   def write_mix_documents(file)
+    docs = DocumentSet.new
     # ranges are [..)
-    write_doc(file, "teen-m", "age in [13..19] and gender in [Male]")
-    write_doc(file, "twenties-f", "age in [20..29] and gender in [Female]")
-    write_doc(file, "twenties-f-1..4",
-              "gender in [Female] and age in [20..29] and pos in [1..3]")
-    write_doc(file, "thirties-f-1..2",
-              "gender in [Female] and age in [30..39] and pos in [1..1]")
-    write_doc(file, "twenties-m-3..4",
-              "gender in [Male] and age in [20..29] and pos in [3..3]")
-    write_doc(file, "thirties-m-2..3",
-              "gender in [Male] and age in [30..39] and pos in [2..2]")
+    docs.add(generate_doc("teen-m", "age in [13..19] and gender in [Male]"))
+    docs.add(generate_doc("twenties-f", "age in [20..29] and gender in [Female]"))
+    docs.add(generate_doc("twenties-f-1..4",
+              "gender in [Female] and age in [20..29] and pos in [1..3]"))
+    docs.add(generate_doc("thirties-f-1..2",
+              "gender in [Female] and age in [30..39] and pos in [1..1]"))
+    docs.add(generate_doc("twenties-m-3..4",
+              "gender in [Male] and age in [20..29] and pos in [3..3]"))
+    docs.add(generate_doc("thirties-m-2..3",
+                       "gender in [Male] and age in [30..39] and pos in [2..2]"))
+    docs.write_json(file)
   end
 
   def test_boolean_searcher_mix_contracts
@@ -313,12 +326,14 @@ class BooleanSearchTest < IndexedOnlySearchTest
   end
 
   def write_subquery_documents(file)
-    write_doc(file, "female-or-NO",
+    docs = DocumentSet.new
+    docs.add(generate_doc("female-or-NO",
               "gender in [Female] or country in [Norway]",
-              ["predicate_field", "second_predicate"])
-    write_doc(file, "female-and-NO",
-              "gender in [Female] and country in [Norway]")
-    write_doc(file, "not female", "gender not in [Female]")
+              ["predicate_field", "second_predicate"]))
+    docs.add(generate_doc("female-and-NO",
+              "gender in [Female] and country in [Norway]"))
+    docs.add(generate_doc("not female", "gender not in [Female]"))
+    docs.write_json(file)
   end
 
   def test_boolean_searcher_subqueries
@@ -378,12 +393,14 @@ class BooleanSearchTest < IndexedOnlySearchTest
   end
 
   def write_odd_range_documents(file)
-    write_doc(file, "0", "value in [0..46]")
+    docs = DocumentSet.new
+    docs.add(generate_doc("0", "value in [0..46]"))
+    docs.write_json(file)
   end
 
   def test_boolean_searcher_odd_range_query_terms
     set_description("Test effects of bug 6379387")
-    File.open(@feed_file, "w") {|file| write_odd_range_documents(file) }
+    write_odd_range_documents(@feed_file)
     deploy_and_feed
 
     run_odd_range_query_terms_test
@@ -400,10 +417,12 @@ class BooleanSearchTest < IndexedOnlySearchTest
   end
 
   def write_empty_boolean_documents(file)
-    write_doc(file, "male", "gender in [male]")
-    write_doc(file, "empty", nil)
-    write_doc(file, "false", "false")
-    write_doc(file, "all", "true")
+    docs = DocumentSet.new
+    docs.add(generate_doc("male", "gender in [male]"))
+    docs.add(generate_doc("empty", nil))
+    docs.add(generate_doc("false", "false"))
+    docs.add(generate_doc("all", "true"))
+    docs.write_json(file)
   end
 
   def test_boolean_searcher_empty_boolean_documents
@@ -425,8 +444,10 @@ class BooleanSearchTest < IndexedOnlySearchTest
   end
 
   def write_minimum_range_value_documents(file)
-    write_doc(file, "one-value", "value in [-9223372036854775808..-9223372036854775808]")
-    write_doc(file, "range", "value in [-9223372036854775808..0]")
+    docs = DocumentSet.new
+    docs.add(generate_doc("one-value", "value in [-9223372036854775808..-9223372036854775808]"))
+    docs.add(generate_doc("range", "value in [-9223372036854775808..0]"))
+    docs.write_json(file)
   end
 
   def test_boolean_searcher_minimum_range_value
@@ -472,15 +493,19 @@ class BooleanSearchTest < IndexedOnlySearchTest
   end
 
   def write_documents_for_partial_update_test(file)
-    write_doc(file, "female-NO", "gender in [Female] or country in [Norway]")
-    write_doc(file, "female-SE", "gender in [Female] or country in [Sweden]")
-    write_doc(file, "male-NO", "gender in [Male] or country in [Norway]")
-    write_doc(file, "male-SE", "gender in [Male] or country in [Sweden]")
+    docs = DocumentSet.new
+    docs.add(generate_doc("female-NO", "gender in [Female] or country in [Norway]"))
+    docs.add(generate_doc("female-SE", "gender in [Female] or country in [Sweden]"))
+    docs.add(generate_doc("male-NO", "gender in [Male] or country in [Norway]"))
+    docs.add(generate_doc("male-SE", "gender in [Male] or country in [Sweden]"))
+    docs.write_json(file)
   end
 
   def write_updates_for_partial_update_test(file)
-    write_update(file, "female-SE", "gender in [Female] or country in [Denmark]")
-    write_update(file, "male-NO", "gender in [Male] or country in [Denmark]")
+    updates = DocumentSet.new
+    updates.add(generate_update("female-SE", "gender in [Female] or country in [Denmark]"))
+    updates.add(generate_update("male-NO", "gender in [Male] or country in [Denmark]"))
+    updates.write_json(file, :update)
   end
 
   def assert_search_and_document_summary_for_partial_update_test
@@ -501,16 +526,17 @@ class BooleanSearchTest < IndexedOnlySearchTest
 
     unoptimized_predicate = "not (not (gender in ['Male'] and age in [20..29] and true)) and country not in ['Sweden']"
     doc_id = "unoptimized-1"
-    File.open(@feed_file, "w") {|file| write_doc(file, doc_id, unoptimized_predicate) }
+    docs = DocumentSet.new
+    docs.add(generate_doc(doc_id, unoptimized_predicate))
+    docs.write_json(@feed_file)
     deploy_and_feed
 
-    container_port = Environment.instance.vespa_web_service_port
-    optimized_doc = vespa.document_api_v1.get("id:test:test::#{doc_id}", :port => container_port)
+    optimized_doc = vespa.document_api_v1.get("id:test:test::#{doc_id}")
     expected_optimized_predicate = "country not in [Sweden] and gender in [Male] and age in [20..29]"
     assert_equal(expected_optimized_predicate, optimized_doc.fields['predicate_field'])
 
-    vespa.document_api_v1.put(optimized_doc, :port => container_port)
-    reoptimized_doc = vespa.document_api_v1.get("id:test:test::#{doc_id}", :port => container_port)
+    vespa.document_api_v1.put(optimized_doc)
+    reoptimized_doc = vespa.document_api_v1.get("id:test:test::#{doc_id}")
     assert_equal(expected_optimized_predicate, reoptimized_doc.fields['predicate_field'])
   end
 

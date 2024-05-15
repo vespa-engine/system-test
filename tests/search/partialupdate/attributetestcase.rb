@@ -1,5 +1,6 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 require 'document'
+require 'document_set'
 require 'documentupdate'
 require 'search/partialupdate/vesparesult'
 
@@ -33,17 +34,17 @@ class AttributeTestCase
     return retval
   end
 
-  def write(file, objects)
-    file.write("<vespafeed>\n")
+  def write_json(file, objects, operation = :put)
+    docs = DocumentSet.new
     objects.each do |obj|
-      file.write(obj.to_xml + "\n")
+      docs.add(obj)
     end
-    file.write("</vespafeed>\n")
+    docs.write_json(file, operation)
   end
 
   def generate_max_doc(file)
     doc = Document.new(@doc_type, @id_prefix + @max_doc.to_s)
-    write(file, [doc])
+    write_json(file, [doc], :put)
   end
 
   def create_update(id)
@@ -120,7 +121,7 @@ class SingleAttributeTestCase < AttributeTestCase
       documents.push(doc)
     end
     testcase.output("generated #{@max_doc} documents") if testcase
-    write(file, documents)
+    write_json(file, documents, :put)
   end
 
   def generate_max_doc(file)
@@ -129,7 +130,7 @@ class SingleAttributeTestCase < AttributeTestCase
     @fields.each do |fd|
       doc.add_field(fd.name, 0)
     end
-    write(file, [doc])
+    write_json(file, [doc], :put)
   end
 
   def add_operation(update, operation, id)
@@ -174,7 +175,7 @@ class SingleAttributeTestCase < AttributeTestCase
     #add_simple_alter_operation(upd, "multiply", 100)
     #add_simple_alter_operation(upd, "divide", 10)
 
-    write(file, @updates)
+    write_json(file, @updates, :update)
     @updates.clear
   end
 
@@ -265,7 +266,7 @@ class SingleAttributeTestCaseExtra < SingleAttributeTestCase
     add_simple_alter_operation(upd, "multiply", 100)
     add_simple_alter_operation(upd, "divide", 10)
 
-    write(file, @updates)
+    write_json(file, @updates, :update)
     @updates.clear
   end
 
@@ -335,7 +336,7 @@ class ArrayAttributeTestCase < AttributeTestCase
       end
       documents.push(doc)
     end
-    write(file, documents)
+    write_json(file, documents, :put)
   end
 
   def add_operation(update, operation, idx)
@@ -375,7 +376,7 @@ class ArrayAttributeTestCase < AttributeTestCase
     #add_operation(upd, "add", [2])
     #add_operation(upd, "assign", [0, 1])
 
-    write(file, @updates)
+    write_json(file, @updates, :update)
     @updates.clear
   end
 
@@ -459,7 +460,7 @@ class ArrayAttributeTestCaseExtra < ArrayAttributeTestCase
     add_operation(upd, "add", [2])
     add_operation(upd, "assign", [0, 1])
 
-    write(file, @updates)
+    write_json(file, @updates, :update)
     @updates.clear
   end
 
@@ -537,21 +538,21 @@ class WeightedSetAttributeTestCase < AttributeTestCase
       doc.add_field("sortfield", i.to_s)
       doc.add_field("hitfield", "hit")
       @fields.each do |fd|
-        doc.add_field(fd.name, [fd.values[3]])
+        doc.add_field(fd.name, { "#{fd.values[3][0]}" => fd.values[3][1]})
       end
       documents.push(doc)
     end
-    write(file, documents)
+    write_json(file, documents, :put)
   end
 
   def add_operation(update, operation, idx)
     @fields.each do |fd|
-      arg = []
+      arg = Hash.new
       idx.each do |i|
         if operation == "remove"
-          arg.push(fd.values[i][0])
+          arg["#{fd.values[i][0]}"] = 0 # value does not matter, but cannot be omitted
         else
-        arg.push(fd.values[i])
+          arg["#{fd.values[i][0]}"] = fd.values[i][1]
         end
       end
       update.addOperation(operation, fd.name, arg)
@@ -560,7 +561,7 @@ class WeightedSetAttributeTestCase < AttributeTestCase
 
   def add_simple_alter_operation(update, operation, number, idx)
     @fields.each do |fd|
-      update.addSimpleAlterOperation(operation, fd.name, number, fd.values[idx][0])
+      update.addOperation(operation, fd.name, { fd.values[idx][0] => number })
     end
   end
 
@@ -639,31 +640,33 @@ class WeightedSetAttributeTestCase < AttributeTestCase
 
     upd = create_update(23) # several on same key
     add_simple_alter_operation(upd, "increment", 20, 3)
+    upd = create_update(23) # several on same key
     add_simple_alter_operation(upd, "decrement", 10, 3)
+    upd = create_update(23) # several on same key
     add_simple_alter_operation(upd, "multiply", 100, 3)
+    upd = create_update(23) # several on same key
     add_simple_alter_operation(upd, "divide", 10, 3)
 
     upd = create_update(24) # several on different keys
     add_operation(upd, "assign", [0, 1, 2, 3])
     upd = create_update(24) # several on different keys
     add_simple_alter_operation(upd, "increment", 10, 0)
+    upd = create_update(24) # several on different keys
     add_simple_alter_operation(upd, "increment", 10, 1)
+    upd = create_update(24) # several on different keys
     add_simple_alter_operation(upd, "increment", 10, 2)
+    upd = create_update(24) # several on different keys
     add_simple_alter_operation(upd, "increment", 10, 3)
 
     # remove if zero
     upd = create_update(25)
-    @fields.each do |fd|
-      upd.addSimpleAlterOperation("decrement", fd.name, 30, fd.values[3][0])
-    end
+    add_simple_alter_operation(upd, "decrement", 30, 3)
 
     # create if non existant
     upd = create_update(26)
-    @fields.each do |fd|
-      upd.addSimpleAlterOperation("increment", fd.name, 25, fd.values[2][0])
-    end
+    add_simple_alter_operation(upd, "increment", 25, 2)
 
-    write(file, @updates)
+    write_json(file, @updates, :update)
     @updates.clear
   end
 

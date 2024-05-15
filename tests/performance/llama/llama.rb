@@ -19,7 +19,7 @@ class LlamaPerformanceTest < PerformanceTest
   end
 
   def timeout_seconds
-    5000
+    1200
   end
 
   def test_llama_inference
@@ -31,7 +31,6 @@ class LlamaPerformanceTest < PerformanceTest
     deploy_app
     copy_query_file
 
-    warmup
     run_queries
   end
 
@@ -67,19 +66,12 @@ class LlamaPerformanceTest < PerformanceTest
     @container = (vespa.qrserver["0"] or vespa.container.values.first)
   end
 
-  def warmup
-    puts "Warming up... (encoding all prompts)"
-    run_fbench2(@container, @queries_file_name,
-                {:runtime => 10, :clients => 10, :append_str => "&searchChain=llm&format=sse"},
-                [])
-    puts "Warming up complete"
-  end
-
   def run_queries
-    run_fbench_helper(1)
     run_fbench_helper(5)
     run_fbench_helper(10)
-    # run_fbench_helper(20)  # will cause a lot of 429's - as parallel is set to 10 and queue to 5
+    run_fbench_helper(20)
+    run_fbench_helper(30)
+    run_fbench_helper(40)
   end
 
   def run_fbench_helper(num_clients)
@@ -87,10 +79,11 @@ class LlamaPerformanceTest < PerformanceTest
     fillers = [
       parameter_filler("clients", num_clients.to_s),
     ]
+    tokens_to_generate = 100
     profiler_start
     run_fbench2(@container,
                 @queries_file_name,
-                {:runtime => 60, :clients => num_clients, :append_str => "&searchChain=llm&format=sse"},
+                {:runtime => 60, :clients => num_clients, :append_str => "&searchChain=llm&format=sse&llm.npredict=#{tokens_to_generate}"},
                 fillers)
     profiler_report("rank_profile-#{num_clients.to_s}")
   end

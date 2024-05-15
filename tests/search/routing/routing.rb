@@ -10,7 +10,6 @@ class RoutingTest < IndexedStreamingSearchTest
 
   def three_cluster_app
     SearchApp.new.
-           enable_document_api.
            cluster(
              SearchCluster.new("music").sd(selfdir + "music.sd").
              doc_type("music", "music.year > 0")).
@@ -24,7 +23,6 @@ class RoutingTest < IndexedStreamingSearchTest
 
   def two_cluster_app
     SearchApp.new.
-           enable_document_api.
            cluster(
              SearchCluster.new("music").sd(selfdir + "music.sd").
              doc_type("music", "music.year / 3 > 0")).

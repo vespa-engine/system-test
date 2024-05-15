@@ -26,26 +26,25 @@ class VdsBasicFeeding < VdsTest
 
     docid = "id:test:music::http://localhost:5810/?query=bar&hits=1"
     # Get a document we just stored.
-    doc2 = get_doc_as_xml(docid)
+    doc2 = get_doc(docid)
     assert(doc2, "did not find #{docid} in backend")
     exp_doc2 = Document.new("music", docid).
       add_field("title", "QRS url 2").
       add_field("artist", "Known artist")
 
-    assert_equal(exp_doc2, Document.create_from_xml(doc2.root))
-    assert(doc2.root.attributes["lastmodifiedtime"].to_i > 0)
+    assert_equal(exp_doc2, Document.create_from_json(doc2, "music"))
   end
 
-  def get_doc_as_xml(id)
-    output = vespa.storage['storage'].storage["0"].execute("vespa-get --xmloutput \"#{id}\"")
-    REXML::Document.new(output)
+  def get_doc(id)
+    output = vespa.storage['storage'].storage["0"].execute("vespa-get \"#{id}\"")
+    JSON.parse(output).first
   end
 
   def test_arrays
     deploy_app(default_app)
     start
 
-    # Put docment with array attribute using vespa-feeder
+    # Put docment with array attribute
     feedfile(selfdir+"data/array.json")
 
     # Create the same document for comparison
@@ -57,7 +56,7 @@ class VdsBasicFeeding < VdsTest
       add_field("year",  1997).
       add_field("tracks", [ "Track 1", "Track 2", "Track 3" ])
 
-    # Get the documents we just stored using vespa-feeder
+    # Get the documents we just stored
     doc2 = vespa.document_api_v1.get("id:music:music::http://music.yahoo.com/bobdylan/BestOf")
 
     assert_equal(doc1, doc2)
@@ -81,7 +80,7 @@ class VdsBasicFeeding < VdsTest
     deploy_app(default_app)
     start
 
-    # Put document with array attribute using vespa-feeder
+    # Put document with array attribute
     feedfile(selfdir+"data/weightedset.json")
 
     # Create the same document for comparison
@@ -113,12 +112,12 @@ class VdsBasicFeeding < VdsTest
     assert_equal(doc3, doc4)
   end
 
-  def test_mixed_case_doctype_vespa_feeder
+  def test_mixed_case_doctype
     deploy_app(default_app.sd(VDS + "schemas/MiXedCase.sd"))
     start
 
     set_owner("vekterli")
-    feedfile(selfdir+"data/mixedcase.json", :client => :vespa_feeder)
+    feedfile(selfdir+"data/mixedcase.json")
 
     doc1 = Document.new("MiXedCase", "id:MiXedCase:MiXedCase::DaisyDaisy").
       add_field("title", "title #1").

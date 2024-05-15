@@ -21,7 +21,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     @mixed = mixed
     @multipoint_mapping = nil
     sd_file = mixed ? selfdir + "mixed/test.sd" : selfdir + "test.sd"
-    deploy_app(SearchApp.new.sd(sd_file).threads_per_search(1).enable_document_api)
+    deploy_app(SearchApp.new.sd(sd_file).threads_per_search(1))
     start
     feed_docs
 
@@ -64,7 +64,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
   def run_test_nearest_neighbor_operator_mixed_multipoint(sd_file)
     @mixed = true
     @multipoint_mapping = [[0],[1],[2],[3],[4,6],[5],[7],[8],[9],[10]]
-    deploy_app(SearchApp.new.sd(sd_file).threads_per_search(1).enable_document_api)
+    deploy_app(SearchApp.new.sd(sd_file).threads_per_search(1))
     start
     feed_docs
     run_multipoint_tests(true)
@@ -120,8 +120,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     deploy_app(SearchApp.new
                  .sd(selfdir + 'campaign.sd', { :global => true })
                  .sd(selfdir + 'ad.sd')
-                 .threads_per_search(1)
-                 .enable_document_api)
+                 .threads_per_search(1))
     start
     feed_campaign_docs
     feed_ad_docs

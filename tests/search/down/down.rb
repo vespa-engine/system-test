@@ -46,12 +46,7 @@ class Down < IndexedOnlySearchTest
   end
 
   def get_base_app(sc)
-    SearchApp.new.
-      cluster(sc).
-      container(Container.new.
-                  search(Searching.new).
-                  docproc(DocumentProcessing.new)).
-      enable_document_api
+    SearchApp.new.cluster(sc)
   end
 
   def get_app(sc)
