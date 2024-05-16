@@ -48,24 +48,18 @@ class LargeDocuments < VdsTest
   def check_dummy_feed(count, size)
     count.times { |id|
       documentid="id:test:music:n=" + id.to_s + ":1"
-      target_node.execute("vespa-get " + documentid + " >#{Environment.instance.vespa_home}/tmp/gettmp")
+      bytes = target_node.execute("vespa-get " + documentid + " | wc -c").to_i
 
-      filesize = File.size("#{Environment.instance.vespa_home}/tmp/gettmp")
-      File.delete("#{Environment.instance.vespa_home}/tmp/gettmp")
-
-      return false if filesize < size
+      return false if bytes < size
     }
 
-    target_node.execute("vespa-visit --maxpending 1 --maxpendingsuperbuckets 1 --maxbuckets 1 >#{Environment.instance.vespa_home}/tmp/visittmp")
-    filesize = File.size("#{Environment.instance.vespa_home}/tmp/visittmp")
-
-    File.delete("#{Environment.instance.vespa_home}/tmp/visittmp")
-
-    filesize >= (size * count)
+    bytes = target_node.execute("vespa-visit --maxpending 1 --maxpendingsuperbuckets 1 --maxbuckets 1 | wc -c").to_i
+    bytes >= (size * count)
   end
 
   def teardown
     stop
   end
+
 end
 
