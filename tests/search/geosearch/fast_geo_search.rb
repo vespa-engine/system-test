@@ -27,7 +27,8 @@ class FastGeoSearchTest < IndexedStreamingSearchTest
         container(Container.new("mycc").
                     search(Searching.new.
                              chain(Chain.new("default", "vespa").add(Searcher.new("com.yahoo.test.MultiPointTester")))).
-                    docproc(DocumentProcessing.new)))
+                    docproc(DocumentProcessing.new).
+                    documentapi(ContainerDocumentApi.new)))
     start
     feed_and_wait_for_docs("multipoint", 3, :file => selfdir+"feed-mp.json")
     # save_result("query=title:pizza", selfdir+"example/mp-all.json")

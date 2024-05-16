@@ -238,6 +238,9 @@ module Feeder
       if params[:mode] == "benchmark"
         p += "--benchmark "
       end
+      if params[:show_all]
+        p += "--show-all "
+      end
       if params[:silent]
         p += "--silent "
       end
