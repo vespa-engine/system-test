@@ -15,8 +15,9 @@ class RunFbench < IndexedOnlySearchTest
     @num_queries = 4000
 
     container_cluster = Container.new("container").
-      search(Searching.new).
-      component(AccessLog.new("disabled"))
+                          documentapi(ContainerDocumentApi.new).
+                          search(Searching.new).
+                          component(AccessLog.new("disabled"))
     deploy_app(SearchApp.new.
                sd("#{selfdir}/banana.sd").
                container(container_cluster))
@@ -95,6 +96,7 @@ class Fbench2 < IndexedOnlySearchTest
     @num_queries = 4000
 
     c_cluster_a = Container.new('c-a').
+                    documentapi(ContainerDocumentApi.new).
                     search(Searching.new).
                     http(Http.new.server(Server.new('foo-server', 6180))).
                     documentapi(ContainerDocumentApi.new)
@@ -107,7 +109,7 @@ class Fbench2 < IndexedOnlySearchTest
                  container(c_cluster_a).
                  container(c_cluster_b))
     start
-    feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.json")
+    feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.json", :port => 6180)
     @node = vespa.logserver
   end
 
