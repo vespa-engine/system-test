@@ -67,6 +67,8 @@ class MatchFeatures < IndexedStreamingSearchTest
     native = mf['nativeFieldMatch']
     assert(native > 0)
     @seen.add(native)
+    assert_equal(attr_value, mf['firstPhase'])
+    assert_equal(attr_value + 1, mf['secondPhase'])
   end
 
   def teardown
