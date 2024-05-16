@@ -101,7 +101,13 @@ def save_df_to_vespa_format(df: pd.DataFrame, file_name: Path) -> None:
         axis=1,
     )
     file_name = file_name.with_suffix(".json.zst")
-    df.to_json(file_name, orient="records", lines=True, compression="zstd")
+    data = ""
+    for row in df:
+        data += json.dumps(row, ensure_ascii=True) + "\n"
+    cctx = zstd.ZstdCompressor(level=1)
+    compressed_data = cctx.compress(data.encode("utf-8"))
+    with open(file_name, "wb") as f:
+        f.write(compressed_data)
     logging.info(f"Data saved in Vespa format to {file_name}")
 
 
@@ -120,7 +126,7 @@ def save_df_to_es_format(df: pd.DataFrame, file_name: Path) -> None:
             "embedding": row["embedding"].tolist(),
         }
         data += json.dumps(doc_data, ensure_ascii=True) + "\n"
-    cctx = zstd.ZstdCompressor()
+    cctx = zstd.ZstdCompressor(level=1)
     compressed_data = cctx.compress(data.encode("utf-8"))
     with open(file_name, "wb") as f:
         f.write(compressed_data)
