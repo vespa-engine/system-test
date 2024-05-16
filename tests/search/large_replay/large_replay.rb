@@ -47,7 +47,7 @@ class LargeReplay < IndexedOnlySearchTest
             add_field("f2", i.to_s)
       docs.add(doc)
     end
-    docs.write_xml(feed_file)
+    docs.write_json(feed_file)
 
     feed_and_wait_for_docs("test", num_docs, :file => feed_file)
   end

@@ -1,11 +1,13 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'document_set'
 require 'indexed_only_search_test'
 require 'pp'
 
 class SearchPartitioning < IndexedOnlySearchTest
 
   def generate_feed(file_name, count)
-    file = File.new("#{dirs.tmpdir}/generated/#{file_name}", "w")
+    docs = DocumentSet.new
+
     for i in 0..(count - 1) do
       bitstring = ""
       for bit in 16.downto(0) do
@@ -14,18 +16,17 @@ class SearchPartitioning < IndexedOnlySearchTest
         end
       end
 
-      docid = "id:test:test::doc#{i}"
+      doc = Document.new("test", "id:test:test::doc#{i}")
       title = "title#{i}#{bitstring}"
+
       body = "body#{i}" + (bitstring * 100)
 
-      document = "<document documenttype=\"test\" documentid=\"#{docid}\">\n"
-      document += "  <title>#{title}</title>\n"
-      document += "  <body>#{body}</body>\n"
-      document += "</document>\n"
+      doc.add_field("title", title)
+      doc.add_field("body", body)
 
-      file.puts(document)
+      docs.add(doc)
     end
-    file.close
+    docs.write_json(file_name)
   end
 
   def print_metrics
@@ -47,10 +48,10 @@ class SearchPartitioning < IndexedOnlySearchTest
   end
 
   def run_test
-    generate_feed("feed.xml", 1024)
+    feed_file = "#{dirs.tmpdir}/generated/feed.json"
+    generate_feed(feed_file, 1024)
     start
-    feed_and_wait_for_hitcount("title:title1", 1,
-                               :file => dirs.tmpdir + "generated/feed.xml")
+    feed_and_wait_for_hitcount("title:title1", 1, :file => feed_file)
     assert_hitcount("title:bit1&type=all", 512);
     assert_hitcount("title:bit2+title:bit4&type=all", 256);
     print_metrics
