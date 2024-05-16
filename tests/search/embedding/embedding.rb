@@ -70,16 +70,20 @@ class Embedding < IndexedStreamingSearchTest
         param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'path' => 'components/tokenizer.json'}).
         param('term-score-threshold', 1.15)
   end
-  
+
+  def default_container_setup
+    Container.new('default').
+      search(Searching.new).
+      documentapi(ContainerDocumentApi.new).
+      docproc(DocumentProcessing.new)
+  end
 
   def test_default_embedding
     deploy_app(
       SearchApp.new.
         container(
-          Container.new('default').
-            component(sentencepiece_tokenizer_component).
-            search(Searching.new).
-            docproc(DocumentProcessing.new)).
+          default_container_setup.
+            component(sentencepiece_tokenizer_component)).
         sd(selfdir + 'app_one_embedder/schemas/doc.sd').
         components_dir(selfdir + 'app_one_embedder/model').
         indexing_cluster('default').indexing_chain('indexing'))
@@ -92,11 +96,9 @@ class Embedding < IndexedStreamingSearchTest
     deploy_app(
       SearchApp.new.
         container(
-          Container.new('default').
+          default_container_setup.
             component(sentencepiece_tokenizer_component).
-            component(bert_embedder_component).
-            search(Searching.new).
-            docproc(DocumentProcessing.new)).
+            component(bert_embedder_component)).
         sd(selfdir + 'app_two_embedders/schemas/doc.sd').
         components_dir(selfdir + 'app_two_embedders/model').
         indexing_cluster('default').indexing_chain('indexing'))
@@ -110,11 +112,9 @@ class Embedding < IndexedStreamingSearchTest
     deploy_app(
       SearchApp.new.
         container(
-          Container.new('default').
+          default_container_setup.
             component(huggingface_tokenizer_component).
             component(huggingface_embedder_component).
-            search(Searching.new).
-            docproc(DocumentProcessing.new).
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_huggingface_embedder/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
@@ -128,10 +128,8 @@ class Embedding < IndexedStreamingSearchTest
     deploy_app(
       SearchApp.new.
         container(
-          Container.new('default').
+          default_container_setup.
             component(huggingface_embedder_binarization_component).
-            search(Searching.new).
-            docproc(DocumentProcessing.new).
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_huggingface_embedder_binarization_matryoshka/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
@@ -144,10 +142,8 @@ class Embedding < IndexedStreamingSearchTest
     deploy_app(
       SearchApp.new.
         container(
-          Container.new('default').
+          default_container_setup.
             component(colbert_embedder_component).
-            search(Searching.new).
-            docproc(DocumentProcessing.new).
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_colbert_embedder/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
@@ -160,10 +156,8 @@ class Embedding < IndexedStreamingSearchTest
     deploy_app(
       SearchApp.new.
         container(
-          Container.new('default').
+          default_container_setup.
             component(colbert_embedder_component_fp16).
-            search(Searching.new).
-            docproc(DocumentProcessing.new).
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_colbert_embedder_fp16/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
@@ -176,10 +170,8 @@ class Embedding < IndexedStreamingSearchTest
     deploy_app(
       SearchApp.new.
         container(
-          Container.new('default').
+          default_container_setup.
             component(colbert_embedder_component).
-            search(Searching.new).
-            docproc(DocumentProcessing.new).
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_colbert_multivector_embedder/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
@@ -192,10 +184,8 @@ class Embedding < IndexedStreamingSearchTest
     deploy_app(
       SearchApp.new.
         container(
-          Container.new('default').
+          default_container_setup.
             component(splade_embedder_component).
-            search(Searching.new).
-            docproc(DocumentProcessing.new).
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_splade_embedder/schemas/doc.sd').
         components_dir(selfdir + 'app_splade_embedder/models').
@@ -209,10 +199,8 @@ class Embedding < IndexedStreamingSearchTest
     deploy_app(
       SearchApp.new.
         container(
-          Container.new('default').
+          default_container_setup.
             component(splade_embedder_component).
-            search(Searching.new).
-            docproc(DocumentProcessing.new).
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_splade_multivector_embedder/schemas/doc.sd').
         components_dir(selfdir + 'app_splade_embedder/models').
