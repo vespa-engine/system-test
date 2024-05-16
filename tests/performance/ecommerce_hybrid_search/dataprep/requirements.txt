@@ -6,3 +6,4 @@ sentence-transformers
 torch
 huggingface-hub
 zstandard
+seaborn
