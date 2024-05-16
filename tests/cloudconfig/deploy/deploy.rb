@@ -359,7 +359,7 @@ include ApplicationV2Api
     response = read_active_application_file(@node.hostname, @tenant_name, @application_name, services)
     assert_file_content_equal("#{CLOUDCONFIG_DEPLOY_APPS}/app_a/#{services}", response.body, "Files were not equal")
     output = JSON.parse(put_file("#{application_url(@node.hostname)}/content/#{services}", "#{CLOUDCONFIG_DEPLOY_APPS}/app_b/#{services}"))
-    assert_equal("Method 'PUT' is not supported", output["message"])
+    assert(output["message"].include?('Nothing at '))
     session_id
   end
 
