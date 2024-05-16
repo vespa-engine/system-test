@@ -16,19 +16,18 @@ class EventLoggingTest < IndexedStreamingSearchTest
 
   def make_app_container(slow)
     eventstore = slow  ? 'EventStoreSlowReceiver' : 'EventStoreImpl'
-    container = Container.new('default')
-    container.component(Component.new('com.yahoo.example.SpoolingLogger').bundle(BUNDLE_NAME))
-    container.component(Component.new("com.yahoo.example.#{eventstore}").bundle(BUNDLE_NAME))
-    container.handler(Handler.new('com.yahoo.example.EventHandler').binding('http://*/events').bundle(BUNDLE_NAME))
-    container.search(Searching.new.chain(make_logging_search_chain))
-    container
+    Container.new('default')
+      .component(Component.new('com.yahoo.example.SpoolingLogger').bundle(BUNDLE_NAME))
+      .component(Component.new("com.yahoo.example.#{eventstore}").bundle(BUNDLE_NAME))
+      .handler(Handler.new('com.yahoo.example.EventHandler').binding('http://*/events').bundle(BUNDLE_NAME))
+      .search(Searching.new.chain(make_logging_search_chain))
+      .documentapi(ContainerDocumentApi.new)
   end
 
   def make_app(slow)
-    app = SearchApp.new
-    app.container(make_app_container(slow))
-    app.sd(selfdir + 'schemas/music.sd')
-    app
+    SearchApp.new
+      .container(make_app_container(slow))
+      .sd(selfdir + 'schemas/music.sd')
   end
 
   def test_event_logging
