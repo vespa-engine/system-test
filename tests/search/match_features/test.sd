@@ -40,6 +40,9 @@ schema test {
     first-phase {
       expression: attribute(order)
     }
+    second-phase {
+      expression: attribute(order) + 1
+    }
     match-features {
       value(2)
       attribute(order)
@@ -47,6 +50,8 @@ schema test {
       rankingExpression(score_per_x)
       nativeFieldMatch
       query(vec)
+      firstPhase
+      secondPhase
     }
   }
 
