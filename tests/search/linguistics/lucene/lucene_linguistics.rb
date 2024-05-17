@@ -14,7 +14,8 @@ class LuceneLinguistics < IndexedOnlySearchTest
                    Container.new('default').
                      component(lucene_linguistics_component).
                      search(Searching.new).
-                     docproc(DocumentProcessing.new)).
+                     docproc(DocumentProcessing.new).
+                     documentapi(ContainerDocumentApi.new)).
                  sd(selfdir + 'lucene.sd'))
     start
     feed_and_wait_for_docs("lucene", 1, :file => selfdir + "document.json")
