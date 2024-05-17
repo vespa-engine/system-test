@@ -21,6 +21,7 @@ class MapInSummaryBug < IndexedStreamingSearchTest
         cluster_name("multitest").
         sd(selfdir+"withmap.sd").
         container(Container.new("mycc").
+                    documentapi(ContainerDocumentApi.new).
                     search(Searching.new.
                              chain(Chain.new("default", "vespa").add(searcher))).
                     docproc(DocumentProcessing.new)))

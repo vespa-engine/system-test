@@ -32,6 +32,7 @@
         <documentprocessor id="com.yahoo.vespatest.BananaDocProc" />
       </chain>
     </document-processing>
+    <document-api/>
   </container>
 
   <container version="1.0">

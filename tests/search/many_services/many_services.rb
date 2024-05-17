@@ -15,7 +15,8 @@ class Many_Services < IndexedStreamingSearchTest
 
   def test_many_services_realtime
     deploy_app(SearchApp.new.slobrok("node1").slobrok("node1").
-                      container(Container.new("foo").
+                 container(Container.new("foo").
+                             documentapi(ContainerDocumentApi.new).
                              search(Searching.new).
                              http(Http.new.
                                   server(Server.new("foo-server", 4080)))).
@@ -65,7 +66,7 @@ class Many_Services < IndexedStreamingSearchTest
   end
 
   def push_realtime(file)
-    feedfile(selfdir+file)
+    feedfile(selfdir+file, :port => 4080)
   end
 
   def assert_resultsets(result, savedresultfile)

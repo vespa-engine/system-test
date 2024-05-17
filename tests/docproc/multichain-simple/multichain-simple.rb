@@ -15,19 +15,23 @@ class MultiChainSimple < DocprocTest
   end
 
   def test_multichain_simple
-    feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.json", :cluster => "worst")
+    options = { :cluster => "worst", :port => 4090 }
+    worst_input = DOCPROC + "data/worst-input.json"
+    worst_remove = DOCPROC + "data/worst-remove.json"
+
+    feed_and_wait_for_docs("worst", 4, options.merge({:file => worst_input}))
     assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-default.json")
-    feed_and_wait_for_docs("worst", 0, :file => DOCPROC+"data/worst-remove.json", :cluster => "worst")
+    feed_and_wait_for_docs("worst", 0, options.merge({:file => worst_remove}))
 
-    feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.json", :cluster => "worst", :route => "\"banana/chain.split indexing\"")
+    feed_and_wait_for_docs("worst", 4, options.merge({:file => worst_input, :route => "\"banana/chain.split indexing\""}))
     assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-banana.json")
-    feed_and_wait_for_docs("worst", 0, :file => DOCPROC+"data/worst-remove.json", :cluster => "worst", :route => "\"banana/chain.split indexing\"")
+    feed_and_wait_for_docs("worst", 0, options.merge({:file => worst_remove, :route => "\"banana/chain.split indexing\""}))
 
-    feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.json", :cluster => "worst", :route => "\"container/chain.apple indexing\"")
+    feed_and_wait_for_docs("worst", 4, options.merge({:file => worst_input, :route => "\"container/chain.apple indexing\""}))
     assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-apple.json")
-    feed_and_wait_for_docs("worst", 0, :file => DOCPROC+"data/worst-remove.json", :cluster => "worst", :route => "\"container/chain.apple indexing\"")
+    feed_and_wait_for_docs("worst", 0, options.merge({:file => worst_remove, :route => "\"container/chain.apple indexing\""}))
 
-    feed_and_wait_for_docs("worst", 4, :file => DOCPROC+"data/worst-input.json", :cluster => "worst", :route => "\"container/chain.default banana/chain.split container/chain.apple indexing\"")
+    feed_and_wait_for_docs("worst", 4, options.merge({:file => worst_input, :route => "\"container/chain.default banana/chain.split container/chain.apple indexing\""}))
     assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-all.json")
   end
 

@@ -14,7 +14,8 @@ class MbusTimeout < IndexedStreamingSearchTest
 	       container(Container.new.
 			 search(Searching.new).
 			 docproc(DocumentProcessing.new.
-				 chain(Chain.new.add(DocProc.new("com.yahoo.vespatest.SleeperDocproc"))))))
+				   chain(Chain.new.add(DocProc.new("com.yahoo.vespatest.SleeperDocproc")))).
+                         documentapi(ContainerDocumentApi.new)))
     start
   end
 
