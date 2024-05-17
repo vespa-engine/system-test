@@ -101,7 +101,8 @@ class JavaDispatchTest < IndexedOnlySearchTest
     .container(
       Container.new("mycc")
       .search(Searching.new.chain(Chain.new("default", "vespa").add(searcher)))
-      .docproc(DocumentProcessing.new))
+      .docproc(DocumentProcessing.new)
+      .documentapi(ContainerDocumentApi.new))
     .cluster(
       SearchCluster.new("mycluster")
       .sd(selfdir + "test.sd")

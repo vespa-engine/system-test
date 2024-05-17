@@ -14,6 +14,7 @@ class LongQueries < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.
                    sd(SEARCH_DATA+"music.sd").
                    container(Container.new.
+                                 documentapi(ContainerDocumentApi.new).
                                  search(Searching.new).
                                  http(Http.new.
                                           server(Server.

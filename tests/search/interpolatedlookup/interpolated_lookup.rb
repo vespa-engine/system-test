@@ -20,7 +20,8 @@ class InterpolatedLookupTest < IndexedStreamingSearchTest
                container(
                          Container.new("mycc").
                          search(Searching.new).
-                         docproc(DocumentProcessing.new)).
+                         docproc(DocumentProcessing.new).
+                         documentapi(ContainerDocumentApi.new)).
                cluster(SearchCluster.new("multitest").
                       sd(selfdir+"sad.sd").
                       indexing("mycc")))
@@ -71,7 +72,8 @@ class InterpolatedLookupTest < IndexedStreamingSearchTest
                container(
                          Container.new("mycc").
                          search(Searching.new).
-                         docproc(DocumentProcessing.new)).
+                         docproc(DocumentProcessing.new).
+                         documentapi(ContainerDocumentApi.new)).
                cluster(SearchCluster.new("multitest").
                       sd(selfdir+"sad.sd").
                       indexing("mycc")))
@@ -112,7 +114,8 @@ class InterpolatedLookupTest < IndexedStreamingSearchTest
                container(
                          Container.new("mycc").
                          search(Searching.new).
-                         docproc(DocumentProcessing.new)).
+                         docproc(DocumentProcessing.new).
+                         documentapi(ContainerDocumentApi.new)).
                cluster(SearchCluster.new("multitest").
                       sd(selfdir+"sad.sd").
                       threads_per_search(1).
