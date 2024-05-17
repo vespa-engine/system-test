@@ -8,6 +8,7 @@
 
   <container version="1.0">
     <search/>
+    <document-api/>
     <document-processing>
       <include dir='docproc/dir1' />
       <include dir='docproc/dir2' />

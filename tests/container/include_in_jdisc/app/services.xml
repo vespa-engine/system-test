@@ -11,6 +11,7 @@
       <include dir='jdisc_include' />
     </components>
     <search/>
+    <document-api/>
     <document-processing>
       <chain id="default">
         <documentprocessor id="test.ExampleDocumentProcessor" bundle="mybundle"/>

@@ -20,7 +20,8 @@ class Inheritance < IndexedStreamingSearchTest
                         indexing("dp")).
                       container(Container.new("dp").
                         search(Searching.new).
-                        docproc(DocumentProcessing.new)))
+                        docproc(DocumentProcessing.new).
+                        documentapi(ContainerDocumentApi.new)))
     start
     feed_and_wait_for_docs("mp3", 1, :file => selfdir+"onemp3.json", :cluster => "mp3")
     feed_and_wait_for_docs("image", 1, :file => selfdir+"oneimage.json", :cluster => "image")
