@@ -35,7 +35,8 @@ class InheritedStruct < IndexedStreamingSearchTest
                          concretedoc(ConcreteDoc.new('usebase').bundle('inheritedconcretedocs')).
                          docproc(DocumentProcessing.new.
                                  chain(Chain.new('mydpchain', 'indexing').
-                                       add(mydp)))))
+                                         add(mydp))).
+                         documentapi(ContainerDocumentApi.new)))
     start
     feed(:file => selfdir + 'docs.json')
     vespa.adminserver.execute('vespa-visit')

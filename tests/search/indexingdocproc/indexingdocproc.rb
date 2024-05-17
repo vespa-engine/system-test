@@ -13,7 +13,8 @@ class IndexingDocproc < IndexedStreamingSearchTest
                                              indexing("dpcluster1")).
                container(Container.new("dpcluster1").
                          search(Searching.new).
-                         docproc(DocumentProcessing.new)))
+                         docproc(DocumentProcessing.new).
+                         documentapi(ContainerDocumentApi.new)))
     start
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json")
   end
@@ -26,7 +27,8 @@ class IndexingDocproc < IndexedStreamingSearchTest
                container(Container.new("dpcluster1").
                          search(Searching.new).
                          docproc(DocumentProcessing.new.chain(Chain.new("banana", "indexing").add(
-                                    DocumentProcessor.new("com.yahoo.vespatest.WorstMusicDocProc", "indexingStart"))))))
+                                                                DocumentProcessor.new("com.yahoo.vespatest.WorstMusicDocProc", "indexingStart")))).
+                         documentapi(ContainerDocumentApi.new)))
     start
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json")
     assert_result("query=sddocname:music",
