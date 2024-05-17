@@ -11,6 +11,7 @@
 
   <container version="1.0" id="default">
     <search />
+    <document-api />
     <document-processing>
       <chain id="default">
           <documentprocessor id="com.yahoo.vespatest.WorstMusicDocProc" />

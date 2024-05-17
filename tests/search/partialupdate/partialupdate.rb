@@ -493,7 +493,8 @@ class PartialUpdate < IndexedStreamingSearchTest
     deploy_app(SearchApp.new.sd(selfdir + "compaction.sd").
                  container(Container.new.component(AccessLog.new("disabled")).
                              search(Searching.new).
-                             docproc(DocumentProcessing.new)))
+                             docproc(DocumentProcessing.new).
+                             documentapi(ContainerDocumentApi.new)))
     start
     proton = vespa.search["search"].first
     transfer_fbench_queries(selfdir + "slowqueries")

@@ -14,7 +14,8 @@ class NoChainsMultiSearch < DocprocTest
             container(
             Container.new("default").
                 search(Searching.new).
-                docproc(DocumentProcessing.new)
+                docproc(DocumentProcessing.new).
+                documentapi(ContainerDocumentApi.new)
         ).
             container(
             Container.new("musicindexingcluster").

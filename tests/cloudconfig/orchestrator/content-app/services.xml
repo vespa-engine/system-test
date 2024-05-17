@@ -20,4 +20,12 @@
       </proton>
     </engine>
   </content>
+
+  <container version="1.0" id="default">
+    <document-api />
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+  </container>
+
 </services>

@@ -11,7 +11,8 @@ class ProcessOnly < IndexedStreamingSearchTest
                container(Container.new("default").
                          docproc(DocumentProcessing.new.
                                  chain(Chain.new("default").
-                                       add(DocumentProcessor.new("com.yahoo.vespatest.MyProcessor"))))))
+                                         add(DocumentProcessor.new("com.yahoo.vespatest.MyProcessor")))).
+                         documentapi(ContainerDocumentApi.new)))
     start
   end
   
