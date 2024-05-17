@@ -9,7 +9,8 @@ class MergeChainingTest < VdsMultiModelTest
     @valgrind = false
     @num_users = 100
     @docs_per_user = 100
-    make_feed_file("tmpfeed_mergechaining.xml", "music", 0, @num_users - 1, @docs_per_user)
+    @feed_file = "tmpfeed_mergechaining.json"
+    make_feed_file(@feed_file, "music", 0, @num_users - 1, @docs_per_user)
 
     deploy_app(default_app.num_nodes(4).redundancy(4))
     start
@@ -17,8 +18,8 @@ class MergeChainingTest < VdsMultiModelTest
 
   def teardown
     begin
-      if File.exist?("tmpfeed_mergechaining.xml")
-        File.delete("tmpfeed_mergechaining.xml")
+      if File.exist?(@feed_file)
+        File.delete(@feed_file)
       end
     ensure
       stop
@@ -41,7 +42,7 @@ class MergeChainingTest < VdsMultiModelTest
     puts "Verifying initial document count"
     vespa.storage["storage"].assert_document_count(0)
 
-    feedfile("tmpfeed_mergechaining.xml")
+    feedfile(@feed_file)
 
     vespa.storage["storage"].wait_until_ready
 
