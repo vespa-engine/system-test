@@ -22,8 +22,8 @@ class ShoppingUrlCompress < DocprocTest
                          search(Searching.new.
                                 chain(Chain.new("default", "vespa").add(searcher))).
                          docproc(DocumentProcessing.new.
-                                 chain(Chain.new("shoppingindexing", "indexing").add(processor))
-                                 )).
+                                 chain(Chain.new("shoppingindexing", "indexing").add(processor))).
+                         documentapi(ContainerDocumentApi.new)).
                logserver("node1").
                slobrok("node1").
                search(SearchCluster.new("shopping").sd(selfdir+"app/schemas/shopping.sd").
