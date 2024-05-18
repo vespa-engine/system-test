@@ -63,7 +63,8 @@ module ResizeApps
         num_hosts(@num_hosts).
         container(Container.new.
             search(Searching.new).
-            docproc(DocumentProcessing.new)).
+            docproc(DocumentProcessing.new).
+            documentapi(ContainerDocumentApi.new)).
         storage(StorageCluster.new("resize", 41).distribution_bits(16)).
         validation_override("cluster-size-reduction").
         config(ConfigOverride.new("vespa.config.content.core.stor-distributormanager").

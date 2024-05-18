@@ -59,7 +59,8 @@ class SearchCoverageTest < IndexedOnlySearchTest
     .container(
       Container.new
       .search(Searching.new.chain(Chain.new("default", "vespa")))
-      .docproc(DocumentProcessing.new))
+      .docproc(DocumentProcessing.new)
+      .documentapi(ContainerDocumentApi.new))
     .cluster(
       SearchCluster.new("mycluster")
       .sd(selfdir + "test.sd")

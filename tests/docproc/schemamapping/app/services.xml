@@ -21,7 +21,8 @@
 
 
   <container id="default" version="1.0">
-  
+
+   <document-api/>
    <search/>
 
    <document-processing>
