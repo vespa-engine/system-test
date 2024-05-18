@@ -11,13 +11,13 @@ class ReturnTimestamps < VdsTest
   end
 
   def test_return_timestamps
-    # Put document using vespa-feeder
-    output = feedfile(selfdir+"data/returntimestamps.json", { :trace => 9, :maxpending => 1 })
+    output = feedfile(selfdir+"data/returntimestamps.json", { :client => :vespa_feed_client, :trace => 9, :maxpending => 1, :show_all => true })
 
     set = Set.new
+    # Output depends on client, this works with vespa-feed-client
     output.each_line { |s|
-	if (s =~ /Modification timestamp/)
-          set.add(s[53..60])
+	if (s =~ /Modification timestamp: (\d+)/)
+          set.add($1)
         end
     }
 
@@ -27,5 +27,5 @@ class ReturnTimestamps < VdsTest
   def teardown
     stop
   end
-end
 
+end

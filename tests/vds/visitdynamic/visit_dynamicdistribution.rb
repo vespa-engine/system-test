@@ -16,7 +16,7 @@ class VisitDynamicDistributionTest < PersistentProviderTest
     @progressFile = "#{Environment.instance.vespa_home}/tmp/progress_dynamic"
     set_owner("vekterli")
 
-    @feed_file = "#{SecureRandom::urlsafe_base64}_tmpfeed_visitdynamic.xml"
+    @feed_file = "#{SecureRandom::urlsafe_base64}_tmpfeed_visitdynamic.json"
     make_feed_file(@feed_file, "music", 0, 4, 100)
     set_expected_logged(/pidfile/)
 
