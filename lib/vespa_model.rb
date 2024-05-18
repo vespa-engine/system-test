@@ -314,16 +314,14 @@ class VespaModel
     document_api_port = nil
     @qrserver.each_with_index do | qrs, index |
       if (qrs["#{index}"] and qrs["#{index}"].http_port and qrs["#{index}"].http_port.to_i == @default_document_api_port)
-        puts "Found qrs with port #{@default_document_api_port} for qrs index #{index}"
         document_api_port = @default_document_api_port
         break
       end
     end
-    puts "@default_document_api_port=#{@default_document_api_port}"
+
     unless document_api_port
       @container.each_value do | container |
         if (container and container.ports.include?(@default_document_api_port))
-          puts "Found container with port #{@default_document_api_port} for container #{container}"
           document_api_port = @default_document_api_port
           break
         end
