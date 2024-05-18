@@ -3,6 +3,7 @@
     <adminserver hostalias="node1"/>
   </admin>
   <container version="1.0">
+    <document-api/>
     <search/>
     <nodes>
       <node hostalias="node1"/>

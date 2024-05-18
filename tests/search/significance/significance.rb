@@ -28,7 +28,8 @@ class SignificanceTest < IndexedStreamingSearchTest
               Searching.new.
                 significance(default_significance_model_component)
             ).
-            docproc(DocumentProcessing.new)).
+            docproc(DocumentProcessing.new).
+            documentapi(ContainerDocumentApi.new)).
         sd(selfdir + 'app_one_significance/schemas/doc.sd').
         components_dir(selfdir + 'app_one_significance/models').
         indexing_cluster('default').indexing_chain('indexing'))
@@ -46,7 +47,8 @@ class SignificanceTest < IndexedStreamingSearchTest
               Searching.new.
                 significance(significance_model_component_multiple_models)
             ).
-            docproc(DocumentProcessing.new)).
+            docproc(DocumentProcessing.new).
+            documentapi(ContainerDocumentApi.new)).
         sd(selfdir + 'app_one_significance/schemas/doc.sd').
         components_dir(selfdir + 'app_one_significance/models').
         indexing_cluster('default').indexing_chain('indexing'))

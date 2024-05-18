@@ -11,8 +11,9 @@ class SimpleLinguistics < IndexedStreamingSearchTest
   def make_app
     app = SearchApp.new
     container = Container.new('container').search(Searching.new)
-    container.docproc(DocumentProcessing.new)
-    container.component(Component.new('com.yahoo.language.simple.SimpleLinguistics'))
+                  .docproc(DocumentProcessing.new)
+                  .documentapi(ContainerDocumentApi.new)
+                  .component(Component.new('com.yahoo.language.simple.SimpleLinguistics'))
     app.container(container)
     app.indexing_cluster('container')
     app.sd(selfdir + 'app/schemas/test.sd')

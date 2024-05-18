@@ -16,7 +16,8 @@ class SearchchainsClusterConnections < IndexedStreamingSearchTest
                cluster(SearchCluster.new(doctype2).sd(selfdir + "#{doctype2}.sd").
                        doc_type(doctype2)).
                container(Container.new("container1").
-                         search(Searching.new.chain(Provider.new(doctype1, "local").cluster(doctype1)))).
+                           search(Searching.new.chain(Provider.new(doctype1, "local").cluster(doctype1))).
+                           documentapi(ContainerDocumentApi.new)).
                container(Container.new("container2").http(Http.new.server(Server.new("default", "5000"))).
                          search(Searching.new.chain(Provider.new(doctype2, "local").cluster(doctype2)))))
   end
