@@ -18,7 +18,8 @@ class StructuredSummaryFeaturesTest < IndexedStreamingSearchTest
         container(Container.new("mycc").
                     search(Searching.new.
                              chain(Chain.new("default", "vespa").add(searcher))).
-                    docproc(DocumentProcessing.new)))
+                    docproc(DocumentProcessing.new).
+                    documentapi(ContainerDocumentApi.new)))
     start
     feed_and_wait_for_docs("sfdtest", 3, :file => selfdir+"feed-2.json")
     # save_result("query=title:word",                         selfdir+"result.wd.json")
