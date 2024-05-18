@@ -21,10 +21,9 @@ class FeedingWhileDistributorsDieTest < VdsTest
   end
 
   def test_feedingwhiledistributorsdie
-
     feederoutput = ""
     feederthread = Thread.new do
-      feederoutput = vespa.storage["storage"].storage["0"].feedfile(selfdir + "data.json", :maxretries => 5)
+      feederoutput = vespa.storage["storage"].storage["0"].feedfile(selfdir + "data.json", :maxretries => 5, :client => :vespa_feed_client)
     end
 
     stop_distributor 0
@@ -43,14 +42,13 @@ class FeedingWhileDistributorsDieTest < VdsTest
 
     feederthread.join
 
-    assert(feederoutput.index("ok: 1000"))
-    assert(feederoutput.index("failed: 0"))
-
+    assert(feederoutput.index("\"feeder.ok.count\" : 1000"))
+    assert(feederoutput.index("\"feeder.error.count\" : 0"))
   end
 
   def teardown
-    vespa.storage["storage"].storage["0"].kill_process("vespa-feeder")
+    vespa.storage["storage"].storage["0"].kill_process("vespa-feed-client")
     stop
   end
-end
 
+end

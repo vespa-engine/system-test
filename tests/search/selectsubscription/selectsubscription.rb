@@ -16,11 +16,9 @@ class SelectSubscription < IndexedStreamingSearchTest
   end
 
   def test_selectNoSubscriptions
-    feedoutput = feed_and_wait_for_docs("books", 0, :file => selfdir + "books.0.json", :clusters => [ "books1", "books2" ], :exceptiononfailure => false);
-    assert_correct_output(["ok: 0"],  feedoutput)
-    assert_correct_output(["ignored: 10"],  feedoutput)
-
-    #save_result("query=mid:1", selfdir + "ssub.0.result.json")
+    # Feed 10 docs, no docs with isbn '1555844022' or 'none'
+    feedoutput = feed_and_wait_for_docs("books", 0, :client => :vespa_feed_client, :file => selfdir + "books.0.json")
+    assert_correct_output(["\"feeder.ok.count\" : 10"],  feedoutput)
 
     assert_result("query=mid:1", selfdir + "ssub.0.result.json");
     assert_result("query=mid:2", selfdir + "ssub.0.result.json");
@@ -28,8 +26,9 @@ class SelectSubscription < IndexedStreamingSearchTest
   end
 
   def test_selectOneSubscription
-    feedoutput = feed_and_wait_for_docs("books", 5, :file => selfdir + "books.1.json", :clusters => [ "books1", "books2" ], :exceptiononfailure => false)
-    assert_correct_output(["ok: 5"], feedoutput)
+    # Feed 1 doc with isbn '1555844022' and 4 with 'none'
+    feedoutput = feed_and_wait_for_docs("books", 5, :client => :vespa_feed_client, :file => selfdir + "books.1.json")
+    assert_correct_output(["\"feeder.ok.count\" : 5"], feedoutput)
 
     assert_result("query=mid:1", selfdir + "ssub.1.result.json", "title")
     assert_result("query=mid:2", selfdir + "ssub.2.result.json", "title")
@@ -37,13 +36,9 @@ class SelectSubscription < IndexedStreamingSearchTest
   end
 
   def test_selectSomeSubscriptions
-    feedoutput = feed_and_wait_for_docs("books", 5, :file => selfdir + "books.01.json", :clusters => [ "books1", "books2" ], :exceptiononfailure => false);
-    assert_correct_output(["ok: 5"], feedoutput)
-    assert_correct_output(["ignored: 10"], feedoutput)
-
-    #save_result("query=mid:1", selfdir + "ssub.1.result.json")
-    #save_result("query=mid:2", selfdir + "ssub.2.result.json")
-    #save_result("query=mid:3", selfdir + "ssub.3.result.json")
+    # Feed 15 docs, 1 with isbn '1555844022', 4 with 'none' and 10 with other isbns
+    feedoutput = feed_and_wait_for_docs("books", 5, :client => :vespa_feed_client, :file => selfdir + "books.01.json")
+    assert_correct_output(["\"feeder.ok.count\" : 15"], feedoutput)
 
     assert_result("query=mid:1", selfdir + "ssub.1.result.json", "title")
     assert_result("query=mid:2", selfdir + "ssub.2.result.json", "title")

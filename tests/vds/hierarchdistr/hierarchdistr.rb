@@ -115,7 +115,7 @@ class HierarchDistr < VdsMultiModelTest
     @valgrind = false
     deploy_and_wait(app2, true)
     
-    feed_file = tempfile_name("1000_buckets_app2.xml")
+    feed_file = tempfile_name("1000_buckets_app2.json")
     make_feed_file(feed_file, "music", 0, 999, 1)
     vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
     feedfile(feed_file, :route => "storage")
@@ -140,7 +140,7 @@ class HierarchDistr < VdsMultiModelTest
   def test_app2
     deploy_and_wait(app2, true)
 
-    feed_file = tempfile_name("1000_buckets_app2.xml")
+    feed_file = tempfile_name("1000_buckets_app2.json")
     make_feed_file(feed_file, "music", 0, 999, 1)
     vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
     feedfile(feed_file, :route => "storage")
@@ -185,7 +185,7 @@ class HierarchDistr < VdsMultiModelTest
   def test_app3
     deploy_and_wait(app3, true)
 
-    feed_file = tempfile_name("1000_buckets_app3.xml")
+    feed_file = tempfile_name("1000_buckets_app3.json")
     make_feed_file(feed_file, "music", 0, 999, 1)
     vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
     feedfile(feed_file, :route => "storage")
@@ -243,7 +243,7 @@ class HierarchDistr < VdsMultiModelTest
   def test_app4
     deploy_and_wait(app4, true)
 
-    feed_file = tempfile_name("1000_buckets_app4.xml")
+    feed_file = tempfile_name("1000_buckets_app4.json")
     make_feed_file(feed_file, "music", 0, 999, 1)
     vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
     feedfile(feed_file, :route => "storage")

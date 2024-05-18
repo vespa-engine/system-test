@@ -6,7 +6,7 @@ class Split < VdsTest
   def setup
     @numbuckets=20
     set_owner("vekterli")
-    make_feed_file("docs_test_split_buckets.xml", "music", 0, @numbuckets - 1, 6)
+    make_feed_file("docs_test_split_buckets.json", "music", 0, @numbuckets - 1, 6)
   end
 
   def timeout_seconds
