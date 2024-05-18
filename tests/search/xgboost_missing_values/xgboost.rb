@@ -17,8 +17,10 @@ class XGBoostMissingValues < IndexedStreamingSearchTest
 
   def make_app
     app = SearchApp.new
-    container = Container.new('default').search(Searching.new)
-    container.component("    <model-evaluation />\n")
+    container = Container.new('default')
+                  .search(Searching.new)
+                  .documentapi(ContainerDocumentApi.new)
+                  .component("    <model-evaluation />\n")
     app.container(container)
     app.sd(selfdir + 'app/schemas/xgboost.sd')
     app

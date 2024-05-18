@@ -196,7 +196,8 @@ class StreamingMatcherPart1 < StreamingMatcher
 	              container(Container.new.
 				search(Searching.new).
 				docproc(DocumentProcessing.new.
-					chain(Chain.new.add(DocProc.new("com.yahoo.vespatest.StructDocProc"))))))
+					  chain(Chain.new.add(DocProc.new("com.yahoo.vespatest.StructDocProc")))).
+                                documentapi(ContainerDocumentApi.new)))
     start
     feedfile(selfdir+"feedstruct.json")
     wait_for_hitcount("query=ssf1:ssf1&streaming.userid=1", 1)

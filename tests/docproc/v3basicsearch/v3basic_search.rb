@@ -14,7 +14,8 @@ class V3BasicDocproc < SearchContainerTest
                 search(Searching.new).
                 docproc(DocumentProcessing.new.chain(
                             Chain.new("default").add(
-                                DocumentProcessor.new("com.yahoo.vespatest.WorstMusicDocProc"))))).
+                              DocumentProcessor.new("com.yahoo.vespatest.WorstMusicDocProc")))).
+                          documentapi(ContainerDocumentApi.new)))
             logserver("node1").
             slobrok("node1").
             search(SearchCluster.new("worst").sd(DOCPROC + "data/worst.sd"))

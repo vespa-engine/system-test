@@ -20,6 +20,7 @@ class VespaApplication < IndexedStreamingSearchTest
         container(Container.new.
                       search(Searching.new).
                       docproc(DocumentProcessing.new).
+                      documentapi(ContainerDocumentApi.new).
                       http(Http.new.server(Server.new("node1", 16666))))
 
     deploy_app(app)

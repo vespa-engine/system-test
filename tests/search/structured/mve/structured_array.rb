@@ -18,7 +18,8 @@ class StructuredArrayTest < IndexedStreamingSearchTest
         container(Container.new("mycc").
                     search(Searching.new.
                              chain(Chain.new("default", "vespa").add(searcher))).
-                    docproc(DocumentProcessing.new)))
+                    docproc(DocumentProcessing.new).
+                documentapi(ContainerDocumentApi.new)))
     start
     feed_and_wait_for_docs("mvdtest", 1, :file => selfdir+"feed-1.json")
     # save_result("query=titles:%22slim%20shady%22", selfdir+"result.ss.json")

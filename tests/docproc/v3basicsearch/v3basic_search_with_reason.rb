@@ -15,7 +15,8 @@ class V3BasicDocprocWithReason < SearchContainerTest
                 search(Searching.new).
                 docproc(DocumentProcessing.new.chain(
                             Chain.new("default").add(
-                                DocumentProcessor.new("com.yahoo.vespatest.WithReasonDocProc"))))).
+                              DocumentProcessor.new("com.yahoo.vespatest.WithReasonDocProc")))).
+                documentapi(ContainerDocumentApi.new)).
             search(SearchCluster.new("worst").sd(DOCPROC + "data/worst.sd"))
     )
     start

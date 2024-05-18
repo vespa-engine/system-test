@@ -18,7 +18,8 @@ class StructuredWeightedSetTest < IndexedStreamingSearchTest
         container(Container.new("mycc").
                     search(Searching.new.
                              chain(Chain.new("default", "vespa").add(searcher))).
-                    docproc(DocumentProcessing.new)))
+                    docproc(DocumentProcessing.new).
+                    documentapi(ContainerDocumentApi.new)))
     start
     feed_and_wait_for_docs("wstest", 1, :file => selfdir+"feed-3.json")
     # save_result("query=titles:%22james%20bond%22", selfdir+"result.ws.json")
