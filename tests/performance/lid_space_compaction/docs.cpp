@@ -49,20 +49,23 @@ void produce_puts(size_t numDocs) {
         data.push_back(s);
     }
 
-    std::cout << "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" << std::endl;
-    std::cout << "<vespafeed>" << std::endl;
+    std::cout << "[" << std::endl;
     for (size_t i(0); i < numDocs; i++) {
         size_t key = i % num_unique_keys;
         char id[128];
-        sprintf(id, "id:test:test::%05ld", i);
-        std::cout << "<document documenttype=\"test\" documentid=\"" << id << "\">\n"; 
-        std::cout << "  <body>" << data[rand()%num_unique] << "</body>\n";
-        std::cout << "  <id>" << i << "</id>\n";
-        std::cout << "  <key>" << key << "</key>\n";
-        std::cout << "  <slowkey>" << key << "</slowkey>\n";
-        std::cout << "</document>\n";
+        sprintf(id, "{ \"put\": \"id:test:test::%05ld\",\n \"fields\": {", i);
+        std::cout << id;
+        std::cout << " \"body\": \"" << data[rand()%num_unique] << "\",";
+        std::cout << " \"id\": "  << i << ",";
+        std::cout << " \"key\": " << key << ",";
+        std::cout << " \"slowkey\": " << key;
+        std::cout << " }" << std::endl;
+        std::cout << "}";
+        if (i < numDocs - 1) {
+          std::cout << "," << std::endl;
+        }
     }
-    std::cout << "</vespafeed>" << std::endl;
+    std::cout << std::endl << "]" << std::endl;
 }
 
 void produce_removes(size_t numDocs, size_t cap) {
@@ -76,13 +79,15 @@ void produce_removes(size_t numDocs, size_t cap) {
         ids[index] = ids.back();
         ids.resize(ids.size() - 1);
     }
-    std::cout << "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" << std::endl;
-    std::cout << "<vespafeed>" << std::endl;
+    std::cout << "[" << std::endl;
     for (size_t i : ids) {
         char id[128];
-        sprintf(id, "id:test:test::%05ld", i);
-        std::cout << "<remove documentid=\"" << id << "\" />\n"; 
+        sprintf(id, "{ \"remove\": \"id:test:test::%05ld\" }", i);
+        std::cout << id;
+        if (i < numDocs - 1) {
+          std::cout << "," << std::endl;
+        }
     }
-    std::cout << "</vespafeed>" << std::endl;
+    std::cout << std::endl << "]" << std::endl;
 }
 
