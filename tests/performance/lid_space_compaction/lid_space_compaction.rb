@@ -85,10 +85,10 @@ class LidSpaceCompactionPerfTest < PerformanceTest
     queries = "#{dirs.tmpdir}/query.txt"
     start
     container.logctl("searchnode:proton.server.searchview", "debug=on")
-    container.execute("#{@tmp_bin_dir}/docs put #{@num_docs} | vespa-feed-perf")
+    container.execute("#{@tmp_bin_dir}/docs put #{@num_docs} | vespa-feeder")
     assert_hitcount("sddocname:test", @num_docs)
 
-    container.execute("#{@tmp_bin_dir}/docs remove #{@num_docs_to_compact} | vespa-feed-perf")
+    container.execute("#{@tmp_bin_dir}/docs remove #{@num_docs_to_compact} | vespa-feeder")
     assert_hitcount("sddocname:test", @num_docs_to_compact)
     vespa.search["search"].first.trigger_flush # make sure document store is compacted
 
