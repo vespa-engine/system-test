@@ -130,7 +130,7 @@ class InterpolatedLookupTest < IndexedStreamingSearchTest
     (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c -o #{tmp_bin_dir}/a.out && #{tmp_bin_dir}/a.out > feed-2.json")
     puts "compile output: #{output}"
 
-    (exitcode, output) = execute(node, "vespa-feed-perf < #{dirs.tmpdir}/feed-2.json")
+    (exitcode, output) = execute(node, "vespa-feed-perf #{dirs.tmpdir}/feed-2.json")
     puts "feeder output: #{output}"
 
     wait_for_hitcount("sddocname:sad", 123456, 30)
