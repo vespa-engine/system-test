@@ -9,8 +9,8 @@ static int *histogram;
 
 void header(int num)
 {
-	printf("<document type='mpd' id='id:test:mpd::%d'>\n", num);
-        printf("<title>the ");
+        printf("{ \"put\": \"id:test:mpd::%d\",\n", num);
+        printf("  \"fields\": { \"title\": \"the ");
 	if ((random() % 100) <= 42) {
             printf("bar ");
         }
@@ -18,23 +18,22 @@ void header(int num)
 	if ((random() % 100) <= 24) {
             printf("foo ");
         }
-        printf("hihi</title>\n");
+        printf("hihi\",");
 }
 
 void footer(int num)
 {
 	double score = random() * .0009765625;
         score += num * .00000095367431640625;
-	printf("<order>%.30g</order>\n", score);
-	printf("<seq>%d</seq>\n", num);
-	printf("<cat>%d</cat>\n", (num / 1000));
-	printf("</document>\n");
+        printf("\"order\": %.30g, ", score);
+	printf("\"seq\": %d, ", num);
+        printf("\"cat\": %d }\n}", (num / 1000));
 }
 
 void body(int docid, int numdocs, int numvals)
 {
 	int i;
-	printf("<body>\n");
+	printf("\"body\": \"");
 	for (i = 0; i <= numvals; i++) {
 		int wantHits = (i * numdocs) / numvals;
 		int gotHits = histogram[i];
@@ -46,7 +45,7 @@ void body(int docid, int numdocs, int numvals)
 			printf(" %d", i);
 		}
 	}
-	printf(" </body>\n");
+        printf("\",");
 }
 
 int main(int argc, char **argv)
@@ -61,13 +60,16 @@ int main(int argc, char **argv)
 		histogram[i] = 0;
 	}
 	srandom(42);
-	printf("<vespafeed>\n");
+	printf("[\n");
 	for (i = 0; i < documents; i++) {
 		header(i);
 		body(i, documents, values);
 		footer(i);
+                if (i < documents - 1) {
+                  printf(",");
+                }
 	}
-	printf("</vespafeed>\n");
+	printf("\n]");
 /*      for (i = 0; i <= values; i++) { fprintf(stderr, "hist %d : %d\n", i, histogram[i]); }    */
 	return 0;
 }
