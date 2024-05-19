@@ -18,8 +18,9 @@ static double nextDouble(double iter, double entries)
 
 void header(int num)
 {
-	printf("<document type='sad' id='id:test:sad::%d'>\n", num);
-        printf("<title>the ");
+
+        printf("{ \"put\": \"id:test:sad::%d\",\n", num);
+        printf("  \"fields\": { \"title\": \"the ");
 	if ((random() % 100) <= 42) {
             printf("bar ");
         }
@@ -27,13 +28,12 @@ void header(int num)
 	if ((random() % 100) <= 24) {
             printf("foo ");
         }
-        printf("hihi</title>");
+        printf("hihi\",\n");
 }
 
 void footer(int num)
 {
-	printf("<order>%d</order>\n", num);
-	printf("</document>\n");
+	printf("\"order\": %d }", num);
 }
 
 void impressions(int num)
@@ -41,31 +41,31 @@ void impressions(int num)
 	int i;
 	int entries = random() % 128;
 	histogram[entries]++;
-	printf("<pos%dimpr>\n", num);
+	printf("\"pos%dimpr\": [", num);
 	for (i = 0; i < entries; i++) {
-		printf("<item>");
 		printf("%.6f", nextDouble(i, entries));
-		printf("</item>\n");
+                if (i < entries - 1) {
+                        printf(",");
+                }
 	}
-	printf("</pos%dimpr>\n", num);
+	printf("],\n", num);
 }
 
 int main(int argc, char **argv)
 {
 	int i;
 	srandom(42);
-	printf("<vespafeed>\n");
+	printf("[\n");
 	for (i = 0; i < 123456; i++) {
 		header(i);
 		impressions(1);
 		impressions(2);
 		footer(i);
+                printf("}");
+                if (i < 123455) {
+                  printf(",\n");
+                }
 	}
-	printf("</vespafeed>\n");
-/*
-	for (i = 0; i < 129; i++) {
-		fprintf(stderr, "hist %d: %d\n", i, histogram[i]);
-	}
-*/
+	printf("\n]");
 	return 0;
 }
