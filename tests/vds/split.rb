@@ -6,7 +6,8 @@ class Split < VdsTest
   def setup
     @numbuckets=20
     set_owner("vekterli")
-    make_feed_file("docs_test_split_buckets.json", "music", 0, @numbuckets - 1, 6)
+    @feed_file = "docs_test_split_buckets.json"
+    make_feed_file(@feed_file, "music", 0, @numbuckets - 1, 6)
   end
 
   def timeout_seconds
@@ -20,7 +21,7 @@ class Split < VdsTest
 
   def teardown
     stop
-    File.delete("docs_test_split_buckets.xml")
+    File.delete(@feed_file)
   end
 
   def get_16bits_mask(i)
@@ -40,7 +41,7 @@ class Split < VdsTest
 
     set_description("")
 
-    feedfile("docs_test_split_buckets.xml")
+    feedfile(@feed_file)
 
     vespa.storage["storage"].wait_until_ready(300)
 
