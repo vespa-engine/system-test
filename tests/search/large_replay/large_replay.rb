@@ -44,7 +44,7 @@ class LargeReplay < IndexedOnlySearchTest
     for i in 0...num_docs
       doc = Document.new("test", "id:test:test::#{i}").
             add_field("f1", i.to_s).
-            add_field("f2", i.to_s)
+            add_field("f2", i)
       docs.add(doc)
     end
     docs.write_json(feed_file)

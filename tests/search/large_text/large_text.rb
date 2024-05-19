@@ -25,7 +25,7 @@ class LargeText < IndexedStreamingSearchTest
   end
 
   def time_feed(num_tokens)
-    doc = Document.new("test", "id:ns:test::")
+    doc = Document.new("test", "id:ns:test::1")
     doc.add_field("my_str", (0..num_tokens - 1).map{ |i| "t#{i}" }.join(" "))
 
     docs = DocumentSet.new()

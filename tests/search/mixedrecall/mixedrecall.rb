@@ -10,7 +10,7 @@ class MixedRecall < IndexedStreamingSearchTest
 
   def test_sddocname
     deploy_and_check_for_warning
-    vespa.start
+    start
 
     feed_and_wait_for_docs("music", 10, {:file => selfdir+"/data/music-basic.json"})
 
