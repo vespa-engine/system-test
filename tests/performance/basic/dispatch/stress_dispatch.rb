@@ -50,9 +50,9 @@ class StressDispatch < PerformanceTest
     node = vespa.adminserver
     node.copy(selfdir + "gendata.c", dirs.tmpdir)
     tmp_bin_dir = node.create_tmp_bin_dir
-    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c -o #{tmp_bin_dir}/a.out && #{tmp_bin_dir}/a.out > feed-2.xml")
+    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c -o #{tmp_bin_dir}/a.out && #{tmp_bin_dir}/a.out > feed-2.json")
     assert_equal(0, exitcode)
-    (exitcode, output) = execute(node, "vespa-feed-perf < #{dirs.tmpdir}/feed-2.xml")
+    (exitcode, output) = execute(node, "vespa-feed-perf < #{dirs.tmpdir}/feed-2.json")
     assert_equal(0, exitcode)
     wait_for_hitcount("sddocname:foobar", 12345, 30)
 
