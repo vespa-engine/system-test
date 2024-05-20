@@ -80,13 +80,16 @@ void produce_removes(size_t numDocs, size_t cap) {
         ids.resize(ids.size() - 1);
     }
     std::cout << "[" << std::endl;
+    bool first = true;
     for (size_t i : ids) {
         char id[128];
+        if (first) {
+           first = false;
+        } else {
+            std::cout << "," << std::endl;
+        }
         sprintf(id, "{ \"remove\": \"id:test:test::%05ld\" }", i);
         std::cout << id;
-        if (i < numDocs - 1) {
-          std::cout << "," << std::endl;
-        }
     }
     std::cout << std::endl << "]" << std::endl;
 }
