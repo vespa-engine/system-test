@@ -184,7 +184,7 @@ class PerformanceTest < TestCase
   end
 
   def run_stream_feeder(streamer_command, custom_fillers=[], feederparams={})
-    client = feederparams.key?(:client) ? feederparams[:client] : default_feed_client
+    client = feederparams.key?(:client) ? feederparams[:client] : :vespa_feeder
     out = feed_stream(streamer_command,
                       feederparams.merge({:client => client, :mode => "benchmark"}))
     post_process_feed_output(out, client, custom_fillers)
