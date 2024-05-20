@@ -34,9 +34,9 @@ class ParentChildPerfTest < PerformanceTest
     @num_ad_docs = 2000000
   end
 
-  def feeder_binary
+  def default_feed_client
     # TODO Duration of the feed tests should be increased so that feedclient startup cost does not matter.
-    "vespa-feeder"
+    :vespa_feeder
   end
 
   def test_parent_child_feeding_ranking_matching

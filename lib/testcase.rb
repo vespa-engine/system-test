@@ -142,9 +142,8 @@ class TestCase
   def prepare
   end
 
-  # Returns the name of the feeder binary to be used.
-  def feeder_binary
-    "vespa-feeder --abortondataerror no --abortonsenderror no"
+  def default_feed_client
+    :vespa_feeder
   end
 
   def can_share_configservers?(method_name=nil)
