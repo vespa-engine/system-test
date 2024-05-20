@@ -464,9 +464,7 @@ module TestBase
               # Use value as it is here, since it is always a regexp
               assert(response_headers[0] =~ value, "Header '#{key}' has value '#{response_headers[0]}', expected '#{value}'")
             else
-              # TODO: Different between ruby 1.8 and 1.9, remove check when 1.8 is gone
-              maybe_array = result.responseheaders[key.downcase]
-              response_headers = (maybe_array.is_a?(Array) ? maybe_array : [maybe_array]).map { |elem| elem.downcase }
+              response_headers = result.responseheaders[key.downcase]
               # Each value for a response header is an array. For simplicity and backwards compatibility, 
               # make it a string if there is just one element
               downcased_values = Array.new
