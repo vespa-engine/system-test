@@ -222,6 +222,25 @@ module Feeder
       if feed_file
         p += feed_file
       end
+    elsif params[:client] == :vespa_feed_perf
+      if params[:maxpending]
+        p += "--maxpending #{params[:maxpending]} "
+      end
+      if params[:nummessages]
+        p += "--nummessages #{params[:nummessages]} "
+      end
+      if params[:numthreads]
+        p += "--numthreads #{params[:numthreads]} "
+      end
+      if params[:numconnections]
+        p += "--numconnections #{params[:numconnections]} "
+      end
+      if params[:mode]
+        p += "--mode #{params[:mode]} "
+      end
+      if feed_file
+        p += feed_file
+      end
     elsif params[:client] == :vespa_feed_client
       if feed_file
         p += "--file #{feed_file} "
