@@ -156,9 +156,9 @@ module Feeder
     if params[:do_sync]
       execute("sync")
     end
-    puts "feed_stream, params: #{params}, default feed client: #{testcase.default_feed_client}"
     if !params[:client]
-      params[:client] = testcase.default_feed_client
+      # Set default feeder to 'vespa-feeder'
+      params[:client] = :vespa_feeder
     end
     if !params[:stderr]
       params[:stderr] = :true
@@ -303,12 +303,10 @@ module Feeder
 
   private
   def select_feeder(params)
-    if params[:client] == :vespa_feed_client
-      return "vespa-feed-client "
-    elsif params[:client] == :vespa_feeder
-      return "vespa-feeder --abortondataerror no --abortonsenderror no"
-    elsif params[:client] == :vespa_feed_perf
-      return "vespa-feed-perf"
+    if params[:client] == :vespa_feeder
+      return "#{testcase.feeder_binary} "
+    elsif params[:client] == :vespa_feed_client
+      return "vespa-feed-client"
     else
       raise "Unsupported feed client '#{client}'"
     end
