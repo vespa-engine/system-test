@@ -156,6 +156,7 @@ module Feeder
     if params[:do_sync]
       execute("sync")
     end
+    puts "feed_stream, params: #{params}, default feed client: #{testcase.default_feed_client}"
     if !params[:client]
       params[:client] = testcase.default_feed_client
     end
