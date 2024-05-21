@@ -77,8 +77,8 @@ class PerformanceTest < TestCase
       2
   end
 
-  def feeder_binary
-    "vespa-feed-perf"
+  def default_feed_client
+    :vespa_feed_perf
   end
 
   def prepare
