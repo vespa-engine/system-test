@@ -43,7 +43,16 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
 
   def start_es
     @es_pidfile = dirs.tmpdir + "es_pid"
-    @node.execute("#{@es_dir}/bin/elasticsearch -E 'discovery.type=single-node' -E 'xpack.security.enabled=false' -E 'xpack.security.http.ssl.enabled=false' -d -p #{@es_pidfile}")
+    cmd = "#{@es_dir}/bin/elasticsearch -E \"discovery.type=single-node\" -E \"xpack.security.enabled=false\" -E \"xpack.security.http.ssl.enabled=false\" -d -p #{@es_pidfile}"
+    if @node.execute("id -u").to_i == 0
+      # ES cannot be executed as root. Run as the vespa user instead.
+      vespa_user = Environment.instance.vespa_user
+      @node.execute("chown -R #{vespa_user}:#{vespa_user} #{@es_dir}")
+      @node.execute("chown #{vespa_user}:#{vespa_user} #{@es_pidfile}")
+      @node.execute("runuser -l vespa -c '#{cmd}'")
+    else
+      @node.execute(cmd)
+    end
   end
 
   def stop_es
