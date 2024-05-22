@@ -16,6 +16,7 @@
       <node hostalias="node1"/>
     </nodes>
     <search/>
+    <document-api/>
     <document-processing>
       <chain id="default">
         <documentprocessor id="com.yahoo.vespatest.WorstMusicDocProc" />
