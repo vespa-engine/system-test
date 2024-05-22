@@ -27,6 +27,8 @@ Broadly speaking, the data preparation involves the following steps:
    1. Save the dataset per category to disk.
    2. Concatenate all categories to a single .parquet file.
 
+After this, all feed and query files are generated from the concatenated .parquet file with the `generate_feed_query.py` script.
+
 ## Prepare the environment
 
 First, install python dependencies.
