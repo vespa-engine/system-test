@@ -1,6 +1,7 @@
 pandas
 numpy
 datasets
+tqdm
 transformers
 sentence-transformers
 torch
