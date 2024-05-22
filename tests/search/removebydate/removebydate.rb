@@ -88,7 +88,7 @@ class RemoveByDate < IndexedStreamingSearchTest
     now = Time.now
     done = false
     while !done and Time.now < (now + timeout) do
-      feedoutput = feedbuffer(feed, :exceptiononfailure => false)
+      feedoutput = feedbuffer(feed, :client => :vespa_feeder, :exceptiononfailure => false)
       check_ok = check_correct_output(["ok: #{expected_ok}"], feedoutput)
       check_ignored = check_correct_output(["ignored: #{expected_ignored}"], feedoutput)
       check_failed = check_correct_output(["failed: #{expected_failed}"], feedoutput)
@@ -99,16 +99,19 @@ class RemoveByDate < IndexedStreamingSearchTest
   end
 
   def generateupdates(numdocs)
-    feed = ""
+    feed = "[\n"
     for i in 1..numdocs
       docid = "id:test:newsarticle::http://foo.bar.com/#{i}"
       title = "updated#{i}"
 
-      feed += "<update documenttype=\"newsarticle\" documentid=\"#{docid}\">\n"
-      feed += "    <assign field=\"title\">#{title}</assign>\n"
-      feed += "</update>\n"
+      feed += "{ \"update\": \"#{docid}\", \"fields\": { \"title\": { \"assign\": \"#{title}\" } } }"
+      if i < numdocs
+        feed += ","
+      end
+      feed += "\n"
     end
-    return feed
+    feed += "\n]"
+    feed
   end
 
   def teardown

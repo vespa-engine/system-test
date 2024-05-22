@@ -6,9 +6,12 @@ import argparse
 from pathlib import Path
 from enum import Enum
 import re
+import tqdm
 
 import pandas as pd
 import zstandard as zstd  # For compression
+import os
+import datetime
 
 # Setup basic configuration for logging
 logging.basicConfig(
@@ -17,7 +20,10 @@ logging.basicConfig(
 
 # Constants
 OUTPUT_DIR = "./output-data/"
-FINAL_DIR = OUTPUT_DIR + "final/"
+
+# Create a new directory for the final output, named with timestamp
+FINAL_DIR = OUTPUT_DIR + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + "/"
+os.makedirs(FINAL_DIR)
 
 # Vespa and Elasticsearch constants
 VESPA_DOCTYPE = "product"
@@ -61,19 +67,19 @@ def parse_args():
 
     return args.num_samples
 
-
-def process_parquet_files(output_dir: str) -> pd.DataFrame:
-    parquet_files = list(Path(output_dir).rglob("*.parquet"))
-    if not parquet_files:
-        logging.info("No parquet files found.")
+def load_parquet_file(basefile_path: str) -> pd.DataFrame:
+    try:
+        df = pd.read_parquet(basefile_path)
+        logging.info(f"Loaded {basefile_path} with {len(df)} records")
+        return df
+    except FileNotFoundError:
+        logging.error(f"File {basefile_path} not found")
         return pd.DataFrame()
-    df = pd.concat([pd.read_parquet(file) for file in parquet_files], ignore_index=True)
-    logging.info(f"Total records loaded: {len(df)}")
-    return df
-
 
 def clean_and_prepare_df(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop_duplicates(subset=["title", "description"])
+    # Reset index to integer values
+    df.reset_index(drop=True, inplace=True)
     # Set index to id column (use .loc to avoid SettingWithCopyWarning)
     df.loc[:, "id"] = df.index
     # assert (
@@ -85,52 +91,53 @@ def clean_and_prepare_df(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def save_df_to_vespa_format(df: pd.DataFrame, file_name: Path) -> None:
-    df = df.apply(
-        lambda row: {
-            "put": f"id:{VESPA_DOCTYPE}:{VESPA_NAMESPACE}::{row['category']}{row['id']}",
-            "fields": {
-                "id": row["id"],
-                "title": row["title"],
-                "category": row["category"],
-                "description": row["description"],
-                "price": row["price"],
-                "average_rating": row["average_rating"],
-                "embedding": row["embedding"].tolist(),
-            },
-        },
-        axis=1,
-    )
     file_name = file_name.with_suffix(".json.zst")
-    data = ""
-    for row in df:
-        data += json.dumps(row, ensure_ascii=True) + "\n"
     cctx = zstd.ZstdCompressor(level=1)
-    compressed_data = cctx.compress(data.encode("utf-8"))
     with open(file_name, "wb") as f:
-        f.write(compressed_data)
+        with cctx.stream_writer(f) as compressor:
+            for index, row in tqdm.tqdm(df.iterrows(), total=len(df)):
+                row_dict = {
+                    "put": f"id:{VESPA_DOCTYPE}:{VESPA_NAMESPACE}::{row['category']}{row['id']}",
+                    "fields": {
+                                "id": row["id"],
+                                "title": row["title"],
+                                "category": row["category"],
+                                "description": row["description"],
+                                "price": row["price"],
+                                "average_rating": row["average_rating"],
+                                "embedding": row["embedding"].tolist(),
+                            }
+                    }
+                row_json = json.dumps(row_dict, ensure_ascii=True) + "\n"
+                compressor.write(row_json.encode("utf-8"))
+    
     logging.info(f"Data saved in Vespa format to {file_name}")
 
 
 def save_df_to_es_format(df: pd.DataFrame, file_name: Path) -> None:
     file_name = file_name.with_suffix(".json.zst")
-    data = ""
-    for index, row in df.iterrows():
-        action = {"index": {"_index": ES_INDEX, "_id": str(row["id"])}}
-        data += json.dumps(action, ensure_ascii=True) + "\n"
-        doc_data = {
-            "title": row["title"],
-            "category": row["category"],
-            "description": row["description"],
-            "price": row["price"],
-            "average_rating": row["average_rating"],
-            "embedding": row["embedding"].tolist(),
-        }
-        data += json.dumps(doc_data, ensure_ascii=True) + "\n"
     cctx = zstd.ZstdCompressor(level=1)
-    compressed_data = cctx.compress(data.encode("utf-8"))
+    
     with open(file_name, "wb") as f:
-        f.write(compressed_data)
+        with cctx.stream_writer(f) as compressor:
+            for index, row in tqdm.tqdm(df.iterrows(), total=len(df)):
+                action = {"index": {"_index": ES_INDEX, "_id": str(row["id"])}}
+                action_json = json.dumps(action, ensure_ascii=True) + "\n"
+                compressor.write(action_json.encode("utf-8"))
+                
+                doc_data = {
+                    "title": row["title"],
+                    "category": row["category"],
+                    "description": row["description"],
+                    "price": row["price"],
+                    "average_rating": row["average_rating"],
+                    "embedding": row["embedding"].tolist(),
+                }
+                doc_json = json.dumps(doc_data, ensure_ascii=True) + "\n"
+                compressor.write(doc_json.encode("utf-8"))
+    
     logging.info(f"Data saved in Elasticsearch format to {file_name}")
+
 
 
 def title_to_query(title: str) -> str:
@@ -308,6 +315,12 @@ def save_es_query_files_from_df(
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "--basefile_path",
+        type=str,
+        default=OUTPUT_DIR + "ecommerce-5M.parquet",
+        help="Path to the parquet file to be loaded",
+    )
+    parser.add_argument(
         "--mode",
         choices=["feed", "query", "both"],
         default="feed",
@@ -328,8 +341,12 @@ def main():
     args = parser.parse_args()
     num_samples = args.num_samples
     num_queries = args.num_queries
-    df = process_parquet_files(OUTPUT_DIR)
+    basefile_path = args.basefile_path
+    logging.info(f"Loading data from {basefile_path}")
+    df = load_parquet_file(basefile_path)
+    logging.info(f"Loaded {len(df)} records")
     df = clean_and_prepare_df(df)
+    logging.info(f"After clean and prepare: {len(df)} records")
     if num_samples > len(df):
         raise ValueError(
             f"Number of samples requested is greater than the total number of samples available: {len(df)}"
@@ -340,9 +357,12 @@ def main():
         shorthand_samples = human_readable_number(num_samples)
         vespa_save_path = Path(FINAL_DIR) / f"vespa_feed-{shorthand_samples}.jsonl"
         es_save_path = Path(FINAL_DIR) / f"es_feed-{shorthand_samples}.jsonl"
+        logging.info(f"Preparing Vespa feed file...")
         save_df_to_vespa_format(df, vespa_save_path)
+        logging.info(f"Preparing Elasticsearch feed file...")
         save_df_to_es_format(df, es_save_path)
     if args.mode in ["query", "both"]:
+        logging.info("Preparing query files...")
         shorthand_queries = human_readable_number(num_queries)
         for query_type in QueryTypeEnum:
             vespa_save_path = (

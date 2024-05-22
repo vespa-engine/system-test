@@ -156,6 +156,7 @@ module Feeder
     if params[:do_sync]
       execute("sync")
     end
+    puts "feed_stream, params: #{params}, default feed client: #{testcase.default_feed_client}"
     if !params[:client]
       params[:client] = testcase.default_feed_client
     end
@@ -218,6 +219,25 @@ module Feeder
       end
       if params[:compress]
         p += "--compress #{params[:compress]} "
+      end
+      if feed_file
+        p += feed_file
+      end
+    elsif params[:client] == :vespa_feed_perf
+      if params[:maxpending]
+        p += "--maxpending #{params[:maxpending]} "
+      end
+      if params[:nummessages]
+        p += "--nummessages #{params[:nummessages]} "
+      end
+      if params[:numthreads]
+        p += "--numthreads #{params[:numthreads]} "
+      end
+      if params[:numconnections]
+        p += "--numconnections #{params[:numconnections]} "
+      end
+      if params[:mode]
+        p += "--mode #{params[:mode]} "
       end
       if feed_file
         p += feed_file

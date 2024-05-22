@@ -28,10 +28,10 @@ class MbusTimeout < IndexedStreamingSearchTest
     assert_equal(1, result.hit.size)
 
     puts("*** Feed document update.")
-    output = vespa.adminserver.feed(:file => "#{selfdir}/myupdate.json", :timeout => 1, :exceptiononfailure => false, :stderr => true)
+    output = vespa.adminserver.feed(:file => "#{selfdir}/myupdate.json", :timeout => 2, :exceptiononfailure => false, :stderr => true, :client => :vespa_feed_client)
 
     puts("*** Assert that feeding timed out.")
-    assert(output.index("imed out after ") != nil)
+    assert(output.index("Timeout after ") != nil)
 
     feed_and_wait_for_docs("simple", 2, :file => "#{selfdir}/mytoken.json")
 

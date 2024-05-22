@@ -141,11 +141,25 @@ def process_category(category: str) -> Optional[pd.DataFrame]:
         df = add_embeddings(df, model)
     return df
 
-
-for category in categories:
-    df_processed = process_category(category)
-    if df_processed is None:
-        continue
-    output_path = os.path.join(OUTPUT_DIR, f"{category}_processed.parquet")
-    df_processed.to_parquet(output_path)
-    logging.info(f"Data saved to {output_path}")
+if __name__ == "__main__":
+    # For creating a subset of the categories:
+    # categories = categories[:10]
+    for category in categories:
+        df_processed = process_category(category)
+        if df_processed is None:
+            continue
+        output_path = os.path.join(OUTPUT_DIR, f"{category}_processed.parquet")
+        df_processed.to_parquet(output_path)
+        logging.info(f"Data saved to {output_path}")
+    # Concatenate all the dataframes and save to a single parquet file
+    dfs = []
+    for category in categories:
+        file_path = os.path.join(OUTPUT_DIR, f"{category}_processed.parquet")
+        if os.path.exists(file_path):
+            dfs.append(pd.read_parquet(file_path))
+    df_all = pd.concat(dfs)
+    df_all.reset_index(drop=True, inplace=True)
+    num_rows = df_all.shape[0]
+    output_path = os.path.join(OUTPUT_DIR, f"ecommerce-{num_rows}.parquet")
+    df_all.to_parquet(output_path)
+    logging.info(f"Parquet file with {num_rows} rows saved to {output_path}")

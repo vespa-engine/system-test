@@ -16,6 +16,7 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.logging.LogManager;
 
@@ -67,7 +68,7 @@ class Utils {
             generator.writeStartObject();
             generator.writeNumberField("feeder.runtime", duration.toMillis());
             generator.writeNumberField("feeder.okcount", stats.successes());
-            generator.writeNumberField("feeder.errorcount", stats.exceptions() + stats.responses() - stats.successes());
+            generator.writeNumberField("feeder.errorcount", stats.exceptions() + stats.responsesByCode().entrySet().stream().filter(entry -> entry.getKey() != 200).map(Entry::getValue).reduce(0L, Long::sum));
             generator.writeNumberField("feeder.exceptions", stats.exceptions());
             generator.writeNumberField("feeder.bytessent", stats.bytesSent());
             generator.writeNumberField("feeder.bytesreceived", stats.bytesReceived());

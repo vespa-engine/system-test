@@ -111,11 +111,12 @@ class PerformanceTest < TestCase
     run_fbench2(qrserver, @queryfile, params.merge({:runtime => runtime, :clients => clients}), custom_fillers)
   end
 
-  def run_fbench2(qrserver, queryfile, params={}, custom_fillers=[])
-    system_fbench = Perf::System.new(qrserver)
+  def run_fbench2(container, queryfile, params={}, custom_fillers=[])
+    system_fbench = Perf::System.new(container)
     system_fbench.start
-    container_port = if params[:port_override] then params[:port_override] else qrserver.http_port end
-    fbench = Perf::Fbench.new(qrserver, qrserver.name, container_port)
+    container_port = if params[:port_override] then params[:port_override] else container.http_port end
+    container_hostname = if params[:hostname_override] then params[:hostname_override] else container.name end
+    fbench = Perf::Fbench.new(container, container_hostname, container_port)
 
     fbench.runtime = params[:runtime] if params[:runtime]
     fbench.clients = params[:clients] if params[:clients]
@@ -184,7 +185,7 @@ class PerformanceTest < TestCase
   end
 
   def run_stream_feeder(streamer_command, custom_fillers=[], feederparams={})
-    client = feederparams.key?(:client) ? feederparams[:client] : :vespa_feeder
+    client = feederparams.key?(:client) ? feederparams[:client] : default_feed_client
     out = feed_stream(streamer_command,
                       feederparams.merge({:client => client, :mode => "benchmark"}))
     post_process_feed_output(out, client, custom_fillers)
