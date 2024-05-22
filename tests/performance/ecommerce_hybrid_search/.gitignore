@@ -1,4 +1,5 @@
 output-data/
 model_cache/
 output_chunks/
+__pycache__/
 .python-version
