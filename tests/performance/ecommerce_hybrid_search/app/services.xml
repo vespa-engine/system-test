@@ -16,7 +16,12 @@
     </container>
 
     <content id="search" version="1.0">
-        <redundancy>1</redundancy>
+        <redundancy>2</redundancy>
+        <engine>
+            <proton>
+                <searchable-copies>1</searchable-copies>
+            </proton>
+        </engine>
         <documents>
             <document type="product" mode="index" />
         </documents>
