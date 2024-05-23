@@ -39,7 +39,7 @@ class VespaApplication < IndexedStreamingSearchTest
   end
 
   def test_vespa_application
-    feed_and_wait_for_docs("music", 2, :file => selfdir+"input.json")
+    feed_and_wait_for_docs("music", 2, :file => selfdir+"input.json", :port => 16666)
 
     wait_for_hitcount('query=metallica&type=all', 1, 60, 0)
 
@@ -50,7 +50,7 @@ class VespaApplication < IndexedStreamingSearchTest
     send_query(qrs0, "metallica&streaming.selection=true")
 
     puts "Run a query to test custom juniper config"
-    feed_and_wait_for_docs("music", 779, :file => SEARCH_DATA+"music.777.json")
+    feed_and_wait_for_docs("music", 779, :file => SEARCH_DATA+"music.777.json", :port => 16666)
     expected_song = "for military <hi>band</hi> in B flat <hi>major</hi>;<hi>English</hi> Folk"
     result = search('query=english+band+major&type=all')
     song = result.hit[0].field["song"]
