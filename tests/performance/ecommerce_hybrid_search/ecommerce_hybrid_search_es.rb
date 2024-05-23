@@ -17,13 +17,23 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     @es_hostname = "localhost"
     @es_port = 9200
     @es_endpoint = "http://#{@es_hostname}:#{@es_port}"
-
+    @minimal = false
     prepare_es_app
-    benchmark_feed("es_feed-1M.json.zst", 1000000)
-    #benchmark_feed("es_feed-10k.json.zst", 10000)
-    benchmark_query("es_queries-weak_and-10k.json", "after_feed", "weak_and")
-    benchmark_query("es_queries-semantic-10k.json", "after_feed", "semantic")
-    benchmark_query("es_queries-hybrid-10k.json", "after_feed", "hybrid")
+
+    benchmark_feed(feed_file_name, get_num_docs, "feed")
+    benchmark_queries("after_feed")
+    feed_thread = Thread.new { benchmark_feed(feed_file_name, get_num_docs, "refeed") }
+    sleep 5
+    benchmark_queries("during_refeed")
+    feed_thread.join
+  end
+
+  def feed_file_name
+    @minimal ? "es_feed-10k.json.zst" : "es_feed-1M.json.zst"
+  end
+
+  def get_num_docs
+    @minimal ? 10000 : 1000000
   end
 
   def prepare_es_app
@@ -64,7 +74,7 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     @node.execute("curl -X PUT '#{@es_endpoint}/product?pretty' -H 'Content-Type: application/json' -d @#{node_file}")
   end
 
-  def benchmark_feed(feed_file, num_docs)
+  def benchmark_feed(feed_file, num_docs, label)
     files = prepare_feed_files(feed_file)
     puts "Starting to feed #{num_docs} documents among #{files.size} files..."
     system_sampler = Perf::System::new(@node)
@@ -82,7 +92,7 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     assert_equal(num_docs, count, "Expected #{num_docs} documents in the index, but was #{count}")
     throughput = num_docs.to_f / elapsed_sec
     puts "Throughput: #{throughput}"
-    fillers = [parameter_filler("label", "feed"),
+    fillers = [parameter_filler("label", label),
                metric_filler("feeder.throughput", throughput),
                system_metric_filler(system_sampler)]
     write_report(fillers)
@@ -96,6 +106,12 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     @node.execute("zstdcat #{node_file} | split -d -a 3 -l 12000 - #{feed_dir}split_")
     files = @node.execute("cd #{feed_dir} && echo split_*").split
     files.map { |file| "#{feed_dir}#{file}" }
+  end
+
+  def benchmark_queries(query_phase)
+    benchmark_query("es_queries-weak_and-10k.json", query_phase, "weak_and")
+    benchmark_query("es_queries-semantic-10k.json", query_phase, "semantic")
+    benchmark_query("es_queries-hybrid-10k.json", query_phase, "hybrid")
   end
 
   def benchmark_query(query_file, query_phase, query_type)
