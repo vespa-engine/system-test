@@ -42,7 +42,7 @@ class LargeDocuments < VdsTest
       docs.add(doc)
     }
     docs.write_json(@feed_file)
-    feed(:file => @feed_file)
+    feed(:file => @feed_file, :stderr => true)
   end
 
   def check_dummy_feed(count, size)
