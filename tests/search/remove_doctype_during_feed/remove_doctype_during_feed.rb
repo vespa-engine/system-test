@@ -56,8 +56,9 @@ class RemoveDocTypeDuringFeed < IndexedOnlySearchTest
     thread = Thread.new(doctype, result) do |doctype, result|
       begin
         puts "Feed data #{doctype} start"
+        # Need to use vespa-feeder to be able to count ignored operations
         output = feedfile("#{dirs.tmpdir}/feed-#{doctype}.json",
-                          :localfile => true, :timeout => 240)
+                          :localfile => true, :timeout => 240, :client => :vespa_feeder)
         ignored = count_ignored_puts(output)
         if ignored > 0
           raise "#{ignored} ignored puts"
