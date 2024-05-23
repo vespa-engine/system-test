@@ -100,7 +100,9 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
 
   def benchmark_query(query_file, query_phase, query_type)
     run_fbench_helper(query_file, query_phase, query_type, @node,
-                      {:port_override => @es_port, :hostname_override => @es_hostname})
+                      {:port_override => @es_port,
+                       :hostname_override => @es_hostname,
+                       :disable_tls => true})
   end
 
   def teardown
