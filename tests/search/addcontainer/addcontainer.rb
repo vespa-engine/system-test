@@ -23,14 +23,14 @@ class AddContainer < IndexedOnlySearchTest
   # fail. Redeploying the original application should give a working cluster again
   def test_addcontainer
     set_expected_logged(/Fatal error while configuring|PortListenException: failed to listen on port|Could not create rpc server listening on|Failed to start status HTTP server using port|Could not bind fnet transport socket to tcp|Rpc port config has changed/)
-    app_one_qrserver = SearchApp.new.num_hosts(2).sd(SEARCH_DATA + "music.sd").
+    app_one_qrserver = SearchApp.new.num_hosts(@num_hosts).sd(SEARCH_DATA + "music.sd").
       slobrok("node1").
       qrserver(QrserverCluster.new("foo").
                node({ :hostalias => "node2" }))
     deploy_app(app_one_qrserver)
     start
 
-    feed(:file => SEARCH_DATA + "music.10.json", :host => vespa.container.values.first)
+    feed(:file => SEARCH_DATA + "music.10.json", :host => vespa.container.values.first.hostname)
     wait_for_hitcount("query=sddocname:music", 10)
 
     deploy_app(SearchApp.new.num_hosts(2).sd(SEARCH_DATA + "music.sd").
@@ -46,7 +46,7 @@ class AddContainer < IndexedOnlySearchTest
     # Go back to the previous app
     deploy_app(app_one_qrserver)
     wait_for_hitcount("query=sddocname:music", 10)
-    feed(:file => SEARCH_DATA + "music.777.json", :host => vespa.container.values.first)
+    feed(:file => SEARCH_DATA + "music.777.json", :host => vespa.container.values.first.hostname)
     wait_for_hitcount("query=sddocname:music", 787)
   end
 
