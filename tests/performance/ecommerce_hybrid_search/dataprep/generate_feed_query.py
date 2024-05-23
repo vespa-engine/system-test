@@ -185,7 +185,7 @@ def save_vespa_query_files_from_df(
         }
     elif query_type == QueryTypeEnum.HYBRID:
         base_parameters = {
-            "yql": "select * from product where ({targetHits:10}nearestNeighbor(embedding,q_embedding)) or userQuery()",
+            "yql": "select * from product where ({targetHits:100}nearestNeighbor(embedding,q_embedding)) or userQuery()",
             "ranking.profile": "hybrid",
             "presentation.summary": "minimal",
         }
@@ -290,7 +290,7 @@ def save_es_query_files_from_df(
                     "knn": {
                         "field": "embedding",
                         "query_vector": embedding.tolist(),
-                        "k": 10,
+                        "k": 100,
                     },
                 }
                 for query, embedding in zip(queries, embeddings)
