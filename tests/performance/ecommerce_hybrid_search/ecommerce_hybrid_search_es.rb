@@ -48,7 +48,7 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
       # ES cannot be executed as root. Run as the vespa user instead.
       vespa_user = Environment.instance.vespa_user
       @node.execute("chown -R #{vespa_user}:#{vespa_user} #{@es_dir}")
-      @node.execute("runuser -l vespa -c '#{cmd}'")
+      @node.execute("sudo -u #{vespa_user} #{cmd}")
     else
       @node.execute(cmd)
     end
