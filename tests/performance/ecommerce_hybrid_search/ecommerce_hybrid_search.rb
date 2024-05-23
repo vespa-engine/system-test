@@ -9,10 +9,13 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     deploy(selfdir + "app")
     @container = vespa.container.values.first
     start
+
     benchmark_feed(feed_file_name(), "feed")
-    benchmark_query("vespa_queries-weak_and-10k.json", "after_feed", "weak_and")
-    benchmark_query("vespa_queries-semantic-10k.json", "after_feed", "semantic")
-    benchmark_query("vespa_queries-hybrid-10k.json", "after_feed", "hybrid")
+    benchmark_queries("after_feed")
+    feed_thread = Thread.new { benchmark_feed(feed_file_name(), "refeed") }
+    sleep 5
+    benchmark_queries("during_refeed")
+    feed_thread.join
   end
 
   def feed_file_name(minimal=false)
@@ -28,6 +31,12 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
                                     :localfile => true,
                                     :silent => true,
                                     :disable_tls => false})
+  end
+
+  def benchmark_queries(query_phase)
+    benchmark_query("vespa_queries-weak_and-10k.json", query_phase, "weak_and")
+    benchmark_query("vespa_queries-semantic-10k.json", query_phase, "semantic")
+    benchmark_query("vespa_queries-hybrid-10k.json", query_phase, "hybrid")
   end
 
   def benchmark_query(query_file, query_phase, query_type)

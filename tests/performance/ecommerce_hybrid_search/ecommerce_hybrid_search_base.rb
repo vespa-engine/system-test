@@ -23,11 +23,15 @@ class EcommerceHybridSearchTestBase < PerformanceTest
       puts "Using local file: #{file_name}"
       selfdir + file_name
     else
-      puts "Downloading file: #{file_name}"
       node_file = dirs.tmpdir + file_name
-      vespa_node.fetchfiles(:testdata_url => url,
-                            :file => file_name,
-                            :destination_file => node_file)
+      if execute(vespa_node, "test -f #{node_file}")[0] == 0
+        puts "Using already downloaded file: #{file_name}"
+      else
+        puts "Downloading file: #{file_name}"
+        vespa_node.fetchfiles(:testdata_url => url,
+                              :file => file_name,
+                              :destination_file => node_file)
+      end
       node_file
     end
   end
