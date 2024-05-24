@@ -71,7 +71,7 @@ class SchemaChangesReplaceTest < IndexedOnlySearchTest
     assert_hitcount("f2:31&nocache", 1)
     assert_hitcount("f3:d&nocache", 1)
     assert_result("sddocname:test&nocache", @test_dir + "result.0.json")
-    proton.softdie
+    proton.restart
     wait_for_hitcount("/?query=sddocname:test", 2);
     assert_hitcount("f2:b&nocache", 0)
     assert_hitcount("f3:30&nocache", 0)
