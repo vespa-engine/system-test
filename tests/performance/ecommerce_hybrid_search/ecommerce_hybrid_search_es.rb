@@ -19,10 +19,11 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     @es_endpoint = "http://#{@es_hostname}:#{@es_port}"
     @minimal = false
     prepare_es_app
+    @feed_threads = 6
 
-    benchmark_feed(feed_file_name, get_num_docs, "feed")
+    benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "feed")
     benchmark_queries("after_feed")
-    feed_thread = Thread.new { benchmark_feed(feed_file_name, get_num_docs, "refeed") }
+    feed_thread = Thread.new { benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "refeed") }
     sleep 5
     benchmark_queries("during_refeed")
     feed_thread.join
@@ -74,14 +75,25 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     @node.execute("curl -X PUT '#{@es_endpoint}/product?pretty' -H 'Content-Type: application/json' -d @#{node_file}")
   end
 
-  def benchmark_feed(feed_file, num_docs, label)
+  def benchmark_feed(feed_file, num_docs, num_threads, label)
     files = prepare_feed_files(feed_file)
-    puts "Starting to feed #{num_docs} documents among #{files.size} files..."
+    files_per_thread = (files.size.to_f / num_threads.to_f).ceil
+    puts "Starting to feed #{num_docs} documents: files=#{files.size}, threads=#{num_threads}, files_per_thread=#{files_per_thread}"
     system_sampler = Perf::System::new(@node)
     system_sampler.start
     start_time = Time.now
-    for file in files
-      @node.execute("curl -X POST '#{@es_endpoint}/_bulk?pretty&filter_path=took,errors,items.*.error' -s -H 'Content-Type: application/x-ndjson' --data-binary @#{file}")
+    threads = []
+    files.each_slice(files_per_thread) do |slice|
+      t = Thread.new do
+        puts "Starting thread #{Thread.current.object_id} to feed #{slice.size} files..."
+        for file in slice
+          @node.execute("curl -X POST '#{@es_endpoint}/_bulk?pretty&filter_path=took,errors,items.*.error' -s -H 'Content-Type: application/x-ndjson' --data-binary @#{file}")
+        end
+      end
+      threads.push(t)
+    end
+    for t in threads
+      t.join
     end
     # A refresh makes recent operations performed on one or more indices available for search.
     @node.execute("curl -X POST '#{@es_endpoint}/_refresh?pretty'")
