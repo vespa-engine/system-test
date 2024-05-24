@@ -10,20 +10,6 @@ class SearchNode < VespaNode
     @feed_destination = @service_entry["feed-destination"]
   end
 
-  def die
-    label = `vespa-proton-cmd #{rpc_port} die 2>&1`.chomp
-    testcase.output(label)
-  end
-
-  def softdie
-    if testcase.valgrind
-      stop
-      start
-    else
-      die
-    end
-  end
-
   def use_min_config_generation
     return true
   end
