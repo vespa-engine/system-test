@@ -67,7 +67,7 @@ class PhraseCasesPerformanceTest < PerformanceTest
     searchnode = vespa.search["search"].first
     searchnode.trigger_flush
     searchnode.trigger_flush
-    searchnode.softdie
+    searchnode.restart
     wait_for_hitcount("sddocname:foobar", 123456, 30)
 
     clients=48
