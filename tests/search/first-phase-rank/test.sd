@@ -13,7 +13,7 @@ schema test {
       expression: attribute(order)
     }
     second-phase {
-      expression: attribute(order) + 60 / firstPhaseRank
+      expression: attribute(order) + 60 / firstPhaseRank + if(firstPhaseRank == 3.0,1000.0,0.0)
     }
     match-features {
       attribute(order)
