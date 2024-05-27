@@ -31,9 +31,6 @@ class LargeDocuments < VdsTest
   end
 
   def create_dummy_feed(count, size)
-    # Add some debug logging for client
-    vespa.adminserver.copy("#{selfdir}/logging.properties", "/opt/vespa/conf/vespa-feed-client/")
-
     docs = DocumentSet.new
     count.times { |id|
       doc = Document.new("music", "id:test:music:n=" + id.to_s + ":1")
@@ -45,7 +42,7 @@ class LargeDocuments < VdsTest
       docs.add(doc)
     }
     docs.write_json(@feed_file)
-    feed(:file => @feed_file, :stderr => true, :verbose => true, :timeout => 60)
+    feed(:file => @feed_file, :stderr => true, :verbose => true, :timeout => 60, :log_config => "#{selfdir}/logging.properties")
   end
 
   def check_dummy_feed(count, size)
