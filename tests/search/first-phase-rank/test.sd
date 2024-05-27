@@ -1,0 +1,32 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema test {
+
+  document test {
+    field order type int {
+      indexing: attribute | summary
+    }
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(order)
+    }
+    second-phase {
+      expression: attribute(order) + 60 / firstPhaseRank
+    }
+    match-features {
+      attribute(order)
+      firstPhase
+      firstPhaseRank
+      secondPhase
+    }
+    summary-features {
+      attribute(order)
+      firstPhase
+      firstPhaseRank
+      secondPhase
+    }
+  }
+
+}
