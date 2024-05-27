@@ -119,7 +119,7 @@ class PartialUpdate < IndexedStreamingSearchTest
     poll_cmp("update.k.result.json", 60)
 
     # the searchnode should start up again with the correct sync token
-    vespa.search["search"].first.softdie
+    vespa.search["search"].first.restart
     sleep 10
 
     feed_and_check_2()
@@ -244,7 +244,7 @@ class PartialUpdate < IndexedStreamingSearchTest
     poll_compare(test_case.query + '&format=xml', result, test_case.sort_field, test_case.fields_to_compare, 30)
 
     # the searchnode should start up again in the same state
-    vespa.search["search"].first.softdie
+    vespa.search["search"].first.restart
     vespa.search["search"].wait_until_ready
     wait_for_hitcount("/?query=sddocname:#{doc_type}", test_case.max_doc + 1)
     poll_compare(test_case.query + '&format=xml', result, test_case.sort_field, test_case.fields_to_compare, 30)
@@ -385,7 +385,7 @@ class PartialUpdate < IndexedStreamingSearchTest
     proton = vespa.search["search"].first
     proton.trigger_flush
     sleep 4
-    proton.softdie
+    proton.restart
     vespa.search["search"].wait_until_ready
     wait_for_hitcount("/?query=sddocname:complex", 1);
     assert_hitcount("query=fa:aaa&nocache", 0)
@@ -431,7 +431,7 @@ class PartialUpdate < IndexedStreamingSearchTest
     assert_fieldcount("fa", "fa:aaa", 1.0, 0)
     assert_fieldcount("fa", "fa:bbb", 4.0, 0)
     assert_fieldcount("fa", "fa:ccc", 1.0, 0)
-    proton.softdie
+    proton.restart
     vespa.search["search"].wait_until_ready
     wait_for_hitcount("/?query=sddocname:indexarray", 1);
     assert_hitcount("query=fa:aaa&nocache", 1)

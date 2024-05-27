@@ -143,7 +143,7 @@ class TestCase
   end
 
   def default_feed_client
-    :vespa_feeder
+    :vespa_feed_client
   end
 
   def can_share_configservers?(method_name=nil)

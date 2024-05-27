@@ -299,7 +299,7 @@ class ProtonTest < IndexedOnlySearchTest
     deploy_app(SearchApp.new.sd("#{selfdir}/banana.sd"))
     start
     numfeed = 100000
-    f = File.new("#{dirs.tmpdir}/#{SecureRandom.urlsafe_base64}_mixedfeed.xml", "w")
+    f = File.new("#{dirs.tmpdir}/#{SecureRandom.urlsafe_base64}_mixedfeed.json", "w")
     numputs, numupdates, numremoves = generate_mixed_feed(f, 0, numfeed, 3, 5)
     f.close
     output = feed(:file => f.path, :timeout => 600)

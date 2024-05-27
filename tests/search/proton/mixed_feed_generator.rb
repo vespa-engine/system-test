@@ -12,6 +12,7 @@ module MixedFeedGenerator
     numputs = 0
     numupdates = 0
     numremoves = 0
+    f.puts("[\n")
     for i in startid..(startid + numelems - 1) do
       docid = "id:banana:banana::doc#{i}"
       color = "yellow#{i}"
@@ -33,27 +34,30 @@ module MixedFeedGenerator
       end
       document = ""
       if state == PUTDOC then
-          document += "<document documenttype=\"banana\" documentid=\"#{docid}\">\n"
-          document += "  <colour>#{color}</colour>\n"
-          document += "  <age>#{age}</age>\n"
-          document += "  <similarfruits>\n"
-          document += "    <item>#{item1}</item>\n"
-          document += "    <item>#{item2}</item>\n"
-          document += "  </similarfruits>\n"
-          document += "</document>\n"
+          document += "{ \"put\": \"#{docid}\",\n"
+          document += " \"fields\": {"
+          document += " \"colour\": \"#{color}\","
+          document += " \"age\": #{age},"
+          document += " \"similarfruits\": [ \"#{item1}\", \"#{item2}\" ]"
+          document += "  }\n"
+          document += "}"
           numputs += 1
       elsif state == UPDATEDOC then
-          document += "<update documenttype=\"banana\" documentid=\"#{prevdocid}\">\n"
-          document += "<increment field=\"age\" by=\"#{numelems}\" />\n"
-          document += "</update>\n"
+          document += "{ \"update\": \"#{prevdocid}\","
+          document += "  \"fields\": { \"age\": { \"increment\": #{numelems} } }"
+          document += "}"
           numupdates += 1
       elsif state == REMOVEDOC then
-          document += "<remove documentid=\"#{prevdocid}\" />\n";
+          document += "{ \"remove\": \"#{prevdocid}\" }";
           numremoves += 1
       end
       f.puts(document)
+      if i < startid + numelems - 1
+        f.puts ","
+      end
       prevdocid = docid
     end
+    f.puts("]\n")
     return numputs, numupdates, numremoves
   end
 
