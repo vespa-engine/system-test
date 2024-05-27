@@ -19,7 +19,7 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     @es_endpoint = "http://#{@es_hostname}:#{@es_port}"
     @minimal = false
     prepare_es_app
-    @feed_threads = 6
+    @feed_threads = 8
 
     benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "feed")
     benchmark_queries("after_feed")
