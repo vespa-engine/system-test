@@ -247,6 +247,9 @@ module Feeder
       else
         p += "--stdin "
       end
+      if params[:log_config]
+        p += "--log-config #{params[:log_config]} "
+      end
       if params[:numconnections]
         p += "--connections #{params[:numconnections]} "
       end
