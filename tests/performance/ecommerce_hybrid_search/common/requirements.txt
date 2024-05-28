@@ -1,3 +1,6 @@
 docker
 elasticsearch
 pyvespa
+tqdm
+requests
+zstandard
