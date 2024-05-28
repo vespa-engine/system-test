@@ -20,10 +20,6 @@ class LargeDocuments < VdsTest
     start
   end
 
-  def timeout_seconds
-    1200
-  end
-
   def target_node
     vespa.search["search"].first
   end
@@ -48,7 +44,7 @@ class LargeDocuments < VdsTest
       docs.add(doc)
     }
     docs.write_json(@feed_file)
-    feed(:file => @feed_file, :stderr => true, :verbose => true, :timeout => 60, :log_config => selfdir + 'logging.properties')
+    feed(:file => @feed_file)
   end
 
   def check_dummy_feed(count, size)
