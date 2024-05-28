@@ -1,6 +1,7 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
-require 'indexed_streaming_search_test'
+require 'document_set'
 require 'environment'
+require 'indexed_streaming_search_test'
 
 class SlowQuery < IndexedStreamingSearchTest
 
@@ -29,18 +30,14 @@ class SlowQuery < IndexedStreamingSearchTest
 
   def setup
     set_owner("arnej")
-    deploy_app(SearchApp.new.sd(selfdir+"simple.sd"))#.qrserver(QrserverCluster.new))
+    deploy_app(SearchApp.new.sd(selfdir+"simple.sd"))
+    @feed_file = dirs.tmpdir + 'feed.json'
     start
   end
 
   def test_slow_query
-
-    node = vespa.adminserver
-    node.copy(selfdir + "gendata.c", dirs.tmpdir)
-    # TODO Generate test data using Ruby instead of C program
-    tmp_bin_dir = node.create_tmp_bin_dir
-    (exitcode, output) = execute(node, "set -x && cd #{dirs.tmpdir} && gcc gendata.c -o #{tmp_bin_dir}/a.out && #{tmp_bin_dir}/a.out | vespa-feed-perf")
-    puts "compile and feed output: #{output}"
+    generate_documents(@feed_file)
+    feed(:file => @feed_file)
 
     wait_for_hitcount("sddocname:simple", 400)
     assert_hitcount("foobar", 400)
@@ -83,6 +80,20 @@ class SlowQuery < IndexedStreamingSearchTest
     query_time_avg = query_time_sum / i
     puts "GOT Query time from access log: #{query_time_avg}"
     assert(query_time_avg.to_f <= 11.0, "Too long query time")
+  end
+
+  def generate_documents(feed_file)
+    docs = DocumentSet.new
+    (0..399).each { | i |
+      doc = Document.new("simple", "id:test:simple::#{i}")
+      doc.add_field("title", "foobar #{i} foobar")
+      description = ""
+      (0..677).each { | count |
+        description += "foobar #{1234567 - count} "
+      }
+      docs.add(doc)
+    }
+    docs.write_json(feed_file)
   end
 
   def teardown
