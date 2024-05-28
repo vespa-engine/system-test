@@ -1,4 +1,5 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'app_generator/search_app'
 require 'document_set'
 require 'vds_test'
 
@@ -9,7 +10,12 @@ class LargeDocuments < VdsTest
     set_owner("vekterli")
 
     @feed_file = dirs.tmpdir + "feed.json"
-    deploy_app(default_app)
+    deploy_app(SearchApp.new.sd(VDS + '/schemas/music.sd').
+                 container(Container.new.
+                             # Needs more memory due to large documents
+                             jvmoptions('-Xms3g -Xmx3g').
+                             search(Searching.new).
+                             documentapi(ContainerDocumentApi.new)))
     set_expected_logged(//, :slow_processing => true)
     start
   end
@@ -19,7 +25,7 @@ class LargeDocuments < VdsTest
   end
 
   def target_node
-    vespa.storage["storage"].distributor["0"]
+    vespa.search["search"].first
   end
 
   def test_largedocuments
@@ -42,7 +48,7 @@ class LargeDocuments < VdsTest
       docs.add(doc)
     }
     docs.write_json(@feed_file)
-    feed(:file => @feed_file, :stderr => true, :verbose => true, :timeout => 60, :log_config => "#{selfdir}/logging.properties")
+    feed(:file => @feed_file, :stderr => true, :verbose => true, :timeout => 60, :log_config => selfdir + 'logging.properties')
   end
 
   def check_dummy_feed(count, size)
