@@ -6,18 +6,17 @@ const double inv = 123456789.0 / RAND_MAX;
 
 void header(int num)
 {
-    printf("<document type='covtest' id='id:test:covtest::%d'>\n", num);
-    printf("<title>the coverage %d test</title>\n", num);
+    printf("{ \"put\": \"id:test:covtest::%d\",\n", num);
+    printf("  \"fields\": { \"title\": \"the coverage %d test\",", num);
 }
 
 void footer(int num)
 {
     // TODO Avoid randomness to make matchphase limiting more predictable.
     double score = random() * inv;
-    printf("<sortlimnum>%d</sortlimnum>\n", (int)score);
+    printf("\"sortlimnum\": %d, ", (int)score);
     score = random() * inv * 0.001;
-    printf("<weight>%f</weight>\n", score);
-    printf("</document>\n");
+    printf("\"weight\": %f }\n}", score);
 }
 
 int main(int argc, char **argv)
@@ -26,11 +25,14 @@ int main(int argc, char **argv)
     int documents = 100000;
     if (argc > 1) { documents = atoi(argv[1]); }
     srandom(42);
-    printf("<vespafeed>\n");
+    printf("[\n");
     for (i = 0; i < documents; i++) {
+        if (i > 0) {
+          printf(",\n");
+        }
         header(i);
         footer(i);
     }
-    printf("</vespafeed>\n");
+    printf("]");
     return 0;
 }
