@@ -33,7 +33,7 @@ schema product {
     field embedding type tensor<float>(x[384]) {
       indexing: attribute | index | summary
       attribute {
-        distance-metric: angular
+        distance-metric: prenormalized-angular
       }
       index {
         hnsw {
@@ -51,7 +51,8 @@ schema product {
 
   rank-profile bm25 {
     first-phase {
-      expression: bm25(title) + bm25(description)
+      # This best matches the 'best_fields' (default) scoring in 'multi_match' ES queries.
+      expression: max(bm25(title), bm25(description))
     }
   }
 
