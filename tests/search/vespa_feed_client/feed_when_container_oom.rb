@@ -8,32 +8,45 @@ class FeedWhenContainerOom < SearchTest
   def setup
     @valgrind = false
     set_owner("hmusum")
+    set_description("Tests feeding against a container with too little memory to handle feed")
 
     @feed_file = dirs.tmpdir + "feed.json"
-    deploy_app(SearchApp.new.sd(VDS + '/schemas/music.sd').
-                 container(Container.new.
-                             # Too little memory to handle the 5 large documents => will OOM
-                             jvmoptions('-Xms1g -Xmx1g').
-                             search(Searching.new).
-                             documentapi(ContainerDocumentApi.new)))
+    deploy_app(app())
     set_expected_logged(//, :slow_processing => true)
     start
   end
 
-  def timeout_seconds
-    120
-  end
-
   def test_feeding_when_container_goes_oom
-     count = 5
-     size = 50000000
+    doc_count = 5
+    generate_feed(doc_count)
 
-     feed_and_verify(count, size)
+    feed(:file => @feed_file, :ignore_errors => true, :timeout => 30)
+    result = search("sddocname:music")
+    assert(result.hitcount < doc_count)
+
+    # Start new feed, will fail until app is redeployed with more memory for container
+    feed_thread= Thread.new(){
+      feed(:file => @feed_file, :ignore_errors => true, :timeout => 60)
+    }
+    # deploy with more container memory
+    deploy_app(app('3g'))
+    feed_thread.join
+    assert_hitcount("query=sddocname:music", doc_count)
   end
 
-  def feed_and_verify(count, size)
+  def app(heap_mem = '1g')
+    SearchApp.new.sd(VDS + '/schemas/music.sd').
+                 container(Container.new.
+                             # Intentionally setup container to have too little memory to handle the 5 large documents => will OOM
+                             jvmoptions("-Xms#{heap_mem} -Xmx#{heap_mem}").
+                             search(Searching.new).
+                             documentapi(ContainerDocumentApi.new))
+  end
+
+  def generate_feed(doc_count)
+    size = 50000000
     docs = DocumentSet.new
-    count.times { |id|
+    doc_count.times { |id|
       doc = Document.new("music", "id:test:music:n=" + id.to_s + ":1")
       content = ""
       (size / 50).times {
@@ -43,7 +56,6 @@ class FeedWhenContainerOom < SearchTest
       docs.add(doc)
     }
     docs.write_json(@feed_file)
-    feed_and_wait_for_docs("music", 5, :file => @feed_file, :stderr => true, :verbose => true, :timeout => 60, :log_config => selfdir + 'logging.properties')
   end
 
   def teardown
