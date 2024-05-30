@@ -89,13 +89,14 @@ class HeapSize < SearchTest
     end
 
     puts "Free memory = " + free.to_s
-    relative = (free - 1024) * 40 / 100
+    relative = (free - 700) * 40 / 100
     puts "Relative memory for container " + relative.to_s
     maxdirect = relative/8 + 16 + 0 # Taken from the startup script.
     puts "MaxDirectMemorySize should be " + maxdirect.to_s
-    assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms#{relative}m/)
-    assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xmx#{relative}m/)
-    assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-XX:MaxDirectMemorySize=#{maxdirect}m/)
+    ps_output = vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep")
+    assert(ps_output =~ /-Xms#{relative}m/, "Expected to find '-Xms#{relative}m' in output: #{ps_output}")
+    assert(ps_output =~ /-Xmx#{relative}m/, "Expected to find '-Xmx#{relative}m' in output: #{ps_output}")
+    assert(ps_output =~ /-XX:MaxDirectMemorySize=#{maxdirect}m/, "Expected to find '-XX:MaxDirectMemorySize=#{maxdirect}m' in output: #{ps_output}")
   end
 
   def teardown

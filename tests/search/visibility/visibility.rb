@@ -14,6 +14,7 @@ class VisibilityFeeder < SimpleHTTPFeeder
     @cv = cv
     @active = false
     @failed = false
+    @exception = ""
     @thread = nil
     @docbias = docbias
   end
@@ -27,6 +28,12 @@ class VisibilityFeeder < SimpleHTTPFeeder
   def failed
     @mutex.synchronize do
       return @failed
+    end
+  end
+
+  def exception
+    @mutex.synchronize do
+      return @exception
     end
   end
 
@@ -95,11 +102,13 @@ class VisibilityFeeder < SimpleHTTPFeeder
         puts e.backtrace.inspect
         @mutex.synchronize do
           @failed = true
+          @exception = e.message
         end
       rescue
         puts "pollfeed thread got unknown exception"
         @mutex.synchronize do
           @failed = true
+          @exception = e.message
         end
       ensure
         @mutex.synchronize do
@@ -197,13 +206,15 @@ class Visibility < IndexedOnlySearchTest
   def unregister_feeders
     return if @feeders.nil?
     feederfailed = false
+    exception = "(no exception message given)"
     @feeders.each do |feeder|
-       feeder.join
+      feeder.join
       feederfailed = true if feeder.failed
+      exception = feeder.exception
     end
     @feeders = nil
     puts "Stopped feeders"
-    assert_equal(false, feederfailed, "Feeder failed due to execption")
+    assert_equal(false, feederfailed, "Feeder failed due to exception: #{exception}")
   end
 
   def create_feeders(num_feeders)
