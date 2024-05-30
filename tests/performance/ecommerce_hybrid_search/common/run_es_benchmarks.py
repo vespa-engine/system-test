@@ -117,7 +117,7 @@ except docker.errors.NotFound:
     print(f"Network {docker_network} created")
 
 container = client.containers.run(
-    "docker.elastic.co/elasticsearch/elasticsearch:8.13.2",
+    "docker.elastic.co/elasticsearch/elasticsearch:8.13.4",
     detach=True,
     remove=True,
     ports={"9200/tcp": 9200},
@@ -243,13 +243,15 @@ start_time = time.time()
 # Split the file and upload in chunks
 split_and_upload(ZST_FILE, CHUNK_SIZE)
 
-end_time = time.time()
-print(f"Total time: {end_time - start_time} seconds")
-
 # %%
 es.indices.refresh(index=index_name)
 refresh_result = es.cat.count(index=index_name, format="json")
 refresh_result
+
+# %%
+end_time = time.time()
+print(f"Total time: {end_time - start_time} seconds")
+
 
 # %%
 assert int(refresh_result[0]["count"]) == int(run_size)
@@ -321,7 +323,7 @@ for config in configs:
             "-c", # cycleTime
             "0",
             "-s", # Seconds to run the benchmark
-            "5",
+            "30",
             "-n", # Number of clients in parallel
             "1",
             "-q", # Query file
@@ -329,7 +331,6 @@ for config in configs:
             "-P", # Post requests (GET is default)
             "-o", # Output file
             config["output_file"],
-            "-D", # Use TLS configuration from environment
             "elasticsearch", # Hostname to run against
             "9200", # Port to run against
         ],
