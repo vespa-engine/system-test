@@ -25,8 +25,8 @@ class FeedWhenContainerOom < SearchTest
     assert(result.hitcount < doc_count)
 
     # Start new feed, will fail until app is redeployed with more memory for container
-    feed_thread= Thread.new(){
-      feed(:file => @feed_file, :ignore_errors => true, :timeout => 60)
+    feed_thread = Thread.new() {
+      feed(:file => @feed_file, :ignore_errors => true, :timeout => 120)
     }
     # deploy with more container memory
     deploy_app(app('3g'))
