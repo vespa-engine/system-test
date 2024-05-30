@@ -20,14 +20,17 @@ class FeedWhenContainerOom < SearchTest
     doc_count = 5
     generate_feed(doc_count)
 
-    feed(:file => @feed_file, :ignore_errors => true, :timeout => 30)
+    feed(:file => @feed_file, :ignore_errors => true, :stderr => true, :verbose => true, :timeout => 30, :log_config => selfdir + 'logging.properties')
     result = search("sddocname:music")
     assert(result.hitcount < doc_count)
 
     # Start new feed, will fail until app is redeployed with more memory for container
     feed_thread= Thread.new(){
-      feed(:file => @feed_file, :ignore_errors => true, :timeout => 60)
+      feed(:file => @feed_file, :ignore_errors => true, :stderr => true, :verbose => true, :timeout => 60, :log_config => selfdir + 'logging.properties')
     }
+
+    # Sleep to make sure feeder has started before deploy
+    sleep 10
     # deploy with more container memory
     deploy_app(app('3g'))
     feed_thread.join
