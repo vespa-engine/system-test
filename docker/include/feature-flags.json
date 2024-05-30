@@ -39,7 +39,6 @@
         { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : true } ] },
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
         { "id" : "persistence-thread-max-feed-op-batch-size", "rules" : [ { "value" : 64 } ] },
-        { "id" : "symmetric-put-and-activate-replica-selection", "rules" : [ { "value" : true } ] },
-        { "id" : "jvm-omit-stack-trace-in-fast-throw", "rules" : [ { "value" : false } ] }
+        { "id" : "symmetric-put-and-activate-replica-selection", "rules" : [ { "value" : true } ] }
     ]
 }
