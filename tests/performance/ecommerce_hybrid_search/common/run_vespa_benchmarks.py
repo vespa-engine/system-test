@@ -5,11 +5,102 @@
 # %% [markdown]
 # # Vespa
 # 
+# ## Defining our input files
+# 
+
+# %%
+import os 
+from enum import Enum
+
+# Define RunSize as enum (mini, medium, full)
+# Make it possible to get bot string and int value
+class RunSize(Enum):
+    MINIMAL = "100k"
+    MEDIUM = "1M"
+    FULL = "5M"
+    
+    def __int__(self):
+        return {
+            RunSize.MINIMAL: 100000,
+            RunSize.MEDIUM: 1000000,
+            RunSize.FULL: 5000000
+        }[self]
+
+# Define run size as RunSize
+run_size = RunSize.MINIMAL
+
+# Define modes as enum (weak_and, hybrid, semantic)
+class Mode(Enum):
+    WEAK_AND = "weak_and"
+    HYBRID = "hybrid"
+    SEMANTIC = "semantic"
+
+# Output dir is ../dataprep/output-data/{mode}
+OUTPUT_DIR = os.path.join(os.path.dirname(os.getcwd()), "dataprep/output-data", run_size.value)
+
+# Create output dir if it does not exist
+if not os.path.exists(OUTPUT_DIR):
+    os.makedirs(OUTPUT_DIR)
+
+feed_file_vespa = os.path.join(OUTPUT_DIR, f"vespa_feed-{run_size.value}.json.zst")
+query_files = {query_mode.value: os.path.join(OUTPUT_DIR, f"vespa_queries-{query_mode.value}-10k.json.zst") for query_mode in Mode}
+
+query_files, feed_file_vespa
+
 
 # %% [markdown]
-# ## Starting the Vespa docker container
+# ## Downloading data files
 # 
-# Be sure that your docker engine is running, and has at least 24GB of memory allocated to it.
+
+# %%
+import requests
+import shutil
+import pathlib
+from tqdm import tqdm
+
+download_base_url = "https://data.vespa.oath.cloud/tests/performance/ecommerce_hybrid_search"
+
+def download_file(url, file_path):
+    try:
+        response = requests.get(url, stream=True)
+        total_size_in_bytes= int(response.headers.get('content-length', 0))
+        progress_bar = tqdm(total=total_size_in_bytes, unit='iB', unit_scale=True)
+        if response.status_code == 200:
+            with open(file_path, 'wb') as f:
+                for chunk in response.iter_content(chunk_size=1024):
+                    progress_bar.update(len(chunk))
+                    f.write(chunk)
+            progress_bar.close()
+        else:
+            print(f"Failed to download {url}. Status code: {response.status_code}")
+    except Exception as e:
+        print(f"Failed to download {url} to {file_path}")
+        print(e)
+
+# Download files if they do not exist
+for query_mode, query_file in query_files.items():
+    if not os.path.exists(query_file):
+        print(f"Downloading {query_file}")
+        download_file(f"{download_base_url}/{pathlib.Path(query_file).name}", query_file)
+
+# Download feed file if it does not exist
+if not os.path.exists(feed_file_vespa):
+    download_file(f"{download_base_url}/vespa_feed-{run_size.value}.json.zst", feed_file_vespa)
+
+# %% [markdown]
+# # Vespa
+# 
+
+# %% [markdown]
+# ## Running the Vespa docker container
+# 
+# Verify that docker/podman engine is running
+# 
+# Recommended resource configuration:
+# 
+# - 8 CPUs
+# - 25 GB RAM
+# - 100 GB+ disk space
 # 
 
 # %%
@@ -36,6 +127,10 @@ container = client.containers.run(
 # Wait until container is ready
 container.reload()
 
+# %% [markdown]
+# ## Deploy the Vespa application
+# 
+
 # %%
 from vespa.deployment import VespaDocker
 
@@ -53,92 +148,95 @@ app = vespa_docker.deploy_from_disk(
 # 
 
 # %%
-#!zstd -d -f ../dataprep/output-data/final/vespa_feed-20k.json.zst -o ../dataprep/output-data/final/vespa_feed-20k.json
+import zstandard as zstd
+import json
+import os
+
+def unzstd(file_path, remove_decompressed_file=True):
+    with open(file_path, 'rb') as compressed:
+        decomp = zstd.ZstdDecompressor()
+        with open(file_path.replace(".zst", ""), 'wb') as destination:
+            decomp.copy_stream(compressed, destination)
+    if remove_decompressed_file:
+        os.remove(file_path)
+    return file_path.replace(".zst", "")
+
+unzstd(feed_file_vespa)
 
 # %%
-# !vespa config set target local
-# unzstd the file
-#!zstd -d -f ../dataprep/output-data/final/vespa_feed-1M.json.zst -o ../dataprep/output-data/final/vespa_feed-1M.json
-# !vespa feed --progress 5 ../dataprep/output-data/final/vespa_feed-20k.json
+import subprocess
 
-# %% [markdown]
-# ## Querying Vespa
-# 
+# Use vespa CLI (vespa feed --progress 10) to feed data
+set_target_command = "vespa config set target local"
+feed_command = f"vespa feed --progress 10 {feed_file_vespa.replace('.zst', '')}"
 
-# %% [markdown]
-# ### BM25
-# 
+# Set target to local
+subprocess.run(set_target_command, shell=True, capture_output=True, text=True)
 
-# %%
-bm25_query = get_single_query(application="vespa", query_mode="weak_and")
-bm25_query
+# Feed data
+feed_output = subprocess.run(feed_command, shell=True, capture_output=True, text=True)
 
-# %%
-from vespa.io import VespaQueryResponse
-
-response: VespaQueryResponse = app.query(
-    # Update to medium presentation summary
-    body={**bm25_query, "presentation.summary": "medium"}
-)
-print(json.dumps(response.hits[:3], indent=4))
-
-# %% [markdown]
-# ### Semantic search
-# 
+# Print the output of the feed command
+print("Feed Command Output:")
+print(feed_output.stdout)
+print(feed_output.stderr)
 
 # %%
-semantic_query = get_single_query(application="vespa", query_mode="semantic")
-semantic_query
+import json
+
+
+feed_result = json.loads(feed_output.stdout)
+print(json.dumps(feed_result, indent=2))
 
 # %%
-response: VespaQueryResponse = app.query(
-    # Update to medium presentation summary
-    body={**semantic_query, "presentation.summary": "medium"}
-)
-print(json.dumps(response.hits[:3], indent=4))
-
-# %% [markdown]
-# ### Hybrid query
-# 
-
-# %%
-hybrid_query = get_single_query(application="vespa", query_mode="hybrid")
-hybrid_query
-
-# %%
-response: VespaQueryResponse = app.query(
-    # Update to medium presentation summary
-    body={**hybrid_query, "presentation.summary": "medium"}
-)
-print(json.dumps(response.hits[:3], indent=4))
+assert int(feed_result["feeder.ok.count"]) == int(run_size)
 
 # %% [markdown]
 # ## Running fbench against Vespa-container
 # 
 
 # %%
-# !for f in ../dataprep/output-data/final/vespa_queries-*-10k.json.zst; do zstd -d -f "$f" -o "${f%.zst}"; done
+import zstandard as zstd
+import glob
+import os
+
+# Create a zstandard decompressor
+decompressor = zstd.ZstdDecompressor()
+
+# Decompress each file
+for zst_file in query_files.values():
+    output_file = zst_file.replace('.zst', '')
+    with open(zst_file, 'rb') as compressed, open(output_file, 'wb') as decompressed:
+        decompressor.copy_stream(compressed, decompressed)
+
+print("Decompression completed.")
 
 # %%
-# Define the options and base filenames
-options = ["weak_and", "semantic", "hybrid"]
-base_query_file = "vespa_queries-{}-10k.json"
-base_output_file = "fbench_output_vespa_{}.txt"
-result_file = "fbench_results_vespa_{}.txt"
-# Generate the configurations dynamically
+import datetime
+
+dt_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+folder_name =f"fbench_output_{dt_str}"
+output_folder = os.path.join(OUTPUT_DIR, folder_name)
+os.makedirs(output_folder, exist_ok=True)
+
+
 configs = [
     {
-        "option": option,
-        "query_file": base_query_file.format(option),
-        "output_file": base_output_file.format(option),
-        "result_file": result_file.format(option),
+        "mode": query_mode.value,
+        # Strip .zst extension from the query file. Use only filename without path
+        "query_file": os.path.basename(query_files[query_mode.value]).replace('.zst', ''),
+        "output_file": os.path.join(folder_name, f"fbench_output_vespa_{query_mode.value}.txt"),
+        "result_file": os.path.join(folder_name, f"fbench_results__vespa_{query_mode.value}.txt"),
     }
-    for option in options
+    for query_mode in Mode
 ]
+configs
 
+# %%
 # Loop through each configuration and run the container
 for config in configs:
-    print(f"Running fbench in container for {config['option']} queries")
+    print("#" * 80 + "\n")
+    print(f"Running fbench in container for {config['mode']} queries")
     output = client.containers.run(
         image="vespaengine/vespa",
         entrypoint="/opt/vespa/bin/vespa-fbench",  # Set vespa-fbench as the entrypoint
@@ -147,7 +245,7 @@ for config in configs:
             "-c",
             "0",
             "-s",
-            "30",
+            "5",
             "-n",
             "1",
             "-q",
@@ -160,7 +258,7 @@ for config in configs:
             "8080",
         ],
         volumes={
-            "/Users/thomas/Repos/system-test/tests/performance/ecommerce_hybrid_search/dataprep/output-data/final": {
+            OUTPUT_DIR: {
                 "bind": "/files",
                 "mode": "rw",
             }
@@ -172,9 +270,10 @@ for config in configs:
 
     # Wait for the container to finish and print the output
     result = output.decode("utf-8")
-    print(f"Output for {config['option']} queries:\n{result}")
+    print(f"Output for {config['mode']} queries:\n{result}")
     # Save results to a file
-    with open(config["result_file"], "w") as file:
+    output_file = os.path.join(OUTPUT_DIR, config["result_file"])
+    with open(output_file, "w") as file:
         file.write(result)
 
 # %% [markdown]
@@ -184,118 +283,3 @@ for config in configs:
 # %%
 vespa_docker.container.stop()
 vespa_docker.container.remove()
-
-# %% [markdown]
-# ### Compare fbench output
-# 
-
-# %%
-import json
-from typing import Dict
-import seaborn as sns
-import matplotlib.pyplot as plt
-import logging
-
-
-def clean_results(result_file_path: str) -> Dict:
-    vespa_in_file = "vespa" in result_file_path
-    es_in_file = "es" in result_file_path
-    if vespa_in_file:
-        application = "vespa"
-    elif es_in_file:
-        application = "es"
-    else:
-        raise ValueError("File must be either vespa or es")
-    all_results = {}
-    query_id_counter = 1
-    with open(result_file_path, "r") as file:
-        lines = file.readlines()
-        # Loop through each line in the file
-        for line in lines:
-            # keep only lines starting with {}
-            if line.startswith("{"):
-                # Load the line as a dictionary
-                result_dict = json.loads(line)
-                if application == "es":
-                    # Extract hits from the dictionary
-                    hits = result_dict["hits"]["hits"]
-                    # Exctract id and score (named relevance) from each hit
-                    individual_results = [
-                        {"id": int(hit["_id"]), "relevance": hit["_score"]}
-                        for hit in hits
-                    ]
-                elif application == "vespa":
-                    # Extract the query_id from the dictionary
-                    children = result_dict["root"]["children"]
-                    individual_results = [
-                        {"id": child["fields"]["id"], "relevance": child["relevance"]}
-                        for child in children
-                    ]
-                # Assert length of results
-                assert len(individual_results) <= 10, individual_results
-                all_results[query_id_counter] = individual_results
-                query_id_counter += 1
-    return all_results
-
-
-def calculate_overlaps(
-    vespa_fbench_output_path: str, es_fbench_output_path: str
-) -> float:
-    vespa_results: dict = clean_results(vespa_fbench_output_path)
-    print(f"Vespa results cleaned for {query_mode} - length: {len(vespa_results)}")
-    es_results: dict = clean_results(es_fbench_output_path)
-    print(f"Elasticsearch results cleaned for {query_mode} - length: {len(es_results)}")
-    # Now we want to calculate the number of overlapping results in the top 10 for each query
-    # We need to take only the lowest number of queries across the two systems
-    min_queries = min(len(vespa_results), len(es_results))
-    # Initialize the overlap counter
-    overlap = {}
-    # Loop through each query
-    for query_id in range(1, min_queries + 1):
-        # Get the top 10 results for each system
-        vespa_top_10 = {result["id"] for result in vespa_results[query_id][:10]}
-        es_top_10 = {result["id"] for result in es_results[query_id][:10]}
-        # Calculate the overlap
-        overlap[query_id] = len(vespa_top_10.intersection(es_top_10)) / 10
-    return overlap
-
-
-def plot_overlap(overlap: dict):
-    # Plot a histogram of the overlap
-    # One bin per 0.1 interval
-
-    bins = [x / 10 for x in range(11)]
-    # Create the histogram
-    sns.histplot(overlap.values(), bins=bins)
-    # Set the title
-    plt.title(f"Overlap in the top 10 results for weak_and and {query_mode}")
-    # Set a legend with total number of queries
-    plt.legend([f"Evaluated queries: {len(overlap)}"])
-    # Add another legend in center of plot with average overlap (to 2 decimal places)
-    plt.text(
-        0.5,
-        0.5,
-        f"Average overlap: {sum(overlap.values())/len(overlap):.2f}",
-        horizontalalignment="center",
-        verticalalignment="center",
-        transform=plt.gca().transAxes,
-    )
-    # Show the plot
-    return plt.show()
-
-
-# File path to the uploaded file
-querymodes = ["weak_and", "semantic", "hybrid"]
-
-for query_mode in querymodes:
-    vespa_fbench_output_path = (
-        f"../dataprep/output-data/final/fbench_output_vespa_{query_mode}.txt"
-    )
-    es_fbench_output_path = (
-        f"../dataprep/output-data/final/fbench_output_es_{query_mode}.txt"
-    )
-    overlap = calculate_overlaps(vespa_fbench_output_path, es_fbench_output_path)
-    plot_overlap(overlap)
-
-
-# %%

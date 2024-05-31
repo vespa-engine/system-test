@@ -1,4 +1,5 @@
--  <document documenttype="music" documentid="id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905709">
+<vespafeed>
+  <document documenttype="music" documentid="id:test:music::http://shopping.yahoo.com/shop?d=hab&amp;id=1804905709">
 			<title><![CDATA[Blues]]></title>
 			<pto>-1</pto>
 			<surl><![CDATA[http://shopping.yahoo.com/shop?d=hab&id=1804905709]]></surl>
@@ -96,3 +97,4 @@
 			<ew><![CDATA[blues]]></ew>
 			<categories><![CDATA[Blues]]></categories>
 		</document>
+</vespafeed>
