@@ -161,7 +161,8 @@ def unzstd(file_path, remove_decompressed_file=True):
         os.remove(file_path)
     return file_path.replace(".zst", "")
 
-unzstd(feed_file_vespa)
+if not os.path.exists(feed_file_vespa.replace(".zst", "")):
+    unzstd(feed_file_vespa)
 
 # %%
 import subprocess
@@ -245,7 +246,7 @@ for config in configs:
             "-c",
             "0",
             "-s",
-            "5",
+            "30",
             "-n",
             "1",
             "-q",
@@ -253,7 +254,6 @@ for config in configs:
             "-P",
             "-o",
             config["output_file"],
-            "-D",
             container_name,
             "8080",
         ],
