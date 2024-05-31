@@ -271,7 +271,8 @@ def save_es_query_files_from_df(
                     "knn": {
                         "field": "embedding",
                         "query_vector": embedding.tolist(),
-                        "k": 100,
+                        "num_candidates": 100,
+                        "k": 10,
                     },
                 }
                 for query, embedding in zip(queries, embeddings)
@@ -290,7 +291,8 @@ def save_es_query_files_from_df(
                     "knn": {
                         "field": "embedding",
                         "query_vector": embedding.tolist(),
-                        "k": 100,
+                        "num_candidates": 100,
+                        "k": 10,
                     },
                 }
                 for query, embedding in zip(queries, embeddings)
