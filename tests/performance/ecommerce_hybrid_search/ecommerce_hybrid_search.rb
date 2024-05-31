@@ -28,10 +28,12 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     system_sampler = Perf::System::new(vespa.search["search"].first)
     system_sampler.start
     fillers = [parameter_filler("label", label), system_metric_filler(system_sampler)]
+    profiler_start
     run_feeder(node_file, fillers, {:client => :vespa_feed_client,
                                     :localfile => true,
                                     :silent => true,
                                     :disable_tls => false})
+    profiler_report(label)
   end
 
   def benchmark_queries(query_phase)
