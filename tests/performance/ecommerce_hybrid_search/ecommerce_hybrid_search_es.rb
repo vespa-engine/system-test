@@ -81,6 +81,7 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     puts "Starting to feed #{num_docs} documents: files=#{files.size}, threads=#{num_threads}, files_per_thread=#{files_per_thread}"
     system_sampler = Perf::System::new(@node)
     system_sampler.start
+    profiler_start
     start_time = Time.now
     threads = []
     files.each_slice(files_per_thread) do |slice|
@@ -98,6 +99,7 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     # A refresh makes recent operations performed on one or more indices available for search.
     @node.execute("curl -X POST '#{@es_endpoint}/_refresh?pretty'")
     elapsed_sec = Time.now - start_time
+    profiler_report(label)
     puts "Elapsed time (sec): #{elapsed_sec}"
     count_res = @node.execute("curl -X GET '#{@es_endpoint}/_count?pretty'")
     count = JSON.parse(count_res)["count"].to_i
