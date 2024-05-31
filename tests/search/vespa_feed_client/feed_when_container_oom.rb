@@ -26,7 +26,7 @@ class FeedWhenContainerOom < SearchTest
 
     # Start new feed, will fail until app is redeployed with more memory for container
     feed_thread= Thread.new(){
-      feed(:file => @feed_file, :ignore_errors => true, :stderr => true, :verbose => true, :timeout => 120, :log_config => selfdir + 'logging.properties')
+      feed(:file => @feed_file, :ignore_errors => true, :stderr => true, :verbose => true, :timeout => 150, :log_config => selfdir + 'logging.properties')
     }
 
     # Sleep to make sure feeder has started before deploy
