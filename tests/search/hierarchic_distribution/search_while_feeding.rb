@@ -65,6 +65,16 @@ class SearchWhileFeedingAndNodesDownAndUpTest < FeedAndQueryTestBase
     assert_group_hitcount(exp_hitcount)
   end
 
+  def toggle_bucket_activation_logging(enable_debug)
+    level_str = "debug=#{enable_debug ? 'on' : 'off'}"
+    vespa.storage['mycluster'].distributor.each do |idx, distr|
+      distr.logctl2('distributor.operation.idealstate.setactive', level_str)
+      distr.logctl2('distributor.stripe_bucket_db_updater', level_str)
+      distr.logctl2('persistencemessagetracker', level_str)
+    end
+    sleep 1 # Let logctl changes become visible (with high probability)
+  end
+
   def test_search_while_feeding_and_nodes_down_and_up
     set_description("Test that all fixed groups/rows returns expected number of hits when feeding and nodes going down and up")
     # See BucketReadiness::test_readiness_while_nodes_down_and_up for similar test without
@@ -76,7 +86,9 @@ class SearchWhileFeedingAndNodesDownAndUpTest < FeedAndQueryTestBase
     chunks = 10
     generate_feed_files(chunks)
 
+    toggle_bucket_activation_logging(true)
     feed_and_assert_hitcount(5*chunks, "doc.0.json")
+    toggle_bucket_activation_logging(false)
 
     # feed removes
     feed_and_assert_hitcount(4*chunks, "rem.00.json")
