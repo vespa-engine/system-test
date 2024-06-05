@@ -1,0 +1,31 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema test {
+  document test {
+    field first type int {
+      indexing: attribute | summary
+    }
+    field second type int {
+      indexing: attribute | summary
+    }
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(first)
+    }
+    second-phase {
+      expression: attribute(second)
+    }
+  }
+  rank-profile second-phase-rank-score-drop-limit-9 inherits default {
+    second-phase {
+      rank-score-drop-limit: 9.0
+    }
+  }
+  rank-profile second-phase-rank-score-drop-limit-13 inherits default {
+    second-phase {
+      rank-score-drop-limit: 13.0
+    }
+  }
+}
