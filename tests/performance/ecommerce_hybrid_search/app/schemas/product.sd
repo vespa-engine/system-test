@@ -4,6 +4,10 @@ schema product {
 
   document product {
 
+    field language type string {
+      indexing: "en" | set_language
+    }
+
     field id type int {
       indexing: attribute | summary
     }
