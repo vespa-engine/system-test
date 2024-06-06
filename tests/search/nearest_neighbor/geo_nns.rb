@@ -101,9 +101,9 @@ class GeoNnsTest < IndexedStreamingSearchTest
     set_description("Test the nearest neighbor search operator for geo search (with whitelist)")
     geo_deploy(2)
     start
-    # Note: Need to use :vespa_feeder to be able to set maxpending, otherwise
-    # feeding order might not give the same HNSW graph for every run
-    feed(:file => selfdir + "5k-docs.json", :numthreads => 1, :client => :vespa_feeder, :maxpending => 1 )
+    # Note: :numconnections => 1, :max_streams_per_connection 1 needed to get deterministic ordering
+    # when feeding, otherwise we might not get the same HNSW graph for every run
+    feed(:file => selfdir + "5k-docs.json", :numthreads => 1, :numconnections => 1, :max_streams_per_connection => 1 )
     i=5000
     puts "Done put of #{i} documents"
     wait_for_hitcount('?query=sddocname:geo', i)
