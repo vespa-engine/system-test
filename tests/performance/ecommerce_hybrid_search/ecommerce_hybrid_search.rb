@@ -30,6 +30,7 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     fillers = [parameter_filler("label", label), system_metric_filler(system_sampler)]
     profiler_start
     run_feeder(node_file, fillers, {:client => :vespa_feed_client,
+                                    :compression => "none",
                                     :localfile => true,
                                     :silent => true,
                                     :disable_tls => false})
