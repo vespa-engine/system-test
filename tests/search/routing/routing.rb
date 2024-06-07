@@ -46,18 +46,15 @@ class RoutingTest < IndexedStreamingSearchTest
   def test_feedToSearchAndStorage
     deploy_app(three_cluster_app)
     start
-    # Feed to search. Because the feed.json file only contains the actual document we need to pre- and postfix the start-
-    # and end-of-feed elements.
+    # Feed to search
     feed_and_wait_for_docs("music", 1, :file => selfdir + "bobdylan_feed.json", :route => "indexing", :trace => 9)
     assert_result("search=music&query=bob", selfdir + "bobdylan_result.json")
 
-    # Feed to storage. Here we need to use the 'feed' method that creates the necessary vespafeed elements surrounding
-    # the content of the feed.json.
+    # Feed to storage
     feed(:file => selfdir + "bobdylan_feed.json", :route => "storage", :trace => 9)
     assert_equal(getBobDylan(), vespa.document_api_v1.get("id:music:music::http://music.yahoo.com/bobdylan/BestOf", @get_params))
 
-    # Feed to both search and storage. Here we can use the 'index' method since that will generate the surrouding vespa-,
-    # start- and end-of-feed elements. When sending to search AND storage, at least one recipient accepts them.
+    # Feed to both search and storage. When sending to search AND storage, at least one recipient accepts them.
     feed_and_wait_for_docs("music", 2, :file => selfdir + "metallica_feed.json", :route => "\"[AND:indexing storage]\"", :trace => 9)
     assert_result("search=music&query=metallica", selfdir + "metallica_result.json")
     assert_equal(getMetallica(), vespa.document_api_v1.get("id:music:music::http://music.yahoo.com/metallica/BestOf", @get_params))
