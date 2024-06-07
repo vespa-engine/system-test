@@ -211,6 +211,9 @@ module Feeder
       if params[:numconnections]
         p += "--connections #{params[:numconnections]} "
       end
+      if params[:compression]
+        p += "--compression #{params[:compression]} "
+      end
       if params[:max_streams_per_connection]
         p += "--max-streams-per-connection #{params[:max_streams_per_connection]} "
       end
