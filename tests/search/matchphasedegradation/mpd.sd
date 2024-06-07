@@ -80,21 +80,34 @@ schema mpd {
   }
 
   rank-profile diverse {
+    diversity {
+      attribute: cat
+      min-groups: 10
+    }
     match-phase {
       attribute: seq
       max-hits: 100
       max-filter-coverage: 1.0
-      diversity {
-        attribute: cat
-        min-groups: 10
-      }
     }
     first-phase {
       expression: attribute(seq)
     }
   }
 
-  rank-profile diverse_second {
+  rank-profile secondphase {
+    first-phase {
+      expression: attribute(seq)
+    }
+    second-phase {
+      rerank-count: 100
+      expression: attribute(seq) * 100
+    }
+  }
+  rank-profile diverse_secondphase {
+    diversity {
+      attribute: cat
+      min-groups: 10
+    }
     first-phase {
       expression: attribute(seq)
     }

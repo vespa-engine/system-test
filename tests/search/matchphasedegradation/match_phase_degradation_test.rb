@@ -116,18 +116,19 @@ class MatchPhaseDegradationTest < IndexedOnlySearchTest
     assert_count_equals("ranking=diverse&select=all(group(cat)output(count())each(output(count())))", 12)
     metrics1 = snode.get_total_metrics
     print_query_stats(metrics1)
-    assert_count_equals("ranking=diverse_second&select=all(group(cat)output(count())each(output(count())))", 100)
+    assert_count_equals("ranking=secondphase&select=all(group(cat)output(count())each(output(count())))", 100)
     metrics2 = snode.get_total_metrics
     print_query_stats(metrics2)
     verify_rankcount(metrics1, metrics2, 1, 100000, 100)
 
-    assert_count_equals("ranking=diverse_second&ranking.properties.vespa.matchphase.diversity.attribute=cat&ranking.properties.vespa.matchphase.diversity.mingroups=10&ranking.properties.vespa.matchphase.diversity.cutoffstrategy=strict&select=all(group(cat)output(count())each(output(count())))", 100)
+    assert_count_equals("ranking=secondphase&ranking.properties.vespa.matchphase.diversity.attribute=cat&ranking.properties.vespa.matchphase.diversity.mingroups=10&ranking.properties.vespa.matchphase.diversity.cutoffstrategy=strict&select=all(group(cat)output(count())each(output(count())))", 100)
     metrics3 = snode.get_total_metrics
     print_query_stats(metrics3)
     verify_rankcount(metrics2, metrics3, 1, 100000, 100)
 
-    assert_rank_of_2_best("ranking=diverse_second&select=all(group(cat)output(count())each(output(count())))", 9999900, 98999)
-    assert_rank_of_2_best("ranking=diverse_second&ranking.properties.vespa.matchphase.diversity.attribute=cat&ranking.properties.vespa.matchphase.diversity.mingroups=10&ranking.properties.vespa.matchphase.diversity.cutoffstrategy=strict&select=all(group(cat)output(count())each(output(count())))", 9999900, 9899900)
+    assert_rank_of_2_best("ranking=secondphase&select=all(group(cat)output(count())each(output(count())))", 9999900, 98999)
+    assert_rank_of_2_best("ranking=secondphase&ranking.properties.vespa.matchphase.diversity.attribute=cat&ranking.properties.vespa.matchphase.diversity.mingroups=10&ranking.properties.vespa.matchphase.diversity.cutoffstrategy=strict&select=all(group(cat)output(count())each(output(count())))", 9999900, 9899900)
+    assert_rank_of_2_best("ranking=diverse_secondphase&select=all(group(cat)output(count())each(output(count())))", 9999900, 9899900)
 
     i = 1
     while i <= 1000
@@ -219,7 +220,7 @@ class MatchPhaseDegradationTest < IndexedOnlySearchTest
     reranked = {}
 
     metrics = snode.get_total_metrics
-    for rp in [ "default", "inverse", "retainall", "retainkilo", "retaintenkilo", "inversekilo", "diverse", "diverse_second" ]
+    for rp in [ "default", "inverse", "retainall", "retainkilo", "retaintenkilo", "inversekilo", "diverse", "diverse_secondphase_querytime" ]
       puts("Metrics for #{rp} rank profile:")
       numq = get_num_queries(metrics, rp)
       numl = get_num_limited(metrics, rp)
