@@ -2,6 +2,7 @@
 require 'document_set'
 require 'environment'
 require 'indexed_streaming_search_test'
+require 'json'
 
 class Refeed < IndexedStreamingSearchTest
 
@@ -25,16 +26,15 @@ class Refeed < IndexedStreamingSearchTest
     generate_documents
     feed_and_wait_for_docs("test", @numdocs, :file => @feed_file)
     check_search
-    vespa.adminserver.execute("vespa-visit --xmloutput --fieldset=test:[document] > #{@visit_file}")
-    vespa.adminserver.execute("cat #{@visit_file} | " +
-                              "sed -e '1i<vespafeed>' -e '$a</vespafeed>' | " +
-                              "sed -e '1i<?xml version=\"1.0\" encoding=" +
-                              "\"UTF-8\" standalone=\"no\"?>'" +
-                              " > #{@refeed_file}")
-    vespa.adminserver.execute("vespa-feeder #{@refeed_file}")
+    result1 = visit()
+    feedbuffer(JSON.dump(result1))
     check_search
-    vespa.adminserver.execute("vespa-visit --xmloutput --fieldset=test:[document] > #{@visit_file2}")
-    check_visit_files
+    result2 = visit()
+    check_visit_results(result1, result2)
+  end
+
+  def visit()
+    JSON[vespa.adminserver.execute("vespa-visit --fieldset=test:[document]")]
   end
 
   def check_search
@@ -98,10 +98,12 @@ class Refeed < IndexedStreamingSearchTest
       '&boolean.rangeAttributes=' + range_attributes + '&nocache'
   end
 
-  def check_visit_files
-    puts "sorted diff"
-    vespa.adminserver.execute("cat #{@visit_file} |sort >#{@visit_file}.sort")
-    vespa.adminserver.execute("cat #{@visit_file2}|sort >#{@visit_file2}.sort")
-    vespa.adminserver.execute("diff #{@visit_file}.sort #{@visit_file2}.sort")
+  def check_visit_results(a, b)
+    assert(sort(a) == sort(b))
   end
+
+  def sort(a)
+    a.sort_by { |hash| hash['id'] }
+  end
+
 end
