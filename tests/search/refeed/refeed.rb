@@ -10,6 +10,7 @@ class Refeed < IndexedStreamingSearchTest
     set_description("Test re-feeding documents from vespa-visit.")
     @feed_file = dirs.tmpdir + "feed.tmp"
     @visit_file = "#{Environment.instance.vespa_home}/tmp/visit.tmp"
+    @refeed_file = "#{Environment.instance.vespa_home}/tmp/refeed.tmp"
     @visit_file2 = "#{Environment.instance.vespa_home}/tmp/visit2.tmp"
     @numdocs = 0
   end
@@ -24,15 +25,16 @@ class Refeed < IndexedStreamingSearchTest
     generate_documents
     feed_and_wait_for_docs("test", @numdocs, :file => @feed_file)
     check_search
-    visit(@visit_file)
-    feed(:file => @visit_file)
+    vespa.adminserver.execute("vespa-visit --xmloutput --fieldset=test:[document] > #{@visit_file}")
+    vespa.adminserver.execute("cat #{@visit_file} | " +
+                              "sed -e '1i<vespafeed>' -e '$a</vespafeed>' | " +
+                              "sed -e '1i<?xml version=\"1.0\" encoding=" +
+                              "\"UTF-8\" standalone=\"no\"?>'" +
+                              " > #{@refeed_file}")
+    vespa.adminserver.execute("vespa-feeder #{@refeed_file}")
     check_search
-    visit(@visit_file2)
+    vespa.adminserver.execute("vespa-visit --xmloutput --fieldset=test:[document] > #{@visit_file2}")
     check_visit_files
-  end
-
-  def visit(output_file)
-    vespa.adminserver.execute("vespa-visit --fieldset=test:[document] | sed -e 's/}]/}\\n]/g' > #{output_file}")
   end
 
   def check_search
