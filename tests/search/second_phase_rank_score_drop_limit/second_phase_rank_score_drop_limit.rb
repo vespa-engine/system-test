@@ -30,6 +30,11 @@ class SecondPhaseRankScoreDropLimit < IndexedOnlySearchTest
     result = search(query.merge({'ranking' => 'second-phase-rank-score-drop-limit-13'}))
     assert_equal([[11,14.0]], extract_ids_and_scores(result))
 
+    # 2 documents from first phase are reranked
+    # Drop is among reranked hits in second phase
+    # second phase rank score drop limit is passed as a query parameter
+    result = search(query.merge({'ranking.secondPhase.rankScoreDropLimit' => '13.0'}))
+    assert_equal([[11,14.0]], extract_ids_and_scores(result))
 end
 
   def extract_ids_and_scores(result)
