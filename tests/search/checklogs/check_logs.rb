@@ -35,7 +35,7 @@ class CheckLogs < IndexedStreamingSearchTest
     puts "Got " + @loglines.length.to_s + " log lines"
 
     services = get_services
-    @services_without_health_check = ["adminserver", "configproxy", "transactionlogserver", "storagenode"]
+    @services_without_health_check = ["adminserver", "configproxy", "storagenode"]
     @services_without_health_check << "configserver" if use_shared_configservers
 
     found = true
