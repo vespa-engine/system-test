@@ -12,6 +12,6 @@ schema book {
     fields: author
   }
   rank-profile year inherits default {
-    first-phase { expression: attribute(year) }
+    first-phase { expression: attribute(year) + 0.0 * debugWait(1.5, 0.0) }
   }
 }

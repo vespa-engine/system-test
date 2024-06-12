@@ -77,8 +77,11 @@ class MultipleDocumentTypes < IndexedStreamingSearchTest
     query = "?query=year:%3E1980&ranking=year&select=all(group(rating) each(group(pages) each(output(count()))))&hits=0"
     assert_xml_result_with_timeout(timeout, query + "&restrict=book", selfdir + "result.book.grouping.2.xml")
     # only type book has both attribute rating & pages
+    puts "before res_one"
     res_one = search(query + '&restrict=book&format=json')
-    res_both = search(query + '&format=json')
+    puts "before res_both"
+    res_both = search_with_timeout(3.0, query + '&format=json')
+    puts "after res_both"
     assert_equal(5, res_one.hitcount)
     assert_equal(13, res_both.hitcount)
     group_one = extract_group(res_one)
