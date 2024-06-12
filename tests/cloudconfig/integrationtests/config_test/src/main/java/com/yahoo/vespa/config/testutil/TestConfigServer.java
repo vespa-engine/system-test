@@ -36,8 +36,6 @@ import com.yahoo.vespa.config.server.rpc.RpcServer;
 import com.yahoo.vespa.config.server.rpc.security.NoopRpcAuthorizer;
 import com.yahoo.vespa.config.server.tenant.Tenant;
 import com.yahoo.vespa.config.util.ConfigUtils;
-import com.yahoo.vespa.flags.FlagSource;
-import com.yahoo.vespa.flags.InMemoryFlagSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -87,8 +85,7 @@ public class TestConfigServer implements RequestHandler, Runnable {
 
     public TestConfigServer(int port, String defDir, String configDir) {
         ConfigserverConfig configServerConfig = configserverConfig(port);
-        FlagSource flagSource = new InMemoryFlagSource();
-        SuperModelRequestHandler superModelRequestHandler = createSuperModelRequestHandler(configServerConfig, flagSource);
+        SuperModelRequestHandler superModelRequestHandler = createSuperModelRequestHandler(configServerConfig);
         this.rpcServer = new RpcServer(configServerConfig,
                                        superModelRequestHandler,
                                        dimensions -> new MetricUpdater(Metrics.createTestMetrics(), Collections.emptyMap()),
@@ -345,11 +342,10 @@ public class TestConfigServer implements RequestHandler, Runnable {
                 .build();
     }
 
-    private SuperModelRequestHandler createSuperModelRequestHandler(ConfigserverConfig configServerConfig, FlagSource flagSource) {
+    private SuperModelRequestHandler createSuperModelRequestHandler(ConfigserverConfig configServerConfig) {
         SuperModelManager superModelManager = new SuperModelManager(configServerConfig,
                                                                     Zone.defaultZone(),
-                                                                    new TestGenerationCounter(),
-                                                                    flagSource);
+                                                                    new TestGenerationCounter());
         return new SuperModelRequestHandler(new TestConfigDefinitionRepo(),
                                             configServerConfig,
                                             superModelManager);
