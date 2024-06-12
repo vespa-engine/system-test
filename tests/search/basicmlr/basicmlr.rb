@@ -10,7 +10,7 @@ class BasicMLR < IndexedStreamingSearchTest
     set_owner("lesters")
     @mytmpdir = dirs.tmpdir
     puts("Using temporary directory '#{@mytmpdir}'..")
-    @feed_file = @mytmpdir + "vespafeed.xml"
+    @feed_file = @mytmpdir + "vespafeed.json"
   end
 
   def test_basicMLR
