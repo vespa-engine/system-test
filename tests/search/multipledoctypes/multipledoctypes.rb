@@ -80,6 +80,8 @@ class MultipleDocumentTypes < IndexedStreamingSearchTest
     res_one = search(query + '&restrict=book&format=json')
     res_both = search(query + '&format=json')
     assert_equal(5, res_one.hitcount)
+    # Errors might cause incomplete grouping results
+    assert_nil(res_both.errorlist) if is_streaming
     assert_equal(13, res_both.hitcount)
     group_one = extract_group(res_one)
     group_both = extract_group(res_both)
