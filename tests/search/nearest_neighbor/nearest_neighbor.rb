@@ -163,7 +163,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     # and this is needed when using streaming search as we cannot control the order in which documents are evaluated.
     # For all other documents the distance / closeness is calculated on the fly by the rank features.
     query_props[:x_0] = -2
-    query_props[:distance_threshold] = 2.0 if is_streaming
+    query_props[:distance_threshold] = 2.0
     assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[6,8,0.2,false]], {:text => "6", :combined => true})
     assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[7,9,0.2,false]], {:text => "7", :combined => true})
     assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[8,10,0.2,false]], {:text => "8", :combined => true})
@@ -173,7 +173,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[1,3,0.8,false],[6,8,0.6,false]], {:text => "1", :combined => true})
     assert_nearest_docs(query_props, 1, [[0,2,0.0,true],[2,4,0.6,false],[7,9,0.4,false]], {:text => "2", :combined => true})
 
-    query_props[:distance_threshold] = 99.0 if is_streaming
+    query_props[:distance_threshold] = 99.0
     assert_nearest_docs(query_props, 1, [[7,106,0.2,false],[0,99,0.0,true]], {:text => "7", :combined => true, :x_0 => -99})
   end
 
