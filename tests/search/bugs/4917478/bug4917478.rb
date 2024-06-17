@@ -26,13 +26,7 @@ class Bug4917478 < IndexedStreamingSearchTest
     assert_xml_result_with_timeout(timeout, "query=iphone",                selfdir+"result1.xml")
     assert_xml_result_with_timeout(timeout, "query=iphone&select=#{gr2A}", selfdir+"result2.xml")
     assert_xml_result_with_timeout(timeout, "query=iphone&select=#{gr2B}", selfdir+"result3.xml")
-    if is_streaming
-      # Streaming is able to correctly produce different summary classes for grouping and the ordinary flat list
-      assert_xml_result_with_timeout(timeout, "query=iphone&select=#{gr2C}", selfdir+"result4_correct.xml")
-    else
-      # Indexed protocol is only able to fetch a single summary class for any document id.
-      assert_xml_result_with_timeout(timeout, "query=iphone&select=#{gr2C}", selfdir+"result4.xml")
-    end
+    assert_xml_result_with_timeout(timeout, "query=iphone&select=#{gr2C}", selfdir+"result4_correct.xml")
 
   end
 
