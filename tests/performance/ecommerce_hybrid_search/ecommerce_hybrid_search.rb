@@ -8,11 +8,14 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     set_description("Test performance of hybrid search using an E-commerce dataset (feeding, queries, re-feeding with queries)")
     deploy(selfdir + "app")
     @container = vespa.container.values.first
+    @search_node = vespa.search["search"].first
     @minimal = false
     start
 
     benchmark_feed(feed_file_name, "feed")
     benchmark_queries("after_feed")
+    @search_node.trigger_flush
+    benchmark_queries("after_flush")
     feed_thread = Thread.new { benchmark_feed(feed_file_name, "refeed") }
     sleep 5
     benchmark_queries("during_refeed")
