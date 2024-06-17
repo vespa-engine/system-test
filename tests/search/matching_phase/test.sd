@@ -11,21 +11,24 @@ schema test {
   }
   rank-profile weakand {
     first-phase {
-      expression: bm25(text)
+      expression: 1.0
     }
     second-phase {
       expression: bm25(text)
+    }
+    match-features {
+      bm25(text)
     }
   }
   rank-profile nns {
     inputs {
-      query(query_pos) tensor<double>(x[2])
+      query(query_pos) tensor(x[2])
     }
     first-phase {
-      expression: 100 - distance(label,nns)
+      expression: 1.0
     }
     second-phase {
-      expression: 100 - distance(label,nns)
+      expression: itemRawScore(nns)
     }
     match-features {
       itemRawScore(nns)

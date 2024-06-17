@@ -29,28 +29,25 @@ class MatchingPhase < IndexedOnlySearchTest
     result = search({ 'yql' => 'select * from sources * where ({targetHits: ' + target_hits.to_s + '}weakAnd(' + wand_terms.join(', ') + '))',
                     'ranking' => 'weakand'})
     if target_hits == 1
-      # First update of scores heap limit is after 4 documents.
+      # First update of scores heap threshold is after 4 documents.
       # DEFAULT_PARALLEL_WAND_SCORES_ADJUST_FREQUENCY = 4
       # constant defined in searchlib/queryeval/wand/wand_parts.h
+      #
+      # First four documents are hits (increasing scores) in first phase
+      # but fifth document is not a hit due to score being below threshold
       assert_hitcount(result, 4)
       assert_equal(['id:test:test::4', 'id:test:test::3', 'id:test:test::2', 'id:test:test::1'], result.get_field_array('documentid'))
-      assert_equal([0.5, 0.3, 0.2, 0.1], result.get_field_array('relevancy'))
+      exp_relevancy = [0.5, 0.3, 0.2, 0.1]
+      assert_scores(exp_relevancy, result, 'bm25(text)')
     else
       assert_hitcount(result, 5)
       assert_equal(['id:test:test::4', 'id:test:test::5', 'id:test:test::3', 'id:test:test::2', 'id:test:test::1'], result.get_field_array('documentid'))
-      assert_equal([0.5, 0.4, 0.3, 0.2, 0.1], result.get_field_array('relevancy'))
+      exp_relevancy = [0.5, 0.4, 0.3, 0.2, 0.1]
+      assert_scores(exp_relevancy, result, 'bm25(text)')
     end
   end
 
   def calc_exp_nns_relevancy(distances)
-    res = []
-    for distance in distances
-      res.push(100.0 - distance)
-    end
-    res
-  end
-
-  def calc_exp_nns_rawscores(distances)
     res = []
     for distance in distances
       res.push(1.0 / (1.0 + distance))
@@ -66,28 +63,30 @@ class MatchingPhase < IndexedOnlySearchTest
     features
   end
 
+  def assert_scores(exp_relevancy, result, feature)
+      assert_equal(exp_relevancy, result.get_field_array('relevancy'))
+      assert_equal(exp_relevancy, extract_features(result, 'matchfeatures', feature))
+  end
+
   def run_nns_query(target_hits)
     result = search({ 'yql' => 'select * from sources * where ({targetHits: ' + target_hits.to_s + ', label: "nns"}nearestNeighbor(pos, query_pos))',
                       'input.query(query_pos)' => '[0.0,0.0]',
                       'ranking' => 'nns'})
     if target_hits == 1
       # First four documents are considered hits by first phase due to them
-      # getting closer to origo
+      # getting closer to origo. Fifth document is further away from origo
+      # and thus above distance limit.
       assert_hitcount(result, 4)
       assert_equal(['id:test:test::4', 'id:test:test::3', 'id:test:test::2', 'id:test:test::1'], result.get_field_array('documentid'))
       exp_distances = [ 5.0, 15.0, 20.0, 25.0 ]
       exp_relevancy = calc_exp_nns_relevancy(exp_distances)
-      assert_equal(exp_relevancy, result.get_field_array('relevancy'))
-      exp_rawscores = calc_exp_nns_rawscores(exp_distances)
-      assert_equal(exp_rawscores, extract_features(result, 'matchfeatures', 'itemRawScore(nns)'))
+      assert_scores(exp_relevancy, result, 'itemRawScore(nns)')
     else
       assert_hitcount(result, 5)
       assert_equal(['id:test:test::4', 'id:test:test::5', 'id:test:test::3', 'id:test:test::2', 'id:test:test::1'], result.get_field_array('documentid'))
       exp_distances = [ 5.0, 10.0, 15.0, 20.0, 25.0 ]
       exp_relevancy = calc_exp_nns_relevancy(exp_distances)
-      assert_equal(exp_relevancy, result.get_field_array('relevancy'))
-      exp_rawscores = calc_exp_nns_rawscores(exp_distances)
-      assert_equal(exp_rawscores, extract_features(result, 'matchfeatures', 'itemRawScore(nns)'))
+      assert_scores(exp_relevancy, result, 'itemRawScore(nns)')
     end
   end
 
