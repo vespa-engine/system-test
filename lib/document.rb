@@ -145,9 +145,8 @@ class Document
     if (other.nil?)
       return false
     end
-    # TODO: change to use to_json
-    return to_xml == other.to_xml
+    return to_json == other.to_json
   end
 
-  alias :inspect :to_xml
+  alias :inspect :to_json
 end
