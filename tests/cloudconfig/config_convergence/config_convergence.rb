@@ -22,8 +22,8 @@ class ConfigConvergence < CloudConfigTest
     json = get_json(response)
     assert_equal(config_generation, json["wantedGeneration"])
     services = json["services"]
-    # 6 services: container, searchnode, container-clustercontroller, distributor, storagenode, metricsproxy-container
-    assert_equal(6, services.length)
+    # 7 services: container, container-clustercontroller, distributor, logserver-container, metricsproxy-container, storagenode, searchnode
+    assert_equal(7, services.length)
 
     converged_services = wait_for_services_to_converge(services)
     # All converged, check result for each service

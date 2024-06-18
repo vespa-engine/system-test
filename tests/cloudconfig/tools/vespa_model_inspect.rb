@@ -41,6 +41,7 @@ container-clustercontroller
 distributor
 logd
 logserver
+logserver-container
 metricsproxy-container
 searchnode
 slobrok
