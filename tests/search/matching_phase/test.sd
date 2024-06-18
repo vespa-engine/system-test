@@ -1,0 +1,37 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+schema test {
+  document test {
+    field text type string {
+      indexing: index | summary
+      index: enable-bm25
+    }
+    field pos type tensor(x[2]) {
+      indexing: attribute | summary
+    }
+  }
+  rank-profile weakand {
+    first-phase {
+      expression: 1.0
+    }
+    second-phase {
+      expression: bm25(text)
+    }
+    match-features {
+      bm25(text)
+    }
+  }
+  rank-profile nns {
+    inputs {
+      query(query_pos) tensor(x[2])
+    }
+    first-phase {
+      expression: 1.0
+    }
+    second-phase {
+      expression: itemRawScore(nns)
+    }
+    match-features {
+      itemRawScore(nns)
+    }
+  }
+}
