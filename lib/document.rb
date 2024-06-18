@@ -145,7 +145,7 @@ class Document
     if (other.nil?)
       return false
     end
-    return to_json == other.to_json
+    JSON.load(to_json) == JSON.load(other.to_json)
   end
 
   alias :inspect :to_json
