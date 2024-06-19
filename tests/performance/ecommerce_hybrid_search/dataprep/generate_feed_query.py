@@ -384,16 +384,16 @@ def main():
         shorthand_queries = human_readable_number(num_queries)
         for query_type in QueryTypeEnum:
             for category_filter in [False, True]:
-                filter = "-filter" if category_filter else ""
+                filter_str = "-filter" if category_filter else ""
                 vespa_save_path = (
                     Path(FINAL_DIR)
-                    / f"vespa_queries-{query_type}{filter}-{shorthand_queries}.json.zst"
+                    / f"vespa_queries-{query_type}{filter_str}-{shorthand_queries}.json.zst"
                 )
-                logging.info(f"Generating {query_type}{filter} queries")
+                logging.info(f"Generating {query_type}{filter_str} queries")
                 save_vespa_query_files_from_df(df, vespa_save_path, num_queries, query_type, category_filter)
                 es_save_path = (
                     Path(FINAL_DIR)
-                    / f"es_queries-{query_type}{filter}-{shorthand_queries}.json.zst"
+                    / f"es_queries-{query_type}{filter_str}-{shorthand_queries}.json.zst"
                 )
                 save_es_query_files_from_df(df, es_save_path, num_queries, query_type, category_filter)
 
