@@ -64,7 +64,7 @@ The final output will be saved to `output-data/ecommerce-{num_rows}.parquet`.
 After the data is prepared, you can run:
 
 ```bash
-python generate_feed_query.py --base_file_path output-data/ecommerce-5M.parquet --mode both --num_samples 1000000 --num_queries 10000
+python generate_feed_query.py --basefile_path output-data/ecommerce-5M.parquet --mode both --num_samples 1000000 --num_queries 10000
 ```
 
 to generate the feed and query files for Vespa and Elasticsearch.

@@ -154,11 +154,22 @@ def remove_quote_chars(query: str) -> str:
     return remove_double_quotes.sub("", remove_single_quotes.sub("", query))
 
 
+def vespa_yql(query_type, category) -> str:
+    category_filter = f'category contains "{category}" and ' if category else ""
+    if query_type == QueryTypeEnum.WEAK_AND:
+        return f'select * from product where {category_filter}userQuery()'
+    elif query_type == QueryTypeEnum.SEMANTIC:
+        return f'select * from product where {category_filter}({{targetHits:100}}nearestNeighbor(embedding,q_embedding))'
+    elif query_type == QueryTypeEnum.HYBRID:
+        return f'select * from product where {category_filter}(({{targetHits:100}}nearestNeighbor(embedding,q_embedding)) or userQuery())'
+
+
 def save_vespa_query_files_from_df(
     df: pd.DataFrame,
     query_save_path: Path,
     num_queries: int,
     query_type: QueryTypeEnum = QueryTypeEnum.WEAK_AND,
+    category_filter: bool = True
 ) -> None:
     """
     Create a query file to benchmark Vespa using vespa-fbench.
@@ -173,19 +184,16 @@ def save_vespa_query_files_from_df(
     df = df.sample(num_queries, random_state=42)
     if query_type == QueryTypeEnum.WEAK_AND:
         base_parameters = {
-            "yql": "select * from product where userQuery()",
             "ranking.profile": "bm25",
             "presentation.summary": "minimal",
         }
     elif query_type == QueryTypeEnum.SEMANTIC:
         base_parameters = {
-            "yql": "select * from product where ({targetHits:100}nearestNeighbor(embedding,q_embedding))",
             "ranking.profile": "closeness",
             "presentation.summary": "minimal",
         }
     elif query_type == QueryTypeEnum.HYBRID:
         base_parameters = {
-            "yql": "select * from product where ({targetHits:100}nearestNeighbor(embedding,q_embedding)) or userQuery()",
             "ranking.profile": "hybrid",
             "presentation.summary": "minimal",
         }
@@ -193,20 +201,27 @@ def save_vespa_query_files_from_df(
         raise ValueError("Invalid query type")
     # Generate list of queries
     queries = df["title"].apply(title_to_query).tolist()
+    categories = df["category"].tolist() if category_filter else [None] * num_queries
     if query_type != QueryTypeEnum.WEAK_AND:
         # Get embeddings
         embeddings = df["embedding"].tolist()
         full_queries = [
             {
+                "yql": vespa_yql(query_type, category),
                 **base_parameters,
                 "query": remove_quote_chars(query),
                 "input.query(q_embedding)": embedding.tolist(),
             }
-            for query, embedding in zip(queries, embeddings)
+            for query, category, embedding in zip(queries, categories, embeddings)
         ]
     else:
         full_queries = [
-            {**base_parameters, "query": remove_quote_chars(query)} for query in queries
+            {
+                "yql": vespa_yql(query_type, category),
+                **base_parameters,
+                "query": remove_quote_chars(query)
+            }
+            for query, category in zip(queries, categories)
         ]
     # Write alternating lines to data
     data = ""
@@ -229,6 +244,7 @@ def save_es_query_files_from_df(
     query_save_path: Path,
     num_queries: int,
     query_type: QueryTypeEnum = QueryTypeEnum.WEAK_AND,
+    category_filter: bool = False
 ) -> None:
     """
     Create a query file to benchmark Elasticsearch using vespa-fbench.
@@ -367,17 +383,19 @@ def main():
         logging.info("Preparing query files...")
         shorthand_queries = human_readable_number(num_queries)
         for query_type in QueryTypeEnum:
-            vespa_save_path = (
-                Path(FINAL_DIR)
-                / f"vespa_queries-{query_type}-{shorthand_queries}.json.zst"
-            )
-            logging.info(f"Generating {query_type} queries")
-            save_vespa_query_files_from_df(df, vespa_save_path, num_queries, query_type)
-            es_save_path = (
-                Path(FINAL_DIR)
-                / f"es_queries-{query_type}-{shorthand_queries}.json.zst"
-            )
-            save_es_query_files_from_df(df, es_save_path, num_queries, query_type)
+            for category_filter in [False, True]:
+                filter = "-filter" if category_filter else ""
+                vespa_save_path = (
+                    Path(FINAL_DIR)
+                    / f"vespa_queries-{query_type}{filter}-{shorthand_queries}.json.zst"
+                )
+                logging.info(f"Generating {query_type}{filter} queries")
+                save_vespa_query_files_from_df(df, vespa_save_path, num_queries, query_type, category_filter)
+                es_save_path = (
+                    Path(FINAL_DIR)
+                    / f"es_queries-{query_type}{filter}-{shorthand_queries}.json.zst"
+                )
+                save_es_query_files_from_df(df, es_save_path, num_queries, query_type, category_filter)
 
 
 if __name__ == "__main__":
