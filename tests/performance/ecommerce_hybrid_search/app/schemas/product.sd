@@ -24,6 +24,8 @@ schema product {
 
     field category type string {
       indexing: attribute | summary
+      attribute: fast-search
+      match: word
     }
 
     field price type int {
