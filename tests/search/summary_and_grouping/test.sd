@@ -1,25 +1,39 @@
 schema test {
 
-    document test {
-        field f1 type string {
-            indexing: attribute
-        }
-
-        field f2 type string {
-            indexing: attribute
-        }
-
-        field f3 type int {
-            indexing: attribute | summary
-        }
-
+  document test {
+    field f1 type string {
+      indexing: attribute
     }
 
-    document-summary a {
-        summary f1 {}
+    field f2 type string {
+      indexing: attribute
     }
 
-    document-summary b {
-        summary f2 {}
+    field f3 type int {
+      indexing: attribute | summary
     }
+    field body type string {
+      indexing: index | summary
+      bolding: on
+    }
+
+  }
+
+  document-summary a {
+    summary f1 {}
+  }
+
+  document-summary b {
+    summary f2 {}
+  }
+  document-summary body_1 {
+    summary body {}
+  }
+  document-summary body_2 {
+    summary body {}
+    summary snippet {
+      source: body
+      dynamic
+    }
+  }
 }
