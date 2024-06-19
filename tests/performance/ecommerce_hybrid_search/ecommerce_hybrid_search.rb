@@ -13,12 +13,12 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     start
 
     benchmark_feed(feed_file_name, "feed")
-    benchmark_queries("after_feed")
+    benchmark_queries("after_feed", true)
     @search_node.trigger_flush
-    benchmark_queries("after_flush")
+    benchmark_queries("after_flush", true)
     feed_thread = Thread.new { benchmark_feed(feed_file_name, "refeed") }
     sleep 5
-    benchmark_queries("during_refeed")
+    benchmark_queries("during_refeed", false)
     feed_thread.join
   end
 
@@ -40,10 +40,15 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     profiler_report(label)
   end
 
-  def benchmark_queries(query_phase)
+  def benchmark_queries(query_phase, run_filter_queries)
     benchmark_query("vespa_queries-weak_and-10k.json", query_phase, "weak_and")
     benchmark_query("vespa_queries-semantic-10k.json", query_phase, "semantic")
     benchmark_query("vespa_queries-hybrid-10k.json", query_phase, "hybrid")
+    if run_filter_queries
+      benchmark_query("vespa_queries-weak_and-filter-10k.json", query_phase, "weak_and_filter")
+      benchmark_query("vespa_queries-semantic-filter-10k.json", query_phase, "semantic_filter")
+      benchmark_query("vespa_queries-hybrid-filter-10k.json", query_phase, "hybrid_filter")
+    end
   end
 
   def benchmark_query(query_file, query_phase, query_type)
