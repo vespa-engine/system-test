@@ -20,6 +20,7 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     sleep 5
     benchmark_queries("during_refeed", false)
     feed_thread.join
+    benchmark_feed("vespa_update-1M.json.zst", "update")
   end
 
   def feed_file_name
