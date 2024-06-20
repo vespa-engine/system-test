@@ -13,7 +13,6 @@ require 'set'
 require 'timeout'
 require 'net/http'
 require 'fileutils'
-require 'vespa_cleanup'
 
 class SystemTestTimeout < Interrupt
   def message
@@ -67,7 +66,6 @@ class TestCase
     @required_hostnames = nil
     @stop_timestamp = nil
     @vespa_version = args[:vespa_version]
-    @vespa_cleanup = VespaCleanup.new(self, @cmd_args)
     @expected_logged = nil
     @use_shared_configservers = false
     @configserverhostlist = []
@@ -243,7 +241,6 @@ class TestCase
 
       init_vespa_model(self, @vespa_version)
 
-      @vespa_cleanup.clean(@vespa.nodeproxies)
       setup_directories(test_method, @starttime)
       @dirs.create_directories
       prepare
@@ -297,12 +294,6 @@ class TestCase
         else
           delete_application
         end
-      end
-      begin
-        @vespa_cleanup.kill_stale_processes(@vespa.nodeproxies)
-        # @vespa_cleanup.remove_model_plugins(@vespa.nodeproxies)
-      rescue Exception => ex
-        puts "Failure during process cleanup: #{ex.message}, ignoring."
       end
 
       begin
