@@ -22,10 +22,10 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     @feed_threads = 16
 
     benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "feed")
-    benchmark_queries("after_feed")
+    benchmark_queries("after_feed", true)
     feed_thread = Thread.new { benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "refeed") }
     sleep 5
-    benchmark_queries("during_refeed")
+    benchmark_queries("during_refeed", false)
     feed_thread.join
   end
 
@@ -122,10 +122,15 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     files.map { |file| "#{feed_dir}#{file}" }
   end
 
-  def benchmark_queries(query_phase)
+  def benchmark_queries(query_phase, run_filter_queries)
     benchmark_query("es_queries-weak_and-10k.json", query_phase, "weak_and")
     benchmark_query("es_queries-semantic-10k.json", query_phase, "semantic")
     benchmark_query("es_queries-hybrid-10k.json", query_phase, "hybrid")
+    if run_filter_queries
+      benchmark_query("es_queries-weak_and-filter-10k.json", query_phase, "weak_and_filter")
+      benchmark_query("es_queries-semantic-filter-10k.json", query_phase, "semantic_filter")
+      benchmark_query("es_queries-hybrid-filter-10k.json", query_phase, "hybrid_filter")
+    end
   end
 
   def benchmark_query(query_file, query_phase, query_type)
