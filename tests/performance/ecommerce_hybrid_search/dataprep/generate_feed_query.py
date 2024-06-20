@@ -90,7 +90,7 @@ def clean_and_prepare_df(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def save_df_to_vespa_format(df: pd.DataFrame, file_name: Path) -> None:
+def save_vespa_feed_file(df: pd.DataFrame, file_name: Path) -> None:
     file_name = file_name.with_suffix(".json.zst")
     cctx = zstd.ZstdCompressor(level=1)
     with open(file_name, "wb") as f:
@@ -111,10 +111,30 @@ def save_df_to_vespa_format(df: pd.DataFrame, file_name: Path) -> None:
                 row_json = json.dumps(row_dict, ensure_ascii=True) + "\n"
                 compressor.write(row_json.encode("utf-8"))
     
-    logging.info(f"Data saved in Vespa format to {file_name}")
+    logging.info(f"Vespa feed file saved to {file_name}")
 
 
-def save_df_to_es_format(df: pd.DataFrame, file_name: Path) -> None:
+def save_vespa_update_file(df: pd.DataFrame, file_name: Path) -> None:
+    file_name = file_name.with_suffix(".json.zst")
+    cctx = zstd.ZstdCompressor(level=1)
+    with open(file_name, "wb") as f:
+        with cctx.stream_writer(f) as compressor:
+            for index, row in tqdm.tqdm(df.iterrows(), total=len(df)):
+                row_dict = {
+                    "update": f"id:{VESPA_DOCTYPE}:{VESPA_NAMESPACE}::{row['category']}{row['id']}",
+                    "fields": {
+                        "price": {
+                            "assign": row["price"] + 100
+                        }
+                    }
+                }
+                row_json = json.dumps(row_dict, ensure_ascii=True) + "\n"
+                compressor.write(row_json.encode("utf-8"))
+
+    logging.info(f"Vespa update file saved to {file_name}")
+
+
+def save_es_feed_file(df: pd.DataFrame, file_name: Path) -> None:
     file_name = file_name.with_suffix(".json.zst")
     cctx = zstd.ZstdCompressor(level=1)
     
@@ -136,7 +156,7 @@ def save_df_to_es_format(df: pd.DataFrame, file_name: Path) -> None:
                 doc_json = json.dumps(doc_data, ensure_ascii=True) + "\n"
                 compressor.write(doc_json.encode("utf-8"))
     
-    logging.info(f"Data saved in Elasticsearch format to {file_name}")
+    logging.info(f"Elasticsearch feed file saved to {file_name}")
 
 
 
@@ -340,7 +360,7 @@ def main():
     )
     parser.add_argument(
         "--mode",
-        choices=["feed", "query", "both"],
+        choices=["feed", "update", "query", "all"],
         default="feed",
         help="Mode of operation: generate data feeds or queries.",
     )
@@ -371,15 +391,19 @@ def main():
         )
     df = df.iloc[:num_samples]
     df = df.sample(num_samples, random_state=42)
-    if args.mode in ["feed", "both"]:
-        shorthand_samples = human_readable_number(num_samples)
+    shorthand_samples = human_readable_number(num_samples)
+    if args.mode in ["feed", "all"]:
         vespa_save_path = Path(FINAL_DIR) / f"vespa_feed-{shorthand_samples}.jsonl"
         es_save_path = Path(FINAL_DIR) / f"es_feed-{shorthand_samples}.jsonl"
         logging.info(f"Preparing Vespa feed file...")
-        save_df_to_vespa_format(df, vespa_save_path)
+        save_vespa_feed_file(df, vespa_save_path)
         logging.info(f"Preparing Elasticsearch feed file...")
-        save_df_to_es_format(df, es_save_path)
-    if args.mode in ["query", "both"]:
+        save_es_feed_file(df, es_save_path)
+    if args.mode in ["update", "all"]:
+        vespa_save_path = Path(FINAL_DIR) / f"vespa_update-{shorthand_samples}.jsonl"
+        logging.info(f"Preparing Vespa update file...")
+        save_vespa_update_file(df, vespa_save_path)
+    if args.mode in ["query", "all"]:
         logging.info("Preparing query files...")
         shorthand_queries = human_readable_number(num_queries)
         for query_type in QueryTypeEnum:
