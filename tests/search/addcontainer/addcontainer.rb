@@ -45,6 +45,10 @@ class AddContainer < IndexedOnlySearchTest
     end
     # Go back to the previous app
     deploy_app(app_one_qrserver)
+    # Need to restart when ports change for services, as will happen in this case
+    vespa.stop_base
+    vespa.start_base
+
     wait_for_hitcount("query=sddocname:music", 10)
     feed(:file => SEARCH_DATA + "music.777.json", :host => vespa.container.values.first.hostname)
     wait_for_hitcount("query=sddocname:music", 787)
