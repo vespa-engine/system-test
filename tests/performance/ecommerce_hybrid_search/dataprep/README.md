@@ -6,7 +6,7 @@ The data is based on this dataset: https://huggingface.co/datasets/McAuley-Lab/A
 The dataset preparation is done in two steps:
 
 1. `download_and_prep.py`: Downloads the dataset for all categories, performs preprocessing, and adds embeddings. Saves a concatenated .parquet file with all categories.
-2. `generate_feed_query.py`: Generates feed and query files for Vespa and Elasticsearch from the concatenated .parquet file.
+2. `generate_feed_query.py`: Generates feed, update and query files for Vespa and Elasticsearch from the concatenated .parquet file.
 
 ## Overview
 
@@ -27,7 +27,7 @@ Broadly speaking, the data preparation involves the following steps:
    1. Save the dataset per category to disk.
    2. Concatenate all categories to a single .parquet file.
 
-After this, all feed and query files are generated from the concatenated .parquet file with the `generate_feed_query.py` script.
+After this, all feed, update and query files are generated from the concatenated .parquet file with the `generate_feed_query.py` script.
 
 ## Prepare the environment
 
@@ -64,16 +64,17 @@ The final output will be saved to `output-data/ecommerce-{num_rows}.parquet`.
 After the data is prepared, you can run:
 
 ```bash
-python generate_feed_query.py --basefile_path output-data/ecommerce-5M.parquet --mode both --num_samples 1000000 --num_queries 10000
+python generate_feed_query.py --basefile_path output-data/ecommerce-5M.parquet --mode all --num_samples 1000000 --num_queries 10000
 ```
 
-to generate the feed and query files for Vespa and Elasticsearch.
-This script will take the concatenated .parquet file and generate the feed and query files for Vespa and Elasticsearch.
+to generate the feed, update and query files for Vespa and Elasticsearch.
+This script will take the concatenated .parquet file and generate the files.
 
 These modes are available:
 
-- `both`: Generates feed and query files for Vespa and Elasticsearch.
+- `all`: Generates feed, update and query files for Vespa and Elasticsearch.
 - `feed`: Generates only the feed files for both Vespa and Elasticsearch.
+- `update`: Generates only the update files for both Vespa and Elasticsearch.
 - `query`: Generates only the query files for both Vespa and Elasticsearch.
 
 ## Output
@@ -86,12 +87,19 @@ The folder will contain the following files:
 - `es_feed-{num_samples}.json.zst`: Elasticsearch feed file.
 - `vespa_feed-{num_samples}.json.zst`: Vespa feed file.
 
+### Update files
+
+- `es_update-{num_samples}.json.zst`: Elasticsearch update file for the price field.
+- `vespa_update-{num_samples}.json.zst`: Vespa update file for the price field.
+
 ### Query files
 
 For each of the query modes `weak_and`, `semantic` and `hybrid`, the following files will be generated:
 
 - `vespa_queries_{mode}-{num_queries}.json.zst`: Vespa query file.
+- `vespa_queries_{mode}-filter-{num_queries}.json.zst`: Vespa query file using the category field as filter.
 - `es_queries_{mode}-{num_queries}.json.zst`: Elasticsearch query file.
+- `es_queries_{mode}-filter-{num_queries}.json.zst`: Elasticsearch query file using the category field as filter.
 
 ### Vespa feed format
 
