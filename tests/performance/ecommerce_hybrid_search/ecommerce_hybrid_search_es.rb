@@ -27,6 +27,7 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     sleep 5
     benchmark_queries("during_refeed", false)
     feed_thread.join
+    benchmark_update("es_update-1M.json.zst", get_num_docs, @feed_threads)
   end
 
   def feed_file_name
@@ -76,9 +77,20 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
   end
 
   def benchmark_feed(feed_file, num_docs, num_threads, label)
-    files = prepare_feed_files(feed_file)
+    # This creates feed files with 6k documents each (~50 MB per file).
+    files = prepare_feed_files(feed_file, dirs.tmpdir + "feed/", 12000)
+    benchmark_feed_helper(files, num_docs, num_threads, label)
+  end
+
+  def benchmark_update(update_file, num_docs, num_threads)
+    # This creates update files with 6k documents each (~0.4 MB per file).
+    files = prepare_feed_files(update_file, dirs.tmpdir + "update/", 12000)
+    benchmark_feed_helper(files, num_docs, num_threads, "update")
+  end
+
+  def benchmark_feed_helper(files, num_docs, num_threads, label)
     files_per_thread = (files.size.to_f / num_threads.to_f).ceil
-    puts "Starting to feed #{num_docs} documents: files=#{files.size}, threads=#{num_threads}, files_per_thread=#{files_per_thread}"
+    puts "Starting to #{label} #{num_docs} documents: files=#{files.size}, threads=#{num_threads}, files_per_thread=#{files_per_thread}"
     system_sampler = Perf::System::new(@node)
     system_sampler.start
     profiler_start
@@ -112,12 +124,10 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     write_report(fillers)
   end
 
-  def prepare_feed_files(feed_file)
+  def prepare_feed_files(feed_file, feed_dir, lines_per_file)
     node_file = download_file(feed_file, @node)
-    # This creates feed files with 6k documents each (~50 MB per file).
-    feed_dir = dirs.tmpdir + "feed/"
     @node.execute("mkdir -p #{feed_dir}")
-    @node.execute("zstdcat #{node_file} | split -d -a 3 -l 12000 - #{feed_dir}split_")
+    @node.execute("zstdcat #{node_file} | split -d -a 3 -l #{lines_per_file} - #{feed_dir}split_")
     files = @node.execute("cd #{feed_dir} && echo split_*").split
     files.map { |file| "#{feed_dir}#{file}" }
   end
