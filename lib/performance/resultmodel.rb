@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'builder'
 require 'xml'
+require 'json'
 
 require 'rexml/document'
 require 'performance/system'
@@ -130,6 +131,13 @@ module Perf
         :parameters => @parameters,
         :metrics => @metrics.transform_keys { |m, s| s.nil? ? [m] : [m, s] },
       }.to_s
+    end
+
+    def to_json
+      {
+        :parameters => @parameters,
+        :metrics => @metrics.transform_keys { |m, s| s.nil? ? m : [m, s] }
+      }.to_json
     end
 
     def Result.read(path)
