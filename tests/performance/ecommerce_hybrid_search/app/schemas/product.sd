@@ -26,6 +26,7 @@ schema product {
       indexing: attribute | summary
       attribute: fast-search
       match: word
+      rank: filter
     }
 
     field price type int {
