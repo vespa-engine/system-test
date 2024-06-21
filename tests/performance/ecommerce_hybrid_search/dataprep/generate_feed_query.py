@@ -174,7 +174,24 @@ def remove_quote_chars(query: str) -> str:
     return remove_double_quotes.sub("", remove_single_quotes.sub("", query))
 
 
-def vespa_yql(query_type, category) -> str:
+def write_queries_to_file(queries: list, endpoint: str, query_save_path: Path) -> None:
+    # Write alternating lines to data (endpoint, request) as needed by vespa-fbench.
+    data = ""
+    for query in queries:
+        data += endpoint + "\n"
+        data += json.dumps(query, ensure_ascii=True) + "\n"
+    if len(queries) < 1000:
+        with open(query_save_path.with_suffix(""), "w") as f:
+            f.write(data)
+        return
+    else:
+        cctx = zstd.ZstdCompressor()
+        compressed_data = cctx.compress(data.encode("utf-8"))
+        with open(query_save_path, "wb") as f:
+            f.write(compressed_data)
+
+
+def vespa_yql(query_type: QueryTypeEnum, category: str) -> str:
     category_filter = f'category contains "{category}" and ' if category else ""
     if query_type == QueryTypeEnum.WEAK_AND:
         return f'select * from product where {category_filter}userQuery()'
@@ -202,61 +219,77 @@ def save_vespa_query_files_from_df(
         )
     # Sample the dataframe set random state for reproducibility
     df = df.sample(num_queries, random_state=42)
-    if query_type == QueryTypeEnum.WEAK_AND:
-        base_parameters = {
-            "ranking.profile": "bm25",
-            "presentation.summary": "minimal",
-        }
-    elif query_type == QueryTypeEnum.SEMANTIC:
-        base_parameters = {
-            "ranking.profile": "closeness",
-            "presentation.summary": "minimal",
-        }
-    elif query_type == QueryTypeEnum.HYBRID:
-        base_parameters = {
-            "ranking.profile": "hybrid",
-            "presentation.summary": "minimal",
-        }
-    else:
-        raise ValueError("Invalid query type")
+    base_parameters = {
+        "presentation.summary": "minimal",
+        "hits": 10,
+    }
     # Generate list of queries
     queries = df["title"].apply(title_to_query).tolist()
     categories = df["category"].tolist() if category_filter else [None] * num_queries
-    if query_type != QueryTypeEnum.WEAK_AND:
-        # Get embeddings
-        embeddings = df["embedding"].tolist()
+    if query_type == QueryTypeEnum.WEAK_AND:
         full_queries = [
             {
                 "yql": vespa_yql(query_type, category),
                 **base_parameters,
-                "query": remove_quote_chars(query),
-                "input.query(q_embedding)": embedding.tolist(),
-            }
-            for query, category, embedding in zip(queries, categories, embeddings)
-        ]
-    else:
-        full_queries = [
-            {
-                "yql": vespa_yql(query_type, category),
-                **base_parameters,
+                "ranking.profile": "bm25",
                 "query": remove_quote_chars(query)
             }
             for query, category in zip(queries, categories)
         ]
-    # Write alternating lines to data
-    data = ""
-    for query in full_queries:
-        data += endpoint + "\n"
-        data += json.dumps(query, ensure_ascii=True) + "\n"
-    if num_queries < 1000:
-        with open(query_save_path.with_suffix(""), "w") as f:
-            f.write(data)
-        return
     else:
-        cctx = zstd.ZstdCompressor()
-        compressed_data = cctx.compress(data.encode("utf-8"))
-        with open(query_save_path, "wb") as f:
-            f.write(compressed_data)
+        embeddings = df["embedding"].tolist()
+        if query_type == QueryTypeEnum.SEMANTIC:
+            full_queries = [
+                {
+                    "yql": vespa_yql(query_type, category),
+                    **base_parameters,
+                    "ranking.profile": "closeness",
+                    "input.query(q_embedding)": embedding.tolist(),
+                }
+                for category, embedding in zip(categories, embeddings)
+            ]
+        elif query_type == QueryTypeEnum.HYBRID:
+            full_queries = [
+                {
+                    "yql": vespa_yql(query_type, category),
+                    **base_parameters,
+                    "ranking.profile": "hybrid",
+                    "query": remove_quote_chars(query),
+                    "input.query(q_embedding)": embedding.tolist(),
+                }
+                for query, category, embedding in zip(queries, categories, embeddings)
+            ]
+    write_queries_to_file(full_queries, endpoint, query_save_path)
+
+
+def es_query(query: str, category: str) -> dict:
+    multi_match = {
+        "multi_match": {
+            "query": remove_quote_chars(query),
+            "fields": ["title", "description"],
+            "type": "best_fields"
+        }
+    }
+    if category:
+        return {
+            "bool": {
+                "must": multi_match,
+                "filter": [{"term": {"category": category}}]
+            }
+        }
+    return multi_match
+
+
+def es_knn(embedding, category: str) -> dict:
+    knn = {
+        "field": "embedding",
+        "query_vector": embedding.tolist(),
+        "num_candidates": 100,
+        "k": 10,
+    }
+    if category:
+        return {**knn, "filter": [{"term": {"category": category}}]}
+    return knn
 
 
 def save_es_query_files_from_df(
@@ -284,19 +317,14 @@ def save_es_query_files_from_df(
     }
     # Generate list of queries
     queries = df["title"].apply(title_to_query).tolist()
+    categories = df["category"].tolist() if category_filter else [None] * num_queries
     if query_type == QueryTypeEnum.WEAK_AND:
         full_queries = [
             {
                 **base_parameters,
-                "query": {
-                    "multi_match": {
-                        "query": remove_quote_chars(query),
-                        "fields": ["title", "description"],
-                        "type": "best_fields",
-                    }
-                },
+                "query": es_query(query, category)
             }
-            for query in queries
+            for query, category in zip (queries, categories)
         ]
     else:
         embeddings = df["embedding"].tolist()
@@ -304,50 +332,20 @@ def save_es_query_files_from_df(
             full_queries = [
                 {
                     **base_parameters,
-                    "knn": {
-                        "field": "embedding",
-                        "query_vector": embedding.tolist(),
-                        "num_candidates": 100,
-                        "k": 10,
-                    },
+                    "knn": es_knn(embedding, category)
                 }
-                for query, embedding in zip(queries, embeddings)
+                for embedding, category in zip(embeddings, categories)
             ]
         elif query_type == QueryTypeEnum.HYBRID:
             full_queries = [
                 {
                     **base_parameters,
-                    "query": {
-                        "multi_match": {
-                            "query": remove_quote_chars(query),
-                            "fields": ["title", "description"],
-                            "type": "best_fields",
-                        },
-                    },
-                    "knn": {
-                        "field": "embedding",
-                        "query_vector": embedding.tolist(),
-                        "num_candidates": 100,
-                        "k": 10,
-                    },
+                    "query": es_query(query, category),
+                    "knn": es_knn(embedding, category)
                 }
-                for query, embedding in zip(queries, embeddings)
+                for query, category, embedding in zip(queries, categories, embeddings)
             ]
-    # Write alternating lines to data
-    data = ""
-    for query in full_queries:
-        data += endpoint + "\n"
-        data += json.dumps(query, ensure_ascii=True) + "\n"
-    # Write to json if num_queries < 1000
-    if num_queries < 1000:
-        with open(query_save_path.with_suffix(""), "w") as f:
-            f.write(data)
-        return
-    else:
-        cctx = zstd.ZstdCompressor()
-        compressed_data = cctx.compress(data.encode("utf-8"))
-        with open(query_save_path, "wb") as f:
-            f.write(compressed_data)
+    write_queries_to_file(full_queries, endpoint, query_save_path)
 
 
 def main():
