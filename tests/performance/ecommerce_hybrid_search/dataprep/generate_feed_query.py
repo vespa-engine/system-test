@@ -159,6 +159,26 @@ def save_es_feed_file(df: pd.DataFrame, file_name: Path) -> None:
     logging.info(f"Elasticsearch feed file saved to {file_name}")
 
 
+def save_es_update_file(df: pd.DataFrame, file_name: Path) -> None:
+    file_name = file_name.with_suffix(".json.zst")
+    cctx = zstd.ZstdCompressor(level=1)
+
+    with open(file_name, "wb") as f:
+        with cctx.stream_writer(f) as compressor:
+            for index, row in tqdm.tqdm(df.iterrows(), total=len(df)):
+                action = {"update": {"_index": ES_INDEX, "_id": str(row["id"])}}
+                action_json = json.dumps(action, ensure_ascii=True) + "\n"
+                compressor.write(action_json.encode("utf-8"))
+                update_data = {
+                    "doc": {
+                        "price": row["price"] + 100
+                    }
+                }
+                update_json = json.dumps(update_data, ensure_ascii=True) + "\n"
+                compressor.write(update_json.encode("utf-8"))
+
+    logging.info(f"Elasticsearch update file saved to {file_name}")
+
 
 def title_to_query(title: str) -> str:
     # If the title is more than 8 words, use the first 8 words.
@@ -399,8 +419,11 @@ def main():
         save_es_feed_file(df, es_save_path)
     if args.mode in ["update", "all"]:
         vespa_save_path = Path(FINAL_DIR) / f"vespa_update-{shorthand_samples}.jsonl"
+        es_save_path = Path(FINAL_DIR) / f"es_update-{shorthand_samples}.jsonl"
         logging.info(f"Preparing Vespa update file...")
         save_vespa_update_file(df, vespa_save_path)
+        logging.info(f"Preparing Elasticsearch update file...")
+        save_es_update_file(df, es_save_path)
     if args.mode in ["query", "all"]:
         logging.info("Preparing query files...")
         shorthand_queries = human_readable_number(num_queries)
