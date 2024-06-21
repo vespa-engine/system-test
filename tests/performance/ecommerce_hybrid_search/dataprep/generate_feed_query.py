@@ -219,47 +219,46 @@ def save_vespa_query_files_from_df(
         )
     # Sample the dataframe set random state for reproducibility
     df = df.sample(num_queries, random_state=42)
-    if query_type == QueryTypeEnum.WEAK_AND:
-        base_parameters = {
-            "ranking.profile": "bm25",
-            "presentation.summary": "minimal",
-        }
-    elif query_type == QueryTypeEnum.SEMANTIC:
-        base_parameters = {
-            "ranking.profile": "closeness",
-            "presentation.summary": "minimal",
-        }
-    elif query_type == QueryTypeEnum.HYBRID:
-        base_parameters = {
-            "ranking.profile": "hybrid",
-            "presentation.summary": "minimal",
-        }
-    else:
-        raise ValueError("Invalid query type")
+    base_parameters = {
+        "presentation.summary": "minimal",
+        "hits": 10,
+    }
     # Generate list of queries
     queries = df["title"].apply(title_to_query).tolist()
     categories = df["category"].tolist() if category_filter else [None] * num_queries
-    if query_type != QueryTypeEnum.WEAK_AND:
-        # Get embeddings
-        embeddings = df["embedding"].tolist()
+    if query_type == QueryTypeEnum.WEAK_AND:
         full_queries = [
             {
                 "yql": vespa_yql(query_type, category),
                 **base_parameters,
-                "query": remove_quote_chars(query),
-                "input.query(q_embedding)": embedding.tolist(),
-            }
-            for query, category, embedding in zip(queries, categories, embeddings)
-        ]
-    else:
-        full_queries = [
-            {
-                "yql": vespa_yql(query_type, category),
-                **base_parameters,
+                "ranking.profile": "bm25",
                 "query": remove_quote_chars(query)
             }
             for query, category in zip(queries, categories)
         ]
+    else:
+        embeddings = df["embedding"].tolist()
+        if query_type == QueryTypeEnum.SEMANTIC:
+            full_queries = [
+                {
+                    "yql": vespa_yql(query_type, category),
+                    **base_parameters,
+                    "ranking.profile": "closeness",
+                    "input.query(q_embedding)": embedding.tolist(),
+                }
+                for category, embedding in zip(categories, embeddings)
+            ]
+        elif query_type == QueryTypeEnum.HYBRID:
+            full_queries = [
+                {
+                    "yql": vespa_yql(query_type, category),
+                    **base_parameters,
+                    "ranking.profile": "hybrid",
+                    "query": remove_quote_chars(query),
+                    "input.query(q_embedding)": embedding.tolist(),
+                }
+                for query, category, embedding in zip(queries, categories, embeddings)
+            ]
     write_queries_to_file(full_queries, endpoint, query_save_path)
 
 
