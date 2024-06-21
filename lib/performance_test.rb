@@ -435,7 +435,7 @@ class PerformanceTest < TestCase
 
   def check_performance(method)
     puts "#### Performance results ####"
-    get_performance_results.each { |result| puts result }
+    get_performance_results.each { |result| puts result.to_json }
     puts "\n"
   end
 
