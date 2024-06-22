@@ -15,10 +15,6 @@ class AddContainer < IndexedOnlySearchTest
     @valgrind = false
   end
 
-  def can_share_configservers?(method_name=nil)
-    true
-  end
-
   # TODO: Will get port conflicts when adding a container to node 1, so the deployment will
   # fail. Redeploying the original application should give a working cluster again
   def test_addcontainer

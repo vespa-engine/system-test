@@ -42,7 +42,7 @@ class PerformanceTest < TestCase
     3600
   end
 
-  def can_share_configservers?(method_name=nil)
+  def can_share_configservers?
     true
   end
 

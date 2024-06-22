@@ -146,8 +146,8 @@ class TestCase
     :vespa_feed_client
   end
 
-  def can_share_configservers?(method_name=nil)
-    return false
+  def can_share_configservers?
+    false
   end
 
   def add_ignorable_messages(msgs)

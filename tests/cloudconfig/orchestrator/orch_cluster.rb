@@ -13,7 +13,7 @@ class OrchestratorContainerClusterTest < CloudConfigTest
     @num_hosts = 4
   end
 
-  def can_share_configservers?(method_name=nil)
+  def can_share_configservers?
     false
   end
 

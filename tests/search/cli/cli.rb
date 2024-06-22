@@ -13,8 +13,8 @@ class Cli < IndexedStreamingSearchTest
     @doc_id_prefix = "id:music:music::mydoc-"
   end
 
-  def can_share_configservers?(method_name=nil)
-    return false
+  def can_share_configservers?
+    false
   end
 
   def create_app

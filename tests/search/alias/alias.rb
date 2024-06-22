@@ -11,10 +11,6 @@ class Alias < IndexedStreamingSearchTest
     start
   end
 
-  def can_share_configservers?(method_name=nil)
-    true
-  end
-
   def comp(q, f, re)
     assert_result(q, selfdir+f, 'title', [ 'title' ])
   end

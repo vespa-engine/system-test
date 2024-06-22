@@ -11,7 +11,7 @@ class SearchTest < TestCase
     "search"
   end
 
-  def can_share_configservers?(method_name=nil)
+  def can_share_configservers?
     true
   end
 

@@ -23,7 +23,7 @@ class ClusterControllerTest < VdsTest
     start
   end
 
-  def can_share_configservers?(method_name=nil)
+  def can_share_configservers?
     false
   end
 

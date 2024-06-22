@@ -10,10 +10,6 @@ class ConfigChange < IndexedStreamingSearchTest
     start
   end
 
-  def can_share_configservers?(method_name=nil)
-    true
-  end
-
   def test_doctypeswitch
     puts "* Insert music doc"
     feed_and_wait_for_docs("music", 1, :file => selfdir+"music.json", :timeout => 240)

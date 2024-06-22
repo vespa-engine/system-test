@@ -7,8 +7,8 @@ class TlsCryptoSmokeTest < IndexedStreamingSearchTest
     super(*args)
   end
 
-  def can_share_configservers?(method_name=nil)
-    return false
+  def can_share_configservers?
+    false
   end
 
   def verify_endpoint_is_running_with_tls(hostname, port)
