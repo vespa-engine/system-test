@@ -8,7 +8,7 @@ require 'app_generator/search_app'
 # If you want to run this manually you need to add "--configserverhost some_other_host"
 class FileDistributionBasic < CloudConfigTest
 
-  def can_share_configservers?(method_name=nil)
+  def can_share_configservers?
     true
   end
 

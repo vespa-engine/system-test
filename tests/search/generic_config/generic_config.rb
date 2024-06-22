@@ -3,7 +3,7 @@ require 'indexed_streaming_search_test'
 
 class GenericConfig < IndexedStreamingSearchTest
 
-  def can_share_configservers?(method_name=nil)
+  def can_share_configservers?
     false
   end
 

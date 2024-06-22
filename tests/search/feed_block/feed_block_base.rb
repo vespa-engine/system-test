@@ -16,7 +16,7 @@ class FeedBlockBase < IndexedOnlySearchTest
     @disable_log_query_and_result = true
   end
 
-  def can_share_configservers?(method_name=nil)
+  def can_share_configservers?
     false
   end
 

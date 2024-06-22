@@ -5,7 +5,7 @@ require 'app_generator/http'
 
 class JvmTuning < IndexedOnlySearchTest
 
-  def can_share_configservers?(method_name=nil)
+  def can_share_configservers?
     false
   end
 

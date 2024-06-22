@@ -4,7 +4,7 @@ require 'vds_test'
 class CheckVespaLogTest < VdsTest
 
   # false, since we want to check log for config server entries too
-  def can_share_configservers?(method_name=nil)
+  def can_share_configservers?
     false
   end
 

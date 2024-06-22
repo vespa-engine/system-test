@@ -6,7 +6,7 @@ class Corruption < CloudConfigTest
   TENANT_A = "a"
   TENANT_B = "b"
   
-  def can_share_configservers?(method_name=nil)
+  def can_share_configservers?
     true
   end
 
