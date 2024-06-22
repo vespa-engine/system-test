@@ -22,7 +22,7 @@ class AddContainer < IndexedOnlySearchTest
   # TODO: Will get port conflicts when adding a container to node 1, so the deployment will
   # fail. Redeploying the original application should give a working cluster again
   def test_addcontainer
-    set_expected_logged(/Fatal error while configuring|PortListenException: failed to listen on port|Could not create rpc server listening on|Failed to start status HTTP server using port|Could not bind fnet transport socket to tcp|Rpc port config has changed/)
+    set_expected_logged(/Fatal error while configuring|PortListenException: failed to listen on port|Could not create rpc server listening on|Rpc port config has changed|Failed to listen to RPC port/)
     app_one_qrserver = SearchApp.new.num_hosts(@num_hosts).sd(SEARCH_DATA + "music.sd").
       slobrok("node1").
       qrserver(QrserverCluster.new("foo").
