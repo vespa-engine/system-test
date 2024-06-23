@@ -25,7 +25,7 @@ class SimpleDocument < Document
     end
   end
 
-  alias :to_s :to_xml
-  alias :inspect :to_xml
+  alias :to_s :to_json
+  alias :inspect :to_json
   alias :attributes :fields
 end
