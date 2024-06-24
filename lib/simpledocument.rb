@@ -2,7 +2,6 @@
 require 'document'
 
 class SimpleDocument < Document
-  attr_accessor :lastmodified
   attr_accessor :removetime
   attr_accessor :isremove
   attr_reader :xml

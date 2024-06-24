@@ -5,15 +5,6 @@ require 'vds/visitor/visitor'
 
 class VisitorPart2Test < VisitorTest
 
-  def test_visittimestamp
-    doc = Document.new("music", "id:test:music::test:test")
-    vespa.document_api_v1.put(doc)
-
-    results = visit(0, 0, "", [])
-    assert_equal(1, results.length)
-    assert(results[0].lastmodified != 0)
-  end
-
   def test_visit_bucket_bogus_selection
     doInserts()
 
