@@ -43,7 +43,7 @@ class MultipleClusters < VdsTest
 
   def visit_docs(start, stop, cluster)
     # Visit documents from vds
-    output = vespa.storage[cluster].storage["0"].execute("vespa-visit --xmloutput -c #{cluster}|| true")
+    output = vespa.storage[cluster].storage["0"].execute("vespa-visit -c #{cluster}|| true")
     (stop-start).times{|i|
       id=start+i
       assert_match(/id:storage_test:music:n=#{id}/, output)

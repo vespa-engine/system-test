@@ -46,7 +46,7 @@ class VisitorTest < VdsTest
 
   def visitBogusSelection()
     args = " --selection \"bogus selection\""
-    result = vespa.adminserver.execute("vespa-visit --xmloutput" + args, { :exceptiononfailure => false, :stderr => true })
+    result = vespa.adminserver.execute("vespa-visit" + args, { :exceptiononfailure => false, :stderr => true })
     assert(result =~ /Illegal document selection string/, result);
   end
 

@@ -11,16 +11,9 @@ class AttributeVisitorTest < IndexedOnlySearchTest
     @doc1 = Document.new("music", "id:storage_test:music:n=1234:1")
   end
 
-
-  def doInserts
-    puts "Insert - START"
+  def test_visit_empty_attribute
     vespa.document_api_v1.put(@doc1)
-    puts "Insert - DONE"
-  end
-
-  def test_visit_empty_attribute()
-    doInserts
-    result = vespa.adminserver.execute("vespa-visit --xmloutput")
+    result = vespa.adminserver.execute("vespa-visit")
     puts "Result = " + result.to_s
     assert(result !~ /twit_lkcnt/)
     assert(result !~ /twit_ikcnt/)
