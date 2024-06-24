@@ -14,7 +14,6 @@ class GatewayXMLParser
        sd = SimpleDocument.new(element.attributes["documenttype"],
 	 element.attributes["documentid"],
 	 buffer)
-       sd.lastmodified = element.attributes["lastmodifiedtime"]
 
        element.elements.each { |elem|
          if (elem.has_elements?)
