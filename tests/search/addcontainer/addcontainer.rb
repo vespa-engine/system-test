@@ -30,7 +30,7 @@ class AddContainer < IndexedOnlySearchTest
     wait_for_hitcount("query=sddocname:music", 10)
 
     deploy_app(SearchApp.new.num_hosts(2).sd(SEARCH_DATA + "music.sd").
-               slobrok("node2").
+               slobrok("node1").
                qrserver(QrserverCluster.new("foo").
                         node({ :hostalias => "node1" }).
                         node({ :hostalias => "node2" })))
