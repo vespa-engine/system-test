@@ -55,7 +55,7 @@ class SignificanceTest < IndexedStreamingSearchTest
   def test_default_significance_searcher_with_generated_significance_model
     generate_default_significance_model_from_vespa_dump_file
 
-    deploy_app(
+    output = deploy_app(
       SearchApp.new.
         container(
           Container.new('default').
@@ -68,7 +68,7 @@ class SignificanceTest < IndexedStreamingSearchTest
         sd(selfdir + 'app_one_significance/schemas/doc.sd').
         components_dir(@models_dir).
         indexing_cluster('default').indexing_chain('indexing'))
-    start
+    wait_for_application(vespa.container.values.first, output)
     feed_and_wait_for_docs("doc", 2, :file => selfdir + "docs.json")
     verify_default_significance_for_simple_query
   end
