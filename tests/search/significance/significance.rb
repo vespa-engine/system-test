@@ -13,7 +13,7 @@ class SignificanceTest < IndexedStreamingSearchTest
 
   def generate_default_significance_model_from_vespa_dump_file
     input_file = selfdir + "app_one_significance/models/en.jsonl"
-    output_file = @mytmpdir + "model.json"
+    output_file = @mytmpdir + "model.json.zst"
     @models_dir = @mytmpdir + "models"
 
     deploy_app(SearchApp.new.
@@ -28,7 +28,7 @@ class SignificanceTest < IndexedStreamingSearchTest
 
     vespa.adminserver.
       execute(
-        "vespa-significance generate --in \"#{input_file}\" --out \"#{output_file}\" --field text --language en --doc-type en --zst-compression false",
+        "vespa-significance generate --in \"#{input_file}\" --out \"#{output_file}\" --field text --language en --doc-type en --zst-compression true",
         :exceptiononfailure => true)
 
     FileUtils.mkdir_p(@models_dir)
@@ -49,7 +49,7 @@ class SignificanceTest < IndexedStreamingSearchTest
 
   def significance_generated_model_component
     Significance.new.
-      model("components/model.json")
+      model("components/model.json.zst")
   end
 
   def test_default_significance_searcher_with_generated_significance_model
