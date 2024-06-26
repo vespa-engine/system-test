@@ -10,14 +10,6 @@ class DocumentSet
     @documents.push(document)
   end
 
-  def to_xml
-    rval = ""
-    @documents.each do |document|
-      rval += document.to_xml + "\n"
-    end
-    return rval
-  end
-
   def write_json(name)
     write_json(name, :put)
   end
