@@ -1290,6 +1290,7 @@ class ResizeContentClusterBase < IndexedOnlySearchTest
     generate_feed(feedname, dictsize, numdocs, num_child_docs, basedir)
     start_initial_nodes
     wait_for_content_cluster
+    vespa.container.each_value { |container| container.wait_until_ready(60) }
     feedfile("#{basedir}/#{feedname}",
              :localfile => true, :timeout => 240)
     wait_for_hitcount(hit_count_query_string, numdocs)
