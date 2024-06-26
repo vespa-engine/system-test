@@ -6,7 +6,6 @@
     "en": {
       "description" : "english model",
       "document-count" : 12,
-      "language" : "en",
       "document-frequencies" : {
         "usa" : 2,
         "hello": 3,

@@ -1,0 +1,12 @@
+{"put": "id:wikimedia:en::1", "fields": {"text": "usa"}}
+{"put": "id:wikimedia:en::2", "fields": {"text": "usa"}}
+{"put": "id:wikimedia:en::3", "fields": {"text": "hello"}}
+{"put": "id:wikimedia:en::4", "fields": {"text": "hello"}}
+{"put": "id:wikimedia:en::5", "fields": {"text": "hello"}}
+{"put": "id:wikimedia:en::6", "fields": {"text": "world"}}
+{"put": "id:wikimedia:en::7", "fields": {"text": "world"}}
+{"put": "id:wikimedia:en::8", "fields": {"text": "world"}}
+{"put": "id:wikimedia:en::9", "fields": {"text": "world"}}
+{"put": "id:wikimedia:en::10", "fields": {"text": "world"}}
+{"put": "id:wikimedia:en::11", "fields": {"text": "test"}}
+{"put": "id:wikimedia:en::12", "fields": {"text": "test"}}
