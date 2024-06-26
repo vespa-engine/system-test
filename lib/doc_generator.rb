@@ -95,7 +95,7 @@ class DocumentUpdateGenerator
   def to_xml
     retval = ""
     @doc_updates.each do |update|
-      retval += update.to_xml
+      retval += update.to_json
       retval += "\n"
     end
     return retval
@@ -103,7 +103,7 @@ class DocumentUpdateGenerator
 
   def write(file)
     @doc_updates.each do |update|
-      file.write(update.to_xml + "\n")
+      file.write(update.to_json + "\n")
     end
   end
 end
@@ -144,10 +144,10 @@ class DocumentGenerator
     end
   end
 
-  def to_xml
+  def to_json
     retval = ""
     @documents.each do |document|
-      retval += document.to_xml
+      retval += document.to_json
       retval += "\n"
     end
     return retval
@@ -155,7 +155,7 @@ class DocumentGenerator
 
   def write(file)
     @documents.each do |document|
-      file.write(document.to_xml + "\n")
+      file.write(document.to_json + "\n")
     end
   end
 end
@@ -222,12 +222,12 @@ if __FILE__ == $0
 
   d = DocumentUpdateGenerator.new("generator", doc_ids, fields)
   d.generate
-  puts d.to_xml
+  puts d.to_json
 
   puts "\nDocumentGenerator:\n\n"
   dg = DocumentGenerator.new("generator", doc_ids, fields)
   dg.generate
-  puts dg.to_xml
+  puts dg.to_json
 
   uniques.each do |unique|
     puts "unique:"
