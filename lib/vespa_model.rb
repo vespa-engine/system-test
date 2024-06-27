@@ -36,6 +36,7 @@ class VespaModel
   def reset_services
     @configservers = {}
     @logserver = nil
+    @logserver_container = nil
     @adminserver = nil
     @qrserver = {}
     @container = {}
@@ -734,6 +735,8 @@ class VespaModel
       @configservers[remote_serviceobject.index] = remote_serviceobject
     elsif service["servicetype"] == "metricsproxy-container"
       @metricsproxies[service["hostname"]] = remote_serviceobject
+    elsif service["servicetype"] == "logserver-container"
+      @logserver_container = remote_serviceobject
     elsif service["servicetype"] == "logd" or service["servicetype"] == "config-sentinel" or service["servicetype"] == "configproxy"
       # Ignoring these
     else
