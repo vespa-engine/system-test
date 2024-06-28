@@ -35,7 +35,7 @@ class VespaCleanup
 
   def kill_stale_processes(nodes)
     if @cmd_args[:nostop] or (@cmd_args[:nostop_if_failure] && @testcase.failure_recorded)
-      puts "Nostop set, won't kill stale processes"
+      @testcase.output("Nostop set, won't kill stale processes")
       return
     end
 

@@ -37,14 +37,14 @@ module RestApi
           if params[:body]
             request.body = params[:body]
           end
-          puts "Request: " + request.method + " " + request.uri.to_s
+          @testcase.output("Request: " + request.method + " " + request.uri.to_s)
           response = conn.request(request)
         end
         break
       rescue Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL
-        puts "Error: #{$!}, url=#{original_uri}"
+        @testcase.output("Error: #{$!}, url=#{original_uri}")
         if iterations == max_iterations - 1
-          puts("Request failed after #{max_iterations} attempts: #{$!}, url=#{original_uri}")
+          @testcase.output("Request failed after #{max_iterations} attempts: #{$!}, url=#{original_uri}")
           raise
         else
           sleep 1
@@ -52,7 +52,7 @@ module RestApi
       end
       iterations += 1
     end
-    #puts "Response: #{response.inspect}"
+    #@testcase.output("Response: #{response.inspect}")
     response
   end
 
