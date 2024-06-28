@@ -3,6 +3,8 @@ require 'date'
 
 class ValidationOverrides
 
+  attr_reader :has_overrides
+
   def initialize
     @override_id = nil
   end
@@ -26,6 +28,10 @@ class ValidationOverrides
   # Returns tomorrows date as an IDO-8601 date string
   def tomorrow()
     Date.today().next_day().to_s
+  end
+
+  def has_overrides
+    @override_id
   end
 
 end

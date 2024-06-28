@@ -194,8 +194,8 @@ class App
 
   # Returns a validation-overrides.xml for this application package containing a single override
   # with the given id which is valid through tomorrow
-  def validation_overrides_xml    
-    @validation_overrides.to_xml()
+  def validation_overrides_xml
+    @validation_overrides.has_overrides ? @validation_overrides.to_xml() : nil
   end
 
   def provider(value)
