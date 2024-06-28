@@ -65,7 +65,7 @@ module Feeder
         tmp.write(buffer)
       end
     end
-    puts "Created #{tmpfeed}"
+    @testcase.output("Created #{tmpfeed}")
     params[:deletefeed] = true
     tmpfeed
   end
