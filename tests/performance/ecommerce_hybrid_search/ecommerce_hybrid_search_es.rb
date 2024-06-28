@@ -22,10 +22,11 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     @feed_threads = 16
 
     benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "feed")
-    benchmark_queries("after_feed", true)
+    benchmark_queries("after_feed", false, [1, 2, 4, 8, 16, 32, 64])
+    benchmark_queries("after_feed", true, [1])
     feed_thread = Thread.new { benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "refeed") }
     sleep 5
-    benchmark_queries("during_refeed", false)
+    benchmark_queries("during_refeed", false, [1])
     feed_thread.join
     benchmark_update("es_update-1M.json.zst", get_num_docs, @feed_threads)
   end
@@ -112,10 +113,11 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     @node.execute("curl -X POST '#{@es_endpoint}/_refresh?pretty'")
     elapsed_sec = Time.now - start_time
     profiler_report(label)
-    puts "Elapsed time (sec): #{elapsed_sec}"
+    puts "Elapsed time feeding (sec): #{elapsed_sec}"
     count_res = @node.execute("curl -X GET '#{@es_endpoint}/_count?pretty'")
     count = JSON.parse(count_res)["count"].to_i
     assert_equal(num_docs, count, "Expected #{num_docs} documents in the index, but was #{count}")
+    @node.execute("curl -X GET '#{@es_endpoint}/product/_segments?pretty' | grep '_segments'")
     throughput = num_docs.to_f / elapsed_sec
     puts "Throughput: #{throughput}"
     fillers = [parameter_filler("label", label),
@@ -132,22 +134,25 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     files.map { |file| "#{feed_dir}#{file}" }
   end
 
-  def benchmark_queries(query_phase, run_filter_queries)
-    benchmark_query("es_queries-weak_and-10k.json", query_phase, "weak_and")
-    benchmark_query("es_queries-semantic-10k.json", query_phase, "semantic")
-    benchmark_query("es_queries-hybrid-10k.json", query_phase, "hybrid")
+  def benchmark_queries(query_phase, run_filter_queries, clients, params = {})
     if run_filter_queries
-      benchmark_query("es_queries-weak_and-filter-10k.json", query_phase, "weak_and_filter")
-      benchmark_query("es_queries-semantic-filter-10k.json", query_phase, "semantic_filter")
-      benchmark_query("es_queries-hybrid-filter-10k.json", query_phase, "hybrid_filter")
+      benchmark_query("es_queries-weak_and-filter-10k.json", query_phase, "weak_and_filter", clients, params)
+      benchmark_query("es_queries-semantic-filter-10k.json", query_phase, "semantic_filter", clients, params)
+      benchmark_query("es_queries-hybrid-filter-10k.json", query_phase, "hybrid_filter", clients, params)
+    else
+      benchmark_query("es_queries-weak_and-10k.json", query_phase, "weak_and", clients, params)
+      benchmark_query("es_queries-semantic-10k.json", query_phase, "semantic", clients, params)
+      benchmark_query("es_queries-hybrid-10k.json", query_phase, "hybrid", clients, params)
     end
   end
 
-  def benchmark_query(query_file, query_phase, query_type)
-    run_fbench_helper(query_file, query_phase, query_type, @node,
-                      {:port_override => @es_port,
-                       :hostname_override => @es_hostname,
-                       :disable_tls => true})
+  def benchmark_query(query_file, query_phase, query_type, clients, params)
+    clients.each do  |c|
+      run_fbench_helper(query_file, query_phase, query_type, c, @node,
+                        {:port_override => @es_port,
+                         :hostname_override => @es_hostname,
+                         :disable_tls => true}.merge(params))
+    end
   end
 
   def teardown

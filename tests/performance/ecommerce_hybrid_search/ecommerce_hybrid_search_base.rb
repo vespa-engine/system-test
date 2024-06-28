@@ -36,18 +36,19 @@ class EcommerceHybridSearchTestBase < PerformanceTest
     end
   end
 
-  def run_fbench_helper(query_file, query_phase, query_type, vespa_node, params={})
+  def run_fbench_helper(query_file, query_phase, query_type, clients, vespa_node, params={})
     node_file = download_file(query_file, vespa_node)
-    label = "#{query_phase}_#{query_type}"
+    label = "#{query_phase}_#{query_type}_#{clients}"
     result_file = dirs.tmpdir + "result_#{label}.txt"
     fillers = [parameter_filler("label", label),
                parameter_filler("query_phase", query_phase),
-               parameter_filler("query_type", query_type)]
+               parameter_filler("query_type", query_type),
+               parameter_filler("clients", clients)]
     profiler_start
+    params[:runtime] = 20 unless params[:runtime]
     run_fbench2(vespa_node,
                 node_file,
-                {:runtime => 30,
-                 :clients => 1,
+                {:clients => clients,
                  :use_post => true,
                  :result_file => result_file}.merge(params),
                 fillers)
