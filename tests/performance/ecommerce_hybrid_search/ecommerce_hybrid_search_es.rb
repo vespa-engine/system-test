@@ -117,11 +117,13 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchTestBase
     count_res = @node.execute("curl -X GET '#{@es_endpoint}/_count?pretty'")
     count = JSON.parse(count_res)["count"].to_i
     assert_equal(num_docs, count, "Expected #{num_docs} documents in the index, but was #{count}")
-    @node.execute("curl -X GET '#{@es_endpoint}/product/_segments?pretty' | grep '_segments'")
+    segments = @node.execute("curl -X GET '#{@es_endpoint}/product/_segments?pretty' | jq '.indices.product.shards[\"0\"][0].num_search_segments'")
+    puts "Num search segments = #{segments}"
     throughput = num_docs.to_f / elapsed_sec
     puts "Throughput: #{throughput}"
     fillers = [parameter_filler("label", label),
                metric_filler("feeder.throughput", throughput),
+               metric_filler("segments", segments.to_i),
                system_metric_filler(system_sampler)]
     write_report(fillers)
   end
