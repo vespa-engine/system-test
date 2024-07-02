@@ -83,7 +83,7 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
     throughput = num_docs.to_f / elapsed_sec
     puts "Throughput: #{throughput}"
     fillers = [parameter_filler("label", label),
-               metric_filler("throughput", throughput),
+               metric_filler("feeder.throughput", throughput),
                metric_filler("segments", segments),
                system_metric_filler(system_sampler)]
     write_report(fillers)
