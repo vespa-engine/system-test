@@ -43,7 +43,8 @@ def clean_results(result_file_path: str) -> Dict[int, List[Dict[str, int]]]:
                         for hit in hits
                     ]
                 elif application == "vespa":
-                    children = result_dict["root"]["children"]
+                    root = result_dict["root"]
+                    children = root["children"] if ("children" in root) else []
                     individual_results = [
                         {"id": child["fields"]["id"], "relevance": child["relevance"]}
                         for child in children
@@ -119,7 +120,7 @@ def main():
     parser.add_argument(
         "--querymodes",
         nargs="*",
-        default=["weak_and", "semantic", "hybrid"],
+        default=["weak_and", "weak_and_filter", "semantic", "semantic_filter", "hybrid", "hybrid_filter"],
         help="Query modes to analyze. Set to empty list to analyze only provided files.",
     )
     parser.add_argument(
