@@ -67,13 +67,13 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
     benchmark_feed_helper(files, num_docs, num_threads, label)
   end
 
-  def benchmark_force_merge(num_docs, label = "merge")
-    puts "Starting force merge down to 1 index segment"
+  def benchmark_force_merge(num_docs, max_segments, label = "merge")
+    puts "Starting force merge down to #{max_segments} index segment(s)"
     system_sampler = Perf::System::new(@node)
     system_sampler.start
     profiler_start
     start_time = Time.now
-    @node.execute("curl -X POST '#{@es_endpoint}/product/_forcemerge?max_num_segments=1&pretty'")
+    @node.execute("curl -X POST '#{@es_endpoint}/product/_forcemerge?max_num_segments=#{max_segments}&pretty'")
     refresh_index
     elapsed_sec = Time.now - start_time
     puts "Elapsed time force merge (sec): #{elapsed_sec}"
