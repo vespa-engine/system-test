@@ -112,18 +112,18 @@ class SignificanceTest < IndexedStreamingSearchTest
   end
 
   def verify_default_significance_for_simple_query
-    result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hello%22&format=json").json
+    result = search({'yql' => 'select * from sources * where text contains "hello"', 'format' => 'json'}).json
     significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
     assert(significance_value == 1.3121863889661687, "Expected significance to be 1.3121863889661687, but was #{significance_value}")
   end
 
 
   def verify_significance_for_and_query
-    result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hello%22%20and%20text%20contains%20%22world%22&format=json").json
+    result = search({'yql' => 'select * from sources * where text contains "hello" and text contains "world"', 'format' => 'json'}).json
     significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
     assert(significance_value == 1.580450375560848, "Expected significance to be 1.580450375560848, but was #{significance_value}")
 
-    result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hei%22%20and%20text%20contains%20%22verden%22&format=json").json
+    result = search({'yql' => 'select * from sources * where text contains "hei" and text contains "verden"', 'format' => 'json'}).json
 
     significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
     assert(significance_value == 2.4277482359480516, "Expected significance to be 2.4277482359480516, but was #{significance_value}")
