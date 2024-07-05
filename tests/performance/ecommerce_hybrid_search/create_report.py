@@ -44,6 +44,9 @@ def load_query_results(file_name, system, query_filter):
                 is_filter = type.endswith('_filter')
                 qps = float(m['qps'])
                 cpu = get_cpu(m)
+                if system == 'es' and phase == 'after_merge':
+                    # Rename to match equivalent Vespa phase
+                    phase = 'after_flush'
                 df.loc[len(df.index)] = [system, phase, type, is_filter, int(p['clients']),
                                          float(m['avgresponsetime']), float(m['99 percentile']), qps, cpu, qps / cpu]
                 if system == 'es' and phase == 'after_feed':
