@@ -6,6 +6,7 @@ import argparse
 from pathlib import Path
 from enum import Enum
 import re
+import struct
 import tqdm
 
 import pandas as pd
@@ -90,7 +91,21 @@ def clean_and_prepare_df(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def save_vespa_feed_file(df: pd.DataFrame, file_name: Path) -> None:
+def float_to_hex(f) -> str:
+    return format(struct.unpack('I', struct.pack('f', f))[0], '08x')
+
+
+def vespa_feed_embedding(embedding, hex_format: bool):
+    if hex_format:
+        res = ""
+        for f in embedding:
+            res += float_to_hex(f)
+        return { "values": res }
+    else:
+        return embedding.tolist()
+
+
+def save_vespa_feed_file(df: pd.DataFrame, file_name: Path, hex_format: bool) -> None:
     file_name = file_name.with_suffix(".json.zst")
     cctx = zstd.ZstdCompressor(level=1)
     with open(file_name, "wb") as f:
@@ -105,7 +120,7 @@ def save_vespa_feed_file(df: pd.DataFrame, file_name: Path) -> None:
                                 "description": row["description"],
                                 "price": row["price"],
                                 "average_rating": row["average_rating"],
-                                "embedding": row["embedding"].tolist(),
+                                "embedding": vespa_feed_embedding(row["embedding"], hex_format),
                             }
                     }
                 row_json = json.dumps(row_dict, ensure_ascii=True) + "\n"
@@ -394,6 +409,11 @@ def main():
         default=10_000,
         help="Number of queries to generate",
     )
+    parser.add_argument(
+        "--hex_format",
+        action="store_true",
+        help="Whether to use hex format for embedding vectors in Vespa feed",
+    )
     args = parser.parse_args()
     num_samples = args.num_samples
     num_queries = args.num_queries
@@ -411,10 +431,11 @@ def main():
     df = df.sample(num_samples, random_state=42)
     shorthand_samples = human_readable_number(num_samples)
     if args.mode in ["feed", "all"]:
-        vespa_save_path = Path(FINAL_DIR) / f"vespa_feed-{shorthand_samples}.jsonl"
+        hex_format = args.hex_format
+        vespa_save_path = Path(FINAL_DIR) / f"vespa_feed{'_hex' if hex_format else ''}-{shorthand_samples}.jsonl"
         es_save_path = Path(FINAL_DIR) / f"es_feed-{shorthand_samples}.jsonl"
         logging.info(f"Preparing Vespa feed file...")
-        save_vespa_feed_file(df, vespa_save_path)
+        save_vespa_feed_file(df, vespa_save_path, args.hex_format)
         logging.info(f"Preparing Elasticsearch feed file...")
         save_es_feed_file(df, es_save_path)
     if args.mode in ["update", "all"]:
