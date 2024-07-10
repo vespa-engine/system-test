@@ -3,6 +3,32 @@ require 'indexed_streaming_search_test'
 
 class Bm25FeatureTest < IndexedStreamingSearchTest
 
+  class Annotation
+  end
+
+  class DocumentFrequency < Annotation
+    attr_reader :frequency, :count
+    def initialize(frequency, count)
+      @frequency = frequency
+      @count = count
+    end
+
+    def annotation
+      "{documentFrequency: {frequency: #{frequency}, count: #{count}}}"
+    end
+  end
+
+  class Significance < Annotation
+    attr_reader :significance
+    def initialize(significance)
+      @significance = significance
+    end
+
+    def annotation
+      "{significance: #{significance}}"
+    end
+  end
+
   def setup
     set_owner("geirst")
   end
@@ -105,42 +131,73 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     assert_matching_doc_count_is_saturated_sum_for_fields(doc_counts: doc_counts)
   end
 
-  def make_query(terms, ranking, idfs)
+  def make_query(terms, ranking, annotations)
     subqueries = []
     for term in terms
-      if idfs.nil? || !idfs.include?(term)
-        significance = ''
-      else
-        significance = "{significance: #{idfs[term]}}"
+      annotation = ''
+      if !annotations.nil? && annotations.include?(term)
+        annotation = annotations[term].annotation
       end
-      subqueries.push("content contains (#{significance}\"#{term}\")")
+      subqueries.push("content contains (#{annotation}\"#{term}\")")
     end
     joined_subqueries = subqueries.join(" and ")
     form = [['yql', "select * from sources * where #{joined_subqueries}"],
             ['ranking', ranking]]
     encoded_form = URI.encode_www_form(form)
+    puts "yql is #{form[0][1]}"
     puts "encoded form is #{encoded_form}"
     return encoded_form
   end
 
   def assert_bm25_scores(total_doc_count = 3, avg_field_length = 4, ranking = 'default')
-    if is_streaming
-      idfs = {}
-      idfs['a'] = idf(3, total_doc_count)
-      idfs['b'] = idf(2, total_doc_count)
-      idfs['d'] = idf(2, total_doc_count)
-    else
-      idfs = nil
+    assert_bm25_scores_helper(total_doc_count, avg_field_length, ranking) unless is_streaming
+    assert_bm25_scores_helper(total_doc_count, avg_field_length, ranking, add_significance: true)
+    assert_bm25_scores_helper(total_doc_count, avg_field_length, ranking, add_significance: true, tweak_frequencies: true)
+    assert_bm25_scores_helper(total_doc_count, avg_field_length, ranking, add_docfreq: true)
+    assert_bm25_scores_helper(total_doc_count, avg_field_length, ranking, add_docfreq: true, tweak_frequencies: true)
+  end
+
+  def assert_bm25_scores_helper(total_doc_count, avg_field_length, ranking, add_significance: false, add_docfreq: false, tweak_frequencies: false)
+    assert(add_docfreq || add_significance || !is_streaming)
+    frequencies = { 'a' => 3,
+                    'b' => 2,
+                    'd' => 2 }
+    if tweak_frequencies
+      assert(add_docfreq || add_significance)
+      frequencies = { 'a' => 2,
+                      'b' => 1,
+                      'd' => 3 }
     end
-    assert_scores_for_query(make_query(['a'], ranking, idfs), [score(2, 3, idf(3, total_doc_count), avg_field_length),
-                                                   score(3, 7, idf(3, total_doc_count), avg_field_length),
-                                                   score(1, 2, idf(3, total_doc_count), avg_field_length)], 'content')
+    idfs = { 'a' => idf(frequencies['a'], total_doc_count),
+             'b' => idf(frequencies['b'], total_doc_count),
+             'd' => idf(frequencies['d'], total_doc_count) };
+    annotations = nil
+    if add_docfreq
+      annotations = { 'a' => DocumentFrequency.new(frequencies['a'], total_doc_count),
+                      'b' => DocumentFrequency.new(frequencies['b'], total_doc_count),
+                      'd' => DocumentFrequency.new(frequencies['d'], total_doc_count) }
+    elsif add_significance
+      annotations = { 'a' => Significance.new(idfs['a']),
+                      'b' => Significance.new(idfs['b']),
+                      'd' => Significance.new(idfs['d']) }
+    end
+    assert_scores_for_query(make_query(['a'], ranking, annotations),
+                            [score(2, 3, idfs['a'], avg_field_length),
+                             score(3, 7, idfs['a'], avg_field_length),
+                             score(1, 2, idfs['a'], avg_field_length)],
+                            'content')
 
-    assert_scores_for_query(make_query(['b'], ranking, idfs), [score(1, 3, idf(2, total_doc_count), avg_field_length),
-                                                   score(1, 7, idf(2, total_doc_count), avg_field_length)], 'content')
+    assert_scores_for_query(make_query(['b'], ranking, annotations),
+                            [score(1, 3, idfs['b'], avg_field_length),
+                             score(1, 7, idfs['b'], avg_field_length)],
+                            'content')
 
-    assert_scores_for_query(make_query(['a','d'], ranking, idfs), [score(1, 2, idf(3, total_doc_count), avg_field_length) + score(1, 2, idf(2, total_doc_count), avg_field_length),
-                                                             score(3, 7, idf(3, total_doc_count), avg_field_length) + score(1, 7, idf(2, total_doc_count), avg_field_length)], 'content')
+    assert_scores_for_query(make_query(['a','d'], ranking, annotations),
+                            [score(1, 2, idfs['a'], avg_field_length) +
+                             score(1, 2, idfs['d'], avg_field_length),
+                             score(3, 7, idfs['a'], avg_field_length) +
+                             score(1, 7, idfs['d'], avg_field_length)],
+                            'content')
   end
 
   def assert_bm25_array_scores(total_doc_count, avg_field_length)
