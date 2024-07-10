@@ -14,6 +14,8 @@ class SignificanceTest < IndexedStreamingSearchTest
     puts("Using temporary directory '#{@mytmpdir}'..")
   end
 
+  # Reimplementation of calculate_legacy_significance in C++
+  # https://github.com/vespa-engine/vespa/blob/b6a2fcbbd80c82d683fc409ed7a0d61b8abc9dc8/searchlib/src/vespa/searchlib/features/utils.cpp#L108
   def calculate_legacy_significance(frequency, count)
     return 0.5 if count == 0
     frequency = [[1.0, frequency.to_f * N / count.to_f].max, N].min
