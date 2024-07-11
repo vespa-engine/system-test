@@ -105,7 +105,27 @@ def vespa_feed_embedding(embedding, hex_format: bool):
         return embedding.tolist()
 
 
-def save_vespa_feed_file(df: pd.DataFrame, file_name: Path, hex_format: bool) -> None:
+def vespa_feed_fields(row, hex_format: bool, weak_and_only: bool):
+    if weak_and_only:
+        return {
+            "id": row["id"],
+            "title": row["title"],
+            "description": row["description"]
+        }
+    else:
+        return {
+            "id": row["id"],
+            "title": row["title"],
+            "category": row["category"],
+            "description": row["description"],
+            "price": row["price"],
+            "average_rating": row["average_rating"],
+            "embedding": vespa_feed_embedding(row["embedding"], hex_format),
+        }
+
+
+def save_vespa_feed_file(df: pd.DataFrame, file_name: Path, hex_format: bool, weak_and_only: bool) -> None:
+    logging.info(f"Preparing Vespa feed file...")
     file_name = file_name.with_suffix(".json.zst")
     cctx = zstd.ZstdCompressor(level=1)
     with open(file_name, "wb") as f:
@@ -113,16 +133,8 @@ def save_vespa_feed_file(df: pd.DataFrame, file_name: Path, hex_format: bool) ->
             for index, row in tqdm.tqdm(df.iterrows(), total=len(df)):
                 row_dict = {
                     "put": f"id:{VESPA_DOCTYPE}:{VESPA_NAMESPACE}::{row['category']}{row['id']}",
-                    "fields": {
-                                "id": row["id"],
-                                "title": row["title"],
-                                "category": row["category"],
-                                "description": row["description"],
-                                "price": row["price"],
-                                "average_rating": row["average_rating"],
-                                "embedding": vespa_feed_embedding(row["embedding"], hex_format),
-                            }
-                    }
+                    "fields": vespa_feed_fields(row, hex_format, weak_and_only)
+                }
                 row_json = json.dumps(row_dict, ensure_ascii=True) + "\n"
                 compressor.write(row_json.encode("utf-8"))
     
@@ -130,6 +142,7 @@ def save_vespa_feed_file(df: pd.DataFrame, file_name: Path, hex_format: bool) ->
 
 
 def save_vespa_update_file(df: pd.DataFrame, file_name: Path) -> None:
+    logging.info(f"Preparing Vespa update file...")
     file_name = file_name.with_suffix(".json.zst")
     cctx = zstd.ZstdCompressor(level=1)
     with open(file_name, "wb") as f:
@@ -150,6 +163,7 @@ def save_vespa_update_file(df: pd.DataFrame, file_name: Path) -> None:
 
 
 def save_es_feed_file(df: pd.DataFrame, file_name: Path) -> None:
+    logging.info(f"Preparing Elasticsearch feed file...")
     file_name = file_name.with_suffix(".json.zst")
     cctx = zstd.ZstdCompressor(level=1)
     
@@ -175,6 +189,7 @@ def save_es_feed_file(df: pd.DataFrame, file_name: Path) -> None:
 
 
 def save_es_update_file(df: pd.DataFrame, file_name: Path) -> None:
+    logging.info(f"Preparing Elasticsearch update file...")
     file_name = file_name.with_suffix(".json.zst")
     cctx = zstd.ZstdCompressor(level=1)
 
@@ -246,6 +261,7 @@ def save_vespa_query_files_from_df(
     """
     Create a query file to benchmark Vespa using vespa-fbench.
     """
+    logging.info(f"Generating Vespa {query_type}{' filter' if category_filter else ''} queries")
     endpoint = "/search/"
     # Validate number of queries requested is less than the total number of samples
     if num_queries > len(df):
@@ -337,6 +353,7 @@ def save_es_query_files_from_df(
     """
     Create a query file to benchmark Elasticsearch using vespa-fbench.
     """
+    logging.info(f"Generating Elasticsearch {query_type}{' filter' if category_filter else ''} queries")
     endpoint = "/" + ES_INDEX + "/_search/"
     # Validate number of queries requested is less than the total number of samples
     if num_queries > len(df):
@@ -383,6 +400,15 @@ def save_es_query_files_from_df(
     write_queries_to_file(full_queries, endpoint, query_save_path)
 
 
+def queries_save_path(system: str, query_type: QueryTypeEnum, category_filter: bool, shorthand_queries: str):
+        filter_str = "-filter" if category_filter else ""
+        save_path = (
+                Path(FINAL_DIR)
+                / f"{system}_queries-{query_type}{filter_str}-{shorthand_queries}.json.zst"
+        )
+        return save_path
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -414,6 +440,11 @@ def main():
         action="store_true",
         help="Whether to use hex format for embedding vectors in Vespa feed",
     )
+    parser.add_argument(
+        "--weak_and_only",
+        action="store_true",
+        help="Whether to generate a Vespa feed file the is only used for weakAnd testing",
+    )
     args = parser.parse_args()
     num_samples = args.num_samples
     num_queries = args.num_queries
@@ -430,38 +461,32 @@ def main():
     df = df.iloc[:num_samples]
     df = df.sample(num_samples, random_state=42)
     shorthand_samples = human_readable_number(num_samples)
+    weak_and_only = args.weak_and_only
     if args.mode in ["feed", "all"]:
         hex_format = args.hex_format
         vespa_save_path = Path(FINAL_DIR) / f"vespa_feed{'_hex' if hex_format else ''}-{shorthand_samples}.jsonl"
-        es_save_path = Path(FINAL_DIR) / f"es_feed-{shorthand_samples}.jsonl"
-        logging.info(f"Preparing Vespa feed file...")
-        save_vespa_feed_file(df, vespa_save_path, args.hex_format)
-        logging.info(f"Preparing Elasticsearch feed file...")
-        save_es_feed_file(df, es_save_path)
-    if args.mode in ["update", "all"]:
+        save_vespa_feed_file(df, vespa_save_path, hex_format, weak_and_only)
+        if not weak_and_only:
+            es_save_path = Path(FINAL_DIR) / f"es_feed-{shorthand_samples}.jsonl"
+            save_es_feed_file(df, es_save_path)
+    if args.mode in ["update", "all"] and not weak_and_only:
         vespa_save_path = Path(FINAL_DIR) / f"vespa_update-{shorthand_samples}.jsonl"
         es_save_path = Path(FINAL_DIR) / f"es_update-{shorthand_samples}.jsonl"
-        logging.info(f"Preparing Vespa update file...")
         save_vespa_update_file(df, vespa_save_path)
-        logging.info(f"Preparing Elasticsearch update file...")
         save_es_update_file(df, es_save_path)
     if args.mode in ["query", "all"]:
         logging.info("Preparing query files...")
         shorthand_queries = human_readable_number(num_queries)
-        for query_type in QueryTypeEnum:
-            for category_filter in [False, True]:
-                filter_str = "-filter" if category_filter else ""
-                vespa_save_path = (
-                    Path(FINAL_DIR)
-                    / f"vespa_queries-{query_type}{filter_str}-{shorthand_queries}.json.zst"
-                )
-                logging.info(f"Generating {query_type}{filter_str} queries")
-                save_vespa_query_files_from_df(df, vespa_save_path, num_queries, query_type, category_filter)
-                es_save_path = (
-                    Path(FINAL_DIR)
-                    / f"es_queries-{query_type}{filter_str}-{shorthand_queries}.json.zst"
-                )
-                save_es_query_files_from_df(df, es_save_path, num_queries, query_type, category_filter)
+        if weak_and_only:
+            vespa_save_path = queries_save_path("vespa", QueryTypeEnum.WEAK_AND, False, shorthand_queries)
+            save_vespa_query_files_from_df(df, vespa_save_path, num_queries, QueryTypeEnum.WEAK_AND, False)
+        else:
+            for query_type in QueryTypeEnum:
+                for category_filter in [False, True]:
+                    vespa_save_path = queries_save_path("vespa", query_type, category_filter, shorthand_queries)
+                    save_vespa_query_files_from_df(df, vespa_save_path, num_queries, query_type, category_filter)
+                    es_save_path = queries_save_path("es", query_type, category_filter, shorthand_queries)
+                    save_es_query_files_from_df(df, es_save_path, num_queries, query_type, category_filter)
 
 
 if __name__ == "__main__":
