@@ -1,0 +1,50 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema product {
+
+  document product {
+
+    field language type string {
+      indexing: "en" | set_language
+    }
+
+    field id type int {
+      indexing: attribute | summary
+    }
+
+    field title type string {
+      indexing: index | summary
+      index: enable-bm25
+    }
+
+    field description type string {
+      indexing: index | summary
+      index: enable-bm25
+    }
+
+  }
+
+  fieldset default {
+    fields: title, description
+  }
+
+  rank-profile bm25 {
+    function best_bm25() {
+      expression: max(bm25(title), bm25(description))
+    }
+    first-phase {
+      expression: best_bm25
+    }
+  }
+
+  rank-profile bm25_model inherits bm25 {
+    significance {
+      use-model: true
+    }
+  }
+
+  document-summary minimal {
+    summary id {}
+  }
+
+}
