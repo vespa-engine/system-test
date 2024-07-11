@@ -282,6 +282,16 @@ class Significance
     self
   end
 
+  def model_url(url)
+    @models.push(Model::new(nil, url))
+    self
+  end
+
+  def model_id(model_id)
+    @models.push(Model::new(nil, nil, model_id))
+    self
+  end
+
   def to_xml(indent="")
     dump_xml(indent)
   end
@@ -320,9 +330,20 @@ class Model
     dump_xml(indent)
   end
 
+  def model_content
+    if @path
+      return {"path" => @path}
+    elsif @url
+      return {"url" => @url}
+    elsif @model_id
+      return {"model-id" => @model_id}
+    end
+    {}
+  end
+
   def dump_xml(indent="")
     XmlHelper.new(indent).
-      tag("model", {"path" => @path}). # TODO handle all params if empty etc
+      tag("model", model_content).
       to_xml("").
       to_s
   end

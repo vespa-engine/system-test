@@ -224,4 +224,31 @@ class ContainerAppGenTest < Test::Unit::TestCase
     assert(exp == actual, "Expected '#{exp}', but was '#{actual}'")
   end
 
+  def test_significance_model_path
+    act = Significance.new.model("my_path").to_xml
+    exp =
+    '<significance>
+      <model path="my_path" />
+    </significance>'
+    assert_substring_ignore_whitespace(act, exp)
+  end
+
+  def test_significance_model_url
+    act = Significance.new.model_url("my_url").to_xml
+    exp =
+    '<significance>
+      <model url="my_url" />
+    </significance>'
+    assert_substring_ignore_whitespace(act, exp)
+  end
+
+  def test_significance_model_id
+    act = Significance.new.model_id("my_id").to_xml
+    exp =
+    '<significance>
+      <model model-id="my_id" />
+    </significance>'
+    assert_substring_ignore_whitespace(act, exp)
+  end
+
 end
