@@ -1,14 +1,34 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
 require 'rubygems'
 require 'json'
 require 'indexed_streaming_search_test'
-require 'indexed_only_search_test'
 
 class SignificanceTest < IndexedStreamingSearchTest
+
+  N = 1000000.0 # Corpus size for legacy significance
 
   def setup
     set_owner("MariusArhaug")
     @mytmpdir = dirs.tmpdir
     puts("Using temporary directory '#{@mytmpdir}'..")
+  end
+
+  # Reimplementation of calculate_legacy_significance in C++
+  # https://github.com/vespa-engine/vespa/blob/b6a2fcbbd80c82d683fc409ed7a0d61b8abc9dc8/searchlib/src/vespa/searchlib/features/utils.cpp#L108
+  def calculate_legacy_significance(frequency, count)
+    return 0.5 if count == 0
+    frequency = [[1.0, frequency.to_f * N / count.to_f].max, N].min
+    count = N
+    logcount = Math.log(count.to_f)
+    logfrequency = Math.log(frequency.to_f)
+    # Using traditional formula for inverse document frequency, see
+    # https://en.wikipedia.org/wiki/Tf%E2%80%93idf#Inverse_document_frequency
+    idf = logcount - logfrequency
+    # We normalize against document frequency 1 in corpus of N documents.
+    normalized_idf = idf / logcount # normalized to range [0;1]
+    renormalized_idf = 0.5 + 0.5 * normalized_idf # normalized to range [0.5;1]
+    renormalized_idf
   end
 
   def generate_default_significance_model_from_vespa_dump_file
@@ -114,19 +134,25 @@ class SignificanceTest < IndexedStreamingSearchTest
   def verify_default_significance_for_simple_query
     result = search({'yql' => 'select * from sources * where text contains "hello"', 'format' => 'json'}).json
     significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
-    assert(significance_value == 1.3121863889661687, "Expected significance to be 1.3121863889661687, but was #{significance_value}")
+    # "hello" { frequency: 3, count: 12 }
+    exp_significance = calculate_legacy_significance(3, 12)
+    assert_approx(exp_significance, significance_value)
   end
 
 
   def verify_significance_for_and_query
     result = search({'yql' => 'select * from sources * where text contains "hello" and text contains "world"', 'format' => 'json'}).json
     significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
-    assert(significance_value == 1.580450375560848, "Expected significance to be 1.580450375560848, but was #{significance_value}")
+    # "hello" { frequency: 3, count: 16 }
+    exp_significance = calculate_legacy_significance(3, 16)
+    assert_approx(exp_significance, significance_value)
 
     result = search({'yql' => 'select * from sources * where text contains "hei" and text contains "verden"', 'format' => 'json'}).json
 
     significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
-    assert(significance_value == 2.4277482359480516, "Expected significance to be 2.4277482359480516, but was #{significance_value}")
+    # "hei" { frequency: 1, count: 16 }
+    exp_significance = calculate_legacy_significance(1, 16)
+    assert_approx(exp_significance, significance_value)
   end
 
   def teardown
