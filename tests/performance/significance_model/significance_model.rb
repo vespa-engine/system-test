@@ -10,7 +10,7 @@ class SignificanceModelPerfTest < PerformanceTest
     set_owner("geirst")
   end
 
-  def test_weak_bm25
+  def test_weak_and_bm25
     set_description("Test performance of weakAnd + bm25 when using a significance model based on english wikipedia")
     # The dataset used in this test is a simplified version of the dataset used in ../ecommerce_hybrid_search perf tests.
     # It only contains the fields relevant for weakAnd search, without the metadata fields and vector field.
@@ -26,7 +26,8 @@ class SignificanceModelPerfTest < PerformanceTest
     start
 
     feed_file("feed-1M.json.zst")
-    benchmark_queries("queries-lower-model-10k.json", "warmup", 10, true)
+    benchmark_queries("queries-lower-10k.json", "warmup", 8, true)
+    benchmark_queries("queries-lower-model-10k.json", "warmup", 8, true)
     for clients in [1, 2, 4, 8, 16, 32, 64] do
       benchmark_queries("queries-lower-10k.json", "no_model", clients)
       benchmark_queries("queries-lower-model-10k.json", "use_model", clients)
@@ -58,7 +59,7 @@ class SignificanceModelPerfTest < PerformanceTest
     download_file_from_s3(file_name, vespa_node, "significance_model")
   end
 
-  def benchmark_queries(query_file, type, clients, runtime = 20, warmup = false)
+  def benchmark_queries(query_file, type, clients, warmup = false, runtime = 20)
     node_file = download_file(query_file, @container)
     label = "#{type}_#{clients}"
     result_file = dirs.tmpdir + "result_#{label}.txt"
