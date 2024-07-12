@@ -17,8 +17,23 @@ class EcommerceHybridSearchTestBase < PerformanceTest
     end
   end
 
-  def download_file(file_name, vespa_node)
-    download_file_from_s3(file_name, vespa_node, "/ecommerce_hybrid_search")
+  def download_file(file_name, vespa_node, url="https://data.vespa.oath.cloud/tests/performance/ecommerce_hybrid_search")
+    if File.exists?(selfdir + file_name)
+      # Place the file in the test directory to avoid downloading during manual testing.
+      puts "Using local file: #{file_name}"
+      selfdir + file_name
+    else
+      node_file = dirs.tmpdir + file_name
+      if execute(vespa_node, "test -f #{node_file}")[0] == 0
+        puts "Using already downloaded file: #{file_name}"
+      else
+        puts "Downloading file: #{file_name}"
+        vespa_node.fetchfiles(:testdata_url => url,
+                              :file => file_name,
+                              :destination_file => node_file)
+      end
+      node_file
+    end
   end
 
   def run_fbench_helper(query_file, query_phase, query_type, clients, vespa_node, params={})
