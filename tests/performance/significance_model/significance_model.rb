@@ -56,7 +56,7 @@ class SignificanceModelPerfTest < PerformanceTest
   end
 
   def download_file(file_name, vespa_node)
-    download_file_from_s3(file_name, vespa_node, "significance_model")
+    download_file_from_s3(file_name, vespa_node, "/significance_model")
   end
 
   def benchmark_queries(query_file, type, clients, warmup = false, runtime = 20)
