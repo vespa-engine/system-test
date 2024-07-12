@@ -13,13 +13,7 @@ class EmbeddingPerfTest < PerformanceTest
     set_description('Benchmark feed throughput with paraphrase-multilingual-MiniLM-L12-v2 ONNX model')
     deploy(selfdir + "app")
     start
-    feed_file = 'miracl-te-docs.100k.json.gz'
-    remote_file = "https://data.vespa.oath.cloud/tests/performance/#{feed_file}"
-    local_file =  dirs.tmpdir + feed_file
-    cmd = "wget -O'#{local_file}' '#{remote_file}'"
-    puts "Running command #{cmd}"
-    result = `#{cmd}`
-    puts "Result: #{result}"
-    run_feeder(local_file, [])
+    file = download_file_from_s3('miracl-te-docs.100k.json.gz', vespa.adminserver)
+    run_feeder(file, [], {:localfile => true})
   end
 end
