@@ -227,11 +227,6 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     assert_same_element_single_summary("complex_elem_map",     map_key_query, "filtered", "complex_elem_map_filtered", complex_map_filtered)
     assert_same_element_single_summary("complex_elem_map_meo", map_key_query, "default",  "complex_elem_map_meo",      complex_map_filtered)
 
-    return if is_streaming
-
-    # The following queries only works in indexed mode.
-    # TODO: Also handle them in streaming mode.
-
     map_key_wset_query_yql = "select * from sources * where weightedSet(elem_map.key, {'@bar':1})"
     map_key_in_query_yql = "select * from sources * where elem_map.key in ('@bar')"
     map_value_weight_wset_query_yql = "select * from sources * where weightedSet(elem_map.value.weight, {'20':1})"
