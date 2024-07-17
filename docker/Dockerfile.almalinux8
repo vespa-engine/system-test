@@ -63,7 +63,11 @@ COPY /vespa-systemtests /opt/vespa-systemtests
 
 ENV RUBYLIB=/opt/vespa-systemtests/lib:/opt/vespa-systemtests/tests
 
-RUN /opt/vespa-systemtests/docker/include/populate-m2-repo.sh root
+RUN --mount=type=bind,target=/context-root,source=./,ro \
+    mkdir -p /root/.m2 && \
+    cp /context-root/include/local-maven-repo-settings.xml /root/.m2/settings.xml && \
+    /opt/vespa-systemtests/docker/include/populate-m2-repo.sh root && \
+    rm -f /root/.m2/settings.xml
 
 RUN /opt/vespa-systemtests/docker/include/setup-tls.sh root 
 ENV VESPA_TLS_CONFIG_FILE=/opt/vespa/conf/vespa/tls/tls_config.json
