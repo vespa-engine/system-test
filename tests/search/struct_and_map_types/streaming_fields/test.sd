@@ -15,6 +15,9 @@ schema test {
     }
     field elem_map type map<string, elem> {
       indexing: index | summary
+      struct-field key {
+        match: word
+      }
     }
     field elem_map_2 type map<string, elem> {
       indexing: index | summary
