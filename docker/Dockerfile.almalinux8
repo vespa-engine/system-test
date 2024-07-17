@@ -1,6 +1,10 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
-FROM docker.io/almalinux:8
+ARG BASE_IMAGE=docker.io/almalinux:8
+ARG VESPA_BASE_IMAGE=vespa
+
+# Vespa install
+FROM $BASE_IMAGE AS vespa
 
 RUN dnf install -y dnf-plugins-core && \
     dnf install -y epel-release && \
@@ -15,9 +19,15 @@ RUN dnf install -y gcc-c++ python3-devel && \
     dnf remove -y remove gcc-c++ python3-devel && \
     yum clean --enablerepo=* all
 
+
+FROM $VESPA_BASE_IMAGE AS systemtest
+
+USER root
+
 ENV VESPA_CONFIGPROXY_JVMARGS="-XX:ThreadStackSize=1024k"
 
-RUN dnf config-manager --enable powertools && \
+RUN dnf install -y dnf-plugins-core && \
+    dnf config-manager --enable powertools && \
     dnf module enable -y ruby:3.1 && \
     dnf module enable -y maven:3.8 && \
     dnf install -y \
@@ -25,13 +35,13 @@ RUN dnf config-manager --enable powertools && \
         gcc-toolset-13-annobin-docs \
         gcc-toolset-13-annobin-plugin-gcc \
         gcc-toolset-13-gcc-c++ \
-        git \
+        git-core \
         hostname \
         jq \
         libxml2-devel \
         lz4 \
         make \
-        maven \
+        maven-openjdk17 \
         net-tools \
         redhat-rpm-config \
         ruby \
@@ -48,18 +58,16 @@ RUN dnf config-manager --enable powertools && \
     (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby) && \
     echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
-# Installation of maven is sneaky. It installs java-8 and sets as default.
-RUN alternatives --set java $(alternatives --display java | grep -Po "\ java-.*-openjdk.*64" | grep java-11)
-
 COPY /include/feature-flags.json /opt/vespa/var/vespa/flag.db
 COPY /vespa-systemtests /opt/vespa-systemtests
 
 ENV RUBYLIB=/opt/vespa-systemtests/lib:/opt/vespa-systemtests/tests
 
-# Backward compability with testrunner
-RUN mkdir -p /opt/rh/rh-ruby27 && touch /opt/rh/rh-ruby27/enable
-
-RUN /opt/vespa-systemtests/docker/include/populate-m2-repo.sh root
+RUN --mount=type=bind,target=/context-root,source=./,ro \
+    mkdir -p /root/.m2 && \
+    cp /context-root/include/local-maven-repo-settings.xml /root/.m2/settings.xml && \
+    /opt/vespa-systemtests/docker/include/populate-m2-repo.sh root && \
+    rm -f /root/.m2/settings.xml
 
 RUN /opt/vespa-systemtests/docker/include/setup-tls.sh root 
 ENV VESPA_TLS_CONFIG_FILE=/opt/vespa/conf/vespa/tls/tls_config.json
