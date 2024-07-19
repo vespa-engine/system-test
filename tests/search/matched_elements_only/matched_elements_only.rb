@@ -76,7 +76,7 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
 
     return if is_streaming
 
-    # Search for fruit goes to both apple and oranges fields.
+    # Search for fruit goes to both apples and oranges fields.
     assert_summary_field("fruit contains 'one'", 'apples', ['one'])
     assert_summary_field("fruit contains 'one'", 'oranges', ['one'])
   end
