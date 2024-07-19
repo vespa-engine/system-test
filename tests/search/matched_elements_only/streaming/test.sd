@@ -33,6 +33,14 @@ schema test {
     field int_array_filtered type array<int> {}
     field str_wset_filtered type weightedset<string> {}
     field int_wset_filtered type weightedset<int> {}
+    field apples type array<string> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
+    field oranges type array<string> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
   }
   document-summary filtered {
     summary str_array_filtered {
@@ -51,5 +59,8 @@ schema test {
       source: int_wset_src
       matched-elements-only
     }
+  }
+  fieldset fruit {
+    fields: apples, oranges
   }
 }
