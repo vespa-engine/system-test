@@ -21,7 +21,9 @@
       "int_wset_src": {
         "10": 5,
         "20": 7
-      }
+      },
+      "apples": [ "one", "two", "three" ],
+      "oranges": [ "three", "two", "one" ]
     }
   }
 ]
