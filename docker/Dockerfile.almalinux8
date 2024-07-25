@@ -24,8 +24,6 @@ FROM $VESPA_BASE_IMAGE AS systemtest
 
 USER root
 
-ENV VESPA_CONFIGPROXY_JVMARGS="-XX:ThreadStackSize=1024k"
-
 RUN dnf install -y dnf-plugins-core && \
     dnf config-manager --enable powertools && \
     dnf module enable -y ruby:3.1 && \
@@ -58,19 +56,45 @@ RUN dnf install -y dnf-plugins-core && \
     (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby) && \
     echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
-COPY /include/feature-flags.json /opt/vespa/var/vespa/flag.db
+# Clear all dynamic debuginfo URLs. Current specific issue related to this is
+# that libelfutils wants to download info when interrupting 'perf record'.
+# Depending on network setup for Docker/Podman this might hang forever.
+RUN rm -rf /etc/debuginfod/*
+
+# We want to have the system test files owned by root to detect any tests
+# that might want to write into this location.
 COPY /vespa-systemtests /opt/vespa-systemtests
 
 ENV RUBYLIB=/opt/vespa-systemtests/lib:/opt/vespa-systemtests/tests
 
-RUN --mount=type=bind,target=/context-root,source=./,ro \
-    mkdir -p /root/.m2 && \
-    cp /context-root/include/local-maven-repo-settings.xml /root/.m2/settings.xml && \
-    /opt/vespa-systemtests/docker/include/populate-m2-repo.sh root && \
-    rm -f /root/.m2/settings.xml
+# Currently both the root and vespa user need the cert/key because thes
+# test controller must run as root. This can be changed to only vespa user
+# when/if the restriction is lifted.
+RUN /opt/vespa-systemtests/docker/include/setup-tls.sh root
 
-RUN /opt/vespa-systemtests/docker/include/setup-tls.sh root 
+# When running the system tests as vespa we require an additional
+# set of locations to be available and writable by the user. The
+# statements below are required for system tests to run currently.
+RUN chown vespa:vespa /opt/vespa && \
+    cp -a /root/.vespa /opt/vespa && \
+    chown -R vespa:vespa /opt/vespa/.vespa && \
+    chown -R vespa:vespa /opt/vespa/conf/vespa && \
+    chown -R vespa:vespa /opt/vespa/conf/configserver-app && \
+    chown -R vespa:vespa /opt/vespa/etc/vespa
+
+USER vespa
+
+ENV VESPA_CONFIGPROXY_JVMARGS="-XX:ThreadStackSize=1024k"
+ENV VESPA_HOME=/opt/vespa
 ENV VESPA_TLS_CONFIG_FILE=/opt/vespa/conf/vespa/tls/tls_config.json
+
+COPY --chown=vespa:vespa /include/feature-flags.json /opt/vespa/var/vespa/flag.db
+
+RUN --mount=type=bind,target=/context-root,source=./,ro \
+    mkdir -p $VESPA_HOME/.m2 && \
+    cp /context-root/include/local-maven-repo-settings.xml $VESPA_HOME/.m2/settings.xml && \
+    /opt/vespa-systemtests/docker/include/populate-m2-repo.sh vespa && \
+    rm -f $VESPA_HOME/.m2/settings.xml
 
 ENTRYPOINT ["bash", "-lc", "source /opt/rh/gcc-toolset/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
 
