@@ -22,6 +22,8 @@ RUN dnf install -y gcc-c++ python3-devel && \
 
 FROM $VESPA_BASE_IMAGE AS systemtest
 
+ENV LANG en_US.UTF-8
+
 USER root
 
 RUN dnf install -y dnf-plugins-core && \
@@ -41,6 +43,7 @@ RUN dnf install -y dnf-plugins-core && \
         make \
         maven-openjdk17 \
         net-tools \
+        python3-devel \
         redhat-rpm-config \
         ruby \
         ruby-devel \
@@ -54,6 +57,7 @@ RUN dnf install -y dnf-plugins-core && \
         sudo \
         zstd && \
     (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby) && \
+    pip3 install --no-cache-dir awscli && \
     echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
 # Clear all dynamic debuginfo URLs. Current specific issue related to this is
