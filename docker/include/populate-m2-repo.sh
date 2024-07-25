@@ -36,4 +36,4 @@ $MVNW $SHARED_MVN_OPTS dependency:go-offline
 # Cleanup
 rm -rf $MVNW /tmp/mvnw.cmd /tmp/.mvn/ /tmp/pom.parent.xml
 # Remove these files to avoid Maven verifying the the source locations
-find $LOCAL_M2_REPO -name "_remote.repositories" | xargs rm -f
+find $LOCAL_M2_REPO -name "_remote.repositories" -delete
