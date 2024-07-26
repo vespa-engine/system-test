@@ -57,7 +57,6 @@ RUN dnf install -y dnf-plugins-core && \
         sudo \
         zstd && \
     (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby) && \
-    (source /opt/rh/gcc-toolset/enable && pip3 install --no-cache-dir xgboost scikit-learn) && \
     pip3 install --no-cache-dir awscli && \
     echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
