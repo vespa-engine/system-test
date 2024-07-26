@@ -62,6 +62,13 @@ RUN dnf install -y dnf-plugins-core && \
     (source /opt/rh/gcc-toolset/enable && pip3 install --no-cache-dir xgboost scikit-learn) && \
     echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
+RUN --mount=type=bind,target=/context-root,source=.,ro \
+    if [[ -d /context-root/rpms ]]; then echo -e "[vespa-rpms-local]\nname=Local Vespa RPMs\nbaseurl=file:///context-root/rpms/\nenabled=1\ngpgcheck=0" > /etc/yum.repos.d/vespa-rpms-local.repo; fi && \
+    dnf -y install vespa-systemtest-tools && \
+    dnf clean all && \
+    rm -f /etc/yum.repos.d/vespa-rpms-local.repo && \
+    rm -rf /var/cache/dnf
+
 # Clear all dynamic debuginfo URLs. Current specific issue related to this is
 # that libelfutils wants to download info when interrupting 'perf record'.
 # Depending on network setup for Docker/Podman this might hang forever.
