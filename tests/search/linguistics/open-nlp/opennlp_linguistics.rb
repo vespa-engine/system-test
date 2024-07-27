@@ -15,8 +15,8 @@ class OpenNlpLinguistics < IndexedStreamingSearchTest
                   .documentapi(ContainerDocumentApi.new)
                   .component(Component.new('com.yahoo.language.opennlp.OpenNlpLinguistics'))
                   .config(ConfigOverride.new('ai.vespa.opennlp.open-nlp').
-                          add(ConfigValue.new('cjk', 'true')).
-                          add(ConfigValue.new('createCjkGrams', 'true')))
+                          add('cjk', 'true').
+                          add('createCjkGrams', 'true'))
 
     app.container(container)
     app.indexing_cluster('container')

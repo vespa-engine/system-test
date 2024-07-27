@@ -1,4 +1,4 @@
 [
   {"id":"id:test:test::doc1","fields":{"text":"是一个展示雅，目前在测试阶段。"}},
-  {"id":"id:test:test::doc2","fields":{"text":"Will still ber stemmed: running."}}
+  {"id":"id:test:test::doc2","fields":{"text":"Will still be stemmed: running."}}
 ]
