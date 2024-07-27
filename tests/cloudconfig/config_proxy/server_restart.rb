@@ -18,7 +18,7 @@ class ServerRestart < CloudConfigTest
     assert_logd_config(node, 86400)
     restart_config_server(node)
     # wait until config proxy logs APPLICATION_NOT_LOADED response from server (the time is dependent on timeouts in TimingValues.java)
-    wait_for_log_matches(/No application exists/, 1)
+    wait_for_atleast_log_matches(/No application exists/, 1)
     # deploy twice to get to a new generation number (2)
     deploy(selfdir+"app")
     deploy(selfdir+"app_changed")
@@ -38,7 +38,6 @@ class ServerRestart < CloudConfigTest
       rescue Exception => e
         puts "Got exception, will retry: " + e.message
       end
-      puts "Wrong config from proxy, sleep and retry"
       sleep 1
     }
     # If we get here we could not get correct config from config proxy,
