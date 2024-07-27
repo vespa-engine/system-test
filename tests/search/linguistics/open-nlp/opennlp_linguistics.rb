@@ -30,7 +30,7 @@ class OpenNlpLinguistics < IndexedStreamingSearchTest
     feed_and_wait_for_docs("test", 2, :file => selfdir + "documents.json")
 
     assert_hitcount("query=text:展示", 1) # A Chinese token from the resulting segmentation done
-    assert_hitcount("query=text:run", 1) # English is still stemmed
+    assert_hitcount("query=text:car", 1) # English is still stemmed
    end
 
   def teardown
