@@ -8,7 +8,6 @@ class DeployV2 < CloudConfigTest
 
 include ApplicationV2Api
 
-  # TODO: @@vespa_home needs to be changed when running the test manually
   @@vespa_home = Environment.instance.vespa_home
   @@config_server_config_file = "#{@@vespa_home}/conf/configserver-app/configserver-config.xml"
 
@@ -20,7 +19,6 @@ include ApplicationV2Api
     @httpport = 19071
     @session_id = nil
     @original_config_server_config = write_default_config_server_config
-    puts "original config server config: #{@original_config_server_config}"
 
     appdir = "#{CLOUDCONFIG_DEPLOY_APPS}/base"
     deploy(appdir, nil) # to initialize nodeproxies etc.
@@ -44,8 +42,8 @@ include ApplicationV2Api
     @session_id = run_multiple_create_sessions(@session_id)
     @session_id = run_multiple_prepare_sessions(@session_id)
     @session_id = run_outdated_session_activation(@session_id)
-    @session_id = run_activate_without_prepare(@session_id, @tenant_name)
-    @session_id = run_serverdb_reuse_session_id(@session_id, @tenant_name)
+    @session_id = run_activate_without_prepare(@session_id)
+    @session_id = run_serverdb_reuse_session_id(@session_id)
     @session_id = run_configserver_restart(@session_id)
     @session_id = run_content_edit(@session_id)
     @session_id = run_content_status(@session_id)
@@ -109,7 +107,7 @@ include ApplicationV2Api
     next_session(session_b)
   end
 
-  def run_activate_without_prepare(session_id=@session_id, tenant="default")
+  def run_activate_without_prepare(session_id=@session_id)
     set_description("Tests activating a session that has not been prepared")
     result = create_session("#{CLOUDCONFIG_DEPLOY_APPS}/app_b", session_id)
     result["activate"] = url_base_activate(session_id) + "?timeout=5.0"
@@ -118,22 +116,20 @@ include ApplicationV2Api
   end
 
   # Check that
-  # #{Environment.instance.vespa_home}/var/db/vespa/config_server/serverdb/tenants/default/sessions/ is cleaned
+  # #{Environment.instance.vespa_home}/var/db/vespa/config_server/serverdb/tenants/{tenant_name}/sessions/ is cleaned
   # when creating a session with the same session id that was used once in the past
-  def run_serverdb_reuse_session_id(session_id=@session_id, tenant_name="default")
+  def run_serverdb_reuse_session_id(session_id=@session_id)
     # base app deployed in setup contains 'extra_file'
     deploy_and_activate_session("#{CLOUDCONFIG_DEPLOY_APPS}/base", session_id, 19080)
-    assert_file_exists("#{@@vespa_home}/var/db/vespa/config_server/serverdb/tenants/#{tenant_name}/sessions/#{session_id}/extra_file")
+    assert_file_exists("#{@@vespa_home}/var/db/vespa/config_server/serverdb/tenants/#{@tenant_name}/sessions/#{session_id}/extra_file")
     # Restart config server and delete zookeeper data so the next deploy
     # also will have session id 2
     restart_config_server(@node)
     # Zookeeper will be cleaned, so next deploy will get session id 2
     session_id = 2
-    if (tenant_name != "default")
-      create_tenant_and_wait(tenant_name, @node.hostname)
-    end
+    create_tenant_and_wait(@tenant_name, @node.hostname)
     next_session_id = deploy_and_activate_session("#{CLOUDCONFIG_DEPLOY_APPS}/app_a", session_id, 1337) 
-    assert_file_does_not_exist("#{@@vespa_home}/var/db/vespa/config_server/serverdb/tenants/#{tenant_name}/sessions/#{session_id}/extra_file")
+    assert_file_does_not_exist("#{@@vespa_home}/var/db/vespa/config_server/serverdb/tenants/#{@tenant_name}/sessions/#{session_id}/extra_file")
     next_session_id
   end
 
@@ -292,7 +288,7 @@ include ApplicationV2Api
 
     # try to activate b, which should give a conflict (status code 409)
     result = activate_session_fail(result_b, 409, /.*Cannot activate session #{session_b} because the currently active session \(#{session_c}\) has changed since session #{session_b} was created \(was #{session_a} at creation time\)/)
-    assert_logd_config_v2(1339, @hostname, tenant_name, @application_name)
+    assert_logd_config_v2(1339, @hostname, @tenant_name, @application_name)
 
     # Deploying again should work
     session_d = next_session(session_c)
@@ -383,7 +379,7 @@ include ApplicationV2Api
     wait_until_local_session_deleted(session_id_b)
     assert_exists(session_id_c)
 
-    set_config_server_config({ })
+    set_config_server_config()
     restart_config_server(@node, :keep_everything => true)
     session_id
   end
@@ -592,11 +588,11 @@ include ApplicationV2Api
 
   def write_default_config_server_config
     original_content = @node.readfile(@@config_server_config_file)
-    set_config_server_config({})
+    set_config_server_config()
     original_content
   end
 
-  def set_config_server_config(fields_and_values)
+  def set_config_server_config(fields_and_values = {})
     default_for_this_test = {
       "maintainerIntervalMinutes" => 1,
       "canReturnEmptySentinelConfig" => true,
@@ -627,7 +623,6 @@ include ApplicationV2Api
   def teardown
     stop
     @node.stop_base if @node
-    puts "Stopping configserver"
     @node.stop_configserver if @node
     replace_config_server_config(@original_config_server_config)
     @dirty_environment_settings = true
