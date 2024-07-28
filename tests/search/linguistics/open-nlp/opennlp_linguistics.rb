@@ -24,7 +24,7 @@ class OpenNlpLinguistics < SearchTest
     app
   end
 
-  def test_simple_linguistics
+  def test_opennlp_linguistics
     deploy_app(make_app)
     start
     feed_and_wait_for_docs("test", 2, :file => selfdir + "documents.json")
