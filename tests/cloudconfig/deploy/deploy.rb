@@ -1,4 +1,5 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+require 'assertions'
 require 'cloudconfig_test'
 require 'json'
 require 'application_v2_api'
@@ -32,6 +33,7 @@ include ApplicationV2Api
     @region = "default"
     @instance = "default"
     @urischeme = https_client.scheme # TODO Inline as 'https' once TLS is enforced
+    @sessions_path = "#{@@vespa_home}/var/db/vespa/config_server/serverdb/tenants/#{@tenant_name}/sessions"
   end
 
   def test_deploy_v2
@@ -79,7 +81,7 @@ include ApplicationV2Api
   end
 
   def run_multiple_create_sessions(session_id=@session_id)
-    set_description("Tests creating multiple sessions in parallel and then preparing and activating one of them")
+    set_description("Tests creating multiple sessions, then preparing and activating one of them")
     session_a = session_id
     session_b = next_session(session_a)
     result_a = create_session("#{CLOUDCONFIG_DEPLOY_APPS}/app_a", session_a)
@@ -93,7 +95,7 @@ include ApplicationV2Api
   end
 
   def run_multiple_prepare_sessions(session_id=@session_id)
-    set_description("Tests creating and preparing multiple sessions in parallel and then activate one of them")
+    set_description("Tests creating and preparing multiple sessions, then activating one of them")
     session_a = session_id
     session_b = next_session(session_a)
     result_a = create_session("#{CLOUDCONFIG_DEPLOY_APPS}/app_a", session_a)
@@ -115,13 +117,12 @@ include ApplicationV2Api
     next_session(session_id)
   end
 
-  # Check that
-  # #{Environment.instance.vespa_home}/var/db/vespa/config_server/serverdb/tenants/{tenant_name}/sessions/ is cleaned
-  # when creating a session with the same session id that was used once in the past
+  # Check that @sessions_path is cleaned when creating a session with the same session id that
+  # was used once in the past
   def run_serverdb_reuse_session_id(session_id=@session_id)
     # base app deployed in setup contains 'extra_file'
     deploy_and_activate_session("#{CLOUDCONFIG_DEPLOY_APPS}/base", session_id, 19080)
-    assert_file_exists("#{@@vespa_home}/var/db/vespa/config_server/serverdb/tenants/#{@tenant_name}/sessions/#{session_id}/extra_file")
+    assert_file_exists("#{@sessions_path}/#{session_id}/extra_file")
     # Restart config server and delete zookeeper data so the next deploy
     # also will have session id 2
     restart_config_server(@node)
@@ -129,7 +130,7 @@ include ApplicationV2Api
     session_id = 2
     create_tenant_and_wait(@tenant_name, @node.hostname)
     next_session_id = deploy_and_activate_session("#{CLOUDCONFIG_DEPLOY_APPS}/app_a", session_id, 1337) 
-    assert_file_does_not_exist("#{@@vespa_home}/var/db/vespa/config_server/serverdb/tenants/#{@tenant_name}/sessions/#{session_id}/extra_file")
+    assert_file_does_not_exist("#{@sessions_path}/#{session_id}/extra_file")
     next_session_id
   end
 
@@ -177,15 +178,12 @@ include ApplicationV2Api
     # Create a directory
     result = create_application_dir(session_id, "files/")
     assert_not_error(result)
-#    assert(!result.has_key?("error"))
 
     # Put a file in the directory
     assert_put_application_file(session_id, "#{CLOUDCONFIG_DEPLOY_APPS}/extra/test1.txt", "files/test1.txt")
 
     # Check directory listing
     result = list_application_dir(session_id, "files/")
-#    assert_not_error(result)
-#    assert(!result.has_key?("error"))
     assert_equal(result.size, 1)
     assert_equal(result[0], url_base_content(session_id) + "files/test1.txt")
 
@@ -194,10 +192,8 @@ include ApplicationV2Api
     assert(result.has_key?("message"))
     result = delete_application_file(session_id, "files/test1.txt")
     assert_not_error(result)
-#    assert(!result.has_key?("error"))
     result = delete_application_file(session_id, "files/")
     assert_not_error(result)
-#    assert(!result.has_key?("error"))
 
     assert_active_application(create_result, services, session_id)
   end
@@ -247,8 +243,8 @@ include ApplicationV2Api
     assert_status(session_id, test_file, create_status_response("deleted", "", test_file))
 
     # File that does not exist
-    assert_not_error(get_content_status(session_id, "non-existing-file"))
-
+    result = get_content_status(session_id, "non-existing-file")
+    assert_equal('BAD_REQUEST', result['error-code']) # TODO: Should be NOT_FOUND
 
     prepare_result = prepare_session(create_result, session_id)
     activate_result = activate_session(prepare_result, session_id)
@@ -341,7 +337,6 @@ include ApplicationV2Api
     session_id = deploy_and_activate_session_v2("#{CLOUDCONFIG_DEPLOY_APPS}/app_a", session_id, 1337)
     result = create_session_url(application_url(@node.hostname, @tenant_name, @application_name), session_id)
     # so that we can prepare the new session with the same host as the previous one
-    # todo: change later to test with another host
     delete_application_v2(@hostname, @tenant_name, @application_name)
     result = prepare_session(result, session_id)
     result = activate_session(result, session_id)
@@ -504,7 +499,7 @@ include ApplicationV2Api
   end
 
   def assert_not_error(json)
-    assert(json.instance_of? Hash)
+    assert(!json.has_key?('error-code'), json)
   end
 
   def assert_exists(session_id)
@@ -516,7 +511,7 @@ include ApplicationV2Api
   end
 
   def local_session_exists(session_id)
-    exitcode, out = @node.execute("ls #{@@vespa_home}/var/db/vespa/config_server/serverdb/tenants/#{@tenant_name}/sessions/#{session_id}", { :exitcode => true, :noecho => true})
+    exitcode, out = @node.execute("ls #{@sessions_path}/#{session_id}", { :exitcode => true, :noecho => true})
     exitcode == "0"
   end
 
