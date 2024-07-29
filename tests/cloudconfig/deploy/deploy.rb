@@ -36,6 +36,20 @@ include ApplicationV2Api
     @sessions_path = "#{@@vespa_home}/var/db/vespa/config_server/serverdb/tenants/#{@tenant_name}/sessions"
   end
 
+  # TODO: Add to list in test below when working, want a separate test method while WIP
+  def test_binary_content
+    session_id = @session_id
+    file = "components/test.jar"
+    assert_put_application_file(session_id, "#{CLOUDCONFIG_DEPLOY_APPS}app_b/components/test.jar", file)
+
+    output = read_application_file(session_id, file)
+    file = File.open("#{CLOUDCONFIG_DEPLOY_APPS}/app_b/#{file}", "rb")
+    data = file.read
+    file.close
+    assert_equal(output, data, "not equal")
+    next_session(session_id)
+  end
+
   def test_deploy_v2
     @node.execute("vespa-logctl -c configserver:com.yahoo.vespa.config.server.session debug=on", :exceptiononfailure => false)
     @session_id = @session_id+1
