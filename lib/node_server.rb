@@ -376,8 +376,9 @@ class NodeServer
     if File.directory?(coredir)
       Dir.foreach(coredir) do |filename|
         next if ignored_files.include?(filename)
-        crashtime = File.mtime(coredir+filename)
-        testcase.output("possible coredump: #{filename}, crashtime=#{crashtime}, starttime=#{starttime}, endtime=#{endtime}")
+        # subtract 1 second to avoid crashtime > endtime, as file system resolution is low
+        crashtime = Time.at(File.mtime(coredir+filename) - 1)
+        testcase.output("possible coredump: #{filename}, crashtime=#{crashtime.to_f}, starttime=#{starttime.to_f}, endtime=#{endtime.to_f}")
         if crashtime.to_i >= starttime.to_i and crashtime <= endtime
           FileUtils.chmod 0444, (coredir+filename)
 
