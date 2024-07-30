@@ -119,7 +119,7 @@ class CoreDump < IndexedOnlySearchTest
   end
 
   def teardown
-    show_kernel_core_pattern(vespa.adminserver)
+    show_kernel_core_pattern(vespa.adminserver) unless has_active_sanitizers
     stop
   end
 
