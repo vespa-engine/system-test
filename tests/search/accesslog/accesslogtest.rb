@@ -13,7 +13,8 @@ class AccessLogTest < IndexedStreamingSearchTest
                    documentapi(ContainerDocumentApi.new).
                    docproc(DocumentProcessing.new).
                    component(AccessLog.new("vespa").
-                       fileNamePattern("logs/vespa/access/QueryAccessLog.default"))).
+                       fileNamePattern("logs/vespa/access/QueryAccessLog.default").
+                       compressOnRotation("false"))).
                sd(SEARCH_DATA+"music.sd"))
     start
   end
