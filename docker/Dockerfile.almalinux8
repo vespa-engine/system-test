@@ -55,6 +55,7 @@ RUN dnf install -y dnf-plugins-core && \
         rubygem-rexml \
         rubygem-test-unit \
         sudo \
+        wget \
         zstd && \
     (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby) && \
     pip3 install --no-cache-dir --upgrade pip && \
