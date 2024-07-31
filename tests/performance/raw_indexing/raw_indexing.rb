@@ -15,6 +15,8 @@ class FeedingIndexTest < PerformanceTest
     
     @warmUpDocPath = "#{dirs.tmpdir}warm_up_docs.json"
     @docPath = "#{dirs.tmpdir}feed_docs.json"
+    # webtext file is from https://openaipublic.azureedge.net/gpt-2/output-dataset/v1/webtext.train.jsonl
+    @webtextFile = 'webtext.train.jsonl'
   end
 
   def test_feeding_and_querying_docs
@@ -42,15 +44,15 @@ class FeedingIndexTest < PerformanceTest
   end
 
   def download_doc_file
-    @container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}download_webtext.py")
+    download_file_from_s3(@webtextFile, @container, 'raw_indexing')
   end
 
   def make_warm_up_docs
-    @container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 2000 data/webtext.train.jsonl warm_up_docs.json")
+    @container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 2000 #{@webtextFile} warm_up_docs.json")
   end
 
   def make_feed_docs
-    @container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 200000 data/webtext.train.jsonl feed_docs.json")
+    @container.execute("cd #{dirs.tmpdir} && python3 #{selfdir}make_json_docs.py 200000 #{@webtextFile} feed_docs.json")
   end
 
   def make_queries
