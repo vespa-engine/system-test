@@ -773,7 +773,7 @@ class NodeServer
       # Optimization: Don't start unless it's necessary
       # Ping configserver to be sure that our assumption is correct
       begin
-        ping_configserver(10)
+        ping_configserver(20)
         return
       rescue StandardError => se
         testcase_output("Config server state: running, but not responding to ping, so starting it anyway")
