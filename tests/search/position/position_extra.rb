@@ -1,4 +1,4 @@
-2# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+2# Copyright Vespa.ai. All rights reserved.
 require 'indexed_only_search_test'
 
 class PositionExtra < IndexedOnlySearchTest
