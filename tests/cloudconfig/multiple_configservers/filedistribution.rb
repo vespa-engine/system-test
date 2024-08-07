@@ -1,5 +1,5 @@
 # coding: utf-8
-# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. All rights reserved.
 
 require 'cloudconfig_test'
 require 'app_generator/container_app'

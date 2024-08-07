@@ -1,4 +1,4 @@
-# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. All rights reserved.
 class Bundle
   attr_reader :sourcedir, :name, :params
   attr_accessor :version, :artifact_id, :group_id, :extra_build_plugin_xml, :bundle_plugin_config

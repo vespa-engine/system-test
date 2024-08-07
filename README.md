@@ -1,4 +1,4 @@
-<!-- Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root. -->
+<!-- Copyright Vespa.ai. All rights reserved. -->
 
 # Vespa system tests framework
 
@@ -61,13 +61,3 @@ For information about the capabilities of ```run-tests-on-swarm.sh```:
 ```
 $ bin/run-tests-on-swarm.sh --help
 ```
-
-
-## Contribute
-
-We welcome contributions - see [contributing](https://github.com/vespa-engine/vespa/blob/master/CONTRIBUTING.md)
-
-## License
-
-Code licensed under the Apache 2.0 license. See [LICENSE](LICENSE) for terms.
-

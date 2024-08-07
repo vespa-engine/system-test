@@ -1,4 +1,4 @@
-# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. All rights reserved.
 class TensorConstantGenerator
 
   def self.gen_tensor_constant(file_name, file_size_bytes)
