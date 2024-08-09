@@ -5,7 +5,7 @@ require 'environment'
 class RemoveIndexes < IndexedStreamingSearchTest
 
   def setup
-    set_owner("johansen")
+    set_owner("hmusum")
   end
 
   def test_remove_indexes
@@ -46,4 +46,5 @@ class RemoveIndexes < IndexedStreamingSearchTest
   def teardown
     stop
   end
+
 end
