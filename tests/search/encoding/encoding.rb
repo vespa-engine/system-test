@@ -1,10 +1,10 @@
-# encoding: iso8859-1
+# encoding: iso-8859-1
 require 'indexed_streaming_search_test'
 
 class EncodingTest < IndexedStreamingSearchTest
 
   def setup
-    set_owner("johansen")
+    set_owner("arnej")
     set_description("Test search and results in non-UTF8 encoding")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"simple.sd"))
     start
@@ -24,11 +24,6 @@ class EncodingTest < IndexedStreamingSearchTest
                  result.hit[1].field["title"]);
 
     result = search("/?query=bl%C3%A5b%C3%A6r&encoding=iso-8859-1&tracelevel=3&format=xml")
-    # TODO remove this debug printout and the above tracelevel when we find the bug
-    if (result.hit.size != 1) then
-      puts "Wrong number of hits: #{result.hit.size}"
-      puts result.xmldata
-    end
     assert_equal(1, result.hit.size)
     assert(result.xmldata.index("encoding=\"iso-8859-1\""))
     assert_equal("test test document1", result.hit[0].field["title"]);
