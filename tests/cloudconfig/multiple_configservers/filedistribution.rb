@@ -9,7 +9,7 @@ class FileDistributionWithMultipleConfigServers < CloudConfigTest
 
   def initialize(*args)
     super(*args)
-    @num_hosts = 3
+    @num_hosts = 5
     @bundle_name = "com.yahoo.vespatest.ExtraHitSearcher"
   end
 
@@ -42,11 +42,13 @@ class FileDistributionWithMultipleConfigServers < CloudConfigTest
 
   def deploy_test_app(add_searcher=nil)
     if add_searcher
-      puts "Deployin app with searcher"
+      puts "Deploying app with searcher"
       app = ContainerApp.new.
               container(Container.new.search(Searching.new.
                                                chain(Chain.new.add(
-                                                       Searcher.new("com.yahoo.vespatest.ExtraHitSearcher")))))
+                                                       Searcher.new("com.yahoo.vespatest.ExtraHitSearcher"))))
+                        .node({ :hostalias => "node4" })
+                        .node({ :hostalias => "node5" }))
     else
       puts "Deploying simple app"
       app = ContainerApp.new
