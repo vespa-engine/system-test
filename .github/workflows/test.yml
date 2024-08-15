@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+defaults:
+  run:
+    # Specify to ensure "pipefail and errexit" are set.
+    # Ref: https://docs.github.com/en/actions/writing-workflows/workflow-syntax-for-github-actions#defaultsrunshell
+    shell: bash
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: docker.io/vespaengine/vespa-build-almalinux-8:latest
+
+    env:
+      RUBYLIB: ${{ github.workspace }}/lib
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: require-test-files
+        run: |
+          export VESPA_FACTORY_NO_AUTORUNNER=1
+          for FILE in $(find tests -name "*.rb"); do
+            ruby  -I lib -I tests -I . -e "require '$FILE'"
+          done
+
+      - name: run-unit-tests
+        run: |
+          set -e
+          cd ${RUBYLIB}
+          ruby test/testrunner.rb
+          exit $?
