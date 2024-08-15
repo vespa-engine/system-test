@@ -55,7 +55,7 @@ class FileDistributionWithMultipleConfigServers < CloudConfigTest
     end
 
     app = app.configserver("node1").num_hosts(@num_hosts)
-    if @num_hosts == 3
+    if @num_hosts >= 3
       app = app.configserver("node2").
               configserver("node3")
     end
