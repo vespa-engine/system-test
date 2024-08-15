@@ -252,4 +252,11 @@ class ContainerAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(act, exp)
   end
 
+  def test_container_app_with_multiple_nodes
+    app = ContainerApp.new.container(Container.new("default")
+                                       .node({ :hostalias => "node1" })
+                                       .node({ :hostalias => "node2" }))
+    verify('multiple_container_nodes.xml', app)
+  end
+
 end
