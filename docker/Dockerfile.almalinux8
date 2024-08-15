@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-ARG BASE_IMAGE=docker.io/almalinux:8
+ARG BASE_IMAGE=almalinux:8
 ARG VESPA_BASE_IMAGE=vespa
 
 # Vespa install
@@ -22,7 +22,7 @@ RUN dnf install -y gcc-c++ python3-devel && \
 
 FROM $VESPA_BASE_IMAGE AS systemtest
 
-ENV LANG en_US.UTF-8
+ENV LANG=en_US.UTF-8
 
 USER root
 
@@ -60,7 +60,7 @@ RUN dnf install -y dnf-plugins-core && \
     (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby) && \
     pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir awscli && \
-    (source /opt/rh/gcc-toolset/enable && pip3 install --no-cache-dir xgboost scikit-learn) && \
+    (source /opt/rh/gcc-toolset/enable && pip3 install --no-cache-dir numpy xgboost scikit-learn) && \
     echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
 RUN --mount=type=bind,target=/context-root,source=.,ro \
@@ -111,4 +111,3 @@ RUN --mount=type=bind,target=/context-root,source=./,ro \
     rm -f $VESPA_HOME/.m2/settings.xml
 
 ENTRYPOINT ["bash", "-lc", "source /opt/rh/gcc-toolset/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
-
