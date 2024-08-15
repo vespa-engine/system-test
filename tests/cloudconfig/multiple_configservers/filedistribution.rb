@@ -46,12 +46,15 @@ class FileDistributionWithMultipleConfigServers < CloudConfigTest
       app = ContainerApp.new.
               container(Container.new.search(Searching.new.
                                                chain(Chain.new.add(
-                                                       Searcher.new("com.yahoo.vespatest.ExtraHitSearcher"))))
-                        .node({ :hostalias => "node4" })
-                        .node({ :hostalias => "node5" }))
+                                                       Searcher.new("com.yahoo.vespatest.ExtraHitSearcher")))).
+                          node({ :hostalias => "node4" }).
+                          node({ :hostalias => "node5" }))
     else
       puts "Deploying simple app"
-      app = ContainerApp.new
+      app = ContainerApp.new.
+              container(Container.new.search(Searching.new).
+                          node({ :hostalias => "node4" }).
+                          node({ :hostalias => "node5" }))
     end
 
     app = app.configserver("node1").num_hosts(@num_hosts)
