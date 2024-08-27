@@ -74,8 +74,6 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     assert_summary_field(query, "str_wset", empty_wset)
     assert_summary_field(query, "int_wset", empty_wset)
 
-    return if is_streaming
-
     # Search for fruit goes to both apples and oranges fields.
     assert_summary_field("fruit contains 'one'", 'apples', ['one'])
     assert_summary_field("fruit contains 'one'", 'oranges', ['one'])
