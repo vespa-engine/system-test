@@ -1,7 +1,7 @@
 # coding: utf-8
 # Copyright Vespa.ai. All rights reserved.
 
-require 'cloudconfig_test'
+require 'config_test'
 require 'app_generator/container_app'
 require 'environment'
 

@@ -1,4 +1,4 @@
-require 'cloudconfig_test'
+require 'config_test'
 require 'app_generator/search_app'
 require 'environment'
 

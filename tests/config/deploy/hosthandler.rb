@@ -1,5 +1,5 @@
 # Copyright Vespa.ai. All rights reserved.
-require 'cloudconfig_test'
+require 'config_test'
 require 'app_generator/cloudconfig_app'
 require 'json'
 

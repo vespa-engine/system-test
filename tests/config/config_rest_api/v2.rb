@@ -1,4 +1,4 @@
-require 'cloudconfig_test'
+require 'config_test'
 require 'pp'
 
 class ConfigRestApiV2 < CloudConfigTest
