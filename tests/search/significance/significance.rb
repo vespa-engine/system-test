@@ -14,6 +14,20 @@ class SignificanceTest < IndexedStreamingSearchTest
     puts("Using temporary directory '#{@mytmpdir}'..")
   end
 
+  def make_app(significance, models_dir)
+    container = Container.new('default').
+                  docproc(DocumentProcessing.new).
+                  documentapi(ContainerDocumentApi.new)
+    container.search(Searching.new.
+                       significance(significance)) unless significance.nil?
+    app = SearchApp.new.
+            container(container).
+            sd(selfdir + 'app_one_significance/schemas/doc.sd').
+            indexing_cluster('default').indexing_chain('indexing')
+    app.components_dir(models_dir) unless models_dir.nil?
+    app
+  end
+
   # Reimplementation of calculate_legacy_significance in C++
   # https://github.com/vespa-engine/vespa/blob/b6a2fcbbd80c82d683fc409ed7a0d61b8abc9dc8/searchlib/src/vespa/searchlib/features/utils.cpp#L108
   def calculate_legacy_significance(frequency, count)
@@ -36,14 +50,7 @@ class SignificanceTest < IndexedStreamingSearchTest
     output_file = @mytmpdir + "model.json.zst"
     @models_dir = @mytmpdir + "models"
 
-    deploy_app(SearchApp.new.
-      container(
-        Container.new('default').
-          search(Searching.new).
-          docproc(DocumentProcessing.new).
-          documentapi(ContainerDocumentApi.new)).
-      sd(selfdir + 'app_one_significance/schemas/doc.sd').
-      indexing_cluster('default').indexing_chain('indexing'))
+    deploy_app(make_app(nil, nil))
     start
 
     vespa.adminserver.
@@ -75,57 +82,24 @@ class SignificanceTest < IndexedStreamingSearchTest
   def test_default_significance_searcher_with_generated_significance_model
     generate_default_significance_model_from_vespa_dump_file
 
-    output = deploy_app(
-      SearchApp.new.
-        container(
-          Container.new('default').
-            search(
-              Searching.new.
-                significance(significance_generated_model_component)
-            ).
-            docproc(DocumentProcessing.new).
-            documentapi(ContainerDocumentApi.new)).
-        sd(selfdir + 'app_one_significance/schemas/doc.sd').
-        components_dir(@models_dir).
-        indexing_cluster('default').indexing_chain('indexing'))
+    output = deploy_app(make_app(significance_generated_model_component,
+                                 @models_dir))
     wait_for_application(vespa.container.values.first, output)
     feed_and_wait_for_docs("doc", 2, :file => selfdir + "docs.json")
     verify_default_significance_for_simple_query
   end
 
   def test_default_significance_searcher
-    deploy_app(
-      SearchApp.new.
-        container(
-          Container.new('default').
-            search(
-              Searching.new.
-                significance(default_significance_model_component)
-            ).
-            docproc(DocumentProcessing.new).
-            documentapi(ContainerDocumentApi.new)).
-        sd(selfdir + 'app_one_significance/schemas/doc.sd').
-        components_dir(selfdir + 'app_one_significance/models').
-        indexing_cluster('default').indexing_chain('indexing'))
+    deploy_app(make_app(default_significance_model_component,
+                        selfdir + 'app_one_significance/models'))
     start
     feed_and_wait_for_docs("doc", 2, :file => selfdir + "docs.json")
     verify_default_significance_for_simple_query
   end
 
   def test_significance_searcher_with_multiple_models
-    deploy_app(
-      SearchApp.new.
-        container(
-          Container.new('default').
-            search(
-              Searching.new.
-                significance(significance_model_component_multiple_models)
-            ).
-            docproc(DocumentProcessing.new).
-            documentapi(ContainerDocumentApi.new)).
-        sd(selfdir + 'app_one_significance/schemas/doc.sd').
-        components_dir(selfdir + 'app_one_significance/models').
-        indexing_cluster('default').indexing_chain('indexing'))
+    deploy_app(make_app(significance_model_component_multiple_models,
+                        selfdir + 'app_one_significance/models'))
     start
     feed_and_wait_for_docs("doc", 2, :file => selfdir + "docs.json")
     verify_significance_for_and_query
