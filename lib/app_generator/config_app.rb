@@ -4,7 +4,7 @@ require 'app_generator/nocontent'
 require 'app_generator/chained_setter'
 require 'app_generator/apphost'
 
-# Simple app that is used to test cloudconfig stuff
+# Simple app that is used to test config stuff
 class ConfigApp < App
 
   chained_setter :host

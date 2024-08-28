@@ -4,7 +4,7 @@ require 'test/unit'
 require 'app_generator/config_app'
 
 
-class CloudconfigGenTest < Test::Unit::TestCase
+class ConfigGenTest < Test::Unit::TestCase
 
   def file(name)
     File.join(File.dirname(__FILE__), "#{name}")
@@ -19,10 +19,10 @@ class CloudconfigGenTest < Test::Unit::TestCase
 
 
   def test_basic_config_app
-    verify('basic_cloudconfig.xml', ConfigApp.new.services_xml)
+    verify('basic_config.xml', ConfigApp.new.services_xml)
   end
 
   def test_hostaliases_app
-    verify('hosts_cloudconfig.xml', ConfigApp.new.hosts_xml)
+    verify('hosts_config.xml', ConfigApp.new.hosts_xml)
   end
 end

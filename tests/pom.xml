@@ -8,10 +8,10 @@
   <version>8-SNAPSHOT</version>
 
   <modules>
-    <module>cloudconfig/config_class_plugin/app</module>
-    <module>cloudconfig/config_proxy/simplebundle</module>
-    <module>cloudconfig/integrationtests/config_test</module>
-    <module>cloudconfig/supermodel/supermodelbundle</module>
+    <module>config/config_class_plugin/app</module>
+    <module>config/config_proxy/simplebundle</module>
+    <module>config/integrationtests/config_test</module>
+    <module>config/supermodel/supermodelbundle</module>
     <module>container/assemble_container_plugin/project1</module>
     <module>container/assemble_container_plugin/project2</module>
     <module>container/jdischandler_logger/logging-bundle</module>

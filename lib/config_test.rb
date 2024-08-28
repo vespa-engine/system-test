@@ -8,17 +8,17 @@ require 'environment'
 class ConfigTest < TestCase
   include TenantRestApi
 
-  CLOUDCONFIG_DEPLOY_APPS = CLOUDCONFIG + "deploy/"
+  CONFIG_DEPLOY_APPS = CONFIG + "deploy/"
   CONFIG_VERIFIER = "#{Environment.instance.vespa_home}/bin/vespa-config-verification"
   ModelPlugin = Struct.new(:jarfile, :xmlfile)
 
   # Returns the modulename for this testcase superclass.
   # It is used by factory for categorizing tests.
   def modulename
-    "cloudconfig"
+    "config"
   end
 
-  # Test app used in multiple cloudconfig tests
+  # Test app used in multiple config tests
   def app_with_logd(logserver_port)
     ConfigApp.new.admin(Admin.new.
                             config(ConfigOverride.new("cloud.config.log.logd").

@@ -63,7 +63,7 @@ class MultiTenantScaling < ConfigTest
   def deploy_10_tiny_apps(tenant)
     for i in 0..9
       app = "a-tiny-#{i}"
-      deploy("#{CLOUDCONFIG_DEPLOY_APPS}/app_a", nil, :tenant => tenant, :application_name => app, :skip_create_tenant =>true, :skip_configserver_start => true)
+      deploy("#{CONFIG_DEPLOY_APP}/app_a", nil, :tenant => tenant, :application_name => app, :skip_create_tenant =>true, :skip_configserver_start => true)
     end
   end
 
@@ -78,7 +78,7 @@ class MultiTenantScaling < ConfigTest
                      cluster(SearchCluster.new("video").
                              sd("#{dir}/video.sd")),
                  :tenant => tenant, :application_name => app, :skip_create_tenant =>true, :skip_configserver_start => true)
-      #deploy("#{CLOUDCONFIG_DEPLOY_APPS}/app_a", nil, :tenant => tenant, :application_name => app, :skip_create_tenant =>true, :skip_configserver_start => true)
+      #deploy("#{CONFIG_DEPLOY_APP}/app_a", nil, :tenant => tenant, :application_name => app, :skip_create_tenant =>true, :skip_configserver_start => true)
     end
   end
 

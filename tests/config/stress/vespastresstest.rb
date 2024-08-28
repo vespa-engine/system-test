@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'config_test'
-require 'cloudconfig/stress/vespa_generator'
+require 'config/stress/vespa_generator'
 
 class VespaConfigStressTest < ConfigTest
 
