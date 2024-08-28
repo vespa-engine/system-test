@@ -120,7 +120,7 @@ class ConfigProxy < CloudConfigTest
   # Also checks that getting this config after deploying an application where it is
   # defined works as expected
   def test_unknown_config_is_not_subscribed_to_forever
-    deploy_app(CloudconfigApp.new)
+    deploy_app(ConfigApp.new)
     start
     node = vespa.adminserver
     assert_equal(19080, getvespaconfig('cloud.config.log.logd', 'client')['logserver']['rpcport'])
@@ -134,7 +134,7 @@ class ConfigProxy < CloudConfigTest
     assert(count < 15, "expected less than 15 warnings in log, but was #{count}")
 
     add_bundle_dir(selfdir + "simplebundle", "simplebundle")
-    deploy_app(CloudconfigApp.new.
+    deploy_app(ConfigApp.new.
                config(ConfigOverride.new("bar.baz.extra").
                       add("quux", "test")))
     assert_equal('test', getvespaconfig('bar.baz.extra', 'client')['quux'])

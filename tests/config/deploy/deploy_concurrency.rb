@@ -17,7 +17,7 @@ include ApplicationV2Api
     @hostname = @vespa.nodeproxies.first[0]
     @session_id=nil
 
-    deploy_app(CloudconfigApp.new)
+    deploy_app(ConfigApp.new)
     @configserver = configserverhostlist[0]
   end
 

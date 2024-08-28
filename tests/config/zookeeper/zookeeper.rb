@@ -9,7 +9,7 @@ class ZooKeeper < CloudConfigTest
   end
 
   def test_zookeeper_version
-    deploy_app(CloudconfigApp.new)
+    deploy_app(ConfigApp.new)
 
     output = vespa.nodeproxies.values.first.execute("vespa-zkflw localhost 2181 srvr | grep 'Zookeeper version'")
     expected_version = "3.9"

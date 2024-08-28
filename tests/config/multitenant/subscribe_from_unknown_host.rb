@@ -18,7 +18,7 @@ class SubscribeFromUnknownHost < CloudConfigTest
   end
 
   def test_subscribe_from_host_outside_vespa_instance
-    deploy_app(CloudconfigApp.new)
+    deploy_app(ConfigApp.new)
     config_server = vespa.configservers["0"]
     if (config_server.hostname == @vespa.nodeproxies.values[0].hostname)
       external_node = @vespa.nodeproxies.values[1]

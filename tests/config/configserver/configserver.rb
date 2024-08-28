@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'config_test'
 require 'search_test'
-require 'app_generator/cloudconfig_app'
+require 'app_generator/config_app'
 require 'environment'
 
 class ConfigServer < CloudConfigTest
@@ -74,7 +74,7 @@ class ConfigServer < CloudConfigTest
   # Check that an application with an error is skipped and that another application works just
   # fine afterwards
   def test_isolation_between_applications_invalid_data_in_file_system
-    deploy_app(CloudconfigApp.new)
+    deploy_app(ConfigApp.new)
     assert_deploy_app_fail(SearchApp.new.sd(selfdir + "sd/invalid_sd_construct.sd"))
     vespa.configservers["0"].stop_configserver({:keep_everything => true})
     vespa.configservers["0"].start_configserver
@@ -155,7 +155,7 @@ class ConfigServer < CloudConfigTest
   # When canReturnEmptySentinelConfig is true and app has been deleted an
   # empty sentinel config should be returned and services stopped
   def test_empty_sentinel_config_when_app_is_deleted
-    deploy_app(CloudconfigApp.new)
+    deploy_app(ConfigApp.new)
     node = vespa.configservers["0"]
 
     override = <<ENDER
@@ -166,7 +166,7 @@ ENDER
     config_file = Environment.instance.vespa_home + "/conf/configserver-app/configserver-config.xml"
     node.execute("echo '#{override}' > #{config_file}")
     restart_config_server(node, :keep_zookeeper_data => true)
-    deploy_app(CloudconfigApp.new)
+    deploy_app(ConfigApp.new)
     start
     wait_for_logserver_state{ logserver_running }
     delete_application_v2(node.hostname, "default", "default")
@@ -242,7 +242,7 @@ ENDER
 
   # Check that setting jute maxbuffer in config override works (checks that Java system property is set)
   def test_jute_maxbuffer
-    deploy_app(CloudconfigApp.new)
+    deploy_app(ConfigApp.new)
     @configserver = vespa.configservers["0"]
 
     @configserver.stop_configserver()

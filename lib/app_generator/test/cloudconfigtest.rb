@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 
 require 'test/unit'
-require 'app_generator/cloudconfig_app'
+require 'app_generator/config_app'
 
 
 class CloudconfigGenTest < Test::Unit::TestCase
@@ -18,11 +18,11 @@ class CloudconfigGenTest < Test::Unit::TestCase
   end
 
 
-  def test_basiccloudconfig_app
-    verify('basic_cloudconfig.xml', CloudconfigApp.new.services_xml)
+  def test_basic_config_app
+    verify('basic_cloudconfig.xml', ConfigApp.new.services_xml)
   end
 
   def test_hostaliases_app
-    verify('hosts_cloudconfig.xml', CloudconfigApp.new.hosts_xml)
+    verify('hosts_cloudconfig.xml', ConfigApp.new.hosts_xml)
   end
 end

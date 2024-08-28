@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'config_test'
-require 'app_generator/cloudconfig_app'
+require 'app_generator/config_app'
 require 'json'
 
 class HostHandler < CloudConfigTest
@@ -25,7 +25,7 @@ class HostHandler < CloudConfigTest
     @environment = "prod"
     @region = "default"
     @instance = "default"
-    deploy_app(CloudconfigApp.new)
+    deploy_app(ConfigApp.new)
     @configserver = configserverhostlist[0]
     puts "configserver=#{@configserver}"
   end

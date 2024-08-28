@@ -2,7 +2,7 @@
 
 require 'testcase'
 require 'tenant_rest_api'
-require 'app_generator/cloudconfig_app'
+require 'app_generator/config_app'
 require 'environment'
 
 class CloudConfigTest < TestCase
@@ -20,7 +20,7 @@ class CloudConfigTest < TestCase
 
   # Test app used in multiple cloudconfig tests
   def app_with_logd(logserver_port)
-    CloudconfigApp.new.admin(Admin.new.
+    ConfigApp.new.admin(Admin.new.
                             config(ConfigOverride.new("cloud.config.log.logd").
                                 add("logserver", ConfigValue.new("rpcport", logserver_port))))
   end
