@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'config_test'
 
-class VespaDeploy < CloudConfigTest
+class VespaDeploy < ConfigTest
   @app_path = nil
   @base_path = nil
   @node = nil

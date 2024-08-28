@@ -2,7 +2,7 @@
 require 'app_generator/container_app'
 require 'config_test'
 
-class ConfigChangeValidation < CloudConfigTest
+class ConfigChangeValidation < ConfigTest
 
   def setup
     set_description("Test config change validator in config server.")

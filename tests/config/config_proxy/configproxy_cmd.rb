@@ -2,7 +2,7 @@ require 'config_test'
 require 'search_test'
 require 'environment'
 
-class ConfigProxyCmd < CloudConfigTest
+class ConfigProxyCmd < ConfigTest
 
   def initialize(*args)
     super(*args)

@@ -5,7 +5,7 @@ require 'tenant_rest_api'
 require 'app_generator/config_app'
 require 'environment'
 
-class CloudConfigTest < TestCase
+class ConfigTest < TestCase
   include TenantRestApi
 
   CLOUDCONFIG_DEPLOY_APPS = CLOUDCONFIG + "deploy/"

@@ -2,7 +2,7 @@
 require 'config_test'
 require 'environment'
 
-class AuditLog < CloudConfigTest
+class AuditLog < ConfigTest
 
   def setup
     super

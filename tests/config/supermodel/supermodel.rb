@@ -4,7 +4,7 @@ require 'config_test'
 require 'set'
 require 'environment'
 
-class SuperModel < CloudConfigTest
+class SuperModel < ConfigTest
 
   def setup
     set_owner("musum")

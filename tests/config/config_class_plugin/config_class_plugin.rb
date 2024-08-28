@@ -2,7 +2,7 @@
 require 'config_test'
 require 'app_generator/search_app'
 
-class ConfigClassPlugin < CloudConfigTest
+class ConfigClassPlugin < ConfigTest
 
   def setup
     set_owner("musum")

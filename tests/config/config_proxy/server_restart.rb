@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'config_test'
 
-class ServerRestart < CloudConfigTest
+class ServerRestart < ConfigTest
 
   def setup
     set_description("Tests that the config proxy returns correct config even when server restarts and is cleaned between deployments.")

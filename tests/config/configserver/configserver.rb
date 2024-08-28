@@ -4,7 +4,7 @@ require 'search_test'
 require 'app_generator/config_app'
 require 'environment'
 
-class ConfigServer < CloudConfigTest
+class ConfigServer < ConfigTest
 
   def initialize(*args)
     super(*args)

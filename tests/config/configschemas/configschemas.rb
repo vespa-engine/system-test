@@ -2,7 +2,7 @@
 require 'config_test'
 require 'environment'
 
-class ConfigSchemas < CloudConfigTest
+class ConfigSchemas < ConfigTest
 
   def setup
     set_owner("musum")

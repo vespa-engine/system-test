@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'config_test'
 
-class ZooKeeper < CloudConfigTest
+class ZooKeeper < ConfigTest
 
   def setup
     set_description("Tests that ZooKeeper version used is the wanted one")

@@ -2,7 +2,7 @@
 require 'config_test'
 require 'json'
 
-class TenantAPI < CloudConfigTest
+class TenantAPI < ConfigTest
 
   SYSTEM_TENANTS = ["default"]
   

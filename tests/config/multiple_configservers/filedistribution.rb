@@ -5,7 +5,7 @@ require 'config_test'
 require 'app_generator/container_app'
 require 'environment'
 
-class FileDistributionWithMultipleConfigServers < CloudConfigTest
+class FileDistributionWithMultipleConfigServers < ConfigTest
 
   def initialize(*args)
     super(*args)

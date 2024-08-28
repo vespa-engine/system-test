@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'config_test'
 
-class ConfigRestApiV1 < CloudConfigTest
+class ConfigRestApiV1 < ConfigTest
   @configserver = nil
   @csrvnode = nil
   @httpport = nil

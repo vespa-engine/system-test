@@ -3,7 +3,7 @@ require 'config_test'
 require 'uri'
 require 'net/http'
 
-class OrchestratorContainerClusterTest < CloudConfigTest
+class OrchestratorContainerClusterTest < ConfigTest
 
   UP = "NO_REMARKS"
   DOWN = "ALLOWED_TO_BE_DOWN"

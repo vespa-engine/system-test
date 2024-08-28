@@ -4,7 +4,7 @@ require 'config_test'
 require 'search_test'
 require 'environment'
 
-class ScalingConfigservers < CloudConfigTest
+class ScalingConfigservers < ConfigTest
 
   def initialize(*args)
     super(*args)

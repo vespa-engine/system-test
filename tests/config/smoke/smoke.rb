@@ -2,7 +2,7 @@
 require 'config_test'
 require 'search_test'
 
-class Smoke < CloudConfigTest
+class Smoke < ConfigTest
 
   def setup
     set_owner("musum")

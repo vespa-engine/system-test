@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'config_test'
 
-class Corruption < CloudConfigTest
+class Corruption < ConfigTest
   
   TENANT_A = "a"
   TENANT_B = "b"

@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'config_test'
 
-class ZkCtl < CloudConfigTest
+class ZkCtl < ConfigTest
 
   def setup
     set_owner("musum")

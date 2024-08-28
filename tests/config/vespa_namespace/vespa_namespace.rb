@@ -2,7 +2,7 @@
 require 'config_test'
 require 'environment'
 
-class VespaNamespace < CloudConfigTest
+class VespaNamespace < ConfigTest
 
   def setup
     set_owner("musum")

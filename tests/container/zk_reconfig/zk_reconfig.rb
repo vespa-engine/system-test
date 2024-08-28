@@ -2,7 +2,7 @@
 
 require 'config_test'
 
-class ZkReconfig < CloudConfigTest
+class ZkReconfig < ConfigTest
 
   def setup
     set_description("dynamically reconfigure a ZK cluster, through ups and downs")

@@ -6,7 +6,7 @@ require 'indexed_search_test'
 require 'json'
 require 'environment'
 
-class MultipleConfigservers < CloudConfigTest
+class MultipleConfigservers < ConfigTest
 
   def initialize(*args)
     super(*args)

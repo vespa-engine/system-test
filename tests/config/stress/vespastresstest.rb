@@ -2,7 +2,7 @@
 require 'config_test'
 require 'cloudconfig/stress/vespa_generator'
 
-class VespaConfigStressTest < CloudConfigTest
+class VespaConfigStressTest < ConfigTest
 
   def initialize(*args)
     super(*args)

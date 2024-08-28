@@ -6,7 +6,7 @@ require 'app_generator/search_app'
 
 # Note: 2 hosts are needed (one for config server, one for vespa app).
 # If you want to run this manually you need to add "--configserverhost some_other_host"
-class FileDistributionBasic < CloudConfigTest
+class FileDistributionBasic < ConfigTest
 
   def can_share_configservers?
     true

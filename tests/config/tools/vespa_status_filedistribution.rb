@@ -2,7 +2,7 @@ require 'config_test'
 require 'app_generator/search_app'
 require 'environment'
 
-class VespaStatusFileDistribution < CloudConfigTest
+class VespaStatusFileDistribution < ConfigTest
   @@vespa_status_filedistribution = "#{Environment.instance.vespa_home}/bin/vespa-status-filedistribution 2>/dev/null"
 
   def initialize(*args)

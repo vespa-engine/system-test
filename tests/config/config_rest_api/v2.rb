@@ -1,7 +1,7 @@
 require 'config_test'
 require 'pp'
 
-class ConfigRestApiV2 < CloudConfigTest
+class ConfigRestApiV2 < ConfigTest
   @configserver = nil
   @csrvnode = nil
   @httpport = nil

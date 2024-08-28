@@ -2,7 +2,7 @@
 require 'config_test'
 require 'environment'
 
-class MultiEnvironment < CloudConfigTest
+class MultiEnvironment < ConfigTest
 
   def initialize(*args)
     super(*args)

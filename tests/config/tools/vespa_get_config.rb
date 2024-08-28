@@ -3,7 +3,7 @@ require 'config_test'
 require 'app_generator/search_app'
 require 'environment'
 
-class VespaGetConfig < CloudConfigTest
+class VespaGetConfig < ConfigTest
 
   def setup
     set_owner("musum")

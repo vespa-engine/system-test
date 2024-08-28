@@ -5,7 +5,7 @@ require 'json'
 require 'application_v2_api'
 require 'environment'
 
-class DeployV2 < CloudConfigTest
+class DeployV2 < ConfigTest
 
 include ApplicationV2Api
 

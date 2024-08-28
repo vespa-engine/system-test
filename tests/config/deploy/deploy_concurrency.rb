@@ -2,7 +2,7 @@ require 'config_test'
 require 'application_v2_api'
 require 'json'
 
-class DeployConcurrency < CloudConfigTest
+class DeployConcurrency < ConfigTest
 
 include ApplicationV2Api
 

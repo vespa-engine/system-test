@@ -3,7 +3,7 @@ require 'config_test'
 require 'app_generator/config_app'
 require 'json'
 
-class HostHandler < CloudConfigTest
+class HostHandler < ConfigTest
 
   def initialize(*args)
     super(*args)

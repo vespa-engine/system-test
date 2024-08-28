@@ -3,7 +3,7 @@ require 'config_test'
 require 'app_generator/search_app'
 require 'environment'
 
-class VespaModelInspect < CloudConfigTest
+class VespaModelInspect < ConfigTest
   @@modelinspect = "#{Environment.instance.vespa_home}/bin/vespa-model-inspect"
 
   def initialize(*args)

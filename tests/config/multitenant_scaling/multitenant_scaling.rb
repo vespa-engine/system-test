@@ -3,7 +3,7 @@ require 'config_test'
 require 'json'
 require 'app_generator/search_app'
 
-class MultiTenantScaling < CloudConfigTest
+class MultiTenantScaling < ConfigTest
 
   def setup
     super

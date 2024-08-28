@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'config_test'
 
-class SubscribeFromUnknownHost < CloudConfigTest
+class SubscribeFromUnknownHost < ConfigTest
 
   def initialize(*args)
     super(*args)

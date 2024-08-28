@@ -3,7 +3,7 @@ require 'config_test'
 require 'app_generator/search_app'
 require 'json'
 
-class ConfigConvergence < CloudConfigTest
+class ConfigConvergence < ConfigTest
 
   def setup
     set_owner("musum")

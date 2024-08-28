@@ -4,7 +4,7 @@ require 'search_test'
 require 'search_test'
 require 'environment'
 
-class ConfigProxy < CloudConfigTest
+class ConfigProxy < ConfigTest
 
   CONFIG_JAR = "#{Environment.instance.vespa_home}/lib/jars/config-with-dependencies.jar"
   CONFIG_SOURCE = "export VESPA_CONFIG_SOURCES=localhost:19070"
