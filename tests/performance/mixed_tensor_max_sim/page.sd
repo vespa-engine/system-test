@@ -1,0 +1,116 @@
+schema page {
+
+    document page {
+        field id type string {
+            indexing: summary | attribute
+        }
+        field embedding type tensor<bfloat16>(patch{}, v[128]) {
+            indexing: attribute
+        }
+        field binary_embedding type tensor<int8>(patch{}, v[16]) {
+            indexing: attribute
+        }
+    }
+    rank-profile float-float-dotproduct {
+        num-threads-per-search: 1
+        inputs {
+            query(qt) tensor<float>(querytoken{}, v[128])             
+        }
+        function max_sim() {
+            expression {    
+                sum(
+                    reduce(
+                        sum(
+                            query(qt) * cell_cast(attribute(embedding),float), v
+                        ),
+                        max, patch
+                    ),
+                    querytoken
+                )    
+            }
+        }
+        first-phase {
+            expression {
+                max_sim
+            }
+        }
+    }
+    rank-profile float-float-dotproduct-random {
+        num-threads-per-search: 1
+        inputs {
+            query(qt) tensor<float>(querytoken{}, v[128])             
+        }
+        function max_sim() {
+            expression {    
+                sum(
+                    reduce(
+                        sum(
+                            query(qt) * cell_cast(attribute(embedding),float), v
+                        ),
+                        max, patch
+                    ),
+                    querytoken
+                )    
+            }
+        }
+        first-phase {
+            expression: random
+        }
+        second-phase {
+            rerank-count:1000
+            expression {
+                max_sim
+            }
+        }
+    }
+
+    rank-profile float-unpacked-bits-dotproduct {
+        num-threads-per-search: 1
+        inputs {
+            query(qt) tensor<float>(querytoken{}, v[128])             
+        }
+        function max_sim() {
+            expression {    
+                sum(
+                    reduce(
+                        sum(
+                            query(qt) * unpack_bits(attribute(binary_embedding)), v
+                        ),
+                        max, patch
+                    ),
+                    querytoken
+                )    
+            }
+        }
+        first-phase {
+            expression {
+                max_sim
+            }
+        }
+    }
+    rank-profile bits-bits-hamming {
+        num-threads-per-search: 1
+        inputs {
+            query(qt) tensor<int8>(querytoken{}, v[16])             
+        
+        }
+        function max_sim() {
+            expression {
+                sum(
+                    reduce(
+                        1/(1 + sum(
+                            hamming(query(qt), attribute(binary_embedding)) ,v)
+                        ),
+                        max, patch
+                    ),
+                    querytoken
+                )    
+            }    
+        }
+        first-phase {
+            expression {
+                max_sim
+            }
+        }
+    }
+}
