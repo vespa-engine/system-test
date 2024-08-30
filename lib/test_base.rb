@@ -82,8 +82,8 @@ module TestBase
   # absolute path to systemtests/tests/docproc/
   DOCPROC = existing_of(INSTALL_DIR + "/docproc/", REPO_DIR + "/docproc/")
 
-  # absolute path to systemtests/tests/cloudconfig/
-  CLOUDCONFIG = existing_of(INSTALL_DIR + "/cloudconfig/", REPO_DIR + "/cloudconfig/")
+  # absolute path to systemtests/tests/config/
+  CONFIG = existing_of(INSTALL_DIR + "/config/", REPO_DIR + "/config/")
 
   # absolute path to systemtests/tests/performance/
   PERFORMANCE = existing_of(INSTALL_DIR + "/performance/", REPO_DIR + "/performance/")

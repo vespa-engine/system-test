@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'cloudconfig_test'
+require 'config_test'
 require 'container_test'
 require 'search_container_test'
 require 'docproc_test'

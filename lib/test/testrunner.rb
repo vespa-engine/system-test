@@ -17,7 +17,7 @@ require 'test/documentupdate_test'
 require 'app_generator/test/test'
 require 'app_generator/test/storagetest'
 require 'app_generator/test/containertest'
-require 'app_generator/test/cloudconfigtest'
+require 'app_generator/test/configtest'
 require 'test/distr_bucketdb_parser_test'
 require 'test/distributionstates_test'
 
