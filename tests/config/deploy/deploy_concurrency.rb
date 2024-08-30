@@ -27,7 +27,7 @@ include ApplicationV2Api
       threads << Thread.new(i) { |id|
         application_name = "app_#{id}"
         puts "Deploying app #{application_name}"
-        result = deploy_app_v2_api("#{CONFIG_DEPLOY_APP}/app_a", @configserver, @tenant_name, application_name)
+        result = deploy_app_v2_api("#{CONFIG_DEPLOY_APPSS}/app_a", @configserver, @tenant_name, application_name)
         assert_equal(200, result.code.to_i, result.body)
       }
     }
