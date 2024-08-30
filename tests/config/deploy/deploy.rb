@@ -21,7 +21,7 @@ include ApplicationV2Api
     @session_id = nil
     @original_config_server_config = write_default_config_server_config
 
-    appdir = "#{CONFIG_DEPLOY_APPSS}/base"
+    appdir = "#{CONFIG_DEPLOY_APPS}/base"
     deploy(appdir, nil) # to initialize nodeproxies etc.
     delete_application_v2(@hostname, "default", "default")
     @tenant_name = "mytenant"
@@ -40,10 +40,10 @@ include ApplicationV2Api
   def test_binary_content
     session_id = @session_id
     file = "components/test.jar"
-    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPSS}app_b/components/test.jar", file)
+    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPS}app_b/components/test.jar", file)
 
     output = read_application_file(session_id, file)
-    file = File.open("#{CONFIG_DEPLOY_APPSS}/app_b/#{file}", "rb")
+    file = File.open("#{CONFIG_DEPLOY_APPS}/app_b/#{file}", "rb")
     data = file.read
     file.close
     assert_equal(output, data, "not equal")
@@ -76,14 +76,14 @@ include ApplicationV2Api
 
   def run_single_session(session_id=@session_id)
     set_description("Tests that deploying three sessions in a row works")
-    session_id = deploy_and_activate_session("#{CONFIG_DEPLOY_APPSS}/app_a", session_id, 1337)
-    session_id = deploy_and_activate_session("#{CONFIG_DEPLOY_APPSS}/app_b", session_id, 1338)
-    deploy_and_activate_session("#{CONFIG_DEPLOY_APPSS}/app_c", session_id, 1339)
+    session_id = deploy_and_activate_session("#{CONFIG_DEPLOY_APPS}/app_a", session_id, 1337)
+    session_id = deploy_and_activate_session("#{CONFIG_DEPLOY_APPS}/app_b", session_id, 1338)
+    deploy_and_activate_session("#{CONFIG_DEPLOY_APPS}/app_c", session_id, 1339)
   end
 
   def run_invalid_app(session_id=@session_id)
     set_description("Tests that deploying an invalid application package gives correct error code and error message")
-    result = create_session("#{CONFIG_DEPLOY_APPSS}/app_invalid", session_id)
+    result = create_session("#{CONFIG_DEPLOY_APPS}/app_invalid", session_id)
     result = put("#{result["prepared"]}?timeout=20.0")
     assert_equal(400, result.code.to_i)
     json = JSON.parse(result.body)
@@ -98,8 +98,8 @@ include ApplicationV2Api
     set_description("Tests creating multiple sessions, then preparing and activating one of them")
     session_a = session_id
     session_b = next_session(session_a)
-    result_a = create_session("#{CONFIG_DEPLOY_APPSS}/app_a", session_a)
-    result_b = create_session("#{CONFIG_DEPLOY_APPSS}/app_b", session_b)
+    result_a = create_session("#{CONFIG_DEPLOY_APPS}/app_a", session_a)
+    result_b = create_session("#{CONFIG_DEPLOY_APPS}/app_b", session_b)
 
     result_a = prepare_session(result_a, session_a)
 
@@ -112,8 +112,8 @@ include ApplicationV2Api
     set_description("Tests creating and preparing multiple sessions, then activating one of them")
     session_a = session_id
     session_b = next_session(session_a)
-    result_a = create_session("#{CONFIG_DEPLOY_APPSS}/app_a", session_a)
-    result_b = create_session("#{CONFIG_DEPLOY_APPSS}/app_b", session_b)
+    result_a = create_session("#{CONFIG_DEPLOY_APPS}/app_a", session_a)
+    result_b = create_session("#{CONFIG_DEPLOY_APPS}/app_b", session_b)
 
     result_a = prepare_session(result_a, session_a)
     result_b = prepare_session(result_b, session_b)
@@ -125,7 +125,7 @@ include ApplicationV2Api
 
   def run_activate_without_prepare(session_id=@session_id)
     set_description("Tests activating a session that has not been prepared")
-    result = create_session("#{CONFIG_DEPLOY_APPSS}/app_b", session_id)
+    result = create_session("#{CONFIG_DEPLOY_APPS}/app_b", session_id)
     result["activate"] = url_base_activate(session_id) + "?timeout=5.0"
     result = activate_session_fail(result, 400, /.*Session #{session_id} is not prepared/)
     next_session(session_id)
@@ -135,7 +135,7 @@ include ApplicationV2Api
   # was used once in the past
   def run_serverdb_reuse_session_id(session_id=@session_id)
     # base app deployed in setup contains 'extra_file'
-    deploy_and_activate_session("#{CONFIG_DEPLOY_APPSS}/base", session_id, 19080)
+    deploy_and_activate_session("#{CONFIG_DEPLOY_APPS}/base", session_id, 19080)
     assert_file_exists("#{@sessions_path}/#{session_id}/extra_file")
     # Restart config server and delete zookeeper data so the next deploy
     # also will have session id 2
@@ -143,7 +143,7 @@ include ApplicationV2Api
     # Zookeeper will be cleaned, so next deploy will get session id 2
     session_id = 2
     create_tenant_and_wait(@tenant_name, @node.hostname)
-    next_session_id = deploy_and_activate_session("#{CONFIG_DEPLOY_APPSS}/app_a", session_id, 1337) 
+    next_session_id = deploy_and_activate_session("#{CONFIG_DEPLOY_APPS}/app_a", session_id, 1337) 
     assert_file_does_not_exist("#{@sessions_path}/#{session_id}/extra_file")
     next_session_id
   end
@@ -151,13 +151,13 @@ include ApplicationV2Api
   def run_configserver_restart(session_id=@session_id)
     set_description("Tests that restarting after upload, prepare, activate etc. works")
     expected_port = 19080
-    session_id = deploy_and_activate_session("#{CONFIG_DEPLOY_APPSS}/base", session_id, expected_port) 
+    session_id = deploy_and_activate_session("#{CONFIG_DEPLOY_APPS}/base", session_id, expected_port) 
     restart_config_server(@node, :keep_zookeeper_data => true, :keep_configserver_data => true)
     assert_logd_config(expected_port)
 
     # create a new session, restart config server
     # try to prepare the session that was created
-    result = create_session("#{CONFIG_DEPLOY_APPSS}/app_a", session_id)
+    result = create_session("#{CONFIG_DEPLOY_APPS}/app_a", session_id)
     restart_config_server(@node, :keep_zookeeper_data => true, :keep_configserver_data => true)
     result = prepare_session(result, session_id)
     assert_logd_config(expected_port)
@@ -166,7 +166,7 @@ include ApplicationV2Api
     # try to activate the session prepared
     session_id = next_session(session_id)
     expected_port = 1337
-    result = create_session("#{CONFIG_DEPLOY_APPSS}/app_a", session_id)
+    result = create_session("#{CONFIG_DEPLOY_APPS}/app_a", session_id)
     result = prepare_session(result, session_id)
     restart_config_server(@node, :keep_zookeeper_data => true, :keep_configserver_data => true)
     result = activate_session(result, session_id)
@@ -177,24 +177,24 @@ include ApplicationV2Api
   def run_content_edit(session_id=@session_id)
     set_description("Tests that it is possible to edit an application packages content through edit interface")
     services = "services.xml"
-    create_result = create_session("#{CONFIG_DEPLOY_APPSS}/app_a", session_id)
+    create_result = create_session("#{CONFIG_DEPLOY_APPS}/app_a", session_id)
 
     # Get deployed file
     output = read_application_file(session_id, services)
-    assert_file_content_equal("#{CONFIG_DEPLOY_APPSS}/app_a/#{services}", output, "Files were not equal")
+    assert_file_content_equal("#{CONFIG_DEPLOY_APPS}/app_a/#{services}", output, "Files were not equal")
 
     # Put a new file that did not exist
-    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPSS}app_b/#{services}", services)
+    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPS}app_b/#{services}", services)
 
     output = read_application_file(session_id, services)
-    assert_file_content_equal("#{CONFIG_DEPLOY_APPSS}/app_b/#{services}", output, "Files were not equal")
+    assert_file_content_equal("#{CONFIG_DEPLOY_APPS}/app_b/#{services}", output, "Files were not equal")
 
     # Create a directory
     result = create_application_dir(session_id, "files/")
     assert_not_error(result)
 
     # Put a file in the directory
-    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPSS}/extra/test1.txt", "files/test1.txt")
+    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPS}/extra/test1.txt", "files/test1.txt")
 
     # Check directory listing
     result = list_application_dir(session_id, "files/")
@@ -217,7 +217,7 @@ include ApplicationV2Api
     prepare_result = prepare_session(create_result, session_id)
     activate_result = activate_session(prepare_result, session_id)
     output = read_application_file("active", services)
-    assert_file_content_equal("#{CONFIG_DEPLOY_APPSS}/app_b/#{services}", output, "Files were not equal")
+    assert_file_content_equal("#{CONFIG_DEPLOY_APPS}/app_b/#{services}", output, "Files were not equal")
     next_session(session_id)
   end
 
@@ -226,22 +226,22 @@ include ApplicationV2Api
 
     Struct.new("StatusResponse", :status, :md5, :name)
     services = "services.xml"
-    create_result = create_session("#{CONFIG_DEPLOY_APPSS}/app_a", session_id)
+    create_result = create_session("#{CONFIG_DEPLOY_APPS}/app_a", session_id)
 
     # Get deployed file
     assert_status(session_id, services, create_status_response("new", "812e24f7ef19ff26ff7eba2aca76951c", services))
 
     # Put a new services file with changed content
-    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPSS}app_b/#{services}", services)
+    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPS}app_b/#{services}", services)
     assert_status(session_id, services, create_status_response("changed", "2b7268a18755fc8bd3a3a87de0d07115", services))
 
     # Put a file in the directory
     test_file = "files/test1.txt"
-    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPSS}/extra/test1.txt", test_file)
+    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPS}/extra/test1.txt", test_file)
     assert_status(session_id, test_file, create_status_response("new", "14758f1afd44c09b7992073ccf00b43d", test_file))
     assert_not_error(create_application_dir(session_id, "files/subdir/"))
     test_file = "files/subdir/test2.txt"
-    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPSS}/extra/test1.txt", test_file)
+    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPS}/extra/test1.txt", test_file)
     assert_status(session_id, test_file, create_status_response("new", "14758f1afd44c09b7992073ccf00b43d", test_file))
     assert_list_status(session_id, "files/", "false",
                        [create_status_response("new", "", "files/subdir"),
@@ -273,7 +273,7 @@ include ApplicationV2Api
 
   def run_zip_compression(session_id=@session_id)
     set_description("Tests that deploying an app with zip compresssion works")
-    result = create_session("#{CONFIG_DEPLOY_APPSS}/app_a", session_id, "zip")
+    result = create_session("#{CONFIG_DEPLOY_APPS}/app_a", session_id, "zip")
     result = prepare_session(result, session_id)
     result = activate_session(result, session_id)
     assert_logd_config(1337)
@@ -286,7 +286,7 @@ include ApplicationV2Api
     session_b = next_session(session_a)
     session_c = next_session(session_b)
 
-    create_result_a = create_session("#{CONFIG_DEPLOY_APPSS}/app_a", session_a)
+    create_result_a = create_session("#{CONFIG_DEPLOY_APPS}/app_a", session_a)
     prepare_result_a = prepare_session(create_result_a, session_a)
     activate_session(prepare_result_a, session_a)
 
@@ -294,7 +294,7 @@ include ApplicationV2Api
     result_b = create_session_url(application_url(@node.hostname, @tenant_name), session_b)
     result_b = prepare_session(result_b, session_b)
     # prepare and activate c
-    deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_c", session_c, 1339)
+    deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_c", session_c, 1339)
 
     # try to activate b, which should give a conflict (status code 409)
     result = activate_session_fail(result_b, 409, /.*Cannot activate session #{session_b} because the currently active session \(#{session_c}\) has changed since session #{session_b} was created \(was #{session_a} at creation time\)/)
@@ -302,7 +302,7 @@ include ApplicationV2Api
 
     # Deploying again should work
     session_d = next_session(session_c)
-    deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_b", session_d, 1338)
+    deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_b", session_d, 1338)
 
     next_session(session_d)
   end
@@ -310,7 +310,7 @@ include ApplicationV2Api
   def run_application_list(session_id=@session_id)
     apps = list_applications_v2(@hostname, @tenant_name)
     assert_equal(1, apps.length)
-    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_a", session_id, 1337)
+    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_a", session_id, 1337)
     apps = list_applications_v2(@hostname, @tenant_name)
     assert_equal(1, apps.length)
     assert_equal(application_url(@hostname, @tenant_name), apps[0])
@@ -318,13 +318,13 @@ include ApplicationV2Api
   end
 
   def run_delete_application(session_id=@session_id)
-    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_a", session_id, 1337)
+    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_a", session_id, 1337)
     apps = list_applications_v2(@hostname, @tenant_name)
     assert_equal(1, apps.length)
     delete_application_v2(@hostname, @tenant_name, @application_name)
     apps = list_applications_v2(@hostname, @tenant_name)
     assert_equal(0, apps.length)
-    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_b", session_id, 1338)
+    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_b", session_id, 1338)
     apps = list_applications_v2(@hostname, @tenant_name)
     assert_equal(1, apps.length)
     assert_equal(application_url(@hostname, @tenant_name), apps[0])
@@ -336,7 +336,7 @@ include ApplicationV2Api
 
   def run_delete_tenant_with_application(session_id=@session_id)
     create_tenant_and_wait(@tenant_name, @node.hostname)
-    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_a", session_id, 1337)
+    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_a", session_id, 1337)
     apps = list_applications_v2(@hostname, @tenant_name)
     assert_equal(1, apps.length)
     
@@ -348,7 +348,7 @@ include ApplicationV2Api
   end
 
   def run_create_from_application_url(session_id=@session_id)
-    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_a", session_id, 1337)
+    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_a", session_id, 1337)
     result = create_session_url(application_url(@node.hostname, @tenant_name, @application_name), session_id)
     # so that we can prepare the new session with the same host as the previous one
     delete_application_v2(@hostname, @tenant_name, @application_name)
@@ -359,11 +359,11 @@ include ApplicationV2Api
   end
 
   def run_application_content(session_id=@session_id)
-    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_a", session_id, 1337)
+    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_a", session_id, 1337)
     services = "services.xml"
     response = read_active_application_file(@node.hostname, @tenant_name, @application_name, services)
-    assert_file_content_equal("#{CONFIG_DEPLOY_APPSS}/app_a/#{services}", response.body, "Files were not equal")
-    output = JSON.parse(put_file("#{application_url(@node.hostname)}/content/#{services}", "#{CONFIG_DEPLOY_APPSS}/app_b/#{services}"))
+    assert_file_content_equal("#{CONFIG_DEPLOY_APPS}/app_a/#{services}", response.body, "Files were not equal")
+    output = JSON.parse(put_file("#{application_url(@node.hostname)}/content/#{services}", "#{CONFIG_DEPLOY_APPS}/app_b/#{services}"))
     assert(output["message"].include?('Nothing at '))
     session_id
   end
@@ -373,15 +373,15 @@ include ApplicationV2Api
     set_config_server_config({ "sessionLifetime" => session_lifetime })
     restart_config_server(@node, :keep_everything => true)
     session_id_a = session_id
-    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_a", session_id, 1337)
+    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_a", session_id, 1337)
     assert_exists(session_id_a)
 
     session_id_b = session_id
-    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_b", session_id, 1338)
+    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_b", session_id, 1338)
     assert_exists(session_id_b)
 
     session_id_c = session_id
-    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_c", session_id, 1339)
+    session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_c", session_id, 1339)
 
     # Check that all sessions have been deleted, except the active one
     wait_until_local_session_deleted(session_id_a)
@@ -397,12 +397,12 @@ include ApplicationV2Api
     set_description("Tests activating session with a lower session id than the last that was activated")
     first_session = session_id
 
-    create_result = create_session("#{CONFIG_DEPLOY_APPSS}/app_a", first_session)
+    create_result = create_session("#{CONFIG_DEPLOY_APPS}/app_a", first_session)
     prepare_result = prepare_session(create_result, first_session)
 
     second_session = next_session(first_session)
     # create a second session, and activate it
-    deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPSS}/app_c", second_session, 1339)
+    deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_c", second_session, 1339)
     third_session = next_session(second_session)
 
     # try to activate first session, which should fail, because config generation cannot go backwards
@@ -413,13 +413,13 @@ include ApplicationV2Api
 
   def run_prepare_and_activate_in_one_call(session_id=@session_id)
     set_description("Tests that preparing and activating in one call works")
-    session_id = prepare_and_activate_one_call("#{CONFIG_DEPLOY_APPSS}/app_a", session_id, 1337)
+    session_id = prepare_and_activate_one_call("#{CONFIG_DEPLOY_APPS}/app_a", session_id, 1337)
     next_session(session_id)
   end
 
   def run_create_prepare_and_activate(session_id)
     set_description("Tests that deploying with one REST API call (preapareandactivate) works")
-    result = create_prepare_and_activate("#{CONFIG_DEPLOY_APPSS}/app_a", @hostname, @tenant_name)
+    result = create_prepare_and_activate("#{CONFIG_DEPLOY_APPS}/app_a", @hostname, @tenant_name)
     assert_logd_config(1337)
     next_session(session_id)
   end
