@@ -2,12 +2,12 @@
   "settings": {"number_of_shards": 1, "number_of_replicas": 1},
   "mappings": {
     "properties": {
-      "id": {"type": "integer"},
+      "id": {"type": "integer", "index": false},
       "title": {"type": "text", "similarity": "BM25"},
       "description": {"type": "text", "similarity": "BM25"},
       "category": {"type": "keyword"},
-      "price": {"type": "integer"},
-      "average_rating": {"type": "float"},
+      "price": {"type": "integer", "index": false},
+      "average_rating": {"type": "float", "index": false},
       "embedding": {
         "type": "dense_vector",
         "dims": 384,
