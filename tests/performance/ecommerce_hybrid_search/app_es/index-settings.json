@@ -12,7 +12,7 @@
         "type": "dense_vector",
         "dims": 384,
         "index": true,
-        "similarity": "cosine",
+        "similarity": "dot_product",
         "index_options": {"type": "hnsw", "ef_construction": 200, "m": 16}
       }
     }
