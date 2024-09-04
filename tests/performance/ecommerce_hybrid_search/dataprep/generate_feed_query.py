@@ -364,7 +364,6 @@ def save_es_query_files_from_df(
     df = df.sample(num_queries, random_state=42)
     base_parameters = {
         "size": 10,
-        "fields": ["id"],
         "_source": False,
     }
     # Generate list of queries
