@@ -14,7 +14,7 @@
       <config name="ai.vespa.llm.clients.llm-local-client">
 
         <!-- File is approx 130Mb" -->
-        <model url="https://data.vespa.oath.cloud/gguf_models/Llama-160M-Chat-v1.Q6_K.gguf" />
+        <model url="https://data.vespa-cloud.com/gguf_models/Llama-160M-Chat-v1.Q6_K.gguf" />
 
         <contextSize>8192</contextSize>
         <parallelRequests>40</parallelRequests>

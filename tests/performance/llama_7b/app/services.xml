@@ -14,7 +14,7 @@
       <config name="ai.vespa.llm.clients.llm-local-client">
 
         <!-- File is approx 5.5Gb" -->
-        <model url="https://data.vespa.oath.cloud/gguf_models/mistral-7b-instruct-v0.1.Q8_0.gguf" />
+        <model url="https://data.vespa-cloud.com/gguf_models/mistral-7b-instruct-v0.1.Q8_0.gguf" />
 
         <contextSize>2048</contextSize>
         <parallelRequests>1</parallelRequests>

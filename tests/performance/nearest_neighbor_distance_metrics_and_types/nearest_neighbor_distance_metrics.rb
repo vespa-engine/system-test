@@ -16,7 +16,7 @@ class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
     deploy_app(SearchApp.new.sd(selfdir + 'vector.sd'))
     start
   
-    remote_file = "https://data.vespa.oath.cloud/tests/performance/vectors.100k.perf.json.zst"
+    remote_file = "https://data.vespa-cloud.com/tests/performance/vectors.100k.perf.json.zst"
     cmd = "curl -s '#{remote_file}' | zstdcat"
     run_stream_feeder(cmd, [])
 

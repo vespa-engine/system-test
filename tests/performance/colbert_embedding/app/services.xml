@@ -5,8 +5,8 @@
   </admin>
   <container id="default" version="1.0">
     <component id="col" type="colbert-embedder">
-      <transformer-model url="https://data.vespa.oath.cloud/onnx_models/colbert_v2.onnx"/>
-      <tokenizer-model url="https://data.vespa.oath.cloud/onnx_models/bert_tokenizer.json"/>
+      <transformer-model url="https://data.vespa-cloud.com/onnx_models/colbert_v2.onnx"/>
+      <tokenizer-model url="https://data.vespa-cloud.com/onnx_models/bert_tokenizer.json"/>
     </component>
     <document-api/>
     <search/>
