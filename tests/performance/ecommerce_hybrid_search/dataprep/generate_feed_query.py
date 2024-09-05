@@ -336,7 +336,7 @@ def es_knn(embedding, category: str) -> dict:
         "field": "embedding",
         "query_vector": embedding.tolist(),
         "num_candidates": 100,
-        "k": 10,
+        "k": 100,
     }
     if category:
         return {**knn, "filter": [{"term": {"category": category}}]}
