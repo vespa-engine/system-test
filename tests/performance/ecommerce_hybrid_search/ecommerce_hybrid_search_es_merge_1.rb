@@ -17,6 +17,7 @@ class EcommerceHybridSearchESForceMerge1Test < EcommerceHybridSearchESTestBase
 
     benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "feed")
     benchmark_force_merge(get_num_docs, 1)
+    dump_jvm_stats
     benchmark_queries("after_merge", false, [1, 2, 4, 8, 16, 32, 64])
   end
 

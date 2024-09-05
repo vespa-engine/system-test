@@ -16,6 +16,7 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchESTestBase
     prepare_es_app
 
     benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "feed")
+    dump_jvm_stats
     benchmark_queries("after_feed", false, [1, 2, 4, 8, 16, 32, 64])
     benchmark_queries("after_feed", true, [1])
     feed_thread = Thread.new { benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "refeed") }
