@@ -27,6 +27,7 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
     install_es
     start_es
     create_index
+    dump_thread_stats
   end
 
   def install_es
@@ -59,6 +60,16 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
     @node.copy(selfdir + "app_es/index-settings.json", dirs.tmpdir)
     node_file = dirs.tmpdir + "index-settings.json"
     @node.execute("curl -X PUT '#{@es_endpoint}/product?pretty' -H 'Content-Type: application/json' -d @#{node_file}")
+  end
+
+  def dump_thread_stats
+    puts "Thread pool statistics:"
+    @node.execute("curl -X GET '#{@es_endpoint}/_cat/thread_pool?h=name,type,size'")
+  end
+
+  def dump_jvm_stats
+    puts "JVM statistics:"
+    @node.execute("curl -X GET '#{@es_endpoint}/_nodes/stats/jvm?pretty'")
   end
 
   def benchmark_feed(feed_file, num_docs, num_threads, label)
