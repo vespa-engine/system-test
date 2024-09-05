@@ -459,7 +459,7 @@ class PerformanceTest < TestCase
   # Downloads the given file from s3 to the given vespa node.
   # If the file already exists in the test directory, use that directly instead.
   def download_file_from_s3(file_name, vespa_node, dir = "")
-    url = "https://data.vespa.oath.cloud/tests/performance/#{dir}"
+    url = "https://data.vespa-cloud.com/tests/performance/#{dir}"
     if File.exists?(selfdir + file_name)
       # Place the file in the test directory to avoid downloading during manual testing.
       puts "Using local file #{file_name}"

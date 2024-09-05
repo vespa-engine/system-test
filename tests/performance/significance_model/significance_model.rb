@@ -35,7 +35,7 @@ class SignificanceModelPerfTest < PerformanceTest
   end
 
   def get_app
-    model_url = "https://data.vespa.oath.cloud/tests/performance/significance_model/enwiki-20240620.json"
+    model_url = "https://data.vespa-cloud.com/tests/performance/significance_model/enwiki-20240620.json"
     SearchApp.new.
       sd(selfdir + 'product.sd').
       search_dir(selfdir + "search").

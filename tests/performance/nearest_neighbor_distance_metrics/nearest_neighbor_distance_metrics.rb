@@ -15,7 +15,7 @@ class NearestNeighborDistanceMetricPerfTest < PerformanceTest
     start
 
     feed_file = "product-search-products.jsonl.zstd"
-    remote_file = "https://data.vespa.oath.cloud/sample-apps-data/#{feed_file}"
+    remote_file = "https://data.vespa-cloud.com/sample-apps-data/#{feed_file}"
     local_file =  dirs.tmpdir + feed_file
     local_feed_file =  dirs.tmpdir + "feed.json"
     cmd = "wget -O'#{local_file}' '#{remote_file}'"

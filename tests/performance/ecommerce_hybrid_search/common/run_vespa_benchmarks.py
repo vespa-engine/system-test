@@ -58,7 +58,7 @@ import shutil
 import pathlib
 from tqdm import tqdm
 
-download_base_url = "https://data.vespa.oath.cloud/tests/performance/ecommerce_hybrid_search"
+download_base_url = "https://data.vespa-cloud.com/tests/performance/ecommerce_hybrid_search"
 
 def download_file(url, file_path):
     try:

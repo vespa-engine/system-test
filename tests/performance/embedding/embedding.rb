@@ -14,7 +14,7 @@ class EmbeddingPerfTest < PerformanceTest
     deploy(selfdir + "app")
     start
     feed_file = 'miracl-te-docs.100k.json.gz'
-    remote_file = "https://data.vespa.oath.cloud/tests/performance/#{feed_file}"
+    remote_file = "https://data.vespa-cloud.com/tests/performance/#{feed_file}"
     local_file =  dirs.tmpdir + feed_file
     cmd = "wget -O'#{local_file}' '#{remote_file}'"
     puts "Running command #{cmd}"

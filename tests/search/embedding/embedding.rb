@@ -23,21 +23,21 @@ class Embedding < IndexedStreamingSearchTest
   def bert_embedder_component
     Component.new('transformer').
       type('bert-embedder').
-      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/sentence_all_MiniLM_L6_v2.onnx' }).
+      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa-cloud.com/onnx_models/sentence_all_MiniLM_L6_v2.onnx' }).
       param('tokenizer-vocab', '', {'model-id' => 'ignored-on-selfhosted', 'path' => 'components/bert-base-uncased.txt'})
   end
 
   def huggingface_tokenizer_component
     Component.new('tokenizer').
       type('hugging-face-tokenizer').
-      param('model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json'})
+      param('model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa-cloud.com/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json'})
   end
 
   def huggingface_embedder_component
     Component.new('huggingface').
       type('hugging-face-embedder').
-      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.onnx'}).
-      param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json'}).
+      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa-cloud.com/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.onnx'}).
+      param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa-cloud.com/onnx_models/paraphrase-multilingual-MiniLM-L12-v2.tokenizer.json'}).
       param('transformer-output', 'output_0')
   end
 
@@ -52,8 +52,8 @@ class Embedding < IndexedStreamingSearchTest
   def colbert_embedder_component
      Component.new('colbert').
        type('colbert-embedder').
-       param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/vespa-colMiniLM-L-6-dynamic-quantized.onnx'}).
-       param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa.oath.cloud/onnx_models/e5-small-v2/tokenizer.json'})
+       param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa-cloud.com/onnx_models/vespa-colMiniLM-L-6-dynamic-quantized.onnx'}).
+       param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa-cloud.com/onnx_models/e5-small-v2/tokenizer.json'})
   end
 
   def colbert_embedder_component_fp16

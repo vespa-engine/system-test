@@ -60,7 +60,7 @@ class OnnxModel < PerformanceTest
   end
 
   def fetch_model
-    remote_file = "https://data.vespa.oath.cloud/tests/performance/#{@onnx_filename}"
+    remote_file = "https://data.vespa-cloud.com/tests/performance/#{@onnx_filename}"
     local_file = "#{Environment.instance.vespa_home}/tmp/#{@onnx_filename}"
     cmd = "wget -O'#{local_file}' '#{remote_file}'"
     puts "Running command #{cmd}"
