@@ -87,7 +87,7 @@ class Embedding < IndexedStreamingSearchTest
         sd(selfdir + 'app_one_embedder/schemas/doc.sd').
         components_dir(selfdir + 'app_one_embedder/model').
         indexing_cluster('default').indexing_chain('indexing'))
-    start
+    start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_default_embedder
   end
@@ -102,7 +102,7 @@ class Embedding < IndexedStreamingSearchTest
         sd(selfdir + 'app_two_embedders/schemas/doc.sd').
         components_dir(selfdir + 'app_two_embedders/model').
         indexing_cluster('default').indexing_chain('indexing'))
-    start
+    start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_tokens
     verify_embedding
@@ -118,7 +118,7 @@ class Embedding < IndexedStreamingSearchTest
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_huggingface_embedder/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
-    start
+    start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_huggingface_tokens
     verify_huggingface_embedding
@@ -133,7 +133,7 @@ class Embedding < IndexedStreamingSearchTest
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_huggingface_embedder_binarization_matryoshka/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
-    start
+    start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_huggingface_embedding_binary_quantization
   end
@@ -147,7 +147,7 @@ class Embedding < IndexedStreamingSearchTest
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_colbert_embedder/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
-    start
+    start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_colbert_embedding
   end
@@ -161,7 +161,7 @@ class Embedding < IndexedStreamingSearchTest
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_colbert_embedder_fp16/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
-    start
+    start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_colbert_embedding_fp16
   end
@@ -175,7 +175,7 @@ class Embedding < IndexedStreamingSearchTest
             jvmoptions('-Xms4g -Xmx4g')).
         sd(selfdir + 'app_colbert_multivector_embedder/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
-    start
+    start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "multivector-docs.json")
     verify_colbert_multivector_embedding
   end
@@ -190,7 +190,7 @@ class Embedding < IndexedStreamingSearchTest
         sd(selfdir + 'app_splade_embedder/schemas/doc.sd').
         components_dir(selfdir + 'app_splade_embedder/models').
         indexing_cluster('default').indexing_chain('indexing'))
-    start
+    start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_splade_embedding
   end
@@ -205,7 +205,7 @@ class Embedding < IndexedStreamingSearchTest
         sd(selfdir + 'app_splade_multivector_embedder/schemas/doc.sd').
         components_dir(selfdir + 'app_splade_embedder/models').
         indexing_cluster('default').indexing_chain('indexing'))
-    start
+    start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "multivector-docs.json")
     verify_splade_multivector_embedding
   end
@@ -427,6 +427,10 @@ class Embedding < IndexedStreamingSearchTest
     assert(docSpladeEmbedding.length > 0, "#{docSpladeEmbedding} lenght is 0.")
     relevance = result['root']['children'][0]['relevance']
     assert(relevance > 0, "#{relevance} is 0, which is not expected.")
+  end
+
+  def start_vespa
+    start(300) # Wait longer than default, download of models sometimes takes > 3 minutes
   end
 
   def teardown
