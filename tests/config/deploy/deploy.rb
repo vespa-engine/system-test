@@ -604,7 +604,6 @@ include ApplicationV2Api
 
   def set_config_server_config(fields_and_values = {})
     default_for_this_test = {
-      "maintainerIntervalMinutes" => 1,
       "canReturnEmptySentinelConfig" => true,
     }
 
