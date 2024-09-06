@@ -384,8 +384,8 @@ include ApplicationV2Api
     session_id = deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_c", session_id, 1339)
 
     # Check that all sessions have been deleted, except the active one
-    wait_until_local_session_deleted(session_id_a)
-    wait_until_local_session_deleted(session_id_b)
+    wait_until_local_session_deleted(session_id_a, session_lifetime)
+    wait_until_local_session_deleted(session_id_b, session_lifetime)
     assert_exists(session_id_c)
 
     set_config_server_config()
@@ -529,11 +529,12 @@ include ApplicationV2Api
     exitcode == "0"
   end
 
-  def wait_until_local_session_deleted(session_id)
-    # SessionsMaintainer is set to run every minute (see call to write_default_config_server_config in setup())
+  def wait_until_local_session_deleted(session_id, session_lifetime)
     session_exists = true
-    # Wait for some time longer than maintainer interval, since config server might not have observed that session has been deactivated on first run
-    190.times do |i|
+    # Wait for some time longer than max(session lifetime, maintainer interval (30 secs)), since config
+    # server might not have observed that session has been deactivated on first run
+    iterations = [session_lifetime * 2, 30].max
+    iterations.times do |i|
       session_exists = local_session_exists(session_id)
       break if !session_exists
       sleep 1
