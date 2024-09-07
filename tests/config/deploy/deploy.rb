@@ -36,20 +36,6 @@ include ApplicationV2Api
     @sessions_path = "#{@@vespa_home}/var/db/vespa/config_server/serverdb/tenants/#{@tenant_name}/sessions"
   end
 
-  # TODO: Add to list in test below when working, want a separate test method while WIP
-  def test_binary_content
-    session_id = @session_id
-    file = "components/test.jar"
-    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPS}app_b/components/test.jar", file)
-
-    output = read_application_file(session_id, file)
-    file = File.open("#{CONFIG_DEPLOY_APPS}/app_b/#{file}", "rb")
-    data = file.read
-    file.close
-    assert_equal(output, data, "not equal")
-    next_session(session_id)
-  end
-
   def test_deploy_v2
     @node.execute("vespa-logctl -c configserver:com.yahoo.vespa.config.server.session debug=on", :exceptiononfailure => false)
     @session_id = @session_id+1
@@ -72,6 +58,7 @@ include ApplicationV2Api
     @session_id = run_old_sessions_are_deleted(@session_id)
     @session_id = run_create_two_sessions_activate_second_then_first(@session_id)
     @session_id = run_create_prepare_and_activate(@session_id)
+    @session_id = run_binary_content(@session_id)
   end
 
   def run_single_session(session_id=@session_id)
@@ -421,6 +408,19 @@ include ApplicationV2Api
     set_description("Tests that deploying with one REST API call (preapareandactivate) works")
     result = create_prepare_and_activate("#{CONFIG_DEPLOY_APPS}/app_a", @hostname, @tenant_name)
     assert_logd_config(1337)
+    session_id
+  end
+
+  def run_binary_content(session_id)
+    puts "DEBUG DEBUG session_id is #{session_id}"
+    file = "components/test.jar"
+    assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPS}app_b/components/test.jar", file)
+
+    output = read_application_file(session_id, file)
+    file = File.open("#{CONFIG_DEPLOY_APPS}/app_b/#{file}", "rb")
+    data = file.read
+    file.close
+    assert_equal(output, data, "not equal")
     next_session(session_id)
   end
 
