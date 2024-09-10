@@ -5,7 +5,7 @@ class OpenNlpLinguistics < SearchTest
 
   def setup
     set_owner("bratseth")
-    set_description("Tests Chinese segmentation with the OpenNlp linguistics module")
+    set_description("Tests the OpenNlp linguistics module")
   end
 
   def make_app
@@ -31,6 +31,7 @@ class OpenNlpLinguistics < SearchTest
 
     assert_hitcount("query=text:展示", 1) # A Chinese token from the resulting segmentation done
     assert_hitcount("query=text:car", 1) # English is still stemmed
+    assert_hitcount("query=text:congés", 1)
    end
 
   def teardown
