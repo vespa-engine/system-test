@@ -1,6 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 
 require_relative 'ecommerce_hybrid_search_base'
+require 'json'
 
 class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
 
@@ -11,6 +12,7 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     @search_node = vespa.search["search"].first
     @minimal = false
     start
+    dump_thread_stats
 
     benchmark_feed(feed_file_name, "feed")
     benchmark_queries("after_feed", false, [1])
@@ -61,6 +63,12 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     clients.each do |c|
       run_fbench_helper(query_file, query_phase, query_type, c, @container, params)
     end
+  end
+
+  def dump_thread_stats
+    stats = @search_node.get_state_v1_custom_component("/threadpools")
+    puts "threadpools stats:"
+    puts JSON.pretty_generate(stats)
   end
 
 end
