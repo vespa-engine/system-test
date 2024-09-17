@@ -22,11 +22,13 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     benchmark_queries("after_flush", false, [1, 2, 4, 8, 16, 32, 64])
     benchmark_queries("after_flush", true, [1, 16, 64])
 
-    feed_thread = Thread.new { benchmark_feed(feed_file_name, "refeed") }
-    sleep 5
-    benchmark_queries("during_refeed", false, [1, 16, 64])
-    feed_thread.join
+    benchmark_feed(feed_file_name, "refeed")
     benchmark_feed("vespa_update-1M.json.zst", "update")
+
+    feed_thread = Thread.new { benchmark_feed(feed_file_name, "refeed_with_queries") }
+    sleep 2
+    benchmark_queries("during_refeed", false, [1, 16, 64], {:runtime => 9})
+    feed_thread.join
   end
 
   def feed_file_name
