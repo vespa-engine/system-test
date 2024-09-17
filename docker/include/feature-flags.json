@@ -42,6 +42,7 @@
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
         { "id" : "symmetric-put-and-activate-replica-selection", "rules" : [ { "value" : true } ] },
         { "id" : "enforce-strictly-increasing-cluster-state-versions", "rules" : [ { "value" : true } ] },
-        { "id" : "distribution-config-from-cluster-controller", "rules" : [ { "value" : true } ] }
+        { "id" : "distribution-config-from-cluster-controller", "rules" : [ { "value" : true } ] },
+        { "id" : "config-server-session-expiry-time", "rules" : [ { "value" : 30 } ] }
     ]
 }
