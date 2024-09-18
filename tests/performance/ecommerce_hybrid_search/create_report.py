@@ -124,7 +124,7 @@ def main():
     parser.add_argument('vespa_file', type=str, help='Path to Vespa result file')
     parser.add_argument('es_file', type=str, help='Path to ES result file')
     parser.add_argument('report_type',
-                        choices=['feed', 'query_1', 'query_n'],
+                        choices=['feed', 'query_1', 'query_n', 'query_n_filter', 'query_n_refeed'],
                         help='Type of report to create')
     parser.add_argument('--format', default='df', choices=['csv', 'df'], help='Output format printed to stdout')
     parser.add_argument('--cpus', default=128, help='The number of CPUs used for the performance tests')
@@ -132,7 +132,7 @@ def main():
     args = parser.parse_args()
     report = args.report_type
     global cpu_cores
-    cpu_cores = args.cpus
+    cpu_cores = int(args.cpus)
     if report == 'feed':
         print_feed_ratio_summary(args.vespa_file, args.es_file, args.format)
     elif report == 'query_1':
@@ -141,6 +141,14 @@ def main():
     elif report == 'query_n':
         print_query_ratio_summary(args.vespa_file, args.es_file,
                                   "phase == 'after_flush' and filter == False",
+                                  args.format)
+    elif report == 'query_n_filter':
+        print_query_ratio_summary(args.vespa_file, args.es_file,
+                                  "phase == 'after_flush' and filter == True",
+                                  args.format)
+    elif report == 'query_n_refeed':
+        print_query_ratio_summary(args.vespa_file, args.es_file,
+                                  "phase == 'during_refeed' and filter == False",
                                   args.format)
 
 
