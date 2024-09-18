@@ -20,7 +20,8 @@ class FlatToHierarchicTransitionTest < FeedAndQueryTestBase
                   node(NodeSpec.new("node1", 0))).
             group(NodeGroup.new(1, "mygroup1").
                   node(NodeSpec.new("node1", 1))))).
-      storage(StorageCluster.new("mycluster", 2))
+      storage(StorageCluster.new("mycluster", 2)).
+      validation_override('redundancy-increase')
   end
 
   def assert_satisfied_within_timeout(timeout: 60*2)
