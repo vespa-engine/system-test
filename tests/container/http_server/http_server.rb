@@ -72,7 +72,7 @@ class HttpServer < SearchContainerTest
     end
   end
 
-  # Count number of "Switched to the latest deployed ..." messages in vespa.log
+  # Count number of "Switching to the latest deployed ..." messages in vespa.log
   def num_application_switches(app)
     regex = Regexp.new(".*\\s#{app}\\s.+Switching to the latest deployed")
     log = ''
