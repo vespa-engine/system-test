@@ -21,7 +21,7 @@ class Resultset
     @errorlist = nil
     @hitcount = nil
     @query = query
-    @xmldata = data
+    @data = data
     if (response != nil)
       @responsecode = response.code
       @responseheaders = response.header.to_hash
@@ -37,7 +37,7 @@ class Resultset
   end
 
   def parse
-    return unless @xmldata
+    return unless @data
     if is_xml?
       parse_xml
     elsif is_json?
@@ -47,20 +47,20 @@ class Resultset
 
   def is_xml?
     # Don't check for a following question mark or xml text. This breaks tests and results where the xml header is omitted
-    @xmldata.match(/\A\s*</) != nil
+    @data.match(/\A\s*</) != nil
   end
 
   def is_json?
-    @xmldata.match(/\A\s*[{|\[]/) != nil
+    @data.match(/\A\s*[{|\[]/) != nil
   end
 
   def parse_json
     begin
       @hit = []
-      @json = JSON.parse(@xmldata)
+      @json = JSON.parse(@data)
       parse_hits_json(@json)
     rescue Exception => e
-      puts "#{e.message}, could not parse JSON: #{@xmldata}"
+      puts "#{e.message}, could not parse JSON: #{@data}"
     end
     @json
   end
@@ -132,23 +132,23 @@ class Resultset
   end
 
   def xml
-    if @xml == nil
-      if @xmldata != nil
+    unless @xml
+      if @data
         @xml = parse_xml
       end
     end
-    return @xml
+    @xml
   end
 
   def xmldata
-    if @xmldata == nil
+    unless @data
       to_xml
     end
-    return @xmldata
+    @data
   end
 
   def hit
-    return @hit
+    @hit
   end
 
   def to_xml
@@ -158,7 +158,7 @@ class Resultset
     @hit.each { |hit|
       root.add(hit.to_xml)
     }
-    @xmldata = xml.to_s
+    @data = xml.to_s
   end
 
   def hitcount
@@ -169,7 +169,7 @@ class Resultset
   def parse_xml
     begin
       @hit = []
-      xml = REXML::Document.new(@xmldata).root
+      xml = REXML::Document.new(@data).root
       parse_hits_xml(xml)
       if xml.attribute("total-hit-count") != nil
         @hitcount = xml.attribute("total-hit-count").to_s
@@ -177,7 +177,7 @@ class Resultset
         @hitcount = @hit.size
       end
     rescue Exception => e
-      puts "#{e.message}, could not parse XML: #{@xmldata}"
+      puts "#{e.message}, could not parse XML: #{@data}"
     end
     return xml
   end
