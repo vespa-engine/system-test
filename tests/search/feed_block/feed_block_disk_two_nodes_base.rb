@@ -206,7 +206,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
       @myuse = 320 * 1024 * 1024
     else
       # If the containers for this test use shared disks while the
-      # argument shared_disk is false then this test is vulerable to
+      # argument shared_disk is false then this test is vulnerable to
       # disk usage changes caused by other containers (e.g. other tests).
       @myuse = 1600 * 1024 * 1024
     end

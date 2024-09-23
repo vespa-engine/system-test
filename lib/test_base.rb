@@ -296,7 +296,7 @@ module TestBase
     result = container.search(to_utf8(query), 0, requestheaders, verbose, params)
 
     # write result to tmpfile, often used for debugging while writing testcases
-    File.open("#{Environment.instance.tmp_dir}/lastresult.xml", "w") do |file|
+    File.open("#{Environment.instance.tmp_dir}/lastresult.json", "w") do |file|
       file.print(result.xmldata)
     end
     result
