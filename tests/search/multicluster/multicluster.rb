@@ -1,5 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'indexed_only_search_test'
+require 'cgi'
 
 class MultiCluster < IndexedOnlySearchTest
 
@@ -14,25 +15,37 @@ class MultiCluster < IndexedOnlySearchTest
     deploy_app(SearchApp.new.cluster(cluster1).cluster(cluster2))
     start
 
-    feed_music_document
-    feed_music2_document
+    feed_music_documents
 
-    search_and_assert_hitcount('query=title:Surfer', 1)
-    # This fails at the moment, due to (from trace, /opt/vespa/tmp/lastresult.xml):
-    # {"message":"Query parsed to: select * from sources cluster1, cluster2 where weakAnd(title contains \"Surfer\") timeout 5000"}
-    search_and_assert_hitcount('query=TITLE:Surfer', 0)
-    search_and_assert_hitcount('query=title:Dummy', 0)
-    search_and_assert_hitcount('query=TITLE:Dummy', 1)
+    [:yql, :vespa].each do |query_language|
+      ["title", "TITLE"].each do |field|
+        ["Surfer", "Dummy"].each do |term|
+          ["cluster1,cluster2", nil].each do |s|
+            query = create_query(query_language, field, term, s)
+            puts "Query: #{CGI.unescape(query)}"
+            search_and_assert_hitcount(query, 1)
+          end
+        end
+      end
+    end
   end
 
-  def feed_music_document
+  def create_query(query_language, field, term, sources)
+    if query_language.eql?(:yql)
+      s = sources ? sources : '*'
+      q = "yql=select * from sources #{s} where #{field} contains \"#{term}\"&trace.level=1"
+    else
+      s = sources ? "&sources=#{sources}" : ''
+      q = "query=#{field}:#{term}#{s}&trace.level=1"
+    end
+    q
+  end
+
+  def feed_music_documents
     vespa.document_api_v1.put(
       Document.new('music', 'id:test:music::1').
         add_field("artist", 'Pixies').
         add_field('title', 'Surfer Rosa'))
-  end
-
-  def feed_music2_document
     vespa.document_api_v1.put(
       Document.new('music', 'id:test:music2::1').
         add_field("artist", 'Portishead').
@@ -40,8 +53,12 @@ class MultiCluster < IndexedOnlySearchTest
   end
 
   def search_and_assert_hitcount(query, expected_hit_count)
-    query_with_sources = query + "&sources=cluster1,cluster2&trace.level=2"
-    assert_hitcount(query_with_sources, expected_hit_count)
+    begin
+      assert_hitcount(query, expected_hit_count)
+    rescue => e
+      puts "Query failed, result: #{JSON.pretty_generate(search(query).parse_json)}"
+      raise e
+    end
   end
 
   def teardown
