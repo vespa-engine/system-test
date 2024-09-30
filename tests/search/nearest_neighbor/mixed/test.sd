@@ -6,7 +6,7 @@ schema test {
       indexing: attribute | summary
       attribute: fast-search
     }
-    field pos type tensor(a{},x[2]) {
+    field pos type tensor(a{},b{},x[2]) {
       indexing: attribute | index | summary
       # attribute: fast-rank
       index {
@@ -31,7 +31,7 @@ schema test {
       expression: sqrt(sum(join(query(qpos_float), attribute(pos), f(x,y)((x-y)*(x-y)))))
     }
     function label_value() {
-      expression: sum(tensor(a{}):{{a:"0"}:100,{a:"1"}:101,{a:"2"}:102}*closest(pos))
+      expression: sum(tensor(a{},b{}):{{a:"0",b:"10"}:100,{a:"1",b:"11"}:101,{a:"2",b:"12"}:102}*closest(pos))
     }
     first-phase {
       expression: 15 - distance(label,nns)

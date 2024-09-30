@@ -263,7 +263,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
       end
       blocks = [ ]
       for j in 0...positions.size
-        blocks.push({ "address" => { "a" => j.to_s}, "values" => [ positions[j], X_1_POS] })
+        blocks.push({ "address" => { "a" => j.to_s, "b" => (j + 10).to_s}, "values" => [ positions[j], X_1_POS] })
       end
       { "blocks" => blocks }
     else
@@ -376,7 +376,10 @@ class NearestNeighborTest < IndexedStreamingSearchTest
         exp_features["euclidean_distance_#{query_tensor}"] = exp_distance
       else
         closest_feature_label = exp_result[2]
-        closest_feature = {"type"=>"tensor(a{})", "cells"=>{closest_feature_label.to_s=>1.0}}
+        closest_feature = {"type"=>"tensor(a{},b{})",
+                           "cells"=>[{"address"=>{"a"=>closest_feature_label.to_s,
+                                                  "b"=>(closest_feature_label +  10).to_s},
+                                      "value"=>1.0}]}
         exp_features["closest(pos)"] = closest_feature
         exp_features["closest(pos,nns)"] = closest_feature
         exp_features["label_value"] = closest_feature_label.to_f + 100
