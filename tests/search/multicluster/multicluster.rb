@@ -56,8 +56,7 @@ class MultiCluster < IndexedOnlySearchTest
     begin
       assert_hitcount(query, expected_hit_count)
     rescue => e
-      puts "Query failed, result: #{JSON.pretty_generate(search(query).parse_json)}"
-      raise e
+      raise "Query '#{query}' failed: #{e.message}\nResult:\n #{JSON.pretty_generate(search(query).parse_json)}"
     end
   end
 
