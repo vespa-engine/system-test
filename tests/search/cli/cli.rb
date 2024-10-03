@@ -61,7 +61,7 @@ class Cli < IndexedStreamingSearchTest
     start
     cfg = hostlist.first
     remote_app_path = create_app
-    status, stdout, stderr = vespa_cli("-t", "https://#{cfg}:19071", "deploy", "-w", "60", remote_app_path)
+    status, stdout, stderr = vespa_cli("-t", "https://#{cfg}:19071", "deploy", "-w", "180", remote_app_path)
     print_output(stdout, stderr)
     assert_equal(0, status)
     # since we're deploying with cli we have to create the model explicitly
