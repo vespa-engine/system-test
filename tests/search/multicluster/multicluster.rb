@@ -18,16 +18,47 @@ class MultiCluster < IndexedOnlySearchTest
     feed_music_documents
 
     [:yql, :vespa].each do |query_language|
-      ["title", "TITLE"].each do |field|
-        ["Surfer", "Dummy"].each do |term|
-          ["cluster1,cluster2", nil].each do |s|
-            query = create_query(query_language, field, term, s)
-            puts "Query: #{CGI.unescape(query)}"
-            search_and_assert_hitcount(query, 1)
+      ["artist"].each do |field|
+        ["Pixies", "Portishead"].each do |term|
+          ["cluster1,cluster2", nil].each do |sources|
+            expect_hits(query_language, field, term, sources, 1)
           end
         end
       end
     end
+    # with YQL we get: Field 'ARTIST' does not exist.
+    expect_hits(:yql, "ARTIST", "Pixies", nil, 0)
+    expect_hits(:vespa, "ARTIST", "Pixies", nil, 1)
+    [:yql, :vespa].each do |query_language|
+      ["title"].each do |field|
+        ["Surfer"].each do |term|
+          ["cluster1", "cluster1,cluster2", nil].each do |sources|
+            expect_hits(query_language, field, term, sources, 1)
+          end
+        end
+      end
+    end
+    # only field 'TITLE' contains 'dummy'
+    expect_hits(:yql, "title", "dummy", nil, 0)
+    expect_hits(:vespa, "title", "dummy", nil, 0)
+    [:yql, :vespa].each do |query_language|
+      ["TITLE"].each do |field|
+        ["Dummy"].each do |term|
+          ["cluster2", "cluster1,cluster2", nil].each do |sources|
+            expect_hits(query_language, field, term, sources, 1)
+          end
+        end
+      end
+    end
+    # only field 'title' contains 'Surfer'
+    expect_hits(:yql, "TITLE", "Surfer", nil, 0)
+    expect_hits(:vespa, "TITLE", "Surfer", nil, 0)
+  end
+
+  def expect_hits(query_language, field, term, sources, numhits)
+    query = create_query(query_language, field, term, sources)
+    puts "Query: #{CGI.unescape(query)}"
+    search_and_assert_hitcount(query, numhits)
   end
 
   def create_query(query_language, field, term, sources)
