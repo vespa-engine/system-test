@@ -190,9 +190,16 @@ docker_cleanup() {
   fi
 
   if docker network inspect $NETWORK &> /dev/null; then
-    if ! docker network rm $NETWORK &> /dev/null; then
-      log_debug "Could not remove network $NETWORK"
-    else
+    retries=5
+    while test $retries -gt 0; do
+      if docker network rm $NETWORK &> /dev/null; then
+        break
+      fi
+      retries=$(($retries - 1))
+      log_debug "Could not remove network $NETWORK ($retries retries left)"
+      sleep 2
+    done
+    if test $retries -gt 0; then
       while [[ -n $(docker network ls | grep "$NETWORK.*swarm") ]]; do
         log_debug "Waiting for network $NETWORK to be removed."
         sleep 2
