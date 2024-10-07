@@ -112,7 +112,7 @@ class SslConfig
   def self_sign_root_ca_certificate_for(this_host)
     run_or_fail("openssl req -new -x509 -nodes -key #{@ca_private_key} " +
                 "-sha256 -out #{@ca_cert} " +
-                "-subj '/C=NO/L=Trondheim/O=Yahoo, Inc/OU=Vespa system test dummy CA root/CN=#{this_host}' " +
+                "-subj '/C=NO/L=Trondheim/O=Vespa.ai AS/OU=Vespa system test dummy CA root/CN=#{this_host}' " +
                 "-days 720")
   end
 
@@ -134,7 +134,7 @@ class SslConfig
                  "DNS.2 = #{this_host}\n")
     end
     run_or_fail("openssl req -new -key #{@host_private_key} -out #{@host_csr} " +
-                "-subj '/C=NO/L=Trondheim/O=Yahoo, Inc/OU=Vespa system testing/CN=#{this_host}' " +
+                "-subj '/C=NO/L=Trondheim/O=Vespa.ai AS/OU=Vespa system testing/CN=#{this_host}' " +
                 "-sha256")
   end
 
