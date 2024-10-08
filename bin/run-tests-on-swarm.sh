@@ -38,7 +38,7 @@ usage() {
 }
 
 if [[ $# == 0 ]]; then usage;fi
-if [[ $(echo $BASH_VERSION|cut -d. -f1) < 4 ]]; then
+if [[ $(echo "$BASH_VERSION"|cut -d. -f1) -lt 4 ]]; then
   echo "ERROR: Requires bash 4 or better."; echo; usage
 fi
 
@@ -77,7 +77,6 @@ key="$1"
 case $key in
     --help)
     usage
-    shift
     ;;
     -c|--configserver)
     CONFIGSERVER="$USER-configserver"
@@ -168,20 +167,20 @@ log() {
 
 log_debug() {
   if [[ $VERBOSE != 0 ]]; then
-    log "DEBUG" $1
+    log "DEBUG" "$1"
   fi
 }
 
 # Remove service and network
 docker_cleanup() {
-  docker rm -f $TESTRUNNER &> /dev/null || true
-  docker rm -f $CONFIGSERVER &> /dev/null || true
+  docker rm -f "$TESTRUNNER" &> /dev/null || true
+  docker rm -f "$CONFIGSERVER" &> /dev/null || true
 
-  if docker service ps $SERVICE &> /dev/null; then
-    if ! docker service rm $SERVICE &> /dev/null; then
+  if docker service ps "$SERVICE" &> /dev/null; then
+    if ! docker service rm "$SERVICE" &> /dev/null; then
       log_debug "Could not remove service $SERVICE"
     else
-      while [[ -n $(docker ps | grep "$SERVICE\.[0-9].*") ]]; do
+      while docker ps | grep -q "$SERVICE\.[0-9].*"; do
         log_debug "Waiting for service $SERVICE to shut down."
         sleep 2
       done
@@ -189,18 +188,18 @@ docker_cleanup() {
     fi
   fi
 
-  if docker network inspect $NETWORK &> /dev/null; then
+  if docker network inspect "$NETWORK" &> /dev/null; then
     retries=5
     while test $retries -gt 0; do
-      if docker network rm $NETWORK &> /dev/null; then
+      if docker network rm "$NETWORK" &> /dev/null; then
         break
       fi
-      retries=$(($retries - 1))
+      retries=$((retries - 1))
       log_debug "Could not remove network $NETWORK ($retries retries left)"
       sleep 2
     done
     if test $retries -gt 0; then
-      while [[ -n $(docker network ls | grep "$NETWORK.*swarm") ]]; do
+      while docker network ls | grep -q "$NETWORK.*swarm"; do
         log_debug "Waiting for network $NETWORK to be removed."
         sleep 2
       done
@@ -217,18 +216,18 @@ if $STOP_SERVICE; then
     exit 0
 fi
 
-if [[ ${#POSITIONAL[@]} > 0 ]]; then
+if [[ ${#POSITIONAL[@]} -gt 0 ]]; then
   set -- "${POSITIONAL[@]}"
 fi
 
 if [[ -z $DOCKERIMAGE   ]]; then usage; fi
 if [[ -z $NUMNODES   ]]; then usage; fi
 if [[ -z $RESULTDIR ]]; then 
-  mkdir -p $HOME/tmp
-  RESULTDIR=$(mktemp -d $HOME/tmp/systemtest.XXXXXX)
+  mkdir -p "$HOME/tmp"
+  RESULTDIR=$(mktemp -d "$HOME/tmp/systemtest.XXXXXX")
 fi
 TESTRUNNER_OPTS="-n $NUMNODES"
-if [[ ${#TESTFILES[@]} > 0 ]]; then
+if [[ ${#TESTFILES[@]} -gt 0 ]]; then
   for F in "${TESTFILES[@]}"; do
     TESTRUNNER_OPTS="$TESTRUNNER_OPTS -f $F"
   done
@@ -258,25 +257,26 @@ if $VERBOSE; then
   TESTRUNNER_OPTS="$TESTRUNNER_OPTS -v"
 fi
 BINDMOUNT_OPTS=""
-if [[ ${#MOUNTS[@]} > 0 ]]; then
+if [[ ${#MOUNTS[@]} -gt 0 ]]; then
     for M in "${MOUNTS[@]}"; do
         BINDMOUNT_OPTS="$BINDMOUNT_OPTS --mount type=bind,src=${M%:*},dst=${M#*:}"
     done
 fi
 TESTRUNNER_BINDMOUNT_OPTS=""
-if [[ ${#TESTRUNNER_MOUNTS[@]} > 0 ]]; then
+if [[ ${#TESTRUNNER_MOUNTS[@]} -gt 0 ]]; then
     for M in "${TESTRUNNER_MOUNTS[@]}"; do
         TESTRUNNER_BINDMOUNT_OPTS="$TESTRUNNER_BINDMOUNT_OPTS --mount type=bind,src=${M%:*},dst=${M#*:}"
     done
 fi
 ENV_OPTS=""
-if [[ ${#ENVS[@]} > 0 ]]; then
+if [[ ${#ENVS[@]} -gt 0 ]]; then
   for E in "${ENVS[@]}"; do
     ENV_OPTS="$ENV_OPTS --env $E"
   done
 fi
 
-VESPAVERSION=$(docker run --rm $BINDMOUNT_OPTS --entrypoint bash $DOCKERIMAGE -lc '${VESPA_HOME-/opt/vespa}/bin/vespa-print-default version')
+# shellcheck disable=SC2086
+VESPAVERSION="$(docker run --rm $BINDMOUNT_OPTS --entrypoint bash "$DOCKERIMAGE" -lc '${VESPA_HOME-/opt/vespa}/bin/vespa-print-default version')"
 case "$VESPAVERSION" in
     7.*.0) VESPAVERSION=7-SNAPSHOT
 	   ;;
@@ -286,7 +286,8 @@ case "$VESPAVERSION" in
 	   ;;
 esac
 if $SERVICE_RAMDISK; then
-    DOCKERIMAGE_VESPA_HOME=$(docker run --rm $BINDMOUNT_OPTS --entrypoint bash $DOCKERIMAGE -lc 'echo ${VESPA_HOME-/opt/vespa}')
+    # shellcheck disable=SC2086
+    DOCKERIMAGE_VESPA_HOME="$(docker run --rm $BINDMOUNT_OPTS --entrypoint bash "$DOCKERIMAGE" -lc 'echo ${VESPA_HOME-/opt/vespa}')"
     SERVICE_EXTRA_ARGS+=("--mount" "type=tmpfs,destination=$DOCKERIMAGE_VESPA_HOME/logs/systemtests,tmpfs-mode=1777")
     SERVICE_EXTRA_ARGS+=("--mount" "type=tmpfs,destination=$DOCKERIMAGE_VESPA_HOME/logs/vespa,tmpfs-mode=1777")
     SERVICE_EXTRA_ARGS+=("--mount" "type=tmpfs,destination=$DOCKERIMAGE_VESPA_HOME/var/tmp/vespa,tmpfs-mode=1777")
@@ -302,10 +303,10 @@ fi
 TESTRUNNER_OPTS="$TESTRUNNER_OPTS -b $BASEDIR -V $VESPAVERSION"
 
 log_info() {
-  log "INFO" $1
+  log "INFO" "$1"
 }
 log_error() {
-  log "ERROR" $1
+  log "ERROR" "$1"
 }
 
 log_debug ""
@@ -323,37 +324,40 @@ log_debug "--  TESTRUNNER_OPTS:            $TESTRUNNER_OPTS"
 log_debug "--  TESTRUNNER_BINDMOUNT_OPTS:  $TESTRUNNER_BINDMOUNT_OPTS"
 log_debug "--  ENV_OPTS:                   $ENV_OPTS"
 log_debug "--  VESPAVERSION:               $VESPAVERSION"
-if [[ ${#POSITIONAL[@]} > 0 ]]; then
+if [[ ${#POSITIONAL[@]} -gt 0 ]]; then
   log_debug "--  NOT PARSED:                 ${POSITIONAL[*]}"
 fi
 log_debug ""
 
 docker_cleanup
 
-if ! docker network create --driver overlay --attachable $NETWORK &> /dev/null; then
+if ! docker network create --driver overlay --attachable "$NETWORK" &> /dev/null; then
   log_error "Could not create network $NETWORK. Exiting."; docker_cleanup; exit 1
 else
-  if ! docker service create --init --limit-pids 0 --replicas $NUMNODES --hostname "{{.Service.Name}}.{{.Task.Slot}}.{{.Task.ID}}.$NETWORK" \
+  # shellcheck disable=SC2086
+  if ! docker service create --init --limit-pids 0 --replicas "$NUMNODES" --hostname "{{.Service.Name}}.{{.Task.Slot}}.{{.Task.ID}}.$NETWORK" \
                              --cap-add SYSLOG --cap-add SYS_PTRACE --cap-add SYS_ADMIN --cap-add SYS_NICE \
                              ${SERVICE_EXTRA_ARGS[@]+"${SERVICE_EXTRA_ARGS[@]}"} \
-                             --name $SERVICE --env NODE_SERVER_OPTS="-c $TESTRUNNER.$NETWORK:27183" \
-                             $ENV_OPTS $BINDMOUNT_OPTS --network $NETWORK --detach $DOCKERIMAGE &> /dev/null; then
+                             --name "$SERVICE" --env NODE_SERVER_OPTS="-c $TESTRUNNER.$NETWORK:27183" \
+                             $ENV_OPTS $BINDMOUNT_OPTS --network "$NETWORK" --detach "$DOCKERIMAGE" &> /dev/null; then
     log_error "Could not create service $SERVICE. Exiting."; docker_cleanup; exit 1
   fi
 fi
 
 if [[ -n $CONFIGSERVER ]]; then
-  if ! docker run --init --pids-limit -1 --hostname $CONFIGSERVER.$NETWORK --network $NETWORK --name $CONFIGSERVER --detach \
+  # shellcheck disable=SC2086
+  if ! docker run --init --pids-limit -1 --hostname "$CONFIGSERVER.$NETWORK" --network "$NETWORK" --name "$CONFIGSERVER" --detach \
                   --cap-add SYSLOG --cap-add SYS_PTRACE --cap-add SYS_ADMIN --cap-add SYS_NICE \
                   --security-opt no-new-privileges=true --security-opt seccomp=unconfined \
-                  -e VESPA_CONFIGSERVERS=$CONFIGSERVER.$NETWORK -e VESPA_CONFIGSERVER_JVMARGS="-verbose:gc -Xms12g -Xmx12g" \
+                  -e VESPA_CONFIGSERVERS="$CONFIGSERVER.$NETWORK" -e VESPA_CONFIGSERVER_JVMARGS="-verbose:gc -Xms12g -Xmx12g" \
                   -e VESPA_CONFIGSERVER_MULTITENANT=true -e VESPA_SYSTEM=dev --entrypoint bash \
                   $ENV_OPTS $BINDMOUNT_OPTS \
-                  $DOCKERIMAGE -lc "\${VESPA_HOME-/opt/vespa}/bin/vespa-start-configserver && tail -f /dev/null" &> /dev/null; then
+                  "$DOCKERIMAGE" -lc "\${VESPA_HOME-/opt/vespa}/bin/vespa-start-configserver && tail -f /dev/null" &> /dev/null; then
     log_error "Could not create configserver $CONFIGSERVER. Exiting."; docker_cleanup; exit 1
   fi
 fi
 
+# shellcheck disable=SC2086
 docker run --rm \
            --init \
            --pids-limit -1 \
@@ -362,11 +366,11 @@ docker run --rm \
            $ENV_OPTS \
            $BINDMOUNT_OPTS \
            $TESTRUNNER_BINDMOUNT_OPTS \
-           -v $RESULTDIR:$BASEDIR \
-           --name $TESTRUNNER \
-           --hostname $TESTRUNNER.$NETWORK \
-           --network $NETWORK \
-           --entrypoint bash $DOCKERIMAGE -lc \
+           -v "$RESULTDIR:$BASEDIR" \
+           --name "$TESTRUNNER" \
+           --hostname "$TESTRUNNER.$NETWORK" \
+           --network "$NETWORK" \
+           --entrypoint bash "$DOCKERIMAGE" -lc \
            "ruby \${VESPA_SYSTEM_TEST_HOME-/opt/vespa-systemtests}/lib/testrunner.rb $TESTRUNNER_OPTS"
 
 if ! $KEEPRUNNING; then
