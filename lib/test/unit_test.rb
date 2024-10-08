@@ -1,5 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'assertions'
+require 'test_base'
 
 class UnitTest
   include TestBase

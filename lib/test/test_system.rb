@@ -19,6 +19,7 @@ class SystemTest < Test::Unit::TestCase
 
   def test_cpuutil
     node = flexmock('node')
+    node.should_receive(:file?).and_return(true)
     node.should_receive(:execute).times(2).
       and_return(IO.read(File.join(File.dirname(__FILE__), "ysar_gather_output.txt")),
                  IO.read(File.join(File.dirname(__FILE__), "ysar_gather_output2.txt")))
