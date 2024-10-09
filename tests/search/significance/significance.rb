@@ -55,7 +55,7 @@ class SignificanceTest < IndexedStreamingSearchTest
 
     vespa.adminserver.
       execute(
-        "vespa-significance generate --in \"#{input_file}\" --out \"#{output_file}\" --field text --language en --doc-type en --zst-compression true",
+        "vespa-significance generate --in \"#{input_file}\" --out \"#{output_file}\" --field text --language en --zst-compression true",
         :exceptiononfailure => true)
 
     FileUtils.mkdir_p(@models_dir)
