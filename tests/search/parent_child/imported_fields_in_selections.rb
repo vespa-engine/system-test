@@ -293,7 +293,7 @@ class ImportedFieldsInSelectionsTest < IndexedOnlySearchTest
     assert_equal([], enumerate_docs_matching(remove_cond))
     # Nothing else should be removed...!
     assert_equal(['id:test:child::1', 'id:test:child::2', 'id:test:child::5'],
-                 enumerate_docs_matching("not (#{remove_cond}"))
+                 enumerate_docs_matching("not (#{remove_cond})"))
   end
 
 end
