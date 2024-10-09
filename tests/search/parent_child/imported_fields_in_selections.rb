@@ -1,5 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'indexed_only_search_test'
+require 'json'
 
 class ImportedFieldsInSelectionsTest < IndexedOnlySearchTest
 
@@ -223,6 +224,76 @@ class ImportedFieldsInSelectionsTest < IndexedOnlySearchTest
 
   def test_imported_fields_can_be_used_in_gc_document_selections_all_ready
     do_test_imported_fields_can_be_used_in_gc_document_selections(searchable_copies: 3)
+  end
+
+  def api_http_put(path, content)
+    vespa.document_api_v1.http_put(path, content, {})
+  end
+
+  def api_http_delete(path)
+    vespa.document_api_v1.http_delete(path, {})
+  end
+
+  def uri_enc(str)
+    ERB::Util.url_encode(str)
+  end
+
+  def handle_continuation
+    raise 'needs a lambda' unless block_given?
+    continuation = nil
+    while true
+      json = JSON.parse(yield continuation)
+      if json.has_key? 'continuation'
+        continuation = json['continuation']
+      else
+        break
+      end
+    end
+  end
+
+  def test_imported_fields_can_be_used_in_batch_update_selections
+    set_description('Test that imported fields can be used in document '+
+                    'selections via Document V1 batch update operations')
+
+    deploy_app(make_app(with_gc: false))
+    start
+    feed_docs_with_references
+
+    # `a3` is a non-imported attribute field in the `child` type.
+    assert_equal([], enumerate_docs_matching('child.a3 == 1234'))
+    # `a1` is an imported field from the `parent` type. Value 5 matches child documents {0, 3, 4}
+    update_cond = 'child.a1 == 5'
+    update_op   = {'fields': {'a3': {'assign': 1234}}}
+    handle_continuation do |continuation|
+      params = "cluster=storage&selection=#{uri_enc(update_cond)}"
+      params += "&continuation=#{continuation}" unless continuation.nil?
+      api_http_put("/document/v1/test/child/docid?#{params}", update_op.to_json)
+    end
+    assert_equal(['id:test:child::0', 'id:test:child::3', 'id:test:child::4'],
+                 enumerate_docs_matching('child.a3 == 1234'))
+  end
+
+  def test_imported_fields_can_be_used_in_batch_remove_selections
+    set_description('Test that imported fields can be used in document ' +
+                    'selections via Document V1 batch remove operations')
+
+    deploy_app(make_app(with_gc: false))
+    start
+    feed_docs_with_references
+
+    # `a1` is an imported field from the `parent` type. Value 5 matches child documents {0, 3, 4}
+    remove_cond = 'child.a1 == 5'
+    assert_equal(['id:test:child::0', 'id:test:child::3', 'id:test:child::4'],
+                 enumerate_docs_matching(remove_cond))
+    handle_continuation do |continuation|
+      params = "cluster=storage&selection=#{uri_enc(remove_cond)}"
+      params += "&continuation=#{continuation}" unless continuation.nil?
+      api_http_delete("/document/v1/test/child/docid?#{params}")
+    end
+    assert_equal([], enumerate_docs_matching(remove_cond))
+    # Nothing else should be removed...!
+    assert_equal(['id:test:child::1', 'id:test:child::2', 'id:test:child::5'],
+                 enumerate_docs_matching("not (#{remove_cond}"))
   end
 
 end

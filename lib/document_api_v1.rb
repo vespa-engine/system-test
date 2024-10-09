@@ -90,6 +90,7 @@ class DocumentApiV1
     response = connection.getConnection.delete(path)
     @connectionPool.release(connection)
     assert_response_ok(response)
+    response.body
   end
 
   def assert_response_ok(response)
