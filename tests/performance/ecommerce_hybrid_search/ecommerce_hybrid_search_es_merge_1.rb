@@ -19,7 +19,7 @@ class EcommerceHybridSearchESForceMerge1Test < EcommerceHybridSearchESTestBase
     benchmark_force_merge(get_num_docs, 1)
     dump_jvm_stats
     benchmark_queries("after_merge", false, [1, 2, 4, 8, 16, 32, 64])
-    benchmark_queries("after_merge", true, [1, 16, 64])
+    benchmark_queries("after_merge", true, [1, 2, 4, 8, 16, 32, 64])
   end
 
   def teardown

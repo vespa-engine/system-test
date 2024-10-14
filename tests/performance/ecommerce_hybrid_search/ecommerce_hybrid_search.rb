@@ -20,7 +20,7 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
 
     @search_node.trigger_flush
     benchmark_queries("after_flush", false, [1, 2, 4, 8, 16, 32, 64])
-    benchmark_queries("after_flush", true, [1, 16, 64])
+    benchmark_queries("after_flush", true, [1, 2, 4, 8, 16, 32, 64])
 
     benchmark_feed(feed_file_name, "refeed")
     benchmark_feed("vespa_update-1M.json.zst", "update")
