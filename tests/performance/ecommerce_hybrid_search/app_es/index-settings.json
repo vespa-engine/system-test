@@ -1,10 +1,39 @@
 {
-  "settings": {"number_of_shards": 1, "number_of_replicas": 1},
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1,
+    "analysis": {
+      "analyzer": {
+        "lowercase_normalize_stem": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding",
+            "porter2_english_stemmer"
+          ]
+        }
+      },
+      "filter": {
+        "porter2_english_stemmer": {
+          "type": "stemmer",
+          "language": "porter2"
+        }
+      }
+    }
+  },
   "mappings": {
     "properties": {
       "id": {"type": "integer", "index": false},
-      "title": {"type": "text", "similarity": "BM25"},
-      "description": {"type": "text", "similarity": "BM25"},
+      "title": {
+        "type": "text",
+        "similarity": "BM25",
+        "analyzer": "lowercase_normalize_stem"
+      },
+      "description": {
+        "type": "text",
+        "similarity": "BM25",
+        "analyzer": "lowercase_normalize_stem"
+      },
       "category": {"type": "keyword"},
       "price": {"type": "integer", "index": false},
       "average_rating": {"type": "float", "index": false},
