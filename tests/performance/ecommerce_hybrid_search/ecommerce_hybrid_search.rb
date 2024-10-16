@@ -15,8 +15,6 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     dump_thread_stats
 
     benchmark_feed(feed_file_name, "feed")
-    benchmark_queries("after_feed", false, [1])
-    benchmark_queries("after_feed", true, [1])
 
     @search_node.trigger_flush
     benchmark_queries("after_flush", false, [1, 2, 4, 8, 16, 32, 64])
@@ -27,7 +25,7 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
 
     feed_thread = Thread.new { benchmark_feed(feed_file_name, "refeed_with_queries") }
     sleep 2
-    benchmark_queries("during_refeed", false, [1, 16, 64], {:runtime => 9})
+    benchmark_queries("during_refeed", true, [1, 16, 64], {:runtime => 9})
     feed_thread.join
   end
 

@@ -151,6 +151,11 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
     @node.execute("curl -X POST '#{@es_endpoint}/_refresh?pretty'")
   end
 
+  def flush_index
+    # A flush is writing the memory segments to disk.
+    @node.execute("curl -X POST '#{@es_endpoint}/product/_flush?pretty'")
+  end
+
   def num_search_segments
     @node.execute("curl -X GET '#{@es_endpoint}/product/_segments?pretty' | jq '.indices.product.shards[\"0\"][0].num_search_segments'").to_i
   end
