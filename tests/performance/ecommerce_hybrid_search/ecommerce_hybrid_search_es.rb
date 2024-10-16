@@ -17,8 +17,10 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchESTestBase
 
     benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "feed")
     dump_jvm_stats
-    benchmark_queries("after_feed", false, [1, 2, 4, 8, 16, 32, 64])
-    benchmark_queries("after_feed", true, [1, 2, 4, 8, 16, 32, 64])
+
+    flush_index
+    benchmark_queries("after_flush", false, [1, 2, 4, 8, 16, 32, 64])
+    benchmark_queries("after_flush", true, [1, 2, 4, 8, 16, 32, 64])
 
     benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "refeed")
     benchmark_update("es_update-1M.json.zst", get_num_docs, @feed_threads)

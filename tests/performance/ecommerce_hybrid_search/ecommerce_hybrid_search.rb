@@ -15,8 +15,6 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     dump_thread_stats
 
     benchmark_feed(feed_file_name, "feed")
-    benchmark_queries("after_feed", false, [1])
-    benchmark_queries("after_feed", true, [1])
 
     @search_node.trigger_flush
     benchmark_queries("after_flush", false, [1, 2, 4, 8, 16, 32, 64])
