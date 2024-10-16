@@ -27,7 +27,7 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
 
     feed_thread = Thread.new { benchmark_feed(feed_file_name, "refeed_with_queries") }
     sleep 2
-    benchmark_queries("during_refeed", false, [1, 16, 64], {:runtime => 9})
+    benchmark_queries("during_refeed", true, [1, 16, 64], {:runtime => 9})
     feed_thread.join
   end
 
