@@ -2,6 +2,8 @@
 
 schema product {
 
+  stemming: none
+
   document product {
 
     field language type string {
