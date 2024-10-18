@@ -1,0 +1,35 @@
+schema wikimedia {
+
+  document wikimedia {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field title type string {
+      indexing: index | summary
+      index: enable-bm25
+    }
+    field text type string {
+      indexing: index
+      index: enable-bm25
+    }
+  }
+
+  document-summary small {
+     summary id {}
+  }
+
+  fieldset default {
+    fields: title, text
+  }
+
+  rank-profile default {
+    rank-properties {
+      vespa.matching.weakand.stop_word_limit: 1.0
+    }
+    first-phase {
+      # expression: bm25(title) + bm25(text)
+      expression: nativeRank
+    }
+  }
+
+}
