@@ -278,6 +278,33 @@ def generate_query_hockey_stick_figure(title, file_name, df):
     fig.write_image(file_name, format='png', scale=1.5)
 
 
+def generate_overall_qps_figure(output, df):
+    file_name = f'{output}/overall_qps.png'
+    print(f'\nGenerate overall qps figure: {file_name}:')
+    filtered_df = df.query("phase == 'after_flush' and type == 'hybrid' and filter == True and system != 'Elasticsearch (force-merged)'")
+    print(filtered_df)
+    fig = make_subplots(rows=2, cols=1, vertical_spacing=0.08)
+    add_scatter_plot_to_figure(fig, 1, 1, filtered_df, 'qps', 'l_avg')
+    add_scatter_plot_to_figure(fig, 2, 1, filtered_df, 'qps', 'cpu_usage')
+    fig.update_xaxes(title_text="Queries per Second (QPS)", row=2, col=1)
+    fig.update_xaxes(nticks=12)
+    fig.update_yaxes(title_text="Average Latency (ms)", row=1, col=1)
+    fig.update_yaxes(nticks=10)
+    fig.update_yaxes(title_text="CPU Usage", row=2, col=1)
+    fig.update_yaxes(tickvals=[0, 20, 40, 60, 80, 100],
+                     ticktext=['0%', '20%', '40%', '60%', '80%', '100%'], row=2, col=1)
+    fig.update_layout(
+        height=500, # Adjust the height (-100) to compensate for the margin adjustments
+        margin=dict(t=50, b=50), # Reduce top and bottom margins as we don't have a title
+        legend=dict( # Locate legends above the subplots
+            x=0,
+            y=1.1,
+            orientation='h'
+        )
+    )
+    fig.write_image(file_name, format='png', scale=1.5)
+
+
 def generate_query_figures(vespa_file, es_files, output):
     df = load_all_query_results(vespa_file, es_files)
     for clients in [1, 16]:
@@ -303,6 +330,8 @@ def generate_query_figures(vespa_file, es_files, output):
             generate_query_hockey_stick_figure(f'QPS for {type_text} queries after initial feeding',
                                                f'{output}/query_hockey_stick_{file_suffix}.png',
                                                filtered_df)
+
+    generate_overall_qps_figure(output, df)
 
 
 def generate_overall_summary_figure(vespa_file, es_files, output):
