@@ -181,6 +181,25 @@ def add_bar_chart_to_figure(fig, row, col, df, x_col, y_col):
         )
 
 
+def add_bar_chart_with_text_label_to_figure(fig, row, col, df, x_col, y_col, text_col):
+    for system in df['system'].unique():
+        filtered_df = df[df['system'] == system]
+        fig.add_trace(
+            go.Bar(
+                name=system,
+                x=filtered_df[x_col],
+                y=filtered_df[y_col],
+                text=filtered_df[text_col],
+                textposition='auto',
+                textangle=0,
+                textfont=dict(size=10),
+                marker_color=get_system_color(system),
+                showlegend=(row == 1 and col == 1),
+            ),
+            row=row, col=col
+        )
+
+
 def add_scatter_plot_to_figure(fig, row, col, df, x_col, y_col):
     for system in df['system'].unique():
         filtered_df = df[df['system'] == system]
@@ -334,18 +353,38 @@ def generate_query_figures(vespa_file, es_files, output):
     generate_overall_qps_figure(output, df)
 
 
+def calculate_ratio_column(df, system_a, system_b, merge_on_col, ratio_of_col):
+    a_df = df[df['system'] == system_a].copy()
+    b_df = df[df['system'] == system_b].copy()
+    # Merge the dataframes of the two systems and create unique column names (other than merge_on_col)
+    # using the system name as suffix.
+    merged_df = pd.merge(a_df, b_df, on=merge_on_col, suffixes=(system_a, system_b))
+
+    # Calculate the ratio between system_a and system_b for the column ratio_of_col.
+    merged_df['ratio'] = merged_df[f"{ratio_of_col}{system_a}"] / merged_df[f"{ratio_of_col}{system_b}"]
+    merged_df['ratio'] = merged_df['ratio'].round(1).astype(str) + 'x'
+
+    df['ratio'] = None
+    # Create a dataframe that provides a mapping from merge_on_col to the ratio value.
+    ratio_map = merged_df[[merge_on_col, 'ratio']].set_index(merge_on_col)['ratio']
+    # Set ratios to only the rows of system_a, using the mapping to lookup the ratio values.
+    df.loc[df['system'] == system_a, 'ratio'] = df[df['system'] == system_a][merge_on_col].map(ratio_map)
+
+
 def generate_overall_summary_figure(vespa_file, es_files, output):
     file_name = f'{output}/overall_perf.png'
     print(f'\nGenerate overall summary figure: {file_name}')
     feed_df = load_all_feed_results(vespa_file, es_files[0])
     query_df = load_all_query_results(vespa_file, es_files)
-    filtered_feed_df = feed_df.query("label != 'refeed_with_queries'")
-    filtered_query_df = query_df.query("phase == 'after_flush' and filter == True and clients == 16 and system != 'Elasticsearch (force-merged)'")
+    filtered_feed_df = feed_df.query("label != 'refeed_with_queries'").copy()
+    filtered_query_df = query_df.query("phase == 'after_flush' and filter == True and clients == 16 and system != 'Elasticsearch (force-merged)'").copy()
+    calculate_ratio_column(filtered_feed_df, 'Vespa', 'Elasticsearch','label', 'throughput_per_cpu')
+    calculate_ratio_column(filtered_query_df, 'Vespa', 'Elasticsearch','type', 'qps_per_cpu')
     print(filtered_feed_df)
     print(filtered_query_df)
     fig = make_subplots(rows=1, cols=2)
-    add_bar_chart_to_figure(fig, 1, 1, filtered_query_df, 'type', 'qps_per_cpu')
-    add_bar_chart_to_figure(fig, 1, 2, filtered_feed_df, 'label', 'throughput_per_cpu')
+    add_bar_chart_with_text_label_to_figure(fig, 1, 1, filtered_query_df, 'type', 'qps_per_cpu', 'ratio')
+    add_bar_chart_with_text_label_to_figure(fig, 1, 2, filtered_feed_df, 'label', 'throughput_per_cpu', 'ratio')
     fig.update_yaxes(title_text="QPS per CPU Core", row=1, col=1)
     fig.update_yaxes(title_text="Throughput per CPU Core", row=1, col=2, side='right')
     fig.update_layout(
