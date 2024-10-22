@@ -10,13 +10,14 @@ import sys
 from pathlib import Path
 from plotly.subplots import make_subplots
 
-cpu_cores = 1
+machine_cpus = 1
+test_cpus = 1
 
 def get_cpu(metrics):
     regex = re.compile(r'\["cpuutil", "[^"]+"\]')
     for key, value in metrics.items():
         if regex.match(key):
-            return float(value) * cpu_cores
+            return float(value) * machine_cpus
     return 0.0
 
 
@@ -111,8 +112,8 @@ def query_ratio_summary(v, e):
 def print_summary(v, e, r, format):
     if format == 'csv':
         v.to_csv(sys.stdout, index=False, float_format='%.3f')
-        e.to_csv(sys.stdout, index=False, float_format='%.3f')
-        r.to_csv(sys.stdout, index=False, float_format='%.3f')
+        e.to_csv(sys.stdout, index=False, header=False, float_format='%.3f')
+        r.to_csv(sys.stdout, index=False, header=False, float_format='%.3f')
     else:
         print(v)
         print(e)
@@ -147,10 +148,11 @@ def load_all_query_results(vespa_file, es_files):
         es_name = 'Elasticsearch (force-merged)' if (segments == 1) else 'Elasticsearch'
         e.replace('es', es_name, inplace=True)
         df = pd.concat([df, e])
-    df.replace('weak_and', 'lexical', inplace=True)
     df.replace('weak_and_filter', 'lexical', inplace=True)
-    df.replace('semantic_filter', 'semantic', inplace=True)
+    df.replace('semantic_filter', 'vector', inplace=True)
     df.replace('hybrid_filter', 'hybrid', inplace=True)
+    df.replace('weak_and', 'lexical', inplace=True)
+    df.replace('semantic', 'vector', inplace=True)
     return df
 
 
@@ -208,7 +210,7 @@ def generate_feed_summary_figure(vespa_file, es_file, output):
     fig.update_yaxes(title_text="Throughput per CPU Core", row=2, col=1)
     fig.update_yaxes(nticks=10)
     fig.update_layout(
-        title="Feed throughput performance",
+        title="Write throughput performance",
         height=600,
         legend=dict( # Locate legends above the subplots
             x=0,
@@ -255,19 +257,48 @@ def generate_query_hockey_stick_figure(title, file_name, df):
     fig = make_subplots(rows=3, cols=1, vertical_spacing=0.08)
     add_scatter_plot_to_figure(fig, 1, 1, df, 'qps', 'l_avg')
     add_scatter_plot_to_figure(fig, 2, 1, df, 'qps', 'l_99p')
-    add_scatter_plot_to_figure(fig, 3, 1, df, 'qps', 'cpu')
+    add_scatter_plot_to_figure(fig, 3, 1, df, 'qps', 'cpu_usage')
     fig.update_xaxes(title_text="Queries per Second (QPS)", row=3, col=1)
     fig.update_xaxes(nticks=12)
     fig.update_yaxes(title_text="Average Latency (ms)", row=1, col=1)
     fig.update_yaxes(title_text="99p Latency (ms)", row=2, col=1)
-    fig.update_yaxes(title_text="CPU Core Usage", row=3, col=1)
     fig.update_yaxes(nticks=10)
+    fig.update_yaxes(title_text="CPU Usage", row=3, col=1)
+    fig.update_yaxes(tickvals=[0, 20, 40, 60, 80, 100],
+                     ticktext=['0%', '20%', '40%', '60%', '80%', '100%'], row=3, col=1)
     fig.update_layout(
         title=title,
         height=800,
         legend=dict( # Locate legends above the subplots
             x=0,
             y=1.05,
+            orientation='h'
+        )
+    )
+    fig.write_image(file_name, format='png', scale=1.5)
+
+
+def generate_overall_qps_figure(output, df):
+    file_name = f'{output}/overall_qps.png'
+    print(f'\nGenerate overall qps figure: {file_name}:')
+    filtered_df = df.query("phase == 'after_flush' and type == 'hybrid' and filter == True and system != 'Elasticsearch (force-merged)'")
+    print(filtered_df)
+    fig = make_subplots(rows=2, cols=1, vertical_spacing=0.08)
+    add_scatter_plot_to_figure(fig, 1, 1, filtered_df, 'qps', 'l_avg')
+    add_scatter_plot_to_figure(fig, 2, 1, filtered_df, 'qps', 'cpu_usage')
+    fig.update_xaxes(title_text="Queries per Second (QPS)", row=2, col=1)
+    fig.update_xaxes(nticks=12)
+    fig.update_yaxes(title_text="Average Latency (ms)", row=1, col=1)
+    fig.update_yaxes(nticks=10)
+    fig.update_yaxes(title_text="CPU Usage", row=2, col=1)
+    fig.update_yaxes(tickvals=[0, 20, 40, 60, 80, 100],
+                     ticktext=['0%', '20%', '40%', '60%', '80%', '100%'], row=2, col=1)
+    fig.update_layout(
+        height=500, # Adjust the height (-100) to compensate for the margin adjustments
+        margin=dict(t=50, b=50), # Reduce top and bottom margins as we don't have a title
+        legend=dict( # Locate legends above the subplots
+            x=0,
+            y=1.1,
             orientation='h'
         )
     )
@@ -287,13 +318,20 @@ def generate_query_figures(vespa_file, es_files, output):
                                       df.query(f"phase == 'after_flush' and filter == True and clients == {clients}"))
         generate_query_summary_figure(f'Query performance during re-feeding {clients_text}',
                                       f'{file_prefix}_during_feed_{clients}_clients.png',
-                                      df.query(f"phase == 'during_refeed' and filter == False and clients == {clients}"))
+                                      df.query(f"phase == 'during_refeed' and filter == True and clients == {clients}"))
 
+    # Convert CPU core to CPU percentage usage
+    df['cpu_usage'] = (df['cpu'] / test_cpus) * 100
     for type in df['type'].unique():
-        filtered_df = df.query(f"phase == 'after_flush' and filter == False and type == '{type}'")
-        generate_query_hockey_stick_figure(f'QPS for {type} queries after initial feeding',
-                                           f'{output}/query_hockey_stick_{type}.png',
-                                           filtered_df)
+        for filter_query in [False, True]:
+            filtered_df = df.query(f"phase == 'after_flush' and filter == {filter_query} and type == '{type}'")
+            type_text = type + (' filtered' if filter_query else '')
+            file_suffix = ('filter_' if filter_query else '') + type
+            generate_query_hockey_stick_figure(f'QPS for {type_text} queries after initial feeding',
+                                               f'{output}/query_hockey_stick_{file_suffix}.png',
+                                               filtered_df)
+
+    generate_overall_qps_figure(output, df)
 
 
 def generate_overall_summary_figure(vespa_file, es_files, output):
@@ -302,14 +340,14 @@ def generate_overall_summary_figure(vespa_file, es_files, output):
     feed_df = load_all_feed_results(vespa_file, es_files[0])
     query_df = load_all_query_results(vespa_file, es_files)
     filtered_feed_df = feed_df.query("label != 'refeed_with_queries'")
-    filtered_query_df = query_df.query("phase == 'during_refeed' and filter == False and clients == 16")
+    filtered_query_df = query_df.query("phase == 'after_flush' and filter == True and clients == 16 and system != 'Elasticsearch (force-merged)'")
     print(filtered_feed_df)
     print(filtered_query_df)
     fig = make_subplots(rows=1, cols=2)
-    add_bar_chart_to_figure(fig, 1, 1, filtered_feed_df, 'label', 'throughput_per_cpu')
-    add_bar_chart_to_figure(fig, 1, 2, filtered_query_df, 'type', 'qps_per_cpu')
-    fig.update_yaxes(title_text="Throughput per CPU Core", row=1, col=1)
-    fig.update_yaxes(title_text="QPS per CPU Core", row=1, col=2, side='right')
+    add_bar_chart_to_figure(fig, 1, 1, filtered_query_df, 'type', 'qps_per_cpu')
+    add_bar_chart_to_figure(fig, 1, 2, filtered_feed_df, 'label', 'throughput_per_cpu')
+    fig.update_yaxes(title_text="QPS per CPU Core", row=1, col=1)
+    fig.update_yaxes(title_text="Throughput per CPU Core", row=1, col=2, side='right')
     fig.update_layout(
         height=350, # Adjust the height (-100) to compensate for the margin adjustments
         margin=dict(t=50, b=50), # Reduce top and bottom margins as we don't have a title
@@ -317,7 +355,19 @@ def generate_overall_summary_figure(vespa_file, es_files, output):
             x=0,
             y=1.15,
             orientation='h'
-        )
+        ),
+        annotations=[ # Add text under each subplot
+            dict(
+                text="Queries",
+                x=0.18, y=-0.15,
+                showarrow=False, xref="paper", yref="paper"
+            ),
+            dict(
+                text="Writes",
+                x=0.81, y=-0.15,
+                showarrow=False, xref="paper", yref="paper"
+            )
+        ]
     )
     fig.write_image(file_name, format='png', scale=1.5)
 
@@ -332,16 +382,19 @@ def main():
     parser.add_argument('vespa_file', type=str, help='Path to Vespa result file')
     parser.add_argument('es_files', nargs='+', help='Path to ES result file(s)')
     parser.add_argument('report_type',
-                        choices=['figure', 'feed', 'query_1', 'query_n', 'query_n_filter', 'query_n_refeed'],
+                        choices=['figure', 'feed', 'query', 'query_filter', 'query_refeed'],
                         help='Type of report to create')
     parser.add_argument('--format', default='df', choices=['csv', 'df'], help='Output format printed to stdout')
-    parser.add_argument('--cpus', default=128, help='The number of CPUs used for the performance tests')
+    parser.add_argument('--machine_cpus', default=128, help='The total number of CPUs on the machine running the performance test. Used when scaling cpuutil metrics into CPU core.')
+    parser.add_argument('--test_cpus', default=62, help='The number of CPUs allocated for the performance test')
     parser.add_argument('--output', default='output', help='The folder in which to save generated files')
 
     args = parser.parse_args()
     report = args.report_type
-    global cpu_cores
-    cpu_cores = int(args.cpus)
+    global machine_cpus
+    global test_cpus
+    machine_cpus = int(args.machine_cpus)
+    test_cpus = int(args.test_cpus)
 
     if report == 'figure':
         # Create output folder if it doesn't exist
@@ -350,21 +403,18 @@ def main():
         generate_query_figures(args.vespa_file, args.es_files, args.output)
         generate_overall_summary_figure(args.vespa_file, args.es_files, args.output)
     elif report == 'feed':
-        print_feed_ratio_summary(args.vespa_file, args.es_file, args.format)
-    elif report == 'query_1':
-        print_query_ratio_summary(args.vespa_file, args.es_file,
-                                  "clients == 1", args.format)
-    elif report == 'query_n':
-        print_query_ratio_summary(args.vespa_file, args.es_file,
+        print_feed_ratio_summary(args.vespa_file, args.es_files[0], args.format)
+    elif report == 'query':
+        print_query_ratio_summary(args.vespa_file, args.es_files[0],
                                   "phase == 'after_flush' and filter == False",
                                   args.format)
-    elif report == 'query_n_filter':
-        print_query_ratio_summary(args.vespa_file, args.es_file,
+    elif report == 'query_filter':
+        print_query_ratio_summary(args.vespa_file, args.es_files[0],
                                   "phase == 'after_flush' and filter == True",
                                   args.format)
-    elif report == 'query_n_refeed':
-        print_query_ratio_summary(args.vespa_file, args.es_file,
-                                  "phase == 'during_refeed' and filter == False",
+    elif report == 'query_refeed':
+        print_query_ratio_summary(args.vespa_file, args.es_files[0],
+                                  "phase == 'during_refeed' and filter == True",
                                   args.format)
 
 
