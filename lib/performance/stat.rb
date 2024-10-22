@@ -331,8 +331,8 @@ module Perf
         rb.open_group('System')
         rb.single_metric('CPU utilization', m[:cpu_util] * 100.0, :suffix => '%')
         rb.avg_metric('Number of forks done', m[:fork])
-        rb.avg_metric('Pages paged out', m[:swap][:paged_out])
-        rb.avg_metric('Pages swapped out', m[:swap][:swapped_out],:warn_if_exceeding => 0)
+        rb.avg_metric('Pages swapped out', m[:swap][:swapped_out], :warn_if_exceeding => 0)
+        rb.avg_metric('Pages swapped in', m[:swap][:swapped_in], :warn_if_exceeding => 0)
         rb.close_group
 
         rb.open_group('Network')
@@ -351,7 +351,7 @@ module Perf
         rb.avg_metric('Connections timed out', m[:network][:tcp][:conn_timeout], :warn_if_exceeding => 0)
         rb.avg_metric('Segments sent', m[:network][:tcp][:out_segs])
         rb.avg_metric('Segments received', m[:network][:tcp][:in_segs])
-        rb.avg_metric('Segments retransmitted', m[:network][:tcp][:retrans_segs], :warn_if_exceeding => 0)
+        rb.avg_metric('Segments retransmitted', m[:network][:tcp][:retrans_segs])
         rb.avg_metric('Listen overflows', m[:network][:tcp][:listen_overflow], :warn_if_exceeding => 0)
         rb.close_group
         m[:network][:if].each do |ni, ni_m|
