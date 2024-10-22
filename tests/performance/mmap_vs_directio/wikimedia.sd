@@ -1,0 +1,24 @@
+schema wikimedia {
+
+  document wikimedia {
+    field title type string {
+      indexing: index | summary
+      index: enable-bm25
+    }
+    field text type string {
+      indexing: index
+      index: enable-bm25
+    }
+  }
+
+  fieldset default {
+    fields: title, text
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: bm25(title) + bm25(text)
+    }
+  }
+
+}
