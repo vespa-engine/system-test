@@ -12,7 +12,7 @@ schema wikimedia {
   }
 
   fieldset default {
-    fields: title
+    fields: title, text
   }
 
   rank-profile default {
