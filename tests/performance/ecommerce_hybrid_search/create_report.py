@@ -221,10 +221,12 @@ def generate_feed_summary_figure(vespa_file, es_file, output):
     df = load_all_feed_results(vespa_file, es_file)
     file_name = f'{output}/feed_perf.png'
     print(f'\nGenerate feed summary figure: {file_name}')
+    calculate_ratio_column(df, 'Vespa', 'Elasticsearch', 'label', 'throughput', 'throughput_ratio')
+    calculate_ratio_column(df, 'Vespa', 'Elasticsearch', 'label', 'throughput_per_cpu', 'throughput_per_cpu_ratio')
     print(df)
     fig = make_subplots(rows=2, cols=1)
-    add_bar_chart_to_figure(fig, 1, 1, df, 'label', 'throughput')
-    add_bar_chart_to_figure(fig, 2, 1, df, 'label', 'throughput_per_cpu')
+    add_bar_chart_with_text_label_to_figure(fig, 1, 1, df, 'label', 'throughput', 'throughput_ratio')
+    add_bar_chart_with_text_label_to_figure(fig, 2, 1, df, 'label', 'throughput_per_cpu', 'throughput_per_cpu_ratio')
     fig.update_yaxes(title_text="Throughput (ops/sec)", row=1, col=1)
     fig.update_yaxes(title_text="Throughput per CPU Core", row=2, col=1)
     fig.update_yaxes(nticks=10)
@@ -353,7 +355,7 @@ def generate_query_figures(vespa_file, es_files, output):
     generate_overall_qps_figure(output, df)
 
 
-def calculate_ratio_column(df, system_a, system_b, merge_on_col, ratio_of_col):
+def calculate_ratio_column(df, system_a, system_b, merge_on_col, ratio_of_col, ratio_col_name = 'ratio'):
     a_df = df[df['system'] == system_a].copy()
     b_df = df[df['system'] == system_b].copy()
     # Merge the dataframes of the two systems and create unique column names (other than merge_on_col)
@@ -361,14 +363,14 @@ def calculate_ratio_column(df, system_a, system_b, merge_on_col, ratio_of_col):
     merged_df = pd.merge(a_df, b_df, on=merge_on_col, suffixes=(system_a, system_b))
 
     # Calculate the ratio between system_a and system_b for the column ratio_of_col.
-    merged_df['ratio'] = merged_df[f"{ratio_of_col}{system_a}"] / merged_df[f"{ratio_of_col}{system_b}"]
-    merged_df['ratio'] = merged_df['ratio'].round(1).astype(str) + 'x'
+    merged_df[ratio_col_name] = merged_df[f"{ratio_of_col}{system_a}"] / merged_df[f"{ratio_of_col}{system_b}"]
+    merged_df[ratio_col_name] = merged_df[ratio_col_name].round(1).astype(str) + 'x'
 
-    df['ratio'] = None
+    df[ratio_col_name] = None
     # Create a dataframe that provides a mapping from merge_on_col to the ratio value.
-    ratio_map = merged_df[[merge_on_col, 'ratio']].set_index(merge_on_col)['ratio']
+    ratio_map = merged_df[[merge_on_col, ratio_col_name]].set_index(merge_on_col)[ratio_col_name]
     # Set ratios to only the rows of system_a, using the mapping to lookup the ratio values.
-    df.loc[df['system'] == system_a, 'ratio'] = df[df['system'] == system_a][merge_on_col].map(ratio_map)
+    df.loc[df['system'] == system_a, ratio_col_name] = df[df['system'] == system_a][merge_on_col].map(ratio_map)
 
 
 def generate_overall_summary_figure(vespa_file, es_files, output):
