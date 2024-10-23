@@ -29,7 +29,7 @@ class MmapVsDirectIoTest < PerformanceTest
 
     query_file_name = 'squad2-questions.fbench.141k.txt'
     report_io_stat_deltas do
-      feed_file('enwiki-20240801-pages.6819k.jsonl.zst')
+      feed_file('enwiki-20240801-pages.1M.jsonl.zst')
     end
 
     @search_node.trigger_flush # Shovel everything into a disk index
@@ -119,6 +119,7 @@ class MmapVsDirectIoTest < PerformanceTest
     run_fbench2(@container,
                 node_file,
                 {:clients => clients,
+                 :append_str => '&presentation.summary=minimal&hits=10',
                  :use_post => false,
                  :runtime => runtime,
                  :result_file => result_file},
