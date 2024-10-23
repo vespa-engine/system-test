@@ -1,6 +1,9 @@
 schema wikimedia {
 
   document wikimedia {
+    field id type int {
+      indexing: attribute | summary
+    }
     field title type string {
       indexing: index | summary
       index: enable-bm25
@@ -19,6 +22,10 @@ schema wikimedia {
     first-phase {
       expression: bm25(title) + bm25(text)
     }
+  }
+
+  document-summary minimal {
+    summary id {}
   }
 
 }
