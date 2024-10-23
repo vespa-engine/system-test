@@ -90,6 +90,7 @@ class MmapVsDirectIoTest < PerformanceTest
   def make_app(search_direct_io:)
     SearchApp.new.sd(selfdir + 'wikimedia.sd').
       container(Container.new('default').
+        jvmoptions("-Xms16g -Xmx16g").
         search(Searching.new).
         docproc(DocumentProcessing.new).
         documentapi(ContainerDocumentApi.new)).
