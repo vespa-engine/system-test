@@ -1,9 +1,9 @@
-schema wiki {
+schema wikimedia {
 
-  document wiki {
-    # field myid type int {
-    #   indexing: attribute | summary
-    # }
+  document wikimedia {
+    field id type int {
+      indexing: attribute | summary
+    }
     field title type string {
       indexing: index | summary
       index: enable-bm25
@@ -12,6 +12,10 @@ schema wiki {
       indexing: index
       index: enable-bm25
     }
+  }
+
+  document-summary small {
+     summary id {}
   }
 
   fieldset default {

@@ -26,7 +26,7 @@ class WandStopWordsTest < PerformanceTest
     searcher = Searcher.new('com.yahoo.test.MicroBmSearcher')
     deploy_app(
       SearchApp.new.
-        sd(selfdir + 'wiki.sd').
+        sd(selfdir + 'wikimedia.sd').
         container(Container.new('mycc').
                     search(Searching.new.
                              chain(Chain.new('default', 'vespa').add(searcher))).
@@ -39,8 +39,10 @@ class WandStopWordsTest < PerformanceTest
     set_description('Test performance and quality of Vespa Wand with stop words')
     deploy_and_start
     @doc_count = 1000
-    feed_and_wait_for_docs('wiki', @doc_count, :file => selfdir + 'feed.json.zst')
-    assert_hitcount('sddocname:wiki', @doc_count)
+    feed_and_wait_for_docs('wikimedia', @doc_count, :file => selfdir + 'just-1k.json')
+    assert_hitcount('yql=select title from wikimedia where true', @doc_count)
+    measure_wand_quality
+    feed_file('enwiki-20240801-pages.1M.jsonl.zst')
     measure_wand_quality
   end
 
@@ -65,9 +67,23 @@ class WandStopWordsTest < PerformanceTest
       h = r.hit[0]
       quality = h.field['weakAndQuality']
       wantedHits = max(h.field['andHits'], min(100, h.field['orHits']))
-      hitsFactor = (100 * h.field['weakAndHits'] ) / wantedHits
-      puts "quality: #{quality} with hits factor #{hitsFactor} % for query: #{line}"
+      hitsFactor = (1000 * h.field['weakAndHits'] ) / wantedHits
+      hitsFactor = hitsFactor / 1000.0
+      puts "quality: #{quality} with #{h.field['weakAndHits']} hits, factor #{hitsFactor} for query: #{line}"
     end
+  end
+
+  def feed_file(feed_file)
+    node_file = download_file(feed_file, vespa.adminserver)
+    run_feeder(node_file, [], {:client => :vespa_feed_client,
+                               :compression => 'none',
+                               :localfile => true,
+                               :silent => true,
+                               :disable_tls => false})
+  end
+
+  def download_file(file_name, vespa_node)
+    download_file_from_s3(file_name, vespa_node, 'wikipedia')
   end
 
   def teardown
