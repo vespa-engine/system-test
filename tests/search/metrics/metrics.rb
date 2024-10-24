@@ -17,7 +17,8 @@ class SearchMetrics < IndexedOnlySearchTest
                       sd(selfdir + "test.sd").
                       tune_searchnode({:summary => {:store => {:cache => { :maxsize => 8192,
                                                                            :compression => {:type => :lz4, :level => 8}
-                                                                         } } } })))
+                                                                         } } } }).
+                 search_io('DIRECTIO')))
     start
 
     # Search handler does a warmup query which may or may not hit the backend, since 8.170. We need to account for this in some search metrics below. 
@@ -81,6 +82,13 @@ class SearchMetrics < IndexedOnlySearchTest
     assert_document_db_total_memory_usage(metrics)
     assert_document_db_total_disk_usage(metrics)
     assert_document_db_attribute_memory_usage(metrics)
+
+    flush_memory_index
+    sleep 1 # Wait for disk index to be used for search
+    assert_hitcount("f1:c", 2)
+    metrics = vespa.search['test'].first.get_total_metrics # Get metrics containing disk index
+    assert_document_db_size_on_disk(metrics)
+    assert_document_db_disk_io(metrics)
   end
 
   def test_metrics_imported_attributes
@@ -160,8 +168,32 @@ class SearchMetrics < IndexedOnlySearchTest
   end
 
   def flush_memory_index
-    vespa.search["search"].first.trigger_flush
+    vespa.search['test'].first.trigger_flush
     wait_for_log_matches(/.*flush\.complete.*memoryindex\.flush/, 1)
+  end
+
+  def assert_document_db_size_on_disk(metrics)
+    f1_size_on_disk = get_size_on_disk_for_field('f1', metrics)
+    puts "f1_size_on_disk = " + f1_size_on_disk.to_s
+    assert(1000 < f1_size_on_disk)
+  end
+
+  def assert_document_db_disk_io(metrics)
+    f1_disk_io = get_disk_io_for_field('f1', metrics)
+    puts "f1_disk_io = " + f1_disk_io.to_s
+    assert(1000 < f1_disk_io["sum"])
+    assert(0 < f1_disk_io["count"])
+  end
+
+  def get_size_on_disk_for_field(field_name, metrics)
+    metrics.get('content.proton.documentdb.ready.index_field.disk_usage.size_on_disk',
+                {"documenttype" => "test", "field" => field_name})["last"]
+  end
+
+
+  def get_disk_io_for_field(field_name, metrics)
+    metrics.get('content.proton.documentdb.ready.index_field.disk_usage.search_read_bytes',
+                {"documenttype" => "test", "field" => field_name})
   end
 
   def dump_metric_names(metrics)
