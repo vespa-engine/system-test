@@ -1,0 +1,50 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema music {
+
+  document music {
+
+    field title type string {
+      indexing: index | summary
+    }
+
+    field artist type string {
+      indexing: index | summary
+    }
+
+    field genre type string {
+      indexing: summary | attribute
+    }
+
+  }
+
+  fieldset default {
+    fields: title, artist
+  }
+
+  rank-profile base inherits default {
+    first-phase {
+        expression: nativeRank(artist) + nativeRank(title)
+    }
+
+    second-phase {
+        expression: firstPhase() + 1000
+    }
+  }
+
+  rank-profile diversity inherits base {
+    diversity {
+        attribute: genre
+        min-groups: 5
+    }
+  }
+
+  rank-profile diversity_many_groups inherits diversity {
+    diversity {
+        attribute: genre
+        min-groups: 60
+    }
+  }
+
+}
+
