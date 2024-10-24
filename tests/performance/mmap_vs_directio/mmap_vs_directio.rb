@@ -28,6 +28,7 @@ class MmapVsDirectIoTest < PerformanceTest
     start
 
     query_file_name = 'squad2-questions.fbench.141k.txt'
+    no_stop_words_query_file_name = 'squad2-questions.max-df-20.fbench.141k.txt'
     report_io_stat_deltas do
       feed_file('enwiki-20240801-pages.1M.jsonl.zst')
     end
@@ -47,6 +48,9 @@ class MmapVsDirectIoTest < PerformanceTest
       report_io_stat_deltas do
         benchmark_queries(query_file_name, 'mmap', clients, false)
       end
+      report_io_stat_deltas do
+        benchmark_queries(no_stop_words_query_file_name, 'mmap_no_stop_words', clients, false)
+      end
     end
 
     vespa.stop_content_node('search', 0)
@@ -64,6 +68,9 @@ class MmapVsDirectIoTest < PerformanceTest
     [8, 16, 32, 64].each do |clients|
       report_io_stat_deltas do
         benchmark_queries(query_file_name, 'directio', clients, false)
+      end
+      report_io_stat_deltas do
+        benchmark_queries(no_stop_words_query_file_name, 'directio_no_stop_words', clients, false)
       end
     end
 

@@ -1,2 +1,4 @@
 enwiki-20240801-pages.*.jsonl.zst
-squad2-questions.fbench.141k.txt
+squad2-questions*.txt
+squad2-questions*.txt.zst
+word_freqs.txt
