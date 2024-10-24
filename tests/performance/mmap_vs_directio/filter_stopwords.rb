@@ -9,6 +9,11 @@
 # ...
 # <term N>\t<term N document frequency>\n
 
+unless File.exist?('word_freqs.txt')
+  puts "Could not find file word_freqs.txt in the same directory as the script"
+  exit
+end
+
 max_df = 0.20
 stop_words = []
 File.open('word_freqs.txt', 'r') do |f|
