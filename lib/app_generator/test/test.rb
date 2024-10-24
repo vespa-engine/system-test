@@ -718,6 +718,17 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_engine)
   end
 
+  def test_that_search_io_can_be_specified
+    actual = SearchApp.new.search_io('DIRECTIO').services_xml
+
+    expected_config_fragment='
+      <search>
+        <io>DIRECTIO</io>
+      </search>'
+
+    assert_substring_ignore_whitespace(actual, expected_config_fragment)
+  end
+
   def test_doc_api_and_feeder_options
     actual = SearchApp.new.enable_document_api(FeederOptions.new.timeout(40)).services_xml
 

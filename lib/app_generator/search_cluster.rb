@@ -30,6 +30,7 @@ class SearchCluster
   chained_setter :persistence_threads
   chained_setter :resource_limits
   chained_setter :proton_resource_limits
+  chained_setter :search_io
   chained_forward :config, :config => :add
   chained_forward :docprocs, :docproc => :push
   chained_forward :node_groups, :group => :push
@@ -69,6 +70,7 @@ class SearchCluster
     @persistence_threads = nil
     @resource_limits = nil
     @proton_resource_limits = nil
+    @search_io = nil
   end
 
   def sd(file_name, params = {})
@@ -149,6 +151,9 @@ class SearchCluster
       if !@hwinfo_disk_writespeed.nil?
         proton.add("hwinfo", ConfigValue.new("disk", ConfigValue.new("writespeed", @hwinfo_disk_writespeed)))
       end
+    end
+    unless @search_io.nil?
+      proton.add('search', ConfigValue.new('io', @search_io))
     end
     XmlHelper.new(indent).to_xml(proton)
   end
