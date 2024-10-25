@@ -23,8 +23,11 @@ schema wikimedia {
   }
 
   rank-profile default {
+    rank-properties {
+      vespa.matching.weakand.stop_word_limit: 0.20
+    }
     first-phase {
-      expression: bm25(text)
+      expression: bm25(title) + bm25(text)
     }
   }
 
