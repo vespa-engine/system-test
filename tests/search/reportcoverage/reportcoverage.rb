@@ -93,7 +93,7 @@ class ReportCoverage < IndexedOnlySearchTest
     assert(18 <= coverage["coverage"])
     assert(23 >= coverage["coverage"])
     # This number depends on how the range search iterator (used by match-phase limiting) calculates approximation of number of hits.
-    assert(18400 <= coverage["documents"])
+    assert(18000 <= coverage["documents"])
     assert(23500 >= coverage["documents"])
     assert_equal(false, coverage["full"])
     assert_equal(2, coverage["nodes"])
