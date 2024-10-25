@@ -25,7 +25,6 @@ class DiversityMinGroups < IndexedOnlySearchTest
     assert_relevancy("query=rock&ranking=base", @expected_relevancy_best_doc, 0)
     assert_relevancy("query=rock&ranking=diversity_min_groups_5", @expected_relevancy_best_doc, 0)
     # Should get 1 hit that is doc 0, rest should have gone through second phase
-    # TODO: Fails with @docs = 20, works with @docs = 50
     check_relevancy("query=rock&ranking=diversity_min_groups_5", @expected_relevancy_rest, {0 => @expected_relevancy_best_doc})
   end
 
