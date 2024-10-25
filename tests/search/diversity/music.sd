@@ -29,20 +29,14 @@ schema music {
 
     second-phase {
         expression: firstPhase() + 1000
+        rerank-count: 100
     }
   }
 
-  rank-profile diversity inherits base {
+  rank-profile diversity_min_groups_5 inherits base {
     diversity {
         attribute: genre
         min-groups: 5
-    }
-  }
-
-  rank-profile diversity_many_groups inherits diversity {
-    diversity {
-        attribute: genre
-        min-groups: 60
     }
   }
 

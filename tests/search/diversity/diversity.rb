@@ -6,8 +6,7 @@ class DiversityMinGroups < IndexedOnlySearchTest
 
   def setup
     set_owner('hmusum')
-    @docs = 50
-    @expected_relevancy = 1000.3344587750165
+    @docs = 20
   end
 
   def test_diversity_min_groups
@@ -15,15 +14,19 @@ class DiversityMinGroups < IndexedOnlySearchTest
     start
     feed_docs
     wait_for_hitcount("query=sddocname:music", @docs)
-    # All docs match this query, but 1 doc has lower relevancy, see feed_docs()
-    assert_hitcount("query=cherub+rock", @docs)
-    assert_hitcount("query=cherub+rock&ranking=base", @docs)
 
-    assert_relevancy("query=cherub+rock&ranking=base", @expected_relevancy, 0)
-    assert_relevancy("query=cherub+rock&ranking=diversity", @expected_relevancy, 0)
-    # diversity.min-groups is 60 in the 'diversity_many_groups' rank profile, more than number of docs
-    # => not aenough docs to fulfill min-groups criteria
-    assert_relevancy("query=cherub+rock&ranking=diversity_many_groups", @expected_relevancy, 0)
+    # All docs match this query, but 1 doc has higher relevancy, see feed_docs()
+    puts "Query: 'rock'"
+    @expected_relevancy_best_doc = 1000.3818623835995
+    @expected_relevancy_rest = 1000.16343879032
+    @expected_relevancy_no_second_phase = 0.16343879032006287
+
+    assert_hitcount("query=rock", @docs)
+    assert_relevancy("query=rock&ranking=base", @expected_relevancy_best_doc, 0)
+    assert_relevancy("query=rock&ranking=diversity_min_groups_5", @expected_relevancy_best_doc, 0)
+    # Should get 1 hit that is doc 0, rest should have gone through second phase
+    # TODO: Fails with @docs = 20, works with @docs = 50
+    check_relevancy("query=rock&ranking=diversity_min_groups_5", @expected_relevancy_rest, {0 => @expected_relevancy_best_doc})
   end
 
   def feed_docs
@@ -40,6 +43,26 @@ class DiversityMinGroups < IndexedOnlySearchTest
       end
       vespa.document_api_v1.put(doc, :brief => true)
     }
+  end
+
+  def check_relevancy(query, default_relevance, hit_number_to_relevance_mapping, hits=10)
+    result = search(query)
+    assert_equal(hits, result.hit.length)
+    hits.times.each { |i|
+      puts "hit #{i} relevance = #{relevance(result, i)}"
+    }
+    puts "---\n"
+    hits.times.each { |i|
+      expected_relevance = hit_number_to_relevance_mapping[i]
+      expected_relevance = default_relevance unless expected_relevance
+      hit = result.hit[i]
+      relevance = relevance(result, i)
+      assert_approx(expected_relevance, relevance, 0.01, "expected: #{expected_relevance}, got #{relevance} for hit #{i}: #{hit}")
+    }
+  end
+
+  def relevance(result, index)
+    result.hit[index].field['relevancy'].to_f
   end
 
   def teardown
