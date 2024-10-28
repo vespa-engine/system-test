@@ -103,8 +103,7 @@ class MmapVsDirectIoTest < PerformanceTest
         documentapi(ContainerDocumentApi.new)).
       indexing_cluster('default').
       indexing_chain('indexing').
-      config(ConfigOverride.new('vespa.config.search.core.proton').
-        add('search', ConfigValue.new('io', search_direct_io ? 'DIRECTIO' : 'MMAP')))
+      search_io(search_direct_io ? 'DIRECTIO' : 'MMAP')
   end
 
   def report_io_stat_deltas
