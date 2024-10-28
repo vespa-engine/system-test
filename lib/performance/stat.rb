@@ -327,45 +327,50 @@ module Perf
         rb = TextReport::Builder.new(title,
                                      :duration => @duration,
                                      :n_ops => params[:n_ops])
+        filter = params[:filter] ? params[:filter] : [:sys, :net, :disk]
 
-        rb.open_group('System')
-        rb.single_metric('CPU utilization', m[:cpu_util] * 100.0, :suffix => '%')
-        rb.avg_metric('Number of forks done', m[:fork])
-        rb.avg_metric('Pages swapped out', m[:swap][:swapped_out], :warn_if_exceeding => 0)
-        rb.avg_metric('Pages swapped in', m[:swap][:swapped_in], :warn_if_exceeding => 0)
-        rb.close_group
-
-        rb.open_group('Network')
-        rb.open_group('IP')
-        rb.avg_metric('Packets sent', m[:network][:ip][:out_requests])
-        rb.avg_metric('Packets received', m[:network][:ip][:in_receives])
-        rb.close_group
-        rb.open_group('UDP')
-        rb.avg_metric('Datagrams sent', m[:network][:udp][:out_datagrams])
-        rb.avg_metric('Datagrams received', m[:network][:udp][:in_datagrams])
-        rb.avg_metric('Datagram receive errors', m[:network][:udp][:in_errors], :warn_if_exceeding => 0)
-        rb.close_group
-        rb.open_group('TCP')
-        rb.avg_metric('Connections established', m[:network][:tcp][:conn_est])
-        rb.avg_metric('Connections dropped', m[:network][:tcp][:conn_drop])
-        rb.avg_metric('Connections timed out', m[:network][:tcp][:conn_timeout], :warn_if_exceeding => 0)
-        rb.avg_metric('Segments sent', m[:network][:tcp][:out_segs])
-        rb.avg_metric('Segments received', m[:network][:tcp][:in_segs])
-        rb.avg_metric('Segments retransmitted', m[:network][:tcp][:retrans_segs])
-        rb.avg_metric('Listen overflows', m[:network][:tcp][:listen_overflow], :warn_if_exceeding => 0)
-        rb.close_group
-        m[:network][:if].each do |ni, ni_m|
-          rb.open_group("Interface '#{ni}'")
-          rb.avg_metric('Packets sent', ni_m[:out_packets])
-          rb.avg_metric('KiB sent', ni_m[:out_bytes] / 1024.0, :unit => 'KiB')
-          rb.single_metric('Avg sent packet size', ni_m[:out_bytes] / ni_m[:out_packets].to_f / 1024, :suffix => ' KiB')
-          rb.avg_metric('Packets received', ni_m[:in_packets])
-          rb.avg_metric('KiB received', ni_m[:in_bytes] / 1024, :unit => 'KiB')
-          rb.single_metric('Avg received packet size', ni_m[:in_bytes] / ni_m[:in_packets].to_f / 1024, :suffix => ' KiB')
+        if filter.include? :sys
+          rb.open_group('System')
+          rb.single_metric('CPU utilization', m[:cpu_util] * 100.0, :suffix => '%')
+          rb.avg_metric('Number of forks done', m[:fork])
+          rb.avg_metric('Pages swapped out', m[:swap][:swapped_out], :warn_if_exceeding => 0)
+          rb.avg_metric('Pages swapped in', m[:swap][:swapped_in], :warn_if_exceeding => 0)
           rb.close_group
         end
-        rb.close_group
-        if m[:disk] # not present on VMs
+
+        if filter.include? :net
+          rb.open_group('Network')
+          rb.open_group('IP')
+          rb.avg_metric('Packets sent', m[:network][:ip][:out_requests])
+          rb.avg_metric('Packets received', m[:network][:ip][:in_receives])
+          rb.close_group
+          rb.open_group('UDP')
+          rb.avg_metric('Datagrams sent', m[:network][:udp][:out_datagrams])
+          rb.avg_metric('Datagrams received', m[:network][:udp][:in_datagrams])
+          rb.avg_metric('Datagram receive errors', m[:network][:udp][:in_errors], :warn_if_exceeding => 0)
+          rb.close_group
+          rb.open_group('TCP')
+          rb.avg_metric('Connections established', m[:network][:tcp][:conn_est])
+          rb.avg_metric('Connections dropped', m[:network][:tcp][:conn_drop])
+          rb.avg_metric('Connections timed out', m[:network][:tcp][:conn_timeout], :warn_if_exceeding => 0)
+          rb.avg_metric('Segments sent', m[:network][:tcp][:out_segs])
+          rb.avg_metric('Segments received', m[:network][:tcp][:in_segs])
+          rb.avg_metric('Segments retransmitted', m[:network][:tcp][:retrans_segs])
+          rb.avg_metric('Listen overflows', m[:network][:tcp][:listen_overflow], :warn_if_exceeding => 0)
+          rb.close_group
+          m[:network][:if].each do |ni, ni_m|
+            rb.open_group("Interface '#{ni}'")
+            rb.avg_metric('Packets sent', ni_m[:out_packets])
+            rb.avg_metric('KiB sent', ni_m[:out_bytes] / 1024.0, :unit => 'KiB')
+            rb.single_metric('Avg sent packet size', ni_m[:out_bytes] / ni_m[:out_packets].to_f / 1024, :suffix => ' KiB')
+            rb.avg_metric('Packets received', ni_m[:in_packets])
+            rb.avg_metric('KiB received', ni_m[:in_bytes] / 1024, :unit => 'KiB')
+            rb.single_metric('Avg received packet size', ni_m[:in_bytes] / ni_m[:in_packets].to_f / 1024, :suffix => ' KiB')
+            rb.close_group
+          end
+          rb.close_group
+        end
+        if filter.include? :disk and m[:disk] # not present on VMs
           rb.open_group('Disks')
           bytes_per_sector = 512
           m[:disk].each do |dev, s|

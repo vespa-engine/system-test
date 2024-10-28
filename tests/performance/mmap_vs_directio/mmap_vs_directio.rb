@@ -22,13 +22,14 @@ class MmapVsDirectIoTest < PerformanceTest
   def test_wikipedia_corpus_search_performance
     set_description('Test search performance on English Wikipedia corpus and query set '+
                     'when file reading is done via either mmap or Direct IO')
-    deploy_app(make_app(search_direct_io: false))
+    deploy_app(make_app(search_io_mode: 'MMAP'))
     @search_node = vespa.search['search'].first
     @container = vespa.container.values.first
     start
 
-    query_file_name = 'squad2-questions.fbench.141k.txt'
-    no_stop_words_query_file_name = 'squad2-questions.max-df-20.fbench.141k.txt'
+    @query_file_name = 'squad2-questions.fbench.141k.txt'
+    @no_stop_words_query_file_name = 'squad2-questions.max-df-20.fbench.141k.txt'
+
     report_io_stat_deltas do
       feed_file('enwiki-20240801-pages.1M.jsonl.zst')
     end
@@ -40,41 +41,39 @@ class MmapVsDirectIoTest < PerformanceTest
     # Note that we don't tag as "warmup=true", as we want profiling enabled here as well.
     puts "Warming up mmap'ed region with 64 clients"
     report_io_stat_deltas do
-      benchmark_queries(query_file_name, 'mmap_warmup', 64, false)
-    end
-    puts "Searching with mmap-backed search stores"
-
-    [8, 16, 32, 64].each do |clients|
-      report_io_stat_deltas do
-        benchmark_queries(query_file_name, 'mmap', clients, false)
-      end
-      report_io_stat_deltas do
-        benchmark_queries(no_stop_words_query_file_name, 'mmap_no_stop_words', clients, false)
-      end
+      benchmark_queries(@query_file_name, 'mmap_warmup', 64, false)
     end
 
-    vespa.stop_content_node('search', 0)
-
-    puts "Redeploying with Direct IO for searches"
-    deploy_app(make_app(search_direct_io: true))
-    # Model has changed under our feet, must refresh remote objects.
-    @search_node = vespa.search['search'].first
-    @container = vespa.container.values.first
-
-    vespa.start_content_node('search', 0)
-    sleep 2 # Allow for container health pings to catch up
-
-    puts "Searching with Direct IO-backed search stores"
-    [8, 16, 32, 64].each do |clients|
-      report_io_stat_deltas do
-        benchmark_queries(query_file_name, 'directio', clients, false)
-      end
-      report_io_stat_deltas do
-        benchmark_queries(no_stop_words_query_file_name, 'directio_no_stop_words', clients, false)
-      end
+    ['MMAP', 'DIRECTIO', 'NORMAL'].each do |io_mode|
+      deploy_and_run_queries(search_io_mode: io_mode)
     end
 
     stop
+  end
+
+  # Feeding must already have been done (using MMAP search_io_mode)
+  def deploy_and_run_queries(search_io_mode:)
+    if search_io_mode != 'MMAP'
+      vespa.stop_content_node('search', 0)
+      puts "Redeploying app with `search.io` mode '#{search_io_mode}'"
+      deploy_app(make_app(search_io_mode: search_io_mode))
+      @search_node = vespa.search['search'].first
+      @container = vespa.container.values.first
+      vespa.start_content_node('search', 0)
+      sleep 2 # Allow for container health pings to catch up
+    end
+
+    pretty_mode = search_io_mode.downcase
+    puts "Searching with '#{pretty_mode}' search store backing"
+    [16, 32, 64].each do |clients|
+      report_io_stat_deltas do
+        benchmark_queries(@query_file_name, pretty_mode, clients, false)
+      end
+      report_io_stat_deltas do
+        benchmark_queries(@no_stop_words_query_file_name, "#{pretty_mode}_no_stop_words", clients, false)
+      end
+    end
+
   end
 
   def feed_file(feed_file, n_docs = -1)
@@ -94,7 +93,7 @@ class MmapVsDirectIoTest < PerformanceTest
     download_file_from_s3(file_name, vespa_node, 'wikipedia')
   end
 
-  def make_app(search_direct_io:)
+  def make_app(search_io_mode:)
     SearchApp.new.sd(selfdir + 'wikimedia.sd').
       container(Container.new('default').
         jvmoptions("-Xms16g -Xmx16g").
@@ -103,14 +102,14 @@ class MmapVsDirectIoTest < PerformanceTest
         documentapi(ContainerDocumentApi.new)).
       indexing_cluster('default').
       indexing_chain('indexing').
-      search_io(search_direct_io ? 'DIRECTIO' : 'MMAP')
+      search_io(search_io_mode)
   end
 
   def report_io_stat_deltas
     stat_before = @search_node.performance_snapshot
     yield
     stat_after = @search_node.performance_snapshot
-    puts Perf::Stat::snapshot_period(stat_before, stat_after).printable_result
+    puts Perf::Stat::snapshot_period(stat_before, stat_after).printable_result({:filter => [:sys, :disk]})
   end
 
   # TODO dedupe
