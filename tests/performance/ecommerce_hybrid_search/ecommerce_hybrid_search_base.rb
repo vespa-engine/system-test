@@ -56,6 +56,14 @@ class EcommerceHybridSearchTestBase < PerformanceTest
     vespa_node.execute("head -12 #{result_file}")
   end
 
+  def write_performance_results_to_json_file
+    file_name = @dirs.resultoutput + "all_perf.json"
+    puts "Writing all performance results to '#{file_name}'"
+    File.open(file_name, "w") do |file|
+      get_performance_results.each { |result| file.puts(result.to_json) }
+    end
+  end
+
   def teardown
     super
   end

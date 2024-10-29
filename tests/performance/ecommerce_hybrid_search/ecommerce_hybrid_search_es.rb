@@ -29,6 +29,8 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchESTestBase
     sleep 2
     benchmark_queries("during_refeed", true, [1, 16, 64], {:runtime => 9})
     feed_thread.join
+
+    write_performance_results_to_json_file
   end
 
   def teardown
