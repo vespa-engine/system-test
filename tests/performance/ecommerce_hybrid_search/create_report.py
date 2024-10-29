@@ -181,7 +181,7 @@ def add_bar_chart_to_figure(fig, row, col, df, x_col, y_col):
         )
 
 
-def add_bar_chart_with_text_label_to_figure(fig, row, col, df, x_col, y_col, text_col):
+def add_bar_chart_with_text_label_to_figure(fig, row, col, df, x_col, y_col, text_col, text_font_size=10):
     for system in df['system'].unique():
         filtered_df = df[df['system'] == system]
         fig.add_trace(
@@ -192,7 +192,7 @@ def add_bar_chart_with_text_label_to_figure(fig, row, col, df, x_col, y_col, tex
                 text=filtered_df[text_col],
                 textposition='auto',
                 textangle=0,
-                textfont=dict(size=10),
+                textfont=dict(size=text_font_size),
                 marker_color=get_system_color(system),
                 showlegend=(row == 1 and col == 1),
             ),
@@ -242,8 +242,17 @@ def generate_feed_summary_figure(vespa_file, es_file, output):
     fig.write_image(file_name, format='png', scale=1.5)
 
 
-def generate_query_summary_figure(title, file_name, df):
+def generate_query_summary_figure(title, file_name, df, text_label_font_size=7):
     print(f'\nGenerate query summary figure: {file_name}:')
+    first_system = True
+    for system in df['system'].unique():
+        # Calculate ratios to compare all systems with 'Elasticsearch'.
+        if system != 'Elasticsearch':
+            calculate_ratio_column(df, system, 'Elasticsearch', 'type', 'l_avg', 'l_avg_ratio', inverse_ratio=True, init_ratio_col=first_system)
+            calculate_ratio_column(df, system, 'Elasticsearch', 'type', 'l_99p', 'l_99p_ratio', inverse_ratio=True, init_ratio_col=first_system)
+            calculate_ratio_column(df, system, 'Elasticsearch', 'type', 'qps', 'qps_ratio', init_ratio_col=first_system)
+            calculate_ratio_column(df, system, 'Elasticsearch', 'type', 'qps_per_cpu', 'qps_per_cpu_ratio', init_ratio_col=first_system)
+            first_system = False
     print(df)
     fig = make_subplots(
         rows=2,
@@ -254,10 +263,10 @@ def generate_query_summary_figure(title, file_name, df):
             "Queries per Second (QPS)", "QPS per CPU Core"
         )
     )
-    add_bar_chart_to_figure(fig, 1, 1, df, 'type', 'l_avg')
-    add_bar_chart_to_figure(fig, 1, 2, df, 'type', 'l_99p')
-    add_bar_chart_to_figure(fig, 2, 1, df, 'type', 'qps')
-    add_bar_chart_to_figure(fig, 2, 2, df, 'type', 'qps_per_cpu')
+    add_bar_chart_with_text_label_to_figure(fig, 1, 1, df, 'type', 'l_avg', 'l_avg_ratio', text_font_size=text_label_font_size)
+    add_bar_chart_with_text_label_to_figure(fig, 1, 2, df, 'type', 'l_99p', 'l_99p_ratio', text_font_size=text_label_font_size)
+    add_bar_chart_with_text_label_to_figure(fig, 2, 1, df, 'type', 'qps', 'qps_ratio', text_font_size=text_label_font_size)
+    add_bar_chart_with_text_label_to_figure(fig, 2, 2, df, 'type', 'qps_per_cpu', 'qps_per_cpu_ratio', text_font_size=text_label_font_size)
     fig.update_yaxes(nticks=8)
     fig.update_annotations(font_size=12) # Reduce the font size of subplot titles
     fig.update_layout(
@@ -333,13 +342,14 @@ def generate_query_figures(vespa_file, es_files, output):
         file_prefix = f'{output}/query_perf'
         generate_query_summary_figure(f'Query performance after initial feeding {clients_text}',
                                       f'{file_prefix}_after_feed_{clients}_clients.png',
-                                      df.query(f"phase == 'after_flush' and filter == False and clients == {clients}"))
+                                      df.query(f"phase == 'after_flush' and filter == False and clients == {clients}").copy())
         generate_query_summary_figure(f'Filter query performance after initial feeding {clients_text}',
                                       f'{file_prefix}_filter_after_feed_{clients}_clients.png',
-                                      df.query(f"phase == 'after_flush' and filter == True and clients == {clients}"))
+                                      df.query(f"phase == 'after_flush' and filter == True and clients == {clients}").copy())
         generate_query_summary_figure(f'Query performance during re-feeding {clients_text}',
                                       f'{file_prefix}_during_feed_{clients}_clients.png',
-                                      df.query(f"phase == 'during_refeed' and filter == True and clients == {clients}"))
+                                      df.query(f"phase == 'during_refeed' and filter == True and clients == {clients}").copy(),
+                                      text_label_font_size=10)
 
     # Convert CPU core to CPU percentage usage
     df['cpu_usage'] = (df['cpu'] / test_cpus) * 100
@@ -355,7 +365,7 @@ def generate_query_figures(vespa_file, es_files, output):
     generate_overall_qps_figure(output, df)
 
 
-def calculate_ratio_column(df, system_a, system_b, merge_on_col, ratio_of_col, ratio_col_name = 'ratio'):
+def calculate_ratio_column(df, system_a, system_b, merge_on_col, ratio_of_col, ratio_col_name = 'ratio', inverse_ratio = False, init_ratio_col = True):
     a_df = df[df['system'] == system_a].copy()
     b_df = df[df['system'] == system_b].copy()
     # Merge the dataframes of the two systems and create unique column names (other than merge_on_col)
@@ -363,10 +373,14 @@ def calculate_ratio_column(df, system_a, system_b, merge_on_col, ratio_of_col, r
     merged_df = pd.merge(a_df, b_df, on=merge_on_col, suffixes=(system_a, system_b))
 
     # Calculate the ratio between system_a and system_b for the column ratio_of_col.
-    merged_df[ratio_col_name] = merged_df[f"{ratio_of_col}{system_a}"] / merged_df[f"{ratio_of_col}{system_b}"]
+    if inverse_ratio: # typical for latency metrics
+        merged_df[ratio_col_name] = merged_df[f"{ratio_of_col}{system_b}"] / merged_df[f"{ratio_of_col}{system_a}"]
+    else:
+        merged_df[ratio_col_name] = merged_df[f"{ratio_of_col}{system_a}"] / merged_df[f"{ratio_of_col}{system_b}"]
     merged_df[ratio_col_name] = merged_df[ratio_col_name].round(1).astype(str) + 'x'
 
-    df[ratio_col_name] = None
+    if init_ratio_col:
+        df[ratio_col_name] = None
     # Create a dataframe that provides a mapping from merge_on_col to the ratio value.
     ratio_map = merged_df[[merge_on_col, ratio_col_name]].set_index(merge_on_col)[ratio_col_name]
     # Set ratios to only the rows of system_a, using the mapping to lookup the ratio values.
