@@ -20,6 +20,8 @@ class EcommerceHybridSearchESForceMerge1Test < EcommerceHybridSearchESTestBase
     dump_jvm_stats
     benchmark_queries("after_merge", false, [1, 2, 4, 8, 16, 32, 64])
     benchmark_queries("after_merge", true, [1, 2, 4, 8, 16, 32, 64])
+
+    write_performance_results_to_json_file
   end
 
   def teardown
