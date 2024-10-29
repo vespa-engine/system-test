@@ -171,6 +171,10 @@ module Perf
         metrics[:cpu]['processes'][0]
       end
 
+      def get_context_switches(metrics)
+        metrics[:cpu]['ctxt'][0]
+      end
+
       def get_network(metrics)
         net = metrics[:net]
         {
@@ -221,11 +225,12 @@ module Perf
 
       def host_to_internal(metrics)
         {
-          :cpu_util => get_cpu_util(metrics),
-          :fork     => get_forks(metrics),
-          :network  => get_network(metrics),
-          :swap     => get_swap(metrics),
-          :disk     => get_disks(metrics)
+          :cpu_util         => get_cpu_util(metrics),
+          :context_switches => get_context_switches(metrics),
+          :fork             => get_forks(metrics),
+          :network          => get_network(metrics),
+          :swap             => get_swap(metrics),
+          :disk             => get_disks(metrics)
         }
       end
 
@@ -332,6 +337,7 @@ module Perf
         if filter.include? :sys
           rb.open_group('System')
           rb.single_metric('CPU utilization', m[:cpu_util] * 100.0, :suffix => '%')
+          rb.avg_metric('Number of context switches', m[:context_switches])
           rb.avg_metric('Number of forks done', m[:fork])
           rb.avg_metric('Pages swapped out', m[:swap][:swapped_out], :warn_if_exceeding => 0)
           rb.avg_metric('Pages swapped in', m[:swap][:swapped_in], :warn_if_exceeding => 0)
