@@ -41,14 +41,19 @@ class WandStopWordsTest < PerformanceTest
   def test_wand_with_stopwords
     set_description('Test performance and quality of Vespa Wand with stop words')
     deploy_and_start
-    @doc_count = 1000000
-    feed_and_wait_for_docs('wikimedia', @doc_count,
-                           { :file => selfdir + 'just-1k.json',
-                             :client => :vespa_feed_client
-                           })
-    assert_hitcount('yql=select title from wikimedia where true', @doc_count)
-    # measure_wand_quality
-    # feed_file('enwiki-20240801-pages.1M.jsonl.zst')
+    if File.exist?(selfdir + 'just-1k.json')
+      # for faster turnaround during development:
+      doc_count = 1000
+      feed_and_wait_for_docs('wikimedia', doc_count,
+                             { :file => selfdir + 'just-1k.json',
+                               :client => :vespa_feed_client
+                             })
+      assert_hitcount('yql=select title from wikimedia where true', doc_count)
+      measure_wand_quality
+    end
+    doc_count = 1000000
+    feed_file('enwiki-20240801-pages.1M.jsonl.zst')
+    wait_for_hitcount('yql=select title from wikimedia where true', doc_count)
     measure_wand_quality
   end
 
@@ -80,7 +85,7 @@ class WandStopWordsTest < PerformanceTest
     q_file = download_file('squad2-questions.raw.141k.txt.zst', vespa.adminserver)
     vespa.adminserver.execute("zstdcat #{q_file} | head -n 1000 > #{q_file}.raw")
     vespa.adminserver.execute("mv #{q_file} #{selfdir}", :exceptiononfailure => false)
-    (1..50).each do |counter|
+    (1..500).each do |counter|
       line = vespa.adminserver.execute("sed -n #{counter}p < #{q_file}.raw", :noecho => true)
       line.gsub!(/\W/, ' ')
       q = "/search/?query=#{line}&hits=100&timeout=100"
@@ -148,7 +153,7 @@ class WandStopWordsTest < PerformanceTest
   def process(legend, type, values)
     sz = values.size
     values.sort!
-    report(legend, values[sz/2], values.sum / sz)
+    report(legend, type, values[sz/2], values.sum / sz)
   end
 
   def report(legend, type, median, avg)
