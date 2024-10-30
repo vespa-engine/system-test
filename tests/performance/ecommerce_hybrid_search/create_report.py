@@ -17,8 +17,13 @@ def get_cpu(metrics):
     regex = re.compile(r'\["cpuutil", "[^"]+"\]')
     for key, value in metrics.items():
         if regex.match(key):
+            # If the performance tests are run on a machine where CPU-util sampling
+            # is not available (e.g. in a virtual machine), assume that 1 CPU core was used
+            # to avoid division by zero when calculating 'per CPU core' metrics.
+            if float(value) == 0.0:
+                return 1.0
             return float(value) * machine_cpus
-    return 0.0
+    return 1.0
 
 
 def load_feed_results(file_name, system):
@@ -281,8 +286,8 @@ def generate_query_summary_figure(title, file_name, df, text_label_font_size=7):
     fig.write_image(file_name, format='png', scale=1.5)
 
 
-def generate_query_hockey_stick_figure(title, file_name, df):
-    print(f'\nGenerate query hockey stick figure: {file_name}:')
+def generate_query_qps_figure(title, file_name, df):
+    print(f'\nGenerate query qps figure: {file_name}:')
     print(df)
     fig = make_subplots(rows=3, cols=1, vertical_spacing=0.08)
     add_scatter_plot_to_figure(fig, 1, 1, df, 'qps', 'l_avg')
@@ -358,9 +363,9 @@ def generate_query_figures(vespa_file, es_files, output):
             filtered_df = df.query(f"phase == 'after_flush' and filter == {filter_query} and type == '{type}'")
             type_text = type + (' filtered' if filter_query else '')
             file_suffix = ('filter_' if filter_query else '') + type
-            generate_query_hockey_stick_figure(f'QPS for {type_text} queries after initial feeding',
-                                               f'{output}/query_hockey_stick_{file_suffix}.png',
-                                               filtered_df)
+            generate_query_qps_figure(f'QPS for {type_text} queries after initial feeding',
+                                      f'{output}/query_qps_{file_suffix}.png',
+                                      filtered_df)
 
     generate_overall_qps_figure(output, df)
 
@@ -430,10 +435,19 @@ def generate_overall_summary_figure(vespa_file, es_files, output):
 def main():
     parser = argparse.ArgumentParser(description="Tool that summarizes feed and query results "
                                                  "between Vespa and ES runs of the performance test")
+    # Prerequisites:
+    # pip install -r requirements.txt
+    #
     # How to use:
-    # The results of a performance test run are logged as JSON in the test log output under:
-    # '#### Performance results ####'
-    # Create a file with these results, one JSON object (per line) per data sample.
+    # 1) If running the test locally using run-perf-test.sh the results are placed in perf_results/8.427.7/
+    # 2) If extracting the results from a performance test run on factory:
+    #   The results are logged as JSON in the test log output under:
+    #   '#### Performance results ####'
+    #   Create a file with these results, one JSON object (per line) per data sample.
+    #
+    # To generate all figures:
+    # python3 create_report.py --machine_cpus 128 --test_cpus 62 --output report_output perf_results/8.427.7/vespa.json perf_results/8.427.7/elasticsearch.json perf_results/8.427.7/elasticsearch-force-merged.json figure
+    #
     parser.add_argument('vespa_file', type=str, help='Path to Vespa result file')
     parser.add_argument('es_files', nargs='+', help='Path to ES result file(s)')
     parser.add_argument('report_type',
