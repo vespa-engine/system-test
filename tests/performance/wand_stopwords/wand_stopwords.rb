@@ -71,16 +71,22 @@ class WandStopWordsTest < PerformanceTest
     waQ = []
     wa20Q = []
     wa05Q = []
+    waD20Q = []
+    waD05Q = []
     andH = []
     orH = []
     waH = []
     wa20H = []
     wa05H = []
+    waD20H = []
+    waD05H = []
     andT = []
     orT = []
     waT = []
     wa20T = []
     wa05T = []
+    waD20T = []
+    waD05T = []
     counter = 0
     q_file = download_file('squad2-questions.raw.141k.txt.zst', vespa.adminserver)
     vespa.adminserver.execute("zstdcat #{q_file} | head -n 1000 > #{q_file}.raw")
@@ -95,16 +101,22 @@ class WandStopWordsTest < PerformanceTest
       waQ.append(h.field['weakAndQuality'])
       wa20Q.append(h.field['weakAndQuality20'])
       wa05Q.append(h.field['weakAndQuality05'])
+      waD20Q.append(h.field['weakAndQualityD20'])
+      waD05Q.append(h.field['weakAndQualityD05'])
       andH.append(h.field['andHits'])
       orH.append(h.field['orHits'])
       waH.append(h.field['weakAndHits'])
       wa20H.append(h.field['weakAndHits20'])
       wa05H.append(h.field['weakAndHits05'])
+      waD20H.append(h.field['weakAndHitsD20'])
+      waD05H.append(h.field['weakAndHitsD05'])
       andT.append(h.field['andTime'])
       orT.append(h.field['orTime'])
       waT.append(h.field['weakAndTime'])
       wa20T.append(h.field['weakAndTime20'])
       wa05T.append(h.field['weakAndTime05'])
+      waD20T.append(h.field['weakAndTimeD20'])
+      waD05T.append(h.field['weakAndTimeD05'])
       quality = h.field['weakAndQuality']
       wantedHits = max(h.field['andHits'], min(100, h.field['orHits']))
       hitsFactor = (1000 * h.field['weakAndHits']) / wantedHits
@@ -121,17 +133,23 @@ class WandStopWordsTest < PerformanceTest
     process("WeakAnd-100-recall", "recall@100", waQ)
     process("WeakAnd-20-recall",  "recall@100", wa20Q)
     process("WeakAnd-5-recall",   "recall@100", wa05Q)
+    process("WeakAnd-D20-recall",  "recall@100", waD20Q)
+    process("WeakAnd-D5-recall",   "recall@100", waD05Q)
 
     process("AND-hits",         "hits", andH)
     process("WeakAnd-100-hits", "hits", waH)
     process("WeakAnd-20-hits",  "hits", wa20H)
     process("WeakAnd-5-hits",   "hits", wa05H)
+    process("WeakAnd-D20-hits",  "hits", waD20H)
+    process("WeakAnd-D5-hits",   "hits", waD05H)
     process("OR-hits",          "hits", orH)
 
     process("AND-ms",         "latency", andT)
     process("WeakAnd-100-ms", "latency", waT)
     process("WeakAnd-20-ms",  "latency", wa20T)
     process("WeakAnd-5-ms",   "latency", wa05T)
+    process("WeakAnd-D20-ms",  "latency", waD20T)
+    process("WeakAnd-D5-ms",   "latency", waD05T)
     process("OR-ms",          "latency", orT)
   end
 
