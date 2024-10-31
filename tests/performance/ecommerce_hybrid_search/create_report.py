@@ -351,8 +351,8 @@ def generate_query_figures(vespa_file, es_files, output):
         generate_query_summary_figure(f'Filter query performance after initial feeding {clients_text}',
                                       f'{file_prefix}_filter_after_feed_{clients}_clients.png',
                                       df.query(f"phase == 'after_flush' and filter == True and clients == {clients}").copy())
-        generate_query_summary_figure(f'Query performance during re-feeding {clients_text}',
-                                      f'{file_prefix}_during_feed_{clients}_clients.png',
+        generate_query_summary_figure(f'Filter query performance during re-feeding {clients_text}',
+                                      f'{file_prefix}_filter_during_feed_{clients}_clients.png',
                                       df.query(f"phase == 'during_refeed' and filter == True and clients == {clients}").copy(),
                                       text_label_font_size=10)
 
