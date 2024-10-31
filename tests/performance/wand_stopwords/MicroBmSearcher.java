@@ -91,27 +91,25 @@ public class MicroBmSearcher extends Searcher {
         var andSet = getHitIds(andResult);
 
         Query weakAndQuery20 = changeRoot(weakAndQuery, new WeakAndItem());
-        weakAndQuery20.properties().set("rankproperty.vespa.matching.weakand.stop_word_limit", "0.20");
+        weakAndQuery20.properties().set("rankproperty.vespa.matching.weakand.stop_word_adjust_limit", "0.20");
         Result weakAndResult20 = execution.search(weakAndQuery20);
         execution.fill(weakAndResult20);
         var weakAndSet20 = getHitIds(weakAndResult20);
 
         Query weakAndQuery05 = changeRoot(weakAndQuery, new WeakAndItem());
-        weakAndQuery05.properties().set("rankproperty.vespa.matching.weakand.stop_word_limit", "0.05");
+        weakAndQuery05.properties().set("rankproperty.vespa.matching.weakand.stop_word_adjust_limit", "0.05");
         Result weakAndResult05 = execution.search(weakAndQuery05);
         execution.fill(weakAndResult05);
         var weakAndSet05 = getHitIds(weakAndResult05);
 
         Query weakAndQueryD20 = changeRoot(weakAndQuery, new WeakAndItem());
-        weakAndQueryD20.properties().set("rankproperty.vespa.matching.weakand.stop_word_limit", "0.20");
-        weakAndQueryD20.properties().set("rankproperty.vespa.matching.weakand.stop_word_strategy", "drop");
+        weakAndQueryD20.properties().set("rankproperty.vespa.matching.weakand.stop_word_drop_limit", "0.20");
         Result weakAndResultD20 = execution.search(weakAndQueryD20);
         execution.fill(weakAndResultD20);
         var weakAndSetD20 = getHitIds(weakAndResultD20);
 
         Query weakAndQueryD05 = changeRoot(weakAndQuery, new WeakAndItem());
-        weakAndQueryD05.properties().set("rankproperty.vespa.matching.weakand.stop_word_limit", "0.05");
-        weakAndQueryD05.properties().set("rankproperty.vespa.matching.weakand.stop_word_strategy", "drop");
+        weakAndQueryD05.properties().set("rankproperty.vespa.matching.weakand.stop_word_drop_limit", "0.05");
         Result weakAndResultD05 = execution.search(weakAndQueryD05);
         execution.fill(weakAndResultD05);
         var weakAndSetD05 = getHitIds(weakAndResultD05);
