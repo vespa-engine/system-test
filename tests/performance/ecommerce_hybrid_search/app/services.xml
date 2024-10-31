@@ -20,8 +20,6 @@
         <documents>
             <document type="product" mode="index" />
         </documents>
-        <!-- TODO: Tune bucket-splitting minimum-bits? -->
-        <!-- TODO: Tune feeding concurrency? -->
         <nodes>
             <node hostalias="node1" distribution-key="0" />
         </nodes>
