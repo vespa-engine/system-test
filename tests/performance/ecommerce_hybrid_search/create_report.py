@@ -342,7 +342,7 @@ def generate_overall_qps_figure(output, df):
 
 def generate_query_figures(vespa_file, es_files, output):
     df = load_all_query_results(vespa_file, es_files)
-    for clients in [1, 16]:
+    for clients in [1, 16, 64]:
         clients_text = f'({clients} client' + (')' if clients == 1 else 's)')
         file_prefix = f'{output}/query_perf'
         generate_query_summary_figure(f'Query performance after initial feeding {clients_text}',
