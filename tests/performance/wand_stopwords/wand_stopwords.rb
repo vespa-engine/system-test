@@ -69,8 +69,8 @@ class WandStopWordsTest < PerformanceTest
     andQ = []
     orQ = []
     waQ = []
-    waA20Q = []
-    waA05Q = []
+    waA10Q = []
+    waA02Q = []
     waS20Q = []
     waS05Q = []
     waD20Q = []
@@ -79,8 +79,8 @@ class WandStopWordsTest < PerformanceTest
     andH = []
     orH = []
     waH = []
-    waA20H = []
-    waA05H = []
+    waA10H = []
+    waA02H = []
     waS20H = []
     waS05H = []
     waD20H = []
@@ -89,8 +89,8 @@ class WandStopWordsTest < PerformanceTest
     andT = []
     orT = []
     waT = []
-    waA20T = []
-    waA05T = []
+    waA10T = []
+    waA02T = []
     waS20T = []
     waS05T = []
     waD20T = []
@@ -108,8 +108,8 @@ class WandStopWordsTest < PerformanceTest
       h = r.hit[0]
       andQ.append(h.field['andQuality'])
       waQ.append(h.field['weakAndQuality'])
-      waA20Q.append(h.field['weakAndQualityA20'])
-      waA05Q.append(h.field['weakAndQualityA05'])
+      waA10Q.append(h.field['weakAndQualityA10'])
+      waA02Q.append(h.field['weakAndQualityA02'])
       waS20Q.append(h.field['weakAndQualityS20'])
       waS05Q.append(h.field['weakAndQualityS05'])
       waD20Q.append(h.field['weakAndQualityD20'])
@@ -118,8 +118,8 @@ class WandStopWordsTest < PerformanceTest
       andH.append(h.field['andHits'])
       orH.append(h.field['orHits'])
       waH.append(h.field['weakAndHits'])
-      waA20H.append(h.field['weakAndHitsA20'])
-      waA05H.append(h.field['weakAndHitsA05'])
+      waA10H.append(h.field['weakAndHitsA10'])
+      waA02H.append(h.field['weakAndHitsA02'])
       waS20H.append(h.field['weakAndHitsS20'])
       waS05H.append(h.field['weakAndHitsS05'])
       waD20H.append(h.field['weakAndHitsD20'])
@@ -128,8 +128,8 @@ class WandStopWordsTest < PerformanceTest
       andT.append(h.field['andTime'])
       orT.append(h.field['orTime'])
       waT.append(h.field['weakAndTime'])
-      waA20T.append(h.field['weakAndTimeA20'])
-      waA05T.append(h.field['weakAndTimeA05'])
+      waA10T.append(h.field['weakAndTimeA10'])
+      waA02T.append(h.field['weakAndTimeA02'])
       waS20T.append(h.field['weakAndTimeS20'])
       waS05T.append(h.field['weakAndTimeS05'])
       waD20T.append(h.field['weakAndTimeD20'])
@@ -149,8 +149,8 @@ class WandStopWordsTest < PerformanceTest
     puts "== Average and median over #{sz} results =="
     process("AND-recall",         "recall@100", andQ)
     process("WeakAnd-recall",     "recall@100", waQ)
-    process("WeakAnd-A20-recall", "recall@100", waA20Q)
-    process("WeakAnd-A5-recall",  "recall@100", waA05Q)
+    process("WeakAnd-A10-recall", "recall@100", waA10Q)
+    process("WeakAnd-A2-recall",  "recall@100", waA02Q)
     process("WeakAnd-S20-recall", "recall@100", waS20Q)
     process("WeakAnd-S5-recall",  "recall@100", waS05Q)
     process("WeakAnd-D20-recall", "recall@100", waD20Q)
@@ -159,8 +159,8 @@ class WandStopWordsTest < PerformanceTest
 
     process("AND-hits",         "hits", andH)
     process("WeakAnd-hits",     "hits", waH)
-    process("WeakAnd-A20-hits", "hits", waA20H)
-    process("WeakAnd-A5-hits",  "hits", waA05H)
+    process("WeakAnd-A10-hits", "hits", waA10H)
+    process("WeakAnd-A2-hits",  "hits", waA02H)
     process("WeakAnd-S20-hits", "hits", waS20H)
     process("WeakAnd-S5-hits",  "hits", waS05H)
     process("WeakAnd-D20-hits", "hits", waD20H)
@@ -170,8 +170,8 @@ class WandStopWordsTest < PerformanceTest
 
     process("AND-ms",         "latency", andT)
     process("WeakAnd-ms",     "latency", waT)
-    process("WeakAnd-A20-ms", "latency", waA20T)
-    process("WeakAnd-A5-ms",  "latency", waA05T)
+    process("WeakAnd-A10-ms", "latency", waA10T)
+    process("WeakAnd-A2-ms",  "latency", waA02T)
     process("WeakAnd-S20-ms", "latency", waS20T)
     process("WeakAnd-S5-ms",  "latency", waS05T)
     process("WeakAnd-D20-ms", "latency", waD20T)
