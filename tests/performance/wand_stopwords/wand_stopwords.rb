@@ -69,24 +69,33 @@ class WandStopWordsTest < PerformanceTest
     andQ = []
     orQ = []
     waQ = []
-    wa20Q = []
-    wa05Q = []
+    waA10Q = []
+    waA02Q = []
+    waS20Q = []
+    waS05Q = []
     waD20Q = []
     waD05Q = []
+    waXQ = []
     andH = []
     orH = []
     waH = []
-    wa20H = []
-    wa05H = []
+    waA10H = []
+    waA02H = []
+    waS20H = []
+    waS05H = []
     waD20H = []
     waD05H = []
+    waXH = []
     andT = []
     orT = []
     waT = []
-    wa20T = []
-    wa05T = []
+    waA10T = []
+    waA02T = []
+    waS20T = []
+    waS05T = []
     waD20T = []
     waD05T = []
+    waXT = []
     counter = 0
     q_file = download_file('squad2-questions.raw.141k.txt.zst', vespa.adminserver)
     vespa.adminserver.execute("zstdcat #{q_file} | head -n 1000 > #{q_file}.raw")
@@ -99,24 +108,33 @@ class WandStopWordsTest < PerformanceTest
       h = r.hit[0]
       andQ.append(h.field['andQuality'])
       waQ.append(h.field['weakAndQuality'])
-      wa20Q.append(h.field['weakAndQuality20'])
-      wa05Q.append(h.field['weakAndQuality05'])
+      waA10Q.append(h.field['weakAndQualityA10'])
+      waA02Q.append(h.field['weakAndQualityA02'])
+      waS20Q.append(h.field['weakAndQualityS20'])
+      waS05Q.append(h.field['weakAndQualityS05'])
       waD20Q.append(h.field['weakAndQualityD20'])
       waD05Q.append(h.field['weakAndQualityD05'])
+      waXQ.append(h.field['weakAndQualityX'])
       andH.append(h.field['andHits'])
       orH.append(h.field['orHits'])
       waH.append(h.field['weakAndHits'])
-      wa20H.append(h.field['weakAndHits20'])
-      wa05H.append(h.field['weakAndHits05'])
+      waA10H.append(h.field['weakAndHitsA10'])
+      waA02H.append(h.field['weakAndHitsA02'])
+      waS20H.append(h.field['weakAndHitsS20'])
+      waS05H.append(h.field['weakAndHitsS05'])
       waD20H.append(h.field['weakAndHitsD20'])
       waD05H.append(h.field['weakAndHitsD05'])
+      waXH.append(h.field['weakAndHitsX'])
       andT.append(h.field['andTime'])
       orT.append(h.field['orTime'])
       waT.append(h.field['weakAndTime'])
-      wa20T.append(h.field['weakAndTime20'])
-      wa05T.append(h.field['weakAndTime05'])
+      waA10T.append(h.field['weakAndTimeA10'])
+      waA02T.append(h.field['weakAndTimeA02'])
+      waS20T.append(h.field['weakAndTimeS20'])
+      waS05T.append(h.field['weakAndTimeS05'])
       waD20T.append(h.field['weakAndTimeD20'])
       waD05T.append(h.field['weakAndTimeD05'])
+      waXT.append(h.field['weakAndTimeX'])
       quality = h.field['weakAndQuality']
       wantedHits = max(h.field['andHits'], min(100, h.field['orHits']))
       hitsFactor = (1000 * h.field['weakAndHits']) / wantedHits
@@ -130,26 +148,35 @@ class WandStopWordsTest < PerformanceTest
     sz = andQ.size
     puts "== Average and median over #{sz} results =="
     process("AND-recall",         "recall@100", andQ)
-    process("WeakAnd-100-recall", "recall@100", waQ)
-    process("WeakAnd-20-recall",  "recall@100", wa20Q)
-    process("WeakAnd-5-recall",   "recall@100", wa05Q)
-    process("WeakAnd-D20-recall",  "recall@100", waD20Q)
-    process("WeakAnd-D5-recall",   "recall@100", waD05Q)
+    process("WeakAnd-recall",     "recall@100", waQ)
+    process("WeakAnd-A10-recall", "recall@100", waA10Q)
+    process("WeakAnd-A2-recall",  "recall@100", waA02Q)
+    process("WeakAnd-S20-recall", "recall@100", waS20Q)
+    process("WeakAnd-S5-recall",  "recall@100", waS05Q)
+    process("WeakAnd-D20-recall", "recall@100", waD20Q)
+    process("WeakAnd-D5-recall",  "recall@100", waD05Q)
+    process("WeakAnd-X-recall",   "recall@100", waXQ)
 
     process("AND-hits",         "hits", andH)
-    process("WeakAnd-100-hits", "hits", waH)
-    process("WeakAnd-20-hits",  "hits", wa20H)
-    process("WeakAnd-5-hits",   "hits", wa05H)
-    process("WeakAnd-D20-hits",  "hits", waD20H)
-    process("WeakAnd-D5-hits",   "hits", waD05H)
+    process("WeakAnd-hits",     "hits", waH)
+    process("WeakAnd-A10-hits", "hits", waA10H)
+    process("WeakAnd-A2-hits",  "hits", waA02H)
+    process("WeakAnd-S20-hits", "hits", waS20H)
+    process("WeakAnd-S5-hits",  "hits", waS05H)
+    process("WeakAnd-D20-hits", "hits", waD20H)
+    process("WeakAnd-D5-hits",  "hits", waD05H)
+    process("WeakAnd-X-hits",   "hits", waXH)
     process("OR-hits",          "hits", orH)
 
     process("AND-ms",         "latency", andT)
-    process("WeakAnd-100-ms", "latency", waT)
-    process("WeakAnd-20-ms",  "latency", wa20T)
-    process("WeakAnd-5-ms",   "latency", wa05T)
-    process("WeakAnd-D20-ms",  "latency", waD20T)
-    process("WeakAnd-D5-ms",   "latency", waD05T)
+    process("WeakAnd-ms",     "latency", waT)
+    process("WeakAnd-A10-ms", "latency", waA10T)
+    process("WeakAnd-A2-ms",  "latency", waA02T)
+    process("WeakAnd-S20-ms", "latency", waS20T)
+    process("WeakAnd-S5-ms",  "latency", waS05T)
+    process("WeakAnd-D20-ms", "latency", waD20T)
+    process("WeakAnd-D5-ms",  "latency", waD05T)
+    process("WeakAnd-X-ms",   "latency", waXT)
     process("OR-ms",          "latency", orT)
   end
 
