@@ -71,8 +71,6 @@ class WandStopWordsTest < PerformanceTest
     waQ = []
     waA10Q = []
     waA02Q = []
-    waS20Q = []
-    waS05Q = []
     waD20Q = []
     waD05Q = []
     waXQ = []
@@ -81,8 +79,6 @@ class WandStopWordsTest < PerformanceTest
     waH = []
     waA10H = []
     waA02H = []
-    waS20H = []
-    waS05H = []
     waD20H = []
     waD05H = []
     waXH = []
@@ -91,8 +87,6 @@ class WandStopWordsTest < PerformanceTest
     waT = []
     waA10T = []
     waA02T = []
-    waS20T = []
-    waS05T = []
     waD20T = []
     waD05T = []
     waXT = []
@@ -110,8 +104,6 @@ class WandStopWordsTest < PerformanceTest
       waQ.append(h.field['weakAndQuality'])
       waA10Q.append(h.field['weakAndQualityA10'])
       waA02Q.append(h.field['weakAndQualityA02'])
-      waS20Q.append(h.field['weakAndQualityS20'])
-      waS05Q.append(h.field['weakAndQualityS05'])
       waD20Q.append(h.field['weakAndQualityD20'])
       waD05Q.append(h.field['weakAndQualityD05'])
       waXQ.append(h.field['weakAndQualityX'])
@@ -120,8 +112,6 @@ class WandStopWordsTest < PerformanceTest
       waH.append(h.field['weakAndHits'])
       waA10H.append(h.field['weakAndHitsA10'])
       waA02H.append(h.field['weakAndHitsA02'])
-      waS20H.append(h.field['weakAndHitsS20'])
-      waS05H.append(h.field['weakAndHitsS05'])
       waD20H.append(h.field['weakAndHitsD20'])
       waD05H.append(h.field['weakAndHitsD05'])
       waXH.append(h.field['weakAndHitsX'])
@@ -130,8 +120,6 @@ class WandStopWordsTest < PerformanceTest
       waT.append(h.field['weakAndTime'])
       waA10T.append(h.field['weakAndTimeA10'])
       waA02T.append(h.field['weakAndTimeA02'])
-      waS20T.append(h.field['weakAndTimeS20'])
-      waS05T.append(h.field['weakAndTimeS05'])
       waD20T.append(h.field['weakAndTimeD20'])
       waD05T.append(h.field['weakAndTimeD05'])
       waXT.append(h.field['weakAndTimeX'])
@@ -151,8 +139,6 @@ class WandStopWordsTest < PerformanceTest
     process("WeakAnd-recall",     "recall@100", waQ)
     process("WeakAnd-A10-recall", "recall@100", waA10Q)
     process("WeakAnd-A2-recall",  "recall@100", waA02Q)
-    process("WeakAnd-S20-recall", "recall@100", waS20Q)
-    process("WeakAnd-S5-recall",  "recall@100", waS05Q)
     process("WeakAnd-D20-recall", "recall@100", waD20Q)
     process("WeakAnd-D5-recall",  "recall@100", waD05Q)
     process("WeakAnd-X-recall",   "recall@100", waXQ)
@@ -161,8 +147,6 @@ class WandStopWordsTest < PerformanceTest
     process("WeakAnd-hits",     "hits", waH)
     process("WeakAnd-A10-hits", "hits", waA10H)
     process("WeakAnd-A2-hits",  "hits", waA02H)
-    process("WeakAnd-S20-hits", "hits", waS20H)
-    process("WeakAnd-S5-hits",  "hits", waS05H)
     process("WeakAnd-D20-hits", "hits", waD20H)
     process("WeakAnd-D5-hits",  "hits", waD05H)
     process("WeakAnd-X-hits",   "hits", waXH)
@@ -172,8 +156,6 @@ class WandStopWordsTest < PerformanceTest
     process("WeakAnd-ms",     "latency", waT)
     process("WeakAnd-A10-ms", "latency", waA10T)
     process("WeakAnd-A2-ms",  "latency", waA02T)
-    process("WeakAnd-S20-ms", "latency", waS20T)
-    process("WeakAnd-S5-ms",  "latency", waS05T)
     process("WeakAnd-D20-ms", "latency", waD20T)
     process("WeakAnd-D5-ms",  "latency", waD05T)
     process("WeakAnd-X-ms",   "latency", waXT)
