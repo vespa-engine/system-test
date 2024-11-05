@@ -102,18 +102,6 @@ public class MicroBmSearcher extends Searcher {
         execution.fill(weakAndResultA02);
         var weakAndSetA02 = getHitIds(weakAndResultA02);
 
-        Query weakAndQueryS20 = changeRoot(weakAndQuery, new WeakAndItem());
-        weakAndQueryS20.properties().set("rankproperty.vespa.matching.weakand.stop_word_score_limit", "0.20");
-        Result weakAndResultS20 = execution.search(weakAndQueryS20);
-        execution.fill(weakAndResultS20);
-        var weakAndSetS20 = getHitIds(weakAndResultS20);
-
-        Query weakAndQueryS05 = changeRoot(weakAndQuery, new WeakAndItem());
-        weakAndQueryS05.properties().set("rankproperty.vespa.matching.weakand.stop_word_score_limit", "0.05");
-        Result weakAndResultS05 = execution.search(weakAndQueryS05);
-        execution.fill(weakAndResultS05);
-        var weakAndSetS05 = getHitIds(weakAndResultS05);
-
         Query weakAndQueryD20 = changeRoot(weakAndQuery, new WeakAndItem());
         weakAndQueryD20.properties().set("rankproperty.vespa.matching.weakand.stop_word_drop_limit", "0.20");
         Result weakAndResultD20 = execution.search(weakAndQueryD20);
@@ -127,8 +115,8 @@ public class MicroBmSearcher extends Searcher {
         var weakAndSetD05 = getHitIds(weakAndResultD05);
 
         Query weakAndQueryX = changeRoot(weakAndQuery, new WeakAndItem());
-        weakAndQueryX.properties().set("rankproperty.vespa.matching.weakand.stop_word_adjust_limit", "0.01");
-        weakAndQueryX.properties().set("rankproperty.vespa.matching.weakand.stop_word_drop_limit", "0.30");
+        weakAndQueryX.properties().set("rankproperty.vespa.matching.weakand.stop_word_adjust_limit", "0.02");
+        weakAndQueryX.properties().set("rankproperty.vespa.matching.weakand.stop_word_drop_limit", "0.20");
         Result weakAndResultX = execution.search(weakAndQueryX);
         execution.fill(weakAndResultX);
         var weakAndSetX = getHitIds(weakAndResultX);
@@ -137,8 +125,6 @@ public class MicroBmSearcher extends Searcher {
         double weakAndTime = timeQuery(weakAndQuery, execution);
         double weakAndTimeA10 = timeQuery(weakAndQueryA10, execution);
         double weakAndTimeA02 = timeQuery(weakAndQueryA02, execution);
-        double weakAndTimeS20 = timeQuery(weakAndQueryS20, execution);
-        double weakAndTimeS05 = timeQuery(weakAndQueryS05, execution);
         double weakAndTimeD20 = timeQuery(weakAndQueryD20, execution);
         double weakAndTimeD05 = timeQuery(weakAndQueryD05, execution);
         double weakAndTimeX = timeQuery(weakAndQueryX, execution);
@@ -150,8 +136,6 @@ public class MicroBmSearcher extends Searcher {
         meta.setField("weakAndQuality", quality(orSet, weakAndSet));
         meta.setField("weakAndQualityA10", quality(orSet, weakAndSetA10));
         meta.setField("weakAndQualityA02", quality(orSet, weakAndSetA02));
-        meta.setField("weakAndQualityS20", quality(orSet, weakAndSetS20));
-        meta.setField("weakAndQualityS05", quality(orSet, weakAndSetS05));
         meta.setField("weakAndQualityD20", quality(orSet, weakAndSetD20));
         meta.setField("weakAndQualityD05", quality(orSet, weakAndSetD05));
         meta.setField("weakAndQualityX", quality(orSet, weakAndSetX));
@@ -160,8 +144,6 @@ public class MicroBmSearcher extends Searcher {
         meta.setField("weakAndHits", weakAndResult.getTotalHitCount());
         meta.setField("weakAndHitsA10", weakAndResultA10.getTotalHitCount());
         meta.setField("weakAndHitsA02", weakAndResultA02.getTotalHitCount());
-        meta.setField("weakAndHitsS20", weakAndResultS20.getTotalHitCount());
-        meta.setField("weakAndHitsS05", weakAndResultS05.getTotalHitCount());
         meta.setField("weakAndHitsD20", weakAndResultD20.getTotalHitCount());
         meta.setField("weakAndHitsD05", weakAndResultD05.getTotalHitCount());
         meta.setField("weakAndHitsX", weakAndResultX.getTotalHitCount());
@@ -170,8 +152,6 @@ public class MicroBmSearcher extends Searcher {
         meta.setField("weakAndTime", weakAndTime);
         meta.setField("weakAndTimeA10", weakAndTimeA10);
         meta.setField("weakAndTimeA02", weakAndTimeA02);
-        meta.setField("weakAndTimeS20", weakAndTimeS20);
-        meta.setField("weakAndTimeS05", weakAndTimeS05);
         meta.setField("weakAndTimeD20", weakAndTimeD20);
         meta.setField("weakAndTimeD05", weakAndTimeD05);
         meta.setField("weakAndTimeX", weakAndTimeX);
