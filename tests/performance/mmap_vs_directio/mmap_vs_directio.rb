@@ -19,6 +19,22 @@ class MmapVsDirectIoTest < PerformanceTest
     super
   end
 
+  def testing_locally?
+    false
+  end
+
+  def test_profile
+    if testing_locally?
+      { :doc_count      => 50_000,
+        :query_runtime  => 20,
+        :cache_sizes_mb => [0, 16, 128, 1024] }
+    else
+      { :doc_count      => -1,
+        :query_runtime  => 60,
+        :cache_sizes_mb => [0, 24, 256, 2 * 1024] }
+    end
+  end
+
   def test_wikipedia_corpus_search_performance
     set_description('Test search performance on English Wikipedia corpus and query set '+
                     'when file reading is done via either mmap or Direct IO')
@@ -27,36 +43,38 @@ class MmapVsDirectIoTest < PerformanceTest
     @container = vespa.container.values.first
     start
 
+    @profile = test_profile
+
     @query_file_name = 'squad2-questions.fbench.141k.txt'
     @no_stop_words_query_file_name = 'squad2-questions.max-df-20.fbench.141k.txt'
 
     report_io_stat_deltas do
-      feed_file('enwiki-20240801-pages.1M.jsonl.zst')
+      feed_file('enwiki-20240801-pages.1M.jsonl.zst', @profile[:doc_count])
     end
 
     @search_node.trigger_flush # Shovel everything into a disk index
     @search_node.execute("du -hS #{Environment.instance.vespa_home}/var/db/vespa/search/cluster.search/")
 
-    # One-shot warmup round with many clients. This helps measure contention for paging in data.
-    # Note that we don't tag as "warmup=true", as we want profiling enabled here as well.
-    puts "Warming up mmap'ed region with 64 clients"
-    report_io_stat_deltas do
-      benchmark_queries(@query_file_name, 'mmap_warmup', 64, false)
-    end
+    # MMap provides the baseline (expected best case) query performance, assuming all index data fits in memory.
+    deploy_and_run_queries(search_io_mode: 'MMAP')
 
-    ['MMAP', 'DIRECTIO', 'NORMAL'].each do |io_mode|
-      deploy_and_run_queries(search_io_mode: io_mode)
+    ['DIRECTIO', 'NORMAL'].each do |io_mode|
+      @profile[:cache_sizes_mb].each do |cache_size_mb|
+        deploy_and_run_queries(search_io_mode: io_mode, cache_size_mb: cache_size_mb)
+      end
     end
 
     stop
   end
 
   # Feeding must already have been done (using MMAP search_io_mode)
-  def deploy_and_run_queries(search_io_mode:)
+  def deploy_and_run_queries(search_io_mode:, cache_size_mb: 0)
     if search_io_mode != 'MMAP'
       vespa.stop_content_node('search', 0)
-      puts "Redeploying app with `search.io` mode '#{search_io_mode}'"
-      deploy_app(make_app(search_io_mode: search_io_mode))
+      puts "----------"
+      puts "Redeploying app with `search.io` mode '#{search_io_mode}', cache size #{cache_size_mb} MiB"
+      puts "----------"
+      deploy_app(make_app(search_io_mode: search_io_mode, cache_size_mb: cache_size_mb))
       @search_node = vespa.search['search'].first
       @container = vespa.container.values.first
       vespa.start_content_node('search', 0)
@@ -64,16 +82,24 @@ class MmapVsDirectIoTest < PerformanceTest
     end
 
     pretty_mode = search_io_mode.downcase
-    puts "Searching with '#{pretty_mode}' search store backing"
-    [16, 32, 64].each do |clients|
+    cache_desc = cache_size_mb > 0 ? "#{cache_size_mb}mb_cache" : "nocache"
+    run_type = "#{pretty_mode}_#{cache_desc}"
+    clients = 64
+
+    unless search_io_mode == 'DIRECTIO' and cache_size_mb == 0
+      puts "Warming up cache"
       report_io_stat_deltas do
-        benchmark_queries(@query_file_name, pretty_mode, clients, false)
-      end
-      report_io_stat_deltas do
-        benchmark_queries(@no_stop_words_query_file_name, "#{pretty_mode}_no_stop_words", clients, false)
+        benchmark_queries(@query_file_name, "#{run_type}_warmup", clients, true, @profile[:query_runtime])
       end
     end
 
+    puts "Searching with '#{pretty_mode}' search store backing using #{clients} clients"
+    report_io_stat_deltas do
+      benchmark_queries(@query_file_name, run_type, clients, false, @profile[:query_runtime])
+    end
+    report_io_stat_deltas do
+      benchmark_queries(@no_stop_words_query_file_name, "#{run_type}_no_stop_words", clients, false, @profile[:query_runtime])
+    end
   end
 
   def feed_file(feed_file, n_docs = -1)
@@ -93,8 +119,8 @@ class MmapVsDirectIoTest < PerformanceTest
     download_file_from_s3(file_name, vespa_node, 'wikipedia')
   end
 
-  def make_app(search_io_mode:)
-    SearchApp.new.sd(selfdir + 'wikimedia.sd').
+  def make_app(search_io_mode:, cache_size_mb: 0)
+    app = SearchApp.new.sd(selfdir + 'wikimedia.sd').
       container(Container.new('default').
         jvmoptions("-Xms16g -Xmx16g").
         search(Searching.new).
@@ -103,6 +129,13 @@ class MmapVsDirectIoTest < PerformanceTest
       indexing_cluster('default').
       indexing_chain('indexing').
       search_io(search_io_mode)
+
+    if search_io_mode != 'MMAP'
+      app.config(ConfigOverride.new('vespa.config.search.core.proton').
+        add('index', ConfigValue.new('postinglist',
+          ConfigValue.new('cache', ConfigValue.new('maxbytes', cache_size_mb * 1024 * 1024)))))
+    end
+    app
   end
 
   def report_io_stat_deltas
