@@ -25,6 +25,7 @@ class SearchApp < App
                   :persistence_threads => :persistence_threads,
                   :cpu_socket_affinity => :cpu_socket_affinity,
                   :resource_limits => :resource_limits,
+                  :posting_list_cache => :posting_list_cache,
                   :proton_resource_limits => :proton_resource_limits,
                   :search_io => :search_io,
                   :indexing_cluster => :indexing_cluster,
