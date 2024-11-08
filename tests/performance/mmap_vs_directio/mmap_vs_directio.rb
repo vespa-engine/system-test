@@ -31,7 +31,7 @@ class MmapVsDirectIoTest < PerformanceTest
     else
       { :doc_count      => -1,
         :query_runtime  => 60,
-        :cache_sizes_mb => [0, 24, 256, 2 * 1024] }
+        :cache_sizes_mb => [0, 24, 256, 10 * 1024] }
     end
   end
 
