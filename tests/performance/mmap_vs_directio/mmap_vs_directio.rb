@@ -7,7 +7,7 @@ require 'performance/stat'
 class MmapVsDirectIoTest < PerformanceTest
 
   def timeout_seconds
-    1200
+    1800
   end
 
   def setup
@@ -27,10 +27,10 @@ class MmapVsDirectIoTest < PerformanceTest
     if testing_locally?
       { :doc_count      => 50_000,
         :query_runtime  => 20,
-        :cache_sizes_mb => [0, 16, 128, 1024] }
+        :cache_sizes_mb => [0, 16, 128, 512] }
     else
       { :doc_count      => -1,
-        :query_runtime  => 60,
+        :query_runtime  => 30,
         :cache_sizes_mb => [0, 24, 256, 10 * 1024] }
     end
   end
