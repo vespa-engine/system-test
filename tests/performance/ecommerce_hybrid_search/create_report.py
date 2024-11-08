@@ -244,7 +244,7 @@ def generate_feed_summary_figure(vespa_file, es_file, output):
             orientation='h'
         )
     )
-    fig.write_image(file_name, format='png', scale=1.5)
+    fig.write_image(file_name, format='png', scale=1.8)
 
 
 def generate_query_summary_figure(title, file_name, df, text_label_font_size=7):
@@ -283,7 +283,7 @@ def generate_query_summary_figure(title, file_name, df, text_label_font_size=7):
             orientation='h'
         )
     )
-    fig.write_image(file_name, format='png', scale=1.5)
+    fig.write_image(file_name, format='png', scale=1.8)
 
 
 def generate_query_qps_figure(title, file_name, df):
@@ -310,7 +310,7 @@ def generate_query_qps_figure(title, file_name, df):
             orientation='h'
         )
     )
-    fig.write_image(file_name, format='png', scale=1.5)
+    fig.write_image(file_name, format='png', scale=1.8)
 
 
 def generate_overall_qps_figure(output, df):
@@ -337,7 +337,7 @@ def generate_overall_qps_figure(output, df):
             orientation='h'
         )
     )
-    fig.write_image(file_name, format='png', scale=1.5)
+    fig.write_image(file_name, format='png', scale=1.8)
 
 
 def generate_query_figures(vespa_file, es_files, output):
@@ -429,7 +429,7 @@ def generate_overall_summary_figure(vespa_file, es_files, output):
             )
         ]
     )
-    fig.write_image(file_name, format='png', scale=1.5)
+    fig.write_image(file_name, format='png', scale=1.8)
 
 
 def main():
