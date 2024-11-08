@@ -186,13 +186,13 @@ class SearchMetrics < IndexedOnlySearchTest
   end
 
   def get_size_on_disk_for_field(field_name, metrics)
-    metrics.get('content.proton.documentdb.ready.index_field.disk_usage.size_on_disk',
+    metrics.get('content.proton.documentdb.ready.index.size_on_disk',
                 {"documenttype" => "test", "field" => field_name})["last"]
   end
 
 
   def get_disk_io_for_field(field_name, metrics)
-    metrics.get('content.proton.documentdb.ready.index_field.disk_usage.search_read_bytes',
+    metrics.get('content.proton.documentdb.ready.index.io.search.read_bytes',
                 {"documenttype" => "test", "field" => field_name})
   end
 
