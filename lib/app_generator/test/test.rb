@@ -729,6 +729,21 @@ class SearchAppGenTest < Test::Unit::TestCase
     assert_substring_ignore_whitespace(actual, expected_config_fragment)
   end
 
+  def test_that_posting_list_cache_can_be_specified
+    actual = SearchApp.new.posting_list_cache(12345).services_xml
+
+    expected_config_fragment='
+      <index>
+        <postinglist>
+          <cache>
+            <maxbytes>12345</maxbytes>
+          </cache>
+        </postinglist>
+      </index>'
+
+    assert_substring_ignore_whitespace(actual, expected_config_fragment)
+  end
+
   def test_doc_api_and_feeder_options
     actual = SearchApp.new.enable_document_api(FeederOptions.new.timeout(40)).services_xml
 

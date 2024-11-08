@@ -18,7 +18,7 @@ class SearchMetrics < IndexedOnlySearchTest
                       tune_searchnode({:summary => {:store => {:cache => { :maxsize => 8192,
                                                                            :compression => {:type => :lz4, :level => 8}
                                                                          } } } }).
-                 search_io('DIRECTIO')))
+                 search_io('DIRECTIO').posting_list_cache(262144)))
     start
 
     # Search handler does a warmup query which may or may not hit the backend, since 8.170. We need to account for this in some search metrics below. 
@@ -89,6 +89,11 @@ class SearchMetrics < IndexedOnlySearchTest
     metrics = vespa.search['test'].first.get_total_metrics # Get metrics containing disk index
     assert_document_db_size_on_disk(metrics)
     assert_document_db_disk_io(metrics)
+    assert_document_db_cached_disk_io(metrics, false)
+    assert_hitcount("f1:c", 2)
+    metrics = vespa.search['test'].first.get_total_metrics # Get metrics containing disk index
+    assert_document_db_disk_io(metrics)
+    assert_document_db_cached_disk_io(metrics, true)
   end
 
   def test_metrics_imported_attributes
@@ -185,6 +190,18 @@ class SearchMetrics < IndexedOnlySearchTest
     assert(0 < f1_disk_io["count"])
   end
 
+  def assert_document_db_cached_disk_io(metrics, expect_cached)
+    f1_cached_disk_io = get_cached_disk_io_for_field('f1', metrics)
+    puts "f1_cached_disk_io = " + f1_cached_disk_io.to_s
+    if expect_cached
+      assert(1000 < f1_cached_disk_io["sum"])
+      assert(0 < f1_cached_disk_io["count"])
+    else
+      assert_equal(0, f1_cached_disk_io["sum"])
+      assert_equal(0, f1_cached_disk_io["count"])
+    end
+  end
+
   def get_size_on_disk_for_field(field_name, metrics)
     metrics.get('content.proton.documentdb.ready.index.size_on_disk',
                 {"documenttype" => "test", "field" => field_name})["last"]
@@ -193,6 +210,11 @@ class SearchMetrics < IndexedOnlySearchTest
 
   def get_disk_io_for_field(field_name, metrics)
     metrics.get('content.proton.documentdb.ready.index.io.search.read_bytes',
+                {"documenttype" => "test", "field" => field_name})
+  end
+
+  def get_cached_disk_io_for_field(field_name, metrics)
+    metrics.get('content.proton.documentdb.ready.index.io.search.cached_read_bytes',
                 {"documenttype" => "test", "field" => field_name})
   end
 
