@@ -5,8 +5,7 @@
             "rules" : [
                 {
                     "value" : [
-                        "VESPA_BITVECTOR_RANGE_CHECK=true",
-                        "VESPA_FILE_DOWNLOAD_BACKOFF_INITIAL_TIME_MS=1000"
+                        "VESPA_BITVECTOR_RANGE_CHECK=true"
                     ]
                 }
             ]
