@@ -181,6 +181,9 @@ class SearchMetrics < IndexedOnlySearchTest
     f1_size_on_disk = get_size_on_disk_for_field('f1', metrics)
     puts "f1_size_on_disk = " + f1_size_on_disk.to_s
     assert(1000 < f1_size_on_disk)
+    f2_size_on_disk = get_size_on_disk_for_attribute_field('f2', metrics)
+    puts "f2_size_on_disk = " + f2_size_on_disk.to_s
+    assert(1000 < f2_size_on_disk)
   end
 
   def assert_document_db_disk_io(metrics)
@@ -216,6 +219,11 @@ class SearchMetrics < IndexedOnlySearchTest
   def get_cached_disk_io_for_field(field_name, metrics)
     metrics.get('content.proton.documentdb.ready.index.io.search.cached_read_bytes',
                 {"documenttype" => "test", "field" => field_name})
+  end
+
+  def get_size_on_disk_for_attribute_field(field_name, metrics)
+    metrics.get('content.proton.documentdb.ready.attribute.size_on_disk',
+                {"documenttype" => "test", "field" => field_name})["last"]
   end
 
   def dump_metric_names(metrics)
