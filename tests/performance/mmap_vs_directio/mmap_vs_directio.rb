@@ -132,8 +132,8 @@ class MmapVsDirectIoTest < PerformanceTest
 
     if search_io_mode != 'MMAP'
       app.config(ConfigOverride.new('vespa.config.search.core.proton').
-        add('index', ConfigValue.new('postinglist',
-          ConfigValue.new('cache', ConfigValue.new('maxbytes', cache_size_mb * 1024 * 1024)))))
+        add('index', ConfigValue.new('cache',
+          ConfigValue.new('postinglist', ConfigValue.new('maxbytes', cache_size_mb * 1024 * 1024)))))
     end
     app
   end

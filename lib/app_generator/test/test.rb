@@ -734,11 +734,44 @@ class SearchAppGenTest < Test::Unit::TestCase
 
     expected_config_fragment='
       <index>
-        <postinglist>
-          <cache>
+        <cache>
+          <postinglist>
             <maxbytes>12345</maxbytes>
-          </cache>
-        </postinglist>
+          </postinglist>
+        </cache>
+      </index>'
+
+    assert_substring_ignore_whitespace(actual, expected_config_fragment)
+  end
+
+  def test_that_bitvector_list_cache_can_be_specified
+    actual = SearchApp.new.bitvector_cache(12346).services_xml
+
+    expected_config_fragment='
+      <index>
+        <cache>
+          <bitvector>
+            <maxbytes>12346</maxbytes>
+          </bitvector>
+        </cache>
+      </index>'
+
+    assert_substring_ignore_whitespace(actual, expected_config_fragment)
+  end
+
+    def test_that_both_posting_list_cache_and_bitvector_cache_can_be_specified
+    actual = SearchApp.new.bitvector_cache(12346).posting_list_cache(12345).services_xml
+
+    expected_config_fragment='
+      <index>
+        <cache>
+          <postinglist>
+            <maxbytes>12345</maxbytes>
+          </postinglist>
+          <bitvector>
+            <maxbytes>12346</maxbytes>
+          </bitvector>
+        </cache>
       </index>'
 
     assert_substring_ignore_whitespace(actual, expected_config_fragment)
