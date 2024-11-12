@@ -30,6 +30,7 @@ class SearchCluster
   chained_setter :persistence_threads
   chained_setter :resource_limits
   chained_setter :posting_list_cache
+  chained_setter :bitvector_cache
   chained_setter :proton_resource_limits
   chained_setter :search_io
   chained_forward :config, :config => :add
@@ -71,6 +72,7 @@ class SearchCluster
     @persistence_threads = nil
     @resource_limits = nil
     @posting_list_cache = nil
+    @bitvector_cache = nil
     @proton_resource_limits = nil
     @search_io = nil
   end
@@ -157,8 +159,15 @@ class SearchCluster
     unless @search_io.nil?
       proton.add('search', ConfigValue.new('io', @search_io))
     end
-    unless @posting_list_cache.nil?
-      proton.add('index', ConfigValue.new('postinglist', ConfigValue.new('cache', ConfigValue.new('maxbytes', @posting_list_cache))))
+    unless @posting_list_cache.nil? && @bitvector_cache.nil?
+      cache = ConfigValues.new
+      unless @posting_list_cache.nil?
+         cache.add('postinglist', ConfigValue.new('maxbytes', @posting_list_cache))
+      end
+      unless @bitvector_cache.nil?
+        cache.add('bitvector', ConfigValue.new('maxbytes', @bitvector_cache))
+      end
+      proton.add('index', ConfigValue.new('cache', cache))
     end
     XmlHelper.new(indent).to_xml(proton)
   end
