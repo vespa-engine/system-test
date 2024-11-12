@@ -196,12 +196,16 @@ class SearchMetrics < IndexedOnlySearchTest
   def assert_document_db_cached_disk_io(metrics, expect_cached)
     f1_cached_disk_io = get_cached_disk_io_for_field('f1', metrics)
     puts "f1_cached_disk_io = " + f1_cached_disk_io.to_s
+    posting_list_cache_hit_rate = get_postinglist_cache_hit_rate(metrics)
+    puts "posting_list_cache_hit_rate = " + posting_list_cache_hit_rate.to_s
     if expect_cached
       assert(1000 < f1_cached_disk_io["sum"])
       assert(0 < f1_cached_disk_io["count"])
+      assert(0 < posting_list_cache_hit_rate)
     else
       assert_equal(0, f1_cached_disk_io["sum"])
       assert_equal(0, f1_cached_disk_io["count"])
+      assert_equal(0, posting_list_cache_hit_rate)
     end
   end
 
@@ -219,6 +223,10 @@ class SearchMetrics < IndexedOnlySearchTest
   def get_cached_disk_io_for_field(field_name, metrics)
     metrics.get('content.proton.documentdb.ready.index.io.search.cached_read_bytes',
                 {"documenttype" => "test", "field" => field_name})
+  end
+
+  def get_postinglist_cache_hit_rate(metrics)
+    metrics.get('content.proton.index.cache.postinglist.hit_rate')['last']
   end
 
   def get_size_on_disk_for_attribute_field(field_name, metrics)
