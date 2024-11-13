@@ -115,8 +115,8 @@ public class MicroBmSearcher extends Searcher {
         var weakAndSetD05 = getHitIds(weakAndResultD05);
 
         Query weakAndQueryX = changeRoot(weakAndQuery, new WeakAndItem());
-        weakAndQueryX.properties().set("rankproperty.vespa.matching.weakand.stop_word_adjust_limit", "0.02");
-        weakAndQueryX.properties().set("rankproperty.vespa.matching.weakand.stop_word_drop_limit", "0.20");
+        weakAndQueryX.properties().set("rankproperty.vespa.matching.weakand.stop_word_adjust_limit", "0.01");
+        weakAndQueryX.properties().set("rankproperty.vespa.matching.weakand.stop_word_drop_limit", "0.66");
         Result weakAndResultX = execution.search(weakAndQueryX);
         execution.fill(weakAndResultX);
         var weakAndSetX = getHitIds(weakAndResultX);
