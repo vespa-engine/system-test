@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'config_test'
-require 'config/filedistribution/filedistribution_base'
+require 'config/filedistribution_uri/filedistribution_base'
 
 # Note: 2 hosts are needed. If you want to run this by yourself you need to add "--configserverhost some_other_host"
 class FileDistributionOnApplicationPrepare < ConfigTest
