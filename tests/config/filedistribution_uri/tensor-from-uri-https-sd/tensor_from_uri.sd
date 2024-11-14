@@ -1,0 +1,18 @@
+search tensor_from_uri {
+  document tensor_from_uri {
+    field my_tensor type tensor(x{}) {
+      indexing: attribute | summary
+    }
+  }
+  constant my_constant {
+    uri: https://data.vespa-cloud.com/tests/data/constant_tensor_1.json
+    type: tensor(x{})
+  }
+  rank-profile default {
+    first-phase {
+      expression: sum(attribute(my_tensor)*constant(my_constant))
+    }
+  }
+
+
+}

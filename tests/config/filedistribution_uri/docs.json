@@ -1,0 +1,6 @@
+[
+  { "put": "id:tensor_from_uri:tensor_from_uri::0", "fields": {
+      "my_tensor": { "cells": [ { "address": { "x": "3" }, "value": 3 } ] }
+    }
+  }
+]
