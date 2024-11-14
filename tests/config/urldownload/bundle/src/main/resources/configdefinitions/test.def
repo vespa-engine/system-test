@@ -1,0 +1,6 @@
+package=com.yahoo.test
+
+myurl url
+arrayOfUrls[] url
+mapOfUrls{} url
+

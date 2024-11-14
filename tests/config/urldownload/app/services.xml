@@ -1,0 +1,18 @@
+<services>
+
+  <container version="1.0" id="container">
+    <handler id="com.yahoo.test.TestHandler" bundle="app">
+      <binding>http://*/test/*</binding>
+      <config name="com.yahoo.test.test">
+        <myurl>https://data.vespa-cloud.com/onnx_models/bert-base-uncased-vocab.txt</myurl>
+        <arrayOfUrls>
+            <item>https://data.vespa-cloud.com/onnx_models/bert-base-uncased-vocab.txt</item>
+        </arrayOfUrls>
+        <mapOfUrls>
+            <item key="constant_tensor_1">https://data.vespa-cloud.com/onnx_models/bert-base-uncased-vocab.txt</item>
+        </mapOfUrls>
+      </config>
+    </handler>
+  </container>
+
+</services>
