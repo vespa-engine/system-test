@@ -154,7 +154,7 @@ class MmapVsDirectIoTest < PerformanceTest
   end
 
   # TODO dedupe
-  def benchmark_queries(query_file, type, clients, warmup = false, runtime = 20, summary = 'minimal')
+  def benchmark_queries(query_file, type, clients, warmup = false, runtime = 20, rank_profile = 'default')
     node_file = download_file(query_file, @container)
     label = "#{type}_#{clients}"
     result_file = dirs.tmpdir + "result_#{label}.txt" # TODO don't include?
@@ -165,7 +165,7 @@ class MmapVsDirectIoTest < PerformanceTest
     run_fbench2(@container,
                 node_file,
                 {:clients => clients,
-                 :append_str => "&presentation.summary=#{summary}&hits=10",
+                 :append_str => "&presentation.summary=minimal&ranking.profile=#{rank_profile}&hits=10",
                  :use_post => false,
                  :runtime => runtime,
                  :result_file => result_file},
