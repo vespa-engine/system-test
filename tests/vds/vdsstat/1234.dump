@@ -1,0 +1,104 @@
+Generated 32-bit bucket id: BucketId(0x80000000000004d2)
+Bucket maps to the following actual files:
+	BucketInfo(BucketId(0x84000000000004d2): [distributor:1] [node(idx=0,crc=0xd4f18fd8,docs=2,bytes=164,trusted=true), node(idx=1,crc=0xd4f18fd8,docs=2,bytes=164,trusted=true)])
+	BucketInfo(BucketId(0x84000001000004d2): [distributor:1] [node(idx=0,crc=0x5cb52fd5,docs=1,bytes=82,trusted=true), node(idx=1,crc=0x5cb52fd5,docs=1,bytes=82,trusted=true)])
+
+Details for BucketId(0x84000000000004d2):
+	Bucket information from node 0:
+
+		Filename: '/opt/vespa/var/db/vespa/vds/storage/storage/0/disks/d0/0004/84000000000004d2.0' (fd 34)
+		Filesize: 1048576
+		SlotFileHeader(
+		  version: abcd0001
+		  meta data list size: 512
+		  header block size: 102848b
+		  checksum: fd80f89		 (OK)
+		  file checksum: d4f18fd8
+		)
+		Slot(gid(0xd2040000eb8696646878fec0)
+		  Header pos:          0 -         82, Body pos:          0 -          0
+		  Timestamp:      2010/02/28-09:01:11, Checksum 0x4158,
+		  Flags: 0x   1)
+		  Name: id:storage_test:music:n=1234:1
+		 Bucket: BucketId(0xe8fe7868000004d2)
+		Slot(gid(0xd2040000ba5509d4d4685abb)
+		  Header pos:         82 -         82, Body pos:          0 -          0
+		  Timestamp:      2010/02/28-09:01:12, Checksum 0x1d04,
+		  Flags: 0x   1)
+		  Name: id:storage_test:music:n=1234:2
+		 Bucket: BucketId(0xeb5a68d4000004d2)
+		Header block: (102848b)
+		Content block: (925184b)
+		
+
+	Bucket information from node 1:
+
+		Filename: '/opt/vespa/var/db/vespa/vds/storage/storage/1/disks/d0/0004/84000000000004d2.0' (fd 34)
+		Filesize: 1048576
+		SlotFileHeader(
+		  version: abcd0001
+		  meta data list size: 512
+		  header block size: 102848b
+		  checksum: fd80f89		 (OK)
+		  file checksum: d4f18fd8
+		)
+		Slot(gid(0xd2040000eb8696646878fec0)
+		  Header pos:          0 -         82, Body pos:          0 -          0
+		  Timestamp:      2010/02/28-09:01:11, Checksum 0x4158,
+		  Flags: 0x   1)
+		  Name: id:storage_test:music:n=1234:1
+		 Bucket: BucketId(0xe8fe7868000004d2)
+		Slot(gid(0xd2040000ba5509d4d4685abb)
+		  Header pos:         82 -         82, Body pos:          0 -          0
+		  Timestamp:      2010/02/28-09:01:12, Checksum 0x1d04,
+		  Flags: 0x   1)
+		  Name: id:storage_test:music:n=1234:2
+		 Bucket: BucketId(0xeb5a68d4000004d2)
+		Header block: (102848b)
+		Content block: (925184b)
+		
+
+
+Details for BucketId(0x84000001000004d2):
+	Bucket information from node 0:
+
+		Filename: '/opt/vespa/var/db/vespa/vds/storage/storage/0/disks/d0/00f0/84000001000004d2.0' (fd 34)
+		Filesize: 1048576
+		SlotFileHeader(
+		  version: abcd0001
+		  meta data list size: 512
+		  header block size: 102848b
+		  checksum: fd80f89		 (OK)
+		  file checksum: 5cb52fd5
+		)
+		Slot(gid(0xd2040000050dfa54ab6befc9)
+		  Header pos:          0 -         82, Body pos:          0 -          0
+		  Timestamp:      2010/02/28-09:01:12, Checksum 0x4585,
+		  Flags: 0x   1)
+		  Name: id:storage_test:music:n=1234:3
+		 Bucket: BucketId(0xe9ef6bab000004d2)
+		Header block: (102848b)
+		Content block: (925184b)
+		
+
+	Bucket information from node 1:
+
+		Filename: '/opt/vespa/var/db/vespa/vds/storage/storage/1/disks/d0/00f0/84000001000004d2.0' (fd 34)
+		Filesize: 1048576
+		SlotFileHeader(
+		  version: abcd0001
+		  meta data list size: 512
+		  header block size: 102848b
+		  checksum: fd80f89		 (OK)
+		  file checksum: 5cb52fd5
+		)
+		Slot(gid(0xd2040000050dfa54ab6befc9)
+		  Header pos:          0 -         82, Body pos:          0 -          0
+		  Timestamp:      2010/02/28-09:01:12, Checksum 0x4585,
+		  Flags: 0x   1)
+		  Name: id:storage_test:music:n=1234:3
+		 Bucket: BucketId(0xe9ef6bab000004d2)
+		Header block: (102848b)
+		Content block: (925184b)
+		
+
