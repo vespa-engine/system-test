@@ -94,11 +94,11 @@ class MmapVsDirectIoTest < PerformanceTest
     puts "Searching with '#{pretty_mode}' search store backing using #{clients} clients"
     puts "Search using BM25 rank profile (full queries)"
     report_io_stat_deltas do
-      benchmark_queries(@query_file_name, run_type, clients, false, @profile[:query_runtime], 'minimal')
+      benchmark_queries(@query_file_name, run_type, clients, false, @profile[:query_runtime])
     end
     puts "Search using BM25 rank profile (queries without stop-words)"
     report_io_stat_deltas do
-      benchmark_queries(@no_stop_words_query_file_name, "#{run_type}_no_stop_words", clients, false, @profile[:query_runtime], 'minimal')
+      benchmark_queries(@no_stop_words_query_file_name, "#{run_type}_no_stop_words", clients, false, @profile[:query_runtime])
     end
     puts "Search using simple filter rank profile that uses bit vectors"
     report_io_stat_deltas do
