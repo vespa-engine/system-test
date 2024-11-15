@@ -58,10 +58,8 @@ class MmapVsDirectIoTest < PerformanceTest
     # MMap provides the baseline (expected best case) query performance, assuming all index data fits in memory.
     deploy_and_run_queries(search_io_mode: 'MMAP')
 
-    ['DIRECTIO', 'NORMAL'].each do |io_mode|
-      @profile[:cache_sizes_mb].each do |cache_size_mb|
-        deploy_and_run_queries(search_io_mode: io_mode, cache_size_mb: cache_size_mb)
-      end
+    @profile[:cache_sizes_mb].each do |cache_size_mb|
+      deploy_and_run_queries(search_io_mode: 'DIRECTIO', cache_size_mb: cache_size_mb)
     end
 
     stop
@@ -94,11 +92,17 @@ class MmapVsDirectIoTest < PerformanceTest
     end
 
     puts "Searching with '#{pretty_mode}' search store backing using #{clients} clients"
+    puts "Search using BM25 rank profile (full queries)"
     report_io_stat_deltas do
       benchmark_queries(@query_file_name, run_type, clients, false, @profile[:query_runtime])
     end
+    puts "Search using BM25 rank profile (queries without stop-words)"
     report_io_stat_deltas do
       benchmark_queries(@no_stop_words_query_file_name, "#{run_type}_no_stop_words", clients, false, @profile[:query_runtime])
+    end
+    puts "Search using simple filter rank profile that uses bit vectors"
+    report_io_stat_deltas do
+      benchmark_queries(@query_file_name, "#{run_type}_use_bitvectors", clients, false, @profile[:query_runtime], 'use_bitvectors')
     end
   end
 
@@ -131,9 +135,13 @@ class MmapVsDirectIoTest < PerformanceTest
       search_io(search_io_mode)
 
     if search_io_mode != 'MMAP'
+      posting_list_cache_bytes = cache_size_mb * 1024 * 1024
+      bit_vector_cache_bytes = posting_list_cache_bytes / 10
       app.config(ConfigOverride.new('vespa.config.search.core.proton').
         add('index', ConfigValue.new('cache',
-          ConfigValue.new('postinglist', ConfigValue.new('maxbytes', cache_size_mb * 1024 * 1024)))))
+          ConfigValue.new('postinglist', ConfigValue.new('maxbytes', posting_list_cache_bytes)))).
+        add('index', ConfigValue.new('cache',
+          ConfigValue.new('bitvector', ConfigValue.new('maxbytes', bit_vector_cache_bytes)))))
     end
     app
   end
@@ -146,7 +154,7 @@ class MmapVsDirectIoTest < PerformanceTest
   end
 
   # TODO dedupe
-  def benchmark_queries(query_file, type, clients, warmup = false, runtime = 20)
+  def benchmark_queries(query_file, type, clients, warmup = false, runtime = 20, rank_profile = 'default')
     node_file = download_file(query_file, @container)
     label = "#{type}_#{clients}"
     result_file = dirs.tmpdir + "result_#{label}.txt" # TODO don't include?
@@ -157,7 +165,7 @@ class MmapVsDirectIoTest < PerformanceTest
     run_fbench2(@container,
                 node_file,
                 {:clients => clients,
-                 :append_str => '&presentation.summary=minimal&hits=10',
+                 :append_str => "&presentation.summary=minimal&ranking.profile=#{rank_profile}&hits=10",
                  :use_post => false,
                  :runtime => runtime,
                  :result_file => result_file},

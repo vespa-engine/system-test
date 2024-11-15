@@ -24,6 +24,14 @@ schema wikimedia {
     }
   }
 
+  rank-profile use_bitvectors {
+    rank title: filter
+    rank text: filter
+    first-phase {
+      expression: attribute(id)
+    }
+  }
+
   document-summary minimal {
     summary id {}
   }
