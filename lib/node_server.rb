@@ -29,11 +29,13 @@ class NodeServer
   attr_accessor :testcase, :addr_configserver, :hostname, :port_configserver_rpc, :configserver_started
   attr_reader :tls_env
   attr_reader :https_client
+  attr_reader :parent_node_name
 
   def initialize(hostname, short_hostname)
     @services = []   # must keep list of service objects created to prevent gc
     @hostname = hostname
     @short_hostname = short_hostname
+    @parent_node_name = ENV['PARENT_NODE_NAME']
     @monitoring = false
     @monitor_thread = nil
     @http_servers = {}

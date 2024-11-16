@@ -193,6 +193,10 @@ module NodeServerInterface
     @node_server.hostname
   end
 
+  def parent_node_name
+    @node_server.parent_node_name
+  end
+
   def port_configserver_rpc
     @node_server.port_configserver_rpc
   end

@@ -266,6 +266,10 @@ class TestCase
         end
         output("Timeout length (test_method: " + test_method.to_s + "): " +
                timeout_length.to_s)
+        vespa.nodeproxies.each do |hostname, node|
+          parent_node_name = node.parent_node_name
+          output("Host \"#{hostname}\" (parent \"#{parent_node_name}\")")
+        end
         __send__(real_test_method)
       end
       check_performance(test_method) if performance?
