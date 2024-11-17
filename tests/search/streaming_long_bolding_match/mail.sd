@@ -1,0 +1,36 @@
+search mail {
+
+  document mail {
+
+    struct part {
+      # Text extracted from the body part, used for searching. 
+      field text type string {
+      }
+
+    } 
+
+    # The MIME parts recognized as "body"
+    field body type array<part> {
+
+      struct-field text {
+        indexing: index
+        match: prefix
+      }
+
+    }
+
+  }
+
+  fieldset default {
+    fields: body.text
+  }
+
+  document-summary default {
+    summary snippet {
+      dynamic
+      source: body.text
+    }
+ 
+  }
+
+}
