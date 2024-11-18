@@ -339,6 +339,7 @@ else
                              --cap-add SYSLOG --cap-add SYS_PTRACE --cap-add SYS_ADMIN --cap-add SYS_NICE \
                              ${SERVICE_EXTRA_ARGS[@]+"${SERVICE_EXTRA_ARGS[@]}"} \
                              --name "$SERVICE" --env NODE_SERVER_OPTS="-c $TESTRUNNER.$NETWORK:27183" \
+                             --env 'PARENT_NODE_NAME={{.Node.Hostname}}' \
                              $ENV_OPTS $BINDMOUNT_OPTS --network "$NETWORK" --detach "$DOCKERIMAGE" &> /dev/null; then
     log_error "Could not create service $SERVICE. Exiting."; docker_cleanup; exit 1
   fi
