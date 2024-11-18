@@ -87,7 +87,7 @@ class SearchMetrics < IndexedOnlySearchTest
     sleep 1 # Wait for disk index to be used for search
     assert_hitcount("f1:c", 2)
     metrics = vespa.search['test'].first.get_total_metrics # Get metrics containing disk index
-    assert_document_db_size_on_disk(metrics)
+    assert_document_db_field_disk_usage(metrics)
     assert_document_db_disk_io(metrics)
     assert_document_db_cached_disk_io(metrics, false)
     assert_hitcount("f1:c", 2)
@@ -177,13 +177,13 @@ class SearchMetrics < IndexedOnlySearchTest
     wait_for_log_matches(/.*flush\.complete.*memoryindex\.flush/, 1)
   end
 
-  def assert_document_db_size_on_disk(metrics)
-    f1_size_on_disk = get_size_on_disk_for_field('f1', metrics)
-    puts "f1_size_on_disk = " + f1_size_on_disk.to_s
-    assert(1000 < f1_size_on_disk)
-    f2_size_on_disk = get_size_on_disk_for_attribute_field('f2', metrics)
-    puts "f2_size_on_disk = " + f2_size_on_disk.to_s
-    assert(1000 < f2_size_on_disk)
+  def assert_document_db_field_disk_usage(metrics)
+    f1_disk_usage = get_disk_usage_for_field('f1', metrics)
+    puts "f1_disk_usage = " + f1_disk_usage.to_s
+    assert(1000 < f1_disk_usage)
+    f2_disk_usage = get_disk_usage_for_attribute_field('f2', metrics)
+    puts "f2_disk_usage = " + f2_disk_usage.to_s
+    assert(1000 < f2_disk_usage)
   end
 
   def assert_document_db_disk_io(metrics)
@@ -209,8 +209,8 @@ class SearchMetrics < IndexedOnlySearchTest
     end
   end
 
-  def get_size_on_disk_for_field(field_name, metrics)
-    metrics.get('content.proton.documentdb.ready.index.size_on_disk',
+  def get_disk_usage_for_field(field_name, metrics)
+    metrics.get('content.proton.documentdb.ready.index.disk_usage',
                 {"documenttype" => "test", "field" => field_name})["last"]
   end
 
@@ -229,8 +229,8 @@ class SearchMetrics < IndexedOnlySearchTest
     metrics.get('content.proton.index.cache.postinglist.hit_rate')['last']
   end
 
-  def get_size_on_disk_for_attribute_field(field_name, metrics)
-    metrics.get('content.proton.documentdb.ready.attribute.size_on_disk',
+  def get_disk_usage_for_attribute_field(field_name, metrics)
+    metrics.get('content.proton.documentdb.ready.attribute.disk_usage',
                 {"documenttype" => "test", "field" => field_name})["last"]
   end
 
