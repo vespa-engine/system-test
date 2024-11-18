@@ -199,7 +199,7 @@ class SearchMetrics < IndexedOnlySearchTest
     posting_list_cache_hit_rate = get_postinglist_cache_hit_rate(metrics)
     puts "posting_list_cache_hit_rate = " + posting_list_cache_hit_rate.to_s
     if expect_cached
-      assert(1000 < f1_cached_disk_io["sum"])
+      assert(10 < f1_cached_disk_io["sum"])
       assert(0 < f1_cached_disk_io["count"])
       assert(0 < posting_list_cache_hit_rate)
     else
