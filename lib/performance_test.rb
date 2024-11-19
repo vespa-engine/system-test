@@ -169,8 +169,10 @@ class PerformanceTest < TestCase
 
   def post_process_feed_output(output, client, custom_fillers)
     if client == :vespa_feed_client
-      json = JSON.parse(output)
-      fillers = [fill_feeder_json(json)]
+      json = '[' + output.gsub('}{', '},{') + ']'
+      feed_outputs = JSON.parse(json)
+      last_feed_output = feed_outputs[-1]
+      fillers = [fill_feeder_json(last_feed_output)]
     else
       lines = output.split("\n")[-1]
       res = lines.gsub(/\s+/, "").split(",")
