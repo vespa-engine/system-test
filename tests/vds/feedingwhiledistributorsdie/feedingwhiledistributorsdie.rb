@@ -21,6 +21,7 @@ class FeedingWhileDistributorsDieTest < VdsTest
   end
 
   def test_feedingwhiledistributorsdie
+    set_expected_logged(Regexp.union(/Added node only event: Event: distributor.0: Failed get node state request: Connection error:/))
     feederoutput = ""
     feederthread = Thread.new do
       feederoutput = vespa.storage["storage"].storage["0"].feedfile(selfdir + "data.json", :maxretries => 5, :client => :vespa_feed_client)
