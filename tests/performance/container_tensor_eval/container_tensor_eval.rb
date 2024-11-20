@@ -7,8 +7,8 @@ require 'performance/fbench'
 require 'pp'
 
 class ContainerTensorEval < PerformanceTest
-  CLIENTS = 5
-  RUNTIME = 60
+  CLIENTS = 64
+  RUNTIME = 120
   
   def setup
     super
@@ -22,7 +22,7 @@ class ContainerTensorEval < PerformanceTest
                      .binding('http://*/TensorEval').bundle('tensor-eval')
     
     container = Container.new.handler(handler).jvmoptions(
-      '-Xms8g -Xmx8g -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005')
+      '-Xms8g -Xmx8g')
     
     app = ContainerApp.new.container(container)
     output = deploy_app(app)    
