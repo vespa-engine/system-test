@@ -25,6 +25,7 @@
     <module>search/event-loggging/project</module>
     <module>search/struct_and_map_types/inherited_struct/concretedocs</module>
     <module>search/wasfound/project</module>
+    <module>performance/container_tensor_eval/tensor-eval</module>
   </modules>
 
   <properties>
