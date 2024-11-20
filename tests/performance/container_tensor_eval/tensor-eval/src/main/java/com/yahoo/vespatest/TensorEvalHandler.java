@@ -19,6 +19,9 @@ public class TensorEvalHandler extends ThreadedHttpRequestHandler {
 
     @Override
     public HttpResponse handle(HttpRequest request) {
+        // Ignoring the results, we are onl 
+        TensorFunctionBenchmark.run_all(2000, 1);
+        
         return new HttpResponse(200) {
             @Override
             public void render(OutputStream outputStream) {

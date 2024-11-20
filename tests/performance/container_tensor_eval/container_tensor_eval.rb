@@ -4,13 +4,11 @@ require 'performance_test'
 require 'app_generator/container_app'
 require 'http_client'
 require 'performance/fbench'
-require 'performance/h2load'
 require 'pp'
 
-
 class ContainerTensorEval < PerformanceTest
-  CLIENTS = 10
-  RUNTIME = 10
+  CLIENTS = 5
+  RUNTIME = 60
   
   def setup
     super
@@ -23,7 +21,8 @@ class ContainerTensorEval < PerformanceTest
     handler = Handler.new('com.yahoo.vespatest.TensorEvalHandler')
                      .binding('http://*/TensorEval').bundle('tensor-eval')
     
-    container = Container.new.handler(handler).jvmoptions('-Xms8g -Xmx8g')
+    container = Container.new.handler(handler).jvmoptions(
+      '-Xms8g -Xmx8g -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005')
     
     app = ContainerApp.new.container(container)
     output = deploy_app(app)    
