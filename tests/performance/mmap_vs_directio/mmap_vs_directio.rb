@@ -23,7 +23,7 @@ class MmapVsDirectIoTest < PerformanceTest
     false
   end
 
-  def test_profile
+  def benchmarking_profile
     if testing_locally?
       { :doc_count      => 50_000,
         :query_runtime  => 20,
@@ -43,7 +43,7 @@ class MmapVsDirectIoTest < PerformanceTest
     @container = vespa.container.values.first
     start
 
-    @profile = test_profile
+    @profile = benchmarking_profile
 
     @query_file_name = 'squad2-questions.fbench.141k.txt'
     @no_stop_words_query_file_name = 'squad2-questions.max-df-20.fbench.141k.txt'
