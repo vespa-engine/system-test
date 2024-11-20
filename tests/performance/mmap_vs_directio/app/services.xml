@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright Vespa.ai. All rights reserved. -->
+<!-- Use this application for performance testing in Vespa Cloud -->
+<services version="1.0" xmlns:deploy="vespa" xmlns:preprocess="properties">
+
+    <container id="default" version="1.0">
+        <document-api/>
+        <search/>
+        <nodes deploy:environment="perf" deploy:region="aws-us-east-1c" count="1">
+            <resources vcpu="8.0" memory="16Gb" architecture="x86_64" storage-type="remote" disk="48Gb"/>
+        </nodes>
+    </container>
+
+    <content id="mmapio" version="1.0">
+        <redundancy>1</redundancy>
+        <documents>
+            <document type="wikimedia" mode="index" />
+        </documents>
+        <nodes deploy:environment="perf" deploy:region="aws-us-east-1c" count="1">
+            <!-- Memory available by proton: 12993349812 -->
+            <resources vcpu="8.0" memory="16Gb" architecture="x86_64" storage-type="local" disk="200Gb"/>
+        </nodes>
+        <config name='vespa.config.search.core.proton'>
+            <search>
+                <!-- <io>DIRECTIO</io> -->
+            </search>
+            <index>
+                <cache>
+                    <postinglist>
+                        <!-- 2.5% : 320 MiB -->
+                        <!-- <maxbytes>324833745</maxbytes> -->
+                        <!-- 5% : 620 MiB -->
+                        <!-- <maxbytes>649667490</maxbytes> -->
+                        <!-- 10% : 1240 MiB -->
+                        <!-- <maxbytes>1299334981</maxbytes> -->
+                        <!-- 20% : 2480 MiB -->
+                        <!-- <maxbytes>2598669962</maxbytes> -->
+                    </postinglist>
+                    <bitvector>
+                        <!-- 0.25% : 31 MiB -->
+                        <!-- <maxbytes>32483374</maxbytes> -->
+                        <!-- 0.5% : 62 MiB -->
+                        <!-- <maxbytes>64966749</maxbytes> -->
+                        <!-- 0.1% : 124 MiB -->
+                        <!-- <maxbytes>129933498</maxbytes> -->
+                        <!-- 0.2% : 248 MiB -->
+                        <!-- <maxbytes>259866996</maxbytes> -->
+                    </bitvector>
+                </cache>
+            </index>
+        </config>
+    </content>
+</services>
