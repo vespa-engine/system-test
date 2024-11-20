@@ -12,6 +12,9 @@ schema wikimedia {
       indexing: index
       index: enable-bm25
     }
+    field payload type raw {
+      indexing: attribute
+    }
   }
 
   fieldset default {
@@ -29,6 +32,13 @@ schema wikimedia {
     rank text: filter
     first-phase {
       expression: attribute(id)
+    }
+  }
+
+  rank-profile weakand_stop_word inherits default {
+    rank-properties {
+      vespa.matching.weakand.stop_word_drop_limit: 0.6
+      vespa.matching.weakand.stop_word_adjust_limit: 0.01
     }
   }
 
