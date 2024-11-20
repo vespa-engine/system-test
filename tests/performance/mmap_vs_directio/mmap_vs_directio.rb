@@ -124,7 +124,7 @@ class MmapVsDirectIoTest < PerformanceTest
   end
 
   def make_app(search_io_mode:, cache_size_mb: 0)
-    app = SearchApp.new.sd(selfdir + 'wikimedia.sd').
+    app = SearchApp.new.sd(selfdir + 'app/schemas/wikimedia.sd').
       container(Container.new('default').
         jvmoptions("-Xms16g -Xmx16g").
         search(Searching.new).
