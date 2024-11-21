@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.yahoo.vespa</groupId>
             <artifactId>container</artifactId>
-            <version>8-SNAPSHOT</version>
+            <version>${vespa.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
