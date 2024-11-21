@@ -122,7 +122,8 @@ class ApproximateNearestNeighborWithFilterTest < IndexedOnlySearchTest
   end
 
   def assert_query_setup(exp_steps, result)
-    traces = result.json["trace"]["children"][1]["children"][0]["children"][1]["message"][0]["traces"][0]["traces"]
+    query_setup = deep_find_tagged_child(result.json['trace'], 'query_setup')
+    traces = query_setup['traces']
     puts "assert_query_setup(): traces: #{traces}"
     # See ../explain/explain.rb for the first steps in the 'query_setup' trace.
     for i in 0...exp_steps.length do
