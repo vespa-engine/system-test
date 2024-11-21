@@ -165,9 +165,10 @@ class MmapVsDirectIoTest < PerformanceTest
     run_fbench2(@container,
                 node_file,
                 {:clients => clients,
-                 :append_str => "&presentation.summary=minimal&ranking.profile=#{rank_profile}&hits=10",
+                 :append_str => "&presentation.summary=minimal&ranking.profile=#{rank_profile}&hits=10&timeout=10s",
                  :use_post => false,
                  :runtime => runtime,
+                 :single_query_file => true,
                  :result_file => result_file},
                 fillers)
     profiler_report(label) if not warmup
