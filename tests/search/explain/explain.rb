@@ -26,13 +26,17 @@ class Explain < IndexedOnlySearchTest
   def verify_traces(explain_level)
     result = search("/search/?query=sddocname:music&format=json&hits=1&explainlevel=#{explain_level}&tracelevel=1&type=all").json
     puts "verify_traces(#{explain_level}): result=#{result.to_json}"
-    children = result["trace"]["children"][1]["children"][0]["children"]
+    trace_root = result['trace']
+    # need tag on "to dispatch" trace message
+    children = trace_root["children"][1]["children"][0]["children"]
     assert_equal(4, children.size)
     verify_to_dispatch(children[0])
-    traces = children[1]["message"][0]["traces"]
-    verify_query_setup(traces[0])
-    verify_query_execution_plan(traces[1])
-    verify_query_execution(traces[2], (explain_level == 2))
+    qs = deep_find_tagged_child(trace_root, 'query_setup')
+    verify_query_setup(qs)
+    qp = deep_find_tagged_child(trace_root, 'query_execution_plan')
+    verify_query_execution_plan(qp)
+    qe = deep_find_tagged_child(trace_root, 'query_execution')
+    verify_query_execution(qe, (explain_level == 2))
   end
 
   def verify_to_dispatch(result)

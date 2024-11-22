@@ -43,4 +43,23 @@ class SearchTest < TestCase
     vespa.storage[cluster_name].wait_until_ready(120)
   end
 
+  def deep_find_tagged_child(obj, tag)
+    if obj.is_a? Hash
+      return obj if obj['tag'] == tag
+      obj.each do |k,v|
+        r = deep_find_tagged_child(v, tag)
+        return r if r
+      end
+      return nil
+    end
+    if obj.is_a? Array
+      obj.each do |v|
+        r = deep_find_tagged_child(v, tag)
+        return r if r
+      end
+      return nil
+    end
+    return nil
+  end
+
 end
