@@ -46,7 +46,6 @@ class MmapVsDirectIoTest < PerformanceTest
     @profile = benchmarking_profile
 
     @query_file_name = 'squad2-questions.fbench.141k.txt'
-    @no_stop_words_query_file_name = 'squad2-questions.max-df-20.fbench.141k.txt'
 
     report_io_stat_deltas do
       feed_file('enwiki-20240801-pages.1M.jsonl.zst', @profile[:doc_count])
@@ -98,7 +97,7 @@ class MmapVsDirectIoTest < PerformanceTest
     end
     puts "Search using BM25 rank profile (queries without stop-words)"
     report_io_stat_deltas do
-      benchmark_queries(@no_stop_words_query_file_name, "#{run_type}_no_stop_words", clients, false, @profile[:query_runtime])
+      benchmark_queries(@query_file_name, "#{run_type}_no_stop_words", clients, false, @profile[:query_runtime], 'weakand_stop_word')
     end
     puts "Search using simple filter rank profile that uses bit vectors"
     report_io_stat_deltas do
