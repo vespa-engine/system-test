@@ -14,5 +14,13 @@ search test {
         bm25(content) + bm25(contenta)
       }
     }
+    summary-features {
+      bm25(content)
+      bm25(contenta)
+    }
+    match-features {
+      bm25(content)
+      bm25(contenta)
+    }
   }
 }
