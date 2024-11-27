@@ -193,10 +193,10 @@ attributeMatch(position_exp_zcurve).queryCompleteness#0.0
 attributeMatch(position_exp_zcurve).significance#0.0
 attributeMatch(position_exp_zcurve).totalWeight#0.0
 attributeMatch(position_exp_zcurve).weight#0.0
-bm25(string_arr)#0.0
+bm25(string_arr)#0.5753641449035617
 bm25(string_exp)#0.28768207245178085
-bm25(string_wset)#0.0
-bm25(url_arr)#0.0
+bm25(string_wset)#0.5753641449035617
+bm25(url_arr)#0.5753641449035617
 bm25(url_arr.fragment)#0.0
 bm25(url_arr.host)#0.0
 bm25(url_arr.hostname)#0.0
@@ -204,7 +204,7 @@ bm25(url_arr.path)#0.0
 bm25(url_arr.port)#0.0
 bm25(url_arr.query)#0.0
 bm25(url_arr.scheme)#0.0
-bm25(url_exp)#0.0
+bm25(url_exp)#0.5753641449035617
 bm25(url_exp.fragment)#0.0
 bm25(url_exp.host)#0.0
 bm25(url_exp.hostname)#0.0
