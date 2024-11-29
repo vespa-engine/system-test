@@ -17,8 +17,8 @@ class MassiveHttpClientFeedingTest < IndexedOnlySearchTest
   end
 
   def setup
-    set_owner("jonmv")
-    set_description("Verifies that a container can handle more feed threads than it has thread.")
+    set_owner("bjorncs")
+    set_description("Verifies that a container can handle more feed threads than it has threads in threadpool")
     @valgrind = false
 
     @feed_file = dirs.tmpdir + "temp.feed.json"

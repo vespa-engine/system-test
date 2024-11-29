@@ -26,7 +26,7 @@ import static com.yahoo.vespa.systemtest.javafeedclient.Utils.warmupSeconds;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * @author jonmv
+ * @author Jon Marius Venstad
  */
 public class VespaJsonFeeder {
 

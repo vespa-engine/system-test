@@ -35,7 +35,7 @@ import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 
 /**
- * @author jonmv
+ * @author Jon Marius Venstad
  */
 public class DataGenerator {
 
