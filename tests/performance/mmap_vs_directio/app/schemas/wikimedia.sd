@@ -27,11 +27,10 @@ schema wikimedia {
     }
   }
 
-  rank-profile use_bitvectors {
-    rank title: filter
-    rank text: filter
-    first-phase {
-      expression: attribute(id)
+  rank-profile use_bitvectors inherits default {
+    rank-properties {
+      # This is set to 1/64 which is the limit for generating bitvectors.
+      vespa.matching.diskindex.bitvector_limit: 0.015625
     }
   }
 
