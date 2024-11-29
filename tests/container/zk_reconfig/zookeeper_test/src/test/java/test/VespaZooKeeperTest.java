@@ -44,7 +44,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
- * @author jonmv
+ * @author Jon Marius Venstad
  */
 public class VespaZooKeeperTest {
 

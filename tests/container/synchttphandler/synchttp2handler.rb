@@ -5,8 +5,8 @@ require 'app_generator/container_app'
 class SyncHttp2Handler < SearchContainerTest
 
   def setup
-    set_owner("jonmv")
-    set_description("Check it's possible to deploy sync HTTP/2 handlers")
+    set_owner("bjorncs")
+    set_description("Check that it's possible to deploy sync HTTP/2 handlers")
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.vespatest.HelloWorld")
     @valgrind = false
     @container_port = Environment.instance.vespa_web_service_port

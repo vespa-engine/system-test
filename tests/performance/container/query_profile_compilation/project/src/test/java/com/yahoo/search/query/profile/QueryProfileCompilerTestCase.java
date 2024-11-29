@@ -12,7 +12,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Compilation efficiency.
  *
- * @author jonmv
+ * @author Jon Marius Venstad
  */
 public class QueryProfileCompilerTestCase {
 
