@@ -64,8 +64,8 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     # Average field length for content = 4 ((7 + 3 + 2) / 3).
     # Average field length for contenta = 8 ((14 + 6 + 4) / 3).
     feed_and_wait_for_docs("test", 3, :file => @test_dir + "docs.json")
-    assert_no_bm25_scores
-    assert_no_bm25_array_scores
+    assert_degraded_bm25_scores(3)
+    assert_degraded_bm25_array_scores(3)
 
     redeploy(SearchApp.new.sd("#{@test_dir}1/test.sd"))
     60.times do |i|
@@ -208,24 +208,32 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     assert_scores_for_query("contenta:b&type=all", [score(1, 6, idf(2, total_doc_count), avg_field_length),
                                                     score(1, 14, idf(2, total_doc_count), avg_field_length)], 'contenta')
 
-    assert_scores_for_query("content:a+content:d&type=all", [score(1, 4, idf(3, total_doc_count), avg_field_length) + score(1, 4, idf(2, total_doc_count), avg_field_length),
-                                                             score(3, 14, idf(3, total_doc_count), avg_field_length) + score(1, 14, idf(2, total_doc_count), avg_field_length)], 'content')
+    assert_scores_for_query("contenta:a+contenta:d&type=all", [score(1, 4, idf(3, total_doc_count), avg_field_length) + score(1, 4, idf(2, total_doc_count), avg_field_length),
+                                                             score(3, 14, idf(3, total_doc_count), avg_field_length) + score(1, 14, idf(2, total_doc_count), avg_field_length)], 'contenta')
   end
 
-  def assert_no_bm25_scores
-    assert_scores_for_query("content:a&type=all", [0.0, 0.0, 0.0], 'content')
+  def assert_degraded_bm25_scores(total_doc_count)
+    assert_scores_for_query("content:a&type=all", [idf(3, total_doc_count),
+                                                    idf(3, total_doc_count),
+                                                    idf(3, total_doc_count)], 'content')
 
-    assert_scores_for_query("content:b&type=all", [0.0, 0.0], 'content')
+    assert_scores_for_query("content:b&type=all", [idf(2, total_doc_count),
+                                                   idf(2, total_doc_count)], 'content')
 
-    assert_scores_for_query("content:a+content:d&type=all", [0.0, 0.0], 'content')
+    assert_scores_for_query("content:a+content:d&type=all", [idf(3, total_doc_count) + idf(2, total_doc_count),
+                                                             idf(3, total_doc_count) + idf(2, total_doc_count)], 'content')
   end
 
-  def assert_no_bm25_array_scores
-    assert_scores_for_query("contenta:a&type=all", [0.0, 0.0, 0.0], 'contenta')
+  def assert_degraded_bm25_array_scores(total_doc_count)
+    assert_scores_for_query("contenta:a&type=all", [idf(3, total_doc_count),
+                                                    idf(3, total_doc_count),
+                                                    idf(3, total_doc_count)], 'contenta')
 
-    assert_scores_for_query("contenta:b&type=all", [0.0, 0.0], 'contenta')
+    assert_scores_for_query("contenta:b&type=all", [idf(2, total_doc_count),
+                                                    idf(2, total_doc_count)], 'contenta')
 
-    assert_scores_for_query("content:a+content:d&type=all", [0.0, 0.0], 'content')
+    assert_scores_for_query("contenta:a+contenta:d&type=all", [idf(3, total_doc_count) + idf(2, total_doc_count),
+                                                             idf(3, total_doc_count) + idf(2, total_doc_count)], 'contenta')
   end
 
   def idf(matching_doc_count, total_doc_count = 3)
