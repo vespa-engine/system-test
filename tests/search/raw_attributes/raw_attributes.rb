@@ -84,7 +84,13 @@ class RawAttributesTest < IndexedStreamingSearchTest
     query = "/search/?" + URI.encode_www_form(form)
     result = search(query)
     assert_equal(0, result.hitcount)
-    assert_nil(result.errorlist)
+    if is_streaming
+      # TODO: Report issue also for streaming search
+      assert_nil(result.errorlist)
+    else
+      assert_not_nil(result.errorlist)
+      assert_match(/Search is not supported for attribute/, result.errorlist[0]['message'])
+    end
   end
 
   def teardown
