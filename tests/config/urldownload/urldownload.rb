@@ -6,7 +6,7 @@ require 'app_generator/search_app'
 class UrlDownloadTest < ConfigTest
 
   def setup
-    set_owner("lesters")
+    set_owner("hmusum")
     set_description("Tests downloading files from urls")
     @valgrind = false
   end
