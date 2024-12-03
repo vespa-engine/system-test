@@ -7,7 +7,7 @@
         <document-api/>
         <search/>
         <nodes deploy:environment="perf" deploy:region="aws-us-east-1c" count="1">
-            <resources vcpu="8.0" memory="16Gb" architecture="x86_64" storage-type="remote" disk="48Gb"/>
+            <resources vcpu="8.0" memory="16Gb" architecture="arm64" storage-type="remote" disk="48Gb"/>
         </nodes>
     </container>
 
@@ -18,7 +18,7 @@
         </documents>
         <nodes deploy:environment="perf" deploy:region="aws-us-east-1c" count="1">
             <!-- Memory available by proton: 12993349812 -->
-            <resources vcpu="8.0" memory="16Gb" architecture="x86_64" storage-type="local" disk="200Gb"/>
+            <resources vcpu="8.0" memory="16Gb" architecture="x86_64" storage-type="local" disk="474Gb"/>
         </nodes>
         <config name='vespa.config.search.core.proton'>
             <search>
