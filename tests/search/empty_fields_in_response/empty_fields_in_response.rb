@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
 
   def setup
-    set_owner("lesters")
+    set_owner("toregge")
     set_description("Test empty single- and multivalued fields in search and get")
   end
 
