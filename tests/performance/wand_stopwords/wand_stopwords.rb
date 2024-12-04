@@ -74,6 +74,7 @@ class WandStopWordsTest < PerformanceTest
     waD20Q = []
     waD05Q = []
     waXQ = []
+    waYQ = []
     andH = []
     orH = []
     waH = []
@@ -82,6 +83,7 @@ class WandStopWordsTest < PerformanceTest
     waD20H = []
     waD05H = []
     waXH = []
+    waYH = []
     andT = []
     orT = []
     waT = []
@@ -90,6 +92,7 @@ class WandStopWordsTest < PerformanceTest
     waD20T = []
     waD05T = []
     waXT = []
+    waYT = []
     counter = 0
     q_file = download_file('squad2-questions.raw.141k.txt.zst', vespa.adminserver)
     vespa.adminserver.execute("zstdcat #{q_file} | head -n 1000 > #{q_file}.raw")
@@ -107,6 +110,7 @@ class WandStopWordsTest < PerformanceTest
       waD20Q.append(h.field['weakAndQualityD20'])
       waD05Q.append(h.field['weakAndQualityD05'])
       waXQ.append(h.field['weakAndQualityX'])
+      waYQ.append(h.field['weakAndQualityY'])
       andH.append(h.field['andHits'])
       orH.append(h.field['orHits'])
       waH.append(h.field['weakAndHits'])
@@ -115,6 +119,7 @@ class WandStopWordsTest < PerformanceTest
       waD20H.append(h.field['weakAndHitsD20'])
       waD05H.append(h.field['weakAndHitsD05'])
       waXH.append(h.field['weakAndHitsX'])
+      waYH.append(h.field['weakAndHitsY'])
       andT.append(h.field['andTime'])
       orT.append(h.field['orTime'])
       waT.append(h.field['weakAndTime'])
@@ -123,6 +128,7 @@ class WandStopWordsTest < PerformanceTest
       waD20T.append(h.field['weakAndTimeD20'])
       waD05T.append(h.field['weakAndTimeD05'])
       waXT.append(h.field['weakAndTimeX'])
+      waYT.append(h.field['weakAndTimeY'])
       quality = h.field['weakAndQuality']
       wantedHits = max(h.field['andHits'], min(100, h.field['orHits']))
       hitsFactor = (1000 * h.field['weakAndHits']) / wantedHits
@@ -142,6 +148,7 @@ class WandStopWordsTest < PerformanceTest
     process("WeakAnd-D20-recall", "recall@100", waD20Q)
     process("WeakAnd-D5-recall",  "recall@100", waD05Q)
     process("WeakAnd-X-recall",   "recall@100", waXQ)
+    process("WeakAnd-Y-recall",   "recall@100", waYQ)
 
     process("AND-hits",         "hits", andH)
     process("WeakAnd-hits",     "hits", waH)
@@ -150,6 +157,7 @@ class WandStopWordsTest < PerformanceTest
     process("WeakAnd-D20-hits", "hits", waD20H)
     process("WeakAnd-D5-hits",  "hits", waD05H)
     process("WeakAnd-X-hits",   "hits", waXH)
+    process("WeakAnd-Y-hits",   "hits", waYH)
     process("OR-hits",          "hits", orH)
 
     process("AND-ms",         "latency", andT)
@@ -159,6 +167,7 @@ class WandStopWordsTest < PerformanceTest
     process("WeakAnd-D20-ms", "latency", waD20T)
     process("WeakAnd-D5-ms",  "latency", waD05T)
     process("WeakAnd-X-ms",   "latency", waXT)
+    process("WeakAnd-Y-ms",   "latency", waYT)
     process("OR-ms",          "latency", orT)
   end
 
