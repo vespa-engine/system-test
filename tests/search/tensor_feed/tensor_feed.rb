@@ -21,6 +21,18 @@ class TensorFeedTest < IndexedStreamingSearchTest
     puts "search_docs: #{search_docs}"
     assert_tensor_docs(search_docs)
 
+    visit_response = vespa.document_api_v1.visit(:selection => "test.my_tensor", :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10)
+    puts "visit_response: #{visit_response}"
+    visit_docs = extract_visit_docs(visit_response)
+    puts "visit_docs: #{visit_docs}"
+    assert_visit_result_tensor_present(visit_docs)
+
+    visit_response = vespa.document_api_v1.visit(:selection => "not test.my_tensor", :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10)
+    puts "visit_response: #{visit_response}"
+    visit_docs = extract_visit_docs(visit_response)
+    puts "visit_docs: #{visit_docs}"
+    assert_visit_result_tensor_not_present(visit_docs)
+
     visit_response = vespa.document_api_v1.visit(:selection => "test", :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10)
     puts "visit_response: #{visit_response}"
     visit_docs = extract_visit_docs(visit_response)
@@ -84,6 +96,20 @@ class TensorFeedTest < IndexedStreamingSearchTest
     search_docs = extract_docs(search("query=sddocname:test&format=json").json)
     puts "search_docs: #{search_docs}"
     assert_tensor_docs_after_updates(search_docs)
+  end
+
+  def extract_doc_ids(docs)
+    docs.map { |d| d['id'] }.to_a
+  end
+
+  def assert_visit_result_tensor_present(docs)
+    ids = extract_doc_ids(docs)
+    assert_equal(ids, ['id:test:test::1', 'id:test:test::2', 'id:test:test::3'])
+  end
+
+  def assert_visit_result_tensor_not_present(docs)
+    ids = extract_doc_ids(docs)
+    assert_equal(ids, ['id:test:test::0'])
   end
 
   def assert_tensor_docs(docs)
