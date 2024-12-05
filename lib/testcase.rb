@@ -85,7 +85,6 @@ class TestCase
       @@log_messages[:uncommon_get],
       @@log_messages[:zkmetric_updater_monitor_failure],
       @@log_messages[:zookeeper_reconfig],
-      @@log_messages[:zookeeper_shutdown],
       @@log_messages[:slow_processing],
       @@log_messages[:time_move_backwards],
       @@log_messages[:remove_dangling_file],
@@ -96,10 +95,8 @@ class TestCase
       @@log_messages[:no_snapshot_from_instance]
     ]
     @valgrind_ignorable_messages = [
-      @@log_messages[:valgrindrc_not_read],
       @@log_messages[:shutdownguard_forcing_exit],
       @@log_messages[:max_query_timeout],
-      @@log_messages[:failed_find_2_consecutive],
       @@log_messages[:no_tick_registered],
       @@log_messages[:slobrok_failed_listnames_check]
     ]
@@ -728,11 +725,8 @@ class TestCase
     :could_not_get_config => /Could not get config, please check your setup/,
     :no_tick_registered =>  /Thread .+ has gone \d+ milliseconds without registering a tick/,
     :zkmetric_updater_monitor_failure => /Failure in retrieving monitoring data:/,
-    :valgrindrc_not_read => /\/home\/builder\/\.valgrindrc was not read/,
     :shutdownguard_forcing_exit => /ShutdownGuard is now forcing an exit of the process/,
-    :failed_find_2_consecutive => /We failed to find 2 consecutive samples that where similar with epsilon of 1048576/,
     :zookeeper_reconfig => /Reconfiguration attempt \d+ failed. Retrying in .+ KeeperErrorCode = ConnectionLoss/,
-    :zookeeper_shutdown => /Starting non-reconfigurable ZooKeeper server failed on attempt/,
     :time_move_backwards => /Time has moved backwards/,
     :metrics_proxy_connection_refused => /Failed retrieving metrics for '.+' : Connect to .+ failed: Connection refused/,
     :empty_idx_file => /We detected an empty idx file for part/,
