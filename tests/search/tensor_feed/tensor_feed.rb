@@ -21,22 +21,13 @@ class TensorFeedTest < IndexedStreamingSearchTest
     puts "search_docs: #{search_docs}"
     assert_tensor_docs(search_docs)
 
-    visit_response = vespa.document_api_v1.visit(:selection => "test.my_tensor", :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10)
-    puts "visit_response: #{visit_response}"
-    visit_docs = extract_visit_docs(visit_response)
-    puts "visit_docs: #{visit_docs}"
+    visit_docs = visit_tensor_docs('test.my_tensor')
     assert_visit_result_tensor_present(visit_docs)
 
-    visit_response = vespa.document_api_v1.visit(:selection => "not test.my_tensor", :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10)
-    puts "visit_response: #{visit_response}"
-    visit_docs = extract_visit_docs(visit_response)
-    puts "visit_docs: #{visit_docs}"
+    visit_docs = visit_tensor_docs('not test.my_tensor')
     assert_visit_result_tensor_not_present(visit_docs)
 
-    visit_response = vespa.document_api_v1.visit(:selection => "test", :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10)
-    puts "visit_response: #{visit_response}"
-    visit_docs = extract_visit_docs(visit_response)
-    puts "visit_docs: #{visit_docs}"
+    visit_docs = visit_tensor_docs('test')
     assert_tensor_docs(visit_docs)
 
     feed(:file => @base_dir + "updates.json")
@@ -44,10 +35,7 @@ class TensorFeedTest < IndexedStreamingSearchTest
     puts "search_docs: #{search_docs}"
     assert_tensor_docs_after_updates(search_docs)
 
-    visit_response = vespa.document_api_v1.visit(:selection => "test", :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10)
-    puts "visit_response: #{visit_response}"
-    visit_docs = extract_visit_docs(visit_response)
-    puts "visit_docs: #{visit_docs}"
+    visit_docs = visit_tensor_docs('test')
     assert_tensor_docs_after_updates(visit_docs)
   end
 
@@ -96,6 +84,14 @@ class TensorFeedTest < IndexedStreamingSearchTest
     search_docs = extract_docs(search("query=sddocname:test&format=json").json)
     puts "search_docs: #{search_docs}"
     assert_tensor_docs_after_updates(search_docs)
+  end
+
+  def visit_tensor_docs(selection)
+    visit_response = vespa.document_api_v1.visit(:selection => selection, :fieldSet => "test:[document]", :cluster => "search", :wantedDocumentCount => 10)
+    puts "visit_response: #{visit_response}"
+    visit_docs = extract_visit_docs(visit_response)
+    puts "visit_docs: #{visit_docs}"
+    visit_docs
   end
 
   def extract_doc_ids(docs)
