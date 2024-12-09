@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root. -->
-<services version="1.0" xmlns:deploy="vespa" xmlns:preprocess="properties" >
+<services version="1.0">
 
   <container id="default" version="1.0">
-    <!-- Mock secrets for local testing -->
-    <component id="secrets" class="ai.vespa.test.LocalSecrets" bundle="generate" />
-
-    <!-- Setup OpenAI client - also works directly as a generator -->
-    <component id="openai" class="ai.vespa.llm.clients.OpenAI">
-      <config name="ai.vespa.llm.clients.llm-client">
-        <apiKeySecretName>openAiKey</apiKeySecretName>
-      </config>
-    </component>
-
+    <!-- Mock generator for testing -->
+    <component id="mock_generator" class="ai.vespa.test.MockGenerator" bundle="generate">
+        <config name="ai.vespa.test.mock-generator">
+            <repetitions>2</repetitions>
+        </config>
+    </component>  
+      
     <!-- Setup a custom generator -->
-    <component id="prompt" class="ai.vespa.test.PromptGenerator" bundle="generate">
+    <component id="mock_with_prompt_generator" class="ai.vespa.test.PromptGenerator" bundle="generate">
       <config name="ai.vespa.test.prompt-generator">
 <!--        <prompt>Prepend the following paragraph with "foo": {context}</prompt>-->
         <promptTemplate>files/prompt.txt</promptTemplate>

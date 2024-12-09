@@ -1,6 +1,5 @@
 package ai.vespa.test;
 
-import ai.vespa.llm.clients.OpenAI;
 import ai.vespa.llm.completion.Prompt;
 import ai.vespa.llm.completion.StringPrompt;
 import com.yahoo.language.process.Generator;
@@ -12,17 +11,17 @@ import java.nio.file.Path;
 public class PromptGenerator implements Generator {
 
     private final String promptTemplate;
-    private final Generator client;
+    private final Generator generator;
 
-    public PromptGenerator(PromptGeneratorConfig config, OpenAI openAI) {
+    public PromptGenerator(PromptGeneratorConfig config, MockGenerator mockGenerator) {
         System.out.println("Starting PromptGenerator....");
         this.promptTemplate = loadDefaultPrompt(config);
-        this.client = openAI;
+        this.generator = mockGenerator;
     }
 
     @Override
     public String generate(Prompt prompt, Generator.Context context) {
-        return client.generate(buildPrompt(prompt), context);
+        return generator.generate(buildPrompt(prompt), context);
     }
 
     private Prompt buildPrompt(Prompt promptContext) {
@@ -35,6 +34,7 @@ public class PromptGenerator implements Generator {
             return config.prompt();
         } else if (config.promptTemplate().isPresent()) {
             Path path = config.promptTemplate().get();
+            
             try {
                 return new String(Files.readAllBytes(path));
             } catch (IOException e) {

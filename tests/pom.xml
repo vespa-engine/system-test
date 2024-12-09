@@ -27,6 +27,7 @@
     <module>search/wasfound/project</module>
     <module>performance/container_tensor_eval/tensor-eval</module>
     <module>search/generate/app</module>
+    <module>search/generate_openai/app</module>
   </modules>
 
   <properties>
