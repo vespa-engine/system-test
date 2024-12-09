@@ -3,9 +3,8 @@
 <services version="1.0" xmlns:deploy="vespa" xmlns:preprocess="properties" >
 
   <container id="default" version="1.0">
-
     <!-- Mock secrets for local testing -->
-    <component id="secrets" class="ai.vespa.test.LocalSecrets" bundle="rag" />
+    <component id="secrets" class="ai.vespa.test.LocalSecrets" bundle="generate" />
 
     <!-- Setup OpenAI client - also works directly as a generator -->
     <component id="openai" class="ai.vespa.llm.clients.OpenAI">
@@ -15,14 +14,13 @@
     </component>
 
     <!-- Setup a custom generator -->
-    <component id="prompt" class="ai.vespa.test.PromptGenerator" bundle="rag">
+    <component id="prompt" class="ai.vespa.test.PromptGenerator" bundle="generate">
       <config name="ai.vespa.test.prompt-generator">
 <!--        <prompt>Prepend the following paragraph with "foo": {context}</prompt>-->
         <promptTemplate>files/prompt.txt</promptTemplate>
       </config>
     </component>
-
-
+      
     <document-api/>
     <search />
     <nodes>
@@ -37,7 +35,7 @@
       <document mode="index" type="passage"/>
     </documents>
     <nodes>
-      <node hostalias="node1" distribution-key="0" />
+      <node hostalias="node1" distribution-key="0"/>
     </nodes>
   </content>
 

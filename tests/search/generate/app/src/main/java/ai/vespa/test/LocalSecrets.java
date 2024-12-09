@@ -14,9 +14,11 @@ public class LocalSecrets implements Secrets {
     @Override
     public Secret get(String key) {
         System.out.println("Key: " + key + " requested");
+        
         if (key.equals("openAiKey")) {
-            return () -> "replace this with a valied key";
+            return () -> System.getenv("OPENAI_AI_KEY");
         }
+        
         throw new IllegalArgumentException("Secret with key '" + key + "' not found in secrets");
     }
 

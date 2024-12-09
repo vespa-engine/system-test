@@ -32,6 +32,12 @@
         </dependency>
     </dependencies>
 
+    <properties>
+        <bundle-plugin.failOnWarnings>true</bundle-plugin.failOnWarnings>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <test.hide>true</test.hide>
+    </properties>
+    
     <build>
         <plugins>
             <plugin>
@@ -45,6 +51,20 @@
                     <release>17</release>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>com.yahoo.vespa</groupId>
+                <artifactId>vespa-application-maven-plugin</artifactId>
+                <version>${vespa.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>packageApplication</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
             <plugin>
                 <groupId>com.yahoo.vespa</groupId>
                 <artifactId>bundle-plugin</artifactId>
