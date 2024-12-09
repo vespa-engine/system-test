@@ -12,7 +12,7 @@ class TensorUnstableCellTypesTest < IndexedStreamingSearchTest
     set_description('Test tensor evaluation with unstable cell types')
     deploy_app(SearchApp.new.sd(selfdir + 'unstable.sd').search_dir(selfdir + 'unstable_search'))
     start
-    feed_and_wait_for_docs('unstable', 3, :file => selfdir + 'unstable-docs.json')
+    feed_and_wait_for_hitcount({'query' => 'sddocname:unstable', 'hits' => '0', 'ranking' => 'unranked'}, 3, :file => selfdir + 'unstable-docs.json')
     expect_scores = [ 525, 580, 330, 412.5, 475, 460, 270, 337.5, 350, 360, 220, 275, 200, 240, 160, 200 ]
     idx = 0
     [ 'default', 'w32bits', 'w16bits', 'w8bits' ].each do |rprofile|
