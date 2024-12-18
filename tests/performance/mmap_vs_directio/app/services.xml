@@ -8,6 +8,7 @@
         <search/>
         <nodes deploy:environment="perf" deploy:region="aws-us-east-1c" count="1">
             <resources vcpu="8.0" memory="16Gb" architecture="arm64" storage-type="remote" disk="48Gb"/>
+            <!-- <resources vcpu="1.0" memory="8Gb" architecture="arm64" storage-type="remote" disk="48Gb"/> -->
         </nodes>
     </container>
 
@@ -23,6 +24,9 @@
         <config name='vespa.config.search.core.proton'>
             <search>
                 <!-- <io>DIRECTIO</io> -->
+                <mmap>
+                    <!-- <advise>SEQUENTIAL</advise> -->
+                </mmap>
             </search>
             <index>
                 <cache>
@@ -35,16 +39,20 @@
                         <!-- <maxbytes>1299334981</maxbytes> -->
                         <!-- 20% : 2480 MiB -->
                         <!-- <maxbytes>2598669962</maxbytes> -->
+                        <!-- Force MMAP -->
+                        <!-- <maxbytes>-1</maxbytes> -->
                     </postinglist>
                     <bitvector>
                         <!-- 0.25% : 31 MiB -->
                         <!-- <maxbytes>32483374</maxbytes> -->
                         <!-- 0.5% : 62 MiB -->
                         <!-- <maxbytes>64966749</maxbytes> -->
-                        <!-- 0.1% : 124 MiB -->
+                        <!-- 1% : 124 MiB -->
                         <!-- <maxbytes>129933498</maxbytes> -->
-                        <!-- 0.2% : 248 MiB -->
+                        <!-- 2% : 248 MiB -->
                         <!-- <maxbytes>259866996</maxbytes> -->
+                        <!-- 5% : 620 MiB -->
+                        <!-- <maxbytes>649667490</maxbytes> -->
                     </bitvector>
                 </cache>
             </index>
