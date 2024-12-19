@@ -36,7 +36,6 @@
         { "id" : "summary-decode-policy", "rules" : [ { "value" : "on-demand" } ] },
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
-        { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : true } ] },
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
         { "id" : "symmetric-put-and-activate-replica-selection", "rules" : [ { "value" : true } ] },
         { "id" : "enforce-strictly-increasing-cluster-state-versions", "rules" : [ { "value" : true } ] },
