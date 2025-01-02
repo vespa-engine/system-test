@@ -66,6 +66,10 @@ RUN dnf install -y dnf-plugins-core && \
 RUN --mount=type=bind,target=/context-root,source=.,ro \
     if [[ -d /context-root/rpms ]]; then echo -e "[vespa-rpms-local]\nname=Local Vespa RPMs\nbaseurl=file:///context-root/rpms/\nenabled=1\ngpgcheck=0" > /etc/yum.repos.d/vespa-rpms-local.repo; fi && \
     dnf -y install vespa-systemtest-tools && \
+    if test "$(/opt/vespa/bin/vespa-print-default sanitizers)" != none; then \
+      dnf debuginfo-install -y vespa-abseil-cpp vespa-libzstd vespa-lz4 vespa-onnxruntime vespa-openblas vespa-openssl vespa-protobuf glibc libatomic libffi libgcc libgfortran libicu libstdc++ llvm-libs ncurses-libs re2 xxhash-libs zlib && \
+      dnf debuginfo-install -y vespa vespa-base-libs vespa-libs vespa-malloc; \
+    fi && \
     dnf clean all && \
     rm -f /etc/yum.repos.d/vespa-rpms-local.repo && \
     rm -rf /var/cache/dnf
