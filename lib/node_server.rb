@@ -912,7 +912,7 @@ class NodeServer
       elsif name == 'thread'
         ENV['TSAN_OPTIONS'] = "suppressions=#{Environment.instance.vespa_home}/etc/vespa/tsan-suppressions.txt history_size=7 detect_deadlocks=1 second_deadlock_stack=1 log_path=#{dir}/tsan-log"
       elsif name == 'undefined'
-        ENV['UBSAN_OPTIONS'] = "print_stacktrace=1:log_path=#{dir}/ubsan-log"
+        ENV['UBSAN_OPTIONS'] = "print_stacktrace=1:log_path=#{dir}/ubsan-log:report_error_type=1:suppressions=#{Environment.instance.vespa_home}/etc/vespa/ubsan-suppressions.txt"
       end
     end
   end
