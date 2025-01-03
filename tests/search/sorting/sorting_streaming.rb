@@ -62,6 +62,15 @@ class SortingStreaming < StreamingSearchTest
     compare('query=this&streaming.selection=true&ranking=onlyweight&sortspec=%2b[docid]&hits=5&type=all', "this_docid_asc", "documentid")
     # Descending sort on docid (global docid is used for sorting)
     compare('query=this&streaming.selection=true&ranking=onlyweight&sortspec=-[docid]&hits=5&type=all', "this_docid_desc", "documentid")
+
+    result = search_with_timeout(60, { 'query' => 'this',
+                                       'streaming.selection' => 'true',
+                                       'ranking' => 'onlyweight',
+                                       'sortspec' => '-badfield',
+                                       'hits' => '5',
+                                       'type' => 'all' })
+    assert_not_nil(result.errorlist)
+    assert_match(/Cannot locate field 'badfield' in field name registry/, result.errorlist[0]['message'])
   end
 
 end
