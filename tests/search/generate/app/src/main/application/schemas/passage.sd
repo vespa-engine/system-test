@@ -1,37 +1,60 @@
 # Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
 
 schema passage {
-  document passage {
-    field id type string {
-      indexing: summary | attribute
+    document passage {
+        field id type string {
+            indexing: summary | attribute
+        }
+    
+        field text type string {
+            indexing: summary | index
+            index: enable-bm25
+        }
+        
+        field prompt type string {
+        }
     }
-
-    field text type string {
-      indexing: summary | index
-      index: enable-bm25
+    
+    field mock_gen type string {
+        indexing: input prompt . input text | generate mock_gen | index | summary
+        index: enable-bm25
     }
-
-    field prompt type string {
+    
+    field mock_lm_gen type string {
+        indexing: input text | generate mock_lm_gen | index | summary
+        index: enable-bm25
     }
-  }
-
-  field generated type string {
-    indexing: input prompt . input text | generate mock_generator | index | summary
-    index: enable-bm25
-  }
-
-  field generated_with_prompt type string {
-    indexing: input text | generate mock_with_prompt_generator | index | summary
-    index: enable-bm25
-  }
-
-  fieldset default {
-    fields: text
-  }
-
-  rank-profile default {
-    first-phase {
-        expression: bm25(generated)
+    
+    field local_llm_gen type string {
+        indexing: input text | generate local_llm_gen | index | summary
+        index: enable-bm25
     }
-  }
+    
+    fieldset default {
+        fields: text
+    }
+    
+    rank-profile default {
+        first-phase {
+            expression: bm25(text)
+        }
+    }
+    
+    rank-profile mock_gen {
+        first-phase {
+            expression: bm25(mock_gen)
+        }
+    }
+    
+    rank-profile mock_lm_gen {
+        first-phase {
+            expression: bm25(mock_lm_gen)
+        }
+    }
+    
+    rank-profile local_llm_gen {
+        first-phase {
+            expression: bm25(local_llm_gen)
+        }
+    }
 }
