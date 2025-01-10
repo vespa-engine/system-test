@@ -16,9 +16,13 @@ public class MockTextGenerator implements TextGenerator {
 
         for (int i = 0; i < config.repetitions(); i++) {
             stringBuilder.append(prompt.asString());
-            stringBuilder.append(" ");
+            
+            if (i < config.repetitions() - 1) {
+                stringBuilder.append(" ");
+            }
         }
 
+        
         return stringBuilder.toString();
     }
 }

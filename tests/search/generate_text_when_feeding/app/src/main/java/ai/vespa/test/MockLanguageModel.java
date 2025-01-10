@@ -21,7 +21,10 @@ public class MockLanguageModel implements ai.vespa.llm.LanguageModel {
 
         for (int i = 0; i < config.repetitions(); i++) {
             stringBuilder.append(prompt.asString());
-            stringBuilder.append(" ");
+            
+            if (i < config.repetitions() - 1) {
+                stringBuilder.append(" ");
+            }
         }
 
         return List.of(Completion.from(stringBuilder.toString().trim()));

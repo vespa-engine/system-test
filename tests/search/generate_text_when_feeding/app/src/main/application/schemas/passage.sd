@@ -16,7 +16,7 @@ schema passage {
     }
     
     field mock_gen type string {
-        indexing: input prompt . input text | generate mock_gen | index | summary
+        indexing: input prompt . " " . input text | generate mock_gen | index | summary
         index: enable-bm25
     }
     
@@ -31,7 +31,7 @@ schema passage {
     }
     
     fieldset default {
-        fields: text
+        fields: text, prompt, mock_gen, mock_lm_gen, local_llm_gen
     }
     
     rank-profile default {

@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     
     <groupId>ai.vespa.test</groupId>
-    <artifactId>generate</artifactId>
+    <artifactId>generate_text_when_feeding</artifactId>
     <packaging>container-plugin</packaging>
     <version>1.0.0</version>
 

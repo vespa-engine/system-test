@@ -26,8 +26,7 @@
     <module>search/struct_and_map_types/inherited_struct/concretedocs</module>
     <module>search/wasfound/project</module>
     <module>performance/container_tensor_eval/tensor-eval</module>
-    <module>search/generate/app</module>
-    <module>search/generate_openai/app</module>
+    <module>search/generate_text_when_feeding/app</module>
   </modules>
 
   <properties>

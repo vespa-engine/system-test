@@ -3,7 +3,7 @@
 <services version="1.0">
 
     <container id="container" version="1.0">
-        <component id="mock_lm" class="ai.vespa.test.MockLanguageModel" bundle="generate">
+        <component id="mock_lm" class="ai.vespa.test.MockLanguageModel" bundle="generate_text_when_feeding">
             <config name="ai.vespa.test.mock-language-model">
                 <repetitions>2</repetitions>
             </config>
@@ -22,12 +22,11 @@
             </config>
         </component>
 
-        <component id="mock_gen" class="ai.vespa.test.MockTextGenerator" bundle="generate">
-            <config name="ai.vespa.test.mock-generator">
+        <component id="mock_gen" class="ai.vespa.test.MockTextGenerator" bundle="generate_text_when_feeding">
+            <config name="ai.vespa.test.mock-text-generator">
                 <repetitions>2</repetitions>
             </config>
         </component>
-
 
         <component id="mock_lm_gen" class="ai.vespa.llm.generation.LanguageModelTextGenerator">
             <config name="ai.vespa.llm.generation.language-model-text-generator">
