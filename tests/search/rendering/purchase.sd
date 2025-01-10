@@ -21,6 +21,10 @@ schema purchase {
         }
     }
 
+    fieldset default {
+        fields: customer
+    }
+
     rank-profile default inherits default {
 
         first-phase {
