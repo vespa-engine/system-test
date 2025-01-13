@@ -24,7 +24,6 @@ class MultipleDocumentTypes < IndexedStreamingSearchTest
   def test_one_search_cluster
     timeout = 5.0
     set_description("Test that we can have a search cluster with native support for multiple document types")
-    set_expected_logged(/proton\.groupingmanager.*Could not locate attribute for grouping number 0 : Failed locating attribute vector 'pages'/)
     deploy_app(SearchApp.new.sd(selfdir+"common.sd").sd(selfdir+"book.sd").sd(selfdir+"music.sd").sd(selfdir+"video.sd"))
     start
     feedfile(selfdir + "feed2.json")
@@ -82,6 +81,9 @@ class MultipleDocumentTypes < IndexedStreamingSearchTest
     assert_equal(5, res_one.hitcount)
     # Errors might cause incomplete grouping results
     assert_not_nil(res_both.errorlist)
+    error = res_both.errorlist[0]['message']
+    assert_match(/Could not locate (attribute|field) for grouping number 0 : /, error)
+    output('Got expected error: ' + error)
     assert_equal(13, res_both.hitcount)
     group_one = extract_group(res_one)
     group_both = extract_group(res_both)
