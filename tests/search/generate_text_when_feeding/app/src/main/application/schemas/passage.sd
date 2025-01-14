@@ -1,0 +1,60 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema passage {
+    document passage {
+        field id type string {
+            indexing: summary | attribute
+        }
+    
+        field text type string {
+            indexing: summary | index
+            index: enable-bm25
+        }
+        
+        field prompt type string {
+        }
+    }
+    
+    field mock_gen type string {
+        indexing: input prompt . " " . input text | generate mock_gen | index | summary
+        index: enable-bm25
+    }
+    
+    field mock_lm_gen type string {
+        indexing: input text | generate mock_lm_gen | index | summary
+        index: enable-bm25
+    }
+    
+    field local_llm_gen type string {
+        indexing: input text | generate local_llm_gen | index | summary
+        index: enable-bm25
+    }
+    
+    fieldset default {
+        fields: text, prompt, mock_gen, mock_lm_gen, local_llm_gen
+    }
+    
+    rank-profile default {
+        first-phase {
+            expression: bm25(text)
+        }
+    }
+    
+    rank-profile mock_gen {
+        first-phase {
+            expression: bm25(mock_gen)
+        }
+    }
+    
+    rank-profile mock_lm_gen {
+        first-phase {
+            expression: bm25(mock_lm_gen)
+        }
+    }
+    
+    rank-profile local_llm_gen {
+        first-phase {
+            expression: bm25(local_llm_gen)
+        }
+    }
+}
