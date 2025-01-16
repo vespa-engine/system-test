@@ -40,6 +40,8 @@
         { "id" : "symmetric-put-and-activate-replica-selection", "rules" : [ { "value" : true } ] },
         { "id" : "enforce-strictly-increasing-cluster-state-versions", "rules" : [ { "value" : true } ] },
         { "id" : "distribution-config-from-cluster-controller", "rules" : [ { "value" : true } ] },
-        { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] }
+        { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
+        { "id" : "document-v1-queue-size", "rules" : [ { "value" : 128 } ] }
+
     ]
 }
