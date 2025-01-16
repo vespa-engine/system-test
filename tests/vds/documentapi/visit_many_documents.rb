@@ -4,7 +4,7 @@ require 'vds_test'
 class VisitManyDocumentsTest < VdsTest
 
   def setup
-    set_owner("geirst")
+    set_owner('vekterli')
     deploy_app(default_app.distribution_bits(8))
     container = (vespa.qrserver["0"] or vespa.container.values.first)
     @tmp_bin_dir = container.create_tmp_bin_dir
@@ -27,9 +27,15 @@ class VisitManyDocumentsTest < VdsTest
   def test_visit_many_documents
     set_description("Test visiting of many documents using continuation token")
     feed_documents
+    [false, true].each { |stream|
+      visit_with_continuation(stream)
+    }
+  end
 
+  def visit_with_continuation(stream)
+    puts "Visiting via Document V1 API with stream=#{stream}"
     doc_ids = Set.new
-    params = {:selection => "music", :cluster => "storage", :wantedDocumentCount => @wanted_doc_count}
+    params = {:selection => "music", :cluster => "storage", :wantedDocumentCount => @wanted_doc_count, :stream => stream}
     continuation = nil
     visit_count = 0
     loop do
