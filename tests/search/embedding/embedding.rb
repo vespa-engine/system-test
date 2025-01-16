@@ -50,10 +50,6 @@ class Embedding < IndexedStreamingSearchTest
   end
 
   def nomic_modernbert_component
-    # param('transformer-model', '', {'path' => 'components/model.onnx'}).
-    # param('tokenizer-model', '', {'path' => 'components/tokenizer.json'}).
-    # param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/nomic-ai/modernbert-embed-base/resolve/main/onnx/model.onnx'}).
-    # param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/nomic-ai/modernbert-embed-base/resolve/main/tokenizer.json'}).
     Component.new('nomicmb').
       type('hugging-face-embedder').
       param('transformer-model', '', { 'url' => 'https://huggingface.co/nomic-ai/modernbert-embed-base/resolve/main/onnx/model.onnx' }).
@@ -141,7 +137,6 @@ class Embedding < IndexedStreamingSearchTest
   end
 
   def test_modernbert_embedding
-    # components_dir(selfdir + 'nomic-ai/modernbert-embed-base').
     deploy_app(
       SearchApp.new.
         container(
@@ -301,7 +296,7 @@ class Embedding < IndexedStreamingSearchTest
     }
   end
 
-  def verify_embeddings_with(savedFile, embedder = "huggingface")
+  def verify_embeddings_with(savedFile, embedder = "modernbert")
     wanted = JSON.parse(File.read(selfdir + savedFile))
     wanted.each do |want|
       docid = '"' + want['docid'] + '"'
@@ -314,7 +309,6 @@ class Embedding < IndexedStreamingSearchTest
       result = search("?yql=#{yql}&#{qi}&myqtext=#{qtext}").json
       assert_equal(1, result['root']['children'].size)
       hitfields = result['root']['children'][0]['fields']
-      # puts "Found: #{hitfields['text']}"
       queryFeature    = hitfields['summaryfeatures']['query(embedding)']
       documentFeature = hitfields['summaryfeatures']['attribute(embedding)']
 
@@ -327,17 +321,6 @@ class Embedding < IndexedStreamingSearchTest
 
       qfv = queryFeature['values']
       check_prefix_suffix(q_emb, qfv, 5)
-
-      # qfl = queryFeature['values'].length
-      # dfl = documentFeature['values'].length
-      #puts "queryFeature[#{qfl}]:    #{queryFeature['type']}"
-      #puts "documentFeature[#{dfl}]: #{documentFeature['type']}"
-      #puts "queryFeature[#{qfl}]:    #{queryFeature}"
-      #puts "documentFeature[#{dfl}]: #{documentFeature}"
-      # puts "wanted DF: #{d_emb}"
-      # puts "got DF: #{dfv[0, 5]} ... #{dfv[-5, 5]}"
-      # puts "wanted QF: #{q_emb}"
-      # puts "got QF: #{qfv[0, 5]} ... #{qfv[-5, 5]}"
     end
   end
 
