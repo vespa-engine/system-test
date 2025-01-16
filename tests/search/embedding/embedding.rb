@@ -49,6 +49,22 @@ class Embedding < IndexedStreamingSearchTest
       param('pooling-strategy', 'cls')
   end
 
+  def nomic_modernbert_component
+    # param('transformer-model', '', {'path' => 'components/model.onnx'}).
+    # param('tokenizer-model', '', {'path' => 'components/tokenizer.json'}).
+    # param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/nomic-ai/modernbert-embed-base/resolve/main/onnx/model.onnx'}).
+    # param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/nomic-ai/modernbert-embed-base/resolve/main/tokenizer.json'}).
+    Component.new('nomicmb').
+      type('hugging-face-embedder').
+      param('transformer-model', '', { 'url' => 'https://huggingface.co/nomic-ai/modernbert-embed-base/resolve/main/onnx/model.onnx' }).
+      param('transformer-token-type-ids').
+      param('tokenizer-model', '', { 'url' => 'https://huggingface.co/nomic-ai/modernbert-embed-base/resolve/main/tokenizer.json' }).
+      param('transformer-output', 'token_embeddings').
+      param('max-tokens', 8192).
+      param('prepend', [ ComponentParam::new('query', 'search_query:', {}),
+                         ComponentParam::new('document', 'search_document:', {}) ] )
+  end
+
   def colbert_embedder_component
      Component.new('colbert').
        type('colbert-embedder').
@@ -122,6 +138,21 @@ class Embedding < IndexedStreamingSearchTest
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_huggingface_tokens
     verify_huggingface_embedding
+  end
+
+  def test_modernbert_embedding
+    # components_dir(selfdir + 'nomic-ai/modernbert-embed-base').
+    deploy_app(
+      SearchApp.new.
+        container(
+          default_container_setup.
+            component(nomic_modernbert_component).
+            jvmoptions('-Xms3g -Xmx3g')).
+        sd(selfdir + 'nomic-ai/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start_vespa
+    feed_and_wait_for_docs('doc', 10, :file => selfdir + '10-docs.json')
+    verify_embeddings_with('nomic-ai/expect.json', 'nomicmb')
   end
 
   def test_huggingface_embedding_binary_quantization
@@ -256,6 +287,60 @@ class Embedding < IndexedStreamingSearchTest
   end
 
 
+  def check_val_by_idx(expected_v, actual_v, idx)
+      expval = expected_v[idx]
+      actval = actual_v[idx]
+      assert((expval - actval).abs < 1e-5, "#{expval} != #{actval} at index #{idx}")
+      #puts("OK[#{idx}]: #{expval}")
+  end
+
+  def check_prefix_suffix(expected_v, actual_v, fixlen)
+    (1..fixlen).each { |i|
+      check_val_by_idx(expected_v, actual_v, i-1)
+      check_val_by_idx(expected_v, actual_v, -i)
+    }
+  end
+
+  def verify_embeddings_with(savedFile, embedder = "huggingface")
+    wanted = JSON.parse(File.read(selfdir + savedFile))
+    wanted.each do |want|
+      docid = '"' + want['docid'] + '"'
+      puts "Looking for #{docid}"
+      qtext = want['qtext']
+      q_emb = want['q_emb']
+      d_emb = want['d_emb']
+      yql = "select+*+from+sources+*+where+text+contains+#{docid}"
+      qi = "input.query(embedding)=embed(#{embedder},@myqtext)"
+      result = search("?yql=#{yql}&#{qi}&myqtext=#{qtext}").json
+      assert_equal(1, result['root']['children'].size)
+      hitfields = result['root']['children'][0]['fields']
+      # puts "Found: #{hitfields['text']}"
+      queryFeature    = hitfields['summaryfeatures']['query(embedding)']
+      documentFeature = hitfields['summaryfeatures']['attribute(embedding)']
+
+      expected_length = 768
+      assert_equal(expected_length, queryFeature['values'].length)
+      assert_equal(expected_length, documentFeature['values'].length)
+
+      dfv = documentFeature['values']
+      check_prefix_suffix(d_emb, dfv, 5)
+
+      qfv = queryFeature['values']
+      check_prefix_suffix(q_emb, qfv, 5)
+
+      # qfl = queryFeature['values'].length
+      # dfl = documentFeature['values'].length
+      #puts "queryFeature[#{qfl}]:    #{queryFeature['type']}"
+      #puts "documentFeature[#{dfl}]: #{documentFeature['type']}"
+      #puts "queryFeature[#{qfl}]:    #{queryFeature}"
+      #puts "documentFeature[#{dfl}]: #{documentFeature}"
+      # puts "wanted DF: #{d_emb}"
+      # puts "got DF: #{dfv[0, 5]} ... #{dfv[-5, 5]}"
+      # puts "wanted QF: #{q_emb}"
+      # puts "got QF: #{qfv[0, 5]} ... #{qfv[-5, 5]}"
+    end
+  end
+
   def verify_huggingface_embedding
     expected_embedding = JSON.parse(File.read(selfdir + 'hf-expected-vector.json'))
     result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hello%22%3B&ranking.features.query(embedding)=embed(huggingface, \"Hello%20world\")&format=json&format.tensors=short").json
@@ -277,10 +362,10 @@ class Embedding < IndexedStreamingSearchTest
     result = search("?yql=select%20*%20from%20sources%20*%20where%20true&input.query(embedding)=embed(mixed, \"Hello%20world\")&input.query(binary_embedding)=embed(mixed, \"Hello%20world\")&format=json&format.tensors=short").json
     queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(embedding)"]
     attributeFeatureShortFloat = result['root']['children'][0]['fields']['summaryfeatures']["attribute(shortened_embedding)"]
-    
+
     attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(binary_embedding)"]
     queryBinaryFeature = result['root']['children'][0]['fields']['summaryfeatures']["query(binary_embedding)"]
-    
+
     attributeFeatureShort = result['root']['children'][0]['fields']['summaryfeatures']["attribute(binary_embedding_short)"]
     attributeUnpackedFeature = result['root']['children'][0]['fields']['summaryfeatures']["unpacked"]
 
@@ -300,13 +385,13 @@ class Embedding < IndexedStreamingSearchTest
     (0..511).each { |i|
       assert((queryFeature['values'][i] - attributeFeatureShortFloat['values'][i]).abs < 1e-5, "#{queryFeature['values'][i]} != #{attributeFeatureShortFloat['values'][i]} at index #{i}")
     }
-    
+
     expected_length = 128
     assert_equal(expected_length, attributeFeature['values'].length)
     assert_equal(expected_length, queryBinaryFeature['values'].length)
     assert_equal(8*expected_length, queryFeature['values'].length)
     assert_equal(8*expected_length, attributeUnpackedFeature['values'].length)
-    
+
     assert_equal(2, attributeFeatureShort['values'].length)
 
     expected_embedding = JSON.parse(File.read(selfdir + 'hf-binarized-expected-vector.json'))

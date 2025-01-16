@@ -1,0 +1,13 @@
+[
+{ "remove": "id:test:doc::1" },
+{ "put": "id:x:doc::1", "fields": { "text": "Hello world" } },
+{ "put": "id:x:doc::2", "fields": { "text": "To transport goods on water, use a boat" } },
+{ "put": "id:x:doc::3", "fields": { "text": "Human interaction is often done by talking" } },
+{ "put": "id:x:doc::4", "fields": { "text": "The galaxy is filled with stars" } },
+{ "put": "id:x:doc::5", "fields": { "text": "TSNE is a dimensionality reduction algorithm created by Laurens van Der Maaten" } },
+{ "put": "id:x:doc::6", "fields": { "text": "GELU (Gaussian Error Linear Unit) is an activation function that can be approximated using tanh" } },
+{ "put": "id:x:doc::7", "fields": { "text": "Washtenaw Community College (WCC) is a public community college in Ann Arbor Charter Township, Michigan." } },
+{ "put": "id:x:doc::8", "fields": { "text": "The Nintendo Entertainment System (NES) is an 8-bit home video game console produced by Nintendo. It was first released in Japan on July 15, 1983, as the Family Computer (Famicom)." } },
+{ "put": "id:x:doc::9", "fields": { "text": "Written in 1787, ratified in 1788, and in operation since 1789, the United States Constitution is the world's longest surviving written charter of government. Its first three words – “We The People” – affirm that the government of the United States exists to serve its citizens." } },
+{ "put": "id:x:doc::A", "fields": { "text": "When the Medical Research Council formed in Britain in 1913, it initially focused on tuberculosis research." } }
+]
