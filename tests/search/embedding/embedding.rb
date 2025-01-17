@@ -299,12 +299,12 @@ class Embedding < IndexedStreamingSearchTest
   def verify_embeddings_with(savedFile, embedder = "modernbert")
     wanted = JSON.parse(File.read(selfdir + savedFile))
     wanted.each do |want|
-      docid = '"' + want['docid'] + '"'
-      puts "Looking for #{docid}"
+      keyword = '"' + want['kw'] + '"'
+      puts "Looking for #{keyword}"
       qtext = want['qtext']
       q_emb = want['q_emb']
       d_emb = want['d_emb']
-      yql = "select+*+from+sources+*+where+text+contains+#{docid}"
+      yql = "select+*+from+sources+*+where+text+contains+#{keyword}"
       qi = "input.query(embedding)=embed(#{embedder},@myqtext)"
       result = search("?yql=#{yql}&#{qi}&myqtext=#{qtext}").json
       assert_equal(1, result['root']['children'].size)
@@ -321,6 +321,11 @@ class Embedding < IndexedStreamingSearchTest
 
       qfv = queryFeature['values']
       check_prefix_suffix(q_emb, qfv, 5)
+
+      yql = "select+*+from+sources+*+where+{targetHits:10}nearestNeighbor(embedding,embedding)"
+      result = search("?yql=#{yql}&#{qi}&myqtext=#{qtext}&ranking=less")
+      puts "Hit 1: #{result.hit[0]}"
+      puts "Hit 2: #{result.hit[1]}"
     end
   end
 

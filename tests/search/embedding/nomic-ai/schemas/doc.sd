@@ -25,6 +25,19 @@ schema doc {
         summary-features {
             query(embedding)
             attribute(embedding)
+            distance(field,embedding)
+        }
+    }
+
+    rank-profile less {
+        inputs {
+            query(embedding) tensor<float>(x[768])
+        }
+        first-phase {
+            expression: closeness(embedding)
+        }
+        summary-features {
+           distance(field,embedding)
         }
     }
 
