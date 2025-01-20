@@ -52,9 +52,9 @@ class Embedding < IndexedStreamingSearchTest
   def nomic_modernbert_component
     Component.new('nomicmb').
       type('hugging-face-embedder').
-      param('transformer-model', '', { 'url' => 'https://huggingface.co/nomic-ai/modernbert-embed-base/resolve/main/onnx/model.onnx' }).
+      param('transformer-model', '', { 'url' => 'https://data.vespa-cloud.com/onnx_models/nomic-ai-modernbert-embed-base/model.onnx' }).
       param('transformer-token-type-ids').
-      param('tokenizer-model', '', { 'url' => 'https://huggingface.co/nomic-ai/modernbert-embed-base/resolve/main/tokenizer.json' }).
+      param('tokenizer-model', '', { 'url' => 'https://data.vespa-cloud.com/onnx_models/nomic-ai-modernbert-embed-base/tokenizer.json' }).
       param('transformer-output', 'token_embeddings').
       param('max-tokens', 8192).
       param('prepend', [ ComponentParam::new('query', 'search_query:', {}),
