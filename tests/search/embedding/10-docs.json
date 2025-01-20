@@ -1,5 +1,4 @@
 [
-{ "remove": "id:test:doc::1" },
 { "put": "id:x:doc::1", "fields": { "text": "Hello world" } },
 { "put": "id:x:doc::2", "fields": { "text": "To transport goods on water, use a boat" } },
 { "put": "id:x:doc::3", "fields": { "text": "Human interaction is often done by talking" } },
