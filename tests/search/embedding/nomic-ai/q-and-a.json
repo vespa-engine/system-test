@@ -1,0 +1,57 @@
+[
+  {
+    "kw": "hello",
+    "qtext": "Hello world",
+    "dtext": "Hello world"
+  },
+  {
+    "kw": "boat",
+    "qtext": "How should we ship containers overseas?",
+    "dtext": "To transport goods on water, use a boat"
+  },
+  {
+    "kw": "talking",
+    "qtext": "How do people communicate?",
+    "dtext": "Human interaction is often done by talking"
+  },
+  {
+    "kw": "galaxy",
+    "qtext": "What can we find in outer space?",
+    "dtext": "The galaxy is filled with stars"
+  },
+  {
+    "kw": "TSNE",
+    "qtext": "What is TSNE?",
+    "dtext": "TSNE is a dimensionality reduction algorithm created by Laurens van Der Maaten"
+  },
+  {
+    "kw": "TSNE",
+    "qtext": "Who is Laurens van der Maaten?",
+    "dtext": "TSNE is a dimensionality reduction algorithm created by Laurens van Der Maaten"
+  },
+  {
+    "kw": "gaussian",
+    "qtext": "Are there fast RELU alternatives?",
+    "dtext": "GELU (Gaussian Error Linear Unit) is an activation function that can be approximated using tanh"
+  },
+  {
+    "kw": "college",
+    "qtext": "What community college is located in Ann Arbor?",
+    "dtext": "Washtenaw Community College (WCC) is a public community college in Ann Arbor Charter Township, Michigan."
+  },
+  {
+    "kw": "nintendo",
+    "qtext": "When was the nationwide release of the NES?",
+    "dtext": "The Nintendo Entertainment System (NES) is an 8-bit home video game console produced by Nintendo. It was first released in Japan on July 15, 1983, as the Family Computer (Famicom)."
+  },
+  {
+    "kw": "constitution",
+    "qtext": "What is the foundation of the U.S. federal government?",
+    "dtext": "Written in 1787, ratified in 1788, and in operation since 1789, the United States Constitution is the world's longest surviving written charter of government. Its first three words – “We The People” – affirm that the government of the United States exists to serve its citizens."
+  },
+  {
+    "kw": "tuberculosis",
+    "qtext": "What British health organization made tuberculosis its top priority at its start?",
+    "dtext": "When the Medical Research Council formed in Britain in 1913, it initially focused on tuberculosis research."
+  }
+]
