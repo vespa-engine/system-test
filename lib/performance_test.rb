@@ -163,6 +163,8 @@ class PerformanceTest < TestCase
       result.add_metric('feeder.minlatency', json['http.response.latency.millis.min'].to_s)
       result.add_metric('feeder.maxlatency', json['http.response.latency.millis.max'].to_s)
       result.add_metric('feeder.avglatency', json['http.response.latency.millis.avg'].to_s)
+      result.add_metric("feeder.operation.avg_latency", json.dig("operation.latency", "avg").to_s)
+      result.add_metric('feeder.response.200.avg_latency', json.dig("http.response", "200", "latency", "avg").to_s)
       result.add_parameter('loadgiver', 'vespa-feed-client')
     end
   end
