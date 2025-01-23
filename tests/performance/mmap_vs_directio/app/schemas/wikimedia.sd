@@ -28,10 +28,8 @@ schema wikimedia {
   }
 
   rank-profile use_bitvectors inherits default {
-    rank-properties {
-      # This is set to 1/64 which is the limit for generating bitvectors.
-      vespa.matching.diskindex.bitvector_limit: 0.05
-    }
+    # This is set to 1/64 which is the limit for generating bitvectors.
+    filter-threshold: 0.05
   }
 
   rank-profile weakand_stop_word inherits default {
@@ -42,10 +40,10 @@ schema wikimedia {
   }
 
   rank-profile weakand_stop_word_use_bitvectors inherits default {
+    filter-threshold: 0.05
     rank-properties {
       vespa.matching.weakand.stop_word_drop_limit: 0.6
       vespa.matching.weakand.stop_word_adjust_limit: 0.01
-      vespa.matching.diskindex.bitvector_limit: 0.05
     }
   }
 
