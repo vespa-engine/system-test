@@ -17,11 +17,11 @@ RUN --mount=type=bind,target=/include/,source=include/,rw \
     dnf -y install \
         bind-utils \
         cmake \
-        gcc-toolset-13-annobin-docs \
-        gcc-toolset-13-annobin-plugin-gcc \
-        gcc-toolset-13-binutils \
-        gcc-toolset-13-gcc-c++ \
-        gcc-toolset-13-libatomic-devel \
+        gcc-toolset-14-annobin-docs \
+        gcc-toolset-14-annobin-plugin-gcc \
+        gcc-toolset-14-binutils \
+        gcc-toolset-14-gcc-c++ \
+        gcc-toolset-14-libatomic-devel \
         file \
         git \
         hostname \
