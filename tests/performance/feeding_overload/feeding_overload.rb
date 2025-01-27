@@ -34,6 +34,9 @@ class FeedingOverloadPerfTest < PerformanceTest
     puts "Running command #{cmd}"
     result = `#{cmd}`
     puts "Result: #{result}"
+    warmup_file = dirs.tmpdir + 'miracl-warmup.json'
+    result = `gunzip -c #{local_file} | jq '.[0:10000]' > #{warmup_file}`
+    puts "Result: #{result}"
     # Use vespa-feed-client for to measure feeding latency end-to-end
     feeder_options = { :client => :vespa_feed_client,
                        :numconnections => 128,
@@ -43,6 +46,7 @@ class FeedingOverloadPerfTest < PerformanceTest
                        :silent => true,
                        :route => 'default/chain.indexing null/default',
                        :disable_tls => false }
+    run_feeder(warmup_file, [], feeder_options.merge({:warmup => true}))
     run_feeder(local_file, [], feeder_options)
   end
 end

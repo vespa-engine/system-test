@@ -169,36 +169,40 @@ class PerformanceTest < TestCase
     end
   end
 
-  def post_process_feed_output(output, client, custom_fillers)
-    if client == :vespa_feed_client
-      json = '[' + output.gsub('}{', '},{') + ']'
-      feed_outputs = JSON.parse(json)
-      last_feed_output = feed_outputs[-1]
-      fillers = [fill_feeder_json(last_feed_output)]
+  def post_process_feed_output(output, client, custom_fillers, warmup=false)
+    if warmup
+      fillers = []
     else
-      lines = output.split("\n")[-1]
-      res = lines.gsub(/\s+/, "").split(",")
-      fillers = [fill_feeder(res)]
+      if client == :vespa_feed_client
+        json = '[' + output.gsub('}{', '},{') + ']'
+        feed_outputs = JSON.parse(json)
+        last_feed_output = feed_outputs[-1]
+        fillers = [fill_feeder_json(last_feed_output)]
+      else
+        lines = output.split("\n")[-1]
+        res = lines.gsub(/\s+/, "").split(",")
+        fillers = [fill_feeder(res)]
+      end
     end
     write_report(fillers + custom_fillers)
   end
 
   def run_feeder(feedfile, custom_fillers=[], feederparams={})
     out = feed(feederparams.merge({:file => feedfile, :mode => "benchmark", :do_sync => true}))
-    post_process_feed_output(out, feederparams[:client], custom_fillers)
+    post_process_feed_output(out, feederparams[:client], custom_fillers, feederparams.dig(:warmup) || false)
   end
 
   def run_stream_feeder(streamer_command, custom_fillers=[], feederparams={})
     client = feederparams.key?(:client) ? feederparams[:client] : default_feed_client
     out = feed_stream(streamer_command,
                       feederparams.merge({:client => client, :mode => "benchmark"}))
-    post_process_feed_output(out, client, custom_fillers)
+    post_process_feed_output(out, client, custom_fillers, feederparams.dig(:warmup) || false)
   end
 
   def run_template_feeder(fillers: [], params: {}, template: params[:template], count: params[:count])
     raise "Template must be present" unless template
     out = feed(params.merge({:template => template, :count => count, :mode => "benchmark"}))
-    post_process_feed_output(out, params[:client], fillers)
+    post_process_feed_output(out, params[:client], fillers, params.dig(:warmup) || false)
   end
 
   def create_loadtester(node, configserver_hostname, port, num_requests, num_threads, defdir)
