@@ -33,17 +33,17 @@ schema wikimedia {
   }
 
   rank-profile weakand_stop_word inherits default {
-    rank-properties {
-      vespa.matching.weakand.stop_word_drop_limit: 0.6
-      vespa.matching.weakand.stop_word_adjust_limit: 0.01
+    weakand {
+      stopword-limit: 0.6
+      adjust-target: 0.01
     }
   }
 
   rank-profile weakand_stop_word_use_bitvectors inherits default {
     filter-threshold: 0.05
-    rank-properties {
-      vespa.matching.weakand.stop_word_drop_limit: 0.6
-      vespa.matching.weakand.stop_word_adjust_limit: 0.01
+    weakand {
+      stopword-limit: 0.6
+      adjust-target: 0.01
     }
   }
 
