@@ -42,7 +42,6 @@ class FeedingOverloadPerfTest < PerformanceTest
                        :numconnections => 128,
                        :max_streams_per_connection => 128,
                        :compression => "none",
-                       :localfile => true,
                        :silent => true,
                        :route => 'default/chain.indexing null/default',
                        :disable_tls => false }
