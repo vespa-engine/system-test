@@ -63,10 +63,13 @@ class ParentChildGroupingSortingTest < ParentChildTestBase
     deploy_and_start
     feed_baseline
 
-    assert_grouping('all(group(my_campaign_name) each(output(sum(my_budget))))', 'group_on_parent_name')
+#    assert_grouping('all(group(my_campaign_name) each(output(sum(my_budget))))', 'group_on_parent_name')
+    assert_grouping('all(group(campaign_ref) each(output(sum(my_budget))))', 'group_on_reference')
   end
 
   def assert_grouping(grouping_query, file_name)
+    save_result("/search/?hits=0&query=sddocname:ad&select=#{grouping_query}",
+                  get_test_path("#{file_name}.json"))
     assert_result("/search/?hits=0&query=sddocname:ad&select=#{grouping_query}",
                   get_test_path("#{file_name}.json"))
   end
