@@ -1,0 +1,59 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 5
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 5,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        },
+        "children": [
+          {
+            "id": "grouplist:my_campaign_name",
+            "relevance": 1.0,
+            "label": "my_campaign_name",
+            "children": [
+              {
+                "id": "group:string:plumbus",
+                "relevance": 21.0,
+                "value": "plumbus",
+                "fields": {
+                  "sum(my_budget)": 20
+                }
+              },
+              {
+                "id": "group:string:gazorpazorpfield",
+                "relevance": 13.0,
+                "value": "gazorpazorpfield",
+                "fields": {
+                  "sum(my_budget)": 20
+                }
+              },
+              {
+                "id": "group:string:morty",
+                "relevance": 10.0,
+                "value": "morty",
+                "fields": {
+                  "sum(my_budget)": 10
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
