@@ -58,7 +58,7 @@ class VespaCleanup
 
   def collect_stale_processes(node)
     pids = []
-    ps_output = execute(node, "ps auxww | sed 's,\\s\\S*/, ,g' | grep -E '(vespa-feeder|vespa-fbench|vespa-visit|vespa-|vespa-config-sentinel|vespa-logd|vespa-runserver|java.*ai.vespa.feed.client)' | grep -v node_server | grep -v grep")
+    ps_output = execute(node, "ps auxww | sed 's,\\s\\S*/, ,g' | grep -E '(vespa-feeder|vespa-fbench|vespa-visit|vespa-|vespa-config-sentinel|vespa-logd|vespa-runserver|java.*ai.vespa.feed.client)' | grep -vE '(node_server|buildkite-agent)' | grep -v grep")
     ps_output.split("\n").each { |process_line|
       pid = process_line.split[1]
       pids << pid unless pid == 1
