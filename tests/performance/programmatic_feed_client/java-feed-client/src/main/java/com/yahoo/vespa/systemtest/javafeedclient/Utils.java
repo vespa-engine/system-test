@@ -68,7 +68,10 @@ class Utils {
             generator.writeStartObject();
             generator.writeNumberField("feeder.runtime", duration.toMillis());
             generator.writeNumberField("feeder.okcount", stats.successes());
-            generator.writeNumberField("feeder.errorcount", stats.exceptions() + stats.responsesByCode().entrySet().stream().filter(entry -> entry.getKey() != 200).map(Entry::getValue).reduce(0L, Long::sum));
+            generator.writeNumberField("feeder.errorcount", stats.exceptions() + stats.statsByCode().entrySet().stream()
+                    .filter(entry -> entry.getKey() != 200)
+                    .map(e -> e.getValue().count())
+                    .reduce(0L, Long::sum));
             generator.writeNumberField("feeder.exceptions", stats.exceptions());
             generator.writeNumberField("feeder.bytessent", stats.bytesSent());
             generator.writeNumberField("feeder.bytesreceived", stats.bytesReceived());

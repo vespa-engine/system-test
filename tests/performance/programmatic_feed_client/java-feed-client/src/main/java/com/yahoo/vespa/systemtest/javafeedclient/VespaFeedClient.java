@@ -31,9 +31,8 @@ public class VespaFeedClient {
         FeedClient client = createFeedClient();
         AtomicReference<OperationStats> stats = new AtomicReference<>();
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.schedule(() -> { stats.set(client.stats()); },
-                          warmupSeconds(), TimeUnit.SECONDS);
-        executor.schedule(() -> { stats.set(client.stats().since(stats.get())); executor.shutdown(); },
+        executor.schedule(client::resetStats, warmupSeconds(), TimeUnit.SECONDS);
+        executor.schedule(() -> { stats.set(client.stats()); executor.shutdown(); },
                           warmupSeconds() + benchmarkSeconds(), TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(() -> { System.err.println(client.stats()); },
                                      1, 1, TimeUnit.SECONDS);
