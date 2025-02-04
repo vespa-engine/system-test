@@ -196,6 +196,9 @@ module Feeder
       if params[:mode]
         p += "--mode #{params[:mode]} "
       end
+      if params[:serial]
+        p += "--serial "
+      end
       if feed_file
         p += feed_file
       end

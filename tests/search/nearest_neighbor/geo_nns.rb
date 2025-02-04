@@ -101,9 +101,10 @@ class GeoNnsTest < IndexedStreamingSearchTest
     set_description("Test the nearest neighbor search operator for geo search (with whitelist)")
     geo_deploy(2)
     start
-    # Note: :numconnections => 1, :max_streams_per_connection 1 needed to get deterministic ordering
+    # Note: Even with :numconnections and :max_streams_per_connection 1 we get reordering
+    # with vespa-feed-client, we need to serialize requests all the way through
     # when feeding, otherwise we might not get the same HNSW graph for every run
-    feed(:file => selfdir + "5k-docs.json", :numthreads => 1, :numconnections => 1, :max_streams_per_connection => 1 )
+    feed(:file => selfdir + "5k-docs.json", :client => :vespa_feed_perf, :serial => true, :numthreads => 1)
     i=5000
     puts "Done put of #{i} documents"
     wait_for_hitcount('?query=sddocname:geo', i)
