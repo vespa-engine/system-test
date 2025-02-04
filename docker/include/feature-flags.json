@@ -39,7 +39,7 @@
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
         { "id" : "symmetric-put-and-activate-replica-selection", "rules" : [ { "value" : true } ] },
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
-        { "id" : "document-v1-queue-size", "rules" : [ { "value" : 0 } ] }
-
+        { "id" : "document-v1-queue-size", "rules" : [ { "value" : 0 } ] },
+        { "id":  "search-handler-threadpool", "rules":  [ { "value": 4 } ] }
     ]
 }
