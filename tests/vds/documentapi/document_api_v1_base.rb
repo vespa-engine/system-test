@@ -82,6 +82,11 @@ class DocumentApiV1Base < SearchTest
     assert_equal(404, response.code.to_i)
   end
 
+  def assert_not_found_with_path(path)
+    response = vespa.document_api_v1.http_get(path)
+    assert_equal(404, response.code.to_i)
+  end
+
   def assert_fails_with_precondition_violation
     begin
       yield
