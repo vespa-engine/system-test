@@ -37,10 +37,6 @@ schema test {
       indexing: attribute | summary
       attribute: fast-search
     }
-    field str_array_filtered type array<string> {}
-    field int_array_filtered type array<long> {}
-    field str_wset_filtered type weightedset<string> {}
-    field int_wset_filtered type weightedset<long> {}
     field apples type array<string> {
       indexing: attribute | summary
       attribute: fast-search
@@ -50,6 +46,20 @@ schema test {
       indexing: attribute | summary
       attribute: fast-search
       summary: matched-elements-only
+    }
+    field idx_array type array<string> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
+    field idx_array_src type array<string> {
+      indexing: index | summary
+    }
+    field idx_wset type weightedset<string> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
+    field idx_wset_src type weightedset<string> {
+      indexing: index | summary
     }
   }
   document-summary filtered {
@@ -67,6 +77,14 @@ schema test {
     }
     summary int_wset_filtered {
       source: int_wset_src
+      matched-elements-only
+    }
+    summary idx_array_filtered {
+      source: idx_array_src
+      matched-elements-only
+    }
+    summary idx_wset_filtered {
+      source: idx_wset_src
       matched-elements-only
     }
   }

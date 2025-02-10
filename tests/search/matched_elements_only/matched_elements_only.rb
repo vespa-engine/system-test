@@ -39,6 +39,10 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     assert_summary_field("int_wset contains '20'", "int_wset", { "20" => 7 })
     assert_summary_field("str_array contains 'foo' or str_array contains 'bar'", "str_array", ["bar", "foo"])
     assert_summary_field("str_wset contains 'foo' or str_wset contains 'bar'", "str_wset", { "bar" => 7, "foo" => 5 })
+    assert_summary_field("idx_array contains 'deux'", "idx_array", ["two 2 deux"])
+    assert_summary_field("idx_array contains 'deux' or idx_array contains 'une'", "idx_array", ["one 1 une", "two 2 deux"])
+    assert_summary_field("idx_wset contains 'deux'", "idx_wset", {"two 2 deux" => 7})
+    assert_summary_field("idx_wset contains 'deux' or idx_wset contains 'une'", "idx_wset", {"one 1 une" => 5, "two 2 deux" => 7})
     assert_summary_field("weightedSet(str_array, {\"foo\":1, \"baz\":2})", "str_array", ["foo"])
     assert_summary_field("weightedSet(str_array, {\"baz\":1, \"bar\":2})", "str_array", ["bar"])
     assert_summary_field("weightedSet(str_array, {\"foo\":1, \"bar\":2})", "str_array", ["bar", "foo"])
@@ -51,6 +55,10 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     assert_summary_field("weightedSet(int_wset, {\"10\":1, \"11\":2})", "int_wset", { "10" => 5 })
     assert_summary_field("weightedSet(int_wset, {\"11\":1, \"20\":2})", "int_wset", { "20" => 7 })
     assert_summary_field("weightedSet(int_wset, {\"10\":1, \"20\":2})", "int_wset", { "10" => 5, "20" => 7 })
+    assert_summary_field('weightedSet(idx_array, {"two":3, "deux": 5, "3":22})', "idx_array", ["three 3 trois", "two 2 deux"])
+    assert_summary_field('weightedSet(idx_wset, {"two":3, "deux": 5, "3":22})', "idx_wset", {"three 3 trois" => 16, "two 2 deux" => 7})
+    assert_summary_field('idx_array contains equiv("two", "deux", "3")', "idx_array", ["three 3 trois", "two 2 deux"])
+    assert_summary_field('idx_wset contains equiv("two", "deux", "3")', "idx_wset", {"three 3 trois" => 16, "two 2 deux" => 7})
 
     # Test summary fields with 'matched-elements-only' (in explicit summary class) that reference source fields.
     assert_summary_field("str_array_src contains 'bar'", "str_array_filtered", ["bar"], "filtered")
@@ -59,6 +67,9 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     assert_summary_field("int_wset_src contains '20'", "int_wset_filtered", { "20" => 7 }, "filtered")
     assert_summary_field("str_array_src contains 'foo' or str_array_src contains 'bar'", "str_array_filtered", ["bar", "foo"], "filtered")
     assert_summary_field("str_wset_src contains 'foo' or str_wset_src contains 'bar'", "str_wset_filtered", { "bar" => 7, "foo" => 5 }, "filtered")
+    assert_summary_field("idx_array_src contains 'deux'", "idx_array_filtered", ["two 2 deux"])
+    assert_summary_field("idx_array_src contains 'deux' or idx_array_src contains '1'", "idx_array_filtered", ["one 1 une", "two 2 deux"])
+    assert_summary_field("idx_wset_src contains 'deux' or idx_wset_src contains '1'", "idx_wset_filtered", {"one 1 une" => 5, "two 2 deux" => 7})
 
     # The source fields are not filtered
     assert_summary_field("str_array_src contains 'bar'", "str_array_src", ["bar", "foo"])
