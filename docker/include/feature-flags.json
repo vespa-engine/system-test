@@ -19,7 +19,6 @@
             ]
         },
         { "id" : "use-legacy-wand-query-parsing", "rules" : [ { "value" : false } ] },
-        { "id" : "shared-string-repo-no-reclaim", "rules" : [ { "value" : true } ] },
         { "id" : "mbus-num-network-threads", "rules" : [ { "value" : 1 } ] },
         { "id" : "mbus-cpp-num-targets", "rules" : [ { "value" : 10 } ] },
         { "id" : "mbus-java-num-targets", "rules" : [ { "value" : 10 } ] },
