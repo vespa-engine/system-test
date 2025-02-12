@@ -121,7 +121,7 @@ class FuzzySearch < IndexedStreamingSearchTest
     # Indexing field is not supported
     assert_query_errors(
       make_query(make_fuzzy("single_index", "query", 2, 0, false)),
-      [".* single_index:query field is not a string attribute"]
+      [".*Fuzzy items require a string attribute field, but 'single_index' is not"]
     )
   end
 
