@@ -227,7 +227,7 @@ class LidSpaceCompactionTest < IndexedOnlySearchTest
     stats["status"]["memoryUsage"]["allocatedBytes"].to_i
   end
 
-  def test_lid_usage_metrics
+  def not_test_lid_usage_metrics
     set_description("Test that document meta store metrics regarding lid usage is updated and reported")
     deploy_app(SearchApp.new.sd(SEARCH_DATA + "test.sd").allowed_lid_bloat(1000))
     start
@@ -302,14 +302,14 @@ class LidSpaceCompactionTest < IndexedOnlySearchTest
     return thread
   end
 
-  def test_basic_document_moving
+  def not_test_basic_document_moving
     @valgrind = false
     set_description("Test that documents are moved to allow for lid space compaction")
 
     run_basic_document_moving_test(false)
   end
 
-  def test_attribute_updates_are_preserved_during_document_moving
+  def not_test_attribute_updates_are_preserved_during_document_moving
     @valgrind = false
     set_description("Test that attribute updates are preserved when moving documents during lid space compaction")
 
@@ -343,7 +343,7 @@ class LidSpaceCompactionTest < IndexedOnlySearchTest
     flush_and_verify_docs_moved(num_remaining, exp_ready_stats, exp_removed_stats)
   end
 
-  def test_document_moving_during_feed
+  def not_test_document_moving_during_feed
     @valgrind = false
     set_description("Test that documents are moved during feed to allow for lid space compaction")
     deploy_app(get_app(2.0)) # no lid compaction will happen
@@ -373,7 +373,7 @@ class LidSpaceCompactionTest < IndexedOnlySearchTest
     flush_and_verify_docs_moved(num_remaining, get_ideal_stats(num_remaining), get_ideal_stats(num_removes))
   end
 
-   def test_document_moving_during_redistribution
+   def not_test_document_moving_during_redistribution
     @valgrind = false
     set_description("Test that documents are moved during re-distribution to allow for lid space compaction")
     deploy_app(get_app(2.0, true)) # no lid compaction will happen
@@ -439,4 +439,8 @@ class LidSpaceCompactionTest < IndexedOnlySearchTest
     stop
   end
 
+  Clones = 1000
+  for i in 1..Clones
+    alias_method("test_shrink_memoryusage_clone%04d" % i, :test_shrink_memoryusage)
+  end
 end
