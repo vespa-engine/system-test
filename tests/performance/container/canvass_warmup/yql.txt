@@ -1,1 +1,0 @@
-/search/?yql=select%20%2A%20from%20sources%20%2A%20where%20text%20contains%20%22foo%22%3B
