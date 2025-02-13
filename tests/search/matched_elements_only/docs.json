@@ -22,6 +22,14 @@
         "10": 5,
         "20": 7
       },
+      "idx_array": [ "one 1 une", "two 2 deux", "three 3 trois"],
+      "idx_array_src": [ "one 1 une", "two 2 deux", "three 3 trois"],
+      "idx_wset": {
+        "one 1 une": 5, "two 2 deux": 7, "three 3 trois": 16
+      },
+      "idx_wset_src": {
+        "one 1 une": 5, "two 2 deux": 7, "three 3 trois": 16
+      },
       "apples": [ "one", "two", "three" ],
       "oranges": [ "three", "two", "one" ]
     }

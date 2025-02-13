@@ -51,4 +51,8 @@ class DocumentApiVdsPart3 < DocumentApiV1Base
     }
   end
 
+  def test_get_unknown_document_type_returns_404_not_found
+    assert_not_found_with_path("/document/v1/storage_test/unknown/docid/somethingrandom")
+  end
+
 end

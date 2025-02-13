@@ -23,10 +23,9 @@ schema wikimedia {
   }
 
   rank-profile default {
-    rank-properties {
-      vespa.matching.weakand.stop_word_adjust_limit: 1.0
-      vespa.matching.weakand.stop_word_score_limit: 1.0
-      vespa.matching.weakand.stop_word_drop_limit: 1.0
+    weakand {
+      stopword-limit: 1.0
+      adjust-target: 1.0
     }
     first-phase {
       # expression: bm25(title) + bm25(text)

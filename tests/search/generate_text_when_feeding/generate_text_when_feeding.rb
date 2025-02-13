@@ -8,9 +8,8 @@ class Generate < SearchTest
   end
 
   def test_generate_text_when_feeding
-    # I haven't found a better way to build the app
-    system('cd app && mvn clean package')
-    deploy(Dir.pwd + '/app/target/application')
+    add_bundle_dir(selfdir + "app", "generate_text_when_feeding")
+    deploy(selfdir + "app/src/main/application")
     start
   
     feed_and_wait_for_docs('passage', 1, :file => selfdir + "data/feed.jsonl")

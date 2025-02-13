@@ -19,7 +19,6 @@
             ]
         },
         { "id" : "use-legacy-wand-query-parsing", "rules" : [ { "value" : false } ] },
-        { "id" : "shared-string-repo-no-reclaim", "rules" : [ { "value" : true } ] },
         { "id" : "mbus-num-network-threads", "rules" : [ { "value" : 1 } ] },
         { "id" : "mbus-cpp-num-targets", "rules" : [ { "value" : 10 } ] },
         { "id" : "mbus-java-num-targets", "rules" : [ { "value" : 10 } ] },
@@ -30,17 +29,14 @@
         { "id" : "rpc-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
         { "id" : "async-message-handling-on-schedule", "rules" : [ { "value" : true } ] },
         { "id" : "max-uncommitted-memory", "rules" : [ { "value" : 130000 } ] },
-        { "id" : "container-shutdown-timeout", "rules" : [ { "value" : 40.0 } ] },
         { "id" : "container-dump-heap-on-shutdown-timeout", "rules" : [ { "value" : true } ] },
         { "id" : "resource-limit-disk", "rules" : [ { "value" : 0.9 } ] },
         { "id" : "summary-decode-policy", "rules" : [ { "value" : "on-demand" } ] },
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
-        { "id" : "symmetric-put-and-activate-replica-selection", "rules" : [ { "value" : true } ] },
-        { "id" : "enforce-strictly-increasing-cluster-state-versions", "rules" : [ { "value" : true } ] },
-        { "id" : "distribution-config-from-cluster-controller", "rules" : [ { "value" : true } ] },
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
-        { "id" : "document-v1-queue-size", "rules" : [ { "value" : 0 } ] }
+        { "id" : "document-v1-queue-size", "rules" : [ { "value" : 0 } ] },
+        { "id":  "search-handler-threadpool", "rules":  [ { "value": 10 } ] }
     ]
 }

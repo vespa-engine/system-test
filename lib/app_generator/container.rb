@@ -315,7 +315,7 @@ class ComponentParam
   end
 
   def dump_xml(indent="")
-    XmlHelper.new(indent).tag(@tag, @attrs).to_xml(@value).to_s
+    XmlHelper.new(indent).tag_always(@tag, @attrs).to_xml(@value).to_s
   end
 end
 

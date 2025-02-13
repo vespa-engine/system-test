@@ -1,0 +1,44 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema doc {
+
+    document doc {
+        field text type string {
+          indexing: index | summary
+        }
+    }
+
+    field embedding type tensor<float>(x[768]) {
+          indexing: input text | embed nomicmb | attribute
+          attribute {
+              distance-metric: angular
+          }
+    }
+
+    rank-profile default {
+        inputs {
+            query(embedding) tensor<float>(x[768])
+        }
+        first-phase {
+            expression: closeness(embedding)
+        }
+        summary-features {
+            query(embedding)
+            attribute(embedding)
+            distance(field,embedding)
+        }
+    }
+
+    rank-profile less {
+        inputs {
+            query(embedding) tensor<float>(x[768])
+        }
+        first-phase {
+            expression: closeness(embedding)
+        }
+        summary-features {
+           distance(field,embedding)
+        }
+    }
+
+}

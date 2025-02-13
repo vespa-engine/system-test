@@ -46,7 +46,7 @@ public class VespaJsonFeeder {
         AtomicReference<OperationStats> stats = new AtomicReference<>();
         AtomicLong startNanos = new AtomicLong();
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        executor.schedule(() -> { stats.set(client.stats()); startNanos.set(System.nanoTime()); },
+        executor.schedule(() -> { client.resetStats(); startNanos.set(System.nanoTime()); },
                           warmupSeconds(), TimeUnit.SECONDS);
         executor.scheduleAtFixedRate(() -> { System.err.println(client.stats()); },
                                      1, 1, TimeUnit.SECONDS);
@@ -55,7 +55,7 @@ public class VespaJsonFeeder {
              JsonFeeder feeder = JsonFeeder.builder(client).withRoute(route()).build()) {
             feeder.feedMany(in);
         }
-        printJsonReport(Duration.ofNanos(System.nanoTime() - startNanos.get()), client.stats().since(stats.get()), "vespa-json-feeder");
+        printJsonReport(Duration.ofNanos(System.nanoTime() - startNanos.get()), client.stats(), "vespa-json-feeder");
         executor.shutdown();
     }
 

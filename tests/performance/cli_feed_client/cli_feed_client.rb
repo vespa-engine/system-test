@@ -123,6 +123,7 @@ class CliFeedClientTest < PerformanceTest
       "feeder.avglatency" => data["http.response.latency.millis.avg"],
       "feeder.maxlatency" => data["http.response.latency.millis.max"],
     }
+
   end
 
   private

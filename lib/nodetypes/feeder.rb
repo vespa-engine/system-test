@@ -196,6 +196,9 @@ module Feeder
       if params[:mode]
         p += "--mode #{params[:mode]} "
       end
+      if params[:serial]
+        p += "--serial "
+      end
       if feed_file
         p += feed_file
       end
@@ -267,7 +270,7 @@ module Feeder
   private
   def select_feeder(params)
     if params[:client] == :vespa_feed_client
-      return "vespa-feed-client "
+      return "env VESPA_EXTENDED_STATS=true vespa-feed-client "
     elsif params[:client] == :vespa_feeder
       return "vespa-feeder --abortondataerror no --abortonsenderror no"
     elsif params[:client] == :vespa_feed_perf
