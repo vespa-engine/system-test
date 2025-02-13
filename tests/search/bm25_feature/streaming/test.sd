@@ -5,24 +5,31 @@ schema test {
       indexing: index | summary
       index: enable-bm25
     }
+    field contenta type array<string> {
+      indexing: index | summary
+      index: enable-bm25
+    }
   }
   rank-profile avgfl100 {
     first-phase {
       expression {
-        bm25(content)
+        bm25(content) + bm25(contenta)
       }
     }
     # Default average field length for streaming search is 100.0
     summary-features {
       bm25(content)
+      bm25(contenta)
     }
     match-features {
       bm25(content)
+      bm25(contenta)
     }
   }
   rank-profile default inherits avgfl100 {
     rank-properties {
       bm25(content).averageFieldLength: 4.0
+      bm25(contenta).averageFieldLength: 8.0
     }
   }
 }

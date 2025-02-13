@@ -1,5 +1,0 @@
-[
-  { "put": "id:test:test::0", "fields": { "content": "a a a b c d e", "contenta": ["a a a1 b c d e", "a a2 a2 b2 c2 d2 e2"] } },
-  { "put": "id:test:test::1", "fields": { "content": "a a b", "contenta": ["a1 a1 b1", "a a b"] } },
-  { "put": "id:test:test::2", "fields": { "content": "a d", "contenta": ["a d1", "a2 d"] } }
-]
