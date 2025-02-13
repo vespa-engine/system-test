@@ -6,7 +6,11 @@
       "array_slow": ["ThisIsAFox", "Bear"],
       "array_fast": ["ThisIsAFox", "Bear"],
       "wset_slow": {"ThisIsAFox": 100, "Bear": 100},
-      "wset_fast": {"ThisIsAFox": 100, "Bear": 100}
+      "wset_fast": {"ThisIsAFox": 100, "Bear": 100},
+      "my_struct_array": [
+        {"f1": "aaa", "f2": "bbb"},
+        {"f1": "ccc", "f2": "ddd"}
+      ]
     }
   },
   {
@@ -16,7 +20,11 @@
       "array_slow": ["ThisIsAFox", "Beaver"],
       "array_fast": ["ThisIsAFox", "Beaver"],
       "wset_slow": {"ThisIsAFox": 100, "Beaver": 100},
-      "wset_fast": {"ThisIsAFox": 100, "Beaver": 100}
+      "wset_fast": {"ThisIsAFox": 100, "Beaver": 100},
+      "my_struct_array": [
+        {"f1": "xaa", "f2": "bbb"},
+        {"f1": "aaa", "f2": "ddd"}
+      ]
     }
   },
   {
