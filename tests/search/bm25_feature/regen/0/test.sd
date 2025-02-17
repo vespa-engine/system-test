@@ -17,10 +17,14 @@ schema test {
     summary-features {
       bm25(content)
       bm25(contenta)
+      elementwise(bm25(content),x,double)
+      elementwise(bm25(contenta),x,double)
     }
     match-features {
       bm25(content)
       bm25(contenta)
+      elementwise(bm25(content),x,double)
+      elementwise(bm25(contenta),x,double)
     }
   }
 }

@@ -20,16 +20,22 @@ schema test {
     summary-features {
       bm25(content)
       bm25(contenta)
+      elementwise(bm25(content),x,double)
+      elementwise(bm25(contenta),x,double)
     }
     match-features {
       bm25(content)
       bm25(contenta)
+      elementwise(bm25(content),x,double)
+      elementwise(bm25(contenta),x,double)
     }
   }
   rank-profile default inherits avgfl100 {
     rank-properties {
       bm25(content).averageFieldLength: 4.0
       bm25(contenta).averageFieldLength: 8.0
+      elementwise(bm25(content),x,double).averageElementLength: 4.0
+      elementwise(bm25(contenta),x,double).averageElementLength: 4.0
     }
   }
 }
