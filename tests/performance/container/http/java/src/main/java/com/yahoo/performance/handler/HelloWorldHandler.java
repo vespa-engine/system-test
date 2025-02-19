@@ -1,7 +1,6 @@
 package com.yahoo.performance.handler;
 
 import com.google.inject.Inject;
-import com.yahoo.container.handler.threadpool.ContainerThreadPool;
 import com.yahoo.container.jdisc.HttpRequest;
 import com.yahoo.container.jdisc.HttpResponse;
 import com.yahoo.container.jdisc.ThreadedHttpRequestHandler;
@@ -17,8 +16,8 @@ import java.util.concurrent.Executor;
 public class HelloWorldHandler extends ThreadedHttpRequestHandler {
 
     @Inject
-    public HelloWorldHandler(ContainerThreadPool pool, Metric metric) {
-        super(pool, metric);
+    public HelloWorldHandler(Executor executor, Metric metric) {
+        super(executor, metric);
     }
 
     @Override
