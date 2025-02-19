@@ -36,6 +36,7 @@
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
         { "id" : "document-v1-queue-size", "rules" : [ { "value" : 0 } ] },
-        { "id":  "search-handler-threadpool", "rules":  [ { "value": 10 } ] }
+        { "id":  "search-handler-threadpool", "rules":  [ { "value": 10 } ] },
+        { "id":  "search-mmap-advise", "rules":  [ { "value": "SEQUENTIAL" } ] }
     ]
 }
