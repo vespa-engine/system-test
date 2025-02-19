@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root. -->
+<services version="1.0">
+
+    <container id="container" version="1.0">
+        <component id="local_llm" class="ai.vespa.llm.clients.LocalLLM">
+            <config name="ai.vespa.llm.clients.llm-local-client">
+                <!-- File is approx 130MB" -->
+                <!-- <model url="https://data.vespa-cloud.com/gguf_models/Llama-160M-Chat-v1.Q6_K.gguf"/>-->
+                <!-- File is approx 2.2GB" -->
+                <model url="https://data.vespa-cloud.com/gguf_models/Phi-3.5-mini-instruct-Q4_K_M.gguf"/>
+                <contextSize>5000</contextSize>
+                <parallelRequests>10</parallelRequests>
+                <maxQueueSize>5</maxQueueSize>
+                <maxQueueWait>100000</maxQueueWait>
+                <maxEnqueueWait>20000</maxEnqueueWait>
+                <maxTokens>200</maxTokens>
+                <maxPromptTokens>200</maxPromptTokens>
+            </config>
+        </component>
+        
+        <component id="local_llm_gen" class="ai.vespa.llm.generation.LanguageModelTextGenerator">
+            <config name="ai.vespa.llm.generation.language-model-text-generator">
+                <providerId>local_llm</providerId>
+                <promptTemplate>Translate this text to Norwegian:\n{input}</promptTemplate>
+            </config>
+        </component>
+
+        <document-api/>
+        
+        <search/>
+
+        <nodes>
+            <node hostalias="node1"/>
+        </nodes>
+    </container>
+
+    <content id="content" version="1.0">
+        <redundancy>1</redundancy>
+        
+        <documents>
+            <document mode="index" type="passage"/>
+        </documents>
+        
+        <nodes>
+            <node hostalias="node1" distribution-key="0"/>
+        </nodes>
+    </content>
+
+</services>
