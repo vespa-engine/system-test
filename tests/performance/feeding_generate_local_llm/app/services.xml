@@ -13,7 +13,7 @@
                 <parallelRequests>10</parallelRequests>
                 <maxQueueSize>5</maxQueueSize>
                 <maxQueueWait>100000</maxQueueWait>
-                <maxEnqueueWait>20000</maxEnqueueWait>
+                <maxEnqueueWait>100000</maxEnqueueWait>
                 <maxTokens>200</maxTokens>
                 <maxPromptTokens>200</maxPromptTokens>
             </config>
