@@ -5,23 +5,34 @@ schema test {
       indexing: index | summary
       index: enable-bm25
     }
+    field contenta type array<string> {
+      indexing: index | summary
+      index: enable-bm25
+    }
   }
   rank-profile default {
     first-phase {
       expression {
-        bm25(content)
+        bm25(content) + bm25(contenta)
       }
     }
     summary-features {
       bm25(content)
+      bm25(contenta)
+      elementwise(bm25(content),x,double)
+      elementwise(bm25(contenta),x,double)
     }
     match-features {
       bm25(content)
+      bm25(contenta)
+      elementwise(bm25(content),x,double)
+      elementwise(bm25(contenta),x,double)
     }
   }
   rank-profile avgfl100 inherits default {
     rank-properties {
       bm25(content).averageFieldLength: 100.0
+      elementwise(bm25(content),x,double).averageElementLength: 100.0
     }
   }
 }

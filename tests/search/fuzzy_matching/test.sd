@@ -18,6 +18,20 @@ schema test {
       indexing: attribute
       attribute: fast-search
     }
+    struct my_struct {
+      field f1 type string {}
+      field f2 type string {}
+    }
+    field my_struct_array type array<my_struct> {
+      struct-field f1 {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field f2 {
+        indexing: attribute
+        attribute: fast-search
+      }
+    }
   }
 
 

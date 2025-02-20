@@ -29,14 +29,14 @@
         { "id" : "rpc-events-before-wakeup", "rules" : [ { "value" : 1 } ] },
         { "id" : "async-message-handling-on-schedule", "rules" : [ { "value" : true } ] },
         { "id" : "max-uncommitted-memory", "rules" : [ { "value" : 130000 } ] },
-        { "id" : "container-dump-heap-on-shutdown-timeout", "rules" : [ { "value" : true } ] },
         { "id" : "resource-limit-disk", "rules" : [ { "value" : 0.9 } ] },
-        { "id" : "summary-decode-policy", "rules" : [ { "value" : "on-demand" } ] },
+        { "id" : "summary-decode-policy", "rules" : [ { "value" : "eager" } ] },
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
         { "id" : "document-v1-queue-size", "rules" : [ { "value" : 0 } ] },
-        { "id":  "search-handler-threadpool", "rules":  [ { "value": 10 } ] }
+        { "id":  "search-handler-threadpool", "rules":  [ { "value": 10 } ] },
+        { "id":  "search-mmap-advise", "rules":  [ { "value": "SEQUENTIAL" } ] }
     ]
 }

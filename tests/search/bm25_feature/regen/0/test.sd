@@ -1,5 +1,5 @@
 # Copyright Vespa.ai. All rights reserved.
-search test {
+schema test {
   document test {
     field content type string {
       indexing: index | summary
@@ -17,10 +17,14 @@ search test {
     summary-features {
       bm25(content)
       bm25(contenta)
+      elementwise(bm25(content),x,double)
+      elementwise(bm25(contenta),x,double)
     }
     match-features {
       bm25(content)
       bm25(contenta)
+      elementwise(bm25(content),x,double)
+      elementwise(bm25(contenta),x,double)
     }
   }
 }
