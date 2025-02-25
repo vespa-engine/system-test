@@ -36,6 +36,8 @@ import com.yahoo.vespa.config.server.rpc.RpcServer;
 import com.yahoo.vespa.config.server.rpc.security.NoopRpcAuthorizer;
 import com.yahoo.vespa.config.server.tenant.Tenant;
 import com.yahoo.vespa.config.util.ConfigUtils;
+import com.yahoo.vespa.flags.InMemoryFlagSource;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
@@ -90,7 +92,7 @@ public class TestConfigServer implements RequestHandler, Runnable {
                                        superModelRequestHandler,
                                        dimensions -> new MetricUpdater(Metrics.createTestMetrics(), Collections.emptyMap()),
                                        new HostRegistry(),
-                                       new FileServer(configServerConfig, new FileDirectory(configServerConfig)),
+                                       new FileServer(configServerConfig, new InMemoryFlagSource(), new FileDirectory(configServerConfig)),
                                        new NoopRpcAuthorizer(),
                                        new RpcRequestHandlerProvider());
         rpcServer.setUpGetConfigHandlers();
