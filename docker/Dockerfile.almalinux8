@@ -11,6 +11,7 @@ RUN dnf install -y dnf-plugins-core && \
     dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/vespa/vespa/repo/epel-8/group_vespa-vespa-epel-8.repo && \
     dnf config-manager --enable powertools && \
     dnf config-manager --enable epel && \
+    dnf -y upgrade && \
     dnf install -y vespa && \
     dnf clean --enablerepo=* all
 
@@ -30,6 +31,7 @@ RUN dnf install -y dnf-plugins-core && \
     dnf config-manager --enable powertools && \
     dnf module enable -y ruby:3.1 && \
     dnf module enable -y maven:3.8 && \
+    dnf -y upgrade && \
     dnf install -y \
         bind-utils \
         gcc-toolset-14-annobin-docs \
