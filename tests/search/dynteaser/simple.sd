@@ -1,0 +1,15 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema simple {
+  document simple {
+    field normal type string {
+      indexing: summary | index
+      summary: dynamic
+    }
+    field nonorm type string {
+      indexing: summary | index
+      normalizing: none
+      summary: dynamic
+    }
+  }
+}
