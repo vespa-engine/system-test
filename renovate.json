@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>vespaai/renovate-config"
+    "local>vespaai/renovate-config"
   ],
   "dependencyDashboardApproval": true,
   "ignorePaths": [],
