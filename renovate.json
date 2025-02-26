@@ -11,9 +11,13 @@
   ],
   "packageRules": [
     {
-      "matchPackagePatterns": ["^com\\.yahoo\\.vespa"],
-      "matchManagers": ["maven"],
-      "enabled": false
+      "matchManagers": [
+        "maven"
+      ],
+      "enabled": false,
+      "matchPackageNames": [
+        "/^com\\.yahoo\\.vespa/"
+      ]
     }
   ]
 }
