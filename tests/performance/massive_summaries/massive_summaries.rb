@@ -25,10 +25,7 @@ class MassiveSummariesTest < PerformanceTest
     cmd = "curl -o '#{local_file}' '#{remote_file}'"
     puts "Running command #{cmd}"
     result = `#{cmd}`
-    cmd = "zstdcat #{local_file} > '#{local_feed_file}'"
-    puts "Running command #{cmd}"
-    result = `#{cmd}`
-    @feed_file = local_feed_file
+    @feed_file = local_file
   end
 
   def prepare
@@ -53,7 +50,7 @@ class MassiveSummariesTest < PerformanceTest
     feed_params = { :dummy => :avoidgc}
     feedfile(@feed_file, feed_params)
 
-    container = (vespa.qrserver["0"] or vespa.container.values.first)
+    container = vespa.container.values.first
     run_custom_fbench("&presentation.timing=true", container, 1, 20, false)
     run_custom_fbench("&presentation.timing=true", container, 1, 60, true)
   end
