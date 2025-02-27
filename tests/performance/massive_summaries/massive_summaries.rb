@@ -46,7 +46,6 @@ class MassiveSummariesTest < PerformanceTest
   def test_summary_performance
     set_description("Test performance fetching and rendering extremely large summaries (400 hits, totalt 80MB).")
     deploy_app(SearchApp.new.sd(selfdir + "book.sd").
-               #search_dir(selfdir + "app").
                container(Container.new.search(Searching.new).jvmoptions("-verbose:gc -Xms16g -Xmx16g -XX:NewRatio=1 -XX:+PrintGCDetails")).
                threads_per_search(1))
     start
