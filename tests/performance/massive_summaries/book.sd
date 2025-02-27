@@ -1,0 +1,25 @@
+schema book {
+    document book {
+        field id type string {
+            indexing: attribute | summary
+        }
+        field title type string {
+            indexing: index | summary
+        }
+        field author type string {
+            indexing: index | summary
+        }
+        field subjects type string {
+            indexing: index | summary
+        }
+        field chunks type array<string> {
+            indexing: index | summary
+        }
+        field text_size type int {
+            indexing: attribute | summary
+        }
+    }
+    fieldset default {
+        fields: title, author, subjects, chunks
+    }
+}
