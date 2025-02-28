@@ -417,11 +417,9 @@ class NearestNeighborTest < IndexedStreamingSearchTest
   end
 
   def get_nni_stats(attribute)
-    uri = "/documentdb/test/subdb/ready/attribute/#{attribute}"
+    uri = "/documentdb/test/subdb/ready/attribute/#{attribute}/tensor/nearest_neighbor_index"
     stats = vespa.search["search"].first.get_state_v1_custom_component(uri)
-    assert(stats['tensor'])
-    assert(stats['tensor']['nearest_neighbor_index'])
-    stats['tensor']['nearest_neighbor_index']
+    stats
   end
 
   def teardown
