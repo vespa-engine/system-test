@@ -13,7 +13,6 @@ class OpenNlpLinguistics < SearchTest
     container = Container.new('container').search(Searching.new)
                   .docproc(DocumentProcessing.new)
                   .documentapi(ContainerDocumentApi.new)
-                  .component(Component.new('com.yahoo.language.opennlp.OpenNlpLinguistics'))
                   .config(ConfigOverride.new('ai.vespa.opennlp.open-nlp').
                           add('cjk', 'true').
                           add('createCjkGrams', 'true'))
