@@ -30,7 +30,7 @@
         { "id" : "async-message-handling-on-schedule", "rules" : [ { "value" : true } ] },
         { "id" : "max-uncommitted-memory", "rules" : [ { "value" : 130000 } ] },
         { "id" : "resource-limit-disk", "rules" : [ { "value" : 0.9 } ] },
-        { "id" : "summary-decode-policy", "rules" : [ { "value" : "eager" } ] },
+        { "id" : "summary-decode-policy", "rules" : [ { "value" : "on-demand" } ] },
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },

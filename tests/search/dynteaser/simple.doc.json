@@ -1,0 +1,9 @@
+[
+  {
+    "id": "id:test:simple::1",
+    "fields": {
+      "nonorm": "blå bær muß für søster sœur elise; Blå Bær Muß Für Søster Sœur Elise",
+      "normal": "blå bær muß für søster sœur elise; Blå Bær Muß Für Søster Sœur Elise"
+    }
+  }
+]

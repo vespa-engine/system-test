@@ -146,6 +146,7 @@ class ReportCoverage < IndexedOnlySearchTest
     sleep(1)
     metrics = JSONMetrics.new(container.get_state_v1_metrics())
     assert_equal(2, metrics.get_all("degraded_queries", {"chain"=>"vespa", "reason"=>"match_phase"})["values"]["count"])
+    assert_equal(1, metrics.get_all("degraded_queries", {"chain"=>"vespa", "reason"=>"timeout"})["values"]["count"])
     assert_document_coverage(metrics, 80)
 
     vespa.search['search'].searchnode.first.at(1).stop
@@ -165,12 +166,12 @@ class ReportCoverage < IndexedOnlySearchTest
     assert_equal(1, coverage["results"])
     assert_equal(0, coverage["resultsFull"])
     assert_equal(false, degraded["match-phase"])
-    assert_equal(true, degraded["timeout"])
+    assert_equal(false, degraded["timeout"])
     assert_equal(false, degraded["adaptive-timeout"])
-    assert_equal(false, degraded["non-ideal-state"])
+    assert_equal(true, degraded["non-ideal-state"])
     sleep(1)
     metrics = JSONMetrics.new(container.get_state_v1_metrics())
-    assert_equal(3, metrics.get_all("degraded_queries", {"chain"=>"vespa", "reason"=>"timeout"})["values"]["count"])
+    assert_equal(2, metrics.get_all("degraded_queries", {"chain"=>"vespa", "reason"=>"non_ideal_state"})["values"]["count"])
     assert_document_coverage(metrics, 80)
   end
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "local>vespa-engine/renovate-config"
   ],
   "dependencyDashboardApproval": true,
   "ignorePaths": [],
@@ -11,9 +11,13 @@
   ],
   "packageRules": [
     {
-      "matchPackagePatterns": ["^com\\.yahoo\\.vespa"],
-      "matchManagers": ["maven"],
-      "enabled": false
+      "matchManagers": [
+        "maven"
+      ],
+      "enabled": false,
+      "matchPackageNames": [
+        "/^com\\.yahoo\\.vespa/"
+      ]
     }
   ]
 }
