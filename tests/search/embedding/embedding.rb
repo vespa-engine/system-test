@@ -147,9 +147,9 @@ class Embedding < IndexedStreamingSearchTest
         indexing_cluster('default').indexing_chain('indexing'))
     start_vespa
     feed_and_wait_for_docs('doc', 10, :file => selfdir + '10-docs.json')
-    verify_embeddings_with('nomic-ai/expect.json', 'embedding', nomicmb')
-    verify_embeddings_with('nomic-ai/expect.json', 'embedding_binarized_implicitly', nomicmb')
-    verify_embeddings_with('nomic-ai/expect.json', 'embedding_binarized_explicitly', nomicmb')
+    verify_embeddings_with('nomic-ai/expect.json', 'embedding', 'nomicmb')
+    verify_embeddings_with('nomic-ai/expect.json', 'embedding_binarized_implicitly', 'nomicmb')
+    verify_embeddings_with('nomic-ai/expect.json', 'embedding_binarized_explicitly', 'nomicmb')
   end
 
   def test_huggingface_embedding_binary_quantization
