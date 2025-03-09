@@ -15,6 +15,21 @@ schema doc {
           }
     }
 
+    field embedding_binarized_implicitly type tensor<int8>(x[96]) {
+          indexing: input text | embed nomicmb | attribute
+          attribute {
+              distance-metric: angular
+          }
+    }
+
+    # The HF embedder can binarize internally, but explicit binarization should also work
+    field embedding_binarized_explicitly type tensor<int8>(x[96]) {
+          indexing: input text | embed nomicmb | pack_bits | attribute
+          attribute {
+              distance-metric: angular
+          }
+    }
+
     rank-profile default {
         inputs {
             query(embedding) tensor<float>(x[768])

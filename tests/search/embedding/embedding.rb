@@ -147,7 +147,9 @@ class Embedding < IndexedStreamingSearchTest
         indexing_cluster('default').indexing_chain('indexing'))
     start_vespa
     feed_and_wait_for_docs('doc', 10, :file => selfdir + '10-docs.json')
-    verify_embeddings_with('nomic-ai/expect.json', 'nomicmb')
+    verify_embeddings_with('nomic-ai/expect.json', 'embedding', nomicmb')
+    verify_embeddings_with('nomic-ai/expect.json', 'embedding_binarized_implicitly', nomicmb')
+    verify_embeddings_with('nomic-ai/expect.json', 'embedding_binarized_explicitly', nomicmb')
   end
 
   def test_huggingface_embedding_binary_quantization
@@ -296,12 +298,14 @@ class Embedding < IndexedStreamingSearchTest
     }
   end
 
-  def verify_embeddings_with(savedFile, embedder = "modernbert")
+  def verify_embeddings_with(savedFile, embeddingField, embedder = "modernbert")
     wanted = JSON.parse(File.read(selfdir + savedFile))
     wanted.each do |want|
       keyword = '"' + want['kw'] + '"'
-      puts "Looking for #{keyword}"
+      puts "Looking for #{keyword} using field #{embeddingField}"
       qtext = want['qtext']
+
+      # Verify embedding values *always using the 'embedding' field*
       q_emb = want['q_emb']
       d_emb = want['d_emb']
       yql = "select+*+from+sources+*+where+text+contains+#{keyword}"
@@ -322,10 +326,13 @@ class Embedding < IndexedStreamingSearchTest
       qfv = queryFeature['values']
       check_prefix_suffix(q_emb, qfv, 5)
 
-      yql = "select+*+from+sources+*+where+{targetHits:10}nearestNeighbor(embedding,embedding)"
+      # Verify that the expected match appears on top when searching with the given embeddingField
+      expectedMostRelevant = want['expectedMostRelevant']
+      yql = "select+*+from+sources+*+where+{targetHits:10}nearestNeighbor(embeddingField,embedding)"
       result = search("?yql=#{yql}&#{qi}&myqtext=#{qtext}&ranking=less")
       puts "Hit 1: #{result.hit[0]}"
       puts "Hit 2: #{result.hit[1]}"
+      assert_equal(expectedMostRelevant, result.hit[0].field["documentid"])
     end
   end
 
