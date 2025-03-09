@@ -328,7 +328,7 @@ class Embedding < IndexedStreamingSearchTest
 
       # Verify that the expected match appears on top when searching with the given embeddingField
       expectedMostRelevant = want['expectedMostRelevant']
-      yql = "select+*+from+sources+*+where+{targetHits:10}nearestNeighbor(embeddingField,embedding)"
+      yql = "select+*+from+sources+*+where+{targetHits:10}nearestNeighbor(#{embeddingField},embedding)"
       result = search("?yql=#{yql}&#{qi}&myqtext=#{qtext}&ranking=less")
       puts "Hit 1: #{result.hit[0]}"
       puts "Hit 2: #{result.hit[1]}"
