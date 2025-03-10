@@ -330,7 +330,7 @@ class Embedding < IndexedStreamingSearchTest
       expectedMostRelevant = want['expectedMostRelevant']
       yql = "select+*+from+sources+*+where+{targetHits:10}nearestNeighbor(#{embeddingField},#{queryTensor})"
       qi = "input.query(#{queryTensor})=embed(#{embedder},@myqtext)"
-      result = search("?yql=#{yql}&#{qi}&myqtext=#{qtext}&ranking=less")
+      result = search("?yql=#{yql}&#{qi}&myqtext=#{qtext}&ranking=#{embeddingField}")
       assert(result.hitcount >= 2)
       puts "Hit 1: #{result.hit[0]}"
       puts "Hit 2: #{result.hit[1]}"

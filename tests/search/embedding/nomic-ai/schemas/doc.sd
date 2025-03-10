@@ -46,12 +46,28 @@ schema doc {
     }
 
     rank-profile less inherits default {
-        first-phase {
-            expression: closeness(embedding)
-        }
         summary-features {
            distance(field,embedding)
         }
     }
+
+    rank-profile embedding inherits less {
+        first-phase {
+            expression: closeness(embedding)
+        }
+    }
+
+    rank-profile embedding_binarized_implicitly inherits less {
+        first-phase {
+            expression: closeness(embedding_binarized_implicitly)
+        }
+    }
+
+    rank-profile embedding_binarized_explicitly inherits less {
+        first-phase {
+            expression: closeness(embedding_binarized_explicitly)
+        }
+    }
+
 
 }
