@@ -18,7 +18,7 @@ schema doc {
     field embedding_binarized_implicitly type tensor<int8>(x[96]) {
           indexing: input text | embed nomicmb | attribute
           attribute {
-              distance-metric: angular
+              distance-metric: hamming
           }
     }
 
@@ -26,7 +26,7 @@ schema doc {
     field embedding_binarized_explicitly type tensor<int8>(x[96]) {
           indexing: input text | embed nomicmb | pack_bits | attribute
           attribute {
-              distance-metric: angular
+              distance-metric: hamming
           }
     }
 
