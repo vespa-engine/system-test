@@ -302,7 +302,7 @@ class Embedding < IndexedStreamingSearchTest
     wanted = JSON.parse(File.read(selfdir + savedFile))
     wanted.each do |want|
       keyword = '"' + want['kw'] + '"'
-      puts "Looking for #{keyword} using field #{embeddingField}"
+      puts "Looking for #{keyword} using field '#{embeddingField}'"
       qtext = want['qtext']
 
       # Verify embedding values *always using the 'embedding' field*
@@ -330,6 +330,7 @@ class Embedding < IndexedStreamingSearchTest
       expectedMostRelevant = want['expectedMostRelevant']
       yql = "select+*+from+sources+*+where+{targetHits:10}nearestNeighbor(#{embeddingField},embedding)"
       result = search("?yql=#{yql}&#{qi}&myqtext=#{qtext}&ranking=less")
+      assert(result.hitcount >= 2)
       puts "Hit 1: #{result.hit[0]}"
       puts "Hit 2: #{result.hit[1]}"
       assert_equal(expectedMostRelevant, result.hit[0].field["documentid"])
