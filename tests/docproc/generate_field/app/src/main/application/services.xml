@@ -3,7 +3,7 @@
 <services version="1.0">
 
     <container id="container" version="1.0">
-        <component id="mock_lm" class="ai.vespa.test.MockLanguageModel" bundle="generate_text_when_feeding">
+        <component id="mock_lm" class="ai.vespa.test.MockLanguageModel" bundle="generate_field">
             <config name="ai.vespa.test.mock-language-model">
                 <repetitions>2</repetitions>
             </config>
@@ -13,32 +13,30 @@
             <config name="ai.vespa.llm.clients.llm-local-client">
 
                 <!-- File is approx 130Mb" -->
-                <model url="https://data.vespa-cloud.com/gguf_models/Llama-160M-Chat-v1.Q6_K.gguf" />
-
-                <contextSize>512</contextSize>
-                <parallelRequests>1</parallelRequests>
-                <maxQueueSize>0</maxQueueSize>
-                <maxTokens>10</maxTokens>
+                <model url="https://data.vespa-cloud.com/gguf_models/llama-3.2-1b-instruct-q4_k_m.gguf" />
+                <contextSize>1024</contextSize>
             </config>
         </component>
 
-        <component id="mock_gen" class="ai.vespa.test.MockTextGenerator" bundle="generate_text_when_feeding">
-            <config name="ai.vespa.test.mock-text-generator">
+        <component id="mock_gen" class="ai.vespa.test.MockFieldGenerator" bundle="generate_field">
+            <config name="ai.vespa.test.mock-field-generator">
                 <repetitions>2</repetitions>
             </config>
         </component>
 
-        <component id="mock_lm_gen" class="ai.vespa.llm.generation.LanguageModelTextGenerator">
-            <config name="ai.vespa.llm.generation.language-model-text-generator">
+        <component id="mock_lm_gen" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
                 <providerId>mock_lm</providerId>
                 <promptTemplateFile>files/prompt.txt</promptTemplateFile>
+                <responseFormatType>TEXT</responseFormatType>
             </config>
         </component>
 
-        <component id="local_llm_gen" class="ai.vespa.llm.generation.LanguageModelTextGenerator">
-            <config name="ai.vespa.llm.generation.language-model-text-generator">
+        <component id="local_llm_gen" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
                 <providerId>local_llm</providerId>
                 <promptTemplateFile>files/prompt.txt</promptTemplateFile>
+                <responseFormatType>JSON</responseFormatType>
             </config>
         </component>
 
@@ -47,7 +45,7 @@
         <search/>
 
         <nodes>
-            <jvm options="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"/>
+<!--            <jvm options="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"/>-->
             <node hostalias="node1"/>
         </nodes>
     </container>
