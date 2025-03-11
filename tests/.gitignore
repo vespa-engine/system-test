@@ -2,3 +2,4 @@ target/
 mvnw
 mvnw.cmd
 .mvn/
+docproc/generate_openai
