@@ -37,7 +37,7 @@ class CustomStateApi < IndexedStreamingSearchTest
   def assert_custom_component_api(page)
     # We only test part of the page as the details are unit tested in searchcore.
     puts "assert_custom_component_api: #{page}"
-    assert_keys(["documentdb", "threadpools", "flushengine", "matchengine", "tls", "hwinfo", "resourceusage", "session"], page)
+    assert_keys(["documentdb", "threadpools", "flushengine", "matchengine", "tls", "hwinfo", "resourceusage", "session", "mallocinfo"], page)
 
     doc_dbs = page["documentdb"]
     assert_equal(1, doc_dbs.size)
@@ -53,6 +53,7 @@ class CustomStateApi < IndexedStreamingSearchTest
     assert_tls(get_page("/tls"))
     assert_hw_info(get_page("/hwinfo"))
     assert_resource_usage(get_page("/resourceusage"))
+    assert_mallocinfo(get_page("/mallocinfo"))
   end
 
   def assert_document_db(page)
@@ -111,6 +112,11 @@ class CustomStateApi < IndexedStreamingSearchTest
 
   def assert_resource_usage(page)
     assert_keys(["disk", "memory", "attribute_address_space"], page)
+  end
+
+  def assert_mallocinfo(page)
+    # Only the 'malloc_impl' field is certain to be present. The rest are platform/implementation-specific.
+    assert page.has_key? 'malloc_impl'
   end
 
   def teardown
