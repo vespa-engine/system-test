@@ -17,6 +17,9 @@ schema expnr {
     field f5 type string {
       indexing: attribute | summary
     }
+    field f6 type array<string> {
+      indexing: index | summary
+    }
   }
   fieldset default {
     fields: f1, f2
@@ -42,6 +45,7 @@ schema expnr {
       nativeFieldMatch.firstOccurrenceTable.f3: "linear(0,800)"
       nativeFieldMatch.firstOccurrenceTable.f4: "linear(0,300)" # streaming case
       nativeFieldMatch.firstOccurrenceTable.f5: "linear(0,500)" # streaming case
+      nativeFieldMatch.firstOccurrenceTable.f6: "linear(0,200)"
       nativeFieldMatch.firstOccurrenceImportance: "1.0"
       nativeProximity.proximityTable.f1: "linear(0,200)"
       nativeProximity.proximityTable.f2: "linear(0,400)"
@@ -49,6 +53,9 @@ schema expnr {
       nativeProximity.proximityTable.f4: "linear(0,300)" # streaming case
       nativeProximity.proximityTable.f5: "linear(0,500)" # streaming case
       nativeProximity.proximityImportance: "1.0"
+      nativeProximity.proximityTable.f6: "linear(-4,400,101)"
+      nativeProximity.reverseProximityTable.f6: "linear(-4,400,101)"
+      nativeProximity.proximityImportance.f6: 0.75
       nativeAttributeMatch.weightTable.f4: "linear(0,200)"
       nativeAttributeMatch.weightTable.f5: "linear(0,400)"
     }
@@ -73,6 +80,28 @@ schema expnr {
       nativeFieldMatch(f4)
       nativeProximity(f4)
       nativeAttributeMatch(f4)
+    }
+  }
+  rank-profile only-f6 inherits default {
+    summary-features {
+      nativeRank(f6)
+      nativeFieldMatch(f6)
+      nativeProximity(f6)
+    }
+  }
+  rank-profile only-f6-eg0 inherits only-f6 {
+    rank-properties {
+      nativeProximity.elementGap.f6: 0
+    }
+  }
+  rank-profile only-f6-eg1 inherits only-f6 {
+    rank-properties {
+      nativeProximity.elementGap.f6: 1
+    }
+  }
+  rank-profile only-f6-eginf inherits only-f6 {
+    rank-properties {
+      nativeProximity.elementGap.f6: infinity
     }
   }
 }
