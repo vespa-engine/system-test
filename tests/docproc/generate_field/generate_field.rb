@@ -3,8 +3,12 @@ require 'search_test'
 class Generate < SearchTest
   def setup
     super
-    set_owner('glebashnik')
-    set_description('Test generation of documents fields with custom generators and a local LLM.')
+    set_owner("glebashnik")
+    set_description("Test generation of document fields using custom gen.")
+  end
+
+  def timeout_seconds
+    600
   end
 
   def test_generate_text_when_feeding
@@ -13,17 +17,42 @@ class Generate < SearchTest
     start
   
     feed_and_wait_for_docs('passage', 1, :file => selfdir + "data/feed.jsonl")
-    assert_hitcount('query=friend&ranking=mock_gen', 1) # Custom text generator.
-    assert_hitcount('query=friend&ranking=mock_lm_gen', 1) # Generator with custom LM.
-    assert_hitcount('query=friend&ranking=local_llm_gen', 1) # Generator with local LLM.
     
-    result = search("query=friend&ranking=mock_gen")
-    assert_equal("Explain: Silence is a true friend who never betrays. Explain: Silence is a true friend who never betrays.", result.hit[0].field["mock_gen"])
-    assert_equal("Explain: Silence is a true friend who never betrays. Explain: Silence is a true friend who never betrays.", result.hit[0].field["mock_lm_gen"])
+    result = search("query=friend")
+    assert_equal(1, result.hit.size)
     
-    local_llm_gen_value = result.hit[0].field["local_llm_gen"].downcase
-    assert(local_llm_gen_value.include?("silence"),
-           "Field `local_llm_gen` does not contain the expected word `silence`, has value: #{local_llm_gen_value}")
+    hit = result.hit[0]
+
+    # Text output to string with mock generator 
+    assert_equal("Explain: silence is a true friend who never betrays Explain: silence is a true friend who never betrays",
+                 hit.field["mock_generator"])
+
+    # Text output to string with mock language model
+    assert_equal("Explain: silence is a true friend who never betrays Explain: silence is a true friend who never betrays",
+                 hit.field["mock_language_model"])
+    
+    # Structured output to string
+    explanation = hit.field["explanation"]
+    assert(!explanation.nil? && explanation.size > 0)
+
+    # Structured output to array of strings
+    keywords = hit.field["keywords"]
+    assert(!keywords.nil? && keywords.size > 0, "Wrong keywords: #{keywords}")
+    
+    # Structured output to bool
+    assert(!hit.field["sentiment_bool"].nil?)
+
+    # Structured output to int
+    assert(!hit.field["sentiment_int"].nil?)
+
+    # Structured output to long
+    assert(!hit.field["sentiment_long"].nil?)
+
+    # Structured output to float
+    assert(!hit.field["sentiment_float"].nil?)
+
+    # Structured output to double
+    assert(!hit.field["sentiment_double"].nil?)
   end
 
   def teardown

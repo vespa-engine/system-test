@@ -19,10 +19,10 @@
             </config>
         </component>
         
-        <component id="local_llm_gen" class="ai.vespa.llm.generation.LanguageModelTextGenerator">
-            <config name="ai.vespa.llm.generation.language-model-text-generator">
+        <component id="named_entity_extractor" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
                 <providerId>local_llm</providerId>
-                <promptTemplate>Translate this text to Norwegian:\n{input}</promptTemplate>
+                <promptTemplate>Extract named entities from this text:\n{input}</promptTemplate>
             </config>
         </component>
 

@@ -12,8 +12,8 @@ schema passage {
         }
     }
        
-    field local_llm_gen type string {
-        indexing: input text | generate local_llm_gen | index | summary
+    field names type array<string> {
+        indexing: input text | generate named_entity_extractor | index | summary
         index: enable-bm25
     }
 
