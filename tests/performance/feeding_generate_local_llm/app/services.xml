@@ -6,7 +6,7 @@
         <component id="local_llm" class="ai.vespa.llm.clients.LocalLLM">
             <config name="ai.vespa.llm.clients.llm-local-client">
                 <!-- File is approx 130MB" -->
-                <!-- <model url="https://data.vespa-cloud.com/gguf_models/Llama-160M-Chat-v1.Q6_K.gguf"/>-->
+<!--                 <model url="https://data.vespa-cloud.com/gguf_models/Llama-160M-Chat-v1.Q6_K.gguf"/>-->
                 <!-- File is approx 2.2GB" -->
                 <model url="https://data.vespa-cloud.com/gguf_models/Phi-3.5-mini-instruct-Q4_K_M.gguf"/>
                 <contextSize>5000</contextSize>
@@ -22,7 +22,7 @@
         <component id="named_entity_extractor" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
             <config name="ai.vespa.llm.generation.language-model-field-generator">
                 <providerId>local_llm</providerId>
-                <promptTemplate>Extract named entities from this text:\n{input}</promptTemplate>
+                <promptTemplate>Extract named entities from this text: {input}</promptTemplate>
             </config>
         </component>
 
