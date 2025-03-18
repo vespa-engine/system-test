@@ -1,0 +1,75 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema passage {
+    document passage {
+        field id type string {
+            indexing: summary | attribute
+        }
+    
+        field text type string {
+            indexing: summary | index
+            index: enable-bm25
+        }
+           
+        field prompt type string {
+        }       
+    }
+    
+    field mock_generator type string {
+        indexing: input prompt . " " . input text | generate mock_generator | summary
+    }
+    
+    field mock_language_model type string {
+        indexing: input text | generate mock_language_model_generator | summary
+    }
+    
+    field explanation type string {
+        indexing: input text | generate explainer | summary
+    }
+       
+    field keywords type array<string>  {
+        indexing: input text | generate keyword_extractor | summary
+    }
+    
+    field sentiment_bool type bool {
+        indexing: input text | generate sentiment_analyzer | attribute | summary
+    }
+    
+    field sentiment_int type int {
+        indexing: input text | generate sentiment_analyzer | attribute | summary
+    }
+    
+    field sentiment_long type long {
+        indexing: input text | generate sentiment_analyzer | attribute | summary
+    }
+    
+    field sentiment_float type float {
+        indexing: input text | generate sentiment_analyzer | attribute | summary
+    }
+    
+    field sentiment_double type double {
+        indexing: input text | generate sentiment_analyzer | attribute | summary
+    }
+    
+#    Synthetic map fields are not implemented in config model, no indexing expression is generated.   
+#    
+#    field roles_map type map<string, string> {
+#        indexing: input text | generate role_extractor | summary
+#    }
+    
+#    Synthetic struct fields are not implemented in config model, no indexing expression is generated.   
+#
+#    struct roles_struct_type {
+#        field subject type string {}
+#        field object type string {}
+#        field verb type string {}
+#    }
+#    
+#    field roles_struct type roles_struct_type {
+#        indexing: input text | generate role_extractor
+#    }
+
+    fieldset default {
+        fields: text
+    }
+}
