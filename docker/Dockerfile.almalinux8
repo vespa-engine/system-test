@@ -31,7 +31,7 @@ RUN dnf install -y dnf-plugins-core && \
     dnf config-manager --enable powertools && \
     dnf module enable -y ruby:3.1 && \
     dnf module enable -y maven:3.8 && \
-    dnf -y upgrade && \
+    dnf -y --nobest upgrade && \
     dnf install -y \
         bind-utils \
         gcc-toolset-14-annobin-docs \
