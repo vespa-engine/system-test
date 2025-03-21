@@ -149,6 +149,29 @@ class NativeRankFeature < IndexedStreamingSearchTest
     assert_expnr(get_explicit(0, 0, 0, 0, "f4"), "query=a",         "only-f4")
     assert_expnr(get_explicit(0, 0, 0, 0, "f4"), "query=a+b",       "only-f4")
     assert_expnr(get_explicit(0, 0, 200, 50, "f4"), "query=f4:a+f5:a", "only-f4")
+    # only f6 (indexed array<string> field)
+    # Forward proximity is weighted 0.75, reverse proximity is weighted 0.25
+    # Element gap not specified, no proximity between positions in adjacent elements
+    assert_expnr(get_explicit(200, 300, nil, 175, "f6"), "query=f6:a+f6:b", "only-f6")
+    assert_expnr(get_explicit(200, 100, nil, 125, "f6"), "query=f6:b+f6:a", "only-f6")
+    assert_expnr(get_explicit(200, 0, nil, 100, "f6"), "query=f6:a+f6:d", "only-f6")
+    assert_expnr(get_explicit(200, 0, nil, 100, "f6"), "query=f6:d+f6:a", "only-f6")
+    assert_expnr(get_explicit(200, 0, nil, 100, "f6"), "query=f6:a+f6:f", "only-f6")
+    # Element gap is 0, allowing for proximity between positions in adjacent elements
+    assert_expnr(get_explicit(200, 300, nil, 175, "f6"), "query=f6:a+f6:b", "only-f6-eg0")
+    assert_expnr(get_explicit(200, 294, nil, 173.5, "f6"), "query=f6:a+f6:d", "only-f6-eg0")
+    assert_expnr(get_explicit(200, 98, nil, 124.5, "f6"), "query=f6:d+f6:a", "only-f6-eg0")
+    assert_expnr(get_explicit(200, 0, nil, 100, "f6"), "query=f6:a+f6:f", "only-f6-eg0")
+    # Element gap is 1, allowing for proximity between positions in adjacent elements
+    assert_expnr(get_explicit(200, 300, nil, 175, "f6"), "query=f6:a+f6:b", "only-f6-eg1")
+    assert_expnr(get_explicit(200, 291, nil, 172.75, "f6"), "query=f6:a+f6:d", "only-f6-eg1")
+    assert_expnr(get_explicit(200, 97, nil, 124.25, "f6"), "query=f6:d+f6:a", "only-f6-eg1")
+    assert_expnr(get_explicit(200, 0, nil, 100, "f6"), "query=f6:a+f6:f", "only-f6-eg1")
+    # Element gap is infinity, no proximity between positions in adjacent elements
+    assert_expnr(get_explicit(200, 300, nil, 175, "f6"), "query=f6:a+f6:b", "only-f6-eginf")
+    assert_expnr(get_explicit(200, 0, nil, 100, "f6"), "query=f6:a+f6:d", "only-f6-eginf")
+    assert_expnr(get_explicit(200, 0, nil, 100, "f6"), "query=f6:d+f6:a", "only-f6-eginf")
+    assert_expnr(get_explicit(200, 0, nil, 100, "f6"), "query=f6:a+f6:f", "only-f6-eginf")
   end
 
   def get_basic(nfm, np, nam, nr)

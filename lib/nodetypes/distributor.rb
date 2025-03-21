@@ -98,6 +98,9 @@ class Distributor < VDSNode
         if state == nil
           return true
         end
+      rescue => ignore
+        # Do nothing (could not parse bucket status page, or similar)
+        puts "Ignoring exception #{ignore}"
       rescue Errno::ECONNREFUSED
         # Do nothing
       end

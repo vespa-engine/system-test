@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root. -->
+<services version="1.0">
+
+    <container id="container" version="1.0">
+        <component id="mock_lm" class="ai.vespa.test.MockLanguageModel" bundle="generate_field">
+            <config name="ai.vespa.test.mock-language-model">
+                <repetitions>2</repetitions>
+            </config>
+        </component>
+
+        <component id="local_llm" class="ai.vespa.llm.clients.LocalLLM">
+            <config name="ai.vespa.llm.clients.llm-local-client">
+
+<!--                 File is approx 130Mb" -->
+<!--                <model url="https://data.vespa-cloud.com/gguf_models/Llama-160M-Chat-v1.Q6_K.gguf"/>-->
+                <!-- File is approx 750Mb" -->
+                <model url="https://data.vespa-cloud.com/gguf_models/llama-3.2-1b-instruct-q4_k_m.gguf" />
+                <contextSize>1024</contextSize>
+            </config>
+        </component>
+
+        <component id="mock_generator" class="ai.vespa.test.MockFieldGenerator" bundle="generate_field">
+            <config name="ai.vespa.test.mock-field-generator">
+                <repetitions>2</repetitions>
+            </config>
+        </component>
+
+        <component id="mock_language_model_generator" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
+                <providerId>mock_lm</providerId>
+                <promptTemplateFile>files/prompt.txt</promptTemplateFile>
+                <responseFormatType>TEXT</responseFormatType>
+            </config>
+        </component>
+
+        <component id="explainer" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
+                <providerId>local_llm</providerId>
+                <promptTemplateFile>files/prompt.txt</promptTemplateFile>
+            </config>
+        </component>
+
+        <component id="keyword_extractor" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
+                <providerId>local_llm</providerId>
+                <promptTemplate>Extract 3 keywords from this sentence: {input}</promptTemplate>
+            </config>
+        </component>
+
+        <component id="sentiment_analyzer" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
+                <providerId>local_llm</providerId>
+                <promptTemplate>Analyze sentiment of this sentence: {input}</promptTemplate>
+            </config>
+        </component>
+
+<!--        <component id="role_extractor" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">-->
+<!--            <config name="ai.vespa.llm.generation.language-model-field-generator">-->
+<!--                <providerId>local_llm</providerId>-->
+<!--                <promptTemplate>Extract subject, object, verb from this sentence: {input}</promptTemplate>-->
+<!--            </config>-->
+<!--        </component>-->
+        
+        <document-api/>
+        
+        <search/>
+
+        <nodes>
+<!--            <jvm options="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"/>-->
+            <node hostalias="node1"/>
+        </nodes>
+    </container>
+
+    <content id="content" version="1.0">
+        <redundancy>1</redundancy>
+        
+        <documents>
+            <document mode="index" type="passage"/>
+        </documents>
+        
+        <nodes>
+            <node hostalias="node1" distribution-key="0"/>
+        </nodes>
+    </content>
+
+</services>

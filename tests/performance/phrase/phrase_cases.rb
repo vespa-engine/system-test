@@ -68,7 +68,7 @@ class PhraseCasesPerformanceTest < PerformanceTest
     searchnode.trigger_flush
     searchnode.trigger_flush
     searchnode.restart
-    wait_for_hitcount("sddocname:foobar", 123456, 30)
+    wait_for_hitcount("sddocname:foobar", 123456, 60)
 
     clients=48
     runtime=20

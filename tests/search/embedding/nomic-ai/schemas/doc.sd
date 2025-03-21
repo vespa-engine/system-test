@@ -15,9 +15,25 @@ schema doc {
           }
     }
 
+    field embedding_binarized_implicitly type tensor<int8>(x[96]) {
+          indexing: input text | embed nomicmb | attribute
+          attribute {
+              distance-metric: hamming
+          }
+    }
+
+    # The HF embedder can binarize internally, but explicit binarization should also work
+    field embedding_binarized_explicitly type tensor<int8>(x[96]) {
+          indexing: input text | embed nomicmb | pack_bits | attribute
+          attribute {
+              distance-metric: hamming
+          }
+    }
+
     rank-profile default {
         inputs {
             query(embedding) tensor<float>(x[768])
+            query(embedding_binarized) tensor<int8>(x[96])
         }
         first-phase {
             expression: closeness(embedding)
@@ -29,16 +45,29 @@ schema doc {
         }
     }
 
-    rank-profile less {
-        inputs {
-            query(embedding) tensor<float>(x[768])
-        }
-        first-phase {
-            expression: closeness(embedding)
-        }
+    rank-profile less inherits default {
         summary-features {
            distance(field,embedding)
         }
     }
+
+    rank-profile embedding inherits less {
+        first-phase {
+            expression: closeness(embedding)
+        }
+    }
+
+    rank-profile embedding_binarized_implicitly inherits less {
+        first-phase {
+            expression: closeness(embedding_binarized_implicitly)
+        }
+    }
+
+    rank-profile embedding_binarized_explicitly inherits less {
+        first-phase {
+            expression: closeness(embedding_binarized_explicitly)
+        }
+    }
+
 
 }
