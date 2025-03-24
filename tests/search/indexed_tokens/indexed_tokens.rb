@@ -10,6 +10,7 @@ class IndexedTokensTest < IndexedStreamingSearchTest
   def feed_doc(idsuffix, doc_template)
     doc = Document.new("test", "id:test:test::#{idsuffix}").
       add_field("stext", doc_template[:stext]).
+      add_field("stext_cased", doc_template[:stext]).
       add_field("atext", doc_template[:atext]).
       add_field("wtext", doc_template[:wtext]).
       add_field("sattr", doc_template[:stext]).
@@ -42,6 +43,7 @@ class IndexedTokensTest < IndexedStreamingSearchTest
     result = my_query('stext', 'hello')
     fields = result['root']['children'][0]['fields']
     assert_equal(['hello','world'], fields['stext_tokens'])
+    assert_equal(['Hello','world'], fields['stext_cased_tokens'])
     assert_equal([['this','is','simply'],['more','elements']], fields['atext_tokens'])
     assert_equal([['weighted','here'],['and','there']].sort, fields['wtext_tokens'].sort)
     assert_equal(['hello world'], fields['sattr_tokens'])
