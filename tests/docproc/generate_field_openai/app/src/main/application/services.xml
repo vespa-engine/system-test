@@ -16,7 +16,6 @@
         <component id="explainer" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
             <config name="ai.vespa.llm.generation.language-model-field-generator">
                 <providerId>openai</providerId>
-                <responseFormatType>TEXT</responseFormatType>
                 <promptTemplateFile>files/prompt.txt</promptTemplateFile>
             </config>
         </component>
@@ -24,7 +23,6 @@
         <component id="keyword_extractor" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
             <config name="ai.vespa.llm.generation.language-model-field-generator">
                 <providerId>openai</providerId>
-                <responseFormatType>TEXT</responseFormatType>
                 <promptTemplate>Extract 3 keywords from this sentence: {input}</promptTemplate>
             </config>
         </component>
@@ -32,8 +30,7 @@
         <component id="sentiment_analyzer" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
             <config name="ai.vespa.llm.generation.language-model-field-generator">
                 <providerId>openai</providerId>
-                <responseFormatType>TEXT</responseFormatType>
-                <promptTemplate>Analyze sentiment of this sentence: {input}</promptTemplate>
+                <promptTemplate>Analyze sentiment of this sentence on a range from -5 to 5 where -5 is very negative and 5 is very positive: {input}</promptTemplate>
             </config>
         </component>
         
@@ -42,7 +39,6 @@
         <search/>
 
         <nodes>
-<!--            <jvm options="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"/>-->
             <node hostalias="node1"/>
         </nodes>
     </container>
