@@ -5,17 +5,16 @@ import ai.vespa.secret.Secrets;
 import com.yahoo.component.annotation.Inject;
 
 public class LocalSecrets implements Secrets {
-    private static final String SECRET_FILE = "secrets/openAiKey.txt";
     private final String openAiKey;
 
     @Inject
-    public LocalSecrets() {
+    public LocalSecrets(LocalSecretsConfig config) {
         System.out.println("Starting LocalSecrets....");
         
         try {
-            openAiKey = java.nio.file.Files.readString(java.nio.file.Path.of(SECRET_FILE)).trim();
+            openAiKey = java.nio.file.Files.readString(config.secretsFile());
         } catch (java.io.IOException e) {
-            throw new RuntimeException("Failed to read secret file: " + SECRET_FILE, e);
+            throw new RuntimeException("Failed to read secret file: " + config.secretsFile(), e);
         }
     }
 
