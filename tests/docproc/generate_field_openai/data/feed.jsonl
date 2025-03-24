@@ -1,0 +1,8 @@
+{
+    "put": "id:passage:passage::0", 
+    "fields": {
+        "id": "0",
+        "text": "silence is a true friend who never betrays",
+        "prompt": "Explain:"
+    }
+}

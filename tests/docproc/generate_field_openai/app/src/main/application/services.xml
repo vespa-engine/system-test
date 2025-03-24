@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root. -->
+<services version="1.0">
+
+    <container id="container" version="1.0">
+        <!-- Mock secrets for local testing -->
+        <component id="secrets" class="ai.vespa.test.LocalSecrets" bundle="generate_field_openai" />
+
+        <!-- Setup OpenAI client - also works directly as a generator -->
+        <component id="openai" class="ai.vespa.llm.clients.OpenAI">
+            <config name="ai.vespa.llm.clients.llm-client">
+                <apiKeySecretName>openAiKey</apiKeySecretName>
+            </config>
+        </component>
+
+        <component id="explainer" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
+                <providerId>openai</providerId>
+                <responseFormatType>TEXT</responseFormatType>
+                <promptTemplateFile>files/prompt.txt</promptTemplateFile>
+            </config>
+        </component>
+
+        <component id="keyword_extractor" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
+                <providerId>openai</providerId>
+                <responseFormatType>TEXT</responseFormatType>
+                <promptTemplate>Extract 3 keywords from this sentence: {input}</promptTemplate>
+            </config>
+        </component>
+
+        <component id="sentiment_analyzer" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
+                <providerId>openai</providerId>
+                <responseFormatType>TEXT</responseFormatType>
+                <promptTemplate>Analyze sentiment of this sentence: {input}</promptTemplate>
+            </config>
+        </component>
+        
+        <document-api/>
+        
+        <search/>
+
+        <nodes>
+<!--            <jvm options="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"/>-->
+            <node hostalias="node1"/>
+        </nodes>
+    </container>
+
+    <content id="content" version="1.0">
+        <redundancy>1</redundancy>
+        
+        <documents>
+            <document mode="index" type="passage"/>
+        </documents>
+        
+        <nodes>
+            <node hostalias="node1" distribution-key="0"/>
+        </nodes>
+    </content>
+
+</services>
