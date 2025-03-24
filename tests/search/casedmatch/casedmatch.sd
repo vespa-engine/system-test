@@ -1,0 +1,14 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema casedmatch {
+
+  document exactmatch {
+
+    field field1 type string {
+      indexing: index | summary
+      match cased
+    }
+
+  }
+
+}
