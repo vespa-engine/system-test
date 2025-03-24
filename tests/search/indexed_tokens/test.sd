@@ -3,10 +3,10 @@ schema test {
   document test {
     field stext type string {
       indexing: index | summary
-      match: cased
     }
     field stext_cased type string {
       indexing: index | summary
+      match: cased
     }
     field atext type array<string> {
       indexing: index | summary
