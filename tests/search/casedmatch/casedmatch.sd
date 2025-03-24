@@ -2,11 +2,11 @@
 
 schema casedmatch {
 
-  document exactmatch {
+  document casedmatch {
 
     field field1 type string {
       indexing: index | summary
-      match cased
+      match: cased
     }
 
   }
