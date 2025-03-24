@@ -47,6 +47,10 @@ schema test {
       source: stext
       tokens
     }
+    summary stext_cased_tokens {
+      source: stext_cased
+      tokens
+    }
     summary atext_tokens {
       source: atext
       tokens
