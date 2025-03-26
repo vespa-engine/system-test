@@ -1,4 +1,4 @@
 [
   {"id":"id:n:casedmatch::0","fields":{"field1":"Foo Bar baz"}},
-  {"id":"id:n:casedmatch::1","fields":{"field1":"Foo bar baz"}
+  {"id":"id:n:casedmatch::1","fields":{"field1":"Foo bar baz"}}
 ]
