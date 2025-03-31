@@ -28,6 +28,4 @@ public class LocalSecrets implements Secrets {
 
         throw new IllegalArgumentException("Secret with key '" + key + "' not found in secrets");
     }
-
-
 }
