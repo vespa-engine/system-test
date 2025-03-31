@@ -20,11 +20,11 @@ schema passage {
         indexing: input text | generate explainer | summary
     }
        
-    field keywords type string  {
+    field keywords type array<string>  {
         indexing: input text | generate keyword_extractor | summary
     }
     
-    field sentiment type string {
+    field sentiment type int {
         indexing: input text | generate sentiment_analyzer | attribute | summary
     }
     
