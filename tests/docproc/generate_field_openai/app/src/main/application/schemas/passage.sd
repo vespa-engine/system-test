@@ -27,24 +27,6 @@ schema passage {
     field sentiment type int {
         indexing: input text | generate sentiment_analyzer | attribute | summary
     }
-    
-#    Synthetic map fields are not implemented in config model, no indexing expression is generated.   
-#    
-#    field roles_map type map<string, string> {
-#        indexing: input text | generate role_extractor | summary
-#    }
-    
-#    Synthetic struct fields are not implemented in config model, no indexing expression is generated.   
-#
-#    struct roles_struct_type {
-#        field subject type string {}
-#        field object type string {}
-#        field verb type string {}
-#    }
-#    
-#    field roles_struct type roles_struct_type {
-#        indexing: input text | generate role_extractor
-#    }
 
     fieldset default {
         fields: text

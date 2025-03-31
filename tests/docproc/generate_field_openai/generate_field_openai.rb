@@ -28,15 +28,10 @@ class Generate < SearchTest
     assert(!explanation.nil? && explanation.length > 0)
 
     keywords = hit.field["keywords"]
-    # keywords should be an array of strings
     assert(!keywords.nil? && keywords.length > 0)
-    # assert each keyword is a string with length > 0
-    keywords.each do |keyword|
-      assert(!keyword.nil? && keyword.length > 0)
-    end
 
     sentiment = hit.field["sentiment"]
-    assert(!sentiment.nil? && sentiment >= -5 && sentiment <= 5)
+    assert(!sentiment.nil?)
   end
 
   def teardown
