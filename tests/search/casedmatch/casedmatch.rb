@@ -20,6 +20,11 @@ class CasedMatch < IndexedStreamingSearchTest
     assert_hitcount("query=field1:foo", 0)
     assert_hitcount("query=field1:bar", 1)
     assert_hitcount("query=field1:baz", 2)
+
+    assert_hitcount("query=field2:Foo", 1)
+    assert_hitcount("query=field2:foo", 0)
+    assert_hitcount("query=field2:Bar", 0)
+    assert_hitcount("query=field2:bar", 1)
   end
 
   def teardown
