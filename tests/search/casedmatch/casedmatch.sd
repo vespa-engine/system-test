@@ -9,6 +9,14 @@ schema casedmatch {
       match: cased
     }
 
+    field field2 type string {
+      indexing: index | summary
+      match {
+        word
+        cased
+      }
+    }
+
   }
 
 }
