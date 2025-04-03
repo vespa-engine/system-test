@@ -1,0 +1,26 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema music {
+
+  document music {
+
+    field title type string {
+      indexing: index | summary
+    }
+
+    field artist type string {
+      indexing: index | summary
+      match: word
+    }
+
+    field year type int {
+      indexing: summary | attribute
+    }
+  }
+
+  fieldset default {
+    fields: title
+  }
+
+}
+
