@@ -65,7 +65,7 @@ class SelectJsonQuery < IndexedStreamingSearchTest
   end
 
   def post_query(query)
-    vespa.container.values.first.post_search("/search/", "{ " + query + ", 'streaming.selection': 'true' }", 0, {'Content-Type' => 'application/json'})
+    vespa.container.values.first.post_search("/search/", "{ " + query + ", 'streaming.selection': 'true', 'timeout': 5 }", 0, {'Content-Type' => 'application/json'})
   end
 
   def teardown
