@@ -4,6 +4,10 @@ schema test {
     field stext type string {
       indexing: index | summary
     }
+    field stext_cased type string {
+      indexing: index | summary
+      match: cased
+    }
     field atext type array<string> {
       indexing: index | summary
     }
@@ -41,6 +45,10 @@ schema test {
   document-summary tokens {
     summary stext_tokens {
       source: stext
+      tokens
+    }
+    summary stext_cased_tokens {
+      source: stext_cased
       tokens
     }
     summary atext_tokens {

@@ -11,7 +11,7 @@ class Generate < SearchTest
     600
   end
 
-  def test_generate_text_when_feeding
+  def test_generate_field
     add_bundle_dir(selfdir + "app", "generate_field")
     deploy(selfdir + "app/src/main/application")
     start

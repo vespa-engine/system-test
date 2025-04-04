@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root. -->
+<services version="1.0">
+
+    <container id="container" version="1.0">
+        <component id="secrets" class="ai.vespa.test.LocalSecrets" bundle="generate_field_openai">
+            <config name="ai.vespa.test.local-secrets">
+                <secretsFile>files/secrets.txt</secretsFile>
+            </config>
+        </component>
+
+        <component id="openai" class="ai.vespa.llm.clients.OpenAI">
+            <config name="ai.vespa.llm.clients.llm-client">
+                <apiKeySecretName>openAiKey</apiKeySecretName>
+            </config>
+        </component>
+
+        <component id="explainer" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
+                <providerId>openai</providerId>
+                <promptTemplateFile>files/prompt.txt</promptTemplateFile>
+            </config>
+        </component>
+
+        <component id="keyword_extractor" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
+                <providerId>openai</providerId>
+                <promptTemplate>Extract 3 keywords from this sentence: {input}</promptTemplate>
+            </config>
+        </component>
+
+        <component id="sentiment_analyzer" class="ai.vespa.llm.generation.LanguageModelFieldGenerator">
+            <config name="ai.vespa.llm.generation.language-model-field-generator">
+                <providerId>openai</providerId>
+                <promptTemplate>Analyze sentiment of this sentence on a range from -5 to 5 where -5 is very negative and 5 is very positive: {input}</promptTemplate>
+            </config>
+        </component>
+        
+        <document-api/>
+        
+        <search/>
+
+        <nodes>
+            <node hostalias="node1"/>
+        </nodes>
+    </container>
+
+    <content id="content" version="1.0">
+        <redundancy>1</redundancy>
+        
+        <documents>
+            <document mode="index" type="passage"/>
+        </documents>
+        
+        <nodes>
+            <node hostalias="node1" distribution-key="0"/>
+        </nodes>
+    </content>
+
+</services>

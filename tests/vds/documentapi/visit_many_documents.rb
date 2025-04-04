@@ -52,8 +52,12 @@ class VisitManyDocumentsTest < VdsTest
 
   def get_document_ids(visit_result)
     result = []
+    res_doc_count = visit_result['documentCount'].to_i
     visit_result["documents"].each do |document|
       result.push(document["id"])
+    end
+    if res_doc_count != result.size
+      raise "Inconsistent specified doc count (#{res_doc_count}) and actual returned doc chunks (#{result.size})"
     end
     result
   end
