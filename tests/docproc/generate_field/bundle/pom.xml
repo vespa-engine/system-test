@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     
     <groupId>ai.vespa.test</groupId>
-    <artifactId>generate_field</artifactId>
+    <artifactId>app</artifactId>
     <packaging>container-plugin</packaging>
     <version>1.0.0</version>
 
@@ -14,7 +14,7 @@
         <groupId>com.yahoo.vespa.systemtest</groupId>
         <artifactId>test-apps-parent</artifactId>
         <version>8-SNAPSHOT</version>
-        <relativePath>../../../pom.xml</relativePath>
+        <relativePath/>
     </parent>
 
     <dependencies>
@@ -31,38 +31,12 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-    <properties>
-        <bundle-plugin.failOnWarnings>true</bundle-plugin.failOnWarnings>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <test.hide>true</test.hide>
-    </properties>
     
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-
-                <configuration>
-                    <optimize>true</optimize>
-                    <showDeprecation>true</showDeprecation>
-                    <showWarnings>true</showWarnings>
-                    <release>17</release>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>com.yahoo.vespa</groupId>
-                <artifactId>vespa-application-maven-plugin</artifactId>
-                <version>${vespa.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>packageApplication</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             
             <plugin>
