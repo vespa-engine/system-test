@@ -12,8 +12,8 @@ class Generate < SearchTest
   end
 
   def test_generate_field
-    add_bundle_dir(selfdir + "app", "generate_field")
-    deploy(selfdir + "app/src/main/application")
+    add_bundle_dir(selfdir + "bundle", "app")
+    deploy(selfdir + "/app")
     start
   
     feed_and_wait_for_docs('passage', 1, :file => selfdir + "data/feed.jsonl")
