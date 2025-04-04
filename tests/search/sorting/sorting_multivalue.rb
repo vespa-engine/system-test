@@ -16,6 +16,16 @@ class SortingMultiValue < IndexedStreamingSearchTest
     check_sorted(nil, [0, 1, 2, 3])
     check_sorted_multi('-years', [2, 3, 0, 1])
     check_sorted_multi('+years', [2, 0, 3, 1])
+    check_sorted_multi2_string('-missing(years,first)', [1, 2, 3, 0])
+    check_sorted_multi2('+missing(years,first)', [1, 2, 0, 3])
+    check_sorted_multi2('-missing(years,last)', [2, 3, 0, 1])
+    check_sorted_multi2('+missing(years,last)', [2, 0, 3, 1])
+    check_sorted_multi2_string('-missing(years,as,2017)', [2, 3, 1, 0])
+    check_sorted_multi2_string('+missing(years,as,2017)', [2, 0, 1, 3])
+    check_sorted_multi2_string('-missing(years,as,2009)', [2, 3, 0, 1])
+    check_sorted_multi2_string('+missing(years,as,2009)', [2, 1, 0, 3])
+    check_sorted_multi2_string('-missing(years,as,2022)', [1, 2, 3, 0])
+    check_sorted_multi2_string('+missing(years,as,2022)', [2, 0, 3, 1])
   end
 
   def make_strings(array)
@@ -56,10 +66,28 @@ class SortingMultiValue < IndexedStreamingSearchTest
     end
   end
 
+  def check_sorted_multi2(sortspec, exp_ids)
+    for sub in [',', '_fs,', '_wset,', '_wset_fs,', '_s,', '_s_wset,']
+      mangled_sortspec = sortspec.gsub(',',sub)
+      puts "mangled_sortspec is #{mangled_sortspec}"
+      check_sorted(mangled_sortspec, exp_ids)
+    end
+  end
+
+  def check_sorted_multi2_string(sortspec, exp_ids)
+    for sub in ['_s,', '_s_wset,']
+      mangled_sortspec = sortspec.gsub(',',sub)
+      puts "mangled_sortspec is #{mangled_sortspec}"
+      check_sorted(mangled_sortspec, exp_ids)
+    end
+  end
+
   def check_sorted(sortspec, exp_ids)
     yql = 'select * from sources * where true'
     form = [['yql', yql]]
     form.push(['sortspec', sortspec]) unless sortspec.nil?
+    form.push(['trace.level', '9'])
+    form.push(['trace.explainLevel', '9'])
     encoded_form = URI.encode_www_form(form)
     puts "encoded_form='#{encoded_form}'"
     result = search("#{encoded_form}")
