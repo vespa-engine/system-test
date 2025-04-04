@@ -1,0 +1,34 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema passage {
+    document passage {
+        field id type string {
+            indexing: summary | attribute
+        }
+    
+        field text type string {
+            indexing: summary | index
+            index: enable-bm25
+        }
+           
+        field prompt type string {
+        }       
+    }
+    
+    
+    field explanation type string {
+        indexing: input text | generate explainer | summary
+    }
+       
+    field keywords type array<string>  {
+        indexing: input text | generate keyword_extractor | summary
+    }
+    
+    field sentiment type int {
+        indexing: input text | generate sentiment_analyzer | attribute | summary
+    }
+
+    fieldset default {
+        fields: text
+    }
+}
