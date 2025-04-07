@@ -1,6 +1,6 @@
 require 'search_test'
 
-class Generate < SearchTest
+class GenerateField < SearchTest
   def setup
     super
     set_owner("glebashnik")
