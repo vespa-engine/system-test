@@ -60,8 +60,9 @@ RUN dnf install -y dnf-plugins-core && \
         wget \
         zstd && \
     (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby) && \
+    curl -sSLf "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && ./aws/install && rm -rf aws awscliv2.zip && \
     pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir awscli && \
     (source /opt/rh/gcc-toolset/enable && pip3 install --no-cache-dir xgboost scikit-learn) && \
     echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
@@ -117,4 +118,3 @@ RUN --mount=type=bind,target=/context-root,source=./,ro \
     rm -f $VESPA_HOME/.m2/settings.xml
 
 ENTRYPOINT ["bash", "-lc", "source /opt/rh/gcc-toolset/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
-
