@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
-schema multivalue {
-  document multivalue {
+schema missing {
+  document missing {
     field years type array<int> {
       indexing: attribute
     }
@@ -19,6 +19,16 @@ schema multivalue {
       indexing: attribute
     }
     field years_s_wset type weightedset<string> {
+      indexing: attribute
+    }
+    field year type int {
+      indexing: attribute
+    }
+    field year_fs type int {
+      indexing: attribute
+      attribute: fast-search
+    }
+    field year_s type string {
       indexing: attribute
     }
     field myrank type float {
