@@ -16,6 +16,17 @@ class SortingMultiValue < IndexedStreamingSearchTest
     check_sorted(nil, [0, 1, 2, 3])
     check_sorted_multi('-years', [2, 3, 0, 1])
     check_sorted_multi('+years', [2, 0, 3, 1])
+    check_sorted_multi('-missing(years,first)', [1, 2, 3, 0])
+    check_sorted_multi('+missing(years,first)', [1, 2, 0, 3])
+    check_sorted_multi('-missing(years,last)', [2, 3, 0, 1])
+    check_sorted_multi('+missing(years,last)', [2, 0, 3, 1])
+    check_sorted_multi('-missing(years,as,2017)', [2, 3, 1, 0])
+    check_sorted_multi('+missing(years,as,2017)', [2, 0, 1, 3])
+    check_sorted_multi('-missing(years,as,2009)', [2, 3, 0, 1])
+    check_sorted_multi('+missing(years,as,2009)', [2, 1, 0, 3])
+    check_sorted_multi('-missing(years,as,2022)', [1, 2, 3, 0])
+    check_sorted_multi('+missing(years,as,2022)', [2, 0, 3, 1])
+    check_sorted_error('+missing(years,as,invalid)')
   end
 
   def make_strings(array)
@@ -52,7 +63,9 @@ class SortingMultiValue < IndexedStreamingSearchTest
 
   def check_sorted_multi(sortspec, exp_ids)
     for suffix in ['', '_fs', '_wset', '_wset_fs', '_s', '_s_wset']
-      check_sorted(sortspec + suffix, exp_ids)
+      adjusted_sortspec = sortspec.gsub('years', "years#{suffix}")
+      puts "adjusted_sortspec is #{adjusted_sortspec}"
+      check_sorted(adjusted_sortspec, exp_ids)
     end
   end
 
@@ -71,6 +84,18 @@ class SortingMultiValue < IndexedStreamingSearchTest
       act_ids.push(id)
     end
     assert_equal(exp_ids, act_ids)
+  end
+
+  def check_sorted_error(sortspec)
+    yql = 'select * from sources * where true'
+    form = [['yql', yql],['sortspec', sortspec]]
+    encoded_form = URI.encode_www_form(form)
+    puts "encoded_form='#{encoded_form}'"
+    result = search("#{encoded_form}")
+    assert_not_nil(result.errorlist)
+    error = result.errorlist[0]['message']
+    puts "Error is #{error}"
+    assert_match(/Failed converting string .* to a number/, error)
   end
 
   def feed_docs
