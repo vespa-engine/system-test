@@ -3,22 +3,7 @@
 require 'timeout'
 require 'json'
 require 'zlib'
-
-begin
-  require 'factory_authentication'
-rescue LoadError
-  class FactoryAuthentication
-    def factory_api
-      nil
-    end
-    def client
-      nil
-    end
-    def token
-      nil
-    end
-  end
-end
+require 'factory_authentication'
 
 class FactoryHttpClient
 
