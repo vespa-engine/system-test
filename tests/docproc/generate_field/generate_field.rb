@@ -33,7 +33,7 @@ class GenerateField < SearchTest
     
     # Structured output to string
     explanation = hit.field["explanation"]
-    assert(!explanation.nil? && explanation.size > 0, "'explanation' in hit is nil, hit: #{hit}")
+    assert(!explanation.nil? && explanation.size > 0, "'explanation' in hit is nil, response: #{result}")
 
     # Structured output to array of strings
     keywords = hit.field["keywords"]

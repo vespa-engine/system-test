@@ -197,11 +197,7 @@ class Resultset
   end
 
   def to_s
-    stringval = ""
-    hit.each do |h|
-      stringval += h.to_s + "\n"
-    end
-    stringval
+    @data
   end
 
   def inspect
