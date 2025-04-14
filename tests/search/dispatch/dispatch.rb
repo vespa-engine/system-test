@@ -4,11 +4,11 @@ require 'indexed_only_search_test'
 require 'document'
 require 'document_set'
 
-class JavaDispatchTest < IndexedOnlySearchTest
+class DispatchTest < IndexedOnlySearchTest
 
   def setup
-    set_owner('ovirtanen')
-    set_description('Tests the Java dispatcher')
+    set_owner('hmusum')
+    set_description('Tests the query dispatcher')
 
     @num_docs = 50
   end
