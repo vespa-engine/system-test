@@ -82,7 +82,7 @@ class QueryProfiling < IndexedOnlySearchTest
         puts "profile result: #{JSON.pretty_generate(filter)}"
       end
       verify_profiler_result(filter, depth)
-      assert(filter["roots"][0]["name"].start_with?("/"))
+      assert(filter["roots"][0]["name"].start_with?("["))
     end
     trace = find_entry(traces, "query_execution", verify: true)
     for thread_id in 0..3 do
@@ -95,7 +95,7 @@ class QueryProfiling < IndexedOnlySearchTest
         assert(find_entry(get_thread_traces(trace, thread_id), @second_phase_tag).nil?)
       end
       verify_profiler_result(match, depth)
-      assert(match["roots"][0]["name"].start_with?("/"))
+      assert(match["roots"][0]["name"].start_with?("["))
     end
   end
 
