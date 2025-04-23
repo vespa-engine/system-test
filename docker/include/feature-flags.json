@@ -32,8 +32,6 @@
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
-        { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
-        { "id" : "document-v1-queue-size", "rules" : [ { "value" : 0 } ] },
-        { "id":  "search-mmap-advise", "rules":  [ { "value": "SEQUENTIAL" } ] }
+        { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] }
     ]
 }
