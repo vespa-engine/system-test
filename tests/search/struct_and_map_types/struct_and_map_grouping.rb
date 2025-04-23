@@ -74,6 +74,7 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
     start
     feed_and_wait_for_docs('test', 3, :file => selfdir + "grouping/docs.json")
     nan = if is_streaming then 0 else -2147483648 end
+
     check_grouping("all(group(int_single) each(output(count())))", {"10"=>2,"#{nan}"=>1})
     check_grouping("all(group(int_array) each(output(count())))", {"10"=>2,"20"=>1})
     check_grouping("all(group(elem_array.weight) each(output(count())))", {"10"=>2,"20"=>1})
@@ -127,6 +128,12 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
       check_grouping("all(group(elem_map{attribute(key1)}.weight) each(output(count())))", {"10"=>2, "#{nan}"=>1})
       check_grouping("all(group(elem_map{attribute(key2)}.weight) each(output(count())))", {"20"=>1, "#{nan}"=>2})
       check_grouping("all(group(elem_map{attribute(key3)}.weight) each(output(count())))", {"#{nan}"=>3})
+
+      check_grouping('all(group(int_array) filter(regex("20", tostring(int_array))) each(output(count())))', {"20"=>1})
+      check_grouping('all(group(elem_array.weight) filter(regex("10", tostring(elem_array.weight))) each(output(count())))', {"10"=>2})
+      check_grouping('all(group(str_int_map.key) filter(regex("10", tostring(str_int_map.value))) each(output(count())))', {"@foo"=>1})
+      check_grouping('all(group(str_int_map.key) filter(regex("20", tostring(str_int_map.value))) each(output(count())))', {"@foo"=>1, "@bar"=>1})
+      check_grouping('all(group(str_int_map.key) filter(regex("@bar", str_str_map{"@foo"})) each(output(count())))', {"@foo"=>1, "@bar"=>1})
     end
   end
 

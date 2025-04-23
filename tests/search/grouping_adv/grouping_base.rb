@@ -20,6 +20,8 @@ module GroupingBase
   def querytest_common
     wait_for_hitcount('query=test&streaming.selection=true', 28, 10)
 
+    querytest_filter
+
     # Test subgrouping.
     check_query('all(group(a) max(5) each(output(count()) each(output(summary(normal)))))',
                 'subgroup1')
@@ -252,6 +254,15 @@ module GroupingBase
 
     check_query("all(group(a)alias(myalias,count())each(output($myalias)))", 'alias-1')
     check_query("all(group(a)order($myalias=count())each(output($myalias)))", 'alias-2')
+  end
+
+  def querytest_filter
+    check_query('all(group(a) filter(regex("^a1$", a)) each(output(count())))', 'filter-1')
+    check_query('all(group(a) filter(regex("^b1$", b)) each(output(count())))', 'filter-2')
+    check_query('all(group(a) filter(regex("5\.9", tostring(f))) each(output(count())))', 'filter-3')
+    check_query('all(group(a) each(group(b) filter(regex("c1", c)) each(output(count()))))', 'filter-4')
+    check_query('all(group(a) filter(regex("c2", c)) each(group(b) each(output(count()))))', 'filter-5')
+    check_query('all(group(a) filter(regex("a1", a)) each(group(b) filter(regex("b1", b)) each(output(count()))))', 'filter-6')
   end
 
   # Tests that are known to fail
