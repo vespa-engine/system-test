@@ -227,7 +227,7 @@ module TestBase
   end
 
   def url_escape_q(q)
-    uri_escape(q, /[{};"<>\[\]@\*\|\(\)\\]?/)
+    uri_escape(q, /[{};"<>\[\]@\*\|\(\)\\\$\^]?/)
   end
 
   def uri_escape(uri, regex)
