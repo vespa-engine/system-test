@@ -15,8 +15,6 @@ using multiple nodes. It is written in pure Ruby.
 - [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
-- [Contribute](#contribute)
-- [License](#license)
 
 ## Background
 
