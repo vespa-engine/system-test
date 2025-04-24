@@ -1,7 +1,5 @@
 # Copyright Vespa.ai. All rights reserved.
-
 require 'vds_multi_model_test'
-require 'gatewayxmlparser'
 
 class SplitBucketCount < VdsMultiModelTest
 
@@ -40,21 +38,13 @@ class SplitBucketCount < VdsMultiModelTest
 
     assert(cnt < timeout, "Failed to split within #{timeout} seconds")
 
-    output = vespa.storage["storage"].storage["0"].execute("vespa-visit --xmloutput")
-    parser = GatewayXMLParser.new("<result>" + output + "</result>")
-    documents = parser.documents
-
-    cmpdocids = []
-
-    documents.each { |document|
-      cmpdocids.push(document.documentid)
-    }
-
-    assert_equal(docids.sort, cmpdocids.sort.uniq)
+    output = vespa.storage["storage"].storage["0"].execute("vespa-visit")
+    cmpdocids = JSON.parse(output).map { | doc | doc['id'] }
+    assert_equal(docids.sort, cmpdocids.sort)
   end
 
   def teardown
     stop
   end
-end
 
+end
