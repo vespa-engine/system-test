@@ -13,7 +13,7 @@ require 'environment'
 class VespaModel
 
   attr_reader :nodeproxies, :hostalias, :adminserver, :configservers, :logserver
-  attr_reader :qrserver, :storage, :search, :slobrok, :qrs
+  attr_reader :qrserver, :storage, :search, :slobrok, :qrs, :services
   attr_reader :metricsproxies
   attr_reader :container, :clustercontrollers, :default_document_api_port, :document_api_v1
 
@@ -47,6 +47,7 @@ class VespaModel
     @slobrok = {}
     @clustercontrollers = {}
     @stop_hooks = []
+    @services = []
   end
 
   def content_node(cluster, index)
@@ -706,6 +707,9 @@ class VespaModel
     end
 
     remote_serviceobject = node_handle.get_service(service)
+    unless remote_serviceobject.nil?
+      @services.append(remote_serviceobject)
+    end
     if service["servicetype"] == "qrserver"
       clustername = service["clustername"]
       @qrs[clustername].add_service(remote_serviceobject)

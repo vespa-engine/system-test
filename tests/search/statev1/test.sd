@@ -1,0 +1,11 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+  document test {
+    field body type string {
+      indexing: summary | index
+    }
+  }
+  fieldset default {
+    fields: body
+  }
+}
