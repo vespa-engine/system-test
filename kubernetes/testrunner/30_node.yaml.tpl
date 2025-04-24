@@ -55,7 +55,6 @@ data:
   stop.sh: |
     #!/bin/bash
     /usr/bin/ruby -e 'require "environment"; require "drb_endpoint"; DrbEndpoint.new("#{Socket.gethostname}:27183").create_client(with_object: nil).shutdown'
-
 ---
 apiVersion: batch/v1
 kind: Job
@@ -71,13 +70,11 @@ spec:
   backoffLimit: 2000
   template:
     metadata:
-      annotations:
-        karpenter.sh/do-not-evict: "true"
       labels:
         app: vespa-test-node
     spec:
       nodeSelector:
-        nodegroup: __TEST_NODE_GROUP__
+        karpenter.sh/nodepool: __TEST_NODE_GROUP__-__NODE_ARCH__
       priorityClassName: system-node-critical
       serviceAccountName: vespa-tester
       restartPolicy: OnFailure
@@ -118,13 +115,15 @@ spec:
                 command:
                   - /mnt/scripts/stop.sh
       tolerations:
-        - key: DeletionCandidateOfClusterAutoscaler
-          operator: Exists
-          effect: PreferNoSchedule
-        - key: dedicated
+        - key: capacity-type
           operator: Equal
           value: "__TEST_NODE_GROUP__"
           effect: NoSchedule
+        - key: arch
+          operator: Equal
+          value: "__NODE_ARCH__"
+          effect: NoSchedule
+
       topologySpreadConstraints:
         - maxSkew: 100
           topologyKey: kubernetes.io/hostname

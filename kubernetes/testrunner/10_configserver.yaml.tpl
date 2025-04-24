@@ -1,4 +1,3 @@
-﻿---
 apiVersion: v1
 kind: Service
 metadata:
@@ -26,7 +25,6 @@ data:
       aws s3 sync /opt/vespa/logs/ __VESPA_TESTRESULTS_URL__/logs/configservers/$(hostname)/
       /opt/vespa/bin/vespa-logfmt -N | tail -100
     done
-
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -43,13 +41,11 @@ spec:
       app: vespa-test-cfg
   template:
     metadata:
-      annotations:
-        karpenter.sh/do-not-evict: "true"
       labels:
         app: vespa-test-cfg
     spec:
       nodeSelector:
-        nodegroup: __SHARED_CONFIGSERVERS_NODE_GROUP__
+        karpenter.sh/nodepool: __SHARED_CONFIGSERVERS_NODE_GROUP__-__NODE_ARCH__
       priorityClassName: system-node-critical
       serviceAccountName: vespa-tester
       restartPolicy: Always
@@ -79,9 +75,13 @@ spec:
               mountPath: /mnt/scripts
 
       tolerations:
-        - key: dedicated
+        - key: capacity-type
           operator: Equal
           value: "__SHARED_CONFIGSERVERS_NODE_GROUP__"
+          effect: NoSchedule
+        - key: arch
+          operator: Equal
+          value: "__NODE_ARCH__"
           effect: NoSchedule
 
       volumes:
@@ -89,4 +89,3 @@ spec:
           configMap:
             name: vespa-test-cfg-scripts
             defaultMode: 0555
-

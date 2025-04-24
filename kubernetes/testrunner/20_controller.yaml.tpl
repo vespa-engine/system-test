@@ -1,4 +1,3 @@
-﻿---
 apiVersion: v1
 kind: Service
 metadata:
@@ -42,7 +41,7 @@ data:
 
     export VESPA_TESTDATA_URL="s3://__AWS_ACCOUNT__-vespa-factory-testdata"
     RESULTS_DIR="/tmp/testresults"
-    
+
     if [[ __TEST_TYPE__ =~ ^perf.* ]]; then
       PERF_TEST_OPTS="-p"
     fi
@@ -61,115 +60,113 @@ data:
     kill $SYNC_PID
     aws s3 sync ./ __VESPA_TESTRESULTS_URL__/
 
-  factory_authentication.rb: |
-    require 'openssl'
-    require 'net/https'
-    require 'json'
+  # factory_authentication.rb: |
+    #require 'openssl'
+    #require 'net/https'
+    #require 'json'
 
-    class FactoryAuthentication
-      def initialize
-        @factory_api = URI.parse('https://factory.vespa.aws-us-east-1a.vespa.oath.cloud')
-        @token_uri = URI.parse('https://zts.athenz.ouroath.com:4443/zts/v1/oauth2/token')
-        @token = nil
-        @token_expires_at = 0
-        @token_lock = Mutex.new
-        @key_cert_location = discover_key_and_cert
-      end
+    #class FactoryAuthentication
+    #  def initialize
+    #    @factory_api = URI.parse('https://api.factory.vespa.ai')
+    #    @token_uri = URI.parse('https://zts.athenz.vespa-cloud.com:4443/zts/v1/oauth2/token')
+    #    @token = nil
+    #    @token_expires_at = 0
+    #    @token_lock = Mutex.new
+    #    @key_cert_location = discover_key_and_cert
+    #  end
 
-      def factory_api
-        @factory_api
-      end
+    #  def factory_api
+    #    @factory_api
+    #  end
 
-      def client
-        http_client(@factory_api)
-      end
+    #  def client
+    #    http_client(@factory_api)
+    #  end
 
-      def token
-        get_access_token
-      end
+    #  def token
+    #    get_access_token
+    #  end
 
-    private
+    #private
 
-      ALL_NET_HTTP_ERRORS = [
-        Timeout::Error,  EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, Net::HTTPError,
-        Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL, Errno::EPIPE, Errno::EINVAL, Errno::ECONNRESET,
-        Errno::EHOSTUNREACH
-      ]
+    #  ALL_NET_HTTP_ERRORS = [
+    #    Timeout::Error,  EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError, Net::HTTPError,
+    #    Errno::ECONNREFUSED, Errno::EADDRNOTAVAIL, Errno::EPIPE, Errno::EINVAL, Errno::ECONNRESET,
+    #    Errno::EHOSTUNREACH
+    #  ]
 
-      def get_access_token()
-        @token_lock.synchronize do
-          if Time.now.to_i > @token_expires_at
-            location = discover_key_and_cert
+    #  def get_access_token()
+    #    @token_lock.synchronize do
+    #      if Time.now.to_i > @token_expires_at
+    #        location = discover_key_and_cert
 
-            if location
-              begin
-                http = http_client(@token_uri)
-                request = Net::HTTP::Post.new(@token_uri.request_uri)
-                request.body = 'grant_type=client_credentials&scope=vespa.vespa:domain'.encode
-                request.add_field('User-Agent', @user_agent)
+    #        if location
+    #          begin
+    #            http = http_client(@token_uri)
+    #            request = Net::HTTP::Post.new(@token_uri.request_uri)
+    #            request.body = 'grant_type=client_credentials&scope=vespa.external.factory:domain'.encode
+    #            request.add_field('User-Agent', @user_agent)
 
-                token_json = JSON.parse(http.request(request).body)
-                @token = token_json["access_token"]
-                @token_expires_at = Time.now.to_i + token_json["expires_in"].to_i - 60 # 60 second slack
-              rescue *ALL_NET_HTTP_ERRORS => e
-                raise "Could not get access token. Exception: #{e.message}"
-              end
-            else
-              raise 'No key and cert files found.'
-            end
-          end
-          @token
-        end
-      end
+    #            token_json = JSON.parse(http.request(request).body)
+    #            @token = token_json["access_token"]
+    #            @token_expires_at = Time.now.to_i + token_json["expires_in"].to_i - 60 # 60 second slack
+    #          rescue *ALL_NET_HTTP_ERRORS => e
+    #            raise "Could not get access token. Exception: #{e.message}"
+    #          end
+    #        else
+    #          raise 'No key and cert files found.'
+    #        end
+    #      end
+    #      @token
+    #    end
+    #  end
 
-      def discover_key_and_cert
-        locations = []
-        locations << { :cert => '/var/lib/sia/certs/vespa.vespa.factory.systemtest.cert.pem',
-                       :key => '/var/lib/sia/keys/vespa.vespa.factory.systemtest.key.pem' }
-        locations << { :cert => '/var/lib/sia/certs/vespa.vespa.factory.builder.cert.pem',
-                       :key => '/var/lib/sia/keys/vespa.vespa.factory.builder.key.pem' }
-        locations << { :cert => '/sd/tokens/cert',
-                       :key => '/sd/tokens/key' }
-        locations << { :cert => "#{Dir.home}/.athenz/cert",
-                       :key => "#{Dir.home}/.athenz/key" }
+    #  def discover_key_and_cert
+    #    locations = []
+    #    locations << { :cert => '/var/lib/sia/certs/vespa.vespa.factory.systemtest.cert.pem',
+    #                   :key => '/var/lib/sia/keys/vespa.vespa.factory.systemtest.key.pem' }
+    #    locations << { :cert => '/var/lib/sia/certs/vespa.vespa.factory.builder.cert.pem',
+    #                   :key => '/var/lib/sia/keys/vespa.vespa.factory.builder.key.pem' }
+    #    locations << { :cert => '/sd/tokens/cert',
+    #                   :key => '/sd/tokens/key' }
+    #    locations << { :cert => "#{Dir.home}/.athenz/cert",
+    #                   :key => "#{Dir.home}/.athenz/key" }
 
-        locations.each do |location|
-          return location if (File.exist?(location[:cert]) && File.exist?(location[:key]))
-        end
-      end
+    #    locations.each do |location|
+    #      return location if (File.exist?(location[:cert]) && File.exist?(location[:key]))
+    #    end
+    #  end
 
-      def ssl_cert(cert)
-        OpenSSL::X509::Certificate.new(File.read(cert))
-      end
+    #  def ssl_cert(cert)
+    #    OpenSSL::X509::Certificate.new(File.read(cert))
+    #  end
 
-      def ssl_key(key)
-        OpenSSL::PKey::RSA.new(File.read(key))
-      end
+    #  def ssl_key(key)
+    #    OpenSSL::PKey::RSA.new(File.read(key))
+    #  end
 
-      def http_client(uri)
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        http.cert = ssl_cert(@key_cert_location[:cert])
-        http.key = ssl_key(@key_cert_location[:key])
-        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-        http.read_timeout = 120
-        http.write_timeout = 120
-        http.ssl_version = :TLSv1_2 # TODO allow TLSv1.3 once https://bugs.ruby-lang.org/issues/19017 is resolved
-        http
-      end
-    end
+    #  def http_client(uri)
+    #    http = Net::HTTP.new(uri.host, uri.port)
+    #    http.use_ssl = true
+    #    http.cert = ssl_cert(@key_cert_location[:cert])
+    #    http.key = ssl_key(@key_cert_location[:key])
+    #    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    #    http.read_timeout = 120
+    #    http.write_timeout = 120
+    #    http.ssl_version = :TLSv1_2 # TODO allow TLSv1.3 once https://bugs.ruby-lang.org/issues/19017 is resolved
+    #    http
+    #  end
+    #end
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: vespa-test-controller
-  annotations:
-    karpenter.sh/do-not-evict: "true"
   labels:
     app: vespa-test-controller
 spec:
   nodeSelector:
-    nodegroup: __CONTROLLER_NODE_GROUP__
+    karpenter.sh/nodepool: __CONTROLLER_NODE_GROUP__-__NODE_ARCH__
   priorityClassName: system-node-critical
   serviceAccountName: vespa-tester
   restartPolicy: Never
@@ -205,9 +202,13 @@ spec:
           mountPath: /mnt/scripts
 
   tolerations:
-    - key: dedicated
+    - key: capacity-type
       operator: Equal
       value: "__CONTROLLER_NODE_GROUP__"
+      effect: NoSchedule
+    - key: arch
+      operator: Equal
+      value: "__NODE_ARCH__"
       effect: NoSchedule
 
   volumes:
@@ -218,4 +219,3 @@ spec:
       configMap:
         name: vespa-test-controller-scripts
         defaultMode: 0555
-

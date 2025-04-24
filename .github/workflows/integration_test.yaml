@@ -1,0 +1,183 @@
+name: Vespa System/Performance Tests
+
+permissions:
+  packages: read
+  contents: read
+  id-token: write
+
+on:
+  workflow_dispatch:
+    inputs:
+      vespa_version:
+        description: "Vespa version to test"
+        required: true
+      node_arch:
+        description: "Node architecture (arm64 or amd64)"
+        required: true
+        default: "arm64"
+      test_type:
+        description: "Test type (system or perf)"
+        required: true
+        default: "system"
+      tests_in_parallel:
+        description: "Number of tests to run in parallel"
+        required: true
+        default: "40"
+      test_node_group:
+        description: "Test node group (spot or on-demand)"
+        required: true
+        default: "spot"
+
+env:
+  CONTAINER_IMAGE: "vespaengine/vespa-systemtest-preview"
+  NODE_ARCH: ${{ github.event.inputs.node_arch }}
+  TEST_TYPE: ${{ github.event.inputs.test_type }}
+  TESTS_IN_PARALLEL: ${{ github.event.inputs.tests_in_parallel }}
+  TEST_NODE_GROUP: ${{ github.event.inputs.test_node_group }}
+  SD_BUILD_ID: ${{ github.run_id }}
+  VESPA_VERSION: ${{ github.event.inputs.vespa_version }}
+  AWS_REGION: "eu-west-1"
+  K8S_CLUSTER: "vespa-system-test"
+
+jobs:
+  run-system-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fetch Athenz Certificate
+        id: athenz
+        uses: vespaai/vespa-athenz-action@releases/v2
+
+      - name: Set up AWS credentials - single role
+        uses: vespaai/vespa-athenz-action/setup-aws-credentials@releases/v2
+        with:
+          certificate: ${{ steps.athenz.outputs.certificate }}
+          key: ${{ steps.athenz.outputs.key }}
+          domain: vespa.external.factory
+          aws_role_name: "s3-artifact-reader"
+
+      - name: Set up tools
+        run: |
+          # Install yq
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+
+          # Install kubectl
+          KUBECTL_VERSION=$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)
+          curl -LO "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+          kubectl version --client
+
+          # Install SSM plugin
+          curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o "session-manager-plugin.deb"
+          sudo dpkg -i session-manager-plugin.deb
+
+      - name: Process templates
+        run: |
+          mkdir -p artifacts/rendered-yaml
+
+          # Run the template processing script
+          bash system-test/kubernetes/scripts/process_templates.sh ${{ env.SD_BUILD_ID }} ${{ env.VESPA_VERSION }}
+
+          echo "Templates processed successfully"
+          ls -la kubernetes/testrunner/*.yaml
+
+      - name: Start port forwarding to EKS cluster
+        run: |
+          # Get bastion instance ID
+          BASTION_ID=$(aws ec2 describe-instances \
+            --region ${{ env.AWS_REGION }} \
+            --filters "Name=instance-state-name,Values=running" "Name=tag:Name,Values=vespa-system-test-bastion" \
+            --query 'Reservations[*].Instances[*].[InstanceId]' \
+            --output text)
+          echo "Found bastion instance: $BASTION_ID"
+
+          # Get API server endpoint
+          AWS_EKS_CLUSTER_ENDPOINT=$(aws eks describe-cluster \
+            --name ${{ env.K8S_CLUSTER }} \
+            --query "cluster.endpoint" \
+            --output text | sed 's/https:\/\///')
+          echo "EKS API server: $AWS_EKS_CLUSTER_ENDPOINT"
+
+          # Start port forwarding in background
+          aws ssm start-session \
+            --region ${{ env.AWS_REGION }} \
+            --target $BASTION_ID \
+            --document-name AWS-StartPortForwardingSessionToRemoteHost \
+            --parameters "{\"portNumber\":[\"443\"],\"localPortNumber\":[\"4443\"],\"host\":[\"$AWS_EKS_CLUSTER_ENDPOINT\"]}" &
+
+          echo "Waiting for port forwarding to establish"
+          sleep 10
+
+      - name: Configure Kubernetes context
+        run: |
+          aws eks update-kubeconfig --name ${{ env.K8S_CLUSTER }} --region ${{ env.AWS_REGION }}
+
+          # Point kubectl to our local port forward
+          K8S_CLUSTER=arn:aws:eks:${{ env.AWS_REGION }}:$(aws sts get-caller-identity --query Account --output text):cluster/${{ env.K8S_CLUSTER }}
+          echo "127.0.0.1 kubernetes.default" | sudo tee -a /etc/hosts
+          kubectl config set-cluster $K8S_CLUSTER --server=https://kubernetes.default:4443
+          kubectl config use-context $K8S_CLUSTER
+
+          # Wait to verify connection
+          for i in {1..10}; do
+            if kubectl get ns &>/dev/null; then
+              echo "Successfully connected to Kubernetes cluster"
+              break
+            fi
+            if [ $i -eq 10 ]; then
+              echo "Failed to connect to Kubernetes cluster"
+              exit 1
+            fi
+            sleep 3
+          done
+
+      - name: Setup Kubernetes environment
+        run: |
+          # Define namespace
+          export K8S_NAMESPACE="vespa-${{ env.TEST_TYPE }}-${{ env.NODE_ARCH }}"
+          echo "Setting up Kubernetes namespace: $K8S_NAMESPACE"
+
+          # Run setup script
+          bash system-test/kubernetes/scripts/setup_k8s.sh $K8S_NAMESPACE
+
+      - name: Run system tests
+        run: |
+          bash system-test/kubernetes/scripts/run_tests.sh
+          echo "Tests completed successfully"
+
+      - name: Collect test results
+        if: always()
+        run: |
+          echo "Collecting test results..."
+
+          # Extract S3 path from the processed template
+          S3_RESULTS_PATH=$(grep "__VESPA_TESTRESULTS_URL__" kubernetes/testrunner/20_controller.yaml | head -1 | sed 's/.*__VESPA_TESTRESULTS_URL__//' | sed 's/\/logs.*$//')
+
+          if [ -n "$S3_RESULTS_PATH" ]; then
+            echo "Test results available at: $S3_RESULTS_PATH"
+
+            # Create a local directory for results
+            mkdir -p test-results
+
+            # Download test results summary
+            aws s3 cp $S3_RESULTS_PATH/results.json test-results/ || echo "No results.json found"
+            aws s3 cp $S3_RESULTS_PATH/summary.json test-results/ || echo "No summary.json found"
+
+            # Download logs
+            aws s3 cp $S3_RESULTS_PATH/logs/test-controller-*.log test-results/ || echo "No controller logs found"
+          else
+            echo "Could not determine test results location"
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: |
+            test-results/
+            artifacts/rendered-yaml/
