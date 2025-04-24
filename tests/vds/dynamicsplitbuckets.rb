@@ -1,6 +1,5 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'vds_multi_model_test'
-require 'gatewayxmlparser'
 
 class DynamicSplitCount < VdsMultiModelTest
 
@@ -23,7 +22,7 @@ class DynamicSplitCount < VdsMultiModelTest
     assert cnt < 200
   end
 
-  def test_dynamicsplitbuckets_manyoneuser
+  def test_dynamicsplitbuckets_one_user
     docids = []
 
     100.times { |i|
@@ -39,19 +38,12 @@ class DynamicSplitCount < VdsMultiModelTest
 
     wait_until_bucket_count_at_least 12
 
-    output = vespa.storage["storage"].storage["0"].execute("vespa-visit --xmloutput")
-    parser = GatewayXMLParser.new("<result>" + output + "</result>")
-
-    actualdocids = []
-
-    parser.documents.each { |document|
-      actualdocids.push(document.documentid)
-    }
-
-    assert_equal(docids.sort, actualdocids.sort.uniq)
+    output = vespa.storage["storage"].storage["0"].execute("vespa-visit")
+    actualdocids = JSON.parse(output).map { | doc | doc['id'] }
+    assert_equal(docids.sort, actualdocids.sort)
   end
 
-  def test_dynamicsplitbuckets_manyusers
+  def test_dynamicsplitbuckets_many_users
     docids = []
 
     100.times { |i|
@@ -69,16 +61,9 @@ class DynamicSplitCount < VdsMultiModelTest
     # Wait until we have at least 5 splits or timeout
     wait_until_bucket_count_at_least 5
 
-    output = vespa.storage["storage"].storage["0"].execute("vespa-visit --xmloutput")
-    parser = GatewayXMLParser.new("<result>" + output + "</result>")
-    documents = parser.documents
-
-    cmpdocids = []
-    documents.each { |doc|
-      cmpdocids.push(doc.documentid)
-    }
-
-    assert_equal(docids.sort, cmpdocids.sort.uniq)
+    output = vespa.storage["storage"].storage["0"].execute("vespa-visit")
+    actualdocids = JSON.parse(output).map { | doc | doc['id'] }
+    assert_equal(docids.sort, actualdocids.sort)
   end
 
   def teardown
