@@ -18,7 +18,7 @@ class DocumentV1Throughput < PerformanceTest
   def setup
     super
     set_description("Stress test document/v1 API POST and GET")
-    set_owner("jvenstad")
+    set_owner("vekterli")
     @test_config = [
       {
         :http1 => {

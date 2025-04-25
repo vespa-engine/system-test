@@ -13,7 +13,7 @@ class Visiting < PerformanceTest
   def setup
     super
     set_description("Test throughput of visit operations through /document/v1")
-    set_owner("jonmv")
+    set_owner("vekterli")
     @document_count = 1 << 22
     @document_template = '{ "put": "id:test:test::$seq()", "fields": { "text": "$words(5)", "number": $ints(1, 100) } }'
     @document_update = '{ "fields": { "number": { "increment": 100 } } }'

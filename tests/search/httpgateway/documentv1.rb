@@ -6,7 +6,7 @@ require 'app_generator/search_app'
 class DocumentV1Test < IndexedOnlySearchTest
 
   def setup
-    set_owner("jonmv")
+    set_owner("vekterli")
     set_description("Test operations in document/v1 api.")
   end
 

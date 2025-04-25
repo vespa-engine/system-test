@@ -17,7 +17,7 @@ class ReindexingAndFeedingTest < PerformanceTest
   def setup
     super
     set_description("Measure throughput of reindexing, and its impact on external updates and puts")
-    set_owner("jvenstad")
+    set_owner("hmusum")
   end
 
   def test_reindexing_performance_and_impact
