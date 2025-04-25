@@ -1,7 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
 require 'vds_test'
-require 'gatewayxmlparser'
 
 class VisitorTest < VdsTest
 
@@ -63,7 +62,7 @@ class VisitorTest < VdsTest
   end
 
   def visit(startTime, endTime, selection, buckets=nil, visitremoves=false, fieldset=nil, params = {})
-    args = "--xmloutput"
+    args = ""
 
     if (startTime != 0)
       args += " --from " + startTime.to_s + " "
@@ -102,17 +101,10 @@ class VisitorTest < VdsTest
       args += " --libraryparam " + key + " \"" + value + "\"";
     }
 
-    java_xml = vespa.adminserver.execute("vespa-visit " + args)
-    java_xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?> <result>" + java_xml + "</result>"
-
-    puts "full xml:\n====================="
-    puts java_xml
-    puts "==================="
-
-    parser_java = GatewayXMLParser.new(java_xml)
-    parser_java.documents.sort! {|a,b| a.documentid <=> b.documentid}
-
-    return parser_java.documents
+    output = vespa.adminserver.execute("vespa-visit " + args)
+    # Sort by id, but if --visitremoves is used, use the document id in 'remove' field instead
+    sorted = JSON.parse(output).sort_by { |doc| doc['id'] ? doc['id'] : doc['remove'] }
+    sorted
   end
 
   # Start visitor and check how many docs we get back
@@ -123,7 +115,7 @@ class VisitorTest < VdsTest
 
     puts " => " + results.length.to_s + " documents visited"
 
-    return results.length
+    results.length
   end
 
   def doComplexInserts
@@ -169,4 +161,5 @@ class VisitorTest < VdsTest
   def teardown
     stop
   end
+
 end

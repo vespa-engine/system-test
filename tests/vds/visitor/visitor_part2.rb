@@ -1,6 +1,5 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'gatewayxmlparser'
 require 'vds/visitor/visitor'
 
 class VisitorPart2Test < VisitorTest
@@ -32,7 +31,7 @@ class VisitorPart2Test < VisitorTest
     visitClusterDown()
   end
 
-  def test_visit1of2storagenodesdown
+  def test_visit_1_of_2_storagenodes_down
     # Run a visitor before inserting to make sure storage is empty
     numResults = checkVisiting([], 0, 0, "")
     puts "0 numResults = " + numResults.to_s
@@ -53,7 +52,7 @@ class VisitorPart2Test < VisitorTest
     assert_equal(4, numResults)
   end
 
-  def test_visit1of2distributorsdown
+  def test_visit_1_of_2_distributors_down
     # Run a visitor before inserting to make sure storage is empty
     numResults = checkVisiting([], 0, 0, "")
     puts "0 numResults = " + numResults.to_s
@@ -76,7 +75,7 @@ class VisitorPart2Test < VisitorTest
     assert_equal(4, numResults)
   end
 
-  def test_visitremoves
+  def test_visit_removes
     doInserts()
 
     result = visit(0, 0, "", [])

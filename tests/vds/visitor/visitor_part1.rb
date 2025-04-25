@@ -1,11 +1,10 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'gatewayxmlparser'
 require 'vds/visitor/visitor'
 
 class VisitorPart1Test < VisitorTest
 
-  def test_visitsomebuckets
+  def test_visit_some_buckets
     doInserts()
 
     puts "Starting visiting NOT including REMOVES"
@@ -13,27 +12,20 @@ class VisitorPart1Test < VisitorTest
     result = visit(0, 0, "", [ 1234, 45 ])
     assert_equal(2, result.size, result)
 
-    assert_equal(@doc1, result[0])
-    assert(!result[0].isRemoved, result[0])
-    assert_equal(@doc2, result[1])
-    assert(!result[1].isRemoved, result[1])
+    assert_equal(@doc1.documentid, result[0]['id'])
+    assert_equal(@doc2.documentid, result[1]['id'])
 
     puts "Starting visiting including REMOVES"
-
     # Visit one bucket with and one buckets without docs, include REMOVES
     result = visit(0, 0, "", [ 1234, 45 ], true)
     assert_equal(3, result.size)
 
-    assert_equal(@doc1, result[0])
-    assert(!result[0].isRemoved, result[0])
-    assert_equal(@doc2, result[1])
-    assert(!result[1].isRemoved, result[1])
-    assert_equal("id:storage_test:music:n=1234:3", result[2].documentid)
-    assert(result[2].isRemoved, result[2])
+    assert_equal(@doc1.documentid, result[0]['id'])
+    assert_equal(@doc2.documentid, result[1]['id'])
+    assert_equal("id:storage_test:music:n=1234:3", result[2]['remove'])
   end
 
-
-  def test_visitallbuckets
+  def test_visit_all_buckets
     # Run a visitor before inserting to make sure storage is empty
     numResults = checkVisiting([], 0, 0, "")
     puts "numResults before insert is " + numResults.to_s
@@ -50,10 +42,10 @@ class VisitorPart1Test < VisitorTest
     correctdocs = [ @doc1, @doc2, @doc4, @doc5 ]
     puts visiteddocs
 
-    assert_equal(correctdocs.sort, visiteddocs.sort)
+    assert_equal(correctdocs.map { |doc| doc.documentid }.sort, visiteddocs.map { |doc| doc['id'] }.sort)
   end
 
-  def test_visitbucketsselection
+  def test_visit_buckets_selection
     doInserts()
 
     puts "* Select DocType(music) => all"
@@ -67,7 +59,7 @@ class VisitorPart1Test < VisitorTest
     assert_equal(2, numResults) # doc4 + doc5, not doc3 (removed)
   end
 
-  def test_visitgroupdocs
+  def test_visit_group_docs
     vespa.document_api_v1.put(Document.new("music", "id:ns:music:g=mygroup:1"))
     vespa.document_api_v1.put(Document.new("music", "id:ns:music:g=mygroup:2"))
     vespa.document_api_v1.put(Document.new("music", "id:ns:music:g=mygroup:3"))
@@ -79,16 +71,16 @@ class VisitorPart1Test < VisitorTest
 
     results = visit(0, 0, "id.group = \\\"mygroup\\\"", [])
     assert_equal(4, results.length)
-    assert_equal("id:ns:music:g=mygroup:1", results[0].documentid)
-    assert_equal("id:ns:music:g=mygroup:2", results[1].documentid)
-    assert_equal("id:ns:music:g=mygroup:3", results[2].documentid)
-    assert_equal("id:ns:music:g=mygroup:4", results[3].documentid)
+    assert_equal("id:ns:music:g=mygroup:1", results[0]['id'])
+    assert_equal("id:ns:music:g=mygroup:2", results[1]['id'])
+    assert_equal("id:ns:music:g=mygroup:3", results[2]['id'])
+    assert_equal("id:ns:music:g=mygroup:4", results[3]['id'])
 
     results = visit(0, 0, "id.group = \\\"yourgroup\\\"", [])
     assert_equal(3, results.length)
-    assert_equal("id:ns:music:g=yourgroup:1", results[0].documentid)
-    assert_equal("id:ns:music:g=yourgroup:2", results[1].documentid)
-    assert_equal("id:ns:music:g=yourgroup:3", results[2].documentid)
+    assert_equal("id:ns:music:g=yourgroup:1", results[0]['id'])
+    assert_equal("id:ns:music:g=yourgroup:2", results[1]['id'])
+    assert_equal("id:ns:music:g=yourgroup:3", results[2]['id'])
   end
 
   def test_visit_ids
@@ -105,7 +97,7 @@ class VisitorPart1Test < VisitorTest
     assert(result.index("mybody") == nil)
   end
 
-  def test_visitfieldsets
+  def test_visit_field_sets
     doc = Document.new("music", "id:test:music::test:test").
       add_field("title", "mytitle").
       add_field("band", "myband").
@@ -115,15 +107,15 @@ class VisitorPart1Test < VisitorTest
 
     results = visit(0, 0, "", [], false, "[all]")
     assert_equal(1, results.length)
-    assert_equal("mytitle", results[0].attributes["title"])
-    assert_equal("myband", results[0].attributes["band"])
-    assert_equal("mybody", results[0].attributes["body"])
+    assert_equal("mytitle", results[0]['fields']["title"])
+    assert_equal("myband", results[0]['fields']["band"])
+    assert_equal("mybody", results[0]['fields']["body"])
 
     results = visit(0, 0, "", [], false, "music:title,body")
     assert_equal(1, results.length)
-    assert_equal("mytitle", results[0].attributes["title"])
-    assert_equal(nil, results[0].attributes["band"])
-    assert_equal("mybody", results[0].attributes["body"])
+    assert_equal("mytitle", results[0]['fields']["title"])
+    assert_equal(nil, results[0]['fields']["band"])
+    assert_equal("mybody", results[0]['fields']["body"])
   end
 
 end
