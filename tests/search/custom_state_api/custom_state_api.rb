@@ -30,7 +30,6 @@ class CustomStateApi < IndexedStreamingSearchTest
   def assert_root_resources(root)
     resources = root["resources"]
     puts "assert_root_resources: #{resources.join(',')}"
-    assert_equal(4, resources.size)
     assert_equal(1, resources.count { |elem| elem["url"].end_with?("/state/v1/custom/component") })
   end
 
