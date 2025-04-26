@@ -85,25 +85,4 @@ class Qrserver < ContainerNode
     response
   end
 
-  def get(documentid, params={})
-    begin
-      xml = gw_http_get(params.merge({:id => documentid})).body
-      gw = GatewayXMLParser.new(xml)
-      # if documentid was an array, return all docs
-      if documentid.kind_of? Array
-        return gw.documents
-      else
-        return gw.documents[0]
-      end
-    rescue RuntimeError => exc
-      if (exc.to_s.index("not found") != nil)
-        @testcase.output "Output gotten in get"
-        @testcase.output exc.to_s
-        return nil
-      else
-        raise exc
-      end
-    end
-  end
-
 end
