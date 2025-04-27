@@ -17,7 +17,7 @@ class ForkOneToZero < DocprocTest
   end
 
   def test_fork_onetozero
-    doc1 = Document.new("worst", "id:worst:worst::1234").
+    doc1 = Document.new("id:worst:worst::1234").
       add_field("title", "jalla jalla")
     vespa.document_api_v1.put(doc1, :port => Environment.instance.vespa_web_service_port, :route => "container/chain.onetozero indexing")
 

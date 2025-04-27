@@ -35,7 +35,7 @@ class JoinBucketCount < VdsTest
 
   def test_join_count
     10.times { |i|
-      doc = Document.new("music", "id:storage_test:music:n=1234:" + i.to_s)
+      doc = Document.new("id:storage_test:music:n=1234:" + i.to_s)
       vespa.document_api_v1.put(doc)
     }
 

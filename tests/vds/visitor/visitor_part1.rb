@@ -60,14 +60,14 @@ class VisitorPart1Test < VisitorTest
   end
 
   def test_visit_group_docs
-    vespa.document_api_v1.put(Document.new("music", "id:ns:music:g=mygroup:1"))
-    vespa.document_api_v1.put(Document.new("music", "id:ns:music:g=mygroup:2"))
-    vespa.document_api_v1.put(Document.new("music", "id:ns:music:g=mygroup:3"))
-    vespa.document_api_v1.put(Document.new("music", "id:ns:music:g=mygroup:4"))
+    vespa.document_api_v1.put(Document.new("id:ns:music:g=mygroup:1"))
+    vespa.document_api_v1.put(Document.new("id:ns:music:g=mygroup:2"))
+    vespa.document_api_v1.put(Document.new("id:ns:music:g=mygroup:3"))
+    vespa.document_api_v1.put(Document.new("id:ns:music:g=mygroup:4"))
 
-    vespa.document_api_v1.put(Document.new("music", "id:ns:music:g=yourgroup:1"))
-    vespa.document_api_v1.put(Document.new("music", "id:ns:music:g=yourgroup:2"))
-    vespa.document_api_v1.put(Document.new("music", "id:ns:music:g=yourgroup:3"))
+    vespa.document_api_v1.put(Document.new("id:ns:music:g=yourgroup:1"))
+    vespa.document_api_v1.put(Document.new("id:ns:music:g=yourgroup:2"))
+    vespa.document_api_v1.put(Document.new("id:ns:music:g=yourgroup:3"))
 
     results = visit(0, 0, "id.group = \\\"mygroup\\\"", [])
     assert_equal(4, results.length)
@@ -84,7 +84,7 @@ class VisitorPart1Test < VisitorTest
   end
 
   def test_visit_ids
-    doc = Document.new("music", "id:test:music::test:test").
+    doc = Document.new("id:test:music::test:test").
       add_field("title", "mytitle").
       add_field("band", "myband").
       add_field("body", "mybody")
@@ -98,7 +98,7 @@ class VisitorPart1Test < VisitorTest
   end
 
   def test_visit_field_sets
-    doc = Document.new("music", "id:test:music::test:test").
+    doc = Document.new("id:test:music::test:test").
       add_field("title", "mytitle").
       add_field("band", "myband").
       add_field("body", "mybody")

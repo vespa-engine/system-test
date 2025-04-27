@@ -12,7 +12,7 @@ class GatewayVisitTest < IndexedOnlySearchTest
 
   def do_inserts
     docid = "id:systemtest:music::1"
-    doc1 = Document.new("music", docid).
+    doc1 = Document.new(docid).
            add_field("twit_lkcnt", "987654321").
            add_field("twit_ikcnt", "12345").
            add_field("twit_dkcnt", "42.42").

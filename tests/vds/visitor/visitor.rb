@@ -8,15 +8,15 @@ class VisitorTest < VdsTest
     set_owner("vekterli")
     deploy_app(default_app.num_nodes(2).redundancy(2))
     start
-    @doc1 = Document.new("music", "id:storage_test:music:n=1234:1").
+    @doc1 = Document.new("id:storage_test:music:n=1234:1").
       add_field("title", "group 1")
-    @doc2 = Document.new("music", "id:storage_test:music:n=1234:2").
+    @doc2 = Document.new("id:storage_test:music:n=1234:2").
       add_field("title", "group 2")
-    @doc3 = Document.new("music", "id:storage_test:music:n=1234:3").
+    @doc3 = Document.new("id:storage_test:music:n=1234:3").
       add_field("title", "group 3")
-    @doc4 = Document.new("music", "id:storage_test:music:n=5678:1").
+    @doc4 = Document.new("id:storage_test:music:n=5678:1").
       add_field("title", "group 3")
-    @doc5 = Document.new("music", "id:storage_test:music:n=5678:2").
+    @doc5 = Document.new("id:storage_test:music:n=5678:2").
       add_field("title", "group 3")
     @timestart1 = 0
     @timestart2 = 0

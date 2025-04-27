@@ -15,7 +15,7 @@ class GarbageCollection < VdsTest
 
   def feed_test_docs
     10.times { |i|
-      doc = Document.new("music", "id:storage_test:music:n=1234:#{i}").
+      doc = Document.new("id:storage_test:music:n=1234:#{i}").
         add_field("year", i)
       vespa.document_api_v1.put(doc)
     }

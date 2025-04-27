@@ -31,7 +31,7 @@ class DocprocComponentDocprocClustersDocprocChains < DocprocTest
 
   def feed_and_compare(expected, route="default", hitField="title")
     for i in 0..65 do
-      doc1 = Document.new("worst", "id:worst:worst::1234").
+      doc1 = Document.new("id:worst:worst::1234").
         add_field("title", "jalla jalla")
 
       vespa.document_api_v1.put(doc1, :route => route)

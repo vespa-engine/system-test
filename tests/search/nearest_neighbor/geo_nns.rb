@@ -62,7 +62,7 @@ class GeoNnsTest < IndexedStreamingSearchTest
   end
 
   def feed_doc(idx, place)
-    doc = Document.new("geo", "id:test:geo::#{idx}").
+    doc = Document.new("id:test:geo::#{idx}").
           add_field("pos", { "values" => [place[:lat], place[:lon]] }).
           add_field("pos_hnsw", { "values" => [place[:lat], place[:lon]] }).
           add_field("text", place[:txt])

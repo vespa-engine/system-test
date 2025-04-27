@@ -55,7 +55,7 @@ class BooleanSearchTest < IndexedOnlySearchTest
 
   def generate_doc(id, predicate, field_names = ["predicate_field"])
     @numdocs += 1
-    doc = Document.new("test", "id:test:test::#{id}")
+    doc = Document.new("id:test:test::#{id}")
     if predicate
       for field_name in field_names
         doc.add_field(field_name, predicate)

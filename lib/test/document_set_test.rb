@@ -9,12 +9,12 @@ class DocumentSetTest < Test::Unit::TestCase
   def test_to_json
     docs = DocumentSet.new
 
-    doc = Document.new('music', 'id:foo:music::1')
+    doc = Document.new('id:foo:music::1')
     doc.add_field('foo', 1)
     doc.add_field('bar', "some text")
     docs.add(doc)
 
-    doc = Document.new('music', 'id:foo:music::2')
+    doc = Document.new('id:foo:music::2')
     doc.add_field('foo', 2)
     doc.add_field('bar', "some other text")
     docs.add(doc)
@@ -37,7 +37,7 @@ class DocumentSetTest < Test::Unit::TestCase
   def test_write_to_json
     docs = DocumentSet.new
 
-    doc = Document.new('music', 'id:foo:music::1')
+    doc = Document.new('id:foo:music::1')
     doc.add_field('foo', 1)
     doc.add_field('bar', "some text")
     docs.add(doc)

@@ -9,7 +9,7 @@ class MassiveHttpClientFeedingTest < IndexedOnlySearchTest
   def generate_documents(docid_begin, num_docs)
     ds = DocumentSet.new()
     for i in docid_begin...docid_begin + num_docs do
-      doc = Document.new("music", "id:music:music::" + "%07d" % i)
+      doc = Document.new("id:music:music::" + "%07d" % i)
       doc.add_field("title", "Ronny och Ragge");
       ds.add(doc)
     end

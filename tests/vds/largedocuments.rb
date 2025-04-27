@@ -35,7 +35,7 @@ class LargeDocuments < VdsTest
   def create_dummy_feed(count, size)
     docs = DocumentSet.new
     count.times { |id|
-      doc = Document.new("music", "id:test:music:n=" + id.to_s + ":1")
+      doc = Document.new("id:test:music:n=" + id.to_s + ":1")
       content = ""
       (size / 50).times {
          content << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"

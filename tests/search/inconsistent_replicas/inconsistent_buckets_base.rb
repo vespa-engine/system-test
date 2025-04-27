@@ -30,12 +30,12 @@ class InconsistentBucketsBase < IndexedOnlySearchTest
   end
 
   def feed_incidental_doc_to_same_bucket
-    doc = Document.new('music', incidental_doc_id).add_field('title', 'hello world')
+    doc = Document.new(incidental_doc_id).add_field('title', 'hello world')
     vespa.document_api_v1.put(doc)
   end
 
   def feed_another_incidental_doc_to_same_bucket
-    doc = Document.new('music', another_incidental_doc_id).add_field('title', 'hello moon')
+    doc = Document.new(another_incidental_doc_id).add_field('title', 'hello moon')
     vespa.document_api_v1.put(doc)
   end
 
@@ -89,7 +89,7 @@ class InconsistentBucketsBase < IndexedOnlySearchTest
   def feed_doc_with_field_value(title:)
     # Also add a second field that updates won't touch so that we can detect if
     # a 'create: true' update erroneously resets the state on any replica.
-    doc = Document.new('music', updated_doc_id).
+    doc = Document.new(updated_doc_id).
         add_field('title', title).
         add_field('artist', 'cool dude')
     vespa.document_api_v1.put(doc)

@@ -144,8 +144,7 @@ class DocumentApiV1
     response = http_get(uri, params)
     if response.code.to_i == 200
       json = JSON.parse(response.body)
-      doc_type = parse_doc_id(doc_id)[:doc_type]
-      Document.create_from_json(json, doc_type)
+      Document.create_from_json(json)
     elsif response.code.to_i == 404
       return nil
     else

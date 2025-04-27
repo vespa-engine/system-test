@@ -30,7 +30,7 @@ class DiversityMinGroups < IndexedOnlySearchTest
 
   def feed_docs
     @docs.times.each { |i|
-      doc = Document.new('music', "id:test:music::#{i}")
+      doc = Document.new("id:test:music::#{i}")
       if i == 0
         doc.add_field('genre', 'rock')
         doc.add_field('artist', 'The Clash')

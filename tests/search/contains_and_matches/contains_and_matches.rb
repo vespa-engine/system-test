@@ -102,7 +102,7 @@ class ContainsAndMatchesTest < IndexedOnlySearchTest
   end
 
   def generate_doc(idx)
-    doc = Document.new("test", "id:test:test::#{idx}")
+    doc = Document.new("id:test:test::#{idx}")
 
     words = []
     words.push("one")   if idx & 1 > 0

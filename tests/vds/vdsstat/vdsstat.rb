@@ -35,33 +35,33 @@ class VdsStat < VdsTest
   end
 
   def test_stat
-    doc = Document.new("music", "id:storage_test:music:n=1234:1")
+    doc = Document.new("id:storage_test:music:n=1234:1")
     vespa.document_api_v1.put(doc)
 
-    doc = Document.new("music", "id:storage_test:music:n=1234:2")
+    doc = Document.new("id:storage_test:music:n=1234:2")
     vespa.document_api_v1.put(doc)
 
-    doc = Document.new("music", "id:storage_test:music:n=1234:3")
+    doc = Document.new("id:storage_test:music:n=1234:3")
     vespa.document_api_v1.put(doc)
 
     # 66770 is in same bucket as 1234
-    doc = Document.new("music", "id:storage_test:music:n=66770:1")
+    doc = Document.new("id:storage_test:music:n=66770:1")
     vespa.document_api_v1.put(doc)
 
-    doc = Document.new("music", "id:storage_test:music:n=66770:2")
+    doc = Document.new("id:storage_test:music:n=66770:2")
     vespa.document_api_v1.put(doc)
 
-    doc = Document.new("music", "id:storage_test:music:n=66770:3")
+    doc = Document.new("id:storage_test:music:n=66770:3")
     vespa.document_api_v1.put(doc)
 
     # Feed a group as well.
-    doc = Document.new("music", "id:storage_test:music:g=mygroup:1")
+    doc = Document.new("id:storage_test:music:g=mygroup:1")
     vespa.document_api_v1.put(doc)
 
-    doc = Document.new("music", "id:storage_test:music:g=mygroup:2")
+    doc = Document.new("id:storage_test:music:g=mygroup:2")
     vespa.document_api_v1.put(doc)
 
-    doc = Document.new("music", "id:storage_test:music:g=mygroup:3")
+    doc = Document.new("id:storage_test:music:g=mygroup:3")
     vespa.document_api_v1.put(doc)
 
     vespa.storage["storage"].wait_until_ready

@@ -23,7 +23,7 @@ class Boolean30KResultsTest < IndexedOnlySearchTest
   end
 
   def generate_doc(id, predicate)
-     Document.new("test", "id:test:test::#{id}").
+     Document.new("id:test:test::#{id}").
        add_field("predicate_field", predicate)
   end
 

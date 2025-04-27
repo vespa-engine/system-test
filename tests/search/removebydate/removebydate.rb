@@ -75,7 +75,7 @@ class RemoveByDate < IndexedStreamingSearchTest
     docs = DocumentSet.new
     age = startage
     for i in 1..numdocs
-      doc = Document.new("newsarticle", "id:test:newsarticle::http://foo.bar.com/#{i}")
+      doc = Document.new("id:test:newsarticle::http://foo.bar.com/#{i}")
       doc.add_field("title","foo#{i}")
       doc.add_field("pubdate", age)
       docs.add(doc)

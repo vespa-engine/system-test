@@ -15,7 +15,7 @@ class Cluster_Name_Specified < VdsTest
   end
 
   def test_basicfunctionality
-    doc = Document.new("music", "id:storage_test:music:n=1234:0").
+    doc = Document.new("id:storage_test:music:n=1234:0").
       add_field("title", "title")
     vespa.document_api_v1.put(doc)
 
@@ -55,7 +55,7 @@ class Cluster_Name_Specified < VdsTest
     res = vespa.storage["nonstandard"].storage["0"].stat("id:storage_test:music:n=1234:2")
     assert_equal(0, res.size())
 
-    doc = Document.new("music", "id:storage_test:music:n=5678:0")
+    doc = Document.new("id:storage_test:music:n=5678:0")
     3.times { | i |
       doc.add_field("title", "title-#{i}")
       vespa.document_api_v1.put(doc)

@@ -97,8 +97,7 @@ class BasicMLR < IndexedStreamingSearchTest
   end
 
   def createDocument(a, b, c)
-    doc = Document.new("mlr",
-      "id:scheme:mlr::" + a.to_s + "_" + b.to_s + "_" + c.to_s).
+    doc = Document.new("id:scheme:mlr::" + a.to_s + "_" + b.to_s + "_" + c.to_s).
       add_field("a", a).
       add_field("b", b).
       add_field("c", c).

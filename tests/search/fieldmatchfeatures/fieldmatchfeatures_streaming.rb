@@ -18,13 +18,13 @@ class FieldMatchFeaturesStreaming < StreamingSearchTest
     set_description("Test fieldMatch and fieldTermMatch features when using structs with both string and numeric fields")
     deploy_app(SearchApp.new.sd(selfdir + "fmstruct.sd"))
     start
-    doc = Document.new("fmstruct", "id:fmstruct:fmstruct:n=1:0").
+    doc = Document.new("id:fmstruct:fmstruct:n=1:0").
       add_field("f1", { "sf" => "foo bar baz", "lf" => 1000 }).
       add_field("f2", [ { "sf" => "foo bar baz", "lf" => 1000 },
                         { "sf" => "foo bar", "lf" => 2000 },
                         { "sf" => "baz foo", "lf" => 1000 } ])
     vespa.document_api_v1.put(doc)
-    doc = Document.new("fmstruct", "id:fmstruct:fmstruct:n=1:1").
+    doc = Document.new("id:fmstruct:fmstruct:n=1:1").
       add_field("f1", { "sf" => "foo foo", "lf" => 1000 }).
       add_field("f2", [ { "sf" => "foo bar baz qux", "lf" => 1000 },
                         { "sf" => "foo bar", "lf" => 2000 },

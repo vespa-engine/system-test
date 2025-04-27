@@ -42,11 +42,11 @@ class SplitWithCollisions < VdsTest
     # The colliding ID was found by running brute force permutations of
     # the user-specific part of doc1's document ID and a collision was
     # found after ~22 million iterations.
-    doc1 = Document.new("music", "id:foo:music:n=123456:ABCDEFGHIJKLMN").
+    doc1 = Document.new("id:foo:music:n=123456:ABCDEFGHIJKLMN").
         add_field("title", "foo")
     vespa.document_api_v1.put(doc1)
 
-    doc2 = Document.new("music", "id:foo:music:n=123456:ABCJGFMKIDNLEH").
+    doc2 = Document.new("id:foo:music:n=123456:ABCJGFMKIDNLEH").
         add_field("title", "bar")
     vespa.document_api_v1.put(doc2)
 

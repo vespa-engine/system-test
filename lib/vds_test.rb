@@ -64,7 +64,7 @@ class VdsTest < TestCase
     (1+bucketIdStop-bucketIdStart).times{|i|
       bucketId=bucketIdStart+i
       numDocs.times{|n|
-        doc = Document.new(type, "id:#{type}:#{type}:n=#{bucketId}:#{n}:system_test")
+        doc = Document.new("id:#{type}:#{type}:n=#{bucketId}:#{n}:system_test")
         docs.add(doc)
       }
     }

@@ -21,11 +21,11 @@ class Migration < DiskProviderStorageTest
     vespa.stop_content_node("storage", "3")
 
     # Put some documents
-    doc1 = Document.new("music", "id:crawler:music::http//yahoo.com/storage_test")
+    doc1 = Document.new("id:crawler:music::http//yahoo.com/storage_test")
     vespa.document_api_v1.put(doc1)
-    doc2 = Document.new("music", "id:crawler:music::http//google.com/storage_test")
+    doc2 = Document.new("id:crawler:music::http//google.com/storage_test")
     vespa.document_api_v1.put(doc2)
-    doc3 = Document.new("music", "id:crawler:music::http//msn.com/storage_test")
+    doc3 = Document.new("id:crawler:music::http//msn.com/storage_test")
     vespa.document_api_v1.put(doc3)
 
     # Check that the documents are stored two times

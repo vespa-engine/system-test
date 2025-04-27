@@ -106,7 +106,7 @@ class ProtobufSearchProtocolTest < IndexedOnlySearchTest
   end
 
   def generate_doc(idx, f1, f2, f3)
-    doc = Document.new("test", "id:test:test::#{idx}")
+    doc = Document.new("id:test:test::#{idx}")
     doc.add_field("f1", f1)
     doc.add_field("f2", f2)
     doc.add_field("f3", f3)

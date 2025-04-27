@@ -26,7 +26,7 @@ class StreamingMatcherPart1 < StreamingMatcher
     num_docs.times { |i|
       docid = "id:storage_test:musicsearch:n=1234:" + i.to_s
       # Make the docs a bit larger.
-      doc = Document.new("musicsearch", docid).
+      doc = Document.new(docid).
         add_field("title", "Well, in Amsterdam, you can buy" +
                        "beer in a movie theatre.  And I " +
                        "don\'t mean in a paper cup either." +
@@ -65,7 +65,7 @@ class StreamingMatcherPart1 < StreamingMatcher
     big_token = 'abc' * 1024*1024;
     2.times { |i|
       docid = "id:storage_test:musicsearch:n=1234:#{i}"
-      doc = Document.new("musicsearch", docid).
+      doc = Document.new(docid).
         add_field("title", big_token)
       vespa.document_api_v1.put(doc)
     }

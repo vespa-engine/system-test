@@ -121,7 +121,7 @@ class DistanceMetricsTest < IndexedStreamingSearchTest
   end
 
   def feed_doc
-    doc = Document.new("distances", "id:#{@namespace}:#{@doc_type}::0").
+    doc = Document.new("id:#{@namespace}:#{@doc_type}::0").
             add_field('euclidean', make_pos([1, 2])).
             add_field('angular', make_pos([0, 2])).
             add_field('prenorm', make_pos([0, 1])).

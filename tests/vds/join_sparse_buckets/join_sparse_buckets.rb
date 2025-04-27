@@ -31,7 +31,7 @@ class JoinSparseBucketsTest < VdsTest
   end
 
   def feed_doc(id)
-    doc = Document.new("music", id)
+    doc = Document.new(id)
     vespa.document_api_v1.put(doc)
   end
 

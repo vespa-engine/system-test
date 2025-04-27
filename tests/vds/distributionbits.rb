@@ -39,9 +39,9 @@ class DistributionBitTest < VdsTest
 
   def test_increasing_distribution_bits
     puts "FEEDING INITIAL DOCS"
-    doc = Document.new("music", "id:test:music:n=1:doc1")
+    doc = Document.new("id:test:music:n=1:doc1")
     vespa.document_api_v1.put(doc)
-    doc = Document.new("music", "id:test:music:n=1:doc2")
+    doc = Document.new("id:test:music:n=1:doc2")
     vespa.document_api_v1.put(doc)
 
     assert_equal(8, get_split_level())

@@ -278,7 +278,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     # Inserting one and one document ensures the same (and deterministic) order of the documents on the content node.
     # This means we can change "targetNumHits" and get deterministic behaviour.
     for i in 0...10 do
-      doc = Document.new("test", get_docid(i)).
+      doc = Document.new(get_docid(i)).
         add_field("text", txt[i]).
         add_field("filter", "#{i % 2}")
       if populate_pos_field
@@ -301,7 +301,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     # Inserting one and one document ensures the same (and deterministic) order of the documents on the content node.
     # This means we can change "targetNumHits" and get deterministic behaviour.
     (0...10).reverse_each do |i|
-      doc = Document.new('campaign', get_docid(i, 'campaign')).
+      doc = Document.new(get_docid(i, 'campaign')).
         add_field('cpos', make_pos(i)).
         add_field('title', "campaign #{i}")
       vespa.document_api_v1.put(doc)
@@ -316,7 +316,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     # Inserting one and one document ensures the same (and deterministic) order of the documents on the content node.
     # This means we can change 'targetNumHits' and get deterministic behaviour.
     (0...10).each do |i|
-      doc = Document.new('ad', get_docid(i, 'ad')).
+      doc = Document.new(get_docid(i, 'ad')).
         add_field('campaign_ref', get_docid(i, 'campaign')).
         add_field('text', txt[i]).
         add_field('filter', "#{i % 2}")

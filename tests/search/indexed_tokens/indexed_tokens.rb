@@ -8,7 +8,7 @@ class IndexedTokensTest < IndexedStreamingSearchTest
   end
 
   def feed_doc(idsuffix, doc_template)
-    doc = Document.new("test", "id:test:test::#{idsuffix}").
+    doc = Document.new("id:test:test::#{idsuffix}").
       add_field("stext", doc_template[:stext]).
       add_field("stext_cased", doc_template[:stext]).
       add_field("atext", doc_template[:atext]).

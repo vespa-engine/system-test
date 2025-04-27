@@ -55,7 +55,7 @@ class IndexAddressing < IndexedStreamingSearchTest
     mdh = idv % 1234
     bdh = (idv % 1423)+7
 
-    doc = Document.new("music", "id:test:music::#{idv}")
+    doc = Document.new("id:test:music::#{idv}")
     doc.add_field("title", "doc #{idv} hash #{mdh} val#{val}")
     doc.add_field("uri", "http://#{val}.yahoo.com/")
     doc.add_field("foobar", "http://#{2*val}.yahoo.com/")
@@ -63,7 +63,7 @@ class IndexAddressing < IndexedStreamingSearchTest
     doc.add_field("popularity", idv)
     docs.add(doc)
 
-    doc = Document.new("books", "id:test:books::#{idv}")
+    doc = Document.new("id:test:books::#{idv}")
     doc.add_field("title", "doc #{idv} hash #{bdh} val#{val}")
     doc.add_field("uri", "http://#{val}.yahoo.com/")
     doc.add_field("foobar", "http://#{2*val+1}.yahoo.com/")

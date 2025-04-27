@@ -99,7 +99,7 @@ class SearchCoverageTest < IndexedOnlySearchTest
   end
 
   def generate_doc(idx, f1)
-    doc = Document.new("test", "id:test:test::D#{idx}")
+    doc = Document.new("id:test:test::D#{idx}")
     doc.add_field("f1", f1)
     doc.add_field("weight", idx)
     return doc

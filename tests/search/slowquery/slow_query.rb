@@ -85,7 +85,7 @@ class SlowQuery < IndexedStreamingSearchTest
   def generate_documents(feed_file)
     docs = DocumentSet.new
     (0..399).each { | i |
-      doc = Document.new("simple", "id:test:simple::#{i}")
+      doc = Document.new("id:test:simple::#{i}")
       doc.add_field("title", "foobar #{i} foobar")
       description = ""
       (0..677).each { | count |
