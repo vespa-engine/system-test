@@ -621,14 +621,15 @@ class SearchAppGenTest < Test::Unit::TestCase
   def test_streaming_with_bucketsplit
     actual = SearchApp.new.streaming.
              storage(StorageCluster.new("mystorage").
-                     default_group.bucket_split_count(4)).
+                     default_group.bucket_split_count(4).max_document_size('2Mib')).
              storage(StorageCluster.new("not used").
-                     default_group.bucket_split_count(8)).
+                     default_group.bucket_split_count(8).max_document_size('2Mib')).
              cluster(SearchCluster.new.sd("sd").storage_cluster("mystorage")).
              services_xml
     expected_substr = '
       <tuning>
         <bucket-splitting max-documents="4" />
+        <max-document-size>2Mib</max-document-size>
       </tuning>'
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
