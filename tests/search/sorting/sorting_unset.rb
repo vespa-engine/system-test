@@ -23,7 +23,7 @@ class SortingUnset < IndexedStreamingSearchTest
   end
 
   def feed_doc(id, year, myrank)
-    doc = Document.new('unset', "id:ns:unset::#{id}")
+    doc = Document.new("id:ns:unset::#{id}")
     doc.add_field('year', year) unless year.nil?
     doc.add_field('year_s', make_string(year)) unless year.nil?
     doc.add_field('myrank', myrank)

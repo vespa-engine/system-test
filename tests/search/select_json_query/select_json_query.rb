@@ -11,7 +11,7 @@ class SelectJsonQuery < IndexedStreamingSearchTest
   end
 
   def feed_doc(id, doc_template)
-    doc = Document.new("music", "id:test:music::#{id}}").
+    doc = Document.new("id:test:music::#{id}}").
       add_field("title", doc_template[:title]).
       add_field("artist", doc_template[:artist]).
       add_field("year", doc_template[:year])

@@ -79,7 +79,7 @@ class Refeed < IndexedStreamingSearchTest
 
   def generate_doc(id, field, content)
     @numdocs += 1
-    Document.new("test", "id:test:test::#{id}").add_field(field, content)
+    Document.new("id:test:test::#{id}").add_field(field, content)
   end
 
   def assert_predicate_search(attributes, range_attributes, expected_hits)

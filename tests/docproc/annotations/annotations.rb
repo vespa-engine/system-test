@@ -14,7 +14,7 @@ class AnnotationsDocproc < DocprocTest
   end
 
   def test_annotations
-    doc = Document.new("article", "id:article:article::boringarticle:longarticle").
+    doc = Document.new("id:article:article::boringarticle:longarticle").
       add_field("title", "Very long article").
       add_field("content", "Very interesting content")
     vespa.document_api_v1.put(doc, :port => Environment.instance.vespa_web_service_port, :route => "container/chain.annotatorchain consumer/chain.consumerchain")

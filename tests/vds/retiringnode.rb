@@ -69,7 +69,7 @@ class RetiringNode < VdsTest
 
   def putdocs(count, index)
     count.times do
-      doc = Document.new("music", "id:crawler:music::http//" + index.to_s + "/test").
+      doc = Document.new("id:crawler:music::http//" + index.to_s + "/test").
         add_field("title", "title " + index.to_s).
         add_field("artist", "artist " + index.to_s)
       vespa.document_api_v1.put(doc)
@@ -99,7 +99,7 @@ class RetiringNode < VdsTest
 
     puts "Feed some documents"
     100.times{|i|
-      doc = Document.new("music", "id:test:music::#{i}:")
+      doc = Document.new("id:test:music::#{i}:")
       vespa.document_api_v1.put(doc)
     }
 

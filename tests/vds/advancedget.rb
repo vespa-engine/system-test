@@ -10,7 +10,7 @@ class AdvancedGet < VdsTest
   end
 
   def test_gettimestamp
-    doc = Document.new("music", "id:storage_test:music:n=1234:0").
+    doc = Document.new("id:storage_test:music:n=1234:0").
       add_field("title", "mytitle").
       add_field("body", "body")
 

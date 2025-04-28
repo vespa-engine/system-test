@@ -18,7 +18,7 @@ class DocumentCount < PersistentProviderTest
 
     10.times { |n|
         vespa.document_api_v1.put(
-                Document.new("music", "id:ns:music:n=100:1" + n.to_s))
+                Document.new("id:ns:music:n=100:1" + n.to_s))
     }
 
     assert_numdocs(10)
@@ -26,7 +26,7 @@ class DocumentCount < PersistentProviderTest
     # Put to node 1 only
     10.times { |n|
         vespa.document_api_v1.put(
-                Document.new("music", "id:ns:music:n=100:2" + n.to_s))
+                Document.new("id:ns:music:n=100:2" + n.to_s))
     }
 
     assert_numdocs(20)
@@ -39,7 +39,7 @@ class DocumentCount < PersistentProviderTest
     # Put to both nodes
     10.times { |n|
         vespa.document_api_v1.put(
-                Document.new("music", "id:ns:music:n=100:x" + n.to_s))
+                Document.new("id:ns:music:n=100:x" + n.to_s))
     }
 
     assert_numdocs(10)
@@ -55,7 +55,7 @@ class DocumentCount < PersistentProviderTest
     # Put to node 1 only
     10.times { |n|
         vespa.document_api_v1.put(
-                Document.new("music", "id:ns:music:n=100:1" + n.to_s))
+                Document.new("id:ns:music:n=100:1" + n.to_s))
     }
 
     assert_numdocs(20)
@@ -82,7 +82,7 @@ class DocumentCount < PersistentProviderTest
     # Put to node 0 only
     10.times { |n|
         vespa.document_api_v1.put(
-                Document.new("music", "id:ns:music:n=100:0" + n.to_s))
+                Document.new("id:ns:music:n=100:0" + n.to_s))
     }
 
     assert_numdocs(20)

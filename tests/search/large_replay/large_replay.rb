@@ -42,7 +42,7 @@ class LargeReplay < IndexedOnlySearchTest
 
     docs = DocumentSet.new
     for i in 0...num_docs
-      doc = Document.new("test", "id:test:test::#{i}").
+      doc = Document.new("id:test:test::#{i}").
             add_field("f1", i.to_s).
             add_field("f2", i)
       docs.add(doc)

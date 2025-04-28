@@ -9,7 +9,7 @@ class InconsistentConditionalPutTest < InconsistentBucketsBase
   end 
 
   def put_with_condition(title:, condition:, create: false)
-    doc = Document.new('music', updated_doc_id).
+    doc = Document.new(updated_doc_id).
         add_field('title', title).
         add_field('artist', 'cool dude')
     vespa.document_api_v1.put(doc, :condition => condition, :create => create)

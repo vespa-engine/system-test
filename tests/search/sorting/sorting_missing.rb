@@ -66,7 +66,7 @@ class SortingMissing < IndexedStreamingSearchTest
   end
 
   def feed_doc(id, year, years, myrank)
-    doc = Document.new('missing', "id:ns:missing::#{id}")
+    doc = Document.new("id:ns:missing::#{id}")
     years_wset = make_wset(years)
     years_s = make_strings(years)
     years_s_wset = make_wset(years_s)

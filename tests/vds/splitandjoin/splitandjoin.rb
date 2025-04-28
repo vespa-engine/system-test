@@ -16,7 +16,7 @@ class SplitAndJoin < VdsMultiModelTest
 
     20.times { |i|
       docid = "id:storage_test:music:n=1:" + i.to_s
-      vespa.document_api_v1.put(Document.new("music", docid))
+      vespa.document_api_v1.put(Document.new(docid))
     }
 
     # Wait until everything is split up ok

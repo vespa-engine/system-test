@@ -21,7 +21,7 @@ class GroupingUnique < IndexedStreamingSearchTest
     (1..5).each do |a|
       (1..10).each do |b|
         (1..15).each do |c|
-          doc = Document.new("test", "id:ns:test::a#{a}b#{b}c#{c}")
+          doc = Document.new("id:ns:test::a#{a}b#{b}c#{c}")
           doc.add_field("a", a.to_s)
           doc.add_field("b", b.to_s)
           doc.add_field("c", c.to_s)

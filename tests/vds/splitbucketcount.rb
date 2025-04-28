@@ -20,7 +20,7 @@ class SplitBucketCount < VdsMultiModelTest
       docid = "id:storage_test:music:n=" + user.to_s + ":" + i.to_s
       docids.push(docid)
 
-      doc = Document.new("music", docid)
+      doc = Document.new(docid)
       vespa.document_api_v1.put(doc)
     }
 

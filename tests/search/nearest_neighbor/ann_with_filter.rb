@@ -81,7 +81,7 @@ class ApproximateNearestNeighborWithFilterTest < IndexedOnlySearchTest
   end
 
   def feed_doc(docid, pos, tags)
-    doc = Document.new("test", get_docid(docid)).
+    doc = Document.new(get_docid(docid)).
       add_field("pos", { "values" => [pos, X_1_POS] }).
       add_field("tags", tags)
     vespa.document_api_v1.put(doc)

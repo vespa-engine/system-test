@@ -54,7 +54,7 @@ class ImportedStructTest < IndexedOnlySearchTest
   end
 
   def feed_data_doc(documentapi, doctype, prefix, idsuffix, doc_template)
-    doc = Document.new("#{doctype}", "id:test:#{doctype}::#{idsuffix}").
+    doc = Document.new("id:test:#{doctype}::#{idsuffix}").
       add_field("#{prefix}elem_array", doc_template[:array]).
       add_field("#{prefix}elem_map", doc_template[:map]).
       add_field("#{prefix}str_int_map", doc_template[:simplemap])
@@ -67,7 +67,7 @@ class ImportedStructTest < IndexedOnlySearchTest
   end
 
   def feed_ref_doc(documentapi, doctype, parentdoctype, idsuffix)
-    doc = Document.new("#{doctype}", "id:test:#{doctype}::#{idsuffix}").
+    doc = Document.new("id:test:#{doctype}::#{idsuffix}").
       add_field("#{parentdoctype}_ref", "id:test:#{parentdoctype}::#{idsuffix}")
     documentapi.put(doc)
   end

@@ -50,7 +50,7 @@ class FeedWhenContainerOom < SearchTest
     size = 50000000
     docs = DocumentSet.new
     doc_count.times { |id|
-      doc = Document.new("music", "id:test:music:n=" + id.to_s + ":1")
+      doc = Document.new("id:test:music:n=" + id.to_s + ":1")
       content = ""
       (size / 50).times {
          content << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n"

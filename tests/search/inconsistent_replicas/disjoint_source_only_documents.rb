@@ -68,7 +68,7 @@ class DisjointSourceOnlyDocuments < IndexedOnlySearchTest
   def feed_doc_range_to_same_location(from_incl, to_incl)
     (from_incl..to_incl).each{|i|
       # Use docs with location-affinity to ensure we put everything into the same bucket
-      doc = Document.new('test', "id:test:test:n=1:#{i}")
+      doc = Document.new("id:test:test:n=1:#{i}")
       # Add some uncompressable document data to ensure we will trivially exceed configured merge chunk size
       doc.add_field('title', StringGenerator.rand_string(500, 600))
       puts doc.documentid

@@ -52,7 +52,7 @@ class MergingMaxNodesTest < VdsTest
       puts "->  Taking node #{i} up to feed it a unique doc"
       vespa.start_content_node("storage", i)
       puts "->  Feeding unique doc to node #{i}"
-      doc = Document.new("music", "id:test:music:n=1:doc#{i}")
+      doc = Document.new("id:test:music:n=1:doc#{i}")
       vespa.document_api_v1.put(doc)
       puts "->  Taking node #{i} back down"
       vespa.stop_content_node("storage", i)

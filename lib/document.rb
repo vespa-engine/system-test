@@ -3,21 +3,18 @@ require 'json'
 
 class Document
   attr_reader :documentid
-  attr_reader :documenttype
   attr_reader :fields
 
-  def self.create_from_json(json, document_type)
-    doc = Document.new(document_type, json["id"])
+  def self.create_from_json(json)
+    doc = Document.new(json["id"])
     json["fields"].each do |name, value|
       doc.add_field(name, value)
     end
     doc
   end
 
-  def initialize(documenttype, documentid)
+  def initialize(documentid)
     @fields = Hash.new
-    # TODO: Remove when all tests using this class are migrated to json
-    @documenttype = documenttype
     @documentid = documentid
   end
 

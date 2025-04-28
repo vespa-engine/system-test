@@ -30,7 +30,7 @@ class DynamicSplitCount < VdsMultiModelTest
       docids.push(docid)
 
       # Make the docs a bit larger.
-      doc = Document.new("music", docid).
+      doc = Document.new(docid).
 	add_field("title", "a" * 540)
 
       vespa.document_api_v1.put(doc)
@@ -52,7 +52,7 @@ class DynamicSplitCount < VdsMultiModelTest
       docid = "id:storage_test:music:n=" + user.to_s + ":myfile"
       docids.push(docid)
       # Make the docs a bit larger.
-      doc = Document.new("music", docid).
+      doc = Document.new(docid).
 	add_field("title", "a" * 540)
 
       vespa.document_api_v1.put(doc)

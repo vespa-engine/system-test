@@ -10,7 +10,7 @@ class ChangeCopies < VdsTest
   end
 
   def test_change_copies
-    docA = Document.new("music", "id:crawler:music::http://yahoo.com/A")
+    docA = Document.new("id:crawler:music::http://yahoo.com/A")
     vespa.document_api_v1.put(docA)
 
     # Check that document is on one node

@@ -16,7 +16,7 @@ class SearchPartitioning < IndexedOnlySearchTest
         end
       end
 
-      doc = Document.new("test", "id:test:test::doc#{i}")
+      doc = Document.new("id:test:test::doc#{i}")
       title = "title#{i}#{bitstring}"
 
       body = "body#{i}" + (bitstring * 100)

@@ -15,7 +15,7 @@ class WrongDistributionResend < VdsTest
     # Feed some documents, some should be rejected by storage nodes
     # as they don't know that the distributor is down.
     for i in 1..100
-      doc = Document.new("music", "id:crawler:music::http://yahoo.com/storage_test" + i.to_s)
+      doc = Document.new("id:crawler:music::http://yahoo.com/storage_test" + i.to_s)
       vespa.document_api_v1.put(doc)
     end
   end

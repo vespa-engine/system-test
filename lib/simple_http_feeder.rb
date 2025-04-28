@@ -48,7 +48,7 @@ class SimpleHTTPFeeder
   end
 
   def gen_doc_docid(i, docid)
-    Document.new(@doc_type, docid).add_field(@field, "w#{i.to_s}")
+    Document.new(docid).add_field(@field, "w#{i.to_s}")
   end
 
   def gen_doc(i)

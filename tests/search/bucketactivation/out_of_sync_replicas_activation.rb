@@ -85,7 +85,7 @@ class OutOfSyncReplicasActivationTest < IndexedOnlySearchTest
   def feed_doc_range_to_same_location(from_incl, to_incl)
     (from_incl..to_incl).each{|i|
       # Use docs with location-affinity to ensure we put everything into the same bucket
-      doc = Document.new('test', "id:test:test:n=1:#{i}")
+      doc = Document.new("id:test:test:n=1:#{i}")
       doc.add_field('f1', 'foo')
       puts doc.documentid
       vespa.document_api_v1.put(doc, :brief => true)

@@ -11,11 +11,11 @@ class VisitorResumeTest < VdsTest
   end
 
   def test_visitorresume
-    doc = Document.new("music", "id:storage_test:music:n=1234:doc").
+    doc = Document.new("id:storage_test:music:n=1234:doc").
       add_field("title", "title")
     vespa.document_api_v1.put(doc)
 
-    doc = Document.new("music", "id:storage_test:music:n=4567:doc").
+    doc = Document.new("id:storage_test:music:n=4567:doc").
       add_field("title", "title")
     vespa.document_api_v1.put(doc)
 

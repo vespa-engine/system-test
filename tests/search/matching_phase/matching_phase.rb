@@ -91,7 +91,7 @@ class MatchingPhase < IndexedOnlySearchTest
   end
 
   def feed_doc(id, text, pos)
-    doc = Document.new('test', id).add_field('text', text).add_field('pos', { 'values' => pos })
+    doc = Document.new(id).add_field('text', text).add_field('pos', { 'values' => pos })
     vespa.document_api_v1.put(doc)
   end
 

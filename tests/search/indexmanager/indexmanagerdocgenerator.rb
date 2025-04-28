@@ -71,7 +71,7 @@ class IndexManagerDocGenerator
   def gen_doc_set(docid_begin, num_docs, handle_doc_func)
     ds = DocumentSet.new()
     for i in docid_begin...docid_begin + num_docs do
-      doc = Document.new("test", get_docid(i))
+      doc = Document.new(get_docid(i))
       word = send(handle_doc_func, i % @mod, i)
       doc.add_field("features", word => i+1)
       doc.add_field("staticscore", i+1)
