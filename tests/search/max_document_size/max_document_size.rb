@@ -16,14 +16,15 @@ class MaxDocumentSize < IndexedOnlySearchTest
     vespa.adminserver.execute("vespa-get-config -n vespa.config.content.core.stor-distributormanager -i mystorage/distributor/0 | grep max_document_operation_message_size_bytes")
 
     # feed a bit less than 1 MiB
-    feed(@one_mib - 100)
+    feed(@one_mib - 1000)
 
-    # feed a bit more than 1 MiB, should fail
     begin
-      feed(@one_mib + 100)
+      # feed a bit more than 1 MiB, should fail
+      feed(@one_mib + 1000)
       raise "An error should have been raised when feeding more than 1 MiB"
     rescue HttpResponseError => e
-      # as expected
+      assert_equal(400, e.response_code)
+      assert(e.response_message.include? "exceeds maximum configured limit")
     end
   end
 
