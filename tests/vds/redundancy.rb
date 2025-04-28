@@ -16,10 +16,10 @@ class Redundancy < PersistentProviderTest
   end
 
   def test_nice_redundancy
-    docA = Document.new("music", "id:crawler:music::http://yahoo.com/A")
+    docA = Document.new("id:crawler:music::http://yahoo.com/A")
     vespa.document_api_v1.put(docA)
 
-    docB = Document.new("music", "id:crawler:music::http://yahoo.com/B")
+    docB = Document.new("id:crawler:music::http://yahoo.com/B")
     vespa.document_api_v1.put(docB)
 
     # Remove storage node from system
@@ -28,7 +28,7 @@ class Redundancy < PersistentProviderTest
     vespa.storage["storage"].wait_until_ready
 
     # Put and remove some docs
-    docC = Document.new("music", "id:crawler:music::http://yahoo.com/C")
+    docC = Document.new("id:crawler:music::http://yahoo.com/C")
     vespa.document_api_v1.put(docC)
 
     vespa.document_api_v1.remove("id:crawler:music::http://yahoo.com/B")
@@ -67,10 +67,10 @@ class Redundancy < PersistentProviderTest
   end
 
   def test_kill_node
-    docA = Document.new("music", "id:crawler:music::http://yahoo.com/A")
+    docA = Document.new("id:crawler:music::http://yahoo.com/A")
     vespa.document_api_v1.put(docA)
 
-    docB = Document.new("music", "id:crawler:music::http://yahoo.com/B")
+    docB = Document.new("id:crawler:music::http://yahoo.com/B")
     vespa.document_api_v1.put(docB)
 
     # Remove storage node from system
@@ -81,7 +81,7 @@ class Redundancy < PersistentProviderTest
     assert_equal(docA, doc)
 
     # Put and remove some docs.
-    docC = Document.new("music", "id:crawler:music::http://yahoo.com/C")
+    docC = Document.new("id:crawler:music::http://yahoo.com/C")
     begin
       vespa.document_api_v1.put(docC)
     rescue

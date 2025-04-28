@@ -42,7 +42,7 @@ class SchemaChangesElastic < IndexedOnlySearchTest
     postdeploy_wait(deploy_output)
 
     feed_output = feed(:file => @test_dir + "feed.1.json")
-    wait_for_get_result("id:testb:testb::1", Document.new("testb", "id:testb:testb::1").add_field("f2", "b c d e").add_field("f3", 31))
+    wait_for_get_result("id:testb:testb::1", Document.new("id:testb:testb::1").add_field("f2", "b c d e").add_field("f3", 31))
   end
 
   def test_document_db_removal_bucketinfo

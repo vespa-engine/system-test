@@ -16,7 +16,7 @@ class InconsistentUpdates < VdsTest
 
   def test_inconsistentupdates
     100.times { |i|
-      doc = Document.new("music", "id:storage_test:music:n=#{i}:0").
+      doc = Document.new("id:storage_test:music:n=#{i}:0").
         add_field("title", "title1")
       vespa.document_api_v1.put(doc)
     }
@@ -26,7 +26,7 @@ class InconsistentUpdates < VdsTest
     vespa.storage["storage"].storage["0"].wait_for_current_node_state('d')
 
     100.times { |i|
-      doc = Document.new("music", "id:storage_test:music:n=#{i}:0").
+      doc = Document.new("id:storage_test:music:n=#{i}:0").
         add_field("title", "title2")
       vespa.document_api_v1.put(doc)
     }

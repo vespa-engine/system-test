@@ -144,7 +144,7 @@ class GroupingTest < PerformanceTest
   def generatefeed(filename, num_docs, attr_prefix, num_attr, num_unique)
     docs = DocumentSet.new
     for i in 0..(num_docs - 1)
-      doc = Document.new("groupingbench", "id:groupingbench:groupingbench::#{i}")
+      doc = Document.new("id:groupingbench:groupingbench::#{i}")
       somevalue = (i % num_unique)
       for attr in 0..(num_attr - 1)
         doc.add_field("a#{attr}", "val_#{attr}_#{somevalue}")

@@ -25,7 +25,7 @@ class ReindexingTest < IndexedStreamingSearchTest
     start
 
     puts "Feeding single document"
-    doc = Document.new("item", "id:test:item::0}")
+    doc = Document.new("id:test:item::0}")
     vespa.document_api_v1.put(doc)
 
     puts "Adding field to schema"
@@ -50,7 +50,7 @@ class ReindexingTest < IndexedStreamingSearchTest
     wait_for_reindexing_to_complete("search", "item", reindexing_timestamp, 1)
 
     puts "Feeding another document"
-    doc = Document.new("item", "id:test:item::1}")
+    doc = Document.new("id:test:item::1}")
     vespa.document_api_v1.put(doc)
 
     # Make sure both documents have the field const_bool set to true

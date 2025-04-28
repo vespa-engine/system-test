@@ -51,7 +51,7 @@ class RoutingDocApiTagTest < IndexedStreamingSearchTest
   end
 
   def getLePetitPrince
-    doc = Document.new("book", "id:book:book::lepetitprince").
+    doc = Document.new("id:book:book::lepetitprince").
       add_field("title", "Le Petit Prince").
       add_field("author", "Antoine de Saint-Exupery").
       add_field("year", 1943)
@@ -59,8 +59,7 @@ class RoutingDocApiTagTest < IndexedStreamingSearchTest
   end
 
   def getBobDylan
-    doc = Document.new("music",
-      "id:music:music::http://music.yahoo.com/bobdylan/BestOf").
+    doc = Document.new("id:music:music::http://music.yahoo.com/bobdylan/BestOf").
       add_field("title", "Best of Bob Dylan").
       add_field("artist", "Bob Dylan").
       add_field("year", 1008)
@@ -68,8 +67,7 @@ class RoutingDocApiTagTest < IndexedStreamingSearchTest
   end
 
   def getMetallica
-    doc = Document.new("music",
-       "id:music:music::http://music.yahoo.com/metallica/BestOf").
+    doc = Document.new("id:music:music::http://music.yahoo.com/metallica/BestOf").
       add_field("title", "Best of Metallica").
       add_field("artist", "Metallica").
       add_field("year", 1977)
@@ -77,7 +75,7 @@ class RoutingDocApiTagTest < IndexedStreamingSearchTest
   end
 
   def getIronMaiden
-    Document.new("music", "id:music:music::http://music.yahoo.com/maiden/BestOf").
+    Document.new("id:music:music::http://music.yahoo.com/maiden/BestOf").
       add_field("title", "Best of Iron Maiden").
       add_field("artist", "Iron Maiden").
       add_field("year", 1981)

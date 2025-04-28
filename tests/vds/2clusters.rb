@@ -23,7 +23,7 @@ class MultipleClusters < VdsTest
     }
     (stop-start).times{|i|
       id=start+i
-      doc = Document.new("music", "id:storage_test:music:n=#{id}:0")
+      doc = Document.new("id:storage_test:music:n=#{id}:0")
       vespa.document_api_v1.put(doc, params)
     }
   end
@@ -35,7 +35,7 @@ class MultipleClusters < VdsTest
     # Get documents from vds
     (stop-start).times{|i|
       id=start+i
-      doc = Document.new("music", "id:storage_test:music:n=#{id}:0")
+      doc = Document.new("id:storage_test:music:n=#{id}:0")
       doc2 = vespa.document_api_v1.get("id:storage_test:music:n=#{id}:0", params)
       assert_equal(doc, doc2)
     }

@@ -20,7 +20,7 @@ class BigDocument < IndexedStreamingSearchTest
     size = [1000, 10000, 42, 17, 100000, 1400000, 200000, 17, 500001, 42]
 
     10.times do |i|
-      doc = Document.new("big", "id:test:big::doc#{i}")
+      doc = Document.new("id:test:big::doc#{i}")
 
       title = ""
       (i+1).times { |j| title << "#{j} " }

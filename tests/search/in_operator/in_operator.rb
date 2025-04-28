@@ -8,7 +8,7 @@ class InOperator < IndexedStreamingSearchTest
   end
 
   def feed_doc(id, doc_template)
-    doc = Document.new("test", "id:test:test::#{id}").
+    doc = Document.new("id:test:test::#{id}").
             add_field("id", id).
             add_field("is", doc_template[:is]).
             add_field("is2", doc_template[:is2]).

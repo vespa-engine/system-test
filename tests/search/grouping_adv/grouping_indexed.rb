@@ -60,7 +60,7 @@ class GroupingIndexed < IndexedOnlySearchTest
 
     docs = DocumentSet.new
     (1..2048).each do |a|
-      doc = Document.new('test2', "id:ns:test2::#{a}")
+      doc = Document.new("id:ns:test2::#{a}")
       doc.add_field('a', a.to_s)
       docs.add(doc)
     end

@@ -95,7 +95,7 @@ class TestAndSetTest < IndexedStreamingSearchTest
     feeder.call("weather")
 
     expect_illegal_parameters {
-      doc = Document.new("weather", "id:weather:weather::0").
+      doc = Document.new("id:weather:weather::0").
       add_field("timestamp", 1000).
       add_field("forecast", "snowing").
       add_field("snowstats", { "height" => 80, "fluffyness" => 3 }).

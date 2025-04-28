@@ -88,7 +88,7 @@ class TagsAccents < IndexedStreamingSearchTest
 
   def generate_doc(val)
     @docid += 1
-    doc = Document.new("tagsaccents", "id:test:tagsaccents::#{@docid}")
+    doc = Document.new("id:test:tagsaccents::#{@docid}")
     doc.add_field("title", "doc #{@docid}")
     [ "sfield1", "sfield2", "sfield3", "sfield4", "sfield5" ].each do |fn|
       doc.add_field(fn, "#{val}")

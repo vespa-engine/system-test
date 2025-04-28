@@ -17,7 +17,7 @@ class FeatureNameQuoting < IndexedStreamingSearchTest
     # Create and feed some synthetic data.
     docs = DocumentSet.new
     0.upto(9) do |i|
-      doc = Document.new("featurenamequoting", "id:scheme:featurenamequoting::#{i}")
+      doc = Document.new("id:scheme:featurenamequoting::#{i}")
       doc.add_field("foo", i)
       docs.add(doc)
     end

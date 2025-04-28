@@ -161,7 +161,7 @@ class ImportedFieldsInSelectionsTest < IndexedOnlySearchTest
   end
 
   def put_grandparent_doc(grandparent:, a1_value:)
-    doc = Document.new('grandparent', "id:test:grandparent::#{grandparent}").add_field('a1', a1_value)
+    doc = Document.new("id:test:grandparent::#{grandparent}").add_field('a1', a1_value)
     vespa.document_api_v1.put(doc)
   end
 

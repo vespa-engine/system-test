@@ -32,7 +32,7 @@ class VdsMetrics < VdsTest
   def feed_docs
     puts "\nFEEDING DOCS\n"
     10.times { |i|
-      doc = Document.new("music", "id:storage_test:music::" + i.to_s).
+      doc = Document.new("id:storage_test:music::" + i.to_s).
         add_field("title", "title")
       vespa.document_api_v1.put(doc)
     }

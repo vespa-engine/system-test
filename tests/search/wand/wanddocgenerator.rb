@@ -29,7 +29,7 @@ class WandDocGenerator
   def gen_doc_set(docid_begin, num_docs, gen_func)
     ds = DocumentSet.new()
     for i in docid_begin...docid_begin + num_docs do
-      doc = Document.new("test", get_docid(i))
+      doc = Document.new(get_docid(i))
       send(gen_func, doc, i)
       ds.add(doc)
     end

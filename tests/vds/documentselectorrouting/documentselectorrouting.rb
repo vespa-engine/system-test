@@ -15,12 +15,12 @@ class DocumentSelectorRoutingTest < VdsTest
     start
 
     # Always succeeds
-    doc = Document.new("music", "id:storage_test:music:n=1234:foo").
+    doc = Document.new("id:storage_test:music:n=1234:foo").
       add_field("year", 5)
     vespa.document_api_v1.put(doc)
 
     # Will throw if feeding fails on no possible selection.
-    doc = Document.new("music", "id:storage_test:music:n=1234:bar").
+    doc = Document.new("id:storage_test:music:n=1234:bar").
       add_field("year", 10)
     vespa.document_api_v1.put(doc)
 

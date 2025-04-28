@@ -24,7 +24,7 @@ class RpcSummaryTest < PerformanceTest
   def generate_feed
     ds = DocumentSet.new()
     for doc_id in 0..10000
-      doc = Document.new("test", "id:test:test::#{doc_id}")
+      doc = Document.new("id:test:test::#{doc_id}")
       doc.add_field("id", doc_id)
       doc.add_field("f1", "approximately-fixed-string-#{doc_id}")
       ds.add(doc)

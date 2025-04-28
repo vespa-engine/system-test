@@ -17,7 +17,7 @@ class MergingTest < PersistentProviderTest
     doc2_id = "id:storage_test:music:n=123:lookatthisfancydocumentidjustlookatitmygoodnesshowfancyitis"
 
     # Feed to the other
-    doc = Document.new("music", doc1_id)
+    doc = Document.new(doc1_id)
     vespa.document_api_v1.put(doc)
 
     # Switch which nodes are up
@@ -28,7 +28,7 @@ class MergingTest < PersistentProviderTest
 
     # Feed another document
 
-    doc = Document.new("music", doc2_id)
+    doc = Document.new(doc2_id)
     vespa.document_api_v1.put(doc)
 
     # Take both nodes back up
@@ -51,7 +51,7 @@ class MergingTest < PersistentProviderTest
 
     # Feed music doc
     music_doc_id = "id:storage_test:music::thequickbrownfoxjumpsoverthelazydogperhapsyoushouldexercisemoredog"
-    doc = Document.new("music", music_doc_id)
+    doc = Document.new(music_doc_id)
     vespa.document_api_v1.put(doc)
 
     # Deploy app with new document type. Feeding will work as the merge handler
@@ -60,7 +60,7 @@ class MergingTest < PersistentProviderTest
 
     # Feed banana doc
     banana_doc_id = "id:storage_test:banana::lookatthisfancydocumentidjustlookatitmygoodnesshowfancyitis"
-    doc = Document.new("banana", banana_doc_id)
+    doc = Document.new(banana_doc_id)
     vespa.document_api_v1.put(doc)
     
     # Increase redundancy, forcing merge of documents with new doc type between

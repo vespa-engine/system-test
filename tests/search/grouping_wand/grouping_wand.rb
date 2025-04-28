@@ -18,7 +18,7 @@ class GroupingWand < IndexedStreamingSearchTest
     (1..10).each do |a|
       (1..10).each do |b|
         (1..10).each do |c|
-          doc = Document.new("test", "id:ns:test::a#{a}b#{b}c#{c}")
+          doc = Document.new("id:ns:test::a#{a}b#{b}c#{c}")
           doc.add_field("a", a)
           doc.add_field("b", b)
           doc.add_field("c", c)

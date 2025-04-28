@@ -26,7 +26,7 @@ class ElasticDocGenerator
     end
     ds = DocumentSet.new()
     doc_ids.each do | doc_id |
-      doc = Document.new("test", doc_id)
+      doc = Document.new(doc_id)
       doc.add_field("f1", content[:field1])
       doc.add_field("f2", content[:field2])
       ds.add(doc)

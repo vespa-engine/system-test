@@ -16,7 +16,7 @@ class VdsBasicFeeding < VdsTest
 
     docid = "id:test:music::http://localhost:5810/?query=foo&hits=1"
     # Create document here for comparison
-    exp_doc = Document.new("music", docid).
+    exp_doc = Document.new(docid).
       add_field("title", "QRS url 1").
       add_field("artist", "Unknown artist")
     # Get a document we just stored.
@@ -28,11 +28,11 @@ class VdsBasicFeeding < VdsTest
     # Get a document we just stored.
     doc2 = get_doc(docid)
     assert(doc2, "did not find #{docid} in backend")
-    exp_doc2 = Document.new("music", docid).
+    exp_doc2 = Document.new(docid).
       add_field("title", "QRS url 2").
       add_field("artist", "Known artist")
 
-    assert_equal(exp_doc2, Document.create_from_json(doc2, "music"))
+    assert_equal(exp_doc2, Document.create_from_json(doc2))
   end
 
   def get_doc(id)
@@ -48,8 +48,7 @@ class VdsBasicFeeding < VdsTest
     feedfile(selfdir+"data/array.json")
 
     # Create the same document for comparison
-    doc1 = Document.new("music",
-                        "id:music:music::http://music.yahoo.com/bobdylan/BestOf").
+    doc1 = Document.new("id:music:music::http://music.yahoo.com/bobdylan/BestOf").
       add_field("url", "http://music.yahoo.com/bobdylan/BestOf").
       add_field("title", "Best of Bob Dylan").
       add_field("artist", "Bob Dylan").
@@ -62,7 +61,7 @@ class VdsBasicFeeding < VdsTest
     assert_equal(doc1, doc2)
 
     # Put document with array attribute using document API
-    doc3 = Document.new("music", "id:storage_test:music:n=1234:soap").
+    doc3 = Document.new("id:storage_test:music:n=1234:soap").
       add_field("url", "http://music.yahoo.com/soap").
       add_field("title", "SoapTitle").
       add_field("artist", "Vespa").
@@ -84,8 +83,7 @@ class VdsBasicFeeding < VdsTest
     feedfile(selfdir+"data/weightedset.json")
 
     # Create the same document for comparison
-    doc1 = Document.new("music",
-      "id:music:music::http://music.yahoo.com/bobdylan/BestOf").
+    doc1 = Document.new("id:music:music::http://music.yahoo.com/bobdylan/BestOf").
       add_field("url", "http://music.yahoo.com/bobdylan/BestOf").
       add_field("title", "Best of Bob Dylan").
       add_field("artist", "Bob Dylan").
@@ -98,7 +96,7 @@ class VdsBasicFeeding < VdsTest
     assert_equal(doc1, doc2)
 
     # Put document with weightedset attribute using document API
-    doc3 = Document.new("music", "id:storage_test:music:n=1234:soap").
+    doc3 = Document.new("id:storage_test:music:n=1234:soap").
       add_field("url", "http://music.yahoo.com/soap").
       add_field("title", "SoapTitle").
       add_field("artist", "Vespa").
@@ -119,11 +117,11 @@ class VdsBasicFeeding < VdsTest
     set_owner("vekterli")
     feedfile(selfdir+"data/mixedcase.json")
 
-    doc1 = Document.new("MiXedCase", "id:MiXedCase:MiXedCase::DaisyDaisy").
+    doc1 = Document.new("id:MiXedCase:MiXedCase::DaisyDaisy").
       add_field("title", "title #1").
       add_field("description", "description #1")
 
-    doc2 = Document.new("MiXedCase", "id:MiXedCase:MiXedCase::GiveMeYourAnswerTrue").
+    doc2 = Document.new("id:MiXedCase:MiXedCase::GiveMeYourAnswerTrue").
       add_field("title", "title #2").
       add_field("description", "description #2")
 

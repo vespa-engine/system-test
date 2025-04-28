@@ -16,10 +16,10 @@ class VespaGet < VdsTest
     deploy_app(default_app)
     start
 
-    doc = Document.new("music", "id:storage_test:music:n=1234:document1").
+    doc = Document.new("id:storage_test:music:n=1234:document1").
       add_field("title", "title1")
     vespa.document_api_v1.put(doc)
-    doc = Document.new("music", "id:storage_test:music:n=1234:document2").
+    doc = Document.new("id:storage_test:music:n=1234:document2").
       add_field("title", "title2").
       add_field("band", "foo").
       add_field("body", "bar")
@@ -56,10 +56,10 @@ class VespaGet < VdsTest
                transition_time(0))
     start
 
-    doc = Document.new("music", "id:storage_test:music:n=1234:document1").
+    doc = Document.new("id:storage_test:music:n=1234:document1").
       add_field("title", "title1")
     vespa.document_api_v1.put(doc)
-    doc = Document.new("music", "id:storage_test:music:n=1234:document2").
+    doc = Document.new("id:storage_test:music:n=1234:document2").
       add_field("title", "title2")
     vespa.document_api_v1.put(doc)
 

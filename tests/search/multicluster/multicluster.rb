@@ -74,11 +74,11 @@ class MultiCluster < IndexedOnlySearchTest
 
   def feed_music_documents
     vespa.document_api_v1.put(
-      Document.new('music', 'id:test:music::1').
+      Document.new('id:test:music::1').
         add_field("artist", 'Pixies').
         add_field('title', 'Surfer Rosa'))
     vespa.document_api_v1.put(
-      Document.new('music', 'id:test:music2::1').
+      Document.new('id:test:music2::1').
         add_field("artist", 'Portishead').
         add_field('TITLE', 'Dummy'))
   end

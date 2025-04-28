@@ -121,7 +121,7 @@ class FeedBlockTest < FeedBlockBase
   end
 
   def create_document(id)
-    Document.new(@doc_type, @id_prefix + id.to_s).
+    Document.new(@id_prefix + id.to_s).
       add_field("a1", [ "w#{id}" ]).
       add_field("a2", id)
   end

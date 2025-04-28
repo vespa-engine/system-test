@@ -299,7 +299,7 @@ class HierarchDistr < VdsMultiModelTest
     end
     begin
       1000.times {|i|
-        doc = Document.new("music", "id:music:music:n=#{i}:0:system_test")
+        doc = Document.new("id:music:music:n=#{i}:0:system_test")
         doc2 = vespa.document_api_v1.get("id:music:music:n=#{i}:0:system_test")
         if doAssert == true
           assert_equal(doc, doc2)

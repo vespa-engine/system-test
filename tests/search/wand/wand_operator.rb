@@ -11,7 +11,7 @@ class WeakAndOperator < IndexedStreamingSearchTest
     puts "generating feed in #{tfn}"
     docs = DocumentSet.new
     (11111..33333).each do |num|
-      doc = Document.new("foo", "id:foo:foo::bar." + num.to_s).
+      doc = Document.new("id:foo:foo::bar." + num.to_s).
               add_field("title", num.to_s)
       d = ""
       (2..9).each do |x|

@@ -26,7 +26,7 @@ class WeakInternalConsistencyGetTest < IndexedStreamingSearchTest
   end
 
   def feed_initial_document
-    doc = Document.new('simple', doc_id).
+    doc = Document.new(doc_id).
       add_field('title', 'hello world'). # indexed, _not_ attribute
       add_field('date', 1234567)         # indexed _and_ attribute field
     vespa.document_api_v1.put(doc)

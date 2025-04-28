@@ -118,7 +118,7 @@ class DocumentGenerator
 
   def generate
     @doc_ids.each do |id|
-      document = Document.new(@doc_type, id)
+      document = Document.new(id)
       @fields.each do |field_data|
         value_count = field_data.value_count.next
         field_data.values.set_pos(rand(field_data.values.size))

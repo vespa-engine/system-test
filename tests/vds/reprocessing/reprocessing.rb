@@ -21,7 +21,7 @@ class Reprocessing < VdsTest
   end
 
   def test_reprocessing
-    doc = Document.new("music", "id:storage_test:music:n=1234:0").
+    doc = Document.new("id:storage_test:music:n=1234:0").
       add_field("year", 1).
       add_field("bodyfield", "foo")
     vespa.document_api_v1.put(doc)

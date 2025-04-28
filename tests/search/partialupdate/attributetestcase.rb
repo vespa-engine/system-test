@@ -43,7 +43,7 @@ class AttributeTestCase
   end
 
   def generate_max_doc(file)
-    doc = Document.new(@doc_type, @id_prefix + @max_doc.to_s)
+    doc = Document.new(@id_prefix + @max_doc.to_s)
     write_json(file, [doc], :put)
   end
 
@@ -112,7 +112,7 @@ class SingleAttributeTestCase < AttributeTestCase
     documents = []
     testcase.output("generate #{@max_doc} documents") if testcase
     for i in 0...@max_doc
-      doc = Document.new(@doc_type, @id_prefix + i.to_s).
+      doc = Document.new(@id_prefix + i.to_s).
         add_field("sortfield", i.to_s).
         add_field("hitfield", "hit")
       @fields.each do |fd|
@@ -126,7 +126,7 @@ class SingleAttributeTestCase < AttributeTestCase
 
   def generate_max_doc(file)
     # this is to ensure that you do not get nan for float and double attributes
-    doc = Document.new(@doc_type, @id_prefix + @max_doc.to_s)
+    doc = Document.new(@id_prefix + @max_doc.to_s)
     @fields.each do |fd|
       doc.add_field(fd.name, 0)
     end
@@ -328,7 +328,7 @@ class ArrayAttributeTestCase < AttributeTestCase
   def generate_documents(file)
     documents = []
     for i in 0...@max_doc
-      doc = Document.new(@doc_type, @id_prefix + i.to_s)
+      doc = Document.new(@id_prefix + i.to_s)
       doc.add_field("sortfield", i.to_s)
       doc.add_field("hitfield", "hit")
       @fields.each do |fd|
@@ -534,7 +534,7 @@ class WeightedSetAttributeTestCase < AttributeTestCase
   def generate_documents(file)
     documents = []
     for i in 0...@max_doc
-      doc = Document.new(@doc_type, @id_prefix + i.to_s)
+      doc = Document.new(@id_prefix + i.to_s)
       doc.add_field("sortfield", i.to_s)
       doc.add_field("hitfield", "hit")
       @fields.each do |fd|

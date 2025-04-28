@@ -38,7 +38,7 @@ class ClusterControllerTest < VdsTest
     doccount.times { |i|
       nr = @docnr
       @docnr += 1
-      doc = Document.new("music", "id:storage_test:music::" + nr.to_s).
+      doc = Document.new("id:storage_test:music::" + nr.to_s).
         add_field("title", "title")
       vespa.document_api_v1.put(doc)
     }

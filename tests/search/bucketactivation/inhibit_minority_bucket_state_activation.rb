@@ -78,7 +78,7 @@ class InhibitMinorityBucketStateActivationTest < IndexedOnlySearchTest
 
   def feed_n_docs_with_field_value(n, field_value)
     n.times{|i|
-      doc = Document.new('test', "id:test:test::doc-#{i}")
+      doc = Document.new("id:test:test::doc-#{i}")
       doc.add_field('f1', field_value)
       puts doc.documentid
       vespa.document_api_v1.put(doc, :brief => true)

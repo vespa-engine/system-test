@@ -15,7 +15,7 @@ class SimpleDocGenerator
   def generate(doc_begin, num_docs, mods = [2, 3, 5, 7, 11])
     ds = DocumentSet.new()
     for i in doc_begin..doc_begin + num_docs - 1 do
-      doc = Document.new(@doc_type, @id_prefix + i.to_s)
+      doc = Document.new(@id_prefix + i.to_s)
       w = []
       mods.each do |mod|
         w.push("w#{mod}w#{i % mod}")
