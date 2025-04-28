@@ -28,7 +28,7 @@ class TestTypes < IndexedStreamingSearchTest
     res = vespa.document_api_v1.visit(:selection => "typetest", :fieldSet => "typetest:[document]", :cluster => "search")
     assert(res["documents"].size == 1)
     puts "Visit result : " + res["documents"][0].to_s
-    vdoc = Document.create_from_json(res["documents"][0], "typetest")
+    vdoc = Document.create_from_json(res["documents"][0])
     assert(vdoc.documentid == doc_id)
     vespa.document_api_v1.put(vdoc)
     verify(expected)
