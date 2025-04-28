@@ -18,7 +18,7 @@ class AdvancedGet < VdsTest
 
     ret = get_doc("id:storage_test:music:n=1234:0")
 
-    assert_equal(doc, Document.create_from_json(ret, "music"))
+    assert_equal(doc, Document.create_from_json(ret))
   end
 
   def get_doc(id)

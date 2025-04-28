@@ -32,7 +32,7 @@ class VdsBasicFeeding < VdsTest
       add_field("title", "QRS url 2").
       add_field("artist", "Known artist")
 
-    assert_equal(exp_doc2, Document.create_from_json(doc2, "music"))
+    assert_equal(exp_doc2, Document.create_from_json(doc2))
   end
 
   def get_doc(id)
