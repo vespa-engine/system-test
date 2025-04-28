@@ -1,8 +1,8 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'document'
-require 'indexed_only_search_test'
+require 'vds_test'
 
-class MaxDocumentSize < IndexedOnlySearchTest
+class MaxDocumentSize < VdsTest
 
   def setup
     set_owner("hmusum")
@@ -40,9 +40,11 @@ class MaxDocumentSize < IndexedOnlySearchTest
   end
 
   def deploy_application(max_document_size)
-    deploy_app(SearchApp.new.
-                 storage(StorageCluster.new("mystorage").max_document_size(max_document_size)).
-                 cluster(SearchCluster.new.sd("#{selfdir}/test.sd").storage_cluster("mystorage")))
+    deploy_app(StorageApp.new.
+                 enable_document_api.
+                 storage_cluster(StorageCluster.new("mystorage").default_group.
+                                   max_document_size(max_document_size)).
+                 sd("#{selfdir}/test.sd"))
   end
 
   def teardown

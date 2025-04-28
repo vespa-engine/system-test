@@ -1,8 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 schema test {
     document test {
-        field my_str type string {
-            indexing: index
-        }
+        field my_str type string {}
     }
 }
