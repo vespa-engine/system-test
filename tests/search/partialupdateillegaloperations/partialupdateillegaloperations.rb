@@ -23,7 +23,7 @@ class PartialUpdateIllegalOperations < IndexedStreamingSearchTest
 
     output = feedfile(selfdir + "dbzero-update.json", :exceptiononfailure => false, :stderr => true)
 
-    assert_output(output, "Division by zero")
+    assert_output(output, "arithmetic divide 0.0")
 
     assert_result(query, srf, nil, ftc)
   end
