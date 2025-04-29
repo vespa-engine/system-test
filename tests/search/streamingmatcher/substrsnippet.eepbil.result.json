@@ -1,0 +1,52 @@
+{
+    "root": {
+        "id": "toplevel",
+        "relevance": 1.0,
+        "fields": {
+            "totalCount": 1
+        },
+        "coverage": {
+            "coverage": 100,
+            "documents": 4,
+            "full": true,
+            "nodes": 1,
+            "results": 1,
+            "resultsFull": 1
+        },
+        "children": [
+            {
+                "id": "id:substrsnippet:substrsnippet:n=1:0",
+                "relevance": 0.1204191398068244,
+                "source": "search.substrsnippet",
+                "fields": {
+                    "sddocname": "substrsnippet",
+                    "f1": "This is the rockered ski of choice for our Factory Team members on the d<hi>eep</hi>est pow days. The HellBent is a massive functional backcountry twin tip built primarily for bidirectional skiing. The ski has been<sep />",
+                    "f2": "<sep />graphic and style. You asked for it and we brought it back. Just like it's predecessor, this ski has the torsional strength and dura<hi>bil</hi>ity to withstand the toughest of landings, and the confidence and sta<hi>bil</hi>ity to rip any terrain, but its twin tip enables you<sep />",
+                    "s1": "<sep />rockered ski of choice for our Factory Team members on the d<hi>eep</hi>est pow days. The HellBent is a massive functional backcountry<sep />it's predecessor, this ski has the torsional strength and dura<hi>bil</hi>ity to withstand the toughest of landings, and the confidence<sep />",
+                    "s2": "CROWBAR Snow is the first Oakley ski goggle with struts to balance and distribute frame pressure for all-day comfort.<sep />Extra text for f3<sep />About the only thing you don't get with the A FRAME goggles is fog.<sep />Extra text for f4",
+                    "documentid": "id:substrsnippet:substrsnippet:n=1:0",
+                    "f3": [
+                        {
+                            "text": "CROWBAR Snow is the first Oakley ski goggle with struts to balance and distribute frame pressure for all-day comfort.",
+                            "name": "The name of f3"
+                        },
+                        {
+                            "text": "Extra text for f3",
+                            "name": "Extra name for f3"
+                        }
+                    ],
+                    "f4": [
+                        {
+                            "text": "About the only thing you don't get with the A FRAME goggles is fog.",
+                            "name": "The name of f4"
+                        },
+                        {
+                            "text": "Extra text for f4",
+                            "name": "Extra name for f4"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}
