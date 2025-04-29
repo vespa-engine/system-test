@@ -9,6 +9,7 @@ class StorageCluster
   chained_setter :bucket_split_count
   chained_setter :max_nodes_per_merge
   chained_setter :distributor_base_port
+  chained_setter :max_document_size
   chained_setter :provider
   chained_setter :persistence_threads
   chained_setter :documentselection
@@ -131,7 +132,9 @@ class StorageCluster
       tag("tuning").
       tag("bucket-splitting", :"max-documents" => @bucket_split_count,
                               :"max-size" => @bucket_split_size,
-                              :"minimum-bits" => @distribution_bits).close_tag
+                              :"minimum-bits" => @distribution_bits).close_tag.
+      tag("max-document-size").content(@max_document_size).close_tag
+
     if (@max_nodes_per_merge != 16)
       xml = xml.tag("merges", :"max-nodes-per-merge" => @max_nodes_per_merge).close_tag
     end
