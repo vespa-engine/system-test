@@ -6,7 +6,6 @@ require 'xml'
 require 'json'
 
 require 'rexml/document'
-require 'performance/system'
 
 module Perf
 
