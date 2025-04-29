@@ -1,0 +1,47 @@
+search substrsnippet {
+  document substrsnippet {
+    struct part {
+      field text type string {}
+      field name type string {}
+    }
+    field f1 type string {
+      indexing: index | summary
+      summary: dynamic
+    }
+    field f2 type string {
+      indexing: index | summary
+      summary: dynamic
+      match: substring
+    }
+    field f3 type array<part> {
+      struct-field text {
+        indexing: index | summary
+      }
+      struct-field name {
+        indexing: index | summary
+      }
+    }
+    field f4 type array<part> {
+      struct-field text {
+        indexing: index | summary
+        match: substring
+      }
+      struct-field name {
+        indexing: index | summary
+      }
+    }
+  }
+  fieldset default {
+    fields: f3.text, f3.name, f4.text, f4.name
+  }
+  document-summary default {
+    summary s1 {
+      source: f1, f2
+      dynamic
+    }
+    summary s2 {
+      source: f3.text, f4.text
+      dynamic
+    }
+  }
+}
