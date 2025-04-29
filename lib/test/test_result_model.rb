@@ -2,6 +2,7 @@
 
 require 'tempfile'
 
+require 'performance/system'
 require 'performance/resultmodel'
 require 'test/unit'
 
@@ -32,6 +33,8 @@ class ResultModelTest < Test::Unit::TestCase
       r = Perf::Result.new('5.0')
 
       r.fbench = { 'runtime' => 555, '99p' => '5.5', '95p' => '1.5', 'successfulrequests' => 5 }
+      host = flexmock(Perf::System.new('localhost'))
+      host.should_receive(:data).and_return({ 'cpu_util' => 99.98 })
       r.add_host host
 
       r.write(path)
