@@ -90,18 +90,18 @@ schema expnr {
     }
   }
   rank-profile only-f6-eg0 inherits only-f6 {
-    rank-properties {
-      nativeProximity.elementGap.f6: 0
+    rank f6 {
+      element-gap: 0
     }
   }
   rank-profile only-f6-eg1 inherits only-f6 {
-    rank-properties {
-      nativeProximity.elementGap.f6: 1
+    rank f6 {
+      element-gap: 1
     }
   }
   rank-profile only-f6-eginf inherits only-f6 {
-    rank-properties {
-      nativeProximity.elementGap.f6: infinity
+    rank f6 {
+      element-gap: infinity
     }
   }
 }
