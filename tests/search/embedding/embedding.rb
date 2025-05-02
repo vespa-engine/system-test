@@ -87,7 +87,10 @@ class Embedding < IndexedStreamingSearchTest
     Container.new('default').
       search(Searching.new).
       documentapi(ContainerDocumentApi.new).
-      docproc(DocumentProcessing.new)
+      docproc(DocumentProcessing.new).
+      config(ConfigOverride.new("ai.vespa.llm.clients.triton").
+        add("target", "host.containers.internal:8001").
+        add("modelRepositoryPath", "var/triton/model-repository")) # Is relative to the vespa root if not prefixed with /
   end
 
   def test_default_embedding
