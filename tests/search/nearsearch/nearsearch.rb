@@ -81,7 +81,18 @@ class NearSearch < IndexedStreamingSearchTest
     #puts search("query=songs:%22c+b+a%22&tracelevel=1").xmldata
     assert_hitcount("query=songs:%22c+b+a%22", 3)
 
+    check_element_gap('default', 3)
+    check_element_gap('element-gap-infinity', 3)
+    check_element_gap('element-gap-17', 3)
+    check_element_gap('element-gap-16', 5)
+    check_element_gap('element-gap-0', 5)
     puts "All OK"
+  end
+
+  def check_element_gap(ranking, wanted_hits)
+    puts "Check element gap: ranking=#{ranking}, wanted_hits=#{wanted_hits}"
+    yql_abc = 'select * from sources * where songs contains ({distance:20}near("a","b","c"))'
+    assert_hitcount({ 'yql' => yql_abc, 'ranking' => ranking }, wanted_hits)
   end
 
   def teardown
