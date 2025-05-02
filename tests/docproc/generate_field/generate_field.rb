@@ -8,7 +8,8 @@ class GenerateField < SearchTest
   end
 
   def timeout_seconds
-    600
+    # Need extra time to download LLM.
+    900
   end
 
   def test_generate_field
