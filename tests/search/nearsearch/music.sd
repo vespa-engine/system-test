@@ -19,4 +19,24 @@ schema music {
             expression: 0
         }
     }
+    rank-profile element-gap-0 inherits default {
+        rank songs {
+	  element-gap: 0
+	}
+    }
+    rank-profile element-gap-16 inherits default {
+        rank songs {
+	  element-gap: 16
+	}
+    }
+    rank-profile element-gap-17 inherits default {
+        rank songs {
+	  element-gap: 17
+	}
+    }
+    rank-profile element-gap-infinity inherits default {
+        rank songs {
+	  element-gap: infinity
+	}
+    }
 }
