@@ -1,0 +1,51 @@
+# Copyright Vespa.ai. All rights reserved.
+schema complex {
+  document complex {
+    field title type string {
+      indexing: summary | index
+    }
+    field body type string {
+      indexing: index | summary
+    }
+    field a type string {
+      indexing: attribute | summary
+    }
+    field b type string {
+      indexing: attribute | summary
+    }
+    field c type string {
+      indexing: attribute | summary
+    }
+    field d type string {
+      indexing: attribute | summary
+    }
+    field score type int {
+      indexing: attribute
+    }
+  }
+  fieldset default {
+    fields: title, body
+  }
+  document-summary foosum {
+    summary a {}
+    summary b {}
+  }
+  document-summary barsum {
+    summary c {}
+    summary d {}
+  }
+  document-summary onlytext {
+    summary title {}
+    summary body {}
+  }
+  document-summary mysummary {
+    summary title {}
+    summary a {}
+    summary d {}
+  }
+  rank-profile default {
+    first-phase {
+      expression: 100 - attribute(score)
+    }
+  }
+}
