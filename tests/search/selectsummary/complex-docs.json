@@ -1,0 +1,5 @@
+[
+  {"id":"id:test:complex::1","fields":{"score":1,"title":"one","body":"body test text 1","a":"fa1","b":"fb1","c":"fc1","d":"fd1"}},
+  {"id":"id:test:complex::2","fields":{"score":2,"title":"two","body":"body test text 2","a":"fa2","b":"fb2","c":"fc2","d":"fd2"}},
+  {"id":"id:test:complex::3","fields":{"score":3,"title":"three","body":"body test text 3","a":"fa3","b":"fb3","c":"fc3","d":"fd3"}}
+]
