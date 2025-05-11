@@ -12,6 +12,47 @@ class SelectSummary < IndexedStreamingSearchTest
     return 1800
   end
 
+  def check_query(q, res, summ=nil, fields=nil)
+    fullq = '/search/?query=' + q
+    fullq = fullq + '&summary=' + summ if summ
+    fullq = fullq + '&presentation.summaryFields=' + fields if fields
+    # save_result(fullq, "#{selfdir}res.#{res}.json")
+    assert_result(fullq, "#{selfdir}res.#{res}.json")
+  end
+
+  def check_yql(yql, res, summ=nil, fields=nil)
+    fullq = '/search/?yql=' + CGI::escape(yql)
+    fullq = fullq + '&summary=' + summ if summ
+    fullq = fullq + '&presentation.summaryFields=' + fields if fields
+    # save_result(fullq, "#{selfdir}res.#{res}.json")
+    assert_result(fullq, "#{selfdir}res.#{res}.json")
+  end
+
+  def test_select_fields_and_summary
+    deploy_app(SearchApp.new.sd(selfdir + 'complex.sd'))
+    start
+    feed_and_wait_for_docs('complex', 3, :file => selfdir + 'complex-docs.json')
+    check_query('test', 'complex-full')
+    check_query('test', 'complex-foo', 'foosum')
+    check_query('test', 'complex-bar', 'barsum')
+    check_query('test', 'complex-txt', 'onlytext')
+    check_query('test', 'complex-mysum', 'mysummary')
+    check_query('test', 'complex-abc', nil,      'a,b,c')
+    check_query('test', 'complex-abc', 'foosum', 'a,b,c')
+    check_yql('select * from complex where true', 'complex-full')
+    check_yql('select * from complex where true', 'complex-foo', 'foosum')
+    check_yql('select * from complex where true', 'complex-bar', 'barsum')
+    check_yql('select * from complex where true', 'complex-txt', 'onlytext')
+    check_yql('select * from complex where true', 'complex-mysum', 'mysummary')
+    check_yql('select a,b,c from complex where true', 'complex-abc')
+    check_yql('select a,b,c from complex where true', 'complex-abc', 'foosum')
+    check_yql('select a,b,c from complex where true', 'complex-abc', 'barsum')
+    check_yql('select a,b,c from complex where true', 'complex-abc')
+    check_yql('select  a,b  from complex where true', 'complex-abc', nil, 'b,c')
+    check_yql('select  a,b  from complex where true', 'complex-abc', 'onlytext', 'b,c')
+    check_yql('select  a,b  from complex where true', 'complex-abc', 'mysummary', 'b,c')
+  end
+
   def test_selectsummary_twophase
     puts "Details: Setting up twophase config"
     deploy_app(SearchApp.new.sd(selfdir + "selsum.sd"))

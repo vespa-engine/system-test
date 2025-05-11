@@ -1,0 +1,64 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 3
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 3,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "id:test:complex::1",
+        "relevance": 99.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "complex",
+          "documentid": "id:test:complex::1",
+          "title": "one",
+          "body": "body test text 1",
+          "a": "fa1",
+          "b": "fb1",
+          "c": "fc1",
+          "d": "fd1"
+        }
+      },
+      {
+        "id": "id:test:complex::2",
+        "relevance": 98.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "complex",
+          "documentid": "id:test:complex::2",
+          "title": "two",
+          "body": "body test text 2",
+          "a": "fa2",
+          "b": "fb2",
+          "c": "fc2",
+          "d": "fd2"
+        }
+      },
+      {
+        "id": "id:test:complex::3",
+        "relevance": 97.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "complex",
+          "documentid": "id:test:complex::3",
+          "title": "three",
+          "body": "body test text 3",
+          "a": "fa3",
+          "b": "fb3",
+          "c": "fc3",
+          "d": "fd3"
+        }
+      }
+    ]
+  }
+}
