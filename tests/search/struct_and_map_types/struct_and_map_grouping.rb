@@ -86,40 +86,31 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
                    {""=>1, "@foo@bar1020"=>1, "@foo@bar2030"=>1})
     check_grouping("all(group(str_int_map.value + int_array) each(output(count())))",
                    {"20"=>1, "30"=>1, "40"=>2})
+
+    check_grouping("all(group(str_int_map.key) each(output(sum(str_int_map.value))))", {"@bar"=>50, "@foo"=>30}, "sum(str_int_map.value)")
+    check_grouping("all(group(str_int_map.key) each(group(str_int_map.value) each(output(sum(str_int_map.value)))))",
+                   {"@bar"=>{"20"=>20, "30"=>30},
+                    "@foo"=>{"10"=>10, "20"=>20}},
+                   "sum(str_int_map.value)")
+    check_grouping("all(group(str_int_map.key) each(group(strcat(str_int_map.key,str_int_map.value)) each(output(sum(str_int_map.value)))))",
+                   {"@bar"=>{"@bar20"=>20, "@bar30"=>30},
+                    "@foo"=>{"@foo10"=>10, "@foo20"=>20}},
+                   "sum(str_int_map.value)")
+    check_grouping("all(group(str_int_map.key) each(group(str_int_map.value + int_array) each(output(count()))))",
+                   {"@bar"=>{"30"=>1, "40"=>2},
+                    "@foo"=>{"20"=>1, "30"=>2}})
+
     if is_streaming
         check_grouping("all(group(str_int_map{\"@foo\"}) each(output(count())))", {"10"=>1, "20"=>1})
         check_grouping("all(group(str_str_map{\"@foo\"}) each(output(count())))", {"@bar"=>1, ""=>1})
         check_grouping("all(group(elem_map{\"@foo\"}.weight) each(output(count())))", {"10"=>2})
-        check_grouping("all(group(str_int_map.key) each(output(sum(str_int_map.value))))", {"@bar"=>80, "@foo"=>80}, "sum(str_int_map.value)")
-        check_grouping("all(group(str_int_map.key) each(group(str_int_map.value) each(output(sum(str_int_map.value)))))",
-                       {"@bar"=>{"10"=>30, "20"=>80, "30"=>50},
-                        "@foo"=>{"10"=>30, "20"=>80, "30"=>50}},
-                       "sum(str_int_map.value)")
-        check_grouping("all(group(str_int_map.key) each(group(strcat(str_int_map.key,str_int_map.value)) each(output(sum(str_int_map.value)))))",
-                       {"@bar"=>{"@foo@bar1020"=>30, "@foo@bar2030"=>50},
-                        "@foo"=>{"@foo@bar1020"=>30, "@foo@bar2030"=>50}},
-                       "sum(str_int_map.value)")
-        check_grouping("all(group(str_int_map.key) each(group(str_int_map.value + int_array) each(output(count()))))",
-                       {"@bar"=>{"20"=>1, "30"=>1, "40"=>2},
-                        "@foo"=>{"20"=>1, "30"=>1, "40"=>2}})
         check_grouping("all(group(elem_map{\"@foo\"}.weight) each(group(elem_map{\"@foo\"}.weight) each(output(count()))))",
                        {"10"=>{"10"=>2}})
     else
         check_grouping("all(group(str_int_map{\"@foo\"}) each(output(count())))", {"10"=>1, "20"=>1, "#{nan}"=>1})
         check_grouping("all(group(str_str_map{\"@foo\"}) each(output(count())))", {"@bar"=>1, ""=>2})
         check_grouping("all(group(elem_map{\"@foo\"}.weight) each(output(count())))", {"10"=>2,"#{nan}"=>1})
-        check_grouping("all(group(str_int_map.key) each(output(sum(str_int_map.value))))", {"@bar"=>50, "@foo"=>30}, "sum(str_int_map.value)")
-        check_grouping("all(group(str_int_map.key) each(group(str_int_map.value) each(output(sum(str_int_map.value)))))",
-                       {"@bar"=>{"20"=>20, "30"=>30},
-                        "@foo"=>{"10"=>10, "20"=>20}},
-                       "sum(str_int_map.value)")
-        check_grouping("all(group(str_int_map.key) each(group(strcat(str_int_map.key,str_int_map.value)) each(output(sum(str_int_map.value)))))",
-                       {"@bar"=>{"@bar20"=>20, "@bar30"=>30},
-                        "@foo"=>{"@foo10"=>10, "@foo20"=>20}},
-                       "sum(str_int_map.value)")
-        check_grouping("all(group(str_int_map.key) each(group(str_int_map.value + int_array) each(output(count()))))",
-                       {"@bar"=>{"30"=>1, "40"=>2},
-                        "@foo"=>{"20"=>1, "30"=>2}})
+
         check_grouping("all(group(elem_map{\"@foo\"}.weight) each(group(elem_map{\"@foo\"}.weight) each(output(count()))))",
                        {"10"=>{"10"=>2}, "#{nan}"=>{"#{nan}"=>1}})
     end
