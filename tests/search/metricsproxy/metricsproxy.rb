@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class MetricsProxy < IndexedStreamingSearchTest
 
   def setup
-    set_owner("bergum")
+    set_owner("hmusum")
     set_description("Test metrics proxy functionality")
   end
 
@@ -104,7 +104,7 @@ class MetricsProxy < IndexedStreamingSearchTest
         if m['application'] == 'vespa_app.container' and m['dimensions']['metrictype'] == 'system'
           found = true
           assert(m['metrics']['memory_virt'] > 0, "memory_virt should be more than zero")
-          assert(m['metrics']['memory_rss'] > 0, "memory_virt should be more than zero")
+          assert(m['metrics']['memory_rss'] > 0, "memory_rss should be more than zero")
           assert(m['metrics']['cpu'] > 0.0, "cpu usage should be higher than 0.0") if check_cpu
         end
       end
