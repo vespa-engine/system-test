@@ -49,7 +49,10 @@
         "children": [
             {
                 "id": "good",
-                "relevance": 1000.0
+                "relevance": 1000.0,
+                "fields": {
+                    "marker": "good"
+                }
             },
             {
                 "id": "id:test:music::http://shopping.yahoo.com/p_tinsel-town-rebellion-remastered-_music_1921942816",
