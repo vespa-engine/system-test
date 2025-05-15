@@ -10,6 +10,12 @@ import java.util.Iterator;
 
 public class TwoPhaseTestSearcher extends Searcher {
 
+    private Hit mkHit(String text) {
+        var hit = new Hit(text, 1000);
+        hit.setField("marker", text);
+        return hit;
+    }
+
     @Override
     public Result search(Query query, Execution execution) {
         query.trace("running TwoPhaseTestSearcher", false, 1);
@@ -21,7 +27,7 @@ public class TwoPhaseTestSearcher extends Searcher {
             Hit hit = i.next();
             if (hit.getField("title") != null) {
                 query.trace("got title before fill: "+hit.toString(), false, 1);
-                result.hits().add(new Hit("bad", 1000));
+                result.hits().add(mkHit("bad"));
                 return result;
             }
 
@@ -30,16 +36,16 @@ public class TwoPhaseTestSearcher extends Searcher {
         query.trace("after fill", false, 1);
         for (Iterator<Hit> i = result.hits().deepIterator(); i.hasNext(); ) {
             Hit hit = i.next();
-	    if (hit.isMeta()) continue;
+            if (hit.isMeta()) continue;
             if (hit.getField("title") == null) {
                 query.trace("no title after fill: "+hit.toString(), false, 1);
-                result.hits().add(new Hit("bad", 1000));
+                result.hits().add(mkHit("bad"));
                 return result;
             }
 
         }
 
-        result.hits().add(new Hit("good", 1000));
+        result.hits().add(mkHit("good"));
 
         return result;
     }
