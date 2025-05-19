@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
-require 'indexed_streaming_search_test'
+require 'indexed_only_search_test'
 
-class TwoPhase_Searcher < IndexedStreamingSearchTest
+class TwoPhase_Searcher < IndexedOnlySearchTest
 
   def setup
     set_owner("arnej")
