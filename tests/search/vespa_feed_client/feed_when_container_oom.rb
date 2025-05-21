@@ -15,22 +15,28 @@ class FeedWhenContainerOom < SearchTest
   end
 
   def test_feeding_when_container_goes_oom
-    doc_count = 5
+    doc_count = 10
     generate_feed(doc_count)
 
-    # Deploy app with container with too little memory to handle the 5 large documents => will OOM
+    # Deploy app with container with too little memory to feed (large documents) => will OOM
     deploy_app(app('1g'))
     start
-    feed(:file => @feed_file, :ignore_errors => true, :stderr => true, :verbose => true, :timeout => 30, :log_config => selfdir + 'logging.properties')
+    feed_file(@feed_file, 30)
     result = search("sddocname:music")
-    assert(result.hitcount < doc_count)
+    assert(result.hitcount < doc_count, "Expected hitcount in result (#{result.hitcount}) to be less than #{doc_count}, result: #{result}")
 
     # Start new feed, will fail until app is redeployed with more memory for container
-    feed_thread= Thread.new(){
-      feed(:file => @feed_file, :ignore_errors => true, :stderr => true, :verbose => true, :timeout => 150, :log_config => selfdir + 'logging.properties')
+    feed_thread = Thread.new(){
+      feed_file(@feed_file, 150)
     }
-    # Sleep to make sure feeder has started before deploy
-    sleep 5
+
+    # Wait until feeder has started before deploying
+    start = Time.now()
+    loop do
+      break if feed_thread.status == 'run'
+      raise "Feed thread not running after 10 seconds" if Time.now > start + 10.seconds
+      sleep 0.01
+    end
 
     # deploy app with more container memory, feed should succeed
     deploy_app(app('3g'))
@@ -63,6 +69,12 @@ class FeedWhenContainerOom < SearchTest
 
   def teardown
     stop
+  end
+
+  def feed_file(feed_file, timeout = 30, verbose = false)
+    params = {:file => feed_file, :ignore_errors => true, :stderr => true, :verbose => verbose, :timeout => timeout}
+    params.add(:log_config => selfdir + 'logging.properties') if verbose
+    feed(params)
   end
 
 end
