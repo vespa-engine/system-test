@@ -27,7 +27,7 @@ class StorageNode < VDSNode
       end
       break if max_moves_found == 0
       @testcase.output("Waiting for bucket move operations to complete (#{max_moves_found})")
-      sleep 1
+      sleep 0.1
     end
   end
 

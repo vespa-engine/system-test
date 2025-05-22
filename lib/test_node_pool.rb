@@ -34,7 +34,7 @@ class TestNodePool
         break
       rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
       end
-      sleep 2
+      sleep 1
     end
 
     if ! node_allocator_up
@@ -70,7 +70,7 @@ class TestNodePool
         return allocated
       end
 
-      sleep(3)
+      sleep 1
     end
 
     raise "Requested #{num} nodes, but could not allocate within #{timeout_sec} seconds."

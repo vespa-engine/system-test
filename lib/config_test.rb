@@ -210,7 +210,7 @@ class ConfigTest < TestCase
         node.execute("#{CONFIG_VERIFIER} #{args}")
         success = true
       rescue
-        sleep 1
+        sleep 0.1
       end
     end
     assert(success)

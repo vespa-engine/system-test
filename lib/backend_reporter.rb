@@ -66,7 +66,7 @@ class BackendReporter
         break
       rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
       end
-      sleep 2
+      sleep 1
     end
     if ! reporter_up
       raise "Could not connect to reporter at #{uri.host}:#{uri.port}"
