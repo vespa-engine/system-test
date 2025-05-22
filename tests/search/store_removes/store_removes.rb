@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class StoreUnknownRemoves < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Try to resurrect a removed document")
   end
 
@@ -27,7 +27,7 @@ class StoreUnknownRemoves < IndexedOnlySearchTest
     @stopped = []
 
     for i in 0..3
-      if node_has_doc(i, "total")
+      if number_of_docs(i, "total") == 1
         stop_node(i)
         break
       end
@@ -41,7 +41,7 @@ class StoreUnknownRemoves < IndexedOnlySearchTest
       if @stopped.include?(i)
         next
       end
-      if node_has_doc(i, "removed")
+      if number_of_docs(i, "removed") == 1
         has_removed_doc << i
       end
     end
@@ -51,18 +51,23 @@ class StoreUnknownRemoves < IndexedOnlySearchTest
     end
     assert_equal(3, @stopped.length)
 
-    my_node = @stopped[0]
-    start_node(my_node)
-    assert(!node_has_doc(my_node, "total"))
-    assert(node_has_doc(my_node, "removed"))
+    node_index = @stopped[0]
+    start_node(node_index)
+    assert_number_of_docs(node_index, "total", 0)
+    assert_number_of_docs(node_index, "removed", 1)
   end
 
-  def node_has_doc(index, stat)
+  def number_of_docs(index, stat)
     puts "checking node #{index}"
     search_node = vespa.search["search"].searchnode[index]
     doc_stats = search_node.get_state_v1_custom_component("/documentdb/test")["documents"]
     puts "document stats:" + doc_stats.to_s
-    return doc_stats[stat] == 1
+    doc_stats[stat]
+  end
+
+  def assert_number_of_docs(index, stat, expected)
+    count = number_of_docs(index, stat)
+    assert_equal(expected, count, "unexpected doc count for '#{stat}' docs on node with index #{index}")
   end
 
   def stop_node(index)
