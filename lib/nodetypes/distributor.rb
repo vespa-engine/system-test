@@ -126,7 +126,7 @@ class Distributor < VDSNode
       end
       return if statuspage.nil?
       return if yield(statuspage)
-      sleep 1
+      sleep 0.1
     end    
   end
 

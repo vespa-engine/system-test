@@ -86,7 +86,7 @@ class VespaNode
   end
 
   def get_state_v1(path)
-    60.times do
+    600.times do
       begin
         response = get_json_over_http("/state/v1/#{path}", get_state_port)
         if response != nil
@@ -95,7 +95,7 @@ class VespaNode
       rescue Errno::ECONNREFUSED, Errno::ECONNRESET
         # Node likely not up yet; retry transparently.
       end
-      sleep 1
+      sleep 0.1
     end
     nil
   end

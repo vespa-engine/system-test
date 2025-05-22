@@ -38,7 +38,7 @@ class VDSNode < VespaNode
       rescue Exception => e
         @testcase.output("Used #{Time.now - started} seconds to NOT get status page: #{e.to_s}")
       end
-      sleep 1
+      sleep 0.1
     end
     return data
   end
