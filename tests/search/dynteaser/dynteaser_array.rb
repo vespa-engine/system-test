@@ -22,6 +22,7 @@ class DynTeaserArrayTest < IndexedStreamingSearchTest
 
     run_test_case("\"schema\"", schema_teaser)
     run_test_case("\"syntax\"", syntax_teaser)
+    assert_teaser_field('content_2', '"syntax"', 'content_2_dyn_meo', 'my_sum', syntax_teaser.slice(1, 1))
     if is_streaming
       run_test_case("({substring:true}\"chem\")", chem_substring_teaser)
     end
