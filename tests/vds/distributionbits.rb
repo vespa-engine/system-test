@@ -27,7 +27,7 @@ class DistributionBitTest < VdsTest
       if (split_level == wanted)
         return
       end
-      sleep(5)
+      sleep 1
     end
   end
 

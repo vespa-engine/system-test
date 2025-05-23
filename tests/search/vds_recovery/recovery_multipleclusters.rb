@@ -39,8 +39,6 @@ class TestRecoveryMultiCluster < IndexedStreamingSearchTest
 
     vespa.storage["storage"].wait_until_ready
 
-    sleep 10
-
     # Recover
     vespa.storage["storage"].storage["0"].execute("vespa-visit --cluster storage --datahandler music --selection music")
     vespa.storage["storage"].storage["0"].execute("vespa-visit --cluster storage --datahandler books --selection books")
