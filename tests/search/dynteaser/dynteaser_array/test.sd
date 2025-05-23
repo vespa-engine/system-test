@@ -13,5 +13,10 @@ schema test {
       source: content_2
       dynamic
     }
+    summary content_2_dyn_meo {
+      source: content_2
+      dynamic
+      matched-elements-only
+    }
   }
 }
