@@ -109,7 +109,6 @@ class RetiringNode < VdsTest
 
     vespa.storage["storage"].storage["2"].wait_for_current_node_state('u')
     vespa.storage["storage"].wait_until_ready
-    sleep(60)
 
     assert_numdocs(200)
 
@@ -121,7 +120,7 @@ class RetiringNode < VdsTest
   def assert_numdocs(numDocs)
     n = -1
     until n == numDocs
-      sleep 5
+      sleep 1
 
       n = 0
       within_total = 0
@@ -136,9 +135,8 @@ class RetiringNode < VdsTest
     assert_equal(numDocs, n)
   end
 
-
   def teardown
     stop
   end
-end
 
+end
