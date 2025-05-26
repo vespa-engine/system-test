@@ -62,7 +62,6 @@ class MergeChainingTest < VdsMultiModelTest
 
     # Taking down the node will trigger merges of its own, so we wait until those are done
     puts "Waiting for downed node merges to trigger and complete"
-    sleep 15
     vespa.storage["storage"].wait_until_ready
 
     puts "Verifying redundancy holds"
