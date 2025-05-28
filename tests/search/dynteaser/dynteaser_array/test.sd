@@ -18,5 +18,15 @@ schema test {
       dynamic
       matched-elements-only
     }
+    summary content_2_dyn_sf {
+      source: content_2
+      dynamic
+      select-elements-by: elementwise(bm25(content_2),x,double)
+    }
+  }
+  rank-profile default {
+    summary-features {
+      elementwise(bm25(content_2),x,double)
+    }
   }
 }
