@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root. -->
+<services version="1.0">
+
+  <container id="default" version="1.0">
+    <!-- Mock secrets for local testing -->
+    <component id="secrets" class="ai.vespa.test.LocalSecrets" />
+
+    <!-- Setup OpenAI client - also works directly as a generator -->
+    <component id="openai" class="ai.vespa.llm.clients.OpenAI">
+      <config name="ai.vespa.llm.clients.llm-client">
+        <apiKeySecretName>openAiKey</apiKeySecretName>
+      </config>
+    </component>
+
+    <search>
+        <chain id="openai" inherits="vespa">
+            <searcher id="ai.vespa.search.llm.RAGSearcher">
+                <config name="ai.vespa.search.llm.llm-searcher">
+                    <providerId>openai</providerId>
+                </config>
+            </searcher>
+        </chain>
+    </search>
+      
+    <document-api/>
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+  </container>
+
+  <content id="msmarco" version="1.0">
+    <redundancy>1</redundancy>
+    <documents>
+      <document mode="index" type="passage"/>
+    </documents>
+    <nodes>
+      <node hostalias="node1" distribution-key="0"/>
+    </nodes>
+  </content>
+
+</services>
