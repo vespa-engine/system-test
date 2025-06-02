@@ -1,0 +1,49 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema test {
+  document test {
+    field pos type tensor<float>(chunk{},xy[2]) {
+      indexing: attribute
+    }
+    field text type array<string> {
+      indexing: index | summary
+      summary {
+        select-elements-by: best_chunks
+      }
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(qpos) tensor<float>(xy[2])
+    }
+    function my_distance() {
+      expression: euclidean_distance(query(qpos), attribute(pos), xy)
+    }
+    function my_dist_scores() {
+      expression: 1/(1+my_distance)
+    }
+    function my_text_scores() {
+      expression: elementwise(bm25(text),chunk,float)
+    }
+    function chunk_scores() {
+      expression: merge(my_dist_scores,my_text_scores,f(a,b)(a+b))
+    }
+    function best_chunks() {
+      expression: top(1,chunk_scores)
+    }
+    function attr_slice() {
+      expression: attribute(pos)*map(best_chunks,f(a)(1))
+    }
+    first-phase {
+      expression: sum(chunk_scores())
+    }
+    summary-features {
+      my_distance
+      my_dist_scores
+      my_text_scores
+      chunk_scores
+      best_chunks
+      attr_slice
+    }
+  }
+}
