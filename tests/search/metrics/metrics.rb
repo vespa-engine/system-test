@@ -94,6 +94,7 @@ class SearchMetrics < IndexedOnlySearchTest
     metrics = vespa.search['test'].first.get_total_metrics # Get metrics containing disk index
     assert_document_db_disk_io(metrics)
     assert_document_db_cached_disk_io(metrics, true)
+    assert_equal(2, get_num_indexes(metrics))
   end
 
   def test_metrics_imported_attributes
@@ -232,6 +233,11 @@ class SearchMetrics < IndexedOnlySearchTest
   def get_disk_usage_for_attribute_field(field_name, metrics)
     metrics.get('content.proton.documentdb.ready.attribute.disk_usage',
                 {"documenttype" => "test", "field" => field_name})["last"]
+  end
+
+  def get_num_indexes(metrics)
+    metrics.get('content.proton.documentdb.index.indexes',
+                {"documenttype" => "test"})["last"]
   end
 
   def dump_metric_names(metrics)
