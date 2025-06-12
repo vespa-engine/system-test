@@ -33,8 +33,7 @@
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
-        { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
-        { "id" : "resource-limit-low-watermark-difference", "rules" : [ { "value" : 0.0 } ] }
+        { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] }
     ]
 
 }
