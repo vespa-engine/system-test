@@ -56,7 +56,8 @@ class FeedBlockBase < IndexedOnlySearchTest
     ConfigOverride.new("vespa.config.content.fleetcontroller").
       add("enable_cluster_feed_block", true).
       add(MapConfig.new("cluster_feed_block_limit").
-          add("attribute-address-space", address_space))
+          add("attribute-address-space", address_space)).
+      add("cluster_feed_block_noise_level", 0.0)
   end
 
   def get_filestor_config(reporter_noise_level)
