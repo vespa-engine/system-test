@@ -5,7 +5,8 @@
             "rules" : [
                 {
                     "value" : [
-                        "VESPA_BITVECTOR_RANGE_CHECK=true"
+                        "VESPA_BITVECTOR_RANGE_CHECK=true",
+                        "VESPA_INTERNAL_VECTORIZATION_TARGET_LEVEL=AVX3_DL"
                     ]
                 }
             ]
