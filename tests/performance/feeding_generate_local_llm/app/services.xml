@@ -12,8 +12,8 @@
                 <contextSize>5000</contextSize>
                 <parallelRequests>10</parallelRequests>
                 <maxQueueSize>5</maxQueueSize>
-                <maxQueueWait>100000</maxQueueWait>
-                <maxEnqueueWait>100000</maxEnqueueWait>
+                <maxQueueWait>200000</maxQueueWait>
+                <maxEnqueueWait>200000</maxEnqueueWait>
                 <maxTokens>200</maxTokens>
                 <maxPromptTokens>200</maxPromptTokens>
             </config>
