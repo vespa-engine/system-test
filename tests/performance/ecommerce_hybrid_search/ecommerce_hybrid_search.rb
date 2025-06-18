@@ -7,6 +7,7 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
 
   def test_hybrid_search
     set_description("Test performance of hybrid search using an E-commerce dataset (feeding, queries, re-feeding with queries)")
+    set_owner("hmusum")
     deploy(selfdir + "app")
     @container = vespa.container.values.first
     @search_node = vespa.search["search"].first
