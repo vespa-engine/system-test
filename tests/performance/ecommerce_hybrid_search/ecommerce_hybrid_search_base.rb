@@ -6,7 +6,7 @@ class EcommerceHybridSearchTestBase < PerformanceTest
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def system_metric_filler(system_sampler)

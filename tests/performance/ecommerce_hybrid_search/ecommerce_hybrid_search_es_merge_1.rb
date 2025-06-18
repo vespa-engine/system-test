@@ -7,7 +7,7 @@ class EcommerceHybridSearchESForceMerge1Test < EcommerceHybridSearchESTestBase
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_hybrid_search
