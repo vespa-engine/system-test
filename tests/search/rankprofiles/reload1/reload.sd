@@ -1,0 +1,20 @@
+search reload {
+  document reload {
+    field f1 type string {
+      indexing: index | summary
+    }
+  }
+  fieldset default {
+    fields: f1
+  }
+  rank-profile default {
+    first-phase {
+      expression: 10
+    }
+  }
+  rank-profile first {
+    first-phase {
+      expression: 20
+    }
+  }
+}
