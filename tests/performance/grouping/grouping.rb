@@ -94,11 +94,24 @@ class GroupingTest < PerformanceTest
     puts "Warmup"
     run_fbench(qrserver, 1, 30, [parameter_filler("legend", "warmup")])
     puts "Single level"
+    # Temporary debugging to see if we are somehow downclocking the CPUs merely by looking
+    # at certain AVX-512 instructions in the wrong way.
+    perf_dump = ""
+    perf_t = Thread.new {
+      proton_pid = vespa.search['search'].first.get_pid()
+      perf_stat_cmd = "perf stat -I 2000 --pid=#{proton_pid} -e '" +
+                      "cpu/event=0x28,umask=0x18,name=core_power_lvl1_turbo_license/," +
+                      "cpu/event=0x28,umask=0x20,name=core_power_lvl2_turbo_license/' sleep 30 2>&1"
+      perf_dump = vespa.search['search'].first.execute(perf_stat_cmd, :exceptiononfailure => false)
+    }
     run_fbench(qrserver, 1, 60, [parameter_filler("legend", "single_level")])
     node = vespa.search["search"].first
     write_report([metric_filler("memory.rss", node.memusage_rss(node.get_pid)),
                   parameter_filler("legend", "single_level")])
     puts "Single level mem usage: #{node.memusage_rss(node.get_pid)}"
+    perf_t.join
+    puts "Perf stat output:"
+    puts perf_dump
 
     File.open(@local_queryfile, "w") { |file|
       file.write("/search/?query=sddocname:groupingbench&nocache&hits=0&" +
