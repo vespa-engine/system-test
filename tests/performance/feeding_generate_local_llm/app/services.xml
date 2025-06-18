@@ -16,6 +16,7 @@
                 <maxEnqueueWait>1000000</maxEnqueueWait>
                 <maxTokens>200</maxTokens>
                 <maxPromptTokens>200</maxPromptTokens>
+                <threads>16</threads>
             </config>
         </component>
         
