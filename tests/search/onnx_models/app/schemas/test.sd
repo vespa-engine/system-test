@@ -23,6 +23,7 @@ schema test {
     }
 
     rank-profile base {
+        # Used by content cluster (in rank-profile)
         onnx-model multiply_add {
             file: files/multiply_add.onnx
             input "model_input_1": constant(matrix)
@@ -31,6 +32,7 @@ schema test {
             output "model_output_1": multiply_add_output
         }
 
+        # Not used by content cluster, model-evaluation can use it
         onnx-model foo {
             file: files/foo.onnx
             input "foo": 1.1
@@ -38,6 +40,7 @@ schema test {
             output "model_output": add_output_1
         }
 
+        # Not used by content cluster, model-evaluation can use it
         onnx-model baz {
             file: files/baz.onnx
             input "baz": 1.3
