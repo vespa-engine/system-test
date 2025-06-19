@@ -21,7 +21,9 @@ class FeedingGenerateLocalLLMPerformanceTests < PerformanceTest
 
     node = (vespa.qrserver["0"] or vespa.container.values.first)
     node.execute('tail -n 50 /proc/cpuinfo')
-    node.execute('printenv')
+    node.execute('printenv | sort')
+    node.execute('nproc')
+    node.execute('nproc --all')
 
     feed_file = (selfdir + "data/feed.jsonl")
     feeder_options = { :client => :vespa_feed_client, :timeout => 600 }
