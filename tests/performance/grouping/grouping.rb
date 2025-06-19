@@ -99,7 +99,7 @@ class GroupingTest < PerformanceTest
     perf_dump = ""
     perf_t = Thread.new {
       proton_pid = vespa.search['search'].first.get_pid()
-      perf_stat_cmd = "perf stat -I 2000 --pid=#{proton_pid} -e '" +
+      perf_stat_cmd = "perf stat -I 1000 --pid=#{proton_pid} -e '" +
                       "cpu/event=0x28,umask=0x18,name=core_power_lvl1_turbo_license/," +
                       "cpu/event=0x28,umask=0x20,name=core_power_lvl2_turbo_license/' sleep 30 2>&1"
       perf_dump = vespa.search['search'].first.execute(perf_stat_cmd, :exceptiononfailure => false)
