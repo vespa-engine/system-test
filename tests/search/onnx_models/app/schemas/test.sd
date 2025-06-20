@@ -1,0 +1,70 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema test {
+    document test {
+        field title type string {
+            indexing: index
+        }
+        field doc_vec type tensor<double>(d0[2]) {
+            indexing: attribute | summary
+        }
+        field score type int {
+            indexing: attribute | summary
+        }
+    }
+
+    fieldset default {
+        fields: title
+    }
+
+    constant matrix {
+        file: files/matrix.json
+        type: tensor<double>(d0[2],d1[2])
+    }
+
+    rank-profile base {
+        # Used by content cluster (in rank-profile)
+        onnx-model multiply_add {
+            file: files/multiply_add.onnx
+            input "model_input_1": constant(matrix)
+            input "model_input_2": attribute(doc_vec)
+            input "model_input_3": query(query_vec)
+            output "model_output_1": multiply_add_output
+        }
+
+        # Not used by content cluster, model-evaluation can use it
+        onnx-model foo {
+            file: files/foo.onnx
+            input "foo": 1.1
+            input "bar": 1.2
+            output "model_output": add_output_1
+        }
+
+        # Not used by content cluster, model-evaluation can use it
+        onnx-model baz {
+            file: files/baz.onnx
+            input "baz": 1.3
+            input "xyzzy": 1.4
+            # Same name for output as input in model above
+            output "foo": add_output_2
+        }
+
+        inputs {
+            query(query_vec) tensor<double>(d0[2])
+        }
+
+        function fn_first_phase() {
+            expression: sum(onnx(multiply_add).multiply_add_output - fn_query_vec)
+        }
+
+        first-phase {
+            expression: fn_first_phase
+        }
+
+        function fn_query_vec() {
+            expression: query(query_vec)
+        }
+
+    }
+
+}
