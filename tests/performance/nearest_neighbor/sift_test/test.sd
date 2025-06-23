@@ -1,0 +1,44 @@
+search test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field filter type array<int> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field vec_m16 type tensor<float>(x[128]) {
+      indexing: attribute | index | summary
+      index {
+        hnsw {
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 500
+        }
+      }
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: closeness(label,nns)
+    }
+    num-threads-per-search: 1
+  }
+  rank-profile threads-1 inherits default {
+    num-threads-per-search: 1
+  }
+  rank-profile threads-2 inherits default {
+    num-threads-per-search: 2
+  }
+  rank-profile threads-4 inherits default {
+    num-threads-per-search: 4
+  }
+  rank-profile threads-8 inherits default {
+    num-threads-per-search: 8
+  }
+  rank-profile threads-16 inherits default {
+    num-threads-per-search: 16
+  }
+  document-summary minimal {
+    summary id {}
+  }
+}
