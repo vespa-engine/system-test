@@ -1,5 +1,4 @@
 # Copyright Vespa.ai. All rights reserved.
-# Private reason: Depends on pub/ data
 
 require 'performance/nearest_neighbor/ann_gist_base'
 

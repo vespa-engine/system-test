@@ -1,5 +1,4 @@
 # Copyright Vespa.ai. All rights reserved.
-# Private reason: Depends on pub/ data
 
 require 'app_generator/search_app'
 require 'performance/fbench'
