@@ -1,4 +1,4 @@
-# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+# Copyright Vespa.ai. All rights reserved.
 # Private reason: Depends on pub/ data
 
 require 'app_generator/search_app'
