@@ -16,10 +16,11 @@ module RemoteFileUtils
       cmd = "wget -nv -O'#{localfile}' '#{source_url}'"
     end
 
-    err = `#{cmd}`
+    err = `#{cmd} </dev/null 2>&1`
     if $? != 0
       raise "error during #{cmd} was: #{err}"
     end
+    testcase_output("run >>> #{cmd} >>> #{err}")
   end
   module_function :download
 
