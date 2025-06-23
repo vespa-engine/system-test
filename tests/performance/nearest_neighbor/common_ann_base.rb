@@ -28,7 +28,7 @@ class CommonAnnBaseTest < PerformanceTest
   def feed_and_benchmark(feed_file, label, doc_type = "test", tensor = "vec_m16")
     profiler_start
     node_file = nn_download_file(feed_file, vespa.adminserver)
-    run_feeder(node_file, [parameter_filler(TYPE, "feed"), parameter_filler(LABEL, label)])
+    run_feeder(node_file, [parameter_filler(TYPE, "feed"), parameter_filler(LABEL, label)], :localfile => true)
     vespa.adminserver.execute("ls -ld #{node_file} #{selfdir}", :exceptiononfailure => false)
     profiler_report("feed")
     print_nni_stats(doc_type, tensor)
