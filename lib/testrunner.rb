@@ -289,7 +289,7 @@ if __FILE__ == $0
     opts.on("-p", "--performance", "Run performance tests.") do |p|
       options[:performance] = p
     end
-    opts.on("-r", "--perf-recording R", String, "Set recording with perf. Valid options are 'off' or 'all'. Default off.") do |perf_recording|
+    opts.on("-r", "--perf-recording R", String, "Set recording with perf. Valid options are 'off' 'some' or 'all'. Default off.") do |perf_recording|
       options[:perf_recording] = perf_recording
     end
     opts.on("-V", "--vespaversion VERSION", String, "Vespa version to use.") do |version|
