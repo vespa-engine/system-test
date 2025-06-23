@@ -60,8 +60,8 @@ class FuzzyMatchingPerfTest < PerformanceTest
     @container = vespa.container.values.first
     start
     node_file = download_file(@docs, vespa.adminserver)
-    feed(:file => node_file)
-#    run_query_benchmarks
+    feed_file(node_file)
+    run_query_benchmarks
   end
 
   def create_app
@@ -120,6 +120,14 @@ class FuzzyMatchingPerfTest < PerformanceTest
 
   def download_file(file_name, vespa_node)
     download_file_from_s3(file_name, vespa_node, @data_path)
+  end
+
+  def feed_file(feed_file)
+    run_feeder(feed_file, [], {:client => :vespa_feed_client,
+                               :compression => "none",
+                               :localfile => true,
+                               :silent => true,
+                               :disable_tls => false})
   end
 
   def teardown
