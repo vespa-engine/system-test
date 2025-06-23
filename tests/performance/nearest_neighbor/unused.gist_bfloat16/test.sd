@@ -1,0 +1,28 @@
+search test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field filter type array<int> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field vec_m16 type tensor<bfloat16>(x[960]) {
+      indexing: attribute | index | summary
+      index {
+        hnsw {
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 500
+        }
+      }
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: closeness(label,nns)
+    }
+  }
+  document-summary minimal {
+    summary id {}
+  }
+}

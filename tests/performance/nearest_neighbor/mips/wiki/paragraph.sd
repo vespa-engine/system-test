@@ -1,0 +1,38 @@
+# Copyright Yahoo. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema paragraph {
+  document paragraph {
+
+    field id type long {
+      indexing: attribute | summary
+    }
+
+    field embedding type tensor<float>(x[768]) {
+      indexing: attribute | index | summary
+      attribute {
+        distance-metric: dotproduct
+      }
+      index {
+        hnsw {
+          max-links-per-node: 48
+          neighbors-to-explore-at-insert: 200
+        }
+      }
+    }
+
+  }
+
+  rank-profile default {
+    inputs {
+      query(paragraph) tensor<float>(x[768])
+    }
+    first-phase {
+      expression: rawScore(embedding)
+    }
+  }
+
+  document-summary minimal {
+    summary id {}
+  }
+
+}
