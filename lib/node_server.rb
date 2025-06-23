@@ -187,9 +187,10 @@ class NodeServer
       destination_dir = params[:destination_dir] ? params[:destination_dir] : @testcase.dirs.downloaddir
       localfilename = params[:destination_file] ? params[:destination_file] : File.join(destination_dir, File.basename(params[:file]))
 
-      RemoteFileUtils.download(source_url, localfilename)
+      download_log = RemoteFileUtils.download(source_url, localfilename)
 
       testcase_output("Downloaded #{source_url} to #{localfilename} on host #{`hostname`}")
+      testcase_output("Log: #{download_log}")
       localfilenames << localfilename
     else
       raise ":dir and :destination_file can not both be specified" if params[:dir] && params[:destination_file]

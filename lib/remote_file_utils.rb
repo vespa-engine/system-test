@@ -20,9 +20,8 @@ module RemoteFileUtils
     if $? != 0
       raise "error during #{cmd} was: #{err}"
     end
-    testcase_output("run >>> #{cmd} >>> #{err}")
+    return "run >>> #{cmd} >>> #{err}"
   end
   module_function :download
 
 end
-
