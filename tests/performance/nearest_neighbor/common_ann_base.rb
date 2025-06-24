@@ -109,7 +109,7 @@ class CommonAnnBaseTest < PerformanceTest
 
   def calc_recall_in_searcher(target_hits, explore_hits, query_vector, doc_type, doc_tensor, query_tensor)
     query = get_query_for_recall_searcher(target_hits, explore_hits, query_vector, doc_type, doc_tensor, query_tensor)
-    result = search(query)
+    result = search_with_timeout(query)
     assert_hitcount(result, 1)
     hit = result.hit[0]
     recall = hit.field["recall"]

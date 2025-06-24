@@ -118,11 +118,16 @@ public class NearestNeighborRecallSearcher extends Searcher {
         int cnt = 0;
         for (var itr = result.hits().deepIterator(); itr.hasNext(); ) {
             var hit = itr.next();
-            var simpleHit = new SimpleHit(hit.getField(idField).toString(),
-                    hit.getRelevance().getScore());
-            log.log(Level.FINE, "NNRS.execute(): hit[" + cnt + "]='" + simpleHit + "'");
-            hits.add(simpleHit);
-            ++cnt;
+            if (hit.getField(idField) == null) {
+                 log.log(Level.WARNING, "NNRS.execute(): hit[" + cnt + "] was bad: '" + hit + "'");
+                 throw new IllegalArgumentException("bad hit: " + hit);
+            } else {
+                 var simpleHit = new SimpleHit(hit.getField(idField).toString(),
+                                               hit.getRelevance().getScore());
+                 log.log(Level.FINE, "NNRS.execute(): hit[" + cnt + "]='" + simpleHit + "'");
+                 hits.add(simpleHit);
+             }
+             ++cnt;
         }
         return hits;
     }

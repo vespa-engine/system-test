@@ -1,0 +1,38 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema news {
+  document news {
+
+    field id type string {
+      indexing: attribute | summary
+    }
+
+    field embedding type tensor<float>(x[128]) {
+      indexing: attribute | index | summary
+      attribute {
+        distance-metric: dotproduct
+      }
+      index {
+        hnsw {
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 100
+        }
+      }
+    }
+
+  }
+
+  rank-profile default {
+    inputs {
+      query(user) tensor<float>(x[128])
+    }
+    first-phase {
+      expression: rawScore(embedding)
+    }
+  }
+
+  document-summary minimal {
+    summary id {}
+  }
+
+}
