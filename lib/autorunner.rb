@@ -13,6 +13,7 @@ class AutoRunner
     @cmd_args[:hostlist] = []
     @cmd_args[:configserverhostlist] = []
     @cmd_args[:nopreclean] = true
+    @cmd_args[:perf_recording] = "off"
     @arg_testmethods = []
     @list_testmethods = false
   end
@@ -91,7 +92,7 @@ class AutoRunner
     opts.on("--leave-loglevels", "Do not alter log levels or remove logctl files.") do
       @cmd_args[:leave_loglevels] = true
     end
-    opts.on("--perf-recording type", "perf recoding type {off, all}.") do | type |
+    opts.on("--perf-recording type", "perf recoding type {off, some, all}.") do | type |
       @cmd_args[:perf_recording] = type
     end
     opts.on("--vespa-version VERSION", String, "Specify vespa version being used, 5.1.3, 5.1.3.0.20120120.121212, etc") do |val|
@@ -105,7 +106,7 @@ class AutoRunner
     }
     opts.on("--forked URI", "DRb URI to systemtest controller responsible for this process") { |uri|
       @command_line_output = false
-      @cmd_args.delete(:nopreclean) 
+      @cmd_args.delete(:nopreclean)
       @cmd_args[:forked] = uri
     }
     opts.on("--platform-label LABEL", String, "Platform label, example: RHEL7-64") { |v| @cmd_args[:platform_label] = v }
@@ -211,4 +212,3 @@ if $0 == __FILE__
   runner = AutoRunner.new
   runner.run
 end
-
