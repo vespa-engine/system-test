@@ -1,0 +1,60 @@
+# Copyright Vespa.ai. All rights reserved.
+search bert {
+    document bert {
+        field expected type double {
+            indexing: summary | attribute
+        }
+        field field_unique_ids type tensor<float>(d0[1]) {
+            indexing: attribute
+        }
+        field field_input_ids type tensor<float>(d0[1],d1[256]) {
+            indexing: attribute
+        }
+        field field_input_mask type tensor<float>(d0[1],d1[256]) {
+            indexing: attribute
+        }
+        field field_segment_ids type tensor<float>(d0[1],d1[256]) {
+            indexing: attribute
+        }
+    }
+
+    rank-profile vespabert inherits default {
+        function unique_ids_raw_output___9() {
+            expression: attribute(field_unique_ids)
+        }
+        function input_ids() {
+            expression: attribute(field_input_ids)
+        }
+        function input_mask() {
+            expression: attribute(field_input_mask)
+        }
+        function segment_ids() {
+            expression: attribute(field_segment_ids)
+        }
+        first-phase {
+            expression: sum(onnx_vespa("bertsquad8.onnx", "default", "unstack"))
+        }
+    }
+
+    onnx-model bertsquad8 {
+        file:  models/bertsquad8.onnx
+        input  "unique_ids_raw_output___9:0": attribute(field_unique_ids)
+        input  "input_ids:0":                 attribute(field_input_ids)
+        input  "input_mask:0":                attribute(field_input_mask)
+        input  "segment_ids:0":               attribute(field_segment_ids)
+        output "unstack:0":                   out
+    }
+
+    rank-profile onnxbert inherits default {
+        first-phase {
+            expression: sum(onnxModel(bertsquad8).out)
+        }
+    }
+
+    rank-profile globalonnxbert inherits default {
+        global-phase {
+            expression: sum(onnxModel(bertsquad8).out)
+        }
+    }
+
+}
