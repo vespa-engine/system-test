@@ -1,0 +1,64 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema wiki {
+
+  document wiki {
+
+    field id type int {
+      indexing: attribute | summary
+    }
+
+    field title type string {
+      indexing: index | summary
+    }
+
+    field text type array<string> {
+      indexing: index | summary
+      index: enable-bm25
+    }
+
+    field embedding type tensor<float>(a{},x[384]) {
+      indexing: attribute | index | summary
+      attribute {
+        distance-metric: angular
+      }
+      index {
+        hnsw {
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 100
+        }
+      }
+    }
+
+  }
+
+  # Only relevant when generating embeddings for the text field:
+  #field embedding type tensor<float>(a{},x[384]) {
+    #indexing: input text | embed | summary
+  #}
+
+  fieldset default {
+    fields: text
+  }
+
+  rank-profile default {
+    inputs {
+      query(question) tensor<float>(x[384])
+    }
+    first-phase {
+      expression: closeness(field,embedding)
+    }
+  }
+
+  rank-profile bm25 {
+    first-phase {
+      expression: bm25(text)
+    }
+  }
+
+  document-summary minimal {
+    summary id {}
+    summary title {}
+  }
+
+}

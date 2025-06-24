@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<services version="1.0">
+
+    <admin version="2.0">
+        <adminserver hostalias="node1"/>
+    </admin>
+
+    <container version="1.0">
+        <!-- Downloads transformer model and vocabulary -->
+        <component id="transformer" class="ai.vespa.embedding.BertBaseEmbedder" bundle="model-integration">
+            <config name="embedding.bert-base-embedder">
+                <transformerModel model-id="ignored-on-selfhosted" url="https://data.vespa-cloud.com/onnx_models/sentence_all_MiniLM_L6_v2.onnx"/>
+                <tokenizerVocab model-id="ignored-on-selfhosted" url="https://data.vespa-cloud.com/onnx_models/bert-base-uncased-vocab.txt"/>
+            </config>
+        </component>
+
+        <search/>
+        <document-api/>
+        <nodes>
+            <jvm options="-Xms16g -Xmx16g" />
+            <node hostalias="node1"/>
+        </nodes>
+    </container>
+
+    <content id="search" version="1.0">
+        <redundancy>1</redundancy>
+        <documents>
+            <document type="wiki" mode="index" />
+            <document type="paragraph" mode="index" />
+            <!-- Only relevant when generating embeddings for the 3452 natural questions: -->
+            <document type="question" mode="index" />
+        </documents>
+        <tuning>
+            <bucket-splitting minimum-bits="16"/>
+        </tuning>
+        <engine>
+            <proton>
+                <tuning>
+                    <searchnode>
+                        <feeding>
+                            <concurrency>1.0</concurrency>
+                        </feeding>
+                    </searchnode>
+                </tuning>
+            </proton>
+        </engine>
+        <nodes>
+            <node hostalias="node1" distribution-key="0" />
+        </nodes>
+    </content>
+
+</services>
