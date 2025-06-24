@@ -33,6 +33,7 @@
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
+        { "id" : "search-core-transaction-log-replay-soft-memory-limit", "rules" : [ { "value" : -5 } ] },
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] }
     ]
 
