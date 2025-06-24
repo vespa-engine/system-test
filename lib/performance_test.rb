@@ -304,7 +304,7 @@ class PerformanceTest < TestCase
   end
 
   def start_perf_profiler
-    if @perf_recording != "all"
+    if @perf_recording == "off"
       return
     end
     stop_perf_profiler
@@ -317,12 +317,14 @@ class PerformanceTest < TestCase
 
           @perf_record_pids[node] = {}
           @perf_record_pids[node]['proton-bin'] = node.get_pids('sbin/vespa-proton-bin')
-          @perf_record_pids[node]['storaged-bin'] = node.get_pids('sbin/vespa-storaged-bin')
-          @perf_record_pids[node]['distributord-bin'] = node.get_pids('sbin/vespa-distributord-bin')
-          @perf_record_pids[node]['container'] = node.get_pids('"java.*container-disc-jar-with-dependencies.jar"')
-          @perf_record_pids[node]['configserver'] = node.get_pids('"java.*jdisc\/configserver"')
-          @perf_record_pids[node]['vespa-config-loadtester'] = node.get_pids('vespa-config-loadtester')
-          @perf_record_pids[node]['programmatic-feed-client'] = node.get_pids('javafeedclient')
+          @perf_record_pids[node]['container'] = node.get_pids('"java.*-Dconfig.id=[^[:space:]]*/container[.][0-9]"')
+          if @perf_recording == "all"
+            @perf_record_pids[node]['storaged-bin'] = node.get_pids('sbin/vespa-storaged-bin')
+            @perf_record_pids[node]['distributord-bin'] = node.get_pids('sbin/vespa-distributord-bin')
+            @perf_record_pids[node]['configserver'] = node.get_pids('"java.*jdisc\/configserver"')
+            @perf_record_pids[node]['vespa-config-loadtester'] = node.get_pids('vespa-config-loadtester')
+            @perf_record_pids[node]['programmatic-feed-client'] = node.get_pids('javafeedclient')
+          end
 
           @perf_processes[node] = []
           @perf_record_pids[node].each do | name, pids |
@@ -331,7 +333,9 @@ class PerformanceTest < TestCase
               @perf_processes[node] << node.execute_bg("exec perf stat -ddd -p #{pid} &> #{@perf_stat_file}-#{name}-#{pid}")
             end
           end
-          @perf_processes[node] << node.execute_bg("perf record -e cycles -a -o #{@perf_data_file}-0")
+          if @perf_recording == "all"
+            @perf_processes[node] << node.execute_bg("perf record -e cycles -a -o #{@perf_data_file}-0")
+          end
         rescue ExecuteError
           puts "Unable to start perf on node #{node.name}"
         end
@@ -347,7 +351,7 @@ class PerformanceTest < TestCase
 
   def report_perf_profiler(label, extra_pids)
     stop_perf_profiler
-    if @perf_recording != "all"
+    if @perf_recording == "off"
       puts "Perf profiling turned off."
       return
     else
