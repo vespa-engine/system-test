@@ -1,0 +1,17 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema question {
+
+  document question {
+
+    field text type string {
+      indexing: index | summary
+    }
+
+  }
+
+  field embedding type tensor<float>(x[384]) {
+    indexing: input text | embed | summary
+  }
+
+}
