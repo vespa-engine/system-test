@@ -35,7 +35,15 @@ class PerformanceTest < TestCase
     @perf_data_dir = "#{Environment.instance.vespa_home}/tmp/perf/"
     @perf_data_file = File.join(@perf_data_dir,'record.data')
     @perf_stat_file = File.join(@perf_data_dir,'perf_stats')
+    @vespa_user = Environment.instance.vespa_user
+    @curr_user = `id -un`.chomp
     @script_user = get_script_user
+    @sudo_to_v = ""
+    @need_chown = false
+    if @vespa_user != @script_user or @curr_user == "root"
+      @sudo_to_v = "sudo -u #{@vespa_user}"
+      @need_chown = true
+    end
   end
 
   def timeout_seconds
@@ -48,7 +56,7 @@ class PerformanceTest < TestCase
 
   def get_script_user
     sudo_user = `echo ${SUDO_USER}`.chomp
-    user = "builder"
+    user = @curr_user
     if sudo_user != nil && sudo_user != ""
       user = sudo_user
     end
