@@ -393,9 +393,11 @@ class PerformanceTest < TestCase
           file_name = File.join(dir_name, "perf_#{name}-#{pid}")
 
           begin
-            # Execute the perfmap dump regardless of process type or existence.
-            node.execute("/usr/bin/sudo -u #{Environment.instance.vespa_user} jcmd #{pid} Compiler.perfmap &> /dev/null", {:exceptiononfailure => false})
-            node.execute("chown root:root /tmp/perf-*.map", {:exceptiononfailure => false}) if @need_chown
+            # Only execute the perfmap dump for java containers
+            if name =~ /container/
+              node.execute("ps -p #{pid} | grep java && #{@sudo_to_v} jcmd #{pid} Compiler.perfmap", {:exceptiononfailure => false})
+              node.execute("chown root:root /tmp/perf-*.map", {:exceptiononfailure => false}) if @need_chown
+            end
             node.execute("perf report --stdio --header --show-nr-samples --percent-limit 0.01 --pid #{pid} --input #{data_file} 2>/dev/null | sed '/^# event : name = cycles.*/d' > #{file_name}")
             node.execute("cp -a #{@stat_file} #{dir_name}") if stat_file
           rescue ExecuteError
