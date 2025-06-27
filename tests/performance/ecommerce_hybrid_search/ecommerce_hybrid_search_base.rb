@@ -18,7 +18,7 @@ class EcommerceHybridSearchTestBase < PerformanceTest
   end
 
   def download_file(file_name, vespa_node, url="https://data.vespa-cloud.com/tests/performance/ecommerce_hybrid_search")
-    if File.exists?(selfdir + file_name)
+    if File.exist?(selfdir + file_name)
       # Place the file in the test directory to avoid downloading during manual testing.
       puts "Using local file: #{file_name}"
       selfdir + file_name
