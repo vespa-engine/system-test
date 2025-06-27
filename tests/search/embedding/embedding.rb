@@ -49,6 +49,14 @@ class Embedding < IndexedStreamingSearchTest
       param('pooling-strategy', 'cls')
   end
 
+  def huggingface_embedder_onnx_external_data_component
+    Component.new('huggingface').
+      type('hugging-face-embedder').
+      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/intfloat/multilingual-e5-large/resolve/main/onnx/model.onnx'}).
+      param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/intfloat/multilingual-e5-large/resolve/main/onnx/tokenizer.json'}).
+      param('transformer-output', 'output_0')
+  end
+
   def nomic_modernbert_component
     Component.new('nomicmb').
       type('hugging-face-embedder').
@@ -192,6 +200,21 @@ class Embedding < IndexedStreamingSearchTest
     start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_colbert_embedding_fp16
+  end
+
+  def test_huggingface_embedding_onnx_external_data
+    deploy_app(
+      SearchApp.new.
+        container(
+          default_container_setup.
+            component(huggingface_tokenizer_component).
+            component(huggingface_embedder_onnx_external_data_component).
+            jvmoptions('-Xms4g -Xmx4g')).
+        sd(selfdir + 'app_huggingface_embedder/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start_vespa
+    feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
+    verify_huggingface_embedding
   end
 
   def test_colbert_multivector_embedding
