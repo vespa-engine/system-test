@@ -136,9 +136,9 @@ class NodeServer
   end
 
   def kill_pid(pid, signal="TERM")
-    execute("echo will kill #{pid}; ps uww -p #{pid}", :exceptiononfailure => false)
+    execute(": will kill #{pid}; ps uww -p #{pid}", :exceptiononfailure => false)
     command = "kill -#{signal} #{pid}"
-    execute(command, :exceptiononfailure => false)
+    execute(command)
     waitpid(pid)
   end
 
