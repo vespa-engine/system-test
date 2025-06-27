@@ -394,7 +394,8 @@ class PerformanceTest < TestCase
 
           begin
             # Execute the perfmap dump regardless of process type or existence.
-            node.execute("/usr/bin/sudo -u #{Environment.instance.vespa_user} jcmd #{pid} Compiler.perfmap &> /dev/null; chown root:root /tmp/perf-*.map &>/dev/null", {:exceptiononfailure => false})
+            node.execute("/usr/bin/sudo -u #{Environment.instance.vespa_user} jcmd #{pid} Compiler.perfmap &> /dev/null", {:exceptiononfailure => false})
+            node.execute("chown root:root /tmp/perf-*.map", {:exceptiononfailure => false}) if @need_chown
             reporter_pids[node] << node.execute_bg("perf report --stdio --header --show-nr-samples --percent-limit 0.01 --pid #{pid} --input #{data_file} 2>/dev/null | sed '/^# event : name = cycles.*/d' > #{file_name}")
             reporter_pids[node] << node.execute_bg("cp -a #{@perf_stat_file}-#{name}-#{pid} #{dir_name}") if stat_file
           rescue ExecuteError
