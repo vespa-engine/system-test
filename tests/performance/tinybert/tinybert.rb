@@ -1,4 +1,4 @@
-# Private reason: Depends on pub/ data
+# Copyright Vespa.ai. All rights reserved
 
 require 'performance_test'
 require 'performance/fbench'
@@ -7,7 +7,7 @@ require 'remote_file_utils'
 class TinyBertPerformanceTest < PerformanceTest
 
   def setup
-    set_owner("lesters")
+    set_owner('hmusum')
     @valgrind = false
   end
 
@@ -90,4 +90,3 @@ class TinyBertPerformanceTest < PerformanceTest
   end
 
 end
-
