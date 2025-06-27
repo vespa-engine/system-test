@@ -420,17 +420,26 @@ class PerformanceTest < TestCase
       @perf_processes.each do |node, pidlist|
         pidlist.each do |pid|
           begin
-            Timeout.timeout(20) do
-              node.kill_pid(pid, 'INT')
-            end
+            if node.pid_running(pid)
+              puts "Stopping perf pid #{pid} on #{node.name}"
+              Timeout.timeout(20) do
+                node.kill_pid(pid, 'INT')
+              end
+           else
+              puts "Perf pid #{pid} on #{node.name} already stopped"
+           end
           rescue Timeout::Error, ExecuteError
-            puts "Failed to terminate pid #{pid} on host #{node.name}, trying KILL. This means that no perf report will be generated!"
+            puts "Failed to stop pid #{pid} on host #{node.name}, trying HUP."
             begin
-              node.kill_pid(pid, 'KILL')
+              node.kill_pid(pid, 'HUP')
             rescue ExecuteError, SystemCallError
               puts "Failed to terminate pid #{pid} on host #{node.name}"
             end
-          end if node.pid_running(pid)
+          end
+          if node.pid_running(pid)
+            puts "Using KILL on pid #{pid} on host #{node.name}"
+            node.kill_pid(pid, 'KILL')
+         end
         end
       end
       @perf_processes.clear
