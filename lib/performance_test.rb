@@ -473,9 +473,11 @@ class PerformanceTest < TestCase
   # Note: teardown will stop process by calling vespa_destination_stop
   def vespa_destination_start
     @vespa_destination_pid = vespa.adminserver.execute_bg("#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")
+    puts "Started vespa-destination #{@vespa_destination_pid}"
   end
 
   def vespa_destination_stop
+    puts "Stop vespa-destination #{@vespa_destination_pid}"
     vespa.adminserver.kill_pid(@vespa_destination_pid) if @vespa_destination_pid
   end
 
