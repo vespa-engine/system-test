@@ -49,6 +49,13 @@ class Embedding < IndexedStreamingSearchTest
       param('pooling-strategy', 'cls')
   end
 
+  def huggingface_embedder_onnx_external_data_component
+    Component.new('huggingface').
+      type('hugging-face-embedder').
+      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/intfloat/multilingual-e5-large/resolve/main/onnx/model.onnx'}).
+      param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/intfloat/multilingual-e5-large/resolve/main/onnx/tokenizer.json'})
+  end
+
   def nomic_modernbert_component
     Component.new('nomicmb').
       type('hugging-face-embedder').
@@ -192,6 +199,21 @@ class Embedding < IndexedStreamingSearchTest
     start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
     verify_colbert_embedding_fp16
+  end
+
+  def test_huggingface_embedding_onnx_external_data
+    deploy_app(
+      SearchApp.new.
+        container(
+          default_container_setup.
+            component(huggingface_tokenizer_component).
+            component(huggingface_embedder_onnx_external_data_component).
+            jvmoptions('-Xms4g -Xmx4g')).
+        sd(selfdir + 'app_huggingface_embedder/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start_vespa
+    feed_and_wait_for_docs("doc", 1, :file => selfdir + "docs.json")
+    verify_huggingface_external_data_embedding
   end
 
   def test_colbert_multivector_embedding
@@ -340,6 +362,23 @@ class Embedding < IndexedStreamingSearchTest
 
   def verify_huggingface_embedding
     expected_embedding = JSON.parse(File.read(selfdir + 'hf-expected-vector.json'))
+    result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hello%22%3B&ranking.features.query(embedding)=embed(huggingface, \"Hello%20world\")&format=json&format.tensors=short").json
+    queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(embedding)"]
+    attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding)"]
+    puts "queryFeature: '#{queryFeature}'"
+    puts "attributeFeature: '#{attributeFeature}'"
+    assert_equal(queryFeature.to_s, attributeFeature.to_s)
+    expected_length = 384
+    assert_equal(expected_length, attributeFeature['values'].length)
+    (0..expected_length-1).each { |i|
+      expected = expected_embedding[i]
+      actual = attributeFeature['values'][i]
+      assert((expected - actual).abs < 1e-5, "#{expected} != #{actual} at index #{i}")
+    }
+  end
+
+  def verify_huggingface_external_data_embedding
+    expected_embedding = JSON.parse(File.read(selfdir + 'hf-external-data-expected-vector.json'))
     result = search("?yql=select%20*%20from%20sources%20*%20where%20text%20contains%20%22hello%22%3B&ranking.features.query(embedding)=embed(huggingface, \"Hello%20world\")&format=json&format.tensors=short").json
     queryFeature     = result['root']['children'][0]['fields']['summaryfeatures']["query(embedding)"]
     attributeFeature = result['root']['children'][0]['fields']['summaryfeatures']["attribute(embedding)"]
