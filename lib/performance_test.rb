@@ -387,7 +387,7 @@ class PerformanceTest < TestCase
             stat_file = nil
           else
             data_file = "#{@perf_data_file}-#{pid}"
-            stat_file = "#{@perf_data_file}-#{name}-#{pid}"
+            stat_file = "#{@perf_stat_file}-#{name}-#{pid}"
           end
 
           file_name = File.join(dir_name, "perf_#{name}-#{pid}")
@@ -397,7 +397,7 @@ class PerformanceTest < TestCase
             node.execute("/usr/bin/sudo -u #{Environment.instance.vespa_user} jcmd #{pid} Compiler.perfmap &> /dev/null", {:exceptiononfailure => false})
             node.execute("chown root:root /tmp/perf-*.map", {:exceptiononfailure => false}) if @need_chown
             node.execute("perf report --stdio --header --show-nr-samples --percent-limit 0.01 --pid #{pid} --input #{data_file} 2>/dev/null | sed '/^# event : name = cycles.*/d' > #{file_name}")
-            node.execute("cp -a #{@perf_stat_file}-#{name}-#{pid} #{dir_name}") if stat_file
+            node.execute("cp -a #{@stat_file} #{dir_name}") if stat_file
           rescue ExecuteError
             puts "Unable to generate report for #{binary} on host #{node.name}"
           end
