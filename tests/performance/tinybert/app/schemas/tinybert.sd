@@ -1,0 +1,83 @@
+# Copyright 2020 Oath Inc. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+search tinybert {
+
+    document tinybert {
+        field expected type double {
+            indexing: summary | attribute
+        }
+        field field_input_ids type tensor<float>(d0[1],d1[128]) {
+            indexing: attribute
+        }
+        field field_token_type_ids type tensor<float>(d0[1],d1[128]) {
+            indexing: attribute
+        }
+        field field_attention_mask type tensor<float>(d0[1],d1[128]) {
+            indexing: attribute
+        }
+    }
+
+    rank-profile vespabert inherits default {
+        function input_ids() {
+            expression: attribute(field_input_ids)
+        }
+        function token_type_ids() {
+            expression: attribute(field_token_type_ids)
+        }
+        function attention_mask() {
+            expression: attribute(field_attention_mask)
+        }
+        function runbert() {
+            expression: onnx_vespa("tinybert.onnx", "default", "output_0")
+        }
+        first-phase {
+            expression: sum(runbert)
+        }
+    }
+
+    onnx-model tinybert {
+        file:  models/tinybert.onnx
+        input  "input_ids":      my_input_ids
+        input  "token_type_ids": my_token_type_ids
+        input  "attention_mask": my_attention_mask
+    }
+
+    rank-profile onnxbert {
+        function my_input_ids() {
+            expression: cell_cast(attribute(field_input_ids),double)
+        }
+        function my_token_type_ids() {
+            expression: cell_cast(attribute(field_token_type_ids),double)
+        }
+        function my_attention_mask() {
+            expression: cell_cast(attribute(field_attention_mask),double)
+        }
+        first-phase {
+            expression: sum(onnxModel(tinybert, "output_0"))
+        }
+    }
+
+    rank-profile globalvespabert inherits vespabert {
+        first-phase {
+            expression: value(0.0)
+        }
+        global-phase {
+            expression: sum(runbert)
+        }
+    }
+
+    rank-profile globalonnxbert {
+        function my_input_ids() {
+            expression: cell_cast(attribute(field_input_ids),double)
+        }
+        function my_token_type_ids() {
+            expression: cell_cast(attribute(field_token_type_ids),double)
+        }
+        function my_attention_mask() {
+            expression: cell_cast(attribute(field_attention_mask),double)
+        }
+        global-phase {
+            expression: sum(onnxModel(tinybert, "output_0"))
+        }
+    }
+
+}
