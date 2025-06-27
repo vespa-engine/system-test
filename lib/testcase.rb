@@ -289,6 +289,8 @@ class TestCase
       begin
         Timeout::timeout(get_timeout, SystemTestTimeout) do |timeout|
           teardown
+          # Copy remote log files to @dirs.vespalogdir
+          copy_remote_vespa_logfiles(savev)
         end
       rescue StandardError, ScriptError, SignalException => e
         add_error(e)
@@ -311,9 +313,6 @@ class TestCase
         @endtime = Time.now
         @result.endtime = @endtime
         @result.add_logfile('testoutput', @dirs.testoutput)
-
-        # Copy remote log files to @dirs.vespalogdir
-        copy_remote_vespa_logfiles(savev)
 
         add_vespa_logfiles
         add_logfiles(@dirs.valgrindlogdir)
@@ -354,6 +353,7 @@ class TestCase
   def copy_remote_vespa_logfiles(vespa_model)
     vespa_model.nodeproxies.values.each do |proxy|
       remote_dir = proxy.remote_eval('@testcase.dirs.vespalogdir')
+      puts "Copying log files from remote directory: #{remote_dir}"
       proxy.copy_remote_directory_to_local_directory(remote_dir, @dirs.vespalogdir)
     end
   rescue Exception => ex

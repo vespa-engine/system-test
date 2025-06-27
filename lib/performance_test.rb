@@ -35,7 +35,15 @@ class PerformanceTest < TestCase
     @perf_data_dir = "#{Environment.instance.vespa_home}/tmp/perf/"
     @perf_data_file = File.join(@perf_data_dir,'record.data')
     @perf_stat_file = File.join(@perf_data_dir,'perf_stats')
+    @vespa_user = Environment.instance.vespa_user
+    @curr_user = `id -un`.chomp
     @script_user = get_script_user
+    @sudo_to_v = ""
+    @need_chown = false
+    if @vespa_user != @script_user or @curr_user == "root"
+      @sudo_to_v = "sudo -u #{@vespa_user}"
+      @need_chown = true
+    end
   end
 
   def timeout_seconds
@@ -48,7 +56,7 @@ class PerformanceTest < TestCase
 
   def get_script_user
     sudo_user = `echo ${SUDO_USER}`.chomp
-    user = "builder"
+    user = @curr_user
     if sudo_user != nil && sudo_user != ""
       user = sudo_user
     end
@@ -330,7 +338,7 @@ class PerformanceTest < TestCase
           @perf_record_pids[node].each do | name, pids |
             pids.each do | pid |
               @perf_processes[node] << node.execute_bg("perf record -e cycles -p #{pid} -o #{@perf_data_file}-#{pid}")
-              @perf_processes[node] << node.execute_bg("exec perf stat -ddd -p #{pid} &> #{@perf_stat_file}-#{name}-#{pid}")
+              @perf_processes[node] << node.execute_bg("perf stat -ddd -p #{pid} -o #{@perf_stat_file}-#{name}-#{pid}")
             end
           end
           if @perf_recording == "all"
@@ -360,7 +368,8 @@ class PerformanceTest < TestCase
 
     reporter_pids = {}
     vespa.nodeproxies.values.each do | node |
-      node.execute("chown root:root /tmp/perf-*.map 2>/dev/null || true")
+      # do we really need this?
+      node.execute("chown root:root /tmp/perf-*.map", {:exceptiononfailure => false}) if @need_chown
 
       dir_name = perf_dir_name(label, node)
       node.execute("mkdir -p #{dir_name}")
@@ -378,18 +387,21 @@ class PerformanceTest < TestCase
             stat_file = nil
           else
             data_file = "#{@perf_data_file}-#{pid}"
-            stat_file = "#{@perf_data_file}-#{name}-#{pid}"
+            stat_file = "#{@perf_stat_file}-#{name}-#{pid}"
           end
 
           file_name = File.join(dir_name, "perf_#{name}-#{pid}")
 
           begin
-            # Execute the perfmap dump regardless of process type or existence.
-            node.execute("/usr/bin/sudo -u #{Environment.instance.vespa_user} jcmd #{pid} Compiler.perfmap &> /dev/null; chown root:root /tmp/perf-*.map &>/dev/null", {:exceptiononfailure => false})
-            reporter_pids[node] << node.execute_bg("perf report --stdio --header --show-nr-samples --percent-limit 0.01 --pid #{pid} --input #{data_file} 2>/dev/null | sed '/^# event : name = cycles.*/d' > #{file_name}")
-            reporter_pids[node] << node.execute_bg("cp -a #{@perf_stat_file}-#{name}-#{pid} #{dir_name}") if stat_file
+            # Only execute the perfmap dump for java containers
+            if name =~ /container/
+              node.execute("ps -p #{pid} | grep java && #{@sudo_to_v} jcmd #{pid} Compiler.perfmap", {:exceptiononfailure => false})
+              node.execute("chown root:root /tmp/perf-*.map", {:exceptiononfailure => false}) if @need_chown
+            end
+            node.execute("perf report --stdio --header --show-nr-samples --percent-limit 0.01 --pid #{pid} --input #{data_file} 2>/dev/null | sed '/^# event : name = cycles.*/d' > #{file_name}")
+            node.execute("cp -a #{@stat_file} #{dir_name}") if stat_file
           rescue ExecuteError
-            puts "Unable to generate report for #{binary} on host #{node.name}"
+            puts "Unable to generate report for #{name} on host #{node.name}"
           end
         end
       end
@@ -411,17 +423,26 @@ class PerformanceTest < TestCase
       @perf_processes.each do |node, pidlist|
         pidlist.each do |pid|
           begin
-            Timeout.timeout(20) do
-              node.kill_pid(pid, 'INT')
-            end
+            if node.pid_running(pid)
+              puts "Stopping perf pid #{pid} on #{node.name}"
+              Timeout.timeout(20) do
+                node.kill_pid(pid, 'INT')
+              end
+           else
+              puts "Perf pid #{pid} on #{node.name} already stopped"
+           end
           rescue Timeout::Error, ExecuteError
-            puts "Failed to terminate pid #{pid} on host #{node.name}, trying KILL. This means that no perf report will be generated!"
+            puts "Failed to stop pid #{pid} on host #{node.name}, trying HUP."
             begin
-              node.kill_pid(pid, 'KILL')
+              node.kill_pid(pid, 'HUP')
             rescue ExecuteError, SystemCallError
               puts "Failed to terminate pid #{pid} on host #{node.name}"
             end
-          end if node.pid_running(pid)
+          end
+          if node.pid_running(pid)
+            puts "Using KILL on pid #{pid} on host #{node.name}"
+            node.kill_pid(pid, 'KILL')
+         end
         end
       end
       @perf_processes.clear
@@ -464,9 +485,11 @@ class PerformanceTest < TestCase
   # Note: teardown will stop process by calling vespa_destination_stop
   def vespa_destination_start
     @vespa_destination_pid = vespa.adminserver.execute_bg("#{Environment.instance.vespa_home}/bin/vespa-destination --instant --silent 1000000000")
+    puts "Started vespa-destination #{@vespa_destination_pid}"
   end
 
   def vespa_destination_stop
+    puts "Stop vespa-destination #{@vespa_destination_pid}"
     vespa.adminserver.kill_pid(@vespa_destination_pid) if @vespa_destination_pid
   end
 
