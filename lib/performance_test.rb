@@ -338,7 +338,7 @@ class PerformanceTest < TestCase
           @perf_record_pids[node].each do | name, pids |
             pids.each do | pid |
               @perf_processes[node] << node.execute_bg("perf record -e cycles -p #{pid} -o #{@perf_data_file}-#{pid}")
-              @perf_processes[node] << node.execute_bg("exec perf stat -ddd -p #{pid} &> #{@perf_stat_file}-#{name}-#{pid}")
+              @perf_processes[node] << node.execute_bg("perf stat -ddd -p #{pid} -o #{@perf_stat_file}-#{name}-#{pid}")
             end
           end
           if @perf_recording == "all"
