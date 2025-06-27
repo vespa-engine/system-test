@@ -368,7 +368,8 @@ class PerformanceTest < TestCase
 
     reporter_pids = {}
     vespa.nodeproxies.values.each do | node |
-      node.execute("chown root:root /tmp/perf-*.map 2>/dev/null || true")
+      # do we really need this?
+      node.execute("chown root:root /tmp/perf-*.map", {:exceptiononfailure => false}) if @need_chown
 
       dir_name = perf_dir_name(label, node)
       node.execute("mkdir -p #{dir_name}")
