@@ -77,8 +77,12 @@ class BackendClient
         path = File.join(dir, filename)
         if filename == "perf"
           testdata.concat(get_perf_data(path))
-        elsif filename == "performance" && !testcase.has_active_sanitizers && testcase.perf_recording == "off"
+        elsif filename == "performance" && !testcase.has_active_sanitizers
           testdata.concat(get_performance_results(path))
+          puts "WARNING: Perf recording may give bad results" if testcase.perf_recording != "off"
+        else
+          puts "INFO: Active sanitizers" if testcase.has_active_sanitizers
+          puts "INFO: Not sending data to factory: #{get_performance_results(path)}"
         end
       end
     end

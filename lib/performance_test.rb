@@ -363,7 +363,7 @@ class PerformanceTest < TestCase
       puts "Perf profiling turned off."
       return
     else
-      puts "Generating perf report."
+      puts ">>> Generating perf report."
     end
 
     reporter_pids = {}
@@ -389,7 +389,6 @@ class PerformanceTest < TestCase
             data_file = "#{@perf_data_file}-#{pid}"
             stat_file = "#{@perf_stat_file}-#{name}-#{pid}"
           end
-
           file_name = File.join(dir_name, "perf_#{name}-#{pid}")
 
           begin
@@ -398,8 +397,10 @@ class PerformanceTest < TestCase
               node.execute("ps -p #{pid} | grep java && #{@sudo_to_v} jcmd #{pid} Compiler.perfmap", {:exceptiononfailure => false})
               node.execute("chown root:root /tmp/perf-*.map", {:exceptiononfailure => false}) if @need_chown
             end
-            node.execute("perf report --stdio --header --show-nr-samples --percent-limit 0.01 --pid #{pid} --input #{data_file} 2>/dev/null | sed '/^# event : name = cycles.*/d' > #{file_name}")
-            node.execute("cp -a #{@stat_file} #{dir_name}") if stat_file
+            filter = '/^# event : name = cycles.*/d;/# event : name/s/id = { [^}]* }/id = { ... }/;s/[.]\{5,255\}/.../g'
+            fixed_opts = '--stdio --header --show-nr-samples --percent-limit 0.01'
+            node.execute("perf report #{fixed_opts} --pid #{pid} --input #{data_file} 2>/dev/null | sed '#{filter}' > #{file_name}")
+            node.execute("cp -a #{stat_file} #{dir_name}") if stat_file
           rescue ExecuteError
             puts "Unable to generate report for #{name} on host #{node.name}"
           end
@@ -412,9 +413,11 @@ class PerformanceTest < TestCase
         node.waitpid(pid)
       end
       dir_name = perf_dir_name(label, node)
-      puts "Copy files from #{dir_name} on host #{node.name}"
+      puts "Copy files from #{dir_name} on host #{node.name} --> #{@perfdir}"
       node.copy_remote_directory_into_local_directory(dir_name, @perfdir)
     end
+    # mark all as done:
+    @perf_record_pids = {}
   end
 
   def stop_perf_profiler
