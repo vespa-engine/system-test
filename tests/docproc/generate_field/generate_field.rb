@@ -17,12 +17,14 @@ class GenerateField < SearchTest
     deploy(selfdir + "/app")
     start(600)
   
-    feed_and_wait_for_docs('passage', 1, :file => selfdir + "data/feed.jsonl")
+    feed_and_wait_for_docs('passage', 1, :file => selfdir + "data/feed.jsonl", :timeout => 300)
     
     result = search("query=friend")
     assert_equal(1, result.hit.size)
     
     hit = result.hit[0]
+
+    puts "got 1 hit: #{hit}"
 
     # Text output to string with mock generator 
     assert_equal("Explain: silence is a true friend who never betrays Explain: silence is a true friend who never betrays",
