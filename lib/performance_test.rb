@@ -406,6 +406,8 @@ class PerformanceTest < TestCase
           end
         end
       end
+      # mark all as done:
+      @perf_record_pids[node] = {}
     end
 
     vespa.nodeproxies.values.each do | node |
@@ -416,8 +418,6 @@ class PerformanceTest < TestCase
       puts "Copy files from #{dir_name} on host #{node.name} --> #{@perfdir}"
       node.copy_remote_directory_into_local_directory(dir_name, @perfdir)
     end
-    # mark all as done:
-    @perf_record_pids = {}
   end
 
   def stop_perf_profiler
