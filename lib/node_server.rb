@@ -143,7 +143,11 @@ class NodeServer
   end
 
   def waitpid(pid)
-    Process.waitpid(pid)
+    begin
+      Process.waitpid(pid)
+    rescue StandardError => se
+      testcase_output("Unexpected waitpid failure: #{se}")
+    end
   end
 
   # Find child pid of parent runserver

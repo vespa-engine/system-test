@@ -362,6 +362,9 @@ class PerformanceTest < TestCase
     if @perf_recording == "off"
       puts "Perf profiling turned off."
       return
+    elsif @perf_record_pids == nil || @perf_record_pids.empty?
+      puts "No perf recording was done at all."
+      return
     else
       puts ">>> Generating perf report."
     end
