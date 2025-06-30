@@ -15,17 +15,17 @@ class EcommerceHybridSearchESTest < EcommerceHybridSearchESTestBase
     @node = vespa.nodeproxies.values.first
     prepare_es_app
 
-    benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "feed")
+    es_feed(feed_file_name, get_num_docs, @feed_threads, "feed", true)
     dump_jvm_stats
 
     flush_index
     benchmark_queries("after_flush", false, [1, 2, 4, 8, 16, 32, 64])
     benchmark_queries("after_flush", true, [1, 2, 4, 8, 16, 32, 64])
 
-    benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "refeed")
-    benchmark_update("es_update-1M.json.zst", get_num_docs, @feed_threads)
+    es_feed(feed_file_name, get_num_docs, @feed_threads, "refeed", true)
+    es_update("es_update-1M.json.zst", get_num_docs, @feed_threads, true)
 
-    feed_thread = Thread.new { benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "refeed_with_queries") }
+    feed_thread = Thread.new { es_feed(feed_file_name, get_num_docs, @feed_threads, "refeed_with_queries", false) }
     sleep 2
     benchmark_queries("during_refeed", true, [1, 16, 64], {:runtime => 9})
     feed_thread.join
