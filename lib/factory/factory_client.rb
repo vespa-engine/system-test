@@ -73,7 +73,12 @@ class FactoryClient
     begin
       handle_response(@http_client.request("/factory/v1/testruns/#{testrun_id}/tests/#{test_name}/artifacts",
                                            'POST', artifacts.to_json))
+    rescue StandardError => e
+      @log.error("Could not post artifact for test #{test_name} to Factory.")
+      update[:status => "failure"]
+    end
 
+    begin
       handle_response(@http_client.request("/factory/v1/testruns/#{testrun_id}/tests/#{test_name}",
                                            'PUT', update.to_json))
     rescue StandardError => e
