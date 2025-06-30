@@ -15,7 +15,7 @@ class EcommerceHybridSearchESForceMerge1Test < EcommerceHybridSearchESTestBase
     @node = vespa.nodeproxies.values.first
     prepare_es_app
 
-    benchmark_feed(feed_file_name, get_num_docs, @feed_threads, "feed")
+    es_feed(feed_file_name, get_num_docs, @feed_threads, "feed", true)
     benchmark_force_merge(get_num_docs, 1)
     dump_jvm_stats
     benchmark_queries("after_merge", false, [1, 2, 4, 8, 16, 32, 64])

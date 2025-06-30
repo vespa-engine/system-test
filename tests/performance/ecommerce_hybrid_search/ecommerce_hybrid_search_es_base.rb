@@ -72,10 +72,10 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
     @node.execute("curl -X GET '#{@es_endpoint}/_nodes/stats/jvm?pretty'")
   end
 
-  def benchmark_feed(feed_file, num_docs, num_threads, label)
+  def es_feed(feed_file, num_docs, num_threads, label, with_profiler)
     # This creates feed files with 6k documents each (~50 MB per file).
     files = prepare_feed_files(feed_file, dirs.tmpdir + "feed/", 12000)
-    benchmark_feed_helper(files, num_docs, num_threads, label)
+    es_feed_helper(files, num_docs, num_threads, label, with_profiler)
   end
 
   def benchmark_force_merge(num_docs, max_segments, label = "merge")
@@ -100,18 +100,18 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
     write_report(fillers)
   end
 
-  def benchmark_update(update_file, num_docs, num_threads)
+  def es_update(update_file, num_docs, num_threads, with_profiler)
     # This creates update files with 6k documents each (~0.4 MB per file).
     files = prepare_feed_files(update_file, dirs.tmpdir + "update/", 12000)
-    benchmark_feed_helper(files, num_docs, num_threads, "update")
+    es_feed_helper(files, num_docs, num_threads, "update", with_profiler)
   end
 
-  def benchmark_feed_helper(files, num_docs, num_threads, label)
+  def es_feed_helper(files, num_docs, num_threads, label, with_profiler)
     files_per_thread = (files.size.to_f / num_threads.to_f).ceil
     puts "Starting to #{label} #{num_docs} documents: files=#{files.size}, threads=#{num_threads}, files_per_thread=#{files_per_thread}"
     system_sampler = Perf::System::new(@node)
     system_sampler.start
-    profiler_start
+    profiler_start if with_profiler
     start_time = Time.now
 
     threads = []
@@ -131,7 +131,7 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
 
     elapsed_sec = Time.now - start_time
     puts "Elapsed time feeding (sec): #{elapsed_sec}"
-    profiler_report(label)
+    profiler_report(label) if with_profiler
     count_res = @node.execute("curl -X GET '#{@es_endpoint}/_count?pretty'")
     count = JSON.parse(count_res)["count"].to_i
     assert_equal(num_docs, count, "Expected #{num_docs} documents in the index, but was #{count}")

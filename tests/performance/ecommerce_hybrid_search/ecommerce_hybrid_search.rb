@@ -24,16 +24,29 @@ class EcommerceHybridSearchTest < EcommerceHybridSearchTestBase
     benchmark_feed(feed_file_name, "refeed")
     benchmark_feed("vespa_update-1M.json.zst", "update")
 
-    feed_thread = Thread.new { benchmark_feed(feed_file_name, "refeed_with_queries") }
+    feed_thread = Thread.new { just_feed(feed_file_name, "refeed_with_queries") }
     sleep 2
     benchmark_queries("during_refeed", true, [1, 16, 64], {:runtime => 9})
     feed_thread.join
 
     write_performance_results_to_json_file
+    dump_thread_stats
   end
 
   def feed_file_name
     @minimal ? "vespa_feed-10k.json.zst" : "vespa_feed-1M.json.zst"
+  end
+
+  def just_feed(feed_file, label)
+    node_file = download_file(feed_file, vespa.adminserver)
+    system_sampler = Perf::System::new(vespa.adminserver)
+    system_sampler.start
+    fillers = [parameter_filler("label", label), system_metric_filler(system_sampler)]
+    run_feeder(node_file, fillers, {:client => :vespa_feed_client,
+                                    :compression => "none",
+                                    :localfile => true,
+                                    :silent => true,
+                                    :disable_tls => false})
   end
 
   def benchmark_feed(feed_file, label)
