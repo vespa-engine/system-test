@@ -51,7 +51,7 @@ class FuzzyMatchingPerfTest < PerformanceTest
     #
 
     @data_path = "fuzzy_matching/wiki"
-    @docs = "docs.2M.json"
+    @docs = "docs.2M.json.zst"
   end
 
   def test_fuzzy_matching_wiki
@@ -123,11 +123,12 @@ class FuzzyMatchingPerfTest < PerformanceTest
   end
 
   def feed_file(feed_file)
-    run_feeder(feed_file, [], {:client => :vespa_feed_client,
-                               :compression => "none",
-                               :localfile => true,
-                               :silent => true,
-                               :disable_tls => false})
+    run_stream_feeder("zstdcat #{feed_file}", [],
+                      {:client => :vespa_feed_client,
+                       :compression => 'none',
+                       :localfile => true,
+                       :silent => true,
+                       :disable_tls => false})
   end
 
   def teardown
