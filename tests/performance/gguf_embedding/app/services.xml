@@ -8,6 +8,11 @@
       <config name="ai.vespa.embedding.config.gguf-embedder">
         <embeddingModel url="https://data.vespa-cloud.com/tests/performance/multilingual-e5-large-instruct-q6_k.gguf"/>
         <maxPromptTokens>512</maxPromptTokens>
+        <parallel>16</parallel>
+        <contextSize>8192</contextSize>
+        <continuousBatching>true</continuousBatching>
+        <physicalMaxBatchSize>8192</physicalMaxBatchSize>
+        <logicalMaxBatchSize>8192</logicalMaxBatchSize>
       </config>
     </component>
     <document-api/>
@@ -16,6 +21,13 @@
       <jvm options="-Xms4g -Xmx4g" />
       <node hostalias="node1"/>
     </nodes>
+
+    <!-- Disable operation queue in doc v1 api handler -->
+    <config name="com.yahoo.document.restapi.document-operation-executor">
+      <maxThrottled>0</maxThrottled>
+      <maxThrottledAge>0</maxThrottledAge>
+      <maxThrottledBytes>0</maxThrottledBytes>
+    </config>
   </container>
 
   <content id="text" version="1.0">

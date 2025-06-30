@@ -34,6 +34,6 @@ class GgufEmbeddingPerfTest < PerformanceTest
     puts "Result: #{result}"
 
     # Feed the reduced file
-    run_feeder(reduced_file, [])
+    run_feeder(reduced_file, [], {:numthreads => 64, :timeout => 1200})
   end
 end
