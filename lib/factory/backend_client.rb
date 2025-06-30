@@ -34,7 +34,7 @@ end
 
 class BackendClient
 
-  MAX_LOGFILE_SIZE = 1*1024*1024
+  MAX_LOGFILE_SIZE = 100*1024
 
   def initialize(testrun_id, basedir, log)
     @testrun_id = testrun_id
