@@ -41,7 +41,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     (threads_per_search > 0) ? "threads-#{threads_per_search}" : "default"
   end
 
-  def query_and_benchmark(algorithm, target_hits, explore_hits, filter_percent = 0, clients = 1, threads_per_search = 0)
+  def query_and_benchmark(algorithm, target_hits, explore_hits, slack = 0.0, filter_percent = 0, clients = 1, threads_per_search = 0)
     approximate = algorithm == HNSW ? "true" : "false"
     query_file = fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
     label = "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-n#{clients}-t#{threads_per_search}"
@@ -51,6 +51,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
                parameter_filler(ALGORITHM, algorithm),
                parameter_filler(TARGET_HITS, target_hits),
                parameter_filler(EXPLORE_HITS, explore_hits),
+               parameter_filler(SLACK, slack),
                parameter_filler(FILTER_PERCENT, filter_percent),
                parameter_filler(CLIENTS, clients),
                parameter_filler(THREADS_PER_SEARCH, threads_per_search)]
@@ -59,7 +60,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
                 query_file,
                 {:runtime => FBENCH_TIME,
                  :clients => clients,
-                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}",
+                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}&ranking.matching.adaptiveBeamSearchSlack=#{slack}",
                  :result_file => result_file},
                 fillers)
     profiler_report(label)
@@ -76,15 +77,25 @@ class CommonSiftGistBase < CommonAnnBaseTest
 
   def run_target_hits_10_tests
     [0, 10, 30, 70, 110, 190, 390, 590, 790].each do |explore_hits|
-      query_and_benchmark(HNSW, 10, explore_hits, 0, 1)
+      query_and_benchmark(HNSW, 10, explore_hits)
       calc_recall_for_queries(10, explore_hits)
+    end
+
+    [0.00, 0.05, 0.10, 0.15, 0.2, 0.5, 1.0].each do |slack|
+      query_and_benchmark(HNSW, 10, 0, slack)
+      calc_recall_for_queries(10, 0, slack)
     end
   end
 
   def run_target_hits_100_tests
     [0, 20, 100, 300, 500, 700].each do |explore_hits|
-      query_and_benchmark(HNSW, 100, explore_hits, 0, 1)
+      query_and_benchmark(HNSW, 100, explore_hits)
       calc_recall_for_queries(100, explore_hits)
+    end
+
+    [0.00, 0.05, 0.10, 0.15, 0.2, 0.5, 1.0].each do |slack|
+      query_and_benchmark(HNSW, 100, 0, slack)
+      calc_recall_for_queries(100, 0, slack)
     end
   end
 

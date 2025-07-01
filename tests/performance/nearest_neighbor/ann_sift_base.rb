@@ -30,20 +30,20 @@ class AnnSiftBase < CommonSiftGistBase
 
     feed_and_benchmark((mixed_tensor ? @docs_mixed_1M : @docs_1M), "1M-docs")
 
-    query_and_benchmark(BRUTE_FORCE, 10, 0, 0, 1)
+    query_and_benchmark(BRUTE_FORCE, 10, 0)
 
     prepare_queries_for_recall
 
     run_target_hits_10_tests
 
     [1, 10, 50, 90, 95, 99].each do |filter_percent|
-      query_and_benchmark(HNSW, 100, 0, filter_percent, 1)
-      query_and_benchmark(BRUTE_FORCE, 100, 0, filter_percent, 1)
+      query_and_benchmark(HNSW, 100, 0, 0.0, filter_percent)
+      query_and_benchmark(BRUTE_FORCE, 100, 0, 0.0, filter_percent)
     end
 
     if test_threads_per_search
       [1, 2, 4, 8, 16].each do |threads|
-        query_and_benchmark(HNSW, 100, 0, 10, 1, threads)
+        query_and_benchmark(HNSW, 100, 0, 0.0, 10, 1, threads)
       end
     end
 

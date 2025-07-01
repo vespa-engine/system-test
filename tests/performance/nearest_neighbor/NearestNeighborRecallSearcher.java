@@ -56,15 +56,16 @@ public class NearestNeighborRecallSearcher extends Searcher {
             String label = props.getString("nnr.label", "nns");
             int targetHits = props.getInteger("nnr.targetHits", 10);
             int exploreHits = props.getInteger("nnr.exploreHits", 0);
+            double slack = Double.parseDouble(props.getString("nnr.slack", "0.00"));
             String idField = props.getString("nnr.idField", "id");
             log.log(Level.FINE, "NNRS.search(): docTensor=" + docTensor +
                     ", queryTensor=" + queryTensor + ", targetHits=" + targetHits +
                     ", exploreHits=" + exploreHits + ", idField=" + idField);
             var exactHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, false, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, slack, false, idField);
 
             var approxHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, true, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, slack, true, idField);
 
             try {
                 int recall = calcRecall(exactHits, approxHits, targetHits);
@@ -93,7 +94,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
     private List<SimpleHit> executeNearestNeighborQuery(Query parentQuery, Execution parentExecution,
                                                         String docTensor, String queryTensor,
                                                         String label,
-                                                        int targetHits, int exploreHits,
+                                                        int targetHits, int exploreHits, double slack,
                                                         boolean approximate, String idField) {
         var nni = new NearestNeighborItem(docTensor, queryTensor);
         nni.setLabel(label);
@@ -107,6 +108,8 @@ public class NearestNeighborRecallSearcher extends Searcher {
         query.properties().set(featureName, parentQuery.properties().get(featureName));
         query.properties().set("summary", parentQuery.properties().getString("summary"));
         query.setHits(targetHits);
+
+        query.properties().set("ranking.matching.adaptiveBeamSearchSlack", slack);
 
         var vespaChain = parentExecution.searchChainRegistry().getComponent("vespa");
         var execution = new Execution(vespaChain, parentExecution.context());
