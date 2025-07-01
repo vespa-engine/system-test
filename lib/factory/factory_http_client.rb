@@ -7,9 +7,10 @@ require 'factory_authentication'
 
 class FactoryHttpClient
 
-  def initialize
+  def initialize(log = nil)
     @user_agent = "Vespa Factory Client (ruby #{RUBY_VERSION})"
     @auth = FactoryAuthentication.new
+    @log = log
   end
 
   ALL_NET_HTTP_ERRORS = [
@@ -20,6 +21,9 @@ class FactoryHttpClient
 
   def request(path, method='GET', body=nil, headers=nil)
     uri = URI(@auth.factory_api + path)
+    @log&.info("Making #{method} request to #{uri}")
+    @log&.debug("Request body: #{body}") if body
+
     case method
     when 'DELETE'
       request = Net::HTTP::Delete.new(uri)
@@ -58,9 +62,12 @@ class FactoryHttpClient
 
       # This method will throw an Net::HTTPError if the response is not 2xx (this is a badly named method)
       response.value
+      @log&.info("HTTP request completed successfully: #{response.code} #{response.message}")
 
     rescue *ALL_NET_HTTP_ERRORS => e
+      @log&.warn("HTTP request failed (attempt #{retries + 1}/5): #{e.message}")
       retry if (retries += 1) < 5
+      @log&.error("HTTP request failed after #{retries} retries: #{e.message}")
       raise "Could not execute http request after #{retries} retries. Exception: #{e.message}"
     end
 
