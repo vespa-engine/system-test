@@ -94,7 +94,7 @@ class CustomStateApi < IndexedStreamingSearchTest
   end
 
   def assert_flush_engine(page)
-    assert_keys(["allTargets", "flushingTargets"], page)
+    assert_keys(["allTargets", "flushingTargets", "flush_history"], page)
     assert(!page["allTargets"].empty?)
   end
 
