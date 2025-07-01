@@ -15,6 +15,7 @@ class CommonAnnBaseTest < PerformanceTest
   APPROXIMATE_THRESHOLD = "approximate_threshold"
   FILTER_FIRST_THRESHOLD = "filter_first_threshold"
   FILTER_FIRST_EXPLORATION = "filter_first_exploration"
+  SLACK = "slack"
   HNSW = "hnsw"
   BRUTE_FORCE = "brute_force"
   RECALL_AVG = "recall.avg"
@@ -67,8 +68,8 @@ class CommonAnnBaseTest < PerformanceTest
     fetch_file_to_localhost(@query_vectors, @local_query_vectors)
   end
 
-  def calc_recall_for_queries(target_hits, explore_hits, filter_percent = 0, approximate_threshold = 0.05, filter_first_threshold = 0.0, filter_first_exploration = 0.3, doc_type = "test", doc_tensor = "vec_m16", query_tensor = "q_vec")
-    puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, filter_percent=#{filter_percent}, approximate_threshold=#{approximate_threshold}, filter_first_threshold=#{filter_first_threshold}, filter_first_exploration=#{filter_first_exploration}, doc_type=#{doc_type}, doc_tensor=#{doc_tensor}, query_tensor=#{query_tensor}"
+  def calc_recall_for_queries(target_hits, explore_hits, filter_percent = 0, approximate_threshold = 0.05, filter_first_threshold = 0.0, filter_first_exploration = 0.3, slack = 0.0, doc_type = "test", doc_tensor = "vec_m16", query_tensor = "q_vec")
+    puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, filter_percent=#{filter_percent}, approximate_threshold=#{approximate_threshold}, filter_first_threshold=#{filter_first_threshold}, filter_first_exploration=#{filter_first_exploration}, slack=#{slack}, doc_type=#{doc_type}, doc_tensor=#{doc_tensor}, query_tensor=#{query_tensor}"
     result = RecallResult.new(target_hits)
     vectors = []
     num_threads = 5
@@ -83,7 +84,7 @@ class CommonAnnBaseTest < PerformanceTest
     threads = []
     for i in 0...num_threads
       threads << Thread.new(batches[i]) do |batch|
-        calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, batch, result, doc_type, doc_tensor, query_tensor)
+        calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, batch, result, doc_type, doc_tensor, query_tensor)
       end
     end
     threads.each(&:join)
@@ -100,13 +101,14 @@ class CommonAnnBaseTest < PerformanceTest
                   parameter_filler(APPROXIMATE_THRESHOLD, approximate_threshold),
                   parameter_filler(FILTER_FIRST_THRESHOLD, filter_first_threshold),
                   parameter_filler(FILTER_FIRST_EXPLORATION, filter_first_exploration),
+                  parameter_filler(SLACK, slack),
                   metric_filler(RECALL_AVG, result.avg),
                   metric_filler(RECALL_MEDIAN, result.median)])
   end
 
-  def calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, vectors, result, doc_type, doc_tensor, query_tensor)
+  def calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, vectors, result, doc_type, doc_tensor, query_tensor)
     vectors.each do |vector|
-      raw_recall = calc_recall_in_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, vector, doc_type, doc_tensor, query_tensor)
+      raw_recall = calc_recall_in_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, vector, doc_type, doc_tensor, query_tensor)
       result.add(raw_recall)
     end
   end
@@ -117,8 +119,8 @@ class CommonAnnBaseTest < PerformanceTest
     proxy_node.copy_remote_file_to_local_file(proxy_file, local_file)
   end
 
-  def calc_recall_in_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, query_vector, doc_type, doc_tensor, query_tensor)
-    query = get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, query_vector, doc_type, doc_tensor, query_tensor)
+  def calc_recall_in_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, query_vector, doc_type, doc_tensor, query_tensor)
+    query = get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, query_vector, doc_type, doc_tensor, query_tensor)
     result = search_with_timeout(20, query)
     assert_hitcount(result, 1)
     hit = result.hit[0]
@@ -134,7 +136,7 @@ class CommonAnnBaseTest < PerformanceTest
     "query=sddocname:#{doc_type}&summary=minimal&ranking.features.query(#{query_tensor})=#{query_vector}" +
     "&nnr.enable=true&nnr.docTensor=#{doc_tensor}&nnr.targetHits=#{target_hits}&nnr.exploreHits=#{explore_hits}&nnr.filterPercent=#{filter_percent}" +
     "&nnr.approximateThreshold=#{approximate_threshold}&nnr.filterFirstThreshold=#{filter_first_threshold}&nnr.filterFirstExploration=#{filter_first_exploration}" +
-    "&nnr.queryTensor=#{query_tensor}"
+    "&nnr.slack=#{slack}&nnr.queryTensor=#{query_tensor}"
   end
 
   class RecallResult
