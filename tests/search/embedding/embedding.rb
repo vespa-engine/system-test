@@ -7,7 +7,7 @@ require 'indexed_streaming_search_test'
 class Embedding < IndexedStreamingSearchTest
 
   def setup
-    set_owner("bratseth")
+    set_owner("bjorncs")
   end
 
   def sentencepiece_tokenizer_component
