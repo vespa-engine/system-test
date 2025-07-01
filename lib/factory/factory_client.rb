@@ -5,7 +5,7 @@ require 'json'
 
 class FactoryClient
   def initialize(log)
-    @http_client = FactoryHttpClient.new
+    @http_client = FactoryHttpClient.new(log)
     @log = log
   end
 
@@ -112,4 +112,3 @@ private
   end
 
 end
-
