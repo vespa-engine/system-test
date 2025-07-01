@@ -109,28 +109,16 @@ class GroupingTest < PerformanceTest
       else
         puts "Search node is not running on an x86-64 CPU, not dumping power license PMUs"
       end
-      perf_tmp_file = search_node.create_unique_temp_file('perf')
-      perf_report_out_file = search_node.create_unique_temp_file('perf_report')
-      # Only look at user stacks to minimize risk of running into capability problems or
-      # rejections from hypervisors...
-      # TODO `--call-graph`
-      perf_record_cmd = "perf record -a --pid=#{proton_pid} --user-callchains -o #{perf_tmp_file} sleep 30"
-      # TODO `--call-graph='graph,0.01,caller'`, but that output is so large (and wide!),
-      #   we probably need to attach it as a separate report file on factory (see below).
-      perf_report_cmd = "perf report --stdio --stdio-color=never -i #{perf_tmp_file} | head -200 > #{perf_report_out_file}"
-      search_node.execute(perf_record_cmd)
-      search_node.execute(perf_report_cmd)
-      perf_dump = search_node.readfile(perf_report_out_file) # Expected to be fairly bounded in size
     }
+    @perf_recording = 'some'
+    profiler_start
     run_fbench(qrserver, 1, 60, [parameter_filler("legend", "single_level")])
     node = vespa.search["search"].first
+    profiler_report('single_level')
     write_report([metric_filler("memory.rss", node.memusage_rss(node.get_pid)),
                   parameter_filler("legend", "single_level")])
     puts "Single level mem usage: #{node.memusage_rss(node.get_pid)}"
     perf_t.join
-    puts "Perf output:"
-    puts perf_dump
-    # TODO if call-graph: attach_to_factory_report('my_perf_output', perf_dump)
 
     File.open(@local_queryfile, "w") { |file|
       file.write("/search/?query=sddocname:groupingbench&nocache&hits=0&" +
@@ -139,7 +127,9 @@ class GroupingTest < PerformanceTest
     }
     vespa.adminserver.copy(@local_queryfile, @remote_dir)
     puts "Multilevel"
+    profiler_start
     run_fbench(qrserver, 1, 60, [parameter_filler("legend", "multilevel")])
+    profiler_report('multilevel')
     write_report([metric_filler("memory.rss", node.memusage_rss(node.get_pid)),
                   parameter_filler("legend", "multilevel")])
     puts "Multilevel mem usage: #{node.memusage_rss(node.get_pid)}"

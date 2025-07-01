@@ -337,12 +337,12 @@ class PerformanceTest < TestCase
           @perf_processes[node] = []
           @perf_record_pids[node].each do | name, pids |
             pids.each do | pid |
-              @perf_processes[node] << node.execute_bg("perf record -e cycles -p #{pid} -o #{@perf_data_file}-#{pid}")
+              @perf_processes[node] << node.execute_bg("perf record -e cycles -F 999 -p #{pid} -o #{@perf_data_file}-#{pid}")
               @perf_processes[node] << node.execute_bg("perf stat -ddd -p #{pid} -o #{@perf_stat_file}-#{name}-#{pid}")
             end
           end
           if @perf_recording == "all"
-            @perf_processes[node] << node.execute_bg("perf record -e cycles -a -o #{@perf_data_file}-0")
+            @perf_processes[node] << node.execute_bg("perf record -e cycles -F 999 -a -o #{@perf_data_file}-0")
           end
         rescue ExecuteError
           puts "Unable to start perf on node #{node.name}"
