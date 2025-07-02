@@ -30,14 +30,16 @@ class AnnGistBase < CommonSiftGistBase
     run_target_hits_10_tests
 
     [1, 10, 50, 90, 95, 99].each do |filter_percent|
-      query_and_benchmark(HNSW, 100, 0, filter_percent)
       query_and_benchmark(BRUTE_FORCE, 100, 0, filter_percent)
-    end
-
-    # Now with ACORN-1
-    [1, 10, 50, 90, 95, 99].each do |filter_percent|
+      # Standard HNSW
+      query_and_benchmark(HNSW, 100, 0, filter_percent)
+      # Now with ACORN-1 enabled
       query_and_benchmark(HNSW, 100, 0, filter_percent, 0.00, 0.40, 0.01)
-      query_and_benchmark(BRUTE_FORCE, 100, 0, filter_percent, 0.00, 0.40, 0.01)
+
+      # Recall for standard HNSW
+      calc_recall_for_queries(100, 0, filter_percent)
+      # Recall for ACORN-1
+      calc_recall_for_queries(100, 0, filter_percent, 0.00, 0.40, 0.01)
     end
   end
 
