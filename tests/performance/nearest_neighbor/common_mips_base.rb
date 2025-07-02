@@ -23,7 +23,7 @@ class CommonMipsBase < CommonAnnBaseTest
 
     prepare_queries_for_recall()
     [0, 90, 190, 490].each do |explore_hits|
-      calc_recall_for_queries(10, explore_hits, doc_type, "embedding", query_tensor)
+      calc_recall_for_queries(10, explore_hits, 0.05, 0.0, 0.01, doc_type, "embedding", query_tensor)
     end
   end
 
