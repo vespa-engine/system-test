@@ -86,7 +86,7 @@ class CommonAnnBaseTest < PerformanceTest
     end
     threads.each(&:join)
     puts "recall: avg=#{result.avg}, median=#{result.median}, min=#{result.min}, max=#{result.max}, size=#{result.size}, samples_sorted=[#{result.samples.sort.join(',')}], samples=[#{result.samples.join(',')}]"
-    label = "th#{target_hits}-eh#{explore_hits}"
+    label = "hnsw-th#{target_hits}-eh#{explore_hits}-sl#{slack}-f0"
     write_report([parameter_filler(TYPE, "recall"),
                   parameter_filler(LABEL, label),
                   parameter_filler(TARGET_HITS, target_hits),

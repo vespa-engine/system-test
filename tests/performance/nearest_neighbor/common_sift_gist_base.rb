@@ -44,7 +44,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
   def query_and_benchmark(algorithm, target_hits, explore_hits, slack = 0.0, filter_percent = 0, clients = 1, threads_per_search = 0)
     approximate = algorithm == HNSW ? "true" : "false"
     query_file = fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
-    label = "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-n#{clients}-t#{threads_per_search}"
+    label = "#{algorithm}-th#{target_hits}-eh#{explore_hits}-sl#{slack}-f#{filter_percent}-n#{clients}-t#{threads_per_search}"
     result_file = dirs.tmpdir + "fbench_result.#{label}.txt"
     fillers = [parameter_filler(TYPE, get_type_string(filter_percent, threads_per_search)),
                parameter_filler(LABEL, label),
@@ -81,7 +81,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
       calc_recall_for_queries(10, explore_hits)
     end
 
-    [0.00, 0.05, 0.10, 0.15, 0.2, 0.5, 1.0].each do |slack|
+    [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
       query_and_benchmark(HNSW, 10, 0, slack)
       calc_recall_for_queries(10, 0, slack)
     end
@@ -93,7 +93,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
       calc_recall_for_queries(100, explore_hits)
     end
 
-    [0.00, 0.05, 0.10, 0.15, 0.2, 0.5, 1.0].each do |slack|
+    [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
       query_and_benchmark(HNSW, 100, 0, slack)
       calc_recall_for_queries(100, 0, slack)
     end
