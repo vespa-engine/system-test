@@ -91,7 +91,7 @@ class CommonAnnBaseTest < PerformanceTest
     puts "recall: avg=#{result.avg}, median=#{result.median}, min=#{result.min}, max=#{result.max}, size=#{result.size}, samples_sorted=[#{result.samples.sort.join(',')}], samples=[#{result.samples.join(',')}]"
     label = "th#{target_hits}-eh#{explore_hits}"
     if filter_percent != 0
-      label = "hnsw-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}"
+      label = "hnsw-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}"
     end
     write_report([parameter_filler(TYPE, "recall"),
                   parameter_filler(LABEL, label),
