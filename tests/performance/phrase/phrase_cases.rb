@@ -8,6 +8,7 @@ class PhraseCasesPerformanceTest < PerformanceTest
 
   def initialize(*args)
     super(*args)
+    @perf_recording = 'some'
   end
 
   def timeout_seconds
