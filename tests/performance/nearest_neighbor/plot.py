@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # Remove filter percentage (-f10- for example) from label
 def clean_filter(label):
     splitLabel = label.split("-")
-    splitLabel = map(lambda str: str if str[0] != 'f' else "", splitLabel)
+    splitLabel = map(lambda str: str if str[0] != 'f' else "fX", splitLabel)
     splitLabel = filter(None, splitLabel)
 
     return '-'.join(splitLabel)
@@ -52,7 +52,7 @@ def read_recall_by_filter(jsonObj):
 # Remove extended-hits count (-eh10- for example) from label
 def clean_extended_hits(label):
     splitLabel = label.split("-")
-    splitLabel = map(lambda str: str if str[:2] != 'eh' else "", splitLabel)
+    splitLabel = map(lambda str: str if str[:2] != 'eh' else "ehX", splitLabel)
     splitLabel = filter(None, splitLabel)
 
     return '-'.join(splitLabel)
@@ -74,6 +74,31 @@ def read_recall_by_extended_hits(jsonObj):
     # Ignore single data points
     return {k: v for k, v in recall.items() if len(v) >= 2}
 
+# Remove slack (-sl0.1- for example) from label
+def clean_slack(label):
+    splitLabel = label.split("-")
+    splitLabel = map(lambda str: str if str[:2] != 'sl' else "slX", splitLabel)
+    splitLabel = filter(None, splitLabel)
+
+    return '-'.join(splitLabel)
+
+def read_recall_by_slack(jsonObj):
+    recall = {}
+
+    for row in jsonObj.itertuples():
+        row_type = row.parameters["type"]
+
+        if row_type == "recall" and "slack" in row.parameters:
+            label = clean_slack(row.parameters["label"])
+            slack = float(row.parameters["slack"])
+
+            if label not in recall:
+                recall[label] = {}
+            recall[label][slack] = float(row.metrics["recall.avg"])
+
+    # Ignore single data points
+    return {k: v for k, v in recall.items() if len(v) >= 2}
+
 def read_recall_by_response_time(jsonObj):
     response_time = {}
 
@@ -87,18 +112,32 @@ def read_recall_by_response_time(jsonObj):
 
             response_time[original_label]  = float(row.metrics["avgresponsetime"])
 
-    # Second, we combine this with the recall
+    # Second, we combine this with the recall for extended hits
     recall = {}
+    already_seen = set()
     for row in jsonObj.itertuples():
         row_type = row.parameters["type"]
 
         if row_type == "recall":
             original_label = row.parameters["label"]
-            label = clean_extended_hits(original_label)
+            if original_label in already_seen:
+                print("Warning: Ambiguous data point for " + original_label)
+                continue
+            else:
+                already_seen.add(original_label)
 
+            # Extended hits
+            label = clean_extended_hits(original_label)
             if label not in recall:
                 recall[label] = []
             recall[label].append((response_time[original_label], float(row.metrics["recall.avg"])))
+
+            # Slack
+            if "slack" in row.parameters:
+                label = clean_slack(original_label)
+                if label not in recall:
+                    recall[label] = []
+                recall[label].append((response_time[original_label], float(row.metrics["recall.avg"])))
 
     # Ignore single data points
     return {k: v for k, v in recall.items() if len(v) >= 2}
@@ -159,6 +198,21 @@ def plot_recall_by_extended_hits(recall):
 
     axs = plt.gca()
 
+def plot_recall_by_slack(recall):
+    labels = recall.keys()
+
+    for label in labels:
+        x = list(recall[label].keys())
+        y = list(recall[label].values())
+        plt.plot(x, y, "o-", label=label)
+
+    plt.xlabel("Slack")
+    plt.ylabel("Average recall")
+    plt.title("Recall/Slack")
+    plt.legend()
+
+    axs = plt.gca()
+
 def plot_recall_by_response_time(recall):
     labels = recall.keys()
 
@@ -172,6 +226,7 @@ def plot_recall_by_response_time(recall):
     plt.legend()
 
     axs = plt.gca()
+    axs.set_ylim(ymin=95, ymax=100)
 
 def plot(filename, save):
     jsonObj = pd.read_json(path_or_buf=filename, lines=True)
@@ -200,10 +255,18 @@ def plot(filename, save):
         if save:
             plt.savefig('recall_by_extended_hits.png', dpi=300)
 
+    # Recall/slack
+    recall_by_slack = read_recall_by_slack(jsonObj)
+    if recall_by_slack:
+        plt.figure(4)
+        plot_recall_by_slack(recall_by_slack)
+        if save:
+            plt.savefig('recall_by_slack.png', dpi=300)
+
     # Recall/response time
     recall_by_response_time = read_recall_by_response_time(jsonObj)
     if recall_by_response_time:
-        plt.figure(4)
+        plt.figure(5)
         plot_recall_by_response_time(recall_by_response_time)
         if save:
             plt.savefig('recall_by_response_time.png', dpi=300)
