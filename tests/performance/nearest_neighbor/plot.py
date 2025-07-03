@@ -56,6 +56,7 @@ def clean_extended_hits(label):
     splitLabel = filter(None, splitLabel)
 
     return '-'.join(splitLabel)
+
 def read_recall_by_extended_hits(jsonObj):
     recall = {}
 
@@ -69,6 +70,35 @@ def read_recall_by_extended_hits(jsonObj):
             if label not in recall:
                 recall[label] = {}
             recall[label][extended_hits] = float(row.metrics["recall.avg"])
+
+    # Ignore single data points
+    return {k: v for k, v in recall.items() if len(v) >= 2}
+
+def read_recall_by_response_time(jsonObj):
+    response_time = {}
+
+    # First, we collect the response times
+    for row in jsonObj.itertuples():
+        row_type = row.parameters["type"]
+
+        if row_type == "query" or row_type == "query_filter":
+            # First remove -n1-t0 from end of label
+            original_label = row.parameters["label"].rsplit("-", 2)[0]
+
+            response_time[original_label]  = float(row.metrics["avgresponsetime"])
+
+    # Second, we combine this with the recall
+    recall = {}
+    for row in jsonObj.itertuples():
+        row_type = row.parameters["type"]
+
+        if row_type == "recall":
+            original_label = row.parameters["label"]
+            label = clean_extended_hits(original_label)
+
+            if label not in recall:
+                recall[label] = []
+            recall[label].append((response_time[original_label], float(row.metrics["recall.avg"])))
 
     # Ignore single data points
     return {k: v for k, v in recall.items() if len(v) >= 2}
@@ -120,7 +150,7 @@ def plot_recall_by_extended_hits(recall):
     for label in labels:
         x = list(recall[label].keys())
         y = list(recall[label].values())
-        plt.plot(x, y, label=label)
+        plt.plot(x, y, "o-", label=label)
 
     plt.xlabel("Extended hits")
     plt.ylabel("Average recall")
@@ -128,7 +158,20 @@ def plot_recall_by_extended_hits(recall):
     plt.legend()
 
     axs = plt.gca()
-    axs.set_ylim(ymin=0)
+
+def plot_recall_by_response_time(recall):
+    labels = recall.keys()
+
+    for label in labels:
+        x,y = zip(*recall[label])
+        plt.plot(x, y, "o-", label=label)
+
+    plt.xlabel("Response time (ms)")
+    plt.ylabel("Average recall")
+    plt.title("Recall/Response Time")
+    plt.legend()
+
+    axs = plt.gca()
 
 def plot(filename, save):
     jsonObj = pd.read_json(path_or_buf=filename, lines=True)
@@ -156,6 +199,14 @@ def plot(filename, save):
         plot_recall_by_extended_hits(recall_by_extended_hits)
         if save:
             plt.savefig('recall_by_extended_hits.png', dpi=300)
+
+    # Recall/response time
+    recall_by_response_time = read_recall_by_response_time(jsonObj)
+    if recall_by_response_time:
+        plt.figure(4)
+        plot_recall_by_response_time(recall_by_response_time)
+        if save:
+            plt.savefig('recall_by_response_time.png', dpi=300)
 
     plt.show()
 
