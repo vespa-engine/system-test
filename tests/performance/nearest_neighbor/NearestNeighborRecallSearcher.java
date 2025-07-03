@@ -61,17 +61,17 @@ public class NearestNeighborRecallSearcher extends Searcher {
             int exploreHits = props.getInteger("nnr.exploreHits", 0);
             long filterPercent = props.getLong("nnr.filterPercent", 0L);
             double approximateThreshold = Double.parseDouble(props.getString("nnr.approximateThreshold", "0.05"));
-            double acornOneThreshold = Double.parseDouble(props.getString("nnr.acornOneThreshold", "0.00"));
-            double acornOneExploration = Double.parseDouble(props.getString("nnr.acornOneExploration", "0.01"));
+            double filterFirstThreshold = Double.parseDouble(props.getString("nnr.filterFirstThreshold", "0.00"));
+            double filterFirstExploration = Double.parseDouble(props.getString("nnr.filterFirstExploration", "0.01"));
             String idField = props.getString("nnr.idField", "id");
             log.log(Level.FINE, "NNRS.search(): docTensor=" + docTensor +
                     ", queryTensor=" + queryTensor + ", targetHits=" + targetHits +
                     ", exploreHits=" + exploreHits + ", idField=" + idField);
             var exactHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, approximateThreshold, acornOneThreshold, acornOneExploration, false, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, approximateThreshold, filterFirstThreshold, filterFirstExploration, false, idField);
 
             var approxHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, approximateThreshold, acornOneThreshold, acornOneExploration, true, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, approximateThreshold, filterFirstThreshold, filterFirstExploration, true, idField);
 
             try {
                 int recall = calcRecall(exactHits, approxHits, targetHits);
@@ -101,7 +101,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
                                                         String docTensor, String queryTensor,
                                                         String label,
                                                         int targetHits, int exploreHits, long filterPercent,
-                                                        double approximateThreshold, double acornOneThreshold, double acornOneExploration,
+                                                        double approximateThreshold, double filterFirstThreshold, double filterFirstExploration,
                                                         boolean approximate, String idField) {
         var nni = new NearestNeighborItem(docTensor, queryTensor);
         nni.setLabel(label);
@@ -127,8 +127,8 @@ public class NearestNeighborRecallSearcher extends Searcher {
         query.setHits(targetHits);
 
         query.properties().set("ranking.matching.approximateThreshold", approximateThreshold);
-        query.properties().set("ranking.matching.acornOneThreshold", acornOneThreshold);
-        query.properties().set("ranking.matching.acornOneExploration", acornOneExploration);
+        query.properties().set("ranking.matching.filterFirstThreshold", filterFirstThreshold);
+        query.properties().set("ranking.matching.filterFirstExploration", filterFirstExploration);
 
         var vespaChain = parentExecution.searchChainRegistry().getComponent("vespa");
         var execution = new Execution(vespaChain, parentExecution.context());

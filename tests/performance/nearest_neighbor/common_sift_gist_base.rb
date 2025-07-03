@@ -41,10 +41,10 @@ class CommonSiftGistBase < CommonAnnBaseTest
     (threads_per_search > 0) ? "threads-#{threads_per_search}" : "default"
   end
 
-  def query_and_benchmark(algorithm, target_hits, explore_hits, filter_percent = 0, approximate_threshold = 0.05, acorn_one_threshold = 0.0, acorn_one_exploration = 0.01, clients = 1, threads_per_search = 0)
+  def query_and_benchmark(algorithm, target_hits, explore_hits, filter_percent = 0, approximate_threshold = 0.05, filter_first_threshold = 0.0, filter_first_exploration = 0.01, clients = 1, threads_per_search = 0)
     approximate = algorithm == HNSW ? "true" : "false"
     query_file = fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
-    label = "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-aot#{acorn_one_threshold}-aoe#{acorn_one_exploration}-n#{clients}-t#{threads_per_search}"
+    label = "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-n#{clients}-t#{threads_per_search}"
     result_file = dirs.tmpdir + "fbench_result.#{label}.txt"
     fillers = [parameter_filler(TYPE, get_type_string(filter_percent, threads_per_search)),
                parameter_filler(LABEL, label),
@@ -53,8 +53,8 @@ class CommonSiftGistBase < CommonAnnBaseTest
                parameter_filler(EXPLORE_HITS, explore_hits),
                parameter_filler(FILTER_PERCENT, filter_percent),
                parameter_filler(APPROXIMATE_THRESHOLD, approximate_threshold),
-               parameter_filler(ACORN_ONE_THRESHOLD, acorn_one_threshold),
-               parameter_filler(ACORN_ONE_EXPLORATION, acorn_one_exploration),
+               parameter_filler(FILTER_FIRST_THRESHOLD, filter_first_threshold),
+               parameter_filler(FILTER_FIRST_EXPLORATION, filter_first_exploration),
                parameter_filler(CLIENTS, clients),
                parameter_filler(THREADS_PER_SEARCH, threads_per_search)]
     profiler_start
@@ -62,7 +62,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
                 query_file,
                 {:runtime => FBENCH_TIME,
                  :clients => clients,
-                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}&ranking.matching.approximateThreshold=#{approximate_threshold}&ranking.matching.acornOneThreshold=#{acorn_one_threshold}&ranking.matching.acornOneExploration=#{acorn_one_exploration}",
+                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}&ranking.matching.approximateThreshold=#{approximate_threshold}&ranking.matching.filterFirstThreshold=#{filter_first_threshold}&ranking.matching.filterFirstExploration=#{filter_first_exploration}",
                  :result_file => result_file},
                 fillers)
     profiler_report(label)
