@@ -63,7 +63,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
                 query_file,
                 {:runtime => FBENCH_TIME,
                  :clients => clients,
-                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}&ranking.matching.approximateThreshold=#{approximate_threshold}&ranking.matching.filterFirstThreshold=#{filter_first_threshold}&ranking.matching.filterFirstExploration=#{filter_first_exploration}&ranking.matching.adaptiveBeamSearchSlack=#{slack}",
+                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}&ranking.matching.approximateThreshold=#{approximate_threshold}&ranking.matching.filterFirstThreshold=#{filter_first_threshold}&ranking.matching.filterFirstExploration=#{filter_first_exploration}&ranking.matching.explorationSlack=#{slack}",
                  :result_file => result_file},
                 fillers)
     profiler_report(label)
