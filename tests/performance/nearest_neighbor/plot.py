@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 # Remove filter percentage (-f10- for example) from label
 def clean_filter(label):
     splitLabel = label.split("-")
-    splitLabel = map(lambda str: str if str[0] != 'f' else "fX", splitLabel)
+    splitLabel = map(lambda str: str if str[0] != 'f' or (str[0] == 'f' and str[1] == 'f') else "fX", splitLabel)
     splitLabel = filter(None, splitLabel)
 
     return '-'.join(splitLabel)
@@ -126,18 +126,19 @@ def read_recall_by_response_time(jsonObj):
             else:
                 already_seen.add(original_label)
 
-            # Extended hits
-            label = clean_extended_hits(original_label)
-            if label not in recall:
-                recall[label] = []
-            recall[label].append((response_time[original_label], float(row.metrics["recall.avg"])))
-
-            # Slack
-            if "slack" in row.parameters:
-                label = clean_slack(original_label)
+            if original_label in recall:
+                # Extended hits
+                label = clean_extended_hits(original_label)
                 if label not in recall:
                     recall[label] = []
                 recall[label].append((response_time[original_label], float(row.metrics["recall.avg"])))
+
+                # Slack
+                if "slack" in row.parameters:
+                    label = clean_slack(original_label)
+                    if label not in recall:
+                        recall[label] = []
+                    recall[label].append((response_time[original_label], float(row.metrics["recall.avg"])))
 
     # Ignore single data points
     return {k: v for k, v in recall.items() if len(v) >= 2}
