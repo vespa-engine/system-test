@@ -36,6 +36,8 @@ class AnnSiftBase < CommonSiftGistBase
 
     run_target_hits_10_tests
 
+    run_target_hits_100_tests
+
     [1, 10, 50, 90, 95, 99].each do |filter_percent|
       query_and_benchmark(BRUTE_FORCE, 100, 0, filter_percent)
       # Standard HNSW

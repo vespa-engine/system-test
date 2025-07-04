@@ -89,10 +89,7 @@ class CommonAnnBaseTest < PerformanceTest
     end
     threads.each(&:join)
     puts "recall: avg=#{result.avg}, median=#{result.median}, min=#{result.min}, max=#{result.max}, size=#{result.size}, samples_sorted=[#{result.samples.sort.join(',')}], samples=[#{result.samples.join(',')}]"
-    label = "th#{target_hits}-eh#{explore_hits}"
-    if filter_percent != 0
-      label = "hnsw-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}"
-    end
+    label = "hnsw-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}"
     write_report([parameter_filler(TYPE, "recall"),
                   parameter_filler(LABEL, label),
                   parameter_filler(TARGET_HITS, target_hits),
@@ -132,7 +129,7 @@ class CommonAnnBaseTest < PerformanceTest
     recall.to_i
   end
 
-  def get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, query_vector, doc_type, doc_tensor, query_tensor)
+  def get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, query_vector, doc_type, doc_tensor, query_tensor)
     "query=sddocname:#{doc_type}&summary=minimal&ranking.features.query(#{query_tensor})=#{query_vector}" +
     "&nnr.enable=true&nnr.docTensor=#{doc_tensor}&nnr.targetHits=#{target_hits}&nnr.exploreHits=#{explore_hits}&nnr.filterPercent=#{filter_percent}" +
     "&nnr.approximateThreshold=#{approximate_threshold}&nnr.filterFirstThreshold=#{filter_first_threshold}&nnr.filterFirstExploration=#{filter_first_exploration}" +

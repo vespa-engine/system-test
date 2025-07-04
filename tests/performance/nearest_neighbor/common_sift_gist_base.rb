@@ -100,6 +100,11 @@ class CommonSiftGistBase < CommonAnnBaseTest
       query_and_benchmark(HNSW, 100, 0, 0, 0.05, 0.0, 0.01, slack)
       calc_recall_for_queries(100, 0, 0, 0.05, 0.0, 0.01, slack)
     end
+
+    [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
+      query_and_benchmark(HNSW, 100, 0, 95, 0.00, 0.4, 0.01, slack)
+      calc_recall_for_queries(100, 0, 95, 0.00, 0.4, 0.01, slack)
+    end
   end
 
   def fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
