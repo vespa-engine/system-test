@@ -129,7 +129,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
         query.properties().set("ranking.matching.approximateThreshold", approximateThreshold);
         query.properties().set("ranking.matching.filterFirstThreshold", filterFirstThreshold);
         query.properties().set("ranking.matching.filterFirstExploration", filterFirstExploration);
-        query.properties().set("ranking.matching.adaptiveBeamSearchSlack", slack);
+        query.properties().set("ranking.matching.explorationSlack", slack);
 
         var vespaChain = parentExecution.searchChainRegistry().getComponent("vespa");
         var execution = new Execution(vespaChain, parentExecution.context());
