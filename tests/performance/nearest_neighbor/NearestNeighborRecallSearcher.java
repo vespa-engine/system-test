@@ -59,7 +59,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
             String label = props.getString("nnr.label", "nns");
             int targetHits = props.getInteger("nnr.targetHits", 10);
             int exploreHits = props.getInteger("nnr.exploreHits", 0);
-            long filterPercent = props.getLong("nnr.filterPercent", 0L);
+            int filterPercent = props.getInteger("nnr.filterPercent", 0);
             double approximateThreshold = Double.parseDouble(props.getString("nnr.approximateThreshold", "0.05"));
             double filterFirstThreshold = Double.parseDouble(props.getString("nnr.filterFirstThreshold", "0.00"));
             double filterFirstExploration = Double.parseDouble(props.getString("nnr.filterFirstExploration", "0.01"));
@@ -100,7 +100,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
     private List<SimpleHit> executeNearestNeighborQuery(Query parentQuery, Execution parentExecution,
                                                         String docTensor, String queryTensor,
                                                         String label,
-                                                        int targetHits, int exploreHits, long filterPercent,
+                                                        int targetHits, int exploreHits, int filterPercent,
                                                         double approximateThreshold, double filterFirstThreshold, double filterFirstExploration,
                                                         boolean approximate, String idField) {
         var nni = new NearestNeighborItem(docTensor, queryTensor);
