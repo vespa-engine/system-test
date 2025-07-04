@@ -23,15 +23,23 @@ class AnnGistBase < CommonSiftGistBase
 
     feed_and_benchmark(@docs_300k, "300k-docs")
 
-    query_and_benchmark(BRUTE_FORCE, 10, 0, 0, 1)
+    query_and_benchmark(BRUTE_FORCE, 10, 0)
 
     prepare_queries_for_recall
 
     run_target_hits_10_tests
 
     [1, 10, 50, 90, 95, 99].each do |filter_percent|
-      query_and_benchmark(HNSW, 100, 0, filter_percent, 1)
-      query_and_benchmark(BRUTE_FORCE, 100, 0, filter_percent, 1)
+      query_and_benchmark(BRUTE_FORCE, 100, 0, filter_percent)
+      # Standard HNSW
+      query_and_benchmark(HNSW, 100, 0, filter_percent)
+      # Now with filter-first heuristic enabled
+      query_and_benchmark(HNSW, 100, 0, filter_percent, 0.00, 0.40, 0.01)
+
+      # Recall for standard HNSW
+      calc_recall_for_queries(100, 0, filter_percent)
+      # Recall for filter-first heuristic
+      calc_recall_for_queries(100, 0, filter_percent, 0.00, 0.40, 0.01)
     end
   end
 

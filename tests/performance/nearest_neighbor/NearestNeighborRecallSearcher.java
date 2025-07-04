@@ -2,6 +2,9 @@
 
 package ai.vespa.test;
 
+import com.yahoo.prelude.query.AndItem;
+import com.yahoo.prelude.query.IntItem;
+import com.yahoo.prelude.query.Item;
 import com.yahoo.prelude.query.NearestNeighborItem;
 import com.yahoo.search.Query;
 import com.yahoo.search.Result;
@@ -56,15 +59,19 @@ public class NearestNeighborRecallSearcher extends Searcher {
             String label = props.getString("nnr.label", "nns");
             int targetHits = props.getInteger("nnr.targetHits", 10);
             int exploreHits = props.getInteger("nnr.exploreHits", 0);
+            int filterPercent = props.getInteger("nnr.filterPercent", 0);
+            double approximateThreshold = Double.parseDouble(props.getString("nnr.approximateThreshold", "0.05"));
+            double filterFirstThreshold = Double.parseDouble(props.getString("nnr.filterFirstThreshold", "0.00"));
+            double filterFirstExploration = Double.parseDouble(props.getString("nnr.filterFirstExploration", "0.01"));
             String idField = props.getString("nnr.idField", "id");
             log.log(Level.FINE, "NNRS.search(): docTensor=" + docTensor +
                     ", queryTensor=" + queryTensor + ", targetHits=" + targetHits +
                     ", exploreHits=" + exploreHits + ", idField=" + idField);
             var exactHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, false, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, approximateThreshold, filterFirstThreshold, filterFirstExploration, false, idField);
 
             var approxHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, true, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, approximateThreshold, filterFirstThreshold, filterFirstExploration, true, idField);
 
             try {
                 int recall = calcRecall(exactHits, approxHits, targetHits);
@@ -93,7 +100,8 @@ public class NearestNeighborRecallSearcher extends Searcher {
     private List<SimpleHit> executeNearestNeighborQuery(Query parentQuery, Execution parentExecution,
                                                         String docTensor, String queryTensor,
                                                         String label,
-                                                        int targetHits, int exploreHits,
+                                                        int targetHits, int exploreHits, int filterPercent,
+                                                        double approximateThreshold, double filterFirstThreshold, double filterFirstExploration,
                                                         boolean approximate, String idField) {
         var nni = new NearestNeighborItem(docTensor, queryTensor);
         nni.setLabel(label);
@@ -101,12 +109,26 @@ public class NearestNeighborRecallSearcher extends Searcher {
         nni.setHnswExploreAdditionalHits(exploreHits);
         nni.setAllowApproximate(approximate);
 
+        Item root = nni;
+        if (filterPercent > 0) {
+            IntItem intItem = new IntItem(filterPercent, "filter");
+
+            AndItem andItem = new AndItem();
+            andItem.addItem(nni);
+            andItem.addItem(intItem);
+            root = andItem;
+        }
+
         var query = new Query();
-        query.getModel().getQueryTree().setRoot(nni);
+        query.getModel().getQueryTree().setRoot(root);
         String featureName = "ranking.features.query(" + queryTensor + ")";
         query.properties().set(featureName, parentQuery.properties().get(featureName));
         query.properties().set("summary", parentQuery.properties().getString("summary"));
         query.setHits(targetHits);
+
+        query.properties().set("ranking.matching.approximateThreshold", approximateThreshold);
+        query.properties().set("ranking.matching.filterFirstThreshold", filterFirstThreshold);
+        query.properties().set("ranking.matching.filterFirstExploration", filterFirstExploration);
 
         var vespaChain = parentExecution.searchChainRegistry().getComponent("vespa");
         var execution = new Execution(vespaChain, parentExecution.context());

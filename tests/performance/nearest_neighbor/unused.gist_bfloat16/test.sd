@@ -21,6 +21,9 @@ search test {
     first-phase {
       expression: closeness(label,nns)
     }
+    approximate-threshold: 0.05
+    filter-first-threshold: 0.0
+    filter-first-exploration: 0.01
   }
   document-summary minimal {
     summary id {}
