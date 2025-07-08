@@ -75,51 +75,6 @@ class MultiplePositions < IndexedOnlySearchTest
     check_q(query, hc, fn)
   end
 
-  def test_multiplepos_2d
-    deploy_app(SearchApp.new.
-               legacy_override('v7-geo-positions', 'true').
-               sd(selfdir+'singlepos2d.sd').
-               sd(selfdir+'multiplepos2d.sd'))
-    start
-    feed_and_wait_for_docs('singlepos2d', 12, :file => selfdir+'docs-sp.json')
-    puts 'Query: Search with single position'
-
-    check_spos('pos.ll=63.4225N+10.3637E', 10, 'res-sp1')
-    check_spos('pos.ll=63.4225N+10.3637E&pos.radius=5km', 6)
-    check_spos('pos.ll=63.4225N+10.3637E&pos.radius=100m', 1)
-
-    check_sq('query=Steinberget', 1, 'res-sp-nopos')
-    check_sq('query=Steinberget&pos.ll=0N+0E', 0)
-    check_sq('query=Steinberget&pos.ll=63N25+10E25', 1, 'res-sp2')
-
-    feed_and_wait_for_docs('multiplepos2d', 4, :file => selfdir+'docs-mp.json')
-    puts 'Query: Search with multiple positions'
-
-    check_mpos('pos.ll=63.4225N+10.3637E', 2)
-    check_mpos('pos.ll=63.4225N+10.3637E&pos.radius=5km', 2, 'res-mp1')
-    check_mpos('pos.ll=63.4225N+10.3637E&pos.radius=100m', 1)
-
-    check_mpos('pos.ll=63N25+10E25', 2)
-    check_mpos('pos.ll=N0+E0', 1)
-    check_mpos('pos.ll=N0+E180', 1)
-
-    check_mq('query=Trondheim1', 1, 'res-mp-nopos')
-    check_mq('query=Trondheim1&pos.ll=0N%3B0E', 0)
-    check_mq('query=Trondheim1&pos.ll=63N25%3B10E25&pos.radius=100km', 1)
-    check_mq('query=Trondheim1&pos.ll=0N+0E', 0)
-    check_mq('query=Trondheim1&pos.ll=63N25+10E25&pos.radius=100km', 1)
-  end
-
-  def test_v7_positions_summary_rendering
-    deploy_app(SearchApp.new.
-               legacy_override('v7-geo-positions', 'true').
-               sd(selfdir+'renderpos.sd'))
-    start
-    feed_and_wait_for_docs('renderpos', 4, :file => selfdir+'docs-render.json')
-    check_q('/search/?yql=select+*+from+sources+*+where+true%3B', 4, 'v7-render')
-  end
-
-
   def teardown
     stop
   end
