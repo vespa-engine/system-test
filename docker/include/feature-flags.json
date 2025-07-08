@@ -15,6 +15,25 @@
             "id" : "jvm-gc-options",
             "rules" : [
                 {
+                    "conditions": [
+                        {
+                            "type": "whitelist",
+                            "dimension": "cluster-type",
+                            "values": [
+                                "admin"
+                            ]
+                        },
+                        {
+                            "type": "whitelist",
+                            "dimension": "cluster-id",
+                            "values": [
+                                "metrics"
+                            ]
+                        }
+                    ],
+                    "value": "-Djdisc.debug.resources=true -XX:+UseG1GC"
+                },
+                {
                     "value" : "-Djdisc.debug.resources=true -XX:+UseParallelGC -XX:MaxTenuringThreshold=15 -XX:NewRatio=1"
                 }
             ]
