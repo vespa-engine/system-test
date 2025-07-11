@@ -30,6 +30,12 @@ class VisitManyDocumentsTest < VdsTest
     [false, true].each { |stream|
       visit_with_continuation(stream)
     }
+    # Test JSONL with several different wanted doc counts to have responses that span
+    # everything from small subsets up to returning the entire corpus in one go.
+    # JSONL always implies stream=true.
+    [@wanted_doc_count, 1_000, 10_000, 100_000].each { |doc_count|
+      visit_with_jsonl doc_count
+    }
   end
 
   def visit_with_continuation(stream)
@@ -60,6 +66,71 @@ class VisitManyDocumentsTest < VdsTest
       raise "Inconsistent specified doc count (#{res_doc_count}) and actual returned doc chunks (#{result.size})"
     end
     result
+  end
+
+  class MyResponseHandler < JsonLinesResponseHandler
+    attr_reader :continuation, :doc_ids, :reported_document_count, :percent_finished
+    def initialize
+      super
+      @continuation = nil
+      @percent_finished = 0.0
+      @doc_ids = Set.new
+      @reported_document_count = -1
+    end
+
+    def on_put(doc_id, fields)
+      @doc_ids.add(doc_id)
+    end
+
+    def on_remove(doc_id)
+      # TODO test removes as well. Existing test does not do this.
+    end
+
+    def on_continuation(token, percent_finished)
+      @continuation = token # nil if finished
+      @percent_finished = percent_finished
+    end
+
+    def on_document_count(doc_count)
+      @reported_document_count = doc_count
+    end
+  end
+
+  # P --> Q
+  def implies(p, q)
+    not p or q
+  end
+
+  def visit_with_jsonl(wanted_doc_count)
+    puts "Visiting via Document V1 API with JSONL stream response and wanted document count #{wanted_doc_count}"
+    params = {:selection => 'music', :cluster => 'storage', :wantedDocumentCount => wanted_doc_count}
+    doc_ids = Set.new
+    visit_count = 0
+    last_percent_finished = 0.0
+    continuation = nil
+    loop do
+      handler = MyResponseHandler.new
+      vespa.document_api_v1.visit_jsonl_stream(handler, continuation ? params.merge(:continuation => continuation) : params)
+      puts "visited #{handler.doc_ids.size} (#{handler.reported_document_count}) docs (#{handler.percent_finished}% finished)"
+      raise 'No docs visited' if handler.doc_ids.size == 0
+      continuation = handler.continuation
+      doc_ids.merge(handler.doc_ids)
+      assert_equal(handler.doc_ids.size, handler.reported_document_count,
+                   'Inconsistent reported document count vs. actual returned document set cardinality')
+      visit_count += 1
+      assert(implies(handler.percent_finished < 100.0, !continuation.nil?),
+             'A non-finished continuation did not have a token set')
+      assert(implies(continuation.nil?, handler.percent_finished == 100.0),
+             'Response did not have a continuation set, but is not marked as completed')
+      assert(handler.percent_finished >= last_percent_finished,
+             "Expected percent finished to be monotonically increasing: " +
+             "was #{last_percent_finished}, is now #{handler.percent_finished}")
+      last_percent_finished = handler.percent_finished
+      break if continuation.nil?
+    end
+    puts "visit_count=#{visit_count}"
+    docs_total = @num_users * @docs_per_user
+    assert_equal(docs_total, doc_ids.size)
   end
 
   def teardown
