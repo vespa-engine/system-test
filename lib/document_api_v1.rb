@@ -14,13 +14,27 @@ class HttpResponseError < RuntimeError
   end
 end
 
+class JsonLinesResponseHandler
+  def on_put(doc_id, fields)
+  end
+
+  def on_remove(doc_id)
+  end
+
+  def on_continuation(token, percent_finished)
+  end
+
+  def on_document_count(doc_count)
+  end
+end
+
 # Class to use the document rest api (v1) for feed, get, visit (https://docs.vespa.ai/documentation/document-api.html)
 class DocumentApiV1
   include Assertions
 
   attr_reader :host, :port
 
-  @@known_request_params = [:concurrency, :condition, :create, :cluster, :continuation, "format.tensors",
+  @@known_request_params = [:concurrency, :condition, :create, :cluster, :continuation, 'format.tensors', :format,
                             :fieldSet, :route, :selection, :wantedDocumentCount, :bucketSpace, :stream].to_set
 
   def initialize(host, port, test_case)
@@ -164,6 +178,34 @@ class DocumentApiV1
       JSON.parse(response.body)
     else
       raise "Expected HTTP 200 OK, got HTTP #{response.code} with body '#{response.body}'"
+    end
+  end
+
+  def visit_jsonl_stream(response_handler, params={})
+    # TODO the `format` string here is obviously temporary...!
+    uri = "/document/v1/" + request_params(params.merge({:stream => true, :format => 'jsonl-experimental-20250707'}))
+    response = http_get(uri, params)
+    unless response.code.to_i == 200
+      raise "Expected HTTP 200 OK, got HTTP #{response.code} with body '#{response.body}'"
+    end
+    # Ideally we'd use a streaming response reader here, but the Ruby HTTP library doc
+    # implies that when a block is passed, it will receive whatever's read from the
+    # socket (i.e. transport level), _not_ something that's on an HTTP-level chunked
+    # response boundary (i.e. protocol level). So in the interest of simplicity and not
+    # having to do our own line buffering, just read everything in one go.
+    response.body.each_line do |line|
+      jl = JSON.parse(line)
+      if jl.has_key? 'put'
+        response_handler.on_put(jl['put'], jl['fields'])
+      elsif jl.has_key? 'remove'
+        response_handler.on_remove jl['remove']
+      elsif jl.has_key? 'continuation'
+        cont = jl['continuation']
+        maybe_token = cont.has_key?('token') ? cont['token'] : nil
+        response_handler.on_continuation(maybe_token, cont['percentFinished'])
+      elsif jl.has_key? 'documentCount'
+        response_handler.on_document_count jl['documentCount'].to_i
+      end
     end
   end
 
