@@ -233,19 +233,6 @@ class PerformanceTest < TestCase
     "-XX:+UnlockDiagnosticVMOptions -XX:+DumpPerfMapAtExit"
   end
 
-  def run_predicate_search_library_benchmark(node, benchmark_params)
-    raw_output = node.execute(
-      "java #{perfmap_jvmarg} " +
-      "-Xmx16g -Xms16g -XX:+UseParallelGC -XX:NewRatio=1 -verbose:gc -XX:MaxTenuringThreshold=15 " +
-      "-cp #{Environment.instance.vespa_home}/lib/jars/predicate-search-jar-with-dependencies.jar " +
-      "com.yahoo.search.predicate.benchmarks.PredicateIndexBenchmark " +
-      "#{benchmark_params}")
-    # Strip out any oprofile error messages
-    gc_log_stripped_output = raw_output.lines.reject { |line| line.include?('[info][gc]') }.join("\n")
-    json_end = gc_log_stripped_output.rindex('}')
-    JSON.parse(gc_log_stripped_output[0..json_end])
-  end
-
   # Create a key-value tag to attach to the metrics produced which can be used to filter and label graphed values
   def parameter_filler(name, value)
     Proc.new do |result|
