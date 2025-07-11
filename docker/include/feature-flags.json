@@ -54,8 +54,7 @@
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
         { "id" : "search-core-transaction-log-replay-soft-memory-limit", "rules" : [ { "value" : -5 } ] },
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
-        { "id" : "resource-limit-address-space", "rules" : [ { "value" : 0.8 } ] },
-        { "id" : "max-distributor-document-operation-size-mib", "rules" : [ { "value" : 200 } ] }
+        { "id" : "resource-limit-address-space", "rules" : [ { "value" : 0.8 } ] }
     ]
 
 }
