@@ -10,7 +10,7 @@ class VespaPrintDefault < ConfigTest
     set_description("Tests vespa-print-default")
   end
 
-  def test_vespa_config
+  def test_vespa_print_default
     app_gen = SearchApp.new.sd(SEARCH_DATA+"music.sd")
     deploy_app(app_gen)
     @node = vespa.adminserver
