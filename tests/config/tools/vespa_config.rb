@@ -3,7 +3,7 @@ require 'config_test'
 require 'app_generator/search_app'
 require 'environment'
 
-class VespaConfig < ConfigTest
+class VespaConfigSources < ConfigTest
 
   def setup
     set_owner("musum")
@@ -11,40 +11,23 @@ class VespaConfig < ConfigTest
     @node = vespa.nodeproxies.first[1]
   end
 
-  def test_vespa_config
+  def test_vespa_config_sources_from_defaults
     app_gen = SearchApp.new.sd(SEARCH_DATA+"music.sd")
     deploy_app(app_gen)
     @node = vespa.adminserver
     @hostname = @node.hostname
 
-    run_configsource_test
-    run_configserver_port_test
-    run_empty_port_test
-  end
+    assert_equal("tcp/" + @hostname + ":19070", print_default("configservers_rpc"))
+    assert_equal("19070", print_default("configserver_rpc_port"))
 
-  def run_configsource_test
-    output = call_vespa_config_script("configservers_rpc")
-    assert_equal("tcp/" + @hostname + ":19070", output.strip)
-  end
-
-  def run_configserver_port_test
-    output = call_vespa_config_script("configserver_rpc_port")
-    assert_equal("19070", output.strip)
-  end
-
-  def run_empty_port_test
     set_port_configserver_rpc(@node)
-    output = call_vespa_config_script("configservers_http")
-    assert_equal("http://#{@hostname}:19071/", output.strip)
+    assert_equal("http://#{@hostname}:19071/", print_default("configservers_http"))
   end
 
-  def call_vespa_config_script(option, noexception=false)
+  def print_default(option, noexception=false)
     command = Environment.instance.vespa_home + "/bin/vespa-print-default #{option} 2>/dev/null"
-    if noexception
-      @node.execute(command, {:exitcode => true, :exceptiononfailure => false})
-    else
-      @node.execute(command)
-    end
+    params = noexception ? {:exitcode => true, :exceptiononfailure => false} : {}
+    @node.execute(command, params).strip
   end
 
   def teardown
