@@ -14,7 +14,7 @@ class VespaModel
 
   attr_reader :nodeproxies, :hostalias, :adminserver, :configservers, :logserver
   attr_reader :qrserver, :storage, :search, :slobrok, :qrs, :services
-  attr_reader :metricsproxies
+  attr_reader :metricsproxies, :vespa_version
   attr_reader :container, :clustercontrollers, :default_document_api_port, :document_api_v1
 
   def initialize(testcase, vespa_version=nil)
