@@ -41,6 +41,7 @@ EOF
 
   def teardown
     override_environment_setting(@node, "VESPA_CONFIGSERVERS", nil)
+    stop
   end
 
 end
