@@ -11,10 +11,10 @@ class VespaPrintDefault < ConfigTest
   end
 
   def test_vespa_print_default
-    app_gen = SearchApp.new.sd(SEARCH_DATA+"music.sd")
-    deploy_app(app_gen)
-    @node = vespa.adminserver
+    @node = vespa.nodeproxies.values.first
     @hostname = @node.hostname
+    # Set VESPA_CONFIGSERVERS explicitly, as is done by system/customer
+    override_environment_setting(@node, "VESPA_CONFIGSERVERS", @hostname)
 
     expected = <<EOF
 VESPA_HOME = '/opt/vespa'
@@ -40,7 +40,7 @@ EOF
   end
 
   def teardown
-    stop
+    override_environment_setting(@node, "VESPA_CONFIGSERVERS", nil)
   end
 
 end
