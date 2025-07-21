@@ -258,6 +258,7 @@ module GroupingBase
 
   def querytest_filter
     check_query('all(group(a) filter(not(regex("^a1$", a))) each(output(count())))', 'predicate-1')
+    check_query('all(group(a) filter(or(regex("^a1$", a),regex("^a2$", a))) each(output(count())))', 'predicate-2')
 
     check_query('all(group(a) filter(regex("^a1$", a)) each(output(count())))', 'filter-1')
     check_query('all(group(a) filter(regex("^b1$", b)) each(output(count())))', 'filter-2')
