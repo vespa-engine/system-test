@@ -67,7 +67,6 @@ class Vespa8GeoPositions < IndexedStreamingSearchTest
 
   def test_v8_single_position
     deploy_app(SearchApp.new.
-               legacy_override('v7-geo-positions', 'false').
                sd(selfdir+'singlepos2d.sd'))
     start
     feed_and_wait_for_docs('singlepos2d', 12, :file => selfdir+'docs-sp.json')
@@ -82,7 +81,6 @@ class Vespa8GeoPositions < IndexedStreamingSearchTest
 
   def test_v8_multi_positions
     deploy_app(SearchApp.new.
-               legacy_override('v7-geo-positions', 'false').
                sd(selfdir+'multiplepos2d.sd'))
     start
     #vespa.adminserver.execute('vespa-logctl searchnode:vsm debug=on')
@@ -102,7 +100,6 @@ class Vespa8GeoPositions < IndexedStreamingSearchTest
 
   def test_v8_positions_summary_rendering
     deploy_app(SearchApp.new.
-               legacy_override('v7-geo-positions', 'false').
                sd(selfdir+'renderpos.sd'))
     start
     feed_and_wait_for_docs('renderpos', 4, :file => selfdir+'docs-render.json')
