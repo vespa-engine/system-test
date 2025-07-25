@@ -36,6 +36,7 @@ class TestRunner
     @vespaversion = options[:vespaversion] ? options[:vespaversion] : "8-SNAPSHOT"
     @wait_for_nodes = options[:nodewait] ? options[:nodewait] : 60
     @dns_settle_time = options[:dns_settle_time] ? options[:dns_settle_time] : 0
+    @force_valgrind = options[:force_valgrind] ? options[:force_valgrind] : false
 
     @backend = BackendReporter.new(@testrun_id, @basedir, @log)
   end
@@ -173,7 +174,7 @@ class TestRunner
       # If we are in a separate process, make sure that DRb is started with the correct SSL config
       allocator_client = client_endpoint.create_client(with_object: nil, force_service_restart: true) unless DRb.thread && DRb.thread.alive?
 
-      testcase.valgrind = @backend.use_valgrind ? "all" : nil
+      testcase.valgrind = (@backend.use_valgrind || @force_valgrind) ? "all" : nil
 
       @log.info "#{testcase.class}::#{test_method.to_s} requesting nodes"
       begin
@@ -300,6 +301,9 @@ if __FILE__ == $0
     end
     opts.on("-w", "--nodewait SECONDS", Integer, "Wait for enough nodes for this many seconds.") do |seconds|
       options[:nodewait] = seconds
+    end
+    opts.on("--force-valgrind", "Force Valgrind on all tests.") do |force|
+      options[:force_valgrind] = force
     end
   end.parse!
 
