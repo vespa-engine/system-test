@@ -94,6 +94,24 @@ module GroupingBase
     check_query('all(group(time.dayofweek(from)) each(output(count()) ))',
                 'time.wday')
 
+    # Test time with timezone
+    check_query('all(group(time.year(from)) each(output(count()) ))',
+                'time.year', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
+    check_query('all(group(time.monthofyear(from)) each(output(count()) ))',
+                'time.month', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
+    check_query('all(group(time.hourofday(from)) each(output(count()) ))',
+                'time.hour.timezone', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
+    check_query('all(group(time.secondofminute(from)) each(output(count()) ))',
+                'time.second', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
+    check_query('all(group(time.minuteofhour(from)) each(output(count()) ))',
+                'time.minute.timezone', DEFAULT_TIMEOUT, true, "default", "Australia/Adelaide")
+    check_query('all(group(time.dayofmonth(from)) each(output(count()) ))',
+                'time.mday.timezone', DEFAULT_TIMEOUT, true, "default", "Pacific/Kiritimati")
+    check_query('all(group(time.dayofyear(from)) each(output(count()) ))',
+                'time.yday.timezone', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
+    check_query('all(group(time.dayofweek(from)) each(output(count()) ))',
+                'time.wday.timezone', DEFAULT_TIMEOUT, true, "default", "Europe/Oslo")
+
     # Test relevance
     check_query('all(group(a) each(output(count(),sum(mod(relevance(),100000))) ))',
                 'relevance')
@@ -335,10 +353,9 @@ module GroupingBase
     check_fullquery(full_query, file)
   end
 
-
-  def check_query(select, file, timeout=DEFAULT_TIMEOUT, session_cache=true, rank_profile="default")
+  def check_query(select, file, timeout=DEFAULT_TIMEOUT, session_cache=true, rank_profile="default", timezone="utc")
     full_query = "/?query=sddocname:test&select=#{select}&streaming.selection=true&hits=0&timeout=#{timeout}" +
-      "&groupingSessionCache=#{session_cache}&ranking.profile=#{rank_profile}"
+      "&groupingSessionCache=#{session_cache}&ranking.profile=#{rank_profile}&timezone=#{timezone}"
     check_fullquery(full_query, file)
   end
 
