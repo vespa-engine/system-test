@@ -62,7 +62,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
             int filterPercent = props.getInteger("nnr.filterPercent", 0);
             double approximateThreshold = Double.parseDouble(props.getString("nnr.approximateThreshold", "0.05"));
             double filterFirstThreshold = Double.parseDouble(props.getString("nnr.filterFirstThreshold", "0.00"));
-            double filterFirstExploration = Double.parseDouble(props.getString("nnr.filterFirstExploration", "0.01"));
+            double filterFirstExploration = Double.parseDouble(props.getString("nnr.filterFirstExploration", "0.3"));
             String idField = props.getString("nnr.idField", "id");
             log.log(Level.FINE, "NNRS.search(): docTensor=" + docTensor +
                     ", queryTensor=" + queryTensor + ", targetHits=" + targetHits +

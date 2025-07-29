@@ -23,7 +23,7 @@ search test {
     }
     approximate-threshold: 0.05
     filter-first-threshold: 0.0
-    filter-first-exploration: 0.01
+    filter-first-exploration: 0.3
     num-threads-per-search: 1
   }
   rank-profile threads-1 inherits default {

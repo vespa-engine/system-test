@@ -34,12 +34,12 @@ class AnnGistBase < CommonSiftGistBase
       # Standard HNSW
       query_and_benchmark(HNSW, 100, 0, filter_percent)
       # Now with filter-first heuristic enabled
-      query_and_benchmark(HNSW, 100, 0, filter_percent, 0.00, 0.40, 0.01)
+      query_and_benchmark(HNSW, 100, 0, filter_percent, 0.00, 0.40, 0.3)
 
       # Recall for standard HNSW
       calc_recall_for_queries(100, 0, filter_percent)
       # Recall for filter-first heuristic
-      calc_recall_for_queries(100, 0, filter_percent, 0.00, 0.40, 0.01)
+      calc_recall_for_queries(100, 0, filter_percent, 0.00, 0.40, 0.3)
     end
   end
 

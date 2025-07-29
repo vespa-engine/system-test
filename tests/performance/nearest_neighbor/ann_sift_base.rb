@@ -41,24 +41,24 @@ class AnnSiftBase < CommonSiftGistBase
       # Standard HNSW
       query_and_benchmark(HNSW, 100, 0, filter_percent)
       # Now with filter-first heuristic enabled
-      query_and_benchmark(HNSW, 100, 0, filter_percent, 0.00, 0.20, 0.01)
+      query_and_benchmark(HNSW, 100, 0, filter_percent, 0.00, 0.20, 0.3)
       # Increased exploration
-      query_and_benchmark(HNSW, 100, 0, filter_percent, 0.00, 0.20, 0.012)
+      query_and_benchmark(HNSW, 100, 0, filter_percent, 0.00, 0.20, 0.35)
 
       # Recall for standard HNSW
       calc_recall_for_queries(100, 0, filter_percent)
       # Recall for filter-first heuristic
-      calc_recall_for_queries(100, 0, filter_percent, 0.00, 0.20, 0.01)
+      calc_recall_for_queries(100, 0, filter_percent, 0.00, 0.20, 0.3)
       # Increased exploration
-      calc_recall_for_queries(100, 0, filter_percent, 0.00, 0.20, 0.012)
+      calc_recall_for_queries(100, 0, filter_percent, 0.00, 0.20, 0.35)
     end
 
     if test_threads_per_search
       [1, 2, 4, 8, 16].each do |threads|
         # Standard HNSW
-        query_and_benchmark(HNSW, 100, 0, 10, 0.05, 0.0, 0.0, 1, threads)
+        query_and_benchmark(HNSW, 100, 0, 10, 0.05, 0.0, 0.3, 1, threads)
         # Now with filter-first heuristic enabled
-        query_and_benchmark(HNSW, 100, 0, 10, 0.00, 0.20, 0.01, 1, threads)
+        query_and_benchmark(HNSW, 100, 0, 10, 0.00, 0.20, 0.3, 1, threads)
       end
     end
 
