@@ -41,7 +41,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     (threads_per_search > 0) ? "threads-#{threads_per_search}" : "default"
   end
 
-  def query_and_benchmark(algorithm, target_hits, explore_hits, filter_percent = 0, approximate_threshold = 0.05, filter_first_threshold = 0.0, filter_first_exploration = 0.01, clients = 1, threads_per_search = 0)
+  def query_and_benchmark(algorithm, target_hits, explore_hits, filter_percent = 0, approximate_threshold = 0.05, filter_first_threshold = 0.0, filter_first_exploration = 0.3, clients = 1, threads_per_search = 0)
     approximate = algorithm == HNSW ? "true" : "false"
     query_file = fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
     label = "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-n#{clients}-t#{threads_per_search}"
