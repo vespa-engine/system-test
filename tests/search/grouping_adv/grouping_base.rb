@@ -95,16 +95,21 @@ module GroupingBase
                 'time.wday')
 
     # Test time with timezone
+    # - timezone should offset the value in from field into a local time with these queries
     check_query('all(group(time.year(from)) each(output(count()) ))',
                 'time.year', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
     check_query('all(group(time.monthofyear(from)) each(output(count()) ))',
                 'time.month', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
+    # - hour should change with timezone
     check_query('all(group(time.hourofday(from)) each(output(count()) ))',
                 'time.hour.timezone', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
+    # - seconds should not change with timezones
     check_query('all(group(time.secondofminute(from)) each(output(count()) ))',
                 'time.second', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
+    # - Australia/Adelaide does not offset the time by whole hours, but with additional 30 minutes
     check_query('all(group(time.minuteofhour(from)) each(output(count()) ))',
                 'time.minute.timezone', DEFAULT_TIMEOUT, true, "default", "Australia/Adelaide")
+    # - Pacific/Kiritimati offsets by 14 hours
     check_query('all(group(time.dayofmonth(from)) each(output(count()) ))',
                 'time.mday.timezone', DEFAULT_TIMEOUT, true, "default", "Pacific/Kiritimati")
     check_query('all(group(time.dayofyear(from)) each(output(count()) ))',
