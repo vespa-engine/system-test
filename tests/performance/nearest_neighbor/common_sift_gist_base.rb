@@ -85,8 +85,8 @@ class CommonSiftGistBase < CommonAnnBaseTest
     end
 
     [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
-      query_and_benchmark(HNSW, 10, 0, 0, 0.05, 0.0, 0.01, slack)
-      calc_recall_for_queries(10, 0, 0, 0.05, 0.0, 0.01, slack)
+      query_and_benchmark(HNSW, 10, 0, 0, 0.05, 0.0, 0.3, slack)
+      calc_recall_for_queries(10, 0, 0, 0.05, 0.0, 0.3, slack)
     end
   end
 
@@ -97,14 +97,14 @@ class CommonSiftGistBase < CommonAnnBaseTest
     end
 
     [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
-      query_and_benchmark(HNSW, 100, 0, 0, 0.05, 0.0, 0.01, slack)
-      calc_recall_for_queries(100, 0, 0, 0.05, 0.0, 0.01, slack)
+      query_and_benchmark(HNSW, 100, 0, 0, 0.05, 0.0, 0.3, slack)
+      calc_recall_for_queries(100, 0, 0, 0.05, 0.0, 0.3, slack)
     end
 
-    # Now with filtering
+    # Now with filtering and filter first
     [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
-      query_and_benchmark(HNSW, 100, 0, 95, 0.00, 0.4, 0.01, slack)
-      calc_recall_for_queries(100, 0, 95, 0.00, 0.4, 0.01, slack)
+      query_and_benchmark(HNSW, 100, 0, 95, 0.00, 0.4, 0.3, slack)
+      calc_recall_for_queries(100, 0, 95, 0.00, 0.4, 0.3, slack)
     end
   end
 
