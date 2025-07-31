@@ -61,6 +61,10 @@ class GlobalPhaseRanking < IndexedStreamingSearchTest
     puts "Check that using reciprocal_rank_fusion works as expected"
     query = "?input.query(query_vec)=[0.5,1.5]&query=bar&ranking=global_phase_rrf&summary=minimal"
     assert_result(query, selfdir + "answers/rrf.json", nil, fields_to_compare)
+
+    puts "Check that relevanceScore picks up current relevance score"
+    query = "?input.query(query_vec)=[2.0,2.0]&query=sddocname:test&ranking=using_relevance_score&summary=minimal"
+    assert_result(query, selfdir + "answers/using_rs.json", nil, fields_to_compare)
   end
 
   def teardown
