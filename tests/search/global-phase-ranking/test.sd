@@ -158,4 +158,16 @@ schema test {
             nativeRank
         }
     }
+
+    rank-profile using_relevance_score inherits base {
+        first-phase {
+           expression: sum(query(query_vec) * attribute(doc_vec))
+        }
+        global-phase {
+            expression: relevanceScore + 10 * attribute(score)
+        }
+        summary-features {
+            firstPhase
+        }
+    }
 }
