@@ -126,7 +126,7 @@ def read_recall_by_response_time(jsonObj):
             else:
                 already_seen.add(original_label)
 
-            if original_label in recall:
+            if original_label in response_time:
                 # Extended hits
                 label = clean_extended_hits(original_label)
                 if label not in recall:
@@ -227,6 +227,7 @@ def plot_recall_by_response_time(recall):
     plt.legend()
 
     axs = plt.gca()
+    axs.set_xlim(xmin=0, xmax=10)
     axs.set_ylim(ymin=95, ymax=100)
 
 def plot(filename, save):
