@@ -1,0 +1,18 @@
+schema twotensors {
+  document twotensors {
+    field docid type long {
+      indexing: attribute | summary
+    }
+    field tensor1 type tensor<float>(x[2]) {
+      indexing: attribute | index | summary
+    }
+    field tensor2 type tensor<float>(x[2]) {
+      indexing: attribute | index | summary
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(query_vector) tensor<float>(x[2])
+    }
+  }
+}
