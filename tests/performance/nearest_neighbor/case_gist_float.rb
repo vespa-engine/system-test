@@ -6,7 +6,7 @@ class AnnGistPerfTest < AnnGistBase
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("boeker")
   end
 
   def test_gist_data_set

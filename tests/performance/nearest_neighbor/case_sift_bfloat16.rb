@@ -6,7 +6,7 @@ class AnnSiftBFloat16PerfTest < AnnSiftBase
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("boeker")
   end
 
   def test_sift_data_set_bfloat16
