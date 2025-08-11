@@ -6,7 +6,7 @@ class AnnMipsWiki < CommonMipsBase
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("boeker")
   end
 
   def test_mips_with_wiki_dataset

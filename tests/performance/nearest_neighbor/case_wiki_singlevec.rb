@@ -6,7 +6,7 @@ class NearestNeighborWikiSinglevec < CommonWikiBase
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("boeker")
   end
 
   def test_wiki_singlevec
