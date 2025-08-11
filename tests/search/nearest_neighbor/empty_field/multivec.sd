@@ -1,18 +1,18 @@
-schema twotensors {
-  document twotensors {
+schema multivec {
+  document multivec {
     field docid type long {
       indexing: attribute | summary
     }
-    field tensor1 type tensor<float>(x[2]) {
+    field tensor1 type tensor<float>(x{}, y[2]) {
       indexing: attribute | index | summary
     }
-    field tensor2 type tensor<float>(x[2]) {
+    field tensor2 type tensor<float>(x{}, y[2]) {
       indexing: attribute | index | summary
     }
   }
   rank-profile default {
     inputs {
-      query(query_vector) tensor<float>(x[2])
+      query(query_vector) tensor<float>(y[2])
     }
   }
 }
