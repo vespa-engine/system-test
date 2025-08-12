@@ -59,6 +59,15 @@ schema test {
     field i type int {
       indexing: attribute
     }
+
+    field msd type map<string, double> {
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value {
+        indexing: attribute
+      }
+    }
   }
   fieldset default {
     fields: body
