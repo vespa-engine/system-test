@@ -289,6 +289,10 @@ module GroupingBase
   end
 
   def querytest_filter
+    check_query('all(group(sf) filter(range(2.9, 8.9, sf)) each(output(count())))', 'range-1')
+    check_query('all(group(sf) filter(range(2.9, 8.9, sf, true, false)) each(output(count())))', 'range-1') # default values for inclusion is true, false
+    check_query('all(group(sf) filter(range(2.9, 8.9, sf, false, true)) each(output(count())))', 'range-2')
+
     check_query('all(group(a) filter(not(regex("^a1$", a))) each(output(count())))', 'predicate-1')
     check_query('all(group(a) filter(or(regex("^a1$", a),regex("^a2$", a))) each(output(count())))', 'predicate-2')
     check_query('all(group(a) filter(and(regex("^a*$", s),regex("^b1$", b))) each(output(count())))', 'predicate-3')
