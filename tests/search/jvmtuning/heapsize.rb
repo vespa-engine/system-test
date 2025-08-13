@@ -81,9 +81,23 @@ class HeapSize < SearchTest
     start
     free = vespa.adminserver.execute("free -m | grep Mem | tr -s ' ' | cut -f2 -d' '").to_i
     begin
-      cglimit_bytes = vespa.adminserver.execute("cgget -nv -r memory.limit_in_bytes / 2>&1").to_i
-      cglimit = cglimit_bytes >> 20
-      free = [free, cglimit].min
+      cg1cmd = 'cgget -nv -r memory.limit_in_bytes /'
+      cg2cmd = 'find /sys/fs/cgroup -name memory.max -print0 | xargs -0 grep -h -v max | sort -u'
+      (cg1exitcode, cg1out) = vespa.adminserver.execute(cg1cmd, {:exitcode => true, :exceptiononfailure => false})
+      (cg2exitcode, cg2out) = vespa.adminserver.execute(cg2cmd, {:exitcode => true, :exceptiononfailure => false})
+      puts "cg1exitcode: #{cg1exitcode} out: #{cg1out}"
+      puts "cg2exitcode: #{cg2exitcode} out: #{cg2out}"
+      if cg1exitcode.to_i == 0
+        puts "Using output from cgget: #{cg1out}"
+        cglimit_bytes = cg1out.to_i
+        cglimit = cglimit_bytes >> 20
+        free = [free, cglimit].min
+      elsif cg2exitcode.to_i == 0
+        puts "Using output from /sys/fs/cgroup grep: #{cg2out}"
+        cglimit_bytes = cg2out.to_i
+        cglimit = cglimit_bytes >> 20
+        free = [free, cglimit].min
+      end
     rescue
       # Ignored
     end
