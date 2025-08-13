@@ -209,6 +209,14 @@ module GroupingBase
     check_query('all(group(fixedwidth(f,0.5)) each(output(count())))',
                 'fixedwidth-f-0.5')
 
+    # Test buckets with map value
+    check_query('all(group(predefined(msd{k1},bucket(1,3),bucket(6,9))) each(output(count())))', 'predef5')
+    check_query('all(group(predefined(msd{k2},bucket(1,3),bucket(6,inf))) each(output(count())))', 'predef6')
+    check_query('all(group(fixedwidth(msd{k1},3)) each(output(count())))',
+                'fixedwidth-mk1-3')
+    check_query('all(group(fixedwidth(msd{k2},3)) each(output(count())))',
+                'fixedwidth-mk2-3')
+
     # Test xorbit
     check_query('all(group(xorbit(cat(a,b,c),  8)) each(output(count())))', 'xorbit.8')
     check_query('all(group(xorbit(cat(a,b,c), 16)) each(output(count())))', 'xorbit.16')
