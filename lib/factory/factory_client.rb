@@ -23,8 +23,11 @@ class FactoryClient
       end
       test_source = elems[i..elems.size].join('/')
 
-      tests[:tests] << { :name => "#{testcase.class.name}::#{method.to_s}", :owner => extract_owner(testcase.testcase_file),
-                         :repo => "#{repo}", :sourcePath => test_source }
+      test_entry = { :name => "#{testcase.class.name}::#{method.to_s}", :owner => extract_owner(testcase.testcase_file),
+                     :repo => "#{repo}", :sourcePath => test_source }
+      description = extract_description(testcase.testcase_file)
+      test_entry[:description] = description if description
+      tests[:tests] << test_entry
     end
 
     begin
@@ -109,6 +112,19 @@ private
       nil
     end
     'nobody'
+  end
+
+  def extract_description(source)
+    begin
+      File.readlines(source).each do |line|
+        match = line.match(/^\s*set_description\((['"])((?:\\\1|[^\1])*)\1\)\s*$/)
+        return match.captures[1] if match
+      end
+    rescue Errno::ENOENT, Encoding::InvalidByteSequenceError
+      # The above code might run into misc encoding issues for files
+      # without UTF-8 encoding. Empty rescue here for those.
+      nil
+    end
   end
 
 end
