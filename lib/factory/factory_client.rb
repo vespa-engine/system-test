@@ -120,7 +120,7 @@ private
         match = line.match(/^\s*set_description\(["'](.+)['"]\)\s*$/)
         return match.captures[0] if match
       end
-    rescue
+    rescue Errno::ENOENT, Encoding::InvalidByteSequenceError
       # The above code might run into misc encoding issues for files
       # without UTF-8 encoding. Empty rescue here for those.
       nil
