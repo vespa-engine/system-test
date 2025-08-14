@@ -26,14 +26,7 @@ class GroupingIndexed < IndexedOnlySearchTest
     feed_docs
 
     querytest_common
-
-    # Test buckets with map value
-    check_query('all(group(predefined(msd{k1},bucket(1,3),bucket(6,9))) each(output(count())))', 'indexed-predef5')
-    check_query('all(group(predefined(msd{k2},bucket(1,3),bucket(6,inf))) each(output(count())))', 'indexed-predef6')
-    check_query('all(group(fixedwidth(msd{k1},3)) each(output(count())))',
-                'indexed-fixedwidth-mk1-3')
-    check_query('all(group(fixedwidth(msd{k2},3)) each(output(count())))',
-                'indexed-fixedwidth-mk2-3')
+    querytest_map_value
 
     # Test for bug http://bug.corp.yahoo.com/show_bug.cgi?id=3393155
     result = search('query=sddocname:test&ranking=default&streaming.selection=&tracelevel=2&select=all(group(a) each(output(count(),sum(n),avg(n),max(n),min(n),xor(n))))')

@@ -279,6 +279,15 @@ module GroupingBase
     check_query("all(group(a)order($myalias=count())each(output($myalias)))", 'alias-2')
   end
 
+  def querytest_map_value(streaming=false)
+    classifier = streaming ? 'streaming' : 'indexed'
+    # Test buckets with map value, possibly missing and possibly filled with default value
+    check_query('all(group(predefined(msd{k1},bucket(1,3),bucket(6,9))) each(output(count())))', "#{classifier}-predef5")
+    check_query('all(group(predefined(msd{k2},bucket(1,3),bucket(6,inf))) each(output(count())))', "#{classifier}-predef6")
+    check_query('all(group(fixedwidth(msd{k1},3)) each(output(count())))', "#{classifier}-fixedwidth-mk1-3")
+    check_query('all(group(fixedwidth(msd{k2},3)) each(output(count())))', "#{classifier}-fixedwidth-mk2-3")
+  end
+
   def querytest_filter
     check_query('all(group(a) filter(not(regex("^a1$", a))) each(output(count())))', 'predicate-1')
     check_query('all(group(a) filter(or(regex("^a1$", a),regex("^a2$", a))) each(output(count())))', 'predicate-2')
