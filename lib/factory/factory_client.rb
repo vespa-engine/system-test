@@ -117,7 +117,7 @@ private
   def extract_description(source)
     begin
       File.readlines(source).each do |line|
-        match = line.match(/^\s*set_description\(["'](.+)['"]\)\s*$/)
+        match = line.match(/^\s*set_description\((['"])((?:\\\1|[^\1])*)\1\)\s*$/)
         return match.captures[0] if match
       end
     rescue Errno::ENOENT, Encoding::InvalidByteSequenceError
