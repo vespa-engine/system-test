@@ -25,6 +25,14 @@ class GroupingStreaming < StreamingSearchTest
 
     querytest_common
 
+    # Test buckets with map value
+    check_query('all(group(predefined(msd{k1},bucket(1,3),bucket(6,9))) each(output(count())))', 'streaming-predef5')
+    check_query('all(group(predefined(msd{k2},bucket(1,3),bucket(6,inf))) each(output(count())))', 'streaming-predef6')
+    check_query('all(group(fixedwidth(msd{k1},3)) each(output(count())))',
+                'streaming-fixedwidth-mk1-3')
+    check_query('all(group(fixedwidth(msd{k2},3)) each(output(count())))',
+                'streaming-fixedwidth-mk2-3')
+
     # Test where
     check_query('all(group(a) each(output(count())))', 'where-allhits')
     check_wherequery('a:a1', 'all(group(a) each(output(count())))', 'where-a1')
