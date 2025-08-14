@@ -118,7 +118,7 @@ private
     begin
       File.readlines(source).each do |line|
         match = line.match(/^\s*set_description\((['"])((?:\\\1|[^\1])*)\1\)\s*$/)
-        return match.captures[0] if match
+        return match.captures[1] if match
       end
     rescue Errno::ENOENT, Encoding::InvalidByteSequenceError
       # The above code might run into misc encoding issues for files
