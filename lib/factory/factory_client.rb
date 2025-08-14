@@ -125,7 +125,6 @@ private
       # without UTF-8 encoding. Empty rescue here for those.
       nil
     end
-    nil
   end
 
 end
