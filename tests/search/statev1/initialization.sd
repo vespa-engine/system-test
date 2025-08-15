@@ -1,0 +1,28 @@
+# Copyright Vespa.ai. All rights reserved.
+schema initialization {
+  document initialization {
+    field int_field1 type int {
+      indexing: summary | attribute
+    }
+    field int_field2 type int {
+      indexing: summary | index
+    }
+    field int_field3 type int {
+      indexing: summary | attribute | index
+    }
+
+    field string_field1 type string {
+      indexing: summary | attribute
+    }
+    field string_field2 type string {
+      indexing: summary | index
+    }
+    field string_field3 type string {
+      indexing: summary | attribute | index
+    }
+
+    field tensor_field type tensor<float>(x[100]) {
+      indexing: summary | attribute | index
+    }
+  }
+}
