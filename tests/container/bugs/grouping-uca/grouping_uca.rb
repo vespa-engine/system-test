@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 require "search_container_test"
 
-class Bug4390127 < SearchContainerTest
+class GroupingUCA < SearchContainerTest
 
   def setup
     set_owner("hmusum")
