@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<result total-hit-count="6" coverage-docs="12" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
+  <hit relevancy="829.6273633914483" source="search">
+    <field name="relevancy">829.6273633914483</field>
+    <field name="sddocname">singlepos2d</field>
+    <field name="title">A Bridge Too Far GCNHK9</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":170.3726366085517,"distance(ll)":1532195.8152351126,"distance(ll).km":170.3726366085517,"distance(ll).latitude":63.394,"distance(ll).longitude":10.3868,"great_circle_distance(field,ll).km":170.3726366085517,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:test:singlepos2d::GCNHK9</field>
+  </hit>
+  <hit relevancy="827.2303112613595" source="search">
+    <field name="relevancy">827.2303112613595</field>
+    <field name="sddocname">singlepos2d</field>
+    <field name="title">BP#02 Steinberget GCQMGM</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":172.7696887386405,"distance(ll)":1553752.993170094,"distance(ll).km":172.7696887386405,"distance(ll).latitude":63.4225,"distance(ll).longitude":10.3637,"great_circle_distance(field,ll).km":172.7696887386405,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:test:singlepos2d::GCQMGM</field>
+  </hit>
+  <hit relevancy="826.3698241686507" source="search">
+    <field name="relevancy">826.3698241686507</field>
+    <field name="sddocname">singlepos2d</field>
+    <field name="title">Kjro#1 - Ilsvika overview GCPAKJ</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":173.6301758313493,"distance(ll)":1561491.5288220455,"distance(ll).km":173.6301758313493,"distance(ll).latitude":63.4345,"distance(ll).longitude":10.3461,"great_circle_distance(field,ll).km":173.6301758313493,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:test:singlepos2d::GCPAKJ</field>
+  </hit>
+  <hit relevancy="826.2857407320903" source="search">
+    <field name="relevancy">826.2857407320903</field>
+    <field name="sddocname">singlepos2d</field>
+    <field name="title">Kjro#2 - Ilsvika seaside GCPCRW</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":173.71425926790965,"distance(ll)":1562247.708289552,"distance(ll).km":173.71425926790965,"distance(ll).latitude":63.4325,"distance(ll).longitude":10.3603,"great_circle_distance(field,ll).km":173.71425926790965,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:test:singlepos2d::GCPCRW</field>
+  </hit>
+  <hit relevancy="823.9790790674989" source="search">
+    <field name="relevancy">823.9790790674989</field>
+    <field name="sddocname">singlepos2d</field>
+    <field name="title">The Fir Forest GCN9G0</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":176.02092093250113,"distance(ll)":1582991.9863614507,"distance(ll).km":176.02092093250113,"distance(ll).latitude":63.4233,"distance(ll).longitude":10.5118,"great_circle_distance(field,ll).km":176.02092093250113,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:test:singlepos2d::GCN9G0</field>
+  </hit>
+  <hit relevancy="822.6164794898343" source="search">
+    <field name="relevancy">822.6164794898343</field>
+    <field name="sddocname">singlepos2d</field>
+    <field name="title">Starte #2 - Ladestien GCG5KZ</field>
+    <field name="summaryfeatures">{"distance(field,ll).km":177.38352051016565,"distance(ll)":1595246.1218394123,"distance(ll).km":177.38352051016565,"distance(ll).latitude":63.447,"distance(ll).longitude":10.4659,"great_circle_distance(field,ll).km":177.38352051016565,"vespa.summaryFeatures.cached":0.0}</field>
+    <field name="documentid">id:test:singlepos2d::GCG5KZ</field>
+  </hit>
+</result>
