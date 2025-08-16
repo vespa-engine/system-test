@@ -78,6 +78,9 @@ class Vespa8GeoPositions < IndexedStreamingSearchTest
     #vespa.adminserver.execute('vespa-logctl searchnode:features.distancefeature debug=on')
     #vespa.adminserver.execute('vespa-logctl searchnode:features.great_circle_distance_feature debug=on')
     check_spos('pos.ll=63.4225N+10.3637E', 10, 'v8-sp3')
+    check_q('yql=select * from singlepos2d where geoLocation("ll", 63.4225, 10.3637, "10km")', 10, 'v8-sp3')
+    check_q('yql=select * from singlepos2d where rank(geoBoundingBox("ll", 63.39, 10.34, 63.45, 10.53), geoLocation("ll", 62.0, 9.0, "-1km"))', 6, 'v8-sp4-bb')
+    check_q('yql=select * from singlepos2d where geoLocation("ll", 63.4225, 10.3637, "2km")', 4, 'v8-sp5-2km')
   end
 
   def test_v8_multi_positions

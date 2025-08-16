@@ -1,0 +1,95 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 4
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 12,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "id:test:singlepos2d::GCQMGM",
+        "relevance": 1000.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "singlepos2d",
+          "documentid": "id:test:singlepos2d::GCQMGM",
+          "title": "BP#02 Steinberget GCQMGM",
+          "summaryfeatures": {
+            "distance(field,ll).km": 0.0,
+            "distance(ll)": 0.0,
+            "distance(ll).km": 0.0,
+            "distance(ll).latitude": 63.4225,
+            "distance(ll).longitude": 10.3637,
+            "great_circle_distance(field,ll).km": 0.0,
+            "vespa.summaryFeatures.cached": 0.0
+          }
+        }
+      },
+      {
+        "id": "id:test:singlepos2d::GCPCRW",
+        "relevance": 998.8752618879876,
+        "source": "search",
+        "fields": {
+          "sddocname": "singlepos2d",
+          "documentid": "id:test:singlepos2d::GCPCRW",
+          "title": "Kjro#2 - Ilsvika seaside GCPCRW",
+          "summaryfeatures": {
+            "distance(field,ll).km": 1.1247381120124027,
+            "distance(ll)": 10114.998879898441,
+            "distance(ll).km": 1.1247381120124027,
+            "distance(ll).latitude": 63.4325,
+            "distance(ll).longitude": 10.3603,
+            "great_circle_distance(field,ll).km": 1.1247381120124027,
+            "vespa.summaryFeatures.cached": 0.0
+          }
+        }
+      },
+      {
+        "id": "id:test:singlepos2d::GCPAKJ",
+        "relevance": 998.4041282603887,
+        "source": "search",
+        "fields": {
+          "sddocname": "singlepos2d",
+          "documentid": "id:test:singlepos2d::GCPAKJ",
+          "title": "Kjro#1 - Ilsvika overview GCPAKJ",
+          "summaryfeatures": {
+            "distance(field,ll).km": 1.5958717396113031,
+            "distance(ll)": 14351.999533249484,
+            "distance(ll).km": 1.5958717396113031,
+            "distance(ll).latitude": 63.4345,
+            "distance(ll).longitude": 10.3461,
+            "great_circle_distance(field,ll).km": 1.5958717396113031,
+            "vespa.summaryFeatures.cached": 0.0
+          }
+        }
+      },
+      {
+        "id": "id:test:singlepos2d::GCQHZ5",
+        "relevance": 998.3017989906999,
+        "source": "search",
+        "fields": {
+          "sddocname": "singlepos2d",
+          "documentid": "id:test:singlepos2d::GCQHZ5",
+          "title": "Overlook Byåsen GCQHZ5",
+          "summaryfeatures": {
+            "distance(field,ll).km": 1.6982010093000948,
+            "distance(ll)": 15272.267493611389,
+            "distance(ll).km": 1.6982010093000948,
+            "distance(ll).latitude": 63.4124,
+            "distance(ll).longitude": 10.3381,
+            "great_circle_distance(field,ll).km": 1.6982010093000948,
+            "vespa.summaryFeatures.cached": 0.0
+          }
+        }
+      }
+    ]
+  }
+}

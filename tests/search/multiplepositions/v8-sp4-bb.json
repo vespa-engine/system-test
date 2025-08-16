@@ -1,0 +1,133 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 6
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 12,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "id:test:singlepos2d::GCNHK9",
+        "relevance": 829.6273633914483,
+        "source": "search",
+        "fields": {
+          "sddocname": "singlepos2d",
+          "documentid": "id:test:singlepos2d::GCNHK9",
+          "title": "A Bridge Too Far GCNHK9",
+          "summaryfeatures": {
+            "distance(field,ll).km": 170.3726366085517,
+            "distance(ll)": 1532195.8152351126,
+            "distance(ll).km": 170.3726366085517,
+            "distance(ll).latitude": 63.394,
+            "distance(ll).longitude": 10.3868,
+            "great_circle_distance(field,ll).km": 170.3726366085517,
+            "vespa.summaryFeatures.cached": 0.0
+          }
+        }
+      },
+      {
+        "id": "id:test:singlepos2d::GCQMGM",
+        "relevance": 827.2303112613595,
+        "source": "search",
+        "fields": {
+          "sddocname": "singlepos2d",
+          "documentid": "id:test:singlepos2d::GCQMGM",
+          "title": "BP#02 Steinberget GCQMGM",
+          "summaryfeatures": {
+            "distance(field,ll).km": 172.7696887386405,
+            "distance(ll)": 1553752.993170094,
+            "distance(ll).km": 172.7696887386405,
+            "distance(ll).latitude": 63.4225,
+            "distance(ll).longitude": 10.3637,
+            "great_circle_distance(field,ll).km": 172.7696887386405,
+            "vespa.summaryFeatures.cached": 0.0
+          }
+        }
+      },
+      {
+        "id": "id:test:singlepos2d::GCPAKJ",
+        "relevance": 826.3698241686507,
+        "source": "search",
+        "fields": {
+          "sddocname": "singlepos2d",
+          "documentid": "id:test:singlepos2d::GCPAKJ",
+          "title": "Kjro#1 - Ilsvika overview GCPAKJ",
+          "summaryfeatures": {
+            "distance(field,ll).km": 173.6301758313493,
+            "distance(ll)": 1561491.5288220455,
+            "distance(ll).km": 173.6301758313493,
+            "distance(ll).latitude": 63.4345,
+            "distance(ll).longitude": 10.3461,
+            "great_circle_distance(field,ll).km": 173.6301758313493,
+            "vespa.summaryFeatures.cached": 0.0
+          }
+        }
+      },
+      {
+        "id": "id:test:singlepos2d::GCPCRW",
+        "relevance": 826.2857407320903,
+        "source": "search",
+        "fields": {
+          "sddocname": "singlepos2d",
+          "documentid": "id:test:singlepos2d::GCPCRW",
+          "title": "Kjro#2 - Ilsvika seaside GCPCRW",
+          "summaryfeatures": {
+            "distance(field,ll).km": 173.71425926790965,
+            "distance(ll)": 1562247.708289552,
+            "distance(ll).km": 173.71425926790965,
+            "distance(ll).latitude": 63.4325,
+            "distance(ll).longitude": 10.3603,
+            "great_circle_distance(field,ll).km": 173.71425926790965,
+            "vespa.summaryFeatures.cached": 0.0
+          }
+        }
+      },
+      {
+        "id": "id:test:singlepos2d::GCN9G0",
+        "relevance": 823.9790790674989,
+        "source": "search",
+        "fields": {
+          "sddocname": "singlepos2d",
+          "documentid": "id:test:singlepos2d::GCN9G0",
+          "title": "The Fir Forest GCN9G0",
+          "summaryfeatures": {
+            "distance(field,ll).km": 176.02092093250113,
+            "distance(ll)": 1582991.9863614507,
+            "distance(ll).km": 176.02092093250113,
+            "distance(ll).latitude": 63.4233,
+            "distance(ll).longitude": 10.5118,
+            "great_circle_distance(field,ll).km": 176.02092093250113,
+            "vespa.summaryFeatures.cached": 0.0
+          }
+        }
+      },
+      {
+        "id": "id:test:singlepos2d::GCG5KZ",
+        "relevance": 822.6164794898343,
+        "source": "search",
+        "fields": {
+          "sddocname": "singlepos2d",
+          "documentid": "id:test:singlepos2d::GCG5KZ",
+          "title": "Starte #2 - Ladestien GCG5KZ",
+          "summaryfeatures": {
+            "distance(field,ll).km": 177.38352051016565,
+            "distance(ll)": 1595246.1218394123,
+            "distance(ll).km": 177.38352051016565,
+            "distance(ll).latitude": 63.447,
+            "distance(ll).longitude": 10.4659,
+            "great_circle_distance(field,ll).km": 177.38352051016565,
+            "vespa.summaryFeatures.cached": 0.0
+          }
+        }
+      }
+    ]
+  }
+}
