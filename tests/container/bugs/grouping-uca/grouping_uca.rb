@@ -1,12 +1,11 @@
 # Copyright Vespa.ai. All rights reserved.
-
 require "search_container_test"
 
-class Bug4390127 < SearchContainerTest
+class GroupingUCA < SearchContainerTest
 
   def setup
-    set_owner("balder")
-    set_description("Test bug 4390127")
+    set_owner("hmusum")
+    set_description("Test order of grouping output when using UCA (Unicode Collation Algorithm) for single- and multivalued fields")
   end
 
   def test_bug4390127
