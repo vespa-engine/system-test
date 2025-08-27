@@ -22,6 +22,11 @@ module GroupingBase
 
     querytest_filter
 
+    # Test quantiles
+    check_query('all(group(boool) each(output(quantiles([0.1], f))))', 'quantile-1', 40)
+    check_query('all(group(boool) each(output(quantiles([0.5, 0.9], f))))', 'quantile-2', 40)
+    check_query('all(group(boool) each(output(quantiles([0.1, 0.5, 0.9, 0.99], f))))', 'quantile-3', 40)
+
     # Test subgrouping.
     check_query('all(group(a) max(5) each(output(count()) each(output(summary(normal)))))',
                 'subgroup1')
