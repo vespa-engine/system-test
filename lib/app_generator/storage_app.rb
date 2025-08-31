@@ -23,7 +23,8 @@ class StorageApp < App
                   :doc_type => :doc_type,
                   :streaming => :streaming,
                   :persistence_threads => :persistence_threads,
-                  :num_distributor_stripes => :num_distributor_stripes
+                  :num_distributor_stripes => :num_distributor_stripes,
+                  :coverage_policy => :coverage_policy
 
   def initialize
     super

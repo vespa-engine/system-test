@@ -33,6 +33,7 @@ class SearchCluster
   chained_setter :bitvector_cache
   chained_setter :proton_resource_limits
   chained_setter :search_io
+  chained_setter :coverage_policy
   chained_forward :config, :config => :add
   chained_forward :docprocs, :docproc => :push
   chained_forward :node_groups, :group => :push
@@ -75,6 +76,7 @@ class SearchCluster
     @bitvector_cache = nil
     @proton_resource_limits = nil
     @search_io = nil
+    @coverage_policy = nil
   end
 
   def sd(file_name, params = {})
@@ -180,6 +182,7 @@ class SearchCluster
     XmlHelper.new(indent).
       tag("redundancy").content(@redundancy).close_tag.
       tag("tuning").to_xml(@persistence_threads).close_tag.
+      tag("coverage-policy").content(@coverage_policy).close_tag.
       to_xml(@config).
       call {|indent| proton_config(indent)}.
       call {|indent| docdefinitions_xml(indent, search_type_tag)}.
