@@ -139,12 +139,14 @@ class SearchAppGenTest < Test::Unit::TestCase
                      num_parts(3).
                      threads_per_search(2).
                      allowed_lid_bloat(3).
-                     allowed_lid_bloat_factor(0.7)).
+                     allowed_lid_bloat_factor(0.7).
+                     coverage_policy('node')).
              services_xml
 
     expected_substr = '
       <content id="foo" version="1.0">
         <redundancy>3</redundancy>
+        <coverage-policy>node</coverage-policy>
         <config name="vespa.config.search.core.proton">
           <numthreadspersearch>2</numthreadspersearch>
           <initialize>
