@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'performance_test'
 
-class OnnxModel < PerformanceTest
+class DeployOnnxModel < PerformanceTest
 
   def initialize(*args)
     super(*args)
