@@ -14,11 +14,18 @@
 
                 <!-- Approx 130Mb, often fails to generate structured output, use responseFormatType TEXT" -->
                 <!-- <model url="https://data.vespa-cloud.com/gguf_models/Llama-160M-Chat-v1.Q6_K.gguf"/>-->
-                <!-- Approx 750Mb, sometime fails to generate structure output, use responseFormatType TEXT" -->
+                <!-- Approx 750Mb, sometimes fails to generate structure output, use responseFormatType TEXT" -->
                 <!-- <model url="https://data.vespa-cloud.com/gguf_models/llama-3.2-1b-instruct-q4_k_m.gguf" /> -->
                 <!-- Approx 2.2GB, should be able to generate structure output -->
                 <model url="https://data.vespa-cloud.com/gguf_models/Phi-3.5-mini-instruct-Q4_K_M.gguf"/>
-                <contextSize>1024</contextSize>
+                <contextSize>1000</contextSize>
+                <parallelRequests>1</parallelRequests>
+                <maxQueueSize>5</maxQueueSize>
+                <maxQueueWait>1000000</maxQueueWait>
+                <maxEnqueueWait>1000000</maxEnqueueWait>
+                <maxTokens>200</maxTokens>
+                <maxPromptTokens>200</maxPromptTokens>
+                <threads>4</threads>
             </config>
         </component>
 
