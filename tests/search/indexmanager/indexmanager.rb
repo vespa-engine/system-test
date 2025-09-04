@@ -134,7 +134,7 @@ class IndexManagerTest < IndexedOnlySearchTest
 
   def verify_trigger_flush_count
     @stats.num_trigger_flush += 1
-    verify_log_matches(/.*Flush finished/, @stats.num_trigger_flush)
+    verify_log_matches(/.*Priority flush strategy flush_all id.* drained/, @stats.num_trigger_flush)
   end
 
   def verify_memory_index_flush_count
