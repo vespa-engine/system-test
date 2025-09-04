@@ -47,6 +47,7 @@
             <config name="ai.vespa.llm.generation.language-model-field-generator">
                 <providerId>local_llm</providerId>
                 <promptTemplateFile>files/prompt.txt</promptTemplateFile>
+                <responseFormatType>TEXT</responseFormatType>
             </config>
         </component>
 
