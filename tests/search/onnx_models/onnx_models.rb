@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class OnnxModelsDeployment < IndexedOnlySearchTest
 
   def setup
-    set_description("Test that having a shcema containing some onnx models that are not used in any content cluster works " +
+    set_description("Test that having a schema containing some onnx models that are not used in any content cluster works " +
                     " ('foo' and 'baz' in this case). " +
                     "Also test that it works to have global onnx models ('foo' and 'baz' in this case), that are not " +
                     "referenced in content cluster / rank-profiles, but only used by stateless model-evaluation " +
