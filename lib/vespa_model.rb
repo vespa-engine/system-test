@@ -579,18 +579,24 @@ class VespaModel
       @testcase.output("No hosts defined in hosts.xml, using " + hostlist.first + " as admin and config server")
       return [hostlist.first, [hostlist.first]]
     end
-    nodes_root = REXML::Document.new(File.open(vespa_nodes)).root
+    if not File.file?(services)
+      # If we are without a vespa hosts file, just return the first
+      # (and probably only node available)
+      @testcase.output("No services.xml file, using " + hostlist.first + " as admin and config server")
+      return [hostlist.first, [hostlist.first]]
+    end
     services_root = REXML::Document.new(File.open(services)).root
-    admin_hostname = ""
-    admin_alias = ""
-    config_hostnames = []
-    config_aliases = []
-
     # In version 3.0 there is no config or admin server explicitly defined
     if get_admin_version(services_root) == "3.0" then
       @testcase.output("Admin version 3.0, using " + hostlist.first + " as admin and config server")
       return [hostlist.first, [hostlist.first]]
     end
+
+    nodes_root = REXML::Document.new(File.open(vespa_nodes)).root
+    admin_hostname = ""
+    admin_alias = ""
+    config_hostnames = []
+    config_aliases = []
 
     # support both old <configserver> and new <configservers><configserver> syntax
     if services_root.elements["admin/configservers"] then
