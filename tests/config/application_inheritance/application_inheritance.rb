@@ -13,7 +13,7 @@ class ApplicationInheritance < IndexedOnlySearchTest
   def test_application_inheritance
     deploy(selfdir + "inheriting-app/")
     start
-    feed(:file => selfdir+"feed.json")
+    feed(:file => selfdir+"feed.jsonl")
     assert_hitcount("query=hello", 1)
   end
 
