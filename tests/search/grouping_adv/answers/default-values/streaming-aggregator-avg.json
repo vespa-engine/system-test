@@ -31,7 +31,7 @@
                 "relevance": 7.0,
                 "value": "0.0",
                 "fields": {
-                  "avg(n)": 0
+                  "avg(n)": 0.25
                 },
                 "children": [
                   {
@@ -42,8 +42,9 @@
                       {
                         "id": "id:test:test::all-non-numeric-fields",
                         "relevance": 7.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-non-numeric-fields",
                           "a": "a2",
                           "b": "b4",
@@ -55,8 +56,9 @@
                       {
                         "id": "id:test:test::all-integer-fields",
                         "relevance": 6.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-integer-fields",
                           "n": 1,
                           "from": 1123406000,
@@ -67,8 +69,9 @@
                       {
                         "id": "id:test:test::all-multivalue-fields",
                         "relevance": 4.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-multivalue-fields",
                           "boool": false
                         }
@@ -76,8 +79,9 @@
                       {
                         "id": "id:test:test::no-fields",
                         "relevance": 1.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::no-fields",
                           "boool": false
                         }
@@ -91,7 +95,7 @@
                 "relevance": 5.0,
                 "value": "2.0999999046325684",
                 "fields": {
-                  "avg(n)": 0
+                  "avg(n)": 0.0
                 },
                 "children": [
                   {
@@ -102,8 +106,9 @@
                       {
                         "id": "id:test:test::all-floating-point-fields",
                         "relevance": 5.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-floating-point-fields",
                           "boool": false
                         }
@@ -117,7 +122,7 @@
                 "relevance": 3.0,
                 "value": "1.2000000476837158",
                 "fields": {
-                  "avg(n)": 7
+                  "avg(n)": 7.0
                 },
                 "children": [
                   {
@@ -128,8 +133,9 @@
                       {
                         "id": "id:test:test::all-numeric-fields",
                         "relevance": 3.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-numeric-fields",
                           "n": 7,
                           "from": 1123406050,
@@ -146,7 +152,7 @@
                 "relevance": 2.0,
                 "value": "3.9000000953674316",
                 "fields": {
-                  "avg(n)": 3
+                  "avg(n)": 3.0
                 },
                 "children": [
                   {
@@ -157,8 +163,9 @@
                       {
                         "id": "id:test:test::all-fields",
                         "relevance": 2.0,
-                        "source": "storage.test",
+                        "source": "storage",
                         "fields": {
+                          "sddocname": "test",
                           "documentid": "id:test:test::all-fields",
                           "n": 3,
                           "a": "a1",

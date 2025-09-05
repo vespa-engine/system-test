@@ -19,7 +19,7 @@ class GroupingApi < IndexedStreamingSearchTest
     assert_equal(4, result.hitcount)
     assert(result.xmldata.include?("PASS: min"))
     assert(result.xmldata.include?("PASS: max"))
-    assert(result.xmldata.include?("PASS: val"))
+    assert(result.xmldata.include?("PASS: average"))
   end
 
   def teardown

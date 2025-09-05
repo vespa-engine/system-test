@@ -33,7 +33,7 @@
                                 "fields": {
                                     "count()": 10,
                                     "sum(n)": 43,
-                                    "avg(n)": 4,
+                                    "avg(n)": 4.3,
                                     "max(n)": 9,
                                     "min(n)": -2,
                                     "xor(n)": -1,
@@ -47,7 +47,7 @@
                                 "fields": {
                                     "count()": 9,
                                     "sum(n)": 45,
-                                    "avg(n)": 5,
+                                    "avg(n)": 5.0,
                                     "max(n)": 9,
                                     "min(n)": 1,
                                     "xor(n)": 1,
@@ -61,7 +61,7 @@
                                 "fields": {
                                     "count()": 9,
                                     "sum(n)": 45,
-                                    "avg(n)": 5,
+                                    "avg(n)": 5.0,
                                     "max(n)": 9,
                                     "min(n)": 1,
                                     "xor(n)": 1,
