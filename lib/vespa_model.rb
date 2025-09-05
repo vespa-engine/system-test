@@ -152,8 +152,9 @@ class VespaModel
 
     tmp_application = create_tmp_application(application)
 
-    vespa_nodes = tmp_application + "/hosts.xml"
+    vespa_application = tmp_application + "/application.xml"
     vespa_services = tmp_application + "/services.xml"
+    vespa_nodes = tmp_application + "/hosts.xml"
     validation_overrides = tmp_application + "/validation-overrides.xml"
 
     if (not File.exist?(vespa_nodes) and @testcase.use_shared_configservers)
@@ -203,13 +204,10 @@ class VespaModel
     copy_params_files(tmp_application, params)
 
     applicationbuffer = Dir.glob(tmp_application + "/*").join("\n") + "\n"
-    applicationbuffer += "services.xml:\n" + File.open(vespa_services, "r").readlines.join('')
+    applicationbuffer += "application.xml:\n" + File.open(vespa_application, "r").readlines.join('') if File.exist?(vespa_application)
+    applicationbuffer += "services.xml:\n" + File.open(vespa_services, "r").readlines.join('') if File.exist?(vespa_services)
     applicationbuffer += "hosts.xml:\n" + File.open(vespa_nodes, "r").readlines.join('') if File.exist?(vespa_nodes)
-    if (File.exist?(validation_overrides))
-      applicationbuffer += "validation-overrides.xml:\n" + File.open(validation_overrides, "r").readlines.join('')
-    else
-      applicationbuffer += "No validation-overrides.xml\n"
-    end
+    applicationbuffer += "validation-overrides.xml:\n" + File.open(validation_overrides, "r").readlines.join('') if File.exist?(validation_overrides)
 
     @testcase.output(applicationbuffer)
 
