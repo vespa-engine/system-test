@@ -47,9 +47,9 @@ public class TestSearcher extends Searcher {
             .setMax(1)
             .addOrderBy(new AvgAggregator(new AttributeValue("value")))
             .addChild(new EachOperation()
-                      .setLabel("val")
+                      .setLabel("average")
                       .addOutput(new AvgAggregator(new AttributeValue("value"))
-                                 .setLabel("val"))));
+                                 .setLabel("average"))));
         Continuation page2 = Continuation.fromString("BGBEAABEBCBC");
         valReq.continuations().add(page2);
 
@@ -57,7 +57,7 @@ public class TestSearcher extends Searcher {
         Hit hit = new Hit("TestResult");
         hit.setField("min", checkResult(minReq.getResultGroup(res), "min", 104));
         hit.setField("max", checkResult(maxReq.getResultGroup(res), "max", 1004));
-        hit.setField("val", checkResult(valReq.getResultGroup(res), "val", 21));
+        hit.setField("average", checkResult(valReq.getResultGroup(res), "average", 21.0));
         res.hits().add(hit);
         return res;
     }
@@ -89,6 +89,38 @@ public class TestSearcher extends Searcher {
             return "FAIL(" + label + "): expected Long, got " + obj.getClass();
         }
         if ((Long)obj != exp) {
+            return "FAIL(" + label + "): expected " + exp + ", got " + obj;
+        }
+        return "PASS: " + label;
+    }
+
+    private String checkResult(Group grp, String label, double exp) {
+        if (grp == null) {
+            return "FAIL(" + label + "): did not get root group";
+        }
+        if (grp.size() != 1) {
+            return "FAIL(" + label + "): expected 1 group list, got " + grp.size();
+        }
+        GroupList lst = grp.getGroupList(label);
+        if (lst == null) {
+            return "FAIL(" + label + "): did not get '" + label + "' group list";
+        }
+        if (lst.size() != 1) {
+            return "FAIL(" + label + "): expected 1 group, got " + lst.size();
+        }
+        Hit hit = lst.get(0);
+        if (!(grp instanceof Group)) {
+            return "FAIL(" + label + "): expected Group, got " + hit.getClass();
+        }
+        grp = (Group)hit;
+        Object obj = grp.getField(label);
+        if (obj == null) {
+            return "FAIL(" + label + "): did not get result output";
+        }
+        if (!(obj instanceof Double)) {
+            return "FAIL(" + label + "): expected Double, got " + obj.getClass();
+        }
+        if ((Double)obj != exp) {
             return "FAIL(" + label + "): expected " + exp + ", got " + obj;
         }
         return "PASS: " + label;
