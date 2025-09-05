@@ -4,13 +4,6 @@ schema initialization {
     field int_field1 type int {
       indexing: summary | attribute
     }
-    field int_field2 type int {
-      indexing: summary | index
-    }
-    field int_field3 type int {
-      indexing: summary | attribute | index
-    }
-
     field string_field1 type string {
       indexing: summary | attribute
     }
@@ -21,7 +14,7 @@ schema initialization {
       indexing: summary | attribute | index
     }
 
-    field tensor_field type tensor<float>(x[100]) {
+    field tensor_field type tensor<float>(x[3]) {
       indexing: summary | attribute | index
     }
   }
