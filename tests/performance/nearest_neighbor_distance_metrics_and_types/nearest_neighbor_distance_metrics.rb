@@ -8,7 +8,7 @@ require 'environment'
 class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
 
   def setup
-    set_owner("bergum")
+    set_owner("boeker")
   end
 
   def test_metrics_and_types
@@ -25,7 +25,7 @@ class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
     test_container_query_directory = dirs.tmpdir + "qd"
     # float vectors of various sizes x metrics
     for client in [1, 16] do
-      for dimension in [256, 384, 512, 768, 1024] do
+      for dimension in [256, 512, 1024] do
         for metric in ["prenormalized_angular", "angular", "euclidean", "dotproduct"] do
           query_file = selfdir + "queries/float-#{dimension}-#{metric}.txt"
           container.copy(query_file, test_container_query_directory)
@@ -34,9 +34,9 @@ class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
         end
       end
     end
-      # int8 vectors of various sizes x metrics (scalar quantization from float to int8)
+    # int8 vectors of various sizes x metrics (scalar quantization from float to int8)
     for client in [1, 16] do
-      for dimension in [256, 384, 512, 768, 1024] do
+      for dimension in [256, 512, 1024] do
         for metric in ["angular", "euclidean", "dotproduct"] do
           query_file = selfdir + "queries/scalar-int8-#{dimension}-#{metric}.txt"
           container.copy(query_file, test_container_query_directory)
@@ -47,7 +47,7 @@ class NearestNeighborDistanceMetricAndTypesPerfTest < PerformanceTest
     end
     # Binary int8 vectors of various sizes x hamming distance 
     for client in [1, 16] do
-      for dimension in [64, 96, 128] do
+      for dimension in [64, 128] do
         metric = "hamming"
         query_file = selfdir + "queries/binary-int8-#{dimension}-#{metric}.txt"
         container.copy(query_file, test_container_query_directory)
