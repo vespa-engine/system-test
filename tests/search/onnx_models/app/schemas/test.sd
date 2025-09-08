@@ -5,7 +5,7 @@ schema test {
         field title type string {
             indexing: index
         }
-        field doc_vec type tensor<double>(d0[2]) {
+        field doc_vec type tensor<float>(d0[2]) {
             indexing: attribute | summary
         }
         field score type int {
@@ -19,7 +19,7 @@ schema test {
 
     constant matrix {
         file: files/matrix.json
-        type: tensor<double>(d0[2],d1[2])
+        type: tensor<float>(d0[2],d1[2])
     }
 
     rank-profile base {
@@ -30,6 +30,7 @@ schema test {
             input "model_input_2": attribute(doc_vec)
             input "model_input_3": query(query_vec)
             output "model_output_1": multiply_add_output
+            output "model_output_2": other_output
         }
 
         # Not used by content cluster, model-evaluation can use it
@@ -50,7 +51,7 @@ schema test {
         }
 
         inputs {
-            query(query_vec) tensor<double>(d0[2])
+            query(query_vec) tensor<float>(d0[2]) : [ 0.75, 1.25 ]
         }
 
         function fn_first_phase() {
@@ -63,6 +64,11 @@ schema test {
 
         function fn_query_vec() {
             expression: query(query_vec)
+        }
+
+        summary-features {
+            onnx(multiply_add).multiply_add_output
+            onnx(multiply_add).other_output
         }
 
     }

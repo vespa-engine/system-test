@@ -1,0 +1,3 @@
+{"id":"id:ns:test::1", "fields": { "title": "foo", "doc_vec": [ 1.0, 2.5 ], "score": 15 } }
+{"id":"id:ns:test::2", "fields": { "title": "bar", "doc_vec": [ 2.0, 0.5 ], "score": 12 } }
+{"id":"id:ns:test::3", "fields": { "title": "qux", "doc_vec": [ 0.5, 1.5 ], "score": 10 } }
