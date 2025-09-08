@@ -1,23 +1,28 @@
-:Ý
+
+:¿
 *
 model_input_1
 model_input_2XA"MatMul
 (
 XA
-model_input_3model_output_1"Addmultiply_addZ
-model_input_1
-
-
+model_input_3model_output_1"Add
+6
+model_input_3
+model_input_1model_output_2"MatMulmultiply_addZ"
+model_input_1
+
+cat
 Z
 model_input_2
 
-
-Z
+
+Z
 model_input_3
-
-
-b
+
+catb
 model_output_1
-
-
-B
+
+catb
+model_output_2
+
+catB
