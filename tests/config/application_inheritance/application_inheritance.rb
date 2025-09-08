@@ -9,6 +9,11 @@ class ApplicationInheritance < IndexedOnlySearchTest
     set_description("Tests application inheritance")
   end
 
+  # Otherwise VespaModel.resolve_app (called on deploy) will generate a hosts.xml file
+  def can_share_configservers?
+    false
+  end
+
   # Test that feeding and querying the schema defined in the internal.text-search app works
   def test_application_inheritance
     deploy(selfdir + "inheriting-app/")
