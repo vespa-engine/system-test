@@ -13,9 +13,7 @@ class Initialization < IndexedOnlySearchTest
 
     dbs = { "initialization" => ["int_field1", "string_field1", "string_field3", "tensor_field"] }
 
-    searchnode_array = @vespa.services.select {|service| service.servicetype == "searchnode"}
-    assert_equal(1, searchnode_array.length)
-    searchnode = searchnode_array[0]
+    searchnode = get_searchnode
 
     # Verify that initialization status is as expected
     initialization = searchnode.get_state_v1("initialization")
@@ -43,7 +41,7 @@ class Initialization < IndexedOnlySearchTest
     assert_loaded(initialization, dbs)
 
     # Flush and restart Vespa
-    vespa.search["search"].first.trigger_flush
+    searchnode.trigger_flush
     restart_vespa
     puts "Waiting for 1 hit"
     wait_for_atleast_hitcount("query=sddocname:initialization", 1)
@@ -54,6 +52,54 @@ class Initialization < IndexedOnlySearchTest
     puts JSON.pretty_generate(initialization)
     assert_loaded(initialization, dbs)
   end
+
+  def test_multiple_schemas
+    deploy(selfdir + "multiple_schemas/")
+    start
+
+    dbs = {
+      "foo" => ["int_foo1", "string_foo1", "string_foo3", "tensor_foo"],
+      "bar" => ["int_bar1", "string_bar1", "string_bar3", "tensor_bar"]
+    }
+
+    searchnode = get_searchnode
+
+    # Verify that initialization status is as expected
+    initialization = searchnode.get_state_v1("initialization")
+    puts JSON.pretty_generate(initialization)
+    assert_loaded(initialization, dbs)
+
+    # Feed two documents
+    foo = Document.new("id:foo:foo::0")
+                  .add_field("int_foo1", "1")
+                  .add_field("string_foo1", "foo")
+                  .add_field("string_foo2", "bar")
+                  .add_field("string_foo3", "baz")
+                  .add_field("tensor_foo", [1, 2, 3])
+    vespa.document_api_v1.put(foo)
+
+    bar = Document.new("id:bar:bar::0")
+                  .add_field("int_bar1", "1")
+                  .add_field("string_bar1", "foo")
+                  .add_field("string_bar2", "bar")
+                  .add_field("string_bar3", "baz")
+                  .add_field("tensor_bar", [1, 2, 3])
+    vespa.document_api_v1.put(bar)
+
+    # Flush and restart Vespa
+    searchnode.trigger_flush
+    restart_vespa
+    puts "Waiting for 1 hit per schema"
+    wait_for_atleast_hitcount("query=sddocname:foo", 1)
+    wait_for_atleast_hitcount("query=sddocname:bar", 1)
+    puts "Waited for 1 hit per schema"
+
+    # Verify that initialization status is as expected
+    initialization = searchnode.get_state_v1("initialization")
+    puts JSON.pretty_generate(initialization)
+    assert_loaded(initialization, dbs)
+  end
+
 
   def restart_vespa
     puts "# Stopping Vespa"
