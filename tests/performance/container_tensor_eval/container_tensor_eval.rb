@@ -40,7 +40,7 @@ class ContainerTensorEval < PerformanceTest
     @queryfile = dirs.tmpdir + query_file_name
     
     profiler_start
-    run_fbench(container, CLIENTS, RUNTIME, [])
-    profiler_report()
+    run_fbench(container, CLIENTS, RUNTIME, [parameter_filler('legend', 'container_tensor_eval')])
+    profiler_report('container_tensor_eval')
   end
 end
