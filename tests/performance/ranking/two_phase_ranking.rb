@@ -28,8 +28,9 @@ class TwoPhaseRankingTest < PerformanceTest
   
   def create_doc(num_docs, path)
     container = vespa.container.values.first
-    container.execute( "g++ -std=c++0x #{selfdir}doc_generator.cpp -o #{selfdir}doc_generator")
-    container.execute("#{selfdir}doc_generator #{num_docs} > #{path}")
+    tmp_bin_dir = container.create_tmp_bin_dir
+    container.execute( "g++ -std=c++0x #{selfdir}doc_generator.cpp -o #{tmp_bin_dir}/doc_generator")
+    container.execute("#{tmp_bin_dir}/doc_generator #{num_docs} > #{path}")
     return path
   end
   
