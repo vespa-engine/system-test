@@ -1,5 +1,4 @@
 # Copyright Vespa.ai. All rights reserved.
-require 'search_test'
 require 'indexed_only_search_test'
 
 class ApplicationInheritance < IndexedOnlySearchTest
@@ -18,8 +17,7 @@ class ApplicationInheritance < IndexedOnlySearchTest
   def test_application_inheritance
     deploy(selfdir + "inheriting-app/")
     start
-    feed(:file => selfdir+"feed.jsonl")
-    assert_hitcount("query=hello", 1)
+    feed_and_wait_for_hitcount("query=hello", 1, :file => selfdir+"feed.jsonl")
   end
 
   def teardown
