@@ -25,8 +25,8 @@ class InOperatorPerfTest < PerformanceTest
     compile_create_docs
     start
 
-    @op_hits_ratios = [1, 5, 10, 50, 100, 200]
-    @filter_hits_ratios = [1, 5, 10, 50, 100, 150, 200]
+    @op_hits_ratios = [1, 10, 50, 200]
+    @filter_hits_ratios = [1, 10, 50, 200]
     @tokens_in_op = [1, 10, 100, 1000, 10000, 100000]
     @num_docs = 10000000
     feed_docs

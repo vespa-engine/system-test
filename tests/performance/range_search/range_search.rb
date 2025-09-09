@@ -22,8 +22,8 @@ class RangeSearchPerfTest < PerformanceTest
     start
 
     # This matches the documents created by create_docs.cpp
-    @range_hits_ratios = [1, 5, 10, 50, 100, 200]
-    @filter_hits_ratios = [1, 5, 10, 50, 100, 150, 200]
+    @range_hits_ratios = [1, 10, 50, 200]
+    @filter_hits_ratios = [1, 10, 50, 200]
     @values_in_range = [1, 100, 10000]
     @large_values_in_range = [100000, 1000000]
     @num_docs = 10000000
