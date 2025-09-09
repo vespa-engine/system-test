@@ -15,7 +15,7 @@ class TensorConstantPerfTest < PerformanceTest
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_tensor_constant_deploy_and_filedistribution
@@ -23,13 +23,6 @@ class TensorConstantPerfTest < PerformanceTest
     @tensor_dir = dirs.tmpdir + "search/"
     generate_tensor_constant(300)
     deploy_and_feed(selfdir + "app/test.sd")
-  end
-
-  def test_tensor_constant_deploy_and_filedistribution_lz4
-    set_description("Test that we can deploy an application with a constant tensor of size 300MB (approx 5.97M cells) and distribute with filedistribution, using lz4")
-    @tensor_dir = dirs.tmpdir + "search/"
-    generate_tensor_constant_lz4(300)
-    deploy_and_feed(selfdir + "app_lz4/test.sd")
   end
 
   def deploy_and_feed(schema)
@@ -56,14 +49,6 @@ class TensorConstantPerfTest < PerformanceTest
     return tensor_constant_file
   end
 
-  def generate_tensor_constant_lz4(mb)
-    tensor_constant_file = generate_tensor_constant(mb)
-
-    compressed_file = tensor_constant_file + ".lz4"
-
-    system("lz4 #{tensor_constant_file} #{compressed_file}")
-    system("rm #{tensor_constant_file}")
-  end
 
   def deploy_app_and_sample_time(app)
     total_prepare_time = 0.0
