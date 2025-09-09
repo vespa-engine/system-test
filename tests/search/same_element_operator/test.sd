@@ -1,0 +1,31 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+  document test {
+    field sa type array<string> {
+      indexing: index | summary
+    }
+    field id type int {
+      indexing: attribute | summary
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression {
+        1000.0 - attribute(id)
+      }
+    }
+  }
+  document-summary meo {
+    summary id { }
+    summary sa_meo {
+      source: sa
+      matched-elements-only
+    }
+  }
+  document-summary full {
+    summary id { }
+    summary sa_full {
+      source: sa
+    }
+  }
+}
