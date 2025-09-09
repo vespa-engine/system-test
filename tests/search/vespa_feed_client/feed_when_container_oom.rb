@@ -41,7 +41,7 @@ class FeedWhenContainerOom < SearchTest
     # deploy app with more container memory, feed should succeed
     deploy_app(app('3g'))
     feed_thread.join
-    assert_hitcount("query=sddocname:music", doc_count)
+    wait_for_hitcount("query=sddocname:music", doc_count, 30)
   end
 
   def app(heap_mem)
