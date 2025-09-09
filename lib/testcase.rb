@@ -92,7 +92,8 @@ class TestCase
       @@log_messages[:metrics_proxy_connection_refused],
       @@log_messages[:empty_idx_file],
       @@log_messages[:taking_search_node_oos],
-      @@log_messages[:no_snapshot_from_instance]
+      @@log_messages[:no_snapshot_from_instance],
+      @@log_messages[:using_incubator_modules]
     ]
     @valgrind_ignorable_messages = [
       @@log_messages[:shutdownguard_forcing_exit],
@@ -734,7 +735,8 @@ class TestCase
     :canonical_hostname_warning => /Host named '.+' may not receive any config since it differs from its canonical hostname/,
     :no_snapshot_from_instance => /no snapshot from instance of /,
     :taking_search_node_oos => /Taking search node in cluster = .+ in group .+ out of service/,
-    :slobrok_failed_listnames_check => /failed check using listNames callback/
+    :slobrok_failed_listnames_check => /failed check using listNames callback/,
+    :using_incubator_modules => /Using incubator modules: jdk\.incubator\.foreign/ ,
   }
 
   # Allow that certain log messages may be ignored without the individual
