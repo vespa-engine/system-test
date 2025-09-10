@@ -1,5 +1,10 @@
 # Copyright Vespa.ai. All rights reserved.
+
+require 'json'
+
 class VespaResultHit
+  attr_reader :fields
+
   def initialize
     @fields = {}
   end
@@ -72,6 +77,13 @@ class VespaResult
     @hits = []
     @num_hits = 0
   end
+
+  def to_json
+    hits_data = @hits.map do |h|
+      { :fields => h.fields }
+    end
+    result = { :root => { :fields => { :totalCount => @num_hits }, :children => hits_data } }
+    JSON.generate(result)
+  end
+
 end
-
-

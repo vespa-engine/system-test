@@ -70,7 +70,7 @@ class SingleAttributeTestCase < AttributeTestCase
     longs = [10000000000, -20000000000, 3000, 3010, 2990, 30000, 300, 30100, 3600, 1200]
     bytes = [5, 20, 10, 20, 0, 100, 1, 200, 12, 4]
     floats = [1000.5, -2000.5, 30.5, 40.5, 20.5, 305.0, 3.05, 405.0, 36.6, 12.2]
-    doubles = [10000.5, -20000.5, 300.5, 310.5, 290.5, 3005.0, 30.05, 3105.0, "360.59999999999997", 120.2] # TODO: use less decimal values
+    doubles = [10000.5, -20000.5, 300.5, 310.5, 290.5, 3005.0, 30.05, 3105.0, 360.59999999999997, 120.2] # TODO: use less decimal values
 
     @fields.push(@@fielddata.new("int", "intval", ints))
     @fields.push(@@fielddata.new("long", "longval", longs))
@@ -210,7 +210,7 @@ class SingleAttributeTestCase < AttributeTestCase
     # no changed on this
     add_hit(2)
 
-    file.write(@result.to_xml)
+    file.write(@result.to_json)
     @result.clear
     @hit_id = 0
   end
@@ -277,7 +277,7 @@ class SingleAttributeTestCaseExtra < SingleAttributeTestCase
       add_hit(2)
     end
 
-    file.write(@result.to_xml)
+    file.write(@result.to_json)
     @result.clear
     @hit_id = 0
   end
@@ -396,10 +396,10 @@ class ArrayAttributeTestCase < AttributeTestCase
     add_hit([0])
     add_hit([0, 1])
     add_hit([0, 0, 1, 1])
-    add_hit([0, 3])
-    add_hit([0, 0, 3])
-    add_hit([0, 1, 3])
-    add_hit([0, 0, 1, 1, 2, 3])
+    add_hit([3, 0])
+    add_hit([3, 0, 0])
+    add_hit([3, 0, 1])
+    add_hit([3, 0, 0, 1, 1, 2])
     add_hit([])
     #add_hit([0, 1, 2])
     add_hit([3])
@@ -409,7 +409,7 @@ class ArrayAttributeTestCase < AttributeTestCase
     # no changes on this
     add_hit([3])
 
-    file.write(@result.to_xml)
+    file.write(@result.to_json)
     @result.clear
     @hit_id = 0
   end
@@ -472,7 +472,7 @@ class ArrayAttributeTestCaseExtra < ArrayAttributeTestCase
       add_hit([3])
     end
 
-    file.write(@result.to_xml)
+    file.write(@result.to_json)
     @result.clear
     @hit_id = 0
   end
@@ -674,7 +674,12 @@ class WeightedSetAttributeTestCase < AttributeTestCase
     hit = create_hit
     if idx.length > 0
       @fields.each do |fd|
-        hit.add_field_filtered(fd.name, fd.values, idx)
+        filtered = {}
+        idx.each do |i|
+          pair = fd.values[i]
+          filtered[pair[0]] = pair[1]
+        end
+        hit.add_field(fd.name, filtered)
       end
     end
     hit.add_field("sortfield", @hit_id)
@@ -684,9 +689,12 @@ class WeightedSetAttributeTestCase < AttributeTestCase
   def add_hit_weight(idx_weight_pairs)
     hit = create_hit
     @fields.each do |fd|
-      values = []
+      values = {}
       idx_weight_pairs.each do |pair|
-        values.push([fd.values[pair[0]][0], pair[1]])
+        idx = pair[0]
+        w = pair[1]
+        val = fd.values[idx][0]
+        values[val] = w
       end
       hit.add_field(fd.name, values)
     end
@@ -735,7 +743,7 @@ class WeightedSetAttributeTestCase < AttributeTestCase
     hit = create_hit
     @fields.each do |fd|
       if regular_weightedset(fd.name)
-        hit.add_field(fd.name, [[fd.values[3][0], 0]])
+        hit.add_field(fd.name, {fd.values[3][0] => 0})
       end
     end
     hit.add_field("sortfield", @hit_id)
@@ -744,11 +752,17 @@ class WeightedSetAttributeTestCase < AttributeTestCase
     # create if non-existent
     hit = create_hit
     @fields.each do |fd|
+      filtered = {}
       if regular_weightedset(fd.name)
-        hit.add_field_filtered(fd.name, fd.values, [3])
+        pair = fd.values[3]
+        filtered[pair[0]] = pair[1]
       else
-        hit.add_field_filtered(fd.name, fd.values, [2, 3])
+        pair = fd.values[2]
+        filtered[pair[0]] = pair[1]
+        pair = fd.values[3]
+        filtered[pair[0]] = pair[1]
       end
+      hit.add_field(fd.name, filtered)
     end
     hit.add_field("sortfield", @hit_id)
     @hit_id = @hit_id + 1
@@ -756,7 +770,7 @@ class WeightedSetAttributeTestCase < AttributeTestCase
     # no changes on this
     add_hit([3])
 
-    file.write(@result.to_xml)
+    file.write(@result.to_json)
     @result.clear
     @hit_id = 0
   end
@@ -792,4 +806,3 @@ class WeightedSetAttributeSummaryTestCase < WeightedSetAttributeTestCase
     "/?query=hitfield:hit&nocache&hits=40"
   end
 end
-
