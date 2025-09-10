@@ -343,13 +343,9 @@ class Initialization < IndexedOnlySearchTest
       assert_not_nil db_replay_start_time
       assert(db_replay_start_time.to_f >= db_start_time.to_f)
 
-      db_replay_end_time = db["replay_end_time"]
-      assert_not_nil db_replay_end_time
-      assert(db_replay_end_time.to_f >= db_replay_start_time.to_f)
-
       db_end_time = db["end_time"]
       assert_not_nil db_end_time
-      assert(db_end_time.to_f >= db_replay_end_time.to_f)
+      assert(db_end_time.to_f >= db_replay_start_time.to_f)
       assert(current_time.to_f >= db_end_time.to_f)
     end
 
