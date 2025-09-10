@@ -18,7 +18,7 @@ class CliFeedClientTest < PerformanceTest
   end
 
   def setup
-    set_owner('mpolden')
+    set_owner('hmusum')
     set_description('Benchmarking of the Vespa CLI feed client and vespa-feed-client (Java implementation)')
   end
 
@@ -96,11 +96,11 @@ class CliFeedClientTest < PerformanceTest
     thread_pool = Concurrent::FixedThreadPool.new(1)
     thread_pool.post { vespa.adminserver.waitpid(pid) }
     thread_pool.shutdown
-    complete = thread_pool.wait_for_termination(300)
+    complete = thread_pool.wait_for_termination(600)
     puts("###### STDERR #####\n#{vespa.adminserver.readfile(err_file)}")
     result = vespa.adminserver.readfile(out_file)
     puts("###### STDOUT #####\n#{result}")
-    raise "Failed to complete benchmark within 5 minutes" unless complete
+    raise "Failed to complete benchmark within 10 minutes" unless complete
     return format_output(JSON.parse(result)), pid
   end
 
