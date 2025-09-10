@@ -17,7 +17,7 @@ class ApplicationInheritance < IndexedOnlySearchTest
   def test_application_inheritance
     deploy(selfdir + "inheriting-app/")
     start
-    feed_and_wait_for_hitcount("query=hello", 1, :file => selfdir+"feed.jsonl")
+    feed_and_wait_for_hitcount("query=text:hello", 1, :file => selfdir+"feed.jsonl")
   end
 
   def teardown
