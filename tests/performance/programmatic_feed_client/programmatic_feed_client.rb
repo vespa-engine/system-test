@@ -26,6 +26,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     container_node = deploy_test_app
     container_node.logctl("container:com.yahoo.messagebus.DynamicThrottlePolicy", "debug=on")
     vespa_destination_start
+    @maven_tmp_dir = "#{dirs.tmpdir}/#{File.basename(selfdir)}"
     build_feed_client
 
     run_benchmark(container_node, "VespaFeedClient",   TINY)
@@ -36,7 +37,9 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   private
   def build_feed_client
-    vespa.adminserver.execute("cd #{java_client_src_root}; #{maven_command} --quiet package")
+    vespa.adminserver.copy("#{java_client_src_root}", @maven_tmp_dir)
+    install_maven_parent_pom(vespa.adminserver)
+    vespa.adminserver.execute("cd #{@maven_tmp_dir}; #{maven_command} --quiet package")
   end
 
   private
@@ -71,7 +74,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
     out_file = "#{label}.out"
     err_file = "#{label}.err"
     java_cmd =
-      "java #{perfmap_jvmarg} -cp #{java_client_src_root}/target/java-feed-client-1.0.jar " +
+      "java #{perfmap_jvmarg} -cp #{@maven_tmp_dir}/target/java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{DUMMY_ROUTE} " +
         "-Dvespa.test.feed.documents=#{DOCUMENTS} " +
         "-Dvespa.test.feed.warmup.seconds=#{10} " +
