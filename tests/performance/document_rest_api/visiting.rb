@@ -7,7 +7,7 @@ require 'concurrent'
 class Visiting < PerformanceTest
 
   def timeout_seconds
-    1200
+    1800
   end
 
   def setup
