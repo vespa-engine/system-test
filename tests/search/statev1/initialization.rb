@@ -19,7 +19,7 @@ class Initialization < IndexedOnlySearchTest
         "initialization" => {
           "state" => "ready",
           "attributes" => {
-            "loaded" => ["int_field1", "string_field1", "string_field3", "tensor_field"] ,
+            "loaded" => ["int_field1", "string_field1", "string_field3", "tensor_field"],
             "loading" => [],
             "reprocessing" => [],
             "queued" => []
@@ -69,7 +69,7 @@ class Initialization < IndexedOnlySearchTest
         "foo" => {
           "state" => "ready",
           "attributes" => {
-            "loaded" => ["int_foo1", "string_foo1", "string_foo3", "tensor_foo"] ,
+            "loaded" => ["int_foo1", "string_foo1", "string_foo3", "tensor_foo"],
             "loading" => [],
             "reprocessing" => [],
             "queued" => []
@@ -78,7 +78,7 @@ class Initialization < IndexedOnlySearchTest
         "bar" => {
           "state" => "ready",
           "attributes" => {
-            "loaded" => ["int_bar1", "string_bar1", "string_bar3", "tensor_bar"] ,
+            "loaded" => ["int_bar1", "string_bar1", "string_bar3", "tensor_bar"],
             "loading" => [],
             "reprocessing" => [],
             "queued" => []
@@ -130,7 +130,7 @@ class Initialization < IndexedOnlySearchTest
 
     restart_vespa
 
-    # TODO Assertion before sleeping?
+    puts "Waiting for a few seconds such that attributes can be loaded"
     sleep 5
 
     expected = {
@@ -139,7 +139,7 @@ class Initialization < IndexedOnlySearchTest
         "replay" => {
           "state" => "replaying",
           "attributes" => {
-            "loaded" => ["int_field", "string_field", "tensor_field"] ,
+            "loaded" => ["int_field", "string_field", "tensor_field"],
             "loading" => [],
             "reprocessing" => [],
             "queued" => []
@@ -160,7 +160,7 @@ class Initialization < IndexedOnlySearchTest
         "replay" => {
           "state" => "ready",
           "attributes" => {
-            "loaded" => ["int_field", "string_field", "tensor_field"] ,
+            "loaded" => ["int_field", "string_field", "tensor_field"],
             "loading" => [],
             "reprocessing" => [],
             "queued" => []
@@ -199,10 +199,7 @@ class Initialization < IndexedOnlySearchTest
 
     restart_vespa
 
-    # TODO Assertion before sleeping?
-    puts JSON.pretty_generate(@searchnode.get_state_v1("initialization"))
-
-    puts "Waiting for a few seconds"
+    puts "Waiting for a few seconds such that attributes can be loaded"
     sleep 5
 
     expected = {
@@ -211,9 +208,30 @@ class Initialization < IndexedOnlySearchTest
         "reprocessing" => {
           "state" => "load",
           "attributes" => {
-            "loaded" => ["int_field", "string_field"] ,
+            "loaded" => ["int_field", "string_field"],
             "loading" => [],
             "reprocessing" => ["tensor_field"],
+            "queued" => []
+          }
+        }
+      }
+    }
+
+    assert_v1_status expected
+
+    puts "# Wait until ready"
+    wait_until_ready
+    puts "# System is up"
+
+    expected = {
+      "state" => "ready",
+      "dbs" => {
+        "reprocessing" => {
+          "state" => "ready",
+          "attributes" => {
+            "loaded" => ["int_field", "string_field", "tensor_field"],
+            "loading" => [],
+            "reprocessing" => [],
             "queued" => []
           }
         }
