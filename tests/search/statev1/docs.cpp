@@ -27,15 +27,16 @@ std::string random_vector(size_t num_dimensions) {
 }
 
 int main (int argc, char *argv[]) {
-    assert(argc == 3);
-    const size_t num_documents = strtoul(argv[1], nullptr, 0);
-    const size_t num_dimensions = strtoul(argv[2], nullptr, 0);
+    assert(argc == 4);
+    const char *name = argv[1];
+    const size_t num_documents = strtoul(argv[2], nullptr, 0);
+    const size_t num_dimensions = strtoul(argv[3], nullptr, 0);
     std::srand(42);
 
     printf("[\n");
     bool first = true;
     for (size_t i(0); i < num_documents; i++) {
-        printf("%s{\"id\":\"id:reprocessing:reprocessing::%d\", \"fields\":{\"int_field\": %d, \"string_field\": \"title%d\", \"tensor_field\": {\"values\": %s}}}", first ? "" : ",\n", i, i, i, random_vector(num_dimensions).c_str());
+        printf("%s{\"id\":\"id:%s:%s::%d\", \"fields\":{\"int_field\": %d, \"string_field\": \"title%d\", \"tensor_field\": {\"values\": %s}}}", first ? "" : ",\n", name, name, i, i, i, random_vector(num_dimensions).c_str());
         first = false;
     }
     printf("\n]\n");
