@@ -288,6 +288,34 @@ class Initialization < IndexedOnlySearchTest
       assert end_time.to_f <= current_time.to_f
     end
 
+    # Check DB counts
+    expected_load = 0
+    expected_replay = 0
+    expected_ready = 0
+    expected["dbs"].each do |expected_name, expected_db|
+      case expected_db["state"]
+      when "load"
+        expected_load += 1
+      when "replaying"
+        expected_replay += 1
+      else
+        expected_ready += 1
+      end
+    end
+
+    num_load = initialization["load"]
+    assert_not_nil num_load
+    assert_equal(expected_load, num_load)
+
+    num_replay = initialization["replay"]
+    assert_not_nil num_replay
+    assert_equal(expected_replay, num_replay)
+
+    num_ready = initialization["ready"]
+    assert_not_nil num_ready
+    assert_equal(expected_ready, num_ready)
+
+    # Check individual DBs
     dbs = initialization["dbs"]
     assert_not_nil dbs
     assert_equal(expected["dbs"].length, dbs.length)
