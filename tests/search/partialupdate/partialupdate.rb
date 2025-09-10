@@ -233,7 +233,7 @@ class PartialUpdate < IndexedStreamingSearchTest
     wait_for_hitcount("/?query=sddocname:#{doc_type}", test_case.max_doc + 1)
     wait_for_hitcount_not_equal(test_case.check_docs_query, test_case.max_doc)
     puts "Query=" + test_case.query
-    poll_compare(test_case.query + '&format=xml', result, test_case.sort_field, test_case.fields_to_compare, 30)
+    poll_compare(test_case.query, result, test_case.sort_field, test_case.fields_to_compare, 30)
 
     # documents and partial updates separated to test fsearch
     index_multiple_files([docs])
@@ -241,13 +241,13 @@ class PartialUpdate < IndexedStreamingSearchTest
     wait_for_hitcount(test_case.check_docs_query, test_case.max_doc)
     feedfile(updates)
     wait_for_hitcount_not_equal(test_case.check_docs_query, test_case.max_doc)
-    poll_compare(test_case.query + '&format=xml', result, test_case.sort_field, test_case.fields_to_compare, 30)
+    poll_compare(test_case.query, result, test_case.sort_field, test_case.fields_to_compare, 30)
 
     # the searchnode should start up again in the same state
     vespa.search["search"].first.restart
     vespa.search["search"].wait_until_ready
     wait_for_hitcount("/?query=sddocname:#{doc_type}", test_case.max_doc + 1)
-    poll_compare(test_case.query + '&format=xml', result, test_case.sort_field, test_case.fields_to_compare, 30)
+    poll_compare(test_case.query, result, test_case.sort_field, test_case.fields_to_compare, 30)
   end
 
   #----------------------------------------------------------------------------
