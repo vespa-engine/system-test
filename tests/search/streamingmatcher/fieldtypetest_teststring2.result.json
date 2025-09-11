@@ -1,0 +1,116 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 1
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 2,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "id:fieldtypetest:fieldtypetest:n=1:1",
+        "relevance": 0.38186238359951247,
+        "source": "search",
+        "fields": {
+          "sddocname": "fieldtypetest",
+          "documentid": "id:fieldtypetest:fieldtypetest:n=1:1",
+          "teststring": "teststring2",
+          "testexactmatch": "testexactmatch2",
+          "testint": 2147483647,
+          "testlong": 2147483647,
+          "testbyte": 127,
+          "testbool": false,
+          "testfloat": 5.678,
+          "testdouble": 12345.6789,
+          "testraw": "testraw2",
+          "testuri": "http://www0.testuri2.se:8080/path/p?arg1=1&arg2=2#frag1",
+          "testtermboost": {
+            "term1": 1
+          },
+          "testcontent": "testcontent2",
+          "testlatlong": {
+            "lat": -4.62325,
+            "lng": 55.452306
+          },
+          "testarraystring": [
+            "item2",
+            "item3"
+          ],
+          "testarraybyte": [
+            4,
+            5,
+            6
+          ],
+          "testarrayint": [
+            4,
+            5,
+            6
+          ],
+          "testarraylong": [
+            4,
+            5,
+            6
+          ],
+          "testarrayfloat": [
+            4.0,
+            5.0,
+            6.0
+          ],
+          "testarraydouble": [
+            4.0,
+            5.0,
+            6.0
+          ],
+          "testarraylatlong": [
+            {
+              "lat": -4.444004,
+              "lng": 55.404004
+            },
+            {
+              "lat": -4.555005,
+              "lng": 55.505005
+            },
+            {
+              "lat": -4.666006,
+              "lng": 55.606006
+            }
+          ],
+          "testwsetstring": {
+            "item3": 2,
+            "item2": 1
+          },
+          "testwsetbyte": {
+            "4": 1,
+            "5": 2,
+            "6": 3
+          },
+          "testwsetint": {
+            "4": 1,
+            "5": 2,
+            "6": 3
+          },
+          "testwsetlong": {
+            "4": 1,
+            "5": 2,
+            "6": 3
+          },
+          "testweightedset": {
+            "item3": 4,
+            "item2": 3
+          },
+          "testtag": {
+            "item3": 4,
+            "item2": 3
+          }
+        }
+      }
+    ]
+  }
+}
