@@ -486,8 +486,8 @@ class StreamingMatcherPart1 < StreamingMatcher
     assert_hitcount("query=testbool:true&streaming.userid=1", 1)
     assert_hitcount("query=testbool:false&streaming.userid=1", 1)
 
-    # save_result("query=teststring:teststring2&streaming.userid=1&format=xml", selfdir + "fieldtypetest_teststring2.result")
-    assert_result("query=teststring:teststring2&streaming.userid=1&format=xml", selfdir + "fieldtypetest_teststring2.result")
+    # save_result("query=teststring:teststring2&streaming.userid=1", selfdir + "fieldtypetest_teststring2.result.json")
+    assert_result("query=teststring:teststring2&streaming.userid=1", selfdir + "fieldtypetest_teststring2.result.json")
 
     # TODO: Should maybe test more features from indexed search?
 

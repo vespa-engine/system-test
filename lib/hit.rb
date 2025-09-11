@@ -109,10 +109,6 @@ class Hit
   end
 
   def add_field(fieldname, fieldvalue)
-    if fieldvalue.instance_of?(Array)
-      items = fieldvalue.sort {|a, b| array_sort_cmp(a, b) }
-      fieldvalue = items
-    end
     if fieldname == 'summaryfeatures' && fieldvalue.instance_of?(Hash)
       fieldvalue.delete('vespa.summaryFeatures.cached')
     end
@@ -182,4 +178,3 @@ class Hit
     end
   end
 end
-

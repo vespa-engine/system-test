@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <result total-hit-count="1" coverage-docs="2" coverage-nodes="1" coverage-full="true" coverage="100" results-full="1" results="1">
-  <hit relevancy="0.38186238359951247" source="search.fieldtypetest">
+  <hit relevancy="0.38186238359951247" source="search">
     <field name="relevancy">0.38186238359951247</field>
     <field name="sddocname">fieldtypetest</field>
     <field name="teststring">teststring2</field>
@@ -69,19 +69,19 @@
       <item weight="1">item2</item>
     </field>
     <field name="testwsetbyte">
+      <item weight="1">4</item>
       <item weight="2">5</item>
       <item weight="3">6</item>
-      <item weight="1">4</item>
     </field>
     <field name="testwsetint">
+      <item weight="1">4</item>
       <item weight="2">5</item>
       <item weight="3">6</item>
-      <item weight="1">4</item>
     </field>
     <field name="testwsetlong">
+      <item weight="1">4</item>
       <item weight="2">5</item>
       <item weight="3">6</item>
-      <item weight="1">4</item>
     </field>
     <field name="testweightedset">
       <item weight="4">item3</item>
