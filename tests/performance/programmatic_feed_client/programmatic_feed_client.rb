@@ -71,8 +71,8 @@ class ProgrammaticFeedClientTest < PerformanceTest
 
   private
   def run_benchmark_program(container_node, main_class, label, size, compression)
-    out_file = "#{label}.out"
-    err_file = "#{label}.err"
+    out_file = "#{dirs.tmpdir}/#{label}.out"
+    err_file = "#{dirs.tmpdir}/#{label}.err"
     java_cmd =
       "java #{perfmap_jvmarg} -cp #{@maven_tmp_dir}/target/java-feed-client-1.0.jar " +
         "-Dvespa.test.feed.route=#{DUMMY_ROUTE} " +
