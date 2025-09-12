@@ -65,13 +65,13 @@ class XGBoostServing < IndexedStreamingSearchTest
       "models/binary_breast_cancer.json",
       "models/regression_breast_cancer.json",
       "models/regression_diabetes.json",
-    ].each {|f| deploy_files["app/#{f}"] = f }
+    ].each {|f| deploy_files[selfdir + "app/#{f}"] = f }
     deploy_app(make_app, :files => deploy_files)
     start
 
     #Feed files generated from setup/train.py
-    feed(:file => "diabetes-feed.json")
-    feed(:file => "breast_cancer-feed.json")
+    feed(:file => selfdir + "diabetes-feed.json")
+    feed(:file => selfdir + "breast_cancer-feed.json")
     wait_for_hitcount("query=sddocname:x", 569 + 442, is_streaming ? 120 : 60)
 
     regression_diabetes = getVespaPrediction("diabetes", "regression-diabetes")
