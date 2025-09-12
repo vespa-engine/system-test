@@ -13,7 +13,7 @@ class XGBoostServing < IndexedStreamingSearchTest
 
   def compare(vespa_prediction,dataset)
     xgboost_prediction = @predictions[dataset]
-    print("Comparing for #{dataset}")
+    puts "Comparing for #{dataset}"
     for i in (0...xgboost_prediction.length)
       assert_in_delta(xgboost_prediction[i], vespa_prediction[i],0.0001, message="Vespa prediction for data id #{i} does not match")
     end
@@ -23,7 +23,7 @@ class XGBoostServing < IndexedStreamingSearchTest
     SearchApp.new.sd(selfdir + 'app/schemas/x.sd')
   end
 
-  def test_xgboost
+  def old_test_xgboost
     node_proxy = vespa.nodeproxies.values.first
     tmp_dir = dirs.tmpdir + "/training"
     node_proxy.execute("mkdir -p #{tmp_dir}/models")
@@ -46,6 +46,32 @@ class XGBoostServing < IndexedStreamingSearchTest
     #Feed files generated from setup/train.py
     feed(:file => "#{tmp_dir}/diabetes-feed.json", :localfile => true)
     feed(:file => "#{tmp_dir}/breast_cancer-feed.json", :localfile => true)
+    wait_for_hitcount("query=sddocname:x", 569 + 442, is_streaming ? 120 : 60)
+
+    regression_diabetes = getVespaPrediction("diabetes", "regression-diabetes")
+    compare(regression_diabetes, "regression_diabetes")
+
+    regression_breast_cancer = getVespaPrediction("breast_cancer", "regression-breast_cancer")
+    compare(regression_breast_cancer, "regression_breast_cancer")
+
+    binary_breast_cancer = getVespaPrediction("breast_cancer", "binary-probability-breast_cancer")
+    compare(binary_breast_cancer, "binary_breast_cancer")
+  end
+
+  def test_xgboost
+    @predictions = JSON.parse(File.read(selfdir + "predictions.json"))
+    deploy_files = {}
+    [ "search/query-profiles/default.xml",
+      "models/binary_breast_cancer.json",
+      "models/regression_breast_cancer.json",
+      "models/regression_diabetes.json",
+    ].each {|f| deploy_files["app/#{f}"] = f }
+    deploy_app(make_app, :files => deploy_files)
+    start
+
+    #Feed files generated from setup/train.py
+    feed(:file => "diabetes-feed.json")
+    feed(:file => "breast_cancer-feed.json")
     wait_for_hitcount("query=sddocname:x", 569 + 442, is_streaming ? 120 : 60)
 
     regression_diabetes = getVespaPrediction("diabetes", "regression-diabetes")
