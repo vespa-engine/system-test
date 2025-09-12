@@ -17,7 +17,7 @@ class Initialization < IndexedOnlySearchTest
       "state" => "ready",
       "dbs" => {
         "initialization" => {
-          "state" => "ready",
+          "state" => "online",
           "attributes" => {
             "loaded" => ["int_field1", "string_field1", "string_field3", "tensor_field"],
             "loading" => [],
@@ -67,7 +67,7 @@ class Initialization < IndexedOnlySearchTest
       "state" => "ready",
       "dbs" => {
         "foo" => {
-          "state" => "ready",
+          "state" => "online",
           "attributes" => {
             "loaded" => ["int_foo1", "string_foo1", "string_foo3", "tensor_foo"],
             "loading" => [],
@@ -76,7 +76,7 @@ class Initialization < IndexedOnlySearchTest
           }
         },
         "bar" => {
-          "state" => "ready",
+          "state" => "online",
           "attributes" => {
             "loaded" => ["int_bar1", "string_bar1", "string_bar3", "tensor_bar"],
             "loading" => [],
@@ -117,8 +117,8 @@ class Initialization < IndexedOnlySearchTest
     assert_v1_status(expected)
   end
 
-  def test_replaying
-    set_description("Verify contents of /state/v1/initialization while replaying")
+  def test_replay
+    set_description("Verify contents of /state/v1/initialization while replay")
     deploy(selfdir + "replay/")
 
     @container = get_container
@@ -137,7 +137,7 @@ class Initialization < IndexedOnlySearchTest
       "state" => "initializing",
       "dbs" => {
         "replay" => {
-          "state" => "replaying",
+          "state" => "replay_transaction_log",
           "attributes" => {
             "loaded" => ["int_field", "string_field", "tensor_field"],
             "loading" => [],
@@ -158,7 +158,7 @@ class Initialization < IndexedOnlySearchTest
       "state" => "ready",
       "dbs" => {
         "replay" => {
-          "state" => "ready",
+          "state" => "online",
           "attributes" => {
             "loaded" => ["int_field", "string_field", "tensor_field"],
             "loading" => [],
@@ -227,7 +227,7 @@ class Initialization < IndexedOnlySearchTest
       "state" => "ready",
       "dbs" => {
         "reprocessing" => {
-          "state" => "ready",
+          "state" => "online",
           "attributes" => {
             "loaded" => ["int_field", "string_field", "tensor_field"],
             "loading" => [],
@@ -299,7 +299,7 @@ class Initialization < IndexedOnlySearchTest
     assert_not_nil current_time
     assert current_time.to_f >= start_time.to_f
 
-    if expected["state"]== "ready"
+    if expected["state"]== "online"
       end_time = initialization["end_time"]
       assert_not_nil end_time
       assert end_time.to_f >= start_time.to_f
@@ -309,15 +309,15 @@ class Initialization < IndexedOnlySearchTest
     # Check DB counts
     expected_load = 0
     expected_replay = 0
-    expected_ready = 0
+    expected_online = 0
     expected["dbs"].each do |expected_name, expected_db|
       case expected_db["state"]
       when "load"
         expected_load += 1
-      when "replaying"
+      when "replay_transaction_log"
         expected_replay += 1
       else
-        expected_ready += 1
+        expected_online += 1
       end
     end
 
@@ -325,13 +325,13 @@ class Initialization < IndexedOnlySearchTest
     assert_not_nil num_load
     assert_equal(expected_load, num_load)
 
-    num_replay = initialization["replay"]
+    num_replay = initialization["replay_transaction_log"]
     assert_not_nil num_replay
     assert_equal(expected_replay, num_replay)
 
-    num_ready = initialization["ready"]
-    assert_not_nil num_ready
-    assert_equal(expected_ready, num_ready)
+    num_online = initialization["online"]
+    assert_not_nil num_online
+    assert_equal(expected_online, num_online)
 
     # Check individual DBs
     dbs = initialization["dbs"]
@@ -369,7 +369,7 @@ class Initialization < IndexedOnlySearchTest
     assert_equal(expected_db["state"], db_state)
 
     # Replay progress
-    if expected_db["stat"] == "replaying"
+    if expected_db["stat"] == "replay_transaction_log"
       db_replay_progress = db["replay_progress"]
       assert_not_nil db_replay_progress
       assert((db_replay_progress.to_f - 1.0).abs < 0.001)
@@ -381,11 +381,11 @@ class Initialization < IndexedOnlySearchTest
     assert(db_start_time.to_f > 0)
 
     db_replay_start_time = db["replay_start_time"]
-    if expected_db["stat"] == "replaying"
+    if expected_db["stat"] == "replay"
       assert_not_nil db_replay_start_time
     end
 
-    if expected_db["state"] == "ready"
+    if expected_db["state"] == "online"
       assert_not_nil db_replay_start_time
       assert(db_replay_start_time.to_f >= db_start_time.to_f)
 
