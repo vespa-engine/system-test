@@ -63,6 +63,27 @@ class GroupingTest < PerformanceTest
     run_grouping_count_many_groups_test(true)
   end
 
+  def test_grouping_quantiles
+    attr_prefix = "a"
+    num_attr = 3
+    num_docs = 120_000
+    num_unique = 100_000
+    setup_grouping_test(attr_prefix, num_docs, num_attr, num_unique)
+
+    qrserver = @vespa.container.values.first
+
+    {
+      "quant_median" => "/search/?query=sddocname:groupingbench&nocache&hits=0&" \
+        "select=all(output(quantiles([0.5], delivery_days)))",
+      "quant_multi"  => "/search/?query=sddocname:groupingbench&nocache&hits=0&" \
+        "select=all(output(quantiles([0.2,0.5,0.75,0.9,0.99], delivery_days)))"
+    }.each do |legend, query|
+      File.open(@local_queryfile, "w") { |f| f.write(query) }
+      vespa.adminserver.copy(@local_queryfile, @remote_dir)
+      run_fbench_ntimes(qrserver, 1, 10, 3, [parameter_filler("grouping_quantiles", legend)])
+    end
+  end
+
   def run_grouping_count_many_groups_test(paged_attributes)
     attr_prefix = "a"
     num_docs = 100000
@@ -157,6 +178,10 @@ class GroupingTest < PerformanceTest
       end
       sd += "        }\n"
     end
+    # Numeric field for quantiles
+    sd += "        field delivery_days type int {\n"
+    sd += "            indexing: attribute | summary\n"
+    sd += "        }\n"
     sd += "    }\n"
     sd += "}"
     f.puts(sd)
@@ -171,6 +196,9 @@ class GroupingTest < PerformanceTest
       for attr in 0..(num_attr - 1)
         doc.add_field("a#{attr}", "val_#{attr}_#{somevalue}")
       end
+      # Deterministic 1..60 distribution (no randomness => exact expected medians)
+      dd = ( (i * 13) % 60 ) + 1
+      doc.add_field("delivery_days", dd)
       docs.add(doc)
     end
     docs.write_json(filename)
