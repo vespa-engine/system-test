@@ -21,6 +21,14 @@ class FieldPath < SearchTest
     check_fullquery('yql=select * from sources * where true', 'update-after')
   end
 
+  def test_update_using_match
+    check_fullquery('yql=select * from sources * where true', 'update-before')
+
+    feedfile(selfdir + "update_using_match.json")
+
+    check_fullquery('yql=select * from sources * where true', 'update-after')
+  end
+
   def check_fullquery(query, localfile)
     puts "check #{query} with #{localfile}"
     file = selfdir + 'answers/' + localfile + '.json'
