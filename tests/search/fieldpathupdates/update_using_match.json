@@ -1,0 +1,43 @@
+[
+  {
+    "update": "id:default:test_field_path::1",
+    "fields": {
+      "arr_int": {
+        "match": {
+          "element": 0,
+          "assign": 4
+        }
+      },
+      "summary_int": {
+        "match": {
+          "element": 0,
+          "assign": 4
+        }
+      },
+      "arr_str": {
+        "match": {
+          "element": 0,
+          "assign": "d"
+        }
+      },
+      "summary_str": {
+        "match": {
+          "element": 0,
+          "assign": "d"
+        }
+      },
+      "arr_map": {
+        "match": {
+          "element": "a",
+          "assign": 5
+        }
+      },
+      "summary_map": {
+        "match": {
+          "element": "a",
+          "assign": 5
+        }
+      }
+    }
+  }
+]
