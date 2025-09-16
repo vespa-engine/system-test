@@ -1,0 +1,59 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 1
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 1,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "id:default:test_field_path::1",
+        "relevance": 0.0,
+        "source": "search",
+        "fields": {
+          "sddocname": "test_field_path",
+          "documentid": "id:default:test_field_path::1",
+          "docid": 1,
+          "arr_int": [
+            4,
+            2,
+            3
+          ],
+          "summary_int": [
+            4,
+            2,
+            3
+          ],
+          "arr_str": [
+            "d",
+            "b",
+            "c"
+          ],
+          "summary_str": [
+            "d",
+            "b",
+            "c"
+          ],
+          "arr_map": {
+            "a": 5,
+            "b": 2,
+            "c": 3
+          },
+          "summary_map": {
+            "a": 5,
+            "b": 2,
+            "c": 3
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+[
+  {
+    "update": "id:default:test_field_path::1",
+    "fields": {
+      "arr_int[0]": {
+        "assign": 4
+      },
+      "summary_int[0]": {
+        "assign": 4
+      },
+      "arr_str[0]": {
+        "assign": "d"
+      },
+      "summary_str[0]": {
+        "assign": "d"
+      },
+      "arr_map{a}": {
+        "assign": 5
+      },
+      "summary_map{a}": {
+        "assign": 5
+      }
+    }
+  }
+]
