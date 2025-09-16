@@ -1,0 +1,38 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test_field_path {
+    document test_field_path {
+        field docid type long {
+            indexing: attribute | summary
+        }
+
+        field arr_int type array<int> {
+            indexing: attribute | summary
+        }
+
+        field summary_int type array<int> {
+            indexing: summary
+        }
+
+        field arr_str type array<string> {
+            indexing: attribute | summary
+        }
+
+        field summary_str type array<string> {
+            indexing: summary
+        }
+
+        field arr_map type map<string, int> {
+            indexing: summary
+            struct-field key {
+                indexing: attribute
+            }
+            struct-field value {
+                indexing: attribute
+            }
+        }
+
+        field summary_map type map<string, int> {
+            indexing: summary
+        }
+    }
+}

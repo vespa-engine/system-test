@@ -1,0 +1,14 @@
+[
+  {
+    "put": "id:default:test_field_path::1",
+    "fields": {
+      "docid": 1,
+      "arr_int": [1, 2, 3],
+      "summary_int": [1, 2, 3],
+      "arr_str": ["a", "b", "c"],
+      "summary_str": ["a", "b", "c"],
+      "arr_map": {"a": 1, "b": 2, "c": 3},
+      "summary_map": {"a": 1, "b": 2, "c": 3}
+    }
+  }
+]
