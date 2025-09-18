@@ -291,7 +291,7 @@ class Initialization < IndexedOnlySearchTest
     assert_equal(expected["state"], state)
 
     # Timestamps
-    start_time = initialization["start_time"]
+    start_time = initialization["initialization_started"]
     assert_not_nil start_time
     assert start_time.to_f > 0
 
@@ -300,7 +300,7 @@ class Initialization < IndexedOnlySearchTest
     assert current_time.to_f >= start_time.to_f
 
     if expected["state"]== "online"
-      end_time = initialization["end_time"]
+      end_time = initialization["initialization_ended"]
       assert_not_nil end_time
       assert end_time.to_f >= start_time.to_f
       assert end_time.to_f <= current_time.to_f
@@ -376,11 +376,11 @@ class Initialization < IndexedOnlySearchTest
     end
 
     # Timestamps
-    db_start_time = db["start_time"]
+    db_start_time = db["loading_started"]
     assert_not_nil db_start_time
     assert(db_start_time.to_f > 0)
 
-    db_replay_start_time = db["replay_start_time"]
+    db_replay_start_time = db["replay_started"]
     if expected_db["stat"] == "replay"
       assert_not_nil db_replay_start_time
     end
@@ -389,7 +389,7 @@ class Initialization < IndexedOnlySearchTest
       assert_not_nil db_replay_start_time
       assert(db_replay_start_time.to_f >= db_start_time.to_f)
 
-      db_end_time = db["end_time"]
+      db_end_time = db["loading_finished"]
       assert_not_nil db_end_time
       assert(db_end_time.to_f >= db_replay_start_time.to_f)
       assert(current_time.to_f >= db_end_time.to_f)
