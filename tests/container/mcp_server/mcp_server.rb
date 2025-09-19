@@ -1,6 +1,5 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'search_container_test'
-require 'app_generator/container_app'
 require 'json'
 require 'net/http'
 require 'uri'
@@ -9,10 +8,10 @@ class McpServerTest < SearchContainerTest
 
   def setup
     set_description("Check that application with MCP components can be created and handle requests")
+    set_owner("edvardwd")
     @valgrind = false
-    @container_port = Environment.instance.vespa_web_service_port
-    
-    deploy_application()
+   
+    deploy(selfdir + "app")
     start
     @container = vespa.container.values.first
   end
@@ -102,7 +101,7 @@ class McpServerTest < SearchContainerTest
 
   def send_jsonrpc_request(request_body)
         # Helper function to send a JSON-RPC request to the MCP endpoint
-        uri = URI("http://localhost:#{@container_port}/mcp/")
+        uri = URI("http://#{@container.hostname}:#{@container.http_port}/mcp/")
         http = Net::HTTP.new(uri.host, uri.port)
         
         request = Net::HTTP::Post.new(uri)
