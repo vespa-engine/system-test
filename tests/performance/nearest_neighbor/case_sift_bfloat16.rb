@@ -10,7 +10,6 @@ class AnnSiftBFloat16PerfTest < AnnSiftBase
   end
 
   def test_sift_data_set_bfloat16
-    @perf_recording = 'some'
     set_description("Test performance and recall using nearestNeighbor operator (hnsw vs brute force) over the 1M SIFT (128 dim) dataset using bfloat16")
     run_sift_test("sift_test_bfloat16")
   end
