@@ -55,8 +55,7 @@
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
         { "id" : "search-core-transaction-log-replay-soft-memory-limit", "rules" : [ { "value" : -5 } ] },
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
-        { "id" : "resource-limit-address-space", "rules" : [ { "value" : 0.8 } ] },
-        { "id" : "vespa-use-malloc-impl", "rules" : [ { "value" : "mimalloc" } ] }
+        { "id" : "resource-limit-address-space", "rules" : [ { "value" : 0.8 } ] }
     ]
 
 }
