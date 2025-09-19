@@ -1,0 +1,21 @@
+# Copyright Vespa.ai. All rights reserved.
+schema foo {
+  document foo {
+    field int_foo1 type int {
+      indexing: summary | attribute
+    }
+    field string_foo1 type string {
+      indexing: summary | attribute
+    }
+    field string_foo2 type string {
+      indexing: summary | index
+    }
+    field string_foo3 type string {
+      indexing: summary | attribute | index
+    }
+
+    field tensor_foo type tensor<float>(x[3]) {
+      indexing: summary | attribute | index
+    }
+  }
+}

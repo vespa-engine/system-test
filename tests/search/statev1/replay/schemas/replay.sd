@@ -1,0 +1,15 @@
+# Copyright Vespa.ai. All rights reserved.
+schema replay {
+  document replay {
+    field int_field type int {
+      indexing: summary | attribute
+    }
+    field string_field type string {
+      indexing: summary | attribute | index
+    }
+
+    field tensor_field type tensor<float>(x[2048]) {
+      indexing: summary | attribute | index
+    }
+  }
+}
