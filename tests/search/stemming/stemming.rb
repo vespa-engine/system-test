@@ -22,8 +22,9 @@ class Stemming < IndexedOnlySearchTest
     assert_hitcount("query=cars", 7)
 
     puts "Query: testing verb forms"
-    assert_hitcount("query=make", 4)
-    assert_hitcount("query=makes", 4)
+    assert_hitcount("query=make", 3)
+    assert_hitcount("query=makes", 3)
+    assert_hitcount("query=makes&language=pt", 1)
 
     assert_hitcount("query=artist:towers", 2)
     assert_hitcount("query=artist:tower", 2)
@@ -35,6 +36,12 @@ class Stemming < IndexedOnlySearchTest
     assert_hitcount("query=artist:inxs", 3)
     assert_hitcount("query=artist:Inxs", 3)
     assert_hitcount("query=artist:INXS", 3)
+
+    assert_hitcount("query=artist:%22towers of power", 2)
+    assert_hitcount("query=artist:bet", 3)
+    assert_hitcount("query=artist:bets", 4)
+    assert_hitcount("query=artist:the-bets-are-big", 2)
+    assert_hitcount("query=artist:the-bet-are-big", 1)
   end
 
   def teardown
