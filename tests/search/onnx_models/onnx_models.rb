@@ -15,10 +15,10 @@ class OnnxModelsDeployment < IndexedOnlySearchTest
   def test_onnx_models_not_used_in_content_cluster
     deploy(selfdir + "app/")
     start
-  end
+    feed_and_wait_for_docs("test", 3, :file => selfdir+"docs.json")
 
-  def teardown
-    stop
+    # save_result("query=sddocname:test&ranking=base", selfdir + "result.json")
+    assert_result("query=sddocname:test&ranking=base", selfdir + "result.json")
   end
 
 end
