@@ -1,0 +1,21 @@
+# Copyright Vespa.ai. All rights reserved.
+schema bar {
+  document bar {
+    field int_bar1 type int {
+      indexing: summary | attribute
+    }
+    field string_bar1 type string {
+      indexing: summary | attribute
+    }
+    field string_bar2 type string {
+      indexing: summary | index
+    }
+    field string_bar3 type string {
+      indexing: summary | attribute | index
+    }
+
+    field tensor_bar type tensor<float>(x[3]) {
+      indexing: summary | attribute | index
+    }
+  }
+}
