@@ -5,9 +5,16 @@ class Stemming < IndexedOnlySearchTest
   # No stemming in streaming search
 
   def setup
-    set_owner("geirst")
+    set_owner("arnej")
     set_description("Test stemming (eg: car -> cars) with dictionary")
-    deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
+    # Explicitly use OpenNlpLinguistics to get the same results between public and internal system test runs.
+    deploy_app(SearchApp.new.sd(selfdir + "music.sd").
+               indexing_cluster("my-container").
+               container(Container.new("my-container").
+                         search(Searching.new).
+                         documentapi(ContainerDocumentApi.new).
+                         docproc(DocumentProcessing.new).
+                         component(Component.new("com.yahoo.language.opennlp.OpenNlpLinguistics"))))
     start
   end
 
