@@ -1,12 +1,17 @@
 # Copyright Vespa.ai. All rights reserved.
-require 'indexed_only_search_test'
+require 'indexed_streaming_search_test'
 
-class Initialization < IndexedOnlySearchTest
+class Initialization < IndexedStreamingSearchTest
 
   NUM_DOCUMENTS = 100000
 
   def setup
     set_owner("boeker")
+  end
+
+  def self.final_test_methods
+    ['test_replay',
+     'test_reprocessing']
   end
 
   def test_initialization
@@ -15,13 +20,18 @@ class Initialization < IndexedOnlySearchTest
     @searchnode = get_searchnode
     start
 
+    loaded = ["int_field1", "string_field1", "string_field3", "tensor_field"]
+    if is_streaming
+      loaded = []
+    end
+
     expected = {
       "state" => "ready",
       "dbs" => {
         "initialization" => {
           "state" => "online",
           "attributes" => {
-            "loaded" => ["int_field1", "string_field1", "string_field3", "tensor_field"],
+            "loaded" => loaded,
             "loading" => [],
             "reprocessing" => [],
             "queued" => []
@@ -66,13 +76,21 @@ class Initialization < IndexedOnlySearchTest
     @searchnode = get_searchnode
     start
 
+    fooLoaded = ["int_foo1", "string_foo1", "string_foo3", "tensor_foo"]
+    barLoaded = ["int_bar1", "string_bar1", "string_bar3", "tensor_bar"]
+
+    if is_streaming
+      fooLoaded = []
+      barLoaded = []
+    end
+
     expected = {
       "state" => "ready",
       "dbs" => {
         "foo" => {
           "state" => "online",
           "attributes" => {
-            "loaded" => ["int_foo1", "string_foo1", "string_foo3", "tensor_foo"],
+            "loaded" => fooLoaded,
             "loading" => [],
             "reprocessing" => [],
             "queued" => []
@@ -81,7 +99,7 @@ class Initialization < IndexedOnlySearchTest
         "bar" => {
           "state" => "online",
           "attributes" => {
-            "loaded" => ["int_bar1", "string_bar1", "string_bar3", "tensor_bar"],
+            "loaded" => barLoaded,
             "loading" => [],
             "reprocessing" => [],
             "queued" => []
@@ -121,6 +139,7 @@ class Initialization < IndexedOnlySearchTest
   end
 
   def test_replay
+    @params = { :search_type => "INDEXED" }
     set_description("Verify contents of /state/v1/initialization while replay")
     deploy_app(SearchApp.new.sd(selfdir + "initialization/replay/replay.sd").flush_on_shutdown(false))
 
@@ -176,6 +195,7 @@ class Initialization < IndexedOnlySearchTest
   end
 
   def test_reprocessing
+    @params = { :search_type => "INDEXED" }
     set_description("Verify contents of /state/v1/initialization while reindexing an HNSW index")
 
     # First, we use a schema where tensor_field is not an index
