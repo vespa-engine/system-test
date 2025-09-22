@@ -122,7 +122,7 @@ class Initialization < IndexedOnlySearchTest
 
   def test_replay
     set_description("Verify contents of /state/v1/initialization while replay")
-    deploy(selfdir + "replay/")
+    deploy_app(SearchApp.new.sd(selfdir + "replay/replay.sd").flush_on_shutdown(false))
 
     @container = get_container
     @searchnode = get_searchnode
