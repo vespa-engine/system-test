@@ -5,9 +5,16 @@ class Stemming < IndexedOnlySearchTest
   # No stemming in streaming search
 
   def setup
-    set_owner("geirst")
+    set_owner("arnej")
     set_description("Test stemming (eg: car -> cars) with dictionary")
-    deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
+    # Explicitly use OpenNlpLinguistics to get the same results between public and internal system test runs.
+    deploy_app(SearchApp.new.sd(selfdir + "music.sd").
+               indexing_cluster("my-container").
+               container(Container.new("my-container").
+                         search(Searching.new).
+                         documentapi(ContainerDocumentApi.new).
+                         docproc(DocumentProcessing.new).
+                         component(Component.new("com.yahoo.language.opennlp.OpenNlpLinguistics"))))
     start
   end
 
@@ -22,8 +29,20 @@ class Stemming < IndexedOnlySearchTest
     assert_hitcount("query=cars", 7)
 
     puts "Query: testing verb forms"
-    assert_hitcount("query=make", 4)
-    assert_hitcount("query=makes", 4)
+    assert_hitcount("query=make", 3)
+    assert_hitcount("query=makes", 3)
+
+    assert_hitcount("query=make+title:doc1&type=all", 1)
+    assert_hitcount("query=make+title:doc2&type=all", 1)
+    assert_hitcount("query=make+title:doc3&type=all", 0)
+    assert_hitcount("query=make+title:doc10&type=all", 1)
+
+    assert_hitcount("query=makes+title:doc1&type=all", 1)
+    assert_hitcount("query=makes+title:doc2&type=all", 1)
+    assert_hitcount("query=makes+title:doc3&type=all", 0)
+    assert_hitcount("query=makes+title:doc10&type=all", 1)
+
+    assert_hitcount("query=makes&language=pt", 1)
 
     assert_hitcount("query=artist:towers", 2)
     assert_hitcount("query=artist:tower", 2)
@@ -35,6 +54,12 @@ class Stemming < IndexedOnlySearchTest
     assert_hitcount("query=artist:inxs", 3)
     assert_hitcount("query=artist:Inxs", 3)
     assert_hitcount("query=artist:INXS", 3)
+
+    assert_hitcount("query=artist:%22towers of power", 2)
+    assert_hitcount("query=artist:bet", 3)
+    assert_hitcount("query=artist:bets", 4)
+    assert_hitcount("query=artist:the-bet-are-big", 1)
+    assert_hitcount("query=artist:the-bets-are-big", 2)
   end
 
   def teardown

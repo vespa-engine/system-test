@@ -5,11 +5,20 @@ schema music {
   
   document music {
 
+    field setlang type string {
+      indexing: input setlang | set_language
+    }
+
     field title type string {
       indexing: index | summary
     }
 
-    field artist type string {
+    field artist1 type string {
+      indexing: index | summary
+      stemming: multiple
+    }
+
+    field artist2 type string {
       indexing: index | summary
       stemming: multiple
     }
@@ -18,29 +27,29 @@ schema music {
       indexing: index | summary
     }
 
-    field pto type int {
-      indexing: summary | attribute
-    }
-
-    field mid type int {
-      indexing: summary | attribute
-    }
-
-    field ew type string {
-      indexing: index | summary
-    }
-
-    field surl type string {
-      indexing: summary | attribute
-    }
-
-    field bgnsellers type int {
-      indexing: summary
-    }
-
   }
+
   fieldset default {
     fields: title, song
+  }
+  fieldset artist {
+    fields: artist1, artist2
+  }
+  document-summary debug {
+    from-disk
+    summary title {}
+    summary a1t {
+      source: artist1
+      tokens
+    }
+    summary a2t {
+      source: artist2
+      tokens
+    }
+    summary s_t {
+      source: song
+      tokens
+    }
   }
 
   rank-profile default {
