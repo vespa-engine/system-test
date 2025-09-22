@@ -200,6 +200,7 @@ class Initialization < IndexedOnlySearchTest
     wait_for_application(vespa.container.values.first, deploy_output)
     wait_for_config_generation_proxy(get_generation(deploy_output))
 
+    @searchnode.trigger_flush # Explicitly flush since we only restart proton
     restart_vespa
 
     puts "Waiting for a few seconds such that attributes can be loaded"
@@ -262,13 +263,11 @@ class Initialization < IndexedOnlySearchTest
   end
 
   def restart_vespa
-    puts "# Stopping Vespa"
-    vespa.stop_base
-    vespa.adminserver.stop_configserver(:keep_everything => true)
-    puts "# Starting Vespa"
-    vespa.adminserver.start_configserver
-    vespa.adminserver.ping_configserver
-    vespa.start_base
+    puts "# Stopping Proton"
+    @searchnode.stop
+
+    puts "# Starting Proton"
+    @searchnode.start
   end
 
   def restart_vespa_and_wait
