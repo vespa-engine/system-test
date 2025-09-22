@@ -59,9 +59,14 @@ class VespaNode
     @https_client.get(hostname, port, path, headers: headers)
   end
 
+  class HTTPNotFoundError < StandardError; end
+
   def get_json_over_http(full_path, port, hostname = Environment.instance.vespa_hostname)
     begin
       res = https_get(hostname, port, full_path)
+      if res.is_a?(Net::HTTPNotFound) # Allow to handle case of endpoint not yet being available separately
+        raise HTTPNotFoundError.new, "https_get returned Net::HTTPNotFound"
+      end
       raise("error!") unless res.is_a?(Net::HTTPSuccess)
       JSON.parse(res.body)
     rescue JSON::ParserError => e
@@ -92,7 +97,7 @@ class VespaNode
         if response != nil
           return response
         end
-      rescue Errno::ECONNREFUSED, Errno::ECONNRESET
+      rescue Errno::ECONNREFUSED, Errno::ECONNRESET, HTTPNotFoundError
         # Node likely not up yet; retry transparently.
       end
       sleep 0.1
