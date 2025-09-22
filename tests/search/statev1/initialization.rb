@@ -61,7 +61,8 @@ class Initialization < IndexedOnlySearchTest
 
   def test_multiple_schemas
     set_description("Verify contents of /state/v1/initialization after startup while using multiple schemas")
-    deploy(selfdir + "multiple_schemas/")
+    deploy_app(SearchApp.new.sd(selfdir + "multiple_schemas/foo.sd")
+                            .sd(selfdir + "multiple_schemas/bar.sd"))
     @searchnode = get_searchnode
     start
 
