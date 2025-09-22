@@ -3,6 +3,8 @@ require 'indexed_only_search_test'
 
 class Initialization < IndexedOnlySearchTest
 
+  NUM_DOCUMENTS = 30000
+
   def setup
     set_owner("boeker")
   end
@@ -126,7 +128,7 @@ class Initialization < IndexedOnlySearchTest
     compile_document_generator
     start
 
-    feed_and_wait("replay", 30000, 2048)
+    feed_and_wait("replay", NUM_DOCUMENTS, 2048)
 
     restart_vespa
 
@@ -186,7 +188,7 @@ class Initialization < IndexedOnlySearchTest
     compile_document_generator
     start
 
-    feed_and_wait("reprocessing", 30000, 2048)
+    feed_and_wait("reprocessing", NUM_DOCUMENTS, 2048)
 
     puts "Redeploying with HNSW index"
     system("cp #{testdir}reprocessing.1.sd #{dirs.tmpdir}reprocessing.sd")
