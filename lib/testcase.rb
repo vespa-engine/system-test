@@ -289,11 +289,7 @@ class TestCase
       savev = @vespa
       begin
         Timeout::timeout(get_timeout, SystemTestTimeout) do |timeout|
-          if respond_to?(:teardown)
-              teardown
-          else
-              stop
-          end
+          teardown
           # Copy remote log files to @dirs.vespalogdir
           copy_remote_vespa_logfiles(savev)
         end
