@@ -3,7 +3,7 @@ require 'indexed_only_search_test'
 
 class Initialization < IndexedOnlySearchTest
 
-  NUM_DOCUMENTS = 30000
+  NUM_DOCUMENTS = 100000
 
   def setup
     set_owner("boeker")
