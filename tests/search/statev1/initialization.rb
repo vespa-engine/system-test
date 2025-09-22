@@ -11,7 +11,7 @@ class Initialization < IndexedOnlySearchTest
 
   def test_initialization
     set_description("Verify contents of /state/v1/initialization after startup")
-    deploy_app(SearchApp.new.sd(selfdir + "initialization.sd"))
+    deploy_app(SearchApp.new.sd(selfdir + "initialization/initialization.sd"))
     @searchnode = get_searchnode
     start
 
@@ -61,8 +61,8 @@ class Initialization < IndexedOnlySearchTest
 
   def test_multiple_schemas
     set_description("Verify contents of /state/v1/initialization after startup while using multiple schemas")
-    deploy_app(SearchApp.new.sd(selfdir + "multiple_schemas/foo.sd")
-                            .sd(selfdir + "multiple_schemas/bar.sd"))
+    deploy_app(SearchApp.new.sd(selfdir + "initialization/multiple_schemas/foo.sd")
+                            .sd(selfdir + "initialization/multiple_schemas/bar.sd"))
     @searchnode = get_searchnode
     start
 
@@ -122,7 +122,7 @@ class Initialization < IndexedOnlySearchTest
 
   def test_replay
     set_description("Verify contents of /state/v1/initialization while replay")
-    deploy_app(SearchApp.new.sd(selfdir + "replay/replay.sd").flush_on_shutdown(false))
+    deploy_app(SearchApp.new.sd(selfdir + "initialization/replay/replay.sd").flush_on_shutdown(false))
 
     @container = get_container
     @searchnode = get_searchnode
@@ -179,7 +179,7 @@ class Initialization < IndexedOnlySearchTest
     set_description("Verify contents of /state/v1/initialization while reindexing an HNSW index")
 
     # First, we use a schema where tensor_field is not an index
-    testdir = selfdir + "reprocessing/"
+    testdir = selfdir + "initialization/reprocessing/"
     system("cp #{testdir}reprocessing.0.sd #{dirs.tmpdir}reprocessing.sd")
     app = SearchApp.new.sd(dirs.tmpdir + "reprocessing.sd")
     deploy_app(app)
@@ -258,7 +258,7 @@ class Initialization < IndexedOnlySearchTest
 
   def compile_document_generator
     @tmp_bin_dir = @container.create_tmp_bin_dir
-    @container.execute("g++ -g -O3 -o #{@tmp_bin_dir}/docs #{selfdir}docs.cpp")
+    @container.execute("g++ -g -O3 -o #{@tmp_bin_dir}/docs #{selfdir}initialization-data/docs.cpp")
   end
 
   def restart_vespa
