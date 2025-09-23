@@ -208,6 +208,10 @@ class TestCase
     return 1200
   end
 
+  def teardown
+    stop
+  end
+
   # method wrapping timeout_seconds, to multiply timeout by 5 if
   # test is run through valgrind
   def get_timeout
