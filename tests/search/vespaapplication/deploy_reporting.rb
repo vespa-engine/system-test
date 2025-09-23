@@ -26,8 +26,5 @@ class DeployReporting < IndexedStreamingSearchTest
                  "error message did not contain required text")
   end
 
-  def teardown
-    stop
-  end
 
 end

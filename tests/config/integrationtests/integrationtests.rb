@@ -28,8 +28,5 @@ class Integrationtests < ConfigTest
     node.execute("cd #{dest} && #{maven_command} -Dtest.hide=false test")
   end
 
-  def teardown
-      stop
-  end
 
 end

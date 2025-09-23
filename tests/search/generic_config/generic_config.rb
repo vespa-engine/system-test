@@ -179,8 +179,5 @@ class GenericConfig < IndexedStreamingSearchTest
     assert(vespa.adminserver.execute("#{@getconfig} -n cloud.config.log.logd -i #{admin_id}") =~ /rotate.age 1234/)
   end
 
-  def teardown
-    stop
-  end
 
 end

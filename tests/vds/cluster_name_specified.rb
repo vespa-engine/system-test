@@ -65,8 +65,5 @@ class Cluster_Name_Specified < VdsTest
     assert_equal(doc, doc2)
   end
 
-  def teardown
-    stop
-  end
 end
 

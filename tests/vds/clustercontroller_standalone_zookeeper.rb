@@ -59,8 +59,5 @@ class ClusterControllerStandaloneZooKeeperTest < VdsTest
     feed_docs
   end
 
-  def teardown
-    stop
-  end
 end
 

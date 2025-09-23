@@ -86,8 +86,5 @@ class EventLoggingTest < IndexedStreamingSearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

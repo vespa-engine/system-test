@@ -7,9 +7,6 @@ class ClientLoadDuringOrchestratedDownTest < VdsTest
     set_owner('vekterli')
   end
 
-  def teardown
-    stop
-  end
 
   def make_doc_id(n)
     "id:test:music::doc#{n}"

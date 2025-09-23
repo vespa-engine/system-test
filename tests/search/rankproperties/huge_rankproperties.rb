@@ -20,8 +20,5 @@ class HugeRankProperties < IndexedStreamingSearchTest
     assert_relevancy(result, 25000, 0)
   end
   
-  def teardown
-    stop
-  end
 
 end

@@ -113,8 +113,5 @@ class MatchCount < IndexedOnlySearchTest
     all.hits.each_with_index { |h,i| h.check_equal(r.hit[i]) }
   end
 
-  def teardown
-    stop
-  end
 
 end

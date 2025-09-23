@@ -81,8 +81,4 @@ class CheckAutoRestart < IndexedStreamingSearchTest
     wait_for_hitcount("query=sddocname:banana", 2);
   end
 
-  def teardown
-    stop
-  end
-
 end

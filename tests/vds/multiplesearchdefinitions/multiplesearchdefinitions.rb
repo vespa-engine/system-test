@@ -95,8 +95,5 @@ class MultipleSearchDefs < VdsMultiModelTest
     assert_match(/id:storage_test:music2:n=1234:music2/, output)
   end
 
-  def teardown
-    stop
-  end
 end
 

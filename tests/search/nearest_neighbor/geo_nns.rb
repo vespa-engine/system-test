@@ -145,7 +145,4 @@ class GeoNnsTest < IndexedStreamingSearchTest
     return result
   end
 
-  def teardown
-    stop
-  end
 end

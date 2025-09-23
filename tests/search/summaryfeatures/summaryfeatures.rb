@@ -111,8 +111,5 @@ class SummaryFeatures < IndexedStreamingSearchTest
     assert_features({"attribute(attr)" => attr_value}, json)
   end
 
-  def teardown
-    stop
-  end
 
 end

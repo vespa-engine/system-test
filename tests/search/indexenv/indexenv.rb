@@ -193,8 +193,5 @@ class IndexEnv < IndexedOnlySearchTest
 
   end
 
-  def teardown
-    stop
-  end
 
 end

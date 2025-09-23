@@ -24,8 +24,5 @@ class ReturnTimestamps < VdsTest
     assert_equal(5, set.length);
   end
 
-  def teardown
-    stop
-  end
 
 end

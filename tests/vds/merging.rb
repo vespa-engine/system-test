@@ -86,8 +86,5 @@ class MergingTest < PersistentProviderTest
     wait_for_config_generation_proxy(gen)
   end
 
-  def teardown
-    stop
-  end
 
 end

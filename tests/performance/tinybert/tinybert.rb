@@ -11,9 +11,6 @@ class TinyBertPerformanceTest < PerformanceTest
     @valgrind = false
   end
 
-  def teardown
-    stop
-  end
 
   def test_single_evaluation_tinybert_performance
     set_description("Performance test of TinyBert model evaluation - one evaluation")

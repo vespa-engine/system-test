@@ -37,8 +37,5 @@ class ConfiguredHandler < ContainerTest
                         config(config)))
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -18,8 +18,5 @@ class ComplexSummary < IndexedStreamingSearchTest
     assert_result("/search/?query=title:Title2", selfdir+"res2.json", nil, check_fields)
   end
 
-  def teardown
-    stop
-  end
   
 end

@@ -20,8 +20,5 @@ class WrongDistributionResend < VdsTest
     end
   end
 
-  def teardown
-    stop
-  end
 end
 

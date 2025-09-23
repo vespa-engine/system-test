@@ -32,8 +32,5 @@ class ZeroHits < IndexedStreamingSearchTest
     assert_result('query=cure&hits=0&nocache', selfdir+'0.result.json')
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -21,8 +21,5 @@ class ZkReconfig < ConfigTest
     node.execute("cd #{dest} && #{maven_command} -Dtest.hide=false test 2>&1")
   end
 
-  def teardown
-    stop
-  end
 
 end

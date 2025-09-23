@@ -27,8 +27,5 @@ class StopVespa < IndexedStreamingSearchTest
     vespa.stop_base
   end
 
-  def teardown
-    stop
-  end
 end
 

@@ -14,9 +14,6 @@ class LlamaPerformanceTest < PerformanceTest
     set_owner("lesters")
   end
 
-  def teardown
-    super
-  end
 
   def timeout_seconds
     1200

@@ -118,8 +118,5 @@ class CustomStateApi < IndexedStreamingSearchTest
     assert page.has_key? 'malloc_impl'
   end
 
-  def teardown
-    stop
-  end
 
 end

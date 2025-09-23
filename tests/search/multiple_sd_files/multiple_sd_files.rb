@@ -16,8 +16,5 @@ class MultipleSdFiles < IndexedStreamingSearchTest
     assert(JSON.generate(getvespaconfig("document.config.documentmanager", "client")) =~ /"name":"attributefilter",/)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -67,8 +67,5 @@ class Filter < IndexedStreamingSearchTest
     assert_equal(false, results_have_equal_order_and_relevance)
   end
 
-  def teardown
-    stop
-  end
 
 end

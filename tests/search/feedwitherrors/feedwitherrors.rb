@@ -22,8 +22,5 @@ class FeedWithErrors < IndexedStreamingSearchTest
     assert_log_matches(Regexp.compile(".*For input string: \"foobar\".*NumberFormatException.*"))
   end
 
-  def teardown
-    stop
-  end
 
 end

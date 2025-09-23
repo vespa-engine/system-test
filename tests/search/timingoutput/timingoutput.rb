@@ -19,8 +19,5 @@ class TimingOutput < IndexedStreamingSearchTest
     assert_match("searchtime=", result.xmldata)
   end
 
-  def teardown
-    stop
-  end
 
 end

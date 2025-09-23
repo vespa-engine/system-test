@@ -18,8 +18,5 @@ class IndexingNow < IndexedStreamingSearchTest
     assert_result("/?query=sddocname:simple", result_file)
   end
 
-  def teardown
-    stop
-  end
 
 end

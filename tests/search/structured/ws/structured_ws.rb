@@ -26,8 +26,5 @@ class StructuredWeightedSetTest < IndexedStreamingSearchTest
     assert_result("query=titles:%22james%20bond%22", selfdir+"result.ws.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

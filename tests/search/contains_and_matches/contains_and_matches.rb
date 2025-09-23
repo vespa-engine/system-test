@@ -14,9 +14,6 @@ class ContainsAndMatchesTest < IndexedOnlySearchTest
     @num_docs = 8
   end
 
-  def teardown
-    stop
-  end
 
   def test_contains_and_matches
     deploy_app(app_definition)

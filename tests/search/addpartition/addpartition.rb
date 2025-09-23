@@ -78,8 +78,5 @@ class AddPartition < IndexedStreamingSearchTest
     wait_for_hitcount("query=sddocname:addpartition", 0)
   end
 
-  def teardown
-    stop
-  end
 end
 

@@ -30,8 +30,5 @@ class LuceneLinguistics < IndexedOnlySearchTest
         config(ConfigOverride.new('com.yahoo.language.lucene.lucene-analysis'))
   end
 
-  def teardown
-    stop
-  end
 
 end

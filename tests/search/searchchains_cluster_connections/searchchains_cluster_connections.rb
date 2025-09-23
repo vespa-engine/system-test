@@ -52,8 +52,5 @@ class SearchchainsClusterConnections < IndexedStreamingSearchTest
     assert_hitcount("query=#{query}&searchChain=#{doctype}&type=all", hits, 0, { :cluster => container_cluster })
   end
 
-  def teardown
-    stop
-  end
   
 end

@@ -38,8 +38,5 @@ class MixedTensorWithQueryProfileTest < IndexedStreamingSearchTest
     "query=sddocname:test&ranking.features.query(tensor)=#{tensor}"
   end
 
-  def teardown
-    stop
-  end
 
 end

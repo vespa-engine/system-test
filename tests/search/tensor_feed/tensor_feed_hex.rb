@@ -160,8 +160,5 @@ class TensorFeedHexTest < IndexedStreamingSearchTest
     assert_nil(get_tensor_field(docs[3], 'my_16_tensor'))
   end
 
-  def teardown
-    stop
-  end
 
 end

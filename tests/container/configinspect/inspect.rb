@@ -18,8 +18,5 @@ class ConfigInspect < SearchContainerTest
     wait_for_reconfig(config_generation, 600, true)
   end
 
-  def teardown
-    stop
-  end
 
 end

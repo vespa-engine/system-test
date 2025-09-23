@@ -128,7 +128,4 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 end

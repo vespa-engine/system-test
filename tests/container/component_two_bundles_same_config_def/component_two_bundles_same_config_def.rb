@@ -18,8 +18,5 @@ class ComponentTwoBundlesSameConfigDef < SearchContainerTest
 #    wait_for_application(vespa.qrs['default'].qrserver['0'], output)
   end
 
-  def teardown
-    stop
-  end
 
 end

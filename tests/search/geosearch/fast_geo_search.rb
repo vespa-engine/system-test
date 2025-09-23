@@ -100,8 +100,5 @@ class FastGeoSearchTest < IndexedStreamingSearchTest
     assert_result_with_timeout(2, query, result_file)
   end
 
-  def teardown
-    stop
-  end
 
 end

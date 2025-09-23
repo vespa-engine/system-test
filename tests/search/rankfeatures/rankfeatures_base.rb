@@ -38,8 +38,5 @@ module RankFeaturesBase
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

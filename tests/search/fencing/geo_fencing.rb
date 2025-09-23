@@ -141,8 +141,5 @@ class GeoFencingTest < IndexedOnlySearchTest
     assert_result(qry, selfdir+"out-mp-yql.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

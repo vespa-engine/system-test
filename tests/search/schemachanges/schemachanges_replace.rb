@@ -80,8 +80,5 @@ class SchemaChangesReplaceTest < IndexedOnlySearchTest
     assert_result("sddocname:test&nocache", @test_dir + "result.0.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -49,8 +49,5 @@ class GroupingPagination < IndexedStreamingSearchTest
     assert_xml_result_with_timeout(4.0, query, file)
   end
 
-  def teardown
-    stop
-  end
 
 end

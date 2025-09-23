@@ -104,8 +104,5 @@ class MatchingPhase < IndexedOnlySearchTest
     wait_for_hitcount({ 'query' => 'sddocname:test' }, 5)
   end
 
-  def teardown
-    stop
-  end
 
 end

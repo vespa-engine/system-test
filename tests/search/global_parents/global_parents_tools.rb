@@ -121,8 +121,5 @@ class GlobalParentsToolTest < IndexedOnlySearchTest
     "id:test:ad::#{id}"
   end
 
-  def teardown
-    stop
-  end
 
 end

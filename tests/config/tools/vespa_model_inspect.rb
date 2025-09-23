@@ -50,8 +50,5 @@ EOS
     assert_exec_output(node, "#{@@modelinspect} services 2>/dev/null", 0, expected_services)
   end
 
-  def teardown
-    stop
-  end
 
 end

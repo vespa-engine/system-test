@@ -11,9 +11,6 @@ class DotProductSearch < IndexedStreamingSearchTest
     set_description("test dot product query term searching")
   end
 
-  def teardown
-    stop
-  end
 
   def build_tokens(vector)
     tokens = ""

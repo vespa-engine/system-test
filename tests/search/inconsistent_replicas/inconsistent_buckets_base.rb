@@ -140,8 +140,5 @@ class InconsistentBucketsBase < IndexedOnlySearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

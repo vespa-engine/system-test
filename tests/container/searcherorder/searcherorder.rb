@@ -71,7 +71,4 @@ class SearcherOrder < SearchContainerTest
         assert_match("EndSearcher: 42", result.xmldata)
     end
 
-    def teardown
-        stop
-    end
 end

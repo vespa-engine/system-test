@@ -117,8 +117,5 @@ class RankProfiles < IndexedStreamingSearchTest
     assert_features(exp, search(query).hit[docid].field['summaryfeatures'], 1e-04)
   end
 
-  def teardown
-    stop
-  end
 
 end

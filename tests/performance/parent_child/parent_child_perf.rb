@@ -134,8 +134,5 @@ class ParentChildPerfTest < PerformanceTest
     @container.copy(query_file, File.dirname(query_file))
   end
 
-  def teardown
-    super
-  end
 
 end

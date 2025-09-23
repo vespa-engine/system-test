@@ -14,9 +14,6 @@ class TensorMatrixMatrixProduct < PerformanceTest
     set_owner("lesters")
   end
 
-  def teardown
-    super
-  end
 
   def test_tensor_matrix_matrix_products
     set_description("Test of various matrix-matrix products")

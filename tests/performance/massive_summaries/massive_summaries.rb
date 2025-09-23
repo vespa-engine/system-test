@@ -55,8 +55,5 @@ class MassiveSummariesTest < PerformanceTest
     run_custom_fbench("&presentation.timing=true", container, 1, 60, true)
   end
 
-  def teardown
-    super
-  end
 
 end

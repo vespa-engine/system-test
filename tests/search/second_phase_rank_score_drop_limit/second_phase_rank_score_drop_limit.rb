@@ -46,8 +46,5 @@ end
     ids_and_scores
   end
 
-  def teardown
-    stop
-  end
 
 end

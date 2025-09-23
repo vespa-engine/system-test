@@ -11,9 +11,6 @@ class XGBoostMissingValues < IndexedStreamingSearchTest
     set_description("Validate evaluation of XGBoost models with missing values - in model-evaluation and in ranking")
   end
 
-  def teardown
-    stop
-  end
 
   def make_app
     app = SearchApp.new

@@ -26,8 +26,5 @@ class Test_LogicalRank < IndexedStreamingSearchTest
 
   end
 
-  def teardown
-    stop
-  end
 end
 

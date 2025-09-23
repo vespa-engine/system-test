@@ -38,7 +38,4 @@ class DeployLargeBundle < SearchContainerTest
     `dd if=/dev/urandom of=#{resourcesPath + "/random.txt"} bs=1 count=#{10*1024*1024}`
   end
 
-  def teardown
-    stop
-  end
 end

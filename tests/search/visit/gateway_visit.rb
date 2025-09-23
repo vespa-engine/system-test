@@ -25,8 +25,5 @@ class GatewayVisitTest < IndexedOnlySearchTest
     res = vespa.document_api_v1.visit(:selection => "music", :fieldSet => "music:[document]", :cluster => "search", :wantedDocumentCount => 10)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -23,8 +23,5 @@ class DirectSearch < IndexedOnlySearchTest
     assert_result(directquery, selfdir + "expected.result")
    end
 
-  def teardown
-    stop
-  end
 
 end

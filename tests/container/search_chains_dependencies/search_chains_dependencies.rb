@@ -22,8 +22,5 @@ class SearchChainsDependencies < SearchContainerTest
     assert_equal("Added by s1", titles[2].text)
   end
 
-  def teardown
-    stop
-  end
 
 end

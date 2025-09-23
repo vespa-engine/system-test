@@ -42,8 +42,5 @@ class RestartVespa < IndexedStreamingSearchTest
     assert_result("query=song:yellow+-title:yellow", selfdir+"query1.result.json", "surl", ["surl","title"])
   end
 
-  def teardown
-    stop
-  end
 
 end

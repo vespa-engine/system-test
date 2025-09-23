@@ -229,8 +229,5 @@ class SchemaChangesElastic < IndexedOnlySearchTest
     assert_equal(expected_doc, actual_doc)
   end
 
-  def teardown
-    stop
-  end
 
 end

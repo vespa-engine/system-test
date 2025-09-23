@@ -21,9 +21,6 @@ class DisjointSourceOnlyDocuments < IndexedOnlySearchTest
     start
   end
 
-  def teardown
-    stop
-  end
 
   def test_chunked_merge_diffing_works_with_disjoint_source_only_document_sets
     set_description('Test that merge protocol correctly handles edge case where ' +

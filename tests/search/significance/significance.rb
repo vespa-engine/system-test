@@ -129,7 +129,4 @@ class SignificanceTest < IndexedStreamingSearchTest
     assert_approx(exp_significance, significance_value)
   end
 
-  def teardown
-    stop
-  end
 end

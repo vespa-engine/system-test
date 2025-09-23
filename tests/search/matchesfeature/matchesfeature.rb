@@ -84,8 +84,5 @@ class MatchesFeature < IndexedStreamingSearchTest
     assert_features(expected, result.hit[0].field['summaryfeatures'], 1e-4)
   end
 
-  def teardown
-    stop
-  end
 
 end

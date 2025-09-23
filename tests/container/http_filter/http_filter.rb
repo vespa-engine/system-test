@@ -71,7 +71,4 @@ class HttpFilterTest < SearchContainerTest
     assert(obj.kind_of?(klass), "Expected #{klass}, got #{obj.class}")
   end
 
-  def teardown
-    stop
-  end
 end

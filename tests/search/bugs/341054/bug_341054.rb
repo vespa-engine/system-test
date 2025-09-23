@@ -21,8 +21,5 @@ class Bug_341054 < IndexedStreamingSearchTest
     assert_equal(1,result.length)
   end
 
-  def teardown
-    stop
-  end
 
 end

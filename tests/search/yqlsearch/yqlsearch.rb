@@ -63,8 +63,5 @@ class YqlSearch < IndexedStreamingSearchTest
     assert_result_matches_wset_order_normalized(query, selfdir + "group-result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

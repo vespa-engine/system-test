@@ -53,8 +53,5 @@ class NoChainsMultiSearch < DocprocTest
     assert_result("query=title:title", selfdir + "title.result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

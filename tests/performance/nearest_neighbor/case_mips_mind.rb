@@ -64,8 +64,5 @@ class NearestNeighborMipsMind < CommonMipsBase
     run_mips_test(selfdir + "mips/mind/news.sd", @news_docs, "news", "user")
   end
 
-  def teardown
-    super
-  end
 
 end

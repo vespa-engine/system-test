@@ -25,8 +25,5 @@ class IncludeXmlSchemaViolation < SearchContainerTest
                  "error message did not contain required text")
   end
 
-  def teardown
-    stop
-  end
 
 end

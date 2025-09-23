@@ -64,8 +64,5 @@ class EcommerceHybridSearchTestBase < PerformanceTest
     end
   end
 
-  def teardown
-    super
-  end
 
 end

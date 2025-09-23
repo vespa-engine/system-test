@@ -32,8 +32,5 @@ class PositionExtra < IndexedOnlySearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

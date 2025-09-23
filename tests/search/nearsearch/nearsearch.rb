@@ -95,9 +95,6 @@ class NearSearch < IndexedStreamingSearchTest
     assert_hitcount({ 'yql' => yql_abc, 'ranking' => ranking }, wanted_hits)
   end
 
-  def teardown
-    stop
-  end
 
   def gen_phrases(numTerms)
     if (numTerms <= 1)

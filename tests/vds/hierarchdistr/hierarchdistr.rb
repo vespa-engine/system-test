@@ -316,8 +316,5 @@ class HierarchDistr < VdsMultiModelTest
     return vespa.storage['storage'].storage[node.to_s].get_buckets()['default'].keys.to_set
   end
 
-  def teardown
-      stop
-  end
 
 end

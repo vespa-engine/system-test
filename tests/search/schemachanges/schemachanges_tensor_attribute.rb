@@ -50,8 +50,5 @@ class SchemaChangesTensorAttributeTest < IndexedOnlySearchTest
     assert_tensor_content([6, 3], 9)
   end
 
-  def teardown
-    stop
-  end
 
 end

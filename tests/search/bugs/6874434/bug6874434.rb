@@ -20,8 +20,5 @@ class PositionsBug < StreamingSearchTest
     assert_result_with_timeout(2.0, "query=title:test&streaming.userid=27959", selfdir+"result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

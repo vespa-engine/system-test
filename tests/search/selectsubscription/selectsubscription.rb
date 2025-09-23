@@ -45,8 +45,5 @@ class SelectSubscription < IndexedStreamingSearchTest
     assert_result("query=mid:3", selfdir + "ssub.3.result.json", "title")
   end
 
-  def teardown
-    stop
-  end
 
 end

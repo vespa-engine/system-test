@@ -49,8 +49,5 @@ class HealthMonitor < SearchContainerTest
     return true
   end
 
-  def teardown
-    stop
-  end
 
 end

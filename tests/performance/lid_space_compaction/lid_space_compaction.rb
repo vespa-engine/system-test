@@ -107,8 +107,5 @@ class LidSpaceCompactionPerfTest < PerformanceTest
     profiler_report
   end
 
-  def teardown
-    super
-  end
 
 end

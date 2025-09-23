@@ -51,8 +51,5 @@ class NumTerm < IndexedStreamingSearchTest
     assert_hitcount("query=arr:5",0)
   end
 
-  def teardown
-    stop
-  end
 
 end

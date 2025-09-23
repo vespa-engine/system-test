@@ -65,8 +65,5 @@ class DynTeaserArrayTest < IndexedStreamingSearchTest
     assert_equal(exp_teaser, act_teaser, "Unexpected teaser for field '#{summary_field}' using query '#{query_field}:#{query_term}'")
   end
 
-  def teardown
-    stop
-  end
 
 end

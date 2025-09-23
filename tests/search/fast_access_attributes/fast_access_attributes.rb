@@ -139,8 +139,5 @@ class FastAccessAttributesTest < IndexedOnlySearchTest
     verify_documents_moved_from_notready_to_ready
   end
 
-  def teardown
-    stop
-  end
 
 end

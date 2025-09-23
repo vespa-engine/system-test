@@ -89,8 +89,5 @@ class HttpServer < SearchContainerTest
     return num_switches
   end
 
-  def teardown
-    stop
-  end
 
 end

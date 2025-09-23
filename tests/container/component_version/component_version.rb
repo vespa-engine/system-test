@@ -28,7 +28,4 @@ class ComponentVersion < SearchContainerTest
     assert_equal("Version #{version} of VersionTestSearcher", title)
   end
 
-  def teardown
-    stop
-  end
 end

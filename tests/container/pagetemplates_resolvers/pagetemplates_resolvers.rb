@@ -29,8 +29,5 @@ class PageTemplatesResolvers < SearchContainerTest
     assert_xml_result(q + "&page.resolver=native.deterministic",selfdir + "sourceChoiceResultLast.xml")
    end
 
-  def teardown
-    stop
-  end
 
 end

@@ -141,7 +141,4 @@ class AttributeBitVectors < IndexedOnlySearchTest
     assert_bv_counts('af', 'common', [1, 1, 1, 1])
   end
 
-  def teardown
-    stop
-  end
 end

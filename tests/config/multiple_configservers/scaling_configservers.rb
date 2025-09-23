@@ -94,9 +94,6 @@ class ScalingConfigservers < ConfigTest
     node.start_configserver
   end
 
-  def teardown
-    stop
-  end
 
   def debug(msg)
     vespa.nodeproxies.values.each do |n|

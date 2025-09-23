@@ -82,7 +82,4 @@ class Many_Services < IndexedStreamingSearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 end

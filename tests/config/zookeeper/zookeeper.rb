@@ -17,8 +17,5 @@ class ZooKeeper < ConfigTest
            "Expected ZooKeeper version to be #{expected_version}, another version found in output: #{output}")
   end
 
-  def teardown
-    stop
-  end
 
 end

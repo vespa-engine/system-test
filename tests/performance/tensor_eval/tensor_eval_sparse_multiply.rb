@@ -22,8 +22,5 @@ class TensorEvalSparseMultiplyPerfTest < TensorEvalPerfTest
     end
   end
 
-  def teardown
-    super
-  end
 
 end

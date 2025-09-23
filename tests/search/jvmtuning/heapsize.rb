@@ -113,8 +113,5 @@ class HeapSize < SearchTest
     assert(ps_output =~ /-XX:MaxDirectMemorySize=#{maxdirect}m/, "Expected to find '-XX:MaxDirectMemorySize=#{maxdirect}m' in output: #{ps_output}")
   end
 
-  def teardown
-    stop
-  end
 
 end

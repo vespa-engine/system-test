@@ -63,8 +63,5 @@ class TensorUpdatePerfTest < PerformanceTest
     profiler_report("#{update_type}-d#{num_docs}-t#{tensor_size}")
   end
 
-  def teardown
-    super
-  end
 
 end

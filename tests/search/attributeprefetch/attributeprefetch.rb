@@ -39,8 +39,5 @@ class AttributePrefetch < IndexedOnlySearchTest
                    selfdir+"qx2.result.json", nil, ["stringfield", "floatfield", "doublefield", "int64field", "bytefield1", "bytefield2", "intfield"])
   end
 
-  def teardown
-    stop
-  end
 
 end

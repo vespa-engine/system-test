@@ -27,8 +27,5 @@ class LiteralBoost < IndexedOnlySearchTest
     assert_equal(File.read(selfdir+"documentvisit.json"), result)
   end
 
-  def teardown
-    stop
-  end
 
 end

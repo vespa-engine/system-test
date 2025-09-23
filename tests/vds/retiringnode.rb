@@ -135,8 +135,5 @@ class RetiringNode < VdsTest
     assert_equal(numDocs, n)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -46,9 +46,6 @@ class ComponentUpdateDef < SearchContainerTest
     verify_result("version two")
   end
 
-  def teardown
-    stop
-  end
 
   def verify_result(expected)
     result = search("query=test")

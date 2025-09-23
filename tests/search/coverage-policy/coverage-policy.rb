@@ -43,8 +43,5 @@ class CoveragePolicyTest < IndexedOnlySearchTest
             node(NodeSpec.new("node1", 3)))
   end
 
-  def teardown
-    stop
-  end
 
 end

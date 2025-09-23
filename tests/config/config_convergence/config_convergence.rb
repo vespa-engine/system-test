@@ -102,7 +102,4 @@ class ConfigConvergence < ConfigTest
       assert_equal(url, json["url"])
   end
 
-  def teardown
-    stop
-  end
 end

@@ -50,8 +50,5 @@ class TestTypes < IndexedStreamingSearchTest
     assert_hitcount('yql=select+%2A+from+sources+%2A+where+boolfield=false%3B', 0)
   end
 
-  def teardown
-    stop
-  end
 
 end

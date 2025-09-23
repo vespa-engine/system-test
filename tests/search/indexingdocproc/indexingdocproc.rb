@@ -36,8 +36,5 @@ class IndexingDocproc < IndexedStreamingSearchTest
                    "surl")
   end
 
-  def teardown
-    stop
-  end
 
 end

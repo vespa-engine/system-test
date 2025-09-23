@@ -310,8 +310,5 @@ class ClusterControllerTest < VdsTest
     flunk("Failed to get to node count #{count} within #{timeout} seconds. Current count #{current}")
   end
 
-  def teardown
-    stop
-  end
 end
 

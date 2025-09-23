@@ -126,7 +126,4 @@ class RemoveDocTypeDuringFeed < IndexedOnlySearchTest
     assert_equal(1, assert_log_matches(/starting\/1\s+name="searchnode"/))
   end
 
-  def teardown
-    stop
-  end
 end

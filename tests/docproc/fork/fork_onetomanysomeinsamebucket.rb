@@ -51,8 +51,5 @@ class ForkOneToManySomeInSameBucket < DocprocTest
     assert(doc10 != nil)
   end
 
-  def teardown
-    stop
-  end
 
 end

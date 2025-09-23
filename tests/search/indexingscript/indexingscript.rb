@@ -15,8 +15,5 @@ class IndexingScript < IndexedStreamingSearchTest
     assert_result("query=sddocname:test", "#{selfdir}/result.json", "a")
   end
 
-  def teardown
-    stop
-  end
 
 end

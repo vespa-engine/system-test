@@ -105,7 +105,4 @@ class ContainerWarmup < PerformanceTest
     run_container_warmup(1, 1000)
   end
 
-  def teardown
-    super
-  end
 end

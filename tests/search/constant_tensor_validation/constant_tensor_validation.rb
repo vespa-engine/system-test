@@ -42,7 +42,4 @@ class ConstantTensorValidationTest < IndexedStreamingSearchTest
     assert_match("constant(constant_tensor_5) tensor(x[33],y[10],z[46]): file:search/constant_tensor_5.json: Failed to parse JSON stream", output)
   end
 
-  def teardown
-    stop
-  end
 end

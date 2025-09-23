@@ -53,8 +53,5 @@ class HammingDistanceRankingTest < IndexedStreamingSearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

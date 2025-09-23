@@ -22,8 +22,5 @@ class SingleTermPhrase < IndexedStreamingSearchTest
                   selfdir+"second.result")
   end
 
-  def teardown
-    stop
-  end
 
 end

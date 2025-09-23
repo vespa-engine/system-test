@@ -87,8 +87,5 @@ class Explain < IndexedOnlySearchTest
     assert_equal(exp_size, thread_1.size)
   end
 
-  def teardown
-    stop
-  end
 
 end

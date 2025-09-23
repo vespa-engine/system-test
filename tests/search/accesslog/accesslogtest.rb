@@ -51,8 +51,5 @@ class AccessLogTest < IndexedStreamingSearchTest
     assert_match(/HTTP\/1.1/, connection_log)
   end
 
-  def teardown
-    stop
-  end
 
 end

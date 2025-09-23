@@ -99,7 +99,4 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     assert_equal(exp_field_value, act_field_value)
   end
 
-  def teardown
-    stop
-  end
 end

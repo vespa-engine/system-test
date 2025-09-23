@@ -30,8 +30,5 @@ class ConfigClassPlugin < ConfigTest
     }
   end
 
-  def teardown
-    stop
-  end
 
 end

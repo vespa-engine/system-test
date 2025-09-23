@@ -60,8 +60,5 @@ class ImplicitNumberPhrase < IndexedStreamingSearchTest
     assert_hitcount("query=body:\"3+3\"", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

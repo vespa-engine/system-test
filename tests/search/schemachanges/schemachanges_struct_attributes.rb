@@ -157,8 +157,5 @@ class SchemaChangesStructAttribute < IndexedOnlySearchTest
     check_add_and_remove_struct_field(false)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -31,8 +31,5 @@ class ClearField < IndexedStreamingSearchTest
     assert_result_with_timeout(5, query, file)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -11,9 +11,6 @@ class GroupAutoTakedownTest < IndexedOnlySearchTest
                     "ratio' feature is able to take groups down and up as expected")
   end
 
-  def teardown
-    stop
-  end
 
   def create_app(min_node_ratio:)
     SearchApp.new.

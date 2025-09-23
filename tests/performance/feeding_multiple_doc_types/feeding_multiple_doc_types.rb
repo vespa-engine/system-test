@@ -109,8 +109,5 @@ class FeedingMultipleDocTypesTest < PerformanceTest
     start
   end
 
-  def teardown
-    super
-  end
 
 end

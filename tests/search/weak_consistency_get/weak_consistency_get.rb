@@ -8,9 +8,6 @@ class WeakInternalConsistencyGetTest < IndexedStreamingSearchTest
     start
   end
 
-  def teardown
-    stop
-  end
 
   def make_app
     SearchApp.new.sd(SEARCH_DATA + 'simple.sd').

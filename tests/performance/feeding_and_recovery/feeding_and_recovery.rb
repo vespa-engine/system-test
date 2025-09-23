@@ -404,7 +404,4 @@ class FeedingAndRecoveryTest < PerformanceTest
     # monitor("test") { run_elastic_feeding_and_recovery_benchmark(dps) }
   end
 
-  def teardown
-    super
-  end
 end

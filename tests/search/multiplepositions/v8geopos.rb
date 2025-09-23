@@ -112,8 +112,5 @@ class Vespa8GeoPositions < IndexedStreamingSearchTest
     check_q('/search/?yql=select+*+from+sources+*+where+true%3B', 4, 'v8-render')
   end
 
-  def teardown
-    stop
-  end
 
 end

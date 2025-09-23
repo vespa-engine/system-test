@@ -19,8 +19,5 @@ class EmptyIndex < IndexedStreamingSearchTest
     assert_result("query=concerto", selfdir + "emptyindex.result.json", nil, ["surl"])
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -32,8 +32,5 @@ class StructuredSummaryFeaturesTest < IndexedStreamingSearchTest
     assert_result("query=title:word&#{grp}&ranking.queryCache=true", selfdir+"result.wd-group.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

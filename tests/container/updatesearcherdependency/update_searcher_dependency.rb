@@ -36,8 +36,5 @@ class UpdateSearcherDependency < SearchContainerTest
     poll_compare("test", selfdir + "new_world_result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

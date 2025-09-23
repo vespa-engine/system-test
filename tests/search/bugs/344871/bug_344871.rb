@@ -34,8 +34,5 @@ class Bug_344871 < IndexedStreamingSearchTest
                    "#{selfdir}/result3.json", "surl")
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -21,8 +21,5 @@ class TensorConformanceTest < SearchTest
     assert_equal(0, exitcode.to_i)
   end
 
-  def teardown
-    stop
-  end
 
 end

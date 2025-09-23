@@ -93,8 +93,5 @@ class FastAccessAttributesPerfTest < PerformanceTest
     assert_hitcount(query, num_docs, 0, {:cluster => "combinedcontainer"})
   end
 
-  def teardown
-    super
-  end
 
 end

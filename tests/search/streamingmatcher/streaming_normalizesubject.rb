@@ -16,9 +16,6 @@ class StreamingMatcherNormalizeSubject < StreamingSearchTest
     assert_result("query=sddocname:musicsearch&hits=0&streaming.userid=1234&streaming.headersonly=true&select=all(group(normalizesubject(title)) each(output(count())))", selfdir+"normalizesubject.result.json")
   end
 
-  def teardown
-    stop
-  end
 
 
 end

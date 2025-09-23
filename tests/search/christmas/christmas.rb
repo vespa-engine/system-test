@@ -19,8 +19,5 @@ class Christmas < IndexedStreamingSearchTest
     assert_hitcount("/?query=ribbe:christmas+ribbe:Christmas", 2)
   end
 
-  def teardown
-    stop
-  end
 
 end

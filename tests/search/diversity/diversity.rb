@@ -64,9 +64,6 @@ class DiversityMinGroups < IndexedOnlySearchTest
     result.hit[index].field['relevancy'].to_f
   end
 
-  def teardown
-    stop
-  end
 
 end
 

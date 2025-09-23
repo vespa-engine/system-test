@@ -227,9 +227,6 @@ class EmptyFieldsInResponseTest < IndexedStreamingSearchTest
       return hit.fields[field]
   end
 
-  def teardown
-    stop
-  end
 
 end
 

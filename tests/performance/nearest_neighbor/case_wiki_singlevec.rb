@@ -14,8 +14,5 @@ class NearestNeighborWikiSinglevec < CommonWikiBase
     run_wiki_test(@paragraph_docs, "paragraph")
   end
 
-  def teardown
-    super
-  end
 
 end

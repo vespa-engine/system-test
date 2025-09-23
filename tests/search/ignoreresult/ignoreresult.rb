@@ -19,8 +19,5 @@ class IgnoreResult < IndexedStreamingSearchTest
     assert_result("query=metallica", "#{selfdir}/metallica_result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

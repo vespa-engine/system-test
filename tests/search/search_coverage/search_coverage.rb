@@ -26,9 +26,6 @@ class SearchCoverageTest < IndexedOnlySearchTest
     @num_docs = @doc_ids.length
   end
 
-  def teardown
-    stop
-  end
 
   def test_minimal_coverage
     run_case(0.1, 0.1, 0.2, 1, 25)

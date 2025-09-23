@@ -131,7 +131,4 @@ class DistanceMetricsTest < IndexedStreamingSearchTest
     vespa.document_api_v1.put(doc)
   end
 
-  def teardown
-    stop
-  end
 end

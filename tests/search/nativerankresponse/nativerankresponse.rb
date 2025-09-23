@@ -79,8 +79,5 @@ class NativeRankResponse < IndexedStreamingSearchTest
     assert_relevancy(query, score, hit, 0.001)
   end
 
-  def teardown
-    stop
-  end
 
 end

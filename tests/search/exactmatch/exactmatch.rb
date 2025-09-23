@@ -84,8 +84,5 @@ class ExactMatch < IndexedStreamingSearchTest
     assert_hitcount("query=field10:wh*", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

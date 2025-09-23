@@ -165,8 +165,5 @@ class RegExp < IndexedStreamingSearchTest
                         [".* Dangling meta character .* near index 0"])
   end
 
-  def teardown
-    stop
-  end
 
 end

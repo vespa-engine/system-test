@@ -55,7 +55,4 @@ class TlsTest < ContainerTest
     end
   end
 
-  def teardown
-    stop
-  end
 end

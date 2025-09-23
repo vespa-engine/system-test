@@ -28,8 +28,5 @@ class SearchTimeoutTest < IndexedOnlySearchTest
     assert_hitcount_withouttimeout("query=sddocname:banana&hits=1&nocache&timeout=5.0&ranking.softtimeout.enable=true", 4)
   end
 
-  def teardown
-    stop
-  end
 
 end

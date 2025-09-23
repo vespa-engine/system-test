@@ -170,7 +170,4 @@ class IndexManagerTest < IndexedOnlySearchTest
     @stats.fusion_during_last_flush = (count_diff == 1)
   end
 
-  def teardown
-    stop
-  end
 end

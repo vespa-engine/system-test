@@ -86,8 +86,5 @@ class ReferencedTensorTest < ParentChildTestBase
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

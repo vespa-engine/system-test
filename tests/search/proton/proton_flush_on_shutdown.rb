@@ -18,7 +18,4 @@ class ProtonFlushOnShutdownTest < IndexedOnlySearchTest
     assert_log_not_matches(/diskindex.load.start/)
   end
 
-  def teardown
-    stop
-  end
 end

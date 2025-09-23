@@ -50,8 +50,5 @@ class MixedModeClustersTest < SearchTest
     assert_hitcount(query, exp_hits)
   end
 
-  def teardown
-    stop
-  end
 
 end

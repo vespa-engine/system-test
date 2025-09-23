@@ -172,8 +172,5 @@ class Bolding < IndexedStreamingSearchTest
     assert_equal(exp_title_field, result.hit[0].field['title'])
   end
 
-  def teardown
-    stop
-  end
 
 end

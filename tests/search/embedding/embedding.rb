@@ -554,8 +554,5 @@ class Embedding < IndexedStreamingSearchTest
     start(300) # Wait longer than default, download of models sometimes takes > 3 minutes
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -83,7 +83,4 @@ class BoldingMultipleFieldsTest < IndexedStreamingSearchTest
     run_test_bolding_multiple_fields(true)
   end
 
-  def teardown
-    stop
-  end
 end

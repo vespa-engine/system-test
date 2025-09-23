@@ -19,8 +19,5 @@ class SimpleSearcherDeploymentWithIndex < IndexedStreamingSearchTest
     assert_result("query=classic", selfdir+"hello_world_result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

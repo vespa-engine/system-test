@@ -77,8 +77,5 @@ class RestartOnDeploy < ContainerTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

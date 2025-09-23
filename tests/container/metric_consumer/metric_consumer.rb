@@ -62,8 +62,5 @@ class MetricConsumer < SearchContainerTest
     assert(matches > 0, "#{regexp} produced no matches in the log")
   end
 
-  def teardown
-    stop
-  end
 
 end

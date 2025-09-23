@@ -12,9 +12,6 @@ class MultipleClusters < VdsTest
     set_owner("vekterli")
   end
 
-  def teardown
-    stop
-  end
 
   def feed_docs(start, stop, cluster)
     # Feed documents

@@ -105,8 +105,5 @@ class BasicMLR < IndexedStreamingSearchTest
     return doc
   end
 
-  def teardown
-    stop
-  end
 
 end

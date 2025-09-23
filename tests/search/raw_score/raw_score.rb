@@ -57,8 +57,5 @@ class RawScore < IndexedStreamingSearchTest
     assert_features({"itemRawScore(normal_fastsearch_baz)" => 3}, json)
   end
 
-  def teardown
-    stop
-  end
 
 end

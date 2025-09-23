@@ -40,8 +40,5 @@ class ContentStreamingSmokeTest < StreamingSearchTest
     verify_get
   end
 
-  def teardown
-    stop
-  end
 
 end

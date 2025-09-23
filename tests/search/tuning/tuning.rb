@@ -35,8 +35,5 @@ class Tuning < IndexedStreamingSearchTest
     assert_hitcount("f2:foo", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

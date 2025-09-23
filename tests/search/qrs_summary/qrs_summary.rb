@@ -44,8 +44,5 @@ class QrsSummary < IndexedStreamingSearchTest
     poll_compare("query=title:concerto", exp_result)
   end
 
-  def teardown
-    stop
-  end
 
 end

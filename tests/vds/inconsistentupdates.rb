@@ -48,8 +48,5 @@ class InconsistentUpdates < VdsTest
     }
   end
 
-  def teardown
-    stop
-  end
 
 end

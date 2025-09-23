@@ -24,8 +24,5 @@ class QueryProfileCompilationTest < PerformanceTest
     write_report([ metric_filler('compile_time_seconds', time_seconds.to_f) ])
   end
 
-  def teardown
-    stop
-  end
 
 end

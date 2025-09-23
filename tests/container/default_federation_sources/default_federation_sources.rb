@@ -62,8 +62,5 @@ class DefaultFederationSources < SearchContainerTest
     titles.sort()
   end
 
-  def teardown
-    stop
-  end
 
 end

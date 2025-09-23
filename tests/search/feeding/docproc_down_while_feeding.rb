@@ -28,8 +28,5 @@ class DocprocDownWhileFeeding < IndexedStreamingSearchTest
     wait_for_hitcount("query=sddocname:music", 10000)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -28,8 +28,5 @@ class VespaFeedClient < IndexedStreamingSearchTest
     assert(output.index("No field 'wrong' in the structure of type 'music'"))
   end
 
-  def teardown
-    stop
-  end
 
 end

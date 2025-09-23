@@ -48,8 +48,5 @@ class ErrorReportingTest < IndexedOnlySearchTest
     assert(json['root']['errors'] == nil, "Unexpected errors in #{json}")
   end
 
-  def teardown
-    stop
-  end
 
 end

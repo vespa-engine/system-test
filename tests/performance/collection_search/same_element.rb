@@ -21,9 +21,6 @@ class SameElementPerformanceTest < CollectionPerfTestBase
     set_owner('vekterli')
   end
 
-  def teardown
-    super
-  end
 
   def test_same_element_operator_with_map_of_struct
     set_description('Test use of sameElement() operator for map of struct with varying number of elements per map')

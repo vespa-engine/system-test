@@ -28,8 +28,5 @@ class RankProperties < IndexedStreamingSearchTest
     assert_features({"query(foo)" => 50}, rf)
   end
 
-  def teardown
-    stop
-  end
 
 end

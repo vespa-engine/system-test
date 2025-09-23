@@ -132,8 +132,5 @@ class Cli < IndexedStreamingSearchTest
     query('"yql=select * from music where title contains \'master\'"', 3)
   end
 
-  def teardown
-    stop
-  end
 
 end

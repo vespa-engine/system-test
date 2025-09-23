@@ -26,9 +26,6 @@ class PathConfig < ContainerTest
     assert_match(Regexp.new("pathVal_2"), result2.xmldata, "Redeploying with modified file failed")
   end
 
-  def teardown
-    stop
-  end
 
 
 end

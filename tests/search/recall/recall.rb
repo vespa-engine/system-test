@@ -38,8 +38,5 @@ class Recall < IndexedStreamingSearchTest
     return retval
   end
 
-  def teardown
-    stop
-  end
 
 end

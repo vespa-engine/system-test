@@ -61,7 +61,4 @@ class StructSummaryFieldWithExplicitSource < IndexedStreamingSearchTest
     check_result(rename_result, 'new_')
   end
 
-  def teardown
-    stop
-  end
 end

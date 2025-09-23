@@ -34,7 +34,4 @@ class DataMigrationConsistency < IndexedStreamingSearchTest
     assert_equal(expected_vec, result["root"]["children"][0]["fields"]["ext_vec"]);
   end
 
-  def teardown
-    stop
-  end
 end

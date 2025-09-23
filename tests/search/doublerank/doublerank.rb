@@ -28,8 +28,5 @@ class DoubleRank < IndexedStreamingSearchTest
     assert result.hit[5].field["relevancy"] == "-4.123123123123E12"
   end
 
-  def teardown
-    stop
-  end
 
 end

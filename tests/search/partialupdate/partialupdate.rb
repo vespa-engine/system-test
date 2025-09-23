@@ -543,8 +543,5 @@ class PartialUpdate < IndexedStreamingSearchTest
     assert_result('query=my_title:abc', selfdir + 'res_hnsw_3.json')
   end
 
-  def teardown
-    stop
-  end
 
 end

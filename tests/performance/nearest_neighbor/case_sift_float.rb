@@ -14,8 +14,5 @@ class AnnSiftPerfTest < AnnSiftBase
     run_sift_test("sift_test", true)
   end
 
-  def teardown
-    super
-  end
 
 end

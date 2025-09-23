@@ -43,8 +43,5 @@ class SplitBucketCount < VdsMultiModelTest
     assert_equal(docids.sort, cmpdocids.sort)
   end
 
-  def teardown
-    stop
-  end
 
 end

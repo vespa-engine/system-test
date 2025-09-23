@@ -153,8 +153,4 @@ class CliFeedClientTest < PerformanceTest
     gw
   end
 
-  def teardown
-    super
-  end
-
 end

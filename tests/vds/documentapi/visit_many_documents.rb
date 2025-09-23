@@ -133,8 +133,5 @@ class VisitManyDocumentsTest < VdsTest
     assert_equal(docs_total, doc_ids.size)
   end
 
-  def teardown
-    stop
-  end
 end
 

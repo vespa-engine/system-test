@@ -94,8 +94,5 @@ class WeakAndOperator < IndexedStreamingSearchTest
     check_qlist(q)
   end
 
-  def teardown
-    stop
-  end
 
 end

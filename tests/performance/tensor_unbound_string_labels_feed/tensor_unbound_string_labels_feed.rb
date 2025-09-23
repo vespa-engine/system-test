@@ -55,7 +55,4 @@ class TensorUnboundStringLabelsTest < PerformanceTest
     profiler_report("d#{num_docs}-t#{tensor_size}")
   end
 
-  def teardown
-    super
-  end
 end

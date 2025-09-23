@@ -24,8 +24,5 @@ class AssembleContainerPlugin < SearchContainerTest
     assert(output.to_s =~ /.*configdefinitions\/project1.def.*/)
   end
 
-  def teardown
-    stop
-  end
 
 end

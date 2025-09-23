@@ -7,9 +7,6 @@ class Bug6559464Test < IndexedStreamingSearchTest
     set_owner('vekterli')
   end
 
-  def teardown
-    stop
-  end
 
   def test_default_get_is_merged_correctly_from_all_clusters
     deploy_app(SearchApp.new.

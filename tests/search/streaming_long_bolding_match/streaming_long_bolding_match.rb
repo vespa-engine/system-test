@@ -30,8 +30,5 @@ class StreamingBongBoldingMatchTest < StreamingSearchTest
     assert_hitcount_with_timeout(60, "streaming.userid=12345678&summary=default&query=%22Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+8RE%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Re%3A+Foo+and+bar%22", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

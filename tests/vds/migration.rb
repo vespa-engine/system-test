@@ -109,8 +109,5 @@ class Migration < DiskProviderStorageTest
     assert_equal(statinfo3, statinfo)
   end
 
-  def teardown
-    stop
-  end
 end
 

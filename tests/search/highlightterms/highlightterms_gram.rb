@@ -15,8 +15,5 @@ class HighlightTermsGram < IndexedOnlySearchTest
     assert_result("yql=select+*+from+doc+where+content+contains+%22doc%22%3B&format=json", selfdir + "ngram.0.result.json", "documentid", ["content"])
   end
 
-  def teardown
-    stop
-  end
 
 end

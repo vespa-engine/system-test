@@ -53,7 +53,4 @@ class HttpServerReconfig < ContainerTest
     end
   end
 
-  def teardown
-    stop
-  end
 end

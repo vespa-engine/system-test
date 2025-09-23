@@ -48,9 +48,6 @@ class LLMInContainerTest < SearchContainerTest
     assert_equal(true, result.include?("Generated tokens: 11"), "Did not display correct number of generated tokens")
   end
 
-  def teardown
-    stop
-  end
 
   def search(query)
     query = "/search/?" + URI.encode_www_form(query.to_a)

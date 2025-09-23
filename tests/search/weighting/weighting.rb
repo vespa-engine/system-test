@@ -67,8 +67,5 @@ class Weighting < IndexedStreamingSearchTest
     assert_features(exp, search(query).hit[0].field["rankfeatures"])
   end
 
-  def teardown
-    stop
-  end
 
 end

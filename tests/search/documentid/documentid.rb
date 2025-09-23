@@ -22,8 +22,5 @@ class DocumentId < IndexedStreamingSearchTest
     assert_equal('id:test:test::0', result.hit[0].field['documentid'])
   end
 
-  def teardown
-    stop
-  end
 
 end

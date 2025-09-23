@@ -114,8 +114,5 @@ class RemoveByDate < IndexedStreamingSearchTest
     feed
   end
 
-  def teardown
-    stop
-  end
 
 end

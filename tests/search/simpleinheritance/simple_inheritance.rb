@@ -43,8 +43,5 @@ class SimpleInheritance < IndexedStreamingSearchTest
     assert_hitcount("query=field1:f1", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -11,9 +11,6 @@ class LightGBMEvaluationTest < IndexedStreamingSearchTest
     set_description("Validate evaluation of LightGBM models - in model-evaluation and in ranking")
   end
 
-  def teardown
-    stop
-  end
 
   def make_app
     app = SearchApp.new

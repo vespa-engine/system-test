@@ -23,8 +23,5 @@ class Vi < IndexedStreamingSearchTest
     assert_hitcount_with_timeout(10, 'query=am%20duong%20lich%20viet%20nam&language=vi&type=all', 2)
   end
 
-  def teardown
-    stop
-  end
 
 end

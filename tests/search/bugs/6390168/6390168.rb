@@ -17,8 +17,5 @@ class Bug6390168 < IndexedStreamingSearchTest
     assert_hitcount("query=sddocname:test", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -8,9 +8,6 @@ class Bug6885526Test < IndexedStreamingSearchTest
     set_owner("geirst")
   end
 
-  def teardown
-    stop
-  end
 
   def test_new_line_character_preserved_with_bolding
     set_description("Test that new line character is preserved when using bolding (ticket 6885526)")

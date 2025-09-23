@@ -39,8 +39,5 @@ class ForkOneToMany < DocprocTest
     assert(doc4 != nil)
   end
 
-  def teardown
-    stop
-  end
 
 end

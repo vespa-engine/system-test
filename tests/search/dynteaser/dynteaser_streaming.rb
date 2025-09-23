@@ -31,8 +31,5 @@ class DynTeaserStreaming < StreamingSearchTest
     assert_equal(expected, result.hit[0].field["f1"])
   end
 
-  def teardown
-    stop
-  end
 
 end

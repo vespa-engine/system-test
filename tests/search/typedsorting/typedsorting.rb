@@ -39,8 +39,5 @@ class TypedSorting < IndexedStreamingSearchTest
 
   end
 
-  def teardown
-    stop
-  end
 
 end

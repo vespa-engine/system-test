@@ -56,8 +56,5 @@ class MaintenanceControllerTest < IndexedStreamingSearchTest
     assert_job_executed("heart_beat")
   end
 
-  def teardown
-    stop
-  end
 
 end

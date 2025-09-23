@@ -14,8 +14,5 @@ class EmptyChain < DocprocTest
     assert_result("query=sddocname:worst", DOCPROC + "data/worst-output.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

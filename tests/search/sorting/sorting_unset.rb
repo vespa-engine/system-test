@@ -59,7 +59,4 @@ class SortingUnset < IndexedStreamingSearchTest
     feed_doc(3, 2020, 5.0)
   end
 
-  def teardown
-    stop
-  end
 end

@@ -11,9 +11,6 @@ class UrlDownloadTest < ConfigTest
     @valgrind = false
   end
 
-  def teardown
-    stop
-  end
 
   def test_url_downloading
     add_bundle_dir(selfdir + "bundle", "app")

@@ -8,9 +8,6 @@ class RestartDataRetentionTest < IndexedOnlySearchTest
     @data_dir = selfdir + 'grandparent_search/'
   end
 
-  def teardown
-    stop
-  end
 
   def make_app
     app = SearchApp.new.

@@ -21,8 +21,5 @@ class SyncHttpHandler < SearchContainerTest
     assert "Hello, Factory!" == result.xmldata
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -352,7 +352,4 @@ class DocumentV1Test < IndexedOnlySearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 end

@@ -96,8 +96,5 @@ class SlowQuery < IndexedStreamingSearchTest
     docs.write_json(feed_file)
   end
 
-  def teardown
-    stop
-  end
 
 end

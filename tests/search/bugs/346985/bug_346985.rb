@@ -23,8 +23,5 @@ class Bug_346985 < IndexedStreamingSearchTest
     assert_result("query=bar+fuzz&ranking=only-proximity", selfdir + "proximitygap.onlyproximity.result.json", nil, "id")
   end
 
-  def teardown
-    stop
-  end
 
 end

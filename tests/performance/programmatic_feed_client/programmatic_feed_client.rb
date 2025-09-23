@@ -135,8 +135,5 @@ class ProgrammaticFeedClientTest < PerformanceTest
     selfdir + "java-feed-client"
   end
 
-  def teardown
-    super
-  end
 
 end

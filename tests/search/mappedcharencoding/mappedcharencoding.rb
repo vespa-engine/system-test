@@ -19,8 +19,5 @@ class MappedCharEncoding < IndexedStreamingSearchTest
     assert_hitcount("query=text:ESPAÑA", 3)
   end
 
-  def teardown
-    stop
-  end
 
 end

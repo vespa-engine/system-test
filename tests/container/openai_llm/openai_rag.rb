@@ -87,8 +87,5 @@ end
     result.body
   end
 
-  def teardown
-    stop
-  end
 
 end

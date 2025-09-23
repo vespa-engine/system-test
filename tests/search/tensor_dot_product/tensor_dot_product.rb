@@ -39,8 +39,5 @@ class TensorDotProductTest < IndexedStreamingSearchTest
     "query=sddocname:test&ranking=usefloat&ranking.features.query(qvectorf)={{x:0}:#{x_0},{x:1}:#{x_1}}"
   end
 
-  def teardown
-    stop
-  end
 
 end

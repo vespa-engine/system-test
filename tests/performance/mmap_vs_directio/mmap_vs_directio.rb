@@ -15,9 +15,6 @@ class MmapVsDirectIoTest < PerformanceTest
     set_owner('vekterli')
   end
 
-  def teardown
-    super
-  end
 
   def testing_locally?
     false

@@ -15,8 +15,5 @@ class SuffixTerm < IndexedStreamingSearchTest
     assert_hitcount("query=*test&nocache", 5)
   end
 
-  def teardown
-    stop
-  end
 
 end

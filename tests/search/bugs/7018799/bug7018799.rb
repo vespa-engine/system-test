@@ -95,8 +95,5 @@ class RecoveryLosesAnnotations < IndexedOnlySearchTest
     checkAll
   end
 
-  def teardown
-    stop
-  end
 
 end

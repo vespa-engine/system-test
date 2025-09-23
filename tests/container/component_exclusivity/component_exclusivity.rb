@@ -47,9 +47,6 @@ class ComponentExclusive < SearchContainerTest
     verify_result("2")
   end
 
-  def teardown
-    stop
-  end
 
   def verify_result(component_id)
     result = search("test")

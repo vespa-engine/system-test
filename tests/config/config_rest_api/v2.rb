@@ -125,7 +125,4 @@ class ConfigRestApiV2 < ConfigTest
     http_request(URI(url), {})
   end
 
-  def teardown
-    stop
-  end
 end

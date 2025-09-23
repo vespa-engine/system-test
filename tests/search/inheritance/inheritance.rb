@@ -39,8 +39,5 @@ class Inheritance < IndexedStreamingSearchTest
     assert_result("query=make:foo&search=image", selfdir+"foo.result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

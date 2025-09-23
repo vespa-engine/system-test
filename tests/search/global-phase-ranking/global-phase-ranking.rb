@@ -67,7 +67,4 @@ class GlobalPhaseRanking < IndexedStreamingSearchTest
     assert_result(query, selfdir + "answers/using_rs.json", nil, fields_to_compare)
   end
 
-  def teardown
-    stop
-  end
 end

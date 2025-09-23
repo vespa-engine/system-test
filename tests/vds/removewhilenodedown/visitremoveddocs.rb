@@ -32,8 +32,5 @@ class VisitRemovedDocs < PersistentProviderTest
     assert_equal(0, output.to_i)
   end
 
-  def teardown
-    stop
-  end
 end
 

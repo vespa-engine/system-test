@@ -22,8 +22,5 @@ class VespaGetConfig < ConfigTest
     assert_match(/error 100001: Failed request \(Unknown config definition name=config.unknown,configId=\) from Connection .*/, out)
   end
 
-  def teardown
-    stop
-  end
 
 end

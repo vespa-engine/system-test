@@ -62,8 +62,5 @@ class FeatureNameQuoting < IndexedStreamingSearchTest
     assert(features.fetch("double(\" attribute( \\\"foo\\\"  )\")").to_i == 2 * foo);
   end
 
-  def teardown
-    stop
-  end
 
 end

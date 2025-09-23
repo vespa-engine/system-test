@@ -156,8 +156,5 @@ class Equiv < IndexedStreamingSearchTest
 
   end
 
-  def teardown
-    stop
-  end
 
 end

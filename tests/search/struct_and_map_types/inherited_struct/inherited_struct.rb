@@ -44,8 +44,5 @@ class InheritedStruct < IndexedStreamingSearchTest
     vespa.adminserver.execute('vespa-logfmt | grep CDDP')
   end
 
-  def teardown
-    stop
-  end
 
 end

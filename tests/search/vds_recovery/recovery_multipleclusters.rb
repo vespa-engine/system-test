@@ -56,8 +56,5 @@ class TestRecoveryMultiCluster < IndexedStreamingSearchTest
                  "title")
   end
 
-  def teardown
-    stop
-  end
 
 end

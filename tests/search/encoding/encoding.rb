@@ -49,8 +49,5 @@ class EncodingTest < IndexedStreamingSearchTest
     assert(result.xmldata.index(to_ascii_8bit("description\">π·¿Ó∏©ª∫<")))
   end
 
-  def teardown
-    stop
-  end
 
 end

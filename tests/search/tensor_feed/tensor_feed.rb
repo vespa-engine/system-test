@@ -126,8 +126,5 @@ class TensorFeedTest < IndexedStreamingSearchTest
     assert_nil(get_tensor_field(docs[3]))
   end
 
-  def teardown
-    stop
-  end
 
 end

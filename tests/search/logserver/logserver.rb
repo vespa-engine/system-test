@@ -69,8 +69,5 @@ class LogServer < SearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

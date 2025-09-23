@@ -47,9 +47,6 @@ class FieldSets < IndexedStreamingSearchTest
     assert_hitcount("pref:fo%2A", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end
 

@@ -9,9 +9,6 @@ class ExpressionsAsArguments < IndexedStreamingSearchTest
     set_description("Validate expressions as arguments to functions")
   end
 
-  def teardown
-    stop
-  end
 
   def test_expressions_as_args
     deploy_app(SearchApp.new.sd(selfdir + 'app/schemas/test.sd'))

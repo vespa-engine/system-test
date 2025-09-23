@@ -107,8 +107,5 @@ class VdsMetrics < VdsTest
     assert_distributor_doc_metrics(10)
   end
 
-  def teardown
-    stop
-  end
 end
 

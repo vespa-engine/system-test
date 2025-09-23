@@ -46,8 +46,5 @@ class MultiChainMultiSearchAdditionalChain < DocprocTest
     assert_result("query=sddocname:muzak", selfdir + "muzak.4.result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

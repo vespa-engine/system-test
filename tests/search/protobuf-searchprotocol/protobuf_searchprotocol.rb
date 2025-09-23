@@ -14,9 +14,6 @@ class ProtobufSearchProtocolTest < IndexedOnlySearchTest
     @num_docs = 25
   end
 
-  def teardown
-    stop
-  end
 
   def test_basic_search
     deploy_app(app_definition)

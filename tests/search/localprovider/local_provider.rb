@@ -22,8 +22,5 @@ class LocalProvider < IndexedStreamingSearchTest
     assert_hitcount("query=sddocname:music&sources=search", 0)
   end
 
-  def teardown
-    stop
-  end
 
 end

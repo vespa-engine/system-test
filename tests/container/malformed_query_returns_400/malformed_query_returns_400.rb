@@ -19,8 +19,5 @@ class MalformedQueryReturns400 < ContainerTest
     assert_equal('400', response.code)
   end
 
-  def teardown
-    stop
-  end
 
 end

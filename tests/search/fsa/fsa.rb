@@ -41,8 +41,5 @@ class Fsa < SearchTest
     assert(Regexp.new("Failed to open").match(output))
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -26,8 +26,5 @@ class TensorEvalMatchPerfTest < TensorEvalPerfTest
     end
   end
 
-  def teardown
-    super
-  end
 
 end

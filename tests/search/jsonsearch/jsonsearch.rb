@@ -28,8 +28,5 @@ class JsonSearch < IndexedStreamingSearchTest
     assert_equal("http://shopping.yahoo.com/shop?d=hab&id=1804905711", tree["root"]["children"][2]["fields"]["surl"])
   end
 
-  def teardown
-    stop
-  end
 
 end

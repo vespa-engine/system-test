@@ -69,8 +69,5 @@ class MultiClusterMultiGroup < VdsMultiModelTest
     vespa.stop_content_node("clusterB", 3)
   end
 
-  def teardown
-    stop
-  end
 
 end

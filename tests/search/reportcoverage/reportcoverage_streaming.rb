@@ -35,8 +35,5 @@ class ReportCoverageStreaming < StreamingSearchTest
     assert_equal(1, coverage["resultsFull"])
   end
 
-  def teardown
-    stop
-  end
 
 end

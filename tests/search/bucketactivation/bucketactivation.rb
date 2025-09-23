@@ -81,8 +81,5 @@ class BucketActivationTest < IndexedOnlySearchTest
     check("3/0")
   end
 
-  def teardown
-    stop
-  end
 
 end

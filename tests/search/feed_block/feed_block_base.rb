@@ -124,8 +124,5 @@ class FeedBlockBase < IndexedOnlySearchTest
                                                  check_states)
   end
 
-  def teardown
-    stop
-  end
 
 end

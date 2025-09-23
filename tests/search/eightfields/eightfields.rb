@@ -21,8 +21,5 @@ class EightFields < IndexedStreamingSearchTest
     assert_hitcount("query=(eightfields:f1d1%20eightfields:f2d2%20eightfields:f3d3%20eightfields:f4d4%20eightfields:f5d5%20eightfields:f6d6%20eightfields:f7d7%20eightfields:f8d8)", 8)
   end
 
-  def teardown
-    stop
-  end
 
 end

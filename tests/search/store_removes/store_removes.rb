@@ -8,9 +8,6 @@ class StoreUnknownRemoves < IndexedOnlySearchTest
     set_description("Try to resurrect a removed document")
   end
 
-  def teardown
-    stop
-  end
 
   def test_store_unknown_removes
     deploy_app(SearchApp.new.

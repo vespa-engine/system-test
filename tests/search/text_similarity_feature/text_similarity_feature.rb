@@ -38,8 +38,5 @@ class TextSimilarityFeature < IndexedStreamingSearchTest
     assert(json["textSimilarity(body).score"] < json["textSimilarity(title).score"])
   end
 
-  def teardown
-    stop
-  end
 
 end

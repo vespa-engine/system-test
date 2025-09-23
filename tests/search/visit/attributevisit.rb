@@ -21,7 +21,4 @@ class AttributeVisitorTest < IndexedOnlySearchTest
     assert(result !~ /twit_dkcnt/)
   end
 
-  def teardown
-    stop
-  end
 end

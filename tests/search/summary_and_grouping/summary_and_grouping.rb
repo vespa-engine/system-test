@@ -62,8 +62,5 @@ class SummaryAndGrouping < IndexedStreamingSearchTest
     assert_equal(body_exp, result.groupings['group:root:0']['children'][0]['children'][0]['children'][0]['children'][0]['fields']['snippet'])
   end
 
-  def teardown
-    stop
-  end
 
 end

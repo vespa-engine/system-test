@@ -22,7 +22,4 @@ class ChunkSelectionTest < IndexedStreamingSearchTest
     assert_equal(result.hit[0].field["text"][0], "d e f")
   end
 
-  def teardown
-    stop
-  end
 end

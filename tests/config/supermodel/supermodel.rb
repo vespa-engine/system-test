@@ -63,8 +63,5 @@ ENDER
     return app
   end
 
-  def teardown
-    stop
-  end
 
 end

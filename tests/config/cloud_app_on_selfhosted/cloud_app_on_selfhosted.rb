@@ -20,8 +20,5 @@ class CloudAppOnSelfhosted < IndexedOnlySearchTest
     assert_hitcount("?yql=select%20*%20from%20sources%20*%20where%20album%20contains%20%22head%22%3B", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

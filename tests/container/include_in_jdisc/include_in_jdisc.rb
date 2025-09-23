@@ -16,8 +16,5 @@ class IncludeInJdisc < SearchContainerTest
     assert_hitcount("query=title:foo bar baz", 10)
   end
   
-  def teardown
-    stop
-  end
   
 end

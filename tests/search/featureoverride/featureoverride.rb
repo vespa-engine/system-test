@@ -40,8 +40,5 @@ class FeatureOverride < IndexedStreamingSearchTest
     assert_features({"attribute(attr)" => 200}, json)
   end
 
-  def teardown
-    stop
-  end
 
 end

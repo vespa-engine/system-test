@@ -50,8 +50,5 @@ class BoldingArrayTest < IndexedStreamingSearchTest
     assert_equal(exp_result, act_teaser, "Unexpected result for field '#{summary_field}' using query '#{query_field}:#{query_term}'")
   end
 
-  def teardown
-    stop
-  end
 
 end

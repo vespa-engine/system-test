@@ -44,8 +44,5 @@ class ComponentConfigNamespace < SearchContainerTest
     assert_equal(42, result.hit[0].field["number"])
   end
 
-  def teardown
-    stop
-  end
 
 end

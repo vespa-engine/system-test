@@ -34,7 +34,4 @@ class GenerateFieldOpenAI < SearchTest
     assert(!sentiment.nil?)
   end
 
-  def teardown
-    stop
-  end
 end

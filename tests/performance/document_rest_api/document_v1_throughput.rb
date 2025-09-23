@@ -134,8 +134,5 @@ class DocumentV1Throughput < PerformanceTest
     end
   end
 
-  def teardown
-    super
-  end
 
 end

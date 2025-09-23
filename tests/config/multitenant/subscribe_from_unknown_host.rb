@@ -33,7 +33,4 @@ class SubscribeFromUnknownHost < ConfigTest
     assert_equal("logserver.host \"#{configserver_hostname}\"", config.chomp)
   end
 
-  def teardown
-    stop
-  end
 end

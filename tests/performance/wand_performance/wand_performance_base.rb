@@ -74,7 +74,4 @@ class WandPerformanceTestBase < PerformanceTest
     write_report(fillers + custom_fillers) if !warmup
   end
 
-  def teardown
-    super
-  end
 end

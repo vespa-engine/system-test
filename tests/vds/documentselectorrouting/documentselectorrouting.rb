@@ -31,8 +31,5 @@ class DocumentSelectorRoutingTest < VdsTest
     assert(doc != nil)
   end
 
-  def teardown
-    stop
-  end
 end
 

@@ -187,9 +187,6 @@ class MapTypeTest < StreamingSearchTest
     return [:warning, :error, :fatal]
   end
 
-  def teardown
-    stop
-  end
 
 
 end

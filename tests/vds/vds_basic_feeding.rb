@@ -132,8 +132,5 @@ class VdsBasicFeeding < VdsTest
     assert_equal(doc2, doc2_get)
   end
 
-  def teardown
-    stop
-  end
 end
 

@@ -126,8 +126,5 @@ class PartialUpdateLogicalIndexes < IndexedOnlySearchTest
     check(query, "airlines", /<item>American Airlines<\/item>/)
   end
 
-  def teardown
-    stop
-  end
 
 end

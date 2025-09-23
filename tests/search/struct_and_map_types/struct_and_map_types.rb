@@ -455,7 +455,4 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
     result
   end
 
-  def teardown
-    stop
-  end
 end

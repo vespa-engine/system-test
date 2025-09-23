@@ -20,8 +20,5 @@ class TensorEvalMatrixPerfTest < TensorEvalPerfTest
     end
   end
 
-  def teardown
-    super
-  end
 
 end

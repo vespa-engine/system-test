@@ -20,9 +20,6 @@ class OutOfSyncReplicasActivationTest < IndexedOnlySearchTest
         storage(StorageCluster.new("storage", 2).distribution_bits(8))
   end
 
-  def teardown
-    stop
-  end
   
   def content_cluster
     vespa.storage['storage']

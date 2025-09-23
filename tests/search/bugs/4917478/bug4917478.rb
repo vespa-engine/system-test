@@ -30,8 +30,5 @@ class Bug4917478 < IndexedStreamingSearchTest
 
   end
 
-  def teardown
-    stop
-  end
 
 end

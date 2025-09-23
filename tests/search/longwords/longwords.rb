@@ -29,7 +29,4 @@ class LongWords < IndexedStreamingSearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 end

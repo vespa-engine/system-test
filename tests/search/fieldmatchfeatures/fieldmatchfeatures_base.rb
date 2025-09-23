@@ -259,8 +259,5 @@ module FieldMatchFeaturesBase
     assert_features({"fieldMatch(#{field}).matches" => matches}, result.hit[0].field['summaryfeatures'])
   end
 
-  def teardown
-    stop
-  end
 
 end

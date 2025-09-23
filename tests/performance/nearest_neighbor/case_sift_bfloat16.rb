@@ -14,8 +14,5 @@ class AnnSiftBFloat16PerfTest < AnnSiftBase
     run_sift_test("sift_test_bfloat16")
   end
 
-  def teardown
-    super
-  end
 
 end

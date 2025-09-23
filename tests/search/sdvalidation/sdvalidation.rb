@@ -40,8 +40,5 @@ class SDValidation < SearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

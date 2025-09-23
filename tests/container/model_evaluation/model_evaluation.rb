@@ -102,8 +102,5 @@ class ModelEvaluation < SearchContainerTest
     return s
   end
 
-  def teardown
-    stop
-  end
 
 end

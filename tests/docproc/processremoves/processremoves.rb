@@ -27,8 +27,5 @@ class ProcessRemoves < DocprocTest
     assert_result("query=sddocname:worst&nocache", selfdir+"worst.3.result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

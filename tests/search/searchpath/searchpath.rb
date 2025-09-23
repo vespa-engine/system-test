@@ -86,8 +86,5 @@ class SearchPath < IndexedOnlySearchTest
             node(NodeSpec.new("node1", 5)))
   end
 
-  def teardown
-    stop
-  end
 
 end

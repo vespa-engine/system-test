@@ -59,8 +59,5 @@ class Reprocessing < VdsTest
     assert_equal(nil, doc4.fields["bodyfield"])
   end
 
-  def teardown
-    stop
-  end
 end
 

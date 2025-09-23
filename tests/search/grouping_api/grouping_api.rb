@@ -22,8 +22,5 @@ class GroupingApi < IndexedStreamingSearchTest
     assert(result.xmldata.include?("PASS: average"))
   end
 
-  def teardown
-    stop
-  end
 
 end

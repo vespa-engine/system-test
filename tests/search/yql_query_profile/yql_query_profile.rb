@@ -26,7 +26,4 @@ class YqlQueryProfile < IndexedStreamingSearchTest
     assert_hitcount("query=country", 10)
   end
 
-  def teardown
-    stop
-  end
 end

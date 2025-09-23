@@ -93,8 +93,5 @@ class DistributorDown < VdsTest
     verifyDocumentCountOnDistributor(1, 12)
   end
 
-  def teardown
-    stop
-  end
 end
 

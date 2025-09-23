@@ -26,8 +26,5 @@ class AdvancedGet < VdsTest
     JSON.parse(output).first
   end
 
-  def teardown
-    stop
-  end
 end
 

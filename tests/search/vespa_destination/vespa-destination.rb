@@ -13,8 +13,5 @@ class VespaDestinationTest < IndexedStreamingSearchTest
     node.execute("vespa-destination --help |grep \"Simple receiver for messagebus messages. Prints the messages received to stdout.\"")
   end
 
-  def teardown
-    stop
-  end
 
 end

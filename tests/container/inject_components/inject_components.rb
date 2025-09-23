@@ -19,8 +19,5 @@ class InjectComponents < SearchContainerTest
                  "Did not get expected response.")
   end
 
-  def teardown
-    stop
-  end
 
 end
