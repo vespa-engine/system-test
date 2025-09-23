@@ -124,9 +124,6 @@ class Redundancy < PersistentProviderTest
     assert(0, statinfo.size)
   end
 
-  def teardown
-    stop
-  end
 
 end
 

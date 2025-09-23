@@ -48,7 +48,4 @@ class ServerRestart < ConfigTest
       "config:\n#{config}\nrotate.age should be #{expected_age}. Config from server is correct:\n#{config_from_server}"
   end
 
-  def teardown
-    stop
-  end
 end

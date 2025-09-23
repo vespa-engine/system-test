@@ -135,8 +135,5 @@ class FieldSlicing < IndexedStreamingSearchTest
     assert_equal(a.hit[1].field["documentid"],     b.hit[1].field["documentid"])
   end
 
-  def teardown
-    stop
-  end
 
 end

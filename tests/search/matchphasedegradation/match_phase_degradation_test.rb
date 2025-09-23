@@ -242,9 +242,6 @@ class MatchPhaseDegradationTest < IndexedOnlySearchTest
     assert(limited["retainkilo"] > 40)
   end
 
-  def teardown
-    stop
-  end
 
 
 end

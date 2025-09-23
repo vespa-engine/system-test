@@ -130,7 +130,4 @@ class MetricsProxy < IndexedStreamingSearchTest
     JSON.parse(wrapper.getMetricsForYamas(monitoring_service_name)[0])
   end 
 
-  def teardown
-    stop
-  end
 end

@@ -40,8 +40,5 @@ class MbusTimeout < IndexedStreamingSearchTest
     assert_equal(1, result.hit.size)
   end
 
-  def teardown
-    stop
-  end
 
 end

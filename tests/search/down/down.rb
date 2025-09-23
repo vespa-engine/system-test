@@ -302,8 +302,5 @@ class Down < IndexedOnlySearchTest
     perform_test_nine_nodes_hierarchic_distribution_single_down(2)
   end
 
-  def teardown
-    stop
-  end
 
 end

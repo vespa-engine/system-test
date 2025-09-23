@@ -61,8 +61,5 @@ class AccentDrop < IndexedStreamingSearchTest
     result
   end
 
-  def teardown
-    stop
-  end
 
 end

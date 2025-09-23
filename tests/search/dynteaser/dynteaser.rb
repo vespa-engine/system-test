@@ -112,8 +112,5 @@ class DynTeaser < IndexedStreamingSearchTest
     assert_equal(nil, result.hit[0].field["content5"])
   end
 
-  def teardown
-    stop
-  end
 
 end

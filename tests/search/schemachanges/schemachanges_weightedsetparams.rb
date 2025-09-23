@@ -31,8 +31,5 @@ class SchemaChangesWeightedSetParams < IndexedOnlySearchTest
     assert_result("sddocname:test&nocache", @test_dir + "result.1.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

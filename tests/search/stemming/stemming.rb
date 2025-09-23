@@ -62,8 +62,5 @@ class Stemming < IndexedOnlySearchTest
     assert_hitcount("query=artist:the-bets-are-big", 2)
   end
 
-  def teardown
-    stop
-  end
 
 end

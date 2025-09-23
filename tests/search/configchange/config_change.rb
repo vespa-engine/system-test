@@ -40,8 +40,5 @@ class ConfigChange < IndexedStreamingSearchTest
     wait_for_config_generation_proxy(get_generation(deploy_output))
   end
 
-  def teardown
-    stop
-  end
 
 end

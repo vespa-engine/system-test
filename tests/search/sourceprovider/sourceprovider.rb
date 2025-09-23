@@ -89,7 +89,4 @@ class SourceProvider < IndexedStreamingSearchTest
     return groups
   end
 
-  def teardown
-    stop
-  end
 end

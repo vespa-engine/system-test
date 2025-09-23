@@ -32,8 +32,5 @@ class NoQueryInSummaryFetch < IndexedOnlySearchTest
     assert(result.xmldata.match("Not resending query during document summary fetching"), "Not resending query data when not required by query for summary construction")
    end
 
-  def teardown
-    stop
-  end
 
 end

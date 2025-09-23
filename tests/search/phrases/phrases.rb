@@ -87,8 +87,5 @@ class Phrases < IndexedStreamingSearchTest
     check_rank('query=%22eta theta iota kappa%22');
   end
 
-  def teardown
-    stop
-  end
 
 end

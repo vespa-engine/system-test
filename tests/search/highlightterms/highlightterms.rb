@@ -33,8 +33,5 @@ class HighlightTerms < IndexedStreamingSearchTest
     assert_result("query=blues", selfdir + "musicbooks.result.json", "title", ["title", "categories"])
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -26,8 +26,5 @@ class StaticRank_2_Schemas < IndexedStreamingSearchTest
 
   end
 
-  def teardown
-    stop
-  end
 
 end

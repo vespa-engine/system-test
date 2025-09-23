@@ -21,8 +21,5 @@ class JDiscHandlerLogger < SearchContainerTest
     assert_log_matches(/hello from slf4j/)
   end
 
-  def teardown
-    stop
-  end
 
 end

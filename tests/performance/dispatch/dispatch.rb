@@ -47,8 +47,5 @@ class DispatchMerge < PerformanceTest
     end
   end
 
-  def teardown
-    super
-  end
 
 end

@@ -24,8 +24,5 @@ class ImplitictIndexPhrase < IndexedStreamingSearchTest
 
   end
 
-  def teardown
-    stop
-  end
 
 end

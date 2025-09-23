@@ -36,8 +36,5 @@ class InstallNewDocprocDocproc < DocprocTest
     assert_result("query=sddocname:worst", selfdir+"terrible.result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -105,8 +105,5 @@ class StressDispatch < PerformanceTest
     write_report(fillers + custom_fillers)
   end
 
-  def teardown
-    super
-  end
 
 end

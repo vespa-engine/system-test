@@ -29,8 +29,5 @@ class ForkOneToZero < DocprocTest
     assert_equal(0, numdocs.to_i)
   end
 
-  def teardown
-    stop
-  end
 
 end

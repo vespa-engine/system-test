@@ -50,7 +50,4 @@ class ConfigserverLoadTest < PerformanceTest
     node.copy(dirs.tmpdir + @defdir, @dirs.tmpdir + @defdir)
   end
 
-  def teardown
-    super
-  end
 end

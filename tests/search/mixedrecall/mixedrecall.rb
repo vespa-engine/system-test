@@ -27,8 +27,5 @@ class MixedRecall < IndexedStreamingSearchTest
     assert_match(Regexp.new(message), output)
   end
 
-  def teardown
-    stop
-  end
 
 end

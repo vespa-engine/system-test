@@ -18,7 +18,4 @@ class YqlFields < IndexedStreamingSearchTest
     assert_result("query=sddocname:music&yql=select%20*%20from%20music%20where%20userQuery%28%29%3B&sorting=surl", selfdir + "unfilteredresult.json", nil, check_fields)
   end
 
-  def teardown
-    stop
-  end
 end

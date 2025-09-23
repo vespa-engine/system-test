@@ -42,9 +42,6 @@ class RestrictParameter < IndexedOnlySearchTest
     assert parsed[/uniq recall/] != nil
   end
 
-  def teardown
-    stop
-  end
 
 end
 

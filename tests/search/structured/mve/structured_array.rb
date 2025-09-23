@@ -26,8 +26,5 @@ class StructuredArrayTest < IndexedStreamingSearchTest
     assert_result("query=titles:%22slim%20shady%22", selfdir+"result.ss.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

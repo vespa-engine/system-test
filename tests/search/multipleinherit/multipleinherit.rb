@@ -32,8 +32,5 @@ class MultipleInherit < IndexedStreamingSearchTest
     assert_result("query=field2:f2d1+field5:f5d1&search=derived", selfdir+"test4.result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

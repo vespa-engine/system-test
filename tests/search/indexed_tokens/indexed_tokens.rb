@@ -86,8 +86,5 @@ class IndexedTokensTest < IndexedStreamingSearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

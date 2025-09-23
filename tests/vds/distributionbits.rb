@@ -9,9 +9,6 @@ class DistributionBitTest < VdsTest
     start
   end
 
-  def teardown
-    stop
-  end
 
   def get_split_level
     s = vespa.storage["storage"].storage["0"].get_status_page("/systemstate")

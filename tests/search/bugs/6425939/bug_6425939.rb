@@ -7,9 +7,6 @@ class Bug6425939Test < IndexedStreamingSearchTest
     set_owner('vekterli')
   end
 
-  def teardown
-    stop
-  end
 
   def test_java_document_deserialization_error
     deploy_app(SearchApp.new.

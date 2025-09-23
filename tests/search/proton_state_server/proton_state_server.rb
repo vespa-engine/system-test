@@ -40,8 +40,5 @@ class ProtonStateServer < IndexedStreamingSearchTest
     assert(period < 200)
   end
 
-  def teardown
-    stop
-  end
 
 end

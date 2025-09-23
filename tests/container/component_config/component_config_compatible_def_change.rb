@@ -30,8 +30,5 @@ class ComponentConfigDefVersion < SearchContainerTest
     assert_equal("Mind 2 times!", title)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -110,8 +110,5 @@ class UriIndexing < IndexedOnlySearchTest
     assert_equal(expected_result, titles.sort)
   end
 
-  def teardown
-    stop
-  end
 
 end

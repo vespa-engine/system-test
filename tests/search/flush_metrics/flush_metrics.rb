@@ -49,8 +49,5 @@ class FlushMetricsTest < IndexedOnlySearchTest
     assert_flush_metrics(metrics, lambda { |average| average > 0.0 })
   end
 
-  def teardown
-    stop
-  end
 
 end

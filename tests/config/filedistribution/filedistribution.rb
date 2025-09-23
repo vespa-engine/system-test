@@ -89,8 +89,5 @@ class FileDistributionBasic < ConfigTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -19,8 +19,5 @@ class Bug_316580 < IndexedStreamingSearchTest
     assert_equal(3, result.hitcount, "Query returned unexpected number of hits.")
   end
 
-  def teardown
-    stop
-  end
 
 end

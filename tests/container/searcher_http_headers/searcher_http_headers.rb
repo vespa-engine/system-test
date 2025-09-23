@@ -19,8 +19,5 @@ class SearcherHttpHeaders < SearchContainerTest
     assert_httpresponse_regexp("/?query=hans&timeout=86400s", {}, responsecode = 200, { "Date" => dateformat })
   end
 
-  def teardown
-    stop
-  end
 
 end

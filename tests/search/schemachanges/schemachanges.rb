@@ -333,8 +333,5 @@ class SchemaChanges < IndexedOnlySearchTest
     assert_hitcount("f1:bar&nocache", 3)
   end
 
-  def teardown
-    stop
-  end
 
 end

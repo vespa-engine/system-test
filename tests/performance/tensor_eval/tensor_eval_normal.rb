@@ -21,8 +21,5 @@ class TensorEvalNormalPerfTest < TensorEvalPerfTest
     end
   end
 
-  def teardown
-    super
-  end
 
 end

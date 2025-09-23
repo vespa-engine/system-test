@@ -36,9 +36,6 @@ class ChangeCopies < VdsTest
     assert_equal(1, statinfo.size)
   end
 
-  def teardown
-    stop
-  end
 
 end
 

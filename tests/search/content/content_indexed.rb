@@ -43,8 +43,5 @@ class ContentIndexedSmokeTest < IndexedOnlySearchTest
     verify_get
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -216,8 +216,5 @@ class RangeSearch < IndexedStreamingSearchTest
     assert_term_hitcount(field, "<1.0;3.0>", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

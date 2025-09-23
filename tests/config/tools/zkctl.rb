@@ -13,8 +13,5 @@ class ZkCtl < ConfigTest
     assert_match(/tenants.*/, vespa.adminserver.execute("vespa-zkctl ls /config/v2"))
   end
 
-  def teardown
-    stop
-  end
 
 end

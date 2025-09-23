@@ -111,8 +111,5 @@ class QueryProfiles < IndexedStreamingSearchTest
     assert(dumpresult =~ /model.defaultIndex=title/)
    end
 
-  def teardown
-    stop
-  end
 
 end

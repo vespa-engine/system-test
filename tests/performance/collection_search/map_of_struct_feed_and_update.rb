@@ -16,9 +16,6 @@ class MapOfStructFeedAndUpdatePerformanceTest < CollectionPerfTestBase
     set_owner('vekterli')
   end
 
-  def teardown
-    super
-  end
 
   def test_map_of_struct_feeding_and_updates
     set_description('Test feeding, field and element-wise partial updates for map of struct')

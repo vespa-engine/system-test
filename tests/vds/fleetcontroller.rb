@@ -75,8 +75,5 @@ class FleetControllerTest < VdsTest
     storage_cluster.storage["1"].wait_for_current_node_state('d')
   end
 
-  def teardown
-    stop
-  end
 end
 

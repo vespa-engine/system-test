@@ -164,8 +164,5 @@ class QueryProfiling < IndexedOnlySearchTest
     end
   end
   
-  def teardown
-    stop
-  end
 
 end

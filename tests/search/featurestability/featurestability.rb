@@ -60,8 +60,5 @@ class FeatureStability < IndexedOnlySearchTest
     return fs
   end
 
-  def teardown
-    stop
-  end
 
 end

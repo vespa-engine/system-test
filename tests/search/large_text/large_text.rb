@@ -52,8 +52,5 @@ class LargeText < IndexedStreamingSearchTest
     return 900
   end
 
-  def teardown
-    stop
-  end
 
 end

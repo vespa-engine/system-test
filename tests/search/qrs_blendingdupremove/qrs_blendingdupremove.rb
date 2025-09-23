@@ -25,8 +25,5 @@ class DupRemove < IndexedStreamingSearchTest
     assert(result.hit.size == 3, "Expected 3 hits returned, got #{result.hit.size}")
   end
 
-  def teardown
-    stop
-  end
 
 end

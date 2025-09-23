@@ -61,8 +61,5 @@ class GarbageCollection < VdsTest
     crosscheck_bucket_consistency
   end
 
-  def teardown
-    stop
-  end
 end
 

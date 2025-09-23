@@ -24,8 +24,5 @@ class VespaStatusFileDistribution < ConfigTest
     assert_equal("File distribution finished\n", out)
   end
 
-  def teardown
-    stop
-  end
 
 end

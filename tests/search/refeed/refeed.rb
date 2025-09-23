@@ -16,9 +16,6 @@ class Refeed < IndexedStreamingSearchTest
     @numdocs = 0
   end
 
-  def teardown
-    stop
-  end
 
   def test_refeed_documents
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))

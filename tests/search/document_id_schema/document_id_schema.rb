@@ -17,8 +17,5 @@ class DocumentIdSchema < IndexedStreamingSearchTest
     assert_hitcount("f1:c", 2)
   end
 
-  def teardown
-    stop
-  end
 
 end

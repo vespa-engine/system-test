@@ -24,8 +24,5 @@ class ProtonVisitDemo < SearchTest
     vespa.adminserver.execute("vespa-visit")
   end
 
-  def teardown
-    stop
-  end
 
 end

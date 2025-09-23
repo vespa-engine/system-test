@@ -63,9 +63,6 @@ class SyncHttp2Handler < SearchContainerTest
     "http://localhost:#{@container_port + 1}/hello?name=Factory"
   end
 
-  def teardown
-    stop
-  end
 
 end
 

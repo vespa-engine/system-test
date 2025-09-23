@@ -35,8 +35,5 @@ class ElementSimilarity < IndexedStreamingSearchTest
     assert_features({"elementSimilarity(foo)" => 15.0 }, json)
   end
 
-  def teardown
-    stop
-  end
 
 end

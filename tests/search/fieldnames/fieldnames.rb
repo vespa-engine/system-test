@@ -15,8 +15,5 @@ class Fieldnames < IndexedStreamingSearchTest
     wait_for_hitcount("query=sddocname:music", 2)
   end
 
-  def teardown
-    stop
-  end
 
 end

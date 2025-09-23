@@ -27,8 +27,5 @@ class CasedMatch < IndexedStreamingSearchTest
     assert_hitcount("query=field2:bar", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

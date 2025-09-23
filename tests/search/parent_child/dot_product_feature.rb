@@ -32,9 +32,6 @@ class ParentChildDotProductFeatureTest < ParentChildTestBase
     assert_features(expected_remapped, wanted_hit.field["summaryfeatures"], 1e-4)
   end
 
-  def teardown
-    stop
-  end
 
   def test_dot_product_feature_can_be_used_with_imported_attributes
     set_description("Test that dot product feature can be used with imported attributes")

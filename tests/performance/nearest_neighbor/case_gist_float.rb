@@ -14,8 +14,5 @@ class AnnGistPerfTest < AnnGistBase
     run_gist_test("gist_test")
   end
 
-  def teardown
-    super
-  end
 
 end

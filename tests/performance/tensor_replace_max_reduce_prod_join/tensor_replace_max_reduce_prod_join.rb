@@ -17,9 +17,6 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
     set_owner("lesters")
   end
 
-  def teardown
-    super
-  end
 
   def test_replace_max_reduce_prod_join_expression
     set_description("Test performance of the max-reduce-prod-join tensor expression replacement optimization")

@@ -62,8 +62,5 @@ class BigDocument < IndexedStreamingSearchTest
     assert_hitcount("query=body:500000",  2)
   end
 
-  def teardown
-    stop
-  end
 
 end

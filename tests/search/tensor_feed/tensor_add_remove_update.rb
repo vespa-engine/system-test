@@ -82,8 +82,5 @@ class TensorAddRemoveUpdateTest < IndexedStreamingSearchTest
     assert_tensor_field(exp_adv_mixed, doc, "adv_mixed_field")
   end
 
-  def teardown
-    stop
-  end
 
 end

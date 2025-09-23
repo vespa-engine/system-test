@@ -18,8 +18,5 @@ class WasFound < IndexedStreamingSearchTest
     vespa.adminserver.execute("cd #{tmpsource}; #{maven_command} test")
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -22,8 +22,5 @@ class HttpHeaders < IndexedStreamingSearchTest
     assert_equal(headervalue, result.header(headername).first)
   end
 
-  def teardown
-    stop
-  end
 
 end

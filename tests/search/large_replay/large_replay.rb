@@ -52,8 +52,5 @@ class LargeReplay < IndexedOnlySearchTest
     feed_and_wait_for_docs("test", num_docs, :file => feed_file)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -21,8 +21,5 @@ class MultiNode < DocprocTest
     assert_result("query=sddocname:music", DOCPROC + "data/music.10.result.json", "surl")
   end
 
-  def teardown
-    stop
-  end
 
 end

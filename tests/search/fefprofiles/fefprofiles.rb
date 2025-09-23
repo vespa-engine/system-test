@@ -38,8 +38,5 @@ class FefProfiles < IndexedStreamingSearchTest
     assert_features({"test_cfgvalue(c)" => 300}, rf2)
   end
 
-  def teardown
-    stop
-  end
 
 end

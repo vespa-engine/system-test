@@ -128,8 +128,5 @@ class ComponentInvalidApp < ContainerTest
     num_failures
   end
 
-  def teardown
-    stop
-  end
 
 end

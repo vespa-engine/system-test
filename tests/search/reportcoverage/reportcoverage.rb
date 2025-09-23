@@ -181,8 +181,5 @@ class ReportCoverage < IndexedOnlySearchTest
     assert(min_coverage_percentage > (documents_covered / documents_total))
   end
 
-  def teardown
-    stop
-  end
 
 end

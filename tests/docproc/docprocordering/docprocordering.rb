@@ -21,8 +21,5 @@ class DocprocOrdering < DocprocTest
     feed_and_wait_for_docs("docprocordering", 1, {:file => selfdir+"docprocordering.1.json"})
   end
 
-  def teardown
-    stop
-  end
 
 end

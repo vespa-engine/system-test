@@ -49,9 +49,6 @@ class BenchmarkingHeaders < IndexedStreamingSearchTest
     assert_httpresponse(query, requestheader_coverage, 200, responseheaders_coverage)
   end
 
-  def teardown
-    stop
-  end
 
 
 end

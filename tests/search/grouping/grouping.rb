@@ -73,8 +73,5 @@ class Grouping < IndexedStreamingSearchTest
     assert_equal(expjson['root']['children'], actjson['root']['children'])
   end
 
-  def teardown
-    stop
-  end
 
 end

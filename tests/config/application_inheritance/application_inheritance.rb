@@ -20,8 +20,5 @@ class ApplicationInheritance < IndexedOnlySearchTest
     feed_and_wait_for_hitcount("query=text:hello", 1, :file => selfdir+"feed.jsonl")
   end
 
-  def teardown
-    stop
-  end
 
 end

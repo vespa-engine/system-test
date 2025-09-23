@@ -16,9 +16,6 @@ class BucketReplicaActivationTest < IndexedOnlySearchTest
     start
   end
 
-  def teardown
-    stop
-  end
   
   def content_cluster
     vespa.storage['storage']

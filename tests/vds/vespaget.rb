@@ -76,8 +76,5 @@ class VespaGet < VdsTest
     assert_match("title1", output);
   end
 
-  def teardown
-    stop
-  end
 end
 

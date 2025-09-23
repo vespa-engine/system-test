@@ -19,8 +19,5 @@ class GbdtConverter < IndexedSearchTest
     vespa.adminserver.execute("vespa-gbdt-converter #{@mytmpdir}/gbdt.xml")
   end
 
-  def teardown
-    stop
-  end
 
 end

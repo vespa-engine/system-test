@@ -106,8 +106,5 @@ class AttributeMatchFeatures < IndexedStreamingSearchTest
     assert_features(pexp, result.hit[docid].field['summaryfeatures'], 1e-4)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -44,8 +44,5 @@ class ShoppingUrlCompress < DocprocTest
     assert_result("query=sddocname:shopping&nocache", selfdir+"result-second.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

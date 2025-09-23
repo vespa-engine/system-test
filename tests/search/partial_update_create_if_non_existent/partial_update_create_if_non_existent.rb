@@ -47,8 +47,5 @@ class PartialUpdateCreateIfNonExistentTest < IndexedOnlySearchTest
     assert_result("sddocname:test", selfdir + "increment/result.json", "documentid", ["wset"])
   end
 
-  def teardown
-    stop
-  end
 
 end

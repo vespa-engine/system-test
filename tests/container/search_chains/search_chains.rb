@@ -34,9 +34,6 @@ class SearchChainsTest < SearchContainerTest
 
   end
 
-  def teardown
-    stop
-  end
 
   def assert_length(length, searchChainNames)
     searchChainNames.flatten.each {

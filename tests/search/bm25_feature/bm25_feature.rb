@@ -488,8 +488,5 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     assert_features(exp_features, mf)
   end
 
-  def teardown
-    stop
-  end
 
 end

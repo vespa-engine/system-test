@@ -435,8 +435,5 @@ class LidSpaceCompactionTest < IndexedOnlySearchTest
     assert(f2memusage3 < f2memusage2)
   end
 
-  def teardown
-    stop
-  end
 
 end

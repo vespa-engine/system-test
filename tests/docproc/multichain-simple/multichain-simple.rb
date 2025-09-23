@@ -35,8 +35,5 @@ class MultiChainSimple < DocprocTest
     assert_result("query=sddocname:worst&nocache", selfdir + "simple-result-all.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

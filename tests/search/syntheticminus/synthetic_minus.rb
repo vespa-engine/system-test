@@ -71,8 +71,5 @@ class SyntheticMinus < IndexedStreamingSearchTest
     puts "done."
   end
 
-  def teardown
-    stop
-  end
 
 end

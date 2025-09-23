@@ -115,8 +115,5 @@ class DocumentCount < PersistentProviderTest
     assert_equal(numDocs, get_numdocs)
   end
 
-  def teardown
-    stop
-  end
 end
 

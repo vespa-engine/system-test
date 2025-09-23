@@ -86,9 +86,6 @@ class TlsCryptoSmokeTest < IndexedStreamingSearchTest
   # TODO verify that we _can't_ connect without client cert
   # TODO verify that we can connect with plaintext mode as well
 
-  def teardown
-    stop
-  end
 
 end
 

@@ -206,7 +206,4 @@ class FuzzySearch < IndexedStreamingSearchTest
     assert_fuzzy(f, "1", [])
   end
 
-  def teardown
-    stop
-  end
 end

@@ -20,8 +20,5 @@ class MapAndNgramBug < IndexedOnlySearchTest
     assert_result("query=sddocname:foo&format=json", selfdir + "result.json", "documentid")
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -18,8 +18,5 @@ class Post_Searcher < IndexedStreamingSearchTest
     assert(result.to_s =~ /Hello world/)
   end
 
-  def teardown
-    stop
-  end
 
 end

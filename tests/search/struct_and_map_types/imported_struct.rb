@@ -172,7 +172,4 @@ class ImportedStructTest < IndexedOnlySearchTest
     {"weight"=>weight}
   end
 
-  def teardown
-    stop
-  end
 end

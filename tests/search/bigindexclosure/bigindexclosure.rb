@@ -56,7 +56,4 @@ class BigIndexClosure < IndexedStreamingSearchTest
     assert_result(encoded_form, exp_result_file, nil, check_fields)
   end
 
-  def teardown
-      stop
-  end
 end

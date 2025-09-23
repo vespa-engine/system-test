@@ -422,7 +422,4 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     stats
   end
 
-  def teardown
-    stop
-  end
 end

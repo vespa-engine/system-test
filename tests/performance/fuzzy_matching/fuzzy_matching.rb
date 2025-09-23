@@ -131,8 +131,5 @@ class FuzzyMatchingPerfTest < PerformanceTest
                        :disable_tls => false})
   end
 
-  def teardown
-    super
-  end
 
 end

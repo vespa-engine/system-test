@@ -49,8 +49,5 @@ class IncludeInSearch < SearchContainerTest
     assert_equal("Hello world", message)
   end
 
-  def teardown
-    stop
-  end
 
 end

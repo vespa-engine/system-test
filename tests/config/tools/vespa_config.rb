@@ -30,8 +30,5 @@ class VespaConfigSources < ConfigTest
     @node.execute(command, params).strip
   end
 
-  def teardown
-    stop
-  end
 
 end

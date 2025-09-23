@@ -398,8 +398,5 @@ class ProtonTest < IndexedOnlySearchTest
     puts "Search node restarted"
   end
   
-  def teardown
-    stop
-  end
 
 end

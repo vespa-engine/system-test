@@ -109,7 +109,4 @@ class ComponentManyBundles < SearchContainerTest
     flunk "Did not get expected response"
   end
 
-  def teardown
-    stop
-  end
 end

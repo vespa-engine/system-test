@@ -61,8 +61,5 @@ class TensorEvalTest < IndexedStreamingSearchTest
     assert_equal(100.0, adult_m_result.hit[0].field["relevancy"].to_f)
   end
 
-  def teardown
-    stop
-  end
 
 end

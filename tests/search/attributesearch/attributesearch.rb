@@ -394,8 +394,5 @@ class AttributeSearch < IndexedStreamingSearchTest
     assert_result('query=sddocname:test&type=all', selfdir+"attrflag/result.json", "documentid", ["documentid"])
   end
 
-  def teardown
-    stop
-  end
 
 end

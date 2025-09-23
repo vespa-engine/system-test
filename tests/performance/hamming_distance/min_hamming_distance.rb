@@ -89,8 +89,5 @@ class MinHammingDistancePerfTest <  PerformanceTest
     write_report(fillers + custom_fillers)
   end
 
-  def teardown
-    stop
-  end
 
 end

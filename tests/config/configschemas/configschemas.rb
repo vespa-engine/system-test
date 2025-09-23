@@ -37,8 +37,5 @@ class ConfigSchemas < ConfigTest
     assert(vespa.adminserver.execute("vespa-get-config -n #{@config_name} -i #{@config_id} -a #{@logd_extra_field} -p #{port}") =~ /testfield "7"/)
   end
 
-  def teardown
-    stop
-  end
 
 end

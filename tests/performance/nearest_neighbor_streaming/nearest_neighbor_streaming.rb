@@ -117,8 +117,5 @@ class NearestNeighborStreamingTest < PerformanceTest
     @container.execute("head -1 #{result_file}")
   end
 
-  def teardown
-    super
-  end
 
 end

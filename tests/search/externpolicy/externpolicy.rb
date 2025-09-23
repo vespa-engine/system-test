@@ -22,8 +22,5 @@ class ExternPolicy < IndexedStreamingSearchTest
            include?("/chain.extern"))
   end
 
-  def teardown
-    stop
-  end
 
 end

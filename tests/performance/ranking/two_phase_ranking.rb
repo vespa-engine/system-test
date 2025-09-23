@@ -101,8 +101,5 @@ class TwoPhaseRankingTest < PerformanceTest
       Array.new(num_terms, "#{field}:#{term}").join('+')
   end
 
-  def teardown
-    super
-  end
 
 end

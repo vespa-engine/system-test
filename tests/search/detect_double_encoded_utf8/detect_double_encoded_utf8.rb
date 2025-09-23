@@ -30,8 +30,5 @@ class DetectDoubleEncodedUtf < IndexedStreamingSearchTest
         ".* double encoded UTF-8.*"])
   end
 
-  def teardown
-    stop
-  end
 
 end

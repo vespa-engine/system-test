@@ -272,8 +272,5 @@ class QueryAccessLog < SearchContainerTest
     filename[-14, 14].to_i
   end
 
-  def teardown
-    stop
-  end
 
 end

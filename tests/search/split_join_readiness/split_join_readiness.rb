@@ -21,9 +21,6 @@ class SplitJoinReadinessTest < IndexedOnlySearchTest
     true
   end
 
-  def teardown
-    stop
-  end
 
   class GroupDocFeedWriter
     def initialize(file_name)

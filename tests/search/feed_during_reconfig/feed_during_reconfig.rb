@@ -66,8 +66,5 @@ class FeedDuringReconfig < IndexedStreamingSearchTest
     thread.join
   end
 
-  def teardown
-    stop
-  end
 
 end

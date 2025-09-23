@@ -55,8 +55,5 @@ class TensorSummaryFeatureTest < IndexedStreamingSearchTest
     return doc['root']['children'][0]['fields']['summaryfeatures']["output_#{field}"]
   end
 
-  def teardown
-    stop
-  end
 
 end

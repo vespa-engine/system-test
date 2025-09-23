@@ -46,8 +46,5 @@ class JvmTuning < IndexedOnlySearchTest
     assert(vespa.adminserver.execute("ps auxwww | grep default/container\.0") =~ /MaxTenuringThreshold=10/)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -30,8 +30,5 @@ class ArrayIndexing < IndexedStreamingSearchTest
     assert_result("query=sddocname:arrayindexing", selfdir + "result.json", nil, ["songtitles", "weightedtitles"])
   end
 
-  def teardown
-    stop
-  end
 
 end

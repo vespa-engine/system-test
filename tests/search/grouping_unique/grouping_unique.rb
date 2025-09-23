@@ -50,8 +50,5 @@ class GroupingUnique < IndexedStreamingSearchTest
     assert_xml_result_with_timeout(2.0, query, file)
   end
 
-  def teardown
-    stop
-  end
 
 end

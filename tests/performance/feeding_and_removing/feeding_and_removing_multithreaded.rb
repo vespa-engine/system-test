@@ -30,8 +30,5 @@ class FeedingAndRemovingMultithreaded < FeedingAndRemovingBase
     run_feed_refeed_remove_test(DELAY_0_SEC, INDEX_THREADS_8)
   end
 
-  def teardown
-    super
-  end
 
 end

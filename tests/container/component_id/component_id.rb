@@ -17,8 +17,5 @@ class ComponentId < SearchContainerTest
     assert_equal("Hello world", result.hit[0].field["message"])
   end
 
-  def teardown
-    stop
-  end
 
 end

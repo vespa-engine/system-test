@@ -46,8 +46,5 @@ class MultipleWeightedSets < IndexedStreamingSearchTest
    assert_summaryfeatures(expected, result)
   end
 
-  def teardown
-     stop
-  end
 
 end

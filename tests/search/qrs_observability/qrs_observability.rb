@@ -21,8 +21,5 @@ class QrsObservability < IndexedStreamingSearchTest
     vespa.container.values.first
   end
 
-  def teardown
-    stop
-  end
 
 end

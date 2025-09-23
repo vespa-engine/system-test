@@ -11,9 +11,6 @@ class FuzzySameElementSearch < SearchTest
     set_owner('vekterli')
   end
 
-  def teardown
-    stop
-  end
 
   def make_query(a)
     yql_query = CGI::escape("select * from sources * where #{a}")

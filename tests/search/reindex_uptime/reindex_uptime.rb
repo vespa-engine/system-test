@@ -33,8 +33,5 @@ class ReindexUptime < IndexedStreamingSearchTest
     assert_hitcount("query=frank", 40);
   end
 
-  def teardown
-    stop
-  end
 
 end

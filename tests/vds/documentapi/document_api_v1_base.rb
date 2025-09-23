@@ -96,7 +96,4 @@ class DocumentApiV1Base < SearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 end

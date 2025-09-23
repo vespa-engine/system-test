@@ -50,8 +50,5 @@ class Bug5707026 < IndexedStreamingSearchTest
     assert(result.hit[1].field['body'].include? exp_body_1_1)
   end
 
-  def teardown
-    stop
-  end
 
 end

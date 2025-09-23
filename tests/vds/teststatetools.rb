@@ -116,8 +116,5 @@ class TestStateTools < VdsTest
     assert_match(/bork bork/, output)
   end
 
-  def teardown
-    stop
-  end
 end
 

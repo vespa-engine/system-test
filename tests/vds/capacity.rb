@@ -62,9 +62,6 @@ class Capacity < VdsTest
     assert( (num_buckets_1.to_i - 3*num_buckets_0.to_i).abs < 10 )
   end
 
-  def teardown
-    stop
-  end
 end
 
 

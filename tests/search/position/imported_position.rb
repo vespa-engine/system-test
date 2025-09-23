@@ -73,8 +73,5 @@ class ImportedPosition < IndexedOnlySearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

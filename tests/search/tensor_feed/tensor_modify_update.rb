@@ -119,8 +119,5 @@ class TensorModifyUpdateTest < IndexedStreamingSearchTest
                          {'address'=>{'x'=>'b','y'=>'1'}, 'value'=>8.0}], doc, name)
   end
 
-  def teardown
-    stop
-  end
 
 end

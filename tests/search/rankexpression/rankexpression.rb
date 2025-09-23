@@ -151,8 +151,5 @@ class RankExpression < IndexedStreamingSearchTest
     assert_relevancy("query=sddocname:isnan&ranking=rp3", 13,   1)
   end
 
-  def teardown
-    stop
-  end
 
 end

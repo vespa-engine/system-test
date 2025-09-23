@@ -31,8 +31,5 @@ class XmlFeed < IndexedOnlySearchTest
                    "title", ["title", "surl", "mid"])
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -11,9 +11,6 @@ class JoinSparseBucketsTest < VdsTest
     600
   end
 
-  def teardown
-    stop
-  end
 
   def deploy_with_params(params={})
     deploy_app(default_app.

@@ -63,8 +63,5 @@ class ForeachFeature < IndexedStreamingSearchTest
     assert_features(expected, result.hit[docid].field['summaryfeatures'], 1e-4)
   end
 
-  def teardown
-    stop
-  end
 
 end

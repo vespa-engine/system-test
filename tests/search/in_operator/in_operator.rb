@@ -123,7 +123,4 @@ class InOperator < IndexedStreamingSearchTest
     return matches_fields_result
   end
 
-  def teardown
-    stop
-  end
 end

@@ -12,9 +12,6 @@ class FeedAndQueryTestBase < IndexedOnlySearchTest
     Dir::mkdir("#{dirs.tmpdir}/generated")
   end
 
-  def teardown
-    stop
-  end
 
   def create_app(num_fdispatch_threads = 3, ready_copies = 6, redundancy = 6, odd_sized_groups = false) # 1 administrative, 1 search, 1 docsum thread
     SearchApp.new.cluster(

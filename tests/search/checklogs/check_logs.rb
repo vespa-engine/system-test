@@ -50,8 +50,5 @@ class CheckLogs < IndexedStreamingSearchTest
     assert(found)
   end
 
-  def teardown
-    stop
-  end
 
 end

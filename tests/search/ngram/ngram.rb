@@ -9,9 +9,6 @@ class NGram < IndexedOnlySearchTest
     set_owner("bratseth")
   end
 
-  def teardown
-    stop
-  end
 
   def test_ngram
     deploy_app(SearchApp.new.sd(selfdir+"test.sd"))

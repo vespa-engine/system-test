@@ -14,9 +14,6 @@ class TensorCanvass < PerformanceTest
     set_owner("lesters")
   end
 
-  def teardown
-    super
-  end
 
   def test_canvass_ranking_expression
     set_description("Test performance of a neural network tensor expression")

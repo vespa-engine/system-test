@@ -11,9 +11,6 @@ class FederationTest2 < SearchContainerTest
     start
   end
 
-  def teardown
-    stop
-  end
 
   def test_inherits
     assert_length(1, ["test-inherits@test-source-inherits"])

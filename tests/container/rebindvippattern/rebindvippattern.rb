@@ -24,8 +24,5 @@ class RebindVipPattern < ContainerTest
     assert_match(/Hello, world!/, result.xmldata, "Did not get expected response.")
   end
 
-  def teardown
-    stop
-  end
 
 end

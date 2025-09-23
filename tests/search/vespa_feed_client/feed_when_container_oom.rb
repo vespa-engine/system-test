@@ -67,9 +67,6 @@ class FeedWhenContainerOom < SearchTest
     docs.write_json(@feed_file)
   end
 
-  def teardown
-    stop
-  end
 
   def feed_file(feed_file, timeout = 30, verbose = false)
     params = {:file => feed_file, :ignore_errors => true, :stderr => true, :verbose => verbose, :timeout => timeout}

@@ -25,9 +25,6 @@ class GetsDuringStateTransitionsTest < PerformanceTest
     @query_file = nil
   end
 
-  def teardown
-    super
-  end
 
   def create_app(enable_stale_reads:)
     SearchApp.new.sd(SEARCH_DATA + 'music.sd').

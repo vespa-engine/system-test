@@ -184,8 +184,5 @@ class ParentChildAttributeSearchTest < IndexedOnlySearchTest
   end
 
 
-  def teardown
-    stop
-  end
 
 end

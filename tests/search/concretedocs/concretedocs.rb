@@ -57,9 +57,6 @@ class ConcreteDocs < IndexedStreamingSearchTest
     assert(doc.fields['symptom'] == 'Paralysis')
   end
 
-  def teardown
-    stop
-  end
 
 end
 

@@ -16,8 +16,5 @@ class GroupingUCA < SearchContainerTest
     assert_xml_result_with_timeout(20, 'sddocname:music&hits=0&nocache&streaming.selection=true&select=all(group(lang)order(max(uca(tracks,"sv"))) each(output(count())))', selfdir + "multi.xml")
   end
 
-  def teardown
-    stop
-  end
 
 end

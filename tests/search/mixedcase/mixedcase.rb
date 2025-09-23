@@ -59,8 +59,5 @@ class MixedCase < IndexedStreamingSearchTest
     assert_hitcount("query=yearset:threethousand////one/lolz]]", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

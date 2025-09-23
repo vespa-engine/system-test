@@ -60,8 +60,5 @@ class NfkcNormalization < IndexedStreamingSearchTest
     assert_hitcount("/search/?query=%EF%BC%91%EF%BC%96%EF%BC%98", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

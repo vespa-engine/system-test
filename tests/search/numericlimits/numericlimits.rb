@@ -61,8 +61,5 @@ class NumericLimits < IndexedStreamingSearchTest
     assert_result("query=sbytea:-127", selfdir + "result.min.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

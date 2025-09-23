@@ -74,8 +74,5 @@ class DeployOnnxModel < PerformanceTest
     transfer_app(selfdir + "app", nil, params.merge({:files => { downloaded_file => "files/#{@onnx_filename}"}}))
   end
 
-  def teardown
-    super
-  end
 
 end

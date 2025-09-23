@@ -24,8 +24,5 @@ class AdvancedIL < IndexedStreamingSearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

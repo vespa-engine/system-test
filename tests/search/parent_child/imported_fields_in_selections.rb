@@ -9,9 +9,6 @@ class ImportedFieldsInSelectionsTest < IndexedOnlySearchTest
     @data_dir = selfdir + 'grandparent_search/'
   end
 
-  def teardown
-    stop
-  end
 
   def gc_interval_secs
     2

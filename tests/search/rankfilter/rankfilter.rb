@@ -65,8 +65,5 @@ class RankFilter < IndexedStreamingSearchTest
     assert_features(exp, result.hit[0].field['summaryfeatures'], 1e-4)
   end
 
-  def teardown
-    stop
-  end
 
 end

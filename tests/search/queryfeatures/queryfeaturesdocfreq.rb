@@ -77,8 +77,5 @@ class QueryFeaturesDocFreq < IndexedStreamingSearchTest
     assert_approx(sig_8_of_100, get_df_significance(80, 1000), eps)
   end
 
-  def teardown
-    stop
-  end
 
 end

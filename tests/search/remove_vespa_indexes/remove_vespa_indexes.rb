@@ -43,8 +43,5 @@ class RemoveIndexes < IndexedStreamingSearchTest
     feed_and_wait_for_docs("banana", 2, :file => selfdir + "bananafeed.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

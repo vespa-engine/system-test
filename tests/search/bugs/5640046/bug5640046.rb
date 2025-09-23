@@ -34,8 +34,5 @@ class Bug5640046 < IndexedOnlySearchTest
     assert_hitcount("f1:foo", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

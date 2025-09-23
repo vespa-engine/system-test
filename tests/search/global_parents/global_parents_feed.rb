@@ -173,8 +173,5 @@ class GlobalParentsFeedTest < IndexedOnlySearchTest
     puts "#{func}(#{args.join(', ')})"
   end
 
-  def teardown
-    stop
-  end
 
 end

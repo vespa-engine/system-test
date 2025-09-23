@@ -17,8 +17,5 @@ class DocumentApiTest < IndexedStreamingSearchTest
     vespa.adminserver.execute("cd #{tmp}; #{maven_command} -Dtest.hide=false test")
   end
 
-  def teardown
-    stop
-  end
 
 end

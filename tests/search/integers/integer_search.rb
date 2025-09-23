@@ -45,8 +45,5 @@ class IntegerSearch < IndexedStreamingSearchTest
     compare("query=select%20%2A%20from%20sources%20%2A%20where%20%28year%20%3E%201969%20AND%20year%20%3C%201976%29%20order%20by%20year%3B&type=yql", "q3.result", "uri")
   end
 
-  def teardown
-    stop
-  end
 
 end

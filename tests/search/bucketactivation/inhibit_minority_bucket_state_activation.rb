@@ -27,9 +27,6 @@ class InhibitMinorityBucketStateActivationTest < IndexedOnlySearchTest
              add('max_activation_inhibited_out_of_sync_groups', 1))
   end
 
-  def teardown
-    stop
-  end
 
   def content_cluster
     vespa.storage['storage']

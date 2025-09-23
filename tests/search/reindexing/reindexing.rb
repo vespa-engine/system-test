@@ -167,8 +167,5 @@ class ReindexingTest < IndexedStreamingSearchTest
     "http://#{cfg_hostname}:19071/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
   end
 
-  def teardown
-    stop
-  end
 
 end

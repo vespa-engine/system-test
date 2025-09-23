@@ -41,8 +41,5 @@ class ExactMatchUnderscore < IndexedStreamingSearchTest
     assert_hitcount("query=brand_name:adidas", 0)
   end
 
-  def teardown
-    stop
-  end
 
 end

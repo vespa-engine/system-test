@@ -35,8 +35,5 @@ class FieldPath < SearchTest
     assert_result(query, file)
   end
 
-  def teardown
-    stop
-  end
 
 end

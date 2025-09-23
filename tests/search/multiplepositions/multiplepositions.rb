@@ -75,8 +75,5 @@ class MultiplePositions < IndexedOnlySearchTest
     check_q(query, hc, fn)
   end
 
-  def teardown
-    stop
-  end
 
 end

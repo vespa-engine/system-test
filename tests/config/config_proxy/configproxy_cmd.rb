@@ -72,8 +72,5 @@ EOS
     assert_match(Regexp.new(expected), node.execute("vespa-configproxy-cmd -m sources"))
   end
 
-  def teardown
-    stop
-  end
 
 end

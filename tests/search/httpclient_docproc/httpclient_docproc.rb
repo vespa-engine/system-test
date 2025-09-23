@@ -100,7 +100,4 @@ class HttpClientDocProcTest < IndexedOnlySearchTest
     http
   end
 
-  def teardown
-    stop
-  end
 end

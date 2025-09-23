@@ -47,8 +47,5 @@ class MaxDocumentSize < VdsTest
                  sd("#{selfdir}/test.sd"))
   end
 
-  def teardown
-    stop
-  end
 
 end

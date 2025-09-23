@@ -59,8 +59,5 @@ class ConstantFeatureTest < IndexedStreamingSearchTest
     check_one_ranking("test.age=adult&test.sex=m", @tv_id, male_tv_rank)
   end
 
-  def teardown
-    stop
-  end
 
 end

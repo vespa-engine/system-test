@@ -32,8 +32,5 @@ class FreshnessBoost < IndexedStreamingSearchTest
     assert(sfb['freshness(docdate)'] < 0.1, "Got: #{sfb}")
   end
 
-  def teardown
-    stop
-  end
 
 end

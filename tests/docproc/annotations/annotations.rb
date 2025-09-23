@@ -20,8 +20,5 @@ class AnnotationsDocproc < DocprocTest
     vespa.document_api_v1.put(doc, :port => Environment.instance.vespa_web_service_port, :route => "container/chain.annotatorchain consumer/chain.consumerchain")
   end
 
-  def teardown
-    stop
-  end
 
 end

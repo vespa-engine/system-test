@@ -62,8 +62,5 @@ class Rendering < IndexedStreamingSearchTest
     assert_xml_result_with_timeout(2.0, fullQuery, "#{selfdir}/#{file}")
   end
 
-  def teardown
-    stop
-  end
 
 end

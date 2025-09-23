@@ -87,8 +87,5 @@ class FileDistributionOnApplicationPrepare < ConfigTest
     return $1;
   end
 
-  def teardown
-    stop
-  end
 
 end

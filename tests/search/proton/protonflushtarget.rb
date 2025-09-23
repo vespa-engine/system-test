@@ -208,8 +208,5 @@ class ProtonFlushTargetTest < IndexedOnlySearchTest
     return searchnode.stat_files(get_full_path("**/*/*"), lambda{|x| return x.mtime })
   end
 
-  def teardown
-    stop
-  end
 
 end

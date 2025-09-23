@@ -121,9 +121,6 @@ class TestAndSetTest < IndexedStreamingSearchTest
     wait_for_hitcount(query, 1, 120)
   end
 
-  def teardown
-    stop
-  end
 
   def feed_filename(name, type)
     selfdir + name + "." + type.to_s

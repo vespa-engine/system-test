@@ -25,8 +25,5 @@ class FederationTimeoutsTest < SearchContainerTest
     assert_log_matches("Query timeout in two: 1000")
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -25,8 +25,5 @@ class AddNodeAndFeed < VdsTest
     vespa.storage["storage"].distributor["1"].wait_for_current_node_state('u')
   end
 
-  def teardown
-    stop
-  end
 end
 

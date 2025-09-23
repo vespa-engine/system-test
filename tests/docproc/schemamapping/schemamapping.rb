@@ -21,8 +21,5 @@ class SchemaMapping < DocprocTest
     wait_for_hitcount("query=isbn:Pear", 2)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -114,9 +114,6 @@ class StreamingMatcher < StreamingSearchTest
     assert(result.xmldata.include?(expected), "Expected '#{expected}' in result:#{result.xmldata}")
   end
 
-  def teardown
-    stop
-  end
 
 
 end

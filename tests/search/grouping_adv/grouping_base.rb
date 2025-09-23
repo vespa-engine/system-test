@@ -422,8 +422,5 @@ module GroupingBase
     return (result == nil || result.json == nil || result.json['root']['errors'])
   end
 
-  def teardown
-    stop
-  end
 
 end

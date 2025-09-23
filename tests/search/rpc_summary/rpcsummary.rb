@@ -33,8 +33,5 @@ class RpcSummary < IndexedStreamingSearchTest
     assert_xml_result_with_timeout(2.0, gquery + "&ranking.queryCache", selfdir + "#{type}-group.xml")
   end
 
-  def teardown
-    stop
-  end
 
 end

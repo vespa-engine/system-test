@@ -23,8 +23,5 @@ class DistanceRanking1D < IndexedStreamingSearchTest
     assert_result("query=len:[-1180000%3B-1170000]", selfdir+"dist_cutoff.result.json", "id", ["id","len"])
   end
 
-  def teardown
-    stop
-  end
 
 end

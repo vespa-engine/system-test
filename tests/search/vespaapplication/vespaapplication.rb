@@ -58,8 +58,5 @@ class VespaApplication < IndexedStreamingSearchTest
     assert(song.include? expected_song)
   end
 
-  def teardown
-    stop
-  end
 
 end

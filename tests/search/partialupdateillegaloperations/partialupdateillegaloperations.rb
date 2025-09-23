@@ -32,8 +32,5 @@ class PartialUpdateIllegalOperations < IndexedStreamingSearchTest
     assert(output.include?(expected), "Expected '#{expected}' in feeder output: #{output}")
   end
 
-  def teardown
-    stop
-  end
 
 end

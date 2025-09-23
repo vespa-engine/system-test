@@ -78,8 +78,5 @@ class SignificanceModelPerfTest < PerformanceTest
     @container.execute("head -12 #{result_file}")
   end
 
-  def teardown
-    super
-  end
 
 end

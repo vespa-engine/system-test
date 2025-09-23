@@ -122,9 +122,6 @@ class WeightedSetFeedTest < PerformanceTest
     end
   end
 
-  def teardown
-    super
-  end
 
 end
 

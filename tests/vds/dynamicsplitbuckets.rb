@@ -66,8 +66,5 @@ class DynamicSplitCount < VdsMultiModelTest
     assert_equal(docids.sort, actualdocids.sort)
   end
 
-  def teardown
-    stop
-  end
 end
 

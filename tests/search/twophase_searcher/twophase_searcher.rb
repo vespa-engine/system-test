@@ -21,8 +21,5 @@ class TwoPhase_Searcher < IndexedOnlySearchTest
     assert_result("/search/?query=frank&tracelevel=1", selfdir+"expect.result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

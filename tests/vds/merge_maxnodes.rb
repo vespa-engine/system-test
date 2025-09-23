@@ -109,8 +109,5 @@ class MergingMaxNodesTest < VdsTest
     assert_equal(4, max_nodes_per_merge)
   end
 
-  def teardown
-    stop
-  end
 end
 

@@ -261,8 +261,5 @@ EOS
     @node.execute(command, params.merge({ :exitcode => true }))
   end
 
-  def teardown
-    stop
-  end
 
 end

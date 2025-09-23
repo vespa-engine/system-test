@@ -7,9 +7,6 @@ class TensorReplaceMaxReduceProdJoinTest < IndexedOnlySearchTest
     set_owner("lesters")
   end
 
-  def teardown
-    stop
-  end
 
   def test_replace_max_reduce_prod_join_expression
     set_description("Test cases where the max-reduce-prod-join tensor expression is or is not replaced")

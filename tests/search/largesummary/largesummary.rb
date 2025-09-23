@@ -17,8 +17,5 @@ class LargeSummary < IndexedStreamingSearchTest
 
   end
 
-  def teardown
-    stop
-  end
 
 end

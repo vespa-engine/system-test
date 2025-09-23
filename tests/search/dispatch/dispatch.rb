@@ -13,9 +13,6 @@ class DispatchTest < IndexedOnlySearchTest
     @num_docs = 50
   end
 
-  def teardown
-    stop
-  end
 
   def test_multiple_groups_with_single_node
     deploy_app(create_app(2,1))

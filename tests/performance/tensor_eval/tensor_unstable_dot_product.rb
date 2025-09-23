@@ -50,8 +50,5 @@ class TensorUnstableDotProductPerfTest < TensorEvalPerfTest
     profiler_report(rank_profile)
   end
 
-  def teardown
-    stop
-  end
 
 end

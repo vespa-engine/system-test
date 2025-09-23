@@ -55,8 +55,5 @@ class ComponentContainerClusters < SearchContainerTest
     assert(ok)
   end
 
-  def teardown
-    stop
-  end
 
 end

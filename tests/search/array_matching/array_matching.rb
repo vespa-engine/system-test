@@ -25,8 +25,5 @@ class ArrayMatching < IndexedStreamingSearchTest
     puts result.hit[4].field["relevancy"]
   end
 
-  def teardown
-    stop
-  end
 
 end

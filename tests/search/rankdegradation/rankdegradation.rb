@@ -55,8 +55,5 @@ class RankDegradation < IndexedStreamingSearchTest
     assert(relevancy >= rank, "Expected relevancy to be >= than #{rank}, but was #{relevancy}")
   end
 
-  def teardown
-    stop
-  end
 
 end

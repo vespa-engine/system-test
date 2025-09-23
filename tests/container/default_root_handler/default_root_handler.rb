@@ -21,8 +21,5 @@ class DefaultRootHandler < SearchContainerTest
     assert(data.has_key? "handlers")
   end
 
-  def teardown
-    stop
-  end
 
 end

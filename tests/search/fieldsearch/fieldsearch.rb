@@ -48,8 +48,5 @@ class FieldSearch < IndexedStreamingSearchTest
     compare('query=title:101%20-song:101&type=all', "7.result.json", "surl")
   end
 
-  def teardown
-    stop
-  end
 
 end

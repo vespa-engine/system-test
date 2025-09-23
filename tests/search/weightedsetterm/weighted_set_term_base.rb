@@ -7,9 +7,6 @@ module WeightedSetTermBase
     set_description("test weighted set query term searching")
   end
 
-  def teardown
-    stop
-  end
 
   def make_query(field, rank, strict, suffix)
     query = "query=title:foo"

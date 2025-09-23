@@ -251,8 +251,5 @@ class SelectSummary < IndexedStreamingSearchTest
     comp("query=common&search=derived2&summary=foosum", "testmultiinherit.result.json", "sddocname")
   end
 
-  def teardown
-    stop
-  end
 
 end

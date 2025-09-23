@@ -572,8 +572,5 @@ class Initialization < IndexedStreamingSearchTest
     searchnode_array[0]
   end
 
-  def teardown
-    stop
-  end
 
 end

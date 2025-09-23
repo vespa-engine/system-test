@@ -32,8 +32,5 @@ class Watchdog < ContainerTest
       /Thread 'leak-using-context-classloader' using bundle 'com.yahoo.vespatest.HandlerLeakingThreads \[.+\]'/, 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

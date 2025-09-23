@@ -16,8 +16,5 @@ class Bug4659212 < VdsTest
     vespa.adminserver.execute("vespa-visit -i")
   end
 
-  def teardown
-    stop
-  end
 
 end

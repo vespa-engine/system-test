@@ -50,8 +50,5 @@ class TestRecovery < IndexedStreamingSearchTest
                    "title")
   end
 
-  def teardown
-    stop
-  end
 
 end

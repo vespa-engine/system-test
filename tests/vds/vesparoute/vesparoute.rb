@@ -215,8 +215,5 @@ class VespaRoute < VdsTest
     }
   end
 
-  def teardown
-    stop
-  end
 
 end

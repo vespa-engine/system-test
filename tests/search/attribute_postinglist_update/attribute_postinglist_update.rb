@@ -26,8 +26,5 @@ class AttributePostinglistUpdateTest < IndexedOnlySearchTest
     assert_hitcount("query=int_array:7", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

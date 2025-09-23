@@ -63,8 +63,5 @@ class ComponentConfig < SearchContainerTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

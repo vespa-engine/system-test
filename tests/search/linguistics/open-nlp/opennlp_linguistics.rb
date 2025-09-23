@@ -33,8 +33,5 @@ class OpenNlpLinguistics < SearchTest
     assert_hitcount("query=text:congés", 1)
    end
 
-  def teardown
-    stop
-  end
 
 end

@@ -28,8 +28,5 @@ class SearchDownWhileFeeding < IndexedStreamingSearchTest
     assert_match(/\"feeder.ok.count\" : 10/, result)
   end
 
-  def teardown
-    stop
-  end
 
 end

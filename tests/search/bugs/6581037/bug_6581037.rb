@@ -12,9 +12,6 @@ class Bug6581037Test < IndexedStreamingSearchTest
     1200
   end
 
-  def teardown
-    stop
-  end
 
   def test_uca_chinese
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))

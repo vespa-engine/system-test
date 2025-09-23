@@ -57,8 +57,5 @@ class DotProductFeature < IndexedStreamingSearchTest
   end
 
 
-  def teardown
-    stop
-  end
 
 end

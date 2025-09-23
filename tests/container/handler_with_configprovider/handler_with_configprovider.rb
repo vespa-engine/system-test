@@ -17,8 +17,5 @@ class HandlerWithConfigProvider < SearchContainerTest
     assert_match(Regexp.new("We can configure a jdisc handler that takes non-cloud config!"), result, "Could not find expected message in response.")
   end
 
-  def teardown
-    stop
-  end
 
 end

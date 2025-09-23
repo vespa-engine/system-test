@@ -137,8 +137,5 @@ class DistanceToPath < IndexedStreamingSearchTest
                     search(query).hit[0].field['summaryfeatures'])
   end
 
-  def teardown
-    stop
-  end
 
 end

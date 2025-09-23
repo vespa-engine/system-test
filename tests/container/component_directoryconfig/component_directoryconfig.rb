@@ -27,8 +27,5 @@ class ComponentDirectoryconfig < SearchContainerTest
     assert_equal("two\n", sorted_titles[1])
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -29,8 +29,5 @@ class V3BasicDocproc < SearchContainerTest
     assert_result("query=title:worst", DOCPROC + "data/worst-processed.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

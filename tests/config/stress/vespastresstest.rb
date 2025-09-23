@@ -42,7 +42,4 @@ class VespaConfigStressTest < ConfigTest
     assert_log_not_matches(/".*Timed\sout\swhile\ssubscribing\sto\sconfig.*"/)
   end
 
-  def teardown
-    stop
-  end
 end

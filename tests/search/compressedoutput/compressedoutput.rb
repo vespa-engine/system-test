@@ -50,8 +50,5 @@ class CompressedOutput < IndexedStreamingSearchTest
     assert(compresult.hitcount == uncompresult.hitcount)
   end
 
-  def teardown
-    stop
-  end
 end
 

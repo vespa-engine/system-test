@@ -110,8 +110,5 @@ class VdsStat < VdsTest
     assert(value =~ /Doc/)
   end
 
-  def teardown
-    stop
-  end
 
 end

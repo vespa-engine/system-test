@@ -71,7 +71,4 @@ class EmptyFieldTest < IndexedStreamingSearchTest
     assert_equal(1, result.hitcount)
   end
 
-  def teardown
-    stop
-  end
 end

@@ -21,8 +21,5 @@ class ProcessOnly < IndexedStreamingSearchTest
     wait_for_log_matches(/PROCESSED: id:test:test::/, 10)
   end
 
-  def teardown
-    stop
-  end
 
 end

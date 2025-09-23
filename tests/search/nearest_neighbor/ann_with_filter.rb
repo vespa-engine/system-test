@@ -131,7 +131,4 @@ class ApproximateNearestNeighborWithFilterTest < IndexedOnlySearchTest
     end
   end
 
-  def teardown
-    stop
-  end
 end

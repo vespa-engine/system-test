@@ -32,8 +32,5 @@ class ProcessingRenderer < SearchContainerTest
     assert_match(Regexp.new("NopProcessor"), result.xmldata, "Could not find expected message in response.")
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -19,8 +19,5 @@ class ImmediateFeeding < IndexedStreamingSearchTest
     assert_result("query=sddocname:music", selfdir+"music.10.result.json", "title", check_fields)
   end
 
-  def teardown
-    stop
-  end
 
 end

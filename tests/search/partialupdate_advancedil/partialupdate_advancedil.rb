@@ -24,8 +24,5 @@ class PartialupdateAdvancedIL < IndexedStreamingSearchTest
                     "extra6", "extra7", "field8" ])
   end
 
-  def teardown
-    stop
-  end
 
 end

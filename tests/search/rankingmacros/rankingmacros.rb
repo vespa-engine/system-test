@@ -33,8 +33,5 @@ class RankingMacros < IndexedStreamingSearchTest
                      result.hit[0].field['summaryfeatures'], 1e-4)
   end
 
-  def teardown
-    stop
-  end
 
 end

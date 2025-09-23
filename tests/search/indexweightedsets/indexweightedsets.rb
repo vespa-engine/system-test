@@ -45,8 +45,5 @@ class IndexWeightedSets < IndexedStreamingSearchTest
     assert_hitcount("query=critics_ratings:%22year=2011,name=critic_X%22", 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

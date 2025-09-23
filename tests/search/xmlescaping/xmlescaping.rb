@@ -19,8 +19,5 @@ class XMLEscaping < IndexedStreamingSearchTest
     assert_result("query=sddocname:test&format=xml", selfdir + "result.xml", nil, ["a", "b", "c", "d", "e", "f"])
   end
 
-  def teardown
-    stop
-  end
 
 end

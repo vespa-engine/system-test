@@ -26,8 +26,5 @@ class Default_Index < IndexedStreamingSearchTest
     assert_result("query=song:cadillac", selfdir + "cadillac_song_index.result.json",  'surl', [ 'surl' ])
   end
 
-  def teardown
-    stop
-  end
 
 end

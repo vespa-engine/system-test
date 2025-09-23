@@ -152,8 +152,5 @@ class QueryFeatures < IndexedStreamingSearchTest
                      fn + ".connectedness" => connectedness}, sf)
   end
 
-  def teardown
-    stop
-  end
 
 end

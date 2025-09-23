@@ -200,7 +200,4 @@ class WandStopWordsTest < PerformanceTest
                   metric_filler('average', avg)])
   end
 
-  def teardown
-    super
-  end
 end

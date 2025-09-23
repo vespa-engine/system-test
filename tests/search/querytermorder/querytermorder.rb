@@ -41,8 +41,5 @@ class QueryTermOrder < IndexedStreamingSearchTest
     assert_features({"term(2).weight" =>  100}, json)
   end
 
-  def teardown
-    stop
-  end
 
 end

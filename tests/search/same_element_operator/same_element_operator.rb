@@ -46,8 +46,5 @@ class SameElementOperator < IndexedStreamingSearchTest
     return summary_result
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -57,8 +57,5 @@ class BasicSearch < IndexedOnlySearchTest
     execute("vespa-proton-cmd --local getState")
   end
 
-  def teardown
-    stop
-  end
 
 end

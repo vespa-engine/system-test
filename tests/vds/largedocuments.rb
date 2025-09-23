@@ -59,9 +59,6 @@ class LargeDocuments < VdsTest
     bytes >= (size * count)
   end
 
-  def teardown
-    stop
-  end
 
 end
 

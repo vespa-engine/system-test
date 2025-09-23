@@ -42,8 +42,5 @@ class AnnMipsWiki < CommonMipsBase
     run_mips_test(selfdir + "mips/wiki/paragraph.sd", @paragraph_docs, "paragraph", "paragraph")
   end
 
-  def teardown
-    super
-  end
 
 end

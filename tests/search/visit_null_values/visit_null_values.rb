@@ -41,8 +41,5 @@ class VisitNullValues < IndexedStreamingSearchTest
     assert_equal(result_count, count)
   end
 
-  def teardown
-    stop
-  end
 
 end

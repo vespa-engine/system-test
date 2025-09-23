@@ -11,9 +11,6 @@ class Bug6612278Test < IndexedOnlySearchTest
     set_expected_logged(/Search node .* went bad/)
   end
 
-  def teardown
-    stop
-  end
 
   def generate_app(nodes, redundancy)
     SearchApp.new.sd(selfdir+'test.sd').

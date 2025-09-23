@@ -101,8 +101,5 @@ class XGBoostServing < IndexedStreamingSearchTest
     return predictions_array
   end
 
-  def teardown
-    stop
-  end
 
 end

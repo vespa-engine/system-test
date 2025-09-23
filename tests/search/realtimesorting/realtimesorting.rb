@@ -27,8 +27,5 @@ class RealtimeSorting < IndexedStreamingSearchTest
     assert_result(query,selfdir+"6-20.result.json", nil, [ 'date' ])
   end
 
-  def teardown
-    stop
-  end
 
 end

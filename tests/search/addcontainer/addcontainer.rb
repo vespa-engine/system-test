@@ -50,8 +50,5 @@ class AddContainer < IndexedOnlySearchTest
     wait_for_hitcount("query=sddocname:music", 787)
   end
 
-  def teardown
-    stop
-  end
 end
 

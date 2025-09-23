@@ -158,8 +158,5 @@ class VisitorTest < VdsTest
     puts "Complexinsert - DONE at " + @timeend.to_s
   end
 
-  def teardown
-    stop
-  end
 
 end

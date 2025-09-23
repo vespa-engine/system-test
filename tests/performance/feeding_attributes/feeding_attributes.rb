@@ -88,8 +88,5 @@ class FeedingAttributesPerfTest < PerformanceTest
     "#{FEED_STAGE}-#{feed_stage}.#{ATTRIBUTE_THREADS}-#{attr_threads}"
   end
 
-  def teardown
-    super
-  end
 
 end

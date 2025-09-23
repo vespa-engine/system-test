@@ -52,8 +52,5 @@ class ElementCompleteness < IndexedStreamingSearchTest
 
   end
 
-  def teardown
-    stop
-  end
 
 end

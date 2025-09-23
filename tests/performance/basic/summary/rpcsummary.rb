@@ -61,8 +61,5 @@ class RpcSummaryTest < PerformanceTest
     run_custom_fbench("&dispatch.summaries=true", container, 24, 60, true)
   end
 
-  def teardown
-    super
-  end
 
 end

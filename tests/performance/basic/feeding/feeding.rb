@@ -95,8 +95,5 @@ class BasicFeeding < PerformanceTest
     my_run_feeder(doc_template("text1"), "test_feeding_performance_simple_persistence_proton", feed_params)
   end
 
-  def teardown
-    super
-  end
 
 end

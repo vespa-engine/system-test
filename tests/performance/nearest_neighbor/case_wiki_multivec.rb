@@ -14,8 +14,5 @@ class NearestNeighborWikiMultivec < CommonWikiBase
     run_wiki_test(@wiki_docs, "wiki")
   end
 
-  def teardown
-    super
-  end
 
 end

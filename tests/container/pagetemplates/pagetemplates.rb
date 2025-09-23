@@ -35,8 +35,5 @@ class PageTemplates < SearchContainerTest
     assert_xml_result(q + "&page.id=sourceChoice",selfdir + "sourceChoiceResult.xml")
   end
 
-  def teardown
-    stop
-  end
 
 end

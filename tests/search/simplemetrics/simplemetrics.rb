@@ -55,8 +55,5 @@ class SimpleMetrics < SearchTest
     JSON.parse(vespa.container.values.first.http_get2("/state/v1/metrics").body)
   end
 
-  def teardown
-    stop
-  end
 
 end

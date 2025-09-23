@@ -81,8 +81,5 @@ class RoutingDocApiTagTest < IndexedStreamingSearchTest
       add_field("year", 1981)
   end
 
-  def teardown
-    stop
-  end
 
 end

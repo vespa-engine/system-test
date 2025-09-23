@@ -71,8 +71,5 @@ class MatchFeatures < IndexedStreamingSearchTest
     assert_equal(attr_value + 1, mf['secondPhase'])
   end
 
-  def teardown
-    stop
-  end
 
 end

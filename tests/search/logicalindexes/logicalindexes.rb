@@ -39,9 +39,6 @@ class LogicalIndexes < IndexedStreamingSearchTest
 
   end
 
-  def teardown
-    stop
-  end
 
 end
 

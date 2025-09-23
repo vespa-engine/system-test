@@ -14,8 +14,5 @@ class MixedTensorFeedMultiPerfTest < MixedTensorPerfTestBase
     feed_and_profile_cases("-d 3 -o #{@num_docs} -f models")
   end
 
-  def teardown
-    super
-  end
 
 end

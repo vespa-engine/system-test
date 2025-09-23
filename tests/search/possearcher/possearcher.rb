@@ -26,8 +26,5 @@ class PosSearcher < IndexedStreamingSearchTest
     assert(result.xmldata.include?("Cannot handle both lat/long and xy coords at the same time"))
   end
 
-  def teardown
-    stop
-  end
 
 end

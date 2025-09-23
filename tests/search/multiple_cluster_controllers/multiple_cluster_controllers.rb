@@ -36,7 +36,4 @@ class MultipleClusterControllers < IndexedStreamingSearchTest
     assert_equal(3, cluster_controller_count)
   end
 
-  def teardown
-    stop
-  end
 end

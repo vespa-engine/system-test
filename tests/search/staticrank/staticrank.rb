@@ -60,8 +60,5 @@ class StaticRank < IndexedStreamingSearchTest
     assert_result(query_attribute, selfdir+"updaterank0.result.json", nil, ["body", "relevancy"])
   end
 
-  def teardown
-    stop
-  end
 
 end

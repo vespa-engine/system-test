@@ -32,8 +32,5 @@ class ExactMatchStreaming < StreamingSearchTest
     assert_hitcount('query=exactfield:hütte'+s, 1)
   end
 
-  def teardown
-    stop
-  end
 
 end

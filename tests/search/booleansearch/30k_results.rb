@@ -18,9 +18,6 @@ class Boolean30KResultsTest < IndexedOnlySearchTest
     feed_and_wait_for_docs("test", 3 * DOCUMENT_COUNT, :file => @feed_file)
   end
 
-  def teardown
-    stop
-  end
 
   def generate_doc(id, predicate)
      Document.new("id:test:test::#{id}").

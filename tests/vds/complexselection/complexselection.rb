@@ -42,8 +42,5 @@ class ComplexSelection < VdsTest
     return retval
   end
 
-  def teardown
-    stop
-  end
 end
 

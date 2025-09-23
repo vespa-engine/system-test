@@ -20,9 +20,6 @@ class ParentChildGroupingSortingTest < ParentChildTestBase
     feed_and_wait_for_docs('ad', 5, :file => get_test_path("ad-docs.json"))
   end
 
-  def teardown
-    stop
-  end
 
   def test_imported_attribute_can_be_used_for_sorting
     set_description('Test that an imported attribute can be used in a sorting expression')

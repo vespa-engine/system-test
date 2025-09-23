@@ -52,8 +52,5 @@ class ComponentUpdateSearcher < SearchContainerTest
 
   end
 
-  def teardown
-    stop
-  end
 
 end

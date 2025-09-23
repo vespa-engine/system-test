@@ -29,8 +29,5 @@ class SpecialTokensDotNet < IndexedStreamingSearchTest
     assert_equal("my_str:\"yahoo .net\"", query)
   end
 
-  def teardown
-    stop
-  end
 
 end

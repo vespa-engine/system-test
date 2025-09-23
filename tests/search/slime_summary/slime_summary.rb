@@ -26,8 +26,5 @@ class SlimeSummary < IndexedStreamingSearchTest
     assert_equal("ok", check)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -16,8 +16,5 @@ class Bug4908197 < IndexedStreamingSearchTest
     assert_result("query=foo", selfdir+"result.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

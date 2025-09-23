@@ -11,9 +11,6 @@ class FeedingWithBucketContentionTest < PerformanceTest
     set_owner('vekterli')
   end
 
-  def teardown
-    super
-  end
 
   # Controls PerformanceTest-specific app generator distribution bits
   def distribution_bits

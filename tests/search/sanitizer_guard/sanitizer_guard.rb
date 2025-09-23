@@ -17,8 +17,5 @@ class SanitizerGuardTest < SearchTest
     assert_equal("none", output.chomp)
   end
 
-  def teardown
-    stop
-  end
 
 end

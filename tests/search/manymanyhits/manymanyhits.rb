@@ -68,8 +68,5 @@ class ManyManyHits < IndexedStreamingSearchTest
     assert_equal(0, result.hit.size)
   end
 
-  def teardown
-    stop
-  end
 
 end

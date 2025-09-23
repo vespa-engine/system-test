@@ -52,8 +52,5 @@ class FieldPath < VdsTest
     output = vespa.storage["storage"].storage["0"].execute("vespa-visit")
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -69,7 +69,4 @@ class MassiveHttpClientFeedingTest < IndexedOnlySearchTest
     gw
   end
 
-  def teardown
-    stop
-  end
 end

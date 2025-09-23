@@ -44,8 +44,5 @@ class ComponentGraphOnRedeployment < ContainerTest
     assert_equal(ALLOWED_COMPONENTS_TO_RECONSTRUCT.sort, reconstructed_components)
   end
 
-  def teardown
-    stop
-  end
 
 end

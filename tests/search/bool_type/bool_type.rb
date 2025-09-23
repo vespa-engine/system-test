@@ -113,8 +113,5 @@ class BoolTypeTest < IndexedStreamingSearchTest
     assert_equal(wanted_ids, visited_ids)
   end
 
-  def teardown
-    stop
-  end
 
 end

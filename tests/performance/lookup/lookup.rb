@@ -76,8 +76,5 @@ class LookupPerformance < PerformanceTest
     end
   end
 
-  def teardown
-    super
-  end
 
 end

@@ -42,8 +42,5 @@ class SplitAndJoin < VdsMultiModelTest
     assert_equal(5, buckets)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -81,8 +81,5 @@ class QueryTypes < IndexedStreamingSearchTest
     assert_field('query=young+RANK+guns&type=adv&hits=1'   , selfdir+"adv5.result.json", "title")
   end
 
-  def teardown
-    stop
-  end
 
 end

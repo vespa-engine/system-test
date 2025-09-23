@@ -58,7 +58,4 @@ class GenerateField < SearchTest
     assert(!hit.field["sentiment_double"].nil?)
   end
 
-  def teardown
-    stop
-  end
 end

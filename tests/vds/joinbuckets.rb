@@ -56,8 +56,5 @@ class JoinBucketCount < VdsTest
     wait_for_bucket_count(1)
   end
 
-  def teardown
-    stop
-  end
 end
 

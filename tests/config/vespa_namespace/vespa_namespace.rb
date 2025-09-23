@@ -35,8 +35,5 @@ class VespaNamespace < ConfigTest
     end
   end
 
-  def teardown
-    stop
-  end
 
 end

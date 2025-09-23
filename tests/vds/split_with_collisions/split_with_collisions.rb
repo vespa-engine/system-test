@@ -60,9 +60,6 @@ class SplitWithCollisions < VdsTest
     assert_equal(58, bucket_used_bits(doc1_bucket.to_i(16)))
   end
 
-  def teardown
-    stop
-  end
 
 end
 

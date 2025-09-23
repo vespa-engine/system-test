@@ -51,7 +51,4 @@ class StructAndMapPerf < PerformanceTest
     profiler_report(MAP_MIX)
   end
 
-  def teardown
-    super
-  end
 end

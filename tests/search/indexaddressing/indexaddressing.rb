@@ -83,8 +83,5 @@ class IndexAddressing < IndexedStreamingSearchTest
     tmp_file
   end
 
-  def teardown
-    stop
-  end
 
 end

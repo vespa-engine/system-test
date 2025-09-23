@@ -43,8 +43,5 @@ class JDiscFilterAndHandlerBindingsTest < ContainerTest
     assert_equal(HOST_HEADER_WITH_INVALID_PORT, response['Observed-Host-Header'])
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -69,8 +69,5 @@ class DisabledBucketActivationTest < VdsTest
     do_test_bucket_activation_is_disabled(non_indexed_proton_app(with_streaming: true))
   end
 
-  def teardown
-    stop
-  end
 
 end

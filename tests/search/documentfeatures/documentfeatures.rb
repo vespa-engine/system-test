@@ -119,8 +119,5 @@ class DocumentFeatures < IndexedStreamingSearchTest
     assert_features({"fieldLength(#{field})" => fl}, sf)
   end
 
-  def teardown
-    stop
-  end
 
 end

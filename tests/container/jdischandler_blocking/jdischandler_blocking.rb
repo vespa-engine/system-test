@@ -26,8 +26,5 @@ class JDiscHandlerBlocking < SearchContainerTest
     assert_equal(1, cnt)
   end
 
-  def teardown
-    stop
-  end
 
 end

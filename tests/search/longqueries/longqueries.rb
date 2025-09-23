@@ -37,8 +37,5 @@ class LongQueries < IndexedStreamingSearchTest
     assert_result(query, selfdir+"do.result.json", nil, ["title", "pto", "mid", "surl", "categories", "bgnsellers"])
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -47,8 +47,5 @@ class SchemaChangesReplayTest < IndexedOnlySearchTest
     assert_hitcount("f3:%3E29&nocache", exp_hits)
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -35,8 +35,5 @@ class Weighting_Ranklog < IndexedStreamingSearchTest
 
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -225,8 +225,5 @@ class ReindexingAndFeedingTest < PerformanceTest
     "http://#{vespa.nodeproxies.first[1].addr_configserver[0]}:#{19071}/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
   end
 
-  def teardown
-    super
-  end
 
 end

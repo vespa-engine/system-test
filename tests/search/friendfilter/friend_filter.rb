@@ -74,8 +74,5 @@ class FriendFilter < IndexedOnlySearchTest
     assert_result('query=title:foo&username=paris+hilton&type=all',   selfdir+"result.foo4.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

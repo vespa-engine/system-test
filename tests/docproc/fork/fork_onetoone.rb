@@ -32,8 +32,5 @@ class ForkOneToOne < DocprocTest
     assert_equal("jalla jalla", doc1.fields["title"])
   end
 
-  def teardown
-    stop
-  end
 
 end

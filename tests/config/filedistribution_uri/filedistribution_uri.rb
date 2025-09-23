@@ -24,8 +24,5 @@ class FileDistributionUri < ConfigTest
     feed_and_wait_for_docs("tensor_from_uri", 1, :file => selfdir + "docs.json")
   end
 
-  def teardown
-    stop
-  end
 
 end

@@ -194,8 +194,5 @@ class NativeRankFeature < IndexedStreamingSearchTest
   end
 
 
-  def teardown
-    stop
-  end
 
 end

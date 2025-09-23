@@ -78,8 +78,5 @@ class ConfigLibrary < IndexedStreamingSearchTest
     node.execute("kill -TERM #{pid}")
   end
 
-  def teardown
-    stop
-  end
 
 end

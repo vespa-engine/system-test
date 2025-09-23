@@ -17,8 +17,5 @@ class HitcountEstimate < IndexedOnlySearchTest
     assert(result.hitcount == 10, "Expected 10 in total result size, got #{result.hitcount}")
   end
 
-  def teardown
-    stop
-  end
 
 end

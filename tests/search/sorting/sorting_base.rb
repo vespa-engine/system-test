@@ -139,8 +139,5 @@ module SortingBase
 
   end
 
-  def teardown
-    stop
-  end
 
 end
