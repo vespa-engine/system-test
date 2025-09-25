@@ -28,6 +28,7 @@ class SameElementOperator < IndexedStreamingSearchTest
     assert_equal({ 0 => [ text0, text1, text2 ] }, check_summary('sa contains sameElement("this" and "text")', 'full'))
     assert_equal({ 0 => [ text0, text2 ] }, check_summary('sa contains sameElement("this" and "text")', 'meo'))
     assert_equal({ }, check_summary('sa contains sameElement("some" and "more")', 'full'))
+    assert_equal({ 0 => [ text2 ] }, check_summary('sa contains sameElement("more" and phrase("this", "is"))', 'meo'))
   end
 
   def check_summary(query, summary)
