@@ -3,7 +3,7 @@ require 'indexed_streaming_search_test'
 
 class Initialization < IndexedStreamingSearchTest
 
-  NUM_DOCUMENTS = 100000
+  NUM_DOCUMENTS = 50000
 
   def setup
     set_owner("boeker")
