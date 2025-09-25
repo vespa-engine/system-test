@@ -152,8 +152,10 @@ class Initialization < IndexedStreamingSearchTest
 
     restart_vespa
 
-    puts "Waiting for a few seconds such that attributes can be loaded"
-    sleep 5
+    puts "Waiting for a few seconds until replay"
+    wait_for_replay
+    puts "Waiting for one more second"
+    sleep 1
 
     expected = {
       "state" => "initializing",
@@ -223,8 +225,10 @@ class Initialization < IndexedStreamingSearchTest
     @searchnode.trigger_flush # Explicitly flush since we only restart proton
     restart_vespa
 
-    puts "Waiting for a few seconds such that attributes can be loaded"
-    sleep 5
+    puts "Waiting for a few seconds until reprocessing"
+    wait_for_reprocessing
+    puts "Waiting for one more second"
+    sleep 1
 
     expected = {
       "state" => "initializing",
@@ -263,6 +267,54 @@ class Initialization < IndexedStreamingSearchTest
     }
 
     assert_v1_status expected
+  end
+
+  def wait_for_replay
+    60.times do
+      initialization = @searchnode.get_state_v1("initialization")
+      next if initialization.nil?
+
+      dbs = initialization["dbs"]
+      next if dbs.nil?
+
+      dbs.each do |db|
+        db_state = db["state"]
+        next if db_state.nil?
+
+        return if db_state == "replay_transaction_log"
+      end
+
+      puts "Waiting for a second before checking for replay again"
+      sleep 1
+    end
+  end
+
+  def wait_for_reprocessing
+    60.times do
+      initialization = @searchnode.get_state_v1("initialization")
+      next if initialization.nil?
+
+      dbs = initialization["dbs"]
+      next if dbs.nil?
+
+      dbs.each do |db|
+        ready_subdb = db["ready_subdb"]
+        next if ready_subdb.nil?
+
+        loading_attributes = ready_subdb["loading_attributes"]
+        next if loading_attributes.nil?
+
+        loading_attributes.each do |loading_attribute|
+          state = loading_attribute["status"]
+          next if state.nil?
+
+          return if state == "reprocessing"
+        end
+      end
+
+      puts "Waiting for a second before checking for reprocessing again"
+      sleep 1
+    end
   end
 
   def wait_for_documents(name, num_documents)
