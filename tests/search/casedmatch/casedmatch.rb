@@ -9,7 +9,13 @@ class CasedMatch < IndexedStreamingSearchTest
   end
 
   def test_cased_match
-    deploy_app(SearchApp.new.sd(selfdir+"casedmatch.sd"))
+    deploy_app(SearchApp.new.sd(selfdir + "casedmatch.sd").
+               indexing_cluster("my-container").
+               container(Container.new("my-container").
+                         search(Searching.new).
+                         documentapi(ContainerDocumentApi.new).
+                         docproc(DocumentProcessing.new).
+                         component(Component.new("com.yahoo.language.opennlp.OpenNlpLinguistics"))))
     start
 
     feed_and_wait_for_docs("casedmatch", 2, :file => selfdir+"feed.json")
