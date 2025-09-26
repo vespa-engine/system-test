@@ -3,6 +3,7 @@ schema test {
   document test {
     field sa type array<string> {
       indexing: index | summary
+      stemming: none
     }
     field id type int {
       indexing: attribute | summary
