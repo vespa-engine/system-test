@@ -305,7 +305,7 @@ class Initialization < IndexedStreamingSearchTest
         next if loading_attributes.nil?
 
         loading_attributes.each do |loading_attribute|
-          state = loading_attribute["status"]
+          state = loading_attribute["state"]
           next if state.nil?
 
           return if state == "reprocessing"
@@ -512,7 +512,7 @@ class Initialization < IndexedStreamingSearchTest
     assert_equal(expected_name, attribute_name)
 
     # Status
-    attribute_status = attribute["status"]
+    attribute_status = attribute["state"]
     assert_not_nil attribute_status
     assert_equal("loaded", attribute_status)
 
@@ -546,7 +546,7 @@ class Initialization < IndexedStreamingSearchTest
     assert_equal(expected_name, attribute_name)
 
     # Status
-    attribute_status = attribute["status"]
+    attribute_status = attribute["state"]
     assert_not_nil attribute_status
     assert_equal("reprocessing", attribute_status)
 
@@ -580,7 +580,7 @@ class Initialization < IndexedStreamingSearchTest
     assert_equal(expected_name, attribute_name)
 
     # Status
-    attribute_status = attribute["status"]
+    attribute_status = attribute["state"]
     assert_not_nil attribute_status
     assert_equal("load", attribute_status)
 
@@ -609,7 +609,7 @@ class Initialization < IndexedStreamingSearchTest
     assert_equal(expected_name, attribute_name)
 
     # Status
-    attribute_status = attribute["status"]
+    attribute_status = attribute["state"]
     assert_not_nil attribute_status
     assert_equal("queued", attribute_status)
   end
