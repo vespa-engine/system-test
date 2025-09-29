@@ -108,6 +108,27 @@ class CommonSiftGistBase < CommonAnnBaseTest
     end
   end
 
+  def run_removal_test(file, label, documents_to_benchmark, documents_in_total)
+    puts "About to feed #{documents_to_benchmark} of #{documents_in_total}"
+    feed_and_benchmark_range(file, "#{label}-0-#{documents_to_benchmark}", 0, documents_to_benchmark)
+    assert_hitcount("query=sddocname:test", documents_to_benchmark)
+
+    puts "Benchmarking before deletion"
+    query_and_benchmark(HNSW, 100, 0)
+    calc_recall_for_queries(100, 0)
+
+    puts "Feeding the remaining documents..."
+    feed_and_benchmark_range(file, "#{label}-#{documents_to_benchmark}-#{documents_in_total}", documents_to_benchmark, documents_in_total)
+
+    puts "...and removing them again"
+    vespa.document_api_v1.http_delete("/document/v1/test/test/docid?cluster=search&selection=#{CGI.escape("test.id>=#{documents_to_benchmark} and test.id<#{documents_in_total}")}")
+    assert_hitcount("query=sddocname:test", documents_to_benchmark)
+
+    puts "Benchmarking after deletion"
+    query_and_benchmark(HNSW, 100, 0)
+    calc_recall_for_queries(100, 0)
+  end
+
   def fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
     filter_str = (filter_percent == 0) ? "" : ".f-#{filter_percent}"
     remote_file = @data_path + "queries.vec_m16.ap-#{approximate}.th-#{target_hits}.eh-#{explore_hits}#{filter_str}.txt"

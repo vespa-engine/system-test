@@ -43,4 +43,14 @@ class AnnGistBase < CommonSiftGistBase
     end
   end
 
+  def run_gist_removal_test(sd_dir)
+    deploy_app(create_app(sd_dir, 0.3))
+    start
+    @container = vespa.container.values.first
+
+    prepare_queries_for_recall
+
+    run_removal_test(@docs_300k, "300k-docs", 150000, 300000)
+  end
+
 end
