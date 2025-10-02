@@ -35,6 +35,8 @@ class SameElementOperator < IndexedStreamingSearchTest
     assert_equal({ }, check_summary('sa contains sameElement("more" and ({distance:2}near("is", "text")))', 'meo'))
     assert_equal({ 0 => [ text2 ] }, check_summary('sa contains sameElement("more" and ({distance:3}onear("is", "text")))', 'meo'))
     assert_equal({ }, check_summary('sa contains sameElement("more" and ({distance:3}onear("text", "is")))', 'meo'))
+    assert_equal({ 0 => [ text1, text2 ] }, check_summary('sa contains sameElement("even" or "more")', 'meo'))
+    assert_equal({ 0 => [ text0, text2 ] }, check_summary('sa contains sameElement("notfound" or ("text" and "is"))', 'meo'))
   end
 
   def check_summary(query, summary)
