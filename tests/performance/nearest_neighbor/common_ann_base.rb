@@ -24,6 +24,14 @@ class CommonAnnBaseTest < PerformanceTest
   THREADS_PER_SEARCH = "threads_per_search"
   NNI_UNREACHABLE = "nni.unreachable"
 
+  def start
+    super
+    node = vespa.container.values.first
+    puts "Getting some hardware details from node #{node}"
+    node.execute('numactl --show', :exceptiononfailure => false)
+    node.execute('lscpu', :exceptiononfailure => false)
+  end
+
   def nn_download_file(file_name, vespa_node)
     puts "Trying to download from NN s3: #{file_name}"
     download_file_from_s3(file_name, vespa_node, 'nearest-neighbor')
