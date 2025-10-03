@@ -67,4 +67,14 @@ class AnnSiftBase < CommonSiftGistBase
     feed_and_benchmark((mixed_tensor ? @updates_mixed_200k : @updates_200k), "1M-updates")
   end
 
+  def run_sift_removal_test(sd_dir)
+    deploy_app(create_app(sd_dir, 0.3, 1))
+    start
+    @container = vespa.container.values.first
+
+    prepare_queries_for_recall
+
+    run_removal_test(@docs_1M, "1M-docs", 500000, 1000000)
+  end
+
 end
