@@ -27,6 +27,7 @@
     <module>search/wasfound/project</module>
     <module>performance/container_tensor_eval/tensor-eval</module>
     <module>docproc/generate_field_openai/bundle</module>
+    <module>container/mcp_server/bundle</module>
   </modules>
 
   <properties>

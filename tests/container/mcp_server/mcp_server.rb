@@ -11,6 +11,7 @@ class McpServerTest < SearchContainerTest
     set_owner("edvardwd")
     @valgrind = false
 
+    add_bundle_dir(selfdir + "bundle", "app")
     deploy(selfdir + "app")
     start
     @container = vespa.container.values.first

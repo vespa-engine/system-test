@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <services version="1.0" xmlns:deploy="vespa" xmlns:preprocess="properties">
     <container id="default" version="1.0">
-        <handler id="ai.vespa.mcp.McpJdiscHandler" bundle="mcp-server">
+        <handler id="ai.vespa.mcp.McpJdiscHandler" bundle="app">
             <binding>http://*/mcp/*</binding>
         </handler>
-        <component id="ai.vespa.mcp.McpServerComponent" bundle="mcp-server"/>
-        <component id="ai.vespa.mcp.McpTools" bundle="mcp-server"/>
+        <component id="ai.vespa.mcp.McpServerComponent" bundle="app"/>
+        <component id="ai.vespa.mcp.McpTools" bundle="app"/>
         <document-api/>
         <search/>
         <nodes count="1"/>
