@@ -86,12 +86,12 @@ class DocumentApiV1
     response.body
   end
 
-  def http_get(path, params={})
+  def http_get(path, params={}, headers={})
     unless params[:brief]
       @test_case.output("http_get('#{path}')")
     end
     connection = get_connection(params)
-    response = connection.getConnection.get(path)
+    response = connection.getConnection.get(path, headers)
     @connectionPool.release(connection)
     response
   end
@@ -182,9 +182,10 @@ class DocumentApiV1
   end
 
   def visit_jsonl_stream(response_handler, params={})
-    # TODO the `format` string here is obviously temporary...!
-    uri = "/document/v1/" + request_params(params.merge({:stream => true, :format => 'jsonl-experimental-20250707'}))
-    response = http_get(uri, params)
+    uri = "/document/v1/" + request_params(params.merge({:stream => true}))
+    # Prefer JSONL but also accept JSON (though we only _expect_ JSONL here)
+    headers = {'Accept' => 'application/jsonl, application/json;q=0.9'}
+    response = http_get(uri, params, headers)
     unless response.code.to_i == 200
       raise "Expected HTTP 200 OK, got HTTP #{response.code} with body '#{response.body}'"
     end
