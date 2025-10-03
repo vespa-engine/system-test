@@ -10,7 +10,7 @@ class McpServerTest < SearchContainerTest
     set_description("Check that application with MCP components can be created and handle requests")
     set_owner("edvardwd")
     @valgrind = false
-   
+
     deploy(selfdir + "app")
     start
     @container = vespa.container.values.first
