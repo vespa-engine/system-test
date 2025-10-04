@@ -7,6 +7,8 @@ class Initialization < IndexedStreamingSearchTest
 
   def setup
     set_owner("boeker")
+    @valgrind = false
+    @valgrind_opt = nil
   end
 
   def self.final_test_methods
