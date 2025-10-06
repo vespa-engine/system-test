@@ -46,6 +46,39 @@ class CommonAnnBaseTest < PerformanceTest
     print_nni_stats(doc_type, tensor)
   end
 
+  def feed_and_benchmark_range(feed_file, label, from, to, doc_type = "test", tensor = "vec_m16")
+    #profiler_start
+    node_file = nn_download_file(feed_file, vespa.adminserver)
+    # Name of the file containing the specified range
+    range_file = "#{node_file}_#{from}_#{to}"
+
+    # Since jq uses too much memory and the streaming mode is too slow, we do some text editing
+    # Add '[' to mark beginning of array
+    vespa.adminserver.execute("echo -e '[' > #{range_file}", :exceptiononfailure => true)
+    # The following places every put in its own line and selects the desired range:
+    # Remove whitespace
+    # Remove leading [
+    # Replace trailing ] by , and newline
+    # Add newline before every put
+    # Choose puts with ids "from" to "to" (not including "to")
+    # Every line now ends with a comma and a newline: Select range
+    vespa.adminserver.execute("cat #{node_file} | tr -d '[:space:]' \
+                                                | sed 's/\\[//' \
+                                                | sed 's/]$/,\\n/' \
+                                                | sed 's/{\\\"put\\\"/\\n{\\\"put\\\"/g' \
+                                                | sed -n #{from+2},#{to+1}p\
+                                                >> #{range_file}", :exceptiononfailure => true)
+    # Remove trailing newline and comma
+    vespa.adminserver.execute("truncate -s -2 #{range_file}", :exceptiononfailure => true)
+    # Add ']' to mark end of array
+    vespa.adminserver.execute("echo -e '\n]\n' >> #{range_file}", :exceptiononfailure => true)
+
+    run_feeder(range_file, [parameter_filler(TYPE, "feed"), parameter_filler(LABEL, label)], :localfile => true)
+    vespa.adminserver.execute("ls -ld #{range_file} #{selfdir}", :exceptiononfailure => false)
+    profiler_report("feed")
+    print_nni_stats(doc_type, tensor)
+  end
+
   def print_nni_stats(doc_type, tensor)
     stats = get_nni_stats(doc_type, tensor)
     write_report([parameter_filler(TYPE, "nni"),
