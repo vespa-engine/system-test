@@ -53,25 +53,24 @@ class CommonAnnBaseTest < PerformanceTest
     range_file = "#{node_file}_#{from}_#{to}"
 
     # Since jq uses too much memory and the streaming mode is too slow, we do some text editing
-    # Add '[' to mark beginning of array
-    vespa.adminserver.execute("echo -e '[' > #{range_file}", :exceptiononfailure => true)
-    # The following places every put in its own line and selects the desired range:
-    # Remove whitespace
-    # Remove leading [
-    # Replace trailing ] by , and newline
-    # Add newline before every put
-    # Choose puts with ids "from" to "to" (not including "to")
-    # Every line now ends with a comma and a newline: Select range
-    vespa.adminserver.execute("cat #{node_file} | tr -d '[:space:]' \
-                                                | sed 's/\\[//' \
-                                                | sed 's/]$/,\\n/' \
-                                                | sed 's/{\\\"put\\\"/\\n{\\\"put\\\"/g' \
-                                                | sed -n #{from+2},#{to+1}p\
-                                                >> #{range_file}", :exceptiononfailure => true)
-    # Remove trailing newline and comma
-    vespa.adminserver.execute("truncate -s -2 #{range_file}", :exceptiononfailure => true)
-    # Add ']' to mark end of array
-    vespa.adminserver.execute("echo -e '\n]\n' >> #{range_file}", :exceptiononfailure => true)
+    # at start: allow '[' at to mark beginning of array
+    first = '$0 == "[" { print; next; };'
+
+    # count start-of-put lines:
+    count_starts = '$0 == "{" { ++count; };'
+
+    # add trailer if we're past the "to" parameter
+    print_trailer1_and_exit = '{ print "{}"; print "]"; exit }'
+    trailer1 = "count > #{to} #{print_trailer1_and_exit}"
+
+    # also stop if we reached EOF, the last document ends with just "}"
+    trailer2 = '$0 == "}" { print; print "]"; exit };'
+
+    # print all the puts starting at "from" parameter:
+    print_puts = "count > #{from} { print }"
+
+    awk_script = "#{first} #{count_starts} #{trailer1} #{trailer2} #{print_puts}"
+    vespa.adminserver.execute("cat #{node_file} | awk '#{awk_script}' > #{range_file}", :exceptiononfailure => true)
 
     run_feeder(range_file, [parameter_filler(TYPE, "feed"), parameter_filler(LABEL, label)], :localfile => true)
     vespa.adminserver.execute("ls -ld #{range_file} #{selfdir}", :exceptiononfailure => false)
