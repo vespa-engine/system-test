@@ -26,7 +26,7 @@ import com.yahoo.component.annotation.Inject;
  * @author Erling Fjelstad
  * @author Edvard Dingsør
  */
-public class McpServerComponent extends AbstractComponent{
+public class McpServerComponent {
 
 
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -547,10 +547,10 @@ public class McpServerComponent extends AbstractComponent{
         );
     }
 
-    @Override
+    //@Override
     public void deconstruct() {
         logger.info("Deconstructing Vespa MCP server...");
-        super.deconstruct();
+        //super.deconstruct();
         logger.info("Vespa MCP server deconstructed");
     }
 

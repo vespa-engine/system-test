@@ -14,6 +14,8 @@ import com.yahoo.jdisc.Metric;
 import com.yahoo.jdisc.handler.ContentChannel;
 import com.yahoo.component.annotation.Inject;
 
+import com.yahoo.search.query.profile.compiled.CompiledQueryProfileRegistry;
+import com.yahoo.search.searchchain.ExecutionFactory;
 import io.modelcontextprotocol.spec.McpError;
 
 /**
@@ -24,15 +26,16 @@ import io.modelcontextprotocol.spec.McpError;
 */
 public class McpJdiscHandler extends ThreadedHttpRequestHandler{
     private static final Logger logger = Logger.getLogger(McpJdiscHandler.class.getName());
-
     private final McpHttpTransport  transport;
     
     @Inject
     public McpJdiscHandler(Executor executor,
-                    Metric metrics,
-                    McpServerComponent  mcpServer) {
+                           Metric metrics,
+                           ExecutionFactory executionFactory, CompiledQueryProfileRegistry queryProfileRegistry) {
         super(executor, metrics, true);
-        this.transport = mcpServer.getTransport();
+        var tools = new McpTools(executionFactory, queryProfileRegistry);
+        var server = new McpServerComponent(tools);
+        this.transport = server.getTransport();
     }
 
     /**

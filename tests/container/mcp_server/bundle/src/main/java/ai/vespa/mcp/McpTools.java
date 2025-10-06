@@ -39,7 +39,7 @@ import com.yahoo.search.searchchain.Execution;
  * @author Erling Fjelstad
  * @author Edvard Dingsør
  */
-public class McpTools extends AbstractComponent {
+public class McpTools {
 
     // Static utilities for HTTP requests and JSON parsing
     private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();

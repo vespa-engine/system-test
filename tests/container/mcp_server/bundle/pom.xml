@@ -4,65 +4,56 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-  <groupId>ai.vespa.test</groupId>
-  <artifactId>app</artifactId>
-  <packaging>container-plugin</packaging>
-  <version>1.0.0</version>
+    <groupId>ai.vespa.mcp</groupId>
+    <artifactId>app</artifactId>
+    <packaging>container-plugin</packaging>
+    <version>1.0.0</version>
 
-  <parent>
-    <groupId>com.yahoo.vespa.systemtest</groupId>
-    <artifactId>test-apps-parent</artifactId>
-    <version>8-SNAPSHOT</version>
-    <relativePath>../../../pom.xml</relativePath>
-  </parent>
+    <parent>
+        <groupId>com.yahoo.vespa.systemtest</groupId>
+        <artifactId>test-apps-parent</artifactId>
+        <version>8-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
 
-<!--  <properties>-->
-<!--    <maven.compiler.source>17</maven.compiler.source>-->
-<!--    <maven.compiler.target>17</maven.compiler.target>-->
-<!--    <maven.compiler.release>17</maven.compiler.release>-->
-<!--  </properties>-->
+    <dependencies>
+        <!-- Core Vespa container development dependency - includes all container APIs -->
+        <dependency>
+            <groupId>com.yahoo.vespa</groupId>
+            <artifactId>container</artifactId>
+            <version>${vespa.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-  <dependencies>
-    <!-- Core Vespa container development dependency - includes all container APIs -->
-    <dependency>
-      <groupId>com.yahoo.vespa</groupId>
-      <artifactId>container-dev</artifactId>
-      <version>${vespa.version}</version>
-      <scope>provided</scope>
-    </dependency>
+        <!-- MCP SDK dependency - exclude slf4j to use Vespa's version -->
+        <dependency>
+            <groupId>io.modelcontextprotocol.sdk</groupId>
+            <artifactId>mcp</artifactId>
+            <version>0.11.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
 
-    <!-- MCP SDK dependency - exclude slf4j to use Vespa's version -->
-    <dependency>
-      <groupId>io.modelcontextprotocol.sdk</groupId>
-      <artifactId>mcp</artifactId>
-      <version>0.11.2</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-  </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <release>17</release>
-        </configuration>
-      </plugin>
-      
-      <plugin>
-        <groupId>com.yahoo.vespa</groupId>
-        <artifactId>bundle-plugin</artifactId>
-        <version>${vespa.version}</version>
-        <extensions>true</extensions>
-      </plugin>
-    </plugins>
-  </build>
+            <plugin>
+                <groupId>com.yahoo.vespa</groupId>
+                <artifactId>bundle-plugin</artifactId>
+                <version>${vespa.version}</version>
+                <extensions>true</extensions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
