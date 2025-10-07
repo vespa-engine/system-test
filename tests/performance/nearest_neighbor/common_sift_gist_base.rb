@@ -122,8 +122,8 @@ class CommonSiftGistBase < CommonAnnBaseTest
     assert_hitcount("query=sddocname:test", documents_to_benchmark)
 
     puts "Benchmarking before deletion"
-    query_and_benchmark(HNSW, 100, 0)
-    calc_recall_for_queries(100, 0)
+    query_and_benchmark(HNSW, 100, 0, {:label => "hnsw-th100-before-removal"})
+    calc_recall_for_queries(100, 0, {:label => "hnsw-th100-before-removal"})
 
     puts "Feeding the remaining documents..."
     feed_and_benchmark_range(file, "#{label}-#{documents_to_benchmark}-#{documents_in_total}", documents_to_benchmark, documents_in_total)
@@ -133,8 +133,8 @@ class CommonSiftGistBase < CommonAnnBaseTest
     assert_hitcount("query=sddocname:test", documents_to_benchmark)
 
     puts "Benchmarking after deletion"
-    query_and_benchmark(HNSW, 100, 0)
-    calc_recall_for_queries(100, 0)
+    query_and_benchmark(HNSW, 100, 0, {:label => "hnsw-th100-after-removal"})
+    calc_recall_for_queries(100, 0, {:label => "hnsw-th100-after-removal"})
   end
 
   def fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
