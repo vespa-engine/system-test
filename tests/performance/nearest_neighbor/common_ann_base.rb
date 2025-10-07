@@ -108,7 +108,16 @@ class CommonAnnBaseTest < PerformanceTest
     fetch_file_to_localhost(@query_vectors, @local_query_vectors)
   end
 
-  def calc_recall_for_queries(target_hits, explore_hits, filter_percent = 0, approximate_threshold = 0.05, filter_first_threshold = 0.0, filter_first_exploration = 0.3, slack = 0.0, doc_type = "test", doc_tensor = "vec_m16", query_tensor = "q_vec")
+  def calc_recall_for_queries(target_hits, explore_hits, params = {})
+    filter_percent = params[:filter_percent] || 0
+    approximate_threshold = params[:approximate_threshold] || 0.05
+    filter_first_threshold = params[:filter_first_threshold] || 0.0
+    filter_first_exploration = params[:filter_first_exploration] || 0.3
+    slack = params[:slack] || 0.0
+    doc_type = params[:doc_type] || "test"
+    doc_tensor = params[:doc_tensor] || "vec_m16"
+    query_tensor = params[:query_tensor] || "q_vec"
+
     puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, filter_percent=#{filter_percent}, approximate_threshold=#{approximate_threshold}, filter_first_threshold=#{filter_first_threshold}, filter_first_exploration=#{filter_first_exploration}, slack=#{slack}, doc_type=#{doc_type}, doc_tensor=#{doc_tensor}, query_tensor=#{query_tensor}"
     result = RecallResult.new(target_hits)
     vectors = []
@@ -129,7 +138,7 @@ class CommonAnnBaseTest < PerformanceTest
     end
     threads.each(&:join)
     puts "recall: avg=#{result.avg}, median=#{result.median}, min=#{result.min}, max=#{result.max}, size=#{result.size}, samples_sorted=[#{result.samples.sort.join(',')}], samples=[#{result.samples.join(',')}]"
-    label = "hnsw-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}"
+    label = params[:label] || "hnsw-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}"
     write_report([parameter_filler(TYPE, "recall"),
                   parameter_filler(LABEL, label),
                   parameter_filler(TARGET_HITS, target_hits),

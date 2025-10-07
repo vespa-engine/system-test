@@ -39,28 +39,28 @@ class AnnSiftBase < CommonSiftGistBase
     run_target_hits_100_tests
 
     [1, 10, 50, 90, 95, 99].each do |filter_percent|
-      query_and_benchmark(BRUTE_FORCE, 100, 0, filter_percent)
+      query_and_benchmark(BRUTE_FORCE, 100, 0, {:filter_percent => filter_percent})
       # Standard HNSW
-      query_and_benchmark(HNSW, 100, 0, filter_percent)
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent})
       # Now with filter-first heuristic enabled
-      query_and_benchmark(HNSW, 100, 0, filter_percent, 0.00, 0.20, 0.3)
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.3})
       # Increased exploration
-      query_and_benchmark(HNSW, 100, 0, filter_percent, 0.00, 0.20, 0.35)
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.35})
 
       # Recall for standard HNSW
-      calc_recall_for_queries(100, 0, filter_percent)
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent})
       # Recall for filter-first heuristic
-      calc_recall_for_queries(100, 0, filter_percent, 0.00, 0.20, 0.3)
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.3})
       # Increased exploration
-      calc_recall_for_queries(100, 0, filter_percent, 0.00, 0.20, 0.35)
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.35})
     end
 
     if test_threads_per_search
       [1, 2, 4, 8, 16].each do |threads|
         # Standard HNSW
-        query_and_benchmark(HNSW, 100, 0, 10, 0.05, 0.0, 0.3, 0.0, 1, threads)
+        query_and_benchmark(HNSW, 100, 0, {:filter_percent => 10, :threads => threads})
         # Now with filter-first heuristic enabled
-        query_and_benchmark(HNSW, 100, 0, 10, 0.00, 0.20, 0.3, 0.0, 1, threads)
+        query_and_benchmark(HNSW, 100, 0, {:filter_percent => 10, :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.3, :threads => threads})
       end
     end
 

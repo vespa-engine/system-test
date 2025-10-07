@@ -41,10 +41,18 @@ class CommonSiftGistBase < CommonAnnBaseTest
     (threads_per_search > 0) ? "threads-#{threads_per_search}" : "default"
   end
 
-  def query_and_benchmark(algorithm, target_hits, explore_hits, filter_percent = 0, approximate_threshold = 0.05, filter_first_threshold = 0.0, filter_first_exploration = 0.3, slack = 0.0, clients = 1, threads_per_search = 0)
+  def query_and_benchmark(algorithm, target_hits, explore_hits, params = {})
+    filter_percent = params[:filter_percent] || 0
+    approximate_threshold = params[:approximate_threshold] || 0.05
+    filter_first_threshold = params[:filter_first_threshold] || 0.0
+    filter_first_exploration = params[:filter_first_exploration] || 0.3
+    slack = params[:slack] || 0.0
+    clients = params[:clients] || 1
+    threads_per_search = params[:threads_per_search] || 0
+
     approximate = algorithm == HNSW ? "true" : "false"
     query_file = fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
-    label = "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}-n#{clients}-t#{threads_per_search}"
+    label = params[:label] || "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}-n#{clients}-t#{threads_per_search}"
     result_file = dirs.tmpdir + "fbench_result.#{label}.txt"
     fillers = [parameter_filler(TYPE, get_type_string(filter_percent, threads_per_search)),
                parameter_filler(LABEL, label),
@@ -85,8 +93,8 @@ class CommonSiftGistBase < CommonAnnBaseTest
     end
 
     [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
-      query_and_benchmark(HNSW, 10, 0, 0, 0.05, 0.0, 0.3, slack)
-      calc_recall_for_queries(10, 0, 0, 0.05, 0.0, 0.3, slack)
+      query_and_benchmark(HNSW, 10, 0, {:slack => slack})
+      calc_recall_for_queries(10, 0, {:slack => slack})
     end
   end
 
@@ -97,14 +105,14 @@ class CommonSiftGistBase < CommonAnnBaseTest
     end
 
     [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
-      query_and_benchmark(HNSW, 100, 0, 0, 0.05, 0.0, 0.3, slack)
-      calc_recall_for_queries(100, 0, 0, 0.05, 0.0, 0.3, slack)
+      query_and_benchmark(HNSW, 100, 0, {:slack => slack})
+      calc_recall_for_queries(100, 0, {:slack => slack})
     end
 
     # Now with filtering and filter first
     [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
-      query_and_benchmark(HNSW, 100, 0, 95, 0.00, 0.4, 0.3, slack)
-      calc_recall_for_queries(100, 0, 95, 0.00, 0.4, 0.3, slack)
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
+      calc_recall_for_queries(100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
     end
   end
 
