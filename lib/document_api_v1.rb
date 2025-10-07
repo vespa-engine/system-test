@@ -204,8 +204,8 @@ class DocumentApiV1
         cont = jl['continuation']
         maybe_token = cont.has_key?('token') ? cont['token'] : nil
         response_handler.on_continuation(maybe_token, cont['percentFinished'])
-      elsif jl.has_key? 'documentCount'
-        response_handler.on_document_count jl['documentCount'].to_i
+      elsif jl.has_key? 'sessionStats'
+        response_handler.on_session_stats jl['sessionStats']
       end
     end
   end

@@ -91,8 +91,8 @@ class VisitManyDocumentsTest < VdsTest
       @percent_finished = percent_finished
     end
 
-    def on_document_count(doc_count)
-      @reported_document_count = doc_count
+    def on_session_stats(session_stats)
+      @reported_document_count = session_stats['documentCount'].to_i
     end
   end
 
