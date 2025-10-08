@@ -54,6 +54,7 @@ class MatchesFeature < IndexedStreamingSearchTest
     assert_matches({"matches(f5.value)" => 0}, "query=a+f5.value:30")
     assert_matches({"matches(f5.value,0)" => 0, "matches(f5.value,1)" => 1}, "query=a+f5.value:10")
 
+    assert_matches({"matches(f1)" => 1, "matches(f2)" => 0, "matches(f3)" => 0}, yql_query("f1 contains 'a' OR (f2 contains 'b' and !(f3 contains 'a'))"))
     same_elem_d = "sameElement(key contains 'd', value >= 40)"
     same_elem_a = "sameElement(key contains 'a', value >= 40)"
     assert_matches({"matches(f5)" => 1}, yql_query("f5 contains #{same_elem_d}"))
