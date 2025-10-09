@@ -288,8 +288,8 @@ elementCompleteness(url_exp.scheme).completeness#0.0
 elementCompleteness(url_exp.scheme).elementWeight#0.0
 elementCompleteness(url_exp.scheme).fieldCompleteness#0.0
 elementCompleteness(url_exp.scheme).queryCompleteness#0.0
-elementSimilarity(string_arr)#0.7
-elementSimilarity(string_wset)#1.4
+elementSimilarity(string_arr)#0.8500000000000001
+elementSimilarity(string_wset)#1.7000000000000002
 elementSimilarity(url_arr)#0.9
 elementSimilarity(url_arr.fragment)#0.0
 elementSimilarity(url_arr.host)#0.0
@@ -909,10 +909,10 @@ term(4).connectedness#0.0
 term(4).significance#0.0
 term(4).weight#0.0
 textSimilarity(string_exp).fieldCoverage#1.0
-textSimilarity(string_exp).order#0.0
+textSimilarity(string_exp).order#1.0
 textSimilarity(string_exp).proximity#1.0
 textSimilarity(string_exp).queryCoverage#0.5
-textSimilarity(string_exp).score#0.7
+textSimilarity(string_exp).score#0.8500000000000001
 textSimilarity(url_exp).fieldCoverage#0.5
 textSimilarity(url_exp).order#1.0
 textSimilarity(url_exp).proximity#1.0
