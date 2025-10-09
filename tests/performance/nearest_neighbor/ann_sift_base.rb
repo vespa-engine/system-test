@@ -58,9 +58,9 @@ class AnnSiftBase < CommonSiftGistBase
     if test_threads_per_search
       [1, 2, 4, 8, 16].each do |threads|
         # Standard HNSW
-        query_and_benchmark(HNSW, 100, 0, {:filter_percent => 10, :threads => threads})
+        query_and_benchmark(HNSW, 100, 0, {:filter_percent => 10, :threads_per_search => threads})
         # Now with filter-first heuristic enabled
-        query_and_benchmark(HNSW, 100, 0, {:filter_percent => 10, :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.3, :threads => threads})
+        query_and_benchmark(HNSW, 100, 0, {:filter_percent => 10, :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.3, :threads_per_search => threads})
       end
     end
 
