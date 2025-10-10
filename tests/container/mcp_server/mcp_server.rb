@@ -19,7 +19,7 @@ class McpServerTest < SearchContainerTest
   def test_all
     # Run all tests in sequence
     print_test_header("INITIALIZE REQUEST")
-    initalize_request_test()
+    initialize_request_test()
 
     print_test_header("LIST TOOLS")
     list_tools_test()
@@ -34,7 +34,7 @@ class McpServerTest < SearchContainerTest
     get_documentation_test()
   end
 
-  def initalize_request_test
+  def initialize_request_test
     # Simple JSON-RPC request to test MCP endpoint
     jsonrpc_request = {
       "jsonrpc" => "2.0",
