@@ -1,0 +1,707 @@
+#!/usr/bin/env bash
+# Copyright Vespa.ai. All rights reserved.
+
+set -euo pipefail
+
+# vespa-dev - Automated Vespa development environment manager
+# Works with both Docker and Podman, on macOS and Linux
+
+VERSION="1.0.0"
+CONTAINER_NAME="vespa-dev-almalinux-8"
+IMAGE_NAME="docker.io/vespaengine/vespa-dev-almalinux-8:latest"
+SSH_PORT="3334"
+DEBUG_PORT="5005"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+#######################################
+# Helper Functions
+#######################################
+
+log_info() {
+    echo -e "${BLUE}ℹ${NC} $*"
+}
+
+log_success() {
+    echo -e "${GREEN}✓${NC} $*"
+}
+
+log_warn() {
+    echo -e "${YELLOW}⚠${NC} $*"
+}
+
+log_error() {
+    echo -e "${RED}✗${NC} $*" >&2
+}
+
+#######################################
+# Detect Runtime (Docker/Podman)
+#######################################
+
+detect_runtime() {
+    # Check if we're inside a container
+    if [ -f /.dockerenv ] || grep -q docker /proc/1/cgroup 2>/dev/null; then
+        echo "container"
+        return 0
+    fi
+
+    # Try Podman first
+    if command -v podman &> /dev/null; then
+        if podman machine list 2>/dev/null | grep -q "Currently running"; then
+            echo "podman"
+            return 0
+        elif podman info &> /dev/null 2>&1; then
+            # Podman on Linux (no machine needed)
+            echo "podman"
+            return 0
+        fi
+    fi
+    
+    # Try Docker
+    if command -v docker &> /dev/null; then
+        if docker info &> /dev/null 2>&1; then
+            echo "docker"
+            return 0
+        fi
+    fi
+    
+    echo "none"
+    return 1
+}
+
+RUNTIME=$(detect_runtime)
+
+#######################################
+# Platform Detection
+#######################################
+
+get_platform() {
+    case "$(uname)" in
+        Darwin) echo "macos" ;;
+        Linux) echo "linux" ;;
+        *) echo "unknown" ;;
+    esac
+}
+
+PLATFORM=$(get_platform)
+
+#######################################
+# CPU Core Detection
+#######################################
+
+get_cores() {
+    if command -v nproc &> /dev/null; then
+        nproc
+    elif command -v sysctl &> /dev/null; then
+        sysctl -n hw.ncpu 2>/dev/null || echo "4"
+    else
+        echo "4"
+    fi
+}
+
+CORES=$(get_cores)
+THREADS=$((CORES + 1))
+
+#######################################
+# Volume Path Management
+#######################################
+
+get_volume_name() {
+    echo "volume-${CONTAINER_NAME}"
+}
+
+get_volume_path() {
+    echo "$HOME/volumes/${CONTAINER_NAME}"
+}
+
+#######################################
+# Container Runtime Commands
+#######################################
+
+runtime_cmd() {
+    if [ "$RUNTIME" = "docker" ]; then
+        docker "$@"
+    elif [ "$RUNTIME" = "podman" ]; then
+        podman "$@"
+    else
+        log_error "No container runtime available"
+        exit 1
+    fi
+}
+
+#######################################
+# Container Status Checks
+#######################################
+
+container_exists() {
+    runtime_cmd container inspect "$CONTAINER_NAME" &> /dev/null
+}
+
+container_running() {
+    [ "$(runtime_cmd container inspect -f '{{.State.Running}}' "$CONTAINER_NAME" 2>/dev/null)" = "true" ]
+}
+
+image_exists() {
+    runtime_cmd image inspect "$IMAGE_NAME" &> /dev/null
+}
+
+#######################################
+# Setup Functions
+#######################################
+
+pull_image() {
+    log_info "Pulling image: $IMAGE_NAME"
+    if runtime_cmd pull "$IMAGE_NAME"; then
+        log_success "Image pulled successfully"
+        return 0
+    else
+        log_error "Failed to pull image"
+        return 1
+    fi
+}
+
+create_volume() {
+    if [ "$PLATFORM" = "macos" ]; then
+        local volume_name=$(get_volume_name)
+        if ! runtime_cmd volume inspect "$volume_name" &> /dev/null; then
+            log_info "Creating volume: $volume_name"
+            runtime_cmd volume create "$volume_name"
+            log_success "Volume created"
+        else
+            log_info "Volume already exists: $volume_name"
+        fi
+    else
+        local volume_path=$(get_volume_path)
+        if [ ! -d "$volume_path" ]; then
+            log_info "Creating volume directory: $volume_path"
+            mkdir -p "$volume_path"
+            log_success "Volume directory created"
+        else
+            log_info "Volume directory already exists: $volume_path"
+        fi
+    fi
+}
+
+create_container() {
+    log_info "Creating container: $CONTAINER_NAME"
+    
+    local volume_arg
+    if [ "$PLATFORM" = "macos" ]; then
+        volume_arg="-v $(get_volume_name):/home"
+    else
+        volume_arg="-v $(get_volume_path):/home"
+    fi
+    
+    runtime_cmd create \
+        --name "$CONTAINER_NAME" \
+        --hostname "$CONTAINER_NAME" \
+        -p "127.0.0.1:${SSH_PORT}:22" \
+        -p "127.0.0.1:${DEBUG_PORT}:${DEBUG_PORT}" \
+        --privileged \
+        --pids-limit -1 \
+        $volume_arg \
+        "$IMAGE_NAME"
+    
+    log_success "Container created"
+}
+
+configure_container() {
+    log_info "Configuring container..."
+    
+    # Check for SSH key
+    if [ ! -f "$HOME/.ssh/id_rsa.pub" ] && [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
+        log_error "No SSH key found. Please generate one first:"
+        log_error "  ssh-keygen -t ed25519 -C \"your_email@example.com\""
+        return 1
+    fi
+    
+    # Get current user info
+    local username=$(whoami)
+    local uid=$(id -u)
+    local gid=$(id -g)
+    
+    log_info "Adding user '$username' (uid:$uid, gid:$gid) to container"
+    
+    # Create user in container
+    runtime_cmd exec "$CONTAINER_NAME" groupadd -g "$gid" "$username" 2>/dev/null || true
+    runtime_cmd exec "$CONTAINER_NAME" useradd -u "$uid" -g "$gid" -m -s /bin/bash "$username" 2>/dev/null || true
+    
+    # Copy SSH keys
+    log_info "Setting up SSH access"
+    runtime_cmd exec "$CONTAINER_NAME" mkdir -p "/home/$username/.ssh"
+    
+    if [ -f "$HOME/.ssh/id_rsa.pub" ]; then
+        cat "$HOME/.ssh/id_rsa.pub" | runtime_cmd exec -i "$CONTAINER_NAME" tee "/home/$username/.ssh/authorized_keys" > /dev/null
+    elif [ -f "$HOME/.ssh/id_ed25519.pub" ]; then
+        cat "$HOME/.ssh/id_ed25519.pub" | runtime_cmd exec -i "$CONTAINER_NAME" tee "/home/$username/.ssh/authorized_keys" > /dev/null
+    fi
+    
+    runtime_cmd exec "$CONTAINER_NAME" chmod 700 "/home/$username/.ssh"
+    runtime_cmd exec "$CONTAINER_NAME" chmod 600 "/home/$username/.ssh/authorized_keys"
+    runtime_cmd exec "$CONTAINER_NAME" chown -R "$uid:$gid" "/home/$username/.ssh"
+    
+    # Set environment variables
+    log_info "Setting environment variables"
+    local env_vars="export VESPA_HOME=\$HOME/vespa
+export VESPA_USER=$username
+export PATH=\$HOME/git/system-test/bin:\$PATH
+export RUBYLIB=\$HOME/git/system-test/lib
+export VESPA_FACTORY=\$HOME/git/system-test/lib/factory"
+    
+    echo "$env_vars" | runtime_cmd exec -i "$CONTAINER_NAME" tee -a "/home/$username/.bashrc" > /dev/null
+    
+    # Copy vespa-dev script into container
+    log_info "Installing vespa-dev script in container"
+    cat "$0" | runtime_cmd exec -i "$CONTAINER_NAME" tee "/usr/local/bin/vespa-dev" > /dev/null
+    runtime_cmd exec "$CONTAINER_NAME" chmod +x "/usr/local/bin/vespa-dev"
+    
+    log_success "Container configured"
+}
+
+clone_repos() {
+    local username=$(whoami)
+    
+    # Clone Vespa repo
+    if ! runtime_cmd exec -u "$username" -w "/home/$username" "$CONTAINER_NAME" test -d "git/vespa"; then
+        log_info "Cloning Vespa repository..."
+        runtime_cmd exec -u "$username" -w "/home/$username" "$CONTAINER_NAME" mkdir -p git
+        runtime_cmd exec -u "$username" -w "/home/$username/git" "$CONTAINER_NAME" \
+            git clone https://github.com/vespa-engine/vespa.git
+        log_success "Vespa repository cloned"
+    else
+        log_info "Vespa repository already exists"
+    fi
+    
+    # Clone system-test repo
+    if ! runtime_cmd exec -u "$username" -w "/home/$username" "$CONTAINER_NAME" test -d "git/system-test"; then
+        log_info "Cloning system-test repository..."
+        runtime_cmd exec -u "$username" -w "/home/$username/git" "$CONTAINER_NAME" \
+            git clone https://github.com/vespa-engine/system-test.git
+        log_success "system-test repository cloned"
+    else
+        log_info "system-test repository already exists"
+    fi
+}
+
+bootstrap_java() {
+    local username=$(whoami)
+    log_info "Bootstrapping Java build environment..."
+    
+    runtime_cmd exec -u "$username" -w "/home/$username/git/vespa" "$CONTAINER_NAME" \
+        bash -c "source ~/.bashrc && ./bootstrap.sh java" || true
+    
+    log_success "Java environment bootstrapped"
+}
+
+build_java() {
+    local username=$(whoami)
+    log_info "Building Java modules (this may take a while)..."
+    
+    runtime_cmd exec -u "$username" -w "/home/$username/git/vespa" "$CONTAINER_NAME" \
+        bash -c "source ~/.bashrc && ./mvnw clean install --threads ${THREADS} -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests"
+    
+    log_success "Java modules built"
+}
+
+configure_cmake() {
+    local username=$(whoami)
+    log_info "Configuring CMake..."
+    
+    runtime_cmd exec -u "$username" -w "/home/$username/git/vespa" "$CONTAINER_NAME" \
+        bash -c "source ~/.bashrc && cmake ."
+    
+    log_success "CMake configured"
+}
+
+build_cpp() {
+    local username=$(whoami)
+    log_info "Building C++ modules (this may take a while)..."
+    
+    runtime_cmd exec -u "$username" -w "/home/$username/git/vespa" "$CONTAINER_NAME" \
+        bash -c "source ~/.bashrc && make -j ${THREADS} && make install/fast"
+    
+    log_success "C++ modules built and installed"
+}
+
+copy_feature_flags() {
+    local username=$(whoami)
+    log_info "Copying feature flags..."
+    
+    runtime_cmd exec -u "$username" -w "/home/$username" "$CONTAINER_NAME" \
+        bash -c "mkdir -p vespa/var/vespa && cp git/system-test/docker/include/feature-flags.json vespa/var/vespa/flag.db" 2>/dev/null || true
+    
+    log_success "Feature flags copied"
+}
+
+#######################################
+# Command Handlers
+#######################################
+
+cmd_setup() {
+    log_info "Starting Vespa development environment setup..."
+    log_info "Runtime: $RUNTIME, Platform: $PLATFORM, Cores: $CORES"
+    
+    if [ "$RUNTIME" = "none" ]; then
+        log_error "No container runtime found. Please install Docker or Podman."
+        exit 1
+    fi
+    
+    # Pull image
+    if ! image_exists; then
+        pull_image || exit 1
+    else
+        log_info "Image already exists: $IMAGE_NAME"
+    fi
+    
+    # Create volume
+    create_volume
+    
+    # Create container
+    if container_exists; then
+        log_warn "Container already exists: $CONTAINER_NAME"
+        log_info "Attempting to remove old container..."
+        runtime_cmd rm -f "$CONTAINER_NAME" 2>/dev/null || true
+    fi
+    
+    create_container || exit 1
+    
+    # Start container
+    log_info "Starting container..."
+    runtime_cmd start "$CONTAINER_NAME"
+    log_success "Container started"
+    
+    # Wait for SSH to be ready
+    log_info "Waiting for SSH to be ready..."
+    sleep 3
+    
+    # Configure container
+    configure_container || exit 1
+    
+    # Clone repositories
+    clone_repos || exit 1
+    
+    # Build everything
+    log_info "Building Vespa (Java + C++)..."
+    bootstrap_java || exit 1
+    build_java || exit 1
+    configure_cmake || exit 1
+    build_cpp || exit 1
+    copy_feature_flags || exit 1
+    
+    log_success "Setup complete!"
+    echo ""
+    log_info "To start developing, SSH into the container:"
+    echo "  ssh -A 127.0.0.1 -p $SSH_PORT"
+    echo ""
+    log_info "Inside the container, you can use:"
+    echo "  vespa-dev build        # Rebuild Vespa"
+    echo "  vespa-dev build-java   # Rebuild Java modules"
+    echo "  vespa-dev build-cpp    # Rebuild C++ modules"
+}
+
+cmd_start() {
+    if ! container_exists; then
+        log_error "Container does not exist. Run 'vespa-dev setup' first."
+        exit 1
+    fi
+    
+    if container_running; then
+        log_info "Container is already running"
+    else
+        log_info "Starting container..."
+        runtime_cmd start "$CONTAINER_NAME"
+        log_success "Container started"
+    fi
+}
+
+cmd_stop() {
+    if ! container_exists; then
+        log_error "Container does not exist"
+        exit 1
+    fi
+    
+    if container_running; then
+        log_info "Stopping container..."
+        runtime_cmd stop "$CONTAINER_NAME"
+        log_success "Container stopped"
+    else
+        log_info "Container is not running"
+    fi
+}
+
+cmd_build() {
+    if [ "$RUNTIME" = "container" ]; then
+        # Running inside container
+        log_info "Building Vespa (Java + C++)..."
+        cd "$HOME/git/vespa"
+        ./mvnw install --threads ${THREADS} -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests
+        make -j ${THREADS}
+        make install/fast
+        log_success "Build complete"
+    else
+        # Running on host
+        if ! container_running; then
+            log_error "Container is not running. Start it with 'vespa-dev start'"
+            exit 1
+        fi
+        
+        local username=$(whoami)
+        log_info "Building Vespa (Java + C++)..."
+        runtime_cmd exec -u "$username" -w "/home/$username/git/vespa" "$CONTAINER_NAME" \
+            bash -c "source ~/.bashrc && ./mvnw install --threads ${THREADS} -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests && make -j ${THREADS} && make install/fast"
+        log_success "Build complete"
+    fi
+}
+
+cmd_build_java() {
+    if [ "$RUNTIME" = "container" ]; then
+        # Running inside container
+        log_info "Building Java modules..."
+        cd "$HOME/git/vespa"
+        ./mvnw install --threads ${THREADS} -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests
+        log_success "Java build complete"
+    else
+        # Running on host
+        if ! container_running; then
+            log_error "Container is not running. Start it with 'vespa-dev start'"
+            exit 1
+        fi
+        
+        local username=$(whoami)
+        log_info "Building Java modules..."
+        runtime_cmd exec -u "$username" -w "/home/$username/git/vespa" "$CONTAINER_NAME" \
+            bash -c "source ~/.bashrc && ./mvnw install --threads ${THREADS} -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests"
+        log_success "Java build complete"
+    fi
+}
+
+cmd_build_cpp() {
+    if [ "$RUNTIME" = "container" ]; then
+        # Running inside container
+        log_info "Building C++ modules..."
+        cd "$HOME/git/vespa"
+        make -j ${THREADS}
+        make install/fast
+        log_success "C++ build complete"
+    else
+        # Running on host
+        if ! container_running; then
+            log_error "Container is not running. Start it with 'vespa-dev start'"
+            exit 1
+        fi
+        
+        local username=$(whoami)
+        log_info "Building C++ modules..."
+        runtime_cmd exec -u "$username" -w "/home/$username/git/vespa" "$CONTAINER_NAME" \
+            bash -c "source ~/.bashrc && make -j ${THREADS} && make install/fast"
+        log_success "C++ build complete"
+    fi
+}
+
+cmd_clean() {
+    if [ "$RUNTIME" = "container" ]; then
+        # Running inside container
+        log_info "Cleaning build artifacts..."
+        cd "$HOME/git/vespa"
+        rm -rf ~/.m2/repository/com/yahoo
+        ccache --clear 2>/dev/null || true
+        log_success "Clean complete"
+    else
+        # Running on host
+        if ! container_running; then
+            log_error "Container is not running. Start it with 'vespa-dev start'"
+            exit 1
+        fi
+        
+        local username=$(whoami)
+        log_info "Cleaning build artifacts..."
+        runtime_cmd exec -u "$username" -w "/home/$username" "$CONTAINER_NAME" \
+            bash -c "rm -rf ~/.m2/repository/com/yahoo && ccache --clear 2>/dev/null || true"
+        log_success "Clean complete"
+    fi
+}
+
+cmd_ssh() {
+    if ! container_running; then
+        log_error "Container is not running. Start it with 'vespa-dev start'"
+        exit 1
+    fi
+    
+    log_info "Connecting via SSH..."
+    ssh -A "127.0.0.1" -p "$SSH_PORT"
+}
+
+cmd_status() {
+    echo "Vespa Development Environment Status"
+    echo "====================================="
+    echo "Runtime: $RUNTIME"
+    echo "Platform: $PLATFORM"
+    echo "CPU Cores: $CORES"
+    echo ""
+    
+    if [ "$RUNTIME" = "container" ]; then
+        echo "Running inside container"
+        echo ""
+        
+        if [ -d "$HOME/git/vespa" ]; then
+            echo "Vespa repo: ✓ ($(cd $HOME/git/vespa && git rev-parse --short HEAD 2>/dev/null || echo 'unknown'))"
+        else
+            echo "Vespa repo: ✗"
+        fi
+        
+        if [ -d "$HOME/git/system-test" ]; then
+            echo "System-test repo: ✓"
+        else
+            echo "System-test repo: ✗"
+        fi
+        
+        if [ -d "$HOME/vespa" ]; then
+            echo "Vespa installed: ✓"
+        else
+            echo "Vespa installed: ✗"
+        fi
+    else
+        if container_exists; then
+            echo "Container: ✓ exists"
+            if container_running; then
+                echo "Status: ✓ running"
+                echo "SSH: ssh -A 127.0.0.1 -p $SSH_PORT"
+            else
+                echo "Status: ✗ stopped"
+            fi
+        else
+            echo "Container: ✗ does not exist"
+            echo "Run 'vespa-dev setup' to create it"
+        fi
+        
+        if image_exists; then
+            echo "Image: ✓ $IMAGE_NAME"
+        else
+            echo "Image: ✗ not pulled"
+        fi
+    fi
+}
+
+cmd_destroy() {
+    if ! container_exists; then
+        log_info "Container does not exist"
+        exit 0
+    fi
+    
+    log_warn "This will remove the container but keep the volume/data"
+    read -p "Are you sure? (yes/no): " -r
+    if [[ ! $REPLY =~ ^[Yy][Ee][Ss]$ ]]; then
+        log_info "Aborted"
+        exit 0
+    fi
+    
+    if container_running; then
+        log_info "Stopping container..."
+        runtime_cmd stop "$CONTAINER_NAME" 2>/dev/null || true
+    fi
+    
+    log_info "Removing container..."
+    if runtime_cmd rm "$CONTAINER_NAME" 2>/dev/null; then
+        log_success "Container removed (volume preserved)"
+    else
+        log_warn "Container may have already been removed"
+    fi
+}
+
+cmd_help() {
+    cat << EOF
+vespa-dev v${VERSION} - Vespa development environment manager
+
+Usage: vespa-dev <command>
+
+Commands:
+  setup         Full setup: create container, clone repos, and build Vespa
+  start         Start the container
+  stop          Stop the container
+  build         Rebuild Vespa (Java + C++)
+  build-java    Rebuild only Java modules
+  build-cpp     Rebuild only C++ modules
+  clean         Clean build artifacts and caches
+  ssh           SSH into the container
+  status        Show current environment status
+  destroy       Remove container (keeps volume/data)
+  help          Show this help message
+
+Examples:
+  # First time setup
+  vespa-dev setup
+
+  # SSH into container
+  vespa-dev ssh
+  # or directly:
+  ssh -A 127.0.0.1 -p ${SSH_PORT}
+
+  # Inside container, rebuild after code changes
+  vespa-dev build
+
+For more information, see VESPA-DEV-QUICKSTART.md
+EOF
+}
+
+#######################################
+# Main
+#######################################
+
+main() {
+    if [ $# -eq 0 ]; then
+        cmd_help
+        exit 0
+    fi
+    
+    local command=$1
+    shift
+    
+    case "$command" in
+        setup)
+            cmd_setup "$@"
+            ;;
+        start)
+            cmd_start "$@"
+            ;;
+        stop)
+            cmd_stop "$@"
+            ;;
+        build)
+            cmd_build "$@"
+            ;;
+        build-java)
+            cmd_build_java "$@"
+            ;;
+        build-cpp)
+            cmd_build_cpp "$@"
+            ;;
+        clean)
+            cmd_clean "$@"
+            ;;
+        ssh)
+            cmd_ssh "$@"
+            ;;
+        status)
+            cmd_status "$@"
+            ;;
+        destroy)
+            cmd_destroy "$@"
+            ;;
+        help|--help|-h)
+            cmd_help
+            ;;
+        *)
+            log_error "Unknown command: $command"
+            echo ""
+            cmd_help
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"
