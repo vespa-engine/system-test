@@ -1,0 +1,35 @@
+{
+  // Ruby LSP configuration
+  "rubyLsp.enabledFeatures": {
+    "documentHighlights": true,
+    "documentLink": true,
+    "documentSymbols": true,
+    "foldingRanges": true,
+    "selectionRanges": true,
+    "semanticHighlighting": true,
+    "formatting": true,
+    "diagnostics": true,
+    "codeActions": true,
+    "inlayHint": true,
+    "completion": true,
+    "codeLens": true,
+    "definition": true,
+    "workspaceSymbol": true,
+    "signatureHelp": true,
+    "typeHierarchy": true,
+    "hover": true,
+    "onTypeFormatting": true
+  },
+  "rubyLsp.rubyVersionManager": {
+    "identifier": "none"
+  },
+  // Use the ruby-lsp gem that's already installed globally
+  "rubyLsp.bundleGemfile": "",
+  
+  // File associations for Ruby
+  "files.associations": {
+    "*.rb": "ruby",
+    "Gemfile": "ruby",
+    "Rakefile": "ruby"
+  }
+}

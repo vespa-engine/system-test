@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Vespa: up",
+      "type": "shell",
+      "command": "${workspaceFolder}/bin/vespa-dev up",
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Vespa: ssh",
+      "type": "shell",
+      "command": "${workspaceFolder}/bin/vespa-dev ssh",
+      "presentation": {
+        "reveal": "always"
+      }
+    },
+    {
+      "label": "Vespa: build java",
+      "type": "shell",
+      "command": "${workspaceFolder}/bin/vespa-dev java"
+    },
+    {
+      "label": "Vespa: build cpp",
+      "type": "shell",
+      "command": "${workspaceFolder}/bin/vespa-dev cpp"
+    },
+    {
+      "label": "Vespa: run example system test",
+      "type": "shell",
+      "command": "${workspaceFolder}/bin/vespa-dev system-test tests/search/basicsearch/basic_search.rb"
+    }
+  ]
+}
