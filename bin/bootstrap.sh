@@ -133,3 +133,7 @@ fi
 
 echo ""
 echo "[devcontainer] Done. Try: 'vespa-dev system-test tests/search/basicsearch/basic_search.rb'."
+echo ""
+echo "[devcontainer] To work with both system-test and vespa repos side-by-side:"
+echo "  Open the workspace file: File > Open Workspace from File > .devcontainer/vespa-dev.code-workspace"
+echo "  This will show both repositories in the VS Code Explorer."

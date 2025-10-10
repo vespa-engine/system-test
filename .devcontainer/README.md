@@ -50,6 +50,24 @@ The devcontainer automatically sets up a complete Vespa development environment:
 - **Maven Cache**: `/root/.m2` - Persistent across rebuilds
 - **ccache**: `/root/.ccache` - Speeds up C++ rebuilds
 
+### Working with Both Repositories
+
+By default, only the `system-test` repository is visible in VS Code's Explorer. To work with both `system-test` and `vespa` repositories side-by-side:
+
+1. Go to **File** → **Open Workspace from File**
+2. Select `.devcontainer/vespa-dev.code-workspace`
+3. VS Code will reload and show both repositories as separate folders in the Explorer
+
+The workspace file is pre-configured to:
+- Show both repositories with descriptive names
+- Keep all your settings and extensions
+- Allow you to easily navigate between system tests and Vespa source code
+
+**Tip**: You can also open the workspace using the command line:
+```bash
+code .devcontainer/vespa-dev.code-workspace
+```
+
 ## Build Caching
 
 The devcontainer uses persistent Docker volumes to cache builds, significantly reducing rebuild times:

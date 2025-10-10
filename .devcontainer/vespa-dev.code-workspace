@@ -1,0 +1,15 @@
+{
+  "folders": [
+    {
+      "name": "system-test",
+      "path": "."
+    },
+    {
+      "name": "vespa",
+      "path": "/root/git/vespa"
+    }
+  ],
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  }
+}
