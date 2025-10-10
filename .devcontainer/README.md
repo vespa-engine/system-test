@@ -43,10 +43,22 @@ The devcontainer automatically sets up a complete Vespa development environment:
 
 ## Environment Details
 
-- **VESPA_HOME**: `/home/vscode/vespa` - Vespa installation directory
-- **Source Code**: `/home/vscode/git/vespa` - Vespa source (persistent volume)
+- **VESPA_HOME**: `/root/vespa` - Vespa installation directory (persistent volume)
+- **Source Code**: `/root/git/vespa` - Vespa source (persistent volume)
 - **System Tests**: `/workspaces/system-test` - This repository (mounted from workspace)
 - **User**: `root` (required for some Vespa operations)
+- **Maven Cache**: `/root/.m2` - Persistent across rebuilds
+- **ccache**: `/root/.ccache` - Speeds up C++ rebuilds
+
+## Build Caching
+
+The devcontainer uses persistent Docker volumes to cache builds, significantly reducing rebuild times:
+
+- **First build**: ~60-90 minutes (downloads dependencies, compiles everything)
+- **Subsequent rebuilds**: ~5-15 minutes (or instant if markers exist)
+- **Container restarts**: Instant (everything is cached)
+
+See [CACHING.md](../CACHING.md) for detailed information about how caching works and how to manage it.
 
 ## Using the `vespa-dev` Helper
 

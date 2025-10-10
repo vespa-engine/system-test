@@ -17,15 +17,15 @@
     }
   },
   "mounts": [
-    "source=vespa-m2,target=/home/vscode/.m2,type=volume",
-    "source=vespa-ccache,target=/home/vscode/.ccache,type=volume",
-    "source=vespa-home,target=/home/vscode/vespa,type=volume",
-    "source=vespa-src,target=/home/vscode/git/vespa,type=volume",
+    "source=vespa-m2,target=/root/.m2,type=volume",
+    "source=vespa-ccache,target=/root/.ccache,type=volume",
+    "source=vespa-home,target=/root/vespa,type=volume",
+    "source=vespa-src,target=/root/git/vespa,type=volume",
     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
   ],
   "containerEnv": {
-    "VESPA_HOME": "/home/vscode/vespa",
-    "CCACHE_DIR": "/home/vscode/.ccache",
+    "VESPA_HOME": "/root/vespa",
+    "CCACHE_DIR": "/root/.ccache",
     "SYSTEM_TEST_ROOT": "${containerWorkspaceFolder}",
     "MAVEN_OPTS": "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
   },

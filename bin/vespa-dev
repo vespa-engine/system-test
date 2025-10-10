@@ -48,50 +48,83 @@ bootstrap_code() {
 
 build_java() {
   local force="${1:-}"
+  
+  # Note: This function always rebuilds (incremental) when called
+  # The marker is only used by bootstrap.sh to avoid initial build on every container start
   if [[ "$force" == "--force" ]]; then
-    log "Force rebuild requested, removing marker..."
-    rm -f "$JAVA_BUILD_MARKER"
+    log "Force clean rebuild requested..."
+  else
+    log "Building Java modules (incremental)..."
   fi
   
-  log "Building Java modules..."
   cd "$GIT_DIR/vespa"
   ./bootstrap.sh java
-  ./mvnw -T 1C -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests clean install
   
-  # Mark as completed
+  # Use offline mode if .m2 repository is populated (speeds up builds)
+  local offline_flag=""
+  if [[ -d "$HOME/.m2/repository" ]] && [[ -n "$(ls -A $HOME/.m2/repository 2>/dev/null)" ]]; then
+    log "Using Maven cache (offline mode)"
+    offline_flag="--offline"
+  fi
+  
+  if [[ "$force" == "--force" ]]; then
+    # Force = clean build
+    ./mvnw -T 1C -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests ${offline_flag} clean install
+  else
+    # Default = incremental build (no clean)
+    ./mvnw -T 1C -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests ${offline_flag} install
+  fi
+  
+  # Mark as completed (for bootstrap)
   mkdir -p "$BUILD_MARKER_DIR"
   touch "$JAVA_BUILD_MARKER"
 }
 
 build_cpp() {
   local force="${1:-}"
+  
+  # Note: This function always rebuilds (incremental) when called
+  # The marker is only used by bootstrap.sh to avoid initial build on every container start
   if [[ "$force" == "--force" ]]; then
-    log "Force rebuild requested, removing marker..."
-    rm -f "$CPP_BUILD_MARKER"
+    log "Force clean rebuild requested..."
+  else
+    log "Building C++ modules (incremental)..."
   fi
   
-  log "Building C++ modules..."
   cd "$GIT_DIR/vespa"
-  cmake .
+  
+  # Configure cmake with ccache if available
+  if command -v ccache >/dev/null 2>&1; then
+    log "Using ccache for C++ compilation"
+    cmake -DCMAKE_CXX_COMPILER_LAUNCHER=ccache .
+  else
+    cmake .
+  fi
+  
+  if [[ "$force" == "--force" ]]; then
+    # Force = clean build
+    log "Cleaning C++ build artifacts..."
+    make clean || true
+  fi
+  
+  # Always run make (incremental by default, clean if forced)
   make -j $(($(nproc)+1))
   
-  # Mark as completed
+  # Mark as completed (for bootstrap)
   mkdir -p "$BUILD_MARKER_DIR"
   touch "$CPP_BUILD_MARKER"
 }
 
 install_fast() {
   local force="${1:-}"
-  if [[ "$force" == "--force" ]]; then
-    log "Force install requested, removing marker..."
-    rm -f "$INSTALL_MARKER"
-  fi
   
-  log "Installing (fast)..."
+  # Note: This function always installs when called
+  # The marker is only used by bootstrap.sh to avoid initial install on every container start
+  log "Installing to $VESPA_HOME (fast)..."
   cd "$GIT_DIR/vespa"
   make install/fast
   
-  # Mark as completed
+  # Mark as completed (for bootstrap)
   mkdir -p "$BUILD_MARKER_DIR"
   touch "$INSTALL_MARKER"
 }
@@ -214,10 +247,10 @@ This script runs INSIDE the devcontainer and executes commands directly.
 
 Commands:
   bootstrap         Clone vespa + system-test and set feature flags
-  java [--force]    Build all Java modules (--force to ignore completion marker)
-  cpp [--force]     Build all C++ modules (--force to ignore completion marker)
-  install [--force] Run 'make install/fast' (--force to ignore completion marker)
-  reset-builds      Reset build markers (builds will run again on next container start)
+  java [--force]    Build Java modules (incremental by default, clean with --force)
+  cpp [--force]     Build C++ modules (incremental by default, clean with --force)
+  install           Install Vespa to \$VESPA_HOME
+  reset-builds      Reset build markers (forces rebuild on next container start)
   setup-test        Create directories for system tests
   unit-java [m]     Run mvn tests (optionally in module m)
   unit-cpp [regex]  Run ctest (optionally filtered)
@@ -226,8 +259,18 @@ Commands:
   status            Show environment status
   help              Show this help
 
-Note: Java, C++, and install commands automatically run on first container start.
-      Use --force flag to rebuild, or reset-builds to clear all markers.
+Build Behavior:
+  - Commands ALWAYS build when you call them (good for development)
+  - Builds are INCREMENTAL by default (only rebuilds changed files)
+  - Use --force for a clean rebuild from scratch
+  - Build markers prevent automatic rebuilds on container start/restart
+  - Caches (Maven, ccache) make incremental builds fast
+
+Typical Workflow:
+  1. Make code changes in $GIT_DIR/vespa
+  2. Run 'vespa-dev java' or 'vespa-dev cpp' to rebuild (incremental)
+  3. Run 'vespa-dev install' to install updated binaries
+  4. Run 'vespa-dev system-test <test.rb>' to test your changes
 
 Environment variables:
   VESPA_HOME        Path to Vespa home directory (default: ~/vespa)

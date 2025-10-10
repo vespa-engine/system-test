@@ -3,6 +3,7 @@ set -euo pipefail
 
 # Set default values for environment variables
 VESPA_HOME="${VESPA_HOME:-$HOME/vespa}"
+GIT_DIR="${GIT_DIR:-$HOME/git}"
 SYSTEM_TEST_ROOT="${SYSTEM_TEST_ROOT:-}"
 
 echo "[devcontainer] Bootstrapping Vespa dev environment..."
@@ -20,27 +21,27 @@ else
 fi
 
 # Ensure directories
-mkdir -p "$HOME/git"
+mkdir -p "$GIT_DIR"
 
 # Clone Vespa repo into persistent volume if missing
-if [ ! -d "$HOME/git/vespa/.git" ]; then
+if [ ! -d "$GIT_DIR/vespa/.git" ]; then
   echo "[devcontainer] Cloning vespa repo (first time only)..."
-  git clone --depth 1 https://github.com/vespa-engine/vespa.git "$HOME/git/vespa"
+  git clone --depth 1 https://github.com/vespa-engine/vespa.git "$GIT_DIR/vespa"
 else
   echo "[devcontainer] vespa repo already present, skipping clone."
 fi
 
-# If the workspace is the system-test repo, keep a convenience link under $HOME/git
+# If the workspace is the system-test repo, keep a convenience link under $GIT_DIR
 if [ -d "${SYSTEM_TEST_ROOT:-}" ] && [ -d "${SYSTEM_TEST_ROOT}/.git" ]; then
-  if [ ! -e "$HOME/git/system-test" ]; then
+  if [ ! -e "$GIT_DIR/system-test" ]; then
     echo "[devcontainer] Linking system-test from workspace..."
-    ln -s "${SYSTEM_TEST_ROOT}" "$HOME/git/system-test"
+    ln -s "${SYSTEM_TEST_ROOT}" "$GIT_DIR/system-test"
   fi
 else
   # Otherwise, clone system-test if not present
-  if [ ! -d "$HOME/git/system-test/.git" ]; then
+  if [ ! -d "$GIT_DIR/system-test/.git" ]; then
     echo "[devcontainer] Cloning system-test repo (first time only)..."
-    git clone --depth 1 https://github.com/vespa-engine/system-test.git "$HOME/git/system-test"
+    git clone --depth 1 https://github.com/vespa-engine/system-test.git "$GIT_DIR/system-test"
   else
     echo "[devcontainer] system-test repo already present, skipping clone."
   fi
@@ -51,9 +52,9 @@ mkdir -p "$VESPA_HOME/var/vespa"
 mkdir -p "$VESPA_HOME/logs/systemtests"
 
 # Copy feature flags - flag.db should be a FILE, not a directory
-if [ -f "$HOME/git/system-test/docker/include/feature-flags.json" ]; then
+if [ -f "$GIT_DIR/system-test/docker/include/feature-flags.json" ]; then
   echo "[devcontainer] Setting up feature flags..."
-  cp -f "$HOME/git/system-test/docker/include/feature-flags.json" "$VESPA_HOME/var/vespa/flag.db"
+  cp -f "$GIT_DIR/system-test/docker/include/feature-flags.json" "$VESPA_HOME/var/vespa/flag.db"
 else
   echo "[devcontainer] Warning: feature-flags.json not found, skipping."
 fi
@@ -114,4 +115,21 @@ else
   echo "[devcontainer] Install already completed (marker found). Use 'vespa-dev install --force' to rerun."
 fi
 
+# Show cache status
+echo ""
+echo "[devcontainer] Cache status:"
+if command -v ccache >/dev/null 2>&1 && [ -d "$HOME/.ccache" ]; then
+  ccache -s 2>/dev/null | grep -E "cache (size|hit)" || echo "  ccache available at $HOME/.ccache"
+else
+  echo "  ccache: not configured"
+fi
+
+if [ -d "$HOME/.m2/repository" ] && [ -n "$(ls -A $HOME/.m2/repository 2>/dev/null)" ]; then
+  m2_size=$(du -sh "$HOME/.m2/repository" 2>/dev/null | cut -f1)
+  echo "  Maven cache: populated ($m2_size at $HOME/.m2/repository)"
+else
+  echo "  Maven cache: empty"
+fi
+
+echo ""
 echo "[devcontainer] Done. Try: 'vespa-dev system-test tests/search/basicsearch/basic_search.rb'."
