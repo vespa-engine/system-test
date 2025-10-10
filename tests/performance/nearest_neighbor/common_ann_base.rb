@@ -118,7 +118,7 @@ class CommonAnnBaseTest < PerformanceTest
     doc_type = params[:doc_type] || "test"
     doc_tensor = params[:doc_tensor] || "vec_m16"
     query_tensor = params[:query_tensor] || "q_vec"
-    annotation = params[:annotation] || ""
+    annotation = params[:annotation] || "none"
 
     puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, filter_percent=#{filter_percent}, approximate_threshold=#{approximate_threshold}, filter_first_threshold=#{filter_first_threshold}, filter_first_exploration=#{filter_first_exploration}, slack=#{slack}, doc_type=#{doc_type}, doc_tensor=#{doc_tensor}, query_tensor=#{query_tensor}"
     result = RecallResult.new(target_hits)

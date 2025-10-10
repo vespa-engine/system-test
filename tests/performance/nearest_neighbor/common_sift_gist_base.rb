@@ -49,7 +49,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     slack = params[:slack] || 0.0
     clients = params[:clients] || 1
     threads_per_search = params[:threads_per_search] || 0
-    annotation = params[:annotation] || ""
+    annotation = params[:annotation] || "none"
 
     approximate = algorithm == HNSW ? "true" : "false"
     query_file = fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
