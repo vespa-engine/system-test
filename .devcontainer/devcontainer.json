@@ -1,0 +1,55 @@
+{
+  "name": "Vespa Dev (AlmaLinux 8)",
+  "image": "docker.io/vespaengine/vespa-dev-almalinux-8:latest",
+  "remoteUser": "root",
+  "updateRemoteUserUID": false,
+  "init": true,
+  "privileged": true,
+  "capAdd": ["SYS_PTRACE"],
+  "securityOpt": ["seccomp=unconfined"],
+  "forwardPorts": [5005, 3334],
+  "portsAttributes": {
+    "5005": {
+      "label": "JVM Debug"
+    },
+    "3334": {
+      "label": "SSH"
+    }
+  },
+  "mounts": [
+    "source=vespa-m2,target=/home/vscode/.m2,type=volume",
+    "source=vespa-ccache,target=/home/vscode/.ccache,type=volume",
+    "source=vespa-home,target=/home/vscode/vespa,type=volume",
+    "source=vespa-src,target=/home/vscode/git/vespa,type=volume",
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
+  ],
+  "containerEnv": {
+    "VESPA_HOME": "/home/vscode/vespa",
+    "CCACHE_DIR": "/home/vscode/.ccache",
+    "SYSTEM_TEST_ROOT": "${containerWorkspaceFolder}",
+    "MAVEN_OPTS": "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
+  },
+  "postCreateCommand": ".devcontainer/scripts/bootstrap.sh",
+  "waitFor": "postCreateCommand",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "redhat.java",
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-maven",
+        "ms-azuretools.vscode-docker",
+        "GitHub.vscode-pull-request-github",
+        "Shopify.ruby-lsp"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "hostRequirements": {
+    "cpus": 8,
+    "memory": "16gb",
+    "storage": "128gb"
+  }
+}
