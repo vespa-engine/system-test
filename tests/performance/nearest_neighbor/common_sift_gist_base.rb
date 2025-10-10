@@ -49,6 +49,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     slack = params[:slack] || 0.0
     clients = params[:clients] || 1
     threads_per_search = params[:threads_per_search] || 0
+    annotation = params[:annotation] || ""
 
     approximate = algorithm == HNSW ? "true" : "false"
     query_file = fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
@@ -65,7 +66,8 @@ class CommonSiftGistBase < CommonAnnBaseTest
                parameter_filler(FILTER_FIRST_THRESHOLD, filter_first_threshold),
                parameter_filler(FILTER_FIRST_EXPLORATION, filter_first_exploration),
                parameter_filler(CLIENTS, clients),
-               parameter_filler(THREADS_PER_SEARCH, threads_per_search)]
+               parameter_filler(THREADS_PER_SEARCH, threads_per_search),
+               parameter_filler(ANNOTATION, annotation)]
     profiler_start
     run_fbench2(@container,
                 query_file,
@@ -122,19 +124,35 @@ class CommonSiftGistBase < CommonAnnBaseTest
     assert_hitcount("query=sddocname:test", documents_to_benchmark)
 
     puts "Benchmarking before deletion"
-    query_and_benchmark(HNSW, 100, 0, {:label => "hnsw-th100-before-removal"})
-    calc_recall_for_queries(100, 0, {:label => "hnsw-th100-before-removal"})
+    query_and_benchmark(HNSW, 100, 0, {:label => "hnsw-th100-before-removal", :annotation => "subset"})
+    calc_recall_for_queries(100, 0, {:label => "hnsw-th100-before-removal", :annotation => "subset"})
 
     puts "Feeding the remaining documents..."
     feed_and_benchmark_range(file, "#{label}-#{documents_to_benchmark}-#{documents_in_total}", documents_to_benchmark, documents_in_total)
+    assert_hitcount("query=sddocname:test", documents_in_total)
+
+    puts "Benchmarking with full data set before deletion"
+    query_and_benchmark(HNSW, 100, 0, {:label => "hnsw-th100-full-before-removal", :annotation => "full"})
+    calc_recall_for_queries(100, 0, {:label => "hnsw-th100-full-before-removal", :annotation => "full"})
 
     puts "...and removing them again"
     vespa.document_api_v1.http_delete("/document/v1/test/test/docid?cluster=search&selection=#{CGI.escape("test.id>=#{documents_to_benchmark} and test.id<#{documents_in_total}")}")
     assert_hitcount("query=sddocname:test", documents_to_benchmark)
 
+    puts "Printing stats after deletion"
+    print_nni_stats("test", "vec_m16")
+
     puts "Benchmarking after deletion"
-    query_and_benchmark(HNSW, 100, 0, {:label => "hnsw-th100-after-removal"})
-    calc_recall_for_queries(100, 0, {:label => "hnsw-th100-after-removal"})
+    query_and_benchmark(HNSW, 100, 0, {:label => "hnsw-th100-after-removal", :annotation => "subset"})
+    calc_recall_for_queries(100, 0, {:label => "hnsw-th100-after-removal", :annotation => "subset"})
+
+    puts "Feeding the removed documents again"
+    feed_and_benchmark_range(file, "#{label}-#{documents_to_benchmark}-#{documents_in_total}-again", documents_to_benchmark, documents_in_total)
+    assert_hitcount("query=sddocname:test", documents_in_total)
+
+    puts "Benchmarking with full data set after deletion"
+    query_and_benchmark(HNSW, 100, 0, {:label => "hnsw-th100-full-after-removal", :annotation => "full"})
+    calc_recall_for_queries(100, 0, {:label => "hnsw-th100-full-after-removal", :annotation => "full"})
   end
 
   def fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)

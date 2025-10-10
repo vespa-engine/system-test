@@ -22,6 +22,7 @@ class CommonAnnBaseTest < PerformanceTest
   RECALL_MEDIAN = "recall.median"
   CLIENTS = "clients"
   THREADS_PER_SEARCH = "threads_per_search"
+  ANNOTATION = "annotation"
   NNI_UNREACHABLE = "nni.unreachable"
 
   def start
@@ -117,6 +118,7 @@ class CommonAnnBaseTest < PerformanceTest
     doc_type = params[:doc_type] || "test"
     doc_tensor = params[:doc_tensor] || "vec_m16"
     query_tensor = params[:query_tensor] || "q_vec"
+    annotation = params[:annotation] || ""
 
     puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, filter_percent=#{filter_percent}, approximate_threshold=#{approximate_threshold}, filter_first_threshold=#{filter_first_threshold}, filter_first_exploration=#{filter_first_exploration}, slack=#{slack}, doc_type=#{doc_type}, doc_tensor=#{doc_tensor}, query_tensor=#{query_tensor}"
     result = RecallResult.new(target_hits)
@@ -148,6 +150,7 @@ class CommonAnnBaseTest < PerformanceTest
                   parameter_filler(FILTER_FIRST_THRESHOLD, filter_first_threshold),
                   parameter_filler(FILTER_FIRST_EXPLORATION, filter_first_exploration),
                   parameter_filler(SLACK, slack),
+                  parameter_filler(ANNOTATION, annotation),
                   metric_filler(RECALL_AVG, result.avg),
                   metric_filler(RECALL_MEDIAN, result.median)])
   end
