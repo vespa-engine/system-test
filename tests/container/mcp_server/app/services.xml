@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <services version="1.0" xmlns:deploy="vespa" xmlns:preprocess="properties">
     <container id="default" version="1.0">
-        <handler id="ai.vespa.mcp.McpJdiscHandler" bundle="app">
+        <handler id="ai.vespa.mcp.McpJdiscHandler" bundle="mcp-server">
             <binding>http://*/mcp/*</binding>
         </handler>
-<!--        -->
-<!--        <component id="ai.vespa.mcp.McpServerComponent" bundle="app"/>-->
-<!--        -->
-<!--        <component id="ai.vespa.mcp.McpTools" bundle="app"/>-->
-<!--        -->
         <document-api/>
-       
         <search/>
-       
         <nodes>
-<!--            <jvm options="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"/>-->
             <node hostalias="node1"/>
         </nodes>
     </container>

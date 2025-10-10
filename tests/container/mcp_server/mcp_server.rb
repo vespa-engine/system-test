@@ -11,7 +11,6 @@ class McpServerTest < SearchContainerTest
     set_owner("edvardwd")
     @valgrind = false
 
-    add_bundle_dir(selfdir + "bundle", "app")
     deploy(selfdir + "app")
     start
     @container = vespa.container.values.first
@@ -120,7 +119,7 @@ class McpServerTest < SearchContainerTest
     assert(parsed_response["result"]["content"].is_a?(Array))
     parsed_content = JSON.parse(parsed_response["result"]["content"][0]["text"])
 
-    # Check that root exists and children is empty (no documents fed yet)
+    # Check that totalCount is equal to 0 (no documents fed yet)
     assert(parsed_content.key?("root"))
     assert_equal(0, parsed_content["root"]["fields"]["totalCount"])
 
@@ -134,7 +133,7 @@ class McpServerTest < SearchContainerTest
     assert_equal(false, parsed_response["result"]["isError"]) 
     assert(parsed_response["result"].key?("content"))
     assert(parsed_response["result"]["content"].is_a?(Array))
-    assert_not_nil(parsed_response["result"]["content"][0]["text"].include?("John Doe"))
+    assert(parsed_response["result"]["content"][0]["text"].include?("John Doe"))
   end
 
   def get_documentation_test
