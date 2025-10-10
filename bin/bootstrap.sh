@@ -7,6 +7,18 @@ SYSTEM_TEST_ROOT="${SYSTEM_TEST_ROOT:-}"
 
 echo "[devcontainer] Bootstrapping Vespa dev environment..."
 
+# Detect if running in a devcontainer
+# REMOTE_CONTAINERS is set by VS Code devcontainers
+# CODESPACES is set by GitHub Codespaces
+if [ -n "${REMOTE_CONTAINERS:-}" ] || [ -n "${CODESPACES:-}" ]; then
+  # Disable GPG signing for git commits (AlmaLinux 8 has OpenSSH 8.0p1, but 8.2p1+ is needed)
+  echo "[devcontainer] Running in devcontainer - configuring git to disable SSH signing..."
+  git config --global gpg.format ""
+  git config --global commit.gpgsign false
+else
+  echo "[devcontainer] Not running in devcontainer - skipping git signing configuration"
+fi
+
 # Ensure directories
 mkdir -p "$HOME/git"
 
