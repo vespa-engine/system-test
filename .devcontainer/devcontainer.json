@@ -29,6 +29,9 @@
     "SYSTEM_TEST_ROOT": "${containerWorkspaceFolder}",
     "MAVEN_OPTS": "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
   },
+  "remoteEnv": {
+    "PATH": "${containerWorkspaceFolder}/bin:${containerEnv:PATH}"
+  },
   "postCreateCommand": "bin/bootstrap.sh",
   "waitFor": "postCreateCommand",
   "customizations": {
