@@ -29,7 +29,7 @@
     "SYSTEM_TEST_ROOT": "${containerWorkspaceFolder}",
     "MAVEN_OPTS": "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
   },
-  "postCreateCommand": ".devcontainer/scripts/bootstrap.sh",
+  "postCreateCommand": "bin/bootstrap.sh",
   "waitFor": "postCreateCommand",
   "customizations": {
     "vscode": {
