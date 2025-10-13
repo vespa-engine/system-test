@@ -1,7 +1,7 @@
 {
   "name": "Vespa Dev (AlmaLinux 8)",
   "image": "docker.io/vespaengine/vespa-dev-almalinux-8:latest",
-  "workspaceFolder": "/workspaces/system-test/.devcontainer/vespa-dev.code-workspace",
+  "workspaceFolder": "/workspaces/system-test",
   "remoteUser": "root",
   "updateRemoteUserUID": false,
   "init": true,
