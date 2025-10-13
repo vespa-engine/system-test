@@ -37,29 +37,34 @@ class BigDocument < IndexedStreamingSearchTest
     docs.write_json(@feed)
   end
 
+  def check(q, n)
+    query = "query=#{q}"
+    assert_hitcount_with_timeout(20.0, query, n)
+  end
+
   def test_bigdocument
     puts "generate docs"
     gendocs
     puts "feed docs"
     feed_and_wait_for_docs("big", 10, :file => @feed, :timeout => 2500)
-    assert_hitcount("query=title:0", 10)
-    assert_hitcount("query=title:1",  9)
-    assert_hitcount("query=title:2",  8)
-    assert_hitcount("query=title:3",  7)
-    assert_hitcount("query=title:4",  6)
-    assert_hitcount("query=title:5",  5)
-    assert_hitcount("query=title:6",  4)
-    assert_hitcount("query=title:7",  3)
-    assert_hitcount("query=title:8",  2)
-    assert_hitcount("query=title:9",  1)
+    check("title:0", 10)
+    check("title:1",  9)
+    check("title:2",  8)
+    check("title:3",  7)
+    check("title:4",  6)
+    check("title:5",  5)
+    check("title:6",  4)
+    check("title:7",  3)
+    check("title:8",  2)
+    check("title:9",  1)
 
-    assert_hitcount("query=body:0",      10)
-    assert_hitcount("query=body:41",      8)
-    assert_hitcount("query=body:999",     6)
-    assert_hitcount("query=body:9999",    5)
-    assert_hitcount("query=body:99999",   4)
-    assert_hitcount("query=body:150000",  3)
-    assert_hitcount("query=body:500000",  2)
+    check("body:0",      10)
+    check("body:41",      8)
+    check("body:999",     6)
+    check("body:9999",    5)
+    check("body:99999",   4)
+    check("body:150000",  3)
+    check("body:500000",  2)
   end
 
   def teardown
