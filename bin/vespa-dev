@@ -60,19 +60,12 @@ build_java() {
   cd "$GIT_DIR/vespa"
   ./bootstrap.sh java
   
-  # Use offline mode if .m2 repository is populated (speeds up builds)
-  local offline_flag=""
-  if [[ -d "$HOME/.m2/repository" ]] && [[ -n "$(ls -A $HOME/.m2/repository 2>/dev/null)" ]]; then
-    log "Using Maven cache (offline mode)"
-    offline_flag="--offline"
-  fi
-  
   if [[ "$force" == "--force" ]]; then
     # Force = clean build
-    ./mvnw -T 1C -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests ${offline_flag} clean install
+    ./mvnw -T 1C -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests clean install
   else
     # Default = incremental build (no clean)
-    ./mvnw -T 1C -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests ${offline_flag} install
+    ./mvnw -T 1C -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests install
   fi
   
   # Mark as completed (for bootstrap)
@@ -163,6 +156,32 @@ unit_cpp() {
   fi
 }
 
+build_all() {
+  local force="${1:-}"
+  log "=== Building all components ==="
+  log "This will build Java, C++, install, and start nodeserver"
+  log ""
+  
+  # Build Java
+  build_java "$force"
+  log ""
+  
+  # Build C++
+  build_cpp "$force"
+  log ""
+  
+  # Install to VESPA_HOME
+  install_fast "$force"
+  log ""
+  
+  # Start nodeserver
+  ensure_nodeserver
+  log ""
+  
+  log "=== Build complete ==="
+  log "Vespa is ready for development and testing!"
+}
+
 ensure_nodeserver() {
   if pgrep -fa nodeserver.sh >/dev/null; then
     log "nodeserver is already running"
@@ -246,6 +265,8 @@ Usage: $(basename "$0") <command> [args]
 This script runs INSIDE the devcontainer and executes commands directly.
 
 Commands:
+  build [--force]   Build everything: Java, C++, install, and start nodeserver
+                    (Main entrypoint after starting devcontainer)
   bootstrap         Clone vespa + system-test and set feature flags
   java [--force]    Build Java modules (incremental by default, clean with --force)
   cpp [--force]     Build C++ modules (incremental by default, clean with --force)
@@ -267,10 +288,14 @@ Build Behavior:
   - Caches (Maven, ccache) make incremental builds fast
 
 Typical Workflow:
-  1. Make code changes in $GIT_DIR/vespa
-  2. Run 'vespa-dev java' or 'vespa-dev cpp' to rebuild (incremental)
-  3. Run 'vespa-dev install' to install updated binaries
-  4. Run 'vespa-dev system-test <test.rb>' to test your changes
+  After starting devcontainer:
+    vespa-dev build              # Build everything and start nodeserver
+  
+  During development:
+    1. Make code changes in $GIT_DIR/vespa
+    2. Run 'vespa-dev java' or 'vespa-dev cpp' to rebuild (incremental)
+    3. Run 'vespa-dev install' to install updated binaries
+    4. Run 'vespa-dev system-test <test.rb>' to test your changes
 
 Environment variables:
   VESPA_HOME        Path to Vespa home directory (default: ~/vespa)
@@ -281,6 +306,7 @@ EOF
 # --- Dispatcher ---
 cmd="${1:-help}"; shift || true
 case "$cmd" in
+  build)        build_all "${1:-}" ;;
   bootstrap)    bootstrap_code ;;
   java)         build_java "${1:-}" ;;
   cpp)          build_cpp "${1:-}" ;;
