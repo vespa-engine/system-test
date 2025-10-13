@@ -53,19 +53,14 @@ build_java() {
   # The marker is only used by bootstrap.sh to avoid initial build on every container start
   if [[ "$force" == "--force" ]]; then
     log "Force clean rebuild requested..."
+    cd "$GIT_DIR/vespa"
+    ./bootstrap.sh java
+    ./mvnw clean install --threads 1C -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests
   else
     log "Building Java modules (incremental)..."
-  fi
-  
-  cd "$GIT_DIR/vespa"
-  ./bootstrap.sh java
-  
-  if [[ "$force" == "--force" ]]; then
-    # Force = clean build
-    ./mvnw -T 1C -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests clean install
-  else
-    # Default = incremental build (no clean)
-    ./mvnw -T 1C -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests install
+    cd "$GIT_DIR/vespa"
+    ./bootstrap.sh java
+    ./mvnw install --threads 1C -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipTests
   fi
   
   # Mark as completed (for bootstrap)
@@ -75,33 +70,25 @@ build_java() {
 
 build_cpp() {
   local force="${1:-}"
+  local num_jobs=$(($(nproc)+1))
   
   # Note: This function always rebuilds (incremental) when called
   # The marker is only used by bootstrap.sh to avoid initial build on every container start
-  if [[ "$force" == "--force" ]]; then
-    log "Force clean rebuild requested..."
-  else
-    log "Building C++ modules (incremental)..."
-  fi
-  
   cd "$GIT_DIR/vespa"
   
-  # Configure cmake with ccache if available
-  if command -v ccache >/dev/null 2>&1; then
-    log "Using ccache for C++ compilation"
-    cmake -DCMAKE_CXX_COMPILER_LAUNCHER=ccache .
-  else
-    cmake .
-  fi
-  
   if [[ "$force" == "--force" ]]; then
-    # Force = clean build
+    log "Force clean rebuild requested..."
+    log "Running cmake..."
+    cmake .
     log "Cleaning C++ build artifacts..."
     make clean || true
+    log "Building C++ modules with $num_jobs jobs..."
+    make -j $num_jobs
+  else
+    log "Building C++ modules (incremental) with $num_jobs jobs..."
+    cmake .
+    make -j $num_jobs
   fi
-  
-  # Always run make (incremental by default, clean if forced)
-  make -j $(($(nproc)+1))
   
   # Mark as completed (for bootstrap)
   mkdir -p "$BUILD_MARKER_DIR"
