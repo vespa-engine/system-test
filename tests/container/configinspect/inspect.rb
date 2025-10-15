@@ -5,7 +5,7 @@ require 'app_generator/search_app'
 class ConfigInspect < SearchContainerTest
 
   def setup
-    set_owner('aressem')
+    set_owner('hmusum')
     set_description('Test config inspection')
     deploy_app(SearchApp.new().sd(selfdir+'simple.sd'))
     start

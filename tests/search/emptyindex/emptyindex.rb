@@ -7,7 +7,7 @@ class EmptyIndex < IndexedStreamingSearchTest
   # with 2 columns and 1 document, one of the columns will get an empty index.
 
   def setup
-    set_owner("aressem")
+    set_owner("hmusum")
     deploy_app(singlenode_2cols_realtime(SEARCH_DATA+"music.sd"))
     start
   end

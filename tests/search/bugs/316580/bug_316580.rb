@@ -6,7 +6,7 @@ class Bug_316580 < IndexedStreamingSearchTest
   # Description: Bugfix for problem with long input without any spaces
 
   def setup
-    set_owner("aressem")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
   end

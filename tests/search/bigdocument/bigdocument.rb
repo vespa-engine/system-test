@@ -9,7 +9,7 @@ class BigDocument < IndexedStreamingSearchTest
   end
 
   def setup
-    set_owner("aressem")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(selfdir+"big.sd"))
     start
     @feed = dirs.tmpdir + "bigfeed.json"
