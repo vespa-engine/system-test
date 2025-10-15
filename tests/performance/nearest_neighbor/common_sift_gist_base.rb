@@ -127,6 +127,9 @@ class CommonSiftGistBase < CommonAnnBaseTest
     query_and_benchmark(HNSW, 100, 0, {:label => "hnsw-th100-before-removal", :annotation => "subset"})
     calc_recall_for_queries(100, 0, {:label => "hnsw-th100-before-removal", :annotation => "subset"})
 
+    puts "Printing stats before deletion"
+    print_nni_stats("test", "vec_m16", "before")
+
     puts "Feeding the remaining documents..."
     feed_and_benchmark_range(file, "#{label}-#{documents_to_benchmark}-#{documents_in_total}", documents_to_benchmark, documents_in_total)
     assert_hitcount("query=sddocname:test", documents_in_total)
@@ -140,7 +143,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     assert_hitcount("query=sddocname:test", documents_to_benchmark)
 
     puts "Printing stats after deletion"
-    print_nni_stats("test", "vec_m16")
+    print_nni_stats("test", "vec_m16", "after")
 
     puts "Benchmarking after deletion"
     query_and_benchmark(HNSW, 100, 0, {:label => "hnsw-th100-after-removal", :annotation => "subset"})

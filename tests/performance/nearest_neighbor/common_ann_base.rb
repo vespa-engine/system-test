@@ -79,9 +79,10 @@ class CommonAnnBaseTest < PerformanceTest
     print_nni_stats(doc_type, tensor)
   end
 
-  def print_nni_stats(doc_type, tensor)
+  def print_nni_stats(doc_type, tensor, annotation = "none")
     stats = get_nni_stats(doc_type, tensor)
     write_report([parameter_filler(TYPE, "nni"),
+                  parameter_filler(ANNOTATION, annotation),
                   metric_filler(NNI_UNREACHABLE, calc_nni_unreachable(stats))])
     puts "Nearest neighbor index statistics for '#{tensor}': #{stats}"
   end
