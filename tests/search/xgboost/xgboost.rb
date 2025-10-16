@@ -7,7 +7,7 @@ class XGBoostServing < IndexedStreamingSearchTest
 
   def setup
     @valgrid = false
-    set_owner("jobergum")
+    set_owner("musum")
     set_description("Test XGBoost model representation in Vespa")
   end
 

@@ -6,7 +6,7 @@ require 'environment'
 class NearestNeighborDistanceMetricPerfTest < PerformanceTest
 
   def setup
-    set_owner("bergum")
+    set_owner("musum")
   end
 
   def test_metrics 

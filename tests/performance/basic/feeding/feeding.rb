@@ -3,7 +3,6 @@
 require 'performance_test'
 require 'app_generator/search_app'
 require 'performance/fbench'
-require 'pp'
 
 
 class BasicFeeding < PerformanceTest
@@ -19,7 +18,7 @@ class BasicFeeding < PerformanceTest
 
   def setup
     super
-    set_owner("bergum")
+    set_owner("hmusum")
     deploy_expand_vespa_home(@app)
     start
     vespa_destination_start
