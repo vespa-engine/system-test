@@ -8,7 +8,7 @@ require 'environment'
 class MixedTensorMaxSim < PerformanceTest
 
   def setup
-    set_owner("bergum")
+    set_owner("musum")
   end
 
   def test_max_sim_performance_1d
