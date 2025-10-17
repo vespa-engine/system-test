@@ -1,5 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'indexed_streaming_search_test'
+require 'bm25_scorer'
 
 class Bm25FeatureTest < IndexedStreamingSearchTest
   attr_reader :content_reverse_index
@@ -79,65 +80,9 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     end
   end
 
-  class Scorer
-    attr_reader :query_builder
-    attr_reader :avg_element_length
-    attr_reader :avg_field_length
-    attr_reader :reverse_index
-    attr_reader :idfs
-
-    def initialize(testcase, query_builder, avg_element_length, avg_field_length, reverse_index)
-      @testcase = testcase
-      @query_builder = query_builder
-      @avg_element_length = avg_element_length
-      @avg_field_length = avg_field_length
-      @reverse_index = reverse_index
-      @idfs = query_builder.idfs
-    end
-
-    def matches(term, doc)
-      rev_idx = reverse_index[term][doc]
-      return rev_idx.transpose[0].sum > 0
-    end
-
-    def bm25_score(term, doc)
-      rev_idx = reverse_index[term][doc]
-      num_occs = rev_idx.transpose[0].sum
-      field_length = rev_idx.transpose[1].sum
-      @testcase.score(num_occs, field_length, idfs[term], avg_field_length)
-    end
-
-    def elementwise_bm25_score(term, doc)
-      rev_idx = reverse_index[term][doc]
-      num_occs = rev_idx.transpose[0]
-      element_lengths = rev_idx.transpose[1]
-      scores = []
-      for element in 0...num_occs.size
-        if num_occs[element] == 0
-          scores.push(0)
-        else
-          scores.push(@testcase.score(num_occs[element], element_lengths[element], idfs[term], avg_element_length))
-        end
-      end
-      scores
-    end
-
-    def sum_scores(scores, other_scores)
-      if scores.nil?
-        return other_scores
-      end
-      @testcase.assert_equal(scores.size, other_scores.size)
-      summed_scores = []
-      for i in 0...scores.size
-        summed_scores.push(scores[i] + other_scores[i])
-      end
-      summed_scores
-    end
-  end
-
-  class DegradedScorer < Scorer
-    def initialize(testcase, query_builder, avg_element_length, avg_field_length, reverse_index)
-      super(testcase, query_builder, avg_element_length, avg_field_length, reverse_index)
+  class DegradedScorer < Bm25Scorer
+    def initialize(idfs, avg_element_length, avg_field_length, reverse_index)
+      super(idfs, avg_element_length, avg_field_length, reverse_index)
     end
 
     def bm25_score(term, doc)
@@ -282,7 +227,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
       document_frequencies = tweaked_content_document_frequencies
     end
     query_builder = QueryBuilder.new(self, total_doc_count, 'content', document_frequencies, ranking, add_significance: add_significance, add_docfreq: add_docfreq)
-    scorer = Scorer.new(self, query_builder, avg_field_length, avg_field_length, content_reverse_index)
+    scorer = Bm25Scorer.new(query_builder.idfs, avg_field_length, avg_field_length, content_reverse_index)
     idfs = query_builder.idfs
     assert_scores_for_query(query_builder, scorer, ['a'],
                             [score(2, 3, idfs['a'], avg_field_length),
@@ -314,7 +259,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
 
   def assert_bm25_array_scores_helper(total_doc_count, avg_field_length, add_docfreq: false)
     query_builder = QueryBuilder.new(self, total_doc_count, 'contenta', contenta_document_frequencies, 'default', add_docfreq: add_docfreq)
-    scorer = Scorer.new(self, query_builder, avg_field_length.to_f / 2, avg_field_length, contenta_reverse_index)
+    scorer = Bm25Scorer.new(query_builder.idfs, avg_field_length.to_f / 2, avg_field_length, contenta_reverse_index)
     idfs = query_builder.idfs
     assert_scores_for_query(query_builder, scorer, ['a'],
                             [score(2, 6, idfs['a'], avg_field_length),
@@ -335,7 +280,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
 
   def assert_degraded_bm25_scores(total_doc_count, avg_field_length)
     query_builder = QueryBuilder.new(self, total_doc_count, 'content', content_document_frequencies, 'default')
-    scorer = DegradedScorer.new(self, query_builder, avg_field_length, avg_field_length, content_reverse_index)
+    scorer = DegradedScorer.new(query_builder.idfs, avg_field_length, avg_field_length, content_reverse_index)
     assert_scores_for_query(query_builder, scorer, ['a'],
                             [idf(3, total_doc_count),
                              idf(3, total_doc_count),
@@ -353,7 +298,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
 
   def assert_degraded_bm25_array_scores(total_doc_count, avg_field_length)
     query_builder = QueryBuilder.new(self, total_doc_count, 'contenta', contenta_document_frequencies, 'default')
-    scorer = DegradedScorer.new(self, query_builder, avg_field_length / 2, avg_field_length, contenta_reverse_index)
+    scorer = DegradedScorer.new(query_builder.idfs, avg_field_length / 2, avg_field_length, contenta_reverse_index)
     assert_scores_for_query(query_builder, scorer, ['a'],
                             [idf(3, total_doc_count),
                              idf(3, total_doc_count),
@@ -370,13 +315,11 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
   end
 
   def idf(matching_doc_count, total_doc_count = 3)
-    # This is the same formula as used in vespa/searchlib/src/vespa/searchlib/features/bm25_feature.cpp
-    Math.log(1 + ((total_doc_count - matching_doc_count + 0.5) / (matching_doc_count + 0.5)))
+    Bm25Scorer.idf(matching_doc_count, total_doc_count)
   end
 
   def score(num_occs, field_length, inverse_doc_freq, avg_field_length = 4)
-    # This is the same formula as used in vespa/searchlib/src/vespa/searchlib/features/bm25_feature.cpp
-    inverse_doc_freq * (num_occs * 2.2) / (num_occs + (1.2 * (0.25 + 0.75 * field_length / avg_field_length)))
+    Bm25Scorer.score(num_occs, field_length, inverse_doc_freq, avg_field_length)
   end
 
   def assert_elementwise_bm25_feature(feature_name, exp_cells, features)
