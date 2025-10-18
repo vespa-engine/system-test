@@ -51,6 +51,7 @@
         { "id" : "max-uncommitted-memory", "rules" : [ { "value" : 130000 } ] },
         { "id" : "resource-limit-disk", "rules" : [ { "value" : 0.9 } ] },
         { "id" : "write-config-server-session-data-as-blob", "rules" : [ { "value" : true } ] },
+        { "id" : "send-protobuf-querytree", "rules" : [ { "value" : true } ] },
         { "id" : "unknown-config-definition", "rules" : [ { "value" : "fail" } ] },
         { "id" : "content-layer-metadata-feature-level", "rules" : [ { "value" : 1 } ] },
         { "id" : "search-core-transaction-log-replay-soft-memory-limit", "rules" : [ { "value" : -5 } ] },
