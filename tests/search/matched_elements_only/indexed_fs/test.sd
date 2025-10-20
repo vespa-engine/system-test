@@ -51,6 +51,10 @@ schema test {
       indexing: index | summary
       summary: matched-elements-only
     }
+    field idx_array2 type array<string> {
+      indexing: index | summary
+      summary: matched-elements-only
+    }
     field idx_array_src type array<string> {
       indexing: index | summary
     }
@@ -90,5 +94,8 @@ schema test {
   }
   fieldset fruit {
     fields: apples, oranges
+  }
+  fieldset i_arrays {
+    fields: idx_array, idx_array2
   }
 }

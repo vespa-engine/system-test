@@ -85,9 +85,36 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     assert_summary_field(query, "str_wset", empty_wset)
     assert_summary_field(query, "int_wset", empty_wset)
 
+    # Search for i_arrays goes to two indexed array fields
+    assert_summary_field("i_arrays contains 'one'", 'idx_array', ['one 1 une'])
+    assert_summary_field("i_arrays contains 'one'", 'idx_array2', ['one 1 une'])
+    unless is_streaming
+      assert_summary_field("i_arrays contains equiv('one', 'two', '2')", 'idx_array', ['one 1 une', 'two 2 deux'])
+      assert_summary_field("i_arrays contains equiv('one', 'two', '2')", 'idx_array2', ['two 2 deux', 'one 1 une'])
+      assert_summary_field("i_arrays contains alternatives({'one':1.0, 'two':1.0, '2':1.0})", 'idx_array', ['one 1 une', 'two 2 deux'])
+      assert_summary_field("i_arrays contains alternatives({'one':1.0, 'two':1.0, '2':1.0})", 'idx_array2', ['two 2 deux', 'one 1 une'])
+
+      assert_summary_field("idx_array  contains phrase('one', '1', 'une')", 'idx_array',  ['one 1 une'])
+      assert_summary_field("idx_array2 contains phrase('one', '1', 'une')", 'idx_array2', ['one 1 une'])
+      assert_summary_field("i_arrays   contains phrase('one', '1', 'une')", 'idx_array',  ['one 1 une'])
+      assert_summary_field("i_arrays   contains phrase('one', '1', 'une')", 'idx_array2', ['one 1 une'])
+      assert_summary_field("idx_array  contains phrase('one', alternatives({'bad':1.0, '1':1.0, 'two':1.0}), 'une')", 'idx_array',  ['one 1 une'])
+      assert_summary_field("idx_array2 contains phrase('one', alternatives({'bad':1.0, '1':1.0, 'two':1.0}), 'une')", 'idx_array2', ['one 1 une'])
+      assert_summary_field("i_arrays   contains phrase('one', alternatives({'bad':1.0, '1':1.0, 'two':1.0}), 'une')", 'idx_array',  ['one 1 une'])
+      assert_summary_field("i_arrays   contains phrase('one', alternatives({'bad':1.0, '1':1.0, 'two':1.0}), 'une')", 'idx_array2', ['one 1 une'])
+    end
+
+    # Search for fruit goes to both apples and oranges fields.
+    assert_summary_field("fruit contains 'one'", 'apples', ['one'])
     # Search for fruit goes to both apples and oranges fields.
     assert_summary_field("fruit contains 'one'", 'apples', ['one'])
     assert_summary_field("fruit contains 'one'", 'oranges', ['one'])
+    unless is_streaming
+      assert_summary_field("fruit contains equiv('one', 'two')", 'apples', ['one', 'two'])
+      assert_summary_field("fruit contains equiv('one', 'two')", 'oranges', ['two', 'one'])
+      assert_summary_field("fruit contains alternatives({'one':1.0, 'two':1.0})", 'apples', ['one', 'two'])
+      assert_summary_field("fruit contains alternatives({'one':1.0, 'two':1.0})", 'oranges', ['two', 'one'])
+    end
   end
 
   def assert_summary_field(yql_filter, field_name, exp_field_value, summary = "default")
@@ -96,6 +123,7 @@ class MatchedElementsOnlyTest < IndexedStreamingSearchTest
     assert_hitcount(result, 1)
     hit = result.hit[0]
     act_field_value = hit.field[field_name]
+    puts "Q: #{yql_filter} --> #{field_name} = #{act_field_value}"
     assert_equal(exp_field_value, act_field_value)
   end
 
