@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
+require 'flexmock/test_unit'
 require 'rubygems'
 require 'test/unit'
-require 'flexmock/test_unit'
 
 require 'performance/system'
 

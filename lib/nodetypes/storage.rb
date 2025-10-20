@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 require "document.rb"
-require 'assertions'
+require 'test/unit/assertions'
 require 'bucket_copy'
 require 'nodetypes/storageclusterstate.rb'
 require 'environment'
@@ -39,7 +39,7 @@ class ClusterControllerWrapper
 end
 
 class Storage
-  include Assertions
+  include Test::Unit::Assertions
 
   attr_accessor :distributor, :feeder, :fleetcontroller, :storage, :stress, :clustername
   attr_reader :bucket_crosscheck_params

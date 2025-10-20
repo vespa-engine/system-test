@@ -4,6 +4,8 @@ require 'search_container_test'
 require 'app_generator/container_app'
 require 'app_generator/http'
 require 'environment'
+require 'test/unit/assertion-failed-error'
+require 'test/unit'
 
 class QueryAccessLog < SearchContainerTest
 
@@ -87,7 +89,7 @@ class QueryAccessLog < SearchContainerTest
           log_c_untouched = get_real_qrs_logname('c') == logname_c_t0
           successful_match_no_log_rotation = log_a_untouched && log_b_untouched && log_c_untouched
 
-        rescue AssertionFailedError
+        rescue Test::Unit::AssertionFailedError
           log_a_untouched = get_real_qrs_logname('a') == logname_a_t0
           log_b_untouched = get_real_qrs_logname('b') == logname_b_t0
           log_c_untouched = get_real_qrs_logname('c') == logname_c_t0
@@ -153,7 +155,7 @@ class QueryAccessLog < SearchContainerTest
           log_c_untouched = get_real_qrs_logname('c') == logname_c_t1
           successful_match_no_log_rotation = log_a_untouched && log_b_untouched && log_c_untouched
 
-        rescue AssertionFailedError
+        rescue Test::Unit::AssertionFailedError
           log_a_untouched = get_real_qrs_logname('a') == logname_a_t1
           log_b_untouched = get_real_qrs_logname('b') == logname_b_t1
           log_c_untouched = get_real_qrs_logname('c') == logname_c_t1
