@@ -10,7 +10,7 @@ module Perf
 
     def initialize(node, data = {})
       @node = node
-      @hostname = node.hostname
+      @hostname = node.hostname unless node == nil
       @data = data
       @start_cpu_used = 0
       @start_cpu_total = 0
@@ -19,21 +19,16 @@ module Perf
     end
 
     # For unit testing
-    def initialize(hostname)
-      @node = nil
+    def self.create_for_testing(hostname)
       @hostname = hostname
-      @data = {}
-      @start_cpu_used = 0
-      @start_cpu_total = 0
-      @end_cpu_used = 0
-      @end_cpu_total = 0
+      new(nil)
     end
 
     def cpu_usage
-      calculate_cpu_usage(@node.execute("cat /proc/stat"))
+      calculate_cpu_usage(@node.execute("cat /proc/stat", :noecho => true))
     end
 
-    def calulate_cpu_usage(stat_output)
+    def calculate_cpu_usage(stat_output)
       # See 'man proc_stat' for format. Basically this sums all cpu usage types and subtracts idle time to find cpu used
       stat_output.split("\n").each do |line|
         if line =~ /^cpu /
@@ -69,7 +64,6 @@ module Perf
     end
 
     def fill
-      puts "Filling with #{@data['cpuutil']}"
       Proc.new do |result|
         result.add_metric('cpuutil', @data['cpuutil'], @hostname)
       end
