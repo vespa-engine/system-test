@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 # -*- coding: utf-8 -*-
-require 'test/unit/assertions'
+require 'assertions'
 require 'test/unit/assertion-failed-error'
 require 'error'
 require 'failure'
@@ -27,7 +27,7 @@ end
 # In addition, subclasses must implement the zero-argument "modulename" method to return a category name for the test case.
 class TestCase
   include DRb::DRbUndumped
-  include Test::Unit::Assertions
+  include Assertions
   include TestBase
 
   attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client, :perf_recording

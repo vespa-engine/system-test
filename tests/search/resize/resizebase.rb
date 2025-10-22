@@ -8,7 +8,7 @@ module ResizeApps
     attr_reader :dictsize, :numdocs, :num_child_docs, :nodes
     attr_accessor :slack_minhits, :slack_maxdocs_per_group
 
-    include Test::Unit::Assertions
+    include Assertions
 
     def initialize(test_case, dictsize, numdocs, num_child_docs, nodes, num_hosts, sps)
       @test_case = test_case
@@ -384,7 +384,7 @@ end
 
 class PollQueryStats < StatsBase
 
-  include Test::Unit::Assertions
+  include Assertions
 
   def initialize(test_case, poll_query, poll_queries_index)
     super(test_case)
@@ -532,7 +532,7 @@ end
 class ExploredDocCountStats < StatsBase
   attr_reader :explore_doc_count
 
-  include Test::Unit::Assertions
+  include Assertions
 
   def initialize(test_case, explore_doc_count, explore_doc_count_index)
     super(test_case)

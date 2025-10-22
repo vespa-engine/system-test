@@ -5,7 +5,6 @@ require 'app_generator/container_app'
 require 'app_generator/http'
 require 'environment'
 require 'test/unit/assertion-failed-error'
-require 'test/unit'
 
 class QueryAccessLog < SearchContainerTest
 

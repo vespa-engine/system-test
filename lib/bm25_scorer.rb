@@ -1,12 +1,12 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'test/unit/assertions'
+require 'assertions'
 
 # Utility class to calculate bm25 scores for a document.
 # Used by Bm25FeatureTest and SameElementOperator
 
 class Bm25Scorer
-  include Test::Unit::Assertions
+  include Assertions
 
   attr_reader :avg_element_length
   attr_reader :avg_field_length
