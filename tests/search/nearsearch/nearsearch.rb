@@ -122,8 +122,6 @@ class NearSearch < IndexedStreamingSearchTest
   end
 
   def test_near_negative_terms
-    return if is_streaming  # Negative terms not yet supported in streaming
-
     deploy_app(SearchApp.new
       .sd(selfdir+"music.sd")
       .container(Container.new
