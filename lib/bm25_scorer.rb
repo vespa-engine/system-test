@@ -10,6 +10,7 @@ class Bm25Scorer
 
   attr_reader :avg_element_length
   attr_reader :avg_field_length
+  attr_accessor :element_filter
   attr_reader :reverse_index
   attr_reader :idfs
 
@@ -18,6 +19,7 @@ class Bm25Scorer
     @avg_element_length = avg_element_length
     @avg_field_length = avg_field_length
     @reverse_index = reverse_index
+    @element_filter = nil
   end
 
   def self.idf(matching_doc_count, total_doc_count)
@@ -30,21 +32,26 @@ class Bm25Scorer
     inverse_doc_freq * (num_occs * 2.2) / (num_occs + (1.2 * (0.25 + 0.75 * field_length / avg_field_length)))
   end
 
+  def filtered_num_occs(num_occs)
+    return num_occs if element_filter.nil?
+    num_occs.each_with_index.map{ | cnt, element | element_filter[element] ? cnt : 0 }
+  end
+
   def matches(term, doc)
     rev_idx = reverse_index[term][doc]
-    return rev_idx.transpose[0].sum > 0
+    return filtered_num_occs(rev_idx.transpose[0]).sum > 0
   end
 
   def bm25_score(term, doc)
     rev_idx = reverse_index[term][doc]
-    num_occs = rev_idx.transpose[0].sum
+    num_occs = filtered_num_occs(rev_idx.transpose[0]).sum
     field_length = rev_idx.transpose[1].sum
     Bm25Scorer.score(num_occs, field_length, idfs[term], avg_field_length)
   end
 
   def elementwise_bm25_score(term, doc)
     rev_idx = reverse_index[term][doc]
-    num_occs = rev_idx.transpose[0]
+    num_occs = filtered_num_occs(rev_idx.transpose[0])
     element_lengths = rev_idx.transpose[1]
     scores = []
     for element in 0...num_occs.size
