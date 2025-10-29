@@ -120,7 +120,7 @@ module GroupingBase
     check_query('all(group(time.dayofyear(from)) each(output(count()) ))',
                 'time.yday.timezone', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
     check_query('all(group(time.dayofweek(from)) each(output(count()) ))',
-                'time.wday.timezone', DEFAULT_TIMEOUT, true, "default", "Europe/Oslo")
+                'time.wday.timezone', DEFAULT_TIMEOUT, true, "default", "Africa/Johannesburg")
 
     # Test relevance
     check_query('all(group(a) each(output(count(),sum(mod(relevance(),100000))) ))',

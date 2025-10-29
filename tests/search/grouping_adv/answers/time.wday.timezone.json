@@ -39,7 +39,7 @@
                 "relevance": 10977.31338339293,
                 "value": "6",
                 "fields": {
-                  "count()": 1
+                  "count()": 2
                 }
               },
               {
@@ -71,7 +71,7 @@
                 "relevance": 8518.091869631671,
                 "value": "5",
                 "fields": {
-                  "count()": 8
+                  "count()": 7
                 }
               },
               {
