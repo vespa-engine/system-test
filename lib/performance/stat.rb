@@ -271,8 +271,7 @@ module Perf
         ret = {}
         this.each do |k, v|
           other = that[k]
-          raise "Field '#{k}' not found in other map" if other.nil?
-          ret[k] = entry_delta(v, other)
+          ret[k] = entry_delta(v, other) unless other.nil?
         end
         ret
       end
