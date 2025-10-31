@@ -280,9 +280,6 @@ class PerformanceTest < TestCase
 
   def setup
     profiler_start
-    vespa.nodeproxies.values[0].execute("grep '^PRETTY_NAME' /etc/os-release")
-    vespa.nodeproxies.values[0].execute('uname -a')
-    vespa.nodeproxies.values[0].execute('lscpu')
   end
 
   # Start profiler. Calling this will stop any profilers started earlier and reset recordings.
