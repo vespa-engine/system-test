@@ -1,7 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
 require 'environment'
-require 'performance/stat'
 
 module Perf
 
@@ -13,6 +12,10 @@ module Perf
       @node = node
       @hostname = node.hostname unless node == nil
       @data = data
+      @start_cpu_used = 0
+      @start_cpu_total = 0
+      @end_cpu_used = 0
+      @end_cpu_total = 0
     end
 
     # For unit testing
@@ -21,17 +24,38 @@ module Perf
       new(nil)
     end
 
+    def cpu_usage
+      calculate_cpu_usage(@node.execute("cat /proc/stat", :noecho => true))
+    end
+
+    def calculate_cpu_usage(stat_output)
+      # See 'man proc_stat' for format. Basically this sums all cpu usage types and subtracts idle time to find cpu used
+      stat_output.split("\n").each do |line|
+        if line =~ /^cpu /
+          values = line.split(' ').collect(&:to_i)
+          values.delete(0) # Remove first item ('cpu')
+          total = values.inject(:+)
+          # Subtract idle time to find cpu usage
+          used = total - values[3]
+
+          return [used, total]
+        end
+      end
+
+      [0, 0]
+    end
+
     def start
-      @system_snapshot_start = Stat::create_snapshot
+      @start_cpu_used, @start_cpu_total = cpu_usage
     end
 
     def end
-      @system_snapshot_end = Stat::create_snapshot
-      p = Stat::snapshot_period(@system_snapshot_start, @system_snapshot_end)
-      set_cpu_util(p.metrics[:cpu_util])
+      @end_cpu_used, @end_cpu_total = cpu_usage
+      set_cpu_util([@start_cpu_used, @start_cpu_total], [@end_cpu_used, @end_cpu_total])
     end
 
-    def set_cpu_util(cpu_util)
+    def set_cpu_util(start_data, end_data)
+      cpu_util = (end_data[0] - start_data[0]).to_f / (end_data[1] - start_data[1]).to_f
       @data['cpuutil'] = cpu_util.nan? ? 0.0 : cpu_util
     end
 
