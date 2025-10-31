@@ -93,6 +93,7 @@ class TestCase
       @@log_messages[:empty_idx_file],
       @@log_messages[:taking_search_node_oos],
       @@log_messages[:no_snapshot_from_instance],
+      @@log_messages[:wanted_higher_limit],
       @@log_messages[:using_incubator_modules]
     ]
     @valgrind_ignorable_messages = [
@@ -740,6 +741,7 @@ class TestCase
     :no_snapshot_from_instance => /no snapshot from instance of /,
     :taking_search_node_oos => /Taking search node in cluster = .+ in group .+ out of service/,
     :slobrok_failed_listnames_check => /failed check using listNames callback/,
+    :wanted_higher_limit => /Wanted 102400 as limit for max user processes/,
     :using_incubator_modules => /Using incubator modules: jdk\.incubator\.foreign/ ,
   }
 
