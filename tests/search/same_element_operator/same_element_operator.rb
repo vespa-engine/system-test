@@ -67,6 +67,8 @@ class SameElementOperator < IndexedStreamingSearchTest
     assert_equal({ 0 => [ text0, text2 ] }, check_summary('sa contains sameElement("notfound" or ("text" and "is"))', 'meo'))
     assert_equal({ 0 => [ text0, text2 ] }, check_summary('sa contains sameElement("text" and !"and")', 'meo'))
     assert_equal({ }, check_summary('sa contains sameElement("this" and !"text")', 'meo'))
+    assert_equal({ 0 => [ text0, text1, text2 ] }, check_summary('sa contains sameElement(rank("text","is"))', 'meo'))
+    assert_equal({ 0 => [ text0, text2 ] }, check_summary('sa contains sameElement(rank("is","text"))', 'meo'))
     check_features('sa contains sameElement("this" and "text")',
                    expected_scores(['this', 'text'], scorer, [true, false, true]))
     check_features('sa contains sameElement("more" and ({distance:3}near("is","text")))',
@@ -77,6 +79,10 @@ class SameElementOperator < IndexedStreamingSearchTest
                    expected_scores(['more', 'this_is'], scorer, [false, false, true]))
     check_features('sa contains sameElement("text" and !"and")',
                    expected_scores(['text'], scorer, [true, false, true]))
+    check_features('sa contains sameElement(rank("text","is"))',
+                   expected_scores(['text','is'], scorer, [true, true, true]))
+    check_features('sa contains sameElement(rank("is","text"))',
+                   expected_scores(['text','is'], scorer, [true, false, true]))
   end
 
   def make_annotated_term(term)
