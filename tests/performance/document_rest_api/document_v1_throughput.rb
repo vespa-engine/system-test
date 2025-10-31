@@ -55,6 +55,8 @@ class DocumentV1Throughput < PerformanceTest
   end
 
   def test_throughput
+    @perf_recording = 'all'
+
     # Deploy a dummy app to get a reference to the container node, which is needed for uploading the certificate
     deploy_app(ContainerApp.new.container(Container.new))
     @container = @vespa.container.values.first
