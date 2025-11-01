@@ -48,7 +48,7 @@ public class VespaJsonFeeder {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.schedule(() -> { client.resetStats(); startNanos.set(System.nanoTime()); },
                           warmupSeconds(), TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(() -> { System.err.println(client.stats()); },
+        executor.scheduleAtFixedRate(() -> { System.out.println(client.stats()); },
                                      1, 1, TimeUnit.SECONDS);
 
         try (InputStream in = Files.newInputStream(tmpFile, StandardOpenOption.READ, StandardOpenOption.DELETE_ON_CLOSE);

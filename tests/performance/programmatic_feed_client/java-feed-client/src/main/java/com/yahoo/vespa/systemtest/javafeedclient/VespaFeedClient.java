@@ -34,7 +34,7 @@ public class VespaFeedClient {
         executor.schedule(client::resetStats, warmupSeconds(), TimeUnit.SECONDS);
         executor.schedule(() -> { stats.set(client.stats()); executor.shutdown(); },
                           warmupSeconds() + benchmarkSeconds(), TimeUnit.SECONDS);
-        executor.scheduleAtFixedRate(() -> { System.err.println(client.stats()); },
+        executor.scheduleAtFixedRate(() -> { System.out.println(client.stats()); },
                                      1, 1, TimeUnit.SECONDS);
         try (client) {
             while ( ! executor.isShutdown()) {
