@@ -40,6 +40,8 @@ class ComponentConfig < SearchContainerTest
 
   def test_component_config_with_missing_value
     set_expected_logged(/JDisc exiting: Throwable caught/)
+    @ignorable_messages.append(/Failed/)
+    @ignorable_messages.append(/Exception/)
     deploy(selfdir + "app_with_missing_config_value", nil, :bundles => [@searcher])
     begin
       start(40) # Need to give some time for services to start and log message below to be produced

@@ -4,6 +4,12 @@ require 'http_client'
 
 class FeedBlockTest < FeedBlockBase
 
+  def initialize(*args)
+    super(*args)
+    @ignorable_messages.append(/Write operations are now blocked:/)
+    @ignorable_messages.append(/attempted updated with a value that is NaN or Infinity;/)
+  end
+
   def test_proton_feed_block_http_client
     set_owner("geirst")
     set_description("Test resource based feed block (in proton) using high performance http client")
