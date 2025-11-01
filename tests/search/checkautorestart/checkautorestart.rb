@@ -9,6 +9,11 @@ class CheckAutoRestart < IndexedStreamingSearchTest
     @ps = Hash.new
   end
 
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
+
   def killapp(app)
     @ps[app] = Hash.new
     vespa.nodeproxies.each_value do |node|
