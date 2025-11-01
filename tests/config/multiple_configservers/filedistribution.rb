@@ -13,6 +13,11 @@ class FileDistributionWithMultipleConfigServers < ConfigTest
     @bundle_name = "com.yahoo.vespatest.ExtraHitSearcher"
   end
 
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
+
   def setup
     @valgrind = false
     set_description("Tests that file distribution works when using multiple configservers. " +

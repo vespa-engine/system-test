@@ -3,6 +3,11 @@ require_relative 'feed_and_query_test_base'
 
 class SearchWhileFeedingAndNodesDownAndUpTest < FeedAndQueryTestBase
 
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
+
   def setup
     set_owner("geirst")
     super
