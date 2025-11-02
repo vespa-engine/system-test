@@ -82,7 +82,7 @@ public class ConfigServerRunner {
 
     private void stopServer(Request req) {
     	if (serverMap.size() < 1) {
-            System.err.println("No servers to stop");
+            System.out.println("No servers to stop");
             req.returnValues().add(new Int32Value(1));
             return;
         }

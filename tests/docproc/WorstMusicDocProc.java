@@ -7,12 +7,12 @@ import com.yahoo.docproc.*;
 public class WorstMusicDocProc extends SimpleDocumentProcessor {
 
     public WorstMusicDocProc() {
-        System.err.println("WorstMusicDocProc constructor!");
+        System.out.println("WorstMusicDocProc constructor!");
     }
 
     @Override
     public void process(DocumentPut put) {
-        System.err.println("WorstMusicDocProc.process(DocumentPut)");
+        System.out.println("WorstMusicDocProc.process(DocumentPut)");
         put.getDocument().setFieldValue("title", "Worst music ever");
     }
 

@@ -207,7 +207,7 @@ public class TestVisitorHandler extends VdsVisitHandler {
 		
 		if (currentDocumentCount == documentThreshold) {
 		    log.log(Level.FINE, "Document threshold exceeded; pausing");
-		    System.err.println("Taking a chill pill and waiting for the ACK file to be touched...");
+		    System.out.println("Taking a chill pill and waiting for the ACK file to be touched...");
 		    // First, touch the file so that the system test knows it's OK to do a
 		    // re-deployment of vespa
 		    ackFile.setLastModified(new Date().getTime());
@@ -221,7 +221,7 @@ public class TestVisitorHandler extends VdsVisitHandler {
 			// This is just test utility code, don't bother with any cleanup
 		    }
 		    log.log(Level.FINE, "Resumed from pause");
-		    System.err.println("aaaaag after ten thousand years i'm finally free!!");
+		    System.out.println("aaaaag after ten thousand years i'm finally free!!");
 		}
 	    }
         }

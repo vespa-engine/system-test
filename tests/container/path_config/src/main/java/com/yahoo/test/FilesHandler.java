@@ -17,9 +17,9 @@ public class FilesHandler extends AbstractRequestHandler {
 
     public FilesHandler(FileAcquirer fileAcquirer, PathsAndFilesConfig config) {
         try {
-            //System.err.println(this + " waiting for fileref: " + config.files().fileVal());
+            //System.out.println(this + " waiting for fileref: " + config.files().fileVal());
             files.add(fileAcquirer.waitFor(config.files().fileVal(), 5, TimeUnit.MINUTES));
-            //System.err.println(this + " got file with fileref: " + config.files().fileVal());
+            //System.out.println(this + " got file with fileref: " + config.files().fileVal());
 
             files.add(config.paths().pathVal().toFile());
             files.add(config.paths().pathArr(0).toFile());
