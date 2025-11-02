@@ -11,6 +11,7 @@ class ConfigProxy < ConfigTest
 
   def initialize(*args)
     super(*args)
+    @ignorable_messages.append(/Request failed: UNKNOWN_DEFINITION/)
   end
 
   def setup

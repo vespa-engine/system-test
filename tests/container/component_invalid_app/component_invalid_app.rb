@@ -21,6 +21,7 @@ class ComponentInvalidApp < ContainerTest
 
   def test_bootstrap_reconfig_works_after_failed_reconfig
     set_expected_logged(/Error constructing 'com.yahoo.test.Fail2Handler'/)
+    @ignorable_messages.append(/Failed to construct components/)
 
     ok1   = add_bundle(selfdir + "Ok1Handler.java", :name => "Ok1Handler")
     fail2 = add_bundle(selfdir + "Fail2Handler.java", :name => "Fail2Handler")
@@ -48,6 +49,7 @@ class ComponentInvalidApp < ContainerTest
 
   def test_component_reconfig_works_after_failed_reconfig
     set_expected_logged(/Error constructing 'com.yahoo.test.ConfigurableExceptionHandler'/)
+    @ignorable_messages.append(/Failed to construct components/)
 
     bundle = add_bundle_dir(File.expand_path(selfdir), "com.yahoo.test.ConfigurableExceptionHandler")
     compile_bundles(@vespa.nodeproxies.values.first)
