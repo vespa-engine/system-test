@@ -15,6 +15,7 @@ require 'https_client'
 require 'json'
 require 'resolv'
 require 'remote_file_utils'
+require 'performance/stat'
 
 # This server is running on all Vespa nodes participating in the test.
 # A NodeServer class is instantiated and made accessible to DRb. Remote
@@ -929,6 +930,10 @@ class NodeServer
     ENV['ASAN_OPTIONS'] = nil
     ENV['TSAN_OPTIONS'] = nil
     ENV['UBSAN_OPTIONS'] = nil
+  end
+
+  def kernel_procfs_perf_snapshot
+    Perf::Stat::create_snapshot
   end
 
   # Not safe to call - part of remote copy methods in node_proxy.rb

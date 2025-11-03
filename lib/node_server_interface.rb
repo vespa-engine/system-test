@@ -300,4 +300,8 @@ module NodeServerInterface
   def reset_sanitizers(cleanup)
     @node_server.reset_sanitizers(cleanup)
   end
+
+  def kernel_procfs_perf_snapshot
+    @node_server.kernel_procfs_perf_snapshot
+  end
 end
