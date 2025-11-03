@@ -333,6 +333,7 @@ class PerformanceTest < TestCase
           end
           if @perf_recording == "all"
             @perf_processes[node] << node.execute_bg("perf record -e cycles -F 999 -a -o #{@perf_data_file}-0")
+            @perf_record_pids[node]['system-wide'] = [0]
           end
         rescue ExecuteError
           puts "Unable to start perf on node #{node.name}"
