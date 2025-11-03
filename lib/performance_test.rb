@@ -3,6 +3,7 @@
 require 'performance/configloadtester'
 require 'performance/fbench'
 require 'performance/resultmodel'
+require 'performance/stat'
 require 'environment'
 require 'json'
 
@@ -35,6 +36,7 @@ class PerformanceTest < TestCase
     @perf_data_dir = "#{Environment.instance.vespa_home}/tmp/perf/"
     @perf_data_file = File.join(@perf_data_dir,'record.data')
     @perf_stat_file = File.join(@perf_data_dir,'perf_stats')
+    @node_procfs_snapshot_at_setup_time = nil
     @vespa_user = Environment.instance.vespa_user
     @curr_user = `id -un`.chomp
     @script_user = get_script_user
@@ -276,13 +278,25 @@ class PerformanceTest < TestCase
     profiler_stop
     profiler_report
     stop
+    dump_procfs_perf_report
   end
 
   def setup
     profiler_start
-    vespa.nodeproxies.values[0].execute("grep '^PRETTY_NAME' /etc/os-release")
-    vespa.nodeproxies.values[0].execute('uname -a')
-    vespa.nodeproxies.values[0].execute('lscpu')
+    remote_node = vespa.nodeproxies.values[0]
+    remote_node.execute("grep '^PRETTY_NAME' /etc/os-release")
+    remote_node.execute('uname -a')
+    remote_node.execute('lscpu')
+    @node_procfs_snapshot_at_setup_time = remote_node.kernel_procfs_perf_snapshot
+  end
+
+  def dump_procfs_perf_report
+    return if @node_procfs_snapshot_at_setup_time.nil?
+    procfs_snapshot_now = vespa.nodeproxies.values[0].kernel_procfs_perf_snapshot
+    delta = Perf::Stat::snapshot_period(@node_procfs_snapshot_at_setup_time, procfs_snapshot_now)
+    puts 'System report for duration of test case on test runner node:'
+    puts '--------'
+    puts delta.printable_result
   end
 
   # Start profiler. Calling this will stop any profilers started earlier and reset recordings.
