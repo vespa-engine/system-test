@@ -79,7 +79,7 @@ class RankProfiles < IndexedStreamingSearchTest
 
     sf1 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 230, "query(myvalue)" => 0}
     sf2 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 235, "query(myvalue)" => 5}
-    sf2 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 235, "query(myvalue)" => 7}
+    sf3 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 237, "query(myvalue)" => 7}
 
     sf4 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 230, "query(myvalue)" => 0}
     sf5 = {"attribute(field13)" => 13}
