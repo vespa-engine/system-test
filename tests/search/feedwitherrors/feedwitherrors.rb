@@ -9,7 +9,7 @@ class FeedWithErrors < IndexedStreamingSearchTest
   end
 
   def setup
-    set_owner("valerijf")
+    set_owner("bratseth")
     set_description("Feed docs with errors, check that docproc reports correctly")
     deploy_app(SearchApp.new.sd(selfdir + "errordoc.sd"))
     start
