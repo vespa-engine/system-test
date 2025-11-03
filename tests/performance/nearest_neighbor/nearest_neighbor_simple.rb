@@ -83,6 +83,10 @@ class NearestNeighborPerformanceTest < PerformanceTest
     deploy_app(app)
     start
 
+    stats = vespa.search['search'].first.get_state_v1_custom_component('/hwinfo')
+    puts "search node HW info:"
+    puts JSON.pretty_generate(stats)
+
     puts "GENERATING QUERIES"
     # queries
     @rnd511vec = gen_511_randoms
