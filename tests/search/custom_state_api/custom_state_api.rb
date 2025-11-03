@@ -103,10 +103,11 @@ class CustomStateApi < IndexedStreamingSearchTest
   end
 
   def assert_hw_info(page)
-    assert_keys(["disk", "memory", "cpu"], page)
+    assert_keys(["disk", "memory", "cpu", "vectorization_fn_table"], page)
     assert(page["disk"]["size_bytes"].to_i > 0)
     assert(page["memory"]["size_bytes"].to_i > 0)
     assert(page["cpu"]["cores"].to_i > 0)
+    assert page["vectorization_fn_table"].has_key? "dot_product_i8" # very much non-exhaustive
   end
 
   def assert_resource_usage(page)
