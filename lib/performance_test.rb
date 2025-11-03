@@ -388,14 +388,15 @@ class PerformanceTest < TestCase
       reporter_pids[node] = []
       name_to_pids.each do | name, pids |
         pids.each do | pid |
+          perf_pid_arg = "--pid #{pid}"
+          perf_pid_arg = '' if pid == 0
+          data_file = "#{@perf_data_file}-#{pid}"
+          stat_file = "#{@perf_stat_file}-#{name}-#{pid}"
 
-          if extra_pids.key?(name)
+          if (pid == 0) || extra_pids.key?(name)
             # Extra program pids must be picked from a system wide perf record and will not have stat files
             data_file = "#{@perf_data_file}-0"
             stat_file = nil
-          else
-            data_file = "#{@perf_data_file}-#{pid}"
-            stat_file = "#{@perf_stat_file}-#{name}-#{pid}"
           end
           file_name = File.join(dir_name, "perf_#{name}-#{pid}")
 
@@ -407,7 +408,7 @@ class PerformanceTest < TestCase
             end
             filter = '/^# event : name = cycles.*/d;/# event : name/s/id = { [^}]* }/id = { ... }/;s/[.]\{5,255\}/.../g'
             fixed_opts = '--stdio --header --show-nr-samples --percent-limit 0.01'
-            node.execute("perf report #{fixed_opts} --pid #{pid} --input #{data_file} 2>/dev/null | sed '#{filter}' > #{file_name}")
+            node.execute("perf report #{fixed_opts} #{perf_pid_arg} --input #{data_file} 2>/dev/null | sed '#{filter}' > #{file_name}")
             node.execute("cp -a #{stat_file} #{dir_name}") if stat_file
           rescue ExecuteError
             puts "Unable to generate report for #{name} on host #{node.name}"
