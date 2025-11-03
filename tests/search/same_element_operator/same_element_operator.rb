@@ -83,6 +83,8 @@ class SameElementOperator < IndexedStreamingSearchTest
                    expected_scores(['text','is'], scorer, [true, true, true]))
     check_features('sa contains sameElement(rank("is","text"))',
                    expected_scores(['text','is'], scorer, [true, false, true]))
+    check_features('sa contains sameElement(rank("is" and "some","text"))',
+                   expected_scores(['text','is','some'], scorer, [true, false, false]))
   end
 
   def make_annotated_term(term)
