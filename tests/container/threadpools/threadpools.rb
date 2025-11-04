@@ -12,13 +12,13 @@ class Threadpools < SearchContainerTest
   end
 
   def test_docproc_handler_threadpool
-    expected_threads = nproc * 1.5
+    expected_threads = available_processors * 1.5
     assert_threadpool("docproc-handler", expected_threads.round, expected_threads.round, "unlimited")
   end
 
   def test_search_handler_threadpool
-    expected_min = nproc * 1.5
-    expected_max = nproc * 2
+    expected_min = available_processors * 1.5
+    expected_max = available_processors * 2
     expected_queue = expected_max * 2
     assert_threadpool("search-handler", expected_min.round, expected_max.round, expected_queue.round.to_s)
   end
@@ -36,10 +36,18 @@ class Threadpools < SearchContainerTest
                  "Threadpool '#{name}': expected queue=#{expected_queue}, got #{actual_queue}. Line: #{line}")
   end
 
-  # Returns nproc on container host
-  def nproc
+  # Returns java runtime available processors on container host
+  def available_processors
     container = vespa.container.values.first
-    container.execute("nproc").to_i
+    out = container.execute(%q{echo "Runtime.getRuntime().availableProcessors();" | jshell -q 2>&1})
+
+    line = out.each_line.find { |l| l.include?('==>') }
+    raise "Couldn't find value in jshell output:\n#{out}" unless line
+
+    match = line.match(/==>\s*(\d+)/)
+    raise "Non-numeric value in jshell output line: #{line}" unless match
+
+    match[1].to_i
   end
 
   # Finds the threadpool log line for given name, expects only 1 line, returns that line.
