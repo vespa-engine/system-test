@@ -6,9 +6,9 @@ require 'factory_client'
 
 class SimpleSystestSorter
 
-  def initialize(durations, tests)
+  def initialize(durations, test_status, tests)
     @test_classes = tests
-    @test_scores = Hash[calculate_scores(durations, tests)]
+    @test_scores = Hash[do_calculate_scores(durations, test_status, tests)]
   end
 
   def sort
@@ -18,6 +18,10 @@ class SimpleSystestSorter
   end
 
   private
+
+  def do_calculate_scores(durations, test_status, tests)
+    calculate_scores(durations, tests)
+  end
 
   def calculate_scores(durations, test_objects)
     test_objects.map do |test_object, method_name|
@@ -44,18 +48,20 @@ class BackendClient
     @valgrind = false
     @durations = {}
     @durations.default = 1500
+    @testStatus = {}
   end
 
   def initialize_testrun(test_objects)
     # Initialize Factory with test cases.
     response = @factory_client.initialize_testrun(@testrun_id, test_objects)
     @durations = response[:durations]
+    @testStatus = response[:testStatus]
     @valgrind = response[:valgrind]
   end
 
   def sort_testcases(test_objects)
     @log.info("Sorting tests")
-    SimpleSystestSorter.new(@durations, test_objects).sort
+    SimpleSystestSorter.new(@durations, @testStatus, test_objects).sort
   end
 
   def use_valgrind
