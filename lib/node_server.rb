@@ -153,7 +153,12 @@ class NodeServer
 
   # Find child pid of parent runserver
   def find_runserver_child(parent_pid)
-    `ps -o pid,ppid ax | awk "{ if ( \\$2 == #{parent_pid} ) { print \\$1 }}"`.chomp
+    psout=`ps -o pid,ppid ax`
+    child_pids = psout.each_line.map do |line|
+      pid, ppid = line.split()
+      (ppid == parent_pid.to_s) && pid || nil
+    end
+    return child_pids.compact.first || ""
   end
 
   # Executes _command_ on this node. Raises an exception if the exitstatus
@@ -257,11 +262,12 @@ class NodeServer
 
   # Returns an array of pids corresponding to _name_.
   def get_pids(name)
-    pids = `ps awwx | grep #{name} | grep -v grep | awk '{print $1}'`
     result = []
-    pids.split("\n").each do |pid|
-      pid.gsub!(/\s+/, "")
-      result.push(pid.to_i)
+    pids = `ps awwx`
+    re = /\s*(\d+)\s.*#{name}/
+    pids.each_line do |line|
+      m = re.match(line)
+      result.push(m.match(1).to_i) if m
     end
     return result
   end
@@ -851,11 +857,17 @@ class NodeServer
     @monitoring = true
     @monitor_thread = Thread.new do
       max_memory = 0
+      regexp = /^Mem:\s*(\d+)\s+(\d+)/
       count = 0
       while @monitoring
         sleep 0.1
         if count % 10 == 0
-            used_memory = `free -b | grep + | awk {'print $3'}`.strip.to_i
+            free_output = `free -b`
+            matches = free_output.each_line.map do |line|
+              m = regexp.match(line)
+              m.match(2) if m
+            end
+            used_memory = matches.compact.first.to_i
             if used_memory > max_memory
               max_memory = used_memory
             end
