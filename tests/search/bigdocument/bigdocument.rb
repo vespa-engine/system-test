@@ -10,6 +10,8 @@ class BigDocument < IndexedStreamingSearchTest
 
   def setup
     set_owner("hmusum")
+    @valgrind = false
+    @valgrind_opt = nil
     deploy_app(SearchApp.new.sd(selfdir+"big.sd"))
     start
     @feed = dirs.tmpdir + "bigfeed.json"
