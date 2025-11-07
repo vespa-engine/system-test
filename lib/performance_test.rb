@@ -329,11 +329,11 @@ class PerformanceTest < TestCase
 
           @perf_record_pids[node] = {}
           @perf_record_pids[node]['proton-bin'] = node.get_pids('sbin/vespa-proton-bin')
-          @perf_record_pids[node]['container'] = node.get_pids('"java.*-Dconfig.id=[^[:space:]]*/container[.][0-9]"')
+          @perf_record_pids[node]['container'] = node.get_pids('java.*-Dconfig.id=[a-z0-9]*/container[.][0-9]')
           if @perf_recording == "all"
             @perf_record_pids[node]['storaged-bin'] = node.get_pids('sbin/vespa-storaged-bin')
             @perf_record_pids[node]['distributord-bin'] = node.get_pids('sbin/vespa-distributord-bin')
-            @perf_record_pids[node]['configserver'] = node.get_pids('"java.*jdisc\/configserver"')
+            @perf_record_pids[node]['configserver'] = node.get_pids('java.*jdisc/configserver')
             @perf_record_pids[node]['vespa-config-loadtester'] = node.get_pids('vespa-config-loadtester')
             @perf_record_pids[node]['programmatic-feed-client'] = node.get_pids('javafeedclient')
           end
