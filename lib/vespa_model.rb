@@ -955,6 +955,8 @@ class VespaModel
           stop_configservers(@testcase.dirty_nodeproxies)
         end
         @testcase.dirty_nodeproxies.each_value do |handle|
+          highest_memory_during_test = handle.stop_monitoring
+          @testcase.output("Memory monitoring stopped")
           fail_unblessed_processes(handle)
           if @testcase.dirty_environment_settings
             Environment.instance.reset_environment(handle)
@@ -967,8 +969,6 @@ class VespaModel
             handle.remove_tmp_files
             @testcase.output("Temporary files removed")
           end
-          highest_memory_during_test = handle.stop_monitoring
-          @testcase.output("Memory monitoring stopped")
           if highest_memory_during_test and highest_memory_during_test > @testcase.max_memory * 1024 * 1024 * 1024
             nodes_exceeded_memory_limit << [handle.short_name, highest_memory_during_test]
           end
