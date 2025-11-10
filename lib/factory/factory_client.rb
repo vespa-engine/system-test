@@ -39,11 +39,13 @@ class FactoryClient
     end
 
     test_run_data = { :durations => Hash.new {0},
+                      :testStatus => Hash.new { "new" },
                       :valgrind => response["useValgrind"] }
 
     response["testDurations"].each do |test_object|
       test_data = Hash[test_object]
       test_run_data[:durations][test_data["name"]] += test_data["durationSeconds"].to_f
+      test_run_data[:testStatus][test_data["name"]] = test_data["status"]
     end
 
     test_run_data[:durations].default = 1500.0
