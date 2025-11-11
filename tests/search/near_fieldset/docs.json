@@ -1,0 +1,6 @@
+[
+    {"id":"id:ns:test::0","fields":{"a":"a1 a2","b":""}},
+    {"id":"id:ns:test::1","fields":{"a":"a3","b":""}},
+    {"id":"id:ns:test::2","fields":{"a":"","b":"b1 b2"}},
+    {"id":"id:ns:test::3","fields":{"a":"","b":"b3"}}
+]
