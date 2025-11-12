@@ -31,7 +31,7 @@ class TestCase
   include TestBase
 
   attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client, :perf_recording
-  attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :required_hostnames, :expected_logged, :method_name
+  attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :expected_logged, :method_name
   attr_accessor :dirty_nodeproxies, :dirty_environment_settings
   attr_accessor :sanitizers
 
@@ -64,7 +64,6 @@ class TestCase
     @disable_log_query_and_result = nil
     @connection_error = false
     @current_assert_file = nil
-    @required_hostnames = nil
     @stop_timestamp = nil
     @vespa_version = args[:vespa_version]
     @vespa_cleanup = VespaCleanup.new(self, @cmd_args)
