@@ -9,7 +9,11 @@ class BERTPerformanceTest < PerformanceTest
     set_owner("glebashnik")
     @valgrind = false
     @node = @vespa.nodeproxies.first[1]
-    override_environment_setting(@node, "VESPA_CONFIGSERVER_JVMARGS", "-Xms16g -Xmx16g")
+    override_environment_setting(@node, "VESPA_CONFIGSERVER_JVMARGS", "-Xms8g -Xmx8g")
+  end
+
+  def can_share_configservers?
+    false
   end
 
   def test_single_evaluation_bert_performance
