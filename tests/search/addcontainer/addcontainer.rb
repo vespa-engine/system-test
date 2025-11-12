@@ -41,7 +41,8 @@ class AddContainer < IndexedOnlySearchTest
                         node({ :hostalias => "node2" })))
     begin
       start
-    rescue RuntimeError
+      raise "Expected starting Vespa to fail"
+    rescue StandardError
       puts "Failed starting Vespa"
     end
     # Go back to the previous app
