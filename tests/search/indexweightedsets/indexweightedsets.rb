@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class IndexWeightedSets < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Check indexing of weighted sets behaves like term boost used to do.")
     deploy_app(SearchApp.new.sd(selfdir + "settest.sd"))
     start

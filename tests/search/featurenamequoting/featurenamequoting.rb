@@ -8,7 +8,7 @@ require 'rubygems'
 class FeatureNameQuoting < IndexedStreamingSearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd("#{selfdir}/featurenamequoting.sd"))
     start
   end

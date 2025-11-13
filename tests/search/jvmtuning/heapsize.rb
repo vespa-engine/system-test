@@ -5,7 +5,7 @@ require 'app_generator/container_app'
 class HeapSize < SearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
   end
 
   def make_app(with_jvm_options = nil)

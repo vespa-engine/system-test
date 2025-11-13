@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class RankExpression < IndexedStreamingSearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
   end
 
   def test_rankExpressionUnaryMinus

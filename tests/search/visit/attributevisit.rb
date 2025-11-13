@@ -5,7 +5,7 @@ require 'indexed_only_search_test'
 class AttributeVisitorTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
     start
     @doc1 = Document.new("id:storage_test:music:n=1234:1")

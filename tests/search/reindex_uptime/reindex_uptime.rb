@@ -6,7 +6,7 @@ class ReindexUptime < IndexedStreamingSearchTest
 
   def setup
     set_description("Description: Test that Vespa is up during reindexing")
-    set_owner("yngve")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start
   end

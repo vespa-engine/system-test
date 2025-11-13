@@ -9,7 +9,7 @@ class LongWords < IndexedStreamingSearchTest
   # $Id$
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(selfdir+"simple.sd"))
     start
   end

@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class TensorReplaceMaxReduceProdJoinTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("lesters")
+    set_owner("hmusum")
   end
 
 

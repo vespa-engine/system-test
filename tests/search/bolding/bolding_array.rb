@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class BoldingArrayTest < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_bolding_array

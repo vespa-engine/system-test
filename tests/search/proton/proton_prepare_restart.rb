@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class ProtonPrepareRestartTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_proton_prepare_restart_command

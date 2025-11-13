@@ -6,7 +6,7 @@ require 'json'
 module RankFeaturesBase
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def assert_rankfeatures(expected, result, hit)

@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class TensorSummaryFeatureTest < IndexedStreamingSearchTest
 
   def setup
-    set_owner("lesters")
+    set_owner("hmusum")
   end
 
   def test_tensor_in_summaryfeatures

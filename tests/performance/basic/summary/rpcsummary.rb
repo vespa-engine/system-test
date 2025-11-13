@@ -17,7 +17,7 @@ class RpcSummaryTest < PerformanceTest
 
   def setup
     super
-    set_owner("balder")
+    set_owner("hmusum")
     @feed_file = dirs.tmpdir + "vespafeed.json"
   end
 

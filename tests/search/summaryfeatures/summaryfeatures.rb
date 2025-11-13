@@ -40,7 +40,7 @@ class SummaryFeatures < IndexedStreamingSearchTest
   end
 
   def test_omit_summary_features
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test that summary features can be omitted for a given document summary")
     deploy_app(SearchApp.new.sd(selfdir + "sd2/test.sd"))
     start

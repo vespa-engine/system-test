@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class DocumentApiTest < IndexedStreamingSearchTest
 
   def setup
-    set_owner("valerijf")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd("#{selfdir}/test.sd"))
     start
   end

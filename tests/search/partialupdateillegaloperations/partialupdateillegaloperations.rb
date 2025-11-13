@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class PartialUpdateIllegalOperations < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_divide_by_zero

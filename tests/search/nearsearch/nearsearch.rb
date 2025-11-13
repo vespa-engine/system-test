@@ -6,7 +6,7 @@ class NearSearch < IndexedStreamingSearchTest
   @@terms = [ "one", "brown", "fox", "jumped" ]
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
   end
 
   def test_phrases_via_near

@@ -6,7 +6,7 @@ require 'indexed_streaming_search_test'
 class LargeText < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd("#{selfdir}/test.sd"))
     start
   end

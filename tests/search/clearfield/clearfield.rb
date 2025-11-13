@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class ClearField < IndexedStreamingSearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Ensure that clearing a field with an update works.")
   end
 

@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class PartialUpdateCreateIfNonExistentTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_create_if_non_existent

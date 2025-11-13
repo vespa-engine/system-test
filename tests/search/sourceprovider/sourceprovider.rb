@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class SourceProvider < IndexedStreamingSearchTest
 
   def setup
-    set_owner("baldersheim")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
                cluster_name('mysearch').
                         search_dir(selfdir + "search").

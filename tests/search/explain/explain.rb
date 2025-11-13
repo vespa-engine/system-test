@@ -6,7 +6,7 @@ require 'json'
 class Explain < IndexedOnlySearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test explain feature")
   end
 

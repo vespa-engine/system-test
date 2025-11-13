@@ -93,7 +93,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
   end
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     @content_reverse_index =
       { 'a' => [[[3, 7]], [[2, 3]], [[1, 2]]],
         'b' => [[[1, 7]], [[1, 3]], [[0, 2]]],

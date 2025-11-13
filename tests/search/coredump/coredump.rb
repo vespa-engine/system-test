@@ -6,7 +6,7 @@ class CoreDump < IndexedOnlySearchTest
 
   def setup
     set_description("Test that coredump control and limiting works")
-    set_owner("balder")
+    set_owner("hmusum")
     @valgrind = false
     @coredump_sleep = 30
   end

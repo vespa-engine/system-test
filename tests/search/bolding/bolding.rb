@@ -157,7 +157,7 @@ class Bolding < IndexedStreamingSearchTest
   end
 
   def test_bolding_in_addition_to_advanced_search_operators
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test the combination of bolding in addition to advanced search operators in the query")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start

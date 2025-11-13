@@ -6,7 +6,7 @@ class Position < IndexedStreamingSearchTest
   SAVE_RESULT = false
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     set_description("Ensure that basic position indexing works as intended.")
   end
 

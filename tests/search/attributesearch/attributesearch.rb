@@ -9,7 +9,7 @@ class AttributeSearch < IndexedStreamingSearchTest
   end
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
 
     # values for numeric attributes
     @ints = [100000, -200000, 300000, -400000, 500000, 1000, -2000]

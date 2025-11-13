@@ -6,7 +6,7 @@ class TensorEvalMatrixPerfTest < TensorEvalPerfTest
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_tensor_evaluation_matrix

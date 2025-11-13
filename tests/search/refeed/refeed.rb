@@ -7,7 +7,7 @@ require 'json'
 class Refeed < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test re-feeding documents from vespa-visit.")
     @feed_file = dirs.tmpdir + "feed.tmp"
     @visit_file = "#{Environment.instance.vespa_home}/tmp/visit.tmp"

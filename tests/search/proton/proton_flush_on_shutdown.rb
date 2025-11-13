@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class ProtonFlushOnShutdownTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     set_description("Test that flush-on-shutdown can be turned off")
   end
 

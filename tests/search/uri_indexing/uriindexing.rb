@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class UriIndexing < IndexedOnlySearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     set_description("Query: Search for full url / and check that port " +
                     "number 80 and 443 is ignored")
   end
@@ -22,7 +22,7 @@ class UriIndexing < IndexedOnlySearchTest
   end
 
   def test_uri_reject_invalid
-    set_owner("yngve")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd("#{selfdir}/simple_def.sd"))
     start
     assert_raise(ExecuteError) do

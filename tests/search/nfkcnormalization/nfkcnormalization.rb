@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class NfkcNormalization < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Check NFKC normalization is actually performed.")
   end
 

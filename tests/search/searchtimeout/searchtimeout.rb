@@ -5,7 +5,7 @@ class SearchTimeoutTest < IndexedOnlySearchTest
 
   def setup
     @valgrind = false
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Tests timeout handling in Vespa search")
     deploy_app(SearchApp.new.sd("#{selfdir}/banana.sd").threads_per_search(1))
     start

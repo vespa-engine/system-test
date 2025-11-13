@@ -9,7 +9,7 @@ class SearchWhileFeedingAndNodesDownAndUpTest < FeedAndQueryTestBase
   end
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     super
   end
 

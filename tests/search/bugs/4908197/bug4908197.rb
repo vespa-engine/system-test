@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class Bug4908197 < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test bug 4908197, JSON encoding issues")
   end
 

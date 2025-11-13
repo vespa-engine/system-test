@@ -7,7 +7,7 @@ class TensorAddRemoveUpdateTest < IndexedStreamingSearchTest
   include TensorFeedTestBase
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     @base_dir = selfdir + "tensor_add_remove_update/"
   end
 

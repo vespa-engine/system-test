@@ -6,7 +6,7 @@ require 'json'
 class JsonSearch < IndexedStreamingSearchTest
 
   def setup
-    set_owner("valerijf")
+    set_owner("hmusum")
     set_description("Test basic searching and feeding with JSON")
   end
 

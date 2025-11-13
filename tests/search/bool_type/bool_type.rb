@@ -5,7 +5,7 @@ require 'set'
 class BoolTypeTest < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def self.final_test_methods

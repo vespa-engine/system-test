@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class Bug5640046 < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test for bug 5640046, invalid document ids in index")
   end
 

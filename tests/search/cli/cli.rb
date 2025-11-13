@@ -8,7 +8,7 @@ class Cli < IndexedStreamingSearchTest
   end
 
   def setup
-    set_owner("mpolden")
+    set_owner("hmusum")
     set_description("Test basic Vespa CLI functionality")
     @doc_id_prefix = "id:music:music::mydoc-"
   end

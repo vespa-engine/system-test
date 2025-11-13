@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class TypedSorting < IndexedStreamingSearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.cluster(
                         SearchCluster.new("music1").sd(selfdir + "music.sd").
                         doc_type("music", "music.mid==2")).

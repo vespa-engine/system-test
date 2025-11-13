@@ -6,7 +6,7 @@ require 'app_generator/container_app'
 class V3BasicDocprocWithReason < SearchContainerTest
 
   def setup
-    set_owner("valerijf")
+    set_owner("hmusum")
     add_bundle(DOCPROC + "v3docprocs/WithReasonDocProc.java")
 
     deploy_app(

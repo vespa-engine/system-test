@@ -78,7 +78,7 @@ class StreamingMatcherPart1 < StreamingMatcher
 
 
   def test_simple_ranking
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Simple test for streaming matcher using the new relevancy framework for rank calculation")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"musicsearch.sd"))
     start
@@ -158,7 +158,7 @@ class StreamingMatcherPart1 < StreamingMatcher
   end
 
   def test_twophase_ranking
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test for streaming matcher using twophase ranking")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"musicsearch.sd"))
     start
@@ -189,7 +189,7 @@ class StreamingMatcherPart1 < StreamingMatcher
   end
 
   def test_struct
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Simple test for streaming matcher using different struct types")
     add_bundle(selfdir + "StructDocProc.java")
     deploy_app(SearchApp.new.streaming.sd(selfdir + "structtest.sd").
@@ -358,7 +358,7 @@ class StreamingMatcherPart1 < StreamingMatcher
   end
 
   def test_field_types
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Simple test for streaming matcher using different field types")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"fieldtypetest.sd"))
     start
@@ -494,7 +494,7 @@ class StreamingMatcherPart1 < StreamingMatcher
   end
 
   def test_many_fields
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test for streaming matcher using many fields (>32)")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"manyfields.sd"))
     start
@@ -528,7 +528,7 @@ class StreamingMatcherPart1 < StreamingMatcher
   end
 
   def test_attribute_rank_features
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test for streaming matcher using attribute rank features")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"attrrank.sd"))
     start

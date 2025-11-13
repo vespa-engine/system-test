@@ -143,7 +143,7 @@ class ParentChildAttributeSearchTest < IndexedOnlySearchTest
 
   def test_reference_attribute_is_searchable
     set_description("Test that the reference attribute in the child (ad) can be searched using parent document id")
-    set_owner("geirst")
+    set_owner("hmusum")
     subdir = "single_parent_attribute"
     deploy_and_start(subdir)
     feed_baseline(subdir)

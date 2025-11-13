@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class LiteralBoost < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(selfdir+"literalboost.sd"))
     start
   end

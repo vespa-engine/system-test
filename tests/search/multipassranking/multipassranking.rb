@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class MultipassRanking < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test multipass ranking with re-ranking of hits from the match data heap.")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start

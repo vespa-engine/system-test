@@ -15,7 +15,7 @@ class DotProduct < PerformanceTest
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test dotproduct-feature vs dotproduct-operator on various fields.")
   end
 

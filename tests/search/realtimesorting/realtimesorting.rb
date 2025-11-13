@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class RealtimeSorting < IndexedStreamingSearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     set_description("Tests the sorting feature of Realtime Mode with two slots")
     deploy_app(SearchApp.new.sd(selfdir+"base.sd"))
     start

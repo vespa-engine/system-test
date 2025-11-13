@@ -6,7 +6,7 @@ require 'indexed_streaming_search_test'
 class Weighting_Ranklog < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Rank using weighting of terms, also check summaryfeatures")
     deploy_app(SearchApp.new.sd(selfdir+"weight.sd"))
     start

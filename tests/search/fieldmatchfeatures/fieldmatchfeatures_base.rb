@@ -6,7 +6,7 @@ require 'json'
 module FieldMatchFeaturesBase
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     @id_field = "documentid"
   end
 

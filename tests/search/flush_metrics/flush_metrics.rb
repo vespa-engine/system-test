@@ -8,7 +8,7 @@ require 'search/utils/elastic_doc_generator'
 class FlushMetricsTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def feed_docs

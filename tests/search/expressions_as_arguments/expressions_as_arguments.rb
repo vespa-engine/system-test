@@ -5,7 +5,7 @@ class ExpressionsAsArguments < IndexedStreamingSearchTest
 
   def setup
     @valgrid = false
-    set_owner("lesters")
+    set_owner("hmusum")
     set_description("Validate expressions as arguments to functions")
   end
 
