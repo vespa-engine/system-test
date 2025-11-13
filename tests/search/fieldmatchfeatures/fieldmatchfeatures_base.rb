@@ -29,6 +29,8 @@ module FieldMatchFeaturesBase
     assert_match(0.3621, "a+b+c", 12)
     assert_match(0.3619, "a+b+c", 13)
     assert_match(0.3584, "a+b+c", 14)
+    assert_match_arr(1, "arr:a-b", 0)
+    assert_match_arr(0.9339, "arr:b", 1)
 
     assert_match(0.3421, "a+b+c&type=any", 15)
     assert_match(0.3474, "a+b+c&type=any", 16)
@@ -43,6 +45,7 @@ module FieldMatchFeaturesBase
 
     # check non-default maxOccurrences (same as unit tests in searchlib)
     assert_occurrences(1,      0.6, 0.6, 0.6, 0.6, 17)
+    assert_occurrences_arr(1,      0.6, 0.6, 0.6, 0.6, 17)
     assert_occurrences(0.9231, 0.6, 0.6, 0.6, 0.6, 18)
     assert_occurrences(0.6,    0.6, 0.6, 0.6, 0.6, 19)
     assert_occurrences(1,      1,   1,   1,   1,   20)
@@ -101,6 +104,11 @@ module FieldMatchFeaturesBase
     assert_field_match({"fieldMatch(a)" => expected}, query, docid)
   end
 
+  def assert_match_arr(expected, query, docid)
+    query = "query=" + query + "&parallel&hits=50"
+    assert_field_match({"fieldMatch(arr)" => expected}, query, docid)
+  end
+
   def assert_querycompleteness(expected, query, docid)
     query = "query=" + query + "&parallel&hits=50"
     assert_field_match({"fieldMatch(a).queryCompleteness" => expected}, query, docid)
@@ -118,6 +126,17 @@ module FieldMatchFeaturesBase
                 "fieldMatch(a).weightedOccurrence" => weighted_occ, \
                 "fieldMatch(a).weightedAbsoluteOccurrence" => weighted_absolute_occ}
                 #"fieldMatch(a).significantOccurrence" => significant_occ} TODO: fix this when significance is working
+
+    assert_field_match(expected, query, docid)
+  end
+
+  def assert_occurrences_arr(occ, absolute_occ, weighted_occ, weighted_absolute_occ, significant_occ, docid)
+    query = "query=arr:a+b&parallel&hits=50&ranking=max-occs"
+    expected = {"fieldMatch(arr).occurrence" => occ,
+                "fieldMatch(arr).absoluteOccurrence" => absolute_occ, \
+                "fieldMatch(arr).weightedOccurrence" => weighted_occ, \
+                "fieldMatch(arr).weightedAbsoluteOccurrence" => weighted_absolute_occ}
+    #"fieldMatch(a).significantOccurrence" => significant_occ} TODO: fix this when significance is working
 
     assert_field_match(expected, query, docid)
   end

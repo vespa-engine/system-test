@@ -1,6 +1,6 @@
 [
-  {"id":"id:fieldmatch:fieldmatch:n=1:0","fields":{"a":"a"}},
-  {"id":"id:fieldmatch:fieldmatch:n=1:1","fields":{"a":"a x"}},
+  {"id":"id:fieldmatch:fieldmatch:n=1:0","fields":{"a":"a", "arr": ["a"]}},
+  {"id":"id:fieldmatch:fieldmatch:n=1:1","fields":{"a":"a x", "arr": ["a", "b"]}},
   {"id":"id:fieldmatch:fieldmatch:n=1:2","fields":{"a":"x"}},
   {"id":"id:fieldmatch:fieldmatch:n=1:3","fields":{"a":"a b"}},
   {"id":"id:fieldmatch:fieldmatch:n=1:4","fields":{"a":"a b x"}},
@@ -16,7 +16,7 @@
   {"id":"id:fieldmatch:fieldmatch:n=1:14","fields":{"a":"x x a x b x x x x x x x x x x x x x x x x x x x x x c"}},
   {"id":"id:fieldmatch:fieldmatch:n=1:15","fields":{"a":"x x a x b x x x x x x x x x x x x x x x x x x x x x x"}},
   {"id":"id:fieldmatch:fieldmatch:n=1:16","fields":{"a":"x x a x b x x x x x x x x x x x x x x b x x x b x b x"}},
-  {"id":"id:fieldmatch:fieldmatch:n=1:17","fields":{"a":"a a a a a a a a a a b b"}},
+  {"id":"id:fieldmatch:fieldmatch:n=1:17","fields":{"a":"a a a a a a a a a a b b", "arr": ["a a a a a a a a a a b b", "a b"]}},
   {"id":"id:fieldmatch:fieldmatch:n=1:18","fields":{"a":"a a a a a a a a a a a b b"}},
   {"id":"id:fieldmatch:fieldmatch:n=1:19","fields":{"a":"a a a a a a a a a a a a a a a a a a a a a b b"}},
   {"id":"id:fieldmatch:fieldmatch:n=1:20","fields":{"a":"a a a a a a a a a a b b b b b b b b b b"}},

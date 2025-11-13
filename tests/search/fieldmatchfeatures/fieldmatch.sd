@@ -7,6 +7,9 @@ schema fieldmatch {
     field b type string {
       indexing: index | summary
     }
+    field arr type array<string> {
+      indexing: index | summary
+    }
   }
   fieldset default {
     fields: a
@@ -47,8 +50,39 @@ schema fieldmatch {
       fieldMatch(a).head
       fieldMatch(a).tail
       fieldMatch(a).segmentDistance
+
+      fieldMatch(arr)
+      fieldMatch(arr).proximity
+      fieldMatch(arr).completeness
+      fieldMatch(arr).queryCompleteness
+      fieldMatch(arr).fieldCompleteness
+      fieldMatch(arr).orderness
+      fieldMatch(arr).relatedness
+      fieldMatch(arr).earliness
+      fieldMatch(arr).longestSequenceRatio
+      fieldMatch(arr).segmentProximity
+      fieldMatch(arr).unweightedProximity
+      fieldMatch(arr).absoluteProximity
+      fieldMatch(arr).occurrence
+      fieldMatch(arr).absoluteOccurrence
+      fieldMatch(arr).weightedOccurrence
+      fieldMatch(arr).weightedAbsoluteOccurrence
+      fieldMatch(arr).significantOccurrence
+      fieldMatch(arr).weight
+      fieldMatch(arr).significance
+      fieldMatch(arr).importance
+      fieldMatch(arr).segments
+      fieldMatch(arr).matches
+      fieldMatch(arr).degradedMatches
+      fieldMatch(arr).outOfOrder
+      fieldMatch(arr).gaps
+      fieldMatch(arr).gapLength
+      fieldMatch(arr).longestSequence
+      fieldMatch(arr).head
+      fieldMatch(arr).tail
+      fieldMatch(arr).segmentDistance
     }
-  }
+}
 
   rank-profile max-occs inherits default {
     rank-properties { 
