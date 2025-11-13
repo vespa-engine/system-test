@@ -5,7 +5,7 @@ require 'environment'
 class ProtonFlushTargetTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     @valgrind=false
   end
 

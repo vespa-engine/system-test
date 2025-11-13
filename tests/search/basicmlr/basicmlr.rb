@@ -7,7 +7,7 @@ require 'document_set'
 class BasicMLR < IndexedStreamingSearchTest
 
   def setup
-    set_owner("lesters")
+    set_owner("hmusum")
     @mytmpdir = dirs.tmpdir
     puts("Using temporary directory '#{@mytmpdir}'..")
     @feed_file = @mytmpdir + "vespafeed.json"

@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class RemoveByDate < IndexedStreamingSearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
   end
 
   def timeout_seconds

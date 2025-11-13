@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class SpecialTokensDotNet < IndexedStreamingSearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.
                sd("#{selfdir}/test.sd").
                config(ConfigOverride.new("vespa.configdefinition.specialtokens").

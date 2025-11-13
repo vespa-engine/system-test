@@ -7,7 +7,7 @@ class TensorFeedTest < IndexedStreamingSearchTest
   include TensorFeedTestBase
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     @base_dir = selfdir + "tensor_feed/"
   end
 

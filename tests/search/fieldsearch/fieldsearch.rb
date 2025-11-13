@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class FieldSearch < IndexedStreamingSearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     set_description("Field search for text and string, and range search for integers.")
     deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
     start

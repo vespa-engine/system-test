@@ -10,7 +10,7 @@ class FeedingAndRemovingMultithreaded < FeedingAndRemovingBase
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_feed_refeed_remove_multithreaded

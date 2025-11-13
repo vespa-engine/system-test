@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class MixedTensorTest < IndexedStreamingSearchTest
 
   def setup
-    set_owner("lesters")
+    set_owner("hmusum")
   end
 
   def test_basic_mixed_tensor

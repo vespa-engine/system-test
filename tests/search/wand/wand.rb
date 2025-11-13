@@ -44,7 +44,7 @@ class WeakAnd < IndexedStreamingSearchTest
 
   def run_wset_wand_ranking_test(sd_folder, wand_type)
     @wand_type = wand_type
-    set_owner("geirst")
+    set_owner("hmusum")
     deploy_app(get_app(sd_folder))
     start
     gen = gen_and_feed(7, 97, "gen_ranking_docs")
@@ -101,7 +101,7 @@ class WeakAnd < IndexedStreamingSearchTest
 
   def run_wset_wand_filter_test(sd_folder, wand_type)
     @wand_type = wand_type
-    set_owner("geirst")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(selfdir + "sdfiles/#{sd_folder}/test.sd"))
     vespa.adminserver.logctl("searchnode:proton.server.searchabledocsubdb", "debug=on")
     start
@@ -140,7 +140,7 @@ class WeakAnd < IndexedStreamingSearchTest
   end
 
   def run_empty_wset_wand_test(sd_folder, wand_type)
-    set_owner("geirst")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(selfdir + "sdfiles/#{sd_folder}/test.sd"))
     start
     feed_and_wait_for_docs("test", 3, :file => selfdir+"docs/empty-wset.json")
@@ -159,7 +159,7 @@ class WeakAnd < IndexedStreamingSearchTest
 
   def run_wand_with_score_threshold_test(sd_folder, wand_type)
     @wand_type = wand_type
-    set_owner("geirst")
+    set_owner("hmusum")
     deploy_app(get_app(sd_folder))
     start
     gen = gen_and_feed(2, 71, "gen_ranking_docs")

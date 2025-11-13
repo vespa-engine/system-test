@@ -7,7 +7,7 @@ class Test_LogicalRank < IndexedStreamingSearchTest
   # Feature: Ranking
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(selfdir+"t1.sd").sd(selfdir+"t2.sd"))
     start
   end

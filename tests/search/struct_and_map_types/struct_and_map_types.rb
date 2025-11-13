@@ -7,7 +7,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   include StructAndMapBase
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     @has_summary_features = false
   end
 

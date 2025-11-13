@@ -5,7 +5,7 @@ class LLMInContainerTest < SearchContainerTest
 
   def setup
     @valgrind = false
-    set_owner("lesters")
+    set_owner("hmusum")
     set_description("Verify that local LLMs can be evaluated in container.")
   end
 

@@ -10,7 +10,7 @@ class Bug_346985 < IndexedStreamingSearchTest
   # Feature:     Ranking
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(selfdir + "proximitygap.sd"))
     start
   end

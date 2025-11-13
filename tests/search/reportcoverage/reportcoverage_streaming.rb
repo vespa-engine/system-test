@@ -4,7 +4,7 @@ require 'streaming_search_test'
 class ReportCoverageStreaming < StreamingSearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Check coverage reports are returned from search.")
   end
 

@@ -14,7 +14,7 @@ class TensorReplaceMaxReduceProdJoinPerfTest < PerformanceTest
 
   def setup
     super
-    set_owner("lesters")
+    set_owner("hmusum")
   end
 
 

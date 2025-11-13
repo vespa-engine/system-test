@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class AccentDrop < IndexedStreamingSearchTest
 
   def setup
-    set_owner("baldersheim")
+    set_owner("hmusum")
   end
 
   def test_accentdrop

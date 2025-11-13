@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class SummaryAndGrouping < IndexedStreamingSearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
   end
 
   def grouping(summary)

@@ -7,7 +7,7 @@ class BucketReadinessBase < IndexedOnlySearchTest
 
   def setup
     @valgrind=false
-    set_owner("geirst")
+    set_owner("hmusum")
     @base_query = "query=f1:word&nocache"
     @generated_dir = "#{dirs.tmpdir}/generated/"
     Dir::mkdir(@generated_dir)

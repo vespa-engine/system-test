@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class CustomStateApi < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_custom_component_api

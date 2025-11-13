@@ -9,7 +9,7 @@ class AttributePostinglistUpdateTest < IndexedOnlySearchTest
   end
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_attribute_postinglist_update

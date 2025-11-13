@@ -9,7 +9,7 @@ IndexManagerFlushStats = Struct.new(:num_memory_index_flush, :num_disk_index_fus
 class IndexManagerTest < IndexedOnlySearchTest
   
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_index_flush_and_fusion_with_warmup

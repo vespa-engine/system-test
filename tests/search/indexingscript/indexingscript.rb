@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class IndexingScript < IndexedStreamingSearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     set_description("Test that complex indexing scripts work as expected.")
     deploy_app(SearchApp.new.sd("#{selfdir}/test.sd"))
     start

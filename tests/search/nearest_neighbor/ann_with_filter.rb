@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class ApproximateNearestNeighborWithFilterTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_ann_with_filters

@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class RpcSummary < IndexedStreamingSearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test that we can fetch summary both with and without ranking.queryCache.")
   end
 

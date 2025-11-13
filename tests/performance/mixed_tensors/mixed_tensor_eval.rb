@@ -11,13 +11,13 @@ class MixedTensorPerfTest < MixedTensorPerfTestBase
 
   def test_mixed_tensor_operations
     set_description("Test performance of various mixed tensor operations using direct tensor attribute (with fast-rank)")
-    set_owner("geirst")
+    set_owner("hmusum")
     run_mixed_tensor_operations("direct")
   end
 
   def test_mixed_tensor_operations_using_serialized_tensor_attribute
     set_description("Test performance of various mixed tensor operations using serialized tensor attribute (without fast-rank)")
-    set_owner("geirst")
+    set_owner("hmusum")
     run_mixed_tensor_operations("serialized")
   end
 

@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class VisitNullValues < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Visit documents that has an undefined field")
   end
 

@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class GlobalParentsFeedTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     @test_dir = selfdir + "global_parents_feed/"
   end
 

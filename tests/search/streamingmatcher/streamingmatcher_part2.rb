@@ -8,7 +8,7 @@ class StreamingMatcherPart2 < StreamingMatcher
   end
 
   def test_phrase_search
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test phrase search for streaming matcher")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"phrase.sd"))
     start
@@ -35,7 +35,7 @@ class StreamingMatcherPart2 < StreamingMatcher
   end
 
   def test_multilevel_sorting
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test sorting on nested fields")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"sortaggr.sd"))
     start
@@ -57,7 +57,7 @@ class StreamingMatcherPart2 < StreamingMatcher
   end
 
   def test_sorting
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test sorting on nested fields")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"sortaggr.sd"))
     start
@@ -72,7 +72,7 @@ class StreamingMatcherPart2 < StreamingMatcher
   end
 
   def test_not_defined_values
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test that not defined values are shown correctly in document summary")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"notdef.sd"))
     start
@@ -84,7 +84,7 @@ class StreamingMatcherPart2 < StreamingMatcher
 
 
   def test_match_types
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test various match types for a field and overrides in query")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"matchtypes.sd").
                    config(ConfigOverride.new("vespa.config.search.core.proton").
@@ -170,7 +170,7 @@ class StreamingMatcherPart2 < StreamingMatcher
 
 
   def test_dynamic_summary
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test dynamic summary with multiple input fields")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"dynsum.sd"))
     start
@@ -187,7 +187,7 @@ class StreamingMatcherPart2 < StreamingMatcher
 
 
   def test_explicit_summary_name
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test summary fields with explicit names different than the field names.")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"expsumname.sd"))
     start
@@ -205,7 +205,7 @@ class StreamingMatcherPart2 < StreamingMatcher
 
   def test_illegal_rank
     set_expected_logged(/searchvisitor\.rankmanager.*error.*\(re-\)configuration of rank manager failed/)
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test that we cannot create a search visitor when we have an illegal rank setup")
     begin
       err = deploy_app(SearchApp.new.streaming().sd(selfdir+"illegalrank.sd"))
@@ -222,7 +222,7 @@ class StreamingMatcherPart2 < StreamingMatcher
 
 
   def test_heap_property
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test that the hit heap in streaming works as expected")
     deploy_app(SearchApp.new.streaming().sd(selfdir+"heap.sd"))
     start
@@ -263,7 +263,7 @@ class StreamingMatcherPart2 < StreamingMatcher
   end
 
   def test_multiple_sd_in_content
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test that content cluster takes multiple schemas")
     deploy(selfdir + "app_multiple_sd_in_content", [selfdir + "app_elastic/schemas/music.sd", selfdir + "app_elastic/schemas/books.sd"])
     start

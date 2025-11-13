@@ -14,7 +14,7 @@ class PartialUpdate < IndexedStreamingSearchTest
   end
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def setup_realtime(paged)

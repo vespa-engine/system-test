@@ -7,7 +7,7 @@ class SchemaChangesTensorAttributeTest < IndexedOnlySearchTest
   include SchemaChangesBase
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def assert_tensor_content(exp_tensor, exp_relevancy)

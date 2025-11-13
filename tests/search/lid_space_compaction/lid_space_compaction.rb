@@ -7,7 +7,7 @@ LidUsageStats = Struct.new(:lid_limit, :used_lids, :lowest_free_lid, :highest_us
 class LidSpaceCompactionTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     @ignore_lid_limit = false
     @gen_random_removes = false
     `rm -rf #{dirs.tmpdir}/generated`

@@ -5,7 +5,7 @@ require 'streaming_search_test'
 class DynTeaserStreaming < StreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_stem_config_streaming

@@ -5,7 +5,7 @@ require 'indexed_only_search_test'
 class FastAccessAttributesTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def get_app(sd_file)

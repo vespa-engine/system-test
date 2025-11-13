@@ -6,7 +6,7 @@ class NumTerm < IndexedStreamingSearchTest
   SAVE_RESULT = false
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
   end
 
   def test_numterm

@@ -2,7 +2,7 @@
 module SortingBase
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Sorting on a field, ascending, descending, multiple fields")
   end
 

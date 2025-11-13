@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class SearchPath < IndexedOnlySearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
   end
 
   def test_searchpath

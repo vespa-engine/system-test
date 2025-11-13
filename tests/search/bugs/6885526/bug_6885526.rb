@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class Bug6885526Test < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
 

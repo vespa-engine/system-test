@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class MatchCount < IndexedOnlySearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test that we can accumulate match count per document.")
   end
 

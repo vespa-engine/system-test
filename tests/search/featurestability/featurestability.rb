@@ -8,7 +8,7 @@ class FeatureStability < IndexedOnlySearchTest
   SAVE_RESULT = false
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     set_description("Ensure that dump features do not change without being " +
                     "noticed. If this test fails, just make sure that the " +
                     "change was intentional, and update the expected value.")

@@ -7,7 +7,7 @@ require 'indexed_streaming_search_test'
 class DistanceToPath < IndexedStreamingSearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     set_description("Test the distance-to-path feature.")
     deploy_app(SearchApp.new.sd("#{selfdir}/local.sd"))
     start

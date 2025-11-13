@@ -6,7 +6,7 @@ class SchemaChanges < IndexedOnlySearchTest
   include SchemaChangesBase
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def timeout_seconds

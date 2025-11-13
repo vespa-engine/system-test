@@ -7,7 +7,7 @@ require 'indexed_streaming_search_test'
 class GlobalFeatures < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     @id_field = "documentid"
     # will test with invalid freshness:
     @ignorable_messages.append(/Invalid freshness/)

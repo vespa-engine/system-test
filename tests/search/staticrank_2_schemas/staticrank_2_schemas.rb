@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class StaticRank_2_Schemas < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test staticrank with two schemas")
     deploy_app(SearchApp.new.sd(selfdir+"one.sd").sd(selfdir+"two.sd"))
     start

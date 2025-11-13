@@ -6,7 +6,7 @@ require 'indexed_streaming_search_test'
 class MatchesFeature < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_matches
