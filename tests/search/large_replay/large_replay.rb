@@ -16,6 +16,7 @@ class LargeReplay < IndexedOnlySearchTest
 
   def test_large_replay
     set_description("Test that we can replay a large amount of documents from the transactionlog without interfering with the RPC connection between the service layer and proton persistence provider.")
+    set_expected_logged(/logfile rotated away underneath/)
     deploy_app(SearchApp.new.cluster(SearchCluster.new.sd(selfdir+"test.sd").disable_flush_tuning))
     vespa.adminserver.logctl("searchnode:proton.persistenceengine.persistenceengine", "debug=on")
     start
