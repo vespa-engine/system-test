@@ -23,6 +23,13 @@ class Threadpools < SearchContainerTest
     assert_threadpool("search-handler", expected_min.round, expected_max.round, expected_queue.round.to_s)
   end
 
+  def test_container_default_threadpool
+    expected_min = available_processors * 2
+    expected_max = available_processors * 4
+    expected_queue = expected_max * 10
+    assert_threadpool("my-container-default-pool", expected_min.round, expected_max.round, expected_queue.round.to_s)
+  end
+
   # Check that threadpool with name has expected min max and queue in log
   def assert_threadpool(name, expected_min, expected_max, expected_queue)
     line = find_threadpool_log(name)
