@@ -66,6 +66,7 @@ class FlatToHierarchicTransitionTest < FeedAndQueryTestBase
     set_description("Converting from a flat to a hierarchic cluster model " +
                     "should replicate, index and activate documents on a " +
                     "per-group basis. See VESPA-1015 for context.")
+    set_expected_logged(/Cluster dispatcher\.mycluster: group \d has reduced coverage/)
     deploy_app(create_flat_group_app())
     start
 

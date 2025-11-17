@@ -9,6 +9,7 @@ class FeedBlockDiskTwoNodesTest < FeedBlockDiskTwoNodesBase
 
   def setup(*args)
     super(*args)
+    set_expected_logged(/Write operations are now blocked:/)
   end
 
   def test_proton_feed_block_document_v1_api_two_nodes_disklimit

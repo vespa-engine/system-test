@@ -32,7 +32,7 @@ class ContentStreamingSmokeTest < StreamingSearchTest
 
   def test_contentsmoke_dummy_streaming
     # bad config expected:
-    @ignorable_messages.append(/NetworkSetupFailureException/)
+    set_expected_logged(/listen failed/)
     app = SearchApp.new
     app.storage_clusters.push(StorageCluster.new("search").default_group)
     app.sd(SEARCH_DATA + 'music.sd').provider('DUMMY')
