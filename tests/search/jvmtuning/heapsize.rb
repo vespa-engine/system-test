@@ -51,6 +51,7 @@ class HeapSize < SearchTest
   end
 
   def test_jvm_absolute_min_heap_size_by_is_capped_at_heapsize()
+    set_expected_logged(/Misconfigured heap size/)
     deploy_app(make_app.
                          config(ConfigOverride.new('search.config.qr-start').
                                                add('jvm', ConfigValue.new('minHeapsize', '2600')).
