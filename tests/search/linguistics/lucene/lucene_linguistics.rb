@@ -9,6 +9,7 @@ class LuceneLinguistics < IndexedOnlySearchTest
   end
 
   def test_simple_linguistics
+    set_expected_logged(/Lucene cannot optimize algorithms or calculate object sizes for JVMs that are not based on Hotspot or a compatible implementation/)
     deploy_app(SearchApp.new.
                  container(
                    Container.new('default').
