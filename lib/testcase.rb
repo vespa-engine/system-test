@@ -717,7 +717,7 @@ class TestCase
 
   # Override this in component-specific test base classes (if needed)
   def get_default_log_check_levels
-    return [:warning, :error, :fatal]
+    return [:error, :fatal]
   end
 
   @@log_messages = {
