@@ -3,6 +3,11 @@ require 'indexed_streaming_search_test'
 
 class StopVespa < IndexedStreamingSearchTest
 
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
+
   def can_share_configservers?
     false
   end
