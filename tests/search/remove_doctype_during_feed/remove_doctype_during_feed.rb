@@ -94,6 +94,8 @@ class RemoveDocTypeDuringFeed < IndexedOnlySearchTest
   end
 
   def test_remove_doctype_during_feed
+    set_expected_logged(/Failed decoding message of type PutDocumentRequest: Document type remove not found/)
+
     first_app = get_app(true)
     second_app = get_app(false)
     deploy_app(first_app)

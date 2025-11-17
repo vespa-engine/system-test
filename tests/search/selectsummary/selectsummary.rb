@@ -204,6 +204,8 @@ class SelectSummary < IndexedStreamingSearchTest
   def test_selectsummary_multipleinherit
     puts "Details: Using multiple inherit"
 
+    set_expected_logged(/Exception in execution of chain 'search' of query/)
+
     dir = selfdir + "multipleinherit/schemas/"
     deploy_app(SearchApp.new.
                sd(dir + "base1.sd").
