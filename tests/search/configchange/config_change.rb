@@ -11,6 +11,7 @@ class ConfigChange < IndexedStreamingSearchTest
   end
 
   def test_doctypeswitch
+    set_expected_logged(/could not locate result class/)
     puts "* Insert music doc"
     feed_and_wait_for_docs("music", 1, :file => selfdir+"music.json", :timeout => 240)
     wait_for_hitcount("query=sddocname:music", 1)

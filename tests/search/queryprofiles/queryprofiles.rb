@@ -12,6 +12,9 @@ class QueryProfiles < IndexedStreamingSearchTest
   # and uses the number of hits returned as a convenient way to check which query profile has been selected
   # as different default index settings produces different number of hits
   def test_queryprofiles
+    if is_streaming
+      set_expected_logged(/'streaming' is not declared in query profile type 'rootStrict', and the type is strict/)
+    end
     deploy_app(SearchApp.new.sd(selfdir + "music.sd").
                              search_dir(selfdir + "search"))
     start
