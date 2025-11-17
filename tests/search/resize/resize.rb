@@ -26,6 +26,11 @@ end
 
 class ResizeParentChildContentCluster < ResizeContentClusterBase
 
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
+
   def initialize(*args)
     super(*args)
     @num_hosts = 1
@@ -46,6 +51,11 @@ end
 
 
 class ResizeHDContentCluster < ResizeContentClusterBase
+
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
 
   def initialize(*args)
     super(*args)

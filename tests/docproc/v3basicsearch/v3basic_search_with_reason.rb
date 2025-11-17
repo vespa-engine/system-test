@@ -5,6 +5,11 @@ require 'app_generator/container_app'
 
 class V3BasicDocprocWithReason < SearchContainerTest
 
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
+
   def setup
     set_owner("hmusum")
     add_bundle(DOCPROC + "v3docprocs/WithReasonDocProc.java")
@@ -28,6 +33,5 @@ class V3BasicDocprocWithReason < SearchContainerTest
     assert_match(/Some detailed failure reason/, output)
     feed_and_wait_for_docs("worst", 4, :file => DOCPROC + "data/worst-input.json", :cluster => "worst")
   end
-
 
 end
