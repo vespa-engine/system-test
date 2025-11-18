@@ -3,6 +3,12 @@ require 'search_container_test'
 
 class LLMInContainerTest < SearchContainerTest
 
+  # TODO: Due to lots of logging to stderr from java-llama.cpp
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
+
   def setup
     @valgrind = false
     set_owner("hmusum")
