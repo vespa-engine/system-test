@@ -17,6 +17,7 @@ class Down < IndexedOnlySearchTest
     @cv = ConditionVariable.new
     @feeder = nil
     @nodestate_cli_app = "vespa-set-node-state";
+    set_expected_logged(/Cluster dispatcher\.mycluster: group \d has reduced coverage/)
   end
 
   def get_base_sc(parts, r, rc)
