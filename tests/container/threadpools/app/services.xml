@@ -10,9 +10,6 @@
   </admin>
 
   <container version="1.0">
-    <config name="container.handler.threadpool">
-      <name>my-container-default-pool</name>
-    </config>
     <threadpool>
       <threads max="4">2</threads>
       <queue>10</queue>
