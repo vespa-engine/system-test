@@ -18,7 +18,7 @@ class SplitJoinReadinessTest < IndexedOnlySearchTest
   end
 
   def should_debug_log?
-    true
+    false
   end
 
 
