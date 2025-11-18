@@ -6,6 +6,7 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
   def setup
     set_owner("hmusum")
     super
+    set_expected_logged(/Cluster dispatcher\.mycluster: group \d has reduced coverage/)
   end
 
   def timeout_seconds
@@ -70,7 +71,6 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
 
   def test_allowed_coverage_loss
     set_description("Test that one group can continue serving with coverage loss distribution")
-    set_expected_logged(/Cluster dispatcher\.mycluster: group \d has reduced coverage/)
     run_basic_search_test(3, 3, true)
     verify_ready_copies_per_group(1)
     stop_and_not_wait(0) # group 0 still has enough nodes
@@ -87,7 +87,6 @@ class HierarchicDistributionTest < FeedAndQueryTestBase
 
   def test_less_ready_than_redundancy
     set_description("Test that search works correctly with less ready than redundancy copies")
-    set_expected_logged(/Cluster dispatcher\.mycluster: group \d has reduced coverage/)
     run_basic_search_test(3)
     verify_ready_copies_per_group(1)
   end
