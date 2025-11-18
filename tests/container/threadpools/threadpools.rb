@@ -3,6 +3,9 @@ require 'search_container_test'
 
 class Threadpools < SearchContainerTest
 
+  INT_MAX = 2_147_483_647
+  MAX_RETRIES_FETCH_METRICS = 10
+
   def setup
     set_owner("johsol")
     set_description("Test that thread pools are configurable.")
@@ -20,24 +23,37 @@ class Threadpools < SearchContainerTest
     expected_min = available_processors * 1.5
     expected_max = available_processors * 2
     expected_queue = expected_max * 2
-    assert_threadpool("search-handler", expected_min.round, expected_max.round, expected_queue.round.to_s)
+    assert_threadpool("search-handler", expected_min.round, expected_max.round, expected_queue.round)
   end
 
-  # Check that threadpool with name has expected min max and queue in log
+  def test_container_default_threadpool
+    expected_min = available_processors * 2
+    expected_max = available_processors * 4
+    expected_queue = expected_max * 10
+    assert_threadpool("default-pool", expected_min.round, expected_max.round, expected_queue.round)
+  end
+
+  # Check that threadpool with given name has expected min, max and queue in metrics.
   def assert_threadpool(name, expected_min, expected_max, expected_queue)
-    line = find_threadpool_log(name)
-    actual_min, actual_max, actual_queue = extract_threadpool_values(line)
-
-    assert_equal(expected_min, actual_min,
-                 "Threadpool '#{name}': expected min=#{expected_min}, got #{actual_min}. Line: #{line}")
-    assert_equal(expected_max, actual_max,
-                 "Threadpool '#{name}': expected max=#{expected_max}, got #{actual_max}. Line: #{line}")
-    assert_equal(expected_queue, actual_queue,
-                 "Threadpool '#{name}': expected queue=#{expected_queue}, got #{actual_queue}. Line: #{line}")
+    actual_min, actual_max, actual_queue = metrics_threadpool_values(name)
+    assert_equal(expected_min, actual_min, "Threadpool '#{name}': expected min=#{expected_min}, got #{actual_min}.")
+    assert_equal(expected_max, actual_max, "Threadpool '#{name}': expected max=#{expected_max}, got #{actual_max}.")
+    assert_queue(expected_queue, actual_queue, "Threadpool '#{name}': expected queue=#{expected_queue}, got #{actual_queue}.")
   end
 
-  # Returns java runtime available processors on container host
+  # Assert queue equality as either "unlimited" or Integers.
+  def assert_queue(expected_queue, actual_queue, message_on_fail)
+    if expected_queue.is_a?(String)
+      assert_equal(expected_queue, actual_queue, message_on_fail)
+    else
+      assert_equal(expected_queue.to_i, actual_queue.to_i, message_on_fail)
+    end
+  end
+
+  # Returns java runtime available processors on container host.
   def available_processors
+    return @available_processors if defined?(@available_processors)
+
     container = vespa.container.values.first
     out = container.execute(%q{echo "Runtime.getRuntime().availableProcessors();" | jshell -q 2>&1})
 
@@ -47,33 +63,47 @@ class Threadpools < SearchContainerTest
     match = line.match(/==>\s*(\d+)/)
     raise "Non-numeric value in jshell output line: #{line}" unless match
 
-    match[1].to_i
+    @available_processors = match[1].to_i
   end
 
-  # Finds the threadpool log line for given name, expects only 1 line, returns that line.
-  def find_threadpool_log(name)
-    escaped_name = Regexp.escape(name)
-    threadpool_name = /Threadpool\s+'#{escaped_name}'[^\n]*/ix
-    lines = vespa.logserver.find_log_matches(threadpool_name, {})
-    assert_equal(1, lines.size, "Expected only one instance of '#{name}' got #{lines.size}.\n#{lines}")
-    lines.first
+  # Returns the metrics values as a list of json objects from /state/v1/metrics.
+  def get_metrics_values
+    container = vespa.container.values.first
+    last_body = nil
+
+    MAX_RETRIES_FETCH_METRICS.times do
+      resp = container.http_get2("/state/v1/metrics")
+      assert_equal(200, resp.code.to_i, "Expected 200 but got #{resp.code}")
+      last_body = resp.body
+      values = JSON.parse(last_body).dig("metrics", "values")
+      return values if values.is_a?(Array)
+      sleep 1
+    end
+
+    flunk "No 'metrics.values' array in metrics response after waiting: #{last_body}"
   end
 
-  # Extracts min, max and queue values from the line.
-  def extract_threadpool_values(line)
-    min_s = line[/\bmin\s*=\s*(\d+)\b/i, 1] # integer
-    max_s = line[/\bmax\s*=\s*(\d+)\b/i, 1] # integer
-    queue_s = line[/\bqueue\s*=\s*([^,\s]+)\b/i, 1] # e.g. "unlimited" or integer
+  # Returns [size, max, queue] where queue is either an Integer or "unlimited" from /state/v1/metrics.
+  def metrics_threadpool_values(threadpool_name)
+    pool_metrics = get_metrics_values.select do |m|
+      m.dig("dimensions", "threadpool") == threadpool_name
+    end
+    assert(pool_metrics.any?, "No metrics found for threadpool '#{threadpool_name}'")
 
-    assert(min_s, "Couldn't find min=... on line: #{line}")
-    assert(max_s, "Couldn't find max=... on line: #{line}")
-    assert(queue_s, "Couldn't find queue=... on line: #{line}")
+    size_metric = pool_metrics.find { |m| m["name"] == "jdisc.thread_pool.size" }
+    max_metric = pool_metrics.find { |m| m["name"] == "jdisc.thread_pool.max_allowed_size" }
+    queue_metric = pool_metrics.find { |m| m["name"] == "jdisc.thread_pool.work_queue.capacity" }
 
-    actual_min = Integer(min_s)
-    actual_max = Integer(max_s)
-    actual_queue = queue_s.downcase
+    assert(size_metric, "Missing 'jdisc.thread_pool.size' metric for '#{threadpool_name}'")
+    assert(max_metric, "Missing 'jdisc.thread_pool.max_allowed_size' metric for '#{threadpool_name}'")
+    assert(queue_metric, "Missing 'jdisc.thread_pool.work_queue.capacity' metric for '#{threadpool_name}'")
 
-    [actual_min, actual_max, actual_queue]
+    size = (size_metric.dig("values", "last") || size_metric.dig("values", "average")).to_i
+    max = (max_metric.dig("values", "last") || max_metric.dig("values", "average")).to_i
+    queue = (queue_metric.dig("values", "last") || queue_metric.dig("values", "average")).to_i
+
+    queue_val = queue >= INT_MAX ? "unlimited" : queue
+    [size, max, queue_val]
   end
 
 end

@@ -10,6 +10,10 @@
   </admin>
 
   <container version="1.0">
+    <threadpool>
+      <threads max="4">2</threads>
+      <queue>10</queue>
+    </threadpool>
     <search>
       <threadpool>
         <threads max="2">1.5</threads>
