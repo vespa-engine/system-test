@@ -53,13 +53,12 @@ RUN dnf install -y dnf-plugins-core && \
         rubygem-bigdecimal \
         rubygem-builder \
         rubygem-concurrent-ruby \
-        rubygem-parallel \
         rubygem-rexml \
         rubygem-test-unit \
         sudo \
         wget \
         zstd && \
-    (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby) && \
+    (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby parallel) && \
     curl -sSLf "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && ./aws/install && rm -rf aws awscliv2.zip && \
     pip3 install --no-cache-dir --upgrade pip && \
