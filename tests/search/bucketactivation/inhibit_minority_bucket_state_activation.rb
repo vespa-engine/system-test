@@ -33,6 +33,7 @@ class InhibitMinorityBucketStateActivationTest < IndexedOnlySearchTest
   end
 
   def test_can_configure_activation_inhibition_of_minority_state_bucket_replicas
+    set_expected_logged(/Cluster dispatcher\.storage: group \d has reduced coverage/)
     deploy_app(make_app(disable_merges: true))
     start
 
