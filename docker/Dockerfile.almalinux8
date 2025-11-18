@@ -28,7 +28,7 @@ ENV LANG en_US.UTF-8
 USER root
 
 RUN dnf install -y dnf-plugins-core && \
-    dnf config-manager --enable powertools && \
+    /usr/bin/crb enable && \
     dnf module enable -y ruby:3.1 && \
     dnf module enable -y maven:3.8 && \
     dnf -y --nobest upgrade && \
