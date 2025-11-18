@@ -19,7 +19,7 @@ class Stemming < IndexedOnlySearchTest
   end
 
   def test_stemming
-    vespa.adminserver.logctl('container:com.yahoo.document', 'debug=on')
+    # vespa.adminserver.logctl('container:com.yahoo.document', 'debug=on')
     sleep 2
     feed_and_wait_for_docs("music", 10, :file => selfdir+"stemming.10.json")
 

@@ -103,7 +103,7 @@ class WeakAnd < IndexedStreamingSearchTest
     @wand_type = wand_type
     set_owner("hmusum")
     deploy_app(SearchApp.new.sd(selfdir + "sdfiles/#{sd_folder}/test.sd"))
-    vespa.adminserver.logctl("searchnode:proton.server.searchabledocsubdb", "debug=on")
+    # vespa.adminserver.logctl("searchnode:proton.server.searchabledocsubdb", "debug=on")
     start
     gen = gen_and_feed(7, 97, "gen_filter_docs")
 
