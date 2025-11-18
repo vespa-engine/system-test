@@ -17,6 +17,8 @@ class MultiNode < DocprocTest
   end
 
   def test_basicsearch_docproc_multinode
+    set_expected_logged(Regexp.union(/Only 1 of 3 nodes are up and OK/,
+                                     /Bad network connectivity/))
     feed_and_wait_for_docs("music", 10, :file => SEARCH_DATA+"music.10.json", :cluster => "music", :host => vespa.container.values.first.hostname)
     assert_result("query=sddocname:music", DOCPROC + "data/music.10.result.json", "surl")
   end
