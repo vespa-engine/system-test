@@ -24,7 +24,7 @@ class RestartOnDeploy < ContainerTest
     start(app)
     verify_response('/test', 'Hello, world!')
 
-    enable_debug_logging
+    # enable_debug_logging
     app = create_application('http://*/should_not_work')
     output = container_deploy(app, {})
     verify_no_reconfig(@container, output)

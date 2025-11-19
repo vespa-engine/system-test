@@ -38,8 +38,8 @@ class ScalingConfigservers < ConfigTest
     @node3 = vespa.configservers["2"]
     @nodes = [ @node1, @node2, @node3 ]
     @nodes.each do |node| node.stop_configserver end
-    @nodes.each do |node| node.logctl("configserver:com.yahoo.vespa.config.server", "debug=on") end
-    @nodes.each do |node| node.logctl("configserver:com.yahoo.vespa.config.server.tenant", "debug=on") end
+    # @nodes.each do |node| node.logctl("configserver:com.yahoo.vespa.config.server", "debug=on") end
+    # @nodes.each do |node| node.logctl("configserver:com.yahoo.vespa.config.server.tenant", "debug=on") end
     @nodes.each do |node| scratch_zk(node) end
 
     puts "INITIAL: 1"

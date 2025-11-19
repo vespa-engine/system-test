@@ -37,7 +37,7 @@ include ApplicationV2Api
   end
 
   def test_deploy_v2
-    @node.execute("vespa-logctl -c configserver:com.yahoo.vespa.config.server.session debug=on", :exceptiononfailure => false)
+    # @node.execute("vespa-logctl -c configserver:com.yahoo.vespa.config.server.session debug=on", :exceptiononfailure => false)
     @session_id = @session_id+1
     @session_id = run_single_session(@session_id)
     @session_id = run_invalid_app(@session_id)
@@ -412,7 +412,6 @@ include ApplicationV2Api
   end
 
   def run_binary_content(session_id)
-    puts "DEBUG DEBUG session_id is #{session_id}"
     file = "components/test.jar"
     assert_put_application_file(session_id, "#{CONFIG_DEPLOY_APPS}app_b/components/test.jar", file)
 

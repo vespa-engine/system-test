@@ -10,7 +10,7 @@ class ReportCoverage < IndexedOnlySearchTest
     @valgrind = false
     deploy_app(SearchApp.new.num_parts(2).sd(selfdir+"covtest.sd"))
     start
-    vespa.adminserver.logctl("searchnode:proton.matching.matcher", "debug=on")
+    # vespa.adminserver.logctl("searchnode:proton.matching.matcher", "debug=on")
   end
 
   def test_reportcoverage_xml
