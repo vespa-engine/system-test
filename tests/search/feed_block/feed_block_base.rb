@@ -102,7 +102,7 @@ class FeedBlockBase < IndexedOnlySearchTest
 
   def http_v1_api_post(http, url, body, headers)
     response = http.post(url, body, headers)
-    puts "response.code is #{response.code} response.body is #{response.body}"
+    # puts "response.code is #{response.code} response.body is #{response.body}"
     return response
   end
 
