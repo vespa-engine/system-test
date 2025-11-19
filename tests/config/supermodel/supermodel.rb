@@ -15,6 +15,7 @@ class SuperModel < ConfigTest
     add_expected_logged(/got addPeer with .* check config consistency/)
     add_expected_logged(/configured partner list does not contain peer/)
     add_expected_logged(/Unable to send default state/)
+    add_expected_logged(/Peer location broker at .* may have problems, differences from consensus map/)
 
     add_bundle("supermodelbundle")
 
