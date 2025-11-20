@@ -1,5 +1,4 @@
 # Copyright Vespa.ai. All rights reserved.
-
 require 'document_set'
 require 'indexed_only_search_test'
 
@@ -7,7 +6,7 @@ class LargeReplay < IndexedOnlySearchTest
 
   def setup
     set_owner("hmusum")
-    @valgrind=false
+    @valgrind = false
   end
 
   def timeout_seconds
@@ -19,6 +18,7 @@ class LargeReplay < IndexedOnlySearchTest
     set_expected_logged(/logfile rotated away underneath/)
     deploy_app(SearchApp.new.cluster(SearchCluster.new.sd(selfdir+"test.sd").disable_flush_tuning))
     vespa.adminserver.logctl("searchnode:proton.persistenceengine.persistenceengine", "debug=on")
+    vespa.adminserver.logctl("container:com.yahoo.container.logging", "debug=on") # TODO: Temporary, remove when debugging done
     start
 
     num_docs = 800000
@@ -37,7 +37,6 @@ class LargeReplay < IndexedOnlySearchTest
     assert(1, num_matches)
   end
 
-
   def generate_and_feed_docs(num_docs)
     feed_file = dirs.tmpdir+"feed.json"
 
@@ -52,6 +51,5 @@ class LargeReplay < IndexedOnlySearchTest
 
     feed_and_wait_for_docs("test", num_docs, :file => feed_file)
   end
-
 
 end
