@@ -27,7 +27,7 @@ class FeedWhenContainerOom < SearchTest
 
     # Start new feed, will fail until app is redeployed with more memory for container
     feed_thread = Thread.new(){
-      feed_file(@feed_file, 150)
+      feed_file(@feed_file, 300)
     }
 
     # Wait until feeder has started before deploying
