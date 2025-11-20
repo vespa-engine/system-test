@@ -40,6 +40,8 @@ class FeedWhenContainerOom < SearchTest
 
     # deploy app with more container memory, feed should succeed
     deploy_app(app('3g'))
+    vespa.stop
+    vespa.start
     feed_thread.join
     wait_for_hitcount("query=sddocname:music", doc_count, 30)
   end
@@ -70,7 +72,7 @@ class FeedWhenContainerOom < SearchTest
 
   def feed_file(feed_file, timeout = 30, verbose = false)
     params = {:file => feed_file, :ignore_errors => true, :stderr => true, :verbose => verbose, :timeout => timeout}
-    params.add(:log_config => selfdir + 'logging.properties') if verbose
+    params.merge({:log_config => selfdir + 'logging.properties'}) if verbose
     feed(params)
   end
 
