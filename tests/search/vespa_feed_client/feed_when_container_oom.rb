@@ -40,8 +40,6 @@ class FeedWhenContainerOom < SearchTest
 
     # deploy app with more container memory, feed should succeed
     deploy_app(app('3g'))
-    vespa.stop
-    vespa.start
     feed_thread.join
     wait_for_hitcount("query=sddocname:music", doc_count, 30)
   end
