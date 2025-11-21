@@ -38,7 +38,7 @@ class MapWset < PerformanceTest
     start
 
     data_file = dirs.tmpdir + "map_wset_docs.json"
-    `python3 #{selfdir}generate_map_wset_data.py 3200 > #{data_file}`
+    vespa.adminserver.execute("python3 #{selfdir}generate_map_wset_data.py 3200 > #{data_file}", :exceptiononfailure => true)
 
     feed_params = { :localfile => true }
     feedfile(data_file, feed_params)
