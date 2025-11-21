@@ -114,6 +114,7 @@ class Fbench2 < IndexedOnlySearchTest
   end
 
   def test_multiple_qrs
+    set_expected_logged(/Request timed out after/)
     qrs0 = @vespa.container['c-a/0']
     qrs1 = @vespa.container['c-b/0']
     # Check all queries are run with two valid qrs servers
