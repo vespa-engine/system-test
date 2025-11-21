@@ -1,0 +1,34 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema map_wset {
+    document map_wset {
+        field id type long {
+            indexing: attribute | summary
+        }
+
+        field metadata type map<string,string> {
+            indexing: summary
+        }
+
+        field scores type map<string,int> {
+            indexing: summary
+        }
+
+        field tags type weightedset<string> {
+            indexing: summary
+        }
+    }
+
+  rank-profile default {
+FUNCTIONS_PLACEHOLDER
+    first-phase {
+      expression: attribute(id)
+    }
+    match-features {
+      attribute(id)
+      firstPhase
+      match
+FEATURES_PLACEHOLDER
+    }
+  }
+}

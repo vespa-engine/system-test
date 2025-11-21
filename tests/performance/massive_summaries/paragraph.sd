@@ -1,0 +1,22 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema paragraph {
+  document paragraph {
+
+    field id type long {
+      indexing: attribute | summary
+    }
+
+    field embedding type tensor<float>(x[768]) {
+      indexing: attribute | summary
+    }
+
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(id)
+    }
+  }
+
+}
