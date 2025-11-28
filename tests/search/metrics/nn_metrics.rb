@@ -1,12 +1,12 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'indexed_only_search_test'
 
-class SearchMetrics < IndexedOnlySearchTest
+class NNSMatchingMetrics < IndexedOnlySearchTest
   def setup
     set_owner("boeker")
   end
 
-  def test_ann_with_filters
+  def test_nns_matching_metrics
     set_description("Test reporting of matching metrics specific for nearest neighbor search")
     deploy_app(SearchApp.new.cluster(SearchCluster.new('test').sd(selfdir + "nn_metrics/test.sd")))
     start
