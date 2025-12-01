@@ -86,13 +86,20 @@ class NearSearch < IndexedStreamingSearchTest
     check_element_gap('element-gap-17', 3)
     check_element_gap('element-gap-16', 5)
     check_element_gap('element-gap-0', 5)
+
+    check_element_gap('element-gap-infinity', 5, '0')
+    check_element_gap('element-gap-infinity', 5, '16')
+    check_element_gap('element-gap-0', 3, '17')
+    check_element_gap('element-gap-0', 3, 'infinity')
     puts "All OK"
   end
 
-  def check_element_gap(ranking, wanted_hits)
+  def check_element_gap(ranking, wanted_hits, query_override=nil)
     puts "Check element gap: ranking=#{ranking}, wanted_hits=#{wanted_hits}"
     yql_abc = 'select * from sources * where songs contains ({distance:20}near("a","b","c"))'
-    assert_hitcount({ 'yql' => yql_abc, 'ranking' => ranking }, wanted_hits)
+    query_params = { 'yql' => yql_abc, 'ranking' => ranking }
+    query_params['ranking.elementGap.songs'] = query_override if query_override
+    assert_hitcount(query_params, wanted_hits)
   end
 
 
