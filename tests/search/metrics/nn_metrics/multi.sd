@@ -1,0 +1,22 @@
+# Copyright Vespa.ai. All rights reserved.
+schema multi {
+  document multi {
+    field pos type tensor(m{}, x[2]) {
+      indexing: attribute | index | summary
+      index {
+        hnsw {
+          max-links-per-node: 4
+        }
+      }
+    }
+  }
+  rank-profile default {
+    inputs {
+      query(qpos) tensor(x[2])
+    }
+    first-phase {
+      expression: closeness(field,pos)
+    }
+    num-threads-per-search: 4
+  }
+}
