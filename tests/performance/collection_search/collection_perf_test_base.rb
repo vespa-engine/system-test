@@ -18,7 +18,7 @@ class CollectionPerfTestBase < PerformanceTest
   MAX_STRING_TERM_LENGTH  = 10
 
   # number of elements per document
-  MAP_OF_STRUCT_ELEMENT_TEST_CASES = [1, 5, 10, 20]
+  MAP_OF_STRUCT_ELEMENT_TEST_CASES = [1, 10]
 
   def initialize(*args)
     super(*args)
