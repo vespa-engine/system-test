@@ -107,6 +107,28 @@ class SignificanceTest < IndexedStreamingSearchTest
 
   def verify_default_significance_for_simple_query
     result = search({'yql' => 'select * from sources * where text contains "hello"', 'format' => 'json'}).json
+    puts "hello => #{result}"
+    significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
+    # "hello" { frequency: 3, count: 12 }
+    exp_significance = calculate_legacy_significance(3, 12)
+    assert_approx(exp_significance, significance_value)
+
+    result = search({'yql' => 'select * from sources * where text contains "world"', 'format' => 'json'}).json
+    puts "world => #{result}"
+    significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
+    # "world" { frequency: 5, count: 12 }
+    exp_significance = calculate_legacy_significance(5, 12)
+    assert_approx(exp_significance, significance_value)
+
+    result = search({'yql' => 'select * from sources * where text contains "the"', 'format' => 'json'}).json
+    puts "the => #{result}"
+    significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
+    # "the" { frequency: 11, count: 12 }
+    exp_significance = calculate_legacy_significance(11, 12)
+    assert_approx(exp_significance, significance_value)
+
+    result = search({'yql' => 'select * from sources * where text contains alternatives({"hello":1.0,"world":1.0})', 'format' => 'json'}).json
+    puts "hello world => #{result}"
     significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
     # "hello" { frequency: 3, count: 12 }
     exp_significance = calculate_legacy_significance(3, 12)
