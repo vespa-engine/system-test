@@ -13,7 +13,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     feed_docs
 
     # No queries yet
-    enn_distances, ann_distances, ann_visited = get_metrics
+    enn_distances, ann_distances, ann_visited = get_metrics("test")
     assert_equal(0, enn_distances)
     assert_equal(0, ann_distances)
     assert_equal(0, ann_visited)
@@ -24,13 +24,13 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 62}))
 
     # Verify overall metrics
-    enn_distances, ann_distances, ann_visited = get_metrics
+    enn_distances, ann_distances, ann_visited = get_metrics("test")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 9)
     assert(ann_visited >= 9)
     assert_equal(ann_distances, ann_visited) # Always the same for plain HNSW
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("default")
+    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "default")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 9)
     assert(ann_visited >= 9)
@@ -42,13 +42,13 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :tag => 5}))
 
     # Verify overall metrics
-    enn_distances, ann_distances, ann_visited = get_metrics
+    enn_distances, ann_distances, ann_visited = get_metrics("test")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 18)
     assert(ann_visited >= 18)
     assert_equal(ann_distances, ann_visited) # Always the same for plain HNSW
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("default")
+    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "default")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 18)
     assert(ann_visited >= 18)
@@ -63,12 +63,12 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :approximate => "false"}))
 
     # Verify overall metrics
-    enn_distances, ann_distances, ann_visited = get_metrics
+    enn_distances, ann_distances, ann_visited = get_metrics("test")
     assert_equal(9, enn_distances)
     assert_equal(saved_ann_distances, ann_distances)
     assert_equal(saved_ann_visited, ann_visited)
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("default")
+    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "default")
     assert_equal(9, enn_distances)
     assert_equal(saved_ann_distances, ann_distances)
     assert_equal(saved_ann_visited, ann_visited)
@@ -79,12 +79,12 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :tag => 5, :approximate => "false"}))
 
     # Verify overall metrics
-    enn_distances, ann_distances, ann_visited = get_metrics
+    enn_distances, ann_distances, ann_visited = get_metrics("test")
     assert_equal(14, enn_distances)
     assert_equal(saved_ann_distances, ann_distances)
     assert_equal(saved_ann_visited, ann_visited)
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("default")
+    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "default")
     assert_equal(14, enn_distances)
     assert_equal(saved_ann_distances, ann_distances)
     assert_equal(saved_ann_visited, ann_visited)
@@ -95,7 +95,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :tag => 5, :ranking => "exact_fallback"}))
 
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("exact_fallback")
+    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "exact_fallback")
     assert_equal(5, enn_distances)
     assert_equal(0, ann_distances)
     assert_equal(0, ann_visited)
@@ -106,7 +106,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :tag => 5, :ranking => "post_filter"}))
 
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("post_filter")
+    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "post_filter")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 9)
     assert(ann_visited >= 9)
@@ -118,7 +118,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :tag => 5, :ranking => "filter_first"}))
 
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("filter_first")
+    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "filter_first")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 5)
     assert(ann_visited >= 9)
@@ -127,44 +127,106 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     puts "Verifying overall metrics again"
     ####################################################################################################################
 
-    enn_distances, ann_distances, ann_visited = get_metrics
+    enn_distances, ann_distances, ann_visited = get_metrics("test")
     assert_equal(enn_distances, 19)
     assert(ann_distances >= 32)
     assert(ann_visited >= 36)
   end
 
-  def get_metrics
-    metrics = vespa.search["test"].first.get_total_metrics
-    extract_metrics(metrics)
+  def test_nns_matching_metrics_multiple_vectors
+    set_description("Test reporting of matching metrics specific for nearest neighbor search for multi-vector indexing")
+    deploy_app(SearchApp.new.cluster(SearchCluster.new('multi').sd(selfdir + "nn_metrics/multi.sd")))
+    start
+
+    vector0 = [{'address'=>{'m'=>'a', 'x'=>'0'}, 'value'=>1.0},
+               {'address'=>{'m'=>'a', 'x'=>'1'}, 'value'=>1.0},
+               {'address'=>{'m'=>'b', 'x'=>'0'}, 'value'=>2.0},
+               {'address'=>{'m'=>'b', 'x'=>'1'}, 'value'=>2.0}]
+    vector1 = [{'address'=>{'m'=>'a', 'x'=>'0'}, 'value'=>3.0},
+               {'address'=>{'m'=>'a', 'x'=>'1'}, 'value'=>3.0},
+               {'address'=>{'m'=>'b', 'x'=>'0'}, 'value'=>4.0},
+               {'address'=>{'m'=>'b', 'x'=>'1'}, 'value'=>4.0},
+               {'address'=>{'m'=>'c', 'x'=>'0'}, 'value'=>5.0},
+               {'address'=>{'m'=>'c', 'x'=>'1'}, 'value'=>5.0}]
+
+    doc0 = Document.new("id:multi:multi::0").add_field("pos", vector0)
+    doc1 = Document.new("id:multi:multi::1").add_field("pos", vector1)
+    vespa.document_api_v1.put(doc0)
+    vespa.document_api_v1.put(doc1)
+
+    # No queries yet
+    enn_distances, ann_distances, ann_visited = get_metrics("multi")
+    assert_equal(0, enn_distances)
+    assert_equal(0, ann_distances)
+    assert_equal(0, ann_visited)
+
+    ####################################################################################################################
+    puts "Exact search"
+    ####################################################################################################################
+    run_query(get_query({:qpos => 80, :approximate => "false"}))
+
+    # Verify overall metrics
+    enn_distances, ann_distances, ann_visited = get_metrics("multi")
+    assert_equal(5, enn_distances)
+    assert_equal(0, ann_distances)
+    assert_equal(0, ann_visited)
+    # Verify rank-profile metrics
+    enn_distances, ann_distances, ann_visited = get_rp_metrics("multi", "default")
+    assert_equal(5, enn_distances)
+    assert_equal(0, ann_distances)
+    assert_equal(0, ann_visited)
+
+    ####################################################################################################################
+    puts "HNSW search without filtering"
+    ####################################################################################################################
+    run_query(get_query({:qpos => 62}))
+
+    # Verify overall metrics
+    enn_distances, ann_distances, ann_visited = get_metrics("multi")
+    assert_equal(5, enn_distances)
+    assert(ann_distances >= 5)
+    assert(ann_visited >= 5)
+    assert_equal(ann_distances, ann_visited) # Always the same for plain HNSW
+    # Verify rank-profile metrics
+    enn_distances, ann_distances, ann_visited = get_rp_metrics("multi", "default")
+    assert_equal(5, enn_distances)
+    assert(ann_distances >= 5)
+    assert(ann_visited >= 5)
+    assert_equal(ann_distances, ann_visited) # Always the same for plain HNSW
   end
 
-  def extract_metrics(metrics)
-    enn_distances = extract_metric(metrics, "exact_nns_distances_computed")
-    ann_distances = extract_metric(metrics, "approximate_nns_distances_computed")
-    ann_visited = extract_metric(metrics, "approximate_nns_nodes_visited")
+  def get_metrics(doc_name)
+    metrics = vespa.search[doc_name].first.get_total_metrics
+    extract_metrics(metrics, doc_name)
+  end
+
+  def extract_metrics(metrics, doc_name)
+    enn_distances = extract_metric(metrics, doc_name, "exact_nns_distances_computed")
+    ann_distances = extract_metric(metrics, doc_name, "approximate_nns_distances_computed")
+    ann_visited = extract_metric(metrics, doc_name, "approximate_nns_nodes_visited")
     return enn_distances, ann_distances, ann_visited
   end
 
-  def extract_metric(metrics, name)
-    value = metrics.get("content.proton.documentdb.matching.#{name}", {"documenttype" => "test"})["count"]
+  def extract_metric(metrics, doc_name, name)
+    value = metrics.get("content.proton.documentdb.matching.#{name}", {"documenttype" => doc_name})["count"]
     puts "content.proton.documentdb.matching.#{name} = #{value}"
     value
   end
 
-  def get_rp_metrics(rank_profile)
-    metrics = vespa.search["test"].first.get_total_metrics
-    extract_rp_metrics(metrics, rank_profile)
+  def get_rp_metrics(doc_name, rank_profile)
+    metrics = vespa.search[doc_name].first.get_total_metrics
+    extract_rp_metrics(metrics, doc_name, rank_profile)
   end
 
-  def extract_rp_metrics(metrics, rank_profile)
-    enn_distances = extract_rp_metric(metrics, rank_profile, "exact_nns_distances_computed")
-    ann_distances = extract_rp_metric(metrics, rank_profile, "approximate_nns_distances_computed")
-    ann_visited = extract_rp_metric(metrics, rank_profile, "approximate_nns_nodes_visited")
+  def extract_rp_metrics(metrics, doc_name, rank_profile)
+    enn_distances = extract_rp_metric(metrics, doc_name, rank_profile, "exact_nns_distances_computed")
+    ann_distances = extract_rp_metric(metrics, doc_name, rank_profile, "approximate_nns_distances_computed")
+    ann_visited = extract_rp_metric(metrics, doc_name, rank_profile, "approximate_nns_nodes_visited")
     return enn_distances, ann_distances, ann_visited
   end
 
-  def extract_rp_metric(metrics, rank_profile, name)
-    value = metrics.get("content.proton.documentdb.matching.rank_profile.#{name}", {"documenttype" => "test", "rankProfile" => rank_profile})["count"]
+  def extract_rp_metric(metrics, doc_name, rank_profile, name)
+    value = metrics.get("content.proton.documentdb.matching.rank_profile.#{name}", {"documenttype" => doc_name, "rankProfile" => rank_profile})["count"]
     puts "content.proton.documentdb.matching.rank_profile.#{name} = #{value} for rank profile #{rank_profile}"
     value
   end
