@@ -46,7 +46,7 @@ class SearchPartitioningBase < PerformanceTest
       searchnode.trigger_flush
     end
     warmup(qrserver)
-    for num_partitions in [1, 2, 4, 8, 16, 1024, 0]
+    for num_partitions in [1, 1024, 0]
       run_fbench_ntimes(qrserver, 1, 30, 1, [parameter_filler("num_partitions", num_partitions)],{:append_str => "&ranking=thread"+num_partitions.to_s})
     end
   end
