@@ -23,17 +23,11 @@ class CollectionPerfTestBase < PerformanceTest
   def initialize(*args)
     super(*args)
     @num_docs_total = 100_000
-    @first_deploy = true
   end
 
-  def wipe_indexes_and_deploy(with_fast_search:)
-    if !@first_deploy
-      vespa.stop_base
-      vespa.adminserver.clean_indexes # Assumes only 1 node running test
-    end
+  def deploy(with_fast_search:)
     deploy_app(create_app(with_fast_search: with_fast_search))
     start
-    @first_deploy = false
   end
 
   def create_app(with_fast_search: false)

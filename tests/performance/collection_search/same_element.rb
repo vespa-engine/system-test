@@ -26,15 +26,20 @@ class SameElementPerformanceTest < CollectionPerfTestBase
     set_description('Test use of sameElement() operator for map of struct with varying number of elements per map')
     @query_file_name = file_in_tmp('queries.txt')
     puts "Using query file: '#{@query_file_name}'"
-    [false, true].each do |fast_search|
-      run_map_of_struct_same_element_test_cases(fast_search: fast_search)
-    end
+    run_map_of_struct_same_element_test_cases(fast_search: false)
+  end
+
+  def test_same_element_operator_with_map_of_struct_fast_search
+    set_description('Test use of sameElement() operator for map of struct with varying number of elements per map with fast-search')
+    @query_file_name = file_in_tmp('queries.txt')
+    puts "Using query file: '#{@query_file_name}'"
+    run_map_of_struct_same_element_test_cases(fast_search: true)
   end
 
   def run_map_of_struct_same_element_test_cases(fast_search:)
     fancy_puts "run_map_of_struct_same_element_test_cases(fast_search: #{fast_search})"
 
-    wipe_indexes_and_deploy(with_fast_search: fast_search)
+    deploy(with_fast_search: fast_search)
 
     MAP_OF_STRUCT_ELEMENT_TEST_CASES.each do |elements_per_doc|
       feed_and_query_map_of_struct(fast_search: fast_search, elements_per_doc: elements_per_doc)
