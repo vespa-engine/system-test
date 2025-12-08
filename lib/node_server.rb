@@ -324,7 +324,7 @@ class NodeServer
   end
 
   def ignore_proc(ps_line)
-    ps_line =~ /\[perf\]|\[sh\]|\[ruby\]| perf record | free|ps alxww| PID | sh |home.y.tmp.systemtests|.*node_server.rb.*/
+    ps_line =~ /\[perf\]|\[sh\]|\[ruby\]| perf record |free|ps alxww| PID | sh |.*node_server.rb.*/
   end
 
   def child_pids(pid, pidmap)
