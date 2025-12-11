@@ -284,7 +284,7 @@ include ApplicationV2Api
     deploy_and_activate_session_v2("#{CONFIG_DEPLOY_APPS}/app_c", session_c, 1339)
 
     # try to activate b, which should give a conflict (status code 409)
-    result = activate_session_fail(result_b, 409, /.*Cannot activate session #{session_b} because the currently active session \(#{session_c}\) has changed since session #{session_b} was created \(was #{session_a} at creation time\)/)
+    result = activate_session_fail(result_b, 409, /This session #{session_b} was prepared when session #{session_a} was active, but session #{session_c} has since become active: refusing to activate this session, please redeploy/)
     assert_logd_config_v2(1339, @hostname, @tenant_name, @application_name)
 
     # Deploying again should work
@@ -393,7 +393,8 @@ include ApplicationV2Api
     third_session = next_session(second_session)
 
     # try to activate first session, which should fail, because config generation cannot go backwards
-    result = activate_session_fail(prepare_result, 409, /Cannot activate session #{first_session} because the currently active session \(#{second_session}\) has changed since session #{first_session} was created \(was #{first_session - 1} at creation time\)/)
+
+    result = activate_session_fail(prepare_result, 409, /This session #{first_session} was prepared when session #{first_session - 1} was active, but session #{second_session} has since become active: refusing to activate this session, please redeploy/)
     assert_logd_config_v2(1339, @hostname, tenant_name, @application_name)
     next_session(second_session)
   end
