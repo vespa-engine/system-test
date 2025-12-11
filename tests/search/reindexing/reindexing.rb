@@ -1,6 +1,11 @@
 # Copyright Vespa.ai. All rights reserved.
-require 'indexed_streaming_search_test'
 
+# TODO: require 'indexed_only_search_test'
+require 'indexed_streaming_search_test'
+require 'document'
+require 'document_set'
+
+# TODO: class ReindexingTest < IndexedOnlySearchTest
 class ReindexingTest < IndexedStreamingSearchTest
 
   DOCUMENT_COUNT = 1000
@@ -91,6 +96,49 @@ class ReindexingTest < IndexedStreamingSearchTest
     wait_for_reindexing_to_complete(MOVIE_CLUSTER_ID, MOVIE_DOC_TYPE, reindexing_timestamp, DOCUMENT_COUNT)
   end
 
+  def test_reindexing_with_binary_in_text_field
+    app = SearchApp.new.monitoring('vespa', 60).
+        cluster(SearchCluster.new(MUSIC_CLUSTER_ID).sd(selfdir + 'music.sd')).
+        container(Container.new('default').
+            search(Searching.new).
+            docproc(DocumentProcessing.new).
+            documentapi(ContainerDocumentApi.new).
+            config(ConfigOverride.new('vespa.configdefinition.ilscripts').
+                     add('maxReplacementCharactersRatio', '0.99').
+                     add('maxReplacementCharacters', '999999999')))
+    deploy_app(app)
+    start
+    container_node = @vespa.container['default/0']
+    puts "Feeding #{MUSIC_DOC_TYPE} documents"
+    music_file = generate_feed_file(container_node, MUSIC_DOC_TYPE)
+    feed_and_wait_for_docs(MUSIC_DOC_TYPE, DOCUMENT_COUNT, { :file => music_file, :feed_node => container_node, :localfile => true })
+    feed_bad_binary_file
+    assert_hitcount("title:ulimit", 1)
+
+    # redeploy with default config
+    app = SearchApp.new.monitoring('vespa', 60).
+        cluster(SearchCluster.new(MUSIC_CLUSTER_ID).sd(selfdir + 'music.sd')).
+        container(Container.new('default').
+            search(Searching.new).
+            docproc(DocumentProcessing.new).
+            documentapi(ContainerDocumentApi.new))
+    deploy_app(app)
+    feed_and_wait_for_docs(MUSIC_DOC_TYPE, DOCUMENT_COUNT + 1, { :file => music_file, :feed_node => container_node, :localfile => true })
+    assert_hitcount("title:ulimit", 1)
+
+    puts "Triggering reindexing"
+    # Get the reindexing timestamp from MUSIC_CLUSTER_ID and MUSIC_DOC_TYPE
+    reindexing_timestamp = trigger_reindexing(app, MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE)
+
+    puts "Waiting for reindexing to actually start"
+    wait_for_reindexing_to_start(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, reindexing_timestamp)
+
+    puts "Waiting for all documents to have a index timestamp after #{reindexing_timestamp}"
+    wait_for_reindexing_to_complete(MUSIC_CLUSTER_ID, MUSIC_DOC_TYPE, reindexing_timestamp, DOCUMENT_COUNT + 1)
+    assert_hitcount("title:ulimit", 0) unless is_streaming
+    @ignorable_messages.append(/classified as binary data/)
+  end
+
   private
   def generate_feed_file(container_node, document_type)
     feed_file = "#{dirs.tmpdir}/#{document_type}.json"
@@ -167,5 +215,22 @@ class ReindexingTest < IndexedStreamingSearchTest
     "http://#{cfg_hostname}:19071/application/v2/tenant/#{tenant}/application/#{application}/environment/prod/region/default/instance/default/"
   end
 
+  def feed_bad_binary_file
+    doc = Document.new('id:ns:music::bin-sh-binary')
+    doc.add_field('title', read_utf8_file_with_replacement('/bin/sh'))
+    docs = DocumentSet.new()
+    docs.add(doc)
+    file = "#{dirs.tmpdir}/input-bad.json";
+    docs.write_json(file)
+    result = feed(:file => file)
+    puts("fed up with bad data: #{result}")
+  end
+
+  def read_utf8_file_with_replacement(file_path)
+    content = File.read(file_path, encoding: 'UTF-8', invalid: :replace, undef: :replace, replace: "\u{FFFD}")
+    content = content.encode('UTF-8', 'UTF-8', invalid: :replace, undef: :replace, replace: "\u{FFFD}")
+    # Replace control characters (0x00-0x1F and 0x7F-0x9F) except whitespace (tab, newline, carriage return)
+    content.gsub(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/, "\u{FFFD}")
+  end
 
 end
