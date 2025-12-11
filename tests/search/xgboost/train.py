@@ -42,6 +42,19 @@ c = xgb.XGBClassifier(n_estimators=20, objective='binary:logistic')
 c.fit(breast_cancer.data,breast_cancer.target)
 c.get_booster().dump_model(modelDir + "binary_breast_cancer.json", fmap=featureMapDir + "feature-map-30.txt", dump_format='json')
 
+# Print base score for binary_breast_cancer
+bst = c.get_booster()
+config_str = bst.save_config()
+config = json.loads(config_str)
+base_score_str = config['learner']['learner_model_param']['base_score']
+base_score_val = json.loads(base_score_str)
+print(base_score_str)
+base_score = float(base_score_val[0]) if isinstance(base_score_val, list) else float(base_score_val)
+print(f"Binary Breast Cancer Base Score: {base_score}")
+
+with open('/tmp/base_score_value.txt', 'w') as f:
+    print(f"    base_score double : {base_score}", file=f)
+
 #predictions
 predictions = {
     "regression_diabetes" :  d.predict(diabetes.data).tolist(),
@@ -49,4 +62,3 @@ predictions = {
     "binary_breast_cancer" : c.predict_proba(breast_cancer.data)[:,1].tolist()
 }
 json.dump(predictions,open(predictionFile,"w"))
-
