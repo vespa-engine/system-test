@@ -57,9 +57,13 @@ class CommonSiftGistBase < CommonAnnBaseTest
     @query_vectors_container = dirs.tmpdir + "query_vectors_container.txt" # The vectors as a .txt file
     @container.execute("#{@container_tmp_bin_dir}/make_queries #{@query_fvecs_container} #{@dimensions} #{@num_queries_for_recall} > #{@query_vectors_container}")
 
-    @local_query_vectors = @query_vectors_container
-    #@local_query_vectors = dirs.tmpdir + "query_vectors.txt"
-    #@container.copy_remote_file_to_local_file(@query_vectors_container, @local_query_vectors)
+    @local_query_vectors = dirs.tmpdir + "query_vectors.txt"
+    vespa.nodeproxies.each_value do |node|
+      if node.file?(@query_vectors_container)
+        node.copy_remote_file_to_local_file(@query_vectors_container, @local_query_vectors)
+        break
+      end
+    end
   end
 
   def query_and_benchmark(algorithm, target_hits, explore_hits, params = {})
