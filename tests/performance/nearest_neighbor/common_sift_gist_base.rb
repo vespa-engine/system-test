@@ -41,6 +41,27 @@ class CommonSiftGistBase < CommonAnnBaseTest
     (threads_per_search > 0) ? "threads-#{threads_per_search}" : "default"
   end
 
+  def compile_generators
+    vespa.adminserver.execute("g++ -g -O3 -o #{@adminserver_tmp_bin_dir}/make_docs #{selfdir}make_docs.cpp")
+    @container.execute("g++ -g -O3 -o #{@container_tmp_bin_dir}/make_queries #{selfdir}make_queries.cpp")
+  end
+
+  def download_and_feed_documents(num_documents, filter_values, label)
+    base_fvecs_local = nn_download_file(@data_path + @base_fvecs , vespa.adminserver)
+    stream_feed_and_benchmark("#{@adminserver_tmp_bin_dir}/make_docs #{base_fvecs_local} #{@dimensions} put 0 #{num_documents} #{filter_values.join(",")} false vec_m16", label)
+  end
+
+  def download_and_prepare_queries
+    @query_fvecs_container = nn_download_file(@data_path + @query_fvecs, @container)
+
+    @query_vectors_container = dirs.tmpdir + "query_vectors_container.txt" # The vectors as a .txt file
+    @container.execute("#{@container_tmp_bin_dir}/make_queries #{@query_fvecs_container} #{@dimensions} #{@num_queries_for_recall} > #{@query_vectors_container}")
+
+    @local_query_vectors = @query_vectors_container
+    #@local_query_vectors = dirs.tmpdir + "query_vectors.txt"
+    #@container.copy_remote_file_to_local_file(@query_vectors_container, @local_query_vectors)
+  end
+
   def query_and_benchmark(algorithm, target_hits, explore_hits, params = {})
     filter_percent = params[:filter_percent] || 0
     approximate_threshold = params[:approximate_threshold] || 0.05
@@ -52,7 +73,10 @@ class CommonSiftGistBase < CommonAnnBaseTest
     annotation = params[:annotation] || "none"
 
     approximate = algorithm == HNSW ? "true" : "false"
-    query_file = fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
+    #query_file = fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
+    query_file = dirs.tmpdir + get_filename(approximate, target_hits, explore_hits, filter_percent)
+    @container.execute("#{@container_tmp_bin_dir}/make_queries #{@query_fvecs_container} #{@dimensions} #{@num_queries} vec_m16 #{approximate} #{target_hits} #{explore_hits} #{filter_percent} > #{query_file}")
+
     label = params[:label] || "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}-n#{clients}-t#{threads_per_search}"
     result_file = dirs.tmpdir + "fbench_result.#{label}.txt"
     fillers = [parameter_filler(TYPE, get_type_string(filter_percent, threads_per_search)),
@@ -158,9 +182,13 @@ class CommonSiftGistBase < CommonAnnBaseTest
     calc_recall_for_queries(100, 0, {:label => "hnsw-th100-full-after-removal", :annotation => "full"})
   end
 
-  def fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
+  def get_filename(approximate, target_hits, explore_hits, filter_percent)
     filter_str = (filter_percent == 0) ? "" : ".f-#{filter_percent}"
-    remote_file = @data_path + "queries.vec_m16.ap-#{approximate}.th-#{target_hits}.eh-#{explore_hits}#{filter_str}.txt"
+    "queries.vec_m16.ap-#{approximate}.th-#{target_hits}.eh-#{explore_hits}#{filter_str}.txt"
+  end
+
+  def fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
+    remote_file = @data_path + get_filename(approximate, target_hits, explore_hits, filter_percent)
     proxy_file = nn_download_file(remote_file, @container)
     puts "Got on container: #{proxy_file}"
     return proxy_file

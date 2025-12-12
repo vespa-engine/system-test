@@ -14,22 +14,30 @@ class AnnGistBase < CommonSiftGistBase
 
     # To re-generate test data:
     # ./create_gist_test_data.sh
+    @dimensions = 960
+    @base_fvecs = "gist_base.fvecs"
+    @query_fvecs = "gist_query.fvecs"
+    @num_queries = 1000
+    @num_queries_for_recall = 100
   end
 
   def run_gist_test(sd_dir)
     deploy_app(create_app(sd_dir, 0.3))
     start
     @container = vespa.container.values.first
+    @container_tmp_bin_dir = @container.create_tmp_bin_dir
+    @adminserver_tmp_bin_dir = vespa.adminserver.create_tmp_bin_dir
 
-    feed_and_benchmark(@docs_300k, "300k-docs")
+    compile_generators
+    filter_values = [1, 10, 50, 90, 95, 99]
+    download_and_feed_documents(300000, filter_values, "300k-docs")
+    download_and_prepare_queries
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
 
-    prepare_queries_for_recall
-
     run_target_hits_10_tests
 
-    [1, 10, 50, 90, 95, 99].each do |filter_percent|
+    filter_values.each do |filter_percent|
       query_and_benchmark(BRUTE_FORCE, 100, 0, {:filter_percent => filter_percent})
       # Standard HNSW
       query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent})

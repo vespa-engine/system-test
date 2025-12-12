@@ -3,17 +3,35 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
 using FloatVector = std::vector<float>;
 using IntVector = std::vector<int>;
 
-// These values indicate how many percent of the corpus should be filtered away.
-const IntVector filters = {1, 10, 50, 90, 95, 99};
+IntVector
+parse_filters(const std::string &str) {
+    IntVector filters;
+
+    std::stringstream ss(str);
+
+    int i;
+    while (ss >> i) {
+        filters.push_back(i);
+        if (ss.peek() == ','
+	    || ss.peek() == '{'
+	    || ss.peek() == '}'
+	    || ss.peek() == '['
+	    || ss.peek() == ']')
+            ss.ignore();
+    }
+
+    return filters;
+}
 
 IntVector
-gen_filter_values(size_t docid)
+gen_filter_values(size_t docid, const IntVector &filters)
 {
     IntVector result;
     for (auto filter_percent : filters) {
@@ -76,14 +94,14 @@ print_assign_vector_field(std::ostream& os, const std::string& field_name, const
 using StringVector = std::vector<std::string>;
 
 void
-print_put(std::ostream& os, size_t docid, bool gen_filter, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor)
+print_put(std::ostream& os, size_t docid, const IntVector &filters, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor)
 {
     os << "{" << std::endl;
     os << "  \"put\": \"id:test:test::" << docid << "\"," << std::endl;
     os << "  \"fields\": {" << std::endl;
     os << "    \"id\": " << docid << "," << std::endl;
-    if (gen_filter) {
-        os << "    \"filter\": "; print_vector(os, gen_filter_values(docid)); os << "," << std::endl;
+    if (!filters.empty()) {
+        os << "    \"filter\": "; print_vector(os, gen_filter_values(docid, filters)); os << "," << std::endl;
     }
     for (size_t i = 0; i < tensor_fields.size(); ++i) {
         bool last = (i + 1) == tensor_fields.size();
@@ -121,51 +139,46 @@ print_update(std::ostream& os, size_t docid, const StringVector& tensor_fields, 
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_docs <data-set> <feed-op> <begin-doc> <num-docs> <gen-filter> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
+ *   ./make_docs <data-set> <feed-op> <begin-doc> <num-docs> <filter-values> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
  */ 
 int
 main(int argc, char **argv)
 {
-    std::string data_set = "sift";
+    std::string vector_file;
     std::string feed_op = "put";
     size_t begin_doc = 0;
     size_t num_docs = 1000000;
-    int dim_size = 128;
-    bool gen_filter = false;
+    size_t dim_size = 128;
+    IntVector filters;
     bool mixed_tensor = false;
     std::vector<std::string> tensor_fields;
     if (argc > 1) {
-        data_set = std::string(argv[1]);
-        if (data_set != "sift" && data_set != "gist") {
-            std::cerr << "Unknown data set '" << data_set << "'" << std::endl;
-            return 1;
-        }
-        if (data_set == "gist") {
-            dim_size = 960;
-        }
+        vector_file = std::string(argv[1]);
     }
     if (argc > 2) {
-        feed_op = std::string(argv[2]);
+        dim_size = std::stoll(argv[2]);
     }
     if (argc > 3) {
-        begin_doc = std::stoll(argv[3]);
+        feed_op = std::string(argv[3]);
     }
     if (argc > 4) {
-        num_docs = std::stoll(argv[4]);
+        begin_doc = std::stoll(argv[4]);
     }
     if (argc > 5) {
-        gen_filter = (argv[5] == std::string("true"));
+        num_docs = std::stoll(argv[5]);
     }
     if (argc > 6) {
-        mixed_tensor = (argv[6] == std::string("true"));
+	filters = parse_filters(argv[6]);
     }
-    for (int i = 7; i < argc; ++i) {
+    if (argc > 7) {
+        mixed_tensor = (argv[7] == std::string("true"));
+    }
+    for (int i = 8; i < argc; ++i) {
         tensor_fields.push_back(std::string(argv[i]));
     }
-    std::string file_name = data_set + "/" + data_set + "_base.fvecs";
-    std::ifstream is(file_name, std::ifstream::binary);
+    std::ifstream is(vector_file, std::ifstream::binary);
     if (!is.good()) {
-        std::cerr << "Could not open '" << file_name << "'" << std::endl;
+        std::cerr << "Could not open '" << vector_file << "'" << std::endl;
         return 1;
     }
     int read_dim_size = 0;
@@ -183,7 +196,7 @@ main(int argc, char **argv)
         }
         first = false;
         if (make_puts) {
-            print_put(std::cout, docid, gen_filter, tensor_fields, vector, mixed_tensor);
+            print_put(std::cout, docid, filters, tensor_fields, vector, mixed_tensor);
         } else {
             print_update(std::cout, docid, tensor_fields, vector, mixed_tensor);
         }

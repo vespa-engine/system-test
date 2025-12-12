@@ -38,7 +38,22 @@ class CommonAnnBaseTest < PerformanceTest
     download_file_from_s3(file_name, vespa_node, 'nearest-neighbor')
   end
 
-  def feed_and_benchmark(feed_file, label, doc_type = "test", tensor = "vec_m16")
+  def stream_feed_and_benchmark(command, label, doc_type = "test", tensor = "vec_m16")
+    profiler_start
+    run_stream_feeder(command, [parameter_filler(TYPE, "feed"), parameter_filler(LABEL, label)])
+    profiler_report("feed")
+    print_nni_stats(doc_type, tensor)
+  end
+
+  def feed_locally_and_benchmark(feed_file, label, doc_type = "test", tensor = "vec_m16")
+    profiler_start
+    run_feeder(feed_file, [parameter_filler(TYPE, "feed"), parameter_filler(LABEL, label)], :localfile => true)
+    vespa.adminserver.execute("ls -ld #{feed_file} #{selfdir}", :exceptiononfailure => false)
+    profiler_report("feed")
+    print_nni_stats(doc_type, tensor)
+  end
+
+  def feed_file_and_benchmark(feed_file, label, doc_type = "test", tensor = "vec_m16")
     profiler_start
     node_file = nn_download_file(feed_file, vespa.adminserver)
     run_feeder(node_file, [parameter_filler(TYPE, "feed"), parameter_filler(LABEL, label)], :localfile => true)
