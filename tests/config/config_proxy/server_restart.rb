@@ -11,6 +11,7 @@ class ServerRestart < ConfigTest
 
   def test_server_restart_and_clean
     @valgrind = false
+    set_expected_logged(/getConfig request queue size is larger than configured max limit/)
     deploy(selfdir+"app")
     start
     node = vespa.adminserver
