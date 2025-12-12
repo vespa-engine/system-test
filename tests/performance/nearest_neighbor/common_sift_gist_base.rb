@@ -42,13 +42,21 @@ class CommonSiftGistBase < CommonAnnBaseTest
   end
 
   def compile_generators
+    @container = vespa.container.values.first
+    @container_tmp_bin_dir = @container.create_tmp_bin_dir
+    @adminserver_tmp_bin_dir = vespa.adminserver.create_tmp_bin_dir
+
     vespa.adminserver.execute("g++ -g -O3 -o #{@adminserver_tmp_bin_dir}/make_docs #{selfdir}make_docs.cpp")
     @container.execute("g++ -g -O3 -o #{@container_tmp_bin_dir}/make_queries #{selfdir}make_queries.cpp")
   end
 
   def download_and_feed_documents(num_documents, filter_values, label)
+    download_and_feed_documents_range(0, num_documents, filter_values, label)
+  end
+
+  def download_and_feed_documents_range(from, to, filter_values, label)
     base_fvecs_local = nn_download_file(@data_path + @base_fvecs , vespa.adminserver)
-    stream_feed_and_benchmark("#{@adminserver_tmp_bin_dir}/make_docs #{base_fvecs_local} #{@dimensions} put 0 #{num_documents} #{filter_values.join(",")} false vec_m16", label)
+    stream_feed_and_benchmark("#{@adminserver_tmp_bin_dir}/make_docs #{base_fvecs_local} #{@dimensions} put 0 #{from} #{to} #{filter_values.nil? ? "[]" : filter_values.join(",")} false vec_m16", label)
   end
 
   def download_and_prepare_queries
@@ -146,9 +154,9 @@ class CommonSiftGistBase < CommonAnnBaseTest
     end
   end
 
-  def run_removal_test(file, label, documents_to_benchmark, documents_in_total)
+  def run_removal_test(documents_to_benchmark, documents_in_total, label)
     puts "About to feed #{documents_to_benchmark} of #{documents_in_total}"
-    feed_and_benchmark_range(file, "#{label}-0-#{documents_to_benchmark}", 0, documents_to_benchmark)
+    download_and_feed_documents_range(0, documents_to_benchmark, nil, "#{label}-0-#{documents_to_benchmark}")
     assert_hitcount("query=sddocname:test", documents_to_benchmark)
 
     puts "Benchmarking before deletion"
@@ -159,7 +167,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     print_nni_stats("test", "vec_m16", "before")
 
     puts "Feeding the remaining documents..."
-    feed_and_benchmark_range(file, "#{label}-#{documents_to_benchmark}-#{documents_in_total}", documents_to_benchmark, documents_in_total)
+    download_and_feed_documents_range(documents_to_benchmark, documents_in_total, nil, "#{label}-#{documents_to_benchmark}-#{documents_in_total}")
     assert_hitcount("query=sddocname:test", documents_in_total)
 
     puts "Benchmarking with full data set before deletion"
@@ -178,7 +186,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     calc_recall_for_queries(100, 0, {:label => "hnsw-th100-after-removal", :annotation => "subset"})
 
     puts "Feeding the removed documents again"
-    feed_and_benchmark_range(file, "#{label}-#{documents_to_benchmark}-#{documents_in_total}-again", documents_to_benchmark, documents_in_total)
+    download_and_feed_documents_range(documents_to_benchmark, documents_in_total, nil, "#{label}-#{documents_to_benchmark}-#{documents_in_total}")
     assert_hitcount("query=sddocname:test", documents_in_total)
 
     puts "Benchmarking with full data set after deletion"

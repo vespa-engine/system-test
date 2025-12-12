@@ -139,7 +139,7 @@ print_update(std::ostream& os, size_t docid, const StringVector& tensor_fields, 
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_docs <data-set> <feed-op> <begin-doc> <num-docs> <filter-values> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
+ *   ./make_docs <data-set> <feed-op> <begin-doc> <start-vector> <end-vector> <filter-values> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
  */ 
 int
 main(int argc, char **argv)
@@ -147,7 +147,8 @@ main(int argc, char **argv)
     std::string vector_file;
     std::string feed_op = "put";
     size_t begin_doc = 0;
-    size_t num_docs = 1000000;
+    size_t start_vector = 0; // inclusive
+    size_t end_vector = 1000000; // exclusive
     size_t dim_size = 128;
     IntVector filters;
     bool mixed_tensor = false;
@@ -165,15 +166,18 @@ main(int argc, char **argv)
         begin_doc = std::stoll(argv[4]);
     }
     if (argc > 5) {
-        num_docs = std::stoll(argv[5]);
+        start_vector = std::stoll(argv[5]);
     }
     if (argc > 6) {
-	filters = parse_filters(argv[6]);
+        end_vector = std::stoll(argv[6]);
     }
     if (argc > 7) {
-        mixed_tensor = (argv[7] == std::string("true"));
+	filters = parse_filters(argv[7]);
     }
-    for (int i = 8; i < argc; ++i) {
+    if (argc > 8) {
+        mixed_tensor = (argv[8] == std::string("true"));
+    }
+    for (int i = 9; i < argc; ++i) {
         tensor_fields.push_back(std::string(argv[i]));
     }
     std::ifstream is(vector_file, std::ifstream::binary);
@@ -186,19 +190,23 @@ main(int argc, char **argv)
     std::cout << "[" << std::endl;
     bool make_puts = (feed_op == "put");
     bool first = true;
-    for (size_t docid = begin_doc; docid < (begin_doc + num_docs); ++docid) {
+    for (size_t vector_num = 0; vector_num < end_vector; ++vector_num) {
         is.read(reinterpret_cast<char*>(&read_dim_size), 4);
         assert(read_dim_size == dim_size);
         is.read(reinterpret_cast<char*>(vector.data()), sizeof(float) * dim_size);
         assert(is.good());
+        if (vector_num < start_vector) {
+            continue;
+        }
+
         if (!first) {
             std::cout << "," << std::endl;
         }
         first = false;
         if (make_puts) {
-            print_put(std::cout, docid, filters, tensor_fields, vector, mixed_tensor);
+            print_put(std::cout, begin_doc + vector_num, filters, tensor_fields, vector, mixed_tensor);
         } else {
-            print_update(std::cout, docid, tensor_fields, vector, mixed_tensor);
+            print_update(std::cout, begin_doc + vector_num, tensor_fields, vector, mixed_tensor);
         }
     }
     std::cout << std::endl << "]" << std::endl;

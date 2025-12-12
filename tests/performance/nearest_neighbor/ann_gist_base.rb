@@ -24,14 +24,11 @@ class AnnGistBase < CommonSiftGistBase
   def run_gist_test(sd_dir)
     deploy_app(create_app(sd_dir, 0.3))
     start
-    @container = vespa.container.values.first
-    @container_tmp_bin_dir = @container.create_tmp_bin_dir
-    @adminserver_tmp_bin_dir = vespa.adminserver.create_tmp_bin_dir
-
     compile_generators
+    download_and_prepare_queries
+
     filter_values = [1, 10, 50, 90, 95, 99]
     download_and_feed_documents(300000, filter_values, "300k-docs")
-    download_and_prepare_queries
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
 
@@ -54,11 +51,10 @@ class AnnGistBase < CommonSiftGistBase
   def run_gist_removal_test(sd_dir)
     deploy_app(create_app(sd_dir, 0.3))
     start
-    @container = vespa.container.values.first
+    compile_generators
+    download_and_prepare_queries
 
-    prepare_queries_for_recall
-
-    run_removal_test(@docs_300k, "300k-docs", 150000, 300000)
+    run_removal_test(150000, 300000, "300k-docs")
   end
 
 end
