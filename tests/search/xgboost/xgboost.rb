@@ -25,22 +25,22 @@ class XGBoostServing < IndexedStreamingSearchTest
 
   # Tests extracting model (from xgboost 2.x or 3.x)
   def test_xgboost_extract_model
-    node_proxy = vespa.nodeproxies.values.first
-    tmp_dir = dirs.tmpdir + "/training"
-    node_proxy.execute("mkdir -p #{tmp_dir}/models")
-    for file in ['train.py', 'feature-map-10.txt', 'feature-map-30.txt']
-      node_proxy.copy(selfdir + file, tmp_dir)
-    end
-    node_proxy.execute("python3 #{tmp_dir}/train.py #{tmp_dir}/ #{tmp_dir}/models/ #{tmp_dir}/ #{tmp_dir}/predictions.json")
-    @predictions = JSON.parse(node_proxy.readfile("#{tmp_dir}/predictions.json"))
+    here = dirs.tmpdir + '/here'
+    feature_dir = selfdir
+    models_dir = here + '/models'
+    feeds_dir = here + '/feeds'
+    predictions_file = here + '/predictions.json'
+    FileUtils.mkdir_p(here)
+    FileUtils.mkdir_p(models_dir)
+    FileUtils.mkdir_p(feeds_dir)
+    success = system("python3 #{selfdir}train.py #{feature_dir} #{models_dir}/ #{feeds_dir}/ #{predictions_file}")
+    assert(success)
     deploy_files = { selfdir + 'app/search/query-profiles/default.xml' => 'search/query-profiles/default.xml' }
-    FileUtils.mkdir_p("#{tmp_dir}/models")
-    models = node_proxy.execute("cd #{tmp_dir}/models && echo *").split
-    for model in models
-      model_file = tmp_dir + '/models/' + model
-      File.write(model_file, node_proxy.readfile("#{tmp_dir}/models/" + model))
+    for model in Dir.children(models_dir)
+      model_file = "#{models_dir}/#{model}"
       deploy_files[model_file] = 'models/' + model
     end
+    @predictions = JSON.parse(File.read(predictions_file))
     # extra base_score for binary:logistic
     prog = (selfdir + 'get_base_score.py')
     puts "Running #{prog}"
@@ -48,20 +48,20 @@ class XGBoostServing < IndexedStreamingSearchTest
     puts "Got base_score #{base_score}"
     if base_score && base_score.to_f > 0.0 && base_score.to_f < 1.0
       pp="m{base_score:} and s,0[.]5,#{base_score.to_f},"
-      doit="perl -pe '#{pp}' < app/schemas/x.sd > #{tmp_dir}/x.sd"
+      doit="perl -pe '#{pp}' < app/schemas/x.sd > #{here}/x.sd"
       puts "Running #{doit}"
-      system(doit)
-      puts "Using final schema:"
-      system("cat #{tmp_dir}/x.sd")
+      success = system(doit)
+      assert(success)
+      puts "Using final schema: >>>\n#{File.read(here + '/x.sd')}\n<<<"
     else
-      system("cp app/schemas/x.sd #{tmp_dir}/x.sd")
+      FileUtils.cp(' app/schemas/x.sd', "#{here}/x.sd")
     end
-    deploy_app(SearchApp.new.sd(tmp_dir + '/x.sd'), :files => deploy_files)
+    deploy_app(SearchApp.new.sd(here + '/x.sd'), :files => deploy_files)
     start
 
     #Feed files generated from setup/train.py
-    feed(:file => "#{tmp_dir}/diabetes-feed.json", :localfile => true)
-    feed(:file => "#{tmp_dir}/breast_cancer-feed.json", :localfile => true)
+    feed(:file => "#{feeds_dir}/diabetes-feed.json")
+    feed(:file => "#{feeds_dir}/breast_cancer-feed.json")
     wait_for_hitcount("query=sddocname:x", 569 + 442, is_streaming ? 120 : 60)
 
     regression_diabetes = getVespaPrediction("diabetes", "regression-diabetes")
