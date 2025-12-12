@@ -23,7 +23,8 @@ class XGBoostServing < IndexedStreamingSearchTest
     SearchApp.new.sd(selfdir + 'app/schemas/x.sd')
   end
 
-  def old_test_xgboost
+  # Tests extracting model (from xgboost 2.x or 3.x)
+  def test_xgboost_extract_model
     node_proxy = vespa.nodeproxies.values.first
     tmp_dir = dirs.tmpdir + "/training"
     node_proxy.execute("mkdir -p #{tmp_dir}/models")
@@ -40,7 +41,22 @@ class XGBoostServing < IndexedStreamingSearchTest
       File.write(model_file, node_proxy.readfile("#{tmp_dir}/models/" + model))
       deploy_files[model_file] = 'models/' + model
     end
-    deploy_app(make_app, :files => deploy_files)
+    # extra base_score for binary:logistic
+    prog = (selfdir + 'get_base_score.py')
+    puts "Running #{prog}"
+    base_score=`#{prog} || echo 0.0`
+    puts "Got base_score #{base_score}"
+    if base_score && base_score.to_f > 0.0 && base_score.to_f < 1.0
+      pp="m{base_score:} and s,0[.]5,#{base_score.to_f},"
+      doit="perl -pe '#{pp}' < app/schemas/x.sd > #{tmp_dir}/x.sd"
+      puts "Running #{doit}"
+      system(doit)
+      puts "Using final schema:"
+      system("cat #{tmp_dir}/x.sd")
+    else
+      system("cp app/schemas/x.sd #{tmp_dir}/x.sd")
+    end
+    deploy_app(SearchApp.new.sd(tmp_dir + '/x.sd'), :files => deploy_files)
     start
 
     #Feed files generated from setup/train.py
@@ -58,6 +74,7 @@ class XGBoostServing < IndexedStreamingSearchTest
     compare(binary_breast_cancer, "binary_breast_cancer")
   end
 
+  # uses old model exported from python 3.6
   def test_xgboost
     @predictions = JSON.parse(File.read(selfdir + "predictions.json"))
     deploy_files = {}
@@ -84,7 +101,8 @@ class XGBoostServing < IndexedStreamingSearchTest
     compare(binary_breast_cancer, "binary_breast_cancer")
   end
 
-  def getVespaPrediction(dataset,rankProfile)
+  def getVespaPrediction(dataset, rankProfile)
+    puts "Getting #{rankProfile}"
     result = search("/search/?query=dataset:#{dataset}&format=json&hits=1000&ranking=#{rankProfile}")
     tree = JSON.parse(result.xmldata)
     hits = tree["root"]["children"]
@@ -93,6 +111,9 @@ class XGBoostServing < IndexedStreamingSearchTest
       score = hit['relevance']
       id = hit['fields']['id']
       predictions[id] = score
+      if id == 0
+        puts("Hit 0: #{hit}")
+      end
     end
     predictions_array = []
     predictions.keys().sort().each do |id|

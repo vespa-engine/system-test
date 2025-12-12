@@ -2,36 +2,57 @@
 
 schema x {
 
-  document x {
+    document x {
 
-    field id type int {
-      indexing: summary | attribute 
+        field id type int {
+            indexing: summary | attribute
+        }
+
+        field dataset type string {
+            indexing: summary | attribute
+        }
+
+        field features type array<float>{
+            indexing: attribute
+        }
     }
 
-    field dataset type string {
-      indexing: summary | attribute 
+    rank-profile regression-diabetes inherits default {
+        first-phase {
+            expression: xgboost("regression_diabetes.json")
+        }
     }
 
-    field features type array<float>{
-      indexing: summary | attribute
+    rank-profile regression-breast_cancer inherits default {
+        first-phase {
+            expression: sigmoid(xgboost("regression_breast_cancer.json"))
+        }
     }
-  }
 
-  rank-profile regression-diabetes inherits default {
-	  first-phase {
-	    expression: xgboost("regression_diabetes.json")
-	  }
-  }
-
-  rank-profile regression-breast_cancer inherits default {
-	  first-phase {
-		  expression: sigmoid(xgboost("regression_breast_cancer.json"))
-	  }
-  }
-
-  rank-profile binary-probability-breast_cancer inherits default {
-	  first-phase {
-		  expression: sigmoid(xgboost("binary_breast_cancer.json"))
-	  }
-   }
+    rank-profile binary-probability-breast_cancer inherits default {
+        constants {
+            base_score: 0.5
+        }
+        function xgb() {
+            expression: xgboost("binary_breast_cancer.json")
+        }
+        function factor() {
+            expression: (1.0 - base_score) / base_score
+        }
+        function below() {
+            expression: factor * exp(-xgb)
+        }
+        function sigma() {
+            expression: 1.0 / (1.0 + below)
+        }
+        first-phase {
+            expression: 1.0 / (1.0 + (1.0 - base_score) / base_score * exp(-(xgboost("binary_breast_cancer.json"))))
+        }
+        match-features {
+            xgb
+            factor
+            below
+            sigma
+        }
+    }
 }
