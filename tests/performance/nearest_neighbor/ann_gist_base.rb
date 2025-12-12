@@ -28,7 +28,7 @@ class AnnGistBase < CommonSiftGistBase
     download_and_prepare_queries
 
     filter_values = [1, 10, 50, 90, 95, 99]
-    download_and_feed_documents(300000, filter_values, "300k-docs")
+    download_feed_and_benchmark_documents(300_000, filter_values, "300k-docs")
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
 
@@ -54,7 +54,7 @@ class AnnGistBase < CommonSiftGistBase
     compile_generators
     download_and_prepare_queries
 
-    run_removal_test(150000, 300000, "300k-docs")
+    run_removal_test(150_000, 300_000, "300k-docs")
   end
 
 end
