@@ -7,7 +7,7 @@ import sys
 
 breast_cancer = datasets.load_breast_cancer()
 
-c = xgb.XGBClassifier(n_estimators=20, objective='binary:logistic')
+c = xgb.XGBClassifier(n_estimators=20, objective='binary:logistic', eval_metric='logloss')
 c.fit(breast_cancer.data,breast_cancer.target)
 
 # Print base score for binary_breast_cancer
