@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'test/unit'
-require '../proc_tools'
+require 'performance/proc_tools'
 
 class ProcToolsTest < Test::Unit::TestCase
   include Perf
