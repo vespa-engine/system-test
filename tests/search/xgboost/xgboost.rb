@@ -44,19 +44,20 @@ class XGBoostServing < IndexedStreamingSearchTest
     # extra base_score for binary:logistic
     prog = (selfdir + 'get_base_score.py')
     puts "Running #{prog}"
-    base_score=`#{prog} || echo 0.0`
+    system(prog)
+    base_score=`#{prog} 2>/dev/null || echo 0.5`
     puts "Got base_score #{base_score}"
     if base_score && base_score.to_f > 0.0 && base_score.to_f < 1.0
       pp="m{base_score:} and s,0[.]5,#{base_score.to_f},"
-      doit="perl -pe '#{pp}' < app/schemas/x.sd > #{here}/x.sd"
+      doit="perl -pe '#{pp}' < #{selfdir}app/schemas/x.sd > #{here}/x.sd"
       puts "Running #{doit}"
       success = system(doit)
       assert(success)
       puts "Using final schema: >>>\n#{File.read(here + '/x.sd')}\n<<<"
     else
-      FileUtils.cp(' app/schemas/x.sd', "#{here}/x.sd")
+      FileUtils.cp("#{selfdir}app/schemas/x.sd", "#{here}/x.sd")
     end
-    deploy_app(SearchApp.new.sd(here + '/x.sd'), :files => deploy_files)
+    deploy_app(SearchApp.new.sd("#{here}/x.sd"), :files => deploy_files)
     start
 
     #Feed files generated from setup/train.py
