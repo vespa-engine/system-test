@@ -1,0 +1,26 @@
+[
+  {
+    "put": "id:test:complex::1",
+    "fields": {
+      "title": "Complex Document",
+      "count": 5,
+      "price": 99.99,
+      "tags": ["tag1", "tag2", "tag3"],
+      "metadata": {"key1": "value1", "key2": "value2"},
+      "attributes": {"attr1": 10, "attr2": 20},
+      "info": {"category": "electronics", "rating": 4.5}
+    }
+  },
+  {
+    "put": "id:test:complex::2",
+    "fields": {
+      "title": "Another Complex Doc",
+      "count": 10,
+      "price": 199.50,
+      "tags": ["foo", "bar"],
+      "metadata": {"x": "y"},
+      "attributes": {"test": 5},
+      "info": {"category": "books", "rating": 3.8}
+    }
+  }
+]

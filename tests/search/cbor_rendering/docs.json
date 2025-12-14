@@ -1,0 +1,5 @@
+[
+  { "put": "id:test:test::1", "fields": { "title": "Hello World", "count": 5, "price": 99.99 } },
+  { "put": "id:test:test::2", "fields": { "title": "Test Document", "count": 10, "price": 199.50 } },
+  { "put": "id:test:test::3", "fields": { "title": "CBOR Test", "count": 3, "price": 49.99 } }
+]
