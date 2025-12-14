@@ -79,4 +79,12 @@ module AsyncProfilerHelper
     end
   end
 
+  def run_fbench2_with_async_profiler(container, queryfile, params, custom_fillers=[], profile_name)
+    async_profiler_pid = start_async_profiler(container, params[:runtime])
+    profiler_start
+    run_fbench2(container, queryfile, params, custom_fillers)
+    profiler_report(profile_name)
+    collect_async_profiler_results(container, profile_name) if async_profiler_pid
+  end
+
 end
