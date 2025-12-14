@@ -29,6 +29,11 @@ class MapWset < PerformanceTest
     File.write(selfdir + "map_wset.sd", schema)
   end
 
+  def teardown
+    File.delete(selfdir + "map_wset.sd") if File.exist?(selfdir + "map_wset.sd")
+    super
+  end
+
   def test_map_wset_performance
     set_description("Test performance rendering maps, weighted sets, and matchfeatures (3.2k docs with large map/wset fields).")
     deploy_app(SearchApp.new.sd(selfdir + "map_wset.sd").
