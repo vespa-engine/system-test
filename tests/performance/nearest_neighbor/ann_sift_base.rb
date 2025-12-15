@@ -67,7 +67,7 @@ class AnnSiftBase < CommonSiftGistBase
     # This feed is updating documents [500000-700000) with the same values as documents [0-200000).
     # This ensures that the vector values actually changes,
     # and avoids the optimization that skips changing the HNSW graphs when vectors are unchanged.
-    feed_and_benchmark(num_updates, "1M-updates", {:start_with_docid => num_documents / 2, :filter_values => filter_values, :mixed_tensor => mixed_tensor})
+    feed_and_benchmark(num_updates, "1M-updates", {:start_with_docid => num_documents / 2, :operation => "update", :mixed_tensor => mixed_tensor})
   end
 
   def run_sift_removal_test(sd_dir)
