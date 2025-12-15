@@ -191,8 +191,10 @@ class CommonSiftGistBase < CommonAnnBaseTest
   end
 
   def run_removal_test(documents_to_benchmark, documents_in_total, label)
+    filter_values = [1, 10, 50, 90, 95, 99]
+
     puts "About to feed #{documents_to_benchmark} of #{documents_in_total}"
-    feed_and_benchmark(documents_to_benchmark, "#{label}-0-#{documents_to_benchmark}")
+    feed_and_benchmark(documents_to_benchmark, "#{label}-0-#{documents_to_benchmark}", {:filter_values => filter_values})
     assert_hitcount("query=sddocname:test", documents_to_benchmark)
 
     puts "Benchmarking before deletion"
@@ -203,7 +205,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     print_nni_stats("test", "vec_m16", "before")
 
     puts "Feeding the remaining documents..."
-    feed_and_benchmark(documents_in_total - documents_to_benchmark, "#{label}-#{documents_to_benchmark}-#{documents_in_total}", {:start_with_vector => documents_to_benchmark, :start_with_docid => documents_to_benchmark})
+    feed_and_benchmark(documents_in_total - documents_to_benchmark, "#{label}-#{documents_to_benchmark}-#{documents_in_total}", {:filter_values => filter_values, :start_with_vector => documents_to_benchmark, :start_with_docid => documents_to_benchmark})
     assert_hitcount("query=sddocname:test", documents_in_total)
 
     puts "Benchmarking with full data set before deletion"
@@ -222,7 +224,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     calc_recall_for_queries(100, 0, {:label => "hnsw-th100-after-removal", :annotation => "subset"})
 
     puts "Feeding the removed documents again"
-    feed_and_benchmark(documents_in_total - documents_to_benchmark, "#{label}-#{documents_to_benchmark}-#{documents_in_total}-again", {:start_with_vector => documents_to_benchmark, :start_with_docid => documents_to_benchmark})
+    feed_and_benchmark(documents_in_total - documents_to_benchmark, "#{label}-#{documents_to_benchmark}-#{documents_in_total}-again", {:filter_values => filter_values, :start_with_vector => documents_to_benchmark, :start_with_docid => documents_to_benchmark})
     assert_hitcount("query=sddocname:test", documents_in_total)
 
     puts "Benchmarking with full data set after deletion"
