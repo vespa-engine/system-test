@@ -40,9 +40,9 @@ class MassiveSummariesTest < PerformanceTest
 
     container = vespa.container.values.first
     run_fbench2(container, @queryfile, {:runtime => 20, :clients => 1, :append_str => "&presentation.format=json"}) # warmup
-    run_fbench2_with_async_profiler(container, @queryfile, {:runtime => 60, :clients => 1, :append_str => "&presentation.format=json"}, [], "json")
+    run_fbench2_with_async_profiler(container, @queryfile, {:runtime => 60, :clients => 1, :append_str => "&presentation.format=json"}, [parameter_filler("legend", "json")], "json")
     run_fbench2(container, @queryfile, {:runtime => 20, :clients => 1, :append_str => "&presentation.format=cbor"}) # warmup
-    run_fbench2_with_async_profiler(container, @queryfile, {:runtime => 60, :clients => 1, :append_str => "&presentation.format=cbor"}, [], "cbor")
+    run_fbench2_with_async_profiler(container, @queryfile, {:runtime => 60, :clients => 1, :append_str => "&presentation.format=cbor"}, [parameter_filler("legend", "cbor")], "cbor")
   end
 
 end
