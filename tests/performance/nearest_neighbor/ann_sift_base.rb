@@ -11,7 +11,7 @@ class AnnSiftBase < CommonSiftGistBase
     @query_fvecs = @data_path + "sift_query.fvecs"
     @dimensions = 128
 
-    @num_queries_for_benchmark = 1000
+    @num_queries_for_benchmark = 10000
   end
 
   def run_sift_test(sd_dir, test_threads_per_search = false, mixed_tensor = false)
