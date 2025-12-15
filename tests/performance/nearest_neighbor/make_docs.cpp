@@ -190,23 +190,22 @@ main(int argc, char **argv)
     std::cout << "[" << std::endl;
     bool make_puts = (feed_op == "put");
     bool first = true;
-    for (size_t vector_num = 0; vector_num < end_vector; ++vector_num) {
+
+    is.ignore(start_vector * (4 + sizeof(float) * dim_size)); // skip vectors as specified by start_vector
+    for (size_t vector_num = start_vector; vector_num < end_vector; ++vector_num) {
         is.read(reinterpret_cast<char*>(&read_dim_size), 4);
         assert(read_dim_size == dim_size);
         is.read(reinterpret_cast<char*>(vector.data()), sizeof(float) * dim_size);
         assert(is.good());
-        if (vector_num < start_vector) {
-            continue;
-        }
 
         if (!first) {
             std::cout << "," << std::endl;
         }
         first = false;
         if (make_puts) {
-            print_put(std::cout, begin_doc + vector_num, filters, tensor_fields, vector, mixed_tensor);
+            print_put(std::cout, begin_doc + vector_num - start_vector, filters, tensor_fields, vector, mixed_tensor);
         } else {
-            print_update(std::cout, begin_doc + vector_num, tensor_fields, vector, mixed_tensor);
+            print_update(std::cout, begin_doc + vector_num - start_vector, tensor_fields, vector, mixed_tensor);
         }
     }
     std::cout << std::endl << "]" << std::endl;

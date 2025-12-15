@@ -7,28 +7,29 @@ class AnnGistBase < CommonSiftGistBase
   def initialize(*args)
     super(*args)
     @data_path = "gist-data/"
-    @docs_300k = @data_path + "docs.300k.json"
-    @docs_1k = @data_path + "docs.1k.json" # Used for development and testing
-    @query_vectors = @data_path + "query_vectors.100.txt"
-    @query_vectors_small = @data_path + "query_vectors.10.txt" # Used for development and testing
-
-    # To re-generate test data:
-    # ./create_gist_test_data.sh
+    #@base_fvecs = @data_path + "gist_base.fvecs" # Original file with 1M vectors
+    @base_fvecs = @data_path + "gist_base_300k.fvecs" # Smaller file that only contains the first 300k vectors
+    @query_fvecs = @data_path + "gist_query.fvecs"
     @dimensions = 960
-    @base_fvecs = "gist_base.fvecs"
-    @query_fvecs = "gist_query.fvecs"
-    @num_queries = 1000
-    @num_queries_for_recall = 100
+
+    @num_queries_for_benchmark = 1000
   end
 
   def run_gist_test(sd_dir)
     deploy_app(create_app(sd_dir, 0.3))
     start
-    compile_generators
-    download_and_prepare_queries
 
+    num_queries_for_recall = 100
+    num_documents = 300_000
     filter_values = [1, 10, 50, 90, 95, 99]
-    download_feed_and_benchmark_documents(300_000, filter_values, "300k-docs")
+
+    # Smaller values that can be used for development and testing
+    #num_queries_for_recall = 10
+    #num_documents = 1_000
+
+    compile_generators
+    generate_queries_for_recall(num_queries_for_recall)
+    feed_and_benchmark(num_documents, "300k-docs", {:filter_values => filter_values})
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
 
@@ -51,10 +52,19 @@ class AnnGistBase < CommonSiftGistBase
   def run_gist_removal_test(sd_dir)
     deploy_app(create_app(sd_dir, 0.3))
     start
-    compile_generators
-    download_and_prepare_queries
 
-    run_removal_test(150_000, 300_000, "300k-docs")
+    num_queries_for_recall = 100
+    documents_to_benchmark_at = 150_000
+    documents_in_total = 300_000
+
+    # Smaller values that can be used for development and testing
+    #num_queries_for_recall = 10
+    #documents_to_benchmark_at = 5_000
+    #documents_in_total = 10_000
+
+    compile_generators
+    generate_queries_for_recall(num_queries_for_recall)
+    run_removal_test(documents_to_benchmark_at, documents_in_total, "300k-docs")
   end
 
 end
