@@ -85,7 +85,7 @@ print_query(std::ostream& os, bool approximate, int target_hits, int explore_hit
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_queries <data-set> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-percent>
+ *   ./make_queries <vector-file> <num-dimensions> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-percent>
  */ 
 int
 main(int argc, char **argv)

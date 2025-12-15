@@ -139,7 +139,7 @@ print_update(std::ostream& os, size_t docid, const StringVector& tensor_fields, 
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_docs <data-set> <feed-op> <begin-doc> <start-vector> <end-vector> <filter-values> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
+ *   ./make_docs <vector-file> <num-dimensions> <feed-op> <begin-doc> <start-vector> <end-vector> <filter-values> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
  */ 
 int
 main(int argc, char **argv)
