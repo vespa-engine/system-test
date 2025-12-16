@@ -88,14 +88,7 @@ class CommonAnnBaseTest < PerformanceTest
   end
 
   def calc_nni_unreachable(stats)
-    valid_nodes = stats["valid_nodes"].to_f
-    unreachable_nodes = valid_nodes
-    if stats.key?("unreachable_nodes")
-      unreachable_nodes = stats["unreachable_nodes"].to_f
-    elsif stats.key?("unreachable_nodes_incomplete_count")
-      unreachable_nodes = stats["unreachable_nodes_incomplete_count"].to_f
-    end
-    (unreachable_nodes / valid_nodes) * 100.0
+    stats["reachability_analysis"]["nodes_not_found_pct"].to_f
   end
 
   def get_nni_stats(doc_type, tensor)

@@ -211,7 +211,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     else
       assert_equal(10, stats['nodes'])
     end
-    assert_equal(0, stats['unreachable_nodes'])
+    assert_equal(0, stats['reachability_analysis']['nodes_not_found_count'])
   end
 
   def run_hnsw_and_query_tests(query_props)
