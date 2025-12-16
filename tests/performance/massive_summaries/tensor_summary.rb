@@ -39,7 +39,7 @@ class TensorSummary < PerformanceTest
 
     container = vespa.container.values.first
     run_fbench2(container, @tensor_queryfile, {:runtime => 20, :clients => 1, :append_str => "&presentation.format=json"}) # warmup
-    run_fbench2_with_async_profiler(container, @tensor_queryfile, {:runtime => 60, :clients => 1, :append_str => "&presentation.format=json"}, [parameter_filler("legend", "json")], "json")
+    run_fbench2_with_async_profiler(container, @tensor_queryfile, {:runtime => 90, :clients => 1, :append_str => "&presentation.format=json"}, [parameter_filler("legend", "json")], "json")
     run_fbench2(container, @tensor_queryfile, {:runtime => 20, :clients => 1, :append_str => "&presentation.format=cbor"}) # warmup
     run_fbench2_with_async_profiler(container, @tensor_queryfile, {:runtime => 60, :clients => 1, :append_str => "&presentation.format=cbor"}, [parameter_filler("legend", "cbor")], "cbor")
   end
