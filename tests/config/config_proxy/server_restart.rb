@@ -27,7 +27,6 @@ class ServerRestart < ConfigTest
   end
 
   def assert_logd_config(node, expected_age)
-    @getconfig = "vespa-get-config -w 10 -t 8"
     timeout = 120
     config = ""
     timeout.times {

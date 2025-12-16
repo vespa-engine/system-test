@@ -17,7 +17,6 @@ class SimpleSearcherDeployment < SearchContainerTest
                     Searcher.new("com.yahoo.search.example.SimpleSearcher"))))))
     start
 
-    system("vespa-get-config -n search-chains -i search/qrsclusters/default/qrserver.0")
     # One hit is added by our deployed searcher - nothing else is going on
     result = search("/search/?query=test&tracelevel=3")
     puts "Result from query=test:"
@@ -25,6 +24,5 @@ class SimpleSearcherDeployment < SearchContainerTest
     assert_match(Regexp.new("Hello world"), result.xmldata,
                  "Could not find expected message in response.")
   end
-
 
 end

@@ -30,12 +30,15 @@ class ConfigSchemas < ConfigTest
 
   def run_tests(port)
     # Test that default values can be modified
-    assert(vespa.adminserver.execute("vespa-get-config -n #{@config_name} -i #{@config_id} -a #{@logd_modified_default} -p #{port}") =~ /logserver.rpcport 5888/)
+    get_config(@logd_modified_default, port) =~ /logserver.rpcport 5888/
 
     # Test that fields can be added
-    assert(vespa.adminserver.execute("vespa-get-config -n #{@config_name} -i #{@config_id} -a #{@logd_def_file} -p #{port}") !~ /testfield/)
-    assert(vespa.adminserver.execute("vespa-get-config -n #{@config_name} -i #{@config_id} -a #{@logd_extra_field} -p #{port}") =~ /testfield "7"/)
+    get_config(@logd_def_file, port) !~ /testfield/
+    get_config(@logd_extra_field, port) =~ /testfield "7"/
   end
 
+  def get_config(schema, port)
+    vespa.adminserver.execute("vespa-get-config -n #{@config_name} -i #{@config_id} -a #{@logd_extra_field} -p #{port}")
+  end
 
 end
