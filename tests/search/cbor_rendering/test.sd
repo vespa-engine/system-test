@@ -1,0 +1,19 @@
+schema test {
+    document test {
+        field title type string {
+            indexing: summary | index
+        }
+        field count type int {
+            indexing: summary | attribute
+        }
+        field price type double {
+            indexing: summary | attribute
+        }
+    }
+
+    rank-profile default {
+        first-phase {
+            expression: attribute(count) * attribute(price)
+        }
+    }
+}
