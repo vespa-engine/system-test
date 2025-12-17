@@ -7,6 +7,9 @@ search test {
       indexing: attribute | summary
       attribute: fast-search
     }
+    field latlng type position {
+      indexing: attribute
+    }
     field vec_m16 type tensor<float>(x[128]) {
       indexing: attribute | index | summary
       index {

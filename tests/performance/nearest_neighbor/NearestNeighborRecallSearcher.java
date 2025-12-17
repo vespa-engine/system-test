@@ -2,10 +2,12 @@
 
 package ai.vespa.test;
 
+import com.yahoo.prelude.Location;
 import com.yahoo.prelude.query.AndItem;
 import com.yahoo.prelude.query.IntItem;
 import com.yahoo.prelude.query.Item;
 import com.yahoo.prelude.query.NearestNeighborItem;
+import com.yahoo.prelude.query.GeoLocationItem;
 import com.yahoo.search.Query;
 import com.yahoo.search.Result;
 import com.yahoo.search.Searcher;
@@ -60,6 +62,9 @@ public class NearestNeighborRecallSearcher extends Searcher {
             int targetHits = props.getInteger("nnr.targetHits", 10);
             int exploreHits = props.getInteger("nnr.exploreHits", 0);
             int filterPercent = props.getInteger("nnr.filterPercent", 0);
+            double radius = Double.parseDouble(props.getString("nnr.radius", "-1.0"));
+            double latitude = Double.parseDouble(props.getString("nnr.latitude", "0.0"));
+            double longitude = Double.parseDouble(props.getString("nnr.longitude", "0.0"));
             double approximateThreshold = Double.parseDouble(props.getString("nnr.approximateThreshold", "0.05"));
             double filterFirstThreshold = Double.parseDouble(props.getString("nnr.filterFirstThreshold", "0.00"));
             double filterFirstExploration = Double.parseDouble(props.getString("nnr.filterFirstExploration", "0.3"));
@@ -69,10 +74,10 @@ public class NearestNeighborRecallSearcher extends Searcher {
                     ", queryTensor=" + queryTensor + ", targetHits=" + targetHits +
                     ", exploreHits=" + exploreHits + ", idField=" + idField);
             var exactHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, false, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, false, idField);
 
             var approxHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, true, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, true, idField);
 
             try {
                 int recall = calcRecall(exactHits, approxHits, targetHits);
@@ -101,6 +106,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
     private List<SimpleHit> executeNearestNeighborQuery(Query parentQuery, Execution parentExecution,
                                                         String docTensor, String queryTensor, String label,
                                                         int targetHits, int exploreHits, int filterPercent,
+                                                        double radius, double latitude, double longitude,
                                                         double approximateThreshold, double filterFirstThreshold, double filterFirstExploration,
                                                         double slack, boolean approximate, String idField) {
         var nni = new NearestNeighborItem(docTensor, queryTensor);
@@ -116,6 +122,19 @@ public class NearestNeighborRecallSearcher extends Searcher {
             AndItem andItem = new AndItem();
             andItem.addItem(nni);
             andItem.addItem(intItem);
+            root = andItem;
+        }
+
+        if (radius >= 0.0) {
+            double km2deg = 1000.000 * 180.0 / (Math.PI * 6356752.0);
+            double actual_radius = radius * km2deg;
+            Location.Point center = new Location.Point(latitude, longitude);
+            Location location = Location.fromGeoCircle(center, actual_radius);
+            GeoLocationItem geoLocationItem = new GeoLocationItem(location, "latlng");
+
+            AndItem andItem = new AndItem();
+            andItem.addItem(root);
+            andItem.addItem(geoLocationItem);
             root = andItem;
         }
 
@@ -179,6 +198,14 @@ public class NearestNeighborRecallSearcher extends Searcher {
                 j += 1;
             }
         }
+
+        // Adjust to targetHits value in case there are not enough exact hits.
+        if (exactSize == 0) {
+            return targetHits;
+        } else if (exactSize < targetHits) {
+            return (recall * targetHits) / exactSize;
+        }
+
         return recall;
     }
 

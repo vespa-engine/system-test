@@ -12,6 +12,7 @@ class CommonAnnBaseTest < PerformanceTest
   TARGET_HITS = "target_hits"
   EXPLORE_HITS = "explore_hits"
   FILTER_PERCENT = "filter_percent"
+  RADIUS = "radius"
   APPROXIMATE_THRESHOLD = "approximate_threshold"
   FILTER_FIRST_THRESHOLD = "filter_first_threshold"
   FILTER_FIRST_EXPLORATION = "filter_first_exploration"
@@ -78,8 +79,11 @@ class CommonAnnBaseTest < PerformanceTest
     fetch_file_to_localhost(@query_vectors, @local_query_vectors)
   end
 
+  QueryDatum = Struct.new(:vector, :latitude, :longitude)
+
   def calc_recall_for_queries(target_hits, explore_hits, params = {})
     filter_percent = params[:filter_percent] || 0
+    radius = params[:radius] || -1.0
     approximate_threshold = params[:approximate_threshold] || 0.05
     filter_first_threshold = params[:filter_first_threshold] || 0.0
     filter_first_exploration = params[:filter_first_exploration] || 0.3
@@ -91,30 +95,54 @@ class CommonAnnBaseTest < PerformanceTest
 
     puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, filter_percent=#{filter_percent}, approximate_threshold=#{approximate_threshold}, filter_first_threshold=#{filter_first_threshold}, filter_first_exploration=#{filter_first_exploration}, slack=#{slack}, doc_type=#{doc_type}, doc_tensor=#{doc_tensor}, query_tensor=#{query_tensor}"
     result = RecallResult.new(target_hits)
-    vectors = []
+
+    query_data = []
     num_threads = 5
     File.open(@local_query_vectors, "r").each do |vector|
       vector = vector.strip
-      vectors.push(vector)
+
+      qd = QueryDatum.new
+      qd.vector = vector.strip
+      qd.latitude = 0.0
+      qd.longitude = 0.0
+      query_data.push(qd)
     end
-    batch_size = (vectors.size.to_f / num_threads.to_f).ceil
-    batches = vectors.each_slice(batch_size).to_a
-    puts "calc_recall_for_queries: vectors.size=#{vectors.size}, num_threads=#{num_threads}, batch_size=#{batch_size}, batches.size=#{batches.size}"
+
+    if File.exist?(@local_locations)
+      num = 0
+      File.open(@local_locations, "r").each do |location|
+        latlng = location.strip.split(",")
+        assert_equal(2, latlng.length)
+
+        assert(num < query_data.length)
+        query_data[num].latitude = latlng[0]
+        query_data[num].longitude = latlng[1]
+
+        num += 1
+      end
+      assert_equal(query_data.length, num)
+    end
+
+    batch_size = (query_data.size.to_f / num_threads.to_f).ceil
+    batches = query_data.each_slice(batch_size).to_a
+    puts "calc_recall_for_queries: query_data.size=#{query_data.size}, num_threads=#{num_threads}, batch_size=#{batch_size}, batches.size=#{batches.size}"
     assert_equal(batches.size, num_threads)
     threads = []
     for i in 0...num_threads
       threads << Thread.new(batches[i]) do |batch|
-        calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, batch, result, doc_type, doc_tensor, query_tensor)
+        calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, batch, result, doc_type, doc_tensor, query_tensor)
       end
     end
     threads.each(&:join)
     puts "recall: avg=#{result.avg}, median=#{result.median}, min=#{result.min}, max=#{result.max}, size=#{result.size}, samples_sorted=[#{result.samples.sort.join(',')}], samples=[#{result.samples.join(',')}]"
-    label = params[:label] || "hnsw-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}"
+    radius_str = (radius >= 0.0) ? "" : "-r#{radius}"
+    label = params[:label] || "hnsw-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}#{radius_str}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}"
     write_report([parameter_filler(TYPE, "recall"),
                   parameter_filler(LABEL, label),
                   parameter_filler(TARGET_HITS, target_hits),
                   parameter_filler(EXPLORE_HITS, explore_hits),
                   parameter_filler(FILTER_PERCENT, filter_percent),
+                  parameter_filler(RADIUS, radius),
                   parameter_filler(APPROXIMATE_THRESHOLD, approximate_threshold),
                   parameter_filler(FILTER_FIRST_THRESHOLD, filter_first_threshold),
                   parameter_filler(FILTER_FIRST_EXPLORATION, filter_first_exploration),
@@ -124,9 +152,9 @@ class CommonAnnBaseTest < PerformanceTest
                   metric_filler(RECALL_MEDIAN, result.median)])
   end
 
-  def calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, vectors, result, doc_type, doc_tensor, query_tensor)
-    vectors.each do |vector|
-      raw_recall = calc_recall_in_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, vector, doc_type, doc_tensor, query_tensor)
+  def calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, batch, result, doc_type, doc_tensor, query_tensor)
+    batch.each do |datum|
+      raw_recall = calc_recall_in_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, datum, doc_type, doc_tensor, query_tensor)
       result.add(raw_recall)
     end
   end
@@ -137,8 +165,8 @@ class CommonAnnBaseTest < PerformanceTest
     proxy_node.copy_remote_file_to_local_file(proxy_file, local_file)
   end
 
-  def calc_recall_in_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, query_vector, doc_type, doc_tensor, query_tensor)
-    query = get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, query_vector, doc_type, doc_tensor, query_tensor)
+  def calc_recall_in_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, datum, doc_type, doc_tensor, query_tensor)
+    query = get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, datum, doc_type, doc_tensor, query_tensor)
     result = search_with_timeout(20, query)
     assert_hitcount(result, 1)
     hit = result.hit[0]
@@ -150,11 +178,11 @@ class CommonAnnBaseTest < PerformanceTest
     recall.to_i
   end
 
-  def get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, query_vector, doc_type, doc_tensor, query_tensor)
-    "query=sddocname:#{doc_type}&summary=minimal&ranking.features.query(#{query_tensor})=#{query_vector}" +
+  def get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, datum, doc_type, doc_tensor, query_tensor)
+    "query=sddocname:#{doc_type}&summary=minimal&ranking.features.query(#{query_tensor})=#{datum.vector}" +
     "&nnr.enable=true&nnr.docTensor=#{doc_tensor}&nnr.targetHits=#{target_hits}&nnr.exploreHits=#{explore_hits}&nnr.filterPercent=#{filter_percent}" +
     "&nnr.approximateThreshold=#{approximate_threshold}&nnr.filterFirstThreshold=#{filter_first_threshold}&nnr.filterFirstExploration=#{filter_first_exploration}" +
-    "&nnr.slack=#{slack}&nnr.queryTensor=#{query_tensor}"
+    "&nnr.slack=#{slack}&nnr.queryTensor=#{query_tensor}&nnr.radius=#{radius}&nnr.latitude=#{datum.latitude}&nnr.longitude=#{datum.longitude}"
   end
 
   class RecallResult
