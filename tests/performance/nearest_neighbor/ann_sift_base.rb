@@ -92,16 +92,20 @@ class AnnSiftBase < CommonSiftGistBase
     compile_generators
     generate_vectors_for_recall(num_queries_for_recall)
     generate_locations_for_recall(num_queries_for_recall, bounding_box_globe)
-    feed_and_benchmark(num_documents, "1M-docs", {:radii => radii, :dump_to_str => "locationfeed.json"}.merge(bounding_box_globe))
+    feed_and_benchmark(num_documents, "1M-docs", {:radii => radii}.merge(bounding_box_globe))
 
     query_and_benchmark(BRUTE_FORCE, 10, 0, {:radius => 50.0}.merge(bounding_box_globe))
 
     radii.each do |radius|
       # HNSW with filter-first heuristic enabled
       query_and_benchmark(HNSW, 100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3}.merge(bounding_box_globe))
+      # Lazy filtering
+      query_and_benchmark(HNSW, 100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3, :lazy_filter => true}.merge(bounding_box_globe))
 
       # Recall for filter-first heuristic
       calc_recall_for_queries(100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3})
+      # Lazy filtering
+      calc_recall_for_queries(100, 0, {:radius => radius, :approximate_threshold => 0.02, :filter_first_threshold => 0.3, :filter_first_exploration => 0.3, :lazy_filter => true})
     end
   end
 

@@ -140,6 +140,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     threads_per_search = params[:threads_per_search] || 0
     annotation = params[:annotation] || "none"
     doc_tensor = params[:doc_tensor] || "vec_m16"
+    lazy_filter = params[:lazy_filter] || false
 
     approximate = algorithm == HNSW ? "true" : "false"
     query_file = dirs.tmpdir + get_filename(doc_tensor, approximate, target_hits, explore_hits, filter_percent, radius)
@@ -158,7 +159,9 @@ class CommonSiftGistBase < CommonAnnBaseTest
 
     puts "Generated on container: #{query_file}"
 
-    label = params[:label] || "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}-n#{clients}-t#{threads_per_search}"
+    radius_str = (radius >= 0.0) ? "-r#{radius}" : ""
+    lazy_str = lazy_filter ? "-lazy" : ""
+    label = params[:label] || "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}#{radius_str}#{lazy_str}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}-n#{clients}-t#{threads_per_search}"
     result_file = dirs.tmpdir + "fbench_result.#{label}.txt"
     fillers = [parameter_filler(TYPE, get_type_string(filter_percent, threads_per_search)),
                parameter_filler(LABEL, label),
@@ -168,6 +171,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
                parameter_filler(SLACK, slack),
                parameter_filler(FILTER_PERCENT, filter_percent),
                parameter_filler(RADIUS, radius),
+               parameter_filler(LAZY_FILTER, lazy_filter),
                parameter_filler(APPROXIMATE_THRESHOLD, approximate_threshold),
                parameter_filler(FILTER_FIRST_THRESHOLD, filter_first_threshold),
                parameter_filler(FILTER_FIRST_EXPLORATION, filter_first_exploration),
@@ -179,7 +183,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
                 query_file,
                 {:runtime => FBENCH_TIME,
                  :clients => clients,
-                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}&ranking.matching.approximateThreshold=#{approximate_threshold}&ranking.matching.filterFirstThreshold=#{filter_first_threshold}&ranking.matching.filterFirstExploration=#{filter_first_exploration}&ranking.matching.explorationSlack=#{slack}",
+                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}&ranking.matching.approximateThreshold=#{approximate_threshold}&ranking.matching.filterFirstThreshold=#{filter_first_threshold}&ranking.matching.filterFirstExploration=#{filter_first_exploration}&ranking.matching.explorationSlack=#{slack}&ranking.matching.lazyFilter=#{lazy_filter}",
                  :result_file => result_file},
                 fillers)
     profiler_report(label)
