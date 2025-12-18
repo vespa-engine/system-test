@@ -41,6 +41,65 @@ class CommonSiftGistBase < CommonAnnBaseTest
     (threads_per_search > 0) ? "threads-#{threads_per_search}" : "default"
   end
 
+  def compile_generators
+    @container = vespa.container.values.first
+    @container_tmp_bin_dir = @container.create_tmp_bin_dir
+    @adminserver_tmp_bin_dir = vespa.adminserver.create_tmp_bin_dir
+
+    vespa.adminserver.execute("g++ -g -O3 -o #{@adminserver_tmp_bin_dir}/make_docs #{selfdir}make_docs.cpp")
+    @container.execute("g++ -g -O3 -o #{@container_tmp_bin_dir}/make_queries #{selfdir}make_queries.cpp")
+  end
+
+  def generate_queries_for_recall(num_queries_for_recall)
+    @query_fvecs_container = nn_download_file(@query_fvecs, @container)
+
+    @query_vectors_container = dirs.tmpdir + "query_vectors_container.txt" # The vectors as a .txt file
+    @container.execute("#{@container_tmp_bin_dir}/make_queries #{@query_fvecs_container} #{@dimensions} #{num_queries_for_recall} > #{@query_vectors_container}")
+
+    # We need that file on localhost (in the recall computation)
+    @local_query_vectors = dirs.tmpdir + "query_vectors.txt"
+    copied = false
+    vespa.nodeproxies.each_value do |node|
+      if node.file?(@query_vectors_container)
+        node.copy_remote_file_to_local_file(@query_vectors_container, @local_query_vectors)
+        copied = true
+        break
+      end
+    end
+
+    # Make sure that we actually found the node proxy corresponding to the container and copied the file
+    assert(copied)
+  end
+
+  def feed_and_benchmark(num_documents, label, params = {})
+    doc_type = params[:doc_type] || "test"
+    doc_tensor = params[:doc_tensor] || "vec_m16"
+    operation = params[:operation] || "put"
+    start_with_docid = params[:start_with_docid] || 0
+    start_with_vector = params[:start_with_vector] || 0
+    filter_values = params[:filter_values] || nil
+    mixed = params[:mixed] || false
+
+    profiler_start
+    base_fvecs_local = nn_download_file(@base_fvecs, vespa.adminserver)
+    command = "#{@adminserver_tmp_bin_dir}/make_docs #{base_fvecs_local} "\
+                                                    "#{@dimensions} "\
+                                                    "#{operation} "\
+                                                    "#{start_with_docid} "\
+                                                    "#{start_with_vector} #{start_with_vector + num_documents} "\
+                                                    "#{filter_values.nil? ? "[]" : filter_values.join(",")} "\
+                                                    "#{mixed} "\
+                                                    "#{doc_tensor}"
+    run_stream_feeder(command, [parameter_filler(TYPE, "feed"), parameter_filler(LABEL, label)])
+    profiler_report("feed")
+    print_nni_stats(doc_type, doc_tensor)
+  end
+
+  def get_filename(doc_tensor, approximate, target_hits, explore_hits, filter_percent)
+    filter_str = (filter_percent == 0) ? "" : ".f-#{filter_percent}"
+    "queries.#{doc_tensor}.ap-#{approximate}.th-#{target_hits}.eh-#{explore_hits}#{filter_str}.txt"
+  end
+
   def query_and_benchmark(algorithm, target_hits, explore_hits, params = {})
     filter_percent = params[:filter_percent] || 0
     approximate_threshold = params[:approximate_threshold] || 0.05
@@ -50,9 +109,22 @@ class CommonSiftGistBase < CommonAnnBaseTest
     clients = params[:clients] || 1
     threads_per_search = params[:threads_per_search] || 0
     annotation = params[:annotation] || "none"
+    doc_tensor = params[:doc_tensor] || "vec_m16"
 
     approximate = algorithm == HNSW ? "true" : "false"
-    query_file = fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
+    query_file = dirs.tmpdir + get_filename(doc_tensor, approximate, target_hits, explore_hits, filter_percent)
+    @container.execute("#{@container_tmp_bin_dir}/make_queries #{@query_fvecs_container} "\
+                                                              "#{@dimensions} "\
+                                                              "#{@num_queries_for_benchmark} "\
+                                                              "#{doc_tensor} "\
+                                                              "#{approximate} "\
+                                                              "#{target_hits} "\
+                                                              "#{explore_hits} "\
+                                                              "#{filter_percent} "\
+                                                              "> #{query_file}")
+
+    puts "Generated on container: #{query_file}"
+
     label = params[:label] || "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}-n#{clients}-t#{threads_per_search}"
     result_file = dirs.tmpdir + "fbench_result.#{label}.txt"
     fillers = [parameter_filler(TYPE, get_type_string(filter_percent, threads_per_search)),
@@ -118,9 +190,11 @@ class CommonSiftGistBase < CommonAnnBaseTest
     end
   end
 
-  def run_removal_test(file, label, documents_to_benchmark, documents_in_total)
+  def run_removal_test(documents_to_benchmark, documents_in_total, label)
+    filter_values = [1, 10, 50, 90, 95, 99]
+
     puts "About to feed #{documents_to_benchmark} of #{documents_in_total}"
-    feed_and_benchmark_range(file, "#{label}-0-#{documents_to_benchmark}", 0, documents_to_benchmark)
+    feed_and_benchmark(documents_to_benchmark, "#{label}-0-#{documents_to_benchmark}", {:filter_values => filter_values})
     assert_hitcount("query=sddocname:test", documents_to_benchmark)
 
     puts "Benchmarking before deletion"
@@ -131,7 +205,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     print_nni_stats("test", "vec_m16", "before")
 
     puts "Feeding the remaining documents..."
-    feed_and_benchmark_range(file, "#{label}-#{documents_to_benchmark}-#{documents_in_total}", documents_to_benchmark, documents_in_total)
+    feed_and_benchmark(documents_in_total - documents_to_benchmark, "#{label}-#{documents_to_benchmark}-#{documents_in_total}", {:filter_values => filter_values, :start_with_vector => documents_to_benchmark, :start_with_docid => documents_to_benchmark})
     assert_hitcount("query=sddocname:test", documents_in_total)
 
     puts "Benchmarking with full data set before deletion"
@@ -150,20 +224,12 @@ class CommonSiftGistBase < CommonAnnBaseTest
     calc_recall_for_queries(100, 0, {:label => "hnsw-th100-after-removal", :annotation => "subset"})
 
     puts "Feeding the removed documents again"
-    feed_and_benchmark_range(file, "#{label}-#{documents_to_benchmark}-#{documents_in_total}-again", documents_to_benchmark, documents_in_total)
+    feed_and_benchmark(documents_in_total - documents_to_benchmark, "#{label}-#{documents_to_benchmark}-#{documents_in_total}-again", {:filter_values => filter_values, :start_with_vector => documents_to_benchmark, :start_with_docid => documents_to_benchmark})
     assert_hitcount("query=sddocname:test", documents_in_total)
 
     puts "Benchmarking with full data set after deletion"
     query_and_benchmark(HNSW, 100, 0, {:label => "hnsw-th100-full-after-removal", :annotation => "full"})
     calc_recall_for_queries(100, 0, {:label => "hnsw-th100-full-after-removal", :annotation => "full"})
-  end
-
-  def fetch_query_file_to_container(approximate, target_hits, explore_hits, filter_percent)
-    filter_str = (filter_percent == 0) ? "" : ".f-#{filter_percent}"
-    remote_file = @data_path + "queries.vec_m16.ap-#{approximate}.th-#{target_hits}.eh-#{explore_hits}#{filter_str}.txt"
-    proxy_file = nn_download_file(remote_file, @container)
-    puts "Got on container: #{proxy_file}"
-    return proxy_file
   end
 
 end

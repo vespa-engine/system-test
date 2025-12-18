@@ -85,13 +85,13 @@ print_query(std::ostream& os, bool approximate, int target_hits, int explore_hit
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_queries <data-set> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-percent>
+ *   ./make_queries <vector-file> <num-dimensions> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-percent>
  */ 
 int
 main(int argc, char **argv)
 {
-    std::string data_set = "sift";
-    int dim_size = 128;
+    std::string vector_file;
+    size_t dim_size = 128;
     size_t num_queries = 10000;
     std::string doc_tensor = "";
     bool approximate = true;
@@ -100,39 +100,33 @@ main(int argc, char **argv)
     int filter_percent = 0;
     bool only_vectors = true;
     if (argc > 1) {
-        data_set = std::string(argv[1]);
-        if (data_set != "sift" && data_set != "gist") {
-            std::cerr << "Unknown data set '" << data_set << "'" << std::endl;
-            return 1;
-        }
-        if (data_set == "gist") {
-            dim_size = 960;
-            num_queries = 1000;
-        }
+        vector_file = std::string(argv[1]);
     }
     if (argc > 2) {
-        num_queries = std::stoll(argv[2]);
+        dim_size = std::stoll(argv[2]);
     }
     if (argc > 3) {
-        doc_tensor = std::string(argv[3]);
-        only_vectors = false;
+        num_queries = std::stoll(argv[3]);
     }
     if (argc > 4) {
-        approximate = (std::string(argv[4]) == "true");
+        doc_tensor = std::string(argv[4]);
+        only_vectors = false;
     }
     if (argc > 5) {
-        target_hits = std::stoi(argv[5]);
+        approximate = (std::string(argv[5]) == "true");
     }
     if (argc > 6) {
-        explore_hits = std::stoi(argv[6]);
+        target_hits = std::stoi(argv[6]);
     }
     if (argc > 7) {
-        filter_percent = std::stoi(argv[7]);
+        explore_hits = std::stoi(argv[7]);
     }
-    std::string file_name = data_set + "/" + data_set + "_query.fvecs";
-    std::ifstream is(file_name, std::ifstream::binary);
+    if (argc > 8) {
+        filter_percent = std::stoi(argv[8]);
+    }
+    std::ifstream is(vector_file, std::ifstream::binary);
     if (!is.good()) {
-        std::cerr << "Could not open '" << file_name << "'" << std::endl;
+        std::cerr << "Could not open '" << vector_file << "'" << std::endl;
         return 1;
     }
     int read_dim_size = 0;
