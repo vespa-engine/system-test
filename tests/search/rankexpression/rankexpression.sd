@@ -77,4 +77,69 @@ schema rankexpression {
         }
     }
 
+    # Switch expression tests
+    rank-profile switch_basic {
+        first-phase {
+            expression {
+                switch(attribute(myrank)) {
+                    case 100: 10000,
+                    case 50: 2500,
+                    case 1: 1,
+                    default: 0
+                }
+            }
+        }
+    }
+
+    rank-profile switch_ranges {
+        first-phase {
+            expression {
+                switch(attribute(myrank) > 90) {
+                    case true: attribute(myrank) * attribute(myrank),
+                    case false: attribute(myrank),
+                    default: 0
+                }
+            }
+        }
+    }
+
+    rank-profile switch_model_selection {
+        # Mimics the issue #33096 use case
+        first-phase {
+            expression {
+                switch(attribute(myrank)) {
+                    case 100: 1000,
+                    case 99: 990,
+                    case 98: 980,
+                    default: attribute(myrank)
+                }
+            }
+        }
+    }
+
+    rank-profile switch_with_computation {
+        first-phase {
+            expression {
+                switch(attribute(myrank) / 10) {
+                    case 10: 100,
+                    case 9: 90,
+                    case 5: 50,
+                    case 1: 10,
+                    default: 0
+                }
+            }
+        }
+    }
+
+    rank-profile switch_nested_if {
+        # Compare switch to equivalent if expression behavior
+        first-phase {
+            expression {
+                if(attribute(myrank) == 100, 10000,
+                  if(attribute(myrank) == 50, 2500,
+                    if(attribute(myrank) == 1, 1, 0)))
+            }
+        }
+    }
+
 }
