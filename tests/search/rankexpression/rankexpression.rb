@@ -121,6 +121,38 @@ class RankExpression < IndexedStreamingSearchTest
     end
   end
 
+  def test_switchExpression
+    deploy_app(SearchApp.new.sd(selfdir + "rankexpression.sd").
+               rank_expression_file(selfdir + "ranking1.expression"))
+    start
+    indexData()
+
+    # Basic switch with exact matches
+    result = search("query=sddocname:rankexpression&skipnormalizing&hits=100&ranking=switch_basic") 
+    assert_equal(10000, result.hit[0].field["relevancy"].to_i,
+                 "First result should have relevancy 10000 (case 100)")
+    assert_equal(2500, result.hit[1].field["relevancy"].to_i,
+                 "Second result should have relevancy 2500 (case 50)")
+    assert_equal(1, result.hit[2].field["relevancy"].to_i,
+                 "Third result should have relevancy 1 (case 1)")
+    assert_equal(0, result.hit[3].field["relevancy"].to_i,
+                 "Fourth result should have relevancy 0 (default case)")
+
+    # Complex switch
+    result = search("query=sddocname:rankexpression&skipnormalizing&hits=100&ranking=switch_complex")
+    result.hit.each_index do |i|
+      myrank = result.hit[i].field["myrank"].to_i
+      score = result.hit[i].field["relevancy"].to_i
+      if myrank > 90
+        expected = myrank * myrank
+      else
+        expected = myrank
+      end
+      assert_equal(expected, score,
+                   "myrank=#{myrank} should give #{expected}, got #{score}")
+    end
+  end
+
   def indexData
     str ="[\n"
     0.upto(99) do |i|

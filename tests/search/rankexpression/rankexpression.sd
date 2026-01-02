@@ -77,4 +77,30 @@ schema rankexpression {
         }
     }
 
+    # Switch expression tests
+    rank-profile switch_basic {
+        first-phase {
+            expression {
+                switch(attribute(myrank)) {
+                    case 100: 10000,
+                    case 50: 2500,
+                    case 1: 1,
+                    default: 0
+                }
+            }
+        }
+    }
+
+    rank-profile switch_complex {
+        first-phase {
+            expression {
+                switch(attribute(myrank) > 90) {
+                    case true: attribute(myrank) * attribute(myrank),
+                    case 1 < 0: attribute(myrank),
+                    default: 0
+                }
+            }
+        }
+    }
+
 }
