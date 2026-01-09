@@ -128,7 +128,7 @@ class RankExpression < IndexedStreamingSearchTest
     indexData()
 
     # Basic switch with exact matches
-    result = search("query=sddocname:rankexpression&skipnormalizing&hits=100&ranking=switch_basic") 
+    result = search("query=sddocname:rankexpression&skipnormalizing&hits=100&ranking=switch_basic")
     assert_equal(10000, result.hit[0].field["relevancy"].to_i,
                  "First result should have relevancy 10000 (case 100)")
     assert_equal(2500, result.hit[1].field["relevancy"].to_i,
