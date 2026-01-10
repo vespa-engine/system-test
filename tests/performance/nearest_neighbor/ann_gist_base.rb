@@ -28,7 +28,7 @@ class AnnGistBase < CommonSiftGistBase
     #num_documents = 1_000
 
     compile_generators
-    generate_queries_for_recall(num_queries_for_recall)
+    generate_vectors_for_recall(num_queries_for_recall)
     feed_and_benchmark(num_documents, "300k-docs", {:filter_values => filter_values})
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
@@ -63,7 +63,7 @@ class AnnGistBase < CommonSiftGistBase
     #documents_in_total = 10_000
 
     compile_generators
-    generate_queries_for_recall(num_queries_for_recall)
+    generate_vectors_for_recall(num_queries_for_recall)
     run_removal_test(documents_to_benchmark_at, documents_in_total, "300k-docs")
   end
 
