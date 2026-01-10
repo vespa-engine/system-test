@@ -47,38 +47,6 @@ class CommonAnnBaseTest < PerformanceTest
     print_nni_stats(doc_type, tensor)
   end
 
-  def feed_and_benchmark_range(feed_file, label, from, to, doc_type = "test", tensor = "vec_m16")
-    #profiler_start
-    node_file = nn_download_file(feed_file, vespa.adminserver)
-    # Name of the file containing the specified range
-    range_file = "#{node_file}_#{from}_#{to}"
-
-    # Since jq uses too much memory and the streaming mode is too slow, we do some text editing
-    # at start: allow '[' at to mark beginning of array
-    first = '$0 == "[" { print; next; };'
-
-    # count start-of-put lines:
-    count_starts = '$0 == "{" { ++count; };'
-
-    # add trailer if we're past the "to" parameter
-    print_trailer1_and_exit = '{ print "{}"; print "]"; exit }'
-    trailer1 = "count > #{to} #{print_trailer1_and_exit}"
-
-    # also stop if we reached EOF, the last document ends with just "}"
-    trailer2 = '$0 == "}" { print; print "]"; exit };'
-
-    # print all the puts starting at "from" parameter:
-    print_puts = "count > #{from} { print }"
-
-    awk_script = "#{first} #{count_starts} #{trailer1} #{trailer2} #{print_puts}"
-    vespa.adminserver.execute("cat #{node_file} | awk '#{awk_script}' > #{range_file}", :exceptiononfailure => true)
-
-    run_feeder(range_file, [parameter_filler(TYPE, "feed"), parameter_filler(LABEL, label)], :localfile => true)
-    vespa.adminserver.execute("ls -ld #{range_file} #{selfdir}", :exceptiononfailure => false)
-    profiler_report("feed")
-    print_nni_stats(doc_type, tensor)
-  end
-
   def print_nni_stats(doc_type, tensor, annotation = "none")
     stats = get_nni_stats(doc_type, tensor)
     write_report([parameter_filler(TYPE, "nni"),
