@@ -127,7 +127,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
 
   def query_and_benchmark(algorithm, target_hits, explore_hits, params = {})
     filter_percent = params[:filter_percent] || 0
-    radius = params[:radius] || 0.0
+    radius = params[:radius] || -1.0
     latitude_lower = params[:latitude_lower] || 0.0
     latitude_upper = params[:latitude_upper] || -1.0
     longitude_lower = params[:longitude_lower] || 0.0
