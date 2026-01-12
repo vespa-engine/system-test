@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <cstdlib>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -56,9 +57,10 @@ print_vector(std::ostream& os, const std::vector<T>& vector)
     bool first = true;
     for (auto val : vector) {
         if (!first) {
-            os << ",";
+            os << std::format(",{}", val);
+        } else {
+            os << std::format("{}", val);
         }
-        os << val;
         first = false;
     }
     os << "]";

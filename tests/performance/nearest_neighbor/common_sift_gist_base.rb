@@ -46,7 +46,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     @container_tmp_bin_dir = @container.create_tmp_bin_dir
     @adminserver_tmp_bin_dir = vespa.adminserver.create_tmp_bin_dir
 
-    vespa.adminserver.execute("g++ -g -O3 -o #{@adminserver_tmp_bin_dir}/make_docs #{selfdir}make_docs.cpp")
+    vespa.adminserver.execute("g++ -g -O3 -std=c++20 -o #{@adminserver_tmp_bin_dir}/make_docs #{selfdir}make_docs.cpp")
     @container.execute("g++ -g -O3 -o #{@container_tmp_bin_dir}/make_queries #{selfdir}make_queries.cpp")
   end
 
