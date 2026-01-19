@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'json'
+require 'cgi'
 require 'indexed_streaming_search_test'
 
 class Embedding < IndexedStreamingSearchTest
@@ -88,6 +89,25 @@ class Embedding < IndexedStreamingSearchTest
         param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'path' => 'components/dummy.onnx'}).
         param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'path' => 'components/tokenizer.json'}).
         param('term-score-threshold', 1.15)
+  end
+
+  def voyage_lite_embedder_component
+    Component.new('voyage-lite').
+      type('voyage-ai-embedder').
+      param('model', 'voyage-4-lite').
+      param('api-key-secret-ref', 'voyage_api_key')
+  end
+
+  def voyage_large_embedder_component
+    Component.new('voyage-large').
+      type('voyage-ai-embedder').
+      param('model', 'voyage-4-large').
+      param('api-key-secret-ref', 'voyage_api_key')
+  end
+
+  def local_secrets_component
+    Component.new('secrets').
+      klass('ai.vespa.test.LocalSecrets')
   end
 
   def default_container_setup
@@ -258,6 +278,30 @@ class Embedding < IndexedStreamingSearchTest
     start_vespa
     feed_and_wait_for_docs("doc", 1, :file => selfdir + "multivector-docs.json")
     verify_splade_multivector_embedding
+  end
+
+  def test_voyage_embedder
+    set_description("Test Voyage AI embedder")
+
+    # Fail immediately if API key is not available
+    if ENV['VESPA_SECRET_VOYAGE_API_KEY'].nil? || ENV['VESPA_SECRET_VOYAGE_API_KEY'].empty?
+      assert(false, "VESPA_SECRET_VOYAGE_API_KEY environment variable must be set")
+    end
+
+    add_bundle(selfdir + 'app_voyage_embedder/components/LocalSecrets.java')
+    deploy_app(
+      SearchApp.new.
+        container(
+          default_container_setup.
+            component(local_secrets_component).
+            component(voyage_lite_embedder_component).
+            component(voyage_large_embedder_component).
+            jvmoptions('-Xms2g -Xmx2g')).
+        sd(selfdir + 'app_voyage_embedder/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start_vespa
+    feed_and_wait_for_docs("doc", 10, :file => selfdir + "10-docs.json")
+    verify_voyage_embedding
   end
 
 
@@ -548,6 +592,44 @@ class Embedding < IndexedStreamingSearchTest
     assert(docSpladeEmbedding.length > 0, "#{docSpladeEmbedding} lenght is 0.")
     relevance = result['root']['children'][0]['relevance']
     assert(relevance > 0, "#{relevance} is 0, which is not expected.")
+  end
+
+  def verify_voyage_embedding
+    # Test semantic search with 5 queries and verify the correct document is returned
+    test_cases = [
+      { query: "greeting message", expected_doc_id: "id:x:doc::1" },
+      { query: "vessel for water transportation", expected_doc_id: "id:x:doc::2" },
+      { query: "machine learning dimensionality reduction", expected_doc_id: "id:x:doc::5" },
+      { query: "activation function in neural networks", expected_doc_id: "id:x:doc::6" },
+      { query: "retro gaming console from the 80s", expected_doc_id: "id:x:doc::8" }
+    ]
+
+    test_cases.each do |test_case|
+      query_text = test_case[:query]
+      expected_doc_id = test_case[:expected_doc_id]
+
+      puts "\nQuery: '#{query_text}'"
+      puts "Expected document: #{expected_doc_id}"
+
+      # Perform nearest neighbor search using semantic embeddings
+      # Query uses voyage-lite (fast), documents use voyage-large (high quality)
+      yql = "select%20*%20from%20sources%20*%20where%20{targetHits:10}nearestNeighbor(embedding,embedding)"
+      result = search("?yql=#{yql}&input.query(embedding)=embed(voyage-lite,@qtext)&qtext=#{CGI.escape(query_text)}&ranking=default&format=json")
+
+      # Verify we got results
+      assert(result.hitcount > 0, "Query '#{query_text}' should return results")
+
+      # Get the top hit document ID
+      returned_doc_id = result.hit[0].field['documentid']
+
+      puts "Returned document: #{returned_doc_id}"
+
+      # Verify the returned document matches expected
+      assert_equal(expected_doc_id, returned_doc_id,
+        "Query '#{query_text}' expected #{expected_doc_id} but got #{returned_doc_id}")
+
+      puts "✓ Correct document returned"
+    end
   end
 
   def start_vespa
