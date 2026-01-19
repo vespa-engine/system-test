@@ -110,6 +110,11 @@ class Embedding < IndexedStreamingSearchTest
       klass('ai.vespa.test.LocalSecrets')
   end
 
+  def exception_embedder_component
+    Component.new('exception-embedder').
+      klass('ai.vespa.test.ExceptionThrowingEmbedder')
+  end
+
   def default_container_setup
     Container.new('default').
       search(Searching.new).
@@ -302,6 +307,27 @@ class Embedding < IndexedStreamingSearchTest
     start_vespa
     feed_and_wait_for_docs("doc", 10, :file => selfdir + "10-docs.json")
     verify_voyage_embedding
+  end
+
+  def test_embedder_exceptions
+    set_description("Test custom embedder OverloadException and TimeoutException handling")
+
+    # Allow the expected RuntimeException in logs since we're testing exception handling
+    add_expected_logged(/Embedder encountered an error - simulated generic exception/)
+
+    add_bundle(selfdir + 'app_exception_embedder/components/ExceptionThrowingEmbedder.java')
+    deploy_app(
+      SearchApp.new.
+        container(
+          default_container_setup.
+            component(exception_embedder_component)).
+        sd(selfdir + 'app_exception_embedder/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start_vespa
+
+    verify_overload_exception
+    verify_timeout_exception
+    verify_generic_exception
   end
 
 
@@ -629,6 +655,42 @@ class Embedding < IndexedStreamingSearchTest
         "Query '#{query_text}' expected #{expected_doc_id} but got #{returned_doc_id}")
 
       puts "✓ Correct document returned"
+    end
+  end
+
+  def verify_overload_exception
+    doc = Document.new("id:test:doc::overload").
+      add_field("text", "This triggers an OVERLOAD exception")
+
+    begin
+      vespa.document_api_v1.put(doc, {:timeout => '10s'})
+      flunk('Expected operation to fail with OverloadException')
+    rescue HttpResponseError => e
+      assert_equal(429, e.response_code, "Expected HTTP 429 for OverloadException")
+    end
+  end
+
+  def verify_timeout_exception
+    doc = Document.new("id:test:doc::timeout").
+      add_field("text", "This triggers a TIMEOUT exception")
+
+    begin
+      vespa.document_api_v1.put(doc, {:timeout => '10s'})
+      flunk('Expected operation to fail with TimeoutException')
+    rescue HttpResponseError => e
+      assert_equal(504, e.response_code, "Expected HTTP 504 for TimeoutException")
+    end
+  end
+
+  def verify_generic_exception
+    doc = Document.new("id:test:doc::error").
+      add_field("text", "This triggers a generic ERROR exception")
+
+    begin
+      vespa.document_api_v1.put(doc, {:timeout => '10s'})
+      flunk('Expected operation to fail with generic RuntimeException')
+    rescue HttpResponseError => e
+      assert_equal(500, e.response_code, "Expected HTTP 500 for generic RuntimeException")
     end
   end
 
