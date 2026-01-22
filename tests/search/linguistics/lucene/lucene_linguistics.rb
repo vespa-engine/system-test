@@ -5,7 +5,7 @@ class LuceneLinguistics < IndexedOnlySearchTest
 
   def setup
     set_owner("hmusum")
-    set_description("Tests that we can specify using the lucene linguistcs implementation")
+    set_description("Tests with the Lucene linguistcs implementation")
   end
 
   def test_simple_linguistics
@@ -28,8 +28,12 @@ class LuceneLinguistics < IndexedOnlySearchTest
       Component.new('lucene-linguistics').
         klass('com.yahoo.language.lucene.LuceneLinguistics').
         bundle('lucene-linguistics').
-        config(ConfigOverride.new('com.yahoo.language.lucene.lucene-analysis'))
+        config(ConfigOverride.new('com.yahoo.language.lucene.lucene-analysis').
+               add(MapConfig.new('analysis').
+                   add('profile=specialTokens',
+                       ConfigValue.new().
+                         add(ConfigValue.new('tokenizer').add('name', 'pattern').add(MapConfig.new('conf').add('pattern', '\s|\(|\)'))
+                         add(ArrayConfig.new('tokenFilters').add(0, 'lowercase')))))
   end
-
 
 end

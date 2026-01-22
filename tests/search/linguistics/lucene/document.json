@@ -1,9 +1,25 @@
 [
   {
-    "put": "id:mynamespace:lucene::mydocid",
+    "put": "id:mynamespace:lucene::id1",
     "fields": {
       "language": "en",
       "mytext": "Cats and Dogs"
+    }
+  },
+  {
+    "put": "id:mynamespace:lucene::id2",
+    "fields": {
+      "language": "en",
+      "normal": "C++",
+      "special": "C++"
+    }
+  },
+  {
+    "put": "id:mynamespace:lucene::id3",
+    "fields": {
+      "language": "en",
+      "normal": "C",
+      "special": "C"
     }
   }
 ]
