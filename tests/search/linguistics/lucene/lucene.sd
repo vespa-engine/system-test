@@ -8,6 +8,17 @@ schema lucene {
         field mytext type string {
             indexing: summary | index
         }
+        field normal type string {
+            indexing: summary | index
+        }
+
+        field special type string {
+            indexing: summary | index
+            linguistics {
+                profile: specialTokens
+            }
+        }
+
     }
 
     fieldset default {
