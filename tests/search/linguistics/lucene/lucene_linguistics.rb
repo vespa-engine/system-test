@@ -31,10 +31,29 @@ class LuceneLinguistics < IndexedOnlySearchTest
         config(ConfigOverride.new('com.yahoo.language.lucene.lucene-analysis').
                add(MapConfig.new('analysis').
                    add('profile=specialTokens',
-                       ConfigValue.new().
-                         add(ConfigValue.new('tokenizer').add('name', 'pattern')
-                                                         .add(MapConfig.new('conf').add('pattern', '\s|\(|\)'))).
+                       ConfigValues.new.
+                         add('tokenizer', ConfigValues.new.add('name', 'pattern').
+                                                           add(MapConfig.new('conf').add('pattern', '\s|\(|\)'))).
                          add(ArrayConfig.new('tokenFilters').add(0, 'lowercase')))))
   end
+
+#            <config name="com.yahoo.language.lucene.lucene-analysis">
+#                <analysis>
+#                    <item key="profile=specialTokens">
+#                        <tokenizer>
+#                            <name>pattern</name>
+#                            <conf>
+#                                <item key="pattern">\s|\(|\)</item>
+#                            </conf>
+#                        </tokenizer>
+#                        <tokenFilters>
+#                            <item>
+#                                <name>lowercase</name>
+#                            </item>
+#                        </tokenFilters>
+#                    </item>
+#                </analysis>
+#            </config>
+
 
 end
