@@ -33,7 +33,7 @@ class LuceneLinguistics < IndexedOnlySearchTest
                    add('profile=specialTokens',
                        ConfigValue.new().
                          add(ConfigValue.new('tokenizer').add('name', 'pattern')
-                                                         .add(MapConfig.new('conf').add('pattern', "\s|\(|\)")))
+                                                         .add(MapConfig.new('conf').add('pattern', "")))
                          add(ArrayConfig.new('tokenFilters').add(0, 'lowercase')))))
   end
 
