@@ -55,21 +55,4 @@ class LuceneLinguistics < IndexedOnlySearchTest
 #                </analysis>
 #            </config>
 
-[09:42:28.875]     <component bundle="lucene-linguistics" class="com.yahoo.language.lucene.LuceneLinguistics" id="lucene-linguistics">
-[09:42:28.875]       <config name="com.yahoo.language.lucene.lucene-analysis">
-[09:42:28.875]         <analysis>
-[09:42:28.875]           <item key="profile=specialTokens">
-[09:42:28.875]             <tokenizer>
-[09:42:28.875]               <name>pattern</name>
-[09:42:28.875]               <conf>
-[09:42:28.875]                 <item key="pattern">\s|\(|\)</item>
-[09:42:28.875]               </conf>
-[09:42:28.875]             </tokenizer>
-[09:42:28.875]             <tokenFilters>
-[09:42:28.875]               <item>lowercase</item>
-[09:42:28.875]             </tokenFilters>
-[09:42:28.875]           </item>
-[09:42:28.875]         </analysis>
-[09:42:28.875]       </config>
-[09:42:28.875]     </component>
 end
