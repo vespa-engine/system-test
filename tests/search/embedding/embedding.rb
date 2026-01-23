@@ -634,7 +634,7 @@ class Embedding < IndexedStreamingSearchTest
 
     # Test all three embedding types: float, binary int8, and regular int8
     embedding_configs = [
-      { field: "embedding", query_tensor: "embedding", rank_profile: "float_angular", description: "float" },
+      { field: "embedding_float", query_tensor: "embedding_float", rank_profile: "float_angular", description: "float" },
       { field: "embedding_binary_int8", query_tensor: "embedding_binary_int8", rank_profile: "binary_int8", description: "binary int8" },
       { field: "embedding_int8", query_tensor: "embedding_int8", rank_profile: "int8_angular", description: "regular int8" }
     ]
