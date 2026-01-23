@@ -34,7 +34,7 @@ class LuceneLinguistics < IndexedOnlySearchTest
                        ConfigValues.new.
                          add('tokenizer', ConfigValues.new.add('name', 'pattern').
                                                            add(MapConfig.new('conf').add('pattern', '\s|\(|\)'))).
-                         add(ArrayConfig.new('tokenFilters').add(0, 'lowercase')))))
+                         add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name','lowercase'))))))
   end
 
 #            <config name="com.yahoo.language.lucene.lucene-analysis">
@@ -55,5 +55,21 @@ class LuceneLinguistics < IndexedOnlySearchTest
 #                </analysis>
 #            </config>
 
-
+[09:42:28.875]     <component bundle="lucene-linguistics" class="com.yahoo.language.lucene.LuceneLinguistics" id="lucene-linguistics">
+[09:42:28.875]       <config name="com.yahoo.language.lucene.lucene-analysis">
+[09:42:28.875]         <analysis>
+[09:42:28.875]           <item key="profile=specialTokens">
+[09:42:28.875]             <tokenizer>
+[09:42:28.875]               <name>pattern</name>
+[09:42:28.875]               <conf>
+[09:42:28.875]                 <item key="pattern">\s|\(|\)</item>
+[09:42:28.875]               </conf>
+[09:42:28.875]             </tokenizer>
+[09:42:28.875]             <tokenFilters>
+[09:42:28.875]               <item>lowercase</item>
+[09:42:28.875]             </tokenFilters>
+[09:42:28.875]           </item>
+[09:42:28.875]         </analysis>
+[09:42:28.875]       </config>
+[09:42:28.875]     </component>
 end
