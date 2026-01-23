@@ -17,10 +17,24 @@ schema doc {
       }
   }
 
-  rank-profile default {
+  field embedding_binary_int8 type tensor<int8>(x[128]) {
+      indexing: input text | embed voyage-large | attribute
+      attribute {
+          distance-metric: hamming
+      }
+  }
+
+  field embedding_int8 type tensor<int8>(x[1024]) {
+      indexing: input text | embed voyage-large | attribute
+      attribute {
+          distance-metric: prenormalized-angular
+      }
+  }
+
+  rank-profile float_angular {
     inputs {
       query(embedding) tensor<float>(x[1024])
-   }
+    }
 
     first-phase {
       expression: closeness(embedding)
@@ -31,6 +45,36 @@ schema doc {
       attribute(embedding)
     }
 
+  }
+
+  rank-profile binary_int8 {
+    inputs {
+      query(embedding_binary_int8) tensor<int8>(x[128])
+    }
+
+    first-phase {
+      expression: closeness(embedding_binary_int8)
+    }
+
+    summary-features {
+      query(embedding_binary_int8)
+      attribute(embedding_binary_int8)
+    }
+  }
+
+  rank-profile int8_angular {
+    inputs {
+      query(embedding_int8) tensor<int8>(x[1024])
+    }
+
+    first-phase {
+      expression: closeness(embedding_int8)
+    }
+
+    summary-features {
+      query(embedding_int8)
+      attribute(embedding_int8)
+    }
   }
 
 }
