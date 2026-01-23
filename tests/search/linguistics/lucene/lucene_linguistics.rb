@@ -22,6 +22,8 @@ class LuceneLinguistics < IndexedOnlySearchTest
     feed_and_wait_for_docs("lucene", 3, :file => selfdir + "document.json")
 
     assert_hitcount("query=dog", 1)
+    assert_hitcount("query=normal:C++", 2)
+    assert_hitcount("query=special:C++", 1)
   end
 
   def lucene_linguistics_component
@@ -36,24 +38,5 @@ class LuceneLinguistics < IndexedOnlySearchTest
                                                            add(MapConfig.new('conf').add('pattern', '\s|\(|\)'))).
                          add(ArrayConfig.new('tokenFilters').add(0, 'lowercase')))))
   end
-
-#            <config name="com.yahoo.language.lucene.lucene-analysis">
-#                <analysis>
-#                    <item key="profile=specialTokens">
-#                        <tokenizer>
-#                            <name>pattern</name>
-#                            <conf>
-#                                <item key="pattern">\s|\(|\)</item>
-#                            </conf>
-#                        </tokenizer>
-#                        <tokenFilters>
-#                            <item>
-#                                <name>lowercase</name>
-#                            </item>
-#                        </tokenFilters>
-#                    </item>
-#                </analysis>
-#            </config>
-
 
 end
