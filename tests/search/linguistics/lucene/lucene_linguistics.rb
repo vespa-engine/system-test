@@ -34,7 +34,7 @@ class LuceneLinguistics < IndexedOnlySearchTest
                        ConfigValues.new.
                          add('tokenizer', ConfigValues.new.add('name', 'pattern').
                                                            add(MapConfig.new('conf').add('pattern', '\s|\(|\)'))).
-                         add(ArrayConfig.new('tokenFilters').add(0, 'lowercase')))))
+                         add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name','lowercase'))))))
   end
 
 #            <config name="com.yahoo.language.lucene.lucene-analysis">
@@ -54,6 +54,5 @@ class LuceneLinguistics < IndexedOnlySearchTest
 #                    </item>
 #                </analysis>
 #            </config>
-
 
 end
