@@ -23,7 +23,7 @@ class ConfigValues
     @values = []
   end
   def add(key, value = nil)
-    if key.is_a? ConfigValue and value.nil?
+    if value.nil? and (key.is_a? ConfigValue or key.is_a? ArrayConfig or key.is_a? MapConfig)
       @values.push(key)
     else
       @values.push(ConfigValue.new(key, value))

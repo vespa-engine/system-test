@@ -19,7 +19,7 @@ class LuceneLinguistics < IndexedOnlySearchTest
                      documentapi(ContainerDocumentApi.new)).
                  sd(selfdir + 'lucene.sd'))
     start
-    feed_and_wait_for_docs("lucene", 1, :file => selfdir + "document.json")
+    feed_and_wait_for_docs("lucene", 3, :file => selfdir + "document.json")
 
     assert_hitcount("query=dog", 1)
   end
