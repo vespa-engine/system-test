@@ -95,14 +95,16 @@ class Embedding < IndexedStreamingSearchTest
     Component.new('voyage-lite').
       type('voyage-ai-embedder').
       param('model', 'voyage-4-lite').
-      param('api-key-secret-ref', 'voyage_api_key')
+      param('api-key-secret-ref', 'voyage_api_key').
+      param('dimensions', '1024')
   end
 
   def voyage_large_embedder_component
     Component.new('voyage-large').
       type('voyage-ai-embedder').
       param('model', 'voyage-4-large').
-      param('api-key-secret-ref', 'voyage_api_key')
+      param('api-key-secret-ref', 'voyage_api_key').
+      param('dimensions', '1024')
   end
 
   def local_secrets_component
@@ -630,31 +632,42 @@ class Embedding < IndexedStreamingSearchTest
       { query: "retro gaming console from the 80s", expected_doc_id: "id:x:doc::8" }
     ]
 
-    test_cases.each do |test_case|
-      query_text = test_case[:query]
-      expected_doc_id = test_case[:expected_doc_id]
+    # Test all three embedding types: float, binary int8, and regular int8
+    embedding_configs = [
+      { field: "embedding_float", query_tensor: "embedding_float", rank_profile: "float_angular", description: "float" },
+      { field: "embedding_binary_int8", query_tensor: "embedding_binary_int8", rank_profile: "binary_int8", description: "binary int8" },
+      { field: "embedding_int8", query_tensor: "embedding_int8", rank_profile: "int8_angular", description: "regular int8" }
+    ]
 
-      puts "\nQuery: '#{query_text}'"
-      puts "Expected document: #{expected_doc_id}"
+    embedding_configs.each do |config|
+      puts "\n=== Testing #{config[:description]} embedding (#{config[:field]}) ==="
 
-      # Perform nearest neighbor search using semantic embeddings
-      # Query uses voyage-lite (fast), documents use voyage-large (high quality)
-      yql = "select%20*%20from%20sources%20*%20where%20{targetHits:10}nearestNeighbor(embedding,embedding)"
-      result = search("?yql=#{yql}&input.query(embedding)=embed(voyage-lite,@qtext)&qtext=#{CGI.escape(query_text)}&ranking=default&format=json")
+      test_cases.each do |test_case|
+        query_text = test_case[:query]
+        expected_doc_id = test_case[:expected_doc_id]
 
-      # Verify we got results
-      assert(result.hitcount > 0, "Query '#{query_text}' should return results")
+        puts "\nQuery: '#{query_text}'"
+        puts "Expected document: #{expected_doc_id}"
 
-      # Get the top hit document ID
-      returned_doc_id = result.hit[0].field['documentid']
+        # Perform nearest neighbor search using semantic embeddings
+        # Query uses voyage-lite (fast), documents use voyage-large (high quality)
+        yql = "select%20*%20from%20sources%20*%20where%20{targetHits:10}nearestNeighbor(#{config[:field]},#{config[:query_tensor]})"
+        result = search("?yql=#{yql}&input.query(#{config[:query_tensor]})=embed(voyage-lite,@qtext)&qtext=#{CGI.escape(query_text)}&ranking=#{config[:rank_profile]}&format=json")
 
-      puts "Returned document: #{returned_doc_id}"
+        # Verify we got results
+        assert(result.hitcount > 0, "Query '#{query_text}' should return results for #{config[:description]} embedding")
 
-      # Verify the returned document matches expected
-      assert_equal(expected_doc_id, returned_doc_id,
-        "Query '#{query_text}' expected #{expected_doc_id} but got #{returned_doc_id}")
+        # Get the top hit document ID
+        returned_doc_id = result.hit[0].field['documentid']
 
-      puts "✓ Correct document returned"
+        puts "Returned document: #{returned_doc_id}"
+
+        # Verify the returned document matches expected
+        assert_equal(expected_doc_id, returned_doc_id,
+          "Query '#{query_text}' expected #{expected_doc_id} but got #{returned_doc_id} for #{config[:description]} embedding")
+
+        puts "✓ Correct document returned for #{config[:description]} embedding"
+      end
     end
   end
 
