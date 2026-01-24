@@ -39,13 +39,13 @@ class LuceneLinguistics < IndexedOnlySearchTest
                        ConfigValues.new
                          .add('tokenizer', ConfigValues.new.add('name', 'pattern')
                                                            .add(MapConfig.new('conf').add('pattern', '\s|\(|\)')))
-                         .add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name', 'lowercase')))))
+                         .add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name', 'lowercase'))))
                    .add('profile=specialTokens;language=es',
                        ConfigValues.new
-                         .add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name', 'englishMinimalStem')))))
+                         .add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name', 'englishMinimalStem'))))
                    .add('profile=reverse',
                        ConfigValues.new
-                         .add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name', 'reverseString')))))
-        )
+                         .add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name', 'reverseString'))))
+        ))
   end
 end
