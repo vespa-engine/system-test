@@ -33,7 +33,7 @@ class LuceneLinguistics < IndexedOnlySearchTest
       Component.new('lucene-linguistics')
         .klass('com.yahoo.language.lucene.LuceneLinguistics')
         .bundle('lucene-linguistics')
-        .config(ConfigOverride.new('com.yahoo.language.lucene.lucene-analysis').
+        .config(ConfigOverride.new('com.yahoo.language.lucene.lucene-analysis')
                .add(MapConfig.new('analysis')
                    .add('profile=specialTokens',
                        ConfigValues.new
