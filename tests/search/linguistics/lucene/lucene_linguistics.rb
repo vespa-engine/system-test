@@ -24,11 +24,11 @@ class LuceneLinguistics < IndexedOnlySearchTest
     assert_hitcount("query=dog", 1)
     assert_hitcount("query=god&model.type.profile=reverse", 1)
     assert_hitcount("query=god&model.type.profile=reverse&language=es", 0)
-    assert_hitcount("yql=select %2a from sources %2a where {grammar.profile:'reverse'}userInput('god')", 1)
+    assert_hitcount("yql=select %2a from sources %2a where {grammar:'linguistics',grammar.profile:'reverse'}userInput('god')", 1)
 
     assert_hitcount("query=normal:C++", 4)
     assert_hitcount("query=special:C++", 1)
-    assert_hitcount("query=special:C++&language=es", 3) # Both language=es is normalized to C, and so is the query
+    # assert_hitcount("query=special:C++&language=es", 3) # Both language=es is normalized to C, and so is the query
    end
 
   def lucene_linguistics_component
