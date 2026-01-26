@@ -28,6 +28,8 @@ class LuceneLinguistics < IndexedOnlySearchTest
     assert_hitcount("yql=select %2a from sources %2a where {grammar:'linguistics',grammar.profile:'reverse'}userInput('god')", 1)
     # Reversion happens in stemming
     assert_hitcount("yql=select %2a from sources %2a where {grammar.profile:'reverse'}userInput('god')", 1)
+    # No reversion as language+profile override is more specific
+    assert_hitcount("yql=select %2a from sources %2a where {grammar.profile:'reverse'}userInput('god')&language=es", 0)
 
     assert_hitcount("query=normal:C++", 4)
     assert_hitcount("query=special:C++", 1)
