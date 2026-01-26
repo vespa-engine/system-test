@@ -24,7 +24,10 @@ class LuceneLinguistics < IndexedOnlySearchTest
     assert_hitcount("query=dog", 1)
     assert_hitcount("query=god&model.type.profile=reverse", 1)
     assert_hitcount("query=god&model.type.profile=reverse&language=es", 0)
+    # Reversion happens during parsing
     assert_hitcount("yql=select %2a from sources %2a where {grammar:'linguistics',grammar.profile:'reverse'}userInput('god')", 1)
+    # Reversion happens in stemming
+    assert_hitcount("yql=select %2a from sources %2a where {grammar.profile:'reverse'}userInput('god')", 1)
 
     assert_hitcount("query=normal:C++", 4)
     assert_hitcount("query=special:C++", 1)
