@@ -1,0 +1,35 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema doc {
+
+  document doc {
+
+    field chunks type array<string> {
+      indexing: index | summary
+    }
+
+  }
+
+  field chunk_embeddings type tensor<float>(chunk{}, x[1024]) {
+      indexing: input chunks | embed voyage-context-3 | attribute
+      attribute {
+          distance-metric: prenormalized-angular
+      }
+  }
+
+  rank-profile context_float {
+    inputs {
+      query(embedding_context) tensor<float>(x[1024])
+    }
+
+    first-phase {
+      expression: closeness(chunk_embeddings)
+    }
+
+    summary-features {
+      query(embedding_context)
+      attribute(chunk_embeddings)
+    }
+  }
+
+}
