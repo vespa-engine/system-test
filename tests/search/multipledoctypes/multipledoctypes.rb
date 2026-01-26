@@ -5,7 +5,7 @@ require 'rexml/document'
 class MultipleDocumentTypes < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def extract_group(res)

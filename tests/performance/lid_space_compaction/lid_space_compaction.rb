@@ -12,7 +12,7 @@ class LidSpaceCompactionPerfTest < PerformanceTest
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def get_app(lid_bloat_factor = 0.2)

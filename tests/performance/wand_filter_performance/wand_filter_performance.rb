@@ -9,7 +9,7 @@ class WandFilterPerformanceTest < WandPerformanceTestBase
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def get_spec_label(spec)

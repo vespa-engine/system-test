@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class WasFound < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Check that proton replies to updates and removes with " +
                     "the wasFound flag set correctly.")
   end

@@ -31,7 +31,7 @@ class TestCase
   include TestBase
 
   attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client, :perf_recording
-  attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :required_hostnames, :expected_logged, :method_name
+  attr_accessor :hostlist, :num_hosts, :valgrind, :valgrind_opt, :failure_recorded, :testcategoryrun_id, :module_name, :expected_logged, :method_name
   attr_accessor :dirty_nodeproxies, :dirty_environment_settings
   attr_accessor :sanitizers
 
@@ -64,7 +64,6 @@ class TestCase
     @disable_log_query_and_result = nil
     @connection_error = false
     @current_assert_file = nil
-    @required_hostnames = nil
     @stop_timestamp = nil
     @vespa_version = args[:vespa_version]
     @vespa_cleanup = VespaCleanup.new(self, @cmd_args)
@@ -82,6 +81,9 @@ class TestCase
       @@log_messages[:async_slow_resolve],
       @@log_messages[:slow_query],
       @@log_messages[:no_slobrok_brokers],
+      @@log_messages[:failed_slobrok_check],
+      @@log_messages[:only_zero_nodes_up],
+      @@log_messages[:bad_network_connectivity],
       @@log_messages[:uncommon_get],
       @@log_messages[:zkmetric_updater_monitor_failure],
       @@log_messages[:zookeeper_reconfig],
@@ -93,7 +95,9 @@ class TestCase
       @@log_messages[:empty_idx_file],
       @@log_messages[:taking_search_node_oos],
       @@log_messages[:no_snapshot_from_instance],
-      @@log_messages[:using_incubator_modules]
+      @@log_messages[:wanted_higher_limit],
+      @@log_messages[:using_incubator_modules],
+      @@log_messages[:unknown_cpu_vendor]
     ]
     @valgrind_ignorable_messages = [
       @@log_messages[:shutdownguard_forcing_exit],
@@ -717,7 +721,7 @@ class TestCase
 
   # Override this in component-specific test base classes (if needed)
   def get_default_log_check_levels
-    return [:error, :fatal]
+    return [:warning, :error, :fatal]
   end
 
   @@log_messages = {
@@ -725,6 +729,9 @@ class TestCase
     :slow_query => /Slow execution. query/,
     :slow_processing =>  /Slow processing of message/,
     :no_slobrok_brokers => /no location brokers available, retrying:/,
+    :failed_slobrok_check => /failed check using listNames callback/,
+    :only_zero_nodes_up => /Only 0 of . nodes are up and OK/,
+    :bad_network_connectivity => /Bad network connectivity .try/,
     :max_query_timeout => /Query timeout \(\d+ ms\) > max query /,
     :uncommon_get => /a little uncommon that GET method returns always/,
     :could_not_get_config => /Could not get config, please check your setup/,
@@ -740,7 +747,9 @@ class TestCase
     :no_snapshot_from_instance => /no snapshot from instance of /,
     :taking_search_node_oos => /Taking search node in cluster = .+ in group .+ out of service/,
     :slobrok_failed_listnames_check => /failed check using listNames callback/,
+    :wanted_higher_limit => /Wanted 102400 as limit for max user processes/,
     :using_incubator_modules => /Using incubator modules: jdk\.incubator\.foreign/ ,
+    :unknown_cpu_vendor => /Unknown CPU vendor/
   }
 
   # Allow that certain log messages may be ignored without the individual

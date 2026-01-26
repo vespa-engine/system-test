@@ -8,7 +8,7 @@ class ProtonTest < IndexedOnlySearchTest
   include MixedFeedGenerator
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def self.final_test_methods
@@ -324,7 +324,7 @@ class ProtonTest < IndexedOnlySearchTest
 
   def test_proton_online_state
     @valgrind=false
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Tests that online state is false until replay of transaction log is done")
     deploy_app(SearchApp.new.sd("#{selfdir}/banana.sd").flush_on_shutdown(false))
     start

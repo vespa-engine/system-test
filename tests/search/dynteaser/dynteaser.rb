@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class DynTeaser < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test of dynamic teaser support")
     @debug_log_enabled = false
   end

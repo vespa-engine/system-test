@@ -7,7 +7,7 @@ class SignificanceModelPerfTest < PerformanceTest
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_weak_and_bm25

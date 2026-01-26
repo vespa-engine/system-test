@@ -148,6 +148,7 @@ class Visibility < IndexedOnlySearchTest
     @mutex = Mutex.new
     @cv = ConditionVariable.new
     @disable_log_query_and_result = true
+    @ignorable_messages.append(/reduced coverage/)
   end
 
   def get_base_sc(parts, r, rc)

@@ -8,7 +8,7 @@ require 'base64'
 class SearchMetrics < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_metrics

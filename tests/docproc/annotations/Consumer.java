@@ -45,23 +45,23 @@ public class Consumer extends DocumentProcessor {
 
 			Annotation person = tree.iterator(personSpan).next();
 			Struct personValue = (Struct) person.getFieldValue();
-			System.err.println("Person is " + personValue.getField("name"));
+			System.out.println("Person is " + personValue.getField("name"));
 
 			Annotation artist = tree.iterator(artistSpan).next();
 			Struct artistValue = (Struct) artist.getFieldValue();
-			System.err.println("Artist is " + artistValue.getFieldValue("name") + " who plays the " + artistValue.getFieldValue("instrument"));
+			System.out.println("Artist is " + artistValue.getFieldValue("name") + " who plays the " + artistValue.getFieldValue("instrument"));
 
 			Annotation date = tree.iterator(dateSpan).next();
 			Struct dateValue = (Struct) date.getFieldValue();
-			System.err.println("Date is " + dateValue.getFieldValue("exacttime"));
+			System.out.println("Date is " + dateValue.getFieldValue("exacttime"));
 
 			Annotation place = tree.iterator(placeSpan).next();
 			Struct placeValue = (Struct) place.getFieldValue();
-			System.err.println("Place is " + placeValue.getFieldValue("lat") + ";" + placeValue.getFieldValue("lon"));
+			System.out.println("Place is " + placeValue.getFieldValue("lat") + ";" + placeValue.getFieldValue("lon"));
 
 			Annotation event = tree.iterator(root).next();
 			Struct eventValue = (Struct) event.getFieldValue();
-			System.err.println("Event is " + eventValue.getFieldValue("description") + " with " + eventValue.getFieldValue("person") + " and " + eventValue.getFieldValue("date") + " and " + eventValue.getFieldValue("place"));
+			System.out.println("Event is " + eventValue.getFieldValue("description") + " with " + eventValue.getFieldValue("person") + " and " + eventValue.getFieldValue("date") + " and " + eventValue.getFieldValue("place"));
 
 			it.remove();
 			log.info("Processed " + document);

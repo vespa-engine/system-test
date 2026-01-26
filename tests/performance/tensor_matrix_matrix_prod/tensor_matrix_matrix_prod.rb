@@ -11,7 +11,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
 
   def setup
     super
-    set_owner("lesters")
+    set_owner("hmusum")
   end
 
 
@@ -120,11 +120,11 @@ class TensorMatrixMatrixProduct < PerformanceTest
 
   def deploy_and_feed
     deploy(selfdir + "/app", nil, {:search_dir => @constants_dir})
-    vespa.adminserver.logctl("searchnode:eval", "debug=on")
+    # vespa.adminserver.logctl("searchnode:eval", "debug=on")
     start
     feed_and_wait_for_docs("test", @num_docs, :file => @docs_file_name)
     @container = (vespa.qrserver["0"] or vespa.container.values.first)
-    vespa.adminserver.execute("vespa-logfmt -S searchnode -l debug -N")
+    # vespa.adminserver.execute("vespa-logfmt -S searchnode -l debug -N")
   end
 
   def warmup

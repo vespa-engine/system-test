@@ -15,6 +15,7 @@ require 'https_client'
 require 'json'
 require 'resolv'
 require 'remote_file_utils'
+require 'performance/stat'
 
 # This server is running on all Vespa nodes participating in the test.
 # A NodeServer class is instantiated and made accessible to DRb. Remote
@@ -152,7 +153,12 @@ class NodeServer
 
   # Find child pid of parent runserver
   def find_runserver_child(parent_pid)
-    `ps -o pid,ppid ax | awk "{ if ( \\$2 == #{parent_pid} ) { print \\$1 }}"`.chomp
+    psout=`ps -o pid,ppid ax`
+    child_pids = psout.each_line.map do |line|
+      pid, ppid = line.split()
+      (ppid == parent_pid.to_s) && pid || nil
+    end
+    return child_pids.compact.first || ""
   end
 
   # Executes _command_ on this node. Raises an exception if the exitstatus
@@ -256,11 +262,12 @@ class NodeServer
 
   # Returns an array of pids corresponding to _name_.
   def get_pids(name)
-    pids = `ps awwx | grep #{name} | grep -v grep | awk '{print $1}'`
     result = []
-    pids.split("\n").each do |pid|
-      pid.gsub!(/\s+/, "")
-      result.push(pid.to_i)
+    pids = `ps awwx`
+    re = /\s*(\d+)\s.*#{name}/
+    pids.each_line do |line|
+      m = re.match(line)
+      result.push(m.match(1).to_i) if m
     end
     return result
   end
@@ -317,7 +324,7 @@ class NodeServer
   end
 
   def ignore_proc(ps_line)
-    ps_line =~ /\[perf\]|\[sh\]|\[ruby\]| perf record | free|ps alxww| PID | sh |home.y.tmp.systemtests|.*node_server.rb.*/
+    ps_line =~ /\[perf\]|\[sh\]|\[ruby\]| perf record |free|ps alxww| PID | sh |.*node_server.rb.*/
   end
 
   def child_pids(pid, pidmap)
@@ -616,113 +623,6 @@ class NodeServer
     return status
   end
 
-  # Compiles java source code in _sourcedir_, storing the result in _destdir_ using
-  # the given _classpath_.
-  def compile_java(classpath, destdir, sourcedir, makejar=false)
-    buildfile = sourcedir+"/build.xml"
-    generate_build_script(classpath, destdir, sourcedir, buildfile, makejar)
-    execute("ANT_OPTS=-Xmx512m cd #{sourcedir}; ant")
-  end
-
-  # Compiles the C++ source code in _sourcedir_, storing the result in _destdir_.
-  def compile_cpp(destdir, sourcedir, target=nil)
-    makecmd = "make"
-    if target != nil then
-      makecmd += " #{target}"
-    end
-    execute("cd #{sourcedir}; #{makecmd}")
-  end
-
-  # Deletes class and JAR files based on source code in _sourcedir_
-  def delete_java(destdir, sourcedir)
-    buildfile = sourcedir+"/delete.xml"
-    generate_delete_script(destdir, sourcedir, buildfile)
-    execute("ANT_OPTS=-Xmx512m cd #{sourcedir}; ant -buildfile #{buildfile}")
-  end
-
-  # Generates an ant build script with name _buildfile_ for java compiling.
-  def generate_build_script(classpath, destdir, srcdir, buildfile, makejar=false)
-
-    classfiles = []
-    Dir.glob(srcdir).each do |filename|
-      if (filename =~ /.+\.java/)
-        classfiles << File.basename(filename).sub(/\.java/, ".class")
-      end
-    end
-
-    jarfile = ""
-    Dir.glob(srcdir).each do |filename|
-      if (filename =~ /.+\.java/)
-        jarfile = jarfile + File.basename(filename).sub(/\.java/, "")
-      end
-    end
-    jarfile = jarfile + ".jar"
-
-    file = File.open(buildfile, "w")
-    file.write("<?xml version=\"1.0\"?>\n")
-    file.write("<project name=\"javadev\" default=\"compile\" basedir=\".\">\n")
-    file.write("  <target name=\"init\">\n")
-    file.write("    <mkdir dir=\"#{destdir}\"/>\n")
-    classfiles.each do |classfile|
-      file.write("    <delete file=\"#{destdir}/#{classfile}\"/>\n")
-    end
-    file.write("    <delete file=\"#{destdir}/#{jarfile}\"/>\n")
-    file.write("  </target>\n")
-    file.write("  <target name=\"compile\" depends=\"init\">\n")
-    file.write("    <javac debug=\"true\" srcdir=\"#{srcdir}\" destdir=\"#{destdir}\" classpath=\"#{classpath}\"/>\n")
-    if (makejar)
-      #make JAR file
-      file.write("    <jar jarfile=\"#{destdir}/#{jarfile}\" duplicate=\"preserve\">\n")
-      file.write("      <fileset dir=\"#{destdir}\" includes=\"")
-      #include class files in JAR
-      classfiles.each do |classfile|
-        file.write("#{classfile} ")
-      end
-      file.write("\"/>\n")
-      file.write("    </jar>\n")
-      #delete class files
-      classfiles.each do |classfile|
-        file.write("    <delete file=\"#{destdir}/#{classfile}\"/>\n")
-      end
-    end
-    file.write("  </target>\n")
-    file.write("</project>\n")
-    file.close()
-  end
-
-  # Generates an ant build script with name _buildfile_ for java deleting
-  def generate_delete_script(destdir, srcdir, buildfile)
-
-    classfiles = []
-    Dir.glob(srcdir).each do |filename|
-      if (filename =~ /.+\.java/)
-        classfiles << File.basename(filename).sub(/\.java/, ".class")
-      end
-    end
-
-    jarfile = ""
-    Dir.glob(srcdir).each do |filename|
-      if (filename =~ /.+\.java/)
-        jarfile = jarfile + File.basename(filename).sub(/\.java/, "")
-      end
-    end
-    jarfile = jarfile + ".jar"
-
-    file = File.open(buildfile, "w")
-    file.write("<?xml version=\"1.0\"?>\n")
-    file.write("<project name=\"javadev\" default=\"delete\" basedir=\".\">\n")
-
-    file.write("  <target name=\"delete\">\n")
-    file.write("    <mkdir dir=\"#{destdir}\"/>\n")
-    classfiles.each do |classfile|
-      file.write("    <delete file=\"#{destdir}/#{classfile}\"/>\n")
-    end
-    file.write("    <delete file=\"#{destdir}/#{jarfile}\"/>\n")
-    file.write("  </target>\n")
-    file.write("</project>\n")
-    file.close()
-  end
-
   # Starts vespa_base on the node
   def start_base
     cmd = Environment.instance.additional_start_base_commands
@@ -850,11 +750,17 @@ class NodeServer
     @monitoring = true
     @monitor_thread = Thread.new do
       max_memory = 0
+      regexp = /^Mem:\s*(\d+)\s+(\d+)/
       count = 0
       while @monitoring
         sleep 0.1
         if count % 10 == 0
-            used_memory = `free -b | grep + | awk {'print $3'}`.strip.to_i
+            free_output = `free -b`
+            matches = free_output.each_line.map do |line|
+              m = regexp.match(line)
+              m.match(2) if m
+            end
+            used_memory = matches.compact.first.to_i
             if used_memory > max_memory
               max_memory = used_memory
             end
@@ -929,6 +835,10 @@ class NodeServer
     ENV['ASAN_OPTIONS'] = nil
     ENV['TSAN_OPTIONS'] = nil
     ENV['UBSAN_OPTIONS'] = nil
+  end
+
+  def kernel_procfs_perf_snapshot
+    Perf::Stat::create_snapshot
   end
 
   # Not safe to call - part of remote copy methods in node_proxy.rb

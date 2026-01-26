@@ -95,6 +95,7 @@ class SignificanceTest < IndexedStreamingSearchTest
     start
     feed_and_wait_for_docs("doc", 2, :file => selfdir + "docs.json")
     verify_default_significance_for_simple_query
+    verify_default_significance_for_more_queries
   end
 
   def test_significance_searcher_with_multiple_models
@@ -107,8 +108,32 @@ class SignificanceTest < IndexedStreamingSearchTest
 
   def verify_default_significance_for_simple_query
     result = search({'yql' => 'select * from sources * where text contains "hello"', 'format' => 'json'}).json
+    puts "hello => #{result}"
     significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
     # "hello" { frequency: 3, count: 12 }
+    exp_significance = calculate_legacy_significance(3, 12)
+    assert_approx(exp_significance, significance_value)
+  end
+
+  def verify_default_significance_for_more_queries
+    result = search({'yql' => 'select * from sources * where text contains "world"', 'format' => 'json'}).json
+    puts "world => #{result}"
+    significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
+    # "world" { frequency: 5, count: 12 }
+    exp_significance = calculate_legacy_significance(5, 12)
+    assert_approx(exp_significance, significance_value)
+
+    result = search({'yql' => 'select * from sources * where text contains "the"', 'format' => 'json'}).json
+    puts "the => #{result}"
+    significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
+    # "the" { frequency: 11, count: 12 }
+    exp_significance = calculate_legacy_significance(11, 12)
+    assert_approx(exp_significance, significance_value)
+
+    result = search({'yql' => 'select * from sources * where text contains alternatives({"hello":1.0,"world":1.0})', 'format' => 'json'}).json
+    puts "hello world => #{result}"
+    significance_value = result["root"]["children"][0]["fields"]["summaryfeatures"]["term(0).significance"]
+    # will get results as for "hello" { frequency: 3, count: 12 }
     exp_significance = calculate_legacy_significance(3, 12)
     assert_approx(exp_significance, significance_value)
   end

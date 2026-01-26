@@ -4,7 +4,7 @@ require 'vds_test'
 class Bug4659212 < VdsTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test for bug 4659212")
     deploy_app(default_app.sd(selfdir + "music.sd"))
     start

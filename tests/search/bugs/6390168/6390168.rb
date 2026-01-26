@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class Bug6390168 < IndexedStreamingSearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test bug 6390168")
   end
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<services version="1.0">
+
+  <admin version="2.0">
+    <adminserver hostalias="node1" />    
+    <logserver hostalias="node1" />
+    <slobroks>
+      <slobrok hostalias="node1" />
+    </slobroks>
+  </admin>
+
+  <container version="1.0">
+    <threadpool>
+      <threads max="4">2</threads>
+      <queue>10</queue>
+    </threadpool>
+    <search>
+      <threadpool>
+        <threads max="2">1.5</threads>
+        <queue>2</queue>
+      </threadpool>
+    </search>
+    <document-processing>
+      <threadpool>
+        <threads>1.5</threads>
+      </threadpool>
+    </document-processing>
+    <nodes>
+      <node hostalias="node1" />
+    </nodes>
+  </container>
+  
+</services>

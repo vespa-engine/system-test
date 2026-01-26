@@ -26,7 +26,7 @@ class MapTypeTest < StreamingSearchTest
   end
 
   def test_map_update
-    set_owner("balder")
+    set_owner("hmusum")
     deploy_app(get_app.sd(selfdir + "schemas/mapupdatetest.sd"))
     start
     feedfile(selfdir+"feedmapupdate.json")
@@ -51,7 +51,7 @@ class MapTypeTest < StreamingSearchTest
   end
 
   def test_map
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test for streaming search in map type")
     deploy_app(get_app.sd(selfdir + "schemas/maptest.sd"))
     start

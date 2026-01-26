@@ -123,7 +123,7 @@ class FeedBlockDiskTwoNodesBase < FeedBlockBase
     url = "/document/v1/#{@namespace}/#{@doc_type}/docid/#{id}"
     httpHeaders = {}
     jsonarray = strings_as_json(select_strings)
-    puts "Putting doc with id #{id}"
+    # puts "Putting doc with id #{id}"
     http_v1_api_post(http,
                      url,
                      "{ \"fields\": { \"a1\" : #{jsonarray} } }",

@@ -6,7 +6,7 @@ require 'indexed_streaming_search_test'
 class LargeText < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd("#{selfdir}/test.sd"))
     start
   end
@@ -22,6 +22,7 @@ class LargeText < IndexedStreamingSearchTest
     arr << time_feed(640000)
     arr << time_feed(1280000)
     puts "rate = " + arr.join(" ")
+    feed_bad_file
   end
 
   def time_feed(num_tokens)
@@ -48,9 +49,40 @@ class LargeText < IndexedStreamingSearchTest
     return rate
   end
 
+  def feed_bad_file
+    # no indexing happens for streaming
+    return if is_streaming
+    doc = Document.new("id:ns:test::1")
+    doc.add_field("my_str", read_utf8_file_with_replacement('/bin/sh'))
+    docs = DocumentSet.new()
+    docs.add(doc)
+    file = "#{dirs.tmpdir}/input-bad.json";
+    docs.write_json(file)
+    result = feed(:file => file)
+    assert(result.include? 'Status 400')
+    assert(result.include? 'classified as binary')
+  end
+
+  def read_utf8_file_with_replacement(file_path)
+    content = File.read(file_path, encoding: 'UTF-8', invalid: :replace, undef: :replace, replace: "\u{FFFD}")
+    content = content.encode('UTF-8', 'UTF-8', invalid: :replace, undef: :replace, replace: "\u{FFFD}")
+    # Replace control characters (0x00-0x1F and 0x7F-0x9F) except whitespace (tab, newline, carriage return)
+    content.gsub(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/, "\u{FFFD}")
+  end
+
+  def create_json_from_file(file_path, doc_id)
+    require 'json'
+    content = read_utf8_file_with_replacement(file_path)
+    {
+      "id" => doc_id,
+      "fields" => {
+        "my_str" => content
+      }
+    }.to_json
+  end
+
   def timeout_seconds
     return 900
   end
-
 
 end

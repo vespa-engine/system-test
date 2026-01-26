@@ -9,6 +9,8 @@ class FeedBlockDiskTwoNodesTest < FeedBlockDiskTwoNodesBase
 
   def setup(*args)
     super(*args)
+    set_expected_logged(Regexp.union(/Write operations are now blocked:/,
+                                     /Peer location broker at .* may have problems, differences from consensus map/))
   end
 
   def test_proton_feed_block_document_v1_api_two_nodes_disklimit

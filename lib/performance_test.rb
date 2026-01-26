@@ -3,6 +3,7 @@
 require 'performance/configloadtester'
 require 'performance/fbench'
 require 'performance/resultmodel'
+require 'performance/stat'
 require 'environment'
 require 'json'
 
@@ -35,6 +36,7 @@ class PerformanceTest < TestCase
     @perf_data_dir = "#{Environment.instance.vespa_home}/tmp/perf/"
     @perf_data_file = File.join(@perf_data_dir,'record.data')
     @perf_stat_file = File.join(@perf_data_dir,'perf_stats')
+    @node_procfs_snapshot_at_setup_time = nil
     @vespa_user = Environment.instance.vespa_user
     @curr_user = `id -un`.chomp
     @script_user = get_script_user
@@ -93,9 +95,9 @@ class PerformanceTest < TestCase
     super
     @magic_number = 0
     @resultoutputdir = @dirs.resultoutput + 'performance/'
-    `mkdir #{@resultoutputdir}`
+    `mkdir -p #{@resultoutputdir}`
     @perfdir = @dirs.resultoutput + 'perf/'
-    `mkdir #{@perfdir}`
+    `mkdir -p #{@perfdir}`
   end
 
   def run_simple(clients, ntimes)
@@ -276,10 +278,25 @@ class PerformanceTest < TestCase
     profiler_stop
     profiler_report
     stop
+    dump_procfs_perf_report
   end
 
   def setup
     profiler_start
+    remote_node = vespa.nodeproxies.values[0]
+    remote_node.execute("grep '^PRETTY_NAME' /etc/os-release")
+    remote_node.execute('uname -a')
+    remote_node.execute('lscpu')
+    @node_procfs_snapshot_at_setup_time = remote_node.kernel_procfs_perf_snapshot
+  end
+
+  def dump_procfs_perf_report
+    return if @node_procfs_snapshot_at_setup_time.nil?
+    procfs_snapshot_now = vespa.nodeproxies.values[0].kernel_procfs_perf_snapshot
+    delta = Perf::Stat::snapshot_period(@node_procfs_snapshot_at_setup_time, procfs_snapshot_now)
+    puts 'System report for duration of test case on test runner node:'
+    puts '--------'
+    puts delta.printable_result
   end
 
   # Start profiler. Calling this will stop any profilers started earlier and reset recordings.
@@ -312,11 +329,11 @@ class PerformanceTest < TestCase
 
           @perf_record_pids[node] = {}
           @perf_record_pids[node]['proton-bin'] = node.get_pids('sbin/vespa-proton-bin')
-          @perf_record_pids[node]['container'] = node.get_pids('"java.*-Dconfig.id=[^[:space:]]*/container[.][0-9]"')
+          @perf_record_pids[node]['container'] = node.get_pids('java.*-Dconfig.id=[a-z0-9]*/container[.][0-9]')
           if @perf_recording == "all"
             @perf_record_pids[node]['storaged-bin'] = node.get_pids('sbin/vespa-storaged-bin')
             @perf_record_pids[node]['distributord-bin'] = node.get_pids('sbin/vespa-distributord-bin')
-            @perf_record_pids[node]['configserver'] = node.get_pids('"java.*jdisc\/configserver"')
+            @perf_record_pids[node]['configserver'] = node.get_pids('java.*jdisc/configserver')
             @perf_record_pids[node]['vespa-config-loadtester'] = node.get_pids('vespa-config-loadtester')
             @perf_record_pids[node]['programmatic-feed-client'] = node.get_pids('javafeedclient')
           end
@@ -330,6 +347,7 @@ class PerformanceTest < TestCase
           end
           if @perf_recording == "all"
             @perf_processes[node] << node.execute_bg("perf record -e cycles -F 999 -a -o #{@perf_data_file}-0")
+            @perf_record_pids[node]['system-wide'] = [0]
           end
         rescue ExecuteError
           puts "Unable to start perf on node #{node.name}"
@@ -370,14 +388,15 @@ class PerformanceTest < TestCase
       reporter_pids[node] = []
       name_to_pids.each do | name, pids |
         pids.each do | pid |
+          perf_pid_arg = "--pid #{pid}"
+          perf_pid_arg = '' if pid == 0
+          data_file = "#{@perf_data_file}-#{pid}"
+          stat_file = "#{@perf_stat_file}-#{name}-#{pid}"
 
-          if extra_pids.key?(name)
+          if (pid == 0) || extra_pids.key?(name)
             # Extra program pids must be picked from a system wide perf record and will not have stat files
             data_file = "#{@perf_data_file}-0"
             stat_file = nil
-          else
-            data_file = "#{@perf_data_file}-#{pid}"
-            stat_file = "#{@perf_stat_file}-#{name}-#{pid}"
           end
           file_name = File.join(dir_name, "perf_#{name}-#{pid}")
 
@@ -389,7 +408,7 @@ class PerformanceTest < TestCase
             end
             filter = '/^# event : name = cycles.*/d;/# event : name/s/id = { [^}]* }/id = { ... }/;s/[.]\{5,255\}/.../g'
             fixed_opts = '--stdio --header --show-nr-samples --percent-limit 0.01'
-            node.execute("perf report #{fixed_opts} --pid #{pid} --input #{data_file} 2>/dev/null | sed '#{filter}' > #{file_name}")
+            node.execute("perf report #{fixed_opts} #{perf_pid_arg} --input #{data_file} 2>/dev/null | sed '#{filter}' > #{file_name}")
             node.execute("cp -a #{stat_file} #{dir_name}") if stat_file
           rescue ExecuteError
             puts "Unable to generate report for #{name} on host #{node.name}"
@@ -489,7 +508,7 @@ class PerformanceTest < TestCase
   # Downloads the given file from s3 to the given vespa node.
   # If the file already exists in the test directory, use that directly instead.
   def download_file_from_s3(file_name, vespa_node, dir = "")
-    url = "https://data.vespa-cloud.com/tests/performance/#{dir}"
+    url = dir.empty? ? "https://data.vespa-cloud.com/tests/performance" : "https://data.vespa-cloud.com/tests/performance/#{dir}"
     if File.exist?(selfdir + file_name)
       # Place the file in the test directory to avoid downloading during manual testing.
       puts "Using local file #{file_name}"

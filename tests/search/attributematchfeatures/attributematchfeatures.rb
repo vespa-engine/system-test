@@ -7,7 +7,7 @@ require 'indexed_streaming_search_test'
 class AttributeMatchFeatures < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def create_query(query)

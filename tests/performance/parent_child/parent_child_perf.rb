@@ -29,7 +29,7 @@ class ParentChildPerfTest < PerformanceTest
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
     @first_run = true
     @num_ad_docs = 2000000
   end

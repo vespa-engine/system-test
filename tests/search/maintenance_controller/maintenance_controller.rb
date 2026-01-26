@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class MaintenanceControllerTest < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def assert_job_executed(job)

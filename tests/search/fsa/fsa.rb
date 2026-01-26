@@ -5,7 +5,7 @@ require 'search_test'
 class Fsa < SearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_fsa_binaries

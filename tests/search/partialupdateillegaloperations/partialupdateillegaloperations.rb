@@ -3,8 +3,13 @@ require 'indexed_streaming_search_test'
 
 class PartialUpdateIllegalOperations < IndexedStreamingSearchTest
 
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
+
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_divide_by_zero

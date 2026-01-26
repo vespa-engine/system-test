@@ -15,9 +15,9 @@ public class FilesizeHandler extends AbstractRequestHandler {
 
     public FilesizeHandler(FilesConfig filesConfig, FileAcquirer fileAcquirer) {
 	try {
-	    //System.err.println(this + " waiting for fileref: " + filesConfig.myFile());
+	    //System.out.println(this + " waiting for fileref: " + filesConfig.myFile());
 	    file = fileAcquirer.waitFor(filesConfig.myFile(), 5, TimeUnit.MINUTES);
-	    //System.err.println(this + " got file with fileref: " + filesConfig.myFile());
+	    //System.out.println(this + " got file with fileref: " + filesConfig.myFile());
         } catch (InterruptedException e) {
             throw new RuntimeException("InterruptedException: ", e);
         }

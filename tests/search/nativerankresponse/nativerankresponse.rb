@@ -8,7 +8,7 @@ class NativeRankResponse < IndexedStreamingSearchTest
 # Check that max response of 1 is reachable by nativeRank fieldmatch,
 # proximity and attributematch when table normalization is used
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_native_rank_response

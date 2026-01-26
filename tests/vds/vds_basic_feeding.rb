@@ -4,7 +4,7 @@ require 'vds_test'
 class VdsBasicFeeding < VdsTest
 
   def setup
-    set_owner("valerijf")
+    set_owner("hmusum")
   end
 
   def test_docid

@@ -7,7 +7,7 @@ class LightGBMEvaluationTest < IndexedStreamingSearchTest
 
   def setup
     @valgrid = false
-    set_owner("lesters")
+    set_owner("hmusum")
     set_description("Validate evaluation of LightGBM models - in model-evaluation and in ranking")
   end
 

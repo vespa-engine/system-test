@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class QueryFeaturesDocFreq < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   #---------- term with docfreq----------#

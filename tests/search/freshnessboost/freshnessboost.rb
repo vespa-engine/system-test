@@ -8,7 +8,7 @@ class FreshnessBoost < IndexedStreamingSearchTest
   end
 
   def test_freshnessboost
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test freshnessboost ranking")
     deploy_app(SearchApp.new.sd(selfdir+"musicdate.sd"))
     start

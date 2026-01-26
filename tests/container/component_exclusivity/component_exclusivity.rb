@@ -4,7 +4,7 @@ require 'search_container_test'
 class ComponentExclusive < SearchContainerTest
 
   def setup
-    set_owner("valerijf")
+    set_owner("hmusum")
     set_description("Verify that only one instance of the component is running at a given time if it acquires lock")
     @project_dir = dirs.tmpdir + "project"
     @def_file_path = "#{@project_dir}/src/main/resources/configdefinitions"

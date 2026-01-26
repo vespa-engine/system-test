@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class Bug5707026 < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test for bug 5707026, unmatched <hi> in dynamic summary (juniper) field")
   end
 

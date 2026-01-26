@@ -8,7 +8,7 @@ class SchemaChangesNeedRefeedReconfigTest < IndexedOnlySearchTest
   include SchemaChangesBase
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   # Application and tenant names changes based on the context this is run in.

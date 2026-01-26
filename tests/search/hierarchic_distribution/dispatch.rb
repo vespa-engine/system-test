@@ -3,8 +3,13 @@ require_relative 'feed_and_query_test_base'
 
 class HierarchicDistributionDispatchTest < FeedAndQueryTestBase
 
+  def get_default_log_check_levels
+    # expected to trigger warnings:
+    return [:error, :fatal]
+  end
+
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     super
   end
 

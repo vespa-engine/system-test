@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class RangeSearch < IndexedStreamingSearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test range search")
   end
 

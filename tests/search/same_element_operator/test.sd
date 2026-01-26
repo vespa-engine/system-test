@@ -4,6 +4,7 @@ schema test {
     field sa type array<string> {
       indexing: index | summary
       stemming: none
+      index: enable-bm25
     }
     field id type int {
       indexing: attribute | summary
@@ -14,6 +15,18 @@ schema test {
       expression {
         1000.0 - attribute(id)
       }
+    }
+    match-features {
+      bm25(sa)
+      elementwise(bm25(sa),x,double)
+    }
+    summary-features {
+      bm25(sa)
+      elementwise(bm25(sa),x,double)
+    }
+    rank-properties {
+      bm25(sa).averageFieldLength: 12.0
+      elementwise(bm25(sa),x,double).averageElementLength: 4.0
     }
   }
   document-summary meo {

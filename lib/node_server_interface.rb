@@ -229,26 +229,6 @@ module NodeServerInterface
     @node_server.maven_install_parent(...)
   end
 
-  def compile_java(...)
-    @node_server.compile_java(...)
-  end
-
-  def compile_cpp(...)
-    @node_server.compile_cpp(...)
-  end
-
-  def delete_java(...)
-    @node_server.delete_java(...)
-  end
-
-  def generate_build_script(...)
-    @node_server.generate_build_script(...)
-  end
-
-  def generate_delete_script(...)
-    @node_server.generate_delete_script(...)
-  end
-
   def runqueries(...)
     @node_server.runqueries(...)
   end
@@ -299,5 +279,9 @@ module NodeServerInterface
 
   def reset_sanitizers(cleanup)
     @node_server.reset_sanitizers(cleanup)
+  end
+
+  def kernel_procfs_perf_snapshot
+    @node_server.kernel_procfs_perf_snapshot
   end
 end

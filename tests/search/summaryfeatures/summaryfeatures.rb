@@ -17,6 +17,7 @@ class SummaryFeatures < IndexedStreamingSearchTest
   end
 
   def test_summaryfeatures_reload_config
+    set_expected_logged(/could not initialize docsum matching: invalid query/) # might happen until new config is in use
     deploy_app(SearchApp.new.sd(selfdir + "sd1/test.sd"))
     start
     feed_and_wait_for_docs("test", 6, :file => selfdir + "doc.json")
@@ -40,7 +41,7 @@ class SummaryFeatures < IndexedStreamingSearchTest
   end
 
   def test_omit_summary_features
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test that summary features can be omitted for a given document summary")
     deploy_app(SearchApp.new.sd(selfdir + "sd2/test.sd"))
     start

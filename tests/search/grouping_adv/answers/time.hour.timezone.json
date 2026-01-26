@@ -27,81 +27,81 @@
             "label": "time.hourofday(from)",
             "children": [
               {
-                "id": "group:long:12",
+                "id": "group:long:11",
                 "relevance": 12111.719438207627,
-                "value": "12",
+                "value": "11",
                 "fields": {
                   "count()": 1
                 }
               },
               {
-                "id": "group:long:9",
+                "id": "group:long:8",
                 "relevance": 11111.709477840308,
-                "value": "9",
+                "value": "8",
                 "fields": {
                   "count()": 2
                 }
               },
               {
-                "id": "group:long:5",
+                "id": "group:long:4",
                 "relevance": 10977.31338339293,
-                "value": "5",
+                "value": "4",
                 "fields": {
                   "count()": 6
                 }
               },
               {
-                "id": "group:long:23",
+                "id": "group:long:22",
                 "relevance": 9998.214537458838,
-                "value": "23",
+                "value": "22",
                 "fields": {
                   "count()": 2
                 }
               },
               {
-                "id": "group:long:19",
+                "id": "group:long:18",
                 "relevance": 9751.807920622134,
-                "value": "19",
+                "value": "18",
                 "fields": {
                   "count()": 1
                 }
               },
               {
-                "id": "group:long:22",
+                "id": "group:long:21",
                 "relevance": 9009.325691944365,
-                "value": "22",
+                "value": "21",
                 "fields": {
                   "count()": 1
                 }
               },
               {
-                "id": "group:long:2",
+                "id": "group:long:1",
                 "relevance": 8875.610133144828,
-                "value": "2",
+                "value": "1",
                 "fields": {
                   "count()": 12
                 }
               },
               {
-                "id": "group:long:1",
-                "relevance": 7751.494193136243,
-                "value": "1",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
-                "id": "group:long:15",
-                "relevance": 2113.5503594784377,
-                "value": "15",
-                "fields": {
-                  "count()": 1
-                }
-              },
-              {
                 "id": "group:long:0",
-                "relevance": 357.87755966891814,
+                "relevance": 7751.494193136243,
                 "value": "0",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:long:14",
+                "relevance": 2113.5503594784377,
+                "value": "14",
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:long:23",
+                "relevance": 357.87755966891814,
+                "value": "23",
                 "fields": {
                   "count()": 1
                 }

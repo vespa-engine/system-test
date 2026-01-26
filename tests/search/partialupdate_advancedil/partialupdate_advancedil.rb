@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class PartialupdateAdvancedIL < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd("#{selfdir}/advanced.sd"))
     start
   end

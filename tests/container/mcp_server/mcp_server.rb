@@ -17,6 +17,7 @@ class McpServerTest < SearchContainerTest
   end
 
   def test_all
+    set_expected_logged(/Client requested unsupported protocol version/)
     # Run all tests in sequence
     print_test_header("INITIALIZE REQUEST")
     initialize_request_test()

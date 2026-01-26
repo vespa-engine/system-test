@@ -122,7 +122,7 @@ class FieldSlicing < IndexedStreamingSearchTest
   end
 
   def test_slicing_in_both_phases
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test that field slicing is working both during first and second phase ranking")
     deploy_app(SearchApp.new.sd(selfdir + "slice.sd"))
     start

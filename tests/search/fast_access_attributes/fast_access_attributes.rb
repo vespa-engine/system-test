@@ -5,7 +5,7 @@ require 'indexed_only_search_test'
 class FastAccessAttributesTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def get_app(sd_file)
@@ -101,7 +101,7 @@ class FastAccessAttributesTest < IndexedOnlySearchTest
     set_description("Verify that a fast access attribute can be added and populated in the not-ready sub database")
     deploy_app(get_app("sd1/test.sd"))
     start
-    enable_debug
+    #enable_debug
     feed_and_wait_for_docs("test", 16, :file => selfdir + "docs.json")
     assert_attributes_exist(false)
 

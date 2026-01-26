@@ -5,7 +5,7 @@ require 'app_generator/container_app'
 class HeapSize < SearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
   end
 
   def make_app(with_jvm_options = nil)
@@ -51,6 +51,7 @@ class HeapSize < SearchTest
   end
 
   def test_jvm_absolute_min_heap_size_by_is_capped_at_heapsize()
+    set_expected_logged(/Misconfigured heap size/)
     deploy_app(make_app.
                          config(ConfigOverride.new('search.config.qr-start').
                                                add('jvm', ConfigValue.new('minHeapsize', '2600')).

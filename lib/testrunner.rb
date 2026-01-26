@@ -87,7 +87,9 @@ class TestRunner
 
     testfiles.each do |testfile|
       begin
-        @log.debug "Failure loading file #{testfile}" unless require "#{testfile}"
+        if File.foreach(testfile).grep(/def test/).any?
+            @log.debug "Failure loading file #{testfile}" unless require "#{testfile}"
+        end
       rescue Exception => e
         @log.debug "Failed to require testcase #{testfile} #{e.message}"
         @log.debug e.backtrace.join("\n")

@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class HighlightTermsGram < IndexedOnlySearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test that it is possible to supply extra highlight terms/phrases for juniper for gram indexes")
   end
 

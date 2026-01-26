@@ -35,7 +35,7 @@ class DocumentApiV1
   attr_reader :host, :port
 
   @@known_request_params = [:concurrency, :condition, :create, :cluster, :continuation, 'format.tensors', :format,
-                            :fieldSet, :route, :selection, :wantedDocumentCount, :bucketSpace, :stream].to_set
+                            :fieldSet, :route, :selection, :wantedDocumentCount, :bucketSpace, :stream, :timeout].to_set
 
   def initialize(host, port, test_case)
     @host = host

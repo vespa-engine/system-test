@@ -4,7 +4,7 @@ require 'search_test'
 class StoreOnly < SearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     deploy("#{selfdir}/app")
     start
   end

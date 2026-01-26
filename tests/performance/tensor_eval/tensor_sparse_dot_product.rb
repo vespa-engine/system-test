@@ -42,6 +42,7 @@ class TensorSparseDotProductTest < TensorEvalPerfTest
   end
 
   def test_sparse_tensor_dot_product
+    @perf_recording = 'some'
     set_description("Test performance of sparse tensor dot product vs feature dot product calculation")
     clients = 8
     deploy_and_feed(100000)

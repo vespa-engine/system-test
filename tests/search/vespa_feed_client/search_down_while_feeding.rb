@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class SearchDownWhileFeeding < IndexedStreamingSearchTest
 
   def setup
-    set_owner("valerijf")
+    set_owner("hmusum")
     set_description("Test that we get an error when search is down while feeding, but ok when search is up again")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))
     start

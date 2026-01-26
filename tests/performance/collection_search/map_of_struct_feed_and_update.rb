@@ -16,12 +16,14 @@ class MapOfStructFeedAndUpdatePerformanceTest < CollectionPerfTestBase
     set_owner('vekterli')
   end
 
-
   def test_map_of_struct_feeding_and_updates
     set_description('Test feeding, field and element-wise partial updates for map of struct')
-    [false, true].each do |fast_search|
-      run_map_of_struct_test_cases(fast_search: fast_search)
-    end
+    run_map_of_struct_test_cases(fast_search: false)
+  end
+
+  def test_map_of_struct_feeding_and_updates_fast_search
+    set_description('Test feeding, field and element-wise partial updates for map of struct with fast-search')
+    run_map_of_struct_test_cases(fast_search: true)
   end
 
   class GeneratorBase
@@ -95,7 +97,7 @@ class MapOfStructFeedAndUpdatePerformanceTest < CollectionPerfTestBase
 
   def run_map_of_struct_test_cases(fast_search:)
     fancy_puts "run_map_of_struct_tests(fast_search: #{fast_search})"
-    wipe_indexes_and_deploy(with_fast_search: fast_search)
+    deploy(with_fast_search: fast_search)
 
     MAP_OF_STRUCT_ELEMENT_TEST_CASES.each do |elements_per_doc|
       fv = FieldValueGenerator.new(max_string_fields: 2, max_int_fields: 3, max_matches_per_doc: 0)

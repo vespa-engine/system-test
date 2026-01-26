@@ -6,7 +6,7 @@ require 'indexed_streaming_search_test'
 class Recall < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test search using recall api")
     deploy_app(SearchApp.new.sd(selfdir + "recall.sd"))
     start

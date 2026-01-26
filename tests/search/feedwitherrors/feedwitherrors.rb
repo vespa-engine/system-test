@@ -3,8 +3,13 @@ require 'indexed_streaming_search_test'
 
 class FeedWithErrors < IndexedStreamingSearchTest
 
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
+
   def setup
-    set_owner("valerijf")
+    set_owner("bratseth")
     set_description("Feed docs with errors, check that docproc reports correctly")
     deploy_app(SearchApp.new.sd(selfdir + "errordoc.sd"))
     start

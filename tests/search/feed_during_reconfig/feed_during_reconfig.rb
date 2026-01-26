@@ -7,7 +7,7 @@ require 'indexed_streaming_search_test'
 class FeedDuringReconfig < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def timeout_seconds

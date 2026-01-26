@@ -5,10 +5,11 @@ class LuceneLinguistics < IndexedOnlySearchTest
 
   def setup
     set_owner("hmusum")
-    set_description("Tests that we can specify using the lucene linguistcs implementation")
+    set_description("Tests with the Lucene linguistcs implementation")
   end
 
   def test_simple_linguistics
+    set_expected_logged(/Lucene cannot optimize algorithms or calculate object sizes for JVMs that are not based on Hotspot or a compatible implementation/)
     deploy_app(SearchApp.new.
                  container(
                    Container.new('default').
@@ -18,17 +19,46 @@ class LuceneLinguistics < IndexedOnlySearchTest
                      documentapi(ContainerDocumentApi.new)).
                  sd(selfdir + 'lucene.sd'))
     start
-    feed_and_wait_for_docs("lucene", 1, :file => selfdir + "document.json")
+    feed_and_wait_for_docs("lucene", 5, :file => selfdir + "document.json")
 
     assert_hitcount("query=dog", 1)
-  end
+    assert_hitcount("query=god&model.type.profile=reverse", 1)
+    assert_hitcount("query=god&model.type.profile=reverse&language=es", 0)
+    # Reversion happens during parsing
+    assert_hitcount("yql=select %2a from sources %2a where {grammar:'linguistics',grammar.profile:'reverse'}userInput('god')", 1)
+    # Reversion happens in stemming
+    assert_hitcount("yql=select %2a from sources %2a where {grammar.profile:'reverse'}userInput('god')", 1)
+    # No reversion as language+profile override is more specific
+    assert_hitcount("yql=select %2a from sources %2a where {grammar.profile:'reverse'}userInput('god')&language=es", 0)
+
+    assert_hitcount("query=normal:C++", 4)
+    assert_hitcount("query=special:C++", 1)
+    # assert_hitcount("query=special:C++&language=es", 3) # Both language=es is normalized to C, and so is the query
+   end
 
   def lucene_linguistics_component
-      Component.new('lucene-linguistics').
-        klass('com.yahoo.language.lucene.LuceneLinguistics').
-        bundle('lucene-linguistics').
-        config(ConfigOverride.new('com.yahoo.language.lucene.lucene-analysis'))
+      Component.new('lucene-linguistics')
+        .klass('com.yahoo.language.lucene.LuceneLinguistics')
+        .bundle('lucene-linguistics')
+        .config(ConfigOverride.new('com.yahoo.language.lucene.lucene-analysis')
+               .add(MapConfig.new('analysis')
+                   .add('profile=specialTokens',
+                       ConfigValues.new
+                         .add('tokenizer', ConfigValues.new.add('name', 'pattern')
+                                                           .add(MapConfig.new('conf').add('pattern', '\s|\(|\)')))
+                         .add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name', 'lowercase'))))
+                   .add('profile=specialTokens;language=es',
+                       ConfigValues.new
+                         .add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name', 'englishMinimalStem'))))
+                   .add('profile=reverse',
+                       ConfigValues.new
+                         .add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name', 'reverseString'))))
+                   .add('profile=specialTokens;language=es',
+                       ConfigValues.new
+                         .add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name', 'englishMinimalStem'))))
+                   .add('profile=reverse;language=es',
+                       ConfigValues.new
+                         .add(ArrayConfig.new('tokenFilters').add(0, ConfigValue.new('name', 'englishMinimalStem'))))
+        ))
   end
-
-
 end

@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class Bug4917478 < IndexedStreamingSearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test bug 4917478, bolding in grouping issues")
   end
 

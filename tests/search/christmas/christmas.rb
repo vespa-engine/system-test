@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class Christmas < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Ensure that 'Christmas' and 'christmas' is indexed equally.")
     deploy_app(SearchApp.new.sd(selfdir+"jul.sd"))
     start

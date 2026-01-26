@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class MixedCase < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Check index names are case insensitive in queries by doing queries only differing in case")
     deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
     start

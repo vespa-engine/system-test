@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class ImmediateFeeding < IndexedStreamingSearchTest
 
   def setup
-    set_owner("valerijf")
+    set_owner("hmusum")
     set_description("Tests that feeding immediately after vespa starts works. This testcase " +
                     "does not use any methods that sleeps or waits for services to start.")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd"))

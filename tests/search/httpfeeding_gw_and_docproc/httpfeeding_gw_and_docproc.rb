@@ -6,7 +6,7 @@ class HttpfeedingGwAndDocproc < IndexedStreamingSearchTest
     @feed_file_json = selfdir + "../data/simple.docs.3.json"
     @feed_file_tas_json = selfdir + "../data/simple.test-and-set.json"
 
-    set_owner("valerijf")
+    set_owner("hmusum")
     set_description("Test feeding through HTTP client API with document processing in same container, ticket 6390014")
   end
 

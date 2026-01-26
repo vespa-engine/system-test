@@ -2,9 +2,7 @@
 
 require 'performance_test'
 require 'app_generator/container_app'
-require 'http_client'
 require 'performance/fbench'
-require 'pp'
 
 class ContainerTensorEval < PerformanceTest
   CLIENTS = 64
@@ -20,27 +18,25 @@ class ContainerTensorEval < PerformanceTest
   def create_app
     handler = Handler.new('com.yahoo.vespatest.TensorEvalHandler')
                      .binding('http://*/TensorEval').bundle('tensor-eval')
-    
-    container = Container.new.handler(handler).jvmoptions(
-      '-Xms8g -Xmx8g')
-    
+    container = Container.new.handler(handler).jvmoptions('-Xms8g -Xmx8g')
     app = ContainerApp.new.container(container)
-    output = deploy_app(app)    
+
+    output = deploy_app(app)
     start
-    wait_for_application(@vespa.container.values.first, output)
+    @container = @vespa.container.values.first
+    wait_for_application(@container, output)
   end
 
   def test_container_tensor_eval
     set_description('Test container tensor operations performance')
     create_app
     
-    container = @vespa.container.values.first
     query_file_name = 'tensor_eval_queries.txt'
-    container.copy(selfdir + query_file_name, dirs.tmpdir)
-    @queryfile = dirs.tmpdir + query_file_name
+    @queryfile = selfdir + query_file_name
     
     profiler_start
-    run_fbench(container, CLIENTS, RUNTIME, [parameter_filler('legend', 'container_tensor_eval')])
+    run_fbench(@container, CLIENTS, RUNTIME, [parameter_filler('legend', 'container_tensor_eval')])
     profiler_report('container_tensor_eval')
   end
+
 end

@@ -4,8 +4,9 @@ require_relative 'feed_and_query_test_base'
 class HierarchicDistributionTest < FeedAndQueryTestBase
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     super
+    set_expected_logged(/Cluster dispatcher\.mycluster: group \d has reduced coverage/)
   end
 
   def timeout_seconds

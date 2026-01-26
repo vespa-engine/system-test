@@ -1,19 +1,43 @@
 // Copyright Vespa.ai. All rights reserved.
 
 #include <cassert>
+#include <cstdlib>
+#include <format>
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <utility>
 #include <vector>
+
+#include "shared.h"
 
 using FloatVector = std::vector<float>;
 using IntVector = std::vector<int>;
 
-// These values indicate how many percent of the corpus should be filtered away.
-const IntVector filters = {1, 10, 50, 90, 95, 99};
+IntVector
+parse_filters(const std::string &str) {
+    IntVector filters;
+
+    std::stringstream ss(str);
+
+    if (ss.peek() == '{' || ss.peek() == '[') {
+        ss.ignore();
+    }
+
+    int i;
+    while (ss >> i) {
+        filters.push_back(i);
+        if (ss.peek() == ','
+	    || ss.peek() == '}'
+	    || ss.peek() == ']')
+            ss.ignore();
+    }
+
+    return filters;
+}
 
 IntVector
-gen_filter_values(size_t docid)
+gen_filter_values(size_t docid, const IntVector &filters)
 {
     IntVector result;
     for (auto filter_percent : filters) {
@@ -33,9 +57,10 @@ print_vector(std::ostream& os, const std::vector<T>& vector)
     bool first = true;
     for (auto val : vector) {
         if (!first) {
-            os << ",";
+            os << std::format(",{}", val);
+        } else {
+            os << std::format("{}", val);
         }
-        os << val;
         first = false;
     }
     os << "]";
@@ -76,14 +101,19 @@ print_assign_vector_field(std::ostream& os, const std::string& field_name, const
 using StringVector = std::vector<std::string>;
 
 void
-print_put(std::ostream& os, size_t docid, bool gen_filter, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor)
+print_put(std::ostream& os, size_t docid, const IntVector &filters, const Interval &latitude, const Interval &longitude, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor)
 {
     os << "{" << std::endl;
     os << "  \"put\": \"id:test:test::" << docid << "\"," << std::endl;
     os << "  \"fields\": {" << std::endl;
     os << "    \"id\": " << docid << "," << std::endl;
-    if (gen_filter) {
-        os << "    \"filter\": "; print_vector(os, gen_filter_values(docid)); os << "," << std::endl;
+    if (!filters.empty()) {
+        os << "    \"filter\": "; print_vector(os, gen_filter_values(docid, filters)); os << "," << std::endl;
+    }
+    if (latitude.non_empty() && longitude.non_empty()) {
+        os << "    \"latlng\": "
+           << "{ \"lat\": " << latitude.random() << ", \"lng\": " << longitude.random() << "}"
+           << "," << std::endl;
     }
     for (size_t i = 0; i < tensor_fields.size(); ++i) {
         bool last = (i + 1) == tensor_fields.size();
@@ -121,51 +151,59 @@ print_update(std::ostream& os, size_t docid, const StringVector& tensor_fields, 
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_docs <data-set> <feed-op> <begin-doc> <num-docs> <gen-filter> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
+ *   ./make_docs <vector-file> <num-dimensions> <feed-op> <begin-doc> <start-vector> <end-vector> <filter-values> <latitude-interval> <longitude-interval> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
  */ 
 int
 main(int argc, char **argv)
 {
-    std::string data_set = "sift";
+    srand(42);
+    std::string vector_file;
     std::string feed_op = "put";
     size_t begin_doc = 0;
-    size_t num_docs = 1000000;
-    int dim_size = 128;
-    bool gen_filter = false;
+    size_t start_vector = 0; // inclusive
+    size_t end_vector = 1000000; // exclusive
+    size_t dim_size = 128;
+    IntVector filters;
+    Interval latitude;
+    Interval longitude;
     bool mixed_tensor = false;
     std::vector<std::string> tensor_fields;
     if (argc > 1) {
-        data_set = std::string(argv[1]);
-        if (data_set != "sift" && data_set != "gist") {
-            std::cerr << "Unknown data set '" << data_set << "'" << std::endl;
-            return 1;
-        }
-        if (data_set == "gist") {
-            dim_size = 960;
-        }
+        vector_file = std::string(argv[1]);
     }
     if (argc > 2) {
-        feed_op = std::string(argv[2]);
+        dim_size = std::stoll(argv[2]);
     }
     if (argc > 3) {
-        begin_doc = std::stoll(argv[3]);
+        feed_op = std::string(argv[3]);
     }
     if (argc > 4) {
-        num_docs = std::stoll(argv[4]);
+        begin_doc = std::stoll(argv[4]);
     }
     if (argc > 5) {
-        gen_filter = (argv[5] == std::string("true"));
+        start_vector = std::stoll(argv[5]);
     }
     if (argc > 6) {
-        mixed_tensor = (argv[6] == std::string("true"));
+        end_vector = std::stoll(argv[6]);
     }
-    for (int i = 7; i < argc; ++i) {
+    if (argc > 7) {
+        filters = parse_filters(argv[7]);
+    }
+    if (argc > 8) {
+        latitude = parse_interval(argv[8]);
+    }
+    if (argc > 9) {
+        longitude = parse_interval(argv[9]);
+    }
+    if (argc > 10) {
+        mixed_tensor = (argv[10] == std::string("true"));
+    }
+    for (int i = 11; i < argc; ++i) {
         tensor_fields.push_back(std::string(argv[i]));
     }
-    std::string file_name = data_set + "/" + data_set + "_base.fvecs";
-    std::ifstream is(file_name, std::ifstream::binary);
+    std::ifstream is(vector_file, std::ifstream::binary);
     if (!is.good()) {
-        std::cerr << "Could not open '" << file_name << "'" << std::endl;
+        std::cerr << "Could not open '" << vector_file << "'" << std::endl;
         return 1;
     }
     int read_dim_size = 0;
@@ -173,19 +211,22 @@ main(int argc, char **argv)
     std::cout << "[" << std::endl;
     bool make_puts = (feed_op == "put");
     bool first = true;
-    for (size_t docid = begin_doc; docid < (begin_doc + num_docs); ++docid) {
+
+    is.ignore(start_vector * (4 + sizeof(float) * dim_size)); // skip vectors as specified by start_vector
+    for (size_t vector_num = start_vector; vector_num < end_vector; ++vector_num) {
         is.read(reinterpret_cast<char*>(&read_dim_size), 4);
         assert(read_dim_size == dim_size);
         is.read(reinterpret_cast<char*>(vector.data()), sizeof(float) * dim_size);
         assert(is.good());
+
         if (!first) {
             std::cout << "," << std::endl;
         }
         first = false;
         if (make_puts) {
-            print_put(std::cout, docid, gen_filter, tensor_fields, vector, mixed_tensor);
+            print_put(std::cout, begin_doc + vector_num - start_vector, filters, latitude, longitude, tensor_fields, vector, mixed_tensor);
         } else {
-            print_update(std::cout, docid, tensor_fields, vector, mixed_tensor);
+            print_update(std::cout, begin_doc + vector_num - start_vector, tensor_fields, vector, mixed_tensor);
         }
     }
     std::cout << std::endl << "]" << std::endl;

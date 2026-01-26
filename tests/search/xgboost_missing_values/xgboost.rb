@@ -7,7 +7,7 @@ class XGBoostMissingValues < IndexedStreamingSearchTest
 
   def setup
     @valgrid = false
-    set_owner("lesters")
+    set_owner("hmusum")
     set_description("Validate evaluation of XGBoost models with missing values - in model-evaluation and in ranking")
   end
 

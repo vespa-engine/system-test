@@ -14,6 +14,8 @@ class Many_Services < IndexedStreamingSearchTest
   end
 
   def test_many_services_realtime
+    set_expected_logged(/Peer location broker at .* may have problems, differences from consensus map/)
+
     deploy_app(SearchApp.new.slobrok("node1").slobrok("node1").
                  container(Container.new("foo").
                              documentapi(ContainerDocumentApi.new).

@@ -7,6 +7,12 @@ class GenerateField < SearchTest
     set_description("Test generation of document fields using custom gen.")
   end
 
+  def get_default_log_check_levels
+    # llama.cpp prints lots of messages on stderr, so ignore warnings:
+    return [:error, :fatal]
+  end
+
+
   def timeout_seconds
     # Need extra time to download LLM.
     900

@@ -14,7 +14,7 @@ class PartialUpdate < IndexedStreamingSearchTest
   end
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def setup_realtime(paged)
@@ -311,6 +311,7 @@ class PartialUpdate < IndexedStreamingSearchTest
 
 
   def test_feed_error
+    set_expected_logged(/Expected start of composite, got VALUE_NUMBER_INT/)
     deploy_app(SearchApp.new.sd(selfdir + "attrerror.sd"))
     start
 

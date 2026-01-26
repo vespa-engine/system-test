@@ -5,7 +5,7 @@ class OnnxInContainerTest < SearchContainerTest
 
   def setup
     @valgrind = false
-    set_owner("lesters")
+    set_owner("hmusum")
     set_description("Verify that a ONNX model can evaluated with ONNX RT in container.")
   end
 

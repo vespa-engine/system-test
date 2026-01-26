@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class BasicSearch < IndexedOnlySearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
     set_description("Test basic searching")
     @valgrind = false
     @valgrind_opt = nil

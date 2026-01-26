@@ -9,7 +9,7 @@ class DispatchTest < IndexedOnlySearchTest
   def setup
     set_owner('hmusum')
     set_description('Tests the query dispatcher')
-
+    set_expected_logged(/Cluster dispatcher\.mycluster: group \d has reduced coverage/)
     @num_docs = 50
   end
 

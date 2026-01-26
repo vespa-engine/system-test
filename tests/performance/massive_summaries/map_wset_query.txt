@@ -1,0 +1,1 @@
+/search/?yql=select+*+from+map_wset+where+true&hits=3200&timeout=30s&ranking.matchFeatures=true

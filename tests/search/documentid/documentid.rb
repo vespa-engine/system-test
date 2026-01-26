@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class DocumentId < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test that we get the documentid field in both default and self-defined summary class")
   end
 

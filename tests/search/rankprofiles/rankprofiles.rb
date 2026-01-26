@@ -63,34 +63,37 @@ class RankProfiles < IndexedStreamingSearchTest
 
     query1 = "query=field24:document+field24:data&search=type2"
     query2 = "query=field24:document+field24:data&search=type2&ranking=myvalue"
-    query3 = "query=document+data"
+    query3 = "query=field24:document+field24:data&search=type2&ranking=myvalue.myInner"
+    query4 = "query=document+data"
 
     # field15 is the only field that is a part of the default index of type1
-    query4 = "query=field15:document&search=test&restrict=type1&ranking=field12rank"
-    query5 = "query=default:document&search=test&restrict=type1&ranking=field12rank"
+    query5 = "query=field15:document&search=test&restrict=type1&ranking=field12rank"
+    query6 = "query=default:document&search=test&restrict=type1&ranking=field12rank"
 
     fields = ["relevancy","sddocname","documentid","field11","field12","field13","field14","field21","field22","field23","field24"]
 
     assert_result(query1, selfdir + "result1.json", nil, fields)
     assert_result(query2, selfdir + "result2.json", nil, fields)
-    assert_result(query3, selfdir + "result3.json", nil, fields)
-    assert_result(query4, selfdir + "result4.json", nil, fields)
+    assert_result(query4, selfdir + "result3.json", nil, fields)
+    assert_result(query5, selfdir + "result4.json", nil, fields)
 
     sf1 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 230, "query(myvalue)" => 0}
     sf2 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 235, "query(myvalue)" => 5}
+    sf3 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 237, "query(myvalue)" => 7}
 
-    sf3 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 230, "query(myvalue)" => 0}
-    sf4 = {"attribute(field13)" => 13}
+    sf4 = {"attribute(field23)" => 23, "fieldMatch(field24).matches" => 2, "firstPhase" => 230, "query(myvalue)" => 0}
+    sf5 = {"attribute(field13)" => 13}
 
-    sf5 = {"attribute(field12)" => 12}
+    sf6 = {"attribute(field12)" => 12}
 
     assert_expression(sf1, query1, 0)
     assert_expression(sf2, query2, 0)
     assert_expression(sf3, query3, 0)
-    assert_expression(sf4, query3, 1)
+    assert_expression(sf4, query4, 0)
+    assert_expression(sf5, query4, 1)
 
-    assert_expression(sf5, query4, 0)
-    assert_expression(sf5, query5, 0)
+    assert_expression(sf6, query5, 0)
+    assert_expression(sf6, query6, 0)
   end
 
   def run_reload_config_test_first

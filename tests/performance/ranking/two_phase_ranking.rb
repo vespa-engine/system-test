@@ -23,7 +23,7 @@ class TwoPhaseRankingTest < PerformanceTest
   
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
   end
   
   def create_doc(num_docs, path)

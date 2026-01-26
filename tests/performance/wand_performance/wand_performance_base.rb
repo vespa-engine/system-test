@@ -10,7 +10,7 @@ class WandPerformanceTestBase < PerformanceTest
 
   def setup
     super
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def initialize(*args)

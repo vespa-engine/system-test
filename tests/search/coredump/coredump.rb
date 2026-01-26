@@ -4,9 +4,14 @@ require 'environment'
 
 class CoreDump < IndexedOnlySearchTest
 
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
+
   def setup
     set_description("Test that coredump control and limiting works")
-    set_owner("balder")
+    set_owner("hmusum")
     @valgrind = false
     @coredump_sleep = 30
   end

@@ -12,7 +12,7 @@ class LookupPerformance < PerformanceTest
 
   def setup
     super
-    set_owner("balder")
+    set_owner("hmusum")
   end
 
   def get_app()

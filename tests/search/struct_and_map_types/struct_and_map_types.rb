@@ -7,7 +7,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
   include StructAndMapBase
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     @has_summary_features = false
   end
 
@@ -49,7 +49,7 @@ class StructAndMapTypesTest < IndexedStreamingSearchTest
 
   def run_test_search_in_map_and_array_of_struct_attribute
     feed(:file => selfdir + "docs_search.json")
-    vespa.adminserver.logctl("searchnode:proton.matching.query", "debug=on")
+    # vespa.adminserver.logctl("searchnode:proton.matching.query", "debug=on")
 
     #Tests for array<struct>
     assert_same_element_single("elem_array", "name contains 'not'", 0)

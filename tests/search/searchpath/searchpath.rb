@@ -4,7 +4,7 @@ require 'indexed_only_search_test'
 class SearchPath < IndexedOnlySearchTest
 
   def setup
-    set_owner("balder")
+    set_owner("hmusum")
   end
 
   def test_searchpath
@@ -25,6 +25,8 @@ class SearchPath < IndexedOnlySearchTest
   end
 
   def run_searchpath_test(res)
+    set_expected_logged(/Cluster dispatcher\.mycluster: group \d has reduced coverage/)
+
     puts "Fetch total documents from column 0"
     assert_hitcount("query=sddocname:music&model.searchPath=0/0", res[:n0g0])
     assert_hitcount("query=sddocname:music&searchpath=0/0", res[:n0g0])

@@ -16,6 +16,7 @@ class ConfigLibrary < IndexedStreamingSearchTest
   end
 
   def test_proxy_crashing
+    set_expected_logged(/sleep interrupted/)
     @query="you"
 
     feed_and_wait_for_docs("book", 2, :file =>selfdir+"feed.json")

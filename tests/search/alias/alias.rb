@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class Alias < IndexedStreamingSearchTest
 
   def setup
-    set_owner("yngve")
+    set_owner("hmusum")
     set_description("Test the alias names as configured, for selecting indexes")
     deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
     start

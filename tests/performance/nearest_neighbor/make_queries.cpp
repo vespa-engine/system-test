@@ -6,9 +6,13 @@
 #include <string>
 #include <vector>
 
+#include "shared.h"
+
 using FloatVector = std::vector<float>;
 std::string l_brace = "%7B";
 std::string r_brace = "%7D";
+std::string l_par = "(";
+std::string r_par = ")";
 std::string quot = "%22";
 std::string eq = "%3D";
 
@@ -25,6 +29,12 @@ print_vector(std::ostream& os, const FloatVector& vector)
         os << val;
     }
     os << "]";
+}
+
+void
+print_random_location(std::ostream& os, const Interval &latitude, const Interval &longitude)
+{
+    os << latitude.random() << "," << longitude.random();
 }
 
 std::ostream&
@@ -60,16 +70,43 @@ print_nns(std::ostream& os, bool approximate, int target_hits, int explore_hits,
 }
 
 void
-print_query(std::ostream& os, bool approximate, int target_hits, int explore_hits, int filter_percent, const std::string& doc_tensor, const FloatVector& vector)
+print_query(std::ostream& os, bool approximate, int target_hits, int explore_hits, int filter_percent, float radius, const Interval &latitude, const Interval &longitude, const std::string& doc_tensor, const FloatVector& vector)
 {
     os << "/search/?yql=select%20*%20from%20sources%20*%20where%20";
     print_nns(os, approximate, target_hits, explore_hits, doc_tensor);
     if (filter_percent > 0) {
         os << "%20and%20filter" << eq << filter_percent;
     }
+    if (radius > 0.0f && latitude.non_empty() && longitude.non_empty()) {
+        os << "%20and%20geoLocation" << l_par << "latlng," << latitude.random() << "," << longitude.random() << "," << quot << radius << "+km" << quot << r_par;
+    }
     os << ";&ranking.features.query(q_vec)=";
     print_vector(os, vector);
     os << std::endl;
+}
+
+int
+print_only_locations(int argc, char **argv) {
+    Interval latitude;
+    Interval longitude;
+    size_t num_queries = 10000;
+
+    if (argc > 2) {
+        latitude = parse_interval(argv[2]);
+    }
+    if (argc > 3) {
+        longitude = parse_interval(argv[3]);
+    }
+    if (argc > 4) {
+        num_queries = std::stoll(argv[4]);
+    }
+
+    for (size_t docid = 0; docid < num_queries; ++docid) {
+        print_random_location(std::cout, latitude, longitude);
+        std::cout << std::endl;
+    }
+
+    return 0;
 }
 
 /**
@@ -85,54 +122,65 @@ print_query(std::ostream& os, bool approximate, int target_hits, int explore_hit
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_queries <data-set> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-percent>
+ *   ./make_queries <vector-file> <num-dimensions> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-percent> <radius> <latitude-interval> <longitude-interval>
  */ 
 int
 main(int argc, char **argv)
 {
-    std::string data_set = "sift";
-    int dim_size = 128;
+    srand(42);
+    std::string vector_file;
+    size_t dim_size = 128;
     size_t num_queries = 10000;
     std::string doc_tensor = "";
     bool approximate = true;
     int target_hits = 100;
     int explore_hits = 0;
     int filter_percent = 0;
+    float radius = 0;
+    Interval latitude;
+    Interval longitude;
     bool only_vectors = true;
     if (argc > 1) {
-        data_set = std::string(argv[1]);
-        if (data_set != "sift" && data_set != "gist") {
-            std::cerr << "Unknown data set '" << data_set << "'" << std::endl;
-            return 1;
-        }
-        if (data_set == "gist") {
-            dim_size = 960;
-            num_queries = 1000;
+        vector_file = std::string(argv[1]);
+
+        if (vector_file == "--only-locations") {
+            return print_only_locations(argc, argv);
         }
     }
     if (argc > 2) {
-        num_queries = std::stoll(argv[2]);
+        dim_size = std::stoll(argv[2]);
     }
     if (argc > 3) {
-        doc_tensor = std::string(argv[3]);
-        only_vectors = false;
+        num_queries = std::stoll(argv[3]);
     }
     if (argc > 4) {
-        approximate = (std::string(argv[4]) == "true");
+        doc_tensor = std::string(argv[4]);
+        only_vectors = false;
     }
     if (argc > 5) {
-        target_hits = std::stoi(argv[5]);
+        approximate = (std::string(argv[5]) == "true");
     }
     if (argc > 6) {
-        explore_hits = std::stoi(argv[6]);
+        target_hits = std::stoi(argv[6]);
     }
     if (argc > 7) {
-        filter_percent = std::stoi(argv[7]);
+        explore_hits = std::stoi(argv[7]);
     }
-    std::string file_name = data_set + "/" + data_set + "_query.fvecs";
-    std::ifstream is(file_name, std::ifstream::binary);
+    if (argc > 8) {
+        filter_percent = std::stoi(argv[8]);
+    }
+    if (argc > 9) {
+        radius = std::stof(argv[9]);
+    }
+    if (argc > 10) {
+        latitude = parse_interval(argv[10]);
+    }
+    if (argc > 11) {
+        longitude = parse_interval(argv[11]);
+    }
+    std::ifstream is(vector_file, std::ifstream::binary);
     if (!is.good()) {
-        std::cerr << "Could not open '" << file_name << "'" << std::endl;
+        std::cerr << "Could not open '" << vector_file << "'" << std::endl;
         return 1;
     }
     int read_dim_size = 0;
@@ -146,7 +194,7 @@ main(int argc, char **argv)
             print_vector(std::cout, vector);
             std::cout << std::endl;
         } else {
-            print_query(std::cout, approximate, target_hits, explore_hits, filter_percent, doc_tensor, vector);
+            print_query(std::cout, approximate, target_hits, explore_hits, filter_percent, radius, latitude, longitude, doc_tensor, vector);
         }
     }
     is.close();

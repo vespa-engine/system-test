@@ -4,6 +4,11 @@ require 'indexed_only_search_test'
 
 class AddContainer < IndexedOnlySearchTest
 
+  def get_default_log_check_levels
+    # warnings are expected for this test:
+    return [:error, :fatal]
+  end
+
   def initialize(*args)
     super(*args)
     @num_hosts = 2
@@ -36,7 +41,8 @@ class AddContainer < IndexedOnlySearchTest
                         node({ :hostalias => "node2" })))
     begin
       start
-    rescue RuntimeError
+      raise "Expected starting Vespa to fail"
+    rescue StandardError
       puts "Failed starting Vespa"
     end
     # Go back to the previous app

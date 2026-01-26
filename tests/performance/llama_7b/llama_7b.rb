@@ -11,7 +11,7 @@ class Llama7BPerformanceTest < PerformanceTest
 
   def setup
     super
-    set_owner("lesters")
+    set_owner("hmusum")
   end
 
 

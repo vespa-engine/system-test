@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class NearestNeighborTest < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
   end
 
   def test_nearest_neighbor_operator
@@ -211,7 +211,7 @@ class NearestNeighborTest < IndexedStreamingSearchTest
     else
       assert_equal(10, stats['nodes'])
     end
-    assert_equal(0, stats['unreachable_nodes'])
+    assert_equal(0, stats['reachability_analysis']['nodes_not_found_count'])
   end
 
   def run_hnsw_and_query_tests(query_props)

@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class LocalProvider < IndexedStreamingSearchTest
 
   def setup
-    set_owner("baldersheim")
+    set_owner("hmusum")
     deploy_app(SearchApp.new.sd(SEARCH_DATA+"music.sd").
                       search_chain(
                         Provider.new("local-provider", "local").cluster("search")))

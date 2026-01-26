@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class HighlightTerms < IndexedStreamingSearchTest
 
   def setup
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test that it is possible to supply extra highlight terms/phrases for juniper")
   end
 

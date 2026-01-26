@@ -4,8 +4,14 @@ require 'http_client'
 
 class FeedBlockTest < FeedBlockBase
 
+  def initialize(*args)
+    super(*args)
+    @ignorable_messages.append(/Write operations are now blocked:/)
+    @ignorable_messages.append(/attempted updated with a value that is NaN or Infinity;/)
+  end
+
   def test_proton_feed_block_http_client
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test resource based feed block (in proton) using high performance http client")
     run_feed_block_http_client_test({ :memory => /memoryLimitReached/,
                                       :disk => /diskLimitReached/,
@@ -13,7 +19,7 @@ class FeedBlockTest < FeedBlockBase
   end
 
   def test_distributor_feed_block_http_client
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test resource based feed block (in distributor) using high performance http client")
     @block_feed_in_distributor = true
     run_feed_block_http_client_test(expected_distributor_error_messages)
@@ -80,7 +86,7 @@ class FeedBlockTest < FeedBlockBase
 
 
   def test_proton_feed_block_document_v1_api
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test resource based feed block (in proton) using document v1 api")
     run_feed_block_document_v1_api_test({ :memory => /memoryLimitReached/,
                                           :disk => /diskLimitReached/,
@@ -88,7 +94,7 @@ class FeedBlockTest < FeedBlockBase
   end
 
   def test_distributor_feed_block_document_v1_api
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test resource based feed block (in distributor) using document v1 api")
     @block_feed_in_distributor = true
     run_feed_block_document_v1_api_test(expected_distributor_error_messages)
@@ -162,13 +168,13 @@ class FeedBlockTest < FeedBlockBase
 
 
   def test_proton_feed_block_document_v1_api_two_nodes
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test resource based feed block (in proton) using document v1 api, attribute resource limit, and node addition for recovery")
     run_feed_block_document_v1_api_two_nodes_test({ :address_space => /addressSpaceLimitReached/ })
   end
 
   def test_distributor_feed_block_document_v1_api_two_nodes
-    set_owner("geirst")
+    set_owner("hmusum")
     set_description("Test resource based feed block (in distributor) using document v1 api, attribute resource limit, and node addition for recovery")
     @block_feed_in_distributor = true
     run_feed_block_document_v1_api_two_nodes_test({ :address_space => /attribute-address-space:test\.ready\.a1\.enum-store on node/ })
