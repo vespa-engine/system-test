@@ -115,11 +115,6 @@ class Embedding < IndexedStreamingSearchTest
       param('dimensions', '1024')
   end
 
-  def local_secrets_component
-    Component.new('secrets').
-      klass('ai.vespa.test.LocalSecrets')
-  end
-
   def exception_embedder_component
     Component.new('exception-embedder').
       klass('ai.vespa.test.ExceptionThrowingEmbedder')
@@ -303,12 +298,10 @@ class Embedding < IndexedStreamingSearchTest
       assert(false, "VESPA_SECRET_VOYAGE_API_KEY environment variable must be set")
     end
 
-    add_bundle(selfdir + 'app_voyage_embedder/components/LocalSecrets.java')
     deploy_app(
       SearchApp.new.
         container(
           default_container_setup.
-            component(local_secrets_component).
             component(voyage_lite_embedder_component).
             component(voyage_large_embedder_component).
             jvmoptions('-Xms2g -Xmx2g')).
@@ -327,12 +320,10 @@ class Embedding < IndexedStreamingSearchTest
       assert(false, "VESPA_SECRET_VOYAGE_API_KEY environment variable must be set")
     end
 
-    add_bundle(selfdir + 'app_voyage_embedder_contextualized/components/LocalSecrets.java')
     deploy_app(
       SearchApp.new.
         container(
           default_container_setup.
-            component(local_secrets_component).
             component(voyage_context_embedder_component).
             jvmoptions('-Xms2g -Xmx2g')).
         sd(selfdir + 'app_voyage_embedder_contextualized/schemas/doc.sd').
