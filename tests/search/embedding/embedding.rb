@@ -107,9 +107,12 @@ class Embedding < IndexedStreamingSearchTest
       param('dimensions', '1024')
   end
 
-  def local_secrets_component
-    Component.new('secrets').
-      klass('ai.vespa.test.LocalSecrets')
+  def voyage_context_embedder_component
+    Component.new('voyage-context-3').
+      type('voyage-ai-embedder').
+      param('model', 'voyage-context-3').
+      param('api-key-secret-ref', 'voyage_api_key').
+      param('dimensions', '1024')
   end
 
   def exception_embedder_component
@@ -295,12 +298,10 @@ class Embedding < IndexedStreamingSearchTest
       assert(false, "VESPA_SECRET_VOYAGE_API_KEY environment variable must be set")
     end
 
-    add_bundle(selfdir + 'app_voyage_embedder/components/LocalSecrets.java')
     deploy_app(
       SearchApp.new.
         container(
           default_container_setup.
-            component(local_secrets_component).
             component(voyage_lite_embedder_component).
             component(voyage_large_embedder_component).
             jvmoptions('-Xms2g -Xmx2g')).
@@ -309,6 +310,27 @@ class Embedding < IndexedStreamingSearchTest
     start_vespa
     feed_and_wait_for_docs("doc", 10, :file => selfdir + "10-docs.json")
     verify_voyage_embedding
+  end
+
+  def test_voyage_contextualized_embeddings
+    set_description("Test Voyage AI contextualized chunk embeddings")
+
+    # Fail immediately if API key is not available
+    if ENV['VESPA_SECRET_VOYAGE_API_KEY'].nil? || ENV['VESPA_SECRET_VOYAGE_API_KEY'].empty?
+      assert(false, "VESPA_SECRET_VOYAGE_API_KEY environment variable must be set")
+    end
+
+    deploy_app(
+      SearchApp.new.
+        container(
+          default_container_setup.
+            component(voyage_context_embedder_component).
+            jvmoptions('-Xms2g -Xmx2g')).
+        sd(selfdir + 'app_voyage_embedder_contextualized/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start_vespa
+    feed_and_wait_for_docs("doc", 10, :file => selfdir + "10-docs-chunked.json")
+    verify_voyage_contextualized_embeddings
   end
 
   def test_embedder_exceptions
@@ -668,6 +690,46 @@ class Embedding < IndexedStreamingSearchTest
 
         puts "✓ Correct document returned for #{config[:description]} embedding"
       end
+    end
+  end
+
+  def verify_voyage_contextualized_embeddings
+    # Test semantic search with 6 queries and verify the correct document is returned
+    test_cases = [
+      { query: "greeting message", expected_doc_id: "id:x:doc::1" },
+      { query: "vessel for water transportation", expected_doc_id: "id:x:doc::2" },
+      { query: "machine learning dimensionality reduction", expected_doc_id: "id:x:doc::5" },
+      { query: "activation function in neural networks", expected_doc_id: "id:x:doc::6" },
+      { query: "retro gaming console from the 80s", expected_doc_id: "id:x:doc::8" },
+      { query: "American founding document charter of government", expected_doc_id: "id:x:doc::9" }
+    ]
+
+    puts "\n=== Testing contextualized chunk embeddings (chunk_embeddings) ==="
+
+    test_cases.each do |test_case|
+      query_text = test_case[:query]
+      expected_doc_id = test_case[:expected_doc_id]
+
+      puts "\nQuery: '#{query_text}'"
+      puts "Expected document: #{expected_doc_id}"
+
+      # Perform nearest neighbor search using contextualized embeddings
+      yql = "select%20*%20from%20sources%20*%20where%20{targetHits:10}nearestNeighbor(chunk_embeddings,embedding_context)"
+      result = search("?yql=#{yql}&input.query(embedding_context)=embed(voyage-context-3,@qtext)&qtext=#{CGI.escape(query_text)}&ranking=context_float&format=json")
+
+      # Verify we got results
+      assert(result.hitcount > 0, "Query '#{query_text}' should return results for contextualized embeddings")
+
+      # Get the top hit document ID
+      returned_doc_id = result.hit[0].field['documentid']
+
+      puts "Returned document: #{returned_doc_id}"
+
+      # Verify the returned document matches expected
+      assert_equal(expected_doc_id, returned_doc_id,
+        "Query '#{query_text}' expected #{expected_doc_id} but got #{returned_doc_id} for contextualized embeddings")
+
+      puts "✓ Correct document returned for contextualized embeddings"
     end
   end
 
