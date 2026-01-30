@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <services version="1.0" xmlns:deploy="vespa" xmlns:preprocess="properties">
     <container id="default" version="1.0">
-        <handler id="ai.vespa.mcp.McpJdiscHandler" bundle="mcp-server">
+        <component id="com.yahoo.search.mcp.McpSearchSpecProvider" bundle="container-search"/>
+        <handler id="ai.vespa.mcp.McpRequestHandler" bundle="container-disc">
             <binding>http://*/mcp/*</binding>
         </handler>
         <document-api/>
