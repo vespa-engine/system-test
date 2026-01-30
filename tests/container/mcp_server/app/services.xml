@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <services version="1.0" xmlns:deploy="vespa" xmlns:preprocess="properties">
     <container id="default" version="1.0">
-        <component id="com.yahoo.search.mcp.McpSearchSpecProvider" bundle="container-search"/>
+        <component id="com.yahoo.search.mcp.McpSearchSpecProvider" bundle="container-search-and-docproc"/>
         <handler id="ai.vespa.mcp.McpRequestHandler" bundle="container-disc">
             <binding>http://*/mcp/*</binding>
         </handler>
