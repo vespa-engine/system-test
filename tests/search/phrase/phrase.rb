@@ -26,7 +26,7 @@ class NestedPhrases < IndexedStreamingSearchTest
 
   def assert_phrase(args)
     puts "phrase(#{args})"
-    assert_hitcount("yql=select * from sources * where artist contains phrase(#{args})", 1)
+    assert_hitcount({'yql' => "select * from sources * where artist contains phrase(#{args})"}, 1)
   end
 
 
