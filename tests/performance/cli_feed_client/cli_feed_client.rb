@@ -7,19 +7,28 @@ require 'json'
 
 class CliFeedClientTest < PerformanceTest
 
-  DOCUMENTS = 2000000
+  DOCUMENTS = 2_000_000
   TINY = 10
-  LARGE = 10000
+  LARGE = 10_000
 
   DUMMY_ROUTE = 'null/default'
+
+  N_TENSOR_QUERIES = 10
 
   def timeout_seconds
     1800
   end
 
   def setup
-    set_owner('hmusum')
+    set_owner('hmusum, bragehk')
     set_description('Benchmarking of the Vespa CLI feed client and vespa-feed-client (Java implementation)')
+    @vespa_destination_pid = nil
+  end
+
+  def test_tensor_query_throughput
+    container_node = deploy_tensor_app
+    feed_tensor_documents(container_node, 3200)
+    run_tensor_query_benchmark(container_node, N_TENSOR_QUERIES)
   end
 
   def test_throughput
@@ -147,6 +156,107 @@ class CliFeedClientTest < PerformanceTest
     output = deploy_app(SearchApp.new.
       sd(selfdir + 'text.sd').
       container(container_cluster))
+    start
+    gw = @vespa.container.values.first
+    wait_for_application(gw, output)
+    gw
+  end
+
+  private
+  def feed_tensor_documents(container_node, num_docs)
+    tensor_docs_s3 = "mips-data/paragraph_docs.400k.json"
+    # Use a permanent local cache directory for the data file
+    local_data_dir = "#{selfdir}/data"
+    vespa.adminserver.execute("mkdir -p #{local_data_dir}")
+    full_file = "#{local_data_dir}/paragraph_docs.400k.json"
+
+    # Download from S3 only if the file doesn't exist locally
+    if vespa.adminserver.execute("test -f #{full_file}; echo $?").to_i != 0
+      downloaded_file = download_file_from_s3(tensor_docs_s3, vespa.adminserver, "nearest-neighbor")
+      vespa.adminserver.execute("cp #{downloaded_file} #{full_file}")
+    end
+
+    subset_file = "#{dirs.tmpdir}/paragraph_docs.#{num_docs}.json"
+
+    lines_to_extract = num_docs + 1
+    vespa.adminserver.execute("(head -#{lines_to_extract} #{full_file} | head -c -2; echo ''; echo ']') > #{subset_file}", :exceptiononfailure => true)
+
+    endpoint = "https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/"
+    feed_cmd = "env " +
+               "VESPA_CLI_DATA_PLANE_TRUST_ALL=true " +
+               "VESPA_CLI_DATA_PLANE_CA_CERT_FILE=#{tls_env.ca_certificates_file} " +
+               "VESPA_CLI_DATA_PLANE_CERT_FILE=#{tls_env.certificate_file} " +
+               "VESPA_CLI_DATA_PLANE_KEY_FILE=#{tls_env.private_key_file} " +
+               "vespa feed " +
+               "--target=#{endpoint} " +
+               "#{subset_file}"
+    vespa.adminserver.execute(feed_cmd)
+  end
+
+  private
+  def run_tensor_query_benchmark(container_node, num_queries)
+    endpoint = "https://#{container_node.hostname}:#{Environment.instance.vespa_web_service_port}/"
+    label = "vespa-cli-tensor-query"
+    cpu_monitor = Perf::System.new(container_node)
+    cpu_monitor.start
+    profiler_start
+
+    start_time = Time.now
+    num_queries.times do
+      run_single_tensor_query(endpoint)
+    end
+    end_time = Time.now
+    duration_seconds = end_time - start_time
+
+    profiler_report(label)
+    cpu_monitor.end
+
+    qps = num_queries / duration_seconds
+    write_report(
+      [
+        Proc.new do |result|
+          result.add_metric('tensor.query.qps', qps.to_s)
+          result.add_metric('tensor.query.count', num_queries.to_s)
+          result.add_metric('tensor.query.duration_seconds', duration_seconds.to_s)
+        end,
+        parameter_filler('label', label),
+        cpu_monitor.fill
+      ]
+    )
+    puts("Tensor query benchmark: #{num_queries} queries in #{duration_seconds}s (#{qps} QPS")
+  end
+
+  private
+  def run_single_tensor_query(endpoint)
+    out_file = "#{dirs.tmpdir}/tensor_query.out"
+    err_file = "#{dirs.tmpdir}/tensor_query.err"
+    query_cmd = "env " +
+                "VESPA_CLI_DATA_PLANE_TRUST_ALL=true " +
+                "VESPA_CLI_DATA_PLANE_CA_CERT_FILE=#{tls_env.ca_certificates_file} " +
+                "VESPA_CLI_DATA_PLANE_CERT_FILE=#{tls_env.certificate_file} " +
+                "VESPA_CLI_DATA_PLANE_KEY_FILE=#{tls_env.private_key_file} " +
+                "/home/bragehk/git/vespa/client/go/bin/vespa query " +
+                "--target=#{endpoint} " +
+                "--verbose " +
+                "'yql=select * from paragraph where id >= 0' " +
+                "'hits=3200' " +
+                "> #{out_file} 2> #{err_file}"
+
+    vespa.adminserver.execute(query_cmd)
+  end
+
+  private
+  def deploy_tensor_app
+    container_cluster = Container.new("dpcluster1").
+      jvmoptions('-Xms16g -Xmx16g -XX:NewRatio=1').
+      search(Searching.new).
+      documentapi(ContainerDocumentApi.new).
+      component(AccessLog.new("disabled"))
+    output = deploy_app(SearchApp.new.
+      sd(selfdir + 'paragraph.sd').
+      search_dir(selfdir + 'app').
+      container(container_cluster).
+      threads_per_search(1))
     start
     gw = @vespa.container.values.first
     wait_for_application(gw, output)
