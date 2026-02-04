@@ -8,3 +8,4 @@ Gemfile.lock
 _work/
 *.iml
 target/
+tests/performance/cli_feed_client/data/
