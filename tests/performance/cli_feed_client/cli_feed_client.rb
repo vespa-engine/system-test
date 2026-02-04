@@ -235,7 +235,7 @@ class CliFeedClientTest < PerformanceTest
                 "VESPA_CLI_DATA_PLANE_CA_CERT_FILE=#{tls_env.ca_certificates_file} " +
                 "VESPA_CLI_DATA_PLANE_CERT_FILE=#{tls_env.certificate_file} " +
                 "VESPA_CLI_DATA_PLANE_KEY_FILE=#{tls_env.private_key_file} " +
-                "/home/bragehk/git/vespa/client/go/bin/vespa query " +
+                "vespa query " +
                 "--target=#{endpoint} " +
                 "--verbose " +
                 "'yql=select * from paragraph where id >= 0' " +
