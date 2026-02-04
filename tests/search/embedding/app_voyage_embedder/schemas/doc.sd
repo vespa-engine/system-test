@@ -77,4 +77,19 @@ schema doc {
     }
   }
 
+  rank-profile float_angular_hf {
+    inputs {
+      query(embedding_float_hf) tensor<float>(x[1024])
+    }
+
+    first-phase {
+      expression: closeness(embedding_float)
+    }
+
+    summary-features {
+      query(embedding_float_hf)
+      attribute(embedding_float)
+    }
+  }
+
 }

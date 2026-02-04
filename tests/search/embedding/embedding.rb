@@ -91,6 +91,16 @@ class Embedding < IndexedStreamingSearchTest
         param('term-score-threshold', 1.15)
   end
 
+  def voyage_nano_hf_embedder_component
+    Component.new('voyage-4-nano-int8').
+      type('hugging-face-embedder').
+      param('transformer-model', '', {'url' => 'https://data.vespa-cloud.com/onnx_models/voyage-4-nano-int8/model.onnx'}).
+      param('tokenizer-model', '', {'url' => 'https://data.vespa-cloud.com/onnx_models/voyage-4-nano-int8/tokenizer.json'}).
+      param('pooling-strategy', 'mean').
+      param('normalize', true).
+      param('prepend', [ComponentParam::new('query', 'Represent the query for retrieving supporting documents: ', {})])
+  end
+
   def voyage_lite_embedder_component
     Component.new('voyage-lite').
       type('voyage-ai-embedder').
@@ -304,6 +314,7 @@ class Embedding < IndexedStreamingSearchTest
           default_container_setup.
             component(voyage_lite_embedder_component).
             component(voyage_large_embedder_component).
+            component(voyage_nano_hf_embedder_component).
             jvmoptions('-Xms2g -Xmx2g')).
         sd(selfdir + 'app_voyage_embedder/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
@@ -654,11 +665,16 @@ class Embedding < IndexedStreamingSearchTest
       { query: "retro gaming console from the 80s", expected_doc_id: "id:x:doc::8" }
     ]
 
-    # Test all three embedding types: float, binary int8, and regular int8
+    # Test all embedding types: float, binary int8, regular int8, and HF query + voyage-large doc
     embedding_configs = [
-      { field: "embedding_float", query_tensor: "embedding_float", rank_profile: "float_angular", description: "float" },
-      { field: "embedding_binary_int8", query_tensor: "embedding_binary_int8", rank_profile: "binary_int8", description: "binary int8" },
-      { field: "embedding_int8", query_tensor: "embedding_int8", rank_profile: "int8_angular", description: "regular int8" }
+      { field: "embedding_float", query_tensor: "embedding_float", rank_profile: "float_angular",
+        description: "float", query_embedder: "voyage-lite" },
+      { field: "embedding_binary_int8", query_tensor: "embedding_binary_int8", rank_profile: "binary_int8",
+        description: "binary int8", query_embedder: "voyage-lite" },
+      { field: "embedding_int8", query_tensor: "embedding_int8", rank_profile: "int8_angular",
+        description: "regular int8", query_embedder: "voyage-lite" },
+      { field: "embedding_float", query_tensor: "embedding_float_hf", rank_profile: "float_angular_hf",
+        description: "HF query + voyage-large doc", query_embedder: "voyage-4-nano-int8" }
     ]
 
     embedding_configs.each do |config|
@@ -672,9 +688,9 @@ class Embedding < IndexedStreamingSearchTest
         puts "Expected document: #{expected_doc_id}"
 
         # Perform nearest neighbor search using semantic embeddings
-        # Query uses voyage-lite (fast), documents use voyage-large (high quality)
+        # Documents use voyage-large (high quality), queries use embedder from config
         yql = "select%20*%20from%20sources%20*%20where%20{targetHits:10}nearestNeighbor(#{config[:field]},#{config[:query_tensor]})"
-        result = search("?yql=#{yql}&input.query(#{config[:query_tensor]})=embed(voyage-lite,@qtext)&qtext=#{CGI.escape(query_text)}&ranking=#{config[:rank_profile]}&format=json")
+        result = search("?yql=#{yql}&input.query(#{config[:query_tensor]})=embed(#{config[:query_embedder]},@qtext)&qtext=#{CGI.escape(query_text)}&ranking=#{config[:rank_profile]}&format=json")
 
         # Verify we got results
         assert(result.hitcount > 0, "Query '#{query_text}' should return results for #{config[:description]} embedding")
