@@ -9,7 +9,7 @@ class CliFeedClientTest < PerformanceTest
 
   DOCUMENTS = 2_000_000
   TINY = 10
-  LARGE = 10_000
+  LARGE = 10000
 
   DUMMY_ROUTE = 'null/default'
 
@@ -165,16 +165,8 @@ class CliFeedClientTest < PerformanceTest
   private
   def feed_tensor_documents(container_node, num_docs)
     tensor_docs_s3 = "mips-data/paragraph_docs.400k.json"
-    # Use a permanent local cache directory for the data file
-    local_data_dir = "#{selfdir}/data"
-    vespa.adminserver.execute("mkdir -p #{local_data_dir}")
-    full_file = "#{local_data_dir}/paragraph_docs.400k.json"
-
     # Download from S3 only if the file doesn't exist locally
-    if vespa.adminserver.execute("test -f #{full_file}; echo $?").to_i != 0
-      downloaded_file = download_file_from_s3(tensor_docs_s3, vespa.adminserver, "nearest-neighbor")
-      vespa.adminserver.execute("cp #{downloaded_file} #{full_file}")
-    end
+    full_file = download_file_from_s3(tensor_docs_s3, vespa.adminserver, "nearest-neighbor")
 
     subset_file = "#{dirs.tmpdir}/paragraph_docs.#{num_docs}.json"
 
@@ -228,8 +220,8 @@ class CliFeedClientTest < PerformanceTest
 
   private
   def run_single_tensor_query(endpoint)
-    out_file = "#{dirs.tmpdir}/tensor_query.out"
-    err_file = "#{dirs.tmpdir}/tensor_query.err"
+    out_file = dirs.tmpdir + "tensor_query.out"
+    err_file = dirs.tmpdir + "tensor_query.err"
     query_cmd = "env " +
                 "VESPA_CLI_DATA_PLANE_TRUST_ALL=true " +
                 "VESPA_CLI_DATA_PLANE_CA_CERT_FILE=#{tls_env.ca_certificates_file} " +
