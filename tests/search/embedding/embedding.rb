@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright Vespa.ai. All rights reserved.
 
 require 'rubygems'
@@ -193,7 +194,7 @@ class Embedding < IndexedStreamingSearchTest
         sd(selfdir + 'nomic-ai/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
     start_vespa
-    feed_and_wait_for_docs('doc', 10, :file => selfdir + '10-docs.json')
+    feed_and_wait_for_docs('doc', 12, :file => selfdir + '12-docs.json')
     verify_embeddings_with('nomic-ai/expect.json', 'embedding', 'embedding', 'nomicmb')
     verify_embeddings_with('nomic-ai/expect.json', 'embedding_binarized', 'embedding_binarized_implicitly', 'nomicmb')
     verify_embeddings_with('nomic-ai/expect.json', 'embedding_binarized', 'embedding_binarized_explicitly', 'nomicmb')
@@ -319,7 +320,7 @@ class Embedding < IndexedStreamingSearchTest
         sd(selfdir + 'app_voyage_embedder/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
     start_vespa
-    feed_and_wait_for_docs("doc", 10, :file => selfdir + "10-docs.json")
+    feed_and_wait_for_docs("doc", 12, :file => selfdir + "12-docs.json")
     verify_voyage_embedding
   end
 
@@ -340,7 +341,7 @@ class Embedding < IndexedStreamingSearchTest
         sd(selfdir + 'app_voyage_embedder_contextualized/schemas/doc.sd').
         indexing_cluster('default').indexing_chain('indexing'))
     start_vespa
-    feed_and_wait_for_docs("doc", 10, :file => selfdir + "10-docs-chunked.json")
+    feed_and_wait_for_docs("doc", 12, :file => selfdir + "12-docs-chunked.json")
     verify_voyage_contextualized_embeddings
   end
 
@@ -455,7 +456,7 @@ class Embedding < IndexedStreamingSearchTest
 
       # Verify that the expected match appears on top when searching with the given embeddingField
       expectedMostRelevant = want['expectedMostRelevant']
-      yql = "select+*+from+sources+*+where+{targetHits:10}nearestNeighbor(#{embeddingField},#{queryTensor})"
+      yql = "select+*+from+sources+*+where+{targetHits:100}nearestNeighbor(#{embeddingField},#{queryTensor})"
       qi = "input.query(#{queryTensor})=embed(#{embedder},@myqtext)"
       result = search("?yql=#{yql}&#{qi}&myqtext=#{qtext}&ranking=#{embeddingField}")
       assert(result.hitcount >= 2)
@@ -689,7 +690,7 @@ class Embedding < IndexedStreamingSearchTest
 
         # Perform nearest neighbor search using semantic embeddings
         # Documents use voyage-large (high quality), queries use embedder from config
-        yql = "select%20*%20from%20sources%20*%20where%20{targetHits:10}nearestNeighbor(#{config[:field]},#{config[:query_tensor]})"
+        yql = "select%20*%20from%20sources%20*%20where%20{targetHits:100}nearestNeighbor(#{config[:field]},#{config[:query_tensor]})"
         result = search("?yql=#{yql}&input.query(#{config[:query_tensor]})=embed(#{config[:query_embedder]},@qtext)&qtext=#{CGI.escape(query_text)}&ranking=#{config[:rank_profile]}&format=json")
 
         # Verify we got results
@@ -730,7 +731,7 @@ class Embedding < IndexedStreamingSearchTest
       puts "Expected document: #{expected_doc_id}"
 
       # Perform nearest neighbor search using contextualized embeddings
-      yql = "select%20*%20from%20sources%20*%20where%20{targetHits:10}nearestNeighbor(chunk_embeddings,embedding_context)"
+      yql = "select%20*%20from%20sources%20*%20where%20{targetHits:100}nearestNeighbor(chunk_embeddings,embedding_context)"
       result = search("?yql=#{yql}&input.query(embedding_context)=embed(voyage-context-3,@qtext)&qtext=#{CGI.escape(query_text)}&ranking=context_float&format=json")
 
       # Verify we got results
