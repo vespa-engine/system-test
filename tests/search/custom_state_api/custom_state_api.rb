@@ -99,7 +99,7 @@ class CustomStateApi < IndexedStreamingSearchTest
   end
 
   def assert_tls(page)
-    assert_keys(["test"], page)
+    assert_keys(["size_on_disk", "test"], page)
   end
 
   def assert_hw_info(page)
