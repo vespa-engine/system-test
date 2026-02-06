@@ -30,9 +30,6 @@ class McpServerTest < SearchContainerTest
     
     print_test_header("EXECUTE QUERY")
     execute_query_test()
-    
-    print_test_header("GET DOCUMENTATION")
-    get_documentation_test()
   end
 
   def initialize_request_test
@@ -66,12 +63,12 @@ class McpServerTest < SearchContainerTest
         "method" => "tools/list",
         "params" => {}
     }
-    # Checks if the MCP server lists the "getDocumentation" tool
+    # Checks if the MCP server lists the "getSchemas" tool
     response = send_jsonrpc_request(jsonrpc_request)
     assert_not_nil(response)
     parsed_response = JSON.parse(response)
     assert(parsed_response["result"].key?("tools"))
-    assert(parsed_response["result"]["tools"].any? { |tool| tool["name"] == "getDocumentation" })
+    assert(parsed_response["result"]["tools"].any? { |tool| tool["name"] == "getSchemas" })
   
   end
   
@@ -135,28 +132,6 @@ class McpServerTest < SearchContainerTest
     assert(parsed_response["result"].key?("content"))
     assert(parsed_response["result"]["content"].is_a?(Array))
     assert(parsed_response["result"]["content"][0]["text"].include?("John Doe"))
-  end
-
-  def get_documentation_test
-    jsonrpc_request = {
-      "jsonrpc" => "2.0",
-      "id" => 6,
-      "method" => "tools/call",
-      "params" => {
-        "name" => "getDocumentation",
-        "arguments" => {
-          "userinput" => "Vespa CLI"
-        }
-      }
-    }
-    # Checks if the get documentation tool call returns some content
-    response = send_jsonrpc_request(jsonrpc_request)
-    assert_not_nil(response)
-    parsed_response = JSON.parse(response)
-    assert_equal(false, parsed_response["result"]["isError"])
-    assert(parsed_response["result"].key?("content"))
-    assert(parsed_response["result"]["content"].is_a?(Array))
-    assert_not_nil(parsed_response["result"]["content"][0]["text"])
   end
 
   def send_jsonrpc_request(request_body)
