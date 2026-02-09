@@ -1,0 +1,36 @@
+[
+  {
+    "put": "id:test:test::1",
+    "fields": {
+      "title": "tft",
+      "flags": [true, false, true]
+    }
+  },
+  {
+    "put": "id:test:test::2",
+    "fields": {
+      "title": "ff",
+      "flags": [false, false]
+    }
+  },
+  {
+    "put": "id:test:test::3",
+    "fields": {
+      "title": "tttf",
+      "flags": [true, true, true, false]
+    }
+  },
+  {
+    "put": "id:test:test::4",
+    "fields": {
+      "title": "empty",
+      "flags": []
+    }
+  },
+  {
+    "put": "id:test:test::5",
+    "fields": {
+      "title": "notset"
+    }
+  }
+]
