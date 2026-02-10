@@ -64,5 +64,15 @@ class EcommerceHybridSearchTestBase < PerformanceTest
     end
   end
 
+  def should_skip?
+    return false if ENV['MANUAL']
+    return false if Time.now.sunday?
+    puts('SKIPPING - you need to:')
+    puts('    export MANUAL=true')
+    puts('in order to run this test manually;')
+    puts('otherwise, it only runs on Sundays.')
+    puts('entire test is now SKIPPED')
+    true
+  end
 
 end
