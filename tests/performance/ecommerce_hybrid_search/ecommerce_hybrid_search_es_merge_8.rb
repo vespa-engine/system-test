@@ -12,6 +12,7 @@ class EcommerceHybridSearchESForceMerge8Test < EcommerceHybridSearchESTestBase
 
   def test_hybrid_search
     set_description("Test performance of hybrid search on ES using an E-commerce dataset (feeding, force merge to 8 segments, queries)")
+    return if should_skip?
     @node = vespa.nodeproxies.values.first
     prepare_es_app
 
@@ -22,7 +23,7 @@ class EcommerceHybridSearchESForceMerge8Test < EcommerceHybridSearchESTestBase
   end
 
   def teardown
-    stop_es
+    stop_es unless should_skip?
     super
   end
 
