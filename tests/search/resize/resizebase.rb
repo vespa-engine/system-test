@@ -979,11 +979,11 @@ class ResizeContentClusterBase < IndexedOnlySearchTest
       expdocs = (rapp.nodes - deltanodes) * rapp.numdocs
       slack_maxdocs = deltanodes * rapp.numdocs
     end
-    @explore_doc_count_vector = [ ExploreDocCount.new("resize", "ready", expdocs, rapp.slack_mindocs, slack_maxdocs) ]
+    @explore_doc_count_vector = [ ExploreDocCount.new("resize", "total", expdocs, rapp.slack_mindocs, slack_maxdocs) ]
     if rapp.num_child_docs != 0
       @poll_queries.push(PollQuery.new("resizechild", "a1", "1", rapp.num_child_docs, rapp.slack_minhits, rapp.slack_maxhits))
       @poll_queries.push(PollQuery.new("resizechild", "my_a1", "1", rapp.num_child_docs, rapp.slack_minhits, rapp.slack_maxhits))
-      @explore_doc_count_vector.push(ExploreDocCount.new("resizechild", "ready", 2 * rapp.num_child_docs * rapp.num_groups, rapp.slack_mindocs, rapp.slack_maxdocs))
+      @explore_doc_count_vector.push(ExploreDocCount.new("resizechild", "total", 2 * rapp.num_child_docs * rapp.num_groups, rapp.slack_mindocs, rapp.slack_maxdocs))
     end
   end
 
