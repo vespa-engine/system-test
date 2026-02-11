@@ -7,7 +7,7 @@ class EcommerceHybridSearchESTestBase < EcommerceHybridSearchTestBase
 
   def setup
     super
-    @es_version = "9.0.2"
+    @es_version = "9.3.0"
     @es_hostname = "localhost"
     @es_port = 9200
     @es_endpoint = "http://#{@es_hostname}:#{@es_port}"
