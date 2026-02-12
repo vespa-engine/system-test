@@ -2,6 +2,10 @@
 
 schema arrays {
     document arrays {
+        field id type int {
+            indexing: summary | attribute
+        }
+
         field string_array type array<string> {
             indexing: summary | attribute
         }

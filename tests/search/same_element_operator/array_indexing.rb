@@ -71,6 +71,7 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
 
     for i in 0...5 do
       vespa.document_api_v1.put(Document.new("id:arrays:arrays::#{i}")
+                                        .add_field("id", i)
                                         .add_field("string_array", string_arrays[i])
                                         .add_field("byte_array", int_arrays[i])
                                         .add_field("int_array", int_arrays[i])
@@ -83,7 +84,7 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
   end
 
   def assert_docs(match_condition, expected_docids)
-    query = {'yql' => "select * from sources * where #{match_condition} order by \"[docid]\" desc"}
+    query = {'yql' => "select * from sources * where #{match_condition} order by id asc"}
     puts "query: #{query}"
     puts "expected_docids: #{expected_docids}"
     result = search(query)
