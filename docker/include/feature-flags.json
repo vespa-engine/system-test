@@ -6,7 +6,8 @@
                 {
                     "value" : [
                         "VESPA_BITVECTOR_RANGE_CHECK=true",
-                        "VESPA_ENABLE_PREPARE_RESTART2=true"
+                        "VESPA_ENABLE_PREPARE_RESTART2=true",
+                        "VESPA_ALLOW_ARRAY_OF_BOOL=true"
                     ]
                 }
             ]

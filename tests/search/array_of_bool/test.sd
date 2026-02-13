@@ -1,0 +1,10 @@
+schema test {
+  document test {
+    field title type string {
+      indexing: summary | index
+    }
+    field flags type array<bool> {
+      indexing: summary | attribute
+    }
+  }
+}
