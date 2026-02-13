@@ -21,6 +21,7 @@ module GroupingBase
     wait_for_hitcount('query=test&streaming.selection=true', 28, 10)
 
     querytest_filter
+    querytest_istrue_error_handling
 
     # Test quantiles
     check_query('all(group(boool) each(output(quantiles([0.1], f))))', 'quantile-1', 40)
@@ -308,11 +309,23 @@ module GroupingBase
     check_query('all(group(a) each(group(b) filter(regex("c1", c)) each(output(count()))))', 'filter-4')
     check_query('all(group(a) filter(regex("c2", c)) each(group(b) each(output(count()))))', 'filter-5')
     check_query('all(group(a) filter(regex("a1", a)) each(group(b) filter(regex("b1", b)) each(output(count()))))', 'filter-6')
+
+    check_query('all(group(a) filter(istrue(boool)) each(output(count())))', 'istrue-1')
+    check_query('all(group(boool) filter(istrue(boool)) each(output(count())))', 'istrue-2')
+    check_query('all(group(a) filter(istrue(boool) and regex("^a1$", a)) each(output(count())))', 'istrue-3')
+    check_query('all(group(a) filter(not istrue(boool)) each(output(count())))', 'istrue-4')
   end
 
   # Tests that are known to fail
   def querytest_failing_common
     wait_for_hitcount('query=test&streaming.selection=true', 28, 10)
+  end
+
+  def querytest_istrue_error_handling
+    result = search('/search/?hits=0&query=sddocname:test&select=all(group(a) filter(istrue(n)) each(output(count())))&restrict=test&streaming.selection=true')
+    assert(result.json['root']['errors'], "Expected error when using istrue with non-boolean field")
+    error_message = result.json['root']['errors'][0]['message']
+    assert_match(/boolean input|filter error/i, error_message, "Expected error message about boolean input or filter error, got: #{error_message}")
   end
 
   def querytest_global_max
