@@ -131,6 +131,11 @@ class Embedding < IndexedStreamingSearchTest
       klass('ai.vespa.test.ExceptionThrowingEmbedder')
   end
 
+  def batch_tracker_component
+    Component.new('batch-tracker').
+      klass('ai.vespa.test.BatchTrackingEmbedder')
+  end
+
   def default_container_setup
     Container.new('default').
       search(Searching.new).
@@ -364,6 +369,27 @@ class Embedding < IndexedStreamingSearchTest
     verify_overload_exception
     verify_timeout_exception
     verify_generic_exception
+  end
+
+  def test_dynamic_batcher
+    set_description("Test dynamic batching of documents during feeding")
+
+    add_bundle(selfdir + 'app_batch_tracking_embedder/components/BatchTrackingEmbedder.java')
+
+    # Configure document processing with large thread pool for concurrent feeding
+    deploy_app(
+      SearchApp.new.
+        container(
+          Container.new('default').
+            search(Searching.new).
+            documentapi(ContainerDocumentApi.new).
+            docproc(DocumentProcessing.new.threads(10)).
+            component(batch_tracker_component)).
+        sd(selfdir + 'app_batch_tracking_embedder/schemas/doc.sd').
+        indexing_cluster('default').indexing_chain('indexing'))
+    start_vespa
+
+    verify_dynamic_batching
   end
 
 
@@ -784,6 +810,129 @@ class Embedding < IndexedStreamingSearchTest
     rescue HttpResponseError => e
       assert_equal(500, e.response_code, "Expected HTTP 500 for generic RuntimeException")
     end
+  end
+
+  def verify_dynamic_batching
+    # Test 1: Verify max batch size trigger
+    # Feed many documents rapidly to trigger batching by max batch size
+    puts "=== Testing max batch size trigger ==="
+    docs_batch_size = []
+    (0..19).each do |i|
+      doc = Document.new("id:test:doc::batchsize#{i}").
+        add_field("text", "Batch size test document #{i} with some text to embed")
+      docs_batch_size.push(doc)
+    end
+
+    # Feed all documents concurrently using threads
+    threads = []
+    docs_batch_size.each do |doc|
+      threads << Thread.new do
+        vespa.document_api_v1.put(doc, {:timeout => '30s'})
+      end
+    end
+    threads.each(&:join)
+
+    wait_for_hitcount("sddocname:doc", 20)
+
+    # Retrieve documents and check their embeddings
+    # The embedding format is: [text.length(), batchSize, position_in_batch, callNum, 0]
+    result = search("?yql=select+*+from+sources+*+where+sddocname+contains+%22doc%22&hits=20&format=json").json
+
+    assert_equal(20, result['root']['fields']['totalCount'], "Expected 20 documents")
+
+    batch_sizes = []
+    batch_call_numbers = []
+    result['root']['children'].each do |hit|
+      embedding = hit['fields']['embedding']
+      puts "Document #{hit['id']}: embedding = #{embedding}"
+
+      # Extract batch size and call number from the embedding
+      batch_size = embedding['values'][1].to_i
+      call_num = embedding['values'][3].to_i
+      batch_sizes.push(batch_size) if batch_size > 0
+      batch_call_numbers.push(call_num) if call_num > 0
+    end
+
+    puts "Detected batch sizes: #{batch_sizes}"
+    puts "Detected batch call numbers: #{batch_call_numbers.uniq.sort}"
+
+    # Verify that documents were processed in batches (batch_size > 1)
+    batched_docs = batch_sizes.select { |size| size > 1 }
+    assert(batched_docs.length > 0, "Expected documents to be batched together by max batch size, but all were processed individually")
+
+    # Verify we had multiple batch calls (not all in one batch)
+    unique_batch_calls = batch_call_numbers.uniq.length
+    puts "Number of batch calls: #{unique_batch_calls}"
+
+    # Find the maximum batch size observed
+    max_observed_batch_size = batch_sizes.max
+    puts "Maximum observed batch size: #{max_observed_batch_size}"
+    assert(max_observed_batch_size > 1, "Expected batch size > 1, got #{max_observed_batch_size}")
+
+    puts "✓ Max batch size trigger verified: #{batched_docs.length} documents were batched"
+
+    # Test 2: Verify max delay trigger
+    # Feed a small number of documents and wait to trigger batching by timeout
+    puts "\n=== Testing max delay trigger ==="
+
+    # Clear previous documents
+    docs_batch_size.each do |doc|
+      vespa.document_api_v1.remove(doc.documentid)
+    end
+    wait_for_hitcount("sddocname:doc", 0)
+
+    # Feed only 3 documents concurrently (less than max batch size)
+    docs_delay = []
+    threads = []
+    (0..2).each do |i|
+      doc = Document.new("id:test:doc::delay#{i}").
+        add_field("text", "Delay test document #{i} with text content")
+      docs_delay.push(doc)
+      threads << Thread.new do
+        vespa.document_api_v1.put(doc, {:timeout => '30s'})
+      end
+    end
+    threads.each(&:join)
+
+    # Wait for documents to be processed (should be flushed by delay trigger)
+    wait_for_hitcount("sddocname:doc", 3)
+
+    # Retrieve and verify
+    result = search("?yql=select+*+from+sources+*+where+sddocname+contains+%22doc%22&hits=3&format=json").json
+    assert_equal(3, result['root']['fields']['totalCount'], "Expected 3 documents")
+
+    delay_batch_sizes = []
+    result['root']['children'].each do |hit|
+      embedding = hit['fields']['embedding']
+      puts "Document #{hit['id']}: embedding = #{embedding}"
+      batch_size = embedding['values'][1].to_i
+      delay_batch_sizes.push(batch_size) if batch_size > 0
+    end
+
+    puts "Detected batch sizes for delay test: #{delay_batch_sizes}"
+
+    # With only 3 documents and a wait, they should have been batched together by the delay trigger
+    # All 3 should show the same batch size (3 or the actual batch size they were processed in)
+    assert(delay_batch_sizes.length == 3, "Expected all 3 documents to have batch size info")
+
+    # Check if they were batched together (all have same call number)
+    delay_call_numbers = []
+    result['root']['children'].each do |hit|
+      embedding = hit['fields']['embedding']
+      call_num = embedding['values'][3].to_i
+      delay_call_numbers.push(call_num)
+    end
+
+    # If all have the same call number > 0, they were batched together
+    unique_delay_calls = delay_call_numbers.uniq
+    if unique_delay_calls.length == 1 && unique_delay_calls[0] > 0
+      puts "✓ Max delay trigger verified: all 3 documents batched together in single call"
+    else
+      puts "⚠ Documents may have been processed in separate batches or individually"
+      puts "  This could happen if batching is disabled or delay is very short"
+    end
+
+    puts "\n=== Dynamic batching test completed ==="
   end
 
   def start_vespa

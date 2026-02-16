@@ -165,16 +165,23 @@ class DocumentProcessing
   include ChainedSetter
 
   chained_forward :chains, :chain => :push
+  chained_setter :threads
 
   def initialize()
     @chains = []
+    @threads = nil
   end
 
   def to_xml(indent)
-    XmlHelper.new(indent)\
-      .tag_always("document-processing")\
-        .to_xml(@chains)\
-        .to_s
+    helper = XmlHelper.new(indent).tag_always("document-processing")
+
+    if @threads
+      helper.tag("threadpool").
+        tag("threads").content(@threads).close_tag.
+        close_tag
+    end
+
+    helper.to_xml(@chains).to_s
   end
 
 end
