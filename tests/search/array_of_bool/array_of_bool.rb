@@ -7,10 +7,23 @@ class ArrayOfBool < IndexedOnlySearchTest
     set_description("Test support for array<bool> field type")
   end
 
+  DOCS = [
+    { 'title' => 'tft',    'flags' => [true, false, true] },
+    { 'title' => 'ff',     'flags' => [false, false] },
+    { 'title' => 'tttf',   'flags' => [true, true, true, false] },
+    { 'title' => 'empty',  'flags' => [] },
+    { 'title' => 'notset' }
+  ]
+
   def test_array_of_bool
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
     start
-    feed_and_wait_for_docs("test", 5, :file => selfdir + "feed.json")
+    DOCS.each_with_index do |fields, i|
+      doc = Document.new("id:test:test::#{i}")
+      fields.each { |key, value| doc.add_field(key, value) }
+      vespa.document_api_v1.put(doc)
+    end
+    wait_for_hitcount('?query=sddocname:test', DOCS.size)
 
     # verify summary rendering
     assert_summary_flags('tft', [true, false, true])
