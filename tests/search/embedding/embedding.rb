@@ -4,9 +4,9 @@
 require 'rubygems'
 require 'json'
 require 'cgi'
-require 'indexed_streaming_search_test'
+require 'search_test'
 
-class Embedding < IndexedStreamingSearchTest
+class Embedding < SearchTest
 
   def setup
     set_owner("bjorncs")
