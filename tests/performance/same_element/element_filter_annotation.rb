@@ -81,7 +81,7 @@ class ElementFilterAnnotationPerformance < PerformanceTest
                 query_file,
                 {:runtime => FBENCH_TIME,
                  :clients => 1,
-                 :append_str => "&summary=minimal&hits=100",
+                 :append_str => "&summary=minimal&hits=100&timeout=20s",
                  :result_file => result_file},
                 fillers)
     profiler_report(label)
