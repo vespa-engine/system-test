@@ -1,0 +1,15 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema arrays {
+    document arrays {
+        field id type int {
+            indexing: summary | attribute
+        }
+        field bool_array type array<bool> {
+            indexing: summary | attribute
+        }
+    }
+  document-summary minimal {
+    summary id {}
+  }
+}

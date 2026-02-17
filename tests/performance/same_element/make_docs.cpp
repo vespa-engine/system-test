@@ -23,7 +23,7 @@ std::ostream& print_array_field(std::ostream& os, size_t array_size, double true
 
 void print_put(std::ostream& os, size_t docid, size_t array_size, double true_probability) {
     os << "{" << std::endl;
-    os << "  \"put\": \"id:test:test::" << docid << "\"," << std::endl;
+    os << "  \"put\": \"id:arrays:arrays::" << docid << "\"," << std::endl;
     os << "  \"fields\": {" << std::endl;
     os << "    \"id\": " << docid << "," << std::endl;
     os << "    "; print_array_field(os, array_size, true_probability) << std::endl;

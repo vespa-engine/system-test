@@ -5,9 +5,14 @@
 #include <iostream>
 
 void print_query(std::ostream& os, size_t array_size) {
-    size_t index = rand() % array_size;
+    size_t index1 = rand() % array_size;
+    size_t index2 = rand() % array_size;
+    size_t index3 = rand() % array_size;
+
     os << "/search/?yql=select%20*%20from%20sources%20*%20where%20"
-       << "bool_array%20contains%20(%7BelementFilter:" << index << "%7DsameElement(%20true%20))";
+       << "bool_array%20contains%20(%7BelementFilter:"
+       << "[" << index1 << "," << index2 << "," << index3 << "]"
+       << "%7DsameElement(%22true%22))";
     os << std::endl;
 }
 
