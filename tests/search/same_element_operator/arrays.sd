@@ -10,6 +10,10 @@ schema arrays {
             indexing: summary | attribute
         }
 
+        field bool_array type array<bool> {
+            indexing: summary | attribute
+        }
+
         field byte_array type array<byte> {
             indexing: summary | attribute
         }

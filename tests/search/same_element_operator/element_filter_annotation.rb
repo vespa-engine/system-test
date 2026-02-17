@@ -12,6 +12,7 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
 
   def feed_docs
     string_arrays = [["foo", "bar", "baz"], ["foo", "bar", "bar"], ["foo", "foo", "foo"], ["bar", "bar", "foo"], ["baz", "baz", "baz"]]
+    bool_arrays = [[true, true, false], [false, false, true], [true, false, false], [false, true, false], [false, false, false]]
     int_arrays = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [9, 5, 4], [9, 9, 9]]
     float_arrays = [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0], [9.0, 5.0, 4.0], [9.0, 9.0, 9.0]]
 
@@ -19,6 +20,7 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
       vespa.document_api_v1.put(Document.new("id:arrays:arrays::#{i}")
                                         .add_field("id", i)
                                         .add_field("string_array", string_arrays[i])
+                                        .add_field("bool_array", bool_arrays[i])
                                         .add_field("byte_array", int_arrays[i])
                                         .add_field("int_array", int_arrays[i])
                                         .add_field("long_array", int_arrays[i])
@@ -54,6 +56,16 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
     assert_docs("string_array contains ({elementFilter:1}sameElement(\"baz\"))", [4])
     assert_docs("string_array contains ({elementFilter:2}sameElement(\"baz\"))", [0, 4])
     assert_docs("string_array contains ({elementFilter:3}sameElement(\"baz\"))", [])
+
+    assert_docs("bool_array contains ({elementFilter:0}sameElement(\"true\"))", [0, 2])
+    assert_docs("bool_array contains ({elementFilter:1}sameElement(\"true\"))", [0, 3])
+    assert_docs("bool_array contains ({elementFilter:2}sameElement(\"true\"))", [1])
+    assert_docs("bool_array contains ({elementFilter:3}sameElement(\"true\"))", [])
+
+    assert_docs("bool_array contains ({elementFilter:0}sameElement(\"false\"))", [1, 3, 4])
+    assert_docs("bool_array contains ({elementFilter:1}sameElement(\"false\"))", [1, 2, 4])
+    assert_docs("bool_array contains ({elementFilter:2}sameElement(\"false\"))", [0, 2, 3, 4])
+    assert_docs("bool_array contains ({elementFilter:3}sameElement(\"false\"))", [])
 
     ["byte_array", "int_array", "long_array"].each do |array_name|
       assert_docs("#{array_name} contains ({elementFilter:0}sameElement(\"1\"))", [0])
@@ -114,6 +126,20 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
     # Test wrong order and duplicated elements
     assert_docs("string_array contains ({elementFilter:[0,0,0,0]}sameElement(\"baz\"))", [4])
     assert_docs("string_array contains ({elementFilter:[25,25,25,0]}sameElement(\"baz\"))", [4])
+
+    assert_docs("bool_array contains ({elementFilter:[0]}sameElement(\"true\"))", [0, 2])
+    assert_docs("bool_array contains ({elementFilter:[0,1]}sameElement(\"true\"))", [0, 2, 3])
+    assert_docs("bool_array contains ({elementFilter:[0,1,2]}sameElement(\"true\"))", [0, 1, 2, 3])
+    assert_docs("bool_array contains ({elementFilter:[0,1,2,3]}sameElement(\"true\"))", [0, 1, 2, 3])
+    assert_docs("bool_array contains ({elementFilter:[1,2,3]}sameElement(\"true\"))", [0, 1, 3])
+    assert_docs("bool_array contains ({elementFilter:[2,3]}sameElement(\"true\"))", [1])
+    assert_docs("bool_array contains ({elementFilter:[3]}sameElement(\"true\"))", [])
+
+    assert_docs("bool_array contains ({elementFilter:[0,1,2,3]}sameElement(\"false\"))", [0, 1, 2, 3, 4])
+
+    # Test wrong order and duplicated elements
+    assert_docs("bool_array contains ({elementFilter:[0,0,0,0]}sameElement(\"true\"))", [0, 2])
+    assert_docs("bool_array contains ({elementFilter:[25,25,25,0]}sameElement(\"true\"))", [0, 2])
 
     ["byte_array", "int_array", "long_array"].each do |array_name|
       assert_docs("#{array_name} contains ({elementFilter:[0,1,2,3]}sameElement(\"1\"))", [0])
