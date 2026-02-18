@@ -1,6 +1,6 @@
-require 'indexed_only_search_test'
+require 'indexed_streaming_search_test'
 
-class ArrayOfBool < IndexedOnlySearchTest
+class ArrayOfBool < IndexedStreamingSearchTest
 
   def setup
     set_owner("havardpe")
