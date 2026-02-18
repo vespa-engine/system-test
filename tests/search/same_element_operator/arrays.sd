@@ -1,0 +1,56 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+
+schema arrays {
+    document arrays {
+        field id type int {
+            indexing: summary | attribute
+        }
+
+        field string_array type array<string> {
+            indexing: summary | attribute
+        }
+
+        field bool_array type array<bool> {
+            indexing: summary | attribute
+        }
+
+        field byte_array type array<byte> {
+            indexing: summary | attribute
+        }
+
+        field int_array type array<int> {
+            indexing: summary | attribute
+        }
+
+        field long_array type array<long> {
+            indexing: summary | attribute
+        }
+
+        field float_array type array<float> {
+            indexing: summary | attribute
+        }
+
+        field double_array type array<double> {
+            indexing: summary | attribute
+        }
+
+        struct person {
+            field first_name    type string {}
+            field last_name     type string {}
+            field year_of_birth type int {}
+        }
+
+        field struct_array type array<person> {
+            indexing: summary
+            struct-field first_name    { indexing: attribute }
+            struct-field last_name     { indexing: attribute }
+            struct-field year_of_birth { indexing: attribute }
+        }
+
+        field byte_byte_map type map<byte,byte> {
+            indexing: summary
+            struct-field key { indexing: attribute }
+            struct-field value { indexing: attribute }
+        }
+    }
+}
