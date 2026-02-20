@@ -12,6 +12,7 @@ class ElementFilterAnnotationPerformance < PerformanceTest
   ARRAY_LENGTH = "array_length"
   ARRAY_DENSITY = "array_density"
   DOCUMENTS = "documents"
+  INDICES = "indices"
   WARMUP = "warmup"
 
   def setup
@@ -39,10 +40,12 @@ class ElementFilterAnnotationPerformance < PerformanceTest
     feed(num_documents, array_length, true_probability)
 
     # Warm-up
-    query_and_benchmark(num_documents, array_length, true_probability, true)
+    query_and_benchmark(num_documents, array_length, true_probability, 3, true)
 
     # Benchmark
-    query_and_benchmark(num_documents, array_length, true_probability)
+    [1, 3, 10, 100].each do |num_indices|
+      query_and_benchmark(num_documents, array_length, true_probability, num_indices)
+    end
   end
 
   def compile_generators
@@ -61,20 +64,21 @@ class ElementFilterAnnotationPerformance < PerformanceTest
     profiler_report("feed")
   end
 
-  def query_and_benchmark(num_documents, array_length, true_probability, warmup = false)
+  def query_and_benchmark(num_documents, array_length, true_probability, num_indices, warmup = false)
     # We only need the array length for the queries
     # The other parameters are just for the labels
-    query_file = dirs.tmpdir + "queries-#{array_length}.txt"
-    @container.execute("#{@container_tmp_bin_dir}/make_queries 10000 #{array_length} > #{query_file}")
+    query_file = dirs.tmpdir + "queries-#{array_length}-#{num_indices}.txt"
+    @container.execute("#{@container_tmp_bin_dir}/make_queries 10000 #{array_length} #{num_indices} > #{query_file}")
     puts "Generated on container: #{query_file}"
     result_file = dirs.tmpdir + "fbench_result.#{array_length}.txt"
     warmup_str = warmup ? "-warmup" : ""
-    label = "#{num_documents}-documents-#{array_length}-length-#{true_probability}-density#{warmup_str}"
+    label = "#{num_indices}-indices#{warmup_str}"
     fillers = [parameter_filler(TYPE, "query"),
                parameter_filler(LABEL, label),
                parameter_filler(ARRAY_LENGTH, array_length),
                parameter_filler(ARRAY_DENSITY, true_probability),
                parameter_filler(DOCUMENTS, num_documents),
+               parameter_filler(INDICES, num_indices),
                parameter_filler(WARMUP, warmup)]
     profiler_start
     run_fbench2(@container,
