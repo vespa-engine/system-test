@@ -15,16 +15,6 @@ class ElementFilterAnnotationPerformance < PerformanceTest
     set_owner('boeker')
   end
 
-  def test_ultra_sparse_bool_array
-    set_description('Test performance of indexing into an array of bools (few true entires) using elementFilter annotation of sameElement operator.')
-    run_bool_test(0.00001) # Roughly every 100'000th entry is true
-  end
-
-  def test_sparser_bool_array
-    set_description('Test performance of indexing into an array of bools (few true entires) using elementFilter annotation of sameElement operator.')
-    run_bool_test(0.0001) # Roughly every 10'000th entry is true
-  end
-
   def test_sparse_bool_array
     set_description('Test performance of indexing into an array of bools (few true entires) using elementFilter annotation of sameElement operator.')
     run_bool_test(0.001) # Roughly every 1'000th entry is true
