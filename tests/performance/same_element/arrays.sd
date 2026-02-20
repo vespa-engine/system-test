@@ -1,0 +1,15 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema arrays {
+    document arrays {
+        field id type int {
+            indexing: summary | attribute
+        }
+        field bool_array type array<bool> {
+            indexing: summary | attribute
+        }
+    }
+  document-summary minimal {
+    summary id {}
+  }
+}
