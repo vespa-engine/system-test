@@ -10,6 +10,9 @@ class ElementFilterAnnotationPerformance < PerformanceTest
   TYPE = "type"
   LABEL = "label"
   ARRAY_LENGTH = "array_length"
+  ARRAY_DENSITY = "array_density"
+  DOCUMENTS = "documents"
+  WARMUP = "warmup"
 
   def setup
     set_owner('boeker')
@@ -36,10 +39,10 @@ class ElementFilterAnnotationPerformance < PerformanceTest
     feed(num_documents, array_length, true_probability)
 
     # Warm-up
-    query_and_benchmark(array_length, "warmup")
+    query_and_benchmark(num_documents, array_length, true_probability, true)
 
     # Benchmark
-    query_and_benchmark(array_length, "benchmark-#{true_probability}")
+    query_and_benchmark(num_documents, array_length, true_probability)
   end
 
   def compile_generators
@@ -58,14 +61,21 @@ class ElementFilterAnnotationPerformance < PerformanceTest
     profiler_report("feed")
   end
 
-  def query_and_benchmark(array_length, label)
+  def query_and_benchmark(num_documents, array_length, true_probability, warmup = false)
+    # We only need the array length for the queries
+    # The other parameters are just for the labels
     query_file = dirs.tmpdir + "queries-#{array_length}.txt"
     @container.execute("#{@container_tmp_bin_dir}/make_queries 10000 #{array_length} > #{query_file}")
     puts "Generated on container: #{query_file}"
-    result_file = dirs.tmpdir + "fbench_result.#{label}.txt"
+    result_file = dirs.tmpdir + "fbench_result.#{array_length}.txt"
+    warmup_str = warmup ? "-warmup" : ""
+    label = "#{num_documents}-documents-#{array_length}-length-#{true_probability}-density#{warmup_str}"
     fillers = [parameter_filler(TYPE, "query"),
                parameter_filler(LABEL, label),
-               parameter_filler(ARRAY_LENGTH, array_length)]
+               parameter_filler(ARRAY_LENGTH, array_length),
+               parameter_filler(ARRAY_DENSITY, true_probability),
+               parameter_filler(DOCUMENTS, num_documents),
+               parameter_filler(WARMUP, warmup)]
     profiler_start
     run_fbench2(@container,
                 query_file,
