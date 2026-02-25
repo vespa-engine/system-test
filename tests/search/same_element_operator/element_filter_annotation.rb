@@ -58,9 +58,22 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
       queries << "#{array_name} contains ({elementFilter:[#{indices.join(',')}]}sameElement(\"#{value}\"))"
       if indices.length == 1
         queries << "#{array_name} contains ({elementFilter:#{indices[0]}}sameElement(\"#{value}\"))"
+
+        # syntax sugar: field[index] = value
+        queries << "#{array_name}[#{indices[0]}]=#{add_quotes_if_string(value)}"
       end
     end
     queries
+  end
+
+  def add_quotes_if_string(s)
+    return s if ["true", "false"].include?(s)
+    return s if is_number(s)
+    "\"#{s}\""
+  end
+
+  def is_number(s)
+    s.match?(/\A-?\d+(\.\d+)?\z/)
   end
 
   def assert_element_filter(array_name, indices, expected_docids, value)
