@@ -38,13 +38,34 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
     wait_for_hitcount("?query=sddocname:arrays", max_length)
   end
 
-
   def assert_docs(match_condition, expected_docids)
     query = {'yql' => "select * from sources * where #{match_condition} order by id asc"}
     result = search(query)
     assert_hitcount(result, expected_docids.length)
     for i in 0...expected_docids.length do
       assert_field_value(result, "documentid", "id:arrays:arrays::#{expected_docids[i]}", i)
+    end
+  end
+
+  # Returns all query variants that should produce the same result for a given
+  # array field, element filter indices, and match value.
+  def build_queries(array_name, indices, value)
+    queries = []
+    if indices.empty?
+      queries << "#{array_name} contains sameElement(\"#{value}\")"
+      queries << "#{array_name} contains ({elementFilter:[]}sameElement(\"#{value}\"))"
+    else
+      queries << "#{array_name} contains ({elementFilter:[#{indices.join(',')}]}sameElement(\"#{value}\"))"
+      if indices.length == 1
+        queries << "#{array_name} contains ({elementFilter:#{indices[0]}}sameElement(\"#{value}\"))"
+      end
+    end
+    queries
+  end
+
+  def assert_element_filter(array_name, indices, expected_docids, value)
+    build_queries(array_name, indices, value).each do |query|
+      assert_docs(query, expected_docids)
     end
   end
 
@@ -56,31 +77,28 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
 
     feed_docs({"bool_array" => [[true, true, false], [false, false, true], [true, false, false], [false, true, false], [false, false, false]]})
 
-    # Single element
-    assert_docs("bool_array contains ({elementFilter:0}sameElement(\"true\"))", [0, 2])
-    assert_docs("bool_array contains ({elementFilter:1}sameElement(\"true\"))", [0, 3])
-    assert_docs("bool_array contains ({elementFilter:2}sameElement(\"true\"))", [1])
-    assert_docs("bool_array contains ({elementFilter:3}sameElement(\"true\"))", [])
-
-    assert_docs("bool_array contains ({elementFilter:0}sameElement(\"false\"))", [1, 3, 4])
-    assert_docs("bool_array contains ({elementFilter:1}sameElement(\"false\"))", [1, 2, 4])
-    assert_docs("bool_array contains ({elementFilter:2}sameElement(\"false\"))", [0, 2, 3, 4])
-    assert_docs("bool_array contains ({elementFilter:3}sameElement(\"false\"))", [])
-
-    # Multiple elements
-    assert_docs("bool_array contains ({elementFilter:[0]}sameElement(\"true\"))", [0, 2])
-    assert_docs("bool_array contains ({elementFilter:[0,1]}sameElement(\"true\"))", [0, 2, 3])
-    assert_docs("bool_array contains ({elementFilter:[0,1,2]}sameElement(\"true\"))", [0, 1, 2, 3])
-    assert_docs("bool_array contains ({elementFilter:[0,1,2,3]}sameElement(\"true\"))", [0, 1, 2, 3])
-    assert_docs("bool_array contains ({elementFilter:[1,2,3]}sameElement(\"true\"))", [0, 1, 3])
-    assert_docs("bool_array contains ({elementFilter:[2,3]}sameElement(\"true\"))", [1])
-    assert_docs("bool_array contains ({elementFilter:[3]}sameElement(\"true\"))", [])
-
-    assert_docs("bool_array contains ({elementFilter:[0,1,2,3]}sameElement(\"false\"))", [0, 1, 2, 3, 4])
-
-    # Test wrong order and duplicated elements
-    assert_docs("bool_array contains ({elementFilter:[0,0,0,0]}sameElement(\"true\"))", [0, 2])
-    assert_docs("bool_array contains ({elementFilter:[25,25,25,0]}sameElement(\"true\"))", [0, 2])
+    # [array, indices, expected_docids, value]
+    [
+      ["bool_array", [0],              [0, 2],          "true"],
+      ["bool_array", [1],              [0, 3],          "true"],
+      ["bool_array", [2],              [1],             "true"],
+      ["bool_array", [3],              [],              "true"],
+      ["bool_array", [0, 1],           [0, 2, 3],       "true"],
+      ["bool_array", [0, 1, 2],        [0, 1, 2, 3],    "true"],
+      ["bool_array", [0, 1, 2, 3],     [0, 1, 2, 3],    "true"],
+      ["bool_array", [1, 2, 3],        [0, 1, 3],       "true"],
+      ["bool_array", [2, 3],           [1],             "true"],
+      ["bool_array", [0],              [1, 3, 4],        "false"],
+      ["bool_array", [1],              [1, 2, 4],        "false"],
+      ["bool_array", [2],              [0, 2, 3, 4],     "false"],
+      ["bool_array", [3],              [],               "false"],
+      ["bool_array", [0, 1, 2, 3],     [0, 1, 2, 3, 4], "false"],
+      # Wrong order and duplicated elements
+      ["bool_array", [0, 0, 0, 0],     [0, 2],          "true"],
+      ["bool_array", [25, 25, 25, 0],  [0, 2],          "true"],
+    ].each do |array_name, indices, expected_docids, value|
+      assert_element_filter(array_name, indices, expected_docids, value)
+    end
   end
 
 
@@ -91,26 +109,24 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
 
     feed_docs({"string_array" => [["foo", "bar", "baz"], ["foo", "bar", "bar"], ["foo", "foo", "foo"], ["bar", "bar", "foo"], ["baz", "baz", "baz"]]})
 
-    # An empty list means "no filtering" and behaves as if no annotation is present.
-    assert_docs("string_array contains sameElement(\"baz\")", [0, 4])
-    assert_docs("string_array contains ({elementFilter:[]}sameElement(\"baz\"))", [0, 4])
-
-    assert_docs("string_array contains ({elementFilter:0}sameElement(\"baz\"))", [4])
-    assert_docs("string_array contains ({elementFilter:1}sameElement(\"baz\"))", [4])
-    assert_docs("string_array contains ({elementFilter:2}sameElement(\"baz\"))", [0, 4])
-    assert_docs("string_array contains ({elementFilter:3}sameElement(\"baz\"))", [])
-
-    assert_docs("string_array contains ({elementFilter:[0]}sameElement(\"baz\"))", [4])
-    assert_docs("string_array contains ({elementFilter:[0,1]}sameElement(\"baz\"))", [4])
-    assert_docs("string_array contains ({elementFilter:[0,1,2]}sameElement(\"baz\"))", [0, 4])
-    assert_docs("string_array contains ({elementFilter:[0,1,2,3]}sameElement(\"baz\"))", [0, 4])
-    assert_docs("string_array contains ({elementFilter:[1,2,3]}sameElement(\"baz\"))", [0, 4])
-    assert_docs("string_array contains ({elementFilter:[2,3]}sameElement(\"baz\"))", [0, 4])
-    assert_docs("string_array contains ({elementFilter:[3]}sameElement(\"baz\"))", [])
-
-    # Test wrong order and duplicated elements
-    assert_docs("string_array contains ({elementFilter:[0,0,0,0]}sameElement(\"baz\"))", [4])
-    assert_docs("string_array contains ({elementFilter:[25,25,25,0]}sameElement(\"baz\"))", [4])
+    # [array, indices, expected_docids, value]
+    [
+      ["string_array", [],              [0, 4],  "baz"],
+      ["string_array", [0],             [4],     "baz"],
+      ["string_array", [1],             [4],     "baz"],
+      ["string_array", [2],             [0, 4],  "baz"],
+      ["string_array", [3],             [],      "baz"],
+      ["string_array", [0, 1],          [4],     "baz"],
+      ["string_array", [0, 1, 2],       [0, 4],  "baz"],
+      ["string_array", [0, 1, 2, 3],    [0, 4],  "baz"],
+      ["string_array", [1, 2, 3],       [0, 4],  "baz"],
+      ["string_array", [2, 3],          [0, 4],  "baz"],
+      # Wrong order and duplicated elements
+      ["string_array", [0, 0, 0, 0],    [4],     "baz"],
+      ["string_array", [25, 25, 25, 0], [4],     "baz"],
+    ].each do |array_name, indices, expected_docids, value|
+      assert_element_filter(array_name, indices, expected_docids, value)
+    end
   end
 
 
@@ -124,45 +140,40 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
 
     feed_docs({"byte_array" => int_arrays, "int_array" => int_arrays, "long_array" => int_arrays, "float_array" => float_arrays, "double_array" => float_arrays})
 
-    ["byte_array", "int_array", "long_array"].each do |array_name|
-      assert_docs("#{array_name} contains sameElement(\"9\")", [2, 3, 4])
-      assert_docs("#{array_name} contains ({elementFilter:[]}sameElement(\"9\"))", [2, 3, 4])
-    end
+    # [indices, expected_docids, value]
+    test_data = [
+      [[],                             [2, 3, 4], "9"],
+      [[0],                            [0],       "1"],
+      [[1],                            [],        "1"],
+      [[2],                            [],        "1"],
+      [[3],                            [],        "1"],
+      [[0, 1, 2, 3],                   [0],       "1"],
+      [[0],                            [3, 4],    "9"],
+      [[1],                            [4],       "9"],
+      [[2],                            [2, 4],    "9"],
+      [[3],                            [],        "9"],
+      [[0, 1],                         [3, 4],    "9"],
+      [[0, 1, 2],                      [2, 3, 4], "9"],
+      [[0, 1, 2, 3],                   [2, 3, 4], "9"],
+      [[1, 2, 3],                      [2, 4],    "9"],
+      [[2, 3],                         [2, 4],    "9"],
+      # Wrong order and duplicated elements
+      [[25, 42, 50000, 0, 0, 0, 0],    [3, 4],    "9"],
+      [[3, 2, 3, 2, 1, 0],             [2, 3, 4], "9"],
+    ]
 
     ["byte_array", "int_array", "long_array"].each do |array_name|
-      assert_docs("#{array_name} contains ({elementFilter:0}sameElement(\"1\"))", [0])
-      assert_docs("#{array_name} contains ({elementFilter:1}sameElement(\"1\"))", [])
-      assert_docs("#{array_name} contains ({elementFilter:2}sameElement(\"1\"))", [])
-      assert_docs("#{array_name} contains ({elementFilter:3}sameElement(\"1\"))", [])
-
-      assert_docs("#{array_name} contains ({elementFilter:0}sameElement(\"9\"))", [3, 4])
-      assert_docs("#{array_name} contains ({elementFilter:1}sameElement(\"9\"))", [4])
-      assert_docs("#{array_name} contains ({elementFilter:2}sameElement(\"9\"))", [2, 4])
-      assert_docs("#{array_name} contains ({elementFilter:3}sameElement(\"9\"))", [])
-    end
-
-    ["byte_array", "int_array", "long_array"].each do |array_name|
-      assert_docs("#{array_name} contains ({elementFilter:[0,1,2,3]}sameElement(\"1\"))", [0])
-
-      assert_docs("#{array_name} contains ({elementFilter:[0]}sameElement(\"9\"))", [3, 4])
-      assert_docs("#{array_name} contains ({elementFilter:[0,1]}sameElement(\"9\"))", [3, 4])
-      assert_docs("#{array_name} contains ({elementFilter:[0,1,2]}sameElement(\"9\"))", [2, 3, 4])
-      assert_docs("#{array_name} contains ({elementFilter:[0,1,2,3]}sameElement(\"9\"))", [2, 3, 4])
-      assert_docs("#{array_name} contains ({elementFilter:[1,2,3]}sameElement(\"9\"))", [2, 4])
-      assert_docs("#{array_name} contains ({elementFilter:[2,3]}sameElement(\"9\"))", [2, 4])
-      assert_docs("#{array_name} contains ({elementFilter:[3]}sameElement(\"9\"))", [])
-
-      # Test wrong order and duplicated elements
-      assert_docs("#{array_name} contains ({elementFilter:[25,42,50000,0,0,0,0]}sameElement(\"9\"))", [3, 4])
-      assert_docs("#{array_name} contains ({elementFilter:[3,2,3,2,1,0]}sameElement(\"9\"))", [2, 3, 4])
+      test_data.each do |indices, expected_docids, value|
+        assert_element_filter(array_name, indices, expected_docids, value)
+      end
     end
 
     # Does not work yet, string gets tokenized
     #["float_array", "double_array"].each do |array_name|
-    #  assert_docs("#{array_name} contains ({elementFilter:0}sameElement(\"1.0\"))", [0])
-    #  assert_docs("#{array_name} contains ({elementFilter:1}sameElement(\"1.0\"))", [])
-    #  assert_docs("#{array_name} contains ({elementFilter:2}sameElement(\"1.0\"))", [])
-    #  assert_docs("#{array_name} contains ({elementFilter:3}sameElement(\"1.0\"))", [])
+    #  assert_element_filter(array_name, [0], [0], "1.0")
+    #  assert_element_filter(array_name, [1], [],  "1.0")
+    #  assert_element_filter(array_name, [2], [],  "1.0")
+    #  assert_element_filter(array_name, [3], [],  "1.0")
     #end
 
   end
