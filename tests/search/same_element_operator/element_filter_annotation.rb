@@ -79,23 +79,23 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
 
     # [array, indices, expected_docids, value]
     [
-      ["bool_array", [0],              [0, 2],          "true"],
-      ["bool_array", [1],              [0, 3],          "true"],
-      ["bool_array", [2],              [1],             "true"],
-      ["bool_array", [3],              [],              "true"],
-      ["bool_array", [0, 1],           [0, 2, 3],       "true"],
-      ["bool_array", [0, 1, 2],        [0, 1, 2, 3],    "true"],
-      ["bool_array", [0, 1, 2, 3],     [0, 1, 2, 3],    "true"],
-      ["bool_array", [1, 2, 3],        [0, 1, 3],       "true"],
-      ["bool_array", [2, 3],           [1],             "true"],
+      ["bool_array", [0],              [0, 2],           "true"],
+      ["bool_array", [1],              [0, 3],           "true"],
+      ["bool_array", [2],              [1],              "true"],
+      ["bool_array", [3],              [],               "true"],
+      ["bool_array", [0, 1],           [0, 2, 3],        "true"],
+      ["bool_array", [0, 1, 2],        [0, 1, 2, 3],     "true"],
+      ["bool_array", [0, 1, 2, 3],     [0, 1, 2, 3],     "true"],
+      ["bool_array", [1, 2, 3],        [0, 1, 3],        "true"],
+      ["bool_array", [2, 3],           [1],              "true"],
       ["bool_array", [0],              [1, 3, 4],        "false"],
       ["bool_array", [1],              [1, 2, 4],        "false"],
       ["bool_array", [2],              [0, 2, 3, 4],     "false"],
       ["bool_array", [3],              [],               "false"],
-      ["bool_array", [0, 1, 2, 3],     [0, 1, 2, 3, 4], "false"],
+      ["bool_array", [0, 1, 2, 3],     [0, 1, 2, 3, 4],  "false"],
       # Wrong order and duplicated elements
-      ["bool_array", [0, 0, 0, 0],     [0, 2],          "true"],
-      ["bool_array", [25, 25, 25, 0],  [0, 2],          "true"],
+      ["bool_array", [0, 0, 0, 0],     [0, 2],           "true"],
+      ["bool_array", [25, 25, 25, 0],  [0, 2],           "true"],
     ].each do |array_name, indices, expected_docids, value|
       assert_element_filter(array_name, indices, expected_docids, value)
     end
