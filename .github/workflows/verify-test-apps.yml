@@ -34,7 +34,7 @@ jobs:
         working-directory: vespa
         run: |
           env VESPA_MAVEN_EXTRA_OPTS="-Dmaven.test.skip=true -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -T 1C -B -q" ./bootstrap.sh
-          ./mvnw -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipCloud -T 1C -B -q clean install
+          ./mvnw -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipCloud -Denforcer.skip=true -T 1C -B -q clean install
 
       - name: Verify test-apps
         working-directory: tests
