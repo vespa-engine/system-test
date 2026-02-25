@@ -14,7 +14,7 @@
         <groupId>com.yahoo.vespa.systemtest</groupId>
         <artifactId>test-apps-parent</artifactId>
         <version>8-SNAPSHOT</version>
-        <relativePath/>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
 
     <dependencies>
