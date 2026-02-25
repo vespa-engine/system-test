@@ -141,6 +141,9 @@ class CommonSiftGistBase < CommonAnnBaseTest
     annotation = params[:annotation] || "none"
     doc_tensor = params[:doc_tensor] || "vec_m16"
     lazy_filter = params[:lazy_filter] || false
+    anntimeout_enable = params[:anntimeout_enable] || false
+    anntimeout_factor = params[:anntimeout_factor] || 0.5
+    timeout = params[:timeout] || 20
 
     approximate = algorithm == HNSW ? "true" : "false"
     query_file = dirs.tmpdir + get_filename(doc_tensor, approximate, target_hits, explore_hits, filter_percent, radius)
@@ -161,7 +164,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
 
     radius_str = (radius >= 0.0) ? "-r#{radius}" : ""
     lazy_str = lazy_filter ? "-lazy" : ""
-    label = params[:label] || "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}#{radius_str}#{lazy_str}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}-n#{clients}-t#{threads_per_search}"
+    label = params[:label] || "#{algorithm}-to#{timeout}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}#{radius_str}#{lazy_str}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}-n#{clients}-t#{threads_per_search}-toe#{anntimeout_enable}-tof#{anntimeout_factor}"
     result_file = dirs.tmpdir + "fbench_result.#{label}.txt"
     fillers = [parameter_filler(TYPE, get_type_string(filter_percent, threads_per_search)),
                parameter_filler(LABEL, label),
@@ -175,6 +178,9 @@ class CommonSiftGistBase < CommonAnnBaseTest
                parameter_filler(APPROXIMATE_THRESHOLD, approximate_threshold),
                parameter_filler(FILTER_FIRST_THRESHOLD, filter_first_threshold),
                parameter_filler(FILTER_FIRST_EXPLORATION, filter_first_exploration),
+               parameter_filler(ANNTIMEOUT_ENABLE, anntimeout_enable),
+               parameter_filler(ANNTIMEOUT_FACTOR, anntimeout_factor),
+               parameter_filler(TIMEOUT, timeout),
                parameter_filler(CLIENTS, clients),
                parameter_filler(THREADS_PER_SEARCH, threads_per_search),
                parameter_filler(ANNOTATION, annotation)]
@@ -183,7 +189,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
                 query_file,
                 {:runtime => FBENCH_TIME,
                  :clients => clients,
-                 :append_str => "&summary=minimal&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}&ranking.matching.approximateThreshold=#{approximate_threshold}&ranking.matching.filterFirstThreshold=#{filter_first_threshold}&ranking.matching.filterFirstExploration=#{filter_first_exploration}&ranking.matching.explorationSlack=#{slack}&ranking.matching.lazyFilter=#{lazy_filter}",
+                 :append_str => "&summary=minimal&timeout=#{timeout}s&hits=#{target_hits}&ranking=#{get_rank_profile(threads_per_search)}&ranking.matching.approximateThreshold=#{approximate_threshold}&ranking.matching.filterFirstThreshold=#{filter_first_threshold}&ranking.matching.filterFirstExploration=#{filter_first_exploration}&ranking.matching.explorationSlack=#{slack}&ranking.matching.lazyFilter=#{lazy_filter}&ranking.anntimeout.enable=#{anntimeout_enable}&ranking.anntimeout.factor=#{anntimeout_factor}",
                  :result_file => result_file},
                 fillers)
     profiler_report(label)

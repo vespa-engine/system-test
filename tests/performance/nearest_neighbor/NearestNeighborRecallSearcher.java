@@ -70,15 +70,18 @@ public class NearestNeighborRecallSearcher extends Searcher {
             double filterFirstExploration = Double.parseDouble(props.getString("nnr.filterFirstExploration", "0.3"));
             double slack = Double.parseDouble(props.getString("nnr.slack", "0.00"));
             boolean lazyFilter = Boolean.parseBoolean(props.getString("nnr.lazyFilter", "false"));
+            double timeout = Double.parseDouble(props.getString("nnr.timeout", "20"));
+            boolean annTimeoutEnable = Boolean.parseBoolean(props.getString("nnr.annTimeoutEnable", "false"));
+            double annTimeoutFactor = Double.parseDouble(props.getString("nnr.annTimeoutFactor", "0.5"));
             String idField = props.getString("nnr.idField", "id");
             log.log(Level.FINE, "NNRS.search(): docTensor=" + docTensor +
                     ", queryTensor=" + queryTensor + ", targetHits=" + targetHits +
                     ", exploreHits=" + exploreHits + ", idField=" + idField);
-            var exactHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, lazyFilter, false, idField);
-
             var approxHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, lazyFilter, true, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, lazyFilter, true, idField, timeout, annTimeoutEnable, annTimeoutFactor);
+
+            var exactHits = executeNearestNeighborQuery(query, execution,
+                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, slack, lazyFilter, false, idField, timeout, annTimeoutEnable, annTimeoutFactor);
 
             try {
                 int recall = calcRecall(exactHits, approxHits, targetHits);
@@ -109,7 +112,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
                                                         int targetHits, int exploreHits, int filterPercent,
                                                         double radius, double latitude, double longitude,
                                                         double approximateThreshold, double filterFirstThreshold, double filterFirstExploration,
-                                                        double slack, boolean lazyFilter, boolean approximate, String idField) {
+                                                        double slack, boolean lazyFilter, boolean approximate, String idField, double timeout, boolean annTimeoutEnable, double annTimeoutFactor) {
         var nni = new NearestNeighborItem(docTensor, queryTensor);
         nni.setLabel(label);
         nni.setTargetNumHits(targetHits);
@@ -151,6 +154,13 @@ public class NearestNeighborRecallSearcher extends Searcher {
         query.properties().set("ranking.matching.filterFirstExploration", filterFirstExploration);
         query.properties().set("ranking.matching.explorationSlack", slack);
         query.properties().set("ranking.matching.lazyFilter", lazyFilter);
+        query.properties().set("ranking.anntimeout.enable", annTimeoutEnable);
+        query.properties().set("ranking.anntimeout.factor", annTimeoutFactor);
+        if (approximate) {
+            query.properties().set("timeout", String.valueOf(timeout) + "s");
+        } else {
+            query.properties().set("timeout", "20s");
+        }
 
         var vespaChain = parentExecution.searchChainRegistry().getComponent("vespa");
         var execution = new Execution(vespaChain, parentExecution.context());
