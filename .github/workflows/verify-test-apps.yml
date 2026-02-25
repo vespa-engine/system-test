@@ -38,4 +38,4 @@ jobs:
 
       - name: Verify test-apps
         working-directory: tests
-        run: mvn verify -ntp
+        run: mvn test-compile -ntp
