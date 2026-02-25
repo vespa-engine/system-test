@@ -1,0 +1,41 @@
+# Copyright Vespa.ai. Licensed under the terms of the Apache 2.0 license. See LICENSE in the project root.
+name: Verify test-apps
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  verify-test-apps:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Clone vespa-engine/vespa
+        run: git clone --depth 1 https://github.com/vespa-engine/vespa.git vespa
+
+      - name: Build Vespa artifacts
+        working-directory: vespa
+        run: |
+          env VESPA_MAVEN_EXTRA_OPTS="-Dmaven.test.skip=true -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -T 1C -B -q" ./bootstrap.sh
+          ./mvnw -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -Dmaven.source.skip=true -DskipCloud -Denforcer.skip=true -T 1C -B -q clean install
+
+      - name: Verify test-apps
+        working-directory: tests
+        run: mvn verify -DskipTests -ntp
