@@ -7,4 +7,12 @@ schema test {
       indexing: summary | attribute
     }
   }
+  rank-profile default {
+    summary-features {
+      attribute(flags,0)
+      attribute(flags,1)
+      attribute(flags,2)
+      attribute(flags).count
+    }
+  }
 }
