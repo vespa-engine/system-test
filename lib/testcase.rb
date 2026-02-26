@@ -1,7 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 # -*- coding: utf-8 -*-
 require 'assertions'
-require 'assertionfailederror'
+require 'test/unit/assertion-failed-error'
 require 'error'
 require 'failure'
 require 'test_base'
@@ -287,7 +287,7 @@ class TestCase
       add_error(e)
     rescue RuntimeError, ExecuteError => e
       add_error(e)
-    rescue AssertionFailedError => e
+    rescue Test::Unit::AssertionFailedError => e
       add_failure(e.message, e.backtrace)
     rescue StandardError, ScriptError, SignalException => e
       add_error(e)
@@ -330,12 +330,12 @@ class TestCase
 
         begin
           assert_no_valgrind_errors
-        rescue AssertionFailedError => e
+        rescue Test::Unit::AssertionFailedError => e
           add_valgrind_failure(e.message, e.backtrace)
         end
         begin
           assert_no_sanitizer_warnings
-        rescue AssertionFailedError => e
+        rescue Test::Unit::AssertionFailedError => e
           add_sanitizer_failure(e.message, e.backtrace)
         end
         if (not @stopped and not @command_line_output)
@@ -620,7 +620,7 @@ class TestCase
       new_method = m.gsub(/^check/, 'assert')
       begin
         self.send(new_method.to_sym, *args, &block)
-      rescue AssertionFailedError => e
+      rescue Test::Unit::AssertionFailedError => e
         add_failure(e.message, e.backtrace)
         false
       end

@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'test/unit'
-require '../filter'
+require 'performance/filter'
 
 class FilterTest < Test::Unit::TestCase
   include Perf

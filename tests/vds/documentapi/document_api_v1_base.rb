@@ -1,9 +1,11 @@
 require 'search_test'
+require 'assertions'
 require 'app_generator/search_app'
 require 'app_generator/storage_app'
 require 'uri'
 
 class DocumentApiV1Base < SearchTest
+  include Assertions
 
   def param_setup(params)
     @params = params
