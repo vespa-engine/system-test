@@ -12,6 +12,8 @@ schema test {
       attribute(flags,0)
       attribute(flags,1)
       attribute(flags,2)
+      attribute(flags,3)
+      attribute(flags,4)
       attribute(flags).count
     }
   }
