@@ -21,15 +21,17 @@ class ComponentContainerClusters < SearchContainerTest
     assertResult(res, "Cluster1Handler says hello!");
 
     res = vespa.container['cluster1/0'].search("/Cluster2")
-    if (! res.xmldata =~ /Could not find \/Cluster2/) &&
-         (! res.xmldata =~ /\/Cluster2.*Not Found/i)
-           flunk "Expected some variant of 'cluster2 not found', but got: #{res.xmldata}"
+    unless (res.xmldata =~ /Could not find \/Cluster2/) ||
+           (res.xmldata =~ /\/Cluster2.*Not Found/i) ||
+           (res.xmldata =~ /No binding for URI.*Cluster2/)
+      flunk "Expected some variant of 'cluster2 not found', but got: #{res.xmldata}"
     end
 
     res = vespa.container['cluster2/0'].search("/Cluster1")
-    if (! res.xmldata =~ /Could not find \/Cluster1/) &&
-         (! res.xmldata =~ /\/Cluster1.*Not Found/i)
-           flunk "Expected some variant of 'cluster1 not found', but got: #{res.xmldata}"
+    unless (res.xmldata =~ /Could not find \/Cluster1/) ||
+           (res.xmldata =~ /\/Cluster1.*Not Found/i) ||
+           (res.xmldata =~ /No binding for URI.*Cluster1/)
+      flunk "Expected some variant of 'cluster1 not found', but got: #{res.xmldata}"
     end
 
     res = vespa.container['cluster2/0'].search("/Cluster2")
