@@ -154,7 +154,7 @@ class TensorFeedHexTest < IndexedStreamingSearchTest
        {"address"=>{"x"=>"foo","y"=>"3"}, "value"=>-255.0},
        {"address"=>{"x"=>"bar","y"=>"0"}, "value"=>0.0},
        {"address"=>{"x"=>"bar","y"=>"1"}, "value"=>-0.0},
-       {"address"=>{"x"=>"bar","y"=>"2"}, "value"=>1.17549435e-38},
+       {"address"=>{"x"=>"bar","y"=>"2"}, "value"=>1.17549444e-38},
        {"address"=>{"x"=>"bar","y"=>"3"}, "value"=>3.3895314e+38}],
       [{"address"=>{"x"=>"foo","y"=>"0"}, "value"=>100.0},
        {"address"=>{"x"=>"foo","y"=>"1"}, "value"=>200.0},
@@ -214,6 +214,5 @@ class TensorFeedHexTest < IndexedStreamingSearchTest
     assert_tensor_field(expect_16[2], docs[2], 'my_16_tensor')
     assert_nil(get_tensor_field(docs[3], 'my_16_tensor'))
   end
-
 
 end

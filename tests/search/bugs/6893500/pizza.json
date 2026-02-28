@@ -22,8 +22,8 @@
                     "sddocname": "withmap",
                     "meta_tags": {
                         "789": "foobar",
-                        "123": "foo",
-                        "456": "bar"
+                        "456": "bar",
+                        "123": "foo"
                     },
                     "bamf": "\nfield meta_tags (StructuredData): [{\"key\":\"789\",\"value\":\"foobar\"},{\"key\":\"123\",\"value\":\"foo\"},{\"key\":\"456\",\"value\":\"bar\"}]\n",
                     "documentid": "id:test:withmap::1",

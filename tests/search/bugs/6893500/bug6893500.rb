@@ -31,5 +31,4 @@ class MapInSummaryBug < IndexedStreamingSearchTest
     assert_result("query=title:pizza", selfdir+"pizza.json")
   end
 
-
 end
