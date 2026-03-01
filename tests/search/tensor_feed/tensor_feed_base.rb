@@ -29,7 +29,7 @@ module TensorFeedTestBase
     tensor_field = get_tensor_field(doc, field_name)
     act_cells = tensor_field['cells']
     # From test_base.rb
-    assert_tensor_cells(exp_cells, act_cells)
+    assert_tensors_equal(exp_cells, act_cells)
   end
 
   def get_tensor_field(doc, field_name = 'my_tensor')
