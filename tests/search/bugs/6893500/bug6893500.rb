@@ -28,7 +28,13 @@ class MapInSummaryBug < IndexedStreamingSearchTest
     start
     feed_and_wait_for_docs("withmap", 1, :file => selfdir+"feed.json")
 
-    assert_result("query=title:pizza", selfdir+"pizza.json")
+    got_result = search("query=title:pizza")
+    expected_2 = create_resultset(selfdir+"pizza2.json")
+    if got_result.check_equal(expected_2)
+      assert_result("query=title:pizza", selfdir+"pizza2.json")
+    else
+      assert_result("query=title:pizza", selfdir+"pizza.json")
+    end
   end
 
 

@@ -215,7 +215,7 @@ class Resultset
   def check_equal(other)
     return false unless (hitcount == other.hitcount)
     return false unless (hit.size == other.hit.size)
-    check_approx_eq(groupings, other.groupings, "groupings")
+    check_groupings(groupings, other.groupings)
     hit.each_index { |i| hit[i].check_equal(other.hit[i]) }
     return true
   end
@@ -307,6 +307,11 @@ class Resultset
       end
     end
 
+  end
+
+  def check_groupings(a, b)
+    return true if (a == b)
+    return self.class.check_approx_eq(a, b, "groupings")
   end
 
 end
