@@ -76,9 +76,28 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
     s.match?(/\A-?\d+(\.\d+)?\z/)
   end
 
+  def to_native_value(s)
+    return true if s == "true"
+    return false if s == "false"
+    return s.to_i if is_number(s)
+    s
+  end
+
+  def post_json_select(query_body)
+    json = { "select" => { "where" => query_body } }
+    json["streaming.selection"] = "true" if is_streaming
+    vespa.container.values.first.post_search(
+      "/search/", json.to_json, 0, {'Content-Type' => 'application/json'})
+  end
+
   def assert_element_filter(array_name, indices, expected_docids, value)
     build_queries(array_name, indices, value).each do |query|
       assert_docs(query, expected_docids)
+    end
+    if indices.length == 1
+      query_body = { "equals" => { "field" => array_name, "index" => indices[0], "value" => to_native_value(value) } }
+      result = post_json_select(query_body)
+      assert_hitcount(result, expected_docids.length)
     end
   end
 
