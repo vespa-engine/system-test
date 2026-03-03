@@ -1,1 +1,1 @@
-Dockerfile.almalinux8
+Dockerfile.alma8
