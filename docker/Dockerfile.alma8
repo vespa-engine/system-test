@@ -6,9 +6,6 @@ ARG VESPA_BASE_IMAGE=vespa
 # Vespa install
 FROM $BASE_IMAGE AS vespa
 
-ARG JAVA_VERSION=17
-ARG MAVEN_VERSION=3.9.12
-
 RUN dnf install -y dnf-plugins-core && \
     dnf install -y epel-release && \
     dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/vespa/vespa/repo/epel-8/group_vespa-vespa-epel-8.repo && \
@@ -26,6 +23,8 @@ RUN dnf install -y gcc-c++ python3-devel && \
 
 FROM $VESPA_BASE_IMAGE AS systemtest
 
+ARG JAVA_VERSION=17
+ARG MAVEN_VERSION=3.9.12
 ENV LANG=en_US.UTF-8
 
 USER root
