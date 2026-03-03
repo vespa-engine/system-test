@@ -41,6 +41,10 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
   def assert_docs(match_condition, expected_docids)
     query = {'yql' => "select * from sources * where #{match_condition} order by id asc"}
     result = search(query)
+    assert_docs_result(expected_docids, result)
+  end
+
+  def assert_docs_result(expected_docids, result)
     assert_hitcount(result, expected_docids.length)
     for i in 0...expected_docids.length do
       assert_field_value(result, "documentid", "id:arrays:arrays::#{expected_docids[i]}", i)
@@ -86,6 +90,7 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
   def post_json_select(query_body)
     json = { "select" => { "where" => query_body } }
     json["streaming.selection"] = "true" if is_streaming
+    json["sorting"] = "id"
     vespa.container.values.first.post_search(
       "/search/", json.to_json, 0, {'Content-Type' => 'application/json'})
   end
@@ -97,7 +102,7 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
     if indices.length == 1
       query_body = { "equals" => { "field" => array_name, "index" => indices[0], "value" => to_native_value(value) } }
       result = post_json_select(query_body)
-      assert_hitcount(result, expected_docids.length)
+      assert_docs_result(expected_docids, result)
     end
   end
 
