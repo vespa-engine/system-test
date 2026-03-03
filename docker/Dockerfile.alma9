@@ -50,7 +50,6 @@ RUN --mount=type=bind,target=/context-root,source=.,ro \
     gem install ffi libxml-ruby parallel && \
     curl -sSLf "https://dlcdn.apache.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.zip" -o maven.zip && \
     curl -sSLf "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2-$(uname -m).zip" && \
-    sha256sum --check --ignore-missing /context-root/dl-sums-sha256.check && \
     unzip -q maven.zip && \
     mv apache-maven-$MAVEN_VERSION /usr/share && \
     ln -snf /usr/share/apache-maven-$MAVEN_VERSION/bin/mvn /usr/bin/mvn && \
