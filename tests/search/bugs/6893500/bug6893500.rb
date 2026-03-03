@@ -5,7 +5,7 @@ require 'app_generator/container_app'
 require 'performance_test'
 require 'app_generator/search_app'
 require 'performance/fbench'
-
+require 'json'
 
 class MapInSummaryBug < IndexedStreamingSearchTest
   def setup
@@ -28,8 +28,38 @@ class MapInSummaryBug < IndexedStreamingSearchTest
     start
     feed_and_wait_for_docs("withmap", 1, :file => selfdir+"feed.json")
 
-    assert_result("query=title:pizza", selfdir+"pizza.json")
-  end
+    result = search("query=title:pizza")
+    fields_to_check = ['bad_map', 'good_map', 'meta_tags']
 
+    common_fields = {
+      "good_map" => {
+        "hitchhiker" => { "bar" => "fortytwo", "foo" => 42 },
+        "adams"      => { "bar" => "one",       "foo" => 1  }
+      },
+      "bad_map" => {
+        "7042" => { "name" => "lademoen",      "addr" => "trondheim",                 "postcode" => 7042 },
+        "42"   => { "name" => "the restaurant","addr" => "at the end of the universe","postcode" => 42   }
+      }
+    }
+
+    # Differences in map order between Java 17 and Java 21
+    meta_tags = common_fields.merge(
+      "meta_tags" => { "789" => "foobar", "123" => "foo", "456" => "bar" }
+    )
+    meta_tags_jdk21 = common_fields.merge(
+      "meta_tags" => { "789" => "foobar", "456" => "bar", "123" => "foo" }
+    )
+
+    result_fields = JSON.parse(result.xmldata)["root"]["children"][0]["fields"]
+
+    passed = fields_to_check.all? { |f| result_fields[f] == meta_tags[f] }
+    unless passed
+      puts "Fields did not match meta_tags, trying meta_tags_jdk21"
+      fields_to_check.each do |field|
+        assert_equal(meta_tags_jdk21[field], result_fields[field],
+                     "Field '#{field}' did not match meta_tags or meta_tags_jdk21 expected values")
+      end
+    end
+  end
 
 end
