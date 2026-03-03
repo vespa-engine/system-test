@@ -6,6 +6,9 @@ ARG VESPA_BASE_IMAGE=vespa
 # Vespa install
 FROM $BASE_IMAGE AS vespa
 
+ARG JAVA_VERSION=17
+ARG MAVEN_VERSION=3.9.12
+
 RUN dnf install -y dnf-plugins-core && \
     dnf install -y epel-release && \
     dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/vespa/vespa/repo/epel-8/group_vespa-vespa-epel-8.repo && \
@@ -17,7 +20,7 @@ RUN dnf install -y dnf-plugins-core && \
 
 RUN dnf install -y gcc-c++ python3-devel && \
     pip3 install --no-cache-dir --upgrade pip  && \
-    dnf remove -y remove gcc-c++ python3-devel && \
+    dnf remove -y gcc-c++ python3-devel && \
     yum clean --enablerepo=* all
 
 
@@ -27,10 +30,10 @@ ENV LANG=en_US.UTF-8
 
 USER root
 
-RUN dnf install -y dnf-plugins-core && \
+RUN --mount=type=bind,target=/context-root,source=.,ro \
+    dnf install -y dnf-plugins-core && \
     /usr/bin/crb enable && \
     dnf module enable -y ruby:3.1 && \
-    dnf module enable -y maven:3.8 && \
     dnf -y --nobest upgrade && \
     dnf install -y \
         bind-utils \
@@ -39,11 +42,11 @@ RUN dnf install -y dnf-plugins-core && \
         gcc-toolset-14-gcc-c++ \
         git-core \
         hostname \
+        java-$JAVA_VERSION-openjdk-devel \
         jq \
         libxml2-devel \
         lz4 \
         make \
-        maven-openjdk17 \
         net-tools \
         python3-devel \
         python3-pip \
@@ -61,8 +64,14 @@ RUN dnf install -y dnf-plugins-core && \
         zstd && \
     dnf install -y gcc && \
     gem install ffi libxml-ruby parallel && \
-    curl -sSLf "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip" && \
-    unzip awscliv2.zip && ./aws/install && rm -rf aws awscliv2.zip && \
+    curl -sSLf "https://dlcdn.apache.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.zip" -o maven.zip && \
+    curl -sSLf "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2-$(uname -m).zip" && \
+    sha256sum --check --ignore-missing /context-root/dl-sums-sha256.check && \
+    unzip -q maven.zip && \
+    mv apache-maven-$MAVEN_VERSION /usr/share && \
+    ln -snf /usr/share/apache-maven-$MAVEN_VERSION/bin/mvn /usr/bin/mvn && \
+    rm -f maven.zip && \
+    unzip -q awscliv2-$(uname -m).zip && ./aws/install && rm -rf aws awscliv2-$(uname -m).zip && \
     pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir xgboost scikit-learn cbor2 && \
     echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc && \
