@@ -14,10 +14,10 @@ ENV LANG=en_US.UTF-8
 
 USER root
 
-RUN dnf install -y dnf-plugins-core && \
+RUN --mount=type=bind,target=/context-root,source=.,ro \
+    dnf install -y dnf-plugins-core && \
     /usr/bin/crb enable && \
     dnf module enable -y ruby:$RUBY_VERSION && \
-    dnf module enable -y maven:$MAVEN_VERSION && \
     dnf -y --nobest upgrade && \
     dnf install -y \
         bind-utils \
@@ -48,13 +48,14 @@ RUN dnf install -y dnf-plugins-core && \
         zstd && \
     dnf install -y gcc && \
     gem install ffi libxml-ruby parallel && \
-    curl -sSLf https://dlcdn.apache.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.zip -o maven.zip && \
+    curl -sSLf "https://dlcdn.apache.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.zip" -o maven.zip && \
+    curl -sSLf "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2-$(uname -m).zip" && \
+    sha256sum --check --ignore-missing /context-root/dl-sums-sha256.check && \
     unzip -q maven.zip && \
     mv apache-maven-$MAVEN_VERSION /usr/share && \
     ln -snf /usr/share/apache-maven-$MAVEN_VERSION/bin/mvn /usr/bin/mvn && \
     rm -f maven.zip && \
-    curl -sSLf "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2.zip" && \
-    unzip -q awscliv2.zip && ./aws/install && rm -rf aws awscliv2.zip && \
+    unzip -q awscliv2-$(uname -m).zip && ./aws/install && rm -rf aws awscliv2-$(uname -m).zip && \
     pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir xgboost scikit-learn cbor2 && \
     dnf remove -y gcc
