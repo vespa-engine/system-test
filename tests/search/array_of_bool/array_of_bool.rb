@@ -82,9 +82,18 @@ class ArrayOfBool < IndexedStreamingSearchTest
   end
 
   def feed_docs
+    unless is_streaming
+      TITLES.each_with_index do |title, i|
+        parent = Document.new("id:test:parent::#{i}")
+        flags = make_flags(title)
+        parent.add_field('flags', flags) unless flags.nil?
+        vespa.document_api_v1.put(parent)
+      end
+    end
     TITLES.each_with_index do |title, i|
       doc = Document.new("id:test:test::#{i}")
       doc.add_field('title', title)
+      doc.add_field('parent_ref', "id:test:parent::#{i}") unless is_streaming
       flags = make_flags(title)
       arr = make_arr(title)
       mymap = make_mymap(title)
@@ -107,17 +116,30 @@ class ArrayOfBool < IndexedStreamingSearchTest
     assert_ranking_flags(search_title, make_features('arr.flag', expected_title))
     assert_map_ranking_flags(search_title, 'mymap.value.flag', 'mymap.key', expected_title)
     assert_map_ranking_flags(search_title, 'flagmap.value', 'flagmap.key', expected_title)
+    unless is_streaming
+      assert_summary_field(search_title, 'parent_flags', make_flags(search_title))
+      assert_ranking_flags(search_title, make_features('parent_flags', search_title))
+    end
+  end
+
+  def make_app
+    app = SearchApp.new
+    if is_streaming
+      app.sd(selfdir + "streaming/test.sd")
+    else
+      app.sd(selfdir + "indexed/parent.sd", { :global => true }).sd(selfdir + "indexed/test.sd")
+    end
   end
 
   def test_array_of_bool
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
+    deploy_app(make_app)
     start
     feed_docs
     TITLES.each { |title| assert_fields(title, title) }
   end
 
   def test_partial_update
-    deploy_app(SearchApp.new.sd(selfdir + "test.sd"))
+    deploy_app(make_app)
     start
     feed_docs
 

@@ -1,0 +1,7 @@
+schema parent {
+  document parent {
+    field flags type array<bool> {
+      indexing: attribute | summary
+    }
+  }
+}
