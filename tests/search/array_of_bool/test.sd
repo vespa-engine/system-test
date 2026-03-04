@@ -1,10 +1,44 @@
 schema test {
+  struct entry {
+    field tag type string {}
+    field flag type bool {}
+  }
   document test {
     field title type string {
       indexing: summary | index
     }
     field flags type array<bool> {
       indexing: summary | attribute
+    }
+    field arr type array<entry> {
+      indexing: summary
+      struct-field tag {
+        indexing: attribute
+      }
+      struct-field flag {
+        indexing: attribute
+      }
+    }
+    field mymap type map<int, entry> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value.tag {
+        indexing: attribute
+      }
+      struct-field value.flag {
+        indexing: attribute
+      }
+    }
+    field flagmap type map<int, bool> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+      }
+      struct-field value {
+        indexing: attribute
+      }
     }
   }
   rank-profile default {
@@ -15,6 +49,36 @@ schema test {
       attribute(flags,3)
       attribute(flags,4)
       attribute(flags).count
+      attribute(arr.flag,0)
+      attribute(arr.flag,1)
+      attribute(arr.flag,2)
+      attribute(arr.flag,3)
+      attribute(arr.flag,4)
+      attribute(arr.flag).count
+      attribute(mymap.key,0)
+      attribute(mymap.key,1)
+      attribute(mymap.key,2)
+      attribute(mymap.key,3)
+      attribute(mymap.key,4)
+      attribute(mymap.key).count
+      attribute(mymap.value.flag,0)
+      attribute(mymap.value.flag,1)
+      attribute(mymap.value.flag,2)
+      attribute(mymap.value.flag,3)
+      attribute(mymap.value.flag,4)
+      attribute(mymap.value.flag).count
+      attribute(flagmap.key,0)
+      attribute(flagmap.key,1)
+      attribute(flagmap.key,2)
+      attribute(flagmap.key,3)
+      attribute(flagmap.key,4)
+      attribute(flagmap.key).count
+      attribute(flagmap.value,0)
+      attribute(flagmap.value,1)
+      attribute(flagmap.value,2)
+      attribute(flagmap.value,3)
+      attribute(flagmap.value,4)
+      attribute(flagmap.value).count
     }
   }
 }
