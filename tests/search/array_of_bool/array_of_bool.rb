@@ -127,7 +127,7 @@ class ArrayOfBool < IndexedStreamingSearchTest
     if is_streaming
       app.sd(selfdir + "streaming/test.sd")
     else
-      app.sd(selfdir + "parent.sd", { :global => true }).sd(selfdir + "indexed/test.sd")
+      app.sd(selfdir + "indexed/parent.sd", { :global => true }).sd(selfdir + "indexed/test.sd")
     end
   end
 
