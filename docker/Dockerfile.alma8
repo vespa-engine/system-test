@@ -24,7 +24,7 @@ RUN dnf install -y gcc-c++ python3-devel && \
 FROM $VESPA_BASE_IMAGE AS systemtest
 
 ARG JAVA_VERSION=17
-ARG MAVEN_VERSION=3.9.12
+ARG MAVEN_VERSION=3.9.13
 ENV LANG=en_US.UTF-8
 
 USER root
