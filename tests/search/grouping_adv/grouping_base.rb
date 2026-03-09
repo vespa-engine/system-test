@@ -108,7 +108,7 @@ module GroupingBase
                 'time.month', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
     # - hour should change with timezone
     check_query('all(group(time.hourofday(from)) each(output(count()) ))',
-                'time.hour.timezone', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
+                'time.hour.timezone', DEFAULT_TIMEOUT, true, "default", "Africa/Johannesburg")
     # - seconds should not change with timezones
     check_query('all(group(time.secondofminute(from)) each(output(count()) ))',
                 'time.second', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
@@ -119,7 +119,7 @@ module GroupingBase
     check_query('all(group(time.dayofmonth(from)) each(output(count()) ))',
                 'time.mday.timezone', DEFAULT_TIMEOUT, true, "default", "Pacific/Kiritimati")
     check_query('all(group(time.dayofyear(from)) each(output(count()) ))',
-                'time.yday.timezone', DEFAULT_TIMEOUT, true, "default", "America/Los_Angeles")
+                'time.yday.timezone', DEFAULT_TIMEOUT, true, "default", "Africa/Johannesburg")
     check_query('all(group(time.dayofweek(from)) each(output(count()) ))',
                 'time.wday.timezone', DEFAULT_TIMEOUT, true, "default", "Africa/Johannesburg")
 
