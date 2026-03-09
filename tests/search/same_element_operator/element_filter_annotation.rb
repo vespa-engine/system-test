@@ -91,6 +91,7 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
     json = { "select" => { "where" => query_body } }
     json["streaming.selection"] = "true" if is_streaming
     json["sorting"] = "id"
+    json["timeout"] = 5
     vespa.container.values.first.post_search(
       "/search/", json.to_json, 0, {'Content-Type' => 'application/json'})
   end
