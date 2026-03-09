@@ -251,7 +251,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     calc_recall_for_queries(100, 0, {:label => "hnsw-th100-full-before-removal", :annotation => "full"})
 
     puts "...and removing them again"
-    vespa.document_api_v1.http_delete("/document/v1/test/test/docid?cluster=search&selection=#{CGI.escape("test.id>=#{documents_to_benchmark} and test.id<#{documents_in_total}")}")
+    vespa.document_api_v1.http_delete("/document/v1/test/test/docid?cluster=search&selection=#{CGI.escape("test.id>=#{documents_to_benchmark} and test.id<#{documents_in_total}")}&timeout=120")
     assert_hitcount("query=sddocname:test", documents_to_benchmark)
 
     puts "Printing stats after deletion"
