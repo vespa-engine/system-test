@@ -53,4 +53,15 @@ schema arrays {
             struct-field value { indexing: attribute }
         }
     }
+    rank-profile array-rank-profile {
+      match-features {
+          matches(bool_array)
+          matches(string_array)
+          matches(byte_array)
+          matches(int_array)
+          matches(long_array)
+          matches(float_array)
+          matches(double_array)
+      }
+    }
 }

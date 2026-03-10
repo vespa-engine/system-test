@@ -215,4 +215,57 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
     #end
 
   end
+
+  def assert_match_feature(array_name, element_filter, element)
+    # We check that two results are returned where the sameElement matches the first but not the second
+    query = {'yql' => "select * from sources * where true or (#{array_name} contains ({elementFilter:#{element_filter}}sameElement(\"#{element}\"))) order by id asc",
+             'ranking' => 'array-rank-profile'}
+    result = search(query)
+    assert_equal(2, result.hit.size)
+    assert_equal(result.hit[0].field["matchfeatures"]["matches(#{array_name})"], 1.0)
+    assert_equal(result.hit[1].field["matchfeatures"]["matches(#{array_name})"], 0.0)
+  end
+
+  def test_bool_array_rank_feature
+    set_description('Test a rank-feature when using elementFilter annotation with sameElement for array of bools.')
+    deploy_app(SearchApp.new.sd(selfdir+'arrays.sd'))
+    start
+
+    feed_docs({"bool_array" => [[true, true, true], [true, false, false]]})
+
+    ["[1]","[1,2]"].each do |element_filter|
+      # "true" matches the first document but not the second
+      assert_match_feature("bool_array", element_filter, "true")
+    end
+  end
+
+  def test_string_array_rank_feature
+    set_description('Test a rank-feature when using elementFilter annotation with sameElement for array of strings.')
+    deploy_app(SearchApp.new.sd(selfdir+'arrays.sd'))
+    start
+
+    feed_docs({"string_array" => [["foo", "foo", "foo"], ["foo", "bar", "bar"]]})
+
+    ["[1]","[1,2]"].each do |element_filter|
+      # "foo" matches the first document but not the second
+      assert_match_feature("string_array", element_filter, "foo")
+    end
+  end
+
+  def test_numerical_arrays_rank_feature
+    set_description('Test a rank-feature when using elementFilter annotation with sameElement for arrays of numbers.')
+    deploy_app(SearchApp.new.sd(selfdir+'arrays.sd'))
+    start
+
+    # Not testing float arrays yet
+    int_arrays = [[1, 1, 1], [1, 2, 2]]
+    feed_docs({"byte_array" => int_arrays, "int_array" => int_arrays, "long_array" => int_arrays})
+
+    ["byte_array", "int_array", "long_array"].each do |array_name|
+      ["[1]","[1,2]"].each do |element_filter|
+        # "1" matches the first document but not the second
+        assert_match_feature(array_name, element_filter, "1")
+      end
+    end
+  end
 end
