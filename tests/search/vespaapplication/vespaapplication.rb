@@ -47,7 +47,7 @@ class VespaApplication < IndexedStreamingSearchTest
     qrs0 = "http://#{hostname}:16666/"
 
     puts "Details: Running query to see that qrs.0 listens at correct port"
-    send_query(qrs0, "metallica&streaming.selection=true")
+    send_query(qrs0, "metallica&streaming.selection=true&timeout=5")
 
     puts "Run a query to test custom juniper config"
     feed_and_wait_for_docs("music", 779, :file => SEARCH_DATA+"music.777.json", :port => 16666)
