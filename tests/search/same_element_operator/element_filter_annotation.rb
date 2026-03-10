@@ -216,9 +216,9 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
 
   end
 
-  def assert_match_feature(array_name, element_filter, element)
+  def assert_match_feature(array_name, element_filter, same_element)
     # We check that two results are returned where the sameElement matches the first but not the second
-    query = {'yql' => "select * from sources * where true or (#{array_name} contains ({elementFilter:#{element_filter}}sameElement(\"#{element}\"))) order by id asc",
+    query = {'yql' => "select * from sources * where true or (#{array_name} contains ({elementFilter:#{element_filter}}sameElement(#{same_element}))) order by id asc",
              'ranking' => 'array-rank-profile'}
     result = search(query)
     assert_equal(2, result.hit.size)
@@ -235,7 +235,7 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
 
     ["[1]","[1,2]"].each do |element_filter|
       # "true" matches the first document but not the second
-      assert_match_feature("bool_array", element_filter, "true")
+      assert_match_feature("bool_array", element_filter, "\"true\"")
     end
   end
 
@@ -248,7 +248,7 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
 
     ["[1]","[1,2]"].each do |element_filter|
       # "foo" matches the first document but not the second
-      assert_match_feature("string_array", element_filter, "foo")
+      assert_match_feature("string_array", element_filter, "\"foo\"")
     end
   end
 
@@ -264,8 +264,34 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
     ["byte_array", "int_array", "long_array"].each do |array_name|
       ["[1]","[1,2]"].each do |element_filter|
         # "1" matches the first document but not the second
-        assert_match_feature(array_name, element_filter, "1")
+        assert_match_feature(array_name, element_filter, "\"1\"")
       end
+    end
+  end
+
+  def test_struct_array_rank_feature
+    set_description('Test a rank-feature when using elementFilter annotation with sameElement for array of struct.')
+    deploy_app(SearchApp.new.sd(selfdir+'arrays.sd'))
+    start
+
+    first_array = [{ "first_name" => "foo", "year_of_birth" => 1, "alive" => true },
+                   { "first_name" => "foo", "year_of_birth" => 1, "alive" => true },
+                   { "first_name" => "foo", "year_of_birth" => 1, "alive" => true }]
+    second_array = [{ "first_name" => "foo", "year_of_birth" => 1, "alive" => true },
+                    { "first_name" => "bar", "year_of_birth" => 2, "alive" => false },
+                    { "first_name" => "bar", "year_of_birth" => 2, "alive" => false }]
+
+    feed_docs({"struct_array" => [first_array, second_array]})
+
+    ["[1]","[1,2]"].each do |element_filter|
+      # "alive contains "true"" matches the first document but not the second
+      assert_match_feature("struct_array", element_filter, "alive contains \"true\"")
+
+      # "first_name contains "foo"" matches the first document but not the second
+      assert_match_feature("struct_array", element_filter, "first_name contains \"foo\"")
+
+      # "year_of_birth contains "1"" matches the first document but not the second
+      assert_match_feature("struct_array", element_filter, "year_of_birth contains \"1\"")
     end
   end
 end
