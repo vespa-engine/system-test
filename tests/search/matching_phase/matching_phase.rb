@@ -13,20 +13,24 @@ class MatchingPhase < IndexedOnlySearchTest
     deploy_app(SearchApp.new.sd(selfdir+'test.sd').threads_per_search(1))
     start
     feed_docs
-    run_weak_and_query(5)
-    run_weak_and_query(1)
-    run_nns_query(5)
-    run_nns_query(1)
+    run_weak_and_query('targetHits', 5)
+    run_weak_and_query('targetHits', 1)
+    run_weak_and_query('totalTargetHits', 5) # 1 node -> same as targetHits
+    run_weak_and_query('totalTargetHits', 1) # 1 node -> same as targetHits
+    run_nns_query('targetHits', 5)
+    run_nns_query('targetHits', 1)
+    run_nns_query('totalTargetHits', 5) # 1 node -> same as targetHits
+    run_nns_query('totalTargetHits', 1) # 1 node -> same as targetHits
   end
 
-  def run_weak_and_query(target_hits)
+  def run_weak_and_query(target_hits_parameter, target_hits)
     # significance used for bm25, weight used for weak and
     wand_terms = [ 'text contains ({significance:0.1, weight:100}"one")',
                     'text contains ({significance:0.2, weight:200}"two")',
                     'text contains ({significance:0.3, weight:300}"three")',
                     'text contains ({significance:0.5, weight:500}"four")',
                     'text contains ({significance:0.4, weight:400}"five")' ];
-    result = search({ 'yql' => 'select * from sources * where ({targetHits: ' + target_hits.to_s + '}weakAnd(' + wand_terms.join(', ') + '))',
+    result = search({ 'yql' => 'select * from sources * where ({' + target_hits_parameter + ': ' + target_hits.to_s + '}weakAnd(' + wand_terms.join(', ') + '))',
                     'ranking' => 'weakand'})
     if target_hits == 1
       # First update of scores heap threshold is after 4 documents.
@@ -68,8 +72,8 @@ class MatchingPhase < IndexedOnlySearchTest
       assert_equal(exp_relevancy, extract_features(result, 'matchfeatures', feature))
   end
 
-  def run_nns_query(target_hits)
-    result = search({ 'yql' => 'select * from sources * where ({targetHits: ' + target_hits.to_s + ', label: "nns"}nearestNeighbor(pos, query_pos))',
+  def run_nns_query(target_hits_parameter, target_hits)
+    result = search({ 'yql' => 'select * from sources * where ({' + target_hits_parameter + ': ' + target_hits.to_s + ', label: "nns"}nearestNeighbor(pos, query_pos))',
                       'input.query(query_pos)' => '[0.0,0.0]',
                       'ranking' => 'nns'})
     if target_hits == 1
