@@ -98,7 +98,7 @@ class MatchPhaseDegradationTest < IndexedOnlySearchTest
     snode = vespa.search["search"].searchnode[0]
 
     metrics = snode.get_total_metrics
-    for rp in [ "default", "inverse", "retainall", "retainkilo", "retaintenkilo", "inversekilo" ]
+    for rp in [ "default", "inverse", "retainall", "retainkilo", "retaintenkilo", "retaintotalkilo", "retaintotaltenkilo", "inversekilo" ]
       puts("Metrics for #{rp} rank profile:")
       numq = get_num_queries(metrics, rp)
       numl = get_num_limited(metrics, rp)
@@ -134,46 +134,56 @@ class MatchPhaseDegradationTest < IndexedOnlySearchTest
     while i <= 1000
       q="/search/?query=body:#{i}&hits=10&summary=small"
       puts "Check: #{i}/1000 url: #{q}"
-      result_norm_dec = search(q + "&ranking=default")
-      result_keep_1k  = search(q + "&ranking=retainkilo")
-      result_keep_10k = search(q + "&ranking=retaintenkilo")
-      result_keep_all = search(q + "&ranking=retainall")
-      result_norm_asc = search(q + "&ranking=inverse")
-      result_keep_inv = search(q + "&ranking=inversekilo")
-      result_sort_asc = search(q + "&sorting=%2border")
-      result_sort_dec = search(q + "&sorting=-order")
+      result_norm_dec =       search(q + "&ranking=default")
+      result_keep_1k  =       search(q + "&ranking=retainkilo")
+      result_keep_10k =       search(q + "&ranking=retaintenkilo")
+      result_keep_total_1k  = search(q + "&ranking=retaintotalkilo") # 1 node -> should equal retainkilo
+      result_keep_total_10k = search(q + "&ranking=retaintotaltenkilo") # 1 node -> should equal retaintenkilo
+      result_keep_all =       search(q + "&ranking=retainall")
+      result_norm_asc =       search(q + "&ranking=inverse")
+      result_keep_inv =       search(q + "&ranking=inversekilo")
+      result_sort_asc =       search(q + "&sorting=%2border")
+      result_sort_dec =       search(q + "&sorting=-order")
 
       # puts "result r1k: #{result_keep_1k.xmldata}"
 
-      hits_norm_dec = result_norm_dec.hitcount
-      hits_keep_1k  = result_keep_1k.hitcount
-      hits_keep_10k = result_keep_10k.hitcount
-      hits_keep_all = result_keep_all.hitcount
-      hits_norm_asc = result_norm_asc.hitcount
-      hits_keep_inv = result_keep_inv.hitcount
-      hits_sort_asc = result_sort_asc.hitcount
-      hits_sort_dec = result_sort_dec.hitcount
+      hits_norm_dec       = result_norm_dec.hitcount
+      hits_keep_1k        = result_keep_1k.hitcount
+      hits_keep_10k       = result_keep_10k.hitcount
+      hits_keep_total_1k  = result_keep_total_1k.hitcount
+      hits_keep_total_10k = result_keep_total_10k.hitcount
+      hits_keep_all       = result_keep_all.hitcount
+      hits_norm_asc       = result_norm_asc.hitcount
+      hits_keep_inv       = result_keep_inv.hitcount
+      hits_sort_asc       = result_sort_asc.hitcount
+      hits_sort_dec       = result_sort_dec.hitcount
 
-      assert(hits_norm_dec == i * 100, "expected #{i*100} hits from normal decreasing order, got #{hits_norm_dec}")
-      assert(hits_keep_all == i * 100, "expected #{i*100} hits from normal decreasing order, got #{hits_keep_all}")
-      assert(hits_keep_1k  <= i * 100, "expected <= #{i*100} hits from degraded keep 1k, got #{hits_keep_1k}")
-      assert(hits_keep_10k <= i * 100, "expected <= #{i*100} hits from degrated keep 10k, got #{hits_keep_10k}")
-      assert(hits_sort_asc <= i * 100, "expected <= #{i*100} hits from degrated sort ascending(10k), got #{hits_sort_asc}")
-      assert(hits_sort_dec <= i * 100, "expected <= #{i*100} hits from degrated sort descending(10k), got #{hits_sort_dec}")
-      assert(hits_norm_asc == i * 100, "expected #{i*100} hits from normal decreasing order, got #{hits_norm_asc}")
-      assert(hits_keep_inv <= i * 100, "expected <= #{i*100} hits from degraded inv 1k, got #{hits_keep_inv}")
+      assert(hits_norm_dec       == i * 100, "expected #{i*100} hits from normal decreasing order, got #{hits_norm_dec}")
+      assert(hits_keep_all       == i * 100, "expected #{i*100} hits from normal decreasing order, got #{hits_keep_all}")
+      assert(hits_keep_1k        <= i * 100, "expected <= #{i*100} hits from degraded keep 1k, got #{hits_keep_1k}")
+      assert(hits_keep_10k       <= i * 100, "expected <= #{i*100} hits from degrated keep 10k, got #{hits_keep_10k}")
+      assert(hits_keep_total_1k  <= i * 100, "expected <= #{i*100} hits from degraded keep 1k total, got #{hits_keep_total_1k}")
+      assert(hits_keep_total_10k <= i * 100, "expected <= #{i*100} hits from degrated keep 10k total, got #{hits_keep_total_10k}")
+      assert(hits_sort_asc       <= i * 100, "expected <= #{i*100} hits from degrated sort ascending(10k), got #{hits_sort_asc}")
+      assert(hits_sort_dec       <= i * 100, "expected <= #{i*100} hits from degrated sort descending(10k), got #{hits_sort_dec}")
+      assert(hits_norm_asc       == i * 100, "expected #{i*100} hits from normal decreasing order, got #{hits_norm_asc}")
+      assert(hits_keep_inv       <= i * 100, "expected <= #{i*100} hits from degraded inv 1k, got #{hits_keep_inv}")
       lowlim = min(900, i*90)
-      assert(hits_keep_1k  >= lowlim, "expected >= #{lowlim} hits from degraded keep 1k, got #{hits_keep_1k}")
-      assert(hits_keep_1k  <= 1500, "expected <= 1500 hits from degraded keep 1k, got #{hits_keep_1k}")
-      assert(hits_keep_inv >= lowlim, "expected >= #{lowlim} hits from degraded inv 1k, got #{hits_keep_inv}")
-      assert(hits_keep_inv <= 1500, "expected <= 1500 hits from degraded inv 1k, got #{hits_keep_inv}")
+      assert(hits_keep_1k        >= lowlim, "expected >= #{lowlim} hits from degraded keep 1k, got #{hits_keep_1k}")
+      assert(hits_keep_1k        <= 1500,   "expected <= 1500 hits from degraded keep 1k, got #{hits_keep_1k}")
+      assert(hits_keep_total_1k  >= lowlim, "expected >= #{lowlim} hits from degraded keep 1k total, got #{hits_keep_total_1k}")
+      assert(hits_keep_total_1k  <= 1500,   "expected <= 1500 hits from degraded keep 1k total, got #{hits_keep_total_1k}")
+      assert(hits_keep_inv       >= lowlim, "expected >= #{lowlim} hits from degraded inv 1k, got #{hits_keep_inv}")
+      assert(hits_keep_inv       <= 1500,   "expected <= 1500 hits from degraded inv 1k, got #{hits_keep_inv}")
       lowlim = min(9500, i*95)
-      assert(hits_keep_10k >= lowlim, "expected >= #{lowlim} hits from degrated keep 10k, got #{hits_keep_10k}")
-      assert(hits_keep_10k <= 15000, "expected <= 15000 hits from degrated keep 10k, got #{hits_keep_10k}")
-      assert(hits_sort_asc >= 10, "expected >= 10 hits from degraded sort ascending(10k), got #{hits_sort_asc}")
-      assert(hits_sort_asc <= 15000, "expected <= 15000 hits from degrated sort ascending(10k), got #{hits_sort_asc}")
-      assert(hits_sort_dec >= 10, "expected >= 10 hits from degraded sort descending(10k), got #{hits_sort_dec}")
-      assert(hits_sort_dec <= 15000, "expected <= 15000 hits from degrated sort descending(10k), got #{hits_sort_dec}")
+      assert(hits_keep_10k       >= lowlim, "expected >= #{lowlim} hits from degrated keep 10k, got #{hits_keep_10k}")
+      assert(hits_keep_10k       <= 15000,  "expected <= 15000 hits from degrated keep 10k, got #{hits_keep_10k}")
+      assert(hits_keep_total_10k >= lowlim, "expected >= #{lowlim} hits from degrated keep 10k total, got #{hits_keep_total_10k}")
+      assert(hits_keep_total_10k <= 15000,  "expected <= 15000 hits from degrated keep 10k total, got #{hits_keep_total_10k}")
+      assert(hits_sort_asc       >= 10,     "expected >= 10 hits from degraded sort ascending(10k), got #{hits_sort_asc}")
+      assert(hits_sort_asc       <= 15000,  "expected <= 15000 hits from degrated sort ascending(10k), got #{hits_sort_asc}")
+      assert(hits_sort_dec       >= 10,     "expected >= 10 hits from degraded sort descending(10k), got #{hits_sort_dec}")
+      assert(hits_sort_dec       <= 15000,  "expected <= 15000 hits from degrated sort descending(10k), got #{hits_sort_dec}")
 
       if (hits_keep_1k < hits_norm_dec)
         for j in 0...result_keep_1k.hit.size
