@@ -70,7 +70,7 @@ class MultipassRanking < IndexedOnlySearchTest
     exp5 = [[4,400],[3,300],[2,200],[1,100]]
 
     qp = "query=sddocname:test&parallel&skipnormalizing&ranking=r1-multi&" +
-            "ranking.rerankCount="
+            "ranking.secondPhase.rerankCount="
     assert_ranking(search(qp + "0"), exp1)
     assert_ranking(search(qp + "1"), exp2)
     assert_ranking(search(qp + "2"), exp3)
@@ -78,7 +78,7 @@ class MultipassRanking < IndexedOnlySearchTest
     assert_ranking(search(qp + "4"), exp5)
 
     qp = "query=sddocname:test&parallel&skipnormalizing&ranking=r1-multi&" +
-            "ranking.totalRerankCount="
+            "ranking.secondPhase.totalRerankCount="
     assert_ranking(search(qp + "0"), exp1)
     assert_ranking(search(qp + "1"), exp2)
     assert_ranking(search(qp + "2"), exp3)
