@@ -52,7 +52,7 @@ class EnvironmentBase
     @executor = Executor.new(@vespa_short_hostname)
 
     if File.exist?(@vespa_home)
-      @tmp_dir = @vespa_home + "/tmp"
+      @tmp_dir = @vespa_home + "/var/tmp"
     else
       @tmp_dir = "/tmp" # When running unit tests with no Vespa installed
     end
