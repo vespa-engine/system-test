@@ -280,7 +280,7 @@ class ConfigProxy < ConfigTest
 
   def get_java_command(service_name="client1", debug=false)
     debug_options = debug ? " -Dvespa.service.name=#{service_name} -Dvespa.log.level=error,warning,info,debug -Dvespa.log.target=file:#{Environment.instance.vespa_home}/logs/vespa/vespa.log" : ""
-    java_command = "java -Xms16m -Xmx64m -cp #{CONFIG_JAR}:bundles/simplebundle-1.0-deploy.jar #{debug_options} com.yahoo.vespa.configtestapp.AppService"
+    java_command = "java -Xms16m -Xmx64m -Djava.io.tmpdir=#{Environment.instance.tmp_dir} -cp #{CONFIG_JAR}:bundles/simplebundle-1.0-deploy.jar #{debug_options} com.yahoo.vespa.configtestapp.AppService"
   end
 
   # Check if config content (number of routes) and config generation is as expected)
