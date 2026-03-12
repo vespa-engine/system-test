@@ -44,7 +44,8 @@ COPY --chown=vespa:vespa /include/feature-flags.json /opt/vespa/var/vespa/flag.d
 
 USER vespa
 
-RUN sh $VESPA_HOME/.m2/populate-m2-repo.sh vespa && \
+RUN --mount=type=bind,target=/context-root,source=./,ro \
+    sh $VESPA_HOME/.m2/populate-m2-repo.sh vespa && \
     rm -f $VESPA_HOME/.m2/settings.xml $VESPA_HOME/.m2/populate-m2-repo.sh
 
 ENTRYPOINT ["bash", "-lc", "source /opt/rh/gcc-toolset/enable && /opt/vespa-systemtests/lib/node_server.rb $NODE_SERVER_OPTS"]
