@@ -661,7 +661,7 @@ class TestCase
   end
 
   def maven_command
-    "mvn #{if Environment.instance.maven_snapshot_url == nil then "-nsu" else "" end} --batch-mode -C -Daether.checksums.algorithms=SHA-1,SHA-256,MD5 -Dvespa.version=#{Maven.to_pom_version(@vespa_version)}"
+    "mvn #{if Environment.instance.maven_snapshot_url == nil then "-nsu" else "" end} --batch-mode -C -Djava.io.tmpdir=#{Environment.instance.tmp_dir} -Daether.checksums.algorithms=SHA-1,SHA-256,MD5 -Dvespa.version=#{Maven.to_pom_version(@vespa_version)}"
   end
 
   def get_timestamp(deploy_output)
