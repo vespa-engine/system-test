@@ -55,7 +55,11 @@
                                                     "from": 1223406051,
                                                     "to": 1234607162000000000,
                                                     "body": "test",
-                                                    "boool": false
+                                                    "boool": false,
+                                                    "pos": {
+                                                        "lat": 58.1462,
+                                                        "lng": 7.9956
+                                                    }
                                                 }
                                             }
                                         ]
