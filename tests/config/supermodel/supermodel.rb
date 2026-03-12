@@ -26,7 +26,7 @@ class SuperModel < ConfigTest
 
     classpath = "#{Environment.instance.vespa_home}/lib/jars/config.jar"
     env_variables = "VESPA_CONFIG_ID=supermodelclient VESPA_LOG_TARGET=file:/opt/vespa/logs/vespa/vespa.log"
-    cmd = "cd #{dirs.tmpdir}/bundles; #{env_variables}; java -cp #{classpath}:supermodelbundle-1.0-deploy.jar com.yahoo.supermodelclient.SuperModelClient"
+    cmd = "cd #{dirs.tmpdir}/bundles; #{env_variables}; java -Djava.io.tmpdir=#{Environment.instance.tmp_dir} -cp #{classpath}:supermodelbundle-1.0-deploy.jar com.yahoo.supermodelclient.SuperModelClient"
     output = vespa.adminserver.execute(cmd)
     assert_match("default,default:prod:default:default,false,0", output)
   end
