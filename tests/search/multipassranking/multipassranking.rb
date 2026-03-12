@@ -123,9 +123,9 @@ class MultipassRanking < IndexedOnlySearchTest
   end
 
   def print_ranking(result, query)
-    puts "######## query: " + query
+    puts "######## query: " + query.to_s
     result.hit.each_index do |i|
-      puts "  " + result.hit[i].field["documentid"] + ": " +  result.hit[i].field["relevancy"].to_i
+      puts "  " + result.hit[i].field["documentid"] + ": " +  result.hit[i].field["relevancy"].to_s
     end
   end
 
