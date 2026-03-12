@@ -56,6 +56,28 @@ schema mpd {
     }
   }
 
+  rank-profile retaintotalkilo {
+    match-phase {
+      attribute: order
+      total-max-hits: 1000
+      max-filter-coverage: 1.0 # Not public API
+    }
+    first-phase {
+      expression: attribute(order)
+    }
+  }
+
+  rank-profile retaintotaltenkilo {
+    match-phase {
+      attribute: order
+      total-max-hits: 10000
+      max-filter-coverage: 1.0
+    }
+    first-phase {
+      expression: attribute(order)
+    }
+  }
+
   rank-profile inversekilo {
     match-phase {
       attribute: order
