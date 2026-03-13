@@ -48,12 +48,6 @@ schema arrays {
             struct-field year_of_birth { indexing: attribute }
             struct-field alive         { indexing: attribute }
         }
-
-        field byte_byte_map type map<byte,byte> {
-            indexing: summary
-            struct-field key { indexing: attribute }
-            struct-field value { indexing: attribute }
-        }
     }
     rank-profile array-rank-profile {
       match-features {
