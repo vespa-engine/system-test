@@ -1,16 +1,31 @@
 {
-    "root": {
-        "id": "toplevel",
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 1
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 1,
+      "full": true,
+      "nodes": 1,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "errors": [
+      {
+        "code": 4,
+        "summary": "Invalid query parameter",
+        "message": "Summary 'barsum' does not exist"
+      }
+    ],
+    "children": [
+      {
+        "id": "index:search/0/e0ddcec5a12306b2090dbb37",
         "relevance": 1.0,
-        "fields": {
-            "totalCount": 0
-        },
-        "errors": [
-            {
-                "code": 17,
-                "summary": "Bad request.",
-                "message": "Invalid request [/search/?query=sddocname:base1&summary=barsum&timeout=10]: invalid presentation.summary=barsum"
-            }
-        ]
-    }
+        "source": "search"
+      }
+    ]
+  }
 }

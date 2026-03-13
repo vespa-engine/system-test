@@ -15,9 +15,9 @@
         },
         "errors": [
             {
-                "code": 8,
-                "summary": "Error in fill reply.",
-                "message": "There is no summary class with name 'barsum' in the summary config. Returning empty document summary for 1 hit(s)"
+                "code": 4,
+                "summary": "Invalid query parameter",
+                "message": "Summary 'barsum' does not exist"
             }
         ],
         "children": [

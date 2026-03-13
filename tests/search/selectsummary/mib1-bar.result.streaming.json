@@ -1,0 +1,17 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 0
+    },
+    "errors": [
+      {
+        "code": 3,
+        "summary": "Illegal query",
+        "source": "search",
+        "message": "Summary 'barsum' does not exist"
+      }
+    ]
+  }
+}
