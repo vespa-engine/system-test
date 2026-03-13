@@ -23,6 +23,16 @@ module GroupingBase
     querytest_filter
     querytest_istrue_error_handling
 
+    # Test geo distance
+    check_query('all(group(fixedwidth(geo_distance(attribute(pos), 70.1, 10.0).km, 100)) each(output(count())))',
+                'geo-distance-1')
+    check_query('all(group(fixedwidth(geo_distance(attribute(pos), 70.1, 10.0).miles, 100)) each(output(count())))',
+                'geo-distance-2')
+    check_query('all(group(boool) filter(range(900.0, 1100.0, geo_distance(attribute(pos), 70.1, 10.0).km)) each(output(count())))',
+                'geo-distance-3')
+    check_query('all(group(boool) filter(range(500.0, 600.0, geo_distance(attribute(pos), 70.1, 10.0).miles)) each(output(count())))',
+                'geo-distance-4')
+
     # Test quantiles
     check_query('all(group(boool) each(output(quantiles([0.1], f))))', 'quantile-1', 40)
     check_query('all(group(boool) each(output(quantiles([0.5, 0.9], f))))', 'quantile-2', 40)

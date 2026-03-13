@@ -60,6 +60,10 @@ schema test {
       indexing: attribute
     }
 
+    field pos type position {
+      indexing: attribute | summary
+    }
+
     field msd type map<string, double> {
       struct-field key {
         indexing: attribute
