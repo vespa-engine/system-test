@@ -237,7 +237,7 @@ class ProtonTest < IndexedOnlySearchTest
     assert(result.json['root'])
     assert(result.json['root']['errors'])
     assert(result.json['root']['errors'][0]['message'])
-    assert(result.json['root']['errors'][0]['message'] =~ /invalid.*summary/)
+    assert(result.json['root']['errors'][0]['message'] =~ /Summary 'not' does not exist/)
 
     puts "simple ranking"
     r1 = search('query=title:first&type=all').hit[0].field["relevancy"].to_f
