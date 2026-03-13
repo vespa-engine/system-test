@@ -4,7 +4,9 @@ datasets
 tqdm
 transformers
 sentence-transformers
-torch
+torch>=2.10.0
+pillow>=12.1.1
+orjson>=3.11.5
 huggingface-hub
 zstandard
 seaborn
