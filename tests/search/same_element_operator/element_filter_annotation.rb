@@ -73,82 +73,86 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
   end
 
   def assert_matching_bool_array
-    # [array, indices, expected_docids, value]
+    # [indices, value, expected_docids]
     [
-      ["bool_array", [0],              [0, 2],           "true"],
-      ["bool_array", [1],              [0, 3],           "true"],
-      ["bool_array", [2],              [1],              "true"],
-      ["bool_array", [3],              [],               "true"],
-      ["bool_array", [0, 1],           [0, 2, 3],        "true"],
-      ["bool_array", [0, 1, 2],        [0, 1, 2, 3],     "true"],
-      ["bool_array", [0, 1, 2, 3],     [0, 1, 2, 3],     "true"],
-      ["bool_array", [1, 2, 3],        [0, 1, 3],        "true"],
-      ["bool_array", [2, 3],           [1],              "true"],
-      ["bool_array", [0],              [1, 3, 4],        "false"],
-      ["bool_array", [1],              [1, 2, 4],        "false"],
-      ["bool_array", [2],              [0, 2, 3, 4],     "false"],
-      ["bool_array", [3],              [],               "false"],
-      ["bool_array", [0, 1, 2, 3],     [0, 1, 2, 3, 4],  "false"],
+      [[0],              "true",   [0, 2]         ],
+      [[1],              "true",   [0, 3]         ],
+      [[2],              "true",   [1]            ],
+      [[3],              "true",   []             ],
+      [[0, 1],           "true",   [0, 2, 3]      ],
+      [[0, 1, 2],        "true",   [0, 1, 2, 3]   ],
+      [[0, 1, 2, 3],     "true",   [0, 1, 2, 3]   ],
+      [[1, 2, 3],        "true",   [0, 1, 3]      ],
+      [[2, 3],           "true",   [1]            ],
+      [[0],              "false",  [1, 3, 4]      ],
+      [[1],              "false",  [1, 2, 4]      ],
+      [[2],              "false",  [0, 2, 3, 4]   ],
+      [[3],              "false",  []             ],
+      [[0, 1, 2, 3],     "false",  [0, 1, 2, 3, 4]],
       # Wrong order and duplicated elements
-      ["bool_array", [0, 0, 0, 0],     [0, 2],           "true"],
-      ["bool_array", [25, 25, 25, 0],  [0, 2],           "true"],
-    ].each do |array_name, indices, expected_docids, value|
-      assert_element_filter(array_name, indices, expected_docids, value)
+      [[0, 0, 0, 0],     "true",   [0, 2]         ],
+      [[25, 25, 25, 0],  "true",   [0, 2]         ],
+    ].each do |indices, value, expected_docids|
+      assert_element_filter("bool_array", indices, value, expected_docids)
     end
   end
 
   def assert_matching_string_array
-    # [array, indices, expected_docids, value]
+    # [indices, value, expected_docids]
     [
-      ["string_array", [],              [0, 4],  "baz"],
-      ["string_array", [0],             [4],     "baz"],
-      ["string_array", [1],             [4],     "baz"],
-      ["string_array", [2],             [0, 4],  "baz"],
-      ["string_array", [3],             [],      "baz"],
-      ["string_array", [0, 1],          [4],     "baz"],
-      ["string_array", [0, 1, 2],       [0, 4],  "baz"],
-      ["string_array", [0, 1, 2, 3],    [0, 4],  "baz"],
-      ["string_array", [1, 2, 3],       [0, 4],  "baz"],
-      ["string_array", [2, 3],          [0, 4],  "baz"],
+      [[],               "baz",  [0, 4]],
+      [[0],              "baz",  [4]   ],
+      [[1],              "baz",  [4]   ],
+      [[2],              "baz",  [0, 4]],
+      [[3],              "baz",  []    ],
+      [[0, 1],           "baz",  [4]   ],
+      [[0, 1, 2],        "baz",  [0, 4]],
+      [[0, 1, 2, 3],     "baz",  [0, 4]],
+      [[1, 2, 3],        "baz",  [0, 4]],
+      [[2, 3],           "baz",  [0, 4]],
       # Wrong order and duplicated elements
-      ["string_array", [0, 0, 0, 0],    [4],     "baz"],
-      ["string_array", [25, 25, 25, 0], [4],     "baz"],
-    ].each do |array_name, indices, expected_docids, value|
-      assert_element_filter(array_name, indices, expected_docids, value)
+      [[0, 0, 0, 0],     "baz",  [4]   ],
+      [[25, 25, 25, 0],  "baz",  [4]   ],
+    ].each do |indices, value, expected_docids|
+      assert_element_filter("string_array", indices, value, expected_docids)
     end
   end
 
   def assert_matching_integer_arrays
-    # [indices, expected_docids, value]
+    # [indices, value, expected_docids]
     test_data = [
-      [[],                             [2, 3, 4], "9"],
-      [[0],                            [0],       "1"],
-      [[1],                            [],        "1"],
-      [[2],                            [],        "1"],
-      [[3],                            [],        "1"],
-      [[0, 1, 2, 3],                   [0],       "1"],
-      [[0],                            [3, 4],    "9"],
-      [[1],                            [4],       "9"],
-      [[2],                            [2, 4],    "9"],
-      [[3],                            [],        "9"],
-      [[0, 1],                         [3, 4],    "9"],
-      [[0, 1, 2],                      [2, 3, 4], "9"],
-      [[0, 1, 2, 3],                   [2, 3, 4], "9"],
-      [[1, 2, 3],                      [2, 4],    "9"],
-      [[2, 3],                         [2, 4],    "9"],
+      [[],                           "9",  [2, 3, 4]],
+      [[0],                          "1",  [0]      ],
+      [[1],                          "1",  []       ],
+      [[2],                          "1",  []       ],
+      [[3],                          "1",  []       ],
+      [[0, 1, 2, 3],                 "1",  [0]      ],
+      [[0],                          "9",  [3, 4]   ],
+      [[1],                          "9",  [4]      ],
+      [[2],                          "9",  [2, 4]   ],
+      [[3],                          "9",  []       ],
+      [[0, 1],                       "9",  [3, 4]   ],
+      [[0, 1, 2],                    "9",  [2, 3, 4]],
+      [[0, 1, 2, 3],                 "9",  [2, 3, 4]],
+      [[1, 2, 3],                    "9",  [2, 4]   ],
+      [[2, 3],                       "9",  [2, 4]   ],
       # Wrong order and duplicated elements
-      [[25, 42, 50000, 0, 0, 0, 0],    [3, 4],    "9"],
-      [[3, 2, 3, 2, 1, 0],             [2, 3, 4], "9"],
+      [[25, 42, 50000, 0, 0, 0, 0],  "9",  [3, 4]   ],
+      [[3, 2, 3, 2, 1, 0],           "9",  [2, 3, 4]],
     ]
 
     ["byte_array", "int_array", "long_array"].each do |array_name|
-      test_data.each do |indices, expected_docids, value|
-        assert_element_filter(array_name, indices, expected_docids, value)
+      test_data.each do |indices, value, expected_docids|
+        assert_element_filter(array_name, indices, value, expected_docids)
       end
     end
   end
 
-  def assert_element_filter(array_name, indices, expected_docids, value)
+  # Gets the name of an array, the indices to use for the elementFilter annotation, the value to check for,
+  # and the expected docids
+  def assert_element_filter(array_name, indices, value, expected_docids)
+    # We have to check that the query "array_name[indices] = value" yields exactly the expected_docids
+    # We are going to build different queries that express this (YQL with elementFilter annotation, YQL with shorthand form, select query)
     build_queries(array_name, indices, value).each do |query|
       assert_docs(query, expected_docids)
     end
