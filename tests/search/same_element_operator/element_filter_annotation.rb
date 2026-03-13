@@ -152,15 +152,48 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
   # and the expected docids
   def assert_element_filter(array_name, indices, value, expected_docids)
     # We have to check that the query "array_name[indices] = value" yields exactly the expected_docids
-    # We are going to build different queries that express this (YQL with elementFilter annotation, YQL with shorthand form, select query)
-    build_queries(array_name, indices, value).each do |query|
-      assert_docs(query, expected_docids)
+    # We are going to build different queries that express this (YQL, YQL with syntactic sugar, JSON select query)
+    # They all should yield the same result
+
+    # Build YQL queries (or rather the match conditions)
+    yql = []
+    if indices.empty?
+      yql << "#{array_name} contains sameElement(\"#{value}\")"
+      yql << "#{array_name} contains ({elementFilter:[]}sameElement(\"#{value}\"))"
+    else
+      yql << "#{array_name} contains ({elementFilter:[#{indices.join(',')}]}sameElement(\"#{value}\"))"
+      if indices.length == 1
+        yql << "#{array_name} contains ({elementFilter:#{indices[0]}}sameElement(\"#{value}\"))"
+
+        # syntax sugar: field[index] = value
+        yql << "#{array_name}[#{indices[0]}]=#{add_quotes_if_string(value)}"
+      end
     end
-    if indices.length == 1
-      query_body = { "equals" => { "field" => array_name, "index" => indices[0], "value" => to_native_value(value) } }
-      result = post_json_select(query_body)
+
+    # Send YQL queries
+    yql.each do |match_condition|
+      query = {'yql' => "select * from sources * where #{match_condition} order by id asc"}
+      puts "Sending query: #{query}"
+      result = search(query)
       assert_docs_result(expected_docids, result)
     end
+
+    # Build and send JSON select query
+    if indices.length == 1
+      json = { "select" => { "where" => { "equals" => { "field" => array_name, "index" => indices[0], "value" => to_native_value(value) } } },
+               "sorting" => "id",
+               "timeout" => 5}
+      json["streaming.selection"] = "true" if is_streaming
+      puts "Sending JSON query: #{json.to_json}"
+      result = vespa.container.values.first.post_search("/search/", json.to_json, 0, {'Content-Type' => 'application/json'})
+      assert_docs_result(expected_docids, result)
+    end
+  end
+
+  def add_quotes_if_string(s)
+    return s if ["true", "false"].include?(s)
+    return s if is_number(s)
+    "\"#{s}\""
   end
 
   def to_native_value(s)
@@ -170,39 +203,8 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
     s
   end
 
-  # Returns all query variants that should produce the same result for a given
-  # array field, element filter indices, and match value.
-  def build_queries(array_name, indices, value)
-    queries = []
-    if indices.empty?
-      queries << "#{array_name} contains sameElement(\"#{value}\")"
-      queries << "#{array_name} contains ({elementFilter:[]}sameElement(\"#{value}\"))"
-    else
-      queries << "#{array_name} contains ({elementFilter:[#{indices.join(',')}]}sameElement(\"#{value}\"))"
-      if indices.length == 1
-        queries << "#{array_name} contains ({elementFilter:#{indices[0]}}sameElement(\"#{value}\"))"
-
-        # syntax sugar: field[index] = value
-        queries << "#{array_name}[#{indices[0]}]=#{add_quotes_if_string(value)}"
-      end
-    end
-    queries
-  end
-
-  def add_quotes_if_string(s)
-    return s if ["true", "false"].include?(s)
-    return s if is_number(s)
-    "\"#{s}\""
-  end
-
   def is_number(s)
     s.match?(/\A-?\d+(\.\d+)?\z/)
-  end
-
-  def assert_docs(match_condition, expected_docids)
-    query = {'yql' => "select * from sources * where #{match_condition} order by id asc"}
-    result = search(query)
-    assert_docs_result(expected_docids, result)
   end
 
   def assert_docs_result(expected_docids, result)
@@ -211,16 +213,6 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
       assert_field_value(result, "documentid", "id:arrays:arrays::#{expected_docids[i]}", i)
     end
   end
-
-  def post_json_select(query_body)
-    json = { "select" => { "where" => query_body } }
-    json["streaming.selection"] = "true" if is_streaming
-    json["sorting"] = "id"
-    json["timeout"] = 5
-    vespa.container.values.first.post_search(
-      "/search/", json.to_json, 0, {'Content-Type' => 'application/json'})
-  end
-
 
   ######################################################################################################################
   # Ranking test
@@ -292,7 +284,7 @@ class ElementFilterAnnotation < IndexedStreamingSearchTest
     # We check that two results are returned where the sameElement matches the first but not the second
     query = {'yql' => "select * from sources * where true or (#{array_name} contains ({elementFilter:#{element_filter}}sameElement(#{same_element}))) order by id asc",
              'ranking' => 'array-rank-profile'}
-    puts "Query: #{query}"
+    puts "Sending query: #{query}"
     result = search(query)
     assert_equal(2, result.hit.size)
     assert_equal(result.hit[0].field["matchfeatures"]["matches(#{array_name})"], 1.0)
