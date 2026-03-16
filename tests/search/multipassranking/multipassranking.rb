@@ -15,7 +15,7 @@ class MultipassRanking < IndexedOnlySearchTest
     assert_hitcount("query=sddocname:test", 4);
 
     @heap_size = 2
-    qp = "query=sddocname:test&parallel&skipnormalizing&ranking="
+    qp = "query=sddocname:test&parallel&ranking="
 
     # case 1 (x+y | x'+y and order(x) == order(x'))
     exp1 = [[4,40],[3,30],[2,20],[1,10]]
@@ -48,7 +48,7 @@ class MultipassRanking < IndexedOnlySearchTest
     assert_ranking(search(qp + "r5-single"), exp1, true)
     assert_ranking(search(qp + "r5-multi"), exp2, true)
 
-    qp = "query=a1:%3E20&parallel&skipnormalizing&ranking="
+    qp = "query=a1:%3E20&parallel&ranking="
 
     # case 6 (x | x' and order(x) == order(x'))
     exp1 = [[4,40],[3,30]]
@@ -69,7 +69,7 @@ class MultipassRanking < IndexedOnlySearchTest
     exp4 = [[4,400],[3,300],[2,200],[1,10]]
     exp5 = [[4,400],[3,300],[2,200],[1,100]]
 
-    qp = "query=sddocname:test&parallel&skipnormalizing&ranking=r1-multi&" +
+    qp = "query=sddocname:test&parallel&ranking=r1-multi&" +
             "ranking.secondPhase.rerankCount="
     assert_ranking(search(qp + "0"), exp1)
     assert_ranking(search(qp + "1"), exp2)
@@ -77,36 +77,21 @@ class MultipassRanking < IndexedOnlySearchTest
     assert_ranking(search(qp + "3"), exp4)
     assert_ranking(search(qp + "4"), exp5)
 
-    qp = "query=sddocname:test&parallel&skipnormalizing&ranking=r1-multi&" +
+    qp = "query=sddocname:test&parallel&ranking=r1-multi&" +
             "ranking.secondPhase.totalRerankCount="
     assert_ranking(search(qp + "0"), exp1)
     assert_ranking(search(qp + "1"), exp2)
     assert_ranking(search(qp + "2"), exp3)
     assert_ranking(search(qp + "3"), exp4)
     assert_ranking(search(qp + "4"), exp5)
-
-    # case 11 (keep-rank-count)
-
-    qp = "query=sddocname:test&parallel&skipnormalizing&ranking="
-    print_ranking(search(qp + "keep2"), qp)
-    print_ranking(search(qp + "keep3"), qp)
-    print_ranking(search(qp + "totalkeep2"), qp)
-    print_ranking(search(qp + "totalkeep3"), qp)
-
-    qp = "query=sddocname:test&parallel&skipnormalizing&ranking=r1-multi&" +
-            "ranking=noarg&ranking.keepRankCount="
-    print_ranking(search(qp + "2"), qp + "2")
-    print_ranking(search(qp + "3"), qp + "3")
-
-    qp = "query=sddocname:test&parallel&skipnormalizing&ranking=r1-multi&" +
-            "ranking=noarg&ranking.totalKeepRankCount="
-    print_ranking(search(qp + "2"), qp + "2")
-    print_ranking(search(qp + "3"), qp + "3")
   end
 
   # Asserts that the given result matches the docids and relevancy
   # of the given expected array ([[docid,relevancy],...])
   def assert_ranking(result, exp, ranking_only = false)
+    if (result.hit.size == 0)
+      puts result.errorlist
+    end
     assert(result.hit.size == exp.size, "Expected #{exp.size} hits, but was #{result.hit.size}")
     result.hit.each_index do |i|
       if (!ranking_only)
@@ -119,13 +104,6 @@ class MultipassRanking < IndexedOnlySearchTest
         exp_score = exp[i][1]
         assert(score == exp_score, "Expected relevancy #{exp_score} for hit #{i}, but was #{score}")
       end
-    end
-  end
-
-  def print_ranking(result, query)
-    puts "######## query: " + query.to_s
-    result.hit.each_index do |i|
-      puts "  " + result.hit[i].field["documentid"] + ": " +  result.hit[i].field["relevancy"].to_s
     end
   end
 

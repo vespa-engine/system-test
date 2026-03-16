@@ -104,35 +104,4 @@ schema test {
     }
   }
 
-  ############## keep-rank-count ##############
-  rank-profile keep2 {
-    first-phase {
-      expression: attribute(a1) + attribute(a2)
-      keep-rank-count: 2
-    }
-  }
-  rank-profile keep3 {
-    first-phase {
-      expression: attribute(a1) + attribute(a2)
-      keep-rank-count: 3
-    }
-  }
-  rank-profile totalkeep2 {
-    first-phase {
-      expression: attribute(a1) + attribute(a2)
-      total-keep-rank-count: 2
-    }
-  }
-  rank-profile totalkeep3 {
-    first-phase {
-      expression: attribute(a1) + attribute(a2)
-      total-keep-rank-count: 3
-    }
-  }
-  rank-profile noarg {
-    first-phase {
-      expression: attribute(a1) + attribute(a2)
-    }
-  }
-
 }
