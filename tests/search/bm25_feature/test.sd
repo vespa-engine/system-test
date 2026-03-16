@@ -35,4 +35,10 @@ schema test {
       elementwise(bm25(content),x,double).averageElementLength: 100.0
     }
   }
+  rank-profile avgfl12 inherits default {
+    rank-properties {
+      bm25(content).averageFieldLength: 12.0
+      elementwise(bm25(content),x,double).averageElementLength: 12.0
+    }
+  }
 }

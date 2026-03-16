@@ -38,7 +38,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     attr_reader :total_doc_count, :field
     attr_reader :document_frequencies, :ranking
     attr_reader :idfs, :annotations
-    def initialize(testcase, total_doc_count, field, document_frequencies, ranking, add_significance: false, add_docfreq: false)
+    def initialize(testcase, total_doc_count, field, document_frequencies, ranking, add_significance: false, add_docfreq: false, use_near: false)
       @testcase = testcase
       @total_doc_count = total_doc_count
       @field = field
@@ -61,6 +61,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
           @annotations[term] = Significance.new(idf)
         end
       end
+      @use_near = use_near
     end
 
     def make_query(terms)
@@ -70,9 +71,17 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
         if !annotations.nil? && annotations.include?(term)
           annotation = annotations[term].annotation
         end
-        subqueries.push("#{field} contains (#{annotation}\"#{term}\")")
+        if @use_near
+          subqueries.push("(#{annotation}\"#{term}\")")
+        else
+          subqueries.push("#{field} contains (#{annotation}\"#{term}\")")
+        end
       end
-      joined_subqueries = subqueries.join(" and ")
+      if @use_near
+        joined_subqueries = "#{field} contains ({distance:1}near(" + subqueries.join(",") + '))'
+      else
+        joined_subqueries = subqueries.join(" and ")
+      end
       form = [['yql', "select * from sources * where #{joined_subqueries}"],
               ['ranking', ranking]]
       encoded_form = URI.encode_www_form(form)
@@ -127,6 +136,7 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     restart_proton("test", 3)
     assert_bm25_scores
     assert_bm25_array_scores(3, 8)
+    assert_filtered_terms
   end
 
   def test_enable_bm25_feature
@@ -316,6 +326,41 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
                             'contenta')
   end
 
+  def assert_filtered_terms
+    feed_doc('id:test:test::0', 'a a a a a a b b b b b b')
+    feed_doc('id:test:test::1', 'a b c a b c a b c a b c')
+    vespa.document_api_v1.remove('id:test:test::2')
+    total_doc_count = 3
+    ranking = 'avgfl12'
+    avg_element_length = 12
+    avg_field_length = 12
+    reverse_index_no_filter = { 'a' => [[[6, 12]], [[4, 12]], [[0, 0]]],
+                                'b' => [[[6, 12]], [[4, 12]], [[0, 0]]] }
+    reverse_index_filter =    { 'a' => [[[1, 12]], [[4, 12]], [[0, 0]]],
+                                'b' => [[[1, 12]], [[4, 12]], [[0, 0]]] }
+    document_frequencies = { 'a' => 2, 'b' => 2 }
+    # No term filtering for and query operator
+    query_builder = QueryBuilder.new(self, total_doc_count, 'content', document_frequencies, ranking, add_docfreq: true)
+    scorer = Bm25Scorer.new(query_builder.idfs, avg_element_length, avg_field_length, reverse_index_no_filter)
+    idfs = query_builder.idfs
+    assert_scores_for_query(query_builder, scorer, ['a','b'],
+                            [score(6, 12, idfs['a'], avg_field_length) +
+                             score(6, 12, idfs['b'], avg_field_length),
+                             score(4, 12, idfs['a'], avg_field_length) +
+                             score(4, 12, idfs['b'], avg_field_length)],
+                            'content')
+    # term filtering for near query operator
+    near_query_builder = QueryBuilder.new(self, total_doc_count, 'content', document_frequencies, ranking, add_docfreq: true, use_near: true)
+    near_scorer = Bm25Scorer.new(near_query_builder.idfs, avg_element_length, avg_field_length, reverse_index_filter)
+    near_idfs = near_query_builder.idfs
+    assert_scores_for_query(near_query_builder, near_scorer, ['a','b'],
+                            [score(1, 12, near_idfs['a'], avg_field_length) +
+                             score(1, 12, near_idfs['b'], avg_field_length),
+                             score(4, 12, near_idfs['a'], avg_field_length) +
+                             score(4, 12, near_idfs['b'], avg_field_length)],
+                            'content')
+  end
+
   def idf(matching_doc_count, total_doc_count = 3)
     Bm25Scorer.idf(matching_doc_count, total_doc_count)
   end
@@ -414,5 +459,9 @@ class Bm25FeatureTest < IndexedStreamingSearchTest
     assert_features(exp_features, mf)
   end
 
+  def feed_doc(id, text)
+    doc = Document.new(id).add_field("content", text)
+    vespa.document_api_v1.put(doc)
+  end
 
 end

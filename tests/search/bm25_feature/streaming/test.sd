@@ -38,4 +38,10 @@ schema test {
       elementwise(bm25(contenta),x,double).averageElementLength: 4.0
     }
   }
+  rank-profile avgfl12 inherits avgfl100 {
+    rank-properties {
+      bm25(content).averageFieldLength: 12.0
+      elementwise(bm25(content),x,double).averageElementLength: 12.0
+    }
+  }
 }
