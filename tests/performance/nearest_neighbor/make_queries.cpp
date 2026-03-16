@@ -63,7 +63,7 @@ print_nns(std::ostream& os, bool approximate, int target_hits, int explore_hits,
 {
     os << "[" << l_brace;
     print_int_param(os, "targetNumHits", target_hits) << ",";
-    print_int_param(os, "hnsw.exploreAdditionalHits", explore_hits) << ",";
+    print_int_param(os, "hnsw.totalExploreAdditionalHits", explore_hits) << ",";
     print_bool_param(os, "approximate", approximate) << ",";
     print_str_param(os, "label", "nns");
     os << r_brace << "]" << "nearestNeighbor(" << doc_tensor << ",q_vec)";
