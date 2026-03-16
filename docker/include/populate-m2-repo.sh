@@ -37,3 +37,23 @@ $MVNW $SHARED_MVN_OPTS dependency:go-offline
 rm -rf $MVNW /tmp/mvnw.cmd /tmp/.mvn/ /tmp/pom.parent.xml
 # Remove these files to avoid Maven verifying the the source locations
 find $LOCAL_M2_REPO -name "_remote.repositories" -delete
+
+dep_versions=/context-root/include/allow-versions.txt
+
+if [ -f "${dep_versions}" ]; then
+    cat "${dep_versions}" | grep vespa.version | sed 's=</.*==;s=[.]vespa.version>= =;s=<==' |
+        while read -r pkg allow_version; do
+            pk_dir=$(find $HOME/.m2/repository -type d -name $pkg)
+            if [ -d "${pk_dir}/${allow_version}" ]; then
+                cd "${pk_dir}" || exit 1
+                for version_dir in *; do
+                    if [ "${version_dir}" = "${allow_version}" ]; then
+                        : ok
+                    else
+                        echo "Removing: $(pwd)/${version_dir}"
+                        rm -rf "./${version_dir}"
+                    fi
+                done
+            fi
+        done
+fi
