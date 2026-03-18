@@ -33,7 +33,7 @@
                     "value": "-Djdisc.debug.resources=true -XX:+UseG1GC"
                 },
                 {
-                    "value" : "-Djdisc.debug.resources=true -XX:+UseZGC -XX:+AlwaysPreTouch -XX:-ZUncommit"
+                    "value" : "-Djdisc.debug.resources=true -XX:+UseParallelGC -XX:MaxTenuringThreshold=15 -XX:NewRatio=1"
                 }
             ]
         },
