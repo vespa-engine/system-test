@@ -31,7 +31,7 @@ class ContainerWarmup < PerformanceTest
     jdisc = Container.new.
         handler(Handler.new("com.yahoo.vespatest.HelloWorld").
                     binding("http://*/HelloWorld")).
-        jvmoptions('-Xms387m -Xmx6g -XX:ThreadStackSize=1024')
+        jvmoptions('-Xms6g -Xmx6g -XX:ThreadStackSize=1024')
 
 
     output = deploy_app(ContainerApp.new.
@@ -41,7 +41,7 @@ class ContainerWarmup < PerformanceTest
 #                   container(Container.new.
 #                                 handler(Handler.new("com.yahoo.vespatest.HelloWorld").
 #                                             binding("http://*/HelloWorld")).
-#                                 jvmoptions('-Xms387m -Xmx6g -XX:ThreadStackSize=1024')))  # Replicates defaults for jdisc test
+#                                 jvmoptions('-Xms6g -Xmx6g -XX:ThreadStackSize=1024')))  # Replicates defaults for jdisc test
 
     start
     wait_for_application(@vespa.container.values.first, output)

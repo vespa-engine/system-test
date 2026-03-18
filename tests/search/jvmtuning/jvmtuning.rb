@@ -18,10 +18,10 @@ class JvmTuning < IndexedOnlySearchTest
     deploy_app(SearchApp.new.sd(selfdir+"foo.sd").
                container(Container.new.
                            jvmgcoptions("-XX:+UseG1GC -XX:MaxTenuringThreshold=10").
-                           jvmoptions('-Dfoo=bar -Dvespa_foo="foo og bar" -Xms256m -Xms256m ' +
+                           jvmoptions('-Dfoo=bar -Dvespa_foo="foo og bar" -Xms256m -Xmx256m ' +
                                       '-XX:+PrintCommandLineFlags')).
                container(Container.new("docproc1").
-                           jvmoptions("-XX:+PrintCommandLineFlags -Xms256m -Xms256m").
+                           jvmoptions("-XX:+PrintCommandLineFlags -Xms256m -Xmx256m").
                            jvmgcoptions("-XX:MaxTenuringThreshold=13").
                            docproc(DocumentProcessing.new.chain(Chain.new("docproc1-chain").add(DocProc.new("com.yahoo.vespatest.WorstMusicDocProc")))).
                            http(Http.new.server(Server.new("server1", 5000)))))
