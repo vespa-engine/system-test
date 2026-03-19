@@ -6,16 +6,17 @@
 
   <container id="search" version="1.0">
     <nodes>
-      <jvm options="-verbose:gc -Xms8g -Xmx8g -XX:+PrintGCDetails" gc-options="-XX:+UseG1GC" />
+      <jvm options="-Xms16g -Xmx16g -Xlog:gc*=info:file=$VESPA_HOME/logs/vespa/gc.log:time,uptime,level,tags -Xlog:gc=info:stdout:time,uptime"
+           gc-options="GC_OPTIONS_PLACEHOLDER" />
       <node hostalias='node1'/>
     </nodes>
     <search>
       <provider id="mock">
-        <searcher id="com.yahoo.performance.searcher.BackEndSearcher" bundle="performance"/>
+        <searcher id="com.yahoo.performance.searcher.GarbageGeneratingSearcher" bundle="performance"/>
       </provider>
     </search>
     <document-api/>
-    <accesslog type="disabled"/> 
+    <accesslog type="disabled"/>
   </container>
 
 </services>
