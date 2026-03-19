@@ -33,6 +33,10 @@ module GroupingBase
     check_query('all(group(boool) filter(range(500.0, 600.0, geo_distance(attribute(pos), 70.1, 10.0).miles)) each(output(count())))',
                 'geo-distance-4')
 
+    # Test geo distance with multi-value position
+    check_query('all(group(fixedwidth(geo_distance(attribute(pos_multi), 70.1, 10.0).km, 100)) each(output(count())))',
+                'geo-distance-multi-1')
+
     # Test quantiles
     check_query('all(group(boool) each(output(quantiles([0.1], f))))', 'quantile-1', 40)
     check_query('all(group(boool) each(output(quantiles([0.5, 0.9], f))))', 'quantile-2', 40)
