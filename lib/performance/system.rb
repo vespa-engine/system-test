@@ -5,6 +5,18 @@ require 'performance/stat'
 
 module Perf
 
+  class RemoteProcFs
+    def initialize(node)
+      @node = node
+    end
+
+    def [](name)
+      @node.execute("cat /proc/#{name}", :noecho => true)
+    rescue
+      nil
+    end
+  end
+
   # Calculate cpu util for a time period, use start() and end()
   class System
     attr_reader :hostname
@@ -22,11 +34,11 @@ module Perf
     end
 
     def start
-      @system_snapshot_start = Stat::create_snapshot
+      @system_snapshot_start = Stat::system_snapshot(RemoteProcFs.new(@node))
     end
 
     def end
-      @system_snapshot_end = Stat::create_snapshot
+      @system_snapshot_end = Stat::system_snapshot(RemoteProcFs.new(@node))
       p = Stat::snapshot_period(@system_snapshot_start, @system_snapshot_end)
       set_cpu_util(p.metrics[:cpu_util])
     end
