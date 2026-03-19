@@ -7,9 +7,10 @@ require 'environment'
 class ContainerGcTest < PerformanceTest
 
   GC_CONFIGS = {
-    'parallel' => '-XX:+UseParallelGC -XX:MaxTenuringThreshold=15 -XX:NewRatio=1',
-    'g1'       => '-XX:+UseG1GC',
-    'zgc'      => '-XX:+UseZGC -XX:+AlwaysPreTouch -XX:-ZUncommit'
+    'parallel'         => '-XX:+UseParallelGC -XX:MaxTenuringThreshold=15 -XX:NewRatio=1',
+    'parallel-default' => '-XX:+UseParallelGC',
+    'g1'               => '-XX:+UseG1GC',
+    'zgc'              => '-XX:+UseZGC -XX:+AlwaysPreTouch -XX:-ZUncommit'
   }
 
   def initialize(*args)
