@@ -13,6 +13,7 @@
 
 using FloatVector = std::vector<float>;
 using IntVector = std::vector<int>;
+using Int8Vector = std::vector<int8_t>;
 
 IntVector
 parse_filters(const std::string &str) {
@@ -77,8 +78,9 @@ print_vector_spec(std::ostream& os, bool mixed_tensor)
     return os;
 }
 
+template <typename T>
 std::ostream&
-print_vector_field(std::ostream& os, const std::string& field_name, const FloatVector& vector, bool mixed_tensor)
+print_vector_field(std::ostream& os, const std::string& field_name, const std::vector<T>& vector, bool mixed_tensor)
 {
     os << "\"" << field_name << "\": { ";
     print_vector_spec(os, mixed_tensor);
@@ -87,8 +89,9 @@ print_vector_field(std::ostream& os, const std::string& field_name, const FloatV
     return os;
 }
 
+template <typename T>
 std::ostream&
-print_assign_vector_field(std::ostream& os, const std::string& field_name, const FloatVector& vector, bool mixed_tensor)
+print_assign_vector_field(std::ostream& os, const std::string& field_name, const std::vector<T>& vector, bool mixed_tensor)
 {
     os << "\"" << field_name << "\": { \"assign\": { ";
     print_vector_spec(os, mixed_tensor);
@@ -100,8 +103,9 @@ print_assign_vector_field(std::ostream& os, const std::string& field_name, const
 
 using StringVector = std::vector<std::string>;
 
+template <typename T>
 void
-print_put(std::ostream& os, size_t docid, const IntVector &filters, const Interval &latitude, const Interval &longitude, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor)
+print_put(std::ostream& os, size_t docid, const IntVector &filters, const Interval &latitude, const Interval &longitude, const StringVector& tensor_fields, const std::vector<T>& vector, bool mixed_tensor)
 {
     os << "{" << std::endl;
     os << "  \"put\": \"id:test:test::" << docid << "\"," << std::endl;
@@ -123,8 +127,9 @@ print_put(std::ostream& os, size_t docid, const IntVector &filters, const Interv
     os << "}";
 }
 
+template <typename T>
 void
-print_update(std::ostream& os, size_t docid, const StringVector& tensor_fields, const FloatVector& vector, bool mixed_tensor)
+print_update(std::ostream& os, size_t docid, const StringVector& tensor_fields, const std::vector<T>& vector, bool mixed_tensor)
 {
     os << "{" << std::endl;
     os << "  \"update\": \"id:test:test::" << docid << "\"," << std::endl;
@@ -151,12 +156,13 @@ print_update(std::ostream& os, size_t docid, const StringVector& tensor_fields, 
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_docs <vector-file> <num-dimensions> <feed-op> <begin-doc> <start-vector> <end-vector> <filter-values> <latitude-interval> <longitude-interval> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
+ *   ./make_docs <data-type> <vector-file> <num-dimensions> <feed-op> <begin-doc> <start-vector> <end-vector> <filter-values> <latitude-interval> <longitude-interval> <mixed-tensor> <tensor-field-0> ... <tensor-field-n>
  */ 
 int
 main(int argc, char **argv)
 {
     srand(42);
+    bool use_int8 = false;
     std::string vector_file;
     std::string feed_op = "put";
     size_t begin_doc = 0;
@@ -169,36 +175,39 @@ main(int argc, char **argv)
     bool mixed_tensor = false;
     std::vector<std::string> tensor_fields;
     if (argc > 1) {
-        vector_file = std::string(argv[1]);
+        use_int8 = (std::string(argv[1]) == "int8");
     }
     if (argc > 2) {
-        dim_size = std::stoll(argv[2]);
+        vector_file = std::string(argv[2]);
     }
     if (argc > 3) {
-        feed_op = std::string(argv[3]);
+        dim_size = std::stoll(argv[3]);
     }
     if (argc > 4) {
-        begin_doc = std::stoll(argv[4]);
+        feed_op = std::string(argv[4]);
     }
     if (argc > 5) {
-        start_vector = std::stoll(argv[5]);
+        begin_doc = std::stoll(argv[5]);
     }
     if (argc > 6) {
-        end_vector = std::stoll(argv[6]);
+        start_vector = std::stoll(argv[6]);
     }
     if (argc > 7) {
-        filters = parse_filters(argv[7]);
+        end_vector = std::stoll(argv[7]);
     }
     if (argc > 8) {
-        latitude = parse_interval(argv[8]);
+        filters = parse_filters(argv[8]);
     }
     if (argc > 9) {
-        longitude = parse_interval(argv[9]);
+        latitude = parse_interval(argv[9]);
     }
     if (argc > 10) {
-        mixed_tensor = (argv[10] == std::string("true"));
+        longitude = parse_interval(argv[10]);
     }
-    for (int i = 11; i < argc; ++i) {
+    if (argc > 11) {
+        mixed_tensor = (argv[11] == std::string("true"));
+    }
+    for (int i = 12; i < argc; ++i) {
         tensor_fields.push_back(std::string(argv[i]));
     }
     std::ifstream is(vector_file, std::ifstream::binary);
@@ -207,16 +216,20 @@ main(int argc, char **argv)
         return 1;
     }
     int read_dim_size = 0;
-    FloatVector vector(dim_size, 0);
+    size_t data_type_size = (use_int8 ? sizeof(int8_t) : sizeof(float));
+    FloatVector float_vector(dim_size, 0);
+    Int8Vector int8_vector(dim_size, 0);
     std::cout << "[" << std::endl;
     bool make_puts = (feed_op == "put");
     bool first = true;
 
-    is.ignore(start_vector * (4 + sizeof(float) * dim_size)); // skip vectors as specified by start_vector
+    is.ignore(start_vector * (4 + data_type_size * dim_size)); // skip vectors as specified by start_vector
     for (size_t vector_num = start_vector; vector_num < end_vector; ++vector_num) {
         is.read(reinterpret_cast<char*>(&read_dim_size), 4);
         assert(read_dim_size == dim_size);
-        is.read(reinterpret_cast<char*>(vector.data()), sizeof(float) * dim_size);
+
+        char* data_target = use_int8 ? reinterpret_cast<char*>(int8_vector.data()) : reinterpret_cast<char*>(float_vector.data());
+        is.read(data_target, data_type_size * dim_size);
         assert(is.good());
 
         if (!first) {
@@ -224,9 +237,17 @@ main(int argc, char **argv)
         }
         first = false;
         if (make_puts) {
-            print_put(std::cout, begin_doc + vector_num - start_vector, filters, latitude, longitude, tensor_fields, vector, mixed_tensor);
+            if (use_int8) {
+                print_put(std::cout, begin_doc + vector_num - start_vector, filters, latitude, longitude, tensor_fields, int8_vector, mixed_tensor);
+            } else {
+                print_put(std::cout, begin_doc + vector_num - start_vector, filters, latitude, longitude, tensor_fields, float_vector, mixed_tensor);
+            }
         } else {
-            print_update(std::cout, begin_doc + vector_num - start_vector, tensor_fields, vector, mixed_tensor);
+            if (use_int8) {
+                print_update(std::cout, begin_doc + vector_num - start_vector, tensor_fields, int8_vector, mixed_tensor);
+            } else {
+                print_update(std::cout, begin_doc + vector_num - start_vector, tensor_fields, float_vector, mixed_tensor);
+            }
         }
     }
     std::cout << std::endl << "]" << std::endl;
