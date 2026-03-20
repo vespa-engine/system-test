@@ -12,6 +12,19 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     start
     feed_docs
 
+    verify_nns_matching_metrics(false)
+  end
+
+  def test_nns_matching_metrics_with_query_caching
+    set_description("Test reporting of matching metrics specific for nearest neighbor search with query caching enabled")
+    deploy_app(SearchApp.new.cluster(SearchCluster.new('test').sd(selfdir + "nn_metrics/test.sd")))
+    start
+    feed_docs
+
+    verify_nns_matching_metrics(true)
+  end
+
+  def  verify_nns_matching_metrics(query_cache)
     # No queries yet
     enn_distances, ann_distances, ann_visited = get_metrics("test")
     assert_equal(0, enn_distances)
@@ -21,7 +34,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     ####################################################################################################################
     puts "HNSW search without filtering"
     ####################################################################################################################
-    run_query(get_query({:qpos => 62}))
+    run_query(get_query({:qpos => 62, :query_cache => query_cache}))
 
     # Verify overall metrics
     enn_distances, ann_distances, ann_visited = get_metrics("test")
@@ -39,7 +52,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     ####################################################################################################################
     puts "HNSW search with filtering"
     ####################################################################################################################
-    run_query(get_query({:qpos => 80, :tag => 5}))
+    run_query(get_query({:qpos => 80, :tag => 5, :query_cache => query_cache}))
 
     # Verify overall metrics
     enn_distances, ann_distances, ann_visited = get_metrics("test")
@@ -60,7 +73,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     ####################################################################################################################
     puts "Exact search"
     ####################################################################################################################
-    run_query(get_query({:qpos => 80, :approximate => "false"}))
+    run_query(get_query({:qpos => 80, :approximate => "false", :query_cache => query_cache}))
 
     # Verify overall metrics
     enn_distances, ann_distances, ann_visited = get_metrics("test")
@@ -76,7 +89,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     ####################################################################################################################
     puts "Exact search with filtering"
     ####################################################################################################################
-    run_query(get_query({:qpos => 80, :tag => 5, :approximate => "false"}))
+    run_query(get_query({:qpos => 80, :tag => 5, :approximate => "false", :query_cache => query_cache}))
 
     # Verify overall metrics
     enn_distances, ann_distances, ann_visited = get_metrics("test")
@@ -92,7 +105,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     ####################################################################################################################
     puts "Exact search with filtering (fallback)"
     ####################################################################################################################
-    run_query(get_query({:qpos => 80, :tag => 5, :ranking => "exact_fallback"}))
+    run_query(get_query({:qpos => 80, :tag => 5, :ranking => "exact_fallback", :query_cache => query_cache}))
 
     # Verify rank-profile metrics
     enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "exact_fallback")
@@ -103,7 +116,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     ####################################################################################################################
     puts "HNSW with post-filter"
     ####################################################################################################################
-    run_query(get_query({:qpos => 80, :tag => 5, :ranking => "post_filter"}))
+    run_query(get_query({:qpos => 80, :tag => 5, :ranking => "post_filter", :query_cache => query_cache}))
 
     # Verify rank-profile metrics
     enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "post_filter")
@@ -115,7 +128,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     ####################################################################################################################
     puts "HSNW with filter first"
     ####################################################################################################################
-    run_query(get_query({:qpos => 80, :tag => 5, :ranking => "filter_first"}))
+    run_query(get_query({:qpos => 80, :tag => 5, :ranking => "filter_first", :query_cache => query_cache}))
 
     # Verify rank-profile metrics
     enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "filter_first")
@@ -138,22 +151,20 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     deploy_app(SearchApp.new.cluster(SearchCluster.new('multi').sd(selfdir + "nn_metrics/multi.sd")))
     start
 
-    vector0 = [{'address'=>{'m'=>'a', 'x'=>'0'}, 'value'=>1.0},
-               {'address'=>{'m'=>'a', 'x'=>'1'}, 'value'=>1.0},
-               {'address'=>{'m'=>'b', 'x'=>'0'}, 'value'=>2.0},
-               {'address'=>{'m'=>'b', 'x'=>'1'}, 'value'=>2.0}]
-    vector1 = [{'address'=>{'m'=>'a', 'x'=>'0'}, 'value'=>3.0},
-               {'address'=>{'m'=>'a', 'x'=>'1'}, 'value'=>3.0},
-               {'address'=>{'m'=>'b', 'x'=>'0'}, 'value'=>4.0},
-               {'address'=>{'m'=>'b', 'x'=>'1'}, 'value'=>4.0},
-               {'address'=>{'m'=>'c', 'x'=>'0'}, 'value'=>5.0},
-               {'address'=>{'m'=>'c', 'x'=>'1'}, 'value'=>5.0}]
+    feed_docs_with_multiple_vectors
+    verify_nns_matching_metrics_multiple_vectors(false)
+  end
 
-    doc0 = Document.new("id:multi:multi::0").add_field("pos", vector0)
-    doc1 = Document.new("id:multi:multi::1").add_field("pos", vector1)
-    vespa.document_api_v1.put(doc0)
-    vespa.document_api_v1.put(doc1)
+  def test_nns_matching_metrics_multiple_vectors_with_query_caching
+    set_description("Test reporting of matching metrics specific for nearest neighbor search for multi-vector indexing with query caching enabled")
+    deploy_app(SearchApp.new.cluster(SearchCluster.new('multi').sd(selfdir + "nn_metrics/multi.sd")))
+    start
 
+    feed_docs_with_multiple_vectors
+    verify_nns_matching_metrics_multiple_vectors(true)
+  end
+
+  def verify_nns_matching_metrics_multiple_vectors(query_cache)
     # No queries yet
     enn_distances, ann_distances, ann_visited = get_metrics("multi")
     assert_equal(0, enn_distances)
@@ -163,7 +174,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     ####################################################################################################################
     puts "Exact search"
     ####################################################################################################################
-    run_query(get_query({:qpos => 80, :approximate => "false"}))
+    run_query(get_query({:qpos => 80, :approximate => "false", :query_cache => query_cache}))
 
     # Verify overall metrics
     enn_distances, ann_distances, ann_visited = get_metrics("multi")
@@ -179,7 +190,7 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     ####################################################################################################################
     puts "HNSW search without filtering"
     ####################################################################################################################
-    run_query(get_query({:qpos => 62}))
+    run_query(get_query({:qpos => 62, :query_cache => query_cache}))
 
     # Verify overall metrics
     enn_distances, ann_distances, ann_visited = get_metrics("multi")
@@ -257,17 +268,37 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     vespa.document_api_v1.put(doc)
   end
 
+  def feed_docs_with_multiple_vectors
+    vector0 = [{'address'=>{'m'=>'a', 'x'=>'0'}, 'value'=>1.0},
+               {'address'=>{'m'=>'a', 'x'=>'1'}, 'value'=>1.0},
+               {'address'=>{'m'=>'b', 'x'=>'0'}, 'value'=>2.0},
+               {'address'=>{'m'=>'b', 'x'=>'1'}, 'value'=>2.0}]
+    vector1 = [{'address'=>{'m'=>'a', 'x'=>'0'}, 'value'=>3.0},
+               {'address'=>{'m'=>'a', 'x'=>'1'}, 'value'=>3.0},
+               {'address'=>{'m'=>'b', 'x'=>'0'}, 'value'=>4.0},
+               {'address'=>{'m'=>'b', 'x'=>'1'}, 'value'=>4.0},
+               {'address'=>{'m'=>'c', 'x'=>'0'}, 'value'=>5.0},
+               {'address'=>{'m'=>'c', 'x'=>'1'}, 'value'=>5.0}]
+
+    doc0 = Document.new("id:multi:multi::0").add_field("pos", vector0)
+    doc1 = Document.new("id:multi:multi::1").add_field("pos", vector1)
+    vespa.document_api_v1.put(doc0)
+    vespa.document_api_v1.put(doc1)
+  end
+
   def get_query(args)
     qpos = args[:qpos]
     target_hits = args[:target_hits] || 100
     tag = args[:tag]
     ranking = args[:ranking] || "default"
+    query_cache = args[:query_cache] || false
     approximate = args[:approximate] || "true"
     trace = args[:trace]
     result = "yql=select * from sources * where {targetHits:#{target_hits},approximate:#{approximate}}nearestNeighbor(pos,qpos)"
     result += " and tags contains '#{tag}'" if tag
     result += "&ranking.features.query(qpos)=[#{qpos},30]"
     result += "&ranking.profile=#{ranking}"
+    result += "&ranking.queryCache=#{query_cache}"
     result += "&trace.level=1&trace.explainLevel=1" if trace
     return result
   end
