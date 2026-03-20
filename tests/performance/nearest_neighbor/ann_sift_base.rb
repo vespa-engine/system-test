@@ -10,6 +10,7 @@ class AnnSiftBase < CommonSiftGistBase
     @base_fvecs = @data_path + "sift_base.fvecs"
     @query_fvecs = @data_path + "sift_query.fvecs"
     @dimensions = 128
+    @file_data_type = "float"
 
     @num_queries_for_benchmark = 10000
   end

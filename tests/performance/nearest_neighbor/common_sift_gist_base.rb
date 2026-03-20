@@ -47,13 +47,13 @@ class CommonSiftGistBase < CommonAnnBaseTest
     @adminserver_tmp_bin_dir = vespa.adminserver.create_tmp_bin_dir
 
     vespa.adminserver.execute("g++ -g -O3 -std=c++20 -o #{@adminserver_tmp_bin_dir}/make_docs #{selfdir}make_docs.cpp")
-    @container.execute("g++ -g -O3 -o #{@container_tmp_bin_dir}/make_queries #{selfdir}make_queries.cpp")
+    @container.execute("g++ -g -O3 -std=c++20 -o #{@container_tmp_bin_dir}/make_queries #{selfdir}make_queries.cpp")
   end
 
   def generate_vectors_for_recall(num_queries_for_recall)
     @query_fvecs_container = nn_download_file(@query_fvecs, @container)
     query_vectors_container = dirs.tmpdir + "query_vectors_container.txt" # The vectors as a .txt file
-    @container.execute("#{@container_tmp_bin_dir}/make_queries #{@query_fvecs_container} #{@dimensions} #{num_queries_for_recall} > #{query_vectors_container}")
+    @container.execute("#{@container_tmp_bin_dir}/make_queries #{@file_data_type} #{@query_fvecs_container} #{@dimensions} #{num_queries_for_recall} > #{query_vectors_container}")
 
     # We need the files on localhost (in the recall computation)
     @local_query_vectors = dirs.tmpdir + "query_vectors.txt"
@@ -67,7 +67,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     longitude_upper = params[:longitude_upper] || -1.0
 
     locations_container = dirs.tmpdir + "query_locations_container.txt"
-    @container.execute("#{@container_tmp_bin_dir}/make_queries --only-locations [#{latitude_lower},#{latitude_upper}] [#{longitude_lower},#{longitude_upper}] #{num_queries_for_recall} > #{locations_container}")
+    @container.execute("#{@container_tmp_bin_dir}/make_queries #{@file_data_type} --only-locations [#{latitude_lower},#{latitude_upper}] [#{longitude_lower},#{longitude_upper}] #{num_queries_for_recall} > #{locations_container}")
 
     # Needed in recall computations
     @local_locations = dirs.tmpdir + "query_locations.txt"
@@ -104,7 +104,8 @@ class CommonSiftGistBase < CommonAnnBaseTest
 
     profiler_start
     base_fvecs_local = nn_download_file(@base_fvecs, vespa.adminserver)
-    command = "#{@adminserver_tmp_bin_dir}/make_docs #{base_fvecs_local} "\
+    command = "#{@adminserver_tmp_bin_dir}/make_docs #{@file_data_type} "\
+                                                    "#{base_fvecs_local} "\
                                                     "#{@dimensions} "\
                                                     "#{operation} "\
                                                     "#{start_with_docid} "\
@@ -144,7 +145,8 @@ class CommonSiftGistBase < CommonAnnBaseTest
 
     approximate = algorithm == HNSW ? "true" : "false"
     query_file = dirs.tmpdir + get_filename(doc_tensor, approximate, target_hits, explore_hits, filter_percent, radius)
-    @container.execute("#{@container_tmp_bin_dir}/make_queries #{@query_fvecs_container} "\
+    @container.execute("#{@container_tmp_bin_dir}/make_queries #{@file_data_type} "\
+                                                              "#{@query_fvecs_container} "\
                                                               "#{@dimensions} "\
                                                               "#{@num_queries_for_benchmark} "\
                                                               "#{doc_tensor} "\

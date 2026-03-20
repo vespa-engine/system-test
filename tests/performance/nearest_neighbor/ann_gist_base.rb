@@ -11,6 +11,7 @@ class AnnGistBase < CommonSiftGistBase
     @base_fvecs = @data_path + "gist_base_300k.fvecs" # Smaller file that only contains the first 300k vectors
     @query_fvecs = @data_path + "gist_query.fvecs"
     @dimensions = 960
+    @file_data_type = "float"
 
     @num_queries_for_benchmark = 1000
   end
