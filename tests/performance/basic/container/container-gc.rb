@@ -7,9 +7,10 @@ require 'environment'
 class ContainerGcTest < PerformanceTest
 
   GC_CONFIGS = {
-    'parallel' => '-XX:+UseParallelGC -XX:MaxTenuringThreshold=15 -XX:NewRatio=1',
-    'g1'       => '-XX:+UseG1GC',
-    'zgc'      => '-XX:+UseZGC -XX:+AlwaysPreTouch -XX:-ZUncommit'
+    'parallel'         => '-XX:+UseParallelGC -XX:MaxTenuringThreshold=15 -XX:NewRatio=1',
+    'parallel-default' => '-XX:+UseParallelGC',
+    'g1'               => '-XX:+UseG1GC',
+    'zgc'              => '-XX:+UseZGC -XX:+AlwaysPreTouch -XX:-ZUncommit'
   }
 
   def initialize(*args)
@@ -61,10 +62,12 @@ class ContainerGcTest < PerformanceTest
     system_fbench.start
 
     fbench = Perf::Fbench.new(container, container.name, container.http_port)
-    fbench.clients = 128
-    fbench.runtime = 90
-    fbench.ignore_first = 30
-    fbench.request_per_ms = 10
+    fbench.clients = 64
+    fbench.runtime = 45
+    warmup_seconds = 15
+    cycle_ms = 10
+    fbench.request_per_ms = cycle_ms
+    fbench.ignore_first = warmup_seconds * 1000 / cycle_ms  # per-client request count for warmup
     fbench.single_query_file = true
     fbench.query(queryfile)
 
