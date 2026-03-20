@@ -1,0 +1,54 @@
+search test {
+  document test {
+    field id type int {
+      indexing: attribute | summary
+    }
+    field filter type array<int> {
+      indexing: attribute | summary
+      attribute: fast-search
+    }
+    field latlng type position {
+      indexing: attribute
+    }
+    field vec_m16 type tensor<int8>(x[128]) {
+      indexing: attribute | index | summary
+      attribute {
+          distance-metric: euclidean
+      }
+      index {
+        hnsw {
+          max-links-per-node: 16
+          neighbors-to-explore-at-insert: 500
+        }
+      }
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: closeness(label,nns)
+    }
+    approximate-threshold: 0.05
+    filter-first-threshold: 0.0
+    filter-first-exploration: 0.3
+    exploration-slack: 0.0
+    num-threads-per-search: 1
+  }
+  rank-profile threads-1 inherits default {
+    num-threads-per-search: 1
+  }
+  rank-profile threads-2 inherits default {
+    num-threads-per-search: 2
+  }
+  rank-profile threads-4 inherits default {
+    num-threads-per-search: 4
+  }
+  rank-profile threads-8 inherits default {
+    num-threads-per-search: 8
+  }
+  rank-profile threads-16 inherits default {
+    num-threads-per-search: 16
+  }
+  document-summary minimal {
+    summary id {}
+  }
+}
