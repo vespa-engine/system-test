@@ -2,6 +2,7 @@
 
 # Vespa system tests framework
 
+[![Hypercommit](https://img.shields.io/badge/Hypercommit-DB2475)](https://hypercommit.com/system-test)
 [![Build Status](https://cd.screwdriver.cd/pipelines/7039/test-system-tests/badge)](https://cd.screwdriver.cd/pipelines/7039)
 
 
