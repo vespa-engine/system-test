@@ -18,6 +18,7 @@ import com.yahoo.yolean.chain.After;
 import com.yahoo.yolean.chain.Before;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -178,30 +179,25 @@ public class NearestNeighborRecallSearcher extends Searcher {
 
     private int calcRecall(List<SimpleHit> exactHits, List<SimpleHit> approxHits, int targetHits) throws RelevanceMismatchException {
         int recall = 0;
-        int i = 0;
-        int j = 0;
-        int exactSize = Math.min(exactHits.size(), targetHits);
-        int approxSize = Math.min(approxHits.size(), targetHits);
-        while ((i < exactSize) && (j < approxSize)) {
-            var ex = exactHits.get(i);
-            var ap = approxHits.get(j);
 
-            if (ex.id.equals(ap.id)) {
-                if (Math.abs(ex.relevance - ap.relevance) > 1e-5) {
-                    throw new RelevanceMismatchException("Relevance mismatch (eps=1e-5) in document '" +
-                            ex.id + "': exact[" + i + "].relevance=" + ex.relevance + ", approx[" + j + "].relevance=" + ap.relevance);
-                }
+        HashMap<String,Double> map = new HashMap<String,Double>();
+        for (SimpleHit hit : exactHits) {
+            map.put(hit.id, hit.relevance);
+        }
+
+        for (SimpleHit hit : approxHits) {
+            Double exact_relevance = map.get(hit.id);
+            if (exact_relevance != null) {
                 recall += 1;
-                i += 1;
-                j += 1;
-            } else if (ex.relevance > ap.relevance) {
-                i += 1;
-            } else {
-                j += 1;
+                if (Math.abs(hit.relevance - exact_relevance) > 1e-5) {
+                    throw new RelevanceMismatchException("Relevance mismatch (eps=1e-5) in document '" +
+                            hit.id + "': relevance in exactHits is " + exact_relevance + ", relevance in approxHits is " + hit.relevance);
+                }
             }
         }
 
         // Adjust to targetHits value in case there are not enough exact hits.
+        int exactSize = Math.min(exactHits.size(), targetHits);
         if (exactSize == 0) {
             return targetHits;
         } else if (exactSize < targetHits) {
