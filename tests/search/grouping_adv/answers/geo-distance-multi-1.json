@@ -1,0 +1,108 @@
+{
+  "root": {
+    "id": "toplevel",
+    "relevance": 1.0,
+    "fields": {
+      "totalCount": 28
+    },
+    "coverage": {
+      "coverage": 100,
+      "documents": 28,
+      "full": true,
+      "nodes": 2,
+      "results": 1,
+      "resultsFull": 1
+    },
+    "children": [
+      {
+        "id": "group:root:0",
+        "relevance": 1.0,
+        "continuation": {
+          "this": ""
+        },
+        "children": [
+          {
+            "id": "grouplist:fixedwidth(geo_distance(attribute(pos_multi), 70.1, 10.0).km, 100)",
+            "relevance": 1.0,
+            "label": "fixedwidth(geo_distance(attribute(pos_multi), 70.1, 10.0).km, 100)",
+            "children": [
+              {
+                "id": "group:double_bucket:300.0:400.0",
+                "relevance": 12111.719438207627,
+                "limits": {
+                  "from": "300.0",
+                  "to": "400.0"
+                },
+                "fields": {
+                  "count()": 13
+                }
+              },
+              {
+                "id": "group:null",
+                "relevance": 11111.709477840308,
+                "fields": {
+                  "count()": 7
+                }
+              },
+              {
+                "id": "group:double_bucket:500.0:600.0",
+                "relevance": 8875.610133144828,
+                "limits": {
+                  "from": "500.0",
+                  "to": "600.0"
+                },
+                "fields": {
+                  "count()": 3
+                }
+              },
+              {
+                "id": "group:double_bucket:1100.0:1200.0",
+                "relevance": 7751.494193136243,
+                "limits": {
+                  "from": "1100.0",
+                  "to": "1200.0"
+                },
+                "fields": {
+                  "count()": 2
+                }
+              },
+              {
+                "id": "group:double_bucket:700.0:800.0",
+                "relevance": 6985.517516649399,
+                "limits": {
+                  "from": "700.0",
+                  "to": "800.0"
+                },
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:double_bucket:800.0:900.0",
+                "relevance": 3580.099884632731,
+                "limits": {
+                  "from": "800.0",
+                  "to": "900.0"
+                },
+                "fields": {
+                  "count()": 1
+                }
+              },
+              {
+                "id": "group:double_bucket:900.0:1000.0",
+                "relevance": 2935.945422549505,
+                "limits": {
+                  "from": "900.0",
+                  "to": "1000.0"
+                },
+                "fields": {
+                  "count()": 1
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
