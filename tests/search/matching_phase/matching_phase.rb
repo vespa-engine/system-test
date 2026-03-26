@@ -73,7 +73,7 @@ class MatchingPhase < IndexedOnlySearchTest
   end
 
   def run_nns_query(target_hits_parameter, target_hits)
-    result = search({ 'yql' => 'select * from sources * where ({' + target_hits_parameter + ': ' + target_hits.to_s + ', label: "nns"}nearestNeighbor(pos, query_pos))',
+    result = search({ 'yql' => 'select * from sources * where ({' + target_hits_parameter + ': ' + target_hits.to_s + ', minTargetHits:1, label: "nns"}nearestNeighbor(pos, query_pos))',
                       'input.query(query_pos)' => '[0.0,0.0]',
                       'ranking' => 'nns'})
     if target_hits == 1
