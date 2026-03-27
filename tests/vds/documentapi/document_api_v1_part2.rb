@@ -52,6 +52,13 @@ class DocumentApiVdsPart2 < DocumentApiV1Base
 
     arrayData = JSON.parse(response)['fields']['string_array']
     assert_equal(['bob', 'frog'], arrayData)
+
+    # remove first element
+    api_http_put('/document/v1/storage_test/music/number/2/9', '{"fields":{"string_array[0]":{"remove": 0}}}')
+
+    response = api_http_get('/document/v1/storage_test/music/number/2/9')
+    arrayData = JSON.parse(response)['fields']['string_array']
+    assert_equal(['frog'], arrayData)
   end
 
   def test_array_of_struct_updates
