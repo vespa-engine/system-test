@@ -54,8 +54,8 @@ class Embedding < SearchTest
   def huggingface_embedder_onnx_external_data_component
     Component.new('huggingface').
       type('hugging-face-embedder').
-      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/intfloat/multilingual-e5-large/resolve/main/onnx/model.onnx'}).
-      param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://huggingface.co/intfloat/multilingual-e5-large/resolve/main/onnx/tokenizer.json'})
+      param('transformer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa-cloud.com/onnx_models/multilingual-e5-large/model.onnx'}).
+      param('tokenizer-model', '', {'model-id' => 'ignored-on-selfhosted', 'url' => 'https://data.vespa-cloud.com/onnx_models/multilingual-e5-large/tokenizer.json'})
   end
 
   def nomic_modernbert_component
