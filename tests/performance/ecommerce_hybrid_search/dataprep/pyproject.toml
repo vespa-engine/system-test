@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "ecommerce-hybrid-search-dataprep"
+version = "0.1.0"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas",
+    "numpy",
+    "datasets",
+    "tqdm",
+    "transformers",
+    "sentence-transformers",
+    "torch>=2.10.0",
+    "pillow>=12.1.1",
+    "orjson>=3.11.6",
+    "huggingface-hub",
+    "zstandard",
+    "seaborn",
+]
