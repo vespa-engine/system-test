@@ -117,22 +117,19 @@ class HierarchDistr < VdsMultiModelTest
     
     feed_file = tempfile_name("1000_buckets_app2.json")
     make_feed_file(feed_file, "music", 0, 999, 1)
-    vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
     feedfile(feed_file, :route => "storage")
 
-    vespagetAllDocs(true)
+    get_all_docs(true)
 
     deploy_and_wait(app4)
-
     vespa.storage["storage"].wait_until_ready(300)
 
-    vespagetAllDocs(true)
+    get_all_docs(true)
 
     deploy_and_wait(nohierarchy)
-
     vespa.storage["storage"].wait_until_ready(300)
 
-    vespagetAllDocs(true)
+    get_all_docs(true)
 
     File.delete(feed_file)
   end
@@ -142,41 +139,39 @@ class HierarchDistr < VdsMultiModelTest
 
     feed_file = tempfile_name("1000_buckets_app2.json")
     make_feed_file(feed_file, "music", 0, 999, 1)
-    vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
     feedfile(feed_file, :route => "storage")
 
-    vespagetAllDocs(true)
+    get_all_docs(true)
 
-    set0=getBuckets(0)
-    set1=getBuckets(1)
-    set2=getBuckets(2)
-    set3=getBuckets(3)
+    set0 = get_buckets(0)
+    set1 = get_buckets(1)
+    set2 = get_buckets(2)
+    set3 = get_buckets(3)
 
-    # no overlapp within switches
-    assert(set0.intersection(set1).empty?)
-    assert(set2.intersection(set3).empty?)
+    # no overlap within switches
+    assert set0.intersection(set1).empty?
+    assert set2.intersection(set3).empty?
 
-    # full overlapp between switches
-    assert(set0.union(set1) == set2.union(set3))
+    # full overlap between switches
+    assert set0.union(set1) == set2.union(set3)
 
-    # should have cross-switch overlapp
-    assert(!set0.intersection(set2).empty?)
-    assert(!set0.intersection(set3).empty?)
-    assert(!set1.intersection(set2).empty?)
-    assert(!set1.intersection(set3).empty?)
+    # should have cross-switch overlap
+    assert !set0.intersection(set2).empty?
+    assert !set0.intersection(set3).empty?
+    assert !set1.intersection(set2).empty?
+    assert !set1.intersection(set3).empty?
 
     # take down switch 0
     vespa.stop_content_node('storage', 0)
     vespa.stop_content_node('storage', 1)
 
-    vespagetAllDocs(false)
+    get_all_docs(false)
     vespa.storage["storage"].storage["0"].wait_for_current_node_state('d')
     vespa.storage["storage"].storage["1"].wait_for_current_node_state('d')
-    vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
     vespa.storage["storage"].wait_until_ready(300)
 
     # all data should still be available
-    vespagetAllDocs(true)
+    get_all_docs(true)
 
     File.delete(feed_file)
   end
@@ -187,54 +182,52 @@ class HierarchDistr < VdsMultiModelTest
 
     feed_file = tempfile_name("1000_buckets_app3.json")
     make_feed_file(feed_file, "music", 0, 999, 1)
-    vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
     feedfile(feed_file, :route => "storage")
 
-    vespagetAllDocs(true)
+    get_all_docs(true)
 
-    set0=getBuckets(0)
-    set1=getBuckets(1)
-    set2=getBuckets(2)
-    set3=getBuckets(3)
-    set4=getBuckets(4)
+    set0 = get_buckets(0)
+    set1 = get_buckets(1)
+    set2 = get_buckets(2)
+    set3 = get_buckets(3)
+    set4 = get_buckets(4)
 
     # should have full overlap within switch 1
-    assert(set3 == set4)
+    assert set3 == set4
 
     # should not have full overlap within switch 0
-    assert(set0 != set1)
-    assert(set0 != set2)
-    assert(set1 != set2)
+    assert set0 != set1
+    assert set0 != set2
+    assert set1 != set2
 
     # should have no overlap between switches
-    set012=set0.union(set1).union(set2)
-    set34=set3.union(set4)
-    assert(set012.intersection(set34).empty?)
+    set012 = set0.union(set1).union(set2)
+    set34 = set3.union(set4)
+    assert set012.intersection(set34).empty?
 
     # take down node 0 in switch 0
     vespa.stop_content_node('storage', 0)
-    vespagetAllDocs(false)
+    get_all_docs(false)
     vespa.storage["storage"].storage["0"].wait_for_current_node_state('d')
-    vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
     vespa.storage["storage"].wait_until_ready(300)
 
-    set1new=getBuckets(1)
-    set2new=getBuckets(2)
-    set3new=getBuckets(3)
-    set4new=getBuckets(4)
+    set1new = get_buckets(1)
+    set2new = get_buckets(2)
+    set3new = get_buckets(3)
+    set4new = get_buckets(4)
 
     # data redistribution should happen only within switch 0
-    assert(set1new != set1)
-    assert(set2new != set2)
-    assert(set3new == set3)
-    assert(set4new == set4)
+    assert set1new != set1
+    assert set2new != set2
+    assert set3new == set3
+    assert set4new == set4
 
     # should have recovered all data
-    set12new=set1.union(set2)
-    assert(set12new == set012)
+    set12new = set1.union(set2)
+    assert set12new == set012
 
     # all data should still be available
-    vespagetAllDocs(true)
+    get_all_docs(true)
 
     File.delete(feed_file)
   end
@@ -245,75 +238,74 @@ class HierarchDistr < VdsMultiModelTest
 
     feed_file = tempfile_name("1000_buckets_app4.json")
     make_feed_file(feed_file, "music", 0, 999, 1)
-    vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
     feedfile(feed_file, :route => "storage")
 
-    vespagetAllDocs(true)
+    get_all_docs(true)
 
-    set0=getBuckets(0)
-    set1=getBuckets(1)
-    set2=getBuckets(2)
-    set3=getBuckets(3)
+    set0 = get_buckets(0)
+    set1 = get_buckets(1)
+    set2 = get_buckets(2)
+    set3 = get_buckets(3)
 
     # should not have overlap within racks
-    assert(set0.intersection(set1).empty?)
-    assert(set2.intersection(set3).empty?)
+    assert set0.intersection(set1).empty?
+    assert set2.intersection(set3).empty?
 
-    # should have cross-switch overlapp
-    assert(!set0.intersection(set2).empty?)
-    assert(!set0.intersection(set3).empty?)
-    assert(!set1.intersection(set2).empty?)
-    assert(!set1.intersection(set3).empty?)
+    # should have cross-switch overlap
+    assert !set0.intersection(set2).empty?
+    assert !set0.intersection(set3).empty?
+    assert !set1.intersection(set2).empty?
+    assert !set1.intersection(set3).empty?
 
     # should have full overlap between switches
-    set01=set0.union(set1)
-    set23=set2.union(set3)
-    assert(set01 == set23)
+    set01 = set0.union(set1)
+    set23 = set2.union(set3)
+    assert set01 == set23
 
     # take down node 0 in switch 0 rack 0
     vespa.stop_content_node('storage', 0)
-    vespagetAllDocs(false)
+    get_all_docs(false)
     vespa.storage["storage"].storage["0"].wait_for_current_node_state('d')
-    vespa.storage["storage"].wait_until_cluster_up # TODO: Is this necessary?
     vespa.storage["storage"].wait_until_ready(300)
 
-    set1new=getBuckets(1)
-    set2new=getBuckets(2)
-    set3new=getBuckets(3)
+    set1new = get_buckets(1)
+    set2new = get_buckets(2)
+    set3new = get_buckets(3)
 
     # no data should be redistributed
-    assert(set1new == set1)
-    assert(set2new == set2)
-    assert(set3new == set3)
+    assert set1new == set1
+    assert set2new == set2
+    assert set3new == set3
 
     # all data should still be available
-    vespagetAllDocs(true)
+    get_all_docs(true)
 
     File.delete(feed_file)
   end
 
 
-  def vespagetAllDocs(doAssert)
-    if doAssert == true
+  def get_all_docs(do_assert)
+    if do_assert
       puts "Get all docs..."
     end
     begin
       1000.times {|i|
         doc = Document.new("id:music:music:n=#{i}:0:system_test")
-        doc2 = vespa.document_api_v1.get("id:music:music:n=#{i}:0:system_test")
-        if doAssert == true
+        doc2 = vespa.document_api_v1.get("id:music:music:n=#{i}:0:system_test", :brief => true)
+        if do_assert
           assert_equal(doc, doc2)
         end
       }
-    rescue RuntimeError => exc
+    rescue RuntimeError
+      # Ignored
     end
-    if doAssert == true
+    if do_assert
       puts "Ok. Got all docs."
     end
   end
 
-  def getBuckets(node)
-    return vespa.storage['storage'].storage[node.to_s].get_buckets()['default'].keys.to_set
+  def get_buckets(node)
+    vespa.storage['storage'].storage[node.to_s].get_buckets['default'].keys.to_set
   end
 
 
