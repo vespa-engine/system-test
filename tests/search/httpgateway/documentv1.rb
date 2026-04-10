@@ -159,7 +159,7 @@ class DocumentV1Test < IndexedOnlySearchTest
     puts "Send document with wrong field"
     response = http.post("/document/v1/fruit/banana/docid/doc1", feedDataBroken, httpheaders)
     assert_equal("400", response.code)
-    assert_match /No field 'habla babla' in the structure of type 'banana'/, response.body
+    assert_match /Field 'habla babla' is not defined in document type 'banana'/, response.body
 
     puts "Update, with create = false"
     response = http.put("/document/v1/fruit/banana/docid/doc1?create=false", feedDataUpdate, httpheaders)
