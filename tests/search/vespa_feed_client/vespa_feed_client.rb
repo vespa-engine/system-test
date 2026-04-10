@@ -25,7 +25,7 @@ class VespaFeedClient < IndexedStreamingSearchTest
     # Test that we fail decently when having a document with a field that does not exist
     (exitcode, output) = feed(:file => selfdir + 'wrongfield.json', :client => :vespa_feed_client, :exitcode => true, :stderr => true)
     assert_equal(0, exitcode.to_i) # Some docs fed successfully, so expect 0
-    assert(output.index("No field 'wrong' in the structure of type 'music'"))
+    assert(output.index("Field 'wrong' is not defined in document type 'music'"))
   end
 
 
