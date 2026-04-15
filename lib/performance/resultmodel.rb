@@ -2,7 +2,6 @@
 
 require 'rubygems'
 require 'builder'
-require 'xml'
 require 'json'
 
 require 'rexml/document'
@@ -148,6 +147,7 @@ module Perf
     end
 
     def Result.read_string_fast(string)
+      require 'xml'
       Result.read_xml_v2_fast(XML::Parser.string(string).parse)
     end
 
