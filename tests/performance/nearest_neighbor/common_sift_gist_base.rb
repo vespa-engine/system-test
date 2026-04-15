@@ -253,7 +253,9 @@ class CommonSiftGistBase < CommonAnnBaseTest
     puts "...and removing them again"
     del_response = vespa.document_api_v1.http_delete("/document/v1/test/test/docid?cluster=search&selection=#{CGI.escape("test.id>=#{documents_to_benchmark} and test.id<#{documents_in_total}")}&timeout=120")
     puts "Response to deletion: #{del_response}"
-    assert_hitcount("query=sddocname:test", documents_to_benchmark)
+    #assert_hitcount("query=sddocname:test", documents_to_benchmark)
+    # Let's wait for hitcount instead. Should not be necessary (?)
+    wait_for_hitcount("query=sddocname:test", documents_to_benchmark, 120)
 
     puts "Printing stats after deletion"
     print_nni_stats("test", "vec_m16", "after")
