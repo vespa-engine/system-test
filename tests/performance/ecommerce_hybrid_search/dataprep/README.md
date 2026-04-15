@@ -35,10 +35,13 @@ First, install python dependencies.
 
 It is recommended to use a virtual environment (i.e [pyenv](https://formulae.brew.sh/formula/pyenv))
 
-Python version 3.11 is recommended, but any version between 3.8-3.12 should work.
+Python 3.10 or later is required (pillow 12.x and orjson 3.11.6+ do not provide Python 3.9 wheels).
+Python 3.13 is recommended.
+
+Run from this directory (`dataprep/`):
 
 ```bash
-pip install -r requirements.txt
+pip install .
 ```
 
 ## Running the scripts
