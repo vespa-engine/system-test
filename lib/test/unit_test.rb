@@ -4,7 +4,7 @@ require 'test_base'
 
 class UnitTest
   include TestBase
-  include Assertions
+  include Test::Unit::Assertions
 
   def initialize(vespamodel)
     deploy_mock(vespamodel)
