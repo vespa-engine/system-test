@@ -47,7 +47,6 @@ dnf -y install \
     rubygem-test-unit
 
 gem install ffi parallel
-gem install libxml-ruby -v 5.0.5
 dnf remove -y gcc
 
 dnf -y install \

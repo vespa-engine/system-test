@@ -51,7 +51,7 @@ RUN --mount=type=bind,target=/include/,source=include/,rw \
      alternatives --set javac java-17-openjdk.$(arch) && \
      (dnf -y install vespa || (dnf -y install --releasever 8.$(( $([[ $(cat /etc/system-release) =~ ^.*\ 8\.([0-9]+).* ]] && echo ${BASH_REMATCH[1]}) + 1 ))-beta llvm-libs && dnf -y install vespa)) && \
      (rpm -qa | grep "vespa.*$(rpm -q --queryformat '%{VERSION}' vespa).*" | xargs dnf -y remove --noautoremove) && \
-     (source /opt/rh/gcc-toolset/enable && gem install ffi libxml-ruby) && \
+     (source /opt/rh/gcc-toolset/enable && gem install ffi) && \
      pip3 install --no-cache-dir awscli && \
      (source /opt/rh/gcc-toolset/enable && pip3 install --no-cache-dir xgboost scikit-learn cbor2) && \
      dnf clean all && rm -rf /var/cache/dnf
