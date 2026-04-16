@@ -25,7 +25,7 @@ class TestbaseTest < Test::Unit::TestCase
     failed = 0
     begin
       @searchtest.assert_hitcount("foobar", 10, 0)
-    rescue AssertionFailedError
+    rescue Test::Unit::AssertionFailedError
       failed = 1
     end
     assert_equal(failed, 1)
@@ -33,7 +33,7 @@ class TestbaseTest < Test::Unit::TestCase
     begin
       @searchtest.assert_hitcount(resultset, 10, 0)
       fail("Should have thrown exception")
-    rescue AssertionFailedError
+    rescue Test::Unit::AssertionFailedError
       failed = 1
     end
     assert_equal(1, failed)
@@ -47,7 +47,7 @@ class TestbaseTest < Test::Unit::TestCase
     failed = false
     begin
       @searchtest.wait_for_hitcount("foobar", 10, 5, 0)
-    rescue AssertionFailedError => e
+    rescue Test::Unit::AssertionFailedError => e
       puts e.class
       failed = true
     end
@@ -101,7 +101,7 @@ class TestbaseTest < Test::Unit::TestCase
     failed = false
     begin
       @searchtest.poll_compare("foobar", tf.path, nil, [], 5)
-    rescue AssertionFailedError
+    rescue Test::Unit::AssertionFailedError
       failed = true
     end
     assert(failed, "Test didn't fail when it should have")
@@ -113,7 +113,7 @@ class TestbaseTest < Test::Unit::TestCase
     @searchtest.assert_query_errors("query=test")
     begin
       @searchtest.assert_query_no_errors("query=test")
-    rescue AssertionFailedError
+    rescue Test::Unit::AssertionFailedError
       failed = true
     end
     @qrserver.set_error(false)
@@ -124,7 +124,7 @@ class TestbaseTest < Test::Unit::TestCase
     @searchtest.assert_query_no_errors("query=test")
     begin
       @searchtest.assert_query_errors("query=test", "No backend in service")
-    rescue AssertionFailedError
+    rescue Test::Unit::AssertionFailedError
       failed = true
     end
     assert(failed, "Test didn't fail when it should have")
