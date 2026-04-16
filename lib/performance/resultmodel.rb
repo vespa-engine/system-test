@@ -2,7 +2,6 @@
 
 require 'rubygems'
 require 'builder'
-require 'xml'
 require 'json'
 
 require 'rexml/document'
@@ -145,10 +144,6 @@ module Perf
       xml = REXML::Document.new(f)
 
       Result.read_xml(xml)
-    end
-
-    def Result.read_string_fast(string)
-      Result.read_xml_v2_fast(XML::Parser.string(string).parse)
     end
 
     def Result.read_string(string)
