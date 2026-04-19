@@ -29,7 +29,7 @@ class ConfigServer < ConfigTest
     deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
 
     # sanity check for field from sd
-    assert_match("age", get_document_config())
+    assert_match(/age/, get_document_config())
 
     # deploy a new app, but do not activate config
     deploy_app(SearchApp.new.sd(selfdir+"sd-extend/banana.sd"), {:no_activate => true, :skip_create_model => true})
@@ -39,8 +39,8 @@ class ConfigServer < ConfigTest
 
     # we should still run with the same application as before deploy,
     # since we did not activate config, so similarfruits should not be there
-    assert_match("age", get_document_config())
-    assert_no_match("similarfruits", get_document_config())
+    assert_match(/age/, get_document_config())
+    assert_no_match(/similarfruits/, get_document_config())
   end
 
   # Tests that there are no zookeeper issues when deploying twice in a row
@@ -60,7 +60,7 @@ class ConfigServer < ConfigTest
     deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
 
     # sanity check for field from sd
-    assert_match("age", get_document_config())
+    assert_match(/age/, get_document_config())
     
     (0..15).each do |i|
       # deploy a new app, but do not activate config
@@ -72,8 +72,8 @@ class ConfigServer < ConfigTest
 
     # we should still run with the same application as before all the 15 deployments
     # since we did not activate config, so similarfruits should not be there
-    assert_match("age", get_document_config())
-    assert_no_match("similarfruits", get_document_config())
+    assert_match(/age/, get_document_config())
+    assert_no_match(/similarfruits/, get_document_config())
   end
 
   # Check that an application with an error is skipped and that another application works just
@@ -292,7 +292,7 @@ ENDER
     set_port_configserver_rpc(vespa.nodeproxies.values.first, 12345)
     deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
     start
-    assert_match("age", get_document_config(12345))
+    assert_match(/age/, get_document_config(12345))
   end
 
   def get_document_config(port=19070)
