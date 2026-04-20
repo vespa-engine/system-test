@@ -1,6 +1,5 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'assertions'
 require 'erb'
 require 'set'
 require 'http_connection_pool'
