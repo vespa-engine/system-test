@@ -26,26 +26,26 @@ class VespaGet < VdsTest
     vespa.document_api_v1.put(doc)
 
     output = run_vespaget("id:storage_test:music:n=1234:document1");
-    assert_match("title1", output);
+    assert_match(/title1/, output);
 
     output = run_vespaget("id:storage_test:music:n=1234:document2");
-    assert_match("title2", output);
+    assert_match(/title2/, output);
 
     output = run_vespaget("--printids id:storage_test:music:n=1234:document2");
-    assert_no_match("title2", output);
-    assert_no_match("foo", output);
-    assert_no_match("bar", output);
+    assert_no_match(/title2/, output);
+    assert_no_match(/foo/, output);
+    assert_no_match(/bar/, output);
 
     output = run_vespaget("--fieldset music:title,body id:storage_test:music:n=1234:document2");
-    assert_match("title2", output);
-    assert_match("bar", output);
-    assert_no_match("foo", output);
+    assert_match(/title2/, output);
+    assert_match(/bar/, output);
+    assert_no_match(/foo/, output);
 
     output = run_vespaget("id:storage_test:music:n=1234:nonexist || true");
-    assert_match("not found", output);
+    assert_match(/not found/, output);
 
     output = run_vespaget("--trace 9 id:storage_test:music:n=1234:document1");
-    assert_match("\<trace\>", output);
+    assert_match(/\<trace\>/, output);
   end
 
   def test_vespaget_nonstandard_clustername
@@ -64,16 +64,16 @@ class VespaGet < VdsTest
     vespa.document_api_v1.put(doc)
 
     output = run_vespaget("id:storage_test:music:n=1234:document1", "dummy");
-    assert_match("title1", output);
+    assert_match(/title1/, output);
 
     output = run_vespaget("id:storage_test:music:n=1234:document2", "dummy");
-    assert_match("title2", output);
+    assert_match(/title2/, output);
 
     output = run_vespaget("id:storage_test:music:n=1234:nonexist || true", "dummy");
-    assert_match("not found", output);
+    assert_match(/not found/, output);
 
     output = run_vespaget("--cluster dummy id:storage_test:music:n=1234:document1", "dummy");
-    assert_match("title1", output);
+    assert_match(/title1/, output);
   end
 
 end
