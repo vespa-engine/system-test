@@ -1,5 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 
+require 'assertions'
+
 # Utility class to calculate bm25 scores for a document.
 # Used by Bm25FeatureTest and SameElementOperator
 
