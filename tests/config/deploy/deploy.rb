@@ -1,5 +1,4 @@
 # Copyright Vespa.ai. All rights reserved.
-require 'assertions'
 require 'config_test'
 require 'json'
 require 'application_v2_api'
