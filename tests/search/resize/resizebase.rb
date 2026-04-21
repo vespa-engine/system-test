@@ -8,8 +8,6 @@ module ResizeApps
     attr_reader :dictsize, :numdocs, :num_child_docs, :nodes
     attr_accessor :slack_minhits, :slack_maxdocs_per_group
 
-    include Assertions
-
     def initialize(test_case, dictsize, numdocs, num_child_docs, nodes, num_hosts, sps)
       @test_case = test_case
       @dictsize = dictsize
