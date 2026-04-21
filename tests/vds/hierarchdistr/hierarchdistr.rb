@@ -370,6 +370,24 @@ class HierarchDistr < VdsMultiModelTest
 
     puts 'Verifying that clients send to correct distributors'
     feed_and_get_all_documents
+
+    set_content_node_state(7, 'u')
+    up_buckets = get_3x3_bucket_matrix
+    assert_equal(up_buckets, buckets)
+
+    puts '-------'
+    puts 'Testing that maintenance mode does not cause bucket movement'
+    puts '-------'
+
+    # Relative node 2 in group 0 (absolute distribution key 2).
+    set_content_node_state(2, 'm')
+    maintenance_buckets = get_3x3_bucket_matrix
+    # This is cheating a tiny bit since the maintenance node is online,
+    # so we can fetch its bucket database.
+    assert_equal(maintenance_buckets, buckets)
+
+    puts 'Verifying that clients send to correct distributors'
+    feed_and_get_all_documents
   end
 
   def feed_and_get_all_documents
