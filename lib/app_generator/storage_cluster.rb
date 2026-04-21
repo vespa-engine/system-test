@@ -17,6 +17,7 @@ class StorageCluster
   chained_setter :garbagecollectioninterval
   chained_setter :selection, :documentselection
   chained_setter :num_distributor_stripes
+  chained_setter :pseudo_row_column_mode
   chained_forward :fleet_controllers,
                   :min_storage_up_ratio => :min_storage_up_ratio,
                   :min_distributor_up_ratio => :min_distributor_up_ratio,
@@ -45,6 +46,7 @@ class StorageCluster
     @streaming = false
     @max_nodes_per_merge = 16
     @num_distributor_stripes = nil
+    @pseudo_row_column_mode = false
   end
 
   def sd(file_name, params = {})
@@ -135,8 +137,11 @@ class StorageCluster
                               :"minimum-bits" => @distribution_bits).close_tag.
       tag("max-document-size").content(@max_document_size).close_tag
 
-    if (@max_nodes_per_merge != 16)
+    if @max_nodes_per_merge != 16
       xml = xml.tag("merges", :"max-nodes-per-merge" => @max_nodes_per_merge).close_tag
+    end
+    if @pseudo_row_column_mode
+      xml = xml.tag("distribution").tag("pseudo-row-column-mode").content("true").close_tag.close_tag
     end
     xml.to_xml(@persistence_threads).
       to_xml(@fleet_controllers, :tuning_xml).
