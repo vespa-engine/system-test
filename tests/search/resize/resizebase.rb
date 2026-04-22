@@ -1,12 +1,15 @@
 # Copyright Vespa.ai. All rights reserved.
 # -*- coding: utf-8 -*-
 require 'indexed_only_search_test'
+require 'test/unit/assertions'
 
 module ResizeApps
   
   class ResizeAppBase
     attr_reader :dictsize, :numdocs, :num_child_docs, :nodes
     attr_accessor :slack_minhits, :slack_maxdocs_per_group
+
+    include Test::Unit::Assertions
 
     def initialize(test_case, dictsize, numdocs, num_child_docs, nodes, num_hosts, sps)
       @test_case = test_case
