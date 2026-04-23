@@ -66,8 +66,8 @@ class Embedding < SearchTest
       param('tokenizer-model', '', { 'url' => 'https://data.vespa-cloud.com/onnx_models/nomic-ai-modernbert-embed-base/tokenizer.json' }).
       param('transformer-output', 'token_embeddings').
       param('max-tokens', 8192).
-      param('prepend', [ ComponentParam::new('query', 'search_query:', {}),
-                         ComponentParam::new('document', 'search_document:', {}) ] )
+      param('prepend', [ ComponentParam::new('query', 'search_query: ', {}),
+                         ComponentParam::new('document', 'search_document: ', {}) ] )
   end
 
   def colbert_embedder_component
