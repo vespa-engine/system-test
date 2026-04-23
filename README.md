@@ -47,10 +47,13 @@ Initialize Docker Swarm if not done previously:
 $ docker swarm init
 ```
 
+Place vespa RPMs in docker/rpms directory.
+Copy ~/.m2/repository to docker/maven-repo and copy all the systemtests
+you want to run into docker/vespa-systemtests directory.
 Build Docker image with updated files and execute:
 
 ```
-$ docker build --file docker/Dockerfile --tag ${USER}-systemtests .
+$ (cd docker; docker build --file Dockerfile.alma9 --tag ${USER}-systemtests .)
 $ bin/run-tests-on-swarm.sh --consoleoutput --image ${USER}-systemtests --nodes 1 --file search/basicsearch/basic_search.rb
 ```
 

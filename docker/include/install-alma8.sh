@@ -46,12 +46,15 @@ dnf -y install \
     rubygem-test-unit
 
 gem install ffi parallel
+gem install libxml-ruby -v 5.0.5
 dnf remove -y gcc
 
 dnf -y install \
     gcc-toolset-$GCC_VERSION-gcc-c++ \
     gcc-toolset-$GCC_VERSION-libatomic-devel \
     gcc-toolset-$GCC_VERSION-annobin-plugin-gcc
+
+echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
 curl -sSLf "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2-$(uname -m).zip"
 unzip -q awscliv2-$(uname -m).zip
