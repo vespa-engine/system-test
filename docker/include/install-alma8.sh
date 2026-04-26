@@ -12,7 +12,6 @@ dnf install -y \
     git-core \
     hostname \
     jq \
-    libxml2-devel \
     lz4 \
     make \
     net-tools \
@@ -52,6 +51,8 @@ dnf -y install \
     gcc-toolset-$GCC_VERSION-gcc-c++ \
     gcc-toolset-$GCC_VERSION-libatomic-devel \
     gcc-toolset-$GCC_VERSION-annobin-plugin-gcc
+
+echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
 curl -sSLf "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2-$(uname -m).zip"
 unzip -q awscliv2-$(uname -m).zip
