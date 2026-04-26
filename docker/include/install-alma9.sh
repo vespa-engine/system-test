@@ -51,7 +51,7 @@ dnf remove -y gcc
 dnf -y install \
     gcc-toolset-$GCC_VERSION-gcc-c++ \
     gcc-toolset-$GCC_VERSION-libatomic-devel \
-    gcc-toolset-$GCC_VERSION-annobin-plugin-gcc
+    gcc-toolset-$GCC_VERSION-gcc-plugin-annobin
 
 curl -sSLf "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "awscliv2-$(uname -m).zip"
 unzip -q awscliv2-$(uname -m).zip
