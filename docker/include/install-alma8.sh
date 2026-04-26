@@ -50,7 +50,7 @@ dnf remove -y gcc
 dnf -y install \
     gcc-toolset-$GCC_VERSION-gcc-c++ \
     gcc-toolset-$GCC_VERSION-libatomic-devel \
-    gcc-toolset-$GCC_VERSION-annobin-plugin-gcc
+    gcc-toolset-$GCC_VERSION-gcc-plugin-annobin
 
 echo ": \${JAVA_HOME:=$(dirname $(dirname $(readlink -f /usr/bin/java)))}" > /etc/mavenrc
 
