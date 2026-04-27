@@ -72,7 +72,11 @@ class DocumentApiV1
     response = connection.getConnection.post(path, content, headers.merge({ 'Content-Type' => 'application/json'}))
     @connectionPool.release(connection)
     assert_response_ok(response)
-    response.body
+    if params[:raw_response]
+      response
+    else
+      response.body
+    end
   end
 
   def http_put(path, content, params={}, headers={})
@@ -83,7 +87,11 @@ class DocumentApiV1
     response = connection.getConnection.put(path, content, headers.merge({ 'Content-Type' => 'application/json'}))
     @connectionPool.release(connection)
     assert_response_ok(response)
-    response.body
+    if params[:raw_response]
+      response
+    else
+      response.body
+    end
   end
 
   def http_get(path, params={}, headers={})
