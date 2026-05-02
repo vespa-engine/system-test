@@ -1,6 +1,7 @@
 # Copyright Vespa.ai. All rights reserved.
 # -*- coding: utf-8 -*-
 require 'assertions'
+require 'vespa_assertions'
 require 'test/unit/assertion-failed-error'
 require 'error'
 require 'failure'
@@ -28,6 +29,7 @@ end
 class TestCase
   include DRb::DRbUndumped
   include Assertions
+  include VespaAssertions
   include TestBase
 
   attr_reader :selfdir, :dirs, :testcase_file, :cmd_args, :timeout, :max_memory, :keep_tmpdir, :leave_loglevels, :tls_env, :https_client, :perf_recording
