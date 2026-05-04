@@ -3,6 +3,8 @@ require 'indexed_streaming_search_test'
 
 class MetricsProxy < IndexedStreamingSearchTest
 
+  NUMBER_OF_SERVICES_IN_METRICS = 12
+
   def setup
     set_owner("hmusum")
     set_description("Test metrics proxy functionality")
@@ -35,8 +37,8 @@ class MetricsProxy < IndexedStreamingSearchTest
     start
     container = @vespa.container.values.first
     verify_metrics_v1_api(container)
-    verify_metrics_v2_api(container, 19092)
-    verify_metrics_v2_api(container, container.http_port)
+    verify_metrics_v2_api(container, true)
+    verify_metrics_v2_api(container, false)
     verify_prometheus_v1_api(container)
   end
 
@@ -46,7 +48,7 @@ class MetricsProxy < IndexedStreamingSearchTest
 
     assert(json.has_key? 'services')
     services = json['services']
-    assert(services.count > 0, services)
+    assert_equal(NUMBER_OF_SERVICES_IN_METRICS, services.count)
 
     services.each do |service|
       assert(service.has_key? 'name')
@@ -58,7 +60,8 @@ class MetricsProxy < IndexedStreamingSearchTest
     end
   end
 
-  def verify_metrics_v2_api(container, port)
+  def verify_metrics_v2_api(container, use_metric_proxy)
+    port = use_metric_proxy ? 19092 : container.http_port
     puts "Verifying metrics/v2 on port #{port}"
     ignored_just_for_caching = container.search("/metrics/v2/values", port)
     sleep 2 # Give time for metrics to be fetched and cached.
@@ -75,7 +78,8 @@ class MetricsProxy < IndexedStreamingSearchTest
     assert(node.has_key? 'services')
 
     services = node['services']
-    assert(services.count > 0, services)
+    # TODO: Why is there one less service in metrics when asking metrics proxy compared to when asking container?
+    assert_equal(use_metric_proxy ? NUMBER_OF_SERVICES_IN_METRICS - 1 : NUMBER_OF_SERVICES_IN_METRICS, services.count)
 
     services.each do |service|
       assert(service.has_key? 'name')
