@@ -121,7 +121,7 @@ class Redundancy < PersistentProviderTest
 
     # Check that document B is on neither node
     statinfo = vespa.storage["storage"].storage["0"].stat("id:crawler:music::http://yahoo.com/B", include_owner: false)
-    assert(0, statinfo.size)
+    assert_equal(0, statinfo.size)
   end
 
 
