@@ -15,13 +15,12 @@ class ImplitictIndexPhrase < IndexedStreamingSearchTest
 
     puts "Query: Querying, checking implicit phrase"
     result = search("query=notanindex:blues&tracelevel=1")
-    assert("Result does not contain string:query=[\"notanindex blue\"]",
-           result.xmldata.include?("query=[\"notanindex blue\"]"))
+    assert(result.xmldata.include?("query=[WEAKAND (AND notanindex blues)]"),
+           "Result does not contain string:query=[WEAKAND (AND notanindex blue)]")
     puts "Query: Querying, checking specific index"
     result = search("query=title:nosuchtitle&tracelevel=1")
-    assert("Result does not contain string:query=[\"notanindex blue\"]",
-           result.xmldata.include?("query=[title:nosuchtitle]"))
-
+    assert(result.xmldata.include?("query=[WEAKAND title:nosuchtitle]"),
+           "Result does not contain string:query=[WEAKAND title:nosuchtitle]")
   end
 
 
