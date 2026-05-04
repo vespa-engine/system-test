@@ -57,7 +57,7 @@ class TenantAPI < ConfigTest
     end
     assert(wait_for_tenants(@hostname, []))
     tenants = list_tenants_assert(@hostname)
-    assert(SYSTEM_TENANTS, tenants["tenants"])
+    assert_equal(SYSTEM_TENANTS, tenants["tenants"])
   end
 
   def create_tenant_assert(tenant)
