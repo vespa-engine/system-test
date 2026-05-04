@@ -622,11 +622,11 @@ include ApplicationV2Api
   end
 
   def assert_file_exists(file)
-    assert("File #{file} does not exist", @node.readfile(file))
+    assert(@node.readfile(file), "File #{file} does not exist")
   end
 
   def assert_file_does_not_exist(file)
-    assert("File #{file} exists", !@node.readfile(file))
+    assert(!@node.readfile(file), "File #{file} exists")
   end
 
   def teardown
