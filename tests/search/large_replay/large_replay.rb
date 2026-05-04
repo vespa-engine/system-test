@@ -30,11 +30,11 @@ class LargeReplay < IndexedOnlySearchTest
     vespa.adminserver.logctl("searchnode:proton.persistenceengine.persistenceengine", "debug=on")
     vespa.logserver.execute("vespa-logctl searchnode:proton.persistenceengine")
     num_matches = assert_log_matches("Begin initializing persistence handlers", 600)
-    assert(1, num_matches)
+    assert_equal(1, num_matches)
     wait_for_hitcount("sddocname:test", num_docs, 600)
     assert_log_not_matches("still trying to connect to peer at")
     num_matches = assert_log_matches("Done initializing persistence handlers")
-    assert(1, num_matches)
+    assert_equal(1, num_matches)
   end
 
   def generate_and_feed_docs(num_docs)
