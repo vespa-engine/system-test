@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 
-require 'test/unit/assertions'
+require 'assertions'
 require 'erb'
 require 'set'
 require 'http_connection_pool'
@@ -30,7 +30,7 @@ end
 
 # Class to use the document rest api (v1) for feed, get, visit (https://docs.vespa.ai/documentation/document-api.html)
 class DocumentApiV1
-  include Test::Unit::Assertions
+  include Assertions
 
   attr_reader :host, :port
 
