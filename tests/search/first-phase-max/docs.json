@@ -1,0 +1,32 @@
+[
+    {
+        "put": "id:test:test::1",
+        "fields": {
+            "order": 100
+        }
+    },
+    {
+        "put": "id:test:test::2",
+        "fields": {
+            "order": 150
+        }
+    },
+    {
+        "put": "id:test:test::3",
+        "fields": {
+            "order": 200
+        }
+    },
+    {
+        "put": "id:test:test::4",
+        "fields": {
+            "order": 250
+        }
+    },
+    {
+        "put": "id:test:test::5",
+        "fields": {
+            "order": 300
+        }
+    }
+]
