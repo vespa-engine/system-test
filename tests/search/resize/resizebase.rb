@@ -385,7 +385,7 @@ end
 
 class PollQueryStats < StatsBase
 
-  include Test::Unit::Assertions
+  include Assertions
 
   def initialize(test_case, poll_query, poll_queries_index)
     super(test_case)
@@ -533,7 +533,7 @@ end
 class ExploredDocCountStats < StatsBase
   attr_reader :explore_doc_count
 
-  include Test::Unit::Assertions
+  include Assertions
 
   def initialize(test_case, explore_doc_count, explore_doc_count_index)
     super(test_case)
