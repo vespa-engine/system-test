@@ -119,9 +119,11 @@ class Redundancy < PersistentProviderTest
     assert(statinfo.has_key?("0"))
     assert(statinfo.has_key?("1"))
 
-    # Check that document B is on neither node
+    # Check that document B is on both nodes with status DELETED
     statinfo = vespa.storage["storage"].storage["0"].stat("id:crawler:music::http://yahoo.com/B", include_owner: false)
-    assert_equal(0, statinfo.size)
+    assert_equal(2, statinfo.size)
+    assert_equal("DELETED", statinfo["0"]["status"])
+    assert_equal("DELETED", statinfo["1"]["status"])
   end
 
 
