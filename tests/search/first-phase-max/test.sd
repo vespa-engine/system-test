@@ -1,0 +1,48 @@
+# Copyright Vespa.ai. All rights reserved.
+
+schema test {
+
+  document test {
+    field order type int {
+      indexing: attribute | summary
+    }
+  }
+
+  rank-profile default {
+    first-phase {
+      expression: attribute(order)
+    }
+    second-phase {
+      expression: attribute(order) + firstPhaseMax
+    }
+    match-features {
+      attribute(order)
+      firstPhaseMax
+    }
+  }
+
+  rank-profile dynamic_threshold {
+    function raw_second_phase() {
+      expression: attribute(order) * 2
+    }
+    function relative_threshold() {
+      expression: 0.7 * firstPhaseMax
+    }
+    function gated() {
+      expression: if (attribute(order) >= relative_threshold, raw_second_phase, -1)
+    }
+    first-phase {
+      expression: attribute(order)
+    }
+    second-phase {
+      expression: gated
+      rerank-count: 100
+      rank-score-drop-limit: 0.0
+    }
+    match-features {
+      attribute(order)
+      firstPhaseMax
+    }
+  }
+
+}
