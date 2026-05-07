@@ -71,10 +71,8 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
     puts "# Redeploying with validate_and_sanitize_docstore=YES and store_full_document_ids=true"
     deploy_app(@app.config(ConfigOverride.new("vespa.config.search.core.proton").add("validate_and_sanitize_docstore", "YES").add("store_full_document_ids", "true")))
 
-    puts "# Restarting Proton"
-    @searchnode.stop
-    @searchnode.start
-    wait_for_atleast_hitcount("query=sddocname:test", 1)
+    puts "# Restarting Proton (without flushing)"
+    restart_proton("test", 1, skip_trigger_flush: true)
 
     flush_and_assert_flushed_metastore_docids(6)
   end
@@ -94,13 +92,8 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
     # Flushing at this point should still cause the document ids to be written to a field when flushing after the restart.
     # That is, this test case tests that populating the docids internally leads to an increase in the serial number,
     # which causes the next flush to actually write the files.
-    puts "# Flushing"
-    @searchnode.trigger_flush
-
-    puts "# Restarting Proton"
-    @searchnode.stop
-    @searchnode.start
-    wait_for_atleast_hitcount("query=sddocname:test", 1)
+    puts "# Restarting Proton (with flushing)"
+    restart_proton("test", 1, skip_trigger_flush: false)
 
     flush_and_assert_flushed_metastore_docids(6)
   end
