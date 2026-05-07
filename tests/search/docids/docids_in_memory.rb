@@ -3,9 +3,7 @@
 require 'indexed_only_search_test'
 
 def get_searchnode
-  searchnode_array = @vespa.services.select {|service| service.servicetype == "searchnode"}
-  assert_equal(1, searchnode_array.length)
-  searchnode_array[0]
+  vespa.search["search"].first
 end
 
 class DocIdsInMemoryTest < IndexedOnlySearchTest
