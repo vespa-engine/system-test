@@ -11,7 +11,7 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
   def setup
     set_owner("boeker")
     @doc1 = Document.new("id:storage_test:test:n=1234:1").add_field("some_field", 42)
-    @docid_file_size = 0x1000 + 8 + 29 # Header + bytes for length of string + bytes for actual string
+    @docid_file_size = 0x1000 + 4 + 29 # Header + bytes for length of string + bytes for actual string
   end
 
   def feed_and_assert_visiting_docids()
