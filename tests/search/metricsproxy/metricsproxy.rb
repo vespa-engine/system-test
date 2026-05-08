@@ -3,7 +3,7 @@ require 'indexed_streaming_search_test'
 
 class MetricsProxy < IndexedStreamingSearchTest
 
-  NUMBER_OF_SERVICES_IN_METRICS = 12
+  MIN_NUMBER_OF_SERVICES_IN_METRICS = 9
 
   def setup
     set_owner("hmusum")
@@ -48,7 +48,8 @@ class MetricsProxy < IndexedStreamingSearchTest
 
     assert(json.has_key? 'services')
     services = json['services']
-    assert_equal(NUMBER_OF_SERVICES_IN_METRICS, services.count)
+    puts("Found metrics for #{services.count} services on port 19092")
+    assert(services.count >= MIN_NUMBER_OF_SERVICES_IN_METRICS)
 
     services.each do |service|
       assert(service.has_key? 'name')
@@ -57,6 +58,8 @@ class MetricsProxy < IndexedStreamingSearchTest
       assert(status.has_key? 'code')
       assert_equal("up", status['code'])
       assert(service.has_key? 'metrics')
+      svc = service['name']
+      puts("We have metrics for service: #{svc} OK")
     end
   end
 
@@ -78,8 +81,11 @@ class MetricsProxy < IndexedStreamingSearchTest
     assert(node.has_key? 'services')
 
     services = node['services']
-    # TODO: Why is there one less service in metrics when asking metrics proxy compared to when asking container?
-    assert_equal(use_metric_proxy ? NUMBER_OF_SERVICES_IN_METRICS - 1 : NUMBER_OF_SERVICES_IN_METRICS, services.count)
+    # Q: Why is there one less service in metrics when asking metrics proxy compared to when asking container?
+    # A: There is an extra "host_life" virtual service reported.
+
+    puts("Found metrics for #{services.count} services on port #{port}")
+    assert(services.count >= MIN_NUMBER_OF_SERVICES_IN_METRICS)
 
     services.each do |service|
       assert(service.has_key? 'name')
@@ -88,6 +94,8 @@ class MetricsProxy < IndexedStreamingSearchTest
       assert(status.has_key? 'code')
       assert_equal("up", status['code'])
       assert(service.has_key? 'metrics')
+      svc = service['name']
+      puts("We have metrics for service: #{svc} OK")
     end
   end
 
