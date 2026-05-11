@@ -1,0 +1,6 @@
+[
+  {"put": "id:test:test::1", "fields": {"n": 1, "a": [1, 2, 3], "b": [4, 5, 6]}},
+  {"put": "id:test:test::2", "fields": {"n": 2, "a": [1, 2, 3], "b": []}},
+  {"put": "id:test:test::3", "fields": {"n": 3, "a": [],        "b": [4, 5, 6]}},
+  {"put": "id:test:test::4", "fields": {"n": 4, "a": [],        "b": []}}
+]
