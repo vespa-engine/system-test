@@ -14,6 +14,18 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
     @docid_file_size = 0x1000 + 4 + 29 # Header + bytes for length of string + bytes for actual string
   end
 
+  def deploy_fromdisk
+    puts "# Deploying with document-id: from-disk"
+    system("cp #{selfdir}test.fromdisk.sd #{dirs.tmpdir}test.sd")
+    deploy_app(SearchApp.new.sd(dirs.tmpdir + "test.sd"))
+  end
+
+  def deploy_attribute
+    puts "# Deploying with document-id: attribute"
+    system("cp #{selfdir}test.attribute.sd #{dirs.tmpdir}test.sd")
+    deploy_app(SearchApp.new.sd(dirs.tmpdir + "test.sd"))
+  end
+
   def feed_and_assert_visiting_docids()
     puts "# Feeding document"
     vespa.document_api_v1.put(@doc1)
@@ -46,8 +58,7 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
 
   def test_populate_docids
     set_description("Test that docids in the metastore are populated when adding a document")
-    @app = SearchApp.new.sd(selfdir + "test.sd")
-    deploy_app(@app.config(ConfigOverride.new("vespa.config.search.core.proton").add("store_full_document_ids", "true")))
+    deploy_attribute
     @searchnode = get_searchnode
     start
 
@@ -58,8 +69,7 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
 
   def test_populate_docids_of_existing_documents_with_early_flush
     set_description("Test that docids in the metastore are populated for existing documents when activating storing of document ids at a later point")
-    @app = SearchApp.new.sd(selfdir + "test.sd")
-    deploy_app(@app)
+    deploy_fromdisk
     @searchnode = get_searchnode
     start
 
@@ -68,8 +78,7 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
     puts "# Flushing"
     @searchnode.trigger_flush
 
-    puts "# Redeploying with store_full_document_ids=true"
-    deploy_app(@app.config(ConfigOverride.new("vespa.config.search.core.proton").add("store_full_document_ids", "true")))
+    deploy_attribute
 
     puts "# Restarting Proton (without flushing)"
     restart_proton("test", 1, skip_trigger_flush: true)
@@ -79,15 +88,13 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
 
   def test_populate_docids_of_existing_documents_with_late_flush
     set_description("Test that docids in the metastore are populated for existing documents when activating storing of document ids at a later point")
-    @app = SearchApp.new.sd(selfdir + "test.sd")
-    deploy_app(@app)
+    deploy_fromdisk
     @searchnode = get_searchnode
     start
 
     feed_and_assert_visiting_docids
 
-    puts "# Redeploying with store_full_document_ids=true"
-    deploy_app(@app.config(ConfigOverride.new("vespa.config.search.core.proton").add("store_full_document_ids", "true")))
+    deploy_attribute
 
     # Flushing at this point should still cause the document ids to be written to a field when flushing after the restart.
     # That is, this test case tests that populating the docids internally leads to an increase in the serial number,
