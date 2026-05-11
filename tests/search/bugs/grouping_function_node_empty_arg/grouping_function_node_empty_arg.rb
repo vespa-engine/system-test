@@ -3,7 +3,7 @@ require 'indexed_streaming_search_test'
 
 # Regression test for vespa-engine/vespa#36843.
 #
-# vespa-proton-bin crashed with SIGFPE in NumericFunctionNode::VectorHandler
+# vespa-proton-bin crashed with SIGSEGV in NumericFunctionNode::VectorHandler
 # when a grouping expression invoked a binary numeric op (e.g. add/mul) and
 # one operand vector was empty. The handler resized result to the larger
 # argSize, then filled values using modulo indexing.
