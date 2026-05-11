@@ -1,5 +1,5 @@
 # Copyright Vespa.ai. All rights reserved.
-require 'indexed_only_search_test'
+require 'indexed_streaming_search_test'
 
 # Regression test for vespa-engine/vespa#36843.
 #
@@ -17,7 +17,7 @@ require 'indexed_only_search_test'
 # behaviour of the handler (e.g. mul with the left operand empty collapses to
 # zeros). If the handler is rewritten to preserve the non-empty operand
 # symmetrically, update the expectations accordingly.
-class GroupingFunctionNodeEmptyArgBug < IndexedOnlySearchTest
+class GroupingFunctionNodeEmptyArgBug < IndexedStreamingSearchTest
 
   def setup
     set_owner('johsol')
