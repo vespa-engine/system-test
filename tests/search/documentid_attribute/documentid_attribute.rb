@@ -18,10 +18,13 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
     deploy_app(SearchApp.new.sd(dirs.tmpdir + "test.sd"))
   end
 
-  def feed_and_assert_visiting_docids()
+  def feed
     puts "# Feeding document"
     vespa.document_api_v1.put(@doc)
+    wait_for_hitcount("sddocname:test&nocache", 1, 60)
+  end
 
+  def assert_visiting_docids_works
     puts "# Vising docids"
     result = vespa.adminserver.execute("vespa-visit --fieldset \"[id]\"")
     assert(result =~ /id:storage_test:test:n=1234:1/)
@@ -74,7 +77,8 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
     deploy "default"
     start
 
-    feed_and_assert_visiting_docids
+    feed
+    assert_visiting_docids_works
 
     flush
     assert_metastore_file_does_exist(4)
@@ -86,10 +90,26 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
     deploy "attribute"
     start
 
-    feed_and_assert_visiting_docids
+    feed
+    assert_visiting_docids_works
 
     flush
     assert_metastore_docid_file_of_size_exists(4, @dms_docid_file_size)
+  end
+
+  def test_visiting_after_loading_docid_file
+    set_description("Test that visiting of docids still works after a document id file has been loaded")
+    deploy "attribute"
+    start
+
+    feed
+    assert_visiting_docids_works
+
+    flush
+    assert_metastore_docid_file_of_size_exists(4, @dms_docid_file_size)
+
+    restart_proton("test", 1, skip_trigger_flush: true)
+    assert_visiting_docids_works
   end
 
   def test_populate_docids_of_existing_documents_with_early_flush
@@ -97,10 +117,10 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
     deploy"fromdisk"
     start
 
-    feed_and_assert_visiting_docids
+    feed
+    assert_visiting_docids_works
 
     flush
-
     deploy "attribute"
 
     puts "# Restarting Proton (without flushing)"
@@ -115,7 +135,8 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
     deploy "fromdisk"
     start
 
-    feed_and_assert_visiting_docids
+    feed
+    assert_visiting_docids_works
 
     deploy "attribute"
 
