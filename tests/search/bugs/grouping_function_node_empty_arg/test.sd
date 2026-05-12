@@ -1,0 +1,14 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+  document test {
+    field n type int {
+      indexing: attribute | summary
+    }
+    field a type array<long> {
+      indexing: attribute
+    }
+    field b type array<long> {
+      indexing: attribute
+    }
+  }
+}
