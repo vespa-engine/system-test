@@ -1,7 +1,8 @@
-docker
-elasticsearch
-pyvespa
-vespacli
-tqdm
-requests
-zstandard
+docker>=7.1.0
+elasticsearch>=9.4.0
+pyvespa>=1.2.0
+vespacli>=8.687.75
+tqdm>=4.67.3
+requests>=2.34.0
+zstandard>=0.25.0
+urllib3>=2.7.0
