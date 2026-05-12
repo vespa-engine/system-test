@@ -2,107 +2,131 @@
 
 require 'indexed_only_search_test'
 
-def get_searchnode
-  vespa.search["search"].first
-end
-
 class DocIdsInMemoryTest < IndexedOnlySearchTest
 
   def setup
     set_owner("boeker")
-    @doc1 = Document.new("id:storage_test:test:n=1234:1").add_field("some_field", 42)
-    @docid_file_size = 0x1000 + 4 + 29 # Header + bytes for length of string + bytes for actual string
+    @doc = Document.new("id:storage_test:test:n=1234:1").add_field("some_field", 42)
+    @dms_filename = "[documentmetastore].dat"
+    @dms_docid_filename = "[documentmetastore].docids.dat"
+    @dms_docid_file_size = 0x1000 + 4 + 29 # Header + bytes for length of string + bytes for actual string
   end
 
-  def deploy_fromdisk
-    puts "# Deploying with document-id: from-disk"
-    system("cp #{selfdir}test.fromdisk.sd #{dirs.tmpdir}test.sd")
-    deploy_app(SearchApp.new.sd(dirs.tmpdir + "test.sd"))
-  end
-
-  def deploy_attribute
-    puts "# Deploying with document-id: attribute"
-    system("cp #{selfdir}test.attribute.sd #{dirs.tmpdir}test.sd")
+  def deploy(document_id_setting)
+    puts "# Deploying with document-id setting '#{document_id_setting}'"
+    system("cp #{selfdir}test.#{document_id_setting}.sd #{dirs.tmpdir}test.sd")
     deploy_app(SearchApp.new.sd(dirs.tmpdir + "test.sd"))
   end
 
   def feed_and_assert_visiting_docids()
     puts "# Feeding document"
-    vespa.document_api_v1.put(@doc1)
+    vespa.document_api_v1.put(@doc)
 
     puts "# Vising docids"
     result = vespa.adminserver.execute("vespa-visit --fieldset \"[id]\"")
     assert(result =~ /id:storage_test:test:n=1234:1/)
   end
 
-  def flush_and_assert_flushed_metastore_docids(snapshot_num)
-    puts "# Checking if flushing creates metastore docid file"
-    @searchnode.trigger_flush
+  def flush
+    puts "# Flushing"
+    vespa.search["search"].first.trigger_flush
+  end
 
-    dms_path = "#{Environment.instance.vespa_home}/var/db/vespa/search/cluster.search/n0/documents/test/0.ready/documentmetastore/"
-    filename = "#{dms_path}snapshot-#{snapshot_num}/[documentmetastore].docids.dat"
-    result = nil
+  def flushed_file_exists(directory, snapshot_num, filename)
+    path = "#{Environment.instance.vespa_home}/var/db/vespa/search/cluster.search/n0/documents/test/0.ready/"
+    sub_path = "#{directory}/snapshot-#{snapshot_num}/#{filename}"
+    puts "# Checking if '#{sub_path}' exists in '#{path}'"
+    full_path = path + sub_path
+    exists = false
+    size = 0
     30.times do
-      puts "Checking if metastore docid file '#{filename}' exists..."
-      result = vespa.adminserver.remote_eval("File.exist?(\"#{filename}\")")
-      if result == true
-        size = vespa.adminserver.remote_eval("File.size(\"#{filename}\")")
+      puts "Checking if '#{filename}' exists..."
+      exists = vespa.adminserver.remote_eval("File.exist?(\"#{full_path}\")")
+      if exists
+        size = vespa.adminserver.remote_eval("File.size(\"#{full_path}\")")
         puts "Size of docid file is #{size}"
-        assert_equal(@docid_file_size, size)
         break
       end
       sleep 1
     end
-    assert_equal(true, result, "Metastore docid file '#{filename}' does not exist")
+
+    return exists, size
+  end
+
+  def assert_metastore_file_does_exist(snapshot_num)
+    exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_filename)
+    assert(exists, "Metastore docid file '#{@dms_filename}' does not exist")
+  end
+
+  def assert_metastore_docid_file_does_not_exist(snapshot_num)
+    exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_docid_filename)
+    assert(!exists, "Metastore docid file '#{@dms_docid_filename}' exists")
+  end
+
+  def assert_metastore_docid_file_of_size_exists(snapshot_num, expected_size)
+    exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_docid_filename)
+    assert(exists, "Metastore docid file '#{@dms_docid_filename}' does not exist")
+    assert_equal(expected_size, size, "Metastore docid file size is incorrect")
+  end
+
+  def test_no_docids_by_default
+    set_description("Test that docids in the metastore are not populated by default")
+    deploy "default"
+    start
+
+    feed_and_assert_visiting_docids
+
+    flush
+    assert_metastore_file_does_exist(4)
+    assert_metastore_docid_file_does_not_exist(4)
   end
 
   def test_populate_docids
     set_description("Test that docids in the metastore are populated when adding a document")
-    deploy_attribute
-    @searchnode = get_searchnode
+    deploy "attribute"
     start
 
     feed_and_assert_visiting_docids
 
-    flush_and_assert_flushed_metastore_docids(4)
+    flush
+    assert_metastore_docid_file_of_size_exists(4, @dms_docid_file_size)
   end
 
   def test_populate_docids_of_existing_documents_with_early_flush
     set_description("Test that docids in the metastore are populated for existing documents when activating storing of document ids at a later point")
-    deploy_fromdisk
-    @searchnode = get_searchnode
+    deploy"fromdisk"
     start
 
     feed_and_assert_visiting_docids
 
-    puts "# Flushing"
-    @searchnode.trigger_flush
+    flush
 
-    deploy_attribute
+    deploy "attribute"
 
     puts "# Restarting Proton (without flushing)"
     restart_proton("test", 1, skip_trigger_flush: true)
 
-    flush_and_assert_flushed_metastore_docids(6)
+    flush
+    assert_metastore_docid_file_of_size_exists(6, @dms_docid_file_size)
   end
 
   def test_populate_docids_of_existing_documents_with_late_flush
     set_description("Test that docids in the metastore are populated for existing documents when activating storing of document ids at a later point")
-    deploy_fromdisk
-    @searchnode = get_searchnode
+    deploy "fromdisk"
     start
 
     feed_and_assert_visiting_docids
 
-    deploy_attribute
+    deploy "attribute"
 
-    # Flushing at this point should still cause the document ids to be written to a field when flushing after the restart.
-    # That is, this test case tests that populating the docids internally leads to an increase in the serial number,
-    # which causes the next flush to actually write the files.
+    # Flushing at this point should still cause the document ids to be written to a file when flushing after the restart.
+    # That is, this test case tests that populating the docids internally as part of the docstore validation after the restart
+    # leads to an increase in the serial number, which causes the next flush to actually write the files.
     puts "# Restarting Proton (with flushing)"
     restart_proton("test", 1, skip_trigger_flush: false)
 
-    flush_and_assert_flushed_metastore_docids(6)
+    flush
+    assert_metastore_docid_file_of_size_exists(6, @dms_docid_file_size)
   end
 
 end
