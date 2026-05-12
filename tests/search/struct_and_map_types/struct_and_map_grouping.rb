@@ -85,7 +85,7 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
     check_grouping("all(group(strcat(str_int_map.key, str_int_map.value)) each(output(count())))",
                    {""=>1, "@foo@bar1020"=>1, "@foo@bar2030"=>1})
     check_grouping("all(group(str_int_map.value + int_array) each(output(count())))",
-                   {"20"=>1, "30"=>1, "40"=>2})
+                   {"20"=>1, "30"=>2, "40"=>1})
 
     check_grouping("all(group(str_int_map.key) each(output(sum(str_int_map.value))))", {"@bar"=>50, "@foo"=>30}, "sum(str_int_map.value)")
     check_grouping("all(group(str_int_map.key) each(group(str_int_map.value) each(output(sum(str_int_map.value)))))",
@@ -97,8 +97,8 @@ class StructAndMapGroupingTest < IndexedStreamingSearchTest
                     "@foo"=>{"@foo10"=>10, "@foo20"=>20}},
                    "sum(str_int_map.value)")
     check_grouping("all(group(str_int_map.key) each(group(str_int_map.value + int_array) each(output(count()))))",
-                   {"@bar"=>{"30"=>1, "40"=>2},
-                    "@foo"=>{"20"=>1, "30"=>2}})
+                   {"@bar"=>{"20"=>1, "30"=>1, "40"=>1},
+                    "@foo"=>{"20"=>2, "30"=>1}})
 
     if is_streaming
         check_grouping("all(group(str_int_map{\"@foo\"}) each(output(count())))", {"10"=>1, "20"=>1})
