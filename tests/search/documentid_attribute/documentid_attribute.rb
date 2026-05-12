@@ -6,6 +6,7 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
 
   def setup
     set_owner("boeker")
+    @schema_dir = selfdir + "schemas/"
     @doc = Document.new("id:storage_test:test:n=1234:1").add_field("some_field", 42)
     @dms_filename = "[documentmetastore].dat"
     @dms_docid_filename = "[documentmetastore].docids.dat"
@@ -14,13 +15,13 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
 
   def deploy_with(document_id_setting)
     puts "# Deploying with document-id setting '#{document_id_setting}'"
-    system("cp #{selfdir}test.#{document_id_setting}.sd #{dirs.tmpdir}test.sd")
+    system("cp #{@schema_dir}test.#{document_id_setting}.sd #{dirs.tmpdir}test.sd")
     deploy_app(SearchApp.new.sd(dirs.tmpdir + "test.sd"))
   end
 
   def redeploy_with(document_id_setting)
     puts "# Re-deploying with document-id setting '#{document_id_setting}'"
-    system("cp #{selfdir}test.#{document_id_setting}.sd #{dirs.tmpdir}test.sd")
+    system("cp #{@schema_dir}test.#{document_id_setting}.sd #{dirs.tmpdir}test.sd")
     deploy_output = redeploy(SearchApp.new.sd(dirs.tmpdir + "test.sd"))
     wait_for_application(vespa.container.values.first, deploy_output)
     wait_for_config_generation_proxy(get_generation(deploy_output))
