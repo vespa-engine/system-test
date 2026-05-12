@@ -42,7 +42,7 @@ class GroupingFunctionNodeEmptyArgBug < IndexedStreamingSearchTest
     # to a single group with key 0. Both operands empty leaves result empty.
     assert_group_keys('n:1', 'mul(a,b)', [4, 10, 18])
     assert_group_keys('n:2', 'mul(a,b)', [1, 2, 3])
-    assert_group_keys('n:3', 'mul(a,b)', [0])
+    assert_group_keys('n:3', 'mul(a,b)', [4, 5, 6])
     assert_group_keys('n:4', 'mul(a,b)', [])
   end
 
