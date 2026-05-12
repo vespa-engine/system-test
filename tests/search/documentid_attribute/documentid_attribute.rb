@@ -80,6 +80,24 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
     assert_equal(expected_size, size, "Metastore docid file size is incorrect")
   end
 
+  def test_populating_and_visiting_docids
+    set_description("Test that docids in the metastore are populated and can be visited")
+    deploy_with "attribute"
+    start
+
+    feed
+    assert_visiting_docids_works
+
+    # To make sure that the document ids in the metastore are actually populated,
+    # we flush and check that they are written to a file.
+    flush
+    assert_metastore_docid_file_of_size_exists(4, @dms_docid_file_size)
+
+    # Let's make sure that visiting still works after loading the document ids from the file
+    restart_proton("test", 1, skip_trigger_flush: true) # Already flushed
+    assert_visiting_docids_works
+  end
+
   def test_no_docids_by_default
     set_description("Test that docids in the metastore are not populated by default")
     deploy_with "default"
@@ -88,36 +106,10 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
     feed
     assert_visiting_docids_works
 
+    # Make sure that the regular metastore file exists and that the docid file does not exist.
     flush
     assert_metastore_file_does_exist(4)
     assert_metastore_docid_file_does_not_exist(4)
-  end
-
-  def test_populate_docids
-    set_description("Test that docids in the metastore are populated when adding a document")
-    deploy_with "attribute"
-    start
-
-    feed
-    assert_visiting_docids_works
-
-    flush
-    assert_metastore_docid_file_of_size_exists(4, @dms_docid_file_size)
-  end
-
-  def test_visiting_after_loading_docid_file
-    set_description("Test that visiting of docids still works after a document id file has been loaded")
-    deploy_with "attribute"
-    start
-
-    feed
-    assert_visiting_docids_works
-
-    flush
-    assert_metastore_docid_file_of_size_exists(4, @dms_docid_file_size)
-
-    restart_proton("test", 1, skip_trigger_flush: true)
-    assert_visiting_docids_works
   end
 
   def test_populate_docids_of_existing_documents_with_early_flush
@@ -131,9 +123,14 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
     flush
     redeploy_with "attribute"
 
+    # No restart yet! Let's make sure that visiting still works.
+    assert_visiting_docids_works
+
+    # The docstore validation after the restart will automatically populate the doc ids.
     puts "# Restarting Proton (without flushing)"
     restart_proton("test", 1, skip_trigger_flush: true)
 
+    # After the docstore validation, flushing should produce a file now.
     flush
     assert_metastore_docid_file_of_size_exists(6, @dms_docid_file_size)
   end
@@ -148,27 +145,21 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
 
     redeploy_with "attribute"
 
+    # No restart yet! Let's make sure that visiting still works.
+    assert_visiting_docids_works
+
     # Flushing at this point should still cause the document ids to be written to a file when flushing after the restart.
     # That is, this test case tests that populating the docids internally as part of the docstore validation after the restart
     # leads to an increase in the serial number, which causes the next flush to actually write the files.
     puts "# Restarting Proton (with flushing)"
     restart_proton("test", 1, skip_trigger_flush: false)
 
+    # Let's make sure that visiting works after population the doc ids through the docstore validation.
+    assert_visiting_docids_works
+
+    # After the docstore validation, flushing should produce a file now.
     flush
     assert_metastore_docid_file_of_size_exists(6, @dms_docid_file_size)
-  end
-
-  def test_visiting_docids_after_config_change_still_works
-    set_description("Test that visiting docids still works before restart when enabling to store them in the metastore")
-    deploy_with "fromdisk"
-    start
-
-    feed
-    assert_visiting_docids_works
-
-    redeploy_with "attribute"
-    # No restart yet!
-    assert_visiting_docids_works
   end
 
 end
