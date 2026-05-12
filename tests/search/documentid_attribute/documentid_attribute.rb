@@ -75,12 +75,12 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
     assert(!exists, "Metastore docid file '#{@dms_docid_filename}' exists")
   end
 
-  def assert_metastore_docid_file_exists(snapshot_num, docname = "test")
+  def assert_metastore_docid_file_does_exist(snapshot_num, docname = "test")
     exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_docid_filename, docname)
     assert(exists, "Metastore docid file '#{@dms_docid_filename}' does not exist")
   end
 
-  def assert_metastore_docid_file_of_size_exists(snapshot_num, expected_size, docname = "test")
+  def assert_metastore_docid_file_of_size_does_exist(snapshot_num, expected_size, docname = "test")
     exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_docid_filename, docname)
     assert(exists, "Metastore docid file '#{@dms_docid_filename}' does not exist")
     assert_equal(expected_size, size, "Metastore docid file size is incorrect")
@@ -97,7 +97,7 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
     # To make sure that the document ids in the metastore are actually populated,
     # we flush and check that they are written to a file.
     flush
-    assert_metastore_docid_file_of_size_exists(4, @dms_docid_file_size)
+    assert_metastore_docid_file_of_size_does_exist(4, @dms_docid_file_size)
 
     # Let's make sure that visiting still works after loading the document ids from the file
     restart_proton("test", 1, skip_trigger_flush: true) # Already flushed
@@ -138,7 +138,7 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
 
     # After the docstore validation, flushing should produce a file now.
     flush
-    assert_metastore_docid_file_of_size_exists(6, @dms_docid_file_size)
+    assert_metastore_docid_file_of_size_does_exist(6, @dms_docid_file_size)
   end
 
   def test_populate_docids_of_existing_documents_with_late_flush
@@ -165,7 +165,7 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
 
     # After the docstore validation, flushing should produce a file now.
     flush
-    assert_metastore_docid_file_of_size_exists(6, @dms_docid_file_size)
+    assert_metastore_docid_file_of_size_does_exist(6, @dms_docid_file_size)
   end
 
   def test_multiple_schemas
@@ -180,7 +180,7 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
 
     flush
     assert_metastore_file_does_exist(4, "foo")
-    assert_metastore_docid_file_exists(4, "foo")
+    assert_metastore_docid_file_does_exist(4, "foo")
     assert_metastore_file_does_exist(4, "bar")
     assert_metastore_docid_file_does_not_exist(4, "bar")
   end
