@@ -3,6 +3,7 @@
 require 'assertions'
 require 'vespa_assertions'
 require 'test/unit/assertion-failed-error'
+require 'test/unit/assertions'
 require 'error'
 require 'failure'
 require 'test_base'
@@ -15,6 +16,35 @@ require 'timeout'
 require 'net/http'
 require 'fileutils'
 require 'vespa_cleanup'
+
+module Test
+  module Unit
+    class AssertionMessage
+      class << self
+        include BacktraceFilter
+
+        if method_defined?(:convert)
+          alias_method :convert_without_backtrace_filter, :convert
+
+          def convert(object)
+            case object
+            when Exception
+              <<EOM.chop
+Class: <#{convert(object.class)}>
+Message: <#{convert(object.message)}>
+---Backtrace---
+#{filter_backtrace(object.backtrace).join("\n")}
+---------------
+EOM
+            else
+              convert_without_backtrace_filter(object)
+            end
+          end
+        end
+      end
+    end
+  end
+end
 
 class SystemTestTimeout < Interrupt
   def message
@@ -29,6 +59,7 @@ end
 class TestCase
   include DRb::DRbUndumped
   include Assertions
+  include BacktraceFilter
   include VespaAssertions
   include TestBase
 
