@@ -2,7 +2,7 @@
 
 require 'indexed_only_search_test'
 
-class DocIdsInMemoryTest < IndexedOnlySearchTest
+class DocumentIdAttributeTest < IndexedOnlySearchTest
 
   def setup
     set_owner("boeker")
@@ -12,10 +12,18 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
     @dms_docid_file_size = 0x1000 + 4 + 29 # Header + bytes for length of string + bytes for actual string
   end
 
-  def deploy(document_id_setting)
+  def deploy_with(document_id_setting)
     puts "# Deploying with document-id setting '#{document_id_setting}'"
     system("cp #{selfdir}test.#{document_id_setting}.sd #{dirs.tmpdir}test.sd")
     deploy_app(SearchApp.new.sd(dirs.tmpdir + "test.sd"))
+  end
+
+  def redeploy_with(document_id_setting)
+    puts "# Re-deploying with document-id setting '#{document_id_setting}'"
+    system("cp #{selfdir}test.#{document_id_setting}.sd #{dirs.tmpdir}test.sd")
+    deploy_output = redeploy(SearchApp.new.sd(dirs.tmpdir + "test.sd"))
+    wait_for_application(vespa.container.values.first, deploy_output)
+    wait_for_config_generation_proxy(get_generation(deploy_output))
   end
 
   def feed
@@ -74,7 +82,7 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
 
   def test_no_docids_by_default
     set_description("Test that docids in the metastore are not populated by default")
-    deploy "default"
+    deploy_with "default"
     start
 
     feed
@@ -87,7 +95,7 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
 
   def test_populate_docids
     set_description("Test that docids in the metastore are populated when adding a document")
-    deploy "attribute"
+    deploy_with "attribute"
     start
 
     feed
@@ -99,7 +107,7 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
 
   def test_visiting_after_loading_docid_file
     set_description("Test that visiting of docids still works after a document id file has been loaded")
-    deploy "attribute"
+    deploy_with "attribute"
     start
 
     feed
@@ -114,14 +122,14 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
 
   def test_populate_docids_of_existing_documents_with_early_flush
     set_description("Test that docids in the metastore are populated for existing documents when activating storing of document ids at a later point")
-    deploy"fromdisk"
+    deploy_with "fromdisk"
     start
 
     feed
     assert_visiting_docids_works
 
     flush
-    deploy "attribute"
+    redeploy_with "attribute"
 
     puts "# Restarting Proton (without flushing)"
     restart_proton("test", 1, skip_trigger_flush: true)
@@ -132,13 +140,13 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
 
   def test_populate_docids_of_existing_documents_with_late_flush
     set_description("Test that docids in the metastore are populated for existing documents when activating storing of document ids at a later point")
-    deploy "fromdisk"
+    deploy_with "fromdisk"
     start
 
     feed
     assert_visiting_docids_works
 
-    deploy "attribute"
+    redeploy_with "attribute"
 
     # Flushing at this point should still cause the document ids to be written to a file when flushing after the restart.
     # That is, this test case tests that populating the docids internally as part of the docstore validation after the restart
@@ -148,6 +156,19 @@ class DocIdsInMemoryTest < IndexedOnlySearchTest
 
     flush
     assert_metastore_docid_file_of_size_exists(6, @dms_docid_file_size)
+  end
+
+  def test_visiting_docids_after_config_change_still_works
+    set_description("Test that visiting docids still works before restart when enabling to store them in the metastore")
+    deploy_with "fromdisk"
+    start
+
+    feed
+    assert_visiting_docids_works
+
+    redeploy_with "attribute"
+    # No restart yet!
+    assert_visiting_docids_works
   end
 
 end
