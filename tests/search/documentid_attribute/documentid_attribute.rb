@@ -44,8 +44,8 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
     vespa.search["search"].first.trigger_flush
   end
 
-  def flushed_file_exists(directory, snapshot_num, filename)
-    path = "#{Environment.instance.vespa_home}/var/db/vespa/search/cluster.search/n0/documents/test/0.ready/"
+  def flushed_file_exists(directory, snapshot_num, filename, docname = "test")
+    path = "#{Environment.instance.vespa_home}/var/db/vespa/search/cluster.search/n0/documents/#{docname}/0.ready/"
     sub_path = "#{directory}/snapshot-#{snapshot_num}/#{filename}"
     puts "# Checking if '#{sub_path}' exists in '#{path}'"
     full_path = path + sub_path
@@ -65,18 +65,23 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
     return exists, size
   end
 
-  def assert_metastore_file_does_exist(snapshot_num)
-    exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_filename)
+  def assert_metastore_file_does_exist(snapshot_num, docname = "test")
+    exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_filename, docname)
     assert(exists, "Metastore docid file '#{@dms_filename}' does not exist")
   end
 
-  def assert_metastore_docid_file_does_not_exist(snapshot_num)
-    exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_docid_filename)
+  def assert_metastore_docid_file_does_not_exist(snapshot_num, docname = "test")
+    exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_docid_filename, docname)
     assert(!exists, "Metastore docid file '#{@dms_docid_filename}' exists")
   end
 
-  def assert_metastore_docid_file_of_size_exists(snapshot_num, expected_size)
-    exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_docid_filename)
+  def assert_metastore_docid_file_exists(snapshot_num, docname = "test")
+    exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_docid_filename, docname)
+    assert(exists, "Metastore docid file '#{@dms_docid_filename}' does not exist")
+  end
+
+  def assert_metastore_docid_file_of_size_exists(snapshot_num, expected_size, docname = "test")
+    exists, size = flushed_file_exists("documentmetastore", snapshot_num, @dms_docid_filename, docname)
     assert(exists, "Metastore docid file '#{@dms_docid_filename}' does not exist")
     assert_equal(expected_size, size, "Metastore docid file size is incorrect")
   end
@@ -161,6 +166,23 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
     # After the docstore validation, flushing should produce a file now.
     flush
     assert_metastore_docid_file_of_size_exists(6, @dms_docid_file_size)
+  end
+
+  def test_multiple_schemas
+    set_description("Test that the document-id setting works on a per-schema basis")
+    deploy_app(SearchApp.new.sd(@schema_dir + "foo.sd").sd(@schema_dir + "bar.sd"))
+    start
+
+    vespa.document_api_v1.put(Document.new("id:foo:foo::1").add_field("some_field", 42))
+    wait_for_hitcount("sddocname:foo&nocache", 1, 60)
+    vespa.document_api_v1.put(Document.new("id:bar:bar::1").add_field("some_field", 43))
+    wait_for_hitcount("sddocname:bar&nocache", 1, 60)
+
+    flush
+    assert_metastore_file_does_exist(4, "foo")
+    assert_metastore_docid_file_exists(4, "foo")
+    assert_metastore_file_does_exist(4, "bar")
+    assert_metastore_docid_file_does_not_exist(4, "bar")
   end
 
 end

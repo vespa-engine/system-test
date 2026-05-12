@@ -1,0 +1,10 @@
+# Copyright Vespa.ai. All rights reserved.
+schema foo {
+  document-id: attribute
+  document foo {
+    field some_field type int {
+        indexing: attribute | summary
+    }
+  }
+}
+
