@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 schema test {
-  document-id: from-disk
+  documentid: from-disk
   document test {
     field some_field type int {
         indexing: attribute | summary

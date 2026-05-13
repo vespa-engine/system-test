@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 schema foo {
-  document-id: attribute
+  documentid: attribute
   document foo {
     field some_field type int {
         indexing: attribute | summary

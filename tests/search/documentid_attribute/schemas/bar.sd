@@ -1,6 +1,6 @@
 # Copyright Vespa.ai. All rights reserved.
 schema bar {
-  document-id: from-disk
+  documentid: from-disk
   document bar {
     field some_field type int {
         indexing: attribute | summary

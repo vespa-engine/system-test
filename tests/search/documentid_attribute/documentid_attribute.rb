@@ -14,13 +14,13 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
   end
 
   def deploy_with(document_id_setting)
-    puts "# Deploying with document-id setting '#{document_id_setting}'"
+    puts "# Deploying with documentid setting '#{document_id_setting}'"
     system("cp #{@schema_dir}test.#{document_id_setting}.sd #{dirs.tmpdir}test.sd")
     deploy_app(SearchApp.new.sd(dirs.tmpdir + "test.sd"))
   end
 
   def redeploy_with(document_id_setting)
-    puts "# Re-deploying with document-id setting '#{document_id_setting}'"
+    puts "# Re-deploying with documentid setting '#{document_id_setting}'"
     system("cp #{@schema_dir}test.#{document_id_setting}.sd #{dirs.tmpdir}test.sd")
     deploy_output = redeploy(SearchApp.new.sd(dirs.tmpdir + "test.sd"))
     wait_for_application(vespa.container.values.first, deploy_output)
@@ -169,7 +169,7 @@ class DocumentIdAttributeTest < IndexedOnlySearchTest
   end
 
   def test_multiple_schemas
-    set_description("Test that the document-id setting works on a per-schema basis")
+    set_description("Test that the documentid setting works on a per-schema basis")
     deploy_app(SearchApp.new.sd(@schema_dir + "foo.sd").sd(@schema_dir + "bar.sd"))
     start
 
