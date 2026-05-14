@@ -1,0 +1,132 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+    struct kvs {
+        field k type string {}
+        field v type float {}
+    }
+    struct k2vs {
+        field k1 type string {}
+        field k2 type string {}
+        field v type float {}
+    }
+    struct k2vi {
+        field k1 type int {}
+        field k2 type int {}
+        field v type float {}
+    }
+    struct k3vs {
+        field k1 type string {}
+        field k2 type string {}
+        field k4 type string {}
+        field v type float {}
+    }
+    struct k4vs {
+        field k1 type string {}
+        field k2 type string {}
+        field k3 type string {}
+        field k4 type string {}
+        field v type float {}
+    }
+    struct k5vs {
+        field k1 type string {}
+        field k2 type string {}
+        field k3 type string {}
+        field k4 type string {}
+        field k5 type string {}
+        field v type float {}
+    }
+    struct k5vi {
+        field k1 type int {}
+        field k2 type int {}
+        field k3 type int {}
+        field k4 type int {}
+        field k5 type int {}
+        field v type float {}
+    }
+    struct k5vmix {
+        field k1 type string {}
+        field k2 type int {}
+        field k3 type string {}
+        field k4 type int {}
+        field k5 type string {}
+        field v type int {}
+    }
+    document test {
+        field title type string {
+            indexing: summary | index
+        }
+        field smap type map<string,float> {
+            struct-field key { indexing: attribute }
+            struct-field value { indexing: attribute }
+        }
+        field imap type map<int,int> {
+            struct-field key { indexing: attribute }
+            struct-field value { indexing: attribute }
+        }
+        field skv type array<kvs> {
+            struct-field k { indexing: attribute }
+            struct-field v { indexing: attribute }
+        }
+        field sk2v type array<k2vs> {
+            struct-field k1 { indexing: attribute }
+            struct-field k2 { indexing: attribute }
+            struct-field v { indexing: attribute }
+        }
+        field ik2v type array<k2vi> {
+        }
+        field sk3v type array<k3vs> {
+        }
+        field sk4v type array<k4vs> {
+        }
+        field sk5v type array<k5vs> {
+            struct-field k1 { indexing: attribute }
+            struct-field k2 { indexing: attribute }
+            struct-field k3 { indexing: attribute }
+            struct-field k4 { indexing: attribute }
+            struct-field k5 { indexing: attribute }
+            struct-field v { indexing: attribute }
+        }
+        field ik5v type array<k5vi> {
+        }
+        field mix5 type array<k5vmix> {
+        }
+    }
+    rank-profile default {
+        function tk5vs() {
+            expression: tensorFromStructs(attribute(sk5v), k1, k2, k3, k4, k5, v, float)
+        }
+        first-phase {
+            expression: nativeRank(title)
+        }
+        match-features {
+            tk5vs
+        }
+    }
+    rank-profile combine2keys {
+        function tsm() {
+            expression: tensorFromStructs(attribute(smap), key, value, float)
+        }
+        function tim() {
+            expression: tensorFromStructs(attribute(imap), key, value, float)
+        }
+        function tkvs() {
+            expression: tensorFromStructs(attribute(skv), k, v, float)
+        }
+        function tk2vs() {
+            expression: tensorFromStructs(attribute(sk2v), k1, k2, v, float)
+        }
+        function c1() {
+            expression: rename(tsm*tim, key, k)
+        }
+        function c2() {
+            expression: rename(c1*tkvs, k, k1)
+        }
+        function c3() {
+            expression: reduce(c2*tk2vs, max, k1)
+        }
+        first-phase {
+            expression: reduce(c3, sum, k2)
+        }
+    }
+
+}
