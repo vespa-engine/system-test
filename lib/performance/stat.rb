@@ -254,31 +254,33 @@ module Perf
         @fields[x]
       end
 
-      def entry_delta(this, that)
+      def entry_delta(this, that, path = [])
         if this.class != that.class
-          raise "Class mismatch when subtracting metrics: #{this.class} != #{that.class}"
+          path_str = path.empty? ? "(root)" : path.join(" -> ")
+          raise "Class mismatch when subtracting metrics at #{path_str}: " \
+                "#{this.class} (#{this.inspect}) != #{that.class} (#{that.inspect})"
         end
         if this.is_a? Hash
-          map_delta(this, that)
+          map_delta(this, that, path)
         elsif this.is_a? Array
-          array_delta(this, that)
+          array_delta(this, that, path)
         else
           this - that
         end
       end
 
-      def map_delta(this, that)
+      def map_delta(this, that, path = [])
         ret = {}
         this.each do |k, v|
           other = that[k]
-          ret[k] = entry_delta(v, other) unless other.nil?
+          ret[k] = entry_delta(v, other, path + [k]) unless other.nil?
         end
         ret
       end
 
-      def array_delta(this, that)
-        this.zip(that).map do |a, b|
-          entry_delta(a, b)
+      def array_delta(this, that, path = [])
+        this.zip(that).each_with_index.map do |(a, b), i|
+          entry_delta(a, b, path + ["[#{i}]"])
         end
       end
 
