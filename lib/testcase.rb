@@ -130,7 +130,8 @@ class TestCase
       @@log_messages[:no_snapshot_from_instance],
       @@log_messages[:wanted_higher_limit],
       @@log_messages[:using_incubator_modules],
-      @@log_messages[:unknown_cpu_vendor]
+      @@log_messages[:unknown_cpu_vendor],
+      @@log_messages[:sve_vector_length]
     ]
     @valgrind_ignorable_messages = [
       @@log_messages[:shutdownguard_forcing_exit],
@@ -782,7 +783,8 @@ class TestCase
     :slobrok_failed_listnames_check => /failed check using listNames callback/,
     :wanted_higher_limit => /Wanted 102400 as limit for max user processes/,
     :using_incubator_modules => /Using incubator modules: jdk\.incubator\.foreign/ ,
-    :unknown_cpu_vendor => /Unknown CPU vendor/
+    :unknown_cpu_vendor => /Unknown CPU vendor/,
+    :sve_vector_length => /Unable to get SVE vector length on this system/
   }
 
   # Allow that certain log messages may be ignored without the individual
