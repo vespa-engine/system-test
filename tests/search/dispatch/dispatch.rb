@@ -53,6 +53,33 @@ class DispatchTest < IndexedOnlySearchTest
     puts "Dispatch grouping = #{grp_in}"
   end
 
+  def test_search_group
+    deploy_app(create_app(2,1))
+    start
+    generate_and_feed_docs
+
+    # Without searchGroup: response should expose the group the query ran on
+    default_result = search("yql=select+*+from+sources+*+where+f1+contains+%22word%22%3B&nocache")
+    assert_result_hitcount(default_result, @num_docs)
+    group = default_result.json['root']['fields']['searchGroup']
+    assert(group != nil, "Expected searchGroup field in default response, got: #{default_result.json}")
+
+    # With explicit searchGroup parameter: each existing group should be selectable
+    for g in 0..1 do
+      result = search("yql=select+*+from+sources+*+where+f1+contains+%22word%22%3B&nocache&model.searchGroup=#{g}")
+      assert_result_hitcount(result, @num_docs)
+      assert_equal(g, result.json['root']['fields']['searchGroup'],
+                   "Expected searchGroup=#{g} when requested")
+    end
+
+    # Non-existent searchGroup: should fall back to an existing group rather than failing
+    fallback_result = search("yql=select+*+from+sources+*+where+f1+contains+%22word%22%3B&nocache&model.searchGroup=99")
+    assert_result_hitcount(fallback_result, @num_docs)
+    fallback_group = fallback_result.json['root']['fields']['searchGroup']
+    assert([0, 1].include?(fallback_group),
+           "Expected fallback to an existing group when requested group is non-existent, got: #{fallback_group}")
+  end
+
   def test_node_failure_error_reporting
     deploy_app(create_app(1,2))
     start
