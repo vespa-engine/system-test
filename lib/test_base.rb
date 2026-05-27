@@ -45,6 +45,7 @@ require 'nodetypes/slobrok'
 require 'nodetypes/metricsproxy_node'
 require 'executeerror'
 require 'environment'
+require 'backtracefilter'
 
 
 # The TestBase module contains methods that share common vespa-specific
