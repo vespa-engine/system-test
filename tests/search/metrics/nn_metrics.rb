@@ -4,6 +4,7 @@ require 'indexed_only_search_test'
 class NNSMatchingMetrics < IndexedOnlySearchTest
   def setup
     set_owner("boeker")
+    # Not testing the approximate_nns_timed_out_queries metric here since reliably triggering a timeout requries more documents
   end
 
   def test_nns_matching_metrics
@@ -26,10 +27,11 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
 
   def  verify_nns_matching_metrics(query_cache)
     # No queries yet
-    enn_distances, ann_distances, ann_visited = get_metrics("test")
+    enn_distances, ann_distances, ann_visited, ann_count = get_metrics("test")
     assert_equal(0, enn_distances)
     assert_equal(0, ann_distances)
     assert_equal(0, ann_visited)
+    assert_equal(0, ann_count)
 
     ####################################################################################################################
     puts "HNSW search without filtering"
@@ -37,17 +39,19 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 62, :query_cache => query_cache}))
 
     # Verify overall metrics
-    enn_distances, ann_distances, ann_visited = get_metrics("test")
+    enn_distances, ann_distances, ann_visited, ann_count = get_metrics("test")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 9)
     assert(ann_visited >= 9)
     assert_equal(ann_distances, ann_visited) # Always the same for plain HNSW
+    assert_equal(1, ann_count)
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "default")
+    enn_distances, ann_distances, ann_visited, ann_count = get_rp_metrics("test", "default")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 9)
     assert(ann_visited >= 9)
     assert_equal(ann_distances, ann_visited) # Always the same for plain HNSW
+    assert_equal(1, ann_count)
 
     ####################################################################################################################
     puts "HNSW search with filtering"
@@ -55,17 +59,19 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :tag => 5, :query_cache => query_cache}))
 
     # Verify overall metrics
-    enn_distances, ann_distances, ann_visited = get_metrics("test")
+    enn_distances, ann_distances, ann_visited, ann_count = get_metrics("test")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 18)
     assert(ann_visited >= 18)
     assert_equal(ann_distances, ann_visited) # Always the same for plain HNSW
+    assert_equal(2, ann_count)
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "default")
+    enn_distances, ann_distances, ann_visited, ann_count = get_rp_metrics("test", "default")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 18)
     assert(ann_visited >= 18)
     assert_equal(ann_distances, ann_visited) # Always the same for plain HNSW
+    assert_equal(2, ann_count)
 
     saved_ann_distances = ann_distances
     saved_ann_visited = ann_visited
@@ -76,15 +82,17 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :approximate => "false", :query_cache => query_cache}))
 
     # Verify overall metrics
-    enn_distances, ann_distances, ann_visited = get_metrics("test")
+    enn_distances, ann_distances, ann_visited, ann_count = get_metrics("test")
     assert_equal(9, enn_distances)
     assert_equal(saved_ann_distances, ann_distances)
     assert_equal(saved_ann_visited, ann_visited)
+    assert_equal(2, ann_count) # Stays at 2
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "default")
+    enn_distances, ann_distances, ann_visited, ann_count = get_rp_metrics("test", "default")
     assert_equal(9, enn_distances)
     assert_equal(saved_ann_distances, ann_distances)
     assert_equal(saved_ann_visited, ann_visited)
+    assert_equal(2, ann_count) # Stays at 2
 
     ####################################################################################################################
     puts "Exact search with filtering"
@@ -92,15 +100,17 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :tag => 5, :approximate => "false", :query_cache => query_cache}))
 
     # Verify overall metrics
-    enn_distances, ann_distances, ann_visited = get_metrics("test")
+    enn_distances, ann_distances, ann_visited, ann_count = get_metrics("test")
     assert_equal(14, enn_distances)
     assert_equal(saved_ann_distances, ann_distances)
     assert_equal(saved_ann_visited, ann_visited)
+    assert_equal(2, ann_count) # Stays at 2
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "default")
+    enn_distances, ann_distances, ann_visited, ann_count = get_rp_metrics("test", "default")
     assert_equal(14, enn_distances)
     assert_equal(saved_ann_distances, ann_distances)
     assert_equal(saved_ann_visited, ann_visited)
+    assert_equal(2, ann_count) # Stays at 2
 
     ####################################################################################################################
     puts "Exact search with filtering (fallback)"
@@ -108,10 +118,11 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :tag => 5, :ranking => "exact_fallback", :query_cache => query_cache}))
 
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "exact_fallback")
+    enn_distances, ann_distances, ann_visited, ann_count = get_rp_metrics("test", "exact_fallback")
     assert_equal(5, enn_distances)
     assert_equal(0, ann_distances)
     assert_equal(0, ann_visited)
+    assert_equal(0, ann_count)
 
     ####################################################################################################################
     puts "HNSW with post-filter"
@@ -119,11 +130,12 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :tag => 5, :ranking => "post_filter", :query_cache => query_cache}))
 
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "post_filter")
+    enn_distances, ann_distances, ann_visited, ann_count = get_rp_metrics("test", "post_filter")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 9)
     assert(ann_visited >= 9)
     assert_equal(ann_distances, ann_visited) # Always the same for plain HNSW
+    assert_equal(1, ann_count)
 
     ####################################################################################################################
     puts "HSNW with filter first"
@@ -131,19 +143,21 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :tag => 5, :ranking => "filter_first", :query_cache => query_cache}))
 
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("test", "filter_first")
+    enn_distances, ann_distances, ann_visited, ann_count = get_rp_metrics("test", "filter_first")
     assert_equal(0, enn_distances)
     assert(ann_distances >= 5)
     assert(ann_visited >= 9)
+    assert_equal(1, ann_count)
 
     ####################################################################################################################
     puts "Verifying overall metrics again"
     ####################################################################################################################
 
-    enn_distances, ann_distances, ann_visited = get_metrics("test")
+    enn_distances, ann_distances, ann_visited, ann_count = get_metrics("test")
     assert_equal(enn_distances, 19)
     assert(ann_distances >= 32)
     assert(ann_visited >= 36)
+    assert_equal(4, ann_count)
   end
 
   def test_nns_matching_metrics_multiple_vectors
@@ -166,10 +180,11 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
 
   def verify_nns_matching_metrics_multiple_vectors(query_cache)
     # No queries yet
-    enn_distances, ann_distances, ann_visited = get_metrics("multi")
+    enn_distances, ann_distances, ann_visited, ann_count = get_metrics("multi")
     assert_equal(0, enn_distances)
     assert_equal(0, ann_distances)
     assert_equal(0, ann_visited)
+    assert_equal(0, ann_count)
 
     ####################################################################################################################
     puts "Exact search"
@@ -177,15 +192,17 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 80, :approximate => "false", :query_cache => query_cache}))
 
     # Verify overall metrics
-    enn_distances, ann_distances, ann_visited = get_metrics("multi")
+    enn_distances, ann_distances, ann_visited, ann_count = get_metrics("multi")
     assert_equal(5, enn_distances)
     assert_equal(0, ann_distances)
     assert_equal(0, ann_visited)
+    assert_equal(0, ann_count)
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("multi", "default")
+    enn_distances, ann_distances, ann_visited, ann_count = get_rp_metrics("multi", "default")
     assert_equal(5, enn_distances)
     assert_equal(0, ann_distances)
     assert_equal(0, ann_visited)
+    assert_equal(0, ann_count)
 
     ####################################################################################################################
     puts "HNSW search without filtering"
@@ -193,17 +210,19 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     run_query(get_query({:qpos => 62, :query_cache => query_cache}))
 
     # Verify overall metrics
-    enn_distances, ann_distances, ann_visited = get_metrics("multi")
+    enn_distances, ann_distances, ann_visited, ann_count = get_metrics("multi")
     assert_equal(5, enn_distances)
     assert(ann_distances >= 5)
     assert(ann_visited >= 5)
     assert_equal(ann_distances, ann_visited) # Always the same for plain HNSW
+    assert_equal(1, ann_count)
     # Verify rank-profile metrics
-    enn_distances, ann_distances, ann_visited = get_rp_metrics("multi", "default")
+    enn_distances, ann_distances, ann_visited, ann_count = get_rp_metrics("multi", "default")
     assert_equal(5, enn_distances)
     assert(ann_distances >= 5)
     assert(ann_visited >= 5)
     assert_equal(ann_distances, ann_visited) # Always the same for plain HNSW
+    assert_equal(1, ann_count)
   end
 
   def get_metrics(doc_name)
@@ -215,7 +234,8 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     enn_distances = extract_metric(metrics, doc_name, "exact_nns_distances_computed")
     ann_distances = extract_metric(metrics, doc_name, "approximate_nns_distances_computed")
     ann_visited = extract_metric(metrics, doc_name, "approximate_nns_nodes_visited")
-    return enn_distances, ann_distances, ann_visited
+    ann_count = extract_metric(metrics, doc_name, "query_approximate_nns_time")
+    return enn_distances, ann_distances, ann_visited, ann_count
   end
 
   def extract_metric(metrics, doc_name, name)
@@ -233,7 +253,8 @@ class NNSMatchingMetrics < IndexedOnlySearchTest
     enn_distances = extract_rp_metric(metrics, doc_name, rank_profile, "exact_nns_distances_computed")
     ann_distances = extract_rp_metric(metrics, doc_name, rank_profile, "approximate_nns_distances_computed")
     ann_visited = extract_rp_metric(metrics, doc_name, rank_profile, "approximate_nns_nodes_visited")
-    return enn_distances, ann_distances, ann_visited
+    ann_count = extract_rp_metric(metrics, doc_name, rank_profile, "query_approximate_nns_time")
+    return enn_distances, ann_distances, ann_visited, ann_count
   end
 
   def extract_rp_metric(metrics, doc_name, rank_profile, name)
