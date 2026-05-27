@@ -1,0 +1,28 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+  document test {
+    field id type int {
+      indexing: summary | attribute
+    }
+    field tensor_field type tensor<float>(x[2048]) {
+      indexing: summary | attribute | index
+      index {
+        hnsw {
+          # We do not care about the quality of the search results
+          # Hence, choosing the parameters so low is ok for this test case
+          # to make the construction faster
+          max-links-per-node: 8
+          neighbors-to-explore-at-insert: 20
+        }
+      }
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: closeness(field,tensor_field)
+    }
+  }
+  document-summary minimal {
+    summary id {}
+  }
+}
