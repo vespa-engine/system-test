@@ -186,10 +186,9 @@ class AnnTimeout < IndexedOnlySearchTest
 
       # Check that query is reported as degraded
       # These values are bools and not strings
-      # TODO Uncomment once implemented
-      #degraded = result.json['root']['coverage']['degraded']
-      #assert_equal(true, degraded['anntimeout'])
-      #assert_equal(false, degraded['timeout'])
+      degraded = result.json['root']['coverage']['degraded']
+      assert_equal(true, degraded['anntimeout'])
+      assert_equal(false, degraded['timeout'])
     end
   end
 
