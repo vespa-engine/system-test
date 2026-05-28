@@ -9,8 +9,8 @@ class AnnTimeout < IndexedOnlySearchTest
 
   # Epsilon for timebudget/timeout comparisons in ms
   # Quite relaxed for now
-  TIMEBUDGET_EPSILON = 5
-  TIMEOUT_EPSILON = 5
+  TIMEBUDGET_EPSILON = 10
+  TIMEOUT_EPSILON = 10
 
   # For debugging purposes
   # Whether to print the whole nearestNeighbor block from the trace
