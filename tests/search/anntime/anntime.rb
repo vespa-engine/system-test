@@ -80,7 +80,9 @@ class AnnTimeout < IndexedOnlySearchTest
     budgets = [5.0, 10.0, 20.0, 30.0, 50.0]
     factors = [0.001, 0.002, 0.004, 0.006, 0.01]
 
-    puts "timeout = #{timeout * 1000.0} ms"
+    puts "\ntimeout = #{timeout * 1000.0} ms"
+    puts "epsilon for time budget = #{TIMEBUDGET_EPSILON} ms"
+    puts "epsilon for timeout = #{TIMEOUT_EPSILON} ms"
 
     puts "\nSending some warmup queries first"
 
