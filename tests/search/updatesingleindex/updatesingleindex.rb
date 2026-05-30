@@ -1,10 +1,19 @@
 # Copyright Vespa.ai. All rights reserved.
 require 'indexed_streaming_search_test'
+require 'uri'
 
 class UpdateSingleIndex < IndexedStreamingSearchTest
 
   def setup
     set_owner("hmusum")
+  end
+
+  def get_query(clause, timeout = 5)
+    if @valgrind
+      timeout = timeout * 10
+    end
+    "/search/?" + URI.encode_www_form("yql" => "select * from sources * where #{clause}",
+                                      "timeout" => "#{timeout}s")
   end
 
   def test_indexaddressing
@@ -24,7 +33,8 @@ class UpdateSingleIndex < IndexedStreamingSearchTest
     wait_for_hitcount('query=sddocname:books&search=books&type=all', 10000)
 
     puts "Query: Match all documents in both indexes"
-    assert_hitcount('query=(sddocname:books+sddocname:music+)&type=all', 20000)
+    assert_hitcount(get_query('true', 10), 20000)
+    assert_hitcount_with_timeout(10, 'query=(sddocname:books+sddocname:music+)&type=all', 20000)
     puts "Query: Match all documents in music"
     assert_hitcount('query=sddocname:music&search=music&type=all', 10000)
     puts "Query: Match all documents in books"
