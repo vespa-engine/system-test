@@ -293,10 +293,16 @@ class PerformanceTest < TestCase
   def dump_procfs_perf_report
     return if @node_procfs_snapshot_at_setup_time.nil?
     procfs_snapshot_now = vespa.nodeproxies.values[0].kernel_procfs_perf_snapshot
-    delta = Perf::Stat::snapshot_period(@node_procfs_snapshot_at_setup_time, procfs_snapshot_now)
-    puts 'System report for duration of test case on test runner node:'
-    puts '--------'
-    puts delta.printable_result
+    begin
+      delta = Perf::Stat::snapshot_period(@node_procfs_snapshot_at_setup_time, procfs_snapshot_now)
+      puts 'System report for duration of test case on test runner node:'
+      puts '--------'
+      puts delta.printable_result
+    rescue RuntimeError => e
+      puts "Unable to create system report: #{e.message}"
+      puts "Snapshot at setup time: #{@node_procfs_snapshot_at_setup_time}"
+      puts "Snapshot now: #{procfs_snapshot_now}"
+    end
   end
 
   # Start profiler. Calling this will stop any profilers started earlier and reset recordings.
