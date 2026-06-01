@@ -299,7 +299,7 @@ class PerformanceTest < TestCase
       puts '--------'
       puts delta.printable_result
     rescue RuntimeError => e
-      puts 'Unable to create system report'
+      puts "Unable to create system report: #{e.message}"
       puts "Snapshot at setup time: #{@node_procfs_snapshot_at_setup_time}"
       puts "Snapshot now: #{procfs_snapshot_now}"
     end
