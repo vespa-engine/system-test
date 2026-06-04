@@ -512,7 +512,7 @@ include ApplicationV2Api
   end
 
   def assert_not_error(json)
-    assert(!json.has_key?('error-code'), json)
+    assert(!json.has_key?('error-code'), json.to_s)
   end
 
   def assert_exists(session_id)
