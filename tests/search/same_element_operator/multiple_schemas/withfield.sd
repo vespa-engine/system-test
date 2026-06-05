@@ -1,0 +1,20 @@
+# Copyright Vespa.ai. All rights reserved.
+schema withfield {
+  document withfield {
+    field custom_fields_string type map<string, string> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value {
+        indexing: attribute
+        attribute: fast-search
+      }
+    }
+    field simple_string_field type string {
+        indexing: summary | attribute
+        attribute: fast-search
+    }
+  }
+}

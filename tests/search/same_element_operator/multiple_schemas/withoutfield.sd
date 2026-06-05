@@ -1,0 +1,5 @@
+# Copyright Vespa.ai. All rights reserved.
+schema withoutfield {
+  document withoutfield {
+  }
+}
