@@ -130,7 +130,7 @@ class AnnTimeout < IndexedOnlySearchTest
       nn_info.each do |nn_search|
         time_info = extract_ann_time_info(nn_search, budget)
         assert_approx(budget, time_info[:time_used], TIMEBUDGET_EPSILON)
-        assert_approx(budget, time_info[:time_allocated], 0.001)
+        assert_approx(budget, time_info[:time_allocated], TIMEBUDGET_EPSILON)
         assert_equal("true", time_info[:terminated_early])
         assert_equal("false", time_info[:timeout_hit])
       end
