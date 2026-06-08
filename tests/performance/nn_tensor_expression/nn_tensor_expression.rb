@@ -3,19 +3,14 @@ require 'performance_test'
 require 'app_generator/search_app'
 require 'performance/fbench'
 
-class TensorCanvass < PerformanceTest
-
-  def initialize(*args)
-    super(*args)
-  end
+class NnTensorTest < PerformanceTest
 
   def setup
     super
     set_owner("hmusum")
   end
 
-
-  def test_canvass_ranking_expression
+  def test_nn_tensor_ranking_expression
     set_description("Test performance of a neural network tensor expression")
 
     @docs_file_name = dirs.tmpdir + "/docs.json"
