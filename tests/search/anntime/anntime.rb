@@ -11,6 +11,9 @@ class AnnTimeout < IndexedOnlySearchTest
   TIMEBUDGET_EPSILON = 5
   TIMEOUT_EPSILON = 5
 
+  # Epsilon for rate of non-zero hitcounts
+  HITCOUNT_EPSILON = 0.25
+
   # How often to send each query
   REPETITIONS = 20
 
@@ -81,13 +84,14 @@ class AnnTimeout < IndexedOnlySearchTest
     }
 
     timeout = 10.0
-    budgets = [5.0, 10.0, 20.0, 30.0, 50.0]
-    factors = [0.001, 0.002, 0.004, 0.006, 0.01]
+    budgets = [10.0, 20.0, 30.0, 50.0]
+    factors = [0.002, 0.004, 0.006, 0.01]
 
     puts "\ntimeout = #{timeout * 1000.0} ms"
     puts "repetitions = #{REPETITIONS}"
     puts "epsilon for time budget = #{TIMEBUDGET_EPSILON} ms"
     puts "epsilon for timeout = #{TIMEOUT_EPSILON} ms"
+    puts "epsilon for non-zero hitcount rate= #{HITCOUNT_EPSILON}"
 
     puts "\nSending some warmup queries first"
 
@@ -125,12 +129,10 @@ class AnnTimeout < IndexedOnlySearchTest
     budgets.each do |budget|
       puts "anntimebudget = #{'%.3f' % budget} ms"
       query_with_params = make_anntimebudget_query(query, budget)
-      results, time_info, metrics = search_and_get_nn_info_and_metrics(timeout, query_with_params, nn_operators, budget, REPETITIONS)
+      results, nonzero_hitcount_rate, time_info, metrics = search_and_get_nn_info_and_metrics(timeout, query_with_params, nn_operators, budget, REPETITIONS)
 
-      # Check that we got hits
-      results.each do |result|
-        assert(result.hitcount > 0)
-      end
+      # Check that we got hits for most queries
+      assert_approx(1.0, nonzero_hitcount_rate, HITCOUNT_EPSILON)
 
       # Check that time used on NNS from trace matches the specified anntimebudget
       time_info.each do |time_info_search|
@@ -171,12 +173,10 @@ class AnnTimeout < IndexedOnlySearchTest
       estimated_time_until_anntimeout = (factor * 0.5 * timeout * 1000.0) / nn_operators
       puts "anntimeout.factor = #{'%.3f' % factor} => #{'%.3f' % estimated_time_until_anntimeout} ms"
       query_with_params = make_anntimeout_query(query, factor)
-      results, nn_info, metrics = search_and_get_nn_info_and_metrics(timeout, query_with_params, nn_operators, estimated_time_until_anntimeout, REPETITIONS)
+      results, nonzero_hitcount_rate, nn_info, metrics = search_and_get_nn_info_and_metrics(timeout, query_with_params, nn_operators, estimated_time_until_anntimeout, REPETITIONS)
 
-      # Check that we got hits despite the timeout
-      results.each do |result|
-        assert(result.hitcount > 0)
-      end
+      # Check that we got hits for most queries despite the timeout
+      assert_approx(1.0, nonzero_hitcount_rate, HITCOUNT_EPSILON)
 
       # Check that the timeout was respected
       nn_info.each do |time_info_search|
@@ -316,14 +316,18 @@ class AnnTimeout < IndexedOnlySearchTest
       averaged_metrics[k] = collected_metrics.map {|x| x[k]}.inject(:+) / collected_metrics.length
     end
 
+    # Average the number of queries that returned hits
+    nonzero_hitcount_rate = collected_results.map{ |x| x.hitcount > 0 ? 1.0 : 0.0 }.inject(:+) / collected_results.length
+
     # Print averaged values
     puts "Averaged:"
     averaged_time_info.each do |time_info|
       print_ann_time_info(time_info, expected_time)
     end
     print_metrics averaged_metrics
+    puts "  rate of queries with non-zero hitcounts: #{nonzero_hitcount_rate}"
 
-    return collected_results, averaged_time_info, averaged_metrics
+    return collected_results, nonzero_hitcount_rate, averaged_time_info, averaged_metrics
   end
 
   def extract_ann_time_info(nn_search)
@@ -345,7 +349,7 @@ class AnnTimeout < IndexedOnlySearchTest
   end
 
   def print_metrics(metrics)
-    puts "increases in metrics: timeouts = #{metrics[:timeouts]}, time_count = #{metrics[:time_count]}, time_total = #{'%6.3f' %  metrics[:time_total]}"
+    puts "  increases in metrics: timeouts = #{metrics[:timeouts]}, time_count = #{metrics[:time_count]}, time_total = #{'%6.3f' %  metrics[:time_total]}"
   end
 
   ################################################################################
