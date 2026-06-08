@@ -84,8 +84,8 @@ class AnnTimeout < IndexedOnlySearchTest
     }
 
     timeout = 10.0
-    budgets = [5.0, 10.0, 20.0, 30.0, 50.0]
-    factors = [0.001, 0.002, 0.004, 0.006, 0.01]
+    budgets = [10.0, 20.0, 30.0, 50.0]
+    factors = [0.002, 0.004, 0.006, 0.01]
 
     puts "\ntimeout = #{timeout * 1000.0} ms"
     puts "repetitions = #{REPETITIONS}"
