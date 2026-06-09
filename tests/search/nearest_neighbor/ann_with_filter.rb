@@ -17,14 +17,16 @@ class ApproximateNearestNeighborWithFilterTest < IndexedOnlySearchTest
     assert_docs_and_setup([6, 7, 5],
                           ["Calculate global filter",
                            "Global filter matches everything",
-                           "Handle global filter in query execution plan"],
+                           "Handle global filter in query execution plan",
+                           "Perform ANN search(es)"],
                           1.0, 1.0,
                            get_query({:qpos => 62, :trace => true}))
 
     # Searching the HNSW graph using the result from pre-filter execution:
     assert_docs_and_setup([5, 4, 3],
                           ["Calculate global filter",
-                           "Handle global filter in query execution plan"],
+                           "Handle global filter in query execution plan",
+                           "Perform ANN search(es)"],
                           0.5, 1.0,
                            get_query({:qpos => 62, :tag => 5, :trace => true}))
 
