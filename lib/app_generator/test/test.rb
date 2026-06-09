@@ -20,7 +20,6 @@ class SearchAppGenTest < Test::Unit::TestCase
   def create_complex
     SearchApp.new.sd("sd1").sd("sd2").sd("sd3").
       cluster_name("storage").num_parts(4).redundancy(3).
-      enable_document_api.
       config(ConfigOverride.new("stor-distribution").
              add("ready_copies", 2))
   end
@@ -35,11 +34,11 @@ class SearchAppGenTest < Test::Unit::TestCase
 
   # test basic setup without modifications
   def test_default
-    verify('default.xml', create_default.enable_document_api)
+    verify('default.xml', create_default)
   end
 
   def test_default_streaming
-    verify('default_streaming.xml', create_default.streaming.enable_document_api)
+    verify('default_streaming.xml', create_default.streaming)
   end
 
   # test setup with bells and whistles
@@ -781,7 +780,7 @@ class SearchAppGenTest < Test::Unit::TestCase
   end
 
   def test_doc_api_and_feeder_options
-    actual = SearchApp.new.enable_document_api(FeederOptions.new.timeout(40)).services_xml
+    actual = SearchApp.new.services_xml
 
     # Note: 'default' container needs to come first as there assumptions about
     # a search container being the first one in test framework and tests
@@ -831,19 +830,7 @@ class SearchAppGenTest < Test::Unit::TestCase
           <searchable-copies>1</searchable-copies>
         </proton>
       </engine>
-    </content>
-
-    <container id="doc-api" version="1.0">
-      <document-api>
-        <timeout>40</timeout>
-      </document-api>
-      <http>
-        <server id="default" port="19020" />
-      </http>
-      <nodes>
-        <node hostalias="node1" />
-      </nodes>
-    </container>'
+    </content>'
 
     assert_substring_ignore_whitespace(actual, expected_substr)
   end
