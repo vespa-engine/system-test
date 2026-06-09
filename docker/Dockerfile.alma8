@@ -3,12 +3,12 @@
 ARG BASE_IMAGE=docker.io/almalinux:8
 ARG VESPA_BASE_IMAGE=vespa
 
-# Vespa install
+# Vespa install (not used in automated build pipeline)
 FROM $BASE_IMAGE AS vespa
 
 RUN dnf install -y dnf-plugins-core && \
     dnf install -y epel-release && \
-    dnf config-manager --add-repo https://copr.fedorainfracloud.org/coprs/g/vespa/vespa/repo/epel-8/group_vespa-vespa-epel-8.repo && \
+    dnf -y config-manager --add-repo https://github.com/vespa-engine/vespa/raw/master/dist/vespa-engine.repo && \
     dnf config-manager --enable powertools && \
     dnf config-manager --enable epel && \
     dnf -y upgrade && \
