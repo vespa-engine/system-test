@@ -18,7 +18,7 @@ class HierarchDistr < VdsMultiModelTest
   end
 
   def app2
-               StorageApp.new.enable_document_api.storage_cluster(
+               StorageApp.new.storage_cluster(
                  StorageCluster.new("storage").
                    redundancy(2).
                    distribution_bits(@distribution_bits).
@@ -38,7 +38,7 @@ class HierarchDistr < VdsMultiModelTest
   end
 
   def app3
-               StorageApp.new.enable_document_api.storage_cluster(
+               StorageApp.new.storage_cluster(
                  StorageCluster.new("storage").
                    redundancy(2).
                    distribution_bits(@distribution_bits).
@@ -59,7 +59,7 @@ class HierarchDistr < VdsMultiModelTest
   end
 
   def app4
-               StorageApp.new.enable_document_api.storage_cluster(
+               StorageApp.new.storage_cluster(
                  StorageCluster.new("storage").
                    redundancy(2).
                    distribution_bits(@distribution_bits).
@@ -102,7 +102,7 @@ class HierarchDistr < VdsMultiModelTest
   end
 
   def nohierarchy
-               StorageApp.new.enable_document_api.storage_cluster(
+               StorageApp.new.storage_cluster(
                  StorageCluster.new("storage").
                    redundancy(2).
                    distribution_bits(@distribution_bits).
@@ -261,7 +261,7 @@ class HierarchDistr < VdsMultiModelTest
   end
 
   def app_3x3_with_pseudo_row_column
-    StorageApp.new.enable_document_api.storage_cluster(
+    StorageApp.new.storage_cluster(
       StorageCluster.new("storage").
         redundancy(3).
         distribution_bits(@distribution_bits).

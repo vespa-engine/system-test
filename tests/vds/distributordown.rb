@@ -56,7 +56,7 @@ class DistributorDown < VdsTest
   end
 
   def create_app
-    StorageApp.new.enable_document_api.storage_cluster(
+    StorageApp.new.storage_cluster(
               StorageCluster.new("storage").
               redundancy(2).
               group(NodeGroup.new(0, "mycluster").
