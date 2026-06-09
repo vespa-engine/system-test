@@ -13,6 +13,9 @@
   </admin>
 
   <container version='1.0' id='default'>
+    <document-api>
+      <timeout>40</timeout>
+    </document-api>
     <search/>
     <nodes>
       <node hostalias='node1'/>
@@ -39,17 +42,5 @@
       <proton/>
     </engine>
   </content>
-
-  <container version='1.0' id='doc-api'>
-    <document-api>
-      <timeout>40</timeout>
-    </document-api>
-    <http>
-      <server id='default' port='19020'/>
-    </http>
-    <nodes>
-      <node hostalias='node1'/>
-    </nodes>
-  </container>
 
 </services>

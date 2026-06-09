@@ -16,6 +16,7 @@
     </nodes>
     <documents>
       <document type="worst" mode="index"/>
+      <document-processing cluster="container"/>
     </documents>
   </content>
 

@@ -54,6 +54,7 @@
   <content version="1.0" id="storage">
     <documents>
       <document type="worst" mode="store-only"/>
+      <document-processing cluster="cluster1"/>
     </documents>
     <redundancy>1</redundancy>
     <nodes>

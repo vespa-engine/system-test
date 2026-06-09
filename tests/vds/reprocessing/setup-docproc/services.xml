@@ -11,6 +11,7 @@
 
     <documents>
       <document type="music" mode="store-only"/>
+      <document-processing cluster="default"/>
     </documents>
     <group>
       <node hostalias="node0" distribution-key="0"/>

@@ -12,12 +12,7 @@ class HttpfeedingGwAndDocproc < IndexedStreamingSearchTest
 
   def make_app
     app = SearchApp.new
-    app.container(Container.new('default').search(Searching.new))
-    container = Container.new('doc-api')
-    container.documentapi(ContainerDocumentApi.new)
-    container.http(Http.new.server(Server.new('default', 19020)))
-    container.docproc(DocumentProcessing.new)
-    app.container(container)
+    app.container(Container.new('default').search(Searching.new).documentapi(ContainerDocumentApi.new))
     app.sd(selfdir + '../data/simple.sd')
     return app
   end
