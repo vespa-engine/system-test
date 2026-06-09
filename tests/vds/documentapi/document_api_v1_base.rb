@@ -38,7 +38,6 @@ class DocumentApiV1Base < SearchTest
 
   def store_only_app
     StorageApp.new.default_cluster.sd(selfdir + 'music.sd').
-      enable_document_api(FeederOptions.new.timeout(120)).
       transition_time(0).
       distribution_bits(8)
   end
