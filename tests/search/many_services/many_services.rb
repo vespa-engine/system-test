@@ -17,8 +17,10 @@ class Many_Services < IndexedStreamingSearchTest
     set_expected_logged(/Peer location broker at .* may have problems, differences from consensus map/)
 
     deploy_app(SearchApp.new.slobrok("node1").slobrok("node1").
+                 indexing_cluster("foo").
                  container(Container.new("foo").
                              documentapi(ContainerDocumentApi.new).
+                             docproc(DocumentProcessing.new).
                              search(Searching.new).
                              http(Http.new.
                                   server(Server.new("foo-server", 4080)))).
@@ -27,7 +29,8 @@ class Many_Services < IndexedStreamingSearchTest
                              http(Http.new.
                                   server(Server.new("bar-server", 4090)))).
                       cluster(SearchCluster.new.sd(selfdir+"music.sd").
-                        redundancy(2).num_parts(3)))
+                                indexing_cluster("foo").
+                                redundancy(2).num_parts(3)))
     vespa.start
 
     wait_until_ready(900)

@@ -12,12 +12,15 @@ class SearchchainsClusterConnections < IndexedStreamingSearchTest
   def deploy(doctype1, doctype2)
     deploy_app(SearchApp.new.
                cluster(SearchCluster.new(doctype1).sd(selfdir + "#{doctype1}.sd").
-                       doc_type(doctype1)).
+                         doc_type(doctype1).
+                         indexing_cluster("container1")).
                cluster(SearchCluster.new(doctype2).sd(selfdir + "#{doctype2}.sd").
-                       doc_type(doctype2)).
+                         doc_type(doctype2).
+                         indexing_cluster("container1")).
                container(Container.new("container1").
                            search(Searching.new.chain(Provider.new(doctype1, "local").cluster(doctype1))).
-                           documentapi(ContainerDocumentApi.new)).
+                           documentapi(ContainerDocumentApi.new).
+                           docproc(DocumentProcessing.new)).
                container(Container.new("container2").http(Http.new.server(Server.new("default", "5000"))).
                          search(Searching.new.chain(Provider.new(doctype2, "local").cluster(doctype2)))))
   end
