@@ -5,7 +5,6 @@ def singlenode_streaming_2storage(sd_file)
   # the search cluster is used for content setup.
   # the storage cluster is used for storage/search setup.
   SearchApp.new.streaming().
-    enable_document_api.
     cluster(SearchCluster.new.sd(sd_file).num_parts(2).storage_cluster("storage"))
 end
 

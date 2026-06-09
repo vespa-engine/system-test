@@ -41,7 +41,6 @@ class MaxDocumentSize < VdsTest
 
   def deploy_application(max_document_size)
     deploy_app(StorageApp.new.
-                 enable_document_api.
                  storage_cluster(StorageCluster.new("mystorage").default_group.
                                    max_document_size(max_document_size)).
                  sd("#{selfdir}/test.sd"))
