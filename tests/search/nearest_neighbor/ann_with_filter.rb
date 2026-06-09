@@ -15,15 +15,17 @@ class ApproximateNearestNeighborWithFilterTest < IndexedOnlySearchTest
 
     # Only searching the HNSW graph:
     assert_docs_and_setup([6, 7, 5],
-                          ["Calculate global filter (estimated_hit_ratio (1.000000) <= upper_limit (1.000000))",
+                          ["Calculate global filter",
                            "Global filter matches everything",
                            "Handle global filter in query execution plan"],
+                          1.0, 1.0,
                            get_query({:qpos => 62, :trace => true}))
 
     # Searching the HNSW graph using the result from pre-filter execution:
     assert_docs_and_setup([5, 4, 3],
-                          ["Calculate global filter (estimated_hit_ratio (0.500000) <= upper_limit (1.000000))",
+                          ["Calculate global filter",
                            "Handle global filter in query execution plan"],
+                          0.5, 1.0,
                            get_query({:qpos => 62, :tag => 5, :trace => true}))
 
     # Fallback to exact nearest neighbor search (estimated-hit-ratio < approximate-threshold):
@@ -116,19 +118,33 @@ class ApproximateNearestNeighborWithFilterTest < IndexedOnlySearchTest
     result
   end
 
-  def assert_docs_and_setup(exp_docids, exp_steps, query)
+  def assert_docs_and_setup(exp_docids, exp_steps, exp_estimated_hit_ratio, exp_upper_limit, query)
     result = assert_docs(exp_docids, query)
-    assert_query_setup(exp_steps, result)
+    assert_query_setup(exp_steps, exp_estimated_hit_ratio, exp_upper_limit, result)
   end
 
-  def assert_query_setup(exp_steps, result)
+  def assert_query_setup(exp_steps, exp_estimated_hit_ratio, exp_upper_limit, result)
     query_setup = deep_find_tagged_child(result.json['trace'], 'query_setup')
     traces = query_setup['traces']
     puts "assert_query_setup(): traces: #{traces}"
+    # The global filter decision is not an event and does not have an "event" key. Filter it out.
+    events = traces.select {|trace| trace.key?("event")}
+    puts "assert_query_setup(): whereof events: #{events}"
+    # Find the global filter decision. It has a "global_filter_decision" tag.
+    global_filter_decisions = traces.select {|trace| trace.key?("tag") and trace["tag"] == "global_filter_decision"}
+    puts "assert_query_setup(): whereof global filter decisions: #{global_filter_decisions}"
+
+    # Verify events.
     # See ../explain/explain.rb for the first steps in the 'query_setup' trace.
     for i in 0...exp_steps.length do
-      assert_equal(exp_steps[i], traces[5 + i]["event"])
+      assert_equal(exp_steps[i], events[5 + i]["event"])
     end
+
+    # Verify the global filter decision.
+    assert_equal(1, global_filter_decisions.length)
+    parameters = global_filter_decisions.first["parameters"]
+    assert_approx(exp_estimated_hit_ratio, parameters["estimated_hit_ratio"])
+    assert_approx(exp_upper_limit, parameters["upper_limit"])
   end
 
 end
