@@ -97,6 +97,7 @@ class Fbench2 < IndexedOnlySearchTest
 
     c_cluster_a = Container.new('c-a').
                     documentapi(ContainerDocumentApi.new).
+                    docproc(DocumentProcessing.new).
                     search(Searching.new).
                     http(Http.new.server(Server.new('foo-server', 6180))).
                     documentapi(ContainerDocumentApi.new)
@@ -105,6 +106,7 @@ class Fbench2 < IndexedOnlySearchTest
                     http(Http.new.server(Server.new('bar-server', 6190))).
                     documentapi(ContainerDocumentApi.new)
     deploy_app(SearchApp.new.
+                 indexing_cluster('c-a').
                  sd("#{selfdir}/banana.sd").
                  container(c_cluster_a).
                  container(c_cluster_b))
