@@ -11,7 +11,6 @@ class Capacity < VdsTest
   def test_capacity
     deploy_app(
                StorageApp.new.
-               enable_document_api.
                storage_cluster(
                  StorageCluster.new("storage").
                    group(NodeGroup.new(0, "mygroup").
@@ -41,7 +40,6 @@ class Capacity < VdsTest
     # Change config: .0.c:1.0 and .1.c:3.0
     deploy_app(
                StorageApp.new.
-               enable_document_api.
                storage_cluster(
                  StorageCluster.new("storage").
                    group(NodeGroup.new(0, "mygroup").
