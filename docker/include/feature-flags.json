@@ -54,6 +54,7 @@
         { "id" : "search-core-transaction-log-replay-soft-memory-limit", "rules" : [ { "value" : -5 } ] },
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
         { "id" : "searchnode-reserved-disk-space-factor", "rules" : [ { "value" : 1.0 } ] },
+        { "id" : "searchnode-reserved-memory-factor", "rules" : [ { "value" : 0.5 } ] },
         { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : true } ] }
     ]
 
