@@ -1,49 +1,48 @@
 # Copyright Vespa.ai. All rights reserved.
-require 'search_test'
+require 'container_test'
 require 'app_generator/container_app'
 
-class HeapSize < SearchTest
+class HeapSize < ContainerTest
 
   def setup
     set_owner("hmusum")
   end
 
   def make_app(with_jvm_options = nil)
-    app = ContainerApp.new.
-            container(Container.new('foo-bar').
-                        jvmoptions(with_jvm_options))
+    ContainerApp.new.
+      container(Container.new('foo-bar').
+                  jvmoptions(with_jvm_options))
   end
 
   def test_jvm_default_heap_size()
-    deploy_app(make_app)
-    start
+    deploy_and_start(make_app)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms1536m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xmx1536m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-XX:MaxDirectMemorySize=208m/)
   end
 
   def test_jvm_absolute_heap_size_by_jvm_options()
-    deploy_app(make_app('-Xms1024m -Xmx2048m'))
-    start
+    app = make_app('-Xms1024m -Xmx2048m')
+    deploy_and_start(app)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms1024m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xmx2048m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-XX:MaxDirectMemorySize=208m/)
   end
 
   def test_jvm_absolute_heap_size_by_jvm_options_is_not_capped()
-    deploy_app(make_app('-Xms384m -Xmx512m'))
-    start
+    app = make_app('-Xms384m -Xmx512m')
+    deploy_and_start(app)    
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms384m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xmx512m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-XX:MaxDirectMemorySize=208m/)
   end
 
   def test_jvm_absolute_heap_size_by_heapsize()
-    deploy_app(make_app.
-                         config(ConfigOverride.new('search.config.qr-start').
-                                               add('jvm', ConfigValue.new('minHeapsize', '1600')).
-                                               add('jvm', ConfigValue.new('heapsize', '2048'))))
-    start
+    app = make_app.
+            config(ConfigOverride.new('search.config.qr-start').
+                     add('jvm', ConfigValue.new('minHeapsize', '1600')).
+                     add('jvm', ConfigValue.new('heapsize', '2048')))
+    deploy_and_start(app)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms1600m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xmx2048m/)
     maxdirect = 2048/8 + 16 + 0 # Taken from the startup script.
@@ -52,11 +51,11 @@ class HeapSize < SearchTest
 
   def test_jvm_absolute_min_heap_size_by_is_capped_at_heapsize()
     set_expected_logged(/Misconfigured heap size/)
-    deploy_app(make_app.
-                         config(ConfigOverride.new('search.config.qr-start').
-                                               add('jvm', ConfigValue.new('minHeapsize', '2600')).
-                                               add('jvm', ConfigValue.new('heapsize', '2048'))))
-    start
+    app = make_app.
+            config(ConfigOverride.new('search.config.qr-start').
+                     add('jvm', ConfigValue.new('minHeapsize', '2600')).
+                     add('jvm', ConfigValue.new('heapsize', '2048')))
+    deploy_and_start(app)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms2048m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xmx2048m/)
     maxdirect = 2048/8 + 16 + 0 # Taken from the startup script.
@@ -64,11 +63,11 @@ class HeapSize < SearchTest
   end
 
   def test_jvm_absolute_heap_size_by_heapsize_is_capped()
-    deploy_app(make_app.
-                         config(ConfigOverride.new('search.config.qr-start').
-                                               add('jvm', ConfigValue.new('minHeapsize', '512')).
-                                               add('jvm', ConfigValue.new('heapsize', '512'))))
-    start
+    app = make_app.
+            config(ConfigOverride.new('search.config.qr-start').
+                     add('jvm', ConfigValue.new('minHeapsize', '512')).
+                     add('jvm', ConfigValue.new('heapsize', '512')))
+    deploy_and_start(app)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xms512m/)
     assert(vespa.adminserver.execute("ps auxwww | grep 'foo[-]bar' | grep -v grep") =~ /-Xmx512m/)
     maxdirect = 512/8 + 16 + 0 # Taken from the startup script.
@@ -76,10 +75,10 @@ class HeapSize < SearchTest
   end
 
   def test_jvm_relative_heap_size()
-    deploy_app(make_app.
-                         config(ConfigOverride.new('search.config.qr-start').
-                                               add('jvm', ConfigValue.new('heapSizeAsPercentageOfPhysicalMemory', '40'))))
-    start
+    app = make_app.
+            config(ConfigOverride.new('search.config.qr-start').
+                     add('jvm', ConfigValue.new('heapSizeAsPercentageOfPhysicalMemory', '40')))
+    deploy_and_start(app)
     free = vespa.adminserver.execute("free -m | grep Mem | tr -s ' ' | cut -f2 -d' '").to_i
     begin
       cg1cmd = 'cgget -nv -r memory.limit_in_bytes /'
@@ -113,6 +112,14 @@ class HeapSize < SearchTest
     assert(ps_output =~ /-Xmx#{relative}m/, "Expected to find '-Xmx#{relative}m' in output: #{ps_output}")
     assert(ps_output =~ /-XX:MaxDirectMemorySize=#{maxdirect}m/, "Expected to find '-XX:MaxDirectMemorySize=#{maxdirect}m' in output: #{ps_output}")
   end
+
+  def deploy_and_start(app)
+    deploy_app(app)
+    start(app)
+  end
+
+
+
 
 
 end

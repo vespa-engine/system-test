@@ -39,7 +39,7 @@ class HttpfeedingGwAndDocproc < IndexedStreamingSearchTest
   end
 
   def httpclient_feed(feed_file)
-    feedfile(feed_file, {:client => :vespa_feed_client, :route => "indexing", :port => 19020})
+    feedfile(feed_file, {:client => :vespa_feed_client, :route => "indexing"})
   end
 
 end
