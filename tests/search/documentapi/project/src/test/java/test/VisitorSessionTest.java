@@ -12,15 +12,15 @@ import com.yahoo.documentapi.SyncSession;
 import com.yahoo.documentapi.VisitorControlHandler;
 import com.yahoo.documentapi.VisitorParameters;
 import com.yahoo.documentapi.VisitorSession;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static test.Documents.newDocument;
 
 /**
@@ -28,7 +28,7 @@ import static test.Documents.newDocument;
  */
 public class VisitorSessionTest {
 
-    @Before
+    @BeforeEach
     public void requireElasticSetup() {
         assumeTrue("INDEXED".equals(System.getProperty("searchType")));
     }

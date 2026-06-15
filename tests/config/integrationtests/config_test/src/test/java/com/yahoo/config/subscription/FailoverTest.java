@@ -8,8 +8,8 @@ import com.yahoo.foo.BarConfig;
 import com.yahoo.vespa.config.Connection;
 import com.yahoo.vespa.config.ConnectionPool;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,18 +17,18 @@ import java.util.logging.Logger;
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasChanged;
 import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasNotChanged;
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class FailoverTest {
     private final java.util.logging.Logger log = Logger.getLogger(FailoverTest.class.getName());
 
     private ConfigSubscriber subscriber;
 
-    @After
+    @AfterEach
     public void closeSubscriber() {
         if (subscriber != null) subscriber.close();
     }

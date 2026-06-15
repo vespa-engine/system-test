@@ -4,7 +4,7 @@ package com.yahoo.search.query.profile;
 import com.yahoo.config.subscription.ConfigGetter;
 import com.yahoo.search.query.profile.config.QueryProfileConfigurer;
 import com.yahoo.search.query.profile.config.QueryProfilesConfig;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

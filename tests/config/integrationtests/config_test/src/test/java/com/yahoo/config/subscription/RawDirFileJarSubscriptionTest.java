@@ -5,16 +5,17 @@ import com.yahoo.config.AppConfig;
 import com.yahoo.config.StringConfig;
 import com.yahoo.foo.BarConfig;
 import com.yahoo.io.IOUtils;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.jar.JarFile;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test cases for raw:, dir:, jar: and file: subscriptions
@@ -207,23 +208,27 @@ public class RawDirFileJarSubscriptionTest {
     /**
      * Tests subscribing with non-existing jar
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNonExistingJar() {
-        ConfigSubscriber subscriber = new ConfigSubscriber();
-        subscriber.subscribe(AppConfig.class, "jar:configs/nonexisting.jar");
-        subscriber.nextConfig(300, false);
-        subscriber.close();
+        assertThrows(IllegalArgumentException.class, () -> {
+            ConfigSubscriber subscriber = new ConfigSubscriber();
+            subscriber.subscribe(AppConfig.class, "jar:configs/nonexisting.jar");
+            subscriber.nextConfig(300, false);
+            subscriber.close();
+        });
     }
 
     /**
      * Tests subscribing with config that is not in jar
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testJarWrongConfig() {
-        ConfigSubscriber subscriber = new ConfigSubscriber();
-        subscriber.subscribe(BarConfig.class, "jar:configs/app.jar");
-        subscriber.nextConfig(300, false);
-        subscriber.close();
+        assertThrows(IllegalArgumentException.class, () -> {
+            ConfigSubscriber subscriber = new ConfigSubscriber();
+            subscriber.subscribe(BarConfig.class, "jar:configs/app.jar");
+            subscriber.nextConfig(300, false);
+            subscriber.close();
+        });
     }
 
     @Test
@@ -251,7 +256,7 @@ public class RawDirFileJarSubscriptionTest {
 
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    @After
+    @AfterEach
     public void tearDown() {
         if (tmpFile1 != null) tmpFile1.delete();
         if (tmpFile2 != null) tmpFile2.delete();

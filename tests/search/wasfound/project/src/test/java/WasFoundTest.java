@@ -11,12 +11,12 @@ import com.yahoo.document.update.ValueUpdate;
 import com.yahoo.documentapi.DocumentAccess;
 import com.yahoo.documentapi.SyncParameters;
 import com.yahoo.documentapi.SyncSession;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * System test accessing the wasFound flag of update and remove replies.
@@ -30,7 +30,7 @@ public class WasFoundTest {
     private DocumentType type;
     private Document doc;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         access = DocumentAccess.createForNonContainer();
         session = access.createSyncSession(new SyncParameters.Builder().build());
@@ -40,7 +40,7 @@ public class WasFoundTest {
         session.remove(new DocumentRemove(docId));
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         access.shutdown();
     }
