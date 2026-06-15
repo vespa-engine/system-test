@@ -3,14 +3,14 @@ package com.yahoo.config.subscription;
 
 import com.yahoo.config.FooConfig;
 import com.yahoo.foo.BarConfig;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedFailure;
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StressTest {
 

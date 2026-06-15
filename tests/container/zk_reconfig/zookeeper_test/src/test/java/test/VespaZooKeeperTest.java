@@ -14,7 +14,8 @@ import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.admin.ZooKeeperAdmin;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -40,8 +41,8 @@ import java.util.stream.IntStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.toList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Jon Marius Venstad
@@ -63,7 +64,8 @@ public class VespaZooKeeperTest {
      * <p>
      * Throughout all of this, quorum should remain, and the data should remain the same.
      */
-    @Test(timeout = 300_000)
+    @Test
+    @Timeout(value = 300_000, unit = TimeUnit.MILLISECONDS)
     public void testReconfiguration() throws ExecutionException, InterruptedException, IOException, KeeperException, TimeoutException {
         List<ZooKeeper> keepers = new ArrayList<>();
         for (int i = 0; i < 8; i++) keepers.add(new ZooKeeper());

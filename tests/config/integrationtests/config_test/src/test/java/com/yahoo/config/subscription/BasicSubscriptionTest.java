@@ -7,8 +7,8 @@ import com.yahoo.config.FooConfig;
 import com.yahoo.foo.BarConfig;
 import com.yahoo.myproject.config.NamespaceConfig;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.logging.Logger;
 
@@ -17,10 +17,10 @@ import static com.yahoo.config.subscription.ConfigTester.assertNextConfigHasNotC
 import static com.yahoo.config.subscription.ConfigTester.timingValues;
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedFailure;
 import static com.yahoo.config.subscription.ConfigTester.waitWhenExpectedSuccess;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class BasicSubscriptionTest {
 
@@ -284,7 +284,7 @@ public class BasicSubscriptionTest {
       handle that the payload then is empty, i.e. empty is not propagated to subscriber
      */
     @Test
-    @Ignore
+    @Disabled
     public void testEmptyPayloadWhenUnHandledReqPreviously() throws InterruptedException {
         try (ConfigTester tester = new ConfigTester()) {
             ConfigSubscriber subscriber = tester.getSubscriber();

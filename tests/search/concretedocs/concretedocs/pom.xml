@@ -55,8 +55,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -66,7 +66,7 @@
       <version>${vespa.version}</version>
       <scope>provided</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>concretedocs2</groupId>
       <artifactId>concretedocs2</artifactId>

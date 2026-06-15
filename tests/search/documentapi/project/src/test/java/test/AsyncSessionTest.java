@@ -12,17 +12,17 @@ import com.yahoo.documentapi.DocumentAccess;
 import com.yahoo.documentapi.DocumentResponse;
 import com.yahoo.documentapi.Response;
 import com.yahoo.documentapi.Result;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static test.AssertQuery.assertQuery;
 import static test.Documents.newDocument;
 import static test.Documents.newUpdate;
@@ -49,7 +49,7 @@ public class AsyncSessionTest {
         assertGet("id:tenant:test::foo", null);
     }
 
-    @After
+    @AfterEach
     public void after() {
         session.destroy();
         access.shutdown();
@@ -65,7 +65,7 @@ public class AsyncSessionTest {
             }
         });
         Response response = session.getNext(TIMEOUT_MILLIS);
-        assertTrue(response.getTextMessage(), response.isSuccess());
+        assertTrue(response.isSuccess(), response.getTextMessage());
     }
 
     private void assertUpdate(final DocumentUpdate upd) throws Exception {
@@ -78,7 +78,7 @@ public class AsyncSessionTest {
             }
         });
         Response response = session.getNext(TIMEOUT_MILLIS);
-        assertTrue(response.getTextMessage(), response.isSuccess());
+        assertTrue(response.isSuccess(), response.getTextMessage());
     }
 
     private void assertRemove(final String docId) throws Exception {
@@ -91,7 +91,7 @@ public class AsyncSessionTest {
             }
         });
         Response response = session.getNext(TIMEOUT_MILLIS);
-        assertTrue(response.getTextMessage(), response.isSuccess());
+        assertTrue(response.isSuccess(), response.getTextMessage());
     }
 
     private void assertGet(final String docId, String expectedFieldValue) throws Exception {
@@ -104,7 +104,7 @@ public class AsyncSessionTest {
             }
         });
         Response response = session.getNext(TIMEOUT_MILLIS);
-        assertTrue(response.getTextMessage(), response.isSuccess());
+        assertTrue(response.isSuccess(), response.getTextMessage());
         assertTrue(response instanceof DocumentResponse);
         Document doc = ((DocumentResponse)response).getDocument();
         System.out.println(doc);

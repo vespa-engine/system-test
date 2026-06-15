@@ -13,7 +13,7 @@ import com.yahoo.vespa.config.protocol.JRTClientConfigRequest;
 import com.yahoo.vespa.config.protocol.JRTClientConfigRequestV3;
 import com.yahoo.vespa.config.protocol.Trace;
 import com.yahoo.vespa.config.testutil.TestConfigServer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -21,10 +21,10 @@ import java.util.Optional;
 import static com.yahoo.vespa.config.ErrorCode.ILLEGAL_CONFIG_MD5;
 import static com.yahoo.vespa.config.PayloadChecksum.Type.MD5;
 import static com.yahoo.vespa.config.PayloadChecksum.Type.XXHASH64;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for different client requests to config server.
@@ -46,8 +46,8 @@ public class ConfigClientTest {
             Request req = new Request("frt.rpc.ping");
             tester.invokeSync(req);
             System.out.println("Got ping response at " + System.currentTimeMillis());
-            assertFalse("Invocation failed: " + req.errorCode() + ": " + req.errorMessage(),
-                        req.isError());
+            assertFalse(req.isError(),
+                        "Invocation failed: " + req.errorCode() + ": " + req.errorMessage());
             assertEquals(0, req.returnValues().size());
         }
     }
@@ -152,16 +152,16 @@ public class ConfigClientTest {
             JRTClientConfigRequest newReq = createRequest(payloadChecksums, generation);
 
             tester.invokeSync(newReq.getRequest());
-            assertTrue("Valid return values", newReq.validateResponse());
-            assertTrue("More recent generation", newReq.getNewGeneration() > generation);
-            assertFalse("Updated flag in response is false", newReq.hasUpdatedConfig());
+            assertTrue(newReq.validateResponse(), "Valid return values");
+            assertTrue(newReq.getNewGeneration() > generation, "More recent generation");
+            assertFalse(newReq.hasUpdatedConfig(), "Updated flag in response is false");
             PayloadChecksums payloadChecksums2 = newReq.getNewChecksums();
-            assertEquals("Equal config md5 as previous response",
-                         payloadChecksums2.getForType(MD5),
-                         payloadChecksums.getForType(MD5));
-            assertEquals("Equal config xxhash64 as previous response",
-                         payloadChecksums2.getForType(XXHASH64),
-                         payloadChecksums.getForType(XXHASH64));
+            assertEquals(payloadChecksums2.getForType(MD5),
+                         payloadChecksums.getForType(MD5),
+                         "Equal config md5 as previous response");
+            assertEquals(payloadChecksums2.getForType(XXHASH64),
+                         payloadChecksums.getForType(XXHASH64),
+                         "Equal config xxhash64 as previous response");
             verifyConfigUnchanged(newReq);
         }
     }
@@ -181,16 +181,16 @@ public class ConfigClientTest {
     void verifyOkResponse(JRTClientConfigRequest req) {
         //System.out.println("Got config response at " + System.currentTimeMillis());
         assertNull(req.errorMessage(), req.errorMessage());
-        assertTrue(req.getRequest().errorMessage(), req.validateResponse());
+        assertTrue(req.validateResponse(), req.getRequest().errorMessage());
     }
 
     void verifyConfigChanged(JRTClientConfigRequest req) {
-        assertTrue(req.errorMessage(), (req.errorCode() == 0));
-        assertTrue(req.toString(), req.hasUpdatedConfig());
+        assertTrue((req.errorCode() == 0), req.errorMessage());
+        assertTrue(req.hasUpdatedConfig(), req.toString());
     }
 
     void verifyConfigUnchanged(JRTClientConfigRequest req) {
-        assertTrue(req.errorMessage(), (req.errorCode() == 0));
+        assertTrue((req.errorCode() == 0), req.errorMessage());
         assertFalse(req.hasUpdatedConfig());
     }
 
