@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <container version="1.0">
 
-  <model-evaluation/>
+  <model-evaluation>
+    <onnx>
+      <models>
+        <model name="mnist_softmax">
+          <intraop-threads>1</intraop-threads>
+          <interop-threads>1</interop-threads>
+          <execution-mode>sequential</execution-mode>
+          <optimize-model>true</optimize-model>
+        </model>
+      </models>
+    </onnx>
+  </model-evaluation>
 
   <handler id="com.yahoo.test.handler.TestModelsEvaluationHandler" bundle="my_bundle">
     <binding>http://*/models/*</binding>
