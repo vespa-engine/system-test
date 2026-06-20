@@ -40,6 +40,7 @@ search tinybert {
         input  "input_ids":      my_input_ids
         input  "token_type_ids": my_token_type_ids
         input  "attention_mask": my_attention_mask
+        optimize-model: true
     }
 
     rank-profile onnxbert {

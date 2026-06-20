@@ -8,6 +8,7 @@
       <transformer-model url="https://huggingface.co/mixedbread-ai/mxbai-embed-large-v1/resolve/main/onnx/model_quantized.onnx"/>
       <tokenizer-model url="https://huggingface.co/mixedbread-ai/mxbai-embed-large-v1/raw/main/tokenizer.json"/>
       <normalize>true</normalize>
+      <onnx-optimize-model>true</onnx-optimize-model>
       <pooling-strategy>cls</pooling-strategy>
     </component>
     <document-api/>
