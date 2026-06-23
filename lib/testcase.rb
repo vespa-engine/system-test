@@ -1033,4 +1033,14 @@ class TestCase
     wait_for_hitcount("sddocname:#{doc_type}&nocache&streaming.selection=true", exp_hits, 180)
   end
 
+  def get_phys_memory(node_proxy:)
+    command="#{Environment.instance.vespa_home}/bin/vespa-resource-limits"
+    (exitcode, output) = node_proxy.execute(command, {:exitcode => true, :exceptiononfailure => false})
+    assert_equal(0, exitcode.to_i)
+    match_info = output.match('Memory limit: (\d*)')
+    assert_not_nil(match_info)
+    assert_not_nil(match_info[1])
+    return match_info[1].to_i
+  end
+
 end
