@@ -29,7 +29,13 @@ class LidSpaceCompactionTest < IndexedOnlySearchTest
       config(ConfigOverride.new("vespa.config.search.core.proton").
              add("lidspacecompaction", ConfigValues.new.
                  add("interval", 2.0)))
-    cluster.disable_flush_tuning if disable_flush
+    if disable_flush
+      phys_memory = get_phys_memory(node_proxy: vespa.nodeproxies.values.first)
+      if two_nodes
+        phys_memory = phys_memory / 2
+      end
+      cluster.limit_flush_tuning(phys_memory / 3)
+    end
     setup_two_nodes(cluster) if two_nodes
     app = SearchApp.new.cluster(cluster)
     app
