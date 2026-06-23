@@ -235,12 +235,17 @@ class SearchCluster
     cluster_parameters_xml(indent, "streaming")
   end
 
-  def disable_flush_tuning
+  def limit_flush_tuning(maxmemorygain)
+    maxmemorygain = [maxmemorygain, 32000000000].min
     tune_searchnode(
-      {:flushstrategy => {:native => { :total => {:maxmemorygain => 32000000000, :diskbloatfactor => 10.0},
-                                       :component => {:maxmemorygain => 32000000000, :diskbloatfactor => 10.0, :maxage => 86400},
+      {:flushstrategy => {:native => { :total => {:maxmemorygain => maxmemorygain, :diskbloatfactor => 10.0},
+                                       :component => {:maxmemorygain => maxmemorygain, :diskbloatfactor => 10.0, :maxage => 86400},
                                        :transactionlog => {:maxsize => 10000000000}
                                      } } }
     )
+  end
+
+  def disable_flush_tuning
+    limit_flush_tuning(32000000000)
   end
 end

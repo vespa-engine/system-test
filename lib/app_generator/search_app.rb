@@ -20,6 +20,7 @@ class SearchApp < App
                   :hwinfo_disk_writespeed => :hwinfo_disk_writespeed,
                   :hwinfo_disk_shared => :hwinfo_disk_shared,
                   :tune_searchnode => :tune_searchnode,
+                  :limit_flush_tuning => :limit_flush_tuning,
                   :disable_flush_tuning => :disable_flush_tuning,
                   :indexing => :indexing,
                   :persistence_threads => :persistence_threads,
