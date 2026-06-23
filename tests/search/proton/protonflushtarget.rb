@@ -70,7 +70,8 @@ class ProtonFlushTargetTest < IndexedOnlySearchTest
 
   def test_proton_searchnode_flushing
     set_description("Test that trigger flush searchnode commands work")
-    deploy_app(SearchApp.new.sd(selfdir+"test.sd").disable_flush_tuning)
+    phys_memory = get_phys_memory(node_proxy: vespa.nodeproxies.values.first)
+    deploy_app(SearchApp.new.sd(selfdir+"test.sd").limit_flush_tuning(phys_memory / 3))
     start
     vespa.adminserver.logctl("searchnode:proton.flushengine.flushengine", "debug=on")
     vespa.adminserver.logctl("searchnode:proton.server.documentdb",       "debug=on")
