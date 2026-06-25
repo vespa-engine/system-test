@@ -1,0 +1,48 @@
+# Copyright Vespa.ai. All rights reserved.
+schema test {
+  document test {
+    # Three map fields with different distributions of key/values.
+    # See create_docs.cpp for details on how the dataset is generated.
+    field kv_1 type map<string, int> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value {
+        indexing: attribute
+        attribute: fast-search
+        rank: filter
+      }
+    }
+    field kv_10 type map<string, int> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value {
+        indexing: attribute
+        attribute: fast-search
+        rank: filter
+      }
+    }
+    field kv_100 type map<string, int> {
+      indexing: summary
+      struct-field key {
+        indexing: attribute
+        attribute: fast-search
+      }
+      struct-field value { indexing: attribute
+        attribute: fast-search
+        rank: filter
+      }
+    }
+    # Independent single-value filter field used for AND-combination queries.
+    field filter type int {
+      indexing: attribute | summary
+      attribute: fast-search
+      rank: filter
+    }
+  }
+}
