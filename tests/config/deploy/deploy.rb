@@ -328,7 +328,7 @@ include ApplicationV2Api
     
     response = delete_tenant(@tenant_name, @hostname)
     assert_equal(400, response.code.to_i)
-    assert_equal("Cannot delete tenant 'mytenant', it has active applications: [mytenant.default]",
+    assert_equal("Cannot delete tenant 'mytenant', it has active applications: [mytenant.default.default]",
                  JSON.parse(response.body)["message"])
     session_id
   end
