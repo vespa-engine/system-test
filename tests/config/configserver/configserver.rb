@@ -107,7 +107,7 @@ class ConfigServer < ConfigTest
   end
 
   def test_redeploy_applications_on_upgrade
-    set_expected_logged(/Redeploying default.default failed, will retry/)
+    set_expected_logged(/Redeploying default.default.default failed, will retry/)
 
     deploy_app(SearchApp.new.sd(selfdir+"sd/banana.sd"))
     assert_log_matches("Session 2 activated successfully", 1)
@@ -136,7 +136,7 @@ class ConfigServer < ConfigTest
     vespa.configservers["0"].execute("cp #{services_xml} #{services_xml}.bak")
     vespa.configservers["0"].execute("echo 'invalid xml' >> #{services_xml}")
     restart_config_server_and_reset_version
-    wait_for_atleast_log_matches("Redeploying default.default failed, will retry", 1, 60)
+    wait_for_atleast_log_matches("Redeploying default.default.default failed, will retry", 1, 60)
     begin
       assert_health_status_for_config_server("initializing")
     rescue
