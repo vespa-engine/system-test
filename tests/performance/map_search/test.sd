@@ -44,5 +44,13 @@ schema test {
       attribute: fast-search
       rank: filter
     }
+    field score type int {
+      indexing: attribute | summary
+    }
+  }
+  rank-profile default {
+    first-phase {
+      expression: attribute(score)
+    }
   }
 }

@@ -32,7 +32,7 @@ class MapSearchPerfTest < PerformanceTest
     # Normal value distribution used for map values in create_docs.cpp (must match).
     @value_mean = 1000
     @value_stddev = 100
-    @num_docs = 10000
+    @num_docs = 100000
     feed_docs
     validate_data
     run_query_and_profile
@@ -215,7 +215,7 @@ class MapSearchPerfTest < PerformanceTest
     profiler_start
     run_fbench2(@container,
                 container_query_file,
-                {:runtime => 10,
+                {:runtime => 5,
                  :clients => 1,
                  :append_str => "&timeout=10s&ranking.profile=unranked",
                  :result_file => result_file},

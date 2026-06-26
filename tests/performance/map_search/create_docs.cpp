@@ -66,6 +66,7 @@ void print_map(const char* name, double exp_mean, std::mt19937& engine) {
 }
 
 void print_docs(int num_docs, const IntVector& filter, std::mt19937& engine) {
+    std::normal_distribution<double> score_dist(100000.0, 10000.0);
     printf("[\n");
     for (int doc_id = 0; doc_id < num_docs; ++doc_id) {
         if (doc_id > 0) {
@@ -76,7 +77,8 @@ void print_docs(int num_docs, const IntVector& filter, std::mt19937& engine) {
             print_map(map_field.name, map_field.exp_mean, engine);
             printf(",");
         }
-        printf("\"filter\":%d", filter[doc_id]);
+        printf("\"filter\":%d,", filter[doc_id]);
+        printf("\"score\":%d", (int)score_dist(engine));
         printf("}}");
     }
     printf("\n]\n");
