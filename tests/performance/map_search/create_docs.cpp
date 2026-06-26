@@ -19,9 +19,9 @@ struct MapField {
     double exp_mean;
 };
 const std::vector<MapField> map_fields = {
-    {"kv_1", 5.0},
-    {"kv_10", 25.0},
-    {"kv_100", 125.0},
+    {"kv_5", 5.0},
+    {"kv_25", 25.0},
+    {"kv_125", 125.0},
 };
 
 // Must match @hits_ratios in map_search.rb. Used for the independent 'filter' field.
@@ -85,10 +85,10 @@ void print_docs(int num_docs, const IntVector& filter, std::mt19937& engine) {
 /**
  * This program generates documents used for performance testing of map search.
  *
- * Each document has three map<string,int> fields (kv_1, kv_10, kv_100). For each field the
+ * Each document has three map<string,int> fields (kv_5, kv_25, kv_125). For each field the
  * number of entries is (1 + int(r)) where r is drawn from an exponential distribution with
- * mean 5, 25 and 125 respectively. Keys are "k0".."k{n-1}" and each value is drawn from a
- * normal distribution (mean 1000, stddev 100).
+ * mean 5, 25 and 125 respectively (matching the field name). Keys are "k0".."k{n-1}" and
+ * each value is drawn from a normal distribution (mean 1000, stddev 100).
  *
  * The independent 'filter' field is populated so that 'filter = R' matches
  * num_docs * R / 1000 documents, for each R in @hits_ratios, and can be AND-combined with

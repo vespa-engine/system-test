@@ -3,7 +3,7 @@ schema test {
   document test {
     # Three map fields with different distributions of key/values.
     # See create_docs.cpp for details on how the dataset is generated.
-    field kv_1 type map<string, int> {
+    field kv_5 type map<string, int> {
       indexing: summary
       struct-field key {
         indexing: attribute
@@ -15,7 +15,7 @@ schema test {
         rank: filter
       }
     }
-    field kv_10 type map<string, int> {
+    field kv_25 type map<string, int> {
       indexing: summary
       struct-field key {
         indexing: attribute
@@ -27,7 +27,7 @@ schema test {
         rank: filter
       }
     }
-    field kv_100 type map<string, int> {
+    field kv_125 type map<string, int> {
       indexing: summary
       struct-field key {
         indexing: attribute
