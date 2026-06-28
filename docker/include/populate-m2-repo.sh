@@ -16,7 +16,8 @@ readonly LOCAL_M2_REPO=$THE_HOME_DIR/.m2/repository
 if [[ -n $(find /opt/rh -mindepth 1 -maxdepth 1 -type d -name "rh-ruby*") ]]; then
   source /opt/rh/rh-ruby*/enable
 fi
-
+mkdir -p "$LOCAL_M2_REPO"
+cp -a /context-root/maven-repo/. "$LOCAL_M2_REPO/."
 readonly TESTS_ROOT=/opt/vespa-systemtests
 # Use '-Daether.dependencyCollector.impl=bf' for parallel dependency downloading https://issues.apache.org/jira/browse/MRESOLVER-324
 readonly SHARED_MVN_OPTS="-Daether.dependencyCollector.impl=bf --threads 1 -Dvespa.version=${VESPA_VERSION} -Dmaven.repo.local=${LOCAL_M2_REPO} --batch-mode --file ${TESTS_ROOT}/tests/pom.xml"
