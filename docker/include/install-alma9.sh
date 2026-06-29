@@ -12,6 +12,7 @@ dnf install -y \
     git-core \
     hostname \
     jq \
+    kernel-tools \
     libxml2-devel \
     lz4 \
     make \
