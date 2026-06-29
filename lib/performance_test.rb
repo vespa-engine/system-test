@@ -286,6 +286,7 @@ class PerformanceTest < TestCase
     remote_node = vespa.nodeproxies.values[0]
     remote_node.execute("grep '^PRETTY_NAME' /etc/os-release")
     remote_node.execute('uname -a')
+    remote_node.execute('numactl -s')
     remote_node.execute('lscpu')
     @node_procfs_snapshot_at_setup_time = remote_node.kernel_procfs_perf_snapshot
   end
