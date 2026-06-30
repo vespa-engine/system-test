@@ -35,7 +35,7 @@ module Perf
 
     def query(queryfile)
       result_file = @node.create_unique_temp_file('fbench_result_')
-      raw_output = @node.execute("#{fbench_cmd(queryfile)} | tee #{result_file}")
+      raw_output = @node.execute(" ( #{fbench_cmd(queryfile)} && echo ) | tee #{result_file}")
       @output_str = raw_output
       @output = @node.execute("cat #{result_file} | (sed -n 's/.*: *\\([0-9.][0-9.]*\\).*/\\1/p' | tr '\\n' ' ';echo)").split
     end
