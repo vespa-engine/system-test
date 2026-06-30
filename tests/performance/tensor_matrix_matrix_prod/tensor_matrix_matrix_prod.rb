@@ -34,7 +34,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
 
   def watch(node)
     while true
-      out = node.execute("turbostat sleep 10 2>&1 | grep -v not.effective", :noecho => true)
+      out = node.execute("turbostat sleep 20 2>&1 | grep -v not.effective", :noecho => true)
       puts ">>>\n#{out}<<<"
     end
   end
@@ -149,7 +149,23 @@ class TensorMatrixMatrixProduct < PerformanceTest
     run_fbench_helper("vector_matrix_512_float_outer")
     run_fbench_helper("matrix_product_512_float")
     run_fbench_helper("matrix_product_512_float_inner_outer")
+    # Temporary debugging to see if we are somehow downclocking the CPUs merely by looking
+    # at certain AVX-512 instructions in the wrong way.
+    perf_t = Thread.new {
+      search_node = vespa.search['search'].first
+      proton_pid = search_node.get_pid
+      if search_node.execute('uname -m').strip == 'x86_64'
+        perf_stat_cmd = "perf stat -I 1000 --pid=#{proton_pid} -e '" +
+                        "cpu/event=0x28,umask=0x07,name=core_power_lvl0_turbo_license/," +
+                        "cpu/event=0x28,umask=0x18,name=core_power_lvl1_turbo_license/," +
+                        "cpu/event=0x28,umask=0x20,name=core_power_lvl2_turbo_license/' sleep 21 2>&1"
+        search_node.execute(perf_stat_cmd, :exceptiononfailure => false) # Just dump to test output
+      else
+        puts "Search node is not running on an x86-64 CPU, not dumping power license PMUs"
+      end
+    }
     run_fbench_helper("matrix_product_512_float_outer_outer")
+    perf_t.join
     run_fbench_helper("matrix_product_1024_float")
     run_fbench_helper("matrix_product_512_double")
     run_fbench_helper("gemm_512_float")
