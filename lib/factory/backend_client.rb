@@ -28,6 +28,7 @@ class SimpleSystestSorter
       score = durations["#{test_object.class.to_s}::#{method_name}"].to_f
       score = 100 if score < 0.1 # Use 100 as fallback when new test, unknown duration due to previous run aborted etc.
       score = score + test_object.num_hosts * 2000 if test_object.num_hosts > 1
+      score = 99999 if test_object.class.to_s == "TensorMatrixMatrixProduct"
       puts "Test: #{test_object.class.to_s}::#{method_name} got a score of: #{score}"
       [test_object, score]
     end
