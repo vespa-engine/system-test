@@ -152,7 +152,7 @@ class TensorMatrixMatrixProduct < PerformanceTest
     # Temporary debugging to see if we are somehow downclocking the CPUs merely by looking
     # at certain AVX-512 instructions in the wrong way.
     perf_t = Thread.new {
-      search_node = vespa.search['search'].first
+      search_node = vespa.search['content'].first
       proton_pid = search_node.get_pid
       if search_node.execute('uname -m').strip == 'x86_64'
         perf_stat_cmd = "perf stat -I 1000 --pid=#{proton_pid} -e '" +
