@@ -26,6 +26,7 @@ class SearchCluster
   chained_setter :hwinfo_disk_shared
   chained_setter :search_coverage
   chained_setter :dispatch_policy
+  chained_setter :min_active_docs_coverage
   chained_setter :min_node_ratio_per_group
   chained_setter :persistence_threads
   chained_setter :resource_limits
@@ -49,6 +50,7 @@ class SearchCluster
     @flush_on_shutdown = nil
     @documents_selection = nil
     @dispatch_policy= nil
+    @min_active_docs_coverage = nil
     @min_node_ratio_per_group = nil
     @num_parts = 1
     @redundancy = 1
@@ -90,6 +92,10 @@ class SearchCluster
 
   def get_dispatch_policy
     return @dispatch_policy
+  end
+
+  def get_min_active_docs_coverage
+    return @min_active_docs_coverage
   end
 
   def get_min_node_ratio_per_group
