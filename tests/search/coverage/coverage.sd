@@ -1,0 +1,11 @@
+# Copyright Vespa.ai. All rights reserved.
+schema coverage {
+  document coverage {
+    field int_field type int {
+      indexing: summary | attribute
+    }
+  }
+  document-summary minimal {
+    summary int_field {}
+  }
+}
