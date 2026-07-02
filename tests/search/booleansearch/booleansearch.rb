@@ -7,7 +7,7 @@ require 'json'
 class BooleanSearchTest < IndexedOnlySearchTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("johsol")
     set_description("Test boolean search with native predicate datatype")
 
     @feed_file = dirs.tmpdir + "boolean_feed.tmp"

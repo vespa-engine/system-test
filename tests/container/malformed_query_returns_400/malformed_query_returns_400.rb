@@ -5,7 +5,7 @@ require 'app_generator/container_app'
 class MalformedQueryReturns400 < ContainerTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("Check HTTP 400 is returned when sending malformed queries.")
   end
 

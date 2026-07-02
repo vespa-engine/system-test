@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class GroupingApi < IndexedStreamingSearchTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("johsol")
     add_bundle(selfdir+"TestSearcher.java");
     search_chain = SearchChain.new.
       add(Searcher.new("com.yahoo.search.grouping.test.TestSearcher", "transformedQuery", "blendedResult"))

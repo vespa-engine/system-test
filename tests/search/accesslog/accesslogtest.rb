@@ -5,7 +5,7 @@ require 'indexed_streaming_search_test'
 class AccessLogTest < IndexedStreamingSearchTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("hmusum")
     set_description("Verify that search request are stored in default access log format")
     deploy_app(SearchApp.new.
                container(Container.new.

@@ -11,7 +11,7 @@ class QueryAccessLog < SearchContainerTest
   MAX_ATTEMPTS = 5
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("QueryAccessLog log rotation and symlinks are tested for multiple qrservers " +
                     "on the same node. Log rotation time is set to one minute. Both symlinks and old " +
                     "logfiles are tested for correctness after rotation.")

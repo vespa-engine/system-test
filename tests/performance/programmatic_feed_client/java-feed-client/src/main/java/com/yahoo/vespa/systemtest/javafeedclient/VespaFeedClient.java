@@ -23,7 +23,7 @@ import static com.yahoo.vespa.systemtest.javafeedclient.Utils.route;
 import static com.yahoo.vespa.systemtest.javafeedclient.Utils.warmupSeconds;
 
 /**
- * @author bjorncs
+ * @author Bjorn Christian Seime
  */
 public class VespaFeedClient {
     public static void main(String[] args) throws IOException {

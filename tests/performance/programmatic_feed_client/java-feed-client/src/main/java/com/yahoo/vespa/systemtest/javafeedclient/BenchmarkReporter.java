@@ -9,7 +9,7 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author bjorncs
+ * @author Bjorn Christian Seime
  */
 class BenchmarkReporter {
 

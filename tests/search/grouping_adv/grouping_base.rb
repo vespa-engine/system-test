@@ -6,7 +6,7 @@ module GroupingBase
   DEFAULT_TIMEOUT = 10
 
   def setup
-    set_owner('bjorncs')
+    set_owner("johsol")
   end
 
   def can_share_configservers?

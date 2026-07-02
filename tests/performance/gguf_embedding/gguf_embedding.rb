@@ -6,7 +6,7 @@ require 'environment'
 class GgufEmbeddingPerfTest < PerformanceTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("Benchmark feed throughput with gguf embedding model")
   end
 

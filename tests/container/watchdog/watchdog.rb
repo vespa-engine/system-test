@@ -5,7 +5,7 @@ require 'app_generator/container_app'
 class Watchdog < ContainerTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("Verify watchdog warns on leaked resources to log")
   end
 

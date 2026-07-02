@@ -5,7 +5,7 @@ require 'app_generator/container_app'
 class MinimalJDiscHandler < ContainerTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("Deploy and run a JDisc handler with minimal amount of Vespa stuff.")
   end
 

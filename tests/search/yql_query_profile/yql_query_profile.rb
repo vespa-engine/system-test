@@ -3,7 +3,7 @@ require 'indexed_streaming_search_test'
 
 class YqlQueryProfile < IndexedStreamingSearchTest
   def setup
-    set_owner("bjorncs")
+    set_owner("hmusum")
     set_description("Test Query Profiles with userQuery() in YQL+")
   end
 

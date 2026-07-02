@@ -4,7 +4,7 @@ require 'search_container_test'
 class JDiscServer < SearchContainerTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("Deploy a container with a custom JDisc server.")
     add_bundle_dir(selfdir, "com.yahoo.vespatest.DemoServer")
     @valgrind = false

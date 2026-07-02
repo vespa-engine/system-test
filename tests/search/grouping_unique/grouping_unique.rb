@@ -9,7 +9,7 @@ class GroupingUnique < IndexedStreamingSearchTest
   SAVE_RESULT = false
 
   def setup
-    set_owner("bjorncs")
+    set_owner("johsol")
     search_chain = SearchChain.new.add(Searcher.new("com.yahoo.search.grouping.UniqueGroupingSearcher",
                                                     nil, nil, nil, "container-search-and-docproc"))
     deploy_app(SearchApp.new.sd("#{selfdir}/test.sd").search_chain(search_chain))

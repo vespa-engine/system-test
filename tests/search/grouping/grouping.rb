@@ -6,7 +6,7 @@ class Grouping < IndexedStreamingSearchTest
   SAVE_RESULT = false
 
   def setup
-    set_owner("bjorncs")
+    set_owner("johsol")
   end
 
   def test_grouping

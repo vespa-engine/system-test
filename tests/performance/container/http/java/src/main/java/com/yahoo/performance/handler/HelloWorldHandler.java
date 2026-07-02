@@ -12,7 +12,7 @@ import java.io.PrintStream;
 import java.util.concurrent.Executor;
 
 /**
- * @author bjorncs
+ * @author Bjorn Christian Seime
  */
 public class HelloWorldHandler extends ThreadedHttpRequestHandler {
 

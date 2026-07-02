@@ -4,7 +4,7 @@ require 'indexed_streaming_search_test'
 class Post_Searcher < IndexedStreamingSearchTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("hmusum")
     set_description("Test that we can POST to a searcher")
     add_bundle(selfdir + "PostSearcher.java")
     search_chain = SearchChain.new.

@@ -8,7 +8,7 @@ import com.yahoo.jdisc.http.filter.SecurityRequestFilter;
 /**
  * Response filter that adds port as request attribute. This attribute is forwarded as a response header in the request handler.
  *
- * @author bjorncs
+ * @author Bjorn Christian Seime
  */
 public class HostHeaderRequestFilter implements SecurityRequestFilter {
     @Override

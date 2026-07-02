@@ -4,7 +4,7 @@ require 'search_container_test'
 class JDiscHandler < SearchContainerTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("Deploy and run a JDisc handler along with search.")
     add_bundle(selfdir + "HelloWorld.java")
     @valgrind = false

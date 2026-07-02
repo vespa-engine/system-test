@@ -15,7 +15,7 @@ class ReindexingTest < IndexedStreamingSearchTest
   MOVIE_DOC_TYPE = 'movie'
 
   def setup
-    set_owner('bjorncs')
+    set_owner("hmusum")
   end
 
   def test_add_const_field

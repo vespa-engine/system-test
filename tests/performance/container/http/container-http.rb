@@ -20,7 +20,7 @@ class ContainerHttp < PerformanceTest
   HTTP2 = 'http2'
 
   def setup
-    set_owner('bjorncs')
+    set_owner("glebashnik")
     # Bundle with HelloWorld and AsyncHelloWorld handler
     @bundledir= selfdir + 'java'
     add_bundle_dir(@bundledir, 'performance', {:mavenargs => '-Dmaven.test.skip=true'})

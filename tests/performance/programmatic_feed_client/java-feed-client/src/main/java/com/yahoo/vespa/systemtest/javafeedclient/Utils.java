@@ -25,7 +25,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNullElse;
 
 /**
- * @author bjorncs
+ * @author Bjorn Christian Seime
  */
 class Utils {
 

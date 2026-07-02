@@ -5,7 +5,7 @@ require 'app_generator/container_app'
 class SyncHttp2Handler < SearchContainerTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("Check that it's possible to deploy sync HTTP/2 handlers")
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.vespatest.HelloWorld")
     @valgrind = false

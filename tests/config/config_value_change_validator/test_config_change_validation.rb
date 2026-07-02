@@ -6,7 +6,7 @@ class ConfigChangeValidation < ConfigTest
 
   def setup
     set_description("Test config change validator in config server.")
-    set_owner("bjorncs")
+    set_owner("hmusum")
   end
 
   def test_config_change_validation

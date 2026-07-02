@@ -7,7 +7,7 @@ class Boolean30KResultsTest < IndexedOnlySearchTest
   DOCUMENT_COUNT = 15000
 
   def setup
-    set_owner("bjorncs")
+    set_owner("johsol")
     set_description("Tests returning 30K results from a boolean query")
     @feed_file = dirs.tmpdir + "boolean_feed_30K.tmp"
   end

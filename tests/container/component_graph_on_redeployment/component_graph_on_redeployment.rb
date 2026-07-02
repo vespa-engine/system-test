@@ -15,7 +15,7 @@ class ComponentGraphOnRedeployment < ContainerTest
   SERVICES = ['container', 'metricsproxy-container']
 
   def setup
-    set_owner('bjorncs')
+    set_owner("glebashnik")
     set_description('Verify that only certain components are reconstructed on redeployment of identical app')
   end
 

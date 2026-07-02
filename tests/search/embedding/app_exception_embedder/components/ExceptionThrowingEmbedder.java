@@ -13,7 +13,7 @@ import java.util.List;
  * Custom embedder that throws exceptions based on input text keywords.
  * Used for testing exception handling in the indexing pipeline.
  *
- * @author bjorncs
+ * @author Bjorn Christian Seime
  */
 public class ExceptionThrowingEmbedder implements Embedder {
 

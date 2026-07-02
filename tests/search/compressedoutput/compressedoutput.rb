@@ -6,7 +6,7 @@ require 'resultset'
 
 class CompressedOutput < IndexedStreamingSearchTest
   def setup
-    set_owner("bjorncs")
+    set_owner("hmusum")
     set_description("Test that checks if compression works")
     deploy_app(SearchApp.new.sd(selfdir+"music.sd"))
     start
