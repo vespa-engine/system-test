@@ -8,7 +8,7 @@ import com.yahoo.jdisc.http.filter.SecurityResponseFilter;
 /**
  * Response filter that adds observed port as response header
  *
- * @author bjorncs
+ * @author Bjorn Christian Seime
  */
 public class HostHeaderResponseFilter implements SecurityResponseFilter {
     @Override

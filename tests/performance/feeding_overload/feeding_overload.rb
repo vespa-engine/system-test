@@ -6,7 +6,7 @@ require 'environment'
 class FeedingOverloadPerfTest < PerformanceTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("hmusum")
   end
 
   def test_feeding_latency_under_overload

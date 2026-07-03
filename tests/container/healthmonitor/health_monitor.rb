@@ -6,7 +6,7 @@ require 'json'
 class HealthMonitor < SearchContainerTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("Test that container health status page is served")
     deploy_app(ContainerApp.new.
                container(Container.new.

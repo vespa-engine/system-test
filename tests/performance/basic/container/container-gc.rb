@@ -20,7 +20,7 @@ class ContainerGcTest < PerformanceTest
   end
 
   def setup
-    set_owner('bjorncs')
+    set_owner("glebashnik")
     add_bundle_dir(@bundledir, 'performance', {:mavenargs => '-Dmaven.test.skip=true'})
   end
 

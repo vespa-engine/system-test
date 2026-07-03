@@ -17,7 +17,7 @@ class MassiveHttpClientFeedingTest < IndexedOnlySearchTest
   end
 
   def setup
-    set_owner("bjorncs")
+    set_owner("hmusum")
     set_description("Verifies that a container can handle more feed threads than it has threads in threadpool")
     @valgrind = false
 

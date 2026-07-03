@@ -6,7 +6,7 @@ class GlobalPhaseRanking < IndexedStreamingSearchTest
   DOCS = 5
 
   def setup
-    set_owner("bjorncs")
+    set_owner("hmusum")
     set_description("Test 'global-phase' ranking")
     deploy_app(SearchApp.new.sd(selfdir + "test.sd"),
                :files => {selfdir + "files/multiply_add.onnx" => "files/multiply_add.onnx",

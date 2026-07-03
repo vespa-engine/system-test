@@ -11,7 +11,7 @@ class JDiscFilterAndHandlerBindingsTest < ContainerTest
   HOST_HEADER_WITH_INVALID_PORT = 'localhost:1234'
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("Verify uri binding matching for filter and handler")
   end
 

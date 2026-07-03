@@ -9,7 +9,7 @@ import com.yahoo.jdisc.http.HttpResponse;
 /**
  * Handler that returns observed host header and port
  *
- * @author bjorncs
+ * @author Bjorn Christian Seime
  */
 public class HostHeaderHandler extends AbstractRequestHandler {
 

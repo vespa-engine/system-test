@@ -55,7 +55,7 @@ class GroupingIndexed < IndexedOnlySearchTest
 
 
   def test_advgrouping_use_exact_group_count_when_applicable
-    set_owner('bjorncs')
+    set_owner("johsol")
     deploy_app(SearchApp.new.sd(selfdir+'test2.sd').search_dir(selfdir + 'unique-count'))
     start
 
@@ -78,7 +78,7 @@ class GroupingIndexed < IndexedOnlySearchTest
   end
 
   def test_global_max
-    set_owner('bjorncs')
+    set_owner("johsol")
     deploy_app(singlenode_2cols_realtime(selfdir+'test.sd').threads_per_search(1).search_dir(selfdir + 'global-max'))
     start
     feed_docs
@@ -86,7 +86,7 @@ class GroupingIndexed < IndexedOnlySearchTest
   end
 
   def test_groups_for_default_value
-    set_owner("bjorncs")
+    set_owner("johsol")
     deploy_app(singlenode_2cols_realtime(selfdir+"test.sd").threads_per_search(1))
     start
     feed_and_wait_for_docs('test', 7, :file => "#{selfdir}/default-values-docs.json")
@@ -103,7 +103,7 @@ class GroupingIndexed < IndexedOnlySearchTest
   # Test to make sure that the session ids from the qrs should not conflict in
   # case query times out.
   def test_advgrouping_sessionid_conflict
-    set_owner('bjorncs')
+    set_owner("johsol")
     deploy_app(SearchApp.new.sd(selfdir+'test.sd'))
     start
     feed_docs

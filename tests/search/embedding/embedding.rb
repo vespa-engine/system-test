@@ -9,7 +9,7 @@ require 'search_test'
 class Embedding < SearchTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
   end
 
   def sentencepiece_tokenizer_component

@@ -17,7 +17,7 @@ class BasicContainer < PerformanceTest
   end
 
   def setup
-    set_owner('bjorncs')
+    set_owner("glebashnik")
     # Empty bundle containing searcher that just returns results to mock
     add_bundle_dir(@bundledir, 'performance', {:mavenargs => '-Dmaven.test.skip=true'})
   end

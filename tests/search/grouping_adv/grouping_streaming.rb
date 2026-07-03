@@ -33,7 +33,7 @@ class GroupingStreaming < StreamingSearchTest
   end
 
   def test_global_max
-    set_owner('bjorncs')
+    set_owner("johsol")
     deploy_app(singlenode_streaming_2storage("#{selfdir}/test.sd").search_dir("#{selfdir}/global-max"))
     start
     feed_docs
@@ -41,7 +41,7 @@ class GroupingStreaming < StreamingSearchTest
   end
 
   def test_groups_for_default_value
-    set_owner("bjorncs")
+    set_owner("johsol")
     deploy_app(singlenode_streaming_2storage(selfdir+"test.sd"))
     start
     feed_and_wait_for_docs('test', 7, :file => "#{selfdir}/default-values-docs.json")

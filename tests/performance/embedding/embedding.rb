@@ -6,7 +6,7 @@ require 'environment'
 class EmbeddingPerfTest < PerformanceTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
   end
 
   def test_huggingface

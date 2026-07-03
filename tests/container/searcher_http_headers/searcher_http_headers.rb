@@ -4,7 +4,7 @@ require 'search_container_test'
 class SearcherHttpHeaders < SearchContainerTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("Verify that it is indeed possible to set HTTP headers in a searcher, and verify that Date header is sane.")
     add_bundle_dir(File.expand_path(selfdir), "com.yahoo.container.test.httpheaders.HttpHeaderSettingSearcher")
     output = deploy(selfdir+"app")

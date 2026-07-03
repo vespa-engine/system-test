@@ -18,7 +18,7 @@ class ProgrammaticFeedClientTest < PerformanceTest
   end
 
   def setup
-    set_owner('bjorncs')
+    set_owner("hmusum")
     set_description('Benchmarking of the programmatic feed client vespa-feed-client in Java')
   end
 

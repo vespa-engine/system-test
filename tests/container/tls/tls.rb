@@ -11,7 +11,7 @@ class TlsTest < ContainerTest
   CERT_FILE = 'cert.crt'
 
   def setup
-    set_owner('bjorncs')
+    set_owner("glebashnik")
     set_description('Test TLS/SSL integration in JDisc')
   end
 

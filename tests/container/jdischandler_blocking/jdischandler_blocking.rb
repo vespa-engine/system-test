@@ -4,7 +4,7 @@ require 'search_container_test'
 class JDiscHandlerBlocking < SearchContainerTest
 
   def setup
-    set_owner("bjorncs")
+    set_owner("glebashnik")
     set_description("Deploy a JDisc handler that prevents shutdown, to " +
                     "ensure that 'vespa-stop-services' is able to kill " +
                     "the yjava_daemon process.")

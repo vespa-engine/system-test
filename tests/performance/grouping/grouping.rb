@@ -17,7 +17,7 @@ class GroupingTest < PerformanceTest
 
   def setup
     super
-    set_owner("bjorncs")
+    set_owner("johsol")
     queryfile_name = 'grouping_queries.txt'
     @local_queryfile = dirs.tmpdir + queryfile_name
     @remote_dir = "#{Environment.instance.vespa_home}/tmp/performancetest_grouping/"
@@ -54,12 +54,12 @@ class GroupingTest < PerformanceTest
   end
 
   def test_grouping_count_many_groups
-    set_owner("bjorncs")
+    set_owner("johsol")
     run_grouping_count_many_groups_test(false)
   end
 
   def test_grouping_count_many_groups_paged_attributes
-    set_owner("bjorncs")
+    set_owner("johsol")
     run_grouping_count_many_groups_test(true)
   end
 

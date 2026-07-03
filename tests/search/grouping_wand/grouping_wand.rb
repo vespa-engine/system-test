@@ -8,7 +8,7 @@ class GroupingWand < IndexedStreamingSearchTest
   SAVE_RESULT = false
 
   def setup
-    set_owner("bjorncs")
+    set_owner("johsol")
     deploy_app(SearchApp.new.sd("#{selfdir}/test.sd"))
     start
   end

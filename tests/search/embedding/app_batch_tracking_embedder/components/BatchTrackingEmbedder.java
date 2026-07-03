@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * Custom embedder that tracks batch sizes for testing dynamic batching.
  * Logs batch information to verify that documents are being batched together.
  *
- * @author bjorncs
+ * @author Bjorn Christian Seime
  */
 public class BatchTrackingEmbedder implements Embedder {
 
