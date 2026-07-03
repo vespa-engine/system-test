@@ -55,7 +55,8 @@
         { "id" : "zookeeper-pre-alloc-size", "rules" : [ { "value" : 16384 } ] },
         { "id" : "searchnode-reserved-memory-factor", "rules" : [ { "value" : 0.5 } ] },
         { "id" : "sort-blueprints-by-cost", "rules" : [ { "value" : true } ] },
-        { "id" : "require-explicit-docproc-cluster", "rules" : [ { "value" : true } ] }
+        { "id" : "require-explicit-docproc-cluster", "rules" : [ { "value" : true } ] },
+        { "id" : "fail-when-configuring-indexed-map-of-array", "rules" : [ { "value" : true } ] }
     ]
 
 }
