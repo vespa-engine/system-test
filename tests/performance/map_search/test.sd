@@ -11,7 +11,7 @@ schema test {
       }
       struct-field value {
         indexing: attribute
-        attribute: fast-search
+        #attribute: fast-search
         rank: filter
       }
     }
@@ -28,7 +28,7 @@ schema test {
       }
       struct-field value {
         indexing: attribute
-        attribute: fast-search
+        #attribute: fast-search
         rank: filter
       }
     }
@@ -43,8 +43,9 @@ schema test {
         indexing: attribute
         attribute: fast-search
       }
-      struct-field value { indexing: attribute
-        attribute: fast-search
+      struct-field value {
+        indexing: attribute
+        #attribute: fast-search
         rank: filter
       }
     }
