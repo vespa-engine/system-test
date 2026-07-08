@@ -4,12 +4,8 @@ schema coverage {
     field int_field type int {
       indexing: summary | attribute
     }
-    field string_field type string {
-      indexing: summary | attribute | index
-    }
   }
   document-summary minimal {
     summary int_field {}
-    summary string_field {}
   }
 }

@@ -7,21 +7,16 @@ class Coverage < IndexedOnlySearchTest
     set_owner("boeker")
     add_ignorable_messages([/group \d has reduced coverage/])
     @num_documents = 10_000
-    @coverage_query = {"query" => "sddocname:coverage"}
-  end
-
-  # Half of the documents contain "foo", the other "bar"
-  def word_data
-    'echo "50 foo 50 bar"'
+    @simple_query = {"query" => "sddocname:coverage"}
   end
 
   def doc_template
-    '{ "put": "id:coverage:coverage::$seq()", "fields": { "int_field": $seq(), "string_field": "$words(1)" } }'
+    '{ "put": "id:coverage:coverage::$seq()", "fields": { "int_field": $seq() } }'
   end
 
   def feed_and_wait
-    feed_stream(DataGenerator.new.feed_command(template: doc_template, count: @num_documents, data: word_data), {})
-    wait_for_hitcount("query=sddocname:coverage", @num_documents)
+    feed_stream(DataGenerator.new.feed_command(template: doc_template, count: @num_documents), {})
+    wait_for_hitcount(@simple_query, @num_documents)
   end
 
   def feed_and_wait_and_stop
@@ -58,8 +53,8 @@ class Coverage < IndexedOnlySearchTest
 
     feed_and_wait_and_stop
 
-    wait_for_hitcount_from_group(@coverage_query, nil, @num_documents)
-    wait_for_coverage_from_group(@coverage_query, nil, 100)
+    wait_for_hitcount_from_group(@simple_query, nil, @num_documents)
+    wait_for_coverage_from_group(@simple_query, nil, 100)
   end
 
   def test_coverage_when_stopping_node_with_one_group_without_redundancy
@@ -70,7 +65,7 @@ class Coverage < IndexedOnlySearchTest
     feed_and_wait_and_stop
 
     # No need to wait for hitcount. Will be around @num_documents / 2 and not change since there is no redundancy.
-    wait_for_coverage_from_group(@coverage_query, nil, 50)
+    wait_for_coverage_from_group(@simple_query, nil, 50)
   end
 
   def test_coverage_when_stopping_node_with_two_groups_without_redundancy
@@ -80,10 +75,10 @@ class Coverage < IndexedOnlySearchTest
 
     feed_and_wait_and_stop
 
-    wait_for_hitcount_from_group(@coverage_query, 0, @num_documents)
-    wait_for_hitcount_from_group(@coverage_query, 1, @num_documents)
-    wait_for_coverage_from_group(@coverage_query, 0, 100)
-    wait_for_coverage_from_group(@coverage_query, 1, 100)
+    wait_for_hitcount_from_group(@simple_query, 0, @num_documents)
+    wait_for_hitcount_from_group(@simple_query, 1, @num_documents)
+    wait_for_coverage_from_group(@simple_query, 0, 100)
+    wait_for_coverage_from_group(@simple_query, 1, 100)
   end
 
   def test_coverage_when_stopping_node_with_two_groups_with_redundancy
@@ -93,10 +88,10 @@ class Coverage < IndexedOnlySearchTest
 
     feed_and_wait_and_stop
 
-    wait_for_hitcount_from_group(@coverage_query, 0, @num_documents)
-    wait_for_hitcount_from_group(@coverage_query, 1, @num_documents)
-    wait_for_coverage_from_group(@coverage_query, 0, 100)
-    wait_for_coverage_from_group(@coverage_query, 1, 100)
+    wait_for_hitcount_from_group(@simple_query, 0, @num_documents)
+    wait_for_hitcount_from_group(@simple_query, 1, @num_documents)
+    wait_for_coverage_from_group(@simple_query, 0, 100)
+    wait_for_coverage_from_group(@simple_query, 1, 100)
   end
 
   def wait_for_hitcount_from_group(query, wanted_group, wanted_hitcount, timeout_in=60, qrserver_id=0, params={})
