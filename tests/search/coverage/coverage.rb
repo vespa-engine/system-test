@@ -162,34 +162,4 @@ class Coverage < IndexedOnlySearchTest
     fail("Timeout after #{trynum} tries: Expected #{wanted_coverage} coverage from group #{wanted_group}, got #{coverage} coverage from group #{group}")
   end
 
-  #def get_container
-  #  vespa.qrserver["0"] or vespa.container.values.first
-  #end
-
-  #def get_container_metrics()
-  #  JSONMetrics.new(vespa.container.values.first.get_state_v1_metrics())
-  #end
-
-  #def print_coverage_metrics_diff(metrics_old, metrics_new)
-  #  documents_covered_old = metrics_old.get_all("documents_covered", {"chain"=>"vespa"})["values"]["count"]
-  #  documents_total_old = metrics_old.get_all("documents_total", {"chain"=>"vespa"})["values"]["count"]
-
-  #  documents_covered_new = metrics_new.get_all("documents_covered", {"chain"=>"vespa"})["values"]["count"]
-  #  documents_total_new = metrics_new.get_all("documents_total", {"chain"=>"vespa"})["values"]["count"]
-
-  #  puts documents_covered_old
-  #  puts documents_covered_new
-
-  #  documents_covered = documents_covered_new - documents_covered_old
-  #  documents_total = documents_total_new - documents_total_old
-  #  puts "documents_covered: #{documents_covered}, documents_total: #{documents_total}, ratio: #{documents_covered.to_f/documents_total}"
-  #end
-
-  #def print_coverage_metrics(metrics)
-  #  documents_covered = metrics.get_all("documents_covered", {"chain"=>"vespa"})["values"]["count"]
-  #  documents_total = metrics.get_all("documents_total", {"chain"=>"vespa"})["values"]["count"]
-
-  #  puts "documents_covered: #{documents_covered}, documents_total: #{documents_total}, ratio: #{documents_covered.to_f/documents_total}"
-  #end
-
 end
