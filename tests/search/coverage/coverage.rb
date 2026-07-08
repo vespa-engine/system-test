@@ -3,15 +3,40 @@ require 'indexed_only_search_test'
 
 class Coverage < IndexedOnlySearchTest
 
-  NUM_DOCUMENTS = 100_000
-  NUM_GROUPS = 2
-  NUM_NODES_PER_GROUP = 2
-
   def setup
     set_owner("boeker")
+    @num_documents = 10_000
+    @coverage_query = {"query" => "sddocname:coverage"}
   end
 
-  def create_app(schema_file, num_groups, num_nodes_per_group)
+  # Half of the documents contain "foo", the other "bar"
+  def word_data
+    'echo "50 foo 50 bar"'
+  end
+
+  def doc_template
+    '{ "put": "id:coverage:coverage::$seq()", "fields": { "int_field": $seq(), "string_field": "$words(1)" } }'
+  end
+
+  def feed_and_wait
+    feed_stream(DataGenerator.new.feed_command(template: doc_template, count: @num_documents, data: word_data), {})
+    wait_for_hitcount("query=sddocname:coverage", @num_documents)
+  end
+
+  def feed_and_wait_and_stop
+    feed_and_wait
+    vespa.stop_content_node("mycluster", 0, 120, "d")
+
+    #search_cluster = vespa.search.values.first
+    ##assert_equal(@num_groups * @num_nodes_per_group, search_cluster.searchnode.length)
+    ## Get node from that cluster
+    #first_searchnode = search_cluster.searchnode.values.first
+    ## Stop it
+    #puts "Stopping searchnode #{first_searchnode}"
+    #first_searchnode.stop
+  end
+
+  def create_app(schema_file, num_groups, num_nodes_per_group, redundancy, ready_copies)
     SearchApp.new.sd(selfdir + "coverage.sd")
 
     if num_groups > 1
@@ -19,6 +44,7 @@ class Coverage < IndexedOnlySearchTest
     else
       distribution = "*"
     end
+
     topgroup = NodeGroup.new(0, "mytopgroup").distribution(distribution)
     distkey = 0
     for g in 1..num_groups do
@@ -31,81 +57,148 @@ class Coverage < IndexedOnlySearchTest
     end
 
     SearchApp.new
-             .search_dir(selfdir + "search")
              .cluster(SearchCluster.new("mycluster")
                                        .sd(schema_file)
-                                       .redundancy(num_groups)
-                                       .ready_copies(num_groups)
+                                       .redundancy(redundancy)
+                                       .ready_copies(ready_copies)
                                        .min_active_docs_coverage(90.0)
                                        .group(topgroup))
   end
 
-  def test_coverage_when_stopping_node
-    set_description("Check reported coverage when a node in a group is stopped")
-    deploy_app(create_app(selfdir + "coverage.sd", NUM_GROUPS, NUM_NODES_PER_GROUP))
-
-    @container = get_container
-    compile_document_generator
+  def test_coverage_when_stopping_node_with_one_group_with_redundancy
+    set_description("Check reported coverage when a node in a group is stopped with one groups and redundant documents on the other node")
+    deploy_app(create_app(selfdir + "coverage.sd", 1, 2, 2, 1))
     start
 
-    feed_and_wait("coverage", NUM_DOCUMENTS, 2048)
+    feed_and_wait_and_stop
 
-    search_and_print
-
-    search_cluster = vespa.search.values.first
-    assert_equal(NUM_GROUPS * NUM_NODES_PER_GROUP, search_cluster.searchnode.length)
-
-    first_searchnode = search_cluster.searchnode.values.first
-    puts "Stopping searchnode #{first_searchnode}"
-    first_searchnode.stop
-
-    300.times do
-      search_and_print
-      puts "Searchnode was stopped"
-      sleep 0.2
-    end
-
-    puts "Starting searchnode #{first_searchnode}"
-    first_searchnode.start
-
-    300.times do
-      search_and_print
-      puts "Searchnode was started again"
-      sleep 0.2
-    end
+    wait_for_hitcount_from_group(@coverage_query, 0, @num_documents)
+    verify_coverage(@coverage_query, 0, 100)
   end
 
-  def search_and_print
-    query = {
-      "yql" => "select * from sources * where ({targetHits:100}nearestNeighbor(tensor_field, q_v))",
-      "input.query(q_v)" => "#{[0.0] * 2048}",
-      "summary" => "minimal",
-      "hits" => "1"
-    }
-    result = search(query)
+  def test_coverage_when_stopping_node_with_one_group_without_redundancy
+    set_description("Check reported coverage when a node in a group is stopped with one groups and no redundant documents on the other node")
+    deploy_app(create_app(selfdir + "coverage.sd", 1, 2, 1, 1))
+    start
+
+    feed_and_wait_and_stop
+
+    wait_for_hitcount_from_group(@coverage_query, 0, @num_documents)
+    verify_coverage(@coverage_query, 0, 50)
+  end
+
+  def test_coverage_when_stopping_node_with_two_groups_without_redundancy
+    set_description("Check reported coverage when a node in a group is stopped with two groups in total and no inner-group redundancy")
+    deploy_app(create_app(selfdir + "coverage.sd", 2, 2, 2, 2))
+    start
+
+    feed_and_wait_and_stop
+
+    wait_for_hitcount_from_group(@coverage_query, 0, @num_documents)
+    wait_for_hitcount_from_group(@coverage_query, 1, @num_documents)
+    verify_coverage(@coverage_query, 0, 100)
+    verify_coverage(@coverage_query, 1, 100)
+  end
+
+  def test_coverage_when_stopping_node_with_two_groups_with_redundancy
+    set_description("Check reported coverage when a node in a group is stopped with two groups in total and inner-group redundancy")
+    deploy_app(create_app(selfdir + "coverage.sd", 2, 2, 4, 2))
+    start
+
+    feed_and_wait_and_stop
+
+    wait_for_hitcount_from_group(@coverage_query, 0, @num_documents)
+    wait_for_hitcount_from_group(@coverage_query, 1, @num_documents)
+    verify_coverage(@coverage_query, 0, 100)
+    verify_coverage(@coverage_query, 1, 100)
+  end
+
+  def test_foo
+    set_description("Check reported coverage when a node in a group is stopped with two groups in total and no inner-group redundancy")
+    deploy_app(create_app(selfdir + "coverage.sd", 2, 2, 2, 2))
+    start
+
+    #vespa.stop_content_node("mycluster", 0)
+  end
+
+  def wait_for_hitcount_from_group(query, wanted_group, wanted_hitcount, timeout_in=60, qrserver_id=0, params={})
+    query = query.merge({"hits" => "1", "model.searchGroup" => "#{wanted_group}"})
+
+    hitcount = -1
+    timeout = timeout_in
+    timeout = calculateQueryTimeout(timeout)
+
+    puts "Waiting for #{wanted_hitcount} hits, timeout: #{timeout}"
+    trynum = 0
+    start = Time.now.to_i
+
+    # check that the hitcount is equal to the wanted hitcount
+    while Time.now.to_i < start + timeout
+      begin
+        trynum += 1
+        result = search_with_timeout(timeout_in, query, qrserver_id, {}, false, params)
+        hitcount = result.hitcount
+        group = result.json['root']['fields']['searchGroup']
+        if hitcount == wanted_hitcount && group == wanted_group
+          puts "Success on try #{trynum}: Got #{wanted_hitcount} hits from group #{wanted_group}"
+          return true
+        else
+          puts "Failure on try #{trynum}: Expected #{wanted_hitcount} hits from group #{wanted_group}, got #{hitcount} hits from group #{group}"
+        end
+      rescue StandardError => e
+        puts "error #{e}: #{e.backtrace}"
+      rescue Interrupt
+        puts "low-level timeout, retry"
+      end
+      sleep 1
+    end
+    fail("Timeout after #{trynum} tries: Expected #{wanted_hitcount} hits from group #{wanted_group}, got #{hitcount} hits from group #{group}")
+  end
+
+  def verify_coverage(query, wanted_group, expected_coverage)
+    puts "Checking for #{expected_coverage} coverage from group #{wanted_group}"
+
+    query = query.merge({"hits" => "1", "model.searchGroup" => "#{wanted_group}"})
+    puts query
+    result = search_with_timeout(60, query)
+    group = result.json['root']['fields']['searchGroup']
+    coverage = result.json['root']['coverage']['coverage']
+
     puts JSON.pretty_generate(result.json)
+
+    puts "Got #{coverage} coverage from group #{group}"
+    assert_equal(wanted_group, group)
+    assert_equal(expected_coverage, coverage)
   end
 
-  def wait_for_documents(name, num_documents)
-    puts "Waiting for #{num_documents} hits"
-    wait_for_atleast_hitcount("query=sddocname:#{name}", num_documents)
-    puts "Waited for #{num_documents} hits"
-  end
+  #def get_container
+  #  vespa.qrserver["0"] or vespa.container.values.first
+  #end
 
-  def feed_and_wait(name, num_documents, num_dimensions)
-    puts "Feeding documents"
-    @container.execute("#{@tmp_bin_dir}/docs #{name} #{num_documents} #{num_dimensions} | vespa-feed-perf")
-    wait_for_documents(name, num_documents)
-  end
+  #def get_container_metrics()
+  #  JSONMetrics.new(vespa.container.values.first.get_state_v1_metrics())
+  #end
 
-  def compile_document_generator
-    @tmp_bin_dir = @container.create_tmp_bin_dir
-    @container.execute("g++ -g -O3 -o #{@tmp_bin_dir}/docs #{selfdir}docs.cpp")
-  end
+  #def print_coverage_metrics_diff(metrics_old, metrics_new)
+  #  documents_covered_old = metrics_old.get_all("documents_covered", {"chain"=>"vespa"})["values"]["count"]
+  #  documents_total_old = metrics_old.get_all("documents_total", {"chain"=>"vespa"})["values"]["count"]
 
-  def get_container
-    vespa.qrserver["0"] or vespa.container.values.first
-  end
+  #  documents_covered_new = metrics_new.get_all("documents_covered", {"chain"=>"vespa"})["values"]["count"]
+  #  documents_total_new = metrics_new.get_all("documents_total", {"chain"=>"vespa"})["values"]["count"]
 
+  #  puts documents_covered_old
+  #  puts documents_covered_new
+
+  #  documents_covered = documents_covered_new - documents_covered_old
+  #  documents_total = documents_total_new - documents_total_old
+  #  puts "documents_covered: #{documents_covered}, documents_total: #{documents_total}, ratio: #{documents_covered.to_f/documents_total}"
+  #end
+
+  #def print_coverage_metrics(metrics)
+  #  documents_covered = metrics.get_all("documents_covered", {"chain"=>"vespa"})["values"]["count"]
+  #  documents_total = metrics.get_all("documents_total", {"chain"=>"vespa"})["values"]["count"]
+
+  #  puts "documents_covered: #{documents_covered}, documents_total: #{documents_total}, ratio: #{documents_covered.to_f/documents_total}"
+  #end
 
 end
