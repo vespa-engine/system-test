@@ -92,6 +92,7 @@ class Content
     def needs_cluster_tuning_tag?
       @distribution_type != nil ||
       @search.get_dispatch_policy != nil ||
+      @search.get_min_active_docs_coverage != nil ||
       @search.get_min_node_ratio_per_group != nil ||
       @search.get_resource_limits != nil
     end
@@ -106,9 +107,14 @@ class Content
           if (@distribution_type != nil)
             tuningTag.tag("distribution", :type => @distribution_type).close_tag
           end
-          if (@search.get_dispatch_policy)
+          if @search.get_dispatch_policy || @search.get_min_active_docs_coverage
             dispatch = tuningTag.tag("dispatch")
-            dispatch.tag("dispatch-policy").content(@search.get_dispatch_policy).close_tag
+            if @search.get_dispatch_policy
+              dispatch.tag("dispatch-policy").content(@search.get_dispatch_policy).close_tag
+            end
+            if @search.get_min_active_docs_coverage
+              dispatch.tag("min-active-docs-coverage").content(@search.get_min_active_docs_coverage).close_tag
+            end
             dispatch.close_tag
           end
           if @search.get_min_node_ratio_per_group != nil
