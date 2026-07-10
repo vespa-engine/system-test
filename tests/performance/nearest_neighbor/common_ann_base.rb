@@ -17,6 +17,7 @@ class CommonAnnBaseTest < PerformanceTest
   APPROXIMATE_THRESHOLD = "approximate_threshold"
   FILTER_FIRST_THRESHOLD = "filter_first_threshold"
   FILTER_FIRST_EXPLORATION = "filter_first_exploration"
+  RESILIENT_FILTER_FIRST = "resilient_filter_first"
   SLACK = "slack"
   HNSW = "hnsw"
   BRUTE_FORCE = "brute_force"
@@ -81,6 +82,7 @@ class CommonAnnBaseTest < PerformanceTest
     approximate_threshold = params[:approximate_threshold] || 0.05
     filter_first_threshold = params[:filter_first_threshold] || 0.0
     filter_first_exploration = params[:filter_first_exploration] || 0.3
+    resilient_filter_first = params[:resilient_filter_first] || false
     slack = params[:slack] || 0.0
     doc_type = params[:doc_type] || "test"
     doc_tensor = params[:doc_tensor] || "vec_m16"
@@ -88,7 +90,7 @@ class CommonAnnBaseTest < PerformanceTest
     annotation = params[:annotation] || "none"
     lazy_filter = params[:lazy_filter] || false
 
-    puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, filter_percent=#{filter_percent}, approximate_threshold=#{approximate_threshold}, filter_first_threshold=#{filter_first_threshold}, filter_first_exploration=#{filter_first_exploration}, slack=#{slack}, doc_type=#{doc_type}, doc_tensor=#{doc_tensor}, query_tensor=#{query_tensor}"
+    puts "calc_recall_for_queries: target_hits=#{target_hits}, explore_hits=#{explore_hits}, filter_percent=#{filter_percent}, approximate_threshold=#{approximate_threshold}, filter_first_threshold=#{filter_first_threshold}, filter_first_exploration=#{filter_first_exploration}, resilient_filter_first=#{resilient_filter_first}, slack=#{slack}, doc_type=#{doc_type}, doc_tensor=#{doc_tensor}, query_tensor=#{query_tensor}"
     result = RecallResult.new(target_hits)
 
     query_data = []
@@ -125,7 +127,7 @@ class CommonAnnBaseTest < PerformanceTest
     threads = []
     for i in 0...num_threads
       threads << Thread.new(batches[i]) do |batch|
-        calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, batch, result, doc_type, doc_tensor, query_tensor)
+        calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, resilient_filter_first, slack, lazy_filter, batch, result, doc_type, doc_tensor, query_tensor)
       end
     end
     threads.each(&:join)
@@ -143,15 +145,16 @@ class CommonAnnBaseTest < PerformanceTest
                   parameter_filler(APPROXIMATE_THRESHOLD, approximate_threshold),
                   parameter_filler(FILTER_FIRST_THRESHOLD, filter_first_threshold),
                   parameter_filler(FILTER_FIRST_EXPLORATION, filter_first_exploration),
+                  parameter_filler(RESILIENT_FILTER_FIRST, resilient_filter_first),
                   parameter_filler(SLACK, slack),
                   parameter_filler(ANNOTATION, annotation),
                   metric_filler(RECALL_AVG, result.avg),
                   metric_filler(RECALL_MEDIAN, result.median)])
   end
 
-  def calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, batch, result, doc_type, doc_tensor, query_tensor)
+  def calc_recall_for_query_batch(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, resilient_filter_first, slack, lazy_filter, batch, result, doc_type, doc_tensor, query_tensor)
     batch.each do |datum|
-      raw_recall = calc_recall_in_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
+      raw_recall = calc_recall_in_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, resilient_filter_first, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
       result.add(raw_recall)
     end
   end
@@ -162,8 +165,8 @@ class CommonAnnBaseTest < PerformanceTest
     proxy_node.copy_remote_file_to_local_file(proxy_file, local_file)
   end
 
-  def calc_recall_in_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
-    query = get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
+  def calc_recall_in_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, resilient_filter_first, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
+    query = get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, resilient_filter_first, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
     result = search_with_timeout(20, query)
     assert_hitcount(result, 1)
     hit = result.hit[0]
@@ -175,10 +178,10 @@ class CommonAnnBaseTest < PerformanceTest
     recall.to_i
   end
 
-  def get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
+  def get_query_for_recall_searcher(target_hits, explore_hits, filter_percent, radius, approximate_threshold, filter_first_threshold, filter_first_exploration, resilient_filter_first, slack, lazy_filter, datum, doc_type, doc_tensor, query_tensor)
     "query=sddocname:#{doc_type}&summary=minimal&ranking.features.query(#{query_tensor})=#{datum.vector}" +
     "&nnr.enable=true&nnr.docTensor=#{doc_tensor}&nnr.targetHits=#{target_hits}&nnr.exploreHits=#{explore_hits}&nnr.filterPercent=#{filter_percent}" +
-    "&nnr.approximateThreshold=#{approximate_threshold}&nnr.filterFirstThreshold=#{filter_first_threshold}&nnr.filterFirstExploration=#{filter_first_exploration}" +
+    "&nnr.approximateThreshold=#{approximate_threshold}&nnr.filterFirstThreshold=#{filter_first_threshold}&nnr.filterFirstExploration=#{filter_first_exploration}&nnr.resilientFilterFirst=#{resilient_filter_first}" +
     "&nnr.slack=#{slack}&nnr.queryTensor=#{query_tensor}&nnr.radius=#{radius}&nnr.latitude=#{datum.latitude}&nnr.longitude=#{datum.longitude}&nnr.lazyFilter=#{lazy_filter}"
   end
 
