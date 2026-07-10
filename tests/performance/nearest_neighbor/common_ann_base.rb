@@ -134,7 +134,7 @@ class CommonAnnBaseTest < PerformanceTest
     puts "recall: avg=#{result.avg}, median=#{result.median}, min=#{result.min}, max=#{result.max}, size=#{result.size}, samples_sorted=[#{result.samples.sort.join(',')}], samples=[#{result.samples.join(',')}]"
     radius_str = (radius >= 0.0) ? "-r#{radius}" : ""
     lazy_str = lazy_filter ? "-lazy" : ""
-    label = params[:label] || "hnsw-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}#{radius_str}#{lazy_str}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-sl#{slack}"
+    label = params[:label] || "hnsw-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}#{radius_str}#{lazy_str}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-rff#{resilient_filter_first}-sl#{slack}"
     write_report([parameter_filler(TYPE, "recall"),
                   parameter_filler(LABEL, label),
                   parameter_filler(TARGET_HITS, target_hits),
