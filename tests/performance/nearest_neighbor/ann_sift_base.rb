@@ -70,6 +70,38 @@ class AnnSiftBase < CommonSiftGistBase
     feed_and_benchmark(num_updates, "1M-updates", {:start_with_docid => num_documents / 2, :operation => "update", :mixed_tensor => mixed_tensor})
   end
 
+  def run_sift_filter_first_test(sd_dir, mixed_tensor = false)
+    deploy_app(create_app(sd_dir, 0.3, 1))
+    start
+
+    num_queries_for_recall = 100
+    num_documents = 1_000_000
+    filter_values = [1, 20, 50, 70, 80, 85, 90, 95, 96, 97, 98, 99]
+
+    compile_generators
+    generate_vectors_for_recall(num_queries_for_recall)
+    feed_and_benchmark(num_documents, "1M-docs", {:filter_values => filter_values, :mixed_tensor => mixed_tensor})
+
+    # Warm-up
+    query_and_benchmark(BRUTE_FORCE, 10, 0)
+
+    filter_values.each do |filter_percent|
+      # Standard HNSW
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.00})
+      # Now with filter-first heuristic enabled
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 0.3})
+      # Now with resilient filter-first heuristic enabled
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 1.0, :resilient_filter_first => true})
+
+      # Recall for standard HNSW
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.00})
+      # Recall for filter-first heuristic
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 0.3})
+      # Recall for resilient filter-first heuristic
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 1.0, :resilient_filter_first => true})
+    end
+  end
+
   def run_sift_geolocation_test(sd_dir)
     deploy_app(create_app(sd_dir, 0.3, 1))
     start
