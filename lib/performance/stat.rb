@@ -255,6 +255,13 @@ module Perf
       end
 
       def entry_delta(this, that, path = [])
+        # One side missing (not both) happens when array_delta zips two arrays of
+        # different lengths (Array#zip pads the shorter side with nil) -- e.g.
+        # /proc/stat's 'intr'/'softirq' per-IRQ arrays, whose length can drift
+        # between two snapshots as the kernel adds/removes IRQ vectors at runtime.
+        # Skip such entries instead of raising, mirroring map_delta's existing
+        # skip of a hash key missing on one side.
+        return nil if this.nil? || that.nil?
         if this.class != that.class
           path_str = path.empty? ? "(root)" : path.join(" -> ")
           raise "Class mismatch when subtracting metrics at #{path_str}: " \
@@ -281,7 +288,7 @@ module Perf
       def array_delta(this, that, path = [])
         this.zip(that).each_with_index.map do |(a, b), i|
           entry_delta(a, b, path + ["[#{i}]"])
-        end
+        end.compact # drop entries entry_delta skipped (nil) due to length drift
       end
 
       def subtract(other, params={})
