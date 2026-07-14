@@ -76,7 +76,7 @@ class AnnSiftBase < CommonSiftGistBase
 
     num_queries_for_recall = 100
     num_documents = 1_000_000
-    filter_values = [1, 70, 90, 95, 99]
+    filter_values = [1, 70, 90, 95, 97, 99]
 
     compile_generators
     generate_vectors_for_recall(num_queries_for_recall)
@@ -85,6 +85,7 @@ class AnnSiftBase < CommonSiftGistBase
     # Warm-up
     query_and_benchmark(BRUTE_FORCE, 10, 0)
 
+    run_target_hits_10_filter_first_tests
     run_target_hits_100_filter_first_tests
 
     filter_values.each do |filter_percent|
