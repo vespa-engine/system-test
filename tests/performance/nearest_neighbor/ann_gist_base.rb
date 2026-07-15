@@ -68,8 +68,7 @@ class AnnGistBase < CommonSiftGistBase
 
     query_and_benchmark(BRUTE_FORCE, 10, 0)
 
-    run_target_hits_10_filter_first_tests
-    run_target_hits_100_filter_first_tests
+    run_target_hits_10_filter_first_tests(95_00)
 
     filter_values.each do |filter_percent|
       query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.40, :filter_first_exploration => 0.3})

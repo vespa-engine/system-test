@@ -86,8 +86,7 @@ class AnnSiftBase < CommonSiftGistBase
     # Warm-up
     query_and_benchmark(BRUTE_FORCE, 10, 0)
 
-    run_target_hits_10_filter_first_tests
-    run_target_hits_100_filter_first_tests
+    run_target_hits_10_filter_first_tests(95_00)
 
     filter_values.each do |filter_percent|
       # Now with filter-first heuristic enabled

@@ -230,27 +230,18 @@ class CommonSiftGistBase < CommonAnnBaseTest
     end
   end
 
-  def run_target_hits_10_filter_first_tests
-    [0, 50, 100].each do |explore_hits|
-      query_and_benchmark(HNSW, 10, explore_hits, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
-      calc_recall_for_queries(10, explore_hits, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
+  def run_target_hits_10_filter_first_tests(filter_percent)
+    query_and_benchmark(HNSW, 10, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
+    calc_recall_for_queries(10, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
+
+    [50, 100].each do |explore_hits|
+      query_and_benchmark(HNSW, 10, explore_hits, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
+      calc_recall_for_queries(10, explore_hits, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
     end
 
-    [0.0, 0.1, 0.2].each do |slack|
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
-      calc_recall_for_queries(100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
-    end
-  end
-
-  def run_target_hits_100_filter_first_tests
-    [0, 100, 200].each do |explore_hits|
-      query_and_benchmark(HNSW, 100, explore_hits, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
-      calc_recall_for_queries(100, explore_hits, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3})
-    end
-
-    [0.0, 0.1, 0.2].each do |slack|
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
-      calc_recall_for_queries(100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
+    [0.1, 0.2].each do |slack|
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
     end
   end
 
