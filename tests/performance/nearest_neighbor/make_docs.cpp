@@ -40,10 +40,10 @@ IntVector
 gen_filter_values(size_t docid, const IntVector &filters)
 {
     IntVector result;
-    for (auto filter_percent : filters) {
-        if ((docid % 100) >= filter_percent) {
-            // This document is NOT filtered away for this filter percent.
-            result.push_back(filter_percent);
+    for (auto filter_permille : filters) {
+        if ((docid % 1000) >= filter_permille) {
+            // This document is NOT filtered away for this filter permille.
+            result.push_back(filter_permille);
         }
     }
     return result;

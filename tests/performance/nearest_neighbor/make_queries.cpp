@@ -70,12 +70,12 @@ print_nns(std::ostream& os, bool approximate, int target_hits, int explore_hits,
 }
 
 void
-print_query(std::ostream& os, bool approximate, int target_hits, int explore_hits, int filter_percent, float radius, const Interval &latitude, const Interval &longitude, const std::string& doc_tensor, const FloatVector& vector)
+print_query(std::ostream& os, bool approximate, int target_hits, int explore_hits, int filter_permille, float radius, const Interval &latitude, const Interval &longitude, const std::string& doc_tensor, const FloatVector& vector)
 {
     os << "/search/?yql=select%20*%20from%20sources%20*%20where%20";
     print_nns(os, approximate, target_hits, explore_hits, doc_tensor);
-    if (filter_percent > 0) {
-        os << "%20and%20filter" << eq << filter_percent;
+    if (filter_permille > 0) {
+        os << "%20and%20filter" << eq << filter_permille;
     }
     if (radius > 0.0f && latitude.non_empty() && longitude.non_empty()) {
         os << "%20and%20geoLocation" << l_par << "latlng," << latitude.random() << "," << longitude.random() << "," << quot << radius << "+km" << quot << r_par;
@@ -122,7 +122,7 @@ print_only_locations(int argc, char **argv) {
  *   tar -xf gist.tar.gz
  *
  * To run:
- *   ./make_queries <vector-file> <num-dimensions> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-percent> <radius> <latitude-interval> <longitude-interval>
+ *   ./make_queries <vector-file> <num-dimensions> <num-queries> <doc-tensor> <approximate> <target-hits> <explore-hits> <filter-permille> <radius> <latitude-interval> <longitude-interval>
  */ 
 int
 main(int argc, char **argv)
@@ -135,7 +135,7 @@ main(int argc, char **argv)
     bool approximate = true;
     int target_hits = 100;
     int explore_hits = 0;
-    int filter_percent = 0;
+    int filter_permille = 0;
     float radius = 0;
     Interval latitude;
     Interval longitude;
@@ -167,7 +167,7 @@ main(int argc, char **argv)
         explore_hits = std::stoi(argv[7]);
     }
     if (argc > 8) {
-        filter_percent = std::stoi(argv[8]);
+        filter_permille = std::stoi(argv[8]);
     }
     if (argc > 9) {
         radius = std::stof(argv[9]);
@@ -194,7 +194,7 @@ main(int argc, char **argv)
             print_vector(std::cout, vector);
             std::cout << std::endl;
         } else {
-            print_query(std::cout, approximate, target_hits, explore_hits, filter_percent, radius, latitude, longitude, doc_tensor, vector);
+            print_query(std::cout, approximate, target_hits, explore_hits, filter_permille, radius, latitude, longitude, doc_tensor, vector);
         }
     }
     is.close();

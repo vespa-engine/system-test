@@ -62,7 +62,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
             String label = props.getString("nnr.label", "nns");
             int targetHits = props.getInteger("nnr.targetHits", 10);
             int exploreHits = props.getInteger("nnr.exploreHits", 0);
-            int filterPercent = props.getInteger("nnr.filterPercent", 0);
+            int filterPermille = props.getInteger("nnr.filterPermille", 0);
             double radius = Double.parseDouble(props.getString("nnr.radius", "-1.0"));
             double latitude = Double.parseDouble(props.getString("nnr.latitude", "0.0"));
             double longitude = Double.parseDouble(props.getString("nnr.longitude", "0.0"));
@@ -77,10 +77,10 @@ public class NearestNeighborRecallSearcher extends Searcher {
                     ", queryTensor=" + queryTensor + ", targetHits=" + targetHits +
                     ", exploreHits=" + exploreHits + ", idField=" + idField);
             var exactHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, resilientFilterFirst, slack, lazyFilter, false, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, filterPermille, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, resilientFilterFirst, slack, lazyFilter, false, idField);
 
             var approxHits = executeNearestNeighborQuery(query, execution,
-                    docTensor, queryTensor, label, targetHits, exploreHits, filterPercent, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, resilientFilterFirst, slack, lazyFilter, true, idField);
+                    docTensor, queryTensor, label, targetHits, exploreHits, filterPermille, radius, latitude, longitude, approximateThreshold, filterFirstThreshold, filterFirstExploration, resilientFilterFirst, slack, lazyFilter, true, idField);
 
             try {
                 int recall = calcRecall(exactHits, approxHits, targetHits);
@@ -108,7 +108,7 @@ public class NearestNeighborRecallSearcher extends Searcher {
 
     private List<SimpleHit> executeNearestNeighborQuery(Query parentQuery, Execution parentExecution,
                                                         String docTensor, String queryTensor, String label,
-                                                        int targetHits, int exploreHits, int filterPercent,
+                                                        int targetHits, int exploreHits, int filterPermille,
                                                         double radius, double latitude, double longitude,
                                                         double approximateThreshold, double filterFirstThreshold, double filterFirstExploration,
                                                         boolean resilientFilterFirst,
@@ -120,8 +120,8 @@ public class NearestNeighborRecallSearcher extends Searcher {
         nni.setAllowApproximate(approximate);
 
         Item root = nni;
-        if (filterPercent > 0) {
-            IntItem intItem = new IntItem(filterPercent, "filter");
+        if (filterPermille > 0) {
+            IntItem intItem = new IntItem(filterPermille, "filter");
 
             AndItem andItem = new AndItem();
             andItem.addItem(nni);

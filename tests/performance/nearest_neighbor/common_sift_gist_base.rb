@@ -27,10 +27,10 @@ class CommonSiftGistBase < CommonAnnBaseTest
     return app
   end
 
-  def get_type_string(filter_percent, threads_per_search)
+  def get_type_string(filter_permille, threads_per_search)
     if threads_per_search > 0
       return "query_threads"
-    elsif filter_percent == 0
+    elsif filter_permille == 0
       return "query"
     else
       return "query_filter"
@@ -119,14 +119,14 @@ class CommonSiftGistBase < CommonAnnBaseTest
     print_nni_stats(doc_type, doc_tensor)
   end
 
-  def get_filename(doc_tensor, approximate, target_hits, explore_hits, filter_percent, radius)
-    filter_str = (filter_percent == 0) ? "" : ".f-#{filter_percent}"
+  def get_filename(doc_tensor, approximate, target_hits, explore_hits, filter_permille, radius)
+    filter_str = (filter_permille == 0) ? "" : ".f-#{filter_permille}"
     radius_str = (radius == nil) ? "" : "-r#{radius}"
     "queries.#{doc_tensor}.ap-#{approximate}.th-#{target_hits}.eh-#{explore_hits}#{filter_str}#{radius_str}.txt"
   end
 
   def query_and_benchmark(algorithm, target_hits, explore_hits, params = {})
-    filter_percent = params[:filter_percent] || 0
+    filter_permille = params[:filter_permille] || 0
     radius = params[:radius] || -1.0
     latitude_lower = params[:latitude_lower] || 0.0
     latitude_upper = params[:latitude_upper] || -1.0
@@ -144,7 +144,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     lazy_filter = params[:lazy_filter] || false
 
     approximate = algorithm == HNSW ? "true" : "false"
-    query_file = dirs.tmpdir + get_filename(doc_tensor, approximate, target_hits, explore_hits, filter_percent, radius)
+    query_file = dirs.tmpdir + get_filename(doc_tensor, approximate, target_hits, explore_hits, filter_permille, radius)
     @container.execute("#{@container_tmp_bin_dir}/make_queries #{@query_fvecs_container} "\
                                                               "#{@dimensions} "\
                                                               "#{@num_queries_for_benchmark} "\
@@ -152,7 +152,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
                                                               "#{approximate} "\
                                                               "#{target_hits} "\
                                                               "#{explore_hits} "\
-                                                              "#{filter_percent} "\
+                                                              "#{filter_permille} "\
                                                               "#{radius} "\
                                                               "[#{latitude_lower},#{latitude_upper}] "\
                                                               "[#{longitude_lower},#{longitude_upper}] "\
@@ -162,15 +162,15 @@ class CommonSiftGistBase < CommonAnnBaseTest
 
     radius_str = (radius >= 0.0) ? "-r#{radius}" : ""
     lazy_str = lazy_filter ? "-lazy" : ""
-    label = params[:label] || "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_percent}#{radius_str}#{lazy_str}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-rff#{resilient_filter_first}-sl#{slack}-n#{clients}-t#{threads_per_search}"
+    label = params[:label] || "#{algorithm}-th#{target_hits}-eh#{explore_hits}-f#{filter_permille}#{radius_str}#{lazy_str}-at#{approximate_threshold}-fft#{filter_first_threshold}-ffe#{filter_first_exploration}-rff#{resilient_filter_first}-sl#{slack}-n#{clients}-t#{threads_per_search}"
     result_file = dirs.tmpdir + "fbench_result.#{label}.txt"
-    fillers = [parameter_filler(TYPE, get_type_string(filter_percent, threads_per_search)),
+    fillers = [parameter_filler(TYPE, get_type_string(filter_permille, threads_per_search)),
                parameter_filler(LABEL, label),
                parameter_filler(ALGORITHM, algorithm),
                parameter_filler(TARGET_HITS, target_hits),
                parameter_filler(EXPLORE_HITS, explore_hits),
                parameter_filler(SLACK, slack),
-               parameter_filler(FILTER_PERCENT, filter_percent),
+               parameter_filler(FILTER_PERMILLE, filter_permille),
                parameter_filler(RADIUS, radius),
                parameter_filler(LAZY_FILTER, lazy_filter),
                parameter_filler(APPROXIMATE_THRESHOLD, approximate_threshold),
@@ -225,8 +225,8 @@ class CommonSiftGistBase < CommonAnnBaseTest
 
     # Now with filtering and filter first
     [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
-      calc_recall_for_queries(100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
+      query_and_benchmark(HNSW, 100, 0, {:filter_permille => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
+      calc_recall_for_queries(100, 0, {:filter_permille => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
     end
   end
 
