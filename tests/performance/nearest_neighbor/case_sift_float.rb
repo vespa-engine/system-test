@@ -14,6 +14,11 @@ class AnnSiftPerfTest < AnnSiftBase
     run_sift_test("sift_test", true)
   end
 
+  def test_filter_first_sift_data_set
+    set_description("Test performance and recall using nearestNeighbor operator (filter-first heuristic) over the 1M SIFT (128 dim) dataset")
+    run_sift_filter_first_test("sift_test")
+  end
+
   def test_geolocation_sift_data_set
     set_description("Test performance and recall using nearestNeighbor combined with geoLocation operator (hnsw vs brute force) over the 1M SIFT (128 dim) dataset")
     run_sift_geolocation_test("sift_test")
