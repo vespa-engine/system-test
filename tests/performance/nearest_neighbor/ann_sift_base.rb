@@ -76,11 +76,12 @@ class AnnSiftBase < CommonSiftGistBase
 
     num_queries_for_recall = 100
     num_documents = 1_000_000
-    filter_values = [1, 70, 90, 95, 97, 99]
+    filter_values_denominator = 10_000 # filter_values below are per myriad
+    filter_values = [1_00, 70_00, 90_00, 95_00, 97_00, 99_00, 99_50]
 
     compile_generators
     generate_vectors_for_recall(num_queries_for_recall)
-    feed_and_benchmark(num_documents, "1M-docs", {:filter_values => filter_values, :mixed_tensor => mixed_tensor})
+    feed_and_benchmark(num_documents, "1M-docs", {:filter_values => filter_values, :filter_values_denominator => filter_values_denominator, :mixed_tensor => mixed_tensor})
 
     # Warm-up
     query_and_benchmark(BRUTE_FORCE, 10, 0)

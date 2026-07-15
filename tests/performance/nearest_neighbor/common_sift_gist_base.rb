@@ -95,6 +95,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
     start_with_docid = params[:start_with_docid] || 0
     start_with_vector = params[:start_with_vector] || 0
     filter_values = params[:filter_values] || nil
+    filter_values_denominator = params[:filter_values_denominator] || 100
     latitude_lower = params[:latitude_lower] || 0.0
     latitude_upper = params[:latitude_upper] || -1.0
     longitude_lower = params[:longitude_lower] || 0.0
@@ -110,6 +111,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
                                                     "#{start_with_docid} "\
                                                     "#{start_with_vector} #{start_with_vector + num_documents} "\
                                                     "#{filter_values.nil? ? "[]" : filter_values.join(",")} "\
+                                                    "#{filter_values_denominator} "\
                                                     "[#{latitude_lower},#{latitude_upper}] "\
                                                     "[#{longitude_lower},#{longitude_upper}] "\
                                                     "#{mixed} "\
