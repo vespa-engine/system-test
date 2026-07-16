@@ -77,7 +77,7 @@ class AnnSiftBase < CommonSiftGistBase
     num_queries_for_recall = 100
     num_documents = 1_000_000
     filter_values_denominator = 10_000 # filter_values below are per myriad
-    filter_values = [1_00, 70_00, 90_00, 95_00, 97_00, 99_00, 99_50]
+    filter_values = [1_00, 50_00, 70_00, 80_00, 90_00, 95_00, 97_00, 99_00, 99_50, 99_70, 99_90]
 
     compile_generators
     generate_vectors_for_recall(num_queries_for_recall)
@@ -86,18 +86,24 @@ class AnnSiftBase < CommonSiftGistBase
     # Warm-up
     query_and_benchmark(BRUTE_FORCE, 10, 0)
 
-    run_target_hits_10_filter_first_tests(95_00)
+    #run_target_hits_10_filter_first_tests(95_00)
 
     filter_values.each do |filter_percent|
+      # Classic HNSW
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.00})
       # Now with filter-first heuristic enabled
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.3})
-      # Increased exploration
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.35})
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 0.35})
+      # Resilient filter-first heuristic
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 1.0, :resilient_filter_first => true})
+      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 2.0, :resilient_filter_first => true})
 
+      # Recall for classic HNSW
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.00})
       # Recall for filter-first heuristic
-      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.3})
-      # Increased exploration
-      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.20, :filter_first_exploration => 0.35})
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 0.35})
+      # Resilient filter-first heuristic
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 1.0, :resilient_filter_first => true})
+      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 1.00, :filter_first_exploration => 2.0, :resilient_filter_first => true})
     end
   end
 
