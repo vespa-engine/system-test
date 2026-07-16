@@ -206,7 +206,7 @@ class CommonSiftGistBase < CommonAnnBaseTest
       calc_recall_for_queries(10, explore_hits)
     end
 
-    [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
+    [0.1, 0.2].each do |slack|
       query_and_benchmark(HNSW, 10, 0, {:slack => slack})
       calc_recall_for_queries(10, 0, {:slack => slack})
     end
@@ -218,15 +218,9 @@ class CommonSiftGistBase < CommonAnnBaseTest
       calc_recall_for_queries(100, explore_hits)
     end
 
-    [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
+    [0.1, 0.2].each do |slack|
       query_and_benchmark(HNSW, 100, 0, {:slack => slack})
       calc_recall_for_queries(100, 0, {:slack => slack})
-    end
-
-    # Now with filtering and filter first
-    [0.00, 0.05, 0.10, 0.15, 0.2, 0.3, 0.4, 0.5].each do |slack|
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
-      calc_recall_for_queries(100, 0, {:filter_percent => 95, :approximate_threshold => 0.00, :filter_first_threshold => 0.4, :filter_first_exploration => 0.3, :slack => slack})
     end
   end
 

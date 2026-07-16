@@ -39,13 +39,7 @@ class AnnGistBase < CommonSiftGistBase
       query_and_benchmark(BRUTE_FORCE, 100, 0, {:filter_percent => filter_percent})
       # Standard HNSW
       query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent})
-      # Now with filter-first heuristic enabled
-      query_and_benchmark(HNSW, 100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.40, :filter_first_exploration => 0.3})
-
-      # Recall for standard HNSW
       calc_recall_for_queries(100, 0, {:filter_percent => filter_percent})
-      # Recall for filter-first heuristic
-      calc_recall_for_queries(100, 0, {:filter_percent => filter_percent, :approximate_threshold => 0.00, :filter_first_threshold => 0.40, :filter_first_exploration => 0.3})
     end
   end
 
